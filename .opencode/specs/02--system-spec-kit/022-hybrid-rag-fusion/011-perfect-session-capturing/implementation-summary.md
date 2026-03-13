@@ -98,11 +98,15 @@ Tasks and the remediation manifest record 20 implemented fixes across eleven fil
   **Description:** Added a two-stage stateless alignment block when file-path overlap with the active spec is below threshold (RC-4: raised from 5% to 15% pre-enrichment / 10% post-enrichment).
   **Before:** Weak session-to-spec alignment could continue and risk cross-spec contamination.
   **After:** The workflow aborts when captured file paths show less than 15 percent overlap (pre-enrichment) or 10 percent overlap (post-enrichment) with spec-folder keywords.
+- **File:** `.opencode/skill/system-spec-kit/scripts/extractors/session-extractor.ts`  
+  **Description:** Updated project-state snapshot derivation to prefer live observations over synthetic spec/git enrichment for `activeFile` and `lastAction`.  
+  **Before:** Synthetic enriched observations could overshadow real session activity in snapshot fields.  
+  **After:** Snapshot fields prioritize non-synthetic observations, preserving live session intent.
 
 ## Files Modified
 | File Path | Change Summary |
 | --- | --- |
-| `.opencode/skill/system-spec-kit/scripts/extractors/session-extractor.ts` | Hardened session ID generation and made zero-tool sessions default to `RESEARCH`. |
+| `.opencode/skill/system-spec-kit/scripts/extractors/session-extractor.ts` | Hardened session ID generation, made zero-tool sessions default to `RESEARCH`, and updated project-state snapshots to prefer live over synthetic observations. |
 | `.opencode/skill/system-spec-kit/scripts/core/file-writer.ts` | Added random temp-file suffixes and rollback cleanup for partial batch-write failures. |
 | `.opencode/skill/system-spec-kit/scripts/extractors/contamination-filter.ts` | Expanded denylist coverage for orchestration chatter, filler, self-reference, and tool scaffolding. |
 | `.opencode/skill/system-spec-kit/scripts/extractors/decision-extractor.ts` | Replaced fixed confidence defaults with evidence-based scoring. |
@@ -114,14 +118,18 @@ Tasks and the remediation manifest record 20 implemented fixes across eleven fil
 | `.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts` | Added descriptive tool observation titles and spec-folder relevance filtering for captured content. |
 | `.opencode/skill/system-spec-kit/scripts/utils/slug-utils.ts` | Added contamination patterns that reject generic tool-derived memory-name candidates. |
 
-## Part II: Stateless Quality Improvements (Planned)
-Part II implementation has not yet begun. The planned stateless-quality roadmap from spec 013 is:
+## Part II: Stateless Quality Improvements (Partially Shipped)
+Part II is no longer planning-only. Core implementation work from Phases 0-2 has shipped in code, but the quality-gate and completion checklist for stateless mode is still incomplete.
 
-1. Phase 0: OpenCode-path hardening (field-name mapping, prompt relevance filtering, SPEC_FOLDER backfill)
-2. Phase 1: Enrichment hook plus spec-folder mining with provenance markers
-3. Phase 2: Git context mining plus ACTION-preserving file extraction
-4. Phase 3: Claude Code capture integration (deferred)
-5. Phase 4: Quality scoring calibration (deferred)
+### Shipped in Code (Phases 0-2)
+1. OpenCode-path hardening shipped in `input-normalizer.ts` and `collect-session-data.ts` (snake_case/camelCase mapping, prompt relevance filtering, SPEC_FOLDER backfill).
+2. Spec-folder enrichment shipped via `spec-folder-extractor.ts` and `workflow.ts` (`enrichStatelessData()` inserted after alignment/contamination guards).
+3. Git-context enrichment shipped via `git-context-extractor.ts` plus merge and ACTION propagation through workflow/file extraction paths, with `session-extractor.ts` now preferring live observations over synthetic enrichment for project-state snapshots.
+
+### Still Pending for Completion
+1. End-to-end stateless validation gates in checklist Part II (qualityValidation, contamination, indexing) are not fully verified.
+2. The automatable enrichment boundary is now covered by targeted regressions (`scripts/tests/stateless-enrichment.vitest.ts` and `scripts/tests/task-enrichment.vitest.ts`), including live-over-synthetic snapshot precedence; remaining open validation is direct OpenCode-session execution on this machine, which is currently blocked by `NO_DATA_AVAILABLE` in direct mode.
+3. Claude Code capture (Phase 3) and quality-calibration (Phase 4) remain deferred.
 
 ## Remaining Work
 - [ ] Quality scores on well-formed sessions >= 85% — PARTIAL: legacy scoring passes (100/100); v2 scoring at 0.80, below 0.85 target; needs v2 calibration
@@ -131,14 +139,14 @@ Part II implementation has not yet begun. The planned stateless-quality roadmap 
 - [ ] All MEDIUM findings from audit resolved — REMAINING: ~67 medium findings not yet addressed
 - [ ] Generated memory files pass manual quality inspection (5 samples) — PARTIAL: 1/5 samples verified (08-03-26_20-47__fixes-for-memory-pipeline-contamination.md — 100/100 score, correct slug, 0 artifacts, 503 lines); 4 samples remaining
 
-### Part II Remaining Work (Planned)
-- [ ] Phase 0: OpenCode-path hardening tasks completed and validated
-- [ ] Phase 1: Spec-folder extractor and enrichment hook implemented with `_provenance: 'spec-folder'`
-- [ ] Phase 2: Git context extractor implemented with `_provenance: 'git'` and ACTION preservation
+### Part II Remaining Work
+- [ ] Phase 0: OpenCode-path hardening validated end-to-end in stateless saves (implementation shipped)
+- [ ] Phase 1: Spec-folder extractor and enrichment hook validated end-to-end with `_provenance: 'spec-folder'` (implementation shipped)
+- [ ] Phase 2: Git context extractor, ACTION preservation, and live-over-synthetic snapshot precedence validated end-to-end (implementation shipped)
 - [ ] Phase 3: Claude Code capture integration completed (deferred)
 - [ ] Phase 4: Quality scorer calibration completed (deferred)
 - [ ] `qualityValidation.valid === true` for stateless saves with no V7/V8/V9 failures
 - [ ] Legacy quality score >= 60/100 on repos with git history (secondary signal)
 - [ ] No regression in stateful (JSON) mode quality and behavior
 - [ ] Semantic indexing succeeds for stateless saves with memory ID assignment
-- [ ] New enrichment modules and stateless regression paths covered by tests
+- [x] New enrichment modules and stateless regression paths covered by tests — VERIFIED: targeted regressions in `scripts/tests/stateless-enrichment.vitest.ts` and `scripts/tests/task-enrichment.vitest.ts` (boundary suite: 40/40 passing); earlier verified suites (`memory-render-fixture`, `runtime-memory-inputs`) still stand

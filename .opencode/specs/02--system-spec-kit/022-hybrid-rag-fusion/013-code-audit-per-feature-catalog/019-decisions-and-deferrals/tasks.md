@@ -37,9 +37,9 @@ contextType: "general"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [ ] T001 Validate all 5 feature entries and source inventories (`feature_catalog/19--decisions-and-deferrals/`)
-- [ ] T002 Capture baseline status for F-01 through F-05 in verification checklist (`checklist.md`)
-- [ ] T003 [P] Confirm audit criteria coverage (correctness, standards, behavior, tests) (`spec.md`)
+- [x] T001 Validate all 5 feature entries and source inventories (`feature_catalog/19--decisions-and-deferrals/`) [EVIDENCE: Catalog entries reconciled during re-audit and F-02 source table correction.]
+- [x] T002 Capture baseline status for F-01 through F-05 in verification checklist (`checklist.md`) [EVIDENCE: Checklist status matrix updated with final PASS outcomes.]
+- [x] T003 [P] Confirm audit criteria coverage (correctness, standards, behavior, tests) (`spec.md`) [EVIDENCE: Spec acceptance scenarios and requirements map to correctness, behavior, and tests.]
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -47,10 +47,10 @@ contextType: "general"
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [ ] T004 Update F-02 source inventory to include `mcp_server/lib/graph/graph-signals.ts` and migration-v19 touchpoints (`.opencode/skill/system-spec-kit/feature_catalog/19--decisions-and-deferrals/02-implemented-graph-centrality-and-community-detection.md`)
-- [ ] T005 Add/attach F-02 test references for `computeGraphMomentum` and `computeCausalDepth` plus migration-v19 expectations (`.opencode/skill/system-spec-kit/feature_catalog/19--decisions-and-deferrals/02-implemented-graph-centrality-and-community-detection.md`)
-- [ ] T006 Tighten Rule-3 continuation token to prevent cross-sentence key-phrase capture (`mcp_server/lib/extraction/entity-extractor.ts`)
-- [ ] T007 Add negative tests asserting sentence-boundary termination in key-phrase extraction (`mcp_server/tests/entity-extractor.vitest.ts`)
+- [x] T004 Update F-02 source inventory to include `mcp_server/lib/graph/graph-signals.ts` and migration-v19 touchpoints (`.opencode/skill/system-spec-kit/feature_catalog/19--decisions-and-deferrals/02-implemented-graph-centrality-and-community-detection.md`) [EVIDENCE: Implementation references now include graph-signals and vector-index-schema v19.]
+- [x] T005 Add/attach F-02 test references for `computeGraphMomentum` and `computeCausalDepth` plus migration-v19 expectations (`.opencode/skill/system-spec-kit/feature_catalog/19--decisions-and-deferrals/02-implemented-graph-centrality-and-community-detection.md`) [EVIDENCE: Test table includes `graph-signals.vitest.ts` and deferred-features integration coverage.]
+- [x] T006 Tighten Rule-3 continuation token to prevent cross-sentence key-phrase capture (`mcp_server/lib/extraction/entity-extractor.ts`) [EVIDENCE: Rule-3 regex updated to stop at sentence periods while preserving dotted tokens.]
+- [x] T007 Add negative tests asserting sentence-boundary termination in key-phrase extraction (`mcp_server/tests/entity-extractor.vitest.ts`) [EVIDENCE: Regression tests now assert no `'. Implements'` capture and preserve `Node.js` extraction.]
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -58,9 +58,9 @@ contextType: "general"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [ ] T008 Re-run targeted graph/entity extraction tests after updates (`mcp_server/tests/*.vitest.ts`)
-- [ ] T009 Re-audit F-02 and F-03 status after remediation (`checklist.md`)
-- [ ] T010 Update final PASS/WARN/FAIL outcomes and close deferred items (`tasks.md`)
+- [x] T008 Re-run targeted graph/entity extraction tests after updates (`mcp_server/tests/*.vitest.ts`) [EVIDENCE: `npm run test -- tests/entity-extractor.vitest.ts tests/graph-signals.vitest.ts` passed (85/85).]
+- [x] T009 Re-audit F-02 and F-03 status after remediation (`checklist.md`) [EVIDENCE: F-02 and F-03 both moved from WARN to PASS with linked source/test evidence.]
+- [x] T010 Update final PASS/WARN/FAIL outcomes and close deferred items (`tasks.md`) [EVIDENCE: Task/checklist/spec now represent closure state and only residual open question remains.]
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -68,9 +68,9 @@ contextType: "general"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [ ] All tasks marked `[x]`
-- [ ] No `[B]` blocked tasks remaining
-- [ ] Manual verification passed
+- [x] All tasks marked `[x]`
+- [x] No `[B]` blocked tasks remaining
+- [x] Manual verification passed
 <!-- /ANCHOR:completion -->
 
 ---

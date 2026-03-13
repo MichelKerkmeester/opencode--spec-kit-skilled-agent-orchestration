@@ -64,9 +64,10 @@ export function extractEntities(content: string): ExtractedEntity[] {
 
   // AI-GUARD: Rule 3: Words after key phrases — keywords are case-insensitive via explicit
   // alternation (no `i` flag, since continuation words must require uppercase start
-  // to avoid capturing common English words like "and", "the"). First captured word
-  // allows lowercase for "using react"; continuation words require uppercase start.
-  const keyPhraseRe = /\b(?:[Uu]sing|[Ww]ith|[Vv]ia|[Ii]mplements)\s+([A-Za-z][\w.-]+(?:\s+[A-Z][\w.-]+)*)/g;
+  // to avoid capturing common English words like "and", "the"). Tokens may include
+  // internal dots (for names like "Node.js"), but a trailing sentence period ends
+  // the match so we do not absorb the next sentence.
+  const keyPhraseRe = /\b(?:[Uu]sing|[Ww]ith|[Vv]ia|[Ii]mplements)\s+([A-Za-z][\w-]*(?:\.[A-Za-z0-9_-]+)*(?:\s+[A-Z][\w-]*(?:\.[A-Za-z0-9_-]+)*)*)/g;
   while ((match = keyPhraseRe.exec(content)) !== null) {
     raw.push({ text: match[1], type: 'key_phrase' });
   }

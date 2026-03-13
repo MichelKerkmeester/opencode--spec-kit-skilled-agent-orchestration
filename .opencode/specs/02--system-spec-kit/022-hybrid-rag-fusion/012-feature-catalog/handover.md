@@ -1,7 +1,7 @@
 # Session Handover: Feature Catalog Audit & Remediation
 
 **Date**: 2026-03-08
-**Spec Folder**: `02--system-spec-kit/022-hybrid-rag-fusion/011-feature-catalog`
+**Spec Folder**: `02--system-spec-kit/022-hybrid-rag-fusion/012-feature-catalog`
 **Branch**: `main`
 **Session Duration**: ~2 hours (across context continuations)
 
@@ -97,7 +97,7 @@ Phase E is defined in `tasks.md` (T100-T171) and `scratch/remediation-manifest.m
 
 ### Spec Folder
 ```
-.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/011-feature-catalog/
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-feature-catalog/
   spec.md              # L3 specification
   plan.md              # Implementation plan with agent partitioning
   tasks.md             # Task breakdown (T001-T171)
@@ -109,7 +109,7 @@ Phase E is defined in `tasks.md` (T100-T171) and `scratch/remediation-manifest.m
 
 ### Scratch Files (Research Outputs)
 ```
-.../011-feature-catalog/scratch/
+.../012-feature-catalog/scratch/
   launch-audit-agents.sh           # 30-agent launcher script
   verification-C[01-20].md         # 20 Stream 1 verification reports
   investigation-X[01-10].md        # 10 Stream 2 gap investigation reports
@@ -128,7 +128,7 @@ Phase E is defined in `tasks.md` (T100-T171) and `scratch/remediation-manifest.m
 
 ### Utilities
 ```
-.opencode/specs/.../011-feature-catalog/scratch/
+.opencode/specs/.../012-feature-catalog/scratch/
   replace-monolith-source-files.mjs    # Syncs snippets -> monolith
   generate-source-files.mjs            # Dep-graph + annotation helper
 ```
@@ -156,7 +156,7 @@ Phase E is defined in `tasks.md` (T100-T171) and `scratch/remediation-manifest.m
 ```
 Resume Phase E of the Feature Catalog Audit & Remediation.
 
-Spec folder: 02--system-spec-kit/022-hybrid-rag-fusion/011-feature-catalog
+Spec folder: 02--system-spec-kit/022-hybrid-rag-fusion/012-feature-catalog
 
 Load memory context for this spec folder, then read:
 1. scratch/remediation-manifest.md (the prioritized action list)

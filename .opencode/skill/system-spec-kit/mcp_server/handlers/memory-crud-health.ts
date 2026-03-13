@@ -8,6 +8,7 @@
 
 import { randomUUID } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { resolve } from 'node:path';
 
 import { checkDatabaseUpdated } from '../core';
@@ -27,8 +28,8 @@ import type { HealthArgs, PartialProviderMetadata } from './memory-crud-types';
 /** Strip absolute paths, stack traces, and truncate for safe user-facing hints. */
 function sanitizeErrorForHint(msg: string): string {
   return msg
-    .replace(/\/[\w./-]+/g, '[path]')          // strip Unix absolute file paths
-    .replace(/[A-Za-z]:\\[\w.\\/-]+/g, '[path]') // strip Windows absolute file paths
+    .replace(/(^|[\s(])\/(?:[^/\n]+\/)*[^:\n)"'\]]+/g, (_match, prefix: string) => `${prefix}[path]`)
+    .replace(/(^|[\s(])[A-Za-z]:\\(?:[^\\\n]+\\)*[^:\n)"'\]]+/g, (_match, prefix: string) => `${prefix}[path]`)
     .replace(/^[ \t]*at .+$/gm, '')            // strip stack trace lines
     .replace(/\n{2,}/g, '\n')                   // collapse blank lines left by stripping
     .trim()
@@ -111,6 +112,25 @@ interface DivergentAliasBucket {
 
 function toNormalizedPath(filePath: string): string {
   return filePath.replace(/\\/g, '/');
+}
+
+function isTempFixturePath(filePath: string): boolean {
+  if (!filePath) {
+    return false;
+  }
+
+  try {
+    const normalizedPath = toNormalizedPath(resolve(filePath));
+    const tempRoots = new Set([
+      toNormalizedPath(resolve(tmpdir())),
+      toNormalizedPath(resolve('/tmp')),
+    ]);
+    return Array.from(tempRoots).some((tempRoot) => (
+      normalizedPath === tempRoot || normalizedPath.startsWith(`${tempRoot}/`)
+    ));
+  } catch {
+    return false;
+  }
 }
 
 function toSpecAliasKey(filePath: string): string {
@@ -412,6 +432,8 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
     'fts_rebuild',
     'trigger_cache_refresh',
     'orphan_edges_cleanup',
+    'orphan_vector_cleanup',
+    'temp_fixture_memory_cleanup',
   ];
 
   if (autoRepair && !confirmed) {
@@ -504,6 +526,73 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
     } catch (orphanError: unknown) {
       trackRepairOutcome(false);
       repair.errors.push(`Orphan edge cleanup failed: ${sanitizeErrorForHint(toErrorMessage(orphanError))}`);
+    }
+  }
+
+  if (autoRepair && database) {
+    try {
+      const integrityReport = vectorIndex.verifyIntegrity({ autoClean: true });
+      const cleanedVectors = integrityReport.cleaned?.vectors ?? 0;
+      const cleanedChunks = integrityReport.cleaned?.chunks ?? 0;
+
+      if (cleanedVectors > 0) {
+        trackRepairOutcome(true);
+        repair.actions.push(`orphan_vectors_cleaned:${cleanedVectors}`);
+        hints.push(`Auto-repair: removed ${cleanedVectors} orphaned vector(s)`);
+      }
+
+      if (cleanedChunks > 0) {
+        trackRepairOutcome(true);
+        repair.actions.push(`orphan_chunks_cleaned:${cleanedChunks}`);
+        hints.push(`Auto-repair: removed ${cleanedChunks} orphaned chunk(s)`);
+      }
+
+      const tempFixtureOrphans = integrityReport.orphanedFiles.filter((entry) => isTempFixturePath(entry.file_path));
+      let tempFixtureDeletes = 0;
+      let tempFixtureDeleteFailures = 0;
+
+      for (const orphan of tempFixtureOrphans) {
+        try {
+          if (vectorIndex.deleteMemory(orphan.id)) {
+            tempFixtureDeletes += 1;
+          } else {
+            tempFixtureDeleteFailures += 1;
+          }
+        } catch (cleanupError: unknown) {
+          tempFixtureDeleteFailures += 1;
+          repair.errors.push(`Temp fixture cleanup failed for ${orphan.id}: ${sanitizeErrorForHint(toErrorMessage(cleanupError))}`);
+        }
+      }
+
+      if (tempFixtureDeletes > 0) {
+        trackRepairOutcome(true);
+        repair.actions.push(`temp_fixture_memories_deleted:${tempFixtureDeletes}`);
+        hints.push(`Auto-repair: removed ${tempFixtureDeletes} temp fixture memory row(s)`);
+      }
+
+      if (tempFixtureDeleteFailures > 0) {
+        trackRepairOutcome(false);
+        const warning = `${tempFixtureDeleteFailures} temp fixture memory row(s) could not be deleted`;
+        repair.warnings.push(warning);
+        hints.push(`Auto-repair warning: ${warning}`);
+      }
+
+      const postRepairReport = vectorIndex.verifyIntegrity({ autoClean: false });
+      if (
+        postRepairReport.orphanedVectors > 0 ||
+        postRepairReport.missingVectors > 0 ||
+        postRepairReport.orphanedFiles.length > 0 ||
+        postRepairReport.orphanedChunks > 0
+      ) {
+        repair.warnings.push(
+          `Post-repair integrity still degraded: orphanedVectors=${postRepairReport.orphanedVectors}, ` +
+          `missingVectors=${postRepairReport.missingVectors}, orphanedFiles=${postRepairReport.orphanedFiles.length}, ` +
+          `orphanedChunks=${postRepairReport.orphanedChunks}`
+        );
+      }
+    } catch (integrityError: unknown) {
+      trackRepairOutcome(false);
+      repair.errors.push(`Integrity cleanup failed: ${sanitizeErrorForHint(toErrorMessage(integrityError))}`);
     }
   }
 

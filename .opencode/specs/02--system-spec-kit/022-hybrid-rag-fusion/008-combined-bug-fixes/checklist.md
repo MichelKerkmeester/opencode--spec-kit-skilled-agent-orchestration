@@ -4,8 +4,8 @@ title: "Combined Bug Fixes Checklist"
 status: "in-progress"
 level: 3
 created: "2025-12-01"
-updated: "2026-03-10"
-description: "Merged checklist covering all verification items from five source spec folders"
+updated: "2026-03-13"
+description: "Merged checklist covering all verification items from six source spec folders"
 importance_tier: "normal"
 contextType: "implementation"
 ---
@@ -13,8 +13,8 @@ contextType: "implementation"
 
 <!-- SPECKIT_LEVEL: 3 -->
 
-This is a **merged checklist** combining all verification items from five source spec folders under `022-hybrid-rag-fusion`.
-Historical "016" checklist naming in older snapshots is legacy labeling only; source 016 remains pending (0/18 verified).
+This is a **merged checklist** combining all verification items from six source spec folders under `022-hybrid-rag-fusion`.
+Historical "016" checklist naming in older snapshots is legacy labeling only; source 016 is now fully verified (18/18).
 
 ---
 
@@ -25,18 +25,22 @@ Historical "016" checklist naming in older snapshots is legacy labeling only; so
 | **003** | Auto-Detected Session Bug | 10 | 9 | 2 | 21 | 20/21 |
 | **008** | Subfolder Resolution Fix | 9 | 2 | 0 | 11 | 11/11 |
 | **013** | Memory Search Bug Fixes | 10 | 13 | 2 | 25 | 22/25 |
-| **015** | Bug Fixes and Alignment | 9 | 54 | 15 | 78 | 69/78 |
-| **016** | Code Audit (2026-03-08) | 1 | 16 | 1 | 18 | 0/18 |
+| **015** | Bug Fixes and Alignment | 9 | 54 | 15 | 78 | 75/78 |
+| **016** | Code Audit (2026-03-08) | 1 | 16 | 1 | 18 | 18/18 |
 | **017** | 30-Commit Bug Audit (W5, 2026-03-10) | 3 | 85 | 0 | 88 | 88/88 |
-| **Combined** | | **42** | **179** | **20** | **241** | **210/241** |
+| **Combined** | | **42** | **179** | **20** | **241** | **234/241** |
 
-Current gate truth (2026-03-10):
-- `npm run check`: PASS
-- `npm run check:full`: PASS
-- `npx tsc --noEmit`: clean across `mcp_server`, `scripts`, and `shared`
-- Tests: 11 pre-existing failures across 9 files (90 pre-existing failures resolved by W5 fixes)
-- W5 commits: `0b53820c` (Wave A+B, 29 fixes, 23 files) and `37b5ba59` (Wave C, 33 fixes, 30 files)
-- Targeted post-fix verification: PASS (see `scratch/verification-logs/2026-03-07-post-fix-targeted-verification.md`)
+Current gate truth (2026-03-13):
+- `npm run check --workspace=scripts`: PASS
+- `npm run check --workspace=mcp_server` in `.opencode/skill/system-spec-kit`: PASS
+- `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit`: PASS (scanned 731, findings 0)
+- `node node_modules/vitest/vitest.mjs run tests/graph-signals.vitest.ts tests/working-memory.vitest.ts tests/checkpoint-working-memory.vitest.ts tests/checkpoints-storage.vitest.ts tests/memory-crud-extended.vitest.ts tests/bm25-index.vitest.ts` in `.opencode/skill/system-spec-kit/mcp_server`: PASS (6 files, 275 tests)
+- `node mcp_server/node_modules/vitest/vitest.mjs run tests/unit-rrf-fusion.vitest.ts tests/checkpoints-storage.vitest.ts tests/access-tracker.vitest.ts tests/access-tracker-extended.vitest.ts`: PASS (73 passed)
+- `node node_modules/vitest/vitest.mjs run tests/composite-scoring.vitest.ts tests/unit-rrf-fusion.vitest.ts tests/mpab-aggregation.vitest.ts tests/co-activation.vitest.ts tests/fsrs-scheduler.vitest.ts tests/eval-metrics.vitest.ts` in `mcp_server`: PASS (322 passed)
+- `node node_modules/vitest/vitest.mjs run tests/score-normalization.vitest.ts tests/unit-normalization.vitest.ts tests/unit-normalization-roundtrip.vitest.ts` in `mcp_server`: PASS (56 passed)
+- `node mcp_server/node_modules/vitest/vitest.mjs run tests/context-server.vitest.ts`: PASS (315 passed)
+- `node .opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js`: PASS (32 passed, 0 failed, 3 skipped)
+- Full `vitest run`: PASS (`264` passed, `1` skipped test files; `7536` passed, `47` skipped, `28` todo tests)
 
 ---
 
@@ -74,26 +78,26 @@ Current gate truth (2026-03-10):
 ### Code Quality
 
 - [x] CHK-010 [P0] Folder detector changes pass lint/format checks [EVIDENCE: Review gate PASS (score 88/100, no P0/P1 findings) for implementation files including `.opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js`, `.opencode/command/spec_kit/resume.md`, and `.opencode/command/spec_kit/handover.md`.]
-- [x] CHK-011 [P0] No new runtime warnings/errors in detector command paths [EVIDENCE: `node .opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js` -> 32 passed, 0 failed, 0 skipped.]
+- [x] CHK-011 [P0] No new runtime warnings/errors in detector command paths [EVIDENCE: `node .opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js` -> 32 passed, 0 failed, 3 skipped.]
 - [x] CHK-012 [P1] Active non-archived preference implemented without breaking explicit path priorities [EVIDENCE: Active detector implementation confirmed in `.opencode/skill/system-spec-kit/scripts/spec-folder/folder-detector.ts` and `.opencode/skill/system-spec-kit/scripts/dist/spec-folder/folder-detector.js` (no net diff required in this finalization).]
-- [x] CHK-013 [P1] Deterministic alias handling implemented for `specs/` and `.opencode/specs/` [EVIDENCE: Behavior validated by updated detector regression suite `.opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js`; command result 32/0/0.]
+- [x] CHK-013 [P1] Deterministic alias handling implemented for `specs/` and `.opencode/specs/` [EVIDENCE: Behavior validated by updated detector regression suite `.opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js`; command result 32 passed, 0 failed, 3 skipped.]
 
 ---
 
 ### Testing
 
-- [x] CHK-020 [P0] REQ-001 satisfied: active non-archived preference verified [EVIDENCE: Detector functional suite pass from `.opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js`; command `node .opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js` -> 32 passed, 0 failed, 0 skipped.]
-- [x] CHK-021 [P0] REQ-002 satisfied: alias determinism verified [EVIDENCE: Same command result 32/0/0 with updated regression file `.opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js`.]
-- [x] CHK-022 [P0] REQ-003 satisfied: mtime distortion resilience verified [EVIDENCE: Same detector regression command result 32/0/0; scope includes mtime distortion scenarios.]
-- [x] CHK-023 [P0] REQ-004 satisfied: low-confidence confirmation/fallback verified [EVIDENCE: Functional regression command result 32/0/0 plus verified existing command guidance alignment in `.opencode/command/spec_kit/resume.md` and `.opencode/command/spec_kit/handover.md` (no net diff in this pass).]
-- [x] CHK-024 [P1] Regression suite updated to fail on pre-fix behavior [EVIDENCE: Updated `.opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js`; execution result 32 passed, 0 failed, 0 skipped.]
+- [x] CHK-020 [P0] REQ-001 satisfied: active non-archived preference verified [EVIDENCE: Detector functional suite pass from `.opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js`; command `node .opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js` -> 32 passed, 0 failed, 3 skipped.]
+- [x] CHK-021 [P0] REQ-002 satisfied: alias determinism verified [EVIDENCE: Same command result 32 passed, 0 failed, 3 skipped with updated regression file `.opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js`.]
+- [x] CHK-022 [P0] REQ-003 satisfied: mtime distortion resilience verified [EVIDENCE: Same detector regression command result 32 passed, 0 failed, 3 skipped; scope includes mtime distortion scenarios.]
+- [x] CHK-023 [P0] REQ-004 satisfied: low-confidence confirmation/fallback verified [EVIDENCE: Functional regression command result 32 passed, 0 failed, 3 skipped plus verified existing command guidance alignment in `.opencode/command/spec_kit/resume.md` and `.opencode/command/spec_kit/handover.md` (no net diff in this pass).]
+- [x] CHK-024 [P1] Regression suite updated to fail on pre-fix behavior [EVIDENCE: Updated `.opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js`; execution result 32 passed, 0 failed, 3 skipped.]
 
 ---
 
 ### Security
 
 - [x] CHK-030 [P0] Alias normalization does not introduce path traversal acceptance [EVIDENCE: Review gate PASS (88/100, no P0/P1) and active detector implementation verification in `.opencode/skill/system-spec-kit/scripts/spec-folder/folder-detector.ts` and dist runtime artifact.]
-- [x] CHK-031 [P0] Selection remains constrained to approved spec roots [EVIDENCE: Active detector code path verified in `.opencode/skill/system-spec-kit/scripts/spec-folder/folder-detector.ts`; no net diff required in this finalization pass; regression suite passed 32/0/0.]
+- [x] CHK-031 [P0] Selection remains constrained to approved spec roots [EVIDENCE: Active detector code path verified in `.opencode/skill/system-spec-kit/scripts/spec-folder/folder-detector.ts`; no net diff required in this finalization pass; regression suite passed 32 passed, 0 failed, 3 skipped.]
 - [x] CHK-032 [P1] Confirmation flow does not bypass explicit user intent [EVIDENCE: Review gate PASS with no required findings; verified existing command guidance alignment in `.opencode/command/spec_kit/resume.md` and `.opencode/command/spec_kit/handover.md` (no net diff in this pass).]
 
 ---
@@ -206,7 +210,7 @@ Current gate truth (2026-03-10):
 - [x] CHK-025 [P1] `npm run check:full` gate is fully green [EVIDENCE: `scratch/verification-logs/2026-03-07-mcp-check-full.md`]
 - [ ] CHK-026 [P1] Alignment drift check rerun captured for this post-fix pass [DEFERRED: not rerun in the 2026-03-07 truth refresh]
 - [ ] CHK-027 [P1] Spec validator rerun captured for this post-fix pass [DEFERRED: not rerun in the 2026-03-07 truth refresh]
-- [x] CHK-028 [P0] Context-server regression suite passes with fatal mismatch startup coverage [EVIDENCE: `npm run test --workspace=mcp_server -- tests/context-server.vitest.ts` -> PASS (307 passed)]
+- [x] CHK-028 [P0] Context-server regression suite passes with fatal mismatch startup coverage [EVIDENCE: `node mcp_server/node_modules/vitest/vitest.mjs run tests/context-server.vitest.ts` -> PASS (315 passed)]
 - [x] CHK-029 [P1] Managed startup and direct runtime probes confirm Voyage 4 on the active 1024d database, and the health handler reports that profile accurately during lazy startup [EVIDENCE: `~/.opencode/bin/opencode --print-logs --log-level DEBUG mcp list` showed `spec_kit_memory` connected plus startup logs `API key validated (provider: voyage)` and `Embedding dimension validated: 1024`; `npx vitest run tests/memory-crud-extended.vitest.ts` -> PASS (68 passed); real MCP SDK client against `dist/context-server.js` returned `Memory system healthy: 963 memories indexed` with `embeddingProvider { provider: voyage, model: voyage-4, dimension: 1024, healthy: true }`]
 - [x] CHK-029a [P1] Direct built-runtime packet indexing succeeds after the fix [EVIDENCE: direct `handleMemoryIndexScan` for `02--system-spec-kit/022-hybrid-rag-fusion/008-combined-bug-fixes` completed with `failed: 0`]
 
@@ -276,7 +280,7 @@ Current gate truth (2026-03-10):
 
 - [x] CHK-001 [P0]: `rrf-fusion.ts` -- `k < 0` throws error, `k = 0` produces valid scores [EVIDENCE: Guard at lines 115, 178, 330-331; k=0 produces 1/rank scores]
 - [x] CHK-002 [P0]: No `Infinity` or `NaN` values in RRF output for any valid input [EVIDENCE: convergenceBonus normalized by 1/(k+1); tsc --noEmit passes]
-- [ ] CHK-003 [P0]: Test suite includes negative/zero `k` edge cases with assertions [DEFERRED: Test task T002]
+- [x] CHK-003 [P0]: Test suite includes negative/zero `k` edge cases with assertions [EVIDENCE: `node mcp_server/node_modules/vitest/vitest.mjs run tests/unit-rrf-fusion.vitest.ts tests/checkpoints-storage.vitest.ts tests/access-tracker.vitest.ts tests/access-tracker-extended.vitest.ts` -> 73 passed (includes `tests/unit-rrf-fusion.vitest.ts` with `k = -1`/`k = 0` assertions).]
 
 ---
 
@@ -284,7 +288,7 @@ Current gate truth (2026-03-10):
 
 - [x] CHK-004 [P0]: `checkpoints.ts` -- merge-mode restore uses INSERT OR IGNORE + UPDATE (not INSERT OR REPLACE) [EVIDENCE: Split at lines 518-536; merge-mode uses IGNORE + explicit UPDATE at lines 649-660]
 - [x] CHK-005 [P0]: Merge-mode restore does not trigger CASCADE deletes on working_memory [EVIDENCE: INSERT OR IGNORE skips existing rows; UPDATE doesn't trigger CASCADE]
-- [ ] CHK-006 [P0]: Test verifies existing session state survives merge-mode checkpoint restore [DEFERRED: Test task T075]
+- [x] CHK-006 [P0]: Test verifies existing session state survives merge-mode checkpoint restore [EVIDENCE: `node mcp_server/node_modules/vitest/vitest.mjs run tests/unit-rrf-fusion.vitest.ts tests/checkpoints-storage.vitest.ts tests/access-tracker.vitest.ts tests/access-tracker-extended.vitest.ts` -> 73 passed (includes checkpoint merge-mode/CASCADE-prevention coverage in `tests/checkpoints-storage.vitest.ts`).]
 
 ---
 
@@ -294,7 +298,7 @@ Current gate truth (2026-03-10):
 - [x] CHK-011 [P1]: `composite-scoring.ts` -- negative accessCount clamped to 0 [EVIDENCE: `Math.max(0, accessCount)` at line 314]
 - [x] CHK-012 [P1]: `composite-scoring.ts` -- undefined similarity defaults to 0 [EVIDENCE: `Number(row.similarity ?? 0)` at line 366]
 - [x] CHK-013 [P1]: All composite scoring outputs are in [0, 1] range for any input [EVIDENCE: Guards prevent NaN/negative propagation; tsc confirms type safety]
-- [ ] CHK-014 [P1]: Test suite covers NaN, undefined, negative, Infinity inputs [DEFERRED: Test task T006]
+- [x] CHK-014 [P1]: Test suite covers NaN, undefined, negative, Infinity inputs [EVIDENCE: `node node_modules/vitest/vitest.mjs run tests/composite-scoring.vitest.ts tests/unit-rrf-fusion.vitest.ts tests/mpab-aggregation.vitest.ts tests/co-activation.vitest.ts tests/fsrs-scheduler.vitest.ts tests/eval-metrics.vitest.ts` -> 322 passed in `mcp_server`; `tests/composite-scoring.vitest.ts` now asserts finite/clamped behavior for negative and non-finite stability, invalid dates, undefined inputs, Infinity, and negative usage counts.]
 
 ---
 
@@ -410,9 +414,9 @@ Current gate truth (2026-03-10):
 - [x] CHK-200 [P0]: TypeScript compilation passes with zero errors [EVIDENCE: `tsc --noEmit` exit 0]
 - [x] CHK-206 [P0]: `npm run check` passes in current tree [EVIDENCE: `npm run check` pass captured in `scratch/verification-logs/2026-03-07-mcp-check-full.md`]
 - [x] CHK-207 [P0]: `npm run check:full` passes in current tree [EVIDENCE: `scratch/verification-logs/2026-03-07-mcp-check-full.md`]
-- [ ] CHK-201 [P1]: `verify_alignment_drift.py` passes on shared/ directory [DEFERRED: T065]
-- [ ] CHK-202 [P1]: `verify_alignment_drift.py` passes on mcp_server/ directory [DEFERRED: T065]
-- [ ] CHK-203 [P1]: `verify_alignment_drift.py` passes on scripts/ directory [DEFERRED: T065]
+- [x] CHK-201 [P1]: `verify_alignment_drift.py` passes on shared/ directory [EVIDENCE: `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit` -> PASS (scanned 731, findings 0).]
+- [x] CHK-202 [P1]: `verify_alignment_drift.py` passes on mcp_server/ directory [EVIDENCE: `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit` -> PASS (scanned 731, findings 0).]
+- [x] CHK-203 [P1]: `verify_alignment_drift.py` passes on scripts/ directory [EVIDENCE: `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit` -> PASS (scanned 731, findings 0).]
 - [x] CHK-204 [P1]: No new TODO/FIXME introduced in modified files [EVIDENCE: grep across all 30 modified files returns 0 matches]
 - [x] CHK-205 [P2]: implementation-summary.md created and complete [EVIDENCE: Created with full file change table and verification results]
 
@@ -422,8 +426,8 @@ Current gate truth (2026-03-10):
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 9 | 7/9 |
-| P1 Items | 54 | 50/54 |
+| P0 Items | 9 | 9/9 |
+| P1 Items | 54 | 54/54 |
 | P2 Items | 15 | 12/15 |
 
 **Verification Date**: 2026-03-07
@@ -439,41 +443,41 @@ Current gate truth (2026-03-10):
 
 ### P0 Items (016)
 
-- [ ] CHK-300 [P0]: Fix broken import path in `graph-flags.ts` and `causal-boost.ts` (T069) — `../cache/cognitive/rollout-policy` → `../cognitive/rollout-policy`
+- [x] CHK-300 [P0]: Revalidated `rollout-policy` import path finding in `graph-flags.ts` and `causal-boost.ts` (T069) [EVIDENCE: `mcp_server/lib/search/graph-flags.ts` and `mcp_server/lib/search/causal-boost.ts` both resolve `../cache/cognitive/rollout-policy` to an extant module, and `npm run check --workspace=mcp_server` passes; the proposed rewrite was stale/not required in the checked tree.]
 
 ### P1 Items (016)
 
-- [ ] CHK-301 [P1]: `access-tracker.ts` flush interval timer cleared on shutdown (T070)
-- [ ] CHK-302 [P1]: `composite-scoring.ts` negative stability guard with `Number.isFinite()` (T071)
-- [ ] CHK-303 [P1]: `rrf-fusion.ts` finite/non-negative validation on `k`, `convergenceBonus`, `list.weight` (T072)
-- [ ] CHK-304 [P1]: `context-server.ts` fatal error handlers unified through single shutdown path (T073)
-- [ ] CHK-305 [P1]: `workflow.ts` HTML sanitization covers all active tags (T074, F7)
-- [ ] CHK-306 [P1]: `folder-detector.ts` approved-root validation enforced inside helper (T075, F6)
-- [ ] CHK-307 [P1]: `checkpoints.ts` edge restore routes through `causal-edges.ts` module (T076, F11)
-- [ ] CHK-308 [P1]: `transaction-manager.ts` nested transaction guard / savepoint support (T077)
-- [ ] CHK-309 [P1]: `memory-crud-update.ts` update+validation in single transaction with rollback (T078)
-- [ ] CHK-310 [P1]: `eval-metrics.ts` empty ground-truth guard returns 0 (T079)
-- [ ] CHK-311 [P1]: `graph-signals.ts` causal depth uses longest-path DAG traversal (T080)
-- [ ] CHK-312 [P1]: `mpab-aggregation.ts` finite-number guards on chunk scores (T081)
-- [ ] CHK-313 [P1]: `shared/normalization.ts` finite-input validation (T082)
-- [ ] CHK-314 [P1]: `co-activation.ts` type-guard on parsed similarity field (T083)
-- [ ] CHK-315 [P1]: `fsrs-scheduler.ts` review interval parameters clamped to valid ranges (T084)
-- [ ] CHK-316 [P1]: Prior findings F4 (FK cascade) and F9 (error contracts) fully resolved
+- [x] CHK-301 [P1]: `access-tracker.ts` flush interval timer cleared on shutdown (T070) [EVIDENCE: `access-tracker.ts` now exposes `dispose()` that clears `flushInterval`, removes exit handlers, and resets DB state; `node mcp_server/node_modules/vitest/vitest.mjs run tests/unit-rrf-fusion.vitest.ts tests/checkpoints-storage.vitest.ts tests/access-tracker.vitest.ts tests/access-tracker-extended.vitest.ts` -> 73 passed.]
+- [x] CHK-302 [P1]: `composite-scoring.ts` negative stability guard with `Number.isFinite()` (T071) [EVIDENCE: Guarded behavior is active in `mcp_server/lib/scoring/composite-scoring.ts`; `node node_modules/vitest/vitest.mjs run tests/composite-scoring.vitest.ts tests/unit-rrf-fusion.vitest.ts tests/mpab-aggregation.vitest.ts tests/co-activation.vitest.ts tests/fsrs-scheduler.vitest.ts tests/eval-metrics.vitest.ts` -> 322 passed in `mcp_server`, including new composite-scoring regressions for negative/non-finite stability and invalid input clamping.]
+- [x] CHK-303 [P1]: `rrf-fusion.ts` finite/non-negative validation on `k`, `convergenceBonus`, `list.weight` (T072) [EVIDENCE: `shared/algorithms/rrf-fusion.ts` rejects negative `k` and sanitizes invalid `convergenceBonus`, `graphWeightBoost`, and list weights; `node node_modules/vitest/vitest.mjs run tests/composite-scoring.vitest.ts tests/unit-rrf-fusion.vitest.ts tests/mpab-aggregation.vitest.ts tests/co-activation.vitest.ts tests/fsrs-scheduler.vitest.ts tests/eval-metrics.vitest.ts` -> 322 passed in `mcp_server`, including updated `tests/unit-rrf-fusion.vitest.ts` coverage for non-finite `k`, invalid bonuses, and invalid weights.]
+- [x] CHK-304 [P1]: `context-server.ts` fatal error handlers unified through single shutdown path (T073) [EVIDENCE: `context-server.ts` routes `SIGTERM`, `SIGINT`, `uncaughtException`, and `unhandledRejection` through `fatalShutdown()`; `node mcp_server/node_modules/vitest/vitest.mjs run tests/context-server.vitest.ts` -> 315 passed.]
+- [x] CHK-305 [P1]: `workflow.ts` HTML sanitization covers all active tags (T074, F7) [EVIDENCE: Workflow sanitization strengthened and covered by `node ../mcp_server/node_modules/vitest/vitest.mjs run tests/task-enrichment.vitest.ts --root . --config ../mcp_server/vitest.config.ts` from `.opencode/skill/system-spec-kit/scripts` -> 32 passed.]
+- [x] CHK-306 [P1]: `folder-detector.ts` approved-root validation enforced inside helper (T075, F6) [EVIDENCE: `resolveSessionSpecFolderPaths()` enforces `isPathWithin()` approved-root checks and throws `Path escapes specs root`; `node .opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js` -> 32 passed, 0 failed, 3 skipped.]
+- [x] CHK-307 [P1]: `checkpoints.ts` edge restore routes through `causal-edges.ts` module (T076, F11) [EVIDENCE: `checkpoints.ts` imports and calls `bulkInsertEdges()` from `causal-edges.ts`; `node mcp_server/node_modules/vitest/vitest.mjs run tests/unit-rrf-fusion.vitest.ts tests/checkpoints-storage.vitest.ts tests/access-tracker.vitest.ts tests/access-tracker-extended.vitest.ts` -> 73 passed.]
+- [x] CHK-308 [P1]: `transaction-manager.ts` nested transaction guard / savepoint support (T077) [EVIDENCE: `mcp_server/lib/storage/transaction-manager.ts` reuses the outer transaction when nested and bypasses wrapper re-entry when `database.inTransaction` is already true; `node node_modules/vitest/vitest.mjs run tests/access-tracker.vitest.ts tests/composite-scoring.vitest.ts tests/unit-rrf-fusion.vitest.ts tests/mpab-aggregation.vitest.ts tests/transaction-manager.vitest.ts tests/bm25-index.vitest.ts tests/co-activation.vitest.ts` -> 310 passed in `mcp_server`, including nested transaction regressions in `tests/transaction-manager.vitest.ts`.]
+- [x] CHK-309 [P1]: `memory-crud-update.ts` update+validation in single transaction with rollback (T078) [EVIDENCE: `mcp_server/handlers/memory-crud-update.ts` routes mutation work through `runInTransaction()`, and `tests/bm25-index.vitest.ts` now proves the update path executes inside the transaction helper while BM25 data failures rethrow from inside that callback; `node node_modules/vitest/vitest.mjs run tests/access-tracker.vitest.ts tests/composite-scoring.vitest.ts tests/unit-rrf-fusion.vitest.ts tests/mpab-aggregation.vitest.ts tests/transaction-manager.vitest.ts tests/bm25-index.vitest.ts tests/co-activation.vitest.ts` -> 310 passed in `mcp_server`.]
+- [x] CHK-310 [P1]: `eval-metrics.ts` empty ground-truth guard returns 0 (T079) [EVIDENCE: `mcp_server/lib/eval/eval-metrics.ts` returns 0 for empty/no-relevant ground truth; `node node_modules/vitest/vitest.mjs run tests/composite-scoring.vitest.ts tests/unit-rrf-fusion.vitest.ts tests/mpab-aggregation.vitest.ts tests/co-activation.vitest.ts tests/fsrs-scheduler.vitest.ts tests/eval-metrics.vitest.ts` -> 322 passed in `mcp_server`, and `tests/eval-metrics.vitest.ts` covers empty inputs and non-positive/non-finite `k`.]
+- [x] CHK-311 [P1]: `graph-signals.ts` causal depth uses longest-path DAG traversal (T080) [EVIDENCE: `mcp_server/lib/graph/graph-signals.ts` now computes causal depth via SCC condensation and longest-path DAG traversal; `tests/graph-signals.vitest.ts` includes regressions for rooted cycles, a rootless cycle with an outgoing tail, and shortcut edges; `node node_modules/vitest/vitest.mjs run tests/graph-signals.vitest.ts tests/working-memory.vitest.ts tests/checkpoint-working-memory.vitest.ts tests/checkpoints-storage.vitest.ts tests/memory-crud-extended.vitest.ts tests/bm25-index.vitest.ts` in `.opencode/skill/system-spec-kit/mcp_server` -> PASS (6 files, 275 tests).]
+- [x] CHK-312 [P1]: `mpab-aggregation.ts` finite-number guards on chunk scores (T081) [EVIDENCE: `computeMPAB()` sanitizes non-finite chunk scores to zero in `mcp_server/lib/scoring/mpab-aggregation.ts`; `node node_modules/vitest/vitest.mjs run tests/composite-scoring.vitest.ts tests/unit-rrf-fusion.vitest.ts tests/mpab-aggregation.vitest.ts tests/co-activation.vitest.ts tests/fsrs-scheduler.vitest.ts tests/eval-metrics.vitest.ts` -> 322 passed in `mcp_server`, including `tests/mpab-aggregation.vitest.ts` non-finite score coverage.]
+- [x] CHK-313 [P1]: `shared/normalization.ts` finite-input validation finding retired after revalidation (T082) [EVIDENCE: `shared/normalization.ts` is a DB row ↔ app object field-mapping adapter, not a score-normalization path; `node node_modules/vitest/vitest.mjs run tests/score-normalization.vitest.ts tests/unit-normalization.vitest.ts tests/unit-normalization-roundtrip.vitest.ts` -> 56 passed in `mcp_server`, confirming the relevant finite-score guards live in the actual normalization/scoring code rather than this adapter.]
+- [x] CHK-314 [P1]: `co-activation.ts` type-guard on parsed similarity field (T083) [EVIDENCE: `mcp_server/lib/cache/cognitive/co-activation.ts` filters parsed relations to finite numeric `id`/`similarity` pairs; `node node_modules/vitest/vitest.mjs run tests/composite-scoring.vitest.ts tests/unit-rrf-fusion.vitest.ts tests/mpab-aggregation.vitest.ts tests/co-activation.vitest.ts tests/fsrs-scheduler.vitest.ts tests/eval-metrics.vitest.ts` -> 322 passed in `mcp_server`, and `tests/co-activation.vitest.ts` verifies malformed related-memory entries are filtered out.]
+- [x] CHK-315 [P1]: `fsrs-scheduler.ts` review interval parameters clamped to valid ranges (T084) [EVIDENCE: `mcp_server/lib/cache/cognitive/fsrs-scheduler.ts` clamps stability, difficulty, and interval inputs to safe ranges; `node node_modules/vitest/vitest.mjs run tests/composite-scoring.vitest.ts tests/unit-rrf-fusion.vitest.ts tests/mpab-aggregation.vitest.ts tests/co-activation.vitest.ts tests/fsrs-scheduler.vitest.ts tests/eval-metrics.vitest.ts` -> 322 passed in `mcp_server`, and `tests/fsrs-scheduler.vitest.ts` covers negative stability, difficulty clamps, and interval monotonicity.]
+- [x] CHK-316 [P1]: Prior findings F4 (FK cascade) and F9 (error contracts) fully resolved [EVIDENCE: `working-memory.ts` canonical schema now uses `ON DELETE SET NULL` with legacy-schema migration coverage, and `tests/working-memory.vitest.ts` plus `tests/checkpoint-working-memory.vitest.ts` verify migration and detached-row behavior. Error-envelope behavior for `memory-crud-update.ts` and `memory-crud-delete.ts` remains valid and was re-verified via `tests/memory-crud-extended.vitest.ts` and `tests/bm25-index.vitest.ts`; shared verification command in `.opencode/skill/system-spec-kit/mcp_server` -> PASS (6 files, 275 tests).]
 
 ### P2 Items (016)
 
-- [ ] CHK-317 [P2]: `.opencode/skill/system-spec-kit/mcp_server/hooks/README.md` lists all 4 hook files including `memory-surface.ts`, `mutation-feedback.ts`, `response-hints.ts` (T085)
+- [x] CHK-317 [P2]: `.opencode/skill/system-spec-kit/mcp_server/hooks/README.md` lists all 4 hook files including `memory-surface.ts`, `mutation-feedback.ts`, `response-hints.ts` (T085) [EVIDENCE: `.opencode/skill/system-spec-kit/mcp_server/hooks/README.md` already lists `memory-surface.ts`, `mutation-feedback.ts`, and `response-hints.ts` in Overview and implemented-state sections; no net doc diff was required after revalidation.]
 
 ### Verification Summary (016)
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 1 | 0/1 |
-| P1 Items | 16 | 0/16 |
-| P2 Items | 1 | 0/1 |
+| P0 Items | 1 | 1/1 |
+| P1 Items | 16 | 16/16 |
+| P2 Items | 1 | 1/1 |
 
-**Audit Date**: 2026-03-08
-**Prior Findings Re-Verified**: F1-F11 (4 FIXED, 3 PARTIALLY_FIXED, 3 STILL_PRESENT)
+**Audit Date**: 2026-03-13
+**Prior Findings Re-Verified**: Follow-up evidence now closes F4, F6, F7, F9, F11, and the stale audit items CHK-300 through CHK-317; source 016 has no remaining open checklist items.
 
 ---
 ---
@@ -495,7 +499,7 @@ Current gate truth (2026-03-10):
 
 ### P1 Items (Fixed)
 
-Discrepancy note: `/tmp/w5-audit-findings.md` states "24 fixed" P1 bugs but enumerates only `F01`-`F21`. This checklist uses `CHK-323` through `CHK-345` by tracking `F01`-`F19` once and splitting `F20`/`F21` into granular contract checks, without inventing new finding IDs.
+Discrepancy note: historical W5 summary text states "24 fixed" P1 bugs but enumerates only `F01`-`F21`. This checklist uses `CHK-323` through `CHK-345` by tracking `F01`-`F19` once and splitting `F20`/`F21` into granular contract checks, without inventing new finding IDs.
 
 - [x] CHK-323 [P1]: Resolve finding `F01` (`scripts/extractors/spec-folder-extractor.ts:321`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
 - [x] CHK-324 [P1]: Resolve finding `F02` (`mcp_server/lib/scoring/composite-scoring.ts:388`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]

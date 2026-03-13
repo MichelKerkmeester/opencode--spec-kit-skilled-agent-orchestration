@@ -31,9 +31,9 @@ contextType: "general"
 
 - [x] T001 Hard-fail missing explicit data files with `EXPLICIT_DATA_FILE_LOAD_FAILED: ...` (`.opencode/skill/system-spec-kit/scripts/loaders/data-loader.ts`)
 - [x] T002 Hard-fail invalid JSON and invalid-shape explicit payloads without falling back to OpenCode capture (`.opencode/skill/system-spec-kit/scripts/loaders/data-loader.ts`)
-- [x] T003 Accept `nextSteps` and `next_steps`, then persist the first entry as `Next: ...` and later entries as `Follow-up: ...` (`.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts`)
+- [x] T003 Accept `nextSteps` and `next_steps`, then persist the first entry as `Next: ...` and later entries as `Follow-up: ...`, including mixed structured payload preservation when next-step facts are missing (`.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts`)
 - [x] T004 Drive `NEXT_ACTION` from the first persisted `Next: ...` fact (`.opencode/skill/system-spec-kit/scripts/extractors/session-extractor.ts`)
-- [x] T005 Add regression coverage for explicit JSON-mode failures and next-step persistence (`.opencode/skill/system-spec-kit/scripts/tests/runtime-memory-inputs.vitest.ts`)
+- [x] T005 Add regression coverage for explicit JSON-mode failures and next-step persistence, including mixed structured payload behavior (`.opencode/skill/system-spec-kit/scripts/tests/runtime-memory-inputs.vitest.ts`)
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -53,8 +53,8 @@ contextType: "general"
 ## Phase 3: Verification and Reconciliation
 
 - [x] T010 Remove non-reproducible historical numeric test-pass totals from scoped acceptance evidence
-- [x] T011 Record current alignment-drift evidence: `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit/scripts` passed with `0 findings`
-- [x] T012 Defer repo-wide typecheck status unless a current rerun artifact is captured, and do not claim prior clean passes as current proof
+- [x] T011 Record current alignment-drift evidence: `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit/scripts` passed with `0 findings` and `0 warnings`
+- [x] T012 Record current TypeScript check evidence: `npm run lint` in `.opencode/skill/system-spec-kit/scripts` passed (`tsc --noEmit`)
 - [x] T013 Remove unverifiable claims about a 1032-line round-trip artifact and completed live outsourced CLI dispatch
 - [x] T014 Update `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` so they agree on runtime behavior, security wording, and deferred verification
 - [x] T015 Run `.opencode/skill/system-spec-kit/scripts/spec/validate.sh` on this spec folder and record the exit code
@@ -66,7 +66,7 @@ contextType: "general"
 ## Completion Criteria
 
 - [x] Runtime hard-fail behavior matches the implemented loader and regression test coverage
-- [x] Next-step persistence wording matches the implemented normalizer and session extractor
+- [x] Next-step persistence wording matches the implemented normalizer and session extractor, including mixed structured payload behavior
 - [x] All `cli-*` references use the real path layout and include redact-and-scrub guidance
 - [x] No spec artifact claims the unverifiable 1032-line memory file as current proof
 - [x] Live outsourced CLI dispatch remains deferred unless rerun with fresh evidence

@@ -101,10 +101,21 @@ describe('Handler Memory Ingest (Sprint 9 P0-3)', () => {
       id: 'job_live',
       state: 'indexing',
       specFolder: 'specs/live',
-      paths: ['/tmp/live.md'],
+      paths: ['/tmp/live.md', '/tmp/nested/trace.json'],
       filesTotal: 4,
       filesProcessed: 1,
-      errors: [],
+      errors: [
+        {
+          filePath: '/tmp/private/deep/secret.md',
+          message: 'boom',
+          timestamp: '2026-03-05T00:00:00.000Z',
+        },
+        {
+          filePath: '__job__',
+          message: 'queue truncated',
+          timestamp: '2026-03-05T00:00:01.000Z',
+        },
+      ],
       createdAt: '2026-03-05T00:00:00.000Z',
       updatedAt: '2026-03-05T00:00:01.000Z',
     });
@@ -116,6 +127,19 @@ describe('Handler Memory Ingest (Sprint 9 P0-3)', () => {
     expect(data.jobId).toBe('job_live');
     expect(data.state).toBe('indexing');
     expect(data.progress).toBe(25);
+    expect(data.paths).toEqual(['live.md', 'trace.json']);
+    expect(data.errors).toEqual([
+      {
+        filePath: 'secret.md',
+        message: 'boom',
+        timestamp: '2026-03-05T00:00:00.000Z',
+      },
+      {
+        filePath: '__job__',
+        message: 'queue truncated',
+        timestamp: '2026-03-05T00:00:01.000Z',
+      },
+    ]);
   });
 
   it('cancel returns terminal state unchanged', async () => {

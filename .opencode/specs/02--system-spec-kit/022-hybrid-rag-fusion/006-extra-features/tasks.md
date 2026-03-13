@@ -28,7 +28,7 @@ contextType: "implementation"
 **Task Format**: `T### [P?] Description (file path)`
 <!-- /ANCHOR:notation -->
 
-> Remediation note (2026-03-06): post-review fixes landed for schema/public contract alignment, ingest queue accounting, watcher delete handling, empty-result trace envelopes, provenance reporting, local reranker fail-closed behavior, and signal-shutdown cleanup. The targeted regression suite for those fixes passed (`89` tests), and broader automated workspace validation now also passes via `npm run check` (fast gate) and `npm run check:full` (`242` Vitest files / `7193` tests), but the original live runtime/eval/manual tasks below remain pending unless explicitly checked off.
+> Remediation note (2026-03-13): post-review fixes landed for schema/public contract alignment, ingest queue accounting, watcher delete handling, empty-result trace envelopes, provenance reporting, local reranker fail-closed behavior, and signal-shutdown cleanup. Orphan-remediation follow-up evidence now records targeted suite passes (`handler-memory-stats-edge`, `handler-memory-health-edge`, `memory-crud-extended`), `npx tsc --noEmit` PASS, live DB backup + cleanup, and runtime smoke PASS on `mcp_server/dist/context-server.js` (`Integrity check: 544/544 valid entries`). `npm run check:full` is currently blocked by unrelated dirty-worktree failure in `tests/unit-rrf-fusion.vitest.ts` (`C138-CV13`) from shared RRF work outside this remediation scope.
 
 ---
 
@@ -316,6 +316,22 @@ contextType: "implementation"
 - [x] T153 TypeScript compilation — `npx tsc --noEmit` passes (pre-existing errors in unrelated files only) [DONE]
 - [x] T154 Integration tests — 12/12 tests pass in `tests/review-fixes.vitest.ts` [DONE]
 <!-- /ANCHOR:cross-ai-review-remediation -->
+
+---
+
+<!-- ANCHOR:orphan-remediation-follow-up -->
+## Orphan Remediation Follow-up (2026-03-13)
+
+- [x] T155 Isolate `handler-memory-stats-edge` to an in-memory DB test fixture and mock `checkDatabaseUpdated=false` [DONE: edge harness now stays in-memory and no longer depends on live DB metadata updates]
+- [x] T156 Seed `handler-memory-stats-edge` fixtures as `pending` (instead of `success`) [DONE: queue-status assertions now exercise the intended pre-update branch deterministically]
+- [x] T157 Verify `memory_health` autoRepair removes orphaned vectors and temp-fixture memory rows [DONE: follow-up repair path now confirms both vector and fixture-row cleanup behavior]
+- [x] T158 Run targeted remediation suites [DONE: `handler-memory-stats-edge`, `handler-memory-health-edge`, and `memory-crud-extended` all passed]
+- [x] T159 Run TypeScript compile gate [DONE: `npx tsc --noEmit` passed]
+- [x] T160 Create pre-cleanup live DB backup [DONE: `mcp_server/dist/database/backups/context-index-pre-orphan-cleanup-20260313-131047.sqlite`]
+- [x] T161 Execute live DB cleanup and capture post-clean integrity metrics [DONE: removed `2885` dead `/tmp` rows and `15138` orphaned vectors; resulting counters `totalMemories=544`, `totalVectors=508`, `orphanedVectors=0`, `missingVectors=0`, `tmpOrphanRows=0`]
+- [x] T162 Run runtime smoke on `mcp_server/dist/context-server.js` and verify integrity log [DONE: smoke passed and logs `Integrity check: 544/544 valid entries` with no orphan warning]
+- [B] T163 Re-run `npm run check:full` for full-workspace confirmation [BLOCKED: unrelated dirty-worktree failure in `tests/unit-rrf-fusion.vitest.ts`, test `C138-CV13`, from shared RRF work outside orphan-remediation scope]
+<!-- /ANCHOR:orphan-remediation-follow-up -->
 
 ---
 

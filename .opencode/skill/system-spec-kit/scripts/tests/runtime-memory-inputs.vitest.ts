@@ -106,4 +106,53 @@ describe('manual next-steps normalization', () => {
     expect(sessionData.SUMMARY).toBe('Stabilized delegated memory save runtime behavior.');
     expect(sessionData.NEXT_ACTION).toBe('Add regression coverage for explicit dataFile failures.');
   });
+
+  it('preserves next_steps for already-structured payloads without duplicating existing next-action facts', async () => {
+    const normalized = normalizeInputData({
+      specFolder: '022-hybrid-rag-fusion/014-outsourced-agent-memory',
+      observations: [{
+        type: 'feature',
+        title: 'Structured payload',
+        narrative: 'Existing structured observation',
+        facts: [],
+      }],
+      userPrompts: [{
+        prompt: 'Use structured save path',
+        timestamp: '2026-03-13T11:00:00.000Z',
+      }],
+      recentContext: [{
+        request: 'Retain structured next steps',
+        learning: 'Structured data came from a CLI handback.',
+      }],
+      next_steps: [
+        'Promote the preserved structured next action.',
+        'Update the related handback docs.',
+      ],
+    });
+
+    expect(normalized.observations.at(-1)).toMatchObject({
+      title: 'Next Steps',
+      facts: [
+        'Next: Promote the preserved structured next action.',
+        'Follow-up: Update the related handback docs.',
+      ],
+    });
+
+    const sessionData = await collectSessionData(
+      normalized,
+      '022-hybrid-rag-fusion/014-outsourced-agent-memory'
+    );
+
+    expect(sessionData.NEXT_ACTION).toBe('Promote the preserved structured next action.');
+
+    const normalizedAgain = normalizeInputData({
+      ...normalized,
+      next_steps: ['This should not duplicate the existing next-step facts.'],
+    });
+    const nextStepObservations = normalizedAgain.observations.filter((observation) =>
+      observation.title === 'Next Steps'
+    );
+
+    expect(nextStepObservations).toHaveLength(1);
+  });
 });

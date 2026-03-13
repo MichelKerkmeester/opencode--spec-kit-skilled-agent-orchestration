@@ -1,8 +1,8 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: .opencode/skill/system-spec-kit/templates/tasks.md -->
 ---
 title: "Tasks: Combined Bug Fixes"
-description: "Merged task list from specs 003, 008, 013, 015, 017"
-updated: "2026-03-10"
+description: "Merged task list from specs 003, 008, 013, 015, 016, 017"
+updated: "2026-03-13"
 importance_tier: "normal"
 contextType: "implementation"
 ---
@@ -10,8 +10,8 @@ contextType: "implementation"
 
 <!-- SPECKIT_LEVEL: 3 -->
 
-This file merges tasks from five source spec folders into a single canonical reference.
-Historical "(016)" naming in earlier snapshots is legacy labeling only; source 016 remains a separate pending audit stream (0/17 complete).
+This file merges tasks from six source spec folders into a single canonical reference.
+Historical "(016)" naming in earlier snapshots is legacy labeling only; source 016 is now fully complete (17/17 complete).
 
 ---
 
@@ -23,18 +23,22 @@ Historical "(016)" naming in earlier snapshots is legacy labeling only; source 0
 | 003 | Auto-Detected Session Bug | 12 | 12 | 0 |
 | 008 | Subfolder Resolution Fix | 31 | 31 | 0 |
 | 013 | Memory Search Bug Fixes | 40 | 40 | 0 |
-| 015 | Bug Fixes and Alignment | 84 | 69 | 15 |
-| 016 | Code Audit (2026-03-08) | 17 | 0 | 17 |
+| 015 | Bug Fixes and Alignment | 84 | 74 | 10 |
+| 016 | Code Audit (2026-03-08) | 17 | 17 | 0 |
 | 017 | 30-Commit Bug Audit (W5, 2026-03-10) | 50 | 50 | 0 |
-| **Total** | | **234** | **202** | **32** |
+| **Total** | | **234** | **224** | **10** |
 
-Current verification truth snapshot (2026-03-10):
-- `npm run check` is green.
-- `npm run check:full` is green.
-- `npx tsc --noEmit` is clean across `mcp_server`, `scripts`, and `shared`.
-- Test suite: 11 pre-existing failures across 9 files (90 pre-existing failures resolved by W5 fixes).
-- W5 commits: `0b53820c` (Wave A+B, 29 fixes, 23 files) and `37b5ba59` (Wave C, 33 fixes, 30 files).
-- Final verification evidence is recorded in `scratch/verification-logs/2026-03-07-post-fix-targeted-verification.md` and `scratch/verification-logs/2026-03-07-mcp-check-full.md`.
+Current verification truth snapshot (2026-03-13):
+- `npm run check --workspace=scripts` is green.
+- `npm run check --workspace=mcp_server` is green when run in `.opencode/skill/system-spec-kit`.
+- `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit` is green (scanned 731, findings 0).
+- `node node_modules/vitest/vitest.mjs run tests/graph-signals.vitest.ts tests/working-memory.vitest.ts tests/checkpoint-working-memory.vitest.ts tests/checkpoints-storage.vitest.ts tests/memory-crud-extended.vitest.ts tests/bm25-index.vitest.ts` passed in `.opencode/skill/system-spec-kit/mcp_server` (6 files, 275 tests).
+- `node mcp_server/node_modules/vitest/vitest.mjs run tests/unit-rrf-fusion.vitest.ts tests/checkpoints-storage.vitest.ts tests/access-tracker.vitest.ts tests/access-tracker-extended.vitest.ts` passed (73 passed).
+- `node node_modules/vitest/vitest.mjs run tests/composite-scoring.vitest.ts tests/unit-rrf-fusion.vitest.ts tests/mpab-aggregation.vitest.ts tests/co-activation.vitest.ts tests/fsrs-scheduler.vitest.ts tests/eval-metrics.vitest.ts` passed in `mcp_server` (322 passed).
+- `node node_modules/vitest/vitest.mjs run tests/score-normalization.vitest.ts tests/unit-normalization.vitest.ts tests/unit-normalization-roundtrip.vitest.ts` passed in `mcp_server` (56 passed).
+- `node mcp_server/node_modules/vitest/vitest.mjs run tests/context-server.vitest.ts` passed (315 passed).
+- `node .opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js` passed (32 passed, 0 failed, 3 skipped).
+- Full `vitest run` passed (`264` passed, `1` skipped test files; `7536` passed, `47` skipped, `28` todo tests).
 
 ---
 
@@ -62,16 +66,16 @@ Current verification truth snapshot (2026-03-10):
 
 ### Phase 1: Setup
 
-- [x] T001 Reproduce and document incorrect archived-session selection baseline (`.opencode/skill/system-spec-kit/scripts/spec-folder/folder-detector.ts`) [EVIDENCE: `handover.md` in this spec folder records archived-path misselection baseline; detector behavior validated via `node .opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js` -> 32 passed, 0 failed, 0 skipped.]
+- [x] T001 Reproduce and document incorrect archived-session selection baseline (`.opencode/skill/system-spec-kit/scripts/spec-folder/folder-detector.ts`) [EVIDENCE: `handover.md` in this spec folder records archived-path misselection baseline; detector behavior validated via `node .opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js` -> 32 passed, 0 failed, 3 skipped.]
 - [x] T002 Define canonical path normalization rules for `specs/` and `.opencode/specs/` aliases (`.opencode/skill/system-spec-kit/scripts/spec-folder/folder-detector.ts`) [EVIDENCE: Implemented behavior is active in `.opencode/skill/system-spec-kit/scripts/spec-folder/folder-detector.ts` with matching runtime artifact in `.opencode/skill/system-spec-kit/scripts/dist/spec-folder/folder-detector.js`; no net diff required in this pass.]
-- [x] T003 [P] Build test matrix for archive, alias, and mtime distortion scenarios (`.opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js`) [EVIDENCE: Updated `.opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js`; command result `node .opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js` -> 32 passed, 0 failed, 0 skipped.]
+- [x] T003 [P] Build test matrix for archive, alias, and mtime distortion scenarios (`.opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js`) [EVIDENCE: Updated `.opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js`; command result `node .opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js` -> 32 passed, 0 failed, 3 skipped.]
 
 ---
 
 ### Phase 2: Implementation
 
 - [x] T004 Implement active non-archived candidate preference with explicit archive/fixture filtering (`.opencode/skill/system-spec-kit/scripts/spec-folder/folder-detector.ts`) [EVIDENCE: Active detector implementation verified in `.opencode/skill/system-spec-kit/scripts/spec-folder/folder-detector.ts` and `.opencode/skill/system-spec-kit/scripts/dist/spec-folder/folder-detector.js`; no net diff required in finalization.]
-- [x] T005 Implement deterministic candidate scoring and stable tie-breakers resilient to mtime skew (`.opencode/skill/system-spec-kit/scripts/spec-folder/folder-detector.ts`) [EVIDENCE: Regression coverage exercised by `.opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js`; command result -> 32 passed, 0 failed, 0 skipped.]
+- [x] T005 Implement deterministic candidate scoring and stable tie-breakers resilient to mtime skew (`.opencode/skill/system-spec-kit/scripts/spec-folder/folder-detector.ts`) [EVIDENCE: Regression coverage exercised by `.opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js`; command result -> 32 passed, 0 failed, 3 skipped.]
 - [x] T006 Implement low-confidence confirmation/fallback gate for ambiguous selection (`.opencode/skill/system-spec-kit/scripts/spec-folder/folder-detector.ts`) [EVIDENCE: Existing detector path verified active with no net diff required; behavior gated by functional test suite pass and review gate PASS 88/100 (no P0/P1 findings).]
 - [x] T007 Align confidence threshold behavior with alignment validator integration (`.opencode/skill/system-spec-kit/scripts/spec-folder/alignment-validator.ts`) [EVIDENCE: No additional code edits required in this finalization pass; integration remains active through current detector flow and passes full functional detector suite.]
 - [x] T008 Update command behavior documentation for resume/handover auto-detection (`.opencode/command/spec_kit/resume.md`, `.opencode/command/spec_kit/handover.md`) [EVIDENCE: Verified existing command guidance alignment in `.opencode/command/spec_kit/resume.md` and `.opencode/command/spec_kit/handover.md` (no net diff in this pass).]
@@ -80,8 +84,8 @@ Current verification truth snapshot (2026-03-10):
 
 ### Phase 3: Verification
 
-- [x] T009 Add regression tests: active non-archived preference and alias determinism (`.opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js`) [EVIDENCE: Test file updated and executed with pass result: 32 passed, 0 failed, 0 skipped.]
-- [x] T010 Add regression tests: mtime distortion resilience and low-confidence confirmation path (`.opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js`) [EVIDENCE: Same detector functional suite run confirms regression matrix pass: 32 passed, 0 failed, 0 skipped.]
+- [x] T009 Add regression tests: active non-archived preference and alias determinism (`.opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js`) [EVIDENCE: Test file updated and executed with pass result: 32 passed, 0 failed, 3 skipped.]
+- [x] T010 Add regression tests: mtime distortion resilience and low-confidence confirmation path (`.opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js`) [EVIDENCE: Same detector functional suite run confirms regression matrix pass: 32 passed, 0 failed, 3 skipped.]
 - [x] T011 Run targeted validation/tests and record evidence in checklist (`checklist.md`) [EVIDENCE: `node .opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js` passed; checklist updated with concrete file and command references.]
 - [x] T012 Review scope lock and confirm no unrelated detector behavior changed (`spec.md`) [EVIDENCE: Review gate PASS (score 88/100, no P0/P1); detector implementation confirmed active with no net diff required for `folder-detector.ts` and dist artifact.]
 
@@ -91,7 +95,7 @@ Current verification truth snapshot (2026-03-10):
 
 - [x] All tasks marked `[x]` [EVIDENCE: T001-T012 completed in this file.]
 - [x] No `[B]` blocked tasks remaining [EVIDENCE: No blocked markers present.]
-- [x] Acceptance criteria REQ-001 through REQ-004 verified with evidence [EVIDENCE: Functional suite command `node .opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js` -> 32 passed, 0 failed, 0 skipped.]
+- [x] Acceptance criteria REQ-001 through REQ-004 verified with evidence [EVIDENCE: Functional suite command `node .opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js` -> 32 passed, 0 failed, 3 skipped.]
 
 ---
 
@@ -292,14 +296,14 @@ Current verification truth snapshot (2026-03-10):
 #### P0 Fixes
 
 - [x] T001: Fix division by zero in `rrf-fusion.ts` -- validate `k >= 0` at entry (P0-001)
-- [ ] T002: Add test for `k = -1`, `k = 0` edge cases in RRF fusion [DEFERRED]
+- [x] T002: Add test for `k = -1`, `k = 0` edge cases in RRF fusion [EVIDENCE: `node mcp_server/node_modules/vitest/vitest.mjs run tests/unit-rrf-fusion.vitest.ts tests/checkpoints-storage.vitest.ts tests/access-tracker.vitest.ts tests/access-tracker-extended.vitest.ts` -> 73 passed (includes `tests/unit-rrf-fusion.vitest.ts`).]
 
 #### P1 Scoring Fixes
 
 - [x] T003: Add `isFinite(stability)` guard in `calculateRetrievabilityScore` (P1-009)
 - [x] T004: Add `Math.max(0, accessCount)` in `calculateUsageScore` (P1-010)
 - [x] T005: Add `similarity ?? 0` guard in `calculatePatternScore` (P1-011)
-- [ ] T006: Add test cases for NaN/undefined/negative inputs to composite scoring [DEFERRED]
+- [x] T006: Add test cases for NaN/undefined/negative inputs to composite scoring [EVIDENCE: `node node_modules/vitest/vitest.mjs run tests/composite-scoring.vitest.ts tests/unit-rrf-fusion.vitest.ts tests/mpab-aggregation.vitest.ts tests/co-activation.vitest.ts tests/fsrs-scheduler.vitest.ts tests/eval-metrics.vitest.ts` -> 322 passed in `mcp_server`; updated `tests/composite-scoring.vitest.ts` now covers negative/non-finite stability, invalid dates, undefined/negative/Infinity inputs, and negative usage counts.]
 
 #### P1 Algorithm Fixes
 
@@ -339,8 +343,8 @@ Current verification truth snapshot (2026-03-10):
 - [x] T072: Add compare-and-swap guard to `setIngestJobState` (P1-038)
 - [x] T073: Use `recallK` parameter in metric label string instead of hardcoded @20 (P1-039)
 - [x] T074: Validate `lastInsertRowid` after UPSERT or use explicit SELECT for edge ID (P1-040)
-- [ ] T075: Add tests for checkpoint merge-mode CASCADE prevention [DEFERRED]
-- [ ] T076: Add tests for causal edge snapshot round-trip [DEFERRED]
+- [x] T075: Add tests for checkpoint merge-mode CASCADE prevention [EVIDENCE: `node mcp_server/node_modules/vitest/vitest.mjs run tests/unit-rrf-fusion.vitest.ts tests/checkpoints-storage.vitest.ts tests/access-tracker.vitest.ts tests/access-tracker-extended.vitest.ts` -> 73 passed (includes `tests/checkpoints-storage.vitest.ts`).]
+- [x] T076: Add tests for causal edge snapshot round-trip [EVIDENCE: `node mcp_server/node_modules/vitest/vitest.mjs run tests/unit-rrf-fusion.vitest.ts tests/checkpoints-storage.vitest.ts tests/access-tracker.vitest.ts tests/access-tracker-extended.vitest.ts` -> 73 passed (includes causal-edge checkpoint round-trip coverage in `tests/checkpoints-storage.vitest.ts`).]
 
 ---
 
@@ -420,7 +424,7 @@ Current verification truth snapshot (2026-03-10):
 ### Verification (015)
 
 - [x] T064: Re-verify current gate status (`npm run check` PASS; `npm run check:full` PASS) with evidence in `scratch/verification-logs/2026-03-07-mcp-check-full.md`
-- [ ] T065: Run `verify_alignment_drift.py` on all modified source directories [DEFERRED]
+- [x] T065: Run `verify_alignment_drift.py` on all modified source directories [EVIDENCE: `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit` -> PASS (scanned 731, findings 0).]
 - [x] T066: Grep for remaining TODO/FIXME in modified files -- 0 found
 - [x] T067: Verify feature catalog em dash count is 0 -- confirmed
 - [x] T068: Create implementation-summary.md
@@ -436,32 +440,32 @@ Current verification truth snapshot (2026-03-10):
 
 ### Tier 1: Immediate (P0 + high-impact P1)
 
-- [ ] T069 [P] Fix broken import `../cache/cognitive/rollout-policy` → `../cognitive/rollout-policy` in `graph-flags.ts:6` and `causal-boost.ts:9` (P0-001)
-- [ ] T070 [P] Clear `access-tracker.ts` flush interval timer on shutdown; add `dispose()` method (P1-T05)
-- [ ] T071 [P] Guard negative `stability` in `composite-scoring.ts:247-303`; add `Number.isFinite()` check on output (P1-S01)
-- [ ] T072 [P] Add finite/non-negative validation for `k`, `convergenceBonus`, `graphWeightBoost`, `list.weight` in `rrf-fusion.ts:179-195` (P1-S02)
-- [ ] T073: Unify fatal error handlers in `context-server.ts:571-681` through single `fatalShutdown()` with deadline (P1-I01)
-- [ ] T074: Replace regex HTML strip in `workflow.ts:818` with comprehensive tag sanitization (P1-H09, F7 STILL_PRESENT)
-- [ ] T075: Add approved-root validation inside `resolveSessionSpecFolderPaths` in `folder-detector.ts:459` (P1-H08, F6 PARTIALLY_FIXED)
+- [x] T069 [P] Revalidate `rollout-policy` import finding in `graph-flags.ts:6` and `causal-boost.ts:9` (P0-001) [EVIDENCE: Current imports in `mcp_server/lib/search/graph-flags.ts` and `mcp_server/lib/search/causal-boost.ts` resolve to the extant `lib/cache/cognitive/rollout-policy.ts` module; `npm run check --workspace=mcp_server` passes, so the proposed path rewrite was stale/not required in the checked tree.]
+- [x] T070 [P] Clear `access-tracker.ts` flush interval timer on shutdown; add `dispose()` method (P1-T05) [EVIDENCE: `access-tracker.ts` now exposes `dispose()` that clears `flushInterval`, removes exit handlers, and resets state; `node mcp_server/node_modules/vitest/vitest.mjs run tests/unit-rrf-fusion.vitest.ts tests/checkpoints-storage.vitest.ts tests/access-tracker.vitest.ts tests/access-tracker-extended.vitest.ts` -> 73 passed.]
+- [x] T071 [P] Guard negative `stability` in `composite-scoring.ts:247-303`; add `Number.isFinite()` check on output (P1-S01) [EVIDENCE: Guarded behavior is active in `mcp_server/lib/scoring/composite-scoring.ts`; `node node_modules/vitest/vitest.mjs run tests/composite-scoring.vitest.ts tests/unit-rrf-fusion.vitest.ts tests/mpab-aggregation.vitest.ts tests/co-activation.vitest.ts tests/fsrs-scheduler.vitest.ts tests/eval-metrics.vitest.ts` -> 322 passed in `mcp_server`, including new composite-scoring regressions for negative/non-finite stability and invalid input clamping.]
+- [x] T072 [P] Add finite/non-negative validation for `k`, `convergenceBonus`, `graphWeightBoost`, `list.weight` in `rrf-fusion.ts:179-195` (P1-S02) [EVIDENCE: `shared/algorithms/rrf-fusion.ts` now rejects negative `k` and sanitizes invalid `convergenceBonus`, `graphWeightBoost`, and list weights; `node node_modules/vitest/vitest.mjs run tests/composite-scoring.vitest.ts tests/unit-rrf-fusion.vitest.ts tests/mpab-aggregation.vitest.ts tests/co-activation.vitest.ts tests/fsrs-scheduler.vitest.ts tests/eval-metrics.vitest.ts` -> 322 passed in `mcp_server`, including updated `tests/unit-rrf-fusion.vitest.ts` coverage for non-finite `k`, invalid bonuses, and invalid weights.]
+- [x] T073: Unify fatal error handlers in `context-server.ts:571-681` through single `fatalShutdown()` with deadline (P1-I01) [EVIDENCE: `context-server.ts` routes fatal process handlers through `fatalShutdown()`; `node mcp_server/node_modules/vitest/vitest.mjs run tests/context-server.vitest.ts` -> 315 passed.]
+- [x] T074: Replace regex HTML strip in `workflow.ts:818` with comprehensive tag sanitization (P1-H09, F7) [EVIDENCE: Workflow HTML sanitization strengthened and covered by `node ../mcp_server/node_modules/vitest/vitest.mjs run tests/task-enrichment.vitest.ts --root . --config ../mcp_server/vitest.config.ts` from `.opencode/skill/system-spec-kit/scripts` -> 32 passed.]
+- [x] T075: Add approved-root validation inside `resolveSessionSpecFolderPaths` in `folder-detector.ts:459` (P1-H08, F6 PARTIALLY_FIXED) [EVIDENCE: `resolveSessionSpecFolderPaths()` now rejects escaped paths via `isPathWithin()`/`Path escapes specs root`; `node .opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js` -> 32 passed, 0 failed, 3 skipped.]
 
 ### Tier 2: Important (transaction/storage safety)
 
-- [ ] T076: Route checkpoint edge restore through `causal-edges.ts` public API in `checkpoints.ts:819-848` (P1-T01, F11 STILL_PRESENT)
-- [ ] T077: Add nested transaction guard / savepoint support in `transaction-manager.ts:291-312` (P1-T04)
-- [ ] T078: Wrap update + validation in single transaction with rollback in `memory-crud-update.ts:187-200` (P1-H02)
-- [ ] T079 [P] Add empty ground-truth guard in `eval-metrics.ts:191-198` returning 0 instead of dividing by zero (P1-E01)
-- [ ] T080: Replace first-visit BFS with longest-path DAG traversal for causal depth in `graph-signals.ts:298-308` (P1-R05)
+- [x] T076: Route checkpoint edge restore through `causal-edges.ts` public API in `checkpoints.ts:819-848` (P1-T01, F11 STILL_PRESENT) [EVIDENCE: `checkpoints.ts` imports and calls `bulkInsertEdges()` from `causal-edges.ts`; `node mcp_server/node_modules/vitest/vitest.mjs run tests/unit-rrf-fusion.vitest.ts tests/checkpoints-storage.vitest.ts tests/access-tracker.vitest.ts tests/access-tracker-extended.vitest.ts` -> 73 passed.]
+- [x] T077: Add nested transaction guard / savepoint support in `transaction-manager.ts:291-312` (P1-T04) [EVIDENCE: `mcp_server/lib/storage/transaction-manager.ts` now reuses the outer transaction when nested and bypasses wrapper re-entry when `database.inTransaction` is already true; `node node_modules/vitest/vitest.mjs run tests/access-tracker.vitest.ts tests/composite-scoring.vitest.ts tests/unit-rrf-fusion.vitest.ts tests/mpab-aggregation.vitest.ts tests/transaction-manager.vitest.ts tests/bm25-index.vitest.ts tests/co-activation.vitest.ts` -> 310 passed in `mcp_server`, including new nested transaction regressions in `tests/transaction-manager.vitest.ts`.]
+- [x] T078: Wrap update + validation in single transaction with rollback in `memory-crud-update.ts:187-200` (P1-H02) [EVIDENCE: `mcp_server/handlers/memory-crud-update.ts` routes mutation work through `runInTransaction()`, and `tests/bm25-index.vitest.ts` now proves the update path executes inside the transaction helper while BM25 data failures rethrow from inside that callback; `node node_modules/vitest/vitest.mjs run tests/access-tracker.vitest.ts tests/composite-scoring.vitest.ts tests/unit-rrf-fusion.vitest.ts tests/mpab-aggregation.vitest.ts tests/transaction-manager.vitest.ts tests/bm25-index.vitest.ts tests/co-activation.vitest.ts` -> 310 passed in `mcp_server`.]
+- [x] T079 [P] Add empty ground-truth guard in `eval-metrics.ts:191-198` returning 0 instead of dividing by zero (P1-E01) [EVIDENCE: `mcp_server/lib/eval/eval-metrics.ts` returns 0 for empty/no-relevant ground truth; `node node_modules/vitest/vitest.mjs run tests/composite-scoring.vitest.ts tests/unit-rrf-fusion.vitest.ts tests/mpab-aggregation.vitest.ts tests/co-activation.vitest.ts tests/fsrs-scheduler.vitest.ts tests/eval-metrics.vitest.ts` -> 322 passed in `mcp_server`, with `tests/eval-metrics.vitest.ts` covering empty inputs and non-positive/non-finite `k`.]
+- [x] T080: Replace first-visit BFS with longest-path DAG traversal for causal depth in `graph-signals.ts:298-308` (P1-R05) [EVIDENCE: `mcp_server/lib/graph/graph-signals.ts` now computes causal depth via SCC condensation plus longest-path DAG traversal, and `tests/graph-signals.vitest.ts` adds regressions for rooted cycles, a rootless cycle with an outgoing tail, and shortcut edges; `node node_modules/vitest/vitest.mjs run tests/graph-signals.vitest.ts tests/working-memory.vitest.ts tests/checkpoint-working-memory.vitest.ts tests/checkpoints-storage.vitest.ts tests/memory-crud-extended.vitest.ts tests/bm25-index.vitest.ts` in `.opencode/skill/system-spec-kit/mcp_server` -> PASS (6 files, 275 tests).]
 
 ### Tier 3: Quality hardening (NaN guards, type safety)
 
-- [ ] T081 [P] Add `Number.isFinite()` guards on chunk scores in `mpab-aggregation.ts:96-118` (P1-S05)
-- [ ] T082 [P] Add finite-input validation in `shared/normalization.ts:25-61,117-154` (P1-S07)
-- [ ] T083 [P] Type-guard parsed `related_memories` similarity field in `co-activation.ts:131-153` (P1-G01)
-- [ ] T084 [P] Clamp review interval parameters to valid ranges in `fsrs-scheduler.ts:95-145` (P1-G06)
+- [x] T081 [P] Add `Number.isFinite()` guards on chunk scores in `mpab-aggregation.ts:96-118` (P1-S05) [EVIDENCE: `computeMPAB()` sanitizes non-finite chunk scores to zero in `mcp_server/lib/scoring/mpab-aggregation.ts`; `node node_modules/vitest/vitest.mjs run tests/composite-scoring.vitest.ts tests/unit-rrf-fusion.vitest.ts tests/mpab-aggregation.vitest.ts tests/co-activation.vitest.ts tests/fsrs-scheduler.vitest.ts tests/eval-metrics.vitest.ts` -> 322 passed in `mcp_server`, including `tests/mpab-aggregation.vitest.ts` non-finite score coverage.]
+- [x] T082 [P] Retire misattributed finite-input audit finding for `shared/normalization.ts` (P1-S07) [EVIDENCE: `shared/normalization.ts` is a DB row ↔ app object field-mapping adapter, not a score-normalization path; the relevant finite-score guards are covered by `tests/score-normalization.vitest.ts`, and `node node_modules/vitest/vitest.mjs run tests/score-normalization.vitest.ts tests/unit-normalization.vitest.ts tests/unit-normalization-roundtrip.vitest.ts` -> 56 passed in `mcp_server` confirms the current checked behavior without any reproducible bug in this module.]
+- [x] T083 [P] Type-guard parsed `related_memories` similarity field in `co-activation.ts:131-153` (P1-G01) [EVIDENCE: `mcp_server/lib/cache/cognitive/co-activation.ts` filters parsed relations to finite numeric `id`/`similarity` pairs; `node node_modules/vitest/vitest.mjs run tests/composite-scoring.vitest.ts tests/unit-rrf-fusion.vitest.ts tests/mpab-aggregation.vitest.ts tests/co-activation.vitest.ts tests/fsrs-scheduler.vitest.ts tests/eval-metrics.vitest.ts` -> 322 passed in `mcp_server`, and `tests/co-activation.vitest.ts` verifies malformed related-memory entries are filtered out.]
+- [x] T084 [P] Clamp review interval parameters to valid ranges in `fsrs-scheduler.ts:95-145` (P1-G06) [EVIDENCE: `mcp_server/lib/cache/cognitive/fsrs-scheduler.ts` clamps stability, difficulty, and interval inputs to safe ranges; `node node_modules/vitest/vitest.mjs run tests/composite-scoring.vitest.ts tests/unit-rrf-fusion.vitest.ts tests/mpab-aggregation.vitest.ts tests/co-activation.vitest.ts tests/fsrs-scheduler.vitest.ts tests/eval-metrics.vitest.ts` -> 322 passed in `mcp_server`, and `tests/fsrs-scheduler.vitest.ts` covers negative stability, difficulty clamps, and interval monotonicity.]
 
 ### Tier 4: README gaps
 
-- [ ] T085 [P] Add missing entries to `.opencode/skill/system-spec-kit/mcp_server/hooks/README.md`: `memory-surface.ts`, `mutation-feedback.ts`, `response-hints.ts` (README)
+- [x] T085 [P] Add missing entries to `.opencode/skill/system-spec-kit/mcp_server/hooks/README.md`: `memory-surface.ts`, `mutation-feedback.ts`, `response-hints.ts` (README) [EVIDENCE: `.opencode/skill/system-spec-kit/mcp_server/hooks/README.md` already lists `memory-surface.ts`, `mutation-feedback.ts`, and `response-hints.ts` in Overview and exported state sections; no net code/doc diff was required after revalidation.]
 
 ---
 ---

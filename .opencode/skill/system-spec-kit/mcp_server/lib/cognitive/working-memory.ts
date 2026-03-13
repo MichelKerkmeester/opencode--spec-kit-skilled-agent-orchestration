@@ -44,7 +44,7 @@ const SCHEMA_SQL = `
   CREATE TABLE IF NOT EXISTS working_memory (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     session_id TEXT NOT NULL,
-    memory_id INTEGER NOT NULL,
+    memory_id INTEGER,
     attention_score REAL DEFAULT 1.0,
     added_at TEXT DEFAULT CURRENT_TIMESTAMP,
     last_focused TEXT DEFAULT CURRENT_TIMESTAMP,
@@ -56,7 +56,7 @@ const SCHEMA_SQL = `
     extraction_rule_id TEXT,
     redaction_applied INTEGER NOT NULL DEFAULT 0,
     UNIQUE(session_id, memory_id),
-    FOREIGN KEY (memory_id) REFERENCES memory_index(id) ON DELETE CASCADE
+    FOREIGN KEY (memory_id) REFERENCES memory_index(id) ON DELETE SET NULL
   )
 `;
 
@@ -158,12 +158,63 @@ function ensureSchema(): void {
       db.exec('ALTER TABLE working_memory ADD COLUMN redaction_applied INTEGER NOT NULL DEFAULT 0');
     }
 
+    migrateLegacyWorkingMemorySchema();
     db.exec(INDEX_SQL);
     schemaEnsured = true;
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : String(error);
     console.warn(`[working-memory] Schema creation failed: ${msg}`);
   }
+}
+
+function migrateLegacyWorkingMemorySchema(): void {
+  if (!db) return;
+
+  const tableInfo = db.prepare(
+    "SELECT sql FROM sqlite_master WHERE type='table' AND name='working_memory'"
+  ).get() as { sql?: string | null } | undefined;
+  const tableSql = tableInfo?.sql ?? '';
+  const needsMigration = tableSql.includes('ON DELETE CASCADE') || tableSql.includes('memory_id INTEGER NOT NULL');
+
+  if (!needsMigration) {
+    return;
+  }
+
+  db.exec(`
+    ALTER TABLE working_memory RENAME TO working_memory_old;
+    ${SCHEMA_SQL};
+    INSERT INTO working_memory (
+      id,
+      session_id,
+      memory_id,
+      attention_score,
+      added_at,
+      last_focused,
+      focus_count,
+      event_counter,
+      mention_count,
+      source_tool,
+      source_call_id,
+      extraction_rule_id,
+      redaction_applied
+    )
+    SELECT
+      id,
+      session_id,
+      memory_id,
+      attention_score,
+      added_at,
+      last_focused,
+      focus_count,
+      COALESCE(event_counter, 0),
+      COALESCE(mention_count, 0),
+      source_tool,
+      source_call_id,
+      extraction_rule_id,
+      COALESCE(redaction_applied, 0)
+    FROM working_memory_old;
+    DROP TABLE working_memory_old;
+  `);
 }
 
 /* --- 6. SESSION MANAGEMENT --- */
@@ -221,6 +272,7 @@ function getWorkingMemory(sessionId: string): WorkingMemoryEntry[] {
     return (db.prepare(`
       SELECT * FROM working_memory
       WHERE session_id = ?
+        AND memory_id IS NOT NULL
       ORDER BY attention_score DESC
     `) as Database.Statement).all(sessionId) as WorkingMemoryEntry[];
   } catch (error: unknown) {
@@ -275,6 +327,7 @@ function getSessionPromptContext(sessionId: string, floor: number = DECAY_FLOOR,
       FROM working_memory wm
       LEFT JOIN memory_index m ON wm.memory_id = m.id
       WHERE wm.session_id = ?
+        AND wm.memory_id IS NOT NULL
         AND wm.attention_score > ?
       ORDER BY wm.attention_score DESC, wm.last_focused DESC
       LIMIT ?
@@ -441,7 +494,7 @@ function enforceMemoryLimit(sessionId: string): number {
 
   try {
     const count = (db.prepare(
-      'SELECT COUNT(*) as count FROM working_memory WHERE session_id = ?'
+      'SELECT COUNT(*) as count FROM working_memory WHERE session_id = ? AND memory_id IS NOT NULL'
     ) as Database.Statement).get(sessionId) as { count: number };
 
     if (count.count < WORKING_MEMORY_CONFIG.maxCapacity) return 0;
@@ -452,6 +505,7 @@ function enforceMemoryLimit(sessionId: string): number {
       WHERE id IN (
         SELECT id FROM working_memory
         WHERE session_id = ?
+          AND memory_id IS NOT NULL
         ORDER BY last_focused ASC, id ASC
         LIMIT ?
       )
@@ -490,6 +544,7 @@ function batchUpdateScores(sessionId: string): number {
       SELECT id, attention_score, event_counter, mention_count
       FROM working_memory
       WHERE session_id = ?
+        AND memory_id IS NOT NULL
     `) as Database.Statement).all(sessionId) as Array<{
       id: number;
       attention_score: number;
@@ -560,6 +615,7 @@ function getLatestSessionEventCounter(sessionId: string): number | null {
       SELECT event_counter
       FROM working_memory
       WHERE session_id = ?
+        AND memory_id IS NOT NULL
       ORDER BY last_focused DESC, id DESC
       LIMIT 1
     `) as Database.Statement).get(sessionId) as { event_counter?: number | null };
@@ -606,6 +662,7 @@ function getSessionStats(sessionId: string): SessionStats | null {
         SUM(focus_count) as totalFocusEvents
       FROM working_memory
       WHERE session_id = ?
+        AND memory_id IS NOT NULL
     `) as Database.Statement).get(sessionId) as {
       totalEntries: number;
       avgAttention: number;

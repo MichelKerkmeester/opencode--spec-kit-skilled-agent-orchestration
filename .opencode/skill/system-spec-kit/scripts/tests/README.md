@@ -65,8 +65,10 @@ Python tests:
 
 Vitest regression suites:
 - `generate-context-cli-authority.vitest.ts` - preserves explicit CLI root-spec and phase-folder targets through `main()` into `runWorkflow`
-- `task-enrichment.vitest.ts` - candidate selection, generic-name rejection, and content-aware slug coverage
+- `runtime-memory-inputs.vitest.ts` - covers explicit JSON-mode hard-fail behavior plus `nextSteps` / `next_steps` preservation into `NEXT_ACTION`
+- `task-enrichment.vitest.ts` - candidate selection, generic-name rejection, content-aware slug coverage, and stateless alignment workflow seams
 - `memory-render-fixture.vitest.ts` - rendered-memory regression coverage for naming fallback and quality validation
+- `stateless-enrichment.vitest.ts` - stateless relevance filtering, sparse-spec extraction, git scoping/fallbacks, live-over-synthetic session snapshot behavior, and extractor barrel export coverage
 - import-policy Vitest suites under `tests/` - boundary enforcement coverage for package-form, relative, dynamic, and AST-backed checks
 
 Fixtures and cache:
@@ -106,5 +108,7 @@ python3 test_dual_threshold.py
 - Validation regression coverage for shell rule orchestration.
 - Import-policy coverage for regex and AST enforcement paths.
 - Task enrichment and rendered-memory fixture coverage for hardened naming fallback behavior.
+- Runtime memory-input coverage for explicit JSON-mode failures and structured next-step persistence.
+- Stateless enrichment coverage for spec-folder parsing, git-derived file scoping, and hyphenated-spec relevance filtering.
 - Direct CLI authority coverage for explicit spec-folder saves through the real `generate-context -> runWorkflow` seam.
 <!-- /ANCHOR:focus-areas -->

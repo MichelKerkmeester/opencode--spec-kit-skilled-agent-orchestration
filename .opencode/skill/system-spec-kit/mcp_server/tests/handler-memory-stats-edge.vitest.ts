@@ -1,4 +1,4 @@
-import { afterEach, describe, it, expect, vi } from 'vitest';
+import { afterAll, afterEach, beforeAll, beforeEach, describe, it, expect, vi } from 'vitest';
 import * as handler from '../handlers/memory-crud';
 import * as core from '../core';
 import * as vectorIndex from '../lib/search/vector-index';
@@ -21,7 +21,6 @@ function getDetails(parsed: Record<string, unknown>) {
 }
 
 async function insertStatsRows(specFolders: string[], repeat = 1) {
-  await core.checkDatabaseUpdated();
   const database = vectorIndex.getDb();
   if (!database) {
     throw new Error('Database not initialized');
@@ -43,7 +42,7 @@ async function insertStatsRows(specFolders: string[], repeat = 1) {
         `Stats Edge ${index}-${occurrence}`,
         now,
         now,
-        'success',
+        'pending',
       );
     }
   }
@@ -70,6 +69,19 @@ function cleanupSeededStatsRows(): void {
 afterEach(() => {
   vi.restoreAllMocks();
   cleanupSeededStatsRows();
+});
+
+beforeAll(() => {
+  vectorIndex.closeDb();
+  vectorIndex.initializeDb(':memory:');
+});
+
+afterAll(() => {
+  vectorIndex.closeDb();
+});
+
+beforeEach(() => {
+  vi.spyOn(core, 'checkDatabaseUpdated').mockResolvedValue(false);
 });
 
 describe('handleMemoryStats Edge Cases (T007a)', () => {

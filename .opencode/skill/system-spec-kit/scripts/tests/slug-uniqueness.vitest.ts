@@ -3,7 +3,7 @@
 // ---------------------------------------------------------------
 // Tests: ensureUniqueMemoryFilename collision detection and resolution
 
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import * as os from 'node:os';
@@ -16,6 +16,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
+  vi.restoreAllMocks();
   try {
     fs.rmSync(tmpDir, { recursive: true, force: true });
   } catch { /* best effort */ }
@@ -75,5 +76,21 @@ describe('ensureUniqueMemoryFilename', () => {
     expect(result).toMatch(/^test-[0-9a-f]{12}\.md$/);
     // Must not collide with any existing file
     expect(fs.existsSync(path.join(tmpDir, result))).toBe(false);
+  });
+
+  it('returns distinct random fallback names across repeated >100-collision calls', () => {
+    fs.writeFileSync(path.join(tmpDir, 'test.md'), 'base');
+    for (let i = 1; i <= 100; i++) {
+      fs.writeFileSync(path.join(tmpDir, `test-${i}.md`), `collision-${i}`);
+    }
+
+    const first = ensureUniqueMemoryFilename(tmpDir, 'test.md');
+    fs.writeFileSync(path.join(tmpDir, first), 'reserved first fallback');
+
+    const second = ensureUniqueMemoryFilename(tmpDir, 'test.md');
+
+    expect(first).toMatch(/^test-[0-9a-f]{12}\.md$/);
+    expect(second).toMatch(/^test-[0-9a-f]{12}\.md$/);
+    expect(second).not.toBe(first);
   });
 });

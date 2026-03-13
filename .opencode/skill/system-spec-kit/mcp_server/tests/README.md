@@ -197,7 +197,7 @@ tests/
 ├── modularization.vitest.ts               # Module structure
 ├── preflight.vitest.ts                    # Preflight validation
 ├── retry-manager.vitest.ts                # Retry manager
-├── incremental-index.vitest.ts            # Incremental indexing
+├── incremental-index.vitest.ts            # Legacy deferred placeholder suite
 ├── incremental-index-v2.vitest.ts         # Incremental indexing v2
 ├── index-refresh.vitest.ts                # Index refresh
 ├── interfaces.vitest.ts                   # Protocol interfaces

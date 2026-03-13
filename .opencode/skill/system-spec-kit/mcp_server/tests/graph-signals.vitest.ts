@@ -303,7 +303,7 @@ describe('Graph Signals (S8 — N2a + N2b)', () => {
       expect(scores.size).toBe(0);
     });
 
-    it('keeps rooted cyclic graphs stable without revisit drift', () => {
+    it('collapses rooted cycles to a bounded SCC depth layer', () => {
       // Rooted cycle: 1 -> 2 -> 3 -> 2 and 3 -> 4
       insertEdge(db, 1, 2);
       insertEdge(db, 2, 3);
@@ -313,12 +313,12 @@ describe('Graph Signals (S8 — N2a + N2b)', () => {
       const scores = computeCausalDepthScores(db, [1, 2, 3, 4]);
 
       expect(scores.get(1)).toBeCloseTo(0, 5);
-      expect(scores.get(2)).toBeCloseTo(1 / 3, 5);
-      expect(scores.get(3)).toBeCloseTo(2 / 3, 5);
+      expect(scores.get(2)).toBeCloseTo(0.5, 5);
+      expect(scores.get(3)).toBeCloseTo(0.5, 5);
       expect(scores.get(4)).toBeCloseTo(1, 5);
     });
 
-    it('returns zero depth for cyclic components with no root', () => {
+    it('returns zero depth for a pure cyclic SCC with no downstream path', () => {
       insertEdge(db, 1, 2);
       insertEdge(db, 2, 3);
       insertEdge(db, 3, 1);
@@ -330,7 +330,19 @@ describe('Graph Signals (S8 — N2a + N2b)', () => {
       expect(scores.get(3)).toBe(0);
     });
 
-    it('uses nearest-root depth when shortcut edges exist', () => {
+    it('treats a rootless cycle with an outgoing tail as a root SCC', () => {
+      insertEdge(db, 1, 2);
+      insertEdge(db, 2, 1);
+      insertEdge(db, 2, 3);
+
+      const scores = computeCausalDepthScores(db, [1, 2, 3]);
+
+      expect(scores.get(1)).toBeCloseTo(0, 5);
+      expect(scores.get(2)).toBeCloseTo(0, 5);
+      expect(scores.get(3)).toBeCloseTo(1, 5);
+    });
+
+    it('uses longest-root depth when shortcut edges exist', () => {
       // Graph: 1 -> 2 -> 3 -> 4 plus shortcut 1 -> 4
       insertEdge(db, 1, 2);
       insertEdge(db, 2, 3);
@@ -340,9 +352,9 @@ describe('Graph Signals (S8 — N2a + N2b)', () => {
       const scores = computeCausalDepthScores(db, [1, 2, 3, 4]);
 
       expect(scores.get(1)).toBeCloseTo(0, 5);
-      expect(scores.get(2)).toBeCloseTo(0.5, 5);
-      expect(scores.get(3)).toBeCloseTo(1, 5);
-      expect(scores.get(4)).toBeCloseTo(0.5, 5);
+      expect(scores.get(2)).toBeCloseTo(1 / 3, 5);
+      expect(scores.get(3)).toBeCloseTo(2 / 3, 5);
+      expect(scores.get(4)).toBeCloseTo(1, 5);
     });
   });
 

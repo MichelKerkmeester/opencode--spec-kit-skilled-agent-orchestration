@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: Code Audit Per Feature Catalog [template:level_1/spec.md]"
-description: "Feature-centric audit orchestration for the Spec Kit Memory MCP server, split into 20 category phases with shared standards and reporting."
+description: "Feature-centric audit orchestration for the Spec Kit Memory MCP server, split into 21 numbered child phases (001-020 category phases plus 021 remediation/revalidation) with shared standards and reporting."
 # SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2
 trigger_phrases:
   - "code audit"
@@ -24,7 +24,7 @@ contextType: "general"
 |-------|-------|
 | **Level** | 1 |
 | **Priority** | P0 |
-| **Status** | In Progress |
+| **Status** | Completed |
 | **Created** | 2026-03-13 |
 | **Branch** | `013-code-audit-per-feature-catalog` |
 <!-- /ANCHOR:metadata -->
@@ -35,10 +35,10 @@ contextType: "general"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-The feature catalog describes expected behavior across many MCP capabilities, but there is no single audited baseline proving that implementation, tests, and playbook coverage are aligned per feature. Without a structured per-category audit, issues remain fragmented across files and teams.
+The original 20-phase audit established a baseline, but parent-level documentation drifted from the repository after remediation fixes landed. Parent `tasks.md` stayed stale, `synthesis.md` still presented the old 41/106/33 snapshot as current truth, and phase navigation did not include the new remediation phase 021.
 
 ### Purpose
-Establish one consistent, feature-based audit process that produces phase-level findings and a cross-phase synthesis for the full Spec Kit Memory MCP server surface area.
+Keep the audit packet trustworthy by reconciling parent state to repository reality, documenting already-applied remediation fixes, and preserving a clear historical-vs-current synthesis narrative.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -48,21 +48,29 @@ Establish one consistent, feature-based audit process that produces phase-level 
 
 ### In Scope
 - Audit `.opencode/skill/system-spec-kit/mcp_server/` sources using feature-catalog categories.
-- Run 20 phase audits (one per category) with standardized findings format.
+- Run 21 numbered child phases (001-020 category phases plus 021 remediation/revalidation) with standardized findings format.
 - Map findings to manual playbook scenarios and identify gaps.
+- Reconcile parent docs to current repository state after remediation fixes already applied in tests and feature catalog coverage narratives.
 
 ### Out of Scope
-- Refactoring or rewriting MCP implementation code as part of this planning artifact.
-- Altering phase child-folder content in this root-folder repair task.
+- New runtime code changes beyond the already-applied remediation fixes captured by this documentation pass.
+- Re-auditing raw feature evidence outside the finalized post-remediation recount ledger.
 - Expanding catalog taxonomy beyond the existing 20 categories.
 
 ### Files to Change
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/spec.md` | Modify | Normalize to template-compliant Level 1 root spec with anchors |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/plan.md` | Modify | Normalize to template-compliant Level 1 plan with anchors |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/tasks.md` | Create | Add required Level 1 tasks document |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/spec.md` | Modify | Reconcile root scope and requirements with remediation reality |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/plan.md` | Modify | Update parent execution plan and verification state |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/tasks.md` | Modify | Replace stale unchecked root task state with truthful completion tracking |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/synthesis.md` | Modify | Replace stale executive summary with current remediation/revalidation synthesis |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/020-feature-flag-reference/spec.md` | Modify | Link phase 020 forward to phase 021 |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/021-remediation-revalidation/spec.md` | Modify | Align remediation phase scope and status to current repository truth |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/021-remediation-revalidation/plan.md` | Modify | Align remediation execution and verification evidence |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/021-remediation-revalidation/tasks.md` | Modify | Remove over-claims and track real completion state |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/021-remediation-revalidation/checklist.md` | Modify | Sync checklist evidence to actual completed work |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/021-remediation-revalidation/implementation-summary.md` | Modify | Replace template residue and record factual verification outcomes |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -74,9 +82,10 @@ Establish one consistent, feature-based audit process that produces phase-level 
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | Create and maintain 20 phase folders aligned to feature categories | Every phase folder exists and contains planning artifacts required by its local level |
+| REQ-001 | Create and maintain 21 numbered phase folders (001-020 category phases plus phase 021 remediation) | Every phase folder exists and contains planning artifacts required by its local level |
 | REQ-002 | Audit every feature against code, tests, and playbook references | Each feature has a findings entry with status and evidence link |
 | REQ-003 | Apply shared audit dimensions consistently | Findings explicitly cover correctness, standards, behavior match, test coverage, and scenario mapping |
+| REQ-006 | Keep parent status reporting truthful after remediation fixes | Parent tasks and synthesis no longer present stale completion/count snapshots as current truth |
 
 ### P1 - Required (complete OR user-approved deferral)
 
@@ -91,13 +100,14 @@ Establish one consistent, feature-based audit process that produces phase-level 
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All 20 phase folders contain their required audit documentation.
+- **SC-001**: All 21 numbered phase folders (001-021) contain their required audit documentation.
 - **SC-002**: Every cataloged feature has a traceable findings record.
-- **SC-003**: Cross-phase synthesis highlights top risks and recommended next actions.
+- **SC-003**: Cross-phase synthesis clearly distinguishes historical baseline metrics from current remediation/revalidation status.
+- **SC-004**: Parent and phase-020/021 links are valid and sequential.
 
 ### Acceptance Scenarios
-1. **Given** all 20 phase folders, **When** phase specs are reviewed, **Then** each phase has a traceable parent navigation path and adjacent phase linkage.
-2. **Given** root packet references, **When** validator integrity checks run, **Then** all markdown references resolve to existing files.
+1. **Given** all 21 numbered phase folders (001-021), **When** phase specs are reviewed, **Then** each phase has a traceable parent navigation path and adjacent phase linkage.
+2. **Given** historical 2026-03-10 audit metrics, **When** synthesis is reviewed, **Then** those metrics are labeled superseded/historical and not presented as current truth.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -118,8 +128,7 @@ Establish one consistent, feature-based audit process that produces phase-level 
 <!-- ANCHOR:questions -->
 ## 7. OPEN QUESTIONS
 
-- Should any category be split further if one phase exceeds practical review limits?
-- Which unresolved findings should be elevated to separate implementation specs first?
+- Which unresolved findings should be elevated to dedicated implementation specs first?
 <!-- /ANCHOR:questions -->
 
 ---
@@ -149,4 +158,5 @@ Establish one consistent, feature-based audit process that produces phase-level 
 | 018 | UX Hooks | 13 | High |
 | 019 | Decisions and Deferrals | 5 | Low |
 | 020 | Feature Flag Reference | 7 | Medium |
+| 021 | Remediation and Revalidation | 3 | High |
 <!-- /ANCHOR:phase-documentation-map -->

@@ -24,13 +24,18 @@ Originally deferred at Sprint 6b pending a feasibility spike. Three graph capabi
 | File | Layer | Role |
 |------|-------|------|
 | `mcp_server/lib/graph/community-detection.ts` | Lib | Community detection algorithm |
+| `mcp_server/lib/graph/graph-signals.ts` | Lib | Graph momentum and causal depth scoring |
 | `mcp_server/lib/manage/pagerank.ts` | Lib | PageRank computation |
+| `mcp_server/lib/search/pipeline/stage2-fusion.ts` | Lib | Applies graph signals during Stage 2 fusion |
+| `mcp_server/lib/search/vector-index-schema.ts` | Lib | Migration v19 schema touchpoints for `degree_snapshots` and `community_assignments` |
 
 ### Tests
 
 | File | Focus |
 |------|-------|
 | `mcp_server/tests/community-detection.vitest.ts` | Community detection tests |
+| `mcp_server/tests/deferred-features-integration.vitest.ts` | Graph signals and community detection integration |
+| `mcp_server/tests/graph-signals.vitest.ts` | Graph momentum and causal depth tests |
 | `mcp_server/tests/pagerank.vitest.ts` | PageRank computation tests |
 
 ## 4. SOURCE METADATA

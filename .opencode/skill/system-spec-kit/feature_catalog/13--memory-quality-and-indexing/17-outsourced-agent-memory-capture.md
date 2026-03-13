@@ -36,7 +36,7 @@ Status: Implemented. Spec folder `014-outsourced-agent-memory` is complete.
 
 | File | Focus |
 |------|-------|
-| scripts/tests/runtime-memory-inputs.vitest.ts | JSON-mode hard-fail, nextSteps persistence, field normalization (26+ tests) |
+| scripts/tests/runtime-memory-inputs.vitest.ts | Targeted regression coverage for explicit JSON-mode hard-fail behavior plus `nextSteps` / `next_steps` persistence into `NEXT_ACTION` |
 
 ### CLI Handback Docs
 

@@ -1,12 +1,12 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: .opencode/skill/system-spec-kit/templates/plan.md -->
 ---
-title: "Combined Plan: Bug Fixes 003 + 008 + 013 + 015 + 017"
-description: "Merged implementation plan consolidating five bug-fix spec folders: auto-detected session bug (003), subfolder resolution fix (008), memory search bug fixes (013), bug fixes and alignment (015), and 30-commit bug audit W5 (017)."
-updated: "2026-03-10"
+title: "Combined Plan: Bug Fixes 003 + 008 + 013 + 015 + 016 + 017"
+description: "Merged implementation plan consolidating six bug-fix spec folders: auto-detected session bug (003), subfolder resolution fix (008), memory search bug fixes (013), bug fixes and alignment (015), code audit follow-up (016), and 30-commit bug audit W5 (017)."
+updated: "2026-03-13"
 importance_tier: "high"
 contextType: "implementation"
 ---
-# Combined Implementation Plan: Bug Fixes (003 + 008 + 013 + 015 + 017)
+# Combined Implementation Plan: Bug Fixes (003 + 008 + 013 + 015 + 016 + 017)
 
 <!-- SPECKIT_LEVEL: 3 -->
 
@@ -15,17 +15,18 @@ contextType: "implementation"
 <!-- ANCHOR:overview -->
 ## Overview
 
-This document merges the implementation plans from five related bug-fix spec folders under `022-hybrid-rag-fusion`:
+This document merges the implementation plans from six related bug-fix spec folders under `022-hybrid-rag-fusion`:
 
 | # | Source Folder | Title | Status |
 |---|--------------|-------|--------|
 | 1 | `003-auto-detected-session-bug` (merged) | Auto-Detected Session Selection Bug | Complete |
 | 2 | `008-subfolder-resolution-fix` (merged) | Subfolder Resolution Fix | Complete |
 | 3 | `013-memory-search-bug-fixes` (merged) | Memory Search Bug Fixes (Unified) | Complete |
-| 4 | `015-bug-fixes-and-alignment` (merged) | Bug Fixes and Alignment | In Progress (15 deferred test tasks) |
-| 5 | `017-30-commit-bug-audit-w5` (merged) | 30-Commit Bug Audit (W5, 2026-03-10) | Complete |
+| 4 | `015-bug-fixes-and-alignment` (merged) | Bug Fixes and Alignment | In Progress (10 deferred tasks) |
+| 5 | `016-code-audit-followup` (merged) | Code Audit Follow-up (2026-03-08) | Complete (17/17 tasks, CHK-311 and CHK-316 closed) |
+| 6 | `017-30-commit-bug-audit-w5` (merged) | 30-Commit Bug Audit (W5, 2026-03-10) | Complete |
 
-Current gate truth (2026-03-10): `npx tsc --noEmit` clean across `mcp_server`, `scripts`, and `shared`. Test suite: 11 pre-existing failures across 9 files (90 pre-existing failures resolved by W5 fixes). W5 commits: `0b53820c` (Wave A+B, 29 fixes, 23 files) and `37b5ba59` (Wave C, 33 fixes, 30 files).
+Current gate truth (2026-03-13): `npm run check --workspace=mcp_server` in `.opencode/skill/system-spec-kit` passes; the scripts workspace underlying lint/boundary/allowlist checks pass when run directly; source-016 closure verification passes via `node node_modules/vitest/vitest.mjs run tests/graph-signals.vitest.ts tests/working-memory.vitest.ts tests/checkpoint-working-memory.vitest.ts tests/checkpoints-storage.vitest.ts tests/memory-crud-extended.vitest.ts tests/bm25-index.vitest.ts` in `.opencode/skill/system-spec-kit/mcp_server` (`6` files, `275` tests); focused follow-up suites pass (`322` tests across composite/RRF/MPAB/co-activation/FSRS/eval and `56` tests across score-normalization/normalization adapters); `npm run check:full` passes (`264` passed, `1` skipped test files; `7516` passed, `47` skipped, `28` todo tests). W5 commits remain `0b53820c` (Wave A+B, 29 fixes, 23 files) and `37b5ba59` (Wave C, 33 fixes, 30 files).
 
 Each section below preserves the full original plan content with source attribution.
 <!-- /ANCHOR:overview -->
@@ -381,10 +382,10 @@ The solution keeps architecture unchanged and applies targeted behavior fixes:
 
 | Test Type | Scope | Evidence |
 |-----------|-------|----------|
-| Regression tests | Stateless task enrichment, preferred-task fallback guard, workflow seam loader-path proof, and slug parity | `npm run test:task-enrichment` -> PASS (30 passed) |
+| Regression tests | Stateless task enrichment, preferred-task fallback guard, workflow seam loader-path proof, slug parity, and HTML sanitization coverage | `node ../mcp_server/node_modules/vitest/vitest.mjs run tests/task-enrichment.vitest.ts --root . --config ../mcp_server/vitest.config.ts` (from `.opencode/skill/system-spec-kit/scripts`) -> PASS (32 passed) |
 | Unit tests | Folder discovery recursion/depth/invalid paths | `npm run test --workspace=mcp_server -- tests/folder-discovery.vitest.ts` -> PASS (45 passed) |
 | Integration tests | Alias-root dedupe + recursive staleness behavior, including stale-cache shrink and folder-set mismatch invalidation coverage | `npm run test --workspace=mcp_server -- tests/folder-discovery-integration.vitest.ts` -> PASS (28 passed) |
-| MCP startup tests | Fatal startup on embedding dimension mismatch | `npm run test --workspace=mcp_server -- tests/context-server.vitest.ts` -> PASS (307 passed) |
+| MCP startup tests | Fatal startup on embedding dimension mismatch | `node mcp_server/node_modules/vitest/vitest.mjs run tests/context-server.vitest.ts` -> PASS (315 passed) |
 | Provider-resolution tests | Auto-mode provider compatibility remains intact | `npm run test --workspace=mcp_server -- tests/embeddings.vitest.ts` -> PASS (14 passed) |
 | Health-handler regression tests | Lazy provider profile reporting remains accurate | `npx vitest run tests/memory-crud-extended.vitest.ts` -> PASS (68 passed) |
 | Type/build checks | Type safety and build consistency | `npx tsc --noEmit` (PASS), `npx tsc -p tsconfig.json --noEmit` (PASS), `npx tsc -p tsconfig.json` (PASS), `npm run typecheck` (PASS), `npm run build` (PASS) |

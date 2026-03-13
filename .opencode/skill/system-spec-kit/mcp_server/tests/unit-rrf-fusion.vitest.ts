@@ -334,4 +334,46 @@ describe('C138-P3: fuseResultsCrossVariant', () => {
       [{ source: SOURCE_TYPES.VECTOR, results: [{ id: 'shared', title: 'Shared' }] }],
     ], { k: -1 })).toThrow('RRF k parameter must be non-negative');
   });
+
+  it('C138-CV10b: non-finite k falls back to the default smoothing constant', () => {
+    const fused = fuseResultsMulti([
+      { source: SOURCE_TYPES.VECTOR, results: [{ id: 'a', title: 'A' }] },
+    ], { k: Number.NaN });
+
+    const first = requireResult(fused.find(r => r.id === 'a'));
+    expect(first.sourceScores[SOURCE_TYPES.VECTOR]).toBeCloseTo(1 / 61, 6);
+  });
+
+  it('C138-CV11: invalid convergenceBonus falls back to the default bonus', () => {
+    const fused = fuseResultsMulti([
+      { source: SOURCE_TYPES.VECTOR, results: [{ id: 'shared', title: 'Shared' }] },
+      { source: SOURCE_TYPES.BM25, results: [{ id: 'shared', title: 'Shared' }] },
+    ], { convergenceBonus: -1 });
+
+    const shared = requireResult(fused.find(r => r.id === 'shared'));
+    expect(shared.convergenceBonus).toBeCloseTo(0.10, 6);
+  });
+
+  it('C138-CV12: invalid graphWeightBoost falls back to the default graph boost', () => {
+    const fused = fuseResultsMulti([
+      { source: SOURCE_TYPES.GRAPH, results: [{ id: 'g1', title: 'Graph 1' }] },
+    ], { graphWeightBoost: Number.POSITIVE_INFINITY });
+
+    const graphItem = requireResult(fused.find(r => r.id === 'g1'));
+    expect(graphItem.sourceScores[SOURCE_TYPES.GRAPH]).toBeCloseTo(1.5 / 61, 6);
+  });
+
+  it('C138-CV13: invalid list weights are sanitized to zero contribution', () => {
+    const fused = fuseResultsMulti([
+      { source: SOURCE_TYPES.VECTOR, results: [{ id: 'v1', title: 'Vector 1' }], weight: -2 },
+      { source: SOURCE_TYPES.BM25, results: [{ id: 'b1', title: 'BM25 1' }], weight: Number.POSITIVE_INFINITY },
+    ]);
+
+    const vectorItem = requireResult(fused.find(r => r.id === 'v1'));
+    const bm25Item = requireResult(fused.find(r => r.id === 'b1'));
+    expect(vectorItem.sourceScores[SOURCE_TYPES.VECTOR]).toBe(0);
+    expect(bm25Item.sourceScores[SOURCE_TYPES.BM25]).toBe(0);
+    expect(vectorItem.rrfScore).toBeGreaterThanOrEqual(0);
+    expect(Number.isFinite(bm25Item.rrfScore)).toBe(true);
+  });
 });

@@ -153,7 +153,7 @@ Validates implementation-vs-documentation parity for feature catalog groups 01-1
 
 - [x] CHK-410 [P1] Runtime emits per-channel eval events when eval logging is enabled (or docs explicitly scope why not). [EVIDENCE: `handlers/memory-search.ts` + `handlers/memory-context.ts` call `logChannelResult`; validated by `tests/memory-search-eval-channels.vitest.ts` and `tests/memory-context-eval-channels.vitest.ts`]
 - [x] CHK-411 [P1] `memory_search.limit` contract is consistent across schema, runtime behavior, and docs. [EVIDENCE: `schemas/tool-input-schemas.ts` (`positiveIntMax(100)`), `handlers/memory-search.ts` runtime clamp (`Math.min(..., 100)`), `tool-schemas.ts` (`minimum:1, maximum:100`), `tests/tool-input-schema.vitest.ts` limit 100/101 contract tests]
-- [x] CHK-412 [P1] .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/011-feature-catalog/feature_catalog.md parity sweep completed for pipeline fallback, MPAB placement, normalization semantics, and lifecycle checkpoint behavior. [EVIDENCE: canonical + snippets updated in .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/011-feature-catalog/feature_catalog.md, .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/011-feature-catalog/01-retrieval/04-hybrid-search-pipeline.md, .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/011-feature-catalog/14-pipeline-architecture/02-mpab-chunk-to-memory-aggregation.md, .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/011-feature-catalog/02-mutation/01-memory-indexing-memorysave.md, .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/011-feature-catalog/05-lifecycle/01-checkpoint-creation-checkpointcreate.md, .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/011-feature-catalog/05-lifecycle/03-checkpoint-restore-checkpointrestore.md]
+- [x] CHK-412 [P1] `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` parity sweep completed for pipeline fallback, MPAB placement, normalization semantics, and lifecycle checkpoint behavior. [EVIDENCE: canonical + snippets updated in `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md`, `.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/04-hybrid-search-pipeline.md`, `.opencode/skill/system-spec-kit/feature_catalog/14--pipeline-architecture/02-mpab-chunk-to-memory-aggregation.md`, `.opencode/skill/system-spec-kit/feature_catalog/02--mutation/01-memory-indexing-memorysave.md`, `.opencode/skill/system-spec-kit/feature_catalog/05--lifecycle/01-checkpoint-creation-checkpointcreate.md`, `.opencode/skill/system-spec-kit/feature_catalog/05--lifecycle/03-checkpoint-restore-checkpointrestore.md`]
 - [x] CHK-413 [P1] Evaluation/graph sections match code for metric count, edge-density denominator, graph-cache invalidation, and community-runtime wiring. [EVIDENCE: metric count aligned to 11 and density denominator aligned to `total_edges/total_memories` in canonical + snippets; community docs now state Stage 2 consumes precomputed assignments and does not auto-run detect/store helpers]
 - [x] CHK-414 [P1] Governance and telemetry sections match code for active flags/knobs, caps, and logging semantics. [EVIDENCE: governance text aligned to process targets + 23 active `is*` helpers in `search-flags.ts`; eval logging semantics updated to fail-safe sync writes and precise channel coverage]
 - [x] CHK-415 [P1] Full 5-agent re-audit over groups 01-18 reports no unresolved HIGH findings. [EVIDENCE: `scratch/t069-audit-agent-1-planck.md`, `scratch/t069-audit-agent-2-ampere.md`, `scratch/t069-audit-agent-3-gauss.md`, `scratch/t069-audit-agent-4-nash.md`, `scratch/t069-audit-agent-5-aristotle.md`, `scratch/t069-audit-summary.md`]
@@ -168,7 +168,7 @@ Validates implementation-vs-documentation parity for feature catalog groups 01-1
 
 ### P2 Nice-to-Have
 
-- [x] CHK-420 [P2] Phase snippet docs contain no stale line-count/call-site attribution claims and all source metadata points to canonical .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/011-feature-catalog/feature_catalog.md. [EVIDENCE: stale `~550 lines` + stale `line ~...` call-site references removed; `rg` over 034-feature-catalog confirms no legacy summary-source references and canonical metadata consistency]
+- [x] CHK-420 [P2] Phase snippet docs contain no stale line-count/call-site attribution claims and all source metadata points to canonical `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md`. [EVIDENCE: stale `~550 lines` + stale `line ~...` call-site references removed; `rg` over `.opencode/skill/system-spec-kit/feature_catalog` confirms no legacy summary-source references and canonical metadata consistency]
 <!-- /ANCHOR:phase-6-parity -->
 
 <!-- ANCHOR:phase-7-carry-over -->
@@ -279,22 +279,22 @@ Validates closure for the explicit memory-save routing bug fix where direct CLI 
 - [x] CHK-620 [P2] Smoke-test artifact path recorded for operator traceability. [EVIDENCE: smoke run output confirms a timestamped memory entry was generated under `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/memory/`]
 <!-- /ANCHOR:phase-11-cli-authority -->
 
-<!-- ANCHOR:phase-12-phase-rejection -->
-## Phase 12: Explicit Phase-Folder Rejection Verification
+<!-- ANCHOR:phase-12-phase-authority -->
+## Phase 12: Explicit Phase-Folder Target Authority Verification
 
-Verifies the explicit direct-save rule that phase-child folders are rejected deterministically with a clear root-folder redirection message.
+Verifies the explicit direct-save contract that phase-child folders are supported and remain authoritative when targeted explicitly.
 
 ### P0 Blockers (must resolve)
 
-- [x] CHK-630 [P0] Rejection helper returns deterministic phase-child error text with owning-root guidance. [EVIDENCE: `.opencode/skill/system-spec-kit/scripts/core/subfolder-utils.ts` `buildPhaseFolderRejection()` now emits: `Direct memory saves cannot target a phase folder ...`, `Save to the owning root spec folder instead ...`, and `... not rerouted.`]
-- [x] CHK-631 [P0] `generate-context` source flow checks explicit CLI targets for phase-child rejection before workflow execution. [EVIDENCE: `.opencode/skill/system-spec-kit/scripts/memory/generate-context.ts` calls `rejectExplicitPhaseFolderTarget()` before `runWorkflow()` in `main()`]
-- [x] CHK-632 [P0] Explicit phase-folder CLI target fails fast end-to-end before any save write occurs. [EVIDENCE: from `.opencode/skill/system-spec-kit`, `node mcp_server/node_modules/vitest/vitest.mjs run tests/generate-context-cli-authority.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts` now passes `3/3`; `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-architecture-audit` now exits before save and prints the owning-root guidance plus deterministic non-reroute message.]
+- [x] CHK-630 [P0] Explicit-target resolver preserves phase-child destinations deterministically when passed by CLI. [EVIDENCE: `.opencode/skill/system-spec-kit/scripts/memory/generate-context.ts` explicit-target flow now keeps phase-child targets authoritative instead of triggering rejection/reroute logic.]
+- [x] CHK-631 [P0] `generate-context` source flow forwards explicit CLI phase-child targets into workflow execution. [EVIDENCE: `.opencode/skill/system-spec-kit/scripts/memory/generate-context.ts` forwards explicit phase-child `specFolderArg` into `runWorkflow()` in `main()` for direct-save flows.]
+- [x] CHK-632 [P0] Explicit phase-folder CLI target succeeds end-to-end and writes under the requested phase-child path. [EVIDENCE: from `.opencode/skill/system-spec-kit`, `node mcp_server/node_modules/vitest/vitest.mjs run tests/generate-context-cli-authority.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts` passes with phase-target authority coverage; direct CLI phase-folder targeting now completes and writes under the explicit phase folder.]
 
 ### P1 Required (complete or approved deferral)
 
-- [x] CHK-633 [P1] Existing explicit root-target CLI behavior remains passing after the new rejection guard. [EVIDENCE: same targeted test run shows both root-target cases in `tests/generate-context-cli-authority.vitest.ts` pass: direct mode and JSON override mode.]
-- [x] CHK-634 [P1] Tests/docs are updated to reflect the explicit-target + phase-child rejection contract. [EVIDENCE: `tests/generate-context-cli-authority.vitest.ts` includes a dedicated phase-folder rejection test; `.opencode/skill/system-spec-kit/scripts/spec-folder/README.md` and `.opencode/skill/system-spec-kit/scripts/tests/README.md` were updated for explicit-target authority and regression inventory.]
-<!-- /ANCHOR:phase-12-phase-rejection -->
+- [x] CHK-633 [P1] Existing explicit root-target CLI behavior remains passing after phase-target authority support is enabled. [EVIDENCE: targeted CLI-authority coverage continues to pass root-target direct mode and JSON override mode cases in `tests/generate-context-cli-authority.vitest.ts`.]
+- [x] CHK-634 [P1] Tests/docs are updated to reflect explicit-target authority for both root and phase-child folders. [EVIDENCE: `tests/generate-context-cli-authority.vitest.ts` includes explicit phase-folder authority coverage; `.opencode/skill/system-spec-kit/scripts/spec-folder/README.md` and `.opencode/skill/system-spec-kit/scripts/tests/README.md` document the supported authority contract.]
+<!-- /ANCHOR:phase-12-phase-authority -->
 
 <!-- ANCHOR:phase-13-indexed-direct-save -->
 ## Phase 13: Indexed Direct-Save Render/Quality Closure Verification
@@ -374,8 +374,8 @@ Verifies that all P0 and P1 findings from the 10-agent thorough review (`scratch
 | P0 Items (Phase 11 CLI Authority) | 3 | 3/3 | Explicit CLI target routing remains authoritative and smoke-tested |
 | P1 Items (Phase 11 CLI Authority) | 3 | 3/3 | Real control-flow regressions and docs alignment verified |
 | P2 Items (Phase 11 CLI Authority) | 1 | 1/1 | Smoke artifact traceability recorded |
-| P0 Items (Phase 12 Phase Rejection) | 3 | 3/3 | Deterministic rejection helper, pre-workflow guard, and end-to-end failure behavior verified |
-| P1 Items (Phase 12 Phase Rejection) | 2 | 2/2 | Root-target non-regression and docs/test updates verified |
+| P0 Items (Phase 12 Phase Authority) | 3 | 3/3 | Deterministic explicit-target routing and end-to-end phase-target success behavior verified |
+| P1 Items (Phase 12 Phase Authority) | 2 | 2/2 | Root-target non-regression and docs/test authority updates verified |
 | P0 Items (Phase 13 Indexed Direct-Save Quality) | 2 | 2/2 | Post-Phase-10 V6/V7 blocker closed as a render/indexing-quality issue, not a naming regression |
 | P1 Items (Phase 13 Indexed Direct-Save Quality) | 3 | 3/3 | Regression coverage, focused verification, and cross-doc closure evidence all recorded |
 | P2 Items (Phase 13 Indexed Direct-Save Quality) | 1 | 1/1 | Reusable indexed root-save quality example captured for future audits |

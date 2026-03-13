@@ -1,3 +1,8 @@
+// ---------------------------------------------------------------
+// MODULE: Tree Thinning Types
+// ---------------------------------------------------------------
+// Public declaration surface for tree-thinning helpers and config.
+
 /** Represents thinning config. */
 export interface ThinningConfig {
     /** Files under this token count are merged into parent document */

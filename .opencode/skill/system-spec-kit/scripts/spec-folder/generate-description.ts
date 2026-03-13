@@ -85,7 +85,7 @@ function main(): void {
   }
 
   if (!desc) {
-    console.error('Could not generate description (no spec.md or empty content)');
+    console.error('Could not generate description (missing spec.md or unreadable content)');
     process.exit(1);
   }
 

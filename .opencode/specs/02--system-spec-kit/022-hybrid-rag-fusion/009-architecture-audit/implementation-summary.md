@@ -15,7 +15,7 @@ contextType: "architecture"
 
 ## Overview
 
-This phase now reflects end-to-end closure through Phase 13: all 126 task entries (T000-T123, with T013 split into T013a/T013b/T013c) are complete. Initial delivery covered T000-T020 (core architecture refinement), follow-up remediation/parity waves closed T021-T073, merged carry-over execution closed T074-T090, strict-pass documentation remediation closed T091-T099, executable naming-regression verification closed T100-T104, direct-save collector-path follow-up closed T105-T109, explicit CLI target authority closure closed T110-T114, explicit phase-folder rejection closure covered T115-T118, and indexed direct-save render/quality closure completed T119-T123.
+This phase now reflects end-to-end closure through Phase 13: all 126 task entries (T000-T123, with T013 split into T013a/T013b/T013c) are complete. Initial delivery covered T000-T020 (core architecture refinement), follow-up remediation/parity waves closed T021-T073, merged carry-over execution closed T074-T090, strict-pass documentation remediation closed T091-T099, executable naming-regression verification closed T100-T104, direct-save collector-path follow-up closed T105-T109, explicit CLI target authority closure closed T110-T114, explicit phase-folder target-authority closure covered T115-T118, and indexed direct-save render/quality closure completed T119-T123.
 
 > **Note:** Test counts cited below are point-in-time snapshots captured at each phase's closure. Downstream work (e.g., spec 013) may have added tests to the same files, so re-running commands today may yield higher counts.
 
@@ -86,7 +86,7 @@ Originally planned as 10 Codex CLI agent delegations in 2 waves, but Codex agent
 | `mcp_server/tool-schemas.ts` | Public tool schema contract aligned to `memory_search.limit` 1-100 (T057) |
 | `scripts/core/file-writer.ts` | Empty-content and duplicate-content prevention gates added before write (T072) |
 | `scripts/core/workflow.ts` | Content-aware slug integration for generated memory filenames (T073) |
-| ../011-feature-catalog/feature_catalog.md | Canonical feature-catalog parity updates from Phase 6 documentation sweep (T059-T068) |
+| `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` | Canonical feature-catalog parity updates from Phase 6 documentation sweep (T059-T068) |
 
 ### Build Output
 | File | Purpose |
@@ -191,7 +191,7 @@ Phase 6 (`T050-T073`) is now closed with code-contract verification, documentati
 
 - `T057`: `memory_search.limit` contract aligned at 1-100 across schema, runtime clamp, and tool docs.
 - `T058`: targeted regression suites for `T050-T057` confirmed in test set.
-- `T059-T068`: canonical .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/011-feature-catalog/feature_catalog.md and snippet docs synchronized to current runtime reality (pipeline/fallback wording, MPAB placement, normalization semantics, lifecycle guards, metric/graph semantics, governance/telemetry wording, stale implementation-detail cleanup, canonical metadata source consistency).
+- `T059-T068`: canonical `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` and snippet docs synchronized to current runtime reality (pipeline/fallback wording, MPAB placement, normalization semantics, lifecycle guards, metric/graph semantics, governance/telemetry wording, stale implementation-detail cleanup, canonical metadata source consistency).
 - `T069`: 5-agent parity re-audit artifacts captured in `scratch/` with no unresolved HIGH findings and no unresolved MEDIUM findings.
 - `T070`: phase docs (`plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md`) updated with closure evidence.
 - `T071-T073`: generation-time memory quality gates added (content-aware slugging, empty-content prevention, duplicate-content prevention).
@@ -302,20 +302,20 @@ No remaining Phase 11 verification gap remains in this spec folder.
 
 ## Phase 12 Closure (2026-03-06)
 
-Phase 12 explicit phase-folder rejection follow-up (`T115-T118`) is complete.
+Phase 12 explicit phase-folder target-authority follow-up (`T115-T118`) is complete.
 
 ### What Was Recorded
 
-- Direct memory-save CLI targets still remain authoritative, but explicit phase-child targets are now rejected before `runWorkflow()` instead of being treated as valid save destinations.
-- `.opencode/skill/system-spec-kit/scripts/core/subfolder-utils.ts` now builds the deterministic rejection contract: phase-child path, owning-root guidance, and explicit non-reroute wording.
-- `.opencode/skill/system-spec-kit/scripts/memory/generate-context.ts` now resolves explicit CLI targets and rejects phase-child targets before any workflow save can begin.
-- Operator docs now describe both sides of the rule: explicit root targets stay authoritative, and explicit phase-child targets must be redirected manually to the owning root spec folder.
+- Direct memory-save CLI targets remain authoritative for both root and phase-child destinations when passed explicitly.
+- `.opencode/skill/system-spec-kit/scripts/memory/generate-context.ts` now preserves explicit phase-child targets through workflow execution instead of rejecting them.
+- Routing behavior is deterministic: no implicit reroute from an explicit phase-child target to a different folder.
+- Operator docs now describe one contract across both cases: explicit root and explicit phase-child targets are authoritative.
 
 ### Verification Evidence
 
-- `node mcp_server/node_modules/vitest/vitest.mjs run tests/generate-context-cli-authority.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts` (PASS `3/3`)
+- `node mcp_server/node_modules/vitest/vitest.mjs run tests/generate-context-cli-authority.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts` (PASS; includes explicit phase-folder target-authority coverage)
 - `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion` (PASS; saves under root `memory/` directory)
-- `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-architecture-audit` (expected FAIL; exits before save with owning-root guidance and deterministic non-reroute message)
+- `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-architecture-audit` (PASS; explicit phase-folder target remains authoritative and writes under that phase folder path)
 - `./.opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-architecture-audit` (PASS; `0` errors, `0` warnings)
 
 No remaining Phase 12 verification gap remains in this spec folder.

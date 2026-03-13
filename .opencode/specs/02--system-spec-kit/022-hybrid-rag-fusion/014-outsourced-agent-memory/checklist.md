@@ -39,7 +39,7 @@ contextType: "general"
 - [x] CHK-010 [P0] Explicit missing-file failures hard-fail with `EXPLICIT_DATA_FILE_LOAD_FAILED: ...` - verified in `.opencode/skill/system-spec-kit/scripts/loaders/data-loader.ts` [Evidence: `.opencode/skill/system-spec-kit/scripts/loaders/data-loader.ts`]
 - [x] CHK-011 [P0] Explicit invalid JSON and invalid-shape payloads do not fall back to OpenCode capture - verified in `.opencode/skill/system-spec-kit/scripts/loaders/data-loader.ts` and `.opencode/skill/system-spec-kit/scripts/tests/runtime-memory-inputs.vitest.ts` [Evidence: `.opencode/skill/system-spec-kit/scripts/loaders/data-loader.ts`, `.opencode/skill/system-spec-kit/scripts/tests/runtime-memory-inputs.vitest.ts`]
 - [x] CHK-012 [P0] `nextSteps` and `next_steps` are both accepted - verified in `.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts` [Evidence: `.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts`]
-- [x] CHK-013 [P1] First next step persists as `Next: ...`, remaining steps persist as `Follow-up: ...`, and `NEXT_ACTION` reads the first step - verified in `.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts`, `.opencode/skill/system-spec-kit/scripts/extractors/session-extractor.ts`, and `.opencode/skill/system-spec-kit/scripts/tests/runtime-memory-inputs.vitest.ts` [Evidence: `.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts`, `.opencode/skill/system-spec-kit/scripts/extractors/session-extractor.ts`, `.opencode/skill/system-spec-kit/scripts/tests/runtime-memory-inputs.vitest.ts`]
+- [x] CHK-013 [P1] First next step persists as `Next: ...`, remaining steps persist as `Follow-up: ...`, `NEXT_ACTION` reads the first step, and mixed structured payloads preserve missing next-step facts without duplicate `Next:` / `Follow-up:` observations - verified in `.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts`, `.opencode/skill/system-spec-kit/scripts/extractors/session-extractor.ts`, and `.opencode/skill/system-spec-kit/scripts/tests/runtime-memory-inputs.vitest.ts` [Evidence: `.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts`, `.opencode/skill/system-spec-kit/scripts/extractors/session-extractor.ts`, `.opencode/skill/system-spec-kit/scripts/tests/runtime-memory-inputs.vitest.ts`]
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -50,8 +50,8 @@ contextType: "general"
 - [x] CHK-020 [P0] All 4 `cli-*` SKILL files include Memory Handback guidance with redact-and-scrub and explicit failure wording - verified by repo search [Evidence: `Memory Handback|redact|scrub|EXPLICIT_DATA_FILE_LOAD_FAILED` in `.opencode/skill/cli-*/SKILL.md`]
 - [x] CHK-021 [P0] All 4 `cli-*` prompt templates include memory epilogue updates with redact-and-scrub and explicit failure wording - verified by repo search [Evidence: `MEMORY EPILOGUE|redact|scrub|nextSteps|next_steps|EXPLICIT_DATA_FILE_LOAD_FAILED` in `.opencode/skill/cli-*/assets/prompt_templates.md`]
 - [x] CHK-022 [P1] Non-reproducible historical numeric Vitest pass-total claims are removed from scoped spec evidence [Evidence: scoped artifacts now use deferred/unverified wording instead of historical numeric totals]
-- [x] CHK-023 [P1] Alignment drift passes for the scripts root - `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit/scripts` returned `0 findings` [Evidence: current rerun output in this task]
-- [x] CHK-024 [P1] Typecheck status is not presented as current acceptance proof without a reproducible rerun artifact [Evidence: scoped spec artifacts now defer typecheck claims instead of asserting prior clean passes]
+- [x] CHK-023 [P1] Alignment drift passes for the scripts root - `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit/scripts` returned `0 findings` and `0 warnings` [Evidence: current rerun output in this task]
+- [x] CHK-024 [P1] TypeScript verification is presented as current acceptance proof only with a reproducible rerun artifact - `npm run lint` in `.opencode/skill/system-spec-kit/scripts` passed (`tsc --noEmit`) [Evidence: current rerun output in this task]
 - [x] CHK-025 [P2] Live outsourced CLI dispatch remains deferred - no current spec doc claims it passed without fresh proof
 <!-- /ANCHOR:testing -->
 
@@ -93,8 +93,8 @@ contextType: "general"
 | Category | Total | Verified |
 |----------|-------|----------|
 | P0 Items | 8 | 8/8 |
-| P1 Items | 11 | 11/11 |
+| P1 Items | 12 | 12/12 |
 | P2 Items | 2 | 2/2 |
 
-**Verification Date**: 2026-03-11
+**Verification Date**: 2026-03-13
 <!-- /ANCHOR:summary -->

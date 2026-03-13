@@ -35,7 +35,7 @@ The graph module operates on the `causal_edges` table to detect communities of r
 ### What It Does
 
 - **Community detection** groups memory nodes into clusters using BFS connected-component labelling as a fast first pass, then escalates to single-level Louvain modularity when the largest component holds more than 50% of all nodes.
-- **Graph signals** compute two additive score bonuses for search results: momentum (degree change over 7 days) and causal depth (normalized nearest-root BFS distance from root nodes).
+- **Graph signals** compute two additive score bonuses for search results: momentum (degree change over 7 days) and causal depth (normalized longest-path depth on the SCC-condensed causal DAG).
 
 ### Design Decisions
 
@@ -66,7 +66,7 @@ graph/
 | File | Purpose |
 |------|---------|
 | `community-detection.ts` | Builds undirected adjacency lists from `causal_edges`, runs BFS connected-component labelling, escalates to single-level Louvain when needed, persists assignments to `community_assignments` table, and injects community co-members into search results with a 0.3x score boost |
-| `graph-signals.ts` | Snapshots node degrees to `degree_snapshots` table, computes momentum (current degree minus degree 7 days ago), computes normalized nearest-root causal depth via multi-root BFS, and applies both as additive bonuses to scored search results |
+| `graph-signals.ts` | Snapshots node degrees to `degree_snapshots` table, computes momentum (current degree minus degree 7 days ago), computes normalized causal depth via SCC condensation plus longest-path DAG traversal, and applies both as additive bonuses to scored search results |
 
 ### Exported Functions
 
@@ -83,7 +83,7 @@ graph/
 | `snapshotDegrees` | graph-signals.ts | Records current degree counts into `degree_snapshots` |
 | `computeMomentum` | graph-signals.ts | Computes single-node momentum (degree delta over 7 days) |
 | `computeMomentumScores` | graph-signals.ts | Batch momentum computation with session caching |
-| `computeCausalDepthScores` | graph-signals.ts | Batch normalized nearest-root causal depth via multi-root BFS |
+| `computeCausalDepthScores` | graph-signals.ts | Batch normalized causal depth via SCC condensation and longest-path DAG traversal |
 | `applyGraphSignals` | graph-signals.ts | Applies momentum (+0.05 max) and depth (+0.05 max) bonuses to result rows |
 | `clearGraphSignalsCache` | graph-signals.ts | Clears momentum and depth session caches |
 

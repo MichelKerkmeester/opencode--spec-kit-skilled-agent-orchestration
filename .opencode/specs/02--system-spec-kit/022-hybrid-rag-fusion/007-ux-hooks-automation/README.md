@@ -1,17 +1,17 @@
 ---
-title: "014 — UX Hooks Automation"
+title: "007 — UX Hooks Automation"
 description: "Post-mutation hook automation and structured UX hints for memory handlers."
 importance_tier: "normal"
 contextType: "implementation"
 ---
 
-# 014 — UX Hooks Automation
+# 007 — UX Hooks Automation
 
 Defines automated post-mutation hook enforcement and structured UX hint output for memory mutation handlers (save, update, delete, bulk-delete, atomic save). Includes checkpoint delete safety via `confirmName`, `memory_health` auto-repair, and context-server hint appending.
 
 ## Status
 
-**Implemented** — Build, lint, and 485 tests passing across 9 files. MCP SDK smoke validation confirms 28 tools listed.
+**Implemented** — Build and lint pass; the combined targeted rerun passes (9 files / 525 tests); split playbook verification passes (7 files / 510 tests and 2 files / 15 tests); MCP SDK smoke validation confirms 28 tools listed.
 
 ## Scope
 

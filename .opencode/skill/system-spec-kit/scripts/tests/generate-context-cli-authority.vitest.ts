@@ -4,6 +4,7 @@
 // ---------------------------------------------------------------
 
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 const harness = vi.hoisted(() => ({
@@ -25,6 +26,7 @@ vi.mock('../extractors/collect-session-data', () => ({
 }));
 
 const ORIGINAL_ARGV = [...process.argv];
+const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..', '..', '..', '..');
 
 async function resetGenerateContextConfig(): Promise<void> {
   const { CONFIG } = await import('../core');
@@ -49,7 +51,7 @@ describe('generate-context CLI authority', () => {
 
   it('passes direct CLI spec-folder mode through main() as an authoritative workflow target', async () => {
     const explicitSpecFolder = '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion';
-    const resolvedSpecFolder = path.resolve(process.cwd(), '..', '..', '..', '..', explicitSpecFolder);
+    const resolvedSpecFolder = path.resolve(REPO_ROOT, explicitSpecFolder);
     process.argv = ['node', path.join('scripts', 'dist', 'memory', 'generate-context.js'), explicitSpecFolder];
 
     const { main } = await import('../memory/generate-context');
@@ -82,8 +84,8 @@ describe('generate-context CLI authority', () => {
   });
 
   it('passes an explicit phase-folder CLI target through main() as an authoritative workflow target', async () => {
-    const explicitPhaseFolder = '/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-architecture-audit';
-    const resolvedPhaseFolder = path.resolve(explicitPhaseFolder);
+    const explicitPhaseFolder = '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/021-remediation-revalidation';
+    const resolvedPhaseFolder = path.resolve(REPO_ROOT, explicitPhaseFolder);
     process.argv = ['node', path.join('scripts', 'dist', 'memory', 'generate-context.js'), explicitPhaseFolder];
 
     const { main } = await import('../memory/generate-context');

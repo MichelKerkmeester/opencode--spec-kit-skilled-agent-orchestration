@@ -11,6 +11,7 @@ import {
   getPendingPath,
   getOriginalPath,
   isPendingFile,
+  runInTransaction,
   atomicWriteFile,
   executeAtomicSave,
   findPendingFiles,
@@ -215,6 +216,47 @@ describe('Transaction Manager Unit Tests', () => {
 describe('Transaction Atomicity Tests (T192-T200)', () => {
   afterEach(() => {
     cleanup();
+  });
+
+  it('T191a: runInTransaction reuses the outer transaction for nested calls', () => {
+    const calls: string[] = [];
+    const fakeDb = {
+      inTransaction: false,
+      transaction: (fn: () => string) => {
+        calls.push('transaction');
+        return () => {
+          calls.push('wrapped');
+          return fn();
+        };
+      },
+    };
+
+    const result = runInTransaction(fakeDb as never, () => {
+      calls.push('outer');
+      return runInTransaction(fakeDb as never, () => {
+        calls.push('inner');
+        return 'done';
+      });
+    });
+
+    expect(result).toBe('done');
+    expect(calls).toEqual(['transaction', 'wrapped', 'outer', 'inner']);
+  });
+
+  it('T191b: runInTransaction avoids reopening when database is already inTransaction', () => {
+    let wrapped = false;
+    const fakeDb = {
+      inTransaction: true,
+      transaction: () => {
+        wrapped = true;
+        return () => 'unexpected';
+      },
+    };
+
+    const result = runInTransaction(fakeDb as never, () => 'inside-existing-tx');
+
+    expect(result).toBe('inside-existing-tx');
+    expect(wrapped).toBe(false);
   });
 
   it('T192: execute_atomic_save() wraps file + DB op in transaction', () => {

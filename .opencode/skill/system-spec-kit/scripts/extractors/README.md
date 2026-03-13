@@ -62,6 +62,7 @@ The `extractors/` directory converts collected session input into structured dat
 
 - Decision tree generation logic is provided by `lib/decision-tree-generator.ts` and used by extractor flow.
 - Runtime imports use compiled files under `dist/extractors/`.
+- The extractor barrel now re-exports the stateless enrichment helpers `extractSpecFolderContext()` and `extractGitContext()` alongside the existing extraction surface.
 
 
 <!-- /ANCHOR:notes -->

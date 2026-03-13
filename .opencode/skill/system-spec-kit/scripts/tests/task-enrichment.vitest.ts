@@ -578,6 +578,64 @@ describe('workflow seam guardrail', () => {
     }
   });
 
+  it('allows stateless saves when captured files match code paths declared in the target spec', async () => {
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-workflow-'));
+    const specFolderPath = path.join(tempRoot, '011-perfect-session-capturing');
+    const contextDir = path.join(tempRoot, 'memory');
+    fs.mkdirSync(specFolderPath, { recursive: true });
+    fs.mkdirSync(contextDir, { recursive: true });
+    fs.writeFileSync(
+      path.join(specFolderPath, 'spec.md'),
+      [
+        '# Spec',
+        '',
+        '## 3. SCOPE',
+        '',
+        '### Files to Change',
+        '',
+        '| File Path | Change Type | Description |',
+        '|-----------|-------------|-------------|',
+        '| `scripts/core/workflow.ts` | Modify | Insert enrichment after alignment guards |',
+      ].join('\n'),
+      'utf-8'
+    );
+
+    workflowHarness.specFolderPath = specFolderPath;
+    workflowHarness.contextDir = contextDir;
+    workflowHarness.loaderDataWithoutFile = {
+      _source: 'opencode-capture',
+      userPrompts: [{ prompt: 'Perfect session capturing hardening', timestamp: '2026-03-06T09:01:00Z' }],
+      observations: [
+        {
+          title: 'Workflow hardening',
+          narrative: 'Updated stateless alignment handling for perfect session capturing.',
+          files: ['.opencode/skill/system-spec-kit/scripts/core/workflow.ts'],
+        },
+      ],
+      FILES: [
+        {
+          FILE_PATH: '.opencode/skill/system-spec-kit/scripts/core/workflow.ts',
+          DESCRIPTION: 'Adjusted stateless alignment guards for the target spec.',
+        },
+      ],
+    };
+
+    const { runWorkflow } = await import('../core/workflow');
+
+    try {
+      const result = await runWorkflow({
+        specFolderArg: specFolderPath,
+        collectSessionDataFn: async (_collectedData, specFolderName) => createSessionData(specFolderName || '011-perfect-session-capturing'),
+        silent: true,
+      });
+
+      expect(result.contextFilename).toContain('.md');
+      expect(workflowHarness.writtenFiles).toHaveLength(1);
+    } finally {
+      fs.rmSync(tempRoot, { recursive: true, force: true });
+    }
+  });
+
   it('does not let file-backed state leak into a later stateless workflow run', async () => {
     const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-workflow-'));
     const specFolderPath = path.join(tempRoot, '013-memory-search-bug-fixes');
@@ -789,6 +847,11 @@ describe('workflow seam guardrail', () => {
       '# Workflow HTML Sanitization',
       '',
       '<section><strong>Leaked</strong><ul><li>alpha</li><li>beta</li></ul></section>',
+      '<!-- hidden comment -->',
+      '<script>alert("drop me")</script>',
+      '<img src="https://example.com/leak.png" alt="tracker" />',
+      '<iframe src="https://example.com/embed"></iframe>',
+      '<svg><title>vector</title><text>drop the svg payload</text></svg>',
       '',
       '```html',
       '<div class="preserve-me">keep fenced html</div>',
@@ -819,10 +882,17 @@ describe('workflow seam guardrail', () => {
       expect(writtenContent).toContain('beta');
       expect(writtenContent).toContain('tail');
       expect(writtenContent).toContain('inline');
+      expect(writtenContent).not.toContain('hidden comment');
+      expect(writtenContent).not.toContain('alert("drop me")');
+      expect(writtenContent).not.toContain('drop the svg payload');
       expect(writtenContent).not.toContain('<section>');
       expect(writtenContent).not.toContain('<strong>');
       expect(writtenContent).not.toContain('<ul>');
       expect(writtenContent).not.toContain('<li>');
+      expect(writtenContent).not.toContain('<script>');
+      expect(writtenContent).not.toContain('<img');
+      expect(writtenContent).not.toContain('<iframe');
+      expect(writtenContent).not.toContain('<svg>');
       expect(writtenContent).not.toContain('<p>');
       expect(writtenContent).not.toContain('<code>inline</code>');
       expect(writtenContent).toContain('```html\n<div class="preserve-me">keep fenced html</div>\n```');

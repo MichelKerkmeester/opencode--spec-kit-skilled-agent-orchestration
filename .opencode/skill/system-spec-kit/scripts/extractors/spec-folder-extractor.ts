@@ -68,6 +68,46 @@ function parseFrontmatter(content: string | null): { data: Frontmatter; body: st
   return { data, body: content.slice(match[0].length) };
 }
 
+function extractFrontmatterListItems(content: string | null, keyName: string): string[] {
+  if (!content) return [];
+
+  const items: string[] = [];
+  const blockPattern = /(?:^|\n)---\s*\n([\s\S]*?)\n---\s*(?=\n|$)/g;
+
+  for (const match of content.matchAll(blockPattern)) {
+    const lines = match[1].split('\n');
+    let collecting = false;
+
+    for (const rawLine of lines) {
+      const line = rawLine.trimEnd();
+      const isKeyLine = new RegExp(`^${keyName}:\\s*$`, 'i').test(line);
+
+      if (isKeyLine) {
+        collecting = true;
+        continue;
+      }
+
+      if (!collecting) {
+        continue;
+      }
+
+      const item = line.match(/^\s*-\s+(.*)$/);
+      if (item) {
+        items.push(item[1].trim().replace(/^['"]|['"]$/g, ''));
+        continue;
+      }
+
+      if (line.trim() === '') {
+        continue;
+      }
+
+      collecting = false;
+    }
+  }
+
+  return items;
+}
+
 function cleanText(text: string): string {
   return text
     .replace(/<!--[\s\S]*?-->/g, ' ')
@@ -122,7 +162,10 @@ function parseSpecDoc(content: string | null) {
   const { data, body } = parseFrontmatter(content);
   const files: SpecFolderExtraction['FILES'] = [];
   const observations: SpecFolderExtraction['observations'] = [];
-  const triggerPhrases = Array.isArray(data.trigger_phrases) ? data.trigger_phrases : [];
+  const triggerPhrases = dedupe([
+    ...(Array.isArray(data.trigger_phrases) ? data.trigger_phrases : []),
+    ...extractFrontmatterListItems(content, 'trigger_phrases'),
+  ].map(cleanText));
   const summary = cleanText(
     [
       data.description,
@@ -149,7 +192,7 @@ function parseSpecDoc(content: string | null) {
       _synthetic: true,
     });
   }
-  return { summary, triggerPhrases: dedupe(triggerPhrases.map(cleanText)), files, observations };
+  return { summary, triggerPhrases, files, observations };
 }
 
 function parsePlanDoc(content: string | null) {

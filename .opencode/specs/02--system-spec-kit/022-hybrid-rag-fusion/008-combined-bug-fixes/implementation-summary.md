@@ -1,7 +1,7 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: .opencode/skill/system-spec-kit/templates/implementation-summary.md -->
 ---
-title: "Combined Implementation Summary: Bug Fixes (003, 008, 013, 015)"
-description: "Merged implementation summary covering auto-detected session bug, subfolder resolution fix, memory search bug fixes, and bug fixes and alignment"
+title: "Combined Implementation Summary: Bug Fixes (003, 008, 013, 015, 016, 017)"
+description: "Merged implementation summary covering auto-detected session bug, subfolder resolution fix, memory search bug fixes, bug fixes and alignment, the 2026-03-08 code audit follow-up, and the W5 bug audit"
 importance_tier: "normal"
 contextType: "implementation"
 ---
@@ -13,7 +13,7 @@ contextType: "implementation"
 
 ## Overview
 
-This document merges implementation summaries from 4 spec folders under `022-hybrid-rag-fusion` into a single canonical reference.
+This document merges implementation summaries and follow-up closure evidence from 6 spec folders under `022-hybrid-rag-fusion` into a single canonical reference.
 
 | # | Spec Folder | Completed | Key Scope |
 |---|-------------|-----------|-----------|
@@ -67,7 +67,7 @@ Detector logic was confirmed active with no additional code delta required in th
 
 Delivery completed through targeted regression and command-guidance verification, then validated by execution and review gates:
 - Functional test command: `node .opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js`
-- Result: `32 passed, 0 failed, 0 skipped`
+- Result: `32 passed, 0 failed, 3 skipped`
 - Review gate: PASS, score `88/100`, no P0/P1 findings
 <!-- /ANCHOR:how-delivered -->
 
@@ -90,7 +90,7 @@ Delivery completed through targeted regression and command-guidance verification
 
 | Check | Result |
 |-------|--------|
-| Functional detector regression suite | PASS (`node .opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js` -> 32 passed, 0 failed, 0 skipped) |
+| Functional detector regression suite | PASS (`node .opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js` -> 32 passed, 0 failed, 3 skipped) |
 | Review gate | PASS (score 88/100, no P0/P1 findings) |
 | Detector implementation presence | PASS (verified active in `.opencode/skill/system-spec-kit/scripts/spec-folder/folder-detector.ts` and `.opencode/skill/system-spec-kit/scripts/dist/spec-folder/folder-detector.js`; no net diff required) |
 | Spec validator for this folder | PASS (`bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-combined-bug-fixes`) |
@@ -277,10 +277,10 @@ This spec now captures all completed workstreams in one canonical Level 2 packet
 | Check | Result |
 |-------|--------|
 | `npx tsc --noEmit` | PASS |
-| `npm run test:task-enrichment` | PASS (30 passed; includes preferred-task fallback guarding, workflow-level seam proof that the later stateless run reaches the loader path with `CONFIG.DATA_FILE === null`, and overlapping-call concurrency coverage) |
+| `node ../mcp_server/node_modules/vitest/vitest.mjs run tests/task-enrichment.vitest.ts --root . --config ../mcp_server/vitest.config.ts` (from `.opencode/skill/system-spec-kit/scripts`) | PASS (32 passed; includes preferred-task fallback guarding, workflow-level seam proof that the later stateless run reaches the loader path with `CONFIG.DATA_FILE === null`, overlapping-call concurrency coverage, and the HTML sanitization regression coverage) |
 | `npm run test --workspace=mcp_server -- tests/folder-discovery.vitest.ts` | PASS (45 passed) |
 | `npm run test --workspace=mcp_server -- tests/folder-discovery-integration.vitest.ts` | PASS (28 passed; includes stale-cache shrink follow-up coverage, future-dated cache invalidation on folder-set mismatch, and alias-root order determinism integration assertions) |
-| `npm run test --workspace=mcp_server -- tests/context-server.vitest.ts` | PASS (307 passed; includes fatal startup mismatch coverage) |
+| `npm run test --workspace=mcp_server -- tests/context-server.vitest.ts` | PASS (315 passed; includes fatal startup mismatch coverage) |
 | `npm run test --workspace=mcp_server -- tests/embeddings.vitest.ts` | PASS (14 passed; includes auto-mode provider-resolution coverage) |
 | `npx vitest run tests/memory-crud-extended.vitest.ts` | PASS (68 passed; includes lazy-profile health reporting coverage) |
 | `~/.opencode/bin/opencode --print-logs --log-level DEBUG mcp list` | PASS (`spec_kit_memory` connected; startup logs reported `API key validated (provider: voyage)` and `Embedding dimension validated: 1024`) |
@@ -519,7 +519,16 @@ Earlier remediation waves implemented a substantial subset of P0/P1/P2 findings 
 
 | Check | Result |
 | --- | --- |
-| `npm run check:full` | PASS (final green after follow-up fixes and contract alignment) |
+| `npm run check --workspace=scripts` | PASS |
+| `npm run check --workspace=mcp_server` in `.opencode/skill/system-spec-kit` | PASS |
+| `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit` | PASS (scanned 731, findings 0) |
+| `node node_modules/vitest/vitest.mjs run tests/graph-signals.vitest.ts tests/working-memory.vitest.ts tests/checkpoint-working-memory.vitest.ts tests/checkpoints-storage.vitest.ts tests/memory-crud-extended.vitest.ts tests/bm25-index.vitest.ts` in `.opencode/skill/system-spec-kit/mcp_server` | PASS (6 files, 275 tests) |
+| `node mcp_server/node_modules/vitest/vitest.mjs run tests/unit-rrf-fusion.vitest.ts tests/checkpoints-storage.vitest.ts tests/access-tracker.vitest.ts tests/access-tracker-extended.vitest.ts` | PASS (73 passed) |
+| `node node_modules/vitest/vitest.mjs run tests/composite-scoring.vitest.ts tests/unit-rrf-fusion.vitest.ts tests/mpab-aggregation.vitest.ts tests/co-activation.vitest.ts tests/fsrs-scheduler.vitest.ts tests/eval-metrics.vitest.ts` | PASS (322 passed) |
+| `node node_modules/vitest/vitest.mjs run tests/score-normalization.vitest.ts tests/unit-normalization.vitest.ts tests/unit-normalization-roundtrip.vitest.ts` | PASS (56 passed) |
+| `node mcp_server/node_modules/vitest/vitest.mjs run tests/context-server.vitest.ts` | PASS (315 passed) |
+| `node .opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js` | PASS (32 passed, 0 failed, 3 skipped) |
+| Full `vitest run` | PASS (`264` passed, `1` skipped test files; `7536` passed, `47` skipped, `28` todo tests) |
 | `tsc --noEmit` | Pass -- zero errors |
 | Em dashes in feature_catalog.md | 0 remaining |
 | HVR "robust" in authored prose | 0 remaining |
@@ -544,8 +553,20 @@ The table below is retained as a historical progress snapshot from prior executi
 
 #### Deferred Items
 
-- **Test tasks (10):** T002, T006, T015, T020, T023, T028, T033, T036, T075, T076 -- writing tests for all fixes. Recommend as follow-up sprint.
+- **Test tasks (6):** T015, T020, T023, T028, T033, T036 -- writing tests for remaining coverage gaps. Recommend as follow-up sprint.
 - **P2 code (4):** T054 (EMBEDDING_DIM), T059 (shared error utils), T060 (dimension fallback), T061 (mutation ledger transaction) -- lower priority improvements.
+
+---
+
+### 2026-03-13 Deferred Follow-up
+
+This follow-up pass closed the remaining composite-scoring regression gap from source 015 and retired a large set of stale or already-implemented source 016 audit findings with fresh evidence from the current tree.
+
+- Source 015: T006 / CHK-014 closed via explicit composite-scoring regressions for negative and non-finite stability, invalid dates, undefined inputs, Infinity inputs, and negative usage counts.
+- Source 016: T069-T085 are now fully complete, including T080. `graph-signals.ts` now uses SCC condensation with longest-path DAG traversal for causal depth, with regressions covering rooted cycles, a rootless cycle with an outgoing tail, and shortcut edges.
+- Source 016: `working-memory.ts` canonical schema now uses `ON DELETE SET NULL` with legacy-schema migration support; tests verify migration and detached-row behavior.
+- Source 016: `memory-crud-update.ts` / `memory-crud-delete.ts` error-envelope evidence remains valid and was re-verified via `memory-crud-extended.vitest.ts` and `bm25-index.vitest.ts`.
+- Current deferred inventory is now 10 items in source 015 only.
 
 ---
 ---
@@ -642,6 +663,5 @@ Two regressions were detected and fixed during Wave C verification:
 
 ### Known Limitations
 
-1. **016 audit findings (17 items):** Source 016 findings remain pending -- they are from a separate code audit and were not in scope for W5.
-2. **015 deferred test tasks (10 items):** Test coverage tasks from source 015 remain deferred.
-3. **Test failure count discrepancy:** Commit message says "9 pre-existing test failures" while the actual test run showed 11 failures across 9 files (some files have multiple failing tests).
+1. **015 deferred tasks (10 items):** Remaining packet deferrals are now source 015 only.
+2. **Test failure count discrepancy:** Commit message says "9 pre-existing test failures" while the actual test run showed 11 failures across 9 files (some files have multiple failing tests).

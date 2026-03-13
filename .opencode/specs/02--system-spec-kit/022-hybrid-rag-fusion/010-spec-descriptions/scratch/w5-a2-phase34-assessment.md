@@ -28,7 +28,7 @@ Agent: W5-A2 | Date: 2026-03-08 | Source: `folder-discovery.ts` + `workflow.ts` 
 - `generateFolderDescriptions()` already prefers per-folder `description.json` when:
   1. `loadPerFolderDescription()` returns non-null, AND
   2. `isPerFolderDescriptionStale()` returns false
-- Falls back to `_processSpecFolder()` (spec.md extraction) otherwise.
+- Repairs stale/corrupt existing per-folder files from `spec.md` during discovery, and falls back to `_processSpecFolder()` only when per-folder files are missing.
 
 **Per-folder staleness detection (folder-discovery.ts:640-650):**
 - `isPerFolderDescriptionStale()` compares `description.json` mtime vs `spec.md` mtime.
@@ -39,7 +39,7 @@ Agent: W5-A2 | Date: 2026-03-08 | Source: `folder-discovery.ts` + `workflow.ts` 
 - `ensureDescriptionCache()` loads from `descriptions.json`, checks staleness via `isCacheStale()`, regenerates via `generateFolderDescriptions()`, saves, and returns. Consumer-facing shape is preserved.
 
 **Backward compatibility (folder-discovery.ts:453-465):**
-- When no usable per-folder file exists (missing or stale), aggregation falls back to the legacy spec.md extraction path via `_processSpecFolder()`.
+- When a per-folder file is missing, aggregation falls back to the legacy spec.md extraction path via `_processSpecFolder()` (without implicit writes).
 
 ### Test Coverage
 
@@ -52,8 +52,8 @@ Agent: W5-A2 | Date: 2026-03-08 | Source: `folder-discovery.ts` + `workflow.ts` 
 
 - **folder-discovery-integration.vitest.ts** (T046 suite):
   - `T046-22`: uses per-folder description.json when fresh
-  - `T046-23`: falls back to spec.md when description.json is stale
-  - `T046-24`: mixed mode aggregation with fresh and stale descriptions
+  - `T046-23`: repairs stale existing `description.json` from `spec.md` during discovery
+  - `T046-24`: mixed mode aggregation with fresh per-folder files plus fallback for missing files
   - `isCacheStale` suite: 12+ tests covering null cache, invalid timestamps, nested depths, deleted/renamed folders
 
 ## What's Missing

@@ -126,6 +126,104 @@ describe('Working Memory Module', () => {
         workingMemory.init(null as unknown as WorkingMemoryDb);
       }).not.toThrow();
     });
+
+    it('migrates legacy working_memory foreign keys to ON DELETE SET NULL', () => {
+      const database = new BetterSqlite3(':memory:');
+      database.pragma('foreign_keys = ON');
+
+      try {
+        database.exec(`
+          CREATE TABLE memory_index (
+            id INTEGER PRIMARY KEY,
+            spec_folder TEXT NOT NULL,
+            file_path TEXT NOT NULL,
+            title TEXT NOT NULL
+          );
+
+          CREATE TABLE working_memory (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            session_id TEXT NOT NULL,
+            memory_id INTEGER NOT NULL,
+            attention_score REAL DEFAULT 1.0,
+            added_at TEXT DEFAULT CURRENT_TIMESTAMP,
+            last_focused TEXT DEFAULT CURRENT_TIMESTAMP,
+            focus_count INTEGER DEFAULT 1,
+            UNIQUE(session_id, memory_id),
+            FOREIGN KEY (memory_id) REFERENCES memory_index(id) ON DELETE CASCADE
+          );
+        `);
+
+        workingMemory.init(database);
+
+        const fkRow = database.prepare(`
+          PRAGMA foreign_key_list(working_memory)
+        `).get() as { on_delete: string };
+        const memoryIdColumn = database.prepare(`
+          PRAGMA table_info(working_memory)
+        `).all() as Array<{ name: string; notnull: number }>;
+        const memoryIdInfo = memoryIdColumn.find((column) => column.name === 'memory_id');
+
+        expect(fkRow.on_delete).toBe('SET NULL');
+        expect(memoryIdInfo?.notnull).toBe(0);
+      } finally {
+        workingMemory.init(null as unknown as WorkingMemoryDb);
+        database.close();
+      }
+    });
+
+    it('preserves working_memory rows as detached entries when a memory is deleted', () => {
+      const database = new BetterSqlite3(':memory:');
+      database.pragma('foreign_keys = ON');
+
+      try {
+        database.exec(`
+          CREATE TABLE memory_index (
+            id INTEGER PRIMARY KEY,
+            spec_folder TEXT NOT NULL,
+            file_path TEXT NOT NULL,
+            title TEXT NOT NULL
+          );
+
+          CREATE TABLE working_memory (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            session_id TEXT NOT NULL,
+            memory_id INTEGER NOT NULL,
+            attention_score REAL DEFAULT 1.0,
+            added_at TEXT DEFAULT CURRENT_TIMESTAMP,
+            last_focused TEXT DEFAULT CURRENT_TIMESTAMP,
+            focus_count INTEGER DEFAULT 1,
+            UNIQUE(session_id, memory_id),
+            FOREIGN KEY (memory_id) REFERENCES memory_index(id) ON DELETE CASCADE
+          );
+        `);
+
+        database.prepare(`
+          INSERT INTO memory_index (id, spec_folder, file_path, title)
+          VALUES (?, ?, ?, ?)
+        `).run(101, 'specs/test', '/tmp/101.md', 'Memory 101');
+
+        database.prepare(`
+          INSERT INTO working_memory (session_id, memory_id, attention_score)
+          VALUES (?, ?, ?)
+        `).run('session-alpha', 101, 0.85);
+
+        workingMemory.init(database);
+        database.prepare('DELETE FROM memory_index WHERE id = ?').run(101);
+
+        const detachedRow = database.prepare(`
+          SELECT memory_id, attention_score
+          FROM working_memory
+          WHERE session_id = ?
+        `).get('session-alpha') as { memory_id: number | null; attention_score: number } | undefined;
+
+        expect(detachedRow).toBeDefined();
+        expect(detachedRow?.memory_id).toBeNull();
+        expect(detachedRow?.attention_score).toBeCloseTo(0.85, 5);
+      } finally {
+        workingMemory.init(null as unknown as WorkingMemoryDb);
+        database.close();
+      }
+    });
   });
 
   /* -------------------------------------------------------------

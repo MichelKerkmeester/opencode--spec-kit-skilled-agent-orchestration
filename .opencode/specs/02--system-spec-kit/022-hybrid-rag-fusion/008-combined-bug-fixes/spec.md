@@ -4,7 +4,7 @@ title: "Combined Bug Fixes"
 status: "in-progress"
 level: 3
 created: "2025-12-01"
-updated: "2026-03-10"
+updated: "2026-03-13"
 description: "Merged spec combining 5 bug-fix and alignment workstreams from 022-hybrid-rag-fusion: auto-detected session bug (003), subfolder resolution fix (008), memory search bug fixes (013), bug fixes and alignment (015), and 30-commit bug audit W5 (017)"
 importance_tier: "high"
 contextType: "implementation"
@@ -29,12 +29,17 @@ This document merges the specifications from 5 related bug-fix and alignment wor
 | 4 | `015-bug-fixes-and-alignment` (merged) | Bug Fixes and Alignment | 3 | P0-P1 |
 | 5 | `017-30-commit-bug-audit-w5` (merged) | 30-Commit Bug Audit (W5, 2026-03-10) | 3 | P0-P1 |
 
-### Current Verification Snapshot (2026-03-10)
+### Current Verification Snapshot (2026-03-13)
 
-- `npm run check`: PASS (lint + `npx tsc --noEmit`)
-- `npm run check:full`: PASS (full package verification green; see `scratch/verification-logs/2026-03-07-mcp-check-full.md`)
-- `npx tsc --noEmit`: PASS across `mcp_server`, `scripts`, and `shared`
-- Test suite: 11 pre-existing failures across 9 files (90 pre-existing failures resolved by W5 fixes)
+- `npm run check --workspace=scripts`: PASS
+- `npm run check --workspace=mcp_server` in `.opencode/skill/system-spec-kit`: PASS
+- `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit`: PASS (scanned 731, findings 0)
+- `node node_modules/vitest/vitest.mjs run tests/graph-signals.vitest.ts tests/working-memory.vitest.ts tests/checkpoint-working-memory.vitest.ts tests/checkpoints-storage.vitest.ts tests/memory-crud-extended.vitest.ts tests/bm25-index.vitest.ts` in `.opencode/skill/system-spec-kit/mcp_server`: PASS (6 files, 275 tests)
+- `node mcp_server/node_modules/vitest/vitest.mjs run tests/unit-rrf-fusion.vitest.ts tests/checkpoints-storage.vitest.ts tests/access-tracker.vitest.ts tests/access-tracker-extended.vitest.ts`: PASS (73 passed)
+- `node mcp_server/node_modules/vitest/vitest.mjs run tests/context-server.vitest.ts`: PASS (315 passed)
+- `node .opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js`: PASS (32 passed, 0 failed, 3 skipped)
+- Full `vitest run`: PASS (`264` passed, `1` skipped test files; `7536` passed, `47` skipped, `28` todo tests)
+- Source 016 closure: `T080`, `CHK-311`, and `CHK-316` are complete; packet status remains `in-progress` because source 015 still carries 10 deferred tasks.
 - W5 commits: `0b53820c` (Wave A+B, 29 fixes, 23 files) and `37b5ba59` (Wave C, 33 fixes, 30 files)
 - Evidence artifacts:
   - `scratch/cross-ai-review-report.md`
@@ -95,9 +100,12 @@ This document merges the specifications from 5 related bug-fix and alignment wor
 ## Verification
 
 All sources share a unified verification gate:
-- `npm run check` (lint + TypeScript) — PASS
-- `npm run check:full` (full package) — PASS
-- Functional regression: 32 passed, 0 failed, 0 skipped
+- `npm run check --workspace=scripts` — PASS
+- `npm run check --workspace=mcp_server` — PASS
+- `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit` — PASS (scanned 731, findings 0)
+- `node mcp_server/node_modules/vitest/vitest.mjs run tests/unit-rrf-fusion.vitest.ts tests/checkpoints-storage.vitest.ts tests/access-tracker.vitest.ts tests/access-tracker-extended.vitest.ts` — PASS (73 passed)
+- `node mcp_server/node_modules/vitest/vitest.mjs run tests/context-server.vitest.ts` — PASS (315 passed)
+- Functional detector regression: `node .opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js` — PASS (32 passed, 0 failed, 3 skipped)
 - Cross-AI review: scratch/cross-ai-review-report.md
 
 ---

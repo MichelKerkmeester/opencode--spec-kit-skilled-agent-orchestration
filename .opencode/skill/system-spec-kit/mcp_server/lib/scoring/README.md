@@ -148,7 +148,7 @@ Graph signals are applied after the core scoring pipeline via `lib/graph/graph-s
 - Momentum bonus: `clamp(momentum * 0.01, 0, 0.05)`
 - Causal-depth bonus: `normalizedDepth * 0.05`
 
-The causal-depth pass uses multi-source BFS from root nodes and keeps the first discovered depth for each node. This makes rooted cyclic graphs stable and prevents revisit loops from inflating depth toward the traversal cap. Cyclic components with no root nodes contribute `0` depth.
+The causal-depth pass condenses strongly connected components, then computes longest-path depth across the resulting DAG. This preserves deeper causal chains even when shortcut edges exist, gives all members of a cycle the same bounded depth layer, and still leaves pure isolated cycles at `0` normalized depth.
 
 <!-- /ANCHOR:key-concepts -->
 

@@ -100,7 +100,7 @@ Contract-first layered architecture.
 | Phase 9: Memory Naming Follow-Up | T100-T104 | ~120 (code+tests+verification) | Low-Medium (2-4h) | Medium |
 | Phase 10: Direct-Save Naming Follow-Up | T105-T109 | ~110 (code+tests+verification) | Low-Medium (2-4h) | Medium |
 | Phase 11: Explicit CLI Target Authority Closure | T110-T114 | ~80 (tests+docs+smoke verification) | Low (1-2h) | Medium |
-| Phase 12: Explicit Phase-Folder Rejection Rule | T115-T118 | ~60 (code+tests) | Low (1-2h) | Low |
+| Phase 12: Explicit Phase-Folder Target Authority | T115-T118 | ~60 (tests+docs+verification) | Low (1-2h) | Low |
 | Phase 13: Indexed Direct-Save Render/Quality Closure | T119-T123 | ~100 (investigation+fixes+tests+verification) | Low-Medium (2-4h) | Medium |
 | Phase 14: README Documentation Audit | T124-T129 | ~1500 (docs) | Medium-High (6-10h) | Low |
 | **Total** | **132 task entries (130 IDs; T013 split into T013a/b/c)** | **~3840** | **~52-85h** | **Medium** |
@@ -246,15 +246,15 @@ Derived from the 5-agent phase audit of `034-feature-catalog` groups 01-18.
 - [x] Ensure operator docs state explicit-target authority behavior. [DONE: `.opencode/skill/system-spec-kit/scripts/spec-folder/README.md` explicitly documents `CLI Authority`; `.opencode/skill/system-spec-kit/scripts/tests/README.md` documents the CLI-authority regression suite.]
 - [x] Sync Phase 11 closure evidence across phase docs and rerun spec validation. [DONE: `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` now include Phase 11 closure evidence; spec validation rerun recorded after updates.]
 
-### Phase 12: Explicit Phase-Folder Rejection Rule (Memory Save)
+### Phase 12: Explicit Phase-Folder Target Authority (Memory Save)
 
-#### Deterministic Rejection Guard
-- [x] Add a phase-folder rejection helper that keeps root-target saves working while stopping explicit phase-child targets before write. [DONE: `.opencode/skill/system-spec-kit/scripts/core/subfolder-utils.ts` now classifies phase children and produces deterministic owning-root guidance; `.opencode/skill/system-spec-kit/scripts/memory/generate-context.ts` rejects explicit phase-folder targets before `runWorkflow()`.]
-- [x] Re-run focused regression coverage for root-target preservation plus phase-target rejection. [DONE: `node mcp_server/node_modules/vitest/vitest.mjs run tests/generate-context-cli-authority.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts` passed with `3/3` tests, covering root direct mode, JSON override mode, and explicit phase-folder rejection.]
-- [x] Capture command-level evidence for both the allowed root target and the rejected phase target. [DONE: `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion` still saves under the root `memory/` directory, while the same command against `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-architecture-audit` now fails before save with owning-root guidance and deterministic non-reroute text.]
+#### Deterministic Explicit-Target Routing
+- [x] Preserve explicit phase-folder CLI targets as authoritative workflow inputs for direct saves. [DONE: `.opencode/skill/system-spec-kit/scripts/memory/generate-context.ts` forwards explicit phase-child `specFolderArg` into `runWorkflow()` without rejection or implicit reroute.]
+- [x] Re-run focused regression coverage for root-target preservation plus explicit phase-target authority. [DONE: `node mcp_server/node_modules/vitest/vitest.mjs run tests/generate-context-cli-authority.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts` passed with explicit root direct mode, JSON override mode, and phase-target authority coverage.]
+- [x] Capture command-level evidence for both the allowed root target and the explicit phase-child target. [DONE: direct CLI targeting of `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion` continues to save under the root `memory/` directory, and explicit phase-folder targets remain authoritative save destinations that write under the requested phase-child path.]
 
 #### Documentation and Closure Sync
-- [x] Update operator docs so explicit CLI authority and explicit phase-child rejection are both documented. [DONE: `.opencode/skill/system-spec-kit/references/memory/save_workflow.md`, `.opencode/skill/system-spec-kit/references/debugging/troubleshooting.md`, `.opencode/skill/system-spec-kit/scripts/spec-folder/README.md`, `.opencode/skill/system-spec-kit/scripts/README.md`, and `.opencode/skill/system-spec-kit/scripts/memory/README.md` now reflect the rejection rule.]
+- [x] Update operator docs so explicit CLI authority covers both root and explicit phase-child targets. [DONE: `.opencode/skill/system-spec-kit/references/memory/save_workflow.md`, `.opencode/skill/system-spec-kit/scripts/spec-folder/README.md`, `.opencode/skill/system-spec-kit/scripts/README.md`, and `.opencode/skill/system-spec-kit/scripts/memory/README.md` now describe the supported explicit-target authority contract.]
 - [x] Sync Phase 12 closure evidence across phase docs and rerun spec validation. [DONE: `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` now record Phase 12 closure evidence; `./.opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-architecture-audit` passed with `0` errors and `0` warnings.]
 
 ### Phase 13: Indexed Direct-Save Render/Quality Closure (Post-Phase-10 Discovery)
@@ -346,7 +346,7 @@ Contract Docs (Phase 1) -----> Structural Cleanup (Phase 2) -----> Enforcement (
 8. Memory naming follow-up for root-save candidate selection precedence and regression-proof verification (critical).
 9. Direct-save follow-up for collector-path quick-summary candidate loss discovered after Phase 9 closure (critical).
 10. Explicit CLI target authority closure for memory-save routing and smoke verification (critical).
-11. Explicit phase-folder rejection rule for memory-save target validation (critical).
+11. Explicit phase-folder target authority for memory-save routing and validation (critical).
 12. Indexed direct-save render/quality closure for the V6/V7 post-Phase-10 blocker with targeted verification (critical).
 
 **Parallel Opportunities**:
@@ -366,7 +366,7 @@ Contract Docs (Phase 1) -----> Structural Cleanup (Phase 2) -----> Enforcement (
 | M7 | Naming remediation | Root-save memory naming regression fixed without weakening generic-name guardrails | Phase 9 |
 | M8 | Direct-save remediation | Collector-path quick-summary derivation preserves best specific naming candidates during direct-save flows | Phase 10 |
 | M9 | CLI authority closure | Explicit CLI save targets remain authoritative through generate-context control flow with regression + smoke evidence | Phase 11 |
-| M10 | Phase-folder rejection | Explicit phase-folder rejection rule guards memory-save from targeting phase subfolders | Phase 12 |
+| M10 | Phase-folder authority | Explicit phase-folder CLI targets remain authoritative save destinations with regression and doc evidence | Phase 12 |
 | M11 | Indexed direct-save quality closure | V6/V7 indexed direct-save render/quality blocker is fixed with regression coverage and targeted verification evidence | Phase 13 |
 | M12 | README documentation audit | All 14 missing READMEs created, 50+ existing READMEs verified for alignment, no HVR-banned words | Phase 14 |
 

@@ -3,7 +3,7 @@ title: "Spec Descriptions"
 status: "complete"
 level: 2
 created: "2025-12-01"
-updated: "2026-03-08"
+updated: "2026-03-13"
 description: "Refactor the centralized descriptions.json into per-folder description.json files, improve memory filename uniqueness and integrate description generation into spec folder creation automation."
 trigger_phrases:
   - "descriptions.json"
@@ -39,7 +39,7 @@ contextType: "general"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-The current descriptions.json system stores ALL spec folder descriptions in a single centralized file at `specs/descriptions.json` (103KB, 400+ entries). This creates three problems: (1) AI agents cannot reliably generate unique memory names when multiple memories are saved to the same spec folder because the description context is global rather than local, (2) the `create.sh` spec folder creation script does not generate a `description.json` on folder creation, requiring a separate cache regeneration step and (3) the centralized file becomes a bottleneck for concurrent operations and grows unboundedly.
+The current descriptions.json system stores ALL spec folder descriptions in a single centralized file at `specs/descriptions.json`. This creates three problems: (1) AI agents cannot reliably generate unique memory names when multiple memories are saved to the same spec folder because the description context is global rather than local, (2) the `create.sh` spec folder creation script does not generate a `description.json` on folder creation, requiring a separate cache regeneration step and (3) the centralized file becomes a bottleneck for concurrent operations and grows unboundedly.
 
 ### Purpose
 Each spec folder at any nesting depth automatically gets its own `description.json` containing its description, keywords and metadata, which enables AI agents to always generate unique memory filenames even when saving 10+ memories to the same folder in rapid succession.
@@ -150,13 +150,14 @@ Each spec folder at any nesting depth automatically gets its own `description.js
 ## L2: EDGE CASES
 
 ### Data Boundaries
-- Empty spec.md: description.json gets empty description field, slug falls back to folder name
+- Blank/whitespace-only spec.md: description.json remains a valid per-folder object with empty `description`, empty `keywords`, and intact identity metadata
 - Very long spec titles (>150 chars): Truncated per existing extractDescription() logic
 - spec.md with no heading: Falls through to problem statement or first line
 
 ### Error Scenarios
 - description.json write failure: Log warning, continue without file (graceful degradation)
-- Corrupted description.json: Regenerate from spec.md on next read
+- Stale/corrupt existing description.json: Repair from `spec.md` during discovery
+- Missing description.json: Fall back to `spec.md` extraction without implicit writes
 - Missing parent folder: create.sh already handles recursive mkdir
 
 ### Uniqueness Edge Cases

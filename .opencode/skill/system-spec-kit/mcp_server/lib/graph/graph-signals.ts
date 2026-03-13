@@ -192,7 +192,7 @@ export function computeMomentumScores(db: Database.Database, memoryIds: number[]
 
 /**
  * Build the full adjacency list from causal_edges, keyed by node ID (as number).
- * Returns both forward adjacency (for BFS) and a set of all node IDs.
+ * Returns forward adjacency, the full node set, and in-degree counts.
  */
 function buildAdjacencyList(db: Database.Database): { adjacency: Map<number, number[]>; allNodes: Set<number>; inDegree: Map<number, number> } {
   const adjacency = new Map<number, number[]>();
@@ -230,16 +230,170 @@ function buildAdjacencyList(db: Database.Database): { adjacency: Map<number, num
   return { adjacency, allNodes, inDegree };
 }
 
+type StronglyConnectedComponents = {
+  componentByNode: Map<number, number>;
+  components: number[][];
+};
+
+/**
+ * Collapse cyclic subgraphs into strongly connected components so we can
+ * compute longest-path depth on the resulting DAG without revisit drift.
+ */
+function buildStronglyConnectedComponents(
+  adjacency: Map<number, number[]>,
+  allNodes: Set<number>,
+): StronglyConnectedComponents {
+  const componentByNode = new Map<number, number>();
+  const components: number[][] = [];
+  const indices = new Map<number, number>();
+  const lowLinks = new Map<number, number>();
+  const stack: number[] = [];
+  const inStack = new Set<number>();
+  let nextIndex = 0;
+
+  function strongConnect(nodeId: number): void {
+    indices.set(nodeId, nextIndex);
+    lowLinks.set(nodeId, nextIndex);
+    nextIndex++;
+
+    stack.push(nodeId);
+    inStack.add(nodeId);
+
+    for (const neighbor of adjacency.get(nodeId) ?? []) {
+      if (!indices.has(neighbor)) {
+        strongConnect(neighbor);
+        lowLinks.set(
+          nodeId,
+          Math.min(lowLinks.get(nodeId) ?? 0, lowLinks.get(neighbor) ?? 0),
+        );
+      } else if (inStack.has(neighbor)) {
+        lowLinks.set(
+          nodeId,
+          Math.min(lowLinks.get(nodeId) ?? 0, indices.get(neighbor) ?? 0),
+        );
+      }
+    }
+
+    if ((lowLinks.get(nodeId) ?? -1) !== (indices.get(nodeId) ?? -2)) {
+      return;
+    }
+
+    const componentId = components.length;
+    const members: number[] = [];
+
+    while (stack.length > 0) {
+      const member = stack.pop();
+      if (member === undefined) break;
+
+      inStack.delete(member);
+      componentByNode.set(member, componentId);
+      members.push(member);
+
+      if (member === nodeId) break;
+    }
+
+    components.push(members);
+  }
+
+  for (const nodeId of allNodes) {
+    if (!indices.has(nodeId)) {
+      strongConnect(nodeId);
+    }
+  }
+
+  return { componentByNode, components };
+}
+
+/**
+ * Compute longest-path depths on the DAG formed by strongly connected
+ * components. Nodes within the same cycle share one bounded depth layer.
+ */
+function computeComponentDepths(
+  adjacency: Map<number, number[]>,
+  allNodes: Set<number>,
+): { depthByNode: Map<number, number>; maxDepth: number } {
+  const { componentByNode, components } = buildStronglyConnectedComponents(adjacency, allNodes);
+  const componentAdjacency = new Map<number, Set<number>>();
+  const componentInDegree = new Map<number, number>();
+
+  for (let componentId = 0; componentId < components.length; componentId++) {
+    componentAdjacency.set(componentId, new Set<number>());
+    componentInDegree.set(componentId, 0);
+  }
+
+  for (const [sourceId, neighbors] of adjacency.entries()) {
+    const sourceComponent = componentByNode.get(sourceId);
+    if (sourceComponent === undefined) continue;
+
+    const componentNeighbors = componentAdjacency.get(sourceComponent);
+    if (!componentNeighbors) continue;
+
+    for (const neighborId of neighbors) {
+      const targetComponent = componentByNode.get(neighborId);
+      if (targetComponent === undefined || targetComponent === sourceComponent || componentNeighbors.has(targetComponent)) {
+        continue;
+      }
+
+      componentNeighbors.add(targetComponent);
+      componentInDegree.set(targetComponent, (componentInDegree.get(targetComponent) ?? 0) + 1);
+    }
+  }
+
+  const remainingInDegree = new Map(componentInDegree);
+  const componentDepths = new Map<number, number>();
+  const queue: number[] = [];
+
+  for (let componentId = 0; componentId < components.length; componentId++) {
+    if ((remainingInDegree.get(componentId) ?? 0) === 0) {
+      componentDepths.set(componentId, 0);
+      queue.push(componentId);
+    }
+  }
+
+  let maxDepth = 0;
+  let queueIndex = 0;
+
+  while (queueIndex < queue.length) {
+    const componentId = queue[queueIndex++];
+    const componentDepth = componentDepths.get(componentId) ?? 0;
+
+    for (const neighborComponent of componentAdjacency.get(componentId) ?? []) {
+      const candidateDepth = componentDepth + 1;
+      if (candidateDepth > (componentDepths.get(neighborComponent) ?? 0)) {
+        componentDepths.set(neighborComponent, candidateDepth);
+        if (candidateDepth > maxDepth) {
+          maxDepth = candidateDepth;
+        }
+      }
+
+      const nextInDegree = (remainingInDegree.get(neighborComponent) ?? 0) - 1;
+      remainingInDegree.set(neighborComponent, nextInDegree);
+      if (nextInDegree === 0) {
+        queue.push(neighborComponent);
+      }
+    }
+  }
+
+  const depthByNode = new Map<number, number>();
+  for (const nodeId of allNodes) {
+    const componentId = componentByNode.get(nodeId);
+    if (componentId === undefined) continue;
+    depthByNode.set(nodeId, componentDepths.get(componentId) ?? 0);
+  }
+
+  return { depthByNode, maxDepth };
+}
+
 /**
  * Batch-compute causal depth scores for a set of memory IDs.
  * Uses the session cache to avoid redundant graph traversals within a session.
  *
  * Optimisation: when multiple IDs are requested, we build the adjacency list
- * and run BFS once, then cache all results.
+ * and compute component depths once, then cache all results.
  *
- * Uses multi-source BFS with first-visit depths only. This keeps causal depth
- * stable on cyclic graphs instead of letting revisit loops drift toward the
- * traversal cap.
+ * Shortcut edges should not collapse deeper causal chains to the nearest-root
+ * distance. We therefore compute longest-path depth on the DAG of strongly
+ * connected components, which also keeps cyclic subgraphs bounded.
  */
 export function computeCausalDepthScores(db: Database.Database, memoryIds: number[]): Map<number, number> {
   const results = new Map<number, number>();
@@ -259,7 +413,7 @@ export function computeCausalDepthScores(db: Database.Database, memoryIds: numbe
 
   // Build graph once for all uncached IDs
   try {
-    const { adjacency, allNodes, inDegree } = buildAdjacencyList(db);
+    const { adjacency, allNodes } = buildAdjacencyList(db);
 
     if (allNodes.size === 0) {
       for (const id of uncached) {
@@ -269,54 +423,13 @@ export function computeCausalDepthScores(db: Database.Database, memoryIds: numbe
       return results;
     }
 
-    // Find root nodes
-    const roots: number[] = [];
-    for (const nodeId of allNodes) {
-      if ((inDegree.get(nodeId) ?? 0) === 0) {
-        roots.push(nodeId);
-      }
-    }
-
-    if (roots.length === 0) {
-      for (const id of uncached) {
-        depthCache.set(id, 0);
-        results.set(id, 0);
-      }
-      return results;
-    }
-
-    // BFS from all roots simultaneously — index-based to avoid O(n) shift()
-    const depthMap = new Map<number, number>();
-    const queue: Array<{ nodeId: number; depth: number }> = [];
-
-    for (const root of roots) {
-      depthMap.set(root, 0);
-      queue.push({ nodeId: root, depth: 0 });
-    }
-
-    let maxDepth = 0;
-    const maxTraversalDepth = 1000;
-    let queueIdx = 0;
-
-    while (queueIdx < queue.length) {
-      const { nodeId, depth } = queue[queueIdx++];
-      const neighbors = adjacency.get(nodeId) ?? [];
-
-      for (const neighbor of neighbors) {
-        const neighborDepth = depth + 1;
-        if (neighborDepth <= maxTraversalDepth && !depthMap.has(neighbor)) {
-          depthMap.set(neighbor, neighborDepth);
-          if (neighborDepth > maxDepth) maxDepth = neighborDepth;
-          queue.push({ nodeId: neighbor, depth: neighborDepth });
-        }
-      }
-    }
+    const { depthByNode, maxDepth } = computeComponentDepths(adjacency, allNodes);
 
     // Normalize and cache all uncached IDs
     for (const id of uncached) {
       let normalizedDepth = 0;
-      if (maxDepth > 0 && depthMap.has(id)) {
-        normalizedDepth = (depthMap.get(id) ?? 0) / maxDepth;
+      if (maxDepth > 0 && depthByNode.has(id)) {
+        normalizedDepth = (depthByNode.get(id) ?? 0) / maxDepth;
       }
       depthCache.set(id, normalizedDepth);
       results.set(id, normalizedDepth);

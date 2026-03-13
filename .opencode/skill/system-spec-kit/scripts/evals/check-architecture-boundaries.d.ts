@@ -1,3 +1,8 @@
+// ---------------------------------------------------------------
+// MODULE: Architecture Boundary Check Types
+// ---------------------------------------------------------------
+// Public declaration surface for architecture-boundary audit helpers.
+
 interface GapAViolation {
     file: string;
     line: number;

@@ -30,12 +30,12 @@ contextType: "general"
 | **Testing** | Vitest unit + integration tests |
 
 ### Overview
-This plan refactors the centralized `specs/descriptions.json` (103KB, 400+ entries) into per-folder `description.json` files generated automatically during spec folder creation. It also adds collision-resistant memory filename generation to guarantee uniqueness even when 10+ memories are saved to the same folder. The centralized file is preserved as a build-time aggregation artifact for backward compatibility.
+This plan refactors the centralized `specs/descriptions.json` aggregation flow into per-folder `description.json` files generated automatically during spec folder creation. It also adds collision-resistant memory filename generation to guarantee uniqueness even when 10+ memories are saved to the same folder. The centralized file is preserved as a build-time aggregation artifact for backward compatibility.
 
 ### Current Architecture (AS-IS)
 
 ```
-spec.md → extractDescription() → generateFolderDescriptions() → specs/descriptions.json (centralized, 400+ entries)
+spec.md → extractDescription() → generateFolderDescriptions() → specs/descriptions.json (centralized aggregate)
                                                                        ↓
                                                               ensureDescriptionCache() → findRelevantFolders() → discoverSpecFolder()
 ```
@@ -81,7 +81,7 @@ Module Extension: extend existing `folder-discovery.ts` with per-folder capabili
 
 ### Key Components
 
-- **`folder-discovery.ts`** (extended): New functions `generatePerFolderDescription()`, `loadPerFolderDescription()`, `savePerFolderDescription()`. `loadPerFolderDescription()` must schema-validate all persisted field types on load (`specId: string`, `parentChain: string[]`, `memorySequence: number`); if any field has the wrong type, treat the file as corrupted and regenerate from `spec.md`. Existing `generateFolderDescriptions()` is refactored to aggregate from per-folder files.
+- **`folder-discovery.ts`** (extended): New functions `generatePerFolderDescription()`, `loadPerFolderDescription()`, `savePerFolderDescription()`. `loadPerFolderDescription()` schema-validates all persisted field types on load (`specId: string`, `parentChain: string[]`, `memorySequence: number`) and returns `null` for corrupt shapes; `generateFolderDescriptions()` then repairs stale/corrupt existing files from `spec.md`, while missing files keep pure fallback behavior without implicit backfill writes.
 
 - **`create.sh`** (extended): Post-creation hook generates `description.json` in new folder. Uses Node.js helper for consistent extraction logic.
 
@@ -157,7 +157,7 @@ interface PerFolderDescription {
   - If `${dateTime}__${baseSlug}.md` exists → try `${dateTime}__${baseSlug}-1.md`, `-2`, etc.
   - Returns: the unique filename string (including `.md` extension). Caller uses it directly as the output filename.
   - Max 100 iterations (fail-safe)
-  - On iteration 101 (exhaustion): fall back to appending a 12-character random hex suffix (from `crypto.randomBytes(6).toString('hex')`) to guarantee uniqueness.
+  - On iteration 101 (exhaustion): reserve a random 12-character hex fallback candidate (from `crypto.randomBytes(6).toString('hex')`) using the same `O_CREAT|O_EXCL` guard before returning.
 - [ ] Integrate `ensureUniqueMemoryFilename()` in `workflow.ts` before `ctxFilename` construction (line ~644)
 - [ ] Update per-folder `description.json` `memorySequence` counter on each save
   - Concurrency: `memorySequence` uses read-modify-write without locking. Concurrent saves may read the same value. This is acceptable for the single-user CLI use case.
@@ -172,7 +172,7 @@ interface PerFolderDescription {
 
 - [ ] Refactor `generateFolderDescriptions()` to prefer per-folder `description.json` over spec.md extraction
   - If per-folder file exists and not stale → use it
-  - If missing → fall back to spec.md extraction (existing logic)
+  - If stale/corrupt and file exists → repair from `spec.md`; if missing → fall back to `spec.md` extraction without implicit writes
 - [ ] `ensureDescriptionCache()` continues to work identically for consumers
 - [ ] `isCacheStale()` extended: also checks per-folder files' mtimes
 - [ ] Backward compat: if NO per-folder files exist, behavior identical to current
@@ -214,12 +214,12 @@ interface PerFolderDescription {
 5. **Mixed mode**: Some folders have `description.json`, some don't → aggregation works for both
 6. **Legacy mode**: Verify correct behavior when NO per-folder `description.json` files exist (pure centralized fallback)
 7. **Phase creation**: Verify `--phase` flag produces child-folder `description.json`
-8. **Empty spec.md**: `description.json` generated with folder-name-based fallback description
+8. **Empty spec.md**: `description.json` generated with empty `description` and empty `keywords` while identity fields remain valid
 9. **Concurrent writes**: Test with 10 parallel writers to same folder using `Promise.all()`. Assert: all files created, no data loss, no corrupt `description.json`. Verify temp-file/rename atomicity under contention.
 10. **Very long spec title (>200 chars)**: Verify generated description is truncated to the 150-character maximum
 11. **spec.md with no H1 heading**: Verify description generation falls back to the folder name
 12. **description.json write failure (read-only dir)**: Verify graceful error handling and no process crash
-13. **Corrupted description.json (invalid JSON)**: Verify the next read regenerates the file from `spec.md`
+13. **Corrupted description.json (invalid JSON)**: Verify discovery falls back to `spec.md` and repairs existing on-disk `description.json`
 14. **Missing parent folder in `parentChain`**: Verify `parentChain` falls back to an empty array
 15. **Same task description repeated (empty fallback + empty task)**: Verify a content-hash suffix differentiates filenames when the base slug is empty
 16. **Performance: Per-folder description.json read <5ms (NFR-P01)**: Benchmark a single-folder `description.json` load and assert steady-state read completes under 5ms
@@ -314,7 +314,7 @@ Phase 4 (Aggregation) ───────────────────�
 ### Data Reversal
 - **Has data migrations?** No; per-folder files are new additions, not replacements
 - **Reversal procedure**: N/A; old code simply ignores `description.json` files in spec folders
-- **Migration note**: 281 existing spec folders received per-folder `description.json` files via one-shot backfill (281/281 folders generated successfully, including `025-git-context-extractor` gap filled in hardening round 2). New folders receive `description.json` automatically at creation time via `create.sh`.
+- **Migration note**: One-shot backfill populated per-folder `description.json` files across the then-active spec inventory. New folders continue to receive `description.json` automatically at creation time via `create.sh`.
 <!-- /ANCHOR:enhanced-rollback -->
 
 ---

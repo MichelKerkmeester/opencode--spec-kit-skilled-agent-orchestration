@@ -6,6 +6,7 @@ trigger_phrases:
   - "tasks"
   - "code audit"
   - "feature catalog"
+  - "remediation"
 importance_tier: "high"
 contextType: "general"
 ---
@@ -22,7 +23,7 @@ contextType: "general"
 | Prefix | Meaning |
 |--------|---------|
 | `[ ]` | Pending |
-| `done` | Completed |
+| `[x]` | Completed |
 | `[P]` | Parallelizable |
 | `[B]` | Blocked |
 
@@ -34,21 +35,22 @@ contextType: "general"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [ ] T001 Confirm phase folder inventory and naming consistency (`013-code-audit-per-feature-catalog/*`)
-- [ ] T002 Validate root documentation baseline with `validate.sh` (root folder)
-- [ ] T003 [P] Confirm feature-catalog to playbook mapping inputs (`feature_catalog/`, `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md`)
+- [x] T001 Confirm phase folder inventory and naming consistency for phases `001` through `021` (`013-code-audit-per-feature-catalog/*`)
+- [x] T002 Confirm feature-catalog and playbook inputs are available for audit traceability (`feature_catalog/`, `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md`)
+- [x] T003 Register remediation phase 021 in parent planning artifacts (`spec.md`, `plan.md`)
 <!-- /ANCHOR:phase-1 -->
 
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Implementation
+## Phase 2: Remediation Reconciliation
 
-- [ ] T004 [P] Run audits for Retrieval, Mutation, and Discovery phases (`001-*` to `003-*`)
-- [ ] T005 [P] Run audits for Lifecycle through Evaluation phases (`005-*` to `007-*`)
-- [ ] T006 [P] Run audits for Bug Fixes through Pipeline Architecture phases (`008-*` to `014-*`)
-- [ ] T007 [P] Run audits for Retrieval Enhancements through Feature Flag Reference phases (`015-*` to `020-*`)
-- [ ] T008 Normalize findings format and scenario cross-reference fields (all phase checklist files)
+- [x] T004 Preserve and reference existing phase 001-020 audit artifacts while adding phase 021 (`001-*` through `020-*`, `021-*`)
+- [x] T005 Capture chunk-thinning timeout remediation evidence (`mcp_server/tests/chunk-thinning.vitest.ts`)
+- [x] T006 Capture tests README placeholder-suite labeling update (`.opencode/skill/system-spec-kit/mcp_server/tests/README.md`)
+- [x] T007 Capture feature-catalog coverage wording alignment for incremental-index suites across phases 001-018 (`feature_catalog/01--*` through `18--*`)
+- [x] T008 Update phase navigation from phase 020 to phase 021 (`020-feature-flag-reference/spec.md`)
+- [x] T009 Rewrite parent synthesis so 41/106/33 is historical superseded context, not current truth (`synthesis.md`)
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -56,9 +58,10 @@ contextType: "general"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [ ] T009 Produce cross-phase synthesis summary (`synthesis.md`)
-- [ ] T010 Re-run validator and resolve root-level documentation issues (root folder)
-- [ ] T011 Save memory context snapshot for continuation (`memory/` via generate-context script)
+- [x] T010 Run recursive spec validation for parent + child phase docs (`validate.sh --recursive`) [RESULT: PASS; root + all 21 phases validated cleanly after parent implementation summary closeout]
+- [x] T011 Verify no template placeholders remain in phase 021 completion artifacts (`021-remediation-revalidation/*.md`) [RESULT: PASS, no hits (rg exit 1)]
+- [x] T012 Record real verification outcomes in phase 021 checklist and implementation summary (`021-remediation-revalidation/checklist.md`, `021-remediation-revalidation/implementation-summary.md`)
+- [ ] T013 Save memory context snapshot if explicitly requested (`memory/` via generate-context script)
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -66,9 +69,9 @@ contextType: "general"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [ ] All tasks marked done
-- [ ] No `[B]` blocked tasks remaining
-- [ ] Manual verification passed
+- [x] T010-T012 marked complete with evidence
+- [x] No `[B]` blocked tasks remaining
+- [x] Parent synthesis and phase-link map reflect current remediation truth
 <!-- /ANCHOR:completion -->
 
 ---

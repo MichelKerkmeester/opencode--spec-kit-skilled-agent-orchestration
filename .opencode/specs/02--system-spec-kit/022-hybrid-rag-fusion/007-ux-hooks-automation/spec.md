@@ -3,7 +3,7 @@ title: "UX Hooks Automation"
 status: "complete"
 level: 2
 created: "2025-12-01"
-updated: "2026-03-08"
+updated: "2026-03-13"
 description: "Define automated hook enforcement and command UX guardrails to reduce common operator mistakes in spec workflows."
 SPECKIT_TEMPLATE_SOURCE: "spec-core | v2.2"
 trigger_phrases:
@@ -130,7 +130,7 @@ Ship predictable post-mutation automation for memory handlers, expose structured
 ## 5. SUCCESS CRITERIA
 
 - **SC-001**: TypeScript build and lint both pass for the MCP server (`npx tsc -b` and `npm run lint`)
-- **SC-002**: The fresh remediation-pass combined UX hook verification rerun passes across 9 files / 485 tests, and MCP SDK stdio smoke validation succeeds with 28 tools listed
+- **SC-002**: Verification reruns pass with the combined targeted suite (9 files / 525 tests) and split playbook checks (7 files / 510 tests, 2 files / 15 tests), and MCP SDK stdio smoke validation succeeds with 28 tools listed
 - **SC-003**: Manual playbook manual test playbook document in folder 016-manual-testing-per-playbook contains NEW-103+ scenarios covering UX hooks and context-server hint behavior
 <!-- /ANCHOR:success-criteria -->
 

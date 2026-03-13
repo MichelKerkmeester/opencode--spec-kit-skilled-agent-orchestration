@@ -157,8 +157,19 @@ describe('ingest job queue processing', () => {
     expect(updated?.filesTotal).toBe(2);
     expect(updated?.filesProcessed).toBe(2);
     expect(updated?.errors).toHaveLength(1);
-    expect(updated?.errors[0]?.filePath).toBe(missingFile);
+    expect(updated?.errors[0]?.filePath).toBe(path.basename(missingFile));
+    expect(updated?.errors[0]?.filePath).not.toContain(path.sep);
     expect(updated?.errors[0]?.message).toBe('File not accessible');
+
+    const storedRow = db.prepare(`
+      SELECT errors_json
+      FROM ingest_jobs
+      WHERE id = ?
+    `).get(job.id) as { errors_json: string };
+    const storedErrors = JSON.parse(storedRow.errors_json) as Array<{ filePath: string; message: string }>;
+
+    expect(storedErrors[0]?.filePath).toBe(path.basename(missingFile));
+    expect(storedErrors[0]?.filePath).not.toContain(path.sep);
   });
 
   it('marks all-fail jobs failed when every file errors', async () => {

@@ -162,6 +162,7 @@ This document indexes Spec Kit Memory feature documentation and links each featu
   - [Deferred lexical-only indexing](#deferred-lexical-only-indexing)
   - [Dry-run preflight for memory_save](#dry-run-preflight-for-memory_save)
   - [Outsourced agent memory capture](#outsourced-agent-memory-capture)
+  - [Stateless enrichment and alignment guards](#stateless-enrichment-and-alignment-guards)
 - [Pipeline architecture](#pipeline-architecture)
   - [4-stage pipeline refactor](#4-stage-pipeline-refactor)
   - [MPAB chunk-to-memory aggregation](#mpab-chunk-to-memory-aggregation)
@@ -1178,7 +1179,7 @@ See [`10--graph-signal-activation/05-graph-momentum-scoring.md`](10--graph-signa
 
 Not all memories sit at the same level of abstraction. A root decision that caused five downstream implementation memories occupies a different position in the knowledge graph than a leaf node.
 
-Causal depth measures each memory's nearest-root distance from root nodes (those with in-degree zero) via multi-source BFS traversal. The raw depth is normalized by the deepest reachable BFS layer to produce a [0,1] score. A memory at depth 3 in a graph whose deepest reachable layer is 6 scores 0.5.
+Causal depth measures each memory's longest structural distance from a root strongly connected component. The causal graph is first condensed into SCCs, then longest-path depth is computed across the resulting DAG so shortcut edges do not suppress deeper chains and cycle members share one bounded depth layer. The raw component depth is normalized by the deepest reachable component chain to produce a [0,1] score. A memory in a component at depth 3 within a graph whose deepest reachable component chain is 6 scores 0.5.
 
 Like momentum, the depth signal applies as an additive bonus in Stage 2, capped at +0.05. Batch computation via `computeCausalDepthScores()` shares the same session cache infrastructure as momentum. Both signals are applied together by `applyGraphSignals()`, which iterates over pipeline rows and adds the combined bonus. A single-node variant of `computeCausalDepth` was removed during Sprint 8 remediation as dead code (the batch version `computeCausalDepthScores` is the only caller).
 
@@ -1706,6 +1707,18 @@ See [`13--memory-quality-and-indexing/17-outsourced-agent-memory-capture.md`](13
 
 > **Playbook:** [M-005](../manual_testing_playbook/manual_testing_playbook.md)
 
+### Stateless enrichment and alignment guards
+
+Stateless saves now enrich OpenCode-derived session data with spec-folder and git context after contamination cleaning and before downstream extraction. The runtime keeps two alignment barriers: one before enrichment and one after enrichment. Both gates now check not just the spec slug, but also code paths declared in the target spec's files-to-change table, which prevents false blocks for legitimate sessions that edit generic implementation files such as `scripts/core/workflow.ts`.
+
+The stateless relevance filter also recognizes natural-language forms of hyphenated spec names, so a prompt like "perfect session capturing hardening" is retained even when the spec folder slug is `perfect-session-capturing`. Git enrichment scopes recent commits and changed files to the spec-declared work surface, and exported provenance markers distinguish synthetic spec/git context from live session evidence.
+
+#### Source Files
+
+See [`13--memory-quality-and-indexing/18-stateless-enrichment-and-alignment-guards.md`](13--memory-quality-and-indexing/18-stateless-enrichment-and-alignment-guards.md) for full implementation and test file listings.
+
+> **Playbook:** [M-006](../manual_testing_playbook/manual_testing_playbook.md)
+
 ## 16. PIPELINE ARCHITECTURE
 
 ### 4-stage pipeline refactor
@@ -2038,9 +2051,9 @@ See [`15--retrieval-enhancements/08-provenance-rich-response-envelopes.md`](15--
 
 ### Contextual tree injection
 
-**IMPLEMENTED (Sprint 004).** *(Overlap note: builds on PI-B3 spec folder description discovery, which provides cached one-sentence descriptions used for routing in `memory_context`.)* Retrieved memory chunks gain hierarchical context headers so the calling agent immediately understands the structural origin of each result without additional round-trips to `memory_list`.
+**IMPLEMENTED (Sprint 019).** *(Overlap note: builds on PI-B3 spec folder description discovery, which provides cached one-sentence descriptions used for routing in `memory_context`.)* Retrieved memory chunks gain hierarchical context headers so the calling agent immediately understands the structural origin of each result without additional round-trips to `memory_list`.
 
-Headers follow the format `[parent > child  -- description]`, capped at 100 characters to conserve context windows. The injection uses the existing PI-B3 cached descriptions via `injectContextualTree()` in `hybrid-search.ts`, inserted in Stage 4 output after token-budget truncation, before the final return. When no spec folder association exists, injection is gracefully skipped. This behavior is governed by the `SPECKIT_CONTEXT_HEADERS` flag (default `true`).
+Headers follow the format `[parent > child — description]`, capped at 100 characters to conserve context windows. The injection uses the existing PI-B3 cached descriptions via `injectContextualTree()` in `hybrid-search.ts`, inserted in Stage 4 output after token-budget truncation, before the final return. When no spec folder association exists, injection is gracefully skipped. This behavior is governed by the `SPECKIT_CONTEXT_HEADERS` flag (default `true`).
 
 
 #### Source Files
@@ -2123,7 +2136,7 @@ No dedicated source files  -- this is a cross-cutting meta-improvement applied a
 
 **IMPLEMENTED (Sprint 019).** The memory index currently relies on pull-based `memory_index_scan` for synchronization with the filesystem. This feature adds push-based file watching via `chokidar` in `lib/ops/file-watcher.ts` to reduce the delay between a file change and its availability in search results.
 
-The watcher implements a 2-second debounce and uses TM-02 SHA-256 content hashing to deduplicate identical writes. On `add` events, the hash cache is pre-seeded so the first subsequent `change` event can properly deduplicate (without seeding, every first change triggers a redundant reindex). ENOENT errors are handled gracefully when a file is rapidly created then deleted before the debounce timer fires. An exponential backoff retry mechanism (3 retries with delays of 1s, 2s, and 4s) handles `SQLITE_BUSY` locks during concurrent write operations. The watcher is registered for cleanup in the server shutdown handler (async-with-deadline) to prevent process leaks. This subsystem is controlled by the `SPECKIT_FILE_WATCHER` flag (default `false`) and watches only configured spec directories (no arbitrary path traversal).
+The watcher implements a 2-second debounce and uses TM-02 SHA-256 content hashing to deduplicate identical writes. `add` events force an initial reindex so subsequent `change` events can deduplicate against a stored hash. ENOENT errors are handled gracefully when a file is rapidly created then deleted before the debounce timer fires. An exponential backoff retry mechanism (3 retries with delays of 1s, 2s, and 4s) handles `SQLITE_BUSY` locks during concurrent write operations. The watcher is registered for cleanup in the server shutdown handler (async-with-deadline) to prevent process leaks. This subsystem is controlled by the `SPECKIT_FILE_WATCHER` flag (default `false`) and watches only configured spec directories (no arbitrary path traversal).
 
 
 #### Source Files
@@ -2179,9 +2192,9 @@ No dedicated source files  -- this describes governance process controls.
 
 ## 20. UX HOOKS
 
-Current mapping: this content is tracked under sub-phase `011-ux-hooks-automation`.
+Current mapping: this content is tracked under spec `007-ux-hooks-automation`.
 
-Phase 014 standardized post-mutation automation and safety checks across mutation handlers, then closed the follow-up review gaps that remained after the initial rollout. The finalized state now includes required `confirmName` enforcement, duplicate-save no-op feedback that leaves caches untouched, atomic-save parity for `postMutationHooks` and hint payloads, token metadata recomputation before token-budget enforcement, hooks README/export alignment, and end-to-end success-envelope verification. Verification after implementation: `npx tsc -b` PASS, `npm run lint` PASS, the targeted UX suite passed with 7 files and 445/445 tests, the stdio plus embeddings suite PASSed with 2 files and 15 tests, and the MCP SDK stdio smoke test PASSed with 28 tools listed.
+Spec 007 standardized post-mutation automation and safety checks across mutation handlers, then closed the follow-up review gaps that remained after the initial rollout. The finalized state now includes required `confirmName` enforcement, duplicate-save no-op feedback that leaves caches untouched, atomic-save parity for `postMutationHooks` and hint payloads, token metadata recomputation before token-budget enforcement, hooks README/export alignment, and end-to-end success-envelope verification. Current verification evidence: `npx tsc -b` PASS, `npm run lint` PASS, the split UX suite passed with 7 files / 510 tests, the stdio plus embeddings suite passed with 2 files / 15 tests, the combined targeted rerun passed with 9 files / 525 tests, and the MCP SDK stdio smoke test passed with 28 tools listed.
 
 ### Shared post-mutation hook wiring
 
@@ -2221,7 +2234,7 @@ See [`18--ux-hooks/04-schema-and-type-contract-synchronization.md`](18--ux-hooks
 
 ### Dedicated UX hook modules
 
-Phase 014 extracted UX-oriented post-mutation behavior into dedicated modules for mutation feedback and response hints. This split reduces coupling inside mutation handlers and makes UX hook behavior reusable and easier to evolve without editing each tool handler.
+Spec 007 extracted UX-oriented post-mutation behavior into dedicated modules for mutation feedback and response hints. This split reduces coupling inside mutation handlers and makes UX hook behavior reusable and easier to evolve without editing each tool handler.
 
 
 #### Source Files
@@ -2275,7 +2288,7 @@ See [`18--ux-hooks/10-atomic-save-parity-and-partial-indexing-hints.md`](18--ux-
 
 ### Final token metadata recomputation
 
-Phase 014 now recomputes final token metadata after `appendAutoSurfaceHints(...)` adds the last response-envelope content and before token-budget enforcement evaluates the payload. This closes the old gap where appended hints could leave `meta.tokenCount` out of sync with the actual envelope. The result is a success response whose metadata reflects the same finalized payload the budget logic inspects.
+Spec 007 now recomputes final token metadata after `appendAutoSurfaceHints(...)` adds the last response-envelope content and before token-budget enforcement evaluates the payload. This closes the old gap where appended hints could leave `meta.tokenCount` out of sync with the actual envelope. The result is a success response whose metadata reflects the same finalized payload the budget logic inspects.
 
 
 #### Source Files
@@ -2293,7 +2306,7 @@ See [`18--ux-hooks/12-hooks-readme-and-export-alignment.md`](18--ux-hooks/12-hoo
 
 ### End-to-end success-envelope verification
 
-Phase 014 verification now includes an end-to-end appended-envelope assertion in `tests/context-server.vitest.ts`. That coverage verifies the finalized success-path hint append flow, preserved `autoSurfacedContext`, and final token metadata behavior together instead of checking them in isolation. The change locks the final response shape in place so future regressions surface immediately.
+Spec 007 verification now includes an end-to-end appended-envelope assertion in `tests/context-server.vitest.ts`. That coverage verifies the finalized success-path hint append flow, preserved `autoSurfacedContext`, and final token metadata behavior together instead of checking them in isolation. The change locks the final response shape in place so future regressions surface immediately.
 
 
 #### Source Files
@@ -2457,7 +2470,7 @@ The `SPECKIT_ROLLOUT_PERCENT` flag applies a global percentage gate on top of an
 | `SPECKIT_EVENT_DECAY` | `true` | boolean | `lib/cognitive/working-memory.ts` | Enables FSRS-based attention decay in the working memory system. Scores decay each turn via exponential degradation. When disabled, attention scores do not degrade over the session. |
 | `SPECKIT_EXTENDED_TELEMETRY` | inert | boolean | `lib/telemetry/retrieval-telemetry.ts` | **Deprecated.** Sprint 7 audit determined the overhead was not justified. The env var is accepted but has no effect; the function always returns `false`. |
 | `SPECKIT_EXTRACTION` | `true` | boolean | `lib/extraction/extraction-adapter.ts` | Gates the extraction adapter which parses entities and structured data from memory files. Uses `isFeatureEnabled()` with session identity for rollout-based gating. |
-| `SPECKIT_FILE_WATCHER` | `false` | boolean | `lib/ops/file-watcher.ts` | **IMPLEMENTED (Sprint 004).** P1-7: Real-time filesystem watching with chokidar. Push-based indexing of spec directories with 2s debounce, TM-02 SHA-256 content-hash deduplication (with hash seeding on `add` events), ENOENT grace handling, and exponential backoff for `SQLITE_BUSY`. |
+| `SPECKIT_FILE_WATCHER` | `false` | boolean | `lib/ops/file-watcher.ts` | **IMPLEMENTED (Sprint 019).** P1-7: Real-time filesystem watching with chokidar. Push-based indexing of spec directories with 2s debounce, TM-02 SHA-256 content-hash deduplication, ENOENT grace handling, and exponential backoff for `SQLITE_BUSY`. |
 | `SPECKIT_FOLDER_DISCOVERY` | `true` | boolean | `lib/search/search-flags.ts` | PI-B3: automatic spec folder discovery. Matches the query against cached one-sentence folder descriptions to identify the most relevant spec folder without triggering full-corpus search. Discovery failure is non-fatal. |
 | `SPECKIT_FOLDER_SCORING` | `true` | boolean | `lib/search/folder-relevance.ts` | Sprint 1 two-phase folder-relevance scoring. When enabled, re-ranks results by spec folder relevance using a two-phase retrieval strategy. Disabled by setting to `'false'`. |
 | `SPECKIT_FOLDER_TOP_K` | `5` | number | `lib/search/hybrid-search.ts` | Number of top folders used in two-phase folder retrieval when `SPECKIT_FOLDER_SCORING` is active. Parsed as integer; invalid or missing values fall back to 5. |
@@ -2477,7 +2490,7 @@ The `SPECKIT_ROLLOUT_PERCENT` flag applies a global percentage gate on top of an
 | `SPECKIT_QUALITY_LOOP` | `false` | boolean | `lib/search/search-flags.ts` | **Default OFF.** Enables the verify-fix-verify loop for `memory_save`. When enabled, low-quality saves get an initial evaluation plus up to 2 immediate auto-fix retries by default; rejected saves return `status: 'rejected'`, and atomic save rolls the file back instead of retrying indexing again. |
 | `SPECKIT_RECONSOLIDATION` | `false` | boolean | `lib/search/search-flags.ts` | TM-06 reconsolidation-on-save. Opt-in only: set `SPECKIT_RECONSOLIDATION=true` to enable merge/supersede behavior after embedding generation. Requires a checkpoint to exist for the spec folder. |
 | `SPECKIT_RELATIONS` | `true` | boolean | `lib/learning/corrections.ts` | Enables relational learning corrections that track and apply inter-memory relationship signals during the learning pipeline. Disabled with explicit `'false'`. |
-| `SPECKIT_RESPONSE_TRACE` | `false` | boolean | `handlers/memory-search.ts` | **IMPLEMENTED (Sprint 004).** P0-2: Include provenance data (scores, source, trace) in `memory_search` response envelopes. Opt-in via `includeTrace: true` parameter. When disabled, response format is unchanged (backward compatible). |
+| `SPECKIT_RESPONSE_TRACE` | `false` | boolean | `handlers/memory-search.ts` | **IMPLEMENTED (Sprint 019).** P0-2: Include provenance data (scores, source, trace) in `memory_search` response envelopes. Opt-in via `includeTrace: true` parameter. When disabled, response format is unchanged (backward compatible). |
 | `SPECKIT_ROLLOUT_PERCENT` | `100` | number | `lib/cognitive/rollout-policy.ts` | Global rollout gate applied on top of individual feature flags. At 100, checks pass. At 0, checks fail. Between 1-99, inclusion uses deterministic identity hashing and calls without identity fail closed. Malformed rollout values fall back to 100. |
 | `SPECKIT_RRF` | `true` | boolean | `lib/search/rrf-fusion.ts` | Enables Reciprocal Rank Fusion for combining multi-channel search results. When disabled, a simpler score-passthrough merge is used. Rarely disabled in production. |
 | `SPECKIT_RSF_FUSION` | inert | boolean | `lib/search/hybrid-search.ts` | **Deprecated runtime gate.** RSF shadow Stage B is no longer active in production ranking paths. Remaining RSF references are compatibility/testing artifacts and do not alter live ranking behavior. |
@@ -2565,7 +2578,7 @@ Source file references are included in the flag table above.
 | `EMBEDDING_DIM` | _(provider default)_ | number | `lib/search/vector-index-impl.ts` | Override for the embedding vector dimension. When set, bypasses the provider's reported dimension. Use when loading a custom model with a non-standard dimension. |
 | `EMBEDDINGS_PROVIDER` | `'auto'` | string | `lib/providers/embeddings.ts` | Selects the embedding provider. Valid values include `'auto'`, `'openai'`, `'hf-local'`, and `'voyage'`. In `'auto'` mode, the system selects based on available API keys (Voyage preferred over OpenAI, local fallback). |
 | `OPENAI_API_KEY` | _(none)_ | string | `tests/embeddings.vitest.ts` | API key for the OpenAI embeddings provider. Required when `EMBEDDINGS_PROVIDER` is `'openai'` or when `'auto'` mode selects OpenAI as the available provider. |
-| `RERANKER_LOCAL` | `false` | boolean | `lib/search/local-reranker.ts` | **IMPLEMENTED (Sprint 019).** When set to `'true'` (strict string equality, not truthy), enables the local GGUF reranker via `node-llama-cpp`. Requires model file on disk and sufficient free memory (4GB default, 512MB with custom `SPECKIT_RERANKER_MODEL`). Falls back silently to algorithmic RRF scoring on any precondition failure. |
+| `RERANKER_LOCAL` | `false` | boolean | `lib/search/local-reranker.ts` | **IMPLEMENTED (Sprint 019).** When set to `'true'` (strict string equality, not truthy), enables the local GGUF reranker via `node-llama-cpp`. Requires model file on disk and sufficient total system memory (8GB default, 2GB with custom `SPECKIT_RERANKER_MODEL`). Falls back silently to algorithmic RRF scoring on any precondition failure. |
 | `VOYAGE_API_KEY` | _(none)_ | string | `tests/embeddings.vitest.ts` | API key for the Voyage AI embeddings and reranker provider. In `'auto'` mode, Voyage is preferred over OpenAI when this key is present. |
 
 

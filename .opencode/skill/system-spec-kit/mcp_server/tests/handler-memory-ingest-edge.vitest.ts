@@ -82,9 +82,13 @@ describe('Handler Memory Ingest edge cases (T005a)', () => {
     const parsed = parseResponse(result) as Record<string, any>;
     const errorText = String(parsed.error ?? parsed.data?.error ?? '');
     const errorCode = String(parsed.code ?? parsed.data?.code ?? '');
+    const details = (parsed.data?.details ?? {}) as Record<string, unknown>;
 
     expect(errorText).toContain('Invalid path(s) rejected');
     expect(errorCode).toBe('E_VALIDATION');
+    expect(details.allowedBasePaths).toBeUndefined();
+    expect(details.allowedBasePathCount).toBe(1);
+    expect(details.allowedPathPolicy).toBe('configured-memory-roots');
     expect(mocks.mockCreateIngestJob).not.toHaveBeenCalled();
     expect(mocks.mockEnqueueIngestJob).not.toHaveBeenCalled();
   });

@@ -219,6 +219,18 @@ describe('Composite Scoring', () => {
       }
     })
 
+    it('T418d: Negative and non-finite stability values still yield finite retrievability', () => {
+      const now = Date.now()
+      const lastReview = new Date(now - 1000 * 60 * 60 * 24 * 7).toISOString()
+
+      for (const stability of [-5, Number.NaN, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY]) {
+        const r = calcR({ stability, lastReview })
+        expect(Number.isFinite(r)).toBe(true)
+        expect(r).toBeGreaterThanOrEqual(0)
+        expect(r).toBeLessThanOrEqual(1)
+      }
+    })
+
     it('T419: R decreases monotonically with elapsed time', () => {
       const now = Date.now()
       const rDay1 = calcR({ stability: 5.0, lastReview: new Date(now - 1000 * 60 * 60 * 24).toISOString() })
@@ -496,16 +508,18 @@ describe('Composite Scoring', () => {
       expect(score).toBeLessThanOrEqual(1)
     })
 
-    it('T437: Invalid date strings produce NaN (known behavior)', () => {
+    it('T437: Invalid date strings fall back to finite safe scores', () => {
       const badDateRow = {
         similarity: 50,
         updated_at: 'not-a-date',
         lastReview: 'invalid',
       }
       const score = calcScore(badDateRow)
-      // Either NaN (from bad date propagation) or valid number (if implementation handles it)
-      // NaN is still typeof 'number'
       expect(typeof score).toBe('number')
+      expect(score).not.toBeNaN()
+      expect(Number.isFinite(score)).toBe(true)
+      expect(score).toBeGreaterThanOrEqual(0)
+      expect(score).toBeLessThanOrEqual(1)
     })
 
     it('T438: Unknown tier defaults correctly', () => {
@@ -518,15 +532,30 @@ describe('Composite Scoring', () => {
       expect(score).not.toBeNaN()
     })
 
-    it('T439: Negative access_count produces NaN (known behavior)', () => {
-      const negAccessRow = {
-        similarity: 50,
-        access_count: -100,
+    it('T439: NaN, undefined, negative, and Infinity inputs stay finite and clamped', () => {
+      const weirdRows = [
+        {
+          similarity: undefined,
+          access_count: -100,
+          stability: Number.NaN,
+          updated_at: 'not-a-date',
+          lastReview: 'invalid',
+        },
+        {
+          similarity: Number.POSITIVE_INFINITY,
+          access_count: Number.NEGATIVE_INFINITY,
+          stability: Number.POSITIVE_INFINITY,
+        },
+      ]
+
+      for (const row of weirdRows) {
+        const score = calcScore(row as unknown as Parameters<typeof calcScore>[0])
+        expect(typeof score).toBe('number')
+        expect(score).not.toBeNaN()
+        expect(Number.isFinite(score)).toBe(true)
+        expect(score).toBeGreaterThanOrEqual(0)
+        expect(score).toBeLessThanOrEqual(1)
       }
-      const score = calcScore(negAccessRow)
-      // log10 of negative produces NaN - upstream should validate
-      // Accept both NaN and valid number
-      expect(typeof score).toBe('number')
     })
 
     it('T440: Future dates handled (score <= 1)', () => {
@@ -537,6 +566,25 @@ describe('Composite Scoring', () => {
       }
       const score = calcScore(futureRow)
       expect(score).toBeLessThanOrEqual(1)
+    })
+
+    it('T440b: NaN, undefined, negative, and Infinity stability inputs stay finite', () => {
+      const now = Date.now()
+      const lastReview = new Date(now - 1000 * 60 * 60 * 24 * 14).toISOString()
+      const cases = [
+        { stability: Number.NaN, lastReview },
+        { stability: undefined, lastReview },
+        { stability: -5, lastReview },
+        { stability: Number.POSITIVE_INFINITY, lastReview },
+      ]
+
+      for (const row of cases) {
+        const score = compositeScoring.calculateRetrievabilityScore(row)
+        expect(score).not.toBeNaN()
+        expect(Number.isFinite(score)).toBe(true)
+        expect(score).toBeGreaterThanOrEqual(0)
+        expect(score).toBeLessThanOrEqual(1)
+      }
     })
   })
 
@@ -802,6 +850,11 @@ describe('Composite Scoring', () => {
     it('T090d: Usage score capped at count=100', () => {
       const score_100 = compositeScoring.calculateUsageScore(100)
       expect(score_100).toBeCloseTo(1.0, 3)
+    })
+
+    it('T090e: Usage score clamps negative counts to 0', () => {
+      const score_negative = compositeScoring.calculateUsageScore(-10)
+      expect(score_negative).toBe(0)
     })
 
     it('T091a: Citation score at 0 days', () => {

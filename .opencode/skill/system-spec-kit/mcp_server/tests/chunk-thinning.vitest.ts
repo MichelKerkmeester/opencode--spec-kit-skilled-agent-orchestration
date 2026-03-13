@@ -338,6 +338,8 @@ describe('constants', () => {
 --------------------------------------------------------------- */
 
 describe('R7 integration wiring', () => {
+  // This integration hits the real chunk/index pipeline and can share a worker
+  // with the long-running file-watcher suite during full runs.
   it('uses thinChunks retained set in indexChunkedMemoryFile active path', async () => {
     vi.resetModules();
 
@@ -390,5 +392,5 @@ describe('R7 integration wiring', () => {
 
     expect(result.message).toContain(`${thinning.retained.length}`);
     vectorIndex.closeDb();
-  });
+  }, 60_000);
 });

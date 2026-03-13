@@ -16,6 +16,7 @@ const CO_ACTIVATION_MODULE_PATHS = [
 const originalCoactivationStrength = process.env.SPECKIT_COACTIVATION_STRENGTH;
 
 afterEach(() => {
+  coActivation.init(null as unknown as CoActivationDb);
   if (originalCoactivationStrength === undefined) {
     delete process.env.SPECKIT_COACTIVATION_STRENGTH;
   } else {
@@ -175,6 +176,42 @@ describe('Co-Activation Module', () => {
       const result = coActivation.getRelatedMemories(-1);
       expect(Array.isArray(result)).toBe(true);
       expect(result).toHaveLength(0);
+    });
+
+    it('Filters malformed related_memories entries to only finite id/similarity pairs', () => {
+      const fakeDb = {
+        prepare: (sql: string) => {
+          if (sql.includes('SELECT related_memories')) {
+            return {
+              get: () => ({
+                related_memories: JSON.stringify([
+                  { id: 2, similarity: 88.5 },
+                  { id: '3', similarity: 91 },
+                  { id: 4, similarity: Number.POSITIVE_INFINITY },
+                  { id: 5, similarity: null },
+                ]),
+              }),
+            };
+          }
+
+          return {
+            get: (id: number) => ({
+              id,
+              title: `Memory ${id}`,
+              spec_folder: 'specs/test',
+              file_path: `specs/test/memory/${id}.md`,
+              importance_tier: 'normal',
+            }),
+          };
+        },
+      };
+
+      coActivation.init(fakeDb as unknown as CoActivationDb);
+      const result = coActivation.getRelatedMemories(1);
+
+      expect(result).toEqual([
+        expect.objectContaining({ id: 2, similarity: 88.5 }),
+      ]);
     });
   });
 

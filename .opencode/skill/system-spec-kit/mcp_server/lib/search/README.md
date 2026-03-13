@@ -198,7 +198,7 @@ score(D, Q) = Sum IDF(qi) * (tf(qi,D) * (k1+1)) / (tf(qi,D) + k1 * (1-b + b*|D|/
 **Providers** (REQ-013):
 - **Voyage rerank-2**: API-based, max 100 docs
 - **Cohere rerank-english-v3.0**: API-based, max 100 docs
-- **Local endpoint**: `cross-encoder/ms-marco-MiniLM-L-6-v2` via `http://localhost:8765/rerank` when `RERANKER_LOCAL=true`
+- **Local GGUF path**: `node-llama-cpp` with `bge-reranker-v2-m3.Q4_K_M.gguf` when `RERANKER_LOCAL=true` and the runtime/model guards pass
 
 **Length Penalty** (REQ-008): Short content (<50 chars) is penalized to `0.9x`; very long content (>2000 chars) is penalized to `0.95x`.
 
@@ -369,7 +369,7 @@ vector-index-impl.ts     (3333 LOC)
 | `SPECKIT_CROSS_ENCODER`  | `true`   | Enable cross-encoder reranking gate |
 | `VOYAGE_API_KEY`         | _(unset)_| Select Voyage reranker provider when set |
 | `COHERE_API_KEY`         | _(unset)_| Select Cohere reranker provider when set |
-| `RERANKER_LOCAL`         | `false`  | Enable local reranker endpoint fallback |
+| `RERANKER_LOCAL`         | `false`  | Enable local GGUF reranker path |
 | `EMBEDDING_DIM`          | `768`    | Fallback embedding dimension        |
 | `SPECKIT_MEMORY_SUMMARIES`| `true`  | Enable memory summary generation and search channel (R8) |
 | `SPECKIT_ENTITY_LINKING`  | `true`  | Enable cross-document entity linking (S5, requires R10) |
@@ -615,7 +615,7 @@ Top-ranked results seed a 2-hop BFS traversal over causal edges. Discovered neig
 Tracks degree change over a 7-day rolling window using the `degree_snapshots` table. Momentum = currentDegree - pastDegree. Nodes gaining connections receive a score bonus: `clamp(momentum * 0.01, 0, 0.05)` — additive cap of +0.05.
 
 **N2b: Causal Depth** (`graph-signals.ts`):
-BFS traversal from root nodes (in-degree = 0) computes depth for each node. Depth is normalized by graph diameter (`maxDepth`). Score bonus: `normalizedDepth * 0.05` — rewards structurally deep nodes in the causal chain.
+The causal graph is condensed into strongly connected components, then longest-path depth is computed across the resulting DAG. Shortcut edges no longer collapse deeper chains, cycle members share one bounded depth layer, and the final depth is normalized by the deepest reachable component chain (`maxDepth`). Score bonus: `normalizedDepth * 0.05` — rewards structurally deep nodes in the causal chain.
 
 **N2c: Community Detection** (`community-detection.ts`):
 BFS connected-component labelling assigns community IDs. When the largest component contains >50% of all nodes, escalates to Louvain modularity optimization for finer-grained communities. Community co-members are injected into Stage 2 results before graph signal scoring. Gated via `SPECKIT_COMMUNITY_DETECTION`.

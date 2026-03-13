@@ -40,7 +40,7 @@ Deterministic coverage check (run from repository root):
 - `TOTAL_FEATURES=$(python3 - <<'PY'
 from pathlib import Path
 import re
-path = Path('.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/manual_testing_playbook/manual_testing_playbook.md')
+path = Path('.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md')
 count = 0
 in_catalog = False
 pattern = re.compile(r'^\| (EX-\d{3}|NEW-\d{3}|PHASE-\d{3}|F-\d{2}) \|')
@@ -61,4 +61,5 @@ Use `manual_testing_playbook.md` as the single source of truth:
 - `M-003 Context Save + Index Update`
 - `M-004 Main-Agent Review and Verdict Handoff`
 - `M-005 Outsourced Agent Memory Capture Round-Trip`
+- `M-006 Stateless Enrichment and Alignment Guardrails`
 Rule: do not duplicate or restate command text in this protocol; update playbook scenarios when commands change.

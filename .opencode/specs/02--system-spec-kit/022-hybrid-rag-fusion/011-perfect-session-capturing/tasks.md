@@ -71,43 +71,44 @@
 ## Part II: Stateless Quality Improvements
 
 ## Phase 0: OpenCode-Path Hardening (highest leverage, lowest risk)
-- [ ] Fix snake_case/camelCase metadata mismatch in `input-normalizer.ts` (~15-25 LOC)
-- [ ] Map both snake_case and camelCase conventions so existing OpenCode data is not silently dropped
-- [ ] Add prompt-level relevance filtering in `input-normalizer.ts` (~20-30 LOC)
-- [ ] Filter prompts by spec-folder relevance to prevent V8 cross-spec contamination
-- [ ] Backfill `SPEC_FOLDER` from CLI-known folder name in `collect-session-data.ts` (~10 LOC)
-- [ ] Re-enable `detectRelatedDocs()` path via `SPEC_FOLDER` backfill
+- [x] Fix snake_case/camelCase metadata mismatch in `input-normalizer.ts` (~15-25 LOC) — IMPLEMENTED
+- [x] Map both snake_case and camelCase conventions so existing OpenCode data is not silently dropped — IMPLEMENTED
+- [x] Add prompt-level relevance filtering in `input-normalizer.ts` (~20-30 LOC) — IMPLEMENTED
+- [x] Filter prompts by spec-folder relevance to prevent V8 cross-spec contamination — IMPLEMENTED
+- [x] Backfill `SPEC_FOLDER` from CLI-known folder name in `collect-session-data.ts` (~10 LOC) — IMPLEMENTED
+- [x] Re-enable `detectRelatedDocs()` path via `SPEC_FOLDER` backfill — IMPLEMENTED (runtime validation still pending)
 
 ## Phase 1: Enrichment Hook + Spec Folder Mining (highest impact)
-- [ ] Create `scripts/extractors/spec-folder-extractor.ts` (~120-170 LOC)
-- [ ] Parse `description.json` metadata (id, name, title, status, level, parent)
-- [ ] Parse `spec.md` YAML frontmatter (title, trigger_phrases, importance_tier)
-- [ ] Parse `spec.md` problem/purpose and files-to-change table
-- [ ] Parse `plan.md` phases and implementation steps
-- [ ] Parse `tasks.md` checkbox status for completion percentage
-- [ ] Parse `checklist.md` verification status and `decision-record.md` decisions
-- [ ] Return `SpecFolderExtraction { observations, FILES, recentContext, summary, triggerPhrases, decisions, sessionPhase }`
-- [ ] Mark all extracted items with `_provenance: 'spec-folder'`
-- [ ] Add `enrichStatelessData()` in `scripts/core/workflow.ts` (~25-45 LOC)
-- [ ] Insert enrichment AFTER contamination/alignment guards and spec resolution
-- [ ] Merge extracted data into `collectedData` with provenance markers
-- [ ] Ensure synthetic timestamps use stable ordering (~5 LOC)
+- [x] Create `scripts/extractors/spec-folder-extractor.ts` (~120-170 LOC) — IMPLEMENTED
+- [x] Parse `description.json` metadata (id, name, title, status, level, parent) — IMPLEMENTED
+- [x] Parse `spec.md` YAML frontmatter (title, trigger_phrases, importance_tier) — IMPLEMENTED, including embedded merged-partition frontmatter extraction (covered by `scripts/tests/stateless-enrichment.vitest.ts`)
+- [x] Parse `spec.md` problem/purpose and files-to-change table — IMPLEMENTED
+- [x] Parse `plan.md` phases and implementation steps — IMPLEMENTED
+- [x] Parse `tasks.md` checkbox status for completion percentage — IMPLEMENTED
+- [x] Parse `checklist.md` verification status and `decision-record.md` decisions — IMPLEMENTED
+- [x] Return `SpecFolderExtraction { observations, FILES, recentContext, summary, triggerPhrases, decisions, sessionPhase }` — IMPLEMENTED
+- [x] Mark all extracted items with `_provenance: 'spec-folder'` — IMPLEMENTED
+- [x] Add `enrichStatelessData()` in `scripts/core/workflow.ts` (~25-45 LOC) — IMPLEMENTED
+- [x] Insert enrichment AFTER contamination/alignment guards and spec resolution — IMPLEMENTED
+- [x] Merge extracted data into `collectedData` with provenance markers — IMPLEMENTED
+- [x] Ensure synthetic timestamps use stable ordering (~5 LOC) — IMPLEMENTED
 
 ## Phase 2: Git Context Mining (high impact)
-- [ ] Create `scripts/extractors/git-context-extractor.ts` (~140-190 LOC)
-- [ ] Use `git status --porcelain` for uncommitted changes -> FILES with ACTION
-- [ ] Use `git diff --name-status HEAD~N` for recent committed changes -> FILES
-- [ ] Check available revision count first via `git rev-list --count HEAD`
-- [ ] Use `git log --format="%H%n%s%n%b%n---%n" --since="24 hours ago" -20` for observations
-- [ ] Map conventional commit prefixes (`fix:`, `feat:`, `refactor:`, `docs:`) to observation types
-- [ ] Use `git diff --stat HEAD~N` for summary context
-- [ ] Add graceful git fallback behavior (not in repo, git unavailable, shallow clone)
-- [ ] Cap mining scope to 20 commits and 24-hour window
-- [ ] Mark all git-derived items with `_provenance: 'git'`
-- [ ] Extend `enrichStatelessData()` to merge git and spec-folder signals
-- [ ] Deduplicate merged FILES by normalized file path
-- [ ] Preserve ACTION field through `file-extractor.ts` (~15-20 LOC)
-- [ ] Verify observation title uniqueness and only patch if dedup ratio remains below 0.7
+- [x] Create `scripts/extractors/git-context-extractor.ts` (~140-190 LOC) — IMPLEMENTED
+- [x] Use `git status --porcelain` for uncommitted changes -> FILES with ACTION — IMPLEMENTED
+- [x] Use `git diff --name-status HEAD~N` for recent committed changes -> FILES — IMPLEMENTED
+- [x] Check available revision count first via `git rev-list --count HEAD` — IMPLEMENTED
+- [x] Use `git log --format="%H%n%s%n%b%n---%n" --since="24 hours ago" -20` for observations — IMPLEMENTED
+- [x] Map conventional commit prefixes (`fix:`, `feat:`, `refactor:`, `docs:`) to observation types — IMPLEMENTED
+- [x] Use `git diff --stat HEAD~N` for summary context — IMPLEMENTED
+- [x] Add graceful git fallback behavior (not in repo, git unavailable, shallow clone) — IMPLEMENTED
+- [x] Cap mining scope to 20 commits and 24-hour window — IMPLEMENTED
+- [x] Mark all git-derived items with `_provenance: 'git'` — IMPLEMENTED
+- [x] Extend `enrichStatelessData()` to merge git and spec-folder signals — IMPLEMENTED
+- [x] Deduplicate merged FILES by normalized file path — IMPLEMENTED
+- [x] Preserve ACTION field through `file-extractor.ts` (~15-20 LOC) — IMPLEMENTED
+- [x] Prefer live observations over synthetic spec/git enrichment when deriving project-state snapshot fields (`activeFile`, `lastAction`) in `session-extractor.ts` — IMPLEMENTED (covered by `scripts/tests/stateless-enrichment.vitest.ts`)
+- [ ] Verify observation title uniqueness and only patch if dedup ratio remains below 0.7 — PENDING VALIDATION
 
 ## Phase 3: Claude Code Capture (deferred — medium impact, higher risk)
 - [ ] Create `scripts/extractors/claude-code-capture.ts` (~110-170 LOC)

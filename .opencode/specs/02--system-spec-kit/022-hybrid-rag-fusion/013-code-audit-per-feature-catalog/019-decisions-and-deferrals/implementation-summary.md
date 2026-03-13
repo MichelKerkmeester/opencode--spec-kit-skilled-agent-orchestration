@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary [template:level_2/implementation-summary.md]"
-description: "Level 2 documentation repairs for 019-decisions-and-deferrals to restore validator compliance and finding traceability."
+description: "F-03 runtime remediation and F-02 evidence reconciliation for 019-decisions-and-deferrals."
 # SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2
 trigger_phrases:
   - "implementation"
@@ -32,21 +32,27 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-This update repaired the phase documentation so validation can run cleanly while preserving the audit intent. The folder now includes the required implementation summary, valid template-source provenance markers, and resolvable markdown references for catalog evidence links.
+This update closes the two previously deferred WARN areas in this phase: F-03 is fixed at runtime with regression coverage, and F-02 is reconciled at the audit-evidence layer by mapping the existing runtime/test/migration artifacts.
 
-### Validation Repair Package
+### Remediation Package
 
-The specification now includes a fifth requirement and four explicit acceptance scenarios, which satisfies Level 2 section-count expectations and keeps expectations testable. Checklist structure was also tightened with explicit P0 and P1 headers plus inline evidence citations on completed required items.
+The spec folder now reflects closure state instead of planning state. Tasks are marked complete with evidence, checklist outcomes for F-02/F-03 are moved from WARN to PASS, and plan/spec text now documents completed verification rather than deferred implementation.
 
 ### Files Changed
 
 | File | Action | Purpose |
 |------|--------|---------|
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/019-decisions-and-deferrals/spec.md` | Modified | Added required-count and acceptance-scenario coverage; added top-of-file template-source marker. |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/019-decisions-and-deferrals/plan.md` | Modified | Added top-of-file template-source marker for validator detection. |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/019-decisions-and-deferrals/tasks.md` | Modified | Fixed markdown references to existing feature catalog files and added top-of-file template-source marker. |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/019-decisions-and-deferrals/checklist.md` | Modified | Added P0/P1 sections and inline evidence tags for completed P0/P1 items. |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/019-decisions-and-deferrals/implementation-summary.md` | Created | Added required Level 2 completion artifact. |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/019-decisions-and-deferrals/spec.md` | Modified | Updated scope/status/success criteria to reflect post-remediation closure. |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/019-decisions-and-deferrals/plan.md` | Modified | Marked implementation and verification phases complete; updated dependency statuses to Green. |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/019-decisions-and-deferrals/tasks.md` | Modified | Marked T001-T010 complete with concrete evidence links and command outputs. |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/019-decisions-and-deferrals/checklist.md` | Modified | Moved F-02/F-03 from WARN to PASS and updated verification evidence and date. |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/019-decisions-and-deferrals/implementation-summary.md` | Modified | Replaced prior doc-repair summary with remediation and verification closure summary. |
+
+### External Evidence Inputs (not edited in this pass)
+
+- `.opencode/skill/system-spec-kit/mcp_server/lib/extraction/entity-extractor.ts`: Rule-3 regex updated to stop sentence-spanning key-phrase capture while preserving dotted tokens.
+- `.opencode/skill/system-spec-kit/mcp_server/tests/entity-extractor.vitest.ts`: regression tests added/updated for sentence-boundary and `Node.js` behavior.
+- `.opencode/skill/system-spec-kit/feature_catalog/19--decisions-and-deferrals/02-implemented-graph-centrality-and-community-detection.md`: F-02 source/test inventory references reconciled.
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -54,7 +60,7 @@ The specification now includes a fifth requirement and four explicit acceptance 
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-The folder was repaired by reading the current docs, applying targeted markdown-only edits, and re-running `validate.sh --no-recursive` for this phase directory. No code files or adjacent spec folders were changed.
+The folder was updated by reconciling implementation evidence into the five phase markdown files, then re-validating checklist/task/spec alignment and running spec validation for this directory. This pass only edited markdown files inside `019-decisions-and-deferrals`.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -64,9 +70,9 @@ The folder was repaired by reading the current docs, applying targeted markdown-
 
 | Decision | Why |
 |----------|-----|
-| Keep checklist evidence detail bullets and add inline evidence tags | The validator only recognizes inline evidence on completed items, while existing bullets still carry richer context. |
-| Point catalog links to `.opencode/skill/system-spec-kit/feature_catalog/...` | Those are the canonical existing markdown files for this audit category. |
-| Add explicit acceptance scenarios in `spec.md` | Section-count checks require Level 2 specs to include measurable Given/When/Then scenarios. |
+| Treat F-02 as evidence reconciliation, not runtime reimplementation | Graph-signals runtime and tests already existed; the gap was source/test mapping in audit artifacts. |
+| Close F-03 with code + tests before documentation closure | The cross-sentence key-phrase capture was a real behavior issue and needed runtime remediation. |
+| Keep one residual open question on historical extracted data | Backfill/cleanup is a product/data decision, not something to invent in a doc-only closure pass. |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -76,7 +82,9 @@ The folder was repaired by reading the current docs, applying targeted markdown-
 
 | Check | Result |
 |-------|--------|
-| `validate.sh --no-recursive` for `019-decisions-and-deferrals` | PASS after repairs (see final command output in session report). |
+| `npm run test -- tests/entity-extractor.vitest.ts tests/graph-signals.vitest.ts` | PASS (85/85) in `mcp_server` |
+| `npm run check` | PASS (eslint + `tsc --noEmit`) in `mcp_server` |
+| `validate.sh --no-recursive` for `019-decisions-and-deferrals` | PASS |
 | Scope validation | PASS, edits limited to markdown files in the target phase folder. |
 <!-- /ANCHOR:verification -->
 
@@ -85,8 +93,8 @@ The folder was repaired by reading the current docs, applying targeted markdown-
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. Code-level WARN remediation work for graph signals and regex behavior is still deferred to implementation tasks.
-2. This summary documents validation repair for phase docs; it does not claim runtime behavior changes.
+1. A backfill/cleanup decision for previously extracted cross-sentence entities remains open.
+2. F-02 closure depends on keeping feature-catalog evidence in sync with runtime code/tests in future audits.
 <!-- /ANCHOR:limitations -->
 
 ---

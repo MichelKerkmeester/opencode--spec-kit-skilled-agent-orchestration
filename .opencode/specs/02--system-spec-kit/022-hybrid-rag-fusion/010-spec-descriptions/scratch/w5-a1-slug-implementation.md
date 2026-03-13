@@ -20,7 +20,7 @@
 - Behavior:
   - Checks existing `.md` filenames in the target context dir.
   - If collision, appends incremental suffixes `-1`, `-2`, ..., up to `-100`.
-  - If all retries collide, appends a short SHA1 hash suffix.
+  - If all retries collide, reserves a random 12-character hex fallback candidate from `crypto.randomBytes(6)` before returning.
 
 ### 2) Workflow integration check
 - `workflow.ts` imports uniqueness helper:

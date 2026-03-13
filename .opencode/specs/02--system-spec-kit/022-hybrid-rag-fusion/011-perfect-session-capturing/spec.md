@@ -266,6 +266,40 @@ Increase stateless mode quality scores from ~30/100 to 60+/100 by mining richer 
 
 ---
 
+## L3: ACCEPTANCE SCENARIOS
+
+### Scenario AS-001: Stateless save applies OpenCode hardening
+- **Given** a stateless run with snake_case OpenCode fields
+- **When** `generate-context.js` runs with this spec folder path
+- **Then** normalized fields are preserved and prompts are filtered by spec relevance
+
+### Scenario AS-002: Stateless enrichment injects spec-folder signals
+- **Given** a spec folder with `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `decision-record.md`
+- **When** stateless enrichment runs
+- **Then** observations/files/decisions include `_provenance: 'spec-folder'` markers
+
+### Scenario AS-003: Stateless enrichment injects git signals
+- **Given** a repository with recent commits and uncommitted file changes
+- **When** `git-context-extractor` runs in stateless mode
+- **Then** extracted FILES include ACTION data and observations include `_provenance: 'git'`
+
+### Scenario AS-004: Stateful mode remains authoritative
+- **Given** a file-backed JSON save (`_source === 'file'`)
+- **When** workflow executes
+- **Then** enrichment is skipped and file-backed data remains authoritative
+
+### Scenario AS-005: Quality gates protect indexing path
+- **Given** a low-signal or contaminated stateless save
+- **When** validation detects failed V-rules
+- **Then** indexing is blocked and the workflow reports `QUALITY_GATE_ABORT`/contamination gate failure
+
+### Scenario AS-006: Deferred phases remain out of completion scope
+- **Given** current implementation state
+- **When** completion is evaluated
+- **Then** Phase 3 (Claude capture) and Phase 4 (scoring calibration) remain deferred and unchecked
+
+---
+
 ## 10. OPEN QUESTIONS (RESOLVED)
 
 - **Indexing gate**: `qualityValidation.valid` (v2 validator), not legacy score. Indexing proceeds when no V-rules fail. (Resolved by code review of workflow.ts:842-933)

@@ -119,8 +119,8 @@ The `olderThanDays` parameter is validated as a positive integer (>= 1) before q
 | `mcp_server/tests/handler-checkpoints.vitest.ts` | Checkpoint handler validation |
 | `mcp_server/tests/handler-memory-index-cooldown.vitest.ts` | Index cooldown validation |
 | `mcp_server/tests/handler-memory-index.vitest.ts` | Index handler validation |
-| `mcp_server/tests/incremental-index-v2.vitest.ts` | Incremental index v2 tests |
-| `mcp_server/tests/incremental-index.vitest.ts` | Incremental index tests |
+| `mcp_server/tests/incremental-index-v2.vitest.ts` | Incremental index behavioral tests |
+| `mcp_server/tests/incremental-index.vitest.ts` | Legacy deferred placeholder suite (skipped; not behavioral evidence) |
 | `mcp_server/tests/index-refresh.vitest.ts` | Index refresh tests |
 | `mcp_server/tests/interference.vitest.ts` | Interference scoring tests |
 | `mcp_server/tests/mcp-response-envelope.vitest.ts` | MCP envelope tests |

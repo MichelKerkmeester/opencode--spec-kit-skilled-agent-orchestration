@@ -1,6 +1,6 @@
 ---
 title: "Verification Checklist: decisions-and-deferrals [template:level_2/checklist.md]"
-description: "Verification Date: 2026-03-10"
+description: "Verification Date: 2026-03-13"
 # SPECKIT_TEMPLATE_SOURCE: checklist | v2.2
 trigger_phrases:
   - "verification"
@@ -56,14 +56,14 @@ Required items are tracked in CHK-003, CHK-012, CHK-013, CHK-022, CHK-023, CHK-0
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [x] CHK-010 [P0] Code passes lint/format checks [EVIDENCE: Findings set reports behavior/test issues only; no lint/format defects were captured.]
-  - **Evidence**: Audit outcomes report no formatting/style defects as primary issues; findings focus on behavior and coverage.
-- [x] CHK-011 [P0] No console errors or warnings [EVIDENCE: Scope is documentation-only and introduces no runtime execution paths.]
-  - **Evidence**: N/A for documentation-level audit output; no runtime changes introduced in this rewrite.
-- [x] CHK-012 [P1] Error handling implemented [EVIDENCE: WARN findings identify explicit handling gaps for graph-signals tests and regex boundaries.]
-  - **Evidence**: WARN findings identify concrete handling gaps to remediate (graph-signal test coverage and regex boundary behavior).
-- [x] CHK-013 [P1] Code follows project patterns [EVIDENCE: F-01/F-04/F-05 are PASS while deviations in F-02/F-03 are isolated and tracked.]
-  - **Evidence**: F-01, F-04, and F-05 are PASS; F-02 and F-03 deviations are explicitly documented for correction.
+- [x] CHK-010 [P0] Code passes lint/format checks [EVIDENCE: `npm run check` passed in `mcp_server`.]
+  - **Evidence**: `npm run check` passed in `.opencode/skill/system-spec-kit/mcp_server` (eslint + `tsc --noEmit`).
+- [x] CHK-011 [P0] No console errors or warnings [EVIDENCE: Targeted runtime test execution completed without errors/warnings.]
+  - **Evidence**: Targeted test execution completed without runtime error output (`entity-extractor.vitest.ts` + `graph-signals.vitest.ts`).
+- [x] CHK-012 [P1] Error handling implemented [EVIDENCE: F-02/F-03 handling gaps remediated and verified.]
+  - **Evidence**: Former WARN handling gaps are remediated: F-02 evidence now maps to existing graph-signals implementation/tests; F-03 regex boundary handling corrected.
+- [x] CHK-013 [P1] Code follows project patterns [EVIDENCE: All five features now align to declared implementation and test patterns.]
+  - **Evidence**: F-01 through F-05 are now PASS after F-02 evidence reconciliation and F-03 regex/test remediation.
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -74,16 +74,16 @@ Required items are tracked in CHK-003, CHK-012, CHK-013, CHK-022, CHK-023, CHK-0
 - [x] CHK-020 [P0] All acceptance criteria met [EVIDENCE: Checklist captures status outcomes and remediation context for F-01 through F-05.]
   - **Evidence**:
     - F-01 INT8 quantization evaluation: PASS (decision record, no code/test gaps)
-    - F-02 Graph centrality/community detection: WARN (source inventory completeness + graph-signals test gaps)
-    - F-03 Auto entity extraction: WARN (Rule-3 regex cross-sentence capture issue)
+    - F-02 Graph centrality/community detection: PASS (source inventory/test references reconciled to `graph-signals.ts`, `graph-signals.vitest.ts`, `deferred-features-integration.vitest.ts`, and migration-v19 schema touchpoints)
+    - F-03 Auto entity extraction: PASS (Rule-3 regex tightened; regression tests assert sentence-boundary termination and dotted-token support)
     - F-04 Memory summary generation: PASS
     - F-05 Cross-document entity linking: PASS
-- [x] CHK-021 [P0] Manual testing complete [EVIDENCE: Manual source/test review completed for all five feature entries.]
-  - **Evidence**: Feature-by-feature source and test review completed across all 5 entries.
+- [x] CHK-021 [P0] Manual testing complete [EVIDENCE: Re-audit plus targeted test run completed for F-02 and F-03.]
+  - **Evidence**: Re-audit and targeted verification completed via `npm run test -- tests/entity-extractor.vitest.ts tests/graph-signals.vitest.ts` (85/85 passing).
 - [x] CHK-022 [P1] Edge cases tested [EVIDENCE: Edge-case gaps are listed and mapped to remediation tasks.]
-  - **Evidence**: Documented edge gaps include sentence-boundary capture and missing momentum/depth coverage.
+  - **Evidence**: Edge coverage now includes sentence-boundary stop behavior and dotted token preservation (`Node.js`) in entity extraction tests.
 - [x] CHK-023 [P1] Error scenarios validated [EVIDENCE: `tasks.md` includes explicit WARN-scenario follow-up tasks.]
-  - **Evidence**: WARN scenarios are captured with remediation targets in `tasks.md`.
+  - **Evidence**: Former WARN scenarios were executed through remediation tasks T004-T010 and verified with targeted test/check commands.
 <!-- /ANCHOR:testing -->
 
 ---
@@ -94,7 +94,7 @@ Required items are tracked in CHK-003, CHK-012, CHK-013, CHK-022, CHK-023, CHK-0
 - [x] CHK-030 [P0] No hardcoded secrets [EVIDENCE: Audit findings contain only repository paths and no secret values.]
   - **Evidence**: No secret exposure identified in the reviewed findings set.
 - [x] CHK-031 [P0] Input validation implemented [EVIDENCE: Entity extraction validation behavior and WARN regex precision gap are both documented.]
-  - **Evidence**: Entity extraction filtering/denylist behavior documented; regex precision issue tracked as WARN.
+  - **Evidence**: Entity extraction filtering/denylist behavior remains intact; regex precision issue is remediated and validated by regression tests.
 - [x] CHK-032 [P1] Auth/authz working correctly [EVIDENCE: Audit scope excludes auth/authz code paths and no related changes were made.]
   - **Evidence**: N/A to this feature category; no auth/authz paths modified.
 <!-- /ANCHOR:security -->
@@ -105,9 +105,9 @@ Required items are tracked in CHK-003, CHK-012, CHK-013, CHK-022, CHK-023, CHK-0
 ## Documentation
 
 - [x] CHK-040 [P1] Spec/plan/tasks synchronized [EVIDENCE: Shared findings and priorities are aligned across all docs in this folder.]
-  - **Evidence**: All four documents now follow aligned Level 2 structure and shared findings vocabulary.
+  - **Evidence**: `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` all reflect final PASS outcomes and completed remediation work.
 - [x] CHK-041 [P1] Code comments adequate [EVIDENCE: Each finding references concrete file paths and remediation notes.]
-  - **Evidence**: Findings include explicit file-level references and remediation notes.
+  - **Evidence**: Findings and closures include explicit code/test/migration references tied to F-02 and F-03.
 - [ ] CHK-042 [P2] README updated (if applicable)
   - **Evidence**: Not applicable for this sub-spec rewrite.
 <!-- /ANCHOR:docs -->
@@ -136,7 +136,9 @@ Required items are tracked in CHK-003, CHK-012, CHK-013, CHK-022, CHK-023, CHK-0
 | P1 Items | 10 | 10/10 |
 | P2 Items | 2 | 0/2 |
 
-**Verification Date**: 2026-03-10
+**Verification Date**: 2026-03-13
+
+Residual open question: whether a cleanup/backfill is needed for pre-fix `memory_entities` rows that may have captured cross-sentence key phrases.
 <!-- /ANCHOR:summary -->
 
 ---

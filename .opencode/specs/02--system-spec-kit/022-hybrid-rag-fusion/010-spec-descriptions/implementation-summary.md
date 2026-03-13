@@ -21,7 +21,7 @@ contextType: "implementation"
 |-------|-------|
 | **Spec Folder** | `010-spec-descriptions` |
 | **Status** | Complete — all P0/P1 items verified; CHK-027 (P2) deferred |
-| **Verification Run** | Targeted Vitest run passed: 3 files, 122 tests, 0 failures |
+| **Verification Run** | Latest targeted verification passed: `npm run typecheck` + 5 Vitest suites (150 tests), 0 failures |
 
 ---
 
@@ -30,9 +30,10 @@ contextType: "implementation"
 The spec folder description system refactor is implemented across creation-time generation, discovery-time aggregation, and memory-save uniqueness handling.
 
 1. **Per-folder `description.json` generation** — spec folders now produce and persist local description metadata instead of relying only on the centralized aggregate.
-2. **Slug uniqueness protection** — `ensureUniqueMemoryFilename()` resolves collisions with sequential `-1..-100` suffixes and then a `crypto.randomBytes` fallback to keep rapid saves unique within a folder.
+2. **Slug uniqueness protection** — `ensureUniqueMemoryFilename()` resolves collisions with sequential `-1..-100` suffixes and then reserves random `crypto.randomBytes(6)` fallback candidates with `O_CREAT|O_EXCL` to keep rapid saves unique within a folder.
 3. **`memorySequence` tracking** — workflow save logic increments a persisted per-folder counter and retains a bounded `memoryNameHistory` trail.
-4. **Aggregation with per-folder preference** — folder discovery prefers fresh per-folder `description.json` data, while preserving the consumer-facing aggregate cache shape.
+4. **Aggregation with per-folder preference** — folder discovery prefers fresh per-folder `description.json` data, repairs stale/corrupt existing files from `spec.md`, and still preserves missing-file fallback behavior without implicit writes.
+5. **Blank-spec handling** — `generatePerFolderDescription()` now returns a valid object for whitespace-only `spec.md` files with empty `description`/`keywords` plus intact identity metadata.
 
 ---
 
@@ -41,7 +42,7 @@ The spec folder description system refactor is implemented across creation-time 
 | File | Role |
 |------|------|
 | `mcp_server/lib/search/folder-discovery.ts` | Per-folder description generation/loading, aggregation, freshness preference, cache preservation |
-| `scripts/utils/slug-utils.ts` | `ensureUniqueMemoryFilename()` collision handling and hash fallback |
+| `scripts/utils/slug-utils.ts` | `ensureUniqueMemoryFilename()` collision handling and reserved random fallback |
 | `scripts/core/workflow.ts` | `memorySequence` increment and `memoryNameHistory` persistence during save flow |
 | `scripts/spec/create.sh` | Auto-generates `description.json` during spec folder creation |
 
@@ -49,10 +50,12 @@ The spec folder description system refactor is implemented across creation-time 
 
 ## Test Coverage
 
-- `mcp_server/tests/folder-discovery.vitest.ts` — 76 tests covering extraction, cache operations, per-folder description helpers, frontmatter stripping, schema validation, C2 path containment, C1 element types, and CRLF frontmatter
-- `mcp_server/tests/slug-uniqueness.vitest.ts` — 7 tests covering filename collision handling, rapid-save uniqueness, and >100 collision randomBytes fallback
-- `mcp_server/tests/folder-discovery-integration.vitest.ts` — 37 tests for stale detection (incl. T046-25b per-folder cycle), aggregation, mixed mode, C2 path containment integration, and 500-folder benchmark
-- 2026-03-09 targeted verification run: **122/122 tests passed** across the three requested files (hardening round 3: +2 tests)
+- `mcp_server/tests/folder-discovery.vitest.ts` — 92 tests covering extraction, cache operations, per-folder description helpers, blank-spec behavior, frontmatter stripping, schema validation, and path containment
+- `mcp_server/tests/folder-discovery-integration.vitest.ts` — 39 tests for stale detection, in-discovery repair behavior, aggregation/mixed mode, path containment integration, and 500-folder benchmark
+- `mcp_server/tests/workflow-memory-tracking.vitest.ts` — 5 tests for load→mutate→save memory tracking (`memorySequence`, ring-buffered `memoryNameHistory`)
+- `mcp_server/tests/slug-utils-boundary.vitest.ts` — 6 tests for numeric coercion and boundary safety in sequence handling
+- `scripts/tests/slug-uniqueness.vitest.ts` — 8 tests covering filename collision handling, rapid-save uniqueness, and >100 collision random fallback reservation
+- 2026-03-13 targeted verification run: `npm run typecheck` passed; **150/150 Vitest tests passed** across the five requested suites
 
 ---
 
@@ -66,8 +69,8 @@ The spec folder description system refactor is implemented across creation-time 
 
 ## Campaign Notes
 
-- **W5-A1** confirmed that slug uniqueness was already implemented: `ensureUniqueMemoryFilename()` exists in `slug-utils.ts`, is called from workflow, and its dedicated test file passes 7/7.
-- **W5-A2** confirmed that Phase 3-4 behavior was already implemented: `memorySequence`, bounded `memoryNameHistory`, per-folder description preference, and stale-per-folder fallback logic are present.
+- **W5-A1** confirmed that slug uniqueness was already implemented: `ensureUniqueMemoryFilename()` exists in `slug-utils.ts`, is called from workflow, and the latest targeted verification run shows its dedicated test file at 8/8.
+- **W5-A2** confirmed that Phase 3-4 behavior was already implemented: `memorySequence`, bounded `memoryNameHistory`, per-folder description preference, and stale/corrupt existing-file repair with missing-file fallback-without-implicit-write behavior are present.
 - **W5-A5** refreshed checklist evidence, ran the requested targeted tests, and documented the remaining verification gaps without requiring code changes.
 
 ---
@@ -81,7 +84,7 @@ Applied 8 code fixes (C1-C8) and 3 test fix groups (T1-T3) based on GPT 5.4 trip
 - **C2**: `generatePerFolderDescription()` + `generate-description.ts` — `realpathSync()` path containment checks to prevent directory traversal
 - **C3**: `savePerFolderDescription()` — atomic write with `crypto.randomBytes(4)` temp suffix, `fsyncSync` before rename, try/finally cleanup
 - **C4**: `saveDescriptionCache()` — same atomic write pattern as C3 (was previously plain `writeFileSync`)
-- **C5**: `ensureUniqueMemoryFilename()` — replaced `SHA1(filename:Date.now())` with `crypto.randomBytes(6)` for truly random fallback
+- **C5**: `ensureUniqueMemoryFilename()` — replaced SHA1 fallback with reserved random `crypto.randomBytes(6)` candidates using `O_CREAT|O_EXCL`
 - **C6**: `create.sh` — removed `2>/dev/null` from 3 node invocations to surface errors
 - **C7**: `extractDescription()` — strip YAML frontmatter (`---..---`) before parsing
 - **C8**: `workflow.ts` — `Number(existing.memorySequence)` for type-safe coercion
@@ -115,11 +118,11 @@ Applied 13 findings from GPT 5.4 triple-agent re-review across 8 code + 3 doc fi
 ### Documentation Fixes
 - **F2**: Marked 2 unchecked subtasks in tasks.md (TASK-004/005) with evidence
 - **F6**: Fixed 3 stale `ensureUniqueSlug()` references → `ensureUniqueMemoryFilename()` in plan.md
-- **F7**: Updated backfill count from 279/279 to 281/281 (gap in 025-git-context-extractor filled)
+- **F7**: Backfill coverage aligned to the active inventory at that time (no fixed global count retained)
 - **F8**: Added file:line security evidence citations to CHK-031/CHK-032 in checklist.md
 - **F12**: Updated verification date to 2026-03-09
 
 ### Verification
-- TypeScript: `tsc --noEmit` — 0 errors
-- Tests: 3 suites, 122 tests, 0 failures
-- description.json coverage: 281/281 (gap in 025-git-context-extractor closed)
+- TypeScript: `npm run typecheck` — passed
+- Tests: 5 Vitest suites, 150 tests, 0 failures
+- description.json coverage: parity with active spec inventory (moving target; no fixed global count asserted)

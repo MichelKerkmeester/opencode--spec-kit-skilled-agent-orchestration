@@ -3,8 +3,8 @@ title: "Spec Descriptions Checklist"
 status: "complete"
 level: 2
 created: "2025-12-01"
-updated: "2026-03-09"
-description: "Verification Date: 2026-03-09"
+updated: "2026-03-13"
+description: "Verification Date: 2026-03-13"
 trigger_phrases:
   - "description verification"
   - "checklist"
@@ -44,8 +44,8 @@ contextType: "general"
 <!-- ANCHOR:code-quality -->
 ## CODE QUALITY
 
-- [x] CHK-010 [P0] Per-folder description.json generates correctly via `generatePerFolderDescription()` — backfill: 281/281 spec folders generated successfully (025-git-context-extractor gap filled in hardening round 2)
-- [x] CHK-011 [P0] Memory filename uniqueness guaranteed — `ensureUniqueMemoryFilename()` guarantees collision-safe filenames via atomic `O_CREAT|O_EXCL` creation with suffix retry and SHA1 hash fallback (`scripts/utils/slug-utils.ts`); targeted run passed `slug-uniqueness.vitest.ts` 7/7
+- [x] CHK-010 [P0] Per-folder description.json generates correctly via `generatePerFolderDescription()` — coverage parity maintained between active `spec.md` folders and `description.json` files in the current inventory
+- [x] CHK-011 [P0] Memory filename uniqueness guaranteed — `ensureUniqueMemoryFilename()` guarantees collision-safe filenames via atomic `O_CREAT|O_EXCL` creation with suffix retry and reserved random `crypto.randomBytes(6)` fallback candidates (no SHA1 path); latest targeted run passed `slug-uniqueness.vitest.ts` 8/8
 - [x] CHK-012 [P0] `create.sh` auto-generates description.json on folder creation — verified in create.sh lines 810-813, 1038-1041
 - [x] CHK-013 [P1] Backward compatibility — `ensureDescriptionCache()` preserves the `DescriptionCache` consumer shape (`version`, `generated`, `folders`) across empty, cached, and regenerated paths (`mcp_server/lib/search/folder-discovery.ts:747-781`)
 - [x] CHK-014 [P1] Atomic write pattern used for per-folder description.json — savePerFolderDescription uses temp+rename in folder-discovery.ts
@@ -60,13 +60,13 @@ contextType: "general"
 <!-- ANCHOR:testing -->
 ## TESTING
 
-- [x] CHK-020 [P0] All existing `folder-discovery.vitest.ts` tests pass (no regressions) — 78/78 tests pass, 0 failures
-- [x] CHK-021 [P0] New per-folder description generation tests pass — 122/122 tests pass across 3 suites (folder-discovery + slug-uniqueness + integration)
-- [x] CHK-022 [P0] Uniqueness test: 10 saves to same folder → 10 unique filenames — targeted run passed `slug-uniqueness.vitest.ts` 7/7, including the 10-identical-input uniqueness test (HELPER-LEVEL — tests the uniqueness function in isolation; does not exercise the full workflow.ts memory-save path. See implementation-summary.md Known Gaps)
+- [x] CHK-020 [P0] All existing `folder-discovery.vitest.ts` tests pass (no regressions) — latest targeted run passed `folder-discovery.vitest.ts` 92/92, 0 failures
+- [x] CHK-021 [P0] New per-folder description generation tests pass — latest targeted verification passed `npm run typecheck` plus 150/150 Vitest tests across 5 suites (`folder-discovery`, `folder-discovery-integration`, `workflow-memory-tracking`, `slug-utils-boundary`, `slug-uniqueness`)
+- [x] CHK-022 [P0] Uniqueness test: 10 saves to same folder → 10 unique filenames — targeted run passed `slug-uniqueness.vitest.ts` 8/8, including the 10-identical-input uniqueness test (HELPER-LEVEL — tests the uniqueness function in isolation; does not exercise the full workflow.ts memory-save path. See implementation-summary.md Known Gaps)
 - [x] CHK-023 [P1] Per-folder at depth 5+: nested folder gets description.json — verified depth-6 folder (test-fixtures/valid-anchors) has correct description.json
 - [x] CHK-024 [P1] Stale detection test: edit spec.md → description.json regenerated [EVIDENCE: folder-discovery.ts:219-234 now incorporates description.json mtime; test T046-25 verifies aggregate cache staleness; test T046-25b verifies per-folder stale detection → regeneration → freshness cycle]
-- [x] CHK-025 [P1] Mixed mode: folders with/without description.json → aggregation works — fresh per-folder descriptions are preferred during aggregation (`mcp_server/lib/search/folder-discovery.ts:438-451`); targeted run passed integration test `T046-24`
-- [x] CHK-026 [P1] Collision test: same slug + same timestamp → sequential suffix `-1`, `-2` — `ensureUniqueMemoryFilename()` uses atomic `O_CREAT|O_EXCL` with `-1..-100` suffix retry before SHA1 hash fallback (`scripts/utils/slug-utils.ts`)
+- [x] CHK-025 [P1] Mixed mode: folders with/without description.json → aggregation works — fresh per-folder descriptions are preferred; stale/corrupt existing files are repaired during discovery; missing files fall back without implicit writes (`mcp_server/lib/search/folder-discovery.ts`)
+- [x] CHK-026 [P1] Collision test: same slug + same timestamp → sequential suffix `-1`, `-2` — `ensureUniqueMemoryFilename()` uses atomic `O_CREAT|O_EXCL` with `-1..-100` suffix retry before reserved random fallback candidates (`scripts/utils/slug-utils.ts`)
 - [ ] CHK-027 [P2] Concurrent write test: two parallel saves → no corruption [DEFERRED: Concurrent write safety provided by OS-level atomic temp+rename pattern. Formal stress test deferred as P2.]
 - [x] CHK-028 [P1] Per-folder description.json read completes in <5ms (NFR-P01) [EVIDENCE: test T046-26 in folder-discovery-integration.vitest.ts benchmarks loadPerFolderDescription() at <5ms; passed in <1ms]
 - [x] CHK-029 [P1] Full 500-folder aggregation scan completes in <2s (NFR-P02) [EVIDENCE: test T046-27 in folder-discovery-integration.vitest.ts benchmarks generateFolderDescriptions() with 500 folders at <2s; passed in ~200ms]
@@ -114,7 +114,7 @@ contextType: "general"
 | P1 Items | 19 | 19/19 |
 | P2 Items | 3 | 2/3 |
 
-**Verification Date**: 2026-03-09
+**Verification Date**: 2026-03-13
 <!-- /ANCHOR:summary -->
 
 ---

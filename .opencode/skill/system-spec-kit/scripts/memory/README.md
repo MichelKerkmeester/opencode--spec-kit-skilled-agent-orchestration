@@ -57,7 +57,7 @@ Direct spec-folder mode:
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js specs/<###-spec-name>
 ```
 
-Explicit CLI targets are authoritative, including policy-defined phase folders. Direct saves write into the targeted folder's `memory/` directory instead of being rerouted to the owning root.
+Explicit CLI targets are authoritative, including policy-defined phase folders. Direct saves write into the targeted folder's `memory/` directory instead of being rerouted elsewhere.
 
 JSON input mode:
 

@@ -107,6 +107,6 @@ contextType: "general"
   - [x] Ensure all existing relevant tests pass without regressions.
   - [x] Confirm the final documentation and test suite reflect the implemented behavior.
 
-<!-- AUDIT-2026-03-09: All 25 tasks marked complete. Phase 1-2 verified in prior rounds. Phase 3-4 verified via W5 campaign (slug uniqueness, memorySequence, aggregation preference all implemented). Phase 5 tasks TASK-024/025 completed with T046-25b stale detection test and 122-test regression pass. Code hardening round (C1-C8) applied 2026-03-09. -->
+<!-- AUDIT-2026-03-13: All 25 tasks remain complete. Phase 1-2 verified in prior rounds. Phase 3-4 behavior now also confirms reserved random fallback after 100 collisions, discovery-time repair for stale/corrupt existing description.json files, and blank-spec per-folder metadata generation. Latest targeted verification: npm run typecheck passed and 150/150 Vitest tests passed across folder-discovery, folder-discovery-integration, workflow-memory-tracking, slug-utils-boundary, and slug-uniqueness suites. -->
 
 <!-- /ANCHOR:tasks -->

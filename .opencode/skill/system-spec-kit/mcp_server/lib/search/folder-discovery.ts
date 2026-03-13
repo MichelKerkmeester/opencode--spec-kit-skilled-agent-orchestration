@@ -455,9 +455,12 @@ export function generateFolderDescriptions(specsBasePaths: string[]): Descriptio
         continue;
       }
 
-      // Prefer per-folder description.json if fresh
+      const descPath = path.join(discoveredFolder.folderPath, 'description.json');
+      // Prefer per-folder description.json if fresh and non-empty. Blank-description edge
+      // cases still aggregate through spec.md fallback so discovery retains a useful label.
       const perFolder = loadPerFolderDescription(discoveredFolder.folderPath);
-      if (perFolder && !isPerFolderDescriptionStale(discoveredFolder.folderPath)) {
+      const perFolderFresh = perFolder && !isPerFolderDescriptionStale(discoveredFolder.folderPath);
+      if (perFolderFresh && perFolder.description.trim().length > 0) {
         const relativePath = path.relative(discoveredFolder.basePath, discoveredFolder.folderPath).replace(/\\/g, '/');
         if (relativePath && !relativePath.startsWith('..')) {
           byCanonicalFolderPath.set(discoveredFolder.canonicalFolderPath, {
@@ -467,6 +470,19 @@ export function generateFolderDescriptions(specsBasePaths: string[]): Descriptio
             lastUpdated: perFolder.lastUpdated,
           });
           continue;
+        }
+      }
+
+      // Repair stale/corrupt on-disk descriptions during discovery when a file exists.
+      // Missing files still use pure spec.md fallback to avoid surprising backfill writes.
+      if (fs.existsSync(descPath) && (!perFolderFresh || perFolder.description.trim().length === 0)) {
+        try {
+          const repaired = generatePerFolderDescription(discoveredFolder.folderPath, discoveredFolder.basePath);
+          if (repaired) {
+            savePerFolderDescription(repaired, discoveredFolder.folderPath);
+          }
+        } catch {
+          /* Best-effort repair — fallback extraction below remains authoritative */
         }
       }
 
@@ -480,6 +496,16 @@ export function generateFolderDescriptions(specsBasePaths: string[]): Descriptio
 
       if (folderEntry) {
         byCanonicalFolderPath.set(discoveredFolder.canonicalFolderPath, folderEntry);
+      } else if (perFolderFresh) {
+        const relativePath = path.relative(discoveredFolder.basePath, discoveredFolder.folderPath).replace(/\\/g, '/');
+        if (relativePath && !relativePath.startsWith('..')) {
+          byCanonicalFolderPath.set(discoveredFolder.canonicalFolderPath, {
+            specFolder: relativePath,
+            description: perFolder.description,
+            keywords: perFolder.keywords,
+            lastUpdated: perFolder.lastUpdated,
+          });
+        }
       }
     }
   }
@@ -586,7 +612,7 @@ export function slugifyFolderName(folderName: string): string {
  *
  * @param folderPath - Absolute path to the spec folder.
  * @param basePath   - Absolute path to the specs root directory.
- * @returns A PerFolderDescription, or null if spec.md is unreadable/empty.
+ * @returns A PerFolderDescription, or null if spec.md is unreadable.
  */
 export function generatePerFolderDescription(
   folderPath: string,
@@ -610,7 +636,6 @@ export function generatePerFolderDescription(
   }
 
   const description = extractDescription(content);
-  if (!description) return null;
 
   const keywords = extractKeywords(description);
   const folderName = path.basename(folderPath);

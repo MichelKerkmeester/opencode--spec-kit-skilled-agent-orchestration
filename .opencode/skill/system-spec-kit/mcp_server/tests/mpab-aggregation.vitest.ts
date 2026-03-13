@@ -127,6 +127,11 @@ describe('computeMPAB', () => {
   it('all-zero scores returns 0', () => {
     expect(computeMPAB([0, 0, 0])).toBe(0);
   });
+
+  it('non-finite chunk scores are sanitized to zero before aggregation', () => {
+    const result = computeMPAB([0.8, Number.NaN, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY]);
+    expect(result).toBeCloseTo(0.8, 10);
+  });
 });
 
 // -------------------------------------------------------------

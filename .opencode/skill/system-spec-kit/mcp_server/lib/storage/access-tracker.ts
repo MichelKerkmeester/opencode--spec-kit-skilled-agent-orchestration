@@ -34,6 +34,10 @@ function clampUsageBoost(boost: number): number {
   return Math.min(boost, MAX_USAGE_BOOST);
 }
 
+function normalizeAccessCount(accessCount: number): number {
+  return Number.isFinite(accessCount) && accessCount > 0 ? accessCount : 0;
+}
+
 /* -------------------------------------------------------------
    2. INTERFACES
 ----------------------------------------------------------------*/
@@ -179,10 +183,11 @@ function calculatePopularityScore(
   lastAccessed: number | null,
   _createdAt: string | null
 ): number {
-  if (accessCount === 0) return 0;
+  const safeAccessCount = normalizeAccessCount(accessCount);
+  if (safeAccessCount === 0) return 0;
 
   // Access frequency component
-  const freqScore = Math.min(1.0, Math.log2(accessCount + 1) / 5);
+  const freqScore = Math.min(1.0, Math.log2(safeAccessCount + 1) / 5);
 
   // Recency component
   let recencyScore = 0;
@@ -202,9 +207,10 @@ function calculatePopularityScore(
  * @returns Usage boost in the range [0, 3.0].
  */
 function calculateUsageBoost(accessCount: number, lastAccessed: number | null): number {
-  if (accessCount === 0) return 0;
+  const safeAccessCount = normalizeAccessCount(accessCount);
+  if (safeAccessCount === 0) return 0;
 
-  const boost = Math.min(0.2, accessCount * 0.02);
+  const boost = Math.min(0.2, safeAccessCount * 0.02);
 
   // Extra boost for recently accessed
   if (lastAccessed) {

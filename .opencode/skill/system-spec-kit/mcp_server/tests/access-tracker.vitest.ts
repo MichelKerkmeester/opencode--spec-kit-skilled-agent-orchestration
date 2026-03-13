@@ -124,6 +124,12 @@ describe('Access Tracker (T507)', () => {
       expect(score).toBeGreaterThan(0);
       expect(score).toBeLessThanOrEqual(1);
     });
+
+    it('T507-04c: Negative and non-finite access counts clamp to 0', () => {
+      expect(mod.calculatePopularityScore(-5, null, null)).toBe(0);
+      expect(mod.calculatePopularityScore(Number.NaN, null, null)).toBe(0);
+      expect(mod.calculatePopularityScore(Number.POSITIVE_INFINITY, null, null)).toBe(0);
+    });
   });
 
   describe('Calculate Usage Boost (T507-05)', () => {
@@ -142,6 +148,12 @@ describe('Access Tracker (T507)', () => {
     it('T507-05c: Usage boost capped at 0.2 max', () => {
       const maxBoost = mod.calculateUsageBoost(100, null);
       expect(maxBoost).toBeLessThanOrEqual(0.2);
+    });
+
+    it('T507-05d: Negative and non-finite access counts return zero boost', () => {
+      expect(mod.calculateUsageBoost(-3, null)).toBe(0);
+      expect(mod.calculateUsageBoost(Number.NaN, null)).toBe(0);
+      expect(mod.calculateUsageBoost(Number.POSITIVE_INFINITY, null)).toBe(0);
     });
   });
 

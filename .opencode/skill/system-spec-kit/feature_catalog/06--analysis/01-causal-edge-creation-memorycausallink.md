@@ -100,8 +100,8 @@ A batch insert variant (`insertEdgesBatch()`) handles bulk edge creation during 
 | `mcp_server/tests/handler-memory-index-cooldown.vitest.ts` | Index cooldown validation |
 | `mcp_server/tests/handler-memory-index.vitest.ts` | Index handler validation |
 | `mcp_server/tests/importance-tiers.vitest.ts` | Importance tier tests |
-| `mcp_server/tests/incremental-index-v2.vitest.ts` | Incremental index v2 tests |
-| `mcp_server/tests/incremental-index.vitest.ts` | Incremental index tests |
+| `mcp_server/tests/incremental-index-v2.vitest.ts` | Incremental index behavioral tests |
+| `mcp_server/tests/incremental-index.vitest.ts` | Legacy deferred placeholder suite (skipped; not behavioral evidence) |
 | `mcp_server/tests/index-refresh.vitest.ts` | Index refresh tests |
 | `mcp_server/tests/interference.vitest.ts` | Interference scoring tests |
 | `mcp_server/tests/memory-parser-extended.vitest.ts` | Parser extended tests |

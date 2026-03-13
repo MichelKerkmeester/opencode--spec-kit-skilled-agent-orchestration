@@ -103,7 +103,7 @@ Memory save entrypoint (required by Memory Save Rule):
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js specs/<###-spec-name>
 ```
 
-Direct saves may target either a root spec folder or a phase folder. Explicit CLI targets remain authoritative, and phase-folder saves write into that phase folder's `memory/` directory.
+Direct saves may target either a root spec folder or a phase folder. Explicit CLI targets remain authoritative, and phase-folder saves write into that selected phase folder's `memory/` directory.
 
 JSON mode is also supported:
 

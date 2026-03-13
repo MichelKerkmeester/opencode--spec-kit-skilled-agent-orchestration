@@ -200,8 +200,8 @@ node scripts/dist/memory/generate-context.js /tmp/context.json specs/<###-featur
 # Non-phase nested child paths stay authoritative
 node scripts/dist/memory/generate-context.js 003-parent/001-child
 
-# Phase-folder paths are rejected; save to the parent root instead
-node scripts/dist/memory/generate-context.js .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-architecture-audit
+# Phase-folder paths stay authoritative and save into that selected phase folder
+node scripts/dist/memory/generate-context.js .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/021-remediation-revalidation
 ```
 
 #### Multiple specs directories warning
@@ -225,7 +225,7 @@ node scripts/dist/memory/generate-context.js .opencode/specs/02--system-spec-kit
 | Permission denied on memory/   | `chmod 755 specs/<###-feature-name>`                   |
 | Archive pattern false positive | Rename folder without z_, archive, old patterns |
 | Wrong folder selected          | Pass the exact CLI target; explicit args are authoritative |
-| Need phase-folder memory save  | Pass the exact phase-folder CLI target; memory writes stay in that phase folder |
+| Need phase-folder memory save  | Pass the exact phase-folder CLI target; memory writes stay in that selected phase folder |
 
 ### Diagnostic Commands
 

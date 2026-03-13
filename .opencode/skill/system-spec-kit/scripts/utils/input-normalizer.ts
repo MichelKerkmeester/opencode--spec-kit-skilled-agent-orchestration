@@ -239,6 +239,22 @@ function buildNextStepsObservation(nextSteps: string[]): Observation {
   };
 }
 
+function hasPersistedNextStepsObservation(observations: Observation[]): boolean {
+  return observations.some((observation) => {
+    if (!Array.isArray(observation.facts)) {
+      return false;
+    }
+
+    return observation.facts.some((fact) => {
+      if (typeof fact !== 'string') {
+        return false;
+      }
+
+      return /^Next:\s+/i.test(fact) || /^Follow-up:\s+/i.test(fact);
+    });
+  });
+}
+
 // ---------------------------------------------------------------
 // 4. INPUT NORMALIZATION
 // ---------------------------------------------------------------
@@ -252,6 +268,12 @@ function cloneInputData<T>(data: T): T {
 }
 
 function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
+  const nextSteps = Array.isArray(data.nextSteps)
+    ? data.nextSteps
+    : Array.isArray(data.next_steps)
+      ? data.next_steps
+      : [];
+
   // F-15: Field-by-field completion instead of early return — backfill missing arrays
   if (data.userPrompts || data.observations || data.recentContext) {
     const cloned = cloneInputData(data) as NormalizedData;
@@ -268,6 +290,11 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
         };
       });
     }
+
+    if (nextSteps.length > 0 && !hasPersistedNextStepsObservation(cloned.observations)) {
+      cloned.observations.push(buildNextStepsObservation(nextSteps));
+    }
+
     return cloned;
   }
 
@@ -288,12 +315,6 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
       DESCRIPTION: 'File modified (description pending)',
     }));
   }
-
-  const nextSteps = Array.isArray(data.nextSteps)
-    ? data.nextSteps
-    : Array.isArray(data.next_steps)
-      ? data.next_steps
-      : [];
 
   const observations: Observation[] = [];
 
@@ -458,6 +479,50 @@ function buildToolObservationTitle(tool: CaptureToolCall): string {
   }
 }
 
+function normalizeRelevanceText(value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function buildSpecRelevanceKeywords(specFolderHint?: string | null): string[] {
+  if (!specFolderHint) return [];
+
+  const keywords = new Set<string>();
+  const segments = specFolderHint
+    .split('/')
+    .map((segment) => segment.replace(/^\d+--?/, '').trim())
+    .filter(Boolean);
+
+  for (const segment of segments) {
+    const normalizedSegment = normalizeRelevanceText(segment);
+    if (normalizedSegment.length > 2) {
+      keywords.add(normalizedSegment);
+    }
+
+    for (const token of normalizedSegment.split(' ')) {
+      if (token.length > 2) {
+        keywords.add(token);
+      }
+    }
+  }
+
+  const normalizedHint = normalizeRelevanceText(specFolderHint);
+  if (normalizedHint.length > 2) {
+    keywords.add(normalizedHint);
+  }
+
+  return Array.from(keywords);
+}
+
+function containsRelevantKeyword(keywords: string[], ...parts: Array<string | undefined>): boolean {
+  if (keywords.length === 0) return true;
+  const normalized = normalizeRelevanceText(parts.filter(Boolean).join(' '));
+  return keywords.some((keyword) => normalized.includes(keyword));
+}
+
 // ---------------------------------------------------------------
 // 6. OPENCODE CAPTURE TRANSFORMATION
 // ---------------------------------------------------------------
@@ -487,23 +552,13 @@ function transformOpencodeCapture(capture: OpencodeCapture, specFolderHint?: str
   // whose file paths relate to the target spec folder. This prevents
   // unrelated session content (e.g., from prior conversations in the same
   // OpenCode session) from polluting the memory file.
-  const relevanceKeywords: string[] = [];
-  if (specFolderHint) {
-    // Extract keywords from the spec folder path for relevance matching
-    // e.g., "02--system-spec-kit/022-hybrid-rag-fusion/011-feature-catalog"
-    // yields segments like "feature-catalog", "hybrid-rag-fusion", "system-spec-kit"
-    const segments = specFolderHint.split('/').map(s => s.replace(/^\d+--?/, ''));
-    relevanceKeywords.push(...segments.filter(s => s.length > 2));
-    // Also include the full path for direct substring matching
-    relevanceKeywords.push(specFolderHint);
-  }
+  const relevanceKeywords = buildSpecRelevanceKeywords(specFolderHint);
 
   function isToolRelevant(tool: CaptureToolCall): boolean {
     if (relevanceKeywords.length === 0) return true; // no filter
     const filePath = tool.input?.filePath || tool.input?.file_path || tool.input?.path || '';
     const title = tool.title || '';
-    const combined = `${filePath} ${title}`.toLowerCase();
-    return relevanceKeywords.some(kw => combined.includes(kw.toLowerCase()));
+    return containsRelevantKeyword(relevanceKeywords, filePath, title);
   }
 
   const filteredToolCalls = specFolderHint
@@ -544,8 +599,7 @@ function transformOpencodeCapture(capture: OpencodeCapture, specFolderHint?: str
   const userPrompts: UserPrompt[] = (() => {
     if (!specFolderHint || relevanceKeywords.length === 0) return allUserPrompts;
     const filtered = allUserPrompts.filter(p => {
-      const lower = p.prompt.toLowerCase();
-      return relevanceKeywords.some(kw => lower.includes(kw.toLowerCase()));
+      return containsRelevantKeyword(relevanceKeywords, p.prompt);
     });
     if (filtered.length === 0) {
       structuredLog('warn', 'Spec relevance filter produced no user prompt matches — using all prompts', {
@@ -576,11 +630,9 @@ function transformOpencodeCapture(capture: OpencodeCapture, specFolderHint?: str
         // When spec folder hint is provided, skip exchanges whose content
         // doesn't mention any relevant keyword
         if (specFolderHint && relevanceKeywords.length > 0) {
-          const responseRelevant = relevanceKeywords.some(kw =>
-            lowerResponse.includes(kw.toLowerCase())
-          );
+          const responseRelevant = containsRelevantKeyword(relevanceKeywords, ex.assistantResponse);
           const inputRelevant = ex.userInput
-            ? relevanceKeywords.some(kw => ex.userInput!.toLowerCase().includes(kw.toLowerCase()))
+            ? containsRelevantKeyword(relevanceKeywords, ex.userInput)
             : false;
           if (!responseRelevant && !inputRelevant) {
             continue; // skip irrelevant exchange
@@ -627,8 +679,7 @@ function transformOpencodeCapture(capture: OpencodeCapture, specFolderHint?: str
   // foreign-spec content from propagating into SUMMARY via learning field.
   const relevantExchanges = (specFolderHint && relevanceKeywords.length > 0)
     ? exchanges.filter(ex => {
-        const combined = `${ex.userInput || ''} ${ex.assistantResponse || ''}`.toLowerCase();
-        return relevanceKeywords.some(kw => combined.includes(kw.toLowerCase()));
+        return containsRelevantKeyword(relevanceKeywords, ex.userInput, ex.assistantResponse);
       })
     : exchanges;
   const contextExchanges = (() => {

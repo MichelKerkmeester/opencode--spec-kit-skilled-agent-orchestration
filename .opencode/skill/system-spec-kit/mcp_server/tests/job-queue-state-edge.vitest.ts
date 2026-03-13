@@ -271,7 +271,7 @@ describe('ingest job queue state + edge tests (T005b)', () => {
     expect(updated?.state).toBe('complete');
     expect(updated?.filesProcessed).toBe(2);
     expect(updated?.errors.length).toBe(1);
-    expect(updated?.errors[0]?.filePath).toBe(missingPath);
+    expect(updated?.errors[0]?.filePath).toBe(path.basename(missingPath));
     expect(processFile).toHaveBeenCalledTimes(1);
     expect(processFile).toHaveBeenCalledWith(validPath);
   });

@@ -693,6 +693,19 @@ describe('T009 generatePerFolderDescription', () => {
     expect(result).toBeNull();
   });
 
+  it('returns blank description metadata for whitespace-only spec.md', () => {
+    const blankDir = path.join(tmpDir2, '006-blank-spec');
+    fs.mkdirSync(blankDir, { recursive: true });
+    fs.writeFileSync(path.join(blankDir, 'spec.md'), '\n   \n', 'utf-8');
+
+    const result = generatePerFolderDescription(blankDir, tmpDir2);
+    expect(result).not.toBeNull();
+    expect(result!.specId).toBe('006');
+    expect(result!.folderSlug).toBe('blank-spec');
+    expect(result!.description).toBe('');
+    expect(result!.keywords).toEqual([]);
+  });
+
   it('preserves existing memorySequence on regeneration', () => {
     const specDir = path.join(tmpDir2, '010-feature');
     fs.mkdirSync(specDir, { recursive: true });

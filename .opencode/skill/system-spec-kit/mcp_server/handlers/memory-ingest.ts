@@ -39,6 +39,10 @@ function hasTraversalSegment(inputPath: string): boolean {
   return inputPath.split(/[\\/]+/).includes('..');
 }
 
+function toPublicPathLabel(filePath: string): string {
+  return filePath === '__job__' ? filePath : path.basename(filePath || '');
+}
+
 // Codex fix: nanoid-style 12-char alphanumeric ID (URL-safe, no UUID dependency).
 const NANOID_ALPHABET = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 function createJobId(): string {
@@ -55,11 +59,14 @@ function mapJobForResponse(job: IngestJob): Record<string, unknown> {
     jobId: job.id,
     state: job.state,
     specFolder: job.specFolder,
-    paths: job.paths.map((entry) => path.basename(entry || '')),
+    paths: job.paths.map((entry) => toPublicPathLabel(entry)),
     filesTotal: job.filesTotal,
     filesProcessed: job.filesProcessed,
     progress: getIngestProgressPercent(job),
-    errors: job.errors,
+    errors: job.errors.map((entry) => ({
+      ...entry,
+      filePath: toPublicPathLabel(entry.filePath),
+    })),
     createdAt: job.createdAt,
     updatedAt: job.updatedAt,
   };
@@ -145,7 +152,8 @@ async function handleMemoryIngestStart(args: MemoryIngestStartArgs): Promise<MCP
       error: `Invalid path(s) rejected: ${invalidPaths.map((entry) => `"${entry.input}" (${entry.reason})`).join(', ')}`,
       code: 'E_VALIDATION',
       details: {
-        allowedBasePaths,
+        allowedBasePathCount: allowedBasePaths.length,
+        allowedPathPolicy: 'configured-memory-roots',
         rejectedCount: invalidPaths.length,
       },
       recovery: {

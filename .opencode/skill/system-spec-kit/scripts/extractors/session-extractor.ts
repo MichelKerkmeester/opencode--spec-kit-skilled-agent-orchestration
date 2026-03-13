@@ -198,11 +198,20 @@ function detectProjectPhase(
 }
 
 function extractActiveFile(observations: Observation[], files: FileEntry[] | undefined): string {
-  for (let i = observations.length - 1; i >= 0; i--) {
-    const obsFiles = observations[i].files;
+  const prioritizedObservations = observations.some((observation) => !observation._synthetic)
+    ? observations.filter((observation) => !observation._synthetic)
+    : observations;
+
+  for (let i = prioritizedObservations.length - 1; i >= 0; i--) {
+    const obsFiles = prioritizedObservations[i].files;
     if (obsFiles && obsFiles.length > 0) return obsFiles[0];
   }
   return files?.[0]?.FILE_PATH || 'N/A';
+}
+
+function getBehavioralObservations(observations: Observation[]): Observation[] {
+  const liveObservations = observations.filter((observation) => !observation._synthetic);
+  return liveObservations.length > 0 ? liveObservations : observations;
 }
 
 function extractNextAction(
@@ -456,12 +465,13 @@ function detectSessionCharacteristics(
 
 function buildProjectStateSnapshot(params: ProjectStateParams): ProjectStateSnapshot {
   const { toolCounts, observations, messageCount, FILES, SPEC_FILES, recentContext } = params;
+  const behavioralObservations = getBehavioralObservations(observations);
   return {
     projectPhase: detectProjectPhase(toolCounts, observations, messageCount),
     activeFile: extractActiveFile(observations, FILES),
-    lastAction: observations.slice(-1)[0]?.title || 'Context save initiated',
-    nextAction: extractNextAction(observations, recentContext),
-    blockers: extractBlockers(observations),
+    lastAction: behavioralObservations.slice(-1)[0]?.title || 'Context save initiated',
+    nextAction: extractNextAction(behavioralObservations, recentContext),
+    blockers: extractBlockers(behavioralObservations),
     fileProgress: buildFileProgress(SPEC_FILES)
   };
 }

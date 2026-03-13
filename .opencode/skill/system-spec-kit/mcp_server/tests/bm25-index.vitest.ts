@@ -669,7 +669,7 @@ describe('C138: Weighted BM25 FTS5 Enhancements', () => {
     }));
 
     const { handleMemoryUpdate } = await import('../handlers/memory-crud-update');
-    return { handleMemoryUpdate, addDocument };
+    return { handleMemoryUpdate, addDocument, runInTransaction };
   }
 
   it('BM25 re-index fires when triggerPhrases change', async () => {
@@ -688,5 +688,25 @@ describe('C138: Weighted BM25 FTS5 Enhancements', () => {
     const { handleMemoryUpdate, addDocument } = await setupMemoryUpdateHarness();
     await handleMemoryUpdate({ id: 42, importanceWeight: 0.8 });
     expect(addDocument).not.toHaveBeenCalled();
+  });
+
+  it('memory_update wraps the update path in runInTransaction', async () => {
+    const { handleMemoryUpdate, runInTransaction } = await setupMemoryUpdateHarness();
+    await handleMemoryUpdate({ id: 42, title: 'Updated title' });
+    expect(runInTransaction).toHaveBeenCalledTimes(1);
+    expect(runInTransaction).toHaveBeenCalledWith(expect.anything(), expect.any(Function));
+  });
+
+  it('BM25 data failures are surfaced from inside the transaction callback', async () => {
+    const { handleMemoryUpdate, addDocument, runInTransaction } = await setupMemoryUpdateHarness();
+    addDocument.mockImplementation(() => {
+      throw new Error('bad bm25 payload');
+    });
+
+    await expect(handleMemoryUpdate({ id: 42, title: 'Updated title' }))
+      .rejects
+      .toThrow('BM25 re-index failed: bad bm25 payload');
+
+    expect(runInTransaction).toHaveBeenCalledTimes(1);
   });
 });

@@ -3,7 +3,7 @@
 // ---------------------------------------------------------------
 // Content-aware slug generation for memory filenames
 
-import { createHash } from 'node:crypto';
+import * as crypto from 'node:crypto';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 
@@ -54,7 +54,7 @@ function toUnicodeSafeSlug(text: string): string {
 }
 
 function hashFallbackSlug(seed: string): string {
-  const digest = createHash('sha1').update(seed).digest('hex').slice(0, 8);
+  const digest = crypto.createHash('sha1').update(seed).digest('hex').slice(0, 8);
   return `session-${digest}`;
 }
 
@@ -139,7 +139,7 @@ export function truncateSlugAtWordBoundary(slug: string, max: number = 50): stri
 
 /**
  * Ensure a memory filename is unique within a context directory.
- * Appends `-1`, `-2`, etc. on collision. Falls back to SHA1 hash suffix.
+ * Appends `-1`, `-2`, etc. on collision. Falls back to random hex suffixes.
  *
  * @param contextDir - Absolute path to the memory directory.
  * @param filename   - Proposed filename (e.g. "08-03-26_10-24__my-slug.md").
@@ -179,12 +179,25 @@ export function ensureUniqueMemoryFilename(contextDir: string, filename: string)
     }
   }
 
-  // F-27: Deterministic SHA1 hash fallback instead of random bytes
-  const hashDigest = createHash('sha1')
-    .update(`${base}::${Date.now()}::${contextDir}`)
-    .digest('hex')
-    .slice(0, 12);
-  return `${base}-${hashDigest}${ext}`;
+  // After 100 sequential collisions, reserve a random fallback candidate with the same
+  // atomic O_CREAT|O_EXCL path so repeated calls in the same millisecond cannot return
+  // the same filename without first proving it is writable in this directory.
+  for (let attempt = 0; attempt < 100; attempt++) {
+    const randomSuffix = crypto.randomBytes(6).toString('hex');
+    const candidate = `${base}-${randomSuffix}${ext}`;
+    const candidatePath = path.join(contextDir, candidate);
+    try {
+      const fd = fs.openSync(candidatePath, fs.constants.O_CREAT | fs.constants.O_EXCL | fs.constants.O_WRONLY, 0o600);
+      fs.closeSync(fd);
+      fs.unlinkSync(candidatePath);
+      return candidate;
+    } catch (randomErr: unknown) {
+      const randomCode = (randomErr as NodeJS.ErrnoException).code;
+      if (randomCode !== 'EEXIST') throw randomErr;
+    }
+  }
+
+  throw new Error(`Failed to reserve unique filename for "${filename}" after random fallback attempts`);
 }
 
 /** Generates the final content slug used for memory filenames. */

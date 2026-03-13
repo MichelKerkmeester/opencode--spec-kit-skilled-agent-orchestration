@@ -18,7 +18,7 @@ Execute memory operations through whichever method fits your workflow - slash co
 
 When direct CLI mode includes an explicit spec-folder argument, that target is authoritative. Session-learning matches, JSON `SPEC_FOLDER` fields, and auto-detect may inform diagnostics, but they must not reroute the save to another folder.
 
-Direct phase-folder targets are supported. If the explicit CLI target resolves to a policy-defined phase folder, `generate-context.js` preserves that target and writes memory files into the phase folder's `memory/` directory.
+Direct phase-folder targets are supported. If the explicit CLI target resolves to a policy-defined phase folder, `generate-context.js` preserves that target and writes memory files into the selected phase folder's `memory/` directory.
 
 ### Execution Paths
 
@@ -211,9 +211,9 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js \
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js \
   ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion"
 
-# Direct phase target mode (authoritative; saves to the phase folder's own memory/ directory)
+# Direct phase target mode (authoritative; saves to the selected phase folder's own memory/ directory)
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js \
-  ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-architecture-audit"
+  ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/021-remediation-revalidation"
 ```
 
 ### Required JSON Fields
@@ -227,7 +227,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js \
 
 If both the JSON payload and the CLI provide a spec folder, the explicit CLI argument wins.
 
-If that explicit CLI argument resolves to a phase folder, the command keeps that explicit target and saves into the phase folder's own `memory/` directory.
+If that explicit CLI argument resolves to a phase folder, the command keeps that explicit target and saves into the selected phase folder's own `memory/` directory.
 
 ### Validation Checkpoints
 

@@ -45,8 +45,8 @@ An O(1) SHA-256 hash lookup in the `memory_index` table now catches exact duplic
 |------|-------|
 | `mcp_server/tests/content-hash-dedup.vitest.ts` | Content hash dedup tests |
 | `mcp_server/tests/importance-tiers.vitest.ts` | Importance tier tests |
-| `mcp_server/tests/incremental-index-v2.vitest.ts` | Incremental index v2 tests |
-| `mcp_server/tests/incremental-index.vitest.ts` | Incremental index tests |
+| `mcp_server/tests/incremental-index-v2.vitest.ts` | Incremental index behavioral tests |
+| `mcp_server/tests/incremental-index.vitest.ts` | Legacy deferred placeholder suite (skipped; not behavioral evidence) |
 | `mcp_server/tests/integration-session-dedup.vitest.ts` | Session dedup integration |
 | `mcp_server/tests/memory-parser-extended.vitest.ts` | Parser extended tests |
 | `mcp_server/tests/memory-parser.vitest.ts` | Memory parser tests |

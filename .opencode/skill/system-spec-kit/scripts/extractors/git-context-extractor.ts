@@ -6,6 +6,8 @@
 import { execFileSync } from 'child_process';
 import path from 'path';
 
+import { extractSpecFolderContext } from './spec-folder-extractor';
+
 const GIT_TIMEOUT_MS = 5_000;
 const MAX_FILES = 50;
 const MAX_COMMITS = 20;
@@ -21,8 +23,13 @@ const COMMIT_TYPE_MAP: Record<string, string> = {
 };
 
 type ChangeAction = 'modify' | 'add' | 'delete' | 'rename';
-type CommitInfo = { hash: string; timestamp: string; subject: string; body: string };
+type CommitInfo = { hash: string; timestamp: string; subject: string; body: string; files: string[] };
 type ParsedEntry = { filePath: string; action: ChangeAction };
+type SpecScope = {
+  normalizedHint: string;
+  specDirectory: string;
+  fileTargets: string[];
+};
 export interface GitContextExtraction {
   observations: Array<{
     type: string;
@@ -108,11 +115,27 @@ function parseStatScores(projectRoot: string, diffStatOutput: string): Map<strin
   }
   return scores;
 }
-function parseCommits(logOutput: string): CommitInfo[] {
-  return logOutput.split(/\n---\n?/).map((entry) => entry.trim()).filter(Boolean).map((entry) => {
-    const [hash = '', timestamp = SYNTHETIC_TIMESTAMP, subject = '', ...bodyLines] = entry.split('\n');
-    return { hash: hash.trim(), timestamp: timestamp.trim() || SYNTHETIC_TIMESTAMP, subject: subject.trim(), body: bodyLines.join('\n').trim() };
-  }).filter((commit) => Boolean(commit.hash && commit.subject));
+function parseCommits(projectRoot: string, logOutput: string): CommitInfo[] {
+  return logOutput
+    .split(/\n---\n?/)
+    .map((entry) => entry.trim())
+    .filter(Boolean)
+    .map((entry) => {
+      const [header, filesBlock = ''] = entry.split('\n__FILES__\n');
+      const [hash = '', timestamp = SYNTHETIC_TIMESTAMP, subject = '', ...bodyLines] = header.split('\n');
+      const files = filesBlock
+        .split('\n')
+        .map((line) => normalizeFilePath(projectRoot, line))
+        .filter(Boolean);
+      return {
+        hash: hash.trim(),
+        timestamp: timestamp.trim() || SYNTHETIC_TIMESTAMP,
+        subject: subject.trim(),
+        body: bodyLines.join('\n').trim(),
+        files,
+      };
+    })
+    .filter((commit) => Boolean(commit.hash && commit.subject));
 }
 function detectCommitType(subject: string): string {
   const prefix = subject.match(/^([a-z]+)(?:\([^)]+\))?!?:/i)?.[1]?.toLowerCase();
@@ -131,13 +154,47 @@ function isExcludedPath(filePath: string): boolean {
   return EXCLUDED_PATH_PATTERNS.some(pattern => pattern.test(filePath));
 }
 
-function matchesSpecFolder(projectRoot: string, filePath: string, specFolderHint?: string): boolean {
-  if (isExcludedPath(filePath)) return false;
-  if (!specFolderHint) return true;
+function matchesPathTarget(normalizedPath: string, target: string): boolean {
+  return (
+    normalizedPath === target
+    || normalizedPath.endsWith(`/${target}`)
+    || normalizedPath.includes(`/${target}/`)
+  );
+}
+
+async function resolveSpecScope(projectRoot: string, specFolderHint?: string): Promise<SpecScope | null> {
+  if (!specFolderHint) return null;
+
   const normalizedHint = normalizeFilePath(projectRoot, specFolderHint).replace(/\/+$/, '');
-  if (!normalizedHint) return true;
   const specDirectory = normalizedHint.split('/').pop() || normalizedHint;
-  return [normalizedHint, specDirectory].some((candidate) => (
+  const fileTargets = new Set<string>();
+
+  try {
+    const specContext = await extractSpecFolderContext(path.resolve(projectRoot, specFolderHint));
+    for (const entry of specContext.FILES) {
+      const normalizedPath = normalizeFilePath(projectRoot, entry.FILE_PATH);
+      if (normalizedPath) {
+        fileTargets.add(normalizedPath);
+      }
+    }
+  } catch {
+    // Fall back to folder-based scoping only when spec docs cannot be parsed.
+  }
+
+  return {
+    normalizedHint,
+    specDirectory,
+    fileTargets: Array.from(fileTargets),
+  };
+}
+
+function matchesSpecFolder(filePath: string, specScope: SpecScope | null): boolean {
+  if (isExcludedPath(filePath)) return false;
+  if (!specScope) return true;
+  if (specScope.fileTargets.some((target) => matchesPathTarget(filePath, target))) {
+    return true;
+  }
+  return [specScope.normalizedHint, specScope.specDirectory].some((candidate) => (
     filePath === candidate
     || filePath.startsWith(`${candidate}/`)
     || filePath.includes(`/${candidate}/`)
@@ -157,11 +214,12 @@ function getDiffOutput(projectRoot: string, revCount: number, format: '--name-st
 export async function extractGitContext(projectRoot: string, specFolderHint?: string): Promise<GitContextExtraction> {
   try {
     if (runGitCommand(projectRoot, ['rev-parse', '--is-inside-work-tree']) !== 'true') return emptyResult();
+    const specScope = await resolveSpecScope(projectRoot, specFolderHint);
     const statusEntries = runGitCommand(projectRoot, ['status', '--porcelain'])
       .split('\n')
       .map((line) => parseNameStatusLine(projectRoot, line))
       .filter((entry): entry is ParsedEntry => Boolean(entry))
-      .filter((entry) => matchesSpecFolder(projectRoot, entry.filePath, specFolderHint));
+      .filter((entry) => matchesSpecFolder(entry.filePath, specScope));
     const revCount = Number.parseInt(runGitCommand(projectRoot, ['rev-list', '--count', 'HEAD']), 10);
     if (!Number.isFinite(revCount)) return emptyResult();
 
@@ -169,21 +227,14 @@ export async function extractGitContext(projectRoot: string, specFolderHint?: st
       .split('\n')
       .map((line) => parseNameStatusLine(projectRoot, line))
       .filter((entry): entry is ParsedEntry => Boolean(entry))
-      .filter((entry) => matchesSpecFolder(projectRoot, entry.filePath, specFolderHint));
+      .filter((entry) => matchesSpecFolder(entry.filePath, specScope));
     const changeScores = new Map(
       Array.from(parseStatScores(projectRoot, getDiffOutput(projectRoot, revCount, '--stat')).entries())
-        .filter(([filePath]) => matchesSpecFolder(projectRoot, filePath, specFolderHint))
+        .filter(([filePath]) => matchesSpecFolder(filePath, specScope))
     );
-    // RC-3 fix: When specFolderHint is provided, scope git log to paths matching the
-    // spec folder. This prevents unrelated commits from leaking into observations.
-    const logArgs = ['log', '--format=%H%n%cI%n%s%n%b%n---', '--since=24 hours ago', `-${MAX_COMMITS}`];
-    if (specFolderHint) {
-      const normalizedHint = normalizeFilePath(projectRoot, specFolderHint).replace(/\/+$/, '');
-      if (normalizedHint) {
-        logArgs.push('--', normalizedHint);
-      }
-    }
-    const commits = parseCommits(runGitCommand(projectRoot, logArgs));
+    const logArgs = ['log', '--name-only', '--format=%H%n%cI%n%s%n%b%n__FILES__', '--since=24 hours ago', `-${MAX_COMMITS}`];
+    const commits = parseCommits(projectRoot, runGitCommand(projectRoot, logArgs))
+      .filter((commit) => commit.files.some((filePath) => matchesSpecFolder(filePath, specScope)));
 
     const FILES: GitContextExtraction['FILES'] = [];
     const seenFiles = new Set<string>();
@@ -215,7 +266,7 @@ export async function extractGitContext(projectRoot: string, specFolderHint?: st
         narrative: commit.body,
         timestamp: commit.timestamp,
         facts: [`commit=${commit.hash}`],
-        files: [],
+        files: commit.files,
         _provenance: 'git',
         _synthetic: true,
       });

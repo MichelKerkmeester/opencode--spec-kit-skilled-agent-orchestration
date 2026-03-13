@@ -63,16 +63,16 @@ Achieve a fully verified, accurate feature catalog where every feature has corre
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `011-feature-catalog/spec.md` | Modify | Rewrite for L3 audit scope |
-| `011-feature-catalog/tasks.md` | Modify | New task breakdown |
-| `011-feature-catalog/plan.md` | Create | L3 implementation plan |
-| `011-feature-catalog/checklist.md` | Create | Audit verification checks |
-| `011-feature-catalog/decision-record.md` | Create | 3 ADRs |
-| `011-feature-catalog/description.json` | Modify | Update level to 3 |
-| `011-feature-catalog/scratch/verification-C*.md` | Create | 20 agent outputs |
-| `011-feature-catalog/scratch/investigation-X*.md` | Create | 10 agent outputs |
-| `011-feature-catalog/scratch/remediation-manifest.md` | Create | Synthesis output |
-| `011-feature-catalog/scratch/analysis-summary.md` | Create | Statistics |
+| `012-feature-catalog/spec.md` | Modify | Rewrite for L3 audit scope |
+| `012-feature-catalog/tasks.md` | Modify | New task breakdown |
+| `012-feature-catalog/plan.md` | Create | L3 implementation plan |
+| `012-feature-catalog/checklist.md` | Create | Audit verification checks |
+| `012-feature-catalog/decision-record.md` | Create | 3 ADRs |
+| `012-feature-catalog/description.json` | Modify | Update level to 3 |
+| `012-feature-catalog/scratch/verification-C*.md` | Create | 20 agent outputs |
+| `012-feature-catalog/scratch/investigation-X*.md` | Create | 10 agent outputs |
+| `012-feature-catalog/scratch/remediation-manifest.md` | Create | Synthesis output |
+| `012-feature-catalog/scratch/analysis-summary.md` | Create | Statistics |
 
 ---
 

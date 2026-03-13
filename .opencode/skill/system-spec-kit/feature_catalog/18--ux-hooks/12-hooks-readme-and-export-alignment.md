@@ -76,8 +76,8 @@ The hooks barrel and hooks README were brought back into sync with the implement
 | `mcp_server/tests/full-spec-doc-indexing.vitest.ts` | Full spec doc indexing |
 | `mcp_server/tests/handler-memory-index-cooldown.vitest.ts` | Index cooldown validation |
 | `mcp_server/tests/handler-memory-index.vitest.ts` | Index handler validation |
-| `mcp_server/tests/incremental-index-v2.vitest.ts` | Incremental index v2 tests |
-| `mcp_server/tests/incremental-index.vitest.ts` | Incremental index tests |
+| `mcp_server/tests/incremental-index-v2.vitest.ts` | Incremental index behavioral tests |
+| `mcp_server/tests/incremental-index.vitest.ts` | Legacy deferred placeholder suite (skipped; not behavioral evidence) |
 | `mcp_server/tests/index-refresh.vitest.ts` | Index refresh tests |
 | `mcp_server/tests/interference.vitest.ts` | Interference scoring tests |
 | `mcp_server/tests/memory-types.vitest.ts` | Memory type tests |

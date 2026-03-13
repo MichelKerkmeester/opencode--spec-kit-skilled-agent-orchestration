@@ -5,6 +5,7 @@
 // continue-on-error for bulk ingestion, SQLITE_BUSY async retry on DB writes,
 // crash recovery with re-enqueue, and original-path progress tracking.
 
+import path from 'node:path';
 import { requireDb, toErrorMessage } from '../../utils';
 
 /**
@@ -80,6 +81,10 @@ const pendingQueue: string[] = [];
 let workerActive = false;
 let processFileFn: ((filePath: string) => Promise<unknown>) | null = null;
 const MAX_STORED_ERRORS = 50;
+
+function toPublicPathLabel(filePath: string): string {
+  return filePath === '__job__' ? filePath : path.basename(filePath || '');
+}
 
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -323,7 +328,7 @@ async function appendIngestError(jobId: string, filePath: string, error: unknown
   let errors = [
     ...current.errors,
     {
-      filePath,
+      filePath: toPublicPathLabel(filePath),
       message: toErrorMessage(error),
       timestamp: nowIso(),
     },
@@ -470,7 +475,7 @@ async function processQueuedJob(jobId: string): Promise<void> {
         : error;
       await appendIngestError(jobId, nextPath, normalizedError);
       failCount += 1;
-      console.warn(`[job-queue] File error (continuing): ${nextPath} — ${toErrorMessage(normalizedError)}`);
+      console.warn(`[job-queue] File error (continuing): ${toPublicPathLabel(nextPath)} — ${toErrorMessage(normalizedError)}`);
     }
 
     job = await incrementProcessed(jobId);

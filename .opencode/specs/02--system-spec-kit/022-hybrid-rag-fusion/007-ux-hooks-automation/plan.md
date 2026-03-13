@@ -28,7 +28,7 @@ contextType: "general"
 | **Language/Stack** | TypeScript, Vitest, Markdown docs |
 | **Framework** | System-spec-kit MCP server handlers |
 | **Storage** | None |
-| **Testing** | `npx tsc -b`, `npm run lint`, fresh combined targeted Vitest rerun (9 files / 485 tests), plus real MCP SDK stdio smoke test |
+| **Testing** | `npx tsc -b`, `npm run lint`, combined targeted Vitest rerun (9 files / 525 tests), split playbook verification (`7 files / 510 tests` and `2 files / 15 tests`), plus real MCP SDK stdio smoke test |
 
 ### Overview
 This phase adds shared post-mutation hook automation across memory mutation handlers, introduces dedicated UX hook modules, and closes the remaining P0-P2 review issues around checkpoint delete safety, duplicate-save no-op feedback, atomic-save parity, token metadata recomputation, README export drift, and end-to-end envelope verification. The implementation prioritizes consistent mutation follow-up behavior, explicit operator guidance, and a verified response contract backed by targeted Vitest coverage plus a real MCP SDK stdio smoke pass.
@@ -98,9 +98,10 @@ Mutation request executes handler logic, then shared post-mutation hooks run and
 - [x] Add regression coverage in `tests/stdio-logging-safety.vitest.ts` and provider-aware lazy model identity coverage in `tests/embeddings.vitest.ts`
 - [x] Add end-to-end envelope assertion covering the finalized appended-envelope hint payload shape
 - [x] Regenerate build artifacts with `npx tsc -b`
-- [x] Run verification commands: `npx tsc -b`; `npm run lint`; and the fresh remediation-pass combined Vitest rerun `npx vitest run tests/hooks-ux-feedback.vitest.ts tests/context-server.vitest.ts tests/handler-checkpoints.vitest.ts tests/tool-input-schema.vitest.ts tests/mcp-input-validation.vitest.ts tests/memory-crud-extended.vitest.ts tests/memory-save-ux-regressions.vitest.ts tests/embeddings.vitest.ts tests/stdio-logging-safety.vitest.ts` (PASS, 9 files / 485 tests)
+- [x] Run verification commands: `npx tsc -b`; `npm run lint`; and the combined Vitest rerun `npx vitest run tests/hooks-ux-feedback.vitest.ts tests/context-server.vitest.ts tests/handler-checkpoints.vitest.ts tests/tool-input-schema.vitest.ts tests/mcp-input-validation.vitest.ts tests/memory-crud-extended.vitest.ts tests/memory-save-ux-regressions.vitest.ts tests/embeddings.vitest.ts tests/stdio-logging-safety.vitest.ts` (PASS, 9 files / 525 tests)
+- [x] Confirm split playbook verification runs also pass for the same suite split (`7 files / 510 tests` and `2 files / 15 tests`)
 - [x] Confirm a real MCP SDK stdio client connects to `node .opencode/skill/system-spec-kit/mcp_server/dist/context-server.js` and lists 28 tools
-- [x] Re-save context via `generate-context.js`, record the parent-spec artifact path `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/06-03-26_16-41__sgqs-comprehensive-review-blocked.md`, and document that no new indexed memory ID is available because `memory_index_scan` still fails on the 1024 vs 768 embedding mismatch
+- [x] Re-save context via `generate-context.js`, record existing phase memory artifacts `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-ux-hooks-automation/memory/06-03-26_20-30__review-13-fixes-applied.md` and `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-ux-hooks-automation/memory/08-03-26_09-42__5-agent-codex-review-synthesis.md`, and document that no new indexed memory ID is available because indexing still fails on the known 1024 vs 768 embedding mismatch
 - [x] Update manual playbook with NEW-103+ scenarios covering UX hook capabilities
 
 ### Phase 4: Review-Driven Fixes

@@ -1,6 +1,6 @@
 ---
 title: "Handover: 008-combined-bug-fixes"
-description: "Canonical continuation handover for the active combined bug-fix packet after review-followup truth reconciliation (verified 2026-03-10)."
+description: "Canonical continuation handover for the active combined bug-fix packet after review-followup and source-016 closeout reconciliation (verified 2026-03-13)."
 trigger_phrases:
   - "combined bug fixes"
   - "008-combined-bug-fixes"
@@ -11,16 +11,16 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "implementation"
 SPECKIT_TEMPLATE_SOURCE: "handover | v1.0"
-last_verified: "2026-03-10"
+last_verified: "2026-03-13"
 ---
 
 # Session Handover: 008-combined-bug-fixes
 
 ## 1. Handover Summary
-- **Date:** 2026-03-10
+- **Date:** 2026-03-13
 - **Canonical active folder:** `specs/02--system-spec-kit/022-hybrid-rag-fusion/008-combined-bug-fixes`
-- **Current phase:** W5 complete (historical delivery), review-followup truth reconciliation complete, continuation-ready
-- **Last action:** Reconciled packet docs to canonical truth and re-ran spec validation (`validate.sh` PASS, 0 errors / 0 warnings)
+- **Current phase:** W5 complete (historical delivery), source-016 closeout complete, packet remains open only for source-015 deferred work
+- **Last action:** Completed source-016 closeout (T080/CHK-316), re-verified source-016 evidence suite, and refreshed canonical packet truth to reflect source-015-only deferred work
 
 ## 2. Context Transfer
 ### W5 Bug Audit (2026-03-10) — 62 P1 fixes
@@ -38,20 +38,27 @@ Categories fixed: race conditions (R01-R11), data flow (D01-D10), architecture (
 ### Historical merged context (in tree)
 - Checkpoint scoping, causal-edge restore, memory_health alias handling, workflow pathing, adaptive-fusion rollout, community-detection lint
 - Sources 003, 008, and 013 are complete in this packet.
-- Source 015 remains partially complete with 15 deferred tasks still open (see tasks.md and implementation-summary.md).
-- Follow-up fixes addressed detector containment/category discovery and RRF/workflow issues; this historical work did not complete source 016 and did not clear 015 deferred work.
+- Source 015 remains partially complete with 10 deferred tasks still open (see tasks.md and implementation-summary.md).
+- Follow-up fixes addressed detector containment/category discovery, access-tracker shutdown cleanup, unified fatal shutdown handling, checkpoint edge restore routing, workflow HTML sanitization, and source-016 closeout completion.
 
-### Review-followup reconciliation (current authoritative state, 2026-03-10)
+### Review-followup reconciliation (current authoritative state, 2026-03-13)
 - Canonical packet identity is `008-combined-bug-fixes`.
 - Packet docs were reconciled to this canonical truth model.
 - `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-combined-bug-fixes` now passes (`PASSED`, errors: 0, warnings: 0).
-- Source 017 (W5) remains complete; source 015 still has 15 deferred tasks; source 016 remains pending as separate scope.
+- Source 017 (W5) remains complete; source 016 is now complete (T080 and CHK-316 closed); source 015 remains the only open deferred scope with 10 tasks.
+- Source-016 closeout specifics: causal depth now uses SCC-condensed longest-path DAG traversal; `working_memory` canonical FK behavior migrated from `CASCADE` to `SET NULL` with tests; handler error-envelope evidence was re-verified via memory-crud/BM25 test coverage.
 
-### Verification status (authoritative as of 2026-03-10)
-- Spec validator for canonical packet: PASS (`validate.sh`, 0 errors / 0 warnings)
-- `npx tsc --noEmit`: clean across `mcp_server`, `scripts`, and `shared`
-- Test suite: 11 pre-existing failures across 9 files (90 pre-existing failures resolved by W5 fixes)
-- 0 new regressions introduced
+### Verification status (authoritative as of 2026-03-13)
+- `npm run check --workspace=scripts`: PASS
+- `npm run check --workspace=mcp_server` in `.opencode/skill/system-spec-kit`: PASS
+- `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit`: PASS (scanned 731, findings 0)
+- `node node_modules/vitest/vitest.mjs run tests/graph-signals.vitest.ts tests/working-memory.vitest.ts tests/checkpoint-working-memory.vitest.ts tests/checkpoints-storage.vitest.ts tests/memory-crud-extended.vitest.ts tests/bm25-index.vitest.ts` in `.opencode/skill/system-spec-kit/mcp_server`: PASS (6 files, 275 tests)
+- `node mcp_server/node_modules/vitest/vitest.mjs run tests/unit-rrf-fusion.vitest.ts tests/checkpoints-storage.vitest.ts tests/access-tracker.vitest.ts tests/access-tracker-extended.vitest.ts`: PASS (73 passed)
+- `node node_modules/vitest/vitest.mjs run tests/composite-scoring.vitest.ts tests/unit-rrf-fusion.vitest.ts tests/mpab-aggregation.vitest.ts tests/co-activation.vitest.ts tests/fsrs-scheduler.vitest.ts tests/eval-metrics.vitest.ts` in `mcp_server`: PASS (322 passed)
+- `node node_modules/vitest/vitest.mjs run tests/score-normalization.vitest.ts tests/unit-normalization.vitest.ts tests/unit-normalization-roundtrip.vitest.ts` in `mcp_server`: PASS (56 passed)
+- `node mcp_server/node_modules/vitest/vitest.mjs run tests/context-server.vitest.ts`: PASS (315 passed)
+- `node .opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js`: PASS (32 passed, 0 failed, 3 skipped)
+- Full `vitest run`: PASS (`264` passed, `1` skipped test files; `7536` passed, `47` skipped, `28` todo tests)
 
 ### Evidence files
 - `scratch/cross-ai-review-report.md`
@@ -60,9 +67,9 @@ Categories fixed: race conditions (R01-R11), data flow (D01-D10), architecture (
 
 ## 3. For Next Session
 - Source 017 (W5) is fully complete — all 50 tasks done, 88/88 checklist items verified
-- Source 016 (code audit, 17 items) remains pending — separate audit scope, not part of W5
-- Source 015 has 15 deferred tasks (10 test coverage + 4 P2 code + 1 alignment drift)
-- If additional changes are made, rerun `npm run check:full` and refresh verification logs
+- Source 016 (code audit) is complete — T080 and CHK-316 are closed with verification evidence recorded
+- Source 015 has 10 deferred tasks (6 test coverage + 4 P2 code) and is now the only remaining deferred packet scope
+- If additional changes are made, rerun `npm run check --workspace=mcp_server` plus the full `vitest run`, then refresh verification logs
 
 ## 4. Validation Checklist
 - [x] Review-followup doc truth reconciliation applied to canonical packet docs
@@ -73,19 +80,12 @@ Categories fixed: race conditions (R01-R11), data flow (D01-D10), architecture (
 - [x] Implementation-summary.md W5 close-out section added
 - [x] Overview tables updated (017: 50/50 tasks, 88/88 checklist)
 - [x] Test baseline updated to reflect resolved pre-existing failures
+- [x] Source-016 closeout reflected: T080/CHK-316 closed and closeout verification evidence added
 
 ## 5. Deferred Items
-
-### Source 016 — Code Audit (17 items, separate scope)
+### Source 015 — Deferred Tasks (10 items, only remaining open packet work)
 | Task ID | Description | Priority |
 |---------|-------------|----------|
-| T069-T085 | 35-agent code audit findings (1 P0, 16 P1, 1 P2) | P0-P2 |
-
-### Source 015 — Deferred Tasks (15 items)
-| Task ID | Description | Priority |
-|---------|-------------|----------|
-| T002 | Test for `k = -1`, `k = 0` edge cases in RRF fusion | P0 |
-| T006 | Test cases for NaN/undefined/negative inputs to composite scoring | P1 |
 | T015 | Tests for all algorithm edge case fixes | P1 |
 | T020 | Tests for graph fix edge cases | P1 |
 | T023 | Tests for handler error response consistency | P1 |
@@ -96,12 +96,10 @@ Categories fixed: race conditions (R01-R11), data flow (D01-D10), architecture (
 | T059 | Extract `getErrorMessage`/`isAbortError` to shared utility | P2 |
 | T060 | Replace hardcoded dimension fallback with provider lookup | P2 |
 | T061 | Move mutation ledger write inside bulk delete transaction | P2 |
-| T065 | Run `verify_alignment_drift.py` on all modified source directories | P1 |
-| T075 | Tests for checkpoint merge-mode CASCADE prevention | P0 |
-| T076 | Tests for causal edge snapshot round-trip | P1 |
 
 ## 6. Session Notes
 - W5 resolved 90 pre-existing test failures as a side effect of the 62 P1 bug fixes
 - Two regressions were caught and fixed during verification: UNIQUE index too strict on mutation_ledger, autoRepair test missing confirmed:true
-- Historical W5 completion context is preserved, but active open-work truth remains: source 015 has 15 deferred tasks and source 016 remains pending/separate.
+- Source-016 closeout landed: SCC-condensed longest-path DAG causal-depth traversal, `working_memory` canonical FK transition (`CASCADE` -> `SET NULL`) with tests, and handler error-envelope re-verification via memory-crud/BM25 suites.
+- Historical W5 completion context is preserved, with current open-work truth: source 015 has 10 deferred tasks and is the only remaining deferred scope in this packet.
 - This handover supersedes the 2026-03-07 version

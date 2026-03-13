@@ -21,7 +21,7 @@ contextType: "general"
 | **Language/Stack** | TypeScript and Markdown |
 | **Framework** | Spec Kit runtime save flow plus `cli-*` skill documentation |
 | **Storage** | Markdown spec artifacts and Spec Kit Memory outputs |
-| **Testing** | Targeted Vitest, TypeScript typecheck, alignment-drift verification, `validate.sh` |
+| **Testing** | Targeted Vitest, `npm run lint` (`tsc --noEmit`), alignment-drift verification, `validate.sh` |
 
 ### Overview
 This work landed in three layers: runtime safeguards for explicit JSON-mode input handling, CLI handback documentation updates across all 8 relevant `cli-*` docs, and spec-folder reconciliation so the written evidence matches the implemented repository state. The plan keeps historical task evidence separate from current rerun status so the spec folder does not overstate a live outsourced CLI round-trip that has not been freshly revalidated.
@@ -55,7 +55,7 @@ Repository-side runtime hardening plus documentation alignment.
 
 ### Key Components
 - **`data-loader.ts`**: Loads explicit JSON-mode input and now throws `EXPLICIT_DATA_FILE_LOAD_FAILED: ...` for missing, invalid, or invalid-shape input instead of falling back.
-- **`input-normalizer.ts`**: Accepts `nextSteps` or `next_steps`, then persists the first item as `Next: ...` and the rest as `Follow-up: ...`.
+- **`input-normalizer.ts`**: Accepts `nextSteps` or `next_steps`, persists `Next: ...` / `Follow-up: ...`, and preserves mixed structured payload next steps when those facts are missing.
 - **`session-extractor.ts`**: Reads the persisted `Next: ...` fact into `NEXT_ACTION`.
 - **`runtime-memory-inputs.vitest.ts`**: Guards the explicit-failure path and next-step persistence behavior.
 - **4 `cli-*` skills + 4 prompt templates**: Tell the caller to extract handback data, redact and scrub it, and stop on explicit JSON-mode failures.
@@ -66,7 +66,7 @@ Caller prepares /tmp/save-context-data.json
   -> Caller redacts and scrubs sensitive values
   -> generate-context runtime loads explicit dataFile
   -> invalid file / JSON / shape throws EXPLICIT_DATA_FILE_LOAD_FAILED: ...
-  -> valid input normalizes nextSteps or next_steps
+  -> valid input normalizes nextSteps or next_steps (including mixed structured payloads)
   -> first persisted fact becomes Next: ...
   -> session extractor maps Next: ... to NEXT_ACTION
   -> saved memory and spec docs describe the same behavior
@@ -80,7 +80,7 @@ Caller prepares /tmp/save-context-data.json
 
 ### Phase 1: Runtime Safeguards
 - [x] Hard-fail explicit `dataFile` load, parse, and validation failures in `data-loader.ts`
-- [x] Normalize `nextSteps` and `next_steps` in `input-normalizer.ts`
+- [x] Normalize `nextSteps` and `next_steps` in `input-normalizer.ts`, including mixed structured payload preservation without duplicate next-step facts
 - [x] Feed the first persisted next step into `NEXT_ACTION` in `session-extractor.ts`
 - [x] Add regression coverage in `runtime-memory-inputs.vitest.ts`
 
@@ -92,8 +92,8 @@ Caller prepares /tmp/save-context-data.json
 
 ### Phase 3: Verification and Reconciliation
 - [x] Remove historical numeric Vitest pass-total claims from current acceptance evidence
-- [x] Verify alignment drift currently reports `0 findings`
-- [x] Record the current unrelated typecheck rerun issue honestly instead of masking it
+- [x] Verify alignment drift currently reports `0 findings` and `0 warnings`
+- [x] Record current `npm run lint` (`tsc --noEmit`) rerun status as passing evidence
 - [x] Remove unverifiable 1032-line artifact claims and keep live outsourced CLI dispatch deferred
 - [x] Run `validate.sh` on this spec folder
 <!-- /ANCHOR:phases -->
@@ -106,7 +106,7 @@ Caller prepares /tmp/save-context-data.json
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
 | Targeted regression | Explicit `dataFile` failure handling and next-step persistence | `runtime-memory-inputs.vitest.ts` |
-| Static verification | TypeScript correctness for the task scope | `npm run typecheck` |
+| Static verification | TypeScript correctness for the task scope | `npm run lint` (`tsc --noEmit`) |
 | Alignment verification | Drift between implementation and aligned standards | `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit/scripts` |
 | Spec validation | Completeness and checklist consistency inside this folder | `.opencode/skill/system-spec-kit/scripts/spec/validate.sh` |
 | Manual follow-up | Fresh live outsourced CLI dispatch | Deferred until rerun |

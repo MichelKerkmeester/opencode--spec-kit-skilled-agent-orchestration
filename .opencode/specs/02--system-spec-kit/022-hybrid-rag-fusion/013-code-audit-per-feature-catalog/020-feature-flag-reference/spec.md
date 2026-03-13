@@ -30,7 +30,7 @@ contextType: "general"
 | **Branch** | `020-feature-flag-reference` |
 | **Parent Spec** | ../spec.md |
 | **Previous Phase** | ../019-decisions-and-deferrals/spec.md |
-| **Next Phase** | N/A |
+| **Next Phase** | ../021-remediation-revalidation/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---

@@ -605,6 +605,10 @@ describe('PI-B3: Per-folder description preference', () => {
     expect(cache.folders).toHaveLength(1);
     // Should fall back to spec.md extraction
     expect(cache.folders[0].description).toBe('Fresh Authentication Title');
+
+    const repaired = loadPerFolderDescription(specDir);
+    expect(repaired).not.toBeNull();
+    expect(repaired!.description).toBe('Fresh Authentication Title');
   });
 
   it('T046-24: mixed mode aggregation with fresh and stale descriptions', () => {
@@ -702,6 +706,44 @@ describe('F12: mixed-mode aggregation with corrupt/missing/stale combinations', 
     expect(stale!.description).toBe('Stale Spec Title');
     expect(corrupt!.description).toBe('Corrupt Spec Title');
     expect(missing!.description).toBe('Missing Json Spec Title');
+  });
+
+  it('repairs stale and corrupt description.json files during discovery when the file already exists', () => {
+    const specsDir = path.join(tmpDir, 'specs');
+    const staleDir = createSpecFolder(tmpDir, '005-stale-repair', '# Stale Repair Title');
+    const corruptDir = createSpecFolder(tmpDir, '006-corrupt-repair', '# Corrupt Repair Title');
+
+    const staleDescription: PerFolderDescription = {
+      specFolder: '005-stale-repair',
+      description: 'Old stale text',
+      keywords: ['stale'],
+      lastUpdated: new Date('2020-01-01').toISOString(),
+      specId: '005',
+      folderSlug: 'stale-repair',
+      parentChain: [],
+      memorySequence: 3,
+      memoryNameHistory: ['old.md'],
+    };
+    savePerFolderDescription(staleDescription, staleDir);
+    const staleDescPath = path.join(staleDir, 'description.json');
+    const pastTime = new Date('2020-01-01');
+    fs.utimesSync(staleDescPath, pastTime, pastTime);
+
+    fs.writeFileSync(path.join(corruptDir, 'description.json'), '{invalid-json', 'utf-8');
+
+    const cache = generateFolderDescriptions([specsDir]);
+    expect(cache.folders.find((folder) => folder.specFolder === '005-stale-repair')!.description).toBe('Stale Repair Title');
+    expect(cache.folders.find((folder) => folder.specFolder === '006-corrupt-repair')!.description).toBe('Corrupt Repair Title');
+
+    const repairedStale = loadPerFolderDescription(staleDir);
+    expect(repairedStale).not.toBeNull();
+    expect(repairedStale!.description).toBe('Stale Repair Title');
+    expect(repairedStale!.memorySequence).toBe(3);
+    expect(repairedStale!.memoryNameHistory).toEqual(['old.md']);
+
+    const repairedCorrupt = loadPerFolderDescription(corruptDir);
+    expect(repairedCorrupt).not.toBeNull();
+    expect(repairedCorrupt!.description).toBe('Corrupt Repair Title');
   });
 });
 

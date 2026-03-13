@@ -59,10 +59,10 @@ Note: `.sqlite` files are generated at runtime. They are not committed to versio
 
 | Document | Purpose |
 | -------- | ------- |
-| [shared/config.ts](../../shared/config.ts) | Database directory resolution and `DB_UPDATED_FILE` export |
-| [shared/paths.ts](../../shared/paths.ts) | `DB_PATH` constant pointing to the default database |
-| [shared/embeddings/profile.ts](../../shared/embeddings/profile.ts) | Per-profile database path generation |
-| [shared/embeddings/README.md](../../shared/embeddings/README.md) | Embeddings factory with per-profile DB explanation |
+| [shared/config.ts](../../config.ts) | Database directory resolution and `DB_UPDATED_FILE` export |
+| [shared/paths.ts](../../paths.ts) | `DB_PATH` constant pointing to the default database |
+| [shared/embeddings/profile.ts](../../embeddings/profile.ts) | Per-profile database path generation |
+| [shared/embeddings/README.md](../../embeddings/README.md) | Embeddings factory with per-profile DB explanation |
 
 <!-- /ANCHOR:related -->
 

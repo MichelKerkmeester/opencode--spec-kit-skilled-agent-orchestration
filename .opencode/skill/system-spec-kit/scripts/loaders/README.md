@@ -1,6 +1,6 @@
 ---
 title: "Data Loaders"
-description: "Data loader modules that normalize input from JSON, OpenCode capture, or simulation fallback."
+description: "Data loader modules that normalize input from JSON files or OpenCode capture, then hard-stop when no usable session data exists."
 trigger_phrases:
   - "data loaders"
   - "load collected data"
@@ -30,7 +30,7 @@ The `loaders/` directory provides the ingestion layer for memory generation.
 ## 2. CURRENT INVENTORY
 
 
-- `data-loader.ts` - source loading, path checks, normalization, fallback handling
+- `data-loader.ts` - source loading, path checks, normalization, and explicit no-data failure handling
 - `index.ts` - public exports for loader API
 
 
@@ -42,7 +42,7 @@ The `loaders/` directory provides the ingestion layer for memory generation.
 `data-loader.ts` loads in this order:
 1. Explicit JSON data file
 2. OpenCode capture input
-3. Simulation fallback
+3. Hard-stop with `NO_DATA_AVAILABLE` when neither source produces usable data
 
 
 <!-- /ANCHOR:source-priority -->
@@ -53,6 +53,7 @@ The `loaders/` directory provides the ingestion layer for memory generation.
 - Path checks restrict data file access to expected safe base locations.
 - macOS `/tmp` and `/private/tmp` handling is normalized.
 - Invalid or unsafe paths fail fast instead of silently falling through.
+- Explicit JSON mode surfaces `EXPLICIT_DATA_FILE_LOAD_FAILED: ...` for missing files, invalid JSON, and validation failures.
 
 
 <!-- /ANCHOR:security-and-path-handling -->

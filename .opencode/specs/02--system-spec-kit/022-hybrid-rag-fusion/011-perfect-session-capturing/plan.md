@@ -21,7 +21,7 @@
 | `scripts/extractors/collect-session-data.ts` | Part I + Part II | 836 + Phase 0 | Task regex, learning formula, completion %; backfill SPEC_FOLDER and enrich context |
 | `scripts/utils/input-normalizer.ts` | Part I + Part II | 499 + Phase 0 | Decision/confidence and relevance filtering; snake_case/camelCase fixes |
 | `scripts/core/workflow.ts` | Part I + Part II | 950 + Phase 1 | Quality gates/error recovery; insert enrichment after alignment guards |
-| `scripts/extractors/session-extractor.ts` | Part I | 478 | Session ID (crypto), phase detection |
+| `scripts/extractors/session-extractor.ts` | Part I + Part II | 478 + Phase 2 | Session ID (crypto), phase detection, and live-over-synthetic project-state snapshot precedence |
 | `scripts/core/quality-scorer.ts` (v1) | Part I + Part II | 146 + Phase 4 | Threshold calibration; deferred semantic density checks |
 | `scripts/extractors/quality-scorer.ts` (v2) | Part I | 127 | Rule tuning, bonus math |
 | `scripts/extractors/contamination-filter.ts` | Part I | 61 | Expand denylist (7 → 25+) |
@@ -32,7 +32,7 @@
 | `scripts/core/file-writer.ts` | Part I | n/a | Atomic write, placeholder validation, rollback |
 | `scripts/core/tree-thinning.ts` | Part I | n/a | Token estimation, merge threshold, preservation |
 | `scripts/memory/generate-context.ts` | Part I | 502 | CLI parsing, spec folder resolution |
-| `templates/context_template.md` | Part I | ~27KB | Memory template output quality |
+| `.opencode/skill/system-spec-kit/templates/context_template.md` | Part I | ~27KB | Memory template output quality |
 | `scripts/extractors/spec-folder-extractor.ts` | Part II | Phase 1 (new) | Parse spec folder docs for structured context |
 | `scripts/extractors/git-context-extractor.ts` | Part II | Phase 2 (new) | Mine git status/diff/commits with provenance |
 | `scripts/extractors/file-extractor.ts` | Part I + Part II | Phase 2 | Dedup/action mapping; preserve ACTION across pipeline |
@@ -134,6 +134,13 @@ Update tasks.md, checklist.md, create implementation-summary.md, save memory con
 
 ## Part II: Stateless Quality Improvements
 
+### Implementation Status Snapshot (as of 2026-03-13)
+
+- **Phase 0 implemented**: snake_case/camelCase normalization, spec relevance filtering, and SPEC_FOLDER backfill are present in shipped code.
+- **Phase 1 implemented**: `spec-folder-extractor.ts` is implemented and integrated through `enrichStatelessData()` in `workflow.ts`.
+- **Phase 2 implemented**: `git-context-extractor.ts`, ACTION-aware file propagation, and `session-extractor.ts` live-over-synthetic project-state snapshot precedence are implemented and wired through enrichment merge.
+- **Still pending**: completion gates and quality verification are not fully closed (`CHK-001`, `CHK-002`, `CHK-007`, `CHK-008`, `CHK-010`, `CHK-013`, `CHK-014`, `CHK-022`), direct OpenCode-session validation remains blocked by `NO_DATA_AVAILABLE` in direct mode on this machine, and Phases 3-4 remain deferred.
+
 ### Preserved Source Content (Part II Source: 013/plan.md)
 
 ---
@@ -221,6 +228,7 @@ Pipeline enrichment (additive data augmentation before fan-out)
 - **`scripts/extractors/spec-folder-extractor.ts`** (NEW Phase 1): Parses spec.md, plan.md, tasks.md, checklist.md, decision-record.md, description.json for structured context
 - **`scripts/extractors/git-context-extractor.ts`** (NEW Phase 2): Mines git status, diff, and recent commits for file changes, observations, and context signals
 - **`scripts/extractors/file-extractor.ts`** (MODIFY Phase 2): Preserve ACTION field through extraction pipeline
+- **`scripts/extractors/session-extractor.ts`** (MODIFY Phase 2): Prefer live observations over synthetic enrichment when deriving project-state snapshot fields (`activeFile`, `lastAction`)
 - **`scripts/core/workflow.ts`** (MODIFY Phase 1-2): Insert enrichment step AFTER alignment guards and spec resolution, before fan-out
 - **`scripts/extractors/claude-code-capture.ts`** (NEW Phase 3, deferred): Reads Claude Code session logs from `~/.claude/projects/`
 - **`scripts/loaders/data-loader.ts`** (MODIFY Phase 3, deferred): Add Claude Code capture as Priority 2.5 fallback
@@ -269,15 +277,15 @@ CLI -> data-loader (file | OpenCode | simulation seed)
 
 **Rationale**: The existing OpenCode capture path has field-name mismatches and missing prompt filtering that silently drop data. Fixing these before adding new extractors prevents building on a broken foundation. [Review finding: GPT-5.4]
 
-- [ ] Fix snake_case/camelCase metadata mismatch in `input-normalizer.ts` (~15-25 LOC)
+- [x] Fix snake_case/camelCase metadata mismatch in `input-normalizer.ts` (~15-25 LOC)
   - `opencode-capture.ts` emits snake_case fields (e.g., `tool_calls`, `file_path`)
   - `input-normalizer.ts:399+` reads camelCase (e.g., `toolCalls`, `filePath`)
   - Map both conventions so existing OpenCode data is not silently dropped
-- [ ] Add prompt-level relevance filtering in `input-normalizer.ts` (~20-30 LOC)
+- [x] Add prompt-level relevance filtering in `input-normalizer.ts` (~20-30 LOC)
   - `transformOpencodeCapture()` converts ALL exchanges into `userPrompts` (line 430)
   - Filter prompts by spec-folder relevance to prevent V8 cross-spec contamination
   - Reuse existing spec-folder-hint matching pattern
-- [ ] Backfill `SPEC_FOLDER` from CLI-known folder name in `collect-session-data.ts` (~10 LOC)
+- [x] Backfill `SPEC_FOLDER` from CLI-known folder name in `collect-session-data.ts` (~10 LOC)
   - When `collectedData.SPEC_FOLDER` is missing but `specFolderName` is known from CLI, set it
   - Fixes data loss point 3: `detectRelatedDocs()` re-enabled
   - Note: `detectRelatedDocs()` has a parent-doc assumption requiring grandparent to be `specs`; category-rooted `.opencode/specs/...` folders may still miss parent docs
@@ -286,9 +294,9 @@ CLI -> data-loader (file | OpenCode | simulation seed)
 
 **Rationale**: Spec docs are always present in stateless runs (the spec folder IS the CLI target) and provide deterministic, high-quality context [R04].
 
-- [ ] Create `scripts/extractors/spec-folder-extractor.ts` (~120-170 LOC)
+- [x] Create `scripts/extractors/spec-folder-extractor.ts` (~120-170 LOC)
   - Parse `description.json` for metadata (id, name, title, status, level, parent)
-  - Parse `spec.md` YAML frontmatter for title, trigger_phrases, importance_tier
+  - Parse `spec.md` YAML frontmatter for title, trigger_phrases, importance_tier (including merged embedded frontmatter blocks)
   - Parse `spec.md` problem/purpose sections for summary text
   - Parse `spec.md` files-to-change table for file list
   - Parse `plan.md` phases and implementation steps for next-action hints
@@ -297,12 +305,12 @@ CLI -> data-loader (file | OpenCode | simulation seed)
   - Parse `decision-record.md` for explicit decision observations
   - Return `SpecFolderExtraction { observations, FILES, recentContext, summary, triggerPhrases, decisions, sessionPhase }`
   - All returned items include `_provenance: 'spec-folder'` marker
-- [ ] Add `enrichStatelessData()` function in `scripts/core/workflow.ts` (~25-45 LOC)
+- [x] Add `enrichStatelessData()` function in `scripts/core/workflow.ts` (~25-45 LOC)
   - Gate: only runs for stateless path (match existing detection at workflow.ts:447)
   - **Insert AFTER** contamination/alignment guards (workflow.ts:443-472) and spec resolution
   - Call spec-folder-extractor with resolved spec folder path
   - Merge extracted data into collectedData object with provenance markers
-- [ ] Ensure synthetic timestamps use stable ordering (~5 LOC)
+- [x] Ensure synthetic timestamps use stable ordering (~5 LOC)
   - Enriched observations get timestamps that do not distort `lastAction`/`nextAction`
   - Use sentinel timestamps (e.g., epoch 0) or explicit `_synthetic: true` flag
 
@@ -312,7 +320,7 @@ CLI -> data-loader (file | OpenCode | simulation seed)
 
 **Stale research note**: R02/R06 describe generic `Tool: read` observation titles, but current code already has `buildToolObservationTitle()` in `input-normalizer.ts:353`. Phase 2 observation title work should verify what is already fixed before adding changes.
 
-- [ ] Create `scripts/extractors/git-context-extractor.ts` (~140-190 LOC)
+- [x] Create `scripts/extractors/git-context-extractor.ts` (~140-190 LOC)
   - `git status --porcelain` for current uncommitted changes -> FILES with ACTION
   - `git diff --name-status HEAD~N` for recent committed changes -> FILES
     - Check available rev count first: `git rev-list --count HEAD` to avoid HEAD~5 failure on shallow repos
@@ -322,14 +330,17 @@ CLI -> data-loader (file | OpenCode | simulation seed)
   - Error handling: graceful fallback if git unavailable (not in repo, git not installed, shallow clone)
   - Performance: cap at 20 commits, 24h window, no full patch bodies
   - All returned items include `_provenance: 'git'` marker
-- [ ] Extend `enrichStatelessData()` to call git-context-extractor
+- [x] Extend `enrichStatelessData()` to call git-context-extractor
   - Merge git-derived FILES with spec-derived FILES (deduplicate by path)
   - Merge git-derived observations with spec-derived observations
   - Build enriched `recentContext` and `SUMMARY` from combined signals
   - Provenance-aware merge: downstream extractors can distinguish synthetic vs live data
-- [ ] Preserve ACTION field through file extraction in `file-extractor.ts` (~15-20 LOC)
+- [x] Preserve ACTION field through file extraction in `file-extractor.ts` (~15-20 LOC)
   - Current `extractFilesFromData()` drops everything except path and description
   - Add optional `action` field (add/modify/delete/rename) so git rename/delete accuracy survives to render
+- [x] Prefer live observations over synthetic enrichment when building project-state snapshot fields in `session-extractor.ts` (~15-25 LOC)
+  - Ensure `activeFile` and `lastAction` derive from non-synthetic observations first
+  - Prevent git/spec synthetic observations from masking real in-session actions
 - [ ] Verify observation title uniqueness (check if already fixed) (~5-15 LOC)
   - Audit current `buildToolObservationTitle()` output
   - Only add changes if dedup ratio still below 0.7
@@ -377,6 +388,7 @@ CLI -> data-loader (file | OpenCode | simulation seed)
 | Unit | snake_case/camelCase field mapping in input-normalizer | Vitest |
 | Unit | prompt relevance filtering (spec-folder hint matching) | Vitest |
 | Unit | spec-folder-extractor parsing, git-context-extractor parsing | Vitest |
+| Unit | project-state snapshot precedence prefers live over synthetic observations | Vitest |
 | Unit | Provenance marker propagation through extraction pipeline | Vitest |
 | Unit | Claude Code capture discovery, transcript parsing (Phase 3) | Vitest |
 | Integration | Full stateless workflow with enrichment (mock git, mock spec folder) | Vitest |
@@ -396,6 +408,7 @@ CLI -> data-loader (file | OpenCode | simulation seed)
 - Clean repo with no uncommitted changes
 - Git not available (not in a repo)
 - Git rename/delete ACTION preserved through file extraction
+- Project-state snapshot prefers live observations over synthetic enrichment for `activeFile` and `lastAction`
 - Synthetic timestamps do not distort lastAction/nextAction ordering
 - Cross-spec contamination: mixed-spec userPrompts filtered
 - Provenance markers present on all enriched observations and files
@@ -507,16 +520,16 @@ All findings documented in 10 scratch files by parallel research agents:
 
 | Report | File | Key Finding |
 |--------|------|-------------|
-| R01 | `scratch/R01-code-path-trace.md` | 5 data loss points identified, SPEC_FOLDER missing is avoidable |
-| R02 | `scratch/R02-opencode-capture-analysis.md` | OpenCode transform discards most tool call detail |
-| R03 | `scratch/R03-git-history-mining.md` | Git barely used today, 5 bounded commands proposed |
-| R04 | `scratch/R04-spec-folder-mining.md` | Rich structured data in spec docs never parsed |
-| R05 | `scratch/R05-claude-code-logs.md` | Claude Code JSONL at ~/.claude/ with full tool traces |
-| R06 | `scratch/R06-quality-scoring-gap.md` | Scorers overestimate stateless; semantic thinness is real issue |
-| R07 | `scratch/R07-input-normalizer-enhancement.md` | Transform produces minimal data, many fields discarded |
-| R08 | `scratch/R08-file-detection-enhancement.md` | Add git as Source 4 in extractFilesFromData |
-| R09 | `scratch/R09-observation-decision-building.md` | Git commits strongest stateless signal for observations |
-| R10 | `scratch/R10-integration-architecture.md` | Option B (enrichment layer) recommended architecture |
+| R01 | `scratch/analysis-X01.md` | Data-flow trace identified avoidable stateless data-loss points |
+| R02 | `scratch/analysis-X02.md` | OpenCode capture transformation quality gaps and title quality issues |
+| R03 | `scratch/analysis-X03.md` | Git mining strategy and bounded-command proposal |
+| R04 | `scratch/analysis-X04.md` | Spec folder mining opportunities and structured-signal extraction |
+| R05 | `scratch/analysis-X05.md` | Claude capture feasibility and deferral constraints |
+| R06 | `scratch/analysis-summary.md` | Scoring overestimation and semantic-thinness gap synthesis |
+| R07 | `scratch/qa-01-alignment-extractors-large.md` | Input normalization and extractor-path QA findings |
+| R08 | `scratch/qa-02-alignment-workflow.md` | Workflow insertion, ordering, and alignment QA findings |
+| R09 | `scratch/qa-03-alignment-collect.md` | Collection/extraction integration QA findings |
+| R10 | `scratch/qa-18-cross-file-consistency.md` | Cross-file architecture consistency and integration checks |
 
 ### Stale Research Notes
 

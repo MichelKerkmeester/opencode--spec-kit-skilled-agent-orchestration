@@ -1,0 +1,53 @@
+# Stateless enrichment and alignment guards
+
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Stateless enrichment and alignment guards.
+
+## 2. CURRENT REALITY
+
+Stateless `generate-context.js` saves now enrich thin OpenCode-derived session data with spec-folder and git context before rendering, while keeping contamination defenses in place.
+
+Current behavior is enforced in three slices:
+1. `transformOpencodeCapture()` normalizes snake_case OpenCode metadata and filters prompts, exchanges, and tool calls by spec relevance using both slug-form and natural-language keyword variants.
+2. `enrichStatelessData()` appends `_provenance: 'spec-folder'` and `_provenance: 'git'` signals after the contamination-cleaning pass and before downstream extraction.
+3. Pre- and post-enrichment alignment gates allow stateless saves only when captured file paths overlap with the target spec's declared work surface. The overlap check now uses both spec-folder keywords and files declared in the spec's files-to-change table, which prevents false blocks for legitimate code paths like `scripts/core/workflow.ts`.
+
+Git enrichment no longer scopes only to the spec folder path itself. It uses files declared by the spec to detect recent committed and uncommitted changes, and commit observations retain the touched file list for downstream reasoning. The workflow still hard-aborts on `ALIGNMENT_BLOCK`, `POST_ENRICHMENT_ALIGNMENT_BLOCK`, or failed stateless validation rules when the capture clearly belongs to another task.
+
+Downstream session snapshots now prefer live observations over synthetic spec/git enrichment when deriving `activeFile`, `lastAction`, `nextAction`, and blocker summaries. That keeps provenance-enrichment useful for context without letting epoch-timestamped synthetic entries masquerade as the user's most recent action.
+
+Status: Implemented and covered by targeted Vitest regressions.
+
+## 3. SOURCE FILES
+
+### Implementation
+
+| File | Layer | Role |
+|------|-------|------|
+| `scripts/utils/input-normalizer.ts` | Script | Stateless relevance filtering and snake_case/camelCase OpenCode normalization |
+| `scripts/extractors/spec-folder-extractor.ts` | Script | Structured extraction of files, trigger phrases, decisions, and progress from spec docs |
+| `scripts/extractors/git-context-extractor.ts` | Script | Git status, diff, and commit enrichment scoped by spec-declared file targets |
+| `scripts/core/workflow.ts` | Script | Stateless enrichment orchestration plus pre/post alignment guard enforcement |
+| `scripts/extractors/file-extractor.ts` | Script | Preserves `ACTION` semantics from enriched file entries |
+
+### Tests
+
+| File | Focus |
+|------|-------|
+| `scripts/tests/stateless-enrichment.vitest.ts` | Relevance filtering, sparse-spec extraction, git scoping/fallbacks, live-over-synthetic snapshot behavior, and extractor barrel exports |
+| `scripts/tests/task-enrichment.vitest.ts` | Workflow seam coverage proving stateless saves are allowed when captured files match spec-declared code paths |
+| `scripts/tests/memory-render-fixture.vitest.ts` | Render-path validation and quality gate regression coverage for stateless memory output |
+
+## 4. SOURCE METADATA
+
+- Group: Memory quality and indexing
+- Source feature title: Stateless enrichment and alignment guards
+- Current reality source: spec 011-perfect-session-capturing

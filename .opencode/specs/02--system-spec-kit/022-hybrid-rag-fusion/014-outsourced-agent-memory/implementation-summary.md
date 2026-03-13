@@ -35,7 +35,7 @@ You now get deterministic failure behavior when `/tmp/save-context-data.json` is
 
 ### Next-step persistence
 
-Manual JSON-mode saves now accept both `nextSteps` and `next_steps`. `input-normalizer.ts` stores the first entry as `Next: ...`, stores the rest as `Follow-up: ...`, and `session-extractor.ts` uses that first `Next: ...` fact to populate `NEXT_ACTION`.
+Manual JSON-mode saves now accept both `nextSteps` and `next_steps`. `input-normalizer.ts` stores the first entry as `Next: ...`, stores the rest as `Follow-up: ...`, preserves mixed structured payload next steps when those facts are missing, and avoids duplicating existing `Next:` / `Follow-up:` facts. `session-extractor.ts` uses the first `Next: ...` fact to populate `NEXT_ACTION`.
 
 ### CLI handback guidance
 
@@ -62,7 +62,7 @@ This spec folder now reflects the real repo state instead of a mixed story. It r
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-The delivery used a fresh documentation audit plus reproducible repo checks. This reconciliation reread the implementation files, verified current CLI doc wording by repo search, reran alignment drift for the scripts root, confirmed the existing memory artifact is 620 lines rather than 1032, and updated the 5 Level 2 spec artifacts so claims rely on current repo-verifiable evidence. Historical test and typecheck notes were demoted to deferred context instead of acceptance proof.
+The delivery used a fresh documentation audit plus reproducible repo checks. This reconciliation reread the implementation files, verified current CLI doc wording by repo search, reran targeted runtime Vitest coverage (`runtime-memory-inputs.vitest.ts`), reran `npm run lint` (`tsc --noEmit`) for scripts TypeScript correctness, reran alignment drift for the scripts root, confirmed the existing memory artifact is 620 lines rather than 1032, and updated the 5 Level 2 spec artifacts so claims rely on current repo-verifiable evidence.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -84,9 +84,9 @@ The delivery used a fresh documentation audit plus reproducible repo checks. Thi
 
 | Check | Result |
 |-------|--------|
-| Targeted runtime Vitest evidence | DEFERRED: no current targeted runtime Vitest rerun artifact was captured in this spec-only reconciliation |
-| Alignment drift | PASS: `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit/scripts` returned `0 findings` |
-| Current `npm run typecheck` rerun | DEFERRED: repo-wide typecheck was not rerun for this documentation reconciliation, so no clean-pass claim is asserted |
+| Targeted runtime Vitest evidence | PASS: `npx vitest run tests/runtime-memory-inputs.vitest.ts --config ../mcp_server/vitest.config.ts --root .` returned 1 file passed, 5 tests passed |
+| Alignment drift | PASS: `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit/scripts` returned `0 findings`, `0 warnings` |
+| Current `npm run lint` rerun | PASS: `.opencode/skill/system-spec-kit/scripts` `npm run lint` passed (`tsc --noEmit`) |
 | Existing memory artifact check | PASS: `memory/11-03-26_15-37__analyzed-loadcollecteddata-in-data-loader-ts.md` exists and is 620 lines |
 | Live outsourced CLI dispatch | DEFERRED: not rerun during this reconciliation |
 | Spec validation | PASS: `.opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/014-outsourced-agent-memory` exited 0 (Errors: 0, Warnings: 0) |
@@ -98,5 +98,4 @@ The delivery used a fresh documentation audit plus reproducible repo checks. Thi
 ## Known Limitations
 
 1. **Live outsourced CLI dispatch is still deferred.** Rerun a fresh end-to-end outsourced-agent session if new acceptance proof is required.
-2. **Repo-wide typecheck is outside this spec-only verification set.** This reconciliation does not present `npm run typecheck` as acceptance evidence without a current rerun artifact.
 <!-- /ANCHOR:limitations -->

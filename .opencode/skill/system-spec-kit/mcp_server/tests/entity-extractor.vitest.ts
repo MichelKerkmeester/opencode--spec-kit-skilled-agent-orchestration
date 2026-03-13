@@ -103,18 +103,21 @@ describe('extractEntities', () => {
     expect(techs.map((e) => e.text)).toContain('python');
   });
 
-  it('extracts words after "using", "with", "via", "implements"', () => {
-    // The key_phrase regex includes [\w.-] so dots extend the match across
-    // sentence boundaries. "via" captures "GraphQL. Implements Singleton"
-    // because both dot and uppercase words keep extending the pattern.
-    // The keywords are case-sensitive lowercase, so capitalized "Implements"
-    // does NOT trigger a separate key_phrase match.
+  it('stops key phrase extraction at sentence boundaries', () => {
     const result = extractEntities('Built using React and integrates via GraphQL. Implements Singleton pattern.');
     const keyPhrases = result.filter((e) => e.type === 'key_phrase');
     expect(keyPhrases.length).toBeGreaterThanOrEqual(1);
     expect(keyPhrases.some((e) => e.text === 'React')).toBe(true);
-    // "via" captures "GraphQL. Implements Singleton" due to dot in char class
-    expect(keyPhrases.some((e) => e.text.startsWith('GraphQL'))).toBe(true);
+    expect(keyPhrases.some((e) => e.text === 'GraphQL')).toBe(true);
+    expect(keyPhrases.some((e) => e.text === 'Singleton')).toBe(true);
+    expect(keyPhrases.some((e) => e.text.includes('. Implements'))).toBe(false);
+  });
+
+  it('keeps dotted technology names inside a single key phrase token', () => {
+    const result = extractEntities('Built using Node.js with Next.js Adapter.');
+    const keyPhrases = result.filter((e) => e.type === 'key_phrase');
+    expect(keyPhrases.some((e) => e.text === 'Node.js')).toBe(true);
+    expect(keyPhrases.some((e) => e.text === 'Next.js Adapter')).toBe(true);
   });
 
   it('extracts heading content from markdown', () => {

@@ -165,8 +165,8 @@ The pipeline is the sole runtime path. `SPECKIT_PIPELINE_V2` is deprecated — `
 | `mcp_server/tests/hybrid-search-context-headers.vitest.ts` | Context header injection |
 | `mcp_server/tests/hybrid-search-flags.vitest.ts` | Hybrid search flag behavior |
 | `mcp_server/tests/hybrid-search.vitest.ts` | Hybrid search orchestration |
-| `mcp_server/tests/incremental-index-v2.vitest.ts` | Incremental index v2 tests |
-| `mcp_server/tests/incremental-index.vitest.ts` | Incremental index tests |
+| `mcp_server/tests/incremental-index-v2.vitest.ts` | Incremental index behavioral tests |
+| `mcp_server/tests/incremental-index.vitest.ts` | Legacy deferred placeholder suite (skipped; not behavioral evidence) |
 | `mcp_server/tests/index-refresh.vitest.ts` | Index refresh tests |
 | `mcp_server/tests/integration-138-pipeline.vitest.ts` | Pipeline feature-138 tests |
 | `mcp_server/tests/integration-search-pipeline.vitest.ts` | Search pipeline integration |

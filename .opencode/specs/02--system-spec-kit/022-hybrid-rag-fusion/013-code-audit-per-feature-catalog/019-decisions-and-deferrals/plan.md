@@ -32,7 +32,7 @@ contextType: "general"
 | **Testing** | Vitest + feature-catalog/source consistency review |
 
 ### Overview
-This plan operationalizes the decisions-and-deferrals audit by mapping findings into phased remediation work and explicit verification checkpoints. It preserves the existing feature-by-feature analysis and focuses implementation effort on the two WARN areas: graph-signals inventory/test coverage and cross-sentence entity extraction behavior.
+This plan operationalized the decisions-and-deferrals audit by closing both prior WARN areas: F-02 evidence completeness for graph signals and F-03 sentence-boundary extraction behavior. The current focus is closure documentation, verification traceability, and one residual data backfill question.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -46,9 +46,9 @@ This plan operationalizes the decisions-and-deferrals audit by mapping findings 
 - [x] Dependencies identified
 
 ### Definition of Done
-- [ ] All acceptance criteria met
-- [ ] Tests passing (if applicable)
-- [ ] Docs updated (spec/plan/tasks)
+- [x] All acceptance criteria met
+- [x] Tests passing (if applicable)
+- [x] Docs updated (spec/plan/tasks)
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -80,14 +80,14 @@ Audit inputs (feature catalog + source/test references) are reviewed per feature
 - [x] Audit criteria baseline established
 
 ### Phase 2: Core Implementation
-- [ ] Update graph centrality feature inventory and test references
-- [ ] Apply entity extractor Rule-3 regex correction
-- [ ] Add regression tests for sentence-boundary capture and graph signals gaps
+- [x] Update graph centrality feature inventory and test references
+- [x] Apply entity extractor Rule-3 regex correction
+- [x] Add regression tests for sentence-boundary capture and graph signals gaps
 
 ### Phase 3: Verification
-- [ ] Manual testing complete
-- [ ] Edge cases handled
-- [ ] Documentation updated
+- [x] Manual testing complete
+- [x] Edge cases handled
+- [x] Documentation updated
 <!-- /ANCHOR:phases -->
 
 ---
@@ -109,10 +109,10 @@ Audit inputs (feature catalog + source/test references) are reviewed per feature
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| `feature_catalog/19--decisions-and-deferrals/` entries | Internal | Green | Audit cannot be reconciled to declared feature reality |
-| `mcp_server/lib/graph/graph-signals.ts` | Internal | Yellow | F-02 WARN cannot be closed |
-| `mcp_server/lib/extraction/entity-extractor.ts` | Internal | Yellow | F-03 WARN cannot be closed |
-| `mcp_server/tests/entity-extractor.vitest.ts` and graph tests | Internal | Yellow | Test-gap deferrals remain unresolved |
+| `feature_catalog/19--decisions-and-deferrals/` entries | Internal | Green | Source-of-truth evidence remains aligned to current implementation |
+| `mcp_server/lib/graph/graph-signals.ts` | Internal | Green | F-02 runtime evidence reconciled to existing implementation |
+| `mcp_server/lib/extraction/entity-extractor.ts` | Internal | Green | F-03 sentence-boundary behavior fixed |
+| `mcp_server/tests/entity-extractor.vitest.ts` and graph tests | Internal | Green | Targeted regression verification passed |
 <!-- /ANCHOR:dependencies -->
 
 ---

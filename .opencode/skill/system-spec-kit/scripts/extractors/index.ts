@@ -35,3 +35,5 @@ export * from './collect-session-data';
 export * from './opencode-capture';
 export * from './contamination-filter';
 export * from './quality-scorer';
+export * from './spec-folder-extractor';
+export * from './git-context-extractor';

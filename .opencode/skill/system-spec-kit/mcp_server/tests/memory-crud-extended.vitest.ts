@@ -41,6 +41,7 @@ vi.mock('../lib/search/vector-index', async (importOriginal) => {
     updateEmbeddingStatus: vi.fn((...args: any[]) => actual.updateEmbeddingStatus?.(...args)),
     getStatusCounts: vi.fn((...args: any[]) => actual.getStatusCounts?.(...args)),
     isVectorSearchAvailable: vi.fn(() => actual.isVectorSearchAvailable?.()),
+    verifyIntegrity: vi.fn((...args: any[]) => actual.verifyIntegrity?.(...args)),
   };
 });
 
@@ -464,6 +465,16 @@ function installHealthMocks(opts: {
 
   vi.mocked(vectorIndex.getDb).mockImplementation(() => fakeDb);
   vi.mocked(vectorIndex.isVectorSearchAvailable).mockImplementation(() => vectorSearchAvailable);
+  vi.mocked(vectorIndex.verifyIntegrity).mockImplementation(() => ({
+    totalMemories: memoryCount,
+    totalVectors: 0,
+    orphanedVectors: 0,
+    missingVectors: 0,
+    orphanedFiles: [],
+    orphanedChunks: 0,
+    isConsistent: true,
+  }));
+  vi.mocked(vectorIndex.deleteMemory).mockImplementation(() => true);
 
   if (embeddingsSourceMod) {
     vi.mocked(embeddingsSourceMod.getProviderMetadata).mockImplementation(() => providerMetadata);
@@ -1195,6 +1206,36 @@ describe('handleMemoryHealth - Happy Path', () => {
     )).toBe(true);
   });
 
+  it('EXT-H4e: Health sanitizes absolute profile-error paths that contain spaces', async (ctx) => {
+    if (!embeddingsSourceMod) { ctx.skip(); return; }
+    if (!handler?.handleMemoryHealth || !vectorIndex) {
+      throw new Error('Test setup incomplete');
+    }
+    handler.setEmbeddingModelReady(true);
+    installHealthMocks({
+      dbAvailable: true,
+      providerMetadata: { provider: 'voyage', healthy: true },
+      embeddingProfile: null,
+      embeddingDimension: 1024,
+      modelName: 'voyage-4',
+    });
+    vi.mocked(embeddingsSourceMod.getEmbeddingProfileAsync)
+      .mockRejectedValueOnce(
+        new Error(
+          'Profile load failed at /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/demo/file.md: dimension mismatch'
+        )
+      );
+
+    const result = await handler.handleMemoryHealth({});
+    const parsed = parseResponse(result);
+    const profileHint = parsed?.hints?.find((hint: string) =>
+      hint.includes('Embedding profile unavailable')
+    );
+
+    expect(profileHint).toContain('[path]');
+    expect(profileHint).not.toContain('/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public');
+  });
+
   it('EXT-H5: Health includes version', async () => {
     if (!handler?.handleMemoryHealth || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
     handler.setEmbeddingModelReady(true);
@@ -1383,6 +1424,15 @@ describe('handleMemoryHealth - Happy Path', () => {
       dim: 768,
       getDatabasePath: (base: string) => `${base}/test.db`,
     }));
+    vi.mocked(vectorIndex.verifyIntegrity).mockImplementation(() => ({
+      totalMemories: 42,
+      totalVectors: 42,
+      orphanedVectors: 0,
+      missingVectors: 0,
+      orphanedFiles: [],
+      orphanedChunks: 0,
+      isConsistent: true,
+    }));
 
     const refreshSpy = vi.spyOn(triggerMatcherMod, 'refreshTriggerCache').mockImplementation(() => undefined as never);
 
@@ -1450,6 +1500,15 @@ describe('handleMemoryHealth - Happy Path', () => {
     }));
     vi.mocked(causalEdgesMod.init).mockImplementation(() => undefined);
     vi.mocked(causalEdgesMod.cleanupOrphanedEdges).mockImplementation(() => ({ deleted: 3 }));
+    vi.mocked(vectorIndex.verifyIntegrity).mockImplementation(() => ({
+      totalMemories: 42,
+      totalVectors: 42,
+      orphanedVectors: 0,
+      missingVectors: 0,
+      orphanedFiles: [],
+      orphanedChunks: 0,
+      isConsistent: true,
+    }));
 
     const refreshSpy = vi.spyOn(triggerMatcherMod, 'refreshTriggerCache').mockImplementation(() => undefined as never);
 
@@ -1510,6 +1569,15 @@ describe('handleMemoryHealth - Happy Path', () => {
     }));
     vi.mocked(causalEdgesMod.init).mockImplementation(() => undefined);
     vi.mocked(causalEdgesMod.cleanupOrphanedEdges).mockImplementation(() => ({ deleted: 2 }));
+    vi.mocked(vectorIndex.verifyIntegrity).mockImplementation(() => ({
+      totalMemories: 42,
+      totalVectors: 42,
+      orphanedVectors: 0,
+      missingVectors: 0,
+      orphanedFiles: [],
+      orphanedChunks: 0,
+      isConsistent: true,
+    }));
 
     const result = await handler.handleMemoryHealth({ autoRepair: true, confirmed: true });
     const parsed = parseResponse(result);
@@ -1524,6 +1592,73 @@ describe('handleMemoryHealth - Happy Path', () => {
       expect.arrayContaining([expect.stringContaining('Consistency check failed before repair')])
     );
     expect(parsed?.data?.repair?.actions).toContain('orphan_edges_cleaned:2');
+  });
+
+  it('EXT-H15: autoRepair cleans orphaned vectors and temp fixture rows', async (ctx) => {
+    if (
+      !handler?.handleMemoryHealth ||
+      !vectorIndex ||
+      !embeddingsSourceMod ||
+      !causalEdgesMod?.init ||
+      !causalEdgesMod?.cleanupOrphanedEdges
+    ) {
+      ctx.skip();
+      return;
+    }
+
+    handler.setEmbeddingModelReady(true);
+    installHealthMocks({ dbAvailable: true, memoryCount: 42 });
+
+    vi.mocked(embeddingsSourceMod.getProviderMetadata).mockImplementation(() => ({
+      provider: 'test',
+      model: 'test-model',
+      healthy: true,
+    }));
+    vi.mocked(embeddingsSourceMod.getEmbeddingProfile).mockImplementation(() => ({
+      dim: 768,
+      getDatabasePath: (base: string) => `${base}/test.db`,
+    }));
+    vi.mocked(causalEdgesMod.init).mockImplementation(() => undefined);
+    vi.mocked(causalEdgesMod.cleanupOrphanedEdges).mockImplementation(() => ({ deleted: 0 }));
+    vi.mocked(vectorIndex.deleteMemory).mockImplementation(() => true);
+    vi.mocked(vectorIndex.verifyIntegrity)
+      .mockReturnValueOnce({
+        totalMemories: 42,
+        totalVectors: 45,
+        orphanedVectors: 0,
+        missingVectors: 2,
+        orphanedFiles: [
+          { id: 101, file_path: '/tmp/specs/123-scratch/a.md', reason: 'File no longer exists on filesystem' },
+          { id: 102, file_path: '/tmp/specs/123-keep/b.md', reason: 'File no longer exists on filesystem' },
+        ],
+        orphanedChunks: 0,
+        isConsistent: false,
+        cleaned: { vectors: 3, chunks: 0 },
+      })
+      .mockReturnValueOnce({
+        totalMemories: 40,
+        totalVectors: 42,
+        orphanedVectors: 0,
+        missingVectors: 0,
+        orphanedFiles: [],
+        orphanedChunks: 0,
+        isConsistent: true,
+      });
+    vi.mocked(vectorIndex.deleteMemory).mockClear();
+
+    const result = await handler.handleMemoryHealth({ autoRepair: true, confirmed: true });
+    const parsed = parseResponse(result);
+
+    expect(vi.mocked(vectorIndex.deleteMemory)).toHaveBeenCalledTimes(2);
+    expect(parsed?.data?.repair?.repaired).toBe(true);
+    expect(parsed?.data?.repair?.actions).toContain('orphan_vectors_cleaned:3');
+    expect(parsed?.data?.repair?.actions).toContain('temp_fixture_memories_deleted:2');
+    expect(parsed?.hints).toEqual(
+      expect.arrayContaining([
+        expect.stringContaining('removed 3 orphaned vector'),
+        expect.stringContaining('removed 2 temp fixture memory row'),
+      ])
+    );
   });
 });
 

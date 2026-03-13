@@ -15,7 +15,7 @@ This document captures the implemented behavior, source references, and validati
 
 Not all memories sit at the same level of abstraction. A root decision that caused five downstream implementation memories occupies a different position in the knowledge graph than a leaf node.
 
-Causal depth measures each memory's nearest-root distance from root nodes (those with in-degree zero) via multi-source BFS traversal. The raw depth is normalized by the deepest reachable BFS layer to produce a [0,1] score. A memory at depth 3 in a graph whose deepest reachable layer is 6 scores 0.5.
+Causal depth measures each memory's longest structural distance from a root strongly connected component. The causal graph is first condensed into SCCs, then longest-path depth is computed across the resulting DAG so shortcut edges do not suppress deeper chains and cycle members share one bounded depth layer. The raw component depth is normalized by the deepest reachable component chain to produce a [0,1] score. A memory in a component at depth 3 within a graph whose deepest reachable component chain is 6 scores 0.5.
 
 Like momentum, the depth signal applies as an additive bonus in Stage 2, capped at +0.05. Batch computation via `computeCausalDepthScores()` shares the same session cache infrastructure as momentum. Both signals are applied together by `applyGraphSignals()`, which iterates over pipeline rows and adds the combined bonus. A single-node variant of `computeCausalDepth` was removed during Sprint 8 remediation as dead code (the batch version `computeCausalDepthScores` is the only caller).
 

@@ -1,6 +1,6 @@
 ---
 title: "Implementation Plan: Code Audit Per Feature Catalog [template:level_1/plan.md]"
-description: "Execution and quality plan for running a 20-phase feature-based audit across the Spec Kit Memory MCP server."
+description: "Execution and quality plan for running a 21-phase feature-based audit (20 category phases plus remediation/revalidation) across the Spec Kit Memory MCP server."
 # SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2
 trigger_phrases:
   - "implementation"
@@ -30,7 +30,7 @@ contextType: "general"
 | **Testing** | Validator scripts and audit checklists |
 
 ### Overview
-This plan coordinates feature-by-feature auditing across 20 phase folders under a single parent catalog. The approach standardizes findings, aligns them to playbook scenarios, and ends with synthesis reporting for prioritization.
+This plan now operates as a remediation/revalidation reconciliation layer across the 21-phase packet. The 20 category phases remain the audit baseline, while phase 021 captures post-fix alignment for chunk-thinning timeout stability, placeholder-suite coverage labeling, and parent-state truthfulness. The finalized post-remediation aggregate recount is published in `synthesis.md`.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -44,9 +44,9 @@ This plan coordinates feature-by-feature auditing across 20 phase folders under 
 - [x] Shared audit dimensions defined and agreed
 
 ### Definition of Done
-- [ ] Every phase includes complete findings per feature
-- [ ] Cross-phase synthesis and recommendations are finalized
-- [ ] Validator checks pass for required root artifacts
+- [x] Every phase includes complete findings per feature
+- [x] Cross-phase synthesis and recommendations are updated with historical-vs-current clarity
+- [x] Validator checks pass for required root artifacts after remediation doc updates
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -63,7 +63,7 @@ Phased documentation workflow with centralized synthesis.
 - **Synthesis Layer**: Consolidates risks, regressions, and follow-up priorities.
 
 ### Data Flow
-Feature catalog entries map to source files and playbook scenarios, each phase produces structured findings, and outputs roll into parent-level synthesis for final decision support.
+Runtime/test/catalog remediation changes are first applied in repository source files, then phase 021 records the reconciliation evidence, and parent docs consume that evidence to keep synthesis and task state truthful.
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -72,19 +72,20 @@ Feature catalog entries map to source files and playbook scenarios, each phase p
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Setup
-- [x] Confirm 20 phase folders exist and match category naming.
+- [x] Confirm 21 phase folders exist (20 category + remediation) and match naming.
 - [x] Align template usage and baseline validator expectations.
 - [x] Define delegation tiers for critical and standard phases.
 
 ### Phase 2: Core Implementation
-- [ ] Execute per-phase feature inventory and code audit.
-- [ ] Validate behavior against feature catalog and tests.
-- [ ] Record findings with scenario cross-references and severity.
+- [x] Execute per-phase feature inventory and code audit.
+- [x] Capture remediation evidence from completed fixes (`chunk-thinning.vitest.ts`, tests README, feature catalog updates).
+- [x] Record findings with scenario cross-references and remediation status.
 
 ### Phase 3: Verification
-- [ ] Review phase artifacts for consistency and completeness.
-- [ ] Produce cross-phase synthesis with top-risk ranking.
-- [ ] Save session context and prepare handoff if needed.
+- [x] Review phase artifacts for consistency and completeness.
+- [x] Execute phase 021 remediation/revalidation closure checks (timeout, stale parent state, coverage drift).
+- [x] Produce cross-phase synthesis with remediation disposition and superseded-baseline labeling.
+- [x] Run recursive spec validation for parent + child phases after final doc edits (result: PASS after adding root `implementation-summary.md` and reconciling phase 021 closeout language).
 <!-- /ANCHOR:phases -->
 
 ---
@@ -94,9 +95,10 @@ Feature catalog entries map to source files and playbook scenarios, each phase p
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Structural validation | Root and phase documentation integrity | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh` |
-| Content consistency | Feature-to-source and scenario mapping | Manual markdown review |
-| Audit quality checks | Completeness of findings and synthesis | Checklist review and peer pass |
+| Structural validation | Root and phase documentation integrity | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog --recursive` |
+| Runtime-test remediation evidence | Chunk-thinning timeout stability | `npx vitest run tests/file-watcher.vitest.ts tests/chunk-thinning.vitest.ts` and `npx vitest run tests/chunk-thinning.vitest.ts tests/file-watcher.vitest.ts --sequence.shuffle.files` |
+| Repository-wide health evidence | Full test suite sanity snapshot | `npm run check:full` |
+| Content consistency | Placeholder-suite coverage wording alignment | `rg "incremental-index-v2.vitest.ts|incremental-index.vitest.ts"` across `feature_catalog/01..18` plus `.opencode/skill/system-spec-kit/mcp_server/tests/README.md` |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -106,9 +108,9 @@ Feature catalog entries map to source files and playbook scenarios, each phase p
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| Feature catalog markdown set | Internal | Green | Missing mappings can delay or invalidate phase audits |
-| Manual testing playbook | Internal | Green | Scenario traceability becomes incomplete |
-| Agent execution capacity | Operational | Yellow | Slower throughput for high-complexity phases |
+| Feature catalog markdown set (phases 001-018) | Internal | Green | Coverage-drift reconciliation evidence becomes incomplete |
+| `mcp_server/tests/chunk-thinning.vitest.ts` remediation change | Internal | Green | Timeout stabilization cannot be evidenced in phase 021 |
+| `.opencode/skill/system-spec-kit/mcp_server/tests/README.md` placeholder labeling | Internal | Green | Parent synthesis cannot claim placeholder-suite alignment truthfully |
 <!-- /ANCHOR:dependencies -->
 
 ---

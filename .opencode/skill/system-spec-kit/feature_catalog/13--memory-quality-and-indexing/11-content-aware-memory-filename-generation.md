@@ -24,12 +24,15 @@ The slug is lowercased, non-alphanumeric characters replaced with hyphens, colla
 | File | Layer | Role |
 |------|-------|------|
 | `scripts/utils/slug-utils.ts` | Script | Content-aware slug generation |
+| `scripts/utils/task-enrichment.ts` | Script | Decides when stateless saves may enrich generic task names from `spec.md` titles |
+| `scripts/core/workflow.ts` | Script | Applies spec-title fallback and `preferredMemoryTask` selection before filename generation |
 
 ### Tests
 
 | File | Focus |
 |------|-------|
 | `mcp_server/tests/slug-utils-boundary.vitest.ts` | Slug generation boundary tests |
+| `scripts/tests/task-enrichment.vitest.ts` | Stateless-vs-file-backed task enrichment, slug precedence, and workflow seam coverage |
 
 ## 4. SOURCE METADATA
 

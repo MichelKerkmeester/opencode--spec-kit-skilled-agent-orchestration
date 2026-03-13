@@ -27,7 +27,7 @@ contextType: "general"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P1 |
-| **Status** | Draft |
+| **Status** | Implemented |
 | **Created** | 2026-03-10 |
 | **Branch** | `019-decisions-and-deferrals` |
 | **Parent Spec** | ../spec.md |
@@ -41,10 +41,10 @@ contextType: "general"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-The decisions-and-deferrals feature catalog has completed implementation notes, but the audit output needed to be normalized into a Level 2 SpecKit structure. Without that structure, findings about behavior mismatches and deferred test coverage are harder to verify and track.
+The decisions-and-deferrals audit identified two WARN findings (F-02 and F-03) that blocked closure due to incomplete evidence mapping and a real sentence-boundary extraction bug. The spec folder now needs to reflect post-remediation reality with traceable verification evidence.
 
 ### Purpose
-Provide a Level 2, verification-ready specification that captures the five-feature audit results and deferral-driven follow-up work.
+Provide a Level 2, verification-ready specification that captures final PASS/WARN outcomes after remediation, plus any residual follow-up questions that still need product/ops decisions.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -54,21 +54,22 @@ Provide a Level 2, verification-ready specification that captures the five-featu
 
 ### In Scope
 - Audit summary for all five catalog features in `feature_catalog/19--decisions-and-deferrals/`
-- Behavior/correctness/test-gap findings for each audited feature
-- Prioritized follow-up tasks for WARN findings and deferred fixes
+- Closure evidence for formerly deferred WARN items F-02 and F-03
+- Final verification outcomes and residual open-question documentation
 
 ### Out of Scope
-- Immediate implementation of code fixes in `mcp_server/` - tracked as follow-up tasks
+- New feature development beyond F-02/F-03 remediation and audit closure
 - Manual playbook mapping - currently N/A for this catalog category
 
 ### Files to Change
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/019-decisions-and-deferrals/spec.md | Modify | Convert audit overview to Level 2 spec template |
-| .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/019-decisions-and-deferrals/tasks.md | Modify | Convert finding list to phased Level 2 tasks |
-| .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/019-decisions-and-deferrals/plan.md | Modify | Convert methodology notes to Level 2 implementation plan |
-| .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/019-decisions-and-deferrals/checklist.md | Modify | Convert per-feature findings into Level 2 verification checklist |
+| .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/019-decisions-and-deferrals/spec.md | Modify | Update phase status and post-remediation scope |
+| .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/019-decisions-and-deferrals/tasks.md | Modify | Mark remediation and verification tasks complete with evidence |
+| .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/019-decisions-and-deferrals/plan.md | Modify | Reflect completed implementation and verification phases |
+| .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/019-decisions-and-deferrals/checklist.md | Modify | Update F-02/F-03 outcomes from WARN to PASS with concrete evidence |
+| .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/019-decisions-and-deferrals/implementation-summary.md | Modify | Capture remediation pass, external evidence reconciliation, and final verification |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -98,7 +99,8 @@ Provide a Level 2, verification-ready specification that captures the five-featu
 ## 5. SUCCESS CRITERIA
 
 - **SC-001**: All 5 features are represented with status, issue class, and recommended action
-- **SC-002**: All WARN findings are translated into explicit tasks and verification checkpoints
+- **SC-002**: Former WARN findings for F-02 and F-03 are reconciled to concrete remediation evidence
+- **SC-003**: Verification commands for targeted tests and checks complete successfully
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -107,8 +109,8 @@ Provide a Level 2, verification-ready specification that captures the five-featu
 ## 6. ACCEPTANCE SCENARIOS
 
 1. **Given** all five catalog features are listed in scope, **When** checklist verification runs, **Then** each feature appears with PASS/WARN/FAIL status and a finding summary.
-2. **Given** a WARN finding exists for F-02 graph signals, **When** tasks are reviewed, **Then** at least one remediation task targets source inventory and test-gap closure.
-3. **Given** a WARN finding exists for F-03 entity extraction, **When** verification tasks execute, **Then** sentence-boundary regex behavior is validated and documented.
+2. **Given** F-02 previously failed on evidence completeness, **When** feature-catalog sources are reconciled, **Then** graph-signals implementation/tests and migration-v19 touchpoints are explicitly referenced and F-02 can be marked PASS.
+3. **Given** F-03 previously failed on cross-sentence extraction, **When** Rule-3 regex and regression tests are updated, **Then** sentence-boundary capture is prevented while dotted tokens like `Node.js` still extract correctly.
 4. **Given** markdown cross-references are updated, **When** `validate.sh --no-recursive` runs for this folder, **Then** spec documentation integrity passes with no missing markdown targets.
 <!-- /ANCHOR:acceptance-scenarios -->
 
@@ -121,8 +123,8 @@ Provide a Level 2, verification-ready specification that captures the five-featu
 |------|------|--------|------------|
 | Dependency | `feature_catalog/19--decisions-and-deferrals/*.md` | Missing/incorrect feature entries can skew audit conclusions | Reconcile findings against catalog source list before sign-off |
 | Dependency | `mcp_server/lib/**` and `mcp_server/tests/**` references | Incomplete file inventory can hide behavior mismatches | Include all referenced implementation and migration files in source tables |
-| Risk | Documentation-only remediation stalls code-level fixes | WARN items can remain unresolved across cycles | Track fixes as P1/P2 tasks with explicit verification steps |
-| Risk | Test-gap deferrals persist without ownership | Known gaps (graph signals, entity regex boundaries) remain untested | Add dedicated verification tasks and require evidence in checklist |
+| Risk | Regex remediation changes extraction boundaries | Previously extracted cross-sentence entities may remain in stored data | Decide whether cleanup/backfill is required for historical rows |
+| Risk | Audit drift after closure | Future code changes can invalidate PASS evidence | Keep catalog source tables synchronized during future audits |
 <!-- /ANCHOR:risks -->
 
 ---
@@ -184,8 +186,7 @@ Provide a Level 2, verification-ready specification that captures the five-featu
 
 ## 10. OPEN QUESTIONS
 
-- Should F-02 source inventory updates be applied in the same cycle as missing graph-signal test additions?
-- Should the F-03 regex correction include a migration/backfill strategy for previously extracted entities?
+- Should the F-03 regex correction include a migration/backfill strategy for previously extracted entities in `memory_entities`?
 <!-- /ANCHOR:questions -->
 
 ---
