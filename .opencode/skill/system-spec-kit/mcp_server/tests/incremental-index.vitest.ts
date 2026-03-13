@@ -99,7 +99,7 @@ describe.skip('Incremental Indexing (T064-T066) [deferred - requires DB test fix
       expect(true).toBe(true);
     });
 
-    // T004: Renamed from hash_checks; still deferred (requires DB fixtures)
+    // T004: Renamed from the legacy mtime-only counter; still deferred (requires DB fixtures)
     it('should track mtime_changed correctly', () => {
       expect(true).toBe(true);
     });

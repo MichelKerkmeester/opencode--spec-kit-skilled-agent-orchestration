@@ -128,7 +128,7 @@ export async function writeFilesAtomically(
       throw new Error(`Invalid filename "${filename}": must be a relative path without traversal`);
     }
     const filePath = path.join(contextDir, filename);
-    const resolvedFilePath = path.resolve(filePath);
+    const resolvedFilePath = path.join(resolvedContextDir, filename);
     if (!resolvedFilePath.startsWith(resolvedContextDir + path.sep)) {
       throw new Error(`Filename "${filename}" resolves outside target directory`);
     }

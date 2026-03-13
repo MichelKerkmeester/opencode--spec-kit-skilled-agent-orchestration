@@ -171,6 +171,29 @@ describe('Causal Edges (T043-T047, T128-T141)', () => {
       expect(new Set(edges.map((edge) => edge.relation))).toEqual(new Set(relationTypes));
     });
 
+    it('rethrows database write failures so handlers can classify them', () => {
+      const originalPrepare = testDb.prepare.bind(testDb);
+      const prepareSpy = vi.spyOn(testDb, 'prepare').mockImplementation((sql: string) => {
+        if (sql.includes('INSERT INTO causal_edges')) {
+          throw new Error('SQLITE_BUSY: database is locked');
+        }
+        return originalPrepare(sql);
+      });
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+
+      try {
+        expect(() => (
+          causalEdges.insertEdge('1', '2', causalEdges.RELATION_TYPES.CAUSED, 0.9, 'busy-db')
+        )).toThrow('SQLITE_BUSY: database is locked');
+        expect(warnSpy).toHaveBeenCalledWith(
+          expect.stringContaining('[causal-edges] insertEdge error: SQLITE_BUSY: database is locked')
+        );
+      } finally {
+        prepareSpy.mockRestore();
+        warnSpy.mockRestore();
+      }
+    });
+
     it('should validate required source_id', () => {
       const edgeId = causalEdges.insertEdge(
         undefined as unknown as string,

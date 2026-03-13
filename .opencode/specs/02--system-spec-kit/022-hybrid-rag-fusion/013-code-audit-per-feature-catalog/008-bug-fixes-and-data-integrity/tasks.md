@@ -5,10 +5,9 @@ SPECKIT_TEMPLATE_SOURCE: "tasks-core | v2.2"
 trigger_phrases:
   - "bug fixes"
   - "data integrity"
-  - "audit tasks"
-  - "chunk deduplication"
-  - "safe swap"
-  - "timestamp fix"
+  - "causal link"
+  - "verification sync"
+  - "scripts package"
 importance_tier: "normal"
 contextType: "general"
 ---
@@ -33,10 +32,10 @@ contextType: "general"
 
 | Priority | Count | Description |
 |----------|-------|-------------|
-| **P0** | 5 | FAIL findings requiring immediate correction |
-| **P1** | 8 | WARN findings requiring behavior or coverage alignment |
-| **P2** | 1 | WARN finding for test gap only |
-| **Total** | 14 | Remediation tasks |
+| **P0** | 7 | Runtime correctness + critical verification |
+| **P1** | 14 | Coverage hardening, docs alignment, and scripts reliability |
+| **P2** | 1 | Cleanup and optional follow-through item |
+| **Total** | 22 | Packet tasks |
 <!-- /ANCHOR:notation -->
 
 ---
@@ -44,11 +43,9 @@ contextType: "general"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 [P] [P0] Correct F-05 implementation table and B4 `.changes` claim — Agent 1: replaced generic config files with actual B1-B4 fix files (reconsolidation-bridge, checkpoints, causal-edges, pe-gating); B4 claim corrected to pe-gating.ts `.changes === 0` guard
-- [x] T002 [P] [P0] Correct F-06 implementation/test pathing for E1/E2 — Agent 1: replaced `lib/errors/*` with `temporal-contiguity.ts` (E1 j=i+1 fix) and `extraction-adapter.ts` (E2 null-on-unresolved)
-- [x] T003 [P] [P1] Add active dedup source/test references for F-02 — Agent 2: added `memory-search.ts` and `handler-memory-search.vitest.ts` to implementation/test tables
-- [x] T004 [P] [P1] Add stage-2 co-activation source/test references for F-03 — Agent 2: added `stage2-fusion.ts` and Stage-2 test references
-- [x] T005 [P] [P1] Add canonical-ID dedup source/test references for F-07 — Agent 2: added `hybrid-search.ts` (combinedLexicalSearch) and `hybrid-search.vitest.ts` to tables
+- [x] T001 [P] [P0] Reconfirm review findings and reproduce causal-link lock/busy masking path (`.opencode/skill/system-spec-kit/mcp_server/lib/storage/causal-edges.ts`, `.opencode/skill/system-spec-kit/mcp_server/handlers/causal-graph.ts`, `.opencode/skill/system-spec-kit/mcp_server/tests/integration-causal-graph.vitest.ts`)
+- [x] T002 [P] [P1] Reconfirm stale documentation and coverage overclaim surfaces (`.opencode/skill/system-spec-kit/README.md`, `.opencode/skill/system-spec-kit/mcp_server/tests/README.md`, `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md`, `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/08-watcher-delete-rename-cleanup.md`)
+- [x] T003 [P] [P0] Lock implementation scope to approved runtime/test/doc files and packet markdown only
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -56,32 +53,50 @@ contextType: "general"
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [x] T006 [P] [P0] Replace wildcard barrel exports — ALREADY DONE: `lib/errors/index.ts` already uses explicit named exports, no `export *` found
-- [x] T007 [P] [P0] Replace remaining spread-based `Math.max` calls — Agent 3: replaced 2 `Math.max(...spread)` with `reduce()` in `shared/scoring/folder-scoring.ts:200-207,269-271` + rebuilt dist
-- [x] T008 [P] [P1] Add production-path content-hash dedup integration coverage — Agent 4: extended `content-hash-dedup.vitest.ts` (23 tests passing)
-- [x] T009 [P] [P1] Extend safe-swap semantics to force path — Agent 3: documented force-path as intentionally destructive with AI-WHY comment at `chunking-orchestrator.ts:170-172`
-- [x] T010 [P] [P1] Align F-11 working-memory naming — Agent 2: fixed table name from `working_memory_sessions` → `working_memory` in F-11 narrative
+- [x] T004 [P] [P0] Fix lock/busy error handling in causal edge insert to rethrow infra failures (`.opencode/skill/system-spec-kit/mcp_server/lib/storage/causal-edges.ts`)
+- [x] T005 [P] [P0] Add storage-level regression for `SQLITE_BUSY` rethrow (`.opencode/skill/system-spec-kit/mcp_server/tests/causal-edges.vitest.ts`)
+- [x] T006 [P] [P0] Add integration regression asserting causal-link lock path maps to `E022` envelope (`.opencode/skill/system-spec-kit/mcp_server/tests/integration-causal-graph.vitest.ts`)
+- [x] T007 [P] [P1] Replace symlink fallback pass-through branches with environment capability gating (`.opencode/skill/system-spec-kit/mcp_server/tests/incremental-index-v2.vitest.ts`)
+- [x] T008 [P] [P1] Remove stale `hash_checks` token from legacy comment (`.opencode/skill/system-spec-kit/mcp_server/tests/incremental-index.vitest.ts`)
+- [x] T009 [P] [P1] Refresh root README test counts and verification freshness (`.opencode/skill/system-spec-kit/README.md`)
+- [x] T010 [P] [P1] Refresh `mcp_server/tests` README coverage wording and file-count command (`.opencode/skill/system-spec-kit/mcp_server/tests/README.md`)
+- [x] T011 [P] [P1] Update watcher cleanup feature note to current reliability coverage wording (`.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/08-watcher-delete-rename-cleanup.md`)
+- [x] T012 [P] [P1] Replace undocumented coverage-gap statement with explicit 29-entry notes matrix (`.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md`)
+- [x] T013 [P] [P1] Restore scripts package local test runner dependency (`.opencode/skill/system-spec-kit/scripts/package.json`, `.opencode/skill/system-spec-kit/package-lock.json`)
+- [x] T014 [P] [P1] Fix scripts support paths for import resolution and CLI authority expectation (`.opencode/skill/system-spec-kit/scripts/lib/decision-tree-generator.ts`, `.opencode/skill/system-spec-kit/scripts/tests/generate-context-cli-authority.vitest.ts`)
+- [x] T015 [P] [P1] Fix macOS `/var` vs `/private/var` file writer target resolution (`.opencode/skill/system-spec-kit/scripts/core/file-writer.ts`)
+- [x] T016 [P] [P2] Remove stray packet artifact file (`.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/005-lifecycle/.DS_Store`)
 <!-- /ANCHOR:phase-2 -->
 
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: Verification
+## Phase 3: Verification and Documentation Sync
 
-- [x] T011 [P] [P0] Add large-array (>100k) `RangeError` regressions — Agent 4: `folder-scoring-overflow.vitest.ts` (2 tests: computeSingleFolderScore 150K, findLastActivity 150K) passing after dist rebuild
-- [x] T012 [P] [P1] Add include-content-independent dedup regression — Agent 4: extended `handler-memory-search.vitest.ts` (18 tests passing)
-- [x] T013 [P] [P1] Add staged-swap success/failure/rollback regressions — Agent 5: `chunking-orchestrator-swap.vitest.ts` (4 tests: success, rollback, partial-embedding, cache-key normalization) passing
-- [x] T014 [P] [P2] Add session-manager entry-limit stress test — Agent 5: `session-manager-stress.vitest.ts` (2 tests: high-volume interleaved capacity, cleanup timestamp) passing
+- [x] T017 [P] [P0] Verify type safety in skill root (`npm run typecheck` in `.opencode/skill/system-spec-kit`)
+- [x] T018 [P] [P0] Verify targeted MCP suites (`causal-edges`, `integration-causal-graph`, `incremental-index`, `incremental-index-v2`) pass in `.opencode/skill/system-spec-kit/mcp_server`
+- [x] T019 [P] [P1] Verify selected scripts suites pass individually (`generate-context-cli-authority`, `memory-render-fixture`, `import-policy-rules`, `tree-thinning`, `slug-uniqueness`, `task-enrichment`, `runtime-memory-inputs`) in `.opencode/skill/system-spec-kit/scripts`
+- [x] T020 [P] [P1] Capture full `scripts` package `npm test` completion evidence and close remaining checklist item (`Test Files 9 passed (9)`, `Tests 150 passed (150)`, `Duration 77.49s`)
 <!-- /ANCHOR:phase-3 -->
+
+---
+
+<!-- ANCHOR:phase-4 -->
+## Phase 4: Packet Documentation
+
+- [x] T021 [P] [P1] Rewrite `008` packet docs to align with actual fixes and verification state (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md`)
+- [x] T022 [P] [P1] Replace stale glob/brace placeholders in Discovery packet task references with concrete paths (`.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/003-discovery/tasks.md`)
+<!-- /ANCHOR:phase-4 -->
 
 ---
 
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [x] All tasks marked `[x]` — 14/14 complete
-- [x] No `[B]` blocked tasks remaining
-- [x] Manual verification passed — TSC 0 errors, targeted audited suite 49/49 passing
+- [x] All P0 tasks completed
+- [x] All P1 tasks completed
+- [x] No `[B]` blocked tasks
+- [x] Verification claims restricted to observed evidence only
 <!-- /ANCHOR:completion -->
 
 ---
@@ -91,6 +106,8 @@ contextType: "general"
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
+- **Checklist**: See `checklist.md`
+- **Implementation Summary**: See `implementation-summary.md`
 <!-- /ANCHOR:cross-refs -->
 
 ---

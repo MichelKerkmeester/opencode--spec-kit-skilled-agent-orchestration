@@ -1,14 +1,13 @@
 ---
 title: "Verification Checklist: bug-fixes-and-data-integrity [template:level_2/checklist.md]"
-description: "Verification Date: 2026-03-10"
+description: "Verification Date: 2026-03-13"
 SPECKIT_TEMPLATE_SOURCE: "checklist | v2.2"
 trigger_phrases:
   - "verification"
   - "bug fixes"
   - "data integrity"
-  - "hybrid rag fusion"
-  - "regression tests"
-  - "catalog alignment"
+  - "causal link"
+  - "scripts package"
 importance_tier: "normal"
 contextType: "general"
 ---
@@ -40,48 +39,62 @@ P0 items below are complete and include inline evidence.
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] Requirements documented in spec.md [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-002 [P0] Technical approach defined in plan.md [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-003 [P1] Dependencies identified and available [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n<!-- /ANCHOR:pre-impl -->
+- [x] CHK-001 [P0] Requirements documented in `spec.md` [EVIDENCE: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/008-bug-fixes-and-data-integrity/spec.md`]
+- [x] CHK-002 [P0] Technical approach documented in `plan.md` [EVIDENCE: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/008-bug-fixes-and-data-integrity/plan.md`]
+- [x] CHK-003 [P1] Dependencies identified [EVIDENCE: plan dependency table reflects current completed verification and ongoing documentation maintenance needs]
+<!-- /ANCHOR:pre-impl -->
 
 ---
 
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [x] CHK-010 [P0] Code passes lint/format checks — TSC: 0 errors [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-011 [P0] No console errors or warnings — targeted Vitest suite passes clean (`49/49` across 5 audited files) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-012 [P1] Error handling implemented — AI-WHY comments document design decisions [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-013 [P1] Code follows project patterns — reduce() pattern matches existing scoring modules [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-014 [P0] Wildcard barrel exports removed — ALREADY DONE: `lib/errors/index.ts` uses explicit named exports [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-015 [P0] Spread-based `Math.max` removed — `shared/scoring/folder-scoring.ts:200-207,269-271` → `reduce()` + dist rebuilt [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n<!-- /ANCHOR:code-quality -->
+- [x] CHK-010 [P0] Causal lock/busy errors are re-thrown as infra failures [EVIDENCE: `.opencode/skill/system-spec-kit/mcp_server/lib/storage/causal-edges.ts`]
+- [x] CHK-011 [P0] Handler-path regression for lock/busy -> `E022` exists [EVIDENCE: `.opencode/skill/system-spec-kit/mcp_server/tests/integration-causal-graph.vitest.ts`]
+- [x] CHK-012 [P1] Symlink pass-through branches replaced with explicit capability gating [EVIDENCE: `.opencode/skill/system-spec-kit/mcp_server/tests/incremental-index-v2.vitest.ts`]
+- [x] CHK-013 [P1] Legacy stale `hash_checks` token removed [EVIDENCE: `.opencode/skill/system-spec-kit/mcp_server/tests/incremental-index.vitest.ts`]
+- [x] CHK-014 [P1] Scripts local testing path fixes applied [EVIDENCE: `.opencode/skill/system-spec-kit/scripts/package.json`, `.opencode/skill/system-spec-kit/scripts/lib/decision-tree-generator.ts`, `.opencode/skill/system-spec-kit/scripts/tests/generate-context-cli-authority.vitest.ts`, `.opencode/skill/system-spec-kit/scripts/core/file-writer.ts`]
+- [x] CHK-015 [P0] Packet artifact cleanup completed [EVIDENCE: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/005-lifecycle/.DS_Store` absent]
+<!-- /ANCHOR:code-quality -->
 
 ---
 
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-020 [P0] All acceptance criteria met — 14/14 tasks complete, targeted verification suite passing [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-021 [P0] Manual testing complete — `npx vitest run` on 5 audited test files: 49/49 pass [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-022 [P1] Edge cases tested — 150K element arrays, high-volume interleaved inserts, swap rollback [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-023 [P1] Error scenarios validated — swap failure rollback, partial embedding, expired sessions [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-024 [P0] Large-array >100k RangeError regression passes — `folder-scoring-overflow.vitest.ts` 2/2 [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-025 [P1] Include-content-independent dedup regression passes — `handler-memory-search.vitest.ts` 18/18 [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-026 [P1] Stage-2 co-activation boost evidence aligned — catalog refs point to co-activation, RRF-degree, and Stage-2 fusion surfaces [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-027 [P1] Production-path content-hash dedup integration passes — `content-hash-dedup.vitest.ts` 23/23 [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-028 [P1] Staged-swap success/failure/rollback regression passes — `chunking-orchestrator-swap.vitest.ts` 4/4 [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-029 [P2] Interleaved session-manager entry-limit stress test passes — `session-manager-stress.vitest.ts` 2/2 [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n<!-- /ANCHOR:testing -->
-
----
-
-<!-- ANCHOR:security -->
-## Security
-
-- [x] CHK-030 [P0] No hardcoded secrets — No credentials in any new/modified files [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-031 [P0] Input validation implemented — reduce() guards with -Infinity seed, BigInt for vec rowids [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-032 [P1] Auth/authz working correctly — No auth changes; handlers unchanged [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n<!-- /ANCHOR:security -->
+- [x] CHK-020 [P0] TypeScript verification passes [EVIDENCE: `npm run typecheck` passed in `.opencode/skill/system-spec-kit`]
+- [x] CHK-021 [P0] Targeted MCP suites pass [EVIDENCE: `npm test -- --run tests/causal-edges.vitest.ts tests/integration-causal-graph.vitest.ts tests/incremental-index.vitest.ts tests/incremental-index-v2.vitest.ts` passed in `.opencode/skill/system-spec-kit/mcp_server`]
+- [x] CHK-022 [P1] Selected scripts suites pass individually [EVIDENCE: `generate-context-cli-authority`, `memory-render-fixture`, `import-policy-rules`, `tree-thinning`, `slug-uniqueness`, `task-enrichment`, `runtime-memory-inputs` suites passed in `.opencode/skill/system-spec-kit/scripts`]
+- [x] CHK-023 [P1] Full scripts package `npm test` completed end-to-end [EVIDENCE: `.opencode/skill/system-spec-kit/scripts` result `Test Files 9 passed (9)`, `Tests 150 passed (150)`, `Duration 77.49s`]
+- [x] CHK-024 [P1] Package quality checks and packet verification state are fully aligned [EVIDENCE: `npm run check` passed in `.opencode/skill/system-spec-kit/mcp_server` and `.opencode/skill/system-spec-kit/scripts`; packet docs and tasks/checklist now closed for required checks]
+<!-- /ANCHOR:testing -->
 
 ---
 
 ## P1 - Required
 
-P1 items are complete and include inline evidence unless explicitly deferred.
+P1 items are complete unless explicitly marked pending.
 
 ---
 
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-040 [P1] Spec/plan/tasks synchronized — All artifacts updated [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-041 [P1] Code comments adequate — AI-WHY comments on reduce() and force-path behavior [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-042 [P2] README updated (if applicable) — updated `.opencode/skill/system-spec-kit/mcp_server/handlers/README.md`, `.opencode/skill/system-spec-kit/mcp_server/handlers/save/README.md`, and `.opencode/skill/system-spec-kit/mcp_server/lib/search/README.md` [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-043 [P0] F-05 implementation table aligned — B1-B4 now reference actual fix files with line-level evidence [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-044 [P0] F-06 implementation/test tables corrected — temporal-contiguity.ts (E1) + extraction-adapter.ts (E2) with targeted tests [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-045 [P1] F-02 dedup path coverage added — memory-search.ts and handler-memory-search.vitest.ts in table [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-046 [P1] F-03 stage-2 source coverage added — `stage2-fusion.ts` (hot-path) and relevant co-activation test surfaces are listed in table [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-047 [P1] F-07 canonical-ID linkage explicit — hybrid-search.ts:364-384 and hybrid-search.vitest.ts in table [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-048 [P1] F-11 naming aligned — `working_memory` table name, SQLite datetime() cleanup documented [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n<!-- /ANCHOR:docs -->
+- [x] CHK-030 [P1] Root/test README coverage claims updated to current state [EVIDENCE: `.opencode/skill/system-spec-kit/README.md`, `.opencode/skill/system-spec-kit/mcp_server/tests/README.md`]
+- [x] CHK-031 [P1] Watcher feature doc wording aligned to current reliability coverage [EVIDENCE: `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/08-watcher-delete-rename-cleanup.md`]
+- [x] CHK-032 [P1] Manual playbook includes coverage notes matrix for 29 catalog entries [EVIDENCE: `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md`]
+- [x] CHK-033 [P1] Discovery task doc uses concrete path references (no stale brace/glob placeholders) [EVIDENCE: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/003-discovery/tasks.md`]
+- [x] CHK-034 [P1] 008 packet docs synchronized to actual fixes [EVIDENCE: `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md`]
+<!-- /ANCHOR:docs -->
 
 ---
 
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [x] CHK-050 [P1] Temp files in scratch/ only [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-051 [P1] scratch/ cleaned before completion [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-052 [P2] Findings saved to memory/ — Will generate via generate-context.js [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n<!-- /ANCHOR:file-org -->
+- [x] CHK-040 [P1] Documentation edits limited to approved packet markdown file list [EVIDENCE: `git status --short` shows only requested spec packet markdown files touched under `.opencode/specs/.../003-discovery` and `.opencode/specs/.../008-bug-fixes-and-data-integrity`]
+- [ ] CHK-041 [P2] Context saved to memory via `generate-context.js` [PENDING: not executed in this subtask]
+<!-- /ANCHOR:file-org -->
 
 ---
 
@@ -90,12 +103,12 @@ P1 items are complete and include inline evidence unless explicitly deferred.
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 13 | 13/13 |
-| P1 Items | 18 | 18/18 |
-| P2 Items | 3 | 3/3 |
-| **Total** | **34** | **34/34** |
+| P0 Items | 7 | 7/7 |
+| P1 Items | 13 | 13/13 |
+| P2 Items | 1 | 0/1 |
+| **Total** | **21** | **20/21** |
 
-**Verification Date**: 2026-03-12
+**Verification Date**: 2026-03-13
 <!-- /ANCHOR:summary -->
 
 ---

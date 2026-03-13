@@ -260,7 +260,7 @@ switch (decision) {
 ```typescript
 import { insertEdge, getCausalChain, RELATION_TYPES } from './causal-edges';
 
-// Create edge (returns edge ID or null)
+// Create edge (returns edge ID, null for guard/validation failures, or throws on DB write failure)
 const edgeId = insertEdge(
   'memory-123',        // sourceId
   'memory-456',        // targetId

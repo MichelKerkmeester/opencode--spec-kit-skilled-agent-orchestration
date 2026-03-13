@@ -103,6 +103,24 @@ function removeTempFile(p: string) {
   try { fs.unlinkSync(p); } catch {}
 }
 
+function supportsDirectorySymlinks(): boolean {
+  const probeRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'inc-idx-symlink-probe-'));
+  const targetDir = path.join(probeRoot, 'target');
+  const aliasDir = path.join(probeRoot, 'alias');
+
+  try {
+    fs.mkdirSync(targetDir);
+    fs.symlinkSync(targetDir, aliasDir, 'dir');
+    return fs.lstatSync(aliasDir).isSymbolicLink();
+  } catch {
+    return false;
+  } finally {
+    fs.rmSync(probeRoot, { recursive: true, force: true });
+  }
+}
+
+const symlinkIt = supportsDirectorySymlinks() ? it : it.skip;
+
 /* -------------------------------------------------------------
    TESTS
 ---------------------------------------------------------------- */
@@ -228,7 +246,7 @@ describe('getStoredMetadata()', () => {
     expect(result).toBeNull();
   });
 
-  it('matches alias path via canonical_file_path when available', () => {
+  symlinkIt('matches alias path via canonical_file_path when available', () => {
     const db = createTestDb();
     db.exec('ALTER TABLE memory_index ADD COLUMN canonical_file_path TEXT');
     mod.init(db);
@@ -238,14 +256,7 @@ describe('getStoredMetadata()', () => {
     fs.writeFileSync(canonicalFile, 'alias content', 'utf-8');
 
     const aliasDir = path.join(os.tmpdir(), `inc-idx-alias-${Date.now()}-${Math.random().toString(36).slice(2)}`);
-    try {
-      fs.symlinkSync(canonicalDir, aliasDir, 'dir');
-    } catch {
-      fs.rmSync(canonicalDir, { recursive: true, force: true });
-      db.close();
-      expect(true).toBe(true);
-      return;
-    }
+    fs.symlinkSync(canonicalDir, aliasDir, 'dir');
 
     const aliasFile = path.join(aliasDir, 'alias-match.md');
     const canonicalKey = fs.realpathSync(canonicalFile);
@@ -388,7 +399,7 @@ describe('updateFileMtime()', () => {
     expect(ok).toBe(false);
   });
 
-  it('updates mtime when called with symlink alias path', () => {
+  symlinkIt('updates mtime when called with symlink alias path', () => {
     const db = createTestDb();
     db.exec('ALTER TABLE memory_index ADD COLUMN canonical_file_path TEXT');
     mod.init(db);
@@ -398,14 +409,7 @@ describe('updateFileMtime()', () => {
     fs.writeFileSync(canonicalFile, 'mtime alias content', 'utf-8');
 
     const aliasDir = path.join(os.tmpdir(), `inc-idx-alias-update-${Date.now()}-${Math.random().toString(36).slice(2)}`);
-    try {
-      fs.symlinkSync(canonicalDir, aliasDir, 'dir');
-    } catch {
-      fs.rmSync(canonicalDir, { recursive: true, force: true });
-      db.close();
-      expect(true).toBe(true);
-      return;
-    }
+    fs.symlinkSync(canonicalDir, aliasDir, 'dir');
 
     const aliasFile = path.join(aliasDir, 'alias-update.md');
     const canonicalKey = fs.realpathSync(canonicalFile);
@@ -525,7 +529,7 @@ describe('categorizeFilesForIndexing()', () => {
     db.close();
   });
 
-  it('does not mark alias rows as stale when canonical path is still present in scan', () => {
+  symlinkIt('does not mark alias rows as stale when canonical path is still present in scan', () => {
     const db = createTestDb();
     db.exec('ALTER TABLE memory_index ADD COLUMN canonical_file_path TEXT');
     mod.init(db);
@@ -535,14 +539,7 @@ describe('categorizeFilesForIndexing()', () => {
     fs.writeFileSync(canonicalFile, 'canonical content', 'utf-8');
 
     const aliasDir = path.join(os.tmpdir(), `inc-idx-alias-present-${Date.now()}-${Math.random().toString(36).slice(2)}`);
-    try {
-      fs.symlinkSync(canonicalDir, aliasDir, 'dir');
-    } catch {
-      fs.rmSync(canonicalDir, { recursive: true, force: true });
-      db.close();
-      expect(true).toBe(true);
-      return;
-    }
+    fs.symlinkSync(canonicalDir, aliasDir, 'dir');
 
     const aliasFile = path.join(aliasDir, 'doc.md');
     const canonicalKey = fs.realpathSync(canonicalFile);
@@ -580,7 +577,7 @@ describe('listIndexedRecordIdsForDeletedPaths()', () => {
     db.close();
   });
 
-  it('skips deletion ids when canonical path still exists', () => {
+  symlinkIt('skips deletion ids when canonical path still exists', () => {
     const db = createTestDb();
     db.exec('ALTER TABLE memory_index ADD COLUMN canonical_file_path TEXT');
     mod.init(db);
@@ -590,14 +587,7 @@ describe('listIndexedRecordIdsForDeletedPaths()', () => {
     fs.writeFileSync(canonicalFile, 'canonical-id content', 'utf-8');
 
     const aliasDir = path.join(os.tmpdir(), `inc-idx-alias-id-${Date.now()}-${Math.random().toString(36).slice(2)}`);
-    try {
-      fs.symlinkSync(canonicalDir, aliasDir, 'dir');
-    } catch {
-      fs.rmSync(canonicalDir, { recursive: true, force: true });
-      db.close();
-      expect(true).toBe(true);
-      return;
-    }
+    fs.symlinkSync(canonicalDir, aliasDir, 'dir');
 
     const aliasFile = path.join(aliasDir, 'doc.md');
     const canonicalKey = fs.realpathSync(canonicalFile);

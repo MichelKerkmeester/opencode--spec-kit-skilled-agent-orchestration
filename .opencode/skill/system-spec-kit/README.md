@@ -109,8 +109,8 @@ Cross-workflow alignment is mandatory:
 | **Importance Tiers** | 6 (constitutional to deprecated) |
 | **Memory Types** | 9 (working, episodic, procedural, semantic, etc.) |
 | **ANCHOR Coverage** | 533 anchors across 78 skill READMEs |
-| **Test Coverage** | 261 `.vitest.ts` files in `mcp_server/tests/` (run `npx vitest run` for the current total test count) |
-| **Last Verified** | 2026-02-27 |
+| **Test Coverage** | 265 `.vitest.ts` files in `mcp_server/tests/` (run `npx vitest run` for the current total test count) |
+| **Last Verified** | 2026-03-13 |
 
 ### Requirements
 

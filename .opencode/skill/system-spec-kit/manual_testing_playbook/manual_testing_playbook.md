@@ -17,7 +17,7 @@ Canonical source artifacts:
 - [DETERMINISTIC COMMAND NOTATION](#deterministic-command-notation)
 - [EXISTING FEATURES (`EX-001..EX-035`)](#existing-features-ex-001ex-035)
 - [NEW FEATURES (`NEW-001..NEW-124`)](#new-features-new-001new-124)
-- [CATALOG ENTRIES WITHOUT PLAYBOOK COVERAGE](#catalog-entries-without-playbook-coverage-24-entries)
+- [CATALOG COVERAGE NOTES FOR PHASES 001-018](#catalog-coverage-notes-for-phases-001-018)
 
 ## 1. OVERVIEW
 
@@ -407,41 +407,41 @@ Note: NEW-042, NEW-119, NEW-120, and NEW-121 all map to the same catalog entry f
 | NEW-123 | [05--lifecycle/06-startup-pending-file-recovery.md](../feature_catalog/05--lifecycle/06-startup-pending-file-recovery.md) |
 | NEW-124 | [05--lifecycle/07-automatic-archival-subsystem.md](../feature_catalog/05--lifecycle/07-automatic-archival-subsystem.md) |
 
-### Catalog Entries Without Playbook Coverage (29 entries for phases 001-018)
+### Catalog Coverage Notes for Phases 001-018
 
-These catalog entries have no dedicated playbook scenario. They are either deferred/planned features, cross-cutting concerns tested implicitly via other scenarios, or documentation-only entries:
+These 29 catalog entries are explicitly documented here even when validation is automated-only, indirectly covered by another scenario, or deferred because the feature is not implemented yet.
 
-| Catalog Entry | Reason |
-|---|---|
-| `01--retrieval/07-ast-level-section-retrieval-tool.md` | DEFERRED — not yet implemented |
-| `01--retrieval/09-tool-result-extraction-to-working-memory.md` | Covered by unit tests (`working-memory.vitest.ts`, `working-memory-event-decay.vitest.ts`, `checkpoint-working-memory.vitest.ts`) but no manual playbook scenario defined; Deferred — automated test coverage sufficient |
-| `02--mutation/07-namespace-management-crud-tools.md` | DEFERRED — not yet implemented |
-| `02--mutation/09-correction-tracking-with-undo.md` | Undo/correction behavior is covered by mutation regression tests; no dedicated manual operator scenario yet |
-| `02--mutation/10-per-memory-history-log.md` | Per-memory history logging is validated in automated mutation/history suites; manual scenario pending |
-| `10--graph-signal-activation/09-anchor-tags-as-graph-nodes.md` | DEFERRED — planned for Sprint 019, not yet implemented |
-| `11--scoring-and-calibration/15-tool-level-ttl-cache.md` | Cache policy behavior is exercised in automated scoring/cache tests; no dedicated manual scenario |
-| `11--scoring-and-calibration/16-access-driven-popularity-scoring.md` | Popularity-scoring heuristics are validated by automated ranking tests; no dedicated operator scenario |
-| `11--scoring-and-calibration/17-temporal-structural-coherence-scoring.md` | Temporal/structural scoring logic is covered by automated scoring suites; manual scenario pending |
-| `13--memory-quality-and-indexing/11-content-aware-memory-filename-generation.md` | Tested implicitly via NEW-045 (smarter content generation) |
-| `13--memory-quality-and-indexing/12-generation-time-duplicate-and-empty-content-prevention.md` | Tested implicitly via NEW-004 (SHA-256 dedup) |
-| `13--memory-quality-and-indexing/17-outsourced-agent-memory-capture.md` | Dedicated memory workflow coverage exists in M-005, but no EX/NEW catalog-linked scenario is defined yet |
-| `14--pipeline-architecture/14-dynamic-server-instructions-at-mcp-initialization.md` | Server startup concern — tested implicitly |
-| `14--pipeline-architecture/15-warm-server-daemon-mode.md` | DEFERRED — not yet implemented |
-| `14--pipeline-architecture/16-backend-storage-adapter-abstraction.md` | DEFERRED — not yet implemented |
-| `14--pipeline-architecture/18-atomic-write-then-index-api.md` | Covered implicitly by NEW-104 and atomic-save failure-injection tests; dedicated manual scenario pending |
-| `14--pipeline-architecture/19-embedding-retry-orchestrator.md` | Covered by retry/index automated suites (`retry-manager.vitest.ts`, `index-refresh.vitest.ts`); no dedicated manual scenario yet |
-| `14--pipeline-architecture/20-7-layer-tool-architecture-metadata.md` | Governance/metadata feature; dispatch behavior covered indirectly by context-server and dispatch-matrix tests, but no dedicated operator scenario |
-| `15--retrieval-enhancements/09-contextual-tree-injection.md` | Tested implicitly via context retrieval scenarios |
-| `16--tooling-and-scripts/02-architecture-boundary-enforcement.md` | Build-time enforcement — not runtime testable |
-| `16--tooling-and-scripts/08-watcher-delete-rename-cleanup.md` | Rename/delete watcher behavior is validated via automated watcher suites; dedicated manual scenario pending |
-| `18--ux-hooks/01-shared-post-mutation-hook-wiring.md` | Tested via NEW-085, NEW-103, NEW-104 |
-| `18--ux-hooks/02-memory-health-autorepair-metadata.md` | Tested via EX-013 (health diagnostics) |
-| `18--ux-hooks/04-schema-and-type-contract-synchronization.md` | Build-time concern — tested via NEW-095 |
-| `18--ux-hooks/06-mutation-hook-result-contract-expansion.md` | Tested via NEW-103 |
-| `18--ux-hooks/07-mutation-response-ux-payload-exposure.md` | Tested via NEW-104 |
-| `18--ux-hooks/10-atomic-save-parity-and-partial-indexing-hints.md` | Tested via NEW-104 |
-| `18--ux-hooks/11-final-token-metadata-recomputation.md` | Tested via NEW-105 |
-| `18--ux-hooks/13-end-to-end-success-envelope-verification.md` | Tested via NEW-105 |
+| Catalog Entry | Coverage Status | Coverage Path / Notes |
+|---|---|---|
+| `01--retrieval/07-ast-level-section-retrieval-tool.md` | Deferred | Not yet implemented |
+| `01--retrieval/09-tool-result-extraction-to-working-memory.md` | Automated only | Covered by `working-memory.vitest.ts`, `working-memory-event-decay.vitest.ts`, and `checkpoint-working-memory.vitest.ts` |
+| `02--mutation/07-namespace-management-crud-tools.md` | Deferred | Not yet implemented |
+| `02--mutation/09-correction-tracking-with-undo.md` | Automated only | Covered by mutation regression tests; no dedicated operator scenario yet |
+| `02--mutation/10-per-memory-history-log.md` | Automated only | Covered by mutation/history suites; dedicated manual scenario still pending |
+| `10--graph-signal-activation/09-anchor-tags-as-graph-nodes.md` | Deferred | Planned for Sprint 019; not yet implemented |
+| `11--scoring-and-calibration/15-tool-level-ttl-cache.md` | Automated only | Cache policy behavior is exercised in scoring/cache tests |
+| `11--scoring-and-calibration/16-access-driven-popularity-scoring.md` | Automated only | Popularity heuristics are validated by ranking tests |
+| `11--scoring-and-calibration/17-temporal-structural-coherence-scoring.md` | Automated only | Temporal/structural scoring logic is covered by scoring suites |
+| `13--memory-quality-and-indexing/11-content-aware-memory-filename-generation.md` | Indirect scenario coverage | Covered implicitly via NEW-045 (smarter content generation) |
+| `13--memory-quality-and-indexing/12-generation-time-duplicate-and-empty-content-prevention.md` | Indirect scenario coverage | Covered implicitly via NEW-004 (SHA-256 deduplication) |
+| `13--memory-quality-and-indexing/17-outsourced-agent-memory-capture.md` | Manual + automated | Dedicated memory workflow coverage exists in M-005 |
+| `14--pipeline-architecture/14-dynamic-server-instructions-at-mcp-initialization.md` | Automated only | Startup concern; validated implicitly by startup/runtime coverage |
+| `14--pipeline-architecture/15-warm-server-daemon-mode.md` | Deferred | Not yet implemented |
+| `14--pipeline-architecture/16-backend-storage-adapter-abstraction.md` | Deferred | Not yet implemented |
+| `14--pipeline-architecture/18-atomic-write-then-index-api.md` | Indirect scenario coverage | Covered by NEW-104 and atomic-save failure-injection tests |
+| `14--pipeline-architecture/19-embedding-retry-orchestrator.md` | Automated only | Covered by `retry-manager.vitest.ts` and `index-refresh.vitest.ts` |
+| `14--pipeline-architecture/20-7-layer-tool-architecture-metadata.md` | Automated only | Dispatch behavior is covered by context-server and dispatch-matrix tests |
+| `15--retrieval-enhancements/09-contextual-tree-injection.md` | Indirect scenario coverage | Covered implicitly via context retrieval scenarios |
+| `16--tooling-and-scripts/02-architecture-boundary-enforcement.md` | Build-time only | Enforced by build/test tooling rather than runtime playbook steps |
+| `16--tooling-and-scripts/08-watcher-delete-rename-cleanup.md` | Automated only | Covered by `mcp_server/tests/file-watcher.vitest.ts`; no dedicated manual operator scenario yet |
+| `18--ux-hooks/01-shared-post-mutation-hook-wiring.md` | Indirect scenario coverage | Covered by NEW-085, NEW-103, and NEW-104 |
+| `18--ux-hooks/02-memory-health-autorepair-metadata.md` | Manual + automated | Covered by EX-013 (health diagnostics) |
+| `18--ux-hooks/04-schema-and-type-contract-synchronization.md` | Build-time only | Verified by NEW-095 and schema/type checks |
+| `18--ux-hooks/06-mutation-hook-result-contract-expansion.md` | Indirect scenario coverage | Covered by NEW-103 |
+| `18--ux-hooks/07-mutation-response-ux-payload-exposure.md` | Indirect scenario coverage | Covered by NEW-104 |
+| `18--ux-hooks/10-atomic-save-parity-and-partial-indexing-hints.md` | Indirect scenario coverage | Covered by NEW-104 |
+| `18--ux-hooks/11-final-token-metadata-recomputation.md` | Indirect scenario coverage | Covered by NEW-105 |
+| `18--ux-hooks/13-end-to-end-success-envelope-verification.md` | Indirect scenario coverage | Covered by NEW-105 |
 
 ## Dedicated Memory/Spec-Kit Scenarios (Required)
 

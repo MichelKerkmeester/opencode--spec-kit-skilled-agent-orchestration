@@ -226,6 +226,9 @@ function insertEdge(
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : String(error);
     console.warn(`[causal-edges] insertEdge error: ${msg}`);
+    if (/SQLITE_BUSY|SQLITE_LOCKED|database is locked/i.test(msg)) {
+      throw error;
+    }
     return null;
   }
 }

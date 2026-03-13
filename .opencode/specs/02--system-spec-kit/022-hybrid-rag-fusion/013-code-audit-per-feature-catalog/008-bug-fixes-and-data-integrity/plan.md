@@ -1,14 +1,13 @@
 ---
 title: "Implementation Plan: bug-fixes-and-data-integrity [template:level_2/plan.md]"
-description: "Audit and remediation plan for 11 bug-fix/data-integrity features in hybrid RAG fusion, focusing on catalog-code-test alignment and regression hardening."
+description: "Execution plan for causal-link reliability fixes, regression hardening, scripts testability repair, and evidence-truthful documentation sync."
 SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
 trigger_phrases:
   - "implementation plan"
-  - "bug fixes"
-  - "data integrity"
-  - "hybrid rag fusion"
-  - "regression coverage"
-  - "safe swap"
+  - "causal link"
+  - "verification alignment"
+  - "scripts testability"
+  - "phase 001-018"
 importance_tier: "normal"
 contextType: "general"
 ---
@@ -27,12 +26,16 @@ contextType: "general"
 | Aspect | Value |
 |--------|-------|
 | **Language/Stack** | TypeScript (Node.js) |
-| **Framework** | Spec Kit Memory MCP server + feature-catalog markdown workflow |
+| **Framework** | Spec Kit Memory MCP server + docs/spec packet workflow |
 | **Storage** | SQLite + markdown artifacts |
-| **Testing** | Vitest + manual playbook scenarios |
+| **Testing** | Vitest (`mcp_server`, `scripts`) + packet validation |
 
 ### Overview
-This plan executes a feature-by-feature audit remediation across the 08 bug-fixes-and-data-integrity catalog. It aligns catalog implementation/test tables with real source paths, resolves correctness gaps in targeted runtime modules, and adds missing regressions for high-risk edge cases. Work is sequenced from catalog alignment to code fixes and then verification hardening.
+This plan executes a targeted remediation bundle discovered during the phase `001` to `018` review:
+1. Fix causal-link lock/busy masking so infra failures surface correctly.
+2. Add deterministic regressions for the corrected failure mode.
+3. Replace weak test branches and stale wording in docs/playbook/readmes.
+4. Repair scripts package local testability and keep packet verification claims truthful.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -41,14 +44,15 @@ This plan executes a feature-by-feature audit remediation across the 08 bug-fixe
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [x] Problem statement clear and scope documented
-- [x] Success criteria measurable
-- [x] Dependencies identified
+- [x] Problem statement and boundaries documented
+- [x] Scope locked to review findings and user-approved file set
+- [x] Verification evidence sources identified
 
 ### Definition of Done
-- [x] All acceptance criteria met — 14/14 tasks complete, targeted audited suite passing
-- [x] Tests passing (if applicable) — TSC 0 errors, Vitest 49/49 green on audited files
-- [x] Docs updated (spec/plan/tasks) — All spec folder artifacts synchronized
+- [x] Runtime and test fixes landed for causal-link, incremental-index, and scripts path issues
+- [x] Targeted verification completed (`typecheck`, targeted MCP vitest, selected scripts suites)
+- [x] Full `scripts` package `npm test` completed end-to-end and reflected in checklist (`Test Files 9 passed (9)`, `Tests 150 passed (150)`, `Duration 77.49s`)
+- [x] Packet docs (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md`) synchronized to real state
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -60,11 +64,13 @@ This plan executes a feature-by-feature audit remediation across the 08 bug-fixe
 Monolith
 
 ### Key Components
-- **Feature Catalog (`feature_catalog/08--bug-fixes-and-data-integrity/`)**: Source of per-feature "Current Reality", implementation, and test mappings.
-- **MCP Server Runtime (`mcp_server/lib` + `mcp_server/handlers`)**: Concrete behavior under audit for dedup, safety guards, scoring, and orchestration.
+- **Storage edge insert path**: `.opencode/skill/system-spec-kit/mcp_server/lib/storage/causal-edges.ts`
+- **Causal graph handler path**: `.opencode/skill/system-spec-kit/mcp_server/handlers/causal-graph.ts`
+- **Regression suites**: causal-edge, causal-graph integration, incremental-index v1/v2, scripts unit suites
+- **Documentation surfaces**: root README, test README, watcher catalog, manual playbook, spec packet docs
 
 ### Data Flow
-Catalog feature definitions are inventoried first, then cross-checked against runtime modules and test suites. Findings are converted into prioritized remediation tasks, followed by targeted code/catalog updates and regression verification against playbook scenarios.
+Review findings were mapped to concrete files, code/test fixes were applied first, documentation surfaces were synchronized next, and verification evidence was captured and closed with full package-level check/test results.
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -73,19 +79,29 @@ Catalog feature definitions are inventoried first, then cross-checked against ru
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Setup
-- [x] Inventory all 11 feature files and validate implementation/test tables — Agents 1 & 2 completed T001-T005
-- [x] Cross-reference playbook scenarios EX-034 and NEW-040..049 — Mapped across F-02, F-03, F-05, F-06, F-07
-- [x] Confirm remediation backlog priorities (5x P0, 8x P1, 1x P2) — All 14 tasks prioritized and assigned
+- [x] Confirm review findings and reproduction surface for causal-link lock/busy flake
+- [x] Confirm stale documentation claims and path placeholders needing correction
+- [x] Lock edits to approved files and packet scope only
 
 ### Phase 2: Core Implementation
-- [x] Correct catalog pathing and behavior claims (F-02, F-03, F-05, F-06, F-07, F-11) — Agents 1 & 2, T001-T005, T010
-- [x] Apply targeted code hardening (explicit exports, spread-max removal, safe-swap semantics) — Agent 3, T006-T007, T009
-- [x] Add integration-path coverage for content-hash dedup behavior — Agent 4, T008 (23 tests)
+- [x] Update causal edge insert behavior to rethrow lock/busy DB errors
+- [x] Add storage-level and handler-level causal regressions for lock/busy -> `E022`
+- [x] Replace incremental-index symlink pass-through fallback assertions with explicit capability gating
+- [x] Apply scripts package/test path fixes and remove stale artifact file
 
-### Phase 3: Verification
-- [x] Execute large-array, dedup, rollback, timestamp, and stress regressions — Agents 4 & 5, T011-T014 (49 tests total in audited suite)
-- [x] Re-validate catalog entries against updated code/test evidence — All catalog tables cross-checked
-- [x] Synchronize spec.md, plan.md, tasks.md, and checklist.md — All artifacts updated
+### Phase 3: Documentation Alignment
+- [x] Refresh stale counts/coverage language in root and tests READMEs
+- [x] Update watcher feature note to current coverage wording
+- [x] Replace playbook "missing coverage" statement with explicit matrix for 29 entries
+- [x] Rewrite packet docs to match true implementation and verification state
+
+### Phase 4: Verification
+- [x] `npm run typecheck` in `.opencode/skill/system-spec-kit`
+- [x] `npm run check` in `.opencode/skill/system-spec-kit/mcp_server`
+- [x] `npm run check` in `.opencode/skill/system-spec-kit/scripts`
+- [x] Targeted MCP vitest run for causal and incremental suites
+- [x] Selected scripts vitest suites run individually
+- [x] Full scripts package `npm test` completed (`Test Files 9 passed (9)`, `Tests 150 passed (150)`, `Duration 77.49s`)
 <!-- /ANCHOR:phases -->
 
 ---
@@ -95,9 +111,11 @@ Catalog feature definitions are inventoried first, then cross-checked against ru
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Unit | `folder-scoring`, `co-activation`, `working-memory`, `session-manager` logic | Vitest |
-| Integration | save/index dedup path, chunking-orchestrator swap behavior | Vitest |
-| Manual | EX-034 and NEW-040..049 scenario validation | Playbook + review |
+| Type Safety | `system-spec-kit` workspace | `npm run typecheck` |
+| Package Quality Gates | `mcp_server` and `scripts` package checks | `npm run check` |
+| Targeted Runtime Regression | causal-link + incremental-index suites | `npm test -- --run ...` in `mcp_server` |
+| Scripts Local Reliability | focused suites for path/import/file-writer behavior | `npm test -- --run ...` in `scripts` |
+| Full Package Verification | all scripts tests | `npm test` in `scripts` (complete: 9 files, 150 tests) |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -107,10 +125,10 @@ Catalog feature definitions are inventoried first, then cross-checked against ru
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| Feature catalog docs (`08--bug-fixes-and-data-integrity`) | Internal | Green | Cannot align findings/tasks without authoritative catalog text |
-| MCP server runtime modules and tests | Internal | Green | Verification cannot prove behavior alignment |
-| Manual playbook scenarios (EX-034, NEW-040..049) | Internal | Yellow | Coverage mapping remains partial/inconclusive |
-| Product decision on force-path safe-swap semantics | Internal | Yellow | F-10 cannot be closed as PASS |
+| Existing review findings for phases `001` to `018` | Internal | Green | Scope rationale and acceptance mapping lose traceability |
+| Local workspace code changes already landed | Internal | Green | Packet cannot be synchronized to real implementation state |
+| Verification outputs captured in packet docs | Internal | Green | Future audits can trace completion evidence precisely |
+| Spec packet validation (`validate.sh`) | Internal | Green | Structural quality gates for markdown docs |
 <!-- /ANCHOR:dependencies -->
 
 ---
@@ -118,12 +136,12 @@ Catalog feature definitions are inventoried first, then cross-checked against ru
 <!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: Regression failures, behavior drift, or incorrect catalog mappings introduced by remediation edits.
-- **Procedure**: Revert affected commits, rerun targeted Vitest suites, and restore prior catalog text for impacted features.
+- **Trigger**: Regressions fail after doc sync, or lock/busy behavior mapping is shown incorrect.
+- **Procedure**:
+1. Revert affected code/docs commits for this packet.
+2. Re-run targeted MCP and scripts suites.
+3. Restore prior packet docs and re-apply corrections with updated evidence.
 <!-- /ANCHOR:rollback -->
-
----
-
 
 ---
 
@@ -131,17 +149,15 @@ Catalog feature definitions are inventoried first, then cross-checked against ru
 ## L2: PHASE DEPENDENCIES
 
 ```
-Phase 1 (Catalog Setup) ──────┐
-                              ├──► Phase 2 (Fixes) ──► Phase 3 (Verify)
-Phase 1.5 (Playbook Map) ─────┘
+Phase 1 (Setup) ---> Phase 2 (Code/Test Fixes) ---> Phase 3 (Docs Sync) ---> Phase 4 (Verification)
 ```
 
 | Phase | Depends On | Blocks |
 |-------|------------|--------|
-| Setup | None | Fixes, Playbook Map |
-| Playbook Map | Setup | Fixes |
-| Fixes | Setup, Playbook Map | Verify |
-| Verify | Fixes | None |
+| Setup | None | Code/Test Fixes, Docs Sync |
+| Code/Test Fixes | Setup | Docs Sync, Verification |
+| Docs Sync | Code/Test Fixes | Verification |
+| Verification | Code/Test Fixes, Docs Sync | Final packet closeout |
 <!-- /ANCHOR:phase-deps -->
 
 ---
@@ -151,10 +167,11 @@ Phase 1.5 (Playbook Map) ─────┘
 
 | Phase | Complexity | Estimated Effort |
 |-------|------------|------------------|
-| Setup | Medium | 2-3 hours |
-| Core Implementation | High | 6-10 hours |
-| Verification | Medium | 3-5 hours |
-| **Total** | | **11-18 hours** |
+| Setup | Medium | 1-2 hours |
+| Core Implementation | High | 4-7 hours |
+| Documentation Alignment | Medium | 2-4 hours |
+| Verification | Medium | 2-3 hours |
+| **Total** | | **9-16 hours** |
 <!-- /ANCHOR:effort -->
 
 ---
@@ -163,15 +180,15 @@ Phase 1.5 (Playbook Map) ─────┘
 ## L2: ENHANCED ROLLBACK
 
 ### Pre-deployment Checklist
-- [ ] Backup created (if data changes)
-- [ ] Feature flag configured
-- [ ] Monitoring alerts set
+- [x] Scope lock preserved (no unrelated feature work)
+- [x] Targeted regression coverage present for causal-lock path
+- [x] Full scripts package suite completion captured
 
 ### Rollback Procedure
-1. Disable or gate the affected behavior path (if runtime-impacting).
-2. Revert remediation commits for impacted modules/catalog entries.
-3. Re-run targeted regression suites and smoke-check critical search/save/session flows.
-4. Notify stakeholders and document rollback rationale in spec artifacts.
+1. Revert causal-edge/storage and scripts-path patches.
+2. Re-run causal/incremental suites and key scripts tests.
+3. Reconcile packet docs/checklist to reverted evidence.
+4. Re-open unresolved task IDs in `tasks.md`.
 
 ### Data Reversal
 - **Has data migrations?** No

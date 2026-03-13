@@ -42,7 +42,7 @@ The test suite validates all critical functionality of the Spec Kit Memory MCP s
 
 | Category | Count | Details |
 |----------|-------|---------|
-| Test Files | 265 | All `.vitest.ts` format (snapshot as of 2026-03-12) |
+| Test Files | 265 | All `.vitest.ts` format (snapshot as of 2026-03-13) |
 | Total Tests | See `npx vitest run` | Use the current Vitest summary as the source of truth |
 | Test Framework | Vitest | TypeScript-native, no compilation step needed |
 | Coverage Target | 80/70/50 | Unit 80%, Integration 70%, E2E 50% |
@@ -52,7 +52,7 @@ The test suite validates all critical functionality of the Spec Kit Memory MCP s
 | Feature | Description |
 |---------|-------------|
 | **Vitest Framework** | Modern TypeScript-native test runner with built-in assertions |
-| **Full Coverage** | 265 test files covering cognitive, search, handlers, integration and eval |
+| **Coverage Snapshot** | 265 test files across cognitive, search, handlers, integration and eval; some DB-fixture-dependent suites remain explicit deferred stubs |
 | **Category Organization** | Tests grouped by functional domain (cognitive, search, handlers, integration, unit) |
 | **Type Safety** | Full TypeScript with type checking at test level |
 | **Spec 126/127 Reality Checks** | Coverage for 3-source indexing, 7 intents, schema v13 document fields, document-type scoring and `includeSpecDocs` |
@@ -574,8 +574,8 @@ npx vitest run
 npx vitest --version
 
 # List test files
-ls tests/*.vitest.ts | wc -l
-# Expected: 261
+find tests -name '*.vitest.ts' | wc -l
+# Expected: 265
 
 # Run tests with detailed output
 npx vitest run --reporter=verbose 2>&1 | head -50

@@ -2,9 +2,11 @@
 // TEST: INTEGRATION CAUSAL GRAPH
 // ---------------------------------------------------------------
 
-import { describe, it, expect } from 'vitest';
+import { afterEach, describe, it, expect, vi } from 'vitest';
 import * as causalHandler from '../handlers/causal-graph';
 import * as causalEdges from '../lib/storage/causal-edges';
+import * as core from '../core';
+import * as vectorIndex from '../lib/search/vector-index';
 
 type CausalLinkArgs = Parameters<typeof causalHandler.handleMemoryCausalLink>[0];
 type DriftWhyArgs = Parameters<typeof causalHandler.handleMemoryDriftWhy>[0];
@@ -37,6 +39,10 @@ function expectErrorCode(response: unknown, expectedCodes: string[]): MCPEnvelop
   expect(expectedCodes).toContain(code as string);
   return envelope;
 }
+
+afterEach(() => {
+  vi.restoreAllMocks();
+});
 
 describe('Integration Causal Graph (T528)', () => {
   describe('Pipeline Module Loading', () => {
@@ -113,6 +119,29 @@ describe('Integration Causal Graph (T528)', () => {
         expect(envelope.data?.success).toBe(true);
         expect(envelope.summary).toContain(`[${relation}]`);
       }
+    });
+
+    it('T528-6b: storage failures return E022 instead of validation errors', async () => {
+      vi.spyOn(core, 'checkDatabaseUpdated').mockResolvedValue(true);
+      vi.spyOn(vectorIndex, 'initializeDb').mockImplementation(
+        () => ({} as ReturnType<typeof vectorIndex.initializeDb>)
+      );
+      vi.spyOn(vectorIndex, 'getDb').mockReturnValue(
+        {} as NonNullable<ReturnType<typeof vectorIndex.getDb>>
+      );
+      vi.spyOn(causalEdges, 'init').mockImplementation(() => undefined);
+      vi.spyOn(causalEdges, 'insertEdge').mockImplementation(() => {
+        throw new Error('SQLITE_BUSY: database is locked');
+      });
+
+      const response = await causalHandler.handleMemoryCausalLink({
+        sourceId: 'test-source-id',
+        targetId: 'test-target-id',
+        relation: 'caused',
+      });
+
+      const envelope = expectErrorCode(response, ['E022']);
+      expect(envelope.data?.error).toBe('SQLITE_BUSY: database is locked');
     });
 
     it('T528-7: Direction parameter "outgoing" accepted', async () => {

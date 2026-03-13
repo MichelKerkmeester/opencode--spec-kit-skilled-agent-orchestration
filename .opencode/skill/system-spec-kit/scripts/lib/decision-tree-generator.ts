@@ -25,7 +25,7 @@ let formatFollowUpBox: (followup: Array<FollowUpRecord | string>) => string;
 let asciiBoxesAvailable: boolean = false;
 
 try {
-  const asciiBoxes = require('../lib/ascii-boxes');
+  const asciiBoxes = require('./ascii-boxes');
   ({
     padText,
     formatDecisionHeader,
