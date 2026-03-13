@@ -21,6 +21,9 @@ contextType: "general"
 | **Status** | Complete |
 | **Created** | 2026-03-10 |
 | **Branch** | `main` |
+| **Parent Spec** | ../spec.md |
+| **Previous Phase** | ../001-retrieval/spec.md |
+| **Next Phase** | ../003-discovery/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -145,6 +148,14 @@ Verify all 10 mutation features against implementation reality, remediate high-p
 - [x] Each feature has Status (PASS/WARN/FAIL), code issues, standards violations
 - [x] Test gaps documented
 - [x] Playbook scenarios mapped or gaps noted
+
+### Acceptance Scenarios
+
+1. **Given** the documented requirements for this phase, **When** a reviewer walks the updated packet, **Then** each requirement has a matching verification path in tasks and checklist artifacts.
+2. **Given** current implementation behavior, **When** spec statements are compared with source and test references, **Then** no contradictory behavior claims remain in the phase packet.
+3. **Given** the updated verification evidence, **When** checklist entries are audited, **Then** each completed P0/P1 item carries inline evidence and traceable context.
+4. **Given** Level 2 template constraints, **When** the spec validator runs, **Then** acceptance-scenario coverage and section integrity checks pass without structural warnings.
+
 <!-- /ANCHOR:success-criteria -->
 
 ---

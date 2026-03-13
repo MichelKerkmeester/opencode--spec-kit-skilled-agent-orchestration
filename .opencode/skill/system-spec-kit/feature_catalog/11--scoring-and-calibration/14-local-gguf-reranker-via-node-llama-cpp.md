@@ -13,7 +13,7 @@ This document captures the implemented behavior, source references, and validati
 
 ## 2. CURRENT REALITY
 
-**IMPLEMENTED (Sprint 019).** Implements the `RERANKER_LOCAL` flag with `node-llama-cpp` in Stage 3 using `bge-reranker-v2-m3.Q4_K_M.gguf` (~350MB). Default 4GB free memory requirement (lower 512MB threshold when custom `SPECKIT_RERANKER_MODEL` is set). Sequential per-candidate inference; on Apple Silicon with small GGUF (~100MB) expect 200-400ms for top-20 (CHK-113). Falls back to existing RRF scoring when local execution is unavailable. New file: `lib/search/local-reranker.ts`.
+**IMPLEMENTED (Sprint 019).** Implements the `RERANKER_LOCAL` flag with `node-llama-cpp` in Stage 3 using `bge-reranker-v2-m3.Q4_K_M.gguf` (~350MB). Activation is strict: `RERANKER_LOCAL` must equal `'true'`, rollout gating must permit the feature, the configured model path must be readable, and the host must meet the total-memory threshold (8GB by default, 2GB when `SPECKIT_RERANKER_MODEL` is set). The guard intentionally checks total system RAM rather than free-memory readings. Sequential per-candidate inference remains intentional. If local execution is unavailable or runtime scoring fails, the local path returns the incoming order unchanged. New file: `lib/search/local-reranker.ts`.
 
 ## 3. SOURCE FILES
 

@@ -299,7 +299,7 @@ Complex P1 fixes requiring multi-file understanding.
 | 018-T07 | UX Hooks | Wildcard exports in hooks barrel | `hooks/index.ts:5-7` |
 | 018-T08 | UX Hooks | Hook failure details not surfaced | hook modules |
 | 018-T09 | UX Hooks | Hint-append failures silenced | context-server modules |
-| 018-T10 | UX Hooks | Hooks README misaligned with exports | `hooks/README.md` |
+| 018-T10 | UX Hooks | Hooks README misaligned with exports | `.opencode/skill/system-spec-kit/mcp_server/hooks/README.md` |
 
 ---
 

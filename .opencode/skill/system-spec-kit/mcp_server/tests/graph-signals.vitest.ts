@@ -302,6 +302,48 @@ describe('Graph Signals (S8 — N2a + N2b)', () => {
       const scores = computeCausalDepthScores(db, []);
       expect(scores.size).toBe(0);
     });
+
+    it('keeps rooted cyclic graphs stable without revisit drift', () => {
+      // Rooted cycle: 1 -> 2 -> 3 -> 2 and 3 -> 4
+      insertEdge(db, 1, 2);
+      insertEdge(db, 2, 3);
+      insertEdge(db, 3, 2);
+      insertEdge(db, 3, 4);
+
+      const scores = computeCausalDepthScores(db, [1, 2, 3, 4]);
+
+      expect(scores.get(1)).toBeCloseTo(0, 5);
+      expect(scores.get(2)).toBeCloseTo(1 / 3, 5);
+      expect(scores.get(3)).toBeCloseTo(2 / 3, 5);
+      expect(scores.get(4)).toBeCloseTo(1, 5);
+    });
+
+    it('returns zero depth for cyclic components with no root', () => {
+      insertEdge(db, 1, 2);
+      insertEdge(db, 2, 3);
+      insertEdge(db, 3, 1);
+
+      const scores = computeCausalDepthScores(db, [1, 2, 3]);
+
+      expect(scores.get(1)).toBe(0);
+      expect(scores.get(2)).toBe(0);
+      expect(scores.get(3)).toBe(0);
+    });
+
+    it('uses nearest-root depth when shortcut edges exist', () => {
+      // Graph: 1 -> 2 -> 3 -> 4 plus shortcut 1 -> 4
+      insertEdge(db, 1, 2);
+      insertEdge(db, 2, 3);
+      insertEdge(db, 3, 4);
+      insertEdge(db, 1, 4);
+
+      const scores = computeCausalDepthScores(db, [1, 2, 3, 4]);
+
+      expect(scores.get(1)).toBeCloseTo(0, 5);
+      expect(scores.get(2)).toBeCloseTo(0.5, 5);
+      expect(scores.get(3)).toBeCloseTo(1, 5);
+      expect(scores.get(4)).toBeCloseTo(0.5, 5);
+    });
   });
 
   // -------------------------------------------------------------
@@ -522,6 +564,9 @@ describe('Graph Signals (S8 — N2a + N2b)', () => {
       // Momentum: no historical snapshot -> 0
       const momentum = computeMomentum(db, 1);
       expect(momentum).toBe(0);
+
+      const scores = computeCausalDepthScores(db, [1]);
+      expect(scores.get(1)).toBe(0);
     });
 
     it('very large graph does not throw', () => {

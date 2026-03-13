@@ -1,6 +1,7 @@
 ---
 title: "Feature Specification: lifecycle [template:level_2/spec.md]"
 description: "Lifecycle feature auditing lacks a template-structured specification and traceable requirement mapping, making findings harder to validate and execute. This document standardizes the audit scope, requirements, and verification targets for the 005-lifecycle phase."
+SPECKIT_TEMPLATE_SOURCE: "spec-core | v2.2"
 trigger_phrases:
   - "feature"
   - "specification"
@@ -27,6 +28,9 @@ contextType: "general"
 | **Status** | Complete |
 | **Created** | 2026-03-10 |
 | **Branch** | `013-code-audit-per-feature-catalog/005-lifecycle` |
+| **Parent Spec** | ../spec.md |
+| **Previous Phase** | ../004-maintenance/spec.md |
+| **Next Phase** | ../006-analysis/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -99,6 +103,14 @@ Define a template-structured, feature-complete lifecycle audit specification tha
 - **SC-002**: Each feature includes code issues, standards violations, behavior mismatch, and test-gap status.
 - **SC-003**: Playbook scenario mapping EX-015..EX-018 plus NEW-097/NEW-114/NEW-123/NEW-124 is captured with missing coverage explicitly noted.
 - **SC-004**: Remediation work is triaged into actionable priority buckets with clear follow-up paths.
+
+### Acceptance Scenarios
+
+1. **Given** the documented requirements for this phase, **When** a reviewer walks the updated packet, **Then** each requirement has a matching verification path in tasks and checklist artifacts.
+2. **Given** current implementation behavior, **When** spec statements are compared with source and test references, **Then** no contradictory behavior claims remain in the phase packet.
+3. **Given** the updated verification evidence, **When** checklist entries are audited, **Then** each completed P0/P1 item carries inline evidence and traceable context.
+4. **Given** Level 2 template constraints, **When** the spec validator runs, **Then** acceptance-scenario coverage and section integrity checks pass without structural warnings.
+
 <!-- /ANCHOR:success-criteria -->
 
 ---

@@ -237,8 +237,9 @@ function buildAdjacencyList(db: Database.Database): { adjacency: Map<number, num
  * Optimisation: when multiple IDs are requested, we build the adjacency list
  * and run BFS once, then cache all results.
  *
- * Uses index-based queue traversal instead of queue.shift() to avoid
- * O(n) per-dequeue cost.
+ * Uses multi-source BFS with first-visit depths only. This keeps causal depth
+ * stable on cyclic graphs instead of letting revisit loops drift toward the
+ * traversal cap.
  */
 export function computeCausalDepthScores(db: Database.Database, memoryIds: number[]): Map<number, number> {
   const results = new Map<number, number>();
@@ -303,10 +304,7 @@ export function computeCausalDepthScores(db: Database.Database, memoryIds: numbe
 
       for (const neighbor of neighbors) {
         const neighborDepth = depth + 1;
-        if (
-          neighborDepth <= maxTraversalDepth &&
-          (!depthMap.has(neighbor) || neighborDepth > depthMap.get(neighbor)!)
-        ) {
+        if (neighborDepth <= maxTraversalDepth && !depthMap.has(neighbor)) {
           depthMap.set(neighbor, neighborDepth);
           if (neighborDepth > maxDepth) maxDepth = neighborDepth;
           queue.push({ nodeId: neighbor, depth: neighborDepth });

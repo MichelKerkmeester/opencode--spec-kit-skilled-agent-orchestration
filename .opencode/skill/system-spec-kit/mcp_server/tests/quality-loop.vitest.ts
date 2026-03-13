@@ -233,6 +233,42 @@ describe('scoreCoherence', () => {
     expect(result.score).toBe(0.75); // non-empty + >50 + >200, but no heading
     expect(result.issues.some(i => /heading/i.test(i))).toBe(true);
   });
+
+  it('penalizes future-dated completion claims beyond lastModified', () => {
+    const content = [
+      '# Release Notes',
+      '',
+      'Completed rollout on 2099-01-01 after validation finished successfully.',
+      'This entry is long enough to satisfy the structural checks without issue.',
+      'Additional detail keeps the document comfortably above the substance threshold.',
+    ].join('\n');
+
+    const result = scoreCoherence(content, {
+      lastModified: '2026-03-13T00:00:00.000Z',
+    });
+
+    expect(result.score).toBeLessThan(1.0);
+    expect(result.issues.some(i => /future-dated completion claims/i.test(i))).toBe(true);
+  });
+
+  it('penalizes unresolved causal references when a resolver is provided', () => {
+    const content = '# Relationship Note\n\n' + 'This document describes how one memory depends on another. '.repeat(8);
+    const result = scoreCoherence(content, {
+      title: 'Relationship Note',
+      filePath: '/tmp/specs/999-test/memory/relationship-note.md',
+      causalLinks: {
+        caused_by: ['missing-memory'],
+        supersedes: [],
+        derived_from: [],
+        blocks: [],
+        related_to: [],
+      },
+      resolveReference: () => false,
+    });
+
+    expect(result.score).toBeLessThan(1.0);
+    expect(result.issues.some(i => /unresolved causal link references/i.test(i))).toBe(true);
+  });
 });
 
 /* ---------------------------------------------------------------

@@ -1,6 +1,7 @@
 ---
 title: "Implementation Plan: discovery [template:level_2/plan.md]"
 description: "Finalize Discovery phase docs so they match current handler, schema, feature-catalog, and test reality with updated verification evidence."
+SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
 trigger_phrases:
   - "implementation"
   - "plan"
@@ -16,21 +17,6 @@ contextType: "general"
 
 ---
 
-## TABLE OF CONTENTS
-
-- [1. SUMMARY](#1--summary)
-- [2. OVERVIEW](#2--overview)
-- [3. QUALITY GATES](#3--quality-gates)
-- [4. ARCHITECTURE](#4--architecture)
-- [5. IMPLEMENTATION PHASES](#5--implementation-phases)
-- [6. TESTING STRATEGY](#6--testing-strategy)
-- [7. DEPENDENCIES](#7--dependencies)
-- [8. ROLLBACK PLAN](#8--rollback-plan)
-- [L2: PHASE DEPENDENCIES](#l2-phase-dependencies)
-- [L2: EFFORT ESTIMATION](#l2-effort-estimation)
-- [L2: ENHANCED ROLLBACK](#l2-enhanced-rollback)
-
----
 
 <!-- ANCHOR:summary -->
 ## 1. SUMMARY
@@ -84,7 +70,7 @@ Evidence-driven documentation alignment for Discovery handlers, schemas, tests, 
 - **Handlers**: `memory-crud-list.ts`, `memory-crud-stats.ts`, `memory-crud-health.ts`
 - **Schema surface**: `mcp_server/schemas/tool-input-schemas.ts`, `mcp_server/tool-schemas.ts`
 - **Regression tests**: `handler-memory-list-edge`, `handler-memory-stats-edge`, `handler-memory-health-edge` (pre-query refresh failure coverage)
-- **Related docs**: `manual_testing_playbook/manual_testing_playbook.md`, merged `feature_catalog/feature_catalog.md`, `shared/scoring/README.md`
+- **Related docs**: `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md`, merged `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md`, `.opencode/skill/system-spec-kit/shared/scoring/README.md`
 - **Focused verification suite**: `handler-memory-list-edge`, `handler-memory-stats-edge`, `handler-memory-health-edge`, `handler-memory-crud`, `tool-input-schema`
 
 ### Data Flow

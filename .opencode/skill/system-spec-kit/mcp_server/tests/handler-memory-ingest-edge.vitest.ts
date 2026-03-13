@@ -89,6 +89,19 @@ describe('Handler Memory Ingest edge cases (T005a)', () => {
     expect(mocks.mockEnqueueIngestJob).not.toHaveBeenCalled();
   });
 
+  it('T005a-I4a: normalized in-base traversal segments are still rejected', async () => {
+    const result = await handler.handleMemoryIngestStart({ paths: ['/tmp/safe/../escaped.md'] });
+    const parsed = parseResponse(result) as Record<string, any>;
+    const errorText = String(parsed.error ?? parsed.data?.error ?? '');
+    const errorCode = String(parsed.code ?? parsed.data?.code ?? '');
+
+    expect(errorText).toContain('Invalid path(s) rejected');
+    expect(errorText).toContain('contains path traversal segments (..)');
+    expect(errorCode).toBe('E_VALIDATION');
+    expect(mocks.mockCreateIngestJob).not.toHaveBeenCalled();
+    expect(mocks.mockEnqueueIngestJob).not.toHaveBeenCalled();
+  });
+
   it('T005a-I4b: exactly MAX_INGEST_PATHS paths is accepted', async () => {
     const paths = Array.from({ length: MAX_INGEST_PATHS }, (_, index) => `/tmp/ingest-edge-${index}.md`);
     mocks.mockCreateIngestJob.mockResolvedValue({

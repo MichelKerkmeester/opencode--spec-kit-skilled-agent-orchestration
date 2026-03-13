@@ -1,6 +1,7 @@
 ---
 title: "Implementation Summary: tooling-and-scripts"
 description: "Summary of Phase 2 implementation for the tooling-and-scripts code audit (T004-T019)"
+SPECKIT_TEMPLATE_SOURCE: "implementation-summary | v2.2"
 trigger_phrases:
   - "implementation summary"
   - "tooling and scripts"
@@ -21,7 +22,7 @@ contextType: "general"
 ### Group 1 — Tree Thinning (T004, T005)
 **Agent: Tree Thinning | Tests: 33 pass | Lines: +138 / -6**
 
-Repointed tree-thinning feature catalog entry from a stale/placeholder mapping to the actual runtime flow: `chunkLargeFile()` → `thinChunks()` → `indexChunkedMemoryFile()` in `chunking-orchestrator.ts`, with supporting docs in `mcp_server/lib/search/README.md` (R7). Added token-threshold boundary tests and content-summary merge tests covering the `scoreChunk()` and `thinChunks()` logic in `chunk-thinning.ts`.
+Repointed tree-thinning feature catalog entry from a stale/placeholder mapping to the actual runtime flow: `chunkLargeFile()` → `thinChunks()` → `indexChunkedMemoryFile()` in `chunking-orchestrator.ts`, with supporting docs in `.opencode/skill/system-spec-kit/mcp_server/lib/search/README.md` (R7). Added token-threshold boundary tests and content-summary merge tests covering the `scoreChunk()` and `thinChunks()` logic in `chunk-thinning.ts`.
 
 ### Group 2 — Architecture Boundary Enforcement (T006, T007)
 **Agent: Architecture Boundary | Tests: 45 pass | Lines: +490 / -43**
@@ -41,7 +42,7 @@ Documented checkpoint-before-delete contract in `mcp_server/cli.ts` and feature 
 ### Group 5 — Documentation Evidence + Regression (T010, T011, T015, T016)
 **Agent: Documentation Evidence + Regression | Tests: 5 pass | Lines: +275 / -2**
 
-Added per-file LOC evidence and `git show b4f85e327` audit references for all 4 dead-code categories in `04-dead-code-removal.md`. Mapped 45 standards-alignment violations to sk-code--opencode rule lines in `05-code-standards-alignment.md` (26 AI-intent conversions, 10 MODULE/COMPONENT headers, import ordering, UPPER_SNAKE constant rename) with file-level fix counts and HEAD verification commands. Added lint/check traceability section to `05-code-standards-alignment.md`. Added 5 canary regression tests that verify dead symbols (`isShadowScoringEnabled`, `isRsfEnabled`, `computeCausalDepth`, `getSubgraphWeights`, `RECOVERY_HALF_LIFE_DAYS`) are absent from their respective files at HEAD.
+Added per-file LOC evidence and `git show b4f85e327` audit references for all 4 dead-code categories in `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/04-dead-code-removal.md`. Mapped 45 standards-alignment violations to sk-code--opencode rule lines in `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/05-code-standards-alignment.md` (26 AI-intent conversions, 10 MODULE/COMPONENT headers, import ordering, UPPER_SNAKE constant rename) with file-level fix counts and HEAD verification commands. Added lint/check traceability section to `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/05-code-standards-alignment.md`. Added 5 canary regression tests that verify dead symbols (`isShadowScoringEnabled`, `isRsfEnabled`, `computeCausalDepth`, `getSubgraphWeights`, `RECOVERY_HALF_LIFE_DAYS`) are absent from their respective files at HEAD.
 
 ---
 
@@ -58,17 +59,17 @@ Added per-file LOC evidence and `git show b4f85e327` audit references for all 4 
 | `mcp_server/tests/progressive-validation.vitest.ts` | Modified | Populated all CHK-PI-B2-001…010 test groups and Pipeline Level Progression |
 | `mcp_server/tests/file-watcher.vitest.ts` | Modified | Added metrics group, rename integration, debounce stress, burst rename, concurrent rename tests |
 | `mcp_server/tests/cli.vitest.ts` | Created | CLI integration test suite (stats, bulk-delete, reindex, schema-downgrade, unknown command) |
-| `feature_catalog/16--tooling-and-scripts/01-tree-thinning-for-spec-folder-consolidation.md` | Modified | Repointed to actual consolidation runtime flow |
-| `feature_catalog/16--tooling-and-scripts/02-architecture-boundary-enforcement.md` | Modified | Corrected implementation path; expanded test focus for T39-T44 |
-| `feature_catalog/16--tooling-and-scripts/04-dead-code-removal.md` | Modified | Added auditable source evidence (git refs, LOC counts, HEAD verification commands) + 5 regression tests |
-| `feature_catalog/16--tooling-and-scripts/05-code-standards-alignment.md` | Modified | Added rule→file→count mapping; lint/check traceability section |
-| `feature_catalog/16--tooling-and-scripts/06-real-time-filesystem-watching-with-chokidar.md` | Modified | Expanded test focus to include metrics and rename/burst tests |
-| `feature_catalog/16--tooling-and-scripts/07-standalone-admin-cli.md` | Modified | Added checkpoint-before-delete contract; added `cli.vitest.ts` to Tests table |
-| `feature_catalog/16--tooling-and-scripts/08-watcher-delete-rename-cleanup.md` | Modified | Expanded test focus to include rename lifecycle, debounce stress, burst/concurrent rename |
-| `specs/016-tooling-and-scripts/tasks.md` | Modified | Marked T004-T019 complete; updated completion criteria |
-| `specs/016-tooling-and-scripts/checklist.md` | Modified | Marked CHK-010..023, CHK-031, CHK-041 complete with evidence; updated counts and date |
-| `specs/016-tooling-and-scripts/plan.md` | Modified | Marked Phase 2 + Phase 3 items complete; updated Definition of Done |
-| `specs/016-tooling-and-scripts/implementation-summary.md` | Created | This file |
+| `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/01-tree-thinning-for-spec-folder-consolidation.md` | Modified | Repointed to actual consolidation runtime flow |
+| `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/02-architecture-boundary-enforcement.md` | Modified | Corrected implementation path; expanded test focus for T39-T44 |
+| `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/04-dead-code-removal.md` | Modified | Added auditable source evidence (git refs, LOC counts, HEAD verification commands) + 5 regression tests |
+| `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/05-code-standards-alignment.md` | Modified | Added rule→file→count mapping; lint/check traceability section |
+| `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/06-real-time-filesystem-watching-with-chokidar.md` | Modified | Expanded test focus to include metrics and rename/burst tests |
+| `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/07-standalone-admin-cli.md` | Modified | Added checkpoint-before-delete contract; added `cli.vitest.ts` to Tests table |
+| `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/08-watcher-delete-rename-cleanup.md` | Modified | Expanded test focus to include rename lifecycle, debounce stress, burst/concurrent rename |
+| `tasks.md` | Modified | Marked T004-T019 complete; updated completion criteria |
+| `checklist.md` | Modified | Marked CHK-010..023, CHK-031, CHK-041 complete with evidence; updated counts and date |
+| `plan.md` | Modified | Marked Phase 2 + Phase 3 items complete; updated Definition of Done |
+| `implementation-summary.md` | Created | This file |
 
 ---
 

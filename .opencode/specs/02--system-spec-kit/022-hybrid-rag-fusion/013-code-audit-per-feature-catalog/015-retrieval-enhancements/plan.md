@@ -1,6 +1,7 @@
 ---
 title: "Implementation Plan: retrieval-enhancements [template:level_2/plan.md]"
 description: "This plan structures the retrieval-enhancements audit remediation workflow, mapping nine feature findings into prioritized implementation and verification phases."
+SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
 trigger_phrases:
   - "retrieval enhancements plan"
   - "hybrid rag fusion audit"
@@ -44,9 +45,9 @@ This plan operationalizes the retrieval-enhancements feature audit into a tracka
 - [x] Dependencies identified
 
 ### Definition of Done
-- [ ] All acceptance criteria met
-- [ ] Tests passing (if applicable)
-- [ ] Docs updated (spec/plan/tasks)
+- [x] All acceptance criteria met
+- [x] Tests passing (if applicable)
+- [x] Docs updated (spec/plan/tasks)
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -83,9 +84,9 @@ Feature definitions are reviewed first to extract claimed implementation/test ow
 - [x] Feature-level PASS/WARN/FAIL outcomes documented
 
 ### Phase 3: Verification
-- [ ] Manual testing complete
-- [ ] Edge cases handled
-- [ ] Documentation updated
+- [x] Manual testing complete
+- [x] Edge cases handled
+- [x] Documentation updated
 <!-- /ANCHOR:phases -->
 
 ---
@@ -107,10 +108,10 @@ Feature definitions are reviewed first to extract claimed implementation/test ow
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| `feature_catalog/15--retrieval-enhancements/` | Internal | Yellow | Mapping mismatches remain unresolved and remediation order is unclear. |
+| `feature_catalog/15--retrieval-enhancements/` | Internal | Green | Source/test mapping validation completed (`MISSING_TOTAL=0`); future drift risk remains if mapping checks are skipped. |
 | `mcp_server/lib/search/*` implementation files | Internal | Green | Core behavioral issues cannot be validated or fixed. |
 | `mcp_server/tests/*.vitest.ts` coverage ownership | Internal | Yellow | Regressions may remain undetected for P0 features. |
-| Manual playbook scenarios (NEW-085+) | External | Yellow | Manual coverage claims cannot be verified feature-by-feature. |
+| Manual playbook scenarios (NEW-085+) | External | Yellow | Eight retrieval features are mapped; feature 09 currently lacks a direct manual scenario mapping. |
 <!-- /ANCHOR:dependencies -->
 
 ---

@@ -1,6 +1,7 @@
 ---
 title: "Feature Specification: retrieval-enhancements [template:level_2/spec.md]"
 description: "Audit and align retrieval-enhancement feature documentation, code mappings, and test coverage for the hybrid RAG fusion catalog."
+SPECKIT_TEMPLATE_SOURCE: "spec-core | v2.2"
 trigger_phrases:
   - "retrieval enhancements"
   - "hybrid rag fusion"
@@ -24,9 +25,12 @@ contextType: "general"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | Draft |
+| **Status** | Complete |
 | **Created** | 2026-03-10 |
 | **Branch** | `015-retrieval-enhancements` |
+| **Parent Spec** | ../spec.md |
+| **Previous Phase** | ../014-pipeline-architecture/spec.md |
+| **Next Phase** | ../016-tooling-and-scripts/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -96,6 +100,14 @@ Standardize the retrieval-enhancements audit into Level 2 format so remediation 
 - **SC-001**: All 9 features have structured PASS/WARN/FAIL outcomes with source-backed findings.
 - **SC-002**: All 17 remediation tasks are retained and traceable to concrete files and behaviors.
 - **SC-003**: P0 documentation and test-mapping mismatches (F-07, F-08) are explicitly resolved or blocked with clear ownership.
+
+### Acceptance Scenarios
+
+1. **Given** the documented requirements for this phase, **When** a reviewer walks the updated packet, **Then** each requirement has a matching verification path in tasks and checklist artifacts.
+2. **Given** current implementation behavior, **When** spec statements are compared with source and test references, **Then** no contradictory behavior claims remain in the phase packet.
+3. **Given** the updated verification evidence, **When** checklist entries are audited, **Then** each completed P0/P1 item carries inline evidence and traceable context.
+4. **Given** Level 2 template constraints, **When** the spec validator runs, **Then** acceptance-scenario coverage and section integrity checks pass without structural warnings.
+
 <!-- /ANCHOR:success-criteria -->
 
 ---

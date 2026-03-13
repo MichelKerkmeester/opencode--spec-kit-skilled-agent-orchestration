@@ -1,6 +1,7 @@
 ---
 title: "Feature Specification: evaluation-and-measurement [template:level_2/spec.md]"
 description: "Evaluation-and-measurement audit findings show correctness bugs, behavior drift, and coverage gaps across 14 cataloged features. This spec defines remediation requirements and verification targets."
+SPECKIT_TEMPLATE_SOURCE: "spec-core | v2.2"
 trigger_phrases:
   - "evaluation"
   - "measurement"
@@ -29,6 +30,9 @@ contextType: "general"
 | **Status** | Complete |
 | **Created** | 2026-03-10 |
 | **Branch** | `009-evaluation-and-measurement` |
+| **Parent Spec** | ../spec.md |
+| **Previous Phase** | ../008-bug-fixes-and-data-integrity/spec.md |
+| **Next Phase** | ../010-graph-signal-activation/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -111,6 +115,14 @@ Define a remediation-ready Level 2 specification that preserves all current audi
 - **SC-001**: All 14 evaluation-and-measurement features remain represented with explicit, testable remediation targets.
 - **SC-002**: Existing FAIL findings are captured as blocker requirements with deterministic acceptance criteria.
 - **SC-003**: Documentation, task planning, and verification status are synchronized with NEW-050..072 playbook mapping expectations.
+
+### Acceptance Scenarios
+
+1. **Given** the documented requirements for this phase, **When** a reviewer walks the updated packet, **Then** each requirement has a matching verification path in tasks and checklist artifacts.
+2. **Given** current implementation behavior, **When** spec statements are compared with source and test references, **Then** no contradictory behavior claims remain in the phase packet.
+3. **Given** the updated verification evidence, **When** checklist entries are audited, **Then** each completed P0/P1 item carries inline evidence and traceable context.
+4. **Given** Level 2 template constraints, **When** the spec validator runs, **Then** acceptance-scenario coverage and section integrity checks pass without structural warnings.
+
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -185,7 +197,7 @@ Define a remediation-ready Level 2 specification that preserves all current audi
 
 ## 10. OPEN QUESTIONS (RESOLVED)
 
-- **Resolved (observer-overhead alert path):** Current-reality text is explicitly documentation-corrected in `03-observer-effect-mitigation.md` to state that automated p95 overhead alerting is not implemented; mitigation is fail-safe/non-fatal behavior.
+- **Resolved (observer-overhead alert path):** Current-reality text is explicitly documentation-corrected in `.opencode/skill/system-spec-kit/feature_catalog/09--evaluation-and-measurement/03-observer-effect-mitigation.md` to state that automated p95 overhead alerting is not implemented; mitigation is fail-safe/non-fatal behavior.
 - **Resolved (metric-count contract):** Evaluation-and-measurement feature docs and `eval-metrics.ts` consistently document the 12-metric contract (7 core + 5 diagnostic).
 - **Resolved (non-fatal logging policy for eval/telemetry):** Policy is standardized as: catch blocks log `console.warn` with module prefix + function context + normalized error message (`err instanceof Error ? err.message : String(err)`), do not block user-facing operations, and return fallback values.
 <!-- /ANCHOR:questions -->

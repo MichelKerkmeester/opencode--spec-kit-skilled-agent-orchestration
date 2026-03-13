@@ -259,7 +259,7 @@ export const KEYWORD_TYPE_MAP: Readonly<Record<string, MemoryTypeName>> = {
 // 4. TYPE HELPER FUNCTIONS
 // ---------------------------------------------------------------
 
-function getValidTypes(): MemoryTypeName[] {
+export function getValidTypes(): MemoryTypeName[] {
   return [...EXPECTED_TYPES];
 }
 
@@ -280,7 +280,7 @@ function getTypeConfig(type: string | null | undefined): MemoryTypeConfig | null
   return MEMORY_TYPES[type.toLowerCase() as MemoryTypeName] || null;
 }
 
-function getHalfLife(type: string | null | undefined): number | null {
+export function getHalfLife(type: string | null | undefined): number | null {
   if (!type || typeof type !== 'string') {
     return 60;
   }
@@ -288,7 +288,7 @@ function getHalfLife(type: string | null | undefined): number | null {
   return halfLife !== undefined ? halfLife : 60;
 }
 
-function isDecayEnabled(type: string | null | undefined): boolean {
+export function isDecayEnabled(type: string | null | undefined): boolean {
   const config = getTypeConfig(type);
   return config ? config.decayEnabled : true;
 }
@@ -304,7 +304,7 @@ export function getDefaultType(): MemoryTypeName {
 // 5. RESET-TO-DEFAULTS
 // ---------------------------------------------------------------
 
-function getDefaultHalfLives(): Record<MemoryTypeName, number | null> {
+export function getDefaultHalfLives(): Record<MemoryTypeName, number | null> {
   return {
     working: 1,
     episodic: 7,
@@ -410,7 +410,7 @@ export function getSpecDocumentConfig(documentType: DocumentType): SpecDocumentC
 // 7. HALF-LIFE VALIDATION
 // ---------------------------------------------------------------
 
-function validateHalfLifeConfig(config: Record<string, unknown> | null | undefined): HalfLifeValidationResult {
+export function validateHalfLifeConfig(config: Record<string, unknown> | null | undefined): HalfLifeValidationResult {
   const errors: string[] = [];
 
   if (!config || typeof config !== 'object') {

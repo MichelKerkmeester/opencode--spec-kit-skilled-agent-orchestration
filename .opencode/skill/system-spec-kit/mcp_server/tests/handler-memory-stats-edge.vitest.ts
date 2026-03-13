@@ -3,6 +3,8 @@ import * as handler from '../handlers/memory-crud';
 import * as core from '../core';
 import * as vectorIndex from '../lib/search/vector-index';
 
+const seededSpecFolders = new Set<string>();
+
 /** Parse the JSON payload from an MCP response. */
 function parseResponse(result: { content: Array<{ text: string }> }) {
   return JSON.parse(result.content[0].text);
@@ -32,6 +34,7 @@ async function insertStatsRows(specFolders: string[], repeat = 1) {
   `);
 
   for (const [index, specFolder] of specFolders.entries()) {
+    seededSpecFolders.add(specFolder);
     const safeFolder = specFolder.replace(/[^a-zA-Z0-9/_-]/g, '-');
     for (let occurrence = 0; occurrence < repeat; occurrence += 1) {
       insert.run(
@@ -46,8 +49,27 @@ async function insertStatsRows(specFolders: string[], repeat = 1) {
   }
 }
 
+function cleanupSeededStatsRows(): void {
+  if (seededSpecFolders.size === 0) {
+    return;
+  }
+
+  const database = vectorIndex.getDb();
+  if (!database) {
+    seededSpecFolders.clear();
+    return;
+  }
+
+  const deleteBySpecFolder = database.prepare('DELETE FROM memory_index WHERE spec_folder = ?');
+  for (const specFolder of seededSpecFolders) {
+    deleteBySpecFolder.run(specFolder);
+  }
+  seededSpecFolders.clear();
+}
+
 afterEach(() => {
   vi.restoreAllMocks();
+  cleanupSeededStatsRows();
 });
 
 describe('handleMemoryStats Edge Cases (T007a)', () => {
@@ -77,7 +99,7 @@ describe('handleMemoryStats Edge Cases (T007a)', () => {
     await insertStatsRows([
       `specs/z_archive/${runId}-archived`,
       `specs/${runId}-active`,
-    ], 25);
+    ], 250);
 
     const result = await handler.handleMemoryStats({ folderRanking: 'count', includeArchived: true, limit: 100 });
     const parsed = parseResponse(result);
@@ -89,7 +111,7 @@ describe('handleMemoryStats Edge Cases (T007a)', () => {
     await insertStatsRows([
       `specs/${runId}-keep`,
       `specs/${runId}-scratch`,
-    ], 25);
+    ], 250);
 
     const result = await handler.handleMemoryStats({
       folderRanking: 'count',

@@ -1,6 +1,7 @@
 ---
 title: "Implementation Plan: analysis [template:level_2/plan.md]"
 description: "Draft plan dated 2026-03-10 for executing the Analysis feature audit backlog using TypeScript, MCP handlers, SQLite evidence, and Vitest regression coverage."
+SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
 trigger_phrases:
   - "implementation"
   - "plan"

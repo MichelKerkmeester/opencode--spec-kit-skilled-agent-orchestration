@@ -431,6 +431,29 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
       expect(parsed.meta.sessionLifecycle.eventCounterStart).toBe(0);
     });
 
+    it('T027ka: caller sessionId starts a new caller-scoped session when none exists', async () => {
+      vi.spyOn(workingMemory, 'sessionExists').mockReturnValue(false);
+      const getSessionEventCounterSpy = vi.spyOn(workingMemory, 'getSessionEventCounter');
+
+      const result = await withTimeout(
+        handler.handleMemoryContext({
+          input: 'continue tracking retrieval drift follow-up',
+          sessionId: 'session-new',
+        }),
+        5000,
+        'T027ka-caller-new-session'
+      );
+
+      const parsed = parseResponse(result);
+      expect(parsed.error).not.toBe(true);
+      expect(parsed.meta.sessionLifecycle.sessionScope).toBe('caller');
+      expect(parsed.meta.sessionLifecycle.requestedSessionId).toBe('session-new');
+      expect(parsed.meta.sessionLifecycle.effectiveSessionId).toBe('session-new');
+      expect(parsed.meta.sessionLifecycle.resumed).toBe(false);
+      expect(parsed.meta.sessionLifecycle.eventCounterStart).toBe(0);
+      expect(getSessionEventCounterSpy).not.toHaveBeenCalled();
+    });
+
     it('T027l/T027m: caller session resume reports counter and injects top-5 context', async () => {
       vi.spyOn(workingMemory, 'sessionExists').mockReturnValue(true);
       vi.spyOn(workingMemory, 'getSessionEventCounter').mockReturnValue(7);

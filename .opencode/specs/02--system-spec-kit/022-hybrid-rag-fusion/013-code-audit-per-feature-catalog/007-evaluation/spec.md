@@ -1,6 +1,7 @@
 ---
 title: "Feature Specification: evaluation [template:level_2/spec.md]"
 description: "Feature-centric code audit of the Evaluation catalog to validate behavior parity, standards alignment, and coverage gaps."
+SPECKIT_TEMPLATE_SOURCE: "spec-core | v2.2"
 trigger_phrases:
   - "feature"
   - "specification"
@@ -27,6 +28,9 @@ contextType: "general"
 | **Status** | Complete |
 | **Created** | 2026-03-10 |
 | **Branch** | `007-evaluation` |
+| **Parent Spec** | ../spec.md |
+| **Previous Phase** | ../006-analysis/spec.md |
+| **Next Phase** | ../008-bug-fixes-and-data-integrity/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -47,7 +51,7 @@ Deliver a complete, structured audit for both Evaluation features so gaps are pr
 ## 3. SCOPE
 
 ### In Scope
-- Audit all Evaluation features in `feature_catalog/07--evaluation/`.
+- Audit all Evaluation features in `.opencode/skill/system-spec-kit/feature_catalog/07--evaluation/`.
 - Validate correctness, standards alignment, behavior match, and test coverage.
 - Map each feature to manual playbook coverage (`EX-032`, `EX-033`) and capture remediation tasks.
 
@@ -59,8 +63,8 @@ Deliver a complete, structured audit for both Evaluation features so gaps are pr
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `feature_catalog/07--evaluation/01-ablation-studies-evalrunablation.md` | Modify | Align test inventory and audit outcomes for F-01. |
-| `feature_catalog/07--evaluation/02-reporting-dashboard-evalreportingdashboard.md` | Modify | Align Current Reality claims and test inventory for F-02. |
+| `.opencode/skill/system-spec-kit/feature_catalog/07--evaluation/01-ablation-studies-evalrunablation.md` | Modify | Align test inventory and audit outcomes for F-01. |
+| `.opencode/skill/system-spec-kit/feature_catalog/07--evaluation/02-reporting-dashboard-evalreportingdashboard.md` | Modify | Align Current Reality claims and test inventory for F-02. |
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/007-evaluation/*.md` | Modify | Maintain phase specification, plan, tasks, and checklist artifacts. |
 <!-- /ANCHOR:scope -->
 
@@ -82,6 +86,7 @@ Deliver a complete, structured audit for both Evaluation features so gaps are pr
 |----|-------------|---------------------|
 | REQ-003 | Document handler-level test gaps for both features. | Required handler scenarios are listed with concrete test actions and file targets. |
 | REQ-004 | Map findings to playbook scenarios and remediation priorities. | Each feature maps to `EX-032` or `EX-033`, with P0/P1/P2 follow-up tasks captured. |
+| REQ-005 | Keep phase documentation synchronized after remediation updates. | `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` reflect the same status, test scope, and evidence narrative. |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -93,6 +98,14 @@ Deliver a complete, structured audit for both Evaluation features so gaps are pr
 - **SC-002**: Each feature has PASS/WARN/FAIL status with code issues and standards violations documented.
 - **SC-003**: Test gaps are explicitly documented and actionable.
 - **SC-004**: Playbook scenarios are mapped, or gaps are clearly noted.
+
+### Acceptance Scenarios
+
+1. **Given** the documented requirements for this phase, **When** a reviewer walks the updated packet, **Then** each requirement has a matching verification path in tasks and checklist artifacts.
+2. **Given** current implementation behavior, **When** spec statements are compared with source and test references, **Then** no contradictory behavior claims remain in the phase packet.
+3. **Given** the updated verification evidence, **When** checklist entries are audited, **Then** each completed P0/P1 item carries inline evidence and traceable context.
+4. **Given** Level 2 template constraints, **When** the spec validator runs, **Then** acceptance-scenario coverage and section integrity checks pass without structural warnings.
+
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -102,7 +115,7 @@ Deliver a complete, structured audit for both Evaluation features so gaps are pr
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | Feature catalog accuracy (`feature_catalog/07--evaluation`) | Incorrect catalog claims can produce false audit deltas. | Cross-check every finding against referenced source files and line ranges. |
+| Dependency | Feature catalog accuracy (`.opencode/skill/system-spec-kit/feature_catalog/07--evaluation`) | Incorrect catalog claims can produce false audit deltas. | Cross-check every finding against referenced source files and line ranges. |
 | Dependency | Evaluation data tables (`eval_metric_snapshots`, `eval_channel_results`) | Missing/changed schema can invalidate behavioral conclusions. | Validate query usage in code and keep findings tied to actual SQL call paths. |
 | Risk | Unresolved `eval_final_results` mismatch in F-02 | Critical documentation/behavior divergence remains open. | Track as P0 with explicit implement-vs-doc decision and owner. |
 | Risk | Handler-level test gaps persist | Regressions may pass unnoticed despite feature-level tests. | Add focused handler tests for format/filter/normalization/error paths. |

@@ -142,10 +142,10 @@ All findings from all 4 review rounds addressed. Final verdict: APPROVE at 97/10
 | `mcp_server/tests/handler-checkpoints-edge.vitest.ts` | New: 12 checkpoint edge tests |
 | `mcp_server/tests/startup-checks.vitest.ts` | Align success-path logging assertions with stderr-safe `console.warn` behavior |
 | `mcp_server/tests/cold-start.vitest.ts` | Remove `Date.now()` drift flake by fixing time in novelty-removed parity assertions |
-| `mcp_server/tests/README.md` | Remove stale `retry.vitest.ts` reference |
-| `feature_catalog/05--lifecycle/01-*.md` through `05-*.md` | Remove stale `retry.vitest.ts` refs |
-| `feature_catalog/05--lifecycle/07-automatic-archival-subsystem.md` | Clarify deferred vector re-embedding on unarchive |
-| `manual_testing_playbook/manual_testing_playbook.md` | Fix stale source-artifact links and align NEW-124 with deferred vector rebuild behavior |
+| `.opencode/skill/system-spec-kit/mcp_server/tests/README.md` | Remove stale `retry.vitest.ts` reference |
+| `.opencode/skill/system-spec-kit/feature_catalog/05--lifecycle/01-*.md` through `05-*.md` | Remove stale `retry.vitest.ts` refs |
+| `.opencode/skill/system-spec-kit/feature_catalog/05--lifecycle/07-automatic-archival-subsystem.md` | Clarify deferred vector re-embedding on unarchive |
+| `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` | Fix stale source-artifact links and align NEW-124 with deferred vector rebuild behavior |
 <!-- /ANCHOR:files-changed -->
 
 ---

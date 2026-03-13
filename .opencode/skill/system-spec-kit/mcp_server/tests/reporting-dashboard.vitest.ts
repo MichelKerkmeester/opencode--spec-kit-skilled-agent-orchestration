@@ -365,6 +365,29 @@ describe('Reporting Dashboard (R13-S3)', () => {
       expect(channels['bm25'].avgLatencyMs).toBeCloseTo(7.0, 1);
     });
 
+    it('weights grouped channel latency by query volume across runs', async () => {
+      seedSnapshots(testDb, [
+        {
+          eval_run_id: 2,
+          metric_name: 'ndcg@5',
+          metric_value: 0.88,
+          metadata: JSON.stringify({ sprint: 'sprint-1' }),
+          created_at: '2026-01-11T10:00:00.000Z',
+        },
+      ]);
+
+      seedChannelResults(testDb, [
+        { eval_run_id: 2, query_id: 1, channel: 'vector', hit_count: 4, latency_ms: 100.0 },
+      ]);
+
+      const report = await generateDashboardReport();
+      const vector = report.sprints[0].channels['vector'];
+
+      expect(vector.queryCount).toBe(3);
+      expect(vector.hitCount).toBe(12);
+      expect(vector.avgLatencyMs).toBeCloseTo((12.5 + 15.0 + 100.0) / 3, 4);
+    });
+
     it('returns empty channels when no channel results exist', async () => {
       // Clear channel_results but keep snapshots
       testDb.exec('DELETE FROM eval_channel_results');
@@ -722,6 +745,26 @@ describe('Reporting Dashboard (R13-S3)', () => {
       const report = await generateDashboardReport();
 
       expect(report.sprints.length).toBe(3);
+    });
+
+    it('limit applies after sprint grouping and report totals match the included scope', async () => {
+      const crowdedSprintRows: SnapshotSeed[] = Array.from({ length: 41 }, (_, index) => ({
+        eval_run_id: 3,
+        metric_name: `metric-${index + 1}`,
+        metric_value: 0.5 + (index / 1000),
+        metadata: JSON.stringify({ sprint: 'sprint-3' }),
+        created_at: '2026-01-30T10:00:00.000Z',
+      }));
+
+      seedSnapshots(testDb, crowdedSprintRows);
+
+      const report = await generateDashboardReport({ limit: 2 });
+
+      expect(report.sprints.length).toBe(2);
+      expect(report.sprints.map((sprint) => sprint.sprint)).toEqual(['sprint-2', 'sprint-3']);
+      expect(report.totalEvalRuns).toBe(2);
+      expect(report.totalSnapshots).toBe(43);
+      expect(report.summary).toContain('2 eval run(s) across 2 sprint group(s)');
     });
   });
 

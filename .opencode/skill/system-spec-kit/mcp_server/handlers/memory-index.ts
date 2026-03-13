@@ -239,7 +239,7 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
         } else {
           failed++;
         }
-      } catch (error: unknown) {
+      } catch (_error: unknown) {
         failed++;
       }
     }

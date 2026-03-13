@@ -1,6 +1,7 @@
 ---
 title: "Implementation Plan: evaluation [template:level_2/plan.md]"
 description: "Implement Evaluation-category audit remediation by reconciling behavior claims, closing handler test gaps, and preserving existing MCP/SQLite workflows."
+SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
 trigger_phrases:
   - "implementation"
   - "plan"

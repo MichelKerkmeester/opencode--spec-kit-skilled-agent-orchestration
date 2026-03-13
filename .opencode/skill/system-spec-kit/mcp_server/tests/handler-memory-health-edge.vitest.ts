@@ -99,6 +99,24 @@ describe('handleMemoryHealth Edge Cases (T007b)', () => {
     expect(parsed.data.aliasConflicts).toBeDefined();
   });
 
+  it('T007b-H8b: autoRepair without confirmed returns confirmation-only payload', async () => {
+    const result = await handler.handleMemoryHealth({ autoRepair: true });
+    const parsed = parseResponse(result);
+
+    expect(result.isError).toBe(false);
+    expect(parsed.summary).toMatch(/Confirmation required before auto-repair actions are executed/);
+    expect(parsed.data).toMatchObject({
+      reportMode: 'full',
+      autoRepairRequested: true,
+      needsConfirmation: true,
+    });
+    expect(parsed.hints).toEqual(
+      expect.arrayContaining([
+        'Re-run memory_health with autoRepair:true and confirmed:true to execute repair actions.',
+      ])
+    );
+  });
+
   it('T007b-H9: checkDatabaseUpdated failures return MCP error response with requestId', async () => {
     vi.spyOn(core, 'checkDatabaseUpdated').mockRejectedValue(new Error('marker read failed'));
 

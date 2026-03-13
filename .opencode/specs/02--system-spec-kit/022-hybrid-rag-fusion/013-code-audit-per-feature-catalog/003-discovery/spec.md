@@ -1,6 +1,7 @@
 ---
 title: "Feature Specification: discovery [template:level_2/spec.md]"
 description: "Align Discovery phase documentation with current on-disk handler, schema, feature-catalog, and test reality after latest fixes."
+SPECKIT_TEMPLATE_SOURCE: "spec-core | v2.2"
 trigger_phrases:
   - "feature"
   - "specification"
@@ -16,21 +17,6 @@ contextType: "general"
 
 ---
 
-## TABLE OF CONTENTS
-
-- [1. METADATA](#1--metadata)
-- [2. OVERVIEW](#2--overview)
-- [3. PROBLEM & PURPOSE](#3--problem--purpose)
-- [4. SCOPE](#4--scope)
-- [5. REQUIREMENTS](#5--requirements)
-- [6. SUCCESS CRITERIA](#6--success-criteria)
-- [7. RISKS & DEPENDENCIES](#7--risks--dependencies)
-- [L2: NON-FUNCTIONAL REQUIREMENTS](#l2-non-functional-requirements)
-- [L2: EDGE CASES](#l2-edge-cases)
-- [L2: COMPLEXITY ASSESSMENT](#l2-complexity-assessment)
-- [8. OPEN QUESTIONS](#8--open-questions)
-
----
 
 <!-- ANCHOR:metadata -->
 ## 1. METADATA
@@ -43,6 +29,9 @@ contextType: "general"
 | **Created** | 2026-03-10 |
 | **Updated** | 2026-03-12 |
 | **Branch** | `003-discovery` |
+| **Parent Spec** | ../spec.md |
+| **Previous Phase** | ../002-mutation/spec.md |
+| **Next Phase** | ../004-maintenance/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -128,6 +117,14 @@ Update `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-sum
 - **SC-003**: Discovery docs describe `memory_health` schema support for `confirmed` accurately.
 - **SC-004**: Discovery docs note related manual playbook, merged feature catalog, and scoring README alignment updates.
 - **SC-005**: Verification evidence is updated to `tsc` clean plus targeted `95/95` tests across the five specified files.
+
+### Acceptance Scenarios
+
+1. **Given** the documented requirements for this phase, **When** a reviewer walks the updated packet, **Then** each requirement has a matching verification path in tasks and checklist artifacts.
+2. **Given** current implementation behavior, **When** spec statements are compared with source and test references, **Then** no contradictory behavior claims remain in the phase packet.
+3. **Given** the updated verification evidence, **When** checklist entries are audited, **Then** each completed P0/P1 item carries inline evidence and traceable context.
+4. **Given** Level 2 template constraints, **When** the spec validator runs, **Then** acceptance-scenario coverage and section integrity checks pass without structural warnings.
+
 <!-- /ANCHOR:success-criteria -->
 
 ---

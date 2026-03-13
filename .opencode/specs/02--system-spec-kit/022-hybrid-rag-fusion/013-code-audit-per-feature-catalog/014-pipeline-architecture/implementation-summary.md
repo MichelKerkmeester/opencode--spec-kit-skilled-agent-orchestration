@@ -54,13 +54,13 @@ T001-T020 completed the full pipeline-architecture code audit across two waves: 
 
 | File | Action | Purpose |
 |------|--------|---------|
-| `feature_catalog/14--pipeline-architecture/03-chunk-ordering-preservation.md` | Modified | Corrected source/test inventory |
-| `feature_catalog/14--pipeline-architecture/08-performance-improvements.md` | Modified | Reconciled performance feature inventory |
-| `feature_catalog/14--pipeline-architecture/09-activation-window-persistence.md` | Modified | Fixed source/test mapping |
-| `feature_catalog/14--pipeline-architecture/11-pipeline-and-mutation-hardening.md` | Modified | Expanded/split hardening inventory |
-| `feature_catalog/14--pipeline-architecture/12-dbpath-extraction-and-import-standardization.md` | Modified | Added DB_PATH script-consumer refs and resolver tests |
-| `feature_catalog/14--pipeline-architecture/01-4-stage-pipeline-refactor.md` | Modified | Removed nonexistent `retry.vitest.ts` entry |
-| `feature_catalog/14--pipeline-architecture/10-legacy-v1-pipeline-removal.md` | Modified | Removed nonexistent retry-test entry, trimmed legacy V1 inventory |
+| `.opencode/skill/system-spec-kit/feature_catalog/14--pipeline-architecture/03-chunk-ordering-preservation.md` | Modified | Corrected source/test inventory |
+| `.opencode/skill/system-spec-kit/feature_catalog/14--pipeline-architecture/08-performance-improvements.md` | Modified | Reconciled performance feature inventory |
+| `.opencode/skill/system-spec-kit/feature_catalog/14--pipeline-architecture/09-activation-window-persistence.md` | Modified | Fixed source/test mapping |
+| `.opencode/skill/system-spec-kit/feature_catalog/14--pipeline-architecture/11-pipeline-and-mutation-hardening.md` | Modified | Expanded/split hardening inventory |
+| `.opencode/skill/system-spec-kit/feature_catalog/14--pipeline-architecture/12-dbpath-extraction-and-import-standardization.md` | Modified | Added DB_PATH script-consumer refs and resolver tests |
+| `.opencode/skill/system-spec-kit/feature_catalog/14--pipeline-architecture/01-4-stage-pipeline-refactor.md` | Modified | Removed nonexistent `retry.vitest.ts` entry |
+| `.opencode/skill/system-spec-kit/feature_catalog/14--pipeline-architecture/10-legacy-v1-pipeline-removal.md` | Modified | Removed nonexistent retry-test entry, trimmed legacy V1 inventory |
 | `mcp_server/lib/scoring/mpab-aggregation.ts` | Modified | Updated stale MPAB default-state comment |
 | `mcp_server/lib/search/learned-feedback.ts` | Modified | Updated stale learned-feedback feature-flag comment |
 | `mcp_server/core/db-state.ts` | Modified | `lastDbCheck` advancement deferred until successful `reinitializeDatabase` |

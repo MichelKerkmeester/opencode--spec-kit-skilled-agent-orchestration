@@ -1,6 +1,7 @@
 ---
 title: "Implementation Plan: decisions-and-deferrals [template:level_2/plan.md]"
 description: "Implementation planning for the decisions-and-deferrals feature audit, including phased remediation and verification strategy."
+# SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2
 trigger_phrases:
   - "implementation"
   - "plan"

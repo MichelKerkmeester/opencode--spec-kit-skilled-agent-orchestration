@@ -1,6 +1,7 @@
 ---
 title: "Feature Specification: bug-fixes-and-data-integrity [template:level_2/spec.md]"
 description: "Audit and remediate bug-fix and data-integrity features in hybrid RAG fusion, correcting catalog-to-code mismatches and test coverage gaps across 11 features."
+SPECKIT_TEMPLATE_SOURCE: "spec-core | v2.2"
 trigger_phrases:
   - "bug fixes"
   - "data integrity"
@@ -28,6 +29,9 @@ contextType: "general"
 | **Status** | Complete |
 | **Created** | 2026-03-10 |
 | **Branch** | `008-bug-fixes-and-data-integrity` |
+| **Parent Spec** | ../spec.md |
+| **Previous Phase** | ../007-evaluation/spec.md |
+| **Next Phase** | ../009-evaluation-and-measurement/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -96,6 +100,14 @@ Produce a validated, feature-by-feature audit specification that aligns catalog 
 
 - **SC-001**: 11/11 features in the bug-fix/data-integrity catalog have validated, evidence-backed audit records.
 - **SC-002**: A remediation backlog with correct P0/P1/P2 prioritization is ready for implementation without additional discovery.
+
+### Acceptance Scenarios
+
+1. **Given** the documented requirements for this phase, **When** a reviewer walks the updated packet, **Then** each requirement has a matching verification path in tasks and checklist artifacts.
+2. **Given** current implementation behavior, **When** spec statements are compared with source and test references, **Then** no contradictory behavior claims remain in the phase packet.
+3. **Given** the updated verification evidence, **When** checklist entries are audited, **Then** each completed P0/P1 item carries inline evidence and traceable context.
+4. **Given** Level 2 template constraints, **When** the spec validator runs, **Then** acceptance-scenario coverage and section integrity checks pass without structural warnings.
+
 <!-- /ANCHOR:success-criteria -->
 
 ---

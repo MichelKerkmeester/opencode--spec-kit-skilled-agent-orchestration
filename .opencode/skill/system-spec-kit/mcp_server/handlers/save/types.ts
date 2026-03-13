@@ -84,6 +84,7 @@ export interface AtomicSaveResult {
   success: boolean;
   filePath: string;
   error?: string;
+  dbCommitted?: boolean;
   status?: string;
   id?: number;
   specFolder?: string;

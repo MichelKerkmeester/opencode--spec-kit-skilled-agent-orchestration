@@ -1,6 +1,7 @@
 ---
 title: "Implementation Summary: bug-fixes-and-data-integrity [template:level_2/implementation-summary.md]"
 description: "Summary of 14-task remediation across 11 bug-fix/data-integrity features with refreshed verification evidence."
+SPECKIT_TEMPLATE_SOURCE: "implementation-summary | v2.2"
 trigger_phrases:
   - "implementation summary"
   - "bug fixes"
@@ -88,12 +89,12 @@ contextType: "general"
 - `handlers/chunking-orchestrator.ts` — AI-WHY comment on force-path
 
 ### Feature Catalog (6 files)
-- `08--bug-fixes-and-data-integrity/02-chunk-collapse-deduplication.md`
-- `08--bug-fixes-and-data-integrity/03-co-activation-fan-effect-divisor.md`
-- `08--bug-fixes-and-data-integrity/05-database-and-schema-safety.md`
-- `08--bug-fixes-and-data-integrity/06-guards-and-edge-cases.md`
-- `08--bug-fixes-and-data-integrity/07-canonical-id-dedup-hardening.md`
-- `08--bug-fixes-and-data-integrity/11-working-memory-timestamp-fix.md`
+- `.opencode/skill/system-spec-kit/feature_catalog/08--bug-fixes-and-data-integrity/02-chunk-collapse-deduplication.md`
+- `.opencode/skill/system-spec-kit/feature_catalog/08--bug-fixes-and-data-integrity/03-co-activation-fan-effect-divisor.md`
+- `.opencode/skill/system-spec-kit/feature_catalog/08--bug-fixes-and-data-integrity/05-database-and-schema-safety.md`
+- `.opencode/skill/system-spec-kit/feature_catalog/08--bug-fixes-and-data-integrity/06-guards-and-edge-cases.md`
+- `.opencode/skill/system-spec-kit/feature_catalog/08--bug-fixes-and-data-integrity/07-canonical-id-dedup-hardening.md`
+- `.opencode/skill/system-spec-kit/feature_catalog/08--bug-fixes-and-data-integrity/11-working-memory-timestamp-fix.md`
 
 ### Test Files (audited verification scope)
 - `tests/folder-scoring-overflow.vitest.ts` (new)

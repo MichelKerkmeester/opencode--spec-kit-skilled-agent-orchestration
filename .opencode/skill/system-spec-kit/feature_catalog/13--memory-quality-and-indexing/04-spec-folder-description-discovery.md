@@ -80,7 +80,7 @@ the saved `memoryNameHistory` ring buffer state.
 |------|-------|
 | `mcp_server/tests/folder-discovery.vitest.ts` | PerFolderDescription schema, generation, required-field/array validation, path-containment hardening, `slugifyFolderName`, CRUD/staleness, and CRLF frontmatter stripping |
 | `mcp_server/tests/folder-discovery-integration.vitest.ts` | Mixed-mode aggregation, fresh-vs-stale preference, corrupt/missing fallback, cache staleness, regeneration behavior, and performance checks |
-| `mcp_server/tests/slug-uniqueness.vitest.ts` | Filename collision resolution |
+| `scripts/tests/slug-uniqueness.vitest.ts` | Filename collision resolution |
 | `mcp_server/tests/workflow-memory-tracking.vitest.ts` | Load-mutate-save cycle for `memorySequence` increment and `memoryNameHistory` ring buffer |
 | `mcp_server/tests/slug-utils-boundary.vitest.ts` | Numeric coercion and boundary cases for `Number(existing.memorySequence) \|\| 0` |
 

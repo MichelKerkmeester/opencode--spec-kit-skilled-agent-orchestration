@@ -87,7 +87,7 @@ export function findSpecDocuments(workspacePath: string, options: SpecDiscoveryO
           results.push(fullPath);
         }
       }
-    } catch (error: unknown) {
+    } catch (_error: unknown) {
       // Skip directories we can't read.
     }
   }
@@ -151,10 +151,10 @@ export function detectSpecLevel(specPath: string): number | null {
       if (hasDecisionRecord) return 3;
       if (hasChecklist) return 2;
       return 1;
-    } catch (error: unknown) {
+    } catch (_error: unknown) {
       return null;
     }
-  } catch (error: unknown) {
+  } catch (_error: unknown) {
     return null;
   }
 }

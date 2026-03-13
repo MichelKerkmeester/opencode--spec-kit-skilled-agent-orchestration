@@ -145,6 +145,12 @@ contextType: "general"
 
 ---
 
+## Phase 4: Validation Follow-Through
+
+- [x] T011 Reconcile tasks-template task-line formatting with validator expectations (`tasks.md`) [EVIDENCE: Level 2 task-line compliance added for validator task counting.]
+
+---
+
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 

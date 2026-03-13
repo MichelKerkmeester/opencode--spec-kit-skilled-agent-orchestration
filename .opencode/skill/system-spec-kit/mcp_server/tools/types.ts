@@ -130,12 +130,15 @@ export interface StatsArgs {
   limit?: number;
 }
 
-/** Arguments for memory health checks. */
+/** Arguments for memory health checks.
+ * Intentionally declared inline to preserve the public interface contract
+ * asserted by context-server.vitest.ts. */
 export interface HealthArgs {
   reportMode?: 'full' | 'divergent_aliases';
   limit?: number;
   specFolder?: string;
   autoRepair?: boolean;
+  confirmed?: boolean;
 }
 
 /** Arguments for memory validation feedback requests. */

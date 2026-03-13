@@ -16,8 +16,10 @@
     "02--system-spec-kit",
     "022-hybrid-rag-fusion"
   ],
-  "memorySequence": 1,
+  "memorySequence": 3,
   "memoryNameHistory": [
-    "10-03-26_11-16__code-audit-per-feature-catalog.md"
+    "10-03-26_11-16__code-audit-per-feature-catalog.md",
+    "13-03-26_07-28__completed-the-feature-centric-code-audit-for-spec.md",
+    "13-03-26_07-29__completed-feature-centric-audit-across-20-phases.md"
   ]
 }

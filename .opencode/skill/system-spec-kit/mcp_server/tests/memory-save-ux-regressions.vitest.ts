@@ -210,7 +210,7 @@ describe('Memory save UX regressions', () => {
 
     expect(result.success).toBe(false);
     expect(result.status).toBe('error');
-    expect(result.error).toContain('Indexing failed after retry');
+    expect(result.error).toContain('Validation failed');
     expect(fs.existsSync(atomicPath)).toBe(false);
   });
 
@@ -229,7 +229,7 @@ describe('Memory save UX regressions', () => {
 
     expect(result.success).toBe(false);
     expect(result.status).toBe('error');
-    expect(result.error).toContain('Indexing failed after retry');
+    expect(result.error).toContain('Validation failed');
     expect(fs.existsSync(atomicPath)).toBe(true);
     expect(fs.readFileSync(atomicPath, 'utf8')).toBe(originalContent);
   });

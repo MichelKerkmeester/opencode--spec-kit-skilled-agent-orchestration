@@ -13,9 +13,9 @@ This document captures the implemented behavior, source references, and validati
 
 ## 2. CURRENT REALITY
 
-The access tracker (`lib/storage/access-tracker.ts`) implements batched access counting with a soft-accumulator pattern. Each retrieval hit increments an in-memory accumulator by 0.1. When the accumulator exceeds the 0.5 threshold, a database write flushes the accumulated count to the `access_count` column in `memory_index` and updates `last_access_at`. This batching reduces write amplification from high-frequency search operations.
+The access tracker (`lib/storage/access-tracker.ts`) implements batched access counting with a soft-accumulator pattern. Each retrieval hit increments an in-memory accumulator by 0.1. When the accumulator exceeds the 0.5 threshold, a database write flushes the accumulated count to the `access_count` column in `memory_index` and updates `last_accessed`. This batching reduces write amplification from high-frequency search operations.
 
-The `access_count` feeds into composite scoring as a popularity signal, boosting frequently retrieved memories. The accumulator map is capped at 10,000 entries to prevent unbounded memory growth. Access data also drives the archival manager's dormancy detection: memories with no recent access are candidates for automatic archival. The tracker exposes `getAccessStats()` for observability.
+The `access_count` feeds into composite scoring as a popularity signal, boosting frequently retrieved memories. The accumulator map is capped at 10,000 entries to prevent unbounded memory growth. Access data also drives the archival manager's dormancy detection: memories with no recent access are candidates for automatic archival. The tracker currently exposes accumulator and scoring helpers such as `getAccumulatorState()`, `calculatePopularityScore()`, and `calculateUsageBoost()`, rather than a separate `getAccessStats()` API.
 
 ## 3. SOURCE FILES
 

@@ -37,7 +37,21 @@ Release is `READY` only when:
 Otherwise release is `NOT READY`.
 
 Deterministic coverage check (run from repository root):
-- `TOTAL_FEATURES=$(rg -n '^\| (EX|NEW)-[0-9]{3} \|' .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/manual-testing-playbook/manual_testing_playbook.md | wc -l | tr -d ' ')`
+- `TOTAL_FEATURES=$(python3 - <<'PY'
+from pathlib import Path
+import re
+path = Path('.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/manual_testing_playbook/manual_testing_playbook.md')
+count = 0
+in_catalog = False
+pattern = re.compile(r'^\| (EX-\d{3}|NEW-\d{3}|PHASE-\d{3}|F-\d{2}) \|')
+for line in path.read_text().splitlines():
+    if line.startswith('## Feature Catalog Cross-Reference Index'):
+        in_catalog = True
+    if not in_catalog and pattern.match(line):
+        count += 1
+print(count)
+PY
+)`
 - Final verdict report must include `COVERED_FEATURES/TOTAL_FEATURES`.
 
 ## Memory/Spec-Kit Mandatory Flows

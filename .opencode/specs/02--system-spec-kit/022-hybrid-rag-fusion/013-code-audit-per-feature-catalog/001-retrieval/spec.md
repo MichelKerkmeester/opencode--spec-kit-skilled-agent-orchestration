@@ -21,6 +21,9 @@ contextType: "general"
 | **Status** | Complete |
 | **Created** | 2026-03-10 |
 | **Branch** | `main` |
+| **Parent Spec** | ../spec.md |
+| **Previous Phase** | N/A |
+| **Next Phase** | ../002-mutation/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -123,6 +126,14 @@ Verify all 9 retrieval features against real code and tests, fix the validated g
 - [x] **SC-003**: Retrieval-targeted verification is green (`10` suites, `365` passed, `0` failed)
 - [x] **SC-004**: Full-suite status is documented honestly (`7339` passed, `5` failed, `28` todo, `1` pending), with failures outside retrieval scope
 - [x] **SC-005**: Unsupported score claims and stale pass-count claims are removed from this spec folder
+
+### Acceptance Scenarios
+
+1. **Given** the documented requirements for this phase, **When** a reviewer walks the updated packet, **Then** each requirement has a matching verification path in tasks and checklist artifacts.
+2. **Given** current implementation behavior, **When** spec statements are compared with source and test references, **Then** no contradictory behavior claims remain in the phase packet.
+3. **Given** the updated verification evidence, **When** checklist entries are audited, **Then** each completed P0/P1 item carries inline evidence and traceable context.
+4. **Given** Level 2 template constraints, **When** the spec validator runs, **Then** acceptance-scenario coverage and section integrity checks pass without structural warnings.
+
 <!-- /ANCHOR:success-criteria -->
 
 ---

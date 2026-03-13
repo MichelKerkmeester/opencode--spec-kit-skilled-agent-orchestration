@@ -35,6 +35,10 @@ interface MemoryIngestCancelArgs {
 
 const MAX_PATH_LENGTH = 500;
 
+function hasTraversalSegment(inputPath: string): boolean {
+  return inputPath.split(/[\\/]+/).includes('..');
+}
+
 // Codex fix: nanoid-style 12-char alphanumeric ID (URL-safe, no UUID dependency).
 const NANOID_ALPHABET = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 function createJobId(): string {
@@ -101,12 +105,16 @@ async function handleMemoryIngestStart(args: MemoryIngestStartArgs): Promise<MCP
 
   for (const inputPath of paths) {
     const trimmedPath = inputPath.trim();
-    const normalizedInput = path.normalize(trimmedPath);
+
+    if (hasTraversalSegment(trimmedPath)) {
+      invalidPaths.push({ input: inputPath, reason: 'contains path traversal segments (..)' });
+      continue;
+    }
+
     const resolvedPath = path.resolve(trimmedPath);
 
-    const hasTraversalInInput = normalizedInput.split(path.sep).includes('..');
     const hasTraversalAfterResolve = resolvedPath.split(path.sep).includes('..');
-    if (hasTraversalInInput || hasTraversalAfterResolve) {
+    if (hasTraversalAfterResolve) {
       invalidPaths.push({ input: inputPath, reason: 'contains path traversal segments (..)' });
       continue;
     }

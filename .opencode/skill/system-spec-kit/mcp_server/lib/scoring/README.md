@@ -47,6 +47,7 @@ The scoring module provides multi-factor algorithms for ranking memories in the 
 | **Event-Based Decay** | Event-driven decay model replacing pure time-based decay (Spec 136) |
 | **HVR Integration** | Human Validation Rate integration for confidence-weighted scoring (Spec 137) |
 | **Phase-Aware Scoring** | Phase-context scoring adjustments for spec phase workflows (Spec 139) |
+| **Graph Signals** | Optional post-score momentum and causal-depth bonuses applied after core scoring |
 
 ### Module Statistics
 
@@ -140,6 +141,15 @@ Phase-aware scoring adjusts retrieval relevance based on the active spec phase c
 - Parent-phase memories are boosted at a lower factor than same-phase
 - Phase columns added in schema v15 for persistent phase metadata
 
+### Graph Signals Post-Processing
+
+Graph signals are applied after the core scoring pipeline via `lib/graph/graph-signals.ts`. When enabled, they add two bounded bonuses to the current score:
+
+- Momentum bonus: `clamp(momentum * 0.01, 0, 0.05)`
+- Causal-depth bonus: `normalizedDepth * 0.05`
+
+The causal-depth pass uses multi-source BFS from root nodes and keeps the first discovered depth for each node. This makes rooted cyclic graphs stable and prevents revisit loops from inflating depth toward the traversal cap. Cyclic components with no root nodes contribute `0` depth.
+
 <!-- /ANCHOR:key-concepts -->
 
 ---
@@ -159,7 +169,7 @@ scoring/
  README.md                # This file
 ```
 
-**Note:** `index.js` and `scoring.js` exist only as compiled JS in `dist/lib/scoring/` (never migrated to TypeScript source). They provide barrel re-exports and base decay utilities respectively.
+**Note:** `dist/lib/scoring/` currently emits module-per-source compiled artifacts such as `composite-scoring.js`, `folder-scoring.js`, and `importance-tiers.js`. There is no generated `index.js` or `scoring.js` in the current build output.
 
 ### Key Files
 

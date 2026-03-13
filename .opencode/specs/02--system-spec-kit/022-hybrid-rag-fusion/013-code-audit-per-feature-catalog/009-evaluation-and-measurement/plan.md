@@ -1,6 +1,7 @@
 ---
 title: "Implementation Plan: evaluation-and-measurement [template:level_2/plan.md]"
 description: "This plan operationalizes evaluation-and-measurement audit findings into phased remediation across metrics, observability, reporting, and traceability. It emphasizes deterministic verification and documentation-to-code parity."
+SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
 trigger_phrases:
   - "implementation"
   - "plan"

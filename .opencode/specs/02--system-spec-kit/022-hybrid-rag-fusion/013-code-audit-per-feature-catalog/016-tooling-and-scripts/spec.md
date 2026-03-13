@@ -1,6 +1,7 @@
 ---
 title: "Feature Specification: tooling-and-scripts [template:level_2/spec.md]"
 description: "The tooling-and-scripts feature catalog audit covers eight features with mixed FAIL/WARN outcomes, but this phase lacked Level 2 template structure. This rewrite preserves scope and remediation intent while standardizing traceability."
+SPECKIT_TEMPLATE_SOURCE: "spec-core | v2.2"
 trigger_phrases:
   - "tooling and scripts"
   - "tooling-and-scripts"
@@ -30,6 +31,9 @@ contextType: "general"
 | **Status** | Draft |
 | **Created** | 2026-03-10 |
 | **Branch** | `016-tooling-and-scripts` |
+| **Parent Spec** | ../spec.md |
+| **Previous Phase** | ../015-retrieval-enhancements/spec.md |
+| **Next Phase** | ../017-governance/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -98,6 +102,14 @@ Create a Level 2-compliant specification that preserves the existing Tooling and
 - **SC-001**: `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` match Level 2 template layout with intact anchors/comments.
 - **SC-002**: All 8 Tooling and Scripts features remain represented in structured audit/remediation context.
 - **SC-003**: P0/P1/P2 remediation intent remains traceable and verification-ready after rewrite.
+
+### Acceptance Scenarios
+
+1. **Given** the documented requirements for this phase, **When** a reviewer walks the updated packet, **Then** each requirement has a matching verification path in tasks and checklist artifacts.
+2. **Given** current implementation behavior, **When** spec statements are compared with source and test references, **Then** no contradictory behavior claims remain in the phase packet.
+3. **Given** the updated verification evidence, **When** checklist entries are audited, **Then** each completed P0/P1 item carries inline evidence and traceable context.
+4. **Given** Level 2 template constraints, **When** the spec validator runs, **Then** acceptance-scenario coverage and section integrity checks pass without structural warnings.
+
 <!-- /ANCHOR:success-criteria -->
 
 ---

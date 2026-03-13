@@ -5,6 +5,20 @@
 import { initEvalDb } from '../lib/eval/eval-db';
 import { isQualityLoopEnabled } from '../lib/search/search-flags';
 
+const HEADING_PATTERN = /^#{1,3}\s+.+/m;
+const ISO_DATE_PATTERN = /\b(\d{4}-\d{2}-\d{2})\b/g;
+const COMPLETION_CLAIM_PATTERN = /\b(completed|resolved|fixed|finished|shipped|released|deployed|implemented|occurred|happened)\b/i;
+
+type CoherenceResolver = (reference: string) => boolean;
+
+interface CoherenceMetadata extends Record<string, unknown> {
+  title?: string;
+  filePath?: string;
+  lastModified?: string;
+  causalLinks?: Record<string, unknown>;
+  resolveReference?: CoherenceResolver;
+}
+
 interface QualityScoreBreakdown {
   triggers: number;
   anchors: number;
@@ -224,8 +238,8 @@ function scoreTokenBudget(content: string, charBudget: number = DEFAULT_CHAR_BUD
 /**
  * Compute coherence quality sub-score.
  *
- * Applies four additive structural checks, each worth 0.25 points, to
- * assess whether `content` represents a well-formed memory document:
+ * Starts with four additive structural checks, each worth 0.25 points, then
+ * applies bounded deductions for temporal and relational inconsistencies:
  *
  *   1. Non-empty (trimmed length > 0)        → +0.25
  *   2. Minimal length (> 50 chars)            → +0.25
@@ -233,15 +247,20 @@ function scoreTokenBudget(content: string, charBudget: number = DEFAULT_CHAR_BUD
  *      (`# …`, `## …`, or `### …`)           → +0.25
  *   4. Substantial content (> 200 chars)      → +0.25
  *
+ * Deductions:
+ *   - Future-dated completion claims          → up to -0.25
+ *   - Unresolved/self causal references       → up to -0.25
+ *
  * Each failing check contributes a descriptive string to `issues`.
  * An entirely empty content string short-circuits to score 0.0.
  *
  * @param content - Full text content of the memory file.
+ * @param metadata - Optional metadata used for temporal/relational validation.
  * @returns An object with:
- *   - `score`  — Additive sub-score in the range [0, 1] (multiples of 0.25).
+ *   - `score`  — Sub-score in the range [0, 1].
  *   - `issues` — One entry per failed structural check.
  */
-function scoreCoherence(content: string): { score: number; issues: string[] } {
+function scoreCoherence(content: string, metadata: CoherenceMetadata = {}): { score: number; issues: string[] } {
   const issues: string[] = [];
   let score = 0;
 
@@ -257,7 +276,7 @@ function scoreCoherence(content: string): { score: number; issues: string[] } {
     issues.push('Content is very short (<50 chars)');
   }
 
-  if (/^#{1,3}\s+.+/m.test(content)) {
+  if (HEADING_PATTERN.test(content)) {
     score += 0.25; // has markdown headings
   } else {
     issues.push('No section headings found');
@@ -269,7 +288,70 @@ function scoreCoherence(content: string): { score: number; issues: string[] } {
     issues.push('Content lacks substance (<200 chars)');
   }
 
-  return { score, issues };
+  let temporalPenalty = 0;
+  const lastModified = typeof metadata.lastModified === 'string'
+    ? Date.parse(metadata.lastModified)
+    : Number.NaN;
+  if (Number.isFinite(lastModified)) {
+    const matches = Array.from(content.matchAll(ISO_DATE_PATTERN));
+    const futureClaims = matches.filter((match) => {
+      const dateValue = Date.parse(`${match[1]}T00:00:00.000Z`);
+      if (!Number.isFinite(dateValue) || dateValue <= lastModified + 86400000) {
+        return false;
+      }
+
+      const start = Math.max(0, match.index ?? 0 - 80);
+      const end = Math.min(content.length, (match.index ?? 0) + match[0].length + 80);
+      const surroundingText = content.slice(start, end);
+      return COMPLETION_CLAIM_PATTERN.test(surroundingText);
+    });
+
+    if (futureClaims.length > 0) {
+      temporalPenalty = Math.min(0.25, futureClaims.length * 0.125);
+      issues.push(`Future-dated completion claims found: ${futureClaims.map(match => match[1]).join(', ')}`);
+    }
+  }
+
+  let relationalPenalty = 0;
+  const causalLinks = metadata.causalLinks && typeof metadata.causalLinks === 'object'
+    ? metadata.causalLinks
+    : null;
+  const resolveReference = typeof metadata.resolveReference === 'function'
+    ? metadata.resolveReference
+    : null;
+  const normalizedSelfTargets = new Set(
+    [metadata.title, metadata.filePath]
+      .filter((value): value is string => typeof value === 'string' && value.trim().length > 0)
+      .map(value => value.trim().toLowerCase())
+  );
+
+  if (causalLinks) {
+    const flattenedReferences = Object.values(causalLinks)
+      .flatMap((value) => Array.isArray(value) ? value : [])
+      .filter((value): value is string => typeof value === 'string' && value.trim().length > 0)
+      .map(value => value.trim());
+
+    if (flattenedReferences.length > 0) {
+      const selfReferences = flattenedReferences.filter(reference => normalizedSelfTargets.has(reference.toLowerCase()));
+      const unresolvedReferences = resolveReference
+        ? flattenedReferences.filter(reference => !resolveReference(reference))
+        : [];
+
+      const brokenReferenceCount = selfReferences.length + unresolvedReferences.length;
+      if (brokenReferenceCount > 0) {
+        relationalPenalty = Math.min(0.25, (brokenReferenceCount / flattenedReferences.length) * 0.25);
+      }
+
+      if (selfReferences.length > 0) {
+        issues.push(`Self-referential causal links found: ${selfReferences.join(', ')}`);
+      }
+      if (unresolvedReferences.length > 0) {
+        issues.push(`Unresolved causal link references: ${unresolvedReferences.join(', ')}`);
+      }
+    }
+  }
+
+  return { score: Math.max(0, score - temporalPenalty - relationalPenalty), issues };
 }
 
 /**
@@ -303,7 +385,7 @@ function computeMemoryQualityScore(
   const triggerResult = scoreTriggerPhrases(metadata);
   const anchorResult = scoreAnchorFormat(content);
   const budgetResult = scoreTokenBudget(content);
-  const coherenceResult = scoreCoherence(content);
+  const coherenceResult = scoreCoherence(content, metadata);
 
   const total =
     triggerResult.score * QUALITY_WEIGHTS.triggers +

@@ -1,6 +1,7 @@
 ---
 title: "Implementation Summary: evaluation [template:level_2/implementation-summary.md]"
 description: "007-evaluation code audit — 2 features audited, P0 mismatch resolved, 16 handler tests added"
+SPECKIT_TEMPLATE_SOURCE: "implementation-summary | v2.2"
 trigger_phrases:
   - "implementation"
   - "summary"
@@ -22,11 +23,11 @@ contextType: "general"
 
 **Finding**: Feature catalog F-02 and reporting-dashboard.ts header comment claimed the dashboard queries `eval_final_results`, but the actual SQL only queries `eval_metric_snapshots` and `eval_channel_results`.
 
-**Resolution**: Corrected the stale comment in `reporting-dashboard.ts` (line 9) and the Current Reality text in `feature_catalog/07--evaluation/02-reporting-dashboard-evalreportingdashboard.md` to accurately reflect the actual data sources.
+**Resolution**: Corrected the stale comment in `reporting-dashboard.ts` (line 9) and the Current Reality text in `.opencode/skill/system-spec-kit/feature_catalog/07--evaluation/02-reporting-dashboard-evalreportingdashboard.md` to accurately reflect the actual data sources.
 
 **Files Modified**:
 - `mcp_server/lib/eval/reporting-dashboard.ts` — header comment corrected
-- `feature_catalog/07--evaluation/02-reporting-dashboard-evalreportingdashboard.md` — catalog claim corrected
+- `.opencode/skill/system-spec-kit/feature_catalog/07--evaluation/02-reporting-dashboard-evalreportingdashboard.md` — catalog claim corrected
 
 ### T005+T006: Handler-Level Eval Tests (P0+P2)
 
@@ -44,7 +45,7 @@ contextType: "general"
 
 **Finding**: Feature catalog files needed checking for stale `retry.vitest.ts` references (found and removed in earlier phases 001-006).
 
-**Resolution**: Grep confirmed 0 stale references in `feature_catalog/07--evaluation/`. Both F-01 and F-02 catalog files are already clean.
+**Resolution**: Grep confirmed 0 stale references in `.opencode/skill/system-spec-kit/feature_catalog/07--evaluation/`. Both F-01 and F-02 catalog files are already clean.
 
 ---
 

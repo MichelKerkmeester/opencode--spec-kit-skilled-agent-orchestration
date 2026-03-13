@@ -31,6 +31,9 @@ contextType: "general"
 | **Status** | Complete |
 | **Created** | 2026-03-10 |
 | **Branch** | `011-scoring-and-calibration` |
+| **Parent Spec** | ../spec.md |
+| **Previous Phase** | ../010-graph-signal-activation/spec.md |
+| **Next Phase** | ../012-query-intelligence/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---

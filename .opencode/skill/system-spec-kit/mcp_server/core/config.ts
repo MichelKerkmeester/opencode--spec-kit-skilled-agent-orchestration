@@ -4,6 +4,7 @@
 
 import path from 'path';
 import os from 'os';
+import { loadCognitiveConfigFromEnv } from '../configs/cognitive';
 import type { CognitiveConfig } from '../configs/cognitive';
 
 /* ---------------------------------------------------------------
@@ -108,7 +109,6 @@ export const CONSTITUTIONAL_CACHE_TTL: number = 60000;
    --------------------------------------------------------------- */
 
 function parseCognitiveConfig(): CognitiveConfig {
-  const { loadCognitiveConfigFromEnv } = require('../configs/cognitive') as typeof import('../configs/cognitive');
   return loadCognitiveConfigFromEnv(process.env);
 }
 

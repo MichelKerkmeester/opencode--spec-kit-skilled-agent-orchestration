@@ -16,7 +16,7 @@ SPECKIT_TEMPLATE_SOURCE: "implementation-summary | v2.2"
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 015-retrieval-enhancements |
-| **Completed** | 2026-03-11 |
+| **Completed** | 2026-03-13 |
 | **Level** | 2 |
 <!-- /ANCHOR:metadata -->
 
@@ -47,10 +47,10 @@ T014: 2 hook dispatch/compaction tests in dual-scope-hooks.vitest.ts. T015: 2 co
 
 | Aspect | Value |
 |--------|-------|
-| **Date** | 2026-03-11 |
+| **Date** | 2026-03-13 |
 | **Agents** | 5 parallel cli-copilot codex 5.3 xhigh (CWB Pattern A) |
-| **Tasks** | 20 total (3 setup + 17 implementation), 3 verification pending |
-| **Tests** | 332 pass, 0 fail (10 test files) |
+| **Tasks** | 20 total (3 setup + 17 implementation), 20/20 complete |
+| **Tests** | 332 pass, 0 fail (10 test files) + targeted phase-3 verification: 138 pass, 0 fail (5 test files) |
 | **TSC** | Pre-existing errors only (chunk-thinning, dead-code-regression, layer-definitions) |
 | **Files** | 59 modified, +3054 -498 lines |
 <!-- /ANCHOR:what-built -->
@@ -60,7 +60,7 @@ T014: 2 hook dispatch/compaction tests in dual-scope-hooks.vitest.ts. T015: 2 co
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-Five parallel cli-copilot agents running gpt-5.3-codex at xhigh reasoning dispatched single-hop from the conductor. Each agent received a targeted prompt covering 3-4 tasks scoped to a specific domain (critical fixes, code standards, documentation, test coverage). All agents completed within a single orchestration round. Verification consisted of a full vitest sweep (332 tests, 10 files, 0 failures) and tsc --noEmit confirming no new type errors beyond pre-existing cross-rootDir imports.
+Five parallel cli-copilot agents running gpt-5.3-codex at xhigh reasoning dispatched single-hop from the conductor. Each agent received a targeted prompt covering 3-4 tasks scoped to a specific domain (critical fixes, code standards, documentation, test coverage). All agents completed within a single orchestration round. Final phase-3 closure on 2026-03-13 validated all nine retrieval-enhancement source/test mappings (`MISSING_TOTAL=0` for backticked `mcp_server/...` references), ran targeted fallback/provenance/context-header regressions (5 files, 138 tests, 0 failures), and synchronized `spec.md`, `plan.md`, `tasks.md`, and `checklist.md`.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -84,9 +84,10 @@ Five parallel cli-copilot agents running gpt-5.3-codex at xhigh reasoning dispat
 | Check | Result |
 |-------|--------|
 | Vitest suite (332 tests, 10 files) | PASS, 0 failures |
+| Targeted phase-3 regressions (`channel`, `hybrid-search`, `search-results-format`, `mcp-response-envelope`, `hybrid-search-context-headers`) | PASS, 5 files, 138 tests, 0 failures |
 | TypeScript build (tsc --noEmit) | PASS, pre-existing errors only (chunk-thinning, dead-code-regression, layer-definitions cross-rootDir) |
-| Feature doc source/test mapping review | PASS, 6 docs corrected (F-01, F-05, F-07, F-08, F-09 plus context-server addition) |
-| Checklist verification | PASS, P0 11/11, P1 17/19 |
+| Feature doc source/test mapping review | PASS, 9/9 retrieval-enhancement docs validated (`MISSING_TOTAL=0` across all backticked `mcp_server/...` refs) |
+| Checklist verification | PASS, P0 11/11, P1 19/19, P2 0/2 (deferred) |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -94,9 +95,9 @@ Five parallel cli-copilot agents running gpt-5.3-codex at xhigh reasoning dispat
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **T021-T023 verification pending.** Cross-feature mapping validation, targeted regression execution, and final spec folder sync remain open.
-2. **CHK-032 auth/authz not verified.** Authentication and authorization checks were out of scope for this audit phase.
-3. **CHK-046 playbook scenario coverage deferred.** Manual playbook mapping for all 9 features requires separate verification pass.
+1. **CHK-042 remains open (P2).** README updates were not part of this remediation closure and remain deferred.
+2. **CHK-052 remains open (P2).** Findings have not yet been saved to memory/ for this phase.
+3. **Feature 09 still lacks a direct manual-playbook scenario mapping.** CHK-046 is complete as "mapped or marked missing" with explicit coverage-gap documentation.
 4. **Pre-existing tsc errors remain.** Three cross-rootDir import issues in chunk-thinning, dead-code-regression, and layer-definitions are not introduced by this work but remain unresolved.
 <!-- /ANCHOR:limitations -->
 

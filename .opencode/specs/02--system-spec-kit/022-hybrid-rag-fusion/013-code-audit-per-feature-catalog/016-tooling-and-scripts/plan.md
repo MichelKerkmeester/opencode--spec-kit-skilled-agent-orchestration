@@ -1,6 +1,7 @@
 ---
 title: "Implementation Plan: tooling-and-scripts [template:level_2/plan.md]"
 description: "This plan executes the Tooling and Scripts feature-catalog audit workflow and converts findings into a prioritized remediation path. The approach combines catalog-to-code validation, test-gap analysis, and verification-driven documentation updates."
+SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
 trigger_phrases:
   - "implementation"
   - "plan"

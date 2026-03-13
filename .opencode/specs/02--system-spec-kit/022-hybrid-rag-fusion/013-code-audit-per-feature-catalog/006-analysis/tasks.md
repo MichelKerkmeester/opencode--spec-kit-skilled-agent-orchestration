@@ -1,6 +1,7 @@
 ---
 title: "Tasks: analysis [template:level_2/tasks.md]"
 description: "Task Format: T### [P?] Description (file path)"
+SPECKIT_TEMPLATE_SOURCE: "tasks-core | v2.2"
 trigger_phrases:
   - "tasks"
   - "analysis"

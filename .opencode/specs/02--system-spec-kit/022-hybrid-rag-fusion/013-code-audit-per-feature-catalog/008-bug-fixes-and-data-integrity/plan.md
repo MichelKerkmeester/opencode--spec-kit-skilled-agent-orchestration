@@ -1,6 +1,7 @@
 ---
 title: "Implementation Plan: bug-fixes-and-data-integrity [template:level_2/plan.md]"
 description: "Audit and remediation plan for 11 bug-fix/data-integrity features in hybrid RAG fusion, focusing on catalog-code-test alignment and regression hardening."
+SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
 trigger_phrases:
   - "implementation plan"
   - "bug fixes"

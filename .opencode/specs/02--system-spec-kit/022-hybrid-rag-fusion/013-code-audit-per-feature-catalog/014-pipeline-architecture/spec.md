@@ -31,6 +31,9 @@ contextType: "general"
 | **Status** | Complete |
 | **Created** | 2026-03-10 |
 | **Branch** | `014-pipeline-architecture` |
+| **Parent Spec** | ../spec.md |
+| **Previous Phase** | ../013-memory-quality-and-indexing/spec.md |
+| **Next Phase** | ../015-retrieval-enhancements/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---

@@ -1,6 +1,7 @@
 ---
 title: "Tasks: feature-flag-reference [template:level_2/tasks.md]"
 description: "Task Format: T### [P?] Description (file path)"
+# SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2
 trigger_phrases:
   - "feature-flag-reference"
   - "feature flag reference"
@@ -45,12 +46,12 @@ contextType: "general"
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [ ] T004 P0 Reconcile stale `SPECKIT_*` Source File mappings, including `SPECKIT_ABLATION`, `SPECKIT_RRF`, and `SPECKIT_LAZY_LOADING` (`feature_catalog/20--feature-flag-reference/01-1-search-pipeline-features-speckit.md`)
+- [ ] T004 P0 Reconcile stale `SPECKIT_*` Source File mappings, including `SPECKIT_ABLATION`, `SPECKIT_RRF`, and `SPECKIT_LAZY_LOADING` (`.opencode/skill/system-spec-kit/feature_catalog/20--feature-flag-reference/01-1-search-pipeline-features-speckit.md`)
 - [ ] T005 [P] P0 Add CI validation script for Source File existence and env-var symbol presence (`feature_catalog/20--feature-flag-reference/`)
-- [ ] T006 [P] P1 Update `MEMORY_DB_DIR` and `MEMORY_DB_PATH` mappings to `lib/search/vector-index-store.ts` (`feature_catalog/20--feature-flag-reference/04-4-memory-and-storage.md`)
-- [ ] T007 [P] P1 Update `EMBEDDINGS_PROVIDER` mapping to `shared/embeddings/factory.ts` (`feature_catalog/20--feature-flag-reference/05-5-embedding-and-api.md`)
-- [ ] T008 [P] P1 Correct `EMBEDDING_DIM` mapping and clarify 768 compatibility semantics (`feature_catalog/20--feature-flag-reference/05-5-embedding-and-api.md`)
-- [ ] T009 P2 Add regression coverage for barrel re-export drift and non-768 `EMBEDDING_DIM` behavior (`feature_catalog/20--feature-flag-reference/04-4-memory-and-storage.md`, `feature_catalog/20--feature-flag-reference/05-5-embedding-and-api.md`)
+- [ ] T006 [P] P1 Update `MEMORY_DB_DIR` and `MEMORY_DB_PATH` mappings to `lib/search/vector-index-store.ts` (`.opencode/skill/system-spec-kit/feature_catalog/20--feature-flag-reference/04-4-memory-and-storage.md`)
+- [ ] T007 [P] P1 Update `EMBEDDINGS_PROVIDER` mapping to `shared/embeddings/factory.ts` (`.opencode/skill/system-spec-kit/feature_catalog/20--feature-flag-reference/05-5-embedding-and-api.md`)
+- [ ] T008 [P] P1 Correct `EMBEDDING_DIM` mapping and clarify 768 compatibility semantics (`.opencode/skill/system-spec-kit/feature_catalog/20--feature-flag-reference/05-5-embedding-and-api.md`)
+- [ ] T009 P2 Add regression coverage for barrel re-export drift and non-768 `EMBEDDING_DIM` behavior (`.opencode/skill/system-spec-kit/feature_catalog/20--feature-flag-reference/04-4-memory-and-storage.md`, `.opencode/skill/system-spec-kit/feature_catalog/20--feature-flag-reference/05-5-embedding-and-api.md`)
 <!-- /ANCHOR:phase-2 -->
 
 ---

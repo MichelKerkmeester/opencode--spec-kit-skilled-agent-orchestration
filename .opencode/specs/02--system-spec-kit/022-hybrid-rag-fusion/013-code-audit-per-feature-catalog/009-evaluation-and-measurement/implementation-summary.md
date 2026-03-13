@@ -1,6 +1,7 @@
 ---
 title: "Implementation Summary: evaluation-and-measurement [template:level_2/implementation-summary.md]"
 description: "009-evaluation-and-measurement code audit — 14 features audited, 17 tasks completed, 298 tests passing (R5 remediated)"
+SPECKIT_TEMPLATE_SOURCE: "implementation-summary | v2.2"
 trigger_phrases:
   - "implementation"
   - "summary"

@@ -1,6 +1,7 @@
 ---
 title: "Tasks: discovery [template:level_2/tasks.md]"
 description: "Task Format: T### [P?] Description (file path)"
+SPECKIT_TEMPLATE_SOURCE: "tasks-core | v2.2"
 trigger_phrases:
   - "tasks"
   - "discovery"
@@ -16,17 +17,6 @@ contextType: "general"
 
 ---
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. TASK NOTATION](#2--task-notation)
-- [3. PHASE 1: SETUP](#3--phase-1-setup)
-- [4. PHASE 2: IMPLEMENTATION](#4--phase-2-implementation)
-- [5. PHASE 3: VERIFICATION](#5--phase-3-verification)
-- [6. COMPLETION CRITERIA](#6--completion-criteria)
-- [7. CROSS-REFERENCES](#7--cross-references)
-
----
 
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW

@@ -1,6 +1,7 @@
 ---
 title: "Implementation Plan: feature-flag-reference [template:level_2/plan.md]"
 description: "This plan executes a feature-centric code audit for the Feature Flag Reference catalog and preserves findings in SpecKit Level 2 structure. The approach inventories all seven features, validates catalog-to-code traceability, and records prioritized remediation tasks."
+# SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2
 trigger_phrases:
   - "feature-flag-reference"
   - "implementation plan"

@@ -1,6 +1,7 @@
 ---
 title: "Implementation Plan: lifecycle [template:level_2/plan.md]"
 description: "This plan implements a template-structured lifecycle audit package that preserves feature-level findings and remediation priorities. The approach maps the original methodology into phased execution with explicit quality gates, dependencies, and rollback safeguards."
+SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
 trigger_phrases:
   - "implementation"
   - "plan"

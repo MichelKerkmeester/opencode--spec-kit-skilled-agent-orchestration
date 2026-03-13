@@ -29,6 +29,9 @@ contextType: "general"
 | **Status** | Completed |
 | **Created** | 2026-03-10 |
 | **Branch** | `013-memory-quality-and-indexing` |
+| **Parent Spec** | ../spec.md |
+| **Previous Phase** | ../012-query-intelligence/spec.md |
+| **Next Phase** | ../014-pipeline-architecture/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---

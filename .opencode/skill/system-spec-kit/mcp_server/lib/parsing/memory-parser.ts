@@ -166,6 +166,20 @@ export function parseMemoryFile(filePath: string): ParsedMemory {
   }
 
   const content = readFileWithEncoding(filePath);
+  const lastModified = fs.statSync(filePath).mtime.toISOString();
+  return parseMemoryContent(filePath, content, { lastModified });
+}
+
+/**
+ * Parse in-memory content using the same metadata extraction path as parseMemoryFile().
+ * This supports atomic-save flows that need to index content before promoting the
+ * pending file to its final path.
+ */
+export function parseMemoryContent(
+  filePath: string,
+  content: string,
+  options: { lastModified?: string } = {},
+): ParsedMemory {
   // Spec 126: Infer document type from file path
   const documentType = extractDocumentType(filePath);
 
@@ -200,7 +214,7 @@ export function parseMemoryFile(filePath: string): ParsedMemory {
     contentHash: content_hash,
     content,
     fileSize: content.length,
-    lastModified: fs.statSync(filePath).mtime.toISOString(),
+    lastModified: options.lastModified ?? new Date().toISOString(),
     // T125: Memory type classification for decay calculation
     memoryType: typeInference.type,
     memoryTypeSource: typeInference.source,
@@ -908,6 +922,7 @@ export function findMemoryFiles(workspacePath: string, options: FindMemoryFilesO
 module.exports = {
   // Core parsing (camelCase primary)
   parseMemoryFile,
+  parseMemoryContent,
   readFileWithEncoding,
   extractSpecFolder,
   extractTitle,
@@ -939,6 +954,7 @@ module.exports = {
 
   // AI-WHY: Backward-compatible aliases (snake_case)
   parse_memory_file: parseMemoryFile,
+  parse_memory_content: parseMemoryContent,
   read_file_with_encoding: readFileWithEncoding,
   extract_spec_folder: extractSpecFolder,
   extract_title: extractTitle,

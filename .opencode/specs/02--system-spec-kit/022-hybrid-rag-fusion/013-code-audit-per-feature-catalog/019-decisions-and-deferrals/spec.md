@@ -1,6 +1,7 @@
 ---
 title: "Feature Specification: decisions-and-deferrals [template:level_2/spec.md]"
 description: "Feature-centric code audit for decisions-and-deferrals features, documenting behavior alignment and test coverage deferrals."
+# SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2
 trigger_phrases:
   - "decisions"
   - "deferrals"
@@ -29,6 +30,9 @@ contextType: "general"
 | **Status** | Draft |
 | **Created** | 2026-03-10 |
 | **Branch** | `019-decisions-and-deferrals` |
+| **Parent Spec** | ../spec.md |
+| **Previous Phase** | ../018-ux-hooks/spec.md |
+| **Next Phase** | ../020-feature-flag-reference/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -85,6 +89,7 @@ Provide a Level 2, verification-ready specification that captures the five-featu
 |----|-------------|---------------------|
 | REQ-003 | Create actionable follow-up tasks for WARN findings | Tasks capture owner action, target file, and expected correction |
 | REQ-004 | Preserve audit methodology and verification workflow | Plan and checklist map directly to audit criteria and acceptance checks |
+| REQ-005 | Ensure feature-catalog references resolve to existing markdown sources | All markdown references in this folder validate via `validate.sh --no-recursive` |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -98,8 +103,19 @@ Provide a Level 2, verification-ready specification that captures the five-featu
 
 ---
 
+<!-- ANCHOR:acceptance-scenarios -->
+## 6. ACCEPTANCE SCENARIOS
+
+1. **Given** all five catalog features are listed in scope, **When** checklist verification runs, **Then** each feature appears with PASS/WARN/FAIL status and a finding summary.
+2. **Given** a WARN finding exists for F-02 graph signals, **When** tasks are reviewed, **Then** at least one remediation task targets source inventory and test-gap closure.
+3. **Given** a WARN finding exists for F-03 entity extraction, **When** verification tasks execute, **Then** sentence-boundary regex behavior is validated and documented.
+4. **Given** markdown cross-references are updated, **When** `validate.sh --no-recursive` runs for this folder, **Then** spec documentation integrity passes with no missing markdown targets.
+<!-- /ANCHOR:acceptance-scenarios -->
+
+---
+
 <!-- ANCHOR:risks -->
-## 6. RISKS & DEPENDENCIES
+## 7. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|

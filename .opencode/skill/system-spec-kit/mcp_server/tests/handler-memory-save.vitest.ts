@@ -133,6 +133,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
 
     async function loadAtomicSaveHarness(options: {
       parseMemoryFileMock?: ReturnType<typeof vi.fn>;
+      parseMemoryContentMock?: ReturnType<typeof vi.fn>;
       isMemoryFileMock?: ReturnType<typeof vi.fn>;
       checkExistingRowMock?: ReturnType<typeof vi.fn>;
       checkContentHashDedupMock?: ReturnType<typeof vi.fn>;
@@ -149,6 +150,8 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
 
       const parseMemoryFileMock = options.parseMemoryFileMock
         ?? vi.fn((targetPath: string) => buildParsedMemory(targetPath));
+      const parseMemoryContentMock = options.parseMemoryContentMock
+        ?? parseMemoryFileMock;
       const isMemoryFileMock = options.isMemoryFileMock
         ?? vi.fn(() => true);
       const validateParsedMemoryMock = vi.fn(() => ({ valid: true, errors: [], warnings: [] }));
@@ -193,6 +196,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         return {
           ...actual,
           parseMemoryFile: parseMemoryFileMock,
+          parseMemoryContent: parseMemoryContentMock,
           isMemoryFile: isMemoryFileMock,
           validateParsedMemory: validateParsedMemoryMock,
         };
@@ -284,6 +288,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       return {
         module,
         parseMemoryFileMock,
+        parseMemoryContentMock,
         runQualityLoopMock,
         checkExistingRowMock,
         checkContentHashDedupMock,
@@ -323,7 +328,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         .mockImplementation((targetPath: string) => buildParsedMemory(targetPath));
 
       const harness = await loadAtomicSaveHarness({
-        parseMemoryFileMock,
+        parseMemoryContentMock: parseMemoryFileMock,
         checkExistingRowMock: vi.fn(() => buildIndexResult({ status: 'indexed', id: 201 })),
       });
 
@@ -334,9 +339,10 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       );
 
       expect(result.success).toBe(true);
-      expect(harness.parseMemoryFileMock).toHaveBeenCalledTimes(2);
+      expect(harness.parseMemoryContentMock).toHaveBeenCalledTimes(2);
       expect(harness.checkExistingRowMock).toHaveBeenCalledTimes(1);
-      expect(harness.deleteFileIfExistsMock).not.toHaveBeenCalled();
+      expect(harness.deleteFileIfExistsMock).toHaveBeenCalledTimes(1);
+      expect(harness.deleteFileIfExistsMock).toHaveBeenCalledWith(path.join(path.dirname(filePath), 'retry-once_pending.md'));
     });
 
     it('rolls back written file when indexMemoryFile throws on both attempts', async () => {
@@ -345,7 +351,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       });
 
       const harness = await loadAtomicSaveHarness({
-        parseMemoryFileMock,
+        parseMemoryContentMock: parseMemoryFileMock,
       });
 
       const filePath = createAtomicSaveTargetPath('throw-both.md');
@@ -357,10 +363,10 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       expect(result.success).toBe(false);
       expect(result.status).toBe('error');
       expect(result.error).toContain('Indexing failed after retry');
-      expect(harness.parseMemoryFileMock).toHaveBeenCalledTimes(2);
+      expect(harness.parseMemoryContentMock).toHaveBeenCalledTimes(2);
       expect(harness.checkExistingRowMock).not.toHaveBeenCalled();
-      expect(harness.deleteFileIfExistsMock).toHaveBeenCalledTimes(1);
-      expect(harness.deleteFileIfExistsMock).toHaveBeenCalledWith(filePath);
+      expect(harness.deleteFileIfExistsMock.mock.calls.length).toBeGreaterThanOrEqual(2);
+      expect(harness.deleteFileIfExistsMock).toHaveBeenCalledWith(path.join(path.dirname(filePath), 'throw-both_pending.md'));
       expect(fs.existsSync(filePath)).toBe(false);
     });
 
@@ -387,9 +393,9 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       );
 
       expect(result.success).toBe(true);
-      expect(harness.parseMemoryFileMock).toHaveBeenCalledTimes(2);
+      expect(harness.parseMemoryContentMock).toHaveBeenCalledTimes(2);
       expect(harness.checkExistingRowMock).toHaveBeenCalledTimes(2);
-      expect(harness.deleteFileIfExistsMock).not.toHaveBeenCalled();
+      expect(harness.deleteFileIfExistsMock).toHaveBeenCalledTimes(1);
     });
 
     it('treats indexMemoryFile status=rejected as non-retry rollback outcome', async () => {
@@ -415,7 +421,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       expect(result.success).toBe(false);
       expect(result.status).toBe('rejected');
       expect(result.message).toContain('Quality gate rejected');
-      expect(harness.parseMemoryFileMock).toHaveBeenCalledTimes(1);
+      expect(harness.parseMemoryContentMock).toHaveBeenCalledTimes(1);
       expect(harness.checkExistingRowMock).toHaveBeenCalledTimes(1);
       expect(harness.deleteFileIfExistsMock).toHaveBeenCalledTimes(1);
       expect(fs.existsSync(filePath)).toBe(false);

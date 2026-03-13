@@ -13,13 +13,11 @@ This document captures the implemented behavior, source references, and validati
 
 ## 2. CURRENT REALITY
 
-RRF has been the fusion method since day one, but is it the best option? Relative Score Fusion runs alongside RRF in shadow mode to find out.
+RRF remains the live fusion method. RSF no longer runs in the shipped hybrid-search ranking path.
 
-Three RSF variants are implemented: single-pair (fusing two ranked lists), multi-list (fusing N lists with proportional penalties for missing sources) and cross-variant (fusing results across query expansions with a +0.10 convergence bonus). RSF results are logged for evaluation comparison but do not affect actual ranking.
+The repository still contains the standalone RSF fusion module and tests for three variants: single-pair (fusing two ranked lists), multi-list (fusing N lists with proportional penalties for missing sources) and cross-variant (fusing results across query expansions with a +0.10 convergence bonus). Those artifacts can be exercised in isolation, but they are not wired into live ranking.
 
-Kendall tau correlation between RSF and RRF rankings is computed at sprint exit to measure how much the two methods diverge. If RSF consistently outperforms, a future sprint can switch the primary fusion method with measured evidence.
-
-**Sprint 8 update:** The `isRsfEnabled()` feature flag function was removed as dead code. The dead RSF branch in `hybrid-search.ts` (which was gated behind this flag returning `false`) was also removed. The RSF fusion module (`rsf-fusion.ts`) retains its core fusion logic for potential future activation, but the flag guard function is gone.
+Sprint 8 removed the dead `isRsfEnabled()` helper and the dead hybrid-search branch that had been guarded behind it. A typed `rsfShadow` metadata slot still exists for compatibility in pipeline types, and `SPECKIT_RSF_FUSION` remains as an inert config/documentation surface, but production ranking behavior stays on RRF unless a future implementation reintroduces a real runtime path.
 
 ## 3. SOURCE FILES
 

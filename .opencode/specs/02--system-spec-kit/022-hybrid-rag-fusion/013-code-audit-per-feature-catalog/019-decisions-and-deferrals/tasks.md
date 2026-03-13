@@ -1,6 +1,7 @@
 ---
 title: "Tasks: decisions-and-deferrals [template:level_2/tasks.md]"
 description: "Task Format: T### [P?] Description (file path)"
+# SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2
 trigger_phrases:
   - "tasks"
   - "decisions"
@@ -46,8 +47,8 @@ contextType: "general"
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [ ] T004 Update F-02 source inventory to include `mcp_server/lib/graph/graph-signals.ts` and migration-v19 touchpoints (`feature_catalog/19--decisions-and-deferrals/02-implemented-graph-centrality-and-community-detection.md`)
-- [ ] T005 Add/attach F-02 test references for `computeGraphMomentum` and `computeCausalDepth` plus migration-v19 expectations (`feature_catalog/19--decisions-and-deferrals/02-implemented-graph-centrality-and-community-detection.md`)
+- [ ] T004 Update F-02 source inventory to include `mcp_server/lib/graph/graph-signals.ts` and migration-v19 touchpoints (`.opencode/skill/system-spec-kit/feature_catalog/19--decisions-and-deferrals/02-implemented-graph-centrality-and-community-detection.md`)
+- [ ] T005 Add/attach F-02 test references for `computeGraphMomentum` and `computeCausalDepth` plus migration-v19 expectations (`.opencode/skill/system-spec-kit/feature_catalog/19--decisions-and-deferrals/02-implemented-graph-centrality-and-community-detection.md`)
 - [ ] T006 Tighten Rule-3 continuation token to prevent cross-sentence key-phrase capture (`mcp_server/lib/extraction/entity-extractor.ts`)
 - [ ] T007 Add negative tests asserting sentence-boundary termination in key-phrase extraction (`mcp_server/tests/entity-extractor.vitest.ts`)
 <!-- /ANCHOR:phase-2 -->

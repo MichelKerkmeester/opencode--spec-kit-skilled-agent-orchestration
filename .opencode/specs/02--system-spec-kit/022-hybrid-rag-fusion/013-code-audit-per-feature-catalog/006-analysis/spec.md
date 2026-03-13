@@ -1,6 +1,7 @@
 ---
 title: "Feature Specification: analysis [template:level_2/spec.md]"
 description: "Feature-centric code audit baseline for the Analysis catalog, capturing correctness, standards, behavior, and test coverage findings across seven features."
+SPECKIT_TEMPLATE_SOURCE: "spec-core | v2.2"
 trigger_phrases:
   - "feature"
   - "specification"
@@ -27,6 +28,9 @@ contextType: "general"
 | **Status** | Complete |
 | **Created** | 2026-03-10 |
 | **Branch** | `006-analysis` |
+| **Parent Spec** | ../spec.md |
+| **Previous Phase** | ../005-lifecycle/spec.md |
+| **Next Phase** | ../007-evaluation/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -68,10 +72,10 @@ Provide a Level 2, template-compliant analysis specification that preserves all 
 | `mcp_server/tests/learning-stats-filters.vitest.ts` | Modify | Add ordering, threshold, and limit clamping tests (T013). |
 | `mcp_server/tests/integration-causal-graph.vitest.ts` | Modify | Add causal-stats (T014) and drift-why (T015) integration tests. |
 | `feature_catalog/06--analysis/01-*.md` through `07-*.md` | Modify | Remove stale retry.vitest.ts references (T016-T022). |
-| `006-analysis/spec.md` | Modify | Update status to Complete. |
-| `006-analysis/tasks.md` | Modify | Mark all 25 tasks with evidence. |
-| `006-analysis/plan.md` | Modify | Mark phase checkboxes with evidence. |
-| `006-analysis/checklist.md` | Modify | Mark all verification items with evidence. |
+| `spec.md` | Modify | Update status to Complete. |
+| `tasks.md` | Modify | Mark all 25 tasks with evidence. |
+| `plan.md` | Modify | Mark phase checkboxes with evidence. |
+| `checklist.md` | Modify | Mark all verification items with evidence. |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -105,6 +109,14 @@ Provide a Level 2, template-compliant analysis specification that preserves all 
 - **SC-002**: Each feature documents code issues, standards violations, behavior match/mismatch, and test gaps.
 - **SC-003**: P0/P1/P2 remediation tasks are converted into template-conformant Phase 2 tasks with T### numbering.
 - **SC-004**: Verification checklist sections reflect pre-implementation, quality, testing, security, and documentation outcomes, including 211 passing tests across 5 Vitest files.
+
+### Acceptance Scenarios
+
+1. **Given** the documented requirements for this phase, **When** a reviewer walks the updated packet, **Then** each requirement has a matching verification path in tasks and checklist artifacts.
+2. **Given** current implementation behavior, **When** spec statements are compared with source and test references, **Then** no contradictory behavior claims remain in the phase packet.
+3. **Given** the updated verification evidence, **When** checklist entries are audited, **Then** each completed P0/P1 item carries inline evidence and traceable context.
+4. **Given** Level 2 template constraints, **When** the spec validator runs, **Then** acceptance-scenario coverage and section integrity checks pass without structural warnings.
+
 <!-- /ANCHOR:success-criteria -->
 
 ---

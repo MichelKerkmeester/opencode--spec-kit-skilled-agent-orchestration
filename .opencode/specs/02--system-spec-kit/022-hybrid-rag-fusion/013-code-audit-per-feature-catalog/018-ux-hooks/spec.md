@@ -24,6 +24,9 @@ contextType: "general"
 | **Status** | Complete |
 | **Created** | 2026-03-10 |
 | **Branch** | `018-ux-hooks` |
+| **Parent Spec** | ../spec.md |
+| **Previous Phase** | ../017-governance/spec.md |
+| **Next Phase** | ../019-decisions-and-deferrals/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---

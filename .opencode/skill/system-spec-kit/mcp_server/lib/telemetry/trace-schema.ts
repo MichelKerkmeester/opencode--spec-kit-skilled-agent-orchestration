@@ -186,6 +186,7 @@ export {
   RETRIEVAL_TRACE_STAGES,
   sanitizeRetrievalTracePayload,
   isRetrievalTracePayload,
+  validateRetrievalTracePayload,
 };
 
 /**

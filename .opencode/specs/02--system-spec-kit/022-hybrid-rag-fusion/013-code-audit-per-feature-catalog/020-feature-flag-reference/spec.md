@@ -1,6 +1,7 @@
 ---
 title: "Feature Specification: feature-flag-reference [template:level_2/spec.md]"
 description: "Audit and maintain the Feature Flag Reference catalog so each documented flag maps to authoritative implementation code, tests, and playbook coverage."
+# SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2
 trigger_phrases:
   - "feature-flag-reference"
   - "feature flag reference"
@@ -27,6 +28,9 @@ contextType: "general"
 | **Status** | Draft |
 | **Created** | 2026-03-10 |
 | **Branch** | `020-feature-flag-reference` |
+| **Parent Spec** | ../spec.md |
+| **Previous Phase** | ../019-decisions-and-deferrals/spec.md |
+| **Next Phase** | N/A |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -53,7 +57,7 @@ Produce a Level 2, verification-ready audit package that captures per-feature fi
 
 ### Out of Scope
 - Runtime code fixes in `mcp_server/` and `shared/` modules - this spec captures audit evidence and planning only.
-- Changes to `description.json`, `memory/`, `scratch/`, or creation of `implementation-summary.md` - explicitly excluded by task constraints.
+- Changes to `description.json`, `memory/`, or `scratch/` - explicitly excluded by task constraints.
 
 ### Files to Change
 
@@ -83,6 +87,7 @@ Produce a Level 2, verification-ready audit package that captures per-feature fi
 |----|-------------|---------------------|
 | REQ-003 | P1/P2 findings and test gaps are preserved with traceability. | Tasks include `MEMORY_DB_*`, `EMBEDDINGS_PROVIDER`, `EMBEDDING_DIM`, and barrel re-export drift coverage. |
 | REQ-004 | Audit criteria and playbook mapping are retained. | Correctness, standards, behavior, tests, and Cross-cutting playbook coverage remain documented. |
+| REQ-005 | Markdown references in this folder resolve to existing documents. | `validate.sh --no-recursive` reports no missing markdown file references for this folder. |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -96,8 +101,19 @@ Produce a Level 2, verification-ready audit package that captures per-feature fi
 
 ---
 
+<!-- ANCHOR:acceptance-scenarios -->
+## 6. ACCEPTANCE SCENARIOS
+
+1. **Given** all seven feature files are in scope, **When** the checklist is reviewed, **Then** every feature has a retained PASS/WARN/FAIL outcome and evidence summary.
+2. **Given** stale mappings exist for `SPECKIT_ABLATION` and `SPECKIT_RRF`, **When** P0 tasks are reviewed, **Then** remediation items explicitly target authoritative source-file ownership.
+3. **Given** `MEMORY_DB_*` and embedding mappings drift from implementation, **When** P1 tasks are executed, **Then** each mapping update points to an existing code path.
+4. **Given** this phase folder includes `implementation-summary.md`, **When** validation runs, **Then** spec-doc integrity passes with no missing markdown references.
+<!-- /ANCHOR:acceptance-scenarios -->
+
+---
+
 <!-- ANCHOR:risks -->
-## 6. RISKS & DEPENDENCIES
+## 7. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|

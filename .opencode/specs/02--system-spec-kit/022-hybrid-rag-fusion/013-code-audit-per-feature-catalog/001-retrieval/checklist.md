@@ -23,65 +23,57 @@ contextType: "general"
 
 ---
 
+## P0 - Blockers
+
+P0 items below are complete and include inline evidence.
+
+---
+
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] Requirements documented in `spec.md`
-- [x] CHK-002 [P0] Technical approach defined in `plan.md`
-- [x] CHK-003 [P1] Dependencies identified and available
-<!-- /ANCHOR:pre-impl -->
+- [x] CHK-001 [P0] Requirements documented in `spec.md` [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-002 [P0] Technical approach defined in `plan.md` [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-003 [P1] Dependencies identified and available [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n<!-- /ANCHOR:pre-impl -->
 
 ---
 
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [x] CHK-010 [P0] Code passes lint/format checks (`tsc --noEmit` clean)
-- [x] CHK-011 [P0] No silent retrieval error swallowing remains in audited retrieval schema/index paths (structured warnings retained by design)
-- [x] CHK-012 [P1] Error handling implemented for retrieval-critical catch points and migration backfill path checks
-- [x] CHK-013 [P1] Code follows project patterns (transaction-correct result reporting, source/dist behavior parity, schema-compatible fallbacks)
-<!-- /ANCHOR:code-quality -->
+- [x] CHK-010 [P0] Code passes lint/format checks (`tsc --noEmit` clean) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-011 [P0] No silent retrieval error swallowing remains in audited retrieval schema/index paths (structured warnings retained by design) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-012 [P1] Error handling implemented for retrieval-critical catch points and migration backfill path checks [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-013 [P1] Code follows project patterns (transaction-correct result reporting, source/dist behavior parity, schema-compatible fallbacks) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n<!-- /ANCHOR:code-quality -->
 
 ---
 
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-020 [P0] All acceptance criteria met
-- [x] CHK-021 [P0] Retrieval-targeted verification complete (`10` suites, `365` passed, `0` failed)
-- [x] CHK-022 [P1] Edge and regression scenarios validated with concrete assertions (token budget, rollback, BM25 re-index, RRF convergence, extraction fallback)
-- [x] CHK-023 [P1] Full-suite baseline recorded honestly (`7339` passed, `5` failed, `28` todo, `1` pending), with failures outside retrieval scope
-<!-- /ANCHOR:testing -->
+- [x] CHK-020 [P0] All acceptance criteria met [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-021 [P0] Retrieval-targeted verification complete (`10` suites, `365` passed, `0` failed) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-022 [P1] Edge and regression scenarios validated with concrete assertions (token budget, rollback, BM25 re-index, RRF convergence, extraction fallback) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-023 [P1] Full-suite baseline recorded honestly (`7339` passed, `5` failed, `28` todo, `1` pending), with failures outside retrieval scope [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n<!-- /ANCHOR:testing -->
 
 ---
 
 <!-- ANCHOR:security -->
 ## Security
 
-- [x] CHK-030 [P0] No hardcoded secrets
-- [x] CHK-031 [P0] Input/path validation implemented for audited retrieval surfaces
-- [x] CHK-032 [P1] Auth/authz working correctly (N/A: no auth in audit scope)
-<!-- /ANCHOR:security -->
+- [x] CHK-030 [P0] No hardcoded secrets [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-031 [P0] Input/path validation implemented for audited retrieval surfaces [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-032 [P1] Auth/authz working correctly (N/A: no auth in audit scope) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n<!-- /ANCHOR:security -->
+
+---
+
+## P1 - Required
+
+P1 items are complete and include inline evidence unless explicitly deferred.
 
 ---
 
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-040 [P1] Spec/plan/tasks synchronized
-- [x] CHK-041 [P1] Verification evidence is concrete and scoped (targeted retrieval vs full-suite baseline clearly separated)
-- [x] CHK-042 [P2] Stale/unsupported claims removed (legacy pass-count claims, unsupported independent-review score claims, stale open findings)
-<!-- /ANCHOR:docs -->
+- [x] CHK-040 [P1] Spec/plan/tasks synchronized [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-041 [P1] Verification evidence is concrete and scoped (targeted retrieval vs full-suite baseline clearly separated) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-042 [P2] Stale/unsupported claims removed (legacy pass-count claims, unsupported independent-review score claims, stale open findings) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n<!-- /ANCHOR:docs -->
 
 ---
 
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [x] CHK-050 [P1] Temp files in `scratch/` only
-- [x] CHK-051 [P1] `scratch/` cleaned before completion
-- [x] CHK-052 [P2] Findings saved to `memory/` (if used) and reflected in spec-folder evidence
-<!-- /ANCHOR:file-org -->
+- [x] CHK-050 [P1] Temp files in `scratch/` only [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-051 [P1] `scratch/` cleaned before completion [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-052 [P2] Findings saved to `memory/` (if used) and reflected in spec-folder evidence [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n<!-- /ANCHOR:file-org -->
 
 ---
 

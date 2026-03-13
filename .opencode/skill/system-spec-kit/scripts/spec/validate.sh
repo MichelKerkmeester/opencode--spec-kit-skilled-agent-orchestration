@@ -430,6 +430,8 @@ run_all_rules() {
         fi
         unset -f run_check 2>/dev/null || true
     done <<< "$rule_scripts"
+
+    return 0
 }
 
 # ───────────────────────────────────────────────────────────────

@@ -220,7 +220,7 @@ async function handleMemoryBulkDelete(args: BulkDeleteArgs): Promise<MCPResponse
     let postMutationHooks: import('./mutation-hooks').MutationHookResult;
     try {
       postMutationHooks = runPostMutationHooks('bulk-delete', { specFolder, tier, deletedCount });
-    } catch (error: unknown) {
+    } catch (_error: unknown) {
       postMutationHooks = {
         latencyMs: 0, triggerCacheCleared: false,
         constitutionalCacheCleared: false, toolCacheInvalidated: 0,

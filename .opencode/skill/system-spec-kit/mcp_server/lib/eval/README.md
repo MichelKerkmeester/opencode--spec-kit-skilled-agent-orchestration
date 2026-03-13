@@ -121,7 +121,7 @@ Expands ground truth datasets via two mechanisms: (1) implicit feedback from use
 
 ### Reporting Dashboard (`reporting-dashboard.ts`)
 
-Full reporting dashboard for the R13-S3 evaluation infrastructure. Aggregates metrics per sprint and per channel from `eval_metric_snapshots`, with trend analysis and formatted report output in text and JSON. Read-only queries against the eval DB. Added in Sprint 7.
+Full reporting dashboard for the R13-S3 evaluation infrastructure. Aggregates metrics per sprint and per channel from `eval_metric_snapshots`, with trend analysis and formatted report output in text and JSON. `limit` applies after sprint grouping so the most recent sprint groups are kept intact, returned totals/summaries reflect the included report scope after filters, and channel results are grouped per included run/channel before sprint aggregation so large per-query histories do not starve the kept sprint groups. Read-only queries against the eval DB. Added in Sprint 7.
 
 ### Shadow Scoring (`shadow-scoring.ts`)
 

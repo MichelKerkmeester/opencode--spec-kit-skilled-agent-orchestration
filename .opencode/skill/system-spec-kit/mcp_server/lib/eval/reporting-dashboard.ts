@@ -97,9 +97,9 @@ export interface TrendEntry {
 export interface DashboardReport {
   /** ISO timestamp when report was generated. */
   generatedAt: string;
-  /** Total eval runs in the database. */
+  /** Total eval runs included in this report after filters/limit. */
   totalEvalRuns: number;
-  /** Total metric snapshots in the database. */
+  /** Total metric snapshots included in this report after filters/limit. */
   totalSnapshots: number;
   /** Per-sprint reports. */
   sprints: SprintReport[];
@@ -133,13 +133,13 @@ interface SnapshotRow {
   created_at: string;
 }
 
-/** Row shape from eval_channel_results. */
+/** Aggregated per-run/per-channel row shape from eval_channel_results. */
 interface ChannelResultRow {
   eval_run_id: number;
   channel: string;
   hit_count: number;
   latency_ms: number | null;
-  query_id: number;
+  query_count: number;
 }
 
 /**
@@ -201,19 +201,16 @@ function queryMetricSnapshots(
 
   sql += ` ORDER BY created_at DESC`;
 
-  if (config.limit && config.limit > 0) {
-    sql += ` LIMIT ?`;
-    params.push(config.limit * 20); // Over-fetch to allow grouping
-  } else {
-    // AI-GUARD: Default LIMIT to prevent unbounded result sets on large eval databases
-    sql += ` LIMIT ${DASHBOARD_ROW_LIMIT}`;
-  }
+  // AI-GUARD: Row safeguard is independent from report `limit`, which applies after sprint grouping.
+  sql += ` LIMIT ${DASHBOARD_ROW_LIMIT}`;
 
   return db.prepare(sql).all(...params) as SnapshotRow[];
 }
 
 /**
- * Query channel results for specific eval_run_ids.
+ * Query grouped channel results for specific eval_run_ids.
+ * Aggregating in SQL keeps channel coverage complete for the included runs
+ * without materializing every per-query row in memory.
  */
 function queryChannelResults(
   db: Database.Database,
@@ -223,7 +220,12 @@ function queryChannelResults(
   if (evalRunIds.length === 0) return [];
 
   const runPlaceholders = evalRunIds.map(() => '?').join(', ');
-  let sql = `SELECT eval_run_id, channel, hit_count, latency_ms, query_id
+  let sql = `SELECT
+               eval_run_id,
+               channel,
+               SUM(hit_count) AS hit_count,
+               AVG(latency_ms) AS latency_ms,
+               COUNT(*) AS query_count
              FROM eval_channel_results
              WHERE eval_run_id IN (${runPlaceholders})`;
   const params: unknown[] = [...evalRunIds];
@@ -234,30 +236,9 @@ function queryChannelResults(
     params.push(...channelFilter);
   }
 
-  // AI-GUARD: Default LIMIT to prevent unbounded result sets on large eval databases
-  sql += ` LIMIT ${DASHBOARD_ROW_LIMIT}`;
+  sql += ` GROUP BY eval_run_id, channel`;
 
   return db.prepare(sql).all(...params) as ChannelResultRow[];
-}
-
-/**
- * Get total count of distinct eval_run_ids.
- */
-function countEvalRuns(db: Database.Database): number {
-  const row = db.prepare(
-    `SELECT COUNT(DISTINCT eval_run_id) as cnt FROM eval_metric_snapshots`
-  ).get() as { cnt: number } | undefined;
-  return row?.cnt ?? 0;
-}
-
-/**
- * Get total snapshot count.
- */
-function countSnapshots(db: Database.Database): number {
-  const row = db.prepare(
-    `SELECT COUNT(*) as cnt FROM eval_metric_snapshots`
-  ).get() as { cnt: number } | undefined;
-  return row?.cnt ?? 0;
 }
 
 /* ---------------------------------------------------------------
@@ -366,15 +347,25 @@ function buildSprintReport(
 
   for (const [ch, rows] of channelGroups) {
     const totalHits = rows.reduce((sum, r) => sum + (r.hit_count ?? 0), 0);
-    const latencies = rows.filter(r => r.latency_ms != null).map(r => r.latency_ms!);
-    const avgLatency = latencies.length > 0
-      ? Math.round((latencies.reduce((a, b) => a + b, 0) / latencies.length) * 100) / 100
+    const totalQueries = rows.reduce((sum, row) => sum + (row.query_count ?? 0), 0);
+    const latencyTotals = rows.reduce(
+      (acc, row) => {
+        if (row.latency_ms == null) return acc;
+        return {
+          weightedLatency: acc.weightedLatency + (row.latency_ms * row.query_count),
+          latencySamples: acc.latencySamples + row.query_count,
+        };
+      },
+      { weightedLatency: 0, latencySamples: 0 },
+    );
+    const avgLatency = latencyTotals.latencySamples > 0
+      ? Math.round((latencyTotals.weightedLatency / latencyTotals.latencySamples) * 100) / 100
       : 0;
 
     channels[ch] = {
       hitCount: totalHits,
       avgLatencyMs: avgLatency,
-      queryCount: rows.length,
+      queryCount: totalQueries,
     };
   }
 
@@ -521,33 +512,43 @@ export async function generateDashboardReport(
 ): Promise<DashboardReport> {
   const db = getDb();
 
-  // Gather totals
-  const totalEvalRuns = countEvalRuns(db);
-  const totalSnapshots = countSnapshots(db);
-
   // Query snapshots
   const snapshots = queryMetricSnapshots(db, config);
 
   // Group by sprint
   const sprintGroups = groupBySprint(snapshots, config.sprintFilter);
 
-  // Collect all eval_run_ids for channel queries
-  const allRunIds = [...new Set(snapshots.map(s => s.eval_run_id))];
+  const sprintEntries = [...sprintGroups.entries()].sort(([, leftSnapshots], [, rightSnapshots]) => {
+    const leftFirstSeen = leftSnapshots
+      .map((snapshot) => snapshot.created_at)
+      .filter(Boolean)
+      .sort()[0] ?? '';
+    const rightFirstSeen = rightSnapshots
+      .map((snapshot) => snapshot.created_at)
+      .filter(Boolean)
+      .sort()[0] ?? '';
+    return leftFirstSeen.localeCompare(rightFirstSeen);
+  });
 
-  // Query channel results
-  const channelRows = queryChannelResults(db, allRunIds, config.channelFilter);
+  const limitedSprintEntries = config.limit && config.limit > 0
+    ? sprintEntries.slice(-config.limit)
+    : sprintEntries;
 
-  // Build sprint reports (sorted by first_seen ascending for chronological order)
-  const sprints: SprintReport[] = [];
-  for (const [label, groupSnaps] of sprintGroups) {
-    sprints.push(buildSprintReport(label, groupSnaps, channelRows));
-  }
-  sprints.sort((a, b) => a.firstSeen.localeCompare(b.firstSeen));
+  const includedRunIds = [...new Set(
+    limitedSprintEntries.flatMap(([, groupSnapshots]) => groupSnapshots.map((snapshot) => snapshot.eval_run_id))
+  )];
+  const totalEvalRuns = includedRunIds.length;
+  const totalSnapshots = limitedSprintEntries.reduce(
+    (sum, [, groupSnapshots]) => sum + groupSnapshots.length,
+    0,
+  );
 
-  // Apply limit if specified
-  const limitedSprints = config.limit && config.limit > 0
-    ? sprints.slice(-config.limit)
-    : sprints;
+  // Query channel results only for included runs so row limits cannot starve kept groups.
+  const channelRows = queryChannelResults(db, includedRunIds, config.channelFilter);
+
+  const limitedSprints = limitedSprintEntries.map(([label, groupSnapshots]) =>
+    buildSprintReport(label, groupSnapshots, channelRows)
+  );
 
   // Compute trends
   const trends = computeTrends(limitedSprints);

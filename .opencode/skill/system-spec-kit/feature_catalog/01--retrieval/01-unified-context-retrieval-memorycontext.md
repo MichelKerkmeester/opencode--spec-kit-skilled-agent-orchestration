@@ -21,7 +21,7 @@ Each mode has a token budget. Quick gets 800 tokens. Focused gets 1,500. Deep ge
 
 When no `specFolder` is provided, automatic spec folder discovery attempts to identify the most relevant folder from the query text using a cached one-sentence description per spec folder. If the target folder can be identified from the description alone, the system avoids full-corpus search entirely. Discovery failure is non-fatal and falls through to the standard retrieval path. This feature runs behind the `SPECKIT_FOLDER_DISCOVERY` flag.
 
-Session management is built in. You can pass a `sessionId` for cross-turn deduplication (the system tracks which memories were already sent in this session and skips them) and working memory integration (attention-scored memories from previous turns carry over). In resume mode with `autoResumeEnabled`, the handler pulls working memory context items and injects them as `systemPromptContext` into the response. If you do not pass a session ID, an ephemeral UUID is generated for that single call.
+Session management is caller-scoped. Passing `sessionId` enables cross-turn deduplication and lets the handler resume an existing working-memory session. If you do not pass `sessionId`, the handler generates an ephemeral UUID for internal bookkeeping for that single call only. In resume mode, `systemPromptContext` is injected only when auto-resume is enabled, the effective mode resolves to `resume`, and the caller supplied a reusable `sessionId`; anonymous calls do not revive prior session context.
 
 Retrieval telemetry records mode selection and pressure-override fallbacks for observability when extended telemetry is enabled.
 

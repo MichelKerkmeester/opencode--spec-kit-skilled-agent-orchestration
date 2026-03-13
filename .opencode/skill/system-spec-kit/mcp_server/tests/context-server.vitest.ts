@@ -1150,8 +1150,9 @@ describe('Context Server', () => {
           sharedTypes: sharedTypesCode,
         }
         const code = sourceMap[iface.source]
-        const ifaceRegex = new RegExp(`interface\\s+${iface.name}\\s*\\{`)
-        expect(ifaceRegex.test(code)).toBe(true)
+        // Accept either interface or type alias contracts in exported tool/context types.
+        const typeContractRegex = new RegExp(`(?:interface\\s+${iface.name}\\s*\\{|type\\s+${iface.name}\\s*=)`)
+        expect(typeContractRegex.test(code)).toBe(true)
 
         // Check required fields if specified
         if (iface.requiredFields) {

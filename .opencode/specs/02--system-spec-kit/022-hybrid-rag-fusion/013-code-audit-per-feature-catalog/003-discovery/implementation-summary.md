@@ -12,17 +12,6 @@ contextType: "general"
 
 ---
 
-## TABLE OF CONTENTS
-
-- [1. METADATA](#1--metadata)
-- [2. OVERVIEW](#2--overview)
-- [3. WHAT WAS BUILT](#3--what-was-built)
-- [4. HOW IT WAS DELIVERED](#4--how-it-was-delivered)
-- [5. KEY DECISIONS](#5--key-decisions)
-- [6. VERIFICATION](#6--verification)
-- [7. KNOWN LIMITATIONS](#7--known-limitations)
-
----
 
 <!-- ANCHOR:metadata -->
 ## 1. METADATA
@@ -64,9 +53,9 @@ Docs now keep `memory_list` and `memory_stats` response/validation details synch
 ### Related Documentation Alignment (Outside Packet)
 
 The packet now explicitly notes that related docs were corrected:
-- `manual_testing_playbook.md`: EX-012 uses `memory_stats(folderRanking:composite,includeScores:true)`
-- merged `feature_catalog.md`: removed `memory_list` tier claim, corrected `importanceScore` wording, corrected `memory_health` top-level status wording
-- `shared/scoring/README.md`: removed stale `memory_list` folder-scoring consumer claims
+- `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md`: EX-012 uses `memory_stats(folderRanking:composite,includeScores:true)`
+- merged `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md`: removed `memory_list` tier claim, corrected `importanceScore` wording, corrected `memory_health` top-level status wording
+- `.opencode/skill/system-spec-kit/shared/scoring/README.md`: removed stale `memory_list` folder-scoring consumer claims
 
 ### Stale Claim Removal
 

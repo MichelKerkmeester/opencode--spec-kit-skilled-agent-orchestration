@@ -53,7 +53,9 @@ Main exports (camelCase):
 Data shape:
 - `extractContextHint(args)` pulls the first usable string from `input`, `query`, `prompt`, `specFolder`, or `filePath`, and falls back to joining `concepts[]` when present.
 - auto-surface output includes `constitutional`, `triggered`, `surfaced_at`, and `latencyMs`.
-- mutation hook feedback includes cache clear booleans, invalidated tool-cache count, and operation latency.
+- post-mutation runtime first produces `MutationHookResult` via `runPostMutationHooks()` in `../handlers/mutation-hooks.ts`, then `buildMutationHookFeedback()` maps that into the public `postMutationHooks` payload used by mutation responses.
+- `MutationHookResult` includes `latencyMs`, `triggerCacheCleared`, `constitutionalCacheCleared`, `graphSignalsCacheCleared`, `coactivationCacheCleared`, `toolCacheInvalidated`, and `errors`.
+- public `postMutationHooks` data includes `operation`, `latencyMs`, `triggerCacheCleared`, `constitutionalCacheCleared`, `graphSignalsCacheCleared`, `coactivationCacheCleared`, and `toolCacheInvalidated`.
 - auto-surface response hints enrich the MCP JSON envelope `hints` and `meta.autoSurface`.
 - `MEMORY_AWARE_TOOLS` currently includes `memory_context`, `memory_search`, `memory_match_triggers`, `memory_list`, `memory_save`, and `memory_index_scan`.
 

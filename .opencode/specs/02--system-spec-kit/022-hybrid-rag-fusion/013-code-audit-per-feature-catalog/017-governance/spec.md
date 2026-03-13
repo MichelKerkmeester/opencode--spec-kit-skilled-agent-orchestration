@@ -29,6 +29,9 @@ contextType: "general"
 | **Status** | Complete |
 | **Created** | 2026-03-10 |
 | **Branch** | `017-governance` |
+| **Parent Spec** | ../spec.md |
+| **Previous Phase** | ../016-tooling-and-scripts/spec.md |
+| **Next Phase** | ../018-ux-hooks/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -105,6 +108,14 @@ Provide a standardized Level 2 governance specification that captures audit scop
 - **SC-001**: Both governance features are represented in the final checklist with documented status and findings (F-01 PASS, F-02 PASS WITH NOTES after remediation).
 - **SC-002**: All four governance docs conform to Level 2 template sections and anchor structure.
 - **SC-003**: Corrective fixes for rollout behavior, test coverage gaps, and governance documentation drift are applied and verified with targeted tests.
+
+### Acceptance Scenarios
+
+1. **Given** the documented requirements for this phase, **When** a reviewer walks the updated packet, **Then** each requirement has a matching verification path in tasks and checklist artifacts.
+2. **Given** current implementation behavior, **When** spec statements are compared with source and test references, **Then** no contradictory behavior claims remain in the phase packet.
+3. **Given** the updated verification evidence, **When** checklist entries are audited, **Then** each completed P0/P1 item carries inline evidence and traceable context.
+4. **Given** Level 2 template constraints, **When** the spec validator runs, **Then** acceptance-scenario coverage and section integrity checks pass without structural warnings.
+
 <!-- /ANCHOR:success-criteria -->
 
 ---

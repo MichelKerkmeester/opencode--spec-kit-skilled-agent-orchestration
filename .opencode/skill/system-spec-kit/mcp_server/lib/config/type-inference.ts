@@ -273,7 +273,7 @@ export function inferMemoryType(params: InferMemoryTypeParams): InferenceResult 
   };
 }
 
-function inferMemoryTypesBatch(
+export function inferMemoryTypesBatch(
   memories: MemoryForBatchInference[]
 ): Map<string, InferenceResult> {
   const results = new Map<string, InferenceResult>();
@@ -306,7 +306,7 @@ const SOURCE_EXPLANATIONS: Record<string, string> = {
   default: 'No patterns matched, using default type',
 };
 
-function getTypeSuggestionDetailed(params: InferMemoryTypeParams): DetailedTypeSuggestion {
+export function getTypeSuggestionDetailed(params: InferMemoryTypeParams): DetailedTypeSuggestion {
   const result = inferMemoryType(params);
 
   return {
@@ -316,7 +316,7 @@ function getTypeSuggestionDetailed(params: InferMemoryTypeParams): DetailedTypeS
   };
 }
 
-function validateInferredType(
+export function validateInferredType(
   inferredType: string,
   filePath: string | null | undefined
 ): TypeValidationResult {

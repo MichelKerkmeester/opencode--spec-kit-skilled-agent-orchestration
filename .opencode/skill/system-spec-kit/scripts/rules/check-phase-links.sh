@@ -72,7 +72,7 @@ run_check() {
 
             # AI-FIX: F-21 — Validate that the referenced parent path actually exists
             local parent_ref
-            parent_ref=$(grep -oE '\.\./spec\.md' "$child_spec" 2>/dev/null | head -1)
+            parent_ref=$(grep -oE '\.\./spec\.md' "$child_spec" 2>/dev/null | head -1 || true)
             if [[ -n "$parent_ref" ]]; then
                 local resolved_parent="$phase_dir/$parent_ref"
                 if [[ ! -f "$resolved_parent" ]]; then

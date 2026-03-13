@@ -41,7 +41,7 @@ interface StatsArgs {
   limit?: number;
 }
 
-/** Arguments for the memory_health handler (currently unused). */
+/** Arguments for the memory_health handler. */
 interface HealthArgs {
   reportMode?: 'full' | 'divergent_aliases';
   limit?: number;

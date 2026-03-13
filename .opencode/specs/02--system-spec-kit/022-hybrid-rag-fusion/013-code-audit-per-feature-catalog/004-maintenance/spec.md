@@ -28,6 +28,9 @@ contextType: "general"
 | **Status** | Complete |
 | **Created** | 2026-03-10 |
 | **Branch** | `013-code-audit-per-feature-catalog` |
+| **Parent Spec** | ../spec.md |
+| **Previous Phase** | ../003-discovery/spec.md |
+| **Next Phase** | ../005-lifecycle/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---

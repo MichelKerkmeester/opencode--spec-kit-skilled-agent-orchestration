@@ -249,7 +249,7 @@ Each mode has a token budget. Quick gets 800 tokens. Focused gets 1,500. Deep ge
 
 When no `specFolder` is provided, automatic spec folder discovery attempts to identify the most relevant folder from the query text using a cached one-sentence description per spec folder. If the target folder can be identified from the description alone, the system avoids full-corpus search entirely. Discovery failure is non-fatal and falls through to the standard retrieval path. This feature runs behind the `SPECKIT_FOLDER_DISCOVERY` flag.
 
-Session management is built in. You can pass a `sessionId` for cross-turn deduplication (the system tracks which memories were already sent in this session and skips them) and working memory integration (attention-scored memories from previous turns carry over). In resume mode with `autoResumeEnabled`, the handler pulls working memory context items and injects them as `systemPromptContext` into the response. If you do not pass a session ID, an ephemeral UUID is generated for that single call.
+Session management is caller-scoped, not automatic across anonymous calls. Passing `sessionId` enables cross-turn deduplication and lets `memory_context` resume an existing working-memory session. If you omit `sessionId`, the handler generates an ephemeral UUID for internal bookkeeping for that call only. Resume-mode `systemPromptContext` injection happens only when auto-resume is enabled, the effective mode is `resume`, and the caller supplied a reusable `sessionId`.
 
 Retrieval telemetry records mode selection and pressure-override fallbacks for observability when extended telemetry is enabled.
 
@@ -773,7 +773,7 @@ See [`07--evaluation/01-ablation-studies-evalrunablation.md`](07--evaluation/01-
 
 Generates a sprint-level and channel-level metric dashboard from stored evaluation runs. You can filter by sprint, channel and metric, and choose between text (markdown-formatted) or JSON output.
 
-The dashboard aggregates per-sprint metric summaries (mean, min, max, latest, count) and per-channel performance views (hit count, average latency, query count) from the `eval_metric_snapshots` and `eval_channel_results` tables. Trend analysis compares consecutive runs to detect regressions. Sprint labels are inferred from metadata JSON or `eval_run_id` grouping. A `isHigherBetter()` helper correctly interprets trend direction for different metric types (recall and precision are higher-better; latency is lower-better).
+The dashboard aggregates per-sprint metric summaries (mean, min, max, latest, count) and per-channel performance views (hit count, average latency, query count) from the `eval_metric_snapshots` and `eval_channel_results` tables. Trend analysis compares consecutive sprint groups using each metric's latest value. Sprint labels come from metadata JSON (`sprint` or `sprintLabel`) and fall back to `run-{eval_run_id}`. The request `limit` trims sprint groups after grouping, while `SPECKIT_DASHBOARD_LIMIT` caps dashboard SQL reads. Channel results are grouped per included eval run and channel before sprint aggregation so large per-query histories do not starve the kept sprint groups.
 
 This is a read-only module. It queries the eval database and produces reports. No writes, no side effects, no feature flag gate.
 
@@ -1178,7 +1178,7 @@ See [`10--graph-signal-activation/05-graph-momentum-scoring.md`](10--graph-signa
 
 Not all memories sit at the same level of abstraction. A root decision that caused five downstream implementation memories occupies a different position in the knowledge graph than a leaf node.
 
-Causal depth measures each memory's maximum distance from root nodes (those with in-degree zero) via BFS traversal. The raw depth is normalized by graph diameter to produce a [0,1] score. A memory at depth 3 in a graph with diameter 6 scores 0.5.
+Causal depth measures each memory's nearest-root distance from root nodes (those with in-degree zero) via multi-source BFS traversal. The raw depth is normalized by the deepest reachable BFS layer to produce a [0,1] score. A memory at depth 3 in a graph whose deepest reachable layer is 6 scores 0.5.
 
 Like momentum, the depth signal applies as an additive bonus in Stage 2, capped at +0.05. Batch computation via `computeCausalDepthScores()` shares the same session cache infrastructure as momentum. Both signals are applied together by `applyGraphSignals()`, which iterates over pipeline rows and adds the combined bonus. A single-node variant of `computeCausalDepth` was removed during Sprint 8 remediation as dead code (the batch version `computeCausalDepthScores` is the only caller).
 
@@ -1406,9 +1406,9 @@ See [`11--scoring-and-calibration/13-scoring-and-fusion-corrections.md`](11--sco
 
 ### Local GGUF reranker via node-llama-cpp
 
-**IMPLEMENTED (Sprint 019).** *(Overlap note: implements the previously unimplemented `RERANKER_LOCAL` flag while `SPECKIT_CROSS_ENCODER` remains the existing default-on rerank control.)* Stage 3 reranking currently supports Cohere and Voyage remote APIs. This feature adds a Node-native GGUF execution path via `node-llama-cpp` in `lib/search/local-reranker.ts`, integrating into the existing Stage 3 reranking slot. `node-llama-cpp` is declared as an `optionalDependency` to avoid blocking installs on platforms without native build support.
+**IMPLEMENTED (Sprint 019).** *(Overlap note: implements the previously unimplemented `RERANKER_LOCAL` flag while `SPECKIT_CROSS_ENCODER` remains the existing default-on rerank control.)* Stage 3 reranking now has an optional Node-native GGUF path via `node-llama-cpp` in `lib/search/local-reranker.ts`. `node-llama-cpp` is declared as an `optionalDependency` so installs still succeed on platforms without native build support.
 
-The system uses a quantized `bge-reranker-v2-m3.Q4_K_M.gguf` model (~350MB). Before loading, `canUseLocalReranker()` checks that `RERANKER_LOCAL === 'true'` (strict string equality, not truthy), the model file exists, and sufficient free memory is available. The memory threshold is 4GB by default, reduced to 512MB when a custom model is configured via `SPECKIT_RERANKER_MODEL` (intentional override). If any check fails, the pipeline silently falls back to the existing algorithmic RRF scoring. Candidates are scored sequentially (not via `Promise.all`) to avoid allocating multiple sequence states simultaneously in VRAM. The loaded model is cached at module level with path-keyed singleton tracking to detect stale promises on model path changes, and disposed on server shutdown via async-with-deadline cleanup.
+The system uses a quantized `bge-reranker-v2-m3.Q4_K_M.gguf` model (~350MB). Before loading, the gate requires `RERANKER_LOCAL === 'true'` plus rollout enablement, a readable model file, and enough total system memory (8GB by default, reduced to 2GB when `SPECKIT_RERANKER_MODEL` is set). The gate intentionally uses total RAM rather than free-memory readings. If any precondition or runtime scoring step fails, the local reranker degrades by returning the incoming candidate order unchanged instead of changing live ranking behavior. Candidates are scored sequentially (not via `Promise.all`) to avoid allocating multiple sequence states simultaneously in VRAM. The loaded model is cached at module level with path-keyed singleton tracking to detect stale promises on model path changes, and disposed on server shutdown via async-with-deadline cleanup.
 
 
 #### Source Files
@@ -1432,13 +1432,11 @@ See [`12--query-intelligence/01-query-complexity-router.md`](12--query-intellige
 
 ### Relative score fusion in shadow mode
 
-RRF has been the fusion method since day one, but is it the best option? Relative Score Fusion runs alongside RRF in shadow mode to find out.
+RRF remains the live fusion method. RSF no longer runs in the production ranking path.
 
-Three RSF variants are implemented: single-pair (fusing two ranked lists), multi-list (fusing N lists with proportional penalties for missing sources) and cross-variant (fusing results across query expansions with a +0.10 convergence bonus). RSF results are logged for evaluation comparison but do not affect actual ranking.
+The repository still contains the standalone RSF fusion module and test coverage for its three variants (single-pair, multi-list and cross-variant), but Sprint 8 removed the dead runtime flag helper and the dead hybrid-search branch that would have surfaced RSF shadow results in the live pipeline.
 
-Kendall tau correlation between RSF and RRF rankings is computed at sprint exit to measure how much the two methods diverge. If RSF consistently outperforms, a future sprint can switch the primary fusion method with measured evidence.
-
-**Sprint 8 update:** The `isRsfEnabled()` feature flag function was removed as dead code. The dead RSF branch in `hybrid-search.ts` (which was gated behind this flag returning `false`) was also removed. The RSF fusion module (`rsf-fusion.ts`) retains its core fusion logic for potential future activation, but the flag guard function is gone.
+`SPECKIT_RSF_FUSION` is now effectively inert documentation/config surface. A typed `rsfShadow` metadata slot still exists in pipeline types for compatibility, and the fusion code can still be exercised in isolation, but shipped ranking behavior stays on RRF unless a future implementation reintroduces a real runtime path.
 
 
 #### Source Files
