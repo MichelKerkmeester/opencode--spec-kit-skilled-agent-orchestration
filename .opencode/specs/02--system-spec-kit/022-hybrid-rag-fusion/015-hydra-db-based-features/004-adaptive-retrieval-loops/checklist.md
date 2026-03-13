@@ -31,25 +31,25 @@ contextType: "general"
 - [x] CHK-401 Scope, shadow-mode rules, and promotion gates documented [EVIDENCE:spec.md]
 - [x] CHK-402 Dependencies on Phase 3 documented [EVIDENCE:plan.md]
 - [x] CHK-403 Phase-local ADR captured [EVIDENCE:decision-record.md]
-- [ ] CHK-404 Phase 3 handoff approved
+- [x] CHK-404 Phase 3 handoff approved [EVIDENCE:../003-unified-graph-retrieval/checklist.md P0 9/9; validate.sh pass]
 
 ---
 
 ## P0: Adaptive Verification
 
-- [ ] CHK-410 Signal capture implemented
-- [ ] CHK-411 Shadow mode leaves live ranking untouched
-- [ ] CHK-412 Bounded-update tests pass
-- [ ] CHK-413 Rollback path validated
-- [ ] CHK-414 Promotion review criteria verified
+- [x] CHK-410 Signal capture implemented [EVIDENCE:implementation-summary.md]
+- [x] CHK-411 Shadow mode leaves live ranking untouched [EVIDENCE:implementation-summary.md]
+- [x] CHK-412 Bounded-update tests pass [EVIDENCE:implementation-summary.md]
+- [x] CHK-413 Rollback path validated [EVIDENCE:implementation-summary.md]
+- [x] CHK-414 Promotion review criteria verified [EVIDENCE:implementation-summary.md]
 
 ---
 
 ## P1: Documentation and Governance
 
 - [x] CHK-420 Level 3+ documentation package created [EVIDENCE:README.md|spec.md|plan.md|tasks.md|checklist.md|decision-record.md|implementation-summary.md]
-- [ ] CHK-421 Playbook updated for adaptive validation
-- [ ] CHK-422 Catalog and README surfaces updated after implementation
+- [x] CHK-421 Playbook updated for adaptive validation [EVIDENCE:manual_testing_playbook.md NEW-121]
+- [x] CHK-422 Catalog and README surfaces updated after implementation [EVIDENCE:feature_catalog/11--scoring-and-calibration/18-adaptive-shadow-ranking-bounded-proposals-and-rollback.md]
 - [ ] CHK-423 Maintainer sign-off recorded
 
 ---
@@ -58,7 +58,7 @@ contextType: "general"
 
 - [ ] CHK-430 Expand signal-quality dashboards if needed
 - [ ] CHK-431 Tune sample thresholds after initial evaluation
-- [ ] CHK-432 Save continuation context after execution
+- [x] CHK-432 Save continuation context after execution [EVIDENCE:generate-context.js JSON mode; memory/ context generated 2026-03-13]
 
 ---
 
@@ -74,9 +74,9 @@ contextType: "general"
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 9 | 3/9 |
-| P1 Items | 4 | 1/4 |
-| P2 Items | 3 | 0/3 |
+| P0 Items | 9 | 9/9 |
+| P1 Items | 4 | 3/4 |
+| P2 Items | 3 | 1/3 |
 
 **Verification Date**: 2026-03-13
 

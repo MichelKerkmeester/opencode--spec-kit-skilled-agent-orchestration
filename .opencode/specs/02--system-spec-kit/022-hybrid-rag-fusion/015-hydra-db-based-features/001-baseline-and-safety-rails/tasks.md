@@ -42,7 +42,7 @@ contextType: "general"
 
 - [x] T010 Add a working build script in `.opencode/skill/system-spec-kit/mcp_server/package.json`
 - [x] T011 Isolate Hydra roadmap capability flags in `.opencode/skill/system-spec-kit/mcp_server/lib/config/capability-flags.ts`
-- [x] T012 Stabilize baseline snapshot behavior in `.opencode/skill/system-spec-kit/mcp_server/lib/eval/hydra-baseline.ts`
+- [x] T012 Stabilize baseline snapshot behavior in `.opencode/skill/system-spec-kit/mcp_server/lib/eval/memory-state-baseline.ts`
 - [x] T013 Export reusable helpers in `.opencode/skill/system-spec-kit/mcp_server/scripts/migrations/create-checkpoint.ts`
 - [x] T014 Export reusable helpers in `.opencode/skill/system-spec-kit/mcp_server/scripts/migrations/restore-checkpoint.ts`
 - [x] T015 Add schema compatibility validation in `.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts`
@@ -51,8 +51,8 @@ contextType: "general"
 
 ## Track C: Verification
 
-- [x] T020 Add focused capability-flag coverage in `tests/hydra-capability-flags.vitest.ts`
-- [x] T021 Add baseline helper coverage in `tests/hydra-baseline.vitest.ts`
+- [x] T020 Add focused capability-flag coverage in `tests/memory-roadmap-flags.vitest.ts`
+- [x] T021 Add baseline helper coverage in `tests/memory-state-baseline.vitest.ts`
 - [x] T022 Add checkpoint-script coverage in `tests/migration-checkpoint-scripts.vitest.ts`
 - [x] T023 Add schema-compatibility coverage in `tests/vector-index-schema-compatibility.vitest.ts`
 - [x] T024 Run Phase 1 TypeScript and Vitest verification sweep
@@ -66,7 +66,7 @@ contextType: "general"
 - [x] T031 Update manual testing playbook with baseline procedures
 - [x] T032 Update MCP README, install guide, telemetry docs, test docs, and environment variable reference
 - [x] T033 Update the parent `015` planning docs to reflect the delivered hardening slice honestly
-- [ ] T034 Decide whether residual baseline observability work remains inside Phase 1 or moves to a later tracked follow-up
+- [x] T034 Decide whether residual baseline observability work remains inside Phase 1 or moves to a later tracked follow-up
 
 ---
 
@@ -80,8 +80,8 @@ contextType: "general"
 
 ## Completion Criteria
 
-- [ ] All required Phase 1 acceptance criteria are met
-- [ ] No `[B]` blocked tasks remain
+- [x] All required Phase 1 acceptance criteria are met
+- [x] No `[B]` blocked tasks remain
 - [x] Delivered hardening slice is backed by automated verification
 - [x] Documentation tells the truth about current status
 

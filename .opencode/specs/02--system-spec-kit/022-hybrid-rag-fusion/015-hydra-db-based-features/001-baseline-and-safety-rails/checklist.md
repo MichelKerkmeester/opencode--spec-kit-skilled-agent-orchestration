@@ -58,16 +58,16 @@ contextType: "general"
 ## P1: Deployment Readiness
 
 - [x] CHK-030 Rollback and checkpoint safety documented [EVIDENCE:plan.md|implementation-summary.md]
-- [x] CHK-031 Roadmap capability flags documented as metadata-only controls [EVIDENCE:spec.md|implementation-summary.md]
-- [ ] CHK-032 Residual baseline follow-up ownership decided
+- [x] CHK-031 Roadmap capability flags documented with compatibility-alias behavior [EVIDENCE:spec.md|implementation-summary.md]
+- [x] CHK-032 Residual baseline follow-up ownership decided [EVIDENCE:tasks.md|implementation-summary.md]
 
 ---
 
 ## P2: Follow-Up Quality
 
 - [ ] CHK-040 Add a dedicated Phase 1 regression shortcut command if maintainers want one
-- [ ] CHK-041 Broaden baseline observability coverage if it remains in scope
-- [ ] CHK-042 Save continuation context after the next implementation pass
+- [x] CHK-041 Broaden baseline observability coverage if it remains in scope [EVIDENCE:Moved to later tracked follow-up; out of Phase 1 scope]
+- [x] CHK-042 Save continuation context after the next implementation pass [EVIDENCE:generate-context.js JSON mode; memory/ context generated 2026-03-13]
 
 ---
 
@@ -92,8 +92,8 @@ contextType: "general"
 | Category | Total | Verified |
 |----------|-------|----------|
 | P0 Items | 8 | 8/8 |
-| P1 Items | 7 | 5/7 |
-| P2 Items | 3 | 0/3 |
+| P1 Items | 7 | 6/7 |
+| P2 Items | 3 | 2/3 |
 
 **Verification Date**: 2026-03-13
 

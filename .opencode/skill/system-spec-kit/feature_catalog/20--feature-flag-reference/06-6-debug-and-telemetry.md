@@ -20,13 +20,13 @@ This document captures the implemented behavior, source references, and validati
 | `SPECKIT_EVAL_LOGGING` | `false` | boolean | `lib/eval/eval-logger.ts` | (Also listed under Search Pipeline.) Enables writes to the eval database during retrieval operations. Must be explicitly `'true'`. See category 1 for full description. |
 | `SPECKIT_DEBUG_INDEX_SCAN` | `false` | boolean | `handlers/memory-index.ts` | (Also listed under Search Pipeline.) Enables verbose file-count diagnostics during index scans. Must be explicitly `'true'`. See category 1 for full description. |
 | `SPECKIT_EXTENDED_TELEMETRY` | `false` | boolean | `lib/telemetry/retrieval-telemetry.ts` | (Also listed under Search Pipeline.) Opt-in retrieval telemetry. Detailed latency/mode/fallback/quality metrics and architecture updates are recorded only when this is explicitly `'true'`. |
-| `SPECKIT_HYDRA_PHASE` | `baseline` | string | `lib/config/capability-flags.ts` | Sets the recorded Hydra roadmap phase for telemetry and migration metadata. Unsupported values fall back to `baseline`. |
-| `SPECKIT_HYDRA_LINEAGE_STATE` | `false` | boolean | `lib/config/capability-flags.ts` | Opt-in Hydra roadmap capability flag surfaced in telemetry metadata only. |
-| `SPECKIT_HYDRA_GRAPH_UNIFIED` | `false` | boolean | `lib/config/capability-flags.ts` | Opt-in Hydra roadmap capability flag surfaced in telemetry metadata only. Distinct from the live `SPECKIT_GRAPH_UNIFIED` runtime gate. |
-| `SPECKIT_HYDRA_ADAPTIVE_RANKING` | `false` | boolean | `lib/config/capability-flags.ts` | Opt-in Hydra roadmap capability flag surfaced in telemetry metadata only. |
-| `SPECKIT_HYDRA_SCOPE_ENFORCEMENT` | `false` | boolean | `lib/config/capability-flags.ts` | Opt-in Hydra roadmap capability flag surfaced in telemetry metadata only. |
-| `SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS` | `false` | boolean | `lib/config/capability-flags.ts` | Opt-in Hydra roadmap capability flag surfaced in telemetry metadata only. |
-| `SPECKIT_HYDRA_SHARED_MEMORY` | `false` | boolean | `lib/config/capability-flags.ts` | Opt-in Hydra roadmap capability flag surfaced in telemetry metadata only. |
+| `SPECKIT_HYDRA_PHASE` | `baseline` | string | `lib/config/capability-flags.ts` | Legacy compatibility alias for the memory-roadmap phase label. Used by telemetry, eval baselines, migration checkpoint metadata, and rename-window compatibility paths. Unsupported values fall back to `baseline`. |
+| `SPECKIT_HYDRA_LINEAGE_STATE` | `false` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the lineage roadmap flag. Consumed by roadmap metadata snapshots and rename-window lineage compatibility checks. |
+| `SPECKIT_HYDRA_GRAPH_UNIFIED` | `false` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the unified-graph roadmap flag. Still distinct from the live `SPECKIT_GRAPH_UNIFIED` runtime gate. |
+| `SPECKIT_HYDRA_ADAPTIVE_RANKING` | `false` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the adaptive-ranking roadmap flag. Used by roadmap snapshots and adaptive shadow-ranking compatibility checks during the rename window. |
+| `SPECKIT_HYDRA_SCOPE_ENFORCEMENT` | `false` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the scope-enforcement roadmap flag. Used by roadmap snapshots and governed-scope compatibility checks during the rename window. |
+| `SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS` | `false` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the governance-guardrail roadmap flag. Used by roadmap snapshots and governed-ingest compatibility checks during the rename window. |
+| `SPECKIT_HYDRA_SHARED_MEMORY` | `false` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the shared-memory roadmap flag. Used by roadmap snapshots and shared-memory rollout compatibility checks during the rename window. |
 | `SPECKIT_CONSUMPTION_LOG` | inert | boolean | `lib/telemetry/consumption-logger.ts` | (Also listed under Search Pipeline.) Deprecated and inert. See category 1 for full description. |
 
 ## 3. SOURCE FILES

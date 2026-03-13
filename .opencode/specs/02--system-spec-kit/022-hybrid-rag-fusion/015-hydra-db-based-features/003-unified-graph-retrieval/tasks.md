@@ -32,44 +32,44 @@ contextType: "general"
 ## Track A: Contract and Design
 
 - [x] T301 Create the Phase 3 Level 3+ documentation package
-- [ ] T302 Define unified graph-scoring contract
-- [ ] T303 Define deterministic tie-break policy
-- [ ] T304 Define explainability trace format
+- [x] T302 Define unified graph-scoring contract
+- [x] T303 Define deterministic tie-break policy
+- [x] T304 Define explainability trace format
 
 ---
 
 ## Track B: Pipeline Integration
 
-- [ ] T310 Integrate graph enrichment into candidate generation
-- [ ] T311 Refactor graph weighting into a unified scoring layer
-- [ ] T312 Add graph-health and trace telemetry
-- [ ] T313 Add kill-switch or rollback activation path
+- [x] T310 Integrate graph enrichment into candidate generation
+- [x] T311 Refactor graph weighting into a unified scoring layer
+- [x] T312 Add graph-health and trace telemetry
+- [x] T313 Add kill-switch or rollback activation path
 
 ---
 
 ## Track C: Regression and Benchmarks
 
-- [ ] T320 Add determinism coverage
-- [ ] T321 Add retrieval regression corpus
-- [ ] T322 Add latency benchmark checks
-- [ ] T323 Add manual explainability validation to the playbook
+- [x] T320 Add determinism coverage
+- [x] T321 Add retrieval regression corpus
+- [x] T322 Add latency benchmark checks
+- [x] T323 Add manual explainability validation to the playbook
 
 ---
 
 ## Coordination Checkpoints
 
-- [ ] T330 Confirm Phase 2 handoff is approved
-- [ ] T331 Confirm Phase 4 can consume stable traces and ranking behavior
-- [ ] T332 Update `implementation-summary.md` with execution evidence when work begins
+- [x] T330 Confirm Phase 2 handoff is approved
+- [x] T331 Confirm Phase 4 can consume stable traces and ranking behavior
+- [x] T332 Update `implementation-summary.md` with execution evidence when work begins
 
 ---
 
 ## Completion Criteria
 
-- [ ] Unified graph-scoring path is active and deterministic
-- [ ] Explainability traces are usable during debugging
-- [ ] Benchmarks remain within agreed limits
-- [ ] No `[B]` blocked tasks remain
+- [x] Unified graph-scoring path is active and deterministic
+- [x] Explainability traces are usable during debugging
+- [x] Benchmarks remain within agreed limits
+- [x] No `[B]` blocked tasks remain
 
 ---
 

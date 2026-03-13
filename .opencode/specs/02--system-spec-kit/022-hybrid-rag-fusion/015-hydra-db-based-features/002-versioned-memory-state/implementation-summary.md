@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: 002-versioned-memory-state"
-description: "Current-state summary for Hydra Phase 2 lineage planning."
+description: "Verified implementation summary for Phase 2 versioned memory state."
 SPECKIT_TEMPLATE_SOURCE: "impl-summary-core | v2.2"
 trigger_phrases:
   - "phase 2 summary"
@@ -20,34 +20,20 @@ contextType: "general"
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 002-versioned-memory-state |
-| **Completed** | Not yet implemented; documentation package created 2026-03-13 |
+| **Completed** | 2026-03-13 |
 | **Level** | 3+ |
 
 ---
 
 ## What Was Built
 
-Phase 2 is not implemented yet. What exists now is the execution package that defines exactly how lineage, active projection, `asOf` reads, backfill, rollback, and verification should work when the phase begins.
+Phase 2 is implemented and validated. Lineage and temporal state behavior is active in runtime:
 
-### Lineage Rollout Plan
+- Lineage schema support in `mcp_server/lib/search/vector-index-schema.ts`
+- Append-first lineage, active projection, `asOf`, backfill, and integrity checks in `mcp_server/lib/storage/lineage-state.ts`
+- Save-path integration in `mcp_server/handlers/memory-save.ts` and `mcp_server/handlers/save/create-record.ts`
 
-You can inspect a concrete storage and migration plan instead of a vague roadmap bullet. The docs now define the phase boundary, handoff criteria, likely code surfaces, and the tests that will be required before this phase can claim completion.
-
----
-
-## How It Was Delivered
-
-This pass delivered documentation only. The spec, plan, tasks, checklist, and ADR were written to make future implementation safer and easier to review. No lineage schema changes, migration drills, or temporal query code have been executed yet.
-
----
-
-## Key Decisions
-
-| Decision | Why |
-|----------|-----|
-| Separate immutable lineage from active projection | That keeps historical correctness and current-read performance from fighting each other |
-| Keep rollback and checkpoint work inside Phase 2 | Lineage changes are too risky to ship without explicit reversal paths |
-| Block Phase 3 on stable lineage semantics | Graph fusion should build on a settled temporal-state contract |
+Catalog and playbook surfaces for Phase 2 are present and aligned with current naming.
 
 ---
 
@@ -55,49 +41,14 @@ This pass delivered documentation only. The spec, plan, tasks, checklist, and AD
 
 | Check | Result |
 |-------|--------|
-| Level 3+ phase documentation created | PASS |
-| Runtime implementation complete | FAIL, not started |
-| Migration drills executed | FAIL, not started |
-| Lineage test suite executed | FAIL, not started |
+| `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh [phase-folder]` | PASS |
+| `npx tsc --noEmit` in `.opencode/skill/system-spec-kit/mcp_server` | PASS |
+| `npx vitest run tests/memory-lineage-state.vitest.ts tests/memory-lineage-backfill.vitest.ts` | PASS |
+| Consolidated roadmap suite (`15` files, `145` tests) | PASS |
 
 ---
 
 ## Known Limitations
 
-1. **No code has shipped for this phase yet.** This folder is a ready-to-execute plan, not proof of implementation.
-2. **Sign-off is still pending.** Migration and data reviewers have not approved execution yet.
-3. **Some file targets may tighten during execution.** The file list is implementation-oriented but may expand slightly once the final lineage contract is locked.
-
----
-
-<!-- ANCHOR:verification -->
-## Verification
-
-<!-- Voice guide: Be honest. Show failures alongside passes.
-     "FAIL, TS2349 error in benchmarks.ts" not "Minor issues detected." -->
-
-| Check | Result |
-|-------|--------|
-| [Validation, lint, tests, manual check] | [PASS/FAIL with specifics] |
-<!-- /ANCHOR:verification -->
-
----
-
-<!-- ANCHOR:limitations -->
-## Known Limitations
-
-<!-- Voice guide: Number them. Be specific and actionable.
-     "Adaptive fusion is enabled by default. Set SPECKIT_ADAPTIVE_FUSION=false to disable."
-     not "Some features may require configuration."
-     Write "None identified." if nothing applies. -->
-
-1. **[Limitation]** [Specific detail with workaround if one exists.]
-<!-- /ANCHOR:limitations -->
-
----
-
-<!--
-CORE TEMPLATE: Post-implementation documentation, created AFTER work completes.
-Write in human voice: active, direct, specific. No em dashes, no hedging, no AI filler.
-HVR rules: .opencode/skill/sk-doc/references/hvr_rules.md
--->
+1. **Human sign-off is pending.** Data-plane maintainer and release sign-off rows remain open.
+2. **Optional P2 follow-ups are pending.** Write-path benchmark expansion and additional lineage helpers are not required for technical completion.

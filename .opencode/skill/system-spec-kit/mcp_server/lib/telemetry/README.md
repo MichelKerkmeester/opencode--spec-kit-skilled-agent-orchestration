@@ -40,7 +40,7 @@ The telemetry module provides structured observability for the retrieval pipelin
 |----------|-------|---------|
 | Modules | 4 | `retrieval-telemetry.ts`, `scoring-observability.ts`, `trace-schema.ts`, `consumption-logger.ts` |
 | Metric Groups | 4 | LatencyMetrics, ModeMetrics, FallbackMetrics, QualityMetrics |
-| Feature Flags | 11 | `SPECKIT_EXTENDED_TELEMETRY` (default: false), `SPECKIT_HYDRA_PHASE`, six `SPECKIT_HYDRA_*` capability flags, `SPECKIT_NOVELTY_BOOST`, `SPECKIT_INTERFERENCE_SCORE`, `SPECKIT_CONSUMPTION_LOG` (deprecated, inert) |
+| Feature Flags | 11 | `SPECKIT_EXTENDED_TELEMETRY` (default: false), `SPECKIT_MEMORY_ROADMAP_PHASE`, six `SPECKIT_MEMORY_*` capability flags, `SPECKIT_NOVELTY_BOOST`, `SPECKIT_INTERFERENCE_SCORE`, `SPECKIT_CONSUMPTION_LOG` (deprecated, inert) |
 
 ### Key Features
 
@@ -75,7 +75,7 @@ telemetry/
 
 | File | Purpose |
 |------|---------|
-| `retrieval-telemetry.ts` | Defines `RetrievalTelemetry`, `LatencyMetrics`, `ModeMetrics`, `FallbackMetrics`, and `QualityMetrics`; exposes collection helpers |
+| `retrieval-telemetry.ts` | Defines `RetrievalTelemetry`, `LatencyMetrics`, `ModeMetrics`, `FallbackMetrics`, `QualityMetrics`, `ArchitectureMetrics`, `GraphHealthMetrics`, and `AdaptiveMetrics`; exposes collection helpers |
 | `scoring-observability.ts` | Sampled (5%) observability logging for N4 cold-start boost and TM-01 interference penalty values; SQLite-backed `scoring_observations` table |
 | `trace-schema.ts` | Canonical schema and runtime validation for `TelemetryTracePayload`; sanitizes unknown/sensitive fields from trace data |
 | `consumption-logger.ts` | Logs agent consumption events (`search`, `context`, `triggers`) to SQLite `consumption_log` table; pattern detection for zero-result, high-frequency, and intent-mismatch queries |
@@ -92,18 +92,18 @@ telemetry/
 | Variable | Default | Purpose |
 |----------|---------|---------|
 | `SPECKIT_EXTENDED_TELEMETRY` | `false` | Enable extended metric collection (latency breakdown, quality scoring, trace payload validation, and architecture updates). Set to `true` to activate |
-| `SPECKIT_HYDRA_PHASE` | `baseline` | Record the active Hydra roadmap phase in telemetry/checkpoint metadata. Unsupported values fall back to `baseline` |
-| `SPECKIT_HYDRA_LINEAGE_STATE` | `false` | Opt-in roadmap capability flag surfaced in telemetry metadata only |
-| `SPECKIT_HYDRA_GRAPH_UNIFIED` | `false` | Opt-in roadmap capability flag surfaced in telemetry metadata only; distinct from live `SPECKIT_GRAPH_UNIFIED` |
-| `SPECKIT_HYDRA_ADAPTIVE_RANKING` | `false` | Opt-in roadmap capability flag surfaced in telemetry metadata only |
-| `SPECKIT_HYDRA_SCOPE_ENFORCEMENT` | `false` | Opt-in roadmap capability flag surfaced in telemetry metadata only |
-| `SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS` | `false` | Opt-in roadmap capability flag surfaced in telemetry metadata only |
-| `SPECKIT_HYDRA_SHARED_MEMORY` | `false` | Opt-in roadmap capability flag surfaced in telemetry metadata only |
+| `SPECKIT_MEMORY_ROADMAP_PHASE` | `baseline` | Record the active memory-roadmap phase in telemetry/checkpoint metadata. Unsupported values fall back to `baseline` |
+| `SPECKIT_MEMORY_LINEAGE_STATE` | `false` | Opt-in roadmap capability flag surfaced in telemetry metadata only |
+| `SPECKIT_MEMORY_GRAPH_UNIFIED` | `false` | Opt-in roadmap capability flag surfaced in telemetry metadata only; distinct from live `SPECKIT_GRAPH_UNIFIED` |
+| `SPECKIT_MEMORY_ADAPTIVE_RANKING` | `false` | Opt-in roadmap capability flag surfaced in telemetry metadata only |
+| `SPECKIT_MEMORY_SCOPE_ENFORCEMENT` | `false` | Opt-in roadmap capability flag surfaced in telemetry metadata only |
+| `SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS` | `false` | Opt-in roadmap capability flag surfaced in telemetry metadata only |
+| `SPECKIT_MEMORY_SHARED_MEMORY` | `false` | Opt-in roadmap capability flag surfaced in telemetry metadata only |
 | `SPECKIT_NOVELTY_BOOST` | - | Gates N4 cold-start boost in scoring observability |
 | `SPECKIT_INTERFERENCE_SCORE` | - | Gates TM-01 interference penalty in scoring observability |
 | `SPECKIT_CONSUMPTION_LOG` | inert | Deprecated. Consumption logging is hardcoded to disabled after Sprint 7 audit |
 
-When `SPECKIT_EXTENDED_TELEMETRY` is disabled (default), the minimal `RetrievalTelemetry` shell is still created so callers can rely on a stable shape. Latency, mode, fallback, and quality sub-metrics remain zeroed/empty, while the baseline architecture snapshot still records the current Hydra phase/capability defaults.
+When `SPECKIT_EXTENDED_TELEMETRY` is disabled (default), the minimal `RetrievalTelemetry` shell is still created so callers can rely on a stable shape. Latency, mode, fallback, quality, graph-health, and adaptive sub-metrics remain zeroed/empty, while the baseline architecture snapshot still records the current memory-roadmap phase/capability defaults.
 
 ### RetrievalTelemetry
 
@@ -117,7 +117,9 @@ When `SPECKIT_EXTENDED_TELEMETRY` is disabled (default), the minimal `RetrievalT
 | `mode` | `ModeMetrics` | Search mode selection details |
 | `fallback` | `FallbackMetrics` | Fallback trigger record |
 | `quality` | `QualityMetrics` | Composite quality assessment |
-| `architecture` | `ArchitectureMetrics` | Hydra rollout phase and capability state for the run |
+| `architecture` | `ArchitectureMetrics` | Memory-roadmap phase and capability state for the run |
+| `graphHealth` | `GraphHealthMetrics` | Graph-signal injection and rollback-gate state for the run |
+| `adaptive` | `AdaptiveMetrics` | Adaptive shadow/promoted evaluation summary for the run |
 | `tracePayload` | `TelemetryTracePayload \| undefined` | Optional canonical retrieval trace payload |
 
 ### LatencyMetrics
@@ -177,13 +179,38 @@ When `SPECKIT_EXTENDED_TELEMETRY` is disabled (default), the minimal `RetrievalT
 
 ### ArchitectureMetrics
 
-**Purpose**: Capture Hydra rollout phase and capability state for architectural telemetry.
+**Purpose**: Capture memory-roadmap phase and capability state for architectural telemetry.
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `phase` | `HydraPhase` | Active Hydra rollout phase for this retrieval run |
-| `capabilities` | `HydraCapabilityFlags` | Capability flags snapshot associated with the phase |
+| `phase` | `MemoryRoadmapPhase` | Active memory-roadmap phase for this retrieval run |
+| `capabilities` | `MemoryRoadmapCapabilityFlags` | Capability flags snapshot associated with the phase |
 | `scopeDimensionsTracked` | `number` | Number of tracked retrieval scope dimensions in this phase |
+
+### GraphHealthMetrics
+
+**Purpose**: Surface graph-fusion activity, injected signal volume, and kill-switch state.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `killSwitchActive` | `boolean` | Whether graph-unified behavior is currently gated off |
+| `causalBoosted` | `number` | Count of results boosted by causal-edge signals |
+| `coActivationBoosted` | `number` | Count of results boosted by co-activation signals |
+| `communityInjected` | `number` | Count of results injected from community expansion |
+| `graphSignalsBoosted` | `number` | Count of results boosted by graph-signal overlays |
+| `totalGraphInjected` | `number` | Aggregate graph-contribution count for the run |
+
+### AdaptiveMetrics
+
+**Purpose**: Record whether adaptive ranking ran, whether it stayed bounded, and how many rows would move.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `mode` | `'shadow' \| 'promoted' \| 'disabled'` | Adaptive evaluation mode for the run |
+| `promotedCount` | `number` | Count of rows proposed to move upward |
+| `demotedCount` | `number` | Count of rows proposed to move downward |
+| `bounded` | `boolean` | Whether bounded-update safeguards remained active |
+| `maxDeltaApplied` | `number` | Largest score delta the adaptive proposal was allowed to apply |
 
 ### Scoring Observability (`scoring-observability.ts`)
 

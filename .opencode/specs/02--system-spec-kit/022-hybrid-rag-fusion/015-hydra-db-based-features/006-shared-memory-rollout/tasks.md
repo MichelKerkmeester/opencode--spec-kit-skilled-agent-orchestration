@@ -32,44 +32,44 @@ contextType: "general"
 ## Track A: Space and Membership Model
 
 - [x] T601 Create the Phase 6 Level 3+ documentation package
-- [ ] T602 Define shared-space schema and role model
-- [ ] T603 Reuse Phase 5 governance checks for collaboration
-- [ ] T604 Define rollout cohorts and gating rules
+- [x] T602 Define shared-space schema and role model
+- [x] T603 Reuse Phase 5 governance checks for collaboration
+- [x] T604 Define rollout cohorts and gating rules
 
 ---
 
 ## Track B: Collaboration Logic
 
-- [ ] T610 Implement shared-space handlers
-- [ ] T611 Implement deny-by-default membership checks
-- [ ] T612 Implement conflict strategy and audit traces
-- [ ] T613 Add collaboration telemetry
+- [x] T610 Implement shared-space handlers
+- [x] T611 Implement deny-by-default membership checks
+- [x] T612 Implement conflict strategy and audit traces
+- [x] T613 Add collaboration telemetry
 
 ---
 
 ## Track C: Staged Rollout and Validation
 
-- [ ] T620 Add shared-memory test coverage
-- [ ] T621 Add kill-switch and rollback drills
-- [ ] T622 Add operator runbooks to the playbook
-- [ ] T623 Update feature catalog and README surfaces after implementation
+- [x] T620 Add shared-memory test coverage
+- [x] T621 Add kill-switch and rollback drills
+- [x] T622 Add operator runbooks to the playbook
+- [x] T623 Update feature catalog and README surfaces after implementation
 
 ---
 
 ## Coordination Checkpoints
 
-- [ ] T630 Confirm Phase 5 governance gate is approved
-- [ ] T631 Confirm earlier retrieval phases are stable enough for rollout
-- [ ] T632 Update `implementation-summary.md` with execution evidence when work begins
+- [x] T630 Confirm Phase 5 governance gate is approved
+- [x] T631 Confirm earlier retrieval phases are stable enough for rollout
+- [x] T632 Update `implementation-summary.md` with execution evidence when work begins
 
 ---
 
 ## Completion Criteria
 
-- [ ] Shared-memory spaces are opt-in and deny-by-default
-- [ ] Conflict handling is auditable and understandable
-- [ ] Kill switches and rollback drills pass
-- [ ] No `[B]` blocked tasks remain
+- [x] Shared-memory spaces are opt-in and deny-by-default
+- [x] Conflict handling is auditable and understandable
+- [x] Kill switches and rollback drills pass
+- [x] No `[B]` blocked tasks remain
 
 ---
 

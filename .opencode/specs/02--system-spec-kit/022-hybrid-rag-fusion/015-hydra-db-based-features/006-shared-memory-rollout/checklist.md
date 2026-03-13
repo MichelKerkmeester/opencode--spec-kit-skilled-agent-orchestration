@@ -31,25 +31,25 @@ contextType: "general"
 - [x] CHK-601 Collaboration scope, rollout gates, and kill-switch rules documented [EVIDENCE:spec.md]
 - [x] CHK-602 Dependencies on Phases 3, 4, and 5 documented [EVIDENCE:plan.md]
 - [x] CHK-603 Phase-local ADR captured [EVIDENCE:decision-record.md]
-- [ ] CHK-604 Phase 5 governance gate approved
+- [x] CHK-604 Phase 5 governance gate approved [EVIDENCE:../005-hierarchical-scope-governance/checklist.md P0 9/9; validate.sh pass]
 
 ---
 
 ## P0: Collaboration Verification
 
-- [ ] CHK-610 Shared-memory spaces implemented
-- [ ] CHK-611 Membership and conflict rules validated
-- [ ] CHK-612 Governance reuse verified
-- [ ] CHK-613 Kill-switch and rollback drills pass
-- [ ] CHK-614 Staged rollout procedure validated
+- [x] CHK-610 Shared-memory spaces implemented [EVIDENCE:implementation-summary.md]
+- [x] CHK-611 Membership and conflict rules validated [EVIDENCE:implementation-summary.md]
+- [x] CHK-612 Governance reuse verified [EVIDENCE:implementation-summary.md]
+- [x] CHK-613 Kill-switch and rollback drills pass [EVIDENCE:implementation-summary.md]
+- [x] CHK-614 Staged rollout procedure validated [EVIDENCE:implementation-summary.md]
 
 ---
 
 ## P1: Documentation and Governance
 
 - [x] CHK-620 Level 3+ documentation package created [EVIDENCE:README.md|spec.md|plan.md|tasks.md|checklist.md|decision-record.md|implementation-summary.md]
-- [ ] CHK-621 Playbook updated for collaboration rollout
-- [ ] CHK-622 Feature catalog and README surfaces updated after implementation
+- [x] CHK-621 Playbook updated for collaboration rollout [EVIDENCE:manual_testing_playbook.md NEW-123]
+- [x] CHK-622 Feature catalog and README surfaces updated after implementation [EVIDENCE:feature_catalog/17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md]
 - [ ] CHK-623 Maintainer sign-off recorded
 
 ---
@@ -58,7 +58,7 @@ contextType: "general"
 
 - [ ] CHK-630 Expand rollout metrics and cohort controls if needed
 - [ ] CHK-631 Refine conflict strategy after initial validation if needed
-- [ ] CHK-632 Save continuation context after execution
+- [x] CHK-632 Save continuation context after execution [EVIDENCE:generate-context.js JSON mode; memory/ context generated 2026-03-13]
 
 ---
 
@@ -74,9 +74,9 @@ contextType: "general"
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 9 | 3/9 |
-| P1 Items | 4 | 1/4 |
-| P2 Items | 3 | 0/3 |
+| P0 Items | 9 | 9/9 |
+| P1 Items | 4 | 3/4 |
+| P2 Items | 3 | 1/3 |
 
 **Verification Date**: 2026-03-13
 

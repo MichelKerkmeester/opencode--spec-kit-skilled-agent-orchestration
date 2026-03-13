@@ -32,44 +32,44 @@ contextType: "general"
 ## Track A: Contract and Policy Design
 
 - [x] T401 Create the Phase 4 Level 3+ documentation package
-- [ ] T402 Define signal contract and thresholds
-- [ ] T403 Define bounded-update rules
-- [ ] T404 Define promotion and rollback criteria
+- [x] T402 Define signal contract and thresholds
+- [x] T403 Define bounded-update rules
+- [x] T404 Define promotion and rollback criteria
 
 ---
 
 ## Track B: Shadow Evaluation Implementation
 
-- [ ] T410 Capture access, outcome, and correction signals
-- [ ] T411 Implement shadow-mode adaptive scoring
-- [ ] T412 Record adaptive decision traces
-- [ ] T413 Add kill switches and cache reset path
+- [x] T410 Capture access, outcome, and correction signals
+- [x] T411 Implement shadow-mode adaptive scoring
+- [x] T412 Record adaptive decision traces
+- [x] T413 Add kill switches and cache reset path
 
 ---
 
 ## Track C: Validation and Rollout Readiness
 
-- [ ] T420 Add regression comparisons against the Phase 3 baseline
-- [ ] T421 Add bounded-update tests
-- [ ] T422 Add rollback drills
-- [ ] T423 Add manual adaptive-validation procedures to the playbook
+- [x] T420 Add regression comparisons against the Phase 3 baseline
+- [x] T421 Add bounded-update tests
+- [x] T422 Add rollback drills
+- [x] T423 Add manual adaptive-validation procedures to the playbook
 
 ---
 
 ## Coordination Checkpoints
 
-- [ ] T430 Confirm Phase 3 handoff is approved
-- [ ] T431 Confirm Phase 5 governance rules do not conflict with promotion policy
-- [ ] T432 Update `implementation-summary.md` with execution evidence when work begins
+- [x] T430 Confirm Phase 3 handoff is approved
+- [x] T431 Confirm Phase 5 governance rules do not conflict with promotion policy
+- [x] T432 Update `implementation-summary.md` with execution evidence when work begins
 
 ---
 
 ## Completion Criteria
 
-- [ ] Adaptive evaluation runs in shadow mode only
-- [ ] Promotion requires explicit evidence
-- [ ] Rollback disables adaptive effects safely
-- [ ] No `[B]` blocked tasks remain
+- [x] Adaptive evaluation runs in shadow mode only
+- [x] Promotion requires explicit evidence
+- [x] Rollback disables adaptive effects safely
+- [x] No `[B]` blocked tasks remain
 
 ---
 

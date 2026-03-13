@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: 004-adaptive-retrieval-loops"
-description: "Current-state summary for Hydra Phase 4 adaptive-learning planning."
+description: "Verified implementation summary for Phase 4 adaptive retrieval loops."
 SPECKIT_TEMPLATE_SOURCE: "impl-summary-core | v2.2"
 trigger_phrases:
   - "phase 4 summary"
@@ -20,34 +20,23 @@ contextType: "general"
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 004-adaptive-retrieval-loops |
-| **Completed** | Not yet implemented; documentation package created 2026-03-13 |
+| **Completed** | 2026-03-13 |
 | **Level** | 3+ |
 
 ---
 
 ## What Was Built
 
-Phase 4 has not shipped yet. What exists now is the execution package for bounded adaptive learning, including shadow-mode rules, promotion gates, rollback expectations, and the tasks required to turn feedback signals into safe retrieval improvement.
+Phase 4 is implemented and validated. Adaptive retrieval behavior is active in shadow-first form:
 
-### Adaptive-Learning Rollout Plan
+- Adaptive signal schema and bounded proposals in `mcp_server/lib/cache/cognitive/adaptive-ranking.ts`
+- Signal capture integration in `mcp_server/lib/storage/access-tracker.ts` and `mcp_server/handlers/checkpoints.ts`
+- Shadow proposal output in `mcp_server/handlers/memory-search.ts`
+- Adaptive telemetry contract in `mcp_server/lib/telemetry/retrieval-telemetry.ts`
+- Rollout gating in `mcp_server/lib/cache/cognitive/rollout-policy.ts`
+- Audit and rollback support in `mcp_server/lib/search/learned-feedback.ts`
 
-You can now see exactly what proof is required before adaptive ranking can ever affect live behavior. The docs keep governance rollout and shared-memory work out of scope so this phase stays focused on safe evaluation.
-
----
-
-## How It Was Delivered
-
-This pass delivered documentation only. The spec, plan, tasks, checklist, and ADR were written to define the adaptive-learning contract clearly before any code or promotion work begins. No signal capture changes, shadow jobs, or rollback drills have been executed yet.
-
----
-
-## Key Decisions
-
-| Decision | Why |
-|----------|-----|
-| Require shadow mode first | That lets the team learn without risking live regressions |
-| Keep updates bounded and auditable | Adaptive behavior is too risky without explicit guardrails |
-| Block promotion on hard evidence | Promotion should be a reviewable decision, not a guess |
+`resetAdaptiveState()` is implemented in both adaptive-ranking module paths and covered by tests.
 
 ---
 
@@ -55,49 +44,15 @@ This pass delivered documentation only. The spec, plan, tasks, checklist, and AD
 
 | Check | Result |
 |-------|--------|
-| Level 3+ phase documentation created | PASS |
-| Runtime implementation complete | FAIL, not started |
-| Shadow-mode evaluation executed | FAIL, not started |
-| Rollback path validated | FAIL, not started |
+| `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh [phase-folder]` | PASS |
+| `npx tsc --noEmit` in `.opencode/skill/system-spec-kit/mcp_server` | PASS |
+| `npx vitest run tests/adaptive-ranking.vitest.ts tests/rollout-policy.vitest.ts tests/learned-feedback.vitest.ts` | PASS |
+| Playbook procedure `NEW-121` present | PASS |
+| Consolidated roadmap suite (`15` files, `145` tests) | PASS |
 
 ---
 
 ## Known Limitations
 
-1. **No code has shipped for this phase yet.** This folder is planning-ready, not implementation-complete.
-2. **Sign-off is still pending.** Policy and release reviewers have not approved execution yet.
-3. **Signal thresholds are still provisional.** Final thresholds should be tuned against real shadow-evaluation data.
-
----
-
-<!-- ANCHOR:verification -->
-## Verification
-
-<!-- Voice guide: Be honest. Show failures alongside passes.
-     "FAIL, TS2349 error in benchmarks.ts" not "Minor issues detected." -->
-
-| Check | Result |
-|-------|--------|
-| [Validation, lint, tests, manual check] | [PASS/FAIL with specifics] |
-<!-- /ANCHOR:verification -->
-
----
-
-<!-- ANCHOR:limitations -->
-## Known Limitations
-
-<!-- Voice guide: Number them. Be specific and actionable.
-     "Adaptive fusion is enabled by default. Set SPECKIT_ADAPTIVE_FUSION=false to disable."
-     not "Some features may require configuration."
-     Write "None identified." if nothing applies. -->
-
-1. **[Limitation]** [Specific detail with workaround if one exists.]
-<!-- /ANCHOR:limitations -->
-
----
-
-<!--
-CORE TEMPLATE: Post-implementation documentation, created AFTER work completes.
-Write in human voice: active, direct, specific. No em dashes, no hedging, no AI filler.
-HVR rules: .opencode/skill/sk-doc/references/hvr_rules.md
--->
+1. **Human sign-off is pending.** Retrieval-maintainer and release sign-off rows remain open.
+2. **Optional P2 follow-ups are pending.** Post-rollout dashboard and threshold tuning items remain future work.

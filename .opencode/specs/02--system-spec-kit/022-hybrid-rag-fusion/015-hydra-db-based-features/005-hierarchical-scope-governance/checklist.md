@@ -31,25 +31,25 @@ contextType: "general"
 - [x] CHK-501 Scope, governance, and lifecycle requirements documented [EVIDENCE:spec.md]
 - [x] CHK-502 Dependencies on Phase 2 and Phase 6 documented [EVIDENCE:plan.md]
 - [x] CHK-503 Phase-local ADR captured [EVIDENCE:decision-record.md]
-- [ ] CHK-504 Phase 2 lineage contract approved
+- [x] CHK-504 Phase 2 lineage contract approved [EVIDENCE:../002-versioned-memory-state/checklist.md P0 9/9; validate.sh pass]
 
 ---
 
 ## P0: Governance Verification
 
-- [ ] CHK-510 Scope enforcement applied consistently
-- [ ] CHK-511 Governed ingest rejects malformed provenance
-- [ ] CHK-512 Retention and cascade deletion workflows validated
-- [ ] CHK-513 Audit evidence is inspectable
-- [ ] CHK-514 Rollback and isolation drills pass
+- [x] CHK-510 Scope enforcement applied consistently [EVIDENCE:implementation-summary.md]
+- [x] CHK-511 Governed ingest rejects malformed provenance [EVIDENCE:implementation-summary.md]
+- [x] CHK-512 Retention and cascade deletion workflows validated [EVIDENCE:implementation-summary.md]
+- [x] CHK-513 Audit evidence is inspectable [EVIDENCE:implementation-summary.md]
+- [x] CHK-514 Rollback and isolation drills pass [EVIDENCE:implementation-summary.md]
 
 ---
 
 ## P1: Documentation and Governance
 
 - [x] CHK-520 Level 3+ documentation package created [EVIDENCE:README.md|spec.md|plan.md|tasks.md|checklist.md|decision-record.md|implementation-summary.md]
-- [ ] CHK-521 Manual governance procedures added to the playbook
-- [ ] CHK-522 Catalog and README surfaces updated after implementation
+- [x] CHK-521 Manual governance procedures added to the playbook [EVIDENCE:manual_testing_playbook.md NEW-122]
+- [x] CHK-522 Catalog and README surfaces updated after implementation [EVIDENCE:feature_catalog/17--governance/03-hierarchical-scope-governance-governed-ingest-retention-and-audit.md]
 - [ ] CHK-523 Maintainer sign-off recorded
 
 ---
@@ -58,7 +58,7 @@ contextType: "general"
 
 - [ ] CHK-530 Expand policy caching and latency benchmarks if needed
 - [ ] CHK-531 Add richer audit review helpers if needed
-- [ ] CHK-532 Save continuation context after execution
+- [x] CHK-532 Save continuation context after execution [EVIDENCE:generate-context.js JSON mode; memory/ context generated 2026-03-13]
 
 ---
 
@@ -74,9 +74,9 @@ contextType: "general"
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 9 | 3/9 |
-| P1 Items | 4 | 1/4 |
-| P2 Items | 3 | 0/3 |
+| P0 Items | 9 | 9/9 |
+| P1 Items | 4 | 3/4 |
+| P2 Items | 3 | 1/3 |
 
 **Verification Date**: 2026-03-13
 

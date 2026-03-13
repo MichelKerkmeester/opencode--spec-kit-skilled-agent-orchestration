@@ -1,0 +1,931 @@
+// ---------------------------------------------------------------
+// MODULE: Memory Lineage State
+// ---------------------------------------------------------------
+// Provides append-first lineage transitions, active projection reads,
+// Temporal asOf resolution, and backfill/integrity helpers.
+// ---------------------------------------------------------------
+
+import type Database from 'better-sqlite3';
+
+import * as bm25Index from '../search/bm25-index';
+import * as embeddingsProvider from '../providers/embeddings';
+import { getCanonicalPathKey } from '../utils/canonical-path';
+import { ensureLineageTables } from '../search/vector-index-schema';
+import { get_embedding_dim, refresh_interference_scores_for_folder, sqlite_vec_available } from '../search/vector-index-store';
+import { to_embedding_buffer } from '../search/vector-index-types';
+import type { ParsedMemory } from '../parsing/memory-parser';
+import { classifyEncodingIntent } from '../search/encoding-intent';
+import { isEncodingIntentEnabled } from '../search/search-flags';
+import { getHistoryEventsForLineage, init as initHistory, recordHistory, type HistoryLineageEvent } from './history';
+import { applyPostInsertMetadata } from '../../handlers/save/db-helpers';
+import { calculateDocumentWeight, isSpecDocumentType } from '../../handlers/pe-gating';
+import { detectSpecLevelFromParsed } from '../../handlers/handler-utils';
+
+type MemoryIndexRow = Record<string, unknown> & {
+  id: number;
+  spec_folder: string;
+  file_path: string;
+  canonical_file_path?: string | null;
+  anchor_id?: string | null;
+  title?: string | null;
+  content_hash?: string | null;
+  created_at?: string;
+  updated_at?: string;
+};
+
+type LineageTransitionEvent = 'CREATE' | 'UPDATE' | 'SUPERSEDE' | 'BACKFILL';
+
+interface MemoryLineageRow {
+  memory_id: number;
+  logical_key: string;
+  version_number: number;
+  root_memory_id: number;
+  predecessor_memory_id: number | null;
+  superseded_by_memory_id: number | null;
+  valid_from: string;
+  valid_to: string | null;
+  transition_event: LineageTransitionEvent;
+  actor: string;
+  metadata: string | null;
+  created_at: string;
+}
+
+interface ActiveProjectionRow {
+  logical_key: string;
+  root_memory_id: number;
+  active_memory_id: number;
+  updated_at: string;
+}
+
+interface LineageMetadata {
+  contentHash: string | null;
+  filePath: string;
+  canonicalFilePath: string | null;
+  anchorId: string | null;
+  specFolder: string;
+  snapshot: MemoryIndexRow;
+  history: HistoryLineageEvent[];
+  actor: string;
+}
+
+interface RecordLineageTransitionOptions {
+  actor?: string;
+  predecessorMemoryId?: number | null;
+  transitionEvent?: LineageTransitionEvent;
+  validFrom?: string;
+  historyEvents?: HistoryLineageEvent[];
+}
+
+interface RecordedLineageTransition {
+  logicalKey: string;
+  versionNumber: number;
+  rootMemoryId: number;
+  activeMemoryId: number;
+  predecessorMemoryId: number | null;
+  transitionEvent: LineageTransitionEvent;
+}
+
+interface ResolvedLineageSnapshot {
+  logicalKey: string;
+  memoryId: number;
+  versionNumber: number;
+  rootMemoryId: number;
+  validFrom: string;
+  validTo: string | null;
+  transitionEvent: LineageTransitionEvent;
+  snapshot: MemoryIndexRow;
+}
+
+interface ValidateLineageIntegrityResult {
+  valid: boolean;
+  issues: string[];
+  activeProjectionCount: number;
+  lineageRowCount: number;
+  missingPredecessors: number[];
+  duplicateActiveLogicalKeys: string[];
+  projectionMismatches: string[];
+}
+
+interface BackfillLineageResult {
+  dryRun: boolean;
+  scanned: number;
+  seeded: number;
+  skipped: number;
+  logicalKeys: string[];
+  totalGroups: number;
+}
+
+interface CreateAppendOnlyMemoryRecordParams {
+  database: Database.Database;
+  parsed: ParsedMemory;
+  filePath: string;
+  embedding: Float32Array | null;
+  embeddingFailureReason: string | null;
+  predecessorMemoryId: number;
+  actor?: string;
+}
+
+function getMemoryRow(database: Database.Database, memoryId: number): MemoryIndexRow {
+  const row = database.prepare('SELECT * FROM memory_index WHERE id = ?').get(memoryId) as MemoryIndexRow | undefined;
+  if (!row) {
+    throw new Error(`Memory ${memoryId} not found in memory_index`);
+  }
+  return row;
+}
+
+function normalizeTimestamp(value?: string | null): string {
+  if (typeof value === 'string' && value.trim().length > 0) {
+    return value;
+  }
+  return new Date().toISOString();
+}
+
+function getSafeHistoryEvents(database: Database.Database, memoryId: number): HistoryLineageEvent[] {
+  try {
+    return getHistoryEventsForLineage(memoryId, database);
+  } catch {
+    return [];
+  }
+}
+
+function buildLogicalKey(row: MemoryIndexRow): string {
+  const canonicalPath = typeof row.canonical_file_path === 'string' && row.canonical_file_path.trim().length > 0
+    ? row.canonical_file_path.trim()
+    : getCanonicalPathKey(row.file_path);
+  const anchorId = typeof row.anchor_id === 'string' && row.anchor_id.trim().length > 0
+    ? row.anchor_id.trim()
+    : '_';
+  return `${row.spec_folder}::${canonicalPath}::${anchorId}`;
+}
+
+function getLineageRow(database: Database.Database, memoryId: number): MemoryLineageRow | null {
+  const row = database.prepare(`
+    SELECT *
+    FROM memory_lineage
+    WHERE memory_id = ?
+  `).get(memoryId) as MemoryLineageRow | undefined;
+  return row ?? null;
+}
+
+function getActiveProjection(database: Database.Database, logicalKey: string): ActiveProjectionRow | null {
+  const row = database.prepare(`
+    SELECT *
+    FROM active_memory_projection
+    WHERE logical_key = ?
+  `).get(logicalKey) as ActiveProjectionRow | undefined;
+  return row ?? null;
+}
+
+function getLatestLineageRowForLogicalKey(database: Database.Database, logicalKey: string): MemoryLineageRow | null {
+  const row = database.prepare(`
+    SELECT *
+    FROM memory_lineage
+    WHERE logical_key = ?
+    ORDER BY version_number DESC, created_at DESC
+    LIMIT 1
+  `).get(logicalKey) as MemoryLineageRow | undefined;
+  return row ?? null;
+}
+
+function buildMetadata(
+  row: MemoryIndexRow,
+  actor: string,
+  historyEvents: HistoryLineageEvent[] = [],
+): string {
+  const metadata: LineageMetadata = {
+    contentHash: typeof row.content_hash === 'string' ? row.content_hash : null,
+    filePath: row.file_path,
+    canonicalFilePath: typeof row.canonical_file_path === 'string' ? row.canonical_file_path : null,
+    anchorId: typeof row.anchor_id === 'string' ? row.anchor_id : null,
+    specFolder: row.spec_folder,
+    snapshot: row,
+    history: historyEvents,
+    actor,
+  };
+  return JSON.stringify(metadata);
+}
+
+function parseMetadata(row: MemoryLineageRow): LineageMetadata | null {
+  if (typeof row.metadata !== 'string' || row.metadata.length === 0) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(row.metadata) as LineageMetadata;
+  } catch (_error: unknown) {
+    return null;
+  }
+}
+
+function upsertActiveProjection(
+  database: Database.Database,
+  logicalKey: string,
+  rootMemoryId: number,
+  activeMemoryId: number,
+  updatedAt: string,
+): void {
+  database.prepare(`
+    INSERT INTO active_memory_projection (logical_key, root_memory_id, active_memory_id, updated_at)
+    VALUES (?, ?, ?, ?)
+    ON CONFLICT(logical_key) DO UPDATE SET
+      root_memory_id = excluded.root_memory_id,
+      active_memory_id = excluded.active_memory_id,
+      updated_at = excluded.updated_at
+  `).run(logicalKey, rootMemoryId, activeMemoryId, updatedAt);
+}
+
+function bindHistory(database: Database.Database): void {
+  if (typeof (database as Database.Database & { exec?: unknown }).exec === 'function') {
+    initHistory(database);
+  }
+}
+
+function markHistoricalPredecessor(database: Database.Database, memoryId: number, updatedAt: string): void {
+  database.prepare(`
+    UPDATE memory_index
+    SET importance_tier = CASE
+          WHEN importance_tier = 'constitutional' THEN importance_tier
+          ELSE 'deprecated'
+        END,
+        updated_at = ?
+    WHERE id = ?
+  `).run(updatedAt, memoryId);
+}
+
+function insertAppendOnlyMemoryIndexRow(params: CreateAppendOnlyMemoryRecordParams): number {
+  const { database, parsed, filePath, embedding, embeddingFailureReason } = params;
+  const now = new Date().toISOString();
+  const canonicalFilePath = getCanonicalPathKey(filePath);
+  const importanceWeight = calculateDocumentWeight(filePath, parsed.documentType);
+  const specLevel = isSpecDocumentType(parsed.documentType)
+    ? detectSpecLevelFromParsed(filePath)
+    : null;
+  const encodingIntent = isEncodingIntentEnabled()
+    ? classifyEncodingIntent(parsed.content)
+    : undefined;
+  const embeddingStatus = embedding
+    ? (sqlite_vec_available() ? 'success' : 'pending')
+    : 'pending';
+
+  const result = database.prepare(`
+    INSERT INTO memory_index (
+      spec_folder,
+      file_path,
+      canonical_file_path,
+      title,
+      trigger_phrases,
+      importance_weight,
+      created_at,
+      updated_at,
+      embedding_model,
+      embedding_generated_at,
+      embedding_status,
+      failure_reason,
+      encoding_intent,
+      document_type,
+      spec_level,
+      content_text,
+      quality_score,
+      quality_flags
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `).run(
+    parsed.specFolder,
+    filePath,
+    canonicalFilePath,
+    parsed.title,
+    JSON.stringify(parsed.triggerPhrases),
+    importanceWeight,
+    now,
+    now,
+    embeddingsProvider.getModelName(),
+    embedding ? now : null,
+    embeddingStatus,
+    embeddingFailureReason,
+    encodingIntent ?? 'document',
+    parsed.documentType || 'memory',
+    specLevel,
+    parsed.content,
+    parsed.qualityScore ?? 0,
+    JSON.stringify(parsed.qualityFlags ?? []),
+  );
+
+  const memoryId = Number(result.lastInsertRowid);
+  applyPostInsertMetadata(database, memoryId, {
+    content_hash: parsed.contentHash,
+    context_type: parsed.contextType,
+    importance_tier: parsed.importanceTier,
+    memory_type: parsed.memoryType,
+    type_inference_source: parsed.memoryTypeSource,
+    encoding_intent: encodingIntent,
+    document_type: parsed.documentType || 'memory',
+    spec_level: specLevel,
+    quality_score: parsed.qualityScore ?? 0,
+    quality_flags: JSON.stringify(parsed.qualityFlags ?? []),
+  });
+
+  if (embedding && sqlite_vec_available()) {
+    const expectedDim = get_embedding_dim();
+    if (embedding.length !== expectedDim) {
+      throw new Error(`Embedding must be ${expectedDim} dimensions, got ${embedding.length}`);
+    }
+
+    database.prepare(`
+      INSERT INTO vec_memories (rowid, embedding)
+      VALUES (?, ?)
+    `).run(BigInt(memoryId), to_embedding_buffer(embedding));
+  }
+
+  if (bm25Index.isBm25Enabled()) {
+    try {
+      bm25Index.getIndex().addDocument(String(memoryId), parsed.content);
+    } catch (_error: unknown) {
+      // Keep parity with save path best-effort BM25 behavior.
+    }
+  }
+
+  try {
+    recordHistory(memoryId, 'ADD', null, parsed.title ?? filePath, params.actor ?? 'mcp:memory_save');
+  } catch (_error: unknown) {
+    // History remains best-effort during save.
+  }
+
+  refresh_interference_scores_for_folder(database, parsed.specFolder);
+  return memoryId;
+}
+
+export function seedLineageFromCurrentState(
+  database: Database.Database,
+  memoryId: number,
+  options: RecordLineageTransitionOptions = {},
+): RecordedLineageTransition {
+  bindHistory(database);
+  ensureLineageTables(database);
+
+  const existing = getLineageRow(database, memoryId);
+  if (existing) {
+    return {
+      logicalKey: existing.logical_key,
+      versionNumber: existing.version_number,
+      rootMemoryId: existing.root_memory_id,
+      activeMemoryId: existing.memory_id,
+      predecessorMemoryId: existing.predecessor_memory_id,
+      transitionEvent: existing.transition_event,
+    };
+  }
+
+  const row = getMemoryRow(database, memoryId);
+  const logicalKey = buildLogicalKey(row);
+  const actor = options.actor ?? 'system';
+  const historyEvents = options.historyEvents ?? getSafeHistoryEvents(database, memoryId);
+  const validFrom = options.validFrom
+    ?? historyEvents[0]?.timestamp
+    ?? normalizeTimestamp(row.created_at ?? row.updated_at);
+
+  database.prepare(`
+    INSERT INTO memory_lineage (
+      memory_id,
+      logical_key,
+      version_number,
+      root_memory_id,
+      predecessor_memory_id,
+      superseded_by_memory_id,
+      valid_from,
+      valid_to,
+      transition_event,
+      actor,
+      metadata
+    ) VALUES (?, ?, 1, ?, NULL, NULL, ?, NULL, ?, ?, ?)
+  `).run(
+    memoryId,
+    logicalKey,
+    memoryId,
+    validFrom,
+    options.transitionEvent ?? 'BACKFILL',
+    actor,
+    buildMetadata(row, actor, historyEvents),
+  );
+
+  upsertActiveProjection(database, logicalKey, memoryId, memoryId, normalizeTimestamp(row.updated_at ?? validFrom));
+
+  return {
+    logicalKey,
+    versionNumber: 1,
+    rootMemoryId: memoryId,
+    activeMemoryId: memoryId,
+    predecessorMemoryId: null,
+    transitionEvent: options.transitionEvent ?? 'BACKFILL',
+  };
+}
+
+export function recordLineageTransition(
+  database: Database.Database,
+  memoryId: number,
+  options: RecordLineageTransitionOptions = {},
+): RecordedLineageTransition {
+  bindHistory(database);
+  ensureLineageTables(database);
+
+  const existing = getLineageRow(database, memoryId);
+  if (existing) {
+    return {
+      logicalKey: existing.logical_key,
+      versionNumber: existing.version_number,
+      rootMemoryId: existing.root_memory_id,
+      activeMemoryId: existing.memory_id,
+      predecessorMemoryId: existing.predecessor_memory_id,
+      transitionEvent: existing.transition_event,
+    };
+  }
+
+  const row = getMemoryRow(database, memoryId);
+  const actor = options.actor ?? 'system';
+  const transitionEvent = options.transitionEvent ?? 'CREATE';
+  const historyEvents = options.historyEvents ?? getSafeHistoryEvents(database, memoryId);
+  const predecessorMemoryId = options.predecessorMemoryId ?? null;
+  const validFrom = options.validFrom ?? normalizeTimestamp(row.updated_at ?? row.created_at);
+
+  let logicalKey = buildLogicalKey(row);
+  let rootMemoryId = memoryId;
+  let versionNumber = 1;
+
+  if (predecessorMemoryId != null) {
+    const predecessor = getLineageRow(database, predecessorMemoryId);
+    if (predecessor) {
+      logicalKey = predecessor.logical_key;
+      rootMemoryId = predecessor.root_memory_id;
+      versionNumber = predecessor.version_number + 1;
+    } else {
+      const seeded = seedLineageFromCurrentState(database, predecessorMemoryId, {
+        actor,
+        transitionEvent: 'BACKFILL',
+      });
+      logicalKey = seeded.logicalKey;
+      rootMemoryId = seeded.rootMemoryId;
+      versionNumber = seeded.versionNumber + 1;
+    }
+
+    database.prepare(`
+      UPDATE memory_lineage
+      SET valid_to = COALESCE(valid_to, ?),
+          superseded_by_memory_id = COALESCE(superseded_by_memory_id, ?)
+      WHERE memory_id = ?
+    `).run(validFrom, memoryId, predecessorMemoryId);
+    markHistoricalPredecessor(database, predecessorMemoryId, validFrom);
+  }
+
+  database.prepare(`
+    INSERT INTO memory_lineage (
+      memory_id,
+      logical_key,
+      version_number,
+      root_memory_id,
+      predecessor_memory_id,
+      superseded_by_memory_id,
+      valid_from,
+      valid_to,
+      transition_event,
+      actor,
+      metadata
+    ) VALUES (?, ?, ?, ?, ?, NULL, ?, NULL, ?, ?, ?)
+  `).run(
+    memoryId,
+    logicalKey,
+    versionNumber,
+    rootMemoryId,
+    predecessorMemoryId,
+    validFrom,
+    transitionEvent,
+    actor,
+    buildMetadata(row, actor, historyEvents),
+  );
+
+  upsertActiveProjection(database, logicalKey, rootMemoryId, memoryId, validFrom);
+
+  return {
+    logicalKey,
+    versionNumber,
+    rootMemoryId,
+    activeMemoryId: memoryId,
+    predecessorMemoryId,
+    transitionEvent,
+  };
+}
+
+export function createAppendOnlyMemoryRecord(params: CreateAppendOnlyMemoryRecordParams): number {
+  bindHistory(params.database);
+  const appendTx = params.database.transaction(() => {
+    const memoryId = insertAppendOnlyMemoryIndexRow(params);
+    recordLineageTransition(params.database, memoryId, {
+      actor: params.actor ?? 'mcp:memory_save',
+      predecessorMemoryId: params.predecessorMemoryId,
+      transitionEvent: 'SUPERSEDE',
+    });
+    return memoryId;
+  });
+
+  return appendTx();
+}
+
+function resolveLogicalKey(database: Database.Database, memoryId: number): string | null {
+  const row = getLineageRow(database, memoryId);
+  if (row) {
+    return row.logical_key;
+  }
+
+  const memoryRow = getMemoryRow(database, memoryId);
+  const projection = getActiveProjection(database, buildLogicalKey(memoryRow));
+  return projection?.logical_key ?? buildLogicalKey(memoryRow);
+}
+
+export function inspectLineageChain(database: Database.Database, memoryId: number): ResolvedLineageSnapshot[] {
+  bindHistory(database);
+  ensureLineageTables(database);
+  const logicalKey = resolveLogicalKey(database, memoryId);
+  if (!logicalKey) {
+    return [];
+  }
+
+  const rows = database.prepare(`
+    SELECT *
+    FROM memory_lineage
+    WHERE logical_key = ?
+    ORDER BY version_number ASC, created_at ASC
+  `).all(logicalKey) as MemoryLineageRow[];
+
+  return rows.map((row) => {
+    const metadata = parseMetadata(row);
+    return {
+      logicalKey: row.logical_key,
+      memoryId: row.memory_id,
+      versionNumber: row.version_number,
+      rootMemoryId: row.root_memory_id,
+      validFrom: row.valid_from,
+      validTo: row.valid_to,
+      transitionEvent: row.transition_event,
+      snapshot: metadata?.snapshot ?? getMemoryRow(database, row.memory_id),
+    };
+  });
+}
+
+export function resolveActiveLineageSnapshot(
+  database: Database.Database,
+  memoryId: number,
+): ResolvedLineageSnapshot | null {
+  ensureLineageTables(database);
+  const logicalKey = resolveLogicalKey(database, memoryId);
+  if (!logicalKey) {
+    return null;
+  }
+
+  const projection = getActiveProjection(database, logicalKey);
+  if (!projection) {
+    return null;
+  }
+
+  const row = getLineageRow(database, projection.active_memory_id);
+  if (!row) {
+    return null;
+  }
+
+  const metadata = parseMetadata(row);
+  return {
+    logicalKey: row.logical_key,
+    memoryId: row.memory_id,
+    versionNumber: row.version_number,
+    rootMemoryId: row.root_memory_id,
+    validFrom: row.valid_from,
+    validTo: row.valid_to,
+    transitionEvent: row.transition_event,
+    snapshot: metadata?.snapshot ?? getMemoryRow(database, row.memory_id),
+  };
+}
+
+export function resolveLineageAsOf(
+  database: Database.Database,
+  memoryId: number,
+  asOf: string | Date,
+): ResolvedLineageSnapshot | null {
+  ensureLineageTables(database);
+  const logicalKey = resolveLogicalKey(database, memoryId);
+  if (!logicalKey) {
+    return null;
+  }
+
+  const asOfTimestamp = typeof asOf === 'string' ? asOf : asOf.toISOString();
+  const row = database.prepare(`
+    SELECT *
+    FROM memory_lineage
+    WHERE logical_key = ?
+      AND valid_from <= ?
+      AND (valid_to IS NULL OR valid_to > ?)
+    ORDER BY version_number DESC, created_at DESC
+    LIMIT 1
+  `).get(logicalKey, asOfTimestamp, asOfTimestamp) as MemoryLineageRow | undefined;
+
+  if (!row) {
+    return null;
+  }
+
+  const metadata = parseMetadata(row);
+  return {
+    logicalKey: row.logical_key,
+    memoryId: row.memory_id,
+    versionNumber: row.version_number,
+    rootMemoryId: row.root_memory_id,
+    validFrom: row.valid_from,
+    validTo: row.valid_to,
+    transitionEvent: row.transition_event,
+    snapshot: metadata?.snapshot ?? getMemoryRow(database, row.memory_id),
+  };
+}
+
+export function validateLineageIntegrity(database: Database.Database): ValidateLineageIntegrityResult {
+  ensureLineageTables(database);
+  const issues: string[] = [];
+  const missingPredecessors: number[] = [];
+  const duplicateActiveLogicalKeys: string[] = [];
+  const projectionMismatches: string[] = [];
+
+  const orphanPredecessors = database.prepare(`
+    SELECT logical_key, memory_id, predecessor_memory_id
+    FROM memory_lineage
+    WHERE predecessor_memory_id IS NOT NULL
+      AND predecessor_memory_id NOT IN (SELECT memory_id FROM memory_lineage)
+  `).all() as Array<{ logical_key: string; memory_id: number; predecessor_memory_id: number }>;
+
+  for (const issue of orphanPredecessors) {
+    missingPredecessors.push(issue.memory_id);
+    issues.push(
+      `Lineage ${issue.logical_key} version ${issue.memory_id} references missing predecessor ${issue.predecessor_memory_id}`,
+    );
+  }
+
+  const duplicateActive = database.prepare(`
+    SELECT logical_key, COUNT(*) AS total
+    FROM memory_lineage
+    WHERE valid_to IS NULL
+    GROUP BY logical_key
+    HAVING COUNT(*) > 1
+  `).all() as Array<{ logical_key: string; total: number }>;
+
+  for (const issue of duplicateActive) {
+    duplicateActiveLogicalKeys.push(issue.logical_key);
+    issues.push(`Lineage ${issue.logical_key} has ${issue.total} active versions`);
+  }
+
+  const projectionMismatch = database.prepare(`
+    SELECT p.logical_key, p.active_memory_id
+    FROM active_memory_projection p
+    LEFT JOIN memory_lineage l
+      ON l.logical_key = p.logical_key
+     AND l.memory_id = p.active_memory_id
+    WHERE l.memory_id IS NULL OR l.valid_to IS NOT NULL
+  `).all() as Array<{ logical_key: string; active_memory_id: number }>;
+
+  for (const issue of projectionMismatch) {
+    projectionMismatches.push(issue.logical_key);
+    issues.push(`Active projection ${issue.logical_key} points to non-active memory ${issue.active_memory_id}`);
+  }
+
+  const activeProjectionCount = (
+    database.prepare('SELECT COUNT(*) AS total FROM active_memory_projection').get() as { total: number }
+  ).total;
+  const lineageRowCount = (
+    database.prepare('SELECT COUNT(*) AS total FROM memory_lineage').get() as { total: number }
+  ).total;
+
+  return {
+    valid: issues.length === 0,
+    issues,
+    activeProjectionCount,
+    lineageRowCount,
+    missingPredecessors,
+    duplicateActiveLogicalKeys,
+    projectionMismatches,
+  };
+}
+
+export function backfillLineageState(
+  database: Database.Database,
+  options: { dryRun?: boolean; actor?: string } = {},
+): BackfillLineageResult {
+  bindHistory(database);
+  ensureLineageTables(database);
+  const dryRun = options.dryRun === true;
+  const actor = options.actor ?? 'memory-lineage:backfill';
+  const rows = database.prepare(`
+    SELECT *
+    FROM memory_index
+    WHERE parent_id IS NULL
+    ORDER BY created_at ASC, id ASC
+  `).all() as MemoryIndexRow[];
+
+  const groups = new Map<string, MemoryIndexRow[]>();
+  for (const row of rows) {
+    const logicalKey = buildLogicalKey(row);
+    const group = groups.get(logicalKey);
+    if (group) {
+      group.push(row);
+    } else {
+      groups.set(logicalKey, [row]);
+    }
+  }
+
+  const logicalKeys = [...groups.keys()];
+  let seeded = 0;
+  let skipped = 0;
+
+  for (const group of groups.values()) {
+    for (let index = 0; index < group.length; index += 1) {
+      const row = group[index];
+      const predecessor = index > 0 ? group[index - 1] : null;
+      const successor = index < group.length - 1 ? group[index + 1] : null;
+      const existing = getLineageRow(database, row.id);
+      const expectedValidFrom = normalizeTimestamp(row.created_at ?? row.updated_at);
+      const expectedValidTo = successor
+        ? normalizeTimestamp(successor.created_at ?? successor.updated_at)
+        : null;
+      const expectedVersion = index + 1;
+      const expectedRoot = group[0].id;
+      if (
+        !existing
+        || existing.version_number !== expectedVersion
+        || existing.root_memory_id !== expectedRoot
+        || existing.predecessor_memory_id !== (predecessor?.id ?? null)
+        || existing.superseded_by_memory_id !== (successor?.id ?? null)
+        || existing.valid_from !== expectedValidFrom
+        || existing.valid_to !== expectedValidTo
+      ) {
+        seeded += 1;
+      } else {
+        skipped += 1;
+      }
+    }
+  }
+
+  if (dryRun) {
+    return {
+      dryRun: true,
+      scanned: rows.length,
+      seeded,
+      skipped,
+      logicalKeys,
+      totalGroups: groups.size,
+    };
+  }
+
+  const execute = database.transaction(() => {
+    for (const [logicalKey, group] of groups.entries()) {
+      for (let index = 0; index < group.length; index += 1) {
+        const row = group[index];
+        const predecessor = index > 0 ? group[index - 1] : null;
+        const successor = index < group.length - 1 ? group[index + 1] : null;
+        const historyEvents = getSafeHistoryEvents(database, row.id);
+        const validFrom = historyEvents[0]?.timestamp
+          ?? normalizeTimestamp(row.created_at ?? row.updated_at);
+        const validTo = successor
+          ? normalizeTimestamp(successor.created_at ?? successor.updated_at)
+          : null;
+
+        database.prepare(`
+          INSERT INTO memory_lineage (
+            memory_id,
+            logical_key,
+            version_number,
+            root_memory_id,
+            predecessor_memory_id,
+            superseded_by_memory_id,
+            valid_from,
+            valid_to,
+            transition_event,
+            actor,
+            metadata
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'BACKFILL', ?, ?)
+          ON CONFLICT(memory_id) DO UPDATE SET
+            logical_key = excluded.logical_key,
+            version_number = excluded.version_number,
+            root_memory_id = excluded.root_memory_id,
+            predecessor_memory_id = excluded.predecessor_memory_id,
+            superseded_by_memory_id = excluded.superseded_by_memory_id,
+            valid_from = excluded.valid_from,
+            valid_to = excluded.valid_to,
+            transition_event = excluded.transition_event,
+            actor = excluded.actor,
+            metadata = excluded.metadata
+        `).run(
+          row.id,
+          logicalKey,
+          index + 1,
+          group[0].id,
+          predecessor?.id ?? null,
+          successor?.id ?? null,
+          validFrom,
+          validTo,
+          actor,
+          buildMetadata(row, actor, historyEvents),
+        );
+
+        if (predecessor) {
+          markHistoricalPredecessor(database, predecessor.id, validFrom);
+        }
+      }
+
+      const latest = group[group.length - 1];
+      upsertActiveProjection(
+        database,
+        logicalKey,
+        group[0].id,
+        latest.id,
+        normalizeTimestamp(latest.updated_at ?? latest.created_at),
+      );
+    }
+  });
+
+  execute();
+
+  return {
+    dryRun: false,
+    scanned: rows.length,
+    seeded,
+    skipped,
+    logicalKeys,
+    totalGroups: groups.size,
+  };
+}
+
+export function getActiveProjectionRow(
+  database: Database.Database,
+  memoryId: number,
+): ActiveProjectionRow | null {
+  const logicalKey = resolveLogicalKey(database, memoryId);
+  if (!logicalKey) {
+    return null;
+  }
+  return getActiveProjection(database, logicalKey);
+}
+
+export function getLatestLineageForMemory(database: Database.Database, memoryId: number): MemoryLineageRow | null {
+  const logicalKey = resolveLogicalKey(database, memoryId);
+  if (!logicalKey) {
+    return null;
+  }
+  return getLatestLineageRowForLogicalKey(database, logicalKey);
+}
+
+export function recordLineageVersion(
+  database: Database.Database,
+  params: {
+    memoryId: number;
+    actor?: string;
+    predecessorMemoryId?: number | null;
+    effectiveAt?: string;
+    transitionEvent?: LineageTransitionEvent;
+  },
+): RecordedLineageTransition {
+  if (typeof (database as Database.Database & { exec?: unknown }).exec !== 'function') {
+    return {
+      logicalKey: `mock:${params.memoryId}`,
+      versionNumber: 1,
+      rootMemoryId: params.predecessorMemoryId ?? params.memoryId,
+      activeMemoryId: params.memoryId,
+      predecessorMemoryId: params.predecessorMemoryId ?? null,
+      transitionEvent: params.transitionEvent ?? 'CREATE',
+    };
+  }
+
+  return recordLineageTransition(database, params.memoryId, {
+    actor: params.actor,
+    predecessorMemoryId: params.predecessorMemoryId,
+    transitionEvent: params.transitionEvent,
+    validFrom: params.effectiveAt,
+  });
+}
+
+export function getActiveMemoryProjection(
+  database: Database.Database,
+  target: { memoryId: number },
+): ResolvedLineageSnapshot | null {
+  return resolveActiveLineageSnapshot(database, target.memoryId);
+}
+
+export function resolveMemoryAsOf(
+  database: Database.Database,
+  target: { memoryId: number; asOf: string | Date },
+): ResolvedLineageSnapshot | null {
+  return resolveLineageAsOf(database, target.memoryId, target.asOf);
+}
+
+export function runLineageBackfill(
+  database: Database.Database,
+  options: { dryRun?: boolean; actor?: string } = {},
+): BackfillLineageResult {
+  return backfillLineageState(database, options);
+}
+
+export type {
+  ActiveProjectionRow,
+  BackfillLineageResult,
+  RecordedLineageTransition,
+  ResolvedLineageSnapshot,
+  ValidateLineageIntegrityResult,
+};

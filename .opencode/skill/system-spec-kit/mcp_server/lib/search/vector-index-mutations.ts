@@ -2,7 +2,7 @@
 // MODULE: Vector Index Mutations
 // ---------------------------------------------------------------
 // Split from vector-index-store.ts — contains ALL mutation functions:
-// index, update, delete, and status/confidence updates.
+// Index, update, delete, and status/confidence updates.
 
 import { getCanonicalPathKey } from '../utils/canonical-path';
 import { createLogger } from '../utils/logger';
@@ -42,6 +42,7 @@ type IndexMemoryParams = {
   readonly contentText?: string | null;
   readonly qualityScore?: number;
   readonly qualityFlags?: string[];
+  readonly appendOnly?: boolean;
 };
 type IndexMemoryDeferredParams = Omit<IndexMemoryParams, 'embedding'> & {
   readonly failureReason?: string | null;
@@ -83,7 +84,8 @@ export function index_memory(params: IndexMemoryParams): number {
     specLevel = null,
     contentText = null,
     qualityScore = 0,
-    qualityFlags = []
+    qualityFlags = [],
+    appendOnly = false,
   } = params;
 
   if (!embedding) {
@@ -102,9 +104,11 @@ export function index_memory(params: IndexMemoryParams): number {
   const canonicalFilePath = getCanonicalPathKey(filePath);
 
   const stmts = init_prepared_statements(database);
-  const existing = stmts.get_by_folder_and_path.get(specFolder, canonicalFilePath, filePath, anchorId, anchorId);
+  const existing = appendOnly
+    ? null
+    : stmts.get_by_folder_and_path.get(specFolder, canonicalFilePath, filePath, anchorId, anchorId);
 
-  if (existing) {
+  if (existing && !appendOnly) {
     return update_memory({
       id: existing.id,
       title: title ?? undefined,
@@ -143,7 +147,7 @@ export function index_memory(params: IndexMemoryParams): number {
     const metadata_id = Number(row_id);
 
     if (sqlite_vec) {
-      // AI-GUARD: remove orphaned vec_memories entry before insert
+      // Remove orphaned vec_memories entry before insert
       database.prepare('DELETE FROM vec_memories WHERE rowid = ?').run(row_id);
       database.prepare(`
         INSERT INTO vec_memories (rowid, embedding) VALUES (?, ?)
@@ -158,7 +162,7 @@ export function index_memory(params: IndexMemoryParams): number {
   return index_memory_tx();
 }
 
-// REQ-031: Deferred indexing - entry searchable via BM25/FTS5 only
+// Deferred indexing - entry searchable via BM25/FTS5 only
 /**
  * Indexes a memory record without storing an embedding yet.
  * @param params - The deferred memory values to index.
@@ -180,7 +184,8 @@ export function index_memory_deferred(params: IndexMemoryDeferredParams): number
     specLevel = null,
     contentText = null,
     qualityScore = 0,
-    qualityFlags = []
+    qualityFlags = [],
+    appendOnly = false,
   } = params;
 
   const now = new Date().toISOString();
@@ -188,9 +193,11 @@ export function index_memory_deferred(params: IndexMemoryDeferredParams): number
   const canonicalFilePath = getCanonicalPathKey(filePath);
 
   const stmts = init_prepared_statements(database);
-  const existing = stmts.get_by_folder_and_path.get(specFolder, canonicalFilePath, filePath, anchorId, anchorId);
+  const existing = appendOnly
+    ? null
+    : stmts.get_by_folder_and_path.get(specFolder, canonicalFilePath, filePath, anchorId, anchorId);
 
-  if (existing) {
+  if (existing && !appendOnly) {
     database.prepare(`
       UPDATE memory_index
       SET title = ?,
@@ -355,8 +362,8 @@ export function delete_memory(id: number): boolean {
   const sqlite_vec = get_sqlite_vec_available();
 
   const delete_memory_tx = database.transaction(() => {
-    // AI-WHY: memory_history rows are intentionally preserved after deletion
-    // so DELETE audit events recorded by handlers persist as audit trail.
+    // Memory_history rows are intentionally preserved after deletion
+    // So DELETE audit events recorded by handlers persist as audit trail.
 
     if (sqlite_vec) {
       try {
@@ -366,7 +373,7 @@ export function delete_memory(id: number): boolean {
       }
     }
 
-    // AI-WHY: Fix #20 (017-refinement-phase-6) — Clean all ancillary records
+    // Fix #20 (017-refinement-phase-6) — Clean all ancillary records
     const ancillaryTables = [
       'DELETE FROM degree_snapshots WHERE memory_id = ?',
       'DELETE FROM community_assignments WHERE memory_id = ?',
@@ -377,7 +384,12 @@ export function delete_memory(id: number): boolean {
       try { database.prepare(sql).run(id); } catch (_error: unknown) { /* table may not exist */ }
     }
     try {
-      database.prepare('DELETE FROM causal_edges WHERE source_id = ? OR target_id = ?').run(id, id);
+      const memoryIdText = String(id);
+      database.prepare(`
+        DELETE FROM causal_edges
+        WHERE source_id IN (?, ?)
+           OR target_id IN (?, ?)
+      `).run(id, memoryIdText, id, memoryIdText);
     } catch (_error: unknown) { /* table may not exist */ }
 
     const result = database.prepare('DELETE FROM memory_index WHERE id = ?').run(id);
@@ -388,7 +400,7 @@ export function delete_memory(id: number): boolean {
     return result.changes > 0;
   });
 
-  // AI-WHY: Fix #21 (017-refinement-phase-6) — Clean BM25 index after successful delete.
+  // Fix #21 (017-refinement-phase-6) — Clean BM25 index after successful delete.
   const deleted = delete_memory_tx();
   if (deleted) {
     try {
@@ -465,8 +477,8 @@ export function delete_memories(memory_ids: number[]): { deleted: number; failed
 
         const result = database.prepare('DELETE FROM memory_index WHERE id = ?').run(id);
         if (result.changes > 0) {
-          // AI-WHY: memory_history rows are intentionally preserved after deletion
-          // so DELETE audit events recorded here persist as audit trail.
+          // Memory_history rows are intentionally preserved after deletion
+          // So DELETE audit events recorded here persist as audit trail.
           try {
             recordHistory(id, 'DELETE', null, null, 'mcp:delete_memories');
           } catch (_histErr: unknown) { /* best-effort */ }
@@ -565,7 +577,7 @@ export function update_confidence(memory_id: number, confidence: number): boolea
   }
 }
 
-// camelCase aliases
+// CamelCase aliases
 export { index_memory as indexMemory };
 export { index_memory_deferred as indexMemoryDeferred };
 export { update_memory as updateMemory };

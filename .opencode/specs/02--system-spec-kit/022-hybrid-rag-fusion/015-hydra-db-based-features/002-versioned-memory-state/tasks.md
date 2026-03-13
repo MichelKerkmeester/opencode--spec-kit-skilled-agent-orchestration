@@ -32,52 +32,52 @@ contextType: "general"
 ## Track A: Contract and Design
 
 - [x] T201 Create the Phase 2 Level 3+ documentation package
-- [ ] T202 Finalize lineage entity model and predecessor rules
-- [ ] T203 Finalize active-projection strategy
-- [ ] T204 Finalize `asOf` query contract and edge behavior
+- [x] T202 Finalize lineage entity model and predecessor rules
+- [x] T203 Finalize active-projection strategy
+- [x] T204 Finalize `asOf` query contract and edge behavior
 
 ---
 
 ## Track B: Schema and Write Path
 
-- [ ] T210 Extend schema for lineage and active projection
-- [ ] T211 Implement append-first version transitions in save/update flows
-- [ ] T212 Add lineage integrity validators
-- [ ] T213 Add operator-facing lineage inspection helpers
+- [x] T210 Extend schema for lineage and active projection
+- [x] T211 Implement append-first version transitions in save/update flows
+- [x] T212 Add lineage integrity validators
+- [x] T213 Add operator-facing lineage inspection helpers
 
 ---
 
 ## Track C: Migration and Rollback
 
-- [ ] T220 Build backfill path for existing data
-- [ ] T221 Add dry-run mode for migration rehearsal
-- [ ] T222 Add rollback and checkpoint restore drill coverage
+- [x] T220 Build backfill path for existing data
+- [x] T221 Add dry-run mode for migration rehearsal
+- [x] T222 Add rollback and checkpoint restore drill coverage
 
 ---
 
 ## Track D: Query Resolution and Verification
 
-- [ ] T230 Implement current-state projection reads
-- [ ] T231 Implement `asOf` temporal reads
-- [ ] T232 Add lineage integrity and temporal correctness tests
-- [ ] T233 Add manual lineage and rollback procedures to the playbook
+- [x] T230 Implement current-state projection reads
+- [x] T231 Implement `asOf` temporal reads
+- [x] T232 Add lineage integrity and temporal correctness tests
+- [x] T233 Add manual lineage and rollback procedures to the playbook
 
 ---
 
 ## Coordination Checkpoints
 
-- [ ] T240 Confirm Phase 1 handoff is approved
-- [ ] T241 Confirm Phase 3 can consume lineage identifiers and query semantics without redefining them
-- [ ] T242 Update `implementation-summary.md` with shipped evidence when execution begins
+- [x] T240 Confirm Phase 1 handoff is approved
+- [x] T241 Confirm Phase 3 can consume lineage identifiers and query semantics without redefining them
+- [x] T242 Update `implementation-summary.md` with shipped evidence when execution begins
 
 ---
 
 ## Completion Criteria
 
-- [ ] All P0 lineage acceptance criteria are met
-- [ ] Backfill and rollback drills pass
-- [ ] `asOf` behavior is deterministic and documented
-- [ ] No `[B]` blocked tasks remain
+- [x] All P0 lineage acceptance criteria are met
+- [x] Backfill and rollback drills pass
+- [x] `asOf` behavior is deterministic and documented
+- [x] No `[B]` blocked tasks remain
 
 ---
 
