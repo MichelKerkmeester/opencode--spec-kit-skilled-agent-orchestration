@@ -1,17 +1,11 @@
-// ---------------------------------------------------------------
-// MODULE: Entity Linker
-// ---------------------------------------------------------------
+// --- 1. ENTITY LINKER ---
 // Gated via SPECKIT_ENTITY_LINKING
 // Creates causal edges between memories sharing entities across spec folders.
-// ---------------------------------------------------------------
-
 import type Database from 'better-sqlite3';
 import { isEntityLinkingEnabled } from './search-flags';
 import { createLogger } from '../utils/logger';
 
-// ---------------------------------------------------------------------------
-// 1. CONSTANTS
-// ---------------------------------------------------------------------------
+// --- 2. CONSTANTS ---
 
 /** Maximum causal edges per node to prevent graph density explosion. */
 const MAX_EDGES_PER_NODE = 20;
@@ -23,9 +17,7 @@ const DEFAULT_MAX_EDGE_DENSITY = 1.0;
 const ENTITY_LINKING_MAX_DENSITY_ENV = 'SPECKIT_ENTITY_LINKING_MAX_DENSITY';
 const logger = createLogger('EntityLinker');
 
-// ---------------------------------------------------------------------------
-// 2. INTERFACES
-// ---------------------------------------------------------------------------
+// --- 3. INTERFACES ---
 
 export interface EntityMatch {
   canonicalName: string;
@@ -54,9 +46,7 @@ export interface EntityLinkStats {
   coveragePercent: number;
 }
 
-// ---------------------------------------------------------------------------
-// 3. HELPERS
-// ---------------------------------------------------------------------------
+// --- 4. HELPERS ---
 
 /**
  * Normalize entity name: lowercase, strip punctuation, collapse whitespace.
@@ -73,9 +63,7 @@ export function normalizeEntityName(name: string): string {
     .trim();
 }
 
-// ---------------------------------------------------------------------------
-// 4. CORE FUNCTIONS
-// ---------------------------------------------------------------------------
+// --- 5. CORE FUNCTIONS ---
 
 /**
  * Build entity catalog from memory_entities table.
@@ -262,9 +250,9 @@ function batchGetEdgeCounts(db: Database.Database, nodeIds: string[]): Map<strin
   if (nodeIds.length === 0) return counts;
 
   // Build: SELECT id, COUNT(*) AS cnt FROM (
-  //   SELECT source_id AS id FROM causal_edges WHERE source_id IN (...)
-  //   UNION ALL
-  //   SELECT target_id AS id FROM causal_edges WHERE target_id IN (...)
+  // SELECT source_id AS id FROM causal_edges WHERE source_id IN (...)
+  // UNION ALL
+  // SELECT target_id AS id FROM causal_edges WHERE target_id IN (...)
   // ) GROUP BY id
   const placeholders = nodeIds.map(() => '?').join(', ');
   const sql = `
@@ -315,16 +303,16 @@ export function createEntityLinks(
 
   // --- P3b: Batch edge-count pre-fetch ---
   // Collect all unique node IDs across all matches so we can fetch edge counts
-  // in a single query instead of one query per node per pair (N+1 pattern).
+  // In a single query instead of one query per node per pair (N+1 pattern).
   const allNodeIds = new Set<string>();
   for (const match of matches) {
     for (const memoryId of match.memoryIds) {
       allNodeIds.add(String(memoryId));
     }
   }
-  // edgeCountCache holds the edge counts at the start of this run.
+  // EdgeCountCache holds the edge counts at the start of this run.
   // As we insert new edges we increment the cached value so subsequent
-  // checks within the same run stay accurate without extra DB round-trips.
+  // Checks within the same run stay accurate without extra DB round-trips.
   const edgeCountCache = batchGetEdgeCounts(db, Array.from(allNodeIds));
 
   for (const match of matches) {
@@ -355,8 +343,8 @@ export function createEntityLinks(
         const sourceId = String(idA);
         const targetId = String(idB);
 
-        // AI-GUARD: Global density guard: skip linking if this insert would push density
-        // above the configured threshold.
+        // Global density guard: skip linking if this insert would push density
+        // Above the configured threshold.
         if (totalMemories > 0) {
           const projectedDensity = (totalEdges + 1) / totalMemories;
           if (projectedDensity > maxEdgeDensity) {
@@ -527,9 +515,7 @@ export function runEntityLinking(db: Database.Database): EntityLinkResult {
   }
 }
 
-// ---------------------------------------------------------------------------
-// 5. TEST EXPORTS
-// ---------------------------------------------------------------------------
+// --- 6. TEST EXPORTS ---
 
 /**
  * Internal functions exposed for unit testing.

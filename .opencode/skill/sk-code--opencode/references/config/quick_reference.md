@@ -337,7 +337,7 @@ P1 - Should Have:
 [ ] Section comments
 [ ] camelCase keys
 [ ] Inline documentation
-[ ] AI-intent comments (max 3/10, AI-WHY/AI-INVARIANT/AI-TRACE/AI-RISK)
+[ ] WHY-focused comments only (max 3/10 lines)
 
 P2 - Nice to Have:
 [ ] Logical ordering

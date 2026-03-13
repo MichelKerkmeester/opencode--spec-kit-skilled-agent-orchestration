@@ -1,27 +1,19 @@
-// ---------------------------------------------------------------
-// MODULE: Scoring Observability (T010)
-// ---------------------------------------------------------------
-// AI-WHY: Lightweight observability logging for N4 cold-start boost and
+// --- 1. SCORING OBSERVABILITY (T010) ---
+// Lightweight observability logging for N4 cold-start boost and
 // TM-01 interference scoring values at query time.
 // Sampled at 5% of queries to avoid performance overhead.
 // All logging is best-effort (fail-safe, never throws).
 // Feature flags:
-//   SPECKIT_NOVELTY_BOOST     — N4 cold-start boost
-//   SPECKIT_INTERFERENCE_SCORE — TM-01 interference penalty
-// ---------------------------------------------------------------
-
+// SPECKIT_NOVELTY_BOOST     — N4 cold-start boost
+// SPECKIT_INTERFERENCE_SCORE — TM-01 interference penalty
 import type Database from 'better-sqlite3';
 
-// ---------------------------------------------------------------
-// 1. CONSTANTS
-// ---------------------------------------------------------------
+// --- 2. CONSTANTS ---
 
 /** 5% sampling rate — logs ~1 in 20 scoring calls */
 export const SAMPLING_RATE = 0.05;
 
-// ---------------------------------------------------------------
-// 2. TYPES
-// ---------------------------------------------------------------
+// --- 3. TYPES ---
 
 /** Full observation record for a single scored memory */
 export interface ScoringObservation {
@@ -52,15 +44,10 @@ export interface ScoringStats {
   avgScoreDelta: number;
 }
 
-// ---------------------------------------------------------------
 // 3. DATABASE HANDLE (module-scoped, set via initScoringObservability)
-// ---------------------------------------------------------------
-
 let _db: Database.Database | null = null;
 
-// ---------------------------------------------------------------
-// 4. INITIALIZATION
-// ---------------------------------------------------------------
+// --- 4. INITIALIZATION ---
 
 /**
  * Initialize the scoring observability system.
@@ -96,9 +83,7 @@ export function initScoringObservability(db: Database.Database): void {
   }
 }
 
-// ---------------------------------------------------------------
-// 5. SAMPLING
-// ---------------------------------------------------------------
+// --- 5. SAMPLING ---
 
 /**
  * Returns true approximately 5% of the time.
@@ -108,9 +93,7 @@ export function shouldSample(): boolean {
   return Math.random() < SAMPLING_RATE;
 }
 
-// ---------------------------------------------------------------
-// 6. LOGGING
-// ---------------------------------------------------------------
+// --- 6. LOGGING ---
 
 /**
  * Persist a scoring observation to the DB.
@@ -152,9 +135,7 @@ export function logScoringObservation(obs: ScoringObservation): void {
   }
 }
 
-// ---------------------------------------------------------------
-// 7. STATS QUERY
-// ---------------------------------------------------------------
+// --- 7. STATS QUERY ---
 
 /**
  * Aggregate stats over all logged scoring observations.
@@ -209,10 +190,7 @@ export function getScoringStats(): ScoringStats {
   }
 }
 
-// ---------------------------------------------------------------
 // 8. DB HANDLE ACCESSOR (for testing)
-// ---------------------------------------------------------------
-
 /** Return the current DB handle (may be null if not initialized). */
 export function getDb(): Database.Database | null {
   return _db;

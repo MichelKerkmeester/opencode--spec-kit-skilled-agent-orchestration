@@ -456,7 +456,7 @@ cleanup_old_backups() {
 # ───────────────────────────────────────────────────────────────
 
 # Scans backward from the end of a file to find where to insert content
-# before any trailing comment block (multi-line or single-line HTML comments).
+# Before any trailing comment block (multi-line or single-line HTML comments).
 # Handles: <!-- ... --> (multi-line), <!-- ... --> (single-line), and --- separators.
 # Echoes the line number to insert BEFORE, or empty string if no trailing block found.
 find_insert_point() {

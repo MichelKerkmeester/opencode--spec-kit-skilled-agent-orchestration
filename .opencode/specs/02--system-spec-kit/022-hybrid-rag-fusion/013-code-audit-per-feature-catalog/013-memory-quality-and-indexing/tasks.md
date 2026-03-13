@@ -37,7 +37,7 @@ contextType: "general"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 [P] Reconfirm 16-feature inventory and playbook mapping baseline (feature_catalog/13--memory-quality-and-indexing/) — 16 features confirmed, all catalog files present
+- [x] T001 [P] Reconfirm 18-feature inventory and playbook mapping baseline (feature_catalog/13--memory-quality-and-indexing/) — 18 features confirmed, all catalog files present
 - [x] T002 [P] Validate source/test file references used by findings backlog (feature_catalog/13--memory-quality-and-indexing/) — paths corrected in plan (handlers/ not lib/validation/, lib/extraction/ not lib/indexing/, lib/search/ not lib/indexing/)
 - [x] T003 Normalize status/priority labels across checklist and tasks artifacts (checklist.md, tasks.md) — labels synchronized
 <!-- /ANCHOR:phase-1 -->
@@ -71,7 +71,7 @@ contextType: "general"
 ## Phase 3: Verification
 
 - [x] T013 [P] Re-run combined targeted Vitest suites for touched save/indexing paths (mcp_server/tests/) — 410/410 tests pass across quality-loop, handler-memory-save, content-hash-dedup, chunking-orchestrator-swap, context-server, handler-memory-index-cooldown, and mutation-hooks suites
-- [x] T014 [P] Re-audit impacted features and refresh PASS/WARN/FAIL status entries (checklist.md) — 7 WARN features remediated to PASS; new totals: 16 PASS, 0 WARN, 0 FAIL
+- [x] T014 [P] Re-audit impacted features and refresh PASS/WARN/FAIL status entries (checklist.md) — 7 WARN features remediated to PASS; new totals: 18 PASS, 0 WARN, 0 FAIL
 - [x] T015 Update spec/plan/tasks/checklist/implementation-summary for consistency after remediation and adjacent-path pass (spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md) — all artifacts updated with evidence
 - [x] T023 [P] Re-run type-check verification (`npx tsc --noEmit`) on updated save/indexing paths — pass
 - [x] T024 [P] Run alignment drift verifier for `.opencode/skill/system-spec-kit/mcp_server` — pass with 0 findings

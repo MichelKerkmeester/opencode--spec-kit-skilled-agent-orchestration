@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: SESSION BOOST (T010-T015)
-// ---------------------------------------------------------------
-
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import Database from 'better-sqlite3';
 import * as sessionBoost from '../lib/search/session-boost';

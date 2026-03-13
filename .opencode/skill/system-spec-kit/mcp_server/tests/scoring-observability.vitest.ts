@@ -1,14 +1,12 @@
-// ---------------------------------------------------------------
-// MODULE: Test — Scoring Observability
-// ---------------------------------------------------------------
+// --- 1. TEST — SCORING OBSERVABILITY ---
 // Tests:
-//   1. Table creation (initScoringObservability)
-//   2. Sampling rate (~5% over 1000 calls)
-//   3. Observation logging — N4 fields populated
-//   4. Observation logging — TM-01 fields populated
-//   5. Stats aggregation
-//   6. Fail-safe behavior (logging errors don't affect scoring)
-//   7. No scoring behavior change when observability is active
+// 1. Table creation (initScoringObservability)
+// 2. Sampling rate (~5% over 1000 calls)
+// 3. Observation logging — N4 fields populated
+// 4. Observation logging — TM-01 fields populated
+// 5. Stats aggregation
+// 6. Fail-safe behavior (logging errors don't affect scoring)
+// 7. No scoring behavior change when observability is active
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import Database from 'better-sqlite3';
@@ -32,10 +30,7 @@ import {
 
 import { applyInterferencePenalty } from '../lib/scoring/interference-scoring';
 
-// ---------------------------------------------------------------
 // Helpers
-// ---------------------------------------------------------------
-
 function createTestDb(): Database.Database {
   const db = new Database(':memory:');
   return db;
@@ -59,10 +54,7 @@ const BASE_ROW = {
   updated_at: daysAgo(5),
 };
 
-// ---------------------------------------------------------------
 // 1. Table Creation
-// ---------------------------------------------------------------
-
 describe('T010-1: Table Creation (initScoringObservability)', () => {
   let db: Database.Database;
 
@@ -122,10 +114,7 @@ describe('T010-1: Table Creation (initScoringObservability)', () => {
   });
 });
 
-// ---------------------------------------------------------------
 // 2. Sampling Rate
-// ---------------------------------------------------------------
-
 describe('T010-2: Sampling Rate (~5%)', () => {
   it('T010-2a: shouldSample() returns a boolean', () => {
     const result = shouldSample();
@@ -185,10 +174,7 @@ describe('T010-2: Sampling Rate (~5%)', () => {
   });
 });
 
-// ---------------------------------------------------------------
 // 3. Observation Logging — N4 Fields
-// ---------------------------------------------------------------
-
 describe('T010-3: Observation Logging (N4 fields)', () => {
   let db: Database.Database;
 
@@ -271,10 +257,7 @@ describe('T010-3: Observation Logging (N4 fields)', () => {
   });
 });
 
-// ---------------------------------------------------------------
 // 4. Observation Logging — TM-01 Fields
-// ---------------------------------------------------------------
-
 describe('T010-4: Observation Logging (TM-01 fields)', () => {
   let db: Database.Database;
 
@@ -358,10 +341,7 @@ describe('T010-4: Observation Logging (TM-01 fields)', () => {
   });
 });
 
-// ---------------------------------------------------------------
 // 5. Stats Aggregation
-// ---------------------------------------------------------------
-
 describe('T010-5: Stats Aggregation (getScoringStats)', () => {
   let db: Database.Database;
 
@@ -461,10 +441,7 @@ describe('T010-5: Stats Aggregation (getScoringStats)', () => {
   });
 });
 
-// ---------------------------------------------------------------
 // 6. Fail-Safe Behavior
-// ---------------------------------------------------------------
-
 describe('T010-6: Fail-Safe Behavior', () => {
   afterEach(() => {
     resetDb();
@@ -551,10 +528,7 @@ describe('T010-6: Fail-Safe Behavior', () => {
   });
 });
 
-// ---------------------------------------------------------------
 // 7. No Scoring Behavior Change
-// ---------------------------------------------------------------
-
 describe('T010-7: No Scoring Behavior Change When Observability Active', () => {
   let db: Database.Database;
 
@@ -659,10 +633,7 @@ describe('T010-7: No Scoring Behavior Change When Observability Active', () => {
   });
 });
 
-// ---------------------------------------------------------------
 // 8. N4 calculateNoveltyBoost unit tests
-// ---------------------------------------------------------------
-
 describe('T010-8: N4 calculateNoveltyBoost', () => {
   afterEach(() => {
     delete process.env.SPECKIT_NOVELTY_BOOST;
@@ -711,10 +682,7 @@ describe('T010-8: N4 calculateNoveltyBoost', () => {
   });
 });
 
-// ---------------------------------------------------------------
 // 9. TM-01 applyInterferencePenalty unit tests
-// ---------------------------------------------------------------
-
 describe('T010-9: TM-01 applyInterferencePenalty', () => {
   afterEach(() => {
     delete process.env.SPECKIT_INTERFERENCE_SCORE;

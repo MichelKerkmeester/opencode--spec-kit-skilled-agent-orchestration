@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Preflight Validation Tests (T067-T070, T156-T166)
-// ---------------------------------------------------------------
+// --- 1. PREFLIGHT VALIDATION TESTS (T067-T070, T156-T166) ---
 
 import { describe, it, expect } from 'vitest';
 import * as preflight from '../lib/validation/preflight';

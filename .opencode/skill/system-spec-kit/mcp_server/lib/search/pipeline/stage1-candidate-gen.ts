@@ -1,18 +1,15 @@
-// ---------------------------------------------------------------
-// MODULE: Stage1 Candidate Gen
-// ---------------------------------------------------------------
+// --- 1. STAGE1 CANDIDATE GEN ---
 // Sprint 5 (R6): 4-Stage Retrieval Pipeline Architecture
-// ---------------------------------------------------------------
 //
 // Responsibility: Execute search channels and collect raw candidate results.
 // This stage performs NO scoring modifications — it only retrieves candidates
-// from the appropriate search channel based on search type.
+// From the appropriate search channel based on search type.
 //
 // Search channels handled:
 //   - multi-concept: Generate per-concept embeddings, run multiConceptSearch
 //   - hybrid (deep mode): Query expansion + multi-variant hybrid search + dedup
 //   - hybrid (R12):       Embedding-based query expansion (SPECKIT_EMBEDDING_EXPANSION)
-//                         Suppressed when R15 classifies query as "simple" (mutual exclusion)
+// Suppressed when R15 classifies query as "simple" (mutual exclusion)
 //   - hybrid: searchWithFallback → falls back to vector on failure
 //   - vector: Direct vectorSearch
 //
@@ -22,18 +19,16 @@
 //   - Tier and contextType filtering
 //
 // I/O CONTRACT:
-//   Input:  Stage1Input { config: PipelineConfig }
-//   Output: Stage1Output { candidates: PipelineRow[], metadata }
-//   Key invariants:
+// Input:  Stage1Input { config: PipelineConfig }
+// Output: Stage1Output { candidates: PipelineRow[], metadata }
+// Key invariants:
 //     - candidates contains raw scores assigned by the search channel (unchanged)
 //     - Constitutional rows are always present when includeConstitutional=true and no tier filter
 //     - All rows pass qualityThreshold (if set) and tier/contextType filters
-//   Side effects:
+// Side effects:
 //     - Generates query embeddings via the embeddings provider (external call)
 //     - Reads from the vector index and FTS5 / BM25 index (DB reads only)
 //
-// ---------------------------------------------------------------
-
 import type { Stage1Input, Stage1Output, PipelineRow } from './types';
 import * as vectorIndex from '../vector-index';
 import * as embeddings from '../../providers/embeddings';
@@ -44,6 +39,8 @@ import { expandQueryWithEmbeddings, isExpansionActive } from '../embedding-expan
 import { querySummaryEmbeddings, checkScaleGate } from '../memory-summaries';
 import { addTraceEntry } from '@spec-kit/shared/contracts/retrieval-trace';
 import { requireDb } from '../../../utils/db-helpers';
+import { filterRowsByScope } from '../../governance/scope-governance';
+import { getAllowedSharedSpaceIds } from '../../collab/shared-spaces';
 
 // -- Constants --
 
@@ -158,8 +155,8 @@ async function buildDeepQueryVariants(query: string): Promise<string[]> {
   try {
     const expanded = expandQuery(query);
     const variants = new Set<string>(expanded);
-    // expandQuery already includes the original as the first entry,
-    // but be explicit in case the implementation changes.
+    // ExpandQuery already includes the original as the first entry,
+    // But be explicit in case the implementation changes.
     variants.add(query);
     return Array.from(variants).slice(0, MAX_DEEP_QUERY_VARIANTS);
   } catch (err: unknown) {
@@ -201,6 +198,10 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
     mode,
     limit,
     specFolder,
+    tenantId,
+    userId,
+    agentId,
+    sharedSpaceId,
     tier,
     contextType,
     includeArchived,
@@ -250,9 +251,9 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
   // -- Channel: Hybrid (with optional deep-mode query expansion) ---------------
 
   else if (searchType === 'hybrid') {
-    // AI-WHY: Resolve the query embedding — either pre-computed in config or generate now
+    // Resolve the query embedding — either pre-computed in config or generate now
     // Fix #16 — Cache this embedding for reuse in constitutional injection path
-    // to avoid a duplicate generateQueryEmbedding() call.
+    // To avoid a duplicate generateQueryEmbedding() call.
     const effectiveEmbedding: Float32Array | number[] | null =
       queryEmbedding ?? (await embeddings.generateQueryEmbedding(query));
     cachedEmbedding = effectiveEmbedding;
@@ -309,7 +310,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
           )) as PipelineRow[];
         }
       } else {
-        // expandQuery returned only the original; treat as standard hybrid
+        // ExpandQuery returned only the original; treat as standard hybrid
         channelCount = 1;
         candidates = (await hybridSearch.searchWithFallback(
           query,
@@ -321,20 +322,20 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
       // -- R12: Embedding-based query expansion (SPECKIT_EMBEDDING_EXPANSION) --
       //
       // When R12 is enabled and R15 does not classify the query as "simple",
-      // we expand the query using embedding similarity to find related terms
-      // from the memory index. The expanded query is used as an additional
-      // hybrid search channel whose results are merged with the baseline.
+      // We expand the query using embedding similarity to find related terms
+      // From the memory index. The expanded query is used as an additional
+      // Hybrid search channel whose results are merged with the baseline.
       //
       // Mutual exclusion: isExpansionActive() returns false when R15 classifies
-      // the query as "simple", suppressing expansion with zero added latency.
+      // The query as "simple", suppressing expansion with zero added latency.
 
       let r12ExpansionApplied = false;
 
       if (isEmbeddingExpansionEnabled() && isExpansionActive(query)) {
         try {
-          // expandQueryWithEmbeddings requires a Float32Array; the effective
-          // embedding may be a number[] when generated by some providers, so
-          // convert if necessary before passing it in.
+          // ExpandQueryWithEmbeddings requires a Float32Array; the effective
+          // Embedding may be a number[] when generated by some providers, so
+          // Convert if necessary before passing it in.
           const expansionEmbedding: Float32Array =
             effectiveEmbedding instanceof Float32Array
               ? effectiveEmbedding
@@ -369,7 +370,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
             r12ExpansionApplied = true;
 
             // Merge both result sets, deduplicate by id, baseline-first ordering
-            // so baseline scores dominate when the same memory appears in both.
+            // So baseline scores dominate when the same memory appears in both.
             const seenIds = new Set<number>();
             const merged: PipelineRow[] = [];
             for (const row of [...(baselineResults as PipelineRow[]), ...(expansionResults as PipelineRow[])]) {
@@ -397,7 +398,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
       }
 
       // Standard hybrid search — runs when R12 is off, suppressed by R15,
-      // or produced no results (candidates still empty from the try block above).
+      // Or produced no results (candidates still empty from the try block above).
       if (!r12ExpansionApplied) {
         try {
           channelCount = 1;
@@ -414,7 +415,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
             `[stage1-candidate-gen] Hybrid search failed, falling back to vector: ${hybridMsg}`
           );
 
-          // AI-WHY: Fallback: pure vector search
+          // Fallback: pure vector search
           channelCount = 1;
           candidates = vectorIndex.vectorSearch(effectiveEmbedding, {
             limit,
@@ -465,14 +466,14 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
     );
   }
 
-  // AI-WHY: -- Tier and contextType filtering -----------------------------------------
+  // -- Tier and contextType filtering -----------------------------------------
   //
   // Applied after candidate collection but before constitutional injection so
-  // injected constitutional rows are evaluated by the same filters.
+  // Injected constitutional rows are evaluated by the same filters.
   // Exception: for hybrid search, tier/contextType are applied here because
-  // searchWithFallback does not accept these parameters directly.
+  // SearchWithFallback does not accept these parameters directly.
   // For vector search, tier/contextType were already passed to vectorSearch,
-  // so this is a no-op guard for those fields.
+  // So this is a no-op guard for those fields.
 
   if (tier) {
     candidates = candidates.filter((r) => r.importance_tier === tier);
@@ -484,12 +485,35 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
     );
   }
 
+  try {
+    const db = requireDb();
+    candidates = filterRowsByScope(
+      candidates,
+      {
+        tenantId,
+        userId,
+        agentId,
+        sessionId: config.sessionId,
+        sharedSpaceId,
+      },
+      getAllowedSharedSpaceIds(db, { tenantId, userId, agentId }),
+    );
+  } catch (_error: unknown) {
+    candidates = filterRowsByScope(candidates, {
+      tenantId,
+      userId,
+      agentId,
+      sessionId: config.sessionId,
+      sharedSpaceId,
+    });
+  }
+
   // -- Constitutional Memory Injection ----------------------------------------
   //
   // If includeConstitutional is requested and no constitutional results exist
-  // in the current candidate set, fetch them separately via vector search.
+  // In the current candidate set, fetch them separately via vector search.
   // They enter the pipeline here so all subsequent stages (scoring, reranking)
-  // treat them uniformly. Constitutional tier boost is applied in Stage 2.
+  // Treat them uniformly. Constitutional tier boost is applied in Stage 2.
   //
   // Injection is skipped when:
   //   - includeConstitutional is false
@@ -502,7 +526,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
     );
 
     if (existingConstitutional.length === 0) {
-      // AI-WHY: Fix #16 — Reuse cached embedding instead of generating a new one
+      // Fix #16 — Reuse cached embedding instead of generating a new one
       const constitutionalEmbedding: Float32Array | number[] | null =
         cachedEmbedding ?? queryEmbedding ?? (await embeddings.generateQueryEmbedding(query));
 
@@ -523,10 +547,10 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
           (r) => !existingIds.has(r.id)
         );
 
-        // AI-FIX: F-05 — Re-apply contextType filter after injection.
+        // F-05 — Re-apply contextType filter after injection.
         // Constitutional rows fetched via vector search bypass the earlier
-        // contextType filter. Without this guard, injected rows with a
-        // different contextType leak into the caller's result set.
+        // ContextType filter. Without this guard, injected rows with a
+        // Different contextType leak into the caller's result set.
         const filteredConstitutional = contextType
           ? uniqueConstitutional.filter((r) => resolveRowContextType(r) === contextType)
           : uniqueConstitutional;
@@ -547,8 +571,8 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
 
   // -- R8: Summary Embedding Channel ---------------------------------------
   // When SPECKIT_MEMORY_SUMMARIES is enabled (default-ON) and scale gate is
-  // met (>5000 indexed), run a parallel search on summary embeddings and merge
-  // results. Pattern follows R12 embedding expansion: run in parallel, merge
+  // Met (>5000 indexed), run a parallel search on summary embeddings and merge
+  // Results. Pattern follows R12 embedding expansion: run in parallel, merge
   // + deduplicate by ID.
   if (isMemorySummariesEnabled()) {
     try {
@@ -609,7 +633,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
     }
   }
 
-  // AI-WHY: -- Trace ------------------------------------------------------------------
+  // -- Trace ------------------------------------------------------------------
 
   const durationMs = Date.now() - startTime;
 

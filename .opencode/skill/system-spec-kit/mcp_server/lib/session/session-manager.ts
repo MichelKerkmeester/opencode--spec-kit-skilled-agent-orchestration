@@ -1,13 +1,11 @@
-// ---------------------------------------------------------------
-// MODULE: Session Manager
-// ---------------------------------------------------------------
+// --- 1. SESSION MANAGER ---
 
 import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
 
 import type { DatabaseExtended as Database } from '@spec-kit/shared/types';
-// AI-TRACE T302: Import working-memory for immediate cleanup on session end (GAP 2).
+// Import working-memory for immediate cleanup on session end (GAP 2).
 import * as workingMemory from '../cache/cognitive/working-memory';
 
 /* ---------------------------------------------------------------
@@ -169,11 +167,11 @@ const SESSION_CONFIG: SessionConfig = {
 --------------------------------------------------------------- */
 
 let db: Database | null = null;
-// AI-TRACE P4-18: Track periodic cleanup interval for expired sessions
+// Track periodic cleanup interval for expired sessions
 let cleanupInterval: ReturnType<typeof setInterval> | null = null;
 const CLEANUP_INTERVAL_MS = 30 * 60 * 1000; // 30 minutes
 
-// AI-TRACE T302: Track stale session cleanup interval (runs hourly)
+// Track stale session cleanup interval (runs hourly)
 let staleCleanupInterval: ReturnType<typeof setInterval> | null = null;
 const STALE_CLEANUP_INTERVAL_MS = parseInt(process.env.STALE_CLEANUP_INTERVAL_MS as string, 10) || 60 * 60 * 1000; // 1 hour
 const STALE_SESSION_THRESHOLD_MS = parseInt(process.env.STALE_SESSION_THRESHOLD_MS as string, 10) || 24 * 60 * 60 * 1000; // 24 hours
@@ -192,8 +190,8 @@ function init(database: Database): InitResult {
 
   cleanupExpiredSessions();
 
-  // AI-WHY: Set up periodic cleanup instead of only running once at init (P4-18).
-  // AI-GUARD: Clear any existing interval first (in case of reinitializeDatabase).
+  // Set up periodic cleanup instead of only running once at init (P4-18).
+  // Clear any existing interval first (in case of reinitializeDatabase).
   if (cleanupInterval) {
     clearInterval(cleanupInterval);
   }
@@ -205,12 +203,12 @@ function init(database: Database): InitResult {
       console.warn(`[session-manager] Periodic cleanup failed: ${message}`);
     }
   }, CLEANUP_INTERVAL_MS);
-  // AI-GUARD: Ensure interval doesn't prevent process exit (unref allows GC on idle)
+  // Ensure interval doesn't prevent process exit (unref allows GC on idle)
   if (cleanupInterval && typeof cleanupInterval === 'object' && 'unref' in cleanupInterval) {
     cleanupInterval.unref();
   }
 
-  // AI-TRACE T302: Run stale session cleanup on startup and set up hourly interval
+  // Run stale session cleanup on startup and set up hourly interval
   try {
     cleanupStaleSessions();
   } catch (err: unknown) {
@@ -291,18 +289,18 @@ function generateMemoryHash(memory: MemoryInput): string {
   if (memory.content_hash) {
     hashInput = memory.content_hash;
   } else if (memory.id !== undefined) {
-    // AI-WHY: Support both anchor_id (snake_case) and anchorId (camelCase) — callers may pass either form (P4-16).
+    // Support both anchor_id (snake_case) and anchorId (camelCase) — callers may pass either form (P4-16).
     hashInput = `${memory.id}:${memory.anchor_id || memory.anchorId || ''}:${memory.file_path || ''}`;
   } else {
     hashInput = JSON.stringify({
-      // AI-WHY: Prefer anchor_id (canonical), fall back to anchorId for legacy callers (P4-16)
+      // Prefer anchor_id (canonical), fall back to anchorId for legacy callers (P4-16)
       anchor: memory.anchor_id || memory.anchorId,
       path: memory.file_path,
       title: memory.title,
     });
   }
 
-  // AI-WHY: Fix #37 (017-refinement-phase-6) — Use 128-bit (32 hex chars) instead of
+  // Fix #37 (017-refinement-phase-6) — Use 128-bit (32 hex chars) instead of
   // 64-bit (16 hex chars) to reduce collision probability.
   return crypto.createHash('sha256').update(hashInput).digest('hex').slice(0, 32);
 }
@@ -389,14 +387,14 @@ function shouldSendMemoriesBatch(
         if (shouldSend) {
           existingHashes.add(hash);
         }
-        // AI-GUARD: Preserve first-occurrence decision for the same memory ID — prevents double-counting.
+        // Preserve first-occurrence decision for the same memory ID — prevents double-counting.
         if (memory.id != null && !result.has(memory.id)) {
           result.set(memory.id, shouldSend);
         }
       }
 
       if (markAsSent) {
-        // AI-WHY: check + mark + cap enforcement stay in one transaction to avoid duplicate injection races.
+        // Check + mark + cap enforcement stay in one transaction to avoid duplicate injection races.
         enforceEntryLimit(sessionId);
       }
     };
@@ -454,10 +452,10 @@ function markMemorySent(sessionId: string, memory: MemoryInput | number): MarkRe
       VALUES (?, ?, ?, ?)
     `);
 
-    // AI-WHY: transaction ensures atomic insert + limit enforcement, preventing concurrent race past entry limit.
+    // Transaction ensures atomic insert + limit enforcement, preventing concurrent race past entry limit.
     db.transaction(() => {
       stmt.run(sessionId, hash, memoryId, new Date().toISOString());
-      // AI-WHY: enforceEntryLimit inside tx — atomic with insert to prevent row count races.
+      // EnforceEntryLimit inside tx — atomic with insert to prevent row count races.
       enforceEntryLimit(sessionId);
     })();
 
@@ -493,7 +491,7 @@ function markMemoriesSentBatch(sessionId: string, memories: MemoryInput[]): Mark
           markedCount++;
         }
       }
-      // AI-WHY: enforceEntryLimit inside tx — atomic with inserts to prevent row count races.
+      // EnforceEntryLimit inside tx — atomic with inserts to prevent row count races.
       enforceEntryLimit(sessionId);
     });
 
@@ -592,7 +590,7 @@ function cleanupStaleSessions(thresholdMs: number = STALE_SESSION_THRESHOLD_MS):
     workingMemoryDeleted = wmResult.changes;
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : String(err);
-    // AI-GUARD: Table may not exist if working-memory module was never initialized
+    // Table may not exist if working-memory module was never initialized
     if (!msg.includes('no such table')) {
       errors.push(`working_memory cleanup: ${msg}`);
     }
@@ -655,7 +653,7 @@ function clearSession(sessionId: string): CleanupResult {
     `);
     const result = stmt.run(sessionId);
 
-    // AI-TRACE T302: Immediately clear working memory for cleared session (GAP 2).
+    // Immediately clear working memory for cleared session (GAP 2).
     try {
       workingMemory.clearSession(sessionId);
     } catch (wmErr: unknown) {
@@ -709,7 +707,7 @@ function filterSearchResults(sessionId: string, results: MemoryInput[]): FilterR
     };
   }
 
-  // AI-WHY: Reserve unsent hashes while filtering so concurrent searches cannot both inject.
+  // Reserve unsent hashes while filtering so concurrent searches cannot both inject.
   const shouldSendMap = shouldSendMemoriesBatch(sessionId, results, true);
   const seenBatchHashes = new Set<string>();
   const filtered = results.filter((r) => {
@@ -856,7 +854,7 @@ function completeSession(sessionId: string): InitResult {
     `);
     stmt.run(new Date().toISOString(), sessionId);
 
-    // AI-TRACE T302: Immediately clear working memory for completed session (GAP 2).
+    // Immediately clear working memory for completed session (GAP 2).
     try {
       workingMemory.clearSession(sessionId);
     } catch (wmErr: unknown) {
@@ -1118,7 +1116,7 @@ function checkpointSession(
    11. SHUTDOWN
 --------------------------------------------------------------- */
 
-// AI-TRACE T302: Clear all background intervals on shutdown (GAP 1).
+// Clear all background intervals on shutdown (GAP 1).
 function shutdown(): void {
   if (cleanupInterval) {
     clearInterval(cleanupInterval);
@@ -1179,6 +1177,6 @@ export {
   getConfig,
   SESSION_CONFIG as CONFIG,
 
-  // AI-TRACE T302: Shutdown (GAP 1)
+  // Shutdown (GAP 1)
   shutdown,
 };

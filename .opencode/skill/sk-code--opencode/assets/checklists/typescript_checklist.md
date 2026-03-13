@@ -101,8 +101,8 @@ Same rule as JavaScript. Delete unused code; git preserves history.
 ### WHY Comments
 
 ```markdown
-[ ] Inline comments follow AI-intent policy (max 3 comments per 10 LOC)
-    - Allowed prefixes: AI-WHY, AI-GUARD, AI-INVARIANT, AI-TRACE, AI-RISK
+[ ] Purposeful WHY comments only (max 3 comments per 10 LOC)
+    - Comments explain WHY, not WHAT
     - No narrative comments describing obvious mechanics
 ```
 

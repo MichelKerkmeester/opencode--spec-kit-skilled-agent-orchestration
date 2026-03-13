@@ -1,6 +1,4 @@
-// ───────────────────────────────────────────────────────────────
-// TEST: TEMPLATE SYSTEM VERIFICATION
-// ───────────────────────────────────────────────────────────────
+// --- 1. TEST: TEMPLATE SYSTEM VERIFICATION ---
 //
 // Comprehensive tests for the SpecKit template system:
 // - Level folder existence and file counts
@@ -34,7 +32,7 @@ const CORE_DIR = path.join(TEMPLATES_DIR, 'core');
 const ADDENDUM_DIR = path.join(TEMPLATES_DIR, 'addendum');
 const EXAMPLES_DIR = path.join(TEMPLATES_DIR, 'examples');
 
-// compose.sh script
+// Compose.sh script
 const COMPOSE_SCRIPT = path.join(SCRIPTS_DIR, 'templates', 'compose.sh');
 
 // Test results

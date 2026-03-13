@@ -1,12 +1,8 @@
-// ---------------------------------------------------------------
 // TEST: RECOVERY HINTS (ERROR CATALOG WITH RECOVERY GUIDANCE) (Vitest)
-// ---------------------------------------------------------------
 // Converted from recovery-hints.test.js
 // T001-T095: Error catalog with recovery hints (REQ-004, REQ-009)
 //
 // STATUS: FULL CONVERSION - Pure logic module with no DB dependencies
-// ---------------------------------------------------------------
-
 import { describe, it, expect, beforeAll } from 'vitest';
 import {
   ERROR_CODES,
@@ -23,10 +19,7 @@ const errorCodeMap = ERROR_CODES as unknown as Record<string, string>;
 type RecoveryToolName = Parameters<typeof getRecoveryHint>[0];
 type RecoveryErrorCode = Parameters<typeof getRecoveryHint>[1];
 
-// -------------------------------------------------------------
 // T001: Module Loading
-// -------------------------------------------------------------
-
 describe('Recovery Hints - Module Loading', () => {
   it('T001: Module loads without error', () => {
     expect(ERROR_CODES).toBeDefined();
@@ -40,10 +33,7 @@ describe('Recovery Hints - Module Loading', () => {
   });
 });
 
-// -------------------------------------------------------------
 // T002-T010: ERROR_CODES Constant
-// -------------------------------------------------------------
-
 describe('ERROR_CODES Constant - T002-T010', () => {
   it('T002: ERROR_CODES is exported as object', () => {
     expect(ERROR_CODES).toBeDefined();
@@ -104,10 +94,7 @@ describe('ERROR_CODES Constant - T002-T010', () => {
   });
 });
 
-// -------------------------------------------------------------
 // T011-T020: RECOVERY_HINTS Catalog
-// -------------------------------------------------------------
-
 describe('RECOVERY_HINTS Catalog - T011-T020', () => {
   it('T011: RECOVERY_HINTS is exported as object', () => {
     expect(RECOVERY_HINTS).toBeDefined();
@@ -184,10 +171,7 @@ describe('RECOVERY_HINTS Catalog - T011-T020', () => {
   });
 });
 
-// -------------------------------------------------------------
 // T021-T030: TOOL_SPECIFIC_HINTS
-// -------------------------------------------------------------
-
 describe('TOOL_SPECIFIC_HINTS - T021-T030', () => {
   it('T021: TOOL_SPECIFIC_HINTS is exported as object', () => {
     expect(TOOL_SPECIFIC_HINTS).toBeDefined();
@@ -250,10 +234,7 @@ describe('TOOL_SPECIFIC_HINTS - T021-T030', () => {
   });
 });
 
-// -------------------------------------------------------------
 // T031-T040: getRecoveryHint() Function
-// -------------------------------------------------------------
-
 describe('getRecoveryHint() Function - T031-T040', () => {
   it('T031: getRecoveryHint is exported as function', () => {
     expect(typeof getRecoveryHint).toBe('function');
@@ -324,10 +305,7 @@ describe('getRecoveryHint() Function - T031-T040', () => {
   });
 });
 
-// -------------------------------------------------------------
 // T041-T045: hasSpecificHint() Helper
-// -------------------------------------------------------------
-
 describe('hasSpecificHint() Helper - T041-T045', () => {
   it('T041: hasSpecificHint is exported as function', () => {
     expect(typeof hasSpecificHint).toBe('function');
@@ -362,10 +340,7 @@ describe('hasSpecificHint() Helper - T041-T045', () => {
   });
 });
 
-// -------------------------------------------------------------
 // T046-T050: getAvailableHints() Helper
-// -------------------------------------------------------------
-
 describe('getAvailableHints() Helper - T046-T050', () => {
   it('T046: getAvailableHints is exported as function', () => {
     expect(typeof getAvailableHints).toBe('function');
@@ -400,10 +375,7 @@ describe('getAvailableHints() Helper - T046-T050', () => {
   });
 });
 
-// -------------------------------------------------------------
 // T051-T055: getErrorCodes() Helper
-// -------------------------------------------------------------
-
 describe('getErrorCodes() Helper - T051-T055', () => {
   it('T051: getErrorCodes is exported as function', () => {
     expect(typeof getErrorCodes).toBe('function');
@@ -448,10 +420,7 @@ describe('getErrorCodes() Helper - T051-T055', () => {
   });
 });
 
-// -------------------------------------------------------------
 // T056-T060: DEFAULT_HINT Fallback
-// -------------------------------------------------------------
-
 describe('DEFAULT_HINT Fallback - T056-T060', () => {
   it('T056: DEFAULT_HINT is exported as object', () => {
     expect(DEFAULT_HINT).toBeDefined();
@@ -479,10 +448,7 @@ describe('DEFAULT_HINT Fallback - T056-T060', () => {
   });
 });
 
-// -------------------------------------------------------------
 // T061-T070: Severity Levels
-// -------------------------------------------------------------
-
 describe('Severity Levels - T061-T070', () => {
   it('T061: At least 3 critical severity hints exist', () => {
     const criticalHints = Object.values(RECOVERY_HINTS).filter(
@@ -549,10 +515,7 @@ describe('Severity Levels - T061-T070', () => {
   });
 });
 
-// -------------------------------------------------------------
 // T071-T080: Error Code Categories
-// -------------------------------------------------------------
-
 describe('Error Code Categories - T071-T080', () => {
   it('T071: Search error codes (E040-E044) exist', () => {
     expect(ERROR_CODES.SEARCH_FAILED).toBe('E040');
@@ -652,10 +615,7 @@ describe('Error Code Categories - T071-T080', () => {
   });
 });
 
-// -------------------------------------------------------------
 // T081-T090: Action Content
-// -------------------------------------------------------------
-
 describe('Action Content - T081-T090', () => {
   it('T081: All actions are non-empty strings', () => {
     for (const [_code, hint] of Object.entries(RECOVERY_HINTS)) {
@@ -739,10 +699,7 @@ describe('Action Content - T081-T090', () => {
   });
 });
 
-// -------------------------------------------------------------
 // T091-T095: Integration Tests
-// -------------------------------------------------------------
-
 describe('Integration Tests - T091-T095', () => {
   it('T091: Complete lookup chain works (tool-specific -> generic -> default)', () => {
     const toolSpecific = getRecoveryHint('memory_search', ERROR_CODES.EMBEDDING_FAILED);

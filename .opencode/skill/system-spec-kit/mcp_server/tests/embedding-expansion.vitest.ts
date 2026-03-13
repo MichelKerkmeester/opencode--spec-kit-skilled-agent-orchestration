@@ -1,22 +1,19 @@
-// ---------------------------------------------------------------
 // TEST: Embedding-Based Query Expansion
 // SPECKIT_EMBEDDING_EXPANSION feature flag
 //
 // Test matrix:
-//   T1  Feature flag OFF → identity result, no expansion
-//   T2  Feature flag ON, simple query (R15) → expansion suppressed
-//   T3  Feature flag ON, complex query → expansion runs (may be empty if no DB)
-//   T4  R15 mutual exclusion detail — "simple" tier always suppresses
-//   T5  isExpansionActive() respects flag OFF
-//   T6  isExpansionActive() respects R15 "simple" classification
-//   T7  isExpansionActive() returns true for complex query when flag is ON
-//   T8  Empty embedding → identity result
-//   T9  ExpandedQuery shape is correct
-//   T10 No latency degradation for simple queries (< 5 ms)
-//   T11 combinedQuery equals original when no expansion terms found
-//   T12 combinedQuery appends expanded terms with space separator
-// ---------------------------------------------------------------
-
+// T1  Feature flag OFF → identity result, no expansion
+// T2  Feature flag ON, simple query (R15) → expansion suppressed
+// T3  Feature flag ON, complex query → expansion runs (may be empty if no DB)
+// T4  R15 mutual exclusion detail — "simple" tier always suppresses
+// T5  isExpansionActive() respects flag OFF
+// T6  isExpansionActive() respects R15 "simple" classification
+// T7  isExpansionActive() returns true for complex query when flag is ON
+// T8  Empty embedding → identity result
+// T9  ExpandedQuery shape is correct
+// T10 No latency degradation for simple queries (< 5 ms)
+// T11 combinedQuery equals original when no expansion terms found
+// T12 combinedQuery appends expanded terms with space separator
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   expandQueryWithEmbeddings,
@@ -49,7 +46,7 @@ function restoreEnv(): void {
 // -- Mock: vector-index ------------------------------------------------------
 //
 // The vector index requires a real SQLite database. We mock it to return
-// controlled memory content without any I/O dependency.
+// Controlled memory content without any I/O dependency.
 
 vi.mock('../lib/search/vector-index', () => ({
   vectorSearch: vi.fn(() => []),
@@ -338,12 +335,12 @@ describe('R12: Embedding-Based Query Expansion', () => {
     process.env.SPECKIT_COMPLEXITY_ROUTER = 'true';
 
     // The query contains all possible expansion tokens. We mock vectorSearch
-    // to return a raw object (bypassing the title injected by makeMockMemory)
-    // whose content only contains words already present in the query.
+    // To return a raw object (bypassing the title injected by makeMockMemory)
+    // Whose content only contains words already present in the query.
     mockVectorSearch.mockReturnValue([
       {
         id: 1,
-        // content and title both use only tokens present in the query
+        // Content and title both use only tokens present in the query
         content: 'semantic pipeline query expansion complex',
         title: 'architecture retrieval deep search',
         similarity: 0.9,
@@ -355,7 +352,7 @@ describe('R12: Embedding-Based Query Expansion', () => {
     const query = 'semantic pipeline query expansion complex architecture retrieval deep search';
     const result = await expandQueryWithEmbeddings(query, makeEmbedding());
 
-    // combinedQuery should equal original since no new terms were found
+    // CombinedQuery should equal original since no new terms were found
     expect(result.combinedQuery).toBe(query);
   });
 
@@ -374,7 +371,7 @@ describe('R12: Embedding-Based Query Expansion', () => {
     const result = await expandQueryWithEmbeddings(query, makeEmbedding());
 
     if (result.expanded.length > 0) {
-      // combinedQuery must start with the original query
+      // CombinedQuery must start with the original query
       expect(result.combinedQuery.startsWith(query)).toBe(true);
       // Expanded terms must be present in combinedQuery
       for (const term of result.expanded) {

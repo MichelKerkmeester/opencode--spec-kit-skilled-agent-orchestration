@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Index
-// ---------------------------------------------------------------
+// --- 1. INDEX ---
 
 import * as memorySearch from './memory-search';
 import * as memoryTriggers from './memory-triggers';
@@ -12,6 +10,7 @@ import * as checkpoints from './checkpoints';
 import * as sessionLearning from './session-learning';
 import * as causalGraph from './causal-graph';
 import * as evalReporting from './eval-reporting';
+import * as sharedMemory from './shared-memory';
 // T061: L1 Orchestration - unified entry point
 import * as memoryContext from './memory-context';
 import * as memoryIngest from './memory-ingest';
@@ -137,6 +136,12 @@ export {
   handle_memory_context,
 } from './memory-context';
 
+export {
+  handleSharedMemoryStatus,
+  handleSharedSpaceMembershipSet,
+  handleSharedSpaceUpsert,
+} from './shared-memory';
+
 /* ---------------------------------------------------------------
    SUB-MODULE REFERENCES (for direct access)
 --------------------------------------------------------------- */
@@ -154,4 +159,5 @@ export {
   evalReporting,
   memoryContext,
   memoryIngest,
+  sharedMemory,
 };

@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Session Extractor
-// ---------------------------------------------------------------
+// --- 1. SESSION EXTRACTOR ---
 // Extracts session metadata — ID, title, duration, key topics, and learning delta
 
 // Node stdlib
@@ -297,7 +295,7 @@ function countToolsByType(observations: Observation[], userPrompts: UserPrompt[]
     }
   }
   // Note: userPrompts are intentionally NOT counted — regex matching on raw
-  // user text produces false positives (e.g. "Read the docs" matching Read tool).
+  // User text produces false positives (e.g. "Read the docs" matching Read tool).
   // Tool usage evidence comes only from structured observation facts.
   return counts;
 }

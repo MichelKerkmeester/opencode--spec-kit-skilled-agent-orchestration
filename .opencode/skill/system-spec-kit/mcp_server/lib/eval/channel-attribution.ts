@@ -1,19 +1,15 @@
-// ---------------------------------------------------------------
-// MODULE: Channel Attribution
-// ---------------------------------------------------------------
+// --- 1. CHANNEL ATTRIBUTION ---
 //
 // Tags each search result with its source channel(s) for evaluation analysis.
 // Computes Exclusive Contribution Rate: how often each channel is the SOLE
-// source for a result in top-K.
+// Source for a result in top-K.
 //
 // Channels: vector, fts, bm25, graph, trigger (extensible).
 //
 // Design notes:
 //   - Pure functions — no DB access, no side effects.
 //   - Channel names are lowercase strings matching existing conventions
-//     (see rrf-fusion.ts SOURCE_TYPES and eval-logger.ts channel parameter).
-// ---------------------------------------------------------------
-
+// (see rrf-fusion.ts SOURCE_TYPES and eval-logger.ts channel parameter).
 /* --- 1. TYPES --- */
 
 /** Known retrieval channels (extensible — any lowercase string accepted). */

@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Memory Index
-// ---------------------------------------------------------------
+// --- 1. MEMORY INDEX ---
 
 import path from 'path';
 
@@ -230,11 +228,11 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
       try {
         if (vectorIndex.deleteMemory(staleRecordId)) {
           deleted++;
-          // AI-WHY: Record DELETE history only after confirmed deletion.
+          // Record DELETE history only after confirmed deletion.
           try {
             recordHistory(staleRecordId, 'DELETE', null, null, 'mcp:memory_index_scan');
           } catch (_histErr: unknown) {
-            // history recording is best-effort
+            // History recording is best-effort
           }
         } else {
           failed++;
@@ -358,9 +356,9 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
   // T106/P0-09: Track successfully indexed files for post-indexing mtime update.
   // SAFETY INVARIANT: mtime markers are updated ONLY after indexing succeeds.
   // Failed files keep their old mtime so shouldReindex() returns 'modified'
-  // or 'new' on the next scan, ensuring automatic retry. Moving this update
-  // before indexing would cause silent data loss — a failed file would be
-  // marked "already indexed" and permanently skipped.
+  // Or 'new' on the next scan, ensuring automatic retry. Moving this update
+  // Before indexing would cause silent data loss — a failed file would be
+  // Marked "already indexed" and permanently skipped.
   const successfullyIndexedFiles: string[] = [];
 
   if (filesToIndex.length > 0) {
@@ -442,11 +440,11 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
     }
   }
 
-  // AI-WHY: T106/P0-09: Update mtimes ONLY for successfully indexed files (not before indexing).
+  // T106/P0-09: Update mtimes ONLY for successfully indexed files (not before indexing).
   // Failed files keep their old mtime so they are retried on next scan.
   // This is the ONLY place where scan-triggered mtime updates occur.
   // See also: indexMemoryFile() sets file_mtime_ms within its DB transaction,
-  // which rolls back atomically on failure — a complementary safety mechanism.
+  // Which rolls back atomically on failure — a complementary safety mechanism.
   if (successfullyIndexedFiles.length > 0) {
     const mtimeUpdateResult = incrementalIndex.batchUpdateMtimes(successfullyIndexedFiles);
     results.mtimeUpdates = mtimeUpdateResult.updated;
@@ -456,9 +454,9 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
   // Includes deferred indexing outcomes and incremental single-file updates.
   if (include_spec_docs) {
     try {
-      // AI-WHY: Determine which spec folders had spec document changes in this scan.
+      // Determine which spec folders had spec document changes in this scan.
       // We use parsed document type (not basename) to avoid false positives
-      // from memory/plan.md or similar filenames.
+      // From memory/plan.md or similar filenames.
       const affectedSpecFolders = new Set<string>();
       for (const fileResult of results.files) {
         if (!fileResult.specFolder || fileResult.status === 'failed') {
@@ -613,7 +611,7 @@ export {
   runDivergenceReconcileHooks,
 };
 
-// AI-WHY: Backward-compatible aliases (snake_case)
+// Backward-compatible aliases (snake_case)
 const handle_memory_index_scan = handleMemoryIndexScan;
 const index_single_file = indexSingleFile;
 const find_constitutional_files = findConstitutionalFiles;

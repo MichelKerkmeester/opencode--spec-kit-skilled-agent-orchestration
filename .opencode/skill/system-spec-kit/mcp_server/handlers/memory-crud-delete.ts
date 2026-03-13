@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Memory Crud Delete
-// ---------------------------------------------------------------
+// --- 1. MEMORY CRUD DELETE ---
 
 /* ---------------------------------------------------------------
    IMPORTS
@@ -76,25 +74,25 @@ async function handleMemoryDelete(args: DeleteArgs): Promise<MCPResponse> {
   const database = vectorIndex.getDb();
 
   if (!database) {
-    // AI-GUARD: Unified DB-unavailable contract for single and bulk delete paths.
+    // Unified DB-unavailable contract for single and bulk delete paths.
     return createDatabaseUnavailableDeleteResponse();
   }
 
   if (numericId !== null) {
     const singleSnapshot = getMemoryHashSnapshot(database, numericId);
 
-    // AI-WHY: T2-5 transaction wrapper — wraps single-delete path (memory delete, causal edge
-    // AI-WHY: cleanup, ledger append) in a transaction for atomicity on error.
+    // T2-5 transaction wrapper — wraps single-delete path (memory delete, causal edge
+    // Cleanup, ledger append) in a transaction for atomicity on error.
     database.transaction(() => {
       deletedCount = vectorIndex.deleteMemory(numericId) ? 1 : 0;
 
       if (deletedCount > 0) {
-        // AI-WHY: Record DELETE history after confirmed delete (no FK, history rows survive).
+        // Record DELETE history after confirmed delete (no FK, history rows survive).
         // Placed after deleteMemory to avoid false audit rows for non-existent IDs.
         try {
           recordHistory(numericId, 'DELETE', singleSnapshot?.file_path ?? null, null, 'mcp:memory_delete');
         } catch (_histErr: unknown) {
-          // history recording is best-effort
+          // History recording is best-effort
         }
 
         causalEdges.init(database);
@@ -134,7 +132,7 @@ async function handleMemoryDelete(args: DeleteArgs): Promise<MCPResponse> {
           hashById.set(row.id, row);
         }
       } catch (_err: unknown) {
-        // AI-GUARD: AI-RISK: Non-fatal — bulk delete proceeds without per-memory hash snapshots; ledger entries will lack prior hashes.
+        // Non-fatal — bulk delete proceeds without per-memory hash snapshots; ledger entries will lack prior hashes.
       }
     }
 
@@ -161,23 +159,23 @@ async function handleMemoryDelete(args: DeleteArgs): Promise<MCPResponse> {
       } catch (cpErr: unknown) {
         const message = toErrorMessage(cpErr);
         console.error(`[memory-delete] Failed to create checkpoint: ${message}`);
-        // AI-GUARD: confirm is always true here (validated at function entry) — safe to proceed without checkpoint.
+        // Confirm is always true here (validated at function entry) — safe to proceed without checkpoint.
         console.warn('[memory-delete] Proceeding without backup (user confirmed)');
         checkpointName = null;
       }
     }
 
-    // AI-WHY: snapshot-then-delete is safe under single-process better-sqlite3; re-evaluate if multi-process support is added
+    // Snapshot-then-delete is safe under single-process better-sqlite3; re-evaluate if multi-process support is added
     causalEdges.init(database);
     const bulkDeleteTx = database.transaction(() => {
       for (const memory of memories) {
         if (vectorIndex.deleteMemory(memory.id)) {
-          // AI-WHY: Record DELETE history after confirmed delete (no FK, history rows survive).
+          // Record DELETE history after confirmed delete (no FK, history rows survive).
           try {
             const snapshot = hashById.get(memory.id);
             recordHistory(memory.id, 'DELETE', snapshot?.file_path ?? null, null, 'mcp:memory_delete');
           } catch (_histErr: unknown) {
-            // history recording is best-effort inside bulk delete
+            // History recording is best-effort inside bulk delete
           }
           deletedCount++;
           deletedIds.push(memory.id);
@@ -185,7 +183,7 @@ async function handleMemoryDelete(args: DeleteArgs): Promise<MCPResponse> {
         }
       }
 
-      // AI-WHY: Mutation ledger entries written inside bulk transaction for atomicity with deletes.
+      // Mutation ledger entries written inside bulk transaction for atomicity with deletes.
       for (const deletedId of deletedIds) {
         const snapshot = hashById.get(deletedId) ?? null;
         appendMutationLedgerSafe(database, {

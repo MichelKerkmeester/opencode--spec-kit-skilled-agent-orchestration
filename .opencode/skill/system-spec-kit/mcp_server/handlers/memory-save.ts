@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Memory Save Handler
-// ---------------------------------------------------------------
+// --- 1. MEMORY SAVE HANDLER ---
 /* --- 1. DEPENDENCIES --- */
 
 // Node built-ins
@@ -19,6 +17,7 @@ import * as transactionManager from '../lib/storage/transaction-manager';
 import * as preflight from '../lib/validation/preflight';
 import { requireDb } from '../utils';
 import type { MCPResponse } from './types';
+import { createAppendOnlyMemoryRecord, recordLineageVersion } from '../lib/storage/lineage-state';
 
 import { runQualityGate, isQualityGateEnabled } from '../lib/validation/save-quality-gate';
 import { isSaveQualityGateEnabled } from '../lib/search/search-flags';
@@ -28,6 +27,17 @@ import { findSimilarMemories } from './pe-gating';
 import { runPostMutationHooks } from './mutation-hooks';
 import { buildMutationHookFeedback } from '../hooks/mutation-feedback';
 import { needsChunking, indexChunkedMemoryFile } from './chunking-orchestrator';
+import { applyPostInsertMetadata } from './save/db-helpers';
+import {
+  buildGovernancePostInsertFields,
+  ensureGovernanceRuntime,
+  recordGovernanceAudit,
+  validateGovernedIngest,
+} from '../lib/governance/scope-governance';
+import {
+  assertSharedSpaceAccess,
+  recordSharedConflict,
+} from '../lib/collab/shared-spaces';
 import {
   computeMemoryQualityScore,
   attemptAutoFix,
@@ -58,7 +68,6 @@ import type {
   AtomicSaveOptions,
   AtomicSaveResult,
 } from './save';
-import { applyPostInsertMetadata } from './save/db-helpers';
 import { checkExistingRow, checkContentHashDedup } from './save/dedup';
 import { generateOrCacheEmbedding, persistPendingEmbeddingCacheWrite } from './save/embedding-pipeline';
 import { evaluateAndApplyPeDecision } from './save/pe-orchestration';
@@ -194,7 +203,7 @@ async function processPreparedMemory(
     });
     if (dupResult) return dupResult;
 
-    // AI-WHY: CHUNKING BRANCH: Large files get split into parent + child records
+    // CHUNKING BRANCH: Large files get split into parent + child records
     // Must be inside withSpecFolderLock to serialize chunked saves too.
     // Dedup checks above must run first so duplicate content exits before chunking.
     if (needsChunking(parsed.content)) {
@@ -268,7 +277,7 @@ async function processPreparedMemory(
       } catch (qgErr: unknown) {
         const message = qgErr instanceof Error ? qgErr.message : String(qgErr);
         console.warn(`[memory-save] TM-04: Quality gate error (proceeding with save): ${message}`);
-        // AI-GUARD: Quality gate errors must not block saves
+        // Quality gate errors must not block saves
       }
     }
 
@@ -298,9 +307,30 @@ async function processPreparedMemory(
       LIMIT 1
     `).get(parsed.specFolder, canonicalFilePath, filePath) as { id: number; content_hash: string } | undefined;
 
-    const id = createMemoryRecord(
-      database, parsed, filePath, embedding, embeddingFailureReason, peResult.decision,
-    );
+    const id = existing && existing.content_hash !== parsed.contentHash
+      ? createAppendOnlyMemoryRecord({
+          database,
+          parsed,
+          filePath,
+          embedding,
+          embeddingFailureReason,
+          predecessorMemoryId: existing.id,
+          actor: 'mcp:memory_save',
+        })
+      : createMemoryRecord(
+          database, parsed, filePath, embedding, embeddingFailureReason, peResult.decision,
+        );
+
+    recordLineageVersion(database, {
+      memoryId: id,
+      predecessorMemoryId: existing && existing.content_hash !== parsed.contentHash
+        ? existing.id
+        : null,
+      actor: 'mcp:memory_save',
+      transitionEvent: existing && existing.content_hash !== parsed.contentHash
+        ? 'SUPERSEDE'
+        : 'CREATE',
+    });
 
     // POST-INSERT ENRICHMENT: causal links, entities, summaries, entity linking
     const { causalLinksResult } = await runPostInsertEnrichment(database, id, parsed);
@@ -327,7 +357,7 @@ async function processPreparedMemory(
 
 /** Parse, validate, and index a memory file with PE gating, FSRS scheduling, and causal links */
 async function indexMemoryFile(filePath: string, { force = false, parsedOverride = null as ReturnType<typeof memoryParser.parseMemoryFile> | null, asyncEmbedding = false } = {}): Promise<IndexResult> {
-  // AI-WHY: Reuse parsed content when provided by caller to avoid a second parse.
+  // Reuse parsed content when provided by caller to avoid a second parse.
   const parsed = parsedOverride || memoryParser.parseMemoryFile(filePath);
   const database = requireDb();
   const prepared = prepareParsedMemoryForIndexing(parsed, database);
@@ -354,13 +384,82 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
   const requestId = randomUUID();
   await checkDatabaseUpdated();
 
-  const { filePath: file_path, force = false, dryRun = false, skipPreflight = false, asyncEmbedding = false } = args;
+  const {
+    filePath: file_path,
+    force = false,
+    dryRun = false,
+    skipPreflight = false,
+    asyncEmbedding = false,
+    tenantId,
+    userId,
+    agentId,
+    sessionId,
+    sharedSpaceId,
+    provenanceSource,
+    provenanceActor,
+    governedAt,
+    retentionPolicy,
+    deleteAfter,
+  } = args;
 
   if (!file_path || typeof file_path !== 'string') {
     throw new Error('filePath is required and must be a string');
   }
 
   const validatedPath: string = validateFilePathLocal(file_path);
+  const database = requireDb();
+  ensureGovernanceRuntime(database);
+
+  const governanceDecision = validateGovernedIngest({
+    tenantId,
+    userId,
+    agentId,
+    sessionId,
+    sharedSpaceId,
+    provenanceSource,
+    provenanceActor,
+    governedAt,
+    retentionPolicy,
+    deleteAfter,
+  });
+
+  if (!governanceDecision.allowed) {
+    recordGovernanceAudit(database, {
+      action: 'memory_save',
+      decision: 'deny',
+      tenantId,
+      userId,
+      agentId,
+      sessionId,
+      sharedSpaceId,
+      reason: governanceDecision.reason ?? 'governance_rejected',
+      metadata: { issues: governanceDecision.issues },
+    });
+    throw new Error(`Governed ingest rejected: ${governanceDecision.issues.join('; ')}`);
+  }
+
+  if (sharedSpaceId) {
+    const access = assertSharedSpaceAccess(database, {
+      tenantId,
+      userId,
+      agentId,
+      sessionId,
+      sharedSpaceId,
+    }, sharedSpaceId, 'editor');
+    if (!access.allowed) {
+      recordGovernanceAudit(database, {
+        action: 'memory_save_shared_space',
+        decision: 'deny',
+        tenantId,
+        userId,
+        agentId,
+        sessionId,
+        sharedSpaceId,
+        reason: access.reason ?? 'shared_space_denied',
+      });
+      throw new Error(`Shared-memory save denied: ${access.reason ?? 'shared_space_denied'}`);
+    }
+  }
 
   if (!memoryParser.isMemoryFile(validatedPath)) {
     throw new Error('File must be a .md or .txt file in: specs/**/memory/, specs/**/ (spec docs), or .opencode/skill/*/constitutional/');
@@ -370,7 +469,6 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
   let parsedForPreflight: ReturnType<typeof memoryParser.parseMemoryFile> | null = null;
   if (!skipPreflight) {
     parsedForPreflight = memoryParser.parseMemoryFile(validatedPath);
-    const database = requireDb();
 
     const preflightResult = preflight.runPreflight(
       {
@@ -424,8 +522,8 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
         typeof e === 'string' ? e : e.message
       ).join('; ');
 
-      // AI-WHY: Fix #23 (017-refinement-phase-6) — Use the actual error code from the
-      // first validation error instead of hardcoding ANCHOR_FORMAT_INVALID.
+      // Fix #23 (017-refinement-phase-6) — Use the actual error code from the
+      // First validation error instead of hardcoding ANCHOR_FORMAT_INVALID.
       const firstError = preflightResult.errors[0];
       const errorCode = (typeof firstError === 'object' && firstError?.code)
         ? firstError.code
@@ -451,7 +549,7 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
     }
   }
 
-  // AI-GUARD: dryRun must remain non-mutating even when preflight is explicitly skipped.
+  // DryRun must remain non-mutating even when preflight is explicitly skipped.
   if (dryRun && skipPreflight) {
     const parsedForDryRun = memoryParser.parseMemoryFile(validatedPath);
     const { createMCPSuccessResponse } = await import('../lib/response/envelope');
@@ -482,6 +580,44 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
   }
 
   const result = await indexMemoryFile(validatedPath, { force, parsedOverride: parsedForPreflight, asyncEmbedding });
+
+  if (typeof result.id === 'number' && result.id > 0) {
+    applyPostInsertMetadata(database, result.id, buildGovernancePostInsertFields(governanceDecision));
+    recordGovernanceAudit(database, {
+      action: 'memory_save',
+      decision: 'allow',
+      memoryId: result.id,
+      tenantId,
+      userId,
+      agentId,
+      sessionId,
+      sharedSpaceId,
+      reason: sharedSpaceId ? 'shared_space_save' : 'governed_ingest',
+      metadata: { filePath: validatedPath, retentionPolicy: governanceDecision.normalized.retentionPolicy },
+    });
+
+    if (sharedSpaceId) {
+      const existing = database.prepare(`
+        SELECT id
+        FROM memory_index
+        WHERE shared_space_id = ?
+          AND file_path = ?
+          AND id != ?
+        ORDER BY id DESC
+        LIMIT 1
+      `).get(sharedSpaceId, validatedPath, result.id) as { id?: number } | undefined;
+      if (existing?.id) {
+        recordSharedConflict(database, {
+          spaceId: sharedSpaceId,
+          logicalKey: `${result.specFolder || ''}::${validatedPath}`,
+          existingMemoryId: existing.id,
+          incomingMemoryId: result.id,
+          actor: provenanceActor ?? 'mcp:memory_save',
+          metadata: { filePath: validatedPath },
+        });
+      }
+    }
+  }
 
   return buildSaveResponse({ result, filePath: file_path, asyncEmbedding, requestId });
 }
@@ -743,7 +879,7 @@ export type {
   QualityLoopResult,
 };
 
-// AI-WHY: Backward-compatible aliases (snake_case)
+// Backward-compatible aliases (snake_case)
 const index_memory_file = indexMemoryFile;
 const handle_memory_save = handleMemorySave;
 const atomic_save_memory = atomicSaveMemory;

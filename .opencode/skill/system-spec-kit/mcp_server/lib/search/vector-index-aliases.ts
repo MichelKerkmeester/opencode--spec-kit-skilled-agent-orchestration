@@ -1,8 +1,6 @@
-// ---------------------------------------------------------------
-// MODULE: Vector Index Aliases
-// ---------------------------------------------------------------
+// --- 1. VECTOR INDEX ALIASES ---
 // Split from vector-index-store.ts — contains LRUCache, query caching,
-// learning from selections, and enhanced search with ranking+diversity.
+// Learning from selections, and enhanced search with ranking+diversity.
 
 import * as crypto from 'crypto';
 import {
@@ -425,7 +423,7 @@ export async function enhanced_search(query: string, limit = 20, options: Enhanc
   return final_results;
 }
 
-// camelCase aliases
+// CamelCase aliases
 export { cached_search as cachedSearch };
 export { clear_search_cache as clearSearchCache };
 export { learn_from_selection as learnFromSelection };

@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Test — Query Router-Channel Interaction
-// ---------------------------------------------------------------
+// --- 1. TEST — QUERY ROUTER-CHANNEL INTERACTION ---
 // Ensures that R15 complexity-based channel routing does NOT violate
 // R2 channel-minimum representation.
 //
@@ -225,7 +223,7 @@ describe('T033: R15 + R2 Interaction Tests', () => {
 
       const result = analyzeChannelRepresentation(topK, channelResults);
 
-      // bm25, graph, degree should all be under-represented
+      // Bm25, graph, degree should all be under-represented
       expect(result.underRepresentedChannels).toContain('bm25');
       expect(result.underRepresentedChannels).toContain('graph');
       expect(result.underRepresentedChannels).toContain('degree');
@@ -291,7 +289,7 @@ describe('T033: R15 + R2 Interaction Tests', () => {
 
       const channelResults = new Map<string, Array<{ id: number | string; score: number }>>();
       channelResults.set('vector', [makeChannelResult(1, 0.9), makeChannelResult(2, 0.85)]);
-      // fts results are all below quality floor (0.005)
+      // Fts results are all below quality floor (0.005)
       channelResults.set('fts', [
         makeChannelResult(10, 0.003),
         makeChannelResult(11, 0.002),
@@ -299,7 +297,7 @@ describe('T033: R15 + R2 Interaction Tests', () => {
 
       const result = analyzeChannelRepresentation(topK, channelResults);
 
-      // fts is under-represented but nothing qualifies for promotion
+      // Fts is under-represented but nothing qualifies for promotion
       expect(result.underRepresentedChannels).toContain('fts');
       // No items should be promoted because all are below QUALITY_FLOOR
       const promotedFts = result.promoted.filter(p => p.promotedFrom === 'fts');
@@ -319,7 +317,7 @@ describe('T033: R15 + R2 Interaction Tests', () => {
 
       const result = analyzeChannelRepresentation(topK, channelResults);
 
-      // fts returned nothing — should NOT be listed as under-represented
+      // Fts returned nothing — should NOT be listed as under-represented
       expect(result.underRepresentedChannels).not.toContain('fts');
       expect(result.promoted.length).toBe(0);
     });

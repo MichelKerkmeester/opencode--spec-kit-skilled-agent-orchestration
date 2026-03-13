@@ -1,8 +1,6 @@
-// ---------------------------------------------------------------
-// MODULE: Search
-// ---------------------------------------------------------------
+// --- 1. SEARCH ---
 // @public — scripts should import from here, not lib/ internals.
-// AI-WHY: ARCH-1 stable re-export surface for search functionality.
+// ARCH-1 stable re-export surface for search functionality.
 // Consumer scripts import from here instead of reaching into lib/search/.
 
 export {

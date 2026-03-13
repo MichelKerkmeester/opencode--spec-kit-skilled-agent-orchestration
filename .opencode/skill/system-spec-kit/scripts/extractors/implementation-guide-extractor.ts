@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Implementation Guide Extractor
-// ---------------------------------------------------------------
+// --- 1. IMPLEMENTATION GUIDE EXTRACTOR ---
 // Extracts implementation guidance and step-by-step instructions from session observations
 
 import { createHash } from 'node:crypto';

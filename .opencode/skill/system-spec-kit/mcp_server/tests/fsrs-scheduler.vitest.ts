@@ -1,14 +1,9 @@
-// ---------------------------------------------------------------
-// MODULE: FSRS Scheduler Tests
-// ---------------------------------------------------------------
+// --- 1. FSRS SCHEDULER TESTS ---
 import { describe, it, expect, beforeAll } from 'vitest';
 import { TIER_MULTIPLIER } from '../lib/cache/cognitive/fsrs-scheduler';
 
-// ---------------------------------------------------------------
 // TEST: FSRS SCHEDULER (Vitest)
 // Covers: T016-T020, T034-T037, T048-T050
-// ---------------------------------------------------------------
-
 type FsrsSchedulerModule = typeof import('../lib/cache/cognitive/fsrs-scheduler');
 type PredictionErrorGateModule = typeof import('../lib/cache/cognitive/prediction-error-gate');
 
@@ -28,10 +23,7 @@ beforeAll(async () => {
   }
 });
 
-// -------------------------------------------------------------
 // 4.1 FSRS RETRIEVABILITY TESTS (T016-T018)
-// -------------------------------------------------------------
-
 describe('FSRS Retrievability Calculation (T016-T018)', () => {
   it('T016: Just reviewed = full retrievability', () => {
     if (!fsrsScheduler?.calculateRetrievability) return;
@@ -54,10 +46,7 @@ describe('FSRS Retrievability Calculation (T016-T018)', () => {
   });
 });
 
-// -------------------------------------------------------------
 // 4.2 FSRS STABILITY UPDATE TESTS (T019-T020)
-// -------------------------------------------------------------
-
 describe('FSRS Stability Update (T019-T020)', () => {
   it('T019: Success grade increases stability', () => {
     if (!fsrsScheduler?.updateStability) return;
@@ -80,10 +69,7 @@ describe('FSRS Stability Update (T019-T020)', () => {
   });
 });
 
-// -------------------------------------------------------------
 // 4.3 ADDITIONAL FSRS FORMULA TESTS
-// -------------------------------------------------------------
-
 describe('FSRS Formula Properties (Additional Verification)', () => {
   it('Retrievability decreases monotonically with time', () => {
     if (!fsrsScheduler?.calculateRetrievability) return;
@@ -115,10 +101,7 @@ describe('FSRS Formula Properties (Additional Verification)', () => {
   });
 });
 
-// -------------------------------------------------------------
 // 4.4 FSRS INPUT VALIDATION TESTS
-// -------------------------------------------------------------
-
 describe('FSRS Input Validation', () => {
   it('Handles zero/negative stability gracefully', () => {
     if (!fsrsScheduler?.calculateRetrievability) return;
@@ -159,10 +142,7 @@ describe('FSRS Input Validation', () => {
   });
 });
 
-// -------------------------------------------------------------
 // 4.5 PREDICTION ERROR GATE TESTS (T034-T037)
-// -------------------------------------------------------------
-
 describe('Prediction Error Gate (T034-T037)', () => {
   const newContent = 'Test memory content for evaluation';
   const dummyHash = 'test-hash-001';
@@ -204,10 +184,7 @@ describe('Prediction Error Gate (T034-T037)', () => {
   });
 });
 
-// -------------------------------------------------------------
 // 4.6 PREDICTION ERROR GATE THRESHOLD TESTS
-// -------------------------------------------------------------
-
 describe('PE Gate Threshold Boundaries', () => {
   it('PE Gate threshold constants are ordered correctly', () => {
     if (!predictionErrorGate) return;
@@ -243,10 +220,7 @@ describe('PE Gate Threshold Boundaries', () => {
   });
 });
 
-// -------------------------------------------------------------
 // 4.7 TESTING EFFECT TESTS (T048-T050)
-// -------------------------------------------------------------
-
 describe('Testing Effect (T048-T050)', () => {
   it('T048: Retrievability factor affects search ranking', () => {
     if (!fsrsScheduler?.calculateRetrievability) return;
@@ -273,7 +247,7 @@ describe('Testing Effect (T048-T050)', () => {
     const boostHighR = fsrsScheduler.updateStability(initial, difficulty, grade, 0.9) - initial;
     const boostLowR = fsrsScheduler.updateStability(initial, difficulty, grade, 0.4) - initial;
     // Some FSRS implementations may not have desirable difficulty built-in
-    // so we accept either outcome but verify the values are positive
+    // So we accept either outcome but verify the values are positive
     expect(boostHighR).toBeGreaterThan(0);
     expect(boostLowR).toBeGreaterThan(0);
     // If desirable difficulty is implemented, low R boost should be larger
@@ -283,10 +257,7 @@ describe('Testing Effect (T048-T050)', () => {
   });
 });
 
-// -------------------------------------------------------------
 // 4.8 FSRS CONSTANTS BOUNDARY TESTS
-// -------------------------------------------------------------
-
 describe('FSRS Constants Boundary Tests', () => {
   it('FSRS_FACTOR is a valid positive number', () => {
     if (!fsrsScheduler) return;
@@ -318,10 +289,7 @@ describe('FSRS Constants Boundary Tests', () => {
   });
 });
 
-// -------------------------------------------------------------
 // 4.9 RETRIEVABILITY EDGE CASES
-// -------------------------------------------------------------
-
 describe('Retrievability Edge Cases', () => {
   it('R at t=0 MUST equal 1.0 exactly', () => {
     if (!fsrsScheduler?.calculateRetrievability) return;
@@ -379,10 +347,7 @@ describe('Retrievability Edge Cases', () => {
   });
 });
 
-// -------------------------------------------------------------
 // 4.10 STABILITY UPDATE SCENARIOS
-// -------------------------------------------------------------
-
 describe('Stability Update Scenarios', () => {
   it('Grade 1 (fail) with high difficulty reduces stability significantly', () => {
     if (!fsrsScheduler?.updateStability) return;
@@ -465,10 +430,7 @@ describe('Stability Update Scenarios', () => {
   });
 });
 
-// -------------------------------------------------------------
 // 4.11 DIFFICULTY UPDATE EDGE CASES
-// -------------------------------------------------------------
-
 describe('Difficulty Update Edge Cases', () => {
   it('Difficulty clamped to [1, 10] range', () => {
     if (!fsrsScheduler?.updateDifficulty) return;
@@ -528,10 +490,7 @@ describe('Difficulty Update Edge Cases', () => {
   });
 });
 
-// -------------------------------------------------------------
 // 4.12 OPTIMAL INTERVAL CALCULATIONS
-// -------------------------------------------------------------
-
 describe('Optimal Interval Calculations', () => {
   it('Target R=0.9 with S=1 gives expected interval', () => {
     if (!fsrsScheduler?.calculateOptimalInterval) return;
@@ -588,10 +547,7 @@ describe('Optimal Interval Calculations', () => {
   });
 });
 
-// -------------------------------------------------------------
 // 4.13 MODULE EXPORTS VERIFICATION
-// -------------------------------------------------------------
-
 describe('FSRS Module Exports', () => {
   const expectedExports = [
     'calculateRetrievability',
@@ -652,11 +608,11 @@ describe('C138: Tier Decay Modulation', () => {
     const oldStability = 10.0;
     const decayRate = 0.5;
 
-    // constitutional: barely decays
+    // Constitutional: barely decays
     const constStab = oldStability * (1.0 - (decayRate * TIER_MULTIPLIER.constitutional));
     expect(constStab).toBeCloseTo(9.5, 1);
 
-    // scratch: rapid decay
+    // Scratch: rapid decay
     const scratchStab = oldStability * (1.0 - (decayRate * TIER_MULTIPLIER.scratch));
     expect(scratchStab).toBeLessThan(0); // negative → clamped to min in production
 

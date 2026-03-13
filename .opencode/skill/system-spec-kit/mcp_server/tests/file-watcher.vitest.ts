@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: File watcher reliability and path filtering
-// ---------------------------------------------------------------
-
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';

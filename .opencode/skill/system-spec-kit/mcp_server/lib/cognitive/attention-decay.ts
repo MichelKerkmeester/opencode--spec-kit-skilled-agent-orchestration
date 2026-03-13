@@ -1,20 +1,16 @@
-// ---------------------------------------------------------------
-// MODULE: Attention Decay
-// ---------------------------------------------------------------
+// --- 1. ATTENTION DECAY ---
 // DECAY STRATEGY (ADR-004): This module is the FACADE for all long-term
-// memory decay. It exposes FSRS-based decay as the canonical path
+// Memory decay. It exposes FSRS-based decay as the canonical path
 // (via composite-scoring.ts and fsrs-scheduler.ts).
 // Legacy exponential functions (calculateDecayedScore, applyDecay) were
-// removed in REC-017 Phase 4 — all callers migrated to applyFsrsDecay
-// or calculateCompositeAttention.
+// Removed in REC-017 Phase 4 — all callers migrated to applyFsrsDecay
+// Or calculateCompositeAttention.
 //
 // Decay ownership map:
-//   Long-term memory scoring → FSRS v4 (fsrs-scheduler.ts)
-//   Composite attention      → 5-factor model (composite-scoring.ts) using FSRS temporal
-//   Session/working memory   → Linear decay (working-memory.ts) — separate domain
-//   Search-time ranking      → FSRS-preferred SQL (vector-index-impl.js)
-// ---------------------------------------------------------------
-
+// Long-term memory scoring → FSRS v4 (fsrs-scheduler.ts)
+// Composite attention      → 5-factor model (composite-scoring.ts) using FSRS temporal
+// Session/working memory   → Linear decay (working-memory.ts) — separate domain
+// Search-time ranking      → FSRS-preferred SQL (vector-index-impl.js)
 // External packages
 import type Database from 'better-sqlite3';
 
@@ -94,7 +90,7 @@ function getDecayRate(importanceTier: string | null | undefined): number {
   return rate !== undefined ? rate : DECAY_CONFIG.defaultDecayRate;
 }
 
-// calculateDecayedScore removed in REC-017 Phase 4 — use calculateRetrievabilityDecay or applyFsrsDecay
+// CalculateDecayedScore removed in REC-017 Phase 4 — use calculateRetrievabilityDecay or applyFsrsDecay
 
 /**
  * Calculate retrievability-based decay using FSRS formula.
@@ -103,12 +99,12 @@ function calculateRetrievabilityDecay(stability: number, elapsedDays: number): n
   if (typeof fsrsScheduler.calculateRetrievability === 'function') {
     return fsrsScheduler.calculateRetrievability(stability, elapsedDays);
   }
-  // AI-TRACE: T301: Inline fallback uses canonical constants from fsrs-scheduler.ts
+  // Inline fallback uses canonical constants from fsrs-scheduler.ts
   if (stability <= 0 || elapsedDays < 0) return 0;
   return Math.pow(1 + fsrsScheduler.FSRS_FACTOR * (elapsedDays / stability), fsrsScheduler.FSRS_DECAY);
 }
 
-// applyDecay removed in REC-017 Phase 4 — use applyFsrsDecay
+// ApplyDecay removed in REC-017 Phase 4 — use applyFsrsDecay
 
 /**
  * Apply FSRS-based decay to a memory.

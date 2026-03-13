@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Handler Utils
-// ---------------------------------------------------------------
+// --- 1. HANDLER UTILS ---
 // Shared utilities extracted from handler modules to break dependency cycles.
 //
 // GROWTH POLICY (T033):
@@ -13,8 +11,6 @@
 // Current contents:
 // - escapeLikePattern: extracted from memory-save.ts
 // - detectSpecLevelFromParsed: extracted from causal-links-processor.ts
-// ---------------------------------------------------------------
-
 import fs from 'fs';
 import path from 'path';
 
@@ -62,7 +58,7 @@ export function detectSpecLevelFromParsed(filePath: string): number | null {
     if (siblings.includes('checklist.md')) return 2;
     return 1;
   } catch (_err: unknown) {
-    // AI-GUARD: Spec level detection is best-effort; null signals unknown level to caller
+    // Spec level detection is best-effort; null signals unknown level to caller
     return null;
   }
 }

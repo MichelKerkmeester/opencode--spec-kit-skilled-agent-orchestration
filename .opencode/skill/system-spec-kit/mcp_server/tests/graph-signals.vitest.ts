@@ -1,9 +1,6 @@
-// ---------------------------------------------------------------
 // TEST: GRAPH SIGNALS — Momentum + Causal Depth (N2a + N2b)
 // Covers: snapshotDegrees, computeMomentum,
-//         computeCausalDepthScores, applyGraphSignals, clearGraphSignalsCache
-// ---------------------------------------------------------------
-
+// ComputeCausalDepthScores, applyGraphSignals, clearGraphSignalsCache
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import Database from 'better-sqlite3';
 import {
@@ -16,10 +13,7 @@ import {
   __testables,
 } from '../lib/graph/graph-signals.js';
 
-// ---------------------------------------------------------------------------
 // TEST HELPERS
-// ---------------------------------------------------------------------------
-
 function createTestDb(): Database.Database {
   const db = new Database(':memory:');
   db.exec(`
@@ -79,10 +73,7 @@ function insertSnapshot(
   `).run(memoryId, degreeCount, snapshotDate);
 }
 
-// ---------------------------------------------------------------------------
 // TESTS
-// ---------------------------------------------------------------------------
-
 describe('Graph Signals (S8 — N2a + N2b)', () => {
   let db: Database.Database;
 
@@ -95,9 +86,7 @@ describe('Graph Signals (S8 — N2a + N2b)', () => {
     db.close();
   });
 
-  // -------------------------------------------------------------
   // 1. snapshotDegrees
-  // -------------------------------------------------------------
   describe('snapshotDegrees', () => {
     it('returns 0 snapshotted for an empty graph', () => {
       const result = snapshotDegrees(db);
@@ -174,9 +163,7 @@ describe('Graph Signals (S8 — N2a + N2b)', () => {
     });
   });
 
-  // -------------------------------------------------------------
   // 2. computeMomentum
-  // -------------------------------------------------------------
   describe('computeMomentum', () => {
     it('returns 0 when no edges and no history exist', () => {
       const momentum = computeMomentum(db, 1);
@@ -232,9 +219,7 @@ describe('Graph Signals (S8 — N2a + N2b)', () => {
     });
   });
 
-  // -------------------------------------------------------------
   // 3. computeMomentumScores
-  // -------------------------------------------------------------
   describe('computeMomentumScores', () => {
     it('batch-computes momentum for multiple nodes', () => {
       insertEdge(db, 1, 2);
@@ -267,9 +252,7 @@ describe('Graph Signals (S8 — N2a + N2b)', () => {
     });
   });
 
-  // -------------------------------------------------------------
   // 5. computeCausalDepthScores
-  // -------------------------------------------------------------
   describe('computeCausalDepthScores', () => {
     it('batch-computes depth for multiple nodes', () => {
       // Chain: 1 -> 2 -> 3
@@ -358,9 +341,7 @@ describe('Graph Signals (S8 — N2a + N2b)', () => {
     });
   });
 
-  // -------------------------------------------------------------
   // 6. applyGraphSignals
-  // -------------------------------------------------------------
   describe('applyGraphSignals', () => {
     it('returns empty array for empty rows', () => {
       const result = applyGraphSignals([], db);
@@ -387,10 +368,10 @@ describe('Graph Signals (S8 — N2a + N2b)', () => {
       const rows = [{ id: 1, score: 0.5 }];
       const result = applyGraphSignals(rows, db);
 
-      // momentumBonus = 0 (no historical snapshot)
-      // depthBonus: node 1 has in-degree 1 (from 3->1), node 3 is root
+      // MomentumBonus = 0 (no historical snapshot)
+      // DepthBonus: node 1 has in-degree 1 (from 3->1), node 3 is root
       // Graph: 3->1, 1->2; roots=[3], BFS: 3=0,1=1,2=2; maxDepth=2
-      // depth(1) = 1/2 = 0.5, depthBonus = 0.5 * 0.05 = 0.025
+      // Depth(1) = 1/2 = 0.5, depthBonus = 0.5 * 0.05 = 0.025
       // Total: 0.5 + 0 + 0.025 = 0.525
       expect(result[0].score).toBeCloseTo(0.525, 5);
     });
@@ -404,10 +385,10 @@ describe('Graph Signals (S8 — N2a + N2b)', () => {
       const rows = [{ id: 30, score: 0.4 }];
       const result = applyGraphSignals(rows, db);
 
-      // momentum for 30: no historical snapshot -> momentum = 0
-      // momentumBonus = 0
-      // depth for 30: depth=2, maxDepth=2, normalized=1.0
-      // depthBonus = 1.0 * 0.05 = 0.05
+      // Momentum for 30: no historical snapshot -> momentum = 0
+      // MomentumBonus = 0
+      // Depth for 30: depth=2, maxDepth=2, normalized=1.0
+      // DepthBonus = 1.0 * 0.05 = 0.05
       // Total: 0.4 + 0 + 0.05 = 0.45
       expect(result[0].score).toBeCloseTo(0.45, 5);
     });
@@ -423,14 +404,14 @@ describe('Graph Signals (S8 — N2a + N2b)', () => {
       const result = applyGraphSignals(rows, db);
 
       // Node 2 has no historical snapshot -> momentum = 0
-      // momentumBonus = 0
+      // MomentumBonus = 0
       // Roots: 1, 4 (in-degree 0)
       // BFS from roots [1,4]:
       //   1 -> depth 0, 4 -> depth 0
       //   2 -> depth 1 (from 1 or 4)
       //   3 -> depth 2
-      // maxDepth = 2, depth(2) = 1/2 = 0.5
-      // depthBonus = 0.5 * 0.05 = 0.025
+      // MaxDepth = 2, depth(2) = 1/2 = 0.5
+      // DepthBonus = 0.5 * 0.05 = 0.025
       // Total: 0.5 + 0 + 0.025 = 0.525
       expect(result[0].score).toBeCloseTo(0.525, 5);
     });
@@ -441,12 +422,12 @@ describe('Graph Signals (S8 — N2a + N2b)', () => {
         insertEdge(db, 1, i);
       }
       // Node 1 has no historical snapshot -> momentum = 0
-      // momentumBonus = 0
+      // MomentumBonus = 0
 
       const rows = [{ id: 1, score: 0.5 }];
       const result = applyGraphSignals(rows, db);
 
-      // depthBonus for root node = 0
+      // DepthBonus for root node = 0
       // Total: 0.5 + 0 + 0 = 0.5
       expect(result[0].score).toBeCloseTo(0.5, 5);
     });
@@ -460,9 +441,9 @@ describe('Graph Signals (S8 — N2a + N2b)', () => {
       const rows = [{ id: 3, score: 0.0 }];
       const result = applyGraphSignals(rows, db);
 
-      // momentum for 3: no historical snapshot -> momentum 0
-      // momentumBonus = 0
-      // depthBonus = 0.05
+      // Momentum for 3: no historical snapshot -> momentum 0
+      // MomentumBonus = 0
+      // DepthBonus = 0.05
       // Total = 0 + 0 + 0.05 = 0.05
       expect(result[0].score).toBeCloseTo(0.05, 5);
     });
@@ -473,11 +454,11 @@ describe('Graph Signals (S8 — N2a + N2b)', () => {
       const rows = [{ id: 1 }];
       const result = applyGraphSignals(rows, db);
 
-      // baseScore defaults to 0 when score is undefined
-      // momentum = 0 (no historical snapshot)
-      // momentumBonus = 0
+      // BaseScore defaults to 0 when score is undefined
+      // Momentum = 0 (no historical snapshot)
+      // MomentumBonus = 0
       // Roots: [1], BFS: 1=0, 2=1, maxDepth=1
-      // depth(1) = 0/1 = 0, depthBonus = 0
+      // Depth(1) = 0/1 = 0, depthBonus = 0
       // Total: 0 + 0 + 0 = 0
       expect(result[0].score).toBeCloseTo(0, 5);
     });
@@ -492,9 +473,7 @@ describe('Graph Signals (S8 — N2a + N2b)', () => {
     });
   });
 
-  // -------------------------------------------------------------
   // 7. clearGraphSignalsCache
-  // -------------------------------------------------------------
   describe('clearGraphSignalsCache', () => {
     it('clears populated caches', () => {
       insertEdge(db, 1, 2);
@@ -548,9 +527,7 @@ describe('Graph Signals (S8 — N2a + N2b)', () => {
     });
   });
 
-  // -------------------------------------------------------------
   // 8. Edge cases
-  // -------------------------------------------------------------
   describe('Edge cases', () => {
     it('non-existent memoryId returns 0 for momentum signal', () => {
       insertEdge(db, 1, 2);
@@ -564,11 +541,11 @@ describe('Graph Signals (S8 — N2a + N2b)', () => {
       // Insert a self-loop: 1 -> 1
       insertEdge(db, 1, 1);
 
-      // snapshotDegrees should handle it
+      // SnapshotDegrees should handle it
       const snapshot = snapshotDegrees(db);
       expect(snapshot.snapshotted).toBe(1);
 
-      // getCurrentDegree uses COUNT(*) with WHERE source_id = ? OR target_id = ?
+      // GetCurrentDegree uses COUNT(*) with WHERE source_id = ? OR target_id = ?
       // A self-loop is a single row where both conditions match, so COUNT = 1
       const degree = __testables.getCurrentDegree(db, 1);
       expect(degree).toBe(1);
@@ -607,9 +584,7 @@ describe('Graph Signals (S8 — N2a + N2b)', () => {
     });
   });
 
-  // -------------------------------------------------------------
   // 9. __testables internal helpers
-  // -------------------------------------------------------------
   describe('__testables internal helpers', () => {
     it('getCurrentDegree returns correct degree count', () => {
       insertEdge(db, 1, 2);

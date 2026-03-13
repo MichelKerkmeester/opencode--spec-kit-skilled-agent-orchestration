@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Auto Promotion
-// ---------------------------------------------------------------
+// --- 1. AUTO PROMOTION ---
 //
 // Promotes memory importance tier based on positive validation count:
 // - >=5 positive validations: normal -> important
@@ -8,13 +6,9 @@
 // - Below threshold: no change (no-op)
 //
 // Does NOT demote -- only promotes upward.
-// ---------------------------------------------------------------
-
 import type { DatabaseExtended as Database } from '@spec-kit/shared/types';
 
-/* ---------------------------------------------------------------
-   1. TYPES
-   --------------------------------------------------------------- */
+// --- 2. TYPES ---
 
 export type { Database };
 
@@ -32,9 +26,7 @@ export interface AutoPromotionResult {
   reason: string;
 }
 
-/* ---------------------------------------------------------------
-   2. CONSTANTS
-   --------------------------------------------------------------- */
+// --- 3. CONSTANTS ---
 
 /** Positive validations required to promote normal -> important */
 export const PROMOTE_TO_IMPORTANT_THRESHOLD = 5;
@@ -85,9 +77,7 @@ function resolvePositiveValidationCount(totalValidationCount: number, negativeVa
   return Math.max(0, totalValidationCount - Math.max(0, negativeValidationCount));
 }
 
-/* ---------------------------------------------------------------
-   3. PROMOTION THROTTLE SAFEGUARD
-   --------------------------------------------------------------- */
+// --- 4. PROMOTION THROTTLE SAFEGUARD ---
 
 const PROMOTION_AUDIT_TABLE_SQL = `
   CREATE TABLE IF NOT EXISTS memory_promotion_audit (
@@ -112,9 +102,7 @@ function countRecentPromotions(db: Database, nowMs: number): number {
   return row?.count ?? 0;
 }
 
-/* ---------------------------------------------------------------
-   4. CORE FUNCTIONS
-   --------------------------------------------------------------- */
+// --- 5. CORE FUNCTIONS ---
 
 /**
  * Check if a memory qualifies for auto-promotion based on its positive validation count.
@@ -223,8 +211,8 @@ export function executeAutoPromotion(db: Database, memoryId: number): AutoPromot
       return check;
     }
 
-    // AI-WHY: Safeguard: cap promotion throughput to avoid runaway tier inflation.
-    // AI-FIX: F-02 — Wrap throttle check + tier update + audit insert in a
+    // Safeguard: cap promotion throughput to avoid runaway tier inflation.
+    // F-02 — Wrap throttle check + tier update + audit insert in a
     // BEGIN IMMEDIATE transaction so concurrent calls cannot exceed the rate limit.
     ensurePromotionAuditTable(db);
 

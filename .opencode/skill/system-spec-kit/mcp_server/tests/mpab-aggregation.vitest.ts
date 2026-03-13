@@ -1,8 +1,5 @@
-// ---------------------------------------------------------------
 // TEST: MPAB AGGREGATION
 // Multi-Parent Aggregated Bonus chunk-to-memory score aggregation
-// ---------------------------------------------------------------
-
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import {
   computeMPAB,
@@ -14,10 +11,7 @@ import type {
   ChunkResult,
 } from '../lib/scoring/mpab-aggregation';
 
-// -------------------------------------------------------------
 // Helpers
-// -------------------------------------------------------------
-
 /** Create a minimal chunk result for testing. */
 function makeChunk(
   parentMemoryId: number | string,
@@ -33,10 +27,7 @@ function makeChunk(
   };
 }
 
-// -------------------------------------------------------------
-// computeMPAB — Core Algorithm
-// -------------------------------------------------------------
-
+// ComputeMPAB — Core Algorithm
 describe('computeMPAB', () => {
   it('N=0: returns 0 (no chunks = no signal)', () => {
     expect(computeMPAB([])).toBe(0);
@@ -54,10 +45,10 @@ describe('computeMPAB', () => {
 
   it('N=2: correct MPAB calculation', () => {
     const scores = [0.8, 0.4];
-    // sorted desc: [0.8, 0.4]
-    // sMax = 0.8, remaining = [0.4]
+    // Sorted desc: [0.8, 0.4]
+    // SMax = 0.8, remaining = [0.4]
     // N = 2, bonus = 0.3 * 0.4 / sqrt(2) = 0.12 / 1.41421356... = 0.08485281...
-    // result = 0.8 + 0.08485281... = 0.88485281...
+    // Result = 0.8 + 0.08485281... = 0.88485281...
     const expected = 0.8 + (0.3 * 0.4) / Math.sqrt(2);
     expect(computeMPAB(scores)).toBeCloseTo(expected, 10);
   });
@@ -70,12 +61,12 @@ describe('computeMPAB', () => {
 
   it('N=10: correct MPAB calculation with known values', () => {
     const scores = [0.9, 0.85, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1];
-    // sorted desc: [0.9, 0.85, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1]
-    // sMax = 0.9
-    // remaining = [0.85, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1]
-    // sum(remaining) = 4.45
+    // Sorted desc: [0.9, 0.85, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1]
+    // SMax = 0.9
+    // Remaining = [0.85, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1]
+    // Sum(remaining) = 4.45
     // N = 10, bonus = 0.3 * 4.45 / sqrt(10) = 1.335 / 3.16227766... = 0.42213203...
-    // result = 0.9 + 0.42213203... = 1.32213203...
+    // Result = 0.9 + 0.42213203... = 1.32213203...
     const sumRemaining = 0.85 + 0.8 + 0.7 + 0.6 + 0.5 + 0.4 + 0.3 + 0.2 + 0.1;
     const expected = 0.9 + (0.3 * sumRemaining) / Math.sqrt(10);
     expect(computeMPAB(scores)).toBeCloseTo(expected, 10);
@@ -91,11 +82,11 @@ describe('computeMPAB', () => {
     // All three scores are 0.5 — value-based removal would remove ALL of them
     // Index-based removal should remove only sorted[0] and keep sorted[1..N-1]
     const scores = [0.5, 0.5, 0.5];
-    // sorted desc: [0.5, 0.5, 0.5]
-    // sMax = 0.5 (index 0)
-    // remaining = [0.5, 0.5] (indices 1, 2)
+    // Sorted desc: [0.5, 0.5, 0.5]
+    // SMax = 0.5 (index 0)
+    // Remaining = [0.5, 0.5] (indices 1, 2)
     // N = 3, bonus = 0.3 * 1.0 / sqrt(3) = 0.3 / 1.73205... = 0.17320508...
-    // result = 0.5 + 0.17320508... = 0.67320508...
+    // Result = 0.5 + 0.17320508... = 0.67320508...
     const expected = 0.5 + (0.3 * 1.0) / Math.sqrt(3);
     expect(computeMPAB(scores)).toBeCloseTo(expected, 10);
     // Crucially, result must be > 0.5 (proves remaining chunks contributed)
@@ -104,11 +95,11 @@ describe('computeMPAB', () => {
 
   it('index-based max removal: two tied max values, only one removed', () => {
     const scores = [0.9, 0.9, 0.3];
-    // sorted desc: [0.9, 0.9, 0.3]
-    // sMax = 0.9 (index 0)
-    // remaining = [0.9, 0.3] (the second 0.9 stays)
+    // Sorted desc: [0.9, 0.9, 0.3]
+    // SMax = 0.9 (index 0)
+    // Remaining = [0.9, 0.3] (the second 0.9 stays)
     // N = 3, bonus = 0.3 * 1.2 / sqrt(3) = 0.36 / 1.73205... = 0.20784609...
-    // result = 0.9 + 0.20784609... = 1.10784609...
+    // Result = 0.9 + 0.20784609... = 1.10784609...
     const expected = 0.9 + (0.3 * (0.9 + 0.3)) / Math.sqrt(3);
     expect(computeMPAB(scores)).toBeCloseTo(expected, 10);
   });
@@ -134,10 +125,7 @@ describe('computeMPAB', () => {
   });
 });
 
-// -------------------------------------------------------------
-// isMpabEnabled — Feature Flag
-// -------------------------------------------------------------
-
+// IsMpabEnabled — Feature Flag
 describe('isMpabEnabled', () => {
   const ENV_KEY = 'SPECKIT_DOCSCORE_AGGREGATION';
   let originalValue: string | undefined;
@@ -190,10 +178,7 @@ describe('isMpabEnabled', () => {
   });
 });
 
-// -------------------------------------------------------------
-// collapseAndReassembleChunkResults — T001a
-// -------------------------------------------------------------
-
+// CollapseAndReassembleChunkResults — T001a
 describe('collapseAndReassembleChunkResults', () => {
   it('empty input returns empty array', () => {
     expect(collapseAndReassembleChunkResults([])).toEqual([]);
@@ -251,19 +236,19 @@ describe('collapseAndReassembleChunkResults', () => {
 
   it('collapsed results sorted by MPAB score descending', () => {
     const chunks: ChunkResult[] = [
-      // mem-2 has lower individual scores but more chunks
+      // Mem-2 has lower individual scores but more chunks
       makeChunk('mem-2', 0, 0.5),
       makeChunk('mem-2', 1, 0.5),
       makeChunk('mem-2', 2, 0.5),
       makeChunk('mem-2', 3, 0.5),
-      // mem-1 has single high score
+      // Mem-1 has single high score
       makeChunk('mem-1', 0, 0.6),
     ];
     const result = collapseAndReassembleChunkResults(chunks);
 
     expect(result).toHaveLength(2);
-    // mem-2 MPAB: 0.5 + 0.3 * 1.5 / sqrt(4) = 0.5 + 0.45/2 = 0.725
-    // mem-1 MPAB: 0.6 (single chunk)
+    // Mem-2 MPAB: 0.5 + 0.3 * 1.5 / sqrt(4) = 0.5 + 0.45/2 = 0.725
+    // Mem-1 MPAB: 0.6 (single chunk)
     expect(result[0].parentMemoryId).toBe('mem-2');
     expect(result[1].parentMemoryId).toBe('mem-1');
   });
@@ -294,11 +279,11 @@ describe('collapseAndReassembleChunkResults', () => {
 
   it('T001a: multi-parent collapse preserves document order per parent', () => {
     const chunks: ChunkResult[] = [
-      // mem-1 chunks arrive out of order
+      // Mem-1 chunks arrive out of order
       makeChunk('mem-1', 2, 0.8),
       makeChunk('mem-1', 0, 0.6),
       makeChunk('mem-1', 1, 0.7),
-      // mem-2 chunks arrive out of order
+      // Mem-2 chunks arrive out of order
       makeChunk('mem-2', 1, 0.9),
       makeChunk('mem-2', 0, 0.4),
     ];
@@ -325,7 +310,7 @@ describe('collapseAndReassembleChunkResults', () => {
     const result = collapseAndReassembleChunkResults(chunks);
 
     expect(result).toHaveLength(2);
-    // mem 42 has higher MPAB than mem 99
+    // Mem 42 has higher MPAB than mem 99
     expect(result[0].parentMemoryId).toBe(42);
     expect(result[0]._chunkHits).toBe(2);
     expect(result[1].parentMemoryId).toBe(99);
@@ -344,10 +329,7 @@ describe('collapseAndReassembleChunkResults', () => {
   });
 });
 
-// -------------------------------------------------------------
 // Type Exports Verification
-// -------------------------------------------------------------
-
 describe('Module Exports', () => {
   it('exports computeMPAB function', () => {
     expect(typeof computeMPAB).toBe('function');

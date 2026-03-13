@@ -1,16 +1,12 @@
-// ---------------------------------------------------------------
-// MODULE: Eval Quality Proxy (T006g)
-// ---------------------------------------------------------------
+// --- 1. EVAL QUALITY PROXY (T006G) ---
 // Automated quality proxy metric that correlates with manual
-// quality assessment. Pure function, no DB access, no side effects.
+// Quality assessment. Pure function, no DB access, no side effects.
 //
 // Formula:
-//   qualityProxy = avgRelevance * 0.40 + topResult * 0.25
-//                + countSaturation * 0.20 + latencyPenalty * 0.15
+// QualityProxy = avgRelevance * 0.40 + topResult * 0.25
+// + countSaturation * 0.20 + latencyPenalty * 0.15
 //
 // All components normalised to [0, 1]. Output range: [0, 1].
-// ---------------------------------------------------------------
-
 /* ---------------------------------------------------------------
    1. CONSTANTS
 --------------------------------------------------------------- */
@@ -176,7 +172,7 @@ export function computeQualityProxy(
     latencyTargetMs = DEFAULT_LATENCY_TARGET_MS,
   } = input;
 
-  // AI-GUARD: Clamp raw inputs to [0, 1] — guard against out-of-range values
+  // Clamp raw inputs to [0, 1] — guard against out-of-range values
   const clampedAvgRelevance = clamp(avgRelevance, 0, 1);
   const clampedTopResult = clamp(topResultRelevance, 0, 1);
 

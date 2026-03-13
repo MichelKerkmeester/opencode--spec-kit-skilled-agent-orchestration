@@ -1,9 +1,6 @@
-// ---------------------------------------------------------------
 // TEST: PREDICTION ERROR GATE (vitest)
 // Converted from: prediction-error-gate.test.ts (custom runner)
 // Aligned with production prediction-error-gate.ts named exports
-// ---------------------------------------------------------------
-
 import { describe, it, expect, vi } from 'vitest';
 import * as peGate from '../lib/cache/cognitive/prediction-error-gate';
 

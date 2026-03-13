@@ -1,9 +1,6 @@
-// ---------------------------------------------------------------
-// MODULE: Shadow Scoring
-// ---------------------------------------------------------------
-// AI-GUARD: 
+// --- 1. SHADOW SCORING ---
 // Runs a parallel scoring path alongside production results WITHOUT affecting
-// production output. Logs both production and shadow scores for A/B comparison.
+// Production output. Logs both production and shadow scores for A/B comparison.
 //
 // Features:
 // - Run alternative scoring algorithms in shadow mode
@@ -15,8 +12,6 @@
 // CRITICAL: Shadow scoring must NEVER affect production search results.
 // Every public function is wrapped in try-catch. The shadow write path
 // (runShadowScoring, logShadowComparison) was permanently disabled in Sprint 7.
-// ---------------------------------------------------------------
-
 import { initEvalDb, getEvalDb } from './eval-db';
 
 /* --- 2. TYPES --- */
@@ -162,7 +157,7 @@ function ensureShadowSchema(): void {
     db.exec(SHADOW_SCHEMA_SQL);
     _schemaEnsured = true;
   } catch {
-    // AI-GUARD: Non-fatal — logging should never break production
+    // Non-fatal — logging should never break production
   }
 }
 

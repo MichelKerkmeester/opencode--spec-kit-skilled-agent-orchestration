@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: FULL SPEC DOC INDEXING
-// ---------------------------------------------------------------
-
 /**
  * Full Spec Folder Document Indexing
  *
@@ -248,7 +245,7 @@ describe('Spec 126 Phase 4: Parser Enhancements', () => {
     });
 
     it('Rejects spec.md in /memory/ directory', () => {
-      // spec.md in memory/ should still be accepted as standard memory
+      // Spec.md in memory/ should still be accepted as standard memory
       expect(isMemoryFile('/p/.opencode/specs/003/100/memory/spec.md')).toBe(true);
     });
 

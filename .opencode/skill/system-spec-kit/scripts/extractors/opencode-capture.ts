@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Opencode Capture
-// ---------------------------------------------------------------
+// --- 1. OPENCODE CAPTURE ---
 // Captures and parses OpenCode session data from JSONL conversation logs
 
 import * as fs from 'fs/promises';
@@ -186,8 +184,8 @@ async function readJsonlTail<T = unknown>(filePath: string, limit: number): Prom
 ------------------------------------------------------------------*/
 
 // RC-1/RC-8: Added optional sessionStart/sessionEnd params to scope prompt
-// history to the active session's time range. Prevents global prompt history
-// from pulling unrelated sessions, fixing 16-day date mismatches.
+// History to the active session's time range. Prevents global prompt history
+// From pulling unrelated sessions, fixing 16-day date mismatches.
 async function getRecentPrompts(
   limit: number = 20,
   sessionStart?: number,
@@ -204,7 +202,7 @@ async function getRecentPrompts(
 
   // When session bounds are provided, filter to only prompts within that window.
   // RC-8 fix: Do NOT fall back to unfiltered prompts — that reintroduces 16-day
-  // mismatch by pulling global prompt history from unrelated sessions.
+  // Mismatch by pulling global prompt history from unrelated sessions.
   if (sessionStart !== undefined && sessionEnd !== undefined) {
     // Guard against invalid bounds (e.g., session.created=0 or clock skew)
     if (sessionStart > 0 && sessionEnd > 0 && sessionStart <= sessionEnd) {
@@ -244,7 +242,7 @@ function getProjectId(directory: string): string | null {
         .filter((name) => name.startsWith('ses_') && name.endsWith('.json'));
 
       // Check ALL session files, not just the first — project may have
-      // multiple sessions and the matching directory could be in any of them
+      // Multiple sessions and the matching directory could be in any of them
       for (const sessionName of sessions) {
         try {
           const sessionFile = path.join(projectPath, sessionName);
@@ -529,7 +527,7 @@ function buildExchanges(
     const userMsg = userMessages[userMessages.length - 1 - i];
 
     // F-17: Match by session-relative ordering first (position-based),
-    // then fall back to timestamp tolerance matching
+    // Then fall back to timestamp tolerance matching
     const positionIndex = prompts.length - 1 - i;
     let promptIndex: number;
 

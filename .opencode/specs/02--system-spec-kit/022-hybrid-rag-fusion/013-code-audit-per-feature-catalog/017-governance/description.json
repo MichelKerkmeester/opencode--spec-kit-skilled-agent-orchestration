@@ -1,14 +1,12 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance",
-  "description": "017 — governance",
+  "description": "Feature Specification: governance",
   "keywords": [
-    "governance",
-    "code-audit",
-    "rollout-policy",
-    "feature-catalog",
-    "manual-playbook"
+    "feature",
+    "specification",
+    "governance"
   ],
-  "lastUpdated": "2026-03-12T00:00:00.000Z",
+  "lastUpdated": "2026-03-13T18:17:46.780Z",
   "specId": "017",
   "folderSlug": "governance",
   "parentChain": [

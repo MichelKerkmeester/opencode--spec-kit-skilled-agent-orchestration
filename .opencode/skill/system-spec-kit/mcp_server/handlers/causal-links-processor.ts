@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Causal Links Processor
-// ---------------------------------------------------------------
+// --- 1. CAUSAL LINKS PROCESSOR ---
 
 import type BetterSqlite3 from 'better-sqlite3';
 
@@ -169,7 +167,7 @@ export {
   CAUSAL_LINK_MAPPINGS,
 };
 
-// AI-WHY: Re-export from handler-utils for backward compatibility
+// Re-export from handler-utils for backward compatibility
 export { detectSpecLevelFromParsed } from './handler-utils';
 
 export type {

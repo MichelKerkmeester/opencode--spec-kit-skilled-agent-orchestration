@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: RESPONSE ENVELOPE
-// ---------------------------------------------------------------
 // Tests for REQ-019: Standardized Response Structure
 
 import { describe, it, expect } from 'vitest';
@@ -411,7 +409,7 @@ describe('Response Envelope (T148-T155)', () => {
     it('should handle cacheHit in empty responses', () => {
       const envelope = createEmptyResponse({
         tool: 'memory_search'
-        // cacheHit not specified, should default via createResponse
+        // CacheHit not specified, should default via createResponse
       });
 
       expect(envelope.meta.cacheHit).toBe(false);

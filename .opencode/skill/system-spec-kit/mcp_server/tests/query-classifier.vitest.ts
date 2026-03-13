@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Test — Query Classifier
-// ---------------------------------------------------------------
+// --- 1. TEST — QUERY CLASSIFIER ---
 // Query Intelligence: complexity classification and routing
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
@@ -587,16 +585,16 @@ describe('T022-09: ClassificationResult Structure', () => {
     withFeatureFlag(() => {
       const result = classifyQueryComplexity('fix the login bug');
 
-      // tier
+      // Tier
       expect(['simple', 'moderate', 'complex']).toContain(result.tier);
 
-      // features
+      // Features
       expect(typeof result.features.termCount).toBe('number');
       expect(typeof result.features.charCount).toBe('number');
       expect(typeof result.features.hasTriggerMatch).toBe('boolean');
       expect(typeof result.features.stopWordRatio).toBe('number');
 
-      // confidence
+      // Confidence
       expect(typeof result.confidence).toBe('string');
     });
   });

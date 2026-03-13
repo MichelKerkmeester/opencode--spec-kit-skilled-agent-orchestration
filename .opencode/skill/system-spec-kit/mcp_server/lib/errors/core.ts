@@ -1,10 +1,6 @@
-// ---------------------------------------------------------------
-// MODULE: Core
-// ---------------------------------------------------------------
+// --- 1. CORE ---
 // Memory error class and utility functions
 // Migrated from lib/errors.js for proper folder organization
-// ---------------------------------------------------------------
-
 import {
   ERROR_CODES,
   RECOVERY_HINTS,
@@ -16,9 +12,7 @@ import {
 
 import type { RecoveryHint, Severity } from './recovery-hints';
 
-// ---------------------------------------------------------------
-// 1. TYPES
-// ---------------------------------------------------------------
+// --- 2. TYPES ---
 
 /**
  * Describes the ErrorResponseData shape.
@@ -48,13 +42,10 @@ export interface ErrorResponse {
   meta: ErrorResponseMeta;
 }
 
-// ---------------------------------------------------------------
-// AI-WHY: 2. ERROR CODES (Legacy)
+// 2. ERROR CODES (Legacy)
 //
 // Re-export from recovery-hints for backward compatibility.
 // New code should use ERROR_CODES from recovery-hints.ts.
-// ---------------------------------------------------------------
-
 /**
  * Defines the ErrorCodes constant.
  */
@@ -85,9 +76,7 @@ export const ErrorCodes = {
  */
 export type LegacyErrorCodeKey = keyof typeof ErrorCodes;
 
-// ---------------------------------------------------------------
-// 3. MEMORY ERROR CLASS
-// ---------------------------------------------------------------
+// --- 3. MEMORY ERROR CLASS ---
 
 /**
  * Represents the MemoryError type.
@@ -111,11 +100,9 @@ export class MemoryError extends Error {
   }
 }
 
-// ---------------------------------------------------------------
-// 4. TIMEOUT WRAPPER
-// ---------------------------------------------------------------
+// --- 4. TIMEOUT WRAPPER ---
 
-// T121: Fixed timer leak - now properly clears timeout on success or rejection
+// Fixed timer leak - now properly clears timeout on success or rejection
 /**
  * Provides the withTimeout helper.
  */
@@ -141,9 +128,7 @@ export function withTimeout<T>(promise: Promise<T>, ms: number, operation: strin
     });
 }
 
-// ---------------------------------------------------------------
-// 5. USER-FRIENDLY ERROR MESSAGES
-// ---------------------------------------------------------------
+// --- 5. USER-FRIENDLY ERROR MESSAGES ---
 
 interface ErrorPattern {
   pattern: RegExp;
@@ -168,17 +153,14 @@ export function userFriendlyError(error: Error): string {
     if (pattern.test(error.message)) return message;
   }
 
-  // AI-TRACE: P2-09: Return generic message to avoid leaking internal details.
+  // Return generic message to avoid leaking internal details.
   // Raw error is logged for debugging but not returned to the caller.
   console.error('[errors] Unmatched error (debug):', error.message);
   return 'An unexpected error occurred. Please check logs for details.';
 }
 
-// ---------------------------------------------------------------
-// 6. TRANSIENT ERROR DETECTION
-// REQ-032: Enhanced error classification with retry module
-// ---------------------------------------------------------------
-
+// --- 6. TRANSIENT ERROR DETECTION ---
+// Enhanced error classification with retry module
 // Try to load retry module for enhanced classification
 interface RetryModule {
   isTransientError: (error: Error) => boolean;
@@ -188,9 +170,9 @@ interface RetryModule {
 let retryModule: RetryModule | null = null;
 // NOTE: Using require() for optional runtime-only module loading.
 // The retry module source lives in shared/utils/retry.ts but compiles to
-// dist/lib/utils/retry.js. TypeScript cannot resolve this cross-workspace
-// path at compile time, so dynamic import() would cause TS2307. The require()
-// try/catch pattern is appropriate here since the project is CommonJS.
+// Dist/lib/utils/retry.js. TypeScript cannot resolve this cross-workspace
+// Path at compile time, so dynamic import() would cause TS2307. The require()
+// Try/catch pattern is appropriate here since the project is CommonJS.
 try {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   retryModule = require('../utils/retry.js') as RetryModule;
@@ -209,7 +191,7 @@ export function isTransientError(error: Error): boolean {
     return retryModule.isTransientError(error);
   }
 
-  // AI-WHY: Legacy fallback patterns
+  // Legacy fallback patterns
   const transientPatterns: RegExp[] = [
     /SQLITE_BUSY/,
     /SQLITE_LOCKED/,
@@ -233,7 +215,7 @@ export function isPermanentError(error: Error): boolean {
     return retryModule.isPermanentError(error);
   }
 
-  // AI-WHY: Legacy fallback patterns
+  // Legacy fallback patterns
   const permanentPatterns: RegExp[] = [
     /unauthorized/i,
     /authentication failed/i,
@@ -245,12 +227,9 @@ export function isPermanentError(error: Error): boolean {
   return permanentPatterns.some(pattern => pattern.test(error.message));
 }
 
-// ---------------------------------------------------------------
-// 7. ERROR RESPONSE BUILDER WITH HINTS
+// --- 7. ERROR RESPONSE BUILDER WITH HINTS ---
 //
-// REQ-004: Build standardized error responses with recovery hints.
-// ---------------------------------------------------------------
-
+// Build standardized error responses with recovery hints.
 /**
  * Build an error response object with recovery hints.
  * REQ-019: Uses standardized envelope (summary, data, hints, meta).
@@ -260,19 +239,19 @@ export function buildErrorResponse(
   error: Error | MemoryError,
   context: Record<string, unknown> = {}
 ): ErrorResponse {
-  // AI-WHY: Extract error code (from MemoryError or fallback)
+  // Extract error code (from MemoryError or fallback)
   const errorCode = (error as MemoryError).code || ErrorCodes.SEARCH_FAILED;
 
   // Get recovery hint (zero-cost static lookup)
   const recoveryHint = getRecoveryHint(toolName, errorCode);
 
-  // REQ-019: Build hints array from recovery hint
+  // Build hints array from recovery hint
   const hints: string[] = [];
   if (recoveryHint.hint) hints.push(recoveryHint.hint);
   if (recoveryHint.actions) hints.push(...recoveryHint.actions);
   if (recoveryHint.toolTip) hints.push(recoveryHint.toolTip);
 
-  // REQ-019: Build standardized envelope format
+  // Build standardized envelope format
   return {
     summary: `Error: ${error.message}`,
     data: {
@@ -309,9 +288,7 @@ export function createErrorWithHint(
   return error;
 }
 
-// ---------------------------------------------------------------
-// 8. RE-EXPORTS
-// ---------------------------------------------------------------
+// --- 8. RE-EXPORTS ---
 
 export {
   ERROR_CODES,

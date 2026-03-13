@@ -132,7 +132,7 @@ find_feature_dir_by_prefix() {
     fi
 }
 
-# get_feature_paths - Export feature paths as eval-able variables
+# Get_feature_paths - Export feature paths as eval-able variables
 # SECURITY: Uses printf %q to prevent injection from malicious paths
 get_feature_paths() {
     local repo_root current_branch has_git_repo="false" feature_dir

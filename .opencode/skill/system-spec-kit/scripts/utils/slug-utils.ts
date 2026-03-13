@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Slug Utils
-// ---------------------------------------------------------------
+// --- 1. SLUG UTILS ---
 // Content-aware slug generation for memory filenames
 
 import * as crypto from 'node:crypto';
@@ -180,8 +178,8 @@ export function ensureUniqueMemoryFilename(contextDir: string, filename: string)
   }
 
   // After 100 sequential collisions, reserve a random fallback candidate with the same
-  // atomic O_CREAT|O_EXCL path so repeated calls in the same millisecond cannot return
-  // the same filename without first proving it is writable in this directory.
+  // Atomic O_CREAT|O_EXCL path so repeated calls in the same millisecond cannot return
+  // The same filename without first proving it is writable in this directory.
   for (let attempt = 0; attempt < 100; attempt++) {
     const randomSuffix = crypto.randomBytes(6).toString('hex');
     const candidate = `${base}-${randomSuffix}${ext}`;

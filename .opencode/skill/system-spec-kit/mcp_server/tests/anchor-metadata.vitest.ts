@@ -1,12 +1,8 @@
-// ---------------------------------------------------------------
 // TEST: Anchor Metadata
-// ---------------------------------------------------------------
 //
 // Covers: extractAnchorMetadata and enrichResultsWithAnchorMetadata
-// from lib/search/anchor-metadata.ts, plus the Stage 2 wiring
-// that calls enrichResultsWithAnchorMetadata as signal step 8.
-// ---------------------------------------------------------------
-
+// From lib/search/anchor-metadata.ts, plus the Stage 2 wiring
+// That calls enrichResultsWithAnchorMetadata as signal step 8.
 import { describe, it, expect } from 'vitest';
 import {
   extractAnchorMetadata,
@@ -22,8 +18,7 @@ type EnrichedPipelineRow = PipelineRow & { anchorMetadata?: AnchorMetadata[] };
 // ===============================================================
 
 describe('extractAnchorMetadata — parsing', () => {
-  // ── 1.1 Empty / null-ish input ─────────────────────────────
-
+  // --- 1. 1 EMPTY / NULL-ISH INPUT ---
   describe('Empty and null-ish content', () => {
     it('E01: empty string returns empty array', () => {
       expect(extractAnchorMetadata('')).toEqual([]);
@@ -48,8 +43,7 @@ describe('extractAnchorMetadata — parsing', () => {
     });
   });
 
-  // ── 1.2 Single anchor ──────────────────────────────────────
-
+  // --- 2. 2 SINGLE ANCHOR ---
   describe('Single anchor extraction', () => {
     it('A01: basic anchor pair is extracted with correct id and line numbers', () => {
       const content = [
@@ -124,8 +118,7 @@ describe('extractAnchorMetadata — parsing', () => {
     });
   });
 
-  // ── 1.3 Multiple anchors ───────────────────────────────────
-
+  // --- 3. 3 MULTIPLE ANCHORS ---
   describe('Multiple anchors in one document', () => {
     it('M01: two sequential anchors both extracted', () => {
       const content = [
@@ -212,8 +205,7 @@ describe('extractAnchorMetadata — parsing', () => {
     });
   });
 
-  // ── 1.4 Malformed / edge-case content ─────────────────────
-
+  // --- 4. 4 MALFORMED / EDGE-CASE CONTENT ---
   describe('Malformed anchor content', () => {
     it('F01: unmatched opening anchor is silently ignored', () => {
       const content = [
@@ -243,7 +235,7 @@ describe('extractAnchorMetadata — parsing', () => {
         '<!-- /ANCHOR:foo -->',
       ].join('\n');
 
-      // bar close has no matching open, so only foo is resolved
+      // Bar close has no matching open, so only foo is resolved
       const result = extractAnchorMetadata(content);
       expect(result).toHaveLength(1);
       expect(result[0].id).toBe('foo');
@@ -321,14 +313,12 @@ describe('extractAnchorMetadata — type extraction', () => {
 // ===============================================================
 
 describe('enrichResultsWithAnchorMetadata — annotation', () => {
-  // ── Helpers ───────────────────────────────────────────────
-
+  // --- 5. HELPERS ---
   function makeRow(overrides: Partial<EnrichedPipelineRow> = {}): EnrichedPipelineRow {
     return { id: 1, score: 0.8, ...overrides };
   }
 
-  // ── 3.1 Empty / edge-case inputs ──────────────────────────
-
+  // --- 6. 1 EMPTY / EDGE-CASE INPUTS ---
   describe('Empty and edge-case inputs', () => {
     it('R01: empty array returns empty array', () => {
       expect(enrichResultsWithAnchorMetadata([])).toEqual([]);
@@ -357,8 +347,7 @@ describe('enrichResultsWithAnchorMetadata — annotation', () => {
     });
   });
 
-  // ── 3.2 Enrichment of rows with anchors ───────────────────
-
+  // --- 7. 2 ENRICHMENT OF ROWS WITH ANCHORS ---
   describe('Enrichment when anchors are present', () => {
     it('R06: row with one anchor receives anchorMetadata array', () => {
       const content = '<!-- ANCHOR:summary -->\nSome text.\n<!-- /ANCHOR:summary -->';
@@ -437,8 +426,7 @@ describe('enrichResultsWithAnchorMetadata — annotation', () => {
     });
   });
 
-  // ── 3.3 Mixed batch (some rows with anchors, some without) ─
-
+  // --- 8. 3 MIXED BATCH (SOME ROWS WITH ANCHORS, SOME WITHOUT) ---
   describe('Mixed batch of rows', () => {
     it('R11: only rows with anchor content are annotated', () => {
       const withAnchorContent = '<!-- ANCHOR:summary -->\ntext\n<!-- /ANCHOR:summary -->';
@@ -488,8 +476,7 @@ describe('enrichResultsWithAnchorMetadata — annotation', () => {
     });
   });
 
-  // ── 3.4 Score immutability invariant ──────────────────────
-
+  // --- 9. 4 SCORE IMMUTABILITY INVARIANT ---
   describe('Score immutability (Stage 4 invariant)', () => {
     const SCORE_FIELDS = ['score', 'rrfScore', 'similarity', 'intentAdjustedScore', 'importance_weight'] as const;
 

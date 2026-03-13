@@ -227,7 +227,7 @@ tests/
 ├── db-state-graph-reinit.vitest.ts        # DB state graph reinitialization
 ├── evidence-gap-detector.vitest.ts        # Evidence gap detection
 ├── graph-flags.vitest.ts                  # Graph feature flags
-├── hydra-capability-flags.vitest.ts       # Hydra roadmap capability flags
+├── memory-roadmap-flags.vitest.ts         # Memory-roadmap capability flags
 ├── graph-regression-flag-off.vitest.ts    # Graph regression when flags off
 ├── graph-search-fn.vitest.ts              # Graph search functions
 ├── hybrid-search-flags.vitest.ts          # Hybrid search feature flags
@@ -297,7 +297,7 @@ tests/
 ├── eval-db.vitest.ts                     # Eval database infrastructure
 ├── eval-logger.vitest.ts                 # Eval logging pipeline
 ├── eval-metrics.vitest.ts                # Eval metrics computation
-├── hydra-baseline.vitest.ts              # Hydra baseline snapshot capture/persistence
+├── memory-state-baseline.vitest.ts       # Memory-state baseline snapshot capture/persistence
 ├── ceiling-quality.vitest.ts             # Ceiling quality proxy
 ├── ground-truth.vitest.ts                # Ground truth dataset
 ├── bm25-baseline.vitest.ts               # BM25 baseline measurement

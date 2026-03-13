@@ -1,12 +1,8 @@
-// ---------------------------------------------------------------
-// MODULE: Anchor Generator
-// ---------------------------------------------------------------
+// --- 1. ANCHOR GENERATOR ---
 
 import * as crypto from 'crypto';
 
-// ---------------------------------------------------------------
-// 1. TYPES
-// ---------------------------------------------------------------
+// --- 2. TYPES ---
 
 /** Anchor tag type representing the semantic category of a section */
 export type AnchorTag =
@@ -19,9 +15,7 @@ export type AnchorTag =
   | 'integration'
   | 'summary';
 
-// ---------------------------------------------------------------
-// 2. WORD FILTER SETS
-// ---------------------------------------------------------------
+// --- 3. WORD FILTER SETS ---
 
 const STOP_WORDS: Set<string> = new Set([
   'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for',
@@ -44,9 +38,7 @@ const ACTION_VERBS: Set<string> = new Set([
   'use', 'using', 'used',
 ]);
 
-// ---------------------------------------------------------------
-// 3. SLUG GENERATION
-// ---------------------------------------------------------------
+// --- 4. SLUG GENERATION ---
 
 /** Extracts 3-5 meaningful words, filtering stop words and action verbs */
 function generateSemanticSlug(title: string, maxWords: number = 4): string {
@@ -68,9 +60,7 @@ function generateShortHash(content: string): string {
   return crypto.createHash('md5').update(content).digest('hex').substring(0, 8);
 }
 
-// ---------------------------------------------------------------
-// 4. ANCHOR ID GENERATION
-// ---------------------------------------------------------------
+// --- 5. ANCHOR ID GENERATION ---
 
 /** Format: {type}-{semantic-slug}-{8char-hash} */
 function generateAnchorId(
@@ -95,9 +85,7 @@ function generateAnchorId(
   return `${normalizedCategory}-${slug}-${hash}`;
 }
 
-// ---------------------------------------------------------------
-// 5. SECTION CATEGORIZATION
-// ---------------------------------------------------------------
+// --- 6. SECTION CATEGORIZATION ---
 
 /** Priority: decision > implementation > guide > architecture > files > discovery > integration */
 function categorizeSection(sectionTitle: string, content: string = ''): AnchorTag {
@@ -114,9 +102,7 @@ function categorizeSection(sectionTitle: string, content: string = ''): AnchorTa
   return 'implementation';
 }
 
-// ---------------------------------------------------------------
-// 6. ANCHOR VALIDATION
-// ---------------------------------------------------------------
+// --- 7. ANCHOR VALIDATION ---
 
 /** Appends -2, -3, etc. on collision */
 function validateAnchorUniqueness(anchorId: string, existingAnchors: string[]): string {
@@ -131,9 +117,7 @@ function validateAnchorUniqueness(anchorId: string, existingAnchors: string[]): 
   return uniqueId;
 }
 
-// ---------------------------------------------------------------
-// 7. KEYWORD EXTRACTION
-// ---------------------------------------------------------------
+// --- 8. KEYWORD EXTRACTION ---
 
 /** Extracts nouns, proper nouns, technical terms (filters action verbs, stop words) */
 function extractKeywords(text: string): string[] {
@@ -155,9 +139,7 @@ function slugify(keywords: string[]): string {
     .replace(/^-|-$/g, '');
 }
 
-// ---------------------------------------------------------------
-// 8. UTILITY FUNCTIONS
-// ---------------------------------------------------------------
+// --- 9. UTILITY FUNCTIONS ---
 
 function extractSpecNumber(specFolder: string): string {
   const match: RegExpMatchArray | null = specFolder.match(/^(\d{3})-/);
@@ -169,9 +151,7 @@ function getCurrentDate(): string {
   return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
 }
 
-// ---------------------------------------------------------------
-// 10. TEMPLATE ANCHOR WRAPPING (T011-T014)
-// ---------------------------------------------------------------
+// --- 10. TEMPLATE ANCHOR WRAPPING (T011-T014) ---
 
 /**
  * Detects ## headings and wraps sections with ANCHOR tags
@@ -289,9 +269,7 @@ function wrapSectionsWithAnchors(
   };
 }
 
-// ---------------------------------------------------------------
-// 11. EXPORTS
-// ---------------------------------------------------------------
+// --- 11. EXPORTS ---
 
 export {
   generateAnchorId,

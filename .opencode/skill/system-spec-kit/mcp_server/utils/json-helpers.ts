@@ -1,19 +1,10 @@
-// ---------------------------------------------------------------
-// MODULE: Json Helpers
-// ---------------------------------------------------------------
-// UTILS: JSON HELPERS
-// ---------------------------------------------------------------
-
-/* ---------------------------------------------------------------
-   1. TYPES
-   --------------------------------------------------------------- */
+// --- 1. JSON HELPERS ---
+// --- 2. TYPES ---
 
 /** Expected types for typed JSON parsing */
 export type ExpectedJsonType = 'array' | 'object' | 'string' | 'number';
 
-/* ---------------------------------------------------------------
-   2. SAFE JSON PARSING
-   --------------------------------------------------------------- */
+// --- 3. SAFE JSON PARSING ---
 
 /** Parses JSON and returns a fallback value on failure. */
 export function safeJsonParse<T = unknown>(str: string | null | undefined, fallback: T): T {

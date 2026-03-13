@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: INTEGRATION LEARNING HISTORY
-// ---------------------------------------------------------------
-
 import { describe, it, expect } from 'vitest';
 import * as learningHandler from '../handlers/session-learning';
 
@@ -11,9 +8,7 @@ type LearningHistoryArgs = Parameters<typeof learningHandler.handleGetLearningHi
 
 describe('Integration Learning History (T530) [deferred - requires DB test fixtures]', () => {
 
-  // -------------------------------------------------------------
   // SUITE: Preflight Pipeline Validation
-  // -------------------------------------------------------------
   describe('Preflight Pipeline Validation', () => {
     it('T530-1: Missing all preflight params rejected', async () => {
       await expect(learningHandler.handleTaskPreflight({} as PreflightArgs)).rejects.toThrow();
@@ -31,27 +26,21 @@ describe('Integration Learning History (T530) [deferred - requires DB test fixtu
     });
   });
 
-  // -------------------------------------------------------------
   // SUITE: Postflight Pipeline Validation
-  // -------------------------------------------------------------
   describe('Postflight Pipeline Validation', () => {
     it('T530-2: Missing all postflight params rejected', async () => {
       await expect(learningHandler.handleTaskPostflight({} as PostflightArgs)).rejects.toThrow();
     });
   });
 
-  // -------------------------------------------------------------
   // SUITE: Learning History Pipeline
-  // -------------------------------------------------------------
   describe('Learning History Pipeline', () => {
     it('T530-3: Missing specFolder for history rejected', async () => {
       await expect(learningHandler.handleGetLearningHistory({} as LearningHistoryArgs)).rejects.toThrow();
     });
   });
 
-  // -------------------------------------------------------------
   // SUITE: Score Validation Across Pipeline
-  // -------------------------------------------------------------
   describe('Score Validation Across Pipeline', () => {
     it('T530-4: Score > 100 rejected in preflight', async () => {
       await expect(
@@ -78,9 +67,7 @@ describe('Integration Learning History (T530) [deferred - requires DB test fixtu
     });
   });
 
-  // -------------------------------------------------------------
   // SUITE: Learning Delta Formula Verification
-  // -------------------------------------------------------------
   describe('Learning Delta Formula Verification', () => {
     it('T530-6: Learning delta weights sum to 1.0', () => {
       const expectedWeights = {

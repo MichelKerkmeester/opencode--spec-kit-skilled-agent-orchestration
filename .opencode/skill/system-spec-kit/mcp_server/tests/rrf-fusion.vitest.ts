@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: RRF FUSION
-// ---------------------------------------------------------------
-
 // Converted from: rrf-fusion.test.ts (custom runner)
 import { describe, it, expect } from 'vitest';
 import {
@@ -49,10 +46,10 @@ describe('RRF Fusion Core Tests (T021-T030)', () => {
     const doc1 = expectDefined(fused.find((r: FusedResult) => r.id === 'doc1'), 'doc1');
     const doc3 = expectDefined(fused.find((r: FusedResult) => r.id === 'doc3'), 'doc3');
 
-    // doc1: vector rank=0, fts rank=1 => 1/61 + 1/62 + 0.10 convergence bonus
+    // Doc1: vector rank=0, fts rank=1 => 1/61 + 1/62 + 0.10 convergence bonus
     const expectedDoc1Base = 1 / (60 + 0 + 1) + 1 / (60 + 1 + 1);
     const expectedDoc1WithBonus = expectedDoc1Base + 0.10;
-    // doc3: vector rank=2 only => 1/63
+    // Doc3: vector rank=2 only => 1/63
     const expectedDoc3 = 1 / (60 + 2 + 1);
 
     expect(doc1.rrfScore).toBeCloseTo(expectedDoc1WithBonus, 3);

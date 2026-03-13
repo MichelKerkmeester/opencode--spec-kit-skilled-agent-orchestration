@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: TRANSACTION MANAGER
-// ---------------------------------------------------------------
-
 // Converted from: transaction-manager.test.ts (custom runner)
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import fs from 'fs';

@@ -1,8 +1,6 @@
-// ---------------------------------------------------------------
-// MODULE: Test — Token Budget
-// ---------------------------------------------------------------
+// --- 1. TEST — TOKEN BUDGET ---
 // Verifies token estimation, greedy truncation, single-result
-// summary fallback, overflow logging, and env var configuration.
+// Summary fallback, overflow logging, and env var configuration.
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import {
@@ -237,7 +235,7 @@ describe('truncateToBudget', () => {
     expect(log.budgetLimit).toBe(100);
     expect(typeof log.truncatedToCount).toBe('number');
     expect(log.truncatedToCount).toBeLessThanOrEqual(log.candidateCount);
-    // timestamp should be valid ISO string
+    // Timestamp should be valid ISO string
     expect(new Date(log.timestamp).toISOString()).toBe(log.timestamp);
   });
 

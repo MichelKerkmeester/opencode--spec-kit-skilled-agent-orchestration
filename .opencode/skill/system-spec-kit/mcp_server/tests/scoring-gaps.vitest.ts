@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: SCORING GAPS
-// ---------------------------------------------------------------
-
 import { describe, it, expect, beforeAll } from 'vitest';
 
 import * as confMod from '../lib/scoring/confidence-tracker';

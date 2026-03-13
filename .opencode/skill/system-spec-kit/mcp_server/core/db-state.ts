@@ -1,15 +1,11 @@
-// ---------------------------------------------------------------
-// MODULE: Db State
-// ---------------------------------------------------------------
+// --- 1. DB STATE ---
 
 import fs from 'fs/promises';
 import { resolveDatabasePaths } from './config';
 import type { DatabaseExtended } from '@spec-kit/shared/types';
 import type { GraphSearchFn } from '../lib/search/search-types';
 
-/* ---------------------------------------------------------------
-   1. TYPES
-   --------------------------------------------------------------- */
+// --- 2. TYPES ---
 
 /** Minimal vector index interface for database operations */
 type VectorSearchFn = (
@@ -63,9 +59,7 @@ export interface DbStateDeps {
   graphSearchFn?: GraphSearchFn | null;
 }
 
-/* ---------------------------------------------------------------
-   2. STATE VARIABLES
-   --------------------------------------------------------------- */
+// --- 3. STATE VARIABLES ---
 
 let lastDbCheck: number = 0;
 let reinitializeMutex: Promise<void> | null = null;
@@ -75,9 +69,7 @@ let constitutionalCache: unknown = null;
 let constitutionalCacheTime: number = 0;
 let configTableCreated: boolean = false;
 
-/* ---------------------------------------------------------------
-   3. MODULE REFERENCES
-   --------------------------------------------------------------- */
+// --- 4. MODULE REFERENCES ---
 
 let vectorIndex: VectorIndexLike | null = null;
 let checkpoints: CheckpointsLike | null = null;
@@ -106,9 +98,7 @@ export function init(deps: DbStateDeps): void {
   if (deps.graphSearchFn !== undefined) graphSearchFnRef = deps.graphSearchFn;
 }
 
-/* ---------------------------------------------------------------
-   4. DATABASE CHANGE NOTIFICATION
-   --------------------------------------------------------------- */
+// --- 5. DATABASE CHANGE NOTIFICATION ---
 
 /** Check if the database was updated externally and reinitialize if needed. */
 export async function checkDatabaseUpdated(): Promise<boolean> {
@@ -201,16 +191,14 @@ export async function reinitializeDatabase(updatedMarkerTime?: number): Promise<
     lastReinitializeSucceeded = rebindSucceeded;
     // P4-13 FIX: Resolve the mutex BEFORE clearing the reference.
     // If we set reinitializeMutex = null first, a concurrent caller could
-    // see null and start a new reinitialization before resolve is called.
+    // See null and start a new reinitialization before resolve is called.
     // WHY non-null: resolveMutex is always assigned in the Promise constructor callback above (synchronous)
     resolveMutex!();
     reinitializeMutex = null;
   }
 }
 
-/* ---------------------------------------------------------------
-   5. PERSISTENT RATE LIMITING
-   --------------------------------------------------------------- */
+// --- 6. PERSISTENT RATE LIMITING ---
 
 /** Ensure the config table exists (idempotent, runs DDL at most once per process). */
 function ensureConfigTable(db: DatabaseLike): void {
@@ -258,9 +246,7 @@ export async function setLastScanTime(time: number): Promise<void> {
   }
 }
 
-/* ---------------------------------------------------------------
-   6. EMBEDDING MODEL READINESS
-   --------------------------------------------------------------- */
+// --- 7. EMBEDDING MODEL READINESS ---
 
 /** Return whether the embedding model has been marked as ready. */
 export function isEmbeddingModelReady(): boolean {
@@ -287,9 +273,7 @@ export async function waitForEmbeddingModel(timeoutMs: number = 30000): Promise<
   return true;
 }
 
-/* ---------------------------------------------------------------
-   7. CONSTITUTIONAL CACHE ACCESSORS
-   --------------------------------------------------------------- */
+// --- 8. CONSTITUTIONAL CACHE ACCESSORS ---
 
 /** Return the cached constitutional memory entries, or null if not cached. */
 export function getConstitutionalCache(): unknown {

@@ -1,8 +1,6 @@
-// ---------------------------------------------------------------
-// MODULE: Folder Relevance
-// ---------------------------------------------------------------
+// --- 1. FOLDER RELEVANCE ---
 // Computes folder-level relevance scores from individual memory
-// scores using damped aggregation: FolderScore = (1/sqrt(M+1)) * SUM(score(m))
+// Scores using damped aggregation: FolderScore = (1/sqrt(M+1)) * SUM(score(m))
 //
 // Gated behind SPECKIT_FOLDER_SCORING env var (default: enabled, graduated-on).
 // Pure scoring addition — NO schema changes, NO new tables.
@@ -11,14 +9,10 @@
 //   - PI-A1: Folder-level relevance scoring via DocScore aggregation
 //   - R-006: Weight rebalancing surface
 //   - R-007: Post-reranker stage in scoring pipeline
-// ---------------------------------------------------------------
-
 // Type-only
 import type Database from 'better-sqlite3';
 
-/* -----------------------------------------------------------
-   1. FEATURE FLAG
-   ----------------------------------------------------------- */
+// --- 2. FEATURE FLAG ---
 
 /**
  * Check if folder relevance scoring is enabled.
@@ -28,9 +22,7 @@ export function isFolderScoringEnabled(): boolean {
   return process.env.SPECKIT_FOLDER_SCORING?.toLowerCase() !== 'false';
 }
 
-/* -----------------------------------------------------------
-   2. CORE COMPUTATION
-   ----------------------------------------------------------- */
+// --- 3. CORE COMPUTATION ---
 
 /**
  * Compute FolderScore for each spec folder from grouped search results.
@@ -83,9 +75,7 @@ export function computeFolderRelevanceScores(
   return folderScores;
 }
 
-/* -----------------------------------------------------------
-   3. DATABASE LOOKUP
-   ----------------------------------------------------------- */
+// --- 4. DATABASE LOOKUP ---
 
 /**
  * Look up spec_folder values for a list of memory IDs from the database.
@@ -124,9 +114,7 @@ export function lookupFolders(
   return folderMap;
 }
 
-/* -----------------------------------------------------------
-   4. RESULT ENRICHMENT
-   ----------------------------------------------------------- */
+// --- 5. RESULT ENRICHMENT ---
 
 /**
  * Enrich search results with folder-level relevance metadata.
@@ -183,9 +171,7 @@ export function enrichResultsWithFolderScores<
   });
 }
 
-/* -----------------------------------------------------------
-   5. TWO-PHASE RETRIEVAL
-   ----------------------------------------------------------- */
+// --- 6. TWO-PHASE RETRIEVAL ---
 
 /**
  * Two-phase retrieval: first select top-K folders by FolderScore,

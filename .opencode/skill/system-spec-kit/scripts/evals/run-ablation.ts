@@ -1,11 +1,9 @@
 #!/usr/bin/env npx tsx
-// ---------------------------------------------------------------
-// MODULE: Run Ablation
-// ---------------------------------------------------------------
+// --- 1. RUN ABLATION ---
 //
 // Runtime entry point for the ablation framework. Runs controlled
-// ablation studies that selectively disable one search channel at
-// a time, measuring Recall@20 delta against a full-pipeline baseline.
+// Ablation studies that selectively disable one search channel at
+// A time, measuring Recall@20 delta against a full-pipeline baseline.
 //
 // Usage:
 //   SPECKIT_ABLATION=true npx tsx scripts/evals/run-ablation.ts [--channels vector,bm25,fts5] [--verbose]
@@ -84,7 +82,7 @@ async function main(): Promise<void> {
   log(`Production DB: ${PROD_DB_PATH}`);
 
   // 3. Initialize vector index and hybrid search (opens the production DB)
-  // AI-FIX: F-22 — Guard null dereference: check db before passing to initHybridSearch
+  // F-22 — Guard null dereference: check db before passing to initHybridSearch
   const db = vectorIndex.initializeDb(PROD_DB_PATH);
   if (!db) {
     console.error('ERROR: Could not initialize database');
@@ -107,7 +105,7 @@ async function main(): Promise<void> {
 
   // 6. Create search function adapter
   // The ablation framework passes a set of disabled channels; we convert
-  // to HybridSearchOptions flags and run hybridSearchEnhanced.
+  // To HybridSearchOptions flags and run hybridSearchEnhanced.
   const searchFn: AblationSearchFn = async (query, disabledChannels) => {
     const channelFlags = toHybridSearchFlags(disabledChannels);
     const embedding = await generateQueryEmbedding(query);

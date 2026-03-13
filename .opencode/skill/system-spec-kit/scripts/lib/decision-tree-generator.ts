@@ -1,19 +1,15 @@
-// ---------------------------------------------------------------
-// MODULE: Decision Tree Generator
-// ---------------------------------------------------------------
+// --- 1. DECISION TREE GENERATOR ---
 
-// ---------------------------------------------------------------
-// 1. IMPORTS
-// ---------------------------------------------------------------
+// --- 2. IMPORTS ---
 
 import type { OptionRecord, EvidenceRecord, CaveatRecord, FollowUpRecord } from './ascii-boxes';
 import { structuredLog } from '../utils/logger';
 
 // NOTE: require() is intentionally kept here instead of dynamic import().
 // Reason: generateDecisionTree() is a synchronous function called synchronously by
-// external callers (decision-extractor.ts, diagram-extractor.ts, and tests).
+// External callers (decision-extractor.ts, diagram-extractor.ts, and tests).
 // Converting to dynamic import() would require making generateDecisionTree() async,
-// which would break all callers that expect a synchronous string return value.
+// Which would break all callers that expect a synchronous string return value.
 // CommonJS does not support top-level await, so eager async initialization is not viable either.
 
 let padText: (text: string, width: number, align?: string) => string;
@@ -47,9 +43,7 @@ try {
   formatFollowUpBox = (followup: Array<FollowUpRecord | string>): string => `[FOLLOWUP: ${followup?.length || 0}]`;
 }
 
-// ---------------------------------------------------------------
-// 2. TYPES
-// ---------------------------------------------------------------
+// --- 3. TYPES ---
 
 /** Decision node data for tree generation */
 export interface DecisionNode {
@@ -66,9 +60,7 @@ export interface DecisionNode {
   [key: string]: unknown;
 }
 
-// ---------------------------------------------------------------
-// 3. DECISION TREE GENERATION
-// ---------------------------------------------------------------
+// --- 4. DECISION TREE GENERATION ---
 
 function generateDecisionTree(decisionData: DecisionNode | string, ...args: unknown[]): string {
   // Handle legacy format (simple parameters) for backwards compatibility
@@ -196,8 +188,6 @@ function generateDecisionTree(decisionData: DecisionNode | string, ...args: unkn
   return tree;
 }
 
-// ---------------------------------------------------------------
-// 4. EXPORTS
-// ---------------------------------------------------------------
+// --- 5. EXPORTS ---
 
 export { generateDecisionTree };

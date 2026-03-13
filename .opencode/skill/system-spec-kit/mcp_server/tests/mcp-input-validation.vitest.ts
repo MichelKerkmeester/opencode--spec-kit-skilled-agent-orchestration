@@ -1,14 +1,9 @@
-// ---------------------------------------------------------------
 // TEST: MCP INPUT VALIDATION
-// ---------------------------------------------------------------
-
 import { describe, it, expect } from 'vitest';
 
 import * as handlers from '../handlers/index';
 
-// ---------------------------------------------------------------
 // Invalid input definitions for each of the 23 tools
-// ---------------------------------------------------------------
 interface HandlerResponse {
   content?: Array<{ type?: string; text?: string }>;
   isError?: boolean;

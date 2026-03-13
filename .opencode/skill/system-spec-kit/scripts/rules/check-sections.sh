@@ -9,10 +9,10 @@ set -euo pipefail
 # Rule: SECTIONS_PRESENT
 # Severity: warning
 # Description: Checks for required markdown sections based on documentation level (warning only).
-#   spec.md: Problem Statement, Requirements, Scope
-#   plan.md: Technical Context, Architecture, Implementation
-#   checklist.md (L2+): P0, P1
-#   decision-record.md (L3): Context, Decision, Consequences
+#   Spec.md: Problem Statement, Requirements, Scope
+#   Plan.md: Technical Context, Architecture, Implementation
+#   Checklist.md (L2+): P0, P1
+#   Decision-record.md (L3): Context, Decision, Consequences
 
 # ───────────────────────────────────────────────────────────────
 # 1. INITIALIZATION

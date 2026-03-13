@@ -1,10 +1,8 @@
-// ---------------------------------------------------------------
-// MODULE: Channel Representation
-// ---------------------------------------------------------------
+// --- 1. CHANNEL REPRESENTATION ---
 /* --- 1. CONSTANTS --- */
 
 /** Minimum similarity / relevance score for a result to qualify for promotion.
- * AI-WHY: QUALITY_FLOOR changed from 0.2 to 0.005 (Sprint 10, D3). The original 0.2
+ * QUALITY_FLOOR changed from 0.2 to 0.005 (Sprint 10, D3). The original 0.2
  * assumed normalized [0,1] scores, but raw RRF scores (~0.01-0.03) never exceeded that
  * threshold, causing channel-representation promotion to silently reject ALL RRF results.
  * The 0.005 floor prevents promoting genuinely irrelevant results while remaining
@@ -145,8 +143,8 @@ export function analyzeChannelRepresentation(
     };
   }
 
-  // AI-WHY: Padding appends the best item from each missing channel to guarantee
-  // every contributing channel has at least one representative in the result set.
+  // Padding appends the best item from each missing channel to guarantee
+  // Every contributing channel has at least one representative in the result set.
   const promoted: PromotedItem[] = [];
   const enhancedTopK: Array<TopKItem> = [...topK];
 

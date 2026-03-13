@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: CAUSAL EDGES
-// ---------------------------------------------------------------
-
 import { describe, it, expect, beforeAll, beforeEach, afterAll, vi } from 'vitest';
 import Database from 'better-sqlite3';
 import * as causalEdges from '../lib/storage/causal-edges.js';

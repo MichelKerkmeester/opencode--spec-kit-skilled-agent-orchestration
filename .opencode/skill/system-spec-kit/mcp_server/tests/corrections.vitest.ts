@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: CORRECTIONS
-// ---------------------------------------------------------------
-
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import Database from 'better-sqlite3';
 import path from 'path';
@@ -16,12 +13,9 @@ import type {
   CorrectionTypes,
 } from '../lib/learning/corrections';
 
-// ---------------------------------------------------------------
 // TESTS: CORRECTIONS MODULE
 // Phase 3 of SpecKit Reimagined - Learning from Corrections
 // Tasks: T052-T055, T142-T147
-// ---------------------------------------------------------------
-
 /* -------------------------------------------------------------
    TEST SETUP
 ---------------------------------------------------------------- */

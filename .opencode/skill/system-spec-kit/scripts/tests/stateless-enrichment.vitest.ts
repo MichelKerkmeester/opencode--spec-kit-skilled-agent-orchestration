@@ -1,8 +1,5 @@
-// ---------------------------------------------------------------
 // TEST: Stateless Enrichment Guardrails
 // Covers spec-folder extraction, git scoping, relevance filtering, and barrel exports
-// ---------------------------------------------------------------
-
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';

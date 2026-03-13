@@ -1,13 +1,7 @@
-// ---------------------------------------------------------------
-// MODULE: Layer Definitions
-// ---------------------------------------------------------------
+// --- 1. LAYER DEFINITIONS ---
 // LIB: LAYER DEFINITIONS
-// T060: 7-Layer MCP Architecture with Token Budgets
-// ---------------------------------------------------------------
-
-/* ---------------------------------------------------------------
-   1. LAYER TYPES
-   --------------------------------------------------------------- */
+// 7-Layer MCP Architecture with Token Budgets
+// --- 2. LAYER TYPES ---
 
 /** Individual layer definition in the 7-layer architecture */
 export interface LayerDefinition {

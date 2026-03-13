@@ -1,9 +1,5 @@
-// ---------------------------------------------------------------
-// MODULE: Corrections
-// ---------------------------------------------------------------
+// --- 1. CORRECTIONS ---
 // LEARNING: CORRECTIONS TRACKING
-// ---------------------------------------------------------------
-
 import type Database from 'better-sqlite3';
 
 /* -------------------------------------------------------------
@@ -409,7 +405,7 @@ export function record_correction(params: RecordCorrectionParams): CorrectionRes
     throw new Error(`correction_type must be one of: ${valid_types.join(', ')}`);
   }
 
-  // AI-GUARD: Prevent self-correction
+  // Prevent self-correction
   if (correction_memory_id && original_memory_id === correction_memory_id) {
     throw new Error('original_memory_id and correction_memory_id cannot be the same');
   }
@@ -428,7 +424,7 @@ export function record_correction(params: RecordCorrectionParams): CorrectionRes
     }
   }
 
-  // AI-WHY: Use transaction for atomicity
+  // Use transaction for atomicity
   const run_correction = db.transaction(() => {
     // Apply stability penalty to original memory (T053: 0.5x penalty)
     const original_stability_after = original_stability_before * CORRECTION_STABILITY_PENALTY;
@@ -442,7 +438,7 @@ export function record_correction(params: RecordCorrectionParams): CorrectionRes
     }
 
     // Record the correction
-    // AI-SAFETY: record_correction validates db before starting this transaction
+    // Record_correction validates db before starting this transaction
     const stmt = db!.prepare(`
       INSERT INTO memory_corrections (
         original_memory_id,
@@ -472,7 +468,7 @@ export function record_correction(params: RecordCorrectionParams): CorrectionRes
 
     // Also create a causal edge if causal_edges table exists
     try {
-      // AI-SAFETY: record_correction validates db before starting this transaction
+      // Record_correction validates db before starting this transaction
       const causal_table_exists = db!.prepare(`
         SELECT name FROM sqlite_master
         WHERE type='table' AND name='causal_edges'
@@ -483,8 +479,8 @@ export function record_correction(params: RecordCorrectionParams): CorrectionRes
         const correctionId = Number(result.lastInsertRowid);
         const edgeEvidence = build_owned_edge_evidence(correctionId, correction_type, reason);
 
-        // AI-SAFETY: record_correction validates db before starting this transaction
-        // AI-SAFETY: undo_correction throws when db is not initialized before creating this transaction
+        // Record_correction validates db before starting this transaction
+        // Undo_correction throws when db is not initialized before creating this transaction
     db!.prepare(`
           INSERT OR IGNORE INTO causal_edges (
             source_id, target_id, relation, strength, evidence, extracted_at
@@ -565,7 +561,7 @@ export function undo_correction(correction_id: number): UndoResult {
     };
   }
 
-  // AI-WHY: Use transaction for atomicity
+  // Use transaction for atomicity
   const run_undo = db.transaction(() => {
     // Restore original memory stability
     if (correction.original_stability_before !== null) {
@@ -593,13 +589,13 @@ export function undo_correction(correction_id: number): UndoResult {
 
     // Try to remove the causal edge if it exists
     // T-02: Scope deletion by relation type to avoid removing unrelated edges
-    // between the same pair of memories (e.g., 'supersedes' vs 'derived_from').
+    // Between the same pair of memories (e.g., 'supersedes' vs 'derived_from').
     try {
       if (correction.correction_memory_id) {
         const undoRelation = map_correction_type_to_relation(correction.correction_type);
         const ownedEdgeEvidencePrefix = `Correction#${correction_id}:`;
 
-        // AI-SAFETY: undo_correction throws when db is not initialized before creating this transaction
+        // Undo_correction throws when db is not initialized before creating this transaction
         const deleteResult = db!.prepare(`
           DELETE FROM causal_edges
           WHERE source_id = ?
@@ -729,7 +725,7 @@ export function get_correction_chain(
     visited.add(id);
 
     // Get corrections where this memory is the original
-    // AI-SAFETY: get_correction_chain returns early when db is unavailable
+    // Get_correction_chain returns early when db is unavailable
     const as_original = db!.prepare(`
       SELECT * FROM memory_corrections
       WHERE original_memory_id = ? AND is_undone = 0
@@ -749,7 +745,7 @@ export function get_correction_chain(
     }
 
     // Get corrections where this memory is the correction
-    // AI-SAFETY: get_correction_chain returns early when db is unavailable
+    // Get_correction_chain returns early when db is unavailable
     const as_correction = db!.prepare(`
       SELECT * FROM memory_corrections
       WHERE correction_memory_id = ? AND is_undone = 0

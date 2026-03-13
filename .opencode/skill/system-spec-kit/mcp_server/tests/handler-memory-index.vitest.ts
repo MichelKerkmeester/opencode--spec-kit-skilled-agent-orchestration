@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Handler Memory Index Tests
-// ---------------------------------------------------------------
+// --- 1. HANDLER MEMORY INDEX TESTS ---
 
 import { describe, it, expect, afterAll } from 'vitest';
 import * as path from 'path';
@@ -16,7 +14,7 @@ afterAll(() => {
     try {
       fs.rmSync(tempDir, { recursive: true, force: true });
     } catch {
-      // ignore cleanup errors
+      // Ignore cleanup errors
     }
   }
 });

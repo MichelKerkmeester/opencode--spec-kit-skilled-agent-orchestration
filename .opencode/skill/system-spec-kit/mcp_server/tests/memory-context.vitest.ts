@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: MEMORY CONTEXT
-// ---------------------------------------------------------------
-
 import { describe, it, expect } from 'vitest';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -567,7 +564,7 @@ describe('T071-T080: Auto Mode Configuration Tests [deferred - requires DB test 
     expect(auto.name).toBeDefined();
     expect(auto.description).toBeDefined();
     expect(auto.strategy).toBeDefined();
-    // tokenBudget is intentionally undefined for auto
+    // TokenBudget is intentionally undefined for auto
   });
 });
 

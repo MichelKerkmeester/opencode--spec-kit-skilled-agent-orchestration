@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Run Redaction Calibration
-// ---------------------------------------------------------------
+// --- 1. RUN REDACTION CALIBRATION ---
 
 import fs from 'fs';
 import path from 'path';

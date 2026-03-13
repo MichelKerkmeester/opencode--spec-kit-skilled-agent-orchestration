@@ -1,13 +1,10 @@
-// ---------------------------------------------------------------
-// MODULE: Dynamic Token Budget
-// ---------------------------------------------------------------
+// --- 1. DYNAMIC TOKEN BUDGET ---
 //
 // ADVISORY-ONLY: This module computes a token budget for a query
-// based on its complexity tier, but does NOT enforce that budget
-// downstream. The returned BudgetResult is handed to callers who
-// are solely responsible for respecting it (e.g. by trimming
-// result sets or truncating content before sending to the LLM).
-// ---------------------------------------------------------------
+// Based on its complexity tier, but does NOT enforce that budget
+// Downstream. The returned BudgetResult is handed to callers who
+// Are solely responsible for respecting it (e.g. by trimming
+// Result sets or truncating content before sending to the LLM).
 import { type QueryComplexityTier } from './query-classifier';
 
 /* --- 1. TYPES & CONSTANTS --- */
@@ -36,7 +33,7 @@ interface BudgetResult {
 const DEFAULT_BUDGET = 4000;
 
 /** Default tier-to-budget mapping when dynamic allocation is enabled.
- * AI-WHY: 1500/2500/4000 tiers balance context window cost vs. recall —
+ * 1500/2500/4000 tiers balance context window cost vs. recall —
  * simple queries need fewer tokens, complex queries need the full budget. */
 const DEFAULT_TOKEN_BUDGET_CONFIG: TokenBudgetConfig = {
   simple: 1500,

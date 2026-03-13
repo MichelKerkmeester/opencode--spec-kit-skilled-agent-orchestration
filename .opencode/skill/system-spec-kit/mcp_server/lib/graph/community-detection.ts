@@ -1,28 +1,18 @@
-// ---------------------------------------------------------------
-// MODULE: Community Detection
-// ---------------------------------------------------------------
+// --- 1. COMMUNITY DETECTION ---
 // Deferred feature — gated via SPECKIT_COMMUNITY_DETECTION
-// ---------------------------------------------------------------
-
-// ---------------------------------------------------------------------------
-// 1. IMPORTS
-// ---------------------------------------------------------------------------
+// --- 2. IMPORTS ---
 
 import type Database from "better-sqlite3";
 
-// ---------------------------------------------------------------------------
-// 2. TYPES
-// ---------------------------------------------------------------------------
+// --- 3. TYPES ---
 
 /** Adjacency list: node ID (string) -> set of neighbor node IDs */
 type AdjacencyList = Map<string, Set<string>>;
 
-// ---------------------------------------------------------------------------
-// 3. CONSTANTS
-// ---------------------------------------------------------------------------
+// --- 4. CONSTANTS ---
 
 /**
- * AI-WHY: Community co-retrieval boost factor — 0.3 balances surfacing
+ * Community co-retrieval boost factor — 0.3 balances surfacing
  * related community members without overwhelming the primary result set.
  * Lower values (e.g. 0.1) make community neighbours nearly invisible;
  * higher values (e.g. 0.5+) risk promoting loosely-related memories above
@@ -32,9 +22,7 @@ type AdjacencyList = Map<string, Set<string>>;
  */
 const COMMUNITY_EDGE_WEIGHT_THRESHOLD = 0.3;
 
-// ---------------------------------------------------------------------------
-// 4. MODULE-LEVEL DEBOUNCE STATE
-// ---------------------------------------------------------------------------
+// --- 5. MODULE-LEVEL DEBOUNCE STATE ---
 
 let lastDebounceHash: string = '';
 let computedThisSession: boolean = false;
@@ -47,9 +35,7 @@ export function resetCommunityDetectionState(): void {
   computedThisSession = false;
 }
 
-// ---------------------------------------------------------------------------
-// 5. INTERNAL HELPERS
-// ---------------------------------------------------------------------------
+// --- 6. INTERNAL HELPERS ---
 
 /**
  * Build an undirected adjacency list from the `causal_edges` table.
@@ -84,9 +70,7 @@ function buildAdjacencyList(db: Database.Database): AdjacencyList {
   return adj;
 }
 
-// ---------------------------------------------------------------------------
-// 6. BFS CONNECTED COMPONENTS
-// ---------------------------------------------------------------------------
+// --- 7. BFS CONNECTED COMPONENTS ---
 
 /**
  * Detect communities using BFS connected-component labelling.
@@ -132,9 +116,7 @@ export function detectCommunitiesBFS(
   return assignments;
 }
 
-// ---------------------------------------------------------------------------
-// 7. ESCALATION CHECK
-// ---------------------------------------------------------------------------
+// --- 8. ESCALATION CHECK ---
 
 /**
  * Check whether the largest connected component contains >50% of all nodes.
@@ -158,10 +140,7 @@ export function shouldEscalateToLouvain(
   return maxSize > components.size * 0.5;
 }
 
-// ---------------------------------------------------------------------------
 // 8. SIMPLIFIED LOUVAIN (single-level, no hierarchical passes)
-// ---------------------------------------------------------------------------
-
 /**
  * Pure-TypeScript single-level Louvain modularity optimisation.
  *
@@ -308,9 +287,7 @@ export function detectCommunitiesLouvain(
   return result;
 }
 
-// ---------------------------------------------------------------------------
-// 9. ORCHESTRATOR
-// ---------------------------------------------------------------------------
+// --- 9. ORCHESTRATOR ---
 
 /**
  * Top-level community detection orchestrator.
@@ -323,14 +300,14 @@ export function detectCommunitiesLouvain(
  */
 export function detectCommunities(db: Database.Database): Map<string, number> {
   try {
-    // AI-WHY: Fix #27 (017-refinement-phase-6) — Replace edge-count-only debounce
-    // with count:maxId hash. Edge count alone can't detect deletions followed by
-    // insertions that maintain the same count.
+    // Fix #27 (017-refinement-phase-6) — Replace edge-count-only debounce
+    // With count:maxId hash. Edge count alone can't detect deletions followed by
+    // Insertions that maintain the same count.
     const edgeStatsRow = db
       .prepare("SELECT COUNT(*) AS cnt, MAX(id) AS maxId FROM causal_edges")
       .get() as { cnt: number; maxId: number | null } | undefined;
     const currentEdgeCount = edgeStatsRow?.cnt ?? 0;
-    // AI: Fix F22 — include SUM of source/target IDs for update-sensitive fingerprint.
+    // Fix F22 — include SUM of source/target IDs for update-sensitive fingerprint.
     const edgeChecksumRow = db
       .prepare("SELECT COALESCE(SUM(CAST(source_id AS INTEGER) + CAST(target_id AS INTEGER)), 0) AS cksum FROM causal_edges")
       .get() as { cksum: number } | undefined;
@@ -414,9 +391,7 @@ function detectCommunitiesBFSFromAdj(
   return assignments;
 }
 
-// ---------------------------------------------------------------------------
-// 10. PERSISTENCE HELPERS
-// ---------------------------------------------------------------------------
+// --- 10. PERSISTENCE HELPERS ---
 
 /**
  * Load previously stored community assignments from the database.
@@ -481,9 +456,7 @@ export function storeCommunityAssignments(
   return { stored };
 }
 
-// ---------------------------------------------------------------------------
-// 11. QUERY HELPERS
-// ---------------------------------------------------------------------------
+// --- 11. QUERY HELPERS ---
 
 /**
  * Return the memory IDs that share the same community as `memoryId`.
@@ -561,9 +534,7 @@ export function applyCommunityBoost(
   }
 }
 
-// ---------------------------------------------------------------------------
-// 12. TEST-ONLY EXPORTS
-// ---------------------------------------------------------------------------
+// --- 12. TEST-ONLY EXPORTS ---
 
 /**
  * Defines the __testables constant.

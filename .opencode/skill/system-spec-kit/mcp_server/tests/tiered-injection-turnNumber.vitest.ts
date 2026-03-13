@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: TIERED INJECTION TURNNUMBER
-// ---------------------------------------------------------------
-
 import { describe, it, expect } from 'vitest';
 
 import * as tierClassifier from '../lib/cache/cognitive/tier-classifier';

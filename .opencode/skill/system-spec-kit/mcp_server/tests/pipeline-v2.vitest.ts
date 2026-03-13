@@ -1,9 +1,6 @@
-// ---------------------------------------------------------------
 // TEST: 4-Stage Pipeline Architecture (v2)
 // Validates pipeline types, stage interfaces, Stage 4 invariant,
-// and pipeline orchestration under SPECKIT_PIPELINE_V2 flag.
-// ---------------------------------------------------------------
-
+// And pipeline orchestration under SPECKIT_PIPELINE_V2 flag.
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 
 // Pipeline types and utilities
@@ -301,8 +298,8 @@ describe('R6: Feature Flags', () => {
 
   it('R6-T20: SPECKIT_PIPELINE_V2=false still returns true (deprecated, V2 always on)', () => {
     process.env.SPECKIT_PIPELINE_V2 = 'false';
-    // AI-WHY: Legacy V1 pipeline removed in 017-refinement-phase-6.
-    // isPipelineV2Enabled() now always returns true regardless of env var.
+    // Legacy V1 pipeline removed in 017-refinement-phase-6.
+    // IsPipelineV2Enabled() now always returns true regardless of env var.
     expect(isPipelineV2Enabled()).toBe(true);
   });
 
@@ -374,7 +371,7 @@ describe('R6: Stage Interface Contracts', () => {
       final: [{ id: 1, similarity: 85 }],
       metadata: {
         stateFiltered: 2,
-        // AI-WHY: sessionDeduped removed (Fix #14) — dedup is post-cache in main handler
+        // SessionDeduped removed (Fix #14) — dedup is post-cache in main handler
         constitutionalInjected: 0,
         evidenceGapDetected: false,
         durationMs: 5,

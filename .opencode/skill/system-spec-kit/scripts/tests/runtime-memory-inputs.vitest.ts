@@ -1,8 +1,5 @@
-// ---------------------------------------------------------------
 // TEST: Runtime Memory Inputs
 // Covers explicit data-file failures and next-steps normalization
-// ---------------------------------------------------------------
-
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';

@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Ground Truth Data Loader
-// ---------------------------------------------------------------
+// --- 1. GROUND TRUTH DATA LOADER ---
 
 import groundTruthData from './data/ground-truth.json';
 

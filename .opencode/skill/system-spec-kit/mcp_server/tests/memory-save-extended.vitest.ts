@@ -10,15 +10,12 @@ function getErrorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
 }
 
-// ---------------------------------------------------------------
 // TEST: MEMORY SAVE EXTENDED
 // Covers untested functions in handlers/memory-save.ts
 // Functions: resolveMemoryReference, processCausalLinks,
-//   reinforceExistingMemory, markMemorySuperseded,
-//   updateExistingMemory, logPeDecision,
-//   atomicSaveMemory, getAtomicityMetrics, indexMemoryFile
-// ---------------------------------------------------------------
-
+// ReinforceExistingMemory, markMemorySuperseded,
+// UpdateExistingMemory, logPeDecision,
+// AtomicSaveMemory, getAtomicityMetrics, indexMemoryFile
 // Initialize a test DB at module scope so skipIf conditions can evaluate correctly.
 // The DB must be available before it() registrations (skipIf evaluates at registration time).
 const TEST_DB_DIR = path.join(os.tmpdir(), 'speckit-test-memory-save-extended-' + process.pid);

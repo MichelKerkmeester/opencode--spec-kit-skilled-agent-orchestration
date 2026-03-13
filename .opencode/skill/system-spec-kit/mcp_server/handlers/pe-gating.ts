@@ -1,14 +1,15 @@
-// ---------------------------------------------------------------
-// MODULE: Prediction Error Gating Helpers
-// ---------------------------------------------------------------
+// --- 1. PREDICTION ERROR GATING HELPERS ---
 
 import * as vectorIndex from '../lib/search/vector-index';
 import * as fsrsScheduler from '../lib/cache/cognitive/fsrs-scheduler';
 import * as incrementalIndex from '../lib/storage/incremental-index';
+import { recordHistory } from '../lib/storage/history';
+import { recordLineageTransition } from '../lib/storage/lineage-state';
 import { classifyEncodingIntent } from '../lib/search/encoding-intent';
 import { isEncodingIntentEnabled } from '../lib/search/search-flags';
 import { requireDb, toErrorMessage } from '../utils';
 import { detectSpecLevelFromParsed } from './handler-utils';
+import { applyPostInsertMetadata } from './save/db-helpers';
 
 interface ParsedMemory {
   specFolder: string;
@@ -85,7 +86,7 @@ function calculateDocumentWeight(filePath: string, documentType?: string): numbe
     if (weight !== undefined) return weight;
   }
 
-  // AI-WHY: Fallback: path-based heuristic (backward compatibility)
+  // Fallback: path-based heuristic (backward compatibility)
   const normalizedPath = filePath.replace(/\\/g, '/');
   if (normalizedPath.includes('/scratch/')) return 0.25;
   return 0.5;
@@ -160,7 +161,7 @@ function reinforceExistingMemory(memoryId: number, parsed: ParsedMemory): IndexR
     // Spec 126: Keep document-type-aware weighting on reinforcement
     const importanceWeight = calculateDocumentWeight(parsed.filePath, parsed.documentType);
 
-    // AI-TRACE:P4-05 FIX: Check result.changes to detect no-op updates (e.g., deleted memory)
+    // P4-05 FIX: Check result.changes to detect no-op updates (e.g., deleted memory)
     const updateResult = database.prepare(`
       UPDATE memory_index
       SET stability = ?,
@@ -218,7 +219,7 @@ function markMemorySuperseded(memoryId: number): boolean {
   }
 }
 
-/** Update an existing memory's content, embedding, and metadata in-place */
+/** Append a new immutable version and advance the active projection. */
 function updateExistingMemory(memoryId: number, parsed: ParsedMemory, embedding: Float32Array): IndexResult {
   const database = requireDb();
 
@@ -227,55 +228,13 @@ function updateExistingMemory(memoryId: number, parsed: ParsedMemory, embedding:
   const specLevel = isSpecDocumentType(parsed.documentType)
     ? detectSpecLevelFromParsed(parsed.filePath)
     : null;
-
-  vectorIndex.updateMemory({
-    id: memoryId,
-    title: parsed.title ?? undefined,
-    triggerPhrases: parsed.triggerPhrases,
-    importanceWeight,
-    embedding: embedding,
-    encodingIntent: isEncodingIntentEnabled() ? classifyEncodingIntent(parsed.content) : undefined,
-    documentType: parsed.documentType || 'memory',
-    specLevel,
-    contentText: parsed.content,
-    qualityScore: parsed.qualityScore,
-    qualityFlags: parsed.qualityFlags,
-  });
-
-  const fileMetadata = incrementalIndex.getFileMetadata(parsed.filePath);
-  const fileMtimeMs = fileMetadata ? fileMetadata.mtime : null;
-
-  const updateResult = database.prepare(`
-    UPDATE memory_index
-    SET content_hash = ?,
-        context_type = ?,
-        importance_tier = ?,
-        importance_weight = ?,
-        last_review = datetime('now'),
-        review_count = COALESCE(review_count, 0) + 1,
-        updated_at = datetime('now'),
-        file_mtime_ms = ?,
-        document_type = ?,
-        spec_level = ?,
-        content_text = ?,
-        quality_score = ?,
-        quality_flags = ?
+  const previous = database.prepare(`
+    SELECT id, title
+    FROM memory_index
     WHERE id = ?
-  `).run(
-    parsed.contentHash,
-    parsed.contextType,
-    parsed.importanceTier,
-    importanceWeight,
-    fileMtimeMs,
-    parsed.documentType || 'memory',
-    specLevel,
-    parsed.content,
-    parsed.qualityScore ?? 0,
-    JSON.stringify(parsed.qualityFlags ?? []),
-    memoryId
-  );
+  `).get(memoryId) as { id: number; title: string | null } | undefined;
 
-  if ((updateResult as { changes: number }).changes === 0) {
+  if (!previous) {
     return {
       status: 'error',
       id: memoryId,
@@ -285,9 +244,66 @@ function updateExistingMemory(memoryId: number, parsed: ParsedMemory, embedding:
     };
   }
 
+  const fileMetadata = incrementalIndex.getFileMetadata(parsed.filePath);
+  const fileMtimeMs = fileMetadata ? fileMetadata.mtime : null;
+  const encodingIntent = isEncodingIntentEnabled() ? classifyEncodingIntent(parsed.content) : undefined;
+
+  const appendVersion = database.transaction(() => {
+    const nextMemoryId = vectorIndex.indexMemory({
+      specFolder: parsed.specFolder,
+      filePath: parsed.filePath,
+      title: parsed.title,
+      triggerPhrases: parsed.triggerPhrases,
+      importanceWeight,
+      embedding,
+      encodingIntent,
+      documentType: parsed.documentType || 'memory',
+      specLevel,
+      contentText: parsed.content,
+      qualityScore: parsed.qualityScore,
+      qualityFlags: parsed.qualityFlags,
+      appendOnly: true,
+    });
+
+    applyPostInsertMetadata(database, nextMemoryId, {
+      content_hash: parsed.contentHash,
+      context_type: parsed.contextType,
+      importance_tier: parsed.importanceTier,
+      file_mtime_ms: fileMtimeMs,
+      encoding_intent: encodingIntent,
+      document_type: parsed.documentType || 'memory',
+      spec_level: specLevel,
+      quality_score: parsed.qualityScore ?? 0,
+      quality_flags: JSON.stringify(parsed.qualityFlags ?? []),
+    });
+
+    database.prepare(`
+      UPDATE memory_index
+      SET importance_tier = 'deprecated',
+          updated_at = ?
+      WHERE id = ?
+    `).run(new Date().toISOString(), memoryId);
+
+    recordLineageTransition(database, nextMemoryId, {
+      actor: 'mcp:memory_save',
+      predecessorMemoryId: memoryId,
+      transitionEvent: 'UPDATE',
+    });
+
+    try {
+      recordHistory(nextMemoryId, 'ADD', null, parsed.title ?? parsed.filePath, 'mcp:memory_save');
+      recordHistory(memoryId, 'UPDATE', previous.title, parsed.title ?? parsed.filePath, 'mcp:memory_save');
+    } catch (_histErr: unknown) {
+      // History recording is best-effort during save
+    }
+
+    return nextMemoryId;
+  });
+
+  const nextMemoryId = appendVersion();
   return {
     status: 'updated',
-    id: memoryId,
+    id: nextMemoryId,
     specFolder: parsed.specFolder,
     title: parsed.title,
     triggerPhrases: parsed.triggerPhrases,

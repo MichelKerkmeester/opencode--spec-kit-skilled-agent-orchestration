@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Directory Setup
-// ---------------------------------------------------------------
+// --- 1. DIRECTORY SETUP ---
 // Creates and configures spec folder directory structure with memory subdirectories
 
 // Node stdlib
@@ -57,7 +55,7 @@ async function setupContextDirectory(specFolder: string): Promise<string> {
           .slice(0, 10);
       } catch (error: unknown) {
         if (error instanceof Error) {
-          // specs/ doesn't exist or can't be read
+          // Specs/ doesn't exist or can't be read
         }
       }
 

@@ -1,23 +1,19 @@
-// ---------------------------------------------------------------
-// MODULE: Cross Encoder
-// ---------------------------------------------------------------
+// --- 1. CROSS ENCODER ---
 //
 // Neural reranking via external APIs (Voyage rerank-2, Cohere
-// rerank-english-v3.0) or a local cross-encoder model
+// Rerank-english-v3.0) or a local cross-encoder model
 // (ms-marco-MiniLM-L-6-v2). When no provider is configured the
-// module returns a positional fallback (scored 0–0.5) and marks
-// results with scoringMethod:'fallback' so callers can distinguish
-// real model scores from synthetic ones.
+// Module returns a positional fallback (scored 0–0.5) and marks
+// Results with scoringMethod:'fallback' so callers can distinguish
+// Real model scores from synthetic ones.
 //
 // T204 / OQ-02 DECISION (2026-02-10):
-//   The filename "cross-encoder.ts" is ACCURATE.  All three
-//   providers invoke real ML-based reranking — either cloud APIs
-//   that run neural rerankers server-side (Voyage, Cohere) or a
-//   local cross-encoder model.  The positional fallback is NOT a
-//   cross-encoder, but is already clearly separated via the
-//   scoringMethod discriminator.  No rename required.
-// ---------------------------------------------------------------
-
+// The filename "cross-encoder.ts" is ACCURATE.  All three
+// Providers invoke real ML-based reranking — either cloud APIs
+// That run neural rerankers server-side (Voyage, Cohere) or a
+// Local cross-encoder model.  The positional fallback is NOT a
+// Cross-encoder, but is already clearly separated via the
+// ScoringMethod discriminator.  No rename required.
 /* -----------------------------------------------------------
    1. CONFIGURATION
 ----------------------------------------------------------------*/
@@ -119,10 +115,10 @@ const CACHE_TTL = 300000; // 5 minutes
 const latencyTracker: { durations: number[] } = { durations: [] };
 const MAX_LATENCY_SAMPLES = 100;
 
-// AI-WHY: T3-15 circuit breaker — prevents cascading failures when external
-// rerank APIs (Voyage, Cohere) are down. After FAILURE_THRESHOLD consecutive
-// failures, the circuit opens and calls skip the API for COOLDOWN_MS, returning
-// positional fallback scores instead.
+// T3-15 circuit breaker — prevents cascading failures when external
+// Rerank APIs (Voyage, Cohere) are down. After FAILURE_THRESHOLD consecutive
+// Failures, the circuit opens and calls skip the API for COOLDOWN_MS, returning
+// Positional fallback scores instead.
 const CIRCUIT_FAILURE_THRESHOLD = 3;
 const CIRCUIT_COOLDOWN_MS = 60_000; // 1 minute
 
@@ -364,7 +360,7 @@ async function rerankResults(
 
   const provider = resolveProvider();
   if (!provider) {
-    // AI-TRACE: No reranker available — P3-16: use 'fallback' scoringMethod and distinct score range
+    // No reranker available — P3-16: use 'fallback' scoringMethod and distinct score range
     return documents.slice(0, limit).map((d, i) => ({
       ...d,
       rerankerScore: 0.5 - (i / (documents.length * 2)),
@@ -375,8 +371,8 @@ async function rerankResults(
     }));
   }
 
-  // AI-WHY: T3-15 — Circuit breaker check. When the provider has failed
-  // consecutively, skip the API call and return positional fallback.
+  // T3-15 — Circuit breaker check. When the provider has failed
+  // Consecutively, skip the API call and return positional fallback.
   if (isCircuitOpen(provider)) {
     return documents.slice(0, limit).map((d, i) => ({
       ...d,
@@ -416,7 +412,7 @@ async function rerankResults(
         throw new Error(`Unknown provider: ${provider}`);
     }
 
-    // T211: Apply length penalty only when requested
+    // Apply length penalty only when requested
     if (shouldApplyLengthPenalty) {
       results = applyLengthPenalty(results);
     }
@@ -452,7 +448,7 @@ async function rerankResults(
     recordFailure(provider);
     const msg = error instanceof Error ? error.message : String(error);
     console.warn(`[cross-encoder] Reranking failed (${provider}): ${msg} — falling back to positional scoring`);
-    // AI-TRACE: P3-16: Fallback scores use distinct range (0–0.5) and scoringMethod marker
+    // Fallback scores use distinct range (0–0.5) and scoringMethod marker
     return documents.slice(0, limit).map((d, i) => ({
       ...d,
       rerankerScore: 0.5 - (i / (documents.length * 2)),
@@ -504,7 +500,7 @@ function resetSession(): void {
 }
 
 function resetProvider(): void {
-  // AI-GUARD: no-op: activeProvider cache removed (was never populated)
+  // No-op: activeProvider cache removed (was never populated)
 }
 
 /* -----------------------------------------------------------

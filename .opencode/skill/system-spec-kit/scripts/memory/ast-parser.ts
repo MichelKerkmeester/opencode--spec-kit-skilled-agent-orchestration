@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: AST Parser
-// ---------------------------------------------------------------
+// --- 1. AST PARSER ---
 
 import { chunkMarkdown, splitIntoBlocks } from '@spec-kit/shared/lib/structure-aware-chunker';
 

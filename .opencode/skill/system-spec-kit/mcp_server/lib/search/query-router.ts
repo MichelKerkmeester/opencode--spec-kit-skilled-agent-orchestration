@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Query Router
-// ---------------------------------------------------------------
+// --- 1. QUERY ROUTER ---
 // Tier-to-channel-subset routing for query complexity (Sprint 3, T001b)
 // Maps classifier tiers to channel subsets for selective pipeline execution.
 
@@ -77,8 +75,8 @@ function enforceMinimumChannels(channels: ChannelName[]): ChannelName[] {
     }
   }
 
-  // AI-WHY: If still under minimum (e.g., input was ['vector'] and fallback only adds 'fts'),
-  // AI-WHY: the loop above covers it. But if input was empty, both fallbacks are added.
+  // If still under minimum (e.g., input was ['vector'] and fallback only adds 'fts'),
+  // The loop above covers it. But if input was empty, both fallbacks are added.
   return result;
 }
 
@@ -119,7 +117,7 @@ function routeQuery(
 ): RouteResult {
   const classification = classifyQueryComplexity(query, triggerPhrases);
 
-  // AI-WHY: When feature flag is disabled, classifier returns 'complex' with 'fallback' confidence.
+  // When feature flag is disabled, classifier returns 'complex' with 'fallback' confidence.
   // In that case, always return all channels (full pipeline — safe default).
   if (!isComplexityRouterEnabled()) {
     return {

@@ -240,7 +240,7 @@ detect_level() {
         fi
         
         # Pattern 3: YAML frontmatter
-        # level: 2 or level: 3+
+        # Level: 2 or level: 3+
         if [[ -z "$level" ]]; then
             level=$(grep -E '^level:\s*[123]\+?' "$spec_file" 2>/dev/null | grep -oE '[123]\+?' | head -1 || true)
         fi

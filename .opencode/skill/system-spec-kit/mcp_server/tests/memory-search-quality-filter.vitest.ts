@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: Memory Search Quality Filter
-// ---------------------------------------------------------------
-
 import { describe, expect, it } from 'vitest';
 import { __testables } from '../handlers/memory-search';
 

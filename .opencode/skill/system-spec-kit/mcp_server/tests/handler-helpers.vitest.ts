@@ -1,23 +1,17 @@
-// ---------------------------------------------------------------
 // TEST: HANDLER HELPERS
-// ---------------------------------------------------------------
-
 import { describe, it, expect, beforeAll, beforeEach, afterEach, vi } from 'vitest';
 import path from 'path';
 import os from 'os';
 import type { CausalLinkMapping } from '../handlers/causal-links-processor';
 import * as dbHelpers from '../utils/db-helpers';
 
-// ---------------------------------------------------------------
 // TEST: HANDLER HELPERS (Vitest)
 // Unit tests for untested exports from:
-//   - handlers/memory-save.ts (escapeLikePattern, CAUSAL_LINK_MAPPINGS,
-//     findSimilarMemories, reinforceExistingMemory, markMemorySuperseded,
-//     updateExistingMemory, logPeDecision, processCausalLinks,
-//     resolveMemoryReference)
-//   - handlers/memory-context.ts (CONTEXT_MODES, INTENT_TO_MODE)
-// ---------------------------------------------------------------
-
+// - handlers/memory-save.ts (escapeLikePattern, CAUSAL_LINK_MAPPINGS,
+// FindSimilarMemories, reinforceExistingMemory, markMemorySuperseded,
+// UpdateExistingMemory, logPeDecision, processCausalLinks,
+// ResolveMemoryReference)
+// - handlers/memory-context.ts (CONTEXT_MODES, INTENT_TO_MODE)
 // Mock core/config to prevent SERVER_DIR resolution issues during import
 vi.mock('../core/config', () => {
   const mDir = path.resolve(path.join(__dirname, '..'));
@@ -669,7 +663,7 @@ describe('processCausalLinks', () => {
     const result = memorySave!.processCausalLinks(db, memoryId, { caused_by: ['1'] } as ProcessCausalLinksInput);
     expect(result.inserted).toBe(1);
       const edge = db.prepare('SELECT source_id, target_id, relation FROM causal_edges LIMIT 1').get() as CausalEdgeRow | undefined;
-    // caused_by has reverse=true: source=resolvedId(1), target=memoryId(10)
+    // Caused_by has reverse=true: source=resolvedId(1), target=memoryId(10)
       if (!edge) {
         expect.unreachable('Expected inserted caused_by edge');
       }
@@ -687,7 +681,7 @@ describe('processCausalLinks', () => {
     const result = memorySave!.processCausalLinks(db, memoryId, { supersedes: ['3'] } as ProcessCausalLinksInput);
     expect(result.inserted).toBe(1);
       const edge = db.prepare('SELECT source_id, target_id, relation FROM causal_edges LIMIT 1').get() as CausalEdgeRow | undefined;
-    // supersedes has reverse=false: source=memoryId(10), target=resolvedId(3)
+    // Supersedes has reverse=false: source=memoryId(10), target=resolvedId(3)
       if (!edge) {
         expect.unreachable('Expected inserted supersedes edge');
       }

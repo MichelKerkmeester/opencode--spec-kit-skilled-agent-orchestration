@@ -1,23 +1,19 @@
-// ---------------------------------------------------------------
-// MODULE: Encoding Intent
-// ---------------------------------------------------------------
+// --- 1. ENCODING INTENT ---
 // Sprint 6a — classify content intent for metadata enrichment.
 //
 // Classifies each memory's content at index time into one of three
-// intent categories: 'document' (prose), 'code' (programming),
-// or 'structured_data' (tables/JSON/YAML). The classification is
-// stored in the `encoding_intent` column alongside the embedding
-// and serves as read-only metadata — it has NO retrieval-time
-// scoring impact.
+// Intent categories: 'document' (prose), 'code' (programming),
+// Or 'structured_data' (tables/JSON/YAML). The classification is
+// Stored in the `encoding_intent` column alongside the embedding
+// And serves as read-only metadata — it has NO retrieval-time
+// Scoring impact.
 //
 // Feature Flag:
-//   Controlled by SPECKIT_ENCODING_INTENT (default ON, graduated).
-//   Set SPECKIT_ENCODING_INTENT=false to disable.
-//   When the flag is off, classifyEncodingIntent() still returns a
-//   classification (default 'document') but callers should gate
-//   persistence on isEncodingIntentEnabled().
-// ---------------------------------------------------------------
-
+// Controlled by SPECKIT_ENCODING_INTENT (default ON, graduated).
+// Set SPECKIT_ENCODING_INTENT=false to disable.
+// When the flag is off, classifyEncodingIntent() still returns a
+// Classification (default 'document') but callers should gate
+// Persistence on isEncodingIntentEnabled().
 export type EncodingIntent = 'document' | 'code' | 'structured_data';
 
 /**
@@ -61,7 +57,7 @@ function computeCodeScore(content: string): number {
   ).length;
   codeIndicators += (importLines / totalLines) * 0.8;
 
-  // AI-WHY: Programming punctuation density (braces, semicolons, arrows)
+  // Programming punctuation density (braces, semicolons, arrows)
   // Threshold: typical prose has <1% punctuation density; code exceeds 3%
   const CODE_PUNCTUATION_DENSITY_THRESHOLD = 0.03;
   const codePunctuation = (content.match(/[{}();=>\[\]]/g) || []).length;

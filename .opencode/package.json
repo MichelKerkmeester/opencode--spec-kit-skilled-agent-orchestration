@@ -1,6 +1,6 @@
 {
   "type": "module",
   "dependencies": {
-    "@opencode-ai/plugin": "1.2.25"
+    "@opencode-ai/plugin": "1.2.26"
   }
 }

@@ -15,7 +15,7 @@
 {"id":"P1-MCP-002","priority":"P1","prompt":"fetch webflow cms collection","confidence_only":false,"expect_result":true,"expected_top_any":["mcp-code-mode"],"expect_kind":"skill","allow_command_bridge":false}
 {"id":"P1-REVIEW-001","priority":"P1","prompt":"perform a security code review for regressions","confidence_only":false,"expect_result":true,"expected_top_any":["sk-code--review"],"expect_kind":"skill","allow_command_bridge":false}
 {"id":"P1-REVIEW-002","priority":"P1","prompt":"check merge readiness and request changes","confidence_only":false,"expect_result":true,"expected_top_any":["sk-code--review"],"expect_kind":"skill","allow_command_bridge":false}
-{"id":"P1-WEB-001","priority":"P1","prompt":"implement responsive css layout fix","confidence_only":false,"expect_result":true,"expected_top_any":["sk-code--full-stack"],"expect_kind":"skill","allow_command_bridge":false}
+{"id":"P1-WEB-001","priority":"P1","prompt":"implement responsive css layout fix","confidence_only":false,"expect_result":true,"expected_top_any":["sk-code--web"],"expect_kind":"skill","allow_command_bridge":false}
 {"id":"P1-WEB-002","priority":"P1","prompt":"refactor frontend component and verify accessibility","confidence_only":false,"expect_result":true,"expected_top_any":["sk-code--web"],"expect_kind":"skill","allow_command_bridge":false}
 {"id":"P1-OPENCODE-001","priority":"P1","prompt":"update python script following opencode standards","confidence_only":false,"expect_result":true,"expected_top_any":["sk-code--opencode"],"expect_kind":"skill","allow_command_bridge":false}
 {"id":"P1-OPENCODE-002","priority":"P1","prompt":"write bash script with proper shebang and snake_case","confidence_only":false,"expect_result":true,"expected_top_any":["sk-code--opencode"],"expect_kind":"skill","allow_command_bridge":false}
@@ -26,7 +26,7 @@
 {"id":"P1-CLI-002","priority":"P1","prompt":"delegate to codex for code generation","confidence_only":false,"expect_result":true,"expected_top_any":["cli-codex"],"expect_kind":"skill","allow_command_bridge":false}
 {"id":"P1-CLI-003","priority":"P1","prompt":"use claude code cli for extended thinking","confidence_only":false,"expect_result":true,"expected_top_any":["cli-claude-code"],"expect_kind":"skill","allow_command_bridge":false}
 {"id":"P1-CLI-004","priority":"P1","prompt":"delegate to copilot cli in cloud delegation mode","confidence_only":false,"expect_result":true,"expected_top_any":["cli-copilot"],"expect_kind":"skill","allow_command_bridge":false}
-{"id":"P1-FULLSTACK-001","priority":"P1","prompt":"build full stack typescript service","confidence_only":false,"expect_result":true,"expected_top_any":["sk-code--full-stack"],"expect_kind":"skill","allow_command_bridge":false}
+{"id":"P1-FULLSTACK-001","priority":"P1","prompt":"build full stack typescript service","confidence_only":false,"expect_result":true,"expected_top_any":["sk-code--opencode"],"expect_kind":"skill","allow_command_bridge":false}
 {"id":"P1-REVIEW-003","priority":"P1","prompt":"review and update this","confidence_only":false,"expect_result":true,"expected_top_any":["sk-code--review"],"expect_kind":"skill","allow_command_bridge":false}
 {"id":"P1-ABSTAIN-001","priority":"P1","prompt":"help","confidence_only":false,"expect_result":false,"expected_top_any":[],"allow_command_bridge":false}
 {"id":"P1-ABSTAIN-002","priority":"P1","prompt":"optimize skill_advisor.py execution speed and recommendation quality","confidence_only":false,"expect_result":false,"expected_top_any":[],"allow_command_bridge":false}

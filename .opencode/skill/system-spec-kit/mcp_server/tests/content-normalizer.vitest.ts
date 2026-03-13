@@ -1,8 +1,5 @@
-// ---------------------------------------------------------------
 // TEST: Content Normalizer
 // File: lib/parsing/content-normalizer.ts
-// ---------------------------------------------------------------
-
 import { describe, it, expect } from 'vitest';
 import {
   normalizeContentForEmbedding,
@@ -16,10 +13,7 @@ import {
   normalizeHeadings,
 } from '../lib/parsing/content-normalizer';
 
-// ---------------------------------------------------------------
-// stripYamlFrontmatter
-// ---------------------------------------------------------------
-
+// StripYamlFrontmatter
 describe('stripYamlFrontmatter', () => {
   it('S1-N-01: removes a standard YAML frontmatter block', () => {
     const input = '---\ntitle: test\nauthor: alice\n---\nBody text here.';
@@ -59,10 +53,7 @@ describe('stripYamlFrontmatter', () => {
   });
 });
 
-// ---------------------------------------------------------------
-// stripAnchors
-// ---------------------------------------------------------------
-
+// StripAnchors
 describe('stripAnchors', () => {
   it('S1-A-01: removes opening ANCHOR tags', () => {
     const input = '<!-- ANCHOR: state -->\nSome content.';
@@ -99,7 +90,7 @@ describe('stripAnchors', () => {
   });
 
   it('S1-A-07: preserves non-anchor HTML comments', () => {
-    // stripAnchors only targets ANCHOR tags; plain comments survive
+    // StripAnchors only targets ANCHOR tags; plain comments survive
     const input = '<!-- regular comment -->\n<!-- ANCHOR: foo -->';
     const result = stripAnchors(input);
     expect(result).toContain('<!-- regular comment -->');
@@ -107,10 +98,7 @@ describe('stripAnchors', () => {
   });
 });
 
-// ---------------------------------------------------------------
-// stripHtmlComments
-// ---------------------------------------------------------------
-
+// StripHtmlComments
 describe('stripHtmlComments', () => {
   it('S1-C-01: removes a simple inline HTML comment', () => {
     const input = 'Before <!-- comment --> after.';
@@ -149,10 +137,7 @@ describe('stripHtmlComments', () => {
   });
 });
 
-// ---------------------------------------------------------------
-// stripCodeFences
-// ---------------------------------------------------------------
-
+// StripCodeFences
 describe('stripCodeFences', () => {
   it('S1-F-01: removes opening and closing fence markers, keeps code body', () => {
     const input = '```ts\nconst x = 1;\n```';
@@ -195,10 +180,7 @@ describe('stripCodeFences', () => {
   });
 });
 
-// ---------------------------------------------------------------
-// normalizeMarkdownTables
-// ---------------------------------------------------------------
-
+// NormalizeMarkdownTables
 describe('normalizeMarkdownTables', () => {
   it('S1-T-01: converts a pipe table header row to space-joined tokens', () => {
     const input = '| A | B | C |';
@@ -248,10 +230,7 @@ describe('normalizeMarkdownTables', () => {
   });
 });
 
-// ---------------------------------------------------------------
-// normalizeMarkdownLists
-// ---------------------------------------------------------------
-
+// NormalizeMarkdownLists
 describe('normalizeMarkdownLists', () => {
   it('S1-L-01: strips unchecked task checkbox prefix', () => {
     const input = '- [ ] T001 Implement feature';
@@ -306,10 +285,7 @@ describe('normalizeMarkdownLists', () => {
   });
 });
 
-// ---------------------------------------------------------------
-// normalizeHeadings
-// ---------------------------------------------------------------
-
+// NormalizeHeadings
 describe('normalizeHeadings', () => {
   it('S1-H-01: strips h2 hashes and numeric section prefix', () => {
     expect(normalizeHeadings('## 3. SCOPE')).toBe('SCOPE');
@@ -355,10 +331,7 @@ describe('normalizeHeadings', () => {
   });
 });
 
-// ---------------------------------------------------------------
-// normalizeContentForEmbedding — full pipeline
-// ---------------------------------------------------------------
-
+// NormalizeContentForEmbedding — full pipeline
 describe('normalizeContentForEmbedding', () => {
   it('S1-E-01: returns empty string for empty input', () => {
     expect(normalizeContentForEmbedding('')).toBe('');
@@ -518,10 +491,7 @@ describe('normalizeContentForEmbedding', () => {
   });
 });
 
-// ---------------------------------------------------------------
-// normalizeContentForBM25
-// ---------------------------------------------------------------
-
+// NormalizeContentForBM25
 describe('normalizeContentForBM25', () => {
   it('S1-B-01: returns empty string for empty input', () => {
     expect(normalizeContentForBM25('')).toBe('');
@@ -565,10 +535,7 @@ describe('normalizeContentForBM25', () => {
   });
 });
 
-// ---------------------------------------------------------------
 // Edge cases
-// ---------------------------------------------------------------
-
 describe('Edge cases', () => {
   it('S1-X-01: empty string through every primitive helper returns empty or unchanged', () => {
     expect(stripYamlFrontmatter('')).toBe('');

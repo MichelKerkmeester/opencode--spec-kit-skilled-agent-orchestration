@@ -1,9 +1,7 @@
-// ---------------------------------------------------------------
-// MODULE: Test — Eval Database
-// ---------------------------------------------------------------
+// --- 1. TEST — EVAL DATABASE ---
 // Verifies that initEvalDb() creates the evaluation database with
-// all 5 required tables, correct columns, and that it is a
-// separate file from the main context-index.sqlite.
+// All 5 required tables, correct columns, and that it is a
+// Separate file from the main context-index.sqlite.
 
 import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
 import * as path from 'path';

@@ -1,29 +1,26 @@
-// ---------------------------------------------------------------
 // TEST: Spec Folder Pre-filter
 //
 // Verifies that specFolder is correctly forwarded through the
-// search pipeline so results are pre-filtered at the DB layer
+// Search pipeline so results are pre-filtered at the DB layer
 // (before entering the scoring pipeline), reducing latency for
-// scoped queries.
+// Scoped queries.
 //
 // Test plan:
-//   1. specFolder forwarded in Stage 1 — vector channel
-//   2. specFolder forwarded in Stage 1 — hybrid channel
-//   3. specFolder forwarded in Stage 1 — multi-concept channel
-//   4. specFolder forwarded in Stage 1 — constitutional injection
-//   5. Unscoped queries — no folder restriction applied
-//   6. Edge case: specFolder specified but no memories in that folder
-//   7. structuralSearch (hybrid fallback Tier 3) respects specFolder
-//   8. Stage 1 metadata consistency invariants
-// ---------------------------------------------------------------
-
+// 1. specFolder forwarded in Stage 1 — vector channel
+// 2. specFolder forwarded in Stage 1 — hybrid channel
+// 3. specFolder forwarded in Stage 1 — multi-concept channel
+// 4. specFolder forwarded in Stage 1 — constitutional injection
+// 5. Unscoped queries — no folder restriction applied
+// 6. Edge case: specFolder specified but no memories in that folder
+// 7. structuralSearch (hybrid fallback Tier 3) respects specFolder
+// 8. Stage 1 metadata consistency invariants
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import Database from 'better-sqlite3';
 
 // -- Module-level mocks (vi.mock hoisted before all imports) ---
 //
 // Rule: mocks must be declared with vi.mock() at the top so Vitest
-// hoisting places them before the module-under-test is imported.
+// Hoisting places them before the module-under-test is imported.
 
 // Capture call arguments for vectorSearch and multiConceptSearch
 const mockVectorSearchCalls: Array<[unknown, unknown]> = [];
@@ -68,23 +65,23 @@ vi.mock('../lib/search/bm25-index', () => ({
   sanitizeFTS5Query: vi.fn((q: string) => q),
 }));
 
-// sqlite-fts — prevent DB access
+// Sqlite-fts — prevent DB access
 vi.mock('../lib/search/sqlite-fts', () => ({
   fts5Bm25Search: vi.fn(() => []),
 }));
 
-// query-expander — safe no-op
+// Query-expander — safe no-op
 vi.mock('../lib/search/query-expander', () => ({
   expandQuery: vi.fn((q: string) => [q]),
 }));
 
-// embedding-expansion — safe no-ops (R12 feature, flag-gated)
+// Embedding-expansion — safe no-ops (R12 feature, flag-gated)
 vi.mock('../lib/search/embedding-expansion', () => ({
   isExpansionActive: vi.fn(() => false),
   expandQueryWithEmbeddings: vi.fn(async () => []),
 }));
 
-// search-flags — disable all optional features to keep tests deterministic
+// Search-flags — disable all optional features to keep tests deterministic
 vi.mock('../lib/search/search-flags', () => ({
   isMultiQueryEnabled: vi.fn(() => false),
   isEmbeddingExpansionEnabled: vi.fn(() => false),
@@ -187,7 +184,7 @@ function seedRows(
 }
 
 // ═══════════════════════════════════════════════════════════════
-//  1. Stage 1 — specFolder forwarded to vector channel
+// 1. Stage 1 — specFolder forwarded to vector channel
 // ═══════════════════════════════════════════════════════════════
 
 describe('R9: Stage 1 spec-folder forwarding — vector channel', () => {
@@ -230,7 +227,7 @@ describe('R9: Stage 1 spec-folder forwarding — vector channel', () => {
 });
 
 // ═══════════════════════════════════════════════════════════════
-//  2. Stage 1 — specFolder forwarded to hybrid channel
+// 2. Stage 1 — specFolder forwarded to hybrid channel
 // ═══════════════════════════════════════════════════════════════
 
 describe('R9: Stage 1 spec-folder forwarding — hybrid channel', () => {
@@ -248,7 +245,7 @@ describe('R9: Stage 1 spec-folder forwarding — hybrid channel', () => {
 
     expect(mockHybridSearchCalls.length).toBeGreaterThanOrEqual(1);
 
-    // searchWithFallback signature: (query, embedding, options) — options is index 2
+    // SearchWithFallback signature: (query, embedding, options) — options is index 2
     const callOptions = mockHybridSearchCalls[0]?.[2] ?? {};
     expect(callOptions).toMatchObject({ specFolder: 'specs/042-rag-fusion' });
   });
@@ -271,7 +268,7 @@ describe('R9: Stage 1 spec-folder forwarding — hybrid channel', () => {
 });
 
 // ═══════════════════════════════════════════════════════════════
-//  3. Stage 1 — specFolder forwarded to multi-concept channel
+// 3. Stage 1 — specFolder forwarded to multi-concept channel
 // ═══════════════════════════════════════════════════════════════
 
 describe('R9: Stage 1 spec-folder forwarding — multi-concept channel', () => {
@@ -290,7 +287,7 @@ describe('R9: Stage 1 spec-folder forwarding — multi-concept channel', () => {
 
     expect(mockMultiConceptSearchCalls.length).toBeGreaterThanOrEqual(1);
 
-    // multiConceptSearch(embeddings, options) — options is index 1
+    // MultiConceptSearch(embeddings, options) — options is index 1
     const callOptions = mockMultiConceptSearchCalls[0]?.[1] ?? {};
     expect(callOptions).toMatchObject({ specFolder: 'specs/018-sprint5' });
   });
@@ -326,7 +323,7 @@ describe('R9: Stage 1 spec-folder forwarding — multi-concept channel', () => {
 });
 
 // ═══════════════════════════════════════════════════════════════
-//  4. Stage 1 — constitutional injection also carries specFolder
+// 4. Stage 1 — constitutional injection also carries specFolder
 // ═══════════════════════════════════════════════════════════════
 
 describe('R9: Stage 1 spec-folder forwarding — constitutional injection', () => {
@@ -334,7 +331,7 @@ describe('R9: Stage 1 spec-folder forwarding — constitutional injection', () =
 
   it('R9-07: all vectorSearch calls (primary + constitutional) carry the same specFolder', async () => {
     // When includeConstitutional is true and the primary channel returns no constitutional
-    // results, Stage 1 does an extra vectorSearch call with tier='constitutional'.
+    // Results, Stage 1 does an extra vectorSearch call with tier='constitutional'.
     // Both calls must carry the same specFolder.
     const input: Stage1Input = {
       config: makePipelineConfig({
@@ -357,15 +354,15 @@ describe('R9: Stage 1 spec-folder forwarding — constitutional injection', () =
 });
 
 // ═══════════════════════════════════════════════════════════════
-//  5. Unscoped queries — no folder restriction applied
+// 5. Unscoped queries — no folder restriction applied
 // ═══════════════════════════════════════════════════════════════
 
 describe('R9: Unscoped queries — cross-folder behaviour', () => {
   beforeEach(() => clearCallLogs());
 
   it('R9-08: no specFolder means no folder filter in vectorSearch options', async () => {
-    // specFolder being absent/null in the options object means the DB layer will
-    // not apply a WHERE spec_folder = ? clause, producing cross-folder results.
+    // SpecFolder being absent/null in the options object means the DB layer will
+    // Not apply a WHERE spec_folder = ? clause, producing cross-folder results.
     const input: Stage1Input = {
       config: makePipelineConfig({
         searchType: 'vector',
@@ -419,7 +416,7 @@ describe('R9: Unscoped queries — cross-folder behaviour', () => {
 });
 
 // ═══════════════════════════════════════════════════════════════
-//  6. Edge case: specFolder specified but no memories in that folder
+// 6. Edge case: specFolder specified but no memories in that folder
 // ═══════════════════════════════════════════════════════════════
 
 describe('R9: Edge case — specFolder with no matching memories', () => {
@@ -478,9 +475,9 @@ describe('R9: Edge case — specFolder with no matching memories', () => {
 });
 
 // ═══════════════════════════════════════════════════════════════
-//  7. structuralSearch (hybrid fallback Tier 3) — real DB tests
-//     These tests import the actual `structuralSearch` + `init`
-//     (via importOriginal in the mock), and use an in-memory SQLite DB.
+// 7. structuralSearch (hybrid fallback Tier 3) — real DB tests
+// These tests import the actual `structuralSearch` + `init`
+// (via importOriginal in the mock), and use an in-memory SQLite DB.
 // ═══════════════════════════════════════════════════════════════
 
 describe('R9: structuralSearch (fallback Tier 3) respects specFolder', () => {
@@ -538,7 +535,7 @@ describe('R9: structuralSearch (fallback Tier 3) respects specFolder', () => {
 });
 
 // ═══════════════════════════════════════════════════════════════
-//  8. Stage 1 metadata consistency invariants
+// 8. Stage 1 metadata consistency invariants
 // ═══════════════════════════════════════════════════════════════
 
 describe('R9: Stage 1 metadata correctness', () => {

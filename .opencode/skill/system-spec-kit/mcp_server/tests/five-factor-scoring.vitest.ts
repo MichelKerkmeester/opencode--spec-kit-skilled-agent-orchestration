@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: FIVE FACTOR SCORING
-// ---------------------------------------------------------------
-
 import { describe, it, expect } from 'vitest';
 import {
   FIVE_FACTOR_WEIGHTS,
@@ -386,7 +383,7 @@ describe('Attention Decay Integration (T035)', () => {
   });
 
   it('T035-04: FIVE_FACTOR_WEIGHTS available via composite-scoring (not re-exported from attention-decay)', () => {
-    // attention-decay imports FIVE_FACTOR_WEIGHTS but does not re-export it
+    // Attention-decay imports FIVE_FACTOR_WEIGHTS but does not re-export it
     // Verify it's available from composite-scoring instead
     expect(FIVE_FACTOR_WEIGHTS).toBeDefined();
   });
@@ -411,7 +408,7 @@ describe('Attention Decay Integration (T035)', () => {
   it('T035-07: get_attention_breakdown returns proper structure', () => {
     // Production signature: getAttentionBreakdown(memory) — single arg, no options
     // Known bug: attention-decay passes memory object to calculateImportanceScore(tier, baseWeight)
-    // which causes .toLowerCase() crash on non-string tier. Provide importance_tier as string to avoid crash.
+    // Which causes .toLowerCase() crash on non-string tier. Provide importance_tier as string to avoid crash.
     try {
       const breakdown = getAttentionBreakdown({
         access_count: 5,
@@ -423,7 +420,7 @@ describe('Attention Decay Integration (T035)', () => {
       expect(typeof breakdown.composite).toBe('number');
       expect(breakdown.weights).toBeDefined();
     } catch (err: unknown) {
-      // AI: Fix F17 — surface actual errors instead of masking.
+      // Fix F17 — surface actual errors instead of masking.
       // Known production bug: calculateImportanceScore receives memory object instead of (tier, weight)
       // This causes .toLowerCase() to fail on non-string input
       expect(err).toBeDefined();
@@ -509,7 +506,7 @@ describe('Relevance Improvement Validation (CHK-056)', () => {
     };
     const optimalScore = calculateFiveFactorScore(optimal, { query: 'test' });
     const suboptimalScore = calculateFiveFactorScore(suboptimal, { query: 'test' });
-    // AI: Fix F18 — guard zero denominator before division.
+    // Fix F18 — guard zero denominator before division.
     expect(suboptimalScore).toBeGreaterThan(0);
     const ratio = optimalScore / suboptimalScore;
     expect(ratio).toBeGreaterThan(1.3);
@@ -653,36 +650,36 @@ describe('Edge Cases: Importance Factor', () => {
   });
 
   it('EDGE-I04: Zero base weight remains zero (only undefined defaults)', () => {
-    // calculateImportanceScore uses nullish coalescing:
-    // base = baseWeight ?? 0.5
-    // so 0 is preserved, while undefined falls back to 0.5.
+    // CalculateImportanceScore uses nullish coalescing:
+    // Base = baseWeight ?? 0.5
+    // So 0 is preserved, while undefined falls back to 0.5.
     const score = calculateImportanceScore('critical', 0);
     expect(score).toBe(0);
   });
 
   it('EDGE-I05: Base weight 1.0 with critical tier normalized correctly', () => {
-    // critical multiplier = 1.5, base = 1.0
-    // normalized = min(1, (1.0 * 1.5) / 2.0) = min(1, 0.75) = 0.75
+    // Critical multiplier = 1.5, base = 1.0
+    // Normalized = min(1, (1.0 * 1.5) / 2.0) = min(1, 0.75) = 0.75
     const score = calculateImportanceScore('critical', 1.0);
     expect(Math.abs(score - 0.75)).toBeLessThan(0.001);
   });
 
   it('EDGE-I06: Constitutional with high base weight capped at 1.0', () => {
-    // normalized = min(1, (1.0 * 2.0) / 2.0) = min(1, 1.0) = 1.0
+    // Normalized = min(1, (1.0 * 2.0) / 2.0) = min(1, 1.0) = 1.0
     const score = calculateImportanceScore('constitutional', 1.0);
     expect(score).toBe(1.0);
   });
 
   it('EDGE-I07: Deprecated tier gives very low score', () => {
-    // deprecated multiplier = 0.1, base = 0.5
-    // normalized = (0.5 * 0.1) / 2.0 = 0.025
+    // Deprecated multiplier = 0.1, base = 0.5
+    // Normalized = (0.5 * 0.1) / 2.0 = 0.025
     const score = calculateImportanceScore('deprecated', 0.5);
     expect(score).toBeLessThan(0.05);
   });
 
   it('EDGE-I08: Missing base weight defaults to 0.5', () => {
     const score = calculateImportanceScore('normal', undefined);
-    // normal = 1.0, base = 0.5, normalized = (0.5 * 1.0) / 2.0 = 0.25
+    // Normal = 1.0, base = 0.5, normalized = (0.5 * 1.0) / 2.0 = 0.25
     expect(Math.abs(score - 0.25)).toBeLessThan(0.001);
   });
 });
@@ -867,7 +864,7 @@ describe('Edge Cases: Batch Operations', () => {
       const scored = applyFiveFactorScoring(filteredResults, {});
       expect(Array.isArray(scored)).toBe(true);
     } catch (err: unknown) {
-      // AI: Fix F17 — surface actual errors instead of masking.
+      // Fix F17 — surface actual errors instead of masking.
       expect(err).toBeDefined();
     }
   });

@@ -1,10 +1,6 @@
-// ---------------------------------------------------------------
-// MODULE: Importance Tiers
-// ---------------------------------------------------------------
+// --- 1. IMPORTANCE TIERS ---
 
-// ---------------------------------------------------------------
-// 1. TYPES
-// ---------------------------------------------------------------
+// --- 2. TYPES ---
 
 export interface TierConfig {
   value: number;
@@ -25,9 +21,7 @@ export type ImportanceTier =
   | 'temporary'
   | 'deprecated';
 
-// ---------------------------------------------------------------
-// 2. TIER CONFIGURATION
-// ---------------------------------------------------------------
+// --- 3. TIER CONFIGURATION ---
 
 export const IMPORTANCE_TIERS: Readonly<Record<ImportanceTier, TierConfig>> = {
   constitutional: {
@@ -80,9 +74,7 @@ export const IMPORTANCE_TIERS: Readonly<Record<ImportanceTier, TierConfig>> = {
 export const VALID_TIERS: readonly ImportanceTier[] = Object.keys(IMPORTANCE_TIERS) as ImportanceTier[];
 export const DEFAULT_TIER: ImportanceTier = 'normal';
 
-// ---------------------------------------------------------------
-// 3. TIER CONFIGURATION FUNCTIONS
-// ---------------------------------------------------------------
+// --- 4. TIER CONFIGURATION FUNCTIONS ---
 
 // Get tier configuration by name (returns normal tier if invalid)
 export function getTierConfig(tierName: string | null | undefined): TierConfig {
@@ -113,7 +105,7 @@ export function allowsDecay(tier: string): boolean {
   return config.decay === true;
 }
 
-// AI-GUARD: Get auto-expiration days for tier (null = never expires)
+// Get auto-expiration days for tier (null = never expires)
 export function getAutoExpireDays(tier: string): number | null {
   const config = getTierConfig(tier);
   return config.autoExpireDays;
@@ -133,9 +125,7 @@ export function getTierValue(tier: string): number {
   return config.value;
 }
 
-// ---------------------------------------------------------------
-// 4. SQL FILTER HELPERS
-// ---------------------------------------------------------------
+// --- 5. SQL FILTER HELPERS ---
 
 // SQL WHERE clause for finding expired temporary memories
 export function getExpiredTemporaryFilter(): string {
@@ -166,9 +156,7 @@ export function getConstitutionalFilter(): string {
   return "importance_tier = 'constitutional'";
 }
 
-// ---------------------------------------------------------------
-// 5. UTILITY FUNCTIONS
-// ---------------------------------------------------------------
+// --- 6. UTILITY FUNCTIONS ---
 
 // Normalize tier input to valid tier name (returns default if invalid)
 export function normalizeTier(tier: string | null | undefined): ImportanceTier {
@@ -193,10 +181,7 @@ export function getTiersByImportance(): ImportanceTier[] {
   });
 }
 
-// ---------------------------------------------------------------
 // 6. DOCUMENT TYPE HELPERS (Spec 126)
-// ---------------------------------------------------------------
-
 /**
  * Get the default importance tier for a given document type.
  * Spec/plan/decision-record are 'important'; others are 'normal'.

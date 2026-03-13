@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Search Results Formatter
-// ---------------------------------------------------------------
+// --- 1. SEARCH RESULTS FORMATTER ---
 
 // Node stdlib
 import fs from 'fs';
@@ -24,9 +22,7 @@ import {
 // Consolidated path validation from core/config.js (single source of truth)
 import { ALLOWED_BASE_PATHS } from '../core/config';
 
-/* ---------------------------------------------------------------
-   1. TYPES
-   --------------------------------------------------------------- */
+// --- 2. TYPES ---
 
 /** Token metrics for anchor-filtered content */
 export interface AnchorTokenMetrics {
@@ -105,6 +101,12 @@ export interface MemoryResultTrace {
   expansionTerms: string[];
   budgetTruncated: boolean;
   scoreResolution: 'intentAdjusted' | 'fusion' | 'score' | 'semantic' | 'none';
+  graphContribution?: {
+    sources: string[];
+    totalDelta: number;
+    injected: boolean;
+  };
+  adaptiveMode?: string | null;
 }
 
 export interface MemoryResultEnvelope extends FormattedSearchResult {
@@ -121,9 +123,7 @@ export interface MemoryParserLike {
 // MCPResponse type is imported from '../lib/response/envelope'
 export type { MCPResponse };
 
-/* ---------------------------------------------------------------
-   2. PATH VALIDATION
-   --------------------------------------------------------------- */
+// --- 3. PATH VALIDATION ---
 
 export function validateFilePathLocal(filePath: string): string {
   const result = validateFilePath(filePath, ALLOWED_BASE_PATHS);
@@ -137,9 +137,7 @@ export function validateFilePathLocal(filePath: string): string {
   return result;
 }
 
-/* ---------------------------------------------------------------
-   3. HELPER UTILITIES
-   --------------------------------------------------------------- */
+// --- 4. HELPER UTILITIES ---
 
 export function safeJsonParse<T>(str: string | null | undefined, fallback: T): T {
   if (!str) return fallback;
@@ -236,6 +234,8 @@ function extractTrace(rawResult: RawSearchResult, extraData?: Record<string, unk
   let fallbackTier: number | null = null;
   let queryComplexity: string | null = null;
   let budgetTruncated = false;
+  let graphContribution: MemoryResultTrace['graphContribution'];
+  let adaptiveMode: string | null = null;
 
   for (const stage of stages) {
     const meta = stage.metadata ?? {};
@@ -266,6 +266,16 @@ function extractTrace(rawResult: RawSearchResult, extraData?: Record<string, unk
     if (meta.budgetTruncated === true || meta.truncated === true) {
       budgetTruncated = true;
     }
+    if (!graphContribution && rawResult.graphContribution && typeof rawResult.graphContribution === 'object') {
+      const contribution = rawResult.graphContribution as Record<string, unknown>;
+      graphContribution = {
+        sources: Array.isArray(contribution.sources)
+          ? contribution.sources.filter((value): value is string => typeof value === 'string')
+          : [],
+        totalDelta: typeof contribution.totalDelta === 'number' ? contribution.totalDelta : 0,
+        injected: contribution.injected === true,
+      };
+    }
   }
 
   if (rawResult.fallbackRetry === true) {
@@ -290,6 +300,11 @@ function extractTrace(rawResult: RawSearchResult, extraData?: Record<string, unk
     }
   }
 
+  const adaptiveShadow = extraData?.adaptiveShadow as { mode?: string } | undefined;
+  if (typeof adaptiveShadow?.mode === 'string') {
+    adaptiveMode = adaptiveShadow.mode;
+  }
+
   return {
     channelsUsed: Array.from(channelsUsed),
     pipelineStages,
@@ -298,12 +313,12 @@ function extractTrace(rawResult: RawSearchResult, extraData?: Record<string, unk
     expansionTerms: Array.from(expansionTerms),
     budgetTruncated,
     scoreResolution: resolveScoreResolution(rawResult),
+    graphContribution,
+    adaptiveMode,
   };
 }
 
-/* ---------------------------------------------------------------
-   4. SEARCH RESULTS FORMATTING
-   --------------------------------------------------------------- */
+// --- 5. SEARCH RESULTS FORMATTING ---
 
 export async function formatSearchResults(
   results: RawSearchResult[] | null,
@@ -424,9 +439,9 @@ export async function formatSearchResults(
 
           for (const anchorId of anchors) {
             // SK-005 Prefix matching: try exact match first, then fall back to
-            // prefix match for composite anchor IDs (e.g. 'summary' matches
+            // Prefix match for composite anchor IDs (e.g. 'summary' matches
             // 'summary-session-1770903150838-...'). Prefers shortest match to
-            // select the most specific key when multiple keys share a prefix.
+            // Select the most specific key when multiple keys share a prefix.
             const matchingKey = extracted[anchorId] !== undefined
               ? anchorId
               : Object.keys(extracted)
@@ -515,7 +530,7 @@ export async function formatSearchResults(
     results: formatted,
   };
   // Always spread caller-provided extraData (pipeline trace, timing, evidence gaps, etc.).
-  // AI-WHY: Spread extraData first, then re-assert canonical keys to prevent overwrites.
+  // Spread extraData first, then re-assert canonical keys to prevent overwrites.
   if (extraData && Object.keys(extraData).length > 0) {
     const { searchType: _s, count: _c, constitutionalCount: _cc, results: _r, ...safeExtra } = extraData as Record<string, unknown>;
     Object.assign(responseData, safeExtra);

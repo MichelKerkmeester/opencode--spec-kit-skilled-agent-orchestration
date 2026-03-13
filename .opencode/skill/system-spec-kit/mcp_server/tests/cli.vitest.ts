@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: Standalone admin CLI integration
-// ---------------------------------------------------------------
-
 import { spawnSync, type SpawnSyncReturns } from 'node:child_process';
 import { existsSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';

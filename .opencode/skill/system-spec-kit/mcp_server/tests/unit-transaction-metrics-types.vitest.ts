@@ -1,10 +1,7 @@
 // Converted from: unit-transaction-metrics-types.test.ts (custom runner)
-// ---------------------------------------------------------------
 // TEST: TRANSACTION MANAGER — TransactionMetrics TYPE CHANGES
 // Validates: [key: string]: unknown index signature on metrics,
-// spread behavior, known keys, and arbitrary access.
-// ---------------------------------------------------------------
-
+// Spread behavior, known keys, and arbitrary access.
 import { describe, it, expect } from 'vitest';
 import * as path from 'path';
 import * as fs from 'fs';

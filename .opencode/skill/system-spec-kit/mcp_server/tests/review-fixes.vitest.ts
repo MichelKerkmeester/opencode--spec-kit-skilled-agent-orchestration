@@ -1,19 +1,14 @@
-// ---------------------------------------------------------------
-// MODULE: Review Fixes Vitest
-// ---------------------------------------------------------------
+// --- 1. REVIEW FIXES VITEST ---
 
 import { describe, it, expect } from 'vitest';
 
-// ---------------------------------------------------------------
 // TEST: Review Fixes Verification (Vitest)
 // Validates critical fixes from the 8-agent cross-AI review:
-//   H1 — fail-closed on unknown tool
-//   C1 — path traversal rejection on ingest paths
-//   H2 — bounded paths array (max 50)
-//   H5 — additionalProperties: false on all schemas
-//   M5 — ingest schema minItems/minLength constraints
-// ---------------------------------------------------------------
-
+// H1 — fail-closed on unknown tool
+// C1 — path traversal rejection on ingest paths
+// H2 — bounded paths array (max 50)
+// H5 — additionalProperties: false on all schemas
+// M5 — ingest schema minItems/minLength constraints
 import {
   validateToolArgs,
   ToolSchemaValidationError,

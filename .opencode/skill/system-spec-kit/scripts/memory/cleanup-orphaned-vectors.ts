@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Cleanup Orphaned Vectors
-// ---------------------------------------------------------------
+// --- 1. CLEANUP ORPHANED VECTORS ---
 // Database maintenance — removes orphaned vector embeddings and history entries
 
 // External packages
@@ -72,9 +70,7 @@ async function main(): Promise<void> {
 
     let totalCleaned = 0;
 
-    // ---------------------------------------------------------
     // STEP 1: Discover orphaned entries across all tables
-    // ---------------------------------------------------------
     console.log('\n[Step 1] Finding orphaned memory_history entries...');
     let orphanedHistory: OrphanedEntry[] = [];
     let hasHistoryTable = true;
@@ -110,11 +106,9 @@ async function main(): Promise<void> {
 
     console.log(`Found ${orphanedVectors.length} orphaned vectors`);
 
-    // ---------------------------------------------------------
     // STEP 2: Delete all orphans in a single atomic transaction
-    // AI-WHY: ISS-B04-002 fix — wrapping history + vector cleanup in one
-    // transaction prevents partial commits on mid-run failure.
-    // ---------------------------------------------------------
+    // ISS-B04-002 fix — wrapping history + vector cleanup in one
+    // Transaction prevents partial commits on mid-run failure.
     if (dryRun) {
       if (orphanedHistory.length > 0) {
         console.log(`[DRY-RUN] Would delete ${orphanedHistory.length} orphaned history entries`);
@@ -154,9 +148,7 @@ async function main(): Promise<void> {
       console.log(`Atomic cleanup committed: ${totalCleaned} total entries removed`);
     }
 
-    // ---------------------------------------------------------
     // STEP 4: Verify and report
-    // ---------------------------------------------------------
     console.log('\n[Step 4] Verification...');
     const memoryCount: CountResult = database.prepare('SELECT COUNT(*) as count FROM memory_index').get() as CountResult;
     const vectorCount: CountResult = database.prepare('SELECT COUNT(*) as count FROM vec_memories').get() as CountResult;

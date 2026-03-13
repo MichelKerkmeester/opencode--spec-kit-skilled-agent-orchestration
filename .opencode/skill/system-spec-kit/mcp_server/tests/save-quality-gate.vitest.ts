@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: Save Quality Gate (TM-04)
-// ---------------------------------------------------------------
-
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import {
   isQualityGateEnabled,
@@ -33,9 +30,7 @@ interface MockConfigDb {
   prepare: ReturnType<typeof vi.fn>;
 }
 
-// ───────────────────────────────────────────────────────────────
-// TEST HELPERS
-// ───────────────────────────────────────────────────────────────
+// --- 1. TEST HELPERS ---
 
 /** Generate content of a specific length */
 function makeContent(length: number): string {

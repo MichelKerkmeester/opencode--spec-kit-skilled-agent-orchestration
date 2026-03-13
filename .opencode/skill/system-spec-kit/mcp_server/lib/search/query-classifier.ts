@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Query Classifier
-// ---------------------------------------------------------------
+// --- 1. QUERY CLASSIFIER ---
 /* --- 1. TYPES & CONSTANTS --- */
 
 type QueryComplexityTier = 'simple' | 'moderate' | 'complex';
@@ -101,7 +99,7 @@ function determineConfidence(
   stopWordRatio: number,
 ): 'high' | 'medium' | 'low' {
   if (tier === 'simple') {
-    // AI-WHY: Trigger match is strongest simplicity signal — overrides term count
+    // Trigger match is strongest simplicity signal — overrides term count
     if (hasTrigger) return 'high';
     if (termCount <= 2) return 'high';
     return 'medium';
@@ -142,7 +140,7 @@ function classifyQueryComplexity(
   query: string,
   triggerPhrases?: string[],
 ): ClassificationResult {
-  // AI-WHY: Safe fallback for any unexpected state
+  // Safe fallback for any unexpected state
   const FALLBACK: ClassificationResult = {
     tier: 'complex',
     features: { termCount: 0, charCount: 0, hasTriggerMatch: false, stopWordRatio: 0 },
@@ -155,7 +153,7 @@ function classifyQueryComplexity(
       return FALLBACK;
     }
 
-    // AI-WHY: Edge case: empty or whitespace-only queries → complex fallback
+    // Edge case: empty or whitespace-only queries → complex fallback
     if (!query || typeof query !== 'string' || query.trim().length === 0) {
       return FALLBACK;
     }
@@ -170,7 +168,7 @@ function classifyQueryComplexity(
     // Classification boundaries
     let tier: QueryComplexityTier;
 
-    // AI-INVARIANT: triggerMatch always forces simple tier regardless of term count
+    // TriggerMatch always forces simple tier regardless of term count
     if (triggerMatch || termCount <= SIMPLE_TERM_THRESHOLD) {
       tier = 'simple';
     } else if (termCount > COMPLEX_TERM_THRESHOLD && !triggerMatch) {
@@ -187,13 +185,13 @@ function classifyQueryComplexity(
         termCount,
         charCount,
         hasTriggerMatch: triggerMatch,
-        // AI-WHY: Round to 3 decimals to avoid floating-point noise in debug output
+        // Round to 3 decimals to avoid floating-point noise in debug output
         stopWordRatio: Math.round(stopWordRatio * 1000) / 1000,
       },
       confidence,
     };
   } catch (_err: unknown) {
-    // AI-GUARD: Classification failure — return moderate default
+    // Classification failure — return moderate default
     return FALLBACK;
   }
 }

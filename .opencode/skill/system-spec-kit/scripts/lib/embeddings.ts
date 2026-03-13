@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Embeddings
-// ---------------------------------------------------------------
+// --- 1. EMBEDDINGS ---
 
 // Re-export from shared/ (canonical source: shared/embeddings.ts)
 export * from '@spec-kit/shared/embeddings';

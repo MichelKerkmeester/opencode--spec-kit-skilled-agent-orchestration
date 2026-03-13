@@ -1,14 +1,11 @@
 // Converted from: trigger-matcher.test.ts (custom runner)
-// ---------------------------------------------------------------
 // TEST: TRIGGER MATCHER
 // Validates phrase matching, Unicode normalization, word boundary
-// detection, regex caching, and matching performance.
-// ---------------------------------------------------------------
-
+// Detection, regex caching, and matching performance.
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 // Mock transitive DB dependencies so the module can load
-// without better-sqlite3 or vector-index wiring.
+// Without better-sqlite3 or vector-index wiring.
 vi.mock('../lib/search/vector-index', () => ({
   initializeDb: vi.fn(),
   getDb: vi.fn(() => null),

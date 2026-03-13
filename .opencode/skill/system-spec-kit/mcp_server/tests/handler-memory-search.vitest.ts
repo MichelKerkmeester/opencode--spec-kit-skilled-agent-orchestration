@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: HANDLER MEMORY SEARCH
-// ---------------------------------------------------------------
-
 import { describe, it, expect } from 'vitest';
 // DB-dependent imports - commented out for deferred test suite
 import * as handler from '../handlers/memory-search';
@@ -183,7 +180,7 @@ describe('T002: Chunk Collapse Dedup (G3)', () => {
 
   it('T002-6: mixed chunk and non-chunk rows — each category handled correctly', () => {
     // Rows: non-chunk (id=1), chunk-parent-A (id=10), sibling-chunk-A (id=11, collapsed),
-    //       chunk-parent-B (id=20) — non-chunk stays, parent-A kept, sibling collapsed, parent-B kept.
+    // Chunk-parent-B (id=20) — non-chunk stays, parent-A kept, sibling collapsed, parent-B kept.
     const rows = [makeRow(1, null), makeRow(10, 100), makeRow(11, 100), makeRow(20, 200)];
     const result = collapseAndReassembleChunkResults(rows);
     expect(result.results).toHaveLength(3); // id=1, id=10, id=20
@@ -225,6 +222,6 @@ describe('T002: Chunk Collapse Dedup (G3)', () => {
   });
 });
 
-// AI-WHY: Sprint-0 intent weighting guard tests removed — shouldApplyPostSearchIntentWeighting
-// was part of legacy V1 pipeline, removed in 017-refinement-phase-6 Sprint 1.
+// Sprint-0 intent weighting guard tests removed — shouldApplyPostSearchIntentWeighting
+// Was part of legacy V1 pipeline, removed in 017-refinement-phase-6 Sprint 1.
 // V2 pipeline handles intent weighting in Stage 2.

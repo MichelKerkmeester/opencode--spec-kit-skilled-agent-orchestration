@@ -1,8 +1,12 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/020-feature-flag-reference",
-  "description": "020 — feature-flag-reference",
-  "keywords": ["feature", "flag", "reference"],
-  "lastUpdated": "2026-03-10T11:14:56.000Z",
+  "description": "Feature Specification: feature-flag-reference",
+  "keywords": [
+    "feature",
+    "specification",
+    "feature-flag-reference"
+  ],
+  "lastUpdated": "2026-03-13T18:17:46.798Z",
   "specId": "020",
   "folderSlug": "feature-flag-reference",
   "parentChain": [

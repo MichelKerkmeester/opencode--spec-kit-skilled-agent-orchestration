@@ -1,9 +1,6 @@
-// ---------------------------------------------------------------
 // TEST: Evidence Gap Detector / TRM (C138-P1)
 // Transparent Reasoning Module: Z-score confidence check on RRF
-// scores to detect low-confidence retrieval and inject warnings.
-// ---------------------------------------------------------------
-
+// Scores to detect low-confidence retrieval and inject warnings.
 import { describe, it, expect } from 'vitest';
 import {
   detectEvidenceGap,
@@ -45,8 +42,8 @@ describe('C138-P1 Evidence Gap Detector (TRM)', () => {
     const scores = [0.30, 0.30, 0.30, 0.30];
     const result = detectEvidenceGap(scores);
 
-    // stdDev=0 but all scores (0.30) are above MIN_ABSOLUTE_SCORE (0.015) →
-    // uniform strong results, not an evidence gap.
+    // StdDev=0 but all scores (0.30) are above MIN_ABSOLUTE_SCORE (0.015) →
+    // Uniform strong results, not an evidence gap.
     expect(result.gapDetected).toBe(false);
     expect(result.zScore).toBe(0);
     expect(result.stdDev).toBe(0);

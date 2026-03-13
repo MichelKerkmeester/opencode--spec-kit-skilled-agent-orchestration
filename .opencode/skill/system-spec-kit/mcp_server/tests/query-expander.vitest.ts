@@ -1,9 +1,6 @@
-// ---------------------------------------------------------------
 // TEST: Query Expander (C138-P3)
 // Rule-based synonym expansion for mode="deep" multi-query RAG.
 // Verifies expansion logic, max variants, synonym maps, edge cases.
-// ---------------------------------------------------------------
-
 import { describe, it, expect } from 'vitest';
 import { expandQuery, DOMAIN_VOCABULARY_MAP } from '../lib/search/query-expander';
 

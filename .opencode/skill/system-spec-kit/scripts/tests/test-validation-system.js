@@ -1,6 +1,4 @@
-// ───────────────────────────────────────────────────────────────
-// TEST: VALIDATION SYSTEM COMPREHENSIVE TESTS
-// ───────────────────────────────────────────────────────────────
+// --- 1. TEST: VALIDATION SYSTEM COMPREHENSIVE TESTS ---
 //
 // JavaScript-based tests for the SpecKit validation system.
 // Covers all 13 validation rules without requiring bash execution.

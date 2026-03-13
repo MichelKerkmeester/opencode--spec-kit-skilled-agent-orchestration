@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Session Learning
-// ---------------------------------------------------------------
+// --- 1. SESSION LEARNING ---
 
 import * as vectorIndex from '../lib/search/vector-index';
 import { checkDatabaseUpdated } from '../core';
@@ -183,7 +181,7 @@ async function handleTaskPreflight(args: PreflightArgs): Promise<MCPResponse> {
   const now = new Date().toISOString();
   const gapsJson = JSON.stringify(knowledgeGaps);
 
-  // AI-TRACE: REQ-207: Check for existing record before INSERT to prevent silent data loss
+  // Check for existing record before INSERT to prevent silent data loss
   const existing = database.prepare(
     'SELECT id, phase FROM session_learning WHERE spec_folder = ? AND task_id = ?'
   ).get(spec_folder, taskId) as { id: number; phase: string } | undefined;
@@ -332,8 +330,8 @@ async function handleTaskPostflight(args: PostflightArgs): Promise<MCPResponse> 
 
   const now = new Date().toISOString();
 
-  // AI-WHY: Fix #35 (017-refinement-phase-6) — Allow re-correction by accepting
-  // both 'preflight' (first postflight) and 'complete' (re-posted postflight) records.
+  // Fix #35 (017-refinement-phase-6) — Allow re-correction by accepting
+  // Both 'preflight' (first postflight) and 'complete' (re-posted postflight) records.
   const preflightRecord = database.prepare(`
     SELECT * FROM session_learning
     WHERE spec_folder = ? AND task_id = ? AND phase IN ('preflight', 'complete')
@@ -664,7 +662,7 @@ export {
   ensureSchema,
 };
 
-// AI-WHY: Backward-compatible aliases (snake_case)
+// Backward-compatible aliases (snake_case)
 const handle_task_preflight = handleTaskPreflight;
 const handle_task_postflight = handleTaskPostflight;
 const handle_get_learning_history = handleGetLearningHistory;

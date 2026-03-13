@@ -1,8 +1,6 @@
-// ---------------------------------------------------------------
-// MODULE: Test — Feature Evaluation — Scoring Calibration
-// ---------------------------------------------------------------
+// --- 1. TEST — FEATURE EVALUATION — SCORING CALIBRATION ---
 // Rigorous feature evaluation covering T001 (embedding cache), T002 (cold-start
-// boost N4), T004 (score normalization), T005 (interference TM-01), and
+// Boost N4), T004 (score normalization), T005 (interference TM-01), and
 // T006 (classification-based decay TM-03).
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';

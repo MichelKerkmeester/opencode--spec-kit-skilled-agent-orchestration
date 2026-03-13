@@ -1,48 +1,24 @@
-// -----------------------------------------------------------------------------
 // TEST: Progressive Validation Pipeline
-// -----------------------------------------------------------------------------
-// Tests for progressive-validate.sh — the 4-level progressive validation
-// wrapper around validate.sh.
-//
-// Covers:
-//   T-PB2-01  Level 1 detect — same behaviour as validate.sh
-//   T-PB2-02  Auto-fix: missing dates corrected
-//   T-PB2-03  Auto-fix: heading levels normalized
-//   T-PB2-04  Auto-fix: whitespace normalized
-//   T-PB2-05  ALL auto-fixes logged with before/after diff
-//   T-PB2-06  Suggest level presents issues with guided options
-//   T-PB2-07  Report level produces structured output
-//   T-PB2-08  --dry-run: shows changes without applying
-//   T-PB2-09  Exit code compatibility (0 / 1 / 2)
-//   T-PB2-10  --json produces parseable structured output
-//   T-PB2-11  --level 1 stops after detect
-//   T-PB2-12  --level 2 runs detect + auto-fix only
-//   T-PB2-13  --level 3 runs detect + auto-fix + suggest
-// -----------------------------------------------------------------------------
-
+// Validates progressive-validate.sh stage behavior and compatibility
+// Against validate.sh baselines, auto-fix reporting, and JSON contract outputs.
+// T-PB2-01..T-PB2-15: progressive validation pipeline conformance suite.
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as os from 'os';
 import { spawnSync } from 'child_process';
 
-// -----------------------------------------------------------------------------
 // CONSTANTS
-// -----------------------------------------------------------------------------
-
 const SCRIPTS_DIR = path.resolve(__dirname, '..');
 const PROGRESSIVE_SCRIPT = path.join(SCRIPTS_DIR, 'spec', 'progressive-validate.sh');
 const VALIDATE_SCRIPT = path.join(SCRIPTS_DIR, 'spec', 'validate.sh');
 const FIXTURES_DIR = path.join(SCRIPTS_DIR, 'tests', 'test-fixtures');
 const VALID_L1_FIXTURE = path.join(FIXTURES_DIR, '002-valid-level1');
 
-// Today's date in YYYY-MM-DD format (for auto-fix assertions)
+// Stable date fixture used by auto-fix assertions.
 const TODAY = new Date().toISOString().split('T')[0];
 
-// -----------------------------------------------------------------------------
 // HELPERS
-// -----------------------------------------------------------------------------
-
 /**
  * Run progressive-validate.sh against a folder with optional extra flags.
  * Returns { stdout, stderr, exitCode }.
@@ -104,11 +80,8 @@ function readFile(dir: string, name: string): string {
   return fs.readFileSync(path.join(dir, name), 'utf8');
 }
 
-// -----------------------------------------------------------------------------
-// FIXTURES — minimal spec.md templates for auto-fix tests
-// -----------------------------------------------------------------------------
-
-/** A minimal valid Level-1 spec.md without date placeholders. */
+// FIXTURES - minimal spec.md templates for auto-fix tests
+/** minimal valid Level-1 fixture without placeholders. */
 const MINIMAL_SPEC_MD = `
 <!-- SPECKIT_TEMPLATE_SOURCE: level_1/spec.md | v2.2 -->
 
@@ -169,23 +142,14 @@ const MINIMAL_IMPL_MD = `
 Summary here.
 `.trimStart();
 
-// -----------------------------------------------------------------------------
-// GUARD: skip entire suite if script is not present
-// -----------------------------------------------------------------------------
-
+// Skip suite when required scripts are unavailable.
 const SCRIPT_EXISTS = fs.existsSync(PROGRESSIVE_SCRIPT);
 const VALIDATE_EXISTS = fs.existsSync(VALIDATE_SCRIPT);
 
-// -----------------------------------------------------------------------------
 // SUITE
-// -----------------------------------------------------------------------------
-
 describe('Progressive Validation Pipeline', () => {
 
-  // -------------------------------------------------------------------------
-  // GUARD TESTS
-  // -------------------------------------------------------------------------
-
+  // Guard tests.
   it('T-PB2-00a: progressive-validate.sh script exists', () => {
     expect(
       SCRIPT_EXISTS,
@@ -216,10 +180,7 @@ describe('Progressive Validation Pipeline', () => {
     expect(stdout).toContain('progressive-validate.sh');
   });
 
-  // -------------------------------------------------------------------------
-  // T-PB2-01: LEVEL 1 DETECT — same behaviour as validate.sh
-  // -------------------------------------------------------------------------
-
+  // Level 1 detect parity with validate.sh.
   describe('T-PB2-01: Level 1 Detect (equivalent to validate.sh)', () => {
 
     it('T-PB2-01a: exit code matches validate.sh for a passing fixture', () => {
@@ -240,7 +201,7 @@ describe('Progressive Validation Pipeline', () => {
       const baseline = runValidate(emptyFixture);
       const progressive = runProgressiveValidate(emptyFixture, ['--level', '1']);
 
-      // Both should fail (exit 2)
+      // Both commands fail with exit 2 on empty fixtures.
       expect(progressive.exitCode).toBe(baseline.exitCode);
       expect(progressive.exitCode).toBe(2);
     });
@@ -250,17 +211,14 @@ describe('Progressive Validation Pipeline', () => {
 
       const { stdout } = runProgressiveValidate(VALID_L1_FIXTURE, ['--level', '1']);
 
-      // Level 1 output should NOT contain the auto-fix pipeline section
+      // Level 1 output excludes auto-fix stage output.
       expect(stdout).not.toMatch(/Level 2.*Auto-fix/i);
       expect(stdout).not.toMatch(/\[FIX\]/);
     });
 
   });
 
-  // -------------------------------------------------------------------------
-  // T-PB2-02: AUTO-FIX — missing dates corrected
-  // -------------------------------------------------------------------------
-
+  // Auto-fix date placeholder normalization.
   describe('T-PB2-02: Auto-fix — Missing dates corrected', () => {
 
     let tmpDir: string;
@@ -335,7 +293,7 @@ Test.
       runProgressiveValidate(tmpDir, ['--level', '2']);
 
       const fixed = readFile(tmpDir, 'spec.md');
-      // The YYYY-MM-DD placeholder and "date: TBD" should both be replaced
+      // Both placeholders are normalized by auto-fix.
       expect(fixed).not.toContain('TBD');
     });
 
@@ -358,10 +316,7 @@ Test.
 
   });
 
-  // -------------------------------------------------------------------------
-  // T-PB2-03: AUTO-FIX — heading levels normalized
-  // -------------------------------------------------------------------------
-
+  // Heading-level normalization behavior.
   describe('T-PB2-03: Auto-fix — Heading levels normalized', () => {
 
     let tmpDir: string;
@@ -386,7 +341,7 @@ Test.
       runProgressiveValidate(tmpDir, ['--level', '2']);
 
       const fixed = readFile(tmpDir, 'spec.md');
-      // Minimum heading level should now be H1
+      // Minimum heading depth normalizes to H1.
       expect(fixed).toMatch(/^# /m);
       expect(fixed).not.toMatch(/^## Feature Spec/m);
     });
@@ -406,7 +361,7 @@ Test.
       runProgressiveValidate(tmpDir, ['--level', '2']);
       const after = readFile(tmpDir, 'spec.md');
 
-      // Headings unchanged
+      // Existing H1 structure remains unchanged.
       const beforeH1s = (before.match(/^# /gm) ?? []).length;
       const afterH1s  = (after.match(/^# /gm) ?? []).length;
       expect(afterH1s).toBe(beforeH1s);
@@ -425,16 +380,13 @@ Test.
 
       const { stdout } = runProgressiveValidate(tmpDir, ['--level', '2']);
 
-      // Should mention the fix type
+      // Output reports heading normalization fix.
       expect(stdout).toMatch(/HEADING_LEVELS|heading/i);
     });
 
   });
 
-  // -------------------------------------------------------------------------
-  // T-PB2-04: AUTO-FIX — whitespace normalized
-  // -------------------------------------------------------------------------
-
+  // Whitespace normalization behavior.
   describe('T-PB2-04: Auto-fix — Whitespace normalized', () => {
 
     let tmpDir: string;
@@ -461,7 +413,7 @@ Test.
       const fixed = readFile(tmpDir, 'spec.md');
       const lines = fixed.split('\n');
       for (const line of lines) {
-        // No line should end with trailing spaces or tabs
+        // Trailing whitespace is removed on all lines.
         expect(line).not.toMatch(/[ \t]+$/);
       }
     });
@@ -480,7 +432,7 @@ Test.
       runProgressiveValidate(tmpDir, ['--level', '2']);
 
       const fixed = readFile(tmpDir, 'spec.md');
-      // No carriage returns should remain
+      // CRLF is normalized to LF.
       expect(fixed).not.toContain('\r');
     });
 
@@ -520,10 +472,7 @@ Test.
 
   });
 
-  // -------------------------------------------------------------------------
-  // T-PB2-05: ALL auto-fixes logged with before/after diff
-  // -------------------------------------------------------------------------
-
+  // Auto-fix logging and diff evidence.
   describe('T-PB2-05: All auto-fixes logged with before/after diff', () => {
 
     let tmpDir: string;
@@ -623,10 +572,7 @@ Test.
 
   });
 
-  // -------------------------------------------------------------------------
   // T-PB2-06: SUGGEST level presents issues with guided options
-  // -------------------------------------------------------------------------
-
   describe('T-PB2-06: Suggest level presents issues with guided options', () => {
 
     it('T-PB2-06a: [SUGGEST] markers appear for fixable but non-auto-fixable issues', () => {
@@ -685,7 +631,7 @@ Test.
         parsed = JSON.parse(stdout) as ProgressiveValidateReport;
       } catch {
         // If JSON parsing fails, the test is inconclusive but not a hard failure
-        // because the script may not emit pure JSON at --level 3/4 when erroring
+        // Because the script may not emit pure JSON at --level 3/4 when erroring
         return;
       }
 
@@ -696,10 +642,7 @@ Test.
 
   });
 
-  // -------------------------------------------------------------------------
   // T-PB2-07: REPORT level produces structured output
-  // -------------------------------------------------------------------------
-
   describe('T-PB2-07: Report level produces structured output', () => {
 
     it('T-PB2-07a: --level 4 output contains pipeline summary section', () => {
@@ -765,10 +708,7 @@ Test.
 
   });
 
-  // -------------------------------------------------------------------------
   // T-PB2-08: DRY-RUN mode — shows changes without applying
-  // -------------------------------------------------------------------------
-
   describe('T-PB2-08: --dry-run shows changes without applying', () => {
 
     let tmpDir: string;
@@ -853,10 +793,7 @@ Test.
 
   });
 
-  // -------------------------------------------------------------------------
   // T-PB2-09: Exit code compatibility (0 / 1 / 2)
-  // -------------------------------------------------------------------------
-
   describe('T-PB2-09: Exit code compatibility (0 / 1 / 2)', () => {
 
     it('T-PB2-09a: exit 0 for a passing spec (full pipeline)', () => {
@@ -914,10 +851,7 @@ Test.
 
   });
 
-  // -------------------------------------------------------------------------
   // T-PB2-10: --json produces parseable structured output
-  // -------------------------------------------------------------------------
-
   describe('T-PB2-10: --json produces parseable structured output', () => {
 
     it('T-PB2-10a: --json output is valid JSON', () => {
@@ -979,10 +913,7 @@ Test.
 
   });
 
-  // -------------------------------------------------------------------------
   // T-PB2-11 / T-PB2-12 / T-PB2-13: --level N pipeline stages
-  // -------------------------------------------------------------------------
-
   describe('T-PB2-11/12/13: --level N controls pipeline depth', () => {
 
     it('T-PB2-11: --level 1 output does NOT contain Level 2/3/4 headings', () => {
@@ -1034,10 +965,7 @@ Test.
 
   });
 
-  // -------------------------------------------------------------------------
   // T-PB2-15: Edge cases
-  // -------------------------------------------------------------------------
-
   describe('T-PB2-15: Edge cases', () => {
 
     it('T-PB2-15a: missing folder argument exits 2 with error message', () => {

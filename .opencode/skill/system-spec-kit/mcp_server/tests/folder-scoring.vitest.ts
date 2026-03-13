@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: FOLDER SCORING
-// ---------------------------------------------------------------
-
 import { describe, it, expect } from 'vitest';
 import * as mod from '../lib/scoring/folder-scoring';
 

@@ -1,9 +1,5 @@
-// ---------------------------------------------------------------
-// MODULE: Config
-// ---------------------------------------------------------------
+// --- 1. CONFIG ---
 // Central configuration loader — reads JSONC config, resolves paths, exports CONFIG object
-// ---------------------------------------------------------------
-
 import * as path from 'path';
 import * as fsSync from 'fs';
 import { stripJsoncComments } from '@spec-kit/shared/utils/jsonc-strip';
@@ -68,7 +64,7 @@ export interface SpecKitConfig {
 ------------------------------------------------------------------*/
 
 // F-08: Stable root detection — walk up from __dirname looking for package.json
-// instead of relying on fragile relative __dirname offset
+// Instead of relying on fragile relative __dirname offset
 function findScriptsRoot(startDir: string): string {
   let dir = startDir;
   for (let i = 0; i < 10; i++) {

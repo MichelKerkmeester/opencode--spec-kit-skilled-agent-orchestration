@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: RETRY MANAGER
-// ---------------------------------------------------------------
-
 import { describe, it, expect, beforeEach, afterAll, vi } from 'vitest';
 import * as path from 'path';
 import * as os from 'os';
@@ -33,7 +30,7 @@ type EmbeddingStatus = RetryQueueItem['embedding_status'];
 describe('retry-manager [deferred - requires DB test fixtures]', () => {
 
   // ═══════════════════════════════════════════════════════════
-  // 1. MODULE EXPORTS
+  // --- 1. MODULE EXPORTS ---
   // ═══════════════════════════════════════════════════════════
 
   describe('1. Module Exports', () => {
@@ -64,7 +61,7 @@ describe('retry-manager [deferred - requires DB test fixtures]', () => {
   });
 
   // ═══════════════════════════════════════════════════════════
-  // 2. CONSTANTS
+  // --- 2. CONSTANTS ---
   // ═══════════════════════════════════════════════════════════
 
   describe('2. Constants', () => {
@@ -113,7 +110,7 @@ describe('retry-manager [deferred - requires DB test fixtures]', () => {
   });
 
   // ═══════════════════════════════════════════════════════════
-  // 3. BACKGROUND JOB LIFECYCLE
+  // --- 3. BACKGROUND JOB LIFECYCLE ---
   // ═══════════════════════════════════════════════════════════
 
   describe('3. Background Job Lifecycle', () => {
@@ -252,10 +249,7 @@ describe('retry-manager [deferred - requires DB test fixtures]', () => {
       }
     });
 
-    // ---------------------------------------------------------
     // 4a. getRetryStats
-    // ---------------------------------------------------------
-
     describe('4a. getRetryStats', () => {
       it('T24: getRetryStats() returns correct shape', () => {
         const stats = mod.getRetryStats();
@@ -291,10 +285,7 @@ describe('retry-manager [deferred - requires DB test fixtures]', () => {
       });
     });
 
-    // ---------------------------------------------------------
     // 4b. getRetryQueue
-    // ---------------------------------------------------------
-
     describe('4b. getRetryQueue', () => {
       it('T27: getRetryQueue() returns array', () => {
         const queue = mod.getRetryQueue();
@@ -364,10 +355,7 @@ describe('retry-manager [deferred - requires DB test fixtures]', () => {
       });
     });
 
-    // ---------------------------------------------------------
     // 4c. getFailedEmbeddings
-    // ---------------------------------------------------------
-
     describe('4c. getFailedEmbeddings', () => {
       it('T34: getFailedEmbeddings() returns array', () => {
         const result = mod.getFailedEmbeddings();
@@ -394,10 +382,7 @@ describe('retry-manager [deferred - requires DB test fixtures]', () => {
       });
     });
 
-    // ---------------------------------------------------------
     // 4d. markAsFailed
-    // ---------------------------------------------------------
-
     describe('4d. markAsFailed', () => {
       it('T37: markAsFailed() sets status and failure_reason', () => {
         insertTestMemory(4001, '/tmp/tofail.md', 'pending');
@@ -432,10 +417,7 @@ describe('retry-manager [deferred - requires DB test fixtures]', () => {
       });
     });
 
-    // ---------------------------------------------------------
     // 4e. resetForRetry
-    // ---------------------------------------------------------
-
     describe('4e. resetForRetry', () => {
       it('T40: resetForRetry() resets failed item correctly', () => {
         insertTestMemory(5001, '/tmp/toreset.md', 'failed', 3, null, 'Previous failure');
@@ -469,10 +451,7 @@ describe('retry-manager [deferred - requires DB test fixtures]', () => {
       });
     });
 
-    // ---------------------------------------------------------
     // 4f. retryEmbedding
-    // ---------------------------------------------------------
-
     describe('4f. retryEmbedding', () => {
       it('T43: retryEmbedding() with non-existent id returns failure', async () => {
         const result = await mod.retryEmbedding(88888, 'some content');
@@ -558,10 +537,7 @@ describe('retry-manager [deferred - requires DB test fixtures]', () => {
       });
     });
 
-    // ---------------------------------------------------------
     // 4g. processRetryQueue
-    // ---------------------------------------------------------
-
     describe('4g. processRetryQueue', () => {
       it('T46: processRetryQueue() with empty queue returns zeros', async () => {
         const result = await mod.processRetryQueue(3);
@@ -594,14 +570,11 @@ describe('retry-manager [deferred - requires DB test fixtures]', () => {
       });
     });
 
-    // ---------------------------------------------------------
     // 4h. runBackgroundJob
-    // ---------------------------------------------------------
-
     describe('4h. runBackgroundJob', () => {
       it('T49: runBackgroundJob() with empty queue reports empty', async () => {
         // Mock getDb to return null so getRetryStats() reports an empty queue,
-        // avoiding interference from the real production database.
+        // Avoiding interference from the real production database.
         // @ts-expect-error testing runtime null-db fallback despite non-null typing
         const spy = vi.spyOn(vectorIndex, 'getDb').mockReturnValue(null);
         try {
@@ -623,10 +596,7 @@ describe('retry-manager [deferred - requires DB test fixtures]', () => {
       });
     });
 
-    // ---------------------------------------------------------
     // 4i. Edge Cases
-    // ---------------------------------------------------------
-
     describe('4i. Edge Cases', () => {
       it('T51: Multiple markAsFailed() calls update reason', () => {
         insertTestMemory(8001, '/tmp/multifail.md', 'pending');

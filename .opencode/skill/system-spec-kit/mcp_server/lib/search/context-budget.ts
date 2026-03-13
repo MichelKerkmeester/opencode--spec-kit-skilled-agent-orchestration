@@ -1,12 +1,6 @@
-// ---------------------------------------------------------------
-// MODULE: Context Budget
-// ---------------------------------------------------------------
+// --- 1. CONTEXT BUDGET ---
 // Token-budget-aware result selection with graph region diversity.
-// ---------------------------------------------------------------
-
-/* ---------------------------------------------------------------
-   1. CONSTANTS
-   --------------------------------------------------------------- */
+// --- 2. CONSTANTS ---
 
 /** Default token budget when none is supplied by the caller. */
 const DEFAULT_BUDGET_TOKENS = 2000;
@@ -22,9 +16,7 @@ const CHARS_PER_TOKEN = 4;
  */
 const REGION_DIVERSITY_THRESHOLD = 0.5;
 
-/* ---------------------------------------------------------------
-   2. INTERFACES
-   --------------------------------------------------------------- */
+// --- 3. INTERFACES ---
 
 /**
  * A single search result eligible for context-budget selection.
@@ -48,9 +40,7 @@ export interface BudgetResult {
   content?: string;
 }
 
-/* ---------------------------------------------------------------
-   3. HELPERS
-   --------------------------------------------------------------- */
+// --- 4. HELPERS ---
 
 /**
  * Rough token count estimate for a plain-text string.
@@ -66,9 +56,7 @@ export function estimateTokens(content: string | undefined): number {
   return Math.ceil(content.length / CHARS_PER_TOKEN);
 }
 
-/* ---------------------------------------------------------------
-   4. CORE FUNCTION
-   --------------------------------------------------------------- */
+// --- 5. CORE FUNCTION ---
 
 /**
  * Select results within a token budget, promoting graph-region diversity.
@@ -157,9 +145,7 @@ export function optimizeContextBudget(
   return selected;
 }
 
-/* ---------------------------------------------------------------
-   5. PRIVATE HELPERS
-   --------------------------------------------------------------- */
+// --- 6. PRIVATE HELPERS ---
 
 /**
  * Standard top-K selection: pick results in score order until budget is full.

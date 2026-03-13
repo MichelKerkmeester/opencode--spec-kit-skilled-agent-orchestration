@@ -1,10 +1,6 @@
-// ---------------------------------------------------------------
 // TEST: Learned Relevance Feedback (R11)
-// ---------------------------------------------------------------
 // Tests all 10 safeguards, auto-promotion (T002a), and negative
-// feedback confidence signal (T002b/A4).
-// ---------------------------------------------------------------
-
+// Feedback confidence signal (T002b/A4).
 import { describe, it, expect, beforeAll, beforeEach, afterAll, afterEach, vi } from 'vitest';
 import * as path from 'path';
 import * as os from 'os';
@@ -141,9 +137,7 @@ function insertMemory(testDb: TestDatabase, id: number, opts: {
   `).run(id, title, JSON.stringify(triggerPhrases), createdAt, tier, validationCount, confidence);
 }
 
-/* ---------------------------------------------------------------
-   1. DENYLIST TESTS
-   --------------------------------------------------------------- */
+// --- 1. DENYLIST TESTS ---
 
 describe('Feedback Denylist', () => {
   it('R11-DL01: denylist contains 100+ words', () => {
@@ -193,9 +187,7 @@ describe('Feedback Denylist', () => {
   });
 });
 
-/* ---------------------------------------------------------------
-   2. SCHEMA MIGRATION TESTS
-   --------------------------------------------------------------- */
+// --- 2. SCHEMA MIGRATION TESTS ---
 
 describe('Learned Triggers Schema', () => {
   let testDb: TestDatabase;
@@ -338,9 +330,7 @@ describe('Learned Feedback Feature Flags', () => {
   });
 });
 
-/* ---------------------------------------------------------------
-   4. TERM EXTRACTION TESTS
-   --------------------------------------------------------------- */
+// --- 3. TERM EXTRACTION TESTS ---
 
 describe('Term Extraction', () => {
   it('R11-TE01: filters out denylist words', () => {
@@ -402,9 +392,7 @@ describe('Term Extraction', () => {
   });
 });
 
-/* ---------------------------------------------------------------
-   5. CORE OPERATIONS TESTS
-   --------------------------------------------------------------- */
+// --- 4. CORE OPERATIONS TESTS ---
 
 describe('Learned Feedback Core Operations', () => {
   let testDb: any;
@@ -567,7 +555,7 @@ describe('Learned Feedback Core Operations', () => {
 
     applyLearnedTriggers(1, ['authentication'], testDb, 'test');
     const matches = queryLearnedTriggers('authentication', testDb);
-    // AI-WHY: Safeguard #6 — shadow period enforced for first 7 days
+    // Safeguard #6 — shadow period enforced for first 7 days
     expect(matches.length).toBe(0);
   });
 });
@@ -648,9 +636,7 @@ describe('Learned Feedback Expiry & Rollback', () => {
   });
 });
 
-/* ---------------------------------------------------------------
-   7. AUDIT LOG TESTS
-   --------------------------------------------------------------- */
+// --- 5. AUDIT LOG TESTS ---
 
 describe('Learned Feedback Audit Log (Safeguard #10)', () => {
   let testDb: any;

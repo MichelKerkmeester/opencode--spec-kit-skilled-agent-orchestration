@@ -1,14 +1,10 @@
-// ---------------------------------------------------------------
-// MODULE: Eval Logger
-// ---------------------------------------------------------------
-// AI-TRACE: T005: Non-blocking, fail-safe logging hooks for search, context,
-// and trigger handlers. All writes go to the eval DB (speckit-eval.db).
+// --- 1. EVAL LOGGER ---
+// Non-blocking, fail-safe logging hooks for search, context,
+// And trigger handlers. All writes go to the eval DB (speckit-eval.db).
 //
 // CRITICAL: Logging must NEVER break production search.
 // Every public function is wrapped in try-catch and is a no-op
-// when SPECKIT_EVAL_LOGGING is not set to "true".
-// ---------------------------------------------------------------
-
+// When SPECKIT_EVAL_LOGGING is not set to "true".
 import { initEvalDb } from './eval-db';
 
 /* ---------------------------------------------------------------
@@ -31,7 +27,7 @@ function isEvalLoggingEnabled(): boolean {
    provides global uniqueness.
 --------------------------------------------------------------- */
 
-// AI-WHY: Fix #34 (017-refinement-phase-6) — Initialize from DB MAX to survive restarts
+// Fix #34 (017-refinement-phase-6) — Initialize from DB MAX to survive restarts
 let _evalRunCounter = 0;
 let _evalRunCounterInitialized = false;
 

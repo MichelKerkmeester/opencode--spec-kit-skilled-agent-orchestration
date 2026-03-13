@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Intent Classifier
-// ---------------------------------------------------------------
+// --- 1. INTENT CLASSIFIER ---
 /* --- 1. TYPES & CONSTANTS --- */
 
 type IntentType = 'add_feature' | 'fix_bug' | 'refactor' | 'security_audit' | 'understand' | 'find_spec' | 'find_decision';
@@ -305,7 +303,7 @@ function buildIntentCentroids(): IntentCentroids {
 
 /**
  * Hash a token into a stable non-negative integer.
- * // AI-WHY: FNV-1a hash chosen for speed and low collision rate on short strings
+ * // FNV-1a hash chosen for speed and low collision rate on short strings
  *
  * @param token - Single lowercase token to hash
  * @returns Non-negative 32-bit integer hash
@@ -435,7 +433,7 @@ function classifyIntent(query: string): IntentResult {
     }
   }
 
-  // AI-WHY: P3-12: If top score is below minimum confidence, return "understand" with low confidence
+  // P3-12: If top score is below minimum confidence, return "understand" with low confidence
   // This prevents weak single-keyword matches from dominating classification.
   if (topScore < MIN_CONFIDENCE_THRESHOLD) {
     return {
@@ -487,7 +485,7 @@ function applyIntentWeights(
 ): Array<Record<string, unknown>> {
   const weights = getIntentWeights(intent);
 
-  // AI-WHY: Fix #5 (017-refinement-phase-6) — recency was previously ignored.
+  // Fix #5 (017-refinement-phase-6) — recency was previously ignored.
   // Parse timestamps, min/max normalize to [0,1], apply weights.recency.
   // Use reduce instead of Math.max(...) to avoid stack overflow on large arrays.
   let minTs = Infinity;

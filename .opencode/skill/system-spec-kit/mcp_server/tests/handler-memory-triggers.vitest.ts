@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: HANDLER MEMORY TRIGGERS
-// ---------------------------------------------------------------
-
 import { describe, it, expect, vi, afterEach } from 'vitest';
 // DB-dependent imports - commented out for deferred test suite
 import * as handler from '../handlers/memory-triggers';

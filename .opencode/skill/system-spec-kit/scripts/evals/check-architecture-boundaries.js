@@ -1,9 +1,7 @@
 "use strict";
-// ---------------------------------------------------------------
-// MODULE: Check Architecture Boundaries
-// ---------------------------------------------------------------
+// --- 1. CHECK ARCHITECTURE BOUNDARIES ---
 // Enforces two rules from ARCHITECTURE.md that were
-// previously documentation-only:
+// Previously documentation-only:
 //   GAP A — shared/ must not import from mcp_server/ or scripts/
 //   GAP B — mcp_server/scripts/ files must be thin wrappers only
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
@@ -50,25 +48,21 @@ exports.extractModuleSpecifiers = extractModuleSpecifiers;
 exports.findTsFiles = findTsFiles;
 exports.resolvePackageRoot = resolvePackageRoot;
 exports.runArchitectureBoundaryCheck = runArchitectureBoundaryCheck;
-// 1. IMPORTS
+// --- 2. IMPORTS ---
 const fs = __importStar(require("fs"));
 const path = __importStar(require("path"));
 const typescript_1 = __importDefault(require("typescript"));
-// ---------------------------------------------------------------------------
-// 3. CONSTANTS
-// ---------------------------------------------------------------------------
+// --- 3. CONSTANTS ---
 const REQUIRED_ROOT_DIRS = ['shared', 'mcp_server', 'scripts'];
-// AI-WHY: absolute prohibition — shared/ must remain neutral (no allowlist)
+// Absolute prohibition — shared/ must remain neutral (no allowlist)
 const SHARED_PROHIBITED_PACKAGE_PREFIXES = ['@spec-kit/mcp-server', '@spec-kit/scripts'];
-// AI-WHY: 50 lines is generous for a spawn+exit wrapper; anything larger
-// indicates logic that belongs in scripts/ instead
+// 50 lines is generous for a spawn+exit wrapper; anything larger
+// Indicates logic that belongs in scripts/ instead
 const MAX_SUBSTANTIVE_LINES = 50;
 const PACKAGE_ROOT = resolvePackageRoot(__dirname);
 const CHILD_PROCESS_MODULE_SPECIFIERS = new Set(['child_process', 'node:child_process']);
 const CHILD_PROCESS_WRAPPER_APIS = new Set(['spawn', 'spawnSync', 'exec', 'execSync', 'execFile', 'execFileSync', 'fork']);
-// ---------------------------------------------------------------------------
-// 4. HELPERS
-// ---------------------------------------------------------------------------
+// --- 4. HELPERS ---
 function findTsFiles(dir) {
     const files = [];
     function walk(currentDir) {
@@ -338,9 +332,7 @@ function collectWrapperSignals(content, filePath) {
         hasScriptsSourceReference,
     };
 }
-// ---------------------------------------------------------------------------
-// 5. CORE LOGIC
-// ---------------------------------------------------------------------------
+// --- 5. CORE LOGIC ---
 function checkSharedNeutrality(packageRoot = PACKAGE_ROOT) {
     const resolvedRoot = resolveCheckRoot(packageRoot);
     const sharedDir = path.join(resolvedRoot, 'shared');
@@ -363,7 +355,7 @@ function checkWrapperOnly(packageRoot = PACKAGE_ROOT) {
     const violations = [];
     if (!fs.existsSync(wrappersDir))
         return violations;
-    // AI-WHY: non-recursive scan — only top-level wrappers, not nested dirs
+    // Non-recursive scan — only top-level wrappers, not nested dirs
     const entries = fs.readdirSync(wrappersDir, { withFileTypes: true });
     for (const entry of entries) {
         if (!entry.isFile() || !entry.name.endsWith('.ts') || entry.name.endsWith('.d.ts'))
@@ -399,9 +391,7 @@ function runArchitectureBoundaryCheck(packageRoot = PACKAGE_ROOT) {
     const gapBViolations = checkWrapperOnly(resolvedRoot);
     return { gapAViolations, gapBViolations };
 }
-// ---------------------------------------------------------------------------
-// 6. MAIN
-// ---------------------------------------------------------------------------
+// --- 6. MAIN ---
 function main() {
     const { gapAViolations, gapBViolations } = runArchitectureBoundaryCheck();
     const resolvedRoot = resolveCheckRoot(PACKAGE_ROOT);

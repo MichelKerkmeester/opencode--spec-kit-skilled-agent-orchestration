@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: Reranker Eval Comparison (CHK-069)
-// ---------------------------------------------------------------
 //
 // Evaluation comparison skeleton for local GGUF reranker vs remote
 // Cohere/Voyage reranker quality. Documents comparison protocol and
@@ -19,7 +17,7 @@ import type { EvalResult, GroundTruthEntry } from '../lib/eval/eval-metrics';
 --------------------------------------------------------------- */
 
 // 5 representative eval queries with ground truth relevance judgments
-// covering common memory retrieval patterns in the spec-kit system.
+// Covering common memory retrieval patterns in the spec-kit system.
 const EVAL_CORPUS = [
   {
     queryId: 1,

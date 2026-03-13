@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Git Context Extractor
-// ---------------------------------------------------------------
+// --- 1. GIT CONTEXT EXTRACTOR ---
 // Mines git history for file changes and observations for stateless enrichment
 
 import { execFileSync } from 'child_process';
@@ -143,7 +141,7 @@ function detectCommitType(subject: string): string {
 }
 // RC-3: Paths excluded from git context to avoid self-referential pollution.
 // Uses path-segment-boundary matching to avoid over-matching (e.g., 'in-memory-cache.ts'
-// should NOT match, but 'specs/foo/memory/file.md' should).
+// Should NOT match, but 'specs/foo/memory/file.md' should).
 const EXCLUDED_PATH_PATTERNS = [
   /(?:^|\/)memory\//,              // directory named "memory/" (no \b — avoids matching "my-memory/")
   /(?:^|\/)metadata\.json$/,      // exact filename "metadata.json"

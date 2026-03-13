@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: HANDLER CAUSAL GRAPH
-// ---------------------------------------------------------------
-
 import { describe, it, expect } from 'vitest';
 import * as handler from '../handlers/causal-graph';
 

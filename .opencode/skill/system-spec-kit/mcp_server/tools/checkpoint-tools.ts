@@ -1,10 +1,6 @@
-// ---------------------------------------------------------------
-// MODULE: Checkpoint Tools
-// ---------------------------------------------------------------
+// --- 1. CHECKPOINT TOOLS ---
 // Dispatch for L5 checkpoint tools: create, list, restore,
-// delete (T303).
-// ---------------------------------------------------------------
-
+// Delete (T303).
 import {
   handleCheckpointCreate,
   handleCheckpointList,

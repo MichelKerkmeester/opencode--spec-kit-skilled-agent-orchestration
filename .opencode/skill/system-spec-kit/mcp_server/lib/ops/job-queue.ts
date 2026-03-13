@@ -1,9 +1,7 @@
-// ---------------------------------------------------------------
-// MODULE: Job Queue
-// ---------------------------------------------------------------
+// --- 1. JOB QUEUE ---
 // Sprint 9 fixes: true sequential worker, meaningful state transitions,
-// continue-on-error for bulk ingestion, SQLITE_BUSY async retry on DB writes,
-// crash recovery with re-enqueue, and original-path progress tracking.
+// Continue-on-error for bulk ingestion, SQLITE_BUSY async retry on DB writes,
+// Crash recovery with re-enqueue, and original-path progress tracking.
 
 import path from 'node:path';
 import { requireDb, toErrorMessage } from '../../utils';
@@ -97,7 +95,7 @@ function isSqliteBusyError(error: unknown): boolean {
 }
 
 // Async SQLITE_BUSY retry — yields to the event loop between retries
-// instead of blocking with a synchronous busy-wait loop.
+// Instead of blocking with a synchronous busy-wait loop.
 async function withBusyRetry<T>(operation: () => T): Promise<T> {
   for (let attempt = 0; attempt <= RETRY_DELAYS_MS.length; attempt += 1) {
     try {
@@ -114,7 +112,7 @@ async function withBusyRetry<T>(operation: () => T): Promise<T> {
 }
 
 // Synchronous retry kept only for startup-path operations where the event
-// loop is not yet serving requests (table creation, crash recovery reset).
+// Loop is not yet serving requests (table creation, crash recovery reset).
 function withBusyRetrySync<T>(operation: () => T): T {
   for (let attempt = 0; attempt <= RETRY_DELAYS_MS.length; attempt += 1) {
     try {
@@ -185,7 +183,7 @@ function ensureIngestJobsTable(): void {
 
 // Restart interrupted jobs from the beginning on process startup.
 // Indexing is idempotent, and replaying the original path list avoids
-// mismatches when path accessibility changes between runs.
+// Mismatches when path accessibility changes between runs.
 function resetIncompleteJobsToQueued(): string[] {
   const db = requireDb();
   // Collect IDs of jobs that will be reset so we can re-enqueue them.
@@ -416,7 +414,7 @@ export function getIngestProgressPercent(job: Pick<IngestJob, 'filesProcessed' |
 
 // Sprint 9 fix: Real state machine — states now correspond to actual work phases.
 // Progress is tracked against the original submitted path list so terminal
-// accounting stays stable even when some files are inaccessible.
+// Accounting stays stable even when some files are inaccessible.
 async function processQueuedJob(jobId: string): Promise<void> {
   if (!processFileFn) {
     throw new Error('Ingest queue not initialized: processFile handler is missing');
@@ -447,9 +445,9 @@ async function processQueuedJob(jobId: string): Promise<void> {
 
   // Resume from filesProcessed against the original submitted path order.
   let currentIndex = job.filesProcessed;
-  // AI-WHY: Track actual failure count independently of the truncated errors array.
+  // Track actual failure count independently of the truncated errors array.
   // The errors array is capped at MAX_STORED_ERRORS, so using errors.length for
-  // terminal state decisions would misclassify all-fail jobs with >50 files as "complete".
+  // Terminal state decisions would misclassify all-fail jobs with >50 files as "complete".
   let failCount = 0;
 
   while (currentIndex < job.paths.length) {
@@ -504,7 +502,7 @@ async function drainQueue(): Promise<void> {
 
   try {
     while (pendingQueue.length > 0) {
-      // AI-SAFETY: pendingQueue.length > 0 in the loop condition guarantees shift() returns a job id
+      // PendingQueue.length > 0 in the loop condition guarantees shift() returns a job id
       const jobId = pendingQueue.shift()!;
       try {
         await processQueuedJob(jobId);
@@ -516,11 +514,11 @@ async function drainQueue(): Promise<void> {
             await setIngestJobState(jobId, 'failed');
           }
         } catch (_error: unknown) {
-          // AI-GUARD: Non-fatal: queue guard to avoid unhandled rejection loops.
+          // Non-fatal: queue guard to avoid unhandled rejection loops.
         }
       }
 
-      // AI-WHY: Brief yield between jobs to avoid starving the event loop.
+      // Brief yield between jobs to avoid starving the event loop.
       await sleep(10);
     }
   } finally {
@@ -529,7 +527,7 @@ async function drainQueue(): Promise<void> {
 }
 
 function enqueueIngestJob(jobId: string): void {
-  // AI-GUARD: Prevent duplicate enqueue of the same job.
+  // Prevent duplicate enqueue of the same job.
   if (pendingQueue.includes(jobId)) {
     return;
   }
@@ -551,7 +549,7 @@ function initIngestJobQueue(config: JobQueueConfig): { resetCount: number } {
   ensureIngestJobsTable();
 
   // Crash recovery: reset incomplete jobs to 'queued' AND re-enqueue them
-  // so they actually get processed by the worker.
+  // So they actually get processed by the worker.
   const resetJobIds = resetIncompleteJobsToQueued();
   for (const jobId of resetJobIds) {
     enqueueIngestJob(jobId);

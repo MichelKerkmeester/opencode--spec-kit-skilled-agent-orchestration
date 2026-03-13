@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Conversation Extractor
-// ---------------------------------------------------------------
+// --- 1. CONVERSATION EXTRACTOR ---
 // Extracts structured conversation data — exchanges, tool calls, phases, and flowcharts
 
 import { CONFIG } from '../core';

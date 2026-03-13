@@ -1,18 +1,10 @@
-// ---------------------------------------------------------------
-// MODULE: Graph Signals
-// ---------------------------------------------------------------
+// --- 1. GRAPH SIGNALS ---
 // Deferred feature — gated via SPECKIT_GRAPH_SIGNALS
-// ---------------------------------------------------------------
-
-// ---------------------------------------------------------------------------
-// 1. IMPORTS
-// ---------------------------------------------------------------------------
+// --- 2. IMPORTS ---
 
 import type Database from 'better-sqlite3';
 
-// ---------------------------------------------------------------------------
-// 2. SESSION CACHE
-// ---------------------------------------------------------------------------
+// --- 3. SESSION CACHE ---
 
 /** Maximum number of entries allowed in each session-scoped cache. */
 const CACHE_MAX_SIZE = 10000;
@@ -44,10 +36,7 @@ export function clearGraphSignalsCache(): void {
   depthCache.clear();
 }
 
-// ---------------------------------------------------------------------------
 // 3. DEGREE SNAPSHOTS (N2a support)
-// ---------------------------------------------------------------------------
-
 /**
  * Record the current degree count for every memory node that participates
  * in at least one causal edge. Writes into the `degree_snapshots` table
@@ -57,8 +46,8 @@ export function clearGraphSignalsCache(): void {
  */
 export function snapshotDegrees(db: Database.Database): { snapshotted: number } {
   try {
-    // AI-GUARD: Collect all unique memory node IDs and their degree counts from causal_edges.
-    // source_id and target_id are TEXT columns, so we cast to ensure numeric comparison.
+    // Collect all unique memory node IDs and their degree counts from causal_edges.
+    // Source_id and target_id are TEXT columns, so we cast to ensure numeric comparison.
     const rows = db.prepare(`
       SELECT node_id, COUNT(*) AS degree_count
       FROM (
@@ -98,10 +87,7 @@ export function snapshotDegrees(db: Database.Database): { snapshotted: number } 
   }
 }
 
-// ---------------------------------------------------------------------------
 // 4. MOMENTUM (N2a)
-// ---------------------------------------------------------------------------
-
 /**
  * Get the current degree of a memory node (total edges where node appears
  * as source or target in causal_edges).
@@ -186,10 +172,7 @@ export function computeMomentumScores(db: Database.Database, memoryIds: number[]
   return results;
 }
 
-// ---------------------------------------------------------------------------
 // 5. CAUSAL DEPTH (N2b)
-// ---------------------------------------------------------------------------
-
 /**
  * Build the full adjacency list from causal_edges, keyed by node ID (as number).
  * Returns forward adjacency, the full node set, and in-degree counts.
@@ -450,9 +433,7 @@ export function computeCausalDepthScores(db: Database.Database, memoryIds: numbe
   return results;
 }
 
-// ---------------------------------------------------------------------------
-// 6. COMBINED APPLICATION
-// ---------------------------------------------------------------------------
+// --- 4. COMBINED APPLICATION ---
 
 /**
  * Clamp a value to [min, max].
@@ -509,9 +490,7 @@ export function applyGraphSignals(
   }
 }
 
-// ---------------------------------------------------------------------------
-// 7. TEST EXPORTS
-// ---------------------------------------------------------------------------
+// --- 5. TEST EXPORTS ---
 
 /**
  * Internal functions exposed for unit testing.

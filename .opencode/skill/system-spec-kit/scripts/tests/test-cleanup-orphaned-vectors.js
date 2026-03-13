@@ -1,8 +1,5 @@
-// ───────────────────────────────────────────────────────────────
 // TEST: CLEANUP ORPHANED VECTORS MODULE
 // Tests database maintenance — orphaned vector and history cleanup
-// ───────────────────────────────────────────────────────────────
-
 'use strict';
 
 const path = require('path');
@@ -116,8 +113,8 @@ function createTestDatabase(opts = {}) {
   const db = new Database(':memory:');
 
   // Disable foreign keys — the cleanup module operates on databases where
-  // orphans already exist (FK was either not enforced or data was externally
-  // modified). Tests must be able to create orphaned state freely.
+  // Orphans already exist (FK was either not enforced or data was externally
+  // Modified). Tests must be able to create orphaned state freely.
   db.pragma('foreign_keys = OFF');
 
   // Core memory_index table (simplified for tests)
@@ -134,7 +131,7 @@ function createTestDatabase(opts = {}) {
     )
   `);
 
-  // memory_history table
+  // Memory_history table
   if (withHistory) {
     db.exec(`
       CREATE TABLE memory_history (
@@ -151,7 +148,7 @@ function createTestDatabase(opts = {}) {
     `);
   }
 
-  // vec_memories virtual table (requires sqlite-vec extension)
+  // Vec_memories virtual table (requires sqlite-vec extension)
   if (withVec && sqliteVecAvailable) {
     loadSqliteVec(db);
     db.exec(`
@@ -1058,17 +1055,17 @@ async function testModuleImportSafety() {
     console.warn = originalConsoleWarn;
 
     // The module either:
-    // a) Called process.exit(0) on success (unlikely without real DB)
-    // b) Called process.exit(1) on error (most likely — no real DB available)
-    // c) Threw our stubbed exit error
+    // A) Called process.exit(0) on success (unlikely without real DB)
+    // B) Called process.exit(1) on error (most likely — no real DB available)
+    // C) Threw our stubbed exit error
     if (exitCode !== null) {
       pass('T-COV-007a: Module calls process.exit on execution', `Exit code: ${exitCode}`);
     } else if (requireError) {
-      // main() is async, so the exit may happen asynchronously
+      // Main() is async, so the exit may happen asynchronously
       // The require itself may succeed but the async main() fails later
       pass('T-COV-007a: Module caught during require (async main)', requireError.message.substring(0, 60));
     } else {
-      // main() is async and hasn't resolved yet — this is expected behavior
+      // Main() is async and hasn't resolved yet — this is expected behavior
       pass('T-COV-007a: Module required successfully (async main pending)', 'Async execution');
     }
 
@@ -1079,7 +1076,7 @@ async function testModuleImportSafety() {
       pass('T-COV-007b: Module exports main', `typeof main = ${typeof moduleExports.main}`);
     } else {
       // Since main() calls process.exit which we threw from, the module
-      // may not have finished defining exports
+      // May not have finished defining exports
       skip('T-COV-007b: Module exports main function', 'Module execution interrupted by exit stub');
     }
 

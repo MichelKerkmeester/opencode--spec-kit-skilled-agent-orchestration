@@ -1,10 +1,6 @@
-// ---------------------------------------------------------------
-// MODULE: Feedback Denylist
-// ---------------------------------------------------------------
-// AI-GUARD: 100+ stop words that should never be learned as trigger phrases.
-// AI-WHY: Prevents noise injection into learned relevance feedback.
-// ---------------------------------------------------------------
-
+// --- 1. FEEDBACK DENYLIST ---
+// 100+ stop words that should never be learned as trigger phrases.
+// Prevents noise injection into learned relevance feedback.
 /* ---------------------------------------------------------------
    1. ENGLISH STOP WORDS
    Common English words that carry no semantic signal.
@@ -68,9 +64,7 @@ const DOMAIN_STOP_WORDS: readonly string[] = [
   'todo', 'fixme', 'hack', 'note',
 ] as const;
 
-/* ---------------------------------------------------------------
-   4. COMBINED DENYLIST
-   --------------------------------------------------------------- */
+// --- 2. COMBINED DENYLIST ---
 
 /**
  * Complete denylist of 100+ stop words that should never be learned
@@ -82,9 +76,7 @@ export const DENYLIST: Set<string> = new Set<string>([
   ...DOMAIN_STOP_WORDS,
 ]);
 
-/* ---------------------------------------------------------------
-   5. PUBLIC API
-   --------------------------------------------------------------- */
+// --- 3. PUBLIC API ---
 
 /**
  * Check if a term is on the denylist (case-insensitive).

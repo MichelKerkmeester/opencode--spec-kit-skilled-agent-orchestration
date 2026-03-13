@@ -1,10 +1,7 @@
 // Converted from: unit-folder-scoring-types.test.ts (custom runner)
-// ---------------------------------------------------------------
 // TEST: FOLDER SCORING — TYPE UNIFICATION (FolderMemoryInput)
 // Validates cast-removal: deprecated MemoryRecord → FolderMemoryInput
-// accepts partial objects, mixed casing, and extra arbitrary fields.
-// ---------------------------------------------------------------
-
+// Accepts partial objects, mixed casing, and extra arbitrary fields.
 import { describe, it, expect } from 'vitest';
 import {
   computeSingleFolderScore,

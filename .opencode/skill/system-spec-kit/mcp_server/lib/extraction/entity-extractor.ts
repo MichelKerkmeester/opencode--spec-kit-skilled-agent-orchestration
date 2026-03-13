@@ -1,21 +1,15 @@
-// ---------------------------------------------------------------
-// MODULE: Entity Extractor
-// ---------------------------------------------------------------
+// --- 1. ENTITY EXTRACTOR ---
 // Deferred feature — gated via SPECKIT_AUTO_ENTITIES
 // Pure-TS rule-based extraction, zero npm dependencies.
-// ---------------------------------------------------------------
-
 import { isEntityDenied } from './entity-denylist.js';
 import { normalizeEntityName, computeEdgeDensity } from '../search/entity-linker.js';
 
 import type Database from 'better-sqlite3';
 
-// AI-WHY: Re-export canonical versions from entity-linker for backward compatibility
+// Re-export canonical versions from entity-linker for backward compatibility
 export { normalizeEntityName, computeEdgeDensity };
 
-// ---------------------------------------------------------------------------
-// 1. TYPES
-// ---------------------------------------------------------------------------
+// --- 2. TYPES ---
 
 /** A single entity extracted from memory content. */
 export interface ExtractedEntity {
@@ -27,9 +21,7 @@ export interface ExtractedEntity {
   frequency: number;
 }
 
-// ---------------------------------------------------------------------------
-// 2. EXTRACTION RULES
-// ---------------------------------------------------------------------------
+// --- 3. EXTRACTION RULES ---
 
 /**
  * Main extraction function — pure-TS rule-based, no npm deps.
@@ -62,11 +54,11 @@ export function extractEntities(content: string): ExtractedEntity[] {
     raw.push({ text: match[1], type: 'technology' });
   }
 
-  // AI-GUARD: Rule 3: Words after key phrases — keywords are case-insensitive via explicit
-  // alternation (no `i` flag, since continuation words must require uppercase start
-  // to avoid capturing common English words like "and", "the"). Tokens may include
-  // internal dots (for names like "Node.js"), but a trailing sentence period ends
-  // the match so we do not absorb the next sentence.
+  // Rule 3: Words after key phrases — keywords are case-insensitive via explicit
+  // Alternation (no `i` flag, since continuation words must require uppercase start
+  // To avoid capturing common English words like "and", "the"). Tokens may include
+  // Internal dots (for names like "Node.js"), but a trailing sentence period ends
+  // The match so we do not absorb the next sentence.
   const keyPhraseRe = /\b(?:[Uu]sing|[Ww]ith|[Vv]ia|[Ii]mplements)\s+([A-Za-z][\w-]*(?:\.[A-Za-z0-9_-]+)*(?:\s+[A-Z][\w-]*(?:\.[A-Za-z0-9_-]+)*)*)/g;
   while ((match = keyPhraseRe.exec(content)) !== null) {
     raw.push({ text: match[1], type: 'key_phrase' });
@@ -88,9 +80,7 @@ export function extractEntities(content: string): ExtractedEntity[] {
   return deduplicateEntities(raw);
 }
 
-// ---------------------------------------------------------------------------
-// 3. FILTERING
-// ---------------------------------------------------------------------------
+// --- 4. FILTERING ---
 
 /**
  * Filter entities through denylist + length checks.
@@ -119,9 +109,7 @@ export function filterEntities(entities: ExtractedEntity[]): ExtractedEntity[] {
   });
 }
 
-// ---------------------------------------------------------------------------
-// 4. STORAGE
-// ---------------------------------------------------------------------------
+// --- 5. STORAGE ---
 
 /**
  * Store extracted entities in the memory_entities table.
@@ -162,9 +150,7 @@ export function storeEntities(
   }
 }
 
-// ---------------------------------------------------------------------------
-// 5. ENTITY CATALOG
-// ---------------------------------------------------------------------------
+// --- 6. ENTITY CATALOG ---
 
 /**
  * Upsert entities into entity_catalog with alias normalization.
@@ -242,10 +228,7 @@ export function updateEntityCatalog(
   }
 }
 
-// ---------------------------------------------------------------------------
 // 6. INTERNAL HELPERS (exported for testing)
-// ---------------------------------------------------------------------------
-
 /**
  * Deduplicate raw extraction results by normalized text.
  * Entries with the same normalized form are merged, summing frequencies.

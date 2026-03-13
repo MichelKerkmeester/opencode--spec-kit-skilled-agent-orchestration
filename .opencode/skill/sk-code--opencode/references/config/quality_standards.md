@@ -1,6 +1,6 @@
 ---
 title: Config Quality Standards
-description: Quality gates for JSON/JSONC configuration files in OpenCode, including AI-intent comment policy, KISS/DRY, and SOLID-aligned boundary checks.
+description: Quality gates for JSON/JSONC configuration files in OpenCode, including comment policy, KISS/DRY, and SOLID-aligned boundary checks.
 ---
 
 # Config Quality Standards
@@ -19,7 +19,7 @@ Define deterministic configuration quality checks so config updates stay parseab
 ### Scope
 
 - JSON files (`.json`) with no comments.
-- JSONC files (`.jsonc`) with bounded AI-intent comments.
+- JSONC files (`.jsonc`) with bounded purposeful comments.
 - Feature flags, thresholds, ranking constants, and runtime behavior controls.
 <!-- /ANCHOR:overview -->
 
@@ -67,11 +67,10 @@ Define deterministic configuration quality checks so config updates stay parseab
 - **OCP**: add new behavior through new section entries before editing stable defaults.
 - **LSP/ISP/DIP**: section consumers should not require special-case type branching due to inconsistent shape.
 
-### AI-Intent Comment Policy (JSONC Only)
+### Comment Policy (JSONC Only)
 
 - Maximum 3 comments per 10 lines.
-- Allowed prefixes: `AI-WHY`, `AI-GUARD`, `AI-INVARIANT`, `AI-TRACE`, `AI-RISK`.
-- Narrative comments are disallowed.
+- Comments should explain WHY, not WHAT. No narrative comments.
 - This policy is a P1 manual/checklist gate (not hard-failed by `verify_alignment_drift.py`).
 <!-- /ANCHOR:p1-required -->
 
@@ -80,7 +79,7 @@ Define deterministic configuration quality checks so config updates stay parseab
 <!-- ANCHOR:p2-recommended -->
 ## 4. P2 - RECOMMENDED
 
-- Add `AI-TRACE REQ-###` markers for high-impact rules.
+- Add `REQ-###` markers for high-impact rules.
 - Keep key ordering stable (`$schema`, core flags, behavior config, advanced settings).
 - Include value constraints in comments for opaque numbers.
 <!-- /ANCHOR:p2-recommended -->
@@ -96,6 +95,6 @@ python -m json.tool config.json
 grep -v '^\s*//' config.jsonc | python -m json.tool
 
 # Header and comment policy spot-checks (JSONC, manual review support)
-rg -n "^// [0-9]+\\. [A-Z0-9 ()/:-]+$|AI-WHY|AI-GUARD|AI-INVARIANT|AI-TRACE|AI-RISK" .opencode/skill/sk-code--opencode/references/config
+rg -n "^// [0-9]+\\. [A-Z0-9 ()/:-]+$" .opencode/skill/sk-code--opencode/references/config
 ```
 <!-- /ANCHOR:verification -->

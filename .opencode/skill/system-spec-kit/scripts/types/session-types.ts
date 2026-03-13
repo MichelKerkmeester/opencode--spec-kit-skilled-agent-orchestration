@@ -1,15 +1,11 @@
-// ---------------------------------------------------------------
-// MODULE: Session Types
-// ---------------------------------------------------------------
+// --- 1. SESSION TYPES ---
 // Canonical type definitions shared between simulation-factory and extractors.
 // Eliminates parallel type hierarchies (TECH-DEBT P6-05).
 
 import type { FileChange, ObservationDetailed } from '../extractors/file-extractor';
 import type { ToolCounts, SpecFileEntry } from '../extractors/session-extractor';
 
-// ---------------------------------------------------------------
-// 1. DECISION TYPES
-// ---------------------------------------------------------------
+// --- 2. DECISION TYPES ---
 
 /** Option within a decision — canonical type */
 export interface DecisionOption {
@@ -59,10 +55,7 @@ export interface DecisionData {
   FOLLOWUP_COUNT: number;
 }
 
-// ---------------------------------------------------------------
-// 2. PHASE / CONVERSATION TYPES
-// ---------------------------------------------------------------
-
+// --- 3. PHASE / CONVERSATION TYPES ---
 /** Phase entry — canonical type (used by diagram + conversation extractors) */
 export interface PhaseEntry {
   PHASE_NAME: string;
@@ -109,9 +102,7 @@ export interface ConversationData {
   DATE: string;
 }
 
-// ---------------------------------------------------------------
-// 3. DIAGRAM TYPES
-// ---------------------------------------------------------------
+// --- 4. DIAGRAM TYPES ---
 
 /** Diagram output entry — canonical type */
 export interface DiagramOutput {
@@ -163,9 +154,7 @@ export interface DiagramData {
   PATTERN_SUMMARY: PatternSummaryEntry[];
 }
 
-// ---------------------------------------------------------------
-// 4. SESSION TYPES
-// ---------------------------------------------------------------
+// --- 5. SESSION TYPES ---
 
 /** Outcome entry — canonical type */
 export interface OutcomeEntry {

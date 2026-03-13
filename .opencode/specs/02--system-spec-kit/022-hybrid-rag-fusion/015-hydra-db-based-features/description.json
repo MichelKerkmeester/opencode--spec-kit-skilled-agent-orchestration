@@ -1,15 +1,18 @@
 {
-  "specFolder": "015-hydra-db-based-features",
-  "description": "Hydra roadmap phases",
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/015-hydra-db-based-features",
+  "description": "Feature Specification: 015-hydra-db-based-features",
   "keywords": [
-    "hydra",
-    "roadmap",
-    "phases"
+    "feature",
+    "specification",
+    "015-hydra-db-based-features"
   ],
-  "lastUpdated": "2026-03-13T17:36:26.638Z",
+  "lastUpdated": "2026-03-13T18:17:46.810Z",
   "specId": "015",
   "folderSlug": "hydra-db-based-features",
-  "parentChain": [],
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion"
+  ],
   "memorySequence": 1,
   "memoryNameHistory": [
     "13-03-26_18-00__hydra-baseline-controls-delivered.md"

@@ -1,12 +1,8 @@
-// ---------------------------------------------------------------
-// MODULE: Eval Ceiling (T006f)
-// ---------------------------------------------------------------
+// --- 1. EVAL CEILING (T006F) ---
 // Full-Context Ceiling Evaluation — computes the theoretical
-// maximum MRR@5 assuming access to ALL memory content and
-// perfect ranking ability. Pure functions, no DB writes,
-// no side effects (except optional async scorer).
-// ---------------------------------------------------------------
-
+// Maximum MRR@5 assuming access to ALL memory content and
+// Perfect ranking ability. Pure functions, no DB writes,
+// No side effects (except optional async scorer).
 import { GroundTruthEntry } from './eval-metrics';
 
 /* ---------------------------------------------------------------
@@ -188,7 +184,7 @@ export function computeCeilingFromGroundTruth(
 ): CeilingResult {
   const { queries, groundTruth, k = 5 } = options;
 
-  // AI-GUARD: Guard: empty inputs
+  // Guard: empty inputs
   if (queries.length === 0 || groundTruth.length === 0) {
     return {
       ceilingMRR: 0,

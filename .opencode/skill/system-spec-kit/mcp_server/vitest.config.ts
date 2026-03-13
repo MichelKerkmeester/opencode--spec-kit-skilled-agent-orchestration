@@ -1,8 +1,5 @@
-// ---------------------------------------------------------------
-// MODULE: Vitest Config
-// CONFIG: VITEST
-// ---------------------------------------------------------------
-
+// --- 1. VITEST CONFIG ---
+// --- 2. VITEST ---
 import { defineConfig } from 'vitest/config';
 import path from 'path';
 

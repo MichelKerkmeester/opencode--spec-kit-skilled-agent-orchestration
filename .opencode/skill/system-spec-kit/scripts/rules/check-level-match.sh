@@ -9,7 +9,7 @@ set -euo pipefail
 # Rule: LEVEL_MATCH
 # Severity: error
 # Description: Validates that the declared level is consistent across all
-#   spec folder files, and required files exist for the declared level.
+#   Spec folder files, and required files exist for the declared level.
 
 # ───────────────────────────────────────────────────────────────
 # 1. HELPER FUNCTIONS
@@ -105,7 +105,7 @@ _level_should_have() {
 
     # These files should have level declarations.
     # NOTE: plan.md is intentionally not required because many valid Level 1
-    # fixtures/specs omit a plan-level declaration while still being consistent.
+    # Fixtures/specs omit a plan-level declaration while still being consistent.
     case "$basename" in
         spec.md|checklist.md)
             return 0

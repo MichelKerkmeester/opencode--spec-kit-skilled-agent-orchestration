@@ -1,12 +1,6 @@
-// ---------------------------------------------------------------
-// MODULE: Recovery Hints
-// ---------------------------------------------------------------
-// T009-T011: Error catalog with recovery hints (REQ-004, REQ-009)
-// ---------------------------------------------------------------
-
-// ---------------------------------------------------------------
-// 1. TYPES
-// ---------------------------------------------------------------
+// --- 1. RECOVERY HINTS ---
+// Error catalog with recovery hints (REQ-004, REQ-009)
+// --- 2. TYPES ---
 
 /**
  * Defines the Severity type.
@@ -33,13 +27,10 @@ export type RecoveryHintMap = Record<string, RecoveryHint>;
  */
 export type ToolSpecificHintMap = Record<string, Record<string, RecoveryHint>>;
 
-// ---------------------------------------------------------------
-// 2. ERROR CODES CATALOG
+// --- 3. ERROR CODES CATALOG ---
 //
 // Organized by category for maintainability.
 // Zero runtime cost - static constants.
-// ---------------------------------------------------------------
-
 /**
  * Defines the ERROR_CODES constant.
  */
@@ -128,13 +119,10 @@ export type ErrorCodeKey = keyof typeof ERROR_CODES;
  */
 export type ErrorCodeValue = (typeof ERROR_CODES)[ErrorCodeKey];
 
-// ---------------------------------------------------------------
-// 3. RECOVERY HINTS CATALOG
+// --- 4. RECOVERY HINTS CATALOG ---
 //
-// REQ-004: Each error code has specific recovery guidance.
-// REQ-009: Default hint is "Run memory_health() for diagnostics".
-// ---------------------------------------------------------------
-
+// Each error code has specific recovery guidance.
+// Default hint is "Run memory_health() for diagnostics".
 /**
  * Defines the RECOVERY_HINTS constant.
  */
@@ -642,9 +630,7 @@ export const RECOVERY_HINTS: RecoveryHintMap = {
   },
 };
 
-// ---------------------------------------------------------------
-// 4. DEFAULT HINT (REQ-009)
-// ---------------------------------------------------------------
+// --- 5. DEFAULT HINT (REQ-009) ---
 
 /**
  * Defines the DEFAULT_HINT constant.
@@ -660,15 +646,13 @@ export const DEFAULT_HINT: RecoveryHint = {
   toolTip: 'memory_health()'
 };
 
-// ---------------------------------------------------------------
-// 5. TOOL-SPECIFIC HINTS
-// ---------------------------------------------------------------
+// --- 6. TOOL-SPECIFIC HINTS ---
 
 /**
  * Defines the TOOL_SPECIFIC_HINTS constant.
  */
 export const TOOL_SPECIFIC_HINTS: ToolSpecificHintMap = {
-  // memory_search specific hints
+  // Memory_search specific hints
   memory_search: {
     [ERROR_CODES.EMBEDDING_FAILED]: {
       hint: 'Semantic search unavailable. Results limited to keyword matching.',
@@ -692,7 +676,7 @@ export const TOOL_SPECIFIC_HINTS: ToolSpecificHintMap = {
     },
   },
 
-  // checkpoint_restore specific hints
+  // Checkpoint_restore specific hints
   checkpoint_restore: {
     [ERROR_CODES.CHECKPOINT_NOT_FOUND]: {
       hint: 'Cannot restore: checkpoint does not exist.',
@@ -716,7 +700,7 @@ export const TOOL_SPECIFIC_HINTS: ToolSpecificHintMap = {
     },
   },
 
-  // memory_save specific hints
+  // Memory_save specific hints
   memory_save: {
     [ERROR_CODES.FILE_NOT_FOUND]: {
       hint: 'Memory file not found. Cannot index non-existent file.',
@@ -749,7 +733,7 @@ export const TOOL_SPECIFIC_HINTS: ToolSpecificHintMap = {
     },
   },
 
-  // memory_index_scan specific hints
+  // Memory_index_scan specific hints
   memory_index_scan: {
     [ERROR_CODES.EMBEDDING_PROVIDER_UNAVAILABLE]: {
       hint: 'Scan complete but embeddings unavailable. Files indexed for text search only.',
@@ -762,7 +746,7 @@ export const TOOL_SPECIFIC_HINTS: ToolSpecificHintMap = {
     },
   },
 
-  // memory_drift_why specific hints
+  // Memory_drift_why specific hints
   memory_drift_why: {
     [ERROR_CODES.MEMORY_NOT_FOUND]: {
       hint: 'Cannot trace lineage: memory not found.',
@@ -776,7 +760,7 @@ export const TOOL_SPECIFIC_HINTS: ToolSpecificHintMap = {
     },
   },
 
-  // memory_causal_link specific hints
+  // Memory_causal_link specific hints
   memory_causal_link: {
     [ERROR_CODES.MEMORY_NOT_FOUND]: {
       hint: 'Cannot create link: one or both memories not found.',
@@ -791,13 +775,10 @@ export const TOOL_SPECIFIC_HINTS: ToolSpecificHintMap = {
   },
 };
 
-// ---------------------------------------------------------------
 // 6. getRecoveryHint() FUNCTION (T010)
 //
-// REQ-004: Returns recovery hint for tool + error code.
+// Returns recovery hint for tool + error code.
 // Zero runtime cost - static lookup.
-// ---------------------------------------------------------------
-
 /**
  * Get recovery hint for a specific error in tool context.
  * Checks tool-specific hints first, then generic hints.
@@ -818,9 +799,7 @@ export function getRecoveryHint(toolName: string, errorCode: string): RecoveryHi
   return DEFAULT_HINT;
 }
 
-// ---------------------------------------------------------------
-// 7. HELPER FUNCTIONS
-// ---------------------------------------------------------------
+// --- 7. HELPER FUNCTIONS ---
 
 /**
  * Check if a specific hint exists (not default).

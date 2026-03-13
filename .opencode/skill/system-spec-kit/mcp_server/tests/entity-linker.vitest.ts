@@ -1,8 +1,5 @@
-// ---------------------------------------------------------------
 // TEST: ENTITY LINKER
 // Cross-Document Entity Linking
-// ---------------------------------------------------------------
-
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import Database from 'better-sqlite3';
 
@@ -23,8 +20,7 @@ import type {
   EntityLinkStats,
 } from '../lib/search/entity-linker';
 
-// ── Helpers ──────────────────────────────────────────────────
-
+// --- 1. HELPERS ---
 /** Create an in-memory SQLite database with the required tables. */
 function createTestDb(): InstanceType<typeof Database> {
   const db = new Database(':memory:');
@@ -139,9 +135,7 @@ describe('S8 Entity Linker', () => {
     delete process.env.SPECKIT_ENTITY_LINKING_MAX_DENSITY;
   });
 
-  // ─────────────────────────────────────────────────────────
-  // 1. normalizeEntityName
-  // ─────────────────────────────────────────────────────────
+  // --- 2. NORMALIZEENTITYNAME ---
   describe('normalizeEntityName', () => {
     it('lowercases text', () => {
       expect(normalizeEntityName('Memory System')).toBe('memory system');
@@ -164,9 +158,7 @@ describe('S8 Entity Linker', () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────
-  // 2. buildEntityCatalog
-  // ─────────────────────────────────────────────────────────
+  // --- 3. BUILDENTITYCATALOG ---
   describe('buildEntityCatalog', () => {
     it('returns empty map for empty tables', () => {
       const catalog = buildEntityCatalog(db);
@@ -217,15 +209,13 @@ describe('S8 Entity Linker', () => {
       const catalog = buildEntityCatalog(db);
       const entry = catalog.get('memory system')!;
       expect(entry.memoryIds).toHaveLength(2);
-      // spec folder should appear only once
+      // Spec folder should appear only once
       expect(entry.specFolders).toHaveLength(1);
       expect(entry.specFolders).toEqual(['specs/001-alpha']);
     });
   });
 
-  // ─────────────────────────────────────────────────────────
-  // 3. findCrossDocumentMatches
-  // ─────────────────────────────────────────────────────────
+  // --- 4. FINDCROSSDOCUMENTMATCHES ---
   describe('findCrossDocumentMatches', () => {
     it('returns empty array when no cross-doc matches exist', () => {
       insertMemory(db, 1, 'specs/001-alpha');
@@ -284,9 +274,7 @@ describe('S8 Entity Linker', () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────
-  // 4. createEntityLinks
-  // ─────────────────────────────────────────────────────────
+  // --- 5. CREATEENTITYLINKS ---
   describe('createEntityLinks', () => {
     it('creates causal_edges with relation=supports', () => {
       insertMemory(db, 1, 'specs/001-alpha');
@@ -528,9 +516,7 @@ describe('S8 Entity Linker', () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────
-  // 5. getEntityLinkStats
-  // ─────────────────────────────────────────────────────────
+  // --- 6. GETENTITYLINKSTATS ---
   describe('getEntityLinkStats', () => {
     it('returns zeros for empty database', () => {
       const stats = getEntityLinkStats(db);
@@ -594,9 +580,7 @@ describe('S8 Entity Linker', () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────
-  // 6. hasEntityInfrastructure
-  // ─────────────────────────────────────────────────────────
+  // --- 7. HASENTITYINFRASTRUCTURE ---
   describe('hasEntityInfrastructure', () => {
     it('returns false for empty entity_catalog', () => {
       expect(hasEntityInfrastructure(db)).toBe(false);
@@ -614,9 +598,7 @@ describe('S8 Entity Linker', () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────
-  // 7. runEntityLinking (end-to-end)
-  // ─────────────────────────────────────────────────────────
+  // --- 8. RUNENTITYLINKING (END-TO-END) ---
   describe('runEntityLinking', () => {
     it('end-to-end: extracts cross-doc matches and creates links', () => {
       // Set up entity infrastructure
@@ -748,9 +730,7 @@ describe('S8 Entity Linker', () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────
-  // 8. Edge cases
-  // ─────────────────────────────────────────────────────────
+  // --- 9. EDGE CASES ---
   describe('Edge cases', () => {
     it('handles many entities without errors', () => {
       // Insert 50 entities across 5 spec folders
@@ -779,9 +759,7 @@ describe('S8 Entity Linker', () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────
-  // 9. __testables internal exports
-  // ─────────────────────────────────────────────────────────
+  // --- 10. __TESTABLES INTERNAL EXPORTS ---
   describe('__testables', () => {
     it('exposes MAX_EDGES_PER_NODE constant', () => {
       expect(__testables.MAX_EDGES_PER_NODE).toBe(20);

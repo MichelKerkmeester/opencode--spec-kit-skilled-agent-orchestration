@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Graph Search Fn
-// ---------------------------------------------------------------
+// --- 1. GRAPH SEARCH FN ---
 // Causal graph search channel — uses FTS5 for node matching
 
 import { sanitizeFTS5Query } from './bm25-index';
@@ -9,7 +7,7 @@ import { queryHierarchyMemories } from './spec-folder-hierarchy';
 import type Database from 'better-sqlite3';
 import type { GraphSearchFn } from './search-types';
 
-// --- 1. TYPES ---
+// --- 2. TYPES ---
 
 interface CausalEdgeRow {
   id: string;
@@ -19,7 +17,7 @@ interface CausalEdgeRow {
   strength: number;
 }
 
-// --- 2. TYPED-DEGREE CONSTANTS ---
+// --- 3. TYPED-DEGREE CONSTANTS ---
 
 /** Edge type weights for typed-degree computation (R4 5th RRF channel) */
 const EDGE_TYPE_WEIGHTS: Record<string, number> = {
@@ -40,7 +38,7 @@ const MAX_TOTAL_DEGREE = 50;
 /** Maximum normalized boost score */
 const DEGREE_BOOST_CAP = 0.15;
 
-// --- 3. CAUSAL EDGE CHANNEL (FTS5-BACKED) ---
+// --- 4. CAUSAL EDGE CHANNEL (FTS5-BACKED) ---
 
 /**
  * Check whether the FTS5 table exists in the database.
@@ -52,7 +50,7 @@ function isFtsTableAvailable(database: Database.Database): boolean {
       `SELECT name FROM sqlite_master WHERE type='table' AND name='memory_fts'`
     ) as Database.Statement).get() as { name: string } | undefined;
     return !!result;
-  } catch (_err: unknown) { // AI-GUARD: SQL parse failure — return empty degree map
+  } catch (_err: unknown) { // SQL parse failure — return empty degree map
     return false;
   }
 }
@@ -76,11 +74,11 @@ function queryCausalEdges(
     if (isFtsTableAvailable(database)) {
       graphResults.push(...queryCausalEdgesFTS5(database, query, limit));
     } else {
-      // AI-WHY: Fallback: LIKE matching when FTS5 table is unavailable
+      // Fallback: LIKE matching when FTS5 table is unavailable
       graphResults.push(...queryCausalEdgesLikeFallback(database, query, limit));
     }
 
-    // AI-TRACE: S4: hierarchy-aware fallback/augmentation for spec-scoped retrieval.
+    // Hierarchy-aware fallback/augmentation for spec-scoped retrieval.
     if (typeof specFolder === 'string' && specFolder.trim().length > 0) {
       const hierarchyRows = queryHierarchyMemories(database, specFolder, Math.max(5, Math.ceil(limit / 2)));
       for (const row of hierarchyRows) {
@@ -131,7 +129,7 @@ function queryCausalEdgesFTS5(
   const sanitized = sanitizeFTS5Query(query);
   if (!sanitized) return [];
 
-  // AI-WHY: BM25-inspired weights: title(10) highest signal, content(5), triggers(2), folder(1)
+  // BM25-inspired weights: title(10) highest signal, content(5), triggers(2), folder(1)
   // Find memory IDs matching the query via FTS5, then join to causal_edges
   const rows = (database.prepare(`
     SELECT ce.id, ce.source_id, ce.target_id, ce.relation, ce.strength,
@@ -147,8 +145,8 @@ function queryCausalEdgesFTS5(
   `) as Database.Statement).all(sanitized, limit) as Array<CausalEdgeRow & { fts_score: number }>;
 
   // Return one candidate entry per memory node (source_id and target_id) with
-  // numeric IDs matching memory_index.id (INTEGER column) in the hybrid search
-  // pipeline (MMR reranking filters with typeof id === 'number').
+  // Numeric IDs matching memory_index.id (INTEGER column) in the hybrid search
+  // Pipeline (MMR reranking filters with typeof id === 'number').
   const candidates: Array<Record<string, unknown>> = [];
   for (const row of rows) {
     const score = typeof row.strength === 'number'
@@ -214,7 +212,7 @@ function queryCausalEdgesLikeFallback(
   `) as Database.Statement).all(likeParam, likeParam, limit) as CausalEdgeRow[];
 
   // Return one candidate entry per memory node (source_id and target_id) with
-  // numeric IDs matching memory_index.id (INTEGER column).
+  // Numeric IDs matching memory_index.id (INTEGER column).
   const candidates: Array<Record<string, unknown>> = [];
   for (const row of rows) {
     const score = typeof row.strength === 'number' ? Math.min(1, Math.max(0, row.strength)) : 0;
@@ -249,7 +247,7 @@ function queryCausalEdgesLikeFallback(
   return candidates;
 }
 
-// --- 4. TYPED-DEGREE COMPUTATION ---
+// --- 5. TYPED-DEGREE COMPUTATION ---
 
 /**
  * In-memory degree cache. Keys are stringified memory IDs.
@@ -352,7 +350,7 @@ function computeMaxTypedDegree(database: Database.Database): number {
     }
 
     return maxDegree > 0 ? maxDegree : DEFAULT_MAX_TYPED_DEGREE;
-  } catch (_err: unknown) { // AI-GUARD: Subgraph computation failure — return default weights
+  } catch (_err: unknown) { // Subgraph computation failure — return default weights
     return DEFAULT_MAX_TYPED_DEGREE;
   }
 }
@@ -386,7 +384,7 @@ function computeDegreeScores(
       constitutionalIds.add(String(row.id));
     }
   } catch (_err: unknown) {
-    // AI-GUARD: Fail closed — if we can't identify constitutional IDs, zero all scores
+    // Fail closed — if we can't identify constitutional IDs, zero all scores
     console.warn('[graph-search-fn] Constitutional exclusion lookup failed; returning zero scores for safety');
     for (const id of memoryIds) {
       results.set(String(id), 0);
@@ -431,7 +429,7 @@ function clearDegreeCache(): void {
   degreeCache.clear();
 }
 
-// --- 5. FACTORY FUNCTION ---
+// --- 6. FACTORY FUNCTION ---
 
 /**
  * Creates a graph search function backed by causal_edges only.
@@ -464,7 +462,7 @@ function createUnifiedGraphSearchFn(
   };
 }
 
-// --- 6. EXPORTS ---
+// --- 7. EXPORTS ---
 
 export {
   createUnifiedGraphSearchFn,

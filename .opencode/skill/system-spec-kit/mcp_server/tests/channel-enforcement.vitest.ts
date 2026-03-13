@@ -1,32 +1,30 @@
-// ---------------------------------------------------------------
-// MODULE: Test — Channel Enforcement
-// ---------------------------------------------------------------
+// --- 1. TEST — CHANNEL ENFORCEMENT ---
 // Channel Enforcement + Precision Verification (T003b + T003c)
 //
 // Coverage:
-//   T003b — Enforcement wrapper (enforceChannelRepresentation)
-//     T1:  enforcement applies when flag enabled and a channel is missing
-//     T2:  enforcement does not apply when flag is disabled
-//     T3:  topK parameter limits the inspection window
-//     T4:  promoted results are appended and metadata is correct
-//     T5:  results remain sorted by score after enforcement
+// T003b — Enforcement wrapper (enforceChannelRepresentation)
+// T1:  enforcement applies when flag enabled and a channel is missing
+// T2:  enforcement does not apply when flag is disabled
+// T3:  topK parameter limits the inspection window
+// T4:  promoted results are appended and metadata is correct
+// T5:  results remain sorted by score after enforcement
 //
-//   T003c — Precision verification (R2 guarantee)
-//     T6:  all channels represented → top-3 unchanged (precision preserved)
-//     T7:  one channel missing → top-3 still contains high-scoring items
-//     T8:  promotions never displace items already in top-3 (appended)
-//     T9:  quality floor prevents low-quality promotions
-//     T10: multiple missing channels → each gets at most 1 promotion
-//     T11: R15+R2 interaction — ≥2 channels from router preserves R2 guarantee
+// T003c — Precision verification (R2 guarantee)
+// T6:  all channels represented → top-3 unchanged (precision preserved)
+// T7:  one channel missing → top-3 still contains high-scoring items
+// T8:  promotions never displace items already in top-3 (appended)
+// T9:  quality floor prevents low-quality promotions
+// T10: multiple missing channels → each gets at most 1 promotion
+// T11: R15+R2 interaction — ≥2 channels from router preserves R2 guarantee
 //
-//   Edge cases
-//     T12: empty results → no crash
-//     T13: single result → no crash
-//     T14: all channel result sets empty → no enforcement needed
-//     T15: topK=0 → no enforcement (empty window), tail returned intact
-//     T16: topK larger than results → full list inspected
-//     T17: promoted items carry original extra fields
-//     T18: channelCounts in EnforcementResult cover full result list
+// Edge cases
+// T12: empty results → no crash
+// T13: single result → no crash
+// T14: all channel result sets empty → no enforcement needed
+// T15: topK=0 → no enforcement (empty window), tail returned intact
+// T16: topK larger than results → full list inspected
+// T17: promoted items carry original extra fields
+// T18: channelCounts in EnforcementResult cover full result list
 
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import {
@@ -156,11 +154,11 @@ describe('T028 Channel Enforcement + Precision Verification', () => {
 
     const result = enforceChannelRepresentation(fused, channels, 3);
 
-    // graph was missing from the top-3 window → should have been promoted
+    // Graph was missing from the top-3 window → should have been promoted
     expect(result.enforcement.promotedCount).toBeGreaterThanOrEqual(1);
     expect(result.enforcement.underRepresentedChannels).toContain('graph');
     // Total results = 5 original + 1 promotion = 6 (g1 already in tail but a new
-    // promotion from g2 might be added, or g1 gets promoted into the window).
+    // Promotion from g2 might be added, or g1 gets promoted into the window).
     // The key guarantee: window size was limited to 3 for analysis.
     expect(result.results.length).toBeGreaterThanOrEqual(5);
   });
@@ -207,7 +205,7 @@ describe('T028 Channel Enforcement + Precision Verification', () => {
     for (let i = 0; i < scores.length - 1; i++) {
       expect(scores[i]).toBeGreaterThanOrEqual(scores[i + 1]);
     }
-    // g1 (0.85) should be between a1 (0.9) and b1 (0.7)
+    // G1 (0.85) should be between a1 (0.9) and b1 (0.7)
     expect(result.results[0].id).toBe('a1');
     expect(result.results[1].id).toBe('g1');
     expect(result.results[2].id).toBe('b1');
@@ -245,7 +243,7 @@ describe('T028 Channel Enforcement + Precision Verification', () => {
       makeFused('b1', 0.88, 'bm25'),
       makeFused('a2', 0.78, 'vector'),
     ];
-    // graph is missing; its best result scores 0.40 (well below the top-3).
+    // Graph is missing; its best result scores 0.40 (well below the top-3).
     const channels = new Map<string, ChannelResult[]>([
       ['vector', [makeChannel('a1', 0.95), makeChannel('a2', 0.78)]],
       ['bm25',   [makeChannel('b1', 0.88)]],
@@ -272,7 +270,7 @@ describe('T028 Channel Enforcement + Precision Verification', () => {
       makeFused('b1', 0.87, 'bm25'),
       makeFused('a2', 0.81, 'vector'),
     ];
-    // graph best result score < all top-3 items.
+    // Graph best result score < all top-3 items.
     const channels = new Map<string, ChannelResult[]>([
       ['vector', [makeChannel('a1', 0.93), makeChannel('a2', 0.81)]],
       ['bm25',   [makeChannel('b1', 0.87)]],
@@ -344,7 +342,7 @@ describe('T028 Channel Enforcement + Precision Verification', () => {
   // ---- T11: R15+R2 interaction — min 2 channels from router preserves R2 guarantee ----
   it('T11: when router returns ≥2 channels both present in top-k, no promotion is triggered', () => {
     // R15 (router) guarantees at least 2 channels. R2 (channel min-rep) should
-    // be a no-op when those channels already appear in the top-k window.
+    // Be a no-op when those channels already appear in the top-k window.
     const fused: FusedResult[] = [
       makeFused('a1', 0.92, 'vector'),
       makeFused('b1', 0.85, 'bm25'),
@@ -378,7 +376,7 @@ describe('T028 Channel Enforcement + Precision Verification', () => {
 
     expect(result.results).toHaveLength(0);
     expect(result.enforcement.promotedCount).toBe(0);
-    // analyzeChannelRepresentation returns [] on empty topK — no under-representation.
+    // AnalyzeChannelRepresentation returns [] on empty topK — no under-representation.
     expect(result.enforcement.underRepresentedChannels).toHaveLength(0);
   });
 
@@ -445,7 +443,7 @@ describe('T028 Channel Enforcement + Precision Verification', () => {
       ['graph',  [makeChannel('g1', 0.5)]],
     ]);
 
-    // topK=100 but only 2 results — should not throw.
+    // TopK=100 but only 2 results — should not throw.
     expect(() => enforceChannelRepresentation(fused, channels, 100)).not.toThrow();
 
     const result = enforceChannelRepresentation(fused, channels, 100);
@@ -489,7 +487,7 @@ describe('T028 Channel Enforcement + Precision Verification', () => {
 
     expect(result.enforcement.channelCounts['vector']).toBe(2);
     expect(result.enforcement.channelCounts['bm25']).toBe(1);
-    // graph was promoted → count should be 1
+    // Graph was promoted → count should be 1
     expect(result.enforcement.channelCounts['graph']).toBe(1);
 
     // Total items = sum of all channel counts

@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Types
-// ---------------------------------------------------------------
+// --- 1. TYPES ---
 
 import { buildMutationHookFeedback } from '../../hooks/mutation-feedback';
 import type { ParsedMemory } from '../../lib/parsing/memory-parser';
@@ -101,7 +99,17 @@ export interface SaveArgs {
   force?: boolean;
   dryRun?: boolean;
   skipPreflight?: boolean;
-  asyncEmbedding?: boolean; // AI-TRACE:T306: When true, embedding generation is deferred (non-blocking)
+  asyncEmbedding?: boolean; // When true, embedding generation is deferred (non-blocking)
+  tenantId?: string;
+  userId?: string;
+  agentId?: string;
+  sessionId?: string;
+  sharedSpaceId?: string;
+  provenanceSource?: string;
+  provenanceActor?: string;
+  governedAt?: string;
+  retentionPolicy?: 'keep' | 'ephemeral' | 'shared';
+  deleteAfter?: string;
 }
 
 export interface PostInsertMetadataFields {
@@ -123,6 +131,16 @@ export interface PostInsertMetadataFields {
   parent_id?: number;
   chunk_index?: number;
   chunk_label?: string;
+  tenant_id?: string;
+  user_id?: string;
+  agent_id?: string;
+  shared_space_id?: string;
+  provenance_source?: string;
+  provenance_actor?: string;
+  governed_at?: string;
+  retention_policy?: string;
+  delete_after?: string | null;
+  governance_metadata?: string;
 }
 
 export type { ParsedMemory };

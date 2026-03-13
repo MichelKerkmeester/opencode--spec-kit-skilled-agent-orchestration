@@ -1,8 +1,5 @@
-// ---------------------------------------------------------------
 // TEST: RRF Fusion (C138-P3) — Cross-Variant Multi-Query Fusion
 // Converted from: unit-rrf-fusion.test.ts (custom runner)
-// ---------------------------------------------------------------
-
 import { describe, it, expect } from 'vitest';
 import type { FusionResult } from '@spec-kit/shared/algorithms/rrf-fusion';
 import { fuseResults, fuseResultsMulti, fuseResultsCrossVariant, SOURCE_TYPES } from '@spec-kit/shared/algorithms/rrf-fusion';

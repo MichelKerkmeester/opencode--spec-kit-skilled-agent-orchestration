@@ -1,28 +1,22 @@
-// ---------------------------------------------------------------
-// MODULE: Embedding Expansion
-// ---------------------------------------------------------------
-// AI-WHY: Sprint 5 Phase B — semantic query expansion using embedding similarity.
+// --- 1. EMBEDDING EXPANSION ---
+// Sprint 5 Phase B — semantic query expansion using embedding similarity.
 //
 // R12/R15 Mutual Exclusion:
-//   When the R15 query complexity classifier returns tier = "simple",
-// embedding expansion is suppressed entirely. This prevents unnecessary
-//   latency on short, well-defined queries that benefit from exact matches
-//   rather than semantic broadening.
+// When the R15 query complexity classifier returns tier = "simple",
+// Embedding expansion is suppressed entirely. This prevents unnecessary
+// Latency on short, well-defined queries that benefit from exact matches
+// Rather than semantic broadening.
 //
 // Feature Flag:
-//   Controlled by SPECKIT_EMBEDDING_EXPANSION (default: ON, graduated).
-//   Set to 'false' to disable. If disabled, expandQueryWithEmbeddings()
-//   returns immediately with an identity result (original query only,
-//   no expanded terms).
-// ---------------------------------------------------------------
-
+// Controlled by SPECKIT_EMBEDDING_EXPANSION (default: ON, graduated).
+// Set to 'false' to disable. If disabled, expandQueryWithEmbeddings()
+// Returns immediately with an identity result (original query only,
+// No expanded terms).
 import { isEmbeddingExpansionEnabled } from './search-flags';
 import { classifyQueryComplexity } from './query-classifier';
 import * as vectorIndex from './vector-index';
 
-/* ---------------------------------------------------------------
-   1. TYPES
-   --------------------------------------------------------------- */
+// --- 2. TYPES ---
 
 /**
  * Result produced by embedding-based query expansion.
@@ -56,9 +50,7 @@ export interface EmbeddingExpansionOptions {
   maxTerms?: number;
 }
 
-/* ---------------------------------------------------------------
-   2. CONSTANTS
-   --------------------------------------------------------------- */
+// --- 3. CONSTANTS ---
 
 /** Number of semantically similar memories to mine for expansion terms. */
 const DEFAULT_CANDIDATE_LIMIT = 5;
@@ -99,9 +91,7 @@ function identityResult(query: string): ExpandedQuery {
   };
 }
 
-/* ---------------------------------------------------------------
-   4. TERM EXTRACTION
-   --------------------------------------------------------------- */
+// --- 4. TERM EXTRACTION ---
 
 /**
  * Extract candidate expansion terms from an array of memory content strings.
@@ -146,9 +136,7 @@ function extractTermsFromContents(
     .map(([term]) => term);
 }
 
-/* ---------------------------------------------------------------
-   5. MAIN EXPANSION FUNCTION
-   --------------------------------------------------------------- */
+// --- 5. MAIN EXPANSION FUNCTION ---
 
 /**
  * Expand a query using embedding-based similarity to find semantically
@@ -181,22 +169,22 @@ export async function expandQueryWithEmbeddings(
   embedding: Float32Array,
   options?: EmbeddingExpansionOptions,
 ): Promise<ExpandedQuery> {
-  // AI-GUARD: -- Guard 1: Feature flag --------------------------------------------------
+  // -- Guard 1: Feature flag --------------------------------------------------
   if (!isEmbeddingExpansionEnabled()) {
     return identityResult(query);
   }
 
-  // AI-GUARD: -- Guard 2: R15 mutual exclusion -----------------------------------------
-  // classifyQueryComplexity() returns "complex" when SPECKIT_COMPLEXITY_ROUTER
-  // is disabled (its own feature flag). When R15 is active and classifies the
-  // query as "simple", R12 expansion is suppressed to avoid latency overhead
-  // on short, high-precision queries.
+  // -- Guard 2: R15 mutual exclusion -----------------------------------------
+  // ClassifyQueryComplexity() returns "complex" when SPECKIT_COMPLEXITY_ROUTER
+  // Is disabled (its own feature flag). When R15 is active and classifies the
+  // Query as "simple", R12 expansion is suppressed to avoid latency overhead
+  // On short, high-precision queries.
   const complexityResult = classifyQueryComplexity(query);
   if (complexityResult.tier === 'simple') {
     return identityResult(query);
   }
 
-  // AI-GUARD: -- Guard 3: Valid embedding -----------------------------------------------
+  // -- Guard 3: Valid embedding -----------------------------------------------
   if (!embedding || embedding.length === 0) {
     console.warn('[embedding-expansion] Received empty embedding — skipping expansion');
     return identityResult(query);
@@ -208,14 +196,14 @@ export async function expandQueryWithEmbeddings(
   try {
     // -- Step a: Vector similarity search --------------------------------------
     // Use the query embedding to find semantically similar memories.
-    // includeConstitutional=false keeps expansion focused on regular content;
-    // constitutional memories are injected separately in Stage 1.
+    // IncludeConstitutional=false keeps expansion focused on regular content;
+    // Constitutional memories are injected separately in Stage 1.
     const similarMemories = vectorIndex.vectorSearch(embedding, {
       limit,
       includeConstitutional: false,
     }) as Array<Record<string, unknown>>;
 
-    // AI-GUARD: -- Guard 4: No candidates -------------------------------------------------
+    // -- Guard 4: No candidates -------------------------------------------------
     if (!similarMemories || similarMemories.length === 0) {
       return identityResult(query);
     }
@@ -246,7 +234,7 @@ export async function expandQueryWithEmbeddings(
 
     // -- Step c: Extract expansion terms ---------------------------------------
     // Build the set of tokens already present in the original query so we
-    // don't redundantly add terms that are already covered.
+    // Don't redundantly add terms that are already covered.
     const queryTokens = new Set(
       (query.toLowerCase().match(/\b[a-z][a-z0-9_-]*\b/g) ?? []).filter(
         t => t.length >= MIN_TERM_LENGTH && !EXPANSION_STOP_WORDS.has(t)
@@ -259,7 +247,7 @@ export async function expandQueryWithEmbeddings(
       return identityResult(query);
     }
 
-    // AI-WHY: -- Step d: Combine -------------------------------------------------------
+    // -- Step d: Combine -------------------------------------------------------
     // Append the top expanded terms to the original query.
     // A space-separated suffix keeps the combined query compatible with both
     // FTS and embedding re-encoding without requiring a separator token.

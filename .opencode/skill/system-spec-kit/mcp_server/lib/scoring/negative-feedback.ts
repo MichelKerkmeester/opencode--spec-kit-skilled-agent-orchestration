@@ -1,20 +1,13 @@
-// ---------------------------------------------------------------
-// MODULE: Negative Feedback
-// ---------------------------------------------------------------
-// AI-GUARD: 
+// --- 1. NEGATIVE FEEDBACK ---
 // When wasUseful=false is recorded via memory_validate, reduce the
-// memory's composite score via a confidence multiplier.
+// Memory's composite score via a confidence multiplier.
 //
 // Multiplier: starts at 1.0, decreases with each negative validation
 // Floor: 0.3 (never suppress below 30% of original score)
 // Decay: gradual recovery over time (30-day half-life)
-// ---------------------------------------------------------------
-
 import type { DatabaseExtended as Database } from '@spec-kit/shared/types';
 
-/* ---------------------------------------------------------------
-   1. CONSTANTS
-   --------------------------------------------------------------- */
+// --- 2. CONSTANTS ---
 
 /** Base multiplier before any negative feedback is applied. */
 export const CONFIDENCE_MULTIPLIER_BASE = 1.0;
@@ -48,9 +41,7 @@ const NEGATIVE_FEEDBACK_INDEX_SQL = `
   ON negative_feedback_events(memory_id, created_at_ms DESC)
 `;
 
-/* ---------------------------------------------------------------
-   2. CORE FUNCTIONS
-   --------------------------------------------------------------- */
+// --- 3. CORE FUNCTIONS ---
 
 /**
  * Compute the confidence multiplier based on negative validation count

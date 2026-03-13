@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: COMPOSITE SCORING
-// ---------------------------------------------------------------
-
 // Converted from: composite-scoring.test.ts (custom runner)
 
 import { describe, it, expect } from 'vitest'
@@ -16,9 +13,7 @@ function approxEqual(a: number, b: number, epsilon: number = 0.0001): boolean {
 
 describe('Composite Scoring', () => {
 
-  // ─────────────────────────────────────────────────────────────
-  // Weight Configuration Tests (T401-T410)
-  // ─────────────────────────────────────────────────────────────
+  // --- 1. WEIGHT CONFIGURATION TESTS (T401-T410) ---
 
   describe('Weight Configuration (T401-T410)', () => {
     const weights = compositeScoring.DEFAULT_WEIGHTS
@@ -69,9 +64,7 @@ describe('Composite Scoring', () => {
     })
   })
 
-  // ─────────────────────────────────────────────────────────────
-  // Retrievability Integration Tests (T411-T420)
-  // ─────────────────────────────────────────────────────────────
+  // --- 2. RETRIEVABILITY INTEGRATION TESTS (T411-T420) ---
 
   describe('Retrievability Integration (T411-T420)', () => {
     const calcR = compositeScoring.calculateRetrievabilityScore
@@ -122,7 +115,7 @@ describe('Composite Scoring', () => {
     it('T415: Missing stability defaults correctly', () => {
       const now = Date.now()
       const row = {
-        // stability is missing
+        // Stability is missing
         lastReview: new Date(now - 1000 * 60 * 60 * 24).toISOString(), // 1 day ago
       }
       const r = calcR(row)
@@ -206,7 +199,7 @@ describe('Composite Scoring', () => {
         })
 
         // Expected path with classification decay:
-        // stabilityAdjusted = 5.0 * 1.5, elapsedDays unchanged (no tier multiplier)
+        // StabilityAdjusted = 5.0 * 1.5, elapsedDays unchanged (no tier multiplier)
         const expected = Math.pow(1 + (19 / 81) * (14 / (5 * 1.5)), -0.5)
 
         expect(result).toBeCloseTo(expected, 2)
@@ -251,9 +244,7 @@ describe('Composite Scoring', () => {
     })
   })
 
-  // ─────────────────────────────────────────────────────────────
-  // Score Calculation Tests (T421-T430)
-  // ─────────────────────────────────────────────────────────────
+  // --- 3. SCORE CALCULATION TESTS (T421-T430) ---
 
   describe('Score Calculation (T421-T430)', () => {
     const calcScore = compositeScoring.calculateCompositeScore
@@ -438,9 +429,7 @@ describe('Composite Scoring', () => {
     })
   })
 
-  // ─────────────────────────────────────────────────────────────
-  // Edge Cases (T431-T440)
-  // ─────────────────────────────────────────────────────────────
+  // --- 4. EDGE CASES (T431-T440) ---
 
   describe('Edge Cases (T431-T440)', () => {
     const calcScore = compositeScoring.calculateCompositeScore
@@ -588,9 +577,7 @@ describe('Composite Scoring', () => {
     })
   })
 
-  // ─────────────────────────────────────────────────────────────
-  // Ranking Tests (T441-T445)
-  // ─────────────────────────────────────────────────────────────
+  // --- 5. RANKING TESTS (T441-T445) ---
 
   describe('Ranking (T441-T445)', () => {
     const applyScoring = compositeScoring.applyCompositeScoring
@@ -722,9 +709,7 @@ describe('Composite Scoring', () => {
     })
   })
 
-  // ─────────────────────────────────────────────────────────────
-  // Tier Boost Tests
-  // ─────────────────────────────────────────────────────────────
+  // --- 6. TIER BOOST TESTS ---
 
   describe('Tier Boost', () => {
     const getBoost = compositeScoring.getTierBoost
@@ -756,9 +741,7 @@ describe('Composite Scoring', () => {
     })
   })
 
-  // ─────────────────────────────────────────────────────────────
-  // Five-Factor Model Tests (T083-T093)
-  // ─────────────────────────────────────────────────────────────
+  // --- 7. FIVE-FACTOR MODEL TESTS (T083-T093) ---
 
   describe('Five-Factor Model (T083-T093)', () => {
     const weights = compositeScoring.FIVE_FACTOR_WEIGHTS
@@ -1023,9 +1006,7 @@ describe('Composite Scoring', () => {
     })
   })
 
-  // ─────────────────────────────────────────────────────────────
-  // Module Exports Verification
-  // ─────────────────────────────────────────────────────────────
+  // --- 8. MODULE EXPORTS VERIFICATION ---
 
   describe('Module Exports', () => {
     const expectedExports = [

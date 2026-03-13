@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Memory Parser
-// ---------------------------------------------------------------
+// --- 1. MEMORY PARSER ---
 
 // Node stdlib
 import fs from 'fs';
@@ -11,14 +9,12 @@ import crypto from 'crypto';
 import { escapeRegex } from '../utils/path-security';
 import { getCanonicalPathKey } from '../utils/canonical-path';
 import { getDefaultTierForDocumentType, isValidTier, normalizeTier } from '../scoring/importance-tiers';
-// T125: Import type inference for memory_type classification
+// Import type inference for memory_type classification
 import { inferMemoryType } from '../config/type-inference';
 
 export { getCanonicalPathKey };
 
-/* ---------------------------------------------------------------
-   1. TYPES
-   --------------------------------------------------------------- */
+// --- 2. TYPES ---
 
 /** Causal link relationship types between memories */
 export interface CausalLinks {
@@ -81,9 +77,7 @@ interface ExtractImportanceTierOptions {
   fallbackTier?: string | null;
 }
 
-/* ---------------------------------------------------------------
-   2. CONFIGURATION
-   --------------------------------------------------------------- */
+// --- 3. CONFIGURATION ---
 
 /**
  * Defines the MEMORY_FILE_PATTERN constant.
@@ -115,15 +109,13 @@ export const CONTEXT_TYPE_MAP: Record<string, ContextType> = {
   'test': 'implementation',
 };
 
-/* ---------------------------------------------------------------
-   3. CORE PARSING FUNCTIONS
-   --------------------------------------------------------------- */
+// --- 4. CORE PARSING FUNCTIONS ---
 
 /** Read file with BOM detection for UTF-16 support */
 export function readFileWithEncoding(filePath: string): string {
   const buffer = fs.readFileSync(filePath);
 
-  // AI-GUARD: Check for BOM (Byte Order Mark)
+  // Check for BOM (Byte Order Mark)
   // UTF-8 BOM: EF BB BF (must check first - 3 bytes)
   if (buffer.length >= 3 &&
       buffer[0] === 0xEF &&
@@ -192,7 +184,7 @@ export function parseMemoryContent(
   const qualityScore = extractQualityScore(content);
   const qualityFlags = extractQualityFlags(content);
 
-  // T125: Infer memory_type for type-specific half-lives (CHK-230)
+  // Infer memory_type for type-specific half-lives (CHK-230)
   const typeInference: TypeInferenceResult = inferMemoryType({
     filePath,
     content: content,
@@ -201,7 +193,7 @@ export function parseMemoryContent(
     importanceTier: importance_tier,
   });
 
-  // T126: Extract causal_links for relationship tracking (CHK-231)
+  // Extract causal_links for relationship tracking (CHK-231)
   const causalLinks = extractCausalLinks(content);
 
   return {
@@ -215,11 +207,11 @@ export function parseMemoryContent(
     content,
     fileSize: content.length,
     lastModified: options.lastModified ?? new Date().toISOString(),
-    // T125: Memory type classification for decay calculation
+    // Memory type classification for decay calculation
     memoryType: typeInference.type,
     memoryTypeSource: typeInference.source,
     memoryTypeConfidence: typeInference.confidence,
-    // T126: Causal links for memory graph relationships
+    // Causal links for memory graph relationships
     causalLinks: causalLinks,
     hasCausalLinks: hasCausalLinks(causalLinks),
     // Spec 126: Document structural type
@@ -290,7 +282,7 @@ export function extractSpecFolder(filePath: string): string {
     return specDocMatch[1];
   }
 
-  // AI-WHY: Fallback: try to extract from path segments
+  // Fallback: try to extract from path segments
   const segments = normalizedPath.split('/');
   const specsIndex = segments.findIndex(s => s === 'specs');
 
@@ -500,7 +492,7 @@ export function extractTriggerPhrases(content: string): string[] {
     }
   }
 
-  // AI-WHY: Method 2: Find ## Trigger Phrases section (fallback/additional)
+  // Method 2: Find ## Trigger Phrases section (fallback/additional)
   const sectionMatch = content.match(/##\s*Trigger\s*Phrases?\s*\n([\s\S]*?)(?=\n##|\n---|\n\n\n|$)/i);
 
   if (sectionMatch) {
@@ -543,7 +535,7 @@ export function extractContextType(content: string): ContextType {
 export function extractImportanceTier(content: string, options: ExtractImportanceTierOptions = {}): string {
   const { documentType = null, fallbackTier = null } = options;
 
-  // AI-WHY: Strip HTML comments to avoid matching instructional examples
+  // Strip HTML comments to avoid matching instructional examples
   // (e.g., template comments containing "importanceTier: 'constitutional'" as documentation)
   const contentWithoutComments = content.replace(/<!--[\s\S]*?-->/g, '');
 
@@ -660,9 +652,7 @@ export function hasCausalLinks(causalLinks: CausalLinks | null | undefined): boo
   return Object.values(causalLinks).some((arr: string[]) => Array.isArray(arr) && arr.length > 0);
 }
 
-/* ---------------------------------------------------------------
-   4. VALIDATION FUNCTIONS
-   --------------------------------------------------------------- */
+// --- 5. VALIDATION FUNCTIONS ---
 
 /** Constitutional markdown basenames intentionally excluded from indexing */
 const EXCLUDED_CONSTITUTIONAL_BASENAMES = new Set(['readme.md', 'readme.txt']);
@@ -809,9 +799,7 @@ export function validateParsedMemory(parsed: ParsedMemory): ParsedMemoryValidati
   };
 }
 
-/* ---------------------------------------------------------------
-   5. DIRECTORY SCANNING
-   --------------------------------------------------------------- */
+// --- 6. DIRECTORY SCANNING ---
 
 /** Options for findMemoryFiles */
 export interface FindMemoryFilesOptions {
@@ -846,7 +834,7 @@ export function findMemoryFiles(workspacePath: string, options: FindMemoryFilesO
     path.join(workspacePath, '.opencode', 'specs')
   ];
 
-  // AI-TRACE: Recursive directory walker
+  // Recursive directory walker
   // BUG-027 FIX: Skip symbolic links to prevent infinite loops
   function walkDir(dir: string, depth: number = 0): void {
     if (depth > 10) {
@@ -861,7 +849,7 @@ export function findMemoryFiles(workspacePath: string, options: FindMemoryFilesO
     }
 
     for (const entry of entries) {
-      // AI-TRACE: BUG-027 FIX: Skip symbolic links to prevent loops and duplicate scanning
+      // BUG-027 FIX: Skip symbolic links to prevent loops and duplicate scanning
       if (entry.isSymbolicLink()) {
         continue;
       }
@@ -931,10 +919,10 @@ module.exports = {
   extractImportanceTier,
   computeContentHash,
 
-  // T125: Re-export type inference for direct usage
+  // Re-export type inference for direct usage
   inferMemoryType,
 
-  // T126: Causal links extraction for memory graph
+  // Causal links extraction for memory graph
   extractCausalLinks,
   hasCausalLinks,
 
@@ -952,7 +940,7 @@ module.exports = {
   MEMORY_FILE_PATTERN,
   CONTEXT_TYPE_MAP,
 
-  // AI-WHY: Backward-compatible aliases (snake_case)
+  // Backward-compatible aliases (snake_case)
   parse_memory_file: parseMemoryFile,
   parse_memory_content: parseMemoryContent,
   read_file_with_encoding: readFileWithEncoding,

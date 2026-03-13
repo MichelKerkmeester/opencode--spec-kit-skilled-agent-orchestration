@@ -1,10 +1,6 @@
-// ---------------------------------------------------------------
-// MODULE: Memory State Baseline Metrics
-// ---------------------------------------------------------------
+// --- 1. MEMORY STATE BASELINE METRICS ---
 // Captures baseline retrieval/isolation metrics before phased rollout.
 // Can optionally persist snapshots into eval_metric_snapshots.
-// ---------------------------------------------------------------
-
 import * as fs from 'fs';
 import * as path from 'path';
 import Database from 'better-sqlite3';

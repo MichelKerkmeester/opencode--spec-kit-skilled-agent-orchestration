@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Confidence Truncation
-// ---------------------------------------------------------------
+// --- 1. CONFIDENCE TRUNCATION ---
 /* --- 1. TYPES & CONSTANTS --- */
 
 /** Generic scored result for truncation — supports both numeric and string IDs. */
@@ -32,7 +30,7 @@ interface TruncationOptions {
 const DEFAULT_MIN_RESULTS = 3;
 
 /** Gap multiplier: gap must exceed this multiple of the median gap to trigger truncation.
- * AI-WHY: 2x median is the elbow heuristic — a gap twice the typical spread signals a relevance cliff. */
+ * 2x median is the elbow heuristic — a gap twice the typical spread signals a relevance cliff. */
 const GAP_THRESHOLD_MULTIPLIER = 2;
 
 /* --- 2. FEATURE FLAG --- */
@@ -60,7 +58,7 @@ function isConfidenceTruncationEnabled(): boolean {
  * @returns Array of consecutive score gaps (length = scores.length - 1).
  */
 function computeGaps(scores: number[]): number[] {
-  // AI-WHY: NaN/Infinity from upstream bugs would corrupt gap statistics — filter them first
+  // NaN/Infinity from upstream bugs would corrupt gap statistics — filter them first
   const finite = scores.filter(s => Number.isFinite(s));
   if (finite.length < 2) return [];
   const gaps: number[] = [];
@@ -168,7 +166,7 @@ function truncateByConfidence(
   }
 
   // Search for the first gap that exceeds the threshold, starting from minResults - 1.
-  // gap[i] is the gap between result i and result i+1.
+  // Gap[i] is the gap between result i and result i+1.
   // If gap[i] > threshold, we keep results 0..i (cutoffIndex = i).
   let cutoffIndex = -1;
   let cutoffGap = 0;

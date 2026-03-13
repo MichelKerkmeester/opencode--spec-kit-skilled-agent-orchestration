@@ -1,25 +1,21 @@
-// ---------------------------------------------------------------
 // TEST: Progressive Validation Pipeline
-// ---------------------------------------------------------------
 // Tests for progressive-validate.sh -- a 4-level validation pipeline:
-//   Level 1: Detect   (delegate to validate.sh)
-//   Level 2: Auto-fix (missing dates, heading levels, whitespace)
-//   Level 3: Suggest  (guided options for non-automatable issues)
-//   Level 4: Report   (structured output with diffs)
+// Level 1: Detect   (delegate to validate.sh)
+// Level 2: Auto-fix (missing dates, heading levels, whitespace)
+// Level 3: Suggest  (guided options for non-automatable issues)
+// Level 4: Report   (structured output with diffs)
 //
 // Checklist coverage:
-//   CHK-PI-B2-001 [P1]: Detect level -- all violations identified
-//   CHK-PI-B2-002 [P1]: Auto-fix -- missing dates corrected
-//   CHK-PI-B2-003 [P1]: Auto-fix -- heading levels normalized
-//   CHK-PI-B2-004 [P1]: Auto-fix -- whitespace normalization
-//   CHK-PI-B2-005 [P0]: All auto-fixes logged with before/after diff
-//   CHK-PI-B2-006 [P1]: Suggest level -- guided fix options
-//   CHK-PI-B2-007 [P1]: Report level -- structured output
-//   CHK-PI-B2-008 [P0]: Exit code compatibility: 0/1/2
-//   CHK-PI-B2-009 [P1]: Dry-run mode: no changes applied
-//   CHK-PI-B2-010 [P2]: Existing validate.sh callers unaffected
-// ---------------------------------------------------------------
-
+// CHK-PI-B2-001 [P1]: Detect level -- all violations identified
+// CHK-PI-B2-002 [P1]: Auto-fix -- missing dates corrected
+// CHK-PI-B2-003 [P1]: Auto-fix -- heading levels normalized
+// CHK-PI-B2-004 [P1]: Auto-fix -- whitespace normalization
+// CHK-PI-B2-005 [P0]: All auto-fixes logged with before/after diff
+// CHK-PI-B2-006 [P1]: Suggest level -- guided fix options
+// CHK-PI-B2-007 [P1]: Report level -- structured output
+// CHK-PI-B2-008 [P0]: Exit code compatibility: 0/1/2
+// CHK-PI-B2-009 [P1]: Dry-run mode: no changes applied
+// CHK-PI-B2-010 [P2]: Existing validate.sh callers unaffected
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { execSync, ExecSyncOptionsWithStringEncoding } from 'child_process';
 import * as fs from 'fs';
@@ -262,7 +258,7 @@ describe('PI-B2: Progressive Validation Pipeline', () => {
       try {
         fs.rmSync(dir, { recursive: true, force: true });
       } catch {
-        // best-effort cleanup
+        // Best-effort cleanup
       }
     }
   });
@@ -307,7 +303,7 @@ describe('PI-B2: Progressive Validation Pipeline', () => {
     it('Level 1 detect runs and produces output', () => {
       const folder = tracked(createMinimalLevel1Folder());
       const { stdout, exitCode } = runProgressive(folder, ['--level', '1']);
-      // validate.sh returns exit 2 for temp folders due to strict rules
+      // Validate.sh returns exit 2 for temp folders due to strict rules
       // (FOLDER_NAMING, ANCHORS_VALID, TEMPLATE_SOURCE) -- this is expected
       expect([0, 1, 2]).toContain(exitCode);
       // Should produce validation output
@@ -317,7 +313,7 @@ describe('PI-B2: Progressive Validation Pipeline', () => {
     it('Level 1 detect identifies missing files', () => {
       const folder = tracked(createTempSpecFolder({
         'spec.md': '# Spec\n\n| **Level** | 1 |\n',
-        // plan.md and tasks.md are missing
+        // Plan.md and tasks.md are missing
       }));
       const { exitCode } = runProgressive(folder, ['--level', '1']);
       expect(exitCode).toBe(2);
@@ -521,7 +517,7 @@ describe('PI-B2: Progressive Validation Pipeline', () => {
         'spec.md': '# Spec\n\n| **Level** | 2 |\n\n## Overview\nTest.\n',
         'plan.md': '# Plan\n\n## Approach\nTest.\n',
         'tasks.md': '# Tasks\n\n## Task List\n- [ ] Task 1\n',
-        // checklist.md missing for Level 2
+        // Checklist.md missing for Level 2
       }));
 
       const { exitCode } = runProgressive(folder, ['--level', '3']);
@@ -652,9 +648,9 @@ describe('PI-B2: Progressive Validation Pipeline', () => {
     });
 
     it('exit code in {0, 1, 2} for valid folder', () => {
-      // validate.sh always returns 2 for temp folders due to strict rules
+      // Validate.sh always returns 2 for temp folders due to strict rules
       // (FOLDER_NAMING, ANCHORS_VALID, TEMPLATE_SOURCE), but the exit code
-      // contract is the standard 0/1/2 range
+      // Contract is the standard 0/1/2 range
       const folder = tracked(createMinimalLevel1Folder());
       const { exitCode } = runProgressive(folder, ['--level', '1']);
       expect([0, 1, 2]).toContain(exitCode);
@@ -740,7 +736,7 @@ describe('PI-B2: Progressive Validation Pipeline', () => {
     it('validate.sh still works independently', () => {
       const folder = tracked(createMinimalLevel1Folder());
       const { exitCode, stdout } = runValidate(folder, ['--quiet']);
-      // validate.sh returns valid exit codes (may be 2 due to strict rules on temp folders)
+      // Validate.sh returns valid exit codes (may be 2 due to strict rules on temp folders)
       expect([0, 1, 2]).toContain(exitCode);
       // Should produce output
       expect(stdout.length).toBeGreaterThan(0);
@@ -872,7 +868,7 @@ describe('PI-B2: Progressive Validation Pipeline', () => {
         'spec.md': '# Spec\n\n| **Level** | 2 |\n| **Date** | YYYY-MM-DD |\n\n## Overview\nTest.\n',
         'plan.md': '# Plan\n\n## Approach\nTest.\n',
         'tasks.md': '# Tasks\n\n## Task List\n- [ ] Task 1\n',
-        // checklist.md missing for Level 2 -- will trigger suggest
+        // Checklist.md missing for Level 2 -- will trigger suggest
       }));
 
       const { stdout } = runProgressive(folder, ['--level', '3']);

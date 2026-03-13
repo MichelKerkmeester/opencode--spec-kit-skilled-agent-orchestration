@@ -5,7 +5,7 @@
 # Creates spec folder with templates based on documentation level.
 #
 # TEMPLATE ARCHITECTURE (v2.0 - CORE + ADDENDUM):
-#   templates/
+#   Templates/
 #   ├── level_1/        # Core only (~270 LOC total)
 #   ├── level_2/        # Core + Verification (~390 LOC)
 #   ├── level_3/        # Core + Verification + Architecture (~540 LOC)
@@ -843,7 +843,7 @@ if [[ "$PHASE_MODE" = true ]]; then
         # Generate description.json for child phase
         if [[ -f "$_DESC_SCRIPT" ]]; then
           _phase_name="${_child_folder#*-}"  # strip numeric prefix
-          # AI-WHY: Use specs root as base so parentChain includes full ancestry (F6 fix)
+          # Use specs root as base so parentChain includes full ancestry (F6 fix)
           if node "$_DESC_SCRIPT" "$_child_path" "$(dirname "$FEATURE_DIR")" \
             --description "Phase ${_i}: ${_phase_name}"; then
             _child_created_files+=("description.json")

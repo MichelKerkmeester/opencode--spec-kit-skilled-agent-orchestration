@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Test — Cold Start (N4)
-// ---------------------------------------------------------------
+// --- 1. TEST — COLD START (N4) ---
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import {
   calculateNoveltyBoost,
@@ -8,10 +6,7 @@ import {
   calculateCompositeScore,
 } from '../lib/scoring/composite-scoring';
 
-// ---------------------------------------------------------------------------
 // Helpers
-// ---------------------------------------------------------------------------
-
 /** Build a minimal ScoringInput row with a given created_at timestamp. */
 function makeRow(createdAtMs: number, overrides: Record<string, unknown> = {}) {
   return {
@@ -29,10 +24,7 @@ function hoursAgo(hours: number): number {
   return Date.now() - hours * 3600000;
 }
 
-// ---------------------------------------------------------------------------
 // N4: calculateNoveltyBoost
-// ---------------------------------------------------------------------------
-
 describe('calculateNoveltyBoost — flag disabled (default)', () => {
   beforeEach(() => {
     vi.unstubAllEnvs();
@@ -104,10 +96,7 @@ describe('calculateNoveltyBoost — feature removed (always returns 0)', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
 // N4: Score cap at 0.95
-// ---------------------------------------------------------------------------
-
 describe('score cap at 0.95', () => {
   afterEach(() => {
     vi.unstubAllEnvs();
@@ -143,10 +132,7 @@ describe('score cap at 0.95', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
 // N4: Both scoring paths apply the boost
-// ---------------------------------------------------------------------------
-
 describe('five-factor path — novelty boost removed', () => {
   afterEach(() => {
     vi.unstubAllEnvs();

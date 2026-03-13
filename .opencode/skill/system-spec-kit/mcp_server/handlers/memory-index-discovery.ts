@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Memory Index Discovery Helpers
-// ---------------------------------------------------------------
+// --- 1. MEMORY INDEX DISCOVERY HELPERS ---
 
 /* ------- 1. DEPENDENCIES ------- */
 
@@ -44,7 +42,7 @@ export interface SpecDiscoveryOptions {
  * Excludes scratch/, memory/, and hidden directories.
  */
 export function findSpecDocuments(workspacePath: string, options: SpecDiscoveryOptions = {}): string[] {
-  // Feature flag: allow opt-out.
+  // Respect explicit opt-out to disable spec document indexing.
   if (process.env.SPECKIT_INDEX_SPEC_DOCS === 'false') {
     return [];
   }
@@ -58,7 +56,7 @@ export function findSpecDocuments(workspacePath: string, options: SpecDiscoveryO
       const entries = fs.readdirSync(dir, { withFileTypes: true });
       for (const entry of entries) {
         if (entry.isDirectory()) {
-          // Skip excluded directories and hidden dirs.
+          // Skip excluded and hidden directories during recursive discovery.
           if (SPEC_DOC_EXCLUDE_DIRS.has(entry.name) || entry.name.startsWith('.')) {
             continue;
           }
@@ -66,7 +64,7 @@ export function findSpecDocuments(workspacePath: string, options: SpecDiscoveryO
         } else if (entry.isFile() && SPEC_DOCUMENT_FILENAMES.has(entry.name.toLowerCase())) {
           const fullPath = path.join(dir, entry.name);
 
-          // If specFolder filter is provided, check it matches.
+          // Enforce optional specFolder scope before including a candidate file.
           if (options.specFolder) {
             const normalizedSpecFolder = options.specFolder.replace(/\\/g, '/').replace(/\/+$/, '');
             const relativePath = path.relative(specsRoot, fullPath).replace(/\\/g, '/');
@@ -88,11 +86,11 @@ export function findSpecDocuments(workspacePath: string, options: SpecDiscoveryO
         }
       }
     } catch (_error: unknown) {
-      // Skip directories we can't read.
+      // Ignore unreadable directories so discovery remains best-effort.
     }
   }
 
-  // Check both possible specs locations.
+  // Search both canonical specs roots for workspace compatibility.
   const specsRoots = [
     path.join(workspacePath, '.opencode', 'specs'),
     path.join(workspacePath, 'specs'),
@@ -120,7 +118,7 @@ export function findSpecDocuments(workspacePath: string, options: SpecDiscoveryO
  */
 export function detectSpecLevel(specPath: string): number | null {
   try {
-    // Read first 2KB for the level marker.
+    // Read only the first 2KB because SPECKIT_LEVEL markers live in the header.
     const fd = fs.openSync(specPath, 'r');
     let bytesRead = 0;
     const buffer = Buffer.alloc(2048);
@@ -132,7 +130,7 @@ export function detectSpecLevel(specPath: string): number | null {
 
     const header = buffer.toString('utf-8', 0, bytesRead);
 
-    // Look for SPECKIT_LEVEL marker.
+    // Parse SPECKIT_LEVEL marker when present.
     const levelMatch = header.match(/<!--\s*SPECKIT_LEVEL:\s*(\d\+?)\s*-->/i);
     if (levelMatch) {
       const levelStr = levelMatch[1];
@@ -141,7 +139,7 @@ export function detectSpecLevel(specPath: string): number | null {
       if (level >= 1 && level <= 3) return level;
     }
 
-    // AI-WHY: Heuristic fallback: check sibling files.
+    // Heuristic fallback: check sibling files.
     const dir = path.dirname(specPath);
     try {
       const siblings = fs.readdirSync(dir).map(f => f.toLowerCase());

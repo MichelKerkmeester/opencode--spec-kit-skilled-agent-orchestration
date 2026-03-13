@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Memory Surface
-// ---------------------------------------------------------------
+// --- 1. MEMORY SURFACE ---
 
 // Lib modules
 import * as vectorIndex from '../lib/search/vector-index';
@@ -271,7 +269,7 @@ async function autoSurfaceAtToolDispatch(
   }
 
   // Delegate to the core surface function; token budget is explicitly
-  // enforced at the hook output boundary via estimateTokenCount().
+  // Enforced at the hook output boundary via estimateTokenCount().
   return autoSurfaceMemories(contextHint, TOOL_DISPATCH_TOKEN_BUDGET, 'tool-dispatch');
 }
 
@@ -311,7 +309,7 @@ async function autoSurfaceAtCompaction(
   }
 
   // Delegate to the core surface function; token budget is explicitly
-  // enforced at the hook output boundary via estimateTokenCount().
+  // Enforced at the hook output boundary via estimateTokenCount().
   return autoSurfaceMemories(sessionContext.trim(), COMPACTION_TOKEN_BUDGET, 'compaction');
 }
 

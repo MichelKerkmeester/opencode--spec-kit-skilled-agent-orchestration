@@ -1,12 +1,10 @@
-// ---------------------------------------------------------------
-// MODULE: Test — Score Normalization
-// ---------------------------------------------------------------
+// --- 1. TEST — SCORE NORMALIZATION ---
 // Score Normalization & K-Value Analysis
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 
 // Mock the problematic @spec-kit/shared dependency chain
-// so composite-scoring.ts can be imported without the shared workspace being linked
+// So composite-scoring.ts can be imported without the shared workspace being linked
 vi.mock('../lib/scoring/folder-scoring', () => ({
   computeRecencyScore: (_ts: string, _tier: string, _rate: number) => 0.5,
   DECAY_RATE: 0.01,
@@ -486,7 +484,7 @@ describe('Kendall Tau (statistical helper)', () => {
 describe('MRR@5 (statistical helper)', () => {
   it('identical rankings produce correct MRR@5', () => {
     // MRR@5 = mean(1/1, 1/2, 1/3, 1/4, 1/5) = ~0.4567
-    // because each baseline top-5 item is at its same rank in the candidate
+    // Because each baseline top-5 item is at its same rank in the candidate
     expect(mrr5([1, 2, 3, 4, 5], [1, 2, 3, 4, 5])).toBeCloseTo(0.4567, 3);
   });
 

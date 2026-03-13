@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Check No MCP Lib Imports
-// ---------------------------------------------------------------
+// --- 1. CHECK NO MCP LIB IMPORTS ---
 // Scans scripts/ for prohibited internal runtime imports.
 // Violations not in the allowlist cause a non-zero exit.
 
@@ -244,7 +242,7 @@ function scanFile(filePath: string, allowlist: Allowlist): ScanFileResult {
       if (closeIdx !== -1) {
         inBlockComment = false;
         // Content after */ could contain code — but import statements
-        // spanning block comment boundaries are not valid TS, so skip line
+        // Spanning block comment boundaries are not valid TS, so skip line
       }
       continue;
     }

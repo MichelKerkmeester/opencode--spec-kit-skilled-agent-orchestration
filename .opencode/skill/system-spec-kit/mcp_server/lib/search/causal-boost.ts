@@ -1,11 +1,7 @@
-// ---------------------------------------------------------------
-// MODULE: Causal Boost
-// ---------------------------------------------------------------
+// --- 1. CAUSAL BOOST ---
 // Graph-traversal score boosting via causal edge relationships.
 // Walks the causal_edges graph up to MAX_HOPS, amplifying scores
-// for results related to top seed results via weighted CTE.
-// ---------------------------------------------------------------
-
+// For results related to top seed results via weighted CTE.
 import { isFeatureEnabled } from '../cache/cognitive/rollout-policy';
 
 import type Database from 'better-sqlite3';
@@ -145,7 +141,7 @@ function getNeighborBoosts(memoryIds: number[]): Map<number, number> {
   const placeholders = originIds.map(() => '?').join(', ');
 
   // C138-P2: Relation-weighted CTE — accumulates score with multiplier
-  // based on edge relation type and edge strength column.
+  // Based on edge relation type and edge strength column.
   // 'supersedes' edges get 1.5x, 'contradicts' 0.8x, others 1.0x.
   const query = `
     WITH RECURSIVE causal_walk(origin_id, node_id, hop_distance, walk_score) AS (
@@ -256,7 +252,7 @@ function applyCausalBoost(results: RankedSearchResult[]): { results: RankedSearc
   }
 
   const existingIds = new Set(results.map((item) => item.id));
-  // AI-WHY: reduce avoids stack overflow on arrays >100K elements (spread pushes all onto call stack)
+  // Reduce avoids stack overflow on arrays >100K elements (spread pushes all onto call stack)
   const lowestScore = Math.max(0.0001, results.map((item) => resolveBaseScore(item)).reduce((a, b) => Math.min(a, b), Infinity));
 
   const boosted = results.map((item) => {

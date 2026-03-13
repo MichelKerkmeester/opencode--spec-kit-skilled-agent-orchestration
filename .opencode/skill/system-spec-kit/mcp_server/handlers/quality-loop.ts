@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Quality Loop (T008)
-// ---------------------------------------------------------------
+// --- 1. QUALITY LOOP (T008) ---
 
 import { initEvalDb } from '../lib/eval/eval-db';
 import { isQualityLoopEnabled } from '../lib/search/search-flags';
@@ -595,7 +593,7 @@ function runQualityLoop(
         attempts: attemptsUsed,
         fixes: allFixes,
         rejected: false,
-        // AI-WHY: Return mutated content so caller can persist it and recompute content_hash
+        // Return mutated content so caller can persist it and recompute content_hash
         fixedContent: allFixes.length > 0 ? currentContent : undefined,
         fixedTriggerPhrases: triggerPhrasesChanged(metadata.triggerPhrases, currentMetadata.triggerPhrases)
           ? currentMetadata.triggerPhrases as string[]
@@ -621,7 +619,7 @@ function runQualityLoop(
     fixes: allFixes,
     rejected: true,
     rejectionReason,
-    // AI-WHY: Return mutated content even on rejection so callers that soft-reject can persist
+    // Return mutated content even on rejection so callers that soft-reject can persist
     fixedContent: allFixes.length > 0 ? currentContent : undefined,
     fixedTriggerPhrases: triggerPhrasesChanged(metadata.triggerPhrases, currentMetadata.triggerPhrases)
       ? currentMetadata.triggerPhrases as string[]

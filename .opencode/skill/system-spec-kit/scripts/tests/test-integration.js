@@ -1,8 +1,6 @@
-// ───────────────────────────────────────────────────────────────
-// TEST: END-TO-END INTEGRATION TESTS
-// ───────────────────────────────────────────────────────────────
+// --- 1. TEST: END-TO-END INTEGRATION TESTS ---
 // Tests complete workflows: memory save, validation, cognitive memory,
-// spec folder creation, and checkpoints.
+// Spec folder creation, and checkpoints.
 
 'use strict';
 

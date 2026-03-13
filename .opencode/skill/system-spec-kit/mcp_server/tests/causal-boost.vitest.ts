@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: CAUSAL BOOST (T038-T044)
-// ---------------------------------------------------------------
-
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import Database from 'better-sqlite3';
 import * as causalBoost from '../lib/search/causal-boost';

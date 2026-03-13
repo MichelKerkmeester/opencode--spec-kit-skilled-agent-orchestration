@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Vector Index Types
-// ---------------------------------------------------------------
+// --- 1. VECTOR INDEX TYPES ---
 
 // SCHEMA_VERSION is now canonical in vector-index-schema.ts
 /** Maximum trigger phrases stored for each memory. */
@@ -175,4 +173,4 @@ export function get_error_code(error: unknown): string | undefined {
 }
 
 // EMBEDDING_DIM, DEFAULT_DB_PATH, getEmbeddingDim, getConfirmedEmbeddingDimension,
-// validateEmbeddingDimension are exported from vector-index-store.ts (canonical)
+// ValidateEmbeddingDimension are exported from vector-index-store.ts (canonical)

@@ -1,9 +1,6 @@
-// ---------------------------------------------------------------
 // TEST: CO-ACTIVATION (vitest)
 // Converted from: co-activation.test.ts (custom runner)
 // Aligned with production co-activation.ts named exports
-// ---------------------------------------------------------------
-
 import { afterEach, describe, it, expect, vi } from 'vitest';
 import * as coActivation from '../lib/cache/cognitive/co-activation';
 
@@ -32,7 +29,7 @@ describe('Co-Activation Module', () => {
 
   describe('Module Exports', () => {
     // Production exports: CO_ACTIVATION_CONFIG (not CONFIG), init, isEnabled,
-    // boostScore, getRelatedMemories, populateRelatedMemories, spreadActivation
+    // BoostScore, getRelatedMemories, populateRelatedMemories, spreadActivation
     const expectedExports = [
       'init',
       'isEnabled',
@@ -111,20 +108,20 @@ describe('Co-Activation Module', () => {
   describe('boostScore()', () => {
     // Production signature: boostScore(baseScore, relatedCount, avgSimilarity)
     // R17 fan-effect divisor formula:
-    //   raw_boost   = boostFactor * (relatedCount / maxRelated) * (avgSimilarity / 100)
-    //   fan_divisor = sqrt(max(1, relatedCount))
-    //   boost       = max(0, raw_boost / fan_divisor)
-    //   result      = baseScore + boost
+    // Raw_boost   = boostFactor * (relatedCount / maxRelated) * (avgSimilarity / 100)
+    // Fan_divisor = sqrt(max(1, relatedCount))
+    // Boost       = max(0, raw_boost / fan_divisor)
+    // Result      = baseScore + boost
 
     it('No related memories returns base score', () => {
       expect(coActivation.boostScore(0.5, 0, 80)).toBe(0.5);
     });
 
     it('With related memories, score is boosted', () => {
-      // perNeighborBoost = 0.25 * (80/100) = 0.2
-      // fanDivisor = sqrt(3) ≈ 1.732
-      // boost = 0.2 / 1.732 ≈ 0.11547
-      // result = 0.5 + 0.11547 ≈ 0.61547
+      // PerNeighborBoost = 0.25 * (80/100) = 0.2
+      // FanDivisor = sqrt(3) ≈ 1.732
+      // Boost = 0.2 / 1.732 ≈ 0.11547
+      // Result = 0.5 + 0.11547 ≈ 0.61547
       const boosted = coActivation.boostScore(0.5, 3, 80);
       const perNeighborBoost = 0.25 * (80 / 100);
       const expectedBoost = perNeighborBoost / Math.sqrt(3);
@@ -132,10 +129,10 @@ describe('Co-Activation Module', () => {
     });
 
     it('Max related count and similarity', () => {
-      // perNeighborBoost = 0.25 * (100/100) = 0.25
-      // fanDivisor = sqrt(5) ≈ 2.236
-      // boost = 0.25 / 2.236 ≈ 0.1118
-      // result = 0.5 + 0.1118 ≈ 0.6118
+      // PerNeighborBoost = 0.25 * (100/100) = 0.25
+      // FanDivisor = sqrt(5) ≈ 2.236
+      // Boost = 0.25 / 2.236 ≈ 0.1118
+      // Result = 0.5 + 0.1118 ≈ 0.6118
       const maxBoost = coActivation.boostScore(0.5, 5, 100);
       const expectedBoost = 0.25 / Math.sqrt(5);
       expect(maxBoost).toBeCloseTo(0.5 + expectedBoost, 3);
@@ -272,10 +269,10 @@ describe('Co-Activation Module', () => {
       const base = 0.5;
       const boosted = coActivation.boostScore(base, 5, 95);
       expect(boosted).toBeGreaterThan(base);
-      // rawBoost = 0.25 * (5/5) * (95/100) = 0.2375
-      // fanDivisor = sqrt(5) ≈ 2.236
-      // boost = 0.2375 / 2.236 ≈ 0.10622
-      // result = 0.5 + 0.10622 ≈ 0.60622
+      // RawBoost = 0.25 * (5/5) * (95/100) = 0.2375
+      // FanDivisor = sqrt(5) ≈ 2.236
+      // Boost = 0.2375 / 2.236 ≈ 0.10622
+      // Result = 0.5 + 0.10622 ≈ 0.60622
       const rawBoost = 0.25 * (5 / 5) * (95 / 100);
       const expectedBoost = base + rawBoost / Math.sqrt(5);
       expect(boosted).toBeCloseTo(expectedBoost, 2);
@@ -290,8 +287,8 @@ describe('Co-Activation Module', () => {
     it('T003-1: boost scales sublinearly with relatedCount (R17 fan-effect divisor)', () => {
       const base = 0.5;
       const similarity = 90;
-      // perNeighborBoost = 0.25 * (90/100) = 0.225
-      // boost = perNeighborBoost / sqrt(relatedCount)
+      // PerNeighborBoost = 0.25 * (90/100) = 0.225
+      // Boost = perNeighborBoost / sqrt(relatedCount)
       const boosted1 = coActivation.boostScore(base, 1, similarity);
       const boosted5 = coActivation.boostScore(base, 5, similarity);
       // More related = LESS boost per neighbor (pure diminishing returns)
@@ -323,10 +320,10 @@ describe('Co-Activation Module', () => {
     });
 
     it('T003-5: boost formula is correct for relatedCount=4', () => {
-      // perNeighborBoost = 0.25 * (80/100) = 0.2
-      // fanDivisor = sqrt(4) = 2
-      // boost = 0.2 / 2 = 0.1
-      // result = 0.5 + 0.1 = 0.6
+      // PerNeighborBoost = 0.25 * (80/100) = 0.2
+      // FanDivisor = sqrt(4) = 2
+      // Boost = 0.2 / 2 = 0.1
+      // Result = 0.5 + 0.1 = 0.6
       const result = coActivation.boostScore(0.5, 4, 80);
       const perNeighborBoost = 0.25 * (80 / 100);
       const expected = 0.5 + perNeighborBoost / Math.sqrt(4);
@@ -336,9 +333,9 @@ describe('Co-Activation Module', () => {
     it('T003-6: max boost with relatedCount=5 and similarity=100', () => {
       const base = 0.5;
       const result = coActivation.boostScore(base, 5, 100);
-      // perNeighborBoost = 0.25 * 1 = 0.25
-      // fanDivisor = sqrt(5) ≈ 2.236
-      // boost = 0.25 / 2.236 ≈ 0.1118
+      // PerNeighborBoost = 0.25 * 1 = 0.25
+      // FanDivisor = sqrt(5) ≈ 2.236
+      // Boost = 0.25 / 2.236 ≈ 0.1118
       expect(result).toBeCloseTo(base + 0.25 / Math.sqrt(5), 5);
     });
   });

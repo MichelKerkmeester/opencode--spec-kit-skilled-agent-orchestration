@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Memory CRUD Update Handler
-// ---------------------------------------------------------------
+// --- 1. MEMORY CRUD UPDATE HANDLER ---
 
 /* ---------------------------------------------------------------
    IMPORTS
@@ -89,7 +87,7 @@ async function handleMemoryUpdate(args: UpdateArgs): Promise<MCPResponse> {
     let newEmbedding: Float32Array | null = null;
 
     try {
-      // AI-WHY: Fix #19 (017-refinement-phase-6) — Embed title + content_text, not title alone.
+      // Fix #19 (017-refinement-phase-6) — Embed title + content_text, not title alone.
       // This produces better semantic embeddings that capture the full memory context.
       const contentText = existing.content_text || '';
       const embeddingInput = contentText ? `${title}\n\n${contentText}` : title;
@@ -128,9 +126,9 @@ async function handleMemoryUpdate(args: UpdateArgs): Promise<MCPResponse> {
     }
   }
 
-  // AI-WHY: T2-5 transaction wrapper — wraps all synchronous mutation steps (DB update,
-  // AI-WHY: cache invalidation, BM25 re-index, ledger append) in a single transaction for atomicity.
-  // AI-WHY: Embedding generation (async) runs before this block; its result feeds into updateParams.
+  // T2-5 transaction wrapper — wraps all synchronous mutation steps (DB update,
+  // Cache invalidation, BM25 re-index, ledger append) in a single transaction for atomicity.
+  // Embedding generation (async) runs before this block; its result feeds into updateParams.
   const fields = Object.keys(updateParams).filter((key) => key !== 'id' && key !== 'embedding');
 
   if (database) {
@@ -141,8 +139,8 @@ async function handleMemoryUpdate(args: UpdateArgs): Promise<MCPResponse> {
 
       vectorIndex.updateMemory(updateParams);
 
-      // AI-WHY: T2-6 — BM25 index stores title + trigger phrases; must re-index when either changes
-      // so keyword search reflects the updated content.
+      // T2-6 — BM25 index stores title + trigger phrases; must re-index when either changes
+      // So keyword search reflects the updated content.
       // T-05: BM25 re-index failure now rolls back the transaction when the index is operational.
       // Infrastructure failures (BM25 not available, DB missing prepare) are non-fatal warnings.
       if ((updateParams.title !== undefined || updateParams.triggerPhrases !== undefined) && bm25Index.isBm25Enabled()) {
@@ -165,9 +163,9 @@ async function handleMemoryUpdate(args: UpdateArgs): Promise<MCPResponse> {
         } catch (e: unknown) {
           const bm25ErrMsg = e instanceof Error ? e.message : String(e);
           // T-05 + P1-02 fix: Distinguish infrastructure failures from data failures.
-          // AI-WHY: Infrastructure failures mean the BM25 subsystem is unavailable or torn down —
-          // these are non-fatal warnings. Data failures mean the index IS operational but rejected
-          // the input — those must re-throw to roll back the transaction.
+          // Infrastructure failures mean the BM25 subsystem is unavailable or torn down —
+          // These are non-fatal warnings. Data failures mean the index IS operational but rejected
+          // The input — those must re-throw to roll back the transaction.
           const isBm25InfraFailure = (msg: string): boolean =>
             msg.includes('not a function') ||
             msg.includes('not initialized') ||
@@ -193,7 +191,7 @@ async function handleMemoryUpdate(args: UpdateArgs): Promise<MCPResponse> {
           'mcp:memory_update'
         );
       } catch (_histErr: unknown) {
-        // history recording is best-effort
+        // History recording is best-effort
       }
 
       appendMutationLedgerSafe(database, {
@@ -219,8 +217,8 @@ async function handleMemoryUpdate(args: UpdateArgs): Promise<MCPResponse> {
       });
     });
   } else {
-    // AI-GUARD: P1-021 — No database handle means we cannot guarantee transactional
-    // consistency. Abort early rather than risk partial state.
+    // P1-021 — No database handle means we cannot guarantee transactional
+    // Consistency. Abort early rather than risk partial state.
     console.warn('[memory-crud-update] No database handle, aborting update to prevent partial state');
     return createMCPErrorResponse({
       tool: 'memory_update',

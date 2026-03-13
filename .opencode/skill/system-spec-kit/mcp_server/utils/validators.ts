@@ -1,15 +1,8 @@
-// ---------------------------------------------------------------
-// MODULE: Validators
-// ---------------------------------------------------------------
-// UTILS: VALIDATORS
-// ---------------------------------------------------------------
-
+// --- 1. VALIDATORS ---
 import path from 'path';
 import os from 'os';
 
-/* ---------------------------------------------------------------
-   1. TYPES
-   --------------------------------------------------------------- */
+// --- 2. TYPES ---
 
 /** Maximum allowed lengths for string inputs (SEC-003: CWE-400 mitigation) */
 export interface InputLimits {
@@ -37,9 +30,7 @@ export interface ValidatableArgs {
 /** Shared file path validation function signature */
 export type SharedValidateFilePath = (filePath: string, allowedBasePaths: string[]) => string | null;
 
-/* ---------------------------------------------------------------
-   2. CONFIGURATION CONSTANTS
-   --------------------------------------------------------------- */
+// --- 3. CONFIGURATION CONSTANTS ---
 
 export const INPUT_LIMITS: Readonly<InputLimits> = {
   query: 10000,
@@ -54,9 +45,7 @@ export const INPUT_LIMITS: Readonly<InputLimits> = {
 /** Maximum query length for search operations (BUG-007) */
 export const MAX_QUERY_LENGTH: number = 10000;
 
-/* ---------------------------------------------------------------
-   3. QUERY VALIDATION
-   --------------------------------------------------------------- */
+// --- 4. QUERY VALIDATION ---
 
 /**
  * Validate and normalize a search query
@@ -79,9 +68,7 @@ export function validateQuery(query: unknown): string {
   return normalized;
 }
 
-/* ---------------------------------------------------------------
-   4. INPUT LENGTH VALIDATION
-   --------------------------------------------------------------- */
+// --- 5. INPUT LENGTH VALIDATION ---
 
 /**
  * Validate input string lengths
@@ -108,9 +95,7 @@ export function validateInputLengths(args: ValidatableArgs | null | undefined): 
   }
 }
 
-/* ---------------------------------------------------------------
-   5. FILE PATH VALIDATION
-   --------------------------------------------------------------- */
+// --- 6. FILE PATH VALIDATION ---
 
 /**
  * Create a file path validator with specified allowed base paths

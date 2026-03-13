@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Test — Slug Uniqueness
-// ---------------------------------------------------------------
+// --- 1. TEST — SLUG UNIQUENESS ---
 // Tests: ensureUniqueMemoryFilename collision detection and resolution
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';

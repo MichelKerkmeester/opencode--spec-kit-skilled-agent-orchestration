@@ -122,11 +122,11 @@ These must be addressed or receive approval to defer.
 }
 ```
 
-### AI-Intent Comment Policy (JSONC)
+### WHY Comment Policy (JSONC)
 
 ```markdown
-[ ] Inline comments follow AI-intent policy (max 3 comments per 10 LOC)
-    - Allowed prefixes: AI-WHY, AI-INVARIANT, AI-TRACE, AI-RISK
+[ ] Purposeful WHY comments only (max 3 comments per 10 LOC)
+    - Comments explain WHY, not WHAT
     - Narrative comments are not used
 ```
 

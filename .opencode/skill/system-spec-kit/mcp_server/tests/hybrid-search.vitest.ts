@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: HYBRID SEARCH
-// ---------------------------------------------------------------
-
 import { afterEach, beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import type Database from 'better-sqlite3';
 import * as hybridSearch from '../lib/search/hybrid-search';
@@ -109,7 +106,7 @@ describe('Hybrid Search Unit Tests (T031+)', () => {
   describe('Initialization Tests', () => {
 
     it('T031-INIT-01: init() accepts null database', () => {
-        // init() does no validation — null db is accepted (graceful degradation)
+        // Init() does no validation — null db is accepted (graceful degradation)
         expect(() => {
           hybridSearch.init(null as unknown as InitDb, mockVectorSearch);
         }).not.toThrow();
@@ -117,7 +114,7 @@ describe('Hybrid Search Unit Tests (T031+)', () => {
 
     it('T031-INIT-02: init() accepts null vectorSearch', () => {
       const mockDb = createMockDb();
-      // init() does no validation — null vectorSearch is accepted (graceful degradation)
+      // Init() does no validation — null vectorSearch is accepted (graceful degradation)
       expect(() => {
         hybridSearch.init(mockDb, null);
       }).not.toThrow();
@@ -664,7 +661,7 @@ describe('C138-P0: useGraph:true Default Routing', () => {
 
   it('C138-P0-T5: adaptive graph weight from fusion profile applied', async () => {
     // The graph channel weight should come from the adaptive fusion weights,
-    // not the hardcoded 0.5. For 'understand' intent, graphWeight = 0.15
+    // Not the hardcoded 0.5. For 'understand' intent, graphWeight = 0.15
     const results = await hybridSearch.hybridSearchEnhanced('authentication', mockEmbedding, { limit: 10 });
     // Verify results returned (graph was included in fusion)
     expect(results.length).toBeGreaterThan(0);
@@ -709,8 +706,8 @@ describe('C138-P0: Adaptive Fallback in searchWithFallback', () => {
       }
 
       // "auth" is a simple query; Tier 1 routes to a subset of channels.
-      // limit=1 guarantees degradation (count < 3), so Tier 2 should run and
-      // force-enable all channels, including graph.
+      // Limit=1 guarantees degradation (count < 3), so Tier 2 should run and
+      // Force-enable all channels, including graph.
       const embedding = new Float32Array(384).fill(0.1);
       await hybridSearch.searchWithFallback('auth', embedding, { limit: 1 });
 

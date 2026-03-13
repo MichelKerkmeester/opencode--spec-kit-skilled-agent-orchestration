@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Pe Orchestration
-// ---------------------------------------------------------------
+// --- 1. PE ORCHESTRATION ---
 
 import type Database from 'better-sqlite3';
 
@@ -52,7 +50,7 @@ export function evaluateAndApplyPeDecision(
 
     logPeDecision(peDecision, parsed.contentHash, parsed.specFolder);
 
-    // AI-GUARD: Guard: PE actions that reference an existing memory require existingMemoryId
+    // Guard: PE actions that reference an existing memory require existingMemoryId
     if (
       (peDecision.action === predictionErrorGate.ACTION.REINFORCE ||
         peDecision.action === predictionErrorGate.ACTION.SUPERSEDE ||
@@ -140,7 +138,7 @@ export function evaluateAndApplyPeDecision(
           reason: 'memory_save: updated existing memory via prediction-error gate',
           priorHash: priorSnapshot?.content_hash ?? null,
           newHash: parsed.contentHash,
-          linkedMemoryIds: [existingId],
+          linkedMemoryIds: updated.status === 'error' ? [existingId] : [existingId, updated.id],
           decisionMeta: {
             tool: 'memory_save',
             action: predictionErrorGate.ACTION.UPDATE,

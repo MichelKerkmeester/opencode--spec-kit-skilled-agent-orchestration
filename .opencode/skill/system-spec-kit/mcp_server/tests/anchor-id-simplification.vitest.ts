@@ -1,17 +1,11 @@
-// ---------------------------------------------------------------
 // TEST: ANCHOR ID SIMPLIFICATION
-// ---------------------------------------------------------------
-
 import { describe, it, expect } from 'vitest';
 import fs from 'fs';
 import path from 'path';
 
-// ---------------------------------------------------------------
 // TEST: ANCHOR ID SIMPLIFICATION (Session 5 — C2 fix)
 // Covers: context_template.md uses simple anchor IDs
-//         (no {{SESSION_ID}} or {{SPEC_FOLDER}} in anchor names)
-// ---------------------------------------------------------------
-
+// (no {{SESSION_ID}} or {{SPEC_FOLDER}} in anchor names)
 /** Path to the context template */
 const TEMPLATE_PATH = path.resolve(
   __dirname,
@@ -331,7 +325,7 @@ describe('ANCHOR ID SIMPLIFICATION — context_template.md', () => {
 
     it('S18: template mentions simple anchor naming in comments', () => {
       const content = getTemplate();
-      // v2.1 improvement note about simple anchor naming
+      // V2.1 improvement note about simple anchor naming
       expect(content).toMatch(/[Ss]imple anchor/i);
     });
 

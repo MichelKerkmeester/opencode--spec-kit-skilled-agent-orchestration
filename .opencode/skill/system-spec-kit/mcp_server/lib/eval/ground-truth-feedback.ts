@@ -1,25 +1,21 @@
-// ---------------------------------------------------------------
-// MODULE: Ground Truth Feedback
-// ---------------------------------------------------------------
+// --- 1. GROUND TRUTH FEEDBACK ---
 //
 // Ground Truth Expansion via Feedback + LLM-Judge
 //
 // Phase B: Collect implicit feedback from user memory selections.
-//   When a user selects a memory from search results, that selection
-//   is recorded as implicit relevance signal for ground truth expansion.
+// When a user selects a memory from search results, that selection
+// Is recorded as implicit relevance signal for ground truth expansion.
 //
 // Phase C: LLM-judge relevance labeling for ground truth expansion.
-//   This module provides a deterministic judge implementation that
-//   scores query-memory relevance using lexical overlap heuristics.
-//   It can be replaced with a model-backed judge later without
-//   changing the persistence or agreement APIs.
+// This module provides a deterministic judge implementation that
+// Scores query-memory relevance using lexical overlap heuristics.
+// It can be replaced with a model-backed judge later without
+// Changing the persistence or agreement APIs.
 //
 // Design notes:
 //   - Selections are persisted to the eval DB for durability.
 //   - LLM-judge interface is deterministic (non-stub fallback).
 //   - Agreement rate target: >= 80% between LLM-judge and manual labels.
-// ---------------------------------------------------------------
-
 import { initEvalDb, getEvalDb } from './eval-db';
 
 /* --- 1. TYPES --- */

@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: Local Reranker Guardrails
-// ---------------------------------------------------------------
-
 import { describe, expect, it } from 'vitest';
 
 import { __testables } from '../lib/search/local-reranker';

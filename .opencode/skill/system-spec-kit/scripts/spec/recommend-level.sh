@@ -7,11 +7,11 @@
 #
 # PURPOSE:
 #   Automated level recommendation that replaces soft LOC guidance with
-#   deterministic scoring. Analyzes task complexity factors and recommends
-#   the appropriate SpecKit level (0-3).
+#   Deterministic scoring. Analyzes task complexity factors and recommends
+#   The appropriate SpecKit level (0-3).
 #
 # USAGE:
-#   recommend-level.sh [OPTIONS]
+#   Recommend-level.sh [OPTIONS]
 #
 # OPTIONS:
 #   --loc <number>       Lines of code estimate
@@ -27,11 +27,11 @@
 #   --help, -h           Show this help message
 #
 # EXAMPLES:
-#   recommend-level.sh --loc 50 --files 2
-#   recommend-level.sh --loc 200 --files 5 --api --db
-#   recommend-level.sh --loc 500 --files 15 --auth --api --db --architectural
-#   recommend-level.sh --loc 100 --files 3 --json
-#   recommend-level.sh --loc 1000 --files 20 --architectural --api --db --recommend-phases
+#   Recommend-level.sh --loc 50 --files 2
+#   Recommend-level.sh --loc 200 --files 5 --api --db
+#   Recommend-level.sh --loc 500 --files 15 --auth --api --db --architectural
+#   Recommend-level.sh --loc 100 --files 3 --json
+#   Recommend-level.sh --loc 1000 --files 20 --architectural --api --db --recommend-phases
 #
 # SCORING ALGORITHM:
 #   LOC Factor:        35% weight (0-35 points)
@@ -156,7 +156,7 @@ _json_escape() {
   printf '%s' "$s"
 }
 
-# show_help()
+# Show_help()
 # Display usage information
 show_help() {
   cat << 'EOF'
@@ -209,7 +209,7 @@ EOF
   exit 0
 }
 
-# calculate_loc_score()
+# Calculate_loc_score()
 # Calculate points for LOC factor (0-35 points)
 # Uses linear interpolation between thresholds
 calculate_loc_score() {
@@ -247,7 +247,7 @@ calculate_loc_score() {
   echo "$score"
 }
 
-# calculate_files_score()
+# Calculate_files_score()
 # Calculate points for file count factor (0-20 points)
 calculate_files_score() {
   local files=$1
@@ -284,7 +284,7 @@ calculate_files_score() {
   echo "$score"
 }
 
-# calculate_risk_score()
+# Calculate_risk_score()
 # Calculate points for risk factors (0-25 points)
 calculate_risk_score() {
   local score=0
@@ -309,7 +309,7 @@ calculate_risk_score() {
   echo "$score"
 }
 
-# calculate_complexity_score()
+# Calculate_complexity_score()
 # Calculate points for complexity factors (0-20 points)
 calculate_complexity_score() {
   local score=0
@@ -326,7 +326,7 @@ calculate_complexity_score() {
   echo "$score"
 }
 
-# determine_level()
+# Determine_level()
 # Map total score to recommended level
 determine_level() {
   local score=$1
@@ -346,10 +346,10 @@ determine_level() {
   fi
 }
 
-# determine_phasing()
+# Determine_phasing()
 # Calculate phase recommendation score and suggested phase count.
 # Phase scoring is SEPARATE from level scoring — uses its own 5 signal
-# dimensions (max 50 points). Phase is recommended when:
+# Dimensions (max 50 points). Phase is recommended when:
 #   - Phase score >= PHASE_THRESHOLD (default 25)
 #   - AND RECOMMENDED_LEVEL >= 3
 # Must be called AFTER determine_level() since it references RECOMMENDED_LEVEL.
@@ -444,7 +444,7 @@ determine_phasing() {
   fi
 }
 
-# calculate_confidence()
+# Calculate_confidence()
 # Calculate confidence percentage based on input completeness
 calculate_confidence() {
   local base_confidence=60
@@ -502,7 +502,7 @@ calculate_confidence() {
 # 4. OUTPUT FUNCTIONS
 # ───────────────────────────────────────────────────────────────
 
-# output_text()
+# Output_text()
 # Output results in human-readable text format
 output_text() {
   echo ""
@@ -556,7 +556,7 @@ output_text() {
   fi
 }
 
-# output_json()
+# Output_json()
 # Output results in JSON format
 output_json() {
   local auth_points=0

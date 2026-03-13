@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Test — Cross-Feature Integration Evaluation
-// ---------------------------------------------------------------
+// --- 1. TEST — CROSS-FEATURE INTEGRATION EVALUATION ---
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 // -- Query Classifier --
@@ -523,7 +521,7 @@ describe('Cross-Sprint Integration', () => {
         // Both methods favor items that appear in multiple lists, so correlation should exist
         expect(tau).toBeGreaterThan(-1); // At minimum, must be valid
         // Log for diagnostics
-        // console.log(`Kendall tau: ${tau}, concordant: ${concordant}, discordant: ${discordant}`);
+        // Console.log(`Kendall tau: ${tau}, concordant: ${concordant}, discordant: ${discordant}`);
       }
 
       // Core invariant: both methods produce scores >= 0 for shared items
@@ -776,10 +774,10 @@ describe('Cross-Sprint Integration', () => {
         { id: 3, similarity: 85, importance_weight: 0.5 }, // balanced
       ];
 
-      // fix_bug intent: recency=0.5, importance=0.2, similarity=0.3
+      // Fix_bug intent: recency=0.5, importance=0.2, similarity=0.3
       const bugResults = applyIntentWeights([...results], 'fix_bug');
 
-      // security_audit intent: recency=0.1, importance=0.5, similarity=0.4
+      // Security_audit intent: recency=0.1, importance=0.5, similarity=0.4
       const secResults = applyIntentWeights([...results], 'security_audit');
 
       // Both should produce valid ordered results
@@ -823,7 +821,7 @@ describe('Cross-Sprint Integration', () => {
     });
 
     it('19. Co-activation R17 fan-effect: pure fan-effect dilutes boost with more relations', () => {
-      // AI-WHY: Pure fan-effect — more connections dilute each relationship's contribution
+      // Pure fan-effect — more connections dilute each relationship's contribution
       const base = 0.5;
       const avgSim = 80;
 

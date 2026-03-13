@@ -1,8 +1,5 @@
-// ---------------------------------------------------------------
 // TEST: NORMALIZATION LAYER (vitest migration POC)
 // Converted from: unit-normalization.test.ts (custom runner)
-// ---------------------------------------------------------------
-
 import { describe, it, expect } from 'vitest';
 import { dbRowToMemory, memoryToDbRow, partialDbRowToMemory } from '@spec-kit/shared/normalization';
 import type { Memory, MemoryDbRow } from '@spec-kit/shared/types';
@@ -220,7 +217,7 @@ describe('Normalization Layer (T001-T007)', () => {
     expect(memory.reviewCount).toBe(5);
     expect(memory.fileMtimeMs).toBe(1706800000000);
 
-    // isPinned: SQLite integer → boolean
+    // IsPinned: SQLite integer → boolean
     expect(memory.isPinned).toBe(true);
     expect(typeof memory.isPinned).toBe('boolean');
 

@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Import Policy Rules
-// ---------------------------------------------------------------
+// --- 1. IMPORT POLICY RULES ---
 // Shared detection rules for prohibited scripts -> internal runtime imports.
 
 import * as path from 'path';

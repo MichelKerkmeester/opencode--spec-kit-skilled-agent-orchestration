@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: RSF Fusion
-// ---------------------------------------------------------------
+// --- 1. RSF FUSION ---
 /**
  * @module rsf-fusion
  *
@@ -53,10 +51,10 @@ function extractScore(item: RrfItem, rank: number, total: number): number {
     return item.score;
   }
   if (typeof item.similarity === 'number' && isFinite(item.similarity)) {
-    // AI-WHY: Normalize similarity to 0-1; some sources provide 0-100 scale
+    // Normalize similarity to 0-1; some sources provide 0-100 scale
     return item.similarity > 1 ? item.similarity / 100 : item.similarity;
   }
-  // AI-WHY: Rank-based fallback ensures items without explicit scores still participate
+  // Rank-based fallback ensures items without explicit scores still participate
   if (total <= 1) return 1.0;
   return 1 - rank / total;
 }
@@ -71,7 +69,7 @@ function extractScore(item: RrfItem, rank: number, total: number): number {
  * @returns Normalized value in [0, 1].
  */
 function minMaxNormalize(value: number, min: number, max: number): number {
-  // AI-WHY: When all scores identical, normalize to 1.0 (not 0/0) — all equally relevant
+  // When all scores identical, normalize to 1.0 (not 0/0) — all equally relevant
   if (max === min) return 1.0;
   return (value - min) / (max - min);
 }
@@ -119,7 +117,7 @@ function fuseResultsRsf(listA: RankedList, listB: RankedList): RsfResult[] {
   const scoresB = itemsB.map((item, i) => extractScore(item, i, itemsB.length));
 
   // --- Step 2: Compute min/max per source ---
-  // AI-WHY: reduce avoids stack overflow on arrays >100K elements (spread pushes all onto call stack)
+  // Reduce avoids stack overflow on arrays >100K elements (spread pushes all onto call stack)
   const minA = scoresA.length > 0 ? scoresA.reduce((a, b) => Math.min(a, b), Infinity) : 0;
   const maxA = scoresA.length > 0 ? scoresA.reduce((a, b) => Math.max(a, b), -Infinity) : 0;
   const minB = scoresB.length > 0 ? scoresB.reduce((a, b) => Math.min(a, b), Infinity) : 0;
@@ -166,7 +164,7 @@ function fuseResultsRsf(listA: RankedList, listB: RankedList): RsfResult[] {
       sourceScores[listB.source] = entryB.normalizedScore;
       mergedItem = { ...entryB.item, ...entryA.item };
     } else if (entryA) {
-      // AI-WHY: Single-source penalty 0.5 ensures dual-confirmed items rank higher
+      // Single-source penalty 0.5 ensures dual-confirmed items rank higher
       rsfScore = entryA.normalizedScore * 0.5;
       sources.push(listA.source);
       sourceScores[listA.source] = entryA.normalizedScore;
@@ -230,7 +228,7 @@ function fuseResultsRsfMulti(lists: RankedList[]): RsfResult[] {
   for (const list of nonEmptyLists) {
     const items = list.results;
     const rawScores = items.map((item, i) => extractScore(item, i, items.length));
-    // AI-WHY: reduce avoids stack overflow on arrays >100K elements (spread pushes all onto call stack)
+    // Reduce avoids stack overflow on arrays >100K elements (spread pushes all onto call stack)
     const minScore = rawScores.reduce((a, b) => Math.min(a, b), Infinity);
     const maxScore = rawScores.reduce((a, b) => Math.max(a, b), -Infinity);
 
@@ -280,7 +278,7 @@ function fuseResultsRsfMulti(lists: RankedList[]): RsfResult[] {
       // Present in all sources — no penalty
       rsfScore = avgScore;
     } else {
-      // AI-WHY: Proportional penalty scales with missing sources
+      // Proportional penalty scales with missing sources
       rsfScore = avgScore * (countPresent / totalSources);
     }
 
@@ -316,7 +314,7 @@ function fuseResultsRsfMulti(lists: RankedList[]): RsfResult[] {
 function fuseResultsRsfCrossVariant(variantLists: RankedList[][]): RsfResult[] {
   if (variantLists.length === 0) return [];
 
-  // AI-WHY: 0.10 cross-variant bonus rewards query interpretation convergence
+  // 0.10 cross-variant bonus rewards query interpretation convergence
   const CROSS_VARIANT_BONUS = 0.10;
 
   // --- Step 1: Fuse each variant's lists independently ---

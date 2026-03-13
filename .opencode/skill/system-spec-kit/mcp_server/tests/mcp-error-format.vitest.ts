@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: MCP ERROR FORMAT
-// ---------------------------------------------------------------
-
 import { describe, it, expect } from 'vitest';
 
 import * as handlers from '../handlers/index';
@@ -33,9 +30,7 @@ function getHandler(handlerName: string): HandlerFunction | null {
   return typeof candidate === 'function' ? (candidate as HandlerFunction) : null;
 }
 
-// ---------------------------------------------------------------
 // Helper: invoke handler and capture error
-// ---------------------------------------------------------------
 async function captureError(handlerName: string, invalidArgs: unknown): Promise<CapturedErrorResult> {
   const handlerFn = getHandler(handlerName);
   if (!handlerFn) return null;
@@ -49,9 +44,7 @@ async function captureError(handlerName: string, invalidArgs: unknown): Promise<
 }
 
 describe('MCP Protocol Error Format Tests (T535) [deferred - requires DB test fixtures]', () => {
-  // ---------------------------------------------------------------
   // Test Suite A: MemoryError class structure (T535-1 through T535-5)
-  // ---------------------------------------------------------------
   describe('T535-A: MemoryError class structure', () => {
     it('T535-1: MemoryError class exists and is importable', () => {
       expect(MemoryError).toBeDefined();
@@ -93,9 +86,7 @@ describe('MCP Protocol Error Format Tests (T535) [deferred - requires DB test fi
     });
   });
 
-  // ---------------------------------------------------------------
   // Test Suite B: Handler error format verification (T535-6 through T535-10)
-  // ---------------------------------------------------------------
   describe('T535-B: Handler error format verification', () => {
     const HANDLER_ERROR_TESTS = [
       {

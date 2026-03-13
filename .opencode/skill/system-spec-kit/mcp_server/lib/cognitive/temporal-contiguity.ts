@@ -1,10 +1,6 @@
-// ---------------------------------------------------------------
-// MODULE: Temporal Contiguity
-// ---------------------------------------------------------------
+// --- 1. TEMPORAL CONTIGUITY ---
 // Boost search results when memories are temporally adjacent,
-// query temporal neighbors, and build spec-folder timelines.
-// ---------------------------------------------------------------
-
+// Query temporal neighbors, and build spec-folder timelines.
 import type Database from 'better-sqlite3';
 
 /* -------------------------------------------------------------
@@ -15,8 +11,8 @@ export const DEFAULT_WINDOW = 3600;   // 1 hour in seconds
 export const MAX_WINDOW = 86400;      // 24 hours in seconds
 
 const BOOST_FACTOR = 0.15;
-// AI-WHY: Cap the cumulative contiguity boost per result so that a cluster of
-// many temporally-close memories cannot inflate a score unboundedly.
+// Cap the cumulative contiguity boost per result so that a cluster of
+// Many temporally-close memories cannot inflate a score unboundedly.
 const MAX_TOTAL_BOOST = 0.5;
 
 /* -------------------------------------------------------------
@@ -57,7 +53,7 @@ export function vectorSearchWithContiguity(
   if (results === null) return null;
   if (results.length <= 1) return results.map(r => ({ ...r }));
 
-  // T009: Clamp window to valid range
+  // Clamp window to valid range
   const clampedWindow = Math.max(1, Math.min(MAX_WINDOW, windowSeconds));
 
   // Clone results so we can mutate similarities safely
@@ -112,7 +108,7 @@ export function getTemporalNeighbors(
     return [];
   }
 
-  // T009: Clamp window to valid range
+  // Clamp window to valid range
   const clampedWindow = Math.max(1, Math.min(MAX_WINDOW, windowSeconds));
 
   try {

@@ -1,9 +1,6 @@
 // Converted from: transaction-manager-extended.test.ts (custom runner)
-// ---------------------------------------------------------------
 // TEST: deleteFileIfExists (transaction-manager extended)
 // Covers the single untested export from transaction-manager.ts
-// ---------------------------------------------------------------
-
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import * as path from 'path';
 import * as fs from 'fs';
@@ -31,7 +28,7 @@ function cleanup(): void {
       fs.rmSync(TEST_DIR, { recursive: true, force: true });
     }
   } catch {
-    // best-effort cleanup
+    // Best-effort cleanup
   }
   TEST_DIR = null;
 }
@@ -133,8 +130,8 @@ describe('deleteFileIfExists (transaction-manager extended)', () => {
     const subDir = path.join(dir, 'a-directory');
     fs.mkdirSync(subDir, { recursive: true });
 
-    // existsSync returns true for directories, but unlinkSync will throw
-    // deleteFileIfExists should catch the error and return false
+    // ExistsSync returns true for directories, but unlinkSync will throw
+    // DeleteFileIfExists should catch the error and return false
     const result = deleteFileIfExists(subDir);
 
     expect(result).toBe(false);

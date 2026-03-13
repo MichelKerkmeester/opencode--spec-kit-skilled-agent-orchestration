@@ -1,9 +1,6 @@
-// ---------------------------------------------------------------
 // TEST: Feedback Denylist (A2-P2-3)
 // Validates the stop-word denylist used to prevent noise injection
-// into learned relevance feedback trigger phrases.
-// ---------------------------------------------------------------
-
+// Into learned relevance feedback trigger phrases.
 import { describe, it, expect } from 'vitest';
 import {
   DENYLIST,

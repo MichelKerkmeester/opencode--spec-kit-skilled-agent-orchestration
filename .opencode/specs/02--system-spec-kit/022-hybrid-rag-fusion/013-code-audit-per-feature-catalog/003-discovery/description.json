@@ -1,10 +1,12 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/003-discovery",
-  "description": "003 — discovery",
+  "description": "Feature Specification: discovery",
   "keywords": [
+    "feature",
+    "specification",
     "discovery"
   ],
-  "lastUpdated": "2026-03-10T11:14:56.000Z",
+  "lastUpdated": "2026-03-13T18:17:46.703Z",
   "specId": "003",
   "folderSlug": "discovery",
   "parentChain": [

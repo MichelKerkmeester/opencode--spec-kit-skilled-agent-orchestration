@@ -1,8 +1,6 @@
-// ---------------------------------------------------------------
-// MODULE: Test — Graph-Scoring Integration
-// ---------------------------------------------------------------
+// --- 1. TEST — GRAPH-SCORING INTEGRATION ---
 // Verifies that graph signal activation and scoring calibration
-// changes to shared files are correctly integrated and do not conflict.
+// Changes to shared files are correctly integrated and do not conflict.
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
@@ -31,10 +29,7 @@ import {
   estimateResultTokens,
 } from '../lib/search/hybrid-search';
 
-// ---------------------------------------------------------------
 // A. RRF Score Normalization (S2 — Score Normalization)
-// ---------------------------------------------------------------
-
 describe('A. RRF Score Normalization', () => {
   afterEach(() => {
     vi.unstubAllEnvs();
@@ -100,9 +95,9 @@ describe('A. RRF Score Normalization', () => {
   it('A4: Normalized scores maintain relative ordering (highest raw score stays highest)', () => {
     vi.stubEnv('SPECKIT_SCORE_NORMALIZATION', 'true');
 
-    // id:1 appears in all 3 sources → highest raw score
-    // id:2 appears in 2 sources
-    // id:3 appears in 1 source
+    // Id:1 appears in all 3 sources → highest raw score
+    // Id:2 appears in 2 sources
+    // Id:3 appears in 1 source
     const lists = [
       { source: 'vector', results: [{ id: 1 }, { id: 2 }, { id: 3 }] },
       { source: 'fts',    results: [{ id: 1 }, { id: 2 }] },
@@ -120,10 +115,7 @@ describe('A. RRF Score Normalization', () => {
   });
 });
 
-// ---------------------------------------------------------------
 // B. Composite Score Normalization (S2 — Score Normalization)
-// ---------------------------------------------------------------
-
 describe('B. Composite Score Normalization', () => {
   afterEach(() => {
     vi.unstubAllEnvs();
@@ -166,10 +158,7 @@ describe('B. Composite Score Normalization', () => {
   });
 });
 
-// ---------------------------------------------------------------
 // C. N4 + TM-01 Interaction (N4 cold-start boost + TM-01 interference penalty)
-// ---------------------------------------------------------------
-
 describe('C. N4 + TM-01 Interaction', () => {
   afterEach(() => {
     vi.unstubAllEnvs();
@@ -228,10 +217,7 @@ describe('C. N4 + TM-01 Interaction', () => {
   });
 });
 
-// ---------------------------------------------------------------
 // D. Token Budget with Results (S1 — PI-A3 token budget)
-// ---------------------------------------------------------------
-
 describe('D. Token Budget with Results', () => {
   afterEach(() => {
     vi.unstubAllEnvs();
@@ -276,10 +262,7 @@ describe('D. Token Budget with Results', () => {
   });
 });
 
-// ---------------------------------------------------------------
 // E. Feature Flag Independence
-// ---------------------------------------------------------------
-
 describe('E. Feature Flag Independence', () => {
   afterEach(() => {
     vi.unstubAllEnvs();
@@ -368,8 +351,8 @@ describe('E. Feature Flag Independence', () => {
   });
 
   it('E9: normalizeRrfScores (standalone) maps array to [0,1] regardless of env flags', () => {
-    // normalizeRrfScores mutates in place and doesn't check env flags — it's called
-    // by fuseResultsMulti only when the flag is set; testing it directly verifies math
+    // NormalizeRrfScores mutates in place and doesn't check env flags — it's called
+    // By fuseResultsMulti only when the flag is set; testing it directly verifies math
     const results = [
       { id: 1, rrfScore: 0.02, sources: ['vector'], sourceScores: {}, convergenceBonus: 0 },
       { id: 2, rrfScore: 0.04, sources: ['fts'],    sourceScores: {}, convergenceBonus: 0 },

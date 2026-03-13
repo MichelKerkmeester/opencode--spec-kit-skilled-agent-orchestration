@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Memory Ingest Handlers
-// ---------------------------------------------------------------
+// --- 1. MEMORY INGEST HANDLERS ---
 
 import { randomBytes } from 'node:crypto';
 import fs from 'node:fs';
@@ -43,7 +41,7 @@ function toPublicPathLabel(filePath: string): string {
   return filePath === '__job__' ? filePath : path.basename(filePath || '');
 }
 
-// Codex fix: nanoid-style 12-char alphanumeric ID (URL-safe, no UUID dependency).
+// Use a nanoid-style 12-char URL-safe identifier without UUID dependency.
 const NANOID_ALPHABET = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 function createJobId(): string {
   const bytes = randomBytes(12);
@@ -126,12 +124,12 @@ async function handleMemoryIngestStart(args: MemoryIngestStartArgs): Promise<MCP
       continue;
     }
 
-    // Resolve symlinks to prevent symlink-based path traversal bypass
+    // Resolve symlinks so traversal checks apply to canonical targets.
     let realPath: string;
     try {
       realPath = fs.realpathSync(resolvedPath);
     } catch {
-      // Path doesn't exist yet (pre-validation) — use resolved path
+      // Fall back to resolvedPath during pre-validation when target does not yet exist.
       realPath = resolvedPath;
     }
 

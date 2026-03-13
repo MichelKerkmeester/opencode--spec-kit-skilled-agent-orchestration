@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Folder Detector
-// ---------------------------------------------------------------
+// --- 1. FOLDER DETECTOR ---
 // Detects, lists, and resolves spec folders with interactive selection and alignment scoring
 
 // Node stdlib
@@ -565,7 +563,7 @@ async function buildSessionCandidates(
     const specFolder = getSpecFolderFromSessionRow(row);
     if (!specFolder) continue;
     const trimmedSpecFolder = specFolder.trim();
-    // AI: Fix F6 — validate session-learning paths against approved roots.
+    // Fix F6 — validate session-learning paths against approved roots.
     if (path.isAbsolute(trimmedSpecFolder)) {
       const resolvedAbsoluteSpecFolder = path.resolve(trimmedSpecFolder);
       if (!isUnderApprovedSpecsRoots(resolvedAbsoluteSpecFolder)) {

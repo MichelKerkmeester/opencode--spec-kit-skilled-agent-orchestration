@@ -1,11 +1,9 @@
-// ---------------------------------------------------------------
-// MODULE: Ablation Framework (R13-S3)
-// ---------------------------------------------------------------
+// --- 1. ABLATION FRAMEWORK (R13-S3) ---
 //
 // Controlled ablation studies for search channel contribution analysis.
 // Selectively disables one search channel at a time, measures Recall@20
-// delta against a full-pipeline baseline, and attributes per-channel
-// contribution to retrieval quality.
+// Delta against a full-pipeline baseline, and attributes per-channel
+// Contribution to retrieval quality.
 //
 // Features:
 // - Channel toggle mechanism (vector, bm25, fts5, graph, trigger)
@@ -17,9 +15,7 @@
 //
 // CRITICAL: Ablation studies are experimental and gated behind
 // SPECKIT_ABLATION=true. Every public function is wrapped in try-catch
-// and is a no-op when the flag is not set.
-// ---------------------------------------------------------------
-
+// And is a no-op when the flag is not set.
 import { initEvalDb, getEvalDb } from './eval-db';
 import {
   computeRecall,
@@ -234,7 +230,7 @@ function signTestPValue(nPositive: number, nNegative: number): number | null {
   // Two-sided sign test: P(X <= min(n+, n-)) under Binomial(n, 0.5)
   const k = Math.min(nPositive, nNegative);
 
-  // AI-WHY: Log-space binomial coefficient to avoid overflow for large n
+  // Log-space binomial coefficient to avoid overflow for large n
   function logBinomial(nVal: number, kVal: number): number {
     if (kVal < 0 || kVal > nVal) return -Infinity;
     if (kVal === 0 || kVal === nVal) return 0;
@@ -445,8 +441,8 @@ export async function runAblation(
         const meanAblatedRecall = meanRecall([...ablatedRecalls.values()]);
         const meanDelta = meanAblatedRecall - overallBaselineRecall;
 
-        // queriesChannelHelped = channel was helping (removing it hurt quality)
-        // queriesChannelHurt = channel was harmful (removing it helped quality)
+        // QueriesChannelHelped = channel was helping (removing it hurt quality)
+        // QueriesChannelHurt = channel was harmful (removing it helped quality)
         const pValue = signTestPValue(queriesChannelHelped, queriesChannelHurt);
 
         // Build aggregated multi-metric breakdown
@@ -528,8 +524,8 @@ export function storeAblationResults(report: AblationReport): boolean {
   try {
     const db = getDb();
 
-    // AI-WHY: Use a synthetic eval_run_id: negative timestamp to avoid collision
-    // with production run IDs (same pattern as bm25-baseline.ts).
+    // Use a synthetic eval_run_id: negative timestamp to avoid collision
+    // With production run IDs (same pattern as bm25-baseline.ts).
     const evalRunId = -(Date.parse(report.timestamp));
 
     const insertSnapshot = db.prepare(`

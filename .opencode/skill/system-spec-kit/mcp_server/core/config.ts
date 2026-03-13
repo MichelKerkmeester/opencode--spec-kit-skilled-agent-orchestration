@@ -1,15 +1,11 @@
-// ---------------------------------------------------------------
-// MODULE: Config
-// ---------------------------------------------------------------
+// --- 1. CONFIG ---
 
 import path from 'path';
 import os from 'os';
 import { loadCognitiveConfigFromEnv } from '../configs/cognitive';
 import type { CognitiveConfig } from '../configs/cognitive';
 
-/* ---------------------------------------------------------------
-   1. TYPES
-   --------------------------------------------------------------- */
+// --- 2. TYPES ---
 
 /** Input validation limits configuration */
 export interface InputLimitsConfig {
@@ -22,9 +18,7 @@ export interface InputLimitsConfig {
   filePath: number;
 }
 
-/* ---------------------------------------------------------------
-   2. PATH CONSTANTS
-   --------------------------------------------------------------- */
+// --- 3. PATH CONSTANTS ---
 
 export const SERVER_DIR: string = path.join(__dirname, '..');
 export const NODE_MODULES: string = path.join(SERVER_DIR, 'node_modules');
@@ -53,24 +47,18 @@ export const DATABASE_DIR: string = resolvedDatabasePaths.databaseDir;
 export const DATABASE_PATH: string = resolvedDatabasePaths.databasePath;
 export const DB_UPDATED_FILE: string = resolvedDatabasePaths.dbUpdatedFile;
 
-/* ---------------------------------------------------------------
-   3. BATCH PROCESSING CONFIGURATION
-   --------------------------------------------------------------- */
+// --- 4. BATCH PROCESSING CONFIGURATION ---
 
 const parsedBatchSize = parseInt(process.env.SPEC_KIT_BATCH_SIZE || '5', 10);
 export const BATCH_SIZE: number = Number.isFinite(parsedBatchSize) && parsedBatchSize > 0 ? parsedBatchSize : 5;
 const parsedBatchDelayMs = parseInt(process.env.SPEC_KIT_BATCH_DELAY_MS || '100', 10);
 export const BATCH_DELAY_MS: number = Number.isFinite(parsedBatchDelayMs) && parsedBatchDelayMs > 0 ? parsedBatchDelayMs : 100;
 
-/* ---------------------------------------------------------------
-   4. RATE LIMITING CONFIGURATION
-   --------------------------------------------------------------- */
+// --- 5. RATE LIMITING CONFIGURATION ---
 
 export const INDEX_SCAN_COOLDOWN: number = 60000;
 
-/* ---------------------------------------------------------------
-   5. QUERY VALIDATION LIMITS
-   --------------------------------------------------------------- */
+// --- 6. QUERY VALIDATION LIMITS ---
 
 export const MAX_QUERY_LENGTH: number = 10000;
 
@@ -84,9 +72,7 @@ export const INPUT_LIMITS: Readonly<InputLimitsConfig> = {
   filePath: 500
 } as const;
 
-/* ---------------------------------------------------------------
-   6. PATH VALIDATION
-   --------------------------------------------------------------- */
+// --- 7. PATH VALIDATION ---
 
 export const DEFAULT_BASE_PATH: string = process.env.MEMORY_BASE_PATH || process.cwd();
 
@@ -98,15 +84,11 @@ export const ALLOWED_BASE_PATHS: string[] = [
   .filter(Boolean)
   .map(base => path.resolve(base));
 
-/* ---------------------------------------------------------------
-   7. CACHE CONFIGURATION
-   --------------------------------------------------------------- */
+// --- 8. CACHE CONFIGURATION ---
 
 export const CONSTITUTIONAL_CACHE_TTL: number = 60000;
 
-/* ---------------------------------------------------------------
-   8. COGNITIVE CONFIGURATION
-   --------------------------------------------------------------- */
+// --- 9. COGNITIVE CONFIGURATION ---
 
 function parseCognitiveConfig(): CognitiveConfig {
   return loadCognitiveConfigFromEnv(process.env);

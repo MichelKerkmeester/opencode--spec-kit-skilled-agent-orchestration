@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Generate Description
-// ---------------------------------------------------------------
+// --- 1. GENERATE DESCRIPTION ---
 // CLI: Generate Per-Folder description.json
 // Usage: node generate-description.js <folder-path> <base-path> [--description "text"]
 //
@@ -28,9 +26,9 @@ function main(): void {
   const folderPath = path.resolve(args[0]);
   const basePath = path.resolve(args[1]);
 
-  // AI-WHY: Path containment check — prevent directory traversal attacks.
-  // try/catch guards against crash on broken symlinks (realpathSync throws ENOENT).
-  // path.sep boundary prevents prefix bypass (e.g. /specs-evil passing for /specs).
+  // Path containment check — prevent directory traversal attacks.
+  // Try/catch guards against crash on broken symlinks (realpathSync throws ENOENT).
+  // Path.sep boundary prevents prefix bypass (e.g. /specs-evil passing for /specs).
   let realFolder: string;
   let realBase: string;
   try {

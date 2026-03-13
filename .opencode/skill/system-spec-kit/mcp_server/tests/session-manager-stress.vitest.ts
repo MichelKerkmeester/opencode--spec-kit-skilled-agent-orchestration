@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: Session Entry-Limit Stress Regressions (T014)
-// ---------------------------------------------------------------
-
 import { describe, expect, it } from 'vitest';
 import Database from 'better-sqlite3';
 import * as workingMemory from '../lib/cache/cognitive/working-memory';

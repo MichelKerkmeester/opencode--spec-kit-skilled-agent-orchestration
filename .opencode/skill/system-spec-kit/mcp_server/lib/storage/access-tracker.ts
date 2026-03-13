@@ -1,10 +1,7 @@
-// ---------------------------------------------------------------
-// MODULE: Access Tracker
-// ---------------------------------------------------------------
+// --- 1. ACCESS TRACKER ---
 // Batched access tracking with accumulator
-// ---------------------------------------------------------------
-
 import type Database from 'better-sqlite3';
+import { recordAdaptiveSignal } from '../cache/cognitive/adaptive-ranking';
 
 /* -------------------------------------------------------------
    1. CONSTANTS
@@ -15,7 +12,7 @@ const INCREMENT_VALUE = 0.1;
 const FLUSH_INTERVAL_MS = 30_000;
 const DEFAULT_RECENCY_DECAY_DAYS = 90;
 const MAX_USAGE_BOOST = 3.0;
-// AI-TRACE: P4-14 FIX: Cap accumulator Map size to prevent unbounded memory growth
+// P4-14 FIX: Cap accumulator Map size to prevent unbounded memory growth
 const MAX_ACCUMULATOR_SIZE = 10000;
 
 function getRecencyDecayDays(): number {
@@ -79,8 +76,8 @@ function init(database: Database.Database): void {
  * Track a memory access, accumulating until threshold is reached.
  */
 function trackAccess(memoryId: number): boolean {
-  // AI-GUARD: P4-14 FIX: If accumulator map exceeds max size, flush all and clear
-  // to prevent unbounded memory growth.
+  // P4-14 FIX: If accumulator map exceeds max size, flush all and clear
+  // To prevent unbounded memory growth.
   if (accumulators.size > MAX_ACCUMULATOR_SIZE) {
     console.warn(`[access-tracker] Accumulator map exceeded ${MAX_ACCUMULATOR_SIZE} entries, flushing all`);
     if (db) {
@@ -154,6 +151,19 @@ function flushAccessCounts(memoryId: number): boolean {
           last_accessed = ?
       WHERE id = ?
     `) as Database.Statement).run(now, memoryId);
+
+    if ((result as { changes: number }).changes > 0) {
+      try {
+        recordAdaptiveSignal(db, {
+          memoryId,
+          signalType: 'access',
+          signalValue: 1,
+          actor: 'access-tracker',
+        });
+      } catch (_error: unknown) {
+        // Adaptive signal capture must never block core access tracking
+      }
+    }
 
     return (result as { changes: number }).changes > 0;
   } catch (error: unknown) {
@@ -240,7 +250,7 @@ function reset(): void {
    6. EXIT HANDLERS
 ----------------------------------------------------------------*/
 
-// AI-WHY: Fix #38 (017-refinement-phase-6) — Store handler refs for process.removeListener()
+// Fix #38 (017-refinement-phase-6) — Store handler refs for process.removeListener()
 let _exitFlushHandler: (() => void) | null = null;
 
 function initExitHandlers(): void {
@@ -248,8 +258,8 @@ function initExitHandlers(): void {
 
   const flush = (): void => {
     // P4-15 FIX: Defensive check — during shutdown the DB handle may
-    // already be closed. Wrap the entire flush in try/catch and verify
-    // db is still usable before attempting writes.
+    // Already be closed. Wrap the entire flush in try/catch and verify
+    // Db is still usable before attempting writes.
     try {
       if (!db || !accumulators.size) return;
       // Quick liveness check: attempt a no-op query to detect closed handle

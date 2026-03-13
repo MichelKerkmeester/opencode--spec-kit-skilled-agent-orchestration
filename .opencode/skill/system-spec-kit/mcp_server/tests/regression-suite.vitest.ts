@@ -1,17 +1,13 @@
-// ---------------------------------------------------------------
 // TEST: Regression Suite (013-refinement-phase-2)
-// ---------------------------------------------------------------
 // Guards against regressions for the P0/P1 fixes applied in
 // 013-refinement-phase-2. Each describe block maps to a
-// specific finding from the 25-agent comprehensive review.
+// Specific finding from the 25-agent comprehensive review.
 //
 // Covers:
-//   P0-1  Schema safety — missing columns handled gracefully
-//   P1-6  ReDoS protection — regex completes in bounded time
-//   P1-7  NDCG cap — scores never exceed 1.0
-//   P1-9  Fetch limit — search results respect the limit parameter
-// ---------------------------------------------------------------
-
+// P0-1  Schema safety — missing columns handled gracefully
+// P1-6  ReDoS protection — regex completes in bounded time
+// P1-7  NDCG cap — scores never exceed 1.0
+// P1-9  Fetch limit — search results respect the limit parameter
 import { describe, it, expect } from 'vitest';
 
 describe('Regression Suite (013 fixes)', () => {
@@ -23,7 +19,7 @@ describe('Regression Suite (013 fixes)', () => {
   describe('P0-1: Schema safety — missing columns', () => {
     it('CREATE TABLE schema includes learned_triggers column', async () => {
       // The v21 migration adds learned_triggers. Verify it is present in
-      // the base CREATE TABLE so fresh databases get it without migration.
+      // The base CREATE TABLE so fresh databases get it without migration.
       const fs = await import('node:fs');
       const path = await import('node:path');
       const schemaFilePath = path.resolve(
@@ -92,7 +88,7 @@ describe('Regression Suite (013 fixes)', () => {
       const { expandQuery } = await import('../lib/search/query-expander');
 
       // Classic ReDoS payload: repeated character that could cause
-      // catastrophic backtracking in an unescaped regex
+      // Catastrophic backtracking in an unescaped regex
       const adversarial = 'a]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]';
 
       const start = performance.now();
@@ -123,7 +119,7 @@ describe('Regression Suite (013 fixes)', () => {
       const result = sanitizeFTS5Query(longInput);
 
       // After truncation at 2000 chars, there should be fewer terms
-      // than the full 600 repetitions
+      // Than the full 600 repetitions
       const termCount = result.split('" "').length;
       expect(termCount).toBeLessThan(600);
       expect(typeof result).toBe('string');
@@ -157,9 +153,9 @@ describe('Regression Suite (013 fixes)', () => {
     it('computeIntentWeightedNDCG never exceeds 1.0 even with high multipliers', async () => {
       const { computeIntentWeightedNDCG } = await import('../lib/eval/eval-metrics');
 
-      // security_audit intent has the highest multiplier (5x for grade 3)
+      // Security_audit intent has the highest multiplier (5x for grade 3)
       // This is exactly the scenario that caused the P1-7 bug:
-      // grade 3 * 5.0 = 15, which inflated NDCG above 1.0
+      // Grade 3 * 5.0 = 15, which inflated NDCG above 1.0
       const results = [
         { memoryId: 1, score: 0.95, rank: 1 },
         { memoryId: 2, score: 0.90, rank: 2 },
@@ -217,7 +213,7 @@ describe('Regression Suite (013 fixes)', () => {
   describe('P1-9: Fetch limit respected', () => {
     it('co-activation config fetches 2*maxRelated (not maxRelated+1)', async () => {
       // P1-9 found that populateRelatedMemories fetched maxRelated+1 instead
-      // of 2*maxRelated per spec. Verify the fix by reading the source.
+      // Of 2*maxRelated per spec. Verify the fix by reading the source.
       const fs = await import('node:fs');
       const path = await import('node:path');
       const coactivationPath = path.resolve(
@@ -271,9 +267,7 @@ describe('Regression Suite (013 fixes)', () => {
   });
 });
 
-// ---------------------------------------------------------------
 // SELF-GOVERNANCE FOOTER (TCB 10+)
-// ---------------------------------------------------------------
 // This regression suite was authored by Opus-I (TCB 10+).
 //
 // Audit trail:
@@ -283,4 +277,3 @@ describe('Regression Suite (013 fixes)', () => {
 // - No mocks of production dependencies — tests use real modules or source analysis
 //
 // Verification: `npx vitest run tests/regression-suite.vitest.ts`
-// ---------------------------------------------------------------

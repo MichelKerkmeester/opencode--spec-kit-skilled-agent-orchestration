@@ -33,28 +33,28 @@ describe('Migration checkpoint scripts', () => {
   let outputDir = '';
 
   beforeEach(() => {
-    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'hydra-checkpoint-'));
+    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'memory-roadmap-checkpoint-'));
     dbPath = path.join(tempDir, 'context-index.sqlite');
     outputDir = path.join(tempDir, 'checkpoints');
     createFixtureDb(dbPath);
   });
 
   afterEach(() => {
-    delete process.env.SPECKIT_HYDRA_PHASE;
-    delete process.env.SPECKIT_HYDRA_GRAPH_UNIFIED;
+    delete process.env.SPECKIT_MEMORY_ROADMAP_PHASE;
+    delete process.env.SPECKIT_MEMORY_GRAPH_UNIFIED;
     delete process.env.SPECKIT_ROLLOUT_PERCENT;
     fs.rmSync(tempDir, { recursive: true, force: true });
   });
 
-  it('creates a checkpoint plus Hydra rollout metadata sidecar', () => {
-    process.env.SPECKIT_HYDRA_PHASE = 'graph';
-    process.env.SPECKIT_HYDRA_GRAPH_UNIFIED = 'true';
+  it('creates a checkpoint plus memory-roadmap metadata sidecar', () => {
+    process.env.SPECKIT_MEMORY_ROADMAP_PHASE = 'graph';
+    process.env.SPECKIT_MEMORY_GRAPH_UNIFIED = 'true';
     process.env.SPECKIT_ROLLOUT_PERCENT = '100';
 
     const result = runCreateCheckpoint({
       dbPath,
       outputDir,
-      name: 'Hydra Graph',
+      name: 'Memory Graph',
       note: 'phase-1 verification',
       json: false,
     });

@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: Import Policy Rules
-// ---------------------------------------------------------------
-
 import { describe, expect, it } from 'vitest';
 
 import { isProhibitedImportPath } from '../evals/import-policy-rules';

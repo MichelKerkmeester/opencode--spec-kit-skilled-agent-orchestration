@@ -37,10 +37,7 @@ try {
 } catch (_err: unknown) {
 }
 
-// -------------------------------------------------------------
 // T124: CONTINUE_SESSION AUTO-GENERATION TESTS
-// -------------------------------------------------------------
-
 const t124Describe = collectSessionDataLoaded ? describe : describe.skip;
 
 t124Describe('T124: determineSessionStatus', () => {
@@ -170,13 +167,10 @@ t124Describe('T124: buildContinueSessionData', () => {
   });
 });
 
-// -------------------------------------------------------------
 // T017-T020: CONTINUE_SESSION.md GENERATION TESTS
 // (SKIPPED — session-manager.js has DB-dependent imports)
-// -------------------------------------------------------------
-
 // Type note: skipped section covers dist/lib/session/session-manager.js
-// imports Database type and working-memory module which trigger better-sqlite3
+// Imports Database type and working-memory module which trigger better-sqlite3
 
 describe('T017: generateContinueSessionMd() creates valid markdown (DB-dependent)', () => {
 

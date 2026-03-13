@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: Dead Code Regression Canary
-// ---------------------------------------------------------------
-
 import { describe, it, expect } from 'vitest';
 import { readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';

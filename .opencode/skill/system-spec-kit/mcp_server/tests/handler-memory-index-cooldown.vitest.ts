@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Handler Memory Index Cooldown Tests
-// ---------------------------------------------------------------
+// --- 1. HANDLER MEMORY INDEX COOLDOWN TESTS ---
 
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 

@@ -1,14 +1,12 @@
-// ---------------------------------------------------------------
-// MODULE: Test — Edge Density
-// ---------------------------------------------------------------
+// --- 1. TEST — EDGE DENSITY ---
 // T003 acceptance tests for lib/eval/edge-density.ts
 //
 // Test cases:
-//   D1 — Dense graph returns density >= 1.0 ("dense")
-//   D2 — Sparse graph returns density < 0.5 with R10 escalation
-//   D3 — Moderate graph returns 0.5 <= density < 1.0 ("moderate")
-//   D4 — Empty graph (no edges) handles gracefully
-//   D5 — Report format includes all required fields
+// D1 — Dense graph returns density >= 1.0 ("dense")
+// D2 — Sparse graph returns density < 0.5 with R10 escalation
+// D3 — Moderate graph returns 0.5 <= density < 1.0 ("moderate")
+// D4 — Empty graph (no edges) handles gracefully
+// D5 — Report format includes all required fields
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import Database from 'better-sqlite3';
@@ -374,7 +372,7 @@ describe('Edge Density (T011)', () => {
     it('report does NOT include R10 recommendation block when escalation is false', () => {
       insertMemories(db, 3);
       insertEdges(db, [['1', '2'], ['2', '3']]);
-      // density = 2/3 = 0.667 → moderate, no escalation
+      // Density = 2/3 = 0.667 → moderate, no escalation
       const result = measureEdgeDensity(db);
       expect(result.r10Escalation).toBe(false);
       const report = formatDensityReport(result);

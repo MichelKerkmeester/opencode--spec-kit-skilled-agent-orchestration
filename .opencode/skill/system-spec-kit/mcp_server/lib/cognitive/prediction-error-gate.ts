@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Prediction Error Gate
-// ---------------------------------------------------------------
+// --- 1. PREDICTION ERROR GATE ---
 
 import type Database from 'better-sqlite3';
 
@@ -287,7 +285,7 @@ function evaluateMemory(
   }
 
   // T-09: Log ALL PE decisions (including low/no-match CREATE) to memory_conflicts
-  // for full decision audit trail. Previously only logged when similarity >= LOW_MATCH.
+  // For full decision audit trail. Previously only logged when similarity >= LOW_MATCH.
   if (db) {
     const record = formatConflictRecord(
       action,
@@ -503,7 +501,7 @@ function calculateSimilarityStats(
   const similarities = candidates.map(c => c.similarity);
   const sum = similarities.reduce((a, b) => a + b, 0);
 
-  // AI-WHY: reduce avoids stack overflow on arrays >100K elements (spread pushes all onto call stack)
+  // Reduce avoids stack overflow on arrays >100K elements (spread pushes all onto call stack)
   return {
     min: similarities.reduce((a, b) => Math.min(a, b), Infinity),
     max: similarities.reduce((a, b) => Math.max(a, b), -Infinity),

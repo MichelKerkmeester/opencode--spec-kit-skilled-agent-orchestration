@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Mutation Feedback
-// ---------------------------------------------------------------
+// --- 1. MUTATION FEEDBACK ---
 
 import type { MutationHookResult } from '../handlers/memory-crud-types';
 

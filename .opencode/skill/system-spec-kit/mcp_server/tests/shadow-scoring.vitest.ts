@@ -1,9 +1,6 @@
-// ---------------------------------------------------------------
 // TEST: Shadow Scoring + Channel Attribution
 // R13-S2: Shadow scoring infrastructure, channel attribution,
-// and Exclusive Contribution Rate metric.
-// ---------------------------------------------------------------
-
+// And Exclusive Contribution Rate metric.
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import * as path from 'path';
 import * as fs from 'fs';

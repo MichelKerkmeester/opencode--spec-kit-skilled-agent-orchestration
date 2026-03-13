@@ -1,9 +1,7 @@
-// ---------------------------------------------------------------
-// MODULE: Test — Dynamic Token Budget
-// ---------------------------------------------------------------
+// --- 1. TEST — DYNAMIC TOKEN BUDGET ---
 // Query Intelligence
 // 16 tests covering:
-//   budget per tier, flag disabled, custom config, edge cases
+// Budget per tier, flag disabled, custom config, edge cases
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import {

@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Causal Graph
-// ---------------------------------------------------------------
+// --- 1. CAUSAL GRAPH ---
 
 /* ---------------------------------------------------------------
    0. DEPENDENCIES
@@ -119,7 +117,7 @@ function flattenCausalTree(
         bucket.push(edge);
       }
 
-      // AI-FIX: T006 — Only flag max_depth_reached when a node exists at the depth limit.
+      // T006 — Only flag max_depth_reached when a node exists at the depth limit.
       // Nodes at maxDepth-1 with no children are natural leaves (edges were queried).
       // Nodes at maxDepth were added but never explored (traverse returned early).
       if (child.depth >= maxDepth) {
@@ -245,7 +243,7 @@ async function handleMemoryDriftWhy(args: DriftWhyArgs): Promise<MCPResponse> {
     relations = null,
     includeMemoryDetails = true
   } = args;
-  // AI-WHY: Fix #25 (017-refinement-phase-6) — Clamp maxDepth to [1, 10] server-side
+  // Fix #25 (017-refinement-phase-6) — Clamp maxDepth to [1, 10] server-side
   const maxDepth = Math.min(Math.max(1, Math.floor(rawMaxDepth)), 10);
 
   const startTime = Date.now();
@@ -727,7 +725,7 @@ export {
   flattenCausalTree,
 };
 
-// AI-WHY: Backward-compatible aliases (snake_case)
+// Backward-compatible aliases (snake_case)
 const handle_memory_drift_why = handleMemoryDriftWhy;
 const handle_memory_causal_link = handleMemoryCausalLink;
 const handle_memory_causal_stats = handleMemoryCausalStats;

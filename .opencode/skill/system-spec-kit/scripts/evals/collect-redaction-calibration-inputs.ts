@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Collect Redaction Calibration Inputs
-// ---------------------------------------------------------------
+// --- 1. COLLECT REDACTION CALIBRATION INPUTS ---
 
 import fs from 'fs';
 import path from 'path';

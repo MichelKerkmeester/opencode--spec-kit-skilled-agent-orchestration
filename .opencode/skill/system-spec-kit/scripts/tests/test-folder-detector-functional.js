@@ -494,10 +494,10 @@ async function testSilentFallthroughCombinedInDetect() {
     // We can verify the function is loadable and the try/catch structure is sound.
     const { detectSpecFolder } = require(path.join(SCRIPTS_DIR, 'spec-folder', 'folder-detector'));
 
-    // detectSpecFolder without CLI arg will fall through Priority 2.5 (DB lookup)
-    // and continue to Priority 3 (CWD) and Priority 4 (auto-detect).
+    // DetectSpecFolder without CLI arg will fall through Priority 2.5 (DB lookup)
+    // And continue to Priority 3 (CWD) and Priority 4 (auto-detect).
     // We can't fully test the end-to-end here without mocking CONFIG,
-    // but we verify the function doesn't throw synchronously on import.
+    // But we verify the function doesn't throw synchronously on import.
     if (typeof detectSpecFolder === 'function') {
       pass('T-FD03d: detectSpecFolder loads without error', 'Function type confirmed, try/catch around Priority 2.5 is intact');
     } else {
@@ -832,7 +832,7 @@ async function testRealDbQueryable() {
     const row = db.prepare(RECENT_SESSION_LOOKUP_SQL).get();
     db.close();
 
-    // row can be undefined (no recent records) or an object — both are valid
+    // Row can be undefined (no recent records) or an object — both are valid
     if (row === undefined) {
       pass('T-FD06b: Real DB queryable', 'Query succeeded, no recent records (expected if no recent preflight)');
     } else if (row && typeof row.spec_folder === 'string') {

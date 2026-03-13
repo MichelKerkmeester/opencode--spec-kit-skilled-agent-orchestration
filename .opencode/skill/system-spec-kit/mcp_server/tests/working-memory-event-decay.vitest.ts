@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: WORKING MEMORY EVENT DECAY (T005-T008)
-// ---------------------------------------------------------------
-
 import { afterEach, describe, expect, it } from 'vitest';
 import Database from 'better-sqlite3';
 import * as wm from '../lib/cache/cognitive/working-memory';

@@ -1,10 +1,8 @@
-// ---------------------------------------------------------------
-// MODULE: Tier Classifier
-// ---------------------------------------------------------------
+// --- 1. TIER CLASSIFIER ---
 
-// fs and path removed — unused in this module
+// Fs and path removed — unused in this module
 
-// T301: Import FSRS constants and canonical retrievability function.
+// Import FSRS constants and canonical retrievability function.
 import {
   FSRS_HALF_LIFE_FACTOR,
   calculateRetrievability as calculateFsrsRetrievability
@@ -34,7 +32,7 @@ function parseLimit(envVar: string, defaultVal: number): number {
   return !isNaN(parsed) && parsed > 0 ? parsed : defaultVal;
 }
 
-// REQ-081: 5-State Model thresholds based on FSRS retrievability R = (1 + FACTOR * t / S)^DECAY
+// 5-State Model thresholds based on FSRS retrievability R = (1 + FACTOR * t / S)^DECAY
 const STATE_THRESHOLDS = {
   HOT: 0.80,
   WARM: 0.25,
@@ -105,7 +103,7 @@ interface StateStats {
   total: number;
 }
 
-// AI-WHY: Lazy-load memory types to avoid circular dependencies
+// Lazy-load memory types to avoid circular dependencies
 let memoryTypesModule: Record<string, unknown> | false | null = null;
 
 /** Get memory types module (lazy loaded) */
@@ -184,7 +182,7 @@ function halfLifeToStability(halfLifeDays: number | null): number {
   if (halfLifeDays === null || halfLifeDays <= 0) {
     return 999999; // Effectively infinite stability (no decay)
   }
-  // T301: Use canonical FSRS_HALF_LIFE_FACTOR from fsrs-scheduler.ts
+  // Use canonical FSRS_HALF_LIFE_FACTOR from fsrs-scheduler.ts
   // S = FSRS_HALF_LIFE_FACTOR * halfLife  (derived from FSRS power-law half-life equation)
   return FSRS_HALF_LIFE_FACTOR * halfLifeDays;
 }
@@ -251,7 +249,7 @@ function classifyState(
 
   // ARCHIVED requires BOTH conditions: old age AND very low retrievability
   // (days > 90 AND r < 0.02). Using || here would incorrectly archive
-  // recent memories with low R, or old memories with high R.
+  // Recent memories with low R, or old memories with high R.
   if (days > TIER_CONFIG.archivedDaysThreshold && r < STATE_THRESHOLDS.DORMANT) {
     return 'ARCHIVED';
   }
@@ -291,10 +289,10 @@ function classifyTier(memory: TierInput): {
     elapsedDays = Math.max(0, (now.getTime() - lastDate.getTime()) / (1000 * 60 * 60 * 24));
   }
 
-  // AI-GUARD: Use effective stability from half-life.
+  // Use effective stability from half-life.
   // Math.max ensures new memories (default stability=1.0) benefit from their
-  // type's configured half-life, while well-reviewed memories keep their
-  // earned FSRS stability if it exceeds the type baseline.
+  // Type's configured half-life, while well-reviewed memories keep their
+  // Earned FSRS stability if it exceeds the type baseline.
   const effectiveStability = halfLifeToStability(effectiveHalfLife);
   const finalStability = Math.max(stability, effectiveStability);
 
@@ -372,7 +370,7 @@ function filterAndLimitByState<T extends TierInput>(
     classified = classified.filter(m => m._classification.state === targetState);
   }
 
-  // T210: Apply per-tier limits with overflow redistribution
+  // Apply per-tier limits with overflow redistribution
   if (!targetState) {
     // Group by tier
     const byTier: Record<TierState, typeof classified> = {
@@ -468,12 +466,12 @@ function getStateStats(memories: readonly TierInput[]): StateStats {
 function shouldArchive(memory: TierInput): boolean {
   const { state } = classifyTier(memory);
 
-  // AI-GUARD: Never archive constitutional or critical
+  // Never archive constitutional or critical
   if (memory.importance_tier === 'constitutional' || memory.importance_tier === 'critical') {
     return false;
   }
 
-  // AI-GUARD: Pinned memories are never archived
+  // Pinned memories are never archived
   if (memory.is_pinned === 1) {
     return false;
   }

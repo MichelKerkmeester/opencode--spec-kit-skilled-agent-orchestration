@@ -1,9 +1,6 @@
 // Converted from: trigger-extractor.test.ts (custom runner)
-// ---------------------------------------------------------------
 // TEST: TRIGGER EXTRACTOR
 // TF-IDF + N-gram hybrid trigger phrase extraction
-// ---------------------------------------------------------------
-
 import { describe, it, expect } from 'vitest';
 import {
   extractTriggerPhrases,

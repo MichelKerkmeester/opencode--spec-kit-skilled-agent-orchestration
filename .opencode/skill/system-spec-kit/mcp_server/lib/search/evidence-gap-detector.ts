@@ -1,14 +1,8 @@
-// ---------------------------------------------------------------
-// MODULE: Evidence Gap Detector
-// ---------------------------------------------------------------
+// --- 1. EVIDENCE GAP DETECTOR ---
 // Transparent Reasoning Module (TRM): Z-score confidence check
-// on RRF scores to detect low-confidence retrieval and inject
-// warnings for the MCP markdown output layer.
-// ---------------------------------------------------------------
-
-/* ---------------------------------------------------------------
-   1. CONSTANTS
-   --------------------------------------------------------------- */
+// On RRF scores to detect low-confidence retrieval and inject
+// Warnings for the MCP markdown output layer.
+// --- 2. CONSTANTS ---
 
 /** Z-score threshold below which retrieval confidence is considered low. */
 const Z_SCORE_THRESHOLD = 1.5;
@@ -22,9 +16,7 @@ const MIN_ABSOLUTE_SCORE = 0.015;
  */
 const MIN_GRAPH_MEMORY_NODES = 3;
 
-/* ---------------------------------------------------------------
-   2. INTERFACES
-   --------------------------------------------------------------- */
+// --- 3. INTERFACES ---
 
 /**
  * Result of a Transparent Reasoning Module evidence-gap check.
@@ -63,9 +55,7 @@ interface MemoryGraphLike {
   inbound: Map<string, string[]>;
 }
 
-/* ---------------------------------------------------------------
-   3. CORE FUNCTIONS
-   --------------------------------------------------------------- */
+// --- 4. CORE FUNCTIONS ---
 
 /**
  * Graph-topology coverage pre-check (T014).
@@ -160,13 +150,13 @@ export function detectEvidenceGap(rrfScores: number[]): TRMResult {
   const variance = finiteScores.reduce((acc, s) => acc + (s - mean) ** 2, 0) / finiteScores.length;
   const stdDev = Math.sqrt(variance);
 
-  // AI-WHY: reduce avoids stack overflow on arrays >100K elements (spread pushes all onto call stack)
+  // Reduce avoids stack overflow on arrays >100K elements (spread pushes all onto call stack)
   const topScore = finiteScores.reduce((a, b) => Math.max(a, b), -Infinity);
   if (!Number.isFinite(mean) || !Number.isFinite(stdDev) || !Number.isFinite(topScore)) {
     return { gapDetected: true, zScore: 0, mean: 0, stdDev: 0 };
   }
 
-  // AI-WHY: Avoid division by zero when all scores are identical (stdDev === 0 → Z = 0).
+  // Avoid division by zero when all scores are identical (stdDev === 0 → Z = 0).
   const zScore = stdDev === 0 ? 0 : (topScore - mean) / stdDev;
 
   // When stdDev===0 all scores are identical; Z-score is meaningless.

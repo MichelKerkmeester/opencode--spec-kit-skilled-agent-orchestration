@@ -6,13 +6,13 @@
 # Source this file: source "$(dirname "$0")/../lib/template-utils.sh"
 #
 # Functions:
-#   get_level_templates_dir()  - Resolve template directory for a given level
-#   copy_template()            - Copy template file with level-specific fallback
+# Get_level_templates_dir()  - Resolve template directory for a given level
+# Copy_template()            - Copy template file with level-specific fallback
 #
 # Compatibility: Bash 3.2+ (macOS default)
 # ───────────────────────────────────────────────────────────────
 
-# AI-GUARD: Conditional strict mode — skipped when sourced to avoid breaking caller's error handling.
+# Conditional strict mode — skipped when sourced to avoid breaking caller's error handling.
 if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
     set -euo pipefail
 fi
@@ -27,8 +27,8 @@ _TEMPLATE_UTILS_LOADED=1
 #
 # Usage: dir=$(get_level_templates_dir "2" "/path/to/templates")
 # Args:
-#   $1 - Documentation level: 1, 2, 3, or 3+
-#   $2 - Base templates directory path
+# $1 - Documentation level: 1, 2, 3, or 3+
+# $2 - Base templates directory path
 # Returns: Prints resolved directory path to stdout
 # ───────────────────────────────────────────────────────────────
 get_level_templates_dir() {
@@ -49,15 +49,15 @@ get_level_templates_dir() {
 # If no template is found, creates an empty file.
 #
 # Consolidated from create.sh's copy_template() and copy_subfolder_template()
-# which were near-identical (only differed in destination directory).
+# Which were near-identical (only differed in destination directory).
 #
 # Usage: copy_template "spec.md" "/dest/dir" "/level/templates" "/base/templates" [dest_name]
 # Args:
-#   $1 - Template filename (e.g., "spec.md")
-#   $2 - Destination directory (e.g., "$FEATURE_DIR" or "$SUBFOLDER_PATH")
-#   $3 - Level-specific templates directory
-#   $4 - Base templates directory (fallback)
-#   $5 - (Optional) Destination filename if different from template name
+# $1 - Template filename (e.g., "spec.md")
+# $2 - Destination directory (e.g., "$FEATURE_DIR" or "$SUBFOLDER_PATH")
+# $3 - Level-specific templates directory
+# $4 - Base templates directory (fallback)
+# $5 - (Optional) Destination filename if different from template name
 # Returns: Prints the created filename to stdout (for tracking in CREATED_FILES)
 # Exit: 0 always (creates empty file as fallback)
 # ───────────────────────────────────────────────────────────────
@@ -85,4 +85,4 @@ copy_template() {
 }
 
 # Exit codes:
-#   0 - Success
+# 0 - Success

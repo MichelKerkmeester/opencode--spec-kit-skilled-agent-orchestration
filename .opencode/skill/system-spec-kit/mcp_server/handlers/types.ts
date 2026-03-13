@@ -1,11 +1,7 @@
-// ---------------------------------------------------------------
-// MODULE: Handler Types
-// ---------------------------------------------------------------
+// --- 1. HANDLER TYPES ---
 // Re-exports canonical types from shared/ for handler convenience.
 // Previously declared duplicates locally — now imports from the
-// single source of truth.
-// ---------------------------------------------------------------
-
+// Single source of truth.
 // Re-export canonical types from shared
 export type {
   Database,

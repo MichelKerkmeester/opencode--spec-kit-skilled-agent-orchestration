@@ -1,9 +1,6 @@
-// ---------------------------------------------------------------
 // TEST: Integration Pipeline (C138 End-to-End)
 // Full scatter→fuse→co-activate→TRM→MMR→serialize pipeline.
 // Validates latency ceiling, token budget, feature flag regression.
-// ---------------------------------------------------------------
-
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { applyMMR } from '@spec-kit/shared/algorithms/mmr-reranker';
 import { detectEvidenceGap } from '../lib/search/evidence-gap-detector';
@@ -105,8 +102,8 @@ function applyMMRLocal(results: SearchResult[], lambda: number, limit: number): 
   // Re-merge metadata from original results
   return selected.map(sel => {
     const orig = results.find(r => r.id === sel.id);
-    // AI-WHY: `sel.content` is optional in MMRCandidate; coerce to string so the
-    // fallback satisfies SearchResult.content (required string).
+    // `sel.content` is optional in MMRCandidate; coerce to string so the
+    // Fallback satisfies SearchResult.content (required string).
     return orig ?? {
       ...sel,
       content: sel.content ?? '',
@@ -226,8 +223,8 @@ describe('C138 Integration Pipeline', () => {
   it('T5: evidence gap warning in payload iff trm.evidenceGapDetected is true', () => {
     const response = hybridSearchEnhanced('bake bread recipe', 'auto', ALL_FLAGS_ON);
 
-    // AI-WHY: Assert both directions so the test cannot silently pass regardless
-    // of whether a gap was detected — an unconditional check avoids vacuous truths.
+    // Assert both directions so the test cannot silently pass regardless
+    // Of whether a gap was detected — an unconditional check avoids vacuous truths.
     if (response.trm.evidenceGapDetected) {
       expect(response.payload).toContain('EVIDENCE GAP DETECTED');
     } else {
@@ -336,7 +333,7 @@ describe('C138 Stage: MMR Reranker Production', () => {
 
     const selected = applyMMR(candidates, { lambda: 0.7, limit: 10 });
     // Should only process first 20 candidates (DEFAULT_MAX_CANDIDATES)
-    // and return at most limit=10
+    // And return at most limit=10
     expect(selected.length).toBeLessThanOrEqual(10);
     // All selected IDs must be from the top-20 pool
     for (const s of selected) {
@@ -404,7 +401,7 @@ describe('C138 Stage: Evidence Gap Detector Production', () => {
 
   it('detectEvidenceGap handles all identical scores', () => {
     const identical = detectEvidenceGap([0.3, 0.3, 0.3, 0.3]);
-    // stdDev=0, all scores (0.3) above MIN_ABSOLUTE_SCORE → no gap
+    // StdDev=0, all scores (0.3) above MIN_ABSOLUTE_SCORE → no gap
     expect(identical.gapDetected).toBe(false);
     expect(identical.stdDev).toBe(0);
   });

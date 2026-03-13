@@ -1,11 +1,9 @@
-// ---------------------------------------------------------------
-// MODULE: Run Performance Benchmarks
-// ---------------------------------------------------------------
+// --- 1. RUN PERFORMANCE BENCHMARKS ---
 
 // USAGE: npx tsx scripts/evals/run-performance-benchmarks.ts <spec-folder>
 //
 // This script MUST be run with tsx (not compiled JS) because
-// the cross-project imports rely on tsconfig path resolution.
+// The cross-project imports rely on tsconfig path resolution.
 
 import fs from 'fs';
 import path from 'path';

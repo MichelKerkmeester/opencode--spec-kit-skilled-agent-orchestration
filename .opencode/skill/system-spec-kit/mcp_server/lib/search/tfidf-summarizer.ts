@@ -1,12 +1,6 @@
-// ---------------------------------------------------------------
-// MODULE: Tfidf Summarizer
-// ---------------------------------------------------------------
+// --- 1. TFIDF SUMMARIZER ---
 // Pure TypeScript, zero dependencies
-// ---------------------------------------------------------------
-
-// ---------------------------------------------------------------------------
-// 1. INTERFACES
-// ---------------------------------------------------------------------------
+// --- 2. INTERFACES ---
 
 interface ScoredSentence {
   text: string;
@@ -14,9 +8,7 @@ interface ScoredSentence {
   index: number;
 }
 
-// ---------------------------------------------------------------------------
-// 2. CONSTANTS
-// ---------------------------------------------------------------------------
+// --- 3. CONSTANTS ---
 
 /** Minimum character length for a sentence to be considered. */
 const MIN_SENTENCE_LENGTH = 10;
@@ -27,9 +19,7 @@ const MAX_SENTENCE_LENGTH = 500;
 /** Default number of key sentences to extract. */
 const DEFAULT_TOP_N = 3;
 
-// ---------------------------------------------------------------------------
-// 3. INTERNAL HELPERS
-// ---------------------------------------------------------------------------
+// --- 4. INTERNAL HELPERS ---
 
 /**
  * Strip markdown syntax from text before scoring.
@@ -86,9 +76,7 @@ function splitSentences(content: string): string[] {
   return sentences;
 }
 
-// ---------------------------------------------------------------------------
-// 4. CORE FUNCTIONS
-// ---------------------------------------------------------------------------
+// --- 5. CORE FUNCTIONS ---
 
 /**
  * Compute TF-IDF scores for sentences within a document.
@@ -146,7 +134,7 @@ export function computeTfIdf(sentences: string[]): ScoredSentence[] {
     return { text, score, index };
   });
 
-  // AI-WHY: Normalize scores to [0, 1]
+  // Normalize scores to [0, 1]
   // Use reduce-based max to avoid RangeError when scored is large (spread exceeds call-stack limit)
   const maxScore = scored.reduce((max, s) => s.score > max ? s.score : max, -Infinity);
   if (maxScore > 0) {
@@ -232,9 +220,7 @@ export function generateSummary(content: string): { summary: string; keySentence
   return { summary, keySentences };
 }
 
-// ---------------------------------------------------------------------------
-// 5. TEST EXPORTS
-// ---------------------------------------------------------------------------
+// --- 6. TEST EXPORTS ---
 
 /**
  * Internal functions exposed for unit testing.

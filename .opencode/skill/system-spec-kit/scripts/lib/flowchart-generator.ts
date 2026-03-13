@@ -1,10 +1,6 @@
-// ---------------------------------------------------------------
-// MODULE: Flowchart Generator
-// ---------------------------------------------------------------
+// --- 1. FLOWCHART GENERATOR ---
 
-// ---------------------------------------------------------------
-// 1. TYPES
-// ---------------------------------------------------------------
+// --- 2. TYPES ---
 
 /** Workflow pattern type */
 export type WorkflowPattern = 'linear' | 'parallel';
@@ -56,9 +52,7 @@ export interface DiagramClassification {
   complexity: ComplexityLevel;
 }
 
-// ---------------------------------------------------------------
-// 2. PATTERN CONSTANTS
-// ---------------------------------------------------------------
+// --- 3. PATTERN CONSTANTS ---
 
 const PATTERNS: { readonly LINEAR: WorkflowPattern; readonly PARALLEL: WorkflowPattern } = {
   LINEAR: 'linear',
@@ -82,17 +76,13 @@ const COMPLEXITY: Record<string, ComplexityLevel> = {
   HIGH: 'High',
 };
 
-// ---------------------------------------------------------------
-// 3. HELPER FUNCTIONS
-// ---------------------------------------------------------------
+// --- 4. HELPER FUNCTIONS ---
 
 function pad(text: string, length: number): string {
   return text.substring(0, length).padEnd(length);
 }
 
-// ---------------------------------------------------------------
-// 4. PATTERN DETECTION
-// ---------------------------------------------------------------
+// --- 5. PATTERN DETECTION ---
 
 /** Linear (<=4 phases) or parallel (>4 phases) */
 function detectWorkflowPattern(phases: Phase[] = []): WorkflowPattern {
@@ -100,9 +90,7 @@ function detectWorkflowPattern(phases: Phase[] = []): WorkflowPattern {
   return phases.length > 4 ? PATTERNS.PARALLEL : PATTERNS.LINEAR;
 }
 
-// ---------------------------------------------------------------
-// 5. FLOWCHART GENERATION
-// ---------------------------------------------------------------
+// --- 6. FLOWCHART GENERATION ---
 
 function generateConversationFlowchart(phases: Phase[] = [], initialRequest: string = 'User Request'): string {
   if (phases.length === 0) {
@@ -273,10 +261,7 @@ SYNCHRONIZATION POINT
   return flowchart;
 }
 
-// ---------------------------------------------------------------
 // 6. PHASE DETAILS & FEATURES
-// ---------------------------------------------------------------
-
 function buildPhaseDetails(phases: Phase[] = []): PhaseDetail[] {
   return phases.map((phase: Phase, index: number): PhaseDetail => ({
     INDEX: index + 1,
@@ -339,9 +324,7 @@ function getPatternUseCases(patternType: string = 'linear'): string[] {
   return useCaseMap[patternType] || useCaseMap.linear;
 }
 
-// ---------------------------------------------------------------
-// 7. DIAGRAM CLASSIFICATION
-// ---------------------------------------------------------------
+// --- 7. DIAGRAM CLASSIFICATION ---
 
 /** Classifies ASCII art using 7 core patterns from sk-doc */
 function classifyDiagramPattern(asciiArt: string): DiagramClassification {
@@ -356,9 +339,9 @@ function classifyDiagramPattern(asciiArt: string): DiagramClassification {
     .some((line) => ((line.match(/\u25BC/g) || []).length > 1));
   const hasParallelBlock: boolean = art.includes('parallel') || (hasBranchConnector && hasMultipleBranchArrows);
   const hasApprovalGate: boolean = asciiArt.includes('\u2554\u2550') || art.includes('approval') || art.includes('gate');
-  // AI-FIX: F-24 — └ and ┘ are standard box-drawing characters used in any boxed
-  // diagram. Requiring both misclassifies most diagrams as loops. Instead, only
-  // match explicit "loop" keyword or back-edge indicators (← ↑ arrows pointing back).
+  // F-24 — └ and ┘ are standard box-drawing characters used in any boxed
+  // Diagram. Requiring both misclassifies most diagrams as loops. Instead, only
+  // Match explicit "loop" keyword or back-edge indicators (← ↑ arrows pointing back).
   const hasLoopBack: boolean = art.includes('loop') || art.includes('retry') ||
     (asciiArt.includes('\u2190') && (asciiArt.includes('\u2514') || asciiArt.includes('\u2518')));
   const hasNestedProcess: boolean = art.includes('sub-process') || art.includes('sub process');
@@ -394,9 +377,7 @@ function classifyDiagramPattern(asciiArt: string): DiagramClassification {
   return { pattern, complexity };
 }
 
-// ---------------------------------------------------------------
-// 8. MODULE EXPORTS
-// ---------------------------------------------------------------
+// --- 8. MODULE EXPORTS ---
 
 export {
   generateConversationFlowchart,

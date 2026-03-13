@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Test — RSF Multi-List
-// ---------------------------------------------------------------
+// --- 1. TEST — RSF MULTI-LIST ---
 // RSF Fusion — Multi-List (T002b) and Cross-Variant (T002c) Variants
 // Tasks T002b + T002c — Hybrid RAG Fusion Refinement
 
@@ -147,7 +145,7 @@ describe('T027: RSF Multi-List and Cross-Variant Fusion', () => {
     it('T027.3.1: single-source item in 3-source fusion gets 1/3 of avg score', () => {
       // With 3 total sources, single-source item gets avgScore * (1/3)
       // List: vector only — item 5 has score 1.0 (normalized to 1.0 as sole item)
-      // penalty: 1.0 * (1/3) ≈ 0.333
+      // Penalty: 1.0 * (1/3) ≈ 0.333
       const lists = [
         makeList('vector', [makeItem(5, 0.9)]),
         makeList('bm25',   [makeItem(1, 0.8)]),
@@ -163,10 +161,10 @@ describe('T027: RSF Multi-List and Cross-Variant Fusion', () => {
 
     it('T027.3.2: item in 2 of 3 sources gets 2/3 of avg score', () => {
       // Item 1 appears in vector and bm25 (2 of 3 sources)
-      // vector: [1(1.0)] → normalized(1) = 1.0
-      // bm25:   [1(1.0)] → normalized(1) = 1.0
-      // avgScore = (1.0 + 1.0) / 2 = 1.0
-      // penalty: 1.0 * (2/3) ≈ 0.667
+      // Vector: [1(1.0)] → normalized(1) = 1.0
+      // Bm25:   [1(1.0)] → normalized(1) = 1.0
+      // AvgScore = (1.0 + 1.0) / 2 = 1.0
+      // Penalty: 1.0 * (2/3) ≈ 0.667
       const lists = [
         makeList('vector', [makeItem(1, 0.9)]),
         makeList('bm25',   [makeItem(1, 0.9)]),
@@ -350,9 +348,9 @@ describe('T027: RSF Multi-List and Cross-Variant Fusion', () => {
       expect(item2!.sources.length).toBe(1);
       expect(item3!.sources.length).toBe(1);
       // Item 1 (full coverage) should rank at or above single-source items
-      // since its avg = 1.0 (both are top of their list) → no penalty
-      // item2 normalized A = 0.0 (min of A range) → 0.0 * 0.5 = 0.0
-      // item3 normalized B = 1.0 (top of B) → 1.0 * 0.5 = 0.5
+      // Since its avg = 1.0 (both are top of their list) → no penalty
+      // Item2 normalized A = 0.0 (min of A range) → 0.0 * 0.5 = 0.0
+      // Item3 normalized B = 1.0 (top of B) → 1.0 * 0.5 = 0.5
       expect(item1!.rsfScore).toBeGreaterThan(item2!.rsfScore);
     });
   });
@@ -413,42 +411,42 @@ describe('T027: RSF Multi-List and Cross-Variant Fusion', () => {
   describe('T027.9: Cross-variant bonus for multi-variant items', () => {
     it('T027.9.1: item in 2 variants gets +0.10 bonus over item in 1 variant', () => {
       // Variant 1: [item1: 1.0, item10: 0.5, item11: 0.0-equivalent] → range > 0
-      //   normV1(item1) = 1.0, normV1(item10) = 0.0 (bottom of range)
-      //   item1 rsfScore = 1.0 (1/1, no penalty), item10 = 0.0
+      // NormV1(item1) = 1.0, normV1(item10) = 0.0 (bottom of range)
+      // Item1 rsfScore = 1.0 (1/1, no penalty), item10 = 0.0
       //
       // Variant 2: [item1: 1.0, item20: 0.5, item21: 0.0-equivalent]
-      //   item1 rsfScore = 1.0, item20 = 0.0
+      // Item1 rsfScore = 1.0, item20 = 0.0
       //
-      // item1 appears in 2 variants: avgScore = (1.0+1.0)/2=1.0, +0.10 bonus → clamped to 1.0
-      // item10 appears in 1 variant: avgScore = 0.0 → 0.0
+      // Item1 appears in 2 variants: avgScore = (1.0+1.0)/2=1.0, +0.10 bonus → clamped to 1.0
+      // Item10 appears in 1 variant: avgScore = 0.0 → 0.0
       //
       // Better test: use base scores that put item1 at ~0.5 so bonus makes it >0.5
       // Variant 1: [item1: 0.8, item10: 1.0] → min=0.8, max=1.0
-      //   normV1(item1) = (0.8-0.8)/(1.0-0.8) = 0.0
-      //   normV1(item10) = (1.0-0.8)/(1.0-0.8) = 1.0
-      //   Both 1 source → no penalty → item1 rsfScore=0.0, item10 rsfScore=1.0
+      // NormV1(item1) = (0.8-0.8)/(1.0-0.8) = 0.0
+      // NormV1(item10) = (1.0-0.8)/(1.0-0.8) = 1.0
+      // Both 1 source → no penalty → item1 rsfScore=0.0, item10 rsfScore=1.0
       //
       // Variant 2: [item1: 0.8, item20: 1.0] → same pattern
-      //   item1 rsfScore=0.0, item20 rsfScore=1.0
+      // Item1 rsfScore=0.0, item20 rsfScore=1.0
       //
-      // item1: avgScore = (0.0+0.0)/2=0.0, variantCount=2 → +0.10 → rsfScore=0.10
-      // item10: avgScore = 1.0 from variant1 only → no bonus → rsfScore=1.0
+      // Item1: avgScore = (0.0+0.0)/2=0.0, variantCount=2 → +0.10 → rsfScore=0.10
+      // Item10: avgScore = 1.0 from variant1 only → no bonus → rsfScore=1.0
       // That's still worse. We need item1 to have a moderate base score, not 0.0.
       //
       // Cleanest approach: give each variant 3 items where item1 is middle rank
       // Variant 1: [item10: 1.0, item1: 0.6, item_low: 0.2] → range=0.8
-      //   normV1(item1) = (0.6-0.2)/0.8 = 0.5, 1/1 source → rsfScore=0.5
+      // NormV1(item1) = (0.6-0.2)/0.8 = 0.5, 1/1 source → rsfScore=0.5
       // Variant 2: [item20: 1.0, item1: 0.6, item_low2: 0.2] → same → rsfScore=0.5
       //
-      // item1: avgScore=(0.5+0.5)/2=0.5, bonus=+0.10 → rsfScore=0.60
-      // item10: rsfScore=1.0 (no bonus), item20: rsfScore=1.0 (no bonus)
+      // Item1: avgScore=(0.5+0.5)/2=0.5, bonus=+0.10 → rsfScore=0.60
+      // Item10: rsfScore=1.0 (no bonus), item20: rsfScore=1.0 (no bonus)
       // — item10 and item20 still beat item1 because they have max normalized score
       //
       // The key insight: bonus only helps if base scores are comparable.
       // Test: item1 has base 0.5 in both variants; item99 has base 0.45 in one variant.
-      // item1: avg=0.5, +0.10 → 0.60
-      // item99: avg=0.45, no bonus → 0.45
-      // item1 (0.60) > item99 (0.45)  ✓
+      // Item1: avg=0.5, +0.10 → 0.60
+      // Item99: avg=0.45, no bonus → 0.45
+      // Item1 (0.60) > item99 (0.45)  ✓
 
       const variantLists = [
         [makeList('vector', [makeItem(10, 1.0), makeItem(1, 0.6), makeItem(99, 0.55), makeItem(50, 0.2)])],
@@ -462,31 +460,31 @@ describe('T027: RSF Multi-List and Cross-Variant Fusion', () => {
       expect(item1).toBeDefined();
       expect(item99).toBeDefined();
 
-      // item1 appears in 2 variants → gets +0.10 bonus over its base avg score
-      // item99 appears in only 1 variant → no bonus
-      // item1 base > item99 base + item1 gets bonus, so item1 should outrank item99
+      // Item1 appears in 2 variants → gets +0.10 bonus over its base avg score
+      // Item99 appears in only 1 variant → no bonus
+      // Item1 base > item99 base + item1 gets bonus, so item1 should outrank item99
       expect(item1!.rsfScore).toBeGreaterThan(item99!.rsfScore);
     });
 
     it('T027.9.2: item in 3 variants gets +0.20 bonus (2 additional variants)', () => {
       // Item 1 appears in all 3 variants; item 99 only in variant 1.
       // To make the bonus observable, item1 needs a moderate base score so that
-      // after +0.20 bonus it clearly beats item99 which has no bonus.
+      // After +0.20 bonus it clearly beats item99 which has no bonus.
       //
       // Variant 1: [item10: 1.0, item1: 0.6, item99: 0.55, item50: 0.2] → range=0.8
-      //   normV1(item1)  = (0.6-0.2)/0.8 = 0.5
-      //   normV1(item99) = (0.55-0.2)/0.8 = 0.4375
-      //   1/1 source → no penalty → item1=0.5, item99=0.4375
+      // NormV1(item1)  = (0.6-0.2)/0.8 = 0.5
+      // NormV1(item99) = (0.55-0.2)/0.8 = 0.4375
+      // 1/1 source → no penalty → item1=0.5, item99=0.4375
       //
       // Variant 2: [item20: 1.0, item1: 0.6, item30: 0.2] → range=0.8
-      //   normV2(item1) = (0.6-0.2)/0.8 = 0.5 → rsfScore=0.5
+      // NormV2(item1) = (0.6-0.2)/0.8 = 0.5 → rsfScore=0.5
       //
       // Variant 3: [item30: 1.0, item1: 0.6, item40: 0.2] → range=0.8
-      //   normV3(item1) = (0.6-0.2)/0.8 = 0.5 → rsfScore=0.5
+      // NormV3(item1) = (0.6-0.2)/0.8 = 0.5 → rsfScore=0.5
       //
-      // item1: avgScore=(0.5+0.5+0.5)/3=0.5, variantCount=3 → +0.20 → rsfScore=0.70
-      // item99: avgScore=0.4375/1=0.4375, variantCount=1 → no bonus → rsfScore=0.4375
-      // item1 (0.70) > item99 (0.4375) ✓
+      // Item1: avgScore=(0.5+0.5+0.5)/3=0.5, variantCount=3 → +0.20 → rsfScore=0.70
+      // Item99: avgScore=0.4375/1=0.4375, variantCount=1 → no bonus → rsfScore=0.4375
+      // Item1 (0.70) > item99 (0.4375) ✓
 
       const variantLists = [
         [makeList('v1', [makeItem(10, 1.0), makeItem(1, 0.6), makeItem(99, 0.55), makeItem(50, 0.2)])],
@@ -501,7 +499,7 @@ describe('T027: RSF Multi-List and Cross-Variant Fusion', () => {
       expect(item1).toBeDefined();
       expect(item99).toBeDefined();
 
-      // item1 appears in 3 variants → bonus = 0.10 * 2 = +0.20 → significantly outranks item99
+      // Item1 appears in 3 variants → bonus = 0.10 * 2 = +0.20 → significantly outranks item99
       expect(item1!.rsfScore).toBeGreaterThan(item99!.rsfScore);
     });
 
@@ -676,16 +674,16 @@ describe('T027: RSF Multi-List and Cross-Variant Fusion', () => {
   describe('T027.14: Detailed score verification for multi-list', () => {
     it('T027.14.1: verifies full computation for 3-source scenario', () => {
       // List A (vector): [1: 1.0, 2: 0.5] → min=0.5, max=1.0, range=0.5
-      //   normA(1) = (1.0-0.5)/0.5 = 1.0
-      //   normA(2) = (0.5-0.5)/0.5 = 0.0
+      // NormA(1) = (1.0-0.5)/0.5 = 1.0
+      // NormA(2) = (0.5-0.5)/0.5 = 0.0
       //
       // List B (bm25): [2: 0.9, 3: 0.1] → min=0.1, max=0.9, range=0.8
-      //   normB(2) = (0.9-0.1)/0.8 = 1.0
-      //   normB(3) = (0.1-0.1)/0.8 = 0.0
+      // NormB(2) = (0.9-0.1)/0.8 = 1.0
+      // NormB(3) = (0.1-0.1)/0.8 = 0.0
       //
       // List C (graph): [1: 0.8, 3: 0.8] → min=0.8, max=0.8, range=0 → all 1.0
-      //   normC(1) = 1.0
-      //   normC(3) = 1.0
+      // NormC(1) = 1.0
+      // NormC(3) = 1.0
       //
       // Item 1 (vector, graph):      avg = (1.0 + 1.0) / 2 = 1.0, present=2/3 → 1.0*(2/3) ≈ 0.667
       // Item 2 (vector, bm25):       avg = (0.0 + 1.0) / 2 = 0.5, present=2/3 → 0.5*(2/3) ≈ 0.333
@@ -751,11 +749,11 @@ describe('T027: RSF Multi-List and Cross-Variant Fusion', () => {
   describe('T027.16: Cross-variant known score computation', () => {
     it('T027.16.1: verifies cross-variant bonus is applied correctly', () => {
       // Variant 1: item 1 is the only item → normalized to 1.0, no penalty (1/1)
-      //   → rsfScore from multi = 1.0
+      // → rsfScore from multi = 1.0
       // Variant 2: item 1 is the only item → normalized to 1.0, no penalty (1/1)
-      //   → rsfScore from multi = 1.0
+      // → rsfScore from multi = 1.0
       // Merge: avgScore = (1.0 + 1.0) / 2 = 1.0
-      // variantCount = 2 → bonus = 0.10 * (2-1) = +0.10
+      // VariantCount = 2 → bonus = 0.10 * (2-1) = +0.10
       // Final = clamp01(1.0 + 0.10) = 1.0 (clamped)
 
       const variantLists = [
@@ -771,15 +769,15 @@ describe('T027: RSF Multi-List and Cross-Variant Fusion', () => {
 
     it('T027.16.2: item in 2 variants with moderate scores gets correct bonus', () => {
       // Variant 1: [item1: 0.9, item99: 0.9] → both normalize to 1.0 (same score → max==min)
-      //   Since there's only 1 list per variant, totalSources=1, countPresent=1 → no penalty
-      //   item1 rsfScore from multi = 1.0
-      //   item99 rsfScore from multi = 1.0
+      // Since there's only 1 list per variant, totalSources=1, countPresent=1 → no penalty
+      // Item1 rsfScore from multi = 1.0
+      // Item99 rsfScore from multi = 1.0
       //
       // Variant 2: [item1: 0.9] → normalizes to 1.0 → no penalty
-      //   item1 rsfScore from multi = 1.0
+      // Item1 rsfScore from multi = 1.0
       //
-      // item1: avgScore = (1.0 + 1.0) / 2 = 1.0, variantCount=2 → +0.10, clamped to 1.0
-      // item99: avgScore = 1.0 / 1 = 1.0, variantCount=1 → no bonus, rsfScore = 1.0
+      // Item1: avgScore = (1.0 + 1.0) / 2 = 1.0, variantCount=2 → +0.10, clamped to 1.0
+      // Item99: avgScore = 1.0 / 1 = 1.0, variantCount=1 → no bonus, rsfScore = 1.0
       // Both are 1.0 because of clamping
 
       const variantLists = [
@@ -798,16 +796,16 @@ describe('T027: RSF Multi-List and Cross-Variant Fusion', () => {
 
     it('T027.16.3: item in 2 variants with lower base score correctly benefits from bonus', () => {
       // Variant 1: [item10: 1.0, item1: 0.5] → min=0.5, max=1.0
-      //   normV1(item1) = (0.5-0.5)/(1.0-0.5) = 0.0
-      //   Since there's 1 list per variant, totalSources=1, 1/1 → no penalty
-      //   item1 rsfScore from multi = 0.0
+      // NormV1(item1) = (0.5-0.5)/(1.0-0.5) = 0.0
+      // Since there's 1 list per variant, totalSources=1, 1/1 → no penalty
+      // Item1 rsfScore from multi = 0.0
       //
       // Variant 2: [item10: 1.0, item1: 0.5] → same
-      //   item1 rsfScore from multi = 0.0
+      // Item1 rsfScore from multi = 0.0
       //
-      // item1: avgScore = 0.0, bonus = +0.10, final = 0.10
-      // item10: avgScore = 1.0 each variant, no bonus if only 1 variant... wait item10 IS in both
-      //   item10 rsfScore = 1.0 from each variant, avgScore = 1.0, bonus = +0.10, clamped to 1.0
+      // Item1: avgScore = 0.0, bonus = +0.10, final = 0.10
+      // Item10: avgScore = 1.0 each variant, no bonus if only 1 variant... wait item10 IS in both
+      // Item10 rsfScore = 1.0 from each variant, avgScore = 1.0, bonus = +0.10, clamped to 1.0
 
       const variantLists = [
         [makeList('v1', [makeItem(10, 1.0), makeItem(1, 0.5)])],
@@ -818,9 +816,9 @@ describe('T027: RSF Multi-List and Cross-Variant Fusion', () => {
       const item1  = results.find(r => r.id === 1);
       const item10 = results.find(r => r.id === 10);
 
-      // item1: avgScore=0.0, bonus=+0.10 → rsfScore = 0.10
+      // Item1: avgScore=0.0, bonus=+0.10 → rsfScore = 0.10
       expect(item1!.rsfScore).toBeCloseTo(0.10, 5);
-      // item10: avgScore=1.0, bonus clamped to 1.0
+      // Item10: avgScore=1.0, bonus clamped to 1.0
       expect(item10!.rsfScore).toBe(1.0);
     });
   });

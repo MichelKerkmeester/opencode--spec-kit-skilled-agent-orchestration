@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Memory Context
-// ---------------------------------------------------------------
+// --- 1. MEMORY CONTEXT ---
 
 import { randomUUID } from 'crypto';
 
@@ -32,7 +30,7 @@ import { isIdentityInRollout } from '../lib/cache/cognitive/rollout-policy';
 import * as retrievalTelemetry from '../lib/telemetry/retrieval-telemetry';
 import { initConsumptionLog, logConsumptionEvent } from '../lib/telemetry/consumption-logger';
 
-// AI-TRACE: T005: Eval logger — fail-safe, no-op when SPECKIT_EVAL_LOGGING !== "true"
+// Eval logger — fail-safe, no-op when SPECKIT_EVAL_LOGGING !== "true"
 import { logSearchQuery, logChannelResult, logFinalResult } from '../lib/eval/eval-logger';
 import * as vectorIndex from '../lib/search/vector-index';
 
@@ -353,9 +351,9 @@ function enforceTokenBudget(result: ContextResult, budgetTokens: number): { resu
     }
   }
 
-  // AI-WHY: Fallback when parsing fails or a structured response still exceeds budget
-  // after result-array truncation. Character-level binary search guarantees the
-  // returned payload is as large as possible while respecting the budget.
+  // Fallback when parsing fails or a structured response still exceeds budget
+  // After result-array truncation. Character-level binary search guarantees the
+  // Returned payload is as large as possible while respecting the budget.
   const fallbackResult = parseFailed
     ? fallbackToCharacterBudget(result)
     : fallbackToCharacterBudget(truncatedResult);
@@ -565,7 +563,7 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
 
   const normalizedInput = input.trim();
 
-  // AI-TRACE: T005: Eval logger — capture context query at entry (fail-safe)
+  // Eval logger — capture context query at entry (fail-safe)
   let _evalQueryId = 0;
   let _evalRunId = 0;
   try {
@@ -577,7 +575,7 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
     _evalQueryId = evalEntry.queryId;
     _evalRunId = evalEntry.evalRunId;
   } catch {
-    // AI-WHY: Intentional no-op — error deliberately discarded
+    // Intentional no-op — error deliberately discarded
   }
 
   const requestedSessionId = typeof session_id === 'string' && session_id.trim().length > 0
@@ -699,7 +697,7 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
         options.specFolder = discoveredFolder;
       }
     } catch (err: unknown) {
-      // AI-GUARD: CHK-PI-B3-004: never block context retrieval
+      // CHK-PI-B3-004: never block context retrieval
       console.error('[memory-context] folder discovery failed (non-critical):',
         err instanceof Error ? err.message : String(err));
     }
@@ -824,7 +822,7 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
     }
   });
 
-  // AI-TRACE: T004: Consumption instrumentation — log context event (fail-safe, never throws)
+  // Consumption instrumentation — log context event (fail-safe, never throws)
   try {
     const db = vectorIndex.getDb();
     if (db) {
@@ -838,7 +836,7 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
           resultCount = innerResults.length;
         }
       } catch {
-        // AI-WHY: Intentional no-op — error deliberately discarded
+        // Intentional no-op — error deliberately discarded
       }
       logConsumptionEvent(db, {
         event_type: 'context',
@@ -853,10 +851,10 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
       });
     }
   } catch {
-    // AI-WHY: Intentional no-op — error deliberately discarded
+    // Intentional no-op — error deliberately discarded
   }
 
-  // AI-TRACE: T005: Eval logger — capture final context results at exit (fail-safe)
+  // Eval logger — capture final context results at exit (fail-safe)
   try {
     if (_evalRunId && _evalQueryId) {
       let finalMemoryIds: number[] = [];
@@ -868,7 +866,7 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
           finalScores = innerResults.map(r => (r.score ?? r.similarity ?? 0) as number);
         }
       } catch {
-        // AI-WHY: Intentional no-op — error deliberately discarded
+        // Intentional no-op — error deliberately discarded
       }
       logFinalResult({
         evalRunId: _evalRunId,
@@ -893,7 +891,7 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
       });
     }
   } catch {
-    // AI-WHY: Intentional no-op — error deliberately discarded
+    // Intentional no-op — error deliberately discarded
   }
 
   return _contextResponse;
@@ -910,7 +908,7 @@ export {
   enforceTokenBudget,
 };
 
-// AI-WHY: Backward-compatible aliases (snake_case)
+// Backward-compatible aliases (snake_case)
 const handle_memory_context = handleMemoryContext;
 
 export {

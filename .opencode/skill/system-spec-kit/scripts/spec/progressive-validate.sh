@@ -38,7 +38,7 @@ source "${SCRIPT_DIR}/../lib/shell-common.sh"
 # STATE
 # Boolean flags are stored as "true"/"false" strings.
 # Use [[ "$FLAG" == "true" ]] for comparisons — NEVER use $FLAG
-# directly in boolean context with set -e (runs false command).
+# Directly in boolean context with set -e (runs false command).
 # ───────────────────────────────────────────────────────────────
 FOLDER_PATH=""
 PIPELINE_LEVEL=4
@@ -194,7 +194,7 @@ compute_diff() {
     new_file=$(mktemp /tmp/progressive-validate-new.XXXXXX)
     printf '%s' "$old_content" > "$old_file"
     printf '%s' "$new_content" > "$new_file"
-    # diff exits 1 when files differ — suppress errexit with || true
+    # Diff exits 1 when files differ — suppress errexit with || true
     local diff_output=""
     diff_output=$(diff -u --label "a/$label" --label "b/$label" "$old_file" "$new_file" 2>/dev/null || true)
     rm -f "$old_file" "$new_file"
@@ -293,7 +293,7 @@ run_level1_detect() {
 
 # AUTO-FIX 2a: Insert missing dates into spec documents.
 # Looks for placeholder patterns like "YYYY-MM-DD", "[DATE]", "date: TBD",
-# and replaces them with today's date.
+# And replaces them with today's date.
 autofix_missing_dates() {
     local folder="$1"
     local today

@@ -1,29 +1,22 @@
-// ---------------------------------------------------------------
-// MODULE: Reconsolidation
-// ---------------------------------------------------------------
-// ---------------------------------------------------------------
+// --- 1. RECONSOLIDATION ---
 // TM-06: Reconsolidation-on-Save
 //
 // After embedding generation, check top-3 most similar memories
-// in the spec folder:
+// In the spec folder:
 // - similarity >= 0.88: MERGE (duplicate - merge content,
-//   boost importance_weight)
+// Boost importance_weight)
 // - similarity 0.75-0.88: CONFLICT (supersede prior memory via causal
-//   'supersedes' edge)
+// 'supersedes' edge)
 // - similarity < 0.75: COMPLEMENT (store new memory unchanged)
 //
 // Behind SPECKIT_RECONSOLIDATION opt-in flag (default OFF)
 // REQUIRES: checkpoint created before first enable
-// ---------------------------------------------------------------
-
 import { createHash } from 'crypto';
 import type Database from 'better-sqlite3';
 import { recordHistory } from './history';
 import * as causalEdges from './causal-edges';
 
-/* ---------------------------------------------------------------
-   1. TYPES
-   --------------------------------------------------------------- */
+// --- 2. TYPES ---
 
 /** Action determined by similarity threshold comparison */
 export type ReconsolidationAction = 'merge' | 'conflict' | 'complement';
@@ -97,9 +90,7 @@ type StoreMemoryFn = (memory: NewMemoryData) => number;
 /** Callback for generating an embedding from content */
 type GenerateEmbeddingFn = (content: string) => Promise<Float32Array | number[] | null>;
 
-/* ---------------------------------------------------------------
-   2. CONFIGURATION
-   --------------------------------------------------------------- */
+// --- 3. CONFIGURATION ---
 
 /** Threshold above which memories are merged (near-duplicates) */
 const MERGE_THRESHOLD = 0.88;
@@ -110,9 +101,7 @@ const CONFLICT_THRESHOLD = 0.75;
 /** Maximum number of similar memories to check */
 const SIMILAR_MEMORY_LIMIT = 3;
 
-/* ---------------------------------------------------------------
-   3. FEATURE FLAG
-   --------------------------------------------------------------- */
+// --- 4. FEATURE FLAG ---
 
 /**
  * Check if reconsolidation is enabled via feature flag.
@@ -126,9 +115,7 @@ export function isReconsolidationEnabled(): boolean {
   return process.env.SPECKIT_RECONSOLIDATION?.toLowerCase().trim() === 'true';
 }
 
-/* ---------------------------------------------------------------
-   4. SIMILARITY SEARCH
-   --------------------------------------------------------------- */
+// --- 5. SIMILARITY SEARCH ---
 
 /**
  * Find the top-N most similar memories in a spec folder.
@@ -154,9 +141,7 @@ export function findSimilarMemories(
   }
 }
 
-/* ---------------------------------------------------------------
-   5. ACTION DETERMINATION
-   --------------------------------------------------------------- */
+// --- 6. ACTION DETERMINATION ---
 
 /**
  * Determine the reconsolidation action based on similarity score.
@@ -174,9 +159,7 @@ export function determineAction(similarity: number): ReconsolidationAction {
   return 'complement';
 }
 
-/* ---------------------------------------------------------------
-   6. MERGE OPERATION
-   --------------------------------------------------------------- */
+// --- 7. MERGE OPERATION ---
 
 /**
  * Merge a new memory into an existing one (similarity >= 0.88).
@@ -208,12 +191,12 @@ export async function executeMerge(
   const boostedWeight = Math.min(1.0, currentWeight + 0.1);
 
   try {
-    // AI-WHY: Include content_hash in UPDATE so change-detection and dedup
-    // use the merged content's hash, not the stale pre-merge value.
+    // Include content_hash in UPDATE so change-detection and dedup
+    // Use the merged content's hash, not the stale pre-merge value.
     const mergedHash = createHash('sha256').update(mergedContent, 'utf-8').digest('hex');
 
     // Generate embedding BEFORE transaction (async I/O cannot run inside
-    // better-sqlite3's synchronous transaction callback).
+    // Better-sqlite3's synchronous transaction callback).
     let newEmbedding: Float32Array | number[] | null = null;
     if (generateEmbedding) {
       try {
@@ -221,11 +204,11 @@ export async function executeMerge(
       } catch (embErr: unknown) {
         const msg = embErr instanceof Error ? embErr.message : String(embErr);
         console.warn('[reconsolidation] Failed to regenerate embedding for merge:', msg);
-        // AI-GUARD: Non-fatal: merged content is stored even without updated embedding
+        // Non-fatal: merged content is stored even without updated embedding
       }
     }
 
-    // AI-GUARD: Atomic transaction: update content + embedding together so they stay in sync.
+    // Atomic transaction: update content + embedding together so they stay in sync.
     db.transaction(() => {
       const mergeResult = db.prepare(`
         UPDATE memory_index
@@ -295,9 +278,7 @@ export function mergeContent(existing: string, incoming: string): string {
   return existing + '\n\n<!-- Merged content -->\n' + newLines.join('\n');
 }
 
-/* ---------------------------------------------------------------
-   7. CONFLICT OPERATION
-   --------------------------------------------------------------- */
+// --- 8. CONFLICT OPERATION ---
 
 /**
  * Resolve a conflict between highly similar memories (similarity 0.75-0.88).
@@ -321,7 +302,7 @@ export function executeConflict(
   db: Database.Database
 ): ConflictResult {
   try {
-    // AI-GUARD: Add causal 'supersedes' edge only when caller provides a distinct new ID.
+    // Add causal 'supersedes' edge only when caller provides a distinct new ID.
     // Prevent self-referential supersedes edges (source == target).
     let edgeId: number | null = null;
     const hasDistinctNewId =
@@ -330,7 +311,7 @@ export function executeConflict(
       newMemory.id !== existingMemory.id;
 
     if (hasDistinctNewId) {
-      // AI-GUARD: Atomic transaction: deprecate + edge must succeed or fail together.
+      // Atomic transaction: deprecate + edge must succeed or fail together.
       // Without this, a failed insertEdge leaves an orphaned deprecation.
       db.transaction(() => {
         const updateResult = db.prepare(`
@@ -356,7 +337,7 @@ export function executeConflict(
         );
       })();
     } else {
-      // AI-GUARD: Atomic transaction: content + embedding + hash update together.
+      // Atomic transaction: content + embedding + hash update together.
       const updatedHash = createHash('sha256').update(newMemory.content, 'utf-8').digest('hex');
       db.transaction(() => {
         db.prepare(`
@@ -390,9 +371,7 @@ export function executeConflict(
   }
 }
 
-/* ---------------------------------------------------------------
-   8. COMPLEMENT OPERATION
-   --------------------------------------------------------------- */
+// --- 9. COMPLEMENT OPERATION ---
 
 /**
  * Store a new memory unchanged (similarity < 0.75).
@@ -419,9 +398,7 @@ export function executeComplement(
   };
 }
 
-/* ---------------------------------------------------------------
-   9. RECONSOLIDATION ORCHESTRATOR
-   --------------------------------------------------------------- */
+// --- 10. RECONSOLIDATION ORCHESTRATOR ---
 
 /** Options for the reconsolidation orchestrator */
 export interface ReconsolidateOptions {
@@ -465,8 +442,8 @@ export async function reconsolidate(
 
   // No existing memories: complement (new)
   if (similarMemories.length === 0) {
-    // AI-WHY: Do not persist in orchestrator complement path.
-    // AI-WHY: Caller owns canonical create flow (prevents duplicate writes).
+    // Do not persist in orchestrator complement path.
+    // Caller owns canonical create flow (prevents duplicate writes).
     return {
       action: 'complement',
       newMemoryId: newMemory.id ?? 0,
@@ -488,7 +465,7 @@ export async function reconsolidate(
         let conflictMemory = newMemory;
 
         // TM-06 live-save path: materialize a distinct memory ID before conflict
-        // so supersedes edges can be created deterministically.
+        // So supersedes edges can be created deterministically.
         if (conflictMemory.id === undefined) {
           try {
             const storedId = storeMemory(newMemory);
@@ -510,10 +487,10 @@ export async function reconsolidate(
           return executeConflict(topMatch, conflictMemory, db);
         } catch (conflictErr: unknown) {
           // If storeMemory succeeded but executeConflict failed, clean up the orphan
-          // memory so we don't leave dangling rows with no supersedes edge.
+          // Memory so we don't leave dangling rows with no supersedes edge.
           if (conflictMemory.id !== undefined && conflictMemory.id !== newMemory.id) {
-            // AI-FIX: F-15 — Clean up related tables in same transaction to prevent
-            // orphan embedding/artifact rows when memory_index is deleted.
+            // F-15 — Clean up related tables in same transaction to prevent
+            // Orphan embedding/artifact rows when memory_index is deleted.
             try {
               db.transaction(() => {
                 const deleteResult = db.prepare('DELETE FROM memory_index WHERE id = ?').run(conflictMemory.id);
@@ -526,13 +503,13 @@ export async function reconsolidate(
                 try {
                   db.prepare('DELETE FROM vec_memories WHERE rowid = ?').run(conflictMemory.id);
                 } catch (_vecErr: unknown) {
-                  // vec_memories may not exist if sqlite-vec is unavailable — ignore
+                  // Vec_memories may not exist if sqlite-vec is unavailable — ignore
                 }
                 // Clean up any artifact references
                 try {
                   db.prepare('DELETE FROM memory_artifacts WHERE memory_id = ?').run(conflictMemory.id);
                 } catch (_artErr: unknown) {
-                  // memory_artifacts table may not exist — ignore
+                  // Memory_artifacts table may not exist — ignore
                 }
               })();
             } catch (_error: unknown) {
@@ -545,7 +522,7 @@ export async function reconsolidate(
       }
 
     case 'complement':
-      // AI-WHY: Complement is a routing decision only; caller persists once.
+      // Complement is a routing decision only; caller persists once.
       return {
         action: 'complement',
         newMemoryId: newMemory.id ?? 0,
@@ -562,9 +539,7 @@ export async function reconsolidate(
   }
 }
 
-/* ---------------------------------------------------------------
-   10. HELPERS
-   --------------------------------------------------------------- */
+// --- 11. HELPERS ---
 
 /**
  * Convert an embedding array to a Buffer for SQLite storage.

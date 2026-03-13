@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: CHECKPOINT LIMIT
-// ---------------------------------------------------------------
-
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import type BetterSqlite3Module from 'better-sqlite3';
 
@@ -78,9 +75,7 @@ describe('T212: Checkpoint Limit Parameter', () => {
     if (tmpDbPath && fs.existsSync(tmpDbPath)) { try { fs.unlinkSync(tmpDbPath); } catch {} }
   });
 
-  // -------------------------------------------------------------
   // SUITE: Limit parameter applied to listCheckpoints
-  // -------------------------------------------------------------
   describe('Limit parameter applied to listCheckpoints', () => {
     it('T212-01: Create 10 checkpoints', () => {
       for (let i = 0; i < 10; i++) {
@@ -118,9 +113,7 @@ describe('T212: Checkpoint Limit Parameter', () => {
     });
   });
 
-  // -------------------------------------------------------------
   // SUITE: Limit with specFolder filter
-  // -------------------------------------------------------------
   describe('Limit with specFolder filter', () => {
     beforeAll(() => {
       for (let i = 0; i < 5; i++) {
@@ -146,9 +139,7 @@ describe('T212: Checkpoint Limit Parameter', () => {
     });
   });
 
-  // -------------------------------------------------------------
   // SUITE: listCheckpoints signature accepts limit
-  // -------------------------------------------------------------
   describe('listCheckpoints signature accepts limit', () => {
     it('T212-08: listCheckpoints(specFolder, limit) accepted', () => {
       const result = mod.listCheckpoints(null, 10);

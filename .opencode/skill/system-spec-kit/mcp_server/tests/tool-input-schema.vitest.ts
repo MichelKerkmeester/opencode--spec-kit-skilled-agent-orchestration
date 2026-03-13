@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: Tool Input Schema Validation
-// ---------------------------------------------------------------
-
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { z } from 'zod';
 

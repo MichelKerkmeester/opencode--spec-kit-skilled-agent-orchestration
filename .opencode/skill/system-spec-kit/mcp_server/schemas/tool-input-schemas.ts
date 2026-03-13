@@ -1,10 +1,6 @@
-// ---------------------------------------------------------------
-// MODULE: Tool Input Schemas
-// ---------------------------------------------------------------
+// --- 1. TOOL INPUT SCHEMAS ---
 // Centralized strict Zod validation schemas for MCP tool inputs.
 // Strict mode is controlled by SPECKIT_STRICT_SCHEMAS (default: true).
-// ---------------------------------------------------------------
-
 import { z, ZodError, type ZodType } from 'zod';
 
 type ToolInput = Record<string, unknown>;
@@ -149,7 +145,7 @@ const memorySaveSchema = getSchema({
 // Discriminated delete: branch 1 requires `id` (single-record delete).
 // Branch 2 requires `specFolder` + `confirm: true` (bulk folder delete).
 // Codex fix: `confirm` accepts only `true` (not `false`) in both branches
-// to prevent semantically meaningless `confirm: false` from passing validation.
+// To prevent semantically meaningless `confirm: false` from passing validation.
 const memoryDeleteSchema = z.union([
   getSchema({
     id: positiveInt,

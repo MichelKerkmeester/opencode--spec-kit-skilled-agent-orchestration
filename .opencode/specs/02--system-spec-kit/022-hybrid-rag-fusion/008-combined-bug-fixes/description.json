@@ -1,14 +1,13 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/008-combined-bug-fixes",
-  "description": "Combined Specification: Bug Fixes (016)",
+  "description": "Combined Specification: Bug Fixes",
   "keywords": [
     "combined",
     "specification",
     "bug",
-    "fixes",
-    "016"
+    "fixes"
   ],
-  "lastUpdated": "2026-03-10T12:00:00.000Z",
+  "lastUpdated": "2026-03-13T18:17:46.667Z",
   "specId": "008",
   "folderSlug": "combined-bug-fixes",
   "parentChain": [

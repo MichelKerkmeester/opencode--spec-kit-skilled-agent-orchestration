@@ -1,11 +1,8 @@
-// ---------------------------------------------------------------
-// MODULE: Input Normalizer
-// ---------------------------------------------------------------
+// --- 1. INPUT NORMALIZER ---
 // Validates, normalizes, and transforms raw input data into structured session format
 import { structuredLog } from './logger';
 
-// 1. TYPES
-
+// --- 2. TYPES ---
 /** Data source type indicating where loaded data came from */
 export type DataSource = 'file' | 'opencode-capture' | 'simulation';
 
@@ -126,9 +123,7 @@ export interface TransformedCapture {
   _capturedAt?: string;
 }
 
-// ---------------------------------------------------------------
-// 2. DECISION TRANSFORMATION
-// ---------------------------------------------------------------
+// --- 3. DECISION TRANSFORMATION ---
 
 function transformKeyDecision(decisionItem: string | DecisionItemObject | null): Observation | null {
   let decisionText: string;
@@ -195,9 +190,7 @@ function transformKeyDecision(decisionItem: string | DecisionItemObject | null):
   };
 }
 
-// ---------------------------------------------------------------
-// 3. OBSERVATION BUILDERS
-// ---------------------------------------------------------------
+// --- 4. OBSERVATION BUILDERS ---
 
 function buildSessionSummaryObservation(summary: string, triggerPhrases: string[] = []): Observation {
   const summaryTitle: string = summary.length > 100
@@ -255,9 +248,7 @@ function hasPersistedNextStepsObservation(observations: Observation[]): boolean 
   });
 }
 
-// ---------------------------------------------------------------
-// 4. INPUT NORMALIZATION
-// ---------------------------------------------------------------
+// --- 5. INPUT NORMALIZATION ---
 
 function cloneInputData<T>(data: T): T {
   if (typeof structuredClone === 'function') {
@@ -363,9 +354,7 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
   return normalized;
 }
 
-// ---------------------------------------------------------------
-// 5. INPUT VALIDATION
-// ---------------------------------------------------------------
+// --- 6. INPUT VALIDATION ---
 
 function validateInputData(data: RawInputData, specFolderArg: string | null = null): void {
   const errors: string[] = [];
@@ -433,10 +422,7 @@ function validateInputData(data: RawInputData, specFolderArg: string | null = nu
   // Validation passed - function returns void on success, throws on failure
 }
 
-// ---------------------------------------------------------------
 // 5.5. TOOL OBSERVATION TITLE BUILDER
-// ---------------------------------------------------------------
-
 /**
  * Build a descriptive observation title from a tool call.
  * Uses the tool's file path, pattern, or command to create a meaningful title
@@ -523,9 +509,7 @@ function containsRelevantKeyword(keywords: string[], ...parts: Array<string | un
   return keywords.some((keyword) => normalized.includes(keyword));
 }
 
-// ---------------------------------------------------------------
-// 6. OPENCODE CAPTURE TRANSFORMATION
-// ---------------------------------------------------------------
+// --- 7. OPENCODE CAPTURE TRANSFORMATION ---
 
 function transformOpencodeCapture(capture: OpencodeCapture, specFolderHint?: string | null): TransformedCapture {
   // F-14: Runtime guards — validate capture shape before processing
@@ -549,8 +533,8 @@ function transformOpencodeCapture(capture: OpencodeCapture, specFolderHint?: str
 
   // --- Spec-folder relevance filter ---
   // When a spec folder hint is provided, filter tool calls to only those
-  // whose file paths relate to the target spec folder. This prevents
-  // unrelated session content (e.g., from prior conversations in the same
+  // Whose file paths relate to the target spec folder. This prevents
+  // Unrelated session content (e.g., from prior conversations in the same
   // OpenCode session) from polluting the memory file.
   const relevanceKeywords = buildSpecRelevanceKeywords(specFolderHint);
 
@@ -592,10 +576,10 @@ function transformOpencodeCapture(capture: OpencodeCapture, specFolderHint?: str
   }));
 
   // RC-2: Filter userPrompts by spec-folder relevance — prevents cross-spec
-  // content (e.g., SGQS/skill-graphs) from leaking into unrelated memory files.
+  // Content (e.g., SGQS/skill-graphs) from leaking into unrelated memory files.
   // Falls back to all prompts when no keyword match is found, because generic
-  // prompts ("continue from previous work") are common and losing them erases
-  // the entire conversation timeline (extractConversations iterates userPrompts).
+  // Prompts ("continue from previous work") are common and losing them erases
+  // The entire conversation timeline (extractConversations iterates userPrompts).
   const userPrompts: UserPrompt[] = (() => {
     if (!specFolderHint || relevanceKeywords.length === 0) return allUserPrompts;
     const filtered = allUserPrompts.filter(p => {
@@ -628,7 +612,7 @@ function transformOpencodeCapture(capture: OpencodeCapture, specFolderHint?: str
 
       if (!isPlaceholder && ex.assistantResponse.length > 20) {
         // When spec folder hint is provided, skip exchanges whose content
-        // doesn't mention any relevant keyword
+        // Doesn't mention any relevant keyword
         if (specFolderHint && relevanceKeywords.length > 0) {
           const responseRelevant = containsRelevantKeyword(relevanceKeywords, ex.assistantResponse);
           const inputRelevant = ex.userInput
@@ -676,7 +660,7 @@ function transformOpencodeCapture(capture: OpencodeCapture, specFolderHint?: str
   }
 
   // RC-2: Build recentContext from relevance-filtered exchanges to prevent
-  // foreign-spec content from propagating into SUMMARY via learning field.
+  // Foreign-spec content from propagating into SUMMARY via learning field.
   const relevantExchanges = (specFolderHint && relevanceKeywords.length > 0)
     ? exchanges.filter(ex => {
         return containsRelevantKeyword(relevanceKeywords, ex.userInput, ex.assistantResponse);
@@ -724,9 +708,7 @@ function transformOpencodeCapture(capture: OpencodeCapture, specFolderHint?: str
   };
 }
 
-// ---------------------------------------------------------------
-// 7. EXPORTS
-// ---------------------------------------------------------------
+// --- 8. EXPORTS ---
 
 export {
   // Primary exports

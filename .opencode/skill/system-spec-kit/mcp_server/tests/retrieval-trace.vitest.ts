@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: Retrieval Trace & Context Envelope Contracts (C136-08)
-// ---------------------------------------------------------------
-
 import { describe, expect, it } from 'vitest';
 import {
   createTrace,
@@ -25,10 +22,7 @@ import type {
 } from '@spec-kit/shared/contracts/retrieval-trace';
 
 describe('C136-08: Retrieval Trace Contracts', () => {
-  // ---------------------------------------------------------------
   // 1. Trace creation
-  // ---------------------------------------------------------------
-
   it('createTrace returns a valid trace with required fields', () => {
     const trace = createTrace('test query');
 
@@ -56,10 +50,7 @@ describe('C136-08: Retrieval Trace Contracts', () => {
     expect(trace1.traceId).not.toBe(trace2.traceId);
   });
 
-  // ---------------------------------------------------------------
   // 2. Trace entry addition
-  // ---------------------------------------------------------------
-
   it('addTraceEntry appends a stage to the trace', () => {
     const trace = createTrace('test');
 
@@ -113,10 +104,7 @@ describe('C136-08: Retrieval Trace Contracts', () => {
     expect(returned).toBe(trace);
   });
 
-  // ---------------------------------------------------------------
   // 3. All 6 stages accepted
-  // ---------------------------------------------------------------
-
   it('accepts all 6 retrieval stages', () => {
     const stages: RetrievalStage[] = [
       'candidate', 'filter', 'fusion', 'rerank', 'fallback', 'final-rank',
@@ -131,10 +119,7 @@ describe('C136-08: Retrieval Trace Contracts', () => {
     expect(trace.stages.map(s => s.stage)).toEqual(stages);
   });
 
-  // ---------------------------------------------------------------
   // 4. Context envelope
-  // ---------------------------------------------------------------
-
   it('createEnvelope wraps data with trace and metadata', () => {
     const trace = createTrace('q');
     addTraceEntry(trace, 'candidate', 50, 20, 10);
@@ -167,10 +152,7 @@ describe('C136-08: Retrieval Trace Contracts', () => {
     expect(envelope.degradedMode!.failure_mode).toBe('embedding_timeout');
   });
 
-  // ---------------------------------------------------------------
   // 5. Degraded mode contract
-  // ---------------------------------------------------------------
-
   it('createDegradedContract returns valid contract', () => {
     const contract = createDegradedContract(
       'reranker_unavailable',
@@ -213,15 +195,12 @@ describe('C136-08: Retrieval Trace Contracts', () => {
     expect(contract.degradedStages).toContain('final-rank');
   });
 
-  // ---------------------------------------------------------------
   // 6. Type-level sanity (compile-time + runtime validation)
-  // ---------------------------------------------------------------
-
   it('envelope metadata has correct ISO timestamp format', () => {
     const trace = createTrace('q');
     const envelope = createEnvelope({}, trace);
 
-    // generatedAt should be a valid ISO 8601 string
+    // GeneratedAt should be a valid ISO 8601 string
     const parsed = new Date(envelope.metadata.generatedAt);
     expect(parsed.getTime()).not.toBeNaN();
   });
@@ -238,10 +217,7 @@ describe('C136-08: Retrieval Trace Contracts', () => {
     }
   });
 
-  // ---------------------------------------------------------------
   // 7. Telemetry trace schema validation
-  // ---------------------------------------------------------------
-
   it('telemetry schema exports expected canonical retrieval stages', () => {
     expect(RETRIEVAL_TRACE_STAGES).toEqual([
       'candidate',

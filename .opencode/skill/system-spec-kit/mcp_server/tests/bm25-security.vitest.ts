@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: BM25 SECURITY
-// ---------------------------------------------------------------
-
 import { describe, it, expect } from 'vitest';
 import type BetterSqlite3 from 'better-sqlite3';
 import {

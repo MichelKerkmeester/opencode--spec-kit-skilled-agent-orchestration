@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: PHASE 2 INTEGRATION (T048-T049)
-// ---------------------------------------------------------------
-
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import Database from 'better-sqlite3';
 import * as workingMemory from '../lib/cache/cognitive/working-memory';

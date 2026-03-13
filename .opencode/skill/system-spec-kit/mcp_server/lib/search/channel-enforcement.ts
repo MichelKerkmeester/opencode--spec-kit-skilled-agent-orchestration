@@ -1,22 +1,16 @@
-// ---------------------------------------------------------------
-// MODULE: Channel Enforcement
-// ---------------------------------------------------------------
+// --- 1. CHANNEL ENFORCEMENT ---
 // Pipeline-ready wrapper around the channel min-representation check.
 // Provides a single enforceChannelRepresentation() entry point for
-// use inside the hybrid-search pipeline after RRF/RSF fusion.
+// Use inside the hybrid-search pipeline after RRF/RSF fusion.
 //
 // Feature flag: SPECKIT_CHANNEL_MIN_REP (default: enabled / graduated)
 // Delegates core logic to channel-representation.ts.
-// ---------------------------------------------------------------
-
 import {
   analyzeChannelRepresentation,
   isChannelMinRepEnabled,
 } from './channel-representation';
 
-/* ---------------------------------------------------------------
-   1. INTERFACES
-   --------------------------------------------------------------- */
+// --- 2. INTERFACES ---
 
 /** A fused result item returned from the search pipeline. */
 interface FusedResult {
@@ -52,9 +46,7 @@ export interface EnforcementResult {
   enforcement: EnforcementMetadata;
 }
 
-/* ---------------------------------------------------------------
-   2. MAIN EXPORT
-   --------------------------------------------------------------- */
+// --- 3. MAIN EXPORT ---
 
 /**
  * Apply channel min-representation enforcement to a set of fused search results.
@@ -108,7 +100,7 @@ export function enforceChannelRepresentation(
   const analysis = analyzeChannelRepresentation(window, channelResultSets);
 
   // Reassemble and globally re-sort by score to preserve strict ordering
-  // even when topK < fusedResults.length and promotions are inserted.
+  // Even when topK < fusedResults.length and promotions are inserted.
   const finalResults: Array<FusedResult> = [...analysis.topK, ...tail]
     .sort((a, b) => b.score - a.score) as Array<FusedResult>;
 
@@ -123,9 +115,7 @@ export function enforceChannelRepresentation(
   };
 }
 
-/* ---------------------------------------------------------------
-   3. HELPERS
-   --------------------------------------------------------------- */
+// --- 4. HELPERS ---
 
 /**
  * Count how many items in a result array belong to each channel.

@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Regression 010 Large Files Tests
-// ---------------------------------------------------------------
+// --- 1. REGRESSION 010 LARGE FILES TESTS ---
 
 import fs from 'node:fs';
 import os from 'node:os';
@@ -31,7 +29,7 @@ afterEach(() => {
     try {
       fs.rmSync(dir, { recursive: true, force: true });
     } catch {
-      // ignore test cleanup failures
+      // Ignore test cleanup failures
     }
   }
 });

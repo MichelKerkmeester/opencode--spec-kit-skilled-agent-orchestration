@@ -1,10 +1,6 @@
-// ---------------------------------------------------------------
-// MODULE: Lifecycle Tools
-// ---------------------------------------------------------------
+// --- 1. LIFECYCLE TOOLS ---
 // Dispatch for L6-L7 lifecycle tools: index_scan, preflight,
-// postflight, learning_history (T303).
-// ---------------------------------------------------------------
-
+// Postflight, learning_history (T303).
 import {
   handleMemoryIndexScan,
   handleMemoryIngestStart,
@@ -15,6 +11,9 @@ import {
   handleGetLearningHistory,
   handleEvalRunAblation,
   handleEvalReportingDashboard,
+  handleSharedMemoryStatus,
+  handleSharedSpaceMembershipSet,
+  handleSharedSpaceUpsert,
 } from '../handlers';
 import { validateToolArgs } from '../schemas/tool-input-schemas';
 
@@ -23,6 +22,7 @@ import {
   ScanArgs, PreflightArgs, PostflightArgs, LearningHistoryArgs,
   EvalRunAblationArgs, EvalReportingDashboardArgs,
   IngestStartArgs, IngestStatusArgs, IngestCancelArgs,
+  SharedSpaceMembershipArgs, SharedSpaceUpsertArgs, SharedMemoryStatusArgs,
 } from './types';
 
 /** Tool names handled by this module */
@@ -36,6 +36,9 @@ export const TOOL_NAMES = new Set([
   'memory_ingest_cancel',
   'eval_run_ablation',
   'eval_reporting_dashboard',
+  'shared_space_upsert',
+  'shared_space_membership_set',
+  'shared_memory_status',
 ]);
 
 /** Dispatch a tool call. Returns null if tool name not handled. */
@@ -50,6 +53,9 @@ export async function handleTool(name: string, args: Record<string, unknown>): P
     case 'memory_ingest_cancel':       return handleMemoryIngestCancel(parseArgs<IngestCancelArgs>(validateToolArgs('memory_ingest_cancel', args)));
     case 'eval_run_ablation':          return handleEvalRunAblation(parseArgs<EvalRunAblationArgs>(validateToolArgs('eval_run_ablation', args)));
     case 'eval_reporting_dashboard':   return handleEvalReportingDashboard(parseArgs<EvalReportingDashboardArgs>(validateToolArgs('eval_reporting_dashboard', args)));
+    case 'shared_space_upsert':        return handleSharedSpaceUpsert(parseArgs<SharedSpaceUpsertArgs>(validateToolArgs('shared_space_upsert', args)));
+    case 'shared_space_membership_set': return handleSharedSpaceMembershipSet(parseArgs<SharedSpaceMembershipArgs>(validateToolArgs('shared_space_membership_set', args)));
+    case 'shared_memory_status':       return handleSharedMemoryStatus(parseArgs<SharedMemoryStatusArgs>(validateToolArgs('shared_memory_status', args)));
     default: return null;
   }
 }

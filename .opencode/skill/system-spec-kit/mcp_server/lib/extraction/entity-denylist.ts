@@ -1,14 +1,7 @@
-// ---------------------------------------------------------------
-// MODULE: Entity Denylist
-// ---------------------------------------------------------------
+// --- 1. ENTITY DENYLIST ---
 // Common nouns and stop words filtered from entity extraction.
-// ---------------------------------------------------------------
-
-// ---------------------------------------------------------------------------
-// 1. COMMON NOUNS
+// --- 2. COMMON NOUNS ---
 // High-frequency English nouns that carry little entity signal.
-// ---------------------------------------------------------------------------
-
 const COMMON_NOUNS: readonly string[] = [
   'thing', 'things', 'way', 'ways', 'time', 'times',
   'year', 'years', 'people', 'system', 'part', 'case',
@@ -17,11 +10,8 @@ const COMMON_NOUNS: readonly string[] = [
   'work', 'day', 'number', 'use', 'change',
 ] as const;
 
-// ---------------------------------------------------------------------------
-// 2. TECHNOLOGY STOP WORDS
+// --- 3. TECHNOLOGY STOP WORDS ---
 // Generic tech abbreviations too broad to serve as entity names.
-// ---------------------------------------------------------------------------
-
 const TECHNOLOGY_STOP_WORDS: readonly string[] = [
   'app', 'api', 'sdk', 'cli', 'url',
   'http', 'https', 'json', 'html', 'css',
@@ -29,20 +19,15 @@ const TECHNOLOGY_STOP_WORDS: readonly string[] = [
   'dev', 'src', 'lib', 'bin', 'tmp',
 ] as const;
 
-// ---------------------------------------------------------------------------
-// 3. GENERIC MODIFIERS
+// --- 4. GENERIC MODIFIERS ---
 // Adjectives/determiners that add no entity-level meaning.
-// ---------------------------------------------------------------------------
-
 const GENERIC_MODIFIERS: readonly string[] = [
   'new', 'old', 'first', 'last', 'next',
   'main', 'other', 'same', 'different', 'current',
   'general', 'specific', 'basic', 'simple', 'various',
 ] as const;
 
-// ---------------------------------------------------------------------------
-// 4. COMBINED ENTITY DENYLIST
-// ---------------------------------------------------------------------------
+// --- 5. COMBINED ENTITY DENYLIST ---
 
 /**
  * Complete denylist of common nouns, technology stop words, and generic
@@ -55,9 +40,7 @@ export const ENTITY_DENYLIST: Set<string> = new Set<string>([
   ...GENERIC_MODIFIERS,
 ]);
 
-// ---------------------------------------------------------------------------
-// 5. PUBLIC API
-// ---------------------------------------------------------------------------
+// --- 6. PUBLIC API ---
 
 /**
  * Check if a term is on the entity denylist (case-insensitive).

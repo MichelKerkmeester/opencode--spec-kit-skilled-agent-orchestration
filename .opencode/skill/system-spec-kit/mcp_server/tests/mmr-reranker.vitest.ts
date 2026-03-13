@@ -1,9 +1,6 @@
-// ---------------------------------------------------------------
 // TEST: MMR Reranker (C138-P1)
 // Maximal Marginal Relevance for post-fusion diversity pruning.
 // Verifies dedup, lambda tuning, N-cap, performance, and limits.
-// ---------------------------------------------------------------
-
 import { describe, it, expect } from 'vitest';
 import { applyMMR, computeCosine } from '@spec-kit/shared/algorithms/mmr-reranker';
 import type { MMRCandidate, MMRConfig } from '@spec-kit/shared/algorithms/mmr-reranker';

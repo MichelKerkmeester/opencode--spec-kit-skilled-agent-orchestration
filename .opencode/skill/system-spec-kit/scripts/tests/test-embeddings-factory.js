@@ -1,6 +1,4 @@
-// ───────────────────────────────────────────────────────────────
-// TEST: EMBEDDINGS FACTORY VERIFICATION
-// ───────────────────────────────────────────────────────────────
+// --- 1. TEST: EMBEDDINGS FACTORY VERIFICATION ---
 
 'use strict';
 

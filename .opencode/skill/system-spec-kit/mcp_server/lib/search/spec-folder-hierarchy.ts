@@ -1,21 +1,19 @@
-// ---------------------------------------------------------------
-// MODULE: Spec Folder Hierarchy
-// ---------------------------------------------------------------
+// --- 1. SPEC FOLDER HIERARCHY ---
 // Builds a spec folder hierarchy from stored spec_folder paths
-// and enables hierarchy-aware retrieval (REQ-S6-006).
+// And enables hierarchy-aware retrieval (REQ-S6-006).
 //
 // Parses folder paths like "02--system-spec-kit/140-hybrid-rag/006-sprint-5"
-// into a tree structure where each path segment is a node, allowing child
-// folders to discover and retrieve memories from parent/sibling folders.
+// Into a tree structure where each path segment is a node, allowing child
+// Folders to discover and retrieve memories from parent/sibling folders.
 
 import type Database from 'better-sqlite3';
 
-// --- 0. HIERARCHY TREE CACHE ---
+// --- 2. HIERARCHY TREE CACHE ---
 //
-// buildHierarchyTree does a full scan of spec_folder values on every call.
+// BuildHierarchyTree does a full scan of spec_folder values on every call.
 // The hierarchy changes only when new spec folders are created, so we cache
-// the result with a TTL. A single cached value per database instance is
-// sufficient — no full LRU library needed.
+// The result with a TTL. A single cached value per database instance is
+// Sufficient — no full LRU library needed.
 
 const HIERARCHY_CACHE_TTL_MS = 60_000; // 60 seconds
 
@@ -25,7 +23,7 @@ interface HierarchyCacheEntry {
 }
 
 // Keyed by database instance identity so tests using different in-memory DBs
-// don't share a stale cache.
+// Don't share a stale cache.
 const hierarchyCache = new WeakMap<Database.Database, HierarchyCacheEntry>();
 
 /**
@@ -37,7 +35,7 @@ export function invalidateHierarchyCache(database: Database.Database): void {
   hierarchyCache.delete(database);
 }
 
-// --- 1. TYPES ---
+// --- 3. TYPES ---
 
 /**
  * Node in the spec-folder hierarchy tree.
@@ -57,7 +55,7 @@ export interface HierarchyTree {
   nodeMap: Map<string, HierarchyNode>;
 }
 
-// --- 2. TREE CONSTRUCTION ---
+// --- 4. TREE CONSTRUCTION ---
 
 /**
  * Build a spec folder hierarchy tree from all spec_folder values in the database.
@@ -134,7 +132,7 @@ function ensureNodeExists(
   };
   nodeMap.set(folderPath, node);
 
-  // AI-GUARD: Ensure parent chain exists (with 0 memoryCount for implicit parents)
+  // Ensure parent chain exists (with 0 memoryCount for implicit parents)
   const parentPath = getParentPath(folderPath);
   if (parentPath) {
     ensureNodeExists(nodeMap, parentPath, 0);
@@ -143,7 +141,7 @@ function ensureNodeExists(
   return node;
 }
 
-// --- 3. PATH UTILITIES ---
+// --- 5. PATH UTILITIES ---
 
 /**
  * Get the parent path of a spec folder path.
@@ -172,7 +170,7 @@ export function getAncestorPaths(folderPath: string): string[] {
   return ancestors;
 }
 
-// --- 4. TREE TRAVERSAL ---
+// --- 6. TREE TRAVERSAL ---
 
 /**
  * Get all sibling folder paths (same parent) for a given spec folder.
@@ -236,7 +234,7 @@ export function getRelatedFolders(
   return related;
 }
 
-// --- 5. HIERARCHY-AWARE QUERY ---
+// --- 7. HIERARCHY-AWARE QUERY ---
 
 /**
  * Query memories from related spec folders using hierarchy traversal.

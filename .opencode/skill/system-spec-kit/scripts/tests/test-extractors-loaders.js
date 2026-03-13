@@ -1,6 +1,4 @@
-// ───────────────────────────────────────────────────────────────
-// TEST: EXTRACTORS AND LOADERS COMPREHENSIVE VERIFICATION
-// ───────────────────────────────────────────────────────────────
+// --- 1. TEST: EXTRACTORS AND LOADERS COMPREHENSIVE VERIFICATION ---
 //
 // Covers:
 // - collect-session-data.js (424 LOC) - P0
@@ -13,8 +11,6 @@
 // - diagram-extractor.js - P1
 // - data-loader.js (145 LOC) - P0
 //
-// ───────────────────────────────────────────────────────────────
-
 'use strict';
 
 const path = require('path');

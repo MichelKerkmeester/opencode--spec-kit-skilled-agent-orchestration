@@ -4,7 +4,7 @@
 # ───────────────────────────────────────────────────────────────
 # Tests regression coverage for upgrade-level.sh
 # Covers fixes applied in spec 125: shell-common guard, dry-run,
-# level detection, input validation, already-at-target, missing spec.md.
+# Level detection, input validation, already-at-target, missing spec.md.
 # COMPATIBILITY: bash 3.2+ (macOS default)
 
 set -euo pipefail
@@ -158,7 +158,7 @@ Test problem.
 SPECMD
 
 # Trying to upgrade to level 2 should fail with "Already at Level 2"
-# which proves the script correctly detected level 2 from the table
+# Which proves the script correctly detected level 2 from the table
 exit_code=0
 output=$(bash "$UPGRADE_SCRIPT" "$tmp_dir/level-detect" --to 2 2>&1) || exit_code=$?
 if [[ "$exit_code" -ne 0 ]] && echo "$output" | grep -qi "already at level 2\|already at.*2"; then

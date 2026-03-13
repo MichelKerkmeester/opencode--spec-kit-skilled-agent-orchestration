@@ -1,9 +1,6 @@
-// ───────────────────────────────────────────────────────────────
 // TEST: RETRY MANAGER BEHAVIORAL VERIFICATION
 // Tests retry logic, backoff strategy, batch processing,
-// background job lifecycle, and edge cases.
-// ───────────────────────────────────────────────────────────────
-
+// Background job lifecycle, and edge cases.
 'use strict';
 
 const path = require('path');
@@ -181,7 +178,7 @@ function setupMocks() {
 
   // Pre-seed the require cache for the embeddings module with a mock.
   // The real module uses __createBinding with getter-only descriptors,
-  // so we replace the entire cache entry with a writable proxy.
+  // So we replace the entire cache entry with a writable proxy.
   const embeddingsResolved = require.resolve(EMBEDDINGS_PATH);
   origGenEmbed = require.cache[embeddingsResolved]; // save original cache entry
 
@@ -262,8 +259,7 @@ function teardownMocks() {
    4. TEST SECTIONS
 ────────────────────────────────────────────────────────────────*/
 
-// ── SECTION 1: Constants & Configuration ──────────────────────
-
+// --- 1. CONSTANTS & CONFIGURATION ---
 async function testConstants() {
   log('\n🔬 SECTION 1: Constants & Configuration');
 
@@ -307,8 +303,7 @@ async function testConstants() {
   }
 }
 
-// ── SECTION 2: getRetryStats ──────────────────────────────────
-
+// --- 2. GETRETRYSTATS ---
 async function testGetRetryStats() {
   log('\n🔬 SECTION 2: getRetryStats');
 
@@ -360,8 +355,7 @@ async function testGetRetryStats() {
   }
 }
 
-// ── SECTION 3: getRetryQueue ──────────────────────────────────
-
+// --- 3. GETRETRYQUEUE ---
 async function testGetRetryQueue() {
   log('\n🔬 SECTION 3: getRetryQueue');
 
@@ -494,8 +488,7 @@ async function testGetRetryQueue() {
   }
 }
 
-// ── SECTION 4: Backoff delay calculation ──────────────────────
-
+// --- 4. BACKOFF DELAY CALCULATION ---
 async function testBackoffLogic() {
   log('\n🔬 SECTION 4: Backoff Delay Calculation (via getRetryQueue)');
 
@@ -594,8 +587,7 @@ async function testBackoffLogic() {
   }
 }
 
-// ── SECTION 5: getFailedEmbeddings ────────────────────────────
-
+// --- 5. GETFAILEDEMBEDDINGS ---
 async function testGetFailedEmbeddings() {
   log('\n🔬 SECTION 5: getFailedEmbeddings');
 
@@ -655,8 +647,7 @@ async function testGetFailedEmbeddings() {
   }
 }
 
-// ── SECTION 6: markAsFailed ───────────────────────────────────
-
+// --- 6. MARKASFAILED ---
 async function testMarkAsFailed() {
   log('\n🔬 SECTION 6: markAsFailed');
 
@@ -706,8 +697,7 @@ async function testMarkAsFailed() {
   }
 }
 
-// ── SECTION 7: resetForRetry ──────────────────────────────────
-
+// --- 7. RESETFORRETRY ---
 async function testResetForRetry() {
   log('\n🔬 SECTION 7: resetForRetry');
 
@@ -775,8 +765,7 @@ async function testResetForRetry() {
   }
 }
 
-// ── SECTION 8: retryEmbedding ─────────────────────────────────
-
+// --- 8. RETRYEMBEDDING ---
 async function testRetryEmbedding() {
   log('\n🔬 SECTION 8: retryEmbedding');
 
@@ -905,8 +894,7 @@ async function testRetryEmbedding() {
   }
 }
 
-// ── SECTION 9: processRetryQueue ──────────────────────────────
-
+// --- 9. PROCESSRETRYQUEUE ---
 async function testProcessRetryQueue() {
   log('\n🔬 SECTION 9: processRetryQueue');
 
@@ -1009,8 +997,7 @@ async function testProcessRetryQueue() {
   }
 }
 
-// ── SECTION 10: Background Job Lifecycle ──────────────────────
-
+// --- 10. BACKGROUND JOB LIFECYCLE ---
 async function testBackgroundJobLifecycle() {
   log('\n🔬 SECTION 10: Background Job Lifecycle');
 
@@ -1088,8 +1075,7 @@ async function testBackgroundJobLifecycle() {
   }
 }
 
-// ── SECTION 11: runBackgroundJob ──────────────────────────────
-
+// --- 11. RUNBACKGROUNDJOB ---
 async function testRunBackgroundJob() {
   log('\n🔬 SECTION 11: runBackgroundJob');
 
@@ -1124,8 +1110,7 @@ async function testRunBackgroundJob() {
   }
 }
 
-// ── SECTION 12: parseRow (via getRetryQueue/getFailedEmbeddings)
-
+// --- 12. PARSEROW (VIA GETRETRYQUEUE/GETFAILEDEMBEDDINGS) ---
 async function testParseRow() {
   log('\n🔬 SECTION 12: Row Parsing (triggerPhrases handling)');
 
@@ -1135,17 +1120,17 @@ async function testParseRow() {
     // Insert with JSON string in the column that gets aliased to triggerPhrases
     // The retry-manager's parseRow checks row.triggerPhrases (camelCase)
     // In our mock DB, the column is trigger_phrases (snake_case), but SELECT *
-    // returns the column as-is. The parseRow function checks row.triggerPhrases
-    // which comes from the camelCase alias. Let's insert with a direct column override.
+    // Returns the column as-is. The parseRow function checks row.triggerPhrases
+    // Which comes from the camelCase alias. Let's insert with a direct column override.
     const id1 = insertMemory(mockDb, { embedding_status: 'pending' });
     // Manually add a triggerPhrases value via a column that might be aliased
     // Since the actual DB stores trigger_phrases, and getRetryQueue does SELECT *,
-    // parseRow checks row.triggerPhrases (which won't exist in our mock).
+    // ParseRow checks row.triggerPhrases (which won't exist in our mock).
     // This test verifies the behavior when the field IS present.
 
     // We need to test parseRow indirectly. The function only fires on
-    // rows returned by getRetryQueue. Since our schema uses snake_case,
-    // triggerPhrases won't be set. Let's test that it returns a shallow copy.
+    // Rows returned by getRetryQueue. Since our schema uses snake_case,
+    // TriggerPhrases won't be set. Let's test that it returns a shallow copy.
     const queue = retryManager.getRetryQueue(10);
     if (queue.length === 1 && typeof queue[0].id !== 'undefined') {
       pass('T-111a: getRetryQueue returns parsed row copies',
@@ -1172,8 +1157,7 @@ async function testParseRow() {
   }
 }
 
-// ── SECTION 13: Edge Cases ────────────────────────────────────
-
+// --- 13. EDGE CASES ---
 async function testEdgeCases() {
   log('\n🔬 SECTION 13: Edge Cases');
 

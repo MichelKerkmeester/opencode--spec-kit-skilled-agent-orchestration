@@ -1,8 +1,6 @@
-// ---------------------------------------------------------------
-// MODULE: Test — Search Fallback Tiered
-// ---------------------------------------------------------------
+// --- 1. TEST — SEARCH FALLBACK TIERED ---
 // Tests: Feature flag gating, tier progression, structuralSearch,
-//        degradation metadata, result merging, R15 invariant
+// Degradation metadata, result merging, R15 invariant
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
@@ -339,7 +337,7 @@ describe('PI-A2: Regression guards', () => {
 
     const calibrated = __testables.calibrateTier3Scores(existing, structural);
 
-    // topCap = 0.13 * 0.5 = 0.065, decayPerRank = 0.13 * 0.08 = 0.0104
+    // TopCap = 0.13 * 0.5 = 0.065, decayPerRank = 0.13 * 0.08 = 0.0104
     // Pin exact 50% cap on first result
     expect(calibrated[0].score).toBeCloseTo(0.065, 5);
     // Pin decay curve on second result

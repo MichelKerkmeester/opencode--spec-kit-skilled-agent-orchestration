@@ -1,11 +1,7 @@
-// ---------------------------------------------------------------
-// MODULE: Anchor Chunker
-// ---------------------------------------------------------------
+// --- 1. ANCHOR CHUNKER ---
 // Splits large memory files into chunks using ANCHOR tags as
-// natural boundaries. Falls back to structure-aware markdown
-// splitting when anchors are absent.
-// ---------------------------------------------------------------
-
+// Natural boundaries. Falls back to structure-aware markdown
+// Splitting when anchors are absent.
 /* ---------------------------------------------------------------
    1. TYPES
 --------------------------------------------------------------- */
@@ -132,7 +128,7 @@ function chunkByAnchors(sections: AnchorSection[]): AnchorChunk[] {
   }
 
   for (const section of sections) {
-    // AI-FIX: F-10 — Oversized anchor sections must be further split to respect
+    // F-10 — Oversized anchor sections must be further split to respect
     // MAX_CHUNK_CHARS. Previously they were emitted as single oversized chunks.
     if (section.charCount > MAX_CHUNK_CHARS) {
       flush();

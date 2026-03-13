@@ -1,10 +1,7 @@
-// ---------------------------------------------------------------
-// MODULE: Tool Detection
-// ---------------------------------------------------------------
+// --- 1. TOOL DETECTION ---
 // Detects tool calls, classifies conversation phases, and identifies prose context
 
-// 1. TYPES
-
+// --- 2. TYPES ---
 /** Confidence level for tool call detection */
 export type ToolConfidence = 'high' | 'medium' | 'low';
 
@@ -23,9 +20,7 @@ export interface ToolCallRecord {
 /** Conversation phase classification labels */
 export type ConversationPhase = 'Research' | 'Planning' | 'Implementation' | 'Debugging' | 'Verification' | 'Discussion';
 
-// ---------------------------------------------------------------
-// 2. TOOL CALL DETECTION
-// ---------------------------------------------------------------
+// --- 3. TOOL CALL DETECTION ---
 
 function detectToolCall(text: string): ToolUsage | null {
   if (!text || typeof text !== 'string') return null;
@@ -53,9 +48,7 @@ function detectToolCall(text: string): ToolUsage | null {
   return null;
 }
 
-// ---------------------------------------------------------------
-// 3. PROSE CONTEXT DETECTION
-// ---------------------------------------------------------------
+// --- 4. PROSE CONTEXT DETECTION ---
 
 function isProseContext(text: string, matchStartIndex: number): boolean {
   if (matchStartIndex < 0) return false;
@@ -88,9 +81,7 @@ function isProseContext(text: string, matchStartIndex: number): boolean {
   return false;
 }
 
-// ---------------------------------------------------------------
-// 4. CONVERSATION PHASE CLASSIFICATION
-// ---------------------------------------------------------------
+// --- 5. CONVERSATION PHASE CLASSIFICATION ---
 
 function classifyConversationPhase(toolCalls: ToolCallRecord[], messageContent: string): ConversationPhase {
   const tools: string[] = toolCalls.map((t: ToolCallRecord) => t.tool?.toLowerCase() || '');
@@ -119,9 +110,7 @@ function classifyConversationPhase(toolCalls: ToolCallRecord[], messageContent: 
   return 'Discussion';
 }
 
-// ---------------------------------------------------------------
-// 5. EXPORTS
-// ---------------------------------------------------------------
+// --- 6. EXPORTS ---
 
 export {
   detectToolCall,

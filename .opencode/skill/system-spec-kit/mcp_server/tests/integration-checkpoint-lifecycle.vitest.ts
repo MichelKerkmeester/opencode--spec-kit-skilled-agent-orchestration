@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: INTEGRATION CHECKPOINT LIFECYCLE
-// ---------------------------------------------------------------
-
 import { describe, it, expect } from 'vitest';
 
 import * as checkpointHandler from '../handlers/checkpoints';
@@ -41,7 +38,7 @@ describe('Integration Checkpoint Lifecycle (T529) [deferred - requires DB test f
 
     it('T529-3: CheckpointList accepts empty params', async () => {
       // Should either return a valid MCP response or throw a DB/infra error,
-      // but NOT a parameter validation error
+      // But NOT a parameter validation error
       try {
         const result = await checkpointHandler.handleCheckpointList({} as CheckpointListArgs);
         // If it succeeds, it should return content
@@ -88,14 +85,14 @@ describe('Integration Checkpoint Lifecycle (T529) [deferred - requires DB test f
     });
 
     it('T529-8: specFolder filter accepted for List', async () => {
-      // specFolder should not cause a validation error.
+      // SpecFolder should not cause a validation error.
       // DB/infra errors are acceptable in test env.
       try {
         await checkpointHandler.handleCheckpointList({
           specFolder: 'specs/test-folder',
         } as CheckpointListArgs);
       } catch (error: unknown) {
-        // specFolder-specific rejection = real failure
+        // SpecFolder-specific rejection = real failure
         expect(getErrorMessage(error)).not.toMatch(/specFolder/i);
       }
     });

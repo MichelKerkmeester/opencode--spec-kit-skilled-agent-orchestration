@@ -1,6 +1,6 @@
 ---
 title: "Implementation Plan: memory-quality-and-indexing [template:level_2/plan.md]"
-description: "Feature-centric audit execution plan for 16 Memory Quality and Indexing features, including adjacent-path save/indexing fixes and updated verification outcomes."
+description: "Feature-centric audit execution plan for 18 Memory Quality and Indexing features, including adjacent-path save/indexing fixes and updated verification outcomes."
 SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
 trigger_phrases:
   - "implementation"
@@ -32,7 +32,7 @@ contextType: "general"
 | **Testing** | Targeted Vitest suites + `tsc --noEmit` + alignment drift verification |
 
 ### Overview
-This plan records completed execution for the Memory Quality and Indexing catalog (16 features total), including follow-on adjacent-path fixes after WARN remediation closed. Work covered feature inventory, code/test verification, remediation of all WARN findings, adjacent quality/indexing-path behavior fixes, and synchronization of Level 2 artifacts to a closed state.
+This plan records completed execution for the Memory Quality and Indexing catalog (18 features total), including follow-on adjacent-path fixes after WARN remediation closed. Work covered feature inventory, code/test verification, remediation of all WARN findings, adjacent quality/indexing-path behavior fixes, and synchronization of Level 2 artifacts to a closed state.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -60,7 +60,7 @@ This plan records completed execution for the Memory Quality and Indexing catalo
 Documentation-Driven Audit Workflow
 
 ### Key Components
-- **Feature Catalog Inputs**: 16 markdown feature definitions in `feature_catalog/13--memory-quality-and-indexing/`.
+- **Feature Catalog Inputs**: 18 markdown feature definitions in `feature_catalog/13--memory-quality-and-indexing/`.
 - **Audit Findings Store**: `checklist.md` records status, issues, gaps, and recommendations.
 - **Remediation Backlog**: `tasks.md` tracks prioritized implementation/documentation fixes.
 
@@ -174,7 +174,7 @@ Phase 1.5 (Config) ───┘
 ### Rollback Procedure
 1. Restore prior versions of `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md`.
 2. Re-validate required template anchors/comments and frontmatter fields.
-3. Re-check summary totals (16 features; 16 PASS, 0 WARN, 0 FAIL) and task counts.
+3. Re-check summary totals (18 features; 18 PASS, 0 WARN, 0 FAIL) and task counts.
 4. Notify stakeholders of rollback and corrected re-application plan.
 
 ### Data Reversal

@@ -1,28 +1,25 @@
-// ---------------------------------------------------------------
-// MODULE: Fsrs Scheduler
-// ---------------------------------------------------------------
-// AI-GUARD: CANONICAL FSRS CONSTANTS & ALGORITHM
+// --- 1. FSRS SCHEDULER ---
+// CANONICAL FSRS CONSTANTS & ALGORITHM
 // Free Spaced Repetition Scheduler v4 algorithm implementation
 //
-// T301: TWO-DOMAIN DECAY MODEL (Single Source of Truth)
-// -----------------------------------------------------
+// TWO-DOMAIN DECAY MODEL (Single Source of Truth)
 // Long-term memory (this file):
-//   FSRS v4 power-law: R(t) = (1 + FSRS_FACTOR * t/S)^FSRS_DECAY
-//   Timescale: days/weeks. Constants: FSRS_FACTOR=19/81, FSRS_DECAY=-0.5
+// FSRS v4 power-law: R(t) = (1 + FSRS_FACTOR * t/S)^FSRS_DECAY
+// Timescale: days/weeks. Constants: FSRS_FACTOR=19/81, FSRS_DECAY=-0.5
 // All long-term decay consumers MUST import constants from this file.
 //
 // Working memory (working-memory.ts — separate system, intentionally decoupled):
-//   Linear multiplicative: score * 0.95 per tick
-//   Timescale: minutes. Operates on session-scoped attention scores only.
+// Linear multiplicative: score * 0.95 per tick
+// Timescale: minutes. Operates on session-scoped attention scores only.
 //
 // DECAY STRATEGY (ADR-004): This is the CANONICAL long-term decay
-// algorithm. All temporal decay for persistent memories should route
-// through calculateRetrievability(). Formula: R(t) = (1 + 19/81 * t/S)^(-0.5)
-// where t = elapsed days, S = stability (grows with successful reviews).
+// Algorithm. All temporal decay for persistent memories should route
+// Through calculateRetrievability(). Formula: R(t) = (1 + 19/81 * t/S)^(-0.5)
+// Where t = elapsed days, S = stability (grows with successful reviews).
 //
 // Consumers: attention-decay.ts (facade), composite-scoring.ts (temporal
-// factor), tier-classifier.ts (state classification),
-// vector-index-impl.js (SQL search ranking).
+// Factor), tier-classifier.ts (state classification),
+// Vector-index-impl.js (SQL search ranking).
 
 /* --- 1. CONSTANTS --- */
 
@@ -30,7 +27,7 @@
 const FSRS_FACTOR = 19 / 81;
 const FSRS_DECAY = -0.5;
 
-// T301: Derived constant for half-life ↔ stability conversion.
+// Derived constant for half-life ↔ stability conversion.
 // From R(h) = 0.5: S = (FSRS_FACTOR / 3) * h = (19/243) * h
 const FSRS_HALF_LIFE_FACTOR = FSRS_FACTOR / 3; // 19/243 ≈ 0.07819
 

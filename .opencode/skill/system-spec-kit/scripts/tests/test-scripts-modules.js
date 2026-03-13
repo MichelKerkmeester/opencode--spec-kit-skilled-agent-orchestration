@@ -1,6 +1,4 @@
-// ───────────────────────────────────────────────────────────────
-// TEST: SCRIPTS MODULES COMPREHENSIVE VERIFICATION
-// ───────────────────────────────────────────────────────────────
+// --- 1. TEST: SCRIPTS MODULES COMPREHENSIVE VERIFICATION ---
 
 'use strict';
 

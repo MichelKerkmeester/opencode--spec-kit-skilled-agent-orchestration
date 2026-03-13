@@ -1,10 +1,6 @@
-// ---------------------------------------------------------------
-// MODULE: Memory Tools
-// ---------------------------------------------------------------
+// --- 1. MEMORY TOOLS ---
 // Dispatch for L2-L4 memory tools: search, triggers, save,
-// list, stats, health, delete, update, validate (T303).
-// ---------------------------------------------------------------
-
+// List, stats, health, delete, update, validate (T303).
 import {
   handleMemorySearch,
   handleMemoryMatchTriggers,

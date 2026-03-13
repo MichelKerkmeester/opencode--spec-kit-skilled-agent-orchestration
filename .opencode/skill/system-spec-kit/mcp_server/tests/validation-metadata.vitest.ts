@@ -1,20 +1,17 @@
-// ---------------------------------------------------------------
 // TEST: Validation Signals as Retrieval Metadata
 //
 // Tests for:
-//   - extractValidationMetadata: signal extraction from PipelineRow
-//   - enrichResultsWithValidationMetadata: batch enrichment of results
+// - extractValidationMetadata: signal extraction from PipelineRow
+// - enrichResultsWithValidationMetadata: batch enrichment of results
 //
 // Coverage areas:
-//   T1-T5   : extractValidationMetadata — quality score signals
-//   T6-T9   : extractValidationMetadata — SPECKIT_LEVEL extraction
-//   T10-T12 : extractValidationMetadata — completion status markers
-//   T13-T14 : extractValidationMetadata — checklist heuristic
-//   T15-T16 : extractValidationMetadata — edge cases (null / missing)
-//   T17-T20 : enrichResultsWithValidationMetadata — batch enrichment
-//   T21-T22 : score immutability invariant
-// ---------------------------------------------------------------
-
+// T1-T5   : extractValidationMetadata — quality score signals
+// T6-T9   : extractValidationMetadata — SPECKIT_LEVEL extraction
+// T10-T12 : extractValidationMetadata — completion status markers
+// T13-T14 : extractValidationMetadata — checklist heuristic
+// T15-T16 : extractValidationMetadata — edge cases (null / missing)
+// T17-T20 : enrichResultsWithValidationMetadata — batch enrichment
+// T21-T22 : score immutability invariant
 import { describe, it, expect } from 'vitest';
 import {
   extractValidationMetadata,

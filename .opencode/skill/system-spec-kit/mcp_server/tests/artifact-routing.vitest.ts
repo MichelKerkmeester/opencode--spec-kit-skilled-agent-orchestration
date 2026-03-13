@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: Artifact-Class Routing Table (C136-09)
-// ---------------------------------------------------------------
-
 import { describe, expect, it } from 'vitest';
 import {
   classifyArtifact,
@@ -70,9 +67,9 @@ describe('C136-09 classifyArtifact', () => {
   });
 
   it('specific patterns take precedence (decision-record before plan)', () => {
-    // decision-record.md should NOT match plan.md pattern
+    // Decision-record.md should NOT match plan.md pattern
     expect(classifyArtifact('decision-record.md')).toBe('decision-record');
-    // implementation-summary.md should NOT match unknown
+    // Implementation-summary.md should NOT match unknown
     expect(classifyArtifact('implementation-summary.md')).toBe('implementation-summary');
   });
 });

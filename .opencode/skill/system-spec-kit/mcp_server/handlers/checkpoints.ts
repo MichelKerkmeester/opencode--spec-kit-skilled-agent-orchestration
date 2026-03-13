@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Checkpoints
-// ---------------------------------------------------------------
+// --- 1. CHECKPOINTS ---
 
 /* ---------------------------------------------------------------
    1. LIB MODULE IMPORTS
@@ -15,6 +13,7 @@ import { executeAutoPromotion } from '../lib/search/auto-promotion';
 import { recordSelection } from '../lib/search/learned-feedback';
 import { recordUserSelection } from '../lib/eval/ground-truth-feedback';
 import { recordNegativeFeedbackEvent } from '../lib/scoring/negative-feedback';
+import { recordAdaptiveSignal } from '../lib/cache/cognitive/adaptive-ranking';
 import { checkDatabaseUpdated } from '../core';
 import { requireDb, toErrorMessage } from '../utils';
 
@@ -209,7 +208,7 @@ async function handleCheckpointRestore(args: CheckpointRestoreArgs): Promise<MCP
 
       triggerMatcher.refreshTriggerCache();
     } catch (rebuildErr: unknown) {
-      // AI-GUARD: Index rebuild failure is non-fatal — indexes will self-heal on next query or restart
+      // Index rebuild failure is non-fatal — indexes will self-heal on next query or restart
       console.error('[T102] Index rebuild after checkpoint restore failed:', toErrorMessage(rebuildErr));
     }
   }
@@ -342,6 +341,22 @@ async function handleMemoryValidate(args: MemoryValidateArgs): Promise<MCPRespon
   vectorIndex.initializeDb();
   const database = requireDb();
   const result: ValidationResult = confidenceTracker.recordValidation(database, memoryId, wasUseful);
+  try {
+    recordAdaptiveSignal(database, {
+      memoryId,
+      signalType: wasUseful ? 'outcome' : 'correction',
+      signalValue: 1,
+      query: queryId ?? null,
+      actor: sessionId ?? 'memory_validate',
+      metadata: {
+        resultRank: typeof resultRank === 'number' ? resultRank : null,
+        totalResultsShown: typeof totalResultsShown === 'number' ? totalResultsShown : null,
+        intent: intent ?? null,
+      },
+    });
+  } catch (_error: unknown) {
+    // Adaptive signals are best-effort only
+  }
 
   // T002a: Auto-promotion wiring on positive feedback.
   let autoPromotion: {
@@ -452,7 +467,7 @@ export {
   handleMemoryValidate,
 };
 
-// AI-WHY: Backward-compatible aliases (snake_case)
+// Backward-compatible aliases (snake_case)
 const handle_checkpoint_create = handleCheckpointCreate;
 const handle_checkpoint_list = handleCheckpointList;
 const handle_checkpoint_restore = handleCheckpointRestore;

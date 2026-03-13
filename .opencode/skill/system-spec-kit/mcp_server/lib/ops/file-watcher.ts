@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: File Watcher
-// ---------------------------------------------------------------
+// --- 1. FILE WATCHER ---
 
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -54,7 +52,7 @@ function isDotfilePath(filePath: string): boolean {
       continue;
     }
 
-    // AI-WHY: .opencode is a first-class workspace root for Spec Kit assets.
+    // .opencode is a first-class workspace root for Spec Kit assets.
     // Treating it as a dotfile path would suppress watcher events for
     // .opencode/specs/** and break auto re-indexing in default layouts.
     if (part === '.opencode') {
@@ -120,7 +118,7 @@ export function startFileWatcher(config: WatcherConfig): FSWatcher {
   const inFlightReindex = new Set<Promise<void>>();
   let isClosing = false;
 
-  // AI-GUARD: C3 fix: Bounded concurrency — prevent unbounded parallel reindex operations
+  // C3 fix: Bounded concurrency — prevent unbounded parallel reindex operations
   const MAX_CONCURRENT_REINDEX = 2;
   let activeReindexCount = 0;
   const pendingReindexSlots: Array<() => void> = [];
@@ -246,8 +244,8 @@ export function startFileWatcher(config: WatcherConfig): FSWatcher {
           return;
         }
 
-        // AI-WHY: Sprint 9 fix: Handle ENOENT gracefully when a file is rapidly
-        // created then deleted before the debounce timer fires.
+        // Sprint 9 fix: Handle ENOENT gracefully when a file is rapidly
+        // Created then deleted before the debounce timer fires.
         let nextHash: string;
         try {
           nextHash = await hashFileContent(filePath);

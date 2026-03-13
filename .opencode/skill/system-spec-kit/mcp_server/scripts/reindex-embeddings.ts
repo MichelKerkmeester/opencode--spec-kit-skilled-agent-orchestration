@@ -1,7 +1,5 @@
 #!/usr/bin/env node
-// ---------------------------------------------------------------
-// MODULE: Reindex Embeddings Compatibility Wrapper
-// ---------------------------------------------------------------
+// --- 1. REINDEX EMBEDDINGS COMPATIBILITY WRAPPER ---
 
 import { spawnSync } from 'child_process';
 import path from 'path';

@@ -1,9 +1,6 @@
-// ---------------------------------------------------------------
 // TEST: End-to-End Pipeline Integration
 // Validates the full search pipeline works with the graph channel
-// by testing the PUBLIC API surface without requiring a real DB.
-// ---------------------------------------------------------------
-
+// By testing the PUBLIC API surface without requiring a real DB.
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import type Database from 'better-sqlite3';
 import type { GraphSearchFn } from '../lib/search/hybrid-search';
@@ -165,7 +162,7 @@ describe('Suite 1 — Module wiring: all exports are accessible', () => {
 // ================================================================
 // SUITE 2: PIPELINE CONTRACT TESTS
 // Wire mock graph fn via init(), call hybridSearch(), verify graph
-// channel inclusion/exclusion and metric tracking.
+// Channel inclusion/exclusion and metric tracking.
 // ================================================================
 
 describe('Suite 2 — Pipeline contract tests', () => {
@@ -240,7 +237,7 @@ describe('Suite 2 — Pipeline contract tests', () => {
     resetGraphMetrics();
     const before = getGraphMetrics().totalQueries;
 
-    // hybridSearchEnhanced tracks metrics (it checks useGraph flag internally).
+    // HybridSearchEnhanced tracks metrics (it checks useGraph flag internally).
     await hybridSearchEnhanced('test query', null, { useGraph: true });
 
     const after = getGraphMetrics().totalQueries;
@@ -264,7 +261,7 @@ describe('Suite 2 — Pipeline contract tests', () => {
 // ================================================================
 // SUITE 3: FEATURE FLAG CONTRACT
 // Graph unified flag defaults to true when unset; setting SPECKIT_GRAPH_UNIFIED=true
-// keeps isGraphUnifiedEnabled() enabled.
+// Keeps isGraphUnifiedEnabled() enabled.
 // ================================================================
 
 describe('Suite 3 — Feature flag contract', () => {

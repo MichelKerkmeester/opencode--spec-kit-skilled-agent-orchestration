@@ -1,9 +1,5 @@
-// ---------------------------------------------------------------
-// MODULE: Types
-// ---------------------------------------------------------------
+// --- 1. TYPES ---
 // Shared types for tool dispatch modules (T303).
-// ---------------------------------------------------------------
-
 // Re-export canonical MCPResponse from shared
 export type { MCPResponse } from '@spec-kit/shared/types';
 
@@ -19,8 +15,8 @@ export interface MCPResponseWithContext extends MCPResponse {
 /** Narrow pre-validated MCP tool args to a specific handler arg type.
  *  Centralises the single protocol-boundary cast so call sites stay clean. */
 export function parseArgs<T>(args: Record<string, unknown>): T {
-  // AI-WHY: Fix #36 (017-refinement-phase-6) — Guard against null/undefined/non-object
-  // at the protocol boundary before casting.
+  // Fix #36 (017-refinement-phase-6) — Guard against null/undefined/non-object
+  // At the protocol boundary before casting.
   if (args == null || typeof args !== 'object') {
     return {} as T;
   }
@@ -59,6 +55,10 @@ export interface SearchArgs {
   query?: string;
   concepts?: string[];
   specFolder?: string;
+  tenantId?: string;
+  userId?: string;
+  agentId?: string;
+  sharedSpaceId?: string;
   limit?: number;
   tier?: string;
   contextType?: string;
@@ -162,6 +162,16 @@ export interface SaveArgs {
   dryRun?: boolean;
   skipPreflight?: boolean;
   asyncEmbedding?: boolean; // T306: When true, embedding generation is deferred (non-blocking)
+  tenantId?: string;
+  userId?: string;
+  agentId?: string;
+  sessionId?: string;
+  sharedSpaceId?: string;
+  provenanceSource?: string;
+  provenanceActor?: string;
+  governedAt?: string;
+  retentionPolicy?: 'keep' | 'ephemeral' | 'shared';
+  deleteAfter?: string;
 }
 
 /** Arguments for memory index scan requests. */
@@ -171,6 +181,28 @@ export interface ScanArgs {
   includeConstitutional?: boolean;
   includeSpecDocs?: boolean;
   incremental?: boolean;
+}
+
+export interface SharedSpaceUpsertArgs {
+  spaceId: string;
+  tenantId: string;
+  name: string;
+  rolloutEnabled?: boolean;
+  rolloutCohort?: string;
+  killSwitch?: boolean;
+}
+
+export interface SharedSpaceMembershipArgs {
+  spaceId: string;
+  subjectType: 'user' | 'agent';
+  subjectId: string;
+  role: 'owner' | 'editor' | 'viewer';
+}
+
+export interface SharedMemoryStatusArgs {
+  tenantId?: string;
+  userId?: string;
+  agentId?: string;
 }
 
 /** Arguments for checkpoint creation requests. */

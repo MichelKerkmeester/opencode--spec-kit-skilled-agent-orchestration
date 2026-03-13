@@ -1,9 +1,5 @@
-// ---------------------------------------------------------------
-// MODULE: Workflow
-// ---------------------------------------------------------------
+// --- 1. WORKFLOW ---
 // Main workflow orchestrator -- coordinates data loading, extraction, rendering, and file output
-// ---------------------------------------------------------------
-
 // Node stdlib
 import * as path from 'path';
 import * as fsSync from 'fs';
@@ -690,7 +686,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     // Step 1.5: Stateless mode alignment check
     // When no JSON data file was provided, data comes from the active OpenCode session.
     // Verify the captured content relates to the target spec folder to prevent
-    // cross-spec contamination (e.g., session working on spec A saved to spec B).
+    // Cross-spec contamination (e.g., session working on spec A saved to spec B).
     const isStatelessMode = !activeDataFile && !preloadedData;
     if (isStatelessMode && activeSpecFolderArg && (collectedData.observations || collectedData.FILES)) {
       const alignmentTargets = await resolveAlignmentTargets(activeSpecFolderArg);
@@ -810,7 +806,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       log('   Enrichment complete');
 
       // RC-4: Post-enrichment alignment re-check — enrichment can introduce
-      // new foreign content (e.g., git context from other spec folders).
+      // New foreign content (e.g., git context from other spec folders).
       // Re-verify alignment at a lower threshold (10%) to catch this.
       // Uses resolved specFolder (not raw activeSpecFolderArg) for accurate keyword matching.
       if (specFolder && (collectedData.observations || collectedData.FILES)) {
@@ -942,7 +938,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     log('\n   All extraction complete (parallel execution)\n');
 
   // Patch TOOL_COUNT for enriched stateless saves so V7 does not flag
-  // synthetic file paths as contradictory with zero tool usage.
+  // Synthetic file paths as contradictory with zero tool usage.
   // RC-9 fix: Guard against NaN/undefined TOOL_COUNT before any comparison.
   if (!Number.isFinite(sessionData.TOOL_COUNT)) {
     sessionData.TOOL_COUNT = 0;
@@ -1127,8 +1123,8 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       ...conversations,
       ...workflowData,
       // RC-9: Re-assert TOOL_COUNT after spreading conversations ONLY in
-      // stateless mode, because conversations object contains TOOL_COUNT: 0
-      // which overwrites the patched value from stateless enrichment.
+      // Stateless mode, because conversations object contains TOOL_COUNT: 0
+      // Which overwrites the patched value from stateless enrichment.
       // Non-stateless flows should keep conversations.TOOL_COUNT as-is.
       ...(isStatelessMode ? { TOOL_COUNT: sessionData.TOOL_COUNT } : {}),
       FILES: effectiveFiles,
@@ -1184,8 +1180,8 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       filtering: {
         ...filterPipeline.getStats(),
         // RC-7: Clarify the two scoring systems to prevent confusion.
-        // metadata.json qualityScore is 0-100 (legacy scorer), while
-        // frontmatter quality_score is 0.0-1.0 (v2 scorer). Different metrics.
+        // Metadata.json qualityScore is 0-100 (legacy scorer), while
+        // Frontmatter quality_score is 0.0-1.0 (v2 scorer). Different metrics.
         _note: 'qualityScore is 0-100 scale (legacy scorer); frontmatter quality_score is 0.0-1.0 (v2 scorer)',
       },
       semanticSummary: {
@@ -1284,8 +1280,8 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   }
 
   // RC-5: V8/V9 contamination hard-block — prevent writing files when
-  // critical contamination rules fail. Previously these produced warnings
-  // but files were still written and sometimes indexed.
+  // Critical contamination rules fail. Previously these produced warnings
+  // But files were still written and sometimes indexed.
   if (qualityValidation.ruleResults) {
     const contaminationRuleIds = ['V8', 'V9'];
     // RC-5 fix: Case-insensitive ruleId comparison + null-safe filter
@@ -1308,7 +1304,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   const writtenFiles: string[] = await writeFilesAtomically(contextDir, files);
 
   // RC-6 fix: Check if the primary context file was actually written (it may
-  // have been skipped as a duplicate). Guard downstream operations accordingly.
+  // Have been skipped as a duplicate). Guard downstream operations accordingly.
   const ctxFileWritten = writtenFiles.includes(ctxFilename);
 
   // Update per-folder description.json memory tracking (only if file was written)
@@ -1339,9 +1335,9 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       }
 
       if (existing) {
-        // AI-WHY: Integration-tested via workflow-memory-tracking.vitest.ts (F3 coverage).
+        // Integration-tested via workflow-memory-tracking.vitest.ts (F3 coverage).
         const rawSeq = Number(existing.memorySequence) || 0;
-        // AI-WHY: Defensive clamp handles Infinity/NaN/negative/overflow edge cases (F11 fix).
+        // Defensive clamp handles Infinity/NaN/negative/overflow edge cases (F11 fix).
         const expectedSeq = (Number.isSafeInteger(rawSeq) && rawSeq >= 0) ? rawSeq + 1 : 1;
         existing.memorySequence = expectedSeq;
         existing.memoryNameHistory = [

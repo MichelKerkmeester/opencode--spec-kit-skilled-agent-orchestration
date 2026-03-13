@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Test — RSF Fusion
-// ---------------------------------------------------------------
+// --- 1. TEST — RSF FUSION ---
 // Relative Score Fusion — Single-Pair Variant
 // Hybrid RAG Fusion Refinement
 
@@ -114,10 +112,10 @@ describe('T023: RSF Fusion (Relative Score Fusion)', () => {
 
     it('T023.2.2: overlapping item score is average of normalized scores', () => {
       // List A: items 1 (0.9) and 2 (0.5) → min=0.5, max=0.9
-      // normalizedA(1) = (0.9 - 0.5) / (0.9 - 0.5) = 1.0
+      // NormalizedA(1) = (0.9 - 0.5) / (0.9 - 0.5) = 1.0
       // List B: items 1 (0.8) and 3 (0.4) → min=0.4, max=0.8
-      // normalizedB(1) = (0.8 - 0.4) / (0.8 - 0.4) = 1.0
-      // fused(1) = (1.0 + 1.0) / 2 = 1.0
+      // NormalizedB(1) = (0.8 - 0.4) / (0.8 - 0.4) = 1.0
+      // Fused(1) = (1.0 + 1.0) / 2 = 1.0
       const listA = makeList('vector', [
         makeItem(1, 0.9),
         makeItem(2, 0.5),
@@ -134,10 +132,10 @@ describe('T023: RSF Fusion (Relative Score Fusion)', () => {
 
     it('T023.2.3: overlapping item with mid-range scores', () => {
       // List A: items 1 (1.0), 2 (0.6), 3 (0.2) → min=0.2, max=1.0
-      // normalizedA(2) = (0.6 - 0.2) / (1.0 - 0.2) = 0.4 / 0.8 = 0.5
+      // NormalizedA(2) = (0.6 - 0.2) / (1.0 - 0.2) = 0.4 / 0.8 = 0.5
       // List B: items 2 (0.7), 4 (0.3) → min=0.3, max=0.7
-      // normalizedB(2) = (0.7 - 0.3) / (0.7 - 0.3) = 1.0
-      // fused(2) = (0.5 + 1.0) / 2 = 0.75
+      // NormalizedB(2) = (0.7 - 0.3) / (0.7 - 0.3) = 1.0
+      // Fused(2) = (0.5 + 1.0) / 2 = 0.75
       const listA = makeList('vector', [
         makeItem(1, 1.0),
         makeItem(2, 0.6),
@@ -176,8 +174,8 @@ describe('T023: RSF Fusion (Relative Score Fusion)', () => {
   describe('T023.3: Single-source items get 0.5 penalty', () => {
     it('T023.3.1: item only in list A gets normalizedScore * 0.5', () => {
       // List A: items 1 (0.9), 2 (0.5) → min=0.5, max=0.9
-      // normalizedA(2) = (0.5 - 0.5) / (0.9 - 0.5) = 0.0
-      // fused(2) = 0.0 * 0.5 = 0.0
+      // NormalizedA(2) = (0.5 - 0.5) / (0.9 - 0.5) = 0.0
+      // Fused(2) = 0.0 * 0.5 = 0.0
       const listA = makeList('vector', [
         makeItem(1, 0.9),
         makeItem(2, 0.5),
@@ -194,8 +192,8 @@ describe('T023: RSF Fusion (Relative Score Fusion)', () => {
 
     it('T023.3.2: item only in list B gets normalizedScore * 0.5', () => {
       // List B: items 3 (0.8), 4 (0.4) → min=0.4, max=0.8
-      // normalizedB(3) = (0.8 - 0.4) / (0.8 - 0.4) = 1.0
-      // fused(3) = 1.0 * 0.5 = 0.5
+      // NormalizedB(3) = (0.8 - 0.4) / (0.8 - 0.4) = 1.0
+      // Fused(3) = 1.0 * 0.5 = 0.5
       const listA = makeList('vector', [
         makeItem(1, 0.9),
       ]);
@@ -226,8 +224,8 @@ describe('T023: RSF Fusion (Relative Score Fusion)', () => {
       const item1 = results.find(r => r.id === 1);
       const item2 = results.find(r => r.id === 2);
       // When all scores are the same, normalized = 1.0
-      // item1 (overlap): (1.0 + 1.0) / 2 = 1.0
-      // item2 (single): 1.0 * 0.5 = 0.5
+      // Item1 (overlap): (1.0 + 1.0) / 2 = 1.0
+      // Item2 (single): 1.0 * 0.5 = 0.5
       expect(item1!.rsfScore).toBeGreaterThan(item2!.rsfScore);
     });
   });
@@ -361,7 +359,7 @@ describe('T023: RSF Fusion (Relative Score Fusion)', () => {
       const results = fuseResultsRsf(listA, listB);
       expect(results.length).toBe(1);
       // Both normalized = 1.0 (single item → max==min)
-      // fused = (1.0 + 1.0) / 2 = 1.0
+      // Fused = (1.0 + 1.0) / 2 = 1.0
       expect(results[0].rsfScore).toBeCloseTo(1.0, 5);
       expect(results[0].sources).toContain('vector');
       expect(results[0].sources).toContain('bm25');
@@ -373,7 +371,7 @@ describe('T023: RSF Fusion (Relative Score Fusion)', () => {
 
       const results = fuseResultsRsf(listA, listB);
       expect(results.length).toBe(1);
-      // normalized = 1.0, penalized = 0.5
+      // Normalized = 1.0, penalized = 0.5
       expect(results[0].rsfScore).toBeCloseTo(0.5, 5);
     });
   });
@@ -429,7 +427,7 @@ describe('T023: RSF Fusion (Relative Score Fusion)', () => {
 
       const results = fuseResultsRsf(listA, listB);
       for (const r of results) {
-        // normalized=1.0 each, average=1.0
+        // Normalized=1.0 each, average=1.0
         expect(r.rsfScore).toBeCloseTo(1.0, 5);
         expect(r.sources.length).toBe(2);
       }
@@ -472,17 +470,17 @@ describe('T023: RSF Fusion (Relative Score Fusion)', () => {
 
     it('T023.10.4: extractScore uses rank-based when neither exists', () => {
       const item: RrfItem = { id: 1, title: 'no scores' };
-      // rank=0, total=4 → 1 - 0/4 = 1.0
+      // Rank=0, total=4 → 1 - 0/4 = 1.0
       expect(extractScore(item, 0, 4)).toBeCloseTo(1.0, 5);
-      // rank=2, total=4 → 1 - 2/4 = 0.5
+      // Rank=2, total=4 → 1 - 2/4 = 0.5
       expect(extractScore(item, 2, 4)).toBeCloseTo(0.5, 5);
-      // rank=3, total=4 → 1 - 3/4 = 0.25
+      // Rank=3, total=4 → 1 - 3/4 = 0.25
       expect(extractScore(item, 3, 4)).toBeCloseTo(0.25, 5);
     });
 
     it('T023.10.5: rank-based fallback with single item returns 1.0', () => {
       const item: RrfItem = { id: 1 };
-      // total <= 1 → returns 1.0
+      // Total <= 1 → returns 1.0
       expect(extractScore(item, 0, 1)).toBe(1.0);
     });
   });
@@ -681,18 +679,18 @@ describe('T023: RSF Fusion (Relative Score Fusion)', () => {
   describe('T023.15: Detailed score computation verification', () => {
     it('T023.15.1: verifies full computation for a known scenario', () => {
       // List A: [id1: 1.0, id2: 0.6, id3: 0.2] → min=0.2, max=1.0, range=0.8
-      //   normalizedA(1) = (1.0-0.2)/0.8 = 1.0
-      //   normalizedA(2) = (0.6-0.2)/0.8 = 0.5
-      //   normalizedA(3) = (0.2-0.2)/0.8 = 0.0
+      // NormalizedA(1) = (1.0-0.2)/0.8 = 1.0
+      // NormalizedA(2) = (0.6-0.2)/0.8 = 0.5
+      // NormalizedA(3) = (0.2-0.2)/0.8 = 0.0
       //
       // List B: [id2: 0.9, id4: 0.1] → min=0.1, max=0.9, range=0.8
-      //   normalizedB(2) = (0.9-0.1)/0.8 = 1.0
-      //   normalizedB(4) = (0.1-0.1)/0.8 = 0.0
+      // NormalizedB(2) = (0.9-0.1)/0.8 = 1.0
+      // NormalizedB(4) = (0.1-0.1)/0.8 = 0.0
       //
-      // id1: A only → 1.0 * 0.5 = 0.5
-      // id2: both   → (0.5 + 1.0) / 2 = 0.75
-      // id3: A only → 0.0 * 0.5 = 0.0
-      // id4: B only → 0.0 * 0.5 = 0.0
+      // Id1: A only → 1.0 * 0.5 = 0.5
+      // Id2: both   → (0.5 + 1.0) / 2 = 0.75
+      // Id3: A only → 0.0 * 0.5 = 0.0
+      // Id4: B only → 0.0 * 0.5 = 0.0
       //
       // Sorted: id2 (0.75), id1 (0.5), id3 (0.0), id4 (0.0)
 
@@ -714,7 +712,7 @@ describe('T023: RSF Fusion (Relative Score Fusion)', () => {
       expect(results[1].id).toBe(1);
       expect(results[1].rsfScore).toBeCloseTo(0.5, 5);
 
-      // id3 and id4 both have 0.0, order between them is implementation-defined
+      // Id3 and id4 both have 0.0, order between them is implementation-defined
       const item3 = results.find(r => r.id === 3);
       const item4 = results.find(r => r.id === 4);
       expect(item3!.rsfScore).toBeCloseTo(0.0, 5);

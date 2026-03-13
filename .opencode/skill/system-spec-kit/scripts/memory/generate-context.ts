@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Generate Context
-// ---------------------------------------------------------------
+// --- 1. GENERATE CONTEXT ---
 // CLI entry point -- parses arguments, validates spec folder, and runs the memory workflow
 
 // Node stdlib
@@ -22,9 +20,7 @@ import { runWorkflow } from '../core/workflow';
 import { loadCollectedData } from '../loaders';
 import { collectSessionData } from '../extractors/collect-session-data';
 
-// ---------------------------------------------------------------
-// 1. INTERFACES
-// ---------------------------------------------------------------
+// --- 2. INTERFACES ---
 
 /** Result of validating a requested spec folder reference. */
 export interface SpecFolderValidation {
@@ -33,9 +29,7 @@ export interface SpecFolderValidation {
   warning?: string;
 }
 
-// ---------------------------------------------------------------
-// 2. HELP TEXT
-// ---------------------------------------------------------------
+// --- 3. HELP TEXT ---
 
 const HELP_TEXT = `
 Usage: node generate-context.js [options] <input>
@@ -105,10 +99,7 @@ if (process.argv.includes('--help') || process.argv.includes('-h')) {
   process.exit(0);
 }
 
-// ---------------------------------------------------------------
 // 2.1 SIGNAL HANDLERS
-// ---------------------------------------------------------------
-
 process.on('SIGTERM', () => {
   console.log('\nWarning: Received SIGTERM signal, shutting down gracefully...');
   process.exit(0);
@@ -119,9 +110,7 @@ process.on('SIGINT', () => {
   process.exit(0);
 });
 
-// ---------------------------------------------------------------
-// 3. SPEC FOLDER VALIDATION
-// ---------------------------------------------------------------
+// --- 4. SPEC FOLDER VALIDATION ---
 
 function isUnderApprovedSpecsRoot(normalizedInput: string): boolean {
   return validateFilePath(path.resolve(CONFIG.PROJECT_ROOT, normalizedInput), getSpecsDirectories()) !== null;
@@ -191,9 +180,7 @@ function isValidSpecFolder(folderPath: string): SpecFolderValidation {
   return { valid: true };
 }
 
-// ---------------------------------------------------------------
-// 4. CLI ARGUMENT PARSING
-// ---------------------------------------------------------------
+// --- 5. CLI ARGUMENT PARSING ---
 
 function parseArguments(): void {
   const primaryArg: string | undefined = process.argv[2];
@@ -252,7 +239,7 @@ function parseArguments(): void {
         }
       }
       // Even if path doesn't exist on disk yet, treat it as a spec folder reference
-      // if the last segment looks like a spec folder
+      // If the last segment looks like a spec folder
       if (!resolvedNestedPath && SPEC_FOLDER_PATTERN.test(segments[segments.length - 1])) {
         const activeDir = findActiveSpecsDir();
         if (activeDir) {
@@ -307,7 +294,7 @@ function validateArguments(): void {
       CONFIG.SPEC_FOLDER_ARG = resolved;
       return;
     }
-    // findChildFolder logs its own error for ambiguous matches
+    // FindChildFolder logs its own error for ambiguous matches
   }
 
   console.error(`\nError: Invalid spec folder format: ${CONFIG.SPEC_FOLDER_ARG}`);
@@ -392,9 +379,7 @@ function validateArguments(): void {
   process.exit(1);
 }
 
-// ---------------------------------------------------------------
-// 5. MAIN ENTRY POINT
-// ---------------------------------------------------------------
+// --- 6. MAIN ENTRY POINT ---
 
 async function main(): Promise<void> {
   console.log('Starting memory skill...\n');
@@ -425,9 +410,7 @@ async function main(): Promise<void> {
   }
 }
 
-// ---------------------------------------------------------------
-// 6. EXPORTS
-// ---------------------------------------------------------------
+// --- 7. EXPORTS ---
 
 if (require.main === module) {
   main().catch((error: unknown) => {

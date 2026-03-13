@@ -1,8 +1,6 @@
-// ---------------------------------------------------------------
-// MODULE: Vector Index Schema
-// ---------------------------------------------------------------
+// --- 1. VECTOR INDEX SCHEMA ---
 // Split from vector-index-store.ts — contains ALL schema creation,
-// migration, and companion-table logic.
+// Migration, and companion-table logic.
 
 import Database from 'better-sqlite3';
 import * as fs from 'fs';
@@ -28,6 +26,23 @@ interface SchemaCompatibilityReport {
   warnings: string[];
 }
 
+interface LineageSchemaReport {
+  compatible: boolean;
+  schemaVersion: number | null;
+  missingTables: string[];
+  missingColumns: Record<string, string[]>;
+  warnings: string[];
+}
+
+const MEMORY_LINEAGE_TABLE = 'memory_lineage';
+const ACTIVE_MEMORY_PROJECTION_TABLE = 'active_memory_projection';
+const LEGACY_MEMORY_LINEAGE_TABLE = 'hydra_memory_lineage';
+const LEGACY_ACTIVE_MEMORY_PROJECTION_TABLE = 'hydra_active_memory_projection';
+const GOVERNANCE_AUDIT_TABLE = 'governance_audit';
+const SHARED_SPACES_TABLE = 'shared_spaces';
+const SHARED_SPACE_MEMBERS_TABLE = 'shared_space_members';
+const SHARED_SPACE_CONFLICTS_TABLE = 'shared_space_conflicts';
+
 const REQUIRED_TABLES: readonly string[] = ['memory_index', 'schema_version'];
 const REQUIRED_MEMORY_INDEX_COLUMNS: readonly string[] = [
   'id',
@@ -39,6 +54,32 @@ const REQUIRED_MEMORY_INDEX_COLUMNS: readonly string[] = [
   'created_at',
   'updated_at',
 ];
+const REQUIRED_LINEAGE_TABLES: readonly string[] = [
+  MEMORY_LINEAGE_TABLE,
+  ACTIVE_MEMORY_PROJECTION_TABLE,
+];
+const REQUIRED_LINEAGE_COLUMNS: Readonly<Record<string, readonly string[]>> = {
+  [MEMORY_LINEAGE_TABLE]: [
+    'memory_id',
+    'logical_key',
+    'version_number',
+    'root_memory_id',
+    'predecessor_memory_id',
+    'superseded_by_memory_id',
+    'valid_from',
+    'valid_to',
+    'transition_event',
+    'actor',
+    'metadata',
+    'created_at',
+  ],
+  [ACTIVE_MEMORY_PROJECTION_TABLE]: [
+    'logical_key',
+    'root_memory_id',
+    'active_memory_id',
+    'updated_at',
+  ],
+};
 
 function hasTable(database: Database.Database, tableName: string): boolean {
   const row = database.prepare(
@@ -76,27 +117,28 @@ function getMigrationAllowedBasePaths(): string[] {
 }
 
 // Schema version for migration tracking
-// v5: Added memory_type column for type-specific half-lives (REQ-002)
-// v6: Added file_mtime_ms for incremental indexing fast-path (REQ-023, T064-T066)
-// v7: Added 'partial' embedding_status for deferred indexing (REQ-031, T096)
-// v8: Added causal_edges table for Causal Memory Graph (REQ-012, T043-T047)
-// v9: Added memory_corrections table for learning from corrections (REQ-015, REQ-026, T052-T055)
-// v10: Schema consolidation and index optimization
-// v11: Error code deduplication and validation improvements
-// v12: Unified memory_conflicts DDL (KL-1 Schema Unification)
-// v13: Add document_type and spec_level columns for full spec folder document indexing (Spec 126)
-// v14: Add content_text column + FTS5 rebuild for BM25 full-text search across restarts
-// v15: Add quality_score and quality_flags columns for memory quality gates
-// v16: Add parent_id column for chunked indexing of large files (010-index-large-files)
-// v17: Add interference_score column for TM-01 (Sprint 2)
-// v18: Sprint 6 — weight_history table + causal_edges provenance + encoding_intent column
-// v19: degree_snapshots + community_assignments (N2 graph centrality)
-// v20: memory_summaries + memory_entities + entity_catalog (R8/R10/S5)
-// v21: Add learned_triggers column (R11 learned feedback)
+// Added memory_type column for type-specific half-lives (REQ-002)
+// Added file_mtime_ms for incremental indexing fast-path (REQ-023, T064-T066)
+// Added 'partial' embedding_status for deferred indexing (REQ-031, T096)
+// Added causal_edges table for Causal Memory Graph (REQ-012, T043-T047)
+// Added memory_corrections table for learning from corrections (REQ-015, REQ-026, T052-T055)
+// V10: Schema consolidation and index optimization
+// V11: Error code deduplication and validation improvements
+// V12: Unified memory_conflicts DDL (KL-1 Schema Unification)
+// V13: Add document_type and spec_level columns for full spec folder document indexing (Spec 126)
+// V14: Add content_text column + FTS5 rebuild for BM25 full-text search across restarts
+// V15: Add quality_score and quality_flags columns for memory quality gates
+// V16: Add parent_id column for chunked indexing of large files (010-index-large-files)
+// V17: Add interference_score column for TM-01 (Sprint 2)
+// V18: Sprint 6 — weight_history table + causal_edges provenance + encoding_intent column
+// V19: degree_snapshots + community_assignments (N2 graph centrality)
+// V20: memory_summaries + memory_entities + entity_catalog (R8/R10/S5)
+// V21: Add learned_triggers column (R11 learned feedback)
+// V22: Phase 2 memory lineage tables + active projection support
 /** Current schema version for vector-index migrations. */
-export const SCHEMA_VERSION = 21;
+export const SCHEMA_VERSION = 22;
 
-// AI-TRACE: Run schema migrations from one version to another
+// Run schema migrations from one version to another
 // Each migration is idempotent - safe to run multiple times
 // BUG-019 FIX: Wrap migrations in transaction for atomicity
 /**
@@ -109,10 +151,10 @@ export const SCHEMA_VERSION = 21;
 export function run_migrations(database: Database.Database, from_version: number, to_version: number): void {
   const migrations: Record<number, () => void> = {
     1: () => {
-      // v0 -> v1: Initial schema (already exists via create_schema)
+      // V0 -> v1: Initial schema (already exists via create_schema)
     },
     2: () => {
-      // v1 -> v2: Add idx_history_timestamp index
+      // V1 -> v2: Add idx_history_timestamp index
       try {
         database.exec('CREATE INDEX IF NOT EXISTS idx_history_timestamp ON memory_history(timestamp DESC)');
         logger.info('Migration v2: Created idx_history_timestamp index');
@@ -123,7 +165,7 @@ export function run_migrations(database: Database.Database, from_version: number
       }
     },
     3: () => {
-      // v2 -> v3: Add related_memories column
+      // V2 -> v3: Add related_memories column
       try {
         database.exec('ALTER TABLE memory_index ADD COLUMN related_memories TEXT');
         logger.info('Migration v3: Added related_memories column');
@@ -134,7 +176,7 @@ export function run_migrations(database: Database.Database, from_version: number
       }
     },
     4: () => {
-      // v3 -> v4: Add FSRS (Free Spaced Repetition Scheduler) columns for cognitive memory
+      // V3 -> v4: Add FSRS (Free Spaced Repetition Scheduler) columns for cognitive memory
       // These columns enable spaced repetition-based memory retrieval prioritization
       const fsrs_columns = [
         { name: 'stability', sql: 'ALTER TABLE memory_index ADD COLUMN stability REAL DEFAULT 1.0' },
@@ -187,7 +229,7 @@ export function run_migrations(database: Database.Database, from_version: number
       }
     },
     5: () => {
-      // v4 -> v5: Add memory_type column for type-specific half-lives (REQ-002, T006)
+      // V4 -> v5: Add memory_type column for type-specific half-lives (REQ-002, T006)
       try {
         database.exec(`
           ALTER TABLE memory_index ADD COLUMN memory_type TEXT DEFAULT 'declarative'
@@ -237,7 +279,7 @@ export function run_migrations(database: Database.Database, from_version: number
       logger.info('Migration v5: Type inference backfill will run on next index scan');
     },
     6: () => {
-      // v5 -> v6: Add file_mtime_ms for incremental indexing (REQ-023, T064-T066)
+      // V5 -> v6: Add file_mtime_ms for incremental indexing (REQ-023, T064-T066)
       try {
         database.exec('ALTER TABLE memory_index ADD COLUMN file_mtime_ms INTEGER');
         logger.info('Migration v6: Added file_mtime_ms column for incremental indexing');
@@ -255,7 +297,7 @@ export function run_migrations(database: Database.Database, from_version: number
       }
     },
     7: () => {
-      // v6 -> v7: Add 'partial' embedding_status for deferred indexing (REQ-031, T096)
+      // V6 -> v7: Add 'partial' embedding_status for deferred indexing (REQ-031, T096)
       try {
         database.exec(`
           CREATE INDEX IF NOT EXISTS idx_embedding_pending
@@ -279,7 +321,7 @@ export function run_migrations(database: Database.Database, from_version: number
       }
     },
     8: () => {
-      // v7 -> v8: Create causal_edges table for Causal Memory Graph (REQ-012, T043-T047)
+      // V7 -> v8: Create causal_edges table for Causal Memory Graph (REQ-012, T043-T047)
       try {
         database.exec(`
           CREATE TABLE IF NOT EXISTS causal_edges (
@@ -315,7 +357,7 @@ export function run_migrations(database: Database.Database, from_version: number
       }
     },
     9: () => {
-      // v8 -> v9: Create memory_corrections table for Learning from Corrections
+      // V8 -> v9: Create memory_corrections table for Learning from Corrections
       try {
         database.exec(`
           CREATE TABLE IF NOT EXISTS memory_corrections (
@@ -357,7 +399,7 @@ export function run_migrations(database: Database.Database, from_version: number
       }
     },
     12: () => {
-      // v11 -> v12: Unify memory_conflicts DDL (KL-1 Schema Unification)
+      // V11 -> v12: Unify memory_conflicts DDL (KL-1 Schema Unification)
       try {
         database.exec(`
           DROP TABLE IF EXISTS memory_conflicts;
@@ -393,7 +435,7 @@ export function run_migrations(database: Database.Database, from_version: number
       }
     },
     13: () => {
-      // v12 -> v13: Add document_type and spec_level for full spec folder document indexing
+      // V12 -> v13: Add document_type and spec_level for full spec folder document indexing
       try {
         database.exec("ALTER TABLE memory_index ADD COLUMN document_type TEXT DEFAULT 'memory'");
         logger.info('Migration v13: Added document_type column');
@@ -763,7 +805,7 @@ export function run_migrations(database: Database.Database, from_version: number
     }
   };
 
-  // v20 -> v21: Add learned_triggers column (R11 learned feedback)
+  // V20 -> v21: Add learned_triggers column (R11 learned feedback)
   migrations[21] = () => {
     try {
       database.exec("ALTER TABLE memory_index ADD COLUMN learned_triggers TEXT DEFAULT '[]'");
@@ -775,7 +817,18 @@ export function run_migrations(database: Database.Database, from_version: number
     }
   };
 
-  // AI-TRACE: BUG-019 FIX: Wrap all migrations in a transaction for atomicity
+  migrations[22] = () => {
+    try {
+      ensureLineageTables(database);
+      logger.info('Migration v22: Created memory lineage tables and indexes');
+    } catch (e: unknown) {
+      if (!get_error_message(e).includes('already exists')) {
+        console.warn('[VectorIndex] Migration v22 warning (memory lineage):', get_error_message(e));
+      }
+    }
+  };
+
+  // BUG-019 FIX: Wrap all migrations in a transaction for atomicity
   const run_all_migrations = database.transaction(() => {
     for (let v = from_version + 1; v <= to_version; v++) {
       if (migrations[v]) {
@@ -793,7 +846,7 @@ export function run_migrations(database: Database.Database, from_version: number
   }
 }
 
-// AI-GUARD: Ensure schema version table exists and run any pending migrations
+// Ensure schema version table exists and run any pending migrations
 /**
  * Ensures the schema version table is current.
  * @param database - The database connection to check.
@@ -832,6 +885,242 @@ export function ensure_schema_version(database: Database.Database): number {
   }
 
   return current_version;
+}
+
+export function ensureLineageTables(database: Database.Database): void {
+  database.exec(`
+    CREATE TABLE IF NOT EXISTS memory_lineage (
+      memory_id INTEGER PRIMARY KEY,
+      logical_key TEXT NOT NULL,
+      version_number INTEGER NOT NULL,
+      root_memory_id INTEGER NOT NULL,
+      predecessor_memory_id INTEGER,
+      superseded_by_memory_id INTEGER,
+      valid_from TEXT NOT NULL,
+      valid_to TEXT,
+      transition_event TEXT NOT NULL CHECK(transition_event IN ('CREATE', 'UPDATE', 'SUPERSEDE', 'BACKFILL')),
+      actor TEXT DEFAULT 'system',
+      metadata TEXT,
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+      UNIQUE(logical_key, version_number)
+    )
+  `);
+
+  const lineageTableInfo = database.prepare(
+    "SELECT sql FROM sqlite_master WHERE type='table' AND name='memory_lineage'"
+  ).get() as { sql?: string } | undefined;
+  if (lineageTableInfo?.sql && (!lineageTableInfo.sql.includes("'UPDATE'") || lineageTableInfo.sql.includes('FOREIGN KEY'))) {
+    database.exec(`
+      ALTER TABLE memory_lineage RENAME TO memory_lineage_old;
+      CREATE TABLE memory_lineage (
+        memory_id INTEGER PRIMARY KEY,
+        logical_key TEXT NOT NULL,
+        version_number INTEGER NOT NULL,
+        root_memory_id INTEGER NOT NULL,
+        predecessor_memory_id INTEGER,
+        superseded_by_memory_id INTEGER,
+        valid_from TEXT NOT NULL,
+        valid_to TEXT,
+        transition_event TEXT NOT NULL CHECK(transition_event IN ('CREATE', 'UPDATE', 'SUPERSEDE', 'BACKFILL')),
+        actor TEXT DEFAULT 'system',
+        metadata TEXT,
+        created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+        UNIQUE(logical_key, version_number)
+      );
+      INSERT INTO memory_lineage (
+        memory_id, logical_key, version_number, root_memory_id, predecessor_memory_id,
+        superseded_by_memory_id, valid_from, valid_to, transition_event, actor, metadata, created_at
+      )
+      SELECT
+        memory_id, logical_key, version_number, root_memory_id, predecessor_memory_id,
+        superseded_by_memory_id, valid_from, valid_to, transition_event, actor, metadata, created_at
+      FROM memory_lineage_old;
+      DROP TABLE memory_lineage_old;
+    `);
+  }
+
+  if (hasTable(database, LEGACY_MEMORY_LINEAGE_TABLE)) {
+    database.exec(`
+      INSERT OR IGNORE INTO memory_lineage (
+        memory_id, logical_key, version_number, root_memory_id, predecessor_memory_id,
+        superseded_by_memory_id, valid_from, valid_to, transition_event, actor, metadata, created_at
+      )
+      SELECT
+        memory_id, logical_key, version_number, root_memory_id, predecessor_memory_id,
+        superseded_by_memory_id, valid_from, valid_to, transition_event, actor, metadata, created_at
+      FROM hydra_memory_lineage
+    `);
+  }
+
+  database.exec(`
+    CREATE TABLE IF NOT EXISTS active_memory_projection (
+      logical_key TEXT PRIMARY KEY,
+      root_memory_id INTEGER NOT NULL,
+      active_memory_id INTEGER NOT NULL UNIQUE,
+      updated_at TEXT NOT NULL
+    )
+  `);
+
+  const projectionTableInfo = database.prepare(
+    "SELECT sql FROM sqlite_master WHERE type='table' AND name='active_memory_projection'"
+  ).get() as { sql?: string } | undefined;
+  if (projectionTableInfo?.sql && projectionTableInfo.sql.includes('FOREIGN KEY')) {
+    database.exec(`
+      ALTER TABLE active_memory_projection RENAME TO active_memory_projection_old;
+      CREATE TABLE active_memory_projection (
+        logical_key TEXT PRIMARY KEY,
+        root_memory_id INTEGER NOT NULL,
+        active_memory_id INTEGER NOT NULL UNIQUE,
+        updated_at TEXT NOT NULL
+      );
+      INSERT INTO active_memory_projection (logical_key, root_memory_id, active_memory_id, updated_at)
+      SELECT logical_key, root_memory_id, active_memory_id, updated_at
+      FROM active_memory_projection_old;
+      DROP TABLE active_memory_projection_old;
+    `);
+  }
+
+  if (hasTable(database, LEGACY_ACTIVE_MEMORY_PROJECTION_TABLE)) {
+    database.exec(`
+      INSERT OR IGNORE INTO active_memory_projection (logical_key, root_memory_id, active_memory_id, updated_at)
+      SELECT logical_key, root_memory_id, active_memory_id, updated_at
+      FROM hydra_active_memory_projection
+    `);
+  }
+
+  database.exec(`
+    CREATE INDEX IF NOT EXISTS idx_memory_lineage_logical_key
+      ON memory_lineage(logical_key, version_number DESC);
+    CREATE INDEX IF NOT EXISTS idx_memory_lineage_predecessor
+      ON memory_lineage(predecessor_memory_id);
+    CREATE INDEX IF NOT EXISTS idx_memory_lineage_root
+      ON memory_lineage(root_memory_id, version_number ASC);
+    CREATE INDEX IF NOT EXISTS idx_memory_lineage_valid_from
+      ON memory_lineage(logical_key, valid_from DESC);
+    CREATE INDEX IF NOT EXISTS idx_active_memory_projection_active
+      ON active_memory_projection(active_memory_id);
+  `);
+}
+
+function ensureMemoryIndexGovernanceColumns(database: Database.Database): void {
+  if (!hasTable(database, 'memory_index')) {
+    return;
+  }
+
+  const columnNames = getTableColumns(database, 'memory_index');
+
+  const governanceColumns: Array<{ name: string; sql: string }> = [
+    { name: 'tenant_id', sql: 'ALTER TABLE memory_index ADD COLUMN tenant_id TEXT' },
+    { name: 'user_id', sql: 'ALTER TABLE memory_index ADD COLUMN user_id TEXT' },
+    { name: 'agent_id', sql: 'ALTER TABLE memory_index ADD COLUMN agent_id TEXT' },
+    { name: 'shared_space_id', sql: 'ALTER TABLE memory_index ADD COLUMN shared_space_id TEXT' },
+    { name: 'provenance_source', sql: 'ALTER TABLE memory_index ADD COLUMN provenance_source TEXT' },
+    { name: 'provenance_actor', sql: 'ALTER TABLE memory_index ADD COLUMN provenance_actor TEXT' },
+    { name: 'governed_at', sql: 'ALTER TABLE memory_index ADD COLUMN governed_at TEXT' },
+    { name: 'retention_policy', sql: "ALTER TABLE memory_index ADD COLUMN retention_policy TEXT DEFAULT 'keep'" },
+    { name: 'delete_after', sql: 'ALTER TABLE memory_index ADD COLUMN delete_after TEXT' },
+    { name: 'governance_metadata', sql: 'ALTER TABLE memory_index ADD COLUMN governance_metadata TEXT' },
+  ];
+
+  for (const column of governanceColumns) {
+    if (columnNames.includes(column.name)) continue;
+    try {
+      database.exec(column.sql);
+    } catch (error: unknown) {
+      logDuplicateColumnMigrationSkip(column.name, error);
+    }
+  }
+}
+
+export function ensureGovernanceTables(database: Database.Database): void {
+  ensureMemoryIndexGovernanceColumns(database);
+
+  database.exec(`
+    CREATE TABLE IF NOT EXISTS governance_audit (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      action TEXT NOT NULL,
+      decision TEXT NOT NULL,
+      memory_id INTEGER,
+      logical_key TEXT,
+      tenant_id TEXT,
+      user_id TEXT,
+      agent_id TEXT,
+      session_id TEXT,
+      shared_space_id TEXT,
+      reason TEXT,
+      metadata TEXT,
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+
+  database.exec(`
+    CREATE INDEX IF NOT EXISTS idx_governance_audit_action
+      ON governance_audit(action, decision, created_at DESC);
+    CREATE INDEX IF NOT EXISTS idx_governance_audit_scope
+      ON governance_audit(tenant_id, user_id, agent_id, session_id, shared_space_id);
+  `);
+
+  if (hasTable(database, 'memory_index')) {
+    database.exec(`
+      CREATE INDEX IF NOT EXISTS idx_memory_scope_hierarchy
+        ON memory_index(tenant_id, user_id, agent_id, session_id, shared_space_id);
+      CREATE INDEX IF NOT EXISTS idx_memory_retention_delete_after
+        ON memory_index(delete_after);
+    `);
+  }
+}
+
+export function ensureSharedSpaceTables(database: Database.Database): void {
+  ensureGovernanceTables(database);
+
+  database.exec(`
+    CREATE TABLE IF NOT EXISTS shared_spaces (
+      space_id TEXT PRIMARY KEY,
+      tenant_id TEXT NOT NULL,
+      name TEXT NOT NULL,
+      rollout_enabled INTEGER DEFAULT 0,
+      rollout_cohort TEXT,
+      kill_switch INTEGER DEFAULT 0,
+      metadata TEXT,
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+      updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+
+  database.exec(`
+    CREATE TABLE IF NOT EXISTS shared_space_members (
+      space_id TEXT NOT NULL,
+      subject_type TEXT NOT NULL CHECK(subject_type IN ('user', 'agent')),
+      subject_id TEXT NOT NULL,
+      role TEXT NOT NULL CHECK(role IN ('owner', 'editor', 'viewer')),
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+      updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+      PRIMARY KEY (space_id, subject_type, subject_id)
+    )
+  `);
+
+  database.exec(`
+    CREATE TABLE IF NOT EXISTS shared_space_conflicts (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      space_id TEXT NOT NULL,
+      logical_key TEXT NOT NULL,
+      existing_memory_id INTEGER,
+      incoming_memory_id INTEGER,
+      strategy TEXT NOT NULL,
+      actor TEXT NOT NULL,
+      metadata TEXT,
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+
+  database.exec(`
+    CREATE INDEX IF NOT EXISTS idx_shared_spaces_tenant
+      ON shared_spaces(tenant_id, rollout_enabled, kill_switch);
+    CREATE INDEX IF NOT EXISTS idx_shared_space_members_subject
+      ON shared_space_members(subject_type, subject_id, role);
+    CREATE INDEX IF NOT EXISTS idx_shared_space_conflicts_space
+      ON shared_space_conflicts(space_id, created_at DESC);
+  `);
 }
 
 /**
@@ -880,6 +1169,56 @@ export function validate_backward_compatibility(database: Database.Database): Sc
       missingColumns: { memory_index: [...REQUIRED_MEMORY_INDEX_COLUMNS] },
       warnings: [
         `Compatibility check failed: ${error instanceof Error ? error.message : String(error)}`,
+      ],
+    };
+  }
+}
+
+export function validateLineageSchemaSupport(database: Database.Database): LineageSchemaReport {
+  try {
+    const missingTables = REQUIRED_LINEAGE_TABLES.filter((tableName) => !hasTable(database, tableName));
+    const missingColumns: Record<string, string[]> = {};
+    const warnings: string[] = [];
+
+    for (const [tableName, requiredColumns] of Object.entries(REQUIRED_LINEAGE_COLUMNS)) {
+      if (!hasTable(database, tableName)) {
+        missingColumns[tableName] = [...requiredColumns];
+        continue;
+      }
+
+      const existingColumns = new Set(getTableColumns(database, tableName));
+      const absentColumns = requiredColumns.filter((columnName) => !existingColumns.has(columnName));
+      if (absentColumns.length > 0) {
+        missingColumns[tableName] = [...absentColumns];
+      }
+    }
+
+    if (!hasTable(database, 'checkpoints')) {
+      warnings.push('checkpoints table missing; rollback drills cannot be validated safely.');
+    }
+    if (!hasTable(database, 'memory_history')) {
+      warnings.push('memory_history table missing; lineage bridge metadata will be incomplete.');
+    }
+
+    return {
+      compatible: missingTables.length === 0 && Object.keys(missingColumns).length === 0,
+      schemaVersion: safe_get_schema_version(database),
+      missingTables,
+      missingColumns,
+      warnings,
+    };
+  } catch (error: unknown) {
+    const missingColumns: Record<string, string[]> = {};
+    for (const [tableName, requiredColumns] of Object.entries(REQUIRED_LINEAGE_COLUMNS)) {
+      missingColumns[tableName] = [...requiredColumns];
+    }
+    return {
+      compatible: false,
+      schemaVersion: null,
+      missingTables: [...REQUIRED_LINEAGE_TABLES],
+      missingColumns,
+      warnings: [
+        `Lineage compatibility check failed: ${error instanceof Error ? error.message : String(error)}`,
       ],
     };
   }
@@ -1396,6 +1735,9 @@ export function create_schema(
     ensure_canonical_file_path_support(database);
     create_common_indexes(database);
     ensureCompanionTables(database);
+    ensureLineageTables(database);
+    ensureGovernanceTables(database);
+    ensureSharedSpaceTables(database);
     initHistory(database);
     const compatibility = validate_backward_compatibility(database);
     if (!compatibility.compatible) {
@@ -1404,8 +1746,8 @@ export function create_schema(
         compatibility as unknown as Record<string, unknown>
       );
     }
-    // AI-WHY: Sprint 2 (REQ-S2-001) — embedding cache table must exist before any
-    // save/index operation so lookupEmbedding() can skip redundant provider calls.
+    // Sprint 2 (REQ-S2-001) — embedding cache table must exist before any
+    // Save/index operation so lookupEmbedding() can skip redundant provider calls.
     initEmbeddingCache(database);
     return;
   }
@@ -1435,10 +1777,20 @@ export function create_schema(
       access_count INTEGER DEFAULT 0,
       last_accessed INTEGER DEFAULT 0,
       importance_tier TEXT DEFAULT 'normal' CHECK(importance_tier IN ('constitutional', 'critical', 'important', 'normal', 'temporary', 'deprecated')),
+      tenant_id TEXT,
+      user_id TEXT,
+      agent_id TEXT,
       session_id TEXT,
+      shared_space_id TEXT,
       context_type TEXT DEFAULT 'general' CHECK(context_type IN ('research', 'implementation', 'decision', 'discovery', 'general')),
       channel TEXT DEFAULT 'default',
       content_hash TEXT,
+      provenance_source TEXT,
+      provenance_actor TEXT,
+      governed_at TEXT,
+      retention_policy TEXT DEFAULT 'keep',
+      delete_after TEXT,
+      governance_metadata TEXT,
       expires_at DATETIME,
       confidence REAL DEFAULT 0.5,
       validation_count INTEGER DEFAULT 0,
@@ -1519,12 +1871,15 @@ export function create_schema(
 
   // Create companion tables
   ensureCompanionTables(database);
+  ensureLineageTables(database);
+  ensureGovernanceTables(database);
+  ensureSharedSpaceTables(database);
   initHistory(database);
 
-  // AI-WHY: Sprint 2 (REQ-S2-001) — create embedding_cache table
+  // Sprint 2 (REQ-S2-001) — create embedding_cache table
   initEmbeddingCache(database);
 
-  // AI-WHY: Create memory_index-specific indexes (not IF NOT EXISTS because this is a fresh DB)
+  // Create memory_index-specific indexes (not IF NOT EXISTS because this is a fresh DB)
   database.exec(`
     CREATE INDEX idx_spec_folder ON memory_index(spec_folder);
     CREATE INDEX idx_created_at ON memory_index(created_at);
@@ -1537,6 +1892,7 @@ export function create_schema(
     CREATE INDEX IF NOT EXISTS idx_importance_tier ON memory_index(importance_tier);
     CREATE INDEX IF NOT EXISTS idx_access_importance ON memory_index(access_count DESC, importance_weight DESC);
     CREATE INDEX IF NOT EXISTS idx_memories_scope ON memory_index(spec_folder, session_id, context_type);
+    CREATE INDEX IF NOT EXISTS idx_memories_governed_scope ON memory_index(tenant_id, user_id, agent_id, session_id, shared_space_id);
     CREATE INDEX IF NOT EXISTS idx_channel ON memory_index(channel);
   `);
 
@@ -1561,7 +1917,7 @@ export function create_schema(
   console.warn('[vector-index] Schema created successfully');
 }
 
-// AI-WHY: camelCase aliases for backward compatibility
+// CamelCase aliases for backward compatibility
 export { ensure_schema_version as ensureSchemaVersion };
 export { run_migrations as runMigrations };
 export { create_schema as createSchema };

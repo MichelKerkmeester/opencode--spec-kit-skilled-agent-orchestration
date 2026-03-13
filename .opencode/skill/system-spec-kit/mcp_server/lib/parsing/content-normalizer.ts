@@ -1,29 +1,21 @@
-// ---------------------------------------------------------------
-// MODULE: Content Normalizer
-// ---------------------------------------------------------------
+// --- 1. CONTENT NORMALIZER ---
 // Sprint 7 / S1 — Smarter Memory Content Generation
-// ---------------------------------------------------------------
 //
 // Purpose: Normalize raw markdown content before it is passed to
-//   embedding generation or BM25 indexing.  Raw markdown contains
-//   structural noise (YAML frontmatter, HTML comment anchors, pipe
-//   table syntax, fence markers, checkbox notation) that degrades
-//   the quality of semantic embeddings and keyword retrieval.
+// Embedding generation or BM25 indexing.  Raw markdown contains
+// Structural noise (YAML frontmatter, HTML comment anchors, pipe
+// Table syntax, fence markers, checkbox notation) that degrades
+// The quality of semantic embeddings and keyword retrieval.
 //
 // Integration points (do NOT modify those files here — reference only):
 //   - memory-parser.ts  ~line 159  : `content` is assigned from readFileWithEncoding()
-//       → wrap with normalizeContentForEmbedding() before passing to generateDocumentEmbedding()
+// → wrap with normalizeContentForEmbedding() before passing to generateDocumentEmbedding()
 //   - memory-save.ts    ~line 1093 : before generateDocumentEmbedding(parsed.content)
-//       → normalizeContentForEmbedding(parsed.content)
+// → normalizeContentForEmbedding(parsed.content)
 //   - bm25-index.ts     ~line 245  : where `content_text` is used for token building
-//       → normalizeContentForBM25(content_text)
+// → normalizeContentForBM25(content_text)
 //
-// ---------------------------------------------------------------
-
-// ---------------------------------------------------------------
-// 1. PRIMITIVE STRIP / NORMALIZE HELPERS
-// ---------------------------------------------------------------
-
+// --- 2. PRIMITIVE STRIP / NORMALIZE HELPERS ---
 /**
  * Strip YAML frontmatter block from the top of a markdown file.
  *
@@ -36,9 +28,9 @@
  * first character of the document.
  */
 export function stripYamlFrontmatter(content: string): string {
-  // AI-GUARD: Must start at position 0.  The closing `---` must be on its own line.
+  // Must start at position 0.  The closing `---` must be on its own line.
   // Without the `m` flag, `^` anchors to position 0 only (document start),
-  // preventing accidental matches on mid-document `---` (e.g. HR rules).
+  // Preventing accidental matches on mid-document `---` (e.g. HR rules).
   return content.replace(/^---[\s\S]*?\n---\s*\n?/, '');
 }
 
@@ -64,7 +56,7 @@ export function stripAnchors(content: string): string {
  *   <!-- prettier-ignore -->
  */
 export function stripHtmlComments(content: string): string {
-  // AI-WHY: Non-greedy match to avoid swallowing multiple comments in one pass
+  // Non-greedy match to avoid swallowing multiple comments in one pass
   return content.replace(/<!--[\s\S]*?-->/g, '');
 }
 
@@ -85,7 +77,7 @@ export function stripHtmlComments(content: string): string {
  */
 export function stripCodeFences(content: string): string {
   // Match ``` optionally followed by a language identifier, then any content,
-  // then a closing ```.  The 's' flag makes '.' match newlines.
+  // Then a closing ```.  The 's' flag makes '.' match newlines.
   return content.replace(/^```[^\n]*\n([\s\S]*?)^```\s*$/gm, '$1');
 }
 
@@ -174,9 +166,7 @@ export function normalizeHeadings(content: string): string {
   );
 }
 
-// ---------------------------------------------------------------
-// 2. WHITESPACE CLEANUP
-// ---------------------------------------------------------------
+// --- 3. WHITESPACE CLEANUP ---
 
 /**
  * Collapse runs of blank lines to a single blank line, and trim
@@ -191,9 +181,7 @@ function collapseWhitespace(content: string): string {
     .trim();
 }
 
-// ---------------------------------------------------------------
-// 3. PUBLIC COMPOSITE FUNCTIONS
-// ---------------------------------------------------------------
+// --- 4. PUBLIC COMPOSITE FUNCTIONS ---
 
 /**
  * Normalize markdown content for use in embedding generation.
@@ -256,10 +244,10 @@ export function normalizeContentForEmbedding(content: string): string {
  */
 export function normalizeContentForBM25(content: string): string {
   // The BM25 pipeline currently delegates to the same normalization
-  // steps as the embedding pipeline (frontmatter, anchors, HTML
-  // comments, code fences, tables, lists, headings, whitespace).
+  // Steps as the embedding pipeline (frontmatter, anchors, HTML
+  // Comments, code fences, tables, lists, headings, whitespace).
   // A separate entry point exists so BM25-specific adjustments
   // (e.g. preserving backtick inline code, adding stemming hints)
-  // can diverge in the future without modifying the embedding path.
+  // Can diverge in the future without modifying the embedding path.
   return normalizeContentForEmbedding(content);
 }

@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: Ingest Job Queue
-// ---------------------------------------------------------------
-
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -78,7 +75,7 @@ afterEach(() => {
       try {
         fs.unlinkSync(filePath);
       } catch {
-        // ignore cleanup failures
+        // Ignore cleanup failures
       }
     }
   }

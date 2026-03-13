@@ -1,9 +1,6 @@
-// ---------------------------------------------------------------
 // TEST: ATTENTION DECAY WITH FSRS INTEGRATION (vitest)
 // Converted from: attention-decay.test.ts (custom runner)
 // Aligned with production attention-decay.ts + fsrs-scheduler.ts named exports
-// ---------------------------------------------------------------
-
 import { describe, it, expect } from 'vitest';
 import * as attentionDecay from '../lib/cache/cognitive/attention-decay';
 import * as fsrsScheduler from '../lib/cache/cognitive/fsrs-scheduler';
@@ -434,7 +431,7 @@ describe('Attention Decay Module', () => {
       expect(attentionDecay.getDecayRate('important')).toBe(1.0);
     });
 
-    // clearSession sets db to null
+    // ClearSession sets db to null
     it('clearSession sets db to null', () => {
       attentionDecay.clearSession();
       expect(attentionDecay.getDb()).toBeNull();

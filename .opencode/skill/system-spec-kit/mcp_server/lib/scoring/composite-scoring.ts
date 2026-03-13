@@ -1,13 +1,11 @@
-// ---------------------------------------------------------------
-// MODULE: Composite Scoring
-// ---------------------------------------------------------------
+// --- 1. COMPOSITE SCORING ---
 import { getTierConfig } from './importance-tiers';
 import { calculatePopularityScore } from '../storage/access-tracker';
 // HIGH-003 FIX: Import unified recency scoring from folder-scoring
 import { computeRecencyScore, DECAY_RATE } from './folder-scoring';
-// TM-01: Interference scoring penalty (Sprint 2, T005)
+// Interference scoring penalty (Sprint 2, T005)
 import { applyInterferencePenalty, INTERFERENCE_PENALTY_COEFFICIENT } from './interference-scoring';
-// T010: Scoring observability (N4 + TM-01 logging, 5% sampled)
+// Scoring observability (N4 + TM-01 logging, 5% sampled)
 import { shouldSample, logScoringObservation } from '../telemetry/scoring-observability';
 
 import type { MemoryDbRow } from '@spec-kit/shared/types';
@@ -19,7 +17,7 @@ import type { MemoryDbRow } from '@spec-kit/shared/types';
  */
 export type ScoringInput = Partial<MemoryDbRow> & Record<string, unknown>;
 
-// AI-WHY: COGNITIVE-079: FSRS Scheduler for retrievability calculations
+// COGNITIVE-079: FSRS Scheduler for retrievability calculations
 // Try to import, fallback to inline calculation if not yet available
 interface FsrsSchedulerModule {
   calculateRetrievability: (stability: number, elapsedDays: number) => number;
@@ -34,10 +32,10 @@ try {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   fsrsScheduler = require('../cognitive/fsrs-scheduler') as FsrsSchedulerModule;
 } catch (_err: unknown) {
-  /* AI-GUARD: fsrs-scheduler optional dep — fallback to inline FSRS formula */
+  /* fsrs-scheduler optional dep — fallback to inline FSRS formula */
 }
 
-// --- 1. TYPES ---
+// --- 2. TYPES ---
 
 export interface FiveFactorWeights {
   temporal: number;
@@ -105,9 +103,9 @@ export interface PatternAlignmentBonuses {
   type_match: number;
 }
 
-// --- 2. CONFIGURATION ---
+// --- 3. CONFIGURATION ---
 
-// REQ-017: 5-Factor Decay Composite weights
+// 5-Factor Decay Composite weights
 export const FIVE_FACTOR_WEIGHTS: FiveFactorWeights = {
   temporal: 0.25,
   usage: 0.15,
@@ -116,7 +114,7 @@ export const FIVE_FACTOR_WEIGHTS: FiveFactorWeights = {
   citation: 0.15,
 };
 
-// AI-WHY: Legacy 6-factor weights for backward compatibility
+// Legacy 6-factor weights for backward compatibility
 export const DEFAULT_WEIGHTS: LegacyWeights = {
   similarity: 0.30,
   importance: 0.25,
@@ -126,10 +124,10 @@ export const DEFAULT_WEIGHTS: LegacyWeights = {
   retrievability: 0.15,
 };
 
-// AI-WHY: HIGH-003 FIX: Re-export DECAY_RATE for backward compatibility
+// HIGH-003 FIX: Re-export DECAY_RATE for backward compatibility
 export const RECENCY_SCALE_DAYS: number = 1 / DECAY_RATE;
 
-// AI-WHY: T301: FSRS constants imported from canonical source (fsrs-scheduler.ts)
+// T301: FSRS constants imported from canonical source (fsrs-scheduler.ts)
 // Re-exported for backward compatibility — consumers may import from here
 export const FSRS_FACTOR: number = fsrsScheduler?.FSRS_FACTOR ?? 19 / 81;
 export const FSRS_DECAY: number = fsrsScheduler?.FSRS_DECAY ?? -0.5;
@@ -172,7 +170,7 @@ function applyClassificationDecayFallback(stability: number, contextType: string
   return stability * contextMult * tierMult;
 }
 
-// REQ-017: Importance weight multipliers
+// Importance weight multipliers
 export const IMPORTANCE_MULTIPLIERS: Readonly<Record<string, number>> = {
   constitutional: 2.0,
   critical: 1.5,
@@ -188,7 +186,7 @@ export const CITATION_MAX_DAYS: number = 90;
 
 // Spec 126: Document type scoring multipliers
 // Applied as a final multiplier to composite scores so spec documents
-// rank higher than regular memory files for relevant queries.
+// Rank higher than regular memory files for relevant queries.
 export const DOCUMENT_TYPE_MULTIPLIERS: Readonly<Record<string, number>> = {
   spec: 1.4,
   decision_record: 1.4,
@@ -214,7 +212,7 @@ export const PATTERN_ALIGNMENT_BONUSES: PatternAlignmentBonuses = {
 // TM-01: Re-export interference penalty coefficient for test access
 export { INTERFERENCE_PENALTY_COEFFICIENT } from './interference-scoring';
 
-// --- 3. SCORE CALCULATIONS ---
+// --- 4. SCORE CALCULATIONS ---
 
 /**
  * Parse last_accessed value that may be:
@@ -256,11 +254,11 @@ export function calculateRetrievabilityScore(row: ScoringInput): number {
   const tier = typeof row.importance_tier === 'string'
     ? row.importance_tier.toLowerCase()
     : 'normal';
-  // AI-WHY: Graduated-ON semantics — classification decay is active unless explicitly disabled.
+  // Graduated-ON semantics — classification decay is active unless explicitly disabled.
   // Aligned with fsrs-scheduler.ts:337 which uses the same !== 'false' convention.
   const classificationDecayEnabled = process.env.SPECKIT_CLASSIFICATION_DECAY !== 'false';
 
-  // AI-GUARD: Return neutral 0.5 when no timestamp — prevents NaN propagation
+  // Return neutral 0.5 when no timestamp — prevents NaN propagation
   if (!lastReview) {
     return 0.5;
   }
@@ -271,8 +269,8 @@ export function calculateRetrievabilityScore(row: ScoringInput): number {
   const elapsedMs = Date.now() - timestamp;
   const elapsedDays = Math.max(0, elapsedMs / (1000 * 60 * 60 * 24));
 
-  // AI-WHY: TM-03: Classification decay applies at stability-level; when enabled do not
-  // additionally apply elapsed-time tier multipliers to avoid double decay.
+  // TM-03: Classification decay applies at stability-level; when enabled do not
+  // Additionally apply elapsed-time tier multipliers to avoid double decay.
   let adjustedStability = stability;
   if (classificationDecayEnabled) {
     if (fsrsScheduler?.applyClassificationDecay) {
@@ -300,7 +298,7 @@ export function calculateRetrievabilityScore(row: ScoringInput): number {
     return Number.isFinite(score) ? score : 0;
   }
 
-  // AI-WHY: Inline FSRS power-law formula used when fsrs-scheduler module unavailable
+  // Inline FSRS power-law formula used when fsrs-scheduler module unavailable
   const retrievability = Math.pow(1 + FSRS_FACTOR * (adjustedElapsedDays / adjustedStability), FSRS_DECAY);
   const score = Math.max(0, Math.min(1, retrievability));
   return Number.isFinite(score) ? score : 0;
@@ -335,9 +333,9 @@ export function calculateImportanceScore(tier: string, baseWeight: number | unde
  * T033: Calculate citation recency score (REQ-017 Factor 5)
  */
 export function calculateCitationScore(row: ScoringInput): number {
-  // AI-GUARD: C2 FIX: Only use actual citation data (lastCited / last_cited).
+  // C2 FIX: Only use actual citation data (lastCited / last_cited).
   // Never fall back to last_accessed or updated_at — those conflate
-  // general recency with citation recency. Uncited memories score 0.
+  // General recency with citation recency. Uncited memories score 0.
   const lastCited = (row.lastCited as string | undefined)
     || (row.last_cited as string | undefined);
 
@@ -518,7 +516,7 @@ function applyPostProcessingAndObserve(
   // C1 FIX: Clamp to [0, 1] — doc-type multipliers can push composite above 1.0
   const finalScore = Math.max(0, Math.min(1, composite));
 
-  // AI-TRACE: T010: Scoring observability (5% sampled, fail-safe)
+  // Scoring observability (5% sampled, fail-safe)
   try {
     if (shouldSample()) {
       const createdMs = row.created_at ? new Date(row.created_at).getTime() : Date.now();
@@ -529,7 +527,7 @@ function applyPostProcessingAndObserve(
         noveltyBoostApplied: false,
         noveltyBoostValue: 0,
         memoryAgeDays: isNaN(createdMs) ? 0 : (Date.now() - createdMs) / 86400000,
-        // AI-WHY: Graduated flag — default ON. Use !== 'false' to match graduated semantics (BUG-4 fix).
+        // Graduated flag — default ON. Use !== 'false' to match graduated semantics (BUG-4 fix).
         interferenceApplied: interferenceScore > 0 && process.env.SPECKIT_INTERFERENCE_SCORE?.toLowerCase() !== 'false',
         interferenceScore,
         interferencePenalty: process.env.SPECKIT_INTERFERENCE_SCORE?.toLowerCase() !== 'false' && interferenceScore > 0
@@ -539,12 +537,12 @@ function applyPostProcessingAndObserve(
         scoreDelta: finalScore - composite,
       });
     }
-  } catch (_err: unknown) { /* AI-RISK: Telemetry must never affect scoring — fail-safe swallow */ }
+  } catch (_err: unknown) { /* Telemetry must never affect scoring — fail-safe swallow */ }
 
   return finalScore;
 }
 
-// --- 4. COMPOSITE SCORING FUNCTIONS ---
+// --- 5. COMPOSITE SCORING FUNCTIONS ---
 
 /**
  * T032: Calculate 5-factor composite score (REQ-017)
@@ -559,8 +557,8 @@ function applyPostProcessingAndObserve(
  */
 export function calculateFiveFactorScore(row: ScoringInput, options: ScoringOptions = {}): number {
   const rawWeights: FiveFactorWeights = { ...FIVE_FACTOR_WEIGHTS, ...(options.weights as Partial<FiveFactorWeights>) };
-  // AI-WHY: Fix #6 (017-refinement-phase-6) — Normalize weights to sum 1.0 after
-  // merging partial overrides. Without this, partial overrides break weighted-average semantics.
+  // Fix #6 (017-refinement-phase-6) — Normalize weights to sum 1.0 after
+  // Merging partial overrides. Without this, partial overrides break weighted-average semantics.
   const wSum = rawWeights.temporal + rawWeights.usage + rawWeights.importance + rawWeights.pattern + rawWeights.citation;
   const weights: FiveFactorWeights = Math.abs(wSum - 1.0) > 0.001 && wSum > 0
     ? {
@@ -630,7 +628,7 @@ export function calculateCompositeScore(row: ScoringInput, options: ScoringOptio
   return applyPostProcessingAndObserve(composite, row, 'cs');
 }
 
-// --- 5. BATCH OPERATIONS ---
+// --- 6. BATCH OPERATIONS ---
 
 /**
  * T032: Apply 5-factor scoring to a batch of results.
@@ -799,9 +797,9 @@ export function normalizeCompositeScores(scores: number[]): number[] {
   if (scores.length === 0) return [];
   if (!isCompositeNormalizationEnabled()) return scores;
 
-  // AI-WHY: Fix #7 (017-refinement-phase-6) — Use loop-based min/max instead of
+  // Fix #7 (017-refinement-phase-6) — Use loop-based min/max instead of
   // Math.max(...scores) / Math.min(...scores) which causes stack overflow on arrays
-  // larger than ~100K elements (exceeds JS call-stack argument limit).
+  // Larger than ~100K elements (exceeds JS call-stack argument limit).
   let maxScore = -Infinity;
   let minScore = Infinity;
   let hasFiniteScore = false;

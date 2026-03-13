@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Post Insert
-// ---------------------------------------------------------------
+// --- 1. POST INSERT ---
 
 import type BetterSqlite3 from 'better-sqlite3';
 import type * as memoryParser from '../../lib/parsing/memory-parser';
@@ -64,7 +62,7 @@ export async function runPostInsertEnrichment(
     }
   }
 
-  // -- AI-TRACE:R10: Auto Entity Extraction --
+  // -- Auto Entity Extraction --
   if (isAutoEntitiesEnabled()) {
     try {
       const rawEntities = extractEntities(parsed.content);

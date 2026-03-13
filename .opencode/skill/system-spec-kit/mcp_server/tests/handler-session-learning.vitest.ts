@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: HANDLER SESSION LEARNING
-// ---------------------------------------------------------------
-
 import { describe, it, expect, vi } from 'vitest';
 import Database from 'better-sqlite3';
 
@@ -28,9 +25,7 @@ function hasErrorMessage(error: unknown, fragment: string): boolean {
 }
 
 describe('Handler Session Learning (T522)', () => {
-  // -------------------------------------------------------------
   // SUITE: Exports Validation
-  // -------------------------------------------------------------
   describe('Exports Validation', () => {
     const expectedExports = [
       'handleTaskPreflight',
@@ -59,9 +54,7 @@ describe('Handler Session Learning (T522)', () => {
     });
   });
 
-  // -------------------------------------------------------------
   // SUITE: handleTaskPreflight Validation
-  // -------------------------------------------------------------
   describe('handleTaskPreflight Validation', () => {
     it('T522-P1: Missing specFolder throws MemoryError', async () => {
       try {
@@ -210,9 +203,7 @@ describe('Handler Session Learning (T522)', () => {
     });
   });
 
-  // -------------------------------------------------------------
   // SUITE: handleTaskPostflight Validation
-  // -------------------------------------------------------------
   describe('handleTaskPostflight Validation', () => {
     it('T522-PF1: Missing specFolder throws', async () => {
       try {
@@ -268,7 +259,7 @@ describe('Handler Session Learning (T522)', () => {
 
   describe('T012: Learning Index Formula and Interpretation Bands', () => {
     // The LI formula (session-learning.ts:356):
-    //   LI = (deltaKnowledge * 0.4) + (deltaUncertainty * 0.35) + (deltaContext * 0.25)
+    // LI = (deltaKnowledge * 0.4) + (deltaUncertainty * 0.35) + (deltaContext * 0.25)
     // Weights MUST sum to 1.0; handler rounds to 2 decimal places.
 
     const WEIGHT_K = 0.4;
@@ -346,9 +337,7 @@ describe('Handler Session Learning (T522)', () => {
     });
   });
 
-  // -------------------------------------------------------------
   // SUITE: handleGetLearningHistory Validation
-  // -------------------------------------------------------------
   describe('handleGetLearningHistory Validation', () => {
     it('T522-H1: Missing specFolder throws', async () => {
       try {

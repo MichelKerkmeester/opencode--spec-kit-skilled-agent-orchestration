@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Memory Parser Extended Tests
-// ---------------------------------------------------------------
+// --- 1. MEMORY PARSER EXTENDED TESTS ---
 
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import * as path from 'path';
@@ -8,14 +6,11 @@ import * as fs from 'fs';
 import * as os from 'os';
 import * as mod from '../lib/parsing/memory-parser';
 
-// ---------------------------------------------------------------
 // TEST: MEMORY PARSER - EXTENDED (UNTESTED EXPORTS)
 // Covers: readFileWithEncoding, parseMemoryFile, extractSpecFolder,
-//         isMemoryFile, validateParsedMemory, findMemoryFiles,
-//         extractCausalLinks, hasCausalLinks, MEMORY_FILE_PATTERN,
+// IsMemoryFile, validateParsedMemory, findMemoryFiles,
+// ExtractCausalLinks, hasCausalLinks, MEMORY_FILE_PATTERN,
 //         CONTEXT_TYPE_MAP
-// ---------------------------------------------------------------
-
 /* -------------------------------------------------------------
    TEMP DIRECTORY HELPERS
 ---------------------------------------------------------------- */

@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: TRIGGER SETATTENTIONSCORE
-// ---------------------------------------------------------------
-
 import { describe, it, expect, beforeAll } from 'vitest';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -12,9 +9,7 @@ const HANDLERS_PATH = path.join(__dirname, '..', 'handlers');
 
 describe('T209: Wire setAttentionScore for Trigger Matches', () => {
 
-  // -------------------------------------------------------------
   // SUITE: T209 — setAttentionScore export and signature
-  // -------------------------------------------------------------
   describe('setAttentionScore export and signature', () => {
     it('T209-1: setAttentionScore is exported from working-memory', () => {
       expect(typeof workingMemory.setAttentionScore).toBe('function');
@@ -22,14 +17,12 @@ describe('T209: Wire setAttentionScore for Trigger Matches', () => {
 
     it('T209-2: setAttentionScore accepts (sessionId, memoryId, score) without throwing', () => {
       const result = workingMemory.setAttentionScore('test-session', 999, 1.0);
-      // result may be false without DB, or truthy with DB — either is acceptable
+      // Result may be false without DB, or truthy with DB — either is acceptable
       expect(result !== undefined).toBe(true);
     });
   });
 
-  // -------------------------------------------------------------
   // SUITE: T209 — Handler source includes setAttentionScore call
-  // -------------------------------------------------------------
   describe('Handler wires setAttentionScore', () => {
     let handlerSource: string | null = null;
     let handlerJs: string | null = null;
@@ -50,7 +43,7 @@ describe('T209: Wire setAttentionScore for Trigger Matches', () => {
           'utf-8'
         );
       } catch {
-        // compiled JS not available either
+        // Compiled JS not available either
       }
     });
 
@@ -99,9 +92,7 @@ describe('T209: Wire setAttentionScore for Trigger Matches', () => {
     });
   });
 
-  // -------------------------------------------------------------
   // SUITE: T209 — Task ID documented in source
-  // -------------------------------------------------------------
   describe('Task ID documented in source', () => {
     it('T209-7: T209 task ID documented in handler source', () => {
       let source: string;

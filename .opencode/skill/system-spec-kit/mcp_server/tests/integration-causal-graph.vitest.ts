@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: INTEGRATION CAUSAL GRAPH
-// ---------------------------------------------------------------
-
 import { afterEach, describe, it, expect, vi } from 'vitest';
 import * as causalHandler from '../handlers/causal-graph';
 import * as causalEdges from '../lib/storage/causal-edges';
@@ -112,7 +109,7 @@ describe('Integration Causal Graph (T528)', () => {
         const { envelope, isError } = parseEnvelope(response);
         if (isError) {
           // Infrastructure/storage errors are acceptable in integration mode;
-          // relation-validation errors are not.
+          // Relation-validation errors are not.
           expect(['E020', 'E022']).toContain(envelope.data?.code as string);
           continue;
         }

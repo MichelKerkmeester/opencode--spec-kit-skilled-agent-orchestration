@@ -1,9 +1,5 @@
-// ---------------------------------------------------------------
-// MODULE: Checkpoints
-// ---------------------------------------------------------------
+// --- 1. CHECKPOINTS ---
 // Gzip-compressed database checkpoints with embedding preservation
-// ---------------------------------------------------------------
-
 // Node stdlib
 import * as zlib from 'zlib';
 
@@ -385,7 +381,7 @@ function createCheckpoint(options: CreateCheckpointOptions = {}): CheckpointInfo
   } = options;
 
   try {
-    // AI-WHY: Wrap snapshot SELECTs + INSERT + overflow DELETE in a transaction for atomicity
+    // Wrap snapshot SELECTs + INSERT + overflow DELETE in a transaction for atomicity
     const checkpointInfo = database.transaction(() => {
       // Snapshot memory_index
       const folderFilter = specFolder ? 'WHERE spec_folder = ?' : '';
@@ -594,9 +590,9 @@ function restoreCheckpoint(nameOrId: string | number, clearExisting: boolean = f
       new Set([...currentScopedMemoryIds, ...snapshotMemoryIds])
     );
 
-    // AI-GUARD: T107 FIX: Validate every row BEFORE any DB mutations.
+    // T107 FIX: Validate every row BEFORE any DB mutations.
     // Reject the entire restore on schema violations to prevent
-    // partial restores or silent NULL insertions.
+    // Partial restores or silent NULL insertions.
     if (snapshot.memories.length > 0) {
       try {
         for (let i = 0; i < snapshot.memories.length; i++) {
@@ -617,10 +613,10 @@ function restoreCheckpoint(nameOrId: string | number, clearExisting: boolean = f
       return result;
     }
 
-    // AI-GUARD: P0-005 FIX: Split INSERT strategy by restore mode.
-    // clearExisting mode: INSERT OR REPLACE is safe (table was already emptied).
-    // merge mode: INSERT OR REPLACE triggers CASCADE DELETE on working_memory
-    // via the FOREIGN KEY (memory_id) REFERENCES memory_index(id) ON DELETE CASCADE.
+    // P0-005 FIX: Split INSERT strategy by restore mode.
+    // ClearExisting mode: INSERT OR REPLACE is safe (table was already emptied).
+    // Merge mode: INSERT OR REPLACE triggers CASCADE DELETE on working_memory
+    // Via the FOREIGN KEY (memory_id) REFERENCES memory_index(id) ON DELETE CASCADE.
     // Use INSERT OR IGNORE + explicit UPDATE to avoid the delete-reinsert cycle.
     const memoryInsertStmt = memoryRestoreColumns.length > 0
       ? database.prepare(`
@@ -637,12 +633,12 @@ function restoreCheckpoint(nameOrId: string | number, clearExisting: boolean = f
         `) as Database.Statement
       : null;
 
-    // AI-TRACE: T213: Ensure working_memory table schema is ready BEFORE the transaction.
+    // Ensure working_memory table schema is ready BEFORE the transaction.
     // DDL (CREATE TABLE, ALTER TABLE) causes SQLite to auto-commit, which would
-    // corrupt a surrounding transaction. Run DDL outside the transaction boundary.
+    // Corrupt a surrounding transaction. Run DDL outside the transaction boundary.
     if (Array.isArray(snapshot.workingMemory) && snapshot.workingMemory.length > 0) {
       try {
-        // AI: Fix F4 — prevent CASCADE delete chain on working_memory.
+        // Fix F4 — prevent CASCADE delete chain on working_memory.
         database.exec(`
           CREATE TABLE IF NOT EXISTS working_memory (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -688,16 +684,16 @@ function restoreCheckpoint(nameOrId: string | number, clearExisting: boolean = f
       }
     }
 
-    // AI-TRACE: T101 FIX: Transaction-wrap checkpoint restore to prevent data loss.
-    // AI-GUARD: When clearExisting=true, the DELETE and all INSERTs must be atomic.
+    // T101 FIX: Transaction-wrap checkpoint restore to prevent data loss.
+    // When clearExisting=true, the DELETE and all INSERTs must be atomic.
     // If any INSERT fails after DELETE, ROLLBACK restores original data.
     // Previously, individual insert errors were silently swallowed inside
-    // the transaction, allowing COMMIT after DELETE + partial inserts = data loss.
+    // The transaction, allowing COMMIT after DELETE + partial inserts = data loss.
     const restoreTx = database.transaction(() => {
       // Clear existing data if requested
       if (clearExisting) {
         if (checkpointSpecFolder) {
-          // AI-WHY: Record DELETE history only for currently-existing memories (not snapshot-only IDs)
+          // Record DELETE history only for currently-existing memories (not snapshot-only IDs)
           for (const memId of currentScopedMemoryIds) {
             try { recordHistory(memId, 'DELETE', null, null, 'mcp:checkpoint_restore'); } catch (_histErr: unknown) { /* best-effort */ }
           }
@@ -708,13 +704,13 @@ function restoreCheckpoint(nameOrId: string | number, clearExisting: boolean = f
           try { deleteCausalEdgesForMemoryIds(database, scopedMemoryIdsToReplace); } catch (_error: unknown) { /* table may not exist */ }
           database.prepare('DELETE FROM memory_index WHERE spec_folder = ?').run(checkpointSpecFolder);
         } else {
-          // AI-WHY: Record DELETE history for all memories before full checkpoint restore
+          // Record DELETE history for all memories before full checkpoint restore
           const allIds = database.prepare('SELECT id FROM memory_index').all() as Array<{ id: number }>;
           for (const row of allIds) {
             try { recordHistory(row.id, 'DELETE', null, null, 'mcp:checkpoint_restore'); } catch (_histErr: unknown) { /* best-effort */ }
           }
           database.prepare('DELETE FROM memory_index').run();
-          // AI-WHY: Only clear vec table when checkpoint contains vectors to restore.
+          // Only clear vec table when checkpoint contains vectors to restore.
           // This keeps backward compatibility for older checkpoints that lacked vector snapshots.
           if (hasVectorSnapshot) {
             try { database.prepare('DELETE FROM vec_memories').run(); } catch (_error: unknown) { /* table may not exist */ }
@@ -759,9 +755,9 @@ function restoreCheckpoint(nameOrId: string | number, clearExisting: boolean = f
               continue;
             }
 
-            // AI-GUARD: Protect merge mode from primary-key collision overwrite.
+            // Protect merge mode from primary-key collision overwrite.
             // If the snapshot ID already exists for a different logical identity,
-            // skip this row instead of applying UPDATE ... WHERE id = ?.
+            // Skip this row instead of applying UPDATE ... WHERE id = ?.
             const existingById = database.prepare(
               `
                 SELECT spec_folder, file_path, anchor_id
@@ -804,8 +800,8 @@ function restoreCheckpoint(nameOrId: string | number, clearExisting: boolean = f
           const insertResult = memoryInsertStmt.run(...values) as { changes: number };
 
           // P0-005: In merge mode, INSERT OR IGNORE returns changes=0 when
-          // the row already exists. Follow up with an explicit UPDATE to
-          // apply the snapshot values without triggering CASCADE deletes.
+          // The row already exists. Follow up with an explicit UPDATE to
+          // Apply the snapshot values without triggering CASCADE deletes.
           if (!clearExisting && insertResult.changes === 0 && memoryUpdateStmt) {
             const updateValues = nonIdColumns.map((column) =>
               normalizeMemoryColumnValue(column, memory[column as keyof typeof memory])
@@ -849,13 +845,13 @@ function restoreCheckpoint(nameOrId: string | number, clearExisting: boolean = f
         }
       }
 
-      // AI-GUARD: T213: Restore working memory state from checkpoint snapshot.
+      // T213: Restore working memory state from checkpoint snapshot.
       // The working_memory table holds session-based attention data that must
-      // survive checkpoint save/restore cycles.
+      // Survive checkpoint save/restore cycles.
       // DDL (CREATE TABLE, ALTER TABLE) is executed BEFORE the transaction above.
       if (Array.isArray(snapshot.workingMemory) && snapshot.workingMemory.length > 0) {
         for (const wmEntry of snapshot.workingMemory) {
-          // AI: Fix F19 — validate required fields before INSERT.
+          // Fix F19 — validate required fields before INSERT.
           if (!wmEntry || typeof wmEntry.session_id !== 'string') {
             console.warn('[checkpoints] Skipping working_memory entry with missing session_id');
             continue;
@@ -945,9 +941,9 @@ function restoreCheckpoint(nameOrId: string | number, clearExisting: boolean = f
         }
       }
 
-      // T101: When clearExisting=true, any insert error means data loss risk.
+      // When clearExisting=true, any insert error means data loss risk.
       // Throw to trigger ROLLBACK — this undoes both the DELETEs and partial INSERTs,
-      // leaving original data intact.
+      // Leaving original data intact.
       if (clearExisting && txErrors.length > 0) {
         // Reset counters — ROLLBACK will undo all DB changes
         result.restored = 0;

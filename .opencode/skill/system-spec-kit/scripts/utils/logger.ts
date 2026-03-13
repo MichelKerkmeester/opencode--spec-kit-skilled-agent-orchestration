@@ -1,12 +1,6 @@
-// ---------------------------------------------------------------
-// MODULE: Logger
-// ---------------------------------------------------------------
+// --- 1. LOGGER ---
 // Structured logging with severity levels and JSON metadata output
-// ---------------------------------------------------------------
-
-// ---------------------------------------------------------------
-// 1. TYPES
-// ---------------------------------------------------------------
+// --- 2. TYPES ---
 
 /** Log level for structured logging */
 export type LogLevel = 'debug' | 'info' | 'warn' | 'error';
@@ -19,9 +13,7 @@ export interface LogEntry {
   [key: string]: unknown;
 }
 
-// ---------------------------------------------------------------
-// 2. LOGGING
-// ---------------------------------------------------------------
+// --- 3. LOGGING ---
 
 function structuredLog(level: LogLevel, message: string, data: Record<string, unknown> = {}): void {
   const logEntry: LogEntry = {
@@ -44,8 +36,6 @@ function structuredLog(level: LogLevel, message: string, data: Record<string, un
   }
 }
 
-// ---------------------------------------------------------------
-// 3. EXPORTS
-// ---------------------------------------------------------------
+// --- 4. EXPORTS ---
 
 export { structuredLog };

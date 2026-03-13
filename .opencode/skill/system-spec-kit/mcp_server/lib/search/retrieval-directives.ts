@@ -1,12 +1,10 @@
-// ---------------------------------------------------------------
-// MODULE: Retrieval Directives
-// ---------------------------------------------------------------
+// --- 1. RETRIEVAL DIRECTIVES ---
 // PI-A4: Constitutional memory as retrieval directives (Sprint 5, deferred from Sprint 4 REC-07)
 //
 // Adds a `retrieval_directive` metadata field to constitutional-tier memories.
 // Directives are formatted as explicit instruction prefixes ("Always surface when:",
 // "Prioritize when:") so LLMs receive actionable retrieval guidance alongside the
-// memory content.
+// Memory content.
 //
 // Design contract:
 //   - Pure content transformation only — scoring logic is NOT touched.
@@ -330,7 +328,7 @@ export function enrichWithRetrievalDirectives(
           content = fs.readFileSync(validatedPath, 'utf-8');
         }
       } catch (_error: unknown) {
-        // AI-GUARD: File read failure is non-fatal; fall back to title-only directive
+        // File read failure is non-fatal; fall back to title-only directive
         content = '';
       }
     }

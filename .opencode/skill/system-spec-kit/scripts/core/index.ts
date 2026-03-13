@@ -1,10 +1,6 @@
-// ---------------------------------------------------------------
-// MODULE: Index
-// ---------------------------------------------------------------
+// --- 1. INDEX ---
 // Barrel export for core modules (config, spec-folder utilities)
-// ---------------------------------------------------------------
-
-// workflow.ts not exported here to avoid circular dependencies
+// Workflow.ts not exported here to avoid circular dependencies
 // Import directly: import { runWorkflow } from './core/workflow';
 
 export {

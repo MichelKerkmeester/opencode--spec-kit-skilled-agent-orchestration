@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Test — Quality Loop
-// ---------------------------------------------------------------
+// --- 1. TEST — QUALITY LOOP ---
 // Quality Loop
 //
 // Verify-fix-verify memory quality loop:
@@ -288,7 +286,7 @@ describe('computeMemoryQualityScore', () => {
   it('returns low score for bad quality content', () => {
     const score = computeMemoryQualityScore(BAD_CONTENT, BAD_METADATA);
     // BAD_CONTENT = 'short': triggers=0, anchors=0.5 (neutral), budget=1.0, coherence=0.25
-    // total = 0*0.25 + 0.5*0.30 + 1.0*0.20 + 0.25*0.25 = 0.4125 → 0.413
+    // Total = 0*0.25 + 0.5*0.30 + 1.0*0.20 + 0.25*0.25 = 0.4125 → 0.413
     expect(score.total).toBeLessThan(0.5);
     expect(score.breakdown.triggers).toBe(0);
     expect(score.issues.length).toBeGreaterThan(0);

@@ -1,31 +1,24 @@
-// ---------------------------------------------------------------
-// MODULE: Save Quality Gate
-// ---------------------------------------------------------------
-// ---------------------------------------------------------------
+// --- 1. SAVE QUALITY GATE ---
 // Pre-Storage Quality Gate
 //
 // 3-layer validation before storing memories:
 // - Layer 1: Structural validation (existing checks, formalized)
 // - Layer 2: Content quality scoring (title, triggers, length,
-//            anchors, metadata, signal density)
+// Anchors, metadata, signal density)
 // - Layer 3: Semantic dedup (cosine similarity against existing)
 //
 // Behind SPECKIT_SAVE_QUALITY_GATE flag (default ON, graduated).
 // Set SPECKIT_SAVE_QUALITY_GATE=false to disable.
 //
 // Warn-only mode: for the first 14 days after activation, the
-// gate logs quality scores and would-reject decisions but does
+// Gate logs quality scores and would-reject decisions but does
 // NOT block saves. This prevents disruption during rollout.
 //
 // Activation timestamp is persisted to SQLite config table so
-// the 14-day graduation countdown survives server restarts.
-// ---------------------------------------------------------------
-
+// The 14-day graduation countdown survives server restarts.
 import * as vectorIndex from '../search/vector-index';
 
-/* ---------------------------------------------------------------
-   1. TYPES
-   --------------------------------------------------------------- */
+// --- 2. TYPES ---
 
 /** Result from Layer 1: Structural validation */
 export interface StructuralValidationResult {
@@ -92,9 +85,7 @@ type FindSimilarFn = (
   options: { limit: number; specFolder?: string }
 ) => Array<{ id: number; file_path: string; similarity: number }>;
 
-/* ---------------------------------------------------------------
-   2. CONFIGURATION
-   --------------------------------------------------------------- */
+// --- 3. CONFIGURATION ---
 
 /** Signal density threshold: below this score, content is too low quality */
 const SIGNAL_DENSITY_THRESHOLD = 0.4;
@@ -183,7 +174,7 @@ function persistActivationTimestampToDb(timestamp: number): void {
     db.prepare('INSERT OR REPLACE INTO config (key, value) VALUES (?, ?)')
       .run(ACTIVATION_CONFIG_KEY, timestamp.toString());
   } catch {
-    // AI-GUARD: Non-fatal: in-memory value still works
+    // Non-fatal: in-memory value still works
   }
 }
 
@@ -593,7 +584,7 @@ export function checkSemanticDedup(
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : String(err);
     console.warn('[quality-gate] Semantic dedup check failed:', message);
-    // AI-GUARD: Non-fatal: allow save through on error
+    // Non-fatal: allow save through on error
     return {
       pass: true,
       isDuplicate: false,
@@ -605,9 +596,7 @@ export function checkSemanticDedup(
   }
 }
 
-/* ---------------------------------------------------------------
-   7. UNIFIED QUALITY GATE
-   --------------------------------------------------------------- */
+// --- 4. UNIFIED QUALITY GATE ---
 
 /**
  * Run the full 3-layer quality gate for a memory save operation.

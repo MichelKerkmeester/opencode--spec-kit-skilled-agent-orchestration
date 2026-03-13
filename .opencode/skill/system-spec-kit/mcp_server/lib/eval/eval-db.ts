@@ -1,10 +1,6 @@
-// ---------------------------------------------------------------
-// MODULE: Eval DB
-// ---------------------------------------------------------------
-// T004: Separate evaluation database with 5 tables for tracking
-// retrieval quality metrics, ground truth, and eval results.
-// ---------------------------------------------------------------
-
+// --- 1. EVAL DB ---
+// Separate evaluation database with 5 tables for tracking
+// Retrieval quality metrics, ground truth, and eval results.
 // Node stdlib
 import * as path from 'path';
 import * as fs from 'fs';
@@ -128,7 +124,7 @@ function initEvalDb(dataDir?: string): Database.Database {
     evalDbPath = null;
   }
 
-  // AI-GUARD: Ensure the directory exists
+  // Ensure the directory exists
   if (!fs.existsSync(resolvedDir)) {
     fs.mkdirSync(resolvedDir, { recursive: true });
   }

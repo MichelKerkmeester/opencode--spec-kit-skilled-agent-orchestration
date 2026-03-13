@@ -1,9 +1,6 @@
-// ---------------------------------------------------------------
 // TEST: Ground Truth Feedback
 // R13-S2: Phase B (implicit feedback) + Phase C (LLM-judge)
-// for ground truth expansion.
-// ---------------------------------------------------------------
-
+// For ground truth expansion.
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import * as path from 'path';
 import * as fs from 'fs';
@@ -382,7 +379,7 @@ describe('Ground Truth Feedback (R13-S2)', () => {
     it('returns zeroes when DB is empty', () => {
       const summary = getGroundTruthCorpusSize();
 
-      // eval_ground_truth may have 0 rows in a fresh test DB
+      // Eval_ground_truth may have 0 rows in a fresh test DB
       expect(summary.selectionPairs).toBe(0);
       expect(summary.llmJudgePairs).toBe(0);
       expect(summary.totalPairs).toBeGreaterThanOrEqual(0);
@@ -423,7 +420,7 @@ describe('Ground Truth Feedback (R13-S2)', () => {
 
       const summary = getGroundTruthCorpusSize();
 
-      // total = manual (from eval_ground_truth, probably 0 in test) + 2 selections + 1 llm
+      // Total = manual (from eval_ground_truth, probably 0 in test) + 2 selections + 1 llm
       expect(summary.totalPairs).toBe(
         summary.manualPairs + summary.selectionPairs + summary.llmJudgePairs,
       );

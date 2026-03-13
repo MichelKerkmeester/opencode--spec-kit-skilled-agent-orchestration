@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: SESSION MANAGER EXTENDED
-// ---------------------------------------------------------------
-
 import { describe, it, expect, beforeEach, afterAll } from 'vitest';
 import fs from 'fs';
 import os from 'os';
@@ -106,8 +103,7 @@ describe('Session Manager Extended Tests', () => {
     teardown();
   });
 
-  // ── 1. shouldSendMemoriesBatch ────────────────────────────
-
+  // --- 1. SHOULDSENDMEMORIESBATCH ---
   describe('1. shouldSendMemoriesBatch', () => {
     it('all new memories return true', () => {
       resetDb();
@@ -140,8 +136,7 @@ describe('Session Manager Extended Tests', () => {
     });
   });
 
-  // ── 2. markMemoriesSentBatch ──────────────────────────────
-
+  // --- 2. MARKMEMORIESSENTBATCH ---
   describe('2. markMemoriesSentBatch', () => {
     it('marks all memories in transaction', () => {
       resetDb();
@@ -164,7 +159,7 @@ describe('Session Manager Extended Tests', () => {
       // Re-mark the same memory + a new one
       const result = sm.markMemoriesSentBatch(sid, [m, mem({ id: 41 })]);
       expect(result.success).toBe(true);
-      // markedCount should be 1 (duplicate ignored via INSERT OR IGNORE)
+      // MarkedCount should be 1 (duplicate ignored via INSERT OR IGNORE)
       expect(result.markedCount).toBe(1);
     });
 
@@ -176,8 +171,7 @@ describe('Session Manager Extended Tests', () => {
     });
   });
 
-  // ── 3. cleanupExpiredSessions ─────────────────────────────
-
+  // --- 3. CLEANUPEXPIREDSESSIONS ---
   describe('3. cleanupExpiredSessions', () => {
     it('removes expired entries', () => {
       resetDb();
@@ -207,8 +201,7 @@ describe('Session Manager Extended Tests', () => {
     });
   });
 
-  // ── 4. clearSession ───────────────────────────────────────
-
+  // --- 4. CLEARSESSION ---
   describe('4. clearSession', () => {
     it('deletes only target session entries', () => {
       resetDb();
@@ -220,7 +213,7 @@ describe('Session Manager Extended Tests', () => {
       const result = sm.clearSession(sid);
       expect(result.success).toBe(true);
       expect(result.deletedCount).toBe(2);
-      // other-session should be untouched
+      // Other-session should be untouched
         const remaining = testDb!.prepare('SELECT COUNT(*) as c FROM session_sent_memories WHERE session_id = ?').get('other-session') as CountRow;
         expect(remaining.c).toBe(1);
     });
@@ -232,8 +225,7 @@ describe('Session Manager Extended Tests', () => {
     });
   });
 
-  // ── 5. getSessionStats ────────────────────────────────────
-
+  // --- 5. GETSESSIONSTATS ---
   describe('5. getSessionStats', () => {
     it('returns correct counts and timestamps', () => {
       resetDb();
@@ -262,8 +254,7 @@ describe('Session Manager Extended Tests', () => {
     });
   });
 
-  // ── 6. markResultsSent ────────────────────────────────────
-
+  // --- 6. MARKRESULTSSENT ---
   describe('6. markResultsSent', () => {
     it('delegates to markMemoriesSentBatch correctly', () => {
       resetDb();
@@ -285,8 +276,7 @@ describe('Session Manager Extended Tests', () => {
     });
   });
 
-  // ── 7. ensureSessionStateSchema ───────────────────────────
-
+  // --- 7. ENSURESESSIONSTATESCHEMA ---
   describe('7. ensureSessionStateSchema', () => {
     it('creates session_state table', () => {
       // Schema already created in setup(), verify the table exists
@@ -303,8 +293,7 @@ describe('Session Manager Extended Tests', () => {
     });
   });
 
-  // ── 8. saveSessionState ───────────────────────────────────
-
+  // --- 8. SAVESESSIONSTATE ---
   describe('8. saveSessionState', () => {
     it('inserts full state correctly', () => {
       resetDb();
@@ -344,8 +333,7 @@ describe('Session Manager Extended Tests', () => {
     });
   });
 
-  // ── 9. completeSession ────────────────────────────────────
-
+  // --- 9. COMPLETESESSION ---
   describe('9. completeSession', () => {
     it('marks session as completed', () => {
       resetDb();
@@ -362,8 +350,7 @@ describe('Session Manager Extended Tests', () => {
     });
   });
 
-  // ── 10. resetInterruptedSessions ──────────────────────────
-
+  // --- 10. RESETINTERRUPTEDSESSIONS ---
   describe('10. resetInterruptedSessions', () => {
     it('only active sessions become interrupted', () => {
       resetDb();
@@ -390,8 +377,7 @@ describe('Session Manager Extended Tests', () => {
     });
   });
 
-  // ── 11. recoverState ──────────────────────────────────────
-
+  // --- 11. RECOVERSTATE ---
   describe('11. recoverState', () => {
     it('recovers interrupted session and reactivates it', () => {
       resetDb();
@@ -434,8 +420,7 @@ describe('Session Manager Extended Tests', () => {
     });
   });
 
-  // ── 12. getInterruptedSessions ────────────────────────────
-
+  // --- 12. GETINTERRUPTEDSESSIONS ---
   describe('12. getInterruptedSessions', () => {
     it('lists only interrupted sessions', () => {
       resetDb();
@@ -465,8 +450,7 @@ describe('Session Manager Extended Tests', () => {
     });
   });
 
-  // ── 13. generateContinueSessionMd ─────────────────────────
-
+  // --- 13. GENERATECONTINUESESSIONMD ---
   describe('13. generateContinueSessionMd', () => {
     it('generates full markdown with all fields', () => {
       const md = sm.generateContinueSessionMd({
@@ -502,8 +486,7 @@ describe('Session Manager Extended Tests', () => {
     });
   });
 
-  // ── 14. writeContinueSessionMd ────────────────────────────
-
+  // --- 14. WRITECONTINUESESSIONMD ---
   describe('14. writeContinueSessionMd', () => {
     it('writes file with recovered state', () => {
       resetDb();
@@ -557,8 +540,7 @@ describe('Session Manager Extended Tests', () => {
     });
   });
 
-  // ── 15. checkpointSession ─────────────────────────────────
-
+  // --- 15. CHECKPOINTSESSION ---
   describe('15. checkpointSession', () => {
     it('saves state and writes file', () => {
       resetDb();
@@ -601,15 +583,14 @@ describe('Session Manager Extended Tests', () => {
 
     it('falls back to DB-only when folder missing', () => {
       resetDb();
-      // specFolderPath that doesn't exist on disk — should save DB only
+      // SpecFolderPath that doesn't exist on disk — should save DB only
       const r = sm.checkpointSession('cp-3', { currentTask: 'missing dir' }, '/nonexistent/path/abc');
       expect(r.success).toBe(true);
       expect(r.note).toBeTruthy();
     });
   });
 
-  // ── 16. enforceEntryLimit ─────────────────────────────────
-
+  // --- 16. ENFORCEENTRYLIMIT ---
   describe('16. enforceEntryLimit', () => {
     it('trims to maxEntriesPerSession', () => {
       resetDb();
@@ -622,7 +603,7 @@ describe('Session Manager Extended Tests', () => {
         for (let i = 1; i <= 5; i++) {
           sm.markMemorySent(sid, mem({ id: 1000 + i, anchorId: `anchor-${i}` }));
         }
-        // enforceEntryLimit is called inside markMemorySent
+        // EnforceEntryLimit is called inside markMemorySent
           const count = testDb!.prepare('SELECT COUNT(*) as c FROM session_sent_memories WHERE session_id = ?').get(sid) as CountRow;
           expect(count.c).toBeLessThanOrEqual(3);
       } finally {
@@ -681,8 +662,7 @@ describe('Session Manager Extended Tests', () => {
     });
   });
 
-  // ── 17. db unavailable dedup mode ─────────────────────────
-
+  // --- 17. DB UNAVAILABLE DEDUP MODE ---
   describe('17. db unavailable dedup mode', () => {
     it('blocks sending when DB unavailable and mode is block', () => {
       const originalMode = sm.CONFIG.dbUnavailableMode;

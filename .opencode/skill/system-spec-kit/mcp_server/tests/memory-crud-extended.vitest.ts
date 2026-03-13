@@ -1,18 +1,13 @@
-// ---------------------------------------------------------------
-// MODULE: Memory Crud Extended Vitest
-// ---------------------------------------------------------------
+// --- 1. MEMORY CRUD EXTENDED VITEST ---
 
 import { describe, it, expect, beforeAll, afterAll, afterEach, vi } from 'vitest';
 
-// ---------------------------------------------------------------
 // TEST: HANDLER - MEMORY CRUD (EXTENDED) (Vitest)
 // Happy-path execution, bulk delete transactions, causal edge
-// cleanup, folder scoring integration, embedding regeneration,
-// allowPartialUpdate, setEmbeddingModelReady.
-// ---------------------------------------------------------------
-
+// Cleanup, folder scoring integration, embedding regeneration,
+// AllowPartialUpdate, setEmbeddingModelReady.
 // Mock modules at the vi.mock level so handler's internal imports are intercepted.
-// vi.mock is hoisted to the top of the file by vitest.
+// Vi.mock is hoisted to the top of the file by vitest.
 vi.mock('../core/db-state', async (importOriginal) => {
   const actual = await importOriginal() as any;
   return {
@@ -59,7 +54,7 @@ vi.mock('../lib/storage/causal-edges', async (importOriginal) => {
     ...actual,
     init: vi.fn((...args: any[]) => actual.init?.(...args)),
     deleteEdgesForMemory: vi.fn((...args: any[]) => actual.deleteEdgesForMemory?.(...args)),
-    // AI: Fix F23 — include cleanupOrphanedEdges in mock for health auto-repair coverage.
+    // Fix F23 — include cleanupOrphanedEdges in mock for health auto-repair coverage.
     cleanupOrphanedEdges: vi.fn((...args: any[]) => actual.cleanupOrphanedEdges?.(...args)),
   };
 });
@@ -583,7 +578,7 @@ describe('handleMemoryDelete - Happy Path', () => {
 
 describe('handleMemoryDelete - Causal Edge Cleanup', () => {
   it('EXT-CE1: Causal edges cleaned up on single delete', async (ctx) => {
-    // AI-WHY: Optional module — test skipped at runtime when causalEdgesMod unavailable
+    // Optional module — test skipped at runtime when causalEdgesMod unavailable
     if (!causalEdgesMod) { ctx.skip(); return; }
     if (!handler?.handleMemoryDelete || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
     const calls = installDeleteMocks({ deleteResult: true, dbAvailable: true });
@@ -593,7 +588,7 @@ describe('handleMemoryDelete - Causal Edge Cleanup', () => {
   });
 
   it('EXT-CE2: Causal edge cleanup failure aborts delete transaction', async (ctx) => {
-    // AI-WHY: Optional module — test skipped at runtime when causalEdgesMod unavailable
+    // Optional module — test skipped at runtime when causalEdgesMod unavailable
     if (!causalEdgesMod) { ctx.skip(); return; }
     if (!handler?.handleMemoryDelete || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
     const calls = installDeleteMocks({ deleteResult: true, dbAvailable: true, edgeCleanupThrows: true });
@@ -601,7 +596,7 @@ describe('handleMemoryDelete - Causal Edge Cleanup', () => {
   });
 
   it('EXT-CE3: No edge cleanup when delete fails', async (ctx) => {
-    // AI-WHY: Optional module — test skipped at runtime when causalEdgesMod unavailable
+    // Optional module — test skipped at runtime when causalEdgesMod unavailable
     if (!causalEdgesMod) { ctx.skip(); return; }
     if (!handler?.handleMemoryDelete || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
     const calls = installDeleteMocks({ deleteResult: false, dbAvailable: true });
@@ -625,7 +620,7 @@ describe('handleMemoryDelete - Bulk Delete Transaction', () => {
   });
 
   it('EXT-BD2: Bulk delete creates checkpoint', async (ctx) => {
-    // AI-WHY: Optional module — test skipped at runtime when checkpointsMod unavailable
+    // Optional module — test skipped at runtime when checkpointsMod unavailable
     if (!checkpointsMod) { ctx.skip(); return; }
     if (!handler?.handleMemoryDelete || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
     const calls = installBulkDeleteMocks({ memories: [{ id: 20 }] });
@@ -635,7 +630,7 @@ describe('handleMemoryDelete - Bulk Delete Transaction', () => {
   });
 
   it('EXT-BD3: Response includes checkpoint name', async (ctx) => {
-    // AI-WHY: Optional module — test skipped at runtime when checkpointsMod unavailable
+    // Optional module — test skipped at runtime when checkpointsMod unavailable
     if (!checkpointsMod) { ctx.skip(); return; }
     if (!handler?.handleMemoryDelete || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
     const calls = installBulkDeleteMocks({ memories: [{ id: 30 }] });
@@ -656,7 +651,7 @@ describe('handleMemoryDelete - Bulk Delete Transaction', () => {
   });
 
   it('EXT-BD5: Bulk delete cleans causal edges for each memory', async (ctx) => {
-    // AI-WHY: Optional module — test skipped at runtime when causalEdgesMod unavailable
+    // Optional module — test skipped at runtime when causalEdgesMod unavailable
     if (!causalEdgesMod) { ctx.skip(); return; }
     if (!handler?.handleMemoryDelete || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
     const calls = installBulkDeleteMocks({ memories: [{ id: 50 }, { id: 51 }] });
@@ -675,7 +670,7 @@ describe('handleMemoryDelete - Bulk Delete Transaction', () => {
   });
 
   it('EXT-BD7: Null checkpoint response omits restore metadata', async (ctx) => {
-    // AI-WHY: Optional module — test skipped at runtime when checkpointsMod unavailable
+    // Optional module — test skipped at runtime when checkpointsMod unavailable
     if (!checkpointsMod) { ctx.skip(); return; }
     if (!handler?.handleMemoryDelete || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
     const calls = installBulkDeleteMocks({ memories: [{ id: 60 }], checkpointReturnsNull: true });
@@ -716,7 +711,7 @@ describe('handleMemoryUpdate - Happy Path', () => {
   });
 
   it('EXT-U2: Changed title triggers embedding regen', async (ctx) => {
-    // AI-WHY: Optional module — test skipped at runtime when embeddingsSourceMod unavailable
+    // Optional module — test skipped at runtime when embeddingsSourceMod unavailable
     if (!embeddingsSourceMod) { ctx.skip(); return; }
     if (!handler?.handleMemoryUpdate || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
     const calls = installUpdateMocks({ existingMemory: { id: 1, title: 'Old Title' } });
@@ -775,7 +770,7 @@ describe('handleMemoryUpdate - Happy Path', () => {
 
 describe('handleMemoryUpdate - Embedding Regeneration', () => {
   it('EXT-ER1: Embedding failure without partial rolls back', async (ctx) => {
-    // AI-WHY: Optional module — test skipped at runtime when embeddingsSourceMod unavailable
+    // Optional module — test skipped at runtime when embeddingsSourceMod unavailable
     if (!embeddingsSourceMod) { ctx.skip(); return; }
     if (!handler?.handleMemoryUpdate || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
     const calls = installUpdateMocks({ existingMemory: { id: 1, title: 'Old' }, embeddingThrows: true });
@@ -792,7 +787,7 @@ describe('handleMemoryUpdate - Embedding Regeneration', () => {
   });
 
   it('EXT-ER2: Partial update marks embedding pending', async (ctx) => {
-    // AI-WHY: Optional module — test skipped at runtime when embeddingsSourceMod unavailable
+    // Optional module — test skipped at runtime when embeddingsSourceMod unavailable
     if (!embeddingsSourceMod) { ctx.skip(); return; }
     if (!handler?.handleMemoryUpdate || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
     const calls = installUpdateMocks({ existingMemory: { id: 2, title: 'Old' }, embeddingThrows: true });
@@ -803,7 +798,7 @@ describe('handleMemoryUpdate - Embedding Regeneration', () => {
   });
 
   it('EXT-ER3: Null embedding without partial throws', async (ctx) => {
-    // AI-WHY: Optional module — test skipped at runtime when embeddingsSourceMod unavailable
+    // Optional module — test skipped at runtime when embeddingsSourceMod unavailable
     if (!embeddingsSourceMod) { ctx.skip(); return; }
     if (!handler?.handleMemoryUpdate || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
     const calls = installUpdateMocks({ existingMemory: { id: 3, title: 'Old' }, embeddingResult: null });
@@ -821,7 +816,7 @@ describe('handleMemoryUpdate - Embedding Regeneration', () => {
   });
 
   it('EXT-ER4: Null embedding + partial marks pending', async (ctx) => {
-    // AI-WHY: Optional module — test skipped at runtime when embeddingsSourceMod unavailable
+    // Optional module — test skipped at runtime when embeddingsSourceMod unavailable
     if (!embeddingsSourceMod) { ctx.skip(); return; }
     if (!handler?.handleMemoryUpdate || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
     const calls = installUpdateMocks({ existingMemory: { id: 4, title: 'Old' }, embeddingResult: null });
@@ -833,7 +828,7 @@ describe('handleMemoryUpdate - Embedding Regeneration', () => {
   });
 
   it('EXT-ER5: Embedding regen completes successfully', async (ctx) => {
-    // AI-WHY: Optional module — test skipped at runtime when embeddingsSourceMod unavailable
+    // Optional module — test skipped at runtime when embeddingsSourceMod unavailable
     if (!embeddingsSourceMod) { ctx.skip(); return; }
     if (!handler?.handleMemoryUpdate || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
     const calls = installUpdateMocks({ existingMemory: { id: 5, title: 'Old' }, embeddingResult: new Float32Array(768) });
@@ -1028,7 +1023,7 @@ describe('handleMemoryStats - Happy Path', () => {
 
 describe('handleMemoryStats - Folder Scoring', () => {
   it('EXT-FS1: Composite ranking returns scored folders', async (ctx) => {
-    // AI-WHY: Optional module — test skipped at runtime when folderScoringSourceMod unavailable
+    // Optional module — test skipped at runtime when folderScoringSourceMod unavailable
     if (!folderScoringSourceMod) { ctx.skip(); return; }
     if (!handler?.handleMemoryStats || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
     const scoredFolders = [
@@ -1042,7 +1037,7 @@ describe('handleMemoryStats - Folder Scoring', () => {
   });
 
   it('EXT-FS2: Scoring failure falls back gracefully', async (ctx) => {
-    // AI-WHY: Optional module — test skipped at runtime when folderScoringSourceMod unavailable
+    // Optional module — test skipped at runtime when folderScoringSourceMod unavailable
     if (!folderScoringSourceMod) { ctx.skip(); return; }
     if (!handler?.handleMemoryStats || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
     installStatsMocks({ computeScoresThrows: true });
@@ -1052,7 +1047,7 @@ describe('handleMemoryStats - Folder Scoring', () => {
   });
 
   it('EXT-FS3: Archived folders filtered out', async (ctx) => {
-    // AI-WHY: Optional module — test skipped at runtime when folderScoringSourceMod unavailable
+    // Optional module — test skipped at runtime when folderScoringSourceMod unavailable
     if (!folderScoringSourceMod) { ctx.skip(); return; }
     if (!handler?.handleMemoryStats || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
     installStatsMocks({
@@ -1068,7 +1063,7 @@ describe('handleMemoryStats - Folder Scoring', () => {
   });
 
   it('EXT-FS4: excludePatterns filters scratch folder', async (ctx) => {
-    // AI-WHY: Optional module — test skipped at runtime when folderScoringSourceMod unavailable
+    // Optional module — test skipped at runtime when folderScoringSourceMod unavailable
     if (!folderScoringSourceMod) { ctx.skip(); return; }
     if (!handler?.handleMemoryStats || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
     installStatsMocks({
@@ -1117,7 +1112,7 @@ describe('handleMemoryHealth - Happy Path', () => {
   });
 
   it('EXT-H4: Health includes provider info', async (ctx) => {
-    // AI-WHY: Optional module — test skipped at runtime when embeddingsSourceMod unavailable
+    // Optional module — test skipped at runtime when embeddingsSourceMod unavailable
     if (!embeddingsSourceMod) { ctx.skip(); return; }
     if (!handler?.handleMemoryHealth || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
     handler.setEmbeddingModelReady(true);
@@ -1734,7 +1729,7 @@ describe('MCP Response Envelope Structure', () => {
 
 describe('Mutation ledger wiring', () => {
   it('EXT-ML1: single delete logs a delete mutation', async (ctx) => {
-    // AI-WHY: Optional module — test skipped at runtime when mutationLedgerMod unavailable
+    // Optional module — test skipped at runtime when mutationLedgerMod unavailable
     if (!mutationLedgerMod) { ctx.skip(); return; }
     if (!handler?.handleMemoryDelete || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
     installDeleteMocks({ deleteResult: true, dbAvailable: true });
@@ -1749,7 +1744,7 @@ describe('Mutation ledger wiring', () => {
   });
 
   it('EXT-ML2: bulk delete logs one ledger entry per deleted memory', async (ctx) => {
-    // AI-WHY: Optional module — test skipped at runtime when mutationLedgerMod unavailable
+    // Optional module — test skipped at runtime when mutationLedgerMod unavailable
     if (!mutationLedgerMod) { ctx.skip(); return; }
     if (!handler?.handleMemoryDelete || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
     installBulkDeleteMocks({ memories: [{ id: 90 }, { id: 91 }], dbAvailable: true });
@@ -1763,7 +1758,7 @@ describe('Mutation ledger wiring', () => {
   });
 
   it('EXT-ML3: memory update logs an update mutation', async (ctx) => {
-    // AI-WHY: Optional module — test skipped at runtime when mutationLedgerMod unavailable
+    // Optional module — test skipped at runtime when mutationLedgerMod unavailable
     if (!mutationLedgerMod) { ctx.skip(); return; }
     if (!handler?.handleMemoryUpdate || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
     installUpdateMocks({ existingMemory: { id: 7, title: 'Old title', content_hash: 'old-hash' } });

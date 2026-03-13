@@ -1,13 +1,10 @@
-// ---------------------------------------------------------------
 // TEST: Signal Vocabulary Expansion
 // Validates CORRECTION and PREFERENCE signal detection in
-// trigger-matcher.ts, including boost application and env-flag gating.
-// ---------------------------------------------------------------
-
+// Trigger-matcher.ts, including boost application and env-flag gating.
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 // Mock transitive DB dependencies so the module can load
-// without better-sqlite3 or vector-index wiring.
+// Without better-sqlite3 or vector-index wiring.
 vi.mock('../lib/search/vector-index', () => ({
   initializeDb: vi.fn(),
   getDb: vi.fn(() => null),
@@ -236,7 +233,7 @@ describe('Signal Vocabulary (T012)', () => {
         },
       ];
       const signals = detectSignals('actually I prefer this');
-      // correction (0.2) + preference (0.1) = 0.3 boost; 0.8 + 0.3 = 1.1, capped to 1.0
+      // Correction (0.2) + preference (0.1) = 0.3 boost; 0.8 + 0.3 = 1.1, capped to 1.0
       const boosted = applySignalBoosts(matches, signals);
       expect(boosted[0].importanceWeight).toBe(1.0);
     });
@@ -247,14 +244,14 @@ describe('Signal Vocabulary (T012)', () => {
     it('does NOT apply signal boosts when SPECKIT_SIGNAL_VOCAB is explicitly false', () => {
       process.env.SPECKIT_SIGNAL_VOCAB = 'false';
       const result = matchTriggerPhrasesWithStats('actually I prefer TypeScript');
-      // stats.signals should be undefined when flag is explicitly disabled
+      // Stats.signals should be undefined when flag is explicitly disabled
       expect(result.stats.signals).toBeUndefined();
     });
 
     it('applies signal boosts when SPECKIT_SIGNAL_VOCAB is set', () => {
       process.env.SPECKIT_SIGNAL_VOCAB = '1';
       const result = matchTriggerPhrasesWithStats('actually I prefer TypeScript');
-      // stats.signals should be present when flag is on
+      // Stats.signals should be present when flag is on
       expect(result.stats.signals).toBeDefined();
       expect(Array.isArray(result.stats.signals)).toBe(true);
     });

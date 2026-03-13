@@ -1,8 +1,5 @@
-// ---------------------------------------------------------------
 // TEST: Memory Summaries (TF-IDF Summarizer + Storage)
 // Covers: TF-IDF extractive summarizer and memory summary storage
-// ---------------------------------------------------------------
-
 import { describe, it, expect, beforeEach } from 'vitest';
 import Database from 'better-sqlite3';
 

@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Spec Folder Extractor
-// ---------------------------------------------------------------
+// --- 1. SPEC FOLDER EXTRACTOR ---
 // Extracts structured context from spec folder documents for stateless enrichment
 
 import fs from 'fs';

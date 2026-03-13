@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Test — Feature Evaluation — Graph Signals
-// ---------------------------------------------------------------
+// --- 1. TEST — FEATURE EVALUATION — GRAPH SIGNALS ---
 // Rigorous cross-feature evaluation tests for T001, T002, T003a, T005a, T007
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
@@ -63,7 +61,7 @@ function createMockDb(edges: Array<{
 }>) {
   return {
     prepare(sql: string) {
-      // computeTypedDegree: UNION ALL of source and target
+      // ComputeTypedDegree: UNION ALL of source and target
       if (sql.includes('UNION ALL') && sql.includes('causal_edges')) {
         return {
           all: (sourceId: string, targetId: string) => {
@@ -76,7 +74,7 @@ function createMockDb(edges: Array<{
           },
         };
       }
-      // computeMaxTypedDegree: SELECT DISTINCT node_id
+      // ComputeMaxTypedDegree: SELECT DISTINCT node_id
       if (sql.includes('DISTINCT') && sql.includes('node_id')) {
         return {
           all: () => {
@@ -89,7 +87,7 @@ function createMockDb(edges: Array<{
           },
         };
       }
-      // computeDegreeScores: constitutional exclusion check
+      // ComputeDegreeScores: constitutional exclusion check
       if (sql.includes('memory_index') && sql.includes('constitutional')) {
         return {
           all: (..._args: unknown[]) => [],
@@ -226,7 +224,7 @@ describe('T002: RRF 5th degree channel integration', () => {
     const fusedWith = fuseResultsMulti(withDegree);
 
     // With graduated-ON normalization, compare source counts and convergence
-    // since normalized scores can both be 1.0 for top results
+    // Since normalized scores can both be 1.0 for top results
     const itemWith = fusedWith.find(r => r.id === 1)!;
     const itemWithout = fusedWithout.find(r => r.id === 1)!;
 
@@ -315,7 +313,7 @@ describe('T003a: Co-activation sublinear scaling (R17 fan-effect)', () => {
     const boost2 = boostScore(base, 2, sim) - base;
     const boost4 = boostScore(base, 4, sim) - base;
 
-    // AI-WHY: Pure fan-effect — more connections dilute each relationship's contribution.
+    // Pure fan-effect — more connections dilute each relationship's contribution.
     // Total boost DECREASES as relatedCount increases (1/sqrt(n) decay).
     expect(boost4).toBeLessThan(boost2);
     expect(boost4).toBeGreaterThan(0); // still positive
@@ -327,7 +325,7 @@ describe('T003a: Co-activation sublinear scaling (R17 fan-effect)', () => {
     const counts = [1, 2, 3, 4, 5];
     const boosts = counts.map(c => boostScore(base, c, sim));
 
-    // AI-WHY: Each step's magnitude of change decreases (diminishing impact)
+    // Each step's magnitude of change decreases (diminishing impact)
     for (let i = 2; i < boosts.length; i++) {
       const delta_i = Math.abs(boosts[i] - boosts[i - 1]);
       const delta_prev = Math.abs(boosts[i - 1] - boosts[i - 2]);
@@ -342,7 +340,7 @@ describe('T003a: Co-activation sublinear scaling (R17 fan-effect)', () => {
 
     const result = boostScore(base, relatedCount, avgSim);
 
-    // AI-WHY: New formula removes relatedCount/maxRelated linear multiplier
+    // New formula removes relatedCount/maxRelated linear multiplier
     const perNeighborBoost = CO_ACTIVATION_CONFIG.boostFactor * (avgSim / 100);
     const fanDivisor = Math.sqrt(Math.max(1, relatedCount));
     const expectedBoost = Math.max(0, perNeighborBoost / fanDivisor);
@@ -374,7 +372,7 @@ describe('T003a: Co-activation sublinear scaling (R17 fan-effect)', () => {
     const boost50 = boostScore(base, count, 50) - base;
     const boost0 = boostScore(base, count, 0) - base;
 
-    // boost50 should be about half of boost100 (similarity is a linear factor)
+    // Boost50 should be about half of boost100 (similarity is a linear factor)
     expect(boost50).toBeCloseTo(boost100 / 2, 5);
     expect(boost0).toBeCloseTo(0, 5);
   });

@@ -64,7 +64,7 @@ afterAll(() => {
   try {
     vectorIndex.closeDb();
   } catch {
-    // ignore cleanup errors in tests
+    // Ignore cleanup errors in tests
   }
   fs.rmSync(TEST_DB_DIR, { recursive: true, force: true });
   fs.rmSync(path.join(process.cwd(), 'tmp-test-fixtures'), { recursive: true, force: true });

@@ -1,14 +1,10 @@
 #!/usr/bin/env node
-// ---------------------------------------------------------------
-// SCRIPT: Migration Checkpoint Create
-// ---------------------------------------------------------------
-// Creates a point-in-time SQLite checkpoint before schema migrations.
-// ---------------------------------------------------------------
-
+// --- 1. MIGRATION CHECKPOINT CREATE ---
+// Create a point-in-time SQLite checkpoint before schema migrations.
 import * as fs from 'fs';
 import * as path from 'path';
 import Database from 'better-sqlite3';
-import { getHydraRolloutDefaults } from '../../lib/config/capability-flags';
+import { getMemoryRoadmapDefaults } from '../../lib/config/capability-flags';
 
 interface CliArgs {
   dbPath: string;
@@ -142,7 +138,7 @@ function getSchemaVersion(dbPath: string): number | null {
     try {
       db?.close();
     } catch (_error: unknown) {
-      // ignore close failures in CLI path
+      // Ignore close failures in CLI path
     }
   }
 }
@@ -162,7 +158,7 @@ function runCreateCheckpoint(args: CliArgs): CreateCheckpointResult {
   fs.copyFileSync(args.dbPath, checkpointPath);
   const sizeBytes = fs.statSync(checkpointPath).size;
   const schemaVersion = getSchemaVersion(args.dbPath);
-  const rollout = getHydraRolloutDefaults();
+  const rollout = getMemoryRoadmapDefaults();
 
   const metadata = {
     createdAt: now.toISOString(),

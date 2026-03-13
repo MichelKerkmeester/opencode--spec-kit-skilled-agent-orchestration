@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: CAUSAL FIXES
-// ---------------------------------------------------------------
-
 import { describe, it, expect, beforeAll, beforeEach } from 'vitest';
 import * as causalEdges from '../lib/storage/causal-edges';
 import * as causalGraphHandler from '../handlers/causal-graph';

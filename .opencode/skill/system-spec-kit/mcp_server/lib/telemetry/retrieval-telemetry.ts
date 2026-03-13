@@ -1,11 +1,7 @@
-// ---------------------------------------------------------------
-// MODULE: Retrieval Telemetry (C136-12)
-// ---------------------------------------------------------------
-// AI-WHY: Captures latency, mode selection, fallback, and quality-proxy
-// dimensions for governance review and Wave 2 gate decisions.
+// --- 1. RETRIEVAL TELEMETRY (C136-12) ---
+// Captures latency, mode selection, fallback, and quality-proxy
+// Dimensions for governance review and Wave 2 gate decisions.
 // Feature flag: SPECKIT_EXTENDED_TELEMETRY (default false / disabled)
-// ---------------------------------------------------------------
-
 import {
   sanitizeRetrievalTracePayload,
 } from './trace-schema';
@@ -13,11 +9,11 @@ import type {
   TelemetryTracePayload,
 } from './trace-schema';
 import {
-  getHydraRolloutDefaults,
+  getMemoryRoadmapDefaults,
 } from '../config/capability-flags';
 import type {
-  HydraCapabilityFlags,
-  HydraPhase,
+  MemoryRoadmapCapabilityFlags,
+  MemoryRoadmapPhase,
 } from '../config/capability-flags';
 
 /* ---------------------------------------------------------------
@@ -25,7 +21,7 @@ import type {
 --------------------------------------------------------------- */
 
 /**
- * AI-WHY: Extended telemetry controlled by env var (default: disabled for performance).
+ * Extended telemetry controlled by env var (default: disabled for performance).
  * Set SPECKIT_EXTENDED_TELEMETRY=true to enable detailed retrieval metrics collection.
  */
 function isExtendedTelemetryEnabled(): boolean {
@@ -81,11 +77,28 @@ interface QualityMetrics {
   qualityProxyScore: number; // 0-1
 }
 
-/** Architecture rollout telemetry for phased Hydra capabilities. */
+/** Architecture rollout telemetry for phased memory-roadmap capabilities. */
 interface ArchitectureMetrics {
-  phase: HydraPhase;
-  capabilities: HydraCapabilityFlags;
+  phase: MemoryRoadmapPhase;
+  capabilities: MemoryRoadmapCapabilityFlags;
   scopeDimensionsTracked: number;
+}
+
+interface GraphHealthMetrics {
+  killSwitchActive: boolean;
+  causalBoosted: number;
+  coActivationBoosted: number;
+  communityInjected: number;
+  graphSignalsBoosted: number;
+  totalGraphInjected: number;
+}
+
+interface AdaptiveMetrics {
+  mode: 'shadow' | 'promoted' | 'disabled';
+  promotedCount: number;
+  demotedCount: number;
+  bounded: boolean;
+  maxDeltaApplied: number;
 }
 
 /** Full retrieval telemetry record */
@@ -97,6 +110,8 @@ interface RetrievalTelemetry {
   fallback: FallbackMetrics;
   quality: QualityMetrics;
   architecture: ArchitectureMetrics;
+  graphHealth: GraphHealthMetrics;
+  adaptive: AdaptiveMetrics;
   tracePayload?: TelemetryTracePayload;
 }
 
@@ -107,7 +122,7 @@ type LatencyStage = keyof Omit<LatencyMetrics, 'totalLatencyMs'>;
 --------------------------------------------------------------- */
 
 function createTelemetry(): RetrievalTelemetry {
-  const hydraDefaults = getHydraRolloutDefaults();
+  const roadmapDefaults = getMemoryRoadmapDefaults();
 
   return {
     enabled: isExtendedTelemetryEnabled(),
@@ -137,9 +152,24 @@ function createTelemetry(): RetrievalTelemetry {
       qualityProxyScore: 0,
     },
     architecture: {
-      phase: hydraDefaults.phase,
-      capabilities: { ...hydraDefaults.capabilities },
-      scopeDimensionsTracked: hydraDefaults.scopeDimensionsTracked,
+      phase: roadmapDefaults.phase,
+      capabilities: { ...roadmapDefaults.capabilities },
+      scopeDimensionsTracked: roadmapDefaults.scopeDimensionsTracked,
+    },
+    graphHealth: {
+      killSwitchActive: false,
+      causalBoosted: 0,
+      coActivationBoosted: 0,
+      communityInjected: 0,
+      graphSignalsBoosted: 0,
+      totalGraphInjected: 0,
+    },
+    adaptive: {
+      mode: 'disabled',
+      promotedCount: 0,
+      demotedCount: 0,
+      bounded: true,
+      maxDeltaApplied: 0,
     },
   };
 }
@@ -203,7 +233,7 @@ function recordQualityProxy(
       if (typeof r.similarity === 'number' && Number.isFinite(r.similarity)) return r.similarity / 100;
       return 0;
     });
-    // AI-WHY: reduce avoids stack overflow on arrays >100K elements (spread pushes all onto call stack)
+    // Reduce avoids stack overflow on arrays >100K elements (spread pushes all onto call stack)
     t.quality.topResultScore = scores.reduce((a, b) => Math.max(a, b), -Infinity);
     t.quality.avgRelevanceScore = scores.reduce((sum, s) => sum + s, 0) / count;
   }
@@ -228,8 +258,8 @@ function recordTracePayload(t: RetrievalTelemetry, payload: unknown): boolean {
 function recordArchitecturePhase(
   t: RetrievalTelemetry,
   update: {
-    phase?: HydraPhase;
-    capabilities?: Partial<HydraCapabilityFlags>;
+    phase?: MemoryRoadmapPhase;
+    capabilities?: Partial<MemoryRoadmapCapabilityFlags>;
     scopeDimensionsTracked?: number;
   }
 ): void {
@@ -249,6 +279,28 @@ function recordArchitecturePhase(
   if (typeof update.scopeDimensionsTracked === 'number' && Number.isFinite(update.scopeDimensionsTracked)) {
     t.architecture.scopeDimensionsTracked = Math.max(0, Math.floor(update.scopeDimensionsTracked));
   }
+}
+
+function recordGraphHealth(
+  t: RetrievalTelemetry,
+  update: Partial<GraphHealthMetrics>,
+): void {
+  if (!t.enabled) return;
+  t.graphHealth = {
+    ...t.graphHealth,
+    ...update,
+  };
+}
+
+function recordAdaptiveEvaluation(
+  t: RetrievalTelemetry,
+  update: Partial<AdaptiveMetrics>,
+): void {
+  if (!t.enabled) return;
+  t.adaptive = {
+    ...t.adaptive,
+    ...update,
+  };
 }
 
 /* ---------------------------------------------------------------
@@ -344,6 +396,21 @@ function toJSON(t: RetrievalTelemetry): Record<string, unknown> {
       },
       scopeDimensionsTracked: t.architecture.scopeDimensionsTracked,
     },
+    graphHealth: {
+      killSwitchActive: t.graphHealth.killSwitchActive,
+      causalBoosted: t.graphHealth.causalBoosted,
+      coActivationBoosted: t.graphHealth.coActivationBoosted,
+      communityInjected: t.graphHealth.communityInjected,
+      graphSignalsBoosted: t.graphHealth.graphSignalsBoosted,
+      totalGraphInjected: t.graphHealth.totalGraphInjected,
+    },
+    adaptive: {
+      mode: t.adaptive.mode,
+      promotedCount: t.adaptive.promotedCount,
+      demotedCount: t.adaptive.demotedCount,
+      bounded: t.adaptive.bounded,
+      maxDeltaApplied: t.adaptive.maxDeltaApplied,
+    },
   };
 
   if (tracePayload) {
@@ -366,6 +433,8 @@ export {
   recordQualityProxy,
   recordTracePayload,
   recordArchitecturePhase,
+  recordGraphHealth,
+  recordAdaptiveEvaluation,
   computeQualityProxy,
   toJSON,
 };
@@ -380,6 +449,8 @@ export type {
   FallbackMetrics,
   QualityMetrics,
   ArchitectureMetrics,
+  GraphHealthMetrics,
+  AdaptiveMetrics,
   LatencyStage,
 };
 

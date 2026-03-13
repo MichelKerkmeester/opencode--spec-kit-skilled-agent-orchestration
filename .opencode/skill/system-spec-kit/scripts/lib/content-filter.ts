@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Content Filter
-// ---------------------------------------------------------------
+// --- 1. CONTENT FILTER ---
 
 import crypto from 'crypto';
 import fs from 'fs';
@@ -8,9 +6,7 @@ import path from 'path';
 import { stripJsoncComments } from '@spec-kit/shared/utils/jsonc-strip';
 import { structuredLog } from '../utils/logger';
 
-// ---------------------------------------------------------------
-// 1. TYPES
-// ---------------------------------------------------------------
+// --- 2. TYPES ---
 
 /** Content type classification labels */
 export type ContentType = 'noise' | 'empty' | 'duplicate' | 'lowQuality' | 'valid';
@@ -85,9 +81,7 @@ export interface FilterPipeline {
   getStats(): FilterStats;
 }
 
-// ---------------------------------------------------------------
-// 2. CONFIGURATION
-// ---------------------------------------------------------------
+// --- 3. CONFIGURATION ---
 
 function loadFilterConfig(): FilterConfig {
   const defaultConfig: FilterConfig = {
@@ -150,7 +144,7 @@ function loadFilterConfig(): FilterConfig {
       }
       // Merged config has been reconstructed with all FilterConfig keys.
       // Per-property casts from unknown → specific type are safe here because
-      // the merge loop preserves defaultConfig's structure for every section.
+      // The merge loop preserves defaultConfig's structure for every section.
       return {
         pipeline: merged.pipeline as FilterConfig['pipeline'],
         noise: merged.noise as FilterConfig['noise'],
@@ -166,9 +160,7 @@ function loadFilterConfig(): FilterConfig {
   return defaultConfig;
 }
 
-// ---------------------------------------------------------------
-// 3. NOISE PATTERNS
-// ---------------------------------------------------------------
+// --- 4. NOISE PATTERNS ---
 
 const NOISE_PATTERNS: readonly RegExp[] = [
   // Placeholder text
@@ -211,9 +203,7 @@ const STRIP_PATTERNS: readonly StripPattern[] = [
   { pattern: /<system-reminder>[\s\S]*?<\/system-reminder>/g, replacement: '' },
 ] as const;
 
-// ---------------------------------------------------------------
-// 4. FILTERING PIPELINE
-// ---------------------------------------------------------------
+// --- 5. FILTERING PIPELINE ---
 
 // P3-20: Factory function to create a fresh stats object per invocation
 // (no longer a module-level mutable singleton)
@@ -368,12 +358,10 @@ function calculateQualityScore(items: PromptItem[], config: FilterConfig): numbe
   );
 }
 
-// ---------------------------------------------------------------
-// 5. MAIN FILTER FUNCTIONS
-// ---------------------------------------------------------------
+// --- 6. MAIN FILTER FUNCTIONS ---
 
 function createFilterPipeline(customConfig: Partial<FilterConfig> = {}): FilterPipeline {
-  // AI-FIX: F-23 — Deep merge to preserve nested defaults (e.g., pipeline.stages).
+  // F-23 — Deep merge to preserve nested defaults (e.g., pipeline.stages).
   // Shallow spread drops nested defaults when customConfig partially overrides pipeline.
   const defaults = loadFilterConfig();
   const config: FilterConfig = {
@@ -496,9 +484,7 @@ function filterContent(prompts: PromptItem[], options: Partial<FilterConfig> = {
   return pipeline.filter(prompts);
 }
 
-// ---------------------------------------------------------------
-// 6. EXPORTS
-// ---------------------------------------------------------------
+// --- 7. EXPORTS ---
 
 export {
   createFilterPipeline,

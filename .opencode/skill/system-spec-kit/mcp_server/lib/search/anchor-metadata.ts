@@ -1,28 +1,24 @@
-// ---------------------------------------------------------------
-// MODULE: Anchor Metadata
-// ---------------------------------------------------------------
+// --- 1. ANCHOR METADATA ---
 // Sprint 5 Phase B — S2 template anchor optimization
 //
 // PURPOSE: Parse ANCHOR tags from memory content and attach the
-// resulting metadata to search pipeline rows. This is a PURE
+// Resulting metadata to search pipeline rows. This is a PURE
 // ANNOTATION step — no scores are modified.
 //
 // ANCHOR FORMAT:
-//   <!-- ANCHOR:id --> ... content ... <!-- /ANCHOR:id -->
+// <!-- ANCHOR:id --> ... content ... <!-- /ANCHOR:id -->
 //
 // ANCHOR ID CONVENTION (for type extraction):
-//   Structured IDs follow the pattern: TYPE-keywords-NNN
-//   e.g.  DECISION-pipeline-003  → type = "DECISION"
-//         state                  → type = "state"
-//         summary                → type = "summary"
+// Structured IDs follow the pattern: TYPE-keywords-NNN
+// e.g.  DECISION-pipeline-003  → type = "DECISION"
+// State                  → type = "state"
+// Summary                → type = "summary"
 //
 // Integration point: called at the end of Stage 2 fusion, after
-// all scoring signals have been applied (signals 1-7). Adding
-// anchor metadata here keeps Stage 3 (rerank) and Stage 4
+// All scoring signals have been applied (signals 1-7). Adding
+// Anchor metadata here keeps Stage 3 (rerank) and Stage 4
 // (filter/annotate) aware of anchor structure without any score
-// side-effects.
-// ---------------------------------------------------------------
-
+// Side-effects.
 import type { PipelineRow } from './pipeline/types';
 
 // -- Public Interface --
@@ -114,10 +110,10 @@ export function extractAnchorMetadata(content: string): AnchorMetadata[] {
     const lineNumber = i + 1; // 1-based
     const line = lines[i];
 
-    // AI-FIX: F-01 — Parse open tag BEFORE close tag so same-line anchors
+    // F-01 — Parse open tag BEFORE close tag so same-line anchors
     // (<!-- ANCHOR:x -->...<!-- /ANCHOR:x -->) are captured. The old logic
-    // checked close first, found no matching open on the stack, skipped it,
-    // then `continue` prevented the open-tag check from running.
+    // Checked close first, found no matching open on the stack, skipped it,
+    // Then `continue` prevented the open-tag check from running.
 
     // Check for opening tag first (push to stack before close check)
     const openMatch = ANCHOR_OPEN_RE.exec(line);
@@ -126,7 +122,7 @@ export function extractAnchorMetadata(content: string): AnchorMetadata[] {
     }
 
     // Then check for closing tag (now same-line open+close works because
-    // the open tag was already pushed to the stack above)
+    // The open tag was already pushed to the stack above)
     const closeMatch = ANCHOR_CLOSE_RE.exec(line);
     if (closeMatch) {
       const closeId = closeMatch[1];

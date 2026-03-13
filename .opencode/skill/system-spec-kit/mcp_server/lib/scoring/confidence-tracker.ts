@@ -1,12 +1,8 @@
-// ---------------------------------------------------------------
-// MODULE: Confidence Tracker
-// ---------------------------------------------------------------
+// --- 1. CONFIDENCE TRACKER ---
 
 import type { DatabaseExtended as Database } from '@spec-kit/shared/types';
 
-// ---------------------------------------------------------------
-// 1. TYPES
-// ---------------------------------------------------------------
+// --- 2. TYPES ---
 
 export type { Database };
 
@@ -76,9 +72,7 @@ function isPromotionEligible(
     positiveValidationCount >= PROMOTION_VALIDATION_THRESHOLD;
 }
 
-// ---------------------------------------------------------------
-// 2. CONSTANTS
-// ---------------------------------------------------------------
+// --- 3. CONSTANTS ---
 
 export const CONFIDENCE_BASE: number = 0.5;
 export const CONFIDENCE_POSITIVE_INCREMENT: number = 0.1;
@@ -89,9 +83,7 @@ export const CONFIDENCE_MIN: number = 0.0;
 export const PROMOTION_CONFIDENCE_THRESHOLD: number = 0.9;
 export const PROMOTION_VALIDATION_THRESHOLD: number = 5;
 
-// ---------------------------------------------------------------
-// 3. CORE FUNCTIONS
-// ---------------------------------------------------------------
+// --- 4. CORE FUNCTIONS ---
 
 /**
  * Record a validation event for a memory and persist confidence counters.
@@ -145,7 +137,7 @@ export function recordValidation(db: Database, memoryId: number, wasUseful: bool
         effectiveNegativeValidationCount
       );
 
-      // AI-WHY: Report eligibility only; promotion is intentionally explicit and separate.
+      // Report eligibility only; promotion is intentionally explicit and separate.
       const promotionEligible = isPromotionEligible(
         memory.importance_tier,
         newConfidence,
@@ -173,7 +165,7 @@ export function recordValidation(db: Database, memoryId: number, wasUseful: bool
   } catch (error: unknown) {
     // T-07: Replace success-shaped fallback with explicit failure signaling.
     // Previously returned default values that looked like success, hiding DB errors
-    // from callers and allowing downstream side-effects to proceed on stale data.
+    // From callers and allowing downstream side-effects to proceed on stale data.
     console.error(`[confidence-tracker] recordValidation failed for memory ${memoryId}:`, error);
     throw error;
   }

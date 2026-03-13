@@ -37,7 +37,7 @@ Corrected path mapping in `scripts/spec/progressive-validate.sh` and populated t
 ### Group 4 — Admin CLI + Watcher Rename (T012, T013, T014)
 **Agent: Admin CLI + Watcher Rename | Tests: 25 pass | Lines: +434 / -27**
 
-Documented checkpoint-before-delete contract in `mcp_server/cli.ts` and feature catalog: best-effort, not mandatory; `--skip-checkpoint` blocked for `constitutional`/`critical` tiers. Created `mcp_server/tests/cli.vitest.ts` with integration tests for `stats`, `bulk-delete` (dry-run, execution, invalid tier), `reindex`, `schema-downgrade` (missing `--confirm`, valid run), and unknown command rejection. Added rename integration (unlink+add lifecycle, old-entry cleanup), debounce stress (rapid rename collapsed to single reindex), burst rename deduplication, and concurrent rename tests to `file-watcher.vitest.ts`.
+Documented checkpoint-before-delete contract in `mcp_server/cli.ts` and feature catalog: best-effort, not mandatory; `--skip-checkpoint` blocked for `constitutional`/`critical` tiers. Created `mcp_server/tests/cli.vitest.ts` with integration tests for `stats`, `bulk-delete` execution with checkpoint creation, `reindex`, schema-downgrade guardrails (`--confirm` required plus safe failure for unsupported downgrade path), unknown command/missing-arg errors, and database-path failure handling. Added rename integration (unlink+add lifecycle, old-entry cleanup), debounce stress (rapid rename collapsed to single reindex), burst rename deduplication, and concurrent rename tests to `file-watcher.vitest.ts`.
 
 ### Group 5 — Documentation Evidence + Regression (T010, T011, T015, T016)
 **Agent: Documentation Evidence + Regression | Tests: 5 pass | Lines: +275 / -2**
@@ -81,7 +81,7 @@ Added per-file LOC evidence and `git show b4f85e327` audit references for all 4 
 | `layer-definitions.vitest.ts` | 45 | ✅ Pass | Layer definitions + GAP A/B boundary violations (T39-T44) |
 | `progressive-validation.vitest.ts` | 52 | ✅ Pass | 4-level pipeline, auto-fix, dry-run, exit codes |
 | `file-watcher.vitest.ts` | 17 | ✅ Pass | Metrics, rename lifecycle, debounce stress, burst/concurrent rename |
-| `cli.vitest.ts` | 25 | ✅ Pass | stats, bulk-delete, reindex, schema-downgrade, unknown command |
+| `cli.vitest.ts` | 25 | ✅ Pass | stats, bulk-delete execution with checkpoint creation, reindex, schema-downgrade guardrails/safe failure, unknown command/missing-arg errors, DB-path failure |
 | Canary regression tests | 5 | ✅ Pass | Dead symbol absence at HEAD |
 | **Total** | **177** | **✅ 0 fail** | |
 

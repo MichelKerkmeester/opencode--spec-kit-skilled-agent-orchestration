@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Folder Discovery
-// ---------------------------------------------------------------
+// --- 1. FOLDER DISCOVERY ---
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import * as crypto from 'node:crypto';
@@ -223,8 +221,8 @@ function collectDiscoveredSpecState(basePaths: string[]): DiscoveredSpecState {
         if (mtime > latestMtime) {
           latestMtime = mtime;
         }
-        // AI-WHY: Also check description.json mtime so aggregate cache staleness
-        // detects per-folder description edits (CHK-024 / REQ-008).
+        // Also check description.json mtime so aggregate cache staleness
+        // Detects per-folder description edits (CHK-024 / REQ-008).
         try {
           const descPath = path.join(discoveredFolder.folderPath, 'description.json');
           const descMtime = fs.statSync(descPath).mtimeMs;
@@ -232,7 +230,7 @@ function collectDiscoveredSpecState(basePaths: string[]): DiscoveredSpecState {
             latestMtime = descMtime;
           }
         } catch (_error: unknown) {
-          // description.json may not exist yet — ignore.
+          // Description.json may not exist yet — ignore.
         }
       } catch (_error: unknown) {
         // Ignore unreadable spec.md entries during staleness probing.
@@ -269,8 +267,8 @@ export function extractDescription(specContent: string): string {
     return '';
   }
 
-  // AI-WHY: Reuse library stripYamlFrontmatter() instead of inline regex — single source
-  // of truth for frontmatter stripping, handles CRLF via [\s\S]*? matching.
+  // Reuse library stripYamlFrontmatter() instead of inline regex — single source
+  // Of truth for frontmatter stripping, handles CRLF via [\s\S]*? matching.
   content = stripYamlFrontmatter(content).trim();
   if (content.length === 0) {
     return '';
@@ -289,7 +287,7 @@ export function extractDescription(specContent: string): string {
   }
 
   // Pass 2: Look for "Problem Statement" or "Problem & Purpose" section
-  // and extract the first non-empty content line following it
+  // And extract the first non-empty content line following it
   const problemHeadingPattern = /^#{1,4}\s+(problem\s+(statement|&\s*purpose|and\s+purpose)|purpose|overview)/i;
   for (let i = 0; i < lines.length; i++) {
     if (problemHeadingPattern.test(lines[i])) {
@@ -401,7 +399,7 @@ export function findRelevantFolders(
     const keywordSet = new Set(folder.keywords);
 
     for (const term of queryTerms) {
-      // AI-WHY: Keywords set lookup is O(1); description substring is fallback for partial matches
+      // Keywords set lookup is O(1); description substring is fallback for partial matches
       if (keywordSet.has(term)) {
         matchCount++;
         continue;
@@ -457,7 +455,7 @@ export function generateFolderDescriptions(specsBasePaths: string[]): Descriptio
 
       const descPath = path.join(discoveredFolder.folderPath, 'description.json');
       // Prefer per-folder description.json if fresh and non-empty. Blank-description edge
-      // cases still aggregate through spec.md fallback so discovery retains a useful label.
+      // Cases still aggregate through spec.md fallback so discovery retains a useful label.
       const perFolder = loadPerFolderDescription(discoveredFolder.folderPath);
       const perFolderFresh = perFolder && !isPerFolderDescriptionStale(discoveredFolder.folderPath);
       if (perFolderFresh && perFolder.description.trim().length > 0) {
@@ -566,12 +564,12 @@ function _processSpecFolder(
   try {
     content = fs.readFileSync(specMdPath, 'utf-8');
   } catch (_err: unknown) {
-    // AI-GUARD: Unreadable spec.md — skip folder
+    // Unreadable spec.md — skip folder
     return null;
   }
 
   const rawDescription = extractDescription(content);
-  // AI-WHY: Fall back to folder name when spec.md has no extractable title (F8 fix)
+  // Fall back to folder name when spec.md has no extractable title (F8 fix)
   const description =
     rawDescription || slugifyFolderName(path.basename(folderPath)).replace(/-/g, ' ') || path.basename(folderPath);
 
@@ -618,11 +616,11 @@ export function generatePerFolderDescription(
   folderPath: string,
   basePath: string,
 ): PerFolderDescription | null {
-  // AI-WHY: Path containment check — prevent directory traversal attacks
+  // Path containment check — prevent directory traversal attacks
   const realFolder = resolveRealPathSafe(path.resolve(folderPath));
   const realBase = resolveRealPathSafe(path.resolve(basePath));
-  // AI-WHY: Equality check covers the case where folderPath IS basePath; path.sep boundary
-  // prevents prefix bypass (e.g. /specs-evil passing for /specs).
+  // Equality check covers the case where folderPath IS basePath; path.sep boundary
+  // Prevents prefix bypass (e.g. /specs-evil passing for /specs).
   if (!realFolder || !realBase || !(realFolder === realBase || realFolder.startsWith(realBase + path.sep))) {
     return null;
   }
@@ -681,9 +679,9 @@ export function loadPerFolderDescription(folderPath: string): PerFolderDescripti
   try {
     const raw = fs.readFileSync(descPath, 'utf-8');
     const parsed = JSON.parse(raw);
-    // AI-WHY: Validate ALL PerFolderDescription fields — type mismatch triggers spec.md fallback.
+    // Validate ALL PerFolderDescription fields — type mismatch triggers spec.md fallback.
     // Array element type checks (every() guards) prevent non-string elements from silently
-    // passing Array.isArray() and causing downstream TypeError on string operations.
+    // Passing Array.isArray() and causing downstream TypeError on string operations.
     if (
       !parsed ||
       typeof parsed.specFolder !== 'string' ||
@@ -736,7 +734,7 @@ export function savePerFolderDescription(desc: PerFolderDescription, folderPath:
     fs.mkdirSync(folderPath, { recursive: true });
   }
   const descPath = path.join(folderPath, 'description.json');
-  // AI-WHY: Atomic write with random suffix, fsync, and cleanup to prevent partial writes
+  // Atomic write with random suffix, fsync, and cleanup to prevent partial writes
   const tempSuffix = crypto.randomBytes(4).toString('hex');
   const tempPath = `${descPath}.tmp.${tempSuffix}`;
   try {
@@ -748,7 +746,7 @@ export function savePerFolderDescription(desc: PerFolderDescription, folderPath:
       fs.closeSync(fd);
     }
     fs.renameSync(tempPath, descPath);
-    // AI-WHY: Directory fsync omitted — Node.js has no portable dirent fsync;
+    // Directory fsync omitted — Node.js has no portable dirent fsync;
     // OS atomic rename provides sufficient durability for this non-critical metadata.
   } finally {
     // Cleanup temp file on failure
@@ -795,7 +793,7 @@ export function loadDescriptionCache(cachePath: string): DescriptionCache | null
     const parsed = JSON.parse(raw) as DescriptionCache;
     return parsed;
   } catch (_err: unknown) {
-    // AI-GUARD: Corrupt or unparseable cache file — return null for regeneration
+    // Corrupt or unparseable cache file — return null for regeneration
     return null;
   }
 }
@@ -812,7 +810,7 @@ export function saveDescriptionCache(cache: DescriptionCache, cachePath: string)
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir, { recursive: true });
   }
-  // AI-WHY: Atomic write with random suffix, fsync, and cleanup (same pattern as savePerFolderDescription)
+  // Atomic write with random suffix, fsync, and cleanup (same pattern as savePerFolderDescription)
   const tempSuffix = crypto.randomBytes(4).toString('hex');
   const tempPath = `${cachePath}.tmp.${tempSuffix}`;
   try {
@@ -897,7 +895,7 @@ export function ensureDescriptionCache(basePaths: string[]): DescriptionCache | 
     };
   }
 
-  // AI-WHY: Cache co-located with primary base path (first in resolution order)
+  // Cache co-located with primary base path (first in resolution order)
   const cachePath = path.join(normalizedBasePaths[0], 'descriptions.json');
 
   try {
@@ -912,11 +910,11 @@ export function ensureDescriptionCache(basePaths: string[]): DescriptionCache | 
     try {
       saveDescriptionCache(fresh, cachePath);
     } catch (_error: unknown) {
-      // AI-GUARD: Cache write failure — still return the generated cache
+      // Cache write failure — still return the generated cache
     }
     return fresh;
   } catch (_error: unknown) {
-    // AI-GUARD: Never throw — return null for graceful degradation
+    // Never throw — return null for graceful degradation
     return null;
   }
 }
@@ -947,7 +945,7 @@ export function discoverSpecFolder(
 
     return best.specFolder;
   } catch (_error: unknown) {
-    // AI-GUARD: CHK-PI-B3-004: Never throw — graceful degradation
+    // CHK-PI-B3-004: Never throw — graceful degradation
     return null;
   }
 }

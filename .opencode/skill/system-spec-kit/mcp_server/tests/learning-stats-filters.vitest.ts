@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: LEARNING STATS FILTERS
-// ---------------------------------------------------------------
-
 import { describe, it, expect, beforeAll } from 'vitest';
 
 import * as handler from '../handlers/session-learning';
@@ -80,9 +77,7 @@ describe('T503: Learning Stats SQL Filter Tests', () => {
     }
   });
 
-  // -----------------------------------------------------------
   // SUITE: Summary stats respect sessionId filter
-  // -----------------------------------------------------------
   describe('T503: Summary stats respect sessionId filter', () => {
     it('T503-01: sessionId stats filter — totalTasks=1', async () => {
       requireDbOrThrow();
@@ -192,9 +187,7 @@ describe('T503: Learning Stats SQL Filter Tests', () => {
     });
   });
 
-  // -----------------------------------------------------------
   // SUITE: Summary stats respect onlyComplete filter
-  // -----------------------------------------------------------
   describe('T503: Summary stats respect onlyComplete filter', () => {
     it('T503-02: onlyComplete records filter', async () => {
       requireDbOrThrow();
@@ -252,9 +245,7 @@ describe('T503: Learning Stats SQL Filter Tests', () => {
     });
   });
 
-  // -----------------------------------------------------------
   // SUITE: Combined sessionId + onlyComplete filters
-  // -----------------------------------------------------------
   describe('T503: Combined sessionId + onlyComplete filters', () => {
     it('T503-03: combined filters — 1 complete record', async () => {
       requireDbOrThrow();
@@ -359,7 +350,7 @@ describe('T503: Learning Stats SQL Filter Tests', () => {
       });
 
       const data = expectLearningResponse(parseResponse(result));
-      // limit=-5 should be clamped to 1, returning at most 1 record
+      // Limit=-5 should be clamped to 1, returning at most 1 record
       expect(data.learningHistory.length).toBeLessThanOrEqual(1);
     });
 

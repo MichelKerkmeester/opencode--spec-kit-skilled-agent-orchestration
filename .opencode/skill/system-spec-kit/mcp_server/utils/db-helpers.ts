@@ -1,13 +1,8 @@
-// ---------------------------------------------------------------
-// MODULE: Db Helpers
-// ---------------------------------------------------------------
-// UTILS: Database Helpers
-// ---------------------------------------------------------------
+// --- 1. DB HELPERS ---
+// --- 2. DATABASE HELPERS ---
 // T304: Consolidated database access and error-coercion utilities
-// to eliminate duplicate getDb()+null-check and instanceof Error
-// patterns across handler files.
-// ---------------------------------------------------------------
-
+// To eliminate duplicate getDb()+null-check and instanceof Error
+// Patterns across handler files.
 import * as vectorIndex from '../lib/search/vector-index';
 
 /**

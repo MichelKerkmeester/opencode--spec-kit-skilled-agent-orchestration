@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Phase 1.5 Dataset Generator (T027a-T027b)
-// ---------------------------------------------------------------
+// --- 1. PHASE 1.5 DATASET GENERATOR (T027A-T027B) ---
 
 import fs from 'fs';
 import path from 'path';

@@ -1,12 +1,9 @@
 import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
 
-// ───────────────────────────────────────────────────────────────
 // TEST: CHECKPOINTS EXTENDED
 // Covers handler happy-paths (with in-memory DB) and storage
-// gap paths: getDatabase error, getGitBranch, restoreCheckpoint
-// clearExisting=true, duplicate file_path skip, edge cases.
-// ───────────────────────────────────────────────────────────────
-
+// Gap paths: getDatabase error, getGitBranch, restoreCheckpoint
+// ClearExisting=true, duplicate file_path skip, edge cases.
 import * as path from 'path';
 import * as os from 'os';
 import * as fs from 'fs';
@@ -845,7 +842,7 @@ describe('CHECKPOINTS EXTENDED TESTS [deferred - requires DB test fixtures]', ()
       expect(result.content.length).toBeGreaterThan(0);
 
       const parsed = parseHandlerResponse(result);
-      // success=false or success=true are both acceptable
+      // Success=false or success=true are both acceptable
       expect(parsed.data).toBeDefined();
     });
   });

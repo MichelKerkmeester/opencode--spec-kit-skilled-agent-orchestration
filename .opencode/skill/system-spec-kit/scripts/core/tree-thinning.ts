@@ -1,11 +1,9 @@
-// ---------------------------------------------------------------
-// MODULE: Tree Thinning
-// ---------------------------------------------------------------
+// --- 1. TREE THINNING ---
 // Bottom-up merging of small files during spec folder context
-// loading to reduce token overhead before the retrieval pipeline starts.
+// Loading to reduce token overhead before the retrieval pipeline starts.
 //
 // This operates PRE-PIPELINE (context loading step) and does NOT affect
-// pipeline stages or scoring.
+// Pipeline stages or scoring.
 
 /* -----------------------------------------------------------------
    1. INTERFACES
@@ -220,9 +218,9 @@ export function applyTreeThinning(
   ).length;
 
   // Tokens saved: estimate the overhead removed by not generating separate
-  // summaries for content-as-summary files, and by collapsing merged children.
+  // Summaries for content-as-summary files, and by collapsing merged children.
   // For merged files the parent holds them, so no token saving in content terms,
-  // but we avoid a separate summary-generation pass (≈ half the tokens as overhead).
+  // But we avoid a separate summary-generation pass (≈ half the tokens as overhead).
   const tokensSaved = thinned.reduce((acc, f) => {
     if (f.action === 'content-as-summary') {
       // Saved a dedicated summary generation pass (≈ tokenCount overhead)

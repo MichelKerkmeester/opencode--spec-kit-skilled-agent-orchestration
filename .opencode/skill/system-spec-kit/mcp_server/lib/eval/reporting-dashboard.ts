@@ -1,26 +1,22 @@
-// ---------------------------------------------------------------
-// MODULE: Reporting Dashboard (R13-S3)
-// ---------------------------------------------------------------
+// --- 1. REPORTING DASHBOARD (R13-S3) ---
 // Sprint 7: Full reporting dashboard for eval infrastructure.
 // Aggregates metrics per sprint/eval-run, per-channel views,
-// trend analysis, and formatted report output.
+// Trend analysis, and formatted report output.
 //
 // Uses: eval-db.ts singleton, eval_metric_snapshots table,
-//       eval_channel_results table.
+// Eval_channel_results table.
 //
 // Design:
 //   - Read-only queries against eval DB (no writes).
 //   - Sprint labels inferred from metadata JSON or eval_run_id grouping.
 //   - Pure aggregation logic; DB access isolated to query functions.
-// ---------------------------------------------------------------
-
 // External packages
 import type Database from 'better-sqlite3';
 
 // Internal modules
 import { initEvalDb } from './eval-db';
 
-// AI-WHY: Configurable limit prevents silent data loss at scale (was hardcoded 1000)
+// Configurable limit prevents silent data loss at scale (was hardcoded 1000)
 const DASHBOARD_ROW_LIMIT = Math.max(1, parseInt(process.env.SPECKIT_DASHBOARD_LIMIT ?? '10000', 10) || 10000);
 
 /* ---------------------------------------------------------------
@@ -201,7 +197,7 @@ function queryMetricSnapshots(
 
   sql += ` ORDER BY created_at DESC`;
 
-  // AI-GUARD: Row safeguard is independent from report `limit`, which applies after sprint grouping.
+  // Row safeguard is independent from report `limit`, which applies after sprint grouping.
   sql += ` LIMIT ${DASHBOARD_ROW_LIMIT}`;
 
   return db.prepare(sql).all(...params) as SnapshotRow[];
@@ -269,7 +265,7 @@ function groupBySprint(
     if (!groups.has(label)) {
       groups.set(label, []);
     }
-    // AI-SAFETY: groups.set(label, []) above ensures the group exists before push
+    // Groups.set(label, []) above ensures the group exists before push
     groups.get(label)!.push(snap);
   }
 
@@ -284,7 +280,7 @@ function computeMetricSummary(values: number[], latest: number): MetricSummary {
     return { mean: 0, min: 0, max: 0, latest: 0, count: 0 };
   }
   const sum = values.reduce((a, b) => a + b, 0);
-  // AI-WHY: reduce avoids stack overflow on arrays >100K elements (spread pushes all onto call stack)
+  // Reduce avoids stack overflow on arrays >100K elements (spread pushes all onto call stack)
   return {
     mean: Math.round((sum / values.length) * 10000) / 10000,
     min: Math.round(values.reduce((a, b) => Math.min(a, b), Infinity) * 10000) / 10000,
@@ -313,7 +309,7 @@ function buildSprintReport(
     if (!metricGroups.has(snap.metric_name)) {
       metricGroups.set(snap.metric_name, []);
     }
-    // AI-SAFETY: metricGroups.set(...) above ensures this metric bucket exists before push
+    // MetricGroups.set(...) above ensures this metric bucket exists before push
     metricGroups.get(snap.metric_name)!.push(snap.metric_value);
 
     const existing = metricLatest.get(snap.metric_name);
@@ -341,7 +337,7 @@ function buildSprintReport(
     if (!channelGroups.has(row.channel)) {
       channelGroups.set(row.channel, []);
     }
-    // AI-SAFETY: channelGroups.set(...) above ensures this channel bucket exists before push
+    // ChannelGroups.set(...) above ensures this channel bucket exists before push
     channelGroups.get(row.channel)!.push(row);
   }
 

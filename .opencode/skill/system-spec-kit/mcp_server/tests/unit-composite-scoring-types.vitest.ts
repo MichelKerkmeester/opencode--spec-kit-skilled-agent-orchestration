@@ -1,10 +1,7 @@
 // Converted from: unit-composite-scoring-types.test.ts (custom runner)
-// ---------------------------------------------------------------
 // TEST: COMPOSITE SCORING — TYPE UNIFICATION (ScoringInput)
 // Validates cast-removal: deprecated MemoryRow → ScoringInput accepts
-// partial objects, mixed casing, and extra arbitrary fields.
-// ---------------------------------------------------------------
-
+// Partial objects, mixed casing, and extra arbitrary fields.
 import { describe, it, expect } from 'vitest';
 import type { ScoringInput } from '../lib/scoring/composite-scoring';
 import {

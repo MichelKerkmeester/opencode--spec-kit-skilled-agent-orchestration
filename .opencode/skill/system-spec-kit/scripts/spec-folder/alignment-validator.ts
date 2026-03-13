@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Alignment Validator
-// ---------------------------------------------------------------
+// --- 1. ALIGNMENT VALIDATOR ---
 // Validates conversation-to-spec-folder alignment using topic and keyword matching
 
 // Node stdlib

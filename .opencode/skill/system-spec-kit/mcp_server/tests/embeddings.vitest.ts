@@ -1,8 +1,5 @@
-// ---------------------------------------------------------------
 // TEST: Embeddings Architecture (T513)
 // Verifies current shared-provider architecture and MCP facade.
-// ---------------------------------------------------------------
-
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import {
   createEmbeddingsProvider,

@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Contamination Filter
-// ---------------------------------------------------------------
+// --- 1. CONTAMINATION FILTER ---
 // Removes orchestration chatter before semantic extraction
 
 const DEFAULT_DENYLIST: RegExp[] = [

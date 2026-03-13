@@ -6,13 +6,13 @@
 # Source this file: source "$(dirname "$0")/../lib/shell-common.sh"
 #
 # Functions:
-#   _json_escape()    - Escape strings for safe JSON embedding
-#   find_repo_root()  - Walk parent directories to find repository root
+# _json_escape()    - Escape strings for safe JSON embedding
+# Find_repo_root()  - Walk parent directories to find repository root
 #
 # Compatibility: Bash 3.2+ (macOS default)
 # ───────────────────────────────────────────────────────────────
 
-# AI-GUARD: Conditional strict mode — skipped when sourced to avoid breaking caller's error handling.
+# Conditional strict mode — skipped when sourced to avoid breaking caller's error handling.
 if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
     set -euo pipefail
 fi
@@ -39,12 +39,12 @@ _json_escape() {
 
 # ───────────────────────────────────────────────────────────────
 # Repository root detection — walks parent directories looking
-# for .git or .specify markers.
+# For .git or .specify markers.
 # Usage: find_repo_root "/some/starting/directory"
 # Returns: Prints repo root path to stdout, returns 0 on success, 1 if not found
 #
 # Note: For git-first detection, see also scripts/common.sh get_repo_root()
-# which uses `git rev-parse --show-toplevel` as primary strategy.
+# Which uses `git rev-parse --show-toplevel` as primary strategy.
 # ───────────────────────────────────────────────────────────────
 find_repo_root() {
     local dir="${1:-}"
@@ -62,5 +62,5 @@ find_repo_root() {
 }
 
 # Exit codes:
-#   0 - Success
-#   1 - General error
+# 0 - Success
+# 1 - General error

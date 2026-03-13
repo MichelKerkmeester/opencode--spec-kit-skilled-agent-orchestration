@@ -1,13 +1,8 @@
-// ---------------------------------------------------------------
-// MODULE: Mpab Quality Gate Integration Vitest
-// ---------------------------------------------------------------
+// --- 1. MPAB QUALITY GATE INTEGRATION VITEST ---
 
-// ---------------------------------------------------------------
 // TEST: MPAB Quality Gate Integration
 // Cross-module wiring tests for MPAB, Quality Gate, Reconsolidation,
 // Shadow Scoring, and Feature Flag independence.
-// ---------------------------------------------------------------
-
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import type Database from 'better-sqlite3';
 
@@ -54,10 +49,7 @@ import {
   isReconsolidationEnabled as isReconsolidationFlag,
 } from '../lib/search/search-flags';
 
-// ---------------------------------------------------------------
 // TEST HELPERS
-// ---------------------------------------------------------------
-
 /** Save and restore env vars around tests */
 function withEnvVars(vars: Record<string, string | undefined>, fn: () => void | Promise<void>) {
   const saved: Record<string, string | undefined> = {};
@@ -134,9 +126,7 @@ function makeSimilarMemory(overrides: Partial<SimilarMemory> = {}): SimilarMemor
   };
 }
 
-// -------------------------------------------------------------
 // Feature flag env var names
-// -------------------------------------------------------------
 const S4_FLAGS = {
   SPECKIT_DOCSCORE_AGGREGATION: 'SPECKIT_DOCSCORE_AGGREGATION',
   SPECKIT_SHADOW_SCORING: 'SPECKIT_SHADOW_SCORING',
@@ -144,10 +134,7 @@ const S4_FLAGS = {
   SPECKIT_RECONSOLIDATION: 'SPECKIT_RECONSOLIDATION',
 };
 
-// -------------------------------------------------------------
 // SUITE 1: MPAB + Pipeline Integration
-// -------------------------------------------------------------
-
 describe('Sprint 4 Integration: MPAB + Pipeline', () => {
   afterEach(() => {
     delete process.env.SPECKIT_DOCSCORE_AGGREGATION;
@@ -194,7 +181,7 @@ describe('Sprint 4 Integration: MPAB + Pipeline', () => {
       expect(isDocscoreAggregationEnabled()).toBe(false);
 
       // When flag is off, collapseAndReassembleChunkResults still works
-      // but the pipeline code would not call it
+      // But the pipeline code would not call it
       const chunks: ChunkResult[] = [
         makeChunk(100, 0, 0.9),
         makeChunk(100, 1, 0.6),
@@ -213,8 +200,8 @@ describe('Sprint 4 Integration: MPAB + Pipeline', () => {
       const fusionScores = [0.7, 0.3, 0.2]; // Simulated post-RRF fusion scores
       const mpabScore = computeMPAB(fusionScores);
 
-      // sMax = 0.7, remaining = [0.3, 0.2]
-      // bonus = 0.3 * (0.3 + 0.2) / sqrt(3) = 0.3 * 0.5 / 1.732 ≈ 0.0866
+      // SMax = 0.7, remaining = [0.3, 0.2]
+      // Bonus = 0.3 * (0.3 + 0.2) / sqrt(3) = 0.3 * 0.5 / 1.732 ≈ 0.0866
       const expectedSMax = 0.7;
       const expectedBonus = MPAB_BONUS_COEFFICIENT * (0.3 + 0.2) / Math.sqrt(3);
       expect(mpabScore).toBeCloseTo(expectedSMax + expectedBonus, 4);
@@ -229,7 +216,7 @@ describe('Sprint 4 Integration: MPAB + Pipeline', () => {
       const nonChunkResult = { id: 50, score: 0.8, source: 'vector' };
       const chunkResult = { id: 'chunk-100-0', parentMemoryId: 100, chunkIndex: 0, score: 0.7 };
 
-      // collapseAndReassembleChunkResults only processes actual chunks
+      // CollapseAndReassembleChunkResults only processes actual chunks
       const collapsed = collapseAndReassembleChunkResults([chunkResult]);
       expect(collapsed).toHaveLength(1);
       expect(collapsed[0].parentMemoryId).toBe(100);
@@ -241,10 +228,7 @@ describe('Sprint 4 Integration: MPAB + Pipeline', () => {
   ));
 });
 
-// -------------------------------------------------------------
 // SUITE 2: Quality Gate + Save Integration
-// -------------------------------------------------------------
-
 describe('Sprint 4 Integration: Quality Gate + Save', () => {
   afterEach(() => {
     delete process.env.SPECKIT_SAVE_QUALITY_GATE;
@@ -328,10 +312,7 @@ anchor quality, and metadata quality dimensions. The threshold is set at ${SIGNA
   ));
 });
 
-// -------------------------------------------------------------
 // SUITE 3: Reconsolidation + Save Integration
-// -------------------------------------------------------------
-
 describe('Sprint 4 Integration: Reconsolidation + Save', () => {
   afterEach(() => {
     delete process.env.SPECKIT_RECONSOLIDATION;
@@ -409,10 +390,7 @@ describe('Sprint 4 Integration: Reconsolidation + Save', () => {
   });
 });
 
-// -------------------------------------------------------------
 // SUITE 4: TM-04/TM-06 Interaction
-// -------------------------------------------------------------
-
 describe('Sprint 4 Integration: TM-04 + TM-06 Interaction', () => {
   afterEach(() => {
     delete process.env.SPECKIT_SAVE_QUALITY_GATE;
@@ -488,10 +466,7 @@ This ensures only quality content gets merged or stored.
   ));
 });
 
-// -------------------------------------------------------------
 // SUITE 5: Shadow Scoring + Channel Attribution
-// -------------------------------------------------------------
-
 describe('Sprint 4 Integration: Shadow Scoring + Channel Attribution', () => {
   afterEach(() => {
     delete process.env.SPECKIT_SHADOW_SCORING;
@@ -500,14 +475,14 @@ describe('Sprint 4 Integration: Shadow Scoring + Channel Attribution', () => {
   it('S4-INT-13: Shadow scoring always disabled (REMOVED flag)', withEnvVars(
     { SPECKIT_SHADOW_SCORING: 'true' },
     () => {
-      // isShadowScoringEnabled removed — shadow scoring permanently disabled
+      // IsShadowScoringEnabled removed — shadow scoring permanently disabled
     },
   ));
 
   it('S4-INT-14: Shadow scoring disabled when flag is OFF (REMOVED)', withEnvVars(
     { SPECKIT_SHADOW_SCORING: undefined },
     () => {
-      // isShadowScoringEnabled removed — shadow scoring permanently disabled
+      // IsShadowScoringEnabled removed — shadow scoring permanently disabled
     },
   ));
 
@@ -539,10 +514,7 @@ describe('Sprint 4 Integration: Shadow Scoring + Channel Attribution', () => {
   });
 });
 
-// -------------------------------------------------------------
 // SUITE 6: Feature Flag Independence
-// -------------------------------------------------------------
-
 describe('Sprint 4 Integration: Feature Flag Independence', () => {
   const allFlags = [
     S4_FLAGS.SPECKIT_DOCSCORE_AGGREGATION,
@@ -564,7 +536,7 @@ describe('Sprint 4 Integration: Feature Flag Independence', () => {
     process.env.SPECKIT_SAVE_QUALITY_GATE = 'false';
     process.env.SPECKIT_RECONSOLIDATION = 'false';
     expect(isDocscoreAggregationEnabled()).toBe(true);
-    // isShadowScoringEnabled removed — shadow scoring permanently disabled
+    // IsShadowScoringEnabled removed — shadow scoring permanently disabled
     expect(isSaveQualityGateEnabled()).toBe(false);
     expect(isReconsolidationFlag()).toBe(false);
 
@@ -574,7 +546,7 @@ describe('Sprint 4 Integration: Feature Flag Independence', () => {
     process.env.SPECKIT_SAVE_QUALITY_GATE = 'false';
     process.env.SPECKIT_RECONSOLIDATION = 'false';
     expect(isDocscoreAggregationEnabled()).toBe(false);
-    // isShadowScoringEnabled removed — shadow scoring permanently disabled
+    // IsShadowScoringEnabled removed — shadow scoring permanently disabled
     expect(isSaveQualityGateEnabled()).toBe(false);
     expect(isReconsolidationFlag()).toBe(false);
 
@@ -584,7 +556,7 @@ describe('Sprint 4 Integration: Feature Flag Independence', () => {
     process.env.SPECKIT_RECONSOLIDATION = 'false';
     delete process.env.SPECKIT_SHADOW_SCORING;
     expect(isDocscoreAggregationEnabled()).toBe(false);
-    // isShadowScoringEnabled removed — shadow scoring permanently disabled
+    // IsShadowScoringEnabled removed — shadow scoring permanently disabled
     expect(isSaveQualityGateEnabled()).toBe(true);
     expect(isReconsolidationFlag()).toBe(false);
 
@@ -593,7 +565,7 @@ describe('Sprint 4 Integration: Feature Flag Independence', () => {
     process.env.SPECKIT_DOCSCORE_AGGREGATION = 'false';
     process.env.SPECKIT_SAVE_QUALITY_GATE = 'false';
     expect(isDocscoreAggregationEnabled()).toBe(false);
-    // isShadowScoringEnabled removed — shadow scoring permanently disabled
+    // IsShadowScoringEnabled removed — shadow scoring permanently disabled
     expect(isSaveQualityGateEnabled()).toBe(false);
     expect(isReconsolidationFlag()).toBe(true);
   });
@@ -605,7 +577,7 @@ describe('Sprint 4 Integration: Feature Flag Independence', () => {
     process.env.SPECKIT_RECONSOLIDATION = 'true';
 
     expect(isDocscoreAggregationEnabled()).toBe(true);
-    // isShadowScoringEnabled removed — shadow scoring permanently disabled
+    // IsShadowScoringEnabled removed — shadow scoring permanently disabled
     expect(isSaveQualityGateEnabled()).toBe(true);
     expect(isReconsolidationFlag()).toBe(true);
   });
@@ -639,10 +611,7 @@ describe('Sprint 4 Integration: Feature Flag Independence', () => {
   });
 });
 
-// -------------------------------------------------------------
 // SUITE 7: All Flags OFF — Backward Compatibility
-// -------------------------------------------------------------
-
 describe('Sprint 4 Integration: All Flags OFF (Backward Compatible)', () => {
   beforeEach(() => {
     // Graduated flags must be explicitly set to 'false' (they default ON when unset)
@@ -657,7 +626,7 @@ describe('Sprint 4 Integration: All Flags OFF (Backward Compatible)', () => {
     // Verify all flags are off
     expect(isDocscoreAggregationEnabled()).toBe(false);
     expect(isMpabEnabled()).toBe(false);
-    // isShadowScoringEnabled removed — shadow scoring permanently disabled
+    // IsShadowScoringEnabled removed — shadow scoring permanently disabled
     expect(isSaveQualityGateEnabled()).toBe(false);
     expect(isQualityGateEnabled()).toBe(false);
     expect(isReconsolidationFlag()).toBe(false);
@@ -697,7 +666,7 @@ describe('Sprint 4 Integration: All Flags OFF (Backward Compatible)', () => {
 
   it('S4-INT-22: Channel attribution is a pure function (no flag dependency)', () => {
     // Channel attribution itself has no feature flag — it's called only when
-    // shadow scoring is enabled. But the function itself always works.
+    // Shadow scoring is enabled. But the function itself always works.
     const results = [
       { memoryId: 1, score: 0.9, rank: 1 },
       { memoryId: 2, score: 0.8, rank: 2 },
@@ -710,14 +679,11 @@ describe('Sprint 4 Integration: All Flags OFF (Backward Compatible)', () => {
   });
 });
 
-// -------------------------------------------------------------
 // SUITE 8: Cross-Module Threshold Consistency
-// -------------------------------------------------------------
-
 describe('Sprint 4 Integration: Cross-Module Threshold Consistency', () => {
   it('S4-INT-23: Quality gate semantic dedup threshold (0.92) > reconsolidation merge threshold (0.88)', () => {
     // This is a critical invariant: the quality gate's semantic dedup threshold
-    // must be higher than reconsolidation's merge threshold.
+    // Must be higher than reconsolidation's merge threshold.
     // Otherwise, quality gate would reject saves that reconsolidation could merge.
     expect(SEMANTIC_DEDUP_THRESHOLD).toBeGreaterThan(MERGE_THRESHOLD);
     expect(SEMANTIC_DEDUP_THRESHOLD).toBe(0.92);
@@ -746,7 +712,7 @@ describe('Sprint 4 Integration: Cross-Module Threshold Consistency', () => {
   it('S4-INT-26: Similarity >= 0.92 triggers both dedup rejection AND merge', () => {
     // At this similarity, quality gate WOULD reject as near-duplicate
     // AND reconsolidation would merge. The pipeline order matters:
-    // quality gate runs first, so it catches this before reconsolidation
+    // Quality gate runs first, so it catches this before reconsolidation
     const similarity = 0.95;
 
     expect(similarity).toBeGreaterThanOrEqual(SEMANTIC_DEDUP_THRESHOLD);

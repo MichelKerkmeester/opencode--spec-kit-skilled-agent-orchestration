@@ -1,16 +1,21 @@
 {
-  "specFolder": "015-hydra-db-based-features/002-versioned-memory-state",
-  "description": "Phase 2: versioned-memory-state",
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/015-hydra-db-based-features/002-versioned-memory-state",
+  "description": "Feature Specification: 002-versioned-memory-state",
   "keywords": [
-    "phase",
-    "versioned-memory-state"
+    "feature",
+    "specification",
+    "002-versioned-memory-state"
   ],
-  "lastUpdated": "2026-03-13T17:36:26.829Z",
+  "lastUpdated": "2026-03-13T18:17:46.820Z",
   "specId": "002",
   "folderSlug": "versioned-memory-state",
   "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion",
     "015-hydra-db-based-features"
   ],
-  "memorySequence": 0,
-  "memoryNameHistory": []
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "13-03-26_20-56__2026-03-13-verification-pass-confirmed-phase-2.md"
+  ]
 }

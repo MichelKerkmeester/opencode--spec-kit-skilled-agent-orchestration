@@ -1,11 +1,7 @@
-// ---------------------------------------------------------------
-// MODULE: Memory Bulk Delete
-// ---------------------------------------------------------------
+// --- 1. MEMORY BULK DELETE ---
 // Tier-based bulk deletion of memories with safety gates.
 // Eliminates the need for direct DB scripts when cleaning up
-// deprecated/temporary memories at scale.
-// ---------------------------------------------------------------
-
+// Deprecated/temporary memories at scale.
 import { checkDatabaseUpdated } from '../core';
 import * as vectorIndex from '../lib/search/vector-index';
 import * as checkpoints from '../lib/storage/checkpoints';
@@ -175,19 +171,19 @@ async function handleMemoryBulkDelete(args: BulkDeleteArgs): Promise<MCPResponse
   const bulkDeleteTx = database.transaction(() => {
     for (const memory of memoriesToDelete) {
       if (vectorIndex.deleteMemory(memory.id)) {
-        // AI-WHY: Record DELETE history after confirmed delete (no FK, history rows survive).
+        // Record DELETE history after confirmed delete (no FK, history rows survive).
         try {
           recordHistory(memory.id, 'DELETE', memory.file_path ?? null, null, 'mcp:memory_bulk_delete');
         } catch (_histErr: unknown) {
-          // history recording is best-effort inside bulk delete
+          // History recording is best-effort inside bulk delete
         }
         deletedCount++;
         deletedIds.push(memory.id);
 
         // Clean up causal edges
-        // AI-FIX: F-27 — Propagate edge-cleanup errors to fail the transaction.
+        // F-27 — Propagate edge-cleanup errors to fail the transaction.
         // Previously errors were caught and logged, leaving orphan causal edges
-        // when memory rows were successfully deleted but edge cleanup failed.
+        // When memory rows were successfully deleted but edge cleanup failed.
         causalEdges.deleteEdgesForMemory(String(memory.id));
       }
     }

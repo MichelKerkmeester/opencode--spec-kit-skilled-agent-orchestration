@@ -1,8 +1,5 @@
-// ---------------------------------------------------------------
 // TEST: Anchor-Aware Chunk Thinning
 // Scores chunks by anchor presence + content density, applies thinning threshold.
-// ---------------------------------------------------------------
-
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -27,7 +24,7 @@ afterEach(() => {
     try {
       fs.rmSync(dir, { recursive: true, force: true });
     } catch {
-      // ignore test cleanup failures
+      // Ignore test cleanup failures
     }
   }
 });
@@ -149,7 +146,7 @@ describe('scoreChunk — content density', () => {
 
   it('should award structure bonus for headings, code blocks, and lists', () => {
     // Use content with significant whitespace so the base ratio is moderate,
-    // making the structure bonus the differentiating factor.
+    // Making the structure bonus the differentiating factor.
     const structured = '## Heading\n\n\n\n- Item one\n- Item two\n- Item three\n- Item four\n\n\n\n```ts\nconst x = 1;\n```\n\n\n\nExplanation text that is long enough to avoid the short content penalty in the density score calculation here.';
     const plain = 'word\n\n\n\nword\n\n\n\nword\n\n\n\nword\n\n\n\nword\n\n\n\nword\n\n\n\nword\n\n\n\nword\n\n\n\nword\n\n\n\nword\n\n\n\nword\n\n\n\nword\n\n\n\nword\n\n\n\nword\n\n\n\nword\n\n\n\nword\n\n\n\nword\n\n\n\nword\n\n\n\nword\n\n\n\nword';
     const structuredScore = scoreChunk(makeChunk({ content: structured, anchorIds: [] }));
@@ -339,7 +336,7 @@ describe('constants', () => {
 
 describe('R7 integration wiring', () => {
   // This integration hits the real chunk/index pipeline and can share a worker
-  // with the long-running file-watcher suite during full runs.
+  // With the long-running file-watcher suite during full runs.
   it('uses thinChunks retained set in indexChunkedMemoryFile active path', async () => {
     vi.resetModules();
 

@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: LAYER DEFINITIONS
-// ---------------------------------------------------------------
-
 import { describe, it, expect } from 'vitest';
 import * as mod from '../lib/architecture/layer-definitions';
 import type { LayerId, TaskType } from '../lib/architecture/layer-definitions';

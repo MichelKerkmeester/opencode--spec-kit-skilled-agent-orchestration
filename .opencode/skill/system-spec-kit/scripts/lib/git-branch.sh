@@ -6,16 +6,16 @@
 # Source this file: source "$(dirname "$0")/../lib/git-branch.sh"
 #
 # Functions:
-#   check_existing_branches()  - Find next available branch number
-#   generate_branch_name()     - Create branch name from description
+# Check_existing_branches()  - Find next available branch number
+# Generate_branch_name()     - Create branch name from description
 #
 # Required variables (must be set before calling):
-#   SPECS_DIR - Path to the specs/ directory (for check_existing_branches)
+# SPECS_DIR - Path to the specs/ directory (for check_existing_branches)
 #
 # Compatibility: Bash 3.2+ (macOS default)
 # ───────────────────────────────────────────────────────────────
 
-# AI-GUARD: Conditional strict mode — skipped when sourced to avoid breaking caller's error handling.
+# Conditional strict mode — skipped when sourced to avoid breaking caller's error handling.
 if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
     set -euo pipefail
 fi
@@ -26,7 +26,7 @@ _GIT_BRANCH_LOADED=1
 
 # ───────────────────────────────────────────────────────────────
 # Check existing branches and spec directories to determine the
-# next available branch number for a given short name.
+# Next available branch number for a given short name.
 #
 # Usage: next_num=$(check_existing_branches "feature-name")
 # Requires: SPECS_DIR to be set
@@ -139,4 +139,4 @@ generate_branch_name() {
 }
 
 # Exit codes:
-#   0 - Success
+# 0 - Success

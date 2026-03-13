@@ -2,11 +2,11 @@
 // Constitutional memory as retrieval directives
 //
 // Tests cover:
-//   1. Extraction from various constitutional memory content formats
-//   2. Directive prefix patterns validated ("Always surface when:", "Prioritize when:")
-//   3. Content with no clear rule pattern (title-only fallback)
-//   4. Enrichment of result arrays (correct field attachment, no reordering)
-//   5. No scoring logic changes (content transformation only)
+// 1. Extraction from various constitutional memory content formats
+// 2. Directive prefix patterns validated ("Always surface when:", "Prioritize when:")
+// 3. Content with no clear rule pattern (title-only fallback)
+// 4. Enrichment of result arrays (correct field attachment, no reordering)
+// 5. No scoring logic changes (content transformation only)
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import {
@@ -439,7 +439,7 @@ describe('T-A4-07: Edge cases', () => {
     const longTitle = 'A'.repeat(200);
     const d = extractRetrievalDirective('', longTitle);
     expect(d).not.toBeNull();
-    // surfaceCondition includes capped title
+    // SurfaceCondition includes capped title
     expect(d!.surfaceCondition.length).toBeLessThanOrEqual(
       'Always surface when: '.length + 121
     );

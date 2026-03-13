@@ -1,9 +1,7 @@
-// ---------------------------------------------------------------
-// MODULE: Test — Classification Decay (TM-03)
-// ---------------------------------------------------------------
+// --- 1. TEST — CLASSIFICATION DECAY (TM-03) ---
 // Tests for CONTEXT_TYPE_STABILITY_MULTIPLIER,
 // IMPORTANCE_TIER_STABILITY_MULTIPLIER, getClassificationDecayMultiplier,
-// applyClassificationDecay, and the SPECKIT_CLASSIFICATION_DECAY feature flag.
+// ApplyClassificationDecay, and the SPECKIT_CLASSIFICATION_DECAY feature flag.
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import {
@@ -14,10 +12,7 @@ import {
   calculateRetrievability,
 } from '../lib/cache/cognitive/fsrs-scheduler';
 
-// ---------------------------------------------------------------
 // Helpers
-// ---------------------------------------------------------------
-
 function withFlag(value: string | undefined, fn: () => void): void {
   const original = process.env.SPECKIT_CLASSIFICATION_DECAY;
   if (value === undefined) {
@@ -36,9 +31,7 @@ function withFlag(value: string | undefined, fn: () => void): void {
   }
 }
 
-// ---------------------------------------------------------------
 // T020-1: Constitutional / critical importance tier — no decay
-// ---------------------------------------------------------------
 describe('T020-1: Constitutional and critical tiers never decay', () => {
   it('constitutional importance_tier multiplier is Infinity', () => {
     expect(IMPORTANCE_TIER_STABILITY_MULTIPLIER['constitutional']).toBe(Infinity);
@@ -75,9 +68,7 @@ describe('T020-1: Constitutional and critical tiers never decay', () => {
   });
 });
 
-// ---------------------------------------------------------------
 // T020-2: Decision context_type — no decay
-// ---------------------------------------------------------------
 describe('T020-2: Decision context_type never decays', () => {
   it('decision context_type multiplier is Infinity', () => {
     expect(CONTEXT_TYPE_STABILITY_MULTIPLIER['decision']).toBe(Infinity);
@@ -96,9 +87,7 @@ describe('T020-2: Decision context_type never decays', () => {
   });
 });
 
-// ---------------------------------------------------------------
 // T020-3: Temporary tier — faster decay
-// ---------------------------------------------------------------
 describe('T020-3: Temporary tier decays faster than normal', () => {
   it('temporary tier multiplier is 0.5', () => {
     expect(IMPORTANCE_TIER_STABILITY_MULTIPLIER['temporary']).toBe(0.5);
@@ -133,9 +122,7 @@ describe('T020-3: Temporary tier decays faster than normal', () => {
   });
 });
 
-// ---------------------------------------------------------------
 // T020-4: Combined multipliers
-// ---------------------------------------------------------------
 describe('T020-4: Combined context_type and importance_tier multipliers', () => {
   it('research + important = 2.0 * 1.5 = 3.0', () => {
     const mult = getClassificationDecayMultiplier('research', 'important');
@@ -169,9 +156,7 @@ describe('T020-4: Combined context_type and importance_tier multipliers', () => 
   });
 });
 
-// ---------------------------------------------------------------
 // T020-5: Unknown types default to 1.0
-// ---------------------------------------------------------------
 describe('T020-5: Unknown context_type and importance_tier default to 1.0', () => {
   it('unknown context_type defaults to 1.0', () => {
     const mult = getClassificationDecayMultiplier('unknown_type', 'normal');
@@ -196,9 +181,7 @@ describe('T020-5: Unknown context_type and importance_tier default to 1.0', () =
   });
 });
 
-// ---------------------------------------------------------------
 // T020-6: Feature flag gating (SPECKIT_CLASSIFICATION_DECAY)
-// ---------------------------------------------------------------
 describe('T020-6: SPECKIT_CLASSIFICATION_DECAY feature flag gating', () => {
   it('flag unset → applyClassificationDecay applies multiplier (graduated: default ON)', () => {
     withFlag(undefined, () => {
@@ -237,7 +220,7 @@ describe('T020-6: SPECKIT_CLASSIFICATION_DECAY feature flag gating', () => {
   });
 
   it('getClassificationDecayMultiplier is NOT gated (pure computation, no env check)', () => {
-    // getClassificationDecayMultiplier should always return values regardless of flag
+    // GetClassificationDecayMultiplier should always return values regardless of flag
     withFlag(undefined, () => {
       expect(getClassificationDecayMultiplier('decision', 'normal')).toBe(Infinity);
       expect(getClassificationDecayMultiplier('temporary', 'normal')).toBeCloseTo(1.0, 6);

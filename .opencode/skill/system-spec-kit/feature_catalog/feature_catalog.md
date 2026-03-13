@@ -125,6 +125,7 @@ This document indexes Spec Kit Memory feature documentation and links each featu
   - [ANCHOR tags as graph nodes](#anchor-tags-as-graph-nodes)
   - [Causal neighbor boost and injection](#causal-neighbor-boost-and-injection)
   - [Temporal contiguity layer](#temporal-contiguity-layer)
+  - [Unified graph retrieval, deterministic ranking, explainability, and rollback](#unified-graph-retrieval-deterministic-ranking-explainability-and-rollback)
 - [Scoring and calibration](#scoring-and-calibration)
   - [Score normalization](#score-normalization)
   - [Cold-start novelty boost](#cold-start-novelty-boost)
@@ -143,6 +144,7 @@ This document indexes Spec Kit Memory feature documentation and links each featu
   - [Tool-level TTL cache](#tool-level-ttl-cache)
   - [Access-driven popularity scoring](#access-driven-popularity-scoring)
   - [Temporal-structural coherence scoring](#temporal-structural-coherence-scoring)
+  - [Adaptive shadow ranking, bounded proposals, and rollback](#adaptive-shadow-ranking-bounded-proposals-and-rollback)
 - [Query intelligence](#query-intelligence)
   - [Query complexity router](#query-complexity-router)
   - [Relative score fusion in shadow mode](#relative-score-fusion-in-shadow-mode)
@@ -191,6 +193,7 @@ This document indexes Spec Kit Memory feature documentation and links each featu
   - [Embedding retry orchestrator](#embedding-retry-orchestrator)
   - [7-layer tool architecture metadata](#7-layer-tool-architecture-metadata)
   - [Atomic pending-file recovery](#atomic-pending-file-recovery)
+  - [Lineage state active projection and asOf resolution](#lineage-state-active-projection-and-asof-resolution)
 - [Retrieval enhancements](#retrieval-enhancements)
   - [Dual-scope memory auto-surface](#dual-scope-memory-auto-surface)
   - [Constitutional memory as expert knowledge injection](#constitutional-memory-as-expert-knowledge-injection)
@@ -215,6 +218,8 @@ This document indexes Spec Kit Memory feature documentation and links each featu
 - [Governance](#governance)
   - [Feature flag governance](#feature-flag-governance)
   - [Feature flag sunset audit](#feature-flag-sunset-audit)
+  - [Hierarchical scope governance, governed ingest, retention, and audit](#hierarchical-scope-governance-governed-ingest-retention-and-audit)
+  - [Shared-memory rollout, deny-by-default membership, and kill switch](#shared-memory-rollout-deny-by-default-membership-and-kill-switch)
 - [UX hooks](#ux-hooks)
   - [Shared post-mutation hook wiring](#shared-post-mutation-hook-wiring)
   - [Memory health autoRepair metadata](#memory-health-autorepair-metadata)
@@ -1281,6 +1286,18 @@ The module also provides `getTemporalNeighbors()` for direct temporal neighborho
 
 See [`10--graph-signal-activation/11-temporal-contiguity-layer.md`](10--graph-signal-activation/11-temporal-contiguity-layer.md) for full implementation and test file listings.
 
+### Unified graph retrieval, deterministic ranking, explainability, and rollback
+
+The Phase 015 graph finalization moved graph participation to a unified retrieval path with deterministic ranking behavior. Stage 2 fusion and Stage 3 rerank now share a ranking contract so repeated identical queries preserve stable ordering, including tie-break cases.
+
+Explainability is exposed as trace metadata for graph-side contributions, allowing operators to inspect why graph signals influenced a result set. Rollback is controlled by the runtime graph gate (`SPECKIT_GRAPH_UNIFIED`): disabling it removes graph-side effects while preserving baseline deterministic ordering and response safety.
+
+#### Source Files
+
+See [`10--graph-signal-activation/12-unified-graph-retrieval-deterministic-ranking-explainability-and-rollback.md`](10--graph-signal-activation/12-unified-graph-retrieval-deterministic-ranking-explainability-and-rollback.md) for full implementation and test file listings.
+
+> **Playbook:** [NEW-120](../manual_testing_playbook/manual_testing_playbook.md)
+
 ## 13. SCORING AND CALIBRATION
 
 ### Score normalization
@@ -1498,6 +1515,18 @@ The verify-fix-verify retry cycle in `mcp_server/handlers/quality-loop.ts` is im
 #### Source Files
 
 See [`11--scoring-and-calibration/17-temporal-structural-coherence-scoring.md`](11--scoring-and-calibration/17-temporal-structural-coherence-scoring.md) for full implementation and test file listings.
+
+### Adaptive shadow ranking, bounded proposals, and rollback
+
+Phase 015 adaptive ranking runs in shadow mode so proposal generation does not change live ordering by default. Access and validation signals drive adaptive proposal deltas, but deltas are bounded to prevent runaway score movement during evaluation.
+
+Runtime rollback is immediate through `SPECKIT_MEMORY_ADAPTIVE_RANKING`. When disabled, adaptive proposal payloads are omitted and baseline ranking behavior remains unchanged without schema rollback.
+
+#### Source Files
+
+See [`11--scoring-and-calibration/18-adaptive-shadow-ranking-bounded-proposals-and-rollback.md`](11--scoring-and-calibration/18-adaptive-shadow-ranking-bounded-proposals-and-rollback.md) for full implementation and test file listings.
+
+> **Playbook:** [NEW-121](../manual_testing_playbook/manual_testing_playbook.md)
 
 ## 14. QUERY INTELLIGENCE
 
@@ -2068,6 +2097,18 @@ The `findPendingFiles()` function scans the memory directories for files matchin
 
 See [`14--pipeline-architecture/21-atomic-pending-file-recovery.md`](14--pipeline-architecture/21-atomic-pending-file-recovery.md) for full implementation and test file listings.
 
+### Lineage state active projection and asOf resolution
+
+Phase 015 lineage-state work introduced append-first version history with an explicit active projection used for runtime reads. Save operations append immutable lineage events, while projection logic resolves which state is currently active for a memory.
+
+Deterministic `asOf` resolution is now part of lineage reads, allowing time-consistent state lookups for audits, replay flows, and rollback drills. Schema support and save-path integration ensure lineage persistence and projection resolution stay synchronized.
+
+#### Source Files
+
+See [`14--pipeline-architecture/22-lineage-state-active-projection-and-asof-resolution.md`](14--pipeline-architecture/22-lineage-state-active-projection-and-asof-resolution.md) for full implementation and test file listings.
+
+> **Playbook:** [NEW-129](../manual_testing_playbook/manual_testing_playbook.md), [NEW-130](../manual_testing_playbook/manual_testing_playbook.md)
+
 ## 17. RETRIEVAL ENHANCEMENTS
 
 ### Dual-scope memory auto-surface
@@ -2348,6 +2389,30 @@ The current active flag-helper inventory in `search-flags.ts` is 24 exported `is
 #### Source Files
 
 No dedicated source files  -- this describes governance process controls.
+
+### Hierarchical scope governance, governed ingest, retention, and audit
+
+Phase 015 scope-governance work adds hierarchical actor boundaries (`tenant`, `user` or `agent`, and `session`) to ingest and retrieval paths. Governed ingest requires provenance metadata when scoped identity fields are present, preventing ambiguous writes.
+
+Retention policy decisions are now aligned with scope governance, and allow/deny outcomes are written to governance audit records for post-run review and policy verification.
+
+#### Source Files
+
+See [`17--governance/03-hierarchical-scope-governance-governed-ingest-retention-and-audit.md`](17--governance/03-hierarchical-scope-governance-governed-ingest-retention-and-audit.md) for full implementation and test file listings.
+
+> **Playbook:** [NEW-122](../manual_testing_playbook/manual_testing_playbook.md)
+
+### Shared-memory rollout, deny-by-default membership, and kill switch
+
+Phase 015 shared-memory rollout introduces explicit shared spaces with deny-by-default membership. Access to shared save/search paths requires membership in the target space; non-members are filtered or rejected.
+
+Space-level rollout controls include an operational kill switch. Enabling the kill switch blocks shared access immediately, including for existing members, which provides a fast rollback lever during incidents or staged rollout control.
+
+#### Source Files
+
+See [`17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md`](17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md) for full implementation and test file listings.
+
+> **Playbook:** [NEW-123](../manual_testing_playbook/manual_testing_playbook.md)
 
 
 ---

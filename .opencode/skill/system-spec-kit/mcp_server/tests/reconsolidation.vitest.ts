@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: Reconsolidation-on-Save (TM-06)
-// ---------------------------------------------------------------
-
 import { describe, it, expect, beforeEach, afterEach, beforeAll, afterAll, vi } from 'vitest';
 import Database from 'better-sqlite3';
 import * as causalEdges from '../lib/storage/causal-edges';
@@ -28,10 +25,7 @@ import type {
 } from '../lib/storage/reconsolidation';
 
 
-// ---------------------------------------------------------------
 // TEST HELPERS
-// ---------------------------------------------------------------
-
 /** Create a simple embedding vector of given dimension */
 function makeEmbedding(dim: number, fill: number = 1.0): number[] {
   return Array(dim).fill(fill);
@@ -717,7 +711,7 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
 
     it('CHK2: Documentation note — checkpoint MUST be created before enabling', () => {
       // This is a documentation-level test. The actual checkpoint creation
-      // is handled by the caller before allowing reconsolidation to proceed.
+      // Is handled by the caller before allowing reconsolidation to proceed.
       // We verify the flag mechanism exists to enforce this workflow.
       expect(typeof isReconsolidationEnabled).toBe('function');
       // The feature being behind a flag means:
@@ -762,7 +756,7 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
         testDb,
         { findSimilar: errorFn, storeMemory: mockStoreMemory(501) }
       );
-      // findSimilarMemories catches errors and returns [], leading to complement
+      // FindSimilarMemories catches errors and returns [], leading to complement
       expect(result!.action).toBe('complement');
     });
 

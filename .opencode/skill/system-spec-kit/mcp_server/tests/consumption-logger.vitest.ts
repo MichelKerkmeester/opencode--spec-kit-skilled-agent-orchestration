@@ -1,13 +1,11 @@
-// ---------------------------------------------------------------
-// MODULE: Test — Consumption Logger
-// ---------------------------------------------------------------
+// --- 1. TEST — CONSUMPTION LOGGER ---
 // Tests for lib/telemetry/consumption-logger.ts
 // Covers: table creation, event logging, stats aggregation,
-//         pattern detection, fail-safe behavior, latency tracking.
+// Pattern detection, fail-safe behavior, latency tracking.
 //
 // NOTE: isConsumptionLogEnabled is REMOVED (hardcoded false). Tests that
-// exercise logging mechanics use forceLogConsumptionEvent() which bypasses
-// the flag check by inserting directly into the DB using the same SQL.
+// Exercise logging mechanics use forceLogConsumptionEvent() which bypasses
+// The flag check by inserting directly into the DB using the same SQL.
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import Database from 'better-sqlite3';
@@ -20,9 +18,9 @@ import {
 } from '../lib/telemetry/consumption-logger';
 
 // -- Force-log helper ------------------------------------------------------
-// isConsumptionLogEnabled() is REMOVED (always false), so logConsumptionEvent
-// short-circuits before inserting. To test logging mechanics we bypass the
-// flag check by inserting directly with the same SQL the source uses.
+// IsConsumptionLogEnabled() is REMOVED (always false), so logConsumptionEvent
+// Short-circuits before inserting. To test logging mechanics we bypass the
+// Flag check by inserting directly with the same SQL the source uses.
 
 interface ConsumptionEvent {
   event_type: string;
@@ -438,7 +436,7 @@ describe('T004: getConsumptionPatterns — pattern detection', () => {
     forceLogConsumptionEvent(db, { event_type: 'search', query_text: 'unique B', result_count: 7 });
 
     const patterns = getConsumptionPatterns(db);
-    // high-frequency, zero-result, low-selection, session-heavy should have count 0
+    // High-frequency, zero-result, low-selection, session-heavy should have count 0
     const highFreq = patterns.find(p => p.category === 'high-frequency-query');
     const zeroResult = patterns.find(p => p.category === 'zero-result');
     expect(highFreq!.count).toBe(0);
@@ -461,7 +459,7 @@ describe('T005: fail-safe behavior — logging errors never propagate', () => {
   });
 
   it('logConsumptionEvent is a no-op when feature is disabled (production path)', () => {
-    // isConsumptionLogEnabled() returns false, so logConsumptionEvent should not insert
+    // IsConsumptionLogEnabled() returns false, so logConsumptionEvent should not insert
     const db = createTestDb();
     logConsumptionEvent(db, {
       event_type: 'search',

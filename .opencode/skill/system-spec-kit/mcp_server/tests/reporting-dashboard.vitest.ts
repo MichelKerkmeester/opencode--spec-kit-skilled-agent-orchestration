@@ -1,18 +1,15 @@
-// ---------------------------------------------------------------
 // TEST: Reporting Dashboard
 // Full reporting dashboard for eval infrastructure.
 //
 // Validates:
-//   RD-1  — generateDashboardReport() returns valid DashboardReport structure
-//   RD-2  — Report includes sprint-level metric aggregation (mean, min, max, latest)
-//   RD-3  — Report includes channel performance data
-//   RD-4  — Report includes trend entries with direction
-//   RD-5  — formatReportText() produces non-empty string with expected sections
-//   RD-6  — formatReportJSON() produces valid JSON matching DashboardReport shape
-//   RD-7  — Filter by sprint works correctly
-//   RD-8  — Empty database returns report with zero eval runs
-// ---------------------------------------------------------------
-
+// RD-1  — generateDashboardReport() returns valid DashboardReport structure
+// RD-2  — Report includes sprint-level metric aggregation (mean, min, max, latest)
+// RD-3  — Report includes channel performance data
+// RD-4  — Report includes trend entries with direction
+// RD-5  — formatReportText() produces non-empty string with expected sections
+// RD-6  — formatReportJSON() produces valid JSON matching DashboardReport shape
+// RD-7  — Filter by sprint works correctly
+// RD-8  — Empty database returns report with zero eval runs
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import Database from 'better-sqlite3';
 
@@ -283,9 +280,9 @@ describe('Reporting Dashboard (R13-S3)', () => {
       expect(ndcg.count).toBe(3);
       expect(ndcg.min).toBe(0.7);
       expect(ndcg.max).toBe(0.9);
-      // latest = value with most recent created_at (0.80 at 2026-01-12)
+      // Latest = value with most recent created_at (0.80 at 2026-01-12)
       expect(ndcg.latest).toBe(0.8);
-      // mean = (0.70 + 0.90 + 0.80) / 3 = 0.8
+      // Mean = (0.70 + 0.90 + 0.80) / 3 = 0.8
       expect(ndcg.mean).toBeCloseTo(0.8, 4);
     });
 
@@ -314,9 +311,9 @@ describe('Reporting Dashboard (R13-S3)', () => {
       expect(Object.keys(metrics)).toContain('ndcg@5');
       expect(Object.keys(metrics)).toContain('mrr@5');
 
-      // ndcg@5 still has 3 values from beforeEach
+      // Ndcg@5 still has 3 values from beforeEach
       expect(metrics['ndcg@5'].count).toBe(3);
-      // mrr@5 has 2 values
+      // Mrr@5 has 2 values
       expect(metrics['mrr@5'].count).toBe(2);
       expect(metrics['mrr@5'].min).toBe(0.6);
       expect(metrics['mrr@5'].max).toBe(0.8);
@@ -354,12 +351,12 @@ describe('Reporting Dashboard (R13-S3)', () => {
       expect(channels).toHaveProperty('vector');
       expect(channels).toHaveProperty('bm25');
 
-      // vector: 2 queries, hits = 5+3=8, avgLatency = (12.5+15.0)/2 = 13.75
+      // Vector: 2 queries, hits = 5+3=8, avgLatency = (12.5+15.0)/2 = 13.75
       expect(channels['vector'].queryCount).toBe(2);
       expect(channels['vector'].hitCount).toBe(8);
       expect(channels['vector'].avgLatencyMs).toBeCloseTo(13.75, 1);
 
-      // bm25: 2 queries, hits = 4+2=6, avgLatency = (8.0+6.0)/2 = 7.0
+      // Bm25: 2 queries, hits = 4+2=6, avgLatency = (8.0+6.0)/2 = 7.0
       expect(channels['bm25'].queryCount).toBe(2);
       expect(channels['bm25'].hitCount).toBe(6);
       expect(channels['bm25'].avgLatencyMs).toBeCloseTo(7.0, 1);

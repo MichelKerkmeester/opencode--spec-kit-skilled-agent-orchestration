@@ -1,10 +1,6 @@
-// ---------------------------------------------------------------
-// MODULE: Tool Schemas
-// ---------------------------------------------------------------
+// --- 1. TOOL SCHEMAS ---
 // All MCP tool definitions (names, descriptions, input schemas).
 // Extracted from context-server.ts for maintainability (T303).
-// ---------------------------------------------------------------
-
 import {
   MAX_INGEST_PATHS,
   MEMORY_BULK_DELETE_MIN_OLDER_THAN_DAYS,
@@ -21,7 +17,7 @@ export {
   getSchema,
 } from './schemas/tool-input-schemas';
 
-// --- 1. TYPES ---
+// --- 2. TYPES ---
 
 /**
  * Normalized definition for a single MCP tool and its JSON schema.
@@ -32,7 +28,7 @@ export interface ToolDefinition {
   inputSchema: Record<string, unknown>;
 }
 
-// --- 2. TOOL DEFINITIONS ---
+// --- 3. TOOL DEFINITIONS ---
 
 // T061: L1 Orchestration - Unified entry point (Token Budget: 2000)
 const memoryContext: ToolDefinition = {
@@ -59,6 +55,10 @@ const memorySearch: ToolDefinition = {
         description: 'Multiple concepts for AND search (requires 2-5 concepts). Results must match ALL concepts.'
       },
       specFolder: { type: 'string', description: 'Limit search to a specific spec folder (e.g., "011-spec-kit-memory-upgrade")' },
+      tenantId: { type: 'string', description: 'Tenant boundary for governed retrieval. When provided with scope enforcement, results are isolated to this tenant.' },
+      userId: { type: 'string', description: 'User boundary for governed retrieval. Filters private or shared-space user-scoped memories.' },
+      agentId: { type: 'string', description: 'Agent boundary for governed retrieval. Filters agent-scoped memories.' },
+      sharedSpaceId: { type: 'string', description: 'Shared-memory space identifier. Requires explicit membership when shared memory rollout is enabled.' },
       limit: { type: 'number', default: 10, minimum: 1, maximum: 100, description: 'Maximum number of results to return (1-100)' },
       sessionId: {
         type: 'string',
@@ -180,7 +180,7 @@ const memoryMatchTriggers: ToolDefinition = {
 const memorySave: ToolDefinition = {
   name: 'memory_save',
   description: '[L2:Core] Index a memory file into the spec kit memory database. Reads the file, extracts metadata (title, trigger phrases), generates embedding, and stores in the index. Use this to manually index new or updated memory files. Includes pre-flight validation (T067-T070) for anchor format, duplicate detection, and token budget estimation. Token Budget: 1500.',
-  inputSchema: { type: 'object', additionalProperties: false, properties: { filePath: { type: 'string', description: 'Absolute path to the memory file (must be in specs/**/memory/, .opencode/specs/**/memory/, specs/**/ for spec documents, or .opencode/skill/*/constitutional/)' }, force: { type: 'boolean', default: false, description: 'Force re-index even if content hash unchanged' }, dryRun: { type: 'boolean', default: false, description: 'Validate only without saving. Returns validation results including anchor format, duplicate check, and token budget estimation (CHK-160)' }, skipPreflight: { type: 'boolean', default: false, description: 'Skip pre-flight validation checks (not recommended)' }, asyncEmbedding: { type: 'boolean', default: false, description: 'When true, embedding generation is deferred for non-blocking saves. Memory is immediately saved with pending status and an async background attempt is triggered. Default false preserves synchronous embedding behavior.' } }, required: ['filePath'] },
+  inputSchema: { type: 'object', additionalProperties: false, properties: { filePath: { type: 'string', description: 'Absolute path to the memory file (must be in specs/**/memory/, .opencode/specs/**/memory/, specs/**/ for spec documents, or .opencode/skill/*/constitutional/)' }, force: { type: 'boolean', default: false, description: 'Force re-index even if content hash unchanged' }, dryRun: { type: 'boolean', default: false, description: 'Validate only without saving. Returns validation results including anchor format, duplicate check, and token budget estimation (CHK-160)' }, skipPreflight: { type: 'boolean', default: false, description: 'Skip pre-flight validation checks (not recommended)' }, asyncEmbedding: { type: 'boolean', default: false, description: 'When true, embedding generation is deferred for non-blocking saves. Memory is immediately saved with pending status and an async background attempt is triggered. Default false preserves synchronous embedding behavior.' }, tenantId: { type: 'string', description: 'Tenant boundary for governed ingest.' }, userId: { type: 'string', description: 'User boundary for governed ingest.' }, agentId: { type: 'string', description: 'Agent boundary for governed ingest.' }, sessionId: { type: 'string', description: 'Session boundary for governed ingest.' }, sharedSpaceId: { type: 'string', description: 'Optional shared-memory space for collaboration saves.' }, provenanceSource: { type: 'string', description: 'Required provenance source when governance guardrails are enabled.' }, provenanceActor: { type: 'string', description: 'Required provenance actor when governance guardrails are enabled.' }, governedAt: { type: 'string', description: 'ISO timestamp for governed ingest. Defaults to now when omitted.' }, retentionPolicy: { type: 'string', enum: ['keep', 'ephemeral', 'shared'], description: 'Retention class applied to the saved memory.' }, deleteAfter: { type: 'string', description: 'Optional ISO timestamp after which retention sweep may delete the memory.' } }, required: ['filePath'] },
 };
 
 // L3: Discovery - Browse and explore (Token Budget: 800)
@@ -316,6 +316,55 @@ const checkpointDelete: ToolDefinition = {
       }
     },
     required: ['name', 'confirmName']
+  },
+};
+
+const sharedSpaceUpsert: ToolDefinition = {
+  name: 'shared_space_upsert',
+  description: '[L5:Lifecycle] Create or update a shared-memory space. Shared rollout stays opt-in and deny-by-default until memberships are added.',
+  inputSchema: {
+    type: 'object',
+    additionalProperties: false,
+    properties: {
+      spaceId: { type: 'string', description: 'Stable shared-space identifier.' },
+      tenantId: { type: 'string', description: 'Owning tenant for the shared space.' },
+      name: { type: 'string', description: 'Display name for the shared space.' },
+      rolloutEnabled: { type: 'boolean', default: false, description: 'Enable this space for rollout.' },
+      rolloutCohort: { type: 'string', description: 'Optional rollout cohort label.' },
+      killSwitch: { type: 'boolean', default: false, description: 'Immediately disable access for this space.' },
+    },
+    required: ['spaceId', 'tenantId', 'name'],
+  },
+};
+
+const sharedSpaceMembershipSet: ToolDefinition = {
+  name: 'shared_space_membership_set',
+  description: '[L5:Lifecycle] Set deny-by-default shared-space membership for a user or agent.',
+  inputSchema: {
+    type: 'object',
+    additionalProperties: false,
+    properties: {
+      spaceId: { type: 'string', description: 'Shared-space identifier.' },
+      subjectType: { type: 'string', enum: ['user', 'agent'], description: 'Membership subject type.' },
+      subjectId: { type: 'string', description: 'Membership subject identifier.' },
+      role: { type: 'string', enum: ['owner', 'editor', 'viewer'], description: 'Access role inside the shared space.' },
+    },
+    required: ['spaceId', 'subjectType', 'subjectId', 'role'],
+  },
+};
+
+const sharedMemoryStatus: ToolDefinition = {
+  name: 'shared_memory_status',
+  description: '[L5:Lifecycle] Inspect current shared-memory rollout and the spaces accessible to a user or agent.',
+  inputSchema: {
+    type: 'object',
+    additionalProperties: false,
+    properties: {
+      tenantId: { type: 'string', description: 'Optional tenant scope.' },
+      userId: { type: 'string', description: 'Optional user scope.' },
+      agentId: { type: 'string', description: 'Optional agent scope.' },
+    },
+    required: [],
   },
 };
 
@@ -487,6 +536,9 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
   checkpointList,
   checkpointRestore,
   checkpointDelete,
+  sharedSpaceUpsert,
+  sharedSpaceMembershipSet,
+  sharedMemoryStatus,
   // L6: Analysis
   taskPreflight,
   taskPostflight,

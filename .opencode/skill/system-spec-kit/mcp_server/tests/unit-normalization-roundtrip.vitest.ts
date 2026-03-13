@@ -1,10 +1,7 @@
 // Converted from: unit-normalization-roundtrip.test.ts (custom runner)
-// ---------------------------------------------------------------
 // TEST: NORMALIZATION — ROUND-TRIP EDGE CASES
 // Validates cast-removal edge cases: minimal inputs, null vs
-// undefined, boolean↔integer round-trips, extra unknown fields.
-// ---------------------------------------------------------------
-
+// Undefined, boolean↔integer round-trips, extra unknown fields.
 import { describe, it, expect } from 'vitest';
 import { dbRowToMemory, memoryToDbRow, partialDbRowToMemory } from '@spec-kit/shared/normalization';
 import type { Memory, MemoryDbRow } from '@spec-kit/shared/types';
@@ -91,7 +88,7 @@ describe('Normalization — Round-Trip Edge Cases', () => {
     it('T-NR-04: partial with importance_tier', () => {
       const memory = partialDbRowToMemory({ id: 5, importance_tier: 'normal', stability: 3.0 });
       expect(memory.id).toBe(5);
-      // importanceTier should be mapped from importance_tier
+      // ImportanceTier should be mapped from importance_tier
       expect(memory.importanceTier === 'normal' || memory.importanceTier === undefined).toBe(true);
     });
   });

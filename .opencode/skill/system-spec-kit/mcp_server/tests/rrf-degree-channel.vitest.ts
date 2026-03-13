@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Test — RRF Degree Channel
-// ---------------------------------------------------------------
+// --- 1. TEST — RRF DEGREE CHANNEL ---
 // T002 (degree as 5th RRF channel) + T003a (co-activation boost)
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
@@ -15,10 +13,7 @@ import {
   DEGREE_BOOST_CAP,
 } from '../lib/search/graph-search-fn';
 
-// ---------------------------------------------------------------
 // Helpers
-// ---------------------------------------------------------------
-
 /** Create a mock database with causal_edges data.
  * Handles SQL patterns used by the committed graph-search-fn.ts:
  * - UNION ALL queries for computeTypedDegree
@@ -33,7 +28,7 @@ function createMockDb(edges: Array<{
 }>) {
   return {
     prepare(sql: string) {
-      // computeTypedDegree: UNION ALL of source and target
+      // ComputeTypedDegree: UNION ALL of source and target
       if (sql.includes('UNION ALL') && sql.includes('causal_edges')) {
         return {
           all: (sourceId: string, targetId: string) => {
@@ -46,7 +41,7 @@ function createMockDb(edges: Array<{
           },
         };
       }
-      // computeMaxTypedDegree: SELECT DISTINCT node_id
+      // ComputeMaxTypedDegree: SELECT DISTINCT node_id
       if (sql.includes('DISTINCT') && sql.includes('node_id')) {
         return {
           all: () => {
@@ -59,7 +54,7 @@ function createMockDb(edges: Array<{
           },
         };
       }
-      // computeDegreeScores: constitutional exclusion check
+      // ComputeDegreeScores: constitutional exclusion check
       if (sql.includes('memory_index') && sql.includes('constitutional')) {
         return {
           all: () => [], // No constitutional memories in mock
@@ -71,10 +66,7 @@ function createMockDb(edges: Array<{
   } as unknown as import('better-sqlite3').Database;
 }
 
-// ---------------------------------------------------------------
 // T002: Degree as 5th RRF Channel
-// ---------------------------------------------------------------
-
 describe('T002: Degree as 5th RRF Channel', () => {
   beforeEach(() => {
     clearDegreeCache();
@@ -134,7 +126,7 @@ describe('T002: Degree as 5th RRF Channel', () => {
       const fusedWithout = fuseResultsMulti(withoutDegree);
 
       // With graduated-ON normalization, single-result sets normalize to 1.0
-      // so we verify via convergenceBonus and source count instead of raw score comparison
+      // So we verify via convergenceBonus and source count instead of raw score comparison
       const itemWith = fusedWith.find(r => r.id === 1)!;
       const itemWithout = fusedWithout.find(r => r.id === 1)!;
 
@@ -334,13 +326,10 @@ describe('T002: Degree as 5th RRF Channel', () => {
   });
 });
 
-// ---------------------------------------------------------------
 // T003a: Co-Activation Boost Strength
-// ---------------------------------------------------------------
-
 describe('T003a: Co-Activation Boost Strength', () => {
   // The co-activation module reads env vars at import time,
-  // so we test the exported config and constants.
+  // So we test the exported config and constants.
 
   describe('Default boost strength (0.25)', () => {
     it('DEFAULT_COACTIVATION_STRENGTH is exported and equals 0.25', async () => {
@@ -367,7 +356,7 @@ describe('T003a: Co-Activation Boost Strength', () => {
       const { boostScore, CO_ACTIVATION_CONFIG } = mod;
 
       // With boostFactor=0.25, maxRelated=5, relatedCount=5, avgSimilarity=100:
-      // rawBoost = 0.25 * (5/5) * (100/100) = 0.25
+      // RawBoost = 0.25 * (5/5) * (100/100) = 0.25
       // R17 fan-effect: boost = rawBoost / sqrt(relatedCount) = 0.25 / sqrt(5)
       const baseScore = 0.5;
       const relatedCount = 5;
@@ -395,7 +384,7 @@ describe('T003a: Co-Activation Boost Strength', () => {
       const boost3 = boostScore(base, 3, avgSim) - base;
       const boost5 = boostScore(base, 5, avgSim) - base;
 
-      // AI-WHY: Pure fan-effect — hub nodes get diluted boost (1/sqrt(n))
+      // Pure fan-effect — hub nodes get diluted boost (1/sqrt(n))
       expect(boost1).toBeGreaterThan(boost3);
       expect(boost3).toBeGreaterThan(boost5);
       expect(boost5).toBeGreaterThan(0); // still positive

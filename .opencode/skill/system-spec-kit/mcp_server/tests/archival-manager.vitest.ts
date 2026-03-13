@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: ARCHIVAL MANAGER
-// ---------------------------------------------------------------
-
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 
 import * as archivalManager from '../lib/cache/cognitive/archival-manager';
@@ -104,7 +101,7 @@ function insertTestMemory(data: TestMemoryInput): Database.RunResult {
 ──────────────────────────────────────────────────────────────── */
 
 describe('Archival Manager (T059)', () => {
-  // 1. INITIALIZATION TESTS
+  // --- 1. INITIALIZATION TESTS ---
   describe('1. Initialization', () => {
     afterEach(() => {
       teardownTestDb();
@@ -133,7 +130,7 @@ describe('Archival Manager (T059)', () => {
     });
   });
 
-  // 2. ARCHIVAL CANDIDATE DETECTION TESTS
+  // --- 2. ARCHIVAL CANDIDATE DETECTION TESTS ---
   describe('2. Archival Candidate Detection', () => {
     beforeEach(() => {
       setupTestDb();
@@ -226,7 +223,7 @@ describe('Archival Manager (T059)', () => {
     });
   });
 
-  // 3. ARCHIVAL ACTION TESTS
+  // --- 3. ARCHIVAL ACTION TESTS ---
   describe('3. Archival Actions', () => {
     beforeEach(() => {
       setupTestDb();
@@ -387,7 +384,7 @@ describe('Archival Manager (T059)', () => {
     });
   });
 
-  // 4. ARCHIVAL SCAN TESTS
+  // --- 4. ARCHIVAL SCAN TESTS ---
   describe('4. Archival Scan', () => {
     beforeEach(() => {
       setupTestDb();
@@ -472,7 +469,7 @@ describe('Archival Manager (T059)', () => {
     });
   });
 
-  // 5. BACKGROUND JOB TESTS
+  // --- 5. BACKGROUND JOB TESTS ---
   describe('5. Background Job', () => {
     beforeEach(() => {
       setupTestDb();
@@ -505,7 +502,7 @@ describe('Archival Manager (T059)', () => {
     });
   });
 
-  // 6. STATISTICS TESTS
+  // --- 6. STATISTICS TESTS ---
   describe('6. Statistics', () => {
     beforeEach(() => {
       setupTestDb();
@@ -584,7 +581,7 @@ describe('Archival Manager (T059)', () => {
     });
   });
 
-  // 7. CHECK MEMORY STATUS TESTS
+  // --- 7. CHECK MEMORY STATUS TESTS ---
   describe('7. Check Memory Status', () => {
     beforeEach(() => {
       setupTestDb();
@@ -627,7 +624,7 @@ describe('Archival Manager (T059)', () => {
     });
   });
 
-  // 8. CLEANUP AND MODULE STATE TESTS
+  // --- 8. CLEANUP AND MODULE STATE TESTS ---
   describe('8. Cleanup and Module State', () => {
     afterEach(() => {
       teardownTestDb();

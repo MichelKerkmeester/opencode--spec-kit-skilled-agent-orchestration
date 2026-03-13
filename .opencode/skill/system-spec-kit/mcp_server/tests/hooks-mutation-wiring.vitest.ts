@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: Hooks Mutation Wiring
-// ---------------------------------------------------------------
-
 import fs from 'fs';
 import path from 'path';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';

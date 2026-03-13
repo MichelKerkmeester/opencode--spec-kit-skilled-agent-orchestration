@@ -1,8 +1,6 @@
-// ---------------------------------------------------------------
-// MODULE: Test — RSF vs RRF Kendall Tau
-// ---------------------------------------------------------------
+// --- 1. TEST — RSF VS RRF KENDALL TAU ---
 // Verification: measure rank correlation between RRF and RSF
-// fusion to determine whether RSF is a safe replacement for RRF.
+// Fusion to determine whether RSF is a safe replacement for RRF.
 //
 // Decision criterion: tau < 0.4 = REJECT RSF (rankings too different)
 
@@ -380,7 +378,7 @@ describe('T032: RSF vs RRF Kendall Tau Comparison', () => {
       const result = compareRankings([1, 2, 3], [4, 5, 6]);
       expect(result.commonIds).toBe(0);
       expect(result.totalIds).toBe(6);
-      // tau is defined but likely low or undefined due to penalty ranks
+      // Tau is defined but likely low or undefined due to penalty ranks
       expect(typeof result.tau).toBe('number');
     });
 

@@ -1,9 +1,5 @@
-// ---------------------------------------------------------------
-// MODULE: Context Tools
-// ---------------------------------------------------------------
+// --- 1. CONTEXT TOOLS ---
 // Dispatch for L1 Orchestration tool: memory_context (T303).
-// ---------------------------------------------------------------
-
 import { handleMemoryContext } from '../handlers';
 import { validateToolArgs } from '../schemas/tool-input-schemas';
 import { MCPResponse, parseArgs, ContextArgs } from './types';

@@ -12,7 +12,7 @@ set -euo pipefail
 #   Level 1: spec.md, plan.md, tasks.md
 #   Level 2: Level 1 + checklist.md
 #   Level 3: Level 2 + decision-record.md
-#   implementation-summary.md: Required after implementation (detected by completed items)
+#   Implementation-summary.md: Required after implementation (detected by completed items)
 
 # ───────────────────────────────────────────────────────────────
 # 1. INITIALIZATION
@@ -41,7 +41,7 @@ run_check() {
     [[ ! -f "$folder/plan.md" ]] && missing+=("plan.md")
     [[ ! -f "$folder/tasks.md" ]] && missing+=("tasks.md")
     
-    # implementation-summary.md required after implementation starts
+    # Implementation-summary.md required after implementation starts
     local has_implementation=false
     if [[ -f "$folder/checklist.md" ]]; then
         if grep -qE '\[[xX]\]' "$folder/checklist.md" 2>/dev/null; then

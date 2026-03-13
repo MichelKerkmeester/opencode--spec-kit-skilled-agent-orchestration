@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: INTEGRATION SEARCH PIPELINE
-// ---------------------------------------------------------------
-
 import { describe, it, expect } from 'vitest';
 
 import * as searchHandler from '../handlers/memory-search';
@@ -43,9 +40,7 @@ function parseResponsePayload(response: MCPResponse): SearchEnvelopePayload {
 
 describe('Integration Search Pipeline (T525) [deferred - requires DB test fixtures]', () => {
 
-  // -------------------------------------------------------------
   // SUITE: Pipeline Module Loading
-  // -------------------------------------------------------------
   describe('Pipeline Module Loading', () => {
     it('T525-1: Search pipeline modules loaded', () => {
       expect(searchHandler).toBeDefined();
@@ -61,9 +56,7 @@ describe('Integration Search Pipeline (T525) [deferred - requires DB test fixtur
     });
   });
 
-  // -------------------------------------------------------------
   // SUITE: Pipeline Input Validation
-  // -------------------------------------------------------------
   describe('Pipeline Input Validation', () => {
     it('T525-2: Valid args accepted by pipeline', async () => {
       try {
@@ -130,15 +123,13 @@ describe('Integration Search Pipeline (T525) [deferred - requires DB test fixtur
         if (message.includes('Timeout')) {
           return; // skip on timeout
         }
-        // specFolder rejection is a failure; other errors are acceptable
+        // SpecFolder rejection is a failure; other errors are acceptable
         expect(message.includes('specFolder')).not.toBe(true);
       }
     });
   });
 
-  // -------------------------------------------------------------
   // SUITE: Pipeline Error Handling
-  // -------------------------------------------------------------
   describe('Pipeline Error Handling', () => {
     it('T525-5: Pipeline error format consistency', async () => {
       try {
@@ -166,9 +157,7 @@ describe('Integration Search Pipeline (T525) [deferred - requires DB test fixtur
     });
   });
 
-  // -------------------------------------------------------------
   // SUITE: Multi-Concept & Advanced Parameters
-  // -------------------------------------------------------------
   describe('Multi-Concept & Advanced Parameters', () => {
     it('T525-7: Single concept without query rejected', async () => {
       try {
@@ -242,7 +231,7 @@ describe('Integration Search Pipeline (T525) [deferred - requires DB test fixtur
         if (message.includes('Timeout')) {
           return; // skip on timeout
         }
-        // includeConstitutional rejection is a failure; other errors are acceptable
+        // IncludeConstitutional rejection is a failure; other errors are acceptable
         expect(message.includes('includeConstitutional')).not.toBe(true);
       }
     });
@@ -285,7 +274,7 @@ describe('C138: Feature Flag Regression Guards', () => {
 
   it('C138-T3: SPECKIT_MMR=false disables MMR; absent re-enables it', () => {
     // Verify the actual isMMREnabled() function responds correctly to the env var,
-    // not just the raw env var value itself.
+    // Not just the raw env var value itself.
     const saved = process.env['SPECKIT_MMR'];
     try {
       delete process.env['SPECKIT_MMR'];

@@ -1,9 +1,6 @@
-// ---------------------------------------------------------------
 // TEST: Structure-Aware Chunker (C138-P4)
 // AST-based markdown chunking using remark-gfm that keeps
-// code blocks and tables atomic (never split mid-element).
-// ---------------------------------------------------------------
-
+// Code blocks and tables atomic (never split mid-element).
 import { describe, it, expect } from 'vitest';
 import { chunkMarkdown, splitIntoBlocks } from '@spec-kit/shared/lib/structure-aware-chunker';
 import type { Chunk } from '@spec-kit/shared/lib/structure-aware-chunker';
@@ -138,7 +135,7 @@ Conclusion.`;
     const chunks: Chunk[] = chunkMarkdown(md);
 
     expect(chunks).toHaveLength(1);
-    // ceil(400 / 4) = 100, but trailing newline from block processing may add 1
+    // Ceil(400 / 4) = 100, but trailing newline from block processing may add 1
     expect(chunks[0].tokenEstimate).toBeGreaterThanOrEqual(100);
     expect(chunks[0].tokenEstimate).toBeLessThanOrEqual(101);
   });

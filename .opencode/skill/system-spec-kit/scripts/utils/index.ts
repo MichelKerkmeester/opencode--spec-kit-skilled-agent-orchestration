@@ -1,9 +1,5 @@
-// ---------------------------------------------------------------
-// MODULE: Index
-// ---------------------------------------------------------------
+// --- 1. INDEX ---
 // Barrel export for utility modules (logger, path, validation, file helpers)
-// ---------------------------------------------------------------
-
 export { structuredLog } from './logger';
 export type { LogLevel, LogEntry } from './logger';
 

@@ -11,7 +11,7 @@
 #   Prevents drift when core/ or addendum/ templates are modified.
 #
 # USAGE:
-#   compose.sh [OPTIONS] [LEVELS...]
+#   Compose.sh [OPTIONS] [LEVELS...]
 #
 # OPTIONS:
 #   --dry-run, -n        Preview changes without writing files
@@ -23,11 +23,11 @@
 #   1, 2, 3, 3+          Specific levels to compose (default: all)
 #
 # EXAMPLES:
-#   compose.sh                    # Compose all levels
-#   compose.sh 2 3                # Compose only Level 2 and 3
-#   compose.sh --dry-run          # Preview all changes
-#   compose.sh --verbose 2        # Verbose composition of Level 2
-#   compose.sh --verify           # Check if composed templates are current
+#   Compose.sh                    # Compose all levels
+#   Compose.sh 2 3                # Compose only Level 2 and 3
+#   Compose.sh --dry-run          # Preview all changes
+#   Compose.sh --verbose 2        # Verbose composition of Level 2
+#   Compose.sh --verify           # Check if composed templates are current
 #
 # COMPOSITION RULES:
 #   Level 1:  Core only
@@ -36,12 +36,12 @@
 #   Level 3+: Core + level2-verify + level3-arch + level3plus-govern addendums
 #
 # FILE MAPPING:
-#   spec.md:                 Merge spec-core.md + spec-levelN.md sections
-#   plan.md:                 Merge plan-core.md + plan-levelN.md sections
-#   tasks.md:                Copy tasks-core.md (no addendums)
-#   implementation-summary.md: Copy impl-summary-core.md (no addendums)
-#   checklist.md:            Copy from level2-verify (Level 2+)
-#   decision-record.md:      Copy from level3-arch (Level 3+)
+#   Spec.md:                 Merge spec-core.md + spec-levelN.md sections
+#   Plan.md:                 Merge plan-core.md + plan-levelN.md sections
+#   Tasks.md:                Copy tasks-core.md (no addendums)
+#   Implementation-summary.md: Copy impl-summary-core.md (no addendums)
+#   Checklist.md:            Copy from level2-verify (Level 2+)
+#   Decision-record.md:      Copy from level3-arch (Level 3+)
 #
 # TEMPLATE MARKERS:
 #   <!-- SPECKIT_LEVEL: N -->          Updated in composed output
@@ -98,7 +98,7 @@ fi
 # 3. HELPER FUNCTIONS
 # ───────────────────────────────────────────────────────────────
 
-# show_help()
+# Show_help()
 # Display usage information
 show_help() {
     cat << 'EOF'
@@ -135,7 +135,7 @@ EOF
     exit 0
 }
 
-# log()
+# Log()
 # Colored logging helper
 log() {
     local level="$1"
@@ -151,13 +151,13 @@ log() {
     esac
 }
 
-# verbose()
+# Verbose()
 # Print only if verbose mode is enabled (to stderr to avoid polluting stdout)
 verbose() {
     [[ "$VERBOSE" == true ]] && echo "  $*" >&2 || true
 }
 
-# ensure_dir()
+# Ensure_dir()
 # Create directory if it doesn't exist
 ensure_dir() {
     local dir="$1"
@@ -171,7 +171,7 @@ ensure_dir() {
     fi
 }
 
-# file_exists()
+# File_exists()
 # Check if file exists
 file_exists() {
     [[ -f "$1" ]]
@@ -181,7 +181,7 @@ file_exists() {
 # 4. COMPOSITION FUNCTIONS
 # ───────────────────────────────────────────────────────────────
 
-# update_level_marker()
+# Update_level_marker()
 # Update SPECKIT_LEVEL comment in content
 # Args: $1=content, $2=level_value (1, 2, 3, or 3+)
 update_level_marker() {
@@ -192,7 +192,7 @@ update_level_marker() {
     echo "$content" | sed "s/<!-- SPECKIT_LEVEL: CORE -->/<!-- SPECKIT_LEVEL: $level -->/"
 }
 
-# update_metadata_level()
+# Update_metadata_level()
 # Update the Level value in METADATA table
 # Args: $1=content, $2=level_value
 update_metadata_level() {
@@ -203,14 +203,14 @@ update_metadata_level() {
     echo "$content" | sed "s/| \*\*Level\*\* | \[1\/2\/3\] |/| **Level** | $level |/"
 }
 
-# strip_addendum_markers()
+# Strip_addendum_markers()
 # Remove SPECKIT_ADDENDUM comments from content
 strip_addendum_markers() {
     local content="$1"
     echo "$content" | grep -v "<!-- SPECKIT_ADDENDUM:" | grep -v "<!-- Append after" | grep -v "<!-- Insert after"
 }
 
-# strip_frontmatter()
+# Strip_frontmatter()
 # Remove leading YAML frontmatter block from content if present.
 strip_frontmatter() {
     local content="$1"
@@ -248,11 +248,11 @@ strip_frontmatter() {
     echo "$stripped"
 }
 
-# normalize_template_title_suffix()
+# Normalize_template_title_suffix()
 # Rewrite frontmatter title suffix to composed output path:
 #   "... [template:core/spec-core.md]" -> "... [template:level_2/spec.md]"
 # Ensures composed templates remain dashboard-disambiguated and idempotent
-# with the frontmatter migration CLI.
+# With the frontmatter migration CLI.
 normalize_template_title_suffix() {
     local filepath="$1"
     local content="$2"
@@ -324,7 +324,7 @@ normalize_template_title_suffix() {
     '
 }
 
-# extract_frontmatter()
+# Extract_frontmatter()
 # Return leading YAML frontmatter block (with delimiters) if present.
 extract_frontmatter() {
     local content="$1"
@@ -351,7 +351,7 @@ extract_frontmatter() {
     '
 }
 
-# compose_spec()
+# Compose_spec()
 # Compose spec.md from core + addendums based on level
 # Args: $1=level (1, 2, 3, 3+)
 compose_spec() {
@@ -377,7 +377,7 @@ compose_spec() {
             l2_content=$(strip_addendum_markers "$l2_content")
 
             # Insert L2 content after Section 6 (Risks & Dependencies)
-            # and before Section 7 (Open Questions)
+            # And before Section 7 (Open Questions)
             # Split core at section boundary, insert L2 content between halves
             local before_marker after_marker
             before_marker=$(echo "$core_content" | sed -n '/^## 7\. OPEN QUESTIONS/q;p')
@@ -518,7 +518,7 @@ LEVEL 3+ SPEC (~200 lines)
     echo "$output"
 }
 
-# compose_plan()
+# Compose_plan()
 # Compose plan.md from core + addendums based on level
 compose_plan() {
     local level="$1"
@@ -614,7 +614,7 @@ LEVEL 3+ PLAN (~260 lines)
     echo "$output"
 }
 
-# compose_tasks()
+# Compose_tasks()
 # Copy tasks-core.md (no addendums exist)
 compose_tasks() {
     local level="$1"
@@ -629,7 +629,7 @@ compose_tasks() {
     echo "$core_content"
 }
 
-# compose_impl_summary()
+# Compose_impl_summary()
 # Copy impl-summary-core.md (no addendums exist)
 compose_impl_summary() {
     local level="$1"
@@ -644,7 +644,7 @@ compose_impl_summary() {
     echo "$core_content"
 }
 
-# compose_checklist()
+# Compose_checklist()
 # Copy checklist from level2-verify, add L3+ extensions if needed
 compose_checklist() {
     local level="$1"
@@ -685,7 +685,7 @@ P0 must complete, P1 need approval to defer
     esac
 }
 
-# compose_decision_record()
+# Compose_decision_record()
 # Copy decision-record from level3-arch
 compose_decision_record() {
     local level="$1"
@@ -698,7 +698,7 @@ compose_decision_record() {
 # 5. LEVEL COMPOSITION ORCHESTRATION
 # ───────────────────────────────────────────────────────────────
 
-# write_file()
+# Write_file()
 # Write content to file (respecting dry-run mode)
 write_file() {
     local filepath="$1"
@@ -738,7 +738,7 @@ write_file() {
     fi
 }
 
-# compose_level()
+# Compose_level()
 # Compose all templates for a given level
 compose_level() {
     local level="$1"

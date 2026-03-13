@@ -1,12 +1,9 @@
-// ---------------------------------------------------------------
-// MODULE: File Helpers
-// ---------------------------------------------------------------
+// --- 1. FILE HELPERS ---
 // Path normalization, description cleaning, and file categorization utilities
 
 import { posix as pathPosix } from 'node:path';
 
-// 1. PATH UTILITIES
-
+// --- 2. PATH UTILITIES ---
 function toRelativePath(filePath: string, projectRoot?: string): string {
   if (!filePath) return '';
   let cleaned: string = pathPosix.normalize(filePath.replace(/\\/g, '/'));
@@ -41,12 +38,10 @@ function toRelativePath(filePath: string, projectRoot?: string): string {
   return cleaned;
 }
 
-// ---------------------------------------------------------------
-// 2. DESCRIPTION UTILITIES
-// ---------------------------------------------------------------
+// --- 3. DESCRIPTION UTILITIES ---
 
 // NOTE: A stricter variant exists in lib/semantic-summarizer.ts with 3 additional
-// garbage patterns (/^changed?$/i, /^no description available$/i, /^modified?$/i).
+// Garbage patterns (/^changed?$/i, /^no description available$/i, /^modified?$/i).
 function isDescriptionValid(description: string): boolean {
   if (!description || description.length < 8) return false;
 
@@ -85,9 +80,7 @@ function cleanDescription(desc: string): string {
   return cleaned;
 }
 
-// ---------------------------------------------------------------
-// 3. EXPORTS
-// ---------------------------------------------------------------
+// --- 4. EXPORTS ---
 
 export {
   toRelativePath,

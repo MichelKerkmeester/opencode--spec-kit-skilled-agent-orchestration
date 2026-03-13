@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Search Results Format Vitest
-// ---------------------------------------------------------------
+// --- 1. SEARCH RESULTS FORMAT VITEST ---
 
 // Converted from: search-results-format.test.ts (custom runner)
 import { describe, it, expect } from 'vitest';

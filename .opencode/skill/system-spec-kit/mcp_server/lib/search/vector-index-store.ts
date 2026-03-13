@@ -1,16 +1,14 @@
-// ---------------------------------------------------------------
-// MODULE: Vector Index Store
-// ---------------------------------------------------------------
-// AI-GUARD: SEARCH: VECTOR INDEX
+// --- 1. VECTOR INDEX STORE ---
+// SEARCH: VECTOR INDEX
 // TypeScript port of the vector index implementation.
 // DECAY STRATEGY (ADR-004): Search-time temporal decay uses an
 // FSRS-preferred strategy. Memories with FSRS review data (last_review
 // IS NOT NULL, review_count > 0) use the FSRS v4 power-law formula:
-//   R(t) = (1 + 0.2346 * t / S)^(-0.5)
+// R(t) = (1 + 0.2346 * t / S)^(-0.5)
 // Memories without review data fall back to half-life exponential:
-//   weight * 0.5^(days / half_life_days)
+// Weight * 0.5^(days / half_life_days)
 // This ensures backward compatibility while aligning reviewed
-// memories with the canonical FSRS algorithm.
+// Memories with the canonical FSRS algorithm.
 
 
 import Database from 'better-sqlite3';
@@ -371,9 +369,9 @@ type PreparedStatements = {
   get_stats: Database.Statement<[], { total: number; complete: number; pending: number; failed: number }>;
   list_base: Database.Statement<[number, number], MemoryRow[]>;
 };
-// AI-FIX: F-09 — Scope prepared statements per Database instance via WeakMap.
+// F-09 — Scope prepared statements per Database instance via WeakMap.
 // The old global singleton would return stale statements from a prior DB connection
-// when called with a different database, executing queries against the wrong connection.
+// When called with a different database, executing queries against the wrong connection.
 const prepared_statements_cache = new WeakMap<Database.Database, PreparedStatements>();
 
 /**
@@ -386,20 +384,50 @@ export function init_prepared_statements(database: Database.Database): PreparedS
   if (cached) return cached;
 
   const prepared_statements: PreparedStatements = {
-    count_all: database.prepare('SELECT COUNT(*) as count FROM memory_index'),
-    count_by_folder: database.prepare('SELECT COUNT(*) as count FROM memory_index WHERE spec_folder = ?'),
+    count_all: database.prepare(`
+      SELECT COUNT(*) as count
+      FROM memory_index m
+      JOIN active_memory_projection p ON p.active_memory_id = m.id
+    `),
+    count_by_folder: database.prepare(`
+      SELECT COUNT(*) as count
+      FROM memory_index m
+      JOIN active_memory_projection p ON p.active_memory_id = m.id
+      WHERE m.spec_folder = ?
+    `),
     get_by_id: database.prepare('SELECT * FROM memory_index WHERE id = ?'),
-    get_by_path: database.prepare('SELECT * FROM memory_index WHERE file_path = ?'),
-    get_by_folder_and_path: database.prepare('SELECT id FROM memory_index WHERE spec_folder = ? AND (canonical_file_path = ? OR file_path = ?) AND (anchor_id = ? OR (anchor_id IS NULL AND ? IS NULL)) ORDER BY id DESC LIMIT 1'),
+    get_by_path: database.prepare(`
+      SELECT m.*
+      FROM memory_index m
+      JOIN active_memory_projection p ON p.active_memory_id = m.id
+      WHERE m.file_path = ?
+    `),
+    get_by_folder_and_path: database.prepare(`
+      SELECT m.id
+      FROM memory_index m
+      JOIN active_memory_projection p ON p.active_memory_id = m.id
+      WHERE m.spec_folder = ?
+        AND (m.canonical_file_path = ? OR m.file_path = ?)
+        AND (m.anchor_id = ? OR (m.anchor_id IS NULL AND ? IS NULL))
+      ORDER BY m.id DESC
+      LIMIT 1
+    `),
     get_stats: database.prepare(`
       SELECT
         COUNT(*) as total,
         SUM(CASE WHEN embedding_status = 'success' THEN 1 ELSE 0 END) as complete,
         SUM(CASE WHEN embedding_status = 'pending' THEN 1 ELSE 0 END) as pending,
         SUM(CASE WHEN embedding_status = 'failed' THEN 1 ELSE 0 END) as failed
-      FROM memory_index
+      FROM memory_index m
+      JOIN active_memory_projection p ON p.active_memory_id = m.id
     `),
-    list_base: database.prepare('SELECT * FROM memory_index ORDER BY created_at DESC LIMIT ? OFFSET ?')
+    list_base: database.prepare(`
+      SELECT m.*
+      FROM memory_index m
+      JOIN active_memory_projection p ON p.active_memory_id = m.id
+      ORDER BY m.created_at DESC
+      LIMIT ? OFFSET ?
+    `)
   };
 
   prepared_statements_cache.set(database, prepared_statements);
@@ -423,7 +451,7 @@ export function clear_prepared_statements(database?: Database.Database): void {
    5. CONSTITUTIONAL MEMORIES CACHE
 ----------------------------------------------------------------*/
 
-// AI-TRACE: BUG-004 FIX: Checks external DB modifications before using cache
+// BUG-004 FIX: Checks external DB modifications before using cache
 // BUG-012 FIX: Prevent thundering herd when cache expires
 /**
  * Gets cached constitutional memories from the index.
@@ -456,6 +484,7 @@ export function get_constitutional_memories(
       SELECT m.*, 100.0 as similarity, 1.0 as effective_importance,
              'constitutional' as source_type
       FROM memory_index m
+      JOIN active_memory_projection p ON p.active_memory_id = m.id
       WHERE m.importance_tier = 'constitutional'
         AND m.embedding_status = 'success'
         ${!includeArchived ? 'AND (m.is_archived IS NULL OR m.is_archived = 0)' : ''}
@@ -691,7 +720,7 @@ export class SQLiteVectorStore extends IVectorStore {
       includeArchived: options.includeArchived === true
     };
 
-    // AI-WHY: Lazy import to avoid circular dependency at module load time
+    // Lazy import to avoid circular dependency at module load time
     const { vector_search } = await import('./vector-index-queries');
     return vector_search(embedding, search_options);
   }
@@ -810,7 +839,7 @@ export class SQLiteVectorStore extends IVectorStore {
    9. CAMELCASE ALIASES
 ----------------------------------------------------------------*/
 
-// AI-WHY: camelCase aliases for backward compatibility (functions already exported above)
+// CamelCase aliases for backward compatibility (functions already exported above)
 export { initialize_db as initializeDb };
 export { close_db as closeDb };
 export { get_db as getDb };

@@ -3,8 +3,8 @@
 # COMPONENT: API Boundary Checker
 # ───────────────────────────────────────────────────────────────
 # Enforce one-way API boundary: mcp_server/lib/ must NEVER import
-# from mcp_server/api/. The api/ directory is a stable public
-# surface that depends on lib/, not the reverse.
+# From mcp_server/api/. The api/ directory is a stable public
+# Surface that depends on lib/, not the reverse.
 #
 # Exit Codes:
 #   0 - No violations found
@@ -21,7 +21,7 @@ if [ ! -d "$MCP_DIR/lib" ]; then
 fi
 
 # Match relative imports that resolve to the api/ directory:
-#   from '../api/...'  from '../../api/...'  from '../api'  from '../../api'
+#   From '../api/...'  from '../../api/...'  from '../api'  from '../../api'
 violations=$(grep -rn --include='*.ts' --include='*.js' -E "from ['\"]\.\.(/\.\.)?/api(/[^'\"]*)?['\"]" "$MCP_DIR/lib/" 2>/dev/null || true)
 
 if [ -n "$violations" ]; then

@@ -110,13 +110,13 @@ These must be addressed or receive approval to defer.
     - Config: camelCase keys
 ```
 
-### AI-Intent Comments (Manual Review)
+### WHY Comments (Manual Review)
 
 ```markdown
-[ ] Inline comments follow AI-intent policy (P1, manual checklist gate)
-    - Allowed prefixes: AI-WHY, AI-GUARD, AI-INVARIANT, AI-TRACE, AI-RISK
+[ ] Purposeful WHY comments only (P1, manual checklist gate)
+    - Comments explain WHY, not WHAT
     - Maximum 3 comments per 10 LOC
-    - Comments explain reasoning, not mechanics
+    - No narrative comments describing obvious mechanics
 ```
 
 **Bad (WHAT)**:
@@ -127,7 +127,7 @@ x = 5
 
 **Good (WHY)**:
 ```python
-# AI-WHY: use 5 retries per SLA requirement for transient network failures
+# use 5 retries per SLA requirement for transient network failures
 max_retries = 5
 ```
 

@@ -39,7 +39,7 @@ afterEach(() => {
         fs.rmSync(dir, { recursive: true, force: true });
       }
     } catch {
-      // best-effort cleanup
+      // Best-effort cleanup
     }
   }
 });

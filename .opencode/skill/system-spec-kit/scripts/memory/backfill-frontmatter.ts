@@ -1,7 +1,5 @@
 #!/usr/bin/env node
-// ---------------------------------------------------------------
-// MODULE: Backfill Frontmatter
-// ---------------------------------------------------------------
+// --- 1. BACKFILL FRONTMATTER ---
 // Bulk normalizes markdown frontmatter for templates, spec docs, and memories.
 
 import * as fs from 'fs';

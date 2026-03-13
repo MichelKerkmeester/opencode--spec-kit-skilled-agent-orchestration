@@ -1,12 +1,10 @@
-// ---------------------------------------------------------------
-// MODULE: Local Reranker
-// ---------------------------------------------------------------
-// AI-WHY: Optional local reranker for Stage 3. This module is fully gated by
+// --- 1. LOCAL RERANKER ---
+// Optional local reranker for Stage 3. This module is fully gated by
 // RERANKER_LOCAL and gracefully degrades to unchanged ordering on any
-// precondition or runtime failure.
+// Precondition or runtime failure.
 //
 // [CHK-069] Eval comparison (local GGUF vs Cohere/Voyage) is deferred to the
-// dedicated evaluation suite because runtime reranking must stay provider-agnostic.
+// Dedicated evaluation suite because runtime reranking must stay provider-agnostic.
 
 import os from 'os';
 import path from 'path';
@@ -26,10 +24,10 @@ type LocalRerankRow = Record<string, unknown> & {
 };
 
 const MIN_TOTAL_MEMORY_BYTES = 8 * 1024 * 1024 * 1024;
-// AI-WHY: Lower total-memory threshold when custom model is configured — still
-// prevents OOM on truly constrained systems without blocking intentional
-// overrides. We use totalmem() because freemem() is unreliable on macOS/Linux
-// where disk cache can make "free" memory appear deceptively low.
+// Lower total-memory threshold when custom model is configured — still
+// Prevents OOM on truly constrained systems without blocking intentional
+// Overrides. We use totalmem() because freemem() is unreliable on macOS/Linux
+// Where disk cache can make "free" memory appear deceptively low.
 const MIN_TOTAL_MEMORY_CUSTOM_BYTES = 2 * 1024 * 1024 * 1024;
 const DEFAULT_MODEL_RELATIVE_PATH = path.join('models', 'bge-reranker-v2-m3.Q4_K_M.gguf');
 const RERANKER_TIMEOUT_MS = Number(process.env.SPECKIT_RERANKER_TIMEOUT_MS) || 30_000;
@@ -78,8 +76,8 @@ async function ensureModelLoaded(modelPath: string): Promise<unknown> {
     return cachedModel;
   }
 
-  // AI-GUARD: H4 fix: Explicitly reuse in-flight promise for the same model path
-  // to prevent concurrent callers from orphaning promises
+  // H4 fix: Explicitly reuse in-flight promise for the same model path
+  // To prevent concurrent callers from orphaning promises
   if (modelLoadPromise && modelLoadPromisePath === modelPath) {
     return await modelLoadPromise;
   }
@@ -189,7 +187,7 @@ export async function canUseLocalReranker(): Promise<boolean> {
   }
 
   // Use total system memory instead of free memory. On macOS/Linux,
-  // os.freemem() can look artificially low due to disk cache usage.
+  // Os.freemem() can look artificially low due to disk cache usage.
   const hasCustomModel = Boolean(process.env.SPECKIT_RERANKER_MODEL?.trim());
   const memThreshold = hasCustomModel ? MIN_TOTAL_MEMORY_CUSTOM_BYTES : MIN_TOTAL_MEMORY_BYTES;
   if (os.totalmem() < memThreshold) {
@@ -256,18 +254,18 @@ export async function rerankLocal<T extends LocalRerankRow>(
      */
     const reranked = await Promise.race([
       (async (): Promise<T[]> => {
-        // AI-WHY: Sprint 9 fix: Sequential scoring instead of Promise.all to avoid
-        // allocating multiple sequence states simultaneously in VRAM, which
-        // can trigger OOM or context mixing on local LLM inference.
+        // Sprint 9 fix: Sequential scoring instead of Promise.all to avoid
+        // Allocating multiple sequence states simultaneously in VRAM, which
+        // Can trigger OOM or context mixing on local LLM inference.
         // PERF(CHK-113): Sequential per-candidate inference. For 20 candidates, latency depends on
-        // model size and hardware. On Apple Silicon with small GGUF (~100MB), expect 200-400ms.
+        // Model size and hardware. On Apple Silicon with small GGUF (~100MB), expect 200-400ms.
         // Future optimization: batch inference via node-llama-cpp's evaluateBatch API.
         const scored: Array<{ candidate: T; rerankScore: number }> = [];
         for (const candidate of rerankCandidates.slice(0, rerankCount)) {
           const content = resolveRowText(candidate);
           const prompt = `query: ${query}\ndocument: ${content}`;
-          // AI-WHY: Truncate by character count after converting from bytes to avoid
-          // splitting multi-byte UTF-8 sequences (which produces replacement chars).
+          // Truncate by character count after converting from bytes to avoid
+          // Splitting multi-byte UTF-8 sequences (which produces replacement chars).
           let boundedPrompt = prompt;
           if (Buffer.byteLength(prompt, 'utf8') > MAX_PROMPT_BYTES) {
             const buf = Buffer.from(prompt, 'utf8');
@@ -312,7 +310,7 @@ export async function rerankLocal<T extends LocalRerankRow>(
       try {
         await dispose.call(context);
       } catch (_error: unknown) {
-        // AI-GUARD: non-fatal cleanup
+        // Non-fatal cleanup
       }
     }
   }
@@ -320,7 +318,7 @@ export async function rerankLocal<T extends LocalRerankRow>(
 
 export async function disposeLocalReranker(): Promise<void> {
   // Sprint 9 fix: If modelLoadPromise is pending when shutdown triggers,
-  // the model could resolve after dispose, leaving it orphaned. Chain cleanup.
+  // The model could resolve after dispose, leaving it orphaned. Chain cleanup.
   const pending = modelLoadPromise;
   if (pending) {
     modelLoadPromise = null;
@@ -340,7 +338,7 @@ export async function disposeLocalReranker(): Promise<void> {
     try {
       await model.dispose();
     } catch (_error: unknown) {
-      // AI-GUARD: non-fatal cleanup
+      // Non-fatal cleanup
     }
   }
   cachedLlama = null;

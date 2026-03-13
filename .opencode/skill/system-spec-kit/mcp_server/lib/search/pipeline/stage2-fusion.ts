@@ -1,48 +1,46 @@
-// ---------------------------------------------------------------
-// MODULE: Stage2 Fusion
-// ---------------------------------------------------------------
-// AI-GUARD: Sprint 5 (R6): 4-Stage Retrieval Pipeline
+// --- 1. STAGE2 FUSION ---
+// Sprint 5 (R6): 4-Stage Retrieval Pipeline
 //
 // I/O CONTRACT:
-//   Input:  Stage2Input { candidates: PipelineRow[], config, stage1Metadata }
-//   Output: Stage2Output { scored: PipelineRow[], metadata }
-//   Key invariants:
+// Input:  Stage2Input { candidates: PipelineRow[], config, stage1Metadata }
+// Output: Stage2Output { scored: PipelineRow[], metadata }
+// Key invariants:
 //     - Every score modification in the pipeline happens exactly once here
 //     - Intent weights are NEVER applied to hybrid results (G2 double-weighting guard)
 //     - scored is sorted descending by effective composite score on exit
-//   Side effects:
+// Side effects:
 //     - FSRS write-back to memory_index (when trackAccess=true) — DB write
 //     - Learned trigger and negative-feedback reads from DB
 //
 // PURPOSE: Single point for ALL scoring signals. Intent weights are
-// applied ONCE here only — this is the architectural guard against
-// the G2 double-weighting recurrence bug.
+// Applied ONCE here only — this is the architectural guard against
+// The G2 double-weighting recurrence bug.
 //
 // SIGNAL APPLICATION ORDER (must not be reordered — 12 steps):
-//   1.  Session boost           — working-memory attention amplification
-//   2.  Causal boost            — graph-traversal neighbor amplification
-//   2a. Co-activation spreading — spreading activation from top-N seeds
-//   2b. Community co-retrieval  — N2c inject community co-members
-//   2c. Graph signals           — N2a momentum + N2b causal depth
-//   3.  Testing effect          — FSRS strengthening write-back (trackAccess)
-//   4.  Intent weights          — non-hybrid search post-scoring adjustment
-//   5.  Artifact routing        — class-based weight boosts
-//   6.  Feedback signals        — learned trigger boosts + negative demotions
-//   7.  Artifact limiting       — result count cap from routing strategy
-//   8.  Anchor metadata         — extract named ANCHOR sections (annotation)
-//   9.  Validation metadata     — spec quality signals enrichment + quality scoring
+// 1.  Session boost           — working-memory attention amplification
+// 2.  Causal boost            — graph-traversal neighbor amplification
+// 2a. Co-activation spreading — spreading activation from top-N seeds
+// 2b. Community co-retrieval  — N2c inject community co-members
+// 2c. Graph signals           — N2a momentum + N2b causal depth
+// 3.  Testing effect          — FSRS strengthening write-back (trackAccess)
+// 4.  Intent weights          — non-hybrid search post-scoring adjustment
+// 5.  Artifact routing        — class-based weight boosts
+// 6.  Feedback signals        — learned trigger boosts + negative demotions
+// 7.  Artifact limiting       — result count cap from routing strategy
+// 8.  Anchor metadata         — extract named ANCHOR sections (annotation)
+// 9.  Validation metadata     — spec quality signals enrichment + quality scoring
 //
-// AI-INVARIANT: Hybrid search already applies intent-aware scoring
-// internally (RRF / RSF fusion). Post-search intent weighting is
-// therefore ONLY applied for non-hybrid search types (vector,
-// multi-concept). Applying it to hybrid results would double-count.
+// Hybrid search already applies intent-aware scoring
+// Internally (RRF / RSF fusion). Post-search intent weighting is
+// Therefore ONLY applied for non-hybrid search types (vector,
+// Multi-concept). Applying it to hybrid results would double-count.
 //
 // SCORE IMMUTABILITY INVARIANT: Once a score field is written during
-// fusion (steps 1–7 above), it must not be overwritten by later stages.
+// Fusion (steps 1–7 above), it must not be overwritten by later stages.
 // Stage 3 (rerank) and Stage 4 (post-processing) MUST introduce new
-// score fields (e.g. rerankScore, finalScore) rather than mutating the
-// existing `score` produced here. This preserves auditability and
-// prevents silent ranking regressions caused by in-place score mutation.
+// Score fields (e.g. rerankScore, finalScore) rather than mutating the
+// Existing `score` produced here. This preserves auditability and
+// Prevents silent ranking regressions caused by in-place score mutation.
 
 import type Database from 'better-sqlite3';
 
@@ -64,6 +62,8 @@ import { enrichResultsWithAnchorMetadata } from '../anchor-metadata';
 import { enrichResultsWithValidationMetadata } from '../validation-metadata';
 import { applyCommunityBoost } from '../../graph/community-detection';
 import { applyGraphSignals } from '../../graph/graph-signals';
+import { isGraphUnifiedEnabled } from '../graph-flags';
+import { sortDeterministicRows } from './ranking-contract';
 
 // -- Internal type aliases --
 
@@ -138,13 +138,13 @@ function applyValidationSignalScoring(results: PipelineRow[]): PipelineRow[] {
     return withSyncedScoreAliases(row, scored);
   });
 
-  return adjusted.sort((a, b) => resolveBaseScore(b) - resolveBaseScore(a));
+  return sortDeterministicRows(adjusted as Array<PipelineRow & { id: number }>);
 }
 
 // -- Internal helpers --
 
 /**
- * AI-WHY: Fix #11 (017-refinement-phase-6) — Replaced with shared resolveEffectiveScore()
+ * Fix #11 (017-refinement-phase-6) — Replaced with shared resolveEffectiveScore()
  * from types.ts. The shared function uses the correct fallback chain:
  * intentAdjustedScore → rrfScore → score → similarity/100, all clamped to [0,1].
  * This alias ensures all call sites use the shared implementation.
@@ -168,6 +168,54 @@ function syncScoreAliasesInPlace(rows: PipelineRow[]): void {
     row.intentAdjustedScore = row.score;
     row.attentionScore = row.score;
   }
+}
+
+type GraphContributionKey = 'causalDelta' | 'coActivationDelta' | 'communityDelta' | 'graphSignalDelta';
+
+function withGraphContribution(
+  row: PipelineRow,
+  key: GraphContributionKey,
+  delta: number,
+  source: string,
+  injected: boolean = false,
+): PipelineRow {
+  const current = (row.graphContribution && typeof row.graphContribution === 'object')
+    ? row.graphContribution as Record<string, unknown>
+    : {};
+  const sources = Array.isArray(current.sources)
+    ? current.sources.filter((value): value is string => typeof value === 'string')
+    : [];
+  const nextSources = sources.includes(source) ? sources : [...sources, source];
+  const currentValue = typeof current[key] === 'number' && Number.isFinite(current[key]) ? current[key] : 0;
+  const totalDelta = ['causalDelta', 'coActivationDelta', 'communityDelta', 'graphSignalDelta']
+    .reduce((sum, field) => {
+      const existing = field === key ? currentValue + delta : current[field];
+      return sum + (typeof existing === 'number' && Number.isFinite(existing) ? existing : 0);
+    }, 0);
+  return {
+    ...row,
+    graphContribution: {
+      ...current,
+      [key]: currentValue + delta,
+      totalDelta,
+      sources: nextSources,
+      injected: current.injected === true || injected,
+    },
+  };
+}
+
+function countGraphContribution(rows: PipelineRow[], key: GraphContributionKey): number {
+  return rows.filter((row) => {
+    const graphContribution = row.graphContribution as Record<string, unknown> | undefined;
+    return typeof graphContribution?.[key] === 'number' && Math.abs(graphContribution[key] as number) > 0;
+  }).length;
+}
+
+function countGraphInjected(rows: PipelineRow[]): number {
+  return rows.filter((row) => {
+    const graphContribution = row.graphContribution as Record<string, unknown> | undefined;
+    return graphContribution?.injected === true;
+  }).length;
 }
 
 /**
@@ -317,7 +365,7 @@ function applyArtifactRouting(
 
   if (boostFactor === 1.0) {
     // No boost; still re-sort for consistency
-    return [...results].sort((a, b) => resolveBaseScore(b) - resolveBaseScore(a));
+    return sortDeterministicRows(results as Array<PipelineRow & { id: number }>);
   }
 
   const boosted = results.map((row) => {
@@ -329,7 +377,7 @@ function applyArtifactRouting(
     };
   });
 
-  return boosted.sort((a, b) => resolveBaseScore(b) - resolveBaseScore(a));
+  return sortDeterministicRows(boosted as Array<PipelineRow & { id: number }>);
 }
 
 /**
@@ -360,10 +408,10 @@ function applyFeedbackSignals(
     db = requireDb();
   } catch (error: unknown) {
     if (error instanceof Error) {
-      // AI-WHY: DB not available — skip feedback signals gracefully
+      // DB not available — skip feedback signals gracefully
       return results;
     }
-    // AI-WHY: DB not available — skip feedback signals gracefully
+    // DB not available — skip feedback signals gracefully
     return results;
   }
 
@@ -503,6 +551,14 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
     intentWeightsApplied: false,
     artifactRoutingApplied: false,
     feedbackSignalsApplied: false,
+    graphContribution: {
+      killSwitchActive: !isGraphUnifiedEnabled(),
+      causalBoosted: 0,
+      coActivationBoosted: 0,
+      communityInjected: 0,
+      graphSignalsBoosted: 0,
+      totalGraphInjected: 0,
+    },
     qualityFiltered: 0,
     durationMs: 0,
   };
@@ -512,7 +568,7 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
 
   // -- 1. Session boost --
   // Only for hybrid search type — session attention signals are most meaningful
-  // when the full hybrid result set is available for ordering.
+  // When the full hybrid result set is available for ordering.
   if (isHybrid && config.enableSessionBoost && config.sessionId) {
     try {
       const { results: boosted, metadata: sbMeta } = sessionBoost.applySessionBoost(
@@ -529,11 +585,18 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
 
   // -- 2. Causal boost --
   // Only for hybrid search type — causal graph traversal is seeded from the
-  // top results after session boost has re-ordered them.
-  if (isHybrid && config.enableCausalBoost) {
+  // Top results after session boost has re-ordered them.
+  if (isHybrid && config.enableCausalBoost && isGraphUnifiedEnabled()) {
     try {
+      const beforeScores = new Map(results.map((row) => [row.id, resolveBaseScore(row)]));
       const { results: boosted, metadata: cbMeta } = causalBoost.applyCausalBoost(results);
-      results = boosted as PipelineRow[];
+      results = (boosted as PipelineRow[]).map((row) => {
+        const previous = beforeScores.get(row.id) ?? resolveBaseScore(row);
+        const next = resolveBaseScore(row);
+        return next !== previous
+          ? withGraphContribution(row, 'causalDelta', next - previous, 'causal', row.injectedByCausalBoost === true)
+          : row;
+      });
       metadata.causalBoostApplied = cbMeta.applied;
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
@@ -543,9 +606,9 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
 
   // -- 2a. Co-activation spreading --
   // Gated behind SPECKIT_COACTIVATION flag. Takes the top-N results as seeds,
-  // performs spreading activation traversal, and boosts scores of results that
-  // appear in the co-activation graph. Matches V1 hybrid-search behavior.
-  if (isCoActivationEnabled()) {
+  // Performs spreading activation traversal, and boosts scores of results that
+  // Appear in the co-activation graph. Matches V1 hybrid-search behavior.
+  if (isCoActivationEnabled() && isGraphUnifiedEnabled()) {
     try {
       const topIds = results
         .slice(0, SPREAD_ACTIVATION_TOP_N)
@@ -560,18 +623,19 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
             const boost = spreadMap.get(row.id);
             if (boost !== undefined) {
               const baseScore = resolveBaseScore(row);
-              return withSyncedScoreAliases(row, baseScore + boost * CO_ACTIVATION_CONFIG.boostFactor);
+              const updated = withSyncedScoreAliases(row, baseScore + boost * CO_ACTIVATION_CONFIG.boostFactor);
+              return withGraphContribution(updated, 'coActivationDelta', resolveBaseScore(updated) - baseScore, 'co-activation');
             }
             return row;
           });
-          // AI-GUARD: Re-sort after co-activation boost to ensure boosted results
-          // are promoted to their correct position in the ranking
-          results.sort((a, b) => resolveBaseScore(b) - resolveBaseScore(a));
+          // Re-sort after co-activation boost to ensure boosted results
+          // Are promoted to their correct position in the ranking
+          results = sortDeterministicRows(results as Array<PipelineRow & { id: number }>);
           (metadata as Record<string, unknown>).coActivationApplied = true;
         }
       }
     } catch (err: unknown) {
-      // AI-GUARD: Non-critical enrichment — co-activation failure does not affect core ranking
+      // Non-critical enrichment — co-activation failure does not affect core ranking
       const message = err instanceof Error ? err.message : String(err);
       console.warn(`[stage2-fusion] co-activation spreading failed: ${message}`);
     }
@@ -579,13 +643,16 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
 
   // -- 2b. Community co-retrieval (N2c) --
   // Inject community co-members into result set before graph signals
-  // so injected rows also receive momentum/depth adjustments.
-  if (isCommunityDetectionEnabled()) {
+  // So injected rows also receive momentum/depth adjustments.
+  if (isCommunityDetectionEnabled() && isGraphUnifiedEnabled()) {
     try {
       const db = requireDb();
+      const beforeIds = new Set(results.map((row) => row.id));
       const boosted = applyCommunityBoost(results, db);
       if (boosted.length > results.length) {
-        results = boosted as PipelineRow[];
+        results = (boosted as PipelineRow[]).map((row) => beforeIds.has(row.id)
+          ? row
+          : withGraphContribution(row, 'communityDelta', 0, 'community', true));
         (metadata as Record<string, unknown>).communityBoostApplied = true;
       }
     } catch (err: unknown) {
@@ -596,11 +663,18 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
 
   // -- 2c. Graph signals (N2a + N2b) --
   // Additive score adjustments for graph momentum and causal depth.
-  if (isGraphSignalsEnabled()) {
+  if (isGraphSignalsEnabled() && isGraphUnifiedEnabled()) {
     try {
       const db = requireDb();
+      const beforeScores = new Map(results.map((row) => [row.id, resolveBaseScore(row)]));
       const signaled = applyGraphSignals(results, db);
-      results = signaled as PipelineRow[];
+      results = (signaled as PipelineRow[]).map((row) => {
+        const previous = beforeScores.get(row.id) ?? resolveBaseScore(row);
+        const next = resolveBaseScore(row);
+        return next !== previous
+          ? withGraphContribution(row, 'graphSignalDelta', next - previous, 'graph-signals')
+          : row;
+      });
       (metadata as Record<string, unknown>).graphSignalsApplied = true;
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
@@ -608,10 +682,10 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
     }
   }
 
-  // AI-GUARD: -- 3. Testing effect (FSRS write-back) --
+  // -- 3. Testing effect (FSRS write-back) --
   // P3-09 FIX: Only when explicitly opted in via trackAccess.
   // Write-back is fire-and-forget; errors per-row are swallowed inside
-  // applyTestingEffect so they never abort the pipeline.
+  // ApplyTestingEffect so they never abort the pipeline.
   if (config.trackAccess) {
     try {
       const db = requireDb();
@@ -622,10 +696,10 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
     }
   }
 
-  // AI-WHY: -- 4. Intent weights --
+  // -- 4. Intent weights --
   // G2 PREVENTION: Only apply for non-hybrid search types.
   // Hybrid search (RRF / RSF) incorporates intent weighting during fusion —
-  // applying it again here would double-count, causing the G2 bug.
+  // Applying it again here would double-count, causing the G2 bug.
   if (!isHybrid && config.intentWeights) {
     try {
       const weighted = applyIntentWeightsToResults(results, config.intentWeights);
@@ -669,9 +743,9 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
 
   // -- 7. Artifact-based result limiting --
   // The routing strategy may specify a maxResults count stricter than the
-  // overall pipeline limit. Apply it here so Stage 3 reranks a pre-trimmed set.
+  // Overall pipeline limit. Apply it here so Stage 3 reranks a pre-trimmed set.
   syncScoreAliasesInPlace(results);
-  results.sort((a, b) => resolveEffectiveScore(b) - resolveEffectiveScore(a));
+  results = sortDeterministicRows(results as Array<PipelineRow & { id: number }>);
   if (
     config.artifactRouting &&
     config.artifactRouting.confidence > 0 &&
@@ -682,10 +756,10 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
     results = results.slice(0, config.artifactRouting.strategy.maxResults);
   }
 
-  // AI-GUARD: -- 8. Anchor metadata annotation --
+  // -- 8. Anchor metadata annotation --
   // Pure annotation: attach AnchorMetadata[] to rows that contain ANCHOR tags.
   // No scores are changed — this satisfies the Stage 4 score-immutability
-  // invariant and does not conflict with the G2 double-weighting guard.
+  // Invariant and does not conflict with the G2 double-weighting guard.
   try {
     results = enrichResultsWithAnchorMetadata(results);
   } catch (err: unknown) {
@@ -695,8 +769,8 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
 
   // -- 9. Validation metadata enrichment + scoring --
   // Extract spec quality signals (SPECKIT_LEVEL, quality_score,
-  // importance_tier, completion markers) and attach as `validationMetadata` key,
-  // then apply bounded quality scoring multipliers at this single scoring point.
+  // Importance_tier, completion markers) and attach as `validationMetadata` key,
+  // Then apply bounded quality scoring multipliers at this single scoring point.
   try {
     results = enrichResultsWithValidationMetadata(results);
     results = applyValidationSignalScoring(results);
@@ -707,6 +781,13 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
 
   // Keep all score aliases aligned after late-stage score mutations.
   syncScoreAliasesInPlace(results);
+  if (metadata.graphContribution) {
+    metadata.graphContribution.causalBoosted = countGraphContribution(results, 'causalDelta');
+    metadata.graphContribution.coActivationBoosted = countGraphContribution(results, 'coActivationDelta');
+    metadata.graphContribution.communityInjected = countGraphContribution(results, 'communityDelta');
+    metadata.graphContribution.graphSignalsBoosted = countGraphContribution(results, 'graphSignalDelta');
+    metadata.graphContribution.totalGraphInjected = countGraphInjected(results);
+  }
 
   // -- Trace --
   if (config.trace) {
@@ -722,6 +803,7 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
         intentWeightsApplied: metadata.intentWeightsApplied,
         artifactRoutingApplied: metadata.artifactRoutingApplied,
         feedbackSignalsApplied: metadata.feedbackSignalsApplied,
+        graphContribution: metadata.graphContribution,
         searchType: config.searchType,
         isHybrid,
       }

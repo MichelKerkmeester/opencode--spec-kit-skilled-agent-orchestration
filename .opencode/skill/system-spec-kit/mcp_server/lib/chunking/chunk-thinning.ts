@@ -1,11 +1,7 @@
-// ---------------------------------------------------------------
-// MODULE: Chunk Thinning
-// ---------------------------------------------------------------
+// --- 1. CHUNK THINNING ---
 // Scores chunks by anchor presence + content density, then
-// applies a thinning threshold to drop low-quality chunks.
+// Applies a thinning threshold to drop low-quality chunks.
 // Used BEFORE indexing to filter out low-value chunks.
-// ---------------------------------------------------------------
-
 import type { AnchorChunk } from './anchor-chunker';
 
 /* ---------------------------------------------------------------

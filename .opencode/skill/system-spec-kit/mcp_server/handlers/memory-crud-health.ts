@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Memory Crud Health
-// ---------------------------------------------------------------
+// --- 1. MEMORY CRUD HEALTH ---
 
 /* ---------------------------------------------------------------
    IMPORTS
@@ -45,7 +43,7 @@ function redactPath(absolutePath: string): string {
   const specsIdx = normalizedPath.indexOf('/specs/');
   if (opencodeIdx !== -1) return normalizedPath.slice(opencodeIdx + 1);
   if (specsIdx !== -1) return normalizedPath.slice(specsIdx + 1);
-  // AI-WHY: Fallback: basename only
+  // Fallback: basename only
   const lastSlash = normalizedPath.lastIndexOf('/');
   return lastSlash !== -1 ? normalizedPath.slice(lastSlash + 1) : normalizedPath;
 }
@@ -218,7 +216,7 @@ function getDivergentAliasGroups(rows: AliasConflictDbRow[], limit: number): Div
 
     groups.push({
       normalizedPath: redactPath(normalizedPath),
-      // AI: Fix F21 — redact specFolders to prevent path disclosure.
+      // Fix F21 — redact specFolders to prevent path disclosure.
       specFolders: Array.from(bucket.specFolders).sort().map(sf => redactPath(sf)),
       distinctHashCount: bucket.hashes.size,
       variants,
@@ -416,8 +414,8 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
 
   if (!profile) {
     try {
-      // AI-WHY: Resolve the lazy profile so health reflects the active runtime provider
-      // rather than the legacy sync fallback defaults.
+      // Resolve the lazy profile so health reflects the active runtime provider
+      // Rather than the legacy sync fallback defaults.
       profile = await embeddings.getEmbeddingProfileAsync() as EmbeddingProfile | null;
       providerMetadata = embeddings.getProviderMetadata() as PartialProviderMetadata;
     } catch (profileError: unknown) {
@@ -510,12 +508,12 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
       }
     }
   }
-  // AI-WHY: Fix #28 (017-refinement-phase-6) — cleanupOrphanedEdges was exported but
-  // never invoked at runtime. Wire it into autoRepair so orphaned causal edges
+  // Fix #28 (017-refinement-phase-6) — cleanupOrphanedEdges was exported but
+  // Never invoked at runtime. Wire it into autoRepair so orphaned causal edges
   // (referencing deleted memories) are cleaned up during health checks.
   if (autoRepair && database) {
     try {
-      // AI: Fix F8 — ensure causal-edges DB init before orphan cleanup.
+      // Fix F8 — ensure causal-edges DB init before orphan cleanup.
       causalEdges.init(database);
       const orphanResult = causalEdges.cleanupOrphanedEdges();
       if (orphanResult.deleted > 0) {

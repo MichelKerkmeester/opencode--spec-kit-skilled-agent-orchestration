@@ -1,10 +1,8 @@
-// ---------------------------------------------------------------
-// MODULE: Test — Channel Representation
-// ---------------------------------------------------------------
+// --- 1. TEST — CHANNEL REPRESENTATION ---
 // 15 tests covering:
-//   all-represented, one-missing, floor-boundary, multi-missing,
-//   no-results-not-penalised, empty-topk, flag-disabled,
-//   promotion-metadata, channel-counts, exact-floor-threshold
+// All-represented, one-missing, floor-boundary, multi-missing,
+// No-results-not-penalised, empty-topk, flag-disabled,
+// Promotion-metadata, channel-counts, exact-floor-threshold
 
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import {
@@ -38,7 +36,7 @@ function restoreEnv() {
       process.env[key] = value;
     }
   }
-  // clear tracked keys so next test starts fresh
+  // Clear tracked keys so next test starts fresh
   for (const key of Object.keys(savedEnv)) {
     delete savedEnv[key];
   }
@@ -124,7 +122,7 @@ describe('T024 Channel Representation Check', () => {
 
     expect(result.promoted).toHaveLength(0);
     expect(result.topK).toHaveLength(1); // unchanged
-    // channel is still listed as under-represented even if not promoted
+    // Channel is still listed as under-represented even if not promoted
     expect(result.underRepresentedChannels).toContain('graph');
   });
 
@@ -240,7 +238,7 @@ describe('T024 Channel Representation Check', () => {
 
     expect(result.channelCounts['vector']).toBe(2);
     expect(result.channelCounts['bm25']).toBe(1);
-    // graph was promoted — its count should now be 1
+    // Graph was promoted — its count should now be 1
     expect(result.channelCounts['graph']).toBe(1);
   });
 
@@ -328,9 +326,9 @@ describe('T024 Channel Representation Check', () => {
 
     const result = analyzeChannelRepresentation(topK, allChannelResults);
 
-    // bm25 is represented via the sources array — should NOT be under-represented
+    // Bm25 is represented via the sources array — should NOT be under-represented
     expect(result.underRepresentedChannels).not.toContain('bm25');
-    // graph is missing — should be promoted
+    // Graph is missing — should be promoted
     expect(result.underRepresentedChannels).toContain('graph');
     expect(result.promoted).toHaveLength(1);
     expect(result.promoted[0].promotedFrom).toBe('graph');
@@ -347,7 +345,7 @@ describe('T024 Channel Representation Check', () => {
       makeTopKItem('a1', 0.9, 'vector'),
       makeTopKItem('b1', 0.5, 'bm25'),
     ];
-    // graph has a higher score than b1 — if re-sorted it would appear before b1
+    // Graph has a higher score than b1 — if re-sorted it would appear before b1
     const allChannelResults = new Map<string, ChannelResult[]>([
       ['vector', [makeChannelResult('a1', 0.9)]],
       ['bm25',   [makeChannelResult('b1', 0.5)]],
@@ -401,7 +399,7 @@ describe('T024 Channel Representation Check', () => {
     expect(result.promoted).toHaveLength(1);
     expect(result.promoted[0].promotedFrom).toBe('bm25');
     expect(result.topK).toHaveLength(2); // original + 1 promoted
-    // graph is under-represented but could not promote due to quality floor
+    // Graph is under-represented but could not promote due to quality floor
     expect(result.underRepresentedChannels).toContain('graph');
   });
 });

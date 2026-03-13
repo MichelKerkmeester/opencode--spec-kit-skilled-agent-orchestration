@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: CHECKPOINTS STORAGE
-// ---------------------------------------------------------------
-
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 
 import * as mod from '../lib/storage/checkpoints';

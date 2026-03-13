@@ -404,7 +404,7 @@ P0 - Must Fix:
 [ ] snake_case functions
 [ ] UPPER_SNAKE constants
 [ ] No commented code
-[ ] AI-intent comments (max 3/10, AI-WHY/AI-GUARD/AI-INVARIANT/AI-TRACE/AI-RISK)
+[ ] WHY-focused comments only (max 3/10 lines)
 
 P1 - Required:
 [ ] Type hints

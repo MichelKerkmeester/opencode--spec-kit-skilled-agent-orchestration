@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Eval Reporting
-// ---------------------------------------------------------------
+// --- 1. EVAL REPORTING ---
 
 import { checkDatabaseUpdated } from '../core';
 import * as vectorIndex from '../lib/search/vector-index';
@@ -82,7 +80,7 @@ async function handleEvalRunAblation(args: RunAblationArgs): Promise<MCPResponse
     const embedding = await generateQueryEmbedding(query);
 
     const searchOptions = {
-      // AI-WHY: Fix #33 (017-refinement-phase-6) — Use recallK, not hardcoded 20
+      // Fix #33 (017-refinement-phase-6) — Use recallK, not hardcoded 20
       limit: recallK,
       useVector: channelFlags.useVector,
       useBm25: channelFlags.useBm25,

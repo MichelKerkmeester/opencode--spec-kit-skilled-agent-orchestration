@@ -1,10 +1,6 @@
-// ---------------------------------------------------------------
-// MODULE: Causal Tools
-// ---------------------------------------------------------------
+// --- 1. CAUSAL TOOLS ---
 // Dispatch for L6 causal memory graph tools: drift_why,
-// causal_link, causal_stats, causal_unlink (T303).
-// ---------------------------------------------------------------
-
+// Causal_link, causal_stats, causal_unlink (T303).
 import {
   handleMemoryDriftWhy,
   handleMemoryCausalLink,

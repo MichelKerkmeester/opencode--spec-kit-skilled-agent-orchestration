@@ -1,11 +1,12 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/018-ux-hooks",
-  "description": "018 — ux-hooks",
+  "description": "Feature Specification: ux-hooks",
   "keywords": [
-    "ux",
-    "hooks"
+    "feature",
+    "specification",
+    "ux-hooks"
   ],
-  "lastUpdated": "2026-03-10T11:14:56.000Z",
+  "lastUpdated": "2026-03-13T18:17:46.786Z",
   "specId": "018",
   "folderSlug": "ux-hooks",
   "parentChain": [

@@ -1,11 +1,7 @@
-// ---------------------------------------------------------------
-// MODULE: Context Server
-// ---------------------------------------------------------------
+// --- 1. CONTEXT SERVER ---
 // T303: Decomposed — tool schemas in tool-schemas.ts, dispatch
-// logic in tools/*.ts. This file retains server init, startup,
-// shutdown, and main orchestration only.
-// ---------------------------------------------------------------
-
+// Logic in tools/*.ts. This file retains server init, startup,
+// Shutdown, and main orchestration only.
 import fs from 'fs';
 import path from 'path';
 
@@ -218,9 +214,9 @@ async function getMemoryStats(): Promise<DynamicMemoryStats> {
   }
 }
 
-// AI-WHY(CHK-076): Instructions are computed once at startup and NOT refreshed during the session.
+// (CHK-076): Instructions are computed once at startup and NOT refreshed during the session.
 // This is by design — instruction updates require MCP protocol re-negotiation which most clients
-// don't support. If index changes significantly, restart the server to refresh instructions.
+// Don't support. If index changes significantly, restart the server to refresh instructions.
 async function buildServerInstructions(): Promise<string> {
   if (process.env.SPECKIT_DYNAMIC_INIT === 'false') {
     return '';
@@ -332,7 +328,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request, _extra: unknown)
     runAfterToolCallbacks(name, callId, result);
 
     // SK-004: Inject auto-surfaced context into successful responses before
-    // token-budget enforcement so metadata reflects the final envelope.
+    // Token-budget enforcement so metadata reflects the final envelope.
     if (autoSurfacedContext && result && !result.isError) {
       appendAutoSurfaceHints(result, autoSurfacedContext);
       result.autoSurfacedContext = autoSurfacedContext;
@@ -468,7 +464,7 @@ async function recoverPendingFiles(basePath: string): Promise<PendingRecoveryRes
     );
 
     // P1 FIX: Wire isCommittedInDb callback so stale pending files are detected at startup.
-    // AI-WHY: vectorIndex.getDb() is an initializing accessor — always returns a valid DB after initializeDb().
+    // VectorIndex.getDb() is an initializing accessor — always returns a valid DB after initializeDb().
     const database = vectorIndex.getDb();
     const isCommittedInDb = (originalPath: string): boolean => {
       const row = (database.prepare('SELECT 1 FROM memory_index WHERE file_path = ?') as import('better-sqlite3').Statement).get(originalPath);
@@ -695,11 +691,11 @@ async function removeIndexedMemoriesForFile(filePath: string): Promise<void> {
     if (typeof row.id === 'number') {
       if (vectorIndex.deleteMemory(row.id)) {
         deletedCount += 1;
-        // AI-WHY: Record DELETE history only after confirmed deletion.
+        // Record DELETE history only after confirmed deletion.
         try {
           recordHistory(row.id, 'DELETE', filePath ?? null, null, 'mcp:file_watcher');
         } catch (_histErr: unknown) {
-          // history recording is best-effort in file-watcher path
+          // History recording is best-effort in file-watcher path
         }
       }
     }
@@ -747,7 +743,7 @@ async function main(): Promise<void> {
 
   // Initialize db-state module with dependencies
   // P4-12/P4-19 FIX: Pass sessionManager and incrementalIndex so db-state can
-  // refresh their DB handles during reinitializeDatabase(), preventing stale refs.
+  // Refresh their DB handles during reinitializeDatabase(), preventing stale refs.
   initDbState({ vectorIndex, checkpoints: checkpointsLib, accessTracker, hybridSearch, sessionManager, incrementalIndex });
 
   // T087-T090: Pre-Flight API Key Validation (REQ-029)

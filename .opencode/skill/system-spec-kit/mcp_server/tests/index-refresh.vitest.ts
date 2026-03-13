@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: INDEX REFRESH
-// ---------------------------------------------------------------
-
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 
 import * as path from 'path';

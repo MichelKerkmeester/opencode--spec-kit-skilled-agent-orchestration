@@ -1,10 +1,6 @@
 #!/usr/bin/env node
-// ---------------------------------------------------------------
-// SCRIPT: Migration Checkpoint Restore
-// ---------------------------------------------------------------
-// Restores a previously created SQLite checkpoint into the target DB.
-// ---------------------------------------------------------------
-
+// --- 1. MIGRATION CHECKPOINT RESTORE ---
+// Restore a previously created SQLite checkpoint into the target DB.
 import * as fs from 'fs';
 import * as path from 'path';
 import Database from 'better-sqlite3';

@@ -1,8 +1,5 @@
-// ---------------------------------------------------------------
-// COMPONENT: Alignment Validator Drift Tests
+// --- 1. ALIGNMENT VALIDATOR DRIFT TESTS ---
 // PURPOSE: Validate telemetry schema/docs drift detection behavior
-// ---------------------------------------------------------------
-
 'use strict';
 
 const fs = require('fs');

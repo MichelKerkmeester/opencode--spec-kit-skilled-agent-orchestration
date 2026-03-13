@@ -1,7 +1,5 @@
-// ---------------------------------------------------------------
-// MODULE: Vector Index Impl
-// ---------------------------------------------------------------
-// AI-WHY: NOTE: Implementation has been split into focused modules:
+// --- 1. VECTOR INDEX IMPL ---
+// NOTE: Implementation has been split into focused modules:
 // - vector-index-types.ts
 // - vector-index-schema.ts
 // - vector-index-mutations.ts

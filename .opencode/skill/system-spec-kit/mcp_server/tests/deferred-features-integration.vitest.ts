@@ -1,9 +1,6 @@
-// ---------------------------------------------------------------
 // TESTS: Deferred Features Integration — Cross-Feature Validation
 // Covers: R10 to S5 dependency chain, N2 pipeline integration,
-// summary channel, flag behavior, backward compatibility.
-// ---------------------------------------------------------------
-
+// Summary channel, flag behavior, backward compatibility.
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import Database from 'better-sqlite3';
 

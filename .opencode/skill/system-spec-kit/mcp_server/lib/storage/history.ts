@@ -1,9 +1,5 @@
-// ---------------------------------------------------------------
-// MODULE: History
-// ---------------------------------------------------------------
+// --- 1. HISTORY ---
 // Tracks change history for memory entries (ADD, UPDATE, DELETE)
-// ---------------------------------------------------------------
-
 // External packages
 import type Database from 'better-sqlite3';
 
@@ -33,6 +29,26 @@ export interface HistoryStats {
   adds: number;
   updates: number;
   deletes: number;
+}
+
+/**
+ * Normalized history event shape for lineage backfill/replay helpers.
+ */
+export interface HistoryLineageEvent {
+  id: string;
+  memoryId: number;
+  event: 'ADD' | 'UPDATE' | 'DELETE';
+  timestamp: string;
+  actor: string;
+  prevValue: string | null;
+  newValue: string | null;
+}
+
+export interface LineageTransitionAnchor {
+  memory_id: number;
+  event: 'ADD' | 'UPDATE' | 'DELETE';
+  timestamp: string;
+  actor: string;
 }
 
 /* -------------------------------------------------------------
@@ -66,7 +82,7 @@ export function init(database: Database.Database): void {
 
   // Migration: rebuild table when legacy constraints are detected.
   // Removes: CHECK(actor IN ...) that blocked mcp:* actors,
-  //          FOREIGN KEY that prevented DELETE history from surviving parent deletion.
+  // FOREIGN KEY that prevented DELETE history from surviving parent deletion.
   const tableInfo = database.prepare(
     "SELECT sql FROM sqlite_master WHERE type='table' AND name='memory_history'"
   ).get() as { sql: string } | undefined;
@@ -158,6 +174,53 @@ export function getHistory(memoryId: number, limit?: number): HistoryEntry[] {
   const params: (number)[] = limit != null ? [memoryId, limit] : [memoryId];
 
   return database.prepare(sql).all(...params) as HistoryEntry[];
+}
+
+/**
+ * Returns chronological history events for lineage backfill/replay helpers.
+ */
+export function getHistoryEventsForLineage(
+  memoryId: number,
+  databaseOverride?: Database.Database | null,
+): HistoryLineageEvent[] {
+  const database = databaseOverride ?? getDatabase();
+  const rows = database.prepare(`
+    SELECT id, memory_id, event, timestamp, actor, prev_value, new_value
+    FROM memory_history
+    WHERE memory_id = ?
+    ORDER BY timestamp ASC, rowid ASC
+  `).all(memoryId) as Array<{
+    id: string;
+    memory_id: number;
+    event: 'ADD' | 'UPDATE' | 'DELETE';
+    timestamp: string;
+    actor: string;
+    prev_value: string | null;
+    new_value: string | null;
+  }>;
+
+  return rows.map((row) => ({
+    id: row.id,
+    memoryId: row.memory_id,
+    event: row.event,
+    timestamp: row.timestamp,
+    actor: row.actor,
+    prevValue: row.prev_value,
+    newValue: row.new_value,
+  }));
+}
+
+/**
+ * Returns the lightweight history facts used to bridge legacy history into
+ * Phase 2 lineage inspection and backfill metadata.
+ */
+export function getLineageTransitionAnchors(memoryId: number): LineageTransitionAnchor[] {
+  return getHistory(memoryId).map((entry) => ({
+    memory_id: entry.memory_id,
+    event: entry.event,
+    timestamp: entry.timestamp,
+    actor: entry.actor,
+  }));
 }
 
 /**

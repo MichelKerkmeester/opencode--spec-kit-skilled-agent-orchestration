@@ -1,13 +1,9 @@
-// ---------------------------------------------------------------
-// MODULE: Schema Downgrade (v16 -> v15)
-// ---------------------------------------------------------------
-// AI-WHY: Targeted downgrade utility for removing chunking columns added in v16:
+// --- 1. SCHEMA DOWNGRADE (V16 -> V15) ---
+// Targeted downgrade utility for removing chunking columns added in v16:
 //   - parent_id
 //   - chunk_index
 //   - chunk_label
 // This intentionally supports ONLY v16 -> v15.
-// ---------------------------------------------------------------
-
 import type Database from 'better-sqlite3';
 import * as checkpoints from './checkpoints';
 

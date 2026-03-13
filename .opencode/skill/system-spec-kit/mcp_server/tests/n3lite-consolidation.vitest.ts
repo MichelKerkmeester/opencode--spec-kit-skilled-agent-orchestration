@@ -1,9 +1,6 @@
-// ---------------------------------------------------------------
 // TESTS: N3-lite Consolidation Engine
 // Covers: contradiction scan, Hebbian strengthening, staleness
-// detection, edge bounds, cluster surfacing, weight_history.
-// ---------------------------------------------------------------
-
+// Detection, edge bounds, cluster surfacing, weight_history.
 import { describe, it, expect, beforeEach } from 'vitest';
 import Database from 'better-sqlite3';
 import {
@@ -49,7 +46,7 @@ function createTestDb(): Database.Database {
     )
   `);
 
-  // causal_edges schema
+  // Causal_edges schema
   db.exec(`
     CREATE TABLE causal_edges (
       id INTEGER PRIMARY KEY,
@@ -69,7 +66,7 @@ function createTestDb(): Database.Database {
   db.exec('CREATE INDEX IF NOT EXISTS idx_causal_source ON causal_edges(source_id)');
   db.exec('CREATE INDEX IF NOT EXISTS idx_causal_target ON causal_edges(target_id)');
 
-  // weight_history
+  // Weight_history
   db.exec(`
     CREATE TABLE weight_history (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -148,9 +145,9 @@ describe('T002a: Contradiction scan', () => {
 
     const pairs = scanContradictions(db);
     // The seeded memories have "Always use JWT" vs "Never use JWT"
-    // but word overlap may or may not meet the 0.85 threshold
+    // But word overlap may or may not meet the 0.85 threshold
     // (heuristic overlap is conservative). The key test is that the
-    // function runs without error.
+    // Function runs without error.
     expect(Array.isArray(pairs)).toBe(true);
   });
 

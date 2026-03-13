@@ -504,18 +504,18 @@ class TestBoundaryValues:
 
     def test_confidence_formula_crossing_points_with_boost(self) -> None:
         """Test exact scores where confidence formula crosses key thresholds with boost"""
-        # score = 2.0 -> 0.50 + 0.30 = 0.80 (exactly at routing threshold)
+        # Score = 2.0 -> 0.50 + 0.30 = 0.80 (exactly at routing threshold)
         assert calculate_confidence(2.0, True) == 0.80
-        # score = 1.99 -> 0.50 + 0.2985 = 0.7985 (just below)
+        # Score = 1.99 -> 0.50 + 0.2985 = 0.7985 (just below)
         assert calculate_confidence(1.99, True) < 0.80
-        # score = 2.01 -> 0.50 + 0.3015 = 0.8015 (just above)
+        # Score = 2.01 -> 0.50 + 0.3015 = 0.8015 (just above)
         assert calculate_confidence(2.01, True) > 0.80
 
     def test_confidence_formula_crossing_points_without_boost(self) -> None:
         """Test exact scores where confidence formula crosses key thresholds without boost"""
-        # score = 4.0 -> 0.25 + 0.60 = 0.85 (above routing threshold)
+        # Score = 4.0 -> 0.25 + 0.60 = 0.85 (above routing threshold)
         assert calculate_confidence(4.0, False) == 0.85
-        # score = 3.67 -> 0.25 + 0.55 = 0.80 (approximately at threshold)
+        # Score = 3.67 -> 0.25 + 0.55 = 0.80 (approximately at threshold)
         result = calculate_confidence(3.67, False)
         assert abs(result - 0.80) < 0.01  # Within 0.01 of 0.80
 

@@ -1,20 +1,17 @@
-// ---------------------------------------------------------------
-// MODULE: Validation Metadata
-// ---------------------------------------------------------------
-// AI-GUARD: 
+// --- 1. VALIDATION METADATA ---
 // PURPOSE: Extract validation signals from spec document metadata
-// and surface them as retrieval metadata on PipelineRow results.
+// And surface them as retrieval metadata on PipelineRow results.
 // This allows the scoring layer to incorporate spec quality information.
 //
 // SIGNAL SOURCES (in extraction order):
-//   1. importance_tier  → qualitative quality signal (tier → numeric score)
-//   2. quality_score    → direct numeric quality metric from DB column
-//   3. content          → SPECKIT_LEVEL marker extraction
-//   4. content          → validation completion markers
+// 1. importance_tier  → qualitative quality signal (tier → numeric score)
+// 2. quality_score    → direct numeric quality metric from DB column
+// 3. content          → SPECKIT_LEVEL marker extraction
+// 4. content          → validation completion markers
 //
-// AI-INVARIANT: This module is metadata-only. It NEVER modifies score
-// fields (score, rrfScore, similarity, intentAdjustedScore). It only
-// adds the `validationMetadata` key to enriched rows.
+// This module is metadata-only. It NEVER modifies score
+// Fields (score, rrfScore, similarity, intentAdjustedScore). It only
+// Adds the `validationMetadata` key to enriched rows.
 
 import type { PipelineRow } from './pipeline/types';
 
@@ -233,7 +230,7 @@ export function extractValidationMetadata(
     hasAnySignal = true;
   }
 
-  // AI-WHY: -- 4. Importance tier signal (even without quality score fallback above) --
+  // -- 4. Importance tier signal (even without quality score fallback above) --
   // If we have a tier name at all, it's a signal — record qualityScore if not yet set.
   if (!hasAnySignal && typeof row.importance_tier === 'string') {
     const tierScore = qualityScoreFromTier(row.importance_tier);

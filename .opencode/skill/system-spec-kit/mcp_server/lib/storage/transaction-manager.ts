@@ -1,9 +1,5 @@
-// ---------------------------------------------------------------
-// MODULE: Transaction Manager
-// ---------------------------------------------------------------
-// AI-GUARD: Atomic file + index operations with pending file recovery
-// ---------------------------------------------------------------
-
+// --- 1. TRANSACTION MANAGER ---
+// Atomic file + index operations with pending file recovery
 import type Database from 'better-sqlite3';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -140,7 +136,7 @@ function atomicWriteFile(filePath: string, content: string, encoding: BufferEnco
   const tempPath = filePath + TEMP_SUFFIX;
 
   try {
-    // AI-GUARD: Ensure directory exists
+    // Ensure directory exists
     const dir = path.dirname(filePath);
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, { recursive: true });
@@ -149,7 +145,7 @@ function atomicWriteFile(filePath: string, content: string, encoding: BufferEnco
     // Write to temp file
     fs.writeFileSync(tempPath, content, encoding);
 
-    // AI-GUARD: Atomic rename
+    // Atomic rename
     fs.renameSync(tempPath, filePath);
 
     metrics.totalAtomicWrites++;
@@ -195,7 +191,7 @@ function deleteFileIfExists(filePath: string): boolean {
  * 2. Execute database operations
  * 3. Rename pending to final
  *
- * AI-WHY: This function provides file-system-level atomicity (write-to-pending + rename),
+ * This function provides file-system-level atomicity (write-to-pending + rename),
  * NOT database transaction isolation. Callers needing transactional guarantees for
  * dbOperation() must wrap it in their own db.transaction() call. The rename step
  * ensures the file is either fully written or not present, but the DB operation
@@ -216,12 +212,12 @@ function executeAtomicSave(
     }
     fs.writeFileSync(pendingPath, content, 'utf-8');
 
-    // AI-WHY: Fix #22 (017-refinement-phase-6) — Flag-based rollback coordination.
+    // Fix #22 (017-refinement-phase-6) — Flag-based rollback coordination.
     // The dbOperation callback runs synchronously (better-sqlite3 transaction). If it
-    // succeeds but the rename (Step 3) fails, the DB change is already committed and
-    // cannot be rolled back. The dbCommitted flag tracks this state so the error path
-    // can report which step failed. No SAVEPOINT is used — better-sqlite3 transactions
-    // are all-or-nothing within the dbOperation() callback itself.
+    // Succeeds but the rename (Step 3) fails, the DB change is already committed and
+    // Cannot be rolled back. The dbCommitted flag tracks this state so the error path
+    // Can report which step failed. No SAVEPOINT is used — better-sqlite3 transactions
+    // Are all-or-nothing within the dbOperation() callback itself.
     let dbCommitted = false;
 
     // Step 2: Execute database operation
@@ -236,14 +232,14 @@ function executeAtomicSave(
       return { success: false, filePath, error: `DB operation failed: ${msg}` };
     }
 
-    // AI-GUARD: Step 3: Rename pending to final (atomic)
+    // Step 3: Rename pending to final (atomic)
     // P1-020 KNOWN LIMITATION: If renameSync fails after dbOperation() committed,
-    // the DB contains the new state but the file is not at its final path. This is
-    // a window of vulnerability that cannot be eliminated without two-phase commit.
+    // The DB contains the new state but the file is not at its final path. This is
+    // A window of vulnerability that cannot be eliminated without two-phase commit.
     // The `dbCommitted` flag on the returned error result enables callers to detect
-    // this state and trigger recovery (e.g., re-index from DB or replay the write).
+    // This state and trigger recovery (e.g., re-index from DB or replay the write).
     // Mitigation: `recoverAllPendingFiles()` can be called on startup to find
-    // orphaned pending files and rename them to their final paths.
+    // Orphaned pending files and rename them to their final paths.
     try {
       fs.renameSync(pendingPath, filePath);
     } catch (renameError: unknown) {
@@ -308,7 +304,7 @@ function findPendingFiles(dirPath: string): string[] {
     try {
       files = (fs.readdirSync(dirPath, { recursive: true, encoding: 'utf-8' }) as string[]).map((f) => path.join(dirPath, f));
     } catch {
-      // AI-WHY: Node 18 compatibility fallback when recursive readdir is unavailable.
+      // Node 18 compatibility fallback when recursive readdir is unavailable.
       files = listFilesRecursive(dirPath);
     }
 
@@ -352,7 +348,7 @@ function recoverPendingFile(
     }
 
     // Stale detection: if DB check is provided and row was never committed,
-    // log and leave for manual review instead of renaming.
+    // Log and leave for manual review instead of renaming.
     if (committedInDb === false) {
       console.warn(`[transaction-manager] Stale pending file detected (no committed DB row): ${pendingPath}`);
       return { path: pendingPath, recovered: false, error: 'Stale pending file: DB row not committed' };
@@ -401,7 +397,7 @@ export {
   getOriginalPath,
   runInTransaction,
 
-  // AI-GUARD: Atomic operations
+  // Atomic operations
   atomicWriteFile,
   deleteFileIfExists,
   executeAtomicSave,

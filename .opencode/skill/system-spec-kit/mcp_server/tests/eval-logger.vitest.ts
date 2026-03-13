@@ -1,12 +1,10 @@
-// ---------------------------------------------------------------
-// MODULE: Test — Eval Logger
-// ---------------------------------------------------------------
+// --- 1. TEST — EVAL LOGGER ---
 // Verifies that logSearchQuery, logChannelResult, and
-// logFinalResult correctly insert records into the eval DB,
-// are no-ops when SPECKIT_EVAL_LOGGING=false, and never throw.
+// LogFinalResult correctly insert records into the eval DB,
+// Are no-ops when SPECKIT_EVAL_LOGGING=false, and never throw.
 //
 // Verifies that enabling SPECKIT_EVAL_LOGGING does not add
-// more than 10% overhead to the core logging operations
+// More than 10% overhead to the core logging operations
 // (observer-effect mitigation benchmark).
 
 import { describe, it, expect, beforeAll, afterAll, beforeEach, afterEach, vi } from 'vitest';
@@ -88,7 +86,7 @@ describe('T005: Eval Logger', () => {
   describe('Feature flag: SPECKIT_EVAL_LOGGING', () => {
     it('T005-1: isEvalLoggingEnabled returns false when env var is absent', () => {
       const restore = setEvalLogging('');
-      // empty string is not "true"
+      // Empty string is not "true"
       expect(isEvalLoggingEnabled()).toBe(false);
       restore();
     });
@@ -320,7 +318,7 @@ describe('T005: Eval Logger', () => {
       const restore = setEvalLogging('true');
       // Close the DB to simulate a failure
       closeEvalDb();
-      // logSearchQuery must not throw — it should catch internally and return noop
+      // LogSearchQuery must not throw — it should catch internally and return noop
       expect(() => {
         const r = logSearchQuery({ query: 'should-not-throw' });
         // Result will be the noop sentinel because initEvalDb re-opens OK or fails silently

@@ -1,19 +1,15 @@
-// ---------------------------------------------------------------
 // TEST: Encoding-Intent Capture at Index Time
-// ---------------------------------------------------------------
 //
 // Covers: classifyEncodingIntent from lib/search/encoding-intent.ts
 //
 // Coverage areas:
-//   T01-T03 : Empty / null / undefined edge cases
-//   T04-T06 : Pure prose → 'document'
-//   T07-T09 : TypeScript / JavaScript code → 'code'
-//   T10-T12 : Structured data (tables, YAML, JSON) → 'structured_data'
-//   T13-T15 : Mixed content → correct dominant type
-//   T16-T17 : Code block inside prose — ratio determines result
-//   T18      : Type export validation
-// ---------------------------------------------------------------
-
+// T01-T03 : Empty / null / undefined edge cases
+// T04-T06 : Pure prose → 'document'
+// T07-T09 : TypeScript / JavaScript code → 'code'
+// T10-T12 : Structured data (tables, YAML, JSON) → 'structured_data'
+// T13-T15 : Mixed content → correct dominant type
+// T16-T17 : Code block inside prose — ratio determines result
+// T18      : Type export validation
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -37,7 +33,7 @@ afterEach(() => {
     try {
       fs.rmSync(dir, { recursive: true, force: true });
     } catch {
-      // ignore test cleanup failures
+      // Ignore test cleanup failures
     }
   }
 });

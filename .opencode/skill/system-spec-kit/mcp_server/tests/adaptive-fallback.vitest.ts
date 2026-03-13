@@ -1,9 +1,6 @@
-// ---------------------------------------------------------------
 // TEST: Adaptive Fallback (C138-P0)
 // Two-pass fallback when primary scatter returns 0 results.
 // Retries at lower similarity threshold with metadata flag.
-// ---------------------------------------------------------------
-
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 /* ---------------------------------------------------------------

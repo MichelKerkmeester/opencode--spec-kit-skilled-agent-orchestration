@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: COMMUNITY DETECTION — BFS + Louvain
-// ---------------------------------------------------------------
-
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import Database from 'better-sqlite3';
 import {
@@ -16,10 +13,7 @@ import {
   __testables,
 } from '../lib/graph/community-detection.js';
 
-// ---------------------------------------------------------------------------
 // Test DB helper
-// ---------------------------------------------------------------------------
-
 function createTestDb(): Database.Database {
   const db = new Database(':memory:');
   db.exec(`
@@ -52,10 +46,7 @@ function createTestDb(): Database.Database {
   return db;
 }
 
-// ---------------------------------------------------------------------------
 // 1. detectCommunitiesBFS (~8 tests)
-// ---------------------------------------------------------------------------
-
 describe('detectCommunitiesBFS', () => {
   let db: Database.Database;
 
@@ -167,10 +158,7 @@ describe('detectCommunitiesBFS', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
 // 2. shouldEscalateToLouvain (~4 tests)
-// ---------------------------------------------------------------------------
-
 describe('shouldEscalateToLouvain', () => {
   it('returns false when largest component <= 50%', () => {
     // 4 nodes, 2 communities of size 2 each => largest is 2/4 = 50%, not > 50%
@@ -203,10 +191,7 @@ describe('shouldEscalateToLouvain', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
 // 3. detectCommunitiesLouvain (~5 tests)
-// ---------------------------------------------------------------------------
-
 describe('detectCommunitiesLouvain', () => {
   it('two well-separated clusters detected', () => {
     // Cluster A: 1-2-3 fully connected, Cluster B: 4-5-6 fully connected
@@ -232,7 +217,7 @@ describe('detectCommunitiesLouvain', () => {
 
   it('single cluster stays as one (symmetric K4 — no modularity gain to merge)', () => {
     // Complete graph K4 — single-level Louvain finds no modularity gain
-    // from merging perfectly symmetric nodes, so each stays in its own community.
+    // From merging perfectly symmetric nodes, so each stays in its own community.
     // This is expected behavior for the simplified single-pass Louvain.
     const adj: Map<string, Set<string>> = new Map([
       ['1', new Set(['2', '3', '4'])],
@@ -243,7 +228,7 @@ describe('detectCommunitiesLouvain', () => {
     const result = detectCommunitiesLouvain(adj);
     expect(result.size).toBe(4);
     // In a perfectly symmetric complete graph, single-level Louvain
-    // keeps each node in its own community (modularity gain is negative)
+    // Keeps each node in its own community (modularity gain is negative)
     const communities = new Set(result.values());
     expect(communities.size).toBe(4);
   });
@@ -305,10 +290,7 @@ describe('detectCommunitiesLouvain', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
 // 4. detectCommunities (orchestrator) (~4 tests)
-// ---------------------------------------------------------------------------
-
 describe('detectCommunities (orchestrator)', () => {
   let db: Database.Database;
 
@@ -379,10 +361,7 @@ describe('detectCommunities (orchestrator)', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
 // 5. storeCommunityAssignments (~4 tests)
-// ---------------------------------------------------------------------------
-
 describe('storeCommunityAssignments', () => {
   let db: Database.Database;
 
@@ -440,10 +419,7 @@ describe('storeCommunityAssignments', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
 // 6. getCommunityMembers (~5 tests)
-// ---------------------------------------------------------------------------
-
 describe('getCommunityMembers', () => {
   let db: Database.Database;
 
@@ -514,10 +490,7 @@ describe('getCommunityMembers', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
 // 7. applyCommunityBoost (~6 tests)
-// ---------------------------------------------------------------------------
-
 describe('applyCommunityBoost', () => {
   let db: Database.Database;
 
@@ -613,10 +586,7 @@ describe('applyCommunityBoost', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
 // 8. resetCommunityDetectionState (~2 tests)
-// ---------------------------------------------------------------------------
-
 describe('resetCommunityDetectionState', () => {
   let db: Database.Database;
 
@@ -661,10 +631,7 @@ describe('resetCommunityDetectionState', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
 // 9. Edge cases (~2 tests)
-// ---------------------------------------------------------------------------
-
 describe('Edge cases', () => {
   let db: Database.Database;
 
@@ -704,10 +671,7 @@ describe('Edge cases', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
 // 10. __testables (internal helpers)
-// ---------------------------------------------------------------------------
-
 describe('__testables', () => {
   let db: Database.Database;
 

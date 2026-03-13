@@ -1,8 +1,5 @@
-// ---------------------------------------------------------------
 // TEST: UNIFIED GRAPH SEARCH FUNCTION
 // Causal edge channel only
-// ---------------------------------------------------------------
-
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { createUnifiedGraphSearchFn } from '../lib/search/graph-search-fn';
 
@@ -41,10 +38,7 @@ describe('createUnifiedGraphSearchFn', () => {
     mockPrepare.mockReturnValue(mockStatement);
   });
 
-  // ---------------------------------------------------------------
   // G1 FIX: numeric ID correctness
-  // ---------------------------------------------------------------
-
   it('G1: returns numeric IDs (source_id) — not string-prefixed mem:edgeId', () => {
     mockAll.mockReturnValue([makeCausalRow({ source_id: '42', target_id: '99', id: 'edge-001' })]);
 
@@ -100,7 +94,7 @@ describe('createUnifiedGraphSearchFn', () => {
     const searchFn = createUnifiedGraphSearchFn(mockDb);
     const results = searchFn('memory', { limit: 10 });
 
-    // source and target are the same node — should produce only one candidate
+    // Source and target are the same node — should produce only one candidate
     const ids = results.map(r => r['id']);
     const uniqueIds = new Set(ids);
     expect(uniqueIds.size).toBe(ids.length); // no duplicate entries
@@ -125,10 +119,7 @@ describe('createUnifiedGraphSearchFn', () => {
     expect(ids).toEqual([1, 2, 3, 4]);
   });
 
-  // ---------------------------------------------------------------
   // Existing behaviour: correct source, title, relation preserved
-  // ---------------------------------------------------------------
-
   it('sets source field to "graph" on all results', () => {
     mockAll.mockReturnValue([makeCausalRow({ source_id: '10', target_id: '20' })]);
 

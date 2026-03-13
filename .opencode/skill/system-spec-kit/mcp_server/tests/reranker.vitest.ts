@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: RERANKER
-// ---------------------------------------------------------------
-
 import { describe, it, expect } from 'vitest';
 
 import * as mod from '../lib/search/reranker';

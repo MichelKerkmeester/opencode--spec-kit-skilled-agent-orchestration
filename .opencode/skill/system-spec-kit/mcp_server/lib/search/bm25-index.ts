@@ -1,13 +1,9 @@
-// ---------------------------------------------------------------
-// MODULE: BM25 Index
-// ---------------------------------------------------------------
+// --- 1. BM25 INDEX ---
 
 import type Database from 'better-sqlite3';
 import { normalizeContentForBM25 } from '../parsing/content-normalizer';
 
-/* ---------------------------------------------------------------
-   1. INTERFACES
-   --------------------------------------------------------------- */
+// --- 2. INTERFACES ---
 
 interface BM25SearchResult {
   id: string;
@@ -38,7 +34,7 @@ const DEFAULT_B = 0.75;
  * each field's token scores by the appropriate weight before
  * accumulating the total document score.
  *
- * AI-WHY: These weights are consumed by the FTS5 path in sqlite-fts.ts,
+ * These weights are consumed by the FTS5 path in sqlite-fts.ts,
  * not the in-memory BM25 engine in this file. Exported for shared access.
  *
  * title:           10.0 — exact title matches are the strongest signal
@@ -57,9 +53,7 @@ function isBm25Enabled(): boolean {
   return process.env.ENABLE_BM25 !== 'false';
 }
 
-/* ---------------------------------------------------------------
-   2. HELPERS
-   --------------------------------------------------------------- */
+// --- 3. HELPERS ---
 
 const STOP_WORDS = new Set([
   'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for',
@@ -79,12 +73,12 @@ function simpleStem(word: string): string {
   else if (stem.endsWith('ly') && stem.length > 4) { stem = stem.slice(0, -2); suffixRemoved = true; }
   else if (stem.endsWith('es') && stem.length > 4) { stem = stem.slice(0, -2); suffixRemoved = true; }
   else if (stem.endsWith('s') && stem.length > 3) { stem = stem.slice(0, -1); suffixRemoved = true; }
-  // AI-WHY: Only deduplicate doubled consonants when a suffix was actually removed.
-  // AI-GUARD: Without this guard, original double consonants are incorrectly stripped:
+  // Only deduplicate doubled consonants when a suffix was actually removed.
+  // Without this guard, original double consonants are incorrectly stripped:
   // "bass" -> "bas", "jazz" -> "jaz", "bill" -> "bil" etc.
   // Fix #18 (017-refinement-phase-6) — Handle doubled consonants after suffix
-  // removal. "running"→"runn"→"run", "stopped"→"stopp"→"stop". Check if last two chars
-  // are identical consonants and deduplicate.
+  // Removal. "running"→"runn"→"run", "stopped"→"stopp"→"stop". Check if last two chars
+  // Are identical consonants and deduplicate.
   if (suffixRemoved && stem.length >= 3) {
     const last = stem[stem.length - 1];
     if (last === stem[stem.length - 2] && !/[aeiou]/.test(last)) {
@@ -114,9 +108,7 @@ function getTermFrequencies(tokens: string[]): Map<string, number> {
   return freq;
 }
 
-/* ---------------------------------------------------------------
-   3. BM25 INDEX CLASS
-   --------------------------------------------------------------- */
+// --- 4. BM25 INDEX CLASS ---
 
 class BM25Index {
   private k1: number;
@@ -278,9 +270,7 @@ class BM25Index {
 
 }
 
-/* ---------------------------------------------------------------
-   4. SINGLETON
-   --------------------------------------------------------------- */
+// --- 5. SINGLETON ---
 
 let indexInstance: BM25Index | null = null;
 
@@ -295,9 +285,7 @@ function resetIndex(): void {
   indexInstance = null;
 }
 
-/* ---------------------------------------------------------------
-   5. FTS5 QUERY SANITIZATION (P3-06)
-   --------------------------------------------------------------- */
+// --- 6. FTS5 QUERY SANITIZATION (P3-06) ---
 
 /**
  * Sanitize a query string for safe use with SQLite FTS5 and return
@@ -309,7 +297,7 @@ function resetIndex(): void {
  * the remaining non-empty tokens.
  */
 function sanitizeQueryTokens(query: string): string[] {
-  // AI-GUARD: Input length guard: truncate overly long queries to prevent DoS
+  // Input length guard: truncate overly long queries to prevent DoS
   if (query.length > 2000) {
     query = query.substring(0, 2000);
   }
@@ -342,9 +330,7 @@ function sanitizeFTS5Query(query: string): string {
     .join(' ');
 }
 
-/* ---------------------------------------------------------------
-   6. EXPORTS
-   --------------------------------------------------------------- */
+// --- 7. EXPORTS ---
 
 export {
   BM25Index,

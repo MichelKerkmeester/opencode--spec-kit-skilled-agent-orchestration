@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Create Record
-// ---------------------------------------------------------------
+// --- 1. CREATE RECORD ---
 
 import path from 'path';
 import type BetterSqlite3 from 'better-sqlite3';
@@ -11,6 +9,8 @@ import * as predictionErrorGate from '../../lib/cache/cognitive/prediction-error
 import * as fsrsScheduler from '../../lib/cache/cognitive/fsrs-scheduler';
 import * as incrementalIndex from '../../lib/storage/incremental-index';
 import type * as memoryParser from '../../lib/parsing/memory-parser';
+import { getCanonicalPathKey } from '../../lib/utils/canonical-path';
+import { recordLineageTransition } from '../../lib/storage/lineage-state';
 import { toErrorMessage } from '../../utils';
 
 import { recordHistory } from '../../lib/storage/history';
@@ -51,10 +51,26 @@ export function createMemoryRecord(
   const encodingIntent = isEncodingIntentEnabled()
     ? classifyEncodingIntent(parsed.content)
     : undefined;
+  const canonicalFilePath = getCanonicalPathKey(filePath);
 
   const indexWithMetadata = database.transaction(() => {
     // Determine importance weight based on document type (Spec 126)
     const importanceWeight = calculateDocumentWeight(filePath, parsed.documentType);
+    const samePathExisting = database.prepare(`
+      SELECT id, title
+      FROM memory_index
+      WHERE spec_folder = ?
+        AND parent_id IS NULL
+        AND (canonical_file_path = ? OR file_path = ?)
+      ORDER BY id DESC
+      LIMIT 1
+    `).get(parsed.specFolder, canonicalFilePath, filePath) as { id: number; title: string | null } | undefined;
+    const predecessorMemoryId = peDecision.action === predictionErrorGate.ACTION.SUPERSEDE && peDecision.existingMemoryId != null
+      ? peDecision.existingMemoryId
+      : samePathExisting?.id ?? null;
+    const transitionEvent = predecessorMemoryId == null
+      ? 'CREATE'
+      : (peDecision.action === predictionErrorGate.ACTION.SUPERSEDE ? 'SUPERSEDE' : 'UPDATE');
 
     const memory_id: number = embedding
       ? vectorIndex.indexMemory({
@@ -70,6 +86,7 @@ export function createMemoryRecord(
           contentText: parsed.content,
           qualityScore: parsed.qualityScore,
           qualityFlags: parsed.qualityFlags,
+          appendOnly: predecessorMemoryId != null,
         })
       : vectorIndex.indexMemoryDeferred({
           specFolder: parsed.specFolder,
@@ -84,6 +101,7 @@ export function createMemoryRecord(
           contentText: parsed.content,
           qualityScore: parsed.qualityScore,
           qualityFlags: parsed.qualityFlags,
+          appendOnly: predecessorMemoryId != null,
         });
 
     const fileMetadata = incrementalIndex.getFileMetadata(filePath);
@@ -118,6 +136,21 @@ export function createMemoryRecord(
       }
     }
 
+    if (predecessorMemoryId != null) {
+      database.prepare(`
+        UPDATE memory_index
+        SET importance_tier = 'deprecated',
+            updated_at = ?
+        WHERE id = ?
+      `).run(new Date().toISOString(), predecessorMemoryId);
+    }
+
+    recordLineageTransition(database, memory_id, {
+      actor: 'mcp:memory_save',
+      predecessorMemoryId,
+      transitionEvent,
+    });
+
     if (bm25Index.isBm25Enabled()) {
       try {
         const bm25 = bm25Index.getIndex();
@@ -130,11 +163,20 @@ export function createMemoryRecord(
       }
     }
 
-    // T-03: Record ADD history for the newly created memory
+    // Phase 2: append-first writes add a new row for every new current version.
     try {
       recordHistory(memory_id, 'ADD', null, parsed.title ?? filePath, 'mcp:memory_save');
+      if (predecessorMemoryId != null) {
+        recordHistory(
+          predecessorMemoryId,
+          'UPDATE',
+          samePathExisting?.title ?? null,
+          parsed.title ?? filePath,
+          'mcp:memory_save',
+        );
+      }
     } catch (_histErr: unknown) {
-      // history recording is best-effort during save
+      // History recording is best-effort during save
     }
 
     return memory_id;

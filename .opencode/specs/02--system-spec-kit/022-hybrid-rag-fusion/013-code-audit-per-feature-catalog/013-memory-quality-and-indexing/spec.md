@@ -43,7 +43,7 @@ contextType: "general"
 The Memory Quality and Indexing phase closed seven WARN findings, then landed adjacent-path fixes affecting quality-loop save semantics, hash/chunk dedup behavior, and indexing invalidation. This spec folder still reflected the earlier closure snapshot, which left the newer fixes and expanded verification state inconsistent across `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md`.
 
 ### Purpose
-Synchronize all in-scope Level 2 artifacts to the delivered remediation-plus-adjacent-fix state so the folder truthfully reports completed work: 16 audited features, 16 PASS, 0 WARN, 0 FAIL, plus updated verification evidence (410/410 targeted tests, `npx tsc --noEmit` pass, alignment drift verifier pass with 0 findings).
+Synchronize all in-scope Level 2 artifacts to the delivered remediation-plus-adjacent-fix state so the folder truthfully reports completed work: 18 audited features, 18 PASS, 0 WARN, 0 FAIL, plus updated verification evidence (410/410 targeted tests, `npx tsc --noEmit` pass, alignment drift verifier pass with 0 findings).
 <!-- /ANCHOR:problem -->
 
 ---
@@ -56,7 +56,7 @@ Synchronize all in-scope Level 2 artifacts to the delivered remediation-plus-adj
 - Capture adjacent-path behavior fixes now applied around quality-loop persistence/locking, unchanged embedding health handling, chunk/hash dedup semantics, embedding-cache hashing, watcher/ingest reindex behavior, and `memory_index_scan` invalidation.
 - Preserve file-level traceability for completed remediation tasks T004-T012, adjacent-path tasks T016-T022, and verification tasks T013-T015/T023-T024.
 - Keep Level 2 template compliance intact, including frontmatter template-source metadata and required anchors.
-- Record final outcomes consistently: 16 features audited, 16 PASS, 0 WARN, 0 FAIL, 410 targeted tests passing, clean `tsc --noEmit`, and alignment drift verifier pass with 0 findings.
+- Record final outcomes consistently: 18 features audited, 18 PASS, 0 WARN, 0 FAIL, 410 targeted tests passing, clean `tsc --noEmit`, and alignment drift verifier pass with 0 findings.
 
 ### Out of Scope
 - New runtime or feature-catalog fixes outside the already completed remediation set.
@@ -83,7 +83,7 @@ Synchronize all in-scope Level 2 artifacts to the delivered remediation-plus-adj
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | Preserve full audit and remediation coverage for all 16 Memory Quality and Indexing features | All in-scope docs consistently report final outcomes: 16 PASS, 0 WARN, 0 FAIL, with 7 WARN findings remediated |
+| REQ-001 | Preserve full audit and remediation coverage for all 18 Memory Quality and Indexing features | All in-scope docs consistently report final outcomes: 18 PASS, 0 WARN, 0 FAIL, with 7 WARN findings remediated |
 | REQ-002 | Preserve traceability for completed remediation and adjacent-path fixes | Artifacts reference completed T004-T012 and T016-T022 changes across quality-loop save flow, dedup/chunking behavior, watcher/ingest reindex behavior, `memory_index_scan` invalidation, and updated feature-catalog entries |
 | REQ-003 | Keep Level 2 structural integrity valid for phase closure | `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` include valid template-source metadata and pass spec-folder validation without level errors |
 
@@ -101,7 +101,7 @@ Synchronize all in-scope Level 2 artifacts to the delivered remediation-plus-adj
 ## 5. SUCCESS CRITERIA
 
 - **SC-001**: All five in-scope docs are synchronized and structurally aligned with the applicable Level 2 artifact templates.
-- **SC-002**: All five in-scope docs report the same completed outcome state (16 PASS, 0 WARN, 0 FAIL; 410/410 tests; clean `tsc --noEmit`; alignment drift verifier pass with 0 findings).
+- **SC-002**: All five in-scope docs report the same completed outcome state (18 PASS, 0 WARN, 0 FAIL; 410/410 tests; clean `tsc --noEmit`; alignment drift verifier pass with 0 findings).
 - **SC-003**: Validation-blocking documentation issues are removed while preserving existing level/template structure.
 
 ---
@@ -111,7 +111,7 @@ Synchronize all in-scope Level 2 artifacts to the delivered remediation-plus-adj
 ### Scenario 1 - Completed remediation-plus-adjacent fix state is reflected
 **Given** the phase completed remediation tasks T004-T012, adjacent-path tasks T016-T022, and verification tasks T013-T015/T023-T024
 **When** a reviewer reads the synchronized Level 2 docs
-**Then** the folder reports the post-remediation state (16 PASS, 0 WARN, 0 FAIL) plus the adjacent-path behavior updates instead of an earlier partial closure snapshot
+**Then** the folder reports the post-remediation state (18 PASS, 0 WARN, 0 FAIL) plus the adjacent-path behavior updates instead of an earlier partial closure snapshot
 
 ### Scenario 2 - Verification evidence remains truthful
 **Given** targeted verification recorded 410/410 passing tests, clean `npx tsc --noEmit`, and alignment drift verifier pass with 0 findings

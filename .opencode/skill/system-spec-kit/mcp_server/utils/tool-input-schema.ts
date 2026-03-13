@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Tool Input Schema
-// ---------------------------------------------------------------
+// --- 1. TOOL INPUT SCHEMA ---
 
 import type { ToolDefinition } from '../tool-schemas';
 

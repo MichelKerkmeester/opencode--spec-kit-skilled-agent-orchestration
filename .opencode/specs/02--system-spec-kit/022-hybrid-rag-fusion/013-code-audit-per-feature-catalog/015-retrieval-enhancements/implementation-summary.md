@@ -51,7 +51,7 @@ T014: 2 hook dispatch/compaction tests in dual-scope-hooks.vitest.ts. T015: 2 co
 | **Agents** | 5 parallel cli-copilot codex 5.3 xhigh (CWB Pattern A) |
 | **Tasks** | 20 total (3 setup + 17 implementation), 20/20 complete |
 | **Tests** | 332 pass, 0 fail (10 test files) + targeted phase-3 verification: 138 pass, 0 fail (5 test files) |
-| **TSC** | Pre-existing errors only (chunk-thinning, dead-code-regression, layer-definitions) |
+| **TSC** | PASS (`npx tsc --noEmit` clean) |
 | **Files** | 59 modified, +3054 -498 lines |
 <!-- /ANCHOR:what-built -->
 
@@ -85,7 +85,7 @@ Five parallel cli-copilot agents running gpt-5.3-codex at xhigh reasoning dispat
 |-------|--------|
 | Vitest suite (332 tests, 10 files) | PASS, 0 failures |
 | Targeted phase-3 regressions (`channel`, `hybrid-search`, `search-results-format`, `mcp-response-envelope`, `hybrid-search-context-headers`) | PASS, 5 files, 138 tests, 0 failures |
-| TypeScript build (tsc --noEmit) | PASS, pre-existing errors only (chunk-thinning, dead-code-regression, layer-definitions cross-rootDir) |
+| TypeScript build (tsc --noEmit) | PASS, no TypeScript errors |
 | Feature doc source/test mapping review | PASS, 9/9 retrieval-enhancement docs validated (`MISSING_TOTAL=0` across all backticked `mcp_server/...` refs) |
 | Checklist verification | PASS, P0 11/11, P1 19/19, P2 0/2 (deferred) |
 <!-- /ANCHOR:verification -->
@@ -98,7 +98,6 @@ Five parallel cli-copilot agents running gpt-5.3-codex at xhigh reasoning dispat
 1. **CHK-042 remains open (P2).** README updates were not part of this remediation closure and remain deferred.
 2. **CHK-052 remains open (P2).** Findings have not yet been saved to memory/ for this phase.
 3. **Feature 09 still lacks a direct manual-playbook scenario mapping.** CHK-046 is complete as "mapped or marked missing" with explicit coverage-gap documentation.
-4. **Pre-existing tsc errors remain.** Three cross-rootDir import issues in chunk-thinning, dead-code-regression, and layer-definitions are not introduced by this work but remain unresolved.
 <!-- /ANCHOR:limitations -->
 
 ---

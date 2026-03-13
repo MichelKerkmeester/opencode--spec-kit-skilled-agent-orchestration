@@ -1,10 +1,12 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/004-maintenance",
-  "description": "004 — maintenance",
+  "description": "Feature Specification: maintenance",
   "keywords": [
+    "feature",
+    "specification",
     "maintenance"
   ],
-  "lastUpdated": "2026-03-10T11:14:56.000Z",
+  "lastUpdated": "2026-03-13T18:17:46.709Z",
   "specId": "004",
   "folderSlug": "maintenance",
   "parentChain": [

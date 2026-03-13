@@ -163,15 +163,15 @@ The divider line should be 67 characters (same as header width).
 Use inline comments to explain non-obvious values:
 
 1. **Quantity limit:** Maximum 3 comments per 10 lines in JSONC blocks
-2. **AI-intent semantics only:** `AI-WHY`, `AI-GUARD`, `AI-INVARIANT`, `AI-TRACE`, `AI-RISK`
+2. **Purposeful semantics only:** Explain WHY, not WHAT
 3. **No narrative/mechanical comments** such as "set value" or "loop through"
 
 ```jsonc
 {
-  "scaleDays": 90,              // AI-WHY: half-life ~ 62 days with this value
-  "enabled": true,              // AI-GUARD: explicit opt-out avoids implicit defaults
-  "decayWeight": 0.3,           // AI-RISK: balances recency vs relevance drift
-  "rrfK": 60                    // AI-INVARIANT: fixed RRF constant for rank fusion
+  "scaleDays": 90,              // Half-life ~ 62 days with this value
+  "enabled": true,              // Explicit opt-out avoids implicit defaults
+  "decayWeight": 0.3,           // Balances recency vs relevance drift
+  "rrfK": 60                    // Fixed RRF constant for rank fusion
 }
 ```
 
@@ -184,7 +184,7 @@ Add documentation comments for complex settings:
 // ─────────────────────────────────────────────────────────────
 // 3. MEMORY DECAY
 // ─────────────────────────────────────────────────────────────
-// AI-WHY: half-life ≈ 62 days with scaleDays=90
+// Half-life ≈ 62 days with scaleDays=90
 "memoryDecay": {
     "enabled": true,
     "scaleDays": 90,

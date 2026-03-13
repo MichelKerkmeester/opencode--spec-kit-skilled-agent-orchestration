@@ -1,8 +1,5 @@
-// ---------------------------------------------------------------
 // TESTS: Mutation Ledger (C136-11)
 // Append-only audit trail with SQLite trigger enforcement
-// ---------------------------------------------------------------
-
 import { describe, it, expect, beforeEach } from 'vitest';
 import Database from 'better-sqlite3';
 import {

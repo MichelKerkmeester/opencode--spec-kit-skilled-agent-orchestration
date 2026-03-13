@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: HANDLER MEMORY SAVE
-// ---------------------------------------------------------------
-
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import fs from 'fs';
 import path from 'path';
@@ -56,6 +53,12 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
 
     it('T518-6b: indexMemoryFile integrates runQualityLoop in save flow', () => {
       expect(MEMORY_SAVE_SOURCE).toContain('const qualityLoopResult = runQualityLoop(');
+    });
+
+    it('T518-6c: same-path supersedes route through append-only lineage helpers', () => {
+      expect(MEMORY_SAVE_SOURCE).toContain('createAppendOnlyMemoryRecord');
+      expect(MEMORY_SAVE_SOURCE).toContain('recordLineageVersion');
+      expect(MEMORY_SAVE_SOURCE).toContain("predecessorMemoryId: existing.id");
     });
   });
 

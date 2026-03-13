@@ -1,14 +1,12 @@
-// ---------------------------------------------------------------
-// MODULE: Test — Ablation Framework
-// ---------------------------------------------------------------
+// --- 1. TEST — ABLATION FRAMEWORK ---
 //
 // Unit and integration tests for the ablation study framework.
 // Verifies feature flag gating, channel-to-flag mapping, ablation runner
-// with dependency-injected mock search functions, report formatting,
-// and DB persistence of ablation results.
+// With dependency-injected mock search functions, report formatting,
+// And DB persistence of ablation results.
 //
 // Acceptance criterion: ablation run shows per-channel Recall@20 delta
-// and can isolate the contribution of at least 1 individual channel.
+// And can isolate the contribution of at least 1 individual channel.
 
 import { describe, it, expect, vi, beforeEach, afterEach, beforeAll, afterAll } from 'vitest';
 import * as path from 'path';
@@ -171,10 +169,7 @@ describe('Ablation Framework (R13-S3)', () => {
     }
   });
 
-  // -------------------------------------------------------------
   // 1. isAblationEnabled() — feature flag gating
-  // -------------------------------------------------------------
-
   describe('isAblationEnabled()', () => {
     it('returns false when SPECKIT_ABLATION is not set', () => {
       delete process.env.SPECKIT_ABLATION;
@@ -212,10 +207,7 @@ describe('Ablation Framework (R13-S3)', () => {
     });
   });
 
-  // -------------------------------------------------------------
   // 2. ALL_CHANNELS constant
-  // -------------------------------------------------------------
-
   describe('ALL_CHANNELS', () => {
     it('contains exactly 5 known channels', () => {
       expect(ALL_CHANNELS).toHaveLength(5);
@@ -230,10 +222,7 @@ describe('Ablation Framework (R13-S3)', () => {
     });
   });
 
-  // -------------------------------------------------------------
   // 3. toHybridSearchFlags()
-  // -------------------------------------------------------------
-
   describe('toHybridSearchFlags()', () => {
     it('returns all true when no channels are disabled', () => {
       const flags = toHybridSearchFlags(new Set());
@@ -311,10 +300,7 @@ describe('Ablation Framework (R13-S3)', () => {
     });
   });
 
-  // -------------------------------------------------------------
   // 4. runAblation() — returns null when disabled
-  // -------------------------------------------------------------
-
   describe('runAblation() — gating', () => {
     it('returns null when SPECKIT_ABLATION is not set', async () => {
       delete process.env.SPECKIT_ABLATION;
@@ -331,10 +317,7 @@ describe('Ablation Framework (R13-S3)', () => {
     });
   });
 
-  // -------------------------------------------------------------
   // 5. runAblation() — computes correct baseline and ablated recalls
-  // -------------------------------------------------------------
-
   describe('runAblation() — computation', () => {
     beforeEach(() => {
       process.env.SPECKIT_ABLATION = 'true';
@@ -485,7 +468,7 @@ describe('Ablation Framework (R13-S3)', () => {
         return;
       }
 
-      // vector fails, bm25 still succeeds (partial report)
+      // Vector fails, bm25 still succeeds (partial report)
       expect(report.results).toHaveLength(1);
       expect(report.results[0].channel).toBe('bm25');
       expect(report.channelFailures).toHaveLength(1);
@@ -586,10 +569,7 @@ describe('Ablation Framework (R13-S3)', () => {
     });
   });
 
-  // -------------------------------------------------------------
   // 6. formatAblationReport()
-  // -------------------------------------------------------------
-
   describe('formatAblationReport()', () => {
     it('produces valid markdown with table headers', () => {
       const report = buildMockReport();
@@ -634,7 +614,7 @@ describe('Ablation Framework (R13-S3)', () => {
         dataRows.push(lines[i]);
       }
 
-      // vector (|delta|=0.3) should come before bm25 (|delta|=0.05) before fts5 (|delta|=0.02)
+      // Vector (|delta|=0.3) should come before bm25 (|delta|=0.05) before fts5 (|delta|=0.02)
       expect(dataRows.length).toBe(3);
       expect(dataRows[0]).toContain('vector');
       expect(dataRows[1]).toContain('bm25');
@@ -645,7 +625,7 @@ describe('Ablation Framework (R13-S3)', () => {
       const report = buildMockReport();
       const md = formatAblationReport(report);
 
-      // vector has p=0.01 (< 0.05) so its delta should have an asterisk
+      // Vector has p=0.01 (< 0.05) so its delta should have an asterisk
       const vectorLine = md.split('\n').find(l => l.includes('| vector'));
       expect(vectorLine).toBeDefined();
       expect(vectorLine).toContain('*');
@@ -655,10 +635,10 @@ describe('Ablation Framework (R13-S3)', () => {
       const report = buildMockReport();
       const md = formatAblationReport(report);
 
-      // vector delta is -0.3 (no + prefix)
+      // Vector delta is -0.3 (no + prefix)
       expect(md).toContain('-0.3000');
 
-      // fts5 delta is +0.02 (has + prefix)
+      // Fts5 delta is +0.02 (has + prefix)
       expect(md).toContain('+0.0200');
     });
 
@@ -666,11 +646,11 @@ describe('Ablation Framework (R13-S3)', () => {
       const report = buildMockReport();
       const md = formatAblationReport(report);
 
-      // vector: delta=-0.3, p=0.01, significant, |delta|>=0.05 => CRITICAL
+      // Vector: delta=-0.3, p=0.01, significant, |delta|>=0.05 => CRITICAL
       const vectorLine = md.split('\n').find(l => l.includes('| vector'));
       expect(vectorLine).toContain('CRITICAL');
 
-      // fts5: delta=+0.02, p=0.45, not significant => likely redundant
+      // Fts5: delta=+0.02, p=0.45, not significant => likely redundant
       const fts5Line = md.split('\n').find(l => l.includes('| fts5'));
       expect(fts5Line).toContain('likely redundant');
     });
@@ -739,10 +719,7 @@ describe('Ablation Framework (R13-S3)', () => {
     });
   });
 
-  // -------------------------------------------------------------
   // 7. storeAblationResults() — gating
-  // -------------------------------------------------------------
-
   describe('storeAblationResults() — gating', () => {
     it('returns false when SPECKIT_ABLATION is not set', () => {
       delete process.env.SPECKIT_ABLATION;
@@ -945,10 +922,10 @@ describe('Ablation Framework — Channel Isolation (R13-S3 acceptance)', () => {
 
   it('ablation can isolate >= 1 channel contribution (acceptance criterion)', async () => {
     // ACCEPTANCE CRITERION: ablation run shows per-channel Recall@20 delta
-    // and can isolate the contribution of at least 1 individual channel.
+    // And can isolate the contribution of at least 1 individual channel.
     //
     // Strategy: Use known ground truth with a mock search function where
-    // vector provides unique results that no other channel provides.
+    // Vector provides unique results that no other channel provides.
     // Ablating vector should show a measurable negative delta.
 
     const { GROUND_TRUTH_QUERIES, GROUND_TRUTH_RELEVANCES } = await import(
@@ -1028,7 +1005,7 @@ describe('Ablation Framework — Channel Isolation (R13-S3 acceptance)', () => {
     expect(vectorResult).toBeDefined();
     expect(vectorResult!.delta).toBeLessThan(0);
 
-    // bm25 should show 0 delta (removing it has no effect in our mock)
+    // Bm25 should show 0 delta (removing it has no effect in our mock)
     const bm25Result = report.results.find(r => r.channel === 'bm25');
     expect(bm25Result).toBeDefined();
     expect(bm25Result!.delta).toBeCloseTo(0, 4);

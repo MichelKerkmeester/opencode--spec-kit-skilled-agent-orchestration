@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: INTEGRATION SESSION DEDUP
-// ---------------------------------------------------------------
-
 import { describe, it, expect } from 'vitest';
 import * as searchHandler from '../handlers/memory-search';
 import * as triggerHandler from '../handlers/memory-triggers';
@@ -21,9 +18,7 @@ function getErrorMessage(error: unknown): string {
 
 describe('Integration Session Dedup (T531) [deferred - requires DB test fixtures]', () => {
 
-  // -------------------------------------------------------------
   // SUITE: Search Handler Session Dedup Parameters
-  // -------------------------------------------------------------
   describe('Search Handler Session Dedup Parameters', () => {
     it('T531-1: sessionId parameter accepted by search', async () => {
       try {
@@ -36,7 +31,7 @@ describe('Integration Session Dedup (T531) [deferred - requires DB test fixtures
           'T531-1'
         );
       } catch (error: unknown) {
-        // sessionId should not be the cause of error
+        // SessionId should not be the cause of error
         expect(getErrorMessage(error)).not.toContain('sessionId');
       }
     });
@@ -53,15 +48,13 @@ describe('Integration Session Dedup (T531) [deferred - requires DB test fixtures
           'T531-2'
         );
       } catch (error: unknown) {
-        // enableDedup should not be the cause of error
+        // EnableDedup should not be the cause of error
         expect(getErrorMessage(error)).not.toContain('enableDedup');
       }
     });
   });
 
-  // -------------------------------------------------------------
   // SUITE: Trigger Handler Session Parameters
-  // -------------------------------------------------------------
   describe('Trigger Handler Session Parameters', () => {
     it('T531-3: session_id parameter accepted by triggers', async () => {
       try {
@@ -74,7 +67,7 @@ describe('Integration Session Dedup (T531) [deferred - requires DB test fixtures
           'T531-3'
         );
       } catch (error: unknown) {
-        // session_id should not be the cause of error
+        // Session_id should not be the cause of error
         expect(getErrorMessage(error)).not.toContain('session_id');
       }
     });
@@ -96,9 +89,7 @@ describe('Integration Session Dedup (T531) [deferred - requires DB test fixtures
     });
   });
 
-  // -------------------------------------------------------------
   // SUITE: Dedup Disable Flag
-  // -------------------------------------------------------------
   describe('Dedup Disable Flag', () => {
     it('T531-5: Default dedup behavior with sessionId', async () => {
       try {
@@ -111,7 +102,7 @@ describe('Integration Session Dedup (T531) [deferred - requires DB test fixtures
           'T531-5'
         );
       } catch (error: unknown) {
-        // dedup should not be the cause of error
+        // Dedup should not be the cause of error
         expect(getErrorMessage(error)).not.toContain('dedup');
       }
     });
@@ -128,7 +119,7 @@ describe('Integration Session Dedup (T531) [deferred - requires DB test fixtures
           'T531-6'
         );
       } catch (error: unknown) {
-        // enableDedup should not be the cause of error
+        // EnableDedup should not be the cause of error
         expect(getErrorMessage(error)).not.toContain('enableDedup');
       }
     });

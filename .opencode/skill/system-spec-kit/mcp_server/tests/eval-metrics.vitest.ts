@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Test — Eval Metrics
-// ---------------------------------------------------------------
+// --- 1. TEST — EVAL METRICS ---
 // 12 evaluation metrics: 7 core + 5 diagnostic.
 // All functions are pure computation — no DB access.
 
@@ -137,7 +135,7 @@ describe('Recall@20', () => {
   it('T006-C15: Half of relevant found → Recall = 0.5', () => {
     const results = [makeResult(1, 1), makeResult(2, 2)];
     const gt = [makeGT(1, 2), makeGT(2, 0), makeGT(3, 2), makeGT(4, 2)]; // 3 relevant, 2 found
-    // relevant: 1 and 3 and 4. found: 1 (yes), 2 (not relevant). hits=1, total=3 → 1/3
+    // Relevant: 1 and 3 and 4. found: 1 (yes), 2 (not relevant). hits=1, total=3 → 1/3
     // Let's use a cleaner case: relevant = {1, 2}, found = {1}
     const results2 = [makeResult(1, 1), makeResult(99, 2)];
     const gt2 = [makeGT(1, 2), makeGT(2, 2)]; // 2 relevant, only 1 found
@@ -221,7 +219,7 @@ describe('T006a: Inversion Rate', () => {
   });
 
   it('T006-D05: Partial inversion → Inversion Rate between 0 and 1', () => {
-    // results: rank1=id1(rel=3), rank2=id3(rel=1), rank3=id2(rel=2)
+    // Results: rank1=id1(rel=3), rank2=id3(rel=1), rank3=id2(rel=2)
     const results = [makeResult(1, 1), makeResult(3, 2), makeResult(2, 3)];
     const gt = [makeGT(1, 3), makeGT(2, 2), makeGT(3, 1)];
     // Pairs: (id1,id3): 3 vs 1 — ok; (id1,id2): 3 vs 2 — ok; (id3,id2): 1 vs 2 — inverted
@@ -276,7 +274,7 @@ describe('T006b: Constitutional Surfacing Rate', () => {
 describe('T006c: Importance-Weighted Recall', () => {
   it('T006-D12: All relevant found — constitutional weighted 3x → higher than unweighted', () => {
     const results = [makeResult(1, 1), makeResult(2, 2)];
-    // id=1 is constitutional (weight 3), id=2 is normal (weight 1)
+    // Id=1 is constitutional (weight 3), id=2 is normal (weight 1)
     const gt = [makeGT(1, 2, 'constitutional'), makeGT(2, 2, 'normal'), makeGT(3, 2, 'normal')];
     // Found: id1 (weight=3) + id2 (weight=1) = 4 out of total 3+1+1=5 → 4/5 = 0.8
     expect(computeImportanceWeightedRecall(results, gt)).toBeCloseTo(0.8, 4);
@@ -284,7 +282,7 @@ describe('T006c: Importance-Weighted Recall', () => {
 
   it('T006-D13: Weighted recall ≠ unweighted recall when tiers differ', () => {
     const results = [makeResult(1, 1)];
-    // id=1 is constitutional, id=2 is normal — only id=1 found
+    // Id=1 is constitutional, id=2 is normal — only id=1 found
     const gt = [makeGT(1, 2, 'constitutional'), makeGT(2, 2, 'normal')];
     const unweighted = computeRecall(results, gt);      // 1/2 = 0.5
     const weighted = computeImportanceWeightedRecall(results, gt); // 3/(3+1) = 0.75
@@ -313,7 +311,7 @@ describe('T006c: Importance-Weighted Recall', () => {
   });
 
   it('T006-D17: Duplicate memoryIds in results do not inflate weighted recall', () => {
-    // id=1 appears 3 times in results but should count only once
+    // Id=1 appears 3 times in results but should count only once
     const results = [makeResult(1, 1), makeResult(1, 2), makeResult(1, 3), makeResult(2, 4)];
     const gt = [makeGT(1, 2, 'constitutional'), makeGT(2, 2, 'normal'), makeGT(3, 2, 'normal')];
     // Found: id1 (weight=3) + id2 (weight=1) = 4 out of total 3+1+1=5 → 4/5 = 0.8
@@ -400,7 +398,7 @@ describe('T006e: Intent-Weighted NDCG', () => {
     const securityScore = computeIntentWeightedNDCG(results, gt, 'security_audit');
     const understandScore = computeIntentWeightedNDCG(results, gt, 'understand');
 
-    // security_audit zeros out partial relevance (grade 1 → 0), so ranking matters differently
+    // Security_audit zeros out partial relevance (grade 1 → 0), so ranking matters differently
     expect(typeof securityScore).toBe('number');
     expect(typeof understandScore).toBe('number');
     expect(securityScore).not.toBeCloseTo(understandScore, 2);

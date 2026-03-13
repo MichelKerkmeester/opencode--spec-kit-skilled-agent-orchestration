@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: Stage 3 Rerank Regression
-// ---------------------------------------------------------------
-
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { PipelineRow } from '../lib/search/pipeline/types';
 

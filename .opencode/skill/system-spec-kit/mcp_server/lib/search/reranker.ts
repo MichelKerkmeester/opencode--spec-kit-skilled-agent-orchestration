@@ -1,8 +1,6 @@
-// ---------------------------------------------------------------
-// MODULE: Reranker
-// ---------------------------------------------------------------
+// --- 1. RERANKER ---
 // Simple score-based reranking utility. Sorts results by score
-// descending and optionally truncates to a limit.
+// Descending and optionally truncates to a limit.
 //
 // For neural/ML-based reranking see cross-encoder.ts.
 

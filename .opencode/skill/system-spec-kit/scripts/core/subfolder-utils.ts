@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Subfolder Utils
-// ---------------------------------------------------------------
+// --- 1. SUBFOLDER UTILS ---
 // CORE: SUBFOLDER UTILS
 
 import * as path from 'path';

@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Test — Ceiling Quality
-// ---------------------------------------------------------------
+// --- 1. TEST — CEILING QUALITY ---
 import { describe, it, expect } from 'vitest';
 
 import {
@@ -146,7 +144,7 @@ describe('T006f: computeCeilingFromGroundTruth', () => {
     };
     const result = computeCeilingFromGroundTruth(options);
 
-    // m2 (relevance 3) should be ranked first → ceilingRank = 1
+    // M2 (relevance 3) should be ranked first → ceilingRank = 1
     expect(result.perQueryCeiling[0].ceilingRank).toBe(1);
     expect(result.ceilingMRR).toBeCloseTo(1.0, 5);
   });
@@ -283,9 +281,9 @@ describe('T006g: computeQualityProxy', () => {
       latencyTargetMs: 500,
     });
 
-    // latencyMs (1000) > latencyTargetMs (500) → penalty = 0
-    // countSaturation = 0/10 = 0
-    // avgRelevance = 0, topResult = 0
+    // LatencyMs (1000) > latencyTargetMs (500) → penalty = 0
+    // CountSaturation = 0/10 = 0
+    // AvgRelevance = 0, topResult = 0
     expect(result.score).toBeCloseTo(0.0, 5);
     expect(result.interpretation).toBe('poor');
   });
@@ -350,7 +348,7 @@ describe('T006g: computeQualityProxy', () => {
       latencyTargetMs: 500,
     });
 
-    // min(1, 20/10) = 1 → component = 1 * 0.20 = 0.20
+    // Min(1, 20/10) = 1 → component = 1 * 0.20 = 0.20
     expect(result.components.countSaturation).toBeCloseTo(WEIGHTS.countSaturation, 5);
   });
 
@@ -391,7 +389,7 @@ describe('T006g: computeQualityProxy', () => {
 
   // -- T006g-09 --------------------------------------------------
   it('T006g-09: interpretation threshold — good (≥ 0.6, < 0.8)', () => {
-    // avgRelevance=0.6 → 0.24, topResult=0.6 → 0.15, count full=0.20, latency@0→0.15 = 0.74
+    // AvgRelevance=0.6 → 0.24, topResult=0.6 → 0.15, count full=0.20, latency@0→0.15 = 0.74
     // Use a combination that lands in [0.6, 0.8)
     const result = computeQualityProxy({
       avgRelevance: 0.6,
@@ -408,9 +406,9 @@ describe('T006g: computeQualityProxy', () => {
 
   // -- T006g-10 --------------------------------------------------
   it('T006g-10: interpretation threshold — acceptable (≥ 0.4, < 0.6)', () => {
-    // avgRelevance=0.3 → 0.12, topResult=0.3 → 0.075, count=0/10=0, latency@500→0
+    // AvgRelevance=0.3 → 0.12, topResult=0.3 → 0.075, count=0/10=0, latency@500→0
     // 0.12 + 0.075 = 0.195 too low; adjust
-    // avgRelevance=0.5 → 0.20, topResult=0.5 → 0.125, count=0, latency=0→0.15 = 0.475
+    // AvgRelevance=0.5 → 0.20, topResult=0.5 → 0.125, count=0, latency=0→0.15 = 0.475
     const result = computeQualityProxy({
       avgRelevance: 0.5,
       topResultRelevance: 0.5,
@@ -473,7 +471,7 @@ describe('T006g: computeQualityProxy', () => {
       resultCount: 0,
       expectedCount: 1,
       latencyMs: 500,
-      // latencyTargetMs intentionally omitted
+      // LatencyTargetMs intentionally omitted
     });
 
     const withExplicit = computeQualityProxy({

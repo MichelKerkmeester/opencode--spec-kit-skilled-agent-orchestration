@@ -1,7 +1,5 @@
 #!/usr/bin/env node
-// ---------------------------------------------------------------
-// MODULE: Rank Memories
-// ---------------------------------------------------------------
+// --- 1. RANK MEMORIES ---
 // Computes composite ranking scores for memories and folders with recency decay
 
 import * as fs from 'fs';

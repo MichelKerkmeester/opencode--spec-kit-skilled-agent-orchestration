@@ -1,14 +1,8 @@
-// ---------------------------------------------------------------
-// MODULE: Logger
-// ---------------------------------------------------------------
+// --- 1. LOGGER ---
 // Structured logging that writes ALL output to stderr.
 // In MCP servers, stdout is reserved for JSON-RPC — diagnostic
-// output on stdout corrupts the protocol stream.
-// ---------------------------------------------------------------
-
-// ---------------------------------------------------------------
-// 1. TYPES
-// ---------------------------------------------------------------
+// Output on stdout corrupts the protocol stream.
+// --- 2. TYPES ---
 
 /** Log severity levels (ascending) */
 export type LogLevel = 'debug' | 'info' | 'warn' | 'error';
@@ -21,9 +15,7 @@ const LEVEL_VALUES: Record<LogLevel, number> = {
   error: 3,
 };
 
-// ---------------------------------------------------------------
-// 2. CONFIGURATION
-// ---------------------------------------------------------------
+// --- 3. CONFIGURATION ---
 
 /** Minimum log level — messages below this are suppressed.
  *  Set via LOG_LEVEL env var (default: 'info'). */
@@ -33,9 +25,7 @@ function getMinLevel(): LogLevel {
   return 'info';
 }
 
-// ---------------------------------------------------------------
-// 3. CORE LOGGING
-// ---------------------------------------------------------------
+// --- 4. CORE LOGGING ---
 
 /**
  * Write a structured log message to stderr.
@@ -59,9 +49,7 @@ function log(level: LogLevel, prefix: string, message: string, data?: Record<str
   }
 }
 
-// ---------------------------------------------------------------
-// 4. NAMED LOGGER FACTORY
-// ---------------------------------------------------------------
+// --- 5. NAMED LOGGER FACTORY ---
 
 /** A logger instance scoped to a specific module prefix. */
 export interface Logger {
@@ -94,8 +82,6 @@ export function createLogger(moduleName: string): Logger {
   };
 }
 
-// ---------------------------------------------------------------
-// 5. EXPORTS
-// ---------------------------------------------------------------
+// --- 6. EXPORTS ---
 
 export { log };

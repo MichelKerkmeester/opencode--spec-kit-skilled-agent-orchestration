@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: COGNITIVE CONFIG VALIDATION (T004)
-// ---------------------------------------------------------------
-
 import { describe, it, expect, vi } from 'vitest';
 import {
   loadCognitiveConfigFromEnv,

@@ -315,14 +315,14 @@ Replace `YOUR_USERNAME` and `path/to/project` with your actual values. Find your
 
 ### Feature Flag Environment Variables
 
-Add these flags to the `environment` (or `env`) block of any configuration option above. Most runtime retrieval flags use an opt-out pattern and are enabled by default unless you set them to `false`. Observability and Hydra roadmap metadata flags remain explicit opt-in.
+Add these flags to the `environment` (or `env`) block of any configuration option above. Most runtime retrieval flags use an opt-out pattern and are enabled by default unless you set them to `false`. Observability and memory-roadmap metadata flags remain explicit opt-in.
 
 | Variable | Default | Description |
 |---|---|---|
 | `SPECKIT_ADAPTIVE_FUSION` | `true` | Controls adaptive intent-based fusion weights. Set to `false` to disable (7 task types). |
 | `SPECKIT_EXTENDED_TELEMETRY` | `false` | Controls 4-dimension per-retrieval telemetry. Set to `true` to enable metrics collection. |
-| `SPECKIT_HYDRA_PHASE` | `baseline` | Records the current Hydra roadmap phase in telemetry, eval baselines, and migration checkpoint metadata. |
-| `SPECKIT_HYDRA_GRAPH_UNIFIED` | `false` | Opt-in Hydra roadmap capability metadata. Distinct from the live `SPECKIT_GRAPH_UNIFIED` runtime retrieval gate. |
+| `SPECKIT_MEMORY_ROADMAP_PHASE` | `baseline` | Records the current memory roadmap phase in telemetry, eval baselines, and migration checkpoint metadata. |
+| `SPECKIT_MEMORY_GRAPH_UNIFIED` | `false` | Opt-in memory-roadmap capability metadata. Distinct from the live `SPECKIT_GRAPH_UNIFIED` runtime retrieval gate. |
 
 **Example** (OpenCode with all flags explicit):
 
@@ -340,8 +340,8 @@ Add these flags to the `environment` (or `env`) block of any configuration optio
         "MEMORY_DB_PATH": ".opencode/skill/system-spec-kit/mcp_server/dist/database/context-index.sqlite",
         "SPECKIT_ADAPTIVE_FUSION": "true",
         "SPECKIT_EXTENDED_TELEMETRY": "true",
-        "SPECKIT_HYDRA_PHASE": "graph",
-        "SPECKIT_HYDRA_GRAPH_UNIFIED": "true"
+        "SPECKIT_MEMORY_ROADMAP_PHASE": "graph",
+        "SPECKIT_MEMORY_GRAPH_UNIFIED": "true"
       },
       "enabled": true
     }
@@ -900,7 +900,7 @@ PHASE VALID:  bash scripts/validate.sh specs/NNN-name --recursive
 FEATURE FLAGS (env vars):
   SPECKIT_ADAPTIVE_FUSION    default: true     (false = disable intent-based fusion)
   SPECKIT_EXTENDED_TELEMETRY default: false    (true = enable metrics)
-  SPECKIT_HYDRA_PHASE        default: baseline (metadata only)
+  SPECKIT_MEMORY_ROADMAP_PHASE default: baseline (metadata only)
 
 MCP TOOLS: memory_context, memory_search, memory_match_triggers,
            memory_save, memory_index_scan, memory_stats

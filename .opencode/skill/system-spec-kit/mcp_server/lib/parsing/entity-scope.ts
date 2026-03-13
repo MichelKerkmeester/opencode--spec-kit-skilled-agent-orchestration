@@ -1,13 +1,7 @@
-// ---------------------------------------------------------------
-// MODULE: Entity Scope
-// ---------------------------------------------------------------
+// --- 1. ENTITY SCOPE ---
 // Provides context type detection, scope filtering, and session ID
-// generation for the spec-kit memory system.
-// ---------------------------------------------------------------
-
-/* ---------------------------------------------------------------
-   1. CONSTANTS
-   --------------------------------------------------------------- */
+// Generation for the spec-kit memory system.
+// --- 2. CONSTANTS ---
 
 /** Valid context types for memory classification */
 export const CONTEXT_TYPES: string[] = [
@@ -18,9 +12,7 @@ export const CONTEXT_TYPES: string[] = [
   'general',
 ];
 
-/* ---------------------------------------------------------------
-   2. CONTEXT TYPE DETECTION
-   --------------------------------------------------------------- */
+// --- 3. CONTEXT TYPE DETECTION ---
 
 /** Keyword-to-context-type mapping (order = priority) */
 const CONTENT_KEYWORDS: Array<{ type: string; keywords: string[] }> = [
@@ -78,9 +70,7 @@ export function detectContextTypeFromTools(
   return 'general';
 }
 
-/* ---------------------------------------------------------------
-   3. SCOPE FILTER BUILDER
-   --------------------------------------------------------------- */
+// --- 4. SCOPE FILTER BUILDER ---
 
 /**
  * Build a SQL WHERE clause from a scope object.

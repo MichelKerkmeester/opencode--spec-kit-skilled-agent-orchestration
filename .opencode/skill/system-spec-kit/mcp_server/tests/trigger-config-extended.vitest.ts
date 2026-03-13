@@ -9,11 +9,8 @@ import type {
   TriggerMatcherConfig,
 } from '../lib/parsing/trigger-matcher';
 
-// ───────────────────────────────────────────────────────────────
 // TEST: TRIGGER-MATCHER + MEMORY-TYPES + TYPE-INFERENCE (extended)
 // Covers previously untested exports across three modules.
-// ───────────────────────────────────────────────────────────────
-
 import * as path from 'path';
 
 /* ─────────────────────────────────────────────────────────────
@@ -166,9 +163,7 @@ describe('EXTENDED TESTS: trigger-matcher + memory-types + type-inference', () =
     typeInference = require(path.join(DIST, 'lib', 'config', 'type-inference.js')) as TypeInferenceModule;
   });
 
-  // ──────────────────────────────────────────────────────────
-  // 3. TRIGGER-MATCHER TESTS
-  // ──────────────────────────────────────────────────────────
+  // --- --- 3. TRIGGER-MATCHER TESTS --- ---
 
   // ---------- 3.1 logExecutionTime ----------
 
@@ -522,9 +517,7 @@ describe('EXTENDED TESTS: trigger-matcher + memory-types + type-inference', () =
     });
   });
 
-  // ──────────────────────────────────────────────────────────
-  // 4. MEMORY-TYPES TESTS
-  // ──────────────────────────────────────────────────────────
+  // --- --- 4. MEMORY-TYPES TESTS --- ---
 
   // ---------- 4.1 getValidTypes ----------
 
@@ -752,9 +745,7 @@ describe('EXTENDED TESTS: trigger-matcher + memory-types + type-inference', () =
     });
   });
 
-  // ──────────────────────────────────────────────────────────
-  // 5. TYPE-INFERENCE TESTS
-  // ──────────────────────────────────────────────────────────
+  // --- --- 5. TYPE-INFERENCE TESTS --- ---
 
   // ---------- 5.1 TIER_TO_TYPE_MAP ----------
 

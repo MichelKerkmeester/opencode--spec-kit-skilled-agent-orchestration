@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Tool Cache
-// ---------------------------------------------------------------
+// --- 1. TOOL CACHE ---
 
 import crypto from 'crypto';
 
@@ -261,8 +259,8 @@ function invalidateOnWrite(operation: string, _context: Record<string, unknown> 
    7. EVICTION & CLEANUP
 --------------------------------------------------------------- */
 
-// AI-WHY: Maps maintain insertion order; the first key is always the oldest
-// entry. This replaces an O(n) full-scan with O(1) eviction.
+// Maps maintain insertion order; the first key is always the oldest
+// Entry. This replaces an O(n) full-scan with O(1) eviction.
 function evictOldest(): void {
   const oldestKey = cache.keys().next().value;
   if (oldestKey !== undefined) {
@@ -326,7 +324,7 @@ async function withCache<T>(
 
   const key = generateCacheKey(tool_name, args);
 
-  // AI-GUARD: Use get() directly to avoid TOCTOU race between has() and get()
+  // Use get() directly to avoid TOCTOU race between has() and get()
   const cached = get<T>(key);
   if (cached !== null) {
     return cached;

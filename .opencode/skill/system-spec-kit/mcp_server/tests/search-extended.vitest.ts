@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: SEARCH EXTENDED
-// ---------------------------------------------------------------
-
 // Converted from: search-extended.test.ts (custom runner)
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import {
@@ -54,7 +51,7 @@ function restoreEnv() {
 
 describe('simpleStem', () => {
   it('SS01: running → run (-ing removed + double-consonant dedup)', () => {
-    // AI-WHY: Fix #18 — doubled consonant "nn" after -ing removal now collapses to "n"
+    // Fix #18 — doubled consonant "nn" after -ing removal now collapses to "n"
     expect(simpleStem('running')).toBe('run');
   });
 

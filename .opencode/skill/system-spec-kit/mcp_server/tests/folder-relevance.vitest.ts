@@ -1,8 +1,6 @@
-// ---------------------------------------------------------------
-// MODULE: Test — Folder Relevance
-// ---------------------------------------------------------------
+// --- 1. TEST — FOLDER RELEVANCE ---
 // Validates FolderScore formula, damping, enrichment, two-phase
-// retrieval, and feature flag gating.
+// Retrieval, and feature flag gating.
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import type Database from 'better-sqlite3';
@@ -195,13 +193,13 @@ describe('Folder Relevance Scoring (t020)', () => {
   describe('Mixed folders', () => {
     it('T020-06: three folders with different sizes and scores computed correctly', () => {
       const results = [
-        // folder-a: 1 result, score 0.9
+        // Folder-a: 1 result, score 0.9
         makeResult(1, 0.9),
-        // folder-b: 3 results, scores 0.6, 0.5, 0.4
+        // Folder-b: 3 results, scores 0.6, 0.5, 0.4
         makeResult(2, 0.6),
         makeResult(3, 0.5),
         makeResult(4, 0.4),
-        // folder-c: 2 results, scores 0.8, 0.7
+        // Folder-c: 2 results, scores 0.8, 0.7
         makeResult(5, 0.8),
         makeResult(6, 0.7),
       ];
@@ -218,15 +216,15 @@ describe('Folder Relevance Scoring (t020)', () => {
 
       expect(scores.size).toBe(3);
 
-      // folder-a: (1/sqrt(2)) * 0.9
+      // Folder-a: (1/sqrt(2)) * 0.9
       const expectedA = (1 / Math.sqrt(2)) * 0.9;
       expect(approxEqual(scores.get('folder-a')!, expectedA)).toBe(true);
 
-      // folder-b: (1/sqrt(4)) * 1.5
+      // Folder-b: (1/sqrt(4)) * 1.5
       const expectedB = (1 / Math.sqrt(4)) * 1.5;
       expect(approxEqual(scores.get('folder-b')!, expectedB)).toBe(true);
 
-      // folder-c: (1/sqrt(3)) * 1.5
+      // Folder-c: (1/sqrt(3)) * 1.5
       const expectedC = (1 / Math.sqrt(3)) * 1.5;
       expect(approxEqual(scores.get('folder-c')!, expectedC)).toBe(true);
     });

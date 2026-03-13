@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Tree Thinning Types
-// ---------------------------------------------------------------
+// --- 1. TREE THINNING TYPES ---
 // Public declaration surface for tree-thinning helpers and config.
 
 /** Represents thinning config. */
@@ -71,4 +69,4 @@ export declare function deriveParentPath(filePath: string): string | null;
  * It does NOT modify pipeline stages or scoring.
  */
 export declare function applyTreeThinning(files: FileEntry[], config?: Partial<ThinningConfig>): ThinningResult;
-//# sourceMappingURL=tree-thinning.d.ts.map
+// # sourceMappingURL=tree-thinning.d.ts.map

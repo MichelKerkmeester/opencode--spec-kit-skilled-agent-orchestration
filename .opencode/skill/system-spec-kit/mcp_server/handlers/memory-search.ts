@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Memory Search
-// ---------------------------------------------------------------
+// --- 1. MEMORY SEARCH ---
 
 /* ---------------------------------------------------------------
    1. DEPENDENCIES
@@ -9,17 +7,17 @@
 import * as toolCache from '../lib/cache/tool-cache';
 import * as sessionManager from '../lib/session/session-manager';
 import * as intentClassifier from '../lib/search/intent-classifier';
-// AI-WHY: tierClassifier, crossEncoder imports removed — only used by legacy V1 pipeline.
+// TierClassifier, crossEncoder imports removed — only used by legacy V1 pipeline.
 import { isEnabled as isSessionBoostEnabled } from '../lib/search/session-boost';
 import { isEnabled as isCausalBoostEnabled } from '../lib/search/causal-boost';
 // Sprint 5 (R6): 4-stage pipeline architecture
 import { executePipeline } from '../lib/search/pipeline';
 import type { PipelineConfig, PipelineResult } from '../lib/search/pipeline';
 import { initConsumptionLog, logConsumptionEvent } from '../lib/telemetry/consumption-logger';
-// AI-TRACE:C136-09: Artifact-class routing (spec/plan/tasks/checklist/memory)
+// Artifact-class routing (spec/plan/tasks/checklist/memory)
 import { applyRoutingWeights, getStrategyForQuery } from '../lib/search/artifact-routing';
 
-// AI-TRACE:T005: Eval logger — fail-safe, no-op when SPECKIT_EVAL_LOGGING !== "true"
+// Eval logger — fail-safe, no-op when SPECKIT_EVAL_LOGGING !== "true"
 import { logSearchQuery, logChannelResult, logFinalResult } from '../lib/eval/eval-logger';
 
 // Core utilities
@@ -37,8 +35,10 @@ import { formatSearchResults } from '../formatters';
 // Shared handler types
 import type { MCPResponse, IntentClassification } from './types';
 
-// AI-TRACE: Retrieval trace contracts (C136-08)
+// Retrieval trace contracts (C136-08)
 import { createTrace } from '@spec-kit/shared/contracts/retrieval-trace';
+import { buildAdaptiveShadowProposal } from '../lib/cache/cognitive/adaptive-ranking';
+import { normalizeScopeContext } from '../lib/governance/scope-governance';
 
 // Type imports for casting
 import type { IntentType, IntentWeights as IntentClassifierWeights } from '../lib/search/intent-classifier';
@@ -109,6 +109,10 @@ interface SearchArgs {
   query?: string;
   concepts?: string[];
   specFolder?: string;
+  tenantId?: string;
+  userId?: string;
+  agentId?: string;
+  sharedSpaceId?: string;
   limit?: number;
   tier?: string;
   contextType?: string;
@@ -126,13 +130,13 @@ interface SearchArgs {
   applyStateLimits?: boolean;
   rerank?: boolean;
   applyLengthPenalty?: boolean;
-  trackAccess?: boolean; // AI-TRACE:P3-09: opt-in access tracking (default false)
+  trackAccess?: boolean; // opt-in access tracking (default false)
   includeArchived?: boolean; // REQ-206: include archived memories in search (default false)
   enableSessionBoost?: boolean;
   enableCausalBoost?: boolean;
   minQualityScore?: number;
   min_quality_score?: number;
-  mode?: string; // AI-TRACE:C138-P3: "deep" mode enables query expansion for multi-query RAG
+  mode?: string; // "deep" mode enables query expansion for multi-query RAG
   includeTrace?: boolean;
 }
 
@@ -261,6 +265,10 @@ interface CacheArgsInput {
   hasValidConcepts: boolean;
   concepts?: string[];
   specFolder?: string;
+  tenantId?: string;
+  userId?: string;
+  agentId?: string;
+  sharedSpaceId?: string;
   limit: number;
   mode?: string;
   tier?: string;
@@ -288,6 +296,10 @@ function buildCacheArgs({
   hasValidConcepts,
   concepts,
   specFolder,
+  tenantId,
+  userId,
+  agentId,
+  sharedSpaceId,
   limit,
   mode,
   tier,
@@ -313,6 +325,10 @@ function buildCacheArgs({
     query: normalizedQuery,
     concepts: hasValidConcepts ? concepts : undefined,
     specFolder,
+    tenantId,
+    userId,
+    agentId,
+    sharedSpaceId,
     limit,
     mode,
     tier,
@@ -538,11 +554,11 @@ function collapseAndReassembleChunkResults(results: MemorySearchRow[]): ChunkRea
    3. CONFIGURATION
 --------------------------------------------------------------- */
 
-// AI-WHY: Sections 3–5 (STATE_PRIORITY, MAX_DEEP_QUERY_VARIANTS, buildDeepQueryVariants,
-// strengthenOnAccess, applyTestingEffect, filterByMemoryState) removed in
+// Sections 3–5 (STATE_PRIORITY, MAX_DEEP_QUERY_VARIANTS, buildDeepQueryVariants,
+// StrengthenOnAccess, applyTestingEffect, filterByMemoryState) removed in
 // 017-refinement-phase-6 Sprint 1. These were only used by the legacy V1 pipeline.
 // The V2 4-stage pipeline handles state filtering (Stage 4), testing effect, and
-// query expansion through its own stages.
+// Query expansion through its own stages.
 
 /* ---------------------------------------------------------------
    6. SESSION DEDUPLICATION UTILITIES
@@ -571,10 +587,10 @@ function applySessionDedup(results: MemorySearchRow[], sessionId: string, enable
   };
 }
 
-// AI-WHY: Sections 7–9 (applyCrossEncoderReranking, applyIntentWeightsToResults,
-// shouldApplyPostSearchIntentWeighting, postSearchPipeline) removed in
+// Sections 7–9 (applyCrossEncoderReranking, applyIntentWeightsToResults,
+// ShouldApplyPostSearchIntentWeighting, postSearchPipeline) removed in
 // 017-refinement-phase-6 Sprint 1. These were only used by the legacy V1 pipeline
-// path. The V2 4-stage pipeline handles all equivalent functionality.
+// Path. The V2 4-stage pipeline handles all equivalent functionality.
 
 /* ---------------------------------------------------------------
    10. MAIN HANDLER
@@ -590,6 +606,10 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
     query,
     concepts,
     specFolder,
+    tenantId,
+    userId,
+    agentId,
+    sharedSpaceId,
     limit: rawLimit = 10,
     tier,
     contextType,
@@ -605,9 +625,9 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
     autoDetectIntent: autoDetectIntent = true,
     minState: minState = 'WARM',
     applyStateLimits: applyStateLimits = false,
-    rerank = true, // AI-TRACE:C138-P2: Enable reranking by default for better result quality
+    rerank = true, // Enable reranking by default for better result quality
     applyLengthPenalty: applyLengthPenalty = true,
-    trackAccess: trackAccess = false, // AI-TRACE:P3-09: opt-in, off by default
+    trackAccess: trackAccess = false, // opt-in, off by default
     includeArchived: includeArchived = false, // REQ-206: exclude archived by default
     enableSessionBoost: enableSessionBoost = isSessionBoostEnabled(),
     enableCausalBoost: enableCausalBoost = isCausalBoostEnabled(),
@@ -620,8 +640,9 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
   const includeTrace = includeTraceByFlag || includeTraceArg === true;
 
   const qualityThreshold = resolveQualityThreshold(minQualityScore, min_quality_score);
+  const normalizedScope = normalizeScopeContext({ tenantId, userId, agentId, sessionId, sharedSpaceId });
 
-  // AI-TRACE:T120: Validate numeric limit parameter
+  // Validate numeric limit parameter
   const limit = (typeof rawLimit === 'number' && Number.isFinite(rawLimit) && rawLimit > 0)
     ? Math.min(Math.floor(rawLimit), 100)
     : 10;
@@ -675,7 +696,7 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
     });
   }
 
-  // AI-TRACE:T005: Eval logger — capture query at pipeline entry (fail-safe)
+  // Eval logger — capture query at pipeline entry (fail-safe)
   let _evalQueryId = 0;
   let _evalRunId = 0;
   try {
@@ -694,7 +715,7 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
   );
   const artifactRouting = getStrategyForQuery(artifactRoutingQuery, specFolder);
 
-  // AI-TRACE:T039: Intent-aware retrieval
+  // Intent-aware retrieval
   let detectedIntent: string | null = null;
   let intentConfidence = 0;
   let intentWeights: IntentWeights | null = null;
@@ -722,19 +743,23 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
     }
   }
 
-  // AI-TRACE:C136-08: Create retrieval trace at pipeline entry
+  // Create retrieval trace at pipeline entry
   const trace = createTrace(
     normalizedQuery || (concepts ? concepts.join(', ') : ''),
     sessionId,
     detectedIntent || undefined
   );
 
-  // AI-TRACE:T012-T015: Build cache key args
+  // Build cache key args
   const cacheArgs = buildCacheArgs({
     normalizedQuery,
     hasValidConcepts,
     concepts,
     specFolder,
+    tenantId: normalizedScope.tenantId,
+    userId: normalizedScope.userId,
+    agentId: normalizedScope.agentId,
+    sharedSpaceId: normalizedScope.sharedSpaceId,
     limit,
     mode,
     tier,
@@ -759,12 +784,12 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
 
   let _evalChannelPayloads: EvalChannelPayload[] = [];
 
-  // AI-TRACE:T012-T015: Use cache wrapper for search execution
+  // Use cache wrapper for search execution
   const cachedResult = await toolCache.withCache(
     'memory_search',
     cacheArgs,
     async () => {
-      // AI-TRACE:P1-CODE-003: Wait for embedding model only on cache miss
+      // Wait for embedding model only on cache miss
       if (!isEmbeddingModelReady()) {
         const modelReady = await waitForEmbeddingModel(30000);
         if (!modelReady) {
@@ -772,7 +797,7 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
         }
       }
 
-      // AI-WHY: V2 pipeline is the only path (legacy V1 removed in 017-refinement-phase-6)
+      // V2 pipeline is the only path (legacy V1 removed in 017-refinement-phase-6)
       {
         const pipelineConfig: PipelineConfig = {
           query: normalizedQuery || '',
@@ -783,6 +808,10 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
           mode,
           limit,
           specFolder,
+          tenantId: normalizedScope.tenantId,
+          userId: normalizedScope.userId,
+          agentId: normalizedScope.agentId,
+          sharedSpaceId: normalizedScope.sharedSpaceId,
           tier,
           contextType,
           includeArchived,
@@ -842,6 +871,11 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
           extraData.feedback_signals = { applied: true };
         }
 
+        if (pipelineResult.metadata.stage2.graphContribution) {
+          extraData.graphContribution = pipelineResult.metadata.stage2.graphContribution;
+          extraData.graph_contribution = pipelineResult.metadata.stage2.graphContribution;
+        }
+
         if (pipelineResult.metadata.stage3.rerankApplied) {
           extraData.rerankMetadata = {
             reranking_enabled: true,
@@ -857,6 +891,20 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
 
         if (pipelineResult.trace) {
           extraData.retrievalTrace = pipelineResult.trace;
+        }
+
+        try {
+          const adaptiveShadow = buildAdaptiveShadowProposal(
+            requireDb(),
+            normalizedQuery || (concepts ? concepts.join(', ') : ''),
+            pipelineResult.results as Array<Record<string, unknown> & { id: number }>,
+          );
+          if (adaptiveShadow) {
+            extraData.adaptiveShadow = adaptiveShadow;
+            extraData.adaptive_shadow = adaptiveShadow;
+          }
+        } catch (_error: unknown) {
+          // Adaptive proposal logging is best-effort only
         }
 
         _evalChannelPayloads = buildEvalChannelPayloads(
@@ -902,7 +950,7 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
 
   let responseToReturn: MCPResponse = cachedResult;
 
-  // AI-TRACE:T123: Apply session deduplication AFTER cache
+  // Apply session deduplication AFTER cache
   if (sessionId && enableDedup && sessionManager.isEnabled()) {
     let resultsData: Record<string, unknown> | null = null;
     if (responseToReturn?.content?.[0]?.text && typeof responseToReturn.content[0].text === 'string') {
@@ -917,9 +965,9 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
       resultsData = responseToReturn as unknown as Record<string, unknown>;
     }
 
-    // AI-GUARD: P1-018 — Validate response shape before dedup. If the cached response
-    // doesn't have the expected data.results array, log a warning and skip dedup
-    // rather than silently falling through to the un-deduped response.
+    // P1-018 — Validate response shape before dedup. If the cached response
+    // Doesn't have the expected data.results array, log a warning and skip dedup
+    // Rather than silently falling through to the un-deduped response.
     const data = (resultsData && typeof resultsData.data === 'object' && resultsData.data !== null)
       ? resultsData.data as Record<string, unknown>
       : null;
@@ -977,7 +1025,7 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
     }
   }
 
-  // AI-TRACE:T004: Consumption instrumentation — log search event (fail-safe, never throws)
+  // Consumption instrumentation — log search event (fail-safe, never throws)
   try {
     const db = (() => { try { return requireDb(); } catch (_error: unknown) { return null; } })();
     if (db) {
@@ -1006,7 +1054,7 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
     }
   } catch (_error: unknown) { /* instrumentation must never cause search to fail */ }
 
-  // AI-TRACE:T005: Eval logger — capture final results at pipeline exit (fail-safe)
+  // Eval logger — capture final results at pipeline exit (fail-safe)
   try {
     if (_evalRunId && _evalQueryId) {
       let finalMemoryIds: number[] = [];
@@ -1065,7 +1113,7 @@ export const __testables = {
   buildEvalChannelPayloads,
 };
 
-// AI-WHY: Backward-compatible aliases (snake_case)
+// Backward-compatible aliases (snake_case)
 const handle_memory_search = handleMemorySearch;
 
 export {

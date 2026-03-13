@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: ERRORS COMPREHENSIVE
-// ---------------------------------------------------------------
-
 import { describe, it, expect } from 'vitest';
 import {
   ErrorCodes, MemoryError, withTimeout, userFriendlyError,

@@ -1,16 +1,11 @@
-// ---------------------------------------------------------------
-// MODULE: Message Utils
-// ---------------------------------------------------------------
+// --- 1. MESSAGE UTILS ---
 // Timestamp formatting, exchange summarization, and tool output truncation
 
-// 1. IMPORTS
-
+// --- 2. IMPORTS ---
 import { CONFIG } from '../core';
 import { structuredLog } from './logger';
 
-// ---------------------------------------------------------------
-// 2. TYPES
-// ---------------------------------------------------------------
+// --- 3. TYPES ---
 
 /** Supported timestamp formats */
 export type TimestampFormat = 'iso' | 'readable' | 'date' | 'date-dutch' | 'time' | 'time-short' | 'filename';
@@ -68,9 +63,7 @@ export interface KeyArtifacts {
   errorsEncountered: ErrorArtifact[];
 }
 
-// ---------------------------------------------------------------
-// 3. TIMESTAMP FORMATTING
-// ---------------------------------------------------------------
+// --- 4. TIMESTAMP FORMATTING ---
 
 // NOTE: Similar to lib/simulation-factory.ts:formatTimestamp but differs in:
 // - Applies CONFIG.TIMEZONE_OFFSET_HOURS adjustment (simulation-factory uses raw UTC)
@@ -124,9 +117,7 @@ function formatTimestamp(date: Date | string | number = new Date(), format: Time
   }
 }
 
-// ---------------------------------------------------------------
-// 4. OUTPUT TRUNCATION
-// ---------------------------------------------------------------
+// --- 5. OUTPUT TRUNCATION ---
 
 function truncateToolOutput(output: string, maxLines: number = CONFIG.MAX_TOOL_OUTPUT_LINES): string {
   if (!output) return '';
@@ -153,9 +144,7 @@ function truncateToolOutput(output: string, maxLines: number = CONFIG.MAX_TOOL_O
   ].join('\n');
 }
 
-// ---------------------------------------------------------------
-// 5. EXCHANGE SUMMARIZATION
-// ---------------------------------------------------------------
+// --- 6. EXCHANGE SUMMARIZATION ---
 
 function summarizeExchange(userMessage: string, assistantResponse: string, toolCalls: ToolCall[] = []): ExchangeSummary {
   let userIntent: string;
@@ -184,9 +173,7 @@ function summarizeExchange(userMessage: string, assistantResponse: string, toolC
   };
 }
 
-// ---------------------------------------------------------------
-// 6. ARTIFACT EXTRACTION
-// ---------------------------------------------------------------
+// --- 7. ARTIFACT EXTRACTION ---
 
 function extractKeyArtifacts(messages: Message[]): KeyArtifacts {
   const artifacts: KeyArtifacts = {
@@ -233,9 +220,7 @@ function extractKeyArtifacts(messages: Message[]): KeyArtifacts {
   return artifacts;
 }
 
-// ---------------------------------------------------------------
-// 7. EXPORTS
-// ---------------------------------------------------------------
+// --- 8. EXPORTS ---
 
 export {
   formatTimestamp,

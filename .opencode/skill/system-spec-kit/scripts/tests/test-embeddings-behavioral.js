@@ -1,14 +1,10 @@
-// ───────────────────────────────────────────────────────────────
-// TEST: EMBEDDINGS BEHAVIORAL VERIFICATION
-// ───────────────────────────────────────────────────────────────
+// --- 1. TEST: EMBEDDINGS BEHAVIORAL VERIFICATION ---
 // Tests actual behavior of shared/embeddings.ts functions
 // (re-exported via lib/embeddings.ts shim).
 //
 // Strategy: mock the factory's createEmbeddingsProvider so no
-// real model/API is loaded, then verify caching, input
-// validation, batching, lazy loading, and dimension logic.
-// ───────────────────────────────────────────────────────────────
-
+// Real model/API is loaded, then verify caching, input
+// Validation, batching, lazy loading, and dimension logic.
 'use strict';
 
 const path = require('path');
@@ -600,7 +596,7 @@ async function testCachingBehavior() {
     assertEqual(mockProvider._getDocumentCallCount(), 1,
       'EB-083: Document embedding: second call uses cache');
 
-    // generateEmbedding with the same raw text should NOT hit doc cache (different namespace)
+    // GenerateEmbedding with the same raw text should NOT hit doc cache (different namespace)
     mockProvider._resetCounts();
     await emb.generateEmbedding('same text');
     assertEqual(mockProvider._getCallCount(), 1,
@@ -835,11 +831,11 @@ async function testPreInitMetadata() {
     assertEqual(meta.provider, 'mock-test',
       'EB-122: getProviderMetadata.provider from mocked getProviderInfo');
 
-    // getEmbeddingProfile is null before init (sync)
+    // GetEmbeddingProfile is null before init (sync)
     assertEqual(emb.getEmbeddingProfile(), null,
       'EB-123: getEmbeddingProfile null before init (sync)');
 
-    // getEmbeddingProfileAsync triggers init
+    // GetEmbeddingProfileAsync triggers init
     const asyncProfile = await emb.getEmbeddingProfileAsync();
     assert(asyncProfile !== null,
       'EB-124: getEmbeddingProfileAsync triggers init and returns profile');

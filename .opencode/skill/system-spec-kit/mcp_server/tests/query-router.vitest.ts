@@ -1,11 +1,9 @@
-// ---------------------------------------------------------------
-// MODULE: Test — Query Router
-// ---------------------------------------------------------------
+// --- 1. TEST — QUERY ROUTER ---
 // Tier-to-Channel-Subset Routing + Pipeline Integration
 // 22 tests covering:
-//   channel subset per tier, minimum invariant, custom config,
-//   routeQuery convenience, feature flag disabled, classification details,
-//   edge cases, enforceMinimumChannels, ALL_CHANNELS constant
+// Channel subset per tier, minimum invariant, custom config,
+// RouteQuery convenience, feature flag disabled, classification details,
+// Edge cases, enforceMinimumChannels, ALL_CHANNELS constant
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import {
@@ -225,7 +223,7 @@ describe('T026-03: Minimum 2-Channel Invariant', () => {
     expect(result).toHaveLength(2);
     expect(result).toContain('vector');
     expect(result).toContain('fts');
-    // vector should appear only once
+    // Vector should appear only once
     expect(result.filter(c => c === 'vector')).toHaveLength(1);
   });
 });

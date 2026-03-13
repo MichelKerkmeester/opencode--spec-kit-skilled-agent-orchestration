@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Vector Index Mutations
-// ---------------------------------------------------------------
+// --- 1. VECTOR INDEX MUTATIONS ---
 // Split from vector-index-store.ts — contains ALL mutation functions:
 // Index, update, delete, and status/confidence updates.
 

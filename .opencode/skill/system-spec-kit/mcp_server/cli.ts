@@ -1,18 +1,14 @@
 #!/usr/bin/env node
-// ---------------------------------------------------------------
-// MODULE: Cli
-// ---------------------------------------------------------------
+// --- 1. CLI ---
 // Standalone CLI for bulk database operations, runnable from any
-// directory. Resolves its own modules via __dirname so
-// better-sqlite3 and sqlite-vec load correctly regardless of cwd.
+// Directory. Resolves its own modules via __dirname so
+// Better-sqlite3 and sqlite-vec load correctly regardless of cwd.
 //
 // Usage:
-//   node .opencode/skill/system-spec-kit/mcp_server/dist/cli.js stats
-//   node .opencode/skill/system-spec-kit/mcp_server/dist/cli.js bulk-delete --tier deprecated
-//   node .opencode/skill/system-spec-kit/mcp_server/dist/cli.js reindex [--force] [--eager-warmup]
-//   node .opencode/skill/system-spec-kit/mcp_server/dist/cli.js schema-downgrade --to 15 --confirm
-// ---------------------------------------------------------------
-
+//   Node .opencode/skill/system-spec-kit/mcp_server/dist/cli.js stats
+//   Node .opencode/skill/system-spec-kit/mcp_server/dist/cli.js bulk-delete --tier deprecated
+//   Node .opencode/skill/system-spec-kit/mcp_server/dist/cli.js reindex [--force] [--eager-warmup]
+//   Node .opencode/skill/system-spec-kit/mcp_server/dist/cli.js schema-downgrade --to 15 --confirm
 // Core modules (resolved relative to this file's location)
 import * as vectorIndex from './lib/search/vector-index';
 import * as checkpointsLib from './lib/storage/checkpoints';
@@ -139,7 +135,7 @@ function runStats(): void {
       console.log(`\n  Schema:    v${versionRow.version}`);
     }
   } catch {
-    // schema_version table may not exist
+    // Schema_version table may not exist
     try {
       const legacyVersion = db.prepare("SELECT value FROM config WHERE key = 'schema_version'").get() as { value: string } | undefined;
       if (legacyVersion) {
@@ -162,7 +158,7 @@ function runStats(): void {
       console.log(`\n  Chunked:   ${chunkedParents.count} parent(s), ${childChunks.count} chunk(s)`);
     }
   } catch {
-    // parent_id column may not exist yet
+    // Parent_id column may not exist yet
   }
 
   console.log('');
@@ -190,7 +186,7 @@ function runBulkDelete(): void {
   const dryRun = getFlag('dry-run');
   const skipCheckpoint = getFlag('skip-checkpoint');
 
-  // AI-FIX: F-17 — Validate --older-than is a positive integer.
+  // F-17 — Validate --older-than is a positive integer.
   // Use strict check: entire string must be digits only (parseInt accepts "10abc" as 10).
   if (olderThanDays) {
     if (!/^\d+$/.test(olderThanDays) || parseInt(olderThanDays, 10) <= 0) {
@@ -311,11 +307,11 @@ function runBulkDelete(): void {
       if (vectorIndex.deleteMemory(memory.id)) {
         deletedCount++;
         deletedIds.push(memory.id);
-        // AI-WHY: Record DELETE history only after confirmed deletion.
+        // Record DELETE history only after confirmed deletion.
         try {
           recordHistory(memory.id, 'DELETE', null, null, 'mcp:cli_bulk_delete');
         } catch (_histErr: unknown) {
-          // history recording is best-effort
+          // History recording is best-effort
         }
         try { causalEdges.deleteEdgesForMemory(String(memory.id)); } catch { /* ignore */ }
       }
@@ -397,7 +393,7 @@ async function runReindex(): Promise<void> {
     includeSpecDocs: true,
   });
 
-  // AI-FIX: F-16 — Check result.isError before reporting success
+  // F-16 — Check result.isError before reporting success
   if (result?.isError) {
     const errText = result?.content?.[0]?.text || 'Unknown error';
     console.error(`\n  ERROR: Reindex failed: ${errText}`);

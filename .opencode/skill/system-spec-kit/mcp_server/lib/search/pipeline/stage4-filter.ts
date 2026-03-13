@@ -1,38 +1,36 @@
-// ---------------------------------------------------------------
-// MODULE: Stage4 Filter
-// ---------------------------------------------------------------
-// AI-WHY: Sprint 5 (R6): Final stage of the 4-stage retrieval pipeline.
+// --- 1. STAGE4 FILTER ---
+// Sprint 5 (R6): Final stage of the 4-stage retrieval pipeline.
 //
 // ARCHITECTURAL INVARIANT: Stage 4 MUST NOT modify scores.
 // Any ordering change after Stage 3 is a bug. Score fields on
 // Stage4ReadonlyRow are compile-time readonly; the runtime assertion
-// via captureScoreSnapshot / verifyScoreInvariant provides a second
-// defence-in-depth layer.
+// Via captureScoreSnapshot / verifyScoreInvariant provides a second
+// Defence-in-depth layer.
 //
 // I/O CONTRACT:
-//   Input:  Stage4Input { results: Stage4ReadonlyRow[], config }
-//   Output: Stage4Output { final: Stage4ReadonlyRow[], metadata, annotations }
-//   Key invariants:
+// Input:  Stage4Input { results: Stage4ReadonlyRow[], config }
+// Output: Stage4Output { final: Stage4ReadonlyRow[], metadata, annotations }
+// Key invariants:
 //     - No score field (similarity, score, rrfScore, intentAdjustedScore,
-//       attentionScore, importance_weight) may change between input and output
+// AttentionScore, importance_weight) may change between input and output
 //     - Ordering from Stage 3 is preserved for all surviving rows
 //     - final contains only rows at or above config.minState priority
-//   Side effects:
+// Side effects:
 //     - None — this stage is read-only with respect to the database
 //
 // FILTER APPLICATION ORDER (within filterByMemoryState):
-//   1. memoryState priority filter — rows below minState are removed
-//   2. Per-tier hard limits        — STATE_LIMITS caps applied when applyStateLimits=true
+// 1. memoryState priority filter — rows below minState are removed
+// 2. Per-tier hard limits        — STATE_LIMITS caps applied when applyStateLimits=true
 //
 // Responsibilities (in execution order):
-//   1. Capture score snapshot BEFORE any operations (runtime invariant)
-//   2. Apply memory-state filtering (filterByMemoryState)
-//   3. Apply evidence gap detection via TRM (Z-score confidence check)
-//   4. Add annotation metadata (feature flags, state stats, etc.)
-//   5. Verify score invariant AFTER all operations
+// 1. Capture score snapshot BEFORE any operations (runtime invariant)
+// 2. Apply memory-state filtering (filterByMemoryState)
+// 3. Apply evidence gap detection via TRM (Z-score confidence check)
+// 4. Add annotation metadata (feature flags, state stats, etc.)
+// 5. Verify score invariant AFTER all operations
 //
 // NOT in Stage 4: session dedup — that happens after cache in the
-// main handler to avoid double-counting and cache pollution.
+// Main handler to avoid double-counting and cache pollution.
 
 import type { Stage4Input, Stage4Output, Stage4ReadonlyRow } from './types';
 import { captureScoreSnapshot, verifyScoreInvariant } from './types';
@@ -40,9 +38,7 @@ import { isTRMEnabled, isMultiQueryEnabled } from '../search-flags';
 import { detectEvidenceGap, formatEvidenceGapWarning } from '../evidence-gap-detector';
 import { addTraceEntry } from '@spec-kit/shared/contracts/retrieval-trace';
 
-/* ---------------------------------------------------------------
-   1. CONSTANTS
-   --------------------------------------------------------------- */
+// --- 2. CONSTANTS ---
 
 /**
  * Memory state priority map. Higher number = higher priority.
@@ -85,15 +81,13 @@ function resolveStateForFiltering(row: Stage4ReadonlyRow, fallbackState: string)
     return explicitState;
   }
 
-  // AI-WHY: Missing memoryState is now treated as a safe fallback instead of
-  // AI-WHY: being dropped, because upstream candidates can omit this optional field.
-  // AI-WHY: Using minState-derived fallback prevents false-negative empty results.
+  // Missing memoryState is now treated as a safe fallback instead of
+  // Being dropped, because upstream candidates can omit this optional field.
+  // Using minState-derived fallback prevents false-negative empty results.
   return fallbackState;
 }
 
-/* ---------------------------------------------------------------
-   2. TYPES
-   --------------------------------------------------------------- */
+// --- 3. TYPES ---
 
 /**
  * Per-state tally produced by `filterByMemoryState`.
@@ -242,8 +236,8 @@ export async function executeStage4(input: Stage4Input): Promise<Stage4Output> {
   //
   // This snapshot is the source-of-truth for the "no score changes" assertion.
   // It is taken over the FULL input set BEFORE any operations, so rows that
-  // are subsequently filtered out are still in the before-snapshot. The
-  // verifyScoreInvariant call skips rows not present in the after-set.
+  // Are subsequently filtered out are still in the before-snapshot. The
+  // VerifyScoreInvariant call skips rows not present in the after-set.
   const scoresBefore = captureScoreSnapshot(results);
 
   // -- Step 2: State filtering --
@@ -299,15 +293,15 @@ export async function executeStage4(input: Stage4Input): Promise<Stage4Output> {
 
   // -- Step 5: Verify score invariant (defence-in-depth) --
   //
-  // verifyScoreInvariant checks every row that survived filtering.
+  // VerifyScoreInvariant checks every row that survived filtering.
   // Rows removed by filterByMemoryState are absent from workingResults,
-  // so the function correctly skips them (see types.ts implementation).
+  // So the function correctly skips them (see types.ts implementation).
   // Throws [Stage4Invariant] Error if any score field was mutated.
   verifyScoreInvariant(scoresBefore, workingResults);
 
   const durationMs = Date.now() - stageStart;
 
-  // AI-WHY: -- Trace entry --
+  // -- Trace entry --
   if (config.trace) {
     addTraceEntry(
       config.trace,
@@ -329,8 +323,8 @@ export async function executeStage4(input: Stage4Input): Promise<Stage4Output> {
     final: workingResults,
     metadata: {
       stateFiltered,
-      // AI-WHY: Fix #14 — sessionDeduped removed; dedup is post-cache in main handler
-      // AI-WHY: Fix #15 — constitutionalInjected passed from Stage 1 metadata
+      // Fix #14 — sessionDeduped removed; dedup is post-cache in main handler
+      // Fix #15 — constitutionalInjected passed from Stage 1 metadata
       constitutionalInjected: input.stage1Metadata?.constitutionalInjected ?? 0,
       evidenceGapDetected,
       durationMs,
@@ -339,9 +333,7 @@ export async function executeStage4(input: Stage4Input): Promise<Stage4Output> {
   };
 }
 
-/* ---------------------------------------------------------------
-   6. TEST SURFACE
-   --------------------------------------------------------------- */
+// --- 4. TEST SURFACE ---
 
 /**
  * Exported internals for unit testing.

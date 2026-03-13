@@ -1,10 +1,8 @@
-// ---------------------------------------------------------------
-// MODULE: Test — Intent Weighting
-// ---------------------------------------------------------------
+// --- 1. TEST — INTENT WEIGHTING ---
 // Verifies that intent weights are applied correctly (not double-counted)
-// across the two independent weight systems:
-//   System A: Channel fusion weights (adaptive-fusion.ts INTENT_WEIGHT_PROFILES)
-//   System B: Result scoring weights (intent-classifier.ts INTENT_WEIGHT_ADJUSTMENTS)
+// Across the two independent weight systems:
+// System A: Channel fusion weights (adaptive-fusion.ts INTENT_WEIGHT_PROFILES)
+// System B: Result scoring weights (intent-classifier.ts INTENT_WEIGHT_ADJUSTMENTS)
 
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import * as intentClassifier from '../lib/search/intent-classifier';
@@ -54,9 +52,7 @@ function restoreEnv() {
   }
 }
 
-/* ---------------------------------------------------------------
-   1. INTENT CLASSIFICATION TESTS
-   --------------------------------------------------------------- */
+// --- 2. INTENT CLASSIFICATION TESTS ---
 
 describe('T017-G2: Intent Classification Produces Expected Weights', () => {
   it('classifyIntent returns valid intent for bug-fix queries', () => {
@@ -100,7 +96,7 @@ describe('T017-G2: Intent Classification Produces Expected Weights', () => {
 
   it('System A and System B weight structures are different (not same data)', () => {
     // Verify the two systems have DIFFERENT weight structures,
-    // confirming they serve different purposes
+    // Confirming they serve different purposes
     const intents = intentClassifier.getValidIntents();
     for (const intent of intents) {
       const systemA = INTENT_WEIGHT_PROFILES[intent] as unknown as Record<string, unknown>;
@@ -128,9 +124,7 @@ describe('T017-G2: Intent Classification Produces Expected Weights', () => {
   });
 });
 
-/* ---------------------------------------------------------------
-   2. NO DOUBLE-COUNTING VERIFICATION
-   --------------------------------------------------------------- */
+// --- 3. NO DOUBLE-COUNTING VERIFICATION ---
 
 describe('T017-G2: Weights Not Double-Counted in Pipeline', () => {
   beforeEach(() => {
@@ -173,9 +167,9 @@ describe('T017-G2: Weights Not Double-Counted in Pipeline', () => {
       expect(typeof r.intentAdjustedScore).toBe('number');
     }
 
-    // fix_bug weights favor recency (0.5) over similarity (0.3) and importance (0.2)
+    // Fix_bug weights favor recency (0.5) over similarity (0.3) and importance (0.2)
     // But applyIntentWeights only uses similarity + importance (not recency, since
-    // the lightweight version in intent-classifier.ts doesn't have timestamps)
+    // The lightweight version in intent-classifier.ts doesn't have timestamps)
     const weights = intentClassifier.INTENT_WEIGHT_ADJUSTMENTS['fix_bug'];
     expect(weights.recency).toBe(0.5);
     expect(weights.similarity).toBe(0.3);
@@ -229,8 +223,8 @@ describe('T017-G2: Weights Not Double-Counted in Pipeline', () => {
     const bugResult = hybridAdaptiveFuse(semantic, keyword, 'fix_bug');
     const understandResult = hybridAdaptiveFuse(semantic, keyword, 'understand');
 
-    // fix_bug: balanced channels (0.4/0.4)
-    // understand: semantic-heavy (0.7/0.2)
+    // Fix_bug: balanced channels (0.4/0.4)
+    // Understand: semantic-heavy (0.7/0.2)
     expect(bugResult.weights.semanticWeight).toBeLessThan(understandResult.weights.semanticWeight);
     expect(bugResult.weights.keywordWeight).toBeGreaterThan(understandResult.weights.keywordWeight);
   });
@@ -239,15 +233,13 @@ describe('T017-G2: Weights Not Double-Counted in Pipeline', () => {
     const fixBugWeights = intentClassifier.getIntentWeights('fix_bug');
     const understandWeights = intentClassifier.getIntentWeights('understand');
 
-    // fix_bug favors recency (0.5), understand favors similarity (0.5)
+    // Fix_bug favors recency (0.5), understand favors similarity (0.5)
     expect(fixBugWeights.recency).toBeGreaterThan(understandWeights.recency);
     expect(understandWeights.similarity).toBeGreaterThan(fixBugWeights.similarity);
   });
 });
 
-/* ---------------------------------------------------------------
-   3. PIPELINE ORDERING STABILITY
-   --------------------------------------------------------------- */
+// --- 4. PIPELINE ORDERING STABILITY ---
 
 describe('T017-G2: Pipeline Ordering Stability (No Regression)', () => {
   beforeEach(() => {
@@ -324,9 +316,7 @@ describe('T017-G2: Pipeline Ordering Stability (No Regression)', () => {
   });
 });
 
-/* ---------------------------------------------------------------
-   4. SCORE DISTRIBUTION VERIFICATION
-   --------------------------------------------------------------- */
+// --- 5. SCORE DISTRIBUTION VERIFICATION ---
 
 describe('T017-G2: Score Distribution Characteristics', () => {
   beforeEach(() => {
@@ -361,11 +351,11 @@ describe('T017-G2: Score Distribution Characteristics', () => {
 
     for (const r of applied) {
       const score = r.intentAdjustedScore as number;
-      // similarity is divided by 100 in applyIntentWeights (0-1 normalization)
-      // importance_weight is already 0-1
+      // Similarity is divided by 100 in applyIntentWeights (0-1 normalization)
+      // Importance_weight is already 0-1
       // Weighted sum with weights summing to 1.0 should be 0-1
       // Note: applyIntentWeights in intent-classifier.ts uses sim/100 * w.sim + imp * w.imp
-      // but does NOT include recency (no timestamps available in this code path)
+      // But does NOT include recency (no timestamps available in this code path)
       expect(score).toBeGreaterThanOrEqual(0);
       expect(score).toBeLessThanOrEqual(1.0);
     }
@@ -389,7 +379,7 @@ describe('T017-G2: Score Distribution Characteristics', () => {
     expect(vecItem).toBeDefined();
     expect(kwItem).toBeDefined();
 
-    // understand: semanticWeight=0.7 > keywordWeight=0.2
+    // Understand: semanticWeight=0.7 > keywordWeight=0.2
     // So vector-only result should have higher RRF score
     expect(vecItem!.rrfScore).toBeGreaterThan(kwItem!.rrfScore);
   });
@@ -422,7 +412,7 @@ describe('T017-G2: Score Distribution Characteristics', () => {
 describe('T017-G2: Normalization Method — RRF + Composite Score', () => {
   it('RRF uses rank-based normalization (1/(k+rank)) not value-based', () => {
     // Items with wildly different raw scores should get similar RRF scores
-    // if they share the same rank position
+    // If they share the same rank position
     const listHighScores: RankedList = {
       source: 'vector',
       results: [
@@ -464,10 +454,10 @@ describe('T017-G2: Normalization Method — RRF + Composite Score', () => {
     const applied = intentClassifier.applyIntentWeights(results, 'understand');
     const score = applied[0].intentAdjustedScore as number;
 
-    // understand: similarity=0.5, importance=0.3, recency=0.2
-    // AI-WHY: Fix #5 (017-refinement-phase-6) — recency now included in score.
+    // Understand: similarity=0.5, importance=0.3, recency=0.2
+    // Fix #5 (017-refinement-phase-6) — recency now included in score.
     // Single result with no timestamp defaults recency to 0.5.
-    // score = (100/100) * 0.5 + 1.0 * 0.3 + 0.5 * 0.2 = 0.5 + 0.3 + 0.1 = 0.9
+    // Score = (100/100) * 0.5 + 1.0 * 0.3 + 0.5 * 0.2 = 0.5 + 0.3 + 0.1 = 0.9
     expect(score).toBeCloseTo(0.9, 2);
   });
 

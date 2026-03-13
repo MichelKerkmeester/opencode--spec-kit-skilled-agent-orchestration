@@ -1,8 +1,6 @@
-// ---------------------------------------------------------------
-// MODULE: Test — Folder Discovery Integration
-// ---------------------------------------------------------------
+// --- 1. TEST — FOLDER DISCOVERY INTEGRATION ---
 // Tests: ensureDescriptionCache, isCacheStale, discoverSpecFolder,
-//        getSpecsBasePaths, graceful degradation
+// GetSpecsBasePaths, graceful degradation
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import * as fs from 'node:fs';

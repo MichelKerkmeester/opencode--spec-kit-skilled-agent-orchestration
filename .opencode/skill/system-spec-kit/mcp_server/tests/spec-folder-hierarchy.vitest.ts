@@ -1,8 +1,5 @@
-// ---------------------------------------------------------------
 // TEST: Spec Folder Hierarchy
 // Validates hierarchy-aware retrieval from spec folder paths.
-// ---------------------------------------------------------------
-
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import Database from 'better-sqlite3';
 import {
@@ -16,7 +13,7 @@ import {
   queryHierarchyMemories,
 } from '../lib/search/spec-folder-hierarchy';
 
-// --- TEST DB HELPERS ---
+// --- 1. TEST DB HELPERS ---
 
 function createTestDb(): Database.Database {
   const db = new Database(':memory:');
@@ -46,7 +43,7 @@ function insertMemory(
   `).run(id, specFolder, title, opts?.parentId ?? null, opts?.tier ?? 'normal');
 }
 
-// --- 1. getParentPath ---
+// --- 2. getParentPath ---
 
 describe('getParentPath', () => {
   it('returns parent for 3-segment path', () => {
@@ -83,7 +80,7 @@ describe('getParentPath', () => {
   });
 });
 
-// --- 2. getAncestorPaths ---
+// --- 3. getAncestorPaths ---
 
 describe('getAncestorPaths', () => {
   it('returns full ancestor chain for 3-segment path', () => {
@@ -116,7 +113,7 @@ describe('getAncestorPaths', () => {
   });
 });
 
-// --- 3. buildHierarchyTree ---
+// --- 4. buildHierarchyTree ---
 
 describe('buildHierarchyTree', () => {
   let db: Database.Database;
@@ -227,7 +224,7 @@ describe('buildHierarchyTree', () => {
   });
 });
 
-// --- 4. getSiblingPaths ---
+// --- 5. getSiblingPaths ---
 
 describe('getSiblingPaths', () => {
   let db: Database.Database;
@@ -272,7 +269,7 @@ describe('getSiblingPaths', () => {
   });
 });
 
-// --- 5. getDescendantPaths ---
+// --- 6. getDescendantPaths ---
 
 describe('getDescendantPaths', () => {
   let db: Database.Database;
@@ -311,7 +308,7 @@ describe('getDescendantPaths', () => {
   });
 });
 
-// --- 6. getRelatedFolders ---
+// --- 7. getRelatedFolders ---
 
 describe('getRelatedFolders', () => {
   let db: Database.Database;
@@ -381,7 +378,7 @@ describe('getRelatedFolders', () => {
   });
 });
 
-// --- 7. queryHierarchyMemories (DB integration) ---
+// --- 8. queryHierarchyMemories (DB integration) ---
 
 describe('queryHierarchyMemories', () => {
   let db: Database.Database;
@@ -496,7 +493,7 @@ describe('queryHierarchyMemories', () => {
   });
 });
 
-// --- 8. Cache behavior (invalidations + TTL stale detection) ---
+// --- 9. Cache behavior (invalidations + TTL stale detection) ---
 
 describe('Hierarchy cache behavior', () => {
   let db: Database.Database;
@@ -548,7 +545,7 @@ describe('Hierarchy cache behavior', () => {
   });
 });
 
-// --- 8. EDGE CASES ---
+// --- 10. EDGE CASES ---
 
 describe('Edge Cases', () => {
   it('getParentPath handles path with only slashes', () => {

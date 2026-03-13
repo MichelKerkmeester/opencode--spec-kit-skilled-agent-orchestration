@@ -1,16 +1,21 @@
 {
-  "specFolder": "015-hydra-db-based-features/005-hierarchical-scope-governance",
-  "description": "Phase 5: hierarchical-scope-governance",
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/015-hydra-db-based-features/005-hierarchical-scope-governance",
+  "description": "Feature Specification: 005-hierarchical-scope-governance",
   "keywords": [
-    "phase",
-    "hierarchical-scope-governance"
+    "feature",
+    "specification",
+    "005-hierarchical-scope-governance"
   ],
-  "lastUpdated": "2026-03-13T17:36:27.161Z",
+  "lastUpdated": "2026-03-13T18:17:46.836Z",
   "specId": "005",
   "folderSlug": "hierarchical-scope-governance",
   "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion",
     "015-hydra-db-based-features"
   ],
-  "memorySequence": 0,
-  "memoryNameHistory": []
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "13-03-26_20-56__2026-03-13-verification-pass-confirmed-phase-5.md"
+  ]
 }

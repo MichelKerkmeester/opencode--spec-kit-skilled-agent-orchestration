@@ -1,8 +1,5 @@
-// ---------------------------------------------------------------
 // TEST: Generate Context CLI Authority
 // Ensures main() preserves explicit CLI targets into runWorkflow
-// ---------------------------------------------------------------
-
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';

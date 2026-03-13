@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: MEMORY SAVE INTEGRATION
-// ---------------------------------------------------------------
-
 import { describe, it, expect } from 'vitest';
 
 import * as memorySaveHandler from '../handlers/memory-save';

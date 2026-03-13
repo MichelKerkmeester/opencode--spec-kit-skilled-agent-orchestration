@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Memory Index Alias Conflict Helpers
-// ---------------------------------------------------------------
+// --- 1. MEMORY INDEX ALIAS CONFLICT HELPERS ---
 
 /* ------- 1. DEPENDENCIES ------- */
 
@@ -272,8 +270,8 @@ export function runDivergenceReconcileHooks(
     }))
     .sort((a, b) => a.normalizedPath.localeCompare(b.normalizedPath));
 
-  // AI-WHY: Samples are intentionally capped; when summary says more divergent groups exist,
-  // expand to the full candidate set from the index table.
+  // Samples are intentionally capped; when summary says more divergent groups exist,
+  // Expand to the full candidate set from the index table.
   if (aliasConflicts.divergentHashGroups > reconcileCandidates.length) {
     try {
       const expandedCandidates = listDivergentAliasConflictCandidates({

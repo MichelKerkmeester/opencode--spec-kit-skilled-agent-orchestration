@@ -1,33 +1,31 @@
-// ---------------------------------------------------------------
-// MODULE: Test — Eval the Eval
-// ---------------------------------------------------------------
+// --- 1. TEST — EVAL THE EVAL ---
 // Eval-the-Eval Validation (Hand-Calculate MRR@5 & NDCG@10)
 //
 // PURPOSE: Validate that computeMRR and computeNDCG produce correct
-// results by comparing to hand-calculated expected values.
+// Results by comparing to hand-calculated expected values.
 // Tolerance: ±0.01 on every assertion.
 //
 // This file IS the "eval-the-eval" deliverable. The hand-calculation
-// comments show full working — they are not incidental documentation.
+// Comments show full working — they are not incidental documentation.
 //
 // HAND-CALC REFERENCE — computeMRR implementation (eval-metrics.ts):
-//   1. buildRelevanceMap(groundTruth) → Map<memoryId, relevance>
-//   2. topK(results, k) → sort by rank asc, slice first k
-//   3. Iterate 0-indexed through topK:
-//      if relevance > 0 → return 1 / (i + 1)   [1-based rank]
-//   4. If no relevant found → return 0
+// 1. buildRelevanceMap(groundTruth) → Map<memoryId, relevance>
+// 2. topK(results, k) → sort by rank asc, slice first k
+// 3. Iterate 0-indexed through topK:
+// If relevance > 0 → return 1 / (i + 1)   [1-based rank]
+// 4. If no relevant found → return 0
 //
 // HAND-CALC REFERENCE — computeNDCG implementation (eval-metrics.ts):
-//   DCG  = Σ rel_i / log2(i+2)  for i = 0..k-1  (0-indexed over topK)
-//   IDCG = DCG of ideal ranking (sort all GT relevances desc, take top-k)
-//   NDCG = min(1, DCG / IDCG)
+// DCG  = Σ rel_i / log2(i+2)  for i = 0..k-1  (0-indexed over topK)
+// IDCG = DCG of ideal ranking (sort all GT relevances desc, take top-k)
+// NDCG = min(1, DCG / IDCG)
 //
-//   log2 values used below:
-//     log2(2) = 1.000000
-//     log2(3) = 1.584963
-//     log2(4) = 2.000000
-//     log2(5) = 2.321928
-//     log2(6) = 2.584963
+// Log2 values used below:
+// Log2(2) = 1.000000
+// Log2(3) = 1.584963
+// Log2(4) = 2.000000
+// Log2(5) = 2.321928
+// Log2(6) = 2.584963
 
 import { describe, it, expect } from 'vitest';
 import { computeMRR, computeNDCG } from '../lib/eval/eval-metrics';
@@ -83,23 +81,21 @@ function logAndAssert(
 --------------------------------------------------------------- */
 
 describe('T013: MRR@5 — Hand-Calculated Validation (eval-the-eval)', () => {
-  // -----------------------------------------------------------
   // SCENARIO 1: First relevant result at rank 1
   //
   // Results (by rank):
-  //   rank 1 → mem:10   rank 2 → mem:20   rank 3 → mem:30
-  //   rank 4 → mem:40   rank 5 → mem:50
+  // Rank 1 → mem:10   rank 2 → mem:20   rank 3 → mem:30
+  // Rank 4 → mem:40   rank 5 → mem:50
   //
   // Ground truth relevance:
-  //   mem:10 = 3  (highly relevant)
-  //   All others = 0
+  // Mem:10 = 3  (highly relevant)
+  // All others = 0
   //
   // Hand calculation:
-  //   topK(results, 5) → [mem:10, mem:20, mem:30, mem:40, mem:50]
-  //   i=0: mem:10 → rel=3 > 0 → RETURN 1/(0+1) = 1/1 = 1.000
+  // TopK(results, 5) → [mem:10, mem:20, mem:30, mem:40, mem:50]
+  // I=0: mem:10 → rel=3 > 0 → RETURN 1/(0+1) = 1/1 = 1.000
   //
-  //   MRR@5 = 1.000
-  // -----------------------------------------------------------
+  // MRR@5 = 1.000
   it('T013-MRR-1: First relevant at rank 1 → MRR = 1.000', () => {
     const results = [
       makeResult(10, 1),
@@ -121,25 +117,23 @@ describe('T013: MRR@5 — Hand-Calculated Validation (eval-the-eval)', () => {
     logAndAssert('T013-MRR-1', 'MRR@5', expected, computed);
   });
 
-  // -----------------------------------------------------------
   // SCENARIO 2: First relevant result at rank 3
   //
   // Results (by rank):
-  //   rank 1 → mem:10   rank 2 → mem:20   rank 3 → mem:30
-  //   rank 4 → mem:40   rank 5 → mem:50
+  // Rank 1 → mem:10   rank 2 → mem:20   rank 3 → mem:30
+  // Rank 4 → mem:40   rank 5 → mem:50
   //
   // Ground truth relevance:
-  //   mem:30 = 2  (relevant)
-  //   All others = 0
+  // Mem:30 = 2  (relevant)
+  // All others = 0
   //
   // Hand calculation:
-  //   topK(results, 5) → [mem:10, mem:20, mem:30, mem:40, mem:50]
-  //   i=0: mem:10 → rel=0 → skip
-  //   i=1: mem:20 → rel=0 → skip
-  //   i=2: mem:30 → rel=2 > 0 → RETURN 1/(2+1) = 1/3 ≈ 0.333333
+  // TopK(results, 5) → [mem:10, mem:20, mem:30, mem:40, mem:50]
+  // I=0: mem:10 → rel=0 → skip
+  // I=1: mem:20 → rel=0 → skip
+  // I=2: mem:30 → rel=2 > 0 → RETURN 1/(2+1) = 1/3 ≈ 0.333333
   //
-  //   MRR@5 ≈ 0.333
-  // -----------------------------------------------------------
+  // MRR@5 ≈ 0.333
   it('T013-MRR-2: First relevant at rank 3 → MRR ≈ 0.333', () => {
     const results = [
       makeResult(10, 1),
@@ -161,26 +155,24 @@ describe('T013: MRR@5 — Hand-Calculated Validation (eval-the-eval)', () => {
     logAndAssert('T013-MRR-2', 'MRR@5', expected, computed);
   });
 
-  // -----------------------------------------------------------
   // SCENARIO 3: Multiple relevant results, first relevant at rank 2
   //
   // Results (by rank):
-  //   rank 1 → mem:10   rank 2 → mem:20   rank 3 → mem:30
-  //   rank 4 → mem:40   rank 5 → mem:50
+  // Rank 1 → mem:10   rank 2 → mem:20   rank 3 → mem:30
+  // Rank 4 → mem:40   rank 5 → mem:50
   //
   // Ground truth relevance:
-  //   mem:20 = 3  (highly relevant — at rank 2)
-  //   mem:40 = 2  (relevant — at rank 4)
-  //   All others = 0
+  // Mem:20 = 3  (highly relevant — at rank 2)
+  // Mem:40 = 2  (relevant — at rank 4)
+  // All others = 0
   //
   // Hand calculation (MRR uses FIRST relevant rank only):
-  //   topK(results, 5) → [mem:10, mem:20, mem:30, mem:40, mem:50]
-  //   i=0: mem:10 → rel=0 → skip
-  //   i=1: mem:20 → rel=3 > 0 → RETURN 1/(1+1) = 1/2 = 0.500
-  //   (mem:40 at i=3 is never reached — function returns early)
+  // TopK(results, 5) → [mem:10, mem:20, mem:30, mem:40, mem:50]
+  // I=0: mem:10 → rel=0 → skip
+  // I=1: mem:20 → rel=3 > 0 → RETURN 1/(1+1) = 1/2 = 0.500
+  // (mem:40 at i=3 is never reached — function returns early)
   //
-  //   MRR@5 = 0.500
-  // -----------------------------------------------------------
+  // MRR@5 = 0.500
   it('T013-MRR-3: Multiple relevant, first at rank 2 → MRR = 0.500', () => {
     const results = [
       makeResult(10, 1),
@@ -202,28 +194,26 @@ describe('T013: MRR@5 — Hand-Calculated Validation (eval-the-eval)', () => {
     logAndAssert('T013-MRR-3', 'MRR@5', expected, computed);
   });
 
-  // -----------------------------------------------------------
   // SCENARIO 4: No relevant result in top 5
   //
   // Results (by rank):
-  //   rank 1 → mem:10   rank 2 → mem:20   rank 3 → mem:30
-  //   rank 4 → mem:40   rank 5 → mem:50
+  // Rank 1 → mem:10   rank 2 → mem:20   rank 3 → mem:30
+  // Rank 4 → mem:40   rank 5 → mem:50
   //
   // Ground truth relevance:
-  //   mem:99 = 3  (highly relevant, but NOT in results)
-  //   All result IDs have relevance 0 (not in GT → treated as 0)
+  // Mem:99 = 3  (highly relevant, but NOT in results)
+  // All result IDs have relevance 0 (not in GT → treated as 0)
   //
   // Hand calculation:
-  //   topK(results, 5) → [mem:10, mem:20, mem:30, mem:40, mem:50]
-  //   i=0: mem:10 → relevanceMap.get(10) = undefined → ?? 0 → skip
-  //   i=1: mem:20 → relevanceMap.get(20) = undefined → ?? 0 → skip
-  //   i=2: mem:30 → relevanceMap.get(30) = undefined → ?? 0 → skip
-  //   i=3: mem:40 → relevanceMap.get(40) = undefined → ?? 0 → skip
-  //   i=4: mem:50 → relevanceMap.get(50) = undefined → ?? 0 → skip
-  //   Loop ends → RETURN 0
+  // TopK(results, 5) → [mem:10, mem:20, mem:30, mem:40, mem:50]
+  // I=0: mem:10 → relevanceMap.get(10) = undefined → ?? 0 → skip
+  // I=1: mem:20 → relevanceMap.get(20) = undefined → ?? 0 → skip
+  // I=2: mem:30 → relevanceMap.get(30) = undefined → ?? 0 → skip
+  // I=3: mem:40 → relevanceMap.get(40) = undefined → ?? 0 → skip
+  // I=4: mem:50 → relevanceMap.get(50) = undefined → ?? 0 → skip
+  // Loop ends → RETURN 0
   //
-  //   MRR@5 = 0.000
-  // -----------------------------------------------------------
+  // MRR@5 = 0.000
   it('T013-MRR-4: No relevant in top 5 → MRR = 0.000', () => {
     const results = [
       makeResult(10, 1),
@@ -241,27 +231,25 @@ describe('T013: MRR@5 — Hand-Calculated Validation (eval-the-eval)', () => {
     logAndAssert('T013-MRR-4', 'MRR@5', expected, computed);
   });
 
-  // -----------------------------------------------------------
   // SCENARIO 5: Relevant result at rank 5 (boundary case)
   //
   // Results (by rank):
-  //   rank 1 → mem:10   rank 2 → mem:20   rank 3 → mem:30
-  //   rank 4 → mem:40   rank 5 → mem:50
+  // Rank 1 → mem:10   rank 2 → mem:20   rank 3 → mem:30
+  // Rank 4 → mem:40   rank 5 → mem:50
   //
   // Ground truth relevance:
-  //   mem:50 = 1  (partially relevant — at rank 5)
-  //   All others = 0
+  // Mem:50 = 1  (partially relevant — at rank 5)
+  // All others = 0
   //
   // Hand calculation:
-  //   topK(results, 5) → [mem:10, mem:20, mem:30, mem:40, mem:50]
-  //   i=0: mem:10 → rel=0 → skip
-  //   i=1: mem:20 → rel=0 → skip
-  //   i=2: mem:30 → rel=0 → skip
-  //   i=3: mem:40 → rel=0 → skip
-  //   i=4: mem:50 → rel=1 > 0 → RETURN 1/(4+1) = 1/5 = 0.200
+  // TopK(results, 5) → [mem:10, mem:20, mem:30, mem:40, mem:50]
+  // I=0: mem:10 → rel=0 → skip
+  // I=1: mem:20 → rel=0 → skip
+  // I=2: mem:30 → rel=0 → skip
+  // I=3: mem:40 → rel=0 → skip
+  // I=4: mem:50 → rel=1 > 0 → RETURN 1/(4+1) = 1/5 = 0.200
   //
-  //   MRR@5 = 0.200
-  // -----------------------------------------------------------
+  // MRR@5 = 0.200
   it('T013-MRR-5: Relevant at rank 5 (boundary) → MRR = 0.200', () => {
     const results = [
       makeResult(10, 1),
@@ -289,34 +277,32 @@ describe('T013: MRR@5 — Hand-Calculated Validation (eval-the-eval)', () => {
 --------------------------------------------------------------- */
 
 describe('T013: NDCG@10 — Hand-Calculated Validation (eval-the-eval)', () => {
-  // -----------------------------------------------------------
   // NDCG SCENARIO A: Perfect ranking (DCG = IDCG → NDCG = 1.0)
   //
   // Results (by rank):
-  //   rank 1 → mem:1 (rel=3)
-  //   rank 2 → mem:2 (rel=2)
-  //   rank 3 → mem:3 (rel=1)
+  // Rank 1 → mem:1 (rel=3)
+  // Rank 2 → mem:2 (rel=2)
+  // Rank 3 → mem:3 (rel=1)
   //
   // Ground truth: mem:1=3, mem:2=2, mem:3=1
   //
   // Hand calculation of DCG (0-indexed):
-  //   i=0 (rank 1): rel=3, divisor=log2(0+2)=log2(2)=1.000000
-  //                 contribution = 3 / 1.000000 = 3.000000
-  //   i=1 (rank 2): rel=2, divisor=log2(1+2)=log2(3)=1.584963
-  //                 contribution = 2 / 1.584963 = 1.261860
-  //   i=2 (rank 3): rel=1, divisor=log2(2+2)=log2(4)=2.000000
-  //                 contribution = 1 / 2.000000 = 0.500000
-  //   DCG = 3.000000 + 1.261860 + 0.500000 = 4.761860
+  // I=0 (rank 1): rel=3, divisor=log2(0+2)=log2(2)=1.000000
+  // Contribution = 3 / 1.000000 = 3.000000
+  // I=1 (rank 2): rel=2, divisor=log2(1+2)=log2(3)=1.584963
+  // Contribution = 2 / 1.584963 = 1.261860
+  // I=2 (rank 3): rel=1, divisor=log2(2+2)=log2(4)=2.000000
+  // Contribution = 1 / 2.000000 = 0.500000
+  // DCG = 3.000000 + 1.261860 + 0.500000 = 4.761860
   //
   // Hand calculation of IDCG:
-  //   Ideal ordering (sort GT relevances desc): [3, 2, 1]
-  //   i=0: 3 / log2(2) = 3 / 1.000000 = 3.000000
-  //   i=1: 2 / log2(3) = 2 / 1.584963 = 1.261860
-  //   i=2: 1 / log2(4) = 1 / 2.000000 = 0.500000
-  //   IDCG = 4.761860
+  // Ideal ordering (sort GT relevances desc): [3, 2, 1]
+  // I=0: 3 / log2(2) = 3 / 1.000000 = 3.000000
+  // I=1: 2 / log2(3) = 2 / 1.584963 = 1.261860
+  // I=2: 1 / log2(4) = 1 / 2.000000 = 0.500000
+  // IDCG = 4.761860
   //
   // NDCG = min(1, DCG / IDCG) = min(1, 4.761860 / 4.761860) = min(1, 1.0) = 1.000
-  // -----------------------------------------------------------
   it('T013-NDCG-A: Perfect ranking (3 items, already ideal) → NDCG = 1.000', () => {
     const results = [
       makeResult(1, 1),
@@ -338,37 +324,35 @@ describe('T013: NDCG@10 — Hand-Calculated Validation (eval-the-eval)', () => {
     logAndAssert('T013-NDCG-A', 'NDCG@10', expected, computed);
   });
 
-  // -----------------------------------------------------------
   // NDCG SCENARIO B: Imperfect ranking (worst-first ordering)
   //
   // Results (by rank):
-  //   rank 1 → mem:3 (GT rel=1)   ← worst placed first
-  //   rank 2 → mem:2 (GT rel=2)
-  //   rank 3 → mem:1 (GT rel=3)   ← best placed last
+  // Rank 1 → mem:3 (GT rel=1)   ← worst placed first
+  // Rank 2 → mem:2 (GT rel=2)
+  // Rank 3 → mem:1 (GT rel=3)   ← best placed last
   //
   // Ground truth: mem:1=3, mem:2=2, mem:3=1
   //
   // Hand calculation of DCG (actual retrieval order):
-  //   i=0 (rank 1): mem:3 rel=1, divisor=log2(2)=1.000000
-  //                 contribution = 1 / 1.000000 = 1.000000
-  //   i=1 (rank 2): mem:2 rel=2, divisor=log2(3)=1.584963
-  //                 contribution = 2 / 1.584963 = 1.261860
-  //   i=2 (rank 3): mem:1 rel=3, divisor=log2(4)=2.000000
-  //                 contribution = 3 / 2.000000 = 1.500000
-  //   DCG = 1.000000 + 1.261860 + 1.500000 = 3.761860
+  // I=0 (rank 1): mem:3 rel=1, divisor=log2(2)=1.000000
+  // Contribution = 1 / 1.000000 = 1.000000
+  // I=1 (rank 2): mem:2 rel=2, divisor=log2(3)=1.584963
+  // Contribution = 2 / 1.584963 = 1.261860
+  // I=2 (rank 3): mem:1 rel=3, divisor=log2(4)=2.000000
+  // Contribution = 3 / 2.000000 = 1.500000
+  // DCG = 1.000000 + 1.261860 + 1.500000 = 3.761860
   //
   // Hand calculation of IDCG:
-  //   Ideal ordering (sort GT relevances desc): [3, 2, 1]
-  //   i=0: 3 / log2(2) = 3.000000
-  //   i=1: 2 / log2(3) = 1.261860
-  //   i=2: 1 / log2(4) = 0.500000
-  //   IDCG = 4.761860
+  // Ideal ordering (sort GT relevances desc): [3, 2, 1]
+  // I=0: 3 / log2(2) = 3.000000
+  // I=1: 2 / log2(3) = 1.261860
+  // I=2: 1 / log2(4) = 0.500000
+  // IDCG = 4.761860
   //
   // NDCG = min(1, DCG / IDCG) = min(1, 3.761860 / 4.761860) = 0.789990
   //
   // Simplified check: 3.761860 / 4.761860 ≈ 0.790
   // Verify: 0.790 × 4.761860 = 3.761869 ≈ 3.761860 ✓
-  // -----------------------------------------------------------
   it('T013-NDCG-B: Worst-first ranking (3 items reversed) → NDCG ≈ 0.790', () => {
     const results = [
       makeResult(3, 1), // rel=1 placed first (worst)
@@ -399,7 +383,7 @@ describe('T013: Discrepancy Log Summary', () => {
   it('T013-SUMMARY: prints discrepancy table and asserts zero failures', () => {
     // This test runs after all scenario tests have populated discrepancyLog.
     // In vitest, describe blocks run sequentially within a file, so by the
-    // time this executes, the log should have all 7 entries (5 MRR + 2 NDCG).
+    // Time this executes, the log should have all 7 entries (5 MRR + 2 NDCG).
     //
     // If individual scenario tests above failed, this summary is informational.
     // If all passed, this confirms zero discrepancies.

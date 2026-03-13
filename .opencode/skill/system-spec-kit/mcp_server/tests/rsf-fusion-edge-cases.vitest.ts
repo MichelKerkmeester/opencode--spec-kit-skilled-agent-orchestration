@@ -1,10 +1,7 @@
-// ---------------------------------------------------------------
 // TEST: RSF Fusion Edge Cases (A3-P2-5)
 // Tests edge-case behavior for fuseResultsRsfCrossVariant()
-// including zero variants, single variant, extreme scores,
-// and duplicate IDs across variants.
-// ---------------------------------------------------------------
-
+// Including zero variants, single variant, extreme scores,
+// And duplicate IDs across variants.
 import { describe, it, expect } from 'vitest';
 import {
   fuseResultsRsfCrossVariant,
@@ -116,7 +113,7 @@ describe('RSF Cross-Variant Fusion – Extreme Scores', () => {
   it('all scores clamped to [0, 1] even with cross-variant bonus', () => {
     // Two variants both containing the same item with score=1
     // Cross-variant bonus of +0.10 would push avgScore=1.0 to 1.10
-    // but clamp01 should cap it at 1.0
+    // But clamp01 should cap it at 1.0
     const results = fuseResultsRsfCrossVariant([
       [{ source: 'vector', results: [{ id: 'hot', score: 1.0 }] }],
       [{ source: 'vector', results: [{ id: 'hot', score: 1.0 }] }],
@@ -132,8 +129,8 @@ describe('RSF Cross-Variant Fusion – Extreme Scores', () => {
 describe('RSF Cross-Variant Fusion – Duplicate IDs Across Variants', () => {
   it('merges duplicate IDs across two variants and applies cross-variant bonus', () => {
     // The target item ('shared') must NOT be the top scorer in its source.
-    // min-max normalization always maps the max to 1.0, which makes the
-    // cross-variant bonus invisible after clamp01. Using 3 items where
+    // Min-max normalization always maps the max to 1.0, which makes the
+    // Cross-variant bonus invisible after clamp01. Using 3 items where
     // 'shared' is in the middle produces a normalized score < 1.0.
     const mkVariantList = (src: string) => [{ source: src, results: [
       { id: 'top_' + src, score: 1.0 },

@@ -1,12 +1,10 @@
 "use strict";
-// ---------------------------------------------------------------
 // TEST: Tree Thinning — Spec Folder Consolidation
 // Sprint 5 PageIndex — pre-pipeline token reduction
 //
 // Run with: vitest run tests/tree-thinning.vitest.ts
 // (requires vitest configured in this package, or run from mcp_server
-//  after adjusting import path)
-// ---------------------------------------------------------------
+//  After adjusting import path)
 Object.defineProperty(exports, "__esModule", { value: true });
 const vitest_1 = require("vitest");
 const tree_thinning_1 = require("../core/tree-thinning");
@@ -298,7 +296,7 @@ function memFile(name, tokens) {
     });
     (0, vitest_1.it)('T9-E: Stage 1 inputs (kept files) are identical to original content — no transformation', () => {
         // Simulate what Stage 1 of the retrieval pipeline would receive:
-        // only "keep" files should be passed through, and their content must be pristine.
+        // Only "keep" files should be passed through, and their content must be pristine.
         const files = [
             specFile('big-a.md', 1000),
             specFile('big-b.md', 2000),

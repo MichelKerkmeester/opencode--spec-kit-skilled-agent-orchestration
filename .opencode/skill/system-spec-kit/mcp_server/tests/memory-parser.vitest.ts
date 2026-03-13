@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Memory Parser Tests
-// ---------------------------------------------------------------
+// --- 1. MEMORY PARSER TESTS ---
 
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import * as fs from 'fs';

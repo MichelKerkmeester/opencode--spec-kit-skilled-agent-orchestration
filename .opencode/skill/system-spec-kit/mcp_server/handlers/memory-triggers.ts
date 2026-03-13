@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Memory Triggers
-// ---------------------------------------------------------------
+// --- 1. MEMORY TRIGGERS ---
 
 // Shared packages
 import { validateFilePath } from '@spec-kit/shared/utils/path-security';
@@ -30,7 +28,7 @@ import { createMCPSuccessResponse, createMCPEmptyResponse, createMCPErrorRespons
 // T004: Consumption instrumentation
 import { initConsumptionLog, logConsumptionEvent } from '../lib/telemetry/consumption-logger';
 
-// AI-TRACE: T005: Eval logger — fail-safe, no-op when SPECKIT_EVAL_LOGGING !== "true"
+// Eval logger — fail-safe, no-op when SPECKIT_EVAL_LOGGING !== "true"
 import { logSearchQuery, logFinalResult } from '../lib/eval/eval-logger';
 
 // Shared handler types
@@ -152,7 +150,7 @@ async function getTieredContent(
     const canonicalPath = validateTieredFilePath(fs.realpathSync(validatedPath));
     const content = fs.readFileSync(canonicalPath, 'utf-8');
     if (tier === 'HOT') return content;
-    // AI-WHY: WARM tier returns truncated summary
+    // WARM tier returns truncated summary
     return content.substring(0, 150) + (content.length > 150 ? '...' : '');
   } catch (_error: unknown) {
     console.warn('[memory-triggers] getTieredContent failed', {
@@ -201,7 +199,7 @@ async function handleMemoryMatchTriggers(args: TriggerArgs): Promise<MCPResponse
 
   const startTime = Date.now();
 
-  // AI-TRACE: T005: Eval logger — capture trigger query at entry (fail-safe)
+  // Eval logger — capture trigger query at entry (fail-safe)
   let _evalQueryId = 0;
   let _evalRunId = 0;
   try {
@@ -335,7 +333,7 @@ async function handleMemoryMatchTriggers(args: TriggerArgs): Promise<MCPResponse
         effectiveRetrievability *= turnDecayFactor;
 
         if (wmEntry) {
-          // AI-WHY: Fix #30 (017-refinement-phase-6) — WM already applies its own decay.
+          // Fix #30 (017-refinement-phase-6) — WM already applies its own decay.
           // Multiplying by turnDecayFactor again causes double-decay.
           effectiveRetrievability = Math.min(effectiveRetrievability, wmEntry.attentionScore);
         }
@@ -348,8 +346,8 @@ async function handleMemoryMatchTriggers(args: TriggerArgs): Promise<MCPResponse
         tier = tierClassifier.classifyState(attentionScore);
       }
 
-      // AI-WHY: Clamp to [0,1] — retrievability * decay or wmEntry scores
-      // can drift outside the valid range due to floating-point arithmetic.
+      // Clamp to [0,1] — retrievability * decay or wmEntry scores
+      // Can drift outside the valid range due to floating-point arithmetic.
       attentionScore = Math.max(0, Math.min(1, attentionScore));
 
       return {
@@ -443,7 +441,7 @@ async function handleMemoryMatchTriggers(args: TriggerArgs): Promise<MCPResponse
     }
   });
 
-  // AI-TRACE: T004: Consumption instrumentation — log triggers event (fail-safe, never throws)
+  // Consumption instrumentation — log triggers event (fail-safe, never throws)
   try {
     const db = attentionDecay.getDb();
     if (db) {
@@ -460,7 +458,7 @@ async function handleMemoryMatchTriggers(args: TriggerArgs): Promise<MCPResponse
     }
   } catch (_error: unknown) { /* instrumentation must never cause triggers handler to fail */ }
 
-  // AI-TRACE: T005: Eval logger — capture final trigger results at exit (fail-safe)
+  // Eval logger — capture final trigger results at exit (fail-safe)
   const triggerMemoryIds = formattedResults.map(r => r.memoryId).filter(id => typeof id === 'number');
   logFinalTriggerEval(triggerMemoryIds, latencyMs);
 
@@ -475,7 +473,7 @@ export {
   handleMemoryMatchTriggers,
 };
 
-// AI-WHY: Backward-compatible aliases (snake_case)
+// Backward-compatible aliases (snake_case)
 const handle_memory_match_triggers = handleMemoryMatchTriggers;
 
 export {

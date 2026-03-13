@@ -1,9 +1,6 @@
-// ---------------------------------------------------------------
-// MODULE: ASCII Boxes
-// ---------------------------------------------------------------
+// --- 1. ASCII BOXES ---
 
-// 1. TYPES
-
+// --- 2. TYPES ---
 /** Box drawing character set */
 export interface BoxCharacters {
   readonly ROUND_TOP_LEFT: string;
@@ -56,9 +53,7 @@ export interface EvidenceRecord {
   [key: string]: unknown;
 }
 
-// ---------------------------------------------------------------
-// 2. BOX DRAWING CHARACTERS
-// ---------------------------------------------------------------
+// --- 3. BOX DRAWING CHARACTERS ---
 
 const BOX: BoxCharacters = {
   ROUND_TOP_LEFT: '\u256D', ROUND_TOP_RIGHT: '\u256E',
@@ -71,9 +66,7 @@ const BOX: BoxCharacters = {
   CHOSEN: '\u2705', WARNING: '\u26A0\uFE0F', CLIPBOARD: '\uD83D\uDCCB',
 };
 
-// ---------------------------------------------------------------
-// 3. TEXT UTILITIES
-// ---------------------------------------------------------------
+// --- 4. TEXT UTILITIES ---
 
 function padText(text: string, width: number, align: TextAlign = 'left'): string {
   const cleaned: string = text.substring(0, width);
@@ -85,9 +78,7 @@ function padText(text: string, width: number, align: TextAlign = 'left'): string
   return cleaned.padEnd(width);
 }
 
-// ---------------------------------------------------------------
-// 4. DECISION TREE VISUALIZATION HELPERS
-// ---------------------------------------------------------------
+// --- 5. DECISION TREE VISUALIZATION HELPERS ---
 
 function formatDecisionHeader(title: string, context: string, confidence: number, timestamp: string): string {
   const width: number = 48;
@@ -201,9 +192,7 @@ function formatFollowUpBox(followup: Array<FollowUpRecord | string>): string {
   return box;
 }
 
-// ---------------------------------------------------------------
-// 5. EXPORTS
-// ---------------------------------------------------------------
+// --- 6. EXPORTS ---
 
 export {
   BOX,

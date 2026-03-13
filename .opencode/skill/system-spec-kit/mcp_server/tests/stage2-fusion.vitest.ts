@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: Stage 2 Fusion — Feedback Signal Weighting
-// ---------------------------------------------------------------
-
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 const mockRequireDb = vi.fn();

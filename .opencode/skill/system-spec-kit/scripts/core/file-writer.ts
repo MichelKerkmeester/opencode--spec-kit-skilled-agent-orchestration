@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: File Writer
-// ---------------------------------------------------------------
+// --- 1. FILE WRITER ---
 // Atomic file writing with validation and rollback on failure
 
 import * as fs from 'fs/promises';
@@ -18,9 +16,9 @@ function verifyResolvedWriteTarget(
   filename: string
 ): void {
   const realContextDir = fsSync.realpathSync(resolvedContextDir);
-  // AI-FIX: F-18 — realpathSync(filePath) throws ENOENT for new files that
-  // don't exist yet. Resolve the parent directory instead (which must exist)
-  // and append the filename to construct the expected real path.
+  // F-18 — realpathSync(filePath) throws ENOENT for new files that
+  // Don't exist yet. Resolve the parent directory instead (which must exist)
+  // And append the filename to construct the expected real path.
   const parentDir = path.dirname(filePath);
   const basename = path.basename(filePath);
   let realFilePath: string;
@@ -74,8 +72,8 @@ function validateContentSubstance(content: string, filename: string): void {
 }
 
 // RC-6: Return duplicate filename instead of throwing, so callers can skip
-// idempotently. Previously, throw-on-duplicate was treated as a batch error
-// that triggered rollback, causing 5 separate runs to create 5 files.
+// Idempotently. Previously, throw-on-duplicate was treated as a batch error
+// That triggered rollback, causing 5 separate runs to create 5 files.
 async function checkForDuplicateContent(
   contextDir: string, content: string, filename: string
 ): Promise<string | null> {
@@ -151,7 +149,7 @@ export async function writeFilesAtomically(
       );
       try {
         await tempFd.writeFile(content, 'utf-8');
-        // AI-WHY: fsync before rename ensures content reaches disk (F9 fix)
+        // Fsync before rename ensures content reaches disk (F9 fix)
         await tempFd.sync();
       } finally {
         await tempFd.close();

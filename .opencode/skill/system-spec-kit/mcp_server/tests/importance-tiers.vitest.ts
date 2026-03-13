@@ -3,13 +3,10 @@ import * as mod from '../lib/scoring/importance-tiers';
 
 type ImportanceTier = keyof typeof mod.IMPORTANCE_TIERS;
 
-// ---------------------------------------------------------------
 // TEST: IMPORTANCE TIERS
 // Validates tier recognition, ordering, boost values, normalization,
-// comparison, and decay/search behavior per tier.
+// Comparison, and decay/search behavior per tier.
 // Task ID: T504
-// ---------------------------------------------------------------
-
 describe('Importance Tiers (T504)', () => {
 
   // 4.1 TIER RECOGNITION (T504-01)

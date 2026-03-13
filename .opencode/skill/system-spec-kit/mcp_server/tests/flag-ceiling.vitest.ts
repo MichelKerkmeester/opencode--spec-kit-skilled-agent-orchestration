@@ -1,11 +1,7 @@
-// ---------------------------------------------------------------
-// MODULE: Feature Flag Ceiling Test (A10-P2-2)
-// ---------------------------------------------------------------
+// --- 1. FEATURE FLAG CEILING TEST (A10-P2-2) ---
 // TEST: Validates system stability when 6+ SPECKIT_* flags are
-//       activated simultaneously. Tests for flag interaction issues,
-//       initialization crashes, and mutual-exclusion conflicts.
-// ---------------------------------------------------------------
-
+// Activated simultaneously. Tests for flag interaction issues,
+// Initialization crashes, and mutual-exclusion conflicts.
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import {
   isMMREnabled,
@@ -161,8 +157,8 @@ describe('Feature Flag Ceiling Test (A10-P2-2)', () => {
       process.env[flag] = 'false';
     }
     for (const { flag, checker } of FLAG_CHECKERS) {
-      // AI-WHY: isPipelineV2Enabled() is deprecated and always returns true
-      // regardless of env var (legacy V1 removed in 017-refinement-phase-6).
+      // IsPipelineV2Enabled() is deprecated and always returns true
+      // Regardless of env var (legacy V1 removed in 017-refinement-phase-6).
       const expected = flag === 'SPECKIT_PIPELINE_V2' ? true : false;
       expect(checker()).toBe(expected);
     }
@@ -183,7 +179,7 @@ describe('Feature Flag Ceiling Test (A10-P2-2)', () => {
 
     for (let i = 0; i < FLAG_CHECKERS.length; i++) {
       const { flag, checker } = FLAG_CHECKERS[i];
-      // AI-WHY: isPipelineV2Enabled() always returns true (deprecated).
+      // IsPipelineV2Enabled() always returns true (deprecated).
       const expected = flag === 'SPECKIT_PIPELINE_V2' ? true : i < half;
       expect(checker(), `${flag} expected=${expected}`).toBe(expected);
     }
@@ -202,12 +198,9 @@ describe('Feature Flag Ceiling Test (A10-P2-2)', () => {
   });
 });
 
-// ---------------------------------------------------------------
 // SELF-GOVERNANCE FOOTER (TCB 9+)
-// ---------------------------------------------------------------
 // Agent: Opus-J | TCB: 9+
 // Scope: Feature flag ceiling test (A10-P2-2)
 // Mutation surface: tests/flag-ceiling.vitest.ts (new file)
 // Verified: All 20 SPECKIT_* flags from search-flags.ts covered
 // No production code modified by this test file
-// ---------------------------------------------------------------

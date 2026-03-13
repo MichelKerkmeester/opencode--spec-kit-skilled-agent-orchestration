@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Search Types
-// ---------------------------------------------------------------
+// --- 1. SEARCH TYPES ---
 
 /**
  * Function signature for graph-based lexical search helpers.

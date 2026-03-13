@@ -1,10 +1,6 @@
-// ---------------------------------------------------------------
-// MODULE: Mutation Ledger
-// ---------------------------------------------------------------
+// --- 1. MUTATION LEDGER ---
 // Append-only audit trail for all memory mutations
 // SQLite triggers enforce immutability (no UPDATE/DELETE on ledger)
-// ---------------------------------------------------------------
-
 import { createHash } from 'crypto';
 import type Database from 'better-sqlite3';
 import { runInTransaction } from './transaction-manager';
@@ -199,18 +195,18 @@ function getEntries(db: Database.Database, opts: GetEntriesOptions = {}): Mutati
   }
 
   const where = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
-  // AI-WHY: String interpolation in LIMIT/OFFSET is safe here because both values
-  // are coerced to non-negative integers via Math.floor + Math.max before use —
+  // String interpolation in LIMIT/OFFSET is safe here because both values
+  // Are coerced to non-negative integers via Math.floor + Math.max before use —
   // Math.floor guarantees no decimal component, Math.max(1,…)/Math.max(0,…)
-  // guarantees no negative value. No user-supplied string reaches the SQL directly.
+  // Guarantees no negative value. No user-supplied string reaches the SQL directly.
   const limit = opts.limit ? `LIMIT ${Math.max(1, Math.floor(opts.limit))}` : '';
-  // AI-FIX: F-13 — OFFSET without LIMIT is invalid SQLite syntax.
+  // F-13 — OFFSET without LIMIT is invalid SQLite syntax.
   // When offset is set but limit is not, emit LIMIT -1 (all rows) before OFFSET.
   const offset = opts.offset ? `OFFSET ${Math.max(0, Math.floor(opts.offset))}` : '';
   const effectiveLimit = !limit && offset ? 'LIMIT -1' : limit;
 
-  // AI-SAFETY: String interpolation constructs IN(?,?,?) placeholder list only —
-  // all user values are parameterized. Accepted exception per audit H-08.
+  // String interpolation constructs IN(?,?,?) placeholder list only —
+  // All user values are parameterized. Accepted exception per audit H-08.
   const sql = `SELECT * FROM mutation_ledger ${where} ORDER BY id ASC ${effectiveLimit} ${offset}`;
   return db.prepare(sql).all(...params) as MutationLedgerEntry[];
 }
@@ -293,7 +289,7 @@ function getDivergenceReconcileAttemptCount(db: Database.Database, normalizedPat
   }
 
   // Use COUNT(*) with json_extract to filter by path in SQL rather than scanning
-  // all decision_meta rows in application code (O(1) vs O(n) full-table scan).
+  // All decision_meta rows in application code (O(1) vs O(n) full-table scan).
   const row = db.prepare(`
     SELECT COUNT(*) AS cnt
     FROM mutation_ledger
@@ -311,7 +307,7 @@ function hasDivergenceEscalationEntry(db: Database.Database, normalizedPath: str
     return false;
   }
 
-  // AI-WHY: Use COUNT(*) with json_extract to avoid O(n) full-table scan in application code.
+  // Use COUNT(*) with json_extract to avoid O(n) full-table scan in application code.
   const row = db.prepare(`
     SELECT COUNT(*) AS cnt
     FROM mutation_ledger

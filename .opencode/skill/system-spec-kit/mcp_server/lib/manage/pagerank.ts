@@ -1,14 +1,8 @@
-// ---------------------------------------------------------------
-// MODULE: Pagerank
-// ---------------------------------------------------------------
+// --- 1. PAGERANK ---
 // Iterative PageRank algorithm for memory graph authority scoring.
 // Computes convergence-based rank scores for weighted node retrieval.
 // Reference: C138-P4 — graph-based importance scoring for memory nodes.
-// ---------------------------------------------------------------
-
-// ---------------------------------------------------------------------------
-// 1. TYPES
-// ---------------------------------------------------------------------------
+// --- 2. TYPES ---
 
 /** Adjacency list node: each node has a unique numeric id and out-edges. */
 export interface GraphNode {
@@ -26,9 +20,7 @@ export interface PageRankResult {
   converged: boolean;
 }
 
-// ---------------------------------------------------------------------------
-// 2. CONSTANTS
-// ---------------------------------------------------------------------------
+// --- 3. CONSTANTS ---
 
 /** Standard PageRank damping factor — probability of following an outbound link. */
 const DAMPING_FACTOR = 0.85;
@@ -39,9 +31,7 @@ const DEFAULT_ITERATIONS = 10;
 /** L∞ delta threshold below which scores are considered converged. */
 const CONVERGENCE_THRESHOLD = 1e-6;
 
-// ---------------------------------------------------------------------------
-// 3. ALGORITHM
-// ---------------------------------------------------------------------------
+// --- 4. ALGORITHM ---
 
 /**
  * Compute iterative PageRank scores for a directed graph.
@@ -65,7 +55,7 @@ export function computePageRank(
 ): PageRankResult {
   const nodeCount = nodes.length;
 
-  // AI-GUARD: Guard: empty graph converges immediately with no scores.
+  // Guard: empty graph converges immediately with no scores.
   if (nodeCount === 0) {
     return { scores: new Map(), iterations: 0, converged: true };
   }
@@ -82,13 +72,13 @@ export function computePageRank(
     scores.set(node.id, 1 / nodeCount);
   }
 
-  // AI-WHY: Pre-compute inbound link lists to avoid scanning all edges each iteration.
+  // Pre-compute inbound link lists to avoid scanning all edges each iteration.
   const inLinks = new Map<number, number[]>();
   for (const node of nodes) {
     if (!inLinks.has(node.id)) inLinks.set(node.id, []);
     for (const targetId of node.outLinks) {
       if (!inLinks.has(targetId)) inLinks.set(targetId, []);
-      // AI-WHY: inLinks.set(targetId, []) on the preceding line guarantees the key exists
+      // InLinks.set(targetId, []) on the preceding line guarantees the key exists
       inLinks.get(targetId)!.push(node.id);
     }
   }

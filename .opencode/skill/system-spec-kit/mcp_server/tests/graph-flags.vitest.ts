@@ -1,11 +1,6 @@
-// ---------------------------------------------------------------
-// MODULE: Graph Flags Vitest
-// ---------------------------------------------------------------
+// --- 1. GRAPH FLAGS VITEST ---
 
-// ---------------------------------------------------------------
 // TEST: Graph Search Feature Flag (Unified)
-// ---------------------------------------------------------------
-
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { isGraphUnifiedEnabled } from '../lib/search/graph-flags';
 

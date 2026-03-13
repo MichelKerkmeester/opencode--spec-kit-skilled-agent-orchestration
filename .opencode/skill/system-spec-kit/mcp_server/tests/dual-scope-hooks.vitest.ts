@@ -1,14 +1,10 @@
-// ---------------------------------------------------------------
 // TEST: Dual-Scope Memory Auto-Surface Hooks
-// ---------------------------------------------------------------
 // Covers:
-//   - autoSurfaceAtToolDispatch: fires at tool dispatch lifecycle point
-//   - autoSurfaceAtCompaction:   fires at session compaction lifecycle point
-//   - Token budget constants (4000 max per point)
-//   - Config flag disabling both hooks
-//   - No regression in existing autoSurfaceMemories behaviour
-// ---------------------------------------------------------------
-
+// - autoSurfaceAtToolDispatch: fires at tool dispatch lifecycle point
+// - autoSurfaceAtCompaction:   fires at session compaction lifecycle point
+// - Token budget constants (4000 max per point)
+// - Config flag disabling both hooks
+// - No regression in existing autoSurfaceMemories behaviour
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { estimateTokenCount } from '@spec-kit/shared/utils/token-estimate';
 
@@ -175,15 +171,15 @@ describe('TM-05: autoSurfaceAtToolDispatch — skips memory-aware tools', () => 
   it('does NOT skip non-memory-aware tools', async () => {
     // With a trigger match present, a non-memory-aware tool should proceed
     // (result may still be null if DB is null + constitutional empty, but
-    //  the mock for matchTriggerPhrases returns a match, so if the function
-    //  proceeds past the skip gate it will call matchTriggerPhrases)
+    // The mock for matchTriggerPhrases returns a match, so if the function
+    // Proceeds past the skip gate it will call matchTriggerPhrases)
     vi.mocked(triggerMatcher.matchTriggerPhrases).mockReturnValue([makeTriggerMatch()]);
     const matchSpy = vi.mocked(triggerMatcher.matchTriggerPhrases);
     matchSpy.mockClear();
 
     await autoSurfaceAtToolDispatch('bash', { query: 'run some command' });
 
-    // matchTriggerPhrases should have been called (meaning we did NOT skip)
+    // MatchTriggerPhrases should have been called (meaning we did NOT skip)
     expect(matchSpy).toHaveBeenCalledTimes(1);
   });
 });

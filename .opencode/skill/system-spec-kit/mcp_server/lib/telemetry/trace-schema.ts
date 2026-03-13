@@ -1,11 +1,7 @@
-// ---------------------------------------------------------------
-// MODULE: Telemetry Trace Schema
-// ---------------------------------------------------------------
-// AI-WHY: Canonical schema + runtime validation for retrieval trace payloads
-// used by telemetry serialization. Unknown or sensitive fields are
-// excluded from canonical payloads.
-// ---------------------------------------------------------------
-
+// --- 1. TELEMETRY TRACE SCHEMA ---
+// Canonical schema + runtime validation for retrieval trace payloads
+// Used by telemetry serialization. Unknown or sensitive fields are
+// Excluded from canonical payloads.
 import type { RetrievalStage } from '@spec-kit/shared/contracts/retrieval-trace';
 
 const RETRIEVAL_TRACE_STAGES: RetrievalStage[] = [

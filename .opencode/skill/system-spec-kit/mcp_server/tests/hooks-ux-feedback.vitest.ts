@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: Hooks UX Feedback
-// ---------------------------------------------------------------
-
 import { describe, expect, it } from 'vitest';
 import { estimateTokenCount } from '@spec-kit/shared/utils/token-estimate';
 import { buildMutationHookFeedback, appendAutoSurfaceHints } from '../hooks';

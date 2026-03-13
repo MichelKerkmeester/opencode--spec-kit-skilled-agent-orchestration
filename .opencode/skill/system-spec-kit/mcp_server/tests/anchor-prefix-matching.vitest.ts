@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: ANCHOR PREFIX MATCHING
-// ---------------------------------------------------------------
-
 import { describe, it, expect } from 'vitest';
 import {
   formatSearchResults,
@@ -9,13 +6,10 @@ import {
   type RawSearchResult,
 } from '../formatters/search-results';
 
-// ---------------------------------------------------------------
 // TEST: ANCHOR PREFIX MATCHING (SK-005)
 // Covers: Prefix matching in filterByAnchors / formatSearchResults
 // Context: Session 5 — C1 fix added prefix fallback so 'summary'
-//          matches 'summary-session-1770903150838-003' etc.
-// ---------------------------------------------------------------
-
+// Matches 'summary-session-1770903150838-003' etc.
 /**
  * Creates a mock MemoryParserLike that returns pre-defined anchor map.
  * This lets us control exactly what extractAnchors returns without
@@ -111,8 +105,8 @@ describe('ANCHOR PREFIX MATCHING — resolveAnchorKey unit', () => {
 
     it('P05: prefix matches on hyphen boundary only', () => {
       // 'sum' should NOT match 'summary-session-123' because
-      // the algorithm checks startsWith(anchorId + '-'), i.e. 'sum-'
-      // and 'summary-session-123' does NOT start with 'sum-'
+      // The algorithm checks startsWith(anchorId + '-'), i.e. 'sum-'
+      // And 'summary-session-123' does NOT start with 'sum-'
       const extracted = { 'summary-session-123': 'content' };
       expect(resolveAnchorKey('sum', extracted)).toBeUndefined();
     });
@@ -207,7 +201,7 @@ describe('ANCHOR PREFIX MATCHING — resolveAnchorKey unit', () => {
     });
 
     it('P17: anchor with trailing hyphen does not double-hyphen', () => {
-      // anchorId = 'next-steps-' → filter checks startsWith('next-steps--')
+      // AnchorId = 'next-steps-' → filter checks startsWith('next-steps--')
       // 'next-steps-session-123' does NOT start with 'next-steps--'
       const extracted = { 'next-steps-session-123': 'content' };
       expect(resolveAnchorKey('next-steps-', extracted)).toBeUndefined();
@@ -222,9 +216,9 @@ describe('ANCHOR PREFIX MATCHING — resolveAnchorKey unit', () => {
 
     it('P19: anchor matches key of same name with hyphen suffix', () => {
       // Edge: 'next-steps' should match 'next-steps-session-123'
-      // because 'next-steps-session-123'.startsWith('next-steps-') = true
+      // Because 'next-steps-session-123'.startsWith('next-steps-') = true
       // But 'next' should also match 'next-steps-session-123'
-      // because 'next-steps-session-123'.startsWith('next-') = true
+      // Because 'next-steps-session-123'.startsWith('next-') = true
       const extracted = { 'next-steps-session-123': 'content' };
       expect(resolveAnchorKey('next', extracted)).toBe('next-steps-session-123');
     });
@@ -320,8 +314,8 @@ describe('ANCHOR PREFIX MATCHING — formatSearchResults integration', () => {
   ) {
     // We need a real file for fs.readFile — create a temp content string.
     // The trick: parserOverride.extractAnchors will return our anchorMap,
-    // but formatSearchResults still reads the file via fs.readFile. We use
-    // a file that exists and contains something.
+    // But formatSearchResults still reads the file via fs.readFile. We use
+    // A file that exists and contains something.
     //
     // We'll use the vitest config file itself as a stand-in (it exists and is readable).
     const result = makeResult({

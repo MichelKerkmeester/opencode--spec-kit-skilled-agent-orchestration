@@ -3,7 +3,7 @@
 # SPECKIT: CHECK PLACEHOLDERS
 # ───────────────────────────────────────────────────────────────
 # Scan spec folder .md files for remaining bracket placeholder
-# patterns after upgrade-level.sh + auto-populate.
+# Patterns after upgrade-level.sh + auto-populate.
 # Bash 3.2+ compatible (macOS and Linux).
 
 set -euo pipefail
@@ -95,7 +95,7 @@ fi
 #
 # Also exclude lines where brackets appear inside code blocks
 # (backtick-wrapped) since those describe placeholder concepts
-# rather than being actual unfilled placeholders.
+# Rather than being actual unfilled placeholders.
 
 TOTAL=0
 MATCHES=""
@@ -103,8 +103,8 @@ MATCHES=""
 # Process each .md file (skip backup/temp directories)
 while IFS= read -r file; do
     # Skip backup directories and non-template subfolders.
-    # memory/ contains generated session context markdown that legitimately
-    # uses bracketed TOC links (e.g., [CONTINUE SESSION]); scratch/ is temp.
+    # Memory/ contains generated session context markdown that legitimately
+    # Uses bracketed TOC links (e.g., [CONTINUE SESSION]); scratch/ is temp.
     case "$file" in
         */.backup-*) continue ;;
         */memory/*) continue ;;

@@ -9,7 +9,7 @@ set -euo pipefail
 # Rule: SECTION_COUNTS
 # Severity: warn
 # Description: Validates that section counts are within expected ranges
-#   for the declared documentation level.
+#   For the declared documentation level.
 
 # ───────────────────────────────────────────────────────────────
 # 1. HELPER FUNCTIONS

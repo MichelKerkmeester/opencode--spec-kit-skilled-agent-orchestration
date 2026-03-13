@@ -781,7 +781,7 @@ if begin_category "CLI Options Tests"; then
     run_test_json_valid "--json produces valid JSON with required fields" "002-valid-level1" "warn"
 
     # Test 2: --strict mode (warnings become errors)
-    # invalid-priority-tags normally returns WARN (exit 1), with --strict should FAIL (exit 2)
+    # Invalid-priority-tags normally returns WARN (exit 1), with --strict should FAIL (exit 2)
     run_test_with_flags "--strict mode: warnings become errors" "021-invalid-priority-tags" "fail" "--strict"
 
     # Test 3: --quiet mode (minimal output)
@@ -790,12 +790,12 @@ if begin_category "CLI Options Tests"; then
 
     # Test 4: .speckit.yaml configuration (config file detection)
     # Note: Config file IS detected and shown in output, but YAML parsing for
-    # rule severity overrides is not yet implemented in validate-spec.sh
+    # Rule severity overrides is not yet implemented in validate-spec.sh
     # This test verifies config file detection; expect WARN due to unimplemented parsing
     run_test "Config file: .speckit.yaml detected (parsing TODO)" "046-with-config" "warn"
 
     # Test 5: Environment variable override (SPECKIT_STRICT=true)
-    # invalid-priority-tags normally returns WARN, with SPECKIT_STRICT=true should FAIL
+    # Invalid-priority-tags normally returns WARN, with SPECKIT_STRICT=true should FAIL
     run_test_with_flags "Env var: SPECKIT_STRICT=true" "021-invalid-priority-tags" "fail" "" "SPECKIT_STRICT=true"
 
     # Test 6: Rule execution order configuration

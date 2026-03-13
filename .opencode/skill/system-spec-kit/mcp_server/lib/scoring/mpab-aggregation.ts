@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Mpab Aggregation
-// ---------------------------------------------------------------
+// --- 1. MPAB AGGREGATION ---
 // Multi-Parent Aggregated Bonus (MPAB) for chunk-to-memory score aggregation.
 // Pipeline position: after RRF fusion, before state filtering.
 // Feature flag: SPECKIT_DOCSCORE_AGGREGATION (graduated default ON)
@@ -100,22 +98,22 @@ export function computeMPAB(scores: number[]): number {
   const safeScores = scores.map(score => Number.isFinite(score) ? score : 0);
   const N = safeScores.length;
 
-  // AI-GUARD: Guard: no chunks = no signal
+  // Guard: no chunks = no signal
   if (N === 0) return 0;
 
-  // AI-GUARD: Guard: single chunk = raw score, no bonus
+  // Guard: single chunk = raw score, no bonus
   if (N === 1) return safeScores[0];
 
-  // AI-WHY: Sort descending (copy to avoid mutating input)
+  // Sort descending (copy to avoid mutating input)
   const sorted = [...safeScores].sort((a, b) => b - a);
 
   // Index-based max removal: sorted[0] is always the max
   const sMax = sorted[0];
   const remaining = sorted.slice(1);
 
-  // AI-WHY: bonus = coefficient * sum(remaining) / sqrt(N) rewards documents
-  // with multiple relevant chunks while dampening the contribution of each
-  // additional chunk via sqrt(N) to prevent score inflation.
+  // Bonus = coefficient * sum(remaining) / sqrt(N) rewards documents
+  // With multiple relevant chunks while dampening the contribution of each
+  // Additional chunk via sqrt(N) to prevent score inflation.
   const sumRemaining = remaining.reduce((acc, s) => acc + s, 0);
   const bonus = MPAB_BONUS_COEFFICIENT * sumRemaining / Math.sqrt(N);
 

@@ -1,10 +1,7 @@
-// ---------------------------------------------------------------
 // TEST: ENTITY EXTRACTOR (R10)
 // Covers: extractEntities, filterEntities, storeEntities,
-//         updateEntityCatalog, computeEdgeDensity, normalizeEntityName,
-//         entity-denylist
-// ---------------------------------------------------------------
-
+// UpdateEntityCatalog, computeEdgeDensity, normalizeEntityName,
+// Entity-denylist
 import { describe, it, expect, beforeEach } from 'vitest';
 import Database from 'better-sqlite3';
 
@@ -88,7 +85,7 @@ describe('extractEntities', () => {
 
   it('extracts proper nouns (capitalized multi-word sequences)', () => {
     // Regex matches consecutive capitalized words; "The" is included since it
-    // matches [A-Z][a-z]+, so the full match is "The Spec Kit Memory".
+    // Matches [A-Z][a-z]+, so the full match is "The Spec Kit Memory".
     const result = extractEntities('The Spec Kit Memory system is robust.');
     const properNouns = result.filter((e) => e.type === 'proper_noun');
     expect(properNouns.length).toBeGreaterThanOrEqual(1);
@@ -130,7 +127,7 @@ describe('extractEntities', () => {
 
   it('extracts quoted strings (2-50 chars)', () => {
     // "Entity Extractor" is also matched by the proper_noun regex (two
-    // capitalized words). Deduplication merges them; the first type
+    // Capitalized words). Deduplication merges them; the first type
     // (proper_noun) wins, so only "valid" remains with type 'quoted'.
     const result = extractEntities('The module is called "Entity Extractor" and outputs "valid" results.');
     const quoted = result.filter((e) => e.type === 'quoted');
@@ -175,7 +172,7 @@ describe('extractEntities', () => {
     const types = new Set(result.map((e) => e.type));
     expect(types.has('heading')).toBe(true);
     expect(types.has('technology')).toBe(true);
-    // key_phrase: "using TypeScript" and "with Better Sqlite"
+    // Key_phrase: "using TypeScript" and "with Better Sqlite"
     expect(types.has('key_phrase')).toBe(true);
     expect(types.has('quoted')).toBe(true);
   });
@@ -202,7 +199,7 @@ describe('extractEntities', () => {
   it('ignores quoted strings shorter than 2 or longer than 50 chars', () => {
     // Use isolated quote pairs to prevent cross-quote matching.
     // The regex "([^"]{2,50})" matches greedily between any two quotes,
-    // so multiple quotes on the same line can pair unexpectedly.
+    // So multiple quotes on the same line can pair unexpectedly.
     const tooShort = extractEntities('Value "a" end');
     expect(tooShort.filter((e) => e.type === 'quoted')).toHaveLength(0);
 
@@ -475,7 +472,7 @@ describe('updateEntityCatalog', () => {
 
   it('normalizes entity names to lowercase with stripped punctuation', () => {
     // Unicode-aware normalizeEntityName replaces all non-letter/non-number/non-space
-    // characters (dots, !, hyphens) with spaces, then collapses whitespace.
+    // Characters (dots, !, hyphens) with spaces, then collapses whitespace.
     // 'React.js Framework!' -> 'react js framework' (dot replaced with space)
     const entities: ExtractedEntity[] = [
       { text: 'React.js Framework!', type: 'technology', frequency: 1 },
@@ -571,7 +568,7 @@ describe('normalizeEntityName', () => {
 
   it('strips punctuation (Unicode-aware, hyphens stripped too)', () => {
     // Unicode-aware regex /[^\p{L}\p{N}\s]/gu replaces all non-letter/non-number/non-space
-    // characters (including dots and hyphens) with a space, then collapses whitespace.
+    // Characters (including dots and hyphens) with a space, then collapses whitespace.
     expect(normalizeEntityName('React.js!')).toBe('react js');
     expect(normalizeEntityName('hello-world')).toBe('hello world');
     expect(normalizeEntityName('test@special#chars')).toBe('test special chars');

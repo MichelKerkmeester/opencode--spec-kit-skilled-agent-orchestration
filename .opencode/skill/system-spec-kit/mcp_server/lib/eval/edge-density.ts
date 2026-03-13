@@ -1,21 +1,18 @@
-// ---------------------------------------------------------------
-// MODULE: Edge Density (Sprint 1 T003)
-// ---------------------------------------------------------------
-// AI-WHY: 
+// --- 1. EDGE DENSITY (SPRINT 1 T003) ---
 // Measures the edge density of the causal graph:
-//   density = edge_count / total_memories
+// Density = edge_count / total_memories
 //
 // This denominator makes sparse non-empty graphs measurable.
 // Fallback for legacy/partial datasets: if total_memories is 0,
-// use unique participating nodes as denominator.
+// Use unique participating nodes as denominator.
 //
 // Density classifications:
-//   >= 1.0  → "dense"    — graph is highly connected
-//   0.5–1.0 → "moderate" — sufficient for graph signals
-//   < 0.5   → "sparse"   — R10 escalation recommended
+// >= 1.0  → "dense"    — graph is highly connected
+// 0.5–1.0 → "moderate" — sufficient for graph signals
+// < 0.5   → "sparse"   — R10 escalation recommended
 //
 // When density < 0.5 an R10 escalation recommendation is generated
-// and included in the result.
+// And included in the result.
 
 import type Database from 'better-sqlite3';
 

@@ -1,10 +1,8 @@
-// ---------------------------------------------------------------
-// MODULE: Test — Interference Scoring
-// ---------------------------------------------------------------
+// --- 1. TEST — INTERFERENCE SCORING ---
 // Tests for interference score computation and penalty application.
 // Covers: zero interference, penalty reduces score, score floor at 0,
-// env var gating, batch computation, text similarity heuristic,
-// and integration with composite scoring.
+// Env var gating, batch computation, text similarity heuristic,
+// And integration with composite scoring.
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import Database from 'better-sqlite3';
@@ -22,10 +20,7 @@ import {
 } from '../lib/scoring/composite-scoring';
 import type { ScoringInput } from '../lib/scoring/composite-scoring';
 
-// ---------------------------------------------------------------
 // Helpers
-// ---------------------------------------------------------------
-
 function createTestDb(): Database.Database {
   const db = new Database(':memory:');
   db.exec(`
@@ -73,10 +68,7 @@ function insertMemory(
   return Number(result.lastInsertRowid);
 }
 
-// ---------------------------------------------------------------
 // 1. Text Similarity Heuristic
-// ---------------------------------------------------------------
-
 describe('Text Similarity Heuristic', () => {
   it('returns 0 for empty inputs', () => {
     expect(computeTextSimilarity('', '')).toBe(0);
@@ -120,10 +112,7 @@ describe('Text Similarity Heuristic', () => {
   });
 });
 
-// ---------------------------------------------------------------
 // 2. Single Memory Interference Scoring
-// ---------------------------------------------------------------
-
 describe('computeInterferenceScore', () => {
   let db: Database.Database;
 
@@ -260,10 +249,7 @@ describe('computeInterferenceScore', () => {
   });
 });
 
-// ---------------------------------------------------------------
 // 3. Batch Interference Scoring
-// ---------------------------------------------------------------
-
 describe('computeInterferenceScoresBatch', () => {
   let db: Database.Database;
 
@@ -319,18 +305,15 @@ describe('computeInterferenceScoresBatch', () => {
     });
 
     const result = computeInterferenceScoresBatch(db, [id1, id2, id3]);
-    // id1 and id2 should have interference with each other
+    // Id1 and id2 should have interference with each other
     expect(result.get(id1)).toBeGreaterThanOrEqual(1);
     expect(result.get(id2)).toBeGreaterThanOrEqual(1);
-    // id3 is alone in its folder
+    // Id3 is alone in its folder
     expect(result.get(id3)).toBe(0);
   });
 });
 
-// ---------------------------------------------------------------
 // 4. Interference Penalty Application
-// ---------------------------------------------------------------
-
 describe('applyInterferencePenalty', () => {
   const originalEnv = process.env.SPECKIT_INTERFERENCE_SCORE;
 
@@ -393,10 +376,7 @@ describe('applyInterferencePenalty', () => {
   });
 });
 
-// ---------------------------------------------------------------
 // 5. Composite Scoring Integration
-// ---------------------------------------------------------------
-
 describe('Composite Scoring Integration with Interference', () => {
   const originalEnv = process.env.SPECKIT_INTERFERENCE_SCORE;
 

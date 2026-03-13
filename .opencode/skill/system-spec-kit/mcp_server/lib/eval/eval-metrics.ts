@@ -1,10 +1,6 @@
-// ---------------------------------------------------------------
-// MODULE: Eval Metrics
-// ---------------------------------------------------------------
+// --- 1. EVAL METRICS ---
 // T006a-e: Pure computation functions for 12 evaluation metrics
 // (7 core + 5 diagnostic). No DB access, no side effects.
-// ---------------------------------------------------------------
-
 /* ---------------------------------------------------------------
    1. TYPES
 --------------------------------------------------------------- */
@@ -120,7 +116,7 @@ export function computeMRR(
   for (let i = 0; i < topResults.length; i++) {
     const rel = relevanceMap.get(topResults[i].memoryId) ?? 0;
     if (rel > 0) {
-      // rank is 1-based position in the top-K slice
+      // Rank is 1-based position in the top-K slice
       return 1 / (i + 1);
     }
   }
@@ -193,8 +189,8 @@ export function computeRecall(
   if (relevantIds.size === 0) return 0;
 
   const topResults = topK(results, k);
-  // AI-FIX: F-28 — Deduplicate hits by memoryId to prevent Recall > 1.0
-  // when the same memory appears multiple times in results.
+  // F-28 — Deduplicate hits by memoryId to prevent Recall > 1.0
+  // When the same memory appears multiple times in results.
   const seenIds = new Set<number>();
   let hits = 0;
   for (const r of topResults) {
@@ -275,7 +271,7 @@ export function computeMAP(
   if (relevantIds.size === 0) return 0;
 
   const topResults = topK(results, k);
-  // AI-FIX: F-29 — Deduplicate relevant IDs in MAP calculation to prevent
+  // F-29 — Deduplicate relevant IDs in MAP calculation to prevent
   // MAP > 1.0 when duplicate memoryIds appear in results.
   const seenIds = new Set<number>();
   let hits = 0;
@@ -353,7 +349,7 @@ export function computeInversionRate(
     for (let j = i + 1; j < n; j++) {
       const relI = relevanceMap.get(sorted[i].memoryId) ?? 0;
       const relJ = relevanceMap.get(sorted[j].memoryId) ?? 0;
-      // rank[i] < rank[j], so if rel[i] < rel[j] it is an inversion
+      // Rank[i] < rank[j], so if rel[i] < rel[j] it is an inversion
       if (relI < relJ) inversions++;
     }
   }
@@ -548,8 +544,8 @@ export function computeIntentWeightedNDCG(
 
   const multipliers = intentMultipliers[intentType] ?? [0, 1.0, 2.0, 3.0];
 
-  // AI-WHY: P1-7 fix: Multiplier values ARE the weighted grades (not factors to multiply
-  // against the original grade). Using them directly prevents extreme scaling
+  // P1-7 fix: Multiplier values ARE the weighted grades (not factors to multiply
+  // Against the original grade). Using them directly prevents extreme scaling
   // (e.g., grade 3 * 5.0 = 15). Safety cap at MAX_WEIGHTED_GRADE = 5.
   const MAX_WEIGHTED_GRADE = 5;
   const weightedGT: GroundTruthEntry[] = groundTruth.map(e => ({

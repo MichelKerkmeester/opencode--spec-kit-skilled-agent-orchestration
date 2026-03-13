@@ -1,10 +1,6 @@
-// ---------------------------------------------------------------
-// MODULE: Memory Lineage State
-// ---------------------------------------------------------------
+// --- 1. MEMORY LINEAGE STATE ---
 // Provides append-first lineage transitions, active projection reads,
 // Temporal asOf resolution, and backfill/integrity helpers.
-// ---------------------------------------------------------------
-
 import type Database from 'better-sqlite3';
 
 import * as bm25Index from '../search/bm25-index';

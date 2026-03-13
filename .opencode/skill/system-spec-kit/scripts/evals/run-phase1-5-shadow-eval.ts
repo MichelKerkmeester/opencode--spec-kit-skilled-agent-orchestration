@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Run Phase 1-5 Shadow Eval
-// ---------------------------------------------------------------
+// --- 1. RUN PHASE 1-5 SHADOW EVAL ---
 
 import fs from 'fs';
 import path from 'path';

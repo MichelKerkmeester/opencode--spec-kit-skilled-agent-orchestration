@@ -1,11 +1,6 @@
-// ---------------------------------------------------------------
-// MODULE: Search Limits Scoring Vitest
-// ---------------------------------------------------------------
+// --- 1. SEARCH LIMITS SCORING VITEST ---
 
-// ---------------------------------------------------------------
 // TEST: SEARCH LIMITS SCORING
-// ---------------------------------------------------------------
-
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -242,9 +237,9 @@ describe('T210 + T211: Search Limits + Scoring Tests', () => {
     });
 
     it('T211-HI2: Length penalty applied even when reranking is off', () => {
-      // AI-WHY: Legacy applyCrossEncoderReranking (which contained calculateLengthPenalty)
-      // was removed in 017-refinement-phase-6. Length penalty is now handled by the V2
-      // pipeline's Stage 3 cross-encoder module. Verify the cross-encoder module instead.
+      // Legacy applyCrossEncoderReranking (which contained calculateLengthPenalty)
+      // Was removed in 017-refinement-phase-6. Length penalty is now handled by the V2
+      // Pipeline's Stage 3 cross-encoder module. Verify the cross-encoder module instead.
       const ceSrc = fs.readFileSync(
         path.join(PROJECT_ROOT, 'lib', 'search', 'cross-encoder.ts'),
         'utf8'
@@ -261,9 +256,9 @@ describe('T210 + T211: Search Limits + Scoring Tests', () => {
     });
 
     it('T211-HI4: rerankMetadata reports length penalty configuration', () => {
-      // AI-WHY: Legacy applyCrossEncoderReranking (which used snake_case length_penalty_applied)
-      // was removed in 017-refinement-phase-6. The V2 pipeline's Stage 3 passes length penalty
-      // config via applyLengthPenalty. Verify the pipeline stage instead.
+      // Legacy applyCrossEncoderReranking (which used snake_case length_penalty_applied)
+      // Was removed in 017-refinement-phase-6. The V2 pipeline's Stage 3 passes length penalty
+      // Config via applyLengthPenalty. Verify the pipeline stage instead.
       const stage3Src = fs.readFileSync(
         path.join(PROJECT_ROOT, 'lib', 'search', 'pipeline', 'stage3-rerank.ts'),
         'utf8'

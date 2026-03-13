@@ -1,9 +1,7 @@
-// ---------------------------------------------------------------
-// MODULE: Test — SHA256 Content-Hash Dedup (TM-02)
-// ---------------------------------------------------------------
+// --- 1. TEST — SHA256 CONTENT-HASH DEDUP (TM-02) ---
 // Verifies that the fast-path dedup check in indexMemoryFile()
-// returns 'duplicate' for identical content (same spec_folder,
-// same content_hash) and proceeds to embed for changed content.
+// Returns 'duplicate' for identical content (same spec_folder,
+// Same content_hash) and proceeds to embed for changed content.
 
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import Database from 'better-sqlite3';

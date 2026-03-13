@@ -117,7 +117,7 @@ Deliver a complete, structured audit for both Evaluation features so gaps are pr
 |------|------|--------|------------|
 | Dependency | Feature catalog accuracy (`.opencode/skill/system-spec-kit/feature_catalog/07--evaluation`) | Incorrect catalog claims can produce false audit deltas. | Cross-check every finding against referenced source files and line ranges. |
 | Dependency | Evaluation data tables (`eval_metric_snapshots`, `eval_channel_results`) | Missing/changed schema can invalidate behavioral conclusions. | Validate query usage in code and keep findings tied to actual SQL call paths. |
-| Risk | Unresolved `eval_final_results` mismatch in F-02 | Critical documentation/behavior divergence remains open. | Track as P0 with explicit implement-vs-doc decision and owner. |
+| Risk | Resolved F-02 data-source contract can drift again if docs are edited without source revalidation | Documentation can become inconsistent with implementation and hide regressions. | Keep `spec.md`, checklist evidence, and feature catalog wording synchronized to the resolved `eval_metric_snapshots` + `eval_channel_results` query contract. |
 | Risk | Handler-level test gaps persist | Regressions may pass unnoticed despite feature-level tests. | Add focused handler tests for format/filter/normalization/error paths. |
 <!-- /ANCHOR:risks -->
 

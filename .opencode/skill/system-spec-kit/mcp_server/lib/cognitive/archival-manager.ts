@@ -1,16 +1,12 @@
-// ---------------------------------------------------------------
-// MODULE: Archival Manager
-// ---------------------------------------------------------------
+// --- 1. ARCHIVAL MANAGER ---
 // Background archival job for dormant/archived memories
-// ---------------------------------------------------------------
-
 import type Database from 'better-sqlite3';
 
 /* -------------------------------------------------------------
    1. DEPENDENCIES (lazy-loaded)
 ----------------------------------------------------------------*/
 
-// AI-WHY: Lazy-load tier-classifier to avoid circular dependencies
+// Lazy-load tier-classifier to avoid circular dependencies
 let tierClassifierModule: Record<string, unknown> | null = null;
 
 function getTierClassifier(): Record<string, unknown> | null {
@@ -275,7 +271,7 @@ function getArchivalCandidates(limit: number = ARCHIVAL_CONFIG.batchSize): Archi
         // Primary: FSRS-based decision
         shouldArchiveRow = classifier.shouldArchive(row) as boolean;
       } else {
-        // AI-WHY: Fallback: SQL-based criteria only when FSRS is unavailable
+        // Fallback: SQL-based criteria only when FSRS is unavailable
         shouldArchiveRow = (
           row.created_at != null &&
           new Date(row.created_at as string) < cutoffDate &&
@@ -376,8 +372,8 @@ function syncBm25OnArchive(memoryId: number): void {
   }
 }
 
-// AI-WHY: Vector-only deletion — removes the vec_memories embedding row without
-// touching memory_index or ancillary tables. This preserves the archived row
+// Vector-only deletion — removes the vec_memories embedding row without
+// Touching memory_index or ancillary tables. This preserves the archived row
 // (is_archived=1) so unarchive can still find and restore it.
 function syncVectorOnArchive(memoryId: number): void {
   if (!db) return;
@@ -425,9 +421,9 @@ function syncBm25OnUnarchive(memoryId: number): void {
 }
 
 function syncVectorOnUnarchive(memoryId: number): void {
-  // AI-WHY: Re-embedding requires the original text content and an embedding provider call.
+  // Re-embedding requires the original text content and an embedding provider call.
   // On unarchive, we log a notice that vectors need regeneration. The next memory_index_scan
-  // or manual re-index will repopulate the vector entry.
+  // Or manual re-index will repopulate the vector entry.
   console.warn(`[archival-manager] Memory ${memoryId} unarchived: vector re-embedding deferred to next index scan`);
 }
 
@@ -472,7 +468,7 @@ function archiveBatch(memoryIds: number[]): { archived: number; failed: number }
   const batchTransaction = db.transaction(() => {
     for (const id of memoryIds) {
       try {
-        // AI-SAFETY: db is guaranteed non-null because archiveBatch returns early when the module database is missing
+        // Db is guaranteed non-null because archiveBatch returns early when the module database is missing
         const result = (db!.prepare(`
           UPDATE memory_index
           SET is_archived = 1,

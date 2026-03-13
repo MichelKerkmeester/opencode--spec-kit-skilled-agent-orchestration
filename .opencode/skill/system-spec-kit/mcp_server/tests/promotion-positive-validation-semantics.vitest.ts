@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: Promotion Thresholds Use Positive Validation Semantics (T055)
-// ---------------------------------------------------------------
-
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import * as path from 'path';
 import * as os from 'os';

@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Extraction Adapter
-// ---------------------------------------------------------------
+// --- 1. EXTRACTION ADAPTER ---
 
 import type Database from 'better-sqlite3';
 import path from 'path';
@@ -110,7 +108,7 @@ function stringifyToolResult(result: unknown): string {
   try {
     return JSON.stringify(result, null, 2);
   } catch {
-    // AI-WHY: Intentional no-op — error deliberately discarded for fail-safe fallback
+    // Intentional no-op — error deliberately discarded for fail-safe fallback
     return String(result);
   }
 }
@@ -178,7 +176,7 @@ function resolveSessionId(result: unknown): string {
       }
     }
   } catch {
-    // AI-WHY: Intentional no-op — error deliberately discarded for fail-safe fallback
+    // Intentional no-op — error deliberately discarded for fail-safe fallback
   }
 
   return 'auto-extraction';

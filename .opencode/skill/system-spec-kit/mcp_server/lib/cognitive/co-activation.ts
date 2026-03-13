@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Co Activation
-// ---------------------------------------------------------------
+// --- 1. CO ACTIVATION ---
 // Spreading activation for related memory retrieval
 
 import type Database from 'better-sqlite3';
@@ -93,7 +91,7 @@ function boostScore(
   }
 
   const perNeighborBoost = CO_ACTIVATION_CONFIG.boostFactor * (avgSimilarity / 100);
-  // AI-WHY: Pure fan-effect scaling — each additional neighbor contributes less (sublinear)
+  // Pure fan-effect scaling — each additional neighbor contributes less (sublinear)
   const fanDivisor = Math.sqrt(Math.max(1, relatedCount));
   const boost = Math.max(0, perNeighborBoost / fanDivisor);
   return baseScore + boost;
@@ -135,7 +133,7 @@ function getRelatedMemories(
     let parsedRelated: unknown;
     try {
       parsedRelated = JSON.parse(memory.related_memories);
-    } catch (_err: unknown) { // AI-GUARD: Malformed JSON in related_memories — return empty
+    } catch (_err: unknown) { // Malformed JSON in related_memories — return empty
       return [];
     }
 
@@ -166,7 +164,7 @@ function getRelatedMemories(
             similarity: rel.similarity,
           });
         }
-      } catch (_err: unknown) { // AI-GUARD: Individual relation lookup failure — skip
+      } catch (_err: unknown) { // Individual relation lookup failure — skip
         // Skip individual failures
       }
     }
@@ -280,7 +278,7 @@ function getCausalNeighbors(
             similarity: Math.round(row.strength * 100),
           });
         }
-      } catch (_err: unknown) { // AI-GUARD: Causal neighbor lookup failure — skip
+      } catch (_err: unknown) { // Causal neighbor lookup failure — skip
         // Skip individual failures
       }
     }

@@ -1,9 +1,7 @@
-// ---------------------------------------------------------------
-// MODULE: Test — Folder Discovery
-// ---------------------------------------------------------------
+// --- 1. TEST — FOLDER DISCOVERY ---
 // Tests: extractDescription, extractKeywords, findRelevantFolders,
-//        generateFolderDescriptions, loadDescriptionCache,
-//        saveDescriptionCache, PerFolderDescription operations
+// GenerateFolderDescriptions, loadDescriptionCache,
+// SaveDescriptionCache, PerFolderDescription operations
 
 import { describe, expect, it, beforeEach, afterEach } from 'vitest';
 import * as fs from 'node:fs';
@@ -201,7 +199,7 @@ describe('T009 findRelevantFolders', () => {
   it('returns ranked results for a matching query', () => {
     const results = findRelevantFolders('vector search memory', mockCache);
     expect(results.length).toBeGreaterThan(0);
-    // specs/002-memory should score highly — has 'vector', 'memory', 'search'
+    // Specs/002-memory should score highly — has 'vector', 'memory', 'search'
     const memoryResult = results.find(r => r.specFolder === 'specs/002-memory');
     expect(memoryResult).toBeDefined();
     expect(memoryResult!.relevanceScore).toBeGreaterThan(0);
@@ -324,7 +322,7 @@ describe('T009 generateFolderDescriptions', () => {
     const withSpec = path.join(tmpDir, 'has-spec');
     fs.mkdirSync(noSpec, { recursive: true });
     fs.mkdirSync(withSpec, { recursive: true });
-    // noSpec has no spec.md; withSpec has one
+    // NoSpec has no spec.md; withSpec has one
     fs.writeFileSync(path.join(withSpec, 'spec.md'), '# Has Spec\n\nBody.', 'utf-8');
 
     const cache = generateFolderDescriptions([tmpDir]);
@@ -1064,7 +1062,7 @@ describe('T009 isPerFolderDescriptionStale', () => {
     // Set description.json mtime to future
     fs.writeFileSync(path.join(tmpDir4, 'description.json'), '{}');
     const descMtime = fs.statSync(path.join(tmpDir4, 'description.json')).mtimeMs;
-    // description.json was written after spec.md, so descMtime >= specMtime
+    // Description.json was written after spec.md, so descMtime >= specMtime
     expect(descMtime >= specMtime).toBe(true);
     expect(isPerFolderDescriptionStale(tmpDir4)).toBe(false);
   });

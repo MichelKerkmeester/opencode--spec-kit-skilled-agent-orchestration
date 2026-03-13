@@ -1,23 +1,15 @@
-// ---------------------------------------------------------------
-// MODULE: Graph Regression Flag Off Vitest
-// ---------------------------------------------------------------
+// --- 1. GRAPH REGRESSION FLAG OFF VITEST ---
 
-// ---------------------------------------------------------------
 // TEST: GRAPH REGRESSION - FLAG CONTRACT + NULL-WIRING SAFETY (T022)
 // Verifies SPECKIT_GRAPH_UNIFIED env semantics and behavior when
-// hybrid-search is explicitly initialized with graphFn = null.
-// ---------------------------------------------------------------
-
+// Hybrid-search is explicitly initialized with graphFn = null.
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import type Database from 'better-sqlite3';
 import type { GraphSearchFn } from '../lib/search/hybrid-search';
 import { isGraphUnifiedEnabled } from '../lib/search/graph-flags';
 import { init, hybridSearch, hybridSearchEnhanced, getGraphMetrics, resetGraphMetrics } from '../lib/search/hybrid-search';
 
-// ---------------------------------------------------------------
 // HELPERS
-// ---------------------------------------------------------------
-
 /**
  * Build a minimal in-memory SQLite-compatible stub that satisfies
  * the hybrid-search module's db.prepare() contract without pulling
@@ -34,10 +26,7 @@ function buildStubDb() {
   };
 }
 
-// ---------------------------------------------------------------
 // SUITE: T022 — Graph Channel Bypassed When Flag Is Off
-// ---------------------------------------------------------------
-
 describe('T022: Graph Channel Feature Flag Regression', () => {
 
   /* -------------------------------------------------------------
@@ -56,7 +45,7 @@ describe('T022: Graph Channel Feature Flag Regression', () => {
     });
 
     // NOTE: T022-2 covers the hybridSearch graphFn=null behavior and lives in the
-    // nested describe('T022-2: hybridSearch — graph search fn NOT called...') group below.
+    // Nested describe('T022-2: hybridSearch — graph search fn NOT called...') group below.
 
     it('T022-3: Flag returns true when env var is exactly "true"', () => {
       process.env.SPECKIT_GRAPH_UNIFIED = 'true';
@@ -206,8 +195,8 @@ describe('T022: Graph Channel Feature Flag Regression', () => {
 
       await hybridSearchEnhanced('test query', null, { useGraph: true });
 
-      // hybridSearchEnhanced may fall through to hybridSearch internally;
-      // either way the graphFn MUST be invoked when wired and useGraph=true.
+      // HybridSearchEnhanced may fall through to hybridSearch internally;
+      // Either way the graphFn MUST be invoked when wired and useGraph=true.
       expect(graphFnSpy).toHaveBeenCalled();
     });
 
@@ -305,7 +294,7 @@ describe('T022: Graph Channel Feature Flag Regression', () => {
       process.env.SPECKIT_GRAPH_UNIFIED = 'false';
 
       // Simulate the wiring decision in context-server.ts:
-      //   isGraphUnifiedEnabled() ? createUnifiedGraphSearchFn(...) : undefined
+      // IsGraphUnifiedEnabled() ? createUnifiedGraphSearchFn(...) : undefined
       const graphFn = isGraphUnifiedEnabled()
         ? vi.fn().mockReturnValue([])   // would be createUnifiedGraphSearchFn(...)
         : undefined;

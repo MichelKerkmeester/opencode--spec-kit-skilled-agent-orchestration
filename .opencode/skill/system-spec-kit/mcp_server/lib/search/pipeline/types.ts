@@ -1,9 +1,5 @@
-// ---------------------------------------------------------------
-// MODULE: Types
-// ---------------------------------------------------------------
+// --- 1. TYPES ---
 // Sprint 5 (R6): Stage interfaces with Stage 4 immutability invariant
-// ---------------------------------------------------------------
-
 import type { RetrievalTrace } from '@spec-kit/shared/contracts/retrieval-trace';
 
 /**
@@ -49,7 +45,7 @@ export interface PipelineRow extends Record<string, unknown> {
  * "best available score" from a PipelineRow. Used by Stage 2, Stage 3, and any
  * code needing a consistent effective score.
  *
- * AI-WHY: Fix #11 (017-refinement-phase-6) — Previously Stage 2 and Stage 3 had
+ * Fix #11 (017-refinement-phase-6) — Previously Stage 2 and Stage 3 had
  * separate implementations with different fallback orders and clamping. This shared
  * function uses the correct chain: intentAdjustedScore → rrfScore → score → similarity/100,
  * all clamped to [0,1] with isFinite guards.
@@ -118,6 +114,10 @@ export interface PipelineConfig {
   // Limits and filtering
   limit: number;
   specFolder?: string;
+  tenantId?: string;
+  userId?: string;
+  agentId?: string;
+  sharedSpaceId?: string;
   tier?: string;
   contextType?: string;
   includeArchived: boolean;
@@ -221,6 +221,14 @@ export interface Stage2Output {
     intentWeightsApplied: boolean;
     artifactRoutingApplied: boolean;
     feedbackSignalsApplied: boolean;
+    graphContribution?: {
+      killSwitchActive: boolean;
+      causalBoosted: number;
+      coActivationBoosted: number;
+      communityInjected: number;
+      graphSignalsBoosted: number;
+      totalGraphInjected: number;
+    };
     qualityFiltered: number;
     durationMs: number;
   };

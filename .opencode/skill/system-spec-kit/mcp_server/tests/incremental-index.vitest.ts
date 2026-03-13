@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: INCREMENTAL INDEX
-// ---------------------------------------------------------------
-
 import { describe, it, expect } from 'vitest';
 
 // Legacy placeholder suite retained only as a deferred spec stub.

@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Db Helpers
-// ---------------------------------------------------------------
+// --- 1. DB HELPERS ---
 
 import type Database from 'better-sqlite3';
 
@@ -12,7 +10,9 @@ export const ALLOWED_POST_INSERT_COLUMNS = new Set<string>([
   'type_inference_source', 'stability', 'difficulty', 'review_count',
   'file_mtime_ms', 'embedding_status', 'encoding_intent', 'document_type',
   'spec_level', 'quality_score', 'quality_flags', 'parent_id',
-  'chunk_index', 'chunk_label',
+  'chunk_index', 'chunk_label', 'tenant_id', 'user_id', 'agent_id',
+  'shared_space_id', 'provenance_source', 'provenance_actor',
+  'governed_at', 'retention_policy', 'delete_after', 'governance_metadata',
 ]);
 
 /**
@@ -45,7 +45,7 @@ export function applyPostInsertMetadata(
     values.push(val);
   }
 
-  // Always set last_review; default review_count to 0 when caller omitted it
+  // Always refresh last_review and default review_count to 0 when omitted.
   setClauses.push("last_review = datetime('now')");
   if (!Object.prototype.hasOwnProperty.call(fields, 'review_count')) {
     setClauses.push('review_count = 0');

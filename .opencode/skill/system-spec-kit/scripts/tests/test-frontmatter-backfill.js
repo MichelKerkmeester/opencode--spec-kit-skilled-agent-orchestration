@@ -42,9 +42,7 @@ function run() {
 
   const migration = require(DIST_LIB);
 
-  // --------------------------------------------------------------------------
   // T-FMB-001: No false-positive frontmatter detection after leading comments.
-  // --------------------------------------------------------------------------
   try {
     const content = `<!-- TEMPLATE: context_template.md v2.2 -->\n\n---\n\n# SESSION SUMMARY\n\n| **Meta Data** | **Value** |\n|:--------------|:----------|\n| Context Type | general |\n\n---\n`;
     const detection = migration.detectFrontmatter(content);
@@ -57,9 +55,7 @@ function run() {
     fail('T-FMB-001: Thematic separator after comments is not frontmatter', error.message);
   }
 
-  // --------------------------------------------------------------------------
   // T-FMB-002: Unknown frontmatter keys are preserved during merge.
-  // --------------------------------------------------------------------------
   try {
     const input = `---\ntitle: "Old Title"\ncustom_meta: "keep-me"\ntriggerPhrases:\n  - "legacy"\n---\n\n# Spec Header\n\nContent body.\n`;
     const result = migration.buildFrontmatterContent(
@@ -77,9 +73,7 @@ function run() {
     fail('T-FMB-002: Unknown keys preserved', error.message);
   }
 
-  // --------------------------------------------------------------------------
   // T-FMB-003: Long titles keep disambiguating suffix and max length.
-  // --------------------------------------------------------------------------
   try {
     const longTitle = '# This is an intentionally very long heading designed to exceed the normal dashboard title width for suffix retention tests\n\nBody.';
     const result = migration.buildFrontmatterContent(
@@ -102,9 +96,7 @@ function run() {
     fail('T-FMB-003: Truncated title keeps suffix', error.message);
   }
 
-  // --------------------------------------------------------------------------
   // T-FMB-004: CLI idempotency (apply then dry-run => zero changed).
-  // --------------------------------------------------------------------------
   let tmpRoot = null;
   try {
     tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'frontmatter-backfill-'));
@@ -153,9 +145,7 @@ function run() {
     }
   }
 
-  // --------------------------------------------------------------------------
   // T-FMB-005: Managed keys normalize case-insensitively.
-  // --------------------------------------------------------------------------
   try {
     const input = `---
 Title: "Mixed Case Title"
@@ -186,9 +176,7 @@ Context_Type: research
     fail('T-FMB-005: Managed keys normalize case-insensitively', error.message);
   }
 
-  // --------------------------------------------------------------------------
   // T-FMB-006: Inline arrays keep quoted comma values intact.
-  // --------------------------------------------------------------------------
   try {
     const input = `---
 triggerPhrases: ["alpha, beta", "gamma"]
@@ -214,9 +202,7 @@ triggerPhrases: ["alpha, beta", "gamma"]
     fail('T-FMB-006: Inline arrays preserve quoted commas', error.message);
   }
 
-  // --------------------------------------------------------------------------
   // T-FMB-007: Strict mode skips malformed frontmatter and reports failure.
-  // --------------------------------------------------------------------------
   tmpRoot = null;
   try {
     tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'frontmatter-malformed-'));
@@ -262,9 +248,7 @@ triggerPhrases: ["alpha, beta", "gamma"]
     }
   }
 
-  // --------------------------------------------------------------------------
   // T-FMB-008: CLI dry-run includes template-path processing by default.
-  // --------------------------------------------------------------------------
   tmpRoot = null;
   try {
     tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'frontmatter-template-'));
@@ -295,9 +279,7 @@ triggerPhrases: ["alpha, beta", "gamma"]
     }
   }
 
-  // --------------------------------------------------------------------------
   // T-FMB-009: Malformed in-block list is treated as malformed and not rewritten.
-  // --------------------------------------------------------------------------
   try {
     const input = `---
 title: "Malformed List"
@@ -321,9 +303,7 @@ title: "Malformed List"
     fail('T-FMB-009: Malformed in-block list is skipped', error.message);
   }
 
-  // --------------------------------------------------------------------------
   // T-FMB-010: Inline arrays support trailing YAML comments.
-  // --------------------------------------------------------------------------
   try {
     const input = `---
 triggerPhrases: ["alpha, beta", "gamma"] # keep this comment ignored

@@ -1,17 +1,13 @@
-// ---------------------------------------------------------------
 // TEST: Stage-1 Candidate Gen — Expansion & Dedup
-// ---------------------------------------------------------------
 // Covers CHK-016: stage1-candidate-gen.ts orchestrates expansion
-//   T1: Stage-1 calls expansion when enabled (R12 path)
-//   T2: Deduplication works correctly — baseline-first ordering
-//   T3: Expansion suppressed for simple queries (R15 mutual exclusion)
-//   T4: Expansion disabled when flag is OFF → single channel
-// ---------------------------------------------------------------
-
+// T1: Stage-1 calls expansion when enabled (R12 path)
+// T2: Deduplication works correctly — baseline-first ordering
+// T3: Expansion suppressed for simple queries (R15 mutual exclusion)
+// T4: Expansion disabled when flag is OFF → single channel
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 // We test the internal helpers via __testables and mock external deps
-// to avoid needing a live DB or embedding provider.
+// To avoid needing a live DB or embedding provider.
 
 const ENV_FLAGS = [
   'SPECKIT_EMBEDDING_EXPANSION',
@@ -167,7 +163,7 @@ describe('Stage-1: Expansion & Dedup', () => {
       combinedQuery: 'test query related terms',
     });
 
-    // searchWithFallback returns different results for baseline vs expansion
+    // SearchWithFallback returns different results for baseline vs expansion
     const mockSearch = searchWithFallback as ReturnType<typeof vi.fn>;
     mockSearch
       .mockResolvedValueOnce([{ id: 1, score: 0.9, title: 'baseline' }])
@@ -206,7 +202,7 @@ describe('Stage-1: Expansion & Dedup', () => {
 
     const result = await executeStage1({ config: makeConfig() });
 
-    // id=1 should appear once with baseline score (0.9), not expanded (0.6)
+    // Id=1 should appear once with baseline score (0.9), not expanded (0.6)
     const id1Rows = result.candidates.filter((r) => r.id === 1);
     expect(id1Rows).toHaveLength(1);
     expect(id1Rows[0]!.score).toBe(0.9);

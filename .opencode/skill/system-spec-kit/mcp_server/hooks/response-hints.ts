@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Response Hints
-// ---------------------------------------------------------------
+// --- 1. RESPONSE HINTS ---
 
 import { estimateTokenCount } from '@spec-kit/shared/utils/token-estimate';
 
@@ -36,7 +34,7 @@ function syncEnvelopeTokenCount(envelope: EnvelopeRecord): number {
     : -1;
 
   // Converges in 2-3 iterations: token count changes the serialized length,
-  // which changes the count. The 5-iteration cap is a safety bound.
+  // Which changes the count. The 5-iteration cap is a safety bound.
   for (let attempt = 0; attempt < 5; attempt += 1) {
     const nextTokenCount = estimateTokenCount(JSON.stringify(envelope, null, 2));
     meta.tokenCount = nextTokenCount;
@@ -50,8 +48,8 @@ function syncEnvelopeTokenCount(envelope: EnvelopeRecord): number {
 }
 
 // Extra JSON.stringify is intentional: syncEnvelopeTokenCount mutates the
-// envelope in place and returns a number. Keeping that return type stable
-// avoids a breaking API change across 10+ call sites.
+// Envelope in place and returns a number. Keeping that return type stable
+// Avoids a breaking API change across 10+ call sites.
 function serializeEnvelopeWithTokenCount(envelope: EnvelopeRecord): string {
   syncEnvelopeTokenCount(envelope);
   return JSON.stringify(envelope, null, 2);

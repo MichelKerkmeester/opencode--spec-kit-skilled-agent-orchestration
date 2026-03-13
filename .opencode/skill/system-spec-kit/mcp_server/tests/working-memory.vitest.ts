@@ -1,8 +1,5 @@
-// ---------------------------------------------------------------
 // TEST: WORKING MEMORY — vitest
 // Aligned with production working-memory.ts named exports
-// ---------------------------------------------------------------
-
 import { describe, it, expect } from 'vitest';
 import * as workingMemory from '../lib/cache/cognitive/working-memory';
 import * as checkpoints from '../lib/storage/checkpoints';
@@ -26,7 +23,7 @@ describe('Working Memory Module', () => {
       expect(typeof workingMemory.WORKING_MEMORY_CONFIG.enabled).toBe('boolean');
     });
 
-    // maxCapacity (Miller's Law: 7)
+    // MaxCapacity (Miller's Law: 7)
     it('maxCapacity is valid', () => {
       expect(typeof workingMemory.WORKING_MEMORY_CONFIG.maxCapacity).toBe('number');
       expect(workingMemory.WORKING_MEMORY_CONFIG.maxCapacity).toBeGreaterThan(0);

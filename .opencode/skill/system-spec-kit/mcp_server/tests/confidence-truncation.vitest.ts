@@ -1,10 +1,8 @@
-// ---------------------------------------------------------------
-// MODULE: Test — Confidence Truncation
-// ---------------------------------------------------------------
+// --- 1. TEST — CONFIDENCE TRUNCATION ---
 // Query Intelligence
 // 24 tests covering:
-//   basic truncation, minimum result count, no-truncation, flag disabled,
-//   edge cases, >30% tail reduction verification, algorithm boundaries
+// Basic truncation, minimum result count, no-truncation, flag disabled,
+// Edge cases, >30% tail reduction verification, algorithm boundaries
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import {
@@ -135,7 +133,7 @@ describe('T029-03: Basic Truncation with Clear Score Gap', () => {
     // Gaps:   0.05, 0.03, 0.72, 0.02
     // Median gap (of 4): sort=[0.02,0.03,0.05,0.72] → (0.03+0.05)/2 = 0.04
     // Threshold = 2 * 0.04 = 0.08
-    // gap[2] = 0.72 > 0.08 → cutoffIndex = 2 (keep 0,1,2)
+    // Gap[2] = 0.72 > 0.08 → cutoffIndex = 2 (keep 0,1,2)
     const results = makeResults([
       [1, 0.9], [2, 0.85], [3, 0.82], [4, 0.10], [5, 0.08],
     ]);
@@ -198,11 +196,11 @@ describe('T029-04: Minimum Result Count (3)', () => {
       [1, 0.9], [2, 0.1], [3, 0.05], [4, 0.04], [5, 0.03],
     ]);
     // Gaps: 0.80, 0.05, 0.01, 0.01
-    // sorted: 0.01, 0.01, 0.05, 0.80 → median = (0.01 + 0.05)/2 = 0.03
-    // threshold = 2 * 0.03 = 0.06
+    // Sorted: 0.01, 0.01, 0.05, 0.80 → median = (0.01 + 0.05)/2 = 0.03
+    // Threshold = 2 * 0.03 = 0.06
     // Start search at i=2 (minResults-1 = 2):
-    //   gap[2] = 0.01, not > 0.06
-    //   gap[3] = 0.01, not > 0.06
+    // Gap[2] = 0.01, not > 0.06
+    // Gap[3] = 0.01, not > 0.06
     // No truncation
     const out = truncateByConfidence(results);
     // With the actual numbers the large gap at 0 is not searched; no truncation
@@ -215,7 +213,7 @@ describe('T029-04: Minimum Result Count (3)', () => {
       [1, 0.9], [2, 0.85], [3, 0.10], [4, 0.05], [5, 0.04],
     ]);
     // Gaps: 0.05, 0.75, 0.05, 0.01  → sorted: 0.01, 0.05, 0.05, 0.75 → median = (0.05+0.05)/2 = 0.05
-    // threshold = 0.10
+    // Threshold = 0.10
     // Start at i=1 (minResults-1=1): gap[1] = 0.75 > 0.10 → cutoffIndex=1 (keep 2 results)
     const out = truncateByConfidence(results, { minResults: 2 });
     expect(out.truncated).toBe(true);

@@ -1,7 +1,5 @@
 #!/usr/bin/env node
-// ---------------------------------------------------------------
-// SETUP: RECORD NODE VERSION
-// ---------------------------------------------------------------
+// --- 1. RECORD NODE VERSION ---
 'use strict';
 
 const fs = require('fs');

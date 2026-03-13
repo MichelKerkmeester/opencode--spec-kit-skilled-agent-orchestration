@@ -15,11 +15,11 @@
 const fs = require('fs');
 const path = require('path');
 
-// ── Paths ──────────────────────────────────────────────────────────────
+// --- 1. PATHS ---
 const MCP_ROOT = path.resolve(__dirname, '../../mcp_server');
 const BASE_ROOT = path.resolve(MCP_ROOT, '..');
 
-// ── Test State ─────────────────────────────────────────────────────────
+// --- 2. TEST STATE ---
 let passed = 0;
 let failed = 0;
 const failures = [];
@@ -33,8 +33,7 @@ function fail(msg, detail) {
 }
 function section(name) { console.log(`\n\u2501\u2501 ${name} ${'\u2501'.repeat(Math.max(0, 56 - name.length))}`); }
 
-// ── Source Analysis Helper ─────────────────────────────────────────────
-
+// --- 3. SOURCE ANALYSIS HELPER ---
 /**
  * Find lines in a function body that match a pattern.
  * @param {string} source - File source code
@@ -151,7 +150,7 @@ function testBug1() {
 // ════════════════════════════════════════════════════════════════════════
 //
 // Bug: extractCausalLinks function declares `causalLinks` and `causalBlockMatch`
-//      but references `causal_links` (line ~348) and `causal_block_match` (line ~351)
+//      But references `causal_links` (line ~348) and `causal_block_match` (line ~351)
 // Fix: References should use camelCase versions
 //
 function testBug2() {
@@ -213,7 +212,7 @@ function testBug2() {
 // ════════════════════════════════════════════════════════════════════════
 //
 // Bug: SQL query returns `COUNT(DISTINCT source_id) as source_count`
-//      but JS accesses `stats.sourceCount` (camelCase - always undefined/0)
+//      But JS accesses `stats.sourceCount` (camelCase - always undefined/0)
 // Fix: JS should access `stats.source_count` to match SQL alias
 //
 function testBug3() {

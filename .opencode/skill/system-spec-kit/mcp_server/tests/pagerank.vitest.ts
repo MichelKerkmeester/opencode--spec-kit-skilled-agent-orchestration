@@ -1,9 +1,6 @@
-// ---------------------------------------------------------------
 // TEST: Batch PageRank (C138-P4)
 // Iterative PageRank for memory graph authority scoring.
 // Verifies convergence, score persistence, isolation, batching.
-// ---------------------------------------------------------------
-
 import { describe, it, expect } from 'vitest';
 import { computePageRank } from '../lib/manage/pagerank';
 import type { GraphNode, PageRankResult } from '../lib/manage/pagerank';

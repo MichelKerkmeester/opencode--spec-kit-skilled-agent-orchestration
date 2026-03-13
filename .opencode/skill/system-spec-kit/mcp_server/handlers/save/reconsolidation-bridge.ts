@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Reconsolidation Bridge
-// ---------------------------------------------------------------
+// --- 1. RECONSOLIDATION BRIDGE ---
 
 import path from 'path';
 import type BetterSqlite3 from 'better-sqlite3';
@@ -50,8 +48,8 @@ export async function runReconsolidationIfEnabled(
   const reconWarnings: string[] = [];
 
   // T-04: search-flags.ts is the canonical caller-visible opt-in gate.
-  // reconsolidation.ts keeps an internal guard as a defensive fallback for
-  // direct callers and future entry points.
+  // Reconsolidation.ts keeps an internal guard as a defensive fallback for
+  // Direct callers and future entry points.
   if (!force && isReconsolidationFlagEnabled() && embedding) {
     try {
       const hasCheckpoint = hasReconsolidationCheckpoint(database, parsed.specFolder);
@@ -101,9 +99,9 @@ export async function runReconsolidationIfEnabled(
                 ? classifyEncodingIntent(memory.content)
                 : undefined;
 
-              // AI-WHY: P1-01 fix — wrap all DB writes (index, metadata, BM25, history) in a
-              // single transaction for atomicity. better-sqlite3 supports nested transactions
-              // via savepoints, so this is safe even if indexMemory uses its own transaction.
+              // P1-01 fix — wrap all DB writes (index, metadata, BM25, history) in a
+              // Single transaction for atomicity. better-sqlite3 supports nested transactions
+              // Via savepoints, so this is safe even if indexMemory uses its own transaction.
               const fileMetadata = incrementalIndex.getFileMetadata(memory.filePath);
               const fileMtimeMs = fileMetadata ? fileMetadata.mtime : null;
 
@@ -202,12 +200,12 @@ export async function runReconsolidationIfEnabled(
             warnings: reconWarnings,
           };
         }
-        // reconResult is null or complement — fall through to normal CREATE path
+        // ReconResult is null or complement — fall through to normal CREATE path
       }
     } catch (reconErr: unknown) {
       const message = toErrorMessage(reconErr);
       console.warn(`[memory-save] TM-06: Reconsolidation error (proceeding with normal save): ${message}`);
-      // AI-GUARD: Reconsolidation errors must not block saves
+      // Reconsolidation errors must not block saves
     }
   }
 

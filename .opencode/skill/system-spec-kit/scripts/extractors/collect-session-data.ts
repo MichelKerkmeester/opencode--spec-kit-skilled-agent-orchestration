@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Collect Session Data
-// ---------------------------------------------------------------
+// --- 1. COLLECT SESSION DATA ---
 // Orchestrates session data collection — gathers observations, files, decisions, and context
 
 // Node stdlib
@@ -596,7 +594,7 @@ function buildContinueSessionData(params: ContinueSessionParams): ContinueSessio
   const continuationCount = recentContext?.[0]?.continuationCount ?? 1;
 
   const lastPrompt = userPrompts[userPrompts.length - 1];
-  // AI-FIX: F-19 — Guard against invalid timestamps that cause RangeError on toISOString()
+  // F-19 — Guard against invalid timestamps that cause RangeError on toISOString()
   let lastActivity: string;
   if (lastPrompt?.timestamp) {
     const d = new Date(lastPrompt.timestamp);

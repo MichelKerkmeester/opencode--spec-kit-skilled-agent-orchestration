@@ -1,19 +1,12 @@
-// ---------------------------------------------------------------
-// MODULE: Interference Scoring
-// ---------------------------------------------------------------
+// --- 1. INTERFERENCE SCORING ---
 // Sprint 2, Task T005
-// ---------------------------------------------------------------
 // Computes interference scores for memories — a measure of how many
-// similar memories exist in the same spec_folder. High interference
-// means the memory is one of many similar items, suggesting redundancy.
+// Similar memories exist in the same spec_folder. High interference
+// Means the memory is one of many similar items, suggesting redundancy.
 // Applied as a penalty in composite scoring to demote redundant results.
-// ---------------------------------------------------------------
-
 import Database from 'better-sqlite3';
 
-// ---------------------------------------------------------------
-// 1. TYPES
-// ---------------------------------------------------------------
+// --- 2. TYPES ---
 
 export interface InterferenceResult {
   memoryId: number;
@@ -21,9 +14,7 @@ export interface InterferenceResult {
   specFolder: string;
 }
 
-// ---------------------------------------------------------------
-// 2. CONFIGURATION
-// ---------------------------------------------------------------
+// --- 3. CONFIGURATION ---
 
 /**
  * Cosine similarity threshold for counting a memory as "interfering".
@@ -40,9 +31,7 @@ export const INTERFERENCE_SIMILARITY_THRESHOLD = 0.75;
  */
 export const INTERFERENCE_PENALTY_COEFFICIENT = -0.08;
 
-// ---------------------------------------------------------------
-// 3. TEXT SIMILARITY HEURISTIC
-// ---------------------------------------------------------------
+// --- 4. TEXT SIMILARITY HEURISTIC ---
 
 /**
  * Compute a simple text similarity score between two texts using
@@ -82,9 +71,7 @@ export function computeTextSimilarity(textA: string, textB: string): number {
   return intersectionCount / unionCount;
 }
 
-// ---------------------------------------------------------------
-// 4. CORE COMPUTATION
-// ---------------------------------------------------------------
+// --- 5. CORE COMPUTATION ---
 
 /**
  * Compute interference score for a single memory.
@@ -151,7 +138,7 @@ export function computeInterferenceScore(
 export function computeInterferenceScoresBatch(
   database: Database.Database,
   memoryIds: number[],
-  // AI-WHY: Fix #12 (017-refinement-phase-6) — Threshold was hardcoded to
+  // Fix #12 (017-refinement-phase-6) — Threshold was hardcoded to
   // INTERFERENCE_SIMILARITY_THRESHOLD. Now configurable for testing/tuning.
   threshold: number = INTERFERENCE_SIMILARITY_THRESHOLD
 ): Map<number, number> {
@@ -244,9 +231,7 @@ export function computeInterferenceScoresBatch(
   return results;
 }
 
-// ---------------------------------------------------------------
-// 5. PENALTY APPLICATION
-// ---------------------------------------------------------------
+// --- 6. PENALTY APPLICATION ---
 
 /**
  * Apply interference penalty to a composite score.

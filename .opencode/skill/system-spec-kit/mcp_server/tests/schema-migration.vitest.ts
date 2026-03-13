@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: SCHEMA MIGRATION
-// ---------------------------------------------------------------
-
 import { describe, it, expect } from 'vitest';
 
 // DB-dependent imports (commented out - requires better-sqlite3 / dist modules)

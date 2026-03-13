@@ -1,15 +1,11 @@
-// ---------------------------------------------------------------
-// MODULE: Memory Summaries
-// ---------------------------------------------------------------
+// --- 1. MEMORY SUMMARIES ---
 // Gated via SPECKIT_MEMORY_SUMMARIES
 
 import type Database from 'better-sqlite3';
 import { generateSummary } from './tfidf-summarizer';
 import { isMemorySummariesEnabled } from './search-flags';
 
-// ---------------------------------------------------------------------------
-// 1. INTERFACES
-// ---------------------------------------------------------------------------
+// --- 2. INTERFACES ---
 
 interface SummarySearchResult {
   id: number;
@@ -17,9 +13,7 @@ interface SummarySearchResult {
   similarity: number;
 }
 
-// ---------------------------------------------------------------------------
-// 2. HELPERS
-// ---------------------------------------------------------------------------
+// --- 3. HELPERS ---
 
 /**
  * Compute cosine similarity between two vectors.
@@ -65,7 +59,7 @@ function float32ToBuffer(arr: Float32Array): Buffer {
  * Convert a Buffer (SQLite BLOB) back to a Float32Array.
  */
 function bufferToFloat32(buf: Buffer): Float32Array {
-  // AI-WHY: Create a copy to avoid alignment issues
+  // Create a copy to avoid alignment issues
   const copy = new ArrayBuffer(buf.length);
   const view = new Uint8Array(copy);
   for (let i = 0; i < buf.length; i++) {
@@ -74,9 +68,7 @@ function bufferToFloat32(buf: Buffer): Float32Array {
   return new Float32Array(copy);
 }
 
-// ---------------------------------------------------------------------------
-// 3. CORE FUNCTIONS
-// ---------------------------------------------------------------------------
+// --- 4. CORE FUNCTIONS ---
 
 /**
  * Generate summary, compute embedding, store in memory_summaries.
@@ -163,8 +155,8 @@ export function querySummaryEmbeddings(
   limit: number
 ): SummarySearchResult[] {
   try {
-    // AI-WHY: Cap rows fetched to avoid full-table scans on large databases.
-    // AI-WHY: Over-fetch by a factor so that after cosine ranking we can still return `limit` results.
+    // Cap rows fetched to avoid full-table scans on large databases.
+    // Over-fetch by a factor so that after cosine ranking we can still return `limit` results.
     const fetchCap = Math.max(limit * 10, 1000);
     const rows = db.prepare(`
       SELECT id, memory_id, summary_embedding
@@ -224,9 +216,7 @@ export function checkScaleGate(db: Database.Database): boolean {
   }
 }
 
-// ---------------------------------------------------------------------------
-// 4. TEST EXPORTS
-// ---------------------------------------------------------------------------
+// --- 5. TEST EXPORTS ---
 
 /**
  * Internal functions exposed for unit testing.

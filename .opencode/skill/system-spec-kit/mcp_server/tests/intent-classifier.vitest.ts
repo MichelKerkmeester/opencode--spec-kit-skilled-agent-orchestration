@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: INTENT CLASSIFIER
-// ---------------------------------------------------------------
-
 import { describe, it, expect } from 'vitest';
 import * as intentClassifier from '../lib/search/intent-classifier';
 import { INTENT_LAMBDA_MAP } from '../lib/search/intent-classifier';

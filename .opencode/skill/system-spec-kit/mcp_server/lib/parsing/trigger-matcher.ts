@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Trigger Matcher
-// ---------------------------------------------------------------
+// --- 1. TRIGGER MATCHER ---
 import * as vectorIndex from '../search/vector-index';
 import { escapeRegex } from '../utils/path-security';
 
@@ -140,7 +138,7 @@ export function logExecutionTime(operation: string, durationMs: number, details:
 let triggerCache: TriggerCacheEntry[] | null = null;
 let cacheTimestamp: number = 0;
 
-// AI-TRACE: T015: LRU cache for regex objects to prevent memory leaks
+// LRU cache for regex objects to prevent memory leaks
 const regexLruCache: Map<string, RegExp> = new Map();
 
 /** Get or create a cached regex for a trigger phrase. @param phrase - The trigger phrase @returns Compiled RegExp */
@@ -156,7 +154,7 @@ export function getCachedRegex(phrase: string): RegExp {
     }
   }
 
-  // AI-WHY: Unicode-aware word boundary avoids false matches on accented characters (BUG-026 fix)
+  // Unicode-aware word boundary avoids false matches on accented characters (BUG-026 fix)
   const escaped = escapeRegex(phrase);
   const regex = new RegExp(
     `(?:^|[^a-zA-Z0-9\u00C0-\u00FF])${escaped}(?:[^a-zA-Z0-9\u00C0-\u00FF]|$)`,
@@ -186,9 +184,9 @@ export function loadTriggerCache(): TriggerCacheEntry[] {
   }
 
   try {
-    // AI-WHY: initializeDb() is called on every cache-miss path (not just at startup)
-    // AI-WHY: because trigger-matcher may be the first module to access the database in the
-    // process. The function is idempotent — repeated calls return immediately when the
+    // InitializeDb() is called on every cache-miss path (not just at startup)
+    // Because trigger-matcher may be the first module to access the database in the
+    // Process. The function is idempotent — repeated calls return immediately when the
     // DB singleton is already initialised — so the side-effect is safe.
     vectorIndex.initializeDb();
     const db = vectorIndex.getDb();
@@ -221,7 +219,7 @@ export function loadTriggerCache(): TriggerCacheEntry[] {
       let phrases: unknown;
       try {
         phrases = JSON.parse(row.trigger_phrases);
-      } catch (_err: unknown) { // AI-GUARD: Malformed JSON in trigger_phrases — skip row
+      } catch (_err: unknown) { // Malformed JSON in trigger_phrases — skip row
         continue;
       }
 
@@ -303,7 +301,7 @@ export function matchPhraseWithBoundary(text: string, phrase: string, precompile
   if (precompiledRegex) {
     return precompiledRegex.test(text);
   }
-  // AI-WHY: Fallback for direct calls without pre-compiled regex
+  // Fallback for direct calls without pre-compiled regex
   const escaped = escapeRegex(phrase);
   const regex = new RegExp(
     `(?:^|[^a-zA-Z0-9\u00C0-\u00FF])${escaped}(?:[^a-zA-Z0-9\u00C0-\u00FF]|$)`,
@@ -336,7 +334,7 @@ export const PREFERENCE_KEYWORDS: string[] = [
   'please use',
 ];
 
-// AI-WHY: Correction signals (0.2) weighted higher than preferences (0.1) — corrections indicate stronger search intent
+// Correction signals (0.2) weighted higher than preferences (0.1) — corrections indicate stronger search intent
 /** Boost values per signal category */
 const SIGNAL_BOOSTS: Record<Exclude<SignalCategory, 'neutral'>, number> = {
   correction: 0.2,

@@ -1,9 +1,6 @@
-// ---------------------------------------------------------------
 // TEST: Adaptive Fusion (C136-10)
 // 15 tests: weight profiles, sum<=1, deterministic output,
-// flag ON/OFF, dark-run, degraded contract, fallback, intent impact
-// ---------------------------------------------------------------
-
+// Flag ON/OFF, dark-run, degraded contract, fallback, intent impact
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import {
   getAdaptiveWeights,
@@ -286,13 +283,13 @@ describe('C136-10 Adaptive Fusion', () => {
   describe('C138: Intent-Weighted RRF Activation', () => {
     it('C138-T1: find_spec intent heavily weights FTS5/keyword', () => {
       const w = getAdaptiveWeights('find_spec');
-      // find_spec should lean toward keyword matching
+      // Find_spec should lean toward keyword matching
       expect(w.keywordWeight).toBeGreaterThanOrEqual(0.2);
     });
 
     it('C138-T2: explore/understand intent balances evenly', () => {
       const w = getAdaptiveWeights('understand');
-      // understand should favor semantic
+      // Understand should favor semantic
       expect(w.semanticWeight).toBeGreaterThan(w.keywordWeight);
     });
 

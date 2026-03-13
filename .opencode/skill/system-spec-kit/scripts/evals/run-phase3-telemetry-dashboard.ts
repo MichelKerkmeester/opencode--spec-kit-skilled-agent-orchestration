@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Run Phase 3 Telemetry Dashboard
-// ---------------------------------------------------------------
+// --- 1. RUN PHASE 3 TELEMETRY DASHBOARD ---
 
 import fs from 'fs';
 import path from 'path';

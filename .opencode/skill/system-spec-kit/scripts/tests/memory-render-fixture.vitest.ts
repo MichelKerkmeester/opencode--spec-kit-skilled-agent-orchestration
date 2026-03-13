@@ -1,8 +1,5 @@
-// ---------------------------------------------------------------
 // TEST: Memory Render Fixture Regression
 // End-to-end regression for rendered memory naming and quality linting
-// ---------------------------------------------------------------
-
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';

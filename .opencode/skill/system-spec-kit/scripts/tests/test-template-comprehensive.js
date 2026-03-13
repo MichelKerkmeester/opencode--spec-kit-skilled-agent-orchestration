@@ -1,6 +1,4 @@
-// ───────────────────────────────────────────────────────────────
-// TEST: TEMPLATE SYSTEM COMPREHENSIVE TESTS
-// ───────────────────────────────────────────────────────────────
+// --- 1. TEST: TEMPLATE SYSTEM COMPREHENSIVE TESTS ---
 //
 // Additional comprehensive tests for the SpecKit template system:
 // - Template rendering with real data substitution
@@ -46,7 +44,7 @@ const ADDENDUM_L2 = path.join(ADDENDUM_DIR, 'level2-verify');
 const ADDENDUM_L3 = path.join(ADDENDUM_DIR, 'level3-arch');
 const ADDENDUM_L3PLUS = path.join(ADDENDUM_DIR, 'level3plus-govern');
 
-// compose.sh script
+// Compose.sh script
 const COMPOSE_SCRIPT = path.join(SCRIPTS_DIR, 'templates', 'compose.sh');
 
 // Test data for rendering

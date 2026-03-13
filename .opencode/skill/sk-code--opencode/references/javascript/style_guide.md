@@ -276,19 +276,19 @@ const message = "Hello world";  // Double quotes
 ### Principles
 
 1. **Quantity limit:** Maximum 3 comments per 10 lines of code
-2. **Focus on AI-intent semantics:** `AI-WHY`, `AI-GUARD`, `AI-INVARIANT`, `AI-TRACE`, `AI-RISK`
+2. **Focus on purposeful semantics:** Explain WHY something is done, not WHAT it does
 3. **Focus on WHY, not WHAT:** Explain intent, constraints, reasoning
 4. **No commented-out code:** Delete unused code (git preserves history)
 
-### AI Comment Prefix Contract
+### Comment Examples
 
-Use these prefixes for inline comments:
+Use plain comments that explain reasoning:
 
-- `// AI-WHY: reasoning for non-obvious choice`
-- `// AI-GUARD: precondition/invariant check`
-- `// AI-INVARIANT: state that must always hold`
-- `// AI-TRACE REQ-###|BUG-###|SEC-###|T###: traceability hook`
-- `// AI-RISK: safety, performance, or reliability constraint`
+- `// Reasoning for non-obvious choice`
+- `// Precondition/invariant check`
+- `// State that must always hold`
+- `// REQ-###|BUG-###|SEC-###|T###: traceability hook`
+- `// Safety, performance, or reliability constraint`
 
 ### Reference Comments
 
@@ -301,10 +301,10 @@ Use bracketed module prefix for inline comments:
 Use task/requirement prefixes for traceability:
 
 ```javascript
-// AI-TRACE T043-T047: Causal Memory Graph handlers
-// AI-TRACE REQ-033: Transaction manager for recovery
-// AI-TRACE SEC-001: Sanitize input (CWE-79)
-// AI-TRACE BUG-107: Pending file recovery on startup
+// T043-T047: Causal Memory Graph handlers
+// REQ-033: Transaction manager for recovery
+// SEC-001: Sanitize input (CWE-79)
+// BUG-107: Pending file recovery on startup
 ```
 
 **Evidence**: `mcp_server/context-server.ts:34,42,62,65`
@@ -328,18 +328,18 @@ function calculateMemoryScore(memory, currentTime) { }
 **Good examples (explain reasoning):**
 
 ```javascript
-// AI-GUARD: skip if already initialized to prevent double-binding
+// Skip if already initialized to prevent double-binding
 if (window[INIT_FLAG]) return;
 
-// AI-WHY: sort by recency so newest memories surface first
+// Sort by recency so newest memories surface first
 results.sort((a, b) => b.timestamp - a.timestamp);
 
-// AI-RISK: add timeout to prevent hang on unresponsive database
+// Add timeout to prevent hang on unresponsive database
 const timeout = new Promise((_, reject) =>
   setTimeout(() => reject(new Error('Timeout')), 30000)
 );
 
-// AI-INVARIANT: close DB connection on all control paths
+// Close DB connection on all control paths
 try {
   await processBatch(items);
 } finally {

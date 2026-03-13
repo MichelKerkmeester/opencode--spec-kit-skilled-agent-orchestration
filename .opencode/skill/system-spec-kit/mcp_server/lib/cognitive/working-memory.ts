@@ -1,16 +1,12 @@
-// ---------------------------------------------------------------
-// MODULE: Working Memory
-// ---------------------------------------------------------------
-// AI-WHY: Session-based attention management
+// --- 1. WORKING MEMORY ---
+// Session-based attention management
 // DECAY STRATEGY (ADR-004): This module handles SESSION-SCOPED decay
-// only (event-distance based: score * pow(0.85, eventsElapsed)). It operates on
-// the working_memory table, NOT memory_index. This is intentionally
-// independent of FSRS long-term decay — different time scale, different
-// domain (ephemeral session attention vs persistent memory scoring).
+// Only (event-distance based: score * pow(0.85, eventsElapsed)). It operates on
+// The working_memory table, NOT memory_index. This is intentionally
+// Independent of FSRS long-term decay — different time scale, different
+// Domain (ephemeral session attention vs persistent memory scoring).
 // The T214/T008 decay/delete separation (floor=0.05, deleteThreshold=0.01)
-// ensures stable resting state and explicit low-score eviction.
-// ---------------------------------------------------------------
-
+// Ensures stable resting state and explicit low-score eviction.
 import type Database from 'better-sqlite3';
 import { isFeatureEnabled } from './rollout-policy';
 
@@ -33,9 +29,9 @@ const MENTION_BOOST_FACTOR = 0.05;
 const DECAY_FLOOR = 0.05;
 const DELETE_THRESHOLD = 0.01;
 const EVENT_COUNTER_MODULUS = 2 ** 31;
-// AI-WHY: Cap mention_count to prevent unbounded integer growth in long-lived
-// sessions. The mention boost formula (mention_count * MENTION_BOOST_FACTOR)
-// would produce unreasonably large scores without a ceiling.
+// Cap mention_count to prevent unbounded integer growth in long-lived
+// Sessions. The mention boost formula (mention_count * MENTION_BOOST_FACTOR)
+// Would produce unreasonably large scores without a ceiling.
 const MAX_MENTION_COUNT = 100;
 
 /* --- 2. SCHEMA SQL --- */
@@ -582,7 +578,7 @@ function batchUpdateScores(sessionId: string): number {
           continue;
         }
 
-        // AI-WHY: Fix #29 (017-refinement-phase-6) — Clamp to [DECAY_FLOOR, 1.0].
+        // Fix #29 (017-refinement-phase-6) — Clamp to [DECAY_FLOOR, 1.0].
         // Mention boost can push rawScore above 1.0 which breaks [0,1] score semantics.
         const nextScore = Math.max(DECAY_FLOOR, Math.min(1.0, rawScore));
         const updateResult = updateStmt.run(nextScore, entry.id) as { changes: number };

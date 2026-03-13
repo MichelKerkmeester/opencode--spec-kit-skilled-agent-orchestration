@@ -1,8 +1,6 @@
-// ---------------------------------------------------------------
-// MODULE: Test — Shadow Comparison
-// ---------------------------------------------------------------
+// --- 1. TEST — SHADOW COMPARISON ---
 // Verifies that tier-based channel routing produces results comparable
-// to full pipeline (all 5 channels) while reducing simulated latency.
+// To full pipeline (all 5 channels) while reducing simulated latency.
 //
 // Approach:
 // - Simulate "search results" as fixed sets based on channel set
@@ -118,7 +116,7 @@ function simulateResultIds(channels: readonly ChannelName[], queryHash: number):
   const ids = new Set<number>();
 
   // Each channel contributes a fixed set of "result slots" based on its index
-  // in ALL_CHANNELS and a small query-specific offset
+  // In ALL_CHANNELS and a small query-specific offset
   const channelIndex = (name: ChannelName): number =>
     ALL_CHANNELS.indexOf(name as ChannelName);
 

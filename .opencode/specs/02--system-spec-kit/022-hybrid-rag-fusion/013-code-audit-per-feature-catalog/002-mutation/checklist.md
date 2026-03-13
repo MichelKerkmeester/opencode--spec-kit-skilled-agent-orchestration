@@ -32,28 +32,42 @@ P0 items below are complete and include inline evidence.
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] Requirements documented in `spec.md` [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-002 [P0] Technical approach defined in `plan.md` [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-003 [P1] Dependencies identified and available [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n<!-- /ANCHOR:pre-impl -->
+- [x] CHK-001 [P0] Requirements documented in `spec.md` [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
+- [x] CHK-002 [P0] Technical approach defined in `plan.md` [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
+- [x] CHK-003 [P1] Dependencies identified and available [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
+<!-- /ANCHOR:pre-impl -->
 
 ---
 
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [x] CHK-010 [P0] Code passes lint/format checks (TSC clean) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-011 [P0] No new unexpected console errors or warnings introduced by the mutation fixes [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-012 [P1] Error handling implemented (T-02 catch -> warn, T-07 throw behavior) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-013 [P1] Code follows project patterns [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n<!-- /ANCHOR:code-quality -->
+- [x] CHK-010 [P0] Code passes lint/format checks (TSC clean) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
+- [x] CHK-011 [P0] No new unexpected console errors or warnings introduced by the mutation fixes [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
+- [x] CHK-012 [P1] Error handling implemented (T-02 catch -> warn, T-07 throw behavior) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
+- [x] CHK-013 [P1] Code follows project patterns [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
+<!-- /ANCHOR:code-quality -->
 
 ---
 
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-020 [P0] All acceptance criteria met [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-021 [P0] Verification complete (`npx tsc --noEmit` clean, focused mutation verification run: `8 files`, `167 tests` passed; full suite: `254 passed files / 5 failed files` and `7331 passed / 8 failed / 1 skipped / 30 todo` tests with failures outside mutation scope) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-022 [P1] Edge cases tested [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-023 [P1] Error scenarios validated [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n<!-- /ANCHOR:testing -->
+- [x] CHK-020 [P0] All acceptance criteria met [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
+- [x] CHK-021 [P0] Verification complete (`npx tsc --noEmit` clean, focused mutation verification run: `8 files`, `167 tests` passed; full suite: `254 passed files / 5 failed files` and `7331 passed / 8 failed / 1 skipped / 30 todo` tests with failures outside mutation scope) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
+- [x] CHK-022 [P1] Edge cases tested [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
+- [x] CHK-023 [P1] Error scenarios validated [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
+<!-- /ANCHOR:testing -->
 
 ---
 
 <!-- ANCHOR:security -->
 ## Security
 
-- [x] CHK-030 [P0] No hardcoded secrets [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-031 [P0] Input validation implemented (`T-01/T-10: olderThanDays >= 1` and `memory_bulk_delete.confirm === true`) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-032 [P1] Auth/authz working correctly - N/A for this internal mutation audit scope [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n<!-- /ANCHOR:security -->
+- [x] CHK-030 [P0] No hardcoded secrets [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
+- [x] CHK-031 [P0] Input validation implemented (`T-01/T-10: olderThanDays >= 1` and `memory_bulk_delete.confirm === true`) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
+- [x] CHK-032 [P1] Auth/authz working correctly - N/A for this internal mutation audit scope [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
+<!-- /ANCHOR:security -->
 
 ---
 
@@ -66,7 +80,9 @@ P1 items are complete and include inline evidence unless explicitly deferred.
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-040 [P1] Spec/plan/tasks synchronized [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-041 [P1] Code comments adequate [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [ ] CHK-042 [P2] README updated (if applicable) - Deferred (P2)
+- [x] CHK-040 [P1] Spec/plan/tasks synchronized [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
+- [x] CHK-041 [P1] Code comments adequate [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
+- [ ] CHK-042 [P2] README updated (if applicable) - Deferred (P2)
 <!-- /ANCHOR:docs -->
 
 ---
@@ -74,7 +90,10 @@ P1 items are complete and include inline evidence unless explicitly deferred.
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [x] CHK-050 [P1] Temp files in `scratch/` only [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-051 [P1] `scratch/` cleaned before completion [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-052 [P2] Findings saved to `memory/` [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n<!-- /ANCHOR:file-org -->
+- [x] CHK-050 [P1] Temp files in `scratch/` only [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
+- [x] CHK-051 [P1] `scratch/` cleaned before completion [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
+- [x] CHK-052 [P2] Findings saved to `memory/` [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
+<!-- /ANCHOR:file-org -->
 
 ---
 

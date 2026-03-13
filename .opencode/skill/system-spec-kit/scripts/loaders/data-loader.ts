@@ -1,10 +1,7 @@
-// ---------------------------------------------------------------
-// MODULE: Data Loader
-// ---------------------------------------------------------------
+// --- 1. DATA LOADER ---
 // Loads session data from file, OpenCode capture, or simulation fallback
 
-// 1. IMPORTS
-
+// --- 2. IMPORTS ---
 import fs from 'fs/promises';
 import path from 'path';
 import os from 'os';
@@ -19,9 +16,7 @@ import {
 } from '../utils/input-normalizer';
 import type { RawInputData, NormalizedData, OpencodeCapture, Observation, UserPrompt, RecentContext, FileEntry, DataSource } from '../utils/input-normalizer';
 
-// ---------------------------------------------------------------
-// 2. TYPES
-// ---------------------------------------------------------------
+// --- 3. TYPES ---
 
 // Re-export DataSource from input-normalizer for consumers importing from loaders
 export type { DataSource };
@@ -42,9 +37,7 @@ interface OpencodeCaptureMod {
   captureConversation(maxExchanges: number, projectRoot: string): Promise<OpencodeCapture | null>;
 }
 
-// ---------------------------------------------------------------
-// 3. LAZY-LOADED DEPENDENCIES
-// ---------------------------------------------------------------
+// --- 4. LAZY-LOADED DEPENDENCIES ---
 
 // Lazy load via dynamic import() to handle missing dependencies
 let _opencodeCapture: OpencodeCaptureMod | null | undefined;
@@ -64,9 +57,7 @@ async function getOpencodeCapture(): Promise<OpencodeCaptureMod | null> {
   return _opencodeCapture;
 }
 
-// ---------------------------------------------------------------
-// 4. LOADER FUNCTIONS
-// ---------------------------------------------------------------
+// --- 5. LOADER FUNCTIONS ---
 
 interface LoadOptions {
   dataFile?: string | null;
@@ -185,9 +176,7 @@ async function loadCollectedData(options?: LoadOptions): Promise<LoadedData> {
   );
 }
 
-// ---------------------------------------------------------------
-// 5. EXPORTS
-// ---------------------------------------------------------------
+// --- 6. EXPORTS ---
 
 export {
   loadCollectedData,

@@ -69,7 +69,9 @@ P0 items below are complete and include inline evidence.
 <!-- ANCHOR:testing -->
 ## 5. TESTING
 
-- [x] CHK-020 [P0] TypeScript verification is documented as clean with no output [Test: `npx tsc --noEmit`] [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-021 [P0] Focused 5-file targeted suite is documented as passing `95/95` tests [Test: `npx vitest run --no-file-parallelism tests/handler-memory-list-edge.vitest.ts tests/handler-memory-stats-edge.vitest.ts tests/handler-memory-health-edge.vitest.ts tests/handler-memory-crud.vitest.ts tests/tool-input-schema.vitest.ts`] [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]\n- [x] CHK-022 [P1] Targeted suite file coverage is explicitly listed in docs [EVIDENCE: plan/tasks/implementation-summary verification sections]
+- [x] CHK-020 [P0] TypeScript verification is documented as clean with no output [Test: `npx tsc --noEmit`] [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
+- [x] CHK-021 [P0] Focused 5-file targeted suite is documented as passing `95/95` tests [Test: `npx vitest run --no-file-parallelism tests/handler-memory-list-edge.vitest.ts tests/handler-memory-stats-edge.vitest.ts tests/handler-memory-health-edge.vitest.ts tests/handler-memory-crud.vitest.ts tests/tool-input-schema.vitest.ts`] [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
+- [x] CHK-022 [P1] Targeted suite file coverage is explicitly listed in docs [EVIDENCE: plan/tasks/implementation-summary verification sections]
 - [x] CHK-023 [P1] Regression coverage includes `requestId` assertions for pre-query refresh failures across Discovery edge suites [EVIDENCE: `handler-memory-list-edge.vitest.ts`, `handler-memory-stats-edge.vitest.ts`, `handler-memory-health-edge.vitest.ts`]
 <!-- /ANCHOR:testing -->
 

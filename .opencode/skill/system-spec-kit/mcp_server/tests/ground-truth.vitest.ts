@@ -1,20 +1,18 @@
-// ---------------------------------------------------------------
-// MODULE: Test — Ground Truth
-// ---------------------------------------------------------------
+// --- 1. TEST — GROUND TRUTH ---
 //
 // Validates:
-//   T007.1  — generateGroundTruth() returns ≥100 queries
-//   T007.2  — All 7 intent types have ≥5 queries
-//   T007.3  — All 3 complexity tiers have ≥10 queries
-//   T007.4  — ≥30 manual queries (source='manual')
-//   T007.5  — ≥3 hard negative queries
-//   T007.6  — No duplicate query strings
-//   T007.7  — All required fields present and valid enum values
-//   T007.8  — validateGroundTruthDiversity() returns all gates passed
-//   T007.9  — loadGroundTruth() populates eval DB tables
-//   T007.10 — Distribution summary matches actual query counts
-//   T007.11 — Seed queries (ids 1-21) are all present and unmodified
-//   T007.12 — Hard negatives have no relevance entries
+// T007.1  — generateGroundTruth() returns ≥100 queries
+// T007.2  — All 7 intent types have ≥5 queries
+// T007.3  — All 3 complexity tiers have ≥10 queries
+// T007.4  — ≥30 manual queries (source='manual')
+// T007.5  — ≥3 hard negative queries
+// T007.6  — No duplicate query strings
+// T007.7  — All required fields present and valid enum values
+// T007.8  — validateGroundTruthDiversity() returns all gates passed
+// T007.9  — loadGroundTruth() populates eval DB tables
+// T007.10 — Distribution summary matches actual query counts
+// T007.11 — Seed queries (ids 1-21) are all present and unmodified
+// T007.12 — Hard negatives have no relevance entries
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import Database from 'better-sqlite3';
@@ -657,7 +655,7 @@ describe('T007.11: Seed query integrity (T000d compatibility)', () => {
   it('T007.11.6: seed queries total 21 and cover all required intent types', () => {
     const seedQueries = GROUND_TRUTH_QUERIES.filter(q => q.source === 'seed');
     // The 21 seed queries come from T000d (20 non-hard-neg + 5 hard-neg = 21 total,
-    // with the T000d metadata listing 20 because the last was appended).
+    // With the T000d metadata listing 20 because the last was appended).
     // Verify: all intent types from T000d are represented in seeds.
     const intentTypes = new Set(seedQueries.map(q => q.intentType));
     expect(intentTypes.has('understand')).toBe(true);
@@ -688,7 +686,7 @@ describe('T007.12: Hard negative isolation', () => {
   it('T007.12.2: hard negatives from all 3 sources are present', () => {
     const hardNegs = GROUND_TRUTH_QUERIES.filter(q => q.category === 'hard_negative');
     const sources = new Set(hardNegs.map(q => q.source));
-    // seed and manual hard negatives should exist
+    // Seed and manual hard negatives should exist
     expect(sources.has('seed')).toBe(true);
     expect(sources.has('manual')).toBe(true);
   });

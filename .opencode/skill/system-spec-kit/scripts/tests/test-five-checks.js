@@ -1,6 +1,4 @@
-// ───────────────────────────────────────────────────────────────
-// TEST: FIVE CHECKS FRAMEWORK VERIFICATION
-// ───────────────────────────────────────────────────────────────
+// --- 1. TEST: FIVE CHECKS FRAMEWORK VERIFICATION ---
 //
 // Comprehensive tests for the Five Checks Framework:
 // - Framework documentation structure validation

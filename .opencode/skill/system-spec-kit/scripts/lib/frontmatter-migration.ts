@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Frontmatter Migration
-// ---------------------------------------------------------------
+// --- 1. FRONTMATTER MIGRATION ---
 // Shared helpers for safe markdown frontmatter normalization.
 
 import * as path from 'path';

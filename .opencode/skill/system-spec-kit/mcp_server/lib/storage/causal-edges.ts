@@ -1,9 +1,5 @@
-// ---------------------------------------------------------------
-// MODULE: Causal Edges
-// ---------------------------------------------------------------
+// --- 1. CAUSAL EDGES ---
 // Causal relationship graph for memory lineage
-// ---------------------------------------------------------------
-
 import type Database from 'better-sqlite3';
 import { clearDegreeCache } from '../search/graph-search-fn';
 import { clearGraphSignalsCache } from '../graph/graph-signals';
@@ -110,12 +106,12 @@ function invalidateDegreeCache(): void {
   try {
     clearDegreeCache();
   } catch (_error: unknown) {
-    // AI-GUARD: cache invalidation is best-effort; never block edge mutations
+    // Cache invalidation is best-effort; never block edge mutations
   }
   try {
     clearGraphSignalsCache();
   } catch (_error: unknown) {
-    // AI-GUARD: graph signals cache invalidation is best-effort
+    // Graph signals cache invalidation is best-effort
   }
 }
 
@@ -126,10 +122,10 @@ function invalidateDegreeCache(): void {
 function init(database: Database.Database): void {
   db = database;
 
-  // AI-TRACE: A4-P2-2: Defensive traversal indexes — the canonical creation lives in
-  // vector-index-impl.ts migration v8 (CHK-062).  These IF NOT EXISTS guards
-  // ensure the indexes are present even when the module is initialised outside
-  // the normal migration path (e.g. tests, standalone scripts).
+  // Defensive traversal indexes — the canonical creation lives in
+  // Vector-index-impl.ts migration v8 (CHK-062).  These IF NOT EXISTS guards
+  // Ensure the indexes are present even when the module is initialised outside
+  // The normal migration path (e.g. tests, standalone scripts).
   try {
     database.exec('CREATE INDEX IF NOT EXISTS idx_causal_source ON causal_edges(source_id)');
     database.exec('CREATE INDEX IF NOT EXISTS idx_causal_target ON causal_edges(target_id)');
@@ -162,7 +158,7 @@ function insertEdge(
     ? Math.min(strength, MAX_AUTO_STRENGTH)
     : strength;
 
-  // AI-WHY: Fix #24 (017-refinement-phase-6) — Prevent self-loops
+  // Fix #24 (017-refinement-phase-6) — Prevent self-loops
   if (sourceId === targetId) {
     return null;
   }
@@ -186,12 +182,12 @@ function insertEdge(
       return null;
     }
 
-    // AI-WHY: Wrap SELECT + UPSERT + logWeightChange in a transaction for atomicity
+    // Wrap SELECT + UPSERT + logWeightChange in a transaction for atomicity
     const rowId = database.transaction(() => {
-      // AI-WHY: Check if edge exists (for weight_history logging on conflict update).
+      // Check if edge exists (for weight_history logging on conflict update).
       // This SELECT is intentional: we need the old strength to decide whether
-      // to write a weight_history row after the upsert. The subsequent INSERT
-      // uses last_insert_rowid() to avoid a second post-upsert SELECT.
+      // To write a weight_history row after the upsert. The subsequent INSERT
+      // Uses last_insert_rowid() to avoid a second post-upsert SELECT.
       const existing = (database.prepare(`
         SELECT id, strength FROM causal_edges
         WHERE source_id = ? AND target_id = ? AND relation = ?
@@ -488,7 +484,7 @@ function updateEdge(
 
     params.push(edgeId);
 
-    // AI-WHY: Wrap SELECT + UPDATE + logWeightChange in a transaction for atomicity
+    // Wrap SELECT + UPDATE + logWeightChange in a transaction for atomicity
     const changed = database.transaction(() => {
       // T001d: Capture old strength for weight_history logging
       let oldStrength: number | undefined;
@@ -499,8 +495,8 @@ function updateEdge(
         oldStrength = existing?.strength;
       }
 
-      // AI-GUARD: String interpolation constructs IN(?,?,?) placeholder list only —
-      // all user values are parameterized. Accepted exception per audit H-08.
+      // String interpolation constructs IN(?,?,?) placeholder list only —
+      // All user values are parameterized. Accepted exception per audit H-08.
       const result = (database.prepare(
         `UPDATE causal_edges SET ${parts.join(', ')} WHERE id = ?`
       ) as Database.Statement).run(...params);
@@ -547,9 +543,9 @@ function deleteEdge(edgeId: number): boolean {
   }
 }
 
-// AI-TRACE T001: Let errors propagate so callers inside transactions see failures.
+// Let errors propagate so callers inside transactions see failures.
 // Previously errors were caught and swallowed, which hid edge-cleanup failures
-// from transactional callers (e.g., memory-bulk-delete, memory-crud-delete).
+// From transactional callers (e.g., memory-bulk-delete, memory-crud-delete).
 function deleteEdgesForMemory(memoryId: string): number {
   if (!db) return 0;
 
@@ -614,7 +610,7 @@ function findOrphanedEdges(): CausalEdge[] {
   }
 }
 
-// AI-WHY: Fix #28 (017-refinement-phase-6) — Automated orphan edge cleanup
+// Fix #28 (017-refinement-phase-6) — Automated orphan edge cleanup
 function cleanupOrphanedEdges(): { deleted: number } {
   if (!db) return { deleted: 0 };
   try {
@@ -723,7 +719,7 @@ function rollbackWeights(edgeId: number, toTimestamp: string): boolean {
   if (!db) return false;
   const database = db;
   try {
-    // AI-WHY: Wrap SELECTs + UPDATE + logWeightChange in a transaction for atomicity
+    // Wrap SELECTs + UPDATE + logWeightChange in a transaction for atomicity
     const changed = database.transaction(() => {
       // Get current strength before rollback
       const current = (database.prepare(
@@ -731,8 +727,8 @@ function rollbackWeights(edgeId: number, toTimestamp: string): boolean {
       ) as Database.Statement).get(edgeId) as { strength: number } | undefined;
       if (!current) return null;
 
-      // AI-WHY: Prefer the latest exact-timestamp row to make same-second
-      // history entries deterministic when callers pass a value from getWeightHistory().
+      // Prefer the latest exact-timestamp row to make same-second
+      // History entries deterministic when callers pass a value from getWeightHistory().
       let entry = (database.prepare(`
         SELECT old_strength FROM weight_history
         WHERE edge_id = ? AND changed_at = ?
@@ -741,7 +737,7 @@ function rollbackWeights(edgeId: number, toTimestamp: string): boolean {
 
       // Find the earliest history entry strictly after the target timestamp.
       // This preserves legacy "rollback to before next change" semantics for
-      // timestamps that do not exactly match a stored history row.
+      // Timestamps that do not exactly match a stored history row.
       if (!entry) {
         entry = (database.prepare(`
         SELECT old_strength FROM weight_history

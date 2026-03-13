@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: CAUSAL EDGES UNIT
-// ---------------------------------------------------------------
-
 import { describe, it, expect, beforeEach, beforeAll, afterAll } from 'vitest';
 import Database from 'better-sqlite3';
 import * as causalEdges from '../lib/storage/causal-edges';
@@ -13,15 +10,12 @@ type SqliteDatabase = InstanceType<typeof Database>;
 type CausalChainNode = ReturnType<typeof causalEdges.getCausalChain>;
 type OrphanedEdge = ReturnType<typeof causalEdges.findOrphanedEdges>[number];
 
-// ───────────────────────────────────────────────────────────────
 // TEST: CAUSAL EDGES UNIT (Vitest)
 // Comprehensive unit tests for lib/storage/causal-edges.ts
 // Covers: constants, insertEdge, insertEdgesBatch, getEdgesFrom,
-//         getEdgesTo, getAllEdges, getCausalChain, updateEdge,
-//         deleteEdge, deleteEdgesForMemory, getGraphStats,
-//         findOrphanedEdges
-// ───────────────────────────────────────────────────────────────
-
+// GetEdgesTo, getAllEdges, getCausalChain, updateEdge,
+// DeleteEdge, deleteEdgesForMemory, getGraphStats,
+// FindOrphanedEdges
 /** DFS helper: collect all node IDs from a causal chain tree */
 function collectNodes(node: CausalChainNode): string[] {
   const nodes: string[] = [node.id];
@@ -419,7 +413,7 @@ describe('Causal Edges Unit Tests', () => {
 
       const chain = causalEdges.getCausalChain('1', 2, 'forward');
       const nodes = collectNodes(chain);
-      // maxDepth=2: root(0), child(1) -> at depth=2, traverse returns, so we get 1,2,3
+      // MaxDepth=2: root(0), child(1) -> at depth=2, traverse returns, so we get 1,2,3
       expect(nodes).toHaveLength(3);
       expect(nodes.join(',')).toBe('1,2,3');
     });
@@ -513,7 +507,7 @@ describe('Causal Edges Unit Tests', () => {
       it('T007-FT2: Node at maxDepth DOES trigger max_depth_reached', () => {
         resetEdges();
         // Chain: A -> B -> C -> D, maxDepth=2
-        // getCausalChain adds C at depth 2 (=maxDepth) but never explores C's edges
+        // GetCausalChain adds C at depth 2 (=maxDepth) but never explores C's edges
         causalEdges.insertEdge('A', 'B', 'caused', 1.0);
         causalEdges.insertEdge('B', 'C', 'caused', 1.0);
         causalEdges.insertEdge('C', 'D', 'caused', 1.0);

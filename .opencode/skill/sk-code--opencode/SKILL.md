@@ -283,7 +283,7 @@ STEP 4: Apply Standards
 | File Headers     | Box-drawing format, shebang, 'use strict', strict mode      |
 | Section Dividers | Numbered sections with consistent divider style             |
 | Naming           | Functions, constants, classes, interfaces, types per lang   |
-| Commenting       | AI-intent comments only (WHY/GUARD/INVARIANT/TRACE), max 3/10 LOC |
+| Commenting       | Purposeful comments only (explain WHY, not WHAT), max 3/10 LOC |
 | Error Handling   | Guard clauses, try-catch, typed catch, specific exceptions  |
 | Documentation    | JSDoc, TSDoc, Google docstrings                             |
 | Design Quality   | KISS/DRY + SOLID (SRP/OCP/LSP/ISP/DIP) violation checks     |
@@ -324,7 +324,7 @@ The recurring verifier at `scripts/verify_alignment_drift.py` applies severity-a
 - Optional strict mode: `--fail-on-warn` makes warnings build-breaking.
 - Style rules (`JS-*`, `TS-*`, `PY-*`, `SH-*`) are warning-first by default.
 - Parse/integrity rules (`COMMON-*`, `JSON-*`, `JSONC-*`) are error-class by default.
-- Header style invariants and AI-intent comment policy checks are manual checklist gates; the verifier checks marker-level headers only.
+- Header style invariants and comment policy checks are manual checklist gates; the verifier checks marker-level headers only.
 - Context-aware advisory downgrade is applied in archival/contextual paths (`z_archive`, `scratch`, `memory`, `research`, `context`, `assets`, `examples`, `fixtures`, and test-heavy paths).
 - TypeScript module-header enforcement is skipped for test files (`*.test.ts`, `*.spec.ts`, `*.vitest.ts` + TSX variants) and pattern assets.
 - JavaScript strict-mode enforcement is skipped for `.mjs`.
@@ -352,17 +352,17 @@ The recurring verifier at `scripts/verify_alignment_drift.py` applies severity-a
    - Shell: `lowercase_underscore` functions, `UPPERCASE` globals
    - Config: `camelCase` keys, `$schema` for validation
 
-3. **Add AI-intent comments only (not narrative comments)**
+3. **Add purposeful comments only (not narrative comments)**
    - Maximum 3 comments per 10 lines of code
-   - Allowed intents: `AI-WHY`, `AI-GUARD`, `AI-INVARIANT`, `AI-TRACE`, `AI-RISK`
+   - Comments should explain WHY something is done, not WHAT it does
    - Bad: `// Loop through items`
-   - Good: `// AI-GUARD: reverse order preserves dependency resolution`
+   - Good: `// Reverse order preserves dependency resolution`
 
 4. **Include reference comments for traceability**
-   - Task: `// AI-TRACE T001: Description`
-   - Bug: `// AI-TRACE BUG-042: Description`
-   - Requirement: `// AI-TRACE REQ-003: Description`
-   - Security: `// AI-TRACE SEC-001: Description (CWE-XXX)`
+   - Task: `// T001: Description`
+   - Bug: `// BUG-042: Description`
+   - Requirement: `// REQ-003: Description`
+   - Security: `// SEC-001: Description (CWE-XXX)`
 
 5. **Validate inputs and handle errors**
    - JavaScript: Guard clauses + try-catch
@@ -415,7 +415,7 @@ The recurring verifier at `scripts/verify_alignment_drift.py` applies severity-a
 | Filesystem Safety  | Canonical path containment checks on create/move/delete flows | P0 |
 | Spec Folder Safety | `NNN-name` validation + approved roots for spec operations | P0 |
 | Error Handling     | All error paths handled                  | P1       |
-| AI Comment Policy  | Max 3/10 + AI-intent tags only (manual checklist gate) | P1 |
+| Comment Policy     | Max 3/10 + purposeful WHY comments only (manual checklist gate) | P1 |
 | KISS/DRY/SOLID     | SRP/OCP/LSP/ISP/DIP violations identified | P1      |
 | Documentation      | Public functions have doc comments       | P1       |
 | Reference Comments | Task/bug/req references where applicable | P2       |
@@ -441,7 +441,7 @@ P0 Items (MUST pass):
 □ Spec folder operations enforce `NNN-name` and approved roots
 
 P1 Items (Required):
-□ AI comment policy enforced via manual checklist review (max 3/10, AI-WHY/AI-GUARD/AI-INVARIANT/AI-TRACE/AI-RISK)
+□ Comment policy enforced via manual checklist review (max 3/10, purposeful WHY comments only)
 □ Error handling implemented
 □ Public functions documented
 □ KISS/DRY + SOLID checks applied (SRP/OCP/LSP/ISP/DIP)
@@ -627,7 +627,7 @@ import type { SearchOptions } from '../types';
 // ╚══════════════════════════════════════════════════════════════════════════╝
 {
   "$schema": "https://...",
-  // AI-WHY: section-level rationale
+  // Section-level rationale
   "key": "value"
 }
 ```
@@ -689,10 +689,10 @@ validate_file() {
 ### Comment Patterns
 
 ```javascript
-// GOOD - AI-intent comments
-// AI-GUARD: skip initialization to prevent double-binding
-// AI-WHY: sort by recency so latest evidence is consumed first
-// AI-TRACE REQ-033: transaction manager for pending file recovery
+// GOOD - Purposeful comments
+// Skip initialization to prevent double-binding
+// Sort by recency so latest evidence is consumed first
+// REQ-033: transaction manager for pending file recovery
 
 // BAD - WHAT comments (avoid)
 // Set value to 42

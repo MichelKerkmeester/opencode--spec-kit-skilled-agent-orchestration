@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Memory Crud
-// ---------------------------------------------------------------
+// --- 1. MEMORY CRUD ---
 
 import { handleMemoryDelete } from './memory-crud-delete';
 import { handleMemoryUpdate } from './memory-crud-update';
@@ -23,7 +21,7 @@ export {
   isEmbeddingModelReady,
 };
 
-// AI-WHY: Backward-compatible aliases (snake_case) — remove after all callers migrate to camelCase
+// Backward-compatible aliases (snake_case) — remove after all callers migrate to camelCase
 const handle_memory_delete = handleMemoryDelete;
 const handle_memory_update = handleMemoryUpdate;
 const handle_memory_list = handleMemoryList;

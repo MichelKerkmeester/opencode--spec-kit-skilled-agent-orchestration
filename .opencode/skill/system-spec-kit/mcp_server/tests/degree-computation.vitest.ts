@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Test — Degree Computation
-// ---------------------------------------------------------------
+// --- 1. TEST — DEGREE COMPUTATION ---
 // Tests for the R4 5th RRF channel: degree-based scoring
 
 import { describe, it, expect, beforeEach, beforeAll, afterAll, vi } from 'vitest';
@@ -17,10 +15,7 @@ import {
   clearDegreeCache,
 } from '../lib/search/graph-search-fn';
 
-// ---------------------------------------------------------------
 // TEST SETUP
-// ---------------------------------------------------------------
-
 let testDb: InstanceType<typeof Database>;
 
 function createTestSchema(db: InstanceType<typeof Database>) {
@@ -77,11 +72,11 @@ function seedTestData(db: InstanceType<typeof Database>) {
   insertMem.run(5, 'test-spec', '/mem/5.md', 'Memory 5', 'normal');
 
   // Insert causal edges:
-  // mem 1 -> 2 (caused, strength 1.0)   => weight 1.0 * 1.0 = 1.0
-  // mem 1 -> 3 (derived_from, strength 0.8) => weight 0.9 * 0.8 = 0.72
-  // mem 2 -> 3 (enabled, strength 0.5)  => weight 0.8 * 0.5 = 0.4
-  // mem 3 -> 5 (supports, strength 1.0) => weight 0.5 * 1.0 = 0.5
-  // mem 4 -> 1 (caused, strength 1.0)   => constitutional source
+  // Mem 1 -> 2 (caused, strength 1.0)   => weight 1.0 * 1.0 = 1.0
+  // Mem 1 -> 3 (derived_from, strength 0.8) => weight 0.9 * 0.8 = 0.72
+  // Mem 2 -> 3 (enabled, strength 0.5)  => weight 0.8 * 0.5 = 0.4
+  // Mem 3 -> 5 (supports, strength 1.0) => weight 0.5 * 1.0 = 0.5
+  // Mem 4 -> 1 (caused, strength 1.0)   => constitutional source
   const insertEdge = db.prepare(
     `INSERT INTO causal_edges (source_id, target_id, relation, strength) VALUES (?, ?, ?, ?)`
   );
@@ -92,10 +87,7 @@ function seedTestData(db: InstanceType<typeof Database>) {
   insertEdge.run('4', '1', 'caused', 1.0);
 }
 
-// ---------------------------------------------------------------
 // TESTS
-// ---------------------------------------------------------------
-
 describe('Typed-Weighted Degree Computation', () => {
   beforeAll(() => {
     testDb = new Database(':memory:');
@@ -111,26 +103,24 @@ describe('Typed-Weighted Degree Computation', () => {
     clearDegreeCache();
   });
 
-  // -----------------------------------------------------------
   // 1. Degree computation returns correct weighted sum
-  // -----------------------------------------------------------
   describe('computeTypedDegree', () => {
     it('returns correct weighted sum for a known graph node', () => {
       // Memory 1:
-      //   As source: 1->2 (caused, 1.0) = 1.0*1.0 = 1.0
-      //              1->3 (derived_from, 0.8) = 0.9*0.8 = 0.72
-      //   As target: 4->1 (caused, 1.0) = 1.0*1.0 = 1.0
-      //   Total = 1.0 + 0.72 + 1.0 = 2.72
+      // As source: 1->2 (caused, 1.0) = 1.0*1.0 = 1.0
+      // 1->3 (derived_from, 0.8) = 0.9*0.8 = 0.72
+      // As target: 4->1 (caused, 1.0) = 1.0*1.0 = 1.0
+      // Total = 1.0 + 0.72 + 1.0 = 2.72
       const degree = computeTypedDegree(testDb, '1');
       expect(degree).toBeCloseTo(2.72, 2);
     });
 
     it('counts both source and target edges', () => {
       // Memory 3:
-      //   As source: 3->5 (supports, 1.0) = 0.5*1.0 = 0.5
-      //   As target: 1->3 (derived_from, 0.8) = 0.9*0.8 = 0.72
-      //              2->3 (enabled, 0.5) = 0.8*0.5 = 0.4
-      //   Total = 0.5 + 0.72 + 0.4 = 1.62
+      // As source: 3->5 (supports, 1.0) = 0.5*1.0 = 0.5
+      // As target: 1->3 (derived_from, 0.8) = 0.9*0.8 = 0.72
+      // 2->3 (enabled, 0.5) = 0.8*0.5 = 0.4
+      // Total = 0.5 + 0.72 + 0.4 = 1.62
       const degree = computeTypedDegree(testDb, '3');
       expect(degree).toBeCloseTo(1.62, 2);
     });
@@ -150,9 +140,7 @@ describe('Typed-Weighted Degree Computation', () => {
     });
   });
 
-  // -----------------------------------------------------------
   // 2. Normalization output is in [0, 0.15] range
-  // -----------------------------------------------------------
   describe('normalizeDegreeToBoostedScore', () => {
     it('returns 0 for rawDegree of 0', () => {
       expect(normalizeDegreeToBoostedScore(0, 15)).toBe(0);
@@ -169,7 +157,7 @@ describe('Typed-Weighted Degree Computation', () => {
     });
 
     it('returns exactly DEGREE_BOOST_CAP when rawDegree equals maxDegree', () => {
-      // log(1+x)/log(1+x) = 1.0, * 0.15 = 0.15
+      // Log(1+x)/log(1+x) = 1.0, * 0.15 = 0.15
       const score = normalizeDegreeToBoostedScore(10, 10);
       expect(score).toBeCloseTo(DEGREE_BOOST_CAP, 5);
     });
@@ -191,9 +179,7 @@ describe('Typed-Weighted Degree Computation', () => {
     });
   });
 
-  // -----------------------------------------------------------
   // 3. Constitutional memories always return 0
-  // -----------------------------------------------------------
   describe('constitutional memory exclusion', () => {
     it('returns 0 for constitutional memories in computeDegreeScores', () => {
       // Memory 4 is constitutional and has edges (4->1 caused)
@@ -232,9 +218,7 @@ describe('Typed-Weighted Degree Computation', () => {
     });
   });
 
-  // -----------------------------------------------------------
   // 4. MAX_TOTAL_DEGREE cap works correctly
-  // -----------------------------------------------------------
   describe('MAX_TOTAL_DEGREE cap', () => {
     it('caps raw degree at MAX_TOTAL_DEGREE', () => {
       // Create a high-degree node
@@ -263,9 +247,7 @@ describe('Typed-Weighted Degree Computation', () => {
     });
   });
 
-  // -----------------------------------------------------------
   // 5. Empty graph returns 0
-  // -----------------------------------------------------------
   describe('empty graph handling', () => {
     it('computeMaxTypedDegree returns fallback for empty graph', () => {
       const emptyDb = new Database(':memory:');
@@ -286,9 +268,7 @@ describe('Typed-Weighted Degree Computation', () => {
     });
   });
 
-  // -----------------------------------------------------------
   // 6. Cache invalidation works
-  // -----------------------------------------------------------
   describe('cache invalidation', () => {
     it('returns cached value on second call', () => {
       const scores1 = computeDegreeScores(testDb, [1]);
@@ -301,7 +281,7 @@ describe('Typed-Weighted Degree Computation', () => {
 
     it('clearDegreeCache forces recomputation', () => {
       // Use memory 5 which has low degree (single edge: 3->5 supports = 0.5)
-      // so it won't saturate at the DEGREE_BOOST_CAP
+      // So it won't saturate at the DEGREE_BOOST_CAP
       const scores1 = computeDegreeScores(testDb, [5]);
       const score1 = scores1.get('5');
       expect(score1).toBeGreaterThan(0);
@@ -329,9 +309,7 @@ describe('Typed-Weighted Degree Computation', () => {
     });
   });
 
-  // -----------------------------------------------------------
   // 7. Batch computation returns scores for multiple IDs
-  // -----------------------------------------------------------
   describe('batch computation (computeDegreeScores)', () => {
     it('returns scores for all requested IDs', () => {
       const scores = computeDegreeScores(testDb, [1, 2, 3, 5]);
@@ -369,9 +347,7 @@ describe('Typed-Weighted Degree Computation', () => {
     });
   });
 
-  // -----------------------------------------------------------
   // 8. Edge type weight constants
-  // -----------------------------------------------------------
   describe('EDGE_TYPE_WEIGHTS constants', () => {
     it('has all 6 relation types', () => {
       expect(Object.keys(EDGE_TYPE_WEIGHTS)).toHaveLength(6);

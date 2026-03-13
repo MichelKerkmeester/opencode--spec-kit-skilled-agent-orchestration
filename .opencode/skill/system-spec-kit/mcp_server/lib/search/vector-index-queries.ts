@@ -1,8 +1,6 @@
-// ---------------------------------------------------------------
-// MODULE: Vector Index Queries
-// ---------------------------------------------------------------
+// --- 1. VECTOR INDEX QUERIES ---
 // Split from vector-index-store.ts — contains ALL query/search functions,
-// content extraction, ranking, stats, cleanup, and integrity checks.
+// Content extraction, ranking, stats, cleanup, and integrity checks.
 
 import * as path from 'path';
 import * as fs from 'fs';
@@ -123,7 +121,11 @@ export function get_memories_by_folder(spec_folder: string): MemoryRow[] {
   const database = initialize_db();
 
   const rows = database.prepare(`
-    SELECT * FROM memory_index WHERE spec_folder = ? ORDER BY created_at DESC
+    SELECT m.*
+    FROM memory_index m
+    JOIN active_memory_projection p ON p.active_memory_id = m.id
+    WHERE m.spec_folder = ?
+    ORDER BY m.created_at DESC
   `).all(spec_folder) as MemoryRow[];
 
   return rows.map((row: MemoryRow) => {
@@ -152,9 +154,10 @@ export function get_status_counts(): { pending: number; success: number; failed:
   const database = initialize_db();
 
   const rows = database.prepare(`
-    SELECT embedding_status, COUNT(*) as count
-    FROM memory_index
-    GROUP BY embedding_status
+    SELECT m.embedding_status, COUNT(*) as count
+    FROM memory_index m
+    JOIN active_memory_projection p ON p.active_memory_id = m.id
+    GROUP BY m.embedding_status
   `).all();
 
   const counts = { pending: 0, success: 0, failed: 0, retry: 0 };
@@ -212,7 +215,7 @@ export function vector_search(query_embedding: EmbeddingInput, options: VectorSe
   const query_buffer = to_embedding_buffer(query_embedding);
   const max_distance = 2 * (1 - minSimilarity / 100);
 
-  // AI-WHY: ADR-004: FSRS-preferred decay with half-life fallback
+  // ADR-004: FSRS-preferred decay with half-life fallback
   const decay_expr = useDecay
     ? `CASE
          WHEN m.is_pinned = 1 THEN m.importance_weight
@@ -272,6 +275,7 @@ export function vector_search(query_embedding: EmbeddingInput, options: VectorSe
       SELECT m.*, vec_distance_cosine(v.embedding, ?) as distance,
              ${decay_expr} as effective_importance
       FROM memory_index m
+      JOIN active_memory_projection p ON p.active_memory_id = m.id
       JOIN vec_memories v ON m.id = v.rowid
       WHERE ${where_clauses.join(' AND ')}
     ) sub
@@ -375,6 +379,7 @@ export function multi_concept_search(
         m.*,
         ${distance_expressions}
       FROM memory_index m
+      JOIN active_memory_projection p ON p.active_memory_id = m.id
       JOIN vec_memories v ON m.id = v.rowid
       WHERE m.embedding_status = 'success'
         ${folder_filter}
@@ -639,9 +644,10 @@ export function keyword_search(
   }
 
   const sql = `
-    SELECT * FROM memory_index
+    SELECT m.* FROM memory_index m
+    JOIN active_memory_projection p ON p.active_memory_id = m.id
     WHERE ${where_clause}
-    ORDER BY importance_weight DESC, created_at DESC
+    ORDER BY m.importance_weight DESC, m.created_at DESC
   `;
 
   const rows = database.prepare(sql).all(...params);
@@ -1222,7 +1228,7 @@ export function get_memory_preview(memory_id: number, max_lines = 50): { id: num
 
   let content = '';
   try {
-    // SEC-002: Validate DB-stored file paths before reading
+    // Validate DB-stored file paths before reading
     if (memory.file_path) {
       const valid_path = validate_file_path_local(memory.file_path);
       if (valid_path && fs.existsSync(valid_path)) {
@@ -1307,7 +1313,7 @@ export function verify_integrity(options: { autoClean?: boolean } = {}): { total
     logger.info(`Cleaned ${cleaned_vectors} orphaned vectors`);
   }
 
-  // AI-FIX: F-08 — Guard vec_memories queries with sqlite_vec availability check.
+  // F-08 — Guard vec_memories queries with sqlite_vec availability check.
   // When sqlite-vec is not loaded, the vec_memories table does not exist.
   const missing_vectors = sqlite_vec
     ? (database.prepare(`
@@ -1370,7 +1376,7 @@ export function verify_integrity(options: { autoClean?: boolean } = {}): { total
         const deleteResult = delete_chunk_stmt.run(chunk.id);
         if (deleteResult.changes > 0) {
           cleaned_chunks++;
-          // AI-WHY: Record DELETE history only after confirmed deletion.
+          // Record DELETE history only after confirmed deletion.
           try {
             recordHistory(chunk.id, 'DELETE', null, null, 'mcp:integrity_check');
           } catch (error: unknown) {
@@ -1402,7 +1408,7 @@ export function verify_integrity(options: { autoClean?: boolean } = {}): { total
   };
 }
 
-// camelCase aliases
+// CamelCase aliases
 export { get_memory as getMemory };
 export { get_memories_by_folder as getMemoriesByFolder };
 export { get_memory_count as getMemoryCount };

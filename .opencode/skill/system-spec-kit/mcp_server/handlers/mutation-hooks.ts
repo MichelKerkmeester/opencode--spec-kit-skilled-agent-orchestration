@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Mutation Hooks
-// ---------------------------------------------------------------
+// --- 1. MUTATION HOOKS ---
 
 import * as triggerMatcher from '../lib/parsing/trigger-matcher';
 import * as toolCache from '../lib/cache/tool-cache';

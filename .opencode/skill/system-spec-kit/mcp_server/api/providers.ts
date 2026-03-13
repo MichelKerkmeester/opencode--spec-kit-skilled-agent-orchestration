@@ -1,8 +1,6 @@
-// ---------------------------------------------------------------
-// MODULE: Providers
-// ---------------------------------------------------------------
+// --- 1. PROVIDERS ---
 // @public — scripts should import from here, not lib/ internals.
-// AI-WHY: ARCH-1 re-exports provider functions through a stable surface.
+// ARCH-1 re-exports provider functions through a stable surface.
 
 export {
   generateEmbedding,

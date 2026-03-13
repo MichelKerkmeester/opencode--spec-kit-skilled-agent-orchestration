@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Context Server Tests
-// ---------------------------------------------------------------
+// --- 1. CONTEXT SERVER TESTS ---
 
 import { describe, it, expect, beforeAll, afterEach, vi } from 'vitest'
 import fs from 'fs'
@@ -1218,7 +1216,7 @@ describe('Context Server', () => {
 
       expect(errorsModule?.getRecoveryHint).toBeTypeOf('function')
 
-      // getRecoveryHint(toolName, errorCode) returns a RecoveryHint object
+      // GetRecoveryHint(toolName, errorCode) returns a RecoveryHint object
       const hint = errorsModule!.getRecoveryHint!('memory_search', 'UNKNOWN_TOOL')
       expect(typeof hint).toBe('object')
       expect(hint).not.toBeNull()
@@ -1367,7 +1365,7 @@ describe('Context Server', () => {
       })
     }
 
-    // extractContextHint tests
+    // ExtractContextHint tests
     it('T31d: extractContextHint extracts query', async () => {
       const hooksModule = await importFirst<HooksModule>([
         async () => await import('../hooks/index'),
@@ -1450,7 +1448,7 @@ describe('Context Server', () => {
     })
 
     it('T32a: Schema validation delegated to tool modules', () => {
-      // context-server validates only length pre-dispatch; schema checks occur in tool dispatch modules.
+      // Context-server validates only length pre-dispatch; schema checks occur in tool dispatch modules.
       expect(sourceCode).toMatch(/dispatchTool\(name,\s*args\)/)
       expect(sourceCode).not.toMatch(/validateToolArgs\(/)
     })

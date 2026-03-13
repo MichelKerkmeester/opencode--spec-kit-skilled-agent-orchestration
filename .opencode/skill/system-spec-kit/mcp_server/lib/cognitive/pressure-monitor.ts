@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Pressure Monitor
-// ---------------------------------------------------------------
+// --- 1. PRESSURE MONITOR ---
 
 export interface RuntimeContextStats {
   tokenCount?: number;

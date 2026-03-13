@@ -1,12 +1,8 @@
-// ---------------------------------------------------------------
-// MODULE: Query Expander
-// ---------------------------------------------------------------
+// --- 1. QUERY EXPANDER ---
 // Rule-based synonym expansion for mode="deep" multi-query RAG.
 // No LLM calls — purely rule-based template substitution.
 
-/* ---------------------------------------------------------------
-   1. CONSTANTS
-   --------------------------------------------------------------- */
+// --- 2. CONSTANTS ---
 
 const MAX_VARIANTS = 3;
 
@@ -54,9 +50,7 @@ export const DOMAIN_VOCABULARY_MAP: Record<string, string[]> = {
   fusion: ['merge', 'combine'],
 };
 
-/* ---------------------------------------------------------------
-   2. CORE FUNCTION
-   --------------------------------------------------------------- */
+// --- 3. CORE FUNCTION ---
 
 /**
  * Expand a query into multiple search variants using synonym maps.
@@ -77,7 +71,7 @@ export function expandQuery(query: string): string[] {
     if (variants.size >= MAX_VARIANTS) break;
     const synonyms = DOMAIN_VOCABULARY_MAP[word];
     if (synonyms && synonyms.length > 0) {
-      // AI-WHY: Keep one expansion per matched word to avoid over-expanding simple queries.
+      // Keep one expansion per matched word to avoid over-expanding simple queries.
       for (const synonym of synonyms) {
         if (variants.size >= MAX_VARIANTS) break;
         const expanded = query.replace(new RegExp(`\\b${escapeRegExp(word)}\\b`, 'i'), synonym);

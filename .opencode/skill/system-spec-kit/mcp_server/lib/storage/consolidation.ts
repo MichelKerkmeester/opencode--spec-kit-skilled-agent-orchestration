@@ -1,11 +1,7 @@
-// ---------------------------------------------------------------
-// MODULE: N3-lite Consolidation Engine
-// ---------------------------------------------------------------
+// --- 1. N3-LITE CONSOLIDATION ENGINE ---
 // Lightweight graph maintenance: contradiction scan, Hebbian
-// strengthening, staleness detection, edge bounds enforcement.
+// Strengthening, staleness detection, edge bounds enforcement.
 // Sprint 6a — behind SPECKIT_CONSOLIDATION flag.
-// ---------------------------------------------------------------
-
 import type Database from 'better-sqlite3';
 import { isConsolidationEnabled } from '../search/search-flags';
 import {
@@ -144,9 +140,9 @@ function scanContradictionsVector(
     embedding: Buffer;
   }>;
 
-  // AI-WHY: O(n^2) pairwise scan capped at 500 memories (up to 124,750 pairs).
-  // AI-WHY: A 5-second deadline prevents runaway CPU when embeddings are large or the
-  // machine is slow, keeping the consolidation cycle non-blocking.
+  // O(n^2) pairwise scan capped at 500 memories (up to 124,750 pairs).
+  // A 5-second deadline prevents runaway CPU when embeddings are large or the
+  // Machine is slow, keeping the consolidation cycle non-blocking.
   const deadline = Date.now() + 5000;
 
   // Pairwise similarity check (O(n^2) but capped at 500 memories)
@@ -204,8 +200,8 @@ function scanContradictionsHeuristic(
     content_text: string | null;
   }>;
 
-  // AI-WHY: Same 5-second timeout guard as the vector-based scan to prevent
-  // AI-WHY: unbounded CPU usage in the heuristic O(n^2) fallback path.
+  // Same 5-second timeout guard as the vector-based scan to prevent
+  // Unbounded CPU usage in the heuristic O(n^2) fallback path.
   const deadline = Date.now() + 5000;
 
   // Simple word-overlap heuristic for candidate generation
@@ -338,7 +334,7 @@ export function runHebbianCycle(database: Database.Database): { strengthened: nu
   let decayed = 0;
 
   try {
-    // AI-WHY: Wrap all DB operations in a single transaction for atomicity
+    // Wrap all DB operations in a single transaction for atomicity
     database.transaction(() => {
       // Strengthen: edges accessed in the last cycle period (7 days)
       const recentEdges = (database.prepare(`
@@ -540,7 +536,7 @@ export function runConsolidationCycleIfEnabled(
         // Ignore rollback errors after failed BEGIN/COMMIT paths.
       }
     }
-    // AI-GUARD: Fail-closed: broken bookkeeping must not cause unbounded cycle runs
+    // Fail-closed: broken bookkeeping must not cause unbounded cycle runs
     const message = err instanceof Error ? err.message : String(err);
     console.warn('[consolidation] cadence bookkeeping error:', message);
     return null;

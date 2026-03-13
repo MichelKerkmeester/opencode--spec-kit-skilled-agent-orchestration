@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: EXTRACTION ADAPTER (T029-T037)
-// ---------------------------------------------------------------
-
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import Database from 'better-sqlite3';
 import * as workingMemory from '../lib/cache/cognitive/working-memory';
@@ -103,7 +100,7 @@ describe('T029-T037 extraction adapter', () => {
 
   it('T035a/T035b/T035c: redaction applies and skips insert when no memory_id resolved', async () => {
     // The bash-git-commit rule matches this content, redaction fires on the token,
-    // but resolveMemoryIdFromText() returns null (no "id": pattern, no spec.md path).
+    // But resolveMemoryIdFromText() returns null (no "id": pattern, no spec.md path).
     // Without a resolvable memory_id the adapter skips the working_memory insert.
     const metricsBefore = getExtractionMetrics();
 

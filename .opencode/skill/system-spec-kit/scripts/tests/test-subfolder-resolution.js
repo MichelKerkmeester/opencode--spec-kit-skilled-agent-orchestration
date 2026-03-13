@@ -1,9 +1,6 @@
-// ───────────────────────────────────────────────────────────────
 // TEST: SUBFOLDER RESOLUTION
 // Focus: SPEC_FOLDER_PATTERN, SPEC_FOLDER_BASIC_PATTERN,
-//        findChildFolderSync, findChildFolderAsync, core/index re-exports
-// ───────────────────────────────────────────────────────────────
-
+//        FindChildFolderSync, findChildFolderAsync, core/index re-exports
 'use strict';
 
 const path = require('path');

@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Architecture Boundary Check Types
-// ---------------------------------------------------------------
+// --- 1. ARCHITECTURE BOUNDARY CHECK TYPES ---
 // Public declaration surface for architecture-boundary audit helpers.
 
 interface GapAViolation {

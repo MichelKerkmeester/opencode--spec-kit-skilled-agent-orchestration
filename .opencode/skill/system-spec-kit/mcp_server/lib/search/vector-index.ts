@@ -1,7 +1,5 @@
-// ---------------------------------------------------------------
-// MODULE: Vector Index
-// ---------------------------------------------------------------
-// AI-WHY: Backward-compatible export surface across split modules.
+// --- 1. VECTOR INDEX ---
+// Backward-compatible export surface across split modules.
 
 export {
   MAX_TRIGGERS_PER_MEMORY,

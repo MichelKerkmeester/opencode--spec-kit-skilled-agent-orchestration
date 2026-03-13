@@ -1,10 +1,7 @@
-// ---------------------------------------------------------------
-// MODULE: Path Utils
-// ---------------------------------------------------------------
+// --- 1. PATH UTILS ---
 // Secure path sanitization and resolution with traversal protection (CWE-22)
 
-// 1. IMPORTS
-
+// --- 2. IMPORTS ---
 // Node stdlib
 import fs from 'fs';
 import path from 'path';
@@ -12,9 +9,7 @@ import path from 'path';
 // Internal modules
 import { structuredLog } from './logger';
 
-// ---------------------------------------------------------------
-// 2. PATH SANITIZATION
-// ---------------------------------------------------------------
+// --- 3. PATH SANITIZATION ---
 
 function sanitizePath(inputPath: string, allowedBases: string[] | null = null): string {
   if (!inputPath || typeof inputPath !== 'string') {
@@ -88,18 +83,14 @@ function sanitizePath(inputPath: string, allowedBases: string[] | null = null): 
   return canonicalResolved;
 }
 
-// ---------------------------------------------------------------
-// 3. UTILITIES
-// ---------------------------------------------------------------
+// --- 4. UTILITIES ---
 
 function getPathBasename(p: string): string {
   if (!p || typeof p !== 'string') return '';
   return p.replace(/\\/g, '/').split('/').pop() || '';
 }
 
-// ---------------------------------------------------------------
-// 4. EXPORTS
-// ---------------------------------------------------------------
+// --- 5. EXPORTS ---
 
 export {
   sanitizePath,

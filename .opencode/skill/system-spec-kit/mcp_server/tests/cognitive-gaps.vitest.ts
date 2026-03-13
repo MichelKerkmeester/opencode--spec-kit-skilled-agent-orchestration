@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: COGNITIVE GAPS
-// ---------------------------------------------------------------
-
 import { describe, it, expect, beforeEach } from 'vitest';
 import Database from 'better-sqlite3';
 import type { FsrsParams } from '../lib/cache/cognitive/fsrs-scheduler';

@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Chunking Orchestrator
-// ---------------------------------------------------------------
+// --- 1. CHUNKING ORCHESTRATOR ---
 
 import type BetterSqlite3 from 'better-sqlite3';
 
@@ -148,7 +146,7 @@ async function indexChunkedMemoryFile(
     console.error(`[memory-save] Chunk thinning retained ${retainedChunks.length}/${chunkResult.chunks.length} chunks`);
   }
 
-  // AI-GUARD: Wrap parent setup in transaction to prevent check-then-delete race condition
+  // Wrap parent setup in transaction to prevent check-then-delete race condition
   const setupParent = database.transaction(() => {
     const existing = database.prepare(`
       SELECT id FROM memory_index
@@ -164,12 +162,12 @@ async function indexChunkedMemoryFile(
     if (existing && !force) {
       pid = existing.id;
       // Safe-swap mode for re-chunking: keep existing children intact until
-      // replacement chunks are fully indexed and finalized in a transaction.
+      // Replacement chunks are fully indexed and finalized in a transaction.
       return { parentId: pid, isUpdate: true };
     } else {
-      // AI-WHY: Force path intentionally uses destructive delete-before-reindex.
+      // Force path intentionally uses destructive delete-before-reindex.
       // The safe-swap pattern is NOT applied here because force is an explicit
-      // hard-reset mode that replaces parent identity and children immediately.
+      // Hard-reset mode that replaces parent identity and children immediately.
       if (existing && force) {
         const existingChunkRows = database.prepare(`
           SELECT id FROM memory_index WHERE parent_id = ?
@@ -177,7 +175,7 @@ async function indexChunkedMemoryFile(
 
         for (const existingChunk of existingChunkRows) {
           if (vectorIndex.deleteMemory(existingChunk.id)) {
-            // AI-WHY: Record DELETE history only after confirmed deletion.
+            // Record DELETE history only after confirmed deletion.
             try {
               recordHistory(existingChunk.id, 'DELETE', filePath ?? null, null, 'mcp:chunking_reindex');
             } catch (_histErr: unknown) { /* best-effort */ }
@@ -262,8 +260,8 @@ async function indexChunkedMemoryFile(
       : undefined;
 
     try {
-      // AI-WHY: Persistent embedding cache (REQ-S2-001) avoids re-calling the embedding
-      // provider on re-index — content-hash keyed so unchanged chunks skip API entirely.
+      // Persistent embedding cache (REQ-S2-001) avoids re-calling the embedding
+      // Provider on re-index — content-hash keyed so unchanged chunks skip API entirely.
       let chunkEmbedding: Float32Array | null = null;
       let chunkEmbeddingStatus = 'pending';
 
@@ -318,7 +316,7 @@ async function indexChunkedMemoryFile(
       }
 
       // Re-chunk updates stage children without parent_id; parent swap is finalized
-      // atomically after successful chunk indexing.
+      // Atomically after successful chunk indexing.
       applyMetadata(database, childId, {
         ...(useSafeSwap ? {} : { parent_id: parentId }),
         chunk_index: i,
@@ -374,7 +372,7 @@ async function indexChunkedMemoryFile(
           for (const chunkRow of chunkRows) {
             if (vectorIndex.deleteMemory(chunkRow.id)) {
               deletedIds.push(chunkRow.id);
-              // AI-WHY: Record DELETE history only after confirmed deletion.
+              // Record DELETE history only after confirmed deletion.
               try {
                 recordHistory(chunkRow.id, 'DELETE', null, null, 'mcp:chunking_rollback');
               } catch (_histErr: unknown) { /* best-effort */ }
@@ -389,7 +387,7 @@ async function indexChunkedMemoryFile(
           for (const childId of childIds) {
             if (vectorIndex.deleteMemory(childId)) {
               deletedIds.push(childId);
-              // AI-WHY: Record DELETE history only after confirmed deletion.
+              // Record DELETE history only after confirmed deletion.
               try {
                 recordHistory(childId, 'DELETE', null, null, 'mcp:chunking_rollback');
               } catch (_histErr: unknown) { /* best-effort */ }
@@ -562,8 +560,8 @@ async function indexChunkedMemoryFile(
     actor: 'mcp:memory_save',
   });
 
-  // AI-WHY: Chunked path must invalidate caches just like the single-record path;
-  // otherwise stale trigger/tool-cache entries persist until next non-chunked save.
+  // Chunked path must invalidate caches just like the single-record path;
+  // Otherwise stale trigger/tool-cache entries persist until next non-chunked save.
   triggerMatcher.clearCache();
   toolCache.invalidateOnWrite('chunked-save', { filePath });
 

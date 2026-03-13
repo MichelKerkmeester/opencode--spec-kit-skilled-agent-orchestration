@@ -1,10 +1,5 @@
-// ---------------------------------------------------------------
-// MODULE: Handler Memory Context Tests
-// ---------------------------------------------------------------
-// ---------------------------------------------------------------
+// --- 1. HANDLER MEMORY CONTEXT TESTS ---
 // TEST: HANDLER MEMORY CONTEXT
-// ---------------------------------------------------------------
-
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import * as layerDefs from '../lib/architecture/layer-definitions';
 import * as workingMemory from '../lib/cache/cognitive/working-memory';
@@ -13,7 +8,7 @@ import * as workingMemory from '../lib/cache/cognitive/working-memory';
 // This must be hoisted before any handler imports.
 // The handlers (memory-context, memory-search, memory-triggers) all import
 // { checkDatabaseUpdated, waitForEmbeddingModel } from '../core' which
-// re-exports from './db-state'.
+// Re-exports from './db-state'.
 vi.mock('../core/db-state', async (importOriginal) => {
   const actual = await importOriginal() as Record<string, unknown>;
   return {
@@ -35,7 +30,7 @@ vi.mock('../core', async (importOriginal) => {
 });
 
 // Mock the sub-handlers (memory-search, memory-triggers) to avoid
-// requiring a real embedding model / database for mode-routing tests.
+// Requiring a real embedding model / database for mode-routing tests.
 // These return valid MCP response shapes so the strategy executors succeed.
 vi.mock('../handlers/memory-search', () => ({
   handleMemorySearch: vi.fn(async () => ({
@@ -120,9 +115,7 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
     }
   });
 
-  // -------------------------------------------------------------
   // SUITE: Auto Mode Routing
-  // -------------------------------------------------------------
   describe('Auto Mode Routing (T524-1 to T524-3)', () => {
     it('T524-1: Auto mode routes "resume" to resume strategy', async () => {
       const result = await withTimeout(
@@ -175,9 +168,7 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
     });
   });
 
-  // -------------------------------------------------------------
   // SUITE: Explicit Mode Selection
-  // -------------------------------------------------------------
   describe('Explicit Mode Selection (T524-4)', () => {
     it('T524-4: Invalid mode falls back to focused', async () => {
       const result = await withTimeout(
@@ -202,9 +193,7 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
     });
   });
 
-  // -------------------------------------------------------------
   // SUITE: Mode-Specific Token Budgets
-  // -------------------------------------------------------------
   describe('Mode-Specific Token Budgets (T524-5)', () => {
     it('T524-5: Each mode has correct token budget', () => {
       const expectedBudgets: Record<string, number | undefined> = {
@@ -223,9 +212,7 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
     });
   });
 
-  // -------------------------------------------------------------
   // SUITE: tokenUsage Fallback Contract + Pressure Policy (T000f/T000g, T018-T020)
-  // -------------------------------------------------------------
   describe('tokenUsage fallback contract and pressure policy lane', () => {
     it('T018/T019: 55% pressure keeps intent-selected mode (no override)', async () => {
       const result = await withTimeout(
@@ -391,9 +378,7 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
     });
   });
 
-  // -------------------------------------------------------------
   // SUITE: INTENT_TO_MODE Routing Configuration
-  // -------------------------------------------------------------
   describe('INTENT_TO_MODE Routing (T524-6)', () => {
     it('T524-6: INTENT_TO_MODE mapping is correct', () => {
       const expectedMappings: Record<string, string> = {
@@ -410,9 +395,7 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
     });
   });
 
-  // -------------------------------------------------------------
   // SUITE: Session lifecycle contract (T027k-T027m)
-  // -------------------------------------------------------------
   describe('Session lifecycle metadata and resume context', () => {
     it('T027k: missing sessionId generates ephemeral UUID scope', async () => {
       const result = await withTimeout(
@@ -548,9 +531,7 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
     });
   });
 
-  // -------------------------------------------------------------
   // SUITE: Error Response Structure
-  // -------------------------------------------------------------
   describe('Error Response Structure (T524-7 to T524-8)', () => {
     it('T524-7: Empty input error includes L1 layer metadata', async () => {
       const result = await withTimeout(

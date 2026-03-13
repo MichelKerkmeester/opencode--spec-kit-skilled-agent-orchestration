@@ -1,10 +1,8 @@
-// ---------------------------------------------------------------
-// MODULE: Eval
-// ---------------------------------------------------------------
+// --- 1. EVAL ---
 // @public — scripts should import from here, not lib/ internals.
-// AI-WHY: ARCH-1 stable re-export surface so eval scripts in scripts/evals/
-// do not couple to internal lib/ paths. When internals refactor, only this
-// file needs updating.
+// ARCH-1 stable re-export surface so eval scripts in scripts/evals/
+// Do not couple to internal lib/ paths. When internals refactor, only this
+// File needs updating.
 
 export {
   runAblation,

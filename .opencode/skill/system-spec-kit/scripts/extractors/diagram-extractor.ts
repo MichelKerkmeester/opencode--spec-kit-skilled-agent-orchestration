@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Diagram Extractor
-// ---------------------------------------------------------------
+// --- 1. DIAGRAM EXTRACTOR ---
 // Extracts and generates ASCII flowcharts and diagrams from conversation data
 
 import { validateDataStructure } from '../utils/data-validator';

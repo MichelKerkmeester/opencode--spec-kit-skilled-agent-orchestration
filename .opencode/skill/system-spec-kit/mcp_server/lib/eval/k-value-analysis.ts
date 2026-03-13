@@ -1,16 +1,10 @@
-// ---------------------------------------------------------------
-// MODULE: K-Value Sensitivity Analysis (T004a)
-// ---------------------------------------------------------------
+// --- 1. K-VALUE SENSITIVITY ANALYSIS (T004A) ---
 // Measures the impact of different RRF K-values on ranking stability.
 // This is a measurement/analysis tool, not production code.
-// ---------------------------------------------------------------
-
 import { fuseResultsMulti } from '@spec-kit/shared/algorithms/rrf-fusion';
 import type { RankedList, FusionResult } from '@spec-kit/shared/algorithms/rrf-fusion';
 
-/* ---------------------------------------------------------------
-   1. TYPES
-   --------------------------------------------------------------- */
+// --- 2. TYPES ---
 
 /** Result metrics for a single K-value configuration. */
 interface KValueMetrics {
@@ -30,9 +24,7 @@ interface KValueAnalysisResult {
   totalItems: number;
 }
 
-/* ---------------------------------------------------------------
-   2. STATISTICAL HELPERS
-   --------------------------------------------------------------- */
+// --- 3. STATISTICAL HELPERS ---
 
 /**
  * Compute Kendall tau rank correlation coefficient between two rankings.
@@ -120,9 +112,7 @@ function mrr5(baselineRanking: (number | string)[], candidateRanking: (number | 
   return sumRR / baselineTop.length;
 }
 
-/* ---------------------------------------------------------------
-   3. MAIN ANALYSIS FUNCTION
-   --------------------------------------------------------------- */
+// --- 4. MAIN ANALYSIS FUNCTION ---
 
 /** K-values to test in the grid search. */
 const K_VALUES = [20, 40, 60, 80, 100] as const;
@@ -191,9 +181,7 @@ function analyzeKValueSensitivity(
   };
 }
 
-/* ---------------------------------------------------------------
-   4. EXPORTS
-   --------------------------------------------------------------- */
+// --- 5. EXPORTS ---
 
 export {
   analyzeKValueSensitivity,

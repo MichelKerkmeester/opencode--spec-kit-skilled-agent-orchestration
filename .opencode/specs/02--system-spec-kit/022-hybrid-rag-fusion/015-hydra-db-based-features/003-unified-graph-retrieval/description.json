@@ -1,16 +1,22 @@
 {
-  "specFolder": "015-hydra-db-based-features/003-unified-graph-retrieval",
-  "description": "Phase 3: unified-graph-retrieval",
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/015-hydra-db-based-features/003-unified-graph-retrieval",
+  "description": "Feature Specification: 003-unified-graph-retrieval",
   "keywords": [
-    "phase",
-    "unified-graph-retrieval"
+    "feature",
+    "specification",
+    "003-unified-graph-retrieval"
   ],
-  "lastUpdated": "2026-03-13T17:36:26.934Z",
+  "lastUpdated": "2026-03-13T18:17:46.825Z",
   "specId": "003",
   "folderSlug": "unified-graph-retrieval",
   "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion",
     "015-hydra-db-based-features"
   ],
-  "memorySequence": 0,
-  "memoryNameHistory": []
+  "memorySequence": 2,
+  "memoryNameHistory": [
+    "13-03-26_20-55__2026-03-13-verification-pass-confirmed-phase-3.md",
+    "13-03-26_20-56__2026-03-13-verification-pass-confirmed-phase-3.md"
+  ]
 }

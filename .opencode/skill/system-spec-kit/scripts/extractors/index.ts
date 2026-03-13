@@ -1,9 +1,5 @@
-// ---------------------------------------------------------------
-// MODULE: Index
-// ---------------------------------------------------------------
+// --- 1. INDEX ---
 // Barrel export for all extractor modules (files, diagrams, conversations, decisions, sessions)
-// ---------------------------------------------------------------
-
 export * from './file-extractor';
 export * from './diagram-extractor';
 export * from './conversation-extractor';

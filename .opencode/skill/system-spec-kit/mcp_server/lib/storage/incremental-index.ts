@@ -1,9 +1,5 @@
-// ---------------------------------------------------------------
-// MODULE: Incremental Index
-// ---------------------------------------------------------------
+// --- 1. INCREMENTAL INDEX ---
 // Mtime-based incremental indexing for fast re-indexing
-// ---------------------------------------------------------------
-
 // Node stdlib
 import * as fs from 'fs';
 
@@ -242,9 +238,9 @@ function categorizeFilesForIndexing(filePaths: string[]): CategorizedFiles {
     }
   }
 
-  // AI-GUARD: Include stale indexed paths that are no longer discovered on disk.
+  // Include stale indexed paths that are no longer discovered on disk.
   // Without this pass, removed files never enter toDelete during normal scans
-  // because discovery only returns files that currently exist.
+  // Because discovery only returns files that currently exist.
   const staleIndexedPaths = listStaleIndexedPaths(filePaths);
   if (staleIndexedPaths.length > 0) {
     const seenDeleteKeys = new Set<string>(result.toDelete.map((filePath) => getCanonicalPathKey(filePath)));

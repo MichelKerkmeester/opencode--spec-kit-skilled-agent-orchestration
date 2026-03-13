@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Session Boost
-// ---------------------------------------------------------------
+// --- 1. SESSION BOOST ---
 
 import type Database from 'better-sqlite3';
 import { isFeatureEnabled } from '../cache/cognitive/rollout-policy';

@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Retry Manager
-// ---------------------------------------------------------------
+// --- 1. RETRY MANAGER ---
 
 // Node stdlib
 import * as fsPromises from 'fs/promises';
@@ -91,7 +89,7 @@ const BACKOFF_DELAYS: number[] = [
 
 const MAX_RETRIES = 3;
 
-// T099: Background retry job configuration (REQ-031, CHK-179)
+// Background retry job configuration (REQ-031, CHK-179)
 const BACKGROUND_JOB_CONFIG: BackgroundJobConfig = {
   intervalMs: 5 * 60 * 1000,
   batchSize: 5,
@@ -102,11 +100,11 @@ const BACKGROUND_JOB_CONFIG: BackgroundJobConfig = {
 let backgroundJobInterval: ReturnType<typeof setInterval> | null = null;
 let backgroundJobRunning = false;
 
-// AI-WHY: T3-15 circuit breaker — prevents the background retry job from
-// hammering the embedding API when the provider is entirely down. After
+// T3-15 circuit breaker — prevents the background retry job from
+// Hammering the embedding API when the provider is entirely down. After
 // PROVIDER_FAILURE_THRESHOLD consecutive failures across any items, the
-// circuit opens for PROVIDER_COOLDOWN_MS, causing retryEmbedding to skip
-// the API call and return a transient error instead.
+// Circuit opens for PROVIDER_COOLDOWN_MS, causing retryEmbedding to skip
+// The API call and return a transient error instead.
 const PROVIDER_FAILURE_THRESHOLD = 5;
 const PROVIDER_COOLDOWN_MS = 120_000; // 2 minutes
 
@@ -179,8 +177,8 @@ function isEligibleForRetry(row: RetryMemoryRow, now: number): boolean {
     const lastRetry = new Date(row.last_retry_at).getTime();
     const retryCount = (row.retry_count as number) ?? (row.retryCount as number) ?? 0;
     // Off-by-one fix: retryCount is already incremented after the failure that triggered
-    // the retry status, so use (retryCount - 1) for the backoff index. First retry (retryCount=1)
-    // should use BACKOFF_DELAYS[0] (1 minute), not BACKOFF_DELAYS[1] (5 minutes).
+    // The retry status, so use (retryCount - 1) for the backoff index. First retry (retryCount=1)
+    // Should use BACKOFF_DELAYS[0] (1 minute), not BACKOFF_DELAYS[1] (5 minutes).
     const backoffIndex = Math.max(0, retryCount - 1);
     const requiredDelay = BACKOFF_DELAYS[Math.min(backoffIndex, BACKOFF_DELAYS.length - 1)];
     return (now - lastRetry) >= requiredDelay;
@@ -253,7 +251,7 @@ async function retryEmbedding(id: number, content: string): Promise<RetryResult>
 
     // BUG-1 fix: Normalize content before embedding to match sync save path (memory-save.ts:1119).
     // Without this, async-saved memories get embeddings from raw markdown (YAML frontmatter, HTML
-    // comments, code fences) while sync-saved memories get clean normalized embeddings.
+    // Comments, code fences) while sync-saved memories get clean normalized embeddings.
     const normalizedContent = normalizeContentForEmbedding(content);
     const modelId = getModelName();
     const contentHash = computeContentHash(normalizedContent);
@@ -424,7 +422,7 @@ async function processRetryQueue(limit = 3, contentLoader: ContentLoader | null 
     }
 
     if (!content) {
-      // AI-TRACE: P2-08 FIX: Count content load failure as a retry attempt to prevent infinite retry loops
+      // P2-08 FIX: Count content load failure as a retry attempt to prevent infinite retry loops
       incrementRetryCount(memory.id, 'Content load failed: file unreadable or missing');
       details.push({ id: memory.id, success: false, error: 'Could not load content (counted as retry)' });
       results.failed++;

@@ -1,9 +1,6 @@
 // Converted from: unit-path-security.test.ts (custom runner)
-// ---------------------------------------------------------------
 // TEST: PATH SECURITY (T001-T007)
 // Phase 1: path-security.ts — realpathSync symlink traversal fix
-// ---------------------------------------------------------------
-
 import { describe, it, expect, afterEach } from 'vitest';
 import * as path from 'path';
 import * as fs from 'fs';
@@ -82,7 +79,7 @@ describe('Path Security (T001-T007)', () => {
         if (fs.existsSync(allowedDir)) fs.rmdirSync(allowedDir);
         if (fs.existsSync(tmpBase)) fs.rmdirSync(tmpBase);
       } catch {
-        // best-effort cleanup
+        // Best-effort cleanup
       }
     }
   });

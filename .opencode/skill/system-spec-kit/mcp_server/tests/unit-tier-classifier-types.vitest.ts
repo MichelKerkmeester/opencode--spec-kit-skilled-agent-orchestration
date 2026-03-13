@@ -1,9 +1,6 @@
-// ---------------------------------------------------------------
 // TEST: TIER CLASSIFIER — TYPE UNIFICATION (TierInput)
 // Validates cast-removal: deprecated MemoryRow → TierInput accepts
-// partial objects, mixed casing, and extra arbitrary fields.
-// ---------------------------------------------------------------
-
+// Partial objects, mixed casing, and extra arbitrary fields.
 import { describe, it, expect } from 'vitest';
 import * as tierClassifier from '../lib/cache/cognitive/tier-classifier';
 
@@ -115,7 +112,7 @@ describe('Tier Classifier — Type Unification (TierInput)', () => {
       const memories = [
         // Snake_case (DB row style)
         { id: 1, importance_tier: 'constitutional', stability: 1.0, spec_folder: 'specs/001' },
-        // camelCase (Memory style)
+        // CamelCase (Memory style)
         { id: 2, importanceTier: 'critical', stability: 1.0, specFolder: 'specs/002' },
         // Minimal
         { id: 3 },

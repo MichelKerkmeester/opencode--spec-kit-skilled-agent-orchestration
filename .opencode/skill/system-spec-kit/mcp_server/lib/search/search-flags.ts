@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Search Flags
-// ---------------------------------------------------------------
+// --- 1. SEARCH FLAGS ---
 // Default-on runtime gates for search pipeline controls
 //
 // Production-ready flags graduated to default-ON.

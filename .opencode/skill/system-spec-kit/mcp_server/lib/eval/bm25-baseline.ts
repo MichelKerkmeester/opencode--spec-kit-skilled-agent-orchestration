@@ -1,23 +1,19 @@
-// ---------------------------------------------------------------
-// MODULE: BM25-Only Baseline Runner (T008)
-// ---------------------------------------------------------------
+// --- 1. BM25-ONLY BASELINE RUNNER (T008) ---
 //
 // Runs the ground truth query set through the BM25/FTS5-only
-// search path (disabling vector, graph, and trigger channels)
-// and computes baseline metrics. Records results in eval DB.
+// Search path (disabling vector, graph, and trigger channels)
+// And computes baseline metrics. Records results in eval DB.
 //
 // The baseline measurement establishes the "floor" — what simple
-// keyword search achieves without any semantic, graph, or trigger
-// augmentation.
+// Keyword search achieves without any semantic, graph, or trigger
+// Augmentation.
 //
 // Design notes:
 //   - The search function is injected as a dependency so tests
-//     can use mocks without a live DB.
+// Can use mocks without a live DB.
 //   - The contingency decision matrix turns the measured MRR@5
-//     into an actionable gate: PAUSE / RATIONALIZE / PROCEED.
+// Into an actionable gate: PAUSE / RATIONALIZE / PROCEED.
 //   - recordBaselineMetrics() is a pure DB write — no network I/O.
-// ---------------------------------------------------------------
-
 import type Database from 'better-sqlite3';
 
 import {
@@ -426,8 +422,8 @@ export function recordBaselineMetrics(
   evalDb: Database.Database,
   result: BM25BaselineResult,
 ): void {
-  // AI-WHY: Use a synthetic eval_run_id for baseline runs: negative integer based on
-  // timestamp to avoid collision with production run IDs (which start at 1).
+  // Use a synthetic eval_run_id for baseline runs: negative integer based on
+  // Timestamp to avoid collision with production run IDs (which start at 1).
   const evalRunId = -(Date.parse(result.timestamp));
 
   const insertSnapshot = evalDb.prepare(`
@@ -541,7 +537,7 @@ export async function runBM25Baseline(
     const groundTruth: GroundTruthEntry[] = buildQueryGroundTruth(q.id);
 
     // Compute per-query metrics (hard negatives contribute 0 to all metrics
-    // since their ground truth is empty — which is the correct behavior)
+    // Since their ground truth is empty — which is the correct behavior)
     const qMRR = computeMRR(evalResults, groundTruth, mrrK);
     perQueryMRR.push(qMRR);
 

@@ -1,8 +1,5 @@
-// ---------------------------------------------------------------
 // TEST: SQLite FTS5 BM25 Search (C138-P2)
 // Verifies weighted BM25 scoring via FTS5 bm25() function.
-// ---------------------------------------------------------------
-
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import Database from 'better-sqlite3';
 import { fts5Bm25Search, isFts5Available, FTS5_BM25_WEIGHTS } from '../lib/search/sqlite-fts';

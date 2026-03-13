@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: TOOL CACHE
-// ---------------------------------------------------------------
-
 // Converted from: tool-cache.test.ts (node:test runner)
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import crypto from 'crypto';
@@ -39,9 +36,7 @@ describe('Tool Cache (T012-T015)', () => {
     clear();
   });
 
-  /* -------------------------------------------------------------
-     1. CACHE INITIALIZATION
-  ---------------------------------------------------------------- */
+  // --- 1. CACHE INITIALIZATION ---
 
   describe('Cache initialization', () => {
     it('should initialize with correct default configuration', () => {
@@ -77,9 +72,7 @@ describe('Tool Cache (T012-T015)', () => {
     });
   });
 
-  /* -------------------------------------------------------------
-     2. CACHE KEY GENERATION (SHA-256)
-  ---------------------------------------------------------------- */
+  // --- 2. CACHE KEY GENERATION (SHA-256) ---
 
   describe('T013: Cache key generation from tool name + args hash', () => {
     it('should generate consistent keys for same inputs', () => {
@@ -172,9 +165,7 @@ describe('Tool Cache (T012-T015)', () => {
     });
   });
 
-  /* -------------------------------------------------------------
-     3. CORE CACHE OPERATIONS (TTL)
-  ---------------------------------------------------------------- */
+  // --- 3. CORE CACHE OPERATIONS (TTL) ---
 
   describe('T012: Session-scoped cache with 60s TTL', () => {
     it('should cache and retrieve values', () => {
@@ -240,9 +231,7 @@ describe('Tool Cache (T012-T015)', () => {
     });
   });
 
-  /* -------------------------------------------------------------
-     4. LRU EVICTION (MAX SIZE)
-  ---------------------------------------------------------------- */
+  // --- 4. LRU EVICTION (MAX SIZE) ---
 
   describe('Cache max size and LRU eviction', () => {
     it('should enforce max entries limit (1000 default)', () => {
@@ -289,9 +278,7 @@ describe('Tool Cache (T012-T015)', () => {
     });
   });
 
-  /* -------------------------------------------------------------
-     5. CACHE BYPASS OPTION
-  ---------------------------------------------------------------- */
+  // --- 5. CACHE BYPASS OPTION ---
 
   describe('T014: Cache bypass option', () => {
     it('should skip cache when bypassCache is true', async () => {
@@ -352,9 +339,7 @@ describe('Tool Cache (T012-T015)', () => {
     });
   });
 
-  /* -------------------------------------------------------------
-     6. CACHE INVALIDATION
-  ---------------------------------------------------------------- */
+  // --- 6. CACHE INVALIDATION ---
 
   describe('T015: Cache invalidation on write operations', () => {
     it('should invalidate by tool name', () => {
@@ -447,9 +432,7 @@ describe('Tool Cache (T012-T015)', () => {
     });
   });
 
-  /* -------------------------------------------------------------
-     7. CLEANUP EXPIRED
-  ---------------------------------------------------------------- */
+  // --- 7. CLEANUP EXPIRED ---
 
   describe('Cleanup expired entries', () => {
     it('should remove expired entries on cleanup', async () => {
@@ -479,9 +462,7 @@ describe('Tool Cache (T012-T015)', () => {
     });
   });
 
-  /* -------------------------------------------------------------
-     8. STATISTICS AND MONITORING
-  ---------------------------------------------------------------- */
+  // --- 8. STATISTICS AND MONITORING ---
 
   describe('Statistics and monitoring', () => {
     it('should track cache statistics', () => {
@@ -562,9 +543,7 @@ describe('Tool Cache (T012-T015)', () => {
     });
   });
 
-  /* -------------------------------------------------------------
-     10. EDGE CASES
-  ---------------------------------------------------------------- */
+  // --- 9. EDGE CASES ---
 
   describe('Edge cases', () => {
     it('should handle complex nested objects', () => {
@@ -634,9 +613,7 @@ describe('Tool Cache (T012-T015)', () => {
     });
   });
 
-  /* -------------------------------------------------------------
-     11. MODULE EXPORTS
-  ---------------------------------------------------------------- */
+  // --- 10. MODULE EXPORTS ---
 
   describe('Module exports', () => {
     it('should export all core operations', () => {

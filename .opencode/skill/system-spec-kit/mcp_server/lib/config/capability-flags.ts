@@ -1,14 +1,10 @@
-// ---------------------------------------------------------------
-// MODULE: Hydra Capability Flags
-// ---------------------------------------------------------------
-// Phase-gated capability switches for the Hydra-inspired roadmap.
+// --- 1. MEMORY ROADMAP FLAGS ---
+// Phase-gated capability switches for the memory roadmap.
 // Defaults are conservative (all disabled) unless explicitly opted in.
-// ---------------------------------------------------------------
-
 import { isFeatureEnabled } from '../cache/cognitive/rollout-policy';
 
-/** Canonical rollout phases used by Hydra roadmap tracking. */
-type HydraPhase =
+/** Canonical rollout phases used by memory roadmap tracking. */
+type MemoryRoadmapPhase =
   | 'baseline'
   | 'lineage'
   | 'graph'
@@ -17,7 +13,7 @@ type HydraPhase =
   | 'shared-rollout';
 
 /** Capability flags tracked for phased rollout. */
-interface HydraCapabilityFlags {
+interface MemoryRoadmapCapabilityFlags {
   lineageState: boolean;
   graphUnified: boolean;
   adaptiveRanking: boolean;
@@ -27,18 +23,28 @@ interface HydraCapabilityFlags {
 }
 
 /** Rollout defaults snapshot for telemetry and migration checkpoints. */
-interface HydraRolloutDefaults {
-  phase: HydraPhase;
-  capabilities: HydraCapabilityFlags;
+interface MemoryRoadmapDefaults {
+  phase: MemoryRoadmapPhase;
+  capabilities: MemoryRoadmapCapabilityFlags;
   scopeDimensionsTracked: number;
 }
 
-const PHASE_ENV = 'SPECKIT_HYDRA_PHASE';
+const PHASE_ENV = 'SPECKIT_MEMORY_ROADMAP_PHASE';
+const LEGACY_PHASE_ENV = 'SPECKIT_HYDRA_PHASE';
 
-// Keep Hydra roadmap controls distinct from existing runtime feature flags so
-// telemetry/checkpoints describe roadmap rollout state rather than unrelated
-// default-on retrieval behavior.
+// Keep roadmap controls distinct from existing runtime feature flags so
+// Telemetry/checkpoints describe roadmap rollout state rather than unrelated
+// Default-on retrieval behavior.
 const CAPABILITY_ENV = {
+  lineageState: 'SPECKIT_MEMORY_LINEAGE_STATE',
+  graphUnified: 'SPECKIT_MEMORY_GRAPH_UNIFIED',
+  adaptiveRanking: 'SPECKIT_MEMORY_ADAPTIVE_RANKING',
+  scopeEnforcement: 'SPECKIT_MEMORY_SCOPE_ENFORCEMENT',
+  governanceGuardrails: 'SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS',
+  sharedMemory: 'SPECKIT_MEMORY_SHARED_MEMORY',
+} as const;
+
+const LEGACY_CAPABILITY_ENV = {
   lineageState: 'SPECKIT_HYDRA_LINEAGE_STATE',
   graphUnified: 'SPECKIT_HYDRA_GRAPH_UNIFIED',
   adaptiveRanking: 'SPECKIT_HYDRA_ADAPTIVE_RANKING',
@@ -47,7 +53,7 @@ const CAPABILITY_ENV = {
   sharedMemory: 'SPECKIT_HYDRA_SHARED_MEMORY',
 } as const;
 
-const SUPPORTED_PHASES: ReadonlySet<HydraPhase> = new Set<HydraPhase>([
+const SUPPORTED_PHASES: ReadonlySet<MemoryRoadmapPhase> = new Set<MemoryRoadmapPhase>([
   'baseline',
   'lineage',
   'graph',
@@ -56,67 +62,92 @@ const SUPPORTED_PHASES: ReadonlySet<HydraPhase> = new Set<HydraPhase>([
   'shared-rollout',
 ]);
 
-function parseOptInFlag(flagName: string): boolean {
-  const rawValue = process.env[flagName]?.trim().toLowerCase();
-  return rawValue === 'true' || rawValue === '1';
+function parseOptInFlag(flagNames: string | readonly string[]): boolean {
+  const candidates = Array.isArray(flagNames) ? flagNames : [flagNames];
+  for (const flagName of candidates) {
+    const rawValue = process.env[flagName]?.trim().toLowerCase();
+    if (rawValue === 'true' || rawValue === '1') {
+      return true;
+    }
+  }
+  return false;
 }
 
 function normalizeIdentity(flagName: string, identity?: string): string {
   if (typeof identity === 'string' && identity.trim().length > 0) {
     return identity.trim();
   }
-  return `hydra-capability:${flagName}`;
+  return `memory-roadmap:${flagName}`;
 }
 
 /** Returns true only when the capability is explicitly opted in and in rollout. */
-function isHydraCapabilityEnabled(flagName: string, identity?: string): boolean {
-  if (!parseOptInFlag(flagName)) {
+function isMemoryRoadmapCapabilityEnabled(flagNames: string | readonly string[], identity?: string): boolean {
+  if (!parseOptInFlag(flagNames)) {
     return false;
   }
 
-  return isFeatureEnabled(flagName, normalizeIdentity(flagName, identity));
+  const canonicalFlag = Array.isArray(flagNames) ? flagNames[0] : flagNames;
+  return isFeatureEnabled(canonicalFlag, normalizeIdentity(canonicalFlag, identity));
 }
 
-/** Resolves the active Hydra roadmap phase from env, defaulting to baseline. */
-function getHydraPhase(): HydraPhase {
-  const phase = process.env[PHASE_ENV]?.trim().toLowerCase() as HydraPhase | undefined;
+/** Resolves the active memory roadmap phase from env, defaulting to baseline. */
+function getMemoryRoadmapPhase(): MemoryRoadmapPhase {
+  const phase = (process.env[PHASE_ENV] ?? process.env[LEGACY_PHASE_ENV])?.trim().toLowerCase() as MemoryRoadmapPhase | undefined;
   if (phase && SUPPORTED_PHASES.has(phase)) {
     return phase;
   }
   return 'baseline';
 }
 
-/** Returns the full capability snapshot for Hydra roadmap controls. */
-function getHydraCapabilityFlags(identity?: string): HydraCapabilityFlags {
+/** Returns the full capability snapshot for memory roadmap controls. */
+function getMemoryRoadmapCapabilityFlags(identity?: string): MemoryRoadmapCapabilityFlags {
   return {
-    lineageState: isHydraCapabilityEnabled(CAPABILITY_ENV.lineageState, identity),
-    graphUnified: isHydraCapabilityEnabled(CAPABILITY_ENV.graphUnified, identity),
-    adaptiveRanking: isHydraCapabilityEnabled(CAPABILITY_ENV.adaptiveRanking, identity),
-    scopeEnforcement: isHydraCapabilityEnabled(CAPABILITY_ENV.scopeEnforcement, identity),
-    governanceGuardrails: isHydraCapabilityEnabled(CAPABILITY_ENV.governanceGuardrails, identity),
-    sharedMemory: isHydraCapabilityEnabled(CAPABILITY_ENV.sharedMemory, identity),
+    lineageState: isMemoryRoadmapCapabilityEnabled(
+      [CAPABILITY_ENV.lineageState, LEGACY_CAPABILITY_ENV.lineageState],
+      identity,
+    ),
+    graphUnified: isMemoryRoadmapCapabilityEnabled(
+      [CAPABILITY_ENV.graphUnified, LEGACY_CAPABILITY_ENV.graphUnified],
+      identity,
+    ),
+    adaptiveRanking: isMemoryRoadmapCapabilityEnabled(
+      [CAPABILITY_ENV.adaptiveRanking, LEGACY_CAPABILITY_ENV.adaptiveRanking],
+      identity,
+    ),
+    scopeEnforcement: isMemoryRoadmapCapabilityEnabled(
+      [CAPABILITY_ENV.scopeEnforcement, LEGACY_CAPABILITY_ENV.scopeEnforcement],
+      identity,
+    ),
+    governanceGuardrails: isMemoryRoadmapCapabilityEnabled(
+      [CAPABILITY_ENV.governanceGuardrails, LEGACY_CAPABILITY_ENV.governanceGuardrails],
+      identity,
+    ),
+    sharedMemory: isMemoryRoadmapCapabilityEnabled(
+      [CAPABILITY_ENV.sharedMemory, LEGACY_CAPABILITY_ENV.sharedMemory],
+      identity,
+    ),
   };
 }
 
 /** Returns defaults consumed by telemetry/checkpoint paths for phase tracking. */
-function getHydraRolloutDefaults(identity?: string): HydraRolloutDefaults {
+function getMemoryRoadmapDefaults(identity?: string): MemoryRoadmapDefaults {
   return {
-    phase: getHydraPhase(),
-    capabilities: getHydraCapabilityFlags(identity),
+    phase: getMemoryRoadmapPhase(),
+    capabilities: getMemoryRoadmapCapabilityFlags(identity),
     scopeDimensionsTracked: 4, // tenant/user/agent/session
   };
 }
 
 export {
   CAPABILITY_ENV,
-  getHydraCapabilityFlags,
-  getHydraPhase,
-  getHydraRolloutDefaults,
-  isHydraCapabilityEnabled,
+  getMemoryRoadmapCapabilityFlags,
+  getMemoryRoadmapDefaults,
+  getMemoryRoadmapPhase,
+  isMemoryRoadmapCapabilityEnabled,
 };
 
 export type {
-  HydraCapabilityFlags,
-  HydraPhase,
-  HydraRolloutDefaults,
+  MemoryRoadmapCapabilityFlags,
+  MemoryRoadmapDefaults,
+  MemoryRoadmapPhase,
 };

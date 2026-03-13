@@ -1,7 +1,4 @@
-// ---------------------------------------------------------------
 // TEST: BM25 INDEX
-// ---------------------------------------------------------------
-
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import type BetterSqlite3 from 'better-sqlite3';
 import {
@@ -24,7 +21,7 @@ try {
   // @ts-expect-error top-level await in test file
   hybridSearch = await import('../lib/search/hybrid-search');
 } catch {
-  // hybrid-search not available
+  // Hybrid-search not available
 }
 
 describe('BM25 Index Tests (T031-T039)', () => {
@@ -137,7 +134,7 @@ describe('BM25 Index Tests (T031-T039)', () => {
 
   describe('T033: Porter stemmer subset reduces words to stems', () => {
     it('T033.1: -ing suffix removal + double-consonant dedup', () => {
-      // AI-WHY: Fix #18 — "running" → "runn" → "run" (doubled consonant collapsed)
+      // Fix #18 — "running" → "runn" → "run" (doubled consonant collapsed)
       expect(simpleStem('running')).toBe('run');
     });
 
@@ -595,7 +592,7 @@ describe('C138: Weighted BM25 FTS5 Enhancements', () => {
   });
 
   // MAINTENANCE: This harness mocks 10 modules. If any export signature
-  // changes upstream, update the corresponding vi.doMock below.
+  // Changes upstream, update the corresponding vi.doMock below.
   async function setupMemoryUpdateHarness() {
     vi.resetModules();
 

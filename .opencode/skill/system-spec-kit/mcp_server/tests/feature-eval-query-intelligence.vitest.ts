@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------
-// MODULE: Test — Feature Evaluation — Query Intelligence
-// ---------------------------------------------------------------
+// --- 1. TEST — FEATURE EVALUATION — QUERY INTELLIGENCE ---
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 // T001: Query complexity classifier
@@ -147,7 +145,7 @@ describe('T002: RSF Fusion Variants', () => {
 
     const fused = fuseResultsRsf(listA, listB);
 
-    // id=1 appears in both lists, id=2 and id=3 appear in one only
+    // Id=1 appears in both lists, id=2 and id=3 appear in one only
     const item1 = fused.find(r => r.id === 1)!;
     const item2 = fused.find(r => r.id === 2)!;
     const item3 = fused.find(r => r.id === 3)!;
@@ -187,10 +185,10 @@ describe('T002: RSF Fusion Variants', () => {
     const item1 = fused.find(r => r.id === 1)!;
     const item2 = fused.find(r => r.id === 2)!;
 
-    // id=1 in 3/3 sources → no penalty
-    // id=2 in 1/3 sources → penalty: avgScore * (1/3)
+    // Id=1 in 3/3 sources → no penalty
+    // Id=2 in 1/3 sources → penalty: avgScore * (1/3)
     expect(item1.rsfScore).toBeGreaterThan(item2.rsfScore);
-    // id=2's rsfScore should be roughly its normalized score * (1/3)
+    // Id=2's rsfScore should be roughly its normalized score * (1/3)
     expect(item2.sources.length).toBe(1);
   });
 
@@ -207,8 +205,8 @@ describe('T002: RSF Fusion Variants', () => {
     const item1 = fused.find(r => r.id === 1)!;
     const item2 = fused.find(r => r.id === 2)!;
 
-    // id=1 appears in 2 variants → gets +0.10 bonus
-    // id=2 appears in 1 variant → no bonus
+    // Id=1 appears in 2 variants → gets +0.10 bonus
+    // Id=2 appears in 1 variant → no bonus
     expect(item1.rsfScore).toBeGreaterThan(item2.rsfScore);
   });
 
@@ -250,7 +248,7 @@ describe('T003: Channel Min-Representation R2', () => {
 
     const result = analyzeChannelRepresentation(topK, allChannelResults);
 
-    // bm25 was under-represented (0 in topK) and has results above QUALITY_FLOOR
+    // Bm25 was under-represented (0 in topK) and has results above QUALITY_FLOOR
     expect(result.underRepresentedChannels).toContain('bm25');
     expect(result.promoted.length).toBeGreaterThan(0);
     expect(result.promoted[0].promotedFrom).toBe('bm25');
@@ -289,7 +287,7 @@ describe('T003: Channel Min-Representation R2', () => {
 
     const result = analyzeChannelRepresentation(topK, allChannelResults);
 
-    // bm25 is under-represented but its best result is below QUALITY_FLOOR
+    // Bm25 is under-represented but its best result is below QUALITY_FLOOR
     expect(result.underRepresentedChannels).toContain('bm25');
     expect(result.promoted).toHaveLength(0); // nothing promoted — below floor
   });

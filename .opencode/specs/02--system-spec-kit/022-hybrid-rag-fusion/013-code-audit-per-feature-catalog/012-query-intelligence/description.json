@@ -1,11 +1,12 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/012-query-intelligence",
-  "description": "012 — query-intelligence",
+  "description": "Feature Specification: query-intelligence",
   "keywords": [
-    "query",
-    "intelligence"
+    "feature",
+    "specification",
+    "query-intelligence"
   ],
-  "lastUpdated": "2026-03-10T11:14:56.000Z",
+  "lastUpdated": "2026-03-13T18:17:46.752Z",
   "specId": "012",
   "folderSlug": "query-intelligence",
   "parentChain": [
