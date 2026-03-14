@@ -168,7 +168,7 @@ npm install
 
 This installs:
 - `better-sqlite3` (SQLite with native bindings)
-- `sqlite-vec` (vector extension for semantic search)
+- `sqlite-vec` + `sqlite-vec-darwin-arm64` (vector extension for semantic search)
 - Workspace dependencies including `@spec-kit/shared`
 
 ### Step 3: Build the MCP Server
@@ -720,7 +720,7 @@ bash .opencode/skill/system-spec-kit/scripts/validate.sh \
 | `Cannot find module '@spec-kit/shared/...'` | Workspace dependency state is incomplete or stale | Run `npm install && npm run build` from the skill root |
 | `ERR_DLOPEN_FAILED` | Native module compiled for a different Node.js ABI | Run `bash scripts/setup/rebuild-native-modules.sh` |
 | `NODE_MODULE_VERSION mismatch` | Node.js was updated after native modules were compiled | Run `bash scripts/setup/rebuild-native-modules.sh` |
-| `sqlite-vec unavailable` | Optional platform package missing or failed to load | Run `npm install && npm rebuild` inside `mcp_server/` |
+| `sqlite-vec unavailable` | Platform-specific native package failed to load | Run `npm install && npm rebuild` in both `mcp_server/` and `scripts/` |
 | Server starts but returns no memories | No indexed memories yet, or embeddings are pending | Run `memory_index_scan({ force: true })` via your AI |
 | Database appears stale after restore | Client still uses old MCP process with in-memory state | Fully restart OpenCode or Claude Code |
 | MCP server not in tools list | Configuration file error or path is wrong | Validate JSON syntax and verify binary path (see below) |
@@ -766,12 +766,19 @@ node -e "console.log('Node', process.version, 'MODULE_VERSION', process.versions
 **`sqlite-vec unavailable`**
 
 ```bash
-cd .opencode/skill/system-spec-kit/mcp_server
+cd .opencode/skill/system-spec-kit
 npm install
 npm rebuild
 ```
 
-The server degrades to non-vector behavior when sqlite-vec is unavailable. Semantic similarity quality drops until you fix the extension.
+Verify the platform package is present:
+
+```bash
+ls mcp_server/node_modules/sqlite-vec-darwin-arm64/vec0.dylib
+ls scripts/node_modules/sqlite-vec-darwin-arm64/vec0.dylib
+```
+
+Both `mcp_server/` and `scripts/` require `sqlite-vec-darwin-arm64` as a direct dependency. The server degrades to non-vector behavior when sqlite-vec is unavailable. Semantic similarity quality drops until you fix the extension.
 
 **Server runs but returns no memories**
 
