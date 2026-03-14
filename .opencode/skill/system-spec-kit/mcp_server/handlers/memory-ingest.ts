@@ -19,6 +19,10 @@ import {
 
 import type { MCPResponse } from './types';
 
+// Feature catalog: Async ingestion job lifecycle
+// Feature catalog: Workspace scanning and indexing (memory_index_scan)
+
+
 interface MemoryIngestStartArgs {
   paths: string[];
   specFolder?: string;

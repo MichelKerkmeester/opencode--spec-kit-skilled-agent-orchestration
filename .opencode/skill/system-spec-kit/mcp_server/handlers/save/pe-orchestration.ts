@@ -15,6 +15,10 @@ import {
 } from '../pe-gating';
 import type { PeDecision, SimilarMemory, IndexResult } from './types';
 
+// Feature catalog: Prediction-error save arbitration
+// Feature catalog: Memory indexing (memory_save)
+
+
 export interface PeOrchestrationResult {
   decision: PeDecision;
   earlyReturn: IndexResult | null;

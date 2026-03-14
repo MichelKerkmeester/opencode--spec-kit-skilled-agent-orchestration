@@ -7,6 +7,9 @@
 import { requireDb, toErrorMessage } from '../utils';
 import * as mutationLedger from '../lib/storage/mutation-ledger';
 
+// Feature catalog: Workspace scanning and indexing (memory_index_scan)
+
+
 /* ------- 2. TYPES ------- */
 
 const DOT_OPENCODE_SPECS_SEGMENT = '/.opencode/specs/';

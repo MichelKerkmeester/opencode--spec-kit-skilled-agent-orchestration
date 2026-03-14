@@ -4,16 +4,14 @@
 
 - [1. OVERVIEW](#1--overview)
 - [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-- [5. IN SIMPLE TERMS](#5--in-simple-terms)
+- [3. IN SIMPLE TERMS](#3--in-simple-terms)
+- [4. SOURCE FILES](#4--source-files)
+- [5. SOURCE METADATA](#5--source-metadata)
 
 ## 1. OVERVIEW
-
 Covers the graph traversal tool that traces causal relationship chains to explain why decisions were made.
 
 ## 2. CURRENT REALITY
-
 "Why was this decision made?" This tool answers that question by tracing the causal relationship chain for a given memory through depth-limited graph traversal.
 
 You choose the traversal direction: outgoing (what did this memory cause or enable?), incoming (what caused or enabled this memory?) or both. Maximum depth is configurable from 1 to 10, defaulting to 3. Cycle detection via a visited set prevents infinite traversal through circular relationships.
@@ -24,8 +22,9 @@ You can filter to specific relationship types after traversal. Pass `relations: 
 
 When contradictions are found, the response includes warning hints. Two memories that contradict each other in the same causal chain is a signal that something needs resolution.
 
-## 3. SOURCE FILES
-
+## 3. IN SIMPLE TERMS
+This answers the question "why was this decision made?" by following the chain of connections backward through related memories. It is like tracing a family tree to understand how you got from a problem to a solution. If two memories in the chain contradict each other, the system flags the conflict so you can resolve it.
+## 4. SOURCE FILES
 ### Implementation
 
 | File | Layer | Role |
@@ -133,12 +132,8 @@ When contradictions are found, the response includes warning hints. Two memories
 | `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
 | `mcp_server/tests/vector-index-impl.vitest.ts` | Vector index implementation |
 
-## 4. SOURCE METADATA
-
+## 5. SOURCE METADATA
 - Group: Analysis
 - Source feature title: Causal chain tracing (memory_drift_why)
 - Current reality source: feature_catalog.md
 
-## 5. IN SIMPLE TERMS
-
-This answers the question "why was this decision made?" by following the chain of connections backward through related memories. It is like tracing a family tree to understand how you got from a problem to a solution. If two memories in the chain contradict each other, the system flags the conflict so you can resolve it.

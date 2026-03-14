@@ -93,6 +93,12 @@ import {
 } from './causal-links-processor';
 import { escapeLikePattern } from './handler-utils';
 
+// Feature catalog: Memory indexing (memory_save)
+// Feature catalog: Verify-fix-verify memory quality loop
+// Feature catalog: Dry-run preflight for memory_save
+// Feature catalog: Prediction-error save arbitration
+
+
 // Create local path validator
 const validateFilePathLocal = createFilePathValidator(ALLOWED_BASE_PATHS, validateFilePath);
 
@@ -233,7 +239,7 @@ async function processPreparedMemory(
       pendingCacheWrite,
     } = embeddingResult;
 
-    // -- Sprint 4: TM-04 Quality Gate (before PE gating, after embedding) --
+    // -- the rollout: TM-04 Quality Gate (before PE gating, after embedding) --
     if (isSaveQualityGateEnabled() && isQualityGateEnabled()) {
       try {
         const qualityGateResult = runQualityGate({
@@ -291,7 +297,7 @@ async function processPreparedMemory(
     );
     if (peResult.earlyReturn) return peResult.earlyReturn;
 
-    // -- Sprint 4: TM-06 Reconsolidation-on-Save --
+    // -- the rollout: TM-06 Reconsolidation-on-Save --
     const reconResult = await runReconsolidationIfEnabled(database, parsed, filePath, force, embedding);
     if (reconResult.earlyReturn) return reconResult.earlyReturn;
 
@@ -555,7 +561,7 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
         typeof e === 'string' ? e : e.message
       ).join('; ');
 
-      // Fix #23 (017-refinement-phase-6) — Use the actual error code from the
+      // Use the actual error code from the
       // First validation error instead of hardcoding ANCHOR_FORMAT_INVALID.
       const firstError = preflightResult.errors[0];
       const errorCode = (typeof firstError === 'object' && firstError?.code)

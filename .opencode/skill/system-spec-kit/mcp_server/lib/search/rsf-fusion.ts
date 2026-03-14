@@ -12,7 +12,7 @@
  * `hybrid-search.ts` (`Sprint3PipelineMeta.rsfShadow`), which records RSF
  * scores for offline evaluation without affecting live result ordering.
  *
- * The `isRsfEnabled()` feature flag was removed in Sprint 8 as dead code.
+ * The `isRsfEnabled()` feature flag was removed as dead code.
  * The dead RSF branch in hybrid-search.ts was also removed at that time.
  *
  * The core fusion functions (`fuseResultsRsf`, `fuseResultsRsfMulti`,
@@ -23,6 +23,9 @@
  * @see feature_catalog/12--query-intelligence/02-relative-score-fusion-in-shadow-mode.md
  */
 import type { RrfItem, RankedList } from '@spec-kit/shared/algorithms/rrf-fusion';
+
+// Feature catalog: Relative score fusion in shadow mode
+
 
 /* --- 1. INTERFACES --- */
 

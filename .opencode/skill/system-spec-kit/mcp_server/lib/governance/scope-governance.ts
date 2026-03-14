@@ -2,6 +2,9 @@ import type Database from 'better-sqlite3';
 
 import { ensureGovernanceTables, ensureSharedSpaceTables } from '../search/vector-index-schema';
 
+// Feature catalog: Hierarchical scope governance, governed ingest, retention, and audit
+
+
 /**
  * Retention modes applied during governed ingest.
  */

@@ -4,16 +4,14 @@
 
 - [1. OVERVIEW](#1--overview)
 - [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-- [5. IN SIMPLE TERMS](#5--in-simple-terms)
+- [3. IN SIMPLE TERMS](#3--in-simple-terms)
+- [4. SOURCE FILES](#4--source-files)
+- [5. SOURCE METADATA](#5--source-metadata)
 
 ## 1. OVERVIEW
-
 Auto entity extraction runs five regex rules at save time to capture technology names, project identifiers and architectural concepts from memory content.
 
 ## 2. CURRENT REALITY
-
 Memory content contains implicit entities (technology names, architectural concepts, project identifiers) that are valuable for cross-document linking but were never explicitly captured. Manual entity tagging does not scale, and the system had zero entities in its catalog.
 
 Auto entity extraction runs at save time using five pure-TypeScript regex rules with no external NLP dependencies. Rule 1 captures capitalized multi-word sequences (proper nouns like "Claude Code" or "Spec Kit Memory"). Rule 2 extracts technology names from code fence language annotations. Rule 3 identifies nouns following key phrases ("using", "with", "via", "implements"). Rule 4 pulls content from markdown headings. Rule 5 captures quoted strings.
@@ -28,8 +26,9 @@ Entities are deliberately stored in a separate table rather than as causal edges
 
 ---
 
-## 3. SOURCE FILES
-
+## 3. IN SIMPLE TERMS
+Your notes mention tools, projects and concepts by name, but those names were never formally cataloged. This feature automatically spots those names when you save a memory and adds them to a shared catalog. Later, the system can use that catalog to connect memories that mention the same things, even if the surrounding text is completely different. It is like an automatic index at the back of a book that builds itself as you write.
+## 4. SOURCE FILES
 ### Implementation
 
 | File | Layer | Role |
@@ -52,12 +51,8 @@ Entities are deliberately stored in a separate table rather than as causal edges
 | `mcp_server/tests/working-memory-event-decay.vitest.ts` | Working memory decay |
 | `mcp_server/tests/working-memory.vitest.ts` | Working memory tests |
 
-## 4. SOURCE METADATA
-
+## 5. SOURCE METADATA
 - Group: Memory quality and indexing
 - Source feature title: Auto entity extraction
 - Current reality source: feature_catalog.md
 
-## 5. IN SIMPLE TERMS
-
-Your notes mention tools, projects and concepts by name, but those names were never formally cataloged. This feature automatically spots those names when you save a memory and adds them to a shared catalog. Later, the system can use that catalog to connect memories that mention the same things, even if the surrounding text is completely different. It is like an automatic index at the back of a book that builds itself as you write.

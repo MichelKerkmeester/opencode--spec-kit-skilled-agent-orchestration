@@ -5,12 +5,17 @@ import { getTierConfig } from './importance-tiers';
 import { calculatePopularityScore } from '../storage/access-tracker';
 // HIGH-003 FIX: Import unified recency scoring from folder-scoring
 import { computeRecencyScore, DECAY_RATE } from './folder-scoring';
-// Interference scoring penalty (Sprint 2, T005)
+// Interference scoring penalty
 import { applyInterferencePenalty, INTERFERENCE_PENALTY_COEFFICIENT } from './interference-scoring';
 // Scoring observability (N4 + TM-01 logging, 5% sampled)
 import { shouldSample, logScoringObservation } from '../telemetry/scoring-observability';
 
 import type { MemoryDbRow } from '@spec-kit/shared/types';
+
+// Feature catalog: Score normalization
+// Feature catalog: Interference scoring
+// Feature catalog: Negative feedback confidence signal
+
 
 /**
  * Loose input type for scoring functions.
@@ -57,7 +62,7 @@ export interface LegacyWeights {
   retrievability: number;
 }
 
-// ScoringInput defined above; deprecated MemoryRow removed in Phase 6B
+// ScoringInput is defined above; deprecated MemoryRow was removed.
 
 export interface ScoringOptions {
   weights?: Partial<FiveFactorWeights> | Partial<LegacyWeights>;
@@ -188,7 +193,7 @@ export const IMPORTANCE_MULTIPLIERS: Readonly<Record<string, number>> = {
 export const CITATION_DECAY_RATE: number = 0.1;
 export const CITATION_MAX_DAYS: number = 90;
 
-// Spec 126: Document type scoring multipliers
+// Document type scoring multipliers.
 // Applied as a final multiplier to composite scores so spec documents
 // Rank higher than regular memory files for relevant queries.
 export const DOCUMENT_TYPE_MULTIPLIERS: Readonly<Record<string, number>> = {
@@ -419,7 +424,7 @@ export function calculatePatternScore(row: ScoringInput, options: ScoringOptions
     score += (similarity - PATTERN_ALIGNMENT_BONUSES.semantic_threshold) * 0.5;
   }
 
-  // Spec 126: Document-type pattern alignment bonus
+  // Document-type pattern alignment bonus.
   // Boost score when query keywords match the document type
   if (queryLower && row.document_type) {
     const docType = row.document_type as string;
@@ -460,17 +465,17 @@ export function calculateRecencyScore(timestamp: string | undefined, tier: strin
 // ───────────────────────────────────────────────────────────────
 /**
  * N4: Cold-start boost constants (exported for observability tests).
- * @deprecated Novelty boost disabled (Sprint 7 audit). Retained for test compatibility.
+ * @deprecated Novelty boost disabled. Retained for test compatibility.
  */
 export const NOVELTY_BOOST_MAX = 0.15;
-/** @deprecated Novelty boost disabled (Sprint 7 audit). Retained for test compatibility. */
+/** @deprecated Novelty boost disabled. Retained for test compatibility. */
 export const NOVELTY_BOOST_HALF_LIFE_HOURS = 12;
-/** @deprecated Novelty boost disabled (Sprint 7 audit). Retained for test compatibility. */
+/** @deprecated Novelty boost disabled. Retained for test compatibility. */
 export const NOVELTY_BOOST_SCORE_CAP = 0.95;
 
 /**
  * N4: Calculate cold-start novelty boost with exponential decay.
- * @deprecated Eval complete (Sprint 7 audit). Marginal value confirmed.
+ * @deprecated Eval complete. Marginal value confirmed.
  * SPECKIT_NOVELTY_BOOST env var is inert. Always returns 0.
  *
  * @param createdAt - ISO creation timestamp
@@ -511,7 +516,7 @@ function applyPostProcessingAndObserve(
   row: ScoringInput,
   queryIdPrefix: string,
 ): number {
-  // Spec 126: Apply document type multiplier
+  // Apply the document type multiplier.
   const docType = (row.document_type as string) || 'memory';
   const docMultiplier = DOCUMENT_TYPE_MULTIPLIERS[docType] ?? 1.0;
   composite *= docMultiplier;
@@ -565,7 +570,7 @@ function applyPostProcessingAndObserve(
  */
 export function calculateFiveFactorScore(row: ScoringInput, options: ScoringOptions = {}): number {
   const rawWeights: FiveFactorWeights = { ...FIVE_FACTOR_WEIGHTS, ...(options.weights as Partial<FiveFactorWeights>) };
-  // Fix #6 (017-refinement-phase-6) — Normalize weights to sum 1.0 after
+  // Normalize weights to sum 1.0 after
   // Merging partial overrides. Without this, partial overrides break weighted-average semantics.
   const wSum = rawWeights.temporal + rawWeights.usage + rawWeights.importance + rawWeights.pattern + rawWeights.citation;
   const weights: FiveFactorWeights = Math.abs(wSum - 1.0) > 0.001 && wSum > 0
@@ -784,7 +789,7 @@ export function getScoreBreakdown(row: ScoringInput, options: ScoringOptions = {
 // ───────────────────────────────────────────────────────────────
 /**
  * Check if composite score normalization is enabled.
- * Default: TRUE (graduated Sprint 4). Set SPECKIT_SCORE_NORMALIZATION=false to disable.
+ * Default: TRUE. Set SPECKIT_SCORE_NORMALIZATION=false to disable.
  *
  * @returns True if normalization is enabled (default: ON)
  */
@@ -807,7 +812,7 @@ export function normalizeCompositeScores(scores: number[]): number[] {
   if (scores.length === 0) return [];
   if (!isCompositeNormalizationEnabled()) return scores;
 
-  // Fix #7 (017-refinement-phase-6) — Use loop-based min/max instead of
+  // Use loop-based min/max instead of
   // Math.max(...scores) / Math.min(...scores) which causes stack overflow on arrays
   // Larger than ~100K elements (exceeds JS call-stack argument limit).
   let maxScore = -Infinity;

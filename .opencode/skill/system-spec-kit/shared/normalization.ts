@@ -7,9 +7,9 @@
 // The raw DB schema is defined in:
 //   mcp_server/lib/search/vector-index-impl.js (CREATE TABLE memory_index)
 //
-// Phase 6A Foundation — consumers should use MemoryDbRow (snake_case DB rows)
+// Consumers should use MemoryDbRow (snake_case DB rows).
 // or Memory (camelCase app layer) from this module.
-// Phase 6B removed the deprecated MemoryRow/MemoryRecord interfaces.
+// Deprecated MemoryRow/MemoryRecord interfaces were removed.
 // ---------------------------------------------------------------
 
 // ---------------------------------------------------------------
@@ -22,6 +22,9 @@
  *
  * Source of truth: vector-index-impl.js CREATE TABLE memory_index
  */
+
+// Feature catalog: Entity normalization consolidation
+
 export interface MemoryDbRow {
   id: number;
   spec_folder: string;

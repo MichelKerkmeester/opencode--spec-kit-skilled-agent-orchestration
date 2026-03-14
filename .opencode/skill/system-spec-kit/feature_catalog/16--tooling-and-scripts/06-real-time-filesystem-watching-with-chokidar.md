@@ -4,22 +4,21 @@
 
 - [1. OVERVIEW](#1--overview)
 - [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-- [5. IN SIMPLE TERMS](#5--in-simple-terms)
+- [3. IN SIMPLE TERMS](#3--in-simple-terms)
+- [4. SOURCE FILES](#4--source-files)
+- [5. SOURCE METADATA](#5--source-metadata)
 
 ## 1. OVERVIEW
-
 Real-time filesystem watching uses chokidar to push-index changed memory files with debounce, content-hash deduplication and retry logic.
 
 ## 2. CURRENT REALITY
-
 **IMPLEMENTED (Sprint 019).** Adds `chokidar`-based push indexing in `lib/ops/file-watcher.ts` with 2-second debounce, TM-02 SHA-256 content-hash deduplication and exponential backoff retries for `SQLITE_BUSY` (1s/2s/4s, 3 attempts). `getWatcherMetrics()` is exported and returns `{ filesReindexed, avgReindexTimeMs }`, with per-reindex timing logs emitted to stderr (CHK-087). Gated by `SPECKIT_FILE_WATCHER` (default `false`).
 
 `mcp_server/tests/file-watcher.vitest.ts` now covers the watcher runtime behavior and is green in the current verification run, including debounce, rename, burst/concurrent rename, retry and metrics scenarios.
 
-## 3. SOURCE FILES
-
+## 3. IN SIMPLE TERMS
+Instead of waiting for you to ask the system to re-scan your files, this feature watches your project folder in real time. When you save, rename or delete a memory file, the system notices and updates its index automatically. It works like how your email app shows new messages as they arrive rather than making you hit refresh.
+## 4. SOURCE FILES
 ### Implementation
 
 | File | Layer | Role |
@@ -32,12 +31,8 @@ Real-time filesystem watching uses chokidar to push-index changed memory files w
 |------|-------|
 | `mcp_server/tests/file-watcher.vitest.ts` | Coverage for path filtering, debounce/retry/delete behavior, rename integration (unlink+add lifecycle, old-entry removal), burst/concurrent rename handling and watcher metrics (`filesReindexed`, `avgReindexTimeMs`) |
 
-## 4. SOURCE METADATA
-
+## 5. SOURCE METADATA
 - Group: Extra features (Sprint 019)
 - Source feature title: Real-time filesystem watching with chokidar
 - Current reality source: feature_catalog.md
 
-## 5. IN SIMPLE TERMS
-
-Instead of waiting for you to ask the system to re-scan your files, this feature watches your project folder in real time. When you save, rename or delete a memory file, the system notices and updates its index automatically. It works like how your email app shows new messages as they arrive rather than making you hit refresh.

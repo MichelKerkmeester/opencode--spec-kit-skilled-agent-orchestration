@@ -4,16 +4,14 @@
 
 - [1. OVERVIEW](#1--overview)
 - [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-- [5. IN SIMPLE TERMS](#5--in-simple-terms)
+- [3. IN SIMPLE TERMS](#3--in-simple-terms)
+- [4. SOURCE FILES](#4--source-files)
+- [5. SOURCE METADATA](#5--source-metadata)
 
 ## 1. OVERVIEW
-
 Covers the fast-path trigger matching tool that performs direct string matching for sub-100ms retrieval.
 
 ## 2. CURRENT REALITY
-
 When you need speed over depth, trigger matching delivers. Rather than generating embeddings and running multi-channel search, it performs direct string matching of your prompt against stored trigger phrases. The performance target is under 100ms. Think of it as the "fast path" that sacrifices recall for latency.
 
 Where this tool gets interesting is the cognitive pipeline. When you provide a session ID with `include_cognitive=true`, the system applies FSRS-based attention decay (scores degrade each turn via `0.98^(turn-1)` exponential decay), memory activation (matched memories get their attention score set to 1.0), co-activation spreading (each activated memory spreads activation to related memories through the co-occurrence graph), tier classification (maps effective retrievability to HOT, WARM, COLD, DORMANT or ARCHIVED) and tiered content injection.
@@ -22,8 +20,9 @@ Tiered content injection is the most visible effect. HOT memories return their f
 
 The cognitive path fetches 2x the requested limit from the trigger matcher to give the cognitive pipeline headroom for filtering. If you request 3 results, 6 candidates enter the cognitive pipeline and the top 3 survivors are returned.
 
-## 3. SOURCE FILES
-
+## 3. IN SIMPLE TERMS
+This is the speed-first search option. Instead of doing a deep analysis of your question, it matches specific phrases you type against a list of known keywords, like a phone's autocomplete. It returns results almost instantly, which makes it great for quick lookups where you already know roughly what you are looking for. Frequently used memories show up with full details while older ones appear as lightweight pointers.
+## 4. SOURCE FILES
 ### Implementation
 
 | File | Layer | Role |
@@ -162,12 +161,8 @@ The cognitive path fetches 2x the requested limit from the trigger matcher to gi
 | `mcp_server/tests/working-memory.vitest.ts` | Working memory tests |
 | `shared/parsing/quality-extractors.test.ts` | Quality Extractors.Ts |
 
-## 4. SOURCE METADATA
-
+## 5. SOURCE METADATA
 - Group: Retrieval
 - Source feature title: Trigger phrase matching (memory_match_triggers)
 - Current reality source: feature_catalog.md
 
-## 5. IN SIMPLE TERMS
-
-This is the speed-first search option. Instead of doing a deep analysis of your question, it matches specific phrases you type against a list of known keywords, like a phone's autocomplete. It returns results almost instantly, which makes it great for quick lookups where you already know roughly what you are looking for. Frequently used memories show up with full details while older ones appear as lightweight pointers.

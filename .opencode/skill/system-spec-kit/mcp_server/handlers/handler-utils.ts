@@ -16,6 +16,11 @@
 import fs from 'fs';
 import path from 'path';
 
+// Feature catalog: Memory indexing (memory_save)
+// Feature catalog: Single and folder delete (memory_delete)
+// Feature catalog: Validation feedback (memory_validate)
+
+
 /** Escape special SQL LIKE pattern characters (% and _) for safe queries */
 export function escapeLikePattern(str: string): string {
   if (typeof str !== 'string') {

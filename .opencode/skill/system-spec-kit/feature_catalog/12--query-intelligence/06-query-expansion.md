@@ -4,24 +4,23 @@
 
 - [1. OVERVIEW](#1--overview)
 - [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-- [5. IN SIMPLE TERMS](#5--in-simple-terms)
+- [3. IN SIMPLE TERMS](#3--in-simple-terms)
+- [4. SOURCE FILES](#4--source-files)
+- [5. SOURCE METADATA](#5--source-metadata)
 
 ## 1. OVERVIEW
-
 Query expansion broadens retrieval for complex queries by mining related terms from the vector index and appending them to the original query.
 
 ## 2. CURRENT REALITY
-
 Embedding-based query expansion broadens retrieval for complex queries by mining similar memories from the vector index and extracting related terms to append to the original query, producing an enriched combined query string. Stop-words are filtered out and tokens shorter than 3 characters are discarded.
 
 When R15 classifies a query as "simple", expansion is suppressed because expanding a trigger-phrase lookup would add noise. If expansion produces no additional terms, the original query proceeds unchanged. In the 4-stage pipeline, Stage 1 runs the baseline and expanded-query searches in parallel with deduplication (baseline-first). Runs behind the `SPECKIT_EMBEDDING_EXPANSION` flag (default ON).
 
 ---
 
-## 3. SOURCE FILES
-
+## 3. IN SIMPLE TERMS
+Sometimes the words you use in a question do not match the words stored in the system, even though they mean the same thing. This feature automatically adds related terms to your search so you find relevant results even when the exact wording differs. It only kicks in for complex questions because simple lookups do not benefit from the extra breadth.
+## 4. SOURCE FILES
 ### Implementation
 
 | File | Layer | Role |
@@ -98,12 +97,8 @@ When R15 classifies a query as "simple", expansion is suppressed because expandi
 | `mcp_server/tests/stage1-expansion.vitest.ts` | Stage-1 expansion call and dedup |
 | `mcp_server/tests/vector-index-impl.vitest.ts` | Vector index implementation |
 
-## 4. SOURCE METADATA
-
+## 5. SOURCE METADATA
 - Group: Query intelligence
 - Source feature title: Query expansion
 - Current reality source: feature_catalog.md
 
-## 5. IN SIMPLE TERMS
-
-Sometimes the words you use in a question do not match the words stored in the system, even though they mean the same thing. This feature automatically adds related terms to your search so you find relevant results even when the exact wording differs. It only kicks in for complex questions because simple lookups do not benefit from the extra breadth.

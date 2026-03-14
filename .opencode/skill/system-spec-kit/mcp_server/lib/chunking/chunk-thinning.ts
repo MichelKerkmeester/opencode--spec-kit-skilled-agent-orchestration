@@ -6,6 +6,9 @@
 // Used BEFORE indexing to filter out low-value chunks.
 import type { AnchorChunk } from './anchor-chunker';
 
+// Feature catalog: Anchor-aware chunk thinning
+
+
 /* ───────────────────────────────────────────────────────────────
    1. TYPES
 ──────────────────────────────────────────────────────────────── */

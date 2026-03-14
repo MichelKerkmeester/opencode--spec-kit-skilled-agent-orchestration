@@ -4,20 +4,19 @@
 
 - [1. OVERVIEW](#1--overview)
 - [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-- [5. IN SIMPLE TERMS](#5--in-simple-terms)
+- [3. IN SIMPLE TERMS](#3--in-simple-terms)
+- [4. SOURCE FILES](#4--source-files)
+- [5. SOURCE METADATA](#5--source-metadata)
 
 ## 1. OVERVIEW
-
 Dedicated UX hook modules separate mutation feedback and response hint logic from individual mutation handlers into shared module boundaries.
 
 ## 2. CURRENT REALITY
-
 Phase 014 introduced dedicated UX hook modules for mutation feedback and response hints. This separated UX hook logic from individual mutation handlers and standardized post-mutation UX behavior through shared module boundaries.
 
-## 3. SOURCE FILES
-
+## 3. IN SIMPLE TERMS
+The logic for generating user-facing feedback after a save or change used to be scattered across many files. This feature moved all that feedback logic into its own dedicated modules. It is like a restaurant separating the kitchen from the serving area: the food still reaches your table, but the responsibilities are clearly divided so nothing falls through the cracks.
+## 4. SOURCE FILES
 ### Implementation
 
 | File | Layer | Role |
@@ -99,12 +98,8 @@ Phase 014 introduced dedicated UX hook modules for mutation feedback and respons
 | `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
 | `mcp_server/tests/vector-index-impl.vitest.ts` | Vector index implementation |
 
-## 4. SOURCE METADATA
-
+## 5. SOURCE METADATA
 - Group: UX hooks automation (Phase 014)
 - Source feature title: Dedicated UX hook modules
 - Current reality source: feature_catalog.md
 
-## 5. IN SIMPLE TERMS
-
-The logic for generating user-facing feedback after a save or change used to be scattered across many files. This feature moved all that feedback logic into its own dedicated modules. It is like a restaurant separating the kitchen from the serving area: the food still reaches your table, but the responsibilities are clearly divided so nothing falls through the cracks.

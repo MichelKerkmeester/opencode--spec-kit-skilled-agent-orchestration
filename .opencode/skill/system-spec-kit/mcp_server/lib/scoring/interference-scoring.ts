@@ -1,12 +1,15 @@
 // ───────────────────────────────────────────────────────────────
 // 1. INTERFERENCE SCORING
 // ───────────────────────────────────────────────────────────────
-// Sprint 2, Task T005
+// Interference scoring calibration
 // Computes interference scores for memories — a measure of how many
 // Similar memories exist in the same spec_folder. High interference
 // Means the memory is one of many similar items, suggesting redundancy.
 // Applied as a penalty in composite scoring to demote redundant results.
 import Database from 'better-sqlite3';
+
+// Feature catalog: Interference scoring
+
 
 // ───────────────────────────────────────────────────────────────
 // 2. TYPES
@@ -144,7 +147,7 @@ export function computeInterferenceScore(
 export function computeInterferenceScoresBatch(
   database: Database.Database,
   memoryIds: number[],
-  // Fix #12 (017-refinement-phase-6) — Threshold was hardcoded to
+  // Threshold was hardcoded to
   // INTERFERENCE_SIMILARITY_THRESHOLD. Now configurable for testing/tuning.
   threshold: number = INTERFERENCE_SIMILARITY_THRESHOLD
 ): Map<number, number> {

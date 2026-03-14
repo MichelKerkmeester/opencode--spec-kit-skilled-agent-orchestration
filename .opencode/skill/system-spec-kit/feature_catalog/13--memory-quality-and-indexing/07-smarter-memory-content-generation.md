@@ -4,24 +4,23 @@
 
 - [1. OVERVIEW](#1--overview)
 - [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-- [5. IN SIMPLE TERMS](#5--in-simple-terms)
+- [3. IN SIMPLE TERMS](#3--in-simple-terms)
+- [4. SOURCE FILES](#4--source-files)
+- [5. SOURCE METADATA](#5--source-metadata)
 
 ## 1. OVERVIEW
-
 The content normalizer strips markdown formatting noise before embedding generation and BM25 indexing to improve retrieval quality.
 
 ## 2. CURRENT REALITY
-
 Raw markdown including code fences, nested lists and YAML frontmatter was being embedded as-is, diluting embedding quality with formatting noise. A content normalizer now strips this noise before embedding generation and BM25 rebuild/index paths that call `normalizeContentForBM25()`.
 
 Seven primitives run in sequence: strip YAML frontmatter, strip anchor markers, strip HTML comments, strip code fence markers (retaining the code body), normalize markdown tables, normalize markdown lists and normalize headings. Two composite entry points apply this: `normalizeContentForEmbedding()` and `normalizeContentForBM25()`. In the current runtime, the BM25 entry point delegates to the same normalization pipeline as embeddings.
 
 The normalizer has no feature flag because it is a non-destructive improvement. It is always active in the `memory-save.ts` embedding path and in BM25 rebuild/tokenization paths that call `normalizeContentForBM25()`.
 
-## 3. SOURCE FILES
-
+## 3. IN SIMPLE TERMS
+Raw notes are full of formatting clutter like bullet markers, code fences and header symbols that have nothing to do with the actual meaning. This feature strips that clutter away before the system creates a searchable fingerprint of your content. The result is cleaner fingerprints that match your questions more accurately, like removing the wrapping paper so you can see what is actually inside the box.
+## 4. SOURCE FILES
 ### Implementation
 
 | File | Layer | Role |
@@ -48,12 +47,8 @@ The normalizer has no feature flag because it is a non-destructive improvement. 
 | `mcp_server/tests/unit-path-security.vitest.ts` | Path security unit tests |
 | `shared/parsing/quality-extractors.test.ts` | Quality Extractors.Ts |
 
-## 4. SOURCE METADATA
-
+## 5. SOURCE METADATA
 - Group: Memory quality and indexing
 - Source feature title: Smarter memory content generation
 - Current reality source: feature_catalog.md
 
-## 5. IN SIMPLE TERMS
-
-Raw notes are full of formatting clutter like bullet markers, code fences and header symbols that have nothing to do with the actual meaning. This feature strips that clutter away before the system creates a searchable fingerprint of your content. The result is cleaner fingerprints that match your questions more accurately, like removing the wrapping paper so you can see what is actually inside the box.

@@ -4,16 +4,14 @@
 
 - [1. OVERVIEW](#1--overview)
 - [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-- [5. IN SIMPLE TERMS](#5--in-simple-terms)
+- [3. IN SIMPLE TERMS](#3--in-simple-terms)
+- [4. SOURCE FILES](#4--source-files)
+- [5. SOURCE METADATA](#5--source-metadata)
 
 ## 1. OVERVIEW
-
 Describes the temporal degree delta signal that scores memories higher when they gain new graph edges recently, applied as a capped +0.05 additive bonus in Stage 2.
 
 ## 2. CURRENT REALITY
-
 Graph connectivity changes over time, and that trajectory carries signal. A memory gaining three new edges this week is more actively relevant than one whose connections have been static for months.
 
 Graph momentum computes a temporal degree delta: `current_degree - degree_7d_ago`. The `degree_snapshots` table records per-node degree counts at daily granularity with a UNIQUE constraint on `(memory_id, snapshot_date)`. The `snapshotDegrees()` function captures the current state, and `computeMomentum()` looks back 7 days to calculate the delta.
@@ -22,8 +20,9 @@ The momentum signal applies as an additive bonus in Stage 2 of the pipeline, cap
 
 When no snapshot exists for the 7-day lookback (common during initial rollout), the momentum defaults to zero rather than penalizing the memory. Runs behind the `SPECKIT_GRAPH_SIGNALS` flag (default ON, shared with N2b).
 
-## 3. SOURCE FILES
-
+## 3. IN SIMPLE TERMS
+This tracks how quickly a piece of knowledge is gaining connections to other knowledge. Think of it like a trending topic: the faster something connects to related ideas, the more likely it is to be relevant right now. A memory that gained three new links this week gets a small search boost compared to one whose connections have not changed in months.
+## 4. SOURCE FILES
 ### Implementation
 
 | File | Layer | Role |
@@ -37,12 +36,8 @@ When no snapshot exists for the 7-day lookback (common during initial rollout), 
 | `mcp_server/tests/feature-eval-graph-signals.vitest.ts` | Graph signal evaluation |
 | `mcp_server/tests/graph-signals.vitest.ts` | Graph signal computation |
 
-## 4. SOURCE METADATA
-
+## 5. SOURCE METADATA
 - Group: Graph signal activation
 - Source feature title: Graph momentum scoring
 - Current reality source: feature_catalog.md
 
-## 5. IN SIMPLE TERMS
-
-This tracks how quickly a piece of knowledge is gaining connections to other knowledge. Think of it like a trending topic: the faster something connects to related ideas, the more likely it is to be relevant right now. A memory that gained three new links this week gets a small search boost compared to one whose connections have not changed in months.

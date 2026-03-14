@@ -7,6 +7,9 @@
 // ───────────────────────────────────────────────────────────────
 import type Database from "better-sqlite3";
 
+// Feature catalog: Community detection
+
+
 // ───────────────────────────────────────────────────────────────
 // 3. TYPES
 // ───────────────────────────────────────────────────────────────
@@ -310,7 +313,7 @@ export function detectCommunitiesLouvain(
  */
 export function detectCommunities(db: Database.Database): Map<string, number> {
   try {
-    // Fix #27 (017-refinement-phase-6) — Replace edge-count-only debounce
+    // Replace edge-count-only debounce
     // With count:maxId hash. Edge count alone can't detect deletions followed by
     // Insertions that maintain the same count.
     const edgeStatsRow = db
@@ -331,14 +334,14 @@ export function detectCommunities(db: Database.Database): Map<string, number> {
       return loadStoredAssignments(db);
     }
 
-    // --- Phase 1: BFS -------------------------------------------------------
+    // --- Step 1: BFS -------------------------------------------------------
     // Build adjacency list once and reuse for both BFS and potential Louvain
     const adj = buildAdjacencyList(db);
     const bfsResult = detectCommunitiesBFSFromAdj(adj);
 
     let finalResult: Map<string, number>;
 
-    // --- Phase 2: Escalate? --------------------------------------------------
+    // --- Step 2: Escalate? --------------------------------------------------
     if (shouldEscalateToLouvain(bfsResult)) {
       // Reuse the adjacency list already built — no second DB query needed
       finalResult = detectCommunitiesLouvain(adj);

@@ -4,25 +4,24 @@
 
 - [1. OVERVIEW](#1--overview)
 - [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-- [5. PLAYBOOK COVERAGE](#5--playbook-coverage)
-- [6. IN SIMPLE TERMS](#6--in-simple-terms)
+- [3. IN SIMPLE TERMS](#3--in-simple-terms)
+- [4. SOURCE FILES](#4--source-files)
+- [5. SOURCE METADATA](#5--source-metadata)
+- [6. PLAYBOOK COVERAGE](#6--playbook-coverage)
 
 ## 1. OVERVIEW
-
 Lineage state active projection appends immutable lineage rows at save time and resolves the currently effective state via deterministic `asOf` timestamp lookup.
 
 ## 2. CURRENT REALITY
-
 Phase 2 introduced versioned lineage state as a first-class storage primitive. Save-time writes append immutable lineage rows, while a deterministic active projection resolves which row is currently effective for a memory.
 
 The active projection supports deterministic `asOf` resolution: for any timestamp, the runtime selects the latest valid lineage state at or before that point. This enables time-consistent retrieval, deterministic rollback planning and predictable replay behavior for migration and audit workflows.
 
 Schema support is now part of vector index setup, and save handlers integrate lineage writes so append-first lineage history and active projection stay synchronized.
 
-## 3. SOURCE FILES
-
+## 3. IN SIMPLE TERMS
+Every time a memory is saved, the system adds a timestamped record of that change to a history log. When you need to know what a memory looked like at a specific point in the past, the system can look up the history and give you the exact version from that moment. Think of it as a timeline for each memory that you can rewind to any date, useful for understanding what changed and when.
+## 4. SOURCE FILES
 ### Implementation
 
 | File | Layer | Role |
@@ -38,16 +37,11 @@ Schema support is now part of vector index setup, and save handlers integrate li
 | `mcp_server/tests/memory-lineage-state.vitest.ts` | Active projection and deterministic `asOf` selection |
 | `mcp_server/tests/memory-lineage-backfill.vitest.ts` | Backfill planning, idempotent apply, and rollback restore behavior |
 
-## 4. SOURCE METADATA
-
+## 5. SOURCE METADATA
 - Group: Pipeline architecture
 - Source feature title: Lineage state active projection and asOf resolution
 - Current reality source: Phase 015 implementation
 
-## 5. PLAYBOOK COVERAGE
-
+## 6. PLAYBOOK COVERAGE
 - Mapped to manual testing playbook scenarios NEW-129 and NEW-130
 
-## 6. IN SIMPLE TERMS
-
-Every time a memory is saved, the system adds a timestamped record of that change to a history log. When you need to know what a memory looked like at a specific point in the past, the system can look up the history and give you the exact version from that moment. Think of it as a timeline for each memory that you can rewind to any date, useful for understanding what changed and when.

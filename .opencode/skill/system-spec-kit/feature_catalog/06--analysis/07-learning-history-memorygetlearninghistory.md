@@ -4,16 +4,14 @@
 
 - [1. OVERVIEW](#1--overview)
 - [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-- [5. IN SIMPLE TERMS](#5--in-simple-terms)
+- [3. IN SIMPLE TERMS](#3--in-simple-terms)
+- [4. SOURCE FILES](#4--source-files)
+- [5. SOURCE METADATA](#5--source-metadata)
 
 ## 1. OVERVIEW
-
 Covers the learning history retrieval tool that aggregates Learning Index trends across completed tasks in a spec folder.
 
 ## 2. CURRENT REALITY
-
 Retrieves learning records for a spec folder with optional filtering by session ID and completion status. Each record shows the preflight scores, postflight scores, computed deltas and Learning Index.
 
 The summary statistics are where this tool earns its keep. Across all completed tasks in a spec folder, you see the average Learning Index, maximum and minimum LI, average knowledge gain, average uncertainty reduction and average context improvement. Trend interpretation maps the average LI to a human-readable assessment: above 15 is a strong learning trend, 7-15 is positive, 0-7 is slight, zero is neutral and below zero is regression.
@@ -22,8 +20,9 @@ Pass `onlyComplete: true` to restrict results to tasks where both preflight and 
 
 ---
 
-## 3. SOURCE FILES
-
+## 3. IN SIMPLE TERMS
+This shows you a report card of learning across all completed tasks in a project. You can see the average learning score, which tasks produced the biggest breakthroughs and whether your understanding is trending up or down over time. It is like a fitness tracker for knowledge growth.
+## 4. SOURCE FILES
 ### Implementation
 
 | File | Layer | Role |
@@ -124,12 +123,8 @@ Pass `onlyComplete: true` to restrict results to tasks where both preflight and 
 | `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
 | `mcp_server/tests/vector-index-impl.vitest.ts` | Vector index implementation |
 
-## 4. SOURCE METADATA
-
+## 5. SOURCE METADATA
 - Group: Analysis
 - Source feature title: Learning history (memory_get_learning_history)
 - Current reality source: feature_catalog.md
 
-## 5. IN SIMPLE TERMS
-
-This shows you a report card of learning across all completed tasks in a project. You can see the average learning score, which tasks produced the biggest breakthroughs and whether your understanding is trending up or down over time. It is like a fitness tracker for knowledge growth.

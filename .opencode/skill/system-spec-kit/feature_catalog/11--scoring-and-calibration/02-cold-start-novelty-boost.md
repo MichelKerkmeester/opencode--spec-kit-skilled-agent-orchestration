@@ -4,16 +4,14 @@
 
 - [1. OVERVIEW](#1--overview)
 - [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-- [5. IN SIMPLE TERMS](#5--in-simple-terms)
+- [3. IN SIMPLE TERMS](#3--in-simple-terms)
+- [4. SOURCE FILES](#4--source-files)
+- [5. SOURCE METADATA](#5--source-metadata)
 
 ## 1. OVERVIEW
-
 Describes the exponential decay novelty boost for memories under 48 hours old that counteracts FSRS temporal bias against recently indexed items.
 
 ## 2. CURRENT REALITY
-
 FSRS temporal decay biases against recent items. A memory indexed 2 hours ago has barely any retrievability score, even when it is exactly what you need.
 
 The novelty boost applies an exponential decay (`0.15 * exp(-elapsed_hours / 12)`) to memories under 48 hours old, counteracting that bias. At indexing time, the boost is 0.15. After 12 hours, it drops to about 0.055. By 48 hours, it is effectively zero.
@@ -22,8 +20,9 @@ The boost applies before FSRS decay and caps the composite score at 0.95 to prev
 
 **Sprint 8 update:** The `calculateNoveltyBoost()` call was removed from the hot scoring path in `composite-scoring.ts` because evaluation showed it always returned 0. The function definition remains but is no longer invoked during search. Telemetry fields are hardcoded to `noveltyBoostApplied: false, noveltyBoostValue: 0` for log schema compatibility.
 
-## 3. SOURCE FILES
-
+## 3. IN SIMPLE TERMS
+Brand-new memories start with a disadvantage because the scoring system has not had time to learn how useful they are. This feature gives freshly saved memories a temporary boost that fades over two days, like a "new arrival" spotlight at a bookstore. It has since been turned off because testing showed it was not making a practical difference, but the logic is kept around in case it is needed later.
+## 4. SOURCE FILES
 ### Implementation
 
 | File | Layer | Role |
@@ -59,12 +58,8 @@ The boost applies before FSRS decay and caps the composite score at 0.95 to prev
 | `mcp_server/tests/unit-tier-classifier-types.vitest.ts` | Tier classifier types |
 | `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
 
-## 4. SOURCE METADATA
-
+## 5. SOURCE METADATA
 - Group: Scoring and calibration
 - Source feature title: Cold-start novelty boost
 - Current reality source: feature_catalog.md
 
-## 5. IN SIMPLE TERMS
-
-Brand-new memories start with a disadvantage because the scoring system has not had time to learn how useful they are. This feature gives freshly saved memories a temporary boost that fades over two days, like a "new arrival" spotlight at a bookstore. It has since been turned off because testing showed it was not making a practical difference, but the logic is kept around in case it is needed later.

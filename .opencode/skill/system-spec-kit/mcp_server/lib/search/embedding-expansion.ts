@@ -1,7 +1,7 @@
 // ───────────────────────────────────────────────────────────────
 // 1. EMBEDDING EXPANSION
 // ───────────────────────────────────────────────────────────────
-// Sprint 5 Phase B — semantic query expansion using embedding similarity.
+// Semantic query expansion using embedding similarity.
 //
 // R12/R15 Mutual Exclusion:
 // When the R15 query complexity classifier returns tier = "simple",
@@ -17,6 +17,9 @@
 import { isEmbeddingExpansionEnabled } from './search-flags';
 import { classifyQueryComplexity } from './query-classifier';
 import * as vectorIndex from './vector-index';
+
+// Feature catalog: Query expansion
+
 
 // ───────────────────────────────────────────────────────────────
 // 2. TYPES

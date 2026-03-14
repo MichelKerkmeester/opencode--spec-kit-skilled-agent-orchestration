@@ -14,6 +14,9 @@ import {
 
 import type { RecoveryHint, Severity } from './recovery-hints';
 
+// Feature catalog: Stage 3 effectiveScore fallback chain
+
+
 // ───────────────────────────────────────────────────────────────
 // 2. TYPES
 // ───────────────────────────────────────────────────────────────

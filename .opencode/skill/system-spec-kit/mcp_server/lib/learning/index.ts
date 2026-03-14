@@ -1,6 +1,6 @@
 // ───────────────────────────────────────────────────────────────
 // 1. INDEX
 // ───────────────────────────────────────────────────────────────
-// Phase 3 of SpecKit Reimagined - Learning from Corrections
+// Learning from corrections
 // Re-export all corrections exports at top level
 export * from './corrections';

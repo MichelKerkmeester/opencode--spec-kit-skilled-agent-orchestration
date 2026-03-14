@@ -4,16 +4,14 @@
 
 - [1. OVERVIEW](#1--overview)
 - [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-- [5. IN SIMPLE TERMS](#5--in-simple-terms)
+- [3. IN SIMPLE TERMS](#3--in-simple-terms)
+- [4. SOURCE FILES](#4--source-files)
+- [5. SOURCE METADATA](#5--source-metadata)
 
 ## 1. OVERVIEW
-
 Outsourced agent memory capture enforces hard-fail validation for explicit JSON data files and persists `nextSteps` fields into memory observations.
 
 ## 2. CURRENT REALITY
-
 Outsourced-agent memory capture is now implemented and aligned across runtime behavior, regression tests and CLI handback documentation.
 
 Current behavior is enforced in three slices:
@@ -23,8 +21,9 @@ Current behavior is enforced in three slices:
 
 Status: Implemented. Spec folder `014-outsourced-agent-memory` is complete.
 
-## 3. SOURCE FILES
-
+## 3. IN SIMPLE TERMS
+When work is delegated to an external helper (like a different AI tool), the results need to come back in a clean format the memory system can understand. This feature makes sure that incoming data files are properly validated and that follow-up actions are captured, so nothing important gets lost when work passes between different tools.
+## 4. SOURCE FILES
 ### Implementation
 
 | File | Layer | Role |
@@ -52,12 +51,8 @@ Status: Implemented. Spec folder `014-outsourced-agent-memory` is complete.
 | .opencode/skill/cli-gemini/SKILL.md | Caller-side handback flow, redact/scrub guidance, explicit JSON-mode hard-fail behavior |
 | .opencode/skill/cli-gemini/assets/prompt_templates.md | Prompt template for MEMORY_HANDBACK extraction and `/tmp/save-context-data.json` save flow |
 
-## 4. SOURCE METADATA
-
+## 5. SOURCE METADATA
 - Group: Memory quality and indexing
 - Source feature title: Outsourced agent memory capture
 - Current reality source: spec 014-outsourced-agent-memory (Complete)
 
-## 5. IN SIMPLE TERMS
-
-When work is delegated to an external helper (like a different AI tool), the results need to come back in a clean format the memory system can understand. This feature makes sure that incoming data files are properly validated and that follow-up actions are captured, so nothing important gets lost when work passes between different tools.

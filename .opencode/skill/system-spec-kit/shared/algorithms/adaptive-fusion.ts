@@ -7,6 +7,10 @@ import { fuseResultsMulti } from './rrf-fusion';
 // Type-only
 import type { RrfItem, FusionResult, RankedList } from './rrf-fusion';
 
+// Feature catalog: Hybrid search pipeline
+// Feature catalog: Adaptive shadow ranking, bounded proposals, and rollback
+
+
 /* --- 1. INTERFACES --- */
 
 /** Represents fusion weights. */
@@ -157,7 +161,7 @@ export function getAdaptiveWeights(
     }
   }
 
-  // AI-WHY: Fix #10 (017-refinement-phase-6), P1-008 — Normalize core weights
+  // AI-WHY: Fix #10 , P1-008 — Normalize core weights
   // (semantic + keyword + recency) to sum 1.0. Always applied regardless of
   // documentType presence. graphWeight and graphCausalBias are separate boosts,
   // not part of the weighted average.

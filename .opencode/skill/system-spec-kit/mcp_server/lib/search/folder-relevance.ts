@@ -14,6 +14,10 @@
 // Type-only
 import type Database from 'better-sqlite3';
 
+// Feature catalog: Folder-level relevance scoring
+// Feature catalog: Spec folder hierarchy as retrieval structure
+
+
 // ───────────────────────────────────────────────────────────────
 // 2. FEATURE FLAG
 // ───────────────────────────────────────────────────────────────
@@ -209,7 +213,7 @@ export function twoPhaseRetrieval<
     return [];
   }
 
-  // Phase 1: Rank folders by FolderScore, take top K
+  // Step 1: Rank folders by FolderScore, take top K
   const rankedFolders = Array.from(folderScores.entries())
     .sort((a, b) => b[1] - a[1])
     .slice(0, topK)
@@ -217,7 +221,7 @@ export function twoPhaseRetrieval<
 
   const topFolderSet = new Set(rankedFolders);
 
-  // Phase 2: Filter results to top-K folders
+  // Step 2: Filter results to top-K folders
   const filtered = results.filter((result) => {
     const numericId = typeof result.id === 'string' ? Number(result.id) : result.id;
     const folder = folderMap.get(numericId);

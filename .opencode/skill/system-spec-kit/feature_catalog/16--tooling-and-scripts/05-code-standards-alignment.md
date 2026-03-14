@@ -4,22 +4,21 @@
 
 - [1. OVERVIEW](#1--overview)
 - [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE EVIDENCE](#3--source-evidence)
-- [4. VERIFICATION TRACEABILITY](#4--verification-traceability)
-- [5. SOURCE FILES](#5--source-files)
-- [6. SOURCE METADATA](#6--source-metadata)
-- [7. IN SIMPLE TERMS](#7--in-simple-terms)
+- [3. IN SIMPLE TERMS](#3--in-simple-terms)
+- [4. SOURCE EVIDENCE](#4--source-evidence)
+- [5. VERIFICATION TRACEABILITY](#5--verification-traceability)
+- [6. SOURCE FILES](#6--source-files)
+- [7. SOURCE METADATA](#7--source-metadata)
 
 ## 1. OVERVIEW
-
 Code standards alignment fixed 45 violations across AI-intent comments, MODULE/COMPONENT headers, import ordering and constant naming to match sk-code--opencode standards.
 
 ## 2. CURRENT REALITY
-
 All modified files were reviewed against sk-code--opencode standards. 45 violations found and fixed: 26 AI-intent comment conversions (AI-WHY, AI-TRACE, AI-GUARD prefixes), 10 MODULE/COMPONENT headers added, import ordering corrections and constant naming (`specFolderLocks` → `SPEC_FOLDER_LOCKS`).
 
-## 3. SOURCE EVIDENCE
-
+## 3. IN SIMPLE TERMS
+This was a cleanup pass that made the code follow a consistent style across the project. It fixed 45 places where comments, file headers, naming patterns or import ordering did not match the agreed-upon rules. Think of it like an editor going through a document to make sure every chapter uses the same formatting and citation style.
+## 4. SOURCE EVIDENCE
 ### 1) AI-intent comments (AI-WHY / AI-TRACE / AI-GUARD)
 
 - **Rule mapping**
@@ -73,8 +72,7 @@ All modified files were reviewed against sk-code--opencode standards. 45 violati
   - `rg "\\bspecFolderLocks\\b" mcp_server` returns no matches.
   - `rg "SPEC_FOLDER_LOCKS" mcp_server/handlers/memory-save.ts` returns active uses at lines `89, 93, 96, 100, 101`.
 
-## 4. VERIFICATION TRACEABILITY
-
+## 5. VERIFICATION TRACEABILITY
 ### Lint/check commands
 
 - Lint (MCP server scope):
@@ -103,16 +101,11 @@ All modified files were reviewed against sk-code--opencode standards. 45 violati
   - `mcp_server/package.json` (`lint`, `check`)
   - `package.json` at `system-spec-kit` root (`typecheck`)
 
-## 5. SOURCE FILES
-
+## 6. SOURCE FILES
 No dedicated source files. This is a cross-cutting meta-improvement applied across multiple modules.
 
-## 6. SOURCE METADATA
-
+## 7. SOURCE METADATA
 - Group: Multi-agent deep review remediation (Phase 018)
 - Source feature title: Code standards alignment
 - Current reality source: feature_catalog.md
 
-## 7. IN SIMPLE TERMS
-
-This was a cleanup pass that made the code follow a consistent style across the project. It fixed 45 places where comments, file headers, naming patterns or import ordering did not match the agreed-upon rules. Think of it like an editor going through a document to make sure every chapter uses the same formatting and citation style.

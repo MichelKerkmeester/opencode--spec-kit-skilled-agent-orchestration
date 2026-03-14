@@ -13,8 +13,11 @@
 //
 // CRITICAL: Shadow scoring must NEVER affect production search results.
 // Every public function is wrapped in try-catch. The shadow write path
-// (runShadowScoring, logShadowComparison) was permanently disabled in Sprint 7.
+// (runShadowScoring, logShadowComparison) was permanently disabled in the rollout.
 import { initEvalDb, getEvalDb } from './eval-db';
+
+// Feature catalog: Shadow scoring and channel attribution
+
 
 /* --- 2. TYPES --- */
 
@@ -235,7 +238,7 @@ function computeRankCorrelation(
 /**
  * Run an alternative scoring algorithm in shadow mode alongside production results.
  *
- * @deprecated Shadow scoring was permanently disabled in Sprint 7. This function
+ * @deprecated Shadow scoring was permanently disabled in the rollout. This function
  * always returns null. Retained for interface compatibility.
  *
  * @param query - The search query.
@@ -248,14 +251,14 @@ export async function runShadowScoring(
   _productionResults: ScoredResult[],
   _shadowConfig: ShadowConfig,
 ): Promise<ShadowComparison | null> {
-  // Shadow scoring eval complete (Sprint 7 audit) — permanently disabled.
+  // Shadow scoring eval complete  — permanently disabled.
   return null;
 }
 
 /**
  * Compute comparison metrics between production and shadow results.
  *
- * @deprecated Shadow scoring was permanently disabled in Sprint 7. This
+ * @deprecated Shadow scoring was permanently disabled in the rollout. This
  * comparison function still works but has no production callers. Retained
  * for interface compatibility. Use channel-attribution.ts instead.
  *
@@ -337,14 +340,14 @@ export function compareShadowResults(
 /**
  * Persist a shadow comparison to the eval database.
  *
- * @deprecated Shadow scoring write path was permanently disabled in Sprint 7.
+ * @deprecated Shadow scoring write path was permanently disabled in the rollout.
  * This function always returns false. Retained for interface compatibility.
  *
  * @param comparison - The ShadowComparison to persist.
  * @returns Always false (logging disabled).
  */
 export function logShadowComparison(_comparison: ShadowComparison): boolean {
-  // Shadow scoring eval complete (Sprint 7 audit) — permanently disabled.
+  // Shadow scoring eval complete  — permanently disabled.
   return false;
 }
 
@@ -352,7 +355,7 @@ export function logShadowComparison(_comparison: ShadowComparison): boolean {
  * Retrieve aggregated shadow scoring statistics over an optional time range.
  *
  * @deprecated Shadow scoring write path (logShadowComparison) was permanently
- * disabled in Sprint 7. The eval_shadow_comparisons table is always empty,
+ * disabled in the rollout. The eval_shadow_comparisons table is always empty,
  * so this function always returns the zero-case object. Retained for interface
  * compatibility. Use channel-attribution.ts for scoring observability instead.
  *

@@ -4,20 +4,19 @@
 
 - [1. OVERVIEW](#1--overview)
 - [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-- [5. IN SIMPLE TERMS](#5--in-simple-terms)
+- [3. IN SIMPLE TERMS](#3--in-simple-terms)
+- [4. SOURCE FILES](#4--source-files)
+- [5. SOURCE METADATA](#5--source-metadata)
 
 ## 1. OVERVIEW
-
 Tracks the fix that moved `enforceEntryLimit()` calls inside database transactions to prevent concurrent limit violations.
 
 ## 2. CURRENT REALITY
-
 Two instances of `enforceEntryLimit()` called outside `db.transaction()` blocks in `session-manager.ts` were moved inside. Concurrent MCP requests could both pass the limit check then both insert, exceeding the entry limit when check and insert were not atomic. Both paths now run check-and-insert atomically inside the transaction.
 
-## 3. SOURCE FILES
-
+## 3. IN SIMPLE TERMS
+When two requests arrived at the same time, they could both slip past a size limit check and add more data than allowed. This fix bundles the check and the write into a single step so they cannot be split apart, preventing the system from exceeding its own limits.
+## 4. SOURCE FILES
 ### Implementation
 
 | File | Layer | Role |
@@ -50,12 +49,8 @@ Two instances of `enforceEntryLimit()` called outside `db.transaction()` blocks 
 | `mcp_server/tests/working-memory-event-decay.vitest.ts` | Working memory decay |
 | `mcp_server/tests/working-memory.vitest.ts` | Working memory tests |
 
-## 4. SOURCE METADATA
-
+## 5. SOURCE METADATA
 - Group: Multi-agent deep review remediation (Phase 018)
 - Source feature title: Session-manager transaction gap fixes
 - Current reality source: feature_catalog.md
 
-## 5. IN SIMPLE TERMS
-
-When two requests arrived at the same time, they could both slip past a size limit check and add more data than allowed. This fix bundles the check and the write into a single step so they cannot be split apart, preventing the system from exceeding its own limits.

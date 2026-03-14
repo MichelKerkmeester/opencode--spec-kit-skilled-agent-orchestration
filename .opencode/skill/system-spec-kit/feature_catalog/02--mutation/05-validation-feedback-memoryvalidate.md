@@ -4,16 +4,14 @@
 
 - [1. OVERVIEW](#1--overview)
 - [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-- [5. IN SIMPLE TERMS](#5--in-simple-terms)
+- [3. IN SIMPLE TERMS](#3--in-simple-terms)
+- [4. SOURCE FILES](#4--source-files)
+- [5. SOURCE METADATA](#5--source-metadata)
 
 ## 1. OVERVIEW
-
 Covers the validation feedback tool that adjusts confidence scores, triggers auto-promotion and records learned feedback.
 
 ## 2. CURRENT REALITY
-
 Every search result is either helpful or not. This tool lets you record that judgment and triggers several downstream systems based on the feedback.
 
 Positive feedback adds 0.1 to the memory's confidence score (capped at 1.0). Negative feedback subtracts 0.05 (floored at 0.0). The base confidence for any memory starts at 0.5. The asymmetry between positive (+0.1) and negative (-0.05) increments is intentional. It takes one good validation to raise confidence by 0.1 but two bad validations to cancel that out. This bias toward preservation reflects the assumption that a memory might be unhelpful for one query but still valuable for another.
@@ -28,8 +26,9 @@ The confidence read-compute-write segment (`recordValidation`) runs within a sin
 
 ---
 
-## 3. SOURCE FILES
-
+## 3. IN SIMPLE TERMS
+After a search result is shown to you, you can tell the system whether it was helpful or not. Helpful results get a confidence boost so they show up more often in the future. Unhelpful results get demoted so they appear less. Over time, the system learns which memories are genuinely useful and which ones keep missing the mark, like training a recommendation engine with your thumbs-up and thumbs-down.
+## 4. SOURCE FILES
 ### Implementation
 
 | File | Layer | Role |
@@ -276,12 +275,8 @@ The confidence read-compute-write segment (`recordValidation`) runs within a sin
 | `mcp_server/tests/vector-index-impl.vitest.ts` | Vector index implementation |
 | `shared/parsing/quality-extractors.test.ts` | Quality Extractors.Ts |
 
-## 4. SOURCE METADATA
-
+## 5. SOURCE METADATA
 - Group: Mutation
 - Source feature title: Validation feedback (memory_validate)
 - Current reality source: feature_catalog.md
 
-## 5. IN SIMPLE TERMS
-
-After a search result is shown to you, you can tell the system whether it was helpful or not. Helpful results get a confidence boost so they show up more often in the future. Unhelpful results get demoted so they appear less. Over time, the system learns which memories are genuinely useful and which ones keep missing the mark, like training a recommendation engine with your thumbs-up and thumbs-down.

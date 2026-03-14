@@ -77,7 +77,7 @@ export interface ConsumptionPatternsOptions {
 ──────────────────────────────────────────────────────────────── */
 
 /**
- * @deprecated Eval complete (Sprint 7 audit). Telemetry baked into core.
+ * @deprecated Eval complete. Telemetry is baked into core.
  * SPECKIT_CONSUMPTION_LOG env var is inert. Hardcoded to false.
  */
 function isConsumptionLogEnabled(): boolean {

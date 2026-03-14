@@ -1,7 +1,7 @@
 // ───────────────────────────────────────────────────────────────
 // 1. STAGE1 CANDIDATE GEN
 // ───────────────────────────────────────────────────────────────
-// Sprint 5 (R6): 4-Stage Retrieval Pipeline Architecture
+// 4-stage retrieval pipeline architecture
 //
 // Responsibility: Execute search channels and collect raw candidate results.
 // This stage performs NO scoring modifications — it only retrieves candidates
@@ -43,6 +43,10 @@ import { addTraceEntry } from '@spec-kit/shared/contracts/retrieval-trace';
 import { requireDb } from '../../../utils/db-helpers';
 import { filterRowsByScope } from '../../governance/scope-governance';
 import { getAllowedSharedSpaceIds } from '../../collab/shared-spaces';
+
+// Feature catalog: 4-stage pipeline architecture
+// Feature catalog: Hybrid search pipeline
+
 
 // -- Constants --
 

@@ -8,7 +8,7 @@
 // 2. MMR diversity pruning     — maximal marginal relevance (SPECKIT_MMR flag)
 // 3. MPAB chunk collapse        — dedup chunks, reassemble parents
 //
-// Pipeline position constraint (Sprint 4):
+// Pipeline position constraint:
 // MPAB MUST remain AFTER RRF fusion (Stage 2).
 // Stage 3 is the only stage that may change scores after Stage 2.
 //
@@ -38,6 +38,10 @@ import { requireDb } from '../../../utils';
 import { toErrorMessage } from '../../../utils';
 import type Database from 'better-sqlite3';
 import { compareDeterministicRows, sortDeterministicRows } from './ranking-contract';
+
+// Feature catalog: 4-stage pipeline architecture
+// Feature catalog: Hybrid search pipeline
+
 
 // -- Constants --------------------------------------------------
 
@@ -528,7 +532,7 @@ function electBestChunk(chunks: PipelineRow[]): PipelineRow {
  * @param row - A pipeline result row.
  * @returns Numeric score value in [0, 1] for comparison.
  */
-// Fix #11 (017-refinement-phase-6) — Replaced local implementation with
+// Replaced local implementation with
 // Shared resolveEffectiveScore() from types.ts for consistency with Stage 2.
 const effectiveScore = resolveEffectiveScore;
 

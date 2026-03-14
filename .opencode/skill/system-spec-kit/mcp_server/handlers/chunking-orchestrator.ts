@@ -24,6 +24,10 @@ import { appendMutationLedgerSafe } from './memory-crud-utils';
 import { calculateDocumentWeight, isSpecDocumentType } from './pe-gating';
 import { detectSpecLevelFromParsed } from './handler-utils';
 
+// Feature catalog: Chunking Orchestrator Safe Swap
+// Feature catalog: Memory indexing (memory_save)
+
+
 interface ParsedMemory {
   specFolder: string;
   filePath: string;

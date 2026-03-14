@@ -4,6 +4,10 @@
 // Shared packages
 import { validateFilePath } from '@spec-kit/shared/utils/path-security';
 
+// Feature catalog: Trigger phrase matching (memory_match_triggers)
+// Feature catalog: BM25 trigger phrase re-index gate
+
+
 /* ───────────────────────────────────────────────────────────────
    1. DEPENDENCIES
 ──────────────────────────────────────────────────────────────── */
@@ -334,7 +338,7 @@ async function handleMemoryMatchTriggers(args: TriggerArgs): Promise<MCPResponse
         effectiveRetrievability *= turnDecayFactor;
 
         if (wmEntry) {
-          // Fix #30 (017-refinement-phase-6) — WM already applies its own decay.
+          // WM already applies its own decay.
           // Multiplying by turnDecayFactor again causes double-decay.
           effectiveRetrievability = Math.min(effectiveRetrievability, wmEntry.attentionScore);
         }

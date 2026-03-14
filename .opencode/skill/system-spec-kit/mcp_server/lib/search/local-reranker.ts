@@ -13,6 +13,9 @@ import path from 'path';
 import { access } from 'fs/promises';
 import { toErrorMessage } from '../../utils';
 
+// Feature catalog: Local GGUF reranker via node-llama-cpp
+
+
 interface NodeLlamaCppModule {
   getLlama: () => Promise<unknown>;
 }
@@ -256,7 +259,7 @@ export async function rerankLocal<T extends LocalRerankRow>(
      */
     const reranked = await Promise.race([
       (async (): Promise<T[]> => {
-        // Sprint 9 fix: Sequential scoring instead of Promise.all to avoid
+        // Sequential scoring instead of Promise.all to avoid
         // Allocating multiple sequence states simultaneously in VRAM, which
         // Can trigger OOM or context mixing on local LLM inference.
         // PERF(CHK-113): Sequential per-candidate inference. For 20 candidates, latency depends on
@@ -319,7 +322,7 @@ export async function rerankLocal<T extends LocalRerankRow>(
 }
 
 export async function disposeLocalReranker(): Promise<void> {
-  // Sprint 9 fix: If modelLoadPromise is pending when shutdown triggers,
+  // If modelLoadPromise is pending when shutdown triggers,
   // The model could resolve after dispose, leaving it orphaned. Chain cleanup.
   const pending = modelLoadPromise;
   if (pending) {

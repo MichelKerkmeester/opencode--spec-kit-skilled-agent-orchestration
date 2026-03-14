@@ -7,6 +7,12 @@
 ──────────────────────────────────────────────────────────────── */
 
 /** Arguments for the memory_delete handler. */
+
+// Feature catalog: Memory indexing (memory_save)
+// Feature catalog: Memory metadata update (memory_update)
+// Feature catalog: Single and folder delete (memory_delete)
+// Feature catalog: Tier-based bulk deletion (memory_bulk_delete)
+
 interface DeleteArgs {
   id?: number | string;
   specFolder?: string;

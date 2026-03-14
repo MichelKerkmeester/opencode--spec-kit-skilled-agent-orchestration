@@ -3,6 +3,8 @@
 // ───────────────────────────────────────────────────────────────
 /* --- 1. TYPES & CONSTANTS --- */
 
+// Feature catalog: Query complexity router
+
 type QueryComplexityTier = 'simple' | 'moderate' | 'complex';
 
 interface ClassificationResult {
@@ -36,7 +38,7 @@ const STOP_WORDS: ReadonlySet<string> = new Set([
 
 /**
  * Check if the complexity router feature flag is enabled.
- * Default: TRUE (graduated Sprint 4). Set SPECKIT_COMPLEXITY_ROUTER=false to disable.
+ * Default: TRUE (graduated). Set SPECKIT_COMPLEXITY_ROUTER=false to disable.
  *
  * @returns True when SPECKIT_COMPLEXITY_ROUTER is not explicitly disabled.
  */
@@ -130,7 +132,7 @@ function determineConfidence(
  * - Moderate: everything else (interior)
  *
  * When the SPECKIT_COMPLEXITY_ROUTER feature flag is disabled (enabled by default,
- * graduated Sprint 4), all queries classify as "complex" (safe fallback — full pipeline).
+ * graduated), all queries classify as "complex" (safe fallback — full pipeline).
  *
  * On any error, returns "complex" (safe fallback per spec).
  *

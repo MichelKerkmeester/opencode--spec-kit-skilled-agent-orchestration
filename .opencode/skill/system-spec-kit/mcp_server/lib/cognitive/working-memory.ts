@@ -12,6 +12,10 @@
 import type Database from 'better-sqlite3';
 import { isFeatureEnabled } from './rollout-policy';
 
+// Feature catalog: Tool-result extraction to working memory
+// Feature catalog: Working Memory Session Cleanup Timestamp Fix
+
+
 /* --- 1. CONFIGURATION --- */
 
 interface WorkingMemoryConfigType {
@@ -580,7 +584,7 @@ function batchUpdateScores(sessionId: string): number {
           continue;
         }
 
-        // Fix #29 (017-refinement-phase-6) — Clamp to [DECAY_FLOOR, 1.0].
+        // Clamp to [DECAY_FLOOR, 1.0].
         // Mention boost can push rawScore above 1.0 which breaks [0,1] score semantics.
         const nextScore = Math.max(DECAY_FLOOR, Math.min(1.0, rawScore));
         const updateResult = updateStmt.run(nextScore, entry.id) as { changes: number };

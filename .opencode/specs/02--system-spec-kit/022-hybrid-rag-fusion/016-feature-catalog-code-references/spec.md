@@ -18,7 +18,7 @@ contextType: "general"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P1 |
-| **Status** | Not Started |
+| **Status** | Completed (implementation + verification confirmed 2026-03-14) |
 | **Created** | 2026-03-14 |
 | **Branch** | `main` |
 | **Parent Spec** | `022-hybrid-rag-fusion` |
@@ -66,7 +66,7 @@ All feature catalog references in code MUST use the feature name only, never fol
 - All TypeScript source files under `mcp_server/` (handlers, lib, shared, scripts)
 - All inline comments referencing spec folders, sprints, phases or ticket numbers
 - Adding feature catalog name references to key functions, modules and exports
-- The feature catalog at `feature_catalog/feature_catalog.md` and its individual files as the source of truth for feature names
+- The feature catalog at `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` and its individual files as the source of truth for feature names
 
 ### Out of Scope
 - Test files (`.vitest.ts`) are excluded from comment modifications
@@ -103,19 +103,19 @@ Analysis required to build the full file list. The scope covers all `.ts` files 
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | Remove all inline comments referencing specific spec folder numbers | [ ] Zero matches for patterns like `Sprint N`, `Phase NNN`, `spec NNN`, `spec-folder NNN` in non-test `.ts` files |
-| REQ-002 | Remove all inline comments referencing specific sprint identifiers | [ ] Zero matches for `Sprint \d+` pattern in inline code comments |
-| REQ-003 | Add feature catalog references to handler entry points | [ ] Each handler file has a top-level comment linking to its primary feature catalog entry by name |
-| REQ-004 | Feature catalog references use names only, never numbers | [ ] Zero matches for folder-number patterns in newly added references |
+| REQ-001 | Remove all inline comments referencing specific spec folder numbers | [x] Zero matches for patterns like `Sprint N`, `Phase NNN`, `spec NNN`, `spec-folder NNN` in non-test `.ts` files |
+| REQ-002 | Remove all inline comments referencing specific sprint identifiers | [x] Zero matches for `Sprint \d+` pattern in inline code comments |
+| REQ-003 | Add feature catalog references to handler entry points | [x] Each handler file has a top-level comment linking to its primary feature catalog entry by name |
+| REQ-004 | Feature catalog references use names only, never numbers | [x] Zero matches for folder-number patterns in newly added references |
 
 ### P1 - Required (complete OR user-approved deferral)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-005 | Add feature catalog references to core library modules | [ ] Key functions in `lib/` directories reference their feature catalog entry by name |
-| REQ-006 | Add feature catalog references to shared algorithm modules | [ ] Shared scoring, fusion and pipeline modules reference their feature catalog entries |
-| REQ-007 | Preserve all existing general-purpose code comments | [ ] No non-reference comments are removed or altered |
-| REQ-008 | Comments are concise (single line where possible) | [ ] References follow the `// Feature catalog: <name>` convention |
+| REQ-005 | Add feature catalog references to core library modules | [x] Key functions in `lib/` directories reference their feature catalog entry by name |
+| REQ-006 | Add feature catalog references to shared algorithm modules | [x] Shared scoring, fusion and pipeline modules reference their feature catalog entries |
+| REQ-007 | Preserve all existing general-purpose code comments | [x] No non-reference comments are removed or altered |
+| REQ-008 | Comments are concise (single line where possible) | [x] References follow the `// Feature catalog: <name>` convention |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -123,12 +123,12 @@ Analysis required to build the full file list. The scope covers all `.ts` files 
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- [ ] **SC-001**: Zero inline comments reference specific spec folder numbers, sprint numbers or phase numbers in source `.ts` files
-- [ ] **SC-002**: All handler files have feature catalog name references
-- [ ] **SC-003**: Core library modules have feature catalog name references at key boundaries
-- [ ] **SC-004**: All feature catalog references use the `// Feature catalog: <name>` format
-- [ ] **SC-005**: TypeScript compile passes (`tsc --noEmit`)
-- [ ] **SC-006**: No runtime behavior changes (comment-only modifications)
+- [x] **SC-001**: Zero inline comments reference specific spec folder numbers, sprint numbers or phase numbers in source `.ts` files
+- [x] **SC-002**: All handler files have feature catalog name references
+- [x] **SC-003**: Core library modules have feature catalog name references at key boundaries
+- [x] **SC-004**: All feature catalog references use the `// Feature catalog: <name>` format
+- [x] **SC-005**: TypeScript compile passes (`tsc --noEmit`)
+- [x] **SC-006**: No runtime behavior changes (comment-only modifications)
 
 ### Acceptance Scenarios
 

@@ -1,7 +1,7 @@
 // ───────────────────────────────────────────────────────────────
 // 1. ANCHOR METADATA
 // ───────────────────────────────────────────────────────────────
-// Sprint 5 Phase B — S2 template anchor optimization
+// S2 template anchor optimization
 //
 // PURPOSE: Parse ANCHOR tags from memory content and attach the
 // Resulting metadata to search pipeline rows. This is a PURE
@@ -22,6 +22,9 @@
 // (filter/annotate) aware of anchor structure without any score
 // Side-effects.
 import type { PipelineRow } from './pipeline/types';
+
+// Feature catalog: Template anchor optimization
+
 
 // -- Public Interface --
 

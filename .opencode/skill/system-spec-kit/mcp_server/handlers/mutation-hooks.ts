@@ -9,6 +9,11 @@ import { clearRelatedCache } from '../lib/cache/cognitive/co-activation';
 
 import type { MutationHookResult } from './memory-crud-types';
 
+// Feature catalog: Transaction wrappers on mutation handlers
+// Feature catalog: Shared post-mutation hook wiring
+// Feature catalog: Mutation hook result contract expansion
+
+
 export type { MutationHookResult };
 
 function runPostMutationHooks(

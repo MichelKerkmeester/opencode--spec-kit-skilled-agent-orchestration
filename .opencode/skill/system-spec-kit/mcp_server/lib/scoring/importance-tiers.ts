@@ -187,7 +187,7 @@ export function getTiersByImportance(): ImportanceTier[] {
   });
 }
 
-// 6. DOCUMENT TYPE HELPERS (Spec 126)
+// 6. DOCUMENT TYPE HELPERS
 /**
  * Get the default importance tier for a given document type.
  * Spec/plan/decision-record are 'important'; others are 'normal'.

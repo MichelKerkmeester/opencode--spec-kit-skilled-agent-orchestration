@@ -22,6 +22,12 @@ import { buildMutationHookFeedback } from '../hooks/mutation-feedback';
 import type { MCPResponse } from './types';
 import type { DeleteArgs, MemoryHashSnapshot } from './memory-crud-types';
 
+// Feature catalog: Single and folder delete (memory_delete)
+// Feature catalog: Validation feedback (memory_validate)
+// Feature catalog: Transaction wrappers on mutation handlers
+// Feature catalog: Per-memory history log
+
+
 /* ───────────────────────────────────────────────────────────────
    CORE LOGIC
 ──────────────────────────────────────────────────────────────── */

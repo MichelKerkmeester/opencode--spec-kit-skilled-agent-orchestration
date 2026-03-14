@@ -1,10 +1,14 @@
 // ───────────────────────────────────────────────────────────────
 // 1. INDEX
 // ───────────────────────────────────────────────────────────────
-// Sprint 5 (R6): Public API for the 4-stage retrieval pipeline
+// Public API for the 4-stage retrieval pipeline
 /**
  * Execute the four-stage retrieval pipeline.
  */
+
+// Feature catalog: 4-stage pipeline architecture
+// Feature catalog: 4-stage pipeline refactor
+
 export { executePipeline } from './orchestrator';
 /**
  * Public pipeline data contracts.

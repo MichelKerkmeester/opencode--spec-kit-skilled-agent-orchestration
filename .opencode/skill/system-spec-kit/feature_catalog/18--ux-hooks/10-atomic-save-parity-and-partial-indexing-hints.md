@@ -4,20 +4,19 @@
 
 - [1. OVERVIEW](#1--overview)
 - [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-- [5. IN SIMPLE TERMS](#5--in-simple-terms)
+- [3. IN SIMPLE TERMS](#3--in-simple-terms)
+- [4. SOURCE FILES](#4--source-files)
+- [5. SOURCE METADATA](#5--source-metadata)
 
 ## 1. OVERVIEW
-
 Atomic-save parity ensures `atomicSaveMemory()` returns the same `postMutationHooks` envelope and UX hint payloads as the primary save path.
 
 ## 2. CURRENT REALITY
-
 `atomicSaveMemory()` now returns the same `postMutationHooks` envelope shape and UX hint payloads as the primary save path. The finalized follow-up pass also preserved structured partial-indexing guidance so callers can handle atomic-save outcomes with the same parsing and recovery flow used for standard saves.
 
-## 3. SOURCE FILES
-
+## 3. IN SIMPLE TERMS
+The system has two ways to save memories: a standard path and a faster "atomic" path. This feature made them return the same kind of feedback so you do not get different information depending on which path ran. It is like making sure both the express and regular checkout lanes at a store give you the same receipt format.
+## 4. SOURCE FILES
 ### Implementation
 
 | File | Layer | Role |
@@ -183,12 +182,8 @@ Atomic-save parity ensures `atomicSaveMemory()` returns the same `postMutationHo
 | `mcp_server/tests/vector-index-impl.vitest.ts` | Vector index implementation |
 | `shared/parsing/quality-extractors.test.ts` | Quality Extractors.Ts |
 
-## 4. SOURCE METADATA
-
+## 5. SOURCE METADATA
 - Group: UX hooks automation (Phase 014)
 - Source feature title: Atomic-save parity and partial-indexing hints
 - Current reality source: feature_catalog.md
 
-## 5. IN SIMPLE TERMS
-
-The system has two ways to save memories: a standard path and a faster "atomic" path. This feature made them return the same kind of feedback so you do not get different information depending on which path ran. It is like making sure both the express and regular checkout lanes at a store give you the same receipt format.

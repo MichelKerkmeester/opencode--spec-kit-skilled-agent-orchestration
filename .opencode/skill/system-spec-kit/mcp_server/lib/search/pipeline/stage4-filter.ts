@@ -1,7 +1,7 @@
 // ───────────────────────────────────────────────────────────────
 // 1. STAGE4 FILTER
 // ───────────────────────────────────────────────────────────────
-// Sprint 5 (R6): Final stage of the 4-stage retrieval pipeline.
+// Final stage of the 4-stage retrieval pipeline.
 //
 // ARCHITECTURAL INVARIANT: Stage 4 MUST NOT modify scores.
 // Any ordering change after Stage 3 is a bug. Score fields on
@@ -39,6 +39,10 @@ import { captureScoreSnapshot, verifyScoreInvariant } from './types';
 import { isTRMEnabled, isMultiQueryEnabled } from '../search-flags';
 import { detectEvidenceGap, formatEvidenceGapWarning } from '../evidence-gap-detector';
 import { addTraceEntry } from '@spec-kit/shared/contracts/retrieval-trace';
+
+// Feature catalog: 4-stage pipeline architecture
+// Feature catalog: Confidence-based result truncation
+
 
 // ───────────────────────────────────────────────────────────────
 // 2. CONSTANTS

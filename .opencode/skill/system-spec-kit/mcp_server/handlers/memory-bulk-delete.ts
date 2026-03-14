@@ -20,6 +20,10 @@ import { buildMutationHookFeedback } from '../hooks/mutation-feedback';
 
 import type { MCPResponse } from './types';
 
+// Feature catalog: Tier-based bulk deletion (memory_bulk_delete)
+// Feature catalog: Per-memory history log
+
+
 /* ───────────────────────────────────────────────────────────────
    1. TYPES
 ──────────────────────────────────────────────────────────────── */

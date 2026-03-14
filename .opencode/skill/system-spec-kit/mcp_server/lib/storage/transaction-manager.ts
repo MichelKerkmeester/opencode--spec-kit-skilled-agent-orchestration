@@ -214,7 +214,7 @@ function executeAtomicSave(
     }
     fs.writeFileSync(pendingPath, content, 'utf-8');
 
-    // Fix #22 (017-refinement-phase-6) — Flag-based rollback coordination.
+    // Flag-based rollback coordination.
     // The dbOperation callback runs synchronously (better-sqlite3 transaction). If it
     // Succeeds but the rename (Step 3) fails, the DB change is already committed and
     // Cannot be rolled back. The dbCommitted flag tracks this state so the error path

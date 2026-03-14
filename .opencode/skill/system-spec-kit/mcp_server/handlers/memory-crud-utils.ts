@@ -12,6 +12,11 @@ import { toErrorMessage } from '../utils';
 import type { DatabaseExtended } from './types';
 import type { MemoryHashSnapshot, MutationLedgerInput } from './memory-crud-types';
 
+// Feature catalog: Memory indexing (memory_save)
+// Feature catalog: Memory metadata update (memory_update)
+// Feature catalog: Single and folder delete (memory_delete)
+
+
 /* ───────────────────────────────────────────────────────────────
    HELPERS
 ──────────────────────────────────────────────────────────────── */

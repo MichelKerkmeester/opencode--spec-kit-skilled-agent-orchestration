@@ -6,27 +6,35 @@ importance_tier: "normal"
 contextType: "general"
 ---
 # Checklist: 016-Feature Catalog Code References
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
 ---
 
+<!-- ANCHOR:p0 -->
 ## P0 - Blockers
 
-- [ ] **CHK-001**: Zero inline comments reference `Sprint \d+` in non-test `.ts` files
-- [ ] **CHK-002**: Zero inline comments reference `Phase \d+` in non-test `.ts` files
-- [ ] **CHK-003**: Zero inline comments reference specific spec folder numbers (e.g., `spec 013`, `specs/NNN`)
-- [ ] **CHK-004**: All handler files have at least one `// Feature catalog: <name>` reference
-- [ ] **CHK-005**: All `Feature catalog:` references use feature name only, no folder numbers
+- [x] **CHK-001**: Zero inline comments reference `Sprint \d+` in non-test `.ts` files [Evidence: Non-test source grep for stale refs returned no matches]
+- [x] **CHK-002**: Zero inline comments reference `Phase \d+` in non-test `.ts` files [Evidence: Non-test source grep for stale refs returned no matches]
+- [x] **CHK-003**: Zero inline comments reference specific spec folder numbers (e.g., `spec 013`, `specs/NNN`) [Evidence: Non-test source grep for stale refs returned no matches]
+- [x] **CHK-004**: All handler files have at least one `// Feature catalog: <name>` reference [Evidence: 40 handler `.ts` files and 40 handler files containing a `// Feature catalog:` comment]
+- [x] **CHK-005**: All `Feature catalog:` references use feature name only, no folder numbers [Evidence: Stable name-based wording + zero numbered-history comment matches]
+<!-- /ANCHOR:p0 -->
 
+<!-- ANCHOR:p1 -->
 ## P1 - Required
 
-- [ ] **CHK-006**: Core lib modules in `lib/search/`, `lib/scoring/`, `lib/cognitive/` have feature catalog references
-- [ ] **CHK-007**: Shared algorithm modules have feature catalog references
-- [ ] **CHK-008**: No existing general-purpose comments were removed
-- [ ] **CHK-009**: References follow the `// Feature catalog: <name>` format consistently
+- [x] **CHK-006**: Core lib modules in `lib/search/`, `lib/scoring/`, `lib/cognitive/` have feature catalog references [Evidence: Additional mapped files in `mcp_server` received feature catalog comments where mapping was strong]
+- [x] **CHK-007**: Shared algorithm modules have feature catalog references [Evidence: Additional mapped files in `shared` received feature catalog comments where mapping was strong]
+- [x] **CHK-008**: No existing general-purpose comments were removed [Evidence: Comment-only diff audit for `mcp_server` + `shared` returned `{\"comment_only\": true}`]
+- [x] **CHK-009**: References follow the `// Feature catalog: <name>` format consistently [Evidence: Implementation used stable `// Feature catalog: <feature-name>` references]
+<!-- /ANCHOR:p1 -->
 
+<!-- ANCHOR:p2 -->
 ## P2 - Quality
 
-- [ ] **CHK-010**: TypeScript compiles cleanly (`tsc --noEmit`)
-- [ ] **CHK-011**: Comments are concise (single line where possible)
-- [ ] **CHK-012**: Files implementing multiple features list all applicable catalog entries
-- [ ] **CHK-013**: No feature catalog references point to non-existent feature names
+- [x] **CHK-010**: TypeScript compiles cleanly (`tsc --noEmit`) [Evidence: `npm run typecheck` in `.opencode/skill/system-spec-kit` exited 0]
+- [x] **CHK-011**: Comments are concise (single line where possible) [Evidence: Stable single-line `// Feature catalog: <feature-name>` format applied]
+- [ ] **CHK-012**: Files implementing multiple features list all applicable catalog entries [DEFERRED: Optional P2 follow-up]
+- [ ] **CHK-013**: No feature catalog references point to non-existent feature names [DEFERRED: Optional P2 follow-up]
+<!-- /ANCHOR:p2 -->

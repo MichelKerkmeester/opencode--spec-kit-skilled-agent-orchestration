@@ -310,7 +310,7 @@ export function getDefaultHalfLives(): Record<MemoryTypeName, number | null> {
   };
 }
 
-// 6. DOCUMENT TYPES (Spec 126: Full Spec Folder Document Indexing)
+// 6. DOCUMENT TYPES
 /**
  * Defines the DocumentType type.
  */

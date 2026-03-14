@@ -9,6 +9,9 @@
 // Result sets or truncating content before sending to the LLM).
 import { type QueryComplexityTier } from './query-classifier';
 
+// Feature catalog: Dynamic token budget allocation
+
+
 /* --- 1. TYPES & CONSTANTS --- */
 
 /** Budget (in tokens) allocated per complexity tier. */

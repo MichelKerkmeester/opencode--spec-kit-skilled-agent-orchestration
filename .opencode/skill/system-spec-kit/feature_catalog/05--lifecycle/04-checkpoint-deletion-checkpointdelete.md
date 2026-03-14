@@ -4,22 +4,21 @@
 
 - [1. OVERVIEW](#1--overview)
 - [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-- [5. IN SIMPLE TERMS](#5--in-simple-terms)
+- [3. IN SIMPLE TERMS](#3--in-simple-terms)
+- [4. SOURCE FILES](#4--source-files)
+- [5. SOURCE METADATA](#5--source-metadata)
 
 ## 1. OVERVIEW
-
 Covers the checkpoint deletion tool that permanently removes named snapshots with a name-confirmation safety gate.
 
 ## 2. CURRENT REALITY
-
 Permanently removes a named checkpoint from the `checkpoints` table. Returns a boolean indicating whether the checkpoint was found and deleted. No confirmation prompt, but the caller must supply a `confirmName` parameter that matches the checkpoint name as a safety gate against accidental deletion. If you delete the wrong checkpoint, it is gone. Use `checkpoint_list` first to verify the name.
 
 ---
 
-## 3. SOURCE FILES
-
+## 3. IN SIMPLE TERMS
+This permanently removes a saved snapshot. You have to type the snapshot name to confirm, which prevents accidental deletions. Once deleted, that snapshot cannot be recovered, so make sure you pick the right one.
+## 4. SOURCE FILES
 ### Implementation
 
 | File | Layer | Role |
@@ -135,12 +134,8 @@ Permanently removes a named checkpoint from the `checkpoints` table. Returns a b
 | `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
 | `mcp_server/tests/vector-index-impl.vitest.ts` | Vector index implementation |
 
-## 4. SOURCE METADATA
-
+## 5. SOURCE METADATA
 - Group: Lifecycle
 - Source feature title: Checkpoint deletion (checkpoint_delete)
 - Current reality source: feature_catalog.md
 
-## 5. IN SIMPLE TERMS
-
-This permanently removes a saved snapshot. You have to type the snapshot name to confirm, which prevents accidental deletions. Once deleted, that snapshot cannot be recovered, so make sure you pick the right one.

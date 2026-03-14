@@ -1,7 +1,7 @@
 // ───────────────────────────────────────────────────────────────
 // 1. QUERY ROUTER
 // ───────────────────────────────────────────────────────────────
-// Tier-to-channel-subset routing for query complexity (Sprint 3, T001b)
+// Tier-to-channel-subset routing for query complexity
 // Maps classifier tiers to channel subsets for selective pipeline execution.
 
 import {
@@ -10,6 +10,9 @@ import {
   type QueryComplexityTier,
   type ClassificationResult,
 } from './query-classifier';
+
+// Feature catalog: Query complexity router
+
 
 /* ───────────────────────────────────────────────────────────────
    1. TYPES & CONSTANTS

@@ -11,7 +11,7 @@ import * as intentClassifier from '../lib/search/intent-classifier';
 // TierClassifier, crossEncoder imports removed — only used by legacy V1 pipeline.
 import { isEnabled as isSessionBoostEnabled } from '../lib/search/session-boost';
 import { isEnabled as isCausalBoostEnabled } from '../lib/search/causal-boost';
-// Sprint 5 (R6): 4-stage pipeline architecture
+// 4-stage pipeline architecture
 import { executePipeline } from '../lib/search/pipeline';
 import type { PipelineConfig, PipelineResult } from '../lib/search/pipeline';
 import { initConsumptionLog, logConsumptionEvent } from '../lib/telemetry/consumption-logger';
@@ -46,6 +46,12 @@ import type { IntentType, IntentWeights as IntentClassifierWeights } from '../li
 import type { RawSearchResult } from '../formatters';
 import type { RoutingResult, WeightedResult } from '../lib/search/artifact-routing';
 
+// Feature catalog: Semantic and lexical search (memory_search)
+// Feature catalog: Hybrid search pipeline
+// Feature catalog: 4-stage pipeline architecture
+// Feature catalog: Quality-aware 3-tier search fallback
+
+
 /* ───────────────────────────────────────────────────────────────
    2. TYPES
 ──────────────────────────────────────────────────────────────── */
@@ -53,8 +59,8 @@ import type { RoutingResult, WeightedResult } from '../lib/search/artifact-routi
 /**
  * Internal search result row — enriched DB row used within this handler.
  * NOT the same as the canonical SearchResult in shared/types.ts.
- * Self-contained: uses local types instead of deprecated MemoryRow/MemoryRecord (removed in Phase 6B).
- * Phase 6B will migrate this to MemoryDbRow & Record<string, unknown>.
+ * Self-contained: uses local types instead of the deprecated MemoryRow/MemoryRecord shapes.
+ * This can migrate to MemoryDbRow & Record<string, unknown> later without changing the handler contract.
  */
 interface MemorySearchRow extends Record<string, unknown> {
   id: number;
@@ -557,7 +563,7 @@ function collapseAndReassembleChunkResults(results: MemorySearchRow[]): ChunkRea
 
 // Sections 3–5 (STATE_PRIORITY, MAX_DEEP_QUERY_VARIANTS, buildDeepQueryVariants,
 // StrengthenOnAccess, applyTestingEffect, filterByMemoryState) removed in
-// 017-refinement-phase-6 Sprint 1. These were only used by the legacy V1 pipeline.
+// These were only used by the legacy V1 pipeline.
 // The V2 4-stage pipeline handles state filtering (Stage 4), testing effect, and
 // Query expansion through its own stages.
 
@@ -590,7 +596,7 @@ function applySessionDedup(results: MemorySearchRow[], sessionId: string, enable
 
 // Sections 7–9 (applyCrossEncoderReranking, applyIntentWeightsToResults,
 // ShouldApplyPostSearchIntentWeighting, postSearchPipeline) removed in
-// 017-refinement-phase-6 Sprint 1. These were only used by the legacy V1 pipeline
+// These were only used by the legacy V1 pipeline
 // Path. The V2 4-stage pipeline handles all equivalent functionality.
 
 /* ───────────────────────────────────────────────────────────────
@@ -798,7 +804,7 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
         }
       }
 
-      // V2 pipeline is the only path (legacy V1 removed in 017-refinement-phase-6)
+      // V2 pipeline is the only path (legacy V1 removed from the runtime pipeline)
       {
         const pipelineConfig: PipelineConfig = {
           query: normalizedQuery || '',

@@ -43,6 +43,11 @@ import type { MCPResponse, IntentClassification } from './types';
 import { discoverSpecFolder, getSpecsBasePaths } from '../lib/search/folder-discovery';
 import { isFolderDiscoveryEnabled } from '../lib/search/search-flags';
 
+// Feature catalog: Unified context retrieval (memory_context)
+// Feature catalog: Dual-scope memory auto-surface
+// Feature catalog: Provenance-rich response envelopes
+
+
 /* ───────────────────────────────────────────────────────────────
    1. TYPES
 ──────────────────────────────────────────────────────────────── */
@@ -374,7 +379,6 @@ function enforceTokenBudget(result: ContextResult, budgetTokens: number): { resu
     }
   };
 }
-
 
 /* ───────────────────────────────────────────────────────────────
    3. CONTEXT MODE DEFINITIONS

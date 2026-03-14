@@ -12,6 +12,10 @@ import { createMCPSuccessResponse } from '../lib/response/envelope';
 // Shared handler types
 import type { MCPResponse, DatabaseExtended as Database } from './types';
 
+// Feature catalog: Post-task learning measurement (task_postflight)
+// Feature catalog: Learning history (memory_get_learning_history)
+
+
 /* ───────────────────────────────────────────────────────────────
    1. TYPES
 ──────────────────────────────────────────────────────────────── */
@@ -331,7 +335,7 @@ async function handleTaskPostflight(args: PostflightArgs): Promise<MCPResponse> 
 
   const now = new Date().toISOString();
 
-  // Fix #35 (017-refinement-phase-6) — Allow re-correction by accepting
+  // Allow re-correction by accepting
   // Both 'preflight' (first postflight) and 'complete' (re-posted postflight) records.
   const preflightRecord = database.prepare(`
     SELECT * FROM session_learning

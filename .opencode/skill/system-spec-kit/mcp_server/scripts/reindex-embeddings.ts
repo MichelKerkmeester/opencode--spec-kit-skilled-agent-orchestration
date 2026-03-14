@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// Feature catalog: Architecture boundary enforcement
 // ───────────────────────────────────────────────────────────────
 // 1. REINDEX EMBEDDINGS COMPATIBILITY WRAPPER
 // ───────────────────────────────────────────────────────────────

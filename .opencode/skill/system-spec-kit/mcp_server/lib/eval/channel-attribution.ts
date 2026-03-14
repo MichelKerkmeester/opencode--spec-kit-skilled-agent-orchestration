@@ -15,6 +15,9 @@
 /* --- 1. TYPES --- */
 
 /** Known retrieval channels (extensible — any lowercase string accepted). */
+
+// Feature catalog: Shadow scoring and channel attribution
+
 export type ChannelName = 'vector' | 'fts' | 'bm25' | 'graph' | 'trigger' | string;
 
 /** A single result with channel attribution tags. */

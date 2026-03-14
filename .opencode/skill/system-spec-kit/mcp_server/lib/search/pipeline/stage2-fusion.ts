@@ -1,7 +1,7 @@
 // ───────────────────────────────────────────────────────────────
 // 1. STAGE2 FUSION
 // ───────────────────────────────────────────────────────────────
-// Sprint 5 (R6): 4-Stage Retrieval Pipeline
+// the rollout (R6): 4-Stage Retrieval Pipeline
 //
 // I/O CONTRACT:
 // Input:  Stage2Input { candidates: PipelineRow[], config, stage1Metadata }
@@ -66,6 +66,10 @@ import { applyCommunityBoost } from '../../graph/community-detection';
 import { applyGraphSignals } from '../../graph/graph-signals';
 import { isGraphUnifiedEnabled } from '../graph-flags';
 import { sortDeterministicRows } from './ranking-contract';
+
+// Feature catalog: 4-stage pipeline architecture
+// Feature catalog: MPAB chunk-to-memory aggregation
+
 
 // -- Internal type aliases --
 
@@ -146,7 +150,7 @@ function applyValidationSignalScoring(results: PipelineRow[]): PipelineRow[] {
 // -- Internal helpers --
 
 /**
- * Fix #11 (017-refinement-phase-6) — Replaced with shared resolveEffectiveScore()
+ * Replaced with shared resolveEffectiveScore()
  * from types.ts. The shared function uses the correct fallback chain:
  * intentAdjustedScore → rrfScore → score → similarity/100, all clamped to [0,1].
  * This alias ensures all call sites use the shared implementation.

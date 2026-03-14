@@ -19,6 +19,9 @@ import { applyPostInsertMetadata } from '../../handlers/save/db-helpers';
 import { calculateDocumentWeight, isSpecDocumentType } from '../../handlers/pe-gating';
 import { detectSpecLevelFromParsed } from '../../handlers/handler-utils';
 
+// Feature catalog: Lineage state active projection and asOf resolution
+
+
 type MemoryIndexRow = Record<string, unknown> & {
   id: number;
   spec_folder: string;

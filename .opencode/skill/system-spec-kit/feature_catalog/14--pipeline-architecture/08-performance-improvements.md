@@ -4,16 +4,14 @@
 
 - [1. OVERVIEW](#1--overview)
 - [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-- [5. IN SIMPLE TERMS](#5--in-simple-terms)
+- [3. IN SIMPLE TERMS](#3--in-simple-terms)
+- [4. SOURCE FILES](#4--source-files)
+- [5. SOURCE METADATA](#5--source-metadata)
 
 ## 1. OVERVIEW
-
 Thirteen performance improvements reduce runtime cost across TF-IDF scoring, summary queries, mutation ledger scanning, entity linking and hierarchy caching.
 
 ## 2. CURRENT REALITY
-
 Thirteen performance improvements were applied:
 
 **Quick wins:** `Math.max(...spread)` replaced with `reduce`-based max in `tfidf-summarizer.ts` (prevents RangeError on large arrays). Unbounded query in `memory-summaries.ts` gained a `LIMIT` clause. O(n) full scan in `mutation-ledger.ts` replaced with SQL `COUNT(*)` query using `json_extract`.
@@ -22,8 +20,9 @@ Thirteen performance improvements were applied:
 
 **SQL-level:** Causal edge upsert keeps explicit row lookup before and after UPSERT so weight-history logging and canonical row-id resolution stay deterministic. Round-trip reduction via `last_insert_rowid()` has not been applied in the current implementation. Spec folder hierarchy tree is cached with a 60-second WeakMap TTL keyed by database instance.
 
-## 3. SOURCE FILES
-
+## 3. IN SIMPLE TERMS
+Thirteen small speed improvements were made across the system. Some replaced slow scanning operations with faster lookups. Others fixed places where the same question was asked many times when once would do. The result is a system that responds more quickly, especially as the amount of stored data grows. Think of it as replacing a hand-cranked search with a power tool.
+## 4. SOURCE FILES
 ### Implementation
 
 | File | Layer | Role |
@@ -46,12 +45,8 @@ Thirteen performance improvements were applied:
 | `mcp_server/tests/causal-edges.vitest.ts` | Causal edge storage integration paths |
 | `mcp_server/tests/spec-folder-hierarchy.vitest.ts` | Hierarchy cache/TTL behavior and traversal checks |
 
-## 4. SOURCE METADATA
-
+## 5. SOURCE METADATA
 - Group: Comprehensive remediation (Sprint 8)
 - Source feature title: Performance improvements
 - Current reality source: feature_catalog.md
 
-## 5. IN SIMPLE TERMS
-
-Thirteen small speed improvements were made across the system. Some replaced slow scanning operations with faster lookups. Others fixed places where the same question was asked many times when once would do. The result is a system that responds more quickly, especially as the amount of stored data grows. Think of it as replacing a hand-cranked search with a power tool.

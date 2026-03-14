@@ -4,6 +4,10 @@
 import { initEvalDb } from '../lib/eval/eval-db';
 import { isQualityLoopEnabled } from '../lib/search/search-flags';
 
+// Feature catalog: Verify-fix-verify memory quality loop
+// Feature catalog: Pre-storage quality gate
+
+
 const HEADING_PATTERN = /^#{1,3}\s+.+/m;
 const ISO_DATE_PATTERN = /\b(\d{4}-\d{2}-\d{2})\b/g;
 const COMPLETION_CLAIM_PATTERN = /\b(completed|resolved|fixed|finished|shipped|released|deployed|implemented|occurred|happened)\b/i;
@@ -428,7 +432,7 @@ function attemptAutoFix(
   const fixedMetadata = { ...metadata };
   const fixed: string[] = [];
 
-  // Fix #1 (017-refinement-phase-6): Re-extract trigger phrases if missing/insufficient
+  // Fix #1 : Re-extract trigger phrases if missing/insufficient
   const hasTriggerIssue = issues.some(i => /trigger phrase/i.test(i));
   if (hasTriggerIssue) {
     const existingTriggers = Array.isArray(fixedMetadata.triggerPhrases)
@@ -442,14 +446,14 @@ function attemptAutoFix(
     }
   }
 
-  // Fix #2 (017-refinement-phase-6): Close unclosed ANCHOR tags
+  // Fix #2 : Close unclosed ANCHOR tags
   const hasAnchorIssue = issues.some(i => /unclosed anchor/i.test(i));
   if (hasAnchorIssue) {
     fixedContent = normalizeAnchors(fixedContent);
     fixed.push('Normalized unclosed ANCHOR tags');
   }
 
-  // Fix #3 (017-refinement-phase-6): Trim content to budget
+  // Fix #3 : Trim content to budget
   const hasBudgetIssue = issues.some(i => /token budget/i.test(i));
   if (hasBudgetIssue) {
     if (fixedContent.length > DEFAULT_CHAR_BUDGET) {

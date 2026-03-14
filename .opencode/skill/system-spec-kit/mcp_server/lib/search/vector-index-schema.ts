@@ -18,6 +18,11 @@ import {
 import { init as initHistory } from '../storage/history';
 import { getSpecsBasePaths } from './folder-discovery';
 
+// Feature catalog: Database and schema safety
+// Feature catalog: Lineage state active projection and asOf resolution
+// Feature catalog: Per-memory history log
+
+
 const logger = createLogger('VectorIndex');
 
 interface SchemaCompatibilityReport {
@@ -122,16 +127,16 @@ function getMigrationAllowedBasePaths(): string[] {
 // V10: Schema consolidation and index optimization
 // V11: Error code deduplication and validation improvements
 // V12: Unified memory_conflicts DDL (KL-1 Schema Unification)
-// V13: Add document_type and spec_level columns for full spec folder document indexing (Spec 126)
+// V13: Add document_type and spec_level columns for full spec folder document indexing
 // V14: Add content_text column + FTS5 rebuild for BM25 full-text search across restarts
 // V15: Add quality_score and quality_flags columns for memory quality gates
 // V16: Add parent_id column for chunked indexing of large files (010-index-large-files)
-// V17: Add interference_score column for TM-01 (Sprint 2)
-// V18: Sprint 6 — weight_history table + causal_edges provenance + encoding_intent column
+// V17: Add interference_score column for TM-01 (the rollout)
+// V18: the rollout — weight_history table + causal_edges provenance + encoding_intent column
 // V19: degree_snapshots + community_assignments (N2 graph centrality)
 // V20: memory_summaries + memory_entities + entity_catalog (R8/R10/S5)
 // V21: Add learned_triggers column (R11 learned feedback)
-// V22: Phase 2 memory lineage tables + active projection support
+// V22: Step 2 memory lineage tables + active projection support
 /** Current schema version for vector-index migrations. */
 export const SCHEMA_VERSION = 22;
 
@@ -1743,7 +1748,7 @@ export function create_schema(
         compatibility as unknown as Record<string, unknown>
       );
     }
-    // Sprint 2 (REQ-S2-001) — embedding cache table must exist before any
+    // the rollout (REQ-S2-001) — embedding cache table must exist before any
     // Save/index operation so lookupEmbedding() can skip redundant provider calls.
     initEmbeddingCache(database);
     return;
@@ -1873,7 +1878,7 @@ export function create_schema(
   ensureSharedSpaceTables(database);
   initHistory(database);
 
-  // Sprint 2 (REQ-S2-001) — create embedding_cache table
+  // the rollout (REQ-S2-001) — create embedding_cache table
   initEmbeddingCache(database);
 
   // Create memory_index-specific indexes (not IF NOT EXISTS because this is a fresh DB)

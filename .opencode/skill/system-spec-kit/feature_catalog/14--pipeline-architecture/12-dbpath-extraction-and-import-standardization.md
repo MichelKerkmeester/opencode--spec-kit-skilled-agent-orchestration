@@ -4,20 +4,19 @@
 
 - [1. OVERVIEW](#1--overview)
 - [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-- [5. IN SIMPLE TERMS](#5--in-simple-terms)
+- [3. IN SIMPLE TERMS](#3--in-simple-terms)
+- [4. SOURCE FILES](#4--source-files)
+- [5. SOURCE METADATA](#5--source-metadata)
 
 ## 1. OVERVIEW
-
 `DB_PATH` extraction and import standardization centralizes database path resolution into `shared/config.ts` and converts cross-boundary imports to workspace aliases.
 
 ## 2. CURRENT REALITY
-
 `shared/config.ts` gained an exported `getDbDir()` function reading `SPEC_KIT_DB_DIR` and `SPECKIT_DB_DIR` env vars. `shared/paths.ts` exports `DB_PATH` using this config. Scripts that hardcoded database paths (`cleanup-orphaned-vectors.ts`) now import from shared. Fourteen relative cross-boundary imports across scripts were converted to `@spec-kit/` workspace aliases.
 
-## 3. SOURCE FILES
-
+## 3. IN SIMPLE TERMS
+Multiple parts of the system were figuring out where the database lives in their own way, each with its own hardcoded path. This fix created one shared place that knows the database location, and everyone else just asks it. It is like giving the whole team the same address book instead of each person keeping their own copy that might go out of date.
+## 4. SOURCE FILES
 ### Implementation
 
 | File | Layer | Role |
@@ -37,12 +36,8 @@
 | `scripts/tests/test-cleanup-orphaned-vectors.js` | Script-level DB_PATH consumer coverage for cleanup flow |
 | `scripts/tests/import-policy-rules.vitest.ts` | Import-standardization policy checks for @spec-kit alias usage |
 
-## 4. SOURCE METADATA
-
+## 5. SOURCE METADATA
 - Group: Multi-agent deep review remediation (Phase 018)
 - Source feature title: DB_PATH extraction and import standardization
 - Current reality source: feature_catalog.md
 
-## 5. IN SIMPLE TERMS
-
-Multiple parts of the system were figuring out where the database lives in their own way, each with its own hardcoded path. This fix created one shared place that knows the database location, and everyone else just asks it. It is like giving the whole team the same address book instead of each person keeping their own copy that might go out of date.

@@ -6,6 +6,11 @@ import type Database from 'better-sqlite3';
 import type { ParsedMemory } from '../../lib/parsing/memory-parser';
 import type { IndexResult } from './types';
 
+// Feature catalog: SHA-256 content-hash deduplication
+// Feature catalog: Canonical ID dedup hardening
+// Feature catalog: Generation-time duplicate and empty content prevention
+
+
 const UNCHANGED_EMBEDDING_STATUSES = new Set(['success', 'pending', 'partial']);
 const DEDUP_ELIGIBLE_EMBEDDING_STATUSES = ['success', 'partial'] as const;
 const QUALITY_SCORE_EPSILON = 1e-9;

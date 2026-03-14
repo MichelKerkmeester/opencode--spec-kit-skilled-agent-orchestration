@@ -143,7 +143,7 @@ let firstEmbeddingTime: number | null = null;
 
 /**
  * Check if eager warmup is requested via environment variable.
- * @deprecated Lazy loading is now the permanent default (Sprint 7 audit).
+ * @deprecated Lazy loading is now the permanent default.
  * SPECKIT_EAGER_WARMUP and SPECKIT_LAZY_LOADING env vars are inert.
  */
 function shouldEagerWarmup(): boolean {

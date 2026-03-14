@@ -8,6 +8,9 @@ import {
   upsertSharedSpace,
 } from '../lib/collab/shared-spaces';
 
+// Feature catalog: Shared-memory rollout, deny-by-default membership, and kill switch
+
+
 interface SharedSpaceUpsertArgs {
   spaceId: string;
   tenantId: string;

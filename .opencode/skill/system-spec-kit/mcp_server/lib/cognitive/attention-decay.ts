@@ -5,7 +5,7 @@
 // Memory decay. It exposes FSRS-based decay as the canonical path
 // (via composite-scoring.ts and fsrs-scheduler.ts).
 // Legacy exponential functions (calculateDecayedScore, applyDecay) were
-// Removed in REC-017 Phase 4 — all callers migrated to applyFsrsDecay
+// Removed from the runtime API after callers migrated to applyFsrsDecay.
 // Or calculateCompositeAttention.
 //
 // Decay ownership map:
@@ -92,7 +92,7 @@ function getDecayRate(importanceTier: string | null | undefined): number {
   return rate !== undefined ? rate : DECAY_CONFIG.defaultDecayRate;
 }
 
-// CalculateDecayedScore removed in REC-017 Phase 4 — use calculateRetrievabilityDecay or applyFsrsDecay
+// calculateDecayedScore was removed; use calculateRetrievabilityDecay or applyFsrsDecay.
 
 /**
  * Calculate retrievability-based decay using FSRS formula.
@@ -106,7 +106,7 @@ function calculateRetrievabilityDecay(stability: number, elapsedDays: number): n
   return Math.pow(1 + fsrsScheduler.FSRS_FACTOR * (elapsedDays / stability), fsrsScheduler.FSRS_DECAY);
 }
 
-// ApplyDecay removed in REC-017 Phase 4 — use applyFsrsDecay
+// applyDecay was removed; use applyFsrsDecay.
 
 /**
  * Apply FSRS-based decay to a memory.

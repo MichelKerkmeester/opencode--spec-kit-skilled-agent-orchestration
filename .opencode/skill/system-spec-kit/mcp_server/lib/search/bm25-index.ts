@@ -79,7 +79,7 @@ function simpleStem(word: string): string {
   // Only deduplicate doubled consonants when a suffix was actually removed.
   // Without this guard, original double consonants are incorrectly stripped:
   // "bass" -> "bas", "jazz" -> "jaz", "bill" -> "bil" etc.
-  // Fix #18 (017-refinement-phase-6) — Handle doubled consonants after suffix
+  // Handle doubled consonants after suffix
   // Removal. "running"→"runn"→"run", "stopped"→"stopp"→"stop". Check if last two chars
   // Are identical consonants and deduplicate.
   if (suffixRemoved && stem.length >= 3) {

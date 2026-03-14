@@ -5,6 +5,9 @@
 // Query temporal neighbors, and build spec-folder timelines.
 import type Database from 'better-sqlite3';
 
+// Feature catalog: Temporal contiguity layer
+
+
 /* ───────────────────────────────────────────────────────────────
    1. CONSTANTS
 ----------------------------------------------------------------*/

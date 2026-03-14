@@ -1,7 +1,7 @@
 // ───────────────────────────────────────────────────────────────
 // 1. REPORTING DASHBOARD (R13-S3)
 // ───────────────────────────────────────────────────────────────
-// Sprint 7: Full reporting dashboard for eval infrastructure.
+// the rollout: Full reporting dashboard for eval infrastructure.
 // Aggregates metrics per sprint/eval-run, per-channel views,
 // Trend analysis, and formatted report output.
 //
@@ -17,6 +17,9 @@ import type Database from 'better-sqlite3';
 
 // Internal modules
 import { initEvalDb } from './eval-db';
+
+// Feature catalog: Reporting dashboard (eval_reporting_dashboard)
+
 
 // Configurable limit prevents silent data loss at scale (was hardcoded 1000)
 const DASHBOARD_ROW_LIMIT = Math.max(1, parseInt(process.env.SPECKIT_DASHBOARD_LIMIT ?? '10000', 10) || 10000);

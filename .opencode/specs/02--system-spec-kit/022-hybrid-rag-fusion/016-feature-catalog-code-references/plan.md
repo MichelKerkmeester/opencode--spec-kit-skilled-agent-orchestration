@@ -6,9 +6,12 @@ importance_tier: "normal"
 contextType: "general"
 ---
 # Plan: 016-Feature Catalog Code References
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---
 
+<!-- ANCHOR:approach -->
 ## 1. APPROACH
 
 Comment-only pass across all MCP server source files in two phases:
@@ -18,9 +21,11 @@ Scan all `.ts` source files for inline comments referencing specific sprint numb
 
 **Phase B: Annotate** (add feature catalog references)
 Map each source file to its feature catalog entry and add concise `// Feature catalog: <feature-name>` comments at module level and key function boundaries.
+<!-- /ANCHOR:approach -->
 
 ---
 
+<!-- ANCHOR:execution -->
 ## 2. EXECUTION STEPS
 
 ### Phase A: Cleanup stale references
@@ -45,9 +50,11 @@ Map each source file to its feature catalog entry and add concise `// Feature ca
 | B5 | Annotate script modules | Add references where scripts implement specific feature behavior |
 | B6 | Verify format consistency | Grep for all `Feature catalog:` comments and verify they use name-only format |
 | B7 | Compile check | Run `tsc --noEmit` to confirm no syntax issues from comment changes |
+<!-- /ANCHOR:execution -->
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## 3. ORDERING AND DEPENDENCIES
 
 ```
@@ -58,9 +65,11 @@ A1-A3 (parallel scans)
         -> B2-B5 (parallel annotation by directory)
           -> B6-B7 (verify)
 ```
+<!-- /ANCHOR:dependencies -->
 
 ---
 
+<!-- ANCHOR:scope-estimate -->
 ## 4. ESTIMATED SCOPE
 
 | Category | File Count | Effort |
@@ -70,3 +79,4 @@ A1-A3 (parallel scans)
 | Shared modules | ~10 | Small |
 | Scripts | ~15 | Small |
 | **Total** | **~105** | **Comment-only, no behavioral changes** |
+<!-- /ANCHOR:scope-estimate -->

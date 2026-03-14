@@ -8,6 +8,9 @@
    --------------------------------------------------------------- */
 
 /** Default maximum number of candidates to process before MMR selection. */
+
+// Feature catalog: Hybrid search pipeline
+
 const DEFAULT_MAX_CANDIDATES = 20;
 
 /* ---------------------------------------------------------------

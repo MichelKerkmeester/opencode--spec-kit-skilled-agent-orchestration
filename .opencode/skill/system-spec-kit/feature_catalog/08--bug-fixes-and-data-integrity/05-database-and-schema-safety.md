@@ -4,16 +4,14 @@
 
 - [1. OVERVIEW](#1--overview)
 - [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-- [5. IN SIMPLE TERMS](#5--in-simple-terms)
+- [3. IN SIMPLE TERMS](#3--in-simple-terms)
+- [4. SOURCE FILES](#4--source-files)
+- [5. SOURCE METADATA](#5--source-metadata)
 
 ## 1. OVERVIEW
-
 Tracks four database-layer bug fixes covering column references, DDL placement, edge deletion filters and update validation.
 
 ## 2. CURRENT REALITY
-
 Four database-layer bugs were fixed:
 
 **B1: Reconsolidation column reference:** `reconsolidation.ts` referenced a non-existent `frequency_counter` column that would crash at runtime during merge operations. Replaced with `importance_weight` using `Math.min(1.0, currentWeight + 0.1)` merge logic.
@@ -24,8 +22,9 @@ Four database-layer bugs were fixed:
 
 **B4: Missing changes guard:** Save-path UPDATE statements in `handlers/pe-gating.ts` now validate SQLite update results (`result.changes`). Zero-row updates are treated as no-ops/errors instead of false success.
 
-## 3. SOURCE FILES
-
+## 3. IN SIMPLE TERMS
+Four separate bugs in the database layer were fixed to prevent data corruption. These ranged from referencing a column that did not exist to running operations in the wrong order. Each fix makes sure that database writes happen safely and predictably so your stored data stays accurate and complete.
+## 4. SOURCE FILES
 ### Implementation
 
 | File | Layer | Role |
@@ -45,12 +44,8 @@ Four database-layer bugs were fixed:
 | `mcp_server/tests/causal-edges-unit.vitest.ts` | **B3**: DM1/DM2 verify deletion filters only intended source/target edge rows. |
 | `mcp_server/tests/memory-save-extended.vitest.ts` | **B4**: save update paths treat zero-row UPDATEs (`changes === 0`) as failure/no-op. |
 
-## 4. SOURCE METADATA
-
+## 5. SOURCE METADATA
 - Group: Comprehensive remediation (Sprint 8)
 - Source feature title: Database and schema safety
 - Current reality source: feature_catalog.md
 
-## 5. IN SIMPLE TERMS
-
-Four separate bugs in the database layer were fixed to prevent data corruption. These ranged from referencing a column that did not exist to running operations in the wrong order. Each fix makes sure that database writes happen safely and predictably so your stored data stays accurate and complete.

@@ -4,6 +4,9 @@
 import crypto from 'crypto';
 import { CHUNKING_THRESHOLD } from '../chunking/anchor-chunker';
 
+// Feature catalog: Dry-run preflight for memory_save
+
+
 // ───────────────────────────────────────────────────────────────
 // 2. TYPES
 // ───────────────────────────────────────────────────────────────

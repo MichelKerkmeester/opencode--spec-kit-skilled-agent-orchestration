@@ -9,6 +9,11 @@ import { handleMemoryStats } from './memory-crud-stats';
 import { handleMemoryHealth } from './memory-crud-health';
 import { setEmbeddingModelReady, isEmbeddingModelReady } from '../core';
 
+// Feature catalog: Memory browser (memory_list)
+// Feature catalog: System statistics (memory_stats)
+// Feature catalog: Health diagnostics (memory_health)
+
+
 /* ───────────────────────────────────────────────────────────────
    EXPORTS
 ──────────────────────────────────────────────────────────────── */

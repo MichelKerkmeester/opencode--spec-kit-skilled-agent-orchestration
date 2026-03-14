@@ -1,6 +1,10 @@
 // ───────────────────────────────────────────────────────────────
 // 1. INDEX
 // ───────────────────────────────────────────────────────────────
+
+// Feature catalog: Memory indexing (memory_save)
+// Feature catalog: Atomic-save parity and partial-indexing hints
+
 export * from './types';
 export * from './db-helpers';
 export * from './dedup';

@@ -4,6 +4,9 @@
 import { createHash } from 'crypto';
 import type Database from 'better-sqlite3';
 
+// Feature catalog: Embedding cache
+
+
 /* --- 1. INTERFACES --- */
 
 interface EmbeddingCacheEntry {

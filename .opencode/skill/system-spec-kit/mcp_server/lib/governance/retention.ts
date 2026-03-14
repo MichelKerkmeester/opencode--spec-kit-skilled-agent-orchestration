@@ -4,6 +4,9 @@ import * as vectorIndex from '../search/vector-index';
 import { filterRowsByScope, ensureGovernanceRuntime, recordGovernanceAudit, type ScopeContext } from './scope-governance';
 import { getAllowedSharedSpaceIds } from '../collab/shared-spaces';
 
+// Feature catalog: Hierarchical scope governance, governed ingest, retention, and audit
+
+
 /**
  * Outcome of a retention sweep scoped to the caller's governance filters.
  */

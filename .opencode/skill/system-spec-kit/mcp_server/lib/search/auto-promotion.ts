@@ -10,6 +10,9 @@
 // Does NOT demote -- only promotes upward.
 import type { DatabaseExtended as Database } from '@spec-kit/shared/types';
 
+// Feature catalog: Auto-promotion on validation
+
+
 // ───────────────────────────────────────────────────────────────
 // 2. TYPES
 // ───────────────────────────────────────────────────────────────

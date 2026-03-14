@@ -5,6 +5,9 @@
 // External packages
 import type Database from 'better-sqlite3';
 
+// Feature catalog: Per-memory history log
+
+
 /* ───────────────────────────────────────────────────────────────
    1. INTERFACES
 ----------------------------------------------------------------*/
@@ -214,7 +217,7 @@ export function getHistoryEventsForLineage(
 
 /**
  * Returns the lightweight history facts used to bridge legacy history into
- * Phase 2 lineage inspection and backfill metadata.
+ * Lineage inspection and backfill metadata.
  */
 export function getLineageTransitionAnchors(memoryId: number): LineageTransitionAnchor[] {
   return getHistory(memoryId).map((entry) => ({

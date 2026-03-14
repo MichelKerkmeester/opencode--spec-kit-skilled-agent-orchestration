@@ -22,6 +22,10 @@ import { createMCPSuccessResponse, createMCPErrorResponse, createMCPEmptyRespons
 // Shared handler types
 import type { MCPResponse } from './types';
 
+// Feature catalog: Causal graph statistics (memory_causal_stats)
+// Feature catalog: Causal chain tracing (memory_drift_why)
+
+
 /* ───────────────────────────────────────────────────────────────
    1. TYPES
 ──────────────────────────────────────────────────────────────── */
@@ -245,7 +249,7 @@ async function handleMemoryDriftWhy(args: DriftWhyArgs): Promise<MCPResponse> {
     relations = null,
     includeMemoryDetails = true
   } = args;
-  // Fix #25 (017-refinement-phase-6) — Clamp maxDepth to [1, 10] server-side
+  // Clamp maxDepth to [1, 10] server-side
   const maxDepth = Math.min(Math.max(1, Math.floor(rawMaxDepth)), 10);
 
   const startTime = Date.now();

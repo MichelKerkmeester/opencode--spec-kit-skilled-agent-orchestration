@@ -4,16 +4,14 @@
 
 - [1. OVERVIEW](#1--overview)
 - [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-- [5. IN SIMPLE TERMS](#5--in-simple-terms)
+- [3. IN SIMPLE TERMS](#3--in-simple-terms)
+- [4. SOURCE FILES](#4--source-files)
+- [5. SOURCE METADATA](#5--source-metadata)
 
 ## 1. OVERVIEW
-
 Stateless enrichment and alignment guards enrich thin OpenCode session data with spec-folder and git context while blocking saves that belong to a different task.
 
 ## 2. CURRENT REALITY
-
 Stateless `generate-context.js` saves now enrich thin OpenCode-derived session data with spec-folder and git context before rendering, while keeping contamination defenses in place.
 
 Current behavior is enforced in three slices:
@@ -27,8 +25,9 @@ Downstream session snapshots now prefer live observations over synthetic spec/gi
 
 Status: Implemented and covered by targeted Vitest regressions.
 
-## 3. SOURCE FILES
-
+## 3. IN SIMPLE TERMS
+When a memory is saved with minimal context, the system fills in the gaps by pulling relevant details from the project folder and recent changes. At the same time, it checks that the memory actually belongs to the project it claims to be part of and blocks saves that clearly belong somewhere else. Think of it as an assistant who fills out missing form fields for you but refuses to file the form in the wrong cabinet.
+## 4. SOURCE FILES
 ### Implementation
 
 | File | Layer | Role |
@@ -47,12 +46,8 @@ Status: Implemented and covered by targeted Vitest regressions.
 | `scripts/tests/task-enrichment.vitest.ts` | Workflow seam coverage proving stateless saves are allowed when captured files match spec-declared code paths |
 | `scripts/tests/memory-render-fixture.vitest.ts` | Render-path validation and quality gate regression coverage for stateless memory output |
 
-## 4. SOURCE METADATA
-
+## 5. SOURCE METADATA
 - Group: Memory quality and indexing
 - Source feature title: Stateless enrichment and alignment guards
 - Current reality source: spec 011-perfect-session-capturing
 
-## 5. IN SIMPLE TERMS
-
-When a memory is saved with minimal context, the system fills in the gaps by pulling relevant details from the project folder and recent changes. At the same time, it checks that the memory actually belongs to the project it claims to be part of and blocks saves that clearly belong somewhere else. Think of it as an assistant who fills out missing form fields for you but refuses to file the form in the wrong cabinet.

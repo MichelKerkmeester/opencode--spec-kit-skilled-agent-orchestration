@@ -3,7 +3,7 @@
 // ───────────────────────────────────────────────────────────────
 // Lightweight graph maintenance: contradiction scan, Hebbian
 // Strengthening, staleness detection, edge bounds enforcement.
-// Sprint 6a — behind SPECKIT_CONSOLIDATION flag.
+// Behind SPECKIT_CONSOLIDATION flag.
 import type Database from 'better-sqlite3';
 import { isConsolidationEnabled } from '../search/search-flags';
 import {
@@ -18,6 +18,9 @@ import {
   DECAY_PERIOD_DAYS,
 } from './causal-edges';
 import type { CausalEdge } from './causal-edges';
+
+// Feature catalog: Lightweight consolidation
+
 
 /* ───────────────────────────────────────────────────────────────
    1. TYPES

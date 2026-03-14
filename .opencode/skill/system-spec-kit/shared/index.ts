@@ -9,7 +9,7 @@
 // 1. TYPE DEFINITIONS
 // ---------------------------------------------------------------
 export type {
-  // DB normalization types (Phase 6A)
+  // DB normalization types
   MemoryDbRow,
   Memory,
   // Database interface types (canonical)
@@ -67,7 +67,7 @@ export type {
   TaskType,
 } from './types';
 
-// DB normalization functions (Phase 6A)
+// DB normalization functions
 export {
   dbRowToMemory,
   memoryToDbRow,

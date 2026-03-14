@@ -26,6 +26,10 @@ import { detectSpecLevelFromParsed } from '../handler-utils';
 import { applyPostInsertMetadata, hasReconsolidationCheckpoint } from './db-helpers';
 import type { IndexResult } from './types';
 
+// Feature catalog: Reconsolidation-on-save
+// Feature catalog: Memory indexing (memory_save)
+
+
 /**
  * Result payload from reconsolidation pre-checks during memory_save.
  */

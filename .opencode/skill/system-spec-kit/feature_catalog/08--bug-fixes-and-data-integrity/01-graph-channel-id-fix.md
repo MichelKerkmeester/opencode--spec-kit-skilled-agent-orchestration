@@ -4,22 +4,21 @@
 
 - [1. OVERVIEW](#1--overview)
 - [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-- [5. IN SIMPLE TERMS](#5--in-simple-terms)
+- [3. IN SIMPLE TERMS](#3--in-simple-terms)
+- [4. SOURCE FILES](#4--source-files)
+- [5. SOURCE METADATA](#5--source-metadata)
 
 ## 1. OVERVIEW
-
 Tracks the fix for the graph search channel that had a 0% hit rate due to string-vs-numeric ID comparison mismatches.
 
 ## 2. CURRENT REALITY
-
 The graph search channel had a 0% hit rate in production. Zero. The system was designed as a multi-channel retrieval engine, but the graph channel contributed nothing because `graph-search-fn.ts` compared string-formatted IDs (`mem:${edgeId}`) against numeric memory IDs at two separate locations.
 
 Both comparison points now extract numeric IDs, and the graph channel returns results for queries where causal edge relationships exist. This was the single highest-impact bug in the system because it meant an entire retrieval signal was dead on arrival.
 
-## 3. SOURCE FILES
-
+## 3. IN SIMPLE TERMS
+One of the search channels that was supposed to find related memories through their connections was completely broken because of a simple label mismatch. It was comparing apples to oranges internally, so it never found anything. The fix corrected the labels so that channel now works as intended and actually contributes useful results.
+## 4. SOURCE FILES
 ### Implementation
 
 | File | Layer | Role |
@@ -43,12 +42,8 @@ Both comparison points now extract numeric IDs, and the graph channel returns re
 | `mcp_server/tests/rollout-policy.vitest.ts` | Rollout policy tests |
 | `mcp_server/tests/spec-folder-hierarchy.vitest.ts` | Folder hierarchy tests |
 
-## 4. SOURCE METADATA
-
+## 5. SOURCE METADATA
 - Group: Bug fixes and data integrity
 - Source feature title: Graph channel ID fix
 - Current reality source: feature_catalog.md
 
-## 5. IN SIMPLE TERMS
-
-One of the search channels that was supposed to find related memories through their connections was completely broken because of a simple label mismatch. It was comparing apples to oranges internally, so it never found anything. The fix corrected the labels so that channel now works as intended and actually contributes useful results.

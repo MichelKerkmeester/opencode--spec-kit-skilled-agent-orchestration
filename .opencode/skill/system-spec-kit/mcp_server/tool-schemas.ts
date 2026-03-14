@@ -148,7 +148,7 @@ const memorySearch: ToolDefinition = {
         default: true,
         description: 'Auto-detect intent from query if not explicitly specified. When true, classifies query to apply task-specific scoring weights.'
       },
-      // Fix #13 (017-refinement-phase-6): Expose previously hidden handler parameters
+      // Fix #13 : Expose previously hidden handler parameters
       trackAccess: {
         type: 'boolean',
         default: false,

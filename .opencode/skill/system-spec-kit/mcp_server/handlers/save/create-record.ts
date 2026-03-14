@@ -21,6 +21,11 @@ import { classifyEncodingIntent } from '../../lib/search/encoding-intent';
 import { isEncodingIntentEnabled } from '../../lib/search/search-flags';
 import { applyPostInsertMetadata } from './db-helpers';
 
+// Feature catalog: Memory indexing (memory_save)
+// Feature catalog: Per-memory history log
+// Feature catalog: Prediction-error save arbitration
+
+
 interface PeDecision {
   action: string;
   similarity: number;
@@ -45,7 +50,7 @@ export function createMemoryRecord(
     console.error(`[memory-save] Using deferred indexing for ${path.basename(filePath)}`);
   }
 
-  // Spec 126: Detect spec level for spec documents
+  // Detect spec level for spec documents.
   const specLevel = isSpecDocumentType(parsed.documentType)
     ? detectSpecLevelFromParsed(filePath)
     : null;
@@ -55,7 +60,7 @@ export function createMemoryRecord(
   const canonicalFilePath = getCanonicalPathKey(filePath);
 
   const indexWithMetadata = database.transaction(() => {
-    // Determine importance weight based on document type (Spec 126)
+    // Determine importance weight based on document type.
     const importanceWeight = calculateDocumentWeight(filePath, parsed.documentType);
     const samePathExisting = database.prepare(`
       SELECT id, title
@@ -164,7 +169,7 @@ export function createMemoryRecord(
       }
     }
 
-    // Phase 2: append-first writes add a new row for every new current version.
+    // Append-first writes add a new row for every new current version.
     try {
       recordHistory(memory_id, 'ADD', null, parsed.title ?? filePath, 'mcp:memory_save');
       if (predecessorMemoryId != null) {

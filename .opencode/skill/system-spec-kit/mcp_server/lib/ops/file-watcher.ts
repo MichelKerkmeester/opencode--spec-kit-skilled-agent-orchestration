@@ -5,6 +5,10 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
 
+// Feature catalog: Real-time filesystem watching with chokidar
+// Feature catalog: Watcher delete/rename cleanup
+
+
 /**
  * Describes the WatcherConfig shape.
  */
@@ -245,7 +249,7 @@ export function startFileWatcher(config: WatcherConfig): FSWatcher {
           return;
         }
 
-        // Sprint 9 fix: Handle ENOENT gracefully when a file is rapidly
+        // Handle ENOENT gracefully when a file is rapidly
         // Created then deleted before the debounce timer fires.
         let nextHash: string;
         try {

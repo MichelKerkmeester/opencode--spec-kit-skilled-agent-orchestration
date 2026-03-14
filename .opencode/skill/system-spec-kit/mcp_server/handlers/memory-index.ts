@@ -43,6 +43,10 @@ import { createMCPSuccessResponse, createMCPErrorResponse } from '../lib/respons
 // Shared handler types
 import type { MCPResponse, EmbeddingProfile } from './types';
 
+// Feature catalog: Workspace scanning and indexing (memory_index_scan)
+// Feature catalog: Async ingestion job lifecycle
+
+
 /* ───────────────────────────────────────────────────────────────
    4. TYPES
 ──────────────────────────────────────────────────────────────── */
@@ -451,7 +455,7 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
     results.mtimeUpdates = mtimeUpdateResult.updated;
   }
 
-  // Spec 126: Create causal chains between spec folder documents.
+  // Create causal chains between spec folder documents.
   // Includes deferred indexing outcomes and incremental single-file updates.
   if (include_spec_docs) {
     try {

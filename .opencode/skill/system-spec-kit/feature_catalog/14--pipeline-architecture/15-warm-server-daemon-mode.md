@@ -4,20 +4,19 @@
 
 - [1. OVERVIEW](#1--overview)
 - [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-- [5. IN SIMPLE TERMS](#5--in-simple-terms)
+- [3. IN SIMPLE TERMS](#3--in-simple-terms)
+- [4. SOURCE FILES](#4--source-files)
+- [5. SOURCE METADATA](#5--source-metadata)
 
 ## 1. OVERVIEW
-
 Warm server / daemon mode is a deferred HTTP transport for persistent server execution, currently using stdio transport.
 
 ## 2. CURRENT REALITY
-
 **PLANNED (Sprint 019): DEFERRED.** HTTP daemon transport for warm, persistent server execution is deferred while MCP SDK HTTP transport conventions continue evolving. Current transport remains stdio. Estimated effort: L (2-3 weeks).
 
-## 3. SOURCE FILES
-
+## 3. IN SIMPLE TERMS
+Right now, the memory server starts fresh every time it is called and shuts down when the conversation ends. This planned feature would keep the server running in the background so it is always warm and ready, like leaving your car engine idling instead of restarting it every time you need to drive. It is deferred until the underlying connection standards settle down.
+## 4. SOURCE FILES
 ### Implementation
 
 | File | Layer | Role |
@@ -34,12 +33,8 @@ Warm server / daemon mode is a deferred HTTP transport for persistent server exe
 | `mcp_server/tests/lazy-loading.vitest.ts` | Verifies deferred warmup flags and `shouldEagerWarmup()` behavior |
 | `mcp_server/tests/stdio-logging-safety.vitest.ts` | Verifies stdio-safe runtime logging in non-daemon mode |
 
-## 4. SOURCE METADATA
-
+## 5. SOURCE METADATA
 - Group: Extra features (Sprint 019)
 - Source feature title: Warm server / daemon mode
 - Current reality source: feature_catalog.md
 
-## 5. IN SIMPLE TERMS
-
-Right now, the memory server starts fresh every time it is called and shuts down when the conversation ends. This planned feature would keep the server running in the background so it is always warm and ready, like leaving your car engine idling instead of restarting it every time you need to drive. It is deferred until the underlying connection standards settle down.

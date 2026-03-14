@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// Feature catalog: Migration checkpoint scripts
 // ───────────────────────────────────────────────────────────────
 // 1. MIGRATION CHECKPOINT RESTORE
 // ───────────────────────────────────────────────────────────────

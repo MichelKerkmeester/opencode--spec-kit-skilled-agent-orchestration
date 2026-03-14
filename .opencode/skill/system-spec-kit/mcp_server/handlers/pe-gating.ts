@@ -12,6 +12,10 @@ import { requireDb, toErrorMessage } from '../utils';
 import { detectSpecLevelFromParsed } from './handler-utils';
 import { applyPostInsertMetadata } from './save/db-helpers';
 
+// Feature catalog: Prediction-error save arbitration
+// Feature catalog: Memory indexing (memory_save)
+
+
 interface ParsedMemory {
   specFolder: string;
   filePath: string;
@@ -159,7 +163,7 @@ function reinforceExistingMemory(memoryId: number, parsed: ParsedMemory): IndexR
       retrievability
     );
 
-    // Spec 126: Keep document-type-aware weighting on reinforcement
+    // Keep document-type-aware weighting on reinforcement.
     const importanceWeight = calculateDocumentWeight(parsed.filePath, parsed.documentType);
 
     // P4-05 FIX: Check result.changes to detect no-op updates (e.g., deleted memory)
@@ -224,7 +228,7 @@ function markMemorySuperseded(memoryId: number): boolean {
 function updateExistingMemory(memoryId: number, parsed: ParsedMemory, embedding: Float32Array): IndexResult {
   const database = requireDb();
 
-  // Spec 126: Keep document-type-aware weighting and metadata on update
+  // Keep document-type-aware weighting and metadata on update.
   const importanceWeight = calculateDocumentWeight(parsed.filePath, parsed.documentType);
   const specLevel = isSpecDocumentType(parsed.documentType)
     ? detectSpecLevelFromParsed(parsed.filePath)

@@ -1,7 +1,7 @@
 // ───────────────────────────────────────────────────────────────
 // 1. RETRIEVAL DIRECTIVES
 // ───────────────────────────────────────────────────────────────
-// PI-A4: Constitutional memory as retrieval directives (Sprint 5, deferred from Sprint 4 REC-07)
+// PI-A4: Constitutional memory as retrieval directives (the rollout, deferred from the rollout REC-07)
 //
 // Adds a `retrieval_directive` metadata field to constitutional-tier memories.
 // Directives are formatted as explicit instruction prefixes ("Always surface when:",
@@ -16,6 +16,9 @@
 import * as fs from 'fs';
 import { ALLOWED_BASE_PATHS } from '../../core/config';
 import { validateFilePath } from '../utils/path-security';
+
+// Feature catalog: Constitutional memory as expert knowledge injection
+
 
 /* ───────────────────────────────────────────────────────────────
    1. TYPES

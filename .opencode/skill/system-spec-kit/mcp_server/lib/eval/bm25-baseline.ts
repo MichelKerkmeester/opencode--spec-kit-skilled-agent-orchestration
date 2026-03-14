@@ -78,7 +78,7 @@ export interface ContingencyDecision {
   action: 'PAUSE' | 'RATIONALIZE' | 'PROCEED';
   /** Plain-language interpretation for humans reading the exit gate report. */
   interpretation: string;
-  /** Comparison mode: 'absolute' (Sprint 0) or 'relative' (Sprint 1+). */
+  /** Comparison mode: 'absolute' (the rollout) or 'relative' (the original rollout+). */
   mode?: 'absolute' | 'relative';
   /** Hybrid MRR@5 used as reference (relative mode only). */
   hybridMRR?: number;

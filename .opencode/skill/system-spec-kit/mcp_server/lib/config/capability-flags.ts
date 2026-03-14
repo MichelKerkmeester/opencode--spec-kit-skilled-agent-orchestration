@@ -2,7 +2,7 @@
 // 1. MEMORY ROADMAP FLAGS
 // ───────────────────────────────────────────────────────────────
 // Phase-gated capability switches for the memory roadmap.
-// Defaults reflect the fully delivered Phase 015 rollout unless explicitly opted out.
+// Defaults reflect the fully delivered rollout unless explicitly opted out.
 import { isFeatureEnabled } from '../cache/cognitive/rollout-policy';
 
 /** Canonical rollout phases used by memory roadmap tracking. */

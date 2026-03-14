@@ -4,22 +4,21 @@
 
 - [1. OVERVIEW](#1--overview)
 - [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-- [5. IN SIMPLE TERMS](#5--in-simple-terms)
+- [3. IN SIMPLE TERMS](#3--in-simple-terms)
+- [4. SOURCE FILES](#4--source-files)
+- [5. SOURCE METADATA](#5--source-metadata)
 
 ## 1. OVERVIEW
-
 Anchor-aware chunk thinning scores each chunk by anchor presence and content density, dropping low-value chunks from the index.
 
 ## 2. CURRENT REALITY
-
 When large files are split into chunks during indexing, not all chunks carry equal value. Anchor-aware chunk thinning scores each chunk using a composite of anchor presence (weight 0.6, binary 0 or 1) and content density (weight 0.4, 0-1 scale). Content density strips HTML comments, collapses whitespace, penalizes short chunks under 100 characters and adds a structure bonus (up to +0.2) for headings, code blocks and list items.
 
 Chunks scoring below the 0.3 threshold are dropped from the index, reducing storage and search noise. The thinning guarantee: the function never returns an empty array regardless of scoring. Always active in the chunking path with no separate feature flag.
 
-## 3. SOURCE FILES
-
+## 3. IN SIMPLE TERMS
+When a large file is split into smaller pieces for indexing, not every piece carries useful information. Some are mostly whitespace or boilerplate. This feature scores each piece and drops the ones that add little value, keeping only the meaningful parts. It is like trimming the fat off a steak so you only store the good cuts.
+## 4. SOURCE FILES
 ### Implementation
 
 | File | Layer | Role |
@@ -33,12 +32,8 @@ Chunks scoring below the 0.3 threshold are dropped from the index, reducing stor
 |------|-------|
 | `mcp_server/tests/chunk-thinning.vitest.ts` | Chunk thinning tests |
 
-## 4. SOURCE METADATA
-
+## 5. SOURCE METADATA
 - Group: Memory quality and indexing
 - Source feature title: Anchor-aware chunk thinning
 - Current reality source: feature_catalog.md
 
-## 5. IN SIMPLE TERMS
-
-When a large file is split into smaller pieces for indexing, not every piece carries useful information. Some are mostly whitespace or boilerplate. This feature scores each piece and drops the ones that add little value, keeping only the meaningful parts. It is like trimming the fat off a steak so you only store the good cuts.

@@ -27,6 +27,12 @@ import { buildMutationHookFeedback } from '../hooks/mutation-feedback';
 import type { MCPResponse } from './types';
 import type { UpdateArgs } from './memory-crud-types';
 
+// Feature catalog: Memory metadata update (memory_update)
+// Feature catalog: Validation feedback (memory_validate)
+// Feature catalog: Transaction wrappers on mutation handlers
+// Feature catalog: Per-memory history log
+
+
 /* ───────────────────────────────────────────────────────────────
    CORE LOGIC
 ──────────────────────────────────────────────────────────────── */
@@ -89,7 +95,7 @@ async function handleMemoryUpdate(args: UpdateArgs): Promise<MCPResponse> {
     let newEmbedding: Float32Array | null = null;
 
     try {
-      // Fix #19 (017-refinement-phase-6) — Embed title + content_text, not title alone.
+      // Embed title + content_text, not title alone.
       // This produces better semantic embeddings that capture the full memory context.
       const contentText = existing.content_text || '';
       const embeddingInput = contentText ? `${title}\n\n${contentText}` : title;

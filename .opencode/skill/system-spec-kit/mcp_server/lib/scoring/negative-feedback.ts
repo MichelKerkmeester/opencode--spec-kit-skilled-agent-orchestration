@@ -9,6 +9,9 @@
 // Decay: gradual recovery over time (30-day half-life)
 import type { DatabaseExtended as Database } from '@spec-kit/shared/types';
 
+// Feature catalog: Negative feedback confidence signal
+
+
 // ───────────────────────────────────────────────────────────────
 // 2. CONSTANTS
 // ───────────────────────────────────────────────────────────────

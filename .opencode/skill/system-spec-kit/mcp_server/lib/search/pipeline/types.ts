@@ -1,8 +1,11 @@
 // ───────────────────────────────────────────────────────────────
 // 1. TYPES
 // ───────────────────────────────────────────────────────────────
-// Sprint 5 (R6): Stage interfaces with Stage 4 immutability invariant
+// Stage interfaces with the Stage 4 immutability invariant
 import type { RetrievalTrace } from '@spec-kit/shared/contracts/retrieval-trace';
+
+// Feature catalog: 4-stage pipeline architecture
+
 
 /**
  * Memory search row — the canonical internal result type flowing through the pipeline.
@@ -47,7 +50,7 @@ export interface PipelineRow extends Record<string, unknown> {
  * "best available score" from a PipelineRow. Used by Stage 2, Stage 3, and any
  * code needing a consistent effective score.
  *
- * Fix #11 (017-refinement-phase-6) — Previously Stage 2 and Stage 3 had
+ * Previously Stage 2 and Stage 3 had
  * separate implementations with different fallback orders and clamping. This shared
  * function uses the correct chain: intentAdjustedScore → rrfScore → score → similarity/100,
  * all clamped to [0,1] with isFinite guards.

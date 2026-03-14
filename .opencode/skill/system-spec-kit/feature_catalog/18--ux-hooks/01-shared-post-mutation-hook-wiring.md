@@ -4,20 +4,19 @@
 
 - [1. OVERVIEW](#1--overview)
 - [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-- [5. IN SIMPLE TERMS](#5--in-simple-terms)
+- [3. IN SIMPLE TERMS](#3--in-simple-terms)
+- [4. SOURCE FILES](#4--source-files)
+- [5. SOURCE METADATA](#5--source-metadata)
 
 ## 1. OVERVIEW
-
 Shared post-mutation hook wiring runs the same hook automation after save, update, delete and bulk-delete flows so cache invalidation stays consistent across handlers.
 
 ## 2. CURRENT REALITY
-
 Phase 014 introduced a shared post-mutation hook path across mutation handlers. The same hook automation now runs after save, update, delete and bulk-delete flows, including atomic save paths, so cache invalidation and follow-up behavior no longer drift by handler.
 
-## 3. SOURCE FILES
-
+## 3. IN SIMPLE TERMS
+After the system saves or changes any piece of knowledge, it runs a standard set of follow-up tasks automatically. Think of it like a checklist that runs every time you file a document: update the index, notify anyone watching and log the change. Before this feature, each type of save had its own checklist, so some steps could get missed.
+## 4. SOURCE FILES
 ### Implementation
 
 | File | Layer | Role |
@@ -97,12 +96,8 @@ Phase 014 introduced a shared post-mutation hook path across mutation handlers. 
 | `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
 | `mcp_server/tests/vector-index-impl.vitest.ts` | Vector index implementation |
 
-## 4. SOURCE METADATA
-
+## 5. SOURCE METADATA
 - Group: UX hooks automation (Phase 014)
 - Source feature title: Shared post-mutation hook wiring
 - Current reality source: feature_catalog.md
 
-## 5. IN SIMPLE TERMS
-
-After the system saves or changes any piece of knowledge, it runs a standard set of follow-up tasks automatically. Think of it like a checklist that runs every time you file a document: update the index, notify anyone watching and log the change. Before this feature, each type of save had its own checklist, so some steps could get missed.

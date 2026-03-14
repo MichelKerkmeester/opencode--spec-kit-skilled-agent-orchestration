@@ -1,12 +1,15 @@
 // ───────────────────────────────────────────────────────────────
 // 1. JOB QUEUE
 // ───────────────────────────────────────────────────────────────
-// Sprint 9 fixes: true sequential worker, meaningful state transitions,
+// True sequential worker, meaningful state transitions,
 // Continue-on-error for bulk ingestion, SQLITE_BUSY async retry on DB writes,
 // Crash recovery with re-enqueue, and original-path progress tracking.
 
 import path from 'node:path';
 import { requireDb, toErrorMessage } from '../../utils';
+
+// Feature catalog: Async ingestion job lifecycle
+
 
 /**
  * Defines the IngestJobState type.
@@ -73,10 +76,10 @@ const ALLOWED_TRANSITIONS: Record<IngestJobState, Set<IngestJobState>> = {
   cancelled: new Set<IngestJobState>([]),
 };
 
-// Sprint 9 fix: SQLITE_BUSY retry delays (matches file-watcher pattern).
+// SQLITE_BUSY retry delays that match the file-watcher pattern.
 const RETRY_DELAYS_MS = [50, 200, 500];
 
-// Sprint 9 fix: True sequential queue — only one job processes at a time.
+// True sequential queue — only one job processes at a time.
 const pendingQueue: string[] = [];
 let workerActive = false;
 let processFileFn: ((filePath: string) => Promise<unknown>) | null = null;
@@ -414,7 +417,7 @@ export function getIngestProgressPercent(job: Pick<IngestJob, 'filesProcessed' |
   return Math.max(0, Math.min(100, raw));
 }
 
-// Sprint 9 fix: Real state machine — states now correspond to actual work phases.
+// Real state machine — states now correspond to actual work phases.
 // Progress is tracked against the original submitted path list so terminal
 // Accounting stays stable even when some files are inaccessible.
 async function processQueuedJob(jobId: string): Promise<void> {
@@ -427,20 +430,20 @@ async function processQueuedJob(jobId: string): Promise<void> {
     return;
   }
 
-  // Phase 1: Parsing — validate all paths exist and are readable.
+  // Step 1: Parsing — validate all paths exist and are readable.
   job = await setIngestJobState(jobId, 'parsing');
   if (TERMINAL_STATES.has(job.state)) return;
 
   const { access } = await import('fs/promises');
 
-  // Phase 2: Embedding — placeholder for batch embedding pre-processing.
+  // Step 2: Embedding — placeholder for batch embedding pre-processing.
   // Transition is meaningful: it signals readiness for indexing after validation.
   const latest1 = getIngestJob(jobId);
   if (!latest1 || TERMINAL_STATES.has(latest1.state)) return;
   job = await setIngestJobState(jobId, 'embedding');
   if (TERMINAL_STATES.has(job.state)) return;
 
-  // Phase 3: Indexing — process only validated paths (not original paths).
+  // Step 3: Indexing — process only validated paths (not original paths).
   const latest2 = getIngestJob(jobId);
   if (!latest2 || TERMINAL_STATES.has(latest2.state)) return;
   job = await setIngestJobState(jobId, 'indexing');
@@ -462,7 +465,7 @@ async function processQueuedJob(jobId: string): Promise<void> {
       break;
     }
 
-    // Sprint 9 fix: Continue on file error instead of aborting entire job.
+    // Continue on file error instead of aborting the entire job.
     try {
       await access(nextPath);
       await processFileFn(nextPath);
@@ -496,7 +499,7 @@ async function processQueuedJob(jobId: string): Promise<void> {
   }
 }
 
-// Sprint 9 fix: True sequential worker — processes one job at a time.
+// True sequential worker — processes one job at a time.
 // Multiple enqueueIngestJob calls add to pendingQueue; a single worker drains it.
 async function drainQueue(): Promise<void> {
   if (workerActive) return;

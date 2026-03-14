@@ -4,6 +4,11 @@
 import { buildMutationHookFeedback } from '../../hooks/mutation-feedback';
 import type { ParsedMemory } from '../../lib/parsing/memory-parser';
 
+// Feature catalog: Memory indexing (memory_save)
+// Feature catalog: Validation feedback (memory_validate)
+// Feature catalog: Dry-run preflight for memory_save
+
+
 export interface ValidationResult {
   valid: boolean;
   errors: string[];

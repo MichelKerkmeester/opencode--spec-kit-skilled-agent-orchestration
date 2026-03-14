@@ -16,6 +16,10 @@ import { generateAndStoreSummary } from '../../lib/search/memory-summaries';
 import { runEntityLinking } from '../../lib/search/entity-linker';
 import { toErrorMessage } from '../../utils';
 
+// Feature catalog: Memory indexing (memory_save)
+// Feature catalog: Duplicate-save no-op feedback hardening
+
+
 interface CausalLinksResult {
   processed: number;
   inserted: number;

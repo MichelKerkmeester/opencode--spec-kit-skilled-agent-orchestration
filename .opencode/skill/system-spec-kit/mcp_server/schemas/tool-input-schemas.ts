@@ -5,6 +5,9 @@
 // Strict mode is controlled by SPECKIT_STRICT_SCHEMAS (default: true).
 import { z, ZodError, type ZodType } from 'zod';
 
+// Feature catalog: Strict Zod schema validation
+
+
 type ToolInput = Record<string, unknown>;
 type ToolInputSchema = ZodType<ToolInput>;
 
@@ -14,7 +17,7 @@ export const getSchema = <T extends z.ZodRawShape>(shape: T): z.ZodObject<T> => 
   return strict ? base.strict() : base.passthrough();
 };
 
-// Sprint 9 fix: safeNumericPreprocess.pipe(z.number()) silently coerces "", null, false → 0.
+// Guard against safeNumericPreprocess.pipe(z.number()) coercing "", null, and false to 0.
 // Use a safe preprocessor that only accepts actual numbers or numeric strings.
 const safeNumericPreprocess = z.preprocess((val) => {
   if (typeof val === 'number') return val;

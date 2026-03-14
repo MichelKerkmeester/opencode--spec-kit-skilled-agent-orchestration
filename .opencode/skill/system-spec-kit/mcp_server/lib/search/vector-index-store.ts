@@ -12,7 +12,6 @@
 // This ensures backward compatibility while aligning reviewed
 // Memories with the canonical FSRS algorithm.
 
-
 import Database from 'better-sqlite3';
 import * as sqliteVec from 'sqlite-vec';
 import * as path from 'path';

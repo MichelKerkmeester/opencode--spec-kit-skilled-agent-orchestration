@@ -1,7 +1,7 @@
 // ───────────────────────────────────────────────────────────────
 // 1. ENCODING INTENT
 // ───────────────────────────────────────────────────────────────
-// Sprint 6a — classify content intent for metadata enrichment.
+// Classify content intent for metadata enrichment.
 //
 // Classifies each memory's content at index time into one of three
 // Intent categories: 'document' (prose), 'code' (programming),
@@ -16,6 +16,9 @@
 // When the flag is off, classifyEncodingIntent() still returns a
 // Classification (default 'document') but callers should gate
 // Persistence on isEncodingIntentEnabled().
+
+// Feature catalog: Encoding-intent capture at index time
+
 export type EncodingIntent = 'document' | 'code' | 'structured_data';
 
 /**

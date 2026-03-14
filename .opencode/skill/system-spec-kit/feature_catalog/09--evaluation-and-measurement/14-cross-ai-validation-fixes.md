@@ -4,17 +4,15 @@
 
 - [1. OVERVIEW](#1--overview)
 - [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-- [5. PLAYBOOK COVERAGE](#5--playbook-coverage)
-- [6. IN SIMPLE TERMS](#6--in-simple-terms)
+- [3. IN SIMPLE TERMS](#3--in-simple-terms)
+- [4. SOURCE FILES](#4--source-files)
+- [5. SOURCE METADATA](#5--source-metadata)
+- [6. PLAYBOOK COVERAGE](#6--playbook-coverage)
 
 ## 1. OVERVIEW
-
 Covers 14 issues found by independent Gemini and Codex reviews, including test suite false-pass patterns, deletion exception propagation and re-sort after feedback mutations.
 
 ## 2. CURRENT REALITY
-
 Independent reviews by Gemini 3.1 Pro and Codex gpt-5.3-codex identified 14 issues missed by the original audit. Key fixes:
 
 - **CR-P0-1:** Test suite false-pass patterns. 21 silent-return guards converted to `it.skipIf()`, fail-fast imports with throw on required handler/vectorIndex missing.
@@ -30,8 +28,9 @@ Independent reviews by Gemini 3.1 Pro and Codex gpt-5.3-codex identified 14 issu
 
 All 14 items verified through 3-stage review: Codex implemented, Gemini reviewed, Claude final-reviewed.
 
-## 3. SOURCE FILES
-
+## 3. IN SIMPLE TERMS
+Three different AI reviewers independently checked the codebase and found 14 issues that the original review missed. This is like getting a second and third opinion from different doctors: each one catches things the others overlooked. The fixes addressed problems ranging from tests that secretly passed when they should have failed to errors that were silently swallowed instead of reported.
+## 4. SOURCE FILES
 ### Implementation
 
 | File | Layer | Role |
@@ -55,16 +54,11 @@ All 14 items verified through 3-stage review: Codex implemented, Gemini reviewed
 | `mcp_server/tests/memory-save-extended.vitest.ts` | False-pass guard pattern remediation coverage |
 | `mcp_server/tests/hybrid-search.vitest.ts` | Search-handler ordering and integration behavior |
 
-## 4. SOURCE METADATA
-
+## 5. SOURCE METADATA
 - Group: Multi-agent deep review remediation (Phase 018)
 - Source feature title: Cross-AI validation fixes
 - Current reality source: feature_catalog.md
 
-## 5. PLAYBOOK COVERAGE
-
+## 6. PLAYBOOK COVERAGE
 - Mapped to manual testing playbook scenario NEW-088
 
-## 6. IN SIMPLE TERMS
-
-Three different AI reviewers independently checked the codebase and found 14 issues that the original review missed. This is like getting a second and third opinion from different doctors: each one catches things the others overlooked. The fixes addressed problems ranging from tests that secretly passed when they should have failed to errors that were silently swallowed instead of reported.

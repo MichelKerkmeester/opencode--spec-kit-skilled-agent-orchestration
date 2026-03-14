@@ -4,16 +4,14 @@
 
 - [1. OVERVIEW](#1--overview)
 - [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-- [5. IN SIMPLE TERMS](#5--in-simple-terms)
+- [3. IN SIMPLE TERMS](#3--in-simple-terms)
+- [4. SOURCE FILES](#4--source-files)
+- [5. SOURCE METADATA](#5--source-metadata)
 
 ## 1. OVERVIEW
-
 Tracks the replacement of `Math.max(...array)` spread patterns with `reduce()` to prevent stack overflows on large arrays.
 
 ## 2. CURRENT REALITY
-
 `Math.max(...array)` and `Math.min(...array)` push all elements onto the call stack, causing `RangeError` on arrays exceeding ~100K elements. Seven production files were converted from spread patterns to `reduce()`:
 
 - `rsf-fusion.ts`: 6 instances (4 + 2)
@@ -25,8 +23,9 @@ Tracks the replacement of `Math.max(...array)` spread patterns with `reduce()` t
 
 Each replacement uses `scores.reduce((a, b) => Math.max(a, b), -Infinity)` with an `AI-WHY` comment explaining the safety rationale.
 
-## 3. SOURCE FILES
-
+## 3. IN SIMPLE TERMS
+A common way of finding the largest or smallest number in a list was crashing the system when the list got too big. Seven places in the code used this risky approach. All were replaced with a safer method that works no matter how large the list grows, preventing crashes on big knowledge bases.
+## 4. SOURCE FILES
 ### Implementation
 
 | File | Layer | Role |
@@ -64,12 +63,8 @@ Each replacement uses `scores.reduce((a, b) => Math.max(a, b), -Infinity)` with 
 | `mcp_server/tests/unit-tier-classifier-types.vitest.ts` | Tier classifier types |
 | `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
 
-## 4. SOURCE METADATA
-
+## 5. SOURCE METADATA
 - Group: Multi-agent deep review remediation (Phase 018)
 - Source feature title: Math.max/min stack overflow elimination
 - Current reality source: feature_catalog.md
 
-## 5. IN SIMPLE TERMS
-
-A common way of finding the largest or smallest number in a list was crashing the system when the list got too big. Seven places in the code used this risky approach. All were replaced with a safer method that works no matter how large the list grows, preventing crashes on big knowledge bases.

@@ -5,6 +5,10 @@ import type Database from 'better-sqlite3';
 
 import type { PostInsertMetadataFields } from './types';
 
+// Feature catalog: Memory indexing (memory_save)
+// Feature catalog: Reconsolidation-on-save
+
+
 /** Allowed column names for the dynamic UPDATE builder (injection guard). */
 export const ALLOWED_POST_INSERT_COLUMNS = new Set<string>([
   'content_hash', 'context_type', 'importance_tier', 'memory_type',

@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. EDGE DENSITY (SPRINT 1 T003)
+// 1. EDGE DENSITY
 // ───────────────────────────────────────────────────────────────
 // Measures the edge density of the causal graph:
 // Density = edge_count / total_memories
@@ -17,6 +17,9 @@
 // And included in the result.
 
 import type Database from 'better-sqlite3';
+
+// Feature catalog: Edge density measurement
+
 
 /* --- 1. TYPES --- */
 

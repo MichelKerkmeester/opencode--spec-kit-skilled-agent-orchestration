@@ -25,6 +25,11 @@ import * as causalEdges from '../lib/storage/causal-edges';
 import type { MCPResponse, EmbeddingProfile } from './types';
 import type { HealthArgs, PartialProviderMetadata } from './memory-crud-types';
 
+// Feature catalog: Health diagnostics (memory_health)
+// Feature catalog: Validation feedback (memory_validate)
+// Feature catalog: Memory health autoRepair metadata
+
+
 /** Strip absolute paths, stack traces, and truncate for safe user-facing hints. */
 function sanitizeErrorForHint(msg: string): string {
   return msg
@@ -510,7 +515,7 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
       }
     }
   }
-  // Fix #28 (017-refinement-phase-6) — cleanupOrphanedEdges was exported but
+  // cleanupOrphanedEdges was exported but
   // Never invoked at runtime. Wire it into autoRepair so orphaned causal edges
   // (referencing deleted memories) are cleaned up during health checks.
   if (autoRepair && database) {

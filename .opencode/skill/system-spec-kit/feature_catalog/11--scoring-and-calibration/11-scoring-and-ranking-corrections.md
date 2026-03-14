@@ -4,16 +4,14 @@
 
 - [1. OVERVIEW](#1--overview)
 - [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-- [5. IN SIMPLE TERMS](#5--in-simple-terms)
+- [3. IN SIMPLE TERMS](#3--in-simple-terms)
+- [4. SOURCE FILES](#4--source-files)
+- [5. SOURCE METADATA](#5--source-metadata)
 
 ## 1. OVERVIEW
-
 Covers four scoring-layer bug fixes: composite score overflow clamping, citation fallback chain removal, causal-boost cycle deduplication and ablation binomial overflow prevention.
 
 ## 2. CURRENT REALITY
-
 Four scoring-layer bugs were fixed:
 
 **C1: Composite score overflow:** `composite-scoring.ts` used `Math.max(0, composite)` which allowed scores above 1.0. Changed to `Math.max(0, Math.min(1, composite))` clamping to [0,1] across scoring paths.
@@ -24,8 +22,9 @@ Four scoring-layer bugs were fixed:
 
 **C4: Ablation binomial overflow:** `ablation-framework.ts` computed binomial coefficients using naive multiplication that overflowed for n>50 in the sign test. Replaced with `logBinomial(n, k)` using log-space summation.
 
-## 3. SOURCE FILES
-
+## 3. IN SIMPLE TERMS
+These are four bug fixes for the scoring math. Scores could climb above their allowed maximum, a fallback was using the wrong data to guess relevance, circular relationships in the graph could multiply scores endlessly, and a statistics calculation could break with large numbers. Each fix is small on its own, but together they keep the ranking numbers honest and reliable.
+## 4. SOURCE FILES
 ### Implementation
 
 | Correction | File | Layer | Role |
@@ -44,12 +43,8 @@ Four scoring-layer bugs were fixed:
 | C3 | `mcp_server/tests/causal-boost.vitest.ts` | Cycle/dedup behavior in recursive graph boost |
 | C4 | `mcp_server/tests/ablation-framework.vitest.ts` | Large-n sign test stability and p-value computation |
 
-## 4. SOURCE METADATA
-
+## 5. SOURCE METADATA
 - Group: Comprehensive remediation (Sprint 8)
 - Source feature title: Scoring and ranking corrections
 - Current reality source: feature_catalog.md
 
-## 5. IN SIMPLE TERMS
-
-These are four bug fixes for the scoring math. Scores could climb above their allowed maximum, a fallback was using the wrong data to guess relevance, circular relationships in the graph could multiply scores endlessly, and a statistics calculation could break with large numbers. Each fix is small on its own, but together they keep the ranking numbers honest and reliable.

@@ -252,7 +252,7 @@ function reset(): void {
    6. EXIT HANDLERS
 ----------------------------------------------------------------*/
 
-// Fix #38 (017-refinement-phase-6) — Store handler refs for process.removeListener()
+// Store handler refs for process.removeListener()
 let _exitFlushHandler: (() => void) | null = null;
 
 function initExitHandlers(): void {

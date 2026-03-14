@@ -20,6 +20,9 @@ import { toErrorMessage } from '../utils';
 import type { MCPResponse } from './types';
 import type { StatsArgs } from './memory-crud-types';
 
+// Feature catalog: System statistics (memory_stats)
+
+
 /* ───────────────────────────────────────────────────────────────
    CORE LOGIC
 ──────────────────────────────────────────────────────────────── */

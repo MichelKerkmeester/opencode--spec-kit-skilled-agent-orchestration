@@ -38,7 +38,7 @@ const RELATION_WEIGHTS: Record<string, number> = {
 const DEFAULT_MAX_DEPTH = 3;
 const MAX_EDGES_LIMIT = 100;
 
-// Sprint 6 N3-lite edge bounds (NFR-R01, SC-005)
+// Edge bounds for the lightweight runtime path (NFR-R01, SC-005)
 const MAX_EDGES_PER_NODE = 20;
 const MAX_AUTO_STRENGTH = 0.5;
 const MAX_STRENGTH_INCREASE_PER_CYCLE = 0.05;
@@ -160,7 +160,7 @@ function insertEdge(
     ? Math.min(strength, MAX_AUTO_STRENGTH)
     : strength;
 
-  // Fix #24 (017-refinement-phase-6) — Prevent self-loops
+  // Prevent self-loops
   if (sourceId === targetId) {
     return null;
   }
@@ -612,7 +612,7 @@ function findOrphanedEdges(): CausalEdge[] {
   }
 }
 
-// Fix #28 (017-refinement-phase-6) — Automated orphan edge cleanup
+// Automated orphan edge cleanup
 function cleanupOrphanedEdges(): { deleted: number } {
   if (!db) return { deleted: 0 };
   try {

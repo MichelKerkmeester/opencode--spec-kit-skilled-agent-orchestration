@@ -6,6 +6,9 @@
 
 /* --- 1. CONSTANTS --- */
 
+// Feature catalog: Hybrid search pipeline
+// Feature catalog: RRF K-value sensitivity analysis
+
 const SOURCE_TYPES = {
   VECTOR: 'vector',
   FTS: 'fts',

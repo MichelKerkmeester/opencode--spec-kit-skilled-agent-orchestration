@@ -18,6 +18,10 @@ import { safeJsonParseTyped } from '../utils/json-helpers';
 import type { MCPResponse } from './types';
 import type { ListArgs } from './memory-crud-types';
 
+// Feature catalog: Memory browser (memory_list)
+// Feature catalog: Validation feedback (memory_validate)
+
+
 /* ───────────────────────────────────────────────────────────────
    CORE LOGIC
 ──────────────────────────────────────────────────────────────── */

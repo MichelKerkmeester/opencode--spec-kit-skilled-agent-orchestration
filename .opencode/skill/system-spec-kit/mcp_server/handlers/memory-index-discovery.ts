@@ -10,6 +10,10 @@ import path from 'path';
 import { toErrorMessage } from '../utils';
 import { getCanonicalPathKey } from '../lib/utils/canonical-path';
 
+// Feature catalog: Workspace scanning and indexing (memory_index_scan)
+// Feature catalog: Spec folder description discovery
+
+
 /* ------- 2. CONSTANTS ------- */
 
 /** Well-known spec folder document filenames. */

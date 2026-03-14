@@ -26,6 +26,10 @@ import {
 
 import type { MCPResponse } from './types';
 
+// Feature catalog: Reporting dashboard (eval_reporting_dashboard)
+// Feature catalog: Ablation studies (eval_run_ablation)
+
+
 interface RunAblationArgs {
   channels?: AblationChannel[];
   groundTruthQueryIds?: number[];
@@ -82,7 +86,7 @@ async function handleEvalRunAblation(args: RunAblationArgs): Promise<MCPResponse
     const embedding = await generateQueryEmbedding(query);
 
     const searchOptions = {
-      // Fix #33 (017-refinement-phase-6) — Use recallK, not hardcoded 20
+      // Use recallK, not hardcoded 20
       limit: recallK,
       useVector: channelFlags.useVector,
       useBm25: channelFlags.useBm25,

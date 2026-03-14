@@ -16,6 +16,11 @@ import type { MCPResponse } from '../types';
 import { buildMutationHookFeedback } from '../../hooks/mutation-feedback';
 import type { IndexResult } from './types';
 
+// Feature catalog: Mutation response UX payload exposure
+// Feature catalog: Duplicate-save no-op feedback hardening
+// Feature catalog: Atomic-save parity and partial-indexing hints
+
+
 interface ValidationResult {
   valid: boolean;
   errors: string[];
@@ -338,7 +343,7 @@ export function buildSaveResponse({ result, filePath, asyncEmbedding, requestId 
     });
   }
 
-  // Sprint 6 N3-lite runtime integration (flag-gated)
+  // the rollout N3-lite runtime integration (flag-gated)
   try {
     const consolidation = runConsolidationCycleIfEnabled(requireDb());
     if (consolidation) {

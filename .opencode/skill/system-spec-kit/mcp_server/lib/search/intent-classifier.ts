@@ -487,7 +487,7 @@ function applyIntentWeights(
 ): Array<Record<string, unknown>> {
   const weights = getIntentWeights(intent);
 
-  // Fix #5 (017-refinement-phase-6) — recency was previously ignored.
+  // recency was previously ignored.
   // Parse timestamps, min/max normalize to [0,1], apply weights.recency.
   // Use reduce instead of Math.max(...) to avoid stack overflow on large arrays.
   let minTs = Infinity;

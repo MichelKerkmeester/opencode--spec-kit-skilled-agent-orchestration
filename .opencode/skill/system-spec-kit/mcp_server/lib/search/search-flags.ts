@@ -8,6 +8,11 @@
 
 import { isFeatureEnabled } from '../cache/cognitive/rollout-policy';
 
+// Feature catalog: Quality-aware 3-tier search fallback
+// Feature catalog: Verify-fix-verify memory quality loop
+// Feature catalog: Negative feedback confidence signal
+
+
 /**
  * Graph-guided MMR diversity reranking.
  * Default: TRUE (enabled). Set SPECKIT_MMR=false to disable.
@@ -95,7 +100,7 @@ export function isNegativeFeedbackEnabled(): boolean {
 /**
  * R6: 4-stage pipeline architecture (Stage 1-4 with Stage 4 invariant).
  * @deprecated Always returns true. Legacy V1 pipeline was removed in
- * 017-refinement-phase-6 Sprint 1. The SPECKIT_PIPELINE_V2 env var is
+ * the runtime pipeline update. The SPECKIT_PIPELINE_V2 env var is
  * still accepted but ignored — V2 is the only code path.
  */
 export function isPipelineV2Enabled(): boolean {

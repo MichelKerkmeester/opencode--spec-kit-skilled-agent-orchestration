@@ -4,24 +4,23 @@
 
 - [1. OVERVIEW](#1--overview)
 - [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-- [5. IN SIMPLE TERMS](#5--in-simple-terms)
+- [3. IN SIMPLE TERMS](#3--in-simple-terms)
+- [4. SOURCE FILES](#4--source-files)
+- [5. SOURCE METADATA](#5--source-metadata)
 
 ## 1. OVERVIEW
-
 Describes the `created_by`/`last_accessed` metadata on causal edges, the `weight_history` audit table and the edge bounds enforcement that caps auto-generated edges at 20 per node and 0.5 max strength.
 
 ## 2. CURRENT REALITY
-
 Every causal edge now carries `created_by` and `last_accessed` metadata fields tracking who created the edge and when it was last used. All strength modifications are logged to a `weight_history` table recording old strength, new strength, the actor (`changed_by`), timestamp and reason.
 
 Edge bounds are enforced at insert time. Auto-generated edges (those with `created_by='auto'`) are rejected when a node already has 20 edges (`MAX_EDGES_PER_NODE`) and clamped to a maximum strength of 0.5 (`MAX_AUTO_STRENGTH`). A `rollbackWeights()` function restores edges from weight history with a fallback to the oldest entry if timestamp matching fails due to same-millisecond updates.
 
 This audit infrastructure supports the N3-lite consolidation engine: Hebbian strengthening, staleness detection and edge bounds enforcement all rely on accurate weight history and provenance tracking.
 
-## 3. SOURCE FILES
-
+## 3. IN SIMPLE TERMS
+Every connection between memories now keeps a paper trail: who created it, when it was last used and every time its strength changed. This works like a change log for relationships. If a connection goes wrong, you can trace exactly what happened and roll it back. There are also limits on automatically created connections so the system cannot overwhelm itself with too many links.
+## 4. SOURCE FILES
 ### Implementation
 
 | File | Layer | Role |
@@ -44,12 +43,8 @@ This audit infrastructure supports the N3-lite consolidation engine: Hebbian str
 | `mcp_server/tests/graph-search-fn.vitest.ts` | Graph search function tests |
 | `mcp_server/tests/spec-folder-hierarchy.vitest.ts` | Folder hierarchy tests |
 
-## 4. SOURCE METADATA
-
+## 5. SOURCE METADATA
 - Group: Graph signal activation
 - Source feature title: Weight history audit tracking
 - Current reality source: feature_catalog.md
 
-## 5. IN SIMPLE TERMS
-
-Every connection between memories now keeps a paper trail: who created it, when it was last used and every time its strength changed. This works like a change log for relationships. If a connection goes wrong, you can trace exactly what happened and roll it back. There are also limits on automatically created connections so the system cannot overwhelm itself with too many links.

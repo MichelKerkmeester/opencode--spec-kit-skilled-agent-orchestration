@@ -4,16 +4,14 @@
 
 - [1. OVERVIEW](#1--overview)
 - [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-- [5. IN SIMPLE TERMS](#5--in-simple-terms)
+- [3. IN SIMPLE TERMS](#3--in-simple-terms)
+- [4. SOURCE FILES](#4--source-files)
+- [5. SOURCE METADATA](#5--source-metadata)
 
 ## 1. OVERVIEW
-
 Learned relevance feedback captures query terms from user result selections and boosts future searches with a 0.7x weight via isolated `learned_triggers`.
 
 ## 2. CURRENT REALITY
-
 The system learns from user result selections. When a user marks a search result as useful via `memory_validate` with a `queryId`, query terms are extracted and stored in a separate `learned_triggers` column. This column is explicitly isolated from the FTS5 index to prevent contamination, which would be irreversible without a full re-index.
 
 Ten safeguards protect against noise: a 100+ stop-word denylist, rate cap of 3 terms per selection and 8 per memory, 30-day TTL decay, FTS5 isolation verified by 5 critical tests, noise floor (top-3 exclusion), 1-week shadow period (log-but-don't-apply), rollback mechanism, provenance audit log, 72-hour minimum memory age and sprint gate review.
@@ -24,8 +22,9 @@ Learned triggers boost future searches via a 0.7x weight applied during the feed
 
 ---
 
-## 3. SOURCE FILES
-
+## 3. IN SIMPLE TERMS
+When you mark a search result as useful, the system remembers which search terms led you to it. Next time similar terms appear in a question, the system gives that memory a small boost. Over time, the system learns which results are genuinely helpful based on your actual selections, like a music app that gets better at recommending songs the more you use it.
+## 4. SOURCE FILES
 ### Implementation
 
 | File | Layer | Role |
@@ -51,12 +50,8 @@ Learned triggers boost future searches via a 0.7x weight applied during the feed
 | `mcp_server/tests/unit-tier-classifier-types.vitest.ts` | Tier classifier types |
 | `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
 
-## 4. SOURCE METADATA
-
+## 5. SOURCE METADATA
 - Group: Pipeline architecture
 - Source feature title: Learned relevance feedback
 - Current reality source: feature_catalog.md
 
-## 5. IN SIMPLE TERMS
-
-When you mark a search result as useful, the system remembers which search terms led you to it. Next time similar terms appear in a question, the system gives that memory a small boost. Over time, the system learns which results are genuinely helpful based on your actual selections, like a music app that gets better at recommending songs the more you use it.

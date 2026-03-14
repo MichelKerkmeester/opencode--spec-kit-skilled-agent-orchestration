@@ -30,8 +30,8 @@ function isEscapedQuoteAt(str: string, index: number): boolean {
  * inside JSON string values (e.g. URLs containing `//`).
  *
  * Two-phase approach:
- *   Phase 1 — character-level scan removes block comments (`/* ... *​/`)
- *   Phase 2 — per-line scan removes single-line comments (`// ...`)
+ *   Step 1 — character-level scan removes block comments (`/* ... *​/`)
+ *   Step 2 — per-line scan removes single-line comments (`// ...`)
  *
  * Both phases track whether the scanner is inside a JSON string literal
  * so that comment-like sequences within strings are left untouched.
@@ -39,7 +39,7 @@ function isEscapedQuoteAt(str: string, index: number): boolean {
 export function stripJsoncComments(content: string): string {
   if (!content) return '';
 
-  // --- Phase 1: Strip block comments (char-by-char, string-aware) ---
+  // --- Step 1: Strip block comments (char-by-char, string-aware) ---
   let stripped = '';
   let inBlockComment = false;
   let inStr = false;
@@ -69,7 +69,7 @@ export function stripJsoncComments(content: string): string {
     stripped += ch;
   }
 
-  // --- Phase 2: Strip single-line comments (per-line, string-aware) ---
+  // --- Step 2: Strip single-line comments (per-line, string-aware) ---
   const lines = stripped.split('\n');
   const cleanLines: string[] = [];
 

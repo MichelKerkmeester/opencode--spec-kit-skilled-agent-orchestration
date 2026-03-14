@@ -25,6 +25,13 @@ import { createMCPErrorResponse, createMCPSuccessResponse } from '../lib/respons
 // Shared handler types
 import type { MCPResponse } from './types';
 
+// Feature catalog: Checkpoint creation (checkpoint_create)
+// Feature catalog: Checkpoint listing (checkpoint_list)
+// Feature catalog: Checkpoint restore (checkpoint_restore)
+// Feature catalog: Checkpoint deletion (checkpoint_delete)
+// Feature catalog: Checkpoint delete confirmName safety
+
+
 /* ───────────────────────────────────────────────────────────────
    2. TYPES
 ──────────────────────────────────────────────────────────────── */

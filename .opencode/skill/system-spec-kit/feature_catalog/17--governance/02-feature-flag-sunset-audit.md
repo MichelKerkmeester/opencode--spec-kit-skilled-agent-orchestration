@@ -4,16 +4,14 @@
 
 - [1. OVERVIEW](#1--overview)
 - [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-- [5. IN SIMPLE TERMS](#5--in-simple-terms)
+- [3. IN SIMPLE TERMS](#3--in-simple-terms)
+- [4. SOURCE FILES](#4--source-files)
+- [5. SOURCE METADATA](#5--source-metadata)
 
 ## 1. OVERVIEW
-
 The feature flag sunset audit inventoried 79 `SPECKIT_` flags and classified them for graduation, removal or retention.
 
 ## 2. CURRENT REALITY
-
 A comprehensive audit at Sprint 7 exit found 79 unique `SPECKIT_` flags across the codebase. Disposition: 27 flags are ready to graduate to permanent-ON defaults (removing the flag check), 9 flags are identified as dead code for removal and 3 flags remain as active operational knobs (`ADAPTIVE_FUSION`, `COACTIVATION_STRENGTH`, `PRESSURE_POLICY`).
 
 The current active flag-helper inventory in `search-flags.ts` is 24 exported `is*` functions (including the deprecated `isPipelineV2Enabled()` compatibility shim and the newly added `isQualityLoopEnabled()`). Sprint 0 core flags remain default ON, sprint-graduated flags from Sprints 3-6 remain default ON and deferred-feature flags (including GRAPH_SIGNALS, COMMUNITY_DETECTION, MEMORY_SUMMARIES, AUTO_ENTITIES and ENTITY_LINKING) are now default ON. `SPECKIT_ABLATION` remains default OFF as an opt-in evaluation tool.
@@ -24,16 +22,13 @@ The current active flag-helper inventory in `search-flags.ts` is 24 exported `is
 
 ---
 
-## 3. SOURCE FILES
-
+## 3. IN SIMPLE TERMS
+This audit went through all 79 feature switches in the system and decided the fate of each one. Most were ready to become permanent (switch removed, feature stays on). Some were dead and got deleted. A few remain as active controls. Without this cleanup, the system would accumulate unused switches that confuse anyone trying to understand what is actually running.
+## 4. SOURCE FILES
 No dedicated source files. This describes governance process controls.
 
-## 4. SOURCE METADATA
-
+## 5. SOURCE METADATA
 - Group: Governance
 - Source feature title: Feature flag sunset audit
 - Current reality source: feature_catalog.md
 
-## 5. IN SIMPLE TERMS
-
-This audit went through all 79 feature switches in the system and decided the fate of each one. Most were ready to become permanent (switch removed, feature stays on). Some were dead and got deleted. A few remain as active controls. Without this cleanup, the system would accumulate unused switches that confuse anyone trying to understand what is actually running.

@@ -176,7 +176,7 @@ export function parseMemoryContent(
   content: string,
   options: { lastModified?: string } = {},
 ): ParsedMemory {
-  // Spec 126: Infer document type from file path
+  // Infer document type from file path.
   const documentType = extractDocumentType(filePath);
 
   const spec_folder = extractSpecFolder(filePath);
@@ -218,7 +218,7 @@ export function parseMemoryContent(
     // Causal links for memory graph relationships
     causalLinks: causalLinks,
     hasCausalLinks: hasCausalLinks(causalLinks),
-    // Spec 126: Document structural type
+    // Document structural type.
     documentType,
     qualityScore,
     qualityFlags,
@@ -229,7 +229,7 @@ export function parseMemoryContent(
 import { extractQualityScore, extractQualityFlags } from '@spec-kit/shared/parsing/quality-extractors';
 
 /**
- * Spec 126: Extract document type from filename.
+ * Extract document type from filename.
  * Maps well-known spec folder filenames to their document types.
  */
 export function extractDocumentType(filePath: string): string {
@@ -280,7 +280,7 @@ export function extractSpecFolder(filePath: string): string {
     return match[1];
   }
 
-  // Spec 126: Match specs/domain/spec-name/doc.md pattern (non-memory spec folder documents)
+  // Match specs/domain/spec-name/doc.md pattern for spec folder documents.
   const specDocMatch = normalizedPath.match(/specs\/([^/]+(?:\/[^/]+)*?)\/(?:spec|plan|tasks|checklist|decision-record|implementation-summary|research|handover)\.md$/i);
   if (specDocMatch) {
     return specDocMatch[1];
@@ -295,7 +295,7 @@ export function extractSpecFolder(filePath: string): string {
     if (memoryIndex > specsIndex + 1) {
       return segments.slice(specsIndex + 1, memoryIndex).join('/');
     }
-    // Spec 126: If no memory/ dir, check for spec document at leaf
+    // If no memory/ dir exists, check for a spec document at the leaf.
     const fileName = segments[segments.length - 1].toLowerCase();
     if (SPEC_DOCUMENT_FILENAMES_SET.has(fileName)) {
       return segments.slice(specsIndex + 1, segments.length - 1).join('/');
@@ -677,7 +677,7 @@ export function isMemoryFile(filePath: string): boolean {
     normalizedPath.includes('/specs/')
   );
 
-  // Spec folder documents (spec.md, plan.md, tasks.md, etc.) — Spec 126
+  // Spec folder documents (spec.md, plan.md, tasks.md, etc.).
   const isSpecDocument = (
     normalizedPath.endsWith('.md') &&
     normalizedPath.includes('/specs/') &&

@@ -17,7 +17,7 @@ export interface MCPResponseWithContext extends MCPResponse {
 /** Narrow pre-validated MCP tool args to a specific handler arg type.
  *  Centralises the single protocol-boundary cast so call sites stay clean. */
 export function parseArgs<T>(args: Record<string, unknown>): T {
-  // Fix #36 (017-refinement-phase-6) — Guard against null/undefined/non-object
+  // Guard against null/undefined/non-object
   // At the protocol boundary before casting.
   if (args == null || typeof args !== 'object') {
     return {} as T;

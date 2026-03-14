@@ -1,7 +1,7 @@
 // ───────────────────────────────────────────────────────────────
 // 1. ORCHESTRATOR
 // ───────────────────────────────────────────────────────────────
-// Sprint 5 (R6): 4-stage pipeline execution behind SPECKIT_PIPELINE_V2
+// 4-stage pipeline execution behind SPECKIT_PIPELINE_V2
 //
 // I/O CONTRACT:
 // Input:  PipelineConfig (query, embedding, limits, flags, intent, session)
@@ -23,6 +23,10 @@ import { executeStage1 } from './stage1-candidate-gen';
 import { executeStage2 } from './stage2-fusion';
 import { executeStage3 } from './stage3-rerank';
 import { executeStage4 } from './stage4-filter';
+
+// Feature catalog: 4-stage pipeline architecture
+// Feature catalog: 4-stage pipeline refactor
+
 
 /**
  * Execute the 4-stage retrieval pipeline.

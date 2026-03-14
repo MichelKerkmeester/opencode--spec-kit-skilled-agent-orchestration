@@ -10,6 +10,9 @@
 
 import type Database from 'better-sqlite3';
 
+// Feature catalog: Spec folder hierarchy as retrieval structure
+
+
 // ───────────────────────────────────────────────────────────────
 // 2. HIERARCHY TREE CACHE
 // ───────────────────────────────────────────────────────────────

@@ -10,6 +10,9 @@
 // SPECKIT_INTERFERENCE_SCORE — TM-01 interference penalty
 import type Database from 'better-sqlite3';
 
+// Feature catalog: Scoring observability
+
+
 // ───────────────────────────────────────────────────────────────
 // 2. CONSTANTS
 // ───────────────────────────────────────────────────────────────

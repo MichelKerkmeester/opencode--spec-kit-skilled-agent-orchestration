@@ -12,6 +12,9 @@ import type {
   TierWeights,
 } from '../types';
 
+// Feature catalog: Folder-level relevance scoring
+
+
 /**
  * Loose input type for folder-scoring functions.
  * Accepts any partial Memory (camelCase) plus arbitrary extra fields
@@ -216,7 +219,7 @@ export function computeSingleFolderScore(folderPath: string, folderMemories: Fol
   }, 0);
   const importanceScore = importanceSum / folderMemories.length;
 
-  // Validation: placeholder until real user feedback tracking (Phase 3)
+  // Validation: placeholder until real user feedback tracking (Step 3)
   const validationScore = DEFAULT_VALIDATION_SCORE;
 
   // Composite score

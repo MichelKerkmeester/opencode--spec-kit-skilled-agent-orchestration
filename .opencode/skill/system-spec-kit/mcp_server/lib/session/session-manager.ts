@@ -9,6 +9,9 @@ import type { DatabaseExtended as Database } from '@spec-kit/shared/types';
 // Import working-memory for immediate cleanup on session end (GAP 2).
 import * as workingMemory from '../cache/cognitive/working-memory';
 
+// Feature catalog: Session-manager transaction gap fixes
+
+
 /* ───────────────────────────────────────────────────────────────
    1. TYPES
 ──────────────────────────────────────────────────────────────── */
@@ -301,7 +304,7 @@ function generateMemoryHash(memory: MemoryInput): string {
     });
   }
 
-  // Fix #37 (017-refinement-phase-6) — Use 128-bit (32 hex chars) instead of
+  // Use 128-bit (32 hex chars) instead of
   // 64-bit (16 hex chars) to reduce collision probability.
   return crypto.createHash('sha256').update(hashInput).digest('hex').slice(0, 32);
 }

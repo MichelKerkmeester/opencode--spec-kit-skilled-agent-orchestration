@@ -4,16 +4,14 @@
 
 - [1. OVERVIEW](#1--overview)
 - [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-- [5. IN SIMPLE TERMS](#5--in-simple-terms)
+- [3. IN SIMPLE TERMS](#3--in-simple-terms)
+- [4. SOURCE FILES](#4--source-files)
+- [5. SOURCE METADATA](#5--source-metadata)
 
 ## 1. OVERVIEW
-
 Memory health autoRepair returns structured repair metadata with partial-success tracking when `autoRepair:true` runs in `reportMode: "full"`.
 
 ## 2. CURRENT REALITY
-
 `memory_health` accepts optional `autoRepair` execution only in `reportMode: "full"` and returns structured repair metadata. If `autoRepair:true` is sent without `confirmed:true`, the handler returns a confirmation-only response that lists the repair actions it would attempt.
 
 Repair metadata semantics for mixed outcomes:
@@ -23,8 +21,9 @@ Repair metadata semantics for mixed outcomes:
 - `repair.partialSuccess` is `true` when at least one attempted repair succeeds and at least one fails.
 - If FTS rebuild still mismatches but orphan-edge cleanup succeeds, the response reports `repair.repaired: false`, `repair.partialSuccess: true`, keeps the FTS warning and includes the orphan cleanup action in `repair.actions`.
 
-## 3. SOURCE FILES
-
+## 3. IN SIMPLE TERMS
+When you run a health check on the memory system and ask it to fix problems, it now tells you exactly what it tried to repair, what succeeded and what failed. Before this, you would only get a pass or fail result. Now you get a detailed report, like a car mechanic who hands you an itemized list showing which parts were replaced and which still need attention.
+## 4. SOURCE FILES
 ### Implementation
 
 | File | Layer | Role |
@@ -49,12 +48,8 @@ Repair metadata semantics for mixed outcomes:
 | `mcp_server/tests/memory-crud-extended.vitest.ts` | Auto-repair metadata and partial-success scenarios |
 | `mcp_server/tests/handler-memory-health-edge.vitest.ts` | Confirmation and validation edge cases |
 
-## 4. SOURCE METADATA
-
+## 5. SOURCE METADATA
 - Group: UX hooks automation (Phase 014)
 - Source feature title: Memory health autoRepair metadata
 - Current reality source: feature_catalog.md
 
-## 5. IN SIMPLE TERMS
-
-When you run a health check on the memory system and ask it to fix problems, it now tells you exactly what it tried to repair, what succeeded and what failed. Before this, you would only get a pass or fail result. Now you get a detailed report, like a car mechanic who hands you an itemized list showing which parts were replaced and which still need attention.

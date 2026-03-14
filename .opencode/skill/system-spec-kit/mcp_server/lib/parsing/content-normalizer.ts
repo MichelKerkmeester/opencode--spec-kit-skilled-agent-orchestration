@@ -1,7 +1,7 @@
 // ───────────────────────────────────────────────────────────────
 // 1. CONTENT NORMALIZER
 // ───────────────────────────────────────────────────────────────
-// Sprint 7 / S1 — Smarter Memory Content Generation
+// Smarter memory content generation
 //
 // Purpose: Normalize raw markdown content before it is passed to
 // Embedding generation or BM25 indexing.  Raw markdown contains

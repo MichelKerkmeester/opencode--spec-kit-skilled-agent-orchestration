@@ -25,6 +25,9 @@ import {
 import { rerankLocal } from './local-reranker';
 import { computeDegreeScores } from './graph-search-fn';
 import type { GraphSearchFn } from './search-types';
+
+// Feature catalog: Hybrid search pipeline
+
 export type { GraphSearchFn } from './search-types';
 
 import { routeQuery } from './query-router';
@@ -114,7 +117,7 @@ function toHybridResult(result: FusionResult): HybridSearchResult {
 /* --- 3. SPRINT 3 PIPELINE METADATA --- */
 
 /**
- * Optional metadata about Sprint 3 pipeline stages attached to enhanced search results.
+ * Optional metadata about pipeline stages attached to enhanced search results.
  * Only populated when the corresponding feature flags are enabled.
  */
 interface Sprint3PipelineMeta {
@@ -266,7 +269,7 @@ function bm25Search(
     const index = getIndex();
     const results = index.search(query, limit);
 
-    // Fix #8 (017-refinement-phase-6) — BM25 document IDs are stringified
+    // BM25 document IDs are stringified
     // Numeric memory IDs (e.g., "42"), not spec folder paths. The old filter compared
     // R.id against specFolder which never matched. Use DB lookup to resolve spec_folder.
     return results
@@ -542,10 +545,10 @@ async function hybridSearchEnhanced(
       weight?: number;
     }> = [];
 
-    // Sprint 3: Pipeline metadata collector (populated by flag-gated stages)
+    // Pipeline metadata collector (populated by flag-gated stages)
     const s3meta: Sprint3PipelineMeta = {};
 
-    // -- Sprint 3 Stage A: Query Classification + Routing (SPECKIT_COMPLEXITY_ROUTER) --
+    // -- Stage A: Query Classification + Routing (SPECKIT_COMPLEXITY_ROUTER) --
     // When enabled, classifies query complexity and restricts channels to a
     // Subset (e.g., simple queries skip graph+degree). When disabled, all channels run.
     const routeResult = routeQuery(query, options.triggerPhrases);
@@ -572,7 +575,7 @@ async function hybridSearchEnhanced(
       };
     }
 
-    // -- Sprint 3 Stage E: Dynamic Token Budget (SPECKIT_DYNAMIC_TOKEN_BUDGET) --
+    // -- Stage E: Dynamic Token Budget (SPECKIT_DYNAMIC_TOKEN_BUDGET) --
     // Compute tier-aware budget early so it's available for downstream truncation.
     // When disabled, getDynamicTokenBudget returns the default 4000 budget with applied=false.
     const budgetResult = getDynamicTokenBudget(routeResult.tier);
@@ -592,7 +595,7 @@ async function hybridSearchEnhanced(
     // All channels use synchronous better-sqlite3; sequential execution
     // Is correct — Promise.all adds overhead without parallelism.
 
-    // Vector channel — gated by Sprint 3 routing
+    // Vector channel — gated by query-complexity routing
     if (activeChannels.has('vector') && embedding && vectorSearchFn) {
       try {
         const vectorResults = vectorSearchFn(embedding, {
@@ -613,7 +616,7 @@ async function hybridSearchEnhanced(
       }
     }
 
-    // FTS channel (internal error handling in ftsSearch) — gated by Sprint 3 routing
+    // FTS channel (internal error handling in ftsSearch) — gated by query-complexity routing
     if (activeChannels.has('fts')) {
       ftsChannelResults = ftsSearch(query, options);
       if (ftsChannelResults.length > 0) {
@@ -623,7 +626,7 @@ async function hybridSearchEnhanced(
       }
     }
 
-    // BM25 channel (internal error handling in bm25Search) — gated by Sprint 3 routing
+    // BM25 channel (internal error handling in bm25Search) — gated by query-complexity routing
     if (activeChannels.has('bm25')) {
       bm25ChannelResults = bm25Search(query, options);
       if (bm25ChannelResults.length > 0) {
@@ -633,7 +636,7 @@ async function hybridSearchEnhanced(
       }
     }
 
-    // Graph channel (T008: metrics collection) — gated by Sprint 3 routing
+    // Graph channel — gated by query-complexity routing
     const useGraph = (options.useGraph !== false) && activeChannels.has('graph');
     if (useGraph && graphSearchFn) {
       try {
@@ -657,7 +660,7 @@ async function hybridSearchEnhanced(
 
     // Degree channel re-ranks based on causal-edge connectivity.
     // Graduated: default-ON. Set SPECKIT_DEGREE_BOOST=false to disable.
-    // Degree channel (T002: 5th RRF channel) — also gated by Sprint 3 routing
+    // Degree channel — also gated by query-complexity routing
     if (activeChannels.has('degree') && db && isDegreeBoostEnabled()) {
       try {
         // Collect all numeric IDs from existing channels
@@ -748,7 +751,7 @@ async function hybridSearchEnhanced(
         };
       });
 
-      // -- Sprint 4 Stage: R1 MPAB chunk-to-memory aggregation (after fusion, before state filter) --
+      // -- Aggregation stage: MPAB chunk-to-memory aggregation (after fusion, before state filter) --
       // When enabled, collapses chunk-level results back to their parent memory
       // Documents using MPAB scoring (sMax + 0.3 * sum(remaining) / sqrt(N)). This prevents
       // Multiple chunks from the same document dominating the result list.
@@ -788,7 +791,7 @@ async function hybridSearchEnhanced(
         }
       }
 
-      // -- Sprint 3 Stage C: Channel Enforcement (SPECKIT_CHANNEL_MIN_REP) --
+      // -- Stage C: Channel Enforcement (SPECKIT_CHANNEL_MIN_REP) --
       // Ensures every channel that returned results has at least one representative
       // In the top-k window. Prevents single-channel dominance in fusion output.
       // When disabled, passes results through unchanged.
@@ -824,7 +827,7 @@ async function hybridSearchEnhanced(
         // Non-critical — enforcement failure does not block pipeline
       }
 
-      // -- Sprint 3 Stage D: Confidence Truncation (SPECKIT_CONFIDENCE_TRUNCATION) --
+      // -- Stage D: Confidence Truncation (SPECKIT_CONFIDENCE_TRUNCATION) --
       // Trims low-confidence tail from fused results using gap analysis.
       // A gap > 2x median signals a relevance cliff — results below are noise.
       // When disabled, passes results through unchanged.
@@ -944,7 +947,7 @@ async function hybridSearchEnhanced(
         }
       }
 
-      // Sprint 1: Folder relevance / two-phase retrieval (SPECKIT_FOLDER_SCORING)
+      // Folder relevance / two-pass retrieval (SPECKIT_FOLDER_SCORING)
       if (db && isFolderScoringEnabled() && reranked.length > 0) {
         try {
           const numericIds = reranked
@@ -969,12 +972,12 @@ async function hybridSearchEnhanced(
         }
       }
 
-      // Preserve non-enumerable Sprint 4 eval metadata across truncation reallocation.
+      // Preserve non-enumerable eval metadata across truncation reallocation.
       const s4shadowMeta = (reranked as unknown as Record<string, unknown>)['_s4shadow'];
       const s4attributionMeta = (reranked as unknown as Record<string, unknown>)['_s4attribution'];
       const degradationMeta = (reranked as unknown as Record<string, unknown>)['_degradation'];
 
-      // Sprint 3/4: Apply token budget truncation before returning live results
+      // Apply token budget truncation before returning live results
       // CHK-060: Reserve token overhead for contextual tree headers
       // (max 100 chars + newline => ~26 tokens per result, chars/4 heuristic).
       const headerOverhead = isContextHeadersEnabled()
@@ -1036,7 +1039,7 @@ async function hybridSearchEnhanced(
         }
       }
 
-      // Sprint 3: Attach pipeline metadata to results for eval/debugging
+      // Attach pipeline metadata to results for eval/debugging
       // Metadata is attached as non-enumerable _s3meta property to avoid
       // Polluting result serialization while remaining accessible for debugging.
       if (Object.keys(s3meta).length > 0 && reranked.length > 0) {
@@ -1232,7 +1235,7 @@ function extractSpecSegments(filePath: string): { left: string; right: string; t
   };
 }
 
-// Sprint 9 fix: Memoize description map to avoid rebuilding on every search query.
+// Memoize description map to avoid rebuilding on every search query.
 // Cache invalidates after 60 seconds so folder renames are eventually picked up.
 // M5 fix: Return stale cache immediately and refresh asynchronously to avoid
 // Blocking the search hot path with synchronous filesystem crawls.
@@ -1717,7 +1720,7 @@ export {
   getTokenBudget,
   DEFAULT_TOKEN_BUDGET,
   SUMMARY_MAX_CHARS,
-  // Sprint 3: Re-exported module functions for caller access
+  // Re-exported module functions for caller access
   routeQuery,
   getDynamicTokenBudget,
   isDynamicTokenBudgetEnabled,
@@ -1734,7 +1737,7 @@ export type {
   // Token budget types
   OverflowLogEntry,
   TruncateToBudgetResult,
-  // Sprint 3: Pipeline metadata type
+  // Pipeline metadata type
   Sprint3PipelineMeta,
   // PI-A2: Degradation types
   DegradationEvent,

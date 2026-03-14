@@ -9,6 +9,11 @@ import * as causalEdges from '../lib/storage/causal-edges';
 import { toErrorMessage } from '../utils';
 import { escapeLikePattern } from './handler-utils';
 
+// Feature catalog: Causal edge creation (memory_causal_link)
+// Feature catalog: Causal edge deletion (memory_causal_unlink)
+// Feature catalog: Memory indexing (memory_save)
+
+
 interface CausalLinkMapping {
   relation: typeof causalEdges.RELATION_TYPES[keyof typeof causalEdges.RELATION_TYPES];
   reverse: boolean;

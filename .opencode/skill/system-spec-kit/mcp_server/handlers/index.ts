@@ -17,6 +17,9 @@ import * as sharedMemory from './shared-memory';
 import * as memoryContext from './memory-context';
 import * as memoryIngest from './memory-ingest';
 
+// Feature catalog: Transaction wrappers on mutation handlers
+
+
 /* ───────────────────────────────────────────────────────────────
    RE-EXPORTS: All handler functions
 ──────────────────────────────────────────────────────────────── */

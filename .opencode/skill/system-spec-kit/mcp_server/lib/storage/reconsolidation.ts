@@ -18,6 +18,9 @@ import type Database from 'better-sqlite3';
 import { recordHistory } from './history';
 import * as causalEdges from './causal-edges';
 
+// Feature catalog: Reconsolidation-on-save
+
+
 // ───────────────────────────────────────────────────────────────
 // 2. TYPES
 // ───────────────────────────────────────────────────────────────

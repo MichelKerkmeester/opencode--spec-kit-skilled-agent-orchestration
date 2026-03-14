@@ -4,16 +4,14 @@
 
 - [1. OVERVIEW](#1--overview)
 - [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-- [5. IN SIMPLE TERMS](#5--in-simple-terms)
+- [3. IN SIMPLE TERMS](#3--in-simple-terms)
+- [4. SOURCE FILES](#4--source-files)
+- [5. SOURCE METADATA](#5--source-metadata)
 
 ## 1. OVERVIEW
-
 Covers the four bounded pipeline stages (candidate generation, fusion, rerank, filter) with score-immutability enforcement.
 
 ## 2. CURRENT REALITY
-
 The pipeline refactor (R6) restructures the retrieval flow into four bounded stages with clear responsibilities and a strict score-immutability invariant in the final stage.
 
 Stage 1 (Candidate Generation) executes search channels based on query type. Multi-concept queries generate one embedding per concept. Deep mode expands into up to 3 query variants via `expandQuery()`. When embedding expansion is active and R15 does not classify the query as "simple", a baseline and expanded-query search run in parallel with deduplication. Constitutional memory injection appends up to 5 constitutional rows when none appear in the initial candidate set. Quality score and tier filters run at the end of Stage 1.
@@ -28,8 +26,9 @@ The pipeline is the sole runtime path. `SPECKIT_PIPELINE_V2` is deprecated. `isP
 
 ---
 
-## 3. SOURCE FILES
-
+## 3. IN SIMPLE TERMS
+Every search goes through four steps, like an assembly line. First, gather candidates. Second, score and rank them. Third, re-check the ranking for accuracy. Fourth, filter out anything that does not belong. Each step has one clear job and is not allowed to change results from earlier steps. This structure keeps searches predictable and prevents bugs from sneaking in between stages.
+## 4. SOURCE FILES
 ### Implementation
 
 | File | Layer | Role |
@@ -214,12 +213,8 @@ The pipeline is the sole runtime path. `SPECKIT_PIPELINE_V2` is deprecated. `isP
 | `mcp_server/tests/validation-metadata.vitest.ts` | Validation metadata tests |
 | `mcp_server/tests/vector-index-impl.vitest.ts` | Vector index implementation |
 
-## 4. SOURCE METADATA
-
+## 5. SOURCE METADATA
 - Group: Retrieval
 - Source feature title: 4-stage pipeline architecture
 - Current reality source: feature_catalog.md
 
-## 5. IN SIMPLE TERMS
-
-Every search goes through four steps, like an assembly line. First, gather candidates. Second, score and rank them. Third, re-check the ranking for accuracy. Fourth, filter out anything that does not belong. Each step has one clear job and is not allowed to change results from earlier steps. This structure keeps searches predictable and prevents bugs from sneaking in between stages.

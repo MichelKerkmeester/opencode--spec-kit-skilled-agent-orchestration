@@ -29,7 +29,7 @@ function isEvalLoggingEnabled(): boolean {
    provides global uniqueness.
 ──────────────────────────────────────────────────────────────── */
 
-// Fix #34 (017-refinement-phase-6) — Initialize from DB MAX to survive restarts
+// Initialize from DB MAX to survive restarts
 let _evalRunCounter = 0;
 let _evalRunCounterInitialized = false;
 

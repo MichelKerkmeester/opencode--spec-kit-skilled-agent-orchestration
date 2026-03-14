@@ -4,16 +4,14 @@
 
 - [1. OVERVIEW](#1--overview)
 - [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-- [5. IN SIMPLE TERMS](#5--in-simple-terms)
+- [3. IN SIMPLE TERMS](#3--in-simple-terms)
+- [4. SOURCE FILES](#4--source-files)
+- [5. SOURCE METADATA](#5--source-metadata)
 
 ## 1. OVERVIEW
-
 Describes the L1 orchestration layer that auto-detects task intent and routes to the best retrieval strategy.
 
 ## 2. CURRENT REALITY
-
 You send a query or prompt. The system figures out what you need. That is the core idea behind `memory_context`: an L1 orchestration layer that auto-detects your task intent and routes to the best retrieval strategy without you having to pick one.
 
 Intent detection classifies your input into one of seven types (add_feature, fix_bug, refactor, security_audit, understand, find_spec, find_decision) and maps it to a retrieval mode. Five modes are available: auto (default, intent-detected routing), quick (trigger matching for fast lookups), deep (comprehensive semantic search across the full corpus), focused (intent-optimized with tighter filtering) and resume (session recovery targeting state, next-steps, summary and blocker anchors with full content included).
@@ -26,8 +24,9 @@ Session management is caller-scoped. Passing `sessionId` enables cross-turn dedu
 
 Retrieval telemetry records mode selection and pressure-override fallbacks for observability when extended telemetry is enabled.
 
-## 3. SOURCE FILES
-
+## 3. IN SIMPLE TERMS
+When you ask the system a question, it figures out what kind of help you need and automatically picks the best way to find the answer. Think of it like a smart librarian who reads your request, decides whether you need a quick lookup or a deep research session and then fetches the right materials for you. Without this, you would have to manually tell the system how to search every time.
+## 4. SOURCE FILES
 ### Implementation
 
 | File | Layer | Role |
@@ -278,12 +277,8 @@ Retrieval telemetry records mode selection and pressure-override fallbacks for o
 | `mcp_server/tests/working-memory.vitest.ts` | Working memory tests |
 | `shared/parsing/quality-extractors.test.ts` | Quality Extractors.Ts |
 
-## 4. SOURCE METADATA
-
+## 5. SOURCE METADATA
 - Group: Retrieval
 - Source feature title: Unified context retrieval (memory_context)
 - Current reality source: feature_catalog.md
 
-## 5. IN SIMPLE TERMS
-
-When you ask the system a question, it figures out what kind of help you need and automatically picks the best way to find the answer. Think of it like a smart librarian who reads your request, decides whether you need a quick lookup or a deep research session and then fetches the right materials for you. Without this, you would have to manually tell the system how to search every time.

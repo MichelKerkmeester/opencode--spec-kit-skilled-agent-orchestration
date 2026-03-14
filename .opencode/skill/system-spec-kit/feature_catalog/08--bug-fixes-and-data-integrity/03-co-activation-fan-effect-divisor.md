@@ -4,22 +4,21 @@
 
 - [1. OVERVIEW](#1--overview)
 - [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-- [5. IN SIMPLE TERMS](#5--in-simple-terms)
+- [3. IN SIMPLE TERMS](#3--in-simple-terms)
+- [4. SOURCE FILES](#4--source-files)
+- [5. SOURCE METADATA](#5--source-metadata)
 
 ## 1. OVERVIEW
-
 Tracks the fan-effect divisor that prevents hub memories from dominating co-activation results.
 
 ## 2. CURRENT REALITY
-
 Hub memories with many connections dominated co-activation results no matter what you searched for. If a memory had 40 causal edges, it showed up everywhere.
 
 A fan-effect divisor helper (`1 / sqrt(neighbor_count)`) exists in `co-activation.ts`, but Stage 2 hot-path boosting currently applies spread-activation scores directly via the configured co-activation strength multiplier. The guard logic remains in the helper path with bounded division behavior.
 
-## 3. SOURCE FILES
-
+## 3. IN SIMPLE TERMS
+Some highly connected memories kept showing up in every search result regardless of what you were looking for, like a popular student who gets invited to every party. This fix reduces the influence of overly connected memories so they do not crowd out more relevant results.
+## 4. SOURCE FILES
 ### Implementation
 
 | File | Layer | Role |
@@ -35,12 +34,8 @@ A fan-effect divisor helper (`1 / sqrt(neighbor_count)`) exists in `co-activatio
 | `mcp_server/tests/rrf-degree-channel.vitest.ts` | Fan-effect divisor behavior in `boostScore()` and co-activation boost interactions |
 | `mcp_server/tests/stage2-fusion.vitest.ts` | Stage 2 adjacent scoring-path coverage (learned-feedback weighting surface) |
 
-## 4. SOURCE METADATA
-
+## 5. SOURCE METADATA
 - Group: Bug fixes and data integrity
 - Source feature title: Co-activation fan-effect divisor
 - Current reality source: feature_catalog.md
 
-## 5. IN SIMPLE TERMS
-
-Some highly connected memories kept showing up in every search result regardless of what you were looking for, like a popular student who gets invited to every party. This fix reduces the influence of overly connected memories so they do not crowd out more relevant results.

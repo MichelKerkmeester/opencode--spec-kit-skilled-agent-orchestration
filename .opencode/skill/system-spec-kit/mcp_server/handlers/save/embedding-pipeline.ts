@@ -10,6 +10,11 @@ import { normalizeContentForEmbedding } from '../../lib/parsing/content-normaliz
 import type { ParsedMemory } from '../../lib/parsing/memory-parser';
 import { toErrorMessage } from '../../utils';
 
+// Feature catalog: Memory indexing (memory_save)
+// Feature catalog: Deferred lexical-only indexing
+// Feature catalog: Atomic-save parity and partial-indexing hints
+
+
 export interface EmbeddingResult {
   embedding: Float32Array | null;
   status: 'success' | 'pending';

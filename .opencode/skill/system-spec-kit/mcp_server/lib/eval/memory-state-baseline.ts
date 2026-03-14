@@ -167,7 +167,7 @@ function persistMemoryStateBaselineSnapshot(snapshot: MemoryStateBaselineSnapsho
 }
 
 /**
- * Capture baseline retrieval and isolation metrics for Phase 1 readiness.
+ * Capture baseline retrieval and isolation metrics for readiness.
  *
  * @param options - Snapshot configuration and optional persistence controls.
  * @returns Baseline snapshot for the current eval and context databases.

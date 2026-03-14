@@ -4,16 +4,14 @@
 
 - [1. OVERVIEW](#1--overview)
 - [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-- [5. IN SIMPLE TERMS](#5--in-simple-terms)
+- [3. IN SIMPLE TERMS](#3--in-simple-terms)
+- [4. SOURCE FILES](#4--source-files)
+- [5. SOURCE METADATA](#5--source-metadata)
 
 ## 1. OVERVIEW
-
 The memory summary search channel generates TF-IDF extractive summaries at save time and searches against summary embeddings to improve retrieval precision on large memories.
 
 ## 2. CURRENT REALITY
-
 Large memory files bury their key information in paragraphs of context. A 2,000-word implementation summary might contain three sentences that actually answer a retrieval query. Searching against the full content dilutes embedding similarity with irrelevant noise.
 
 R8 generates extractive summaries at save time using a pure-TypeScript TF-IDF implementation with zero dependencies. The `computeTfIdf()` function scores each sentence by term frequency times inverse document frequency across all sentences in the document, normalized to [0,1]. The `extractKeySentences()` function selects the top-3 scoring sentences and returns them in original document order rather than score order, preserving narrative coherence.
@@ -26,8 +24,9 @@ The summary channel is integrated as an additional Stage 1 retrieval channel alo
 
 A runtime scale gate activates the channel only when the system exceeds 5,000 indexed memories with successful embeddings. Below that threshold, the summary channel adds overhead without measurable benefit because the base channels already cover the corpus effectively. The code exists regardless of scale. The gate simply skips execution. Runs behind the `SPECKIT_MEMORY_SUMMARIES` flag (default ON).
 
-## 3. SOURCE FILES
-
+## 3. IN SIMPLE TERMS
+Long documents can bury their key points in paragraphs of detail. This feature creates a short summary of each memory when it is saved and searches against those summaries instead of the full text. It is like reading the back-cover blurb of a book rather than skimming every page to decide if it is relevant.
+## 4. SOURCE FILES
 ### Implementation
 
 | File | Layer | Role |
@@ -47,12 +46,8 @@ A runtime scale gate activates the channel only when the system exceeds 5,000 in
 | `mcp_server/tests/rollout-policy.vitest.ts` | Rollout policy tests |
 | `mcp_server/tests/search-flags.vitest.ts` | Feature flag behavior |
 
-## 4. SOURCE METADATA
-
+## 5. SOURCE METADATA
 - Group: Retrieval enhancements
 - Source feature title: Memory summary search channel
 - Current reality source: feature_catalog.md
 
-## 5. IN SIMPLE TERMS
-
-Long documents can bury their key points in paragraphs of detail. This feature creates a short summary of each memory when it is saved and searches against those summaries instead of the full text. It is like reading the back-cover blurb of a book rather than skimming every page to decide if it is relevant.
