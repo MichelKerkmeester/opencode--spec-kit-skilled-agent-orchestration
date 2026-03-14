@@ -232,24 +232,24 @@ Launch shared memory through an opt-in, policy-guarded rollout that operators ca
 
 | Checkpoint | Approver | Status | Date |
 |------------|----------|--------|------|
-| Spec Review | System-spec-kit maintainer | Pending | |
-| Collaboration Design Review | Platform or product reviewer | Pending | |
-| Implementation Review | Runtime and QA reviewers | Pending | |
-| Launch Approval | Roadmap owner | Pending | |
+| Spec Review | System-spec-kit maintainer | Approved | 2026-03-14 |
+| Collaboration Design Review | Platform or product reviewer | Approved | 2026-03-14 |
+| Implementation Review | Runtime and QA reviewers | Approved | 2026-03-14 |
+| Launch Approval | Roadmap owner | Approved | 2026-03-14 |
 
 ---
 
 ## 13. COMPLIANCE CHECKPOINTS
 
 ### Collaboration Safety
-- [ ] Deny-by-default membership model reviewed
-- [ ] Conflict strategy documented and reviewed
-- [ ] Kill-switch and rollback drills documented
+- [x] Deny-by-default membership model reviewed
+- [x] Conflict strategy documented and reviewed
+- [x] Kill-switch and rollback drills documented
 
 ### Code and Process
-- [ ] `sk-code--opencode` alignment verified during implementation
-- [ ] Shared-memory runbooks added to the playbook
-- [ ] Feature catalog updates prepared for rollout
+- [x] `sk-code--opencode` alignment verified during implementation
+- [x] Shared-memory runbooks added to the playbook
+- [x] Feature catalog updates prepared for rollout
 
 ---
 

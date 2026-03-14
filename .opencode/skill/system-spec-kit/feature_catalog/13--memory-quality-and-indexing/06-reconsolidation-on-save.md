@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Reconsolidation-on-save.
+Reconsolidation-on-save merges, supersedes or complements new memories with existing similar memories based on cosine similarity thresholds.
 
 ## 2. CURRENT REALITY
 
@@ -151,3 +152,7 @@ A checkpoint must exist for the spec folder before reconsolidation can run. When
 - Group: Memory quality and indexing
 - Source feature title: Reconsolidation-on-save
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+When you save a new memory that is very similar to one already stored, the system decides what to do with the overlap. If the two are nearly identical, it merges them into one stronger memory. If the new one contradicts the old one, the old one is retired and the new one takes over. If they are different enough, both are kept side by side. This keeps your memory collection clean and up to date instead of cluttered with redundant notes.

@@ -2,7 +2,7 @@
 // 1. MEMORY ROADMAP FLAGS
 // ───────────────────────────────────────────────────────────────
 // Phase-gated capability switches for the memory roadmap.
-// Defaults are conservative (all disabled) unless explicitly opted in.
+// Defaults reflect the fully delivered Phase 015 rollout unless explicitly opted out.
 import { isFeatureEnabled } from '../cache/cognitive/rollout-policy';
 
 /** Canonical rollout phases used by memory roadmap tracking. */
@@ -64,11 +64,11 @@ const SUPPORTED_PHASES: ReadonlySet<MemoryRoadmapPhase> = new Set<MemoryRoadmapP
   'shared-rollout',
 ]);
 
-function parseOptInFlag(flagNames: string | readonly string[]): boolean {
+function hasExplicitDisableFlag(flagNames: string | readonly string[]): boolean {
   const candidates = Array.isArray(flagNames) ? flagNames : [flagNames];
   for (const flagName of candidates) {
     const rawValue = process.env[flagName]?.trim().toLowerCase();
-    if (rawValue === 'true' || rawValue === '1') {
+    if (rawValue === 'false' || rawValue === '0') {
       return true;
     }
   }
@@ -82,9 +82,9 @@ function normalizeIdentity(flagName: string, identity?: string): string {
   return `memory-roadmap:${flagName}`;
 }
 
-/** Returns true only when the capability is explicitly opted in and in rollout. */
+/** Returns true by default unless the roadmap capability is explicitly opted out. */
 function isMemoryRoadmapCapabilityEnabled(flagNames: string | readonly string[], identity?: string): boolean {
-  if (!parseOptInFlag(flagNames)) {
+  if (hasExplicitDisableFlag(flagNames)) {
     return false;
   }
 
@@ -92,13 +92,13 @@ function isMemoryRoadmapCapabilityEnabled(flagNames: string | readonly string[],
   return isFeatureEnabled(canonicalFlag, normalizeIdentity(canonicalFlag, identity));
 }
 
-/** Resolves the active memory roadmap phase from env, defaulting to baseline. */
+/** Resolves the active memory roadmap phase from env, defaulting to shared-rollout. */
 function getMemoryRoadmapPhase(): MemoryRoadmapPhase {
   const phase = (process.env[PHASE_ENV] ?? process.env[LEGACY_PHASE_ENV])?.trim().toLowerCase() as MemoryRoadmapPhase | undefined;
   if (phase && SUPPORTED_PHASES.has(phase)) {
     return phase;
   }
-  return 'baseline';
+  return 'shared-rollout';
 }
 
 /** Returns the full capability snapshot for memory roadmap controls. */

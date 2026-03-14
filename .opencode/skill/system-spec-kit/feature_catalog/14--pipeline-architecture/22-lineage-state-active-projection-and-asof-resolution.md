@@ -7,16 +7,17 @@
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
 - [5. PLAYBOOK COVERAGE](#5--playbook-coverage)
+- [6. IN SIMPLE TERMS](#6--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Lineage state active projection and asOf resolution.
+Lineage state active projection appends immutable lineage rows at save time and resolves the currently effective state via deterministic `asOf` timestamp lookup.
 
 ## 2. CURRENT REALITY
 
 Phase 2 introduced versioned lineage state as a first-class storage primitive. Save-time writes append immutable lineage rows, while a deterministic active projection resolves which row is currently effective for a memory.
 
-The active projection supports deterministic `asOf` resolution: for any timestamp, the runtime selects the latest valid lineage state at or before that point. This enables time-consistent retrieval, deterministic rollback planning, and predictable replay behavior for migration and audit workflows.
+The active projection supports deterministic `asOf` resolution: for any timestamp, the runtime selects the latest valid lineage state at or before that point. This enables time-consistent retrieval, deterministic rollback planning and predictable replay behavior for migration and audit workflows.
 
 Schema support is now part of vector index setup, and save handlers integrate lineage writes so append-first lineage history and active projection stay synchronized.
 
@@ -46,3 +47,7 @@ Schema support is now part of vector index setup, and save handlers integrate li
 ## 5. PLAYBOOK COVERAGE
 
 - Mapped to manual testing playbook scenarios NEW-129 and NEW-130
+
+## 6. IN SIMPLE TERMS
+
+Every time a memory is saved, the system adds a timestamped record of that change to a history log. When you need to know what a memory looked like at a specific point in the past, the system can look up the history and give you the exact version from that moment. Think of it as a timeline for each memory that you can rewind to any date, useful for understanding what changed and when.

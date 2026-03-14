@@ -7,14 +7,15 @@
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
 - [5. PLAYBOOK COVERAGE](#5--playbook-coverage)
+- [6. IN SIMPLE TERMS](#6--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Hierarchical scope governance, governed ingest, retention, and audit.
+Hierarchical scope governance enforces multi-scope controls across ingest and retrieval with provenance requirements, retention policies and an audit trail.
 
 ## 2. CURRENT REALITY
 
-Phase 5 added governed multi-scope controls across ingest and retrieval. Scope is modeled hierarchically (`tenant`, `user` or `agent`, and `session`) so reads and writes are evaluated against explicit actor boundaries.
+Phase 5 added governed multi-scope controls across ingest and retrieval. Scope is modeled hierarchically (`tenant`, `user` or `agent` and `session`) so reads and writes are evaluated against explicit actor boundaries.
 
 Governed ingest now requires provenance metadata (`provenanceSource`, `provenanceActor`) when scoped identity fields are provided. Ingest attempts that carry scope identifiers without required provenance are rejected instead of being accepted as ambiguous writes.
 
@@ -35,7 +36,7 @@ Retention policy logic is integrated with governance controls, and allow/deny ou
 
 | File | Focus |
 |------|-------|
-| `mcp_server/tests/memory-governance.vitest.ts` | Governed ingest requirements, scope isolation, and governance audit coverage |
+| `mcp_server/tests/memory-governance.vitest.ts` | Governed ingest requirements, scope isolation and governance audit coverage |
 
 ## 4. SOURCE METADATA
 
@@ -46,3 +47,7 @@ Retention policy logic is integrated with governance controls, and allow/deny ou
 ## 5. PLAYBOOK COVERAGE
 
 - Mapped to manual testing playbook scenario NEW-122
+
+## 6. IN SIMPLE TERMS
+
+This feature controls who can save and read memories and keeps a record of every decision it makes. When someone tries to save information, the system checks their identity and requires proof of where the information came from. It is like a secure document room where you must show your badge, sign in and explain what you are filing before you are allowed to add or retrieve anything.

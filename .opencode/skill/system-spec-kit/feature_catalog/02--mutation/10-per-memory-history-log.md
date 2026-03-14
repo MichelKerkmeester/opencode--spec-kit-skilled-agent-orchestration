@@ -6,14 +6,15 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Per-memory history log.
+Covers the per-memory audit trail that records ADD, UPDATE and DELETE mutation events in the `memory_history` table.
 
 ## 2. CURRENT REALITY
 
-The `memory_history` table records a per-memory audit trail of mutation events. Each row captures the memory ID, event type (`ADD`, `UPDATE`, `DELETE`), timestamp, actor, and optional `prev_value`/`new_value` payloads. This provides a lifecycle trace for individual memories and supports audit/debug workflows such as "show me all mutation events for memory #42."
+The `memory_history` table records a per-memory audit trail of mutation events. Each row captures the memory ID, event type (`ADD`, `UPDATE`, `DELETE`), timestamp, actor and optional `prev_value`/`new_value` payloads. This provides a lifecycle trace for individual memories and supports audit/debug workflows such as "show me all mutation events for memory #42."
 
 The history log is written by mutation handlers (`memory_save`, `memory_update`, `memory_delete`, `memory_bulk_delete`) and lower-level mutation helpers (`delete_memories`, `delete_memory_by_path`). `lib/storage/history.ts` owns schema-safe initialization/migration and read/write helpers, while `vector-index-schema.ts` ensures initialization runs at DB startup. The orphan cleanup script removes orphaned history rows when parent memories are missing.
 
@@ -44,3 +45,7 @@ The history log is written by mutation handlers (`memory_save`, `memory_update`,
 - Group: Mutation
 - Source feature title: Per-memory history log
 - Current reality source: audit-D04 gap backfill
+
+## 5. IN SIMPLE TERMS
+
+Every time a memory is created, changed or deleted, the system writes a log entry recording what happened, when and who did it. This is like a change history on a shared document. If something looks wrong later, you can trace back to exactly what changed and when it happened.

@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Pre-flight token budget validation.
+Pre-flight token budget validation estimates token count before embedding generation and rejects oversized content at save time.
 
 ## 2. CURRENT REALITY
 
@@ -17,7 +18,7 @@ Pre-flight token budget validation is a save-time guard in `preflight.ts`, not a
 
 `checkTokenBudget()` adds a default 150-token embedding overhead, compares the estimate against `MCP_MAX_MEMORY_TOKENS` (default `8000`), and emits one of two outcomes: `PF020` hard failure when the estimate exceeds the max, or `PF021` warning when usage reaches `MCP_TOKEN_WARNING_THRESHOLD` (default `0.8`). The reduction hint in the error message uses the same `charsPerToken` ratio so the suggested character trim matches runtime math.
 
-This validation runs in `memory_save` pre-flight before any embedding generation or database writes. It protects ingestion cost and save-time limits; it does not control search-result truncation.
+This validation runs in `memory_save` pre-flight before any embedding generation or database writes. It protects ingestion cost and save-time limits. It does not control search-result truncation.
 
 ## 3. SOURCE FILES
 
@@ -38,3 +39,7 @@ This validation runs in `memory_save` pre-flight before any embedding generation
 - Group: Memory quality and indexing
 - Source feature title: Pre-flight token budget validation
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+Before the system stores a new memory, it checks whether the content is too large to process. Think of it like a mailbox with a size limit: if your package is too big, you get told right away instead of wasting time trying to stuff it in. This prevents expensive processing work on content that would fail anyway.

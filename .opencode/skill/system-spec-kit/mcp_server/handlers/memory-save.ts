@@ -409,6 +409,37 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
   }
 
   const validatedPath: string = validateFilePathLocal(file_path);
+
+  // DryRun must remain non-mutating even when preflight is explicitly skipped.
+  if (dryRun && skipPreflight) {
+    const parsedForDryRun = memoryParser.parseMemoryFile(validatedPath);
+    const { createMCPSuccessResponse } = await import('../lib/response/envelope');
+    const dryRunSummary = 'Pre-flight validation skipped (dry-run mode)';
+
+    return createMCPSuccessResponse({
+      tool: 'memory_save',
+      summary: dryRunSummary,
+      data: {
+        status: 'dry_run',
+        would_pass: true,
+        file_path: validatedPath,
+        spec_folder: parsedForDryRun.specFolder,
+        title: parsedForDryRun.title,
+        validation: {
+          skipped: true,
+          errors: [],
+          warnings: [],
+          details: { skipped: true },
+        },
+        message: dryRunSummary,
+      },
+      hints: [
+        'Dry-run complete - no changes made',
+        'Pre-flight checks were skipped because skipPreflight=true',
+      ],
+    });
+  }
+
   const database = requireDb();
   ensureGovernanceRuntime(database);
 
@@ -549,36 +580,6 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
         console.warn(`[preflight]   - ${msg}`);
       });
     }
-  }
-
-  // DryRun must remain non-mutating even when preflight is explicitly skipped.
-  if (dryRun && skipPreflight) {
-    const parsedForDryRun = memoryParser.parseMemoryFile(validatedPath);
-    const { createMCPSuccessResponse } = await import('../lib/response/envelope');
-    const dryRunSummary = 'Pre-flight validation skipped (dry-run mode)';
-
-    return createMCPSuccessResponse({
-      tool: 'memory_save',
-      summary: dryRunSummary,
-      data: {
-        status: 'dry_run',
-        would_pass: true,
-        file_path: validatedPath,
-        spec_folder: parsedForDryRun.specFolder,
-        title: parsedForDryRun.title,
-        validation: {
-          skipped: true,
-          errors: [],
-          warnings: [],
-          details: { skipped: true },
-        },
-        message: dryRunSummary,
-      },
-      hints: [
-        'Dry-run complete - no changes made',
-        'Pre-flight checks were skipped because skipPreflight=true',
-      ],
-    });
   }
 
   const result = await indexMemoryFile(validatedPath, { force, parsedOverride: parsedForPreflight, asyncEmbedding });

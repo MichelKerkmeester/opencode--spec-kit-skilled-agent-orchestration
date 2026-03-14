@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Unified context retrieval (memory_context).
+Describes the L1 orchestration layer that auto-detects task intent and routes to the best retrieval strategy.
 
 ## 2. CURRENT REALITY
 
@@ -21,7 +22,7 @@ Each mode has a token budget. Quick gets 800 tokens. Focused gets 1,500. Deep ge
 
 When no `specFolder` is provided, automatic spec folder discovery attempts to identify the most relevant folder from the query text using a cached one-sentence description per spec folder. If the target folder can be identified from the description alone, the system avoids full-corpus search entirely. Discovery failure is non-fatal and falls through to the standard retrieval path. This feature runs behind the `SPECKIT_FOLDER_DISCOVERY` flag.
 
-Session management is caller-scoped. Passing `sessionId` enables cross-turn deduplication and lets the handler resume an existing working-memory session. If you do not pass `sessionId`, the handler generates an ephemeral UUID for internal bookkeeping for that single call only. In resume mode, `systemPromptContext` is injected only when auto-resume is enabled, the effective mode resolves to `resume`, and the caller supplied a reusable `sessionId`; anonymous calls do not revive prior session context.
+Session management is caller-scoped. Passing `sessionId` enables cross-turn deduplication and lets the handler resume an existing working-memory session. If you do not pass `sessionId`, the handler generates an ephemeral UUID for internal bookkeeping for that single call only. In resume mode, `systemPromptContext` is injected only when auto-resume is enabled, the effective mode resolves to `resume` and the caller supplied a reusable `sessionId`. Anonymous calls do not revive prior session context.
 
 Retrieval telemetry records mode selection and pressure-override fallbacks for observability when extended telemetry is enabled.
 
@@ -282,3 +283,7 @@ Retrieval telemetry records mode selection and pressure-override fallbacks for o
 - Group: Retrieval
 - Source feature title: Unified context retrieval (memory_context)
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+When you ask the system a question, it figures out what kind of help you need and automatically picks the best way to find the answer. Think of it like a smart librarian who reads your request, decides whether you need a quick lookup or a deep research session and then fetches the right materials for you. Without this, you would have to manually tell the system how to search every time.

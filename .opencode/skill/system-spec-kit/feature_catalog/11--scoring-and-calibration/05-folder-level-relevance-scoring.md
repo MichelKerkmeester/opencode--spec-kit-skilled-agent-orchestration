@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Folder-level relevance scoring.
+Describes the four-factor weighted formula (recency, importance, activity and validation) that scores spec folders for two-phase retrieval, with archive folder multipliers and damped aggregation via DocScore.
 
 ## 2. CURRENT REALITY
 
@@ -50,3 +51,7 @@ This scoring enables two-phase retrieval: first rank folders by aggregated score
 - Group: Scoring and calibration
 - Source feature title: Folder-level relevance scoring
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+Instead of searching through every memory equally, this feature first ranks the folders they live in. Recent, important and actively used folders rise to the top while archived folders sink to the bottom. The system then searches within the top folders first. It is like checking the most promising filing cabinets before digging through the dusty ones in the back.

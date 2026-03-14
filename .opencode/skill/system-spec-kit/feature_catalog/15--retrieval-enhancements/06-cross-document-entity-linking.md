@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Cross-document entity linking.
+Cross-document entity linking creates causal edges between memories in different spec folders that reference the same entity.
 
 ## 2. CURRENT REALITY
 
@@ -51,3 +52,7 @@ A density guard prevents runaway edge creation: current global edge density is c
 - Group: Retrieval enhancements
 - Source feature title: Cross-document entity linking
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+Different documents in different folders sometimes talk about the same thing without knowing about each other. This feature connects them automatically when it notices they reference the same concept. It is like a researcher who reads two separate reports, notices both mention the same topic and staples a note between them saying "these are related."

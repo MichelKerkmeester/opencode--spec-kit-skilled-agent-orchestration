@@ -105,7 +105,8 @@ describe('Session Manager Extended Tests', () => {
 
   // ───────────────────────────────────────────────────────────────
   // 1. SHOULDSENDMEMORIESBATCH
-  // ───────────────────────────────────────────────────────────────  describe('1. shouldSendMemoriesBatch', () => {
+  // ───────────────────────────────────────────────────────────────
+  describe('1. shouldSendMemoriesBatch', () => {
     it('all new memories return true', () => {
       resetDb();
       const sid = 'batch-check-1';
@@ -139,7 +140,8 @@ describe('Session Manager Extended Tests', () => {
 
   // ───────────────────────────────────────────────────────────────
   // 2. MARKMEMORIESSENTBATCH
-  // ───────────────────────────────────────────────────────────────  describe('2. markMemoriesSentBatch', () => {
+  // ───────────────────────────────────────────────────────────────
+  describe('2. markMemoriesSentBatch', () => {
     it('marks all memories in transaction', () => {
       resetDb();
       const sid = 'batch-mark-1';
@@ -175,7 +177,8 @@ describe('Session Manager Extended Tests', () => {
 
   // ───────────────────────────────────────────────────────────────
   // 3. CLEANUPEXPIREDSESSIONS
-  // ───────────────────────────────────────────────────────────────  describe('3. cleanupExpiredSessions', () => {
+  // ───────────────────────────────────────────────────────────────
+  describe('3. cleanupExpiredSessions', () => {
     it('removes expired entries', () => {
       resetDb();
       const sid = 'cleanup-1';
@@ -206,7 +209,8 @@ describe('Session Manager Extended Tests', () => {
 
   // ───────────────────────────────────────────────────────────────
   // 4. CLEARSESSION
-  // ───────────────────────────────────────────────────────────────  describe('4. clearSession', () => {
+  // ───────────────────────────────────────────────────────────────
+  describe('4. clearSession', () => {
     it('deletes only target session entries', () => {
       resetDb();
       const sid = 'clear-1';
@@ -231,7 +235,8 @@ describe('Session Manager Extended Tests', () => {
 
   // ───────────────────────────────────────────────────────────────
   // 5. GETSESSIONSTATS
-  // ───────────────────────────────────────────────────────────────  describe('5. getSessionStats', () => {
+  // ───────────────────────────────────────────────────────────────
+  describe('5. getSessionStats', () => {
     it('returns correct counts and timestamps', () => {
       resetDb();
       const sid = 'stats-1';
@@ -261,7 +266,8 @@ describe('Session Manager Extended Tests', () => {
 
   // ───────────────────────────────────────────────────────────────
   // 6. MARKRESULTSSENT
-  // ───────────────────────────────────────────────────────────────  describe('6. markResultsSent', () => {
+  // ───────────────────────────────────────────────────────────────
+  describe('6. markResultsSent', () => {
     it('delegates to markMemoriesSentBatch correctly', () => {
       resetDb();
       const sid = 'mark-results-1';
@@ -284,7 +290,8 @@ describe('Session Manager Extended Tests', () => {
 
   // ───────────────────────────────────────────────────────────────
   // 7. ENSURESESSIONSTATESCHEMA
-  // ───────────────────────────────────────────────────────────────  describe('7. ensureSessionStateSchema', () => {
+  // ───────────────────────────────────────────────────────────────
+  describe('7. ensureSessionStateSchema', () => {
     it('creates session_state table', () => {
       // Schema already created in setup(), verify the table exists
         const tables = testDb!.prepare(
@@ -302,7 +309,8 @@ describe('Session Manager Extended Tests', () => {
 
   // ───────────────────────────────────────────────────────────────
   // 8. SAVESESSIONSTATE
-  // ───────────────────────────────────────────────────────────────  describe('8. saveSessionState', () => {
+  // ───────────────────────────────────────────────────────────────
+  describe('8. saveSessionState', () => {
     it('inserts full state correctly', () => {
       resetDb();
       const r = sm.saveSessionState('save-1', {
@@ -343,7 +351,8 @@ describe('Session Manager Extended Tests', () => {
 
   // ───────────────────────────────────────────────────────────────
   // 9. COMPLETESESSION
-  // ───────────────────────────────────────────────────────────────  describe('9. completeSession', () => {
+  // ───────────────────────────────────────────────────────────────
+  describe('9. completeSession', () => {
     it('marks session as completed', () => {
       resetDb();
       sm.saveSessionState('complete-1', { currentTask: 'finishing up' });
@@ -361,7 +370,8 @@ describe('Session Manager Extended Tests', () => {
 
   // ───────────────────────────────────────────────────────────────
   // 10. RESETINTERRUPTEDSESSIONS
-  // ───────────────────────────────────────────────────────────────  describe('10. resetInterruptedSessions', () => {
+  // ───────────────────────────────────────────────────────────────
+  describe('10. resetInterruptedSessions', () => {
     it('only active sessions become interrupted', () => {
       resetDb();
       sm.saveSessionState('reset-1', { currentTask: 'task A' });
@@ -389,7 +399,8 @@ describe('Session Manager Extended Tests', () => {
 
   // ───────────────────────────────────────────────────────────────
   // 11. RECOVERSTATE
-  // ───────────────────────────────────────────────────────────────  describe('11. recoverState', () => {
+  // ───────────────────────────────────────────────────────────────
+  describe('11. recoverState', () => {
     it('recovers interrupted session and reactivates it', () => {
       resetDb();
       sm.saveSessionState('recover-1', {
@@ -433,7 +444,8 @@ describe('Session Manager Extended Tests', () => {
 
   // ───────────────────────────────────────────────────────────────
   // 12. GETINTERRUPTEDSESSIONS
-  // ───────────────────────────────────────────────────────────────  describe('12. getInterruptedSessions', () => {
+  // ───────────────────────────────────────────────────────────────
+  describe('12. getInterruptedSessions', () => {
     it('lists only interrupted sessions', () => {
       resetDb();
       sm.saveSessionState('int-1', { specFolder: 'specs/A', currentTask: 'task A' });
@@ -464,7 +476,8 @@ describe('Session Manager Extended Tests', () => {
 
   // ───────────────────────────────────────────────────────────────
   // 13. GENERATECONTINUESESSIONMD
-  // ───────────────────────────────────────────────────────────────  describe('13. generateContinueSessionMd', () => {
+  // ───────────────────────────────────────────────────────────────
+  describe('13. generateContinueSessionMd', () => {
     it('generates full markdown with all fields', () => {
       const md = sm.generateContinueSessionMd({
         sessionId: 'gen-md-1',
@@ -501,7 +514,8 @@ describe('Session Manager Extended Tests', () => {
 
   // ───────────────────────────────────────────────────────────────
   // 14. WRITECONTINUESESSIONMD
-  // ───────────────────────────────────────────────────────────────  describe('14. writeContinueSessionMd', () => {
+  // ───────────────────────────────────────────────────────────────
+  describe('14. writeContinueSessionMd', () => {
     it('writes file with recovered state', () => {
       resetDb();
       const tmpDir = makeTmpDir();
@@ -556,7 +570,8 @@ describe('Session Manager Extended Tests', () => {
 
   // ───────────────────────────────────────────────────────────────
   // 15. CHECKPOINTSESSION
-  // ───────────────────────────────────────────────────────────────  describe('15. checkpointSession', () => {
+  // ───────────────────────────────────────────────────────────────
+  describe('15. checkpointSession', () => {
     it('saves state and writes file', () => {
       resetDb();
       const tmpDir = makeTmpDir();
@@ -607,7 +622,8 @@ describe('Session Manager Extended Tests', () => {
 
   // ───────────────────────────────────────────────────────────────
   // 16. ENFORCEENTRYLIMIT
-  // ───────────────────────────────────────────────────────────────  describe('16. enforceEntryLimit', () => {
+  // ───────────────────────────────────────────────────────────────
+  describe('16. enforceEntryLimit', () => {
     it('trims to maxEntriesPerSession', () => {
       resetDb();
       const sid = 'enforce-1';
@@ -680,7 +696,8 @@ describe('Session Manager Extended Tests', () => {
 
   // ───────────────────────────────────────────────────────────────
   // 17. DB UNAVAILABLE DEDUP MODE
-  // ───────────────────────────────────────────────────────────────  describe('17. db unavailable dedup mode', () => {
+  // ───────────────────────────────────────────────────────────────
+  describe('17. db unavailable dedup mode', () => {
     it('blocks sending when DB unavailable and mode is block', () => {
       const originalMode = sm.CONFIG.dbUnavailableMode;
       try {

@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Hooks README and export alignment.
+Hooks README and export alignment synchronizes the hooks barrel and README with the implemented UX-hook modules.
 
 ## 2. CURRENT REALITY
 
@@ -77,7 +78,7 @@ The hooks barrel and hooks README were brought back into sync with the implement
 | `mcp_server/tests/handler-memory-index-cooldown.vitest.ts` | Index cooldown validation |
 | `mcp_server/tests/handler-memory-index.vitest.ts` | Index handler validation |
 | `mcp_server/tests/incremental-index-v2.vitest.ts` | Incremental index behavioral tests |
-| `mcp_server/tests/incremental-index.vitest.ts` | Legacy deferred placeholder suite (skipped; not behavioral evidence) |
+| `mcp_server/tests/incremental-index.vitest.ts` | Legacy deferred placeholder suite (skipped, not behavioral evidence) |
 | `mcp_server/tests/index-refresh.vitest.ts` | Index refresh tests |
 | `mcp_server/tests/interference.vitest.ts` | Interference scoring tests |
 | `mcp_server/tests/memory-types.vitest.ts` | Memory type tests |
@@ -103,3 +104,7 @@ The hooks barrel and hooks README were brought back into sync with the implement
 - Group: UX hooks automation (Phase 014)
 - Source feature title: Hooks README and export alignment
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+The documentation and the published list of available hook modules had drifted out of sync with the actual code. This fix updated both so they accurately reflect what hooks exist and how to use them. It is like updating a building directory after new offices move in so visitors can actually find what is listed.

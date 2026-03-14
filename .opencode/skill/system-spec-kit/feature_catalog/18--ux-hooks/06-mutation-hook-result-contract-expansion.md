@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Mutation hook result contract expansion.
+Mutation hook result contract expansion adds `latencyMs` and cache-clear booleans to post-mutation hook results.
 
 ## 2. CURRENT REALITY
 
@@ -101,3 +102,7 @@ The shared mutation hook result contract was expanded to include `latencyMs` and
 - Group: UX hooks automation (Phase 014)
 - Source feature title: Mutation hook result contract expansion
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+After the system finishes its follow-up tasks on a save, it now reports how long those tasks took and whether any caches were cleared. This gives you a clearer picture of what happened behind the scenes, like a shipping notification that tells you not just "delivered" but also the delivery time and which steps were completed.

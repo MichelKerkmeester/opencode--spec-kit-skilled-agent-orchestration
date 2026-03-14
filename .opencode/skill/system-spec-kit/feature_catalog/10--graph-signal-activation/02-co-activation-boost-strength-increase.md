@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Co-activation boost strength increase.
+Describes the co-activation boost multiplier increase from 0.1x to 0.25-0.3x, making graph signal contribution visible in retrieval results at 15% or higher effective contribution.
 
 ## 2. CURRENT REALITY
 
@@ -36,3 +37,7 @@ The new multiplier targets 15% or higher contribution, which is enough to matter
 - Group: Graph signal activation
 - Source feature title: Co-activation boost strength increase
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+When two memories are connected in the knowledge graph, finding one should help surface the other. The original boost from these connections was too weak to make a noticeable difference. This change turned up the volume so that graph connections actually influence what shows up in your search results, making the relationship map between memories useful rather than decorative.

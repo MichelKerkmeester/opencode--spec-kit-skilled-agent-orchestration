@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Strict Zod schema validation.
+Strict Zod schema validation adds runtime input validation to all 28 MCP tools, rejecting hallucinated parameters from calling LLMs.
 
 ## 2. CURRENT REALITY
 
@@ -34,3 +35,7 @@ This document captures the implemented behavior, source references, and validati
 - Group: Extra features (Sprint 019)
 - Source feature title: Strict Zod schema validation
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+AI assistants sometimes invent parameters that do not exist when calling tools. This feature checks every incoming request against a strict rulebook and rejects anything that does not match. It is like a bouncer who checks your ID against the guest list: if your name is not on the list, you do not get in. This prevents made-up inputs from causing unexpected behavior.

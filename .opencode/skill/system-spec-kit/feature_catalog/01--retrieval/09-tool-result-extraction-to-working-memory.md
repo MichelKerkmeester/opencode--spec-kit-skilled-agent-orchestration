@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Tool-result extraction to working memory.
+Covers the working memory module that captures salient tool results as session-scoped attention items for cross-turn continuity.
 
 ## 2. CURRENT REALITY
 
@@ -39,3 +40,7 @@ The checkpoint module (`lib/storage/checkpoints.ts`) also participates by preser
 - Group: Retrieval
 - Source feature title: Tool-result extraction to working memory
 - Current reality source: audit-D04 gap backfill
+
+## 5. IN SIMPLE TERMS
+
+When the system finds something useful during a search, it keeps a mental note of it for the rest of your session. That way, if you ask a follow-up question a few turns later, the system still remembers what it found earlier. These notes gradually fade over time so the most recent findings stay prominent while older ones quietly step aside.

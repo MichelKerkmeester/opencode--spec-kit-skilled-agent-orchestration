@@ -735,7 +735,7 @@ S5 density guard behavior in `lib/search/entity-linker.ts`: if current global ed
 
 Most runtime search flags are evaluated via `isFeatureEnabled()`. That helper treats absent, empty, and `'true'` values as enabled, and treats `'false'` or `'0'` as disabled. For partial rollouts (`SPECKIT_ROLLOUT_PERCENT` between 1 and 99), identity-less checks fail closed. Malformed rollout values fall back to 100.
 
-Operator-only and observational flags remain explicit opt-in instead of using default-on semantics. Notable examples are `SPECKIT_EXTENDED_TELEMETRY`, `SPECKIT_EVAL_LOGGING`, `SPECKIT_ABLATION`, and the memory-roadmap metadata flags (`SPECKIT_MEMORY_*`).
+Operator-only and observational flags can still remain explicit opt-in. Notable examples are `SPECKIT_EXTENDED_TELEMETRY`, `SPECKIT_EVAL_LOGGING`, and `SPECKIT_ABLATION`. Phase 015 roadmap controls now default to the fully delivered rollout unless explicitly disabled.
 
 After specs 137-139, the core retrieval flags defaulted to enabled. Expensive or experimental paths introduced later remain opt-in.
 
@@ -785,17 +785,17 @@ Canonical source of truth: `../references/config/environment_variables.md`.
 
 #### Memory Roadmap Metadata Controls
 
-These env vars do not turn new runtime features on by themselves. They exist so telemetry, eval baselines, and migration checkpoint sidecars can record which roadmap slice is under test. They are intentionally separate from live runtime flags such as `SPECKIT_GRAPH_UNIFIED`.
+These env vars now default to the fully delivered Phase 015 rollout so telemetry, eval baselines, and migration checkpoint sidecars reflect the live default state. They can still be set explicitly to disable a roadmap capability for rollback drills or compatibility tests. `SPECKIT_MEMORY_GRAPH_UNIFIED` remains distinct from live runtime `SPECKIT_GRAPH_UNIFIED`.
 
 | Flag | Default | Description |
 | ---- | ------- | ----------- |
-| `SPECKIT_MEMORY_ROADMAP_PHASE` | `baseline` | Recorded roadmap phase for telemetry, eval baselines, and migration checkpoints (`baseline`, `lineage`, `graph`, `adaptive`, `scope-governance`, `shared-rollout`) |
-| `SPECKIT_MEMORY_LINEAGE_STATE` | `false` | Explicit opt-in roadmap metadata for the lineage-state milestone |
-| `SPECKIT_MEMORY_GRAPH_UNIFIED` | `false` | Explicit opt-in roadmap metadata for the unified-graph milestone; distinct from runtime `SPECKIT_GRAPH_UNIFIED` |
-| `SPECKIT_MEMORY_ADAPTIVE_RANKING` | `false` | Explicit opt-in roadmap metadata for adaptive-ranking experiments |
-| `SPECKIT_MEMORY_SCOPE_ENFORCEMENT` | `false` | Explicit opt-in roadmap metadata for scope-enforcement tracking |
-| `SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS` | `false` | Explicit opt-in roadmap metadata for governance-guardrail tracking |
-| `SPECKIT_MEMORY_SHARED_MEMORY` | `false` | Explicit opt-in roadmap metadata for the shared-memory milestone |
+| `SPECKIT_MEMORY_ROADMAP_PHASE` | `shared-rollout` | Recorded roadmap phase for telemetry, eval baselines, and migration checkpoints (`baseline`, `lineage`, `graph`, `adaptive`, `scope-governance`, `shared-rollout`) |
+| `SPECKIT_MEMORY_LINEAGE_STATE` | `true` | Default-on roadmap capability for the lineage-state milestone; set `false` to suppress the snapshot |
+| `SPECKIT_MEMORY_GRAPH_UNIFIED` | `true` | Default-on roadmap capability for the unified-graph milestone; distinct from runtime `SPECKIT_GRAPH_UNIFIED` |
+| `SPECKIT_MEMORY_ADAPTIVE_RANKING` | `true` | Default-on adaptive-ranking gate; unset runs in the default shadow-mode path |
+| `SPECKIT_MEMORY_SCOPE_ENFORCEMENT` | `true` | Default-on scope-enforcement gate; set `false` to disable scoped filtering |
+| `SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS` | `true` | Default-on governance guardrails gate; set `false` to disable governance checks |
+| `SPECKIT_MEMORY_SHARED_MEMORY` | `true` | Default-on shared-memory gate; deny-by-default membership and rollout controls still apply |
 
 #### Phase 1 Readiness Helpers
 

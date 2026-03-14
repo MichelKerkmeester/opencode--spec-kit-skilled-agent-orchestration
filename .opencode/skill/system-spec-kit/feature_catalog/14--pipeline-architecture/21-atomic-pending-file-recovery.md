@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Atomic pending-file recovery.
+Atomic pending-file recovery scans for `_pending` files left by interrupted saves and completes the rename when the DB row exists.
 
 ## 2. CURRENT REALITY
 
@@ -38,3 +39,7 @@ The `findPendingFiles()` function scans the memory directories for files matchin
 - Group: Pipeline architecture
 - Source feature title: Atomic pending-file recovery
 - Current reality source: audit-D04 gap backfill
+
+## 5. IN SIMPLE TERMS
+
+If the system crashes in the middle of saving a memory, the file might be left in a half-finished state on disk. When the server starts back up, this feature scans for those half-finished files and completes the save if the database already recorded it. It is like a delivery service checking for undelivered packages each morning and finishing the route from where it left off.

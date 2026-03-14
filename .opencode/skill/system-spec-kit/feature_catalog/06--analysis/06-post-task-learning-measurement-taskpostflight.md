@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Post-task learning measurement (task_postflight).
+Covers the postflight tool that computes a Learning Index by comparing post-task epistemic state against the preflight baseline.
 
 ## 2. CURRENT REALITY
 
@@ -128,3 +129,7 @@ You can track gaps closed during the task and new gaps discovered. Both are stor
 - Group: Analysis
 - Source feature title: Post-task learning measurement (task_postflight)
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+After finishing a task, this tool takes the "after" measurement and compares it against the "before" baseline. It calculates a score that tells you how much you learned. A high score means you gained real new understanding. A low score means you mostly applied what you already knew. A negative score means you discovered that what you thought was true turned out to be wrong.

@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Tier-based bulk deletion (memory_bulk_delete).
+Covers the bulk delete tool that targets entire importance tiers with safety checkpoints and constitutional protection.
 
 ## 2. CURRENT REALITY
 
@@ -152,3 +153,7 @@ The `olderThanDays` parameter is validated as a positive integer (>= 1) before q
 - Group: Mutation
 - Source feature title: Tier-based bulk deletion (memory_bulk_delete)
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+This is the cleanup tool for large-scale housekeeping. You can delete all outdated or temporary memories in one go based on their importance level, like clearing out the recycling bin. The most important memories get extra protection so they cannot be accidentally wiped. A safety snapshot is taken first so you can restore if needed.

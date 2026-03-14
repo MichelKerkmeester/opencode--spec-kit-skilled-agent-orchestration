@@ -6,14 +6,15 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Graph and cognitive memory fixes.
+Covers seven fixes (of 9 planned) for graph integrity and cognitive scoring, including self-loop prevention, community debounce, WM score clamping and double-decay removal.
 
 ## 2. CURRENT REALITY
 
-Seven fixes (of 9 planned; 2 deferred) addressed graph integrity and cognitive scoring:
+Seven fixes (of 9 planned, 2 deferred) addressed graph integrity and cognitive scoring:
 
 - **Self-loop prevention (#24):** `insertEdge()` rejects `sourceId === targetId`.
 - **maxDepth clamping (#25):** `handleMemoryDriftWhy` clamps `maxDepth` to [1, 10] server-side.
@@ -95,3 +96,7 @@ Seven fixes (of 9 planned; 2 deferred) addressed graph integrity and cognitive s
 - Group: Opus review remediation (Phase 017)
 - Source feature title: Graph and cognitive memory fixes
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+This is a collection of seven bug fixes for the relationship graph and memory scoring systems. Problems included a memory linking to itself (a loop that makes no sense), cluster detection that could not tell when links were deleted and replaced, and scores that could climb higher than they should. Without these fixes, the graph connections and scoring would slowly drift into unreliable territory.

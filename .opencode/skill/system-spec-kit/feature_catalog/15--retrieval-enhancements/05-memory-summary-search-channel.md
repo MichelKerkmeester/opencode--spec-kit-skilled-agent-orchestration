@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Memory summary search channel.
+The memory summary search channel generates TF-IDF extractive summaries at save time and searches against summary embeddings to improve retrieval precision on large memories.
 
 ## 2. CURRENT REALITY
 
@@ -23,7 +24,7 @@ Generated summaries are stored in the `memory_summaries` table alongside a summa
 
 The summary channel is integrated as an additional Stage 1 retrieval channel alongside hybrid, vector and multi-concept paths. Stage 1 adapts summary hits into full `PipelineRow` candidates by hydrating `memory_index` rows, assigning `similarity` / `score`, then merging and deduplicating by memory ID with baseline candidates taking priority.
 
-A runtime scale gate activates the channel only when the system exceeds 5,000 indexed memories with successful embeddings. Below that threshold, the summary channel adds overhead without measurable benefit because the base channels already cover the corpus effectively. The code exists regardless of scale; the gate simply skips execution. Runs behind the `SPECKIT_MEMORY_SUMMARIES` flag (default ON).
+A runtime scale gate activates the channel only when the system exceeds 5,000 indexed memories with successful embeddings. Below that threshold, the summary channel adds overhead without measurable benefit because the base channels already cover the corpus effectively. The code exists regardless of scale. The gate simply skips execution. Runs behind the `SPECKIT_MEMORY_SUMMARIES` flag (default ON).
 
 ## 3. SOURCE FILES
 
@@ -51,3 +52,7 @@ A runtime scale gate activates the channel only when the system exceeds 5,000 in
 - Group: Retrieval enhancements
 - Source feature title: Memory summary search channel
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+Long documents can bury their key points in paragraphs of detail. This feature creates a short summary of each memory when it is saved and searches against those summaries instead of the full text. It is like reading the back-cover blurb of a book rather than skimming every page to decide if it is relevant.

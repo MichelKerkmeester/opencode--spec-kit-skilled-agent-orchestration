@@ -6,20 +6,21 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Search pipeline safety.
+Search pipeline safety fixed three bugs: summary quality bypass, FTS5 double-tokenization and quality floor vs RRF range mismatch.
 
 ## 2. CURRENT REALITY
 
 Three search pipeline issues were fixed:
 
-**D1 — Summary quality bypass:** `stage1-candidate-gen.ts` allowed R8 summary hits to bypass the `minQualityScore` filter, letting low-quality summaries enter final results. Summary candidates now pass through the same quality filter.
+**D1: Summary quality bypass:** `stage1-candidate-gen.ts` allowed R8 summary hits to bypass the `minQualityScore` filter, letting low-quality summaries enter final results. Summary candidates now pass through the same quality filter.
 
-**D2 — FTS5 double-tokenization:** `sqlite-fts.ts` and `bm25-index.ts` had separate tokenization logic, causing query terms to be tokenized differently than indexed content. Refactored to a shared `sanitizeQueryTokens()` function returning a raw token array that both callers join with their appropriate syntax.
+**D2: FTS5 double-tokenization:** `sqlite-fts.ts` and `bm25-index.ts` had separate tokenization logic, causing query terms to be tokenized differently than indexed content. Refactored to a shared `sanitizeQueryTokens()` function returning a raw token array that both callers join with their appropriate syntax.
 
-**D3 — Quality floor vs RRF range mismatch:** `channel-representation.ts` used `QUALITY_FLOOR=0.2` which filtered out virtually all RRF-sourced results (RRF scores are typically 0.01-0.03). Lowered to 0.005.
+**D3: Quality floor vs RRF range mismatch:** `channel-representation.ts` used `QUALITY_FLOOR=0.2` which filtered out virtually all RRF-sourced results (RRF scores are typically 0.01-0.03). Lowered to 0.005.
 
 ## 3. SOURCE FILES
 
@@ -209,3 +210,7 @@ Three search pipeline issues were fixed:
 - Group: Comprehensive remediation (Sprint 8)
 - Source feature title: Search pipeline safety
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+Three bugs were quietly making search results worse. One let low-quality summaries sneak past the quality filter. Another caused search terms to be processed differently at search time versus index time, so exact matches were missed. A third was accidentally throwing away almost all results from one search method because the quality bar was set too high for that method's scoring range. Fixing these three issues made search results noticeably more accurate.

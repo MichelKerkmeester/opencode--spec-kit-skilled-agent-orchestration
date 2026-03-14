@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Signal vocabulary expansion.
+Signal vocabulary expansion adds CORRECTION and PREFERENCE categories to the trigger matcher for better intent detection.
 
 ## 2. CURRENT REALITY
 
@@ -90,3 +91,7 @@ Correction signals matter because they indicate the user is fixing a prior misun
 - Group: Memory quality and indexing
 - Source feature title: Signal vocabulary expansion
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+The system listens for clues in your language to understand what you really mean. This feature taught it to recognize two new types of clues: when you are correcting a past mistake (words like "actually" or "wait") and when you are expressing a preference (words like "prefer" or "want"). Recognizing these patterns helps the system pull up the right memories for the situation.

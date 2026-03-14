@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Dynamic server instructions at MCP initialization.
+Dynamic server instructions inject a memory-system overview (total memories, spec folder count, channels, stale count) into the MCP instruction payload at startup.
 
 ## 2. CURRENT REALITY
 
@@ -397,3 +398,7 @@ This document captures the implemented behavior, source references, and validati
 - Group: Extra features (Sprint 019)
 - Source feature title: Dynamic server instructions at MCP initialization
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+When the memory server starts up, it now tells the calling AI how many memories are stored, how many folders exist and which search methods are available. This is like a librarian greeting you at the door with a summary of what the library has today. It helps the AI make smarter decisions about how to search right from the start.

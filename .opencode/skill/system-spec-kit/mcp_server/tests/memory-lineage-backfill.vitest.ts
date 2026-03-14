@@ -5,7 +5,7 @@ import Database from 'better-sqlite3';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 import { createSchema, ensureSchemaVersion } from '../lib/search/vector-index-schema';
-import { runLineageBackfill } from '../lib/storage/lineage-state';
+import { runLineageBackfill, summarizeLineageInspection } from '../lib/storage/lineage-state';
 import { runCreateCheckpoint } from '../scripts/migrations/create-checkpoint';
 import { runRestoreCheckpoint } from '../scripts/migrations/restore-checkpoint';
 
@@ -117,6 +117,25 @@ describe('Memory lineage backfill', () => {
     expect(executed.dryRun).toBe(false);
     expect(executed.seeded).toBe(3);
     expect(executed.skipped).toBe(0);
+
+    const summary = summarizeLineageInspection(database, 2);
+    expect(summary).toMatchObject({
+      logicalKey: 'specs/015-memory-state::/tmp/specs/015-memory-state/memory/alpha.md::_',
+      rootMemoryId: 1,
+      activeMemoryId: 2,
+      activeVersionNumber: 2,
+      totalVersions: 2,
+      versionNumbers: [1, 2],
+      historicalMemoryIds: [1],
+      transitionCounts: {
+        CREATE: 0,
+        UPDATE: 0,
+        SUPERSEDE: 0,
+        BACKFILL: 2,
+      },
+      hasVersionGaps: false,
+      hasMultipleActiveVersions: false,
+    });
 
     const afterBackfill = database.prepare(`
       SELECT COUNT(*) AS total

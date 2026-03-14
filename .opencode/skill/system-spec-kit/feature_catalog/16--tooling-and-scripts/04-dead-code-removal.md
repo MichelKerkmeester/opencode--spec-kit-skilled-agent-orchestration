@@ -7,10 +7,11 @@
 - [3. SOURCE EVIDENCE](#3--source-evidence)
 - [4. SOURCE FILES](#4--source-files)
 - [5. SOURCE METADATA](#5--source-metadata)
+- [6. IN SIMPLE TERMS](#6--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Dead code removal.
+Dead code removal eliminated approximately 360 lines of unused branches, feature flags, module-level state and function exports across the codebase.
 
 ## 2. CURRENT REALITY
 
@@ -20,9 +21,9 @@ Approximately 360 lines of dead code were removed across four categories:
 
 **Dead feature flag functions:** `isShadowScoringEnabled()` removed from `shadow-scoring.ts` and `search-flags.ts`. `isRsfEnabled()` function was removed from `rsf-fusion.ts` (the name remains only in explanatory module comments). `isInShadowPeriod()` in `learned-feedback.ts` remains active as the R11 shadow-period safeguard and was not removed.
 
-**Dead module-level state:** `stmtCache` Map (archival-manager.ts — never populated), `lastComputedAt` (community-detection.ts — set but never read), `activeProvider` cache (cross-encoder.ts — never populated), `flushCount` (access-tracker.ts — never incremented), 3 dead config fields in working-memory.ts (`decayInterval`, `attentionDecayRate`, `minAttentionScore`).
+**Dead module-level state:** `stmtCache` Map (archival-manager.ts, never populated), `lastComputedAt` (community-detection.ts, set but never read), `activeProvider` cache (cross-encoder.ts, never populated), `flushCount` (access-tracker.ts, never incremented), 3 dead config fields in working-memory.ts (`decayInterval`, `attentionDecayRate`, `minAttentionScore`).
 
-**Dead functions and exports:** `computeCausalDepth` single-node variant (graph-signals.ts) was removed; `computeCausalDepthScores` is the live batch API. Also removed: `getSubgraphWeights` (graph-search-fn.ts — always returned 1.0, replaced with inline constant), `RECOVERY_HALF_LIFE_DAYS` (negative-feedback.ts — never imported), `'related'` weight entry (causal-edges.ts — invalid relation type), `logCoActivationEvent` and `CoActivationEvent` (co-activation.ts — never called).
+**Dead functions and exports:** `computeCausalDepth` single-node variant (graph-signals.ts) was removed. `computeCausalDepthScores` is the live batch API. Also removed: `getSubgraphWeights` (graph-search-fn.ts, always returned 1.0, replaced with inline constant), `RECOVERY_HALF_LIFE_DAYS` (negative-feedback.ts, never imported), `'related'` weight entry (causal-edges.ts, invalid relation type), `logCoActivationEvent` and `CoActivationEvent` (co-activation.ts, never called).
 
 **Preserved (NOT dead):** `computeStructuralFreshness` and `computeGraphCentrality` in `fsrs.ts` were identified as planned architectural components (not concluded experiments) and retained.
 
@@ -60,7 +61,7 @@ Approximately 360 lines of dead code were removed across four categories:
     - `mcp_server/lib/search/learned-feedback.ts` (HEAD: lines `306`, `411`, `452`).
   - HEAD verification:
     - `rg "export\\s+function\\s+(isShadowScoringEnabled|isRsfEnabled)" mcp_server/lib` => no matches.
-    - `rg -n "isRsfEnabled" mcp_server/lib/search/rsf-fusion.ts` => comment-only mention; no live declaration.
+    - `rg -n "isRsfEnabled" mcp_server/lib/search/rsf-fusion.ts` => comment-only mention, no live declaration.
 - **Approx LOC removed:** `~21` (`search-flags.ts -9`, `rsf-fusion.ts -12`, commit `b4f85e327`).
 
 ### 3) Dead module-level state
@@ -133,3 +134,7 @@ Cross-cutting evidence is distributed across:
 - Group: Comprehensive remediation (Sprint 8)
 - Source feature title: Dead code removal
 - Current reality source: feature_catalog.md
+
+## 6. IN SIMPLE TERMS
+
+Over time, some parts of the code stopped being used but were never cleaned up. This effort identified and removed roughly 360 lines of unused code: old switches that were always off, variables that were set but never read and functions that nothing called anymore. It is like clearing out a storage closet of things nobody has touched in years so the space stays organized.

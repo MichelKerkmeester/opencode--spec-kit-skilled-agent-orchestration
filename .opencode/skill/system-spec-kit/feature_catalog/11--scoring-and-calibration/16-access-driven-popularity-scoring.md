@@ -6,16 +6,17 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Access-driven popularity scoring.
+Describes the batched access counting with soft-accumulator pattern that feeds popularity signals into composite scoring and drives archival dormancy detection.
 
 ## 2. CURRENT REALITY
 
 The access tracker (`lib/storage/access-tracker.ts`) implements batched access counting with a soft-accumulator pattern. Each retrieval hit increments an in-memory accumulator by 0.1. When the accumulator exceeds the 0.5 threshold, a database write flushes the accumulated count to the `access_count` column in `memory_index` and updates `last_accessed`. This batching reduces write amplification from high-frequency search operations.
 
-The `access_count` feeds into composite scoring as a popularity signal, boosting frequently retrieved memories. The accumulator map is capped at 10,000 entries to prevent unbounded memory growth. Access data also drives the archival manager's dormancy detection: memories with no recent access are candidates for automatic archival. The tracker currently exposes accumulator and scoring helpers such as `getAccumulatorState()`, `calculatePopularityScore()`, and `calculateUsageBoost()`, rather than a separate `getAccessStats()` API.
+The `access_count` feeds into composite scoring as a popularity signal, boosting frequently retrieved memories. The accumulator map is capped at 10,000 entries to prevent unbounded memory growth. Access data also drives the archival manager's dormancy detection: memories with no recent access are candidates for automatic archival. The tracker currently exposes accumulator and scoring helpers such as `getAccumulatorState()`, `calculatePopularityScore()` and `calculateUsageBoost()`, rather than a separate `getAccessStats()` API.
 
 ## 3. SOURCE FILES
 
@@ -39,3 +40,7 @@ The `access_count` feeds into composite scoring as a popularity signal, boosting
 - Group: Scoring and calibration
 - Source feature title: Access-driven popularity scoring
 - Current reality source: audit-D04 gap backfill
+
+## 5. IN SIMPLE TERMS
+
+Memories that get looked up frequently are probably more useful than ones that sit untouched. This feature counts how often each memory is retrieved and gives frequently accessed ones a higher score, like how a popular library book gets a front-of-shelf display. It also helps identify neglected memories that might be candidates for archiving.

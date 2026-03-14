@@ -275,13 +275,13 @@ Catalog base path: `feature_catalog/` (relative to `022-hybrid-rag-fusion/`)
 | EX-025 | [06--analysis/07-learning-history-memorygetlearninghistory.md](../feature_catalog/06--analysis/07-learning-history-memorygetlearninghistory.md) |
 | EX-026 | [07--evaluation/01-ablation-studies-evalrunablation.md](../feature_catalog/07--evaluation/01-ablation-studies-evalrunablation.md) |
 | EX-027 | [07--evaluation/02-reporting-dashboard-evalreportingdashboard.md](../feature_catalog/07--evaluation/02-reporting-dashboard-evalreportingdashboard.md) |
-| EX-028 | [20--feature-flag-reference/01-1-search-pipeline-features-speckit.md](../feature_catalog/20--feature-flag-reference/01-1-search-pipeline-features-speckit.md) |
-| EX-029 | [20--feature-flag-reference/02-2-session-and-cache.md](../feature_catalog/20--feature-flag-reference/02-2-session-and-cache.md) |
-| EX-030 | [20--feature-flag-reference/03-3-mcp-configuration.md](../feature_catalog/20--feature-flag-reference/03-3-mcp-configuration.md) |
-| EX-031 | [20--feature-flag-reference/04-4-memory-and-storage.md](../feature_catalog/20--feature-flag-reference/04-4-memory-and-storage.md) |
-| EX-032 | [20--feature-flag-reference/05-5-embedding-and-api.md](../feature_catalog/20--feature-flag-reference/05-5-embedding-and-api.md) |
-| EX-033 | [20--feature-flag-reference/06-6-debug-and-telemetry.md](../feature_catalog/20--feature-flag-reference/06-6-debug-and-telemetry.md) |
-| EX-034 | [20--feature-flag-reference/07-7-ci-and-build-informational.md](../feature_catalog/20--feature-flag-reference/07-7-ci-and-build-informational.md) |
+| EX-028 | [19--feature-flag-reference/01-1-search-pipeline-features-speckit.md](../feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md) |
+| EX-029 | [19--feature-flag-reference/02-2-session-and-cache.md](../feature_catalog/19--feature-flag-reference/02-2-session-and-cache.md) |
+| EX-030 | [19--feature-flag-reference/03-3-mcp-configuration.md](../feature_catalog/19--feature-flag-reference/03-3-mcp-configuration.md) |
+| EX-031 | [19--feature-flag-reference/04-4-memory-and-storage.md](../feature_catalog/19--feature-flag-reference/04-4-memory-and-storage.md) |
+| EX-032 | [19--feature-flag-reference/05-5-embedding-and-api.md](../feature_catalog/19--feature-flag-reference/05-5-embedding-and-api.md) |
+| EX-033 | [19--feature-flag-reference/06-6-debug-and-telemetry.md](../feature_catalog/19--feature-flag-reference/06-6-debug-and-telemetry.md) |
+| EX-034 | [19--feature-flag-reference/07-7-ci-and-build-informational.md](../feature_catalog/19--feature-flag-reference/07-7-ci-and-build-informational.md) |
 | EX-035 | [04--maintenance/02-startup-runtime-compatibility-guards.md](../feature_catalog/04--maintenance/02-startup-runtime-compatibility-guards.md) |
 
 ### New Features (NEW-001..NEW-134)
@@ -381,11 +381,7 @@ Note: NEW-042, NEW-119, NEW-131, and NEW-132 all map to the same catalog entry f
 | NEW-087 | [14--pipeline-architecture/12-dbpath-extraction-and-import-standardization.md](../feature_catalog/14--pipeline-architecture/12-dbpath-extraction-and-import-standardization.md) |
 | NEW-088 | [09--evaluation-and-measurement/14-cross-ai-validation-fixes.md](../feature_catalog/09--evaluation-and-measurement/14-cross-ai-validation-fixes.md) |
 | NEW-089 | [16--tooling-and-scripts/05-code-standards-alignment.md](../feature_catalog/16--tooling-and-scripts/05-code-standards-alignment.md) |
-| NEW-090 | [19--decisions-and-deferrals/01-int8-quantization-evaluation.md](../feature_catalog/19--decisions-and-deferrals/01-int8-quantization-evaluation.md) |
-| NEW-091 | [19--decisions-and-deferrals/02-implemented-graph-centrality-and-community-detection.md](../feature_catalog/19--decisions-and-deferrals/02-implemented-graph-centrality-and-community-detection.md) |
-| NEW-092 | [19--decisions-and-deferrals/03-implemented-auto-entity-extraction.md](../feature_catalog/19--decisions-and-deferrals/03-implemented-auto-entity-extraction.md) |
-| NEW-093 | [19--decisions-and-deferrals/04-implemented-memory-summary-generation.md](../feature_catalog/19--decisions-and-deferrals/04-implemented-memory-summary-generation.md) |
-| NEW-094 | [19--decisions-and-deferrals/05-implemented-cross-document-entity-linking.md](../feature_catalog/19--decisions-and-deferrals/05-implemented-cross-document-entity-linking.md) |
+| NEW-090 | [09--evaluation-and-measurement/16-int8-quantization-evaluation.md](../feature_catalog/09--evaluation-and-measurement/16-int8-quantization-evaluation.md) |
 | NEW-095 | [14--pipeline-architecture/13-strict-zod-schema-validation.md](../feature_catalog/14--pipeline-architecture/13-strict-zod-schema-validation.md) |
 | NEW-096 | [15--retrieval-enhancements/08-provenance-rich-response-envelopes.md](../feature_catalog/15--retrieval-enhancements/08-provenance-rich-response-envelopes.md) |
 | NEW-097 | [05--lifecycle/05-async-ingestion-job-lifecycle.md](../feature_catalog/05--lifecycle/05-async-ingestion-job-lifecycle.md) |
@@ -416,7 +412,7 @@ Note: NEW-042, NEW-119, NEW-131, and NEW-132 all map to the same catalog entry f
 | NEW-122 | [17--governance/03-hierarchical-scope-governance-governed-ingest-retention-and-audit.md](../feature_catalog/17--governance/03-hierarchical-scope-governance-governed-ingest-retention-and-audit.md) |
 | NEW-123 | [17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md](../feature_catalog/17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md) |
 | NEW-124 | [05--lifecycle/07-automatic-archival-subsystem.md](../feature_catalog/05--lifecycle/07-automatic-archival-subsystem.md) |
-| NEW-125 | [20--feature-flag-reference/01-1-search-pipeline-features-speckit.md](../feature_catalog/20--feature-flag-reference/01-1-search-pipeline-features-speckit.md) |
+| NEW-125 | [19--feature-flag-reference/01-1-search-pipeline-features-speckit.md](../feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md) |
 | NEW-126 | [09--evaluation-and-measurement/15-hydra-baseline-snapshot.md](../feature_catalog/09--evaluation-and-measurement/15-hydra-baseline-snapshot.md) |
 | NEW-127 | [16--tooling-and-scripts/09-migration-checkpoint-scripts.md](../feature_catalog/16--tooling-and-scripts/09-migration-checkpoint-scripts.md) |
 | NEW-128 | [16--tooling-and-scripts/10-schema-compatibility-validation.md](../feature_catalog/16--tooling-and-scripts/10-schema-compatibility-validation.md) |

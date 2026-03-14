@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Stage 3 effectiveScore fallback chain.
+Describes the unified `effectiveScore()` fallback chain (`intentAdjustedScore -> rrfScore -> score -> similarity/100`) with `isFinite()` guards and [0,1] clamping used by Stage 3 reranking and cross-encoder mapping.
 
 ## 2. CURRENT REALITY
 
@@ -128,3 +129,7 @@ This document captures the implemented behavior, source references, and validati
 - Group: Gemini review P1 fixes (Phase 015)
 - Source feature title: Stage 3 effectiveScore fallback chain
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+A search result can carry several different scores from different stages of processing. The final ranking step was only looking at two of them and skipping the most refined ones. This fix teaches it to check the best available score first and fall back through less precise options only when needed, like reading the final exam grade before the midterm before the homework score.

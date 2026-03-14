@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Causal neighbor boost and injection.
+Describes the post-fusion causal boost that walks `causal_edges` up to 2 hops from top-ranked seed results, applying relation-type weighted amplification with a combined causal + session boost ceiling of 0.20.
 
 ## 2. CURRENT REALITY
 
@@ -42,3 +43,7 @@ The combined causal + session boost ceiling is 0.20, preventing runaway score in
 - Group: Graph signal activation
 - Source feature title: Causal neighbor boost and injection
 - Current reality source: audit-D04 gap backfill
+
+## 5. IN SIMPLE TERMS
+
+When a search result scores highly, this feature follows its cause-and-effect links to find related memories nearby in the graph. Those neighbors get a score bump because if Memory A is relevant and it caused or enabled Memory B, there is a good chance Memory B matters too. There is a ceiling on how much boost any result can receive so that highly connected clusters do not take over all the top spots.

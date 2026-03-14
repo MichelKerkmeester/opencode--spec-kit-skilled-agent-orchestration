@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: 001-baseline-and-safety-rails"
-description: "Verified implementation summary for Phase 1 baseline and safety rails."
+description: "Verified implementation summary for Phase 1 baseline and safety rails under the default-on Phase 015 rollout."
 SPECKIT_TEMPLATE_SOURCE: "impl-summary-core | v2.2"
 trigger_phrases:
   - "phase 1 summary"
@@ -35,8 +35,10 @@ Phase 1 is implemented and verified. The baseline package and safety rails are a
 - `mcp_server/scripts/migrations/create-checkpoint.ts`
 - `mcp_server/scripts/migrations/restore-checkpoint.ts`
 - `mcp_server/lib/search/vector-index-schema.ts`
+- `mcp_server/package.json` (`test:hydra:phase1` dedicated regression shortcut)
 
 Manual playbook references were corrected from old Hydra naming to the memory-roadmap naming used by the live code and tests.
+The broader Phase 015 runtime now uses default-on roadmap behavior (`shared-rollout` phase default plus six enabled capabilities unless explicitly disabled).
 
 ---
 
@@ -46,8 +48,11 @@ Manual playbook references were corrected from old Hydra naming to the memory-ro
 |-------|--------|
 | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh [phase-folder]` | PASS |
 | `npx tsc --noEmit` in `.opencode/skill/system-spec-kit/mcp_server` | PASS |
-| `npx vitest run tests/memory-roadmap-flags.vitest.ts tests/memory-state-baseline.vitest.ts tests/migration-checkpoint-scripts.vitest.ts tests/vector-index-schema-compatibility.vitest.ts` | PASS |
-| Consolidated roadmap suite (`15` files, `145` tests) | PASS |
+| `npm run build` in `.opencode/skill/system-spec-kit/mcp_server` | PASS |
+| `npx vitest run tests/memory-roadmap-flags.vitest.ts tests/retrieval-telemetry.vitest.ts tests/adaptive-ranking.vitest.ts tests/memory-governance.vitest.ts tests/shared-spaces.vitest.ts tests/handler-memory-save.vitest.ts` | PASS (`79` tests across `6` files) |
+| Manual dist roadmap smoke (`SPECKIT_GRAPH_UNIFIED=false` baseline snapshot + `SPECKIT_HYDRA_PHASE=graph SPECKIT_HYDRA_GRAPH_UNIFIED=true` graph snapshot) | PASS |
+| Consolidated roadmap suite (`15` files, `160` tests) | PASS |
+| Six-phase validation sweep (`001`-`006` `validate.sh`) | PASS |
 
 ---
 

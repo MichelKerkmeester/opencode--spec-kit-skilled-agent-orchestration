@@ -20,7 +20,8 @@ type EnrichedPipelineRow = PipelineRow & { anchorMetadata?: AnchorMetadata[] };
 describe('extractAnchorMetadata — parsing', () => {
   // ───────────────────────────────────────────────────────────────
   // 1. 1 EMPTY / NULL-ISH INPUT
-  // ───────────────────────────────────────────────────────────────  describe('Empty and null-ish content', () => {
+  // ───────────────────────────────────────────────────────────────
+  describe('Empty and null-ish content', () => {
     it('E01: empty string returns empty array', () => {
       expect(extractAnchorMetadata('')).toEqual([]);
     });
@@ -46,7 +47,8 @@ describe('extractAnchorMetadata — parsing', () => {
 
   // ───────────────────────────────────────────────────────────────
   // 2. 2 SINGLE ANCHOR
-  // ───────────────────────────────────────────────────────────────  describe('Single anchor extraction', () => {
+  // ───────────────────────────────────────────────────────────────
+  describe('Single anchor extraction', () => {
     it('A01: basic anchor pair is extracted with correct id and line numbers', () => {
       const content = [
         '# File header',               // line 1
@@ -122,7 +124,8 @@ describe('extractAnchorMetadata — parsing', () => {
 
   // ───────────────────────────────────────────────────────────────
   // 3. 3 MULTIPLE ANCHORS
-  // ───────────────────────────────────────────────────────────────  describe('Multiple anchors in one document', () => {
+  // ───────────────────────────────────────────────────────────────
+  describe('Multiple anchors in one document', () => {
     it('M01: two sequential anchors both extracted', () => {
       const content = [
         '<!-- ANCHOR:summary -->',      // line 1
@@ -210,7 +213,8 @@ describe('extractAnchorMetadata — parsing', () => {
 
   // ───────────────────────────────────────────────────────────────
   // 4. 4 MALFORMED / EDGE-CASE CONTENT
-  // ───────────────────────────────────────────────────────────────  describe('Malformed anchor content', () => {
+  // ───────────────────────────────────────────────────────────────
+  describe('Malformed anchor content', () => {
     it('F01: unmatched opening anchor is silently ignored', () => {
       const content = [
         '<!-- ANCHOR:orphan -->',
@@ -319,13 +323,15 @@ describe('extractAnchorMetadata — type extraction', () => {
 describe('enrichResultsWithAnchorMetadata — annotation', () => {
   // ───────────────────────────────────────────────────────────────
   // 5. HELPERS
-  // ───────────────────────────────────────────────────────────────  function makeRow(overrides: Partial<EnrichedPipelineRow> = {}): EnrichedPipelineRow {
+  // ───────────────────────────────────────────────────────────────
+  function makeRow(overrides: Partial<EnrichedPipelineRow> = {}): EnrichedPipelineRow {
     return { id: 1, score: 0.8, ...overrides };
   }
 
   // ───────────────────────────────────────────────────────────────
   // 6. 1 EMPTY / EDGE-CASE INPUTS
-  // ───────────────────────────────────────────────────────────────  describe('Empty and edge-case inputs', () => {
+  // ───────────────────────────────────────────────────────────────
+  describe('Empty and edge-case inputs', () => {
     it('R01: empty array returns empty array', () => {
       expect(enrichResultsWithAnchorMetadata([])).toEqual([]);
     });
@@ -355,7 +361,8 @@ describe('enrichResultsWithAnchorMetadata — annotation', () => {
 
   // ───────────────────────────────────────────────────────────────
   // 7. 2 ENRICHMENT OF ROWS WITH ANCHORS
-  // ───────────────────────────────────────────────────────────────  describe('Enrichment when anchors are present', () => {
+  // ───────────────────────────────────────────────────────────────
+  describe('Enrichment when anchors are present', () => {
     it('R06: row with one anchor receives anchorMetadata array', () => {
       const content = '<!-- ANCHOR:summary -->\nSome text.\n<!-- /ANCHOR:summary -->';
       const row = makeRow({ content });
@@ -435,7 +442,8 @@ describe('enrichResultsWithAnchorMetadata — annotation', () => {
 
   // ───────────────────────────────────────────────────────────────
   // 8. 3 MIXED BATCH (SOME ROWS WITH ANCHORS, SOME WITHOUT)
-  // ───────────────────────────────────────────────────────────────  describe('Mixed batch of rows', () => {
+  // ───────────────────────────────────────────────────────────────
+  describe('Mixed batch of rows', () => {
     it('R11: only rows with anchor content are annotated', () => {
       const withAnchorContent = '<!-- ANCHOR:summary -->\ntext\n<!-- /ANCHOR:summary -->';
       const rows = [
@@ -486,7 +494,8 @@ describe('enrichResultsWithAnchorMetadata — annotation', () => {
 
   // ───────────────────────────────────────────────────────────────
   // 9. 4 SCORE IMMUTABILITY INVARIANT
-  // ───────────────────────────────────────────────────────────────  describe('Score immutability (Stage 4 invariant)', () => {
+  // ───────────────────────────────────────────────────────────────
+  describe('Score immutability (Stage 4 invariant)', () => {
     const SCORE_FIELDS = ['score', 'rrfScore', 'similarity', 'intentAdjustedScore', 'importance_weight'] as const;
 
     it('R14: no score field is added, removed, or changed by enrichment', () => {

@@ -6,16 +6,17 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Health diagnostics (memory_health).
+Covers the health diagnostics tool that reports system readiness, alias conflicts and optional auto-repair actions.
 
 ## 2. CURRENT REALITY
 
-`memory_health` has two report modes. `full` returns system diagnostics: database connectivity, embedding model readiness, vector-search availability, memory count, uptime, server version, alias-conflict summary, repair metadata, and embedding provider details. `divergent_aliases` returns a compact triage payload that focuses only on alias groups whose `specs/` and `.opencode/specs/` variants have different content hashes.
+`memory_health` has two report modes. `full` returns system diagnostics: database connectivity, embedding model readiness, vector-search availability, memory count, uptime, server version, alias-conflict summary, repair metadata and embedding provider details. `divergent_aliases` returns a compact triage payload that focuses only on alias groups whose `specs/` and `.opencode/specs/` variants have different content hashes.
 
-The top-level status is currently derived from two signals only: embedding model readiness and database connectivity. FTS drift and alias conflicts do not flip the status to `degraded` by themselves; they surface through hints and the repair payload. The embedding provider section exposes a redacted database path, not a raw absolute path.
+The top-level status is currently derived from two signals only: embedding model readiness and database connectivity. FTS drift and alias conflicts do not flip the status to `degraded` by themselves. They surface through hints and the repair payload. The embedding provider section exposes a redacted database path, not a raw absolute path.
 
 `autoRepair: true` without `confirmed: true` does not execute repair actions. Instead, the handler returns a confirmation-only success response describing the actions it would take. The public tool schema now accepts `confirmed`, so the documented confirmation flow is reachable through real MCP calls as well as direct handler tests.
 
@@ -49,3 +50,7 @@ All health validation failures return MCP error envelopes with `E_INVALID_INPUT`
 - Group: Discovery
 - Source feature title: Health diagnostics (memory_health)
 - Current reality source: `mcp_server/handlers/memory-crud-health.ts`, public schemas, and discovery test coverage
+
+## 5. IN SIMPLE TERMS
+
+This is the system's self-check tool. It tells you whether the database is connected, whether the search engine is ready and whether anything looks out of place. If it finds problems, it can suggest or even perform automatic repairs. Think of it like running a diagnostic on your car to see if everything is working properly.

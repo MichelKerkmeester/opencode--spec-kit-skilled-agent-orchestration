@@ -38,14 +38,14 @@ Phase 5 makes the roadmap safe enough for wider rollout by enforcing boundaries 
 - [x] Governance scope and safety goals documented
 - [x] Dependencies on Phase 2 and parent ADRs documented
 - [x] Isolation, deletion, and audit requirements documented
-- [ ] Phase 2 lineage contract approved for governance use
+- [x] Phase 2 lineage contract approved for governance use
 
 ### Definition of Done
-- [ ] Scope predicates applied consistently across read/write/index paths
-- [ ] Governed ingest rejects malformed provenance
-- [ ] Retention and cascade deletion workflows validated
-- [ ] Audit evidence is inspectable
-- [ ] Docs and playbook reflect shipped behavior
+- [x] Scope predicates applied consistently across read/write/index paths
+- [x] Governed ingest rejects malformed provenance
+- [x] Retention and cascade deletion workflows validated
+- [x] Audit evidence is inspectable
+- [x] Docs and playbook reflect shipped behavior
 
 ---
 
@@ -73,19 +73,19 @@ Central governance layer with shared policy checks, lifecycle jobs, and audit ou
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase A: Policy Model and Shared Middleware
-- [ ] Finalize hierarchical scope model
-- [ ] Build shared policy middleware
-- [ ] Define audit event contract
+- [x] Finalize hierarchical scope model
+- [x] Build shared policy middleware
+- [x] Define audit event contract
 
 ### Phase B: Governed Ingest and Retrieval
-- [ ] Apply scope predicates to retrieval
-- [ ] Apply provenance gates to ingest
-- [ ] Add denial and audit outputs
+- [x] Apply scope predicates to retrieval
+- [x] Apply provenance gates to ingest
+- [x] Add denial and audit outputs
 
 ### Phase C: Lifecycle Enforcement and Validation
-- [ ] Implement retention and cascade deletion jobs
-- [ ] Add leak-test and deletion-drill coverage
-- [ ] Add operator playbook for governance procedures
+- [x] Implement retention and cascade deletion jobs
+- [x] Add leak-test and deletion-drill coverage
+- [x] Add operator playbook for governance procedures
 
 ---
 
@@ -151,10 +151,10 @@ Phase 2 lineage -> Policy model -> Governed ingest/retrieval -> Lifecycle jobs -
 ## L2: ENHANCED ROLLBACK
 
 ### Pre-deployment Checklist
-- [ ] Scope matrix defined
-- [ ] Audit event contract defined
-- [ ] Deletion graph documented
-- [ ] Checkpoint restore path identified
+- [x] Scope matrix defined
+- [x] Audit event contract defined
+- [x] Deletion graph documented
+- [x] Checkpoint restore path identified
 
 ### Rollback Procedure
 1. Disable governance rollout.

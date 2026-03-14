@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Embedding cache.
+Describes the SQLite-backed embedding cache keyed by SHA-256 content hash and model ID that avoids redundant embedding API calls on re-index.
 
 ## 2. CURRENT REALITY
 
@@ -38,3 +39,7 @@ The cache has no feature flag because cache misses fall through to normal embedd
 - Group: Scoring and calibration
 - Source feature title: Embedding cache
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+Converting text into the numerical format the search engine understands is the slowest and most expensive step. This feature saves those conversions so the system does not have to redo them when the same content is indexed again. It is like keeping a translated copy of a document instead of hiring the translator every time you need it. If the content has not changed, the saved version is used instantly.

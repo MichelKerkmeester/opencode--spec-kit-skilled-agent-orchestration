@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Deferred lexical-only indexing.
+Deferred lexical-only indexing stores memories with `embedding_status='pending'` when embedding generation fails, keeping them searchable via BM25/FTS5 until retry succeeds.
 
 ## 2. CURRENT REALITY
 
@@ -39,3 +40,7 @@ Async embedding fallback via `index_memory_deferred()`. When embedding generatio
 - Source feature title: Deferred lexical-only indexing
 - Current reality source: 10-agent feature gap scan
 - Playbook reference: NEW-111
+
+## 5. IN SIMPLE TERMS
+
+Sometimes the system cannot create a full searchable fingerprint for a memory because the fingerprinting service is temporarily down. Instead of losing the memory entirely, this feature saves it in a simpler text-searchable form so you can still find it by keywords. When the fingerprinting service comes back, the system automatically retries and upgrades the memory to full searchability.

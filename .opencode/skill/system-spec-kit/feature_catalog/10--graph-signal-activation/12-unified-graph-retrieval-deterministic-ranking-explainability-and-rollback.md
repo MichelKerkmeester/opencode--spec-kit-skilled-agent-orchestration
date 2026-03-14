@@ -7,10 +7,11 @@
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
 - [5. PLAYBOOK COVERAGE](#5--playbook-coverage)
+- [6. IN SIMPLE TERMS](#6--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Unified graph retrieval, deterministic ranking, explainability, and rollback.
+Describes the Phase 3 unified graph retrieval path with deterministic ranking contracts, trace-based explainability and runtime rollback via the `SPECKIT_GRAPH_UNIFIED` gate.
 
 ## 2. CURRENT REALITY
 
@@ -46,3 +47,7 @@ Rollback is controlled by the runtime graph gate (`SPECKIT_GRAPH_UNIFIED`). Disa
 ## 5. PLAYBOOK COVERAGE
 
 - Mapped to manual testing playbook scenario NEW-120
+
+## 6. IN SIMPLE TERMS
+
+This brings all the graph-based search features together into one reliable path. The same query will always return results in the same order, and you can see exactly why each result ranked where it did. If anything goes wrong with the graph features, a single switch turns them off and search falls back to working without them. Think of it as a well-labeled control panel with an emergency off switch.

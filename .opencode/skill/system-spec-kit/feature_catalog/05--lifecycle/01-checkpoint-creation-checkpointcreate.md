@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Checkpoint creation (checkpoint_create).
+Covers the checkpoint creation tool that captures gzip-compressed memory state snapshots for rollback safety.
 
 ## 2. CURRENT REALITY
 
@@ -142,3 +143,7 @@ Checkpoints are the safety net for destructive operations. `memory_bulk_delete` 
 - Group: Lifecycle
 - Source feature title: Checkpoint creation (checkpoint_create)
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+This takes a snapshot of your entire knowledge base at a point in time, like a save point in a video game. If something goes wrong later (an accidental deletion or a bad import), you can restore back to this snapshot. The system keeps up to 10 snapshots and automatically removes the oldest one when you create a new one.

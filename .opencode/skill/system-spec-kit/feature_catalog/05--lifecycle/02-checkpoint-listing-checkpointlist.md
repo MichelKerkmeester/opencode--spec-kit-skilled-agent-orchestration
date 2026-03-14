@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Checkpoint listing (checkpoint_list).
+Covers the checkpoint listing tool that returns paginated metadata for available snapshots.
 
 ## 2. CURRENT REALITY
 
@@ -137,3 +138,7 @@ Returns a paginated list of available checkpoints with metadata: name, creation 
 - Group: Lifecycle
 - Source feature title: Checkpoint listing (checkpoint_list)
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+This shows you all available snapshots so you can see when each one was taken and what it covers. Think of it like looking at a list of backup dates on your phone before deciding which one to restore from.

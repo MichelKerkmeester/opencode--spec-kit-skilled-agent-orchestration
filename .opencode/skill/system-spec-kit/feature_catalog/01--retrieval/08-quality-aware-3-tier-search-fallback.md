@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Quality-aware 3-tier search fallback.
+Covers the adaptive search degradation chain that progressively widens retrieval when initial results fail quality checks.
 
 ## 2. CURRENT REALITY
 
@@ -38,3 +39,7 @@ Adaptive search degradation chain in `searchWithFallbackTiered()`. Tier 1: enhan
 - Source feature title: Quality-aware 3-tier search fallback
 - Current reality source: 10-agent feature gap scan
 - Playbook reference: NEW-109
+
+## 5. IN SIMPLE TERMS
+
+If your search does not find good results on the first try, the system automatically tries again with wider criteria instead of giving up. Think of it like asking a store clerk for a specific item. If they cannot find it on the first shelf, they check the back room and then the warehouse. You almost never walk away empty-handed.

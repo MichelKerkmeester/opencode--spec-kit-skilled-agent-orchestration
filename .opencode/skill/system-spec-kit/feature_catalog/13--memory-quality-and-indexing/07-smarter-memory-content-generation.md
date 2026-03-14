@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Smarter memory content generation.
+The content normalizer strips markdown formatting noise before embedding generation and BM25 indexing to improve retrieval quality.
 
 ## 2. CURRENT REALITY
 
@@ -52,3 +53,7 @@ The normalizer has no feature flag because it is a non-destructive improvement. 
 - Group: Memory quality and indexing
 - Source feature title: Smarter memory content generation
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+Raw notes are full of formatting clutter like bullet markers, code fences and header symbols that have nothing to do with the actual meaning. This feature strips that clutter away before the system creates a searchable fingerprint of your content. The result is cleaner fingerprints that match your questions more accurately, like removing the wrapping paper so you can see what is actually inside the box.

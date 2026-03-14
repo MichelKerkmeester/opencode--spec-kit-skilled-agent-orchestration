@@ -39,14 +39,14 @@ Phase 2 extends the current server with first-class lineage state. The plan adds
 - [x] Problem statement clear and scope documented
 - [x] Dependencies on Phase 1 and parent ADRs documented
 - [x] Success criteria and migration risks documented
-- [ ] Phase 1 handoff criteria approved
+- [x] Phase 1 handoff criteria approved
 
 ### Definition of Done
-- [ ] Append-first lineage writes implemented
-- [ ] Active projection and `asOf` semantics validated
-- [ ] Backfill and rollback drills pass
-- [ ] Lineage integrity test suite passes
-- [ ] Docs and playbook reflect the shipped behavior
+- [x] Append-first lineage writes implemented
+- [x] Active projection and `asOf` semantics validated
+- [x] Backfill and rollback drills pass
+- [x] Lineage integrity test suite passes
+- [x] Docs and playbook reflect the shipped behavior
 
 ---
 
@@ -74,19 +74,19 @@ Incremental schema extension over the current MCP storage model. Immutable linea
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase A: Contract and Schema Design
-- [ ] Finalize lineage entity model and predecessor rules
-- [ ] Define active projection strategy
-- [ ] Specify `asOf` contract and edge behavior
+- [x] Finalize lineage entity model and predecessor rules
+- [x] Define active projection strategy
+- [x] Specify `asOf` contract and edge behavior
 
 ### Phase B: Write Path and Migration
-- [ ] Implement lineage writes in save/update flows
-- [ ] Add migration/backfill path for existing data
-- [ ] Add checkpoint-backed rollback procedure
+- [x] Implement lineage writes in save/update flows
+- [x] Add migration/backfill path for existing data
+- [x] Add checkpoint-backed rollback procedure
 
 ### Phase C: Query Resolution and Verification
-- [ ] Add current-state and `asOf` read resolution
-- [ ] Add integrity and temporal correctness tests
-- [ ] Update playbook and docs for lineage operations
+- [x] Add current-state and `asOf` read resolution
+- [x] Add integrity and temporal correctness tests
+- [x] Update playbook and docs for lineage operations
 
 ---
 
@@ -153,10 +153,10 @@ Phase 1 baseline -> Lineage schema and contract -> Backfill/write path -> Tempor
 ## L2: ENHANCED ROLLBACK
 
 ### Pre-deployment Checklist
-- [ ] Checkpoint captured
-- [ ] Dry-run backfill available
-- [ ] Integrity validator implemented
-- [ ] Current-read fallback path identified
+- [x] Checkpoint captured
+- [x] Dry-run backfill available
+- [x] Integrity validator implemented
+- [x] Current-read fallback path identified
 
 ### Rollback Procedure
 1. Stop lineage rollout traffic.

@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Session-manager transaction gap fixes.
+Tracks the fix that moved `enforceEntryLimit()` calls inside database transactions to prevent concurrent limit violations.
 
 ## 2. CURRENT REALITY
 
@@ -54,3 +55,7 @@ Two instances of `enforceEntryLimit()` called outside `db.transaction()` blocks 
 - Group: Multi-agent deep review remediation (Phase 018)
 - Source feature title: Session-manager transaction gap fixes
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+When two requests arrived at the same time, they could both slip past a size limit check and add more data than allowed. This fix bundles the check and the write into a single step so they cannot be split apart, preventing the system from exceeding its own limits.

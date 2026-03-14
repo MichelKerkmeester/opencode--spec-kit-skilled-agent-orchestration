@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Quality gate timer persistence.
+Quality gate timer persistence stores the warn-only countdown timestamp in SQLite so server restarts do not reset the 14-day graduation period.
 
 ## 2. CURRENT REALITY
 
@@ -88,3 +89,7 @@ The `qualityGateActivatedAt` timestamp in `save-quality-gate.ts` was stored pure
 - Group: Gemini review P1 fixes (Phase 015)
 - Source feature title: Quality gate timer persistence
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+The quality gate has a two-week warm-up period where it warns about problems without blocking saves. Previously, every time the server restarted, the countdown clock reset and the warm-up never finished. This fix saves the clock to the database so restarts do not reset it. Think of it like writing your gym start date on a calendar instead of just remembering it in your head.

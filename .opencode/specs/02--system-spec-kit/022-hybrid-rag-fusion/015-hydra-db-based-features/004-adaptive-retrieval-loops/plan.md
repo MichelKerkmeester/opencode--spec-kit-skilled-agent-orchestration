@@ -38,14 +38,14 @@ Phase 4 adds learning loops cautiously. The plan captures feedback signals, eval
 - [x] Adaptive scope and guardrails documented
 - [x] Dependencies on Phase 3 traces documented
 - [x] Promotion and rollback requirements documented
-- [ ] Phase 3 handoff approved
+- [x] Phase 3 handoff approved
 
 ### Definition of Done
-- [ ] Signal capture implemented
-- [ ] Shadow-mode evaluation passes regression gates
-- [ ] Bounded-update policy verified
-- [ ] Rollback path validated
-- [ ] Docs and playbook reflect shipped behavior
+- [x] Signal capture implemented
+- [x] Shadow-mode evaluation passes regression gates
+- [x] Bounded-update policy verified
+- [x] Rollback path validated
+- [x] Docs and playbook reflect shipped behavior
 
 ---
 
@@ -73,19 +73,19 @@ Bounded adaptive-learning layer on top of a deterministic retrieval baseline. Sh
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase A: Signal and Policy Design
-- [ ] Define the signal contract and thresholds
-- [ ] Define bounded-update policy rules
-- [ ] Define audit and trace format
+- [x] Define the signal contract and thresholds
+- [x] Define bounded-update policy rules
+- [x] Define audit and trace format
 
 ### Phase B: Shadow-Mode Execution
-- [ ] Capture signals in the data path
-- [ ] Run adaptive evaluation in shadow mode
-- [ ] Record decision traces and comparison metrics
+- [x] Capture signals in the data path
+- [x] Run adaptive evaluation in shadow mode
+- [x] Record decision traces and comparison metrics
 
 ### Phase C: Promotion and Rollback Validation
-- [ ] Define promotion review procedure
-- [ ] Validate rollback and cache reset behavior
-- [ ] Add playbook coverage for shadow and rollback checks
+- [x] Define promotion review procedure
+- [x] Validate rollback and cache reset behavior
+- [x] Add playbook coverage for shadow and rollback checks
 
 ---
 
@@ -151,10 +151,10 @@ Phase 3 traces -> Signal capture -> Shadow evaluation -> Promotion rules -> Phas
 ## L2: ENHANCED ROLLBACK
 
 ### Pre-deployment Checklist
-- [ ] Stable Phase 3 baseline captured
-- [ ] Signal thresholds defined
-- [ ] Bounded-update policy implemented
-- [ ] Kill-switch path documented
+- [x] Stable Phase 3 baseline captured
+- [x] Signal thresholds defined
+- [x] Bounded-update policy implemented
+- [x] Kill-switch path documented
 
 ### Rollback Procedure
 1. Disable adaptive mode.

@@ -42,8 +42,93 @@ export interface AdaptiveShadowProposal {
   demotedIds: number[];
 }
 
+export interface AdaptiveThresholdSnapshot {
+  maxAdaptiveDelta: number;
+  minSignalsForPromotion: number;
+  signalWeights: Record<AdaptiveSignalType, number>;
+}
+
+export interface AdaptiveSignalQualitySummary {
+  totalSignals: number;
+  distinctMemories: number;
+  promotionReadyMemories: number;
+  shadowRunCount: number;
+  latestShadowMode: 'shadow' | 'promoted' | null;
+  weightedSignalScore: number;
+  signalCounts: Record<AdaptiveSignalType, number>;
+  signalTotals: Record<AdaptiveSignalType, number>;
+}
+
+export interface AdaptiveThresholdOverrides {
+  maxAdaptiveDelta?: number;
+  minSignalsForPromotion?: number;
+  signalWeights?: Partial<Record<AdaptiveSignalType, number>>;
+}
+
+export interface AdaptiveThresholdTuningResult {
+  summary: AdaptiveSignalQualitySummary;
+  previous: AdaptiveThresholdSnapshot;
+  next: AdaptiveThresholdSnapshot;
+}
+
 const MAX_ADAPTIVE_DELTA = 0.08;
 const MIN_SIGNALS_FOR_PROMOTION = 3;
+const ADAPTIVE_SIGNAL_WEIGHTS: Record<AdaptiveSignalType, number> = {
+  access: 0.005,
+  outcome: 0.02,
+  correction: -0.03,
+};
+const MIN_ALLOWED_ADAPTIVE_DELTA = 0.02;
+const MAX_ALLOWED_ADAPTIVE_DELTA = 0.12;
+const MIN_ALLOWED_SIGNALS_FOR_PROMOTION = 1;
+const MAX_ALLOWED_SIGNALS_FOR_PROMOTION = 8;
+
+let adaptiveThresholdOverrides: AdaptiveThresholdOverrides = {};
+
+function isDefaultOnFlagEnabled(...flagNames: string[]): boolean {
+  for (const flagName of flagNames) {
+    const rawValue = process.env[flagName]?.trim().toLowerCase();
+    if (rawValue === 'false' || rawValue === '0') {
+      return false;
+    }
+    if (rawValue === 'true' || rawValue === '1') {
+      return true;
+    }
+  }
+  return true;
+}
+
+function roundAdaptiveNumber(value: number, digits = 3): number {
+  const factor = 10 ** digits;
+  return Math.round(value * factor) / factor;
+}
+
+function clampAdaptiveDelta(value: number): number {
+  return roundAdaptiveNumber(Math.max(MIN_ALLOWED_ADAPTIVE_DELTA, Math.min(MAX_ALLOWED_ADAPTIVE_DELTA, value)));
+}
+
+function clampSignalThreshold(value: number): number {
+  return Math.max(
+    MIN_ALLOWED_SIGNALS_FOR_PROMOTION,
+    Math.min(MAX_ALLOWED_SIGNALS_FOR_PROMOTION, Math.trunc(value)),
+  );
+}
+
+function getAdaptiveThresholdConfig(): AdaptiveThresholdSnapshot {
+  return {
+    maxAdaptiveDelta: clampAdaptiveDelta(adaptiveThresholdOverrides.maxAdaptiveDelta ?? MAX_ADAPTIVE_DELTA),
+    minSignalsForPromotion: clampSignalThreshold(
+      adaptiveThresholdOverrides.minSignalsForPromotion ?? MIN_SIGNALS_FOR_PROMOTION,
+    ),
+    signalWeights: {
+      access: roundAdaptiveNumber(adaptiveThresholdOverrides.signalWeights?.access ?? ADAPTIVE_SIGNAL_WEIGHTS.access),
+      outcome: roundAdaptiveNumber(adaptiveThresholdOverrides.signalWeights?.outcome ?? ADAPTIVE_SIGNAL_WEIGHTS.outcome),
+      correction: roundAdaptiveNumber(
+        adaptiveThresholdOverrides.signalWeights?.correction ?? ADAPTIVE_SIGNAL_WEIGHTS.correction,
+      ),
+    },
+  };
+}
 
 function compareAdaptiveRows(
   a: Record<string, unknown> & { id: number },
@@ -61,8 +146,10 @@ function compareAdaptiveRows(
 }
 
 function isAdaptiveEnabled(): boolean {
-  return process.env.SPECKIT_MEMORY_ADAPTIVE_RANKING === 'true'
-    || process.env.SPECKIT_HYDRA_ADAPTIVE_RANKING === 'true';
+  return isDefaultOnFlagEnabled(
+    'SPECKIT_MEMORY_ADAPTIVE_RANKING',
+    'SPECKIT_HYDRA_ADAPTIVE_RANKING',
+  );
 }
 
 /**
@@ -148,8 +235,180 @@ export function resetAdaptiveState(
   };
 }
 
+/**
+ * Apply resettable adaptive-threshold overrides after evaluation.
+ *
+ * @param overrides - Optional threshold and weight overrides to apply.
+ * @returns Effective adaptive threshold snapshot after the update.
+ */
+export function setAdaptiveThresholdOverrides(
+  overrides: AdaptiveThresholdOverrides = {},
+): AdaptiveThresholdSnapshot {
+  adaptiveThresholdOverrides = {
+    maxAdaptiveDelta: typeof overrides.maxAdaptiveDelta === 'number' && Number.isFinite(overrides.maxAdaptiveDelta)
+      ? overrides.maxAdaptiveDelta
+      : undefined,
+    minSignalsForPromotion:
+      typeof overrides.minSignalsForPromotion === 'number' && Number.isFinite(overrides.minSignalsForPromotion)
+        ? overrides.minSignalsForPromotion
+        : undefined,
+    signalWeights: overrides.signalWeights
+      ? {
+          access:
+            typeof overrides.signalWeights.access === 'number' && Number.isFinite(overrides.signalWeights.access)
+              ? overrides.signalWeights.access
+              : undefined,
+          outcome:
+            typeof overrides.signalWeights.outcome === 'number' && Number.isFinite(overrides.signalWeights.outcome)
+              ? overrides.signalWeights.outcome
+              : undefined,
+          correction:
+            typeof overrides.signalWeights.correction === 'number' && Number.isFinite(overrides.signalWeights.correction)
+              ? overrides.signalWeights.correction
+              : undefined,
+        }
+      : undefined,
+  };
+  return getAdaptiveThresholdConfig();
+}
+
+/**
+ * Clear adaptive-threshold tuning and restore the default bounded configuration.
+ *
+ * @returns Default adaptive threshold snapshot.
+ */
+export function resetAdaptiveThresholdOverrides(): AdaptiveThresholdSnapshot {
+  adaptiveThresholdOverrides = {};
+  return getAdaptiveThresholdConfig();
+}
+
+/**
+ * Snapshot the bounded thresholds and signal weights that govern adaptive ranking.
+ *
+ * @returns Immutable adaptive threshold configuration for diagnostics.
+ */
+export function getAdaptiveThresholdSnapshot(): AdaptiveThresholdSnapshot {
+  return getAdaptiveThresholdConfig();
+}
+
+/**
+ * Summarize adaptive signal quality and rollout readiness across stored events.
+ *
+ * @param database - Database connection that stores adaptive state.
+ * @returns Aggregate signal counts, totals, and shadow-run coverage.
+ */
+export function summarizeAdaptiveSignalQuality(
+  database: Database.Database,
+): AdaptiveSignalQualitySummary {
+  ensureAdaptiveTables(database);
+  const thresholds = getAdaptiveThresholdConfig();
+
+  const signalCounts: Record<AdaptiveSignalType, number> = {
+    access: 0,
+    outcome: 0,
+    correction: 0,
+  };
+  const signalTotals: Record<AdaptiveSignalType, number> = {
+    access: 0,
+    outcome: 0,
+    correction: 0,
+  };
+
+  const signalRows = database.prepare(`
+    SELECT signal_type, COUNT(*) AS count, COALESCE(SUM(signal_value), 0) AS total
+    FROM adaptive_signal_events
+    GROUP BY signal_type
+  `).all() as Array<{ signal_type: AdaptiveSignalType; count: number; total: number }>;
+
+  let totalSignals = 0;
+  let weightedSignalScore = 0;
+  for (const row of signalRows) {
+    signalCounts[row.signal_type] = row.count;
+    signalTotals[row.signal_type] = row.total;
+    totalSignals += row.count;
+    weightedSignalScore += row.total * thresholds.signalWeights[row.signal_type];
+  }
+
+  const distinctMemoriesRow = database.prepare(`
+    SELECT COUNT(DISTINCT memory_id) AS count
+    FROM adaptive_signal_events
+  `).get() as { count?: number } | undefined;
+  const promotionReadyRow = database.prepare(`
+    SELECT COUNT(*) AS count
+    FROM (
+      SELECT memory_id
+      FROM adaptive_signal_events
+      GROUP BY memory_id
+      HAVING COUNT(*) >= ?
+    )
+  `).get(thresholds.minSignalsForPromotion) as { count?: number } | undefined;
+  const shadowRunCountRow = database.prepare(`
+    SELECT COUNT(*) AS count
+    FROM adaptive_shadow_runs
+  `).get() as { count?: number } | undefined;
+  const latestShadowRun = database.prepare(`
+    SELECT mode
+    FROM adaptive_shadow_runs
+    ORDER BY id DESC
+    LIMIT 1
+  `).get() as { mode?: string } | undefined;
+
+  return {
+    totalSignals,
+    distinctMemories: typeof distinctMemoriesRow?.count === 'number' ? distinctMemoriesRow.count : 0,
+    promotionReadyMemories: typeof promotionReadyRow?.count === 'number' ? promotionReadyRow.count : 0,
+    shadowRunCount: typeof shadowRunCountRow?.count === 'number' ? shadowRunCountRow.count : 0,
+    latestShadowMode: latestShadowRun?.mode === 'shadow' || latestShadowRun?.mode === 'promoted'
+      ? latestShadowRun.mode
+      : null,
+    weightedSignalScore,
+    signalCounts,
+    signalTotals,
+  };
+}
+
+/**
+ * Tune adaptive thresholds after reviewing the current shadow signal set.
+ *
+ * @param database - Database connection that stores adaptive state.
+ * @returns Previous and next threshold snapshots plus the summary that drove the tuning.
+ */
+export function tuneAdaptiveThresholdsAfterEvaluation(
+  database: Database.Database,
+): AdaptiveThresholdTuningResult {
+  const previous = getAdaptiveThresholdConfig();
+  const summary = summarizeAdaptiveSignalQuality(database);
+
+  let nextMinSignals = previous.minSignalsForPromotion;
+  let nextMaxAdaptiveDelta = previous.maxAdaptiveDelta;
+  const nextSignalWeights = { ...previous.signalWeights };
+
+  if (summary.totalSignals >= previous.minSignalsForPromotion * 2 && summary.weightedSignalScore >= 0.04) {
+    nextMinSignals = Math.max(2, previous.minSignalsForPromotion - 1);
+    nextMaxAdaptiveDelta = clampAdaptiveDelta(previous.maxAdaptiveDelta + 0.02);
+    nextSignalWeights.outcome = roundAdaptiveNumber(previous.signalWeights.outcome + 0.005);
+  } else if (summary.totalSignals < previous.minSignalsForPromotion * 2 || summary.distinctMemories < 2) {
+    nextMinSignals = clampSignalThreshold(previous.minSignalsForPromotion + 1);
+    nextMaxAdaptiveDelta = clampAdaptiveDelta(previous.maxAdaptiveDelta - 0.02);
+    nextSignalWeights.correction = roundAdaptiveNumber(previous.signalWeights.correction - 0.005);
+  }
+
+  const next = setAdaptiveThresholdOverrides({
+    maxAdaptiveDelta: nextMaxAdaptiveDelta,
+    minSignalsForPromotion: nextMinSignals,
+    signalWeights: nextSignalWeights,
+  });
+
+  return {
+    summary,
+    previous,
+    next,
+  };
+}
+
 function getSignalDelta(database: Database.Database, memoryId: number): number {
   ensureAdaptiveTables(database);
+  const thresholds = getAdaptiveThresholdConfig();
   const rows = database.prepare(`
     SELECT signal_type, COUNT(*) AS count, COALESCE(SUM(signal_value), 0) AS total
     FROM adaptive_signal_events
@@ -166,8 +425,11 @@ function getSignalDelta(database: Database.Database, memoryId: number): number {
     if (row.signal_type === 'correction') correctionTotal = row.total;
   }
 
-  const rawDelta = (accessTotal * 0.005) + (outcomeTotal * 0.02) - (correctionTotal * 0.03);
-  return Math.max(-MAX_ADAPTIVE_DELTA, Math.min(MAX_ADAPTIVE_DELTA, rawDelta));
+  const rawDelta =
+    (accessTotal * thresholds.signalWeights.access) +
+    (outcomeTotal * thresholds.signalWeights.outcome) +
+    (correctionTotal * thresholds.signalWeights.correction);
+  return Math.max(-thresholds.maxAdaptiveDelta, Math.min(thresholds.maxAdaptiveDelta, rawDelta));
 }
 
 /**
@@ -185,6 +447,7 @@ export function buildAdaptiveShadowProposal(
 ): AdaptiveShadowProposal | null {
   const mode = getAdaptiveMode();
   if (mode === 'disabled' || results.length === 0) return null;
+  const thresholds = getAdaptiveThresholdConfig();
 
   const production = results.map((row, index) => ({
     ...row,
@@ -227,16 +490,22 @@ export function buildAdaptiveShadowProposal(
   }));
 
   const promotedIds = rows
-    .filter((row) => row.shadowRank < row.productionRank && (signalCountMap.get(row.memoryId) ?? 0) >= MIN_SIGNALS_FOR_PROMOTION)
+    .filter(
+      (row) => row.shadowRank < row.productionRank
+        && (signalCountMap.get(row.memoryId) ?? 0) >= thresholds.minSignalsForPromotion,
+    )
     .map((row) => row.memoryId);
   const demotedIds = rows
-    .filter((row) => row.shadowRank > row.productionRank && (signalCountMap.get(row.memoryId) ?? 0) >= MIN_SIGNALS_FOR_PROMOTION)
+    .filter(
+      (row) => row.shadowRank > row.productionRank
+        && (signalCountMap.get(row.memoryId) ?? 0) >= thresholds.minSignalsForPromotion,
+    )
     .map((row) => row.memoryId);
 
   const proposal: AdaptiveShadowProposal = {
     mode,
     bounded: true,
-    maxDeltaApplied: MAX_ADAPTIVE_DELTA,
+    maxDeltaApplied: thresholds.maxAdaptiveDelta,
     query,
     rows,
     promotedIds,
@@ -247,7 +516,7 @@ export function buildAdaptiveShadowProposal(
   database.prepare(`
     INSERT INTO adaptive_shadow_runs (query, mode, bounded, max_delta_applied, proposal_json)
     VALUES (?, ?, ?, ?, ?)
-  `).run(query, mode, 1, MAX_ADAPTIVE_DELTA, JSON.stringify(proposal));
+  `).run(query, mode, 1, thresholds.maxAdaptiveDelta, JSON.stringify(proposal));
 
   return proposal;
 }

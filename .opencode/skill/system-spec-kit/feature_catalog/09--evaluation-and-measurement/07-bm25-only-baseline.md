@@ -7,10 +7,11 @@
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
 - [5. PLAYBOOK COVERAGE](#5--playbook-coverage)
+- [6. IN SIMPLE TERMS](#6--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for BM25-only baseline.
+Describes the FTS5-only baseline measurement (MRR@5 of 0.2083) that confirmed hybrid retrieval adds real value over keyword search alone.
 
 ## 2. CURRENT REALITY
 
@@ -45,3 +46,7 @@ If BM25 had been competitive, the entire multi-channel approach would be questio
 ## 5. PLAYBOOK COVERAGE
 
 - Mapped to manual testing playbook scenario NEW-011
+
+## 6. IN SIMPLE TERMS
+
+This test answered a simple question: "Would basic keyword search be good enough on its own?" By running just keyword matching against 110 test questions and measuring how poorly it performed, the team proved that the more advanced multi-method search approach is worth the extra effort. Without this baseline measurement, you would be guessing whether the added complexity actually helps.

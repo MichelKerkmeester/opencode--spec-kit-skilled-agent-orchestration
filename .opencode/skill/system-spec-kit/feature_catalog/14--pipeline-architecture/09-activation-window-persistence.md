@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Activation window persistence.
+Activation window persistence preserves the quality gate warn-only countdown timestamp across process restarts via SQLite storage.
 
 ## 2. CURRENT REALITY
 
@@ -36,3 +37,7 @@ The `ensureActivationTimestampInitialized` path was added to `save-quality-gate.
 - Group: Alignment remediation (Phase 016)
 - Source feature title: Activation window persistence
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+The quality gate needs a two-week trial period before it starts blocking bad saves. Previously, restarting the server reset the trial clock back to zero, so the gate never graduated. This fix remembers the start date in the database so restarts do not affect the countdown. Without it, the quality gate would stay in warning-only mode forever.

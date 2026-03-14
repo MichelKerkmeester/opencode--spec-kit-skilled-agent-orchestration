@@ -6,21 +6,22 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Math.max/min stack overflow elimination.
+Tracks the replacement of `Math.max(...array)` spread patterns with `reduce()` to prevent stack overflows on large arrays.
 
 ## 2. CURRENT REALITY
 
 `Math.max(...array)` and `Math.min(...array)` push all elements onto the call stack, causing `RangeError` on arrays exceeding ~100K elements. Seven production files were converted from spread patterns to `reduce()`:
 
-- `rsf-fusion.ts` — 6 instances (4 + 2)
-- `causal-boost.ts` — 1 instance
-- `evidence-gap-detector.ts` — 1 instance
-- `prediction-error-gate.ts` — 2 instances
-- `retrieval-telemetry.ts` — 1 instance
-- `reporting-dashboard.ts` — 2 instances
+- `rsf-fusion.ts`: 6 instances (4 + 2)
+- `causal-boost.ts`: 1 instance
+- `evidence-gap-detector.ts`: 1 instance
+- `prediction-error-gate.ts`: 2 instances
+- `retrieval-telemetry.ts`: 1 instance
+- `reporting-dashboard.ts`: 2 instances
 
 Each replacement uses `scores.reduce((a, b) => Math.max(a, b), -Infinity)` with an `AI-WHY` comment explaining the safety rationale.
 
@@ -68,3 +69,7 @@ Each replacement uses `scores.reduce((a, b) => Math.max(a, b), -Infinity)` with 
 - Group: Multi-agent deep review remediation (Phase 018)
 - Source feature title: Math.max/min stack overflow elimination
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+A common way of finding the largest or smallest number in a list was crashing the system when the list got too big. Seven places in the code used this risky approach. All were replaced with a safer method that works no matter how large the list grows, preventing crashes on big knowledge bases.

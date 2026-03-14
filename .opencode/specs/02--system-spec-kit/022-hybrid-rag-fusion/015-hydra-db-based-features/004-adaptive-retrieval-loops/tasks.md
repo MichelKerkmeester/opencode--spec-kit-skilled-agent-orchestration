@@ -58,7 +58,7 @@ contextType: "general"
 
 ## Coordination Checkpoints
 
-- [x] T430 Confirm Phase 3 handoff is approved
+- [x] T430 Confirm Phase 3 technical gate is verified
 - [x] T431 Confirm Phase 5 governance rules do not conflict with promotion policy
 - [x] T432 Update `implementation-summary.md` with execution evidence when work begins
 

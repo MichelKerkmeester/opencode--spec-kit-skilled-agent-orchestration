@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Chunk ordering preservation.
+Chunk ordering preservation sorts collapsed multi-chunk results by `chunk_index` so the consuming agent reads content in document order.
 
 ## 2. CURRENT REALITY
 
@@ -40,3 +41,7 @@ When multi-chunk results collapse back into a single memory during MPAB aggregat
 - Group: Pipeline architecture
 - Source feature title: Chunk ordering preservation
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+When a document is reassembled from its search-result pieces, the pieces need to appear in the order they were written, not in the order they scored. This feature makes sure you read the content from top to bottom, just like the original document. Without it, you would get a scrambled version where paragraph three appears before paragraph one.

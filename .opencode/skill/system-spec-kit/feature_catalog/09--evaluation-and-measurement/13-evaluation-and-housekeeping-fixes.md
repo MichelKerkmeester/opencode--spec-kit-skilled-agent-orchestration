@@ -7,10 +7,11 @@
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
 - [5. PLAYBOOK COVERAGE](#5--playbook-coverage)
+- [6. IN SIMPLE TERMS](#6--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Evaluation and housekeeping fixes.
+Covers six fixes addressing evaluation framework reliability and protocol-boundary safety, including ablation recallK, evalRunId persistence and exit handler cleanup.
 
 ## 2. CURRENT REALITY
 
@@ -21,7 +22,7 @@ Six fixes addressed evaluation framework reliability and protocol-boundary safet
 - **Postflight re-correction (#35):** `task_postflight` SELECT now matches `phase IN ('preflight', 'complete')` so re-posting updates the existing record instead of failing.
 - **parseArgs guard (#36):** `parseArgs<T>()` returns `{} as T` for null/undefined/non-object input at the protocol boundary.
 - **128-bit dedup hash (#37):** Session dedup hash extended from `.slice(0, 16)` (64-bit) to `.slice(0, 32)` (128-bit) to reduce collision probability.
-- **Exit handler cleanup (#38):** `_exitFlushHandler` reference stored; `cleanupExitHandlers()` now calls `process.removeListener()` for `beforeExit`, `SIGTERM`, and `SIGINT`.
+- **Exit handler cleanup (#38):** `_exitFlushHandler` reference stored. `cleanupExitHandlers()` now calls `process.removeListener()` for `beforeExit`, `SIGTERM` and `SIGINT`.
 
 ---
 
@@ -52,3 +53,7 @@ Six fixes addressed evaluation framework reliability and protocol-boundary safet
 ## 5. PLAYBOOK COVERAGE
 
 - Mapped to manual testing playbook scenario NEW-082
+
+## 6. IN SIMPLE TERMS
+
+These are six small but important fixes for the testing and bookkeeping systems. They address issues like counters that reset when the system restarts, clean-up routines that did not run properly and safety guards for unexpected input. Think of it as tightening loose bolts: none were causing a breakdown yet, but leaving them loose would eventually cause trouble.

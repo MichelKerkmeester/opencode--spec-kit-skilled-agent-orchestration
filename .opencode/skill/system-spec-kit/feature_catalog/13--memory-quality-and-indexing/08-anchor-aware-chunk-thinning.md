@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Anchor-aware chunk thinning.
+Anchor-aware chunk thinning scores each chunk by anchor presence and content density, dropping low-value chunks from the index.
 
 ## 2. CURRENT REALITY
 
@@ -37,3 +38,7 @@ Chunks scoring below the 0.3 threshold are dropped from the index, reducing stor
 - Group: Memory quality and indexing
 - Source feature title: Anchor-aware chunk thinning
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+When a large file is split into smaller pieces for indexing, not every piece carries useful information. Some are mostly whitespace or boilerplate. This feature scores each piece and drops the ones that add little value, keeping only the meaningful parts. It is like trimming the fat off a steak so you only store the good cuts.

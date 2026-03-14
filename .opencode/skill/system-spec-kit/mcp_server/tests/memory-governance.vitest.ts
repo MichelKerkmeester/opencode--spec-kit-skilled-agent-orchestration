@@ -2,9 +2,12 @@ import Database from 'better-sqlite3';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import {
+  benchmarkScopeFilter,
+  createScopeFilterPredicate,
   ensureGovernanceRuntime,
   filterRowsByScope,
   recordGovernanceAudit,
+  reviewGovernanceAudit,
   validateGovernedIngest,
 } from '../lib/governance/scope-governance';
 import { runRetentionSweep } from '../lib/governance/retention';
@@ -90,6 +93,111 @@ describe('Phase 5 memory governance', () => {
       tenant_id: 'tenant-a',
       user_id: 'user-1',
     });
+  });
+
+  it('reviews governance audit history with summary counts and parsed metadata', () => {
+    const db = new Database(':memory:');
+    db.exec(`
+      CREATE TABLE memory_index (
+        id INTEGER PRIMARY KEY,
+        spec_folder TEXT,
+        file_path TEXT,
+        session_id TEXT
+      )
+    `);
+    ensureGovernanceRuntime(db);
+
+    recordGovernanceAudit(db, {
+      action: 'memory_save',
+      decision: 'allow',
+      tenantId: 'tenant-a',
+      userId: 'user-1',
+      sessionId: 'session-1',
+      reason: 'governed_ingest',
+      metadata: { stage: 'pilot' },
+    });
+    recordGovernanceAudit(db, {
+      action: 'memory_save',
+      decision: 'deny',
+      tenantId: 'tenant-a',
+      userId: 'user-1',
+      sessionId: 'session-1',
+      reason: 'missing_provenance',
+    });
+    recordGovernanceAudit(db, {
+      action: 'retention_sweep',
+      decision: 'delete',
+      tenantId: 'tenant-b',
+      userId: 'user-9',
+      sessionId: 'session-9',
+      reason: 'delete_after_expired',
+    });
+
+    const review = reviewGovernanceAudit(db, {
+      tenantId: 'tenant-a',
+      action: 'memory_save',
+      limit: 10,
+    });
+
+    expect(review.summary.totalMatching).toBe(2);
+    expect(review.summary.returnedRows).toBe(2);
+    expect(review.summary.byAction).toEqual({ memory_save: 2 });
+    expect(review.summary.byDecision).toEqual({ allow: 1, deny: 1 });
+    expect(review.summary.latestCreatedAt).toEqual(expect.any(String));
+    expect(review.rows).toHaveLength(2);
+    expect(review.rows[0]).toMatchObject({
+      action: 'memory_save',
+      decision: 'deny',
+      tenantId: 'tenant-a',
+      userId: 'user-1',
+      sessionId: 'session-1',
+      reason: 'missing_provenance',
+    });
+    expect(review.rows[1]).toMatchObject({
+      action: 'memory_save',
+      decision: 'allow',
+      metadata: { stage: 'pilot' },
+    });
+  });
+
+  it('reuses cached scope predicates and benchmarks scoped filtering', () => {
+    process.env.SPECKIT_MEMORY_SCOPE_ENFORCEMENT = 'true';
+    const rows = [
+      { id: 1, tenant_id: 'tenant-a', user_id: 'user-1', session_id: 'session-1', shared_space_id: 'space-1' },
+      { id: 2, tenant_id: 'tenant-a', user_id: 'user-1', session_id: 'session-1', shared_space_id: 'space-2' },
+      { id: 3, tenant_id: 'tenant-a', user_id: 'user-2', session_id: 'session-1', shared_space_id: 'space-1' },
+      { id: 4, tenant_id: 'tenant-b', user_id: 'user-1', session_id: 'session-1', shared_space_id: 'space-1' },
+    ];
+    const allowedSharedSpaceIds = new Set(['space-1']);
+
+    const predicate = createScopeFilterPredicate({
+      tenantId: 'tenant-a',
+      userId: 'user-1',
+      sessionId: 'session-1',
+    }, allowedSharedSpaceIds);
+
+    expect(rows.filter(predicate).map((row) => row.id)).toEqual([1]);
+    expect(filterRowsByScope(rows, {
+      tenantId: 'tenant-a',
+      userId: 'user-1',
+      sessionId: 'session-1',
+    }, allowedSharedSpaceIds).map((row) => row.id)).toEqual([1]);
+
+    const benchmark = benchmarkScopeFilter(rows, {
+      tenantId: 'tenant-a',
+      userId: 'user-1',
+      sessionId: 'session-1',
+    }, {
+      iterations: 3,
+      allowedSharedSpaceIds,
+    });
+
+    expect(benchmark.iterations).toBe(3);
+    expect(benchmark.totalRows).toBe(4);
+    expect(benchmark.matchedRows).toBe(1);
+    expect(benchmark.filteredRows).toBe(3);
+    expect(benchmark.elapsedMs).toBeGreaterThanOrEqual(0);
+    expect(benchmark.averageMsPerIteration).toBeGreaterThanOrEqual(0);
   });
 
   it('runs retention sweeps and records delete audit evidence for expired rows', () => {

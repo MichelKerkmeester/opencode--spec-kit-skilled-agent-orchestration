@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Contextual tree injection.
+Contextual tree injection prefixes returned chunks with hierarchical context headers using cached spec folder descriptions.
 
 ## 2. CURRENT REALITY
 
@@ -116,7 +117,7 @@ This document captures the implemented behavior, source references, and validati
 | `mcp_server/tests/hybrid-search-flags.vitest.ts` | Hybrid search flag behavior |
 | `mcp_server/tests/hybrid-search.vitest.ts` | Hybrid search orchestration |
 | `mcp_server/tests/incremental-index-v2.vitest.ts` | Incremental index behavioral tests |
-| `mcp_server/tests/incremental-index.vitest.ts` | Legacy deferred placeholder suite (skipped; not behavioral evidence) |
+| `mcp_server/tests/incremental-index.vitest.ts` | Legacy deferred placeholder suite (skipped, not behavioral evidence) |
 | `mcp_server/tests/index-refresh.vitest.ts` | Index refresh tests |
 | `mcp_server/tests/intent-classifier.vitest.ts` | Intent classification accuracy |
 | `mcp_server/tests/interference.vitest.ts` | Interference scoring tests |
@@ -158,3 +159,7 @@ This document captures the implemented behavior, source references, and validati
 - Group: Extra features (Sprint 019)
 - Source feature title: Contextual tree injection
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+When search results come back, each piece of information now carries a short label showing where it belongs in the project, like "Project > Feature > Detail." Without this, you would see raw content with no clue about its context. It is like seeing a chapter heading at the top of a photocopied page so you know which part of the book it came from.

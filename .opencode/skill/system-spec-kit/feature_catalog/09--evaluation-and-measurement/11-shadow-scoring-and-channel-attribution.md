@@ -7,14 +7,15 @@
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
 - [5. PLAYBOOK COVERAGE](#5--playbook-coverage)
+- [6. IN SIMPLE TERMS](#6--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Shadow scoring and channel attribution.
+Describes the shadow A/B scoring infrastructure for alternative ranking comparison and channel attribution that tags each result with its source channels and computes per-channel exclusive contribution rates.
 
 ## 2. CURRENT REALITY
 
-Full A/B comparison infrastructure ran alternative scoring algorithms in parallel, logging results without affecting live ranking. The system computed detailed comparison metrics including Kendall tau rank correlation, per-result score deltas, and production-only versus shadow-only result sets. Channel attribution tagged each result with its source channels and computed Exclusive Contribution Rate per channel: how often each channel was the sole source for a result in the top-k window.
+Full A/B comparison infrastructure ran alternative scoring algorithms in parallel, logging results without affecting live ranking. The system computed detailed comparison metrics including Kendall tau rank correlation, per-result score deltas and production-only versus shadow-only result sets. Channel attribution tagged each result with its source channels and computed Exclusive Contribution Rate per channel: how often each channel was the sole source for a result in the top-k window.
 
 Ground truth expansion via implicit user selection tracking and an LLM-judge stub interface were included for future corpus growth.
 
@@ -50,3 +51,7 @@ Shadow scoring completed its evaluation purpose and has been fully removed. The 
 ## 5. PLAYBOOK COVERAGE
 
 - Mapped to manual testing playbook scenario NEW-015
+
+## 6. IN SIMPLE TERMS
+
+This feature let the team test new ranking approaches side-by-side with the current one, without affecting what you actually see. It also tracks which search method found each result. Think of it like taste-testing a new recipe next to the old one before deciding to switch. The side-by-side testing has finished its job and been retired, but the tracking of "which method found this result" remains active.

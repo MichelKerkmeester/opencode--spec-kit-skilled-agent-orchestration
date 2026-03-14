@@ -58,7 +58,7 @@ contextType: "general"
 
 ## Coordination Checkpoints
 
-- [x] T330 Confirm Phase 2 handoff is approved
+- [x] T330 Confirm Phase 2 technical gate is verified
 - [x] T331 Confirm Phase 4 can consume stable traces and ranking behavior
 - [x] T332 Update `implementation-summary.md` with execution evidence when work begins
 

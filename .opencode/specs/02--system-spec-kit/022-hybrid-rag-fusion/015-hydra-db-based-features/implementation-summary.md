@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: 015-hydra-db-based-features"
-description: "Phase 1 baseline and safety-rail implementation slice for the Hydra roadmap."
+description: "Six-phase Hydra roadmap implementation summary with default-on rollout behavior."
 importance_tier: "critical"
 contextType: "implementation"
 ---
@@ -13,28 +13,30 @@ contextType: "implementation"
 | Field | Value |
 |-------|-------|
 | Spec Folder | `015-hydra-db-based-features` |
-| Date | 2026-03-13 |
+| Date | 2026-03-14 |
 | Level | 3 |
-| Execution Scope | Phase 1 tasks (T010-T014) |
-| Overall Workflow Status | Phase 1 hardening complete; roadmap phases 2-6 explicitly deferred; external catalog/playbook/runtime docs refresh in progress |
+| Execution Scope | Phase 1-6 implementation, hardening, and rollout verification |
+| Overall Workflow Status | Code rollout complete with default-on semantics across all six capabilities; human sign-off remains pending |
 
 ## What Was Built
 
-This run implemented the Phase 1 baseline and safety-rail slice of the Hydra roadmap and a follow-up hardening pass. The changes now include a buildable runtime `dist` path (`npm run build`), prefixed Hydra roadmap flags that are explicitly separated from the runtime graph gate, context-aligned baseline snapshot persistence, exportable/testable checkpoint migration scripts, telemetry architecture phase capture, and schema backward-compatibility validation. These remain foundational controls for future lineage/graph/governance rollout work.
+This run reflects the delivered six-phase Hydra roadmap state. `getMemoryRoadmapPhase()` now defaults to `shared-rollout`, `getMemoryRoadmapCapabilityFlags()` defaults all six capabilities to enabled (unless explicitly disabled), and runtime gates for adaptive ranking, scope enforcement, governance guardrails, and shared memory are default-on with explicit opt-out semantics. Governance validation preserves legacy behavior unless governance/scope metadata is actually supplied.
 
 ## Files Modified/Created
+
+This table lists representative foundational files from the baseline hardening slice; follow-on phase-specific file changes are captured in the child phase implementation summaries.
 
 | File | Action | Purpose |
 |------|--------|---------|
 | `.opencode/skill/system-spec-kit/mcp_server/package.json` | Modified | Added `build` script (`tsc --build`) so runtime `dist` output can be rebuilt deterministically |
-| `.opencode/skill/system-spec-kit/mcp_server/lib/config/capability-flags.ts` | Created | Added prefixed Hydra roadmap gates (`SPECKIT_HYDRA_*`) and phase defaults, distinct from runtime `SPECKIT_GRAPH_UNIFIED` behavior |
-| `.opencode/skill/system-spec-kit/mcp_server/lib/eval/hydra-baseline.ts` | Created | Added retrieval/isolation baseline capture and persistence aligned to the target context DB directory |
+| `.opencode/skill/system-spec-kit/mcp_server/lib/config/capability-flags.ts` | Modified | Added prefixed Hydra roadmap gates (`SPECKIT_HYDRA_*`) and phase defaults, now aligned to shared-rollout default-on behavior with explicit opt-out support |
+| `.opencode/skill/system-spec-kit/mcp_server/lib/eval/memory-state-baseline.ts` | Modified | Added retrieval/isolation baseline capture and persistence aligned to the target context DB directory |
 | `.opencode/skill/system-spec-kit/mcp_server/lib/telemetry/retrieval-telemetry.ts` | Modified | Added architecture phase/capability telemetry fields and recorder |
 | `.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts` | Modified | Added backward-compatibility schema validator and compatibility logging |
 | `.opencode/skill/system-spec-kit/mcp_server/scripts/migrations/create-checkpoint.ts` | Created | Added checkpoint creation CLI with exportable helpers for testability (`runCreateCheckpoint`, `main`, arg/parser utilities) |
 | `.opencode/skill/system-spec-kit/mcp_server/scripts/migrations/restore-checkpoint.ts` | Created | Added checkpoint restore CLI with exportable helpers and corrected backup-path handling (`runRestoreCheckpoint`, `main`) |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/hydra-capability-flags.vitest.ts` | Created | Added focused coverage for Hydra capability flag defaults, rollout gating, and phase fallback behavior |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/hydra-baseline.vitest.ts` | Created | Added baseline snapshot coverage for present/absent context DB paths and eval persistence behavior |
+| `.opencode/skill/system-spec-kit/mcp_server/tests/memory-roadmap-flags.vitest.ts` | Modified | Added focused coverage for roadmap phase/capability defaults, explicit disable overrides, and phase fallback behavior |
+| `.opencode/skill/system-spec-kit/mcp_server/tests/memory-state-baseline.vitest.ts` | Modified | Added baseline snapshot coverage for present/absent context DB paths and eval persistence behavior |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/migration-checkpoint-scripts.vitest.ts` | Created | Added executable coverage for checkpoint create/restore scripts and metadata/backup behavior |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/vector-index-schema-compatibility.vitest.ts` | Created | Added compatibility validator coverage for missing-table and compatible-schema paths |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/retrieval-telemetry.vitest.ts` | Modified | Extended telemetry tests for architecture payload serialization and `recordArchitecturePhase` merge behavior |
@@ -46,14 +48,14 @@ This run implemented the Phase 1 baseline and safety-rail slice of the Hydra roa
 |-------|--------|
 | `cd .opencode/skill/system-spec-kit/mcp_server && npx tsc --noEmit` | PASS |
 | `cd .opencode/skill/system-spec-kit/mcp_server && npm run build` | PASS |
-| `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hydra-capability-flags.vitest.ts tests/hydra-baseline.vitest.ts tests/migration-checkpoint-scripts.vitest.ts tests/vector-index-schema-compatibility.vitest.ts tests/retrieval-telemetry.vitest.ts` | PASS (36 tests across 5 files) |
+| `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/memory-roadmap-flags.vitest.ts tests/retrieval-telemetry.vitest.ts tests/adaptive-ranking.vitest.ts tests/memory-governance.vitest.ts tests/shared-spaces.vitest.ts tests/handler-memory-save.vitest.ts` | PASS (79 tests across 6 files) |
+| Broader Hydra suite | PASS (15 files, 160 tests) |
 
 ## Deviations From Plan
 
-1. Full roadmap implementation (Phases 2-6) was deferred after completing the Phase 1 baseline and safety-rail slice.
-2. Future-phase verification items were converted to explicit deferred roadmap notes in `checklist.md` and `tasks.md`.
-3. Browser/staging verification was not executed because this slice targeted backend modules and scripts only.
-4. Feature catalog/manual playbook/runtime README refresh is being tracked as in-progress alignment outside this spec-folder markdown pass.
+1. The rollout posture changed from conservative opt-in to default-on across roadmap phase and capability gates.
+2. Governance ingestion validation was adjusted to avoid rejecting legacy callers solely because defaults are on.
+3. Browser/staging verification was not executed because this rollout targeted backend modules and scripts.
 
 ## Skill Updates
 
@@ -61,10 +63,9 @@ No skill files were modified in this implementation slice.
 
 ## Recommended Next Steps
 
-1. Implement Phase 2 lineage schema/migrations and `asOf` query behavior (T020-T025).
-2. Add migration test harness and lineage integrity tests before enabling `SPECKIT_LINEAGE_STATE`.
-3. Complete feature catalog/manual playbook/runtime README alignment for the Phase 1 hardening slice, then close CHK-044.
-4. Expand checklist evidence for CHK-010 onward as implementation phases complete.
+1. Complete pending human sign-off rows across phase summaries/checklists.
+2. Keep default-on rollout behavior and explicit opt-out semantics documented in future maintenance updates.
+3. Continue operational monitoring on retrieval/governance telemetry under the shared-rollout default baseline.
 
 ## Browser Testing Results
 

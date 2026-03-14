@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Dynamic token budget allocation.
+Dynamic token budget allocation scales the token budget returned per query based on query complexity tier.
 
 ## 2. CURRENT REALITY
 
@@ -42,3 +43,7 @@ The savings add up. If 60% of your queries are simple, you recover roughly 40% o
 - Group: Query intelligence
 - Source feature title: Dynamic token budget allocation
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+Every answer the system gives takes up space in a limited response window. This feature gives simple questions a small response budget and saves the big budget for complex questions that genuinely need more room. Think of it like packing a lunch bag versus a suitcase: you match the container to what you actually need to carry.

@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Feature flag governance.
+Feature flag governance defines operational targets for keeping the active flag surface small with explicit sunset windows and periodic audits.
 
 ## 2. CURRENT REALITY
 
@@ -21,10 +22,14 @@ The B8 signal ceiling ("12 active scoring signals") is a governance target, not 
 
 ## 3. SOURCE FILES
 
-No dedicated source files — this describes governance process controls.
+No dedicated source files. This describes governance process controls.
 
 ## 4. SOURCE METADATA
 
 - Group: Governance
 - Source feature title: Feature flag governance
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+Feature flags let you turn new features on or off without changing the code itself, like light switches for functionality. This governance process tracks which switches exist, who controls them and when old ones should be retired so the collection does not grow out of control.

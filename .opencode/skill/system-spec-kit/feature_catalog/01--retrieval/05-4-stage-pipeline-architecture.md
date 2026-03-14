@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for 4-stage pipeline architecture.
+Covers the four bounded pipeline stages (candidate generation, fusion, rerank, filter) with score-immutability enforcement.
 
 ## 2. CURRENT REALITY
 
@@ -23,7 +24,7 @@ Stage 3 (Rerank and Aggregate) handles cross-encoder reranking (optional, gated 
 
 Stage 4 (Filter and Annotate) enforces a "no score changes" invariant through dual enforcement. At compile time, `Stage4ReadonlyRow` declares all six score fields as `Readonly`, making assignment a TypeScript error. At runtime, `captureScoreSnapshot()` records all scores before operations and `verifyScoreInvariant()` checks them afterward, throwing a `[Stage4Invariant]` error on any mismatch. Within this invariant, Stage 4 applies memory state filtering (removing rows below `config.minState` with optional per-tier hard limits), evidence gap detection via TRM Z-score analysis and annotation metadata for feature flags and state statistics. Session deduplication is explicitly excluded from Stage 4 and runs post-cache in the handler to avoid double-counting.
 
-The pipeline is the sole runtime path. `SPECKIT_PIPELINE_V2` is deprecated — `isPipelineV2Enabled()` is hardcoded to `true` and the legacy `postSearchPipeline` was removed in Phase 017.
+The pipeline is the sole runtime path. `SPECKIT_PIPELINE_V2` is deprecated. `isPipelineV2Enabled()` is hardcoded to `true` and the legacy `postSearchPipeline` was removed in Phase 017.
 
 ---
 
@@ -218,3 +219,7 @@ The pipeline is the sole runtime path. `SPECKIT_PIPELINE_V2` is deprecated — `
 - Group: Retrieval
 - Source feature title: 4-stage pipeline architecture
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+Every search goes through four steps, like an assembly line. First, gather candidates. Second, score and rank them. Third, re-check the ranking for accuracy. Fourth, filter out anything that does not belong. Each step has one clear job and is not allowed to change results from earlier steps. This structure keeps searches predictable and prevents bugs from sneaking in between stages.

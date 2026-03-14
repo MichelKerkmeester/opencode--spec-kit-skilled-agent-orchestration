@@ -9,6 +9,9 @@ import {
   createTelemetry,
   recordAdaptiveEvaluation,
   recordGraphHealth,
+  recordTracePayload,
+  sampleTracePayloads,
+  summarizeGraphHealthDashboard,
   toJSON,
 } from '../lib/telemetry/retrieval-telemetry';
 
@@ -66,6 +69,121 @@ describe('Phase 3 graph roadmap finalization', () => {
       demotedCount: 1,
       bounded: true,
       maxDeltaApplied: 0.08,
+    });
+  });
+
+  it('summarizes graph-health dashboard metrics across telemetry payloads', () => {
+    process.env.SPECKIT_EXTENDED_TELEMETRY = 'true';
+
+    const first = createTelemetry();
+    first.timestamp = '2026-03-14T10:00:00.000Z';
+    recordGraphHealth(first, {
+      killSwitchActive: true,
+      causalBoosted: 2,
+      coActivationBoosted: 1,
+      communityInjected: 3,
+      graphSignalsBoosted: 4,
+      totalGraphInjected: 5,
+    });
+
+    const second = createTelemetry();
+    second.timestamp = '2026-03-14T10:05:00.000Z';
+    recordGraphHealth(second, {
+      killSwitchActive: false,
+      causalBoosted: 1,
+      coActivationBoosted: 2,
+      communityInjected: 0,
+      graphSignalsBoosted: 1,
+      totalGraphInjected: 2,
+    });
+
+    const summary = summarizeGraphHealthDashboard([
+      toJSON(first),
+      toJSON(second),
+      { enabled: true, timestamp: '2026-03-14T10:10:00.000Z' },
+    ]);
+
+    expect(summary).toEqual({
+      totalPayloads: 3,
+      payloadsWithGraphHealth: 2,
+      killSwitchActiveCount: 1,
+      averageGraphInjected: 3.5,
+      maxGraphInjected: 5,
+      causalBoostedTotal: 3,
+      coActivationBoostedTotal: 3,
+      communityInjectedTotal: 3,
+      graphSignalsBoostedTotal: 5,
+    });
+  });
+
+  it('samples sanitized trace payloads using graph-health thresholds', () => {
+    process.env.SPECKIT_EXTENDED_TELEMETRY = 'true';
+
+    const highGraph = createTelemetry();
+    highGraph.timestamp = '2026-03-14T10:06:00.000Z';
+    recordGraphHealth(highGraph, {
+      killSwitchActive: true,
+      totalGraphInjected: 6,
+      graphSignalsBoosted: 3,
+    });
+    recordTracePayload(highGraph, {
+      traceId: 'trace-high',
+      totalDurationMs: 24,
+      finalResultCount: 3,
+      stages: [
+        { stage: 'candidate', timestamp: 1, inputCount: 8, outputCount: 5, durationMs: 10 },
+        { stage: 'final-rank', timestamp: 2, inputCount: 5, outputCount: 3, durationMs: 14 },
+      ],
+      ignoredField: 'drop-me',
+    });
+
+    const recentLowGraph = createTelemetry();
+    recentLowGraph.timestamp = '2026-03-14T10:07:00.000Z';
+    recordGraphHealth(recentLowGraph, {
+      killSwitchActive: false,
+      totalGraphInjected: 2,
+    });
+    recordTracePayload(recentLowGraph, {
+      traceId: 'trace-low',
+      totalDurationMs: 12,
+      finalResultCount: 2,
+      stages: [
+        { stage: 'candidate', timestamp: 1, inputCount: 4, outputCount: 2, durationMs: 12 },
+      ],
+    });
+
+    const noTrace = createTelemetry();
+    noTrace.timestamp = '2026-03-14T10:08:00.000Z';
+    recordGraphHealth(noTrace, {
+      killSwitchActive: true,
+      totalGraphInjected: 9,
+    });
+
+    const sampled = sampleTracePayloads(
+      [toJSON(recentLowGraph), toJSON(noTrace), toJSON(highGraph)],
+      { limit: 2, minGraphInjected: 2, killSwitchOnly: true },
+    );
+
+    expect(sampled).toHaveLength(1);
+    expect(sampled[0]).toEqual({
+      timestamp: '2026-03-14T10:06:00.000Z',
+      graphHealth: {
+        killSwitchActive: true,
+        causalBoosted: 0,
+        coActivationBoosted: 0,
+        communityInjected: 0,
+        graphSignalsBoosted: 3,
+        totalGraphInjected: 6,
+      },
+      tracePayload: {
+        traceId: 'trace-high',
+        totalDurationMs: 24,
+        finalResultCount: 3,
+        stages: [
+          { stage: 'candidate', timestamp: 1, inputCount: 8, outputCount: 5, durationMs: 10 },
+          { stage: 'final-rank', timestamp: 2, inputCount: 5, outputCount: 3, durationMs: 14 },
+        ],
+      },
     });
   });
 

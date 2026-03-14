@@ -6,16 +6,17 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Dry-run preflight for memory_save.
+The `dryRun` parameter on `memory_save` runs preflight validation without indexing, database mutation or file writes.
 
 ## 2. CURRENT REALITY
 
-The `memory_save` tool accepts a `dryRun` parameter that runs preflight validation only (content size, anchor validation, token budget estimation, and exact duplicate checks) without indexing, database mutation, or file writes. In dry-run mode, handler responses are returned from the preflight result (`would_pass`, validation errors/warnings/details) and the save/index pipeline is not executed.
+The `memory_save` tool accepts a `dryRun` parameter that runs preflight validation only (content size, anchor validation, token budget estimation and exact duplicate checks) without indexing, database mutation, or file writes. In dry-run mode, handler responses are returned from the preflight result (`would_pass`, validation errors/warnings/details) and the save/index pipeline is not executed.
 
-This allows agents to preview validation outcomes before committing while still using the same preflight validator used by non-dry-run requests. In non-dry-run mode, the same preflight checks run first (unless `skipPreflight=true`) and then `indexMemoryFile` executes quality-loop, quality-gate, PE-gating, and persistence flows.
+This allows agents to preview validation outcomes before committing while still using the same preflight validator used by non-dry-run requests. In non-dry-run mode, the same preflight checks run first (unless `skipPreflight=true`) and then `indexMemoryFile` executes quality-loop, quality-gate, PE-gating and persistence flows.
 
 ## 3. SOURCE FILES
 
@@ -47,3 +48,7 @@ This allows agents to preview validation outcomes before committing while still 
 - Group: Memory quality and indexing
 - Source feature title: Dry-run preflight for memory_save
 - Current reality source: audit-D04 gap backfill
+
+## 5. IN SIMPLE TERMS
+
+Before committing a memory to storage, you can do a practice run to see if it would pass all the checks. Nothing gets saved or changed. It is like using the "print preview" button before printing: you catch problems before they become permanent, without wasting paper.

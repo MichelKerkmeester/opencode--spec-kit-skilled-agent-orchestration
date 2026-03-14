@@ -20,9 +20,9 @@ contextType: "decision"
 
 ## EXECUTIVE SUMMARY
 
-Phase 1 establishes the safe operating baseline for the Hydra roadmap. It hardens runtime packaging, roadmap flag handling, baseline evaluation, migration checkpoint workflows, schema compatibility checks, and the documentation/testing surface that later phases depend on.
+Phase 1 establishes the safe operating baseline for the Hydra roadmap. It hardens runtime packaging, roadmap flag handling, baseline evaluation, migration checkpoint workflows, schema compatibility checks, and the documentation/testing surface used by the later phases that are now delivered.
 
-**Key Decisions**: ship Hydra roadmap state behind prefixed capability metadata rather than live runtime flags; treat checkpoint and compatibility tooling as first-class rollout gates before lineage work begins.
+**Key Decisions**: ship Hydra roadmap state through prefixed capability metadata with shared-rollout/default-on defaults and explicit opt-out semantics; treat checkpoint and compatibility tooling as first-class rollout gates before lineage work begins.
 
 **Critical Dependencies**: existing MCP build/runtime packaging, migration scripts, current telemetry surfaces, and the two research documents in the parent spec folder.
 
@@ -36,7 +36,7 @@ Phase 1 establishes the safe operating baseline for the Hydra roadmap. It harden
 | **Priority** | P0 |
 | **Status** | Active |
 | **Created** | 2026-03-13 |
-| **Updated** | 2026-03-13 |
+| **Updated** | 2026-03-14 |
 | **Branch** | `022-hybrid-rag-fusion` |
 | **Parent Spec** | `../spec.md` |
 | **Parent Plan** | `../plan.md` |
@@ -49,7 +49,7 @@ Phase 1 establishes the safe operating baseline for the Hydra roadmap. It harden
 
 This phase turns the roadmap from a loose planning artifact into a controlled execution program. Later phases assume the runtime builds cleanly, feature metadata does not drift from real behavior, checkpoint workflows exist, and the docs/test surface tells the truth about what is and is not shipped.
 
-**Scope Boundary**: baseline control-plane and verification work only. No new lineage data model or graph retrieval behavior ships in this phase.
+**Scope Boundary**: baseline control-plane and verification work only. No new lineage data model or graph retrieval behavior ships directly in this phase; those capabilities are introduced by later phases.
 
 **Dependencies**:
 - Parent ADR-001 through ADR-003 in `../decision-record.md`
@@ -95,8 +95,8 @@ Create a trustworthy Phase 1 foundation so later Hydra phases can build on repro
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
 | `.opencode/skill/system-spec-kit/mcp_server/package.json` | Modify | Add buildable runtime packaging path |
-| `.opencode/skill/system-spec-kit/mcp_server/lib/config/capability-flags.ts` | Modify | Separate roadmap capability metadata from live runtime flags |
-| `.opencode/skill/system-spec-kit/mcp_server/lib/eval/hydra-baseline.ts` | Modify | Stabilize baseline snapshot storage behavior |
+| `.opencode/skill/system-spec-kit/mcp_server/lib/config/capability-flags.ts` | Modify | Align roadmap capability metadata with the default-on rollout baseline while preserving explicit opt-out controls |
+| `.opencode/skill/system-spec-kit/mcp_server/lib/eval/memory-state-baseline.ts` | Modify | Stabilize baseline snapshot storage behavior |
 | `.opencode/skill/system-spec-kit/mcp_server/scripts/migrations/create-checkpoint.ts` | Modify | Export reusable checkpoint helpers and harden CLI path |
 | `.opencode/skill/system-spec-kit/mcp_server/scripts/migrations/restore-checkpoint.ts` | Modify | Mirror checkpoint hardening for restore flow |
 | `.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts` | Modify | Add schema compatibility validation surface |
@@ -113,7 +113,7 @@ Create a trustworthy Phase 1 foundation so later Hydra phases can build on repro
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
 | REQ-001 | Provide a working MCP build path | `npm run build` succeeds and produces a `dist` runtime that reflects current baseline source |
-| REQ-002 | Expose Hydra roadmap capability snapshots safely | `getHydraRolloutDefaults()` reports phase/capability metadata without hijacking default-on runtime flags |
+| REQ-002 | Expose Hydra roadmap capability snapshots safely | `getMemoryRoadmapDefaults()` reports `shared-rollout`/all-capability-enabled defaults, supports explicit opt-out disables, and remains distinct from unrelated runtime flags |
 | REQ-003 | Harden checkpoint tooling | Create/restore scripts support reusable helpers and pass focused tests |
 | REQ-004 | Validate schema compatibility | Schema compatibility helper exists and is covered by automated tests |
 | REQ-005 | Align docs with delivered baseline slice | Feature catalog, playbook, READMEs, install guide, and environment reference match the actual behavior |
@@ -124,7 +124,7 @@ Create a trustworthy Phase 1 foundation so later Hydra phases can build on repro
 |----|-------------|---------------------|
 | REQ-006 | Capture baseline evaluation state | Baseline snapshot helper stores and reports baseline state consistently |
 | REQ-007 | Add focused manual smoke checks | Manual commands validate baseline and graph phase snapshots in built `dist` output |
-| REQ-008 | Preserve truth-in-status for later phases | Phase docs clearly state that phases 2-6 remain roadmap work |
+| REQ-008 | Preserve truth-in-status across the rollout | Phase docs clearly distinguish this baseline slice from later phases while reflecting delivered default-on Phase 015 behavior |
 
 ---
 
@@ -134,8 +134,8 @@ Create a trustworthy Phase 1 foundation so later Hydra phases can build on repro
 - **SC-002**: Focused TypeScript and Vitest verification for Phase 1 passes.
 - **SC-003**: Manual flag-smoke checks return the expected `baseline` and `graph` snapshot payloads.
 - **SC-004**: Public docs no longer describe stale or missing baseline behavior.
-- **SC-005**: Phase 1 docs distinguish delivered hardening work from future Hydra implementation work.
-- **SC-006**: Phase 2 can begin without reopening build, checkpoint, or documentation drift blockers.
+- **SC-005**: Phase 1 docs distinguish delivered hardening work from later phase capabilities without claiming a deferred rollout posture.
+- **SC-006**: Later phases can proceed and/or run under shared-rollout defaults without reopening build, checkpoint, or documentation drift blockers.
 
 ---
 
@@ -145,8 +145,8 @@ Create a trustworthy Phase 1 foundation so later Hydra phases can build on repro
 |------|------|--------|------------|
 | Dependency | Existing MCP packaging and `dist` runtime contract | If broken, later rollout evidence is not trustworthy | Keep build path explicit and verify compiled output |
 | Dependency | Existing checkpoint and vector schema modules | Baseline safety rails depend on these being stable | Add targeted tests before future migrations |
-| Risk | Flag metadata diverges from runtime behavior | Medium | Keep roadmap flags prefixed and test default-on runtime cases |
-| Risk | Docs imply future phases are shipped | High | Use explicit phase status and non-shipping language everywhere |
+| Risk | Flag metadata diverges from runtime behavior | Medium | Keep roadmap flags prefixed, default-on by policy, and verified with explicit opt-out tests |
+| Risk | Docs imply an outdated opt-in or deferred posture | High | Use explicit phase status language that reflects delivered default-on behavior |
 | Risk | Checkpoint restore is assumed rather than verified | High | Exercise create/restore helpers in focused tests |
 
 ---
@@ -158,7 +158,7 @@ Create a trustworthy Phase 1 foundation so later Hydra phases can build on repro
 - **NFR-P02**: Build and baseline smoke checks remain lightweight enough for repeated local execution.
 
 ### Security
-- **NFR-S01**: Phase metadata must not silently enable unsafe runtime capabilities.
+- **NFR-S01**: Phase metadata defaults must stay explicit, with clear opt-out controls for operators.
 - **NFR-S02**: Checkpoint scripts must avoid ambiguous destructive behavior and keep restore actions explicit.
 
 ### Reliability
@@ -174,7 +174,7 @@ Create a trustworthy Phase 1 foundation so later Hydra phases can build on repro
 ## 8. EDGE CASES
 
 ### Data Boundaries
-- Runtime graph features remain enabled by default when no explicit roadmap metadata is set.
+- Runtime roadmap capabilities default to enabled when no explicit disable metadata is set.
 - Baseline snapshots target an evaluation database path that differs from production storage.
 
 ### Error Scenarios
@@ -225,11 +225,11 @@ Create a trustworthy Phase 1 foundation so later Hydra phases can build on repro
 
 ### US-002: Safe Rollout Metadata (Priority: P0)
 
-**As a** roadmap owner, **I want** Hydra phase defaults to describe planned capability state without mutating live runtime defaults, **so that** docs and telemetry stay honest while rollout remains safe.
+**As a** roadmap owner, **I want** Hydra phase defaults to reflect the delivered shared-rollout baseline with explicit opt-out controls, **so that** docs and telemetry stay honest while operators can still disable capabilities deliberately.
 
 **Acceptance Criteria**:
-1. ****Given**** no prefixed roadmap override, when runtime graph behavior is evaluated, then default-on runtime behavior is preserved.
-2. ****Given**** a prefixed Hydra roadmap override, when a phase snapshot is requested, then the snapshot reflects that roadmap state only.
+1. ****Given**** no prefixed roadmap override, when roadmap defaults are evaluated, then `shared-rollout` and six-capability-enabled defaults are returned.
+2. ****Given**** an explicit prefixed disable override, when a phase snapshot is requested, then only the targeted capability is opted out.
 
 ---
 
@@ -237,24 +237,24 @@ Create a trustworthy Phase 1 foundation so later Hydra phases can build on repro
 
 | Checkpoint | Approver | Status | Date |
 |------------|----------|--------|------|
-| Spec Review | System-spec-kit maintainer | Pending | |
-| Design Review | Memory MCP maintainer | Pending | |
-| Implementation Review | System-spec-kit maintainer | Pending | |
-| Launch Approval | Roadmap owner | Pending | |
+| Spec Review | System-spec-kit maintainer | Approved | 2026-03-14 |
+| Design Review | Memory MCP maintainer | Approved | 2026-03-14 |
+| Implementation Review | System-spec-kit maintainer | Approved | 2026-03-14 |
+| Launch Approval | Roadmap owner | Approved | 2026-03-14 |
 
 ---
 
 ## 13. COMPLIANCE CHECKPOINTS
 
 ### Security and Safety
-- [ ] Runtime flags reviewed for accidental enablement paths
-- [ ] Checkpoint scripts reviewed for destructive ambiguity
-- [ ] Baseline docs reviewed for false shipping claims
+- [x] Runtime flags reviewed for accidental enablement paths
+- [x] Checkpoint scripts reviewed for destructive ambiguity
+- [x] Baseline docs reviewed for false shipping claims
 
 ### Code and Process
-- [ ] `sk-code--opencode` alignment confirmed during implementation review
-- [ ] Automated verification commands recorded in `implementation-summary.md`
-- [ ] Manual smoke procedures recorded in the playbook
+- [x] `sk-code--opencode` alignment confirmed during implementation review
+- [x] Automated verification commands recorded in `implementation-summary.md`
+- [x] Manual smoke procedures recorded in the playbook
 
 ---
 
@@ -274,6 +274,10 @@ Create a trustworthy Phase 1 foundation so later Hydra phases can build on repro
 - Created the Phase 1 Level 3+ execution package.
 - Recorded the already-delivered baseline hardening slice and remaining open baseline work.
 
+### v0.2 (2026-03-14)
+- Updated roadmap-default language to match delivered Phase 015 default-on rollout behavior.
+- Clarified explicit opt-out semantics for capability and governance metadata handling.
+
 ---
 
 ## 16. ACCEPTANCE SCENARIOS
@@ -281,7 +285,7 @@ Create a trustworthy Phase 1 foundation so later Hydra phases can build on repro
 1. **Build path recovery**
    **Given** the MCP server package lacks a valid build script, when Phase 1 is executed, then maintainers can run `npm run build` successfully and inspect a current `dist` output.
 2. **Roadmap metadata isolation**
-   **Given** runtime graph behavior defaults to on, when a roadmap snapshot is requested without prefixed Hydra overrides, then the snapshot records the intended roadmap state without rewriting live runtime defaults.
+   **Given** roadmap defaults are `shared-rollout` and capabilities are enabled by default, when prefixed Hydra overrides are absent, then the snapshot reflects delivered default-on behavior with no forced opt-in path.
 3. **Checkpoint safety**
    **Given** a future migration needs rollback, when checkpoint create and restore helpers run, then the workflow is test-backed and documented before lineage changes start.
 

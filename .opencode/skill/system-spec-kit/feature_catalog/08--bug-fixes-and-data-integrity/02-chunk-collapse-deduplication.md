@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Chunk collapse deduplication.
+Tracks the fix that removed the conditional gate restricting chunk deduplication to content-included queries only.
 
 ## 2. CURRENT REALITY
 
@@ -40,3 +41,7 @@ Duplicate chunk rows appeared in default search mode because the deduplication l
 - Group: Bug fixes and data integrity
 - Source feature title: Chunk collapse deduplication
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+Search results were showing duplicate entries because the system only removed duplicates in certain modes. This fix makes deduplication run on every search so you always get clean results without repeated items, no matter how you run the query.

@@ -94,6 +94,22 @@ interface ResolvedLineageSnapshot {
   snapshot: MemoryIndexRow;
 }
 
+interface LineageInspectionSummary {
+  logicalKey: string;
+  rootMemoryId: number;
+  activeMemoryId: number | null;
+  activeVersionNumber: number | null;
+  totalVersions: number;
+  versionNumbers: number[];
+  historicalMemoryIds: number[];
+  firstValidFrom: string;
+  latestValidFrom: string;
+  actors: string[];
+  transitionCounts: Record<LineageTransitionEvent, number>;
+  hasVersionGaps: boolean;
+  hasMultipleActiveVersions: boolean;
+}
+
 interface ValidateLineageIntegrityResult {
   valid: boolean;
   issues: string[];
@@ -111,6 +127,18 @@ interface BackfillLineageResult {
   skipped: number;
   logicalKeys: string[];
   totalGroups: number;
+}
+
+interface LineageWriteBenchmarkResult {
+  memoryIds: number[];
+  iterations: number;
+  insertedVersions: number;
+  durationMs: number;
+  averageWriteMs: number;
+  logicalKey: string | null;
+  rootMemoryId: number | null;
+  activeMemoryId: number | null;
+  finalVersionNumber: number | null;
 }
 
 interface CreateAppendOnlyMemoryRecordParams {
@@ -595,6 +623,85 @@ export function inspectLineageChain(database: Database.Database, memoryId: numbe
 }
 
 /**
+ * Build a compact operator-facing summary for the lineage behind a memory.
+ *
+ * @param database - Database connection that stores lineage state.
+ * @param memoryId - Memory identifier used to resolve the logical key.
+ * @returns Aggregated lineage summary when one exists.
+ */
+export function summarizeLineageInspection(
+  database: Database.Database,
+  memoryId: number,
+): LineageInspectionSummary | null {
+  bindHistory(database);
+  ensureLineageTables(database);
+  const logicalKey = resolveLogicalKey(database, memoryId);
+  if (!logicalKey) {
+    return null;
+  }
+
+  const rows = database.prepare(`
+    SELECT *
+    FROM memory_lineage
+    WHERE logical_key = ?
+    ORDER BY version_number ASC, created_at ASC
+  `).all(logicalKey) as MemoryLineageRow[];
+
+  if (rows.length === 0) {
+    return null;
+  }
+
+  const projection = getActiveProjection(database, logicalKey);
+  const transitionCounts: Record<LineageTransitionEvent, number> = {
+    CREATE: 0,
+    UPDATE: 0,
+    SUPERSEDE: 0,
+    BACKFILL: 0,
+  };
+  const actors = new Set<string>();
+  let hasVersionGaps = false;
+  let activeRows = 0;
+
+  for (let index = 0; index < rows.length; index += 1) {
+    const row = rows[index];
+    const expectedVersion = index + 1;
+    if (row.version_number !== expectedVersion) {
+      hasVersionGaps = true;
+    }
+    if (index > 0 && row.predecessor_memory_id !== rows[index - 1]?.memory_id) {
+      hasVersionGaps = true;
+    }
+    if (row.valid_to == null) {
+      activeRows += 1;
+    }
+    transitionCounts[row.transition_event] += 1;
+    if (row.actor.trim().length > 0) {
+      actors.add(row.actor);
+    }
+  }
+
+  const activeVersion = projection
+    ? rows.find((row) => row.memory_id === projection.active_memory_id) ?? null
+    : rows.find((row) => row.valid_to == null) ?? null;
+
+  return {
+    logicalKey,
+    rootMemoryId: rows[0].root_memory_id,
+    activeMemoryId: projection?.active_memory_id ?? activeVersion?.memory_id ?? null,
+    activeVersionNumber: activeVersion?.version_number ?? null,
+    totalVersions: rows.length,
+    versionNumbers: rows.map((row) => row.version_number),
+    historicalMemoryIds: rows.slice(0, -1).map((row) => row.memory_id),
+    firstValidFrom: rows[0].valid_from,
+    latestValidFrom: rows[rows.length - 1].valid_from,
+    actors: [...actors],
+    transitionCounts,
+    hasVersionGaps,
+    hasMultipleActiveVersions: activeRows > 1,
+  };
+}
+
+/**
  * Resolve the currently active lineage snapshot for a memory logical key.
  *
  * @param database - Database connection that stores lineage state.
@@ -1020,11 +1127,75 @@ export function runLineageBackfill(
 }
 
 /**
+ * Benchmark append-first lineage writes across an ordered chain of memory ids.
+ *
+ * @param database - Database connection that stores lineage state.
+ * @param options - Ordered memory ids and optional actor label for the benchmark run.
+ * @returns Lightweight write-path timing and final projection details.
+ */
+export function benchmarkLineageWritePath(
+  database: Database.Database,
+  options: { memoryIds: number[]; actor?: string },
+): LineageWriteBenchmarkResult {
+  bindHistory(database);
+  ensureLineageTables(database);
+  const memoryIds = [...options.memoryIds];
+
+  if (memoryIds.length === 0) {
+    return {
+      memoryIds,
+      iterations: 0,
+      insertedVersions: 0,
+      durationMs: 0,
+      averageWriteMs: 0,
+      logicalKey: null,
+      rootMemoryId: null,
+      activeMemoryId: null,
+      finalVersionNumber: null,
+    };
+  }
+
+  const actor = options.actor ?? 'memory-lineage:benchmark';
+  let insertedVersions = 0;
+  let predecessorMemoryId: number | null = null;
+  let lastRecorded: RecordedLineageTransition | null = null;
+  const startedAt = Date.now();
+
+  for (const memoryId of memoryIds) {
+    if (!getLineageRow(database, memoryId)) {
+      insertedVersions += 1;
+    }
+    lastRecorded = recordLineageTransition(database, memoryId, {
+      actor,
+      predecessorMemoryId,
+      transitionEvent: predecessorMemoryId == null ? 'CREATE' : 'SUPERSEDE',
+    });
+    predecessorMemoryId = memoryId;
+  }
+
+  const durationMs = Date.now() - startedAt;
+
+  return {
+    memoryIds,
+    iterations: memoryIds.length,
+    insertedVersions,
+    durationMs,
+    averageWriteMs: durationMs / memoryIds.length,
+    logicalKey: lastRecorded?.logicalKey ?? null,
+    rootMemoryId: lastRecorded?.rootMemoryId ?? null,
+    activeMemoryId: lastRecorded?.activeMemoryId ?? null,
+    finalVersionNumber: lastRecorded?.versionNumber ?? null,
+  };
+}
+
+/**
  * Public lineage result types exposed to tests and compatibility helpers.
  */
 export type {
   ActiveProjectionRow,
   BackfillLineageResult,
+  LineageInspectionSummary,
+  LineageWriteBenchmarkResult,
   RecordedLineageTransition,
   ResolvedLineageSnapshot,
   ValidateLineageIntegrityResult,

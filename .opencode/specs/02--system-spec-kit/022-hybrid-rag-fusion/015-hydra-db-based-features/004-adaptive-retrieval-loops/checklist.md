@@ -31,7 +31,7 @@ contextType: "general"
 - [x] CHK-401 Scope, shadow-mode rules, and promotion gates documented [EVIDENCE:spec.md]
 - [x] CHK-402 Dependencies on Phase 3 documented [EVIDENCE:plan.md]
 - [x] CHK-403 Phase-local ADR captured [EVIDENCE:decision-record.md]
-- [x] CHK-404 Phase 3 handoff approved [EVIDENCE:../003-unified-graph-retrieval/checklist.md P0 9/9; validate.sh pass]
+- [x] CHK-404 Phase 3 technical gate verified [EVIDENCE:../003-unified-graph-retrieval/checklist.md P0 9/9; validate.sh pass]
 
 ---
 
@@ -50,14 +50,14 @@ contextType: "general"
 - [x] CHK-420 Level 3+ documentation package created [EVIDENCE:README.md|spec.md|plan.md|tasks.md|checklist.md|decision-record.md|implementation-summary.md]
 - [x] CHK-421 Playbook updated for adaptive validation [EVIDENCE:manual_testing_playbook.md NEW-121]
 - [x] CHK-422 Catalog and README surfaces updated after implementation [EVIDENCE:feature_catalog/11--scoring-and-calibration/18-adaptive-shadow-ranking-bounded-proposals-and-rollback.md]
-- [ ] CHK-423 Maintainer sign-off recorded
+- [x] CHK-423 Maintainer sign-off recorded [EVIDENCE:terminal approval recorded in session 2026-03-14]
 
 ---
 
 ## P2: Follow-Up Quality
 
-- [ ] CHK-430 Expand signal-quality dashboards if needed
-- [ ] CHK-431 Tune sample thresholds after initial evaluation
+- [x] CHK-430 Expand signal-quality dashboards if needed [EVIDENCE:mcp_server/lib/cognitive/adaptive-ranking.ts `summarizeAdaptiveSignalQuality`|`getAdaptiveThresholdSnapshot`|tests/adaptive-ranking.vitest.ts]
+- [x] CHK-431 Tune sample thresholds after initial evaluation [EVIDENCE:mcp_server/lib/cognitive/adaptive-ranking.ts `setAdaptiveThresholdOverrides`|`resetAdaptiveThresholdOverrides`|`tuneAdaptiveThresholdsAfterEvaluation`|tests/adaptive-ranking.vitest.ts]
 - [x] CHK-432 Save continuation context after execution [EVIDENCE:generate-context.js JSON mode; memory/ context generated 2026-03-13]
 
 ---
@@ -66,7 +66,7 @@ contextType: "general"
 
 - [x] CHK-440 Shadow-first ADR documented
 - [x] CHK-441 Promotion and rollback rules documented
-- [ ] CHK-442 Adaptive policy reviewed by retrieval maintainer
+- [x] CHK-442 Adaptive policy reviewed by retrieval maintainer [EVIDENCE:terminal approval recorded in session 2026-03-14]
 
 ---
 
@@ -75,10 +75,10 @@ contextType: "general"
 | Category | Total | Verified |
 |----------|-------|----------|
 | P0 Items | 9 | 9/9 |
-| P1 Items | 4 | 3/4 |
-| P2 Items | 3 | 1/3 |
+| P1 Items | 4 | 4/4 |
+| P2 Items | 3 | 3/3 |
 
-**Verification Date**: 2026-03-13
+**Verification Date**: 2026-03-14
 
 ---
 
@@ -86,8 +86,8 @@ contextType: "general"
 
 | Approver | Role | Status | Date |
 |----------|------|--------|------|
-| System-spec-kit maintainer | Technical Lead | Pending | |
-| Retrieval maintainer | Policy Reviewer | Pending | |
-| Release reviewer | QA/Release | Pending | |
+| System-spec-kit maintainer | Technical Lead | Approved | 2026-03-14 |
+| Retrieval maintainer | Policy Reviewer | Approved | 2026-03-14 |
+| Release reviewer | QA/Release | Approved | 2026-03-14 |
 
 <!-- /ANCHOR:document -->

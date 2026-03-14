@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Context-server success-path hint append.
+Context-server success-path hint append injects UX hints through `appendAutoSurfaceHints` while preserving the existing auto-surface contract.
 
 ## 2. CURRENT REALITY
 
@@ -308,7 +309,7 @@ The context-server success path now appends UX hints through `appendAutoSurfaceH
 | `mcp_server/tests/hybrid-search.vitest.ts` | Hybrid search orchestration |
 | `mcp_server/tests/importance-tiers.vitest.ts` | Importance tier tests |
 | `mcp_server/tests/incremental-index-v2.vitest.ts` | Incremental index behavioral tests |
-| `mcp_server/tests/incremental-index.vitest.ts` | Legacy deferred placeholder suite (skipped; not behavioral evidence) |
+| `mcp_server/tests/incremental-index.vitest.ts` | Legacy deferred placeholder suite (skipped, not behavioral evidence) |
 | `mcp_server/tests/index-refresh.vitest.ts` | Index refresh tests |
 | `mcp_server/tests/integration-causal-graph.vitest.ts` | Causal graph integration |
 | `mcp_server/tests/integration-session-dedup.vitest.ts` | Session dedup integration |
@@ -397,3 +398,7 @@ The context-server success path now appends UX hints through `appendAutoSurfaceH
 - Group: UX hooks automation (Phase 014)
 - Source feature title: Context-server success-path hint append
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+When the system successfully retrieves context for you, it now attaches short guidance hints to the response without changing the main content. Think of it like a librarian who hands you the book you asked for along with a sticky note saying "you might also want to check chapter 5." The original content stays the same, but you get a helpful nudge.

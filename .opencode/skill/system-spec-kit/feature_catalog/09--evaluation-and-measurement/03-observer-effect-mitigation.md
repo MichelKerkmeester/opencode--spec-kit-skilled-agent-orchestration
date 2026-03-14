@@ -7,10 +7,11 @@
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
 - [5. PLAYBOOK COVERAGE](#5--playbook-coverage)
+- [6. IN SIMPLE TERMS](#6--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Observer effect mitigation.
+Describes how the evaluation infrastructure avoids perturbing production query performance through fail-safe degradation and non-fatal handling in evaluation and observability paths.
 
 ## 2. CURRENT REALITY
 
@@ -44,3 +45,7 @@ A formal p95 latency comparison (eval logging enabled vs disabled) and an automa
 ## 5. PLAYBOOK COVERAGE
 
 - Mapped to manual testing playbook scenario NEW-007
+
+## 6. IN SIMPLE TERMS
+
+Measuring performance can sometimes slow down the thing you are measuring, like how stepping on a scale while running would trip you up. This feature makes sure that all the quality-checking work happens quietly in the background. If the measurement process breaks, your searches keep running at full speed without noticing.

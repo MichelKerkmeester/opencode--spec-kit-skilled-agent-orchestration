@@ -7,10 +7,11 @@
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
 - [5. PLAYBOOK COVERAGE](#5--playbook-coverage)
+- [6. IN SIMPLE TERMS](#6--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Quality proxy formula.
+Describes the automated 0-1 quality proxy score that detects retrieval regressions from four weighted components without requiring manual review.
 
 ## 2. CURRENT REALITY
 
@@ -44,3 +45,7 @@ The weights were chosen to prioritize relevance over speed while still penalizin
 ## 5. PLAYBOOK COVERAGE
 
 - Mapped to manual testing playbook scenario NEW-009
+
+## 6. IN SIMPLE TERMS
+
+You cannot have a person hand-check every search result after every change. This feature creates a single "quality score" from 0 to 1 that runs automatically and flags when results are getting worse. Think of it like an automated smoke detector for search quality: it watches for problems around the clock so you do not have to.

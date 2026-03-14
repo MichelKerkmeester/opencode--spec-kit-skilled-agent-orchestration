@@ -1,0 +1,22 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/016-feature-catalog-code-references",
+  "description": "Add feature catalog references as inline code comments and remove stale spec/sprint references",
+  "keywords": [
+    "feature",
+    "catalog",
+    "inline",
+    "comments",
+    "code",
+    "references",
+    "cleanup"
+  ],
+  "lastUpdated": "2026-03-14T00:00:00.000Z",
+  "specId": "016",
+  "folderSlug": "feature-catalog-code-references",
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

@@ -321,8 +321,8 @@ Add these flags to the `environment` (or `env`) block of any configuration optio
 |---|---|---|
 | `SPECKIT_ADAPTIVE_FUSION` | `true` | Controls adaptive intent-based fusion weights. Set to `false` to disable (7 task types). |
 | `SPECKIT_EXTENDED_TELEMETRY` | `false` | Controls 4-dimension per-retrieval telemetry. Set to `true` to enable metrics collection. |
-| `SPECKIT_MEMORY_ROADMAP_PHASE` | `baseline` | Records the current memory roadmap phase in telemetry, eval baselines, and migration checkpoint metadata. |
-| `SPECKIT_MEMORY_GRAPH_UNIFIED` | `false` | Opt-in memory-roadmap capability metadata. Distinct from the live `SPECKIT_GRAPH_UNIFIED` runtime retrieval gate. |
+| `SPECKIT_MEMORY_ROADMAP_PHASE` | `shared-rollout` | Records the current memory roadmap phase in telemetry, eval baselines, and migration checkpoint metadata. |
+| `SPECKIT_MEMORY_GRAPH_UNIFIED` | `true` | Default-on memory-roadmap graph capability metadata. Distinct from the live `SPECKIT_GRAPH_UNIFIED` runtime retrieval gate. |
 
 **Example** (OpenCode with all flags explicit):
 
@@ -900,7 +900,7 @@ PHASE VALID:  bash scripts/validate.sh specs/NNN-name --recursive
 FEATURE FLAGS (env vars):
   SPECKIT_ADAPTIVE_FUSION    default: true     (false = disable intent-based fusion)
   SPECKIT_EXTENDED_TELEMETRY default: false    (true = enable metrics)
-  SPECKIT_MEMORY_ROADMAP_PHASE default: baseline (metadata only)
+  SPECKIT_MEMORY_ROADMAP_PHASE default: shared-rollout (final roadmap default)
 
 MCP TOOLS: memory_context, memory_search, memory_match_triggers,
            memory_save, memory_index_scan, memory_stats

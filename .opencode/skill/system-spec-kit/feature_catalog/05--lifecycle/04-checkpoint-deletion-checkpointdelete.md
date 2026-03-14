@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Checkpoint deletion (checkpoint_delete).
+Covers the checkpoint deletion tool that permanently removes named snapshots with a name-confirmation safety gate.
 
 ## 2. CURRENT REALITY
 
@@ -139,3 +140,7 @@ Permanently removes a named checkpoint from the `checkpoints` table. Returns a b
 - Group: Lifecycle
 - Source feature title: Checkpoint deletion (checkpoint_delete)
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+This permanently removes a saved snapshot. You have to type the snapshot name to confirm, which prevents accidental deletions. Once deleted, that snapshot cannot be recovered, so make sure you pick the right one.

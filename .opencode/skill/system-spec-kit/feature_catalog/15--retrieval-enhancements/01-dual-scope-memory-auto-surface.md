@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Dual-scope memory auto-surface.
+Dual-scope memory auto-surface fires at tool dispatch and session compaction to re-inject critical memories outside explicit search.
 
 ## 2. CURRENT REALITY
 
@@ -93,3 +94,7 @@ Each hook point has a per-point token budget of 4,000 tokens maximum. The tool d
 - Group: Retrieval enhancements
 - Source feature title: Dual-scope memory auto-surface
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+When you are working on something, this feature automatically brings up important memories you might need without you having to ask for them. It watches for two key moments: when you use a tool and when a long conversation gets compressed. Think of it like a helpful assistant who notices what you are doing and quietly slides the right reference notes onto your desk.

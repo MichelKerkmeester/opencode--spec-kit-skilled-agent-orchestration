@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for BM25 trigger phrase re-index gate.
+Tracks the fix that expands the BM25 re-index condition to include trigger phrase changes alongside title changes.
 
 ## 2. CURRENT REALITY
 
@@ -39,3 +40,7 @@ The BM25 re-index condition in `memory-crud-update.ts` was expanded from title-o
 - Group: Multi-agent deep review remediation (Phase 018)
 - Source feature title: BM25 trigger phrase re-index gate
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+When you change the keywords associated with a memory, the search index now updates itself to reflect those changes. Previously it only refreshed when you changed the title, so updated keywords were invisible to searches until a full rebuild. This fix makes sure the system stays in sync with your edits.

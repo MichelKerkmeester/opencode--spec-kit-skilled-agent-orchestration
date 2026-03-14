@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Tier-2 fallback channel forcing.
+Tier-2 fallback channel forcing sets `forceAllChannels: true` during quality fallback so all retrieval channels execute regardless of simple-route reduction.
 
 ## 2. CURRENT REALITY
 
@@ -23,7 +24,7 @@ A `forceAllChannels` option was added to hybrid search. When the tier-2 quality 
 
 | File | Layer | Role |
 |------|-------|------|
-| `mcp_server/lib/search/hybrid-search.ts` | Lib | Tiered fallback orchestration; sets `forceAllChannels: true` during Tier-2 degradation |
+| `mcp_server/lib/search/hybrid-search.ts` | Lib | Tiered fallback orchestration, sets `forceAllChannels: true` during Tier-2 degradation |
 | `mcp_server/lib/search/channel-enforcement.ts` | Lib | Channel enforcement |
 | `mcp_server/lib/search/channel-representation.ts` | Lib | Channel min-representation |
 
@@ -41,3 +42,7 @@ A `forceAllChannels` option was added to hybrid search. When the tier-2 quality 
 - Group: Alignment remediation (Phase 016)
 - Source feature title: Tier-2 fallback channel forcing
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+Normally the search system skips some search methods when a question seems simple. But when results come back poor, this fallback kicks in and forces every search method to run. It is a safety net that says "the shortcut did not work, so try everything before giving up."

@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Epistemic baseline capture (task_preflight).
+Covers the preflight tool that records knowledge, uncertainty and context completeness baselines before task execution.
 
 ## 2. CURRENT REALITY
 
@@ -128,3 +129,7 @@ The purpose of preflight is establishing a baseline for learning measurement. Wi
 - Group: Analysis
 - Source feature title: Epistemic baseline capture (task_preflight)
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+Before starting a task, this tool records how much you know, how uncertain you are and how complete your context is. It is like taking a "before" photo at the start of a home renovation. Later, you can compare against the "after" to measure how much progress you made and what you learned along the way.

@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Causal edge creation (memory_causal_link).
+Covers the causal edge creation tool that builds directed relationship edges between memories in the causal graph.
 
 ## 2. CURRENT REALITY
 
@@ -131,3 +132,7 @@ A batch insert variant (`insertEdgesBatch()`) handles bulk edge creation during 
 - Group: Analysis
 - Source feature title: Causal edge creation (memory_causal_link)
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+This lets you draw a line between two memories to show they are related, like connecting pins on a corkboard with string. You can say one memory caused another, replaced another or contradicts another. These connections help the search system understand how ideas relate to each other and surface better results when you are tracing the history of a decision.

@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Ablation studies (eval_run_ablation).
+Covers the ablation study framework that measures Recall@20 deltas when individual search channels are disabled.
 
 ## 2. CURRENT REALITY
 
@@ -185,3 +186,7 @@ Results are stored in `eval_metric_snapshots` with negative timestamp IDs to dis
 - Group: Evaluation
 - Source feature title: Ablation studies (eval_run_ablation)
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+This tool tests how important each part of the search system is by turning off one piece at a time and measuring the difference. It is like removing one ingredient from a recipe to see if the dish still tastes good. The results tell you which components are critical and which ones you could remove without hurting search quality.

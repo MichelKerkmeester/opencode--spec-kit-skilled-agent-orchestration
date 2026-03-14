@@ -93,9 +93,9 @@ describe('C136-12: retrieval-telemetry', () => {
     expect(t.quality.boostImpactDelta).toBe(0);
     expect(t.quality.extractionCountInSession).toBe(0);
     expect(t.quality.qualityProxyScore).toBe(0);
-    expect(t.architecture.phase).toBe('baseline');
-    expect(t.architecture.capabilities.lineageState).toBe(false);
-    expect(t.architecture.capabilities.graphUnified).toBe(false);
+    expect(t.architecture.phase).toBe('shared-rollout');
+    expect(t.architecture.capabilities.lineageState).toBe(true);
+    expect(t.architecture.capabilities.graphUnified).toBe(true);
     expect(t.architecture.scopeDimensionsTracked).toBe(4);
   });
 
@@ -352,7 +352,7 @@ describe('C136-12: retrieval-telemetry', () => {
 
     expect(t.architecture.phase).toBe('adaptive');
     expect(t.architecture.capabilities.adaptiveRanking).toBe(true);
-    expect(t.architecture.capabilities.sharedMemory).toBe(false);
+    expect(t.architecture.capabilities.sharedMemory).toBe(true);
     expect(t.architecture.scopeDimensionsTracked).toBe(6);
   });
 

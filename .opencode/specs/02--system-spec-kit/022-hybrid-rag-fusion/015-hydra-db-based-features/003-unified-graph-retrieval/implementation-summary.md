@@ -34,6 +34,7 @@ Phase 3 is implemented and validated. The unified graph retrieval contract is ac
 - Graph telemetry contract in `mcp_server/lib/telemetry/retrieval-telemetry.ts`
 - Unified graph search in `mcp_server/lib/search/graph-search-fn.ts`
 - Graph signal modules in `mcp_server/lib/graph/graph-signals.ts` and `mcp_server/lib/graph/community-detection.ts`
+- Graph follow-up telemetry helpers `summarizeGraphHealthDashboard` and `sampleTracePayloads` in `mcp_server/lib/telemetry/retrieval-telemetry.ts` with coverage in `tests/graph-roadmap-finalization.vitest.ts`
 
 A local latency microbenchmark guard is present in `tests/graph-roadmap-finalization.vitest.ts`.
 
@@ -45,13 +46,14 @@ A local latency microbenchmark guard is present in `tests/graph-roadmap-finaliza
 |-------|--------|
 | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh [phase-folder]` | PASS |
 | `npx tsc --noEmit` in `.opencode/skill/system-spec-kit/mcp_server` | PASS |
+| `npm run build` in `.opencode/skill/system-spec-kit/mcp_server` | PASS |
 | `npx vitest run tests/graph-search-fn.vitest.ts tests/graph-roadmap-finalization.vitest.ts tests/graph-regression-flag-off.vitest.ts` | PASS |
 | Playbook procedure `NEW-120` present | PASS |
-| Consolidated roadmap suite (`15` files, `145` tests) | PASS |
+| Consolidated roadmap suite (`15` files, `159` tests) | PASS |
+| Six-phase validation sweep (`001`-`006` `validate.sh`) | PASS |
 
 ---
 
 ## Known Limitations
 
 1. **Human sign-off is pending.** Retrieval-maintainer and release sign-off rows remain open.
-2. **Optional P2 follow-ups are pending.** Additional dashboards and trace-sampling controls are not required for technical completion.

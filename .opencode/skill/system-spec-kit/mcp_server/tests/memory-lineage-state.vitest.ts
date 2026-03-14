@@ -4,10 +4,12 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { createSchema, ensureSchemaVersion, validateLineageSchemaSupport } from '../lib/search/vector-index-schema';
 import { recordHistory } from '../lib/storage/history';
 import {
+  benchmarkLineageWritePath,
   getActiveMemoryProjection,
   inspectLineageChain,
   recordLineageVersion,
   resolveMemoryAsOf,
+  summarizeLineageInspection,
   validateLineageIntegrity,
 } from '../lib/storage/lineage-state';
 
@@ -130,6 +132,115 @@ describe('Memory lineage state', () => {
     expect(report.compatible).toBe(true);
     expect(report.missingTables).toEqual([]);
     expect(report.missingColumns).toEqual({});
+  });
+
+  it('builds an operator-facing lineage summary for append-first chains', () => {
+    const filePath = '/tmp/specs/015-memory-state/memory/summary.md';
+    insertMemory(database, {
+      id: 21,
+      specFolder: 'specs/015-memory-state',
+      filePath,
+      title: 'Summary v1',
+      createdAt: '2026-03-13T08:00:00.000Z',
+    });
+    insertMemory(database, {
+      id: 22,
+      specFolder: 'specs/015-memory-state',
+      filePath,
+      title: 'Summary v2',
+      createdAt: '2026-03-13T09:00:00.000Z',
+    });
+    insertMemory(database, {
+      id: 23,
+      specFolder: 'specs/015-memory-state',
+      filePath,
+      title: 'Summary v3',
+      createdAt: '2026-03-13T10:00:00.000Z',
+    });
+
+    recordLineageVersion(database, {
+      memoryId: 21,
+      actor: 'ops:lineage-summary',
+      effectiveAt: '2026-03-13T08:00:00.000Z',
+    });
+    recordLineageVersion(database, {
+      memoryId: 22,
+      actor: 'ops:lineage-summary',
+      predecessorMemoryId: 21,
+      effectiveAt: '2026-03-13T09:00:00.000Z',
+      transitionEvent: 'SUPERSEDE',
+    });
+    recordLineageVersion(database, {
+      memoryId: 23,
+      actor: 'ops:lineage-summary',
+      predecessorMemoryId: 22,
+      effectiveAt: '2026-03-13T10:00:00.000Z',
+      transitionEvent: 'SUPERSEDE',
+    });
+
+    const summary = summarizeLineageInspection(database, 23);
+    expect(summary).toMatchObject({
+      logicalKey: 'specs/015-memory-state::/tmp/specs/015-memory-state/memory/summary.md::_',
+      rootMemoryId: 21,
+      activeMemoryId: 23,
+      activeVersionNumber: 3,
+      totalVersions: 3,
+      versionNumbers: [1, 2, 3],
+      historicalMemoryIds: [21, 22],
+      firstValidFrom: '2026-03-13T08:00:00.000Z',
+      latestValidFrom: '2026-03-13T10:00:00.000Z',
+      actors: ['ops:lineage-summary'],
+      transitionCounts: {
+        CREATE: 1,
+        UPDATE: 0,
+        SUPERSEDE: 2,
+        BACKFILL: 0,
+      },
+      hasVersionGaps: false,
+      hasMultipleActiveVersions: false,
+    });
+  });
+
+  it('benchmarks ordered lineage writes with final projection details', () => {
+    const filePath = '/tmp/specs/015-memory-state/memory/benchmark.md';
+    insertMemory(database, {
+      id: 31,
+      specFolder: 'specs/015-memory-state',
+      filePath,
+      title: 'Benchmark v1',
+      createdAt: '2026-03-13T08:00:00.000Z',
+    });
+    insertMemory(database, {
+      id: 32,
+      specFolder: 'specs/015-memory-state',
+      filePath,
+      title: 'Benchmark v2',
+      createdAt: '2026-03-13T09:00:00.000Z',
+    });
+    insertMemory(database, {
+      id: 33,
+      specFolder: 'specs/015-memory-state',
+      filePath,
+      title: 'Benchmark v3',
+      createdAt: '2026-03-13T10:00:00.000Z',
+    });
+
+    const benchmark = benchmarkLineageWritePath(database, {
+      memoryIds: [31, 32, 33],
+      actor: 'ops:lineage-benchmark',
+    });
+
+    expect(benchmark.iterations).toBe(3);
+    expect(benchmark.insertedVersions).toBe(3);
+    expect(benchmark.rootMemoryId).toBe(31);
+    expect(benchmark.activeMemoryId).toBe(33);
+    expect(benchmark.finalVersionNumber).toBe(3);
+    expect(benchmark.logicalKey).toBe('specs/015-memory-state::/tmp/specs/015-memory-state/memory/benchmark.md::_');
+    expect(benchmark.durationMs).toBeGreaterThanOrEqual(0);
+    expect(benchmark.averageWriteMs).toBeGreaterThanOrEqual(0);
+
+    const projection = getActiveMemoryProjection(database, { memoryId: 31 });
+    expect(projection?.memoryId).toBe(33);
   });
 
   it('detects malformed predecessor chains and projection drift', () => {

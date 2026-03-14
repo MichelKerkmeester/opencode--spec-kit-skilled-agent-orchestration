@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Query expansion.
+Query expansion broadens retrieval for complex queries by mining related terms from the vector index and appending them to the original query.
 
 ## 2. CURRENT REALITY
 
@@ -102,3 +103,7 @@ When R15 classifies a query as "simple", expansion is suppressed because expandi
 - Group: Query intelligence
 - Source feature title: Query expansion
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+Sometimes the words you use in a question do not match the words stored in the system, even though they mean the same thing. This feature automatically adds related terms to your search so you find relevant results even when the exact wording differs. It only kicks in for complex questions because simple lookups do not benefit from the extra breadth.

@@ -38,14 +38,14 @@ Phase 3 integrates graph context into the main retrieval flow. The plan focuses 
 - [x] Phase 3 problem statement and scope documented
 - [x] Dependencies on Phase 2 and parent ADRs documented
 - [x] Determinism, explainability, and rollback requirements documented
-- [ ] Phase 2 handoff approved
+- [x] Phase 2 handoff approved
 
 ### Definition of Done
-- [ ] Unified graph scoring path implemented
-- [ ] Deterministic tie-break and score-trace coverage passes
-- [ ] Benchmarks stay within agreed latency limits
-- [ ] Kill-switch rollback path validated
-- [ ] Docs and playbook reflect shipped behavior
+- [x] Unified graph scoring path implemented
+- [x] Deterministic tie-break and score-trace coverage passes
+- [x] Benchmarks stay within agreed latency limits
+- [x] Kill-switch rollback path validated
+- [x] Docs and playbook reflect shipped behavior
 
 ---
 
@@ -73,19 +73,19 @@ In-process graph-fusion layer inside the current retrieval pipeline, with bounde
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase A: Scoring Contract
-- [ ] Define bounded graph scoring rules
-- [ ] Define deterministic tie-break order
-- [ ] Define explainability trace format
+- [x] Define bounded graph scoring rules
+- [x] Define deterministic tie-break order
+- [x] Define explainability trace format
 
 ### Phase B: Pipeline Integration
-- [ ] Integrate graph enrichment into the current retrieval stages
-- [ ] Add score-trace and graph-health telemetry
-- [ ] Add kill-switch or rollback configuration path
+- [x] Integrate graph enrichment into the current retrieval stages
+- [x] Add score-trace and graph-health telemetry
+- [x] Add kill-switch or rollback configuration path
 
 ### Phase C: Regression and Rollout Validation
-- [ ] Add determinism and latency benchmarks
-- [ ] Add retrieval regression suites
-- [ ] Add manual playbook scenarios for graph explainability
+- [x] Add determinism and latency benchmarks
+- [x] Add retrieval regression suites
+- [x] Add manual playbook scenarios for graph explainability
 
 ---
 
@@ -151,10 +151,10 @@ Phase 2 lineage -> Graph scoring contract -> Pipeline integration -> Regression 
 ## L2: ENHANCED ROLLBACK
 
 ### Pre-deployment Checklist
-- [ ] Baseline regression corpus captured
-- [ ] Determinism tests authored
-- [ ] Kill-switch path identified
-- [ ] Trace sampling strategy chosen
+- [x] Baseline regression corpus captured
+- [x] Determinism tests authored
+- [x] Kill-switch path identified
+- [x] Trace sampling strategy chosen
 
 ### Rollback Procedure
 1. Disable graph fusion.

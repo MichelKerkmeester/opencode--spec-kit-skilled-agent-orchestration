@@ -32,6 +32,7 @@ Phase 2 is implemented and validated. Lineage and temporal state behavior is act
 - Lineage schema support in `mcp_server/lib/search/vector-index-schema.ts`
 - Append-first lineage, active projection, `asOf`, backfill, and integrity checks in `mcp_server/lib/storage/lineage-state.ts`
 - Save-path integration in `mcp_server/handlers/memory-save.ts` and `mcp_server/handlers/save/create-record.ts`
+- Operator-facing lineage helpers `summarizeLineageInspection` and `benchmarkLineageWritePath` in `mcp_server/lib/storage/lineage-state.ts` with coverage in `tests/memory-lineage-state.vitest.ts` and `tests/memory-lineage-backfill.vitest.ts`
 
 Catalog and playbook surfaces for Phase 2 are present and aligned with current naming.
 
@@ -43,12 +44,13 @@ Catalog and playbook surfaces for Phase 2 are present and aligned with current n
 |-------|--------|
 | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh [phase-folder]` | PASS |
 | `npx tsc --noEmit` in `.opencode/skill/system-spec-kit/mcp_server` | PASS |
+| `npm run build` in `.opencode/skill/system-spec-kit/mcp_server` | PASS |
 | `npx vitest run tests/memory-lineage-state.vitest.ts tests/memory-lineage-backfill.vitest.ts` | PASS |
-| Consolidated roadmap suite (`15` files, `145` tests) | PASS |
+| Consolidated roadmap suite (`15` files, `159` tests) | PASS |
+| Six-phase validation sweep (`001`-`006` `validate.sh`) | PASS |
 
 ---
 
 ## Known Limitations
 
 1. **Human sign-off is pending.** Data-plane maintainer and release sign-off rows remain open.
-2. **Optional P2 follow-ups are pending.** Write-path benchmark expansion and additional lineage helpers are not required for technical completion.

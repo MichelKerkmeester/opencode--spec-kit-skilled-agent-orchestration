@@ -1,11 +1,11 @@
 ---
-title: "Spec Kit Memory  -- Feature Catalog"
+title: "Spec Kit Memory: Feature Catalog"
 description: "Unified reference combining the complete system feature inventory and the refinement program changelog for the Spec Kit Memory MCP server."
 ---
 
-# Spec Kit Memory  -- Feature Catalog
+# Spec Kit Memory: Feature Catalog
 
-This document combines two complementary views of the Spec Kit Memory MCP server into a single reference. The **System Reference** section describes what the system is today  -- every tool, pipeline stage and capability organized by MCP layer. The **Refinement Program** section describes what was changed and why  -- every improvement delivered across the refinement program, with ticket IDs and implementation details.
+This document combines two complementary views of the Spec Kit Memory MCP server into a single reference. The **System Reference** section describes what the system is today: every tool, pipeline stage and capability organized by MCP layer. The **Refinement Program** section describes what was changed and why: every improvement delivered across the refinement program, with ticket IDs and implementation details.
 
 ## TABLE OF CONTENTS
 
@@ -29,9 +29,8 @@ This document combines two complementary views of the Spec Kit Memory MCP server
 - [18. TOOLING AND SCRIPTS](#18--tooling-and-scripts)
 - [19. GOVERNANCE](#19--governance)
 - [20. UX HOOKS](#20--ux-hooks)
-- [21. DECISIONS AND DEFERRALS](#21--decisions-and-deferrals)
-- [22. PHASE SYSTEM](#22--phase-system)
-- [23. FEATURE FLAG REFERENCE](#23--feature-flag-reference)
+- [21. PHASE SYSTEM](#21--phase-system)
+- [22. FEATURE FLAG REFERENCE](#22--feature-flag-reference)
 
 ## 1. OVERVIEW
 
@@ -112,7 +111,8 @@ This document indexes Spec Kit Memory feature documentation and links each featu
   - [Test quality improvements](#test-quality-improvements)
   - [Evaluation and housekeeping fixes](#evaluation-and-housekeeping-fixes)
   - [Cross-AI validation fixes](#cross-ai-validation-fixes)
-  - [Hydra baseline snapshot](#hydra-baseline-snapshot)
+  - [Memory roadmap baseline snapshot](#memory-roadmap-baseline-snapshot)
+  - [INT8 quantization evaluation](#int8-quantization-evaluation)
 - [Graph signal activation](#graph-signal-activation)
   - [Typed-weighted degree channel](#typed-weighted-degree-channel)
   - [Co-activation boost strength increase](#co-activation-boost-strength-increase)
@@ -234,12 +234,6 @@ This document indexes Spec Kit Memory feature documentation and links each featu
   - [Final token metadata recomputation](#final-token-metadata-recomputation)
   - [Hooks README and export alignment](#hooks-readme-and-export-alignment)
   - [End-to-end success-envelope verification](#end-to-end-success-envelope-verification)
-- [Decisions and deferrals](#decisions-and-deferrals)
-  - [INT8 quantization evaluation](#int8-quantization-evaluation)
-  - [Implemented: graph centrality and community detection](#implemented-graph-centrality-and-community-detection)
-  - [Implemented: auto entity extraction](#implemented-auto-entity-extraction)
-  - [Implemented: memory summary generation](#implemented-memory-summary-generation)
-  - [Implemented: cross-document entity linking](#implemented-cross-document-entity-linking)
 - [Phase System](#phase-system)
   - [Phase detection and scoring (recommend-level.sh --recommend-phases)](#phase-detection-and-scoring-recommend-levelsh---recommend-phases)
   - [Phase folder creation (create.sh --phase)](#phase-folder-creation-createsh---phase)
@@ -268,7 +262,7 @@ Each mode has a token budget. Quick gets 800 tokens. Focused gets 1,500. Deep ge
 
 When no `specFolder` is provided, automatic spec folder discovery attempts to identify the most relevant folder from the query text using a cached one-sentence description per spec folder. If the target folder can be identified from the description alone, the system avoids full-corpus search entirely. Discovery failure is non-fatal and falls through to the standard retrieval path. This feature runs behind the `SPECKIT_FOLDER_DISCOVERY` flag.
 
-Session management is caller-scoped, not automatic across anonymous calls. Passing `sessionId` enables cross-turn deduplication and lets `memory_context` resume an existing working-memory session. If you omit `sessionId`, the handler generates an ephemeral UUID for internal bookkeeping for that call only. Resume-mode `systemPromptContext` injection happens only when auto-resume is enabled, the effective mode is `resume`, and the caller supplied a reusable `sessionId`.
+Session management is caller-scoped, not automatic across anonymous calls. Passing `sessionId` enables cross-turn deduplication and lets `memory_context` resume an existing working-memory session. If you omit `sessionId`, the handler generates an ephemeral UUID for internal bookkeeping for that call only. Resume-mode `systemPromptContext` injection happens only when auto-resume is enabled, the effective mode is `resume` and the caller supplied a reusable `sessionId`.
 
 Retrieval telemetry records mode selection and pressure-override fallbacks for observability when extended telemetry is enabled.
 
@@ -281,7 +275,7 @@ See [`01--retrieval/01-unified-context-retrieval-memorycontext.md`](01--retrieva
 
 This is the primary search tool, and it does a lot. You give it a natural language query (or a multi-concept array of 2-5 strings where all concepts must match), and it runs the full hybrid retrieval pipeline.
 
-The search path is the 4-stage pipeline architecture (V2 is the sole runtime path; `SPECKIT_PIPELINE_V2` is deprecated/inert). The pipeline starts with Stage 1 candidate generation, which selects search channels based on query type: multi-concept queries run per-concept embeddings, deep mode expands into up to 3 query variants, and when embedding expansion is active a baseline plus expanded-query search run in parallel. Constitutional memories are injected if none appear in the initial candidate set. Stage 2 applies all scoring signals in a single pass: session boost, causal boost, FSRS testing effect, intent weights (for non-hybrid only, preventing G2 double-weighting), artifact routing, feedback signals (learned trigger boosts and negative feedback demotions), anchor metadata annotation and validation metadata enrichment. Stage 3 handles cross-encoder reranking and MPAB chunk-to-memory aggregation with document-order reassembly. Stage 4 filters by memory state, runs TRM evidence gap detection and enforces a score immutability invariant that prevents any score modifications after reranking.
+The search path is the 4-stage pipeline architecture (V2 is the sole runtime path and `SPECKIT_PIPELINE_V2` is deprecated/inert). The pipeline starts with Stage 1 candidate generation, which selects search channels based on query type: multi-concept queries run per-concept embeddings, deep mode expands into up to 3 query variants, and when embedding expansion is active a baseline plus expanded-query search run in parallel. Constitutional memories are injected if none appear in the initial candidate set. Stage 2 applies all scoring signals in a single pass: session boost, causal boost, FSRS testing effect, intent weights (for non-hybrid only, preventing G2 double-weighting), artifact routing, feedback signals (learned trigger boosts and negative feedback demotions), anchor metadata annotation and validation metadata enrichment. Stage 3 handles cross-encoder reranking and MPAB chunk-to-memory aggregation with document-order reassembly. Stage 4 filters by memory state, runs TRM evidence gap detection and enforces a score immutability invariant that prevents any score modifications after reranking.
 
 A deep mode expands the query into up to 3 variants using `expandQuery()`, runs hybrid search for each variant in parallel and merges results with deduplication. Results are cached per parameter combination via `toolCache.withCache()`, and session deduplication runs after cache so that cache hits still respect session state.
 
@@ -315,11 +309,11 @@ Five channels feed the pipeline. Vector search (cosine similarity via sqlite-vec
 
 Adaptive fusion replaces hardcoded channel weights with intent-aware profiles. The `hybridAdaptiveFuse()` function selects weights based on the detected query intent, so a "fix_bug" query weights channels differently than a "find_spec" query. Results from all channels merge through `fuseResultsMulti()` using Reciprocal Rank Fusion.
 
-Five operational stages run between fusion and delivery. Stage A (query complexity routing, `SPECKIT_COMPLEXITY_ROUTER`) restricts active channels for simple queries to just vector and FTS, moderate queries add BM25, and complex queries get all five. Stage B (RSF shadow fusion, `SPECKIT_RSF_FUSION`) is historical and no longer active in runtime ranking; RSF artifacts are retained for compatibility/testing references only. Stage C (channel enforcement, `SPECKIT_CHANNEL_MIN_REP`) ensures every contributing channel has at least one result in top-k with a 0.005 quality floor. Stage D (confidence truncation, `SPECKIT_CONFIDENCE_TRUNCATION`) trims the irrelevant tail using a 2x-median gap elbow heuristic. Stage E (dynamic token budget, `SPECKIT_DYNAMIC_TOKEN_BUDGET`) computes tier-aware token limits (simple 1,500, moderate 2,500, complex 4,000).
+Five operational stages run between fusion and delivery. Stage A (query complexity routing, `SPECKIT_COMPLEXITY_ROUTER`) restricts active channels for simple queries to just vector and FTS, moderate queries add BM25, and complex queries get all five. Stage B (RSF shadow fusion, `SPECKIT_RSF_FUSION`) is historical and no longer active in runtime ranking. RSF artifacts are retained for compatibility/testing references only. Stage C (channel enforcement, `SPECKIT_CHANNEL_MIN_REP`) ensures every contributing channel has at least one result in top-k with a 0.005 quality floor. Stage D (confidence truncation, `SPECKIT_CONFIDENCE_TRUNCATION`) trims the irrelevant tail using a 2x-median gap elbow heuristic. Stage E (dynamic token budget, `SPECKIT_DYNAMIC_TOKEN_BUDGET`) computes tier-aware token limits (simple 1,500, moderate 2,500, complex 4,000).
 
 After these stages, Maximal Marginal Relevance reranking promotes result diversity using intent-specific lambda values (from `INTENT_LAMBDA_MAP`, default 0.7). Co-activation spreading takes the top 5 results, traverses the co-activation graph and applies a 0.25x boost to returned activation scores. A fan-effect divisor helper exists in `co-activation.ts`, but the Stage 2 hot path currently applies the spread score directly.
 
-The fallback chain (`searchWithFallback()`) provides resilience. When `SPECKIT_SEARCH_FALLBACK` is enabled, the default path is a three-tier degradation flow: Tier 1 primary retrieval (default minimum similarity 0.3), Tier 2 widened retrieval at 0.1 with all channels forced on, and Tier 3 structural SQL search as last resort. When `SPECKIT_SEARCH_FALLBACK` is disabled, the legacy two-pass path is used (0.3 then 0.17). The system is designed to avoid empty returns except on hard failures.
+The fallback chain (`searchWithFallback()`) provides resilience. When `SPECKIT_SEARCH_FALLBACK` is enabled, the default path is a three-tier degradation flow: Tier 1 primary retrieval (default minimum similarity 0.3), Tier 2 widened retrieval at 0.1 with all channels forced on and Tier 3 structural SQL search as last resort. When `SPECKIT_SEARCH_FALLBACK` is disabled, the legacy two-pass path is used (0.3 then 0.17). The system is designed to avoid empty returns except on hard failures.
 
 
 #### Source Files
@@ -334,11 +328,11 @@ Stage 1 (Candidate Generation) executes search channels based on query type. Mul
 
 Stage 2 (Fusion and Signal Integration) is the single authoritative scoring point. The current runtime order is: session boost, causal boost, co-activation spreading, community co-retrieval from precomputed `community_assignments`, graph signals (N2a momentum + N2b depth), FSRS testing effect (when `trackAccess=true`), intent weights (non-hybrid only, preventing G2 double-weighting), artifact routing weight boosts, feedback signals (learned trigger boosts and negative feedback demotions), artifact result limiting, anchor metadata annotation (S2) and validation metadata enrichment with a bounded multiplier clamped to 0.8-1.2 (S3). The G2 prevention is structural: an `isHybrid` boolean computed once at the top of Stage 2 gates the intent weight step, so the code path for intent weights is absent when hybrid search already applied them during RRF fusion.
 
-Stage 3 (Rerank and Aggregate) handles cross-encoder reranking (optional, gated by `SPECKIT_CROSS_ENCODER`) and MPAB chunk collapse with parent reassembly. Chunks are grouped by parent ID, the best chunk per group is elected by score, and full parent content is loaded from the database. On DB failure, the best-chunk row is emitted as a fallback. Non-chunks and reassembled parents merge and sort descending by effective score.
+Stage 3 (Rerank and Aggregate) handles cross-encoder reranking (optional, gated by `SPECKIT_CROSS_ENCODER`) and MPAB chunk collapse with parent reassembly. Chunks are grouped by parent ID, the best chunk per group is elected by score and full parent content is loaded from the database. On DB failure, the best-chunk row is emitted as a fallback. Non-chunks and reassembled parents merge and sort descending by effective score.
 
 Stage 4 (Filter and Annotate) enforces a "no score changes" invariant through dual enforcement. At compile time, `Stage4ReadonlyRow` declares all six score fields as `Readonly`, making assignment a TypeScript error. At runtime, `captureScoreSnapshot()` records all scores before operations and `verifyScoreInvariant()` checks them afterward, throwing a `[Stage4Invariant]` error on any mismatch. Within this invariant, Stage 4 applies memory state filtering (removing rows below `config.minState` with optional per-tier hard limits), evidence gap detection via TRM Z-score analysis and annotation metadata for feature flags and state statistics. Session deduplication is explicitly excluded from Stage 4 and runs post-cache in the handler to avoid double-counting.
 
-The pipeline is the sole runtime path. `SPECKIT_PIPELINE_V2` is deprecated  -- `isPipelineV2Enabled()` is hardcoded to `true` and the legacy `postSearchPipeline` was removed in Phase 017.
+The pipeline is the sole runtime path. `SPECKIT_PIPELINE_V2` is deprecated. `isPipelineV2Enabled()` is hardcoded to `true` and the legacy `postSearchPipeline` was removed in Phase 017.
 
 
 #### Source Files
@@ -356,12 +350,12 @@ See [`01--retrieval/06-bm25-trigger-phrase-re-index-gate.md`](01--retrieval/06-b
 
 ### AST-level section retrieval tool
 
-**PLANNED (Sprint 019)  -- DEFERRED.** Existing R7 anchor-aware chunk thinning provides reasonable granularity for retrieval. For very large spec documents (>1000 lines), a targeted `read_spec_section(filePath, heading)` tool using Markdown AST parsing via `remark` would extract and return only content beneath a requested heading. Deferred until spec documents consistently exceed the 1000-line threshold. Estimated effort: M (5-7 days).
+**PLANNED (Sprint 019). DEFERRED.** Existing R7 anchor-aware chunk thinning provides reasonable granularity for retrieval. For very large spec documents (>1000 lines), a targeted `read_spec_section(filePath, heading)` tool using Markdown AST parsing via `remark` would extract and return only content beneath a requested heading. Deferred until spec documents consistently exceed the 1000-line threshold. Estimated effort: M (5-7 days).
 
 
 #### Source Files
 
-No source files yet  -- this feature is planned but not yet implemented.
+No source files yet. This feature is planned but not yet implemented.
 
 ### Quality-aware 3-tier search fallback
 
@@ -397,7 +391,7 @@ Reconsolidation-on-save runs after embedding generation only when `SPECKIT_RECON
 
 For large files exceeding the chunking threshold, the system splits into a parent record (metadata only) plus child chunk records, each with its own embedding. Before indexing, anchor-aware chunk thinning scores each chunk using a composite of anchor presence (weight 0.6, binary) and content density (weight 0.4, 0-1). Chunks scoring below 0.3 are dropped to reduce storage and search noise. If thinning retains zero chunks, the chunked-save path returns a warning and skips creating partial parent/child records.
 
-When `SPECKIT_ENCODING_INTENT` is enabled (default ON), the content type is classified at index time as `document`, `code` or `structured_data` using heuristic scoring against a 0.4 threshold. The classification is stored as read-only metadata on the `encoding_intent` column for both parent records and individual chunks. This metadata has no retrieval-time scoring impact yet; it builds a labeled dataset for future type-aware retrieval.
+When `SPECKIT_ENCODING_INTENT` is enabled (default ON), the content type is classified at index time as `document`, `code` or `structured_data` using heuristic scoring against a 0.4 threshold. The classification is stored as read-only metadata on the `encoding_intent` column for both parent records and individual chunks. This metadata has no retrieval-time scoring impact yet. It builds a labeled dataset for future type-aware retrieval.
 
 After every successful save, a consolidation cycle hook fires when `SPECKIT_CONSOLIDATION` is enabled (default ON). The N3-lite consolidation engine scans for contradictions (memory pairs above 0.85 cosine similarity with negation keyword conflicts), runs Hebbian strengthening on recently accessed edges (+0.05 per cycle with a 30-day decay), detects stale edges (unfetched for 90+ days) and enforces edge bounds (maximum 20 per node). The cycle runs on a weekly cadence.
 
@@ -442,7 +436,7 @@ See [`02--mutation/03-single-and-folder-delete-memorydelete.md`](02--mutation/03
 
 ### Tier-based bulk deletion (memory_bulk_delete)
 
-For large-scale cleanup operations. Instead of targeting a folder, you target an importance tier: delete all deprecated memories, or all temporary memories older than 30 days. The tool counts affected memories first (so the response tells you exactly how many were deleted), then deletes within a database transaction. A safety checkpoint is created unless `skipCheckpoint=true`; constitutional/critical tiers still require checkpoint creation.
+For large-scale cleanup operations. Instead of targeting a folder, you target an importance tier: delete all deprecated memories, or all temporary memories older than 30 days. The tool counts affected memories first (so the response tells you exactly how many were deleted), then deletes within a database transaction. A safety checkpoint is created unless `skipCheckpoint=true`. Constitutional/critical tiers still require checkpoint creation.
 
 Constitutional and critical tier memories receive extra protection. Unscoped deletion of these tiers is refused outright. You must provide a `specFolder` to delete constitutional or critical memories in bulk. The `skipCheckpoint` speed optimization, which skips the safety checkpoint for faster execution, is also rejected for these tiers. If the checkpoint creation itself fails for constitutional/critical, the entire operation aborts. For lower tiers, a checkpoint failure triggers a warning but the deletion proceeds because the risk of losing deprecated or temporary memories is low.
 
@@ -465,7 +459,7 @@ Negative feedback persistence fires unconditionally on every negative validation
 
 When a `queryId` is provided alongside positive feedback, two additional systems activate. Learned feedback persistence records the user's selection and extracts query terms into a separate `learned_triggers` column (isolated from the FTS5 index to prevent contamination). These learned triggers boost future searches for the same terms. Ground truth selection logging records the event in the evaluation database for the ground truth corpus, returning a `groundTruthSelectionId` in the response.
 
-The confidence read-compute-write segment (`recordValidation`) runs within a single SQLite transaction to prevent concurrent validation updates from racing and dropping writes. Downstream side effects (auto-promotion, negative-feedback persistence, learned feedback, and ground-truth logging) execute after that transactional segment.
+The confidence read-compute-write segment (`recordValidation`) runs within a single SQLite transaction to prevent concurrent validation updates from racing and dropping writes. Downstream side effects (auto-promotion, negative-feedback persistence, learned feedback and ground-truth logging) execute after that transactional segment.
 
 
 #### Source Files
@@ -483,7 +477,7 @@ See [`02--mutation/06-transaction-wrappers-on-mutation-handlers.md`](02--mutatio
 
 ### Namespace management CRUD tools
 
-**PLANNED (Sprint 019)  -- DEFERRED.** The `specFolder` filter currently provides logical scoping for memory isolation. For true multi-tenant or multi-project isolation, explicit namespace boundaries via CRUD tools (`list_namespaces`, `create_namespace`, `switch_namespace`, `delete_namespace`) would provide strict contextual segmentation. Deferred pending verifiable demand for multi-tenant deployment architectures. Estimated effort: S-M (3-5 days).
+**PLANNED (Sprint 019). DEFERRED.** The `specFolder` filter currently provides logical scoping for memory isolation. For true multi-tenant or multi-project isolation, explicit namespace boundaries via CRUD tools (`list_namespaces`, `create_namespace`, `switch_namespace`, `delete_namespace`) would provide strict contextual segmentation. Deferred pending verifiable demand for multi-tenant deployment architectures. Estimated effort: S-M (3-5 days).
 
 
 #### Source Files
@@ -492,9 +486,9 @@ See [`02--mutation/07-namespace-management-crud-tools.md`](02--mutation/07-names
 
 ### Prediction-error save arbitration
 
-A 5-action decision engine that activates during the save path. It examines the semantic similarity of new content against existing memories and selects one of five actions: REINFORCE (>=0.95, boost FSRS stability), UPDATE (0.85-0.94 no contradiction, in-place update), SUPERSEDE (0.85-0.94 with contradiction, deprecate old + create new), CREATE_LINKED (0.70-0.84, new memory + causal edge), or CREATE (<0.70, standalone).
+A 5-action decision engine that activates during the save path. It examines the semantic similarity of new content against existing memories and selects one of five actions: REINFORCE (>=0.95, boost FSRS stability), UPDATE (0.85-0.94 no contradiction, in-place update), SUPERSEDE (0.85-0.94 with contradiction, deprecate old + create new), CREATE_LINKED (0.70-0.84, new memory + causal edge) or CREATE (<0.70, standalone).
 
-Contradiction detection uses regex patterns. All decisions are logged to the `memory_conflicts` table with similarity score, chosen action, contradiction flag, reason, and spec_folder. Document-type-aware weighting adjusts thresholds (constitutional=1.0 down to scratch=0.25). The engine is always active unless `force: true` is passed to bypass arbitration.
+Contradiction detection uses regex patterns. All decisions are logged to the `memory_conflicts` table with similarity score, chosen action, contradiction flag, reason and spec_folder. Document-type-aware weighting adjusts thresholds (constitutional=1.0 down to scratch=0.25). The engine is always active unless `force: true` is passed to bypass arbitration.
 
 
 #### Source Files
@@ -512,7 +506,7 @@ See [`02--mutation/09-correction-tracking-with-undo.md`](02--mutation/09-correct
 
 ### Per-memory history log
 
-The `memory_history` table records per-memory mutation events (`ADD`, `UPDATE`, `DELETE`) with timestamp, actor, and optional before/after payloads. History writes are wired into mutation handlers and deletion helpers so lifecycle activity is captured across save, update, and delete flows.
+The `memory_history` table records per-memory mutation events (`ADD`, `UPDATE`, `DELETE`) with timestamp, actor and optional before/after payloads. History writes are wired into mutation handlers and deletion helpers so lifecycle activity is captured across save, update, and delete flows.
 
 
 #### Source Files
@@ -589,7 +583,7 @@ See [`04--maintenance/01-workspace-scanning-and-indexing-memoryindexscan.md`](04
 
 ### Startup runtime compatibility guards
 
-This maintenance module runs non-blocking startup diagnostics before the MCP server settles into normal operation. It persists a `.node-version-marker` on first startup, then compares later runtimes against that marker and warns when the Node module ABI, platform, or architecture changes. This reduces surprise native-module crashes after runtime upgrades or machine changes.
+This maintenance module runs non-blocking startup diagnostics before the MCP server settles into normal operation. It persists a `.node-version-marker` on first startup, then compares later runtimes against that marker and warns when the Node module ABI, platform or architecture changes. This reduces surprise native-module crashes after runtime upgrades or machine changes.
 
 The module also verifies that SQLite reports at least version 3.35.0 and degrades to warnings when version queries fail or return malformed strings. The guard stays intentionally non-fatal so startup diagnostics do not prevent the server from booting, but they surface actionable rebuild or environment warnings early.
 
@@ -629,7 +623,7 @@ The `clearExisting` mode deserves explanation. When true, the entire restore run
 
 When merging (the default), the system checks for duplicates using a logical key of `spec_folder + file_path + anchor_id`. Existing memories that match the logical key are skipped rather than duplicated.
 
-After restore, vectors are restored from the checkpoint snapshot when vector payloads are present. The restore handler then clears in-memory search/constitutional caches, rebuilds BM25 from the live database when BM25 is enabled, and refreshes the trigger cache. This keeps restored memories immediately discoverable without forcing a full re-embedding pass.
+After restore, vectors are restored from the checkpoint snapshot when vector payloads are present. The restore handler then clears in-memory search/constitutional caches, rebuilds BM25 from the live database when BM25 is enabled and refreshes the trigger cache. This keeps restored memories immediately discoverable without forcing a full re-embedding pass.
 
 
 #### Source Files
@@ -849,13 +843,13 @@ See [`08--bug-fixes-and-data-integrity/04-sha-256-content-hash-deduplication.md`
 
 Four database-layer bugs were fixed:
 
-**B1  -- Reconsolidation column reference:** `reconsolidation.ts` referenced a non-existent `frequency_counter` column that would crash at runtime during merge operations. Replaced with `importance_weight` using `Math.min(1.0, currentWeight + 0.1)` merge logic.
+**B1, Reconsolidation column reference:** `reconsolidation.ts` referenced a non-existent `frequency_counter` column that would crash at runtime during merge operations. Replaced with `importance_weight` using `Math.min(1.0, currentWeight + 0.1)` merge logic.
 
-**B2  -- DDL inside transaction:** `checkpoints.ts` placed DDL statements (`CREATE TABLE IF NOT EXISTS`, `ALTER TABLE ADD COLUMN`) inside a `database.transaction()` block. SQLite silently auto-commits on DDL, which corrupted the transaction boundary during checkpoint restore. DDL now runs before `BEGIN`; only DML is wrapped in the transaction.
+**B2, DDL inside transaction:** `checkpoints.ts` placed DDL statements (`CREATE TABLE IF NOT EXISTS`, `ALTER TABLE ADD COLUMN`) inside a `database.transaction()` block. SQLite silently auto-commits on DDL, which corrupted the transaction boundary during checkpoint restore. DDL now runs before `BEGIN`. Only DML is wrapped in the transaction.
 
-**B3  -- SQL operator precedence:** `causal-edges.ts` had `WHERE a AND b OR c` without parentheses, matching wrong rows on edge deletion. Fixed to `WHERE a AND (b OR c)`.
+**B3, SQL operator precedence:** `causal-edges.ts` had `WHERE a AND b OR c` without parentheses, matching wrong rows on edge deletion. Fixed to `WHERE a AND (b OR c)`.
 
-**B4  -- Missing changes guard:** `memory-save.ts` UPDATE statements reported success even when zero rows were updated. Added `.changes > 0` guards so callers can distinguish actual updates from no-ops.
+**B4, Missing changes guard:** `memory-save.ts` UPDATE statements reported success even when zero rows were updated. Added `.changes > 0` guards so callers can distinguish actual updates from no-ops.
 
 
 #### Source Files
@@ -866,9 +860,9 @@ See [`08--bug-fixes-and-data-integrity/05-database-and-schema-safety.md`](08--bu
 
 Two guard/edge-case issues were fixed:
 
-**E1  -- Temporal contiguity double-counting:** `temporal-contiguity.ts` had an O(N^2) nested loop that processed both (A,B) and (B,A) pairs, double-counting boosts. Fixed inner loop to `j = i + 1`.
+**E1, Temporal contiguity double-counting:** `temporal-contiguity.ts` had an O(N^2) nested loop that processed both (A,B) and (B,A) pairs, double-counting boosts. Fixed inner loop to `j = i + 1`.
 
-**E2  -- Wrong-memory fallback:** `extraction-adapter.ts` fell back to resolving the most-recent memory ID on entity resolution failure, silently linking to the wrong memory. The fallback was removed; the function returns `null` on resolution failure.
+**E2, Wrong-memory fallback:** `extraction-adapter.ts` fell back to resolving the most-recent memory ID on entity resolution failure, silently linking to the wrong memory. The fallback was removed. The function returns `null` on resolution failure.
 
 Current mapping: legacy Phase 016 content is canonically tracked under `008-combined-bug-fixes` (historical source folded from retired `009-post-review-remediation-epic`).
 
@@ -896,12 +890,12 @@ See [`08--bug-fixes-and-data-integrity/07-canonical-id-dedup-hardening.md`](08--
 
 `Math.max(...array)` and `Math.min(...array)` push all elements onto the call stack, causing `RangeError` on arrays exceeding ~100K elements. Seven production files were converted from spread patterns to `reduce()`:
 
-- `rsf-fusion.ts`  -- 6 instances (4 + 2)
-- `causal-boost.ts`  -- 1 instance
-- `evidence-gap-detector.ts`  -- 1 instance
-- `prediction-error-gate.ts`  -- 2 instances
-- `retrieval-telemetry.ts`  -- 1 instance
-- `reporting-dashboard.ts`  -- 2 instances
+- `rsf-fusion.ts`: 6 instances (4 + 2)
+- `causal-boost.ts`: 1 instance
+- `evidence-gap-detector.ts`: 1 instance
+- `prediction-error-gate.ts`: 2 instances
+- `retrieval-telemetry.ts`: 1 instance
+- `reporting-dashboard.ts`: 2 instances
 
 Each replacement uses `scores.reduce((a, b) => Math.max(a, b), -Infinity)` with an `AI-WHY` comment explaining the safety rationale.
 
@@ -943,7 +937,7 @@ See [`08--bug-fixes-and-data-integrity/11-working-memory-timestamp-fix.md`](08--
 
 A separate SQLite database (`speckit-eval.db`) stores retrieval quality data in five tables: `eval_queries`, `eval_channel_results`, `eval_final_results`, `eval_ground_truth` and `eval_metric_snapshots`. Keeping evaluation data in its own database is a deliberate security decision. The main search database should never carry evaluation artifacts that could leak into production results.
 
-Logging hooks in the search, context and trigger handlers are best-effort and fail-safe: they execute only when `SPECKIT_EVAL_LOGGING=true`, and all writes are wrapped in non-fatal `try/catch` so query responses continue even if eval logging fails. `memory_search` and `memory_context` emit per-channel rows; `memory_match_triggers` emits query/final-result rows without channel-level breakdown.
+Logging hooks in the search, context and trigger handlers are best-effort and fail-safe: they execute only when `SPECKIT_EVAL_LOGGING=true`, and all writes are wrapped in non-fatal `try/catch` so query responses continue even if eval logging fails. `memory_search` and `memory_context` emit per-channel rows. `memory_match_triggers` emits query/final-result rows without channel-level breakdown.
 
 
 #### Source Files
@@ -954,7 +948,7 @@ See [`09--evaluation-and-measurement/01-evaluation-database-and-schema.md`](09--
 
 Eleven metrics run against logged retrieval data. The four primary ones are MRR@5 (how high does the right answer rank?), NDCG@10 (are results ordered well?), Recall@20 (do we find everything relevant?) and Hit Rate@1 (is the top result correct?).
 
-Seven diagnostic metrics add depth: inversion rate counts pairwise ranking mistakes, constitutional surfacing rate tracks whether high-priority memories appear in top results, importance-weighted recall favors recall of critical content, cold-start detection rate measures whether fresh memories surface when relevant, precision@K and F1@K expose precision/recall balance, and intent-weighted NDCG adjusts ranking quality by query type.
+Seven diagnostic metrics add depth: inversion rate counts pairwise ranking mistakes, constitutional surfacing rate tracks whether high-priority memories appear in top results, importance-weighted recall favors recall of critical content, cold-start detection rate measures whether fresh memories surface when relevant, precision@K and F1@K expose precision/recall balance and intent-weighted NDCG adjusts ranking quality by query type.
 
 This battery of metrics means you can diagnose where the pipeline fails, not just whether it fails.
 
@@ -1057,7 +1051,7 @@ See [`09--evaluation-and-measurement/10-full-reporting-and-ablation-study-framew
 
 ### Shadow scoring and channel attribution
 
-Full A/B comparison infrastructure ran alternative scoring algorithms in parallel, logging results without affecting live ranking. The system computed detailed comparison metrics including Kendall tau rank correlation, per-result score deltas, and production-only versus shadow-only result sets. Channel attribution tagged each result with its source channels and computed Exclusive Contribution Rate per channel: how often each channel was the sole source for a result in the top-k window.
+Full A/B comparison infrastructure ran alternative scoring algorithms in parallel, logging results without affecting live ranking. The system computed detailed comparison metrics including Kendall tau rank correlation, per-result score deltas and production-only versus shadow-only result sets. Channel attribution tagged each result with its source channels and computed Exclusive Contribution Rate per channel: how often each channel was the sole source for a result in the top-k window.
 
 Ground truth expansion via implicit user selection tracking and an LLM-judge stub interface were included for future corpus growth.
 
@@ -1101,7 +1095,7 @@ Six fixes addressed evaluation framework reliability and protocol-boundary safet
 - **Postflight re-correction (#35):** `task_postflight` SELECT now matches `phase IN ('preflight', 'complete')` so re-posting updates the existing record instead of failing.
 - **parseArgs guard (#36):** `parseArgs<T>()` returns `{} as T` for null/undefined/non-object input at the protocol boundary.
 - **128-bit dedup hash (#37):** Session dedup hash extended from `.slice(0, 16)` (64-bit) to `.slice(0, 32)` (128-bit) to reduce collision probability.
-- **Exit handler cleanup (#38):** `_exitFlushHandler` reference stored; `cleanupExitHandlers()` now calls `process.removeListener()` for `beforeExit`, `SIGTERM`, and `SIGINT`.
+- **Exit handler cleanup (#38):** `_exitFlushHandler` reference stored. `cleanupExitHandlers()` now calls `process.removeListener()` for `beforeExit`, `SIGTERM` and `SIGINT`.
 
 
 #### Source Files
@@ -1112,8 +1106,8 @@ See [`09--evaluation-and-measurement/13-evaluation-and-housekeeping-fixes.md`](0
 
 Independent reviews by Gemini 3.1 Pro and Codex gpt-5.3-codex identified 14 issues missed by the original audit. Key fixes:
 
-- **CR-P0-1:** Test suite false-pass patterns  -- 21 silent-return guards converted to `it.skipIf()`, fail-fast imports with throw on required handler/vectorIndex missing.
-- **CR-P1-1:** Deletion exception propagation  -- causal edge cleanup errors in single-delete now propagate (previously swallowed).
+- **CR-P0-1:** Test suite false-pass patterns. 21 silent-return guards converted to `it.skipIf()`, fail-fast imports with throw on required handler/vectorIndex missing.
+- **CR-P1-1:** Deletion exception propagation. Causal edge cleanup errors in single-delete now propagate (previously swallowed).
 - **CR-P1-2:** Re-sort after feedback mutations before top-K slice in Stage 2 fusion.
 - **CR-P1-3:** Dedup queries gained `AND parent_id IS NULL` to exclude chunk rows.
 - **CR-P1-4:** Session dedup `id != null` guards against undefined collapse.
@@ -1132,16 +1126,29 @@ See [`09--evaluation-and-measurement/14-cross-ai-validation-fixes.md`](09--evalu
 
 This remains a cross-cutting meta-improvement applied across multiple modules.
 
-### Hydra baseline snapshot
+### Memory roadmap baseline snapshot
 
-`captureHydraBaselineSnapshot()` records a compact Phase 1 readiness baseline before any broader Hydra rollout. It combines retrieval-volume counters from the eval database with isolation/schema counters from the target context database and returns a single metrics snapshot with metadata describing the current Hydra phase and capability flags.
+`captureMemoryStateBaselineSnapshot()` records a compact Phase 1 readiness baseline before any broader memory-roadmap rollout. It combines retrieval-volume counters from the eval database with isolation/schema counters from the target context database and returns a single metrics snapshot with metadata describing the current roadmap phase and capability flags.
 
-When `persist=true`, the snapshot writes one row per metric into `eval_metric_snapshots` with `channel='hydra-baseline'`. The metadata now includes the resolved `contextDbPath`, the prefixed Hydra roadmap flags, and `scopeDimensionsTracked`, and the eval database is initialized beside the context database under test instead of silently falling back to the default eval location. Missing or unreadable context databases are tolerated; the retrieval-side metrics still record and context-backed counters fall back to zero.
+When `persist=true`, the snapshot writes one row per metric into `eval_metric_snapshots` with `channel='memory-state-baseline'`. The metadata now includes the resolved `contextDbPath`, the roadmap capability flags and `scopeDimensionsTracked`, and the eval database is initialized beside the context database under test instead of silently falling back to the default eval location. Missing or unreadable context databases are tolerated. The retrieval-side metrics still record and context-backed counters fall back to zero.
 
 
 #### Source Files
 
-See [`09--evaluation-and-measurement/15-hydra-baseline-snapshot.md`](09--evaluation-and-measurement/15-hydra-baseline-snapshot.md) for full implementation and test file listings.
+See [`09--evaluation-and-measurement/15-memory-roadmap-baseline-snapshot.md`](09--evaluation-and-measurement/15-memory-roadmap-baseline-snapshot.md) for full implementation and test file listings.
+
+### INT8 quantization evaluation
+
+Decision: **NO-GO**. All three activation criteria were unmet.
+
+Active memories with embeddings: 2,412 measured versus the 10,000 threshold (24.1%). P95 search latency: approximately 15ms measured versus the 50ms threshold (approximately 30%). Embedding dimensions: 1,024 measured versus the 1,536 threshold (66.7%).
+
+The estimated 7.1 MB storage savings (3.9% of 180 MB total DB) did not justify 5.32% estimated recall risk, custom quantized BLOB complexity or KL-divergence calibration overhead. Re-evaluate when the corpus grows approximately 4x (above 10K memories), sustained p95 exceeds 50ms or the embedding provider changes to dimensions above 1,536.
+
+
+#### Source Files
+
+See [`09--evaluation-and-measurement/16-int8-quantization-evaluation.md`](09--evaluation-and-measurement/16-int8-quantization-evaluation.md) for details.
 
 ## 12. GRAPH SIGNAL ACTIVATION
 
@@ -1169,7 +1176,7 @@ See [`10--graph-signal-activation/02-co-activation-boost-strength-increase.md`](
 
 ### Edge density measurement
 
-The current density metric used by runtime guards is global edge density: `total_edges / total_memories` from the graph tables. If density is too low, graph-derived gains are naturally limited; if density is too high, entity-linking creation is gated by the density threshold. Earlier "edges-per-node" language remains useful as intuition, but runtime checks now use the global-density denominator for consistency.
+The current density metric used by runtime guards is global edge density: `total_edges / total_memories` from the graph tables. If density is too low, graph-derived gains are naturally limited. If density is too high, entity-linking creation is gated by the density threshold. Earlier "edges-per-node" language remains useful as intuition, but runtime checks now use the global-density denominator for consistency.
 
 
 #### Source Files
@@ -1236,7 +1243,7 @@ See [`10--graph-signal-activation/07-community-detection.md`](10--graph-signal-a
 
 ### Graph and cognitive memory fixes
 
-Seven fixes (of 9 planned; 2 deferred) addressed graph integrity and cognitive scoring:
+Seven fixes (of 9 planned, 2 deferred) addressed graph integrity and cognitive scoring:
 
 - **Self-loop prevention (#24):** `insertEdge()` rejects `sourceId === targetId`.
 - **maxDepth clamping (#25):** `handleMemoryDriftWhy` clamps `maxDepth` to [1, 10] server-side.
@@ -1255,7 +1262,7 @@ See [`10--graph-signal-activation/08-graph-and-cognitive-memory-fixes.md`](10--g
 
 ### ANCHOR tags as graph nodes
 
-**PLANNED (Sprint 019)  -- DEFERRED.** S2 currently parses `<!-- ANCHOR: architecture -->` tags and derives semantic types, but these annotations exist only on pipeline rows and are not promoted to graph nodes. Converting anchors into strongly typed graph nodes with distinct edge rules would create a deterministic knowledge graph from existing markdown conventions without expensive LLM extraction. This was the most creative unique insight from the research corpus (Gemini-2). Deferred pending a 2-day technical spike to validate the approach. Estimated effort: S-M (3-5 days).
+**PLANNED (Sprint 019). DEFERRED.** S2 currently parses `<!-- ANCHOR: architecture -->` tags and derives semantic types, but these annotations exist only on pipeline rows and are not promoted to graph nodes. Converting anchors into strongly typed graph nodes with distinct edge rules would create a deterministic knowledge graph from existing markdown conventions without expensive LLM extraction. This was the most creative unique insight from the research corpus (Gemini-2). Deferred pending a 2-day technical spike to validate the approach. Estimated effort: S-M (3-5 days).
 
 
 #### Source Files
@@ -1266,7 +1273,7 @@ See [`10--graph-signal-activation/09-anchor-tags-as-graph-nodes.md`](10--graph-s
 
 After Stage 2 fusion produces a ranked result set, the causal boost module walks the `causal_edges` graph to amplify scores for memories related to top-ranked seed results. Up to 25% of the result set (capped at 5) serves as seed nodes. The graph walk traverses up to 2 hops via a weighted recursive CTE, applying a per-hop base boost capped at 0.05.
 
-Relation-type weight multipliers are applied during traversal as follows: `supersedes` (1.5), `contradicts` (0.8), and `caused`/`enabled`/`derived_from`/`supports` (1.0). These weights are combined with edge `strength` to scale neighbor amplification while preserving the hop-depth cap.
+Relation-type weight multipliers are applied during traversal as follows: `supersedes` (1.5), `contradicts` (0.8) and `caused`/`enabled`/`derived_from`/`supports` (1.0). These weights are combined with edge `strength` to scale neighbor amplification while preserving the hop-depth cap.
 
 The combined causal + session boost ceiling is 0.20, preventing runaway score inflation from graph-dense clusters. The feature is gated by `SPECKIT_CAUSAL_BOOST` (default `true`). When disabled, results pass through without graph-based score adjustment.
 
@@ -1345,7 +1352,7 @@ See [`11--scoring-and-calibration/03-interference-scoring.md`](11--scoring-and-c
 
 Not all memories should decay at the same rate. A decision record from six months ago is still relevant. A scratch note from last Tuesday probably is not.
 
-FSRS decay rates now vary by a two-dimensional multiplier matrix. On the context axis: decisions never decay (stability set to Infinity), research memories get 2x stability, and implementation/discovery/general memories follow the standard rate. On the tier axis: constitutional and critical memories never decay, important memories get 1.5x stability, normal memories follow the standard, temporary memories decay at 0.5x and deprecated at 0.25x.
+FSRS decay rates now vary by a two-dimensional multiplier matrix. On the context axis: decisions never decay (stability set to Infinity), research memories get 2x stability and implementation/discovery/general memories follow the standard rate. On the tier axis: constitutional and critical memories never decay, important memories get 1.5x stability, normal memories follow the standard, temporary memories decay at 0.5x and deprecated at 0.25x.
 
 The combined multiplier uses `Infinity` for never-decay cases, which produces `R(t) = 1.0` for all t without special-case logic. Runs behind the `SPECKIT_CLASSIFICATION_DECAY` flag.
 
@@ -1430,13 +1437,13 @@ See [`11--scoring-and-calibration/10-auto-promotion-on-validation.md`](11--scori
 
 Four scoring-layer bugs were fixed:
 
-**C1  -- Composite score overflow:** `composite-scoring.ts` used `Math.max(0, composite)` which allowed scores above 1.0. Changed to `Math.max(0, Math.min(1, composite))` clamping to [0,1] at three call sites.
+**C1, Composite score overflow:** `composite-scoring.ts` used `Math.max(0, composite)` which allowed scores above 1.0. Changed to `Math.max(0, Math.min(1, composite))` clamping to [0,1] at three call sites.
 
-**C2  -- Citation fallback chain:** `composite-scoring.ts` fell back through `last_accessed` then `updated_at` when no citation data existed, conflating recency with citation authority. The fallback chain was removed; the function returns 0 when no citation data exists.
+**C2, Citation fallback chain:** `composite-scoring.ts` fell back through `last_accessed` then `updated_at` when no citation data existed, conflating recency with citation authority. The fallback chain was removed. The function returns 0 when no citation data exists.
 
-**C3  -- Causal-boost cycle amplification:** `causal-boost.ts` used `UNION ALL` in a recursive CTE, allowing cycles to amplify scores exponentially as the same node was visited multiple times. Changed to `UNION` which deduplicates visited nodes and prevents cycles.
+**C3, Causal-boost cycle amplification:** `causal-boost.ts` used `UNION ALL` in a recursive CTE, allowing cycles to amplify scores exponentially as the same node was visited multiple times. Changed to `UNION` which deduplicates visited nodes and prevents cycles.
 
-**C4  -- Ablation binomial overflow:** `ablation-framework.ts` computed binomial coefficients using naive multiplication that overflowed for n>50 in the sign test. Replaced with `logBinomial(n, k)` using log-space summation.
+**C4, Ablation binomial overflow:** `ablation-framework.ts` computed binomial coefficients using naive multiplication that overflowed for n>50 in the sign test. Replaced with `logBinomial(n, k)` using log-space summation.
 
 
 #### Source Files
@@ -1485,7 +1492,7 @@ See [`11--scoring-and-calibration/14-local-gguf-reranker-via-node-llama-cpp.md`]
 
 The tool cache (`lib/cache/tool-cache.ts`) provides a per-tool, TTL-based in-memory cache that sits in front of expensive operations like embedding generation and database queries. Each cache entry is keyed by a SHA-256 hash of the tool name plus input parameters and expires after a configurable TTL (default 60 seconds via `TOOL_CACHE_TTL_MS`). Maximum cache size is governed by `TOOL_CACHE_MAX_ENTRIES` (default 1000) with oldest-entry eviction on overflow.
 
-Cache statistics (hits, misses, evictions, invalidations, hit rate) are tracked for observability. A periodic cleanup sweep removes expired entries. Tool-specific invalidation allows targeted cache busting after mutations without flushing the entire cache. The cache is wired into multiple handlers including `memory_search`, `memory_save`, `memory_delete`, and `memory_bulk_delete` via the mutation hooks system.
+Cache statistics (hits, misses, evictions, invalidations, hit rate) are tracked for observability. A periodic cleanup sweep removes expired entries. Tool-specific invalidation allows targeted cache busting after mutations without flushing the entire cache. The cache is wired into multiple handlers including `memory_search`, `memory_save`, `memory_delete` and `memory_bulk_delete` via the mutation hooks system.
 
 
 #### Source Files
@@ -1507,7 +1514,7 @@ See [`11--scoring-and-calibration/16-access-driven-popularity-scoring.md`](11--s
 
 The quality loop handler (`handlers/quality-loop.ts`) includes a coherence dimension in its quality score breakdown. The coherence score measures how well a memory's content structure aligns with its temporal context, whether the claimed relationships (references to other memories, spec folder associations, causal links) are consistent with the chronological ordering of events. Incoherent memories that reference future events or claim relationships with non-existent predecessors receive a lower coherence score, which reduces their overall quality assessment.
 
-The coherence signal feeds into the composite quality score alongside trigger coverage, anchor density, and token budget efficiency. A low coherence score can trigger a quality loop rejection, preventing temporally inconsistent content from entering the index.
+The coherence signal feeds into the composite quality score alongside trigger coverage, anchor density and token budget efficiency. A low coherence score can trigger a quality loop rejection, preventing temporally inconsistent content from entering the index.
 
 The verify-fix-verify retry cycle in `mcp_server/handlers/quality-loop.ts` is immediate by design with no backoff delay between attempts. Retries are bounded by `maxRetries` (default `2`) and run synchronously because the auto-fix steps are deterministic local transforms.
 
@@ -1612,7 +1619,7 @@ See [`12--query-intelligence/06-query-expansion.md`](12--query-intelligence/06-q
 
 The quality loop is opt-in. When `SPECKIT_QUALITY_LOOP=true`, the save pipeline computes a quality score based on trigger phrase coverage, anchor format, token budget and content coherence, then runs an initial evaluation plus up to 2 immediate auto-fix retries by default. Auto-fixes can re-extract triggers, normalize unclosed anchors and trim content to the shared token budget.
 
-`attempts` reports the actual number of evaluations used rather than the configured retry ceiling, so early-break cases stop at the real attempt count. If the loop still fails, the save returns `status: 'rejected'`; in atomic save flows that rejected status triggers file rollback rather than another indexing retry.
+`attempts` reports the actual number of evaluations used rather than the configured retry ceiling, so early-break cases stop at the real attempt count. If the loop still fails, the save returns `status: 'rejected'`. In atomic save flows that rejected status triggers file rollback rather than another indexing retry.
 
 When the loop is disabled, the runtime still computes the score but allows the save to continue. This keeps quality telemetry available without forcing retry/reject behavior.
 
@@ -1706,7 +1713,7 @@ See [`13--memory-quality-and-indexing/08-anchor-aware-chunk-thinning.md`](13--me
 
 ### Encoding-intent capture at index time
 
-An `encoding_intent` field classifies content type at index time as `document`, `code` or `structured_data` using heuristic scoring. The code path scores fenced code blocks, import/export/function keyword density and programming punctuation density. The structured data path scores YAML frontmatter, pipe tables and key-value patterns. The classification threshold is 0.4; anything below defaults to `document`.
+An `encoding_intent` field classifies content type at index time as `document`, `code` or `structured_data` using heuristic scoring. The code path scores fenced code blocks, import/export/function keyword density and programming punctuation density. The structured data path scores YAML frontmatter, pipe tables and key-value patterns. The classification threshold is 0.4. Anything below defaults to `document`.
 
 The classification is stored as read-only metadata on the `encoding_intent` column for both parent records and individual chunks. It has no retrieval-time scoring impact. The intent is to build a labeled dataset that future work can use for type-aware retrieval. Runs behind the `SPECKIT_ENCODING_INTENT` flag (default ON).
 
@@ -1717,13 +1724,13 @@ See [`13--memory-quality-and-indexing/09-encoding-intent-capture-at-index-time.m
 
 ### Auto entity extraction
 
-Memory content contains implicit entities  -- technology names, architectural concepts, project identifiers  -- that are valuable for cross-document linking but were never explicitly captured. Manual entity tagging does not scale, and the system had zero entities in its catalog.
+Memory content contains implicit entities (technology names, architectural concepts, project identifiers) that are valuable for cross-document linking but were never explicitly captured. Manual entity tagging does not scale, and the system had zero entities in its catalog.
 
 Auto entity extraction runs at save time using five pure-TypeScript regex rules with no external NLP dependencies. Rule 1 captures capitalized multi-word sequences (proper nouns like "Claude Code" or "Spec Kit Memory"). Rule 2 extracts technology names from code fence language annotations. Rule 3 identifies nouns following key phrases ("using", "with", "via", "implements"). Rule 4 pulls content from markdown headings. Rule 5 captures quoted strings.
 
 Extracted entities pass through a denylist filter (`entity-denylist.ts`) containing 64 combined stop words across three categories: common nouns (29 words like "thing", "time", "example"), technology stop words (20 words like "api", "json", "npm") and generic modifiers (15 words like "new", "old", "simple"). Single-character entities and entities shorter than 2 characters are also filtered.
 
-Deduplicated entities are stored in the `memory_entities` table with a UNIQUE constraint on `(memory_id, entity_text)`. The `entity_catalog` table maintains canonical names with Unicode-aware alias normalization (`/[^\p{L}\p{N}\s]/gu`  -- preserving letters and numbers from all scripts) and a `memory_count` field tracking how many memories reference each entity. An `edge_density` check (`totalEdges / totalMemories`) provides a diagnostic metric.
+Deduplicated entities are stored in the `memory_entities` table with a UNIQUE constraint on `(memory_id, entity_text)`. The `entity_catalog` table maintains canonical names with Unicode-aware alias normalization (`/[^\p{L}\p{N}\s]/gu`, preserving letters and numbers from all scripts) and a `memory_count` field tracking how many memories reference each entity. An `edge_density` check (`totalEdges / totalMemories`) provides a diagnostic metric.
 
 **Sprint 8 update:** Entity normalization was consolidated. Two divergent `normalizeEntityName` functions (ASCII-only in `entity-extractor.ts` vs Unicode-aware in `entity-linker.ts`) were unified into a single Unicode-aware version in `entity-linker.ts`. The `entity-extractor.ts` module now imports and re-exports this function. Similarly, a duplicate `computeEdgeDensity` function was consolidated into `entity-linker.ts`.
 
@@ -1749,7 +1756,7 @@ See [`13--memory-quality-and-indexing/11-content-aware-memory-filename-generatio
 
 Two pre-write quality gates in `scripts/core/file-writer.ts` prevent empty and duplicate memory files at generation time, complementing the existing index-time dedup in `memory-save.ts`. The empty content gate (`validateContentSubstance`) strips YAML frontmatter, HTML comments, anchor markers, empty headings, table rows and empty list items, then rejects files with fewer than 200 characters of remaining substance. The duplicate gate (`checkForDuplicateContent`) computes a SHA-256 hash of the file content and compares it against all existing `.md` files in the target memory directory, rejecting exact matches.
 
-Both gates run inside `writeFilesAtomically()` before the atomic write operation, after the existing `validateNoLeakedPlaceholders` check. Failures throw descriptive errors that halt the save and report which validation failed. This catches the two most common quality problems  -- SGQS-template-only files and repeated saves of identical content  -- at the earliest possible point. Always active with no feature flag.
+Both gates run inside `writeFilesAtomically()` before the atomic write operation, after the existing `validateNoLeakedPlaceholders` check. Failures throw descriptive errors that halt the save and report which validation failed. This catches the two most common quality problems (SGQS-template-only files and repeated saves of identical content) at the earliest possible point. Always active with no feature flag.
 
 
 #### Source Files
@@ -1760,9 +1767,9 @@ See [`13--memory-quality-and-indexing/12-generation-time-duplicate-and-empty-con
 
 Two cross-cutting normalization issues were resolved:
 
-**A1  -- Divergent normalizeEntityName:** `entity-extractor.ts` used ASCII-only normalization (`/[^\w\s-]/g`) while `entity-linker.ts` used Unicode-aware normalization (`/[^\p{L}\p{N}\s]/gu`). Consolidated to a single Unicode-aware version in `entity-linker.ts`, imported by `entity-extractor.ts`.
+**A1, Divergent normalizeEntityName:** `entity-extractor.ts` used ASCII-only normalization (`/[^\w\s-]/g`) while `entity-linker.ts` used Unicode-aware normalization (`/[^\p{L}\p{N}\s]/gu`). Consolidated to a single Unicode-aware version in `entity-linker.ts`, imported by `entity-extractor.ts`.
 
-**A2  -- Duplicate computeEdgeDensity:** Both `entity-extractor.ts` and `entity-linker.ts` had independent implementations. Consolidated to `entity-linker.ts` with import and re-export from `entity-extractor.ts`.
+**A2, Duplicate computeEdgeDensity:** Both `entity-extractor.ts` and `entity-linker.ts` had independent implementations. Consolidated to `entity-linker.ts` with import and re-export from `entity-extractor.ts`.
 
 Current mapping: legacy Phase 015 content is canonically tracked under `008-combined-bug-fixes` (historical source folded from retired `009-post-review-remediation-epic`).
 
@@ -1786,7 +1793,7 @@ See [`13--memory-quality-and-indexing/14-quality-gate-timer-persistence.md`](13-
 
 Async embedding fallback via `index_memory_deferred()`. When embedding generation fails due to API timeout or rate limiting, memories are inserted with `embedding_status='pending'` and become immediately searchable via BM25/FTS5 (title, trigger_phrases, content_text) and structural SQL (importance_tier, importance_weight). Vector search remains unavailable until `embedding_status='success'`.
 
-Deferred memories skip embedding dimension validation and `vec_memories` insertion entirely. Background retry via the retry manager or CLI reindex increments `retry_count` and updates the status field. The failure reason is recorded for diagnostics. This ensures that no memory is lost due to transient embedding failures  -- lexical searchability is preserved as a degraded-but-functional baseline.
+Deferred memories skip embedding dimension validation and `vec_memories` insertion entirely. Background retry via the retry manager or CLI reindex increments `retry_count` and updates the status field. The failure reason is recorded for diagnostics. This ensures that no memory is lost due to transient embedding failures. Lexical searchability is preserved as a degraded-but-functional baseline.
 
 
 #### Source Files
@@ -1797,7 +1804,7 @@ See [`13--memory-quality-and-indexing/15-deferred-lexical-only-indexing.md`](13-
 
 ### Dry-run preflight for memory_save
 
-`memory_save` supports a `dryRun` mode that executes preflight validation only and returns the same validation contract used by normal saves (`would_pass`, validation errors, warnings, and details). In dry-run mode, the save/index pipeline is not executed: no indexing, no database mutation, and no file-write side effects are performed.
+`memory_save` supports a `dryRun` mode that executes preflight validation only and returns the same validation contract used by normal saves (`would_pass`, validation errors, warnings and details). In dry-run mode, the save/index pipeline is not executed: no indexing, no database mutation, and no file-write side effects are performed.
 
 This gives operators a deterministic way to preview content-size, anchor-format, token-budget, and duplicate checks before committing. In non-dry-run mode, the same preflight logic runs first (unless `skipPreflight=true`) and then the normal indexing path executes.
 
@@ -1809,7 +1816,7 @@ See [`13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md`](
 
 ### Outsourced agent memory capture
 
-CLI agents dispatched via cli-codex, cli-copilot, cli-gemini, and cli-claude-code run in sandboxed subprocesses with no access to the Spec Kit Memory MCP server. The outsourced memory return protocol is now implemented: explicit JSON-mode failures hard-fail with `EXPLICIT_DATA_FILE_LOAD_FAILED: ...`, `nextSteps` / `next_steps` persist into `Next: ...` and `Follow-up: ...` (feeding `NEXT_ACTION`), and the 8 CLI handback docs now standardize redact/scrub guidance plus explicit failure handling.
+CLI agents dispatched via cli-codex, cli-copilot, cli-gemini and cli-claude-code run in sandboxed subprocesses with no access to the Spec Kit Memory MCP server. The outsourced memory return protocol is now implemented: explicit JSON-mode failures hard-fail with `EXPLICIT_DATA_FILE_LOAD_FAILED: ...`, `nextSteps` / `next_steps` persist into `Next: ...` and `Follow-up: ...` (feeding `NEXT_ACTION`), and the 8 CLI handback docs now standardize redact/scrub guidance plus explicit failure handling.
 
 Status: Implemented. Spec folder `014-outsourced-agent-memory` is complete.
 
@@ -1821,7 +1828,7 @@ See [`13--memory-quality-and-indexing/17-outsourced-agent-memory-capture.md`](13
 
 ### Stateless enrichment and alignment guards
 
-Stateless saves now enrich OpenCode-derived session data with spec-folder and git context after contamination cleaning and before downstream extraction. The runtime keeps two alignment barriers: one before enrichment and one after enrichment. Both gates now check not just the spec slug, but also code paths declared in the target spec's files-to-change table, which prevents false blocks for legitimate sessions that edit generic implementation files such as `scripts/core/workflow.ts`.
+Stateless saves now enrich OpenCode-derived session data with spec-folder and git context after contamination cleaning and before downstream extraction. The runtime keeps two alignment barriers: one before enrichment and one after enrichment. Both gates now check the spec slug and the code paths declared in the target spec's files-to-change table, which prevents false blocks for legitimate sessions that edit generic implementation files such as `scripts/core/workflow.ts`.
 
 The stateless relevance filter also recognizes natural-language forms of hyphenated spec names, so a prompt like "perfect session capturing hardening" is retained even when the spec folder slug is `perfect-session-capturing`. Git enrichment scopes recent commits and changed files to the spec-declared work surface, and exported provenance markers distinguish synthetic spec/git context from live session evidence.
 
@@ -1841,7 +1848,7 @@ Stage 1 (Candidate Generation) executes search channels based on query type: mul
 
 **Phase 017 update:** The query embedding is now cached at function scope for reuse in the constitutional injection path, saving one API call per search. The constitutional injection count is tracked and passed through the orchestrator to Stage 4 output metadata (previously hardcoded to 0).
 
-Stage 2 (Fusion and Signal Integration) applies all scoring signals in a fixed order: session boost, causal boost, co-activation spreading (2a), community co-retrieval from precomputed `community_assignments` (N2c, 2b), graph signals (N2a+N2b  -- additive momentum and depth bonuses, 2c), FSRS testing effect, intent weights (non-hybrid only, G2 prevention), artifact routing, feedback signals (learned trigger boosts and negative feedback demotions), artifact result limiting, anchor metadata annotation (S2) and validation metadata enrichment with a bounded multiplier clamped to 0.8-1.2 (S3). Community injection runs before graph signals so injected rows can also receive momentum/depth adjustments. The G2 prevention is structural: an `isHybrid` boolean gates the intent weight step so the code path is absent for hybrid search.
+Stage 2 (Fusion and Signal Integration) applies all scoring signals in a fixed order: session boost, causal boost, co-activation spreading (2a), community co-retrieval from precomputed `community_assignments` (N2c, 2b), graph signals (N2a+N2b, additive momentum and depth bonuses, 2c), FSRS testing effect, intent weights (non-hybrid only, G2 prevention), artifact routing, feedback signals (learned trigger boosts and negative feedback demotions), artifact result limiting, anchor metadata annotation (S2) and validation metadata enrichment with a bounded multiplier clamped to 0.8-1.2 (S3). Community injection runs before graph signals so injected rows can also receive momentum/depth adjustments. The G2 prevention is structural: an `isHybrid` boolean gates the intent weight step so the code path is absent for hybrid search.
 
 **Phase 017 update:** Stage 2 now uses the shared `resolveEffectiveScore()` function from `pipeline/types.ts` (aliased as `resolveBaseScore`) for consistent score resolution. The five-factor composite weights auto-normalize to sum 1.0 after partial overrides. Cross-variant RRF fusion no longer double-counts convergence bonuses (per-variant bonus subtracted before cross-variant bonus). Adaptive fusion core weights (semantic + keyword + recency) normalize after doc-type adjustments.
 
@@ -1880,7 +1887,7 @@ See [`14--pipeline-architecture/03-chunk-ordering-preservation.md`](14--pipeline
 
 Anchor markers in memory files (structured sections like `<!-- ANCHOR:state -->`) are parsed and attached as metadata to search pipeline rows. The module extracts anchor IDs and derives semantic types from structured IDs (for example, `DECISION-pipeline-003` yields type `DECISION`). Simple IDs like `summary` pass through as-is.
 
-This is a pure annotation step wired into Stage 2 as step 8. It never modifies any score fields. The enrichment makes Stage 3 (rerank) and Stage 4 (filter) anchor-aware without score side-effects. No feature flag; always active.
+This is a pure annotation step wired into Stage 2 as step 8. It never modifies any score fields. The enrichment makes Stage 3 (rerank) and Stage 4 (filter) anchor-aware without score side-effects. No feature flag. Always active.
 
 
 #### Source Files
@@ -1891,7 +1898,7 @@ See [`14--pipeline-architecture/04-template-anchor-optimization.md`](14--pipelin
 
 Spec document validation metadata integrates into the scoring layer as an additional ranking dimension in Stage 2. Four signal sources contribute: importance tier mapped to a numeric quality score (constitutional=1.0 through deprecated=0.1), the direct `quality_score` database column, `<!-- SPECKIT_LEVEL: N -->` content marker extraction and validation completion markers (`<!-- VALIDATED -->`, `<!-- VALIDATION: PASS -->`).
 
-The combined multiplier is bounded to 0.8-1.2 via a clamping function, composed of quality factor (0.9-1.1), spec level bonus (0-0.06), completion bonus (0-0.04) and checklist bonus (0-0.01). Well-maintained documentation ranks slightly above neglected documentation when both are relevant. No feature flag; always active.
+The combined multiplier is bounded to 0.8-1.2 via a clamping function, composed of quality factor (0.9-1.1), spec level bonus (0-0.06), completion bonus (0-0.04) and checklist bonus (0-0.01). Well-maintained documentation ranks slightly above neglected documentation when both are relevant. No feature flag. Always active.
 
 
 #### Source Files
@@ -1906,7 +1913,7 @@ Ten safeguards protect against noise: a 100+ stop-word denylist, rate cap of 3 t
 
 **Sprint 8 update:** The R11 shadow-period safeguard remains active in runtime. `isInShadowPeriod()` and its guards in `recordSelection()` / `queryLearnedTriggers()` were retained as Safeguard #6 (1-week shadow mode: log-but-don't-apply). Sprint 8 dead-code cleanup removed other retired flag helpers (`isShadowScoringEnabled`, `isRsfEnabled`), but not the R11 shadow-period guard.
 
-Learned triggers boost future searches via a 0.7x weight applied during the feedback signals step in Stage 2. The boost applies alongside the query, not replacing it. Runs behind the `SPECKIT_LEARN_FROM_SELECTION` flag (default ON; set to `false` to disable).
+Learned triggers boost future searches via a 0.7x weight applied during the feedback signals step in Stage 2. The boost applies alongside the query, not replacing it. Runs behind the `SPECKIT_LEARN_FROM_SELECTION` flag (default ON, set to `false` to disable).
 
 
 #### Source Files
@@ -1917,11 +1924,11 @@ See [`14--pipeline-architecture/06-learned-relevance-feedback.md`](14--pipeline-
 
 Three search pipeline issues were fixed:
 
-**D1  -- Summary quality bypass:** `stage1-candidate-gen.ts` allowed R8 summary hits to bypass the `minQualityScore` filter, letting low-quality summaries enter final results. Summary candidates now pass through the same quality filter.
+**D1, Summary quality bypass:** `stage1-candidate-gen.ts` allowed R8 summary hits to bypass the `minQualityScore` filter, letting low-quality summaries enter final results. Summary candidates now pass through the same quality filter.
 
-**D2  -- FTS5 double-tokenization:** `sqlite-fts.ts` and `bm25-index.ts` had separate tokenization logic, causing query terms to be tokenized differently than indexed content. Refactored to a shared `sanitizeQueryTokens()` function returning a raw token array that both callers join with their appropriate syntax.
+**D2, FTS5 double-tokenization:** `sqlite-fts.ts` and `bm25-index.ts` had separate tokenization logic, causing query terms to be tokenized differently than indexed content. Refactored to a shared `sanitizeQueryTokens()` function returning a raw token array that both callers join with their appropriate syntax.
 
-**D3  -- Quality floor vs RRF range mismatch:** `channel-representation.ts` used `QUALITY_FLOOR=0.2` which filtered out virtually all RRF-sourced results (RRF scores are typically 0.01-0.03). Lowered to 0.005.
+**D3, Quality floor vs RRF range mismatch:** `channel-representation.ts` used `QUALITY_FLOOR=0.2` which filtered out virtually all RRF-sourced results (RRF scores are typically 0.01-0.03). Lowered to 0.005.
 
 
 #### Source Files
@@ -1969,15 +1976,15 @@ See [`14--pipeline-architecture/10-legacy-v1-pipeline-removal.md`](14--pipeline-
 
 ### Pipeline and mutation hardening
 
-Ten fixes addressed schema completeness, pipeline metadata, embedding efficiency, stemmer quality, and data cleanup:
+Ten fixes addressed schema completeness, pipeline metadata, embedding efficiency, stemmer quality and data cleanup:
 
-- **Schema params exposed (#13):** `memorySearch` tool schema now includes `trackAccess`, `includeArchived`, and `mode` parameters.
+- **Schema params exposed (#13):** `memorySearch` tool schema now includes `trackAccess`, `includeArchived` and `mode` parameters.
 - **Dead dedup config removed (#14):** `sessionDeduped` removed from Stage 4 metadata (dedup is post-cache in the main handler).
 - **Constitutional count passthrough (#15):** Stage 1's constitutional injection count flows through the orchestrator to Stage 4 output metadata.
 - **Embedding caching (#16):** Stage 1 caches the query embedding at function scope for reuse in the constitutional injection path, saving one API call per search.
 - **Stemmer double-consonant (#18):** `simpleStem()` now handles doubled consonants after suffix removal: "running"->"runn"->"run", "stopped"->"stopp"->"stop".
 - **Full-content embedding on update (#19):** `memory_update` now embeds `title + "\n\n" + content_text` instead of title alone.
-- **Ancillary record cleanup on delete (#20):** Memory deletion now cleans `degree_snapshots`, `community_assignments`, `memory_summaries`, `memory_entities`, and `causal_edges`.
+- **Ancillary record cleanup on delete (#20):** Memory deletion now cleans `degree_snapshots`, `community_assignments`, `memory_summaries`, `memory_entities` and `causal_edges`.
 - **BM25 index cleanup on delete (#21):** `bm25Index.getIndex().removeDocument(String(id))` called after successful delete when BM25 is enabled.
 - **Atomic save error tracking (#22):** `atomicSaveMemory` now tracks rename-failure state with a `dbCommitted` flag for better error reporting.
 - **Dynamic preflight error code (#23):** Preflight validation uses the actual error code from `preflightResult.errors[0].code` instead of hardcoding `ANCHOR_FORMAT_INVALID`.
@@ -1993,7 +2000,7 @@ See [`14--pipeline-architecture/11-pipeline-and-mutation-hardening.md`](14--pipe
 
 Current mapping: legacy Sprint 019 content is tracked under sub-phase `009-extra-features`.
 
-A 6-agent cross-AI research effort (3 Codex gpt-5.3-codex, 3 Gemini 3.1-pro-preview) analyzed external systems (Cognee, QMD, ArtemXTech) and produced 16 recommendations. These were distilled into Sprint 019 scope: 12 features total (3 P0 foundation, 4 P1 quality and operations, 5 P2 deferred innovation). All 7 implementation features are complete; 5 features remain deferred (Phase 4). Runtime test tasks remain open. Verification status in `009-extra-features/checklist.md` (current: P0 11/28, P1 14/49, P2 1/11, total 26/88).
+A 6-agent cross-AI research effort (3 Codex gpt-5.3-codex, 3 Gemini 3.1-pro-preview) analyzed external systems (Cognee, QMD, ArtemXTech) and produced 16 recommendations. These were distilled into Sprint 019 scope: 12 features total (3 P0 foundation, 4 P1 quality and operations, 5 P2 deferred innovation). All 7 implementation features are complete. 5 features remain deferred (Phase 4). Runtime test tasks remain open. Verification status in `009-extra-features/checklist.md` (current: P0 11/28, P1 14/49, P2 1/11, total 26/88).
 
 
 #### Source Files
@@ -2015,7 +2022,7 @@ See [`14--pipeline-architecture/13-strict-zod-schema-validation.md`](14--pipelin
 
 **IMPLEMENTED (Sprint 019).** At startup, `context-server.ts` now injects dynamic information about the memory system's state so calling LLMs start each session with awareness of available knowledge.
 
-The `buildServerInstructions()` function generates a concise overview: total memory count, active spec folder count, available search channels, and stale memory count (with a warning when stale count exceeds 10). The instruction string is injected via `server.setInstructions()` and reuses existing `memory_stats` handler data. The feature is gated by `SPECKIT_DYNAMIC_INIT` (default `true`).
+The `buildServerInstructions()` function generates a concise overview: total memory count, active spec folder count, available search channels and stale memory count (with a warning when stale count exceeds 10). The instruction string is injected via `server.setInstructions()` and reuses existing `memory_stats` handler data. The feature is gated by `SPECKIT_DYNAMIC_INIT` (default `true`).
 
 
 #### Source Files
@@ -2024,7 +2031,7 @@ See [`14--pipeline-architecture/14-dynamic-server-instructions-at-mcp-initializa
 
 ### Warm server / daemon mode
 
-**PLANNED (Sprint 019)  -- DEFERRED.** An HTTP daemon with warm caches and multi-transport support (stdio, HTTP, SSE) would eliminate cold-start penalties for subsequent agent invocations. The historical `SPECKIT_LAZY_LOADING` and `SPECKIT_EAGER_WARMUP` controls are now inert, and lazy provider initialization is the permanent behavior (`shouldEagerWarmup()` returns `false`). This feature is deferred until the MCP SDK standardizes HTTP transport protocols to avoid building a custom daemon that risks throwaway work. Estimated effort: L (2-3 weeks).
+**PLANNED (Sprint 019). DEFERRED.** An HTTP daemon with warm caches and multi-transport support (stdio, HTTP, SSE) would eliminate cold-start penalties for subsequent agent invocations. The historical `SPECKIT_LAZY_LOADING` and `SPECKIT_EAGER_WARMUP` controls are now inert, and lazy provider initialization is the permanent behavior (`shouldEagerWarmup()` returns `false`). This feature is deferred until the MCP SDK standardizes HTTP transport protocols to avoid building a custom daemon that risks throwaway work. Estimated effort: L (2-3 weeks).
 
 
 #### Source Files
@@ -2033,7 +2040,7 @@ See [`14--pipeline-architecture/15-warm-server-daemon-mode.md`](14--pipeline-arc
 
 ### Backend storage adapter abstraction
 
-**PLANNED (Sprint 019)  -- DEFERRED.** Extracting core storage logic into generic `IVectorStore`, `IGraphStore`, and `IDocumentStore` interfaces would allow hot-swapping backend technologies. The embedding provider is already abstracted (auto/openai/hf-local/voyage), demonstrating the pattern. However, the storage layer remains tightly coupled to SQLite with sqlite-vec and FTS5, which handles the current scale well. This is a classic premature abstraction risk. Deferred until the corpus exceeds 100K memories or multi-node deployment demand emerges. Estimated effort: M-L (1-2 weeks).
+**PLANNED (Sprint 019). DEFERRED.** Extracting core storage logic into generic `IVectorStore`, `IGraphStore`, and `IDocumentStore` interfaces would allow hot-swapping backend technologies. The embedding provider is already abstracted (auto/openai/hf-local/voyage), demonstrating the pattern. However, the storage layer remains tightly coupled to SQLite with sqlite-vec and FTS5, which handles the current scale well. This is a classic premature abstraction risk. Deferred until the corpus exceeds 100K memories or multi-node deployment demand emerges. Estimated effort: M-L (1-2 weeks).
 
 
 #### Source Files
@@ -2042,7 +2049,7 @@ See [`14--pipeline-architecture/16-backend-storage-adapter-abstraction.md`](14--
 
 ### Cross-process DB hot rebinding
 
-Process-lifetime DB connection manager via marker file (`DB_UPDATED_FILE`). When an external process mutates the database, it writes a timestamp to the marker file. On the next `checkDatabaseUpdated()` call, if the timestamp exceeds `lastDbCheck`, the system triggers `reinitializeDatabase()`: closes the old DB handle, calls `vectorIndex.initializeDb()`, and rebinds 6 modules (vectorIndex, checkpoints, accessTracker, hybridSearch, sessionManager, incrementalIndex).
+Process-lifetime DB connection manager via marker file (`DB_UPDATED_FILE`). When an external process mutates the database, it writes a timestamp to the marker file. On the next `checkDatabaseUpdated()` call, if the timestamp exceeds `lastDbCheck`, the system triggers `reinitializeDatabase()`: closes the old DB handle, calls `vectorIndex.initializeDb()` and rebinds 6 modules (vectorIndex, checkpoints, accessTracker, hybridSearch, sessionManager, incrementalIndex).
 
 Concurrency is handled safely via a mutex with a race-condition fix (P4-13). The module also manages embedding model readiness via polling with timeout and the constitutional cache lifecycle. This mechanism enables multi-process architectures where the CLI or external tools can mutate the database while the MCP server is running, without requiring a server restart.
 
@@ -2055,7 +2062,7 @@ See [`14--pipeline-architecture/17-cross-process-db-hot-rebinding.md`](14--pipel
 
 ### Atomic write-then-index API
 
-The `memory_save` handler offers an atomic write-then-index mode where file writing is atomic (pending file + rename), while indexing runs asynchronously after the write succeeds. The transaction manager writes memory content to a `_pending` file and renames it to the final path. The `dbOperation` callback in this path is intentionally a no-op; `indexMemoryFile(...)` executes afterward and can retry once on transient failures.
+The `memory_save` handler offers an atomic write-then-index mode where file writing is atomic (pending file + rename), while indexing runs asynchronously after the write succeeds. The transaction manager writes memory content to a `_pending` file and renames it to the final path. The `dbOperation` callback in this path is intentionally a no-op. `indexMemoryFile(...)` executes afterward and can retry once on transient failures.
 
 Because indexing is decoupled from the file rename, this flow provides atomic file persistence with guarded best-effort index consistency (retry + rollback), not a single file+DB transaction. The `AtomicSaveResult` interface reports `dbCommitted` to distinguish full success from partial commit states (for example, DB callback committed but rename failed, leaving a pending file for startup recovery).
 
@@ -2077,7 +2084,7 @@ See [`14--pipeline-architecture/19-embedding-retry-orchestrator.md`](14--pipelin
 
 ### 7-layer tool architecture metadata
 
-The layer definitions module (`lib/architecture/layer-definitions.ts`) defines a 7-layer MCP architecture (L1 through L7) where each layer has token budgets, priorities, use-case guidance, and tool membership. Layer IDs still map to task types (`search`, `browse`, `modify`, `checkpoint`, `analyze`, `maintenance`, `default`) for recommendation and hinting.
+The layer definitions module (`lib/architecture/layer-definitions.ts`) defines a 7-layer MCP architecture (L1 through L7) where each layer has token budgets, priorities, use-case guidance and tool membership. Layer IDs still map to task types (`search`, `browse`, `modify`, `checkpoint`, `analyze`, `maintenance`, `default`) for recommendation and hinting.
 
 Runtime dispatch in `context-server.ts` has a single name-based dispatch hop (`dispatchTool(name, args)`), and that hop fans into 5 dispatcher modules in `tools/index.ts` (`context`, `memory`, `causal`, `checkpoint`, `lifecycle`). The 7-layer model is therefore metadata and governance, not a 7-layer runtime classifier or router.
 
@@ -2101,7 +2108,7 @@ See [`14--pipeline-architecture/21-atomic-pending-file-recovery.md`](14--pipelin
 
 Phase 015 lineage-state work introduced append-first version history with an explicit active projection used for runtime reads. Save operations append immutable lineage events, while projection logic resolves which state is currently active for a memory.
 
-Deterministic `asOf` resolution is now part of lineage reads, allowing time-consistent state lookups for audits, replay flows, and rollback drills. Schema support and save-path integration ensure lineage persistence and projection resolution stay synchronized.
+Deterministic `asOf` resolution is now part of lineage reads, allowing time-consistent state lookups for audits, replay flows and rollback drills. Schema support and save-path integration ensure lineage persistence and projection resolution stay synchronized.
 
 #### Source Files
 
@@ -2171,7 +2178,7 @@ Generated summaries are stored in the `memory_summaries` table alongside a summa
 
 The summary channel runs as a parallel search channel in Stage 1 of the 4-stage pipeline, alongside hybrid, vector and multi-concept channels. It follows the R12 embedding expansion pattern: execute in parallel, merge results and deduplicate by memory ID with baseline results taking priority. This is deliberately a parallel channel rather than a pre-filter to avoid recall loss.
 
-A runtime scale gate activates the channel only when the system exceeds 5,000 indexed memories with successful embeddings. Below that threshold, the summary channel adds overhead without measurable benefit because the base channels already cover the corpus effectively. The code exists regardless of scale; the gate simply skips execution. Runs behind the `SPECKIT_MEMORY_SUMMARIES` flag (default ON).
+A runtime scale gate activates the channel only when the system exceeds 5,000 indexed memories with successful embeddings. Below that threshold, the summary channel adds overhead without measurable benefit because the base channels already cover the corpus effectively. The code exists regardless of scale. The gate simply skips execution. Runs behind the `SPECKIT_MEMORY_SUMMARIES` flag (default ON).
 
 
 #### Source Files
@@ -2263,7 +2270,7 @@ Flags include `--level N`, `--dry-run`, `--json`, `--strict`, `--quiet` and `--v
 
 #### Source Files
 
-No dedicated source files  -- this is a cross-cutting meta-improvement applied across multiple modules.
+No dedicated source files. This is a cross-cutting meta-improvement applied across multiple modules.
 
 
 ---
@@ -2276,26 +2283,26 @@ Approximately 360 lines of dead code were removed across four categories:
 
 **Dead feature flag functions:** `isShadowScoringEnabled()` removed from `shadow-scoring.ts` and `search-flags.ts`. `isRsfEnabled()` removed from `rsf-fusion.ts`. `isInShadowPeriod()` in `learned-feedback.ts` remains active as the R11 shadow-period safeguard and was not removed.
 
-**Dead module-level state:** `stmtCache` Map (archival-manager.ts  -- never populated), `lastComputedAt` (community-detection.ts  -- set but never read), `activeProvider` cache (cross-encoder.ts  -- never populated), `flushCount` (access-tracker.ts  -- never incremented), 3 dead config fields in working-memory.ts (`decayInterval`, `attentionDecayRate`, `minAttentionScore`).
+**Dead module-level state:** `stmtCache` Map (archival-manager.ts, never populated), `lastComputedAt` (community-detection.ts, set but never read), `activeProvider` cache (cross-encoder.ts, never populated), `flushCount` (access-tracker.ts, never incremented), 3 dead config fields in working-memory.ts (`decayInterval`, `attentionDecayRate`, `minAttentionScore`).
 
-**Dead functions and exports:** `computeCausalDepth` single-node variant (graph-signals.ts  -- batch version is the only caller), `getSubgraphWeights` (graph-search-fn.ts  -- always returned 1.0, replaced with inline constant), `RECOVERY_HALF_LIFE_DAYS` (negative-feedback.ts  -- never imported), `'related'` weight entry (causal-edges.ts  -- invalid relation type), `logCoActivationEvent` and `CoActivationEvent` (co-activation.ts  -- never called).
+**Dead functions and exports:** `computeCausalDepth` single-node variant (graph-signals.ts, batch version is the only caller), `getSubgraphWeights` (graph-search-fn.ts, always returned 1.0, replaced with inline constant), `RECOVERY_HALF_LIFE_DAYS` (negative-feedback.ts, never imported), `'related'` weight entry (causal-edges.ts, invalid relation type), `logCoActivationEvent` and `CoActivationEvent` (co-activation.ts, never called).
 
 **Preserved (NOT dead):** `computeStructuralFreshness` and `computeGraphCentrality` in `fsrs.ts` were identified as planned architectural components (not concluded experiments) and retained.
 
 
 #### Source Files
 
-No dedicated source files  -- this is a cross-cutting meta-improvement applied across multiple modules.
+No dedicated source files. This is a cross-cutting meta-improvement applied across multiple modules.
 
 
 ### Code standards alignment
 
-All modified files were reviewed against sk-code--opencode standards. 45 violations found and fixed: 26 AI-intent comment conversions (AI-WHY, AI-TRACE, AI-GUARD prefixes), 10 MODULE/COMPONENT headers added, import ordering corrections, and constant naming (`specFolderLocks` → `SPEC_FOLDER_LOCKS`).
+All modified files were reviewed against sk-code--opencode standards. 45 violations found and fixed: 26 AI-intent comment conversions (AI-WHY, AI-TRACE, AI-GUARD prefixes), 10 MODULE/COMPONENT headers added, import ordering corrections and constant naming (`specFolderLocks` → `SPEC_FOLDER_LOCKS`).
 
 
 #### Source Files
 
-No dedicated source files  -- this is a cross-cutting meta-improvement applied across multiple modules.
+No dedicated source files. This is a cross-cutting meta-improvement applied across multiple modules.
 
 
 ---
@@ -2313,7 +2320,7 @@ See [`16--tooling-and-scripts/06-real-time-filesystem-watching-with-chokidar.md`
 
 ### Standalone admin CLI
 
-Non-MCP `spec-kit-cli` entry point (`cli.ts`) for database maintenance outside the MCP protocol. Provides four commands: `stats` (tier distribution, top folders, schema version), `bulk-delete` (with --tier, --folder, --older-than, --dry-run, --skip-checkpoint; constitutional/critical tiers require folder scope), `reindex` (--force, --eager-warmup), and `schema-downgrade` (--to 15, --confirm).
+Non-MCP `spec-kit-cli` entry point (`cli.ts`) for database maintenance outside the MCP protocol. Provides four commands: `stats` (tier distribution, top folders, schema version), `bulk-delete` (with --tier, --folder, --older-than, --dry-run, --skip-checkpoint, where constitutional/critical tiers require folder scope), `reindex` (--force, --eager-warmup), and `schema-downgrade` (--to 15, --confirm).
 
 Deletions are transaction-wrapped with mutation ledger recording and a best-effort pre-delete checkpoint attempt unless `--skip-checkpoint` is set. For `constitutional` and `critical` tiers, `--skip-checkpoint` is blocked and folder scope is required. If checkpoint creation fails, the CLI logs a warning and proceeds with deletion so recovery tooling remains usable during partial storage failures. Invoked as `node cli.js <command>` from any directory. This provides operators a direct database maintenance path without requiring an active MCP session or AI assistant.
 
@@ -2326,7 +2333,7 @@ See [`16--tooling-and-scripts/07-standalone-admin-cli.md`](16--tooling-and-scrip
 
 ### Migration checkpoint scripts
 
-Two raw SQLite helpers live under `mcp_server/scripts/migrations/` for pre-migration safety outside the logical checkpoint tables. `create-checkpoint.ts` copies a target database to a timestamped checkpoint file and writes a JSON sidecar with schema version, size, optional note, and Hydra roadmap metadata. `restore-checkpoint.ts` restores a checkpoint into a target database path, creates a pre-restore backup when replacing an existing file, and verifies that the restored file opens as SQLite before reporting success.
+Two raw SQLite helpers live under `mcp_server/scripts/migrations/` for pre-migration safety outside the logical checkpoint tables. `create-checkpoint.ts` copies a target database to a timestamped checkpoint file and writes a JSON sidecar with schema version, size, optional note, and memory roadmap metadata. `restore-checkpoint.ts` restores a checkpoint into a target database path, creates a pre-restore backup when replacing an existing file, and verifies that the restored file opens as SQLite before reporting success.
 
 These scripts are intentionally distinct from the `checkpoint_create` / `checkpoint_restore` MCP tools. The MCP tools serialize memory state into the `checkpoints` table, while the migration helpers operate directly on database files so schema experiments can be rolled back even when the logical checkpoint tables themselves are changing. Both helpers now expose testable `run*` functions plus `--json` output for deterministic automation.
 
@@ -2337,9 +2344,9 @@ See [`16--tooling-and-scripts/09-migration-checkpoint-scripts.md`](16--tooling-a
 
 ### Schema compatibility validation
 
-`validateBackwardCompatibility()` performs a non-throwing schema readiness check against a live database handle. It treats `memory_index` and `schema_version` as hard requirements, verifies that `memory_index` still exposes the core columns the runtime expects, and emits warnings when supporting tables such as `memory_history`, `checkpoints`, or `memory_conflicts` are missing.
+`validateBackwardCompatibility()` performs a non-throwing schema readiness check against a live database handle. It treats `memory_index` and `schema_version` as hard requirements, verifies that `memory_index` still exposes the core columns the runtime expects, and emits warnings when supporting tables such as `memory_history`, `checkpoints` or `memory_conflicts` are missing.
 
-The helper is exported as `validateBackwardCompatibility` from `vector-index-schema.ts`, which makes it usable from rollout gates, migration tooling, and tests without crashing startup when a database is only partially compatible.
+The helper is exported as `validateBackwardCompatibility` from `vector-index-schema.ts`, which makes it usable from rollout gates, migration tooling and tests without crashing startup when a database is only partially compatible.
 
 
 #### Source Files
@@ -2352,7 +2359,7 @@ The chokidar-based file watcher (`lib/ops/file-watcher.ts`) handles more than ad
 
 Rename detection is handled as an unlink followed by an add, which means the memory gets a fresh index entry at the new path while the old entry is cleaned up. The 2-second debounce window collapses rapid rename sequences into a single reindex cycle.
 
-Scenario coverage is defined in `mcp_server/tests/file-watcher.vitest.ts`, which exercises unlink cleanup, rename lifecycle handling, debounce behavior, burst rename deduplication, and concurrent rename handling.
+Scenario coverage is defined in `mcp_server/tests/file-watcher.vitest.ts`, which exercises unlink cleanup, rename lifecycle handling, debounce behavior, burst rename deduplication and concurrent rename handling.
 
 
 #### Source Files
@@ -2372,7 +2379,7 @@ The B8 signal ceiling ("12 active scoring signals") is treated as a governance t
 
 #### Source Files
 
-No dedicated source files  -- this describes governance process controls.
+No dedicated source files. This describes governance process controls.
 
 
 ### Feature flag sunset audit
@@ -2388,11 +2395,11 @@ The current active flag-helper inventory in `search-flags.ts` is 24 exported `is
 
 #### Source Files
 
-No dedicated source files  -- this describes governance process controls.
+No dedicated source files. This describes governance process controls.
 
 ### Hierarchical scope governance, governed ingest, retention, and audit
 
-Phase 015 scope-governance work adds hierarchical actor boundaries (`tenant`, `user` or `agent`, and `session`) to ingest and retrieval paths. Governed ingest requires provenance metadata when scoped identity fields are present, preventing ambiguous writes.
+Phase 015 scope-governance work adds hierarchical actor boundaries (`tenant`, `user` or `agent` and `session`) to ingest and retrieval paths. Governed ingest requires provenance metadata when scoped identity fields are present, preventing ambiguous writes.
 
 Retention policy decisions are now aligned with scope governance, and allow/deny outcomes are written to governance audit records for post-run review and policy verification.
 
@@ -2404,7 +2411,7 @@ See [`17--governance/03-hierarchical-scope-governance-governed-ingest-retention-
 
 ### Shared-memory rollout, deny-by-default membership, and kill switch
 
-Phase 015 shared-memory rollout introduces explicit shared spaces with deny-by-default membership. Access to shared save/search paths requires membership in the target space; non-members are filtered or rejected.
+Phase 015 shared-memory rollout introduces explicit shared spaces with deny-by-default membership. Access to shared save/search paths requires membership in the target space. Non-members are filtered or rejected.
 
 Space-level rollout controls include an operational kill switch. Enabling the kill switch blocks shared access immediately, including for existing members, which provides a fast rollback lever during incidents or staged rollout control.
 
@@ -2425,7 +2432,7 @@ Spec 007 standardized post-mutation automation and safety checks across mutation
 
 ### Shared post-mutation hook wiring
 
-Shared post-mutation hook automation now runs for `memory_save`, `memory_update`, `memory_delete`, and `memory_bulk_delete`, including atomic save paths. This removes per-handler follow-up drift and makes mutation side effects consistent.
+Shared post-mutation hook automation now runs for `memory_save`, `memory_update`, `memory_delete` and `memory_bulk_delete`, including atomic save paths. This removes per-handler follow-up drift and makes mutation side effects consistent.
 
 
 #### Source Files
@@ -2452,7 +2459,7 @@ See [`18--ux-hooks/03-checkpoint-delete-confirmname-safety.md`](18--ux-hooks/03-
 
 ### Schema and type contract synchronization
 
-The mutation-safety parameters and outputs were aligned across runtime validation and typing layers (`schemas/tool-input-schemas.ts`, `tool-schemas.ts`, and `tools/types.ts`) so handler behavior, tool schemas, and TypeScript contracts stay synchronized. That follow-up work specifically locked in required `confirmName` validation and the finalized mutation response metadata contract.
+The mutation-safety parameters and outputs were aligned across runtime validation and typing layers (`schemas/tool-input-schemas.ts`, `tool-schemas.ts` and `tools/types.ts`) so handler behavior, tool schemas and TypeScript contracts stay synchronized. That follow-up work specifically locked in required `confirmName` validation and the finalized mutation response metadata contract.
 
 
 #### Source Files
@@ -2497,7 +2504,7 @@ See [`18--ux-hooks/08-context-server-success-hint-append.md`](18--ux-hooks/08-co
 
 ### Duplicate-save no-op feedback hardening
 
-Duplicate-content save no-op responses no longer emit false `postMutationHooks`, cache-clear booleans, or misleading invalidation hints. Instead, they explain that the save was a no-op and that caches were left unchanged. This gives callers an accurate success response without pretending a mutation hook actually ran.
+Duplicate-content save no-op responses no longer emit false `postMutationHooks`, cache-clear booleans or misleading invalidation hints. Instead, they explain that the save was a no-op and that caches were left unchanged. This gives callers an accurate success response without pretending a mutation hook actually ran.
 
 
 #### Source Files
@@ -2540,67 +2547,7 @@ Spec 007 verification now includes an end-to-end appended-envelope assertion in 
 
 See [`18--ux-hooks/13-end-to-end-success-envelope-verification.md`](18--ux-hooks/13-end-to-end-success-envelope-verification.md) for full implementation and test file listings.
 
-## 21. DECISIONS AND DEFERRALS
-
-### INT8 quantization evaluation
-
-Decision: **NO-GO**. All three activation criteria were unmet.
-
-Active memories with embeddings: 2,412 measured versus the 10,000 threshold (24.1%). P95 search latency: approximately 15ms measured versus the 50ms threshold (approximately 30%). Embedding dimensions: 1,024 measured versus the 1,536 threshold (66.7%).
-
-The estimated 7.1 MB storage savings (3.9% of 180 MB total DB) did not justify 5.32% estimated recall risk, custom quantized BLOB complexity, or KL-divergence calibration overhead. Re-evaluate when the corpus grows approximately 4x (above 10K memories), sustained p95 exceeds 50ms, or the embedding provider changes to dimensions above 1,536.
-
-
-#### Source Files
-
-No dedicated source files  -- this is a decision record.
-
-
-### Implemented: graph centrality and community detection
-
-Originally deferred at Sprint 6b pending a feasibility spike. Three graph capabilities were planned: graph momentum (N2a), causal depth signal (N2b) and community detection (N2c).
-
-**Now implemented (with explicit runtime wiring boundaries).** N2a and N2b share a single flag (`SPECKIT_GRAPH_SIGNALS`, default ON) providing additive score adjustments up to +0.05 each in Stage 2. N2c runs behind `SPECKIT_COMMUNITY_DETECTION` (default ON): Stage 2 consumes existing `community_assignments` rows for co-member injection, while BFS/Louvain detection helpers and assignment persistence exist outside the hot path. Schema migrations v19 added `degree_snapshots` and `community_assignments` tables. See [Graph momentum scoring](#graph-momentum-scoring), [Causal depth signal](#causal-depth-signal) and [Community detection](#community-detection) for full descriptions.
-
-
-#### Source Files
-
-See [`19--decisions-and-deferrals/02-implemented-graph-centrality-and-community-detection.md`](19--decisions-and-deferrals/02-implemented-graph-centrality-and-community-detection.md) for full implementation and test file listings.
-
-### Implemented: auto entity extraction
-
-Originally deferred at Sprint 6b pending a feasibility spike alongside N2. Rule-based heuristics would extract entities from memory content, gated on edge density.
-
-**Now implemented.** Five regex extraction rules with a 64-word denylist, stored in a dedicated `memory_entities` table (not causal_edges) with an `entity_catalog` for canonical name resolution. Runs at save time behind `SPECKIT_AUTO_ENTITIES` (default ON). Schema migration v20 added `memory_entities` and `entity_catalog` tables. Zero external NLP dependencies. See [Auto entity extraction](#auto-entity-extraction) for the full description. Unblocks S5 (cross-document entity linking).
-
-
-#### Source Files
-
-See [`19--decisions-and-deferrals/03-implemented-auto-entity-extraction.md`](19--decisions-and-deferrals/03-implemented-auto-entity-extraction.md) for full implementation and test file listings.
-
-### Implemented: memory summary generation
-
-Originally skipped at Sprint 7 because the scale gate measured 2,411 active memories, below the 5,000 threshold.
-
-**Now implemented.** Pure-TypeScript TF-IDF extractive summarizer generates top-3 key sentences at save time, stored with summary-specific embeddings in the `memory_summaries` table. Operates as a parallel search channel in Stage 1 (not a pre-filter, avoiding recall loss). The runtime scale gate remains: the channel skips execution below 5,000 indexed memories. Runs behind `SPECKIT_MEMORY_SUMMARIES` (default ON). Schema migration v20 added the `memory_summaries` table. See [Memory summary search channel](#memory-summary-search-channel) for the full description.
-
-
-#### Source Files
-
-See [`19--decisions-and-deferrals/04-implemented-memory-summary-generation.md`](19--decisions-and-deferrals/04-implemented-memory-summary-generation.md) for full implementation and test file listings.
-
-### Implemented: cross-document entity linking
-
-Originally skipped at Sprint 7 because zero entities existed in the system. R10 had not been built, so there was no entity catalog to link against.
-
-**Now implemented.** With R10 providing extracted entities, S5 scans the `entity_catalog` for entities appearing in two or more spec folders and creates `supports` causal edges with `strength=0.7` and `created_by='entity_linker'`. A density guard prevents runaway edge creation by running both a current-global-density precheck (`total_edges / total_memories`) and a projected post-insert global density check against `SPECKIT_ENTITY_LINKING_MAX_DENSITY` (default `1.0`, invalid or negative values fall back to `1.0`). Runs behind `SPECKIT_ENTITY_LINKING` (default ON) and depends on a populated `entity_catalog` (typically produced by R10 auto-entities). See [Cross-document entity linking](#cross-document-entity-linking) for the full description.
-
-
-#### Source Files
-
-See [`19--decisions-and-deferrals/05-implemented-cross-document-entity-linking.md`](19--decisions-and-deferrals/05-implemented-cross-document-entity-linking.md) for full implementation and test file listings.
-
-## 22. PHASE SYSTEM
+## 21. PHASE SYSTEM
 
 ### Phase detection and scoring (recommend-level.sh --recommend-phases)
 
@@ -2630,7 +2577,7 @@ Shell script: `.opencode/skill/system-spec-kit/scripts/spec/create.sh`
 
 When `validate.sh` is invoked with `--recursive` on a parent phase folder, it discovers all child phase folders matching the `[0-9][0-9][0-9]-*/` naming pattern beneath the parent directory. Each child folder is validated independently using the same validation rules that apply to standalone spec folders. After individual validation completes, the results are aggregated into a combined report.
 
-The aggregated output includes a combined exit code (the highest severity exit code across all children), per-phase pass/fail status, and a JSON `phases` array containing the validation result for each child folder. Exit code 0 indicates all phases passed, exit code 1 indicates warnings in one or more phases, and exit code 2 indicates errors that must be fixed. This enables CI pipelines and automated workflows to validate an entire phase tree with a single command invocation.
+The aggregated output includes a combined exit code (the highest severity exit code across all children), per-phase pass/fail status and a JSON `phases` array containing the validation result for each child folder. Exit code 0 indicates all phases passed, exit code 1 indicates warnings in one or more phases and exit code 2 indicates errors that must be fixed. This enables CI pipelines and automated workflows to validate an entire phase tree with a single command invocation.
 
 
 #### Source Files
@@ -2652,11 +2599,11 @@ Shell script: `.opencode/skill/system-spec-kit/scripts/rules/check-phase-links.s
 
 ---
 
-## 23. FEATURE FLAG REFERENCE
+## 22. FEATURE FLAG REFERENCE
 
 Every runtime behavior in the MCP server is controlled by environment variables. The tables below catalogue all known flags grouped by category. The "Default" column reflects the value in effect when the variable is absent from the environment.
 
-For SPECKIT_* flags that use `isFeatureEnabled()`: the function returns `true` when the variable is absent, empty, or set to `'true'`. It returns `false` when explicitly set to `'false'` or `'0'`. This means almost all graduated search-pipeline features are **ON by default** and require an explicit opt-out.
+For SPECKIT_* flags that use `isFeatureEnabled()`: the function returns `true` when the variable is absent, empty or set to `'true'`. It returns `false` when explicitly set to `'false'` or `'0'`. This means almost all graduated search-pipeline features are **ON by default** and require an explicit opt-out.
 
 The `SPECKIT_ROLLOUT_PERCENT` flag applies a global percentage gate on top of any individual flag check. At 100 (the default), checks pass normally. At 0, checks fail. Between 1-99, inclusion uses deterministic identity hashing and calls without identity fail closed. Malformed rollout values fall back to 100.
 
@@ -2664,51 +2611,51 @@ The `SPECKIT_ROLLOUT_PERCENT` flag applies a global percentage gate on top of an
 
 | Name | Default | Type | Source File | Description |
 |---|---|---|---|---|
-| `SPECKIT_ABLATION` | `false` | boolean | `lib/eval/eval-metrics.ts` | Activates the ablation study framework. Must be explicitly set to `'true'` to run controlled channel ablations via MCP; when `false`, the handler rejects `eval_run_ablation` calls with a disabled-flag error. |
+| `SPECKIT_ABLATION` | `false` | boolean | `lib/eval/eval-metrics.ts` | Activates the ablation study framework. Must be explicitly set to `'true'` to run controlled channel ablations via MCP. When `false`, the handler rejects `eval_run_ablation` calls with a disabled-flag error. |
 | `SPECKIT_ARCHIVAL` | `true` | boolean | `lib/cognitive/archival-manager.ts` | Enables the archival manager which promotes DORMANT memories to the ARCHIVED state based on access patterns. Disable to keep all memories in active tiers. |
 | `SPECKIT_AUTO_ENTITIES` | `true` | boolean | `lib/search/search-flags.ts` | Enables R10 automatic noun-phrase entity extraction at index time. Extracted entities feed the entity linking channel (S5). Requires `SPECKIT_ENTITY_LINKING` to create graph edges. |
 | `SPECKIT_AUTO_RESUME` | `true` | boolean | `handlers/memory-context.ts` | In resume mode, automatically injects working-memory context items as `systemPromptContext` into the response. Also subject to `SPECKIT_ROLLOUT_PERCENT`. |
 | `SPECKIT_CAUSAL_BOOST` | `true` | boolean | `lib/search/causal-boost.ts` | Enables causal-neighbor graph boosting. Top seed results (up to 25% of result set, capped at 5) walk the causal edge graph up to 2 hops, applying a per-hop boost capped at 0.05. Combined causal + session boost ceiling is 0.20. |
 | `SPECKIT_CHANNEL_MIN_REP` | `true` | boolean | `lib/search/channel-representation.ts` | Sprint 3 Stage C: ensures every contributing search channel has at least one result in the top-k window. Results with a score below 0.005 are excluded from promotion regardless. |
 | `SPECKIT_CLASSIFICATION_DECAY` | `true` | boolean | `lib/scoring/composite-scoring.ts` | Applies intent-classification-based decay scoring to composite scores. When disabled, classification signals do not reduce scores for mismatched intent types. |
-| `SPECKIT_COACTIVATION` | `true` | boolean | `lib/cognitive/co-activation.ts` | Enables co-activation spreading in the hybrid search path and trigger-matcher cognitive pipeline. Top-5 results spread activation through the co-occurrence graph; related memories receive a boost scaled by `SPECKIT_COACTIVATION_STRENGTH`. |
+| `SPECKIT_COACTIVATION` | `true` | boolean | `lib/cognitive/co-activation.ts` | Enables co-activation spreading in the hybrid search path and trigger-matcher cognitive pipeline. Top-5 results spread activation through the co-occurrence graph. Related memories receive a boost scaled by `SPECKIT_COACTIVATION_STRENGTH`. |
 | `SPECKIT_COACTIVATION_STRENGTH` | `0.25` | number | `lib/cognitive/co-activation.ts` | Configures the raw boost multiplier applied to co-activated memories in hot-path Stage 2 spreading. A separate fan-divisor helper exists in the co-activation module, but Stage 2 currently applies spread scores directly. |
 | `SPECKIT_COGNITIVE_COACTIVATION_FLAGS` | `'i'` | string | `configs/cognitive.ts` | Regex flags for the cognitive co-activation pattern matcher. Must match `/^[dgimsuvy]*$/`. Invalid flags cause a startup validation error. |
 | `SPECKIT_COGNITIVE_COACTIVATION_PATTERN` | `'\\b(memory\|context\|decision\|implementation\|bug)\\b'` | string | `configs/cognitive.ts` | Regex pattern used by the cognitive pipeline to detect co-activation-relevant content. Backreferences and nested quantifier groups are rejected for safety. Maximum length 256 characters. |
 | `SPECKIT_COMMUNITY_DETECTION` | `true` | boolean | `lib/search/search-flags.ts` | Enables N2c BFS connected-component detection with Louvain escalation for large graphs. Injects community co-members alongside Stage 2 fusion results. |
-| `SPECKIT_COMPLEXITY_ROUTER` | `true` | boolean | `lib/search/query-classifier.ts` | Sprint 3 Stage A: routes queries to channel subsets based on complexity tier. Simple queries use vector + FTS only; moderate adds BM25; complex uses all five channels. When disabled, all channels run for every query. |
+| `SPECKIT_COMPLEXITY_ROUTER` | `true` | boolean | `lib/search/query-classifier.ts` | Sprint 3 Stage A: routes queries to channel subsets based on complexity tier. Simple queries use vector + FTS only. Moderate adds BM25. Complex uses all five channels. When disabled, all channels run for every query. |
 | `SPECKIT_CONFIDENCE_TRUNCATION` | `true` | boolean | `lib/search/confidence-truncation.ts` | Sprint 3 Stage D: trims the low-confidence tail from fused results. A consecutive score gap exceeding 2× the median gap triggers truncation. Always returns at least 3 results. |
 | `SPECKIT_CONSOLIDATION` | `true` | boolean | `lib/search/search-flags.ts` | Enables the N3-lite consolidation engine which runs after every successful save. Scans for contradictions (>0.85 cosine similarity with negation conflicts), applies Hebbian strengthening (+0.05/cycle, 30-day decay), detects stale edges (>90 days unfetched) and enforces 20 edges per node. Runs weekly. |
-| `SPECKIT_CONSUMPTION_LOG` | inert | boolean | `lib/telemetry/consumption-logger.ts` | **Deprecated.** Eval complete (Sprint 7 audit). Telemetry is baked into core. The env var is accepted but has no effect; the function always returns `false`. |
-| `SPECKIT_CONTEXT_HEADERS` | `true` | boolean | `lib/search/hybrid-search.ts` | **IMPLEMENTED (Sprint 019).** P1-4: Contextual tree injection into returned chunks. When enabled, `injectContextualTree()` string-prepends hierarchical context headers (`[parent > child  -- description]`, max 100 chars) using PI-B3 cached spec folder descriptions. Injected in Stage 4 after token-budget truncation. |
+| `SPECKIT_CONSUMPTION_LOG` | inert | boolean | `lib/telemetry/consumption-logger.ts` | **Deprecated.** Eval complete (Sprint 7 audit). Telemetry is baked into core. The env var is accepted but has no effect. The function always returns `false`. |
+| `SPECKIT_CONTEXT_HEADERS` | `true` | boolean | `lib/search/hybrid-search.ts` | **IMPLEMENTED (Sprint 019).** P1-4: Contextual tree injection into returned chunks. When enabled, `injectContextualTree()` string-prepends hierarchical context headers (`[parent > child: description]`, max 100 chars) using PI-B3 cached spec folder descriptions. Injected in Stage 4 after token-budget truncation. |
 | `SPECKIT_CROSS_ENCODER` | `true` | boolean | `lib/search/search-flags.ts` | Enables cross-encoder reranking in Stage 3 of the 4-stage pipeline. When enabled, the reranker rescores candidates using a more expensive cross-attention model. Disabling falls back to vector-only ranking from fusion. |
 | `SPECKIT_DASHBOARD_LIMIT` | `10000` | number | `lib/eval/reporting-dashboard.ts` | Maximum number of rows fetched for the reporting dashboard. Parsed as integer with NaN guard (`|| 10000`). Replaces a previously hardcoded limit of 1000. Added in Phase 018 (CR-P2-3). |
-| `SPECKIT_DEBUG_INDEX_SCAN` | `false` | boolean | `handlers/memory-index.ts` | When `'true'`, emits additional file-count diagnostics during `memory_index_scan` runs. Off by default; intended for debugging index coverage issues. Must be explicitly set to `'true'`. |
+| `SPECKIT_DEBUG_INDEX_SCAN` | `false` | boolean | `handlers/memory-index.ts` | When `'true'`, emits additional file-count diagnostics during `memory_index_scan` runs. Off by default. Intended for debugging index coverage issues. Must be explicitly set to `'true'`. |
 | `SPECKIT_DEGREE_BOOST` | `true` | boolean | `lib/search/search-flags.ts` | Enables the degree-search channel in hybrid search. Re-ranks results by hub score via `computeDegreeScores()` with logarithmic normalization and a hard cap of 50. Base channel weight is 0.4. |
 | `SPECKIT_DOCSCORE_AGGREGATION` | `true` | boolean | `lib/search/search-flags.ts` | Enables R1 MPAB (Multi-Parent Aggregated Bonus) chunk-to-memory score aggregation. Collapses chunk-level results back to parent memory documents using `sMax + 0.3 * sum(remaining) / sqrt(N)` to prevent multi-chunk dominance. |
 | `SPECKIT_DYNAMIC_INIT` | `true` | boolean | `context-server.ts` | **IMPLEMENTED (Sprint 019).** P1-6: Dynamic server instructions at MCP initialization. `buildServerInstructions()` generates a memory-system overview (total memories, spec folder count, channels, stale count) and injects via `server.setInstructions()`. Reuses existing `memory_stats` handler data. |
-| `SPECKIT_DYNAMIC_TOKEN_BUDGET` | `true` | boolean | `lib/search/dynamic-token-budget.ts` | Sprint 3 Stage E: computes a tier-aware token limit (simple 1,500 / moderate 2,500 / complex 4,000 tokens). Advisory only; callers are responsible for respecting the budget. When disabled, defaults to 4,000 tokens for all queries. |
-| `SPECKIT_EAGER_WARMUP` | inert | boolean | `shared/embeddings.ts` | **Deprecated/inert.** The warmup toggle is no longer active; `shouldEagerWarmup()` is hardcoded to `false`, so setting this env var has no runtime effect. |
+| `SPECKIT_DYNAMIC_TOKEN_BUDGET` | `true` | boolean | `lib/search/dynamic-token-budget.ts` | Sprint 3 Stage E: computes a tier-aware token limit (simple 1,500 / moderate 2,500 / complex 4,000 tokens). Advisory only. Callers are responsible for respecting the budget. When disabled, defaults to 4,000 tokens for all queries. |
+| `SPECKIT_EAGER_WARMUP` | inert | boolean | `shared/embeddings.ts` | **Deprecated/inert.** The warmup toggle is no longer active. `shouldEagerWarmup()` is hardcoded to `false`. Setting this env var has no runtime effect. |
 | `SPECKIT_EMBEDDING_EXPANSION` | `true` | boolean | `lib/search/search-flags.ts` | R12 query expansion for embedding-based retrieval. Generates an expanded query variant and runs it in parallel with the baseline. Suppressed when the complexity classifier marks a query as `'simple'` (mutual exclusion with R15). |
-| `SPECKIT_ENCODING_INTENT` | `true` | boolean | `lib/search/search-flags.ts` | R16 encoding-intent capture at index time. Classifies content as `document`, `code` or `structured_data` using heuristic scoring above a 0.4 threshold. Stored as read-only metadata on the `encoding_intent` column. No retrieval-time scoring impact yet; builds a labeled dataset. |
+| `SPECKIT_ENCODING_INTENT` | `true` | boolean | `lib/search/search-flags.ts` | R16 encoding-intent capture at index time. Classifies content as `document`, `code` or `structured_data` using heuristic scoring above a 0.4 threshold. Stored as read-only metadata on the `encoding_intent` column. No retrieval-time scoring impact yet. Builds a labeled dataset. |
 | `SPECKIT_ENTITY_LINKING` | `true` | boolean | `lib/search/search-flags.ts` | S5 cross-document entity linking. Creates causal edges between memories sharing entities across spec folders. Depends on a populated `entity_catalog` (typically produced by R10 auto-entities). Controlled by the global density guard (`SPECKIT_ENTITY_LINKING_MAX_DENSITY`). |
 | `SPECKIT_ENTITY_LINKING_MAX_DENSITY` | `1.0` | number | `lib/search/entity-linker.ts` | S5 global density guard threshold. Entity linking performs a current-global-density precheck (`total_edges / total_memories`) and a projected post-insert global density check before creating links. If either check exceeds this value, link creation is skipped. Default 1.0 is permissive, but the guard can still trigger when total edges exceed total memories. |
 | `SPECKIT_EVAL_LOGGING` | `false` | boolean | `lib/eval/eval-logger.ts` | Enables eval logging that writes retrieval events to the eval database. Must be explicitly set to `'true'`. Used during ablation and ground-truth evaluation runs. |
 | `SPECKIT_EVENT_DECAY` | `true` | boolean | `lib/cognitive/working-memory.ts` | Enables FSRS-based attention decay in the working memory system. Scores decay each turn via exponential degradation. When disabled, attention scores do not degrade over the session. |
-| `SPECKIT_EXTENDED_TELEMETRY` | `false` | boolean | `lib/telemetry/retrieval-telemetry.ts` | Opt-in extended retrieval telemetry. When `'true'`, the runtime records latency, mode, fallback, quality, trace-payload validation, and the default Hydra architecture snapshot; when unset or `'false'`, the telemetry shell still exists but detailed metrics remain zero/empty. |
+| `SPECKIT_EXTENDED_TELEMETRY` | `false` | boolean | `lib/telemetry/retrieval-telemetry.ts` | Opt-in extended retrieval telemetry. When `'true'`, the runtime records latency, mode, fallback, quality, trace-payload validation and the default memory roadmap architecture snapshot. When unset or `'false'`, the telemetry shell still exists but detailed metrics remain zero/empty. |
 | `SPECKIT_EXTRACTION` | `true` | boolean | `lib/extraction/extraction-adapter.ts` | Gates the extraction adapter which parses entities and structured data from memory files. Uses `isFeatureEnabled()` with session identity for rollout-based gating. |
-| `SPECKIT_FILE_WATCHER` | `false` | boolean | `lib/ops/file-watcher.ts` | **IMPLEMENTED (Sprint 019).** P1-7: Real-time filesystem watching with chokidar. Push-based indexing of spec directories with 2s debounce, TM-02 SHA-256 content-hash deduplication, ENOENT grace handling, and exponential backoff for `SQLITE_BUSY`. |
+| `SPECKIT_FILE_WATCHER` | `false` | boolean | `lib/ops/file-watcher.ts` | **IMPLEMENTED (Sprint 019).** P1-7: Real-time filesystem watching with chokidar. Push-based indexing of spec directories with 2s debounce, TM-02 SHA-256 content-hash deduplication, ENOENT grace handling and exponential backoff for `SQLITE_BUSY`. |
 | `SPECKIT_FOLDER_DISCOVERY` | `true` | boolean | `lib/search/search-flags.ts` | PI-B3: automatic spec folder discovery. Matches the query against cached one-sentence folder descriptions to identify the most relevant spec folder without triggering full-corpus search. Discovery failure is non-fatal. |
 | `SPECKIT_FOLDER_SCORING` | `true` | boolean | `lib/search/folder-relevance.ts` | Sprint 1 two-phase folder-relevance scoring. When enabled, re-ranks results by spec folder relevance using a two-phase retrieval strategy. Disabled by setting to `'false'`. |
-| `SPECKIT_FOLDER_TOP_K` | `5` | number | `lib/search/hybrid-search.ts` | Number of top folders used in two-phase folder retrieval when `SPECKIT_FOLDER_SCORING` is active. Parsed as integer; invalid or missing values fall back to 5. |
+| `SPECKIT_FOLDER_TOP_K` | `5` | number | `lib/search/hybrid-search.ts` | Number of top folders used in two-phase folder retrieval when `SPECKIT_FOLDER_SCORING` is active. Parsed as integer. Invalid or missing values fall back to 5. |
 | `SPECKIT_GRAPH_SIGNALS` | `true` | boolean | `lib/search/search-flags.ts` | Enables N2a graph momentum scoring and N2b causal depth signals. Applied during Stage 2 fusion as additional scoring inputs from the causal graph structure. |
 | `SPECKIT_GRAPH_UNIFIED` | `true` | boolean | `lib/search/graph-flags.ts` | Unified graph channel gate. Legacy compatibility shim that controls whether the graph search channel participates in hybrid retrieval. Disabled with explicit `'false'`. |
-| `SPECKIT_HYDRA_PHASE` | `baseline` | string | `lib/config/capability-flags.ts` | Sets the recorded Hydra roadmap phase for telemetry, eval baselines, and migration checkpoint metadata. Supported values are `baseline`, `lineage`, `graph`, `adaptive`, `scope-governance`, and `shared-rollout`; unknown values fall back to `baseline`. |
-| `SPECKIT_HYDRA_LINEAGE_STATE` | `false` | boolean | `lib/config/capability-flags.ts` | Explicit opt-in roadmap flag for the Hydra lineage-state capability. Used only for rollout metadata snapshots; it does not enable lineage behavior by itself. |
-| `SPECKIT_HYDRA_GRAPH_UNIFIED` | `false` | boolean | `lib/config/capability-flags.ts` | Explicit opt-in roadmap flag for the Hydra unified-graph milestone. Intentionally separate from the runtime `SPECKIT_GRAPH_UNIFIED` retrieval gate so roadmap metadata cannot misreport live graph-channel defaults. |
-| `SPECKIT_HYDRA_ADAPTIVE_RANKING` | `false` | boolean | `lib/config/capability-flags.ts` | Explicit opt-in roadmap flag for the Hydra adaptive-ranking milestone. Used by telemetry, eval baseline snapshots, and migration checkpoint metadata only. |
-| `SPECKIT_HYDRA_SCOPE_ENFORCEMENT` | `false` | boolean | `lib/config/capability-flags.ts` | Explicit opt-in roadmap flag for Hydra scope-enforcement tracking. Requires `'true'` and still passes through rollout gating before it appears as enabled in metadata. |
-| `SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS` | `false` | boolean | `lib/config/capability-flags.ts` | Explicit opt-in roadmap flag for Hydra governance-guardrail tracking. Metadata only; no retrieval behavior changes occur from this env var alone. |
+| `SPECKIT_HYDRA_PHASE` | `baseline` | string | `lib/config/capability-flags.ts` | Sets the recorded memory roadmap phase for telemetry, eval baselines, and migration checkpoint metadata. Supported values are `baseline`, `lineage`, `graph`, `adaptive`, `scope-governance` and `shared-rollout`. Unknown values fall back to `baseline`. |
+| `SPECKIT_HYDRA_LINEAGE_STATE` | `false` | boolean | `lib/config/capability-flags.ts` | Explicit opt-in roadmap flag for the lineage-state capability. Used only for rollout metadata snapshots. It does not enable lineage behavior by itself. |
+| `SPECKIT_HYDRA_GRAPH_UNIFIED` | `false` | boolean | `lib/config/capability-flags.ts` | Explicit opt-in roadmap flag for the unified-graph milestone. Intentionally separate from the runtime `SPECKIT_GRAPH_UNIFIED` retrieval gate so roadmap metadata cannot misreport live graph-channel defaults. |
+| `SPECKIT_HYDRA_ADAPTIVE_RANKING` | `false` | boolean | `lib/config/capability-flags.ts` | Explicit opt-in roadmap flag for the adaptive-ranking milestone. Used by telemetry, eval baseline snapshots and migration checkpoint metadata only. |
+| `SPECKIT_HYDRA_SCOPE_ENFORCEMENT` | `false` | boolean | `lib/config/capability-flags.ts` | Explicit opt-in roadmap flag for scope-enforcement tracking. Requires `'true'` and still passes through rollout gating before it appears as enabled in metadata. |
+| `SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS` | `false` | boolean | `lib/config/capability-flags.ts` | Explicit opt-in roadmap flag for governance-guardrail tracking. Metadata only. No retrieval behavior changes occur from this env var alone. |
 | `SPECKIT_HYDRA_SHARED_MEMORY` | `false` | boolean | `lib/config/capability-flags.ts` | Explicit opt-in roadmap flag for the shared-memory milestone. Used to describe the evaluated rollout slice in telemetry and checkpoint sidecars, not to activate a shared-memory runtime. |
 | `SPECKIT_INDEX_SPEC_DOCS` | `true` | boolean | `handlers/memory-index-discovery.ts` | Controls whether `memory_index_scan` indexes spec folder documents (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`, `research.md`, `handover.md`). Set to `'false'` to skip spec docs. |
 | `SPECKIT_INTERFERENCE_SCORE` | `true` | boolean | `lib/scoring/interference-scoring.ts` | Enables interference-based penalty scoring in composite scoring. When disabled (set to `'false'`), the interference computation is bypassed and the raw score passes through unchanged. |
@@ -2718,10 +2665,10 @@ The `SPECKIT_ROLLOUT_PERCENT` flag applies a global percentage gate on top of an
 | `SPECKIT_MMR` | `true` | boolean | `lib/search/search-flags.ts` | Enables Maximal Marginal Relevance reranking after fusion to promote result diversity. Uses intent-specific lambda values from `INTENT_LAMBDA_MAP` (default 0.7). Requires embeddings to be loaded from `vec_memories` for top-N candidates. |
 | `SPECKIT_MULTI_QUERY` | `true` | boolean | `lib/search/search-flags.ts` | Enables multi-query expansion for deep-mode retrieval. The query is expanded into up to 3 variants via `expandQuery()`, each variant runs hybrid search in parallel, and results merge with deduplication. |
 | `SPECKIT_NEGATIVE_FEEDBACK` | `true` | boolean | `lib/search/search-flags.ts` | T002b/A4 negative-feedback confidence demotion. Applies a confidence multiplier (starts at 1.0, decreases 0.1 per negative validation, floors at 0.3) with 30-day half-life recovery. |
-| `SPECKIT_NOVELTY_BOOST` | inert | boolean | `lib/scoring/composite-scoring.ts` | **Inert.** N4 cold-start novelty boost was evaluated and removed. The env var is read in tests only; the production function always returns 0. |
+| `SPECKIT_NOVELTY_BOOST` | inert | boolean | `lib/scoring/composite-scoring.ts` | **Inert.** N4 cold-start novelty boost was evaluated and removed. The env var is read in tests only. The production function always returns 0. |
 | `SPECKIT_PIPELINE_V2` | `true` | boolean | `lib/search/search-flags.ts` | **Deprecated (always true).** `isPipelineV2Enabled()` is hardcoded to `return true` at `search-flags.ts:101`. The V2 pipeline is the only pipeline. The legacy `postSearchPipeline` was removed in Phase 017. This flag is retained for backward compatibility but has no effect. |
 | `SPECKIT_PRESSURE_POLICY` | `true` | boolean | `handlers/memory-context.ts` | Enables context-pressure-based mode downgrading in `memory_context`. Above 0.60 token usage ratio, switches to focused mode. Above 0.80, switches to quick mode. Also subject to `SPECKIT_ROLLOUT_PERCENT`. |
-| `SPECKIT_QUALITY_LOOP` | `false` | boolean | `lib/search/search-flags.ts` | **Default OFF.** Enables the verify-fix-verify loop for `memory_save`. When enabled, low-quality saves get an initial evaluation plus up to 2 immediate auto-fix retries by default; rejected saves return `status: 'rejected'`, and atomic save rolls the file back instead of retrying indexing again. |
+| `SPECKIT_QUALITY_LOOP` | `false` | boolean | `lib/search/search-flags.ts` | **Default OFF.** Enables the verify-fix-verify loop for `memory_save`. When enabled, low-quality saves get an initial evaluation plus up to 2 immediate auto-fix retries by default. Rejected saves return `status: 'rejected'`, and atomic save rolls the file back instead of retrying indexing again. |
 | `SPECKIT_RECONSOLIDATION` | `false` | boolean | `lib/search/search-flags.ts` | TM-06 reconsolidation-on-save. Opt-in only: set `SPECKIT_RECONSOLIDATION=true` to enable merge/supersede behavior after embedding generation. Requires a checkpoint to exist for the spec folder. |
 | `SPECKIT_RELATIONS` | `true` | boolean | `lib/learning/corrections.ts` | Enables relational learning corrections that track and apply inter-memory relationship signals during the learning pipeline. Disabled with explicit `'false'`. |
 | `SPECKIT_RESPONSE_TRACE` | `false` | boolean | `handlers/memory-search.ts` | **IMPLEMENTED (Sprint 019).** P0-2: Include provenance data (scores, source, trace) in `memory_search` response envelopes. Opt-in via `includeTrace: true` parameter. When disabled, response format is unchanged (backward compatible). |
@@ -2810,7 +2757,7 @@ Source file references are included in the flag table above.
 |---|---|---|---|---|
 | `COHERE_API_KEY` | _(none)_ | string | `tests/search-limits-scoring.vitest.ts` | API key for the Cohere reranker provider. When present, the cross-encoder reranker uses Cohere's rerank API. Falls back to local or Voyage reranker when absent. |
 | `EMBEDDING_DIM` | _(provider default)_ | number | `lib/search/vector-index-impl.ts` | Override for the embedding vector dimension. When set, bypasses the provider's reported dimension. Use when loading a custom model with a non-standard dimension. |
-| `EMBEDDINGS_PROVIDER` | `'auto'` | string | `lib/providers/embeddings.ts` | Selects the embedding provider. Valid values include `'auto'`, `'openai'`, `'hf-local'`, and `'voyage'`. In `'auto'` mode, the system selects based on available API keys (Voyage preferred over OpenAI, local fallback). |
+| `EMBEDDINGS_PROVIDER` | `'auto'` | string | `lib/providers/embeddings.ts` | Selects the embedding provider. Valid values include `'auto'`, `'openai'`, `'hf-local'` and `'voyage'`. In `'auto'` mode, the system selects based on available API keys (Voyage preferred over OpenAI, local fallback). |
 | `OPENAI_API_KEY` | _(none)_ | string | `tests/embeddings.vitest.ts` | API key for the OpenAI embeddings provider. Required when `EMBEDDINGS_PROVIDER` is `'openai'` or when `'auto'` mode selects OpenAI as the available provider. |
 | `RERANKER_LOCAL` | `false` | boolean | `lib/search/local-reranker.ts` | **IMPLEMENTED (Sprint 019).** When set to `'true'` (strict string equality, not truthy), enables the local GGUF reranker via `node-llama-cpp`. Requires model file on disk and sufficient total system memory (8GB default, 2GB with custom `SPECKIT_RERANKER_MODEL`). Falls back silently to algorithmic RRF scoring on any precondition failure. |
 | `VOYAGE_API_KEY` | _(none)_ | string | `tests/embeddings.vitest.ts` | API key for the Voyage AI embeddings and reranker provider. In `'auto'` mode, Voyage is preferred over OpenAI when this key is present. |
@@ -2830,13 +2777,13 @@ Source file references are included in the flag table above.
 | `SPECKIT_EVAL_LOGGING` | `false` | boolean | `lib/eval/eval-logger.ts` | (Also listed under Search Pipeline.) Enables writes to the eval database during retrieval operations. Must be explicitly `'true'`. See category 1 for full description. |
 | `SPECKIT_DEBUG_INDEX_SCAN` | `false` | boolean | `handlers/memory-index.ts` | (Also listed under Search Pipeline.) Enables verbose file-count diagnostics during index scans. Must be explicitly `'true'`. See category 1 for full description. |
 | `SPECKIT_EXTENDED_TELEMETRY` | `false` | boolean | `lib/telemetry/retrieval-telemetry.ts` | (Also listed under Search Pipeline.) Opt-in retrieval telemetry. Detailed latency/mode/fallback/quality metrics and architecture updates are recorded only when this is explicitly `'true'`. |
-| `SPECKIT_HYDRA_PHASE` | `baseline` | string | `lib/config/capability-flags.ts` | Sets the recorded Hydra roadmap phase for telemetry and migration metadata. Unsupported values fall back to `baseline`. |
-| `SPECKIT_HYDRA_LINEAGE_STATE` | `false` | boolean | `lib/config/capability-flags.ts` | Opt-in Hydra roadmap capability flag surfaced in telemetry metadata only. |
-| `SPECKIT_HYDRA_GRAPH_UNIFIED` | `false` | boolean | `lib/config/capability-flags.ts` | Opt-in Hydra roadmap capability flag surfaced in telemetry metadata only. Distinct from the live `SPECKIT_GRAPH_UNIFIED` runtime gate. |
-| `SPECKIT_HYDRA_ADAPTIVE_RANKING` | `false` | boolean | `lib/config/capability-flags.ts` | Opt-in Hydra roadmap capability flag surfaced in telemetry metadata only. |
-| `SPECKIT_HYDRA_SCOPE_ENFORCEMENT` | `false` | boolean | `lib/config/capability-flags.ts` | Opt-in Hydra roadmap capability flag surfaced in telemetry metadata only. |
-| `SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS` | `false` | boolean | `lib/config/capability-flags.ts` | Opt-in Hydra roadmap capability flag surfaced in telemetry metadata only. |
-| `SPECKIT_HYDRA_SHARED_MEMORY` | `false` | boolean | `lib/config/capability-flags.ts` | Opt-in Hydra roadmap capability flag surfaced in telemetry metadata only. |
+| `SPECKIT_HYDRA_PHASE` | `baseline` | string | `lib/config/capability-flags.ts` | Sets the recorded memory roadmap phase for telemetry and migration metadata. Unsupported values fall back to `baseline`. |
+| `SPECKIT_HYDRA_LINEAGE_STATE` | `false` | boolean | `lib/config/capability-flags.ts` | Opt-in memory roadmap capability flag surfaced in telemetry metadata only. |
+| `SPECKIT_HYDRA_GRAPH_UNIFIED` | `false` | boolean | `lib/config/capability-flags.ts` | Opt-in memory roadmap capability flag surfaced in telemetry metadata only. Distinct from the live `SPECKIT_GRAPH_UNIFIED` runtime gate. |
+| `SPECKIT_HYDRA_ADAPTIVE_RANKING` | `false` | boolean | `lib/config/capability-flags.ts` | Opt-in memory roadmap capability flag surfaced in telemetry metadata only. |
+| `SPECKIT_HYDRA_SCOPE_ENFORCEMENT` | `false` | boolean | `lib/config/capability-flags.ts` | Opt-in memory roadmap capability flag surfaced in telemetry metadata only. |
+| `SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS` | `false` | boolean | `lib/config/capability-flags.ts` | Opt-in memory roadmap capability flag surfaced in telemetry metadata only. |
+| `SPECKIT_HYDRA_SHARED_MEMORY` | `false` | boolean | `lib/config/capability-flags.ts` | Opt-in memory roadmap capability flag surfaced in telemetry metadata only. |
 | `SPECKIT_CONSUMPTION_LOG` | inert | boolean | `lib/telemetry/consumption-logger.ts` | (Also listed under Search Pipeline.) Deprecated and inert. See category 1 for full description. |
 
 

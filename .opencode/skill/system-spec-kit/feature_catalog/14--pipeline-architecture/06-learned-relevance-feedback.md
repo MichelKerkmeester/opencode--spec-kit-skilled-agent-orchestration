@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Learned relevance feedback.
+Learned relevance feedback captures query terms from user result selections and boosts future searches with a 0.7x weight via isolated `learned_triggers`.
 
 ## 2. CURRENT REALITY
 
@@ -19,7 +20,7 @@ Ten safeguards protect against noise: a 100+ stop-word denylist, rate cap of 3 t
 
 **Sprint 8 update:** The R11 shadow-period safeguard remains active in runtime. `isInShadowPeriod()` and its guards in `recordSelection()` / `queryLearnedTriggers()` were retained as Safeguard #6 (1-week shadow mode: log-but-don't-apply). Sprint 8 dead-code cleanup removed other retired flag helpers (`isShadowScoringEnabled`, `isRsfEnabled`), but not the R11 shadow-period guard.
 
-Learned triggers boost future searches via a 0.7x weight applied during the feedback signals step in Stage 2. The boost applies alongside the query, not replacing it. Runs behind the `SPECKIT_LEARN_FROM_SELECTION` flag (default ON; set to `false` to disable).
+Learned triggers boost future searches via a 0.7x weight applied during the feedback signals step in Stage 2. The boost applies alongside the query, not replacing it. Runs behind the `SPECKIT_LEARN_FROM_SELECTION` flag (default ON, set to `false` to disable).
 
 ---
 
@@ -55,3 +56,7 @@ Learned triggers boost future searches via a 0.7x weight applied during the feed
 - Group: Pipeline architecture
 - Source feature title: Learned relevance feedback
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+When you mark a search result as useful, the system remembers which search terms led you to it. Next time similar terms appear in a question, the system gives that memory a small boost. Over time, the system learns which results are genuinely helpful based on your actual selections, like a music app that gets better at recommending songs the more you use it.

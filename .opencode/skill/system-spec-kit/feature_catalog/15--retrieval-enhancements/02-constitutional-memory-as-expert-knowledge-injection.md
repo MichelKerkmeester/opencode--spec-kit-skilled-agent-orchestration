@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Constitutional memory as expert knowledge injection.
+Constitutional-tier memories receive retrieval directive metadata that instructs the LLM when to surface them.
 
 ## 2. CURRENT REALITY
 
@@ -36,3 +37,7 @@ Rule patterns are extracted from content using a ranked list of imperative verbs
 - Group: Retrieval enhancements
 - Source feature title: Constitutional memory as expert knowledge injection
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+Some memories are fundamental rules that should always come up when relevant, like "never delete production data." This feature tags those high-priority memories with instructions about when to surface them. It works like sticky notes on a filing cabinet that say "pull this file whenever someone asks about X."

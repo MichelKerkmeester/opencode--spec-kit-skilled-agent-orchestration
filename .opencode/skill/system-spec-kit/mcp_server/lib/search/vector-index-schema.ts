@@ -40,11 +40,6 @@ const MEMORY_LINEAGE_TABLE = 'memory_lineage';
 const ACTIVE_MEMORY_PROJECTION_TABLE = 'active_memory_projection';
 const LEGACY_MEMORY_LINEAGE_TABLE = 'hydra_memory_lineage';
 const LEGACY_ACTIVE_MEMORY_PROJECTION_TABLE = 'hydra_active_memory_projection';
-const GOVERNANCE_AUDIT_TABLE = 'governance_audit';
-const SHARED_SPACES_TABLE = 'shared_spaces';
-const SHARED_SPACE_MEMBERS_TABLE = 'shared_space_members';
-const SHARED_SPACE_CONFLICTS_TABLE = 'shared_space_conflicts';
-
 const REQUIRED_TABLES: readonly string[] = ['memory_index', 'schema_version'];
 const REQUIRED_MEMORY_INDEX_COLUMNS: readonly string[] = [
   'id',

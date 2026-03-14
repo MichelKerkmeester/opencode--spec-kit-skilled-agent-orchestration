@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Async ingestion job lifecycle.
+Covers the SQLite-persisted async job queue for batch ingestion with start, status and cancel tools.
 
 ## 2. CURRENT REALITY
 
@@ -121,3 +122,7 @@ This document captures the implemented behavior, source references, and validati
 - Group: Extra features (Sprint 019)
 - Source feature title: Async ingestion job lifecycle
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+When you need to import a large batch of files, this feature queues them up and processes them one at a time in the background. You can start the import, check its progress and cancel it if needed. It works like a print queue: you submit the jobs and the system works through them at its own pace while you continue doing other things.

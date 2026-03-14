@@ -103,6 +103,30 @@ interface AdaptiveMetrics {
   maxDeltaApplied: number;
 }
 
+interface GraphHealthDashboardSummary {
+  totalPayloads: number;
+  payloadsWithGraphHealth: number;
+  killSwitchActiveCount: number;
+  averageGraphInjected: number;
+  maxGraphInjected: number;
+  causalBoostedTotal: number;
+  coActivationBoostedTotal: number;
+  communityInjectedTotal: number;
+  graphSignalsBoostedTotal: number;
+}
+
+interface TraceSamplingOptions {
+  limit?: number;
+  minGraphInjected?: number;
+  killSwitchOnly?: boolean;
+}
+
+interface SampledTracePayload {
+  timestamp: string | null;
+  graphHealth: GraphHealthMetrics;
+  tracePayload: TelemetryTracePayload;
+}
+
 /** Full retrieval telemetry record */
 interface RetrievalTelemetry {
   enabled: boolean;
@@ -339,7 +363,135 @@ function computeQualityProxy(t: RetrievalTelemetry): number {
 }
 
 /* ───────────────────────────────────────────────────────────────
-   6. SERIALIZATION
+   6. DASHBOARD HELPERS
+──────────────────────────────────────────────────────────────── */
+
+function isObjectRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+function toNonNegativeFiniteNumber(value: unknown): number {
+  if (typeof value !== 'number' || !Number.isFinite(value) || value < 0) {
+    return 0;
+  }
+  return value;
+}
+
+function normalizeGraphHealthMetrics(value: unknown): GraphHealthMetrics | null {
+  if (!isObjectRecord(value)) {
+    return null;
+  }
+
+  return {
+    killSwitchActive: value.killSwitchActive === true,
+    causalBoosted: toNonNegativeFiniteNumber(value.causalBoosted),
+    coActivationBoosted: toNonNegativeFiniteNumber(value.coActivationBoosted),
+    communityInjected: toNonNegativeFiniteNumber(value.communityInjected),
+    graphSignalsBoosted: toNonNegativeFiniteNumber(value.graphSignalsBoosted),
+    totalGraphInjected: toNonNegativeFiniteNumber(value.totalGraphInjected),
+  };
+}
+
+function summarizeGraphHealthDashboard(
+  payloads: Array<RetrievalTelemetry | Record<string, unknown>>,
+): GraphHealthDashboardSummary {
+  let payloadsWithGraphHealth = 0;
+  let killSwitchActiveCount = 0;
+  let totalGraphInjected = 0;
+  let maxGraphInjected = 0;
+  let causalBoostedTotal = 0;
+  let coActivationBoostedTotal = 0;
+  let communityInjectedTotal = 0;
+  let graphSignalsBoostedTotal = 0;
+
+  for (const payload of payloads) {
+    const graphHealth = normalizeGraphHealthMetrics(
+      isObjectRecord(payload) ? payload.graphHealth : undefined,
+    );
+    if (!graphHealth) {
+      continue;
+    }
+
+    payloadsWithGraphHealth += 1;
+    if (graphHealth.killSwitchActive) {
+      killSwitchActiveCount += 1;
+    }
+
+    totalGraphInjected += graphHealth.totalGraphInjected;
+    maxGraphInjected = Math.max(maxGraphInjected, graphHealth.totalGraphInjected);
+    causalBoostedTotal += graphHealth.causalBoosted;
+    coActivationBoostedTotal += graphHealth.coActivationBoosted;
+    communityInjectedTotal += graphHealth.communityInjected;
+    graphSignalsBoostedTotal += graphHealth.graphSignalsBoosted;
+  }
+
+  return {
+    totalPayloads: payloads.length,
+    payloadsWithGraphHealth,
+    killSwitchActiveCount,
+    averageGraphInjected: payloadsWithGraphHealth > 0 ? totalGraphInjected / payloadsWithGraphHealth : 0,
+    maxGraphInjected,
+    causalBoostedTotal,
+    coActivationBoostedTotal,
+    communityInjectedTotal,
+    graphSignalsBoostedTotal,
+  };
+}
+
+function sampleTracePayloads(
+  payloads: Array<RetrievalTelemetry | Record<string, unknown>>,
+  options: TraceSamplingOptions = {},
+): SampledTracePayload[] {
+  const limit = typeof options.limit === 'number' && Number.isFinite(options.limit)
+    ? Math.max(0, Math.floor(options.limit))
+    : 5;
+  const minGraphInjected = typeof options.minGraphInjected === 'number' && Number.isFinite(options.minGraphInjected)
+    ? Math.max(0, options.minGraphInjected)
+    : 1;
+  const sampled: SampledTracePayload[] = [];
+
+  if (limit === 0) {
+    return sampled;
+  }
+
+  for (const payload of payloads) {
+    const tracePayload = sanitizeRetrievalTracePayload(
+      isObjectRecord(payload) ? payload.tracePayload : undefined,
+    );
+    const graphHealth = normalizeGraphHealthMetrics(
+      isObjectRecord(payload) ? payload.graphHealth : undefined,
+    );
+    if (!tracePayload || !graphHealth) {
+      continue;
+    }
+    if (graphHealth.totalGraphInjected < minGraphInjected) {
+      continue;
+    }
+    if (options.killSwitchOnly === true && !graphHealth.killSwitchActive) {
+      continue;
+    }
+
+    sampled.push({
+      timestamp: typeof payload.timestamp === 'string' ? payload.timestamp : null,
+      graphHealth,
+      tracePayload,
+    });
+  }
+
+  sampled.sort((left, right) => {
+    if (right.graphHealth.totalGraphInjected !== left.graphHealth.totalGraphInjected) {
+      return right.graphHealth.totalGraphInjected - left.graphHealth.totalGraphInjected;
+    }
+    const leftTime = left.timestamp ? Date.parse(left.timestamp) : 0;
+    const rightTime = right.timestamp ? Date.parse(right.timestamp) : 0;
+    return rightTime - leftTime;
+  });
+
+  return sampled.slice(0, limit);
+}
+
+/* ───────────────────────────────────────────────────────────────
+   7. SERIALIZATION
 ──────────────────────────────────────────────────────────────── */
 
 function toJSON(t: RetrievalTelemetry): Record<string, unknown> {
@@ -423,7 +575,7 @@ function toJSON(t: RetrievalTelemetry): Record<string, unknown> {
 }
 
 /* ───────────────────────────────────────────────────────────────
-   7. EXPORTS
+   8. EXPORTS
 ──────────────────────────────────────────────────────────────── */
 
 export {
@@ -438,6 +590,8 @@ export {
   recordGraphHealth,
   recordAdaptiveEvaluation,
   computeQualityProxy,
+  summarizeGraphHealthDashboard,
+  sampleTracePayloads,
   toJSON,
 };
 
@@ -453,6 +607,9 @@ export type {
   ArchitectureMetrics,
   GraphHealthMetrics,
   AdaptiveMetrics,
+  GraphHealthDashboardSummary,
+  TraceSamplingOptions,
+  SampledTracePayload,
   LatencyStage,
 };
 

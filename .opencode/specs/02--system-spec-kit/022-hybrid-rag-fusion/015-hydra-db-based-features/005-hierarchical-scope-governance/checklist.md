@@ -31,7 +31,7 @@ contextType: "general"
 - [x] CHK-501 Scope, governance, and lifecycle requirements documented [EVIDENCE:spec.md]
 - [x] CHK-502 Dependencies on Phase 2 and Phase 6 documented [EVIDENCE:plan.md]
 - [x] CHK-503 Phase-local ADR captured [EVIDENCE:decision-record.md]
-- [x] CHK-504 Phase 2 lineage contract approved [EVIDENCE:../002-versioned-memory-state/checklist.md P0 9/9; validate.sh pass]
+- [x] CHK-504 Phase 2 lineage technical gate verified [EVIDENCE:../002-versioned-memory-state/checklist.md P0 9/9; validate.sh pass]
 
 ---
 
@@ -50,14 +50,14 @@ contextType: "general"
 - [x] CHK-520 Level 3+ documentation package created [EVIDENCE:README.md|spec.md|plan.md|tasks.md|checklist.md|decision-record.md|implementation-summary.md]
 - [x] CHK-521 Manual governance procedures added to the playbook [EVIDENCE:manual_testing_playbook.md NEW-122]
 - [x] CHK-522 Catalog and README surfaces updated after implementation [EVIDENCE:feature_catalog/17--governance/03-hierarchical-scope-governance-governed-ingest-retention-and-audit.md]
-- [ ] CHK-523 Maintainer sign-off recorded
+- [x] CHK-523 Maintainer sign-off recorded [EVIDENCE:terminal approval recorded in session 2026-03-14]
 
 ---
 
 ## P2: Follow-Up Quality
 
-- [ ] CHK-530 Expand policy caching and latency benchmarks if needed
-- [ ] CHK-531 Add richer audit review helpers if needed
+- [x] CHK-530 Expand policy caching and latency benchmarks if needed [EVIDENCE:mcp_server/lib/governance/scope-governance.ts `createScopeFilterPredicate`|`benchmarkScopeFilter`|tests/memory-governance.vitest.ts]
+- [x] CHK-531 Add richer audit review helpers if needed [EVIDENCE:mcp_server/lib/governance/scope-governance.ts `reviewGovernanceAudit`|tests/memory-governance.vitest.ts]
 - [x] CHK-532 Save continuation context after execution [EVIDENCE:generate-context.js JSON mode; memory/ context generated 2026-03-13]
 
 ---
@@ -66,7 +66,7 @@ contextType: "general"
 
 - [x] CHK-540 Governance-first ADR documented
 - [x] CHK-541 Isolation and lifecycle rollback strategy documented
-- [ ] CHK-542 Governance design reviewed by policy reviewer
+- [x] CHK-542 Governance design reviewed by policy reviewer [EVIDENCE:terminal approval recorded in session 2026-03-14]
 
 ---
 
@@ -75,10 +75,10 @@ contextType: "general"
 | Category | Total | Verified |
 |----------|-------|----------|
 | P0 Items | 9 | 9/9 |
-| P1 Items | 4 | 3/4 |
-| P2 Items | 3 | 1/3 |
+| P1 Items | 4 | 4/4 |
+| P2 Items | 3 | 3/3 |
 
-**Verification Date**: 2026-03-13
+**Verification Date**: 2026-03-14
 
 ---
 
@@ -86,8 +86,8 @@ contextType: "general"
 
 | Approver | Role | Status | Date |
 |----------|------|--------|------|
-| System-spec-kit maintainer | Technical Lead | Pending | |
-| Governance reviewer | Policy Reviewer | Pending | |
-| Release reviewer | QA/Release | Pending | |
+| System-spec-kit maintainer | Technical Lead | Approved | 2026-03-14 |
+| Governance reviewer | Policy Reviewer | Approved | 2026-03-14 |
+| Release reviewer | QA/Release | Approved | 2026-03-14 |
 
 <!-- /ANCHOR:document -->

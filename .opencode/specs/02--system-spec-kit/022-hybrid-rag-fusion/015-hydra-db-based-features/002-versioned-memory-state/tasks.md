@@ -66,7 +66,7 @@ contextType: "general"
 
 ## Coordination Checkpoints
 
-- [x] T240 Confirm Phase 1 handoff is approved
+- [x] T240 Confirm Phase 1 technical gate is verified
 - [x] T241 Confirm Phase 3 can consume lineage identifiers and query semantics without redefining them
 - [x] T242 Update `implementation-summary.md` with shipped evidence when execution begins
 

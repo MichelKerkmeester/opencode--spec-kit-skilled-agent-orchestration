@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Pre-storage quality gate.
+The pre-storage quality gate validates structural integrity, content quality and semantic deduplication before a memory enters the index.
 
 ## 2. CURRENT REALITY
 
@@ -90,3 +91,7 @@ The gate starts in warn-only mode for 14 days after activation per the MR12 miti
 - Group: Memory quality and indexing
 - Source feature title: Pre-storage quality gate
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+This is the bouncer at the door before a memory enters the system. It checks three things: is the memory properly structured, is the content actually useful and is it different enough from what is already stored? If a memory fails any of these checks, it gets turned away. Without this gate, the system would fill up with junk and near-duplicates that pollute future search results.

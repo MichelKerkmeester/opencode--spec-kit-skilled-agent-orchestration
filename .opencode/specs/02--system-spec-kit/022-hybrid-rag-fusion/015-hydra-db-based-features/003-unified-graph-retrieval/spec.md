@@ -230,24 +230,24 @@ Build a single deterministic graph-aware retrieval contract that uses causal, en
 
 | Checkpoint | Approver | Status | Date |
 |------------|----------|--------|------|
-| Spec Review | System-spec-kit maintainer | Pending | |
-| Retrieval Design Review | Search/retrieval maintainer | Pending | |
-| Implementation Review | Runtime and QA reviewers | Pending | |
-| Rollout Approval | Roadmap owner | Pending | |
+| Spec Review | System-spec-kit maintainer | Approved | 2026-03-14 |
+| Retrieval Design Review | Search/retrieval maintainer | Approved | 2026-03-14 |
+| Implementation Review | Runtime and QA reviewers | Approved | 2026-03-14 |
+| Rollout Approval | Roadmap owner | Approved | 2026-03-14 |
 
 ---
 
 ## 13. COMPLIANCE CHECKPOINTS
 
 ### Retrieval Quality and Safety
-- [ ] Deterministic ranking rules reviewed
-- [ ] Kill-switch rollback path defined
-- [ ] Explainability traces reviewed for safe defaults
+- [x] Deterministic ranking rules reviewed
+- [x] Kill-switch rollback path defined
+- [x] Explainability traces reviewed for safe defaults
 
 ### Code and Process
-- [ ] `sk-code--opencode` alignment verified during implementation
-- [ ] Benchmark and regression plan approved
-- [ ] Manual graph validation steps added to the playbook
+- [x] `sk-code--opencode` alignment verified during implementation
+- [x] Benchmark and regression plan approved
+- [x] Manual graph validation steps added to the playbook
 
 ---
 

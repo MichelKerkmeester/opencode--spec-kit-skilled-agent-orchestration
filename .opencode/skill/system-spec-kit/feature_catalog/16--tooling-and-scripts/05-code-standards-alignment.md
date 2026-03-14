@@ -8,14 +8,15 @@
 - [4. VERIFICATION TRACEABILITY](#4--verification-traceability)
 - [5. SOURCE FILES](#5--source-files)
 - [6. SOURCE METADATA](#6--source-metadata)
+- [7. IN SIMPLE TERMS](#7--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Code standards alignment.
+Code standards alignment fixed 45 violations across AI-intent comments, MODULE/COMPONENT headers, import ordering and constant naming to match sk-code--opencode standards.
 
 ## 2. CURRENT REALITY
 
-All modified files were reviewed against sk-code--opencode standards. 45 violations found and fixed: 26 AI-intent comment conversions (AI-WHY, AI-TRACE, AI-GUARD prefixes), 10 MODULE/COMPONENT headers added, import ordering corrections, and constant naming (`specFolderLocks` → `SPEC_FOLDER_LOCKS`).
+All modified files were reviewed against sk-code--opencode standards. 45 violations found and fixed: 26 AI-intent comment conversions (AI-WHY, AI-TRACE, AI-GUARD prefixes), 10 MODULE/COMPONENT headers added, import ordering corrections and constant naming (`specFolderLocks` → `SPEC_FOLDER_LOCKS`).
 
 ## 3. SOURCE EVIDENCE
 
@@ -87,7 +88,7 @@ All modified files were reviewed against sk-code--opencode standards. 45 violati
 
 - `npm run lint` exits `0` and reports `0` warnings / `0` errors.
 - `npm run check` exits `0` (lint clean + `npx tsc --noEmit` clean).
-- `npm run typecheck` exits `0` across `shared`, `mcp_server`, and `scripts`.
+- `npm run typecheck` exits `0` across `shared`, `mcp_server` and `scripts`.
 
 ### Configuration links (rules and enforcement points)
 
@@ -104,10 +105,14 @@ All modified files were reviewed against sk-code--opencode standards. 45 violati
 
 ## 5. SOURCE FILES
 
-No dedicated source files — this is a cross-cutting meta-improvement applied across multiple modules.
+No dedicated source files. This is a cross-cutting meta-improvement applied across multiple modules.
 
 ## 6. SOURCE METADATA
 
 - Group: Multi-agent deep review remediation (Phase 018)
 - Source feature title: Code standards alignment
 - Current reality source: feature_catalog.md
+
+## 7. IN SIMPLE TERMS
+
+This was a cleanup pass that made the code follow a consistent style across the project. It fixed 45 places where comments, file headers, naming patterns or import ordering did not match the agreed-upon rules. Think of it like an editor going through a document to make sure every chapter uses the same formatting and citation style.

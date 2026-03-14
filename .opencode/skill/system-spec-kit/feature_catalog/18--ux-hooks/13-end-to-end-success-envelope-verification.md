@@ -6,14 +6,15 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for End-to-end success-envelope verification.
+End-to-end success-envelope verification asserts that the finalized response envelope preserves hint append, auto-surface context and token metadata correctness.
 
 ## 2. CURRENT REALITY
 
-Phase 014 verification includes end-to-end success-envelope assertions in `tests/context-server.vitest.ts`. This coverage verifies the finalized success-path hint append flow, preserved `autoSurfacedContext`, and final token metadata behavior together so response-envelope regressions fail fast.
+Phase 014 verification includes end-to-end success-envelope assertions in `tests/context-server.vitest.ts`. This coverage verifies the finalized success-path hint append flow, preserved `autoSurfacedContext` and final token metadata behavior together so response-envelope regressions fail fast.
 
 ## 3. SOURCE FILES
 
@@ -38,3 +39,7 @@ Phase 014 verification includes end-to-end success-envelope assertions in `tests
 - Group: UX hooks automation (Phase 014)
 - Source feature title: End-to-end success-envelope verification
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+This is a set of automated tests that checks the entire response from start to finish: hints are included, previously surfaced context is preserved and the size count is correct. It acts as a final quality check before a response leaves the system, like a shipping inspector who opens the box, verifies everything is inside and confirms the label is accurate before it goes out the door.

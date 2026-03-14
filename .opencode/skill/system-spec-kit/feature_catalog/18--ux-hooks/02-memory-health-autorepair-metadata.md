@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Memory health autoRepair metadata.
+Memory health autoRepair returns structured repair metadata with partial-success tracking when `autoRepair:true` runs in `reportMode: "full"`.
 
 ## 2. CURRENT REALITY
 
@@ -17,10 +18,10 @@ This document captures the implemented behavior, source references, and validati
 
 Repair metadata semantics for mixed outcomes:
 
-- The repair action inventory is limited to the actual runtime payload values: `fts_rebuild`, `trigger_cache_refresh`, `fts_consistency_verified` when the rebuilt FTS row count matches `memory_index`, and orphan-edge cleanup (`orphan_edges_cleaned:N` when deletions occur).
+- The repair action inventory is limited to the actual runtime payload values: `fts_rebuild`, `trigger_cache_refresh`, `fts_consistency_verified` when the rebuilt FTS row count matches `memory_index` and orphan-edge cleanup (`orphan_edges_cleaned:N` when deletions occur).
 - `repair.repaired` is `true` only when every attempted repair action succeeds.
 - `repair.partialSuccess` is `true` when at least one attempted repair succeeds and at least one fails.
-- If FTS rebuild still mismatches but orphan-edge cleanup succeeds, the response reports `repair.repaired: false`, `repair.partialSuccess: true`, keeps the FTS warning, and includes the orphan cleanup action in `repair.actions`.
+- If FTS rebuild still mismatches but orphan-edge cleanup succeeds, the response reports `repair.repaired: false`, `repair.partialSuccess: true`, keeps the FTS warning and includes the orphan cleanup action in `repair.actions`.
 
 ## 3. SOURCE FILES
 
@@ -53,3 +54,7 @@ Repair metadata semantics for mixed outcomes:
 - Group: UX hooks automation (Phase 014)
 - Source feature title: Memory health autoRepair metadata
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+When you run a health check on the memory system and ask it to fix problems, it now tells you exactly what it tried to repair, what succeeded and what failed. Before this, you would only get a pass or fail result. Now you get a detailed report, like a car mechanic who hands you an itemized list showing which parts were replaced and which still need attention.

@@ -58,7 +58,7 @@ contextType: "general"
 
 ## Coordination Checkpoints
 
-- [x] T630 Confirm Phase 5 governance gate is approved
+- [x] T630 Confirm Phase 5 governance technical gate is verified
 - [x] T631 Confirm earlier retrieval phases are stable enough for rollout
 - [x] T632 Update `implementation-summary.md` with execution evidence when work begins
 

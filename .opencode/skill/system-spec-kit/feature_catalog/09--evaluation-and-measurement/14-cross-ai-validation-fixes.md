@@ -7,17 +7,18 @@
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
 - [5. PLAYBOOK COVERAGE](#5--playbook-coverage)
+- [6. IN SIMPLE TERMS](#6--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Cross-AI validation fixes.
+Covers 14 issues found by independent Gemini and Codex reviews, including test suite false-pass patterns, deletion exception propagation and re-sort after feedback mutations.
 
 ## 2. CURRENT REALITY
 
 Independent reviews by Gemini 3.1 Pro and Codex gpt-5.3-codex identified 14 issues missed by the original audit. Key fixes:
 
-- **CR-P0-1:** Test suite false-pass patterns — 21 silent-return guards converted to `it.skipIf()`, fail-fast imports with throw on required handler/vectorIndex missing.
-- **CR-P1-1:** Deletion exception propagation — causal edge cleanup errors in single-delete now propagate (previously swallowed).
+- **CR-P0-1:** Test suite false-pass patterns. 21 silent-return guards converted to `it.skipIf()`, fail-fast imports with throw on required handler/vectorIndex missing.
+- **CR-P1-1:** Deletion exception propagation. Causal edge cleanup errors in single-delete now propagate (previously swallowed).
 - **CR-P1-2:** Re-sort after feedback mutations before top-K slice in Stage 2 fusion.
 - **CR-P1-3:** Dedup queries gained `AND parent_id IS NULL` to exclude chunk rows.
 - **CR-P1-4:** Session dedup `id != null` guards against undefined collapse.
@@ -63,3 +64,7 @@ All 14 items verified through 3-stage review: Codex implemented, Gemini reviewed
 ## 5. PLAYBOOK COVERAGE
 
 - Mapped to manual testing playbook scenario NEW-088
+
+## 6. IN SIMPLE TERMS
+
+Three different AI reviewers independently checked the codebase and found 14 issues that the original review missed. This is like getting a second and third opinion from different doctors: each one catches things the others overlooked. The fixes addressed problems ranging from tests that secretly passed when they should have failed to errors that were silently swallowed instead of reported.

@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Progressive validation for spec documents.
+Progressive validation runs a 4-level pipeline (detect, auto-fix, suggest, report) on top of `validate.sh` for spec documents.
 
 ## 2. CURRENT REALITY
 
@@ -18,7 +19,7 @@ The `progressive-validate.sh` wrapper in `scripts/spec/` runs a 4-level pipeline
 1. **Detect (Level 1)** delegates validation to `validate.sh` and captures the compatible detect exit status.
 2. **Auto-fix (Level 2)** applies safe mechanical fixes (date placeholders, heading normalization, whitespace/line-ending normalization) with logged before/after diffs.
 3. **Suggest (Level 3)** derives remediation guidance for non-automatable failures from JSON validation output.
-4. **Report (Level 4)** emits a consolidated human or JSON summary including detect outcome, auto-fixes, and suggestions.
+4. **Report (Level 4)** emits a consolidated human or JSON summary including detect outcome, auto-fixes and suggestions.
 
 Flags include `--level N`, `--dry-run`, `--json`, `--strict`, `--quiet` and `--verbose`. Exit code behavior matches `validate.sh`: **0 = pass, 1 = warnings, 2 = errors** (with `--strict`, warnings are promoted to exit 2).
 
@@ -36,7 +37,7 @@ Flags include `--level N`, `--dry-run`, `--json`, `--strict`, `--quiet` and `--v
 
 | File | Focus |
 |------|-------|
-| `mcp_server/tests/progressive-validation.vitest.ts` | Pipeline prerequisites, detect behavior, auto-fix transforms/diff logging, suggest guidance, report output modes, exit code contract, dry-run semantics, edge-case handling, and level progression |
+| `mcp_server/tests/progressive-validation.vitest.ts` | Pipeline prerequisites, detect behavior, auto-fix transforms/diff logging, suggest guidance, report output modes, exit code contract, dry-run semantics, edge-case handling and level progression |
 
 ### Feature Test Coverage
 
@@ -49,7 +50,7 @@ Flags include `--level N`, `--dry-run`, `--json`, `--strict`, `--quiet` and `--v
 | `CHK-PI-B2-005` | Auto-fix audit logging with typed entries and diff output in JSON/human reports |
 | `CHK-PI-B2-006` | Level 3 suggestion generation and remediation guidance presence |
 | `CHK-PI-B2-007` | Level 4 report shape (JSON keys, human summary, quiet output, dry-run reflection) |
-| `CHK-PI-B2-008` | Exit code compatibility (0/1/2), strict-mode escalation, and cross-level consistency |
+| `CHK-PI-B2-008` | Exit code compatibility (0/1/2), strict-mode escalation and cross-level consistency |
 | `CHK-PI-B2-009` | Dry-run no-write guarantee with proposed-fix reporting |
 | `CHK-PI-B2-010` | Backward-compatibility of direct `validate.sh` callers |
 | `Pipeline Level Progression` | Level sequencing checks for level 2/3 behavior and level 4 defaulting |
@@ -59,3 +60,7 @@ Flags include `--level N`, `--dry-run`, `--json`, `--strict`, `--quiet` and `--v
 - Group: Tooling and scripts
 - Source feature title: Progressive validation for spec documents
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+This tool checks your project documents for problems in four steps: find issues, fix the easy ones automatically, suggest fixes for the harder ones and write up a report. It works like a spell-checker that also auto-corrects obvious typos and highlights the rest for you to review.

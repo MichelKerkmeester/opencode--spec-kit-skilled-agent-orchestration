@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Channel min-representation.
+Channel min-representation ensures every retrieval channel with results has at least one entry in the top-k window after fusion.
 
 ## 2. CURRENT REALITY
 
@@ -40,3 +41,7 @@ The architecture is two-layered: `channel-representation.ts` performs the core a
 - Group: Query intelligence
 - Source feature title: Channel min-representation
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+Imagine you ask a librarian for book recommendations and they only check one shelf, ignoring everything else in the library. This feature makes sure that every search method that found something useful gets at least one result in the final answer. That way you see a diverse set of results instead of one dominant source drowning out everything else.

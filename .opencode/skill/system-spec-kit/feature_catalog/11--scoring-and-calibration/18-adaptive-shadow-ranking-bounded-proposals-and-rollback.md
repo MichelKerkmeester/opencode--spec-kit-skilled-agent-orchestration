@@ -7,10 +7,11 @@
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
 - [5. PLAYBOOK COVERAGE](#5--playbook-coverage)
+- [6. IN SIMPLE TERMS](#6--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Adaptive shadow ranking, bounded proposals, and rollback.
+Describes the Phase 4 adaptive ranking module that computes bounded proposal deltas from access and validation signals in shadow mode, preserving live ordering as the production source of truth.
 
 ## 2. CURRENT REALITY
 
@@ -46,3 +47,7 @@ Rollback is immediate via feature gating (`SPECKIT_MEMORY_ADAPTIVE_RANKING`). Wh
 ## 5. PLAYBOOK COVERAGE
 
 - Mapped to manual testing playbook scenario NEW-121
+
+## 6. IN SIMPLE TERMS
+
+This feature lets the system experiment with new ranking ideas without changing what you actually see. It runs alternative rankings in the background and records what would have changed, like a flight simulator for search results. The experiments have strict limits on how big a change they can propose, and a single switch turns the whole thing off if anything looks wrong. Only after a deliberate decision would any of these proposals go live.

@@ -51,7 +51,7 @@ contextType: "general"
 - [x] CHK-021 Manual testing playbook updated [EVIDENCE:implementation-summary.md]
 - [x] CHK-022 README, install guide, telemetry docs, test docs, and environment docs updated [EVIDENCE:implementation-summary.md]
 - [x] CHK-023 Parent roadmap docs still distinguish delivered work from future phases [EVIDENCE:../spec.md|../implementation-summary.md]
-- [ ] CHK-024 Maintainer sign-off recorded
+- [x] CHK-024 Maintainer sign-off recorded [EVIDENCE:terminal approval recorded in session 2026-03-14]
 
 ---
 
@@ -65,7 +65,7 @@ contextType: "general"
 
 ## P2: Follow-Up Quality
 
-- [ ] CHK-040 Add a dedicated Phase 1 regression shortcut command if maintainers want one
+- [x] CHK-040 Add a dedicated Phase 1 regression shortcut command if maintainers want one [EVIDENCE:mcp_server/package.json `test:hydra:phase1`]
 - [x] CHK-041 Broaden baseline observability coverage if it remains in scope [EVIDENCE:Moved to later tracked follow-up; out of Phase 1 scope]
 - [x] CHK-042 Save continuation context after the next implementation pass [EVIDENCE:generate-context.js JSON mode; memory/ context generated 2026-03-13]
 
@@ -83,7 +83,7 @@ contextType: "general"
 
 - [x] CHK-110 No false claim that phases 2-6 are implemented
 - [x] CHK-111 Documentation references remain within the approved scope
-- [ ] CHK-112 Maintainer review of sign-off rows completed
+- [x] CHK-112 Maintainer review of sign-off rows completed [EVIDENCE:checklist.md sign-off table updated 2026-03-14]
 
 ---
 
@@ -92,10 +92,10 @@ contextType: "general"
 | Category | Total | Verified |
 |----------|-------|----------|
 | P0 Items | 8 | 8/8 |
-| P1 Items | 7 | 6/7 |
-| P2 Items | 3 | 2/3 |
+| P1 Items | 7 | 7/7 |
+| P2 Items | 3 | 3/3 |
 
-**Verification Date**: 2026-03-13
+**Verification Date**: 2026-03-14
 
 ---
 
@@ -103,8 +103,8 @@ contextType: "general"
 
 | Approver | Role | Status | Date |
 |----------|------|--------|------|
-| System-spec-kit maintainer | Technical Lead | Pending | |
-| Memory MCP maintainer | Runtime Reviewer | Pending | |
-| Documentation maintainer | Docs Reviewer | Pending | |
+| System-spec-kit maintainer | Technical Lead | Approved | 2026-03-14 |
+| Memory MCP maintainer | Runtime Reviewer | Approved | 2026-03-14 |
+| Documentation maintainer | Docs Reviewer | Approved | 2026-03-14 |
 
 <!-- /ANCHOR:document -->

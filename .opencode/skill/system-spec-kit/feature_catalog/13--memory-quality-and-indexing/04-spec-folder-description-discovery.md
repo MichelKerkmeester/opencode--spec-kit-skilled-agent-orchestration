@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Spec folder description discovery.
+Spec folder description discovery generates per-folder `description.json` metadata and uses it to short-circuit full-corpus vector search.
 
 ## 2. CURRENT REALITY
 
@@ -21,7 +22,7 @@ by the memory save workflow.
 
 A one-time backfill using `generate-description.js` populated `description.json`
 across the existing spec inventory, so per-folder descriptions are now present
-repository-wide — not only for newly created folders.
+repository-wide, not only for newly created folders.
 
 A centralized `descriptions.json` aggregation layer remains for backward
 compatibility. The `generateFolderDescriptions()` function prefers fresh
@@ -39,9 +40,9 @@ the target directory.
 
 Post-hardening, `loadPerFolderDescription()` performs full schema validation
 instead of trusting parsed JSON shape: `specId` must be a string,
-`parentChain` must be an array, and `memorySequence` must be a number. Array
+`parentChain` must be an array and `memorySequence` must be a number. Array
 element type guards now use `.every()` checks so `parentChain`,
-`memoryNameHistory`, and `keywords` only admit strings, while description
+`memoryNameHistory` and `keywords` only admit strings, while description
 extraction reuses imported `stripYamlFrontmatter()` from
 `content-normalizer.ts` instead of ad hoc inline frontmatter stripping.
 
@@ -49,7 +50,7 @@ Path containment is also hardened in both `generatePerFolderDescription()` and
 `generate-description.ts` via `realpathSync()` plus a `path.sep` boundary guard
 to block traversal and prefix-bypass attacks. Description and cache writes now
 use atomic temp files with `crypto.randomBytes(4)` suffixes, `fsyncSync()`,
-`renameSync()`, and `try/finally` cleanup for crash safety. During mixed-mode
+`renameSync()` and `try/finally` cleanup for crash safety. During mixed-mode
 discovery, fresh per-folder files win, stale or corrupt existing files are
 repaired from `spec.md`, and missing files fall back cleanly to `spec.md`
 without forcing an implicit backfill write.
@@ -93,3 +94,7 @@ continues to derive a folder-name fallback label from the path when needed.
 - Group: Memory quality and indexing
 - Source feature title: Spec folder description discovery
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+Each project folder now has a short identity card describing what it contains. When you ask the system a question, it can check these identity cards first to figure out which folder holds the answer, skipping the need to search through everything. It is like reading the labels on filing cabinet drawers instead of opening every drawer to find what you need.

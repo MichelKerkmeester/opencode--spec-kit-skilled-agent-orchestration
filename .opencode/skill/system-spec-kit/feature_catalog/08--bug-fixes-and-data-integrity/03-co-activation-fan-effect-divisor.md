@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Co-activation fan-effect divisor.
+Tracks the fan-effect divisor that prevents hub memories from dominating co-activation results.
 
 ## 2. CURRENT REALITY
 
@@ -39,3 +40,7 @@ A fan-effect divisor helper (`1 / sqrt(neighbor_count)`) exists in `co-activatio
 - Group: Bug fixes and data integrity
 - Source feature title: Co-activation fan-effect divisor
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+Some highly connected memories kept showing up in every search result regardless of what you were looking for, like a popular student who gets invited to every party. This fix reduces the influence of overly connected memories so they do not crowd out more relevant results.

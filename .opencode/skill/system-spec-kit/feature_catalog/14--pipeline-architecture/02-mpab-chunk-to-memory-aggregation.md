@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for MPAB chunk-to-memory aggregation.
+MPAB chunk-to-memory aggregation combines multiple chunk scores into a single memory-level score using a damped bonus formula.
 
 ## 2. CURRENT REALITY
 
@@ -36,3 +37,7 @@ Guards handle the edge cases: N=0 returns 0, N=1 returns the raw score and N>1 a
 - Group: Pipeline architecture
 - Source feature title: MPAB chunk-to-memory aggregation
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+A long document gets split into smaller pieces for searching, but you want to see the whole document in your results, not a list of fragments. This feature combines the scores from all the pieces back into a single score for the whole document. The best piece counts the most, and the other pieces add a small bonus. That way a document with several good matches ranks higher than one with just a single lucky hit.

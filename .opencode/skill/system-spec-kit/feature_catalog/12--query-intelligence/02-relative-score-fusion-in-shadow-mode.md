@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Relative score fusion in shadow mode.
+Relative score fusion (RSF) is a standalone fusion module retained for future use but no longer wired into live ranking.
 
 ## 2. CURRENT REALITY
 
@@ -42,3 +43,7 @@ Sprint 8 removed the dead `isRsfEnabled()` helper and the dead hybrid-search bra
 - Group: Query intelligence
 - Source feature title: Relative score fusion in shadow mode
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+When you search for something, multiple search methods each return their own ranked lists of results. This feature is an alternative way to merge those lists into one final ranking. It is currently shelved and not actively used, but it remains available if the team decides to switch merging strategies in the future.

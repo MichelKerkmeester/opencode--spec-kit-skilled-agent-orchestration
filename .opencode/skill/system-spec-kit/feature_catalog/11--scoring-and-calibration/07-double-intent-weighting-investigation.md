@@ -9,10 +9,11 @@
 - [5. SOURCE FILES](#5--source-files)
 - [6. SOURCE/TEST TRACEABILITY](#6--sourcetest-traceability)
 - [7. SOURCE METADATA](#7--source-metadata)
+- [8. IN SIMPLE TERMS](#8--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Double intent weighting investigation.
+Documents the pipeline trace confirming that dual intent weight systems (channel-level in adaptive fusion, attribute-level in intent classifier) are intentional and non-overlapping by design through the `isHybrid` gate.
 
 ## 2. CURRENT REALITY
 
@@ -63,3 +64,7 @@ The no-double-weighting behavior is validated by `mcp_server/tests/intent-weight
 - Group: Scoring and calibration
 - Source feature title: Double intent weighting investigation
 - Current reality source: feature_catalog.md
+
+## 8. IN SIMPLE TERMS
+
+This investigation checked whether the system was accidentally applying the same scoring adjustment twice, which would be like getting double-taxed. It turns out the two adjustments work at different levels on purpose: one controls which search methods contribute to results and the other controls how result qualities are weighed afterward. They do not overlap, so no fix was needed.

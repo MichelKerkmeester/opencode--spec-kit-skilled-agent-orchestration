@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Interference scoring.
+Describes the interference penalty that demotes memories in dense similarity clusters, preventing near-identical results from crowding out unique content.
 
 ## 2. CURRENT REALITY
 
@@ -39,3 +40,7 @@ Both the threshold (0.75) and coefficient (-0.08) are provisional. They will be 
 - Group: Scoring and calibration
 - Source feature title: Interference scoring
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+If you have five nearly identical memories about the same thing, they can all crowd into the top results and push out something different that might actually be more helpful. This feature penalizes memories that look too similar to their neighbors, making room for a wider variety of results. It is like a rule that says "no more than one song per artist on a playlist" to keep things diverse.

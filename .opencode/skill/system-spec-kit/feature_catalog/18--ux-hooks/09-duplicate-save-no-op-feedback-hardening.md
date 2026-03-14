@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Duplicate-save no-op feedback hardening.
+Duplicate-save no-op feedback hardening prevents false mutation hook data and cache-clearing hints from appearing in no-op save responses.
 
 ## 2. CURRENT REALITY
 
@@ -159,7 +160,7 @@ Duplicate-content save no-op responses no longer emit false `postMutationHooks`,
 | `mcp_server/tests/hybrid-search-flags.vitest.ts` | Hybrid search flag behavior |
 | `mcp_server/tests/importance-tiers.vitest.ts` | Importance tier tests |
 | `mcp_server/tests/incremental-index-v2.vitest.ts` | Incremental index behavioral tests |
-| `mcp_server/tests/incremental-index.vitest.ts` | Legacy deferred placeholder suite (skipped; not behavioral evidence) |
+| `mcp_server/tests/incremental-index.vitest.ts` | Legacy deferred placeholder suite (skipped, not behavioral evidence) |
 | `mcp_server/tests/index-refresh.vitest.ts` | Index refresh tests |
 | `mcp_server/tests/integration-session-dedup.vitest.ts` | Session dedup integration |
 | `mcp_server/tests/interference.vitest.ts` | Interference scoring tests |
@@ -210,3 +211,7 @@ Duplicate-content save no-op responses no longer emit false `postMutationHooks`,
 - Group: UX hooks automation (Phase 014)
 - Source feature title: Duplicate-save no-op feedback hardening
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+When you try to save something that is already stored exactly as-is, the system now tells you honestly that nothing changed instead of pretending it did work. Previously it could report misleading cache-clearing activity even when nothing happened. It is like a vending machine that returns your coin and says "already dispensed" instead of making clunking sounds and giving you nothing.

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated": "2026-03-13T20:04:53.711Z",
+  "generated": "2026-03-14T06:48:13.208Z",
   "folders": [
     {
       "specFolder": "00--ai-systems-non-dev/001-global-shared/001-hvr-refinement-repo-analysis",
@@ -919,7 +919,7 @@
         "specification",
         "remediation-revalidation"
       ],
-      "lastUpdated": "2026-03-13T20:04:53.711Z"
+      "lastUpdated": "2026-03-14T06:48:13.208Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-outsourced-agent-memory",
@@ -952,7 +952,7 @@
         "specification",
         "001-baseline-and-safety-rails"
       ],
-      "lastUpdated": "2026-03-13T18:17:46.815Z"
+      "lastUpdated": "2026-03-14T06:47:51.385Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/015-hydra-db-based-features/002-versioned-memory-state",

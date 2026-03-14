@@ -6,23 +6,24 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Stateless enrichment and alignment guards.
+Stateless enrichment and alignment guards enrich thin OpenCode session data with spec-folder and git context while blocking saves that belong to a different task.
 
 ## 2. CURRENT REALITY
 
 Stateless `generate-context.js` saves now enrich thin OpenCode-derived session data with spec-folder and git context before rendering, while keeping contamination defenses in place.
 
 Current behavior is enforced in three slices:
-1. `transformOpencodeCapture()` normalizes snake_case OpenCode metadata and filters prompts, exchanges, and tool calls by spec relevance using both slug-form and natural-language keyword variants.
+1. `transformOpencodeCapture()` normalizes snake_case OpenCode metadata and filters prompts, exchanges and tool calls by spec relevance using both slug-form and natural-language keyword variants.
 2. `enrichStatelessData()` appends `_provenance: 'spec-folder'` and `_provenance: 'git'` signals after the contamination-cleaning pass and before downstream extraction.
 3. Pre- and post-enrichment alignment gates allow stateless saves only when captured file paths overlap with the target spec's declared work surface. The overlap check now uses both spec-folder keywords and files declared in the spec's files-to-change table, which prevents false blocks for legitimate code paths like `scripts/core/workflow.ts`.
 
 Git enrichment no longer scopes only to the spec folder path itself. It uses files declared by the spec to detect recent committed and uncommitted changes, and commit observations retain the touched file list for downstream reasoning. The workflow still hard-aborts on `ALIGNMENT_BLOCK`, `POST_ENRICHMENT_ALIGNMENT_BLOCK`, or failed stateless validation rules when the capture clearly belongs to another task.
 
-Downstream session snapshots now prefer live observations over synthetic spec/git enrichment when deriving `activeFile`, `lastAction`, `nextAction`, and blocker summaries. That keeps provenance-enrichment useful for context without letting epoch-timestamped synthetic entries masquerade as the user's most recent action.
+Downstream session snapshots now prefer live observations over synthetic spec/git enrichment when deriving `activeFile`, `lastAction`, `nextAction` and blocker summaries. That keeps provenance-enrichment useful for context without letting epoch-timestamped synthetic entries masquerade as the user's most recent action.
 
 Status: Implemented and covered by targeted Vitest regressions.
 
@@ -51,3 +52,7 @@ Status: Implemented and covered by targeted Vitest regressions.
 - Group: Memory quality and indexing
 - Source feature title: Stateless enrichment and alignment guards
 - Current reality source: spec 011-perfect-session-capturing
+
+## 5. IN SIMPLE TERMS
+
+When a memory is saved with minimal context, the system fills in the gaps by pulling relevant details from the project folder and recent changes. At the same time, it checks that the memory actually belongs to the project it claims to be part of and blocks saves that clearly belong somewhere else. Think of it as an assistant who fills out missing form fields for you but refuses to file the form in the wrong cabinet.

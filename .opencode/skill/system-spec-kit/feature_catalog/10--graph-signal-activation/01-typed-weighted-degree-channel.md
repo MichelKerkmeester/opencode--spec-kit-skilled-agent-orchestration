@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Typed-weighted degree channel.
+Describes the fifth RRF channel that scores memories by graph connectivity using typed edge weights, logarithmic normalization and hub caps to prevent connection-count dominance.
 
 ## 2. CURRENT REALITY
 
@@ -50,3 +51,7 @@ Constitutional memories are excluded from degree boosting because they already r
 - Group: Graph signal activation
 - Source feature title: Typed-weighted degree channel
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+This gives a search bonus to memories that are well-connected to other memories, like how a person who knows many people in a community is often a good source of information. Different types of connections count for different amounts, and there is a cap to prevent any single well-connected memory from dominating all search results just because it links to everything.

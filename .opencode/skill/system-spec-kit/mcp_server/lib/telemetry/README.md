@@ -92,13 +92,13 @@ telemetry/
 | Variable | Default | Purpose |
 |----------|---------|---------|
 | `SPECKIT_EXTENDED_TELEMETRY` | `false` | Enable extended metric collection (latency breakdown, quality scoring, trace payload validation, and architecture updates). Set to `true` to activate |
-| `SPECKIT_MEMORY_ROADMAP_PHASE` | `baseline` | Record the active memory-roadmap phase in telemetry/checkpoint metadata. Unsupported values fall back to `baseline` |
-| `SPECKIT_MEMORY_LINEAGE_STATE` | `false` | Opt-in roadmap capability flag surfaced in telemetry metadata only |
-| `SPECKIT_MEMORY_GRAPH_UNIFIED` | `false` | Opt-in roadmap capability flag surfaced in telemetry metadata only; distinct from live `SPECKIT_GRAPH_UNIFIED` |
-| `SPECKIT_MEMORY_ADAPTIVE_RANKING` | `false` | Opt-in roadmap capability flag surfaced in telemetry metadata only |
-| `SPECKIT_MEMORY_SCOPE_ENFORCEMENT` | `false` | Opt-in roadmap capability flag surfaced in telemetry metadata only |
-| `SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS` | `false` | Opt-in roadmap capability flag surfaced in telemetry metadata only |
-| `SPECKIT_MEMORY_SHARED_MEMORY` | `false` | Opt-in roadmap capability flag surfaced in telemetry metadata only |
+| `SPECKIT_MEMORY_ROADMAP_PHASE` | `shared-rollout` | Record the active memory-roadmap phase in telemetry/checkpoint metadata. Unsupported values fall back to `shared-rollout` |
+| `SPECKIT_MEMORY_LINEAGE_STATE` | `true` | Default-on roadmap capability flag surfaced in telemetry metadata |
+| `SPECKIT_MEMORY_GRAPH_UNIFIED` | `true` | Default-on roadmap capability flag surfaced in telemetry metadata; distinct from live `SPECKIT_GRAPH_UNIFIED` |
+| `SPECKIT_MEMORY_ADAPTIVE_RANKING` | `true` | Default-on roadmap capability flag surfaced in telemetry metadata |
+| `SPECKIT_MEMORY_SCOPE_ENFORCEMENT` | `true` | Default-on roadmap capability flag surfaced in telemetry metadata |
+| `SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS` | `true` | Default-on roadmap capability flag surfaced in telemetry metadata |
+| `SPECKIT_MEMORY_SHARED_MEMORY` | `true` | Default-on roadmap capability flag surfaced in telemetry metadata |
 | `SPECKIT_NOVELTY_BOOST` | - | Gates N4 cold-start boost in scoring observability |
 | `SPECKIT_INTERFERENCE_SCORE` | - | Gates TM-01 interference penalty in scoring observability |
 | `SPECKIT_CONSUMPTION_LOG` | inert | Deprecated. Consumption logging is hardcoded to disabled after Sprint 7 audit |

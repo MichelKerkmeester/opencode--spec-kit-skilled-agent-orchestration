@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Reporting dashboard (eval_reporting_dashboard).
+Covers the read-only reporting dashboard that aggregates sprint-level and channel-level evaluation metrics.
 
 ## 2. CURRENT REALITY
 
@@ -48,3 +49,7 @@ This is a read-only module. It queries the eval database and produces reports wi
 - Group: Evaluation
 - Source feature title: Reporting dashboard (eval_reporting_dashboard)
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+This is a performance report that shows how well the search system has been working over time. It tracks metrics across different work periods and search channels so you can see whether things are getting better or worse. It only reads data and never changes anything, making it safe to run at any time.

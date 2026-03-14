@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Canonical ID dedup hardening.
+Tracks the fix for mixed ID format deduplication failures in hybrid search caused by string/number mismatches.
 
 ## 2. CURRENT REALITY
 
@@ -58,3 +59,7 @@ Mixed ID formats (`42`, `"42"`, `mem:42`) caused deduplication failures in hybri
 - Group: Alignment remediation (Phase 016)
 - Source feature title: Canonical ID dedup hardening
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+The same memory was sometimes listed multiple times in search results because different parts of the system referred to it using slightly different labels. This fix standardizes how memories are identified internally so duplicates are correctly detected and merged in the results every time.

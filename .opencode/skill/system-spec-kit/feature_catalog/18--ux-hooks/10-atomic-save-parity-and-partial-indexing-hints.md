@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Atomic-save parity and partial-indexing hints.
+Atomic-save parity ensures `atomicSaveMemory()` returns the same `postMutationHooks` envelope and UX hint payloads as the primary save path.
 
 ## 2. CURRENT REALITY
 
@@ -144,7 +145,7 @@ This document captures the implemented behavior, source references, and validati
 | `mcp_server/tests/hybrid-search-flags.vitest.ts` | Hybrid search flag behavior |
 | `mcp_server/tests/importance-tiers.vitest.ts` | Importance tier tests |
 | `mcp_server/tests/incremental-index-v2.vitest.ts` | Incremental index behavioral tests |
-| `mcp_server/tests/incremental-index.vitest.ts` | Legacy deferred placeholder suite (skipped; not behavioral evidence) |
+| `mcp_server/tests/incremental-index.vitest.ts` | Legacy deferred placeholder suite (skipped, not behavioral evidence) |
 | `mcp_server/tests/index-refresh.vitest.ts` | Index refresh tests |
 | `mcp_server/tests/integration-session-dedup.vitest.ts` | Session dedup integration |
 | `mcp_server/tests/interference.vitest.ts` | Interference scoring tests |
@@ -187,3 +188,7 @@ This document captures the implemented behavior, source references, and validati
 - Group: UX hooks automation (Phase 014)
 - Source feature title: Atomic-save parity and partial-indexing hints
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+The system has two ways to save memories: a standard path and a faster "atomic" path. This feature made them return the same kind of feedback so you do not get different information depending on which path ran. It is like making sure both the express and regular checkout lanes at a store give you the same receipt format.

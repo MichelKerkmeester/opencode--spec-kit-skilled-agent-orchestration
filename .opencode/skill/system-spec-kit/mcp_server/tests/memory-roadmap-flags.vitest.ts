@@ -51,31 +51,30 @@ describe('Memory roadmap flags', () => {
     }
   });
 
-  it('defaults to the baseline phase with all roadmap capabilities disabled', () => {
-    expect(getMemoryRoadmapPhase()).toBe('baseline');
+  it('defaults to the shared-rollout phase with all roadmap capabilities enabled', () => {
+    expect(getMemoryRoadmapPhase()).toBe('shared-rollout');
     expect(getMemoryRoadmapCapabilityFlags()).toEqual({
-      lineageState: false,
-      graphUnified: false,
-      adaptiveRanking: false,
-      scopeEnforcement: false,
-      governanceGuardrails: false,
-      sharedMemory: false,
+      lineageState: true,
+      graphUnified: true,
+      adaptiveRanking: true,
+      scopeEnforcement: true,
+      governanceGuardrails: true,
+      sharedMemory: true,
     });
   });
 
-  it('uses literal memory-roadmap env vars instead of existing runtime flags', () => {
-    process.env.SPECKIT_GRAPH_UNIFIED = 'true';
+  it('uses memory-roadmap env vars independently from existing runtime flags', () => {
+    process.env.SPECKIT_GRAPH_UNIFIED = 'false';
     process.env.SPECKIT_ROLLOUT_PERCENT = '100';
 
-    expect(getMemoryRoadmapCapabilityFlags().graphUnified).toBe(false);
-
-    process.env[CAPABILITY_ENV.graphUnified] = 'true';
     expect(getMemoryRoadmapCapabilityFlags().graphUnified).toBe(true);
+
+    process.env[CAPABILITY_ENV.graphUnified] = 'false';
+    expect(getMemoryRoadmapCapabilityFlags().graphUnified).toBe(false);
   });
 
-  it('respects rollout phase and rollout gating for explicit roadmap opt-ins', () => {
+  it('respects rollout phase and rollout gating for default-on roadmap capabilities', () => {
     process.env.SPECKIT_MEMORY_ROADMAP_PHASE = 'adaptive';
-    process.env.SPECKIT_MEMORY_ADAPTIVE_RANKING = 'true';
     process.env.SPECKIT_ROLLOUT_PERCENT = '100';
 
     const enabled = getMemoryRoadmapDefaults('roadmap-session-1');
@@ -97,8 +96,8 @@ describe('Memory roadmap flags', () => {
     expect(defaults.capabilities.graphUnified).toBe(true);
   });
 
-  it('falls back to baseline for unknown phase labels', () => {
+  it('falls back to shared-rollout for unknown phase labels', () => {
     process.env.SPECKIT_MEMORY_ROADMAP_PHASE = 'future-phase';
-    expect(getMemoryRoadmapPhase()).toBe('baseline');
+    expect(getMemoryRoadmapPhase()).toBe('shared-rollout');
   });
 });

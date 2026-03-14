@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Weight history audit tracking.
+Describes the `created_by`/`last_accessed` metadata on causal edges, the `weight_history` audit table and the edge bounds enforcement that caps auto-generated edges at 20 per node and 0.5 max strength.
 
 ## 2. CURRENT REALITY
 
@@ -48,3 +49,7 @@ This audit infrastructure supports the N3-lite consolidation engine: Hebbian str
 - Group: Graph signal activation
 - Source feature title: Weight history audit tracking
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+Every connection between memories now keeps a paper trail: who created it, when it was last used and every time its strength changed. This works like a change log for relationships. If a connection goes wrong, you can trace exactly what happened and roll it back. There are also limits on automatically created connections so the system cannot overwhelm itself with too many links.

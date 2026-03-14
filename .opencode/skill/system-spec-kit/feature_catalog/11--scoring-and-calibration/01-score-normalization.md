@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Score normalization.
+Covers how raw retrieval scores from RRF and composite scoring are min-max normalized to a common [0,1] range before fusion, so relevance signals compete on comparable scale.
 
 ## 2. CURRENT REALITY
 
@@ -69,3 +70,7 @@ Normalization is batch-relative (the same memory can score differently across di
 - Group: Scoring and calibration
 - Source feature title: Score normalization
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+Different search methods produce scores on different scales, like comparing grades from different schools. This feature puts all scores on the same 0-to-1 scale so they can be compared fairly before picking the best results. Without it, one method might always win just because its numbers happen to be bigger, not because its results are actually better.

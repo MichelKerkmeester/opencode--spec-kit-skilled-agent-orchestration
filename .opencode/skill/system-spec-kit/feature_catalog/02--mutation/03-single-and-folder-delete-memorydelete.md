@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Single and folder delete (memory_delete).
+Covers the delete tool that supports both single-memory and bulk folder deletion with atomic transactions.
 
 ## 2. CURRENT REALITY
 
@@ -272,3 +273,7 @@ Bulk deletes by spec folder are more involved. The system first creates an auto-
 - Group: Mutation
 - Source feature title: Single and folder delete (memory_delete)
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+You can remove one memory at a time or clear out an entire folder at once. Before a big deletion, the system takes a snapshot so you can undo it if you change your mind. Deletions are all-or-nothing: either everything you asked to remove is gone or nothing changes at all. This prevents situations where only half the data gets deleted and the rest is left in a messy state.

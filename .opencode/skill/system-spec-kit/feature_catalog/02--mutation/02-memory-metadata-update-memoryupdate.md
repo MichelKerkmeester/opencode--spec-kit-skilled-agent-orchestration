@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Memory metadata update (memory_update).
+Covers the update tool that modifies memory metadata and auto-regenerates embeddings when titles change.
 
 ## 2. CURRENT REALITY
 
@@ -145,3 +146,7 @@ A pre-update hash snapshot is captured for the mutation ledger. Every update rec
 - Group: Mutation
 - Source feature title: Memory metadata update (memory_update)
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+You can rename a memory or change its priority without deleting and re-creating it. When you change the title, the system automatically updates its internal search index to match. If the update fails partway through, everything rolls back to the way it was before so you never end up with a half-changed record.

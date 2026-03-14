@@ -6,14 +6,15 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Chunking Orchestrator Safe Swap.
+Tracks the staged swap pattern that prevents data loss during re-chunking by indexing new chunks before deleting old ones.
 
 ## 2. CURRENT REALITY
 
-During re-chunking of parent memories, the orchestrator previously deleted existing child chunks before indexing new replacements. If new chunk indexing failed (all embeddings fail, disk full), both old and new data were lost. The fix introduces a staged swap pattern: new child chunks are indexed first without a parent_id link, then a single database transaction atomically deletes old children, attaches new children to the parent, and updates parent metadata. If new chunk indexing fails completely, old children remain intact and the handler returns an error status.
+During re-chunking of parent memories, the orchestrator previously deleted existing child chunks before indexing new replacements. If new chunk indexing failed (all embeddings fail, disk full), both old and new data were lost. The fix introduces a staged swap pattern: new child chunks are indexed first without a parent_id link, then a single database transaction atomically deletes old children, attaches new children to the parent and updates parent metadata. If new chunk indexing fails completely, old children remain intact and the handler returns an error status.
 
 ## 3. SOURCE FILES
 
@@ -34,3 +35,7 @@ During re-chunking of parent memories, the orchestrator previously deleted exist
 - Group: Bug Fixes and Data Integrity
 - Source feature title: Chunking Orchestrator Safe Swap
 - Current reality source: P0 code review finding (2026-03-08)
+
+## 5. IN SIMPLE TERMS
+
+When a large document gets re-split into smaller pieces, the system used to delete the old pieces before creating the new ones. If creating the new pieces failed, you lost both old and new. Now it creates the new pieces first and only swaps them in once everything is ready, like building a new fence before tearing down the old one.

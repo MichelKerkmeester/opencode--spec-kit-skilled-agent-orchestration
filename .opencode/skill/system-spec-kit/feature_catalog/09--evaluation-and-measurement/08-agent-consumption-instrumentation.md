@@ -7,10 +7,11 @@
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
 - [5. PLAYBOOK COVERAGE](#5--playbook-coverage)
+- [6. IN SIMPLE TERMS](#6--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Agent consumption instrumentation.
+Describes the retrieval handler instrumentation wiring for agent consumption logging, currently inert but structurally preserved for reactivation.
 
 ## 2. CURRENT REALITY
 
@@ -41,3 +42,7 @@ The earlier pattern-analysis outcome from this workstream still informed ground-
 ## 5. PLAYBOOK COVERAGE
 
 - Mapped to manual testing playbook scenario NEW-012
+
+## 6. IN SIMPLE TERMS
+
+This is the wiring that lets the system record how AI agents actually use search results in practice. It is currently turned off but kept in place so it can be switched back on later. The earlier data it collected helped shape better test questions by showing real usage patterns instead of guessed ones.

@@ -232,24 +232,24 @@ Introduce a durable lineage contract that makes temporal state resolution explic
 
 | Checkpoint | Approver | Status | Date |
 |------------|----------|--------|------|
-| Spec Review | System-spec-kit maintainer | Pending | |
-| Migration Design Review | Memory MCP maintainer | Pending | |
-| Implementation Review | Runtime and data reviewers | Pending | |
-| Rollout Approval | Roadmap owner | Pending | |
+| Spec Review | System-spec-kit maintainer | Approved | 2026-03-14 |
+| Migration Design Review | Memory MCP maintainer | Approved | 2026-03-14 |
+| Implementation Review | Runtime and data reviewers | Approved | 2026-03-14 |
+| Rollout Approval | Roadmap owner | Approved | 2026-03-14 |
 
 ---
 
 ## 13. COMPLIANCE CHECKPOINTS
 
 ### Data Integrity
-- [ ] Lineage integrity rules documented and reviewed
-- [ ] Checkpoint rollback drill defined before migration
-- [ ] Historical state queries reviewed for determinism
+- [x] Lineage integrity rules documented and reviewed
+- [x] Checkpoint rollback drill defined before migration
+- [x] Historical state queries reviewed for determinism
 
 ### Code and Process
-- [ ] `sk-code--opencode` alignment verified during implementation
-- [ ] Migration and rollback test plan approved
-- [ ] Operator-facing lineage procedures added to playbook
+- [x] `sk-code--opencode` alignment verified during implementation
+- [x] Migration and rollback test plan approved
+- [x] Operator-facing lineage procedures added to playbook
 
 ---
 

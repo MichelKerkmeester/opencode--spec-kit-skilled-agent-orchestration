@@ -51,6 +51,68 @@ export interface GovernanceAuditEntry extends ScopeContext {
   metadata?: Record<string, unknown> | null;
 }
 
+/**
+ * Filters used to review governance audit history.
+ */
+export interface GovernanceAuditReviewFilters extends ScopeContext {
+  action?: string;
+  decision?: GovernanceAuditEntry['decision'];
+  limit?: number;
+}
+
+/**
+ * Parsed governance audit row returned for review workflows.
+ */
+export interface GovernanceAuditReviewRow extends ScopeContext {
+  id: number;
+  action: string;
+  decision: GovernanceAuditEntry['decision'];
+  memoryId: number | null;
+  logicalKey: string | null;
+  reason: string | null;
+  metadata: Record<string, unknown> | null;
+  createdAt: string;
+}
+
+/**
+ * Aggregate view of governance audit activity for a filtered review.
+ */
+export interface GovernanceAuditReviewSummary {
+  totalMatching: number;
+  returnedRows: number;
+  byAction: Record<string, number>;
+  byDecision: Partial<Record<GovernanceAuditEntry['decision'], number>>;
+  latestCreatedAt: string | null;
+}
+
+/**
+ * Combined governance audit review rows and summary.
+ */
+export interface GovernanceAuditReviewResult {
+  rows: GovernanceAuditReviewRow[];
+  summary: GovernanceAuditReviewSummary;
+}
+
+/**
+ * Options used when benchmarking scope-filter behavior.
+ */
+export interface ScopeFilterBenchmarkOptions {
+  iterations?: number;
+  allowedSharedSpaceIds?: ReadonlySet<string>;
+}
+
+/**
+ * Benchmark result for a scope filter predicate.
+ */
+export interface ScopeFilterBenchmarkResult {
+  iterations: number;
+  totalRows: number;
+  matchedRows: number;
+  filteredRows: number;
+  elapsedMs: number;
+  averageMsPerIteration: number;
+}
+
 function normalizeId(value: unknown): string | undefined {
   if (typeof value !== 'string') return undefined;
   const trimmed = value.trim();
@@ -62,6 +124,19 @@ function normalizeIsoTimestamp(value: unknown): string | undefined {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return undefined;
   return date.toISOString();
+}
+
+function isDefaultOnFlagEnabled(...flagNames: string[]): boolean {
+  for (const flagName of flagNames) {
+    const rawValue = process.env[flagName]?.trim().toLowerCase();
+    if (rawValue === 'false' || rawValue === '0') {
+      return false;
+    }
+    if (rawValue === 'true' || rawValue === '1') {
+      return true;
+    }
+  }
+  return true;
 }
 
 /**
@@ -86,8 +161,10 @@ export function normalizeScopeContext(input: ScopeContext): ScopeContext {
  * @returns `true` when scope enforcement is enabled.
  */
 export function isScopeEnforcementEnabled(): boolean {
-  return process.env.SPECKIT_MEMORY_SCOPE_ENFORCEMENT === 'true'
-    || process.env.SPECKIT_HYDRA_SCOPE_ENFORCEMENT === 'true';
+  return isDefaultOnFlagEnabled(
+    'SPECKIT_MEMORY_SCOPE_ENFORCEMENT',
+    'SPECKIT_HYDRA_SCOPE_ENFORCEMENT',
+  );
 }
 
 /**
@@ -96,8 +173,10 @@ export function isScopeEnforcementEnabled(): boolean {
  * @returns `true` when governance guardrails are enabled.
  */
 export function isGovernanceGuardrailsEnabled(): boolean {
-  return process.env.SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS === 'true'
-    || process.env.SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS === 'true';
+  return isDefaultOnFlagEnabled(
+    'SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS',
+    'SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS',
+  );
 }
 
 /**
@@ -108,11 +187,12 @@ export function isGovernanceGuardrailsEnabled(): boolean {
  */
 export function requiresGovernedIngest(input: GovernedIngestInput): boolean {
   const scope = normalizeScopeContext(input);
-  return isGovernanceGuardrailsEnabled()
-    || isScopeEnforcementEnabled()
-    || Object.values(scope).some((value) => typeof value === 'string')
+  return Object.values(scope).some((value) => typeof value === 'string')
     || typeof input.provenanceSource === 'string'
     || typeof input.provenanceActor === 'string'
+    || typeof input.governedAt === 'string'
+    || input.retentionPolicy === 'ephemeral'
+    || input.retentionPolicy === 'shared'
     || typeof input.deleteAfter === 'string';
 }
 
@@ -256,28 +336,90 @@ function matchesExactScope(rowValue: unknown, requestedValue?: string): boolean 
   return typeof rowValue === 'string' && rowValue === requestedValue;
 }
 
-/**
- * Filter result rows to the tenant, actor, session, and shared-space scope in force.
- *
- * @param rows - Candidate rows that include governance scope columns.
- * @param scope - Requested scope used for filtering.
- * @param allowedSharedSpaceIds - Optional shared-space allowlist for the scope.
- * @returns Rows that remain visible after governance filtering.
- */
-export function filterRowsByScope<T extends Record<string, unknown>>(rows: T[], scope: ScopeContext, allowedSharedSpaceIds?: ReadonlySet<string>): T[] {
-  const normalized = normalizeScopeContext(scope);
-  if (
-    !isScopeEnforcementEnabled()
-    && !normalized.sharedSpaceId
-    && !normalized.tenantId
-    && !normalized.userId
-    && !normalized.agentId
-    && !normalized.sessionId
-  ) {
-    return rows;
+function hasScopeConstraints(scope: ScopeContext): boolean {
+  return Boolean(
+    scope.sharedSpaceId
+    || scope.tenantId
+    || scope.userId
+    || scope.agentId
+    || scope.sessionId,
+  );
+}
+
+function parseAuditMetadata(value: unknown): Record<string, unknown> | null {
+  if (typeof value !== 'string' || value.trim().length === 0) {
+    return null;
   }
 
-  return rows.filter((row) => {
+  try {
+    const parsed = JSON.parse(value) as unknown;
+    if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+      return parsed as Record<string, unknown>;
+    }
+  } catch {
+    return null;
+  }
+
+  return null;
+}
+
+function buildGovernanceAuditWhereClause(filters: GovernanceAuditReviewFilters): { whereSql: string; params: unknown[] } {
+  const normalized = normalizeScopeContext(filters);
+  const clauses: string[] = [];
+  const params: unknown[] = [];
+
+  if (filters.action) {
+    clauses.push('action = ?');
+    params.push(filters.action);
+  }
+  if (filters.decision) {
+    clauses.push('decision = ?');
+    params.push(filters.decision);
+  }
+  if (normalized.tenantId) {
+    clauses.push('tenant_id = ?');
+    params.push(normalized.tenantId);
+  }
+  if (normalized.userId) {
+    clauses.push('user_id = ?');
+    params.push(normalized.userId);
+  }
+  if (normalized.agentId) {
+    clauses.push('agent_id = ?');
+    params.push(normalized.agentId);
+  }
+  if (normalized.sessionId) {
+    clauses.push('session_id = ?');
+    params.push(normalized.sessionId);
+  }
+  if (normalized.sharedSpaceId) {
+    clauses.push('shared_space_id = ?');
+    params.push(normalized.sharedSpaceId);
+  }
+
+  return {
+    whereSql: clauses.length > 0 ? `WHERE ${clauses.join(' AND ')}` : '',
+    params,
+  };
+}
+
+/**
+ * Build a reusable row predicate for scope filtering without re-normalizing each row scan.
+ *
+ * @param scope - Requested scope used for filtering.
+ * @param allowedSharedSpaceIds - Optional shared-space allowlist for the scope.
+ * @returns Predicate that returns `true` when a row remains visible.
+ */
+export function createScopeFilterPredicate<T extends Record<string, unknown>>(
+  scope: ScopeContext,
+  allowedSharedSpaceIds?: ReadonlySet<string>,
+): (row: T) => boolean {
+  const normalized = normalizeScopeContext(scope);
+  if (!isScopeEnforcementEnabled() && !hasScopeConstraints(normalized)) {
+    return () => true;
+  }
+
+  return (row: T) => {
     const rowSharedSpaceId = normalizeId(row.shared_space_id);
     if (rowSharedSpaceId) {
       if (normalized.sharedSpaceId && rowSharedSpaceId !== normalized.sharedSpaceId) {
@@ -294,5 +436,161 @@ export function filterRowsByScope<T extends Record<string, unknown>>(rows: T[], 
       && matchesExactScope(row.user_id, normalized.userId)
       && matchesExactScope(row.agent_id, normalized.agentId)
       && matchesExactScope(row.session_id, normalized.sessionId);
-  });
+  };
+}
+
+/**
+ * Review governance audit rows and aggregate counts for a filtered governance window.
+ *
+ * @param database - Database connection that stores governance state.
+ * @param filters - Optional audit filters and row limit.
+ * @returns Review rows plus aggregate counts for the matching audit window.
+ */
+export function reviewGovernanceAudit(
+  database: Database.Database,
+  filters: GovernanceAuditReviewFilters = {},
+): GovernanceAuditReviewResult {
+  ensureGovernanceRuntime(database);
+  const { whereSql, params } = buildGovernanceAuditWhereClause(filters);
+  const limit = Number.isInteger(filters.limit) && (filters.limit ?? 0) > 0
+    ? Math.trunc(filters.limit as number)
+    : 50;
+
+  const rows = database.prepare(`
+    SELECT
+      id,
+      action,
+      decision,
+      memory_id,
+      logical_key,
+      tenant_id,
+      user_id,
+      agent_id,
+      session_id,
+      shared_space_id,
+      reason,
+      metadata,
+      created_at
+    FROM governance_audit
+    ${whereSql}
+    ORDER BY id DESC
+    LIMIT ?
+  `).all(...params, limit) as Array<{
+    id: number;
+    action: string;
+    decision: GovernanceAuditEntry['decision'];
+    memory_id: number | null;
+    logical_key: string | null;
+    tenant_id: string | null;
+    user_id: string | null;
+    agent_id: string | null;
+    session_id: string | null;
+    shared_space_id: string | null;
+    reason: string | null;
+    metadata: string | null;
+    created_at: string;
+  }>;
+
+  const totalMatching = (database.prepare(`
+    SELECT COUNT(*) AS count
+    FROM governance_audit
+    ${whereSql}
+  `).get(...params) as { count: number }).count;
+
+  const byActionRows = database.prepare(`
+    SELECT action, COUNT(*) AS count
+    FROM governance_audit
+    ${whereSql}
+    GROUP BY action
+  `).all(...params) as Array<{ action: string; count: number }>;
+
+  const byDecisionRows = database.prepare(`
+    SELECT decision, COUNT(*) AS count
+    FROM governance_audit
+    ${whereSql}
+    GROUP BY decision
+  `).all(...params) as Array<{ decision: GovernanceAuditEntry['decision']; count: number }>;
+
+  const latestRow = database.prepare(`
+    SELECT MAX(created_at) AS latest_created_at
+    FROM governance_audit
+    ${whereSql}
+  `).get(...params) as { latest_created_at: string | null };
+
+  return {
+    rows: rows.map((row) => ({
+      id: row.id,
+      action: row.action,
+      decision: row.decision,
+      memoryId: row.memory_id,
+      logicalKey: row.logical_key,
+      tenantId: row.tenant_id ?? undefined,
+      userId: row.user_id ?? undefined,
+      agentId: row.agent_id ?? undefined,
+      sessionId: row.session_id ?? undefined,
+      sharedSpaceId: row.shared_space_id ?? undefined,
+      reason: row.reason,
+      metadata: parseAuditMetadata(row.metadata),
+      createdAt: row.created_at,
+    })),
+    summary: {
+      totalMatching,
+      returnedRows: rows.length,
+      byAction: Object.fromEntries(byActionRows.map((row) => [row.action, row.count])),
+      byDecision: Object.fromEntries(byDecisionRows.map((row) => [row.decision, row.count])),
+      latestCreatedAt: latestRow.latest_created_at,
+    },
+  };
+}
+
+/**
+ * Benchmark scope filtering with a reusable predicate for rollout and safety checks.
+ *
+ * @param rows - Candidate rows that include governance scope columns.
+ * @param scope - Requested scope used for filtering.
+ * @param options - Optional iterations and shared-space allowlist.
+ * @returns Timing and match counts for the benchmark run.
+ */
+export function benchmarkScopeFilter<T extends Record<string, unknown>>(
+  rows: T[],
+  scope: ScopeContext,
+  options: ScopeFilterBenchmarkOptions = {},
+): ScopeFilterBenchmarkResult {
+  const iterations = Number.isInteger(options.iterations) && (options.iterations ?? 0) > 0
+    ? Math.trunc(options.iterations as number)
+    : 1;
+  const predicate = createScopeFilterPredicate(scope, options.allowedSharedSpaceIds);
+  let matchedRows = 0;
+  const startedAt = process.hrtime.bigint();
+
+  for (let iteration = 0; iteration < iterations; iteration += 1) {
+    matchedRows = 0;
+    for (const row of rows) {
+      if (predicate(row)) {
+        matchedRows += 1;
+      }
+    }
+  }
+
+  const elapsedMs = Number(process.hrtime.bigint() - startedAt) / 1_000_000;
+  return {
+    iterations,
+    totalRows: rows.length,
+    matchedRows,
+    filteredRows: rows.length - matchedRows,
+    elapsedMs,
+    averageMsPerIteration: elapsedMs / iterations,
+  };
+}
+
+/**
+ * Filter result rows to the tenant, actor, session, and shared-space scope in force.
+ *
+ * @param rows - Candidate rows that include governance scope columns.
+ * @param scope - Requested scope used for filtering.
+ * @param allowedSharedSpaceIds - Optional shared-space allowlist for the scope.
+ * @returns Rows that remain visible after governance filtering.
+ */
+export function filterRowsByScope<T extends Record<string, unknown>>(rows: T[], scope: ScopeContext, allowedSharedSpaceIds?: ReadonlySet<string>): T[] {
+  return rows.filter(createScopeFilterPredicate(scope, allowedSharedSpaceIds));
 }

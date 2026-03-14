@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Causal edge deletion (memory_causal_unlink).
+Covers the causal edge deletion tool that removes relationship edges by ID with automatic cleanup on memory deletion.
 
 ## 2. CURRENT REALITY
 
@@ -127,3 +128,7 @@ A library-level variant, `deleteEdgesForMemory()`, removes all edges referencing
 - Group: Analysis
 - Source feature title: Causal edge deletion (memory_causal_unlink)
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+This removes a connection between two memories. If you delete a memory entirely, all its connections are cleaned up automatically. You only need this tool when you want to remove a specific connection while keeping both memories intact, like cutting one thread on a corkboard without taking down the pins.

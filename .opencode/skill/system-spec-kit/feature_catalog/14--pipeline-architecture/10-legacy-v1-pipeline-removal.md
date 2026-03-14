@@ -6,14 +6,15 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Legacy V1 pipeline removal.
+Legacy V1 pipeline removal deleted the old monolithic handler path, making the 4-stage orchestrator the only runtime code path.
 
 ## 2. CURRENT REALITY
 
-The legacy V1 pipeline was the root cause of 3 of 4 P0 bugs: an inverted `STATE_PRIORITY` map, divergent scoring order in post-search weighting, and a mismatched deep-query variant cap. Since V2 was already the default, the legacy handler path in `memory-search.ts` was removed and the 4-stage orchestrator became the only runtime path. Stage helpers with familiar names now live in stage modules (`stage1-candidate-gen.ts`, `stage2-fusion.ts`, `stage3-rerank.ts`, `stage4-filter.ts`) rather than the old monolithic V1 branch. The `isPipelineV2Enabled()` function now always returns `true` with a deprecation comment, and stale legacy-handler imports were removed.
+The legacy V1 pipeline was the root cause of 3 of 4 P0 bugs: an inverted `STATE_PRIORITY` map, divergent scoring order in post-search weighting and a mismatched deep-query variant cap. Since V2 was already the default, the legacy handler path in `memory-search.ts` was removed and the 4-stage orchestrator became the only runtime path. Stage helpers with familiar names now live in stage modules (`stage1-candidate-gen.ts`, `stage2-fusion.ts`, `stage3-rerank.ts`, `stage4-filter.ts`) rather than the old monolithic V1 branch. The `isPipelineV2Enabled()` function now always returns `true` with a deprecation comment, and stale legacy-handler imports were removed.
 
 Orphaned chunk detection was added to `verify_integrity()` as the fourth P0 fix: chunks whose parent has been deleted but the chunk record persists (e.g., if FK cascade didn't fire) are now detected and optionally auto-cleaned when `autoClean=true`.
 
@@ -159,3 +160,7 @@ Orphaned chunk detection was added to `verify_integrity()` as the fourth P0 fix:
 - Group: Opus review remediation (Phase 017)
 - Source feature title: Legacy V1 pipeline removal
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+The system used to have two different search paths: an old one and a new one. The old path was causing bugs and was no longer needed because the new one was already the default. This cleanup removed the old path entirely so there is only one way searches run, eliminating a whole class of bugs that came from the two paths disagreeing with each other.

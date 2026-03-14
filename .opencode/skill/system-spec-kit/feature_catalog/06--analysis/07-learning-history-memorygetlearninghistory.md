@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Learning history (memory_get_learning_history).
+Covers the learning history retrieval tool that aggregates Learning Index trends across completed tasks in a spec folder.
 
 ## 2. CURRENT REALITY
 
@@ -128,3 +129,7 @@ Pass `onlyComplete: true` to restrict results to tasks where both preflight and 
 - Group: Analysis
 - Source feature title: Learning history (memory_get_learning_history)
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+This shows you a report card of learning across all completed tasks in a project. You can see the average learning score, which tasks produced the biggest breakthroughs and whether your understanding is trending up or down over time. It is like a fitness tracker for knowledge growth.

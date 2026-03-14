@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Graph channel ID fix.
+Tracks the fix for the graph search channel that had a 0% hit rate due to string-vs-numeric ID comparison mismatches.
 
 ## 2. CURRENT REALITY
 
@@ -47,3 +48,7 @@ Both comparison points now extract numeric IDs, and the graph channel returns re
 - Group: Bug fixes and data integrity
 - Source feature title: Graph channel ID fix
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+One of the search channels that was supposed to find related memories through their connections was completely broken because of a simple label mismatch. It was comparing apples to oranges internally, so it never found anything. The fix corrected the labels so that channel now works as intended and actually contributes useful results.

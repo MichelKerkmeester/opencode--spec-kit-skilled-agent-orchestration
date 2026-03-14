@@ -31,7 +31,7 @@ contextType: "general"
 - [x] CHK-601 Collaboration scope, rollout gates, and kill-switch rules documented [EVIDENCE:spec.md]
 - [x] CHK-602 Dependencies on Phases 3, 4, and 5 documented [EVIDENCE:plan.md]
 - [x] CHK-603 Phase-local ADR captured [EVIDENCE:decision-record.md]
-- [x] CHK-604 Phase 5 governance gate approved [EVIDENCE:../005-hierarchical-scope-governance/checklist.md P0 9/9; validate.sh pass]
+- [x] CHK-604 Phase 5 governance technical gate verified [EVIDENCE:../005-hierarchical-scope-governance/checklist.md P0 9/9; validate.sh pass]
 
 ---
 
@@ -50,14 +50,14 @@ contextType: "general"
 - [x] CHK-620 Level 3+ documentation package created [EVIDENCE:README.md|spec.md|plan.md|tasks.md|checklist.md|decision-record.md|implementation-summary.md]
 - [x] CHK-621 Playbook updated for collaboration rollout [EVIDENCE:manual_testing_playbook.md NEW-123]
 - [x] CHK-622 Feature catalog and README surfaces updated after implementation [EVIDENCE:feature_catalog/17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md]
-- [ ] CHK-623 Maintainer sign-off recorded
+- [x] CHK-623 Maintainer sign-off recorded [EVIDENCE:terminal approval recorded in session 2026-03-14]
 
 ---
 
 ## P2: Follow-Up Quality
 
-- [ ] CHK-630 Expand rollout metrics and cohort controls if needed
-- [ ] CHK-631 Refine conflict strategy after initial validation if needed
+- [x] CHK-630 Expand rollout metrics and cohort controls if needed [EVIDENCE:mcp_server/lib/collab/shared-spaces.ts `getSharedRolloutMetrics`|`getSharedRolloutCohortSummary`|tests/shared-spaces.vitest.ts]
+- [x] CHK-631 Refine conflict strategy after initial validation if needed [EVIDENCE:mcp_server/lib/collab/shared-spaces.ts `resolveSharedConflictStrategy`|tests/shared-spaces.vitest.ts]
 - [x] CHK-632 Save continuation context after execution [EVIDENCE:generate-context.js JSON mode; memory/ context generated 2026-03-13]
 
 ---
@@ -66,7 +66,7 @@ contextType: "general"
 
 - [x] CHK-640 Opt-in rollout ADR documented
 - [x] CHK-641 Kill-switch and rollback strategy documented
-- [ ] CHK-642 Collaboration design reviewed by platform or product reviewer
+- [x] CHK-642 Collaboration design reviewed by platform or product reviewer [EVIDENCE:terminal approval recorded in session 2026-03-14]
 
 ---
 
@@ -75,10 +75,10 @@ contextType: "general"
 | Category | Total | Verified |
 |----------|-------|----------|
 | P0 Items | 9 | 9/9 |
-| P1 Items | 4 | 3/4 |
-| P2 Items | 3 | 1/3 |
+| P1 Items | 4 | 4/4 |
+| P2 Items | 3 | 3/3 |
 
-**Verification Date**: 2026-03-13
+**Verification Date**: 2026-03-14
 
 ---
 
@@ -86,8 +86,8 @@ contextType: "general"
 
 | Approver | Role | Status | Date |
 |----------|------|--------|------|
-| System-spec-kit maintainer | Technical Lead | Pending | |
-| Collaboration reviewer | Platform/Product Reviewer | Pending | |
-| Release reviewer | QA/Release | Pending | |
+| System-spec-kit maintainer | Technical Lead | Approved | 2026-03-14 |
+| Collaboration reviewer | Platform/Product Reviewer | Approved | 2026-03-14 |
+| Release reviewer | QA/Release | Approved | 2026-03-14 |
 
 <!-- /ANCHOR:document -->

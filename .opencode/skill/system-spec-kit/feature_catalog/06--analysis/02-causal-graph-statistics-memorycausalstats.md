@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Causal graph statistics (memory_causal_stats).
+Covers the causal graph health metrics tool reporting edge counts, relationship breakdowns and link coverage percentage.
 
 ## 2. CURRENT REALITY
 
@@ -133,3 +134,7 @@ Orphaned edges (edges referencing source or target memories that no longer exist
 - Group: Analysis
 - Source feature title: Causal graph statistics (memory_causal_stats)
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+This gives you a health report on the web of connections between your memories. It tells you how many connections exist, how strong they are and whether enough memories are linked together. If too many memories are isolated with no connections, the system warns you because it means the relationship network is too thin to be useful for tracing decisions.

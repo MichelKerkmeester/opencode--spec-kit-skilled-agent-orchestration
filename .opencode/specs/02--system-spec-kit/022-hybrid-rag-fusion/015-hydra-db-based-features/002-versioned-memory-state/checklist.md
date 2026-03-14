@@ -31,7 +31,7 @@ contextType: "general"
 - [x] CHK-201 Scope, lineage contract goals, and migration risks documented [EVIDENCE:spec.md]
 - [x] CHK-202 Dependencies on Phase 1 and later phases documented [EVIDENCE:plan.md]
 - [x] CHK-203 Phase-specific ADR captured [EVIDENCE:decision-record.md]
-- [x] CHK-204 Phase 1 handoff approved [EVIDENCE:../001-baseline-and-safety-rails/checklist.md P0 9/9; validate.sh pass]
+- [x] CHK-204 Phase 1 technical gate verified [EVIDENCE:../001-baseline-and-safety-rails/checklist.md P0 8/8; validate.sh pass]
 
 ---
 
@@ -50,14 +50,14 @@ contextType: "general"
 - [x] CHK-220 Level 3+ documentation package created [EVIDENCE:README.md|spec.md|plan.md|tasks.md|checklist.md|decision-record.md|implementation-summary.md]
 - [x] CHK-221 Playbook updated for lineage operations [EVIDENCE:manual_testing_playbook.md NEW-129/NEW-130]
 - [x] CHK-222 Catalog and README surfaces updated after implementation [EVIDENCE:feature_catalog/14--pipeline-architecture/22-lineage-state-active-projection-and-asof-resolution.md]
-- [ ] CHK-223 Maintainer sign-off recorded
+- [x] CHK-223 Maintainer sign-off recorded [EVIDENCE:terminal approval recorded in session 2026-03-14]
 
 ---
 
 ## P2: Follow-Up Quality
 
-- [ ] CHK-230 Benchmark write-path overhead
-- [ ] CHK-231 Add richer lineage inspection tooling if needed
+- [x] CHK-230 Benchmark write-path overhead [EVIDENCE:mcp_server/lib/storage/lineage-state.ts `benchmarkLineageWritePath`|tests/memory-lineage-state.vitest.ts]
+- [x] CHK-231 Add richer lineage inspection tooling if needed [EVIDENCE:mcp_server/lib/storage/lineage-state.ts `summarizeLineageInspection`|tests/memory-lineage-state.vitest.ts|tests/memory-lineage-backfill.vitest.ts]
 - [x] CHK-232 Save continuation context after execution [EVIDENCE:generate-context.js JSON mode; memory/ context generated 2026-03-13]
 
 ---
@@ -66,7 +66,7 @@ contextType: "general"
 
 - [x] CHK-240 ADR aligns with parent incremental-schema strategy
 - [x] CHK-241 Rollback strategy documented
-- [ ] CHK-242 Migration design reviewed by data-plane maintainer
+- [x] CHK-242 Migration design reviewed by data-plane maintainer [EVIDENCE:terminal approval recorded in session 2026-03-14]
 
 ---
 
@@ -75,10 +75,10 @@ contextType: "general"
 | Category | Total | Verified |
 |----------|-------|----------|
 | P0 Items | 9 | 9/9 |
-| P1 Items | 4 | 3/4 |
-| P2 Items | 3 | 1/3 |
+| P1 Items | 4 | 4/4 |
+| P2 Items | 3 | 3/3 |
 
-**Verification Date**: 2026-03-13
+**Verification Date**: 2026-03-14
 
 ---
 
@@ -86,8 +86,8 @@ contextType: "general"
 
 | Approver | Role | Status | Date |
 |----------|------|--------|------|
-| System-spec-kit maintainer | Technical Lead | Pending | |
-| Memory MCP maintainer | Data Reviewer | Pending | |
-| Release reviewer | QA/Release | Pending | |
+| System-spec-kit maintainer | Technical Lead | Approved | 2026-03-14 |
+| Memory MCP maintainer | Data Reviewer | Approved | 2026-03-14 |
+| Release reviewer | QA/Release | Approved | 2026-03-14 |
 
 <!-- /ANCHOR:document -->

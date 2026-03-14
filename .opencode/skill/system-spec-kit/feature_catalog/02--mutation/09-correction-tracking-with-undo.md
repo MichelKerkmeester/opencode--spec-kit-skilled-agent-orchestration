@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Correction tracking with undo.
+Covers the corrections module that records inter-memory relationship signals and adjusts stability scores during learning.
 
 ## 2. CURRENT REALITY
 
@@ -36,3 +37,7 @@ Each correction adjusts the stability scores of both the original and correcting
 - Group: Mutation
 - Source feature title: Correction tracking with undo
 - Current reality source: audit-D04 gap backfill
+
+## 5. IN SIMPLE TERMS
+
+When a newer memory replaces or refines an older one, the system records what changed and why. The old memory gets a lower confidence score while the new one gets a boost. This creates a paper trail of corrections so you can see how your knowledge evolved over time and understand why older information was updated.

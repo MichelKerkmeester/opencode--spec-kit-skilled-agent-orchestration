@@ -74,7 +74,7 @@ contextType: "general"
 
 - [x] T040 Confirm parent roadmap still treats phases 2-6 as planned work
 - [x] T041 Record actual verification evidence in `implementation-summary.md`
-- [ ] T042 Obtain maintainer sign-off on final Phase 1 handoff criteria
+- [x] T042 Obtain maintainer sign-off on final Phase 1 handoff criteria
 
 ---
 

@@ -27,7 +27,8 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
 
   // ───────────────────────────────────────────────────────────────
   // 1. SUITE: EXPORTS VALIDATION
-  // ───────────────────────────────────────────────────────────────  describe('Exports Validation', () => {
+  // ───────────────────────────────────────────────────────────────
+  describe('Exports Validation', () => {
     const expectedExports: HandlerExportName[] = [
       'handleCheckpointCreate',
       'handleCheckpointList',
@@ -59,7 +60,8 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
 
   // ───────────────────────────────────────────────────────────────
   // 2. SUITE: HANDLECHECKPOINTCREATE VALIDATION
-  // ───────────────────────────────────────────────────────────────  describe('handleCheckpointCreate Validation', () => {
+  // ───────────────────────────────────────────────────────────────
+  describe('handleCheckpointCreate Validation', () => {
     it('T521-C1: Missing name throws', async () => {
       await expect(
         handler.handleCheckpointCreate(
@@ -139,7 +141,8 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
 
   // ───────────────────────────────────────────────────────────────
   // 3. SUITE: HANDLECHECKPOINTLIST VALIDATION
-  // ───────────────────────────────────────────────────────────────  describe('handleCheckpointList Validation', () => {
+  // ───────────────────────────────────────────────────────────────
+  describe('handleCheckpointList Validation', () => {
     it('T521-L1: Non-string specFolder throws', async () => {
       await expect(
         handler.handleCheckpointList(
@@ -182,7 +185,8 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
 
   // ───────────────────────────────────────────────────────────────
   // 4. SUITE: HANDLECHECKPOINTRESTORE VALIDATION
-  // ───────────────────────────────────────────────────────────────  describe('handleCheckpointRestore Validation', () => {
+  // ───────────────────────────────────────────────────────────────
+  describe('handleCheckpointRestore Validation', () => {
     it('T521-R1: Missing name throws', async () => {
       await expect(
         handler.handleCheckpointRestore(
@@ -247,7 +251,8 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
 
   // ───────────────────────────────────────────────────────────────
   // 5. SUITE: HANDLECHECKPOINTDELETE VALIDATION
-  // ───────────────────────────────────────────────────────────────  describe('handleCheckpointDelete Validation', () => {
+  // ───────────────────────────────────────────────────────────────
+  describe('handleCheckpointDelete Validation', () => {
     it('T521-DEL1: Missing name throws', async () => {
       await expect(
         handler.handleCheckpointDelete(
@@ -317,7 +322,8 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
 
   // ───────────────────────────────────────────────────────────────
   // 6. SUITE: HANDLEMEMORYVALIDATE VALIDATION
-  // ───────────────────────────────────────────────────────────────  describe('handleMemoryValidate Validation', () => {
+  // ───────────────────────────────────────────────────────────────
+  describe('handleMemoryValidate Validation', () => {
     it('T521-V1: Missing id throws', async () => {
       await expect(
         handler.handleMemoryValidate(
@@ -352,7 +358,8 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
 
   // ───────────────────────────────────────────────────────────────
   // 7. SUITE: T102 - INDEX REBUILD AFTER CHECKPOINT RESTORE
-  // ───────────────────────────────────────────────────────────────  describe('T102 - Index Rebuild After Checkpoint Restore', () => {
+  // ───────────────────────────────────────────────────────────────
+  describe('T102 - Index Rebuild After Checkpoint Restore', () => {
     it('T102-1: bm25Index module available', () => {
       expect(bm25IndexMod).toBeDefined();
     });

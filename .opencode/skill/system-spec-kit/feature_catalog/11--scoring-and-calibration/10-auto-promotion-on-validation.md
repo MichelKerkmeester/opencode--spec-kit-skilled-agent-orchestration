@@ -8,10 +8,11 @@
 - [4. BEHAVIOR COVERAGE MATRIX](#4--behavior-coverage-matrix)
 - [5. SOURCE FILES](#5--source-files)
 - [6. SOURCE METADATA](#6--source-metadata)
+- [7. IN SIMPLE TERMS](#7--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Auto-promotion on validation.
+Describes automatic tier promotion triggered by positive validations (normal at 5, important at 10) with a throttle safeguard limiting promotions to 3 per 8-hour rolling window.
 
 ## 2. CURRENT REALITY
 
@@ -23,7 +24,7 @@ Constitutional, critical, temporary and deprecated tiers are non-promotable. Eac
 
 ## 3. HANDLER-PATH COVERAGE
 
-`memory_validate` enters `handleMemoryValidate(...)` in `mcp_server/handlers/checkpoints.ts`, records validation via `confidenceTracker.recordValidation(...)`, and on positive feedback (`wasUseful === true`) calls `executeAutoPromotion(database, memoryId)`. The returned result is surfaced in `data.autoPromotion`.
+`memory_validate` enters `handleMemoryValidate(...)` in `mcp_server/handlers/checkpoints.ts`, records validation via `confidenceTracker.recordValidation(...)` and on positive feedback (`wasUseful === true`) calls `executeAutoPromotion(database, memoryId)`. The returned result is surfaced in `data.autoPromotion`.
 
 ## 4. BEHAVIOR COVERAGE MATRIX
 
@@ -57,3 +58,7 @@ Constitutional, critical, temporary and deprecated tiers are non-promotable. Eac
 - Group: Scoring and calibration
 - Source feature title: Auto-promotion on validation
 - Current reality source: feature_catalog.md
+
+## 7. IN SIMPLE TERMS
+
+When a memory keeps proving useful over and over, it earns a promotion. After five thumbs-up reviews, a regular memory becomes "important." After ten, it becomes "critical." This happens automatically so you do not have to manually tag your most valuable knowledge. A speed limit prevents too many promotions from happening at once during a busy session.

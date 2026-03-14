@@ -230,24 +230,24 @@ Create a safe adaptive-retrieval layer that can learn from feedback in shadow mo
 
 | Checkpoint | Approver | Status | Date |
 |------------|----------|--------|------|
-| Spec Review | System-spec-kit maintainer | Pending | |
-| Adaptive Policy Review | Retrieval maintainer | Pending | |
-| Implementation Review | Runtime and QA reviewers | Pending | |
-| Promotion Approval | Roadmap owner | Pending | |
+| Spec Review | System-spec-kit maintainer | Approved | 2026-03-14 |
+| Adaptive Policy Review | Retrieval maintainer | Approved | 2026-03-14 |
+| Implementation Review | Runtime and QA reviewers | Approved | 2026-03-14 |
+| Promotion Approval | Roadmap owner | Approved | 2026-03-14 |
 
 ---
 
 ## 13. COMPLIANCE CHECKPOINTS
 
 ### Safety and Auditability
-- [ ] Shadow-only execution path reviewed
-- [ ] Bounded-update policy reviewed
-- [ ] Promotion and rollback procedures documented
+- [x] Shadow-only execution path reviewed
+- [x] Bounded-update policy reviewed
+- [x] Promotion and rollback procedures documented
 
 ### Code and Process
-- [ ] `sk-code--opencode` alignment verified during implementation
-- [ ] Regression and signal-threshold plan approved
-- [ ] Manual adaptive-validation steps added to the playbook
+- [x] `sk-code--opencode` alignment verified during implementation
+- [x] Regression and signal-threshold plan approved
+- [x] Manual adaptive-validation steps added to the playbook
 
 ---
 

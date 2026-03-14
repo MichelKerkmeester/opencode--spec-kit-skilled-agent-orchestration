@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Mutation response UX payload exposure.
+Mutation response UX payload exposure makes post-mutation hook data available directly in tool responses on successful mutation paths.
 
 ## 2. CURRENT REALITY
 
@@ -33,7 +34,7 @@ Mutation responses now expose UX payload data produced by post-mutation hooks, i
 
 | Test File | Test Name | Coverage |
 |-----------|-----------|----------|
-| `mcp_server/tests/memory-save-ux-regressions.vitest.ts` | `memory_save success response exposes postMutationHooks contract fields and types` | Verifies successful `memory_save` responses include `data.postMutationHooks` with `latencyMs`, cache-clear booleans, and `toolCacheInvalidated` typed as the UX payload contract requires. |
+| `mcp_server/tests/memory-save-ux-regressions.vitest.ts` | `memory_save success response exposes postMutationHooks contract fields and types` | Verifies successful `memory_save` responses include `data.postMutationHooks` with `latencyMs`, cache-clear booleans and `toolCacheInvalidated` typed as the UX payload contract requires. |
 | `mcp_server/tests/memory-save-ux-regressions.vitest.ts` | `atomicSaveMemory returns post-mutation feedback payload with typed fields for successful saves` | Verifies successful `atomicSaveMemory` responses emit the same typed `postMutationHooks` payload contract. |
 | `mcp_server/tests/memory-save-ux-regressions.vitest.ts` | `atomicSaveMemory duplicate no-op omits postMutationHooks and reports no-op status` | Verifies duplicate/no-op atomic saves do not emit `postMutationHooks` when no post-mutation cache work occurs. |
 
@@ -42,3 +43,7 @@ Mutation responses now expose UX payload data produced by post-mutation hooks, i
 - Group: UX hooks automation (Phase 014)
 - Source feature title: Mutation response UX payload exposure
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+When you save a memory, the system now includes helpful follow-up information right in the response, like whether caches were refreshed or if any hints are available. Previously that information existed internally but was not shown to you. It is like a bank transaction that now prints a full receipt instead of just saying "transaction complete."

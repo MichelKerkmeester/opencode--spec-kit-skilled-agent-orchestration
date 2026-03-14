@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Graph momentum scoring.
+Describes the temporal degree delta signal that scores memories higher when they gain new graph edges recently, applied as a capped +0.05 additive bonus in Stage 2.
 
 ## 2. CURRENT REALITY
 
@@ -41,3 +42,7 @@ When no snapshot exists for the 7-day lookback (common during initial rollout), 
 - Group: Graph signal activation
 - Source feature title: Graph momentum scoring
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+This tracks how quickly a piece of knowledge is gaining connections to other knowledge. Think of it like a trending topic: the faster something connects to related ideas, the more likely it is to be relevant right now. A memory that gained three new links this week gets a small search boost compared to one whose connections have not changed in months.

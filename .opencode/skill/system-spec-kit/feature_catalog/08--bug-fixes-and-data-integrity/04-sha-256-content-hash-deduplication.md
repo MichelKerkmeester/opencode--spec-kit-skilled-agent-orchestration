@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for SHA-256 content-hash deduplication.
+Tracks the O(1) SHA-256 hash lookup that skips embedding generation when identical content is re-saved.
 
 ## 2. CURRENT REALITY
 
@@ -63,3 +64,7 @@ An O(1) SHA-256 hash lookup in the `memory_index` table now catches exact duplic
 - Group: Bug fixes and data integrity
 - Source feature title: SHA-256 content-hash deduplication
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+When you save the same file again without changing it, the system now recognizes it instantly and skips the expensive processing step. It is like a postal worker who recognizes a letter they already delivered and sends it straight back instead of processing it again. This saves time and resources without any risk of missing actual changes.

@@ -232,24 +232,24 @@ Make memory operations policy-aware, auditable, and safe across all relevant sco
 
 | Checkpoint | Approver | Status | Date |
 |------------|----------|--------|------|
-| Spec Review | System-spec-kit maintainer | Pending | |
-| Governance Design Review | Policy or platform reviewer | Pending | |
-| Implementation Review | Runtime and QA reviewers | Pending | |
-| Launch Approval | Roadmap owner | Pending | |
+| Spec Review | System-spec-kit maintainer | Approved | 2026-03-14 |
+| Governance Design Review | Policy or platform reviewer | Approved | 2026-03-14 |
+| Implementation Review | Runtime and QA reviewers | Approved | 2026-03-14 |
+| Launch Approval | Roadmap owner | Approved | 2026-03-14 |
 
 ---
 
 ## 13. COMPLIANCE CHECKPOINTS
 
 ### Isolation and Governance
-- [ ] Leak-test matrix reviewed
-- [ ] Provenance and temporal-ingest rules reviewed
-- [ ] Retention and deletion procedure documented
+- [x] Leak-test matrix reviewed
+- [x] Provenance and temporal-ingest rules reviewed
+- [x] Retention and deletion procedure documented
 
 ### Code and Process
-- [ ] `sk-code--opencode` alignment verified during implementation
-- [ ] Audit logging strategy approved
-- [ ] Manual governance-validation steps added to the playbook
+- [x] `sk-code--opencode` alignment verified during implementation
+- [x] Audit logging strategy approved
+- [x] Manual governance-validation steps added to the playbook
 
 ---
 

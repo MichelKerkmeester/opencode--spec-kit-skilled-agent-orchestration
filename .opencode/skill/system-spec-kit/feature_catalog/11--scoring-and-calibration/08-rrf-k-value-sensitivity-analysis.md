@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for RRF K-value sensitivity analysis.
+Documents the grid search over K values {20, 40, 60, 80, 100} that empirically grounded the RRF K parameter choice using MRR@5 delta and Kendall tau correlation.
 
 ## 2. CURRENT REALITY
 
@@ -38,3 +39,7 @@ A grid search over K values {20, 40, 60, 80, 100} measured MRR@5 delta per value
 - Group: Scoring and calibration
 - Source feature title: RRF K-value sensitivity analysis
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+When combining results from different search methods, a single tuning knob controls how much "being ranked first" matters versus "appearing in multiple lists." This analysis tested five different settings for that knob and measured which one produced the best results. Before this work, the setting was chosen by gut feeling. Now it is chosen by data.

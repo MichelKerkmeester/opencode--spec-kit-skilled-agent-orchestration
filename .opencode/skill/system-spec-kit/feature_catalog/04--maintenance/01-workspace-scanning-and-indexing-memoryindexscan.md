@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Workspace scanning and indexing (memory_index_scan).
+Covers the filesystem scanner that keeps the memory database synchronized with spec folder files via incremental indexing.
 
 ## 2. CURRENT REALITY
 
@@ -226,3 +227,7 @@ The result breakdown is detailed: indexed count, updated count, unchanged count,
 - Group: Maintenance
 - Source feature title: Workspace scanning and indexing (memory_index_scan)
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+This tool scans your project folders for new or changed files and adds them to the searchable knowledge base. It is like a librarian walking through the stacks every day to catalog new arrivals and update records for books that have been revised. Files that have not changed are skipped to save time. If a file fails to process, the system remembers and retries it next time.

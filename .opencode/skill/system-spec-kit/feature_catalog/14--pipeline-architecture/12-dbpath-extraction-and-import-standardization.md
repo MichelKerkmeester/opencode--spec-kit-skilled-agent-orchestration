@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for DB_PATH extraction and import standardization.
+`DB_PATH` extraction and import standardization centralizes database path resolution into `shared/config.ts` and converts cross-boundary imports to workspace aliases.
 
 ## 2. CURRENT REALITY
 
@@ -41,3 +42,7 @@ This document captures the implemented behavior, source references, and validati
 - Group: Multi-agent deep review remediation (Phase 018)
 - Source feature title: DB_PATH extraction and import standardization
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+Multiple parts of the system were figuring out where the database lives in their own way, each with its own hardcoded path. This fix created one shared place that knows the database location, and everyone else just asks it. It is like giving the whole team the same address book instead of each person keeping their own copy that might go out of date.

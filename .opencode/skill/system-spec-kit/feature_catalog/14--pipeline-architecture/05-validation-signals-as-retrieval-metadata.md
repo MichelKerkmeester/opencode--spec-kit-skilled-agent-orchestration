@@ -6,16 +6,17 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Validation signals as retrieval metadata.
+Validation signals as retrieval metadata integrates spec document quality scores into the Stage 2 scoring layer as a bounded multiplier.
 
 ## 2. CURRENT REALITY
 
 Spec document validation metadata integrates into the scoring layer as an additional ranking dimension in Stage 2. Four signal sources contribute: importance tier mapped to a numeric quality score (constitutional=1.0 through deprecated=0.1), the direct `quality_score` database column, `<!-- SPECKIT_LEVEL: N -->` content marker extraction and validation completion markers (`<!-- VALIDATED -->`, `<!-- VALIDATION: PASS -->`).
 
-The combined multiplier is bounded to 0.8-1.2 via a clamping function, composed of quality factor (0.9-1.1), spec level bonus (0-0.06), completion bonus (0-0.04) and checklist bonus (0-0.01). Well-maintained documentation ranks slightly above neglected documentation when both are relevant. No feature flag; always active.
+The combined multiplier is bounded to 0.8-1.2 via a clamping function, composed of quality factor (0.9-1.1), spec level bonus (0-0.06), completion bonus (0-0.04) and checklist bonus (0-0.01). Well-maintained documentation ranks slightly above neglected documentation when both are relevant. No feature flag. Always active.
 
 ## 3. SOURCE FILES
 
@@ -44,3 +45,7 @@ The combined multiplier is bounded to 0.8-1.2 via a clamping function, composed 
 - Group: Pipeline architecture
 - Source feature title: Validation signals as retrieval metadata
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+Well-maintained documents should rank slightly higher than neglected ones when both are equally relevant to your question. This feature gives a small ranking nudge to documents that have been reviewed, validated and kept up to date. The nudge is small enough that a truly relevant but less polished document still wins over a well-polished but less relevant one.

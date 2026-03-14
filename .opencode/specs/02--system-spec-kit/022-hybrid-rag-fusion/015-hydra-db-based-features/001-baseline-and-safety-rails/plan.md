@@ -42,11 +42,11 @@ Phase 1 delivers the control-plane work that lets the Hydra roadmap proceed safe
 - [x] Parent roadmap and ADR context available
 
 ### Definition of Done
-- [ ] Build path is stable and verified in the MCP package
-- [ ] Focused Phase 1 verification suite passes
-- [ ] Manual flag-smoke checks are recorded
-- [ ] Docs and playbook match delivered behavior
-- [ ] Remaining baseline gaps are explicitly tracked
+- [x] Build path is stable and verified in the MCP package
+- [x] Focused Phase 1 verification suite passes
+- [x] Manual flag-smoke checks are recorded
+- [x] Docs and playbook match delivered behavior
+- [x] Remaining baseline gaps are explicitly tracked
 
 ---
 
@@ -88,7 +88,7 @@ Operational safety layer over the existing MCP server. Phase 1 does not introduc
 - [x] Add focused Vitest coverage for Phase 1 surfaces
 - [x] Update feature catalog, playbook, README, install guide, and environment docs
 - [x] Run manual baseline and graph snapshot smoke commands
-- [ ] Decide whether broader Phase 1 observability follow-ups stay here or move forward as tracked residual work
+- [x] Decide whether broader Phase 1 observability follow-ups stay here or move forward as tracked residual work
 
 ---
 

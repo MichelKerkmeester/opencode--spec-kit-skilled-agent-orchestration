@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Negative feedback confidence signal.
+Describes the negative validation demotion multiplier that decreases by 0.1 per negative feedback event (floor 0.3) with a 30-day half-life recovery, applied during Stage 2 feedback signals.
 
 ## 2. CURRENT REALITY
 
@@ -49,3 +50,7 @@ Negative feedback events are persisted to a `negative_feedback_events` table. Th
 - Group: Scoring and calibration
 - Source feature title: Negative feedback confidence signal
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+When you tell the system a result was not helpful, it remembers that feedback and pushes that memory lower in future searches. The more times you say "not useful," the further it drops, but it can never be completely hidden. Over time the penalty fades, giving the memory a chance to recover. This way the system learns from your feedback without permanently burying anything.

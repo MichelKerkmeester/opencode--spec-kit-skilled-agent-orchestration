@@ -19,6 +19,7 @@
     "check:full": "npm run check && npm run test",
     "lint": "eslint . --ext .ts",
     "test": "vitest run",
+    "test:hydra:phase1": "vitest run tests/memory-roadmap-flags.vitest.ts tests/memory-state-baseline.vitest.ts tests/migration-checkpoint-scripts.vitest.ts tests/vector-index-schema-compatibility.vitest.ts",
     "test:watch": "vitest"
   },
   "keywords": [

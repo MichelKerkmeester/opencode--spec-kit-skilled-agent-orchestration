@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Cold-start novelty boost.
+Describes the exponential decay novelty boost for memories under 48 hours old that counteracts FSRS temporal bias against recently indexed items.
 
 ## 2. CURRENT REALITY
 
@@ -63,3 +64,7 @@ The boost applies before FSRS decay and caps the composite score at 0.95 to prev
 - Group: Scoring and calibration
 - Source feature title: Cold-start novelty boost
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+Brand-new memories start with a disadvantage because the scoring system has not had time to learn how useful they are. This feature gives freshly saved memories a temporary boost that fades over two days, like a "new arrival" spotlight at a bookstore. It has since been turned off because testing showed it was not making a practical difference, but the logic is kept around in case it is needed later.

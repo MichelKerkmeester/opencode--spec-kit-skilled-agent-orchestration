@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Community detection.
+Describes BFS connected components and Louvain modularity-based community detection that clusters related memories, enabling co-member injection at 0.3x source score during Stage 2.
 
 ## 2. CURRENT REALITY
 
@@ -42,3 +43,7 @@ The `applyCommunityBoost()` function in the pipeline injects up to 3 community c
 - Group: Graph signal activation
 - Source feature title: Community detection
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+Memories naturally form clusters around related topics, like how books on a shelf group by subject. This feature identifies those clusters automatically. When you find one useful memory, the system can pull in its neighbors from the same cluster because they are likely related to what you are looking for. It is like finding one helpful book and having the librarian hand you the two sitting next to it.

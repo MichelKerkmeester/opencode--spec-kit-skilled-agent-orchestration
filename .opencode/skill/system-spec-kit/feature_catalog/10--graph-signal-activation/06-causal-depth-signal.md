@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Causal depth signal.
+Describes the SCC-condensed longest-path depth signal that normalizes each memory's structural distance from root components to a [0,1] score, applied as a capped +0.05 additive bonus in Stage 2.
 
 ## 2. CURRENT REALITY
 
@@ -45,3 +46,7 @@ The combined N2a+N2b adjustment is modest by design: up to +0.10 total. This kee
 - Group: Graph signal activation
 - Source feature title: Causal depth signal
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+Not all knowledge sits at the same level. A big decision that led to five smaller tasks is a "root" while those tasks are "leaves." This feature measures how deep each memory sits in that tree of cause-and-effect relationships. It gives a small search boost based on that depth, acting as a tiebreaker when two results are otherwise equally relevant.

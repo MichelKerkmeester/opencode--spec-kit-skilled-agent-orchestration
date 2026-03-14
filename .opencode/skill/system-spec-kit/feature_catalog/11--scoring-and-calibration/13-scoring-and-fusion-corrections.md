@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Scoring and fusion corrections.
+Covers eight scoring fixes including intent weight recency, five-factor weight normalization, stack overflow prevention, BM25 specFolder filter and shared `resolveEffectiveScore` consolidation.
 
 ## 2. CURRENT REALITY
 
@@ -64,3 +65,7 @@ In the non-hybrid flow, after Step 4 applies `intentAdjustedScore`, subsequent p
 - Group: Opus review remediation (Phase 017)
 - Source feature title: Scoring and fusion corrections
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+These eight fixes address problems in how scores are calculated and combined. Issues ranged from weights that did not add up to 100% to a method that crashed when processing large batches and a filter that compared apples to oranges. Each fix makes the scoring math more accurate and stable, ensuring the final ranking truly reflects which results are most relevant to your question.

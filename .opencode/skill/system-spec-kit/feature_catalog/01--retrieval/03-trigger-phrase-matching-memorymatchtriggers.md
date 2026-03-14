@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Trigger phrase matching (memory_match_triggers).
+Covers the fast-path trigger matching tool that performs direct string matching for sub-100ms retrieval.
 
 ## 2. CURRENT REALITY
 
@@ -166,3 +167,7 @@ The cognitive path fetches 2x the requested limit from the trigger matcher to gi
 - Group: Retrieval
 - Source feature title: Trigger phrase matching (memory_match_triggers)
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+This is the speed-first search option. Instead of doing a deep analysis of your question, it matches specific phrases you type against a list of known keywords, like a phone's autocomplete. It returns results almost instantly, which makes it great for quick lookups where you already know roughly what you are looking for. Frequently used memories show up with full details while older ones appear as lightweight pointers.

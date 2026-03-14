@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Embedding retry orchestrator.
+The embedding retry orchestrator runs background batch retries for memories with failed embedding generation, using cache dedup and progressive backoff.
 
 ## 2. CURRENT REALITY
 
@@ -40,3 +41,7 @@ Each retry attempt uses the embedding cache to avoid redundant API calls for con
 - Group: Pipeline architecture
 - Source feature title: Embedding retry orchestrator
 - Current reality source: audit-D04 gap backfill
+
+## 5. IN SIMPLE TERMS
+
+Creating a numerical fingerprint for each memory requires calling an external service that can sometimes be unavailable. When that service fails, the memory is saved without a fingerprint and queued for a retry. A background worker periodically picks up these queued items and tries again. This way, a temporary service outage does not permanently prevent your memories from being fully searchable.

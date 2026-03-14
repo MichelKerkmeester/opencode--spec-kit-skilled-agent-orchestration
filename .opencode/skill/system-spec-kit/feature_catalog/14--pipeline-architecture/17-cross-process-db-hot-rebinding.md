@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Cross-process DB hot rebinding.
+Cross-process DB hot rebinding detects external database mutations via a marker file and reinitializes the DB connection with module rebinding.
 
 ## 2. CURRENT REALITY
 
@@ -36,3 +37,7 @@ Process-lifetime DB connection manager via marker file (`DB_UPDATED_FILE`). When
 - Source feature title: Cross-process DB hot rebinding
 - Current reality source: 10-agent feature gap scan
 - Playbook reference: NEW-112
+
+## 5. IN SIMPLE TERMS
+
+When another process changes the database while the server is running, the server needs to notice and reconnect. This feature watches for a signal file that says "the database changed" and automatically refreshes the connection. Without it, the server would keep using stale data until someone manually restarted it.

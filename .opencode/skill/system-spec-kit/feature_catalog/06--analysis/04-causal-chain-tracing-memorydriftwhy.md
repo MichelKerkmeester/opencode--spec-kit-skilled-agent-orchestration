@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Causal chain tracing (memory_drift_why).
+Covers the graph traversal tool that traces causal relationship chains to explain why decisions were made.
 
 ## 2. CURRENT REALITY
 
@@ -137,3 +138,7 @@ When contradictions are found, the response includes warning hints. Two memories
 - Group: Analysis
 - Source feature title: Causal chain tracing (memory_drift_why)
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+This answers the question "why was this decision made?" by following the chain of connections backward through related memories. It is like tracing a family tree to understand how you got from a problem to a solution. If two memories in the chain contradict each other, the system flags the conflict so you can resolve it.

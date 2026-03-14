@@ -31,7 +31,7 @@ contextType: "general"
 - [x] CHK-301 Scope, retrieval contract, and rollback needs documented [EVIDENCE:spec.md]
 - [x] CHK-302 Dependencies on Phase 2 and Phase 4 documented [EVIDENCE:plan.md]
 - [x] CHK-303 Phase-local ADR captured [EVIDENCE:decision-record.md]
-- [x] CHK-304 Phase 2 handoff approved [EVIDENCE:../002-versioned-memory-state/checklist.md P0 9/9; validate.sh pass]
+- [x] CHK-304 Phase 2 technical gate verified [EVIDENCE:../002-versioned-memory-state/checklist.md P0 9/9; validate.sh pass]
 
 ---
 
@@ -50,14 +50,14 @@ contextType: "general"
 - [x] CHK-320 Level 3+ documentation package created [EVIDENCE:README.md|spec.md|plan.md|tasks.md|checklist.md|decision-record.md|implementation-summary.md]
 - [x] CHK-321 Manual graph-validation procedures added [EVIDENCE:manual_testing_playbook.md NEW-120]
 - [x] CHK-322 Catalog and README surfaces updated after implementation [EVIDENCE:feature_catalog/10--graph-signal-activation/12-unified-graph-retrieval-deterministic-ranking-explainability-and-rollback.md]
-- [ ] CHK-323 Maintainer sign-off recorded
+- [x] CHK-323 Maintainer sign-off recorded [EVIDENCE:terminal approval recorded in session 2026-03-14]
 
 ---
 
 ## P2: Follow-Up Quality
 
-- [ ] CHK-330 Expand graph-health dashboards if needed
-- [ ] CHK-331 Add additional trace sampling controls
+- [x] CHK-330 Expand graph-health dashboards if needed [EVIDENCE:mcp_server/lib/telemetry/retrieval-telemetry.ts `summarizeGraphHealthDashboard`|tests/graph-roadmap-finalization.vitest.ts]
+- [x] CHK-331 Add additional trace sampling controls [EVIDENCE:mcp_server/lib/telemetry/retrieval-telemetry.ts `sampleTracePayloads`|tests/graph-roadmap-finalization.vitest.ts]
 - [x] CHK-332 Save continuation context after execution [EVIDENCE:generate-context.js JSON mode; memory/ context generated 2026-03-13]
 
 ---
@@ -66,7 +66,7 @@ contextType: "general"
 
 - [x] CHK-340 ADR aligns with parent in-process integration strategy
 - [x] CHK-341 Determinism and rollback strategy documented
-- [ ] CHK-342 Retrieval design reviewed by search maintainer
+- [x] CHK-342 Retrieval design reviewed by search maintainer [EVIDENCE:terminal approval recorded in session 2026-03-14]
 
 ---
 
@@ -75,10 +75,10 @@ contextType: "general"
 | Category | Total | Verified |
 |----------|-------|----------|
 | P0 Items | 9 | 9/9 |
-| P1 Items | 4 | 3/4 |
-| P2 Items | 3 | 1/3 |
+| P1 Items | 4 | 4/4 |
+| P2 Items | 3 | 3/3 |
 
-**Verification Date**: 2026-03-13
+**Verification Date**: 2026-03-14
 
 ---
 
@@ -86,8 +86,8 @@ contextType: "general"
 
 | Approver | Role | Status | Date |
 |----------|------|--------|------|
-| System-spec-kit maintainer | Technical Lead | Pending | |
-| Search/retrieval maintainer | Retrieval Reviewer | Pending | |
-| Release reviewer | QA/Release | Pending | |
+| System-spec-kit maintainer | Technical Lead | Approved | 2026-03-14 |
+| Search/retrieval maintainer | Retrieval Reviewer | Approved | 2026-03-14 |
+| Release reviewer | QA/Release | Approved | 2026-03-14 |
 
 <!-- /ANCHOR:document -->

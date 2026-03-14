@@ -7,10 +7,11 @@
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
 - [5. PLAYBOOK COVERAGE](#5--playbook-coverage)
+- [6. IN SIMPLE TERMS](#6--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Shared-memory rollout, deny-by-default membership, and kill switch.
+Shared-memory rollout controls access to shared spaces through deny-by-default membership and an immediate kill switch for incident response.
 
 ## 2. CURRENT REALITY
 
@@ -18,7 +19,7 @@ Phase 6 introduced shared-memory spaces with governance-first rollout controls. 
 
 Rollout is controlled per space and supports immediate kill-switch behavior. Even previously authorized members are blocked when the kill switch is enabled, providing a hard operational stop for incident response or controlled rollback.
 
-Shared-memory handlers and lifecycle tools use the same membership and rollout checks so save, search, and status flows enforce one consistent governance boundary.
+Shared-memory handlers and lifecycle tools use the same membership and rollout checks so save, search and status flows enforce one consistent governance boundary.
 
 ## 3. SOURCE FILES
 
@@ -35,7 +36,7 @@ Shared-memory handlers and lifecycle tools use the same membership and rollout c
 
 | File | Focus |
 |------|-------|
-| `mcp_server/tests/shared-spaces.vitest.ts` | Deny-by-default membership, membership grant flow, and kill-switch enforcement |
+| `mcp_server/tests/shared-spaces.vitest.ts` | Deny-by-default membership, membership grant flow and kill-switch enforcement |
 
 ## 4. SOURCE METADATA
 
@@ -46,3 +47,7 @@ Shared-memory handlers and lifecycle tools use the same membership and rollout c
 ## 5. PLAYBOOK COVERAGE
 
 - Mapped to manual testing playbook scenario NEW-123
+
+## 6. IN SIMPLE TERMS
+
+Shared memory spaces let multiple users or agents access the same pool of knowledge. This feature makes sure nobody gets access unless they are explicitly granted membership, and it includes an emergency "off" switch that immediately blocks everyone if something goes wrong. It is like a shared office with a keycard lock: you only get in if your name is on the list, and building management can lock it down instantly in an emergency.

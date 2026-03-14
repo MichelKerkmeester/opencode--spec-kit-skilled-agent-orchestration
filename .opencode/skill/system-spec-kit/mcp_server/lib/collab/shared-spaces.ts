@@ -45,13 +45,126 @@ export interface SharedMembership {
 }
 
 /**
+ * Aggregate rollout metrics for shared spaces, memberships, and conflicts.
+ */
+export interface SharedRolloutMetrics {
+  tenantId?: string;
+  totalSpaces: number;
+  rolloutEnabledSpaces: number;
+  rolloutDisabledSpaces: number;
+  killSwitchedSpaces: number;
+  totalMemberships: number;
+  totalConflicts: number;
+  totalCohorts: number;
+}
+
+/**
+ * Per-cohort summary used to review shared rollout coverage.
+ */
+export interface SharedRolloutCohortSummary {
+  cohort: string | null;
+  totalSpaces: number;
+  rolloutEnabledSpaces: number;
+  killSwitchedSpaces: number;
+  membershipCount: number;
+}
+
+/**
+ * Aggregate summary of conflict strategies used in shared spaces.
+ */
+export interface SharedConflictStrategySummary {
+  strategy: string;
+  totalConflicts: number;
+  distinctLogicalKeys: number;
+  latestCreatedAt: string | null;
+}
+
+const HIGH_RISK_CONFLICT_KINDS = new Set([
+  'destructive_edit',
+  'schema_mismatch',
+  'semantic_divergence',
+]);
+
+function isDefaultOnFlagEnabled(...flagNames: string[]): boolean {
+  for (const flagName of flagNames) {
+    const rawValue = process.env[flagName]?.trim().toLowerCase();
+    if (rawValue === 'false' || rawValue === '0') {
+      return false;
+    }
+    if (rawValue === 'true' || rawValue === '1') {
+      return true;
+    }
+  }
+  return true;
+}
+
+function normalizeConflictKind(metadata: Record<string, unknown> | undefined): string | null {
+  const value = metadata?.conflictKind;
+  if (typeof value !== 'string') return null;
+  const normalized = value.trim().toLowerCase();
+  return normalized.length > 0 ? normalized : null;
+}
+
+function normalizeExplicitStrategy(metadata: Record<string, unknown> | undefined): string | null {
+  const value = metadata?.strategy;
+  if (typeof value !== 'string') return null;
+  const normalized = value.trim().toLowerCase();
+  return normalized.length > 0 ? normalized : null;
+}
+
+function resolveSharedConflictStrategy(
+  database: Database.Database,
+  args: {
+    spaceId: string;
+    logicalKey: string;
+    metadata?: Record<string, unknown>;
+  },
+): { strategy: string; metadata: Record<string, unknown> | null } {
+  const explicitStrategy = normalizeExplicitStrategy(args.metadata);
+  const conflictKind = normalizeConflictKind(args.metadata);
+  const priorConflictsRow = database.prepare(`
+    SELECT COUNT(*) AS count
+    FROM shared_space_conflicts
+    WHERE space_id = ?
+      AND logical_key = ?
+  `).get(args.spaceId, args.logicalKey) as { count?: number } | undefined;
+  const priorConflicts = typeof priorConflictsRow?.count === 'number' ? priorConflictsRow.count : 0;
+
+  const strategy = explicitStrategy
+    ?? (HIGH_RISK_CONFLICT_KINDS.has(conflictKind ?? '')
+      ? 'manual_merge'
+      : priorConflicts > 0
+        ? 'manual_merge'
+        : 'append_version');
+  const strategyReason = explicitStrategy
+    ? 'explicit_metadata'
+    : HIGH_RISK_CONFLICT_KINDS.has(conflictKind ?? '')
+      ? `high_risk:${conflictKind}`
+      : priorConflicts > 0
+        ? 'repeat_conflict'
+        : 'default_append_only';
+
+  return {
+    strategy,
+    metadata: {
+      ...(args.metadata ?? {}),
+      strategy,
+      strategyReason,
+      priorConflictCount: priorConflicts,
+    },
+  };
+}
+
+/**
  * Resolve whether shared-memory rollout is enabled for the process.
  *
  * @returns `true` when shared-memory access is allowed at runtime.
  */
 export function isSharedMemoryEnabled(): boolean {
-  return process.env.SPECKIT_MEMORY_SHARED_MEMORY === 'true'
-    || process.env.SPECKIT_HYDRA_SHARED_MEMORY === 'true';
+  return isDefaultOnFlagEnabled(
+    'SPECKIT_MEMORY_SHARED_MEMORY',
+    'SPECKIT_HYDRA_SHARED_MEMORY',
+  );
 }
 
 /**
@@ -61,6 +174,165 @@ export function isSharedMemoryEnabled(): boolean {
  */
 export function ensureSharedCollabRuntime(database: Database.Database): void {
   ensureSharedSpaceTables(database);
+}
+
+/**
+ * Summarize shared-space rollout metrics for an optional tenant boundary.
+ *
+ * @param database - Database connection that stores shared-space state.
+ * @param tenantId - Optional tenant to constrain the summary.
+ * @returns Aggregate rollout, membership, and conflict counts.
+ */
+export function getSharedRolloutMetrics(database: Database.Database, tenantId?: string): SharedRolloutMetrics {
+  ensureSharedCollabRuntime(database);
+  const normalizedTenantId = normalizeScopeContext({ tenantId }).tenantId ?? null;
+
+  const spaceCounts = database.prepare(`
+    SELECT
+      COUNT(*) AS total_spaces,
+      SUM(CASE WHEN rollout_enabled = 1 THEN 1 ELSE 0 END) AS rollout_enabled_spaces,
+      SUM(CASE WHEN rollout_enabled = 0 THEN 1 ELSE 0 END) AS rollout_disabled_spaces,
+      SUM(CASE WHEN kill_switch = 1 THEN 1 ELSE 0 END) AS kill_switched_spaces,
+      COUNT(DISTINCT CASE
+        WHEN rollout_cohort IS NOT NULL AND TRIM(rollout_cohort) <> ''
+        THEN rollout_cohort
+      END) AS total_cohorts
+    FROM shared_spaces
+    WHERE (? IS NULL OR tenant_id = ?)
+  `).get(normalizedTenantId, normalizedTenantId) as {
+    total_spaces: number;
+    rollout_enabled_spaces: number | null;
+    rollout_disabled_spaces: number | null;
+    kill_switched_spaces: number | null;
+    total_cohorts: number;
+  };
+
+  const membershipRow = database.prepare(`
+    SELECT COUNT(*) AS count
+    FROM shared_space_members m
+    JOIN shared_spaces s ON s.space_id = m.space_id
+    WHERE (? IS NULL OR s.tenant_id = ?)
+  `).get(normalizedTenantId, normalizedTenantId) as { count: number };
+
+  const conflictRow = database.prepare(`
+    SELECT COUNT(*) AS count
+    FROM shared_space_conflicts c
+    JOIN shared_spaces s ON s.space_id = c.space_id
+    WHERE (? IS NULL OR s.tenant_id = ?)
+  `).get(normalizedTenantId, normalizedTenantId) as { count: number };
+
+  return {
+    tenantId: normalizedTenantId ?? undefined,
+    totalSpaces: spaceCounts.total_spaces,
+    rolloutEnabledSpaces: spaceCounts.rollout_enabled_spaces ?? 0,
+    rolloutDisabledSpaces: spaceCounts.rollout_disabled_spaces ?? 0,
+    killSwitchedSpaces: spaceCounts.kill_switched_spaces ?? 0,
+    totalMemberships: membershipRow.count,
+    totalConflicts: conflictRow.count,
+    totalCohorts: spaceCounts.total_cohorts,
+  };
+}
+
+/**
+ * Summarize rollout cohorts for shared spaces within an optional tenant boundary.
+ *
+ * @param database - Database connection that stores shared-space state.
+ * @param tenantId - Optional tenant to constrain the summary.
+ * @returns Cohort-by-cohort rollout counts ordered for review.
+ */
+export function getSharedRolloutCohortSummary(
+  database: Database.Database,
+  tenantId?: string,
+): SharedRolloutCohortSummary[] {
+  ensureSharedCollabRuntime(database);
+  const normalizedTenantId = normalizeScopeContext({ tenantId }).tenantId ?? null;
+  const spaces = database.prepare(`
+    SELECT space_id, rollout_enabled, rollout_cohort, kill_switch
+    FROM shared_spaces
+    WHERE (? IS NULL OR tenant_id = ?)
+    ORDER BY space_id ASC
+  `).all(normalizedTenantId, normalizedTenantId) as Array<{
+    space_id: string;
+    rollout_enabled: number;
+    rollout_cohort: string | null;
+    kill_switch: number;
+  }>;
+
+  const membershipRows = database.prepare(`
+    SELECT s.space_id, COUNT(m.subject_id) AS membership_count
+    FROM shared_spaces s
+    LEFT JOIN shared_space_members m ON m.space_id = s.space_id
+    WHERE (? IS NULL OR s.tenant_id = ?)
+    GROUP BY s.space_id
+  `).all(normalizedTenantId, normalizedTenantId) as Array<{
+    space_id: string;
+    membership_count: number;
+  }>;
+
+  const membershipCounts = new Map<string, number>(
+    membershipRows.map((row) => [row.space_id, row.membership_count]),
+  );
+  const summaryByCohort = new Map<string | null, SharedRolloutCohortSummary>();
+
+  for (const space of spaces) {
+    const cohort = typeof space.rollout_cohort === 'string' && space.rollout_cohort.trim().length > 0
+      ? space.rollout_cohort
+      : null;
+    const existing = summaryByCohort.get(cohort) ?? {
+      cohort,
+      totalSpaces: 0,
+      rolloutEnabledSpaces: 0,
+      killSwitchedSpaces: 0,
+      membershipCount: 0,
+    };
+
+    existing.totalSpaces += 1;
+    if (space.rollout_enabled === 1) {
+      existing.rolloutEnabledSpaces += 1;
+    }
+    if (space.kill_switch === 1) {
+      existing.killSwitchedSpaces += 1;
+    }
+    existing.membershipCount += membershipCounts.get(space.space_id) ?? 0;
+    summaryByCohort.set(cohort, existing);
+  }
+
+  return Array.from(summaryByCohort.values()).sort((left, right) => {
+    if (left.cohort === null) return 1;
+    if (right.cohort === null) return -1;
+    return left.cohort.localeCompare(right.cohort);
+  });
+}
+
+/**
+ * Summarize how shared-space conflicts have been resolved by strategy.
+ *
+ * @param database - Database connection that stores shared-space state.
+ * @param spaceId - Optional shared-space identifier to constrain the summary.
+ * @returns Conflict counts grouped by strategy.
+ */
+export function getSharedConflictStrategySummary(
+  database: Database.Database,
+  spaceId?: string,
+): SharedConflictStrategySummary[] {
+  ensureSharedCollabRuntime(database);
+
+  return database.prepare(`
+    SELECT
+      strategy,
+      COUNT(*) AS total_conflicts,
+      COUNT(DISTINCT logical_key) AS distinct_logical_keys,
+      MAX(created_at) AS latest_created_at
+    FROM shared_space_conflicts
+    WHERE (? IS NULL OR space_id = ?)
+    GROUP BY strategy
+    ORDER BY total_conflicts DESC, strategy ASC
+  `).all(spaceId ?? null, spaceId ?? null).map((row) => ({
+    strategy: (row as { strategy: string }).strategy,
+    totalConflicts: (row as { total_conflicts: number }).total_conflicts,
+    distinctLogicalKeys: (row as { distinct_logical_keys: number }).distinct_logical_keys,
+    latestCreatedAt: (row as { latest_created_at: string | null }).latest_created_at,
+  }));
 }
 
 /**
@@ -250,6 +522,7 @@ export function recordSharedConflict(
   }
 ): void {
   ensureSharedCollabRuntime(database);
+  const resolved = resolveSharedConflictStrategy(database, args);
   database.prepare(`
     INSERT INTO shared_space_conflicts (
       space_id, logical_key, existing_memory_id, incoming_memory_id, strategy, actor, metadata
@@ -259,9 +532,9 @@ export function recordSharedConflict(
     args.logicalKey,
     args.existingMemoryId,
     args.incomingMemoryId,
-    'append_version',
+    resolved.strategy,
     args.actor,
-    args.metadata ? JSON.stringify(args.metadata) : null,
+    resolved.metadata ? JSON.stringify(resolved.metadata) : null,
   );
 
   recordGovernanceAudit(database, {
@@ -270,7 +543,7 @@ export function recordSharedConflict(
     memoryId: args.incomingMemoryId,
     logicalKey: args.logicalKey,
     sharedSpaceId: args.spaceId,
-    reason: 'append_version',
-    metadata: args.metadata ?? null,
+    reason: resolved.strategy,
+    metadata: resolved.metadata,
   });
 }

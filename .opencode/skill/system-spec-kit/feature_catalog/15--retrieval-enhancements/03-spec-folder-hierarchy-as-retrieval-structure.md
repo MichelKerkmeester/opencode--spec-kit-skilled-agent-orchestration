@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Spec folder hierarchy as retrieval structure.
+Spec folder paths are parsed into an in-memory hierarchy tree that surfaces parent, sibling and ancestor memories during retrieval.
 
 ## 2. CURRENT REALITY
 
@@ -38,3 +39,7 @@ The `queryHierarchyMemories()` function returns parent, sibling and ancestor mem
 - Group: Retrieval enhancements
 - Source feature title: Spec folder hierarchy as retrieval structure
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+The way you organize your project folders directly influences what the system finds when you search. If you are looking at a child folder, the system also checks the parent and sibling folders for related information. It is like browsing one section of a bookstore and getting recommendations from nearby shelves because they cover related topics.

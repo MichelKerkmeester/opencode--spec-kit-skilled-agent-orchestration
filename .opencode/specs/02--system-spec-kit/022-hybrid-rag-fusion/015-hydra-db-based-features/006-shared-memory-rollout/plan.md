@@ -38,14 +38,14 @@ Phase 6 packages the roadmap into a controllable collaboration rollout. The plan
 - [x] Collaboration scope and rollout gates documented
 - [x] Dependencies on Phases 3, 4, and 5 documented
 - [x] Kill-switch and rollback requirements documented
-- [ ] Phase 5 governance gate approved
+- [x] Phase 5 governance gate approved
 
 ### Definition of Done
-- [ ] Shared-memory spaces implemented
-- [ ] Membership and conflict rules validated
-- [ ] Kill-switch and rollback drills pass
-- [ ] Staged rollout procedures documented and tested
-- [ ] Docs and feature catalog reflect shipped behavior
+- [x] Shared-memory spaces implemented
+- [x] Membership and conflict rules validated
+- [x] Kill-switch and rollback drills pass
+- [x] Staged rollout procedures documented and tested
+- [x] Docs and feature catalog reflect shipped behavior
 
 ---
 
@@ -73,19 +73,19 @@ Opt-in collaboration layer on top of governed memory state. Phase 6 introduces s
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase A: Space and Membership Model
-- [ ] Define shared-space schema and role model
-- [ ] Integrate governance checks into collaboration flows
-- [ ] Define cohort rollout controls
+- [x] Define shared-space schema and role model
+- [x] Integrate governance checks into collaboration flows
+- [x] Define cohort rollout controls
 
 ### Phase B: Conflict Handling and Telemetry
-- [ ] Implement conflict strategy
-- [ ] Add collaboration telemetry and audit traces
-- [ ] Add shared-memory test coverage
+- [x] Implement conflict strategy
+- [x] Add collaboration telemetry and audit traces
+- [x] Add shared-memory test coverage
 
 ### Phase C: Staged Rollout and Rollback
-- [ ] Add kill switches and rollback drills
-- [ ] Add playbook runbooks for rollout and incidents
-- [ ] Validate cohort expansion and contraction procedures
+- [x] Add kill switches and rollback drills
+- [x] Add playbook runbooks for rollout and incidents
+- [x] Validate cohort expansion and contraction procedures
 
 ---
 
@@ -151,10 +151,10 @@ Phase 5 governance -> Shared-space model -> Conflict handling -> Staged rollout 
 ## L2: ENHANCED ROLLBACK
 
 ### Pre-deployment Checklist
-- [ ] Governance gate approved
-- [ ] Rollout cohorts defined
-- [ ] Kill-switch path verified
-- [ ] Operator runbooks drafted
+- [x] Governance gate approved
+- [x] Rollout cohorts defined
+- [x] Kill-switch path verified
+- [x] Operator runbooks drafted
 
 ### Rollback Procedure
 1. Disable shared-memory access.

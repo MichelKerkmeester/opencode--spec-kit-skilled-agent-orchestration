@@ -6,10 +6,11 @@
 - [2. CURRENT REALITY](#2--current-reality)
 - [3. SOURCE FILES](#3--source-files)
 - [4. SOURCE METADATA](#4--source-metadata)
+- [5. IN SIMPLE TERMS](#5--in-simple-terms)
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for Checkpoint restore (checkpoint_restore).
+Covers the checkpoint restore tool that decompresses snapshots and merges or replaces memory state atomically.
 
 ## 2. CURRENT REALITY
 
@@ -19,7 +20,7 @@ The `clearExisting` mode deserves explanation. When true, the entire restore run
 
 When merging (the default), the system checks for duplicates using a logical key of `spec_folder + file_path + anchor_id`. Existing memories that match the logical key are skipped rather than duplicated.
 
-After restore, vectors are restored from the checkpoint snapshot when vector payloads are present. The restore handler then clears in-memory search/constitutional caches, rebuilds BM25 from live DB content when BM25 is enabled, and refreshes the trigger cache. This keeps restored memories immediately discoverable without forcing a full re-embedding pass.
+After restore, vectors are restored from the checkpoint snapshot when vector payloads are present. The restore handler then clears in-memory search/constitutional caches, rebuilds BM25 from live DB content when BM25 is enabled and refreshes the trigger cache. This keeps restored memories immediately discoverable without forcing a full re-embedding pass.
 
 ## 3. SOURCE FILES
 
@@ -143,3 +144,7 @@ After restore, vectors are restored from the checkpoint snapshot when vector pay
 - Group: Lifecycle
 - Source feature title: Checkpoint restore (checkpoint_restore)
 - Current reality source: feature_catalog.md
+
+## 5. IN SIMPLE TERMS
+
+This brings your knowledge base back to a previous snapshot, like using the undo button on a massive scale. If the restore fails partway through, nothing changes and your current data stays safe. Restored memories are immediately searchable without any extra steps.
