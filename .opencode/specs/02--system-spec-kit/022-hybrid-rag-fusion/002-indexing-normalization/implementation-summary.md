@@ -33,14 +33,14 @@ This consolidated spec combined two delivered streams: canonical-path deduplicat
 - `.opencode/skill/system-spec-kit/mcp_server/lib/scoring/importance-tiers.ts` - Standardized tier precedence so metadata, inline markers, and defaults resolve in one deterministic order.
 - `.opencode/skill/system-spec-kit/scripts/dist/memory/backfill-frontmatter.js` - Delivered dry-run/apply migration flow and idempotency checks for canonical frontmatter normalization.
 - `.opencode/skill/system-spec-kit/templates/level_3/spec.md` and `.opencode/skill/system-spec-kit/templates/level_3/plan.md` - Updated templates to emit canonical frontmatter structure.
-- `.opencode/skill/system-spec-kit/mcp_server/tests/memory-parser.vitest.ts`, `handler-memory-index.vitest.ts`, `importance-tiers.vitest.ts`, `memory-parser-extended.vitest.ts`, `spec126-full-spec-doc-indexing.vitest.ts`, and `index-refresh.vitest.ts` - Added and extended regression coverage for deduplication, tier precedence, normalized parsing, and index rebuild behavior.
+- `.opencode/skill/system-spec-kit/mcp_server/tests/memory-parser.vitest.ts`, `handler-memory-index.vitest.ts`, `importance-tiers.vitest.ts`, `memory-parser-extended.vitest.ts`, `full-spec-doc-indexing.vitest.ts`, and `index-refresh.vitest.ts` - Added and extended regression coverage for deduplication, tier precedence, normalized parsing, and index rebuild behavior.
 
 ---
 
 ## Testing Status
 
 - PASS - `npm test -- tests/memory-parser.vitest.ts tests/handler-memory-index.vitest.ts tests/importance-tiers.vitest.ts` (52 tests) verified alias-root deduplication and tier precedence behavior.
-- PASS - `npm test -- tests/memory-parser-extended.vitest.ts tests/spec126-full-spec-doc-indexing.vitest.ts` (186 tests) verified broader parser and spec-document indexing behavior.
+- PASS - `npm test -- tests/memory-parser-extended.vitest.ts tests/full-spec-doc-indexing.vitest.ts` (186 tests) verified broader parser and spec-document indexing behavior.
 - PASS - `npm run build`, template compose verification, `test-template-system.js`, `test-template-comprehensive.js`, and `test-frontmatter-backfill.js` verified the frontmatter normalization toolchain.
 - PASS - Migration apply and dry-run idempotency evidence showed successful rewrite plus `changed 0` on the final dry-run rerun.
 - PASS - Reindex completed successfully after migration, with prior notes indicating `STATUS=OK` on repeated runs.

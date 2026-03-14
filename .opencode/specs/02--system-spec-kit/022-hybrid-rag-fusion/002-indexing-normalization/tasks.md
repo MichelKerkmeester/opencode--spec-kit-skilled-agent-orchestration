@@ -168,7 +168,7 @@ contextType: "implementation"
 ## Phase 3: Verification
 
 - [x] T008 Run unit tests for parser/coercion/compose paths (`npm test -- parser/frontmatter suites`) | Evidence: Passed: `test-template-system.js`, `test-template-comprehensive.js`, `test-frontmatter-backfill.js`, `mcp_server/tests/memory-parser.vitest.ts`, `mcp_server/tests/memory-parser-extended.vitest.ts`.
-- [x] T009 Run integration reindex and retrieval regression suites (`mcp_server/tests/...`) | Evidence: `npm run test --workspace mcp_server -- tests/spec126-full-spec-doc-indexing.vitest.ts tests/index-refresh.vitest.ts` passed; reindex quality checks remain captured in `implementation-summary.md`.
+- [x] T009 Run integration reindex and retrieval regression suites (`mcp_server/tests/...`) | Evidence: `npm run test --workspace mcp_server -- tests/full-spec-doc-indexing.vitest.ts tests/index-refresh.vitest.ts` passed; reindex quality checks remain captured in `implementation-summary.md`.
 - [x] T010 Update checklist and implementation summary with evidence (`checklist.md`, `implementation-summary.md`) | Evidence: Evidence paths, numbering normalization, and `historical scratch artifact "full-tree-fusion-audit.md"` were updated in this remediation pass.
 <!-- /ANCHOR:phase-3 -->
 

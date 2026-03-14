@@ -386,7 +386,7 @@ Define and execute a deterministic normalization plus reindex workflow that prod
 | `.opencode/skill/system-spec-kit/templates/level_3/plan.md` | Modify | Apply canonical frontmatter format. |
 | `.opencode/skill/system-spec-kit/mcp_server/lib/parsing/memory-parser.ts` | Modify | Enforce normalized parse + compose behavior. |
 | `.opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js` | Modify | Add migration pass and trigger reindex flow. |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/spec126-full-spec-doc-indexing.vitest.ts` | Modify | Expand tests for normalized frontmatter indexing. |
+| `.opencode/skill/system-spec-kit/mcp_server/tests/full-spec-doc-indexing.vitest.ts` | Modify | Expand tests for normalized frontmatter indexing. |
 <!-- /ANCHOR:scope -->
 
 ---

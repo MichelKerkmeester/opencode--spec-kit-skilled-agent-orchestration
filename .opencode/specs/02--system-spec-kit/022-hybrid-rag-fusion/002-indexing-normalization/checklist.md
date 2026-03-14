@@ -82,7 +82,7 @@ contextType: "implementation"
 - [x] CHK-020 [P0] All acceptance criteria met [EVIDENCE: targeted + extended test runs PASS (52 + 186 tests)]
 - [x] CHK-021 [P0] Alias-root dedup regression tests pass [EVIDENCE: `npm test -- tests/memory-parser.vitest.ts tests/handler-memory-index.vitest.ts tests/importance-tiers.vitest.ts` PASS (52 tests)]
 - [x] CHK-022 [P1] Tier precedence regression tests pass [EVIDENCE: targeted parser/tier suites PASS; extended parser/spec suite PASS]
-- [x] CHK-023 [P1] Error scenarios validated [EVIDENCE: `npm test -- tests/memory-parser-extended.vitest.ts tests/spec126-full-spec-doc-indexing.vitest.ts` PASS (186 tests)]
+- [x] CHK-023 [P1] Error scenarios validated [EVIDENCE: `npm test -- tests/memory-parser-extended.vitest.ts tests/full-spec-doc-indexing.vitest.ts` PASS (186 tests)]
 <!-- /ANCHOR:testing -->
 
 ---
@@ -267,7 +267,7 @@ contextType: "implementation"
 - [x] CHK-020 [P0] Acceptance criteria met for normalization and rebuild | Evidence: Migration dry-run and regression command set passed, including `test-frontmatter-backfill.js` coverage for template-path processing by default (`T-FMB-008`), and reindex reached `STATUS=OK` (ran twice).
 - [x] CHK-021 [P0] Manual dry-run and apply verification complete | Evidence: `scratch/frontmatter-apply-report.json` (`changed: 1789, failed: 0`) plus idempotency dry-run `scratch/frontmatter-final-dry-run-report-v3.json` (`changed: 0, unchanged: 1789, failed: 0`).
 - [x] CHK-022 [P1] Edge cases tested (managed key casing, quoted comma arrays, malformed frontmatter) | Evidence: `node scripts/tests/test-frontmatter-backfill.js` passed with `T-FMB-005`, `T-FMB-006`, `T-FMB-007`, `T-FMB-009`, and `T-FMB-010`.
-- [x] CHK-023 [P1] Retrieval regression scenarios validated | Evidence: `npm run test --workspace mcp_server -- tests/spec126-full-spec-doc-indexing.vitest.ts tests/index-refresh.vitest.ts` passed. Prior DB quality checks remain recorded in implementation summary.
+- [x] CHK-023 [P1] Retrieval regression scenarios validated | Evidence: `npm run test --workspace mcp_server -- tests/full-spec-doc-indexing.vitest.ts tests/index-refresh.vitest.ts` passed. Prior DB quality checks remain recorded in implementation summary.
 <!-- /ANCHOR:testing -->
 
 ---
