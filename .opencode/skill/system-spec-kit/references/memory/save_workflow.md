@@ -213,7 +213,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js \
 
 # Direct phase target mode (authoritative; saves to the selected phase folder's own memory/ directory)
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js \
-  ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/021-remediation-revalidation"
+  ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/021-remediation-revalidation"
 ```
 
 ### Required JSON Fields

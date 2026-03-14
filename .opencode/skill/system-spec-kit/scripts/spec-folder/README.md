@@ -201,7 +201,7 @@ node scripts/dist/memory/generate-context.js /tmp/context.json specs/<###-featur
 node scripts/dist/memory/generate-context.js 003-parent/001-child
 
 # Phase-folder paths stay authoritative and save into that selected phase folder
-node scripts/dist/memory/generate-context.js .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/021-remediation-revalidation
+node scripts/dist/memory/generate-context.js .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/021-remediation-revalidation
 ```
 
 #### Multiple specs directories warning

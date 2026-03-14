@@ -2,7 +2,7 @@
 
 ## 1. OVERVIEW
 
-Session capturing pipeline quality covers the 20 P0-P3 fixes applied to `generate-context.js` and its supporting extractors during the Part I audit and remediation of spec 011-perfect-session-capturing. These fixes harden session ID generation, atomic writes, contamination filtering, extraction correctness, and configurability across the memory-save pipeline.
+Session capturing pipeline quality covers the 20 P0-P3 fixes applied to `generate-context.js` and its supporting extractors during the Part I audit and remediation of spec 010-perfect-session-capturing. These fixes harden session ID generation, atomic writes, contamination filtering, extraction correctness, and configurability across the memory-save pipeline.
 
 The pipeline processes raw session data (observations, tool calls, file modifications) into structured memory files. Before these fixes, the pipeline had security gaps (predictable session IDs, partial write failures), quality gaps (false learning deltas, contaminated slugs), and configurability gaps (hardcoded limits). The remediation brought all critical and high-severity findings to closure.
 
@@ -59,4 +59,4 @@ Status: Implemented and verified via node test suite (278 passed), vitest bounda
 
 - Group: Tooling and scripts
 - Source feature title: Session capturing pipeline quality
-- Current reality source: spec 011-perfect-session-capturing
+- Current reality source: spec 010-perfect-session-capturing

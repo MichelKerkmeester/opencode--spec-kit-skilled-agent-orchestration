@@ -20,6 +20,21 @@ function makeTempRoot(prefix: string): string {
   return root;
 }
 
+function initializeGitRepo(repoRoot: string, branchName = 'test-main'): void {
+  execFileSync('git', ['init'], { cwd: repoRoot, stdio: 'ignore' });
+  execFileSync('git', ['checkout', '-b', branchName], { cwd: repoRoot, stdio: 'ignore' });
+  execFileSync('git', ['config', 'user.email', 'test@example.com'], { cwd: repoRoot, stdio: 'ignore' });
+  execFileSync('git', ['config', 'user.name', 'Spec Kit Tests'], { cwd: repoRoot, stdio: 'ignore' });
+}
+
+function readShortHead(repoRoot: string): string {
+  return execFileSync('git', ['rev-parse', '--short=12', 'HEAD'], {
+    cwd: repoRoot,
+    encoding: 'utf-8',
+    stdio: ['pipe', 'pipe', 'ignore'],
+  }).trim();
+}
+
 afterEach(() => {
   while (tempRoots.length > 0) {
     fs.rmSync(tempRoots.pop()!, { recursive: true, force: true });
@@ -41,7 +56,7 @@ describe('stateless enrichment guardrails', () => {
       sessionTitle: 'Perfect Session Capturing',
       sessionId: 'session-test',
       capturedAt: '2026-03-09T10:01:00Z',
-    }, '02--system-spec-kit/022-hybrid-rag-fusion/011-perfect-session-capturing');
+    }, '02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing');
 
     expect(transformed.userPrompts).toHaveLength(1);
     expect(transformed.observations).toHaveLength(1);
@@ -67,7 +82,7 @@ describe('stateless enrichment guardrails', () => {
       sessionTitle: 'Perfect Session Capturing',
       sessionId: 'session-test',
       capturedAt: '2026-03-09T10:06:00Z',
-    }, '02--system-spec-kit/022-hybrid-rag-fusion/011-perfect-session-capturing');
+    }, '02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing');
 
     expect(transformed.userPrompts).toHaveLength(1);
     expect(transformed.userPrompts[0]?.prompt).toContain('Perfect session capturing');
@@ -119,7 +134,7 @@ describe('stateless enrichment guardrails', () => {
   it('extracts task progress and decisions from spec-folder docs without crashing on sparse inputs', async () => {
     const specRoot = makeTempRoot('speckit-spec-folder-sparse-');
     fs.writeFileSync(path.join(specRoot, 'description.json'), JSON.stringify({
-      id: '011-perfect-session-capturing',
+      id: '010-perfect-session-capturing',
       title: 'Perfect Session Capturing',
       status: 'in-progress',
       level: 3,
@@ -186,7 +201,7 @@ describe('stateless enrichment guardrails', () => {
 
   it('uses spec-declared file targets to scope git context beyond the spec folder path itself', async () => {
     const repoRoot = makeTempRoot('speckit-git-context-');
-    const specFolderPath = path.join(repoRoot, '.opencode', 'specs', '02--system-spec-kit', '022-hybrid-rag-fusion', '011-perfect-session-capturing');
+    const specFolderPath = path.join(repoRoot, '.opencode', 'specs', '02--system-spec-kit', '022-hybrid-rag-fusion', '010-perfect-session-capturing');
     const workflowPath = path.join(repoRoot, '.opencode', 'skill', 'system-spec-kit', 'scripts', 'core', 'workflow.ts');
 
     fs.mkdirSync(specFolderPath, { recursive: true });
@@ -212,15 +227,21 @@ describe('stateless enrichment guardrails', () => {
     fs.writeFileSync(path.join(specFolderPath, 'decision-record.md'), '## DR-001\n\n**Decision:** Track workflow changes.\n', 'utf-8');
     fs.writeFileSync(workflowPath, 'export const workflowVersion = 1;\n', 'utf-8');
 
-    execFileSync('git', ['init'], { cwd: repoRoot, stdio: 'ignore' });
-    execFileSync('git', ['config', 'user.email', 'test@example.com'], { cwd: repoRoot, stdio: 'ignore' });
-    execFileSync('git', ['config', 'user.name', 'Spec Kit Tests'], { cwd: repoRoot, stdio: 'ignore' });
+    initializeGitRepo(repoRoot);
     execFileSync('git', ['add', '-f', '.'], { cwd: repoRoot, stdio: 'ignore' });
     execFileSync('git', ['commit', '-m', 'feat: add workflow alignment fix'], { cwd: repoRoot, stdio: 'ignore' });
 
     const gitContext = await extractGitContext(repoRoot, specFolderPath);
+    const commitRef = readShortHead(repoRoot);
 
-    expect(gitContext.commitCount).toBe(1);
+    expect(gitContext).toMatchObject({
+      commitCount: 1,
+      uncommittedCount: 0,
+      headRef: 'test-main',
+      commitRef,
+      repositoryState: 'clean',
+      isDetachedHead: false,
+    });
     expect(gitContext.FILES).toEqual(expect.arrayContaining([
       expect.objectContaining({
         FILE_PATH: '.opencode/skill/system-spec-kit/scripts/core/workflow.ts',
@@ -234,7 +255,7 @@ describe('stateless enrichment guardrails', () => {
     ]));
   });
 
-  it('degrades cleanly when git context is unavailable and on single-commit repositories', async () => {
+  it('degrades cleanly when git context is unavailable', async () => {
     const noGitRoot = makeTempRoot('speckit-no-git-');
     const noGitContext = await extractGitContext(noGitRoot);
 
@@ -244,7 +265,145 @@ describe('stateless enrichment guardrails', () => {
       summary: '',
       commitCount: 0,
       uncommittedCount: 0,
+      headRef: null,
+      commitRef: null,
+      repositoryState: 'unavailable',
+      isDetachedHead: false,
     });
+  });
+
+  it('keeps uncommitted file context in repositories that do not have a HEAD commit yet', async () => {
+    const repoRoot = makeTempRoot('speckit-unborn-head-');
+    const trackedFile = path.join(repoRoot, 'scripts', 'core', 'workflow.ts');
+
+    fs.mkdirSync(path.dirname(trackedFile), { recursive: true });
+    fs.writeFileSync(trackedFile, 'export const workflowVersion = 1;\n', 'utf-8');
+
+    initializeGitRepo(repoRoot, 'scratch-branch');
+
+    const gitContext = await extractGitContext(repoRoot);
+
+    expect(gitContext).toMatchObject({
+      commitCount: 0,
+      uncommittedCount: 1,
+      headRef: 'scratch-branch',
+      commitRef: null,
+      repositoryState: 'dirty',
+      isDetachedHead: false,
+    });
+    expect(gitContext.FILES).toEqual(expect.arrayContaining([
+      expect.objectContaining({
+        FILE_PATH: 'scripts/core/workflow.ts',
+        ACTION: 'add',
+      }),
+    ]));
+    expect(gitContext.summary).toContain('head scratch-branch');
+    expect(gitContext.summary).toContain('state dirty');
+    expect(gitContext.observations).toEqual(expect.arrayContaining([
+      expect.objectContaining({
+        title: 'Uncommitted add: scripts/core/workflow.ts',
+        files: ['scripts/core/workflow.ts'],
+      }),
+    ]));
+  });
+
+  it('reports detached HEAD metadata without losing commit context', async () => {
+    const repoRoot = makeTempRoot('speckit-detached-head-');
+    const trackedFile = path.join(repoRoot, 'scripts', 'core', 'workflow.ts');
+
+    fs.mkdirSync(path.dirname(trackedFile), { recursive: true });
+    fs.writeFileSync(trackedFile, 'export const workflowVersion = 1;\n', 'utf-8');
+
+    initializeGitRepo(repoRoot);
+    execFileSync('git', ['add', '.'], { cwd: repoRoot, stdio: 'ignore' });
+    execFileSync('git', ['commit', '-m', 'feat: add workflow seed'], { cwd: repoRoot, stdio: 'ignore' });
+    const commitRef = readShortHead(repoRoot);
+    execFileSync('git', ['checkout', '--detach'], { cwd: repoRoot, stdio: 'ignore' });
+
+    const gitContext = await extractGitContext(repoRoot);
+
+    expect(gitContext).toMatchObject({
+      commitCount: 1,
+      uncommittedCount: 0,
+      headRef: 'HEAD',
+      commitRef,
+      repositoryState: 'clean',
+      isDetachedHead: true,
+    });
+    expect(gitContext.summary).toContain('detached HEAD');
+  });
+
+  it('keeps the full capped diff window when history exceeds the recent-commit limit', async () => {
+    const repoRoot = makeTempRoot('speckit-git-window-');
+    const targetSpecFolder = path.join(repoRoot, '.opencode', 'specs', '02--system-spec-kit', '022-hybrid-rag-fusion', '010-perfect-session-capturing');
+
+    fs.mkdirSync(targetSpecFolder, { recursive: true });
+    fs.writeFileSync(path.join(targetSpecFolder, 'spec.md'), '# Spec\n', 'utf-8');
+
+    initializeGitRepo(repoRoot);
+
+    for (let index = 1; index <= 6; index += 1) {
+      const fileName = `note-${index}.md`;
+      fs.writeFileSync(path.join(targetSpecFolder, fileName), `Commit ${index}\n`, 'utf-8');
+      execFileSync('git', ['add', '-f', '.'], { cwd: repoRoot, stdio: 'ignore' });
+      execFileSync('git', ['commit', '-m', `docs: add note ${index}`], { cwd: repoRoot, stdio: 'ignore' });
+    }
+
+    const gitContext = await extractGitContext(repoRoot, targetSpecFolder);
+
+    expect(gitContext.commitCount).toBe(6);
+    expect(gitContext.FILES).toHaveLength(5);
+    expect(gitContext.FILES).toEqual(expect.arrayContaining([
+      expect.objectContaining({
+        FILE_PATH: '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/note-2.md',
+      }),
+      expect.objectContaining({
+        FILE_PATH: '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/note-6.md',
+      }),
+    ]));
+    expect(gitContext.FILES).toEqual(expect.not.arrayContaining([
+      expect.objectContaining({
+        FILE_PATH: '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/note-1.md',
+      }),
+    ]));
+  });
+
+  it('does not over-match similarly named spec folders when file targets do not overlap', async () => {
+    const repoRoot = makeTempRoot('speckit-git-boundary-');
+    const targetSpecFolder = path.join(repoRoot, '.opencode', 'specs', '02--system-spec-kit', '022-hybrid-rag-fusion', '010-perfect-session-capturing');
+    const foreignSpecFolder = `${targetSpecFolder}-archive`;
+
+    fs.mkdirSync(targetSpecFolder, { recursive: true });
+    fs.mkdirSync(foreignSpecFolder, { recursive: true });
+    fs.writeFileSync(path.join(targetSpecFolder, 'spec.md'), '# Spec\n', 'utf-8');
+
+    initializeGitRepo(repoRoot);
+    execFileSync('git', ['add', '-f', '.'], { cwd: repoRoot, stdio: 'ignore' });
+    execFileSync('git', ['commit', '-m', 'docs: add target spec shell'], { cwd: repoRoot, stdio: 'ignore' });
+
+    fs.writeFileSync(path.join(foreignSpecFolder, 'notes.md'), 'Foreign spec note\n', 'utf-8');
+    execFileSync('git', ['add', '-f', '.'], { cwd: repoRoot, stdio: 'ignore' });
+    execFileSync('git', ['commit', '-m', 'docs: add foreign spec note'], { cwd: repoRoot, stdio: 'ignore' });
+
+    const gitContext = await extractGitContext(repoRoot, targetSpecFolder);
+
+    expect(gitContext.commitCount).toBe(1);
+    expect(gitContext.FILES).toEqual(expect.arrayContaining([
+      expect.objectContaining({
+        FILE_PATH: '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/spec.md',
+      }),
+    ]));
+    expect(gitContext.observations).toEqual(expect.arrayContaining([
+      expect.objectContaining({
+        title: 'docs: add target spec shell',
+        files: ['.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/spec.md'],
+      }),
+    ]));
+    expect(gitContext.FILES).toEqual(expect.not.arrayContaining([
+      expect.objectContaining({
+        FILE_PATH: '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing-archive/notes.md',
+      }),
+    ]));
   });
 
   it('prefers live observations over synthetic enrichment for project state snapshots', () => {

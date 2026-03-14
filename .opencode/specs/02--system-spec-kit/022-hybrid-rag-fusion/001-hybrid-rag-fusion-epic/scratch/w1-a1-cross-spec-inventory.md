@@ -9,9 +9,9 @@ Generated: Sun Mar  8 15:30:08 CET 2026
 | 002-indexing-normalization | 83 | 54 | 29 | 0 | 12 | 17 |
 | 005-core-rag-sprints-0-to-8 | 398 | 327 | 71 | 20 | 34 | 17 |
 | 006-extra-features | 112 | 65 | 47 | 20 | 25 | 2 |
-| 007-ux-hooks-automation | 21 | 11 | 10 | 4 | 5 | 1 |
-| 009-architecture-audit | 136 | 136 | 0 | 0 | 0 | 0 |
-| 010-spec-descriptions | 32 | 20 | 12 | 2 | 7 | 3 |
+| 006-ux-hooks-automation | 21 | 11 | 10 | 4 | 5 | 1 |
+| 008-architecture-audit | 136 | 136 | 0 | 0 | 0 | 0 |
+| 009-spec-descriptions | 32 | 20 | 12 | 2 | 7 | 3 |
 | 012-command-alignment | 32 | 29 | 3 | 1 | 1 | 1 |
 
 ## Detailed Items
@@ -244,7 +244,7 @@ Generated: Sun Mar  8 15:30:08 CET 2026
 | CHK-094 | P0 | Existing `memory_match_triggers` call returns identical results | L | Regression Testing \| checklist.md:L164 |
 | CHK-141 | P2 | Findings saved to memory/ via generate-context.js | M | File Organization \| checklist.md:L199 |
 
-### 007-ux-hooks-automation
+### 006-ux-hooks-automation
 | ID | Priority | Description | Effort | Notes |
 |---|---|---|---|---|
 | CHK-001 | P0 | Requirements documented in spec.md | M | Pre-Implementation \| AUDIT-2026-03-08: unchecked — evidence was generic boilerplate, needs specific file/test references \| checklist.md:L45 |
@@ -258,10 +258,10 @@ Generated: Sun Mar  8 15:30:08 CET 2026
 | CHK-050 | P1 | Temp files in scratch/ only | M | File Organization \| AUDIT-2026-03-08: unchecked — evidence contradicted by actual scratch/ contents (codex-review-report.md, review-report.md present) \| checklist.md:L98 |
 | CHK-051 | P1 | scratch/ cleaned before completion | M | File Organization \| AUDIT-2026-03-08: unchecked — evidence contradicted by actual scratch/ contents (codex-review-report.md, review-report.md present) \| checklist.md:L99 |
 
-### 009-architecture-audit
+### 008-architecture-audit
 No unchecked items.
 
-### 010-spec-descriptions
+### 009-spec-descriptions
 | ID | Priority | Description | Effort | Notes |
 |---|---|---|---|---|
 | CHK-011 | P0 | Memory filename uniqueness guaranteed — 10 rapid saves = 10 distinct files | M | CODE QUALITY \| checklist.md:L48 |

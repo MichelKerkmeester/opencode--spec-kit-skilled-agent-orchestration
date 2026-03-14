@@ -1,0 +1,19 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/006-analysis",
+  "description": "Feature Specification: analysis",
+  "keywords": [
+    "feature",
+    "specification",
+    "analysis"
+  ],
+  "lastUpdated": "2026-03-13T18:17:46.722Z",
+  "specId": "006",
+  "folderSlug": "analysis",
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion",
+    "012-code-audit-per-feature-catalog"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

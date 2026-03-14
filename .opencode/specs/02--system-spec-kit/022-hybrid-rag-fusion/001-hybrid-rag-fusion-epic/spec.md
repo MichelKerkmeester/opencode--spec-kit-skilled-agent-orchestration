@@ -20,7 +20,13 @@ Consolidated from the following source docs:
   004-frontmatter-indexing       → 002-indexing-normalization
   002-auto-detected-session-bug  → 002-indexing-normalization
   006-hybrid-rag-fusion-logic-improvements → content merged into this epic (001-hybrid-rag-fusion-epic)
-  006-measurement-foundation through 017-long-horizon → 005-core-rag-sprints-0-to-8
+  006-measurement-foundation through 017-long-horizon → 005-core-rag-sprints-0-to-9
+  006-extra-features (Sprint 9) → merged into 005-core-rag-sprints-0-to-9 (2026-03-14)
+  018-git-context-extractor → merged into 010-perfect-session-capturing (2026-03-14)
+  016-feature-catalog-code-references → merged into 011-feature-catalog (2026-03-14)
+  017-markovian-architectures → merged into 014-hydra-db-based-features (2026-03-14)
+  025-git-context-extractor → deleted (was duplicate of 018, never existed as separate folder)
+  007→006, 008→007, 009→008, 010→009, 011→010, 012→011, 013→012, 014→013, 015→014, 999→015 (2026-03-14 sequential renumbering)
 -->
 
 ## Source: 000-feature-overview
@@ -57,28 +63,31 @@ The spec-kit memory MCP server's graph channel produces a 0% hit rate due to an 
 
 ## Child Folder Status Dashboard
 
+<!-- AUDIT-2026-03-14: Dashboard updated to reflect current folder structure after consolidation merges.
+  005+006 merged into 005-core-rag-sprints-0-to-9 (2026-03-14)
+  011+018 merged into 010-perfect-session-capturing (2026-03-14): 018-git-context-extractor absorbed
+  012+016 merged into 011-feature-catalog (2026-03-14): 016-feature-catalog-code-references absorbed
+  015+017 merged into 014-hydra-db-based-features (2026-03-14): 017-markovian-architectures absorbed
+  Deleted folders: 006, 016, 017, 018, 025
+-->
+
 | Folder | Name | Status | Last Updated |
 |--------|------|--------|--------------|
-| 001 | `001-hybrid-rag-fusion-epic` | In Progress (epic) | 2026-03-08 |
-| 002 | `002-indexing-normalization` | Complete (closed out in Wave 2) | 2026-03-08 |
+| 001 | `001-hybrid-rag-fusion-epic` | In Progress (epic) | 2026-03-14 |
+| 002 | `002-indexing-normalization` | Complete | 2026-03-08 |
 | 003 | `003-speckit-quality-and-standards` | In Progress | 2026-03-08 |
 | 004 | `004-constitutional-learn-refactor` | Complete | 2026-03-08 |
-| 005 | `005-core-rag-sprints-0-to-8` | In Progress (Sprint 0 complete; S1-S7 not started) | 2026-03-08 |
-| 006 | `006-extra-features` | Complete (112/112 items verified; close-out 2026-03-08) | 2026-03-08 |
-| 007 | `007-ux-hooks-automation` | Complete (21/21 items verified; close-out 2026-03-08) | 2026-03-08 |
-| 008 | `008-combined-bug-fixes` | In Progress | 2026-03-08 |
-| 009 | `009-architecture-audit` | Complete (closed out in Wave 3) | 2026-03-08 |
-| 010 | `010-spec-descriptions` | Complete (30/30 P0+P1 verified; CHK-027 P2 deferred; close-out 2026-03-08) | 2026-03-08 |
-| 011 | `011-feature-catalog` | In Progress | 2026-03-08 |
-| 012 | `012-command-alignment` | Complete (closed out in Wave 2) | 2026-03-08 |
-| 013 | `013-skill-alignment` | Not Started / Empty | 2026-03-08 |
-| 014 | `014-agents-alignment` | Not Started / Empty | 2026-03-08 |
-| 015 | `015-agents-md-alignment` | Not Started / Empty | 2026-03-08 |
-| 016 | `016-manual-testing-per-playbook` | Not Started / Empty | 2026-03-08 |
-| 017 | `017-update-install-guide` | Not Started / Empty | 2026-03-08 |
-| 018 | `018-rewrite-memory-mcp-readme` | Not Started / Empty | 2026-03-08 |
-| 019 | `019-rewrite-system-speckit-readme` | Not Started / Empty | 2026-03-08 |
-| 020 | `020-rewrite-repo-readme` | Not Started / Empty | 2026-03-08 |
+| 005 | `005-core-rag-sprints-0-to-9` | In Progress (S0 complete; S1-S7 not started; S9 merged from 006-extra-features) | 2026-03-14 |
+| 006 | `006-ux-hooks-automation` | Complete | 2026-03-08 |
+| 007 | `007-combined-bug-fixes` | In Progress | 2026-03-14 |
+| 008 | `008-architecture-audit` | Complete | 2026-03-08 |
+| 009 | `009-spec-descriptions` | Complete | 2026-03-08 |
+| 010 | `010-perfect-session-capturing` | In Progress (absorbed 018-git-context-extractor) | 2026-03-14 |
+| 011 | `011-feature-catalog` | In Progress (absorbed 016-feature-catalog-code-references) | 2026-03-14 |
+| 012 | `012-code-audit-per-feature-catalog` | In Progress (structural umbrella with 21 child phases) | 2026-03-14 |
+| 013 | `013-outsourced-agent-memory` | Complete | 2026-03-14 |
+| 014 | `014-hydra-db-based-features` | Complete (absorbed 017-markovian-architectures) | 2026-03-14 |
+| 015 | `015-finalization` | Pending | 2026-03-14 |
 
 ---
 
@@ -174,23 +183,23 @@ Transform the system into a measurably improving, graph-differentiated, feedback
 >
 > **Note:** Phases map 1:1 to sprints (Phase 1 = Sprint 0, Phase 2 = Sprint 1, etc.) except Sprint 6 which is split into Phase 7a (Indexing) and Phase 7b (Graph Deepening).
 
-<!-- NOTE: Sprint child folders (006-measurement-foundation through 017-long-horizon) were consolidated into 005-core-rag-sprints-0-to-8. Folder names below are historical sprint references, not current folder paths. -->
+<!-- NOTE: Sprint child folders (006-measurement-foundation through 017-long-horizon) were consolidated into 005-core-rag-sprints-0-to-9. Folder names below are historical sprint references, not current folder paths. -->
 | Phase | Folder | Scope | Dependencies | Status |
 |-------|--------|-------|--------------|--------|
-| 1 | `005-core-rag-sprints-0-to-8` <!-- was 006-measurement-foundation --> | G1, G3, R17, R13-S1, G-NEW-1, B7, D4, TM-02, A2, Eval-the-eval, G-NEW-3 (Phase A) (50-77h) | None (BLOCKING) | Complete |
-| 2 | `005-core-rag-sprints-0-to-8` <!-- was 011-graph-signal-activation --> | R4, A7, density measurement, G-NEW-2, TM-08, PI-A3, PI-A5 (42-61h) | Sprint 0 gate | Complete |
-| 3 | `005-core-rag-sprints-0-to-8` <!-- was 012-scoring-calibration --> | R18, N4, G2, score normalization, TM-01, TM-03, FUT-5, PI-A1 (28-43h) | Sprint 0 gate | Complete |
-| 4 | `005-core-rag-sprints-0-to-8` <!-- was 013-query-intelligence --> | R15, R14/N1, R2, R15-ext, FUT-7, PI-A2 (deferred), PI-B3 (34-53h) | Sprint 1 AND Sprint 2 gates | Complete |
-| 5 | `005-core-rag-sprints-0-to-8` <!-- was 014-feedback-and-quality --> | R1, R11, R13-S2, A4, B2, TM-04, TM-06, G-NEW-3 (Phase C) (72-109h) | Sprint 3 gate + R13 2 eval cycles | Pending |
+| 1 | `005-core-rag-sprints-0-to-9` <!-- was 006-measurement-foundation --> | G1, G3, R17, R13-S1, G-NEW-1, B7, D4, TM-02, A2, Eval-the-eval, G-NEW-3 (Phase A) (50-77h) | None (BLOCKING) | Complete |
+| 2 | `005-core-rag-sprints-0-to-9` <!-- was 011-graph-signal-activation --> | R4, A7, density measurement, G-NEW-2, TM-08, PI-A3, PI-A5 (42-61h) | Sprint 0 gate | Complete |
+| 3 | `005-core-rag-sprints-0-to-9` <!-- was 012-scoring-calibration --> | R18, N4, G2, score normalization, TM-01, TM-03, FUT-5, PI-A1 (28-43h) | Sprint 0 gate | Complete |
+| 4 | `005-core-rag-sprints-0-to-9` <!-- was 013-query-intelligence --> | R15, R14/N1, R2, R15-ext, FUT-7, PI-A2 (deferred), PI-B3 (34-53h) | Sprint 1 AND Sprint 2 gates | Complete |
+| 5 | `005-core-rag-sprints-0-to-9` <!-- was 014-feedback-and-quality --> | R1, R11, R13-S2, A4, B2, TM-04, TM-06, G-NEW-3 (Phase C) (72-109h) | Sprint 3 gate + R13 2 eval cycles | Pending |
 
 > **Sprint 4 Split Recommendation:** Sprint 4 should be considered for decomposition into two sub-phases:
 > - **S4a** (R1/MPAB + R13-S2 enhanced eval + TM-04 quality gate, ~33-49h): Lower-risk scoring, evaluation, and save-quality gating work that can proceed immediately after Sprint 3 gate. TM-04 is placed in S4a (per child spec authoritative phasing) as a pre-storage quality gate with no schema change that should be operational before R11 feedback mutations begin.
 > - **S4b** (R11 learned relevance feedback + TM-06, ~31-48h): Higher-risk work containing R11 with its CRITICAL FTS5 contamination risk (MR1). R11 should not share a sprint with 4 other deliverables given its irreversible failure mode. S4b also requires the R13 calendar dependency (minimum 28 days of eval logging before R11 activation).
 > This split isolates R11's contamination risk and allows S4a to complete faster, providing R13-S2 channel attribution data earlier.
-| 6 | `005-core-rag-sprints-0-to-8` <!-- was 015-pipeline-refactor --> | R6, R9, R12, S2, S3, TM-05, PI-A4, PI-B1, PI-B2 (68-98h) | Sprint 4 gate | Pending |
-| 7a | `005-core-rag-sprints-0-to-8` <!-- was 016-indexing-and-graph --> | R7, R16, S4, N3-lite, N2a, N2b, N2c (under N2) (33-51h) | Sprint 5 gate | Pending |
-| 7b | `005-core-rag-sprints-0-to-8` <!-- was 016-indexing-and-graph --> | N2, R10 (37-53h heuristic; **ESTIMATION WARNING**: production quality 80-150h — see child spec for N2c 40-80h and R10 30-50h warnings) | Sprint 6a gate + feasibility spike | Pending (GATED) |
-| 8 | `005-core-rag-sprints-0-to-8` <!-- was 017-long-horizon --> | R8, S1, S5, R13-S3 (REQ-061), R5 eval (REQ-062) (45-62h) | Sprint 6a gate | Pending |
+| 6 | `005-core-rag-sprints-0-to-9` <!-- was 015-pipeline-refactor --> | R6, R9, R12, S2, S3, TM-05, PI-A4, PI-B1, PI-B2 (68-98h) | Sprint 4 gate | Pending |
+| 7a | `005-core-rag-sprints-0-to-9` <!-- was 016-indexing-and-graph --> | R7, R16, S4, N3-lite, N2a, N2b, N2c (under N2) (33-51h) | Sprint 5 gate | Pending |
+| 7b | `005-core-rag-sprints-0-to-9` <!-- was 016-indexing-and-graph --> | N2, R10 (37-53h heuristic; **ESTIMATION WARNING**: production quality 80-150h — see child spec for N2c 40-80h and R10 30-50h warnings) | Sprint 6a gate + feasibility spike | Pending (GATED) |
+| 8 | `005-core-rag-sprints-0-to-9` <!-- was 017-long-horizon --> | R8, S1, S5, R13-S3 (REQ-061), R5 eval (REQ-062) (45-62h) | Sprint 6a gate | Pending |
 <!-- REMOVED: referenced non-existent folders 012-scoring-calibration, 013-query-intelligence, 014-feedback-and-quality as Phase 12-14 placeholders — these sprints are already covered above as Phases 3, 4, 5 -->
 
 ### Phase Transition Rules
@@ -205,12 +214,12 @@ Transform the system into a measurably improving, graph-differentiated, feedback
 
 | From | To | Criteria | Verification |
 |------|-----|----------|--------------|
-| Sprint 0 (in `005-core-rag-sprints-0-to-8`) | Sprint 1 (in `005-core-rag-sprints-0-to-8`) | Graph hit rate >0%, chunk dedup verified, BM25 baseline MRR@5 recorded, ground truth corpus meets diversity requirements (see below) | R13 eval metrics |
-| Sprint 0 (in `005-core-rag-sprints-0-to-8`) | Sprint 2 (in `005-core-rag-sprints-0-to-8`) | Same Sprint 0 exit gate (S1 and S2 run **in parallel** after S0) | R13 eval metrics |
+| Sprint 0 (in `005-core-rag-sprints-0-to-9`) | Sprint 1 (in `005-core-rag-sprints-0-to-9`) | Graph hit rate >0%, chunk dedup verified, BM25 baseline MRR@5 recorded, ground truth corpus meets diversity requirements (see below) | R13 eval metrics |
+| Sprint 0 (in `005-core-rag-sprints-0-to-9`) | Sprint 2 (in `005-core-rag-sprints-0-to-9`) | Same Sprint 0 exit gate (S1 and S2 run **in parallel** after S0) | R13 eval metrics |
 
 **Sprint 0 Ground Truth Diversity Requirement (HARD GATE):**
 Ground truth corpus MUST include >=30 manually curated natural-language queries covering: graph relationship queries ("what decisions led to X?"), temporal queries ("what was discussed last week about Y?"), cross-document queries ("how does A relate to B?"), and hard negatives (queries where specific memories should NOT rank highly). Minimum: >=5 queries per intent type, >=3 query complexity tiers (simple single-concept, moderate multi-concept, complex cross-document/temporal). This diversity requirement is a hard exit gate criterion alongside the existing "at least 100 queries" minimum (50 minimum for initial baseline; >=100 required for BM25 contingency decision) — both must be satisfied.
-<!-- NOTE: Sprint references below use historical folder names; all consolidated in 005-core-rag-sprints-0-to-8 -->
+<!-- NOTE: Sprint references below use historical folder names; all consolidated in 005-core-rag-sprints-0-to-9 -->
 | Sprint 1 AND Sprint 2 | Sprint 3 | S1: R4 MRR@5 delta >+2% absolute, edge density measured; S2: Cache hit >90%, score distributions normalized, G2 resolved | R13 eval metrics |
 | Sprint 3 | Sprint 4 | R15 p95 <30ms, RSF Kendall tau computed, R2 precision within 5% | R13 eval metrics |
 | Sprint 4 | Sprint 5 | R1 MRR@5 within 2%, R11 noise <5%, R13-S2 operational | R13 eval metrics |
@@ -218,7 +227,7 @@ Ground truth corpus MUST include >=30 manually curated natural-language queries 
 | Sprint 6a | Sprint 7 | R7 Recall@20 within 10%, R16 functional, S4 hierarchy functional, N3-lite contradiction detection verified, weight_history logging functional | R13 eval metrics |
 | Sprint 6a | Sprint 6b | Sprint 6a exit gate + feasibility spike completed + OQ-S6-001/002 resolved | R13 eval + spike results |
 | Sprint 6b | — | N2 attribution >10% or density-conditional deferral, R10 FP <20% (if executed) | R13 eval metrics |
-| 008-combined-bug-fixes | 021-cross-cutting-remediation | Subfolder path resolution fixes complete; P0 and P1 checklist gates fully checked | 008-combined-bug-fixes/checklist.md summary + testing section |
+| 007-combined-bug-fixes | 021-cross-cutting-remediation | Subfolder path resolution fixes complete; P0 and P1 checklist gates fully checked | 007-combined-bug-fixes/checklist.md summary + testing section |
 | 021-cross-cutting-remediation | 022-post-review-remediation | Phase-1 remediation exit gate complete with all required checklist items verified | 003-speckit-quality-and-standards/checklist.md remediation exit gate + summary | <!-- AUDIT-2026-03-08: corrected from non-existent 002-cross-cutting-remediation -->
 | 022-post-review-remediation | 023-flag-catalog-remediation | Post-review remediation complete (P0/P1 fully verified) and implementation summary published | 022-post-review-remediation/checklist.md summary + 022-post-review-remediation/implementation-summary.md |
 <!-- /ANCHOR:phase-map -->
@@ -1296,7 +1305,7 @@ Deliver a broadened deep-audit and hardening pass that makes the complete retrie
 - **From `002-hybrid-rag-fusion`**: tri-hybrid retrieval (vector + FTS/BM25 + graph), MMR, and evidence-gap signaling remain architectural baseline.
 - **From `003-index-tier-anomalies`**: canonical-path dedup and deterministic tier precedence remain mandatory invariants.
 - **From `004-frontmatter-indexing`**: normalized frontmatter and idempotent reindex behavior remain required preconditions.
-- **From `008-combined-bug-fixes`**: confidence-aware session/folder detection and archive exclusion remain mandatory for workflow safety.
+- **From `007-combined-bug-fixes`**: confidence-aware session/folder detection and archive exclusion remain mandatory for workflow safety.
 
 ### Carry-Forward Expansion Matrix in `006`
 
@@ -1305,7 +1314,7 @@ Deliver a broadened deep-audit and hardening pass that makes the complete retrie
 | `002-hybrid-rag-fusion` | Tri-hybrid + fusion + evidence-gap baseline | Adds graph-contract scoring, cognitive decay integration, and telemetry-governed ranking diagnostics |
 | `003-index-tier-anomalies` | Canonical path + tier invariants | Adds index-health automation, CRUD re-embed consistency, and ledger-backed integrity checks |
 | `004-frontmatter-indexing` | Normalized metadata and idempotent reindex | Adds parser/index auto-heal checks, schema drift prevention, and re-embedding consistency gates |
-| `008-combined-bug-fixes` | Confidence-aware routing safeguards | Adds session-learning quality metrics, routing/retrieval confidence alignment, and operational runbook coverage |
+| `007-combined-bug-fixes` | Confidence-aware routing safeguards | Adds session-learning quality metrics, routing/retrieval confidence alignment, and operational runbook coverage |
 
 ### Carry-Forward Gaps Addressed in `006`
 - Convert deferred operational controls into enforced release checks across all ten scoped subsystems.

@@ -123,7 +123,7 @@ Next: Continue implementation
 
 **Key Context to Review:**
 
-- Files modified: .opencode/.../extractors/collect-session-data.ts, .opencode/.../tests/task-enrichment.vitest.ts, specs/.../009-architecture-audit/implementation-summary.md
+- Files modified: .opencode/.../extractors/collect-session-data.ts, .opencode/.../tests/task-enrichment.vitest.ts, specs/.../008-architecture-audit/implementation-summary.md
 
 - Last: Phase 10 direct save naming closure for hybrid rag fusion
 
@@ -162,7 +162,7 @@ Next: Continue implementation
 
 - `.opencode/.../tests/task-enrichment.vitest.ts` - Regression coverage verifies direct preloaded saves no lo...
 
-- `specs/.../009-architecture-audit/implementation-summary.md` - Documentation
+- `specs/.../008-architecture-audit/implementation-summary.md` - Documentation
 
 **How to Extend**:
 
@@ -194,7 +194,7 @@ The remaining bug was in collectSessionData quick-summary derivation, not in Pha
 |:---------|:----------------|
 | `.opencode/.../extractors/(merged-small-files)` | Tree-thinning merged 1 small files (collect-session-data.ts). collect-session-data.ts: Direct and preloaded memory saves before folder fallback |
 | `.opencode/.../tests/(merged-small-files)` | Tree-thinning merged 1 small files (task-enrichment.vitest.ts). task-enrichment.vitest.ts: Direct and preloaded memory saves before folder fallback |
-| `specs/.../009-architecture-audit/(merged-small-files)` | Tree-thinning merged 1 small files (implementation-summary.md). implementation-summary.md: Direct and preloaded memory saves before folder fallback |
+| `specs/.../008-architecture-audit/(merged-small-files)` | Tree-thinning merged 1 small files (implementation-summary.md). implementation-summary.md: Direct and preloaded memory saves before folder fallback |
 
 <!-- /ANCHOR:summary -->
 
@@ -210,7 +210,7 @@ The remaining bug was in collectSessionData quick-summary derivation, not in Pha
 
 Confirmed the real collector path now preserves stronger semantic naming for direct and preloaded memory saves before folder fallback.
 
-**Files:** .opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts, .opencode/skill/system-spec-kit/scripts/tests/task-enrichment.vitest.ts, specs/02--system-spec-kit/022-hybrid-rag-fusion/009-architecture-audit/implementation-summary.md
+**Files:** .opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts, .opencode/skill/system-spec-kit/scripts/tests/task-enrichment.vitest.ts, specs/02--system-spec-kit/022-hybrid-rag-fusion/008-architecture-audit/implementation-summary.md
 **Details:** collector path now picks the best semantic quick summary candidate | direct preloaded workflow regression test passed | phase 10 is closed in 012 architecture audit
 <!-- /ANCHOR:implementation-phase-direct-save-naming-28942e6b -->
 
@@ -512,7 +512,7 @@ trigger_phrases:
 key_files:
   - ".opencode/.../extractors/(merged-small-files)"
   - ".opencode/.../tests/(merged-small-files)"
-  - "specs/.../009-architecture-audit/(merged-small-files)"
+  - "specs/.../008-architecture-audit/(merged-small-files)"
 
 # Relationships
 related_sessions:

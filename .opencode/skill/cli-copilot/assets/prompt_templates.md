@@ -312,7 +312,7 @@ When you finish, include a session memory section in your output using EXACTLY t
 - Remaining work
 
 ### Spec Folder
-[spec-folder-name, e.g. 014-outsourced-agent-memory]
+[spec-folder-name, e.g. 013-outsourced-agent-memory]
 <!-- MEMORY_HANDBACK_END -->
 ```
 

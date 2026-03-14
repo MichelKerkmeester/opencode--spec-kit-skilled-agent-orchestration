@@ -1,0 +1,27 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing",
+  "description": "Feature Specification: Generate-Context Pipeline Quality",
+  "keywords": [
+    "feature",
+    "specification",
+    "generate-context",
+    "pipeline",
+    "quality",
+    "git context extractor",
+    "stateless memory save",
+    "memory save git context",
+    "extractor"
+  ],
+  "lastUpdated": "2026-03-14T12:00:00.000Z",
+  "specId": "010",
+  "folderSlug": "perfect-session-capturing",
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion"
+  ],
+  "memorySequence": 2,
+  "memoryNameHistory": [
+    "14-03-26_15-45__code-issues-found-during-review.md",
+    "14-03-26_15-47__code-issues-found-during-review.md"
+  ]
+}

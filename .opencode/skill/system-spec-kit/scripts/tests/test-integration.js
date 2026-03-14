@@ -67,8 +67,7 @@ function skip(testName, reason) {
 
 function startSuite(name) {
   log(`\n🧪 ${name}`);
-  log('─
-'.repeat(60));
+  log('─'.repeat(60));
   results.suites.push({ name, startTime: Date.now() });
 }
 

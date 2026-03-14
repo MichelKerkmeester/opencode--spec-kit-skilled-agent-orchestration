@@ -522,7 +522,7 @@ describe('T009 cache version', () => {
 describe('T009 PerFolderDescription schema', () => {
   it('has required specId field', () => {
     const desc: PerFolderDescription = {
-      specFolder: '010-spec-descriptions',
+      specFolder: '009-spec-descriptions',
       description: 'Test',
       keywords: ['test'],
       lastUpdated: new Date().toISOString(),
@@ -537,7 +537,7 @@ describe('T009 PerFolderDescription schema', () => {
 
   it('has required folderSlug field', () => {
     const desc: PerFolderDescription = {
-      specFolder: '010-spec-descriptions',
+      specFolder: '009-spec-descriptions',
       description: 'Test',
       keywords: ['test'],
       lastUpdated: new Date().toISOString(),
@@ -952,7 +952,7 @@ describe('F13: loadPerFolderDescription required field validation', () => {
   });
 
   const validBase: Record<string, unknown> = {
-    specFolder: '010-spec-descriptions',
+    specFolder: '009-spec-descriptions',
     description: 'Valid description',
     keywords: ['valid', 'description'],
     lastUpdated: new Date().toISOString(),
@@ -998,7 +998,7 @@ describe('F13: loadPerFolderDescription required field validation', () => {
 
 describe('F14: slugifyFolderName', () => {
   it('strips numeric prefix and slugifies', () => {
-    expect(slugifyFolderName('010-spec-descriptions')).toBe('spec-descriptions');
+    expect(slugifyFolderName('009-spec-descriptions')).toBe('spec-descriptions');
   });
 
   it('handles no numeric prefix', () => {

@@ -1,0 +1,22 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/007-combined-bug-fixes",
+  "description": "Combined Specification: Bug Fixes",
+  "keywords": [
+    "combined",
+    "specification",
+    "bug",
+    "fixes"
+  ],
+  "lastUpdated": "2026-03-13T18:17:46.667Z",
+  "specId": "007",
+  "folderSlug": "combined-bug-fixes",
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion"
+  ],
+  "memorySequence": 2,
+  "memoryNameHistory": [
+    "10-03-26_16-06__review-spec-folder-context.md",
+    "10-03-26_16-17__review-spec-folder-context.md"
+  ]
+}

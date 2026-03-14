@@ -641,7 +641,7 @@ export function generatePerFolderDescription(
   const keywords = extractKeywords(description);
   const folderName = path.basename(folderPath);
 
-  // Extract numeric prefix (e.g. "010" from "010-spec-descriptions")
+  // Extract numeric prefix (e.g. "010" from "009-spec-descriptions")
   const numMatch = folderName.match(/^(\d+)/);
   const specId = numMatch ? numMatch[1] : '';
 

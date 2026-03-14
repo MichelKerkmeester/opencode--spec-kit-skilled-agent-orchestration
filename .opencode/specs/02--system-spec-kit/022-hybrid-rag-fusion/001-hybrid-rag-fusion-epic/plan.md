@@ -1211,7 +1211,7 @@ Audit-first, contract-driven hardening with release-gated invariants and self-he
 | `002-hybrid-rag-fusion` | Tri-hybrid retrieval + MMR/TRM pipeline | Baseline for retrieval/fusion determinism and channel governance |
 | `003-index-tier-anomalies` | Canonical path dedup + tier precedence | Elevated to parser/index + storage integrity gates |
 | `004-frontmatter-indexing` | Frontmatter normalization + idempotent reindex | Enforced as parser/index invariant and metadata consistency precondition |
-| `008-combined-bug-fixes` | Confidence-aware folder/session detection | Extended into session manager and session-learning quality/performance controls |
+| `007-combined-bug-fixes` | Confidence-aware folder/session detection | Extended into session manager and session-learning quality/performance controls |
 
 | Expanded Area | Primary Continuity Source | Implementation Note |
 |---------------|---------------------------|---------------------|

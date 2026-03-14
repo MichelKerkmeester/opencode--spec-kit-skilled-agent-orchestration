@@ -577,7 +577,7 @@ describe('workflow seam guardrail', () => {
 
   it('allows stateless saves when captured files match code paths declared in the target spec', async () => {
     const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-workflow-'));
-    const specFolderPath = path.join(tempRoot, '011-perfect-session-capturing');
+    const specFolderPath = path.join(tempRoot, '010-perfect-session-capturing');
     const contextDir = path.join(tempRoot, 'memory');
     fs.mkdirSync(specFolderPath, { recursive: true });
     fs.mkdirSync(contextDir, { recursive: true });
@@ -622,7 +622,7 @@ describe('workflow seam guardrail', () => {
     try {
       const result = await runWorkflow({
         specFolderArg: specFolderPath,
-        collectSessionDataFn: async (_collectedData, specFolderName) => createSessionData(specFolderName || '011-perfect-session-capturing'),
+        collectSessionDataFn: async (_collectedData, specFolderName) => createSessionData(specFolderName || '010-perfect-session-capturing'),
         silent: true,
       });
 

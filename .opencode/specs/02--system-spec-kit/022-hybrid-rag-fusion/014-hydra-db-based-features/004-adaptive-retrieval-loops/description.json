@@ -1,0 +1,21 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/004-adaptive-retrieval-loops",
+  "description": "Feature Specification: 004-adaptive-retrieval-loops",
+  "keywords": [
+    "feature",
+    "specification",
+    "004-adaptive-retrieval-loops"
+  ],
+  "lastUpdated": "2026-03-14T12:28:30.632Z",
+  "specId": "004",
+  "folderSlug": "adaptive-retrieval-loops",
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion",
+    "014-hydra-db-based-features"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "13-03-26_20-56__2026-03-13-verification-pass-confirmed-phase-4.md"
+  ]
+}

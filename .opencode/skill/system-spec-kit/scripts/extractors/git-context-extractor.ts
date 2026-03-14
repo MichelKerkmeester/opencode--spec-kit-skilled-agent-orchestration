@@ -17,6 +17,9 @@ const MAX_FILES = 50;
 const MAX_COMMITS = 20;
 const MAX_DIFF_COMMITS = 5;
 const SYNTHETIC_TIMESTAMP = new Date(0).toISOString();
+const EMPTY_TREE_HASH = '4b825dc642cb6eb9a060e54bf8d69288fbee4904';
+const COMMIT_ENTRY_SEPARATOR = '\u001e';
+const COMMIT_FILES_SEPARATOR = '\u001f';
 const COMMIT_TYPE_MAP: Record<string, string> = {
   fix: 'bugfix',
   feat: 'feature',
@@ -29,10 +32,12 @@ const COMMIT_TYPE_MAP: Record<string, string> = {
 type ChangeAction = 'modify' | 'add' | 'delete' | 'rename';
 type CommitInfo = { hash: string; timestamp: string; subject: string; body: string; files: string[] };
 type ParsedEntry = { filePath: string; action: ChangeAction };
+export type GitRepositoryState = 'clean' | 'dirty' | 'unavailable';
 type SpecScope = {
   normalizedHint: string;
   specDirectory: string;
   fileTargets: string[];
+  allowSpecDirectoryFallback: boolean;
 };
 export interface GitContextExtraction {
   observations: Array<{
@@ -54,9 +59,23 @@ export interface GitContextExtraction {
   summary: string;
   commitCount: number;
   uncommittedCount: number;
+  headRef: string | null;
+  commitRef: string | null;
+  repositoryState: GitRepositoryState;
+  isDetachedHead: boolean;
 }
 function emptyResult(): GitContextExtraction {
-  return { observations: [], FILES: [], summary: '', commitCount: 0, uncommittedCount: 0 };
+  return {
+    observations: [],
+    FILES: [],
+    summary: '',
+    commitCount: 0,
+    uncommittedCount: 0,
+    headRef: null,
+    commitRef: null,
+    repositoryState: 'unavailable',
+    isDetachedHead: false,
+  };
 }
 
 function runGitCommand(projectRoot: string, args: string[]): string {
@@ -66,6 +85,13 @@ function runGitCommand(projectRoot: string, args: string[]): string {
     timeout: GIT_TIMEOUT_MS,
     stdio: ['pipe', 'pipe', 'pipe'],
   }).trim();
+}
+function tryRunGitCommand(projectRoot: string, args: string[]): string | null {
+  try {
+    return runGitCommand(projectRoot, args);
+  } catch {
+    return null;
+  }
 }
 function normalizeFilePath(projectRoot: string, rawPath: string): string {
   const cleanedPath = rawPath.replace(/^"+|"+$/g, '').trim();
@@ -121,12 +147,12 @@ function parseStatScores(projectRoot: string, diffStatOutput: string): Map<strin
 }
 function parseCommits(projectRoot: string, logOutput: string): CommitInfo[] {
   return logOutput
-    .split(/\n---\n?/)
+    .split(COMMIT_ENTRY_SEPARATOR)
     .map((entry) => entry.trim())
     .filter(Boolean)
     .map((entry) => {
-      const [header, filesBlock = ''] = entry.split('\n__FILES__\n');
-      const [hash = '', timestamp = SYNTHETIC_TIMESTAMP, subject = '', ...bodyLines] = header.split('\n');
+      const [header, filesBlock = ''] = entry.split(COMMIT_FILES_SEPARATOR);
+      const [hash = '', timestamp = SYNTHETIC_TIMESTAMP, subject = '', ...bodyLines] = header.trim().split('\n');
       const files = filesBlock
         .split('\n')
         .map((line) => normalizeFilePath(projectRoot, line))
@@ -172,6 +198,7 @@ async function resolveSpecScope(projectRoot: string, specFolderHint?: string): P
   const normalizedHint = normalizeFilePath(projectRoot, specFolderHint).replace(/\/+$/, '');
   const specDirectory = normalizedHint.split('/').pop() || normalizedHint;
   const fileTargets = new Set<string>();
+  let allowSpecDirectoryFallback = true;
 
   try {
     const specContext = await extractSpecFolderContext(path.resolve(projectRoot, specFolderHint));
@@ -181,6 +208,7 @@ async function resolveSpecScope(projectRoot: string, specFolderHint?: string): P
         fileTargets.add(normalizedPath);
       }
     }
+    allowSpecDirectoryFallback = false;
   } catch {
     // Fall back to folder-based scoping only when spec docs cannot be parsed.
   }
@@ -189,6 +217,7 @@ async function resolveSpecScope(projectRoot: string, specFolderHint?: string): P
     normalizedHint,
     specDirectory,
     fileTargets: Array.from(fileTargets),
+    allowSpecDirectoryFallback,
   };
 }
 
@@ -198,16 +227,50 @@ function matchesSpecFolder(filePath: string, specScope: SpecScope | null): boole
   if (specScope.fileTargets.some((target) => matchesPathTarget(filePath, target))) {
     return true;
   }
-  return [specScope.normalizedHint, specScope.specDirectory].some((candidate) => (
+  const matchesFolderHint = [specScope.normalizedHint].some((candidate) => (
     filePath === candidate
     || filePath.startsWith(`${candidate}/`)
     || filePath.includes(`/${candidate}/`)
-    || filePath.includes(candidate)
   ));
+  if (matchesFolderHint) {
+    return true;
+  }
+  if (!specScope.allowSpecDirectoryFallback) {
+    return false;
+  }
+  return [specScope.specDirectory].some((candidate) => (
+    filePath === candidate
+    || filePath.startsWith(`${candidate}/`)
+    || filePath.includes(`/${candidate}/`)
+  ));
+}
+function getGitSnapshot(projectRoot: string, uncommittedCount: number): Pick<
+  GitContextExtraction,
+  'headRef' | 'commitRef' | 'repositoryState' | 'isDetachedHead'
+> {
+  const branchRef = tryRunGitCommand(projectRoot, ['symbolic-ref', '--short', '-q', 'HEAD']);
+  const commitRef = tryRunGitCommand(projectRoot, ['rev-parse', '--short=12', 'HEAD']);
+  const isDetachedHead = !branchRef && Boolean(commitRef);
+  const headRef = branchRef || (isDetachedHead ? 'HEAD' : null);
+  const repositoryState = uncommittedCount > 0
+    ? 'dirty'
+    : (headRef || commitRef ? 'clean' : 'unavailable');
+
+  return {
+    headRef,
+    commitRef,
+    repositoryState,
+    isDetachedHead,
+  };
 }
 function getDiffOutput(projectRoot: string, revCount: number, format: '--name-status' | '--stat'): string {
   const diffWindow = Math.min(revCount, MAX_DIFF_COMMITS);
-  if (diffWindow > 1) return runGitCommand(projectRoot, ['diff', format, `HEAD~${diffWindow}`]);
+  if (diffWindow > 1) {
+    if (revCount <= diffWindow) {
+      return runGitCommand(projectRoot, ['diff', format, EMPTY_TREE_HASH, 'HEAD']);
+    }
+    return runGitCommand(projectRoot, ['diff', format, `HEAD~${diffWindow}..HEAD`]);
+  }
   if (revCount === 1) {
     return format === '--name-status'
       ? runGitCommand(projectRoot, ['show', '--pretty=format:', '--name-status', 'HEAD'])
@@ -219,26 +282,43 @@ export async function extractGitContext(projectRoot: string, specFolderHint?: st
   try {
     if (runGitCommand(projectRoot, ['rev-parse', '--is-inside-work-tree']) !== 'true') return emptyResult();
     const specScope = await resolveSpecScope(projectRoot, specFolderHint);
-    const statusEntries = runGitCommand(projectRoot, ['status', '--porcelain'])
+    const statusEntries = runGitCommand(projectRoot, ['status', '--porcelain', '--untracked-files=all'])
       .split('\n')
       .map((line) => parseNameStatusLine(projectRoot, line))
       .filter((entry): entry is ParsedEntry => Boolean(entry))
       .filter((entry) => matchesSpecFolder(entry.filePath, specScope));
-    const revCount = Number.parseInt(runGitCommand(projectRoot, ['rev-list', '--count', 'HEAD']), 10);
+    const gitSnapshot = getGitSnapshot(projectRoot, statusEntries.length);
+    const revCountOutput = tryRunGitCommand(projectRoot, ['rev-list', '--count', 'HEAD']);
+    const revCount = revCountOutput ? Number.parseInt(revCountOutput, 10) : 0;
     if (!Number.isFinite(revCount)) return emptyResult();
 
-    const diffEntries = getDiffOutput(projectRoot, revCount, '--name-status')
-      .split('\n')
-      .map((line) => parseNameStatusLine(projectRoot, line))
-      .filter((entry): entry is ParsedEntry => Boolean(entry))
-      .filter((entry) => matchesSpecFolder(entry.filePath, specScope));
+    const diffOutput = revCount > 0 ? getDiffOutput(projectRoot, revCount, '--name-status') : '';
+    const diffEntries = diffOutput
+      ? diffOutput
+        .split('\n')
+        .map((line) => parseNameStatusLine(projectRoot, line))
+        .filter((entry): entry is ParsedEntry => Boolean(entry))
+        .filter((entry) => matchesSpecFolder(entry.filePath, specScope))
+      : [];
     const changeScores = new Map(
-      Array.from(parseStatScores(projectRoot, getDiffOutput(projectRoot, revCount, '--stat')).entries())
+      Array.from(parseStatScores(projectRoot, revCount > 0 ? getDiffOutput(projectRoot, revCount, '--stat') : '').entries())
         .filter(([filePath]) => matchesSpecFolder(filePath, specScope))
     );
-    const logArgs = ['log', '--name-only', '--format=%H%n%cI%n%s%n%b%n__FILES__', '--since=24 hours ago', `-${MAX_COMMITS}`];
-    const commits = parseCommits(projectRoot, runGitCommand(projectRoot, logArgs))
-      .filter((commit) => commit.files.some((filePath) => matchesSpecFolder(filePath, specScope)));
+    const logArgs = [
+      'log',
+      '--name-only',
+      `--format=${COMMIT_ENTRY_SEPARATOR}%H%n%cI%n%s%n%b%n${COMMIT_FILES_SEPARATOR}`,
+      '--since=24 hours ago',
+      `-${MAX_COMMITS}`,
+    ];
+    const commits = revCount > 0
+      ? parseCommits(projectRoot, runGitCommand(projectRoot, logArgs))
+        .map((commit) => ({
+          ...commit,
+          files: commit.files.filter((filePath) => matchesSpecFolder(filePath, specScope)),
+        }))
+        .filter((commit) => commit.files.length > 0)
+      : [];
 
     const FILES: GitContextExtraction['FILES'] = [];
     const seenFiles = new Set<string>();
@@ -280,13 +360,23 @@ export async function extractGitContext(projectRoot: string, specFolderHint?: st
       .sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0]))
       .slice(0, 3)
       .map(([filePath]) => filePath);
+    const summaryParts = [
+      gitSnapshot.headRef ? `head ${gitSnapshot.headRef}` : null,
+      gitSnapshot.commitRef ? `commit ${gitSnapshot.commitRef}` : null,
+      gitSnapshot.isDetachedHead ? 'detached HEAD' : null,
+      `state ${gitSnapshot.repositoryState}`,
+      `${statusEntries.length} uncommitted changes`,
+      `${commits.length} recent commits`,
+      topFiles.length ? `top files: ${topFiles.join(', ')}` : null,
+    ].filter((part): part is string => Boolean(part));
 
     return {
       observations,
       FILES,
-      summary: `${statusEntries.length} uncommitted changes, ${commits.length} recent commits${topFiles.length ? `; top files: ${topFiles.join(', ')}` : ''}`,
+      summary: summaryParts.join('; '),
       commitCount: commits.length,
       uncommittedCount: statusEntries.length,
+      ...gitSnapshot,
     };
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);

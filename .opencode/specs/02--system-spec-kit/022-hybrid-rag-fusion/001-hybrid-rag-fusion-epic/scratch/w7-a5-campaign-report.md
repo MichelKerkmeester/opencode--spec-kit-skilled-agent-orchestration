@@ -106,7 +106,7 @@ Budget utilization: 34/35 agents used (97.1%). One GPT-5.4 spare slot unused.
 | W3-A4 | 006 test execution plan | Created: 3 groups, 22KB plan document |
 | W3-A5 | 006 regression baseline | Captured: 7153 pass, 4 known failures |
 
-**Folder closed:** 009-architecture-audit.
+**Folder closed:** 008-architecture-audit.
 
 ---
 
@@ -128,7 +128,7 @@ Items verified:
 
 ### Wave 5 -- 010 Completion + 006 Documentation
 
-**Purpose:** Advance 010-spec-descriptions P0 to full completion; document 006 progress.
+**Purpose:** Advance 009-spec-descriptions P0 to full completion; document 006 progress.
 **Agents:** 5 (2 GPT-5.4, 1 GPT-5.3-Codex, 2 Sonnet 4.6)
 **Result:** All 5 agents completed successfully.
 
@@ -181,7 +181,7 @@ Items verified:
 | Folder | Method | Key Action |
 |--------|--------|------------|
 | 002-indexing-normalization | Deferral | 6 P1 items formally deferred with rationale |
-| 009-architecture-audit | Completion | Stale refs fixed, exceptions reconciled, dist/ policy added |
+| 008-architecture-audit | Completion | Stale refs fixed, exceptions reconciled, dist/ policy added |
 | 012-command-alignment | Deferral | CHK-052 P2 deferred |
 
 ### Major Progress
@@ -189,9 +189,9 @@ Items verified:
 | Folder | Before | After | Delta |
 |--------|--------|-------|-------|
 | 006-extra-features | 76/112 verified | ~85/112 verified | +9 items |
-| 007-ux-hooks-automation | 3/10 verified | 7/10 verified | +4 items |
-| 010-spec-descriptions (P0) | 8/10 | 10/10 | +2 items (P0 complete) |
-| 010-spec-descriptions (P1) | 12/19 | 16/20 | +4 items |
+| 006-ux-hooks-automation | 3/10 verified | 7/10 verified | +4 items |
+| 009-spec-descriptions (P0) | 8/10 | 10/10 | +2 items (P0 complete) |
+| 009-spec-descriptions (P1) | 12/19 | 16/20 | +4 items |
 
 ### Planning Completed
 
@@ -207,7 +207,7 @@ Items verified:
 
 The remaining items fall into runtime/eval/benchmark categories that require hands-on execution environments -- not automatable via read-only or limited-scope agents. These include evaluation harness runs, benchmark measurements, and integration tests requiring live service dependencies.
 
-### 010-spec-descriptions (3 items)
+### 009-spec-descriptions (3 items)
 
 | Item | Description | Effort Estimate |
 |------|-------------|-----------------|
@@ -215,7 +215,7 @@ The remaining items fall into runtime/eval/benchmark categories that require han
 | CHK-028 | Performance benchmark (read latency) | Requires bench harness |
 | CHK-029 | Performance benchmark (write latency) | Requires bench harness |
 
-### 007-ux-hooks-automation (3 items)
+### 006-ux-hooks-automation (3 items)
 
 | Item | Description |
 |------|-------------|

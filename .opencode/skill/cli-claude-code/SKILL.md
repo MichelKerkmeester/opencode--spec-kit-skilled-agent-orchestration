@@ -2,7 +2,7 @@
 name: cli-claude-code
 description: "Claude Code CLI orchestrator enabling external AI assistants (Gemini, Codex, Copilot) to invoke Anthropic's Claude Code CLI for supplementary tasks including deep reasoning, code editing, structured output, code review, agent delegation, and extended thinking."
 allowed-tools: [Bash, Read, Glob, Grep]
-version: 1.1.0
+version: 1.1.1
 ---
 
 <!-- Keywords: claude-code, claude-cli, anthropic, cross-ai, deep-reasoning, extended-thinking, code-editing, structured-output, agent-delegation, opus, sonnet, haiku -->
@@ -57,9 +57,9 @@ Orchestrate Anthropic's Claude Code CLI from external AI assistants (Gemini CLI,
 
 ### When NOT to Use
 
+- **Self-invocation guard**: If you ARE Claude Code (running natively inside a Claude Code session), do NOT use this skill. You already have direct access to all capabilities described here — Edit tool, Agent tool, extended thinking, structured output, skills system, and Spec Kit Memory. Delegating to yourself via CLI is circular and wasteful. This skill is for EXTERNAL AIs (Gemini, Codex, Copilot) to delegate TO Claude Code. Detection: `$CLAUDECODE` env var is set when inside a Claude Code session.
 - Simple, quick tasks where CLI overhead is not worth it
 - Tasks requiring interactive terminal UI (use `claude` directly instead)
-- When already running inside a Claude Code session (CLAUDECODE env var detected)
 - Context already loaded and understood by the calling AI
 - Tasks where Claude Code CLI is not installed
 - Real-time web search (Claude Code has no `--search` flag — use Gemini or Codex)
@@ -76,8 +76,8 @@ Orchestrate Anthropic's Claude Code CLI from external AI assistants (Gemini CLI,
 # Verify Claude Code CLI is available before routing
 command -v claude || echo "Not installed. Run: npm install -g @anthropic-ai/claude-code"
 
-# CRITICAL: Check for nesting — Claude Code cannot run inside itself
-[ -n "$CLAUDECODE" ] && echo "ERROR: Already inside Claude Code session. Cannot nest."
+# SELF-INVOCATION GUARD: If you ARE Claude Code, do not use this skill — use native capabilities
+[ -n "$CLAUDECODE" ] && echo "ERROR: Already inside Claude Code session. Do not self-invoke."
 ```
 
 ### Phase Detection
@@ -254,8 +254,8 @@ Claude Code CLI must be installed and authenticated:
 # Verify installation
 command -v claude || echo "Not installed. Run: npm install -g @anthropic-ai/claude-code"
 
-# CRITICAL: Nesting check — cannot run Claude Code inside Claude Code
-[ -n "$CLAUDECODE" ] && echo "ERROR: Already inside a Claude Code session"
+# SELF-INVOCATION GUARD: Cannot run Claude Code inside Claude Code
+[ -n "$CLAUDECODE" ] && echo "ERROR: Already inside a Claude Code session — do not self-invoke"
 
 # Authentication — API key
 export ANTHROPIC_API_KEY=your-key-here
@@ -426,8 +426,9 @@ claude -p "Now refactor the auth module based on the review" --continue --output
 1. **NEVER use `--permission-mode bypassPermissions`** without explicit user approval
    - This mode auto-approves all file writes and tool executions
 
-2. **NEVER run Claude Code inside another Claude Code session**
-   - Check `$CLAUDECODE` env var first; nesting causes undefined behavior
+2. **NEVER invoke this skill from within Claude Code itself**
+   - If you ARE Claude Code, you already have native access to all capabilities — do not self-delegate via CLI
+   - Check `$CLAUDECODE` env var; self-invocation and nesting cause circular loops and undefined behavior
 
 3. **NEVER trust Claude Code output blindly** for security-sensitive code
    - Always review for XSS, injection, hardcoded secrets, and eval() calls

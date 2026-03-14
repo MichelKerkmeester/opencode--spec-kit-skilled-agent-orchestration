@@ -2,7 +2,7 @@
 name: cli-gemini
 description: "Gemini CLI orchestrator enabling any AI assistant to invoke Google's Gemini CLI for supplementary AI tasks including code generation, web research via Google Search, codebase architecture analysis, cross-AI validation, and parallel task processing."
 allowed-tools: [Bash, Read, Glob, Grep]
-version: 1.2.0
+version: 1.2.1
 ---
 
 <!-- Keywords: gemini, gemini-cli, google, cross-ai, web-search, codebase-investigator, code-generation, code-review, second-opinion, agent-delegation -->
@@ -53,6 +53,7 @@ Orchestrate Google's Gemini CLI for tasks that benefit from a second AI perspect
 
 ### When NOT to Use
 
+- **Self-invocation guard**: If you ARE Gemini CLI (running natively inside a Gemini CLI session), do NOT use this skill. You already have direct access to all capabilities described here — google_web_search, codebase_investigator, save_memory, and your agent system. Delegating to yourself via CLI is circular and wasteful. This skill is for EXTERNAL AIs (Claude Code, Codex, Copilot) to delegate TO Gemini CLI.
 - Simple, quick tasks where CLI overhead is not worth it
 - Tasks requiring immediate response (rate limits may cause delays)
 - Context already loaded and understood by the current agent
@@ -383,6 +384,10 @@ gemini "[prompt]" -m gemini-3.1-pro-preview -o text
 
 6. **NEVER assume Gemini output is correct** without verification
    - Cross-reference with the codebase and project standards
+
+7. **NEVER invoke this skill from within Gemini CLI itself**
+   - If you ARE Gemini CLI, you already have native access to all capabilities — do not self-delegate via CLI
+   - Self-invocation creates a circular, wasteful loop; use your native tools directly instead
 
 ### ⚠️ ESCALATE IF
 

@@ -1,0 +1,25 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/011-feature-catalog",
+  "description": "Feature Catalog Comprehensive Audit & Remediation",
+  "keywords": [
+    "feature",
+    "catalog",
+    "comprehensive",
+    "audit",
+    "remediation",
+    "inline comments",
+    "code references",
+    "sprint cleanup"
+  ],
+  "lastUpdated": "2026-03-14T12:00:00.000Z",
+  "specId": "011",
+  "folderSlug": "feature-catalog",
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "08-03-26_19-28__feature-catalog-comprehensive-audit-remediation.md"
+  ]
+}

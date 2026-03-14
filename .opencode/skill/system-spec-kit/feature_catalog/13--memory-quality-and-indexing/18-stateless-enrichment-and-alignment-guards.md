@@ -17,7 +17,9 @@ Current behavior is enforced in three slices:
 2. `enrichStatelessData()` appends `_provenance: 'spec-folder'` and `_provenance: 'git'` signals after the contamination-cleaning pass and before downstream extraction.
 3. Pre- and post-enrichment alignment gates allow stateless saves only when captured file paths overlap with the target spec's declared work surface. The overlap check now uses both spec-folder keywords and files declared in the spec's files-to-change table, which prevents false blocks for legitimate code paths like `scripts/core/workflow.ts`.
 
-Git enrichment no longer scopes only to the spec folder path itself. It uses files declared by the spec to detect recent committed and uncommitted changes, and commit observations retain the touched file list for downstream reasoning. The workflow still hard-aborts on `ALIGNMENT_BLOCK`, `POST_ENRICHMENT_ALIGNMENT_BLOCK`, or failed stateless validation rules when the capture clearly belongs to another task.
+Git enrichment no longer scopes only to the spec folder path itself. It uses files declared by the spec to detect recent committed and uncommitted changes, commit observations retain only the scope-filtered touched file list for downstream reasoning, and the extractor now exposes an explicit repository snapshot through `headRef`, `commitRef`, `repositoryState`, and `isDetachedHead`. The workflow still hard-aborts on `ALIGNMENT_BLOCK`, `POST_ENRICHMENT_ALIGNMENT_BLOCK`, or failed stateless validation rules when the capture clearly belongs to another task.
+
+Git extraction also preserves uncommitted file context in freshly initialized repositories that do not have a `HEAD` commit yet, survives detached-HEAD saves without dropping commit identity, and parses multi-commit history without leaking similarly named foreign spec folders into the target result.
 
 Downstream session snapshots now prefer live observations over synthetic spec/git enrichment when deriving `activeFile`, `lastAction`, `nextAction` and blocker summaries. That keeps provenance-enrichment useful for context without letting epoch-timestamped synthetic entries masquerade as the user's most recent action.
 
@@ -41,7 +43,7 @@ Status: Implemented and covered by targeted Vitest regressions.
 
 | File | Focus |
 |------|-------|
-| `scripts/tests/stateless-enrichment.vitest.ts` | Relevance filtering, sparse-spec extraction, git scoping/fallbacks, live-over-synthetic snapshot behavior, and extractor barrel exports |
+| `scripts/tests/stateless-enrichment.vitest.ts` | Relevance filtering, sparse-spec extraction, git snapshot metadata, multi-commit scoping/fallbacks, unborn-HEAD repo handling, live-over-synthetic snapshot behavior, and extractor barrel exports |
 | `scripts/tests/task-enrichment.vitest.ts` | Workflow seam coverage proving stateless saves are allowed when captured files match spec-declared code paths |
 | `scripts/tests/memory-render-fixture.vitest.ts` | Render-path validation and quality gate regression coverage for stateless memory output |
 
@@ -51,4 +53,4 @@ Status: Implemented and covered by targeted Vitest regressions.
 
 - Group: Memory quality and indexing
 - Source feature title: Stateless enrichment and alignment guards
-- Current reality source: spec 011-perfect-session-capturing
+- Current reality source: spec 010-perfect-session-capturing

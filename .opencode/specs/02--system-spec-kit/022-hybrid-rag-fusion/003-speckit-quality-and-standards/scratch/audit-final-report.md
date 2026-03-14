@@ -125,7 +125,7 @@ The codebase is functionally solid — no SQL injection vulnerabilities, no `any
 
 ---
 
-## Comparison to Prior Audit (010-spec-descriptions)
+## Comparison to Prior Audit (009-spec-descriptions)
 
 The prior audit (2026-03-08, 35 agents, 30 files) focused on **spec folder compliance and documentation quality** across 12 spec folders. This audit (H-series) focuses on **source code quality standards** with deeper file-level coverage.
 

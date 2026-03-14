@@ -81,7 +81,7 @@ describe('generate-context CLI authority', () => {
   });
 
   it('passes an explicit phase-folder CLI target through main() as an authoritative workflow target', async () => {
-    const explicitPhaseFolder = '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/021-remediation-revalidation';
+    const explicitPhaseFolder = '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/021-remediation-revalidation';
     const resolvedPhaseFolder = path.resolve(REPO_ROOT, explicitPhaseFolder);
     process.argv = ['node', path.join('scripts', 'dist', 'memory', 'generate-context.js'), explicitPhaseFolder];
 

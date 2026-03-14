@@ -1,0 +1,25 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/001-retrieval",
+  "description": "Feature Specification: 001-Retrieval Code Audit",
+  "keywords": [
+    "feature",
+    "specification",
+    "001-retrieval",
+    "code",
+    "audit"
+  ],
+  "lastUpdated": "2026-03-13T18:17:46.691Z",
+  "specId": "001",
+  "folderSlug": "retrieval",
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion",
+    "012-code-audit-per-feature-catalog"
+  ],
+  "memorySequence": 3,
+  "memoryNameHistory": [
+    "10-03-26_14-43__review-spec-folder-context.md",
+    "10-03-26_15-57__review-spec-folder-context.md",
+    "10-03-26_15-58__manual-context-save.md"
+  ]
+}

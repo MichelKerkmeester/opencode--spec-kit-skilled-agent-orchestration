@@ -64,7 +64,7 @@ describe('Memory state baseline snapshots', () => {
       contextDbPath,
       evalRunId: 42,
       persist: true,
-      specFolder: 'specs/015-hydra-db-based-features',
+      specFolder: 'specs/014-hydra-db-based-features',
     });
 
     expect(snapshot.evalRunId).toBe(42);

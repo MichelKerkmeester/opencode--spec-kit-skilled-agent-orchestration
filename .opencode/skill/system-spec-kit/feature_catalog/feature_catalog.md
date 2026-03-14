@@ -2731,7 +2731,7 @@ Current behavior is enforced in three slices:
 2. `nextSteps` / `next_steps` persistence in normalization and extraction flow, producing `Next: ...`, `Follow-up: ...` and `NEXT_ACTION`.
 3. 8 CLI handback docs (`cli-codex`, `cli-copilot`, `cli-claude-code`, `cli-gemini` `SKILL.md` + `prompt_templates.md`) documenting redact/scrub guidance before writing `/tmp/save-context-data.json`.
 
-Status: Implemented. Spec folder `014-outsourced-agent-memory` is complete.
+Status: Implemented. Spec folder `013-outsourced-agent-memory` is complete.
 
 #### Source Files
 
@@ -2756,7 +2756,9 @@ Current behavior is enforced in three slices:
 2. `enrichStatelessData()` appends `_provenance: 'spec-folder'` and `_provenance: 'git'` signals after the contamination-cleaning pass and before downstream extraction.
 3. Pre- and post-enrichment alignment gates allow stateless saves only when captured file paths overlap with the target spec's declared work surface. The overlap check now uses both spec-folder keywords and files declared in the spec's files-to-change table, which prevents false blocks for legitimate code paths like `scripts/core/workflow.ts`.
 
-Git enrichment no longer scopes only to the spec folder path itself. It uses files declared by the spec to detect recent committed and uncommitted changes, and commit observations retain the touched file list for downstream reasoning. The workflow still hard-aborts on `ALIGNMENT_BLOCK`, `POST_ENRICHMENT_ALIGNMENT_BLOCK`, or failed stateless validation rules when the capture clearly belongs to another task.
+Git enrichment no longer scopes only to the spec folder path itself. It uses files declared by the spec to detect recent committed and uncommitted changes, commit observations retain only the scope-filtered touched file list for downstream reasoning, and the extractor now exposes an explicit repository snapshot through `headRef`, `commitRef`, `repositoryState`, and `isDetachedHead`. The workflow still hard-aborts on `ALIGNMENT_BLOCK`, `POST_ENRICHMENT_ALIGNMENT_BLOCK`, or failed stateless validation rules when the capture clearly belongs to another task.
+
+Git extraction also preserves uncommitted file context in freshly initialized repositories that do not have a `HEAD` commit yet, survives detached-HEAD saves without dropping commit identity, and parses multi-commit history without leaking similarly named foreign spec folders into the target result.
 
 Downstream session snapshots now prefer live observations over synthetic spec/git enrichment when deriving `activeFile`, `lastAction`, `nextAction` and blocker summaries. That keeps provenance-enrichment useful for context without letting epoch-timestamped synthetic entries masquerade as the user's most recent action.
 
@@ -3622,7 +3624,7 @@ See [`16--tooling-and-scripts/11-feature-catalog-code-references.md`](16--toolin
 
 #### Description
 
-Session capturing pipeline quality covers the 20 P0-P3 fixes applied to `generate-context.js` and its supporting extractors during the Part I audit and remediation of spec 011-perfect-session-capturing. These fixes harden session ID generation, atomic writes, contamination filtering, extraction correctness, and configurability across the memory-save pipeline.
+Session capturing pipeline quality covers the 20 P0-P3 fixes applied to `generate-context.js` and its supporting extractors during the Part I audit and remediation of spec 010-perfect-session-capturing. These fixes harden session ID generation, atomic writes, contamination filtering, extraction correctness, and configurability across the memory-save pipeline.
 
 #### Current Reality
 
@@ -3724,7 +3726,7 @@ See [`17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kil
 
 ## 20. UX HOOKS
 
-Current mapping: this content is tracked under spec `007-ux-hooks-automation`.
+Current mapping: this content is tracked under spec `006-ux-hooks-automation`.
 
 Spec 007 standardized post-mutation automation and safety checks across mutation handlers, then closed the follow-up review gaps that remained after the initial rollout. The finalized state now includes required `confirmName` enforcement, duplicate-save no-op feedback that leaves caches untouched, atomic-save parity for `postMutationHooks` and hint payloads, token metadata recomputation before token-budget enforcement, hooks README/export alignment, and end-to-end success-envelope verification. Current verification evidence: `npx tsc -b` PASS, `npm run lint` PASS, the split UX suite passed with 7 files / 510 tests, the stdio plus embeddings suite passed with 2 files / 15 tests, the combined targeted rerun passed with 9 files / 525 tests, and the MCP SDK stdio smoke test passed with 28 tools listed.
 

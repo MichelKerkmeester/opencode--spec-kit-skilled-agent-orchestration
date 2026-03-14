@@ -2,7 +2,7 @@
 name: cli-codex
 description: "Codex CLI orchestrator enabling any AI assistant to invoke OpenAI's Codex CLI for supplementary AI tasks including code generation, code review, web research, codebase analysis, cross-AI validation, and parallel task processing."
 allowed-tools: [Bash, Read, Glob, Grep]
-version: 1.3.0
+version: 1.3.1
 ---
 
 <!-- Keywords: codex, codex-cli, openai, cross-ai, web-search, code-generation, code-review, second-opinion, agent-delegation, gpt-5, session-management -->
@@ -56,6 +56,7 @@ Orchestrate OpenAI's Codex CLI for tasks that benefit from a second AI perspecti
 
 ### When NOT to Use
 
+- **Self-invocation guard**: If you ARE Codex CLI (running natively inside a Codex CLI session), do NOT use this skill. You already have direct access to all capabilities described here — sandbox execution, /review workflow, --search, session management, and your profile system. Delegating to yourself via CLI is circular and wasteful. This skill is for EXTERNAL AIs (Claude Code, Gemini, Copilot) to delegate TO Codex CLI.
 - Simple, quick tasks where CLI overhead is not worth it
 - Tasks requiring immediate response (rate limits may cause delays)
 - Context already loaded and understood by the current agent
@@ -436,6 +437,10 @@ codex exec -p research "Research latest security advisories for Express.js" --mo
 
 6. **NEVER assume Codex output is correct** without verification
    - Cross-reference with the codebase and project standards
+
+7. **NEVER invoke this skill from within Codex CLI itself**
+   - If you ARE Codex CLI, you already have native access to all capabilities — do not self-delegate via CLI
+   - Self-invocation creates a circular, wasteful loop; use your native tools directly instead
 
 ### ⚠️ ESCALATE IF
 

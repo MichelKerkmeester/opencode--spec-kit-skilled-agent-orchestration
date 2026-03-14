@@ -2,7 +2,7 @@
 name: cli-copilot
 description: "GitHub Copilot CLI orchestrator enabling external AI assistants to invoke the standalone 'copilot' binary for supplementary tasks including collaborative planning, cloud delegation, versatile code generation, and autonomous task execution."
 allowed-tools: [Bash, Read, Glob, Grep]
-version: 1.3.0
+version: 1.3.1
 ---
 
 <!-- Keywords: copilot, copilot-cli, github, cross-ai, planning, cloud-delegation, autopilot, multi-model, gpt-5, claude-4.6, gemini-3 -->
@@ -52,9 +52,9 @@ Orchestrate the GitHub Copilot CLI from external AI assistants (Gemini CLI, Code
 
 ### When NOT to Use
 
+- **Self-invocation guard**: If you ARE Copilot CLI (running natively inside a Copilot CLI session), do NOT use this skill. You already have direct access to all capabilities described here — Autopilot, Explore/Task agents, cloud delegation, repo memory, and multi-model selection. Delegating to yourself via CLI is circular and wasteful. This skill is for EXTERNAL AIs (Claude Code, Gemini, Codex) to delegate TO Copilot CLI.
 - Simple, quick tasks where local execution is faster
 - When GitHub authentication is unavailable or expired
-- When already running inside a Copilot CLI session (to avoid nesting)
 - Real-time web search (use Gemini CLI or specialized search tools instead)
 - Tasks where precise diff-based surgical editing is the only requirement
 
@@ -70,8 +70,8 @@ Orchestrate the GitHub Copilot CLI from external AI assistants (Gemini CLI, Code
 # Verify Copilot CLI is available before routing
 command -v copilot || echo "Not installed. Run: npm install -g @github/copilot"
 
-# Check for active session/nesting if applicable
-# [ -n "$COPILOT_SESSION" ] && echo "ERROR: Already inside Copilot session."
+# SELF-INVOCATION GUARD: If you are Copilot CLI, do not use this skill
+# [ -n "$COPILOT_SESSION" ] && echo "ERROR: Already inside Copilot session. Do not self-invoke."
 ```
 
 ### Phase Detection
@@ -291,6 +291,9 @@ The calling AI acts as the **conductor** that delegates tasks to Copilot CLI.
 2. **NEVER expose `GH_TOKEN`** in logs or printed output.
 3. **NEVER assume Autopilot is perfect**; always verify the structural integrity of generated code.
 4. **NEVER ignore repository memory**; check for existing conventions before overriding.
+5. **NEVER invoke this skill from within Copilot CLI itself**
+   - If you ARE Copilot CLI, you already have native access to all capabilities — do not self-delegate via CLI
+   - Self-invocation creates a circular, wasteful loop; use your native tools directly instead
 
 ### ESCALATE IF
 

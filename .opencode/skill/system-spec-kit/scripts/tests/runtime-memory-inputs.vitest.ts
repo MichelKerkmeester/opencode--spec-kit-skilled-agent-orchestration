@@ -26,7 +26,7 @@ describe('loadCollectedData explicit data-file handling', () => {
 
     await expect(loadCollectedData({
       dataFile: missingFile,
-      specFolderArg: '022-hybrid-rag-fusion/014-outsourced-agent-memory',
+      specFolderArg: '022-hybrid-rag-fusion/013-outsourced-agent-memory',
     })).rejects.toThrow(/EXPLICIT_DATA_FILE_LOAD_FAILED: Data file not found/);
 
     expect(captureConversation).not.toHaveBeenCalled();
@@ -41,7 +41,7 @@ describe('loadCollectedData explicit data-file handling', () => {
 
       await expect(loadCollectedData({
         dataFile: invalidFile,
-        specFolderArg: '022-hybrid-rag-fusion/014-outsourced-agent-memory',
+        specFolderArg: '022-hybrid-rag-fusion/013-outsourced-agent-memory',
       })).rejects.toThrow(/EXPLICIT_DATA_FILE_LOAD_FAILED: Invalid JSON in data file/);
 
       expect(captureConversation).not.toHaveBeenCalled();
@@ -53,7 +53,7 @@ describe('loadCollectedData explicit data-file handling', () => {
   it('rejects validation failures from an explicit dataFile instead of falling back to OpenCode capture', async () => {
     const invalidShapeFile = path.join(os.tmpdir(), `invalid-shape-${Date.now()}.json`);
     await fs.writeFile(invalidShapeFile, JSON.stringify({
-      specFolder: '022-hybrid-rag-fusion/014-outsourced-agent-memory',
+      specFolder: '022-hybrid-rag-fusion/013-outsourced-agent-memory',
       nextSteps: 'not-an-array',
     }), 'utf-8');
 
@@ -62,7 +62,7 @@ describe('loadCollectedData explicit data-file handling', () => {
 
       await expect(loadCollectedData({
         dataFile: invalidShapeFile,
-        specFolderArg: '022-hybrid-rag-fusion/014-outsourced-agent-memory',
+        specFolderArg: '022-hybrid-rag-fusion/013-outsourced-agent-memory',
       })).rejects.toThrow(/EXPLICIT_DATA_FILE_LOAD_FAILED: Failed to load data file/);
 
       expect(captureConversation).not.toHaveBeenCalled();
@@ -81,7 +81,7 @@ describe('valid explicit dataFile happy path', () => {
   it('loads and normalizes a valid explicit dataFile successfully', async () => {
     const validFile = path.join(os.tmpdir(), `valid-${Date.now()}.json`);
     await fs.writeFile(validFile, JSON.stringify({
-      specFolder: '022-hybrid-rag-fusion/014-outsourced-agent-memory',
+      specFolder: '022-hybrid-rag-fusion/013-outsourced-agent-memory',
       sessionSummary: 'Completed runtime hardening.',
       nextSteps: ['Update documentation.'],
     }), 'utf-8');
@@ -90,7 +90,7 @@ describe('valid explicit dataFile happy path', () => {
       const { loadCollectedData } = await import('../loaders/data-loader');
       const result = await loadCollectedData({
         dataFile: validFile,
-        specFolderArg: '022-hybrid-rag-fusion/014-outsourced-agent-memory',
+        specFolderArg: '022-hybrid-rag-fusion/013-outsourced-agent-memory',
       });
 
       expect(result._source).toBe('file');
@@ -114,7 +114,7 @@ describe('path traversal security', () => {
 
     await expect(loadCollectedData({
       dataFile: '../../etc/passwd',
-      specFolderArg: '022-hybrid-rag-fusion/014-outsourced-agent-memory',
+      specFolderArg: '022-hybrid-rag-fusion/013-outsourced-agent-memory',
     })).rejects.toThrow(/Security|Path outside allowed directories/);
 
     expect(captureConversation).not.toHaveBeenCalled();
@@ -124,7 +124,7 @@ describe('path traversal security', () => {
 describe('FILES field transformation', () => {
   it('transforms path/description fields to FILE_PATH/DESCRIPTION in structured payloads', () => {
     const normalized = normalizeInputData({
-      specFolder: '022-hybrid-rag-fusion/014-outsourced-agent-memory',
+      specFolder: '022-hybrid-rag-fusion/013-outsourced-agent-memory',
       observations: [{
         type: 'feature',
         title: 'Test payload',
@@ -186,7 +186,7 @@ describe('manual next-steps normalization', () => {
 
   it('preserves next_steps for already-structured payloads without duplicating existing next-action facts', async () => {
     const normalized = normalizeInputData({
-      specFolder: '022-hybrid-rag-fusion/014-outsourced-agent-memory',
+      specFolder: '022-hybrid-rag-fusion/013-outsourced-agent-memory',
       observations: [{
         type: 'feature',
         title: 'Structured payload',
@@ -217,7 +217,7 @@ describe('manual next-steps normalization', () => {
 
     const sessionData = await collectSessionData(
       normalized,
-      '022-hybrid-rag-fusion/014-outsourced-agent-memory'
+      '022-hybrid-rag-fusion/013-outsourced-agent-memory'
     );
 
     expect(sessionData.NEXT_ACTION).toBe('Promote the preserved structured next action.');
@@ -235,7 +235,7 @@ describe('manual next-steps normalization', () => {
 
   it('produces no Next Steps observation when nextSteps is an empty array', () => {
     const normalized = normalizeInputData({
-      specFolder: '022-hybrid-rag-fusion/014-outsourced-agent-memory',
+      specFolder: '022-hybrid-rag-fusion/013-outsourced-agent-memory',
       sessionSummary: 'Session with no next steps.',
       nextSteps: [],
     });
@@ -246,7 +246,7 @@ describe('manual next-steps normalization', () => {
 
   it('prefers camelCase nextSteps when both nextSteps and next_steps are present', () => {
     const normalized = normalizeInputData({
-      specFolder: '022-hybrid-rag-fusion/014-outsourced-agent-memory',
+      specFolder: '022-hybrid-rag-fusion/013-outsourced-agent-memory',
       sessionSummary: 'Both fields present.',
       nextSteps: ['camelCase wins.'],
       next_steps: ['snake_case loses.'],
@@ -261,7 +261,7 @@ describe('manual next-steps normalization', () => {
 
   it('documents behavior when the first next step is an empty string', () => {
     const normalized = normalizeInputData({
-      specFolder: '022-hybrid-rag-fusion/014-outsourced-agent-memory',
+      specFolder: '022-hybrid-rag-fusion/013-outsourced-agent-memory',
       sessionSummary: 'Edge case: empty first step.',
       nextSteps: ['', 'Second step is real.'],
     });

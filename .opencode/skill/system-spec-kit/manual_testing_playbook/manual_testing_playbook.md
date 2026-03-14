@@ -550,13 +550,39 @@ These 29 catalog entries are explicitly documented here even when validation is 
 - Commands:
   - `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js specs/<target-spec>`
   - `memory_search({ query: "stateless enrichment alignment", specFolder: "specs/<target-spec>" })`
-- Expected: the save uses spec-folder and git enrichment, keeps natural-language prompt variants of the spec slug, and does not raise `ALIGNMENT_BLOCK` when captured files match the spec's files-to-change table.
+- Expected: the save uses spec-folder and git enrichment, keeps natural-language prompt variants of the spec slug, records git snapshot metadata (`headRef`, `commitRef`, `repositoryState`, `isDetachedHead`), and does not raise `ALIGNMENT_BLOCK` when captured files match the spec's files-to-change table.
 - Evidence: save stdout showing Step 3.5 enrichment, absence of false alignment aborts for matching code files, and saved memory content/search hits reflecting spec/git-derived context.
 - Pass: stateless save succeeds for matching files, emits provenance-backed context, and still blocks unrelated captures when overlap is genuinely low.
 - Fail triage: inspect `input-normalizer.ts` relevance filtering, compare captured file paths to the spec's files-to-change table, verify git scope includes the declared code paths, then rerun.
 
+#### M-006a: Unborn-HEAD and dirty snapshot fallback
+1. Initialize a sandbox repo without creating a commit yet, then create one in-scope file.
+2. Run:
+   `node - <<'NODE'
+   const { extractGitContext } = require('./.opencode/skill/system-spec-kit/scripts/dist/extractors/git-context-extractor.js');
+   (async () => {
+     const result = await extractGitContext(process.cwd());
+     console.log(JSON.stringify(result, null, 2));
+   })().catch((error) => {
+     console.error(error);
+     process.exit(1);
+   });
+   NODE`
+3. Verify: `headRef` shows the current branch, `commitRef` is `null`, `repositoryState` is `dirty`, and uncommitted files are listed.
+
+#### M-006b: Detached-HEAD snapshot preservation
+1. Checkout a detached `HEAD` in a sandbox repo that already has at least one commit affecting the target scope.
+2. Run the same extractor command as M-006a.
+3. Verify: `headRef` is `HEAD`, `commitRef` is populated, `isDetachedHead` is `true`, and the extractor still returns recent in-scope commit observations.
+
+#### M-006c: Similar-folder boundary protection
+1. Create two spec folders where one slug is a prefix of the other, but only the target spec contains in-scope files.
+2. Commit a change only under the similarly named foreign folder.
+3. Run the extractor command from M-006a with the target spec folder hint.
+4. Verify: recent commit observations do not include the foreign folder path, and the target result remains empty or limited to genuinely in-scope history.
+
 ### M-007 Session Capturing Pipeline Quality
-- Prompt: `Verify the 20 P0-P3 pipeline quality fixes from spec 011-perfect-session-capturing`
+- Prompt: `Verify the 20 P0-P3 pipeline quality fixes from spec 010-perfect-session-capturing`
 - Commands:
   - Crypto session ID: `grep -n 'crypto.randomBytes' .opencode/skill/system-spec-kit/scripts/extractors/session-extractor.ts`
   - Batch write rollback: simulate failure by writing to a read-only directory, verify no partial files remain
