@@ -15,9 +15,9 @@ import {
 import type { FusionWeights, DegradedModeContract, AdaptiveFusionResult } from '@spec-kit/shared/algorithms/adaptive-fusion';
 import type { RrfItem } from '@spec-kit/shared/algorithms/rrf-fusion';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    HELPERS
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 function makeItems(count: number, prefix = 'item'): RrfItem[] {
   return Array.from({ length: count }, (_, i) => ({
@@ -47,9 +47,9 @@ function restoreEnv() {
   }
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    TESTS
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 describe('C136-10 Adaptive Fusion', () => {
   beforeEach(() => {

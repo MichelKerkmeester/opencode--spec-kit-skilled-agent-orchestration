@@ -1,4 +1,6 @@
-// --- 1. TEST — TOKEN BUDGET ---
+// ───────────────────────────────────────────────────────────────
+// 1. TEST — TOKEN BUDGET
+// ───────────────────────────────────────────────────────────────
 // Verifies token estimation, greedy truncation, single-result
 // Summary fallback, overflow logging, and env var configuration.
 
@@ -268,11 +270,11 @@ describe('truncateToBudget', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    CHK-023: adjustedBudget = max(dynamicBudget - (resultCount * 26), 200)
    The formula lives inline in hybrid-search.ts (line ~971).
    We test the formula's math directly since it is not exported as a function.
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 describe('CHK-023: adjustedBudget formula (header overhead deduction)', () => {
   /**

@@ -1,8 +1,10 @@
-// --- 1. MEMORY CRUD UTILS ---
+// ────────────────────────────────────────────────────────────────
+// 1. MEMORY CRUD UTILS 
+// ────────────────────────────────────────────────────────────────
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    IMPORTS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 import * as mutationLedger from '../lib/storage/mutation-ledger';
 import { toErrorMessage } from '../utils';
@@ -10,9 +12,9 @@ import { toErrorMessage } from '../utils';
 import type { DatabaseExtended } from './types';
 import type { MemoryHashSnapshot, MutationLedgerInput } from './memory-crud-types';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    HELPERS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /** Retrieve a memory's hash snapshot from the database. Returns null if unavailable. */
 function getMemoryHashSnapshot(database: DatabaseExtended | null, memoryId: number): MemoryHashSnapshot | null {
@@ -57,9 +59,9 @@ function appendMutationLedgerSafe(database: DatabaseExtended | null, input: Muta
   }
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    EXPORTS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 export {
   getMemoryHashSnapshot,

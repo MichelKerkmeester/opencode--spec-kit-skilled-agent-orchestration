@@ -8,7 +8,8 @@ const Database = require('better-sqlite3');
 
 /* ─────────────────────────────────────────────────────────────
    1. CONFIGURATION
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 const SCRIPTS_DIR = path.join(__dirname, '..', 'dist');
 const MODULE_PATH = path.join(SCRIPTS_DIR, 'memory', 'cleanup-orphaned-vectors.js');
@@ -49,7 +50,8 @@ const results = {
 
 /* ─────────────────────────────────────────────────────────────
    2. TEST UTILITIES
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 function log(msg) {
   console.log(msg);
@@ -98,7 +100,8 @@ function assertType(value, expectedType, testName) {
 
 /* ─────────────────────────────────────────────────────────────
    3. DATABASE HELPERS
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 /**
  * Creates an in-memory SQLite database with the same schema
@@ -198,7 +201,8 @@ function insertVector(db, rowid) {
 
 /* ─────────────────────────────────────────────────────────────
    4. MODULE STRUCTURE TESTS
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testModuleStructure() {
   log('\n🔬 MODULE STRUCTURE: cleanup-orphaned-vectors.js');
@@ -307,7 +311,8 @@ async function testModuleStructure() {
 
 /* ─────────────────────────────────────────────────────────────
    5. ORPHANED HISTORY DETECTION SQL TESTS
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testOrphanedHistoryDetection() {
   log('\n🔬 SQL LOGIC: Orphaned History Detection');
@@ -422,7 +427,8 @@ async function testOrphanedHistoryDetection() {
 
 /* ─────────────────────────────────────────────────────────────
    6. ORPHANED VECTOR DETECTION SQL TESTS
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testOrphanedVectorDetection() {
   log('\n🔬 SQL LOGIC: Orphaned Vector Detection');
@@ -572,7 +578,8 @@ async function testOrphanedVectorDetection() {
 
 /* ─────────────────────────────────────────────────────────────
    7. VERIFICATION STEP SQL TESTS
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testVerificationCounts() {
   log('\n🔬 SQL LOGIC: Verification Count Queries');
@@ -680,7 +687,8 @@ async function testVerificationCounts() {
 
 /* ─────────────────────────────────────────────────────────────
    8. EDGE CASES & ERROR HANDLING TESTS
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testEdgeCases() {
   log('\n🔬 EDGE CASES: Error Handling and Boundaries');
@@ -879,7 +887,8 @@ async function testEdgeCases() {
 
 /* ─────────────────────────────────────────────────────────────
    9. FULL CLEANUP WORKFLOW SIMULATION
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testFullCleanupWorkflow() {
   log('\n🔬 INTEGRATION: Full Cleanup Workflow Simulation');
@@ -1010,7 +1019,8 @@ async function testFullCleanupWorkflow() {
 
 /* ─────────────────────────────────────────────────────────────
    10. MODULE IMPORT SAFETY TESTS
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testModuleImportSafety() {
   log('\n🔬 IMPORT SAFETY: Module require() behavior');
@@ -1101,7 +1111,8 @@ async function testModuleImportSafety() {
 
 /* ─────────────────────────────────────────────────────────────
    11. MAIN
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function main() {
   log('🧪 Cleanup Orphaned Vectors — Test Suite');

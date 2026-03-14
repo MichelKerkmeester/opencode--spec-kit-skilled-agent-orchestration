@@ -1,4 +1,6 @@
-// --- 1. RUN QUALITY LEGACY REMEDIATION ---
+// ───────────────────────────────────────────────────────────────
+// 1. RUN QUALITY LEGACY REMEDIATION
+// ───────────────────────────────────────────────────────────────
 // SCRIPT: Quality Legacy Remediation (TQ040-TQ047)
 
 import fs from 'fs';

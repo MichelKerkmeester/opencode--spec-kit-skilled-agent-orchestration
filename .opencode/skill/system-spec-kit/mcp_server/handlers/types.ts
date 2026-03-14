@@ -1,4 +1,6 @@
-// --- 1. HANDLER TYPES ---
+// ───────────────────────────────────────────────────────────────
+// 1. HANDLER TYPES
+// ───────────────────────────────────────────────────────────────
 // Re-exports canonical types from shared/ for handler convenience.
 // Previously declared duplicates locally — now imports from the
 // Single source of truth.

@@ -1,10 +1,14 @@
-// --- 1. TOPIC KEYWORDS ---
+// ───────────────────────────────────────────────────────────────
+// 1. TOPIC KEYWORDS
+// ───────────────────────────────────────────────────────────────
 /**
  * @file topic-keywords.ts
  * @description Shared lexical helpers for topic extraction across script extractors.
  * @module scripts/lib/topic-keywords
  */
-// --- 2. TOPIC KEYWORDS ---
+// ───────────────────────────────────────────────────────────────
+// 2. TOPIC KEYWORDS
+// ───────────────────────────────────────────────────────────────
 // Shared lexical helpers for topic extraction across script extractors.
 
 const WORD_PATTERN = /\b[a-z][a-z0-9]+\b/g;

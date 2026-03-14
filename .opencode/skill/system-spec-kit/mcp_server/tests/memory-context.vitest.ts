@@ -11,9 +11,9 @@ import {
   enforceTokenBudget,
 } from '../handlers/memory-context';
 
-/* -----------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    TYPE DEFINITIONS
------------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 interface ContextMode {
   name: string;
@@ -34,9 +34,9 @@ const MEMORY_CONTEXT_SOURCE = fs.readFileSync(
   'utf-8'
 );
 
-/* -----------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    TEST UTILITIES
------------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Parse an error response from the envelope structure.
@@ -62,9 +62,9 @@ function invokeMemoryContext(args: Record<string, unknown>): Promise<MCPResponse
   return handleMemoryContext(args as unknown as MemoryContextArgs);
 }
 
-/* -----------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    T001-T010: CONTEXT MODES TESTS
------------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('T001-T010: Context Modes Configuration [deferred - requires DB test fixtures]', () => {
   it('T001: CONTEXT_MODES contains all 5 required modes', () => {
@@ -146,9 +146,9 @@ describe('T001-T010: Context Modes Configuration [deferred - requires DB test fi
   });
 });
 
-/* -----------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    T011-T020: INTENT_TO_MODE ROUTING TESTS
------------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('T011-T020: Intent-to-Mode Routing [deferred - requires DB test fixtures]', () => {
   it('T011: INTENT_TO_MODE contains all 7 intent types', () => {
@@ -204,9 +204,9 @@ describe('T011-T020: Intent-to-Mode Routing [deferred - requires DB test fixture
   });
 });
 
-/* -----------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    T021-T030: handle_memory_context MAIN HANDLER TESTS
------------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('T021-T030: Main Handler Tests [deferred - requires DB test fixtures]', () => {
   it('T021: handle_memory_context is a function', () => {
@@ -267,9 +267,9 @@ describe('T021-T030: Main Handler Tests [deferred - requires DB test fixtures]',
   });
 });
 
-/* -----------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    T031-T040: QUICK MODE CONFIGURATION TESTS
------------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('T031-T040: Quick Mode Configuration Tests [deferred - requires DB test fixtures]', () => {
   it('T031: Quick mode strategy is triggers', () => {
@@ -330,9 +330,9 @@ describe('T031-T040: Quick Mode Configuration Tests [deferred - requires DB test
   });
 });
 
-/* -----------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    T041-T050: DEEP MODE CONFIGURATION TESTS
------------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('T041-T050: Deep Mode Configuration Tests [deferred - requires DB test fixtures]', () => {
   it('T041: Deep mode strategy is search', () => {
@@ -385,9 +385,9 @@ describe('T041-T050: Deep Mode Configuration Tests [deferred - requires DB test 
   });
 });
 
-/* -----------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    T051-T060: FOCUSED MODE CONFIGURATION TESTS
------------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('T051-T060: Focused Mode Configuration Tests [deferred - requires DB test fixtures]', () => {
   it('T051: Focused mode strategy is intent-search', () => {
@@ -442,9 +442,9 @@ describe('T051-T060: Focused Mode Configuration Tests [deferred - requires DB te
   });
 });
 
-/* -----------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    T061-T070: RESUME MODE CONFIGURATION TESTS
------------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('T061-T070: Resume Mode Configuration Tests [deferred - requires DB test fixtures]', () => {
   it('T061: Resume mode strategy is resume', () => {
@@ -503,9 +503,9 @@ describe('T061-T070: Resume Mode Configuration Tests [deferred - requires DB tes
   });
 });
 
-/* -----------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    T071-T080: AUTO MODE CONFIGURATION TESTS
------------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('T071-T080: Auto Mode Configuration Tests [deferred - requires DB test fixtures]', () => {
   it('T071: Auto mode strategy is adaptive', () => {
@@ -568,9 +568,9 @@ describe('T071-T080: Auto Mode Configuration Tests [deferred - requires DB test 
   });
 });
 
-/* -----------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    T081-T090: L1 ORCHESTRATION TOKEN BUDGET TESTS (CHK-071, CHK-072, CHK-074)
------------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('T081-T090: L1 Orchestration Token Budget Tests [deferred - requires DB test fixtures]', () => {
   it('T081: Error response includes L1 layer reference', async () => {
@@ -647,9 +647,9 @@ describe('T081-T090: L1 Orchestration Token Budget Tests [deferred - requires DB
   });
 });
 
-/* -----------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    T091-T100: INPUT VALIDATION TESTS
------------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('T091-T100: Input Validation Tests [deferred - requires DB test fixtures]', () => {
   it('T091: Handles non-string input gracefully', async () => {
@@ -715,9 +715,9 @@ describe('T091-T100: Input Validation Tests [deferred - requires DB test fixture
   });
 });
 
-/* -----------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    T101-T105: MODULE EXPORTS TESTS
------------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('T101-T105: Module Exports Tests [deferred - requires DB test fixtures]', () => {
   it('T101: handle_memory_context is exported', () => {
@@ -746,9 +746,9 @@ describe('T101-T105: Module Exports Tests [deferred - requires DB test fixtures]
   });
 });
 
-/* -----------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    T201-T220: TOKEN BUDGET ENFORCEMENT TESTS (T205)
------------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('T201-T220: Token Budget Enforcement (T205) [deferred - requires DB test fixtures]', () => {
   it('T201: enforceTokenBudget is exported as a function', () => {

@@ -1,4 +1,6 @@
-// --- 1. ABLATION FRAMEWORK (R13-S3) ---
+// ───────────────────────────────────────────────────────────────
+// 1. ABLATION FRAMEWORK (R13-S3)
+// ───────────────────────────────────────────────────────────────
 //
 // Controlled ablation studies for search channel contribution analysis.
 // Selectively disables one search channel at a time, measures Recall@20

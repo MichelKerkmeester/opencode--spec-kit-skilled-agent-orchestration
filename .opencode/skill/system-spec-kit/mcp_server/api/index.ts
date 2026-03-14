@@ -1,4 +1,6 @@
-// --- 1. INDEX ---
+// ────────────────────────────────────────────────────────────────
+// 1. INDEX 
+// ────────────────────────────────────────────────────────────────
 // @public — single entry point for all public API surfaces.
 // ARCH-1 consumer scripts import from '../../mcp_server/api'
 // Instead of reaching into lib/ internals.

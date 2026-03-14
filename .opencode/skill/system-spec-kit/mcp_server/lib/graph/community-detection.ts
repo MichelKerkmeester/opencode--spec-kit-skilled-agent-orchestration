@@ -1,16 +1,21 @@
-// --- 1. COMMUNITY DETECTION ---
+// ───────────────────────────────────────────────────────────────
+// 1. COMMUNITY DETECTION
+// ───────────────────────────────────────────────────────────────
 // Deferred feature — gated via SPECKIT_COMMUNITY_DETECTION
-// --- 2. IMPORTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 2. IMPORTS
+// ───────────────────────────────────────────────────────────────
 import type Database from "better-sqlite3";
 
-// --- 3. TYPES ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. TYPES
+// ───────────────────────────────────────────────────────────────
 /** Adjacency list: node ID (string) -> set of neighbor node IDs */
 type AdjacencyList = Map<string, Set<string>>;
 
-// --- 4. CONSTANTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 4. CONSTANTS
+// ───────────────────────────────────────────────────────────────
 /**
  * Community co-retrieval boost factor — 0.3 balances surfacing
  * related community members without overwhelming the primary result set.
@@ -22,8 +27,9 @@ type AdjacencyList = Map<string, Set<string>>;
  */
 const COMMUNITY_EDGE_WEIGHT_THRESHOLD = 0.3;
 
-// --- 5. MODULE-LEVEL DEBOUNCE STATE ---
-
+// ───────────────────────────────────────────────────────────────
+// 5. MODULE-LEVEL DEBOUNCE STATE
+// ───────────────────────────────────────────────────────────────
 let lastDebounceHash: string = '';
 let computedThisSession: boolean = false;
 
@@ -35,8 +41,9 @@ export function resetCommunityDetectionState(): void {
   computedThisSession = false;
 }
 
-// --- 6. INTERNAL HELPERS ---
-
+// ───────────────────────────────────────────────────────────────
+// 6. INTERNAL HELPERS
+// ───────────────────────────────────────────────────────────────
 /**
  * Build an undirected adjacency list from the `causal_edges` table.
  * Each edge (source_id, target_id) produces links in both directions.
@@ -70,8 +77,9 @@ function buildAdjacencyList(db: Database.Database): AdjacencyList {
   return adj;
 }
 
-// --- 7. BFS CONNECTED COMPONENTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 7. BFS CONNECTED COMPONENTS
+// ───────────────────────────────────────────────────────────────
 /**
  * Detect communities using BFS connected-component labelling.
  * Returns a map of nodeId -> communityId (0-indexed).
@@ -116,8 +124,9 @@ export function detectCommunitiesBFS(
   return assignments;
 }
 
-// --- 8. ESCALATION CHECK ---
-
+// ───────────────────────────────────────────────────────────────
+// 8. ESCALATION CHECK
+// ───────────────────────────────────────────────────────────────
 /**
  * Check whether the largest connected component contains >50% of all nodes.
  * If true, the graph is poorly partitioned and Louvain should be attempted.
@@ -287,8 +296,9 @@ export function detectCommunitiesLouvain(
   return result;
 }
 
-// --- 9. ORCHESTRATOR ---
-
+// ───────────────────────────────────────────────────────────────
+// 9. ORCHESTRATOR
+// ───────────────────────────────────────────────────────────────
 /**
  * Top-level community detection orchestrator.
  *
@@ -391,8 +401,9 @@ function detectCommunitiesBFSFromAdj(
   return assignments;
 }
 
-// --- 10. PERSISTENCE HELPERS ---
-
+// ───────────────────────────────────────────────────────────────
+// 10. PERSISTENCE HELPERS
+// ───────────────────────────────────────────────────────────────
 /**
  * Load previously stored community assignments from the database.
  */
@@ -456,8 +467,9 @@ export function storeCommunityAssignments(
   return { stored };
 }
 
-// --- 11. QUERY HELPERS ---
-
+// ───────────────────────────────────────────────────────────────
+// 11. QUERY HELPERS
+// ───────────────────────────────────────────────────────────────
 /**
  * Return the memory IDs that share the same community as `memoryId`.
  * Excludes the queried memory itself from the result.
@@ -534,8 +546,9 @@ export function applyCommunityBoost(
   }
 }
 
-// --- 12. TEST-ONLY EXPORTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 12. TEST-ONLY EXPORTS
+// ───────────────────────────────────────────────────────────────
 /**
  * Defines the __testables constant.
  */

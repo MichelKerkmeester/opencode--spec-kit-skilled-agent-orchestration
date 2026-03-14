@@ -1,4 +1,6 @@
-// --- 1. GRAPH FLAGS ---
+// ───────────────────────────────────────────────────────────────
+// 1. GRAPH FLAGS
+// ───────────────────────────────────────────────────────────────
 // Legacy compatibility shim retained for test/runtime imports.
 
 import { isFeatureEnabled } from '../cache/cognitive/rollout-policy';

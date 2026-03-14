@@ -1,16 +1,21 @@
-// --- 1. CHECK ARCHITECTURE BOUNDARIES ---
+// ───────────────────────────────────────────────────────────────
+// 1. CHECK ARCHITECTURE BOUNDARIES
+// ───────────────────────────────────────────────────────────────
 // Enforces two rules from ARCHITECTURE.md that were
 // Previously documentation-only:
 //   GAP A — shared/ must not import from mcp_server/ or scripts/
 //   GAP B — mcp_server/scripts/ files must be thin wrappers only
 
-// --- 2. IMPORTS ---
+// ───────────────────────────────────────────────────────────────
+// 2. IMPORTS
+// ───────────────────────────────────────────────────────────────
 import * as fs from 'fs';
 import * as path from 'path';
 import ts from 'typescript';
 
-// --- 3. TYPE DEFINITIONS ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. TYPE DEFINITIONS
+// ───────────────────────────────────────────────────────────────
 interface GapAViolation {
   file: string;
   line: number;
@@ -30,8 +35,9 @@ interface WrapperSignals {
   hasScriptsSourceReference: boolean;
 }
 
-// --- 4. CONSTANTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 4. CONSTANTS
+// ───────────────────────────────────────────────────────────────
 const REQUIRED_ROOT_DIRS = ['shared', 'mcp_server', 'scripts'] as const;
 
 // Absolute prohibition — shared/ must remain neutral (no allowlist)
@@ -44,8 +50,9 @@ const PACKAGE_ROOT = resolvePackageRoot(__dirname);
 const CHILD_PROCESS_MODULE_SPECIFIERS = new Set(['child_process', 'node:child_process']);
 const CHILD_PROCESS_WRAPPER_APIS = new Set(['spawn', 'spawnSync', 'exec', 'execSync', 'execFile', 'execFileSync', 'fork']);
 
-// --- 5. HELPERS ---
-
+// ───────────────────────────────────────────────────────────────
+// 5. HELPERS
+// ───────────────────────────────────────────────────────────────
 function findTsFiles(dir: string): string[] {
   const files: string[] = [];
 
@@ -354,8 +361,9 @@ function collectWrapperSignals(content: string, filePath: string): WrapperSignal
   };
 }
 
-// --- 6. CORE LOGIC ---
-
+// ───────────────────────────────────────────────────────────────
+// 6. CORE LOGIC
+// ───────────────────────────────────────────────────────────────
 function checkSharedNeutrality(packageRoot = PACKAGE_ROOT): GapAViolation[] {
   const resolvedRoot = resolveCheckRoot(packageRoot);
   const sharedDir = path.join(resolvedRoot, 'shared');
@@ -428,8 +436,9 @@ function runArchitectureBoundaryCheck(packageRoot = PACKAGE_ROOT): { gapAViolati
   return { gapAViolations, gapBViolations };
 }
 
-// --- 7. MAIN ---
-
+// ───────────────────────────────────────────────────────────────
+// 7. MAIN
+// ───────────────────────────────────────────────────────────────
 function main(): void {
   const { gapAViolations, gapBViolations } = runArchitectureBoundaryCheck();
   const resolvedRoot = resolveCheckRoot(PACKAGE_ROOT);

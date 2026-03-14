@@ -16,10 +16,10 @@ type MockFusionResult = Record<string, unknown> & {
   source: string;
 };
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    MOCKS — declared before any module imports so vi.mock hoisting
    picks them up correctly.
----------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 // Mock the BM25 index so no filesystem reads are attempted.
 vi.mock('../lib/search/bm25-index', () => ({
@@ -60,17 +60,17 @@ vi.mock('../lib/cache/cognitive/co-activation', () => ({
   spreadActivation: vi.fn(() => []),
 }));
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    MINIMAL MOCK DATABASE
----------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 const mockDb = {
   prepare: () => ({ all: () => [], get: () => undefined }),
 } as unknown as Database.Database;
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    FAKE GRAPH RESULTS (3 results as specified in T021)
----------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 const FAKE_GRAPH_RESULTS: ReturnType<GraphSearchFn> = [
   { id: 'graph-001', score: 0.9, source: 'graph', title: 'Graph Result Alpha' },
@@ -82,9 +82,9 @@ const mockGraphFn = vi.fn(
   (_query: string, _options: Record<string, unknown>): ReturnType<GraphSearchFn> => FAKE_GRAPH_RESULTS,
 );
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    ENV HELPERS
----------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 function saveEnv() {
   return {

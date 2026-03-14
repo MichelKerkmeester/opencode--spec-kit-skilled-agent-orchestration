@@ -1,4 +1,6 @@
-// --- 1. TEST — RSF VS RRF KENDALL TAU ---
+// ───────────────────────────────────────────────────────────────
+// 1. TEST — RSF VS RRF KENDALL TAU
+// ───────────────────────────────────────────────────────────────
 // Verification: measure rank correlation between RRF and RSF
 // Fusion to determine whether RSF is a safe replacement for RRF.
 //
@@ -8,9 +10,9 @@ import { describe, it, expect, beforeAll } from 'vitest';
 import { fuseResultsMulti, type RankedList, type RrfItem } from '@spec-kit/shared/algorithms/rrf-fusion';
 import { fuseResultsRsfMulti, type RsfResult } from '../lib/search/rsf-fusion';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    KENDALL TAU-B IMPLEMENTATION
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 /**
  * Compute Kendall tau-b rank correlation coefficient.
@@ -108,9 +110,9 @@ function compareRankings(
   return { tau, commonIds, totalIds: allIds.size };
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    SYNTHETIC DATA GENERATORS
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 /** Create an RrfItem with specified ID and score */
 function makeItem(id: number, score: number): RrfItem {
@@ -274,9 +276,9 @@ function generateScenarios(): TestScenario[] {
   return scenarios;
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    GLOBAL TEST STATE
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 interface TauResult {
   scenario: string;
@@ -288,9 +290,9 @@ interface TauResult {
 let allTauResults: TauResult[] = [];
 let scenarios: TestScenario[] = [];
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    TESTS
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 describe('T032: RSF vs RRF Kendall Tau Comparison', () => {
 

@@ -1,5 +1,6 @@
-// --- 1. RECONSOLIDATION BRIDGE ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. RECONSOLIDATION BRIDGE
+// ───────────────────────────────────────────────────────────────
 import path from 'path';
 import type BetterSqlite3 from 'better-sqlite3';
 

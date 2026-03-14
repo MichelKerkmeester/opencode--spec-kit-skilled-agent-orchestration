@@ -440,13 +440,16 @@ run_all_rules() {
 
 print_header() {
     $JSON_MODE && return 0; $QUIET_MODE && return 0
-    echo -e "\n${BLUE}───────────────────────────────────────────────────────────────${NC}"
+    echo -e "\n${BLUE}───────────────────────────────────────────────────────────────
+${NC}"
     echo -e "${BLUE}  Spec Folder Validation v$VERSION${NC}"
-    echo -e "${BLUE}───────────────────────────────────────────────────────────────${NC}\n"
+    echo -e "${BLUE}───────────────────────────────────────────────────────────────
+${NC}\n"
     echo -e "  ${BOLD}Folder:${NC} $FOLDER_PATH"
     echo -e "  ${BOLD}Level:${NC}  $DETECTED_LEVEL ($LEVEL_METHOD)"
     [[ -n "$CONFIG_FILE_PATH" ]] && echo -e "  ${BOLD}Config:${NC} $CONFIG_FILE_PATH" || true
-    echo -e "\n${BLUE}───────────────────────────────────────────────────────────────${NC}\n"
+    echo -e "\n${BLUE}───────────────────────────────────────────────────────────────
+${NC}\n"
 }
 
 print_summary() {
@@ -463,7 +466,8 @@ print_summary() {
         echo "RESULT: $status (errors=$ERRORS warnings=$WARNINGS)"
         return 0
     fi
-    echo -e "\n${BLUE}───────────────────────────────────────────────────────────────${NC}\n"
+    echo -e "\n${BLUE}───────────────────────────────────────────────────────────────
+${NC}\n"
     echo -e "  ${BOLD}Summary:${NC} ${RED}Errors:${NC} $ERRORS  ${YELLOW}Warnings:${NC} $WARNINGS"
     $VERBOSE && echo -e "  ${BLUE}Info:${NC} $INFOS" || true
     echo ""
@@ -515,9 +519,11 @@ run_recursive_validation() {
         return 0
     fi
 
-    ! $JSON_MODE && ! $QUIET_MODE && echo -e "\n${BLUE}───────────────────────────────────────────────────────────────${NC}" || true
+    ! $JSON_MODE && ! $QUIET_MODE && echo -e "\n${BLUE}───────────────────────────────────────────────────────────────
+${NC}" || true
     ! $JSON_MODE && ! $QUIET_MODE && echo -e "${BLUE}  Recursive Phase Validation (${#phase_dirs[@]} phases found)${NC}" || true
-    ! $JSON_MODE && ! $QUIET_MODE && echo -e "${BLUE}───────────────────────────────────────────────────────────────${NC}" || true
+    ! $JSON_MODE && ! $QUIET_MODE && echo -e "${BLUE}───────────────────────────────────────────────────────────────
+${NC}" || true
 
     for phase_dir in "${phase_dirs[@]}"; do
         local phase_name

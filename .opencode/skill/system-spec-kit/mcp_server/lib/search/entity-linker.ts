@@ -1,12 +1,15 @@
-// --- 1. ENTITY LINKER ---
+// ───────────────────────────────────────────────────────────────
+// 1. ENTITY LINKER
+// ───────────────────────────────────────────────────────────────
 // Gated via SPECKIT_ENTITY_LINKING
 // Creates causal edges between memories sharing entities across spec folders.
 import type Database from 'better-sqlite3';
 import { isEntityLinkingEnabled } from './search-flags';
 import { createLogger } from '../utils/logger';
 
-// --- 2. CONSTANTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 2. CONSTANTS
+// ───────────────────────────────────────────────────────────────
 /** Maximum causal edges per node to prevent graph density explosion. */
 const MAX_EDGES_PER_NODE = 20;
 
@@ -17,8 +20,9 @@ const DEFAULT_MAX_EDGE_DENSITY = 1.0;
 const ENTITY_LINKING_MAX_DENSITY_ENV = 'SPECKIT_ENTITY_LINKING_MAX_DENSITY';
 const logger = createLogger('EntityLinker');
 
-// --- 3. INTERFACES ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. INTERFACES
+// ───────────────────────────────────────────────────────────────
 export interface EntityMatch {
   canonicalName: string;
   memoryIds: number[];
@@ -46,8 +50,9 @@ export interface EntityLinkStats {
   coveragePercent: number;
 }
 
-// --- 4. HELPERS ---
-
+// ───────────────────────────────────────────────────────────────
+// 4. HELPERS
+// ───────────────────────────────────────────────────────────────
 /**
  * Normalize entity name: lowercase, strip punctuation, collapse whitespace.
  * e.g. "Memory System" -> "memory system", "TF-IDF" -> "tf idf"
@@ -63,8 +68,9 @@ export function normalizeEntityName(name: string): string {
     .trim();
 }
 
-// --- 5. CORE FUNCTIONS ---
-
+// ───────────────────────────────────────────────────────────────
+// 5. CORE FUNCTIONS
+// ───────────────────────────────────────────────────────────────
 /**
  * Build entity catalog from memory_entities table.
  * Groups entities by their normalized name, collecting associated memory IDs
@@ -515,8 +521,9 @@ export function runEntityLinking(db: Database.Database): EntityLinkResult {
   }
 }
 
-// --- 6. TEST EXPORTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 6. TEST EXPORTS
+// ───────────────────────────────────────────────────────────────
 /**
  * Internal functions exposed for unit testing.
  * Do NOT use in production code paths.

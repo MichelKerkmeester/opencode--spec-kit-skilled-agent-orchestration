@@ -30,6 +30,12 @@ interface SharedMemoryStatusArgs {
   agentId?: string;
 }
 
+/**
+ * Persist a shared-space definition for rollout and membership checks.
+ *
+ * @param args - Shared-space fields to create or update.
+ * @returns MCP success response describing the saved shared space.
+ */
 export async function handleSharedSpaceUpsert(args: SharedSpaceUpsertArgs): Promise<MCPResponse> {
   const db = requireDb();
   upsertSharedSpace(db, args);
@@ -45,6 +51,12 @@ export async function handleSharedSpaceUpsert(args: SharedSpaceUpsertArgs): Prom
   });
 }
 
+/**
+ * Persist membership for a user or agent within a shared space.
+ *
+ * @param args - Membership assignment to write.
+ * @returns MCP success response describing the updated membership.
+ */
 export async function handleSharedSpaceMembershipSet(args: SharedSpaceMembershipArgs): Promise<MCPResponse> {
   const db = requireDb();
   upsertSharedMembership(db, args);
@@ -60,6 +72,12 @@ export async function handleSharedSpaceMembershipSet(args: SharedSpaceMembership
   });
 }
 
+/**
+ * Report rollout status and visible shared spaces for the requested scope.
+ *
+ * @param args - Tenant, user, or agent scope to evaluate.
+ * @returns MCP success response containing the enabled state and allowed spaces.
+ */
 export async function handleSharedMemoryStatus(args: SharedMemoryStatusArgs): Promise<MCPResponse> {
   const db = requireDb();
   const allowedSharedSpaceIds = Array.from(getAllowedSharedSpaceIds(db, args));
@@ -77,4 +95,3 @@ export async function handleSharedMemoryStatus(args: SharedMemoryStatusArgs): Pr
     },
   });
 }
-

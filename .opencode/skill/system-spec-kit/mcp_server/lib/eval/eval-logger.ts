@@ -1,4 +1,6 @@
-// --- 1. EVAL LOGGER ---
+// ───────────────────────────────────────────────────────────────
+// 1. EVAL LOGGER
+// ───────────────────────────────────────────────────────────────
 // Non-blocking, fail-safe logging hooks for search, context,
 // And trigger handlers. All writes go to the eval DB (speckit-eval.db).
 //
@@ -7,9 +9,9 @@
 // When SPECKIT_EVAL_LOGGING is not set to "true".
 import { initEvalDb } from './eval-db';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    1. FEATURE FLAG
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Returns true only when SPECKIT_EVAL_LOGGING=true (case-insensitive).
@@ -19,13 +21,13 @@ function isEvalLoggingEnabled(): boolean {
   return process.env.SPECKIT_EVAL_LOGGING?.toLowerCase() === 'true';
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    2. EVAL RUN ID GENERATOR
    A monotonically increasing counter is sufficient for within-
    process correlation. It resets on process restart — that is
    acceptable because eval data is append-only and the DB ID
    provides global uniqueness.
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 // Fix #34 (017-refinement-phase-6) — Initialize from DB MAX to survive restarts
 let _evalRunCounter = 0;
@@ -64,9 +66,9 @@ function generateEvalRunId(): number {
   return ++_evalRunCounter;
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    3. PARAMETER TYPES
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 interface LogSearchQueryParams {
   /** Raw query text as supplied by the caller. */
@@ -112,20 +114,20 @@ interface LogFinalResultParams {
   latencyMs?: number;
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    4. HELPER — lazy DB acquisition
    We call initEvalDb() with no args so it uses the same DB
    directory resolution as the main DB (env-var precedence).
    initEvalDb() is idempotent, so repeated calls are safe.
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 function getDb() {
   return initEvalDb();
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    5. PUBLIC API
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Log a search query to eval_queries.
@@ -229,9 +231,9 @@ function logFinalResult(params: LogFinalResultParams): void {
   }
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    6. EXPORTS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 export {
   isEvalLoggingEnabled,

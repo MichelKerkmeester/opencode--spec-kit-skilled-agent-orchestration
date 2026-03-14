@@ -1,11 +1,15 @@
-// --- 1. GRAPH SIGNALS ---
+// ───────────────────────────────────────────────────────────────
+// 1. GRAPH SIGNALS
+// ───────────────────────────────────────────────────────────────
 // Deferred feature — gated via SPECKIT_GRAPH_SIGNALS
-// --- 2. IMPORTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 2. IMPORTS
+// ───────────────────────────────────────────────────────────────
 import type Database from 'better-sqlite3';
 
-// --- 3. SESSION CACHE ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. SESSION CACHE
+// ───────────────────────────────────────────────────────────────
 /** Maximum number of entries allowed in each session-scoped cache. */
 const CACHE_MAX_SIZE = 10000;
 
@@ -433,8 +437,9 @@ export function computeCausalDepthScores(db: Database.Database, memoryIds: numbe
   return results;
 }
 
-// --- 4. COMBINED APPLICATION ---
-
+// ───────────────────────────────────────────────────────────────
+// 4. COMBINED APPLICATION
+// ───────────────────────────────────────────────────────────────
 /**
  * Clamp a value to [min, max].
  */
@@ -490,8 +495,9 @@ export function applyGraphSignals(
   }
 }
 
-// --- 5. TEST EXPORTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 5. TEST EXPORTS
+// ───────────────────────────────────────────────────────────────
 /**
  * Internal functions exposed for unit testing.
  * These are NOT part of the public API and may change without notice.

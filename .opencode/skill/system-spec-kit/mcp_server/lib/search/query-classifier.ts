@@ -1,4 +1,6 @@
-// --- 1. QUERY CLASSIFIER ---
+// ───────────────────────────────────────────────────────────────
+// 1. QUERY CLASSIFIER
+// ───────────────────────────────────────────────────────────────
 /* --- 1. TYPES & CONSTANTS --- */
 
 type QueryComplexityTier = 'simple' | 'moderate' | 'complex';

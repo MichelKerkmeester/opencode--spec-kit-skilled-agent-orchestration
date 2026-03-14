@@ -1,4 +1,6 @@
-// --- 1. TEST — RSF MULTI-LIST ---
+// ───────────────────────────────────────────────────────────────
+// 1. TEST — RSF MULTI-LIST
+// ───────────────────────────────────────────────────────────────
 // RSF Fusion — Multi-List (T002b) and Cross-Variant (T002c) Variants
 // Tasks T002b + T002c — Hybrid RAG Fusion Refinement
 
@@ -30,9 +32,9 @@ function makeItem(id: number | string, score?: number): RrfItem {
 
 describe('T027: RSF Multi-List and Cross-Variant Fusion', () => {
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      T027.1: Multi-list fusion with 3 sources produces valid ranking
-     ------------------------------------------------------------- */
+     ──────────────────────────────────────────────────────────────── */
   describe('T027.1: Multi-list fusion with 3 sources', () => {
     it('T027.1.1: produces a non-empty result array with items from all sources', () => {
       const lists = [
@@ -85,9 +87,9 @@ describe('T027: RSF Multi-List and Cross-Variant Fusion', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      T027.2: Multi-list items in all sources rank highest
-     ------------------------------------------------------------- */
+     ──────────────────────────────────────────────────────────────── */
   describe('T027.2: Items present in all sources rank highest', () => {
     it('T027.2.1: item in all 3 sources outranks item in 2 sources', () => {
       // Item 1 appears in all 3 lists with identical scores → no penalty
@@ -138,9 +140,9 @@ describe('T027: RSF Multi-List and Cross-Variant Fusion', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      T027.3: Single-source items get proportional penalty
-     ------------------------------------------------------------- */
+     ──────────────────────────────────────────────────────────────── */
   describe('T027.3: Single-source items get proportional penalty', () => {
     it('T027.3.1: single-source item in 3-source fusion gets 1/3 of avg score', () => {
       // With 3 total sources, single-source item gets avgScore * (1/3)
@@ -193,9 +195,9 @@ describe('T027: RSF Multi-List and Cross-Variant Fusion', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      T027.4: All scores in [0, 1] range
-     ------------------------------------------------------------- */
+     ──────────────────────────────────────────────────────────────── */
   describe('T027.4: All scores clamped to [0, 1]', () => {
     it('T027.4.1: all rsfScores are between 0 and 1 for normal inputs', () => {
       const lists = [
@@ -228,9 +230,9 @@ describe('T027: RSF Multi-List and Cross-Variant Fusion', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      T027.5: Empty lists handled gracefully
-     ------------------------------------------------------------- */
+     ──────────────────────────────────────────────────────────────── */
   describe('T027.5: Empty list handling', () => {
     it('T027.5.1: empty input array returns empty result', () => {
       const results = fuseResultsRsfMulti([]);
@@ -282,9 +284,9 @@ describe('T027: RSF Multi-List and Cross-Variant Fusion', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      T027.6: Multi-list with single list (conceptually matches single-pair)
-     ------------------------------------------------------------- */
+     ──────────────────────────────────────────────────────────────── */
   describe('T027.6: Single list input behaviour', () => {
     it('T027.6.1: single list input returns all items with 1/1 coverage (no penalty)', () => {
       // Single list: totalSources = 1, countPresent = 1 → no penalty
@@ -304,9 +306,9 @@ describe('T027: RSF Multi-List and Cross-Variant Fusion', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      T027.7: Multi-list consistency with single-pair on 2-list input
-     ------------------------------------------------------------- */
+     ──────────────────────────────────────────────────────────────── */
   describe('T027.7: Multi-list consistency with single-pair on 2-list input', () => {
     it('T027.7.1: overlapping items: multi-list produces same relative order as single-pair for 2 lists', () => {
       // Using multi-list with 2 sources and same items as single-pair:
@@ -355,9 +357,9 @@ describe('T027: RSF Multi-List and Cross-Variant Fusion', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      T027.8: Cross-variant basic fusion
-     ------------------------------------------------------------- */
+     ──────────────────────────────────────────────────────────────── */
   describe('T027.8: Cross-variant basic fusion', () => {
     it('T027.8.1: cross-variant basic produces non-empty result', () => {
       const variantLists = [
@@ -405,9 +407,9 @@ describe('T027: RSF Multi-List and Cross-Variant Fusion', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      T027.9: Cross-variant items in multiple variants get bonus
-     ------------------------------------------------------------- */
+     ──────────────────────────────────────────────────────────────── */
   describe('T027.9: Cross-variant bonus for multi-variant items', () => {
     it('T027.9.1: item in 2 variants gets +0.10 bonus over item in 1 variant', () => {
       // Variant 1: [item1: 1.0, item10: 0.5, item11: 0.0-equivalent] → range > 0
@@ -518,9 +520,9 @@ describe('T027: RSF Multi-List and Cross-Variant Fusion', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      T027.10: Cross-variant single-variant same as multi-list
-     ------------------------------------------------------------- */
+     ──────────────────────────────────────────────────────────────── */
   describe('T027.10: Cross-variant single-variant behaves like multi-list', () => {
     it('T027.10.1: single variant returns same items as fuseResultsRsfMulti', () => {
       const lists = [
@@ -557,9 +559,9 @@ describe('T027: RSF Multi-List and Cross-Variant Fusion', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      T027.11: Cross-variant all scores in [0, 1]
-     ------------------------------------------------------------- */
+     ──────────────────────────────────────────────────────────────── */
   describe('T027.11: Cross-variant all scores clamped to [0, 1]', () => {
     it('T027.11.1: all rsfScores in [0, 1] for typical inputs', () => {
       const variantLists = [
@@ -577,9 +579,9 @@ describe('T027: RSF Multi-List and Cross-Variant Fusion', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      T027.12: Cross-variant empty variant lists
-     ------------------------------------------------------------- */
+     ──────────────────────────────────────────────────────────────── */
   describe('T027.12: Cross-variant empty variant handling', () => {
     it('T027.12.1: empty variantLists array returns empty result', () => {
       const results = fuseResultsRsfCrossVariant([]);
@@ -612,9 +614,9 @@ describe('T027: RSF Multi-List and Cross-Variant Fusion', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      T027.13: Cross-variant with multi-list per variant
-     ------------------------------------------------------------- */
+     ──────────────────────────────────────────────────────────────── */
   describe('T027.13: Cross-variant with multi-list per variant', () => {
     it('T027.13.1: each variant can contain multiple ranked lists', () => {
       // Variant 1 fuses vector + bm25; Variant 2 fuses graph + degree
@@ -668,9 +670,9 @@ describe('T027: RSF Multi-List and Cross-Variant Fusion', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      T027.14: Known score computation for multi-list
-     ------------------------------------------------------------- */
+     ──────────────────────────────────────────────────────────────── */
   describe('T027.14: Detailed score verification for multi-list', () => {
     it('T027.14.1: verifies full computation for 3-source scenario', () => {
       // List A (vector): [1: 1.0, 2: 0.5] → min=0.5, max=1.0, range=0.5
@@ -712,9 +714,9 @@ describe('T027: RSF Multi-List and Cross-Variant Fusion', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      T027.15: Multi-list string IDs and extra properties preserved
-     ------------------------------------------------------------- */
+     ──────────────────────────────────────────────────────────────── */
   describe('T027.15: String IDs and extra properties', () => {
     it('T027.15.1: handles string IDs correctly in multi-list', () => {
       const lists = [
@@ -743,9 +745,9 @@ describe('T027: RSF Multi-List and Cross-Variant Fusion', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      T027.16: Cross-variant known score verification
-     ------------------------------------------------------------- */
+     ──────────────────────────────────────────────────────────────── */
   describe('T027.16: Cross-variant known score computation', () => {
     it('T027.16.1: verifies cross-variant bonus is applied correctly', () => {
       // Variant 1: item 1 is the only item → normalized to 1.0, no penalty (1/1)

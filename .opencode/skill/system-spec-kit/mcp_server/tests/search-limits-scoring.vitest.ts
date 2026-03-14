@@ -1,5 +1,6 @@
-// --- 1. SEARCH LIMITS SCORING VITEST ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. SEARCH LIMITS SCORING VITEST
+// ───────────────────────────────────────────────────────────────
 // TEST: SEARCH LIMITS SCORING
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import * as fs from 'fs';

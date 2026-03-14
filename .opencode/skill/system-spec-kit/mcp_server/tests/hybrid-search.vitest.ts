@@ -5,9 +5,9 @@ import * as hybridSearch from '../lib/search/hybrid-search';
 import * as bm25Index from '../lib/search/bm25-index';
 import * as rrfFusion from '@spec-kit/shared/algorithms/rrf-fusion';
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    MOCK DATABASE & SEARCH FUNCTIONS
----------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 // Mock documents for testing - each has >10 words for BM25 MIN_DOC_LENGTH requirement
 type InitDb = Parameters<typeof hybridSearch.init>[0];
@@ -95,9 +95,9 @@ function isPromiseLike(
   return typeof (value as PromiseLike<HybridSearchResult[]>).then === 'function';
 }
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    TEST SUITES
----------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('Hybrid Search Unit Tests (T031+)', () => {
 

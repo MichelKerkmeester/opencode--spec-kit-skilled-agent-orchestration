@@ -1,4 +1,6 @@
-// --- 1. GROUND TRUTH GENERATOR ---
+// ───────────────────────────────────────────────────────────────
+// 1. GROUND TRUTH GENERATOR
+// ───────────────────────────────────────────────────────────────
 // Functions for generating, loading, and validating the
 // Synthetic ground truth dataset for retrieval evaluation.
 //
@@ -18,9 +20,9 @@ import {
   type ComplexityTier,
 } from './ground-truth-data';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    1. PUBLIC TYPES
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /** Result returned by generateGroundTruth(). */
 export interface GroundTruthDataset {
@@ -55,10 +57,10 @@ export interface LoadGroundTruthOptions {
   annotator?: string;
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    2. DIVERSITY HARD GATES
    These constants define the minimum thresholds that MUST pass.
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 const GATES = {
   MIN_TOTAL_QUERIES: 100,
@@ -79,12 +81,12 @@ const GATES = {
   COMPLEXITY_TIERS: ['simple', 'moderate', 'complex'] as ComplexityTier[],
 } as const;
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    3. generateGroundTruth()
    Returns the full dataset including approximate relevance
    judgments. Relevance memory IDs use placeholder values of -1
    for queries where live DB mapping has not yet been performed.
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Generate the full ground truth dataset.
@@ -112,12 +114,12 @@ export function generateGroundTruth(): GroundTruthDataset {
   };
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    4. loadGroundTruth()
    Populates eval_queries and eval_ground_truth tables in the
    evaluation database. Safe to call repeatedly (idempotent by
    default via INSERT OR IGNORE).
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Load the ground truth dataset into the evaluation database.
@@ -184,10 +186,10 @@ export function loadGroundTruth(
   return { queriesInserted, relevancesInserted };
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    5. validateGroundTruthDiversity()
    Checks all 6 hard gates and returns a structured report.
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Validate that the query dataset meets all diversity hard gates.
@@ -297,9 +299,9 @@ export function validateGroundTruthDiversity(
   };
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    6. INTERNAL HELPERS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /** Count occurrences of each value produced by keyFn over items. */
 function countBy<T>(items: T[], keyFn: (item: T) => string): Record<string, number> {
@@ -311,9 +313,9 @@ function countBy<T>(items: T[], keyFn: (item: T) => string): Record<string, numb
   return counts;
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    7. EXPORTS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 export {
   GROUND_TRUTH_QUERIES,

@@ -1,7 +1,11 @@
-// --- 1. DATA VALIDATOR ---
+// ───────────────────────────────────────────────────────────────
+// 1. DATA VALIDATOR
+// ───────────────────────────────────────────────────────────────
 // Validates data structures — syncs boolean flags with array contents, sanitizes strings
 
-// --- 2. TYPES ---
+// ───────────────────────────────────────────────────────────────
+// 2. TYPES
+// ───────────────────────────────────────────────────────────────
 /** Mapping of array field names to their corresponding boolean flag field names */
 export interface ArrayFlagMappings {
   readonly [key: string]: string;
@@ -23,8 +27,9 @@ export interface ValidatedData {
 /** Item within an array that can be a primitive or object */
 type ArrayItem = string | number | boolean | Record<string, unknown>;
 
-// --- 3. CONFIGURATION ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. CONFIGURATION
+// ───────────────────────────────────────────────────────────────
 const ARRAY_FLAG_MAPPINGS: ArrayFlagMappings = {
   CODE_BLOCKS: 'HAS_CODE_BLOCKS',
   NOTES: 'HAS_NOTES',
@@ -43,8 +48,9 @@ const PRESENCE_FLAG_MAPPINGS: PresenceFlagMappings = {
   DECISION_TREE: 'HAS_DECISION_TREE'
 };
 
-// --- 4. UTILITIES ---
-
+// ───────────────────────────────────────────────────────────────
+// 4. UTILITIES
+// ───────────────────────────────────────────────────────────────
 function ensureArrayOfObjects(value: unknown, objectKey: string): Array<Record<string, string>> {
   if (!value) return [];
   if (!Array.isArray(value)) {
@@ -60,8 +66,9 @@ function hasArrayContent(value: unknown): boolean {
   return Array.isArray(value) && value.length > 0;
 }
 
-// --- 5. VALIDATION ---
-
+// ───────────────────────────────────────────────────────────────
+// 5. VALIDATION
+// ───────────────────────────────────────────────────────────────
 function validateDataStructure(data: ValidatedData): ValidatedData {
   const validated: ValidatedData = { ...data };
 
@@ -100,8 +107,9 @@ function validateDataStructure(data: ValidatedData): ValidatedData {
   return validated;
 }
 
-// --- 6. EXPORTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 6. EXPORTS
+// ───────────────────────────────────────────────────────────────
 export {
   ARRAY_FLAG_MAPPINGS,
   PRESENCE_FLAG_MAPPINGS,

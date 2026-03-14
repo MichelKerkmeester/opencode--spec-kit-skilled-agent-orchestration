@@ -5,9 +5,9 @@ import { describe, it, expect } from 'vitest';
 import { applyMMR, computeCosine } from '@spec-kit/shared/algorithms/mmr-reranker';
 import type { MMRCandidate, MMRConfig } from '@spec-kit/shared/algorithms/mmr-reranker';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    HELPERS
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 function makeEmbedding(values: number[]): Float32Array {
   return new Float32Array(values);
@@ -34,9 +34,9 @@ function makeDiverseCandidates(count: number): MMRCandidate[] {
   });
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    TESTS
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 describe('C138-P1 MMR Reranker', () => {
 

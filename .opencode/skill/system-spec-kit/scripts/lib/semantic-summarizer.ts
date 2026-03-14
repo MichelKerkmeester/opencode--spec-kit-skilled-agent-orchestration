@@ -1,5 +1,6 @@
-// --- 1. SEMANTIC SUMMARIZER ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. SEMANTIC SUMMARIZER
+// ───────────────────────────────────────────────────────────────
 // Node stdlib
 import os from 'os';
 
@@ -8,8 +9,9 @@ import { extractTriggerPhrases } from './trigger-extractor';
 import { cleanDescription } from '../utils/file-helpers';
 import { CONFIG } from '../core';
 
-// --- 2. TYPES ---
-
+// ───────────────────────────────────────────────────────────────
+// 2. TYPES
+// ───────────────────────────────────────────────────────────────
 /** Message type classification labels */
 export type MessageType = 'intent' | 'plan' | 'implementation' | 'result' | 'decision' | 'question' | 'context';
 
@@ -82,8 +84,9 @@ export interface ImplementationSummary {
   messageStats: MessageStats;
 }
 
-// --- 3. CONSTANTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. CONSTANTS
+// ───────────────────────────────────────────────────────────────
 const MESSAGE_TYPES: Record<string, MessageType> = {
   INTENT: 'intent',
   PLAN: 'plan',
@@ -132,8 +135,9 @@ const CLASSIFICATION_PATTERNS = {
 const DESC_MIN_LENGTH: number = 10;
 const DESC_MAX_LENGTH: number = 100;
 
-// --- 4. MESSAGE CLASSIFICATION ---
-
+// ───────────────────────────────────────────────────────────────
+// 4. MESSAGE CLASSIFICATION
+// ───────────────────────────────────────────────────────────────
 function classifyMessage(content: string): MessageType {
   if (!content || typeof content !== 'string') {
     return MESSAGE_TYPES.CONTEXT;
@@ -172,8 +176,9 @@ function classifyMessages(messages: SemanticMessage[]): Map<MessageType, Semanti
   return classified;
 }
 
-// --- 5. FILE CHANGE EXTRACTION ---
-
+// ───────────────────────────────────────────────────────────────
+// 5. FILE CHANGE EXTRACTION
+// ───────────────────────────────────────────────────────────────
 function findFilePosition(content: string, filePath: string, searchFrom: number = 0): number {
   const searchContent: string = content.substring(searchFrom);
   const index: number = searchContent.indexOf(filePath);
@@ -294,8 +299,9 @@ function extractFileChanges(messages: SemanticMessage[], observations: SemanticO
   return fileChanges;
 }
 
-// --- 6. DESCRIPTION UTILITIES ---
-
+// ───────────────────────────────────────────────────────────────
+// 6. DESCRIPTION UTILITIES
+// ───────────────────────────────────────────────────────────────
 // CleanDescription is imported from '../utils/file-helpers' (canonical location)
 
 // NOTE: Similar to utils/file-helpers.ts:isDescriptionValid but differs in garbage patterns.
@@ -400,8 +406,9 @@ function extractChangeDescription(context: string, filePath: string): string {
   return `Updated ${humanReadable}`;
 }
 
-// --- 7. DECISION EXTRACTION ---
-
+// ───────────────────────────────────────────────────────────────
+// 7. DECISION EXTRACTION
+// ───────────────────────────────────────────────────────────────
 function extractDecisions(messages: SemanticMessage[]): ExtractedDecision[] {
   const decisions: ExtractedDecision[] = [];
 
@@ -443,8 +450,9 @@ function extractDecisions(messages: SemanticMessage[]): ExtractedDecision[] {
   return decisions;
 }
 
-// --- 8. IMPLEMENTATION SUMMARY GENERATION ---
-
+// ───────────────────────────────────────────────────────────────
+// 8. IMPLEMENTATION SUMMARY GENERATION
+// ───────────────────────────────────────────────────────────────
 function generateImplementationSummary(messages: SemanticMessage[], observations: SemanticObservation[] = []): ImplementationSummary {
   const classified: Map<MessageType, SemanticMessage[]> = classifyMessages(messages);
   const fileChanges: Map<string, FileChangeInfo> = extractFileChanges(messages, observations);
@@ -621,8 +629,9 @@ function formatSummaryAsMarkdown(summary: ImplementationSummary): string {
   return lines.join('\n');
 }
 
-// --- 9. EXPORTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 9. EXPORTS
+// ───────────────────────────────────────────────────────────────
 export {
   MESSAGE_TYPES,
   classifyMessage,

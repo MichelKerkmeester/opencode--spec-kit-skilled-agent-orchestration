@@ -1,4 +1,6 @@
-// --- 1. QUALITY SCORER ---
+// ───────────────────────────────────────────────────────────────
+// 1. QUALITY SCORER
+// ───────────────────────────────────────────────────────────────
 // Computes deterministic quality score and flags for rendered memories
 
 type QualityRuleId = 'V1' | 'V2' | 'V3' | 'V4' | 'V5' | 'V6' | 'V7' | 'V8' | 'V9';

@@ -1,4 +1,6 @@
-// --- 1. ORCHESTRATOR ---
+// ───────────────────────────────────────────────────────────────
+// 1. ORCHESTRATOR
+// ───────────────────────────────────────────────────────────────
 // Sprint 5 (R6): 4-stage pipeline execution behind SPECKIT_PIPELINE_V2
 //
 // I/O CONTRACT:

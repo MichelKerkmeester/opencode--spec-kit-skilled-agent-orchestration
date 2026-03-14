@@ -1,4 +1,6 @@
-// --- 1. TEST — FEATURE EVALUATION — QUERY INTELLIGENCE ---
+// ───────────────────────────────────────────────────────────────
+// 1. TEST — FEATURE EVALUATION — QUERY INTELLIGENCE
+// ───────────────────────────────────────────────────────────────
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 // T001: Query complexity classifier

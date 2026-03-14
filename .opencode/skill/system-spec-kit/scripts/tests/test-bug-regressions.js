@@ -15,11 +15,15 @@
 const fs = require('fs');
 const path = require('path');
 
-// --- 1. PATHS ---
+// ───────────────────────────────────────────────────────────────
+// 1. PATHS
+// ───────────────────────────────────────────────────────────────
 const MCP_ROOT = path.resolve(__dirname, '../../mcp_server');
 const BASE_ROOT = path.resolve(MCP_ROOT, '..');
 
-// --- 2. TEST STATE ---
+// ───────────────────────────────────────────────────────────────
+// 2. TEST STATE
+// ───────────────────────────────────────────────────────────────
 let passed = 0;
 let failed = 0;
 const failures = [];
@@ -33,7 +37,9 @@ function fail(msg, detail) {
 }
 function section(name) { console.log(`\n\u2501\u2501 ${name} ${'\u2501'.repeat(Math.max(0, 56 - name.length))}`); }
 
-// --- 3. SOURCE ANALYSIS HELPER ---
+// ───────────────────────────────────────────────────────────────
+// 3. SOURCE ANALYSIS HELPER
+// ───────────────────────────────────────────────────────────────
 /**
  * Find lines in a function body that match a pattern.
  * @param {string} source - File source code

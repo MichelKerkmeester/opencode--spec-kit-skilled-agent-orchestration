@@ -1,5 +1,6 @@
-// --- 1. AST PARSER ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. AST PARSER
+// ───────────────────────────────────────────────────────────────
 import { chunkMarkdown, splitIntoBlocks } from '@spec-kit/shared/lib/structure-aware-chunker';
 
 /** Structured markdown block emitted by parseMarkdownSections(). */

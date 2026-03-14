@@ -1,5 +1,6 @@
-// --- 1. REVIEW FIXES VITEST ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. REVIEW FIXES VITEST
+// ───────────────────────────────────────────────────────────────
 import { describe, it, expect } from 'vitest';
 
 // TEST: Review Fixes Verification (Vitest)

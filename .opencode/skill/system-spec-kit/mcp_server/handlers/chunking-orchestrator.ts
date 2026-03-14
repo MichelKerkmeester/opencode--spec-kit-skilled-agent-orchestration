@@ -1,4 +1,6 @@
-// --- 1. CHUNKING ORCHESTRATOR ---
+// ────────────────────────────────────────────────────────────────
+// 1. CHUNKING ORCHESTRATOR 
+// ────────────────────────────────────────────────────────────────
 
 import type BetterSqlite3 from 'better-sqlite3';
 

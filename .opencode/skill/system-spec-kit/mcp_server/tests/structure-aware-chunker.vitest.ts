@@ -5,9 +5,9 @@ import { describe, it, expect } from 'vitest';
 import { chunkMarkdown, splitIntoBlocks } from '@spec-kit/shared/lib/structure-aware-chunker';
 import type { Chunk } from '@spec-kit/shared/lib/structure-aware-chunker';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    TESTS
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 describe('C138-P4 Structure-Aware Chunker', () => {
 

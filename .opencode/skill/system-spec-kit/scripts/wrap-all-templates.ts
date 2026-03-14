@@ -1,5 +1,7 @@
 #!/usr/bin/env node
-// --- 1. WRAP ALL TEMPLATES ---
+// ───────────────────────────────────────────────────────────────
+// 1. WRAP ALL TEMPLATES
+// ───────────────────────────────────────────────────────────────
 /**
  * Wraps all level_1-3+ template files with ANCHOR tags
  * Uses anchor-generator.ts wrapSectionsWithAnchors() function

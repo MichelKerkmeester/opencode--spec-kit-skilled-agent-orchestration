@@ -1,4 +1,6 @@
-// --- 1. STORAGE ---
+// ────────────────────────────────────────────────────────────────
+// 1. STORAGE 
+// ────────────────────────────────────────────────────────────────
 // @public — scripts should import from here, not lib/ internals.
 // ARCH-1 exposes minimal storage initialization hooks needed by
 // Operational scripts without importing mcp_server/lib/storage directly.

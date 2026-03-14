@@ -1,4 +1,6 @@
-// --- 1. FOLDER SCORING ---
+// ───────────────────────────────────────────────────────────────
+// 1. FOLDER SCORING
+// ───────────────────────────────────────────────────────────────
 // SCORING: FOLDER SCORING BARREL
 export {
   type FolderMemoryInput,

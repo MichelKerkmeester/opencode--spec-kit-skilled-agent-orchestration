@@ -3,9 +3,9 @@
 // Retries at lower similarity threshold with metadata flag.
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    MOCK: Simulates executeScatter behavior
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 interface ScatterOptions {
   min_similarity: number;
@@ -42,9 +42,9 @@ async function executeWithFallback(
   return results;
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    TESTS
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 describe('C138-P0 Adaptive Fallback', () => {
   let mockScatter: ReturnType<typeof vi.fn<ScatterFn>>;

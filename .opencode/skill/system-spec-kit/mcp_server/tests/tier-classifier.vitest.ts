@@ -1,5 +1,6 @@
-// --- 1. TIER CLASSIFIER VITEST ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. TIER CLASSIFIER VITEST
+// ───────────────────────────────────────────────────────────────
 // TEST: TIER CLASSIFIER (5-STATE MODEL) — vitest
 // Aligned with production tier-classifier.ts named exports
 import { describe, it, expect } from 'vitest';
@@ -9,7 +10,7 @@ const tierClassifierModule = tierClassifier as unknown as Record<string, unknown
 
 describe('Tier Classifier (5-State Model)', () => {
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      State Classification (T201-T210)
      Production classifyState() accepts:
        - A number (retrievability, elapsedDays): classifyState(0.95, 0)
@@ -17,7 +18,7 @@ describe('Tier Classifier (5-State Model)', () => {
        - null/undefined: returns 'DORMANT'
      Thresholds: HOT >= 0.80, WARM >= 0.25, COLD >= 0.05, else DORMANT
      ARCHIVED: > 90 days AND r < 0.02
-  ---------------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('State Classification (T201-T210)', () => {
     // Using numeric call: classifyState(retrievability, elapsedDays)
@@ -63,10 +64,10 @@ describe('Tier Classifier (5-State Model)', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      Archive Detection (T211-T215)
      ARCHIVED: days > 90 AND r < 0.02
-  ---------------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('Archive Detection (T211-T215)', () => {
     it('T211: 89 days + low R => NOT archived', () => {
@@ -90,11 +91,11 @@ describe('Tier Classifier (5-State Model)', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      Retrievability Calculation (T216-T220)
      Production: calculateRetrievability(stability: number, elapsedDays: number): number
      R = (1 + (19/81) * t / S)^(-0.5)
-  ---------------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('Retrievability Calculation (T216-T220)', () => {
     it('T216: t=0 => R=1.0', () => {
@@ -125,10 +126,10 @@ describe('Tier Classifier (5-State Model)', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      classifyTier() (T221-T225)
      Production: classifyTier(memory: TierInput) returns {state, retrievability, effectiveHalfLife}
-  ---------------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('classifyTier() (T221-T225)', () => {
     it('T221: Constitutional => HOT with R=1.0', () => {
@@ -162,9 +163,9 @@ describe('Tier Classifier (5-State Model)', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      shouldArchive() (T226-T230)
-  ---------------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('shouldArchive() (T226-T230)', () => {
     it('T226: Constitutional => never archive', () => {
@@ -188,10 +189,10 @@ describe('Tier Classifier (5-State Model)', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      getStateStats() (T236-T240)
      Production: getStateStats(memories) returns { HOT, WARM, COLD, DORMANT, ARCHIVED, total }
-  ---------------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('getStateStats() (T236-T240)', () => {
     it('T236: Empty array => all zeros', () => {
@@ -241,10 +242,10 @@ describe('Tier Classifier (5-State Model)', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      getStateContent() (T241-T245)
      Production: getStateContent(memories[], targetState, limit) returns { state, memories, count }
-  ---------------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('getStateContent() (T241-T245)', () => {
     const memories = [
@@ -281,10 +282,10 @@ describe('Tier Classifier (5-State Model)', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      formatStateResponse() (T246-T250)
      Production: formatStateResponse(memories) returns [{id, title, state, retrievability, specFolder, filePath}]
-  ---------------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('formatStateResponse() (T246-T250)', () => {
     const memories = [
@@ -328,10 +329,10 @@ describe('Tier Classifier (5-State Model)', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      filterAndLimitByState() (T251-T255)
      Production: filterAndLimitByState(memories, targetState?, limit?)
-  ---------------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('filterAndLimitByState() (T251-T255)', () => {
     const memories = [
@@ -368,9 +369,9 @@ describe('Tier Classifier (5-State Model)', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      getEffectiveHalfLife() (T256-T260)
-  ---------------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('getEffectiveHalfLife() (T256-T260)', () => {
     it('T256: Constitutional => null (no decay)', () => {
@@ -394,9 +395,9 @@ describe('Tier Classifier (5-State Model)', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      halfLifeToStability() (T261-T263)
-  ---------------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('halfLifeToStability() (T261-T263)', () => {
     it('T261: null => infinite stability', () => {
@@ -415,9 +416,9 @@ describe('Tier Classifier (5-State Model)', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      Threshold Configuration (T266-T270)
-  ---------------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('Threshold Configuration (T266-T270)', () => {
     it('T266: HOT threshold is 0.80', () => {
@@ -444,9 +445,9 @@ describe('Tier Classifier (5-State Model)', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      STATE_THRESHOLDS Constants (T094-T099)
-  ---------------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('STATE_THRESHOLDS Constants (T094-T099)', () => {
     it('T094: STATE_THRESHOLDS is valid', () => {
@@ -470,9 +471,9 @@ describe('Tier Classifier (5-State Model)', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      Module Exports
-  ---------------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('Module Exports', () => {
     const expectedExports = [

@@ -1,4 +1,6 @@
-// --- 1. VECTOR INDEX ---
+// ───────────────────────────────────────────────────────────────
+// 1. VECTOR INDEX
+// ───────────────────────────────────────────────────────────────
 // Backward-compatible export surface across split modules.
 
 export {

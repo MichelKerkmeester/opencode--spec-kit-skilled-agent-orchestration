@@ -1,4 +1,6 @@
-// --- 1. EVAL REPORTING ---
+// ────────────────────────────────────────────────────────────────
+// 1. EVAL REPORTING 
+// ────────────────────────────────────────────────────────────────
 
 import { checkDatabaseUpdated } from '../core';
 import * as vectorIndex from '../lib/search/vector-index';

@@ -1,7 +1,10 @@
-// --- 1. CONTEXT BUDGET ---
+// ───────────────────────────────────────────────────────────────
+// 1. CONTEXT BUDGET
+// ───────────────────────────────────────────────────────────────
 // Token-budget-aware result selection with graph region diversity.
-// --- 2. CONSTANTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 2. CONSTANTS
+// ───────────────────────────────────────────────────────────────
 /** Default token budget when none is supplied by the caller. */
 const DEFAULT_BUDGET_TOKENS = 2000;
 
@@ -16,8 +19,9 @@ const CHARS_PER_TOKEN = 4;
  */
 const REGION_DIVERSITY_THRESHOLD = 0.5;
 
-// --- 3. INTERFACES ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. INTERFACES
+// ───────────────────────────────────────────────────────────────
 /**
  * A single search result eligible for context-budget selection.
  */
@@ -40,8 +44,9 @@ export interface BudgetResult {
   content?: string;
 }
 
-// --- 4. HELPERS ---
-
+// ───────────────────────────────────────────────────────────────
+// 4. HELPERS
+// ───────────────────────────────────────────────────────────────
 /**
  * Rough token count estimate for a plain-text string.
  *
@@ -56,8 +61,9 @@ export function estimateTokens(content: string | undefined): number {
   return Math.ceil(content.length / CHARS_PER_TOKEN);
 }
 
-// --- 5. CORE FUNCTION ---
-
+// ───────────────────────────────────────────────────────────────
+// 5. CORE FUNCTION
+// ───────────────────────────────────────────────────────────────
 /**
  * Select results within a token budget, promoting graph-region diversity.
  *
@@ -145,8 +151,9 @@ export function optimizeContextBudget(
   return selected;
 }
 
-// --- 6. PRIVATE HELPERS ---
-
+// ───────────────────────────────────────────────────────────────
+// 6. PRIVATE HELPERS
+// ───────────────────────────────────────────────────────────────
 /**
  * Standard top-K selection: pick results in score order until budget is full.
  */

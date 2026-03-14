@@ -1,8 +1,11 @@
-// --- 1. LAYER DEFINITIONS ---
+// ───────────────────────────────────────────────────────────────
+// 1. LAYER DEFINITIONS
+// ───────────────────────────────────────────────────────────────
 // LIB: LAYER DEFINITIONS
 // 7-Layer MCP Architecture with Token Budgets
-// --- 2. LAYER TYPES ---
-
+// ───────────────────────────────────────────────────────────────
+// 2. LAYER TYPES
+// ───────────────────────────────────────────────────────────────
 /** Individual layer definition in the 7-layer architecture */
 export interface LayerDefinition {
   id: string;
@@ -20,7 +23,7 @@ export type LayerId = 'L1' | 'L2' | 'L3' | 'L4' | 'L5' | 'L6' | 'L7';
 /** Task type for layer recommendations */
 export type TaskType = 'search' | 'browse' | 'modify' | 'checkpoint' | 'analyze' | 'maintenance' | 'default';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    2. LAYER CONSTANTS
 
    REQ-020: Layered Tool Organization (L1-L7 structure)
@@ -29,7 +32,7 @@ export type TaskType = 'search' | 'browse' | 'modify' | 'checkpoint' | 'analyze'
    - Progressive disclosure: Start with high-level, drill down as needed
    - Token efficiency: Higher layers = fewer tokens, more targeted
    - Cognitive load: Reduce choices at each decision point
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 /**
  * Defines the LAYER_DEFINITIONS constant.
@@ -109,11 +112,11 @@ export const LAYER_DEFINITIONS: Record<LayerId, LayerDefinition> = {
   }
 } as const;
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    3. TOOL-TO-LAYER MAPPING
 
    Maps each tool to its layer for quick lookup.
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 /**
  * Defines the TOOL_LAYER_MAP constant.
@@ -125,12 +128,12 @@ for (const [layerId, layer] of Object.entries(LAYER_DEFINITIONS)) {
   }
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    4. LAYER PREFIX GENERATOR
 
    Generates description prefixes for tool descriptions.
    Format: "[L#:Name] Original description..."
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 /**
  * Get the layer prefix for a tool's description.
@@ -155,11 +158,11 @@ export function enhanceDescription(toolName: string, description: string): strin
   return `${prefix} ${description}`;
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    5. TOKEN BUDGET HELPERS
 
    CHK-072: Token budgets assigned per layer.
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 /**
  * Get the token budget for a tool.
@@ -206,11 +209,11 @@ export function getRecommendedLayers(taskType: TaskType): LayerId[] {
   return recommendations[taskType] || recommendations.default;
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    6. LAYER DOCUMENTATION
 
    Human-readable documentation for the layer system.
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 /**
  * Get formatted layer documentation.

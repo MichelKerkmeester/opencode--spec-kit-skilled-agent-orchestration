@@ -1,4 +1,6 @@
-// --- 1. TEST — FEATURE EVALUATION — SCORING CALIBRATION ---
+// ───────────────────────────────────────────────────────────────
+// 1. TEST — FEATURE EVALUATION — SCORING CALIBRATION
+// ───────────────────────────────────────────────────────────────
 // Rigorous feature evaluation covering T001 (embedding cache), T002 (cold-start
 // Boost N4), T004 (score normalization), T005 (interference TM-01), and
 // T006 (classification-based decay TM-03).

@@ -1,5 +1,6 @@
-// --- 1. HANDLER MEMORY INDEX TESTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. HANDLER MEMORY INDEX TESTS
+// ───────────────────────────────────────────────────────────────
 import { describe, it, expect, afterAll } from 'vitest';
 import * as path from 'path';
 import * as fs from 'fs';

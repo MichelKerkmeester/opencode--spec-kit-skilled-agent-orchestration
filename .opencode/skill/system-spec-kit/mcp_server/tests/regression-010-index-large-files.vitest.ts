@@ -1,5 +1,6 @@
-// --- 1. REGRESSION 010 LARGE FILES TESTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. REGRESSION 010 LARGE FILES TESTS
+// ───────────────────────────────────────────────────────────────
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';

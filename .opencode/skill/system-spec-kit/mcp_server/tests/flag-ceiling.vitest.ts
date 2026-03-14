@@ -1,4 +1,6 @@
-// --- 1. FEATURE FLAG CEILING TEST (A10-P2-2) ---
+// ───────────────────────────────────────────────────────────────
+// 1. FEATURE FLAG CEILING TEST (A10-P2-2)
+// ───────────────────────────────────────────────────────────────
 // TEST: Validates system stability when 6+ SPECKIT_* flags are
 // Activated simultaneously. Tests for flag interaction issues,
 // Initialization crashes, and mutual-exclusion conflicts.

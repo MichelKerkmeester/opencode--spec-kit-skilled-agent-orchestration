@@ -1,7 +1,11 @@
-// --- 1. TOOL DETECTION ---
+// ───────────────────────────────────────────────────────────────
+// 1. TOOL DETECTION
+// ───────────────────────────────────────────────────────────────
 // Detects tool calls, classifies conversation phases, and identifies prose context
 
-// --- 2. TYPES ---
+// ───────────────────────────────────────────────────────────────
+// 2. TYPES
+// ───────────────────────────────────────────────────────────────
 /** Confidence level for tool call detection */
 export type ToolConfidence = 'high' | 'medium' | 'low';
 
@@ -20,8 +24,9 @@ export interface ToolCallRecord {
 /** Conversation phase classification labels */
 export type ConversationPhase = 'Research' | 'Planning' | 'Implementation' | 'Debugging' | 'Verification' | 'Discussion';
 
-// --- 3. TOOL CALL DETECTION ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. TOOL CALL DETECTION
+// ───────────────────────────────────────────────────────────────
 function detectToolCall(text: string): ToolUsage | null {
   if (!text || typeof text !== 'string') return null;
 
@@ -48,8 +53,9 @@ function detectToolCall(text: string): ToolUsage | null {
   return null;
 }
 
-// --- 4. PROSE CONTEXT DETECTION ---
-
+// ───────────────────────────────────────────────────────────────
+// 4. PROSE CONTEXT DETECTION
+// ───────────────────────────────────────────────────────────────
 function isProseContext(text: string, matchStartIndex: number): boolean {
   if (matchStartIndex < 0) return false;
 
@@ -81,8 +87,9 @@ function isProseContext(text: string, matchStartIndex: number): boolean {
   return false;
 }
 
-// --- 5. CONVERSATION PHASE CLASSIFICATION ---
-
+// ───────────────────────────────────────────────────────────────
+// 5. CONVERSATION PHASE CLASSIFICATION
+// ───────────────────────────────────────────────────────────────
 function classifyConversationPhase(toolCalls: ToolCallRecord[], messageContent: string): ConversationPhase {
   const tools: string[] = toolCalls.map((t: ToolCallRecord) => t.tool?.toLowerCase() || '');
   const content: string = messageContent.toLowerCase();
@@ -110,8 +117,9 @@ function classifyConversationPhase(toolCalls: ToolCallRecord[], messageContent: 
   return 'Discussion';
 }
 
-// --- 6. EXPORTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 6. EXPORTS
+// ───────────────────────────────────────────────────────────────
 export {
   detectToolCall,
   isProseContext,

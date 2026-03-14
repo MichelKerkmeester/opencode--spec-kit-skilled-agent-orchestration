@@ -1,4 +1,6 @@
-// --- 1. CHECK NO MCP LIB IMPORTS ---
+// ───────────────────────────────────────────────────────────────
+// 1. CHECK NO MCP LIB IMPORTS
+// ───────────────────────────────────────────────────────────────
 // Scans scripts/ for prohibited internal runtime imports.
 // Violations not in the allowlist cause a non-zero exit.
 

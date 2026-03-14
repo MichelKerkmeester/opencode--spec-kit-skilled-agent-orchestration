@@ -1,5 +1,6 @@
-// --- 1. DEDUP ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. DEDUP
+// ───────────────────────────────────────────────────────────────
 import type Database from 'better-sqlite3';
 
 import type { ParsedMemory } from '../../lib/parsing/memory-parser';

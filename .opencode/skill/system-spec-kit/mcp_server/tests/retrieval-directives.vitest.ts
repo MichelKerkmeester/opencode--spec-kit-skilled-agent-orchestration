@@ -24,9 +24,9 @@ import {
 import * as vectorIndex from '../lib/search/vector-index';
 import * as triggerMatcher from '../lib/parsing/trigger-matcher';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    HELPERS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /** Build a minimal ConstitutionalResult for testing. */
 function makeResult(
@@ -50,9 +50,9 @@ function makeConstitutionalDb(rows: Array<Record<string, unknown>>): { prepare: 
   };
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    T-A4-01: EXTRACTION — IMPERATIVE CONTENT
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('T-A4-01: Extraction from imperative content', () => {
   it('T1: extracts from content with "always" keyword', () => {
@@ -139,9 +139,9 @@ describe('T-A4-01: Extraction from imperative content', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    T-A4-02: DIRECTIVE PREFIX PATTERNS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('T-A4-02: Directive prefix patterns', () => {
   it('T11: surfaceCondition always starts with "Always surface when:"', () => {
@@ -195,9 +195,9 @@ describe('T-A4-02: Directive prefix patterns', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    T-A4-03: FALLBACK — NO CLEAR RULE PATTERN
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('T-A4-03: Fallback when content has no imperative rules', () => {
   it('T17: falls back to title when content has no imperative keywords', () => {
@@ -252,9 +252,9 @@ describe('T-A4-03: Fallback when content has no imperative rules', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    T-A4-04: FORMAT DIRECTIVE METADATA
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('T-A4-04: formatDirectiveMetadata', () => {
   it('T24: formats as "surfaceCondition | priorityCondition"', () => {
@@ -284,9 +284,9 @@ describe('T-A4-04: formatDirectiveMetadata', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    T-A4-05: ENRICHMENT OF RESULT ARRAYS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('T-A4-05: enrichWithRetrievalDirectives', () => {
   it('T27: returns same number of results as input', () => {
@@ -362,9 +362,9 @@ describe('T-A4-05: enrichWithRetrievalDirectives', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    T-A4-06: NO SCORING LOGIC CHANGES (content transformation only)
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('T-A4-06: Scoring invariants — content transformation only', () => {
   it('T36: enrichment does not add any numeric score field', () => {
@@ -423,9 +423,9 @@ describe('T-A4-06: Scoring invariants — content transformation only', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    T-A4-07: EDGE CASES
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('T-A4-07: Edge cases', () => {
   it('T42: content with only whitespace is treated as empty', () => {
@@ -482,9 +482,9 @@ describe('T-A4-07: Edge cases', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    T-A4-08: AUTO-SURFACE INTEGRATION (constitutional injection path)
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('T-A4-08: constitutional auto-surface integration', () => {
   beforeEach(() => {

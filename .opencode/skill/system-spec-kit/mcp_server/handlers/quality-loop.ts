@@ -1,5 +1,6 @@
-// --- 1. QUALITY LOOP (T008) ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. QUALITY LOOP (T008)
+// ───────────────────────────────────────────────────────────────
 import { initEvalDb } from '../lib/eval/eval-db';
 import { isQualityLoopEnabled } from '../lib/search/search-flags';
 

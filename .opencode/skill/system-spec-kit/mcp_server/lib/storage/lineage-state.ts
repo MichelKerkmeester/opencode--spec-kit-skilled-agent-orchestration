@@ -1,4 +1,6 @@
-// --- 1. MEMORY LINEAGE STATE ---
+// ───────────────────────────────────────────────────────────────
+// 1. MEMORY LINEAGE STATE
+// ───────────────────────────────────────────────────────────────
 // Provides append-first lineage transitions, active projection reads,
 // Temporal asOf resolution, and backfill/integrity helpers.
 import type Database from 'better-sqlite3';
@@ -349,6 +351,14 @@ function insertAppendOnlyMemoryIndexRow(params: CreateAppendOnlyMemoryRecordPara
   return memoryId;
 }
 
+/**
+ * Seed lineage state from an existing memory row when no lineage entry exists yet.
+ *
+ * @param database - Database connection that stores lineage state.
+ * @param memoryId - Memory version to seed into lineage tables.
+ * @param options - Optional actor, timestamps, and transition metadata.
+ * @returns Seeded lineage state for the requested memory version.
+ */
 export function seedLineageFromCurrentState(
   database: Database.Database,
   memoryId: number,
@@ -413,6 +423,14 @@ export function seedLineageFromCurrentState(
   };
 }
 
+/**
+ * Seed or append a lineage transition for a memory version.
+ *
+ * @param database - Database connection that stores lineage state.
+ * @param memoryId - Memory version being recorded.
+ * @param options - Transition details such as predecessor and actor.
+ * @returns Recorded lineage state for the requested memory version.
+ */
 export function recordLineageTransition(
   database: Database.Database,
   memoryId: number,
@@ -507,6 +525,12 @@ export function recordLineageTransition(
   };
 }
 
+/**
+ * Create a new append-only memory row and wire it into lineage state.
+ *
+ * @param params - Parsed memory payload and append-only lineage metadata.
+ * @returns Identifier of the newly inserted memory row.
+ */
 export function createAppendOnlyMemoryRecord(params: CreateAppendOnlyMemoryRecordParams): number {
   bindHistory(params.database);
   const appendTx = params.database.transaction(() => {
@@ -533,6 +557,13 @@ function resolveLogicalKey(database: Database.Database, memoryId: number): strin
   return projection?.logical_key ?? buildLogicalKey(memoryRow);
 }
 
+/**
+ * Return the full ordered lineage chain for the logical key behind a memory.
+ *
+ * @param database - Database connection that stores lineage state.
+ * @param memoryId - Memory identifier used to resolve the logical key.
+ * @returns Ordered lineage snapshots from oldest to newest version.
+ */
 export function inspectLineageChain(database: Database.Database, memoryId: number): ResolvedLineageSnapshot[] {
   bindHistory(database);
   ensureLineageTables(database);
@@ -563,6 +594,13 @@ export function inspectLineageChain(database: Database.Database, memoryId: numbe
   });
 }
 
+/**
+ * Resolve the currently active lineage snapshot for a memory logical key.
+ *
+ * @param database - Database connection that stores lineage state.
+ * @param memoryId - Memory identifier used to resolve the logical key.
+ * @returns Active lineage snapshot when one exists.
+ */
 export function resolveActiveLineageSnapshot(
   database: Database.Database,
   memoryId: number,
@@ -596,6 +634,14 @@ export function resolveActiveLineageSnapshot(
   };
 }
 
+/**
+ * Resolve the lineage snapshot visible at a specific point in time.
+ *
+ * @param database - Database connection that stores lineage state.
+ * @param memoryId - Memory identifier used to resolve the logical key.
+ * @param asOf - Timestamp used for temporal resolution.
+ * @returns Snapshot active at the requested time when one exists.
+ */
 export function resolveLineageAsOf(
   database: Database.Database,
   memoryId: number,
@@ -635,6 +681,12 @@ export function resolveLineageAsOf(
   };
 }
 
+/**
+ * Validate lineage chains and active projections for structural drift.
+ *
+ * @param database - Database connection that stores lineage state.
+ * @returns Integrity report describing missing predecessors and projection drift.
+ */
 export function validateLineageIntegrity(database: Database.Database): ValidateLineageIntegrityResult {
   ensureLineageTables(database);
   const issues: string[] = [];
@@ -701,6 +753,13 @@ export function validateLineageIntegrity(database: Database.Database): ValidateL
   };
 }
 
+/**
+ * Backfill lineage state from existing memory rows in append-only order.
+ *
+ * @param database - Database connection that stores lineage state.
+ * @param options - Dry-run and actor settings for the backfill.
+ * @returns Backfill summary including scanned and seeded rows.
+ */
 export function backfillLineageState(
   database: Database.Database,
   options: { dryRun?: boolean; actor?: string } = {},
@@ -849,6 +908,13 @@ export function backfillLineageState(
   };
 }
 
+/**
+ * Resolve the active projection row for the lineage that owns a memory.
+ *
+ * @param database - Database connection that stores lineage state.
+ * @param memoryId - Memory identifier used to resolve the logical key.
+ * @returns Active projection row when one exists.
+ */
 export function getActiveProjectionRow(
   database: Database.Database,
   memoryId: number,
@@ -860,6 +926,13 @@ export function getActiveProjectionRow(
   return getActiveProjection(database, logicalKey);
 }
 
+/**
+ * Resolve the latest lineage row for the logical key behind a memory.
+ *
+ * @param database - Database connection that stores lineage state.
+ * @param memoryId - Memory identifier used to resolve the logical key.
+ * @returns Latest lineage row when one exists.
+ */
 export function getLatestLineageForMemory(database: Database.Database, memoryId: number): MemoryLineageRow | null {
   const logicalKey = resolveLogicalKey(database, memoryId);
   if (!logicalKey) {
@@ -868,6 +941,13 @@ export function getLatestLineageForMemory(database: Database.Database, memoryId:
   return getLatestLineageRowForLogicalKey(database, logicalKey);
 }
 
+/**
+ * Compatibility wrapper used by roadmap tests and save flows for lineage writes.
+ *
+ * @param database - Database connection that stores lineage state.
+ * @param params - Memory identifier and transition metadata to record.
+ * @returns Recorded lineage transition for the requested memory version.
+ */
 export function recordLineageVersion(
   database: Database.Database,
   params: {
@@ -897,6 +977,13 @@ export function recordLineageVersion(
   });
 }
 
+/**
+ * Compatibility wrapper that resolves the active snapshot for a memory target.
+ *
+ * @param database - Database connection that stores lineage state.
+ * @param target - Memory identifier used to resolve the active snapshot.
+ * @returns Active lineage snapshot when one exists.
+ */
 export function getActiveMemoryProjection(
   database: Database.Database,
   target: { memoryId: number },
@@ -904,6 +991,13 @@ export function getActiveMemoryProjection(
   return resolveActiveLineageSnapshot(database, target.memoryId);
 }
 
+/**
+ * Compatibility wrapper that resolves the snapshot visible at a given time.
+ *
+ * @param database - Database connection that stores lineage state.
+ * @param target - Memory identifier and `asOf` timestamp to resolve.
+ * @returns Snapshot active at the requested time when one exists.
+ */
 export function resolveMemoryAsOf(
   database: Database.Database,
   target: { memoryId: number; asOf: string | Date },
@@ -911,6 +1005,13 @@ export function resolveMemoryAsOf(
   return resolveLineageAsOf(database, target.memoryId, target.asOf);
 }
 
+/**
+ * Compatibility wrapper that executes the lineage backfill workflow.
+ *
+ * @param database - Database connection that stores lineage state.
+ * @param options - Dry-run and actor settings for the backfill.
+ * @returns Backfill summary including scanned and seeded rows.
+ */
 export function runLineageBackfill(
   database: Database.Database,
   options: { dryRun?: boolean; actor?: string } = {},
@@ -918,6 +1019,9 @@ export function runLineageBackfill(
   return backfillLineageState(database, options);
 }
 
+/**
+ * Public lineage result types exposed to tests and compatibility helpers.
+ */
 export type {
   ActiveProjectionRow,
   BackfillLineageResult,

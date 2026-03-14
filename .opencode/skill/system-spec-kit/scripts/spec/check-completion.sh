@@ -274,14 +274,17 @@ output_text() {
     local status="$1"
     local percentage=$(( TOTAL_ITEMS > 0 ? (COMPLETED_ITEMS * 100 / TOTAL_ITEMS) : 0 ))
 
-    echo -e "\n${BLUE}───────────────────────────────────────────────────────────────${NC}"
+    echo -e "\n${BLUE}───────────────────────────────────────────────────────────────
+${NC}"
     echo -e "${BLUE}  Checklist Completion Check${NC}"
-    echo -e "${BLUE}───────────────────────────────────────────────────────────────${NC}\n"
+    echo -e "${BLUE}───────────────────────────────────────────────────────────────
+${NC}\n"
 
     echo -e "  ${BOLD}Folder:${NC} $FOLDER_PATH"
     echo -e "  ${BOLD}Mode:${NC}   $(if $STRICT_MODE; then echo "Strict (P2 required)"; else echo "Standard (P2 deferrable)"; fi)"
 
-    echo -e "\n${BLUE}───────────────────────────────────────────────────────────────${NC}\n"
+    echo -e "\n${BLUE}───────────────────────────────────────────────────────────────
+${NC}\n"
 
     echo -e "  ${BOLD}Priority Breakdown:${NC}"
     
@@ -326,7 +329,8 @@ output_text() {
         echo -e "    ${GREEN}✓${NC} Evidence present for all completed P0/P1 items"
     fi
 
-    echo -e "\n${BLUE}───────────────────────────────────────────────────────────────${NC}\n"
+    echo -e "\n${BLUE}───────────────────────────────────────────────────────────────
+${NC}\n"
 
     echo -e "  ${BOLD}Summary:${NC} $COMPLETED_ITEMS/$TOTAL_ITEMS items ($percentage%)"
     echo ""

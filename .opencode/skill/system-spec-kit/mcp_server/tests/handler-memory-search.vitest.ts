@@ -108,11 +108,11 @@ describe('C138: Evidence Gap Warning Injection', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    T002: Chunk Collapse Dedup — G3 Fix
    collapseAndReassembleChunkResults is exported via __testables.
    Tests verify dedup runs regardless of the includeContent flag.
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 describe('T002: Chunk Collapse Dedup (G3)', () => {
   const { collapseAndReassembleChunkResults } = handler.__testables;
 

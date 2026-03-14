@@ -1,4 +1,6 @@
-// --- 1. TRIGGER MATCHER ---
+// ───────────────────────────────────────────────────────────────
+// 1. TRIGGER MATCHER
+// ───────────────────────────────────────────────────────────────
 import * as vectorIndex from '../search/vector-index';
 import { escapeRegex } from '../utils/path-security';
 

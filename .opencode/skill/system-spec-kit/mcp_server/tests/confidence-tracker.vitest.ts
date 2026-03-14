@@ -72,8 +72,9 @@ describe('Confidence Tracker Tests (T510)', () => {
     } catch { /* ignore cleanup errors */ }
   });
 
-  // --- 1. INITIAL CONFIDENCE CONSTANTS (T510-01) ---
-
+  // ───────────────────────────────────────────────────────────────
+  // 1. INITIAL CONFIDENCE CONSTANTS (T510-01)
+  // ───────────────────────────────────────────────────────────────
   describe('Initial Confidence Constants (T510-01)', () => {
     it('T510-01a: CONFIDENCE_BASE = 0.5', () => {
       expect(mod.CONFIDENCE_BASE).toBe(0.5);
@@ -93,8 +94,9 @@ describe('Confidence Tracker Tests (T510)', () => {
     });
   });
 
-  // --- 2. POSITIVE FEEDBACK ADJUSTS UP (T510-02) ---
-
+  // ───────────────────────────────────────────────────────────────
+  // 2. POSITIVE FEEDBACK ADJUSTS UP (T510-02)
+  // ───────────────────────────────────────────────────────────────
   describe('Positive Feedback Adjusts Up (T510-02)', () => {
     it('T510-02a: Positive validation increases confidence', () => {
       const before = mod.getConfidenceScore(db!, 1);
@@ -118,8 +120,9 @@ describe('Confidence Tracker Tests (T510)', () => {
     });
   });
 
-  // --- 3. NEGATIVE FEEDBACK ADJUSTS DOWN (T510-03) ---
-
+  // ───────────────────────────────────────────────────────────────
+  // 3. NEGATIVE FEEDBACK ADJUSTS DOWN (T510-03)
+  // ───────────────────────────────────────────────────────────────
   describe('Negative Feedback Adjusts Down (T510-03)', () => {
     it('T510-03a: Negative validation decreases confidence', () => {
       const before = mod.getConfidenceScore(db!, 4);
@@ -136,8 +139,9 @@ describe('Confidence Tracker Tests (T510)', () => {
     });
   });
 
-  // --- 4. CONFIDENCE BOUNDS (T510-04) ---
-
+  // ───────────────────────────────────────────────────────────────
+  // 4. CONFIDENCE BOUNDS (T510-04)
+  // ───────────────────────────────────────────────────────────────
   describe('Confidence Bounds (T510-04)', () => {
     it('T510-04a: Confidence never goes below CONFIDENCE_MIN (0.0)', () => {
       // Push memory 4 to minimum by recording many negative validations
@@ -158,8 +162,9 @@ describe('Confidence Tracker Tests (T510)', () => {
     });
   });
 
-  // --- 5. PROMOTION TRACKING AND HISTORY (T510-05) ---
-
+  // ───────────────────────────────────────────────────────────────
+  // 5. PROMOTION TRACKING AND HISTORY (T510-05)
+  // ───────────────────────────────────────────────────────────────
   describe('Promotion Tracking and History (T510-05)', () => {
     it('T510-05a: Promotion eligibility detected after meeting thresholds', () => {
       // Memory 5 has confidence=0.88, validation_count=4
@@ -199,8 +204,9 @@ describe('Confidence Tracker Tests (T510)', () => {
 // Tests: closed DB handle, mock SQLITE_BUSY, error logging.
 describe('DB Error Safe Defaults (T103)', () => {
 
-  // --- 6. DB ERROR: CLOSED DB HANDLE (T103-01) ---
-
+  // ───────────────────────────────────────────────────────────────
+  // 6. DB ERROR: CLOSED DB HANDLE (T103-01)
+  // ───────────────────────────────────────────────────────────────
   describe('Closed DB Handle (T103-01)', () => {
     let closedDb: ClosableConfidenceTrackerDatabase | null = null;
     let closedDbPath: string;
@@ -258,8 +264,9 @@ describe('DB Error Safe Defaults (T103)', () => {
     });
   });
 
-  // --- 7. DB ERROR: MOCK SQLITE_BUSY (T103-02) ---
-
+  // ───────────────────────────────────────────────────────────────
+  // 7. DB ERROR: MOCK SQLITE_BUSY (T103-02)
+  // ───────────────────────────────────────────────────────────────
   describe('Mock SQLITE_BUSY (T103-02)', () => {
     let brokenDb: ConfidenceTrackerDatabase;
 
@@ -296,8 +303,9 @@ describe('DB Error Safe Defaults (T103)', () => {
     });
   });
 
-  // --- 8. DB ERROR: ERROR LOGGING VERIFICATION (T103-03) ---
-
+  // ───────────────────────────────────────────────────────────────
+  // 8. DB ERROR: ERROR LOGGING VERIFICATION (T103-03)
+  // ───────────────────────────────────────────────────────────────
   describe('Error Logging Verification (T103-03)', () => {
     let brokenDb: ConfidenceTrackerDatabase;
 
@@ -335,8 +343,9 @@ describe('DB Error Safe Defaults (T103)', () => {
     }
   });
 
-  // --- 9. DB ERROR: GETCONFIDENCEINFO FULL STRUCTURE (T103-04) ---
-
+  // ───────────────────────────────────────────────────────────────
+  // 9. DB ERROR: GETCONFIDENCEINFO FULL STRUCTURE (T103-04)
+  // ───────────────────────────────────────────────────────────────
   describe('getConfidenceInfo Full Structure (T103-04)', () => {
     it('T103-04a: getConfidenceInfo safe default has all correct fields', () => {
       const brokenDb = createBrokenDb();

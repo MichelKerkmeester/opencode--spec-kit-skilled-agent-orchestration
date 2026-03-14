@@ -1,4 +1,6 @@
-// --- 1. RETRIEVAL DIRECTIVES ---
+// ───────────────────────────────────────────────────────────────
+// 1. RETRIEVAL DIRECTIVES
+// ───────────────────────────────────────────────────────────────
 // PI-A4: Constitutional memory as retrieval directives (Sprint 5, deferred from Sprint 4 REC-07)
 //
 // Adds a `retrieval_directive` metadata field to constitutional-tier memories.
@@ -15,9 +17,9 @@ import * as fs from 'fs';
 import { ALLOWED_BASE_PATHS } from '../../core/config';
 import { validateFilePath } from '../utils/path-security';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    1. TYPES
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Retrieval directive derived from a constitutional memory.
@@ -51,9 +53,9 @@ export interface ConstitutionalResult {
   retrieval_directive?: string;
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    2. CONSTANTS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Imperative verbs that signal a rule pattern.
@@ -83,9 +85,9 @@ const MAX_CONTENT_SCAN_CHARS = 2000;
 /** Maximum characters allowed in a directive phrase component. */
 const MAX_DIRECTIVE_COMPONENT_CHARS = 120;
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    3. HELPERS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Normalise whitespace and trim a string.
@@ -181,9 +183,9 @@ function parseCandidateLine(line: string): {
   return { ruleVerb: foundVerb, ruleBody, conditionClause };
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    4. CORE EXTRACTION
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Extract a retrieval directive from constitutional memory content.
@@ -273,9 +275,9 @@ export function extractRetrievalDirective(
   return null;
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    5. FORMATTING
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Format a retrieval directive as a single metadata field value string.
@@ -294,9 +296,9 @@ export function formatDirectiveMetadata(directive: RetrievalDirective): string {
   return `${directive.surfaceCondition} | ${directive.priorityCondition}`;
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    6. ENRICHMENT
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Enrich an array of constitutional memory results with `retrieval_directive` metadata.

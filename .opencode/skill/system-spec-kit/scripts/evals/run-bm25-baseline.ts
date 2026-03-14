@@ -1,5 +1,7 @@
 #!/usr/bin/env npx tsx
-// --- 1. RUN BM25 BASELINE ---
+// ───────────────────────────────────────────────────────────────
+// 1. RUN BM25 BASELINE
+// ───────────────────────────────────────────────────────────────
 //
 // Sprint 0 closure: Execute the BM25-only baseline against the
 // Live production context-index.sqlite and record results in the

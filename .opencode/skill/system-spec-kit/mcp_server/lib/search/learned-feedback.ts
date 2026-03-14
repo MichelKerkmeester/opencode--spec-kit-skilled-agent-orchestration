@@ -1,4 +1,6 @@
-// --- 1. LEARNED FEEDBACK ---
+// ───────────────────────────────────────────────────────────────
+// 1. LEARNED FEEDBACK
+// ───────────────────────────────────────────────────────────────
 //
 //
 // Learns from user memory selections to improve future search results.
@@ -27,8 +29,9 @@ import {
   type LearnedTriggerEntry,
 } from '../storage/learned-triggers-schema';
 
-// --- 2. TYPES ---
-
+// ───────────────────────────────────────────────────────────────
+// 2. TYPES
+// ───────────────────────────────────────────────────────────────
 export type { Database };
 
 /** Selection event recorded when a user selects a search result. */
@@ -57,8 +60,9 @@ export interface LearnedTriggerMatch {
   weight: number;
 }
 
-// --- 3. CONSTANTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. CONSTANTS
+// ───────────────────────────────────────────────────────────────
 /** Feature flag environment variable name (graduated default ON) */
 export const FEATURE_FLAG = 'SPECKIT_LEARN_FROM_SELECTION';
 
@@ -86,8 +90,9 @@ export const TOP_N_EXCLUSION = 3;
 /** Minimum term length to be learnable */
 export const MIN_TERM_LENGTH = 3;
 
-// --- 4. AUDIT LOG TABLE ---
-
+// ───────────────────────────────────────────────────────────────
+// 4. AUDIT LOG TABLE
+// ───────────────────────────────────────────────────────────────
 const AUDIT_TABLE_SQL = `
   CREATE TABLE IF NOT EXISTS learned_feedback_audit (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -143,9 +148,9 @@ function ensureLearnedTriggersIndex(db: Database): void {
   }
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    4. FEATURE FLAG & GATING
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 /**
  * Check if the learned relevance feedback feature is enabled.
@@ -170,8 +175,9 @@ export function isMemoryEligible(memoryAgeMs: number): boolean {
   return memoryAgeMs >= MIN_MEMORY_AGE_MS;
 }
 
-// --- 5. TERM EXTRACTION ---
-
+// ───────────────────────────────────────────────────────────────
+// 5. TERM EXTRACTION
+// ───────────────────────────────────────────────────────────────
 /**
  * Extract learnable terms from query terms, filtering against the denylist
  * and existing triggers (Safeguards #3, #4).
@@ -215,8 +221,9 @@ export function extractLearnableTerms(
   return unique.slice(0, MAX_TERMS_PER_SELECTION);
 }
 
-// --- 6. CORE OPERATIONS ---
-
+// ───────────────────────────────────────────────────────────────
+// 6. CORE OPERATIONS
+// ───────────────────────────────────────────────────────────────
 /**
  * Record a user selection and learn from it (Safeguards #1-#10).
  *
@@ -486,8 +493,9 @@ export function queryLearnedTriggers(
   }
 }
 
-// --- 7. MAINTENANCE ---
-
+// ───────────────────────────────────────────────────────────────
+// 7. MAINTENANCE
+// ───────────────────────────────────────────────────────────────
 /**
  * Remove expired learned terms from all memories (Safeguard #2).
  * Terms older than 30 days are removed.
@@ -590,8 +598,9 @@ export function clearAllLearnedTriggers(db: Database): number {
   }
 }
 
-// --- 8. AUDIT LOG ---
-
+// ───────────────────────────────────────────────────────────────
+// 8. AUDIT LOG
+// ───────────────────────────────────────────────────────────────
 /**
  * Retrieve the provenance audit log (Safeguard #10).
  *

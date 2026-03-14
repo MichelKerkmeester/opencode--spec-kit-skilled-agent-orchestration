@@ -1,8 +1,11 @@
-// --- 1. ENTITY SCOPE ---
+// ───────────────────────────────────────────────────────────────
+// 1. ENTITY SCOPE
+// ───────────────────────────────────────────────────────────────
 // Provides context type detection, scope filtering, and session ID
 // Generation for the spec-kit memory system.
-// --- 2. CONSTANTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 2. CONSTANTS
+// ───────────────────────────────────────────────────────────────
 /** Valid context types for memory classification */
 export const CONTEXT_TYPES: string[] = [
   'research',
@@ -12,8 +15,9 @@ export const CONTEXT_TYPES: string[] = [
   'general',
 ];
 
-// --- 3. CONTEXT TYPE DETECTION ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. CONTEXT TYPE DETECTION
+// ───────────────────────────────────────────────────────────────
 /** Keyword-to-context-type mapping (order = priority) */
 const CONTENT_KEYWORDS: Array<{ type: string; keywords: string[] }> = [
   { type: 'research', keywords: ['explored', 'investigated'] },
@@ -70,8 +74,9 @@ export function detectContextTypeFromTools(
   return 'general';
 }
 
-// --- 4. SCOPE FILTER BUILDER ---
-
+// ───────────────────────────────────────────────────────────────
+// 4. SCOPE FILTER BUILDER
+// ───────────────────────────────────────────────────────────────
 /**
  * Build a SQL WHERE clause from a scope object.
  * Combines individual filters with AND. Returns {clause, params}.
@@ -110,9 +115,9 @@ export function buildScopeFilter(scope: {
   };
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    4. VALIDATION & UTILITIES
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 /** Check whether a string is a recognised context type */
 export function isValidContextType(type: string): boolean {

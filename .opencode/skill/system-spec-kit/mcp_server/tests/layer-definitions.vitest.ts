@@ -8,9 +8,9 @@ function expectLayerInfo(value: ReturnType<typeof mod.getLayerInfo>) {
   return value as NonNullable<typeof value>;
 }
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    TEST SUITES
----------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('Layer Definitions Tests', () => {
 

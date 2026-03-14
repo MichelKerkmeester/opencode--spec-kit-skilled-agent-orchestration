@@ -1,5 +1,6 @@
-// --- 1. CONTEXT SERVER TESTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. CONTEXT SERVER TESTS
+// ───────────────────────────────────────────────────────────────
 import { describe, it, expect, beforeAll, afterEach, vi } from 'vitest'
 import fs from 'fs'
 import path from 'path'

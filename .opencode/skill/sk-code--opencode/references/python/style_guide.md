@@ -332,6 +332,17 @@ for item in items:
     pass
 ```
 
+### Capitalization
+
+All comment text MUST start with a capital letter:
+
+```python
+# Sort by recency so newest memories surface first     # correct
+# sort by recency so newest memories surface first     # wrong
+```
+
+**Exceptions**: Directives like `type: ignore`, `noqa:`, `pylint: disable`, and inline code references.
+
 ---
 
 <!-- /ANCHOR:docstrings -->

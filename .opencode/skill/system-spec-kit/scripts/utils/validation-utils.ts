@@ -1,7 +1,11 @@
-// --- 1. VALIDATION UTILS ---
+// ───────────────────────────────────────────────────────────────
+// 1. VALIDATION UTILS
+// ───────────────────────────────────────────────────────────────
 // Validates rendered output — detects leaked Mustache placeholders and empty sections
 
-// --- 2. PLACEHOLDER VALIDATION ---
+// ───────────────────────────────────────────────────────────────
+// 2. PLACEHOLDER VALIDATION
+// ───────────────────────────────────────────────────────────────
 function validateNoLeakedPlaceholders(content: string, filename: string): void {
   const leaked: RegExpMatchArray | null = content.match(/\{\{[A-Z_]+\}\}/g);
   if (leaked) {
@@ -23,8 +27,9 @@ function validateNoLeakedPlaceholders(content: string, filename: string): void {
   }
 }
 
-// --- 3. ANCHOR VALIDATION ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. ANCHOR VALIDATION
+// ───────────────────────────────────────────────────────────────
 function validateAnchors(content: string): string[] {
   const openPattern: RegExp = /<!-- (?:ANCHOR|anchor):([a-zA-Z0-9_-]+)/g;
   const closePattern: RegExp = /<!-- \/(?:ANCHOR|anchor):([a-zA-Z0-9_-]+)/g;
@@ -65,8 +70,9 @@ function logAnchorValidation(content: string, filename: string): void {
   }
 }
 
-// --- 4. EXPORTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 4. EXPORTS
+// ───────────────────────────────────────────────────────────────
 export {
   validateNoLeakedPlaceholders,
   validateAnchors,

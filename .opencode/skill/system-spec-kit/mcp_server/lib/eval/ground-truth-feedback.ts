@@ -1,4 +1,6 @@
-// --- 1. GROUND TRUTH FEEDBACK ---
+// ───────────────────────────────────────────────────────────────
+// 1. GROUND TRUTH FEEDBACK
+// ───────────────────────────────────────────────────────────────
 //
 // Ground Truth Expansion via Feedback + LLM-Judge
 //

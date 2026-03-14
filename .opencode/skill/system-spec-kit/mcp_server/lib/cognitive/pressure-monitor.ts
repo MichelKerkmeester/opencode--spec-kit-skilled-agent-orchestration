@@ -1,5 +1,6 @@
-// --- 1. PRESSURE MONITOR ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. PRESSURE MONITOR
+// ───────────────────────────────────────────────────────────────
 export interface RuntimeContextStats {
   tokenCount?: number;
   tokenBudget?: number;

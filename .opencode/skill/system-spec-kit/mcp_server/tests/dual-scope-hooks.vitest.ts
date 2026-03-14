@@ -33,9 +33,9 @@ import {
 import * as triggerMatcher from '../lib/parsing/trigger-matcher';
 import * as vectorIndex from '../lib/search/vector-index';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    Helper: build a minimal AutoSurfaceResult-like mock return value
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 const makeTriggerMatch = (overrides = {}) => ({
   memoryId: 1,
@@ -47,9 +47,9 @@ const makeTriggerMatch = (overrides = {}) => ({
   ...overrides,
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    1. TOKEN BUDGET CONSTANTS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('TM-05: Token Budget Constants', () => {
   it('TOOL_DISPATCH_TOKEN_BUDGET is 4000', () => {
@@ -71,9 +71,9 @@ describe('TM-05: Token Budget Constants', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    2. autoSurfaceAtToolDispatch — BASIC BEHAVIOR
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('TM-05: autoSurfaceAtToolDispatch — basic behavior', () => {
   beforeEach(() => {
@@ -108,9 +108,9 @@ describe('TM-05: autoSurfaceAtToolDispatch — basic behavior', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    3. autoSurfaceAtToolDispatch — MEMORY-AWARE TOOL SKIP
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('TM-05: autoSurfaceAtToolDispatch — skips memory-aware tools', () => {
   beforeEach(() => {
@@ -184,9 +184,9 @@ describe('TM-05: autoSurfaceAtToolDispatch — skips memory-aware tools', () => 
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    4. autoSurfaceAtToolDispatch — CONFIG FLAG DISABLING
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('TM-05: autoSurfaceAtToolDispatch — config flag disabling', () => {
   beforeEach(() => {
@@ -228,9 +228,9 @@ describe('TM-05: autoSurfaceAtToolDispatch — config flag disabling', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    5. autoSurfaceAtToolDispatch — CONTEXT EXTRACTION FROM TOOL ARGS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('TM-05: autoSurfaceAtToolDispatch — context hint extraction from args', () => {
   beforeEach(() => {
@@ -281,9 +281,9 @@ describe('TM-05: autoSurfaceAtToolDispatch — context hint extraction from args
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    5b. HOOK LIFECYCLE POINTS (DISPATCH + COMPACTION)
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('TM-05: hook lifecycle points', () => {
   beforeEach(() => {
@@ -306,9 +306,9 @@ describe('TM-05: hook lifecycle points', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    6. autoSurfaceAtToolDispatch — RESULT STRUCTURE WHEN SURFACE FIRES
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('TM-05: autoSurfaceAtToolDispatch — result structure', () => {
   beforeEach(() => {
@@ -372,9 +372,9 @@ describe('TM-05: autoSurfaceAtToolDispatch — result structure', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    7. autoSurfaceAtCompaction — BASIC BEHAVIOR
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('TM-05: autoSurfaceAtCompaction — basic behavior', () => {
   beforeEach(() => {
@@ -424,9 +424,9 @@ describe('TM-05: autoSurfaceAtCompaction — basic behavior', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    8. autoSurfaceAtCompaction — CONFIG FLAG DISABLING
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('TM-05: autoSurfaceAtCompaction — config flag disabling', () => {
   beforeEach(() => {
@@ -466,9 +466,9 @@ describe('TM-05: autoSurfaceAtCompaction — config flag disabling', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    9. autoSurfaceAtCompaction — TRIMS WHITESPACE BEFORE SURFACING
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('TM-05: autoSurfaceAtCompaction — whitespace trimming', () => {
   beforeEach(() => {
@@ -489,9 +489,9 @@ describe('TM-05: autoSurfaceAtCompaction — whitespace trimming', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    10. autoSurfaceAtCompaction — RESULT STRUCTURE
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('TM-05: autoSurfaceAtCompaction — result structure', () => {
   beforeEach(() => {
@@ -531,9 +531,9 @@ describe('TM-05: autoSurfaceAtCompaction — result structure', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    11. TOKEN BUDGET ENFORCEMENT
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('TM-05: Token budget enforcement (4000 max per point)', () => {
   it('TOOL_DISPATCH_TOKEN_BUDGET does not exceed 4000', () => {
@@ -626,9 +626,9 @@ describe('TM-05: Token budget enforcement (4000 max per point)', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    12. NO REGRESSION — existing autoSurfaceMemories behavior
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('TM-05: No regression in existing autoSurfaceMemories', () => {
   beforeEach(() => {
@@ -699,9 +699,9 @@ describe('TM-05: No regression in existing autoSurfaceMemories', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    13. MODULE EXPORTS VERIFICATION
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('TM-05: Module exports verification', () => {
   it('TOOL_DISPATCH_TOKEN_BUDGET is exported', () => {

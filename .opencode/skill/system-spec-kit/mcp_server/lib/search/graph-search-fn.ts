@@ -1,4 +1,6 @@
-// --- 1. GRAPH SEARCH FN ---
+// ───────────────────────────────────────────────────────────────
+// 1. GRAPH SEARCH FN
+// ───────────────────────────────────────────────────────────────
 // Causal graph search channel — uses FTS5 for node matching
 
 import { sanitizeFTS5Query } from './bm25-index';
@@ -7,8 +9,9 @@ import { queryHierarchyMemories } from './spec-folder-hierarchy';
 import type Database from 'better-sqlite3';
 import type { GraphSearchFn } from './search-types';
 
-// --- 2. TYPES ---
-
+// ───────────────────────────────────────────────────────────────
+// 2. TYPES
+// ───────────────────────────────────────────────────────────────
 interface CausalEdgeRow {
   id: string;
   source_id: string;
@@ -17,8 +20,9 @@ interface CausalEdgeRow {
   strength: number;
 }
 
-// --- 3. TYPED-DEGREE CONSTANTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. TYPED-DEGREE CONSTANTS
+// ───────────────────────────────────────────────────────────────
 /** Edge type weights for typed-degree computation (R4 5th RRF channel) */
 const EDGE_TYPE_WEIGHTS: Record<string, number> = {
   caused: 1.0,
@@ -38,8 +42,9 @@ const MAX_TOTAL_DEGREE = 50;
 /** Maximum normalized boost score */
 const DEGREE_BOOST_CAP = 0.15;
 
-// --- 4. CAUSAL EDGE CHANNEL (FTS5-BACKED) ---
-
+// ───────────────────────────────────────────────────────────────
+// 4. CAUSAL EDGE CHANNEL (FTS5-BACKED)
+// ───────────────────────────────────────────────────────────────
 /**
  * Check whether the FTS5 table exists in the database.
  * Used to determine if FTS5 matching is available.
@@ -247,8 +252,9 @@ function queryCausalEdgesLikeFallback(
   return candidates;
 }
 
-// --- 5. TYPED-DEGREE COMPUTATION ---
-
+// ───────────────────────────────────────────────────────────────
+// 5. TYPED-DEGREE COMPUTATION
+// ───────────────────────────────────────────────────────────────
 /**
  * In-memory degree cache. Keys are stringified memory IDs.
  * Invalidated via clearDegreeCache() on causal edge mutations.
@@ -429,8 +435,9 @@ function clearDegreeCache(): void {
   degreeCache.clear();
 }
 
-// --- 6. FACTORY FUNCTION ---
-
+// ───────────────────────────────────────────────────────────────
+// 6. FACTORY FUNCTION
+// ───────────────────────────────────────────────────────────────
 /**
  * Creates a graph search function backed by causal_edges only.
  *
@@ -462,8 +469,9 @@ function createUnifiedGraphSearchFn(
   };
 }
 
-// --- 7. EXPORTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 7. EXPORTS
+// ───────────────────────────────────────────────────────────────
 export {
   createUnifiedGraphSearchFn,
   // Typed-degree computation (R4 5th RRF channel)

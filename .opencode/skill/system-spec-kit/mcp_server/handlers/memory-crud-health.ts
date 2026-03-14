@@ -1,8 +1,10 @@
-// --- 1. MEMORY CRUD HEALTH ---
+// ────────────────────────────────────────────────────────────────
+// 1. MEMORY CRUD HEALTH 
+// ────────────────────────────────────────────────────────────────
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    IMPORTS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 import { randomUUID } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
@@ -48,9 +50,9 @@ function redactPath(absolutePath: string): string {
   return lastSlash !== -1 ? normalizedPath.slice(lastSlash + 1) : normalizedPath;
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    CONSTANTS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 // Read version from package.json at module load time (CJS __dirname is available)
 // WHY try-catch: if package.json is missing or malformed, the server should still start
@@ -227,9 +229,9 @@ function getDivergentAliasGroups(rows: AliasConflictDbRow[], limit: number): Div
   return groups.slice(0, limit);
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    CORE LOGIC
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /** Handle memory_health tool -- returns system health status and diagnostics. */
 async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
@@ -633,8 +635,8 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
   });
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    EXPORTS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 export { handleMemoryHealth };

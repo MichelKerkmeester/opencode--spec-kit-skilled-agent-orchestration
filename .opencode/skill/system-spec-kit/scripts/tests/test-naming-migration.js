@@ -17,7 +17,9 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
-// --- 1. PATHS ---
+// ───────────────────────────────────────────────────────────────
+// 1. PATHS
+// ───────────────────────────────────────────────────────────────
 const SCRIPTS_ROOT = path.resolve(__dirname, '..');
 const MCP_ROOT = path.resolve(__dirname, '../../mcp_server');
 const BASE_ROOT = path.resolve(MCP_ROOT, '..');
@@ -37,7 +39,9 @@ const CROSS_REFERENCE_MISMATCH_BUDGET = new Map([
   ['mcp_server/dist/lib/config/type-inference.js', 1],
 ]);
 
-// --- 2. TEST STATE ---
+// ───────────────────────────────────────────────────────────────
+// 2. TEST STATE
+// ───────────────────────────────────────────────────────────────
 let passed = 0;
 let failed = 0;
 let skipped = 0;
@@ -53,7 +57,9 @@ function fail(msg, detail) {
 function skip(msg) { skipped++; console.log(`  \u25CB ${msg}`); }
 function section(name) { console.log(`\n\u2501\u2501 ${name} ${'\u2501'.repeat(Math.max(0, 56 - name.length))}`); }
 
-// --- 3. FILE DISCOVERY ---
+// ───────────────────────────────────────────────────────────────
+// 3. FILE DISCOVERY
+// ───────────────────────────────────────────────────────────────
 function walkFiles(dir, ext) {
   const results = [];
   if (!fs.existsSync(dir)) return results;
@@ -73,7 +79,9 @@ function rel(filePath) {
   return path.relative(BASE_ROOT, filePath);
 }
 
-// --- 4. ERROR CLASSIFICATION ---
+// ───────────────────────────────────────────────────────────────
+// 4. ERROR CLASSIFICATION
+// ───────────────────────────────────────────────────────────────
 function isMigrationError(e) {
   if (e instanceof ReferenceError) return true;
   if (e instanceof SyntaxError) return true;
@@ -121,7 +129,9 @@ function t1SyntaxValidation() {
   if (shFail === 0) pass(`All ${shells.length} shell scripts pass bash -n`);
 }
 
-// --- 5. IMPORT TEST HELPERS ---
+// ───────────────────────────────────────────────────────────────
+// 5. IMPORT TEST HELPERS
+// ───────────────────────────────────────────────────────────────
 // Some scripts call process.exit() on require (standalone CLI tools).
 // We intercept process.exit and suppress console noise during import tests.
 

@@ -1,8 +1,11 @@
-// --- 1. BATCH PROCESSOR ---
+// ───────────────────────────────────────────────────────────────
+// 1. BATCH PROCESSOR
+// ───────────────────────────────────────────────────────────────
 import { isTransientError, userFriendlyError } from '../lib/errors/core';
 
-// --- 2. TYPES ---
-
+// ───────────────────────────────────────────────────────────────
+// 2. TYPES
+// ───────────────────────────────────────────────────────────────
 /** Retry options for batch processing */
 export interface RetryOptions {
   maxRetries?: number;
@@ -26,8 +29,9 @@ export interface RetryErrorResult {
 /** Processor function type */
 export type ItemProcessor<T, R> = (item: T) => Promise<R>;
 
-// --- 3. CONFIGURATION CONSTANTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. CONFIGURATION CONSTANTS
+// ───────────────────────────────────────────────────────────────
 /** Default batch size for concurrent processing */
 const parsedBatchSize = parseInt(process.env.SPEC_KIT_BATCH_SIZE || '5', 10);
 export const BATCH_SIZE: number = Number.isFinite(parsedBatchSize) && parsedBatchSize > 0 ? parsedBatchSize : 5;
@@ -49,8 +53,9 @@ function normalizeRetryValue(value: number | undefined, fallback: number): numbe
   return Math.floor(value);
 }
 
-// --- 4. RETRY LOGIC ---
-
+// ───────────────────────────────────────────────────────────────
+// 4. RETRY LOGIC
+// ───────────────────────────────────────────────────────────────
 /**
  * Process a single item with retry logic for transient failures.
  * Uses exponential backoff strategy for retries.
@@ -92,8 +97,9 @@ export async function processWithRetry<T, R>(
   };
 }
 
-// --- 5. BATCH PROCESSING ---
-
+// ───────────────────────────────────────────────────────────────
+// 5. BATCH PROCESSING
+// ───────────────────────────────────────────────────────────────
 /**
  * Process items in batches with concurrency control and retry logic.
  * Provides controlled execution to prevent resource exhaustion.
@@ -160,6 +166,6 @@ export async function processSequentially<T, R>(
   return results;
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    5. (ESM exports above — no CommonJS module.exports needed)
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */

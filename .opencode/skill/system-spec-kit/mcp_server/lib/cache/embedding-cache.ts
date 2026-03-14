@@ -1,4 +1,6 @@
-// --- 1. EMBEDDING CACHE ---
+// ───────────────────────────────────────────────────────────────
+// 1. EMBEDDING CACHE
+// ───────────────────────────────────────────────────────────────
 import { createHash } from 'crypto';
 import type Database from 'better-sqlite3';
 

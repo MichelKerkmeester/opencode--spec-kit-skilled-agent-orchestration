@@ -1,4 +1,6 @@
-// --- 1. HANDLER MEMORY CONTEXT TESTS ---
+// ───────────────────────────────────────────────────────────────
+// 1. HANDLER MEMORY CONTEXT TESTS
+// ───────────────────────────────────────────────────────────────
 // TEST: HANDLER MEMORY CONTEXT
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import * as layerDefs from '../lib/architecture/layer-definitions';

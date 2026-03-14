@@ -1,5 +1,7 @@
 #!/usr/bin/env node
-// --- 1. MIGRATION CHECKPOINT CREATE ---
+// ───────────────────────────────────────────────────────────────
+// 1. MIGRATION CHECKPOINT CREATE
+// ───────────────────────────────────────────────────────────────
 // Create a point-in-time SQLite checkpoint before schema migrations.
 import * as fs from 'fs';
 import * as path from 'path';

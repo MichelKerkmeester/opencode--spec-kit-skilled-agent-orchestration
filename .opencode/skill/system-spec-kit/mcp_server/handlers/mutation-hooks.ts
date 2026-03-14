@@ -1,5 +1,6 @@
-// --- 1. MUTATION HOOKS ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. MUTATION HOOKS
+// ───────────────────────────────────────────────────────────────
 import * as triggerMatcher from '../lib/parsing/trigger-matcher';
 import * as toolCache from '../lib/cache/tool-cache';
 import { clearConstitutionalCache } from '../hooks/memory-surface';

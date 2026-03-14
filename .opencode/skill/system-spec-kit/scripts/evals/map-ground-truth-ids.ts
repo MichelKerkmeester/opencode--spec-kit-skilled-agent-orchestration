@@ -1,5 +1,7 @@
 #!/usr/bin/env npx tsx
-// --- 1. MAP GROUND TRUTH IDS ---
+// ───────────────────────────────────────────────────────────────
+// 1. MAP GROUND TRUTH IDS
+// ───────────────────────────────────────────────────────────────
 // Maps unresolved memoryId=-1 placeholders to real memory IDs
 // By ranking FTS, path, and spec-folder candidates against production index data.
 // Closure utility for ground-truth mapping reconciliation.
@@ -8,8 +10,9 @@ import Database from 'better-sqlite3';
 import * as path from 'path';
 import * as fs from 'fs';
 
-// --- 2. CONFIGURATION ---
-
+// ───────────────────────────────────────────────────────────────
+// 2. CONFIGURATION
+// ───────────────────────────────────────────────────────────────
 const DB_DIR = path.resolve(__dirname, '../../mcp_server/database');
 const DB_PATH = path.join(DB_DIR, 'context-index.sqlite');
 const OUTPUT_PATH = '/tmp/ground-truth-id-mapping.json';
@@ -18,8 +21,9 @@ const args = process.argv.slice(2);
 const VERBOSE = args.includes('--verbose') || args.includes('-v');
 const DRY_RUN = args.includes('--dry-run');
 
-// --- 3. TYPE DEFINITIONS ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. TYPE DEFINITIONS
+// ───────────────────────────────────────────────────────────────
 interface GroundTruthQuery {
   id: number;
   query: string;
@@ -64,7 +68,9 @@ interface CountRow {
   cnt: number;
 }
 
-// --- 4. QUERY DATASET LOADING ---
+// ───────────────────────────────────────────────────────────────
+// 4. QUERY DATASET LOADING
+// ───────────────────────────────────────────────────────────────
 // Avoid runtime TS import requirements by parsing source directly.
 
 function loadGroundTruthQueries(): GroundTruthQuery[] {
@@ -199,8 +205,9 @@ function loadGroundTruthQueries(): GroundTruthQuery[] {
   return queries;
 }
 
-// --- 5. SEARCH STRATEGIES ---
-
+// ───────────────────────────────────────────────────────────────
+// 5. SEARCH STRATEGIES
+// ───────────────────────────────────────────────────────────────
 function extractKeywords(text: string): string[] {
   // Remove low-signal terms to improve FTS candidate precision.
   const stopWords = new Set([
@@ -259,8 +266,9 @@ function buildFTS5Query(terms: string[]): string {
   return cleaned.map(t => `"${t}"`).join(' OR ');
 }
 
-// --- 6. MAIN MAPPING LOGIC ---
-
+// ───────────────────────────────────────────────────────────────
+// 6. MAIN MAPPING LOGIC
+// ───────────────────────────────────────────────────────────────
 function mapQueryToMemories(
   db: Database.Database,
   query: GroundTruthQuery,
@@ -509,8 +517,9 @@ function mapQueryToMemories(
   return mappings;
 }
 
-// --- 7. MAIN ENTRYPOINT ---
-
+// ───────────────────────────────────────────────────────────────
+// 7. MAIN ENTRYPOINT
+// ───────────────────────────────────────────────────────────────
 function main() {
   console.log('=== Ground Truth ID Mapping Script ===');
   console.log(`Database: ${DB_PATH}`);

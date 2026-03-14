@@ -1,4 +1,6 @@
-// --- 1. EVAL ---
+// ────────────────────────────────────────────────────────────────
+// 1. EVAL 
+// ────────────────────────────────────────────────────────────────
 // @public — scripts should import from here, not lib/ internals.
 // ARCH-1 stable re-export surface so eval scripts in scripts/evals/
 // Do not couple to internal lib/ paths. When internals refactor, only this

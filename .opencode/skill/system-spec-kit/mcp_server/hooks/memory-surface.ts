@@ -1,5 +1,6 @@
-// --- 1. MEMORY SURFACE ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. MEMORY SURFACE
+// ───────────────────────────────────────────────────────────────
 // Lib modules
 import * as vectorIndex from '../lib/search/vector-index';
 import * as triggerMatcher from '../lib/parsing/trigger-matcher';
@@ -8,9 +9,9 @@ import { estimateTokenCount } from '@spec-kit/shared/utils/token-estimate';
 
 import type { Database } from '@spec-kit/shared/types';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    1. TYPES
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 interface ConstitutionalMemory {
   id: number;
@@ -34,9 +35,9 @@ interface AutoSurfaceResult {
   latencyMs: number;
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    2. MEMORY SURFACE HOOK CONFIGURATION
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 const MEMORY_AWARE_TOOLS: Set<string> = new Set([
   'memory_context',
@@ -58,9 +59,9 @@ let constitutionalCache: ConstitutionalMemory[] | null = null;
 let constitutionalCacheTime = 0;
 const CONSTITUTIONAL_CACHE_TTL = 60000; // 1 minute
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    3. CONTEXT EXTRACTION
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 function extractContextHint(args: Record<string, unknown> | null | undefined): string | null {
   if (!args || typeof args !== 'object') return null;
@@ -80,9 +81,9 @@ function extractContextHint(args: Record<string, unknown> | null | undefined): s
   return null;
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    4. CONSTITUTIONAL MEMORIES
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 async function getConstitutionalMemories(): Promise<ConstitutionalMemory[]> {
   const now = Date.now();
@@ -126,9 +127,9 @@ function clearConstitutionalCache(): void {
   constitutionalCacheTime = 0;
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    5. AUTO-SURFACE MEMORIES
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 function enforceAutoSurfaceTokenBudget(
   result: AutoSurfaceResult | null,
@@ -225,9 +226,9 @@ async function autoSurfaceMemories(
   }
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    6. TOOL DISPATCH HOOK (TM-05)
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /**
  * autoSurfaceAtToolDispatch
@@ -273,9 +274,9 @@ async function autoSurfaceAtToolDispatch(
   return autoSurfaceMemories(contextHint, TOOL_DISPATCH_TOKEN_BUDGET, 'tool-dispatch');
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    7. COMPACTION HOOK (TM-05)
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /**
  * autoSurfaceAtCompaction
@@ -313,9 +314,9 @@ async function autoSurfaceAtCompaction(
   return autoSurfaceMemories(sessionContext.trim(), COMPACTION_TOKEN_BUDGET, 'compaction');
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    8. EXPORTS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 export {
   // Constants

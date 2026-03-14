@@ -1,4 +1,6 @@
-// --- 1. CONSUMPTION LOGGER (T004 — AGENT UX INSTRUMENTATION) ---
+// ───────────────────────────────────────────────────────────────
+// 1. CONSUMPTION LOGGER (T004 — AGENT UX INSTRUMENTATION)
+// ───────────────────────────────────────────────────────────────
 // Logs agent consumption events to a SQLite table for G-NEW-2
 // Requirement analysis: what agents query, what results they get,
 // And (via hooks) which results they actually use.
@@ -7,9 +9,9 @@
 // Feature flag: SPECKIT_CONSUMPTION_LOG (deprecated, hardcoded false)
 import Database from 'better-sqlite3';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    1. TYPES
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Defines the ConsumptionEventType type.
@@ -70,9 +72,9 @@ export interface ConsumptionPatternsOptions {
   limit?: number;
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    2. FEATURE FLAG
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /**
  * @deprecated Eval complete (Sprint 7 audit). Telemetry baked into core.
@@ -82,9 +84,9 @@ function isConsumptionLogEnabled(): boolean {
   return false;
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    3. TABLE INITIALIZATION
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Create consumption_log table if it doesn't exist.
@@ -118,9 +120,9 @@ function initConsumptionLog(db: Database.Database): void {
   `);
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    4. EVENT LOGGING
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Insert a consumption event row.
@@ -165,9 +167,9 @@ function logConsumptionEvent(db: Database.Database, event: ConsumptionEvent): vo
   }
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    5. STATS AGGREGATION
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Return aggregate statistics from consumption_log.
@@ -258,9 +260,9 @@ function getConsumptionStats(db: Database.Database, options: ConsumptionStatsOpt
   }
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    6. PATTERN DETECTION
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Identify consumption pattern categories from logged events.
@@ -437,9 +439,9 @@ function getConsumptionPatterns(db: Database.Database, options: ConsumptionPatte
   return patterns;
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    7. EXPORTS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 export {
   isConsumptionLogEnabled,

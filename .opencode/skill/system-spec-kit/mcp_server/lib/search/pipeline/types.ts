@@ -1,4 +1,6 @@
-// --- 1. TYPES ---
+// ───────────────────────────────────────────────────────────────
+// 1. TYPES
+// ───────────────────────────────────────────────────────────────
 // Sprint 5 (R6): Stage interfaces with Stage 4 immutability invariant
 import type { RetrievalTrace } from '@spec-kit/shared/contracts/retrieval-trace';
 

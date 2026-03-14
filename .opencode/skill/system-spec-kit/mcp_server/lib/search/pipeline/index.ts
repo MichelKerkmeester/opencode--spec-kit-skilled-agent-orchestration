@@ -1,4 +1,6 @@
-// --- 1. INDEX ---
+// ───────────────────────────────────────────────────────────────
+// 1. INDEX
+// ───────────────────────────────────────────────────────────────
 // Sprint 5 (R6): Public API for the 4-stage retrieval pipeline
 /**
  * Execute the four-stage retrieval pipeline.

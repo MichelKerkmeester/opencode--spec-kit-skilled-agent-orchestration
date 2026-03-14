@@ -1,4 +1,6 @@
-// --- 1. TOOL SCHEMAS ---
+// ───────────────────────────────────────────────────────────────
+// 1. TOOL SCHEMAS
+// ───────────────────────────────────────────────────────────────
 // All MCP tool definitions (names, descriptions, input schemas).
 // Extracted from context-server.ts for maintainability (T303).
 import {
@@ -17,8 +19,9 @@ export {
   getSchema,
 } from './schemas/tool-input-schemas';
 
-// --- 2. TYPES ---
-
+// ───────────────────────────────────────────────────────────────
+// 2. TYPES
+// ───────────────────────────────────────────────────────────────
 /**
  * Normalized definition for a single MCP tool and its JSON schema.
  */
@@ -28,8 +31,9 @@ export interface ToolDefinition {
   inputSchema: Record<string, unknown>;
 }
 
-// --- 3. TOOL DEFINITIONS ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. TOOL DEFINITIONS
+// ───────────────────────────────────────────────────────────────
 // T061: L1 Orchestration - Unified entry point (Token Budget: 2000)
 const memoryContext: ToolDefinition = {
   name: 'memory_context',
@@ -510,8 +514,9 @@ const memoryIngestCancel: ToolDefinition = {
   },
 };
 
-// --- 4. AGGREGATED DEFINITIONS ---
-
+// ───────────────────────────────────────────────────────────────
+// 4. AGGREGATED DEFINITIONS
+// ───────────────────────────────────────────────────────────────
 /**
  * Canonical ordered list of MCP tool registrations exposed by this server.
  */

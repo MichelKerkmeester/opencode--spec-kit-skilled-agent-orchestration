@@ -1,5 +1,6 @@
-// --- 1. MPAB QUALITY GATE INTEGRATION VITEST ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. MPAB QUALITY GATE INTEGRATION VITEST
+// ───────────────────────────────────────────────────────────────
 // TEST: MPAB Quality Gate Integration
 // Cross-module wiring tests for MPAB, Quality Gate, Reconsolidation,
 // Shadow Scoring, and Feature Flag independence.

@@ -1,9 +1,11 @@
-// --- 1. CONFIDENCE TRACKER ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. CONFIDENCE TRACKER
+// ───────────────────────────────────────────────────────────────
 import type { DatabaseExtended as Database } from '@spec-kit/shared/types';
 
-// --- 2. TYPES ---
-
+// ───────────────────────────────────────────────────────────────
+// 2. TYPES
+// ───────────────────────────────────────────────────────────────
 export type { Database };
 
 export interface ValidationResult {
@@ -72,8 +74,9 @@ function isPromotionEligible(
     positiveValidationCount >= PROMOTION_VALIDATION_THRESHOLD;
 }
 
-// --- 3. CONSTANTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. CONSTANTS
+// ───────────────────────────────────────────────────────────────
 export const CONFIDENCE_BASE: number = 0.5;
 export const CONFIDENCE_POSITIVE_INCREMENT: number = 0.1;
 export const CONFIDENCE_NEGATIVE_DECREMENT: number = 0.05;
@@ -83,8 +86,9 @@ export const CONFIDENCE_MIN: number = 0.0;
 export const PROMOTION_CONFIDENCE_THRESHOLD: number = 0.9;
 export const PROMOTION_VALIDATION_THRESHOLD: number = 5;
 
-// --- 4. CORE FUNCTIONS ---
-
+// ───────────────────────────────────────────────────────────────
+// 4. CORE FUNCTIONS
+// ───────────────────────────────────────────────────────────────
 /**
  * Record a validation event for a memory and persist confidence counters.
  *

@@ -8,10 +8,10 @@ import path from 'path';
 const SRC_ROOT = path.resolve(__dirname, '..');
 const SRC_HANDLERS_PATH = path.join(SRC_ROOT, 'handlers');
 
-/* -------------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    Source code static analysis — reads source files directly
    to verify SQL patterns. No DB dependency needed.
-------------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('T207 - INSERT OR REPLACE removed from preflight', () => {
   let source: string;
@@ -92,9 +92,9 @@ describe('T207 - INSERT OR REPLACE removed from preflight', () => {
   });
 });
 
-/* -------------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    Handler exports — may pull in DB deps, use skip if needed
-------------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('T207 - Handler exports [deferred - may require DB dependency]', () => {
   it('T207-EXP1: session-learning handler loads', () => {

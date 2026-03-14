@@ -1,5 +1,6 @@
-// --- 1. MEMORY CRUD EXTENDED VITEST ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. MEMORY CRUD EXTENDED VITEST
+// ───────────────────────────────────────────────────────────────
 import { describe, it, expect, beforeAll, afterAll, afterEach, vi } from 'vitest';
 
 // TEST: HANDLER - MEMORY CRUD (EXTENDED) (Vitest)
@@ -161,10 +162,10 @@ afterAll(() => {
   vi.resetModules();
 });
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    MOCK HELPERS
    Use vi.mocked().mockImplementation() on the vi.mock'd modules
----------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 function installDeleteMocks(opts: {
   deleteResult?: boolean;
@@ -510,9 +511,9 @@ function installMutationLedgerMocks() {
   return calls;
 }
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    SUITE: handleMemoryDelete - Happy Path
----------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('handleMemoryDelete - Happy Path', () => {
   it('EXT-D1: Single ID delete returns deleted=1', async () => {
@@ -572,9 +573,9 @@ describe('handleMemoryDelete - Happy Path', () => {
   });
 });
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    SUITE: handleMemoryDelete - Causal Edge Cleanup
----------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('handleMemoryDelete - Causal Edge Cleanup', () => {
   it('EXT-CE1: Causal edges cleaned up on single delete', async (ctx) => {
@@ -605,9 +606,9 @@ describe('handleMemoryDelete - Causal Edge Cleanup', () => {
   });
 });
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    SUITE: handleMemoryDelete - Bulk Delete Transaction
----------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('handleMemoryDelete - Bulk Delete Transaction', () => {
   it('EXT-BD1: Bulk delete 3 memories succeeds', async () => {
@@ -697,9 +698,9 @@ describe('handleMemoryDelete - Bulk Delete Transaction', () => {
   });
 });
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    SUITE: handleMemoryUpdate - Happy Path
----------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('handleMemoryUpdate - Happy Path', () => {
   it('EXT-U1: Same title skips embedding regen', async () => {
@@ -764,9 +765,9 @@ describe('handleMemoryUpdate - Happy Path', () => {
   });
 });
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    SUITE: handleMemoryUpdate - Embedding Regeneration
----------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('handleMemoryUpdate - Embedding Regeneration', () => {
   it('EXT-ER1: Embedding failure without partial rolls back', async (ctx) => {
@@ -838,9 +839,9 @@ describe('handleMemoryUpdate - Embedding Regeneration', () => {
   });
 });
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    SUITE: handleMemoryList - Happy Path
----------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('handleMemoryList - Happy Path', () => {
   it('EXT-L1: List returns proper structure', async () => {
@@ -928,9 +929,9 @@ describe('handleMemoryList - Happy Path', () => {
   });
 });
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    SUITE: handleMemoryStats - Happy Path
----------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('handleMemoryStats - Happy Path', () => {
   it('EXT-S1: Count-based stats returns structure', async () => {
@@ -1017,9 +1018,9 @@ describe('handleMemoryStats - Happy Path', () => {
   });
 });
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    SUITE: handleMemoryStats - Folder Scoring
----------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('handleMemoryStats - Folder Scoring', () => {
   it('EXT-FS1: Composite ranking returns scored folders', async (ctx) => {
@@ -1079,9 +1080,9 @@ describe('handleMemoryStats - Folder Scoring', () => {
   });
 });
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    SUITE: handleMemoryHealth - Happy Path
----------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('handleMemoryHealth - Happy Path', () => {
   it('EXT-H1: Healthy system returns status=healthy', async () => {
@@ -1657,9 +1658,9 @@ describe('handleMemoryHealth - Happy Path', () => {
   });
 });
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    SUITE: setEmbeddingModelReady
----------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('setEmbeddingModelReady', () => {
   it('EXT-EMR1: setEmbeddingModelReady(true) reflected in health', async () => {
@@ -1695,9 +1696,9 @@ describe('setEmbeddingModelReady', () => {
   });
 });
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    SUITE: MCP Response Envelope Structure
----------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('MCP Response Envelope Structure', () => {
   it('EXT-ENV1: Success response envelope structure', async () => {

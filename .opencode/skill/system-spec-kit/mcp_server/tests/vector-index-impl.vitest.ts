@@ -59,16 +59,18 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
     } catch (_: unknown) {}
   });
 
-  // --- 1. GROUP 1: MODULE IMPORT ---
-  describe('Module Import', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 1. GROUP 1: MODULE IMPORT
+  // ───────────────────────────────────────────────────────────────  describe('Module Import', () => {
     it('imports without error', () => {
       expect(importError).toBeNull();
       expect(mod).toBeDefined();
     });
   });
 
-  // --- 2. GROUP 2: EXPORT VERIFICATION ---
-  describe('Export Verification', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 2. GROUP 2: EXPORT VERIFICATION
+  // ───────────────────────────────────────────────────────────────  describe('Export Verification', () => {
     it('has all required exports present', () => {
       const requiredExports = [
         // Initialization
@@ -153,8 +155,9 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
     });
   });
 
-  // --- 3. GROUP 3: PURE FUNCTIONS — EXTRACTTITLE ---
-  describe('extractTitle', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 3. GROUP 3: PURE FUNCTIONS — EXTRACTTITLE
+  // ───────────────────────────────────────────────────────────────  describe('extractTitle', () => {
     it('extracts H1 heading', () => {
       const title = mod.extractTitle('# My Great Title\n\nSome content here', 'test.md');
       expect(title).toBe('My Great Title');
@@ -196,8 +199,9 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
     });
   });
 
-  // --- 4. GROUP 4: PURE FUNCTIONS — EXTRACTSNIPPET ---
-  describe('extractSnippet', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 4. GROUP 4: PURE FUNCTIONS — EXTRACTSNIPPET
+  // ───────────────────────────────────────────────────────────────  describe('extractSnippet', () => {
     it('skips heading, returns body text', () => {
       const snippet = mod.extractSnippet('# Title\n\nThis is the body paragraph.', 200);
       expect(snippet).toBe('This is the body paragraph.');
@@ -226,8 +230,9 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
     });
   });
 
-  // --- 5. GROUP 5: PURE FUNCTIONS — EXTRACTTAGS ---
-  describe('extractTags', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 5. GROUP 5: PURE FUNCTIONS — EXTRACTTAGS
+  // ───────────────────────────────────────────────────────────────  describe('extractTags', () => {
     it('parses YAML inline array tags', () => {
       const tags = mod.extractTags('---\ntags: [memory, search, "vector"]\n---\n\nContent');
       expect(tags).toContain('memory');
@@ -266,8 +271,9 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
     });
   });
 
-  // --- 6. GROUP 6: PURE FUNCTIONS — EXTRACTDATE ---
-  describe('extractDate', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 6. GROUP 6: PURE FUNCTIONS — EXTRACTDATE
+  // ───────────────────────────────────────────────────────────────  describe('extractDate', () => {
     it('extracts ISO date from YAML frontmatter', () => {
       const date = mod.extractDate('---\ndate: 2025-06-15\n---\nContent', undefined);
       expect(date).toBe('2025-06-15');
@@ -299,8 +305,9 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
     });
   });
 
-  // --- 7. GROUP 7: PURE FUNCTIONS — PARSEQUOTEDTERMS ---
-  describe('parseQuotedTerms', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 7. GROUP 7: PURE FUNCTIONS — PARSEQUOTEDTERMS
+  // ───────────────────────────────────────────────────────────────  describe('parseQuotedTerms', () => {
     it('extracts multiple quoted terms', () => {
       const terms = mod.parseQuotedTerms('search for "exact phrase" in "another term" query');
       expect(terms).toEqual(['exact phrase', 'another term']);
@@ -333,8 +340,9 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
     });
   });
 
-  // --- 8. GROUP 8: PURE FUNCTIONS — GETCACHEKEY ---
-  describe('getCacheKey', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 8. GROUP 8: PURE FUNCTIONS — GETCACHEKEY
+  // ───────────────────────────────────────────────────────────────  describe('getCacheKey', () => {
     it('is deterministic for same inputs', () => {
       const key1 = mod.getCacheKey('test query', 10, { specFolder: 'a' });
       const key2 = mod.getCacheKey('test query', 10, { specFolder: 'a' });
@@ -356,8 +364,9 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
     });
   });
 
-  // --- 9. GROUP 9: DATABASE INITIALIZATION ---
-  describe('Database Initialization', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 9. GROUP 9: DATABASE INITIALIZATION
+  // ───────────────────────────────────────────────────────────────  describe('Database Initialization', () => {
     it('creates database at custom path', () => {
       const db = mod.initializeDb(TMP_DB_PATH);
       expect(db).toBeTruthy();
@@ -390,8 +399,9 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
     });
   });
 
-  // --- 10. GROUP 10: EMBEDDING DIMENSION ---
-  describe('Embedding Dimension', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 10. GROUP 10: EMBEDDING DIMENSION
+  // ───────────────────────────────────────────────────────────────  describe('Embedding Dimension', () => {
     it('getEmbeddingDim returns valid dimension', () => {
       const dim = mod.getEmbeddingDim();
       expect(typeof dim).toBe('number');
@@ -408,8 +418,9 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
     });
   });
 
-  // --- 11. GROUP 11: CORE OPERATIONS — DEFERRED INDEXING ---
-  describe('Deferred Indexing (no embedding required)', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 11. GROUP 11: CORE OPERATIONS — DEFERRED INDEXING
+  // ───────────────────────────────────────────────────────────────  describe('Deferred Indexing (no embedding required)', () => {
     it('creates first deferred memory', () => {
       deferredId1 = mod.indexMemoryDeferred({
         specFolder: 'specs/test-001',
@@ -503,8 +514,9 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
     });
   });
 
-  // --- 12. GROUP 12: CORE OPERATIONS — GETMEMORY, GETMEMORYCOUNT, GETSTATS ---
-  describe('Query Operations', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 12. GROUP 12: CORE OPERATIONS — GETMEMORY, GETMEMORYCOUNT, GETSTATS
+  // ───────────────────────────────────────────────────────────────  describe('Query Operations', () => {
     it('getMemory returns correct memory with parsed trigger_phrases', () => {
       const mem = mod.getMemory(deferredId1!);
       expect(mem).toBeTruthy();
@@ -543,8 +555,9 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
     });
   });
 
-  // --- 13. GROUP 13: GETMEMORIESBYFOLDER ---
-  describe('getMemoriesByFolder', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 13. GROUP 13: GETMEMORIESBYFOLDER
+  // ───────────────────────────────────────────────────────────────  describe('getMemoriesByFolder', () => {
     it('returns memories for existing folder', () => {
       const memories = mod.getMemoriesByFolder('specs/test-001');
       expect(Array.isArray(memories)).toBe(true);
@@ -559,8 +572,9 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
     });
   });
 
-  // --- 14. GROUP 14: UPDATEEMBEDDINGSTATUS ---
-  describe('updateEmbeddingStatus', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 14. GROUP 14: UPDATEEMBEDDINGSTATUS
+  // ───────────────────────────────────────────────────────────────  describe('updateEmbeddingStatus', () => {
     it('updates to failed', () => {
       const result = mod.updateEmbeddingStatus(deferredId1!, 'failed');
       expect(result).toBe(true);
@@ -591,8 +605,9 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
     });
   });
 
-  // --- 15. GROUP 15: UPDATECONFIDENCE ---
-  describe('updateConfidence', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 15. GROUP 15: UPDATECONFIDENCE
+  // ───────────────────────────────────────────────────────────────  describe('updateConfidence', () => {
     it('sets confidence to 0.85', () => {
       const result = mod.updateConfidence(deferredId1!, 0.85);
       expect(result).toBe(true);
@@ -614,8 +629,9 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
     });
   });
 
-  // --- 16. GROUP 16: RECORDACCESS ---
-  describe('recordAccess', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 16. GROUP 16: RECORDACCESS
+  // ───────────────────────────────────────────────────────────────  describe('recordAccess', () => {
     it('increments access_count and updates last_accessed', () => {
       const before = mod.getMemory(deferredId1!);
       const initialCount = before?.access_count || 0;
@@ -634,8 +650,9 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
     });
   });
 
-  // --- 17. GROUP 17: KEYWORDSEARCH ---
-  describe('keywordSearch', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 17. GROUP 17: KEYWORDSEARCH
+  // ───────────────────────────────────────────────────────────────  describe('keywordSearch', () => {
     it('finds memories matching "alpha"', () => {
       const results = mod.keywordSearch('alpha', { limit: 10 });
       expect(Array.isArray(results)).toBe(true);
@@ -670,8 +687,9 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
     });
   });
 
-  // --- 18. GROUP 18: APPLYSMARTRANKING ---
-  describe('applySmartRanking', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 18. GROUP 18: APPLYSMARTRANKING
+  // ───────────────────────────────────────────────────────────────  describe('applySmartRanking', () => {
     it('returns empty for empty input', () => {
       const ranked = mod.applySmartRanking([]);
       expect(ranked).toEqual([]);
@@ -695,8 +713,9 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
     });
   });
 
-  // --- 19. GROUP 19: APPLYDIVERSITY ---
-  describe('applyDiversity', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 19. GROUP 19: APPLYDIVERSITY
+  // ───────────────────────────────────────────────────────────────  describe('applyDiversity', () => {
     it('returns input unchanged for <=3 results', () => {
       const small = [{ id: 1 }, { id: 2 }];
       const diverse = mod.applyDiversity(small as DiversityInput[], 0.3);
@@ -724,8 +743,9 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
     });
   });
 
-  // --- 20. GROUP 20: CACHE CLEARING ---
-  describe('Cache Clearing', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 20. GROUP 20: CACHE CLEARING
+  // ───────────────────────────────────────────────────────────────  describe('Cache Clearing', () => {
     it('clearSearchCache clears globally', () => {
       const cleared = mod.clearSearchCache();
       expect(typeof cleared).toBe('number');
@@ -745,8 +765,9 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
     });
   });
 
-  // --- 21. GROUP 21: DELETE OPERATIONS ---
-  describe('Delete Operations', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 21. GROUP 21: DELETE OPERATIONS
+  // ───────────────────────────────────────────────────────────────  describe('Delete Operations', () => {
     it('deleteMemory successfully deletes a memory', () => {
       const sacrificialId = mod.indexMemoryDeferred({
         specFolder: 'specs/test-delete',
@@ -791,8 +812,9 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
     });
   });
 
-  // --- 22. GROUP 22: BATCH DELETE ---
-  describe('Batch Delete', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 22. GROUP 22: BATCH DELETE
+  // ───────────────────────────────────────────────────────────────  describe('Batch Delete', () => {
     it('returns {deleted:0, failed:0} for empty array', () => {
       const result = mod.deleteMemories([]);
       expect(result).toEqual({ deleted: 0, failed: 0 });
@@ -843,8 +865,9 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
     });
   });
 
-  // --- 23. GROUP 23: GETUSAGESTATS ---
-  describe('getUsageStats', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 23. GROUP 23: GETUSAGESTATS
+  // ───────────────────────────────────────────────────────────────  describe('getUsageStats', () => {
     it('returns entries sorted by access_count', () => {
       const stats = mod.getUsageStats({ sortBy: 'access_count', order: 'DESC', limit: 10 });
       expect(Array.isArray(stats)).toBe(true);
@@ -857,16 +880,18 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
     });
   });
 
-  // --- 24. GROUP 24: GETCONSTITUTIONALMEMORIES ---
-  describe('getConstitutionalMemories', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 24. GROUP 24: GETCONSTITUTIONALMEMORIES
+  // ───────────────────────────────────────────────────────────────  describe('getConstitutionalMemories', () => {
     it('returns array (expected 0 in test DB)', () => {
       const constitutional = mod.getConstitutionalMemories({});
       expect(Array.isArray(constitutional)).toBe(true);
     });
   });
 
-  // --- 25. GROUP 25: GETRELATEDMEMORIES ---
-  describe('getRelatedMemories', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 25. GROUP 25: GETRELATEDMEMORIES
+  // ───────────────────────────────────────────────────────────────  describe('getRelatedMemories', () => {
     it('returns empty for memory without relations', () => {
       const related = mod.getRelatedMemories(deferredId1!);
       expect(Array.isArray(related)).toBe(true);
@@ -880,8 +905,9 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
     });
   });
 
-  // --- 26. GROUP 26: FINDCLEANUPCANDIDATES ---
-  describe('findCleanupCandidates', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 26. GROUP 26: FINDCLEANUPCANDIDATES
+  // ───────────────────────────────────────────────────────────────  describe('findCleanupCandidates', () => {
     it('returns candidates array with expected fields', () => {
       const candidates = mod.findCleanupCandidates({
         maxAgeDays: 0, // Everything is a candidate
@@ -902,8 +928,9 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
     });
   });
 
-  // --- 27. GROUP 27: VERIFYINTEGRITY ---
-  describe('verifyIntegrity', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 27. GROUP 27: VERIFYINTEGRITY
+  // ───────────────────────────────────────────────────────────────  describe('verifyIntegrity', () => {
     it('returns integrity report with expected fields', () => {
       const report = mod.verifyIntegrity({ autoClean: false }) as IntegrityReport;
       expect(typeof report).toBe('object');
@@ -917,8 +944,9 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
     });
   });
 
-  // --- 28. GROUP 28: SQLITEVECTORSTORE CLASS ---
-  describe('SQLiteVectorStore', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 28. GROUP 28: SQLITEVECTORSTORE CLASS
+  // ───────────────────────────────────────────────────────────────  describe('SQLiteVectorStore', () => {
     it('constructor creates instance', () => {
       expect(typeof mod.SQLiteVectorStore).toBe('function');
       const store = new mod.SQLiteVectorStore({ dbPath: TMP_DB_PATH });
@@ -966,8 +994,9 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
     });
   });
 
-  // --- 29. GROUP 29: VECTOR SEARCH (SQLITE-VEC DEPENDENT) ---
-  describe('Vector Search (sqlite-vec dependent)', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 29. GROUP 29: VECTOR SEARCH (SQLITE-VEC DEPENDENT)
+  // ───────────────────────────────────────────────────────────────  describe('Vector Search (sqlite-vec dependent)', () => {
     // Helper to create test embeddings
     const makeEmbedding = (seed: number) => {
       const dim = 768; // fallback; overridden if module available
@@ -1131,8 +1160,9 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
     });
   });
 
-  // --- 30. GROUP 30: ENRICHED/ENHANCED SEARCH (EMBEDDING PROVIDER DEPENDENT) ---
-  describe('Enriched/Enhanced Search (edge cases without API key)', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 30. GROUP 30: ENRICHED/ENHANCED SEARCH (EMBEDDING PROVIDER DEPENDENT)
+  // ───────────────────────────────────────────────────────────────  describe('Enriched/Enhanced Search (edge cases without API key)', () => {
     it('vectorSearchEnriched — exported and falls back to keyword search without embedding', async () => {
       expect(typeof mod.vectorSearchEnriched).toBe('function');
       // Without an API key, embedding generation fails gracefully → keyword fallback
@@ -1171,8 +1201,9 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
     });
   });
 
-  // --- 31. GROUP 30B: LEARNFROMSELECTION ---
-  describe('learnFromSelection', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 31. GROUP 30B: LEARNFROMSELECTION
+  // ───────────────────────────────────────────────────────────────  describe('learnFromSelection', () => {
     it('adds new terms from query to trigger_phrases', () => {
       const result = mod.learnFromSelection('vector search implementation testing', deferredId1!);
       expect(result).toBe(true);
@@ -1225,8 +1256,9 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
     });
   });
 
-  // --- 32. GROUP 30C: GETMEMORYPREVIEW ---
-  describe('getMemoryPreview', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 32. GROUP 30C: GETMEMORYPREVIEW
+  // ───────────────────────────────────────────────────────────────  describe('getMemoryPreview', () => {
     const previewFileContent = [
       '# Preview Test File',
       '',
@@ -1288,8 +1320,9 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
     });
   });
 
-  // --- 33. GROUP 30D: MULTICONCEPTKEYWORDSEARCH ---
-  describe('multiConceptKeywordSearch', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 33. GROUP 30D: MULTICONCEPTKEYWORDSEARCH
+  // ───────────────────────────────────────────────────────────────  describe('multiConceptKeywordSearch', () => {
     it('returns results for 2 concepts', async () => {
       const mcResults = await mod.multiConceptKeywordSearch(['alpha', 'test'], 10, {});
       expect(Array.isArray(mcResults)).toBe(true);
@@ -1308,8 +1341,9 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
     });
   });
 
-  // --- 34. GROUP 30E: VALIDATEFILEPATH ---
-  describe('validateFilePath', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 34. GROUP 30E: VALIDATEFILEPATH
+  // ───────────────────────────────────────────────────────────────  describe('validateFilePath', () => {
     it('accepts path within allowed base', () => {
       const result = mod.validateFilePath(path.join(TMP_DIR, 'test.md'));
       expect(typeof result).toBe('string');
@@ -1341,8 +1375,9 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
     });
   });
 
-  // --- 35. GROUP 31: GETCONFIRMEDEMBEDDINGDIMENSION ---
-  describe('getConfirmedEmbeddingDimension', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 35. GROUP 31: GETCONFIRMEDEMBEDDINGDIMENSION
+  // ───────────────────────────────────────────────────────────────  describe('getConfirmedEmbeddingDimension', () => {
     it('returns dimension within timeout', async () => {
       // Short timeout since we're in test mode
       const dim = await mod.getConfirmedEmbeddingDimension(500);
@@ -1351,8 +1386,9 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
     });
   });
 
-  // --- 36. GROUP 32: CLOSEDB AND RE-INIT ---
-  describe('closeDb', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 36. GROUP 32: CLOSEDB AND RE-INIT
+  // ───────────────────────────────────────────────────────────────  describe('closeDb', () => {
     it('closes and getDb re-initializes', () => {
       mod.closeDb();
       // After close, getDb should re-initialize

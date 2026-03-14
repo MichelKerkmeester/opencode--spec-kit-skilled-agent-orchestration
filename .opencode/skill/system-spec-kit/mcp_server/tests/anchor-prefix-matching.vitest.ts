@@ -70,8 +70,9 @@ function resolveAnchorKey(
 // ===============================================================
 
 describe('ANCHOR PREFIX MATCHING — resolveAnchorKey unit', () => {
-  // --- 1. Exact match priority --------------------------------
-
+  // ───────────────────────────────────────────────────────────────
+  // 1. Exact match priority
+  // ───────────────────────────────────────────────────────────────
   describe('Exact match priority', () => {
     it('P01: exact match returns the anchor ID itself', () => {
       const extracted = { summary: 'content A', 'summary-session-123': 'content B' };
@@ -93,8 +94,9 @@ describe('ANCHOR PREFIX MATCHING — resolveAnchorKey unit', () => {
     });
   });
 
-  // --- 2. Prefix fallback -------------------------------------
-
+  // ───────────────────────────────────────────────────────────────
+  // 2. Prefix fallback
+  // ───────────────────────────────────────────────────────────────
   describe('Prefix fallback', () => {
     it('P04: prefix match when no exact key exists', () => {
       const extracted = { 'summary-session-1770903150838-003': 'content' };
@@ -136,8 +138,9 @@ describe('ANCHOR PREFIX MATCHING — resolveAnchorKey unit', () => {
     });
   });
 
-  // --- 3. Shortest match selection ----------------------------
-
+  // ───────────────────────────────────────────────────────────────
+  // 3. Shortest match selection
+  // ───────────────────────────────────────────────────────────────
   describe('Shortest match selection', () => {
     it('P09: picks shortest key among multiple prefix matches', () => {
       const extracted = {
@@ -164,8 +167,9 @@ describe('ANCHOR PREFIX MATCHING — resolveAnchorKey unit', () => {
     });
   });
 
-  // --- 4. No match --------------------------------------------
-
+  // ───────────────────────────────────────────────────────────────
+  // 4. No match
+  // ───────────────────────────────────────────────────────────────
   describe('No match', () => {
     it('P12: returns undefined when no exact or prefix match', () => {
       const extracted = { 'summary-session-123': 'content' };
@@ -190,8 +194,9 @@ describe('ANCHOR PREFIX MATCHING — resolveAnchorKey unit', () => {
     });
   });
 
-  // --- 5. Edge cases ------------------------------------------
-
+  // ───────────────────────────────────────────────────────────────
+  // 5. Edge cases
+  // ───────────────────────────────────────────────────────────────
   describe('Edge cases', () => {
     it('P16: empty anchor ID matches nothing (no key starts with just "-")', () => {
       const extracted = { 'summary-session-123': 'content', summary: 'exact' };
@@ -224,8 +229,9 @@ describe('ANCHOR PREFIX MATCHING — resolveAnchorKey unit', () => {
     });
   });
 
-  // --- 6. Multiple anchors requested --------------------------
-
+  // ───────────────────────────────────────────────────────────────
+  // 6. Multiple anchors requested
+  // ───────────────────────────────────────────────────────────────
   describe('Multiple anchors — mixed exact and prefix', () => {
     it('P20: resolves a batch of mixed anchors correctly', () => {
       const extracted = {
@@ -251,8 +257,9 @@ describe('ANCHOR PREFIX MATCHING — resolveAnchorKey unit', () => {
     });
   });
 
-  // --- 7. Real-world composite IDs ----------------------------
-
+  // ───────────────────────────────────────────────────────────────
+  // 7. Real-world composite IDs
+  // ───────────────────────────────────────────────────────────────
   describe('Real-world composite IDs', () => {
     it('P21: all 12 anchor types resolve from composite IDs', () => {
       const sessionSuffix = '-session-1770903150838-02--system-spec-kit-111';

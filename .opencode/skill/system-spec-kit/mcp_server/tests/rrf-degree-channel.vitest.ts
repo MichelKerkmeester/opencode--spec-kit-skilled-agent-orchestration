@@ -1,4 +1,6 @@
-// --- 1. TEST — RRF DEGREE CHANNEL ---
+// ───────────────────────────────────────────────────────────────
+// 1. TEST — RRF DEGREE CHANNEL
+// ───────────────────────────────────────────────────────────────
 // T002 (degree as 5th RRF channel) + T003a (co-activation boost)
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';

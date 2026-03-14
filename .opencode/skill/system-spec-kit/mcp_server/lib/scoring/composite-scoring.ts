@@ -1,4 +1,6 @@
-// --- 1. COMPOSITE SCORING ---
+// ───────────────────────────────────────────────────────────────
+// 1. COMPOSITE SCORING
+// ───────────────────────────────────────────────────────────────
 import { getTierConfig } from './importance-tiers';
 import { calculatePopularityScore } from '../storage/access-tracker';
 // HIGH-003 FIX: Import unified recency scoring from folder-scoring
@@ -35,8 +37,9 @@ try {
   /* fsrs-scheduler optional dep — fallback to inline FSRS formula */
 }
 
-// --- 2. TYPES ---
-
+// ───────────────────────────────────────────────────────────────
+// 2. TYPES
+// ───────────────────────────────────────────────────────────────
 export interface FiveFactorWeights {
   temporal: number;
   usage: number;
@@ -103,8 +106,9 @@ export interface PatternAlignmentBonuses {
   type_match: number;
 }
 
-// --- 3. CONFIGURATION ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. CONFIGURATION
+// ───────────────────────────────────────────────────────────────
 // 5-Factor Decay Composite weights
 export const FIVE_FACTOR_WEIGHTS: FiveFactorWeights = {
   temporal: 0.25,
@@ -212,8 +216,9 @@ export const PATTERN_ALIGNMENT_BONUSES: PatternAlignmentBonuses = {
 // TM-01: Re-export interference penalty coefficient for test access
 export { INTERFERENCE_PENALTY_COEFFICIENT } from './interference-scoring';
 
-// --- 4. SCORE CALCULATIONS ---
-
+// ───────────────────────────────────────────────────────────────
+// 4. SCORE CALCULATIONS
+// ───────────────────────────────────────────────────────────────
 /**
  * Parse last_accessed value that may be:
  * - An ISO date string (new format from access-tracker)
@@ -450,8 +455,9 @@ export function calculateRecencyScore(timestamp: string | undefined, tier: strin
   return computeRecencyScore(timestamp || '', tier, DECAY_RATE);
 }
 
-// --- 3a. NOVELTY BOOST ---
-
+// ───────────────────────────────────────────────────────────────
+// 3a. NOVELTY BOOST
+// ───────────────────────────────────────────────────────────────
 /**
  * N4: Cold-start boost constants (exported for observability tests).
  * @deprecated Novelty boost disabled (Sprint 7 audit). Retained for test compatibility.
@@ -485,8 +491,9 @@ export function getTierBoost(tier: string): number {
   return tierConfig.value;
 }
 
-// --- 3b. SHARED POST-PROCESSING ---
-
+// ───────────────────────────────────────────────────────────────
+// 3b. SHARED POST-PROCESSING
+// ───────────────────────────────────────────────────────────────
 /**
  * Apply doc-type multiplier, novelty boost, interference penalty, and
  * observability telemetry to an already-computed weighted composite score.
@@ -542,8 +549,9 @@ function applyPostProcessingAndObserve(
   return finalScore;
 }
 
-// --- 5. COMPOSITE SCORING FUNCTIONS ---
-
+// ───────────────────────────────────────────────────────────────
+// 5. COMPOSITE SCORING FUNCTIONS
+// ───────────────────────────────────────────────────────────────
 /**
  * T032: Calculate 5-factor composite score (REQ-017)
  *
@@ -628,8 +636,9 @@ export function calculateCompositeScore(row: ScoringInput, options: ScoringOptio
   return applyPostProcessingAndObserve(composite, row, 'cs');
 }
 
-// --- 6. BATCH OPERATIONS ---
-
+// ───────────────────────────────────────────────────────────────
+// 6. BATCH OPERATIONS
+// ───────────────────────────────────────────────────────────────
 /**
  * T032: Apply 5-factor scoring to a batch of results.
  *
@@ -770,8 +779,9 @@ export function getScoreBreakdown(row: ScoringInput, options: ScoringOptions = {
   };
 }
 
-// --- 7. SCORE NORMALIZATION ---
-
+// ───────────────────────────────────────────────────────────────
+// 7. SCORE NORMALIZATION
+// ───────────────────────────────────────────────────────────────
 /**
  * Check if composite score normalization is enabled.
  * Default: TRUE (graduated Sprint 4). Set SPECKIT_SCORE_NORMALIZATION=false to disable.

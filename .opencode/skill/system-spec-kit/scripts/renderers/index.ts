@@ -1,4 +1,6 @@
-// --- 1. INDEX ---
+// ───────────────────────────────────────────────────────────────
+// 1. INDEX
+// ───────────────────────────────────────────────────────────────
 // Barrel export for template rendering modules
 export {
   populateTemplate,

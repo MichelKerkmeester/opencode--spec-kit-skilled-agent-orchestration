@@ -1,5 +1,6 @@
-// --- 1. RETRY MANAGER ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. RETRY MANAGER
+// ───────────────────────────────────────────────────────────────
 // Node stdlib
 import * as fsPromises from 'fs/promises';
 
@@ -12,9 +13,9 @@ import { generateDocumentEmbedding, getModelName } from './embeddings';
 // Type imports
 import type { MemoryDbRow } from '@spec-kit/shared/types';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    1. TYPES
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 interface BackgroundJobConfig {
   intervalMs: number;
@@ -76,9 +77,9 @@ type RetryMemoryRow = Partial<MemoryDbRow> & Record<string, unknown> & {
 
 type ContentLoader = (memory: RetryMemoryRow) => Promise<string | null>;
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    2. CONFIGURATION
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 // Backoff delays in milliseconds (1min, 5min, 15min)
 const BACKOFF_DELAYS: number[] = [
@@ -134,9 +135,9 @@ function recordProviderFailure(): void {
   }
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    3. RETRY QUEUE
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 function getRetryQueue(limit = 10): RetryMemoryRow[] {
   vectorIndex.initializeDb();
@@ -230,9 +231,9 @@ function getRetryStats(): RetryStats {
   };
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    4. RETRY OPERATIONS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 async function retryEmbedding(id: number, content: string): Promise<RetryResult> {
   const db = vectorIndex.getDb();
@@ -390,9 +391,9 @@ function resetForRetry(id: number): boolean {
   return result.changes > 0;
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    5. BATCH PROCESSING
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 async function processRetryQueue(limit = 3, contentLoader: ContentLoader | null = null): Promise<BatchResult> {
   const queue = getRetryQueue(limit);
@@ -445,9 +446,9 @@ async function processRetryQueue(limit = 3, contentLoader: ContentLoader | null 
   return results;
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    6. BACKGROUND RETRY JOB (T099, REQ-031, CHK-179)
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 function startBackgroundJob(options: Partial<BackgroundJobConfig> = {}): boolean {
   if (backgroundJobInterval) {
@@ -526,9 +527,9 @@ async function runBackgroundJob(batchSize: number = BACKGROUND_JOB_CONFIG.batchS
   }
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    7. UTILITIES
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 function parseRow(row: RetryMemoryRow): RetryMemoryRow {
   if (row.triggerPhrases && typeof row.triggerPhrases === 'string') {
@@ -549,9 +550,9 @@ async function loadContentFromFile(filePath: string): Promise<string | null> {
   }
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    8. EXPORTS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 export {
   getRetryQueue,

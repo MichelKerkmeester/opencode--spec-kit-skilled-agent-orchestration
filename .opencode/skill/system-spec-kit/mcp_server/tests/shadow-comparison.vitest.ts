@@ -1,4 +1,6 @@
-// --- 1. TEST — SHADOW COMPARISON ---
+// ───────────────────────────────────────────────────────────────
+// 1. TEST — SHADOW COMPARISON
+// ───────────────────────────────────────────────────────────────
 // Verifies that tier-based channel routing produces results comparable
 // To full pipeline (all 5 channels) while reducing simulated latency.
 //
@@ -21,9 +23,9 @@ import {
   type ChannelName,
 } from '../lib/search/query-router';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    SYNTHETIC QUERY CORPUS — 60 queries (20 per tier)
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 const SIMPLE_QUERIES = [
   'fix bug',
@@ -96,9 +98,9 @@ const COMPLEX_QUERIES = [
 
 const ALL_QUERIES = [...SIMPLE_QUERIES, ...MODERATE_QUERIES, ...COMPLEX_QUERIES];
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    SIMULATION HELPERS
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 /** Simulated base latency per channel (ms). */
 const BASE_MS_PER_CHANNEL = 10;
@@ -155,9 +157,9 @@ function queryHash(q: string): number {
   return h % 97;
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    T031-01: SYNTHETIC QUERY CORPUS VERIFICATION
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 describe('T031-01: Synthetic Query Corpus', () => {
   it('T1: corpus contains at least 50 queries', () => {
@@ -190,9 +192,9 @@ describe('T031-01: Synthetic Query Corpus', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    T031-02: CHANNEL COUNT PER TIER VERIFICATION
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 describe('T031-02: Channel Count Per Tier', () => {
   it('T6: simple tier routes to exactly 2 channels', () => {
@@ -221,9 +223,9 @@ describe('T031-02: Channel Count Per Tier', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    T031-03: SIMULATED TIMING COMPARISON
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 describe('T031-03: Simulated Timing (Channel Count Proxy)', () => {
   it('T11: simple queries simulated latency is ~60% faster than full pipeline', () => {
@@ -266,9 +268,9 @@ describe('T031-03: Simulated Timing (Channel Count Proxy)', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    T031-04: RESULT OVERLAP (JACCARD SIMILARITY)
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 describe('T031-04: Result Overlap — Jaccard Similarity', () => {
   it('T15: complex-tier routed results have high overlap with full pipeline', () => {
@@ -330,9 +332,9 @@ describe('T031-04: Result Overlap — Jaccard Similarity', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    T031-05: ROUTING CORRECTNESS ON SYNTHETIC CORPUS
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 describe('T031-05: Routing Correctness on Synthetic Corpus', () => {
   it('T20: all queries route to valid channel sets (≥2 channels)', () => {

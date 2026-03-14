@@ -1,4 +1,6 @@
-// --- 1. SEARCH FEATURE FLAGS TESTS ---
+// ───────────────────────────────────────────────────────────────
+// 1. SEARCH FEATURE FLAGS TESTS
+// ───────────────────────────────────────────────────────────────
 // TEST: Search Feature Flags
 
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';

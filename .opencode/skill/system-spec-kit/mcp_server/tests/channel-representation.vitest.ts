@@ -1,4 +1,6 @@
-// --- 1. TEST — CHANNEL REPRESENTATION ---
+// ───────────────────────────────────────────────────────────────
+// 1. TEST — CHANNEL REPRESENTATION
+// ───────────────────────────────────────────────────────────────
 // 15 tests covering:
 // All-represented, one-missing, floor-boundary, multi-missing,
 // No-results-not-penalised, empty-topk, flag-disabled,
@@ -11,9 +13,9 @@ import {
   QUALITY_FLOOR,
 } from '../lib/search/channel-representation';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    HELPERS
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 const FEATURE_FLAG = 'SPECKIT_CHANNEL_MIN_REP';
 
@@ -53,9 +55,9 @@ function makeChannelResult(id: string, score: number, extra?: Partial<ChannelRes
   return { id, score, ...extra };
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    TESTS
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 describe('T024 Channel Representation Check', () => {
   beforeEach(() => {

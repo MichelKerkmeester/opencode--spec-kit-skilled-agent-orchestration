@@ -1,4 +1,6 @@
-// --- 1. JOB QUEUE ---
+// ───────────────────────────────────────────────────────────────
+// 1. JOB QUEUE
+// ───────────────────────────────────────────────────────────────
 // Sprint 9 fixes: true sequential worker, meaningful state transitions,
 // Continue-on-error for bulk ingestion, SQLITE_BUSY async retry on DB writes,
 // Crash recovery with re-enqueue, and original-path progress tracking.

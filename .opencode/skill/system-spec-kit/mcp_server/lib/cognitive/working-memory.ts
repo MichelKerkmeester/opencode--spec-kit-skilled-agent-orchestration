@@ -1,4 +1,6 @@
-// --- 1. WORKING MEMORY ---
+// ───────────────────────────────────────────────────────────────
+// 1. WORKING MEMORY
+// ───────────────────────────────────────────────────────────────
 // Session-based attention management
 // DECAY STRATEGY (ADR-004): This module handles SESSION-SCOPED decay
 // Only (event-distance based: score * pow(0.85, eventsElapsed)). It operates on

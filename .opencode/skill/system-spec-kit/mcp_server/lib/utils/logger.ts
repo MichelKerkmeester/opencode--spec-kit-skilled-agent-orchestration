@@ -1,9 +1,12 @@
-// --- 1. LOGGER ---
+// ───────────────────────────────────────────────────────────────
+// 1. LOGGER
+// ───────────────────────────────────────────────────────────────
 // Structured logging that writes ALL output to stderr.
 // In MCP servers, stdout is reserved for JSON-RPC — diagnostic
 // Output on stdout corrupts the protocol stream.
-// --- 2. TYPES ---
-
+// ───────────────────────────────────────────────────────────────
+// 2. TYPES
+// ───────────────────────────────────────────────────────────────
 /** Log severity levels (ascending) */
 export type LogLevel = 'debug' | 'info' | 'warn' | 'error';
 
@@ -15,8 +18,9 @@ const LEVEL_VALUES: Record<LogLevel, number> = {
   error: 3,
 };
 
-// --- 3. CONFIGURATION ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. CONFIGURATION
+// ───────────────────────────────────────────────────────────────
 /** Minimum log level — messages below this are suppressed.
  *  Set via LOG_LEVEL env var (default: 'info'). */
 function getMinLevel(): LogLevel {
@@ -25,8 +29,9 @@ function getMinLevel(): LogLevel {
   return 'info';
 }
 
-// --- 4. CORE LOGGING ---
-
+// ───────────────────────────────────────────────────────────────
+// 4. CORE LOGGING
+// ───────────────────────────────────────────────────────────────
 /**
  * Write a structured log message to stderr.
  *
@@ -49,8 +54,9 @@ function log(level: LogLevel, prefix: string, message: string, data?: Record<str
   }
 }
 
-// --- 5. NAMED LOGGER FACTORY ---
-
+// ───────────────────────────────────────────────────────────────
+// 5. NAMED LOGGER FACTORY
+// ───────────────────────────────────────────────────────────────
 /** A logger instance scoped to a specific module prefix. */
 export interface Logger {
   debug(message: string, data?: Record<string, unknown>): void;
@@ -82,6 +88,7 @@ export function createLogger(moduleName: string): Logger {
   };
 }
 
-// --- 6. EXPORTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 6. EXPORTS
+// ───────────────────────────────────────────────────────────────
 export { log };

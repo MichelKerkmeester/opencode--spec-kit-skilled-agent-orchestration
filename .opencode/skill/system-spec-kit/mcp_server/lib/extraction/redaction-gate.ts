@@ -1,5 +1,6 @@
-// --- 1. REDACTION GATE ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. REDACTION GATE
+// ───────────────────────────────────────────────────────────────
 interface RedactionMatch {
   value: string;
   category: string;

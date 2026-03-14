@@ -1,4 +1,6 @@
-// --- 1. ALIGNMENT VALIDATOR DRIFT TESTS ---
+// ───────────────────────────────────────────────────────────────
+// 1. ALIGNMENT VALIDATOR DRIFT TESTS
+// ───────────────────────────────────────────────────────────────
 // PURPOSE: Validate telemetry schema/docs drift detection behavior
 'use strict';
 

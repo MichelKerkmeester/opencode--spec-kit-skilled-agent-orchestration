@@ -1,5 +1,6 @@
-// --- 1. DB HELPERS ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. DB HELPERS
+// ───────────────────────────────────────────────────────────────
 import type Database from 'better-sqlite3';
 
 import type { PostInsertMetadataFields } from './types';

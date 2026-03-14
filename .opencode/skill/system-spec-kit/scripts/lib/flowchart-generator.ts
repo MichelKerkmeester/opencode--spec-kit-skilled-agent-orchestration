@@ -1,7 +1,9 @@
-// --- 1. FLOWCHART GENERATOR ---
-
-// --- 2. TYPES ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. FLOWCHART GENERATOR
+// ───────────────────────────────────────────────────────────────
+// ───────────────────────────────────────────────────────────────
+// 2. TYPES
+// ───────────────────────────────────────────────────────────────
 /** Workflow pattern type */
 export type WorkflowPattern = 'linear' | 'parallel';
 
@@ -52,8 +54,9 @@ export interface DiagramClassification {
   complexity: ComplexityLevel;
 }
 
-// --- 3. PATTERN CONSTANTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. PATTERN CONSTANTS
+// ───────────────────────────────────────────────────────────────
 const PATTERNS: { readonly LINEAR: WorkflowPattern; readonly PARALLEL: WorkflowPattern } = {
   LINEAR: 'linear',
   PARALLEL: 'parallel',
@@ -76,22 +79,25 @@ const COMPLEXITY: Record<string, ComplexityLevel> = {
   HIGH: 'High',
 };
 
-// --- 4. HELPER FUNCTIONS ---
-
+// ───────────────────────────────────────────────────────────────
+// 4. HELPER FUNCTIONS
+// ───────────────────────────────────────────────────────────────
 function pad(text: string, length: number): string {
   return text.substring(0, length).padEnd(length);
 }
 
-// --- 5. PATTERN DETECTION ---
-
+// ───────────────────────────────────────────────────────────────
+// 5. PATTERN DETECTION
+// ───────────────────────────────────────────────────────────────
 /** Linear (<=4 phases) or parallel (>4 phases) */
 function detectWorkflowPattern(phases: Phase[] = []): WorkflowPattern {
   if (phases.length === 0) return PATTERNS.LINEAR;
   return phases.length > 4 ? PATTERNS.PARALLEL : PATTERNS.LINEAR;
 }
 
-// --- 6. FLOWCHART GENERATION ---
-
+// ───────────────────────────────────────────────────────────────
+// 6. FLOWCHART GENERATION
+// ───────────────────────────────────────────────────────────────
 function generateConversationFlowchart(phases: Phase[] = [], initialRequest: string = 'User Request'): string {
   if (phases.length === 0) {
     return `\u256D\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u256E
@@ -324,8 +330,9 @@ function getPatternUseCases(patternType: string = 'linear'): string[] {
   return useCaseMap[patternType] || useCaseMap.linear;
 }
 
-// --- 7. DIAGRAM CLASSIFICATION ---
-
+// ───────────────────────────────────────────────────────────────
+// 7. DIAGRAM CLASSIFICATION
+// ───────────────────────────────────────────────────────────────
 /** Classifies ASCII art using 7 core patterns from sk-doc */
 function classifyDiagramPattern(asciiArt: string): DiagramClassification {
   const art: string = asciiArt.toLowerCase();
@@ -377,8 +384,9 @@ function classifyDiagramPattern(asciiArt: string): DiagramClassification {
   return { pattern, complexity };
 }
 
-// --- 8. MODULE EXPORTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 8. MODULE EXPORTS
+// ───────────────────────────────────────────────────────────────
 export {
   generateConversationFlowchart,
   generateWorkflowFlowchart,

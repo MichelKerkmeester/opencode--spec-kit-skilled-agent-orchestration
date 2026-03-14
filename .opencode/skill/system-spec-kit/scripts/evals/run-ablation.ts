@@ -1,5 +1,7 @@
 #!/usr/bin/env npx tsx
-// --- 1. RUN ABLATION ---
+// ───────────────────────────────────────────────────────────────
+// 1. RUN ABLATION
+// ───────────────────────────────────────────────────────────────
 //
 // Runtime entry point for the ablation framework. Runs controlled
 // Ablation studies that selectively disable one search channel at

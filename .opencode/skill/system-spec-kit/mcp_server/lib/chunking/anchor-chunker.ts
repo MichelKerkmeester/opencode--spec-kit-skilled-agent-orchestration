@@ -1,10 +1,12 @@
-// --- 1. ANCHOR CHUNKER ---
+// ───────────────────────────────────────────────────────────────
+// 1. ANCHOR CHUNKER
+// ───────────────────────────────────────────────────────────────
 // Splits large memory files into chunks using ANCHOR tags as
 // Natural boundaries. Falls back to structure-aware markdown
 // Splitting when anchors are absent.
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    1. TYPES
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Describes the AnchorChunk shape.
@@ -38,9 +40,9 @@ interface AnchorSection {
   charCount: number;
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    2. CONSTANTS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /** Target chunk size in characters (~1000 tokens at 4 chars/token) */
 const TARGET_CHUNK_CHARS = 4000;
@@ -54,9 +56,9 @@ export const CHUNKING_THRESHOLD = 50000;
 /** Max characters for parent summary (BM25 fallback) */
 const PARENT_SUMMARY_LENGTH = 500;
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    3. ANCHOR EXTRACTION
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 const ANCHOR_OPEN_RE = /<!--\s*(?:ANCHOR|anchor):\s*([^>\s]+)\s*-->/g;
 
@@ -97,9 +99,9 @@ function extractAnchorSections(content: string): AnchorSection[] {
   return sections;
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    4. ANCHOR-BASED CHUNKING
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Group anchor sections into chunks that stay under the target size.
@@ -188,9 +190,9 @@ function chunkByAnchors(sections: AnchorSection[]): AnchorChunk[] {
   return chunks;
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    5. STRUCTURE-BASED FALLBACK CHUNKING
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Fall back to splitting by markdown headings and paragraphs.
@@ -249,9 +251,9 @@ function chunkByStructure(content: string): AnchorChunk[] {
   return chunks;
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    6. MAIN ENTRY POINT
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Chunk a large memory file into smaller pieces for indexing.

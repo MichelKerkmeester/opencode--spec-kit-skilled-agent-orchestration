@@ -1,4 +1,6 @@
-// --- 1. ANCHOR METADATA ---
+// ───────────────────────────────────────────────────────────────
+// 1. ANCHOR METADATA
+// ───────────────────────────────────────────────────────────────
 // Sprint 5 Phase B — S2 template anchor optimization
 //
 // PURPOSE: Parse ANCHOR tags from memory content and attach the

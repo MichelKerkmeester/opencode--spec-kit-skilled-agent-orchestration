@@ -1,4 +1,6 @@
-// --- 1. DECISION EXTRACTOR ---
+// ───────────────────────────────────────────────────────────────
+// 1. DECISION EXTRACTOR
+// ───────────────────────────────────────────────────────────────
 // Extracts decision records with options, rationale, confidence, and decision trees
 
 import { formatTimestamp } from '../utils/message-utils';
@@ -12,7 +14,7 @@ import type { DecisionOption, DecisionRecord, DecisionData } from '../types/sess
 // Re-export canonical types for backward compatibility
 export type { DecisionOption, DecisionRecord, DecisionData };
 
-/* -----------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    1. INTERFACES
 ------------------------------------------------------------------*/
 
@@ -110,7 +112,7 @@ function buildLexicalDecisionObservations(collectedData: CollectedDataForDecisio
   return candidates;
 }
 
-/* -----------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    2. DECISION EXTRACTION
 ------------------------------------------------------------------*/
 
@@ -465,7 +467,7 @@ async function extractDecisions(
   };
 }
 
-/* -----------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    3. EXPORTS
 ------------------------------------------------------------------*/
 

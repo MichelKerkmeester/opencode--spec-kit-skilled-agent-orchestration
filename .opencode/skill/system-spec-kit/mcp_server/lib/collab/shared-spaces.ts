@@ -11,9 +11,19 @@ import {
   type ScopeContext,
 } from '../governance/scope-governance';
 
+/**
+ * Supported membership subject kinds for shared spaces.
+ */
 export type SharedSubjectType = 'user' | 'agent';
+
+/**
+ * Shared-space roles in descending permission order.
+ */
 export type SharedRole = 'owner' | 'editor' | 'viewer';
 
+/**
+ * Persisted shared-space definition used for rollout and tenancy checks.
+ */
 export interface SharedSpaceDefinition {
   spaceId: string;
   tenantId: string;
@@ -24,6 +34,9 @@ export interface SharedSpaceDefinition {
   metadata?: Record<string, unknown>;
 }
 
+/**
+ * Membership assignment for a user or agent within a shared space.
+ */
 export interface SharedMembership {
   spaceId: string;
   subjectType: SharedSubjectType;
@@ -31,15 +44,31 @@ export interface SharedMembership {
   role: SharedRole;
 }
 
+/**
+ * Resolve whether shared-memory rollout is enabled for the process.
+ *
+ * @returns `true` when shared-memory access is allowed at runtime.
+ */
 export function isSharedMemoryEnabled(): boolean {
   return process.env.SPECKIT_MEMORY_SHARED_MEMORY === 'true'
     || process.env.SPECKIT_HYDRA_SHARED_MEMORY === 'true';
 }
 
+/**
+ * Ensure shared-space schema is available before collab operations run.
+ *
+ * @param database - Database connection that stores shared-space state.
+ */
 export function ensureSharedCollabRuntime(database: Database.Database): void {
   ensureSharedSpaceTables(database);
 }
 
+/**
+ * Create or update a shared-space definition.
+ *
+ * @param database - Database connection that stores shared-space state.
+ * @param definition - Shared-space values to persist.
+ */
 export function upsertSharedSpace(database: Database.Database, definition: SharedSpaceDefinition): void {
   ensureSharedCollabRuntime(database);
   database.prepare(`
@@ -64,6 +93,12 @@ export function upsertSharedSpace(database: Database.Database, definition: Share
   );
 }
 
+/**
+ * Create or update a membership entry for a shared space.
+ *
+ * @param database - Database connection that stores shared-space state.
+ * @param membership - Membership values to persist.
+ */
 export function upsertSharedMembership(database: Database.Database, membership: SharedMembership): void {
   ensureSharedCollabRuntime(database);
   database.prepare(`
@@ -75,6 +110,13 @@ export function upsertSharedMembership(database: Database.Database, membership: 
   `).run(membership.spaceId, membership.subjectType, membership.subjectId, membership.role);
 }
 
+/**
+ * Collect the shared spaces visible to the provided user or agent scope.
+ *
+ * @param database - Database connection that stores shared-space state.
+ * @param scope - Scope used to filter memberships and tenant boundaries.
+ * @returns Shared-space identifiers the scope is allowed to see.
+ */
 export function getAllowedSharedSpaceIds(database: Database.Database, scope: ScopeContext): Set<string> {
   ensureSharedCollabRuntime(database);
   const normalizedScope = normalizeScopeContext(scope);
@@ -109,6 +151,15 @@ export function getAllowedSharedSpaceIds(database: Database.Database, scope: Sco
   return ids;
 }
 
+/**
+ * Enforce rollout, tenancy, and membership rules for shared-space access.
+ *
+ * @param database - Database connection that stores shared-space state.
+ * @param scope - Scope requesting shared-space access.
+ * @param spaceId - Shared-space identifier to validate.
+ * @param requiredRole - Minimum role required for the attempted action.
+ * @returns Allow or deny decision with a failure reason when blocked.
+ */
 export function assertSharedSpaceAccess(
   database: Database.Database,
   scope: ScopeContext,
@@ -181,6 +232,12 @@ export function assertSharedSpaceAccess(
   return { allowed: true };
 }
 
+/**
+ * Record an append-version conflict for shared-memory writes and audit it.
+ *
+ * @param database - Database connection that stores shared-space state.
+ * @param args - Conflict details used for shared and governance audits.
+ */
 export function recordSharedConflict(
   database: Database.Database,
   args: {

@@ -1,4 +1,6 @@
-// --- 1. TOPIC EXTRACTOR ---
+// ───────────────────────────────────────────────────────────────
+// 1. TOPIC EXTRACTOR
+// ───────────────────────────────────────────────────────────────
 // Extracts key topics from session data using weighted scoring and bigram analysis
 
 import {

@@ -1,4 +1,6 @@
-// --- 1. FSRS ---
+// ───────────────────────────────────────────────────────────────
+// 1. FSRS
+// ───────────────────────────────────────────────────────────────
 // Augments FSRS stability scores with graph centrality so that
 // Central nodes decay slower and peripheral nodes decay faster.
 

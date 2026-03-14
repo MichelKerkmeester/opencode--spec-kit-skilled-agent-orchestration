@@ -1,11 +1,13 @@
-// --- 1. IMPLEMENTATION GUIDE EXTRACTOR ---
+// ───────────────────────────────────────────────────────────────
+// 1. IMPLEMENTATION GUIDE EXTRACTOR
+// ───────────────────────────────────────────────────────────────
 // Extracts implementation guidance and step-by-step instructions from session observations
 
 import { createHash } from 'node:crypto';
 import { detectObservationType } from './file-extractor';
 import { slugify } from '../utils/slug-utils';
 
-/* -----------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    1. INTERFACES
 ------------------------------------------------------------------*/
 
@@ -59,7 +61,7 @@ export interface FileInput {
   description?: string;
 }
 
-/* -----------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    2. IMPLEMENTATION DETECTION
 ------------------------------------------------------------------*/
 
@@ -104,7 +106,7 @@ function extractMainTopic(observations: ObservationInput[], specFolder: string |
   return 'implementation';
 }
 
-/* -----------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    3. FEATURE EXTRACTION
 ------------------------------------------------------------------*/
 
@@ -148,7 +150,7 @@ function extractWhatBuilt(observations: ObservationInput[]): ImplementationStep[
   return implementations.slice(0, 5);
 }
 
-/* -----------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    4. FILE ROLE DETECTION
 ------------------------------------------------------------------*/
 
@@ -236,7 +238,7 @@ function extractKeyFilesWithRoles(files: FileInput[], observations: ObservationI
   return keyFiles.slice(0, 8);
 }
 
-/* -----------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    5. EXTENSION GUIDE GENERATION
 ------------------------------------------------------------------*/
 
@@ -293,7 +295,7 @@ function generateExtensionGuide(observations: ObservationInput[], files: FileInp
   return guides.slice(0, 4);
 }
 
-/* -----------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    6. PATTERN EXTRACTION
 ------------------------------------------------------------------*/
 
@@ -347,7 +349,7 @@ function extractCodePatterns(observations: ObservationInput[], files: FileInput[
   return patterns.slice(0, 5);
 }
 
-/* -----------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    7. IMPLEMENTATION GUIDE BUILDER
 ------------------------------------------------------------------*/
 
@@ -379,7 +381,7 @@ function buildImplementationGuideData(
   };
 }
 
-/* -----------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    8. EXPORTS
 ------------------------------------------------------------------*/
 

@@ -1,4 +1,6 @@
-// --- 1. ENCODING INTENT ---
+// ───────────────────────────────────────────────────────────────
+// 1. ENCODING INTENT
+// ───────────────────────────────────────────────────────────────
 // Sprint 6a — classify content intent for metadata enrichment.
 //
 // Classifies each memory's content at index time into one of three

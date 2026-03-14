@@ -1,4 +1,6 @@
-// --- 1. MEMORY CRUD ---
+// ────────────────────────────────────────────────────────────────
+// 1. MEMORY CRUD 
+// ────────────────────────────────────────────────────────────────
 
 import { handleMemoryDelete } from './memory-crud-delete';
 import { handleMemoryUpdate } from './memory-crud-update';
@@ -7,9 +9,9 @@ import { handleMemoryStats } from './memory-crud-stats';
 import { handleMemoryHealth } from './memory-crud-health';
 import { setEmbeddingModelReady, isEmbeddingModelReady } from '../core';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    EXPORTS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 export {
   handleMemoryDelete,

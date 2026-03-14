@@ -1,7 +1,13 @@
 import type Database from 'better-sqlite3';
 
+/**
+ * Adaptive feedback channels that influence shadow ranking proposals.
+ */
 export type AdaptiveSignalType = 'access' | 'outcome' | 'correction';
 
+/**
+ * Stored adaptive feedback event for a single memory.
+ */
 export interface AdaptiveSignalEvent {
   memoryId: number;
   signalType: AdaptiveSignalType;
@@ -11,6 +17,9 @@ export interface AdaptiveSignalEvent {
   metadata?: Record<string, unknown>;
 }
 
+/**
+ * Ranking deltas for one memory under production and shadow scoring.
+ */
 export interface AdaptiveShadowProposalRow {
   memoryId: number;
   productionScore: number;
@@ -20,6 +29,9 @@ export interface AdaptiveShadowProposalRow {
   scoreDelta: number;
 }
 
+/**
+ * Bounded shadow-ranking proposal derived from accumulated adaptive signals.
+ */
 export interface AdaptiveShadowProposal {
   mode: 'shadow' | 'promoted';
   bounded: boolean;
@@ -53,12 +65,22 @@ function isAdaptiveEnabled(): boolean {
     || process.env.SPECKIT_HYDRA_ADAPTIVE_RANKING === 'true';
 }
 
+/**
+ * Resolve whether adaptive ranking is disabled, shadow-only, or promoted.
+ *
+ * @returns The effective adaptive-ranking mode.
+ */
 export function getAdaptiveMode(): 'shadow' | 'promoted' | 'disabled' {
   if (!isAdaptiveEnabled()) return 'disabled';
   const mode = process.env.SPECKIT_MEMORY_ADAPTIVE_MODE?.trim().toLowerCase();
   return mode === 'promoted' ? 'promoted' : 'shadow';
 }
 
+/**
+ * Ensure the adaptive signal and shadow-run tables exist before use.
+ *
+ * @param database - Database connection that stores adaptive state.
+ */
 export function ensureAdaptiveTables(database: Database.Database): void {
   database.exec(`
     CREATE TABLE IF NOT EXISTS adaptive_signal_events (
@@ -86,6 +108,12 @@ export function ensureAdaptiveTables(database: Database.Database): void {
   `);
 }
 
+/**
+ * Record an adaptive signal when the roadmap mode is enabled.
+ *
+ * @param database - Database connection that stores adaptive state.
+ * @param event - Adaptive feedback event to persist.
+ */
 export function recordAdaptiveSignal(database: Database.Database, event: AdaptiveSignalEvent): void {
   if (getAdaptiveMode() === 'disabled') return;
   ensureAdaptiveTables(database);
@@ -102,6 +130,12 @@ export function recordAdaptiveSignal(database: Database.Database, event: Adaptiv
   );
 }
 
+/**
+ * Clear adaptive signal history and shadow-run snapshots for rollback drills.
+ *
+ * @param database - Database connection that stores adaptive state.
+ * @returns Counts for deleted signal and shadow-run rows.
+ */
 export function resetAdaptiveState(
   database: Database.Database,
 ): { clearedSignals: number; clearedRuns: number } {
@@ -136,6 +170,14 @@ function getSignalDelta(database: Database.Database, memoryId: number): number {
   return Math.max(-MAX_ADAPTIVE_DELTA, Math.min(MAX_ADAPTIVE_DELTA, rawDelta));
 }
 
+/**
+ * Build a bounded shadow-ranking proposal for a production result set.
+ *
+ * @param database - Database connection that stores adaptive state.
+ * @param query - Query string associated with the evaluated result set.
+ * @param results - Ranked production rows to evaluate in shadow mode.
+ * @returns Shadow proposal when adaptive ranking is enabled; otherwise `null`.
+ */
 export function buildAdaptiveShadowProposal(
   database: Database.Database,
   query: string,

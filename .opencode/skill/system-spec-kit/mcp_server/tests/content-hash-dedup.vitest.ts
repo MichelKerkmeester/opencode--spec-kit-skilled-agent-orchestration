@@ -1,4 +1,6 @@
-// --- 1. TEST — SHA256 CONTENT-HASH DEDUP (TM-02) ---
+// ───────────────────────────────────────────────────────────────
+// 1. TEST — SHA256 CONTENT-HASH DEDUP (TM-02)
+// ───────────────────────────────────────────────────────────────
 // Verifies that the fast-path dedup check in indexMemoryFile()
 // Returns 'duplicate' for identical content (same spec_folder,
 // Same content_hash) and proceeds to embed for changed content.
@@ -12,9 +14,9 @@ import * as crypto from 'crypto';
 import * as hybridSearch from '../lib/search/hybrid-search';
 import { checkContentHashDedup, checkExistingRow } from '../handlers/save/dedup';
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    HELPERS
----------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 function sha256(content: string): string {
   return crypto.createHash('sha256').update(content, 'utf-8').digest('hex');
@@ -85,9 +87,9 @@ function buildParsedMemory(specFolder: string, content: string, title: string | 
   } as any;
 }
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    TESTS
----------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('T054: SHA256 Content-Hash Dedup (TM-02)', () => {
   let db: Database.Database;
@@ -100,9 +102,9 @@ describe('T054: SHA256 Content-Hash Dedup (TM-02)', () => {
     if (db) db.close();
   });
 
-  /* -----------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      Core dedup logic
-  ----------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('Dedup Query Logic', () => {
     it('T054-1: Returns undefined when memory_index is empty', () => {
@@ -390,9 +392,9 @@ describe('T054: SHA256 Content-Hash Dedup (TM-02)', () => {
     });
   });
 
-  /* -----------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      SHA256 hash computation
-  ----------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('SHA256 Hash Properties', () => {
     it('T054-7: SHA256 of identical strings always produces the same hash', () => {
@@ -421,9 +423,9 @@ describe('T054: SHA256 Content-Hash Dedup (TM-02)', () => {
     });
   });
 
-  /* -----------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      Return value shape
-  ----------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('Duplicate Return Value', () => {
     it('T054-11: Duplicate result contains id, file_path, and title fields', () => {

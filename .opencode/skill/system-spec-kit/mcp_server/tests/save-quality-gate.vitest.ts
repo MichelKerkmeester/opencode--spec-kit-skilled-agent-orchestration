@@ -30,8 +30,9 @@ interface MockConfigDb {
   prepare: ReturnType<typeof vi.fn>;
 }
 
-// --- 1. TEST HELPERS ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. TEST HELPERS
+// ───────────────────────────────────────────────────────────────
 /** Generate content of a specific length */
 function makeContent(length: number): string {
   return 'x'.repeat(length);

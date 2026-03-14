@@ -309,6 +309,17 @@ for file in *.sh; do
 done
 ```
 
+### Capitalization
+
+All comment text MUST start with a capital letter:
+
+```bash
+# Reverse order preserves dependency chain     # correct
+# reverse order preserves dependency chain     # wrong
+```
+
+**Exceptions**: Directives like `shellcheck disable`, inline code references, and technical identifiers.
+
 ### Function Purpose Comments
 
 Brief description above function:

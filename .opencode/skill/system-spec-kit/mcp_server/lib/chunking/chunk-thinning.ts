@@ -1,12 +1,14 @@
-// --- 1. CHUNK THINNING ---
+// ───────────────────────────────────────────────────────────────
+// 1. CHUNK THINNING
+// ───────────────────────────────────────────────────────────────
 // Scores chunks by anchor presence + content density, then
 // Applies a thinning threshold to drop low-quality chunks.
 // Used BEFORE indexing to filter out low-value chunks.
 import type { AnchorChunk } from './anchor-chunker';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    1. TYPES
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Describes the ChunkScore shape.
@@ -29,9 +31,9 @@ export interface ThinningResult {
   scores: ChunkScore[];
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    2. CONSTANTS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 // Default threshold — chunks below this composite score are dropped
 const DEFAULT_THINNING_THRESHOLD = 0.3;
@@ -40,9 +42,9 @@ const DEFAULT_THINNING_THRESHOLD = 0.3;
 const ANCHOR_WEIGHT = 0.6;   // Anchor presence is primary signal
 const DENSITY_WEIGHT = 0.4;  // Content density is secondary
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    3. DENSITY COMPUTATION
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Compute content density for a chunk.
@@ -75,9 +77,9 @@ function computeContentDensity(content: string): number {
   return Math.min(1.0, (ratio * lengthFactor) + structureBonus);
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    4. CHUNK SCORING
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Score a chunk based on anchor presence and content density.
@@ -101,9 +103,9 @@ export function scoreChunk(chunk: AnchorChunk): ChunkScore {
   };
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    5. THINNING
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Apply anchor-aware thinning to a set of chunks.

@@ -1,4 +1,6 @@
-// --- 1. GENERATE DESCRIPTION ---
+// ───────────────────────────────────────────────────────────────
+// 1. GENERATE DESCRIPTION
+// ───────────────────────────────────────────────────────────────
 // CLI: Generate Per-Folder description.json
 // Usage: node generate-description.js <folder-path> <base-path> [--description "text"]
 //

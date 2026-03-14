@@ -1,4 +1,6 @@
-// --- 1. FSRS SCHEDULER TESTS ---
+// ───────────────────────────────────────────────────────────────
+// 1. FSRS SCHEDULER TESTS
+// ───────────────────────────────────────────────────────────────
 import { describe, it, expect, beforeAll } from 'vitest';
 import { TIER_MULTIPLIER } from '../lib/cache/cognitive/fsrs-scheduler';
 

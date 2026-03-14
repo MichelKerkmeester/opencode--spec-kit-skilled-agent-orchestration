@@ -1,4 +1,6 @@
-// --- 1. TEST — INTERFERENCE SCORING ---
+// ───────────────────────────────────────────────────────────────
+// 1. TEST — INTERFERENCE SCORING
+// ───────────────────────────────────────────────────────────────
 // Tests for interference score computation and penalty application.
 // Covers: zero interference, penalty reduces score, score floor at 0,
 // Env var gating, batch computation, text similarity heuristic,

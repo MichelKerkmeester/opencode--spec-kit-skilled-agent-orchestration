@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# ---------------------------------------------------------------
+# ───────────────────────────────────────────────────────────────
 # COMPONENT: Check Native Modules
-# ---------------------------------------------------------------
+# ───────────────────────────────────────────────────────────────
 # Quick diagnostic for native module health.
 # Run from spec-kit root: bash scripts/setup/check-native-modules.sh
 set -euo pipefail

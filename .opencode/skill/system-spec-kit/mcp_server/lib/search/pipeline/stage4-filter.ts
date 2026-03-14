@@ -1,4 +1,6 @@
-// --- 1. STAGE4 FILTER ---
+// ───────────────────────────────────────────────────────────────
+// 1. STAGE4 FILTER
+// ───────────────────────────────────────────────────────────────
 // Sprint 5 (R6): Final stage of the 4-stage retrieval pipeline.
 //
 // ARCHITECTURAL INVARIANT: Stage 4 MUST NOT modify scores.
@@ -38,8 +40,9 @@ import { isTRMEnabled, isMultiQueryEnabled } from '../search-flags';
 import { detectEvidenceGap, formatEvidenceGapWarning } from '../evidence-gap-detector';
 import { addTraceEntry } from '@spec-kit/shared/contracts/retrieval-trace';
 
-// --- 2. CONSTANTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 2. CONSTANTS
+// ───────────────────────────────────────────────────────────────
 /**
  * Memory state priority map. Higher number = higher priority.
  * Used to compare states numerically so filtering is O(1) per row.
@@ -87,8 +90,9 @@ function resolveStateForFiltering(row: Stage4ReadonlyRow, fallbackState: string)
   return fallbackState;
 }
 
-// --- 3. TYPES ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. TYPES
+// ───────────────────────────────────────────────────────────────
 /**
  * Per-state tally produced by `filterByMemoryState`.
  * Keys are state names (e.g. "HOT", "WARM"); values are counts.
@@ -109,9 +113,9 @@ export interface FilterResult {
   removedCount: number;
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    3. INTERNAL: filterByMemoryState
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 /**
  * Remove rows whose `memoryState` falls below `minState` priority and,
@@ -184,9 +188,9 @@ export function filterByMemoryState(
   };
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    4. INTERNAL: extractScoringValues
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 /**
  * Extract the best available numeric score from a row for evidence-gap
@@ -204,9 +208,9 @@ export function extractScoringValue(row: Stage4ReadonlyRow): number {
   return 0;
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    5. MAIN: executeStage4
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 /**
  * Execute Stage 4 of the 4-stage retrieval pipeline: Filter + Annotate.
@@ -333,8 +337,9 @@ export async function executeStage4(input: Stage4Input): Promise<Stage4Output> {
   };
 }
 
-// --- 4. TEST SURFACE ---
-
+// ───────────────────────────────────────────────────────────────
+// 4. TEST SURFACE
+// ───────────────────────────────────────────────────────────────
 /**
  * Exported internals for unit testing.
  * Not intended for production use outside the test harness.

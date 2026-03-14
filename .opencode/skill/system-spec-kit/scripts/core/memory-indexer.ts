@@ -1,4 +1,6 @@
-// --- 1. MEMORY INDEXER ---
+// ───────────────────────────────────────────────────────────────
+// 1. MEMORY INDEXER
+// ───────────────────────────────────────────────────────────────
 // Handles persisting memory files to the vector index: embedding generation,
 // Database storage, metadata updates, and DB-change notifications.
 
@@ -25,7 +27,7 @@ function notifyDatabaseUpdated(): void {
   }
 }
 
-/* -----------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    MEMORY INDEXING
 ------------------------------------------------------------------*/
 
@@ -143,7 +145,7 @@ async function updateMetadataWithEmbedding(contextDir: string, memoryId: number)
   }
 }
 
-/* -----------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    EXPORTS
 ------------------------------------------------------------------*/
 

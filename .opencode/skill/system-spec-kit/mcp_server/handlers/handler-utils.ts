@@ -1,4 +1,6 @@
-// --- 1. HANDLER UTILS ---
+// ────────────────────────────────────────────────────────────────
+// 1. HANDLER UTILS 
+// ────────────────────────────────────────────────────────────────
 // Shared utilities extracted from handler modules to break dependency cycles.
 //
 // GROWTH POLICY (T033):

@@ -1,4 +1,6 @@
-// --- 1. VECTOR INDEX SCHEMA ---
+// ───────────────────────────────────────────────────────────────
+// 1. VECTOR INDEX SCHEMA
+// ───────────────────────────────────────────────────────────────
 // Split from vector-index-store.ts — contains ALL schema creation,
 // Migration, and companion-table logic.
 

@@ -1,5 +1,6 @@
-// --- 1. TEST: SCRIPTS MODULES COMPREHENSIVE VERIFICATION ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. TEST: SCRIPTS MODULES COMPREHENSIVE VERIFICATION
+// ───────────────────────────────────────────────────────────────
 'use strict';
 
 const path = require('path');
@@ -7,7 +8,8 @@ const fs = require('fs');
 
 /* ─────────────────────────────────────────────────────────────
    1. CONFIGURATION
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 const SCRIPTS_DIR = path.join(__dirname, '..', 'dist');
 const ROOT = path.join(__dirname, '..', '..');
@@ -22,7 +24,8 @@ const results = {
 
 /* ─────────────────────────────────────────────────────────────
    2. TEST UTILITIES
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 function log(msg) {
   console.log(msg);
@@ -103,7 +106,8 @@ function assertDoesNotThrow(fn, testName) {
 
 /* ─────────────────────────────────────────────────────────────
    3. CORE MODULE TESTS
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testCoreConfig() {
   log('\n🔬 CORE: config.js');
@@ -212,7 +216,8 @@ async function testCoreWorkflow() {
 
 /* ─────────────────────────────────────────────────────────────
    4. UTILS MODULE TESTS
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testUtilsPath() {
   log('\n🔬 UTILS: path-utils.js');
@@ -591,7 +596,8 @@ async function testUtilsToolDetection() {
 
 /* ─────────────────────────────────────────────────────────────
    5. LIB MODULE TESTS
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testLibAnchorGenerator() {
   log('\n🔬 LIB: anchor-generator.js');
@@ -1008,7 +1014,8 @@ async function testLibSimulationFactory() {
 
 /* ─────────────────────────────────────────────────────────────
    6. SPEC-FOLDER MODULE TESTS
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testSpecFolderAlignmentValidator() {
   log('\n🔬 SPEC-FOLDER: alignment-validator.js');
@@ -1139,7 +1146,8 @@ async function testSpecFolderFolderDetector() {
 
 /* ─────────────────────────────────────────────────────────────
    7. LOADER/RENDERER TESTS
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testLoadersDataLoader() {
   log('\n🔬 LOADERS: data-loader.js');
@@ -1233,7 +1241,8 @@ async function testRenderersTemplateRenderer() {
 
 /* ─────────────────────────────────────────────────────────────
    8. EXTRACTOR TESTS
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testExtractorsFile() {
   log('\n🔬 EXTRACTORS: file-extractor.js');
@@ -1521,7 +1530,8 @@ async function testExtractorsCollectSessionData() {
 
 /* ─────────────────────────────────────────────────────────────
    9. ADDITIONAL CORE WORKFLOW TESTS
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testCoreWorkflowAdditional() {
   log('\n🔬 CORE: workflow.js (Additional Functions)');
@@ -1592,7 +1602,8 @@ async function testCoreWorkflowAdditional() {
 
 /* ─────────────────────────────────────────────────────────────
    10. LIB OPENCODE-CAPTURE TESTS
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testLibOpencodeCapture() {
   log('\n🔬 EXTRACTORS: opencode-capture.js');
@@ -1702,7 +1713,8 @@ async function testLibOpencodeCapture() {
 
 /* ─────────────────────────────────────────────────────────────
    11. IMPLEMENTATION GUIDE EXTRACTOR TESTS
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testExtractorsImplementationGuide() {
   log('\n🔬 EXTRACTORS: implementation-guide-extractor.js');
@@ -1848,7 +1860,8 @@ async function testExtractorsImplementationGuide() {
 
 /* ─────────────────────────────────────────────────────────────
    12. SESSION EXTRACTOR ADDITIONAL TESTS
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testExtractorsSessionAdditional() {
   log('\n🔬 EXTRACTORS: session-extractor.js (Additional Functions)');
@@ -2011,7 +2024,8 @@ async function testExtractorsSessionAdditional() {
 
 /* ─────────────────────────────────────────────────────────────
    13. LOW PRIORITY ADDITIONAL TESTS
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testLibContentFilterAdditional() {
   log('\n🔬 LIB: content-filter.js (additional functions)');
@@ -2479,7 +2493,8 @@ async function testLibRetryManagerReexport() {
 
 /* ─────────────────────────────────────────────────────────────
    14. MEDIUM PRIORITY: UTILS/PROMPT-UTILS.JS TESTS
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testUtilsPromptUtils() {
   log('\n🔬 UTILS: prompt-utils.js');
@@ -2531,7 +2546,8 @@ async function testUtilsPromptUtils() {
 
 /* ─────────────────────────────────────────────────────────────
    15. MEDIUM PRIORITY: UTILS/FILE-HELPERS.JS TESTS
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testUtilsFileHelpers() {
   log('\n🔬 UTILS: file-helpers.js');
@@ -2614,7 +2630,8 @@ async function testUtilsFileHelpers() {
 
 /* ─────────────────────────────────────────────────────────────
    16. MEDIUM PRIORITY: UTILS/VALIDATION-UTILS.JS TESTS
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testUtilsValidationUtils() {
   log('\n🔬 UTILS: validation-utils.js');
@@ -2688,7 +2705,8 @@ async function testUtilsValidationUtils() {
 
 /* ─────────────────────────────────────────────────────────────
    17. MEDIUM PRIORITY: LIB/ASCII-BOXES.JS TESTS
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testLibAsciiBoxes() {
   log('\n🔬 LIB: ascii-boxes.js');
@@ -2799,7 +2817,8 @@ async function testLibAsciiBoxes() {
 
 /* ─────────────────────────────────────────────────────────────
    18. MEDIUM PRIORITY: LIB/TRIGGER-EXTRACTOR.JS TESTS
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testLibTriggerExtractor() {
   log('\n🔬 LIB: trigger-extractor.js (re-export verification)');
@@ -2855,7 +2874,8 @@ async function testLibTriggerExtractor() {
 
 /* ─────────────────────────────────────────────────────────────
    19. MEDIUM PRIORITY: LIB/EMBEDDINGS.JS TESTS
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testLibEmbeddings() {
   log('\n🔬 LIB: embeddings.js (re-export verification)');
@@ -2914,7 +2934,8 @@ async function testLibEmbeddings() {
 
 /* ─────────────────────────────────────────────────────────────
    20. MEDIUM PRIORITY: SPEC-FOLDER/ALIGNMENT-VALIDATOR.JS EXTENDED TESTS
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testSpecFolderAlignmentValidatorExtended() {
   log('\n🔬 SPEC-FOLDER: alignment-validator.js (extended)');
@@ -2999,7 +3020,8 @@ async function testSpecFolderAlignmentValidatorExtended() {
 
 /* ─────────────────────────────────────────────────────────────
    21. MEDIUM PRIORITY: EXTRACTORS/DIAGRAM-EXTRACTOR.JS TESTS
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testExtractorsDiagram() {
   log('\n🔬 EXTRACTORS: diagram-extractor.js');
@@ -3085,7 +3107,8 @@ async function testExtractorsDiagram() {
 
 /* ─────────────────────────────────────────────────────────────
    22. MEDIUM PRIORITY: EXTRACTORS/DECISION-TREE-GENERATOR.JS TESTS
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testExtractorsDecisionTree() {
   log('\n🔬 LIB: decision-tree-generator.js');
@@ -3167,7 +3190,8 @@ async function testExtractorsDecisionTree() {
 
 /* ─────────────────────────────────────────────────────────────
    23. MEDIUM PRIORITY: MEMORY/GENERATE-CONTEXT.JS TESTS
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testMemoryGenerateContext() {
   log('\n🔬 MEMORY: generate-context.js');
@@ -3260,7 +3284,8 @@ async function testMemoryGenerateContext() {
 
 /* ─────────────────────────────────────────────────────────────
    24. MEDIUM PRIORITY: MEMORY/RANK-MEMORIES.JS TESTS
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testMemoryRankMemories() {
   log('\n🔬 MEMORY: rank-memories.js');
@@ -3383,7 +3408,8 @@ async function testMemoryRankMemories() {
 
 /* ─────────────────────────────────────────────────────────────
    25. MAIN
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function main() {
   log('🧪 Scripts Modules Comprehensive Test Suite');

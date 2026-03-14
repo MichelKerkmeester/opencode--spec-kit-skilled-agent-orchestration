@@ -1,8 +1,10 @@
-// --- 1. MEMORY CRUD UPDATE HANDLER ---
+// ────────────────────────────────────────────────────────────────
+// 1. MEMORY CRUD UPDATE HANDLER 
+// ────────────────────────────────────────────────────────────────
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    IMPORTS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 import { randomUUID } from 'node:crypto';
 import { checkDatabaseUpdated } from '../core';
@@ -25,9 +27,9 @@ import { buildMutationHookFeedback } from '../hooks/mutation-feedback';
 import type { MCPResponse } from './types';
 import type { UpdateArgs } from './memory-crud-types';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    CORE LOGIC
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /** Handle memory_update tool -- updates metadata fields and optionally regenerates embeddings. */
 async function handleMemoryUpdate(args: UpdateArgs): Promise<MCPResponse> {
@@ -279,8 +281,8 @@ async function handleMemoryUpdate(args: UpdateArgs): Promise<MCPResponse> {
   });
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    EXPORTS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 export { handleMemoryUpdate };

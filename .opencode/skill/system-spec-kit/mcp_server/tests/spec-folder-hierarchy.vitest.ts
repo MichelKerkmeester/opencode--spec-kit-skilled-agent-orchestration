@@ -13,8 +13,9 @@ import {
   queryHierarchyMemories,
 } from '../lib/search/spec-folder-hierarchy';
 
-// --- 1. TEST DB HELPERS ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. TEST DB HELPERS
+// ───────────────────────────────────────────────────────────────
 function createTestDb(): Database.Database {
   const db = new Database(':memory:');
   db.exec(`
@@ -43,8 +44,9 @@ function insertMemory(
   `).run(id, specFolder, title, opts?.parentId ?? null, opts?.tier ?? 'normal');
 }
 
-// --- 2. getParentPath ---
-
+// ───────────────────────────────────────────────────────────────
+// 2. getParentPath
+// ───────────────────────────────────────────────────────────────
 describe('getParentPath', () => {
   it('returns parent for 3-segment path', () => {
     expect(getParentPath('003-foo/140-bar/006-baz')).toBe('003-foo/140-bar');
@@ -80,8 +82,9 @@ describe('getParentPath', () => {
   });
 });
 
-// --- 3. getAncestorPaths ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. getAncestorPaths
+// ───────────────────────────────────────────────────────────────
 describe('getAncestorPaths', () => {
   it('returns full ancestor chain for 3-segment path', () => {
     const ancestors = getAncestorPaths('003-foo/140-bar/006-baz');
@@ -113,8 +116,9 @@ describe('getAncestorPaths', () => {
   });
 });
 
-// --- 4. buildHierarchyTree ---
-
+// ───────────────────────────────────────────────────────────────
+// 4. buildHierarchyTree
+// ───────────────────────────────────────────────────────────────
 describe('buildHierarchyTree', () => {
   let db: Database.Database;
 
@@ -224,8 +228,9 @@ describe('buildHierarchyTree', () => {
   });
 });
 
-// --- 5. getSiblingPaths ---
-
+// ───────────────────────────────────────────────────────────────
+// 5. getSiblingPaths
+// ───────────────────────────────────────────────────────────────
 describe('getSiblingPaths', () => {
   let db: Database.Database;
 
@@ -269,8 +274,9 @@ describe('getSiblingPaths', () => {
   });
 });
 
-// --- 6. getDescendantPaths ---
-
+// ───────────────────────────────────────────────────────────────
+// 6. getDescendantPaths
+// ───────────────────────────────────────────────────────────────
 describe('getDescendantPaths', () => {
   let db: Database.Database;
 
@@ -308,8 +314,9 @@ describe('getDescendantPaths', () => {
   });
 });
 
-// --- 7. getRelatedFolders ---
-
+// ───────────────────────────────────────────────────────────────
+// 7. getRelatedFolders
+// ───────────────────────────────────────────────────────────────
 describe('getRelatedFolders', () => {
   let db: Database.Database;
 
@@ -378,8 +385,9 @@ describe('getRelatedFolders', () => {
   });
 });
 
-// --- 8. queryHierarchyMemories (DB integration) ---
-
+// ───────────────────────────────────────────────────────────────
+// 8. queryHierarchyMemories (DB integration)
+// ───────────────────────────────────────────────────────────────
 describe('queryHierarchyMemories', () => {
   let db: Database.Database;
 
@@ -493,8 +501,9 @@ describe('queryHierarchyMemories', () => {
   });
 });
 
-// --- 9. Cache behavior (invalidations + TTL stale detection) ---
-
+// ───────────────────────────────────────────────────────────────
+// 9. Cache behavior (invalidations + TTL stale detection)
+// ───────────────────────────────────────────────────────────────
 describe('Hierarchy cache behavior', () => {
   let db: Database.Database;
 
@@ -545,8 +554,9 @@ describe('Hierarchy cache behavior', () => {
   });
 });
 
-// --- 10. EDGE CASES ---
-
+// ───────────────────────────────────────────────────────────────
+// 10. EDGE CASES
+// ───────────────────────────────────────────────────────────────
 describe('Edge Cases', () => {
   it('getParentPath handles path with only slashes', () => {
     expect(getParentPath('///')).toBeNull();

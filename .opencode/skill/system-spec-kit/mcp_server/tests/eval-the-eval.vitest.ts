@@ -1,4 +1,6 @@
-// --- 1. TEST — EVAL THE EVAL ---
+// ───────────────────────────────────────────────────────────────
+// 1. TEST — EVAL THE EVAL
+// ───────────────────────────────────────────────────────────────
 // Eval-the-Eval Validation (Hand-Calculate MRR@5 & NDCG@10)
 //
 // PURPOSE: Validate that computeMRR and computeNDCG produce correct
@@ -31,9 +33,9 @@ import { describe, it, expect } from 'vitest';
 import { computeMRR, computeNDCG } from '../lib/eval/eval-metrics';
 import type { EvalResult, GroundTruthEntry } from '../lib/eval/eval-metrics';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    HELPERS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 function makeResult(memoryId: number, rank: number, score = 1.0): EvalResult {
   return { memoryId, rank, score };
@@ -43,9 +45,9 @@ function makeGT(memoryId: number, relevance: number): GroundTruthEntry {
   return { queryId: 1, memoryId, relevance };
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    DISCREPANCY LOG — populated during test execution
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 interface DiscrepancyRecord {
   scenario: string;
@@ -76,9 +78,9 @@ function logAndAssert(
   ).toBeLessThanOrEqual(tolerance);
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    MRR@5 — 5 HAND-CALCULATED SCENARIOS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('T013: MRR@5 — Hand-Calculated Validation (eval-the-eval)', () => {
   // SCENARIO 1: First relevant result at rank 1
@@ -272,9 +274,9 @@ describe('T013: MRR@5 — Hand-Calculated Validation (eval-the-eval)', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    NDCG@10 — 2 HAND-CALCULATED SCENARIOS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('T013: NDCG@10 — Hand-Calculated Validation (eval-the-eval)', () => {
   // NDCG SCENARIO A: Perfect ranking (DCG = IDCG → NDCG = 1.0)
@@ -375,9 +377,9 @@ describe('T013: NDCG@10 — Hand-Calculated Validation (eval-the-eval)', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    DISCREPANCY LOG SUMMARY — printed after all scenarios run
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('T013: Discrepancy Log Summary', () => {
   it('T013-SUMMARY: prints discrepancy table and asserts zero failures', () => {

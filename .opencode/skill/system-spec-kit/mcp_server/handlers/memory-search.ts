@@ -1,8 +1,9 @@
-// --- 1. MEMORY SEARCH ---
-
-/* ---------------------------------------------------------------
+// ───────────────────────────────────────────────────────────────
+// 1. MEMORY SEARCH
+// ───────────────────────────────────────────────────────────────
+/* ───────────────────────────────────────────────────────────────
    1. DEPENDENCIES
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 import * as toolCache from '../lib/cache/tool-cache';
 import * as sessionManager from '../lib/session/session-manager';
@@ -45,9 +46,9 @@ import type { IntentType, IntentWeights as IntentClassifierWeights } from '../li
 import type { RawSearchResult } from '../formatters';
 import type { RoutingResult, WeightedResult } from '../lib/search/artifact-routing';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    2. TYPES
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Internal search result row — enriched DB row used within this handler.
@@ -550,9 +551,9 @@ function collapseAndReassembleChunkResults(results: MemorySearchRow[]): ChunkRea
   }
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    3. CONFIGURATION
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 // Sections 3–5 (STATE_PRIORITY, MAX_DEEP_QUERY_VARIANTS, buildDeepQueryVariants,
 // StrengthenOnAccess, applyTestingEffect, filterByMemoryState) removed in
@@ -560,9 +561,9 @@ function collapseAndReassembleChunkResults(results: MemorySearchRow[]): ChunkRea
 // The V2 4-stage pipeline handles state filtering (Stage 4), testing effect, and
 // Query expansion through its own stages.
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    6. SESSION DEDUPLICATION UTILITIES
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 function applySessionDedup(results: MemorySearchRow[], sessionId: string, enableDedup: boolean): DedupResult {
   if (!enableDedup || !sessionId || !sessionManager.isEnabled()) {
@@ -592,9 +593,9 @@ function applySessionDedup(results: MemorySearchRow[], sessionId: string, enable
 // 017-refinement-phase-6 Sprint 1. These were only used by the legacy V1 pipeline
 // Path. The V2 4-stage pipeline handles all equivalent functionality.
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    10. MAIN HANDLER
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /** Handle memory_search tool - performs hybrid vector/BM25 search with intent-aware ranking */
 async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
@@ -1093,9 +1094,9 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
   return responseToReturn;
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    11. EXPORTS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 export {
   handleMemorySearch,

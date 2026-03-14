@@ -1,4 +1,6 @@
-// --- 1. FILE WRITER ---
+// ───────────────────────────────────────────────────────────────
+// 1. FILE WRITER
+// ───────────────────────────────────────────────────────────────
 // Atomic file writing with validation and rollback on failure
 
 import * as fs from 'fs/promises';

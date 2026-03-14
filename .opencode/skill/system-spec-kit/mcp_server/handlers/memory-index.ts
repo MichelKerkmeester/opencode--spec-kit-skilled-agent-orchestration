@@ -1,19 +1,20 @@
-// --- 1. MEMORY INDEX ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. MEMORY INDEX
+// ───────────────────────────────────────────────────────────────
 import path from 'path';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    1. CORE AND UTILS IMPORTS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 import { getLastScanTime, setLastScanTime, checkDatabaseUpdated } from '../core';
 import { INDEX_SCAN_COOLDOWN, DEFAULT_BASE_PATH, BATCH_SIZE } from '../core/config';
 import { processBatches, requireDb, toErrorMessage, type RetryErrorResult } from '../utils';
 import { getCanonicalPathKey } from '../lib/utils/canonical-path';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    2. LIB MODULE IMPORTS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 import { recordHistory } from '../lib/storage/history';
 import * as memoryParser from '../lib/parsing/memory-parser';
@@ -42,9 +43,9 @@ import { createMCPSuccessResponse, createMCPErrorResponse } from '../lib/respons
 // Shared handler types
 import type { MCPResponse, EmbeddingProfile } from './types';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    4. TYPES
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 interface IndexResult {
   status: string;
@@ -123,9 +124,9 @@ interface ScanArgs {
   incremental?: boolean;
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    5. SHARED INDEXING LOGIC
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 import { indexMemoryFile } from './memory-save';
 
@@ -134,9 +135,9 @@ async function indexSingleFile(filePath: string, force: boolean = false): Promis
   return indexMemoryFile(filePath, { force });
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    6. MEMORY INDEX SCAN HANDLER
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /** Handle memory_index_scan tool - scans and indexes memory files with incremental support */
 async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
@@ -597,9 +598,9 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
   });
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    9. EXPORTS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 export {
   handleMemoryIndexScan,

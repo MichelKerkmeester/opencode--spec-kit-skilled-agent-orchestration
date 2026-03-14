@@ -1,4 +1,6 @@
-// --- 1. VECTOR STORE ---
+// ───────────────────────────────────────────────────────────────
+// 1. VECTOR STORE
+// ───────────────────────────────────────────────────────────────
 // INTERFACE: IVectorStore (abstract base class)
 // Concrete base class providing the IVectorStore contract for JS consumers.
 // TypeScript consumers use the interface in @spec-kit/shared/types.ts;

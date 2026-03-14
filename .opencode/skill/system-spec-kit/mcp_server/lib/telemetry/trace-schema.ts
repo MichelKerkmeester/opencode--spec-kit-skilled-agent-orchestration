@@ -1,4 +1,6 @@
-// --- 1. TELEMETRY TRACE SCHEMA ---
+// ───────────────────────────────────────────────────────────────
+// 1. TELEMETRY TRACE SCHEMA
+// ───────────────────────────────────────────────────────────────
 // Canonical schema + runtime validation for retrieval trace payloads
 // Used by telemetry serialization. Unknown or sensitive fields are
 // Excluded from canonical payloads.

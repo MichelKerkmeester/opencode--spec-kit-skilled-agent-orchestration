@@ -1,5 +1,7 @@
 "use strict";
-// --- 1. CHECK ARCHITECTURE BOUNDARIES ---
+// ───────────────────────────────────────────────────────────────
+// 1. CHECK ARCHITECTURE BOUNDARIES
+// ───────────────────────────────────────────────────────────────
 // Enforces two rules from ARCHITECTURE.md that were
 // Previously documentation-only:
 //   GAP A — shared/ must not import from mcp_server/ or scripts/
@@ -48,11 +50,15 @@ exports.extractModuleSpecifiers = extractModuleSpecifiers;
 exports.findTsFiles = findTsFiles;
 exports.resolvePackageRoot = resolvePackageRoot;
 exports.runArchitectureBoundaryCheck = runArchitectureBoundaryCheck;
-// --- 2. IMPORTS ---
+// ───────────────────────────────────────────────────────────────
+// 2. IMPORTS
+// ───────────────────────────────────────────────────────────────
 const fs = __importStar(require("fs"));
 const path = __importStar(require("path"));
 const typescript_1 = __importDefault(require("typescript"));
-// --- 3. CONSTANTS ---
+// ───────────────────────────────────────────────────────────────
+// 3. CONSTANTS
+// ───────────────────────────────────────────────────────────────
 const REQUIRED_ROOT_DIRS = ['shared', 'mcp_server', 'scripts'];
 // Absolute prohibition — shared/ must remain neutral (no allowlist)
 const SHARED_PROHIBITED_PACKAGE_PREFIXES = ['@spec-kit/mcp-server', '@spec-kit/scripts'];
@@ -62,7 +68,9 @@ const MAX_SUBSTANTIVE_LINES = 50;
 const PACKAGE_ROOT = resolvePackageRoot(__dirname);
 const CHILD_PROCESS_MODULE_SPECIFIERS = new Set(['child_process', 'node:child_process']);
 const CHILD_PROCESS_WRAPPER_APIS = new Set(['spawn', 'spawnSync', 'exec', 'execSync', 'execFile', 'execFileSync', 'fork']);
-// --- 4. HELPERS ---
+// ───────────────────────────────────────────────────────────────
+// 4. HELPERS
+// ───────────────────────────────────────────────────────────────
 function findTsFiles(dir) {
     const files = [];
     function walk(currentDir) {
@@ -332,7 +340,9 @@ function collectWrapperSignals(content, filePath) {
         hasScriptsSourceReference,
     };
 }
-// --- 5. CORE LOGIC ---
+// ───────────────────────────────────────────────────────────────
+// 5. CORE LOGIC
+// ───────────────────────────────────────────────────────────────
 function checkSharedNeutrality(packageRoot = PACKAGE_ROOT) {
     const resolvedRoot = resolveCheckRoot(packageRoot);
     const sharedDir = path.join(resolvedRoot, 'shared');
@@ -391,7 +401,9 @@ function runArchitectureBoundaryCheck(packageRoot = PACKAGE_ROOT) {
     const gapBViolations = checkWrapperOnly(resolvedRoot);
     return { gapAViolations, gapBViolations };
 }
-// --- 6. MAIN ---
+// ───────────────────────────────────────────────────────────────
+// 6. MAIN
+// ───────────────────────────────────────────────────────────────
 function main() {
     const { gapAViolations, gapBViolations } = runArchitectureBoundaryCheck();
     const resolvedRoot = resolveCheckRoot(PACKAGE_ROOT);

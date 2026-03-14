@@ -1,5 +1,6 @@
-// --- 1. RESPONSE HINTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. RESPONSE HINTS
+// ───────────────────────────────────────────────────────────────
 import { estimateTokenCount } from '@spec-kit/shared/utils/token-estimate';
 
 interface HookResult {

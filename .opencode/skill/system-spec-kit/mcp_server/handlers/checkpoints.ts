@@ -1,8 +1,10 @@
-// --- 1. CHECKPOINTS ---
+// ────────────────────────────────────────────────────────────────
+// 1. CHECKPOINTS 
+// ────────────────────────────────────────────────────────────────
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    1. LIB MODULE IMPORTS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 import * as checkpoints from '../lib/storage/checkpoints';
 import * as vectorIndex from '../lib/search/vector-index';
@@ -23,9 +25,9 @@ import { createMCPErrorResponse, createMCPSuccessResponse } from '../lib/respons
 // Shared handler types
 import type { MCPResponse } from './types';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    2. TYPES
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 interface CheckpointCreateArgs {
   name: string;
@@ -85,9 +87,9 @@ function parseMemoryId(rawId: number | string): number {
   return numericId;
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    3. CHECKPOINT CREATE HANDLER
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /** Handle checkpoint_create tool - snapshots the current memory state for rollback */
 async function handleCheckpointCreate(args: CheckpointCreateArgs): Promise<MCPResponse> {
@@ -137,9 +139,9 @@ async function handleCheckpointCreate(args: CheckpointCreateArgs): Promise<MCPRe
   });
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    4. CHECKPOINT LIST HANDLER
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /** Handle checkpoint_list tool - returns available checkpoints filtered by spec folder */
 async function handleCheckpointList(args: CheckpointListArgs): Promise<MCPResponse> {
@@ -175,9 +177,9 @@ async function handleCheckpointList(args: CheckpointListArgs): Promise<MCPRespon
   });
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    5. CHECKPOINT RESTORE HANDLER
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /** Handle checkpoint_restore tool - restores memory state from a named checkpoint */
 async function handleCheckpointRestore(args: CheckpointRestoreArgs): Promise<MCPResponse> {
@@ -265,9 +267,9 @@ async function handleCheckpointRestore(args: CheckpointRestoreArgs): Promise<MCP
   });
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    6. CHECKPOINT DELETE HANDLER
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /** Handle checkpoint_delete tool - permanently removes a named checkpoint */
 async function handleCheckpointDelete(args: CheckpointDeleteArgs): Promise<MCPResponse> {
@@ -307,9 +309,9 @@ async function handleCheckpointDelete(args: CheckpointDeleteArgs): Promise<MCPRe
   });
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    7. MEMORY VALIDATE HANDLER
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /** Handle memory_validate tool - records user validation feedback to adjust confidence */
 async function handleMemoryValidate(args: MemoryValidateArgs): Promise<MCPResponse> {
@@ -455,9 +457,9 @@ async function handleMemoryValidate(args: MemoryValidateArgs): Promise<MCPRespon
   });
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    8. EXPORTS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 export {
   handleCheckpointCreate,

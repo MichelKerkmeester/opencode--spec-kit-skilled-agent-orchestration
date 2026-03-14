@@ -1,5 +1,6 @@
-// --- 1. RUN REDACTION CALIBRATION ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. RUN REDACTION CALIBRATION
+// ───────────────────────────────────────────────────────────────
 import fs from 'fs';
 import path from 'path';
 

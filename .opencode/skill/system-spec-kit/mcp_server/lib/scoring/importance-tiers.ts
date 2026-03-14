@@ -1,7 +1,9 @@
-// --- 1. IMPORTANCE TIERS ---
-
-// --- 2. TYPES ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. IMPORTANCE TIERS
+// ───────────────────────────────────────────────────────────────
+// ───────────────────────────────────────────────────────────────
+// 2. TYPES
+// ───────────────────────────────────────────────────────────────
 export interface TierConfig {
   value: number;
   searchBoost: number;
@@ -21,8 +23,9 @@ export type ImportanceTier =
   | 'temporary'
   | 'deprecated';
 
-// --- 3. TIER CONFIGURATION ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. TIER CONFIGURATION
+// ───────────────────────────────────────────────────────────────
 export const IMPORTANCE_TIERS: Readonly<Record<ImportanceTier, TierConfig>> = {
   constitutional: {
     value: 1.0,
@@ -74,8 +77,9 @@ export const IMPORTANCE_TIERS: Readonly<Record<ImportanceTier, TierConfig>> = {
 export const VALID_TIERS: readonly ImportanceTier[] = Object.keys(IMPORTANCE_TIERS) as ImportanceTier[];
 export const DEFAULT_TIER: ImportanceTier = 'normal';
 
-// --- 4. TIER CONFIGURATION FUNCTIONS ---
-
+// ───────────────────────────────────────────────────────────────
+// 4. TIER CONFIGURATION FUNCTIONS
+// ───────────────────────────────────────────────────────────────
 // Get tier configuration by name (returns normal tier if invalid)
 export function getTierConfig(tierName: string | null | undefined): TierConfig {
   if (!tierName || typeof tierName !== 'string') {
@@ -125,8 +129,9 @@ export function getTierValue(tier: string): number {
   return config.value;
 }
 
-// --- 5. SQL FILTER HELPERS ---
-
+// ───────────────────────────────────────────────────────────────
+// 5. SQL FILTER HELPERS
+// ───────────────────────────────────────────────────────────────
 // SQL WHERE clause for finding expired temporary memories
 export function getExpiredTemporaryFilter(): string {
   const tempConfig = IMPORTANCE_TIERS.temporary;
@@ -156,8 +161,9 @@ export function getConstitutionalFilter(): string {
   return "importance_tier = 'constitutional'";
 }
 
-// --- 6. UTILITY FUNCTIONS ---
-
+// ───────────────────────────────────────────────────────────────
+// 6. UTILITY FUNCTIONS
+// ───────────────────────────────────────────────────────────────
 // Normalize tier input to valid tier name (returns default if invalid)
 export function normalizeTier(tier: string | null | undefined): ImportanceTier {
   if (!tier || typeof tier !== 'string') {

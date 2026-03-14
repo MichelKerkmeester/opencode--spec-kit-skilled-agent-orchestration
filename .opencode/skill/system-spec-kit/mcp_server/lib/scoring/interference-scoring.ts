@@ -1,4 +1,6 @@
-// --- 1. INTERFERENCE SCORING ---
+// ───────────────────────────────────────────────────────────────
+// 1. INTERFERENCE SCORING
+// ───────────────────────────────────────────────────────────────
 // Sprint 2, Task T005
 // Computes interference scores for memories — a measure of how many
 // Similar memories exist in the same spec_folder. High interference
@@ -6,16 +8,18 @@
 // Applied as a penalty in composite scoring to demote redundant results.
 import Database from 'better-sqlite3';
 
-// --- 2. TYPES ---
-
+// ───────────────────────────────────────────────────────────────
+// 2. TYPES
+// ───────────────────────────────────────────────────────────────
 export interface InterferenceResult {
   memoryId: number;
   interferenceScore: number; // count of similar memories in same folder
   specFolder: string;
 }
 
-// --- 3. CONFIGURATION ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. CONFIGURATION
+// ───────────────────────────────────────────────────────────────
 /**
  * Cosine similarity threshold for counting a memory as "interfering".
  * Memories in the same spec_folder with similarity above this threshold
@@ -31,8 +35,9 @@ export const INTERFERENCE_SIMILARITY_THRESHOLD = 0.75;
  */
 export const INTERFERENCE_PENALTY_COEFFICIENT = -0.08;
 
-// --- 4. TEXT SIMILARITY HEURISTIC ---
-
+// ───────────────────────────────────────────────────────────────
+// 4. TEXT SIMILARITY HEURISTIC
+// ───────────────────────────────────────────────────────────────
 /**
  * Compute a simple text similarity score between two texts using
  * word overlap (Jaccard-like). Returns a value in [0, 1].
@@ -71,8 +76,9 @@ export function computeTextSimilarity(textA: string, textB: string): number {
   return intersectionCount / unionCount;
 }
 
-// --- 5. CORE COMPUTATION ---
-
+// ───────────────────────────────────────────────────────────────
+// 5. CORE COMPUTATION
+// ───────────────────────────────────────────────────────────────
 /**
  * Compute interference score for a single memory.
  *
@@ -231,8 +237,9 @@ export function computeInterferenceScoresBatch(
   return results;
 }
 
-// --- 6. PENALTY APPLICATION ---
-
+// ───────────────────────────────────────────────────────────────
+// 6. PENALTY APPLICATION
+// ───────────────────────────────────────────────────────────────
 /**
  * Apply interference penalty to a composite score.
  *

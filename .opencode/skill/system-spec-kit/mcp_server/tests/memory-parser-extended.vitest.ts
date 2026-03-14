@@ -1,5 +1,6 @@
-// --- 1. MEMORY PARSER EXTENDED TESTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. MEMORY PARSER EXTENDED TESTS
+// ───────────────────────────────────────────────────────────────
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import * as path from 'path';
 import * as fs from 'fs';
@@ -11,9 +12,9 @@ import * as mod from '../lib/parsing/memory-parser';
 // IsMemoryFile, validateParsedMemory, findMemoryFiles,
 // ExtractCausalLinks, hasCausalLinks, MEMORY_FILE_PATTERN,
 //         CONTEXT_TYPE_MAP
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    TEMP DIRECTORY HELPERS
----------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 let tmpRoot: string = '';
 type ParsedMemory = mod.ParsedMemory;
@@ -85,9 +86,9 @@ function cleanup() {
   }
 }
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    SAMPLE CONTENT
----------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 const COMPLETE_MEMORY = `---
 title: "Session Context - Feature Implementation"
@@ -163,9 +164,9 @@ causalLinks:
 Content.
 `;
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    TEST SUITES
----------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('MEMORY PARSER EXTENDED TESTS', () => {
   beforeAll(() => {
@@ -176,8 +177,9 @@ describe('MEMORY PARSER EXTENDED TESTS', () => {
     cleanup();
   });
 
-  // --- 4.1 MEMORY_FILE_PATTERN --------------------------------
-
+  // ───────────────────────────────────────────────────────────────
+  // 4.1 MEMORY_FILE_PATTERN
+  // ───────────────────────────────────────────────────────────────
   describe('MEMORY_FILE_PATTERN', () => {
     const regex: RegExp = mod.MEMORY_FILE_PATTERN;
 
@@ -207,8 +209,9 @@ describe('MEMORY PARSER EXTENDED TESTS', () => {
     });
   });
 
-  // --- 4.2 CONTEXT_TYPE_MAP -----------------------------------
-
+  // ───────────────────────────────────────────────────────────────
+  // 4.2 CONTEXT_TYPE_MAP
+  // ───────────────────────────────────────────────────────────────
   describe('CONTEXT_TYPE_MAP', () => {
     const map = mod.CONTEXT_TYPE_MAP;
 
@@ -231,8 +234,9 @@ describe('MEMORY PARSER EXTENDED TESTS', () => {
     });
   });
 
-  // --- 4.3 readFileWithEncoding -------------------------------
-
+  // ───────────────────────────────────────────────────────────────
+  // 4.3 readFileWithEncoding
+  // ───────────────────────────────────────────────────────────────
   describe('readFileWithEncoding', () => {
     let memDir: string;
 
@@ -270,8 +274,9 @@ describe('MEMORY PARSER EXTENDED TESTS', () => {
     });
   });
 
-  // --- 4.4 extractSpecFolder ----------------------------------
-
+  // ───────────────────────────────────────────────────────────────
+  // 4.4 extractSpecFolder
+  // ───────────────────────────────────────────────────────────────
   describe('extractSpecFolder', () => {
     it('T13: extracts from standard specs path', () => {
       const result = mod.extractSpecFolder('/project/specs/003-auth/memory/session.md');
@@ -295,8 +300,9 @@ describe('MEMORY PARSER EXTENDED TESTS', () => {
     });
   });
 
-  // --- 4.5 isMemoryFile --------------------------------------
-
+  // ───────────────────────────────────────────────────────────────
+  // 4.5 isMemoryFile
+  // ───────────────────────────────────────────────────────────────
   describe('isMemoryFile', () => {
     it('T17: recognizes specs memory .md file', () => {
       expect(mod.isMemoryFile('/project/specs/003-auth/memory/session.md')).toBe(true);
@@ -323,8 +329,9 @@ describe('MEMORY PARSER EXTENDED TESTS', () => {
     });
   });
 
-  // --- 4.6 validateParsedMemory -------------------------------
-
+  // ───────────────────────────────────────────────────────────────
+  // 4.6 validateParsedMemory
+  // ───────────────────────────────────────────────────────────────
   describe('validateParsedMemory', () => {
     it('T23: valid parsed memory passes validation', () => {
       const parsed = createParsedMemory({});
@@ -395,8 +402,9 @@ describe('MEMORY PARSER EXTENDED TESTS', () => {
     });
   });
 
-  // --- 4.7 extractCausalLinks --------------------------------
-
+  // ───────────────────────────────────────────────────────────────
+  // 4.7 extractCausalLinks
+  // ───────────────────────────────────────────────────────────────
   describe('extractCausalLinks', () => {
     it('T28: extracts multi-line causal links correctly', () => {
       const result = mod.extractCausalLinks(CAUSAL_LINKS_CONTENT);
@@ -433,8 +441,9 @@ describe('MEMORY PARSER EXTENDED TESTS', () => {
     });
   });
 
-  // --- 4.8 hasCausalLinks ------------------------------------
-
+  // ───────────────────────────────────────────────────────────────
+  // 4.8 hasCausalLinks
+  // ───────────────────────────────────────────────────────────────
   describe('hasCausalLinks', () => {
     it('T32: returns true when links present', () => {
       const links = { caused_by: ['mem-1'], supersedes: [], derived_from: [], blocks: [], related_to: [] };
@@ -455,8 +464,9 @@ describe('MEMORY PARSER EXTENDED TESTS', () => {
     });
   });
 
-  // --- 4.9 parseMemoryFile -----------------------------------
-
+  // ───────────────────────────────────────────────────────────────
+  // 4.9 parseMemoryFile
+  // ───────────────────────────────────────────────────────────────
   describe('parseMemoryFile', () => {
     let memDir: string;
 
@@ -506,8 +516,9 @@ describe('MEMORY PARSER EXTENDED TESTS', () => {
     });
   });
 
-  // --- 4.10 findMemoryFiles ----------------------------------
-
+  // ───────────────────────────────────────────────────────────────
+  // 4.10 findMemoryFiles
+  // ───────────────────────────────────────────────────────────────
   describe('findMemoryFiles', () => {
     let memDir1: string;
     let memDir2: string;

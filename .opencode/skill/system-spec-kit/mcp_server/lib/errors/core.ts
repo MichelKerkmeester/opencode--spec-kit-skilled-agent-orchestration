@@ -1,4 +1,6 @@
-// --- 1. CORE ---
+// ───────────────────────────────────────────────────────────────
+// 1. CORE
+// ───────────────────────────────────────────────────────────────
 // Memory error class and utility functions
 // Migrated from lib/errors.js for proper folder organization
 import {
@@ -12,8 +14,9 @@ import {
 
 import type { RecoveryHint, Severity } from './recovery-hints';
 
-// --- 2. TYPES ---
-
+// ───────────────────────────────────────────────────────────────
+// 2. TYPES
+// ───────────────────────────────────────────────────────────────
 /**
  * Describes the ErrorResponseData shape.
  */
@@ -76,8 +79,9 @@ export const ErrorCodes = {
  */
 export type LegacyErrorCodeKey = keyof typeof ErrorCodes;
 
-// --- 3. MEMORY ERROR CLASS ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. MEMORY ERROR CLASS
+// ───────────────────────────────────────────────────────────────
 /**
  * Represents the MemoryError type.
  */
@@ -100,8 +104,9 @@ export class MemoryError extends Error {
   }
 }
 
-// --- 4. TIMEOUT WRAPPER ---
-
+// ───────────────────────────────────────────────────────────────
+// 4. TIMEOUT WRAPPER
+// ───────────────────────────────────────────────────────────────
 // Fixed timer leak - now properly clears timeout on success or rejection
 /**
  * Provides the withTimeout helper.
@@ -128,8 +133,9 @@ export function withTimeout<T>(promise: Promise<T>, ms: number, operation: strin
     });
 }
 
-// --- 5. USER-FRIENDLY ERROR MESSAGES ---
-
+// ───────────────────────────────────────────────────────────────
+// 5. USER-FRIENDLY ERROR MESSAGES
+// ───────────────────────────────────────────────────────────────
 interface ErrorPattern {
   pattern: RegExp;
   message: string;
@@ -159,7 +165,9 @@ export function userFriendlyError(error: Error): string {
   return 'An unexpected error occurred. Please check logs for details.';
 }
 
-// --- 6. TRANSIENT ERROR DETECTION ---
+// ───────────────────────────────────────────────────────────────
+// 6. TRANSIENT ERROR DETECTION
+// ───────────────────────────────────────────────────────────────
 // Enhanced error classification with retry module
 // Try to load retry module for enhanced classification
 interface RetryModule {
@@ -227,7 +235,9 @@ export function isPermanentError(error: Error): boolean {
   return permanentPatterns.some(pattern => pattern.test(error.message));
 }
 
-// --- 7. ERROR RESPONSE BUILDER WITH HINTS ---
+// ───────────────────────────────────────────────────────────────
+// 7. ERROR RESPONSE BUILDER WITH HINTS
+// ───────────────────────────────────────────────────────────────
 //
 // Build standardized error responses with recovery hints.
 /**
@@ -288,8 +298,9 @@ export function createErrorWithHint(
   return error;
 }
 
-// --- 8. RE-EXPORTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 8. RE-EXPORTS
+// ───────────────────────────────────────────────────────────────
 export {
   ERROR_CODES,
   RECOVERY_HINTS,

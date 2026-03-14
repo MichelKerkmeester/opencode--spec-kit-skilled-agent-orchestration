@@ -1,10 +1,12 @@
-// --- 1. FEEDBACK DENYLIST ---
+// ───────────────────────────────────────────────────────────────
+// 1. FEEDBACK DENYLIST
+// ───────────────────────────────────────────────────────────────
 // 100+ stop words that should never be learned as trigger phrases.
 // Prevents noise injection into learned relevance feedback.
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    1. ENGLISH STOP WORDS
    Common English words that carry no semantic signal.
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 const ENGLISH_STOP_WORDS: readonly string[] = [
   // Articles & determiners
@@ -32,10 +34,10 @@ const ENGLISH_STOP_WORDS: readonly string[] = [
   'if', 'else', 'because', 'as', 'until', 'while',
 ] as const;
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    2. CODE / PROGRAMMING STOP WORDS
    Generic programming keywords that appear in nearly all code.
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 const CODE_STOP_WORDS: readonly string[] = [
   'function', 'const', 'let', 'var', 'import', 'export', 'return',
@@ -48,11 +50,11 @@ const CODE_STOP_WORDS: readonly string[] = [
   'string', 'number', 'boolean', 'object', 'array',
 ] as const;
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    3. DOMAIN-SPECIFIC STOP WORDS (Memory System)
    Generic terms in the spec-kit memory domain that are too broad
    to serve as meaningful trigger phrases.
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 const DOMAIN_STOP_WORDS: readonly string[] = [
   'memory', 'session', 'context', 'spec', 'folder', 'file', 'path',
@@ -64,8 +66,9 @@ const DOMAIN_STOP_WORDS: readonly string[] = [
   'todo', 'fixme', 'hack', 'note',
 ] as const;
 
-// --- 2. COMBINED DENYLIST ---
-
+// ───────────────────────────────────────────────────────────────
+// 2. COMBINED DENYLIST
+// ───────────────────────────────────────────────────────────────
 /**
  * Complete denylist of 100+ stop words that should never be learned
  * as trigger phrases. All terms stored in lowercase for case-insensitive matching.
@@ -76,8 +79,9 @@ export const DENYLIST: Set<string> = new Set<string>([
   ...DOMAIN_STOP_WORDS,
 ]);
 
-// --- 3. PUBLIC API ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. PUBLIC API
+// ───────────────────────────────────────────────────────────────
 /**
  * Check if a term is on the denylist (case-insensitive).
  *

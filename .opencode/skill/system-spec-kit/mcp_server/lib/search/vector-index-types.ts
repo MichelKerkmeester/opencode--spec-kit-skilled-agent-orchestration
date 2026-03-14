@@ -1,5 +1,6 @@
-// --- 1. VECTOR INDEX TYPES ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. VECTOR INDEX TYPES
+// ───────────────────────────────────────────────────────────────
 // SCHEMA_VERSION is now canonical in vector-index-schema.ts
 /** Maximum trigger phrases stored for each memory. */
 export const MAX_TRIGGERS_PER_MEMORY = 10;

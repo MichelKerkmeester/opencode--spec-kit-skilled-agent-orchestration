@@ -1,5 +1,6 @@
-// --- 1. PE ORCHESTRATION ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. PE ORCHESTRATION
+// ───────────────────────────────────────────────────────────────
 import type Database from 'better-sqlite3';
 
 import * as predictionErrorGate from '../../lib/cache/cognitive/prediction-error-gate';

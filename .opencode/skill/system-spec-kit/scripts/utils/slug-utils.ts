@@ -1,4 +1,6 @@
-// --- 1. SLUG UTILS ---
+// ───────────────────────────────────────────────────────────────
+// 1. SLUG UTILS
+// ───────────────────────────────────────────────────────────────
 // Content-aware slug generation for memory filenames
 
 import * as crypto from 'node:crypto';

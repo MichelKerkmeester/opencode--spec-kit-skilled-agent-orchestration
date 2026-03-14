@@ -1,5 +1,6 @@
-// --- 1. TOOL INPUT SCHEMA ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. TOOL INPUT SCHEMA
+// ───────────────────────────────────────────────────────────────
 import type { ToolDefinition } from '../tool-schemas';
 
 interface JsonSchemaProperty {

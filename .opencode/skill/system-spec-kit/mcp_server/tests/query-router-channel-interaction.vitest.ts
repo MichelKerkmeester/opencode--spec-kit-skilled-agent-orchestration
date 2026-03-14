@@ -1,4 +1,6 @@
-// --- 1. TEST — QUERY ROUTER-CHANNEL INTERACTION ---
+// ───────────────────────────────────────────────────────────────
+// 1. TEST — QUERY ROUTER-CHANNEL INTERACTION
+// ───────────────────────────────────────────────────────────────
 // Ensures that R15 complexity-based channel routing does NOT violate
 // R2 channel-minimum representation.
 //
@@ -29,9 +31,9 @@ import {
   enforceChannelRepresentation,
 } from '../lib/search/channel-enforcement';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    TEST HELPERS
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 /** Create a fused result item */
 function makeFused(id: number, score: number, source: string) {
@@ -61,9 +63,9 @@ function restoreEnv() {
   savedEnv = {};
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    TESTS
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 describe('T033: R15 + R2 Interaction Tests', () => {
 

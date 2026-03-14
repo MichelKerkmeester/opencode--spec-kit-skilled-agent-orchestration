@@ -1,4 +1,6 @@
-// --- 1. CO ACTIVATION ---
+// ───────────────────────────────────────────────────────────────
+// 1. CO ACTIVATION
+// ───────────────────────────────────────────────────────────────
 // Spreading activation for related memory retrieval
 
 import type Database from 'better-sqlite3';

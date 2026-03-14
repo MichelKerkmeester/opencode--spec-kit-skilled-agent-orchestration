@@ -1,5 +1,7 @@
 #!/usr/bin/env node
-// --- 1. MIGRATION CHECKPOINT RESTORE ---
+// ───────────────────────────────────────────────────────────────
+// 1. MIGRATION CHECKPOINT RESTORE
+// ───────────────────────────────────────────────────────────────
 // Restore a previously created SQLite checkpoint into the target DB.
 import * as fs from 'fs';
 import * as path from 'path';

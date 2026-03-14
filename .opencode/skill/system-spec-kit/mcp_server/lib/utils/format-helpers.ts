@@ -1,6 +1,9 @@
-// --- 1. FORMAT HELPERS ---
-// --- 2. FORMATTING UTILITIES ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. FORMAT HELPERS
+// ───────────────────────────────────────────────────────────────
+// ───────────────────────────────────────────────────────────────
+// 2. FORMATTING UTILITIES
+// ───────────────────────────────────────────────────────────────
 /**
  * Format a date string as a human-readable age string
  * @param dateString - ISO date string or null

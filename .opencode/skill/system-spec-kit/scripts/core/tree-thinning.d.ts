@@ -1,4 +1,6 @@
-// --- 1. TREE THINNING TYPES ---
+// ───────────────────────────────────────────────────────────────
+// 1. TREE THINNING TYPES
+// ───────────────────────────────────────────────────────────────
 // Public declaration surface for tree-thinning helpers and config.
 
 /** Represents thinning config. */

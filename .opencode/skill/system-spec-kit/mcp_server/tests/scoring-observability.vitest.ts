@@ -1,4 +1,6 @@
-// --- 1. TEST — SCORING OBSERVABILITY ---
+// ───────────────────────────────────────────────────────────────
+// 1. TEST — SCORING OBSERVABILITY
+// ───────────────────────────────────────────────────────────────
 // Tests:
 // 1. Table creation (initScoringObservability)
 // 2. Sampling rate (~5% over 1000 calls)

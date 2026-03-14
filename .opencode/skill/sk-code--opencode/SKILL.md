@@ -2,7 +2,7 @@
 name: sk-code--opencode
 description: Multi-language code standards for OpenCode system code (JavaScript, TypeScript, Python, Shell, JSON/JSONC) with language detection routing, universal patterns, and quality checklists.
 allowed-tools: [Bash, Edit, Glob, Grep, Read, Task, Write]
-version: 1.1.0.0
+version: 1.2.0.0
 ---
 
 <!-- Keywords: opencode style, script standards, mcp code quality, node code style, typescript style, ts standards, python style, py standards, bash style, shell script, json format, jsonc config, code standards opencode -->
@@ -340,7 +340,7 @@ The recurring verifier at `scripts/verify_alignment_drift.py` applies severity-a
 
 1. **Follow file header format for the language**
    - JavaScript: Box-drawing `// ─── MODULE_TYPE: NAME ───` + `'use strict'`
-   - TypeScript: Module header block `// --- MODULE: NAME ---` (no `'use strict'`; tsconfig handles it)
+   - TypeScript: Module header block `// ─── MODULE: NAME ───` (no `'use strict'`; tsconfig handles it)
    - Python: Shebang `#!/usr/bin/env python3` + box-drawing header
    - Shell: Shebang `#!/usr/bin/env bash` + header + `set -euo pipefail`
    - JSONC: Box comment header (JSON cannot have comments)
@@ -608,13 +608,13 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 **TypeScript**
 ```typescript
-// ---------------------------------------------------------------
+// ───────────────────────────────────────────────────────────────────
 // MODULE: [Module Name]
-// ---------------------------------------------------------------
+// ───────────────────────────────────────────────────────────────────
 
-// ---------------------------------------------------------------------------
+// ───────────────────────────────────────────────────────────────────
 // 1. IMPORTS
-// ---------------------------------------------------------------------------
+// ───────────────────────────────────────────────────────────────────
 
 import path from 'path';
 import type { SearchOptions } from '../types';

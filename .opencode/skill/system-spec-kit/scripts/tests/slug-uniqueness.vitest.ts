@@ -1,4 +1,6 @@
-// --- 1. TEST — SLUG UNIQUENESS ---
+// ───────────────────────────────────────────────────────────────
+// 1. TEST — SLUG UNIQUENESS
+// ───────────────────────────────────────────────────────────────
 // Tests: ensureUniqueMemoryFilename collision detection and resolution
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';

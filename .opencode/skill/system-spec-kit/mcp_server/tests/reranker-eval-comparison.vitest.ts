@@ -12,9 +12,9 @@ import { describe, expect, it } from 'vitest';
 import { computeMRR } from '../lib/eval/eval-metrics';
 import type { EvalResult, GroundTruthEntry } from '../lib/eval/eval-metrics';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    1. GROUND TRUTH CORPUS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 // 5 representative eval queries with ground truth relevance judgments
 // Covering common memory retrieval patterns in the spec-kit system.
@@ -63,9 +63,9 @@ const EVAL_CORPUS = [
   },
 ];
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    2. COMPARISON PROTOCOL DOCUMENTATION
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 // MTEB benchmark reference ranges for reranking models (as of 2025):
 // - Cohere Rerank v3:   NDCG@10 ~0.60, MRR@5 ~0.55-0.65
@@ -78,9 +78,9 @@ const EVAL_CORPUS = [
 // 3. Compare: local should be within 0.15 of remote on MRR@5
 // 4. Latency comparison: local should be <500ms, remote <2000ms
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    3. ALWAYS-PASSING TESTS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('Reranker Eval Comparison — corpus validation', () => {
   it('eval corpus has 5 representative queries', () => {
@@ -117,9 +117,9 @@ describe('Reranker Eval Comparison — corpus validation', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    4. CONDITIONAL TESTS (skip when no API keys)
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('Reranker Eval Comparison — remote providers', () => {
   it.skipIf(!process.env.VOYAGE_API_KEY)(

@@ -1,4 +1,6 @@
-// --- 1. MEMORY STATE BASELINE METRICS ---
+// ───────────────────────────────────────────────────────────────
+// 1. MEMORY STATE BASELINE METRICS
+// ───────────────────────────────────────────────────────────────
 // Captures baseline retrieval/isolation metrics before phased rollout.
 // Can optionally persist snapshots into eval_metric_snapshots.
 import * as fs from 'fs';
@@ -140,6 +142,13 @@ function buildMetrics(evalDb: Database.Database, contextDb: Database.Database | 
   return metrics;
 }
 
+/**
+ * Persist a captured baseline snapshot into eval metric history.
+ *
+ * @param snapshot - Baseline snapshot to persist.
+ * @param evalDb - Eval database that stores metric snapshots.
+ * @returns Number of rows written to `eval_metric_snapshots`.
+ */
 function persistMemoryStateBaselineSnapshot(snapshot: MemoryStateBaselineSnapshot, evalDb: Database.Database): number {
   const insert = evalDb.prepare(`
     INSERT INTO eval_metric_snapshots (eval_run_id, metric_name, metric_value, channel, query_count, metadata)
@@ -158,7 +167,10 @@ function persistMemoryStateBaselineSnapshot(snapshot: MemoryStateBaselineSnapsho
 }
 
 /**
- * Capture baseline retrieval/isolation metrics for Phase 1 readiness.
+ * Capture baseline retrieval and isolation metrics for Phase 1 readiness.
+ *
+ * @param options - Snapshot configuration and optional persistence controls.
+ * @returns Baseline snapshot for the current eval and context databases.
  */
 function captureMemoryStateBaselineSnapshot(
   options: CaptureMemoryStateBaselineOptions = {},

@@ -1,4 +1,6 @@
-// --- 1. INTENT CLASSIFIER ---
+// ───────────────────────────────────────────────────────────────
+// 1. INTENT CLASSIFIER
+// ───────────────────────────────────────────────────────────────
 /* --- 1. TYPES & CONSTANTS --- */
 
 type IntentType = 'add_feature' | 'fix_bug' | 'refactor' | 'security_audit' | 'understand' | 'find_spec' | 'find_decision';

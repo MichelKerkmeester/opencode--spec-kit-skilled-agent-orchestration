@@ -1,5 +1,6 @@
-// --- 1. GRAPH REGRESSION FLAG OFF VITEST ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. GRAPH REGRESSION FLAG OFF VITEST
+// ───────────────────────────────────────────────────────────────
 // TEST: GRAPH REGRESSION - FLAG CONTRACT + NULL-WIRING SAFETY (T022)
 // Verifies SPECKIT_GRAPH_UNIFIED env semantics and behavior when
 // Hybrid-search is explicitly initialized with graphFn = null.
@@ -29,9 +30,9 @@ function buildStubDb() {
 // SUITE: T022 — Graph Channel Bypassed When Flag Is Off
 describe('T022: Graph Channel Feature Flag Regression', () => {
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      Group 1: isGraphUnifiedEnabled() — flag reading contract
-  ---------------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('isGraphUnifiedEnabled() — env-var contract', () => {
 
@@ -94,10 +95,10 @@ describe('T022: Graph Channel Feature Flag Regression', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      Group 2: Graph search function NOT called during hybridSearch
               when the module is initialised with graphFn = null
-  ---------------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('T022-2: hybridSearch — graph search fn NOT called when graphFn is null', () => {
     let graphFnSpy: ReturnType<typeof vi.fn>;
@@ -162,9 +163,9 @@ describe('T022: Graph Channel Feature Flag Regression', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      Group 3: hybridSearchEnhanced — graph channel bypass
-  ---------------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('T022-2e: hybridSearchEnhanced — graph search fn NOT called when graphFn is null', () => {
     let graphFnSpy: ReturnType<typeof vi.fn>;
@@ -210,9 +211,9 @@ describe('T022: Graph Channel Feature Flag Regression', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      Group 4: Graph channel metrics — getGraphMetrics / resetGraphMetrics
-  ---------------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('T022: Graph channel metrics', () => {
     const savedComplexityRouter = process.env.SPECKIT_COMPLEXITY_ROUTER;
@@ -278,10 +279,10 @@ describe('T022: Graph Channel Feature Flag Regression', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      Group 5: End-to-end wiring — isGraphUnifiedEnabled() gates
               createUnifiedGraphSearchFn() reaching init()
-  ---------------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('T022: Flag gating controls graphFn wiring (simulation)', () => {
 

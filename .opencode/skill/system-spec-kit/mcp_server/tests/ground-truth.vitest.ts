@@ -1,4 +1,6 @@
-// --- 1. TEST — GROUND TRUTH ---
+// ───────────────────────────────────────────────────────────────
+// 1. TEST — GROUND TRUTH
+// ───────────────────────────────────────────────────────────────
 //
 // Validates:
 // T007.1  — generateGroundTruth() returns ≥100 queries
@@ -36,9 +38,9 @@ import {
   type QuerySource,
 } from '../lib/eval/ground-truth-data';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    CONSTANTS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 const VALID_INTENT_TYPES: IntentType[] = [
   'add_feature',
@@ -64,9 +66,9 @@ const VALID_CATEGORIES: QueryCategory[] = [
 
 const VALID_SOURCES: QuerySource[] = ['manual', 'trigger_derived', 'pattern_derived', 'seed'];
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    TEST SETUP: in-memory eval DB for T007.9
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 const EVAL_SCHEMA_SQL = `
   CREATE TABLE IF NOT EXISTS eval_queries (

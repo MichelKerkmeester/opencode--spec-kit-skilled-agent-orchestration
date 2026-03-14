@@ -1,4 +1,6 @@
-// --- 1. TEST — DEGREE COMPUTATION ---
+// ───────────────────────────────────────────────────────────────
+// 1. TEST — DEGREE COMPUTATION
+// ───────────────────────────────────────────────────────────────
 // Tests for the R4 5th RRF channel: degree-based scoring
 
 import { describe, it, expect, beforeEach, beforeAll, afterAll, vi } from 'vitest';

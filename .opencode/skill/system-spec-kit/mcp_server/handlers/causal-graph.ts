@@ -1,8 +1,10 @@
-// --- 1. CAUSAL GRAPH ---
+// ────────────────────────────────────────────────────────────────
+// 1. CAUSAL GRAPH 
+// ────────────────────────────────────────────────────────────────
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    0. DEPENDENCIES
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 // Lib modules
 import * as vectorIndex from '../lib/search/vector-index';
@@ -20,9 +22,9 @@ import { createMCPSuccessResponse, createMCPErrorResponse, createMCPEmptyRespons
 // Shared handler types
 import type { MCPResponse } from './types';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    1. TYPES
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /** Flat edge representation for API responses */
 export interface FlatEdge {
@@ -71,9 +73,9 @@ interface CausalUnlinkArgs {
   edgeId: number;
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    2. TREE-TO-FLAT CONVERTER
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Flatten a CausalChainNode tree into flat edge lists grouped by relation.
@@ -230,9 +232,9 @@ function filterChainByRelations(
   return filtered;
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    3. MEMORY DRIFT WHY HANDLER
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /** Handle memory_drift_why tool - traces causal relationships for a given memory */
 async function handleMemoryDriftWhy(args: DriftWhyArgs): Promise<MCPResponse> {
@@ -419,9 +421,9 @@ async function handleMemoryDriftWhy(args: DriftWhyArgs): Promise<MCPResponse> {
   }
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    3. CAUSAL LINK HANDLER
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /** Handle memory_causal_link tool - creates a causal edge between two memories */
 async function handleMemoryCausalLink(args: CausalLinkArgs): Promise<MCPResponse> {
@@ -537,9 +539,9 @@ async function handleMemoryCausalLink(args: CausalLinkArgs): Promise<MCPResponse
   }
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    4. CAUSAL GRAPH STATS HANDLER
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /** Handle memory_causal_stats tool - returns graph coverage and health metrics */
 async function handleMemoryCausalStats(_args: CausalStatsArgs): Promise<MCPResponse> {
@@ -639,9 +641,9 @@ async function handleMemoryCausalStats(_args: CausalStatsArgs): Promise<MCPRespo
   }
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    5. CAUSAL UNLINK HANDLER
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /** Handle memory_causal_unlink tool - deletes a causal edge by ID */
 async function handleMemoryCausalUnlink(args: CausalUnlinkArgs): Promise<MCPResponse> {
@@ -713,9 +715,9 @@ async function handleMemoryCausalUnlink(args: CausalUnlinkArgs): Promise<MCPResp
   }
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    6. EXPORTS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 export {
   handleMemoryDriftWhy,

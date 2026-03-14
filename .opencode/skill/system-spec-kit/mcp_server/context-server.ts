@@ -1,13 +1,15 @@
-// --- 1. CONTEXT SERVER ---
+// ────────────────────────────────────────────────────────────────
+// 1. CONTEXT SERVER 
+// ────────────────────────────────────────────────────────────────
 // T303: Decomposed — tool schemas in tool-schemas.ts, dispatch
 // Logic in tools/*.ts. This file retains server init, startup,
 // Shutdown, and main orchestration only.
 import fs from 'fs';
 import path from 'path';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    1. MODULE IMPORTS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 // MCP SDK
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
@@ -97,9 +99,9 @@ import { initIngestJobQueue } from './lib/ops/job-queue';
 import { startFileWatcher, type FSWatcher } from './lib/ops/file-watcher';
 import { getCanonicalPathKey } from './lib/utils/canonical-path';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    2. TYPES
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 interface IndexResult {
   status: string;
@@ -245,9 +247,9 @@ export function registerAfterToolCallback(fn: AfterToolCallback): void {
   afterToolCallbacks.push(fn);
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    3. SERVER INITIALIZATION
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 const server = new Server(
   { name: 'context-server', version: '1.7.2' },
@@ -255,17 +257,17 @@ const server = new Server(
 );
 const serverWithInstructions = server as unknown as { setInstructions?: (instructions: string) => void };
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    4. TOOL DEFINITIONS (T303: from tool-schemas.ts)
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 server.setRequestHandler(ListToolsRequestSchema, async () => ({
   tools: TOOL_DEFINITIONS
 }));
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    5. TOOL DISPATCH (T303: routed through tools/*.ts)
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 server.setRequestHandler(CallToolRequestSchema, async (request, _extra: unknown) => {
   const requestParams = request.params as { name: string; arguments?: Record<string, unknown> };
@@ -404,9 +406,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request, _extra: unknown)
   }
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    6. STARTUP SCAN & PENDING FILE RECOVERY
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 let startupScanInProgress = false;
 
@@ -578,9 +580,9 @@ async function startupScan(basePath: string): Promise<void> {
   }
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    7. GRACEFUL SHUTDOWN
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 let shuttingDown = false;
 // P1-09 FIX: Hoist transport to module scope so shutdown handlers can close it
@@ -728,9 +730,9 @@ process.on('unhandledRejection', (reason: unknown, promise: Promise<unknown>) =>
   );
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    8. MAIN
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 async function main(): Promise<void> {
   // Node version mismatch detection (non-blocking)

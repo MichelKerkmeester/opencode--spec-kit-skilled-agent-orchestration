@@ -1,5 +1,7 @@
 "use strict";
-// --- 1. TREE THINNING ---
+// ───────────────────────────────────────────────────────────────
+// 1. TREE THINNING
+// ───────────────────────────────────────────────────────────────
 // Bottom-up merging of small files during spec folder context
 // Loading to reduce token overhead before the retrieval pipeline starts.
 //
@@ -17,7 +19,7 @@ exports.DEFAULT_THINNING_CONFIG = {
     memoryThinThreshold: 300,
     memoryTextThreshold: 100,
 };
-/* -----------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    2. HELPERS
 ------------------------------------------------------------------*/
 // Canonical shared implementation — imported and re-exported for backward compatibility
@@ -70,7 +72,7 @@ function buildMergedSummary(children) {
     })
         .join('\n\n---\n\n');
 }
-/* -----------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    3. CORE THINNING LOGIC
 ------------------------------------------------------------------*/
 /**
@@ -97,7 +99,7 @@ function resolveAction(tokenCount, memory, config) {
     }
     return 'keep';
 }
-/* -----------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    4. PUBLIC API
 ------------------------------------------------------------------*/
 /**

@@ -1,4 +1,6 @@
-// --- 1. VECTOR INDEX MUTATIONS ---
+// ───────────────────────────────────────────────────────────────
+// 1. VECTOR INDEX MUTATIONS
+// ───────────────────────────────────────────────────────────────
 // Split from vector-index-store.ts — contains ALL mutation functions:
 // Index, update, delete, and status/confidence updates.
 
@@ -371,7 +373,7 @@ export function delete_memory(id: number): boolean {
       }
     }
 
-    // Fix #20 (017-refinement-phase-6) — Clean all ancillary records
+    // BUG-020: Clean ancillary records so deletes do not leave graph residue behind.
     const ancillaryTables = [
       'DELETE FROM degree_snapshots WHERE memory_id = ?',
       'DELETE FROM community_assignments WHERE memory_id = ?',
@@ -398,7 +400,7 @@ export function delete_memory(id: number): boolean {
     return result.changes > 0;
   });
 
-  // Fix #21 (017-refinement-phase-6) — Clean BM25 index after successful delete.
+  // BUG-021: Remove the BM25 document only after the source row is deleted.
   const deleted = delete_memory_tx();
   if (deleted) {
     try {

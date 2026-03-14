@@ -1,5 +1,6 @@
-// --- 1. MUTATION FEEDBACK ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. MUTATION FEEDBACK
+// ───────────────────────────────────────────────────────────────
 import type { MutationHookResult } from '../handlers/memory-crud-types';
 
 function buildMutationHookFeedback(operation: string, hookResult: MutationHookResult): {

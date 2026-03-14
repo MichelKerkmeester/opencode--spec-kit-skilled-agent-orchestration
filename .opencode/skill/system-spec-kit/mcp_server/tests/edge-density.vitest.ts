@@ -1,4 +1,6 @@
-// --- 1. TEST — EDGE DENSITY ---
+// ───────────────────────────────────────────────────────────────
+// 1. TEST — EDGE DENSITY
+// ───────────────────────────────────────────────────────────────
 // T003 acceptance tests for lib/eval/edge-density.ts
 //
 // Test cases:
@@ -12,9 +14,9 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import Database from 'better-sqlite3';
 import { measureEdgeDensity, formatDensityReport } from '../lib/eval/edge-density';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    HELPERS — build an in-memory test DB with required tables
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 function createTestDb(): InstanceType<typeof Database> {
   const db = new Database(':memory:');
@@ -74,9 +76,9 @@ function insertMemories(db: InstanceType<typeof Database>, count: number): void 
   }
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    TESTS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('Edge Density (T011)', () => {
   let db: InstanceType<typeof Database>;
@@ -89,10 +91,10 @@ describe('Edge Density (T011)', () => {
     try { db.close(); } catch {}
   });
 
-  /* -----------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      D1: Dense graph — density >= 1.0
      5 nodes (1,2,3,4,5), 6 edges → density = 6/5 = 1.2
-  ----------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
   describe('D1: Dense graph', () => {
     it('returns edgeCount = 6', () => {
       insertMemories(db, 5);
@@ -155,11 +157,11 @@ describe('Edge Density (T011)', () => {
     });
   });
 
-  /* -----------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      D2: Sparse graph → R10 escalation
      Density uses edgeCount / totalMemories, so non-empty sparse graphs
      are possible and should trigger escalation when below 0.5.
-  ----------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
   describe('D2: Sparse graph → R10 escalation', () => {
     // No edges inserted in beforeEach — sparse = empty edge table
     beforeEach(() => {
@@ -220,10 +222,10 @@ describe('Edge Density (T011)', () => {
     });
   });
 
-  /* -----------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      D3: Moderate graph — 0.5 <= density < 1.0
      4 nodes in a chain (1→2→3→4, 2→4) → 3 edges, 4 nodes = 0.75
-  ----------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
   describe('D3: Moderate graph (0.5 <= density < 1.0)', () => {
     beforeEach(() => {
       insertMemories(db, 4);
@@ -253,9 +255,9 @@ describe('Edge Density (T011)', () => {
     });
   });
 
-  /* -----------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      D4: Empty graph — no edges at all
-  ----------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
   describe('D4: Empty graph', () => {
     it('returns edgeCount = 0', () => {
       insertMemories(db, 5);
@@ -301,9 +303,9 @@ describe('Edge Density (T011)', () => {
     });
   });
 
-  /* -----------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      D5: Report format includes all required fields
-  ----------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
   describe('D5: Report format', () => {
     it('report includes "Edge Density Report" header', () => {
       insertMemories(db, 3);
@@ -387,9 +389,9 @@ describe('Edge Density (T011)', () => {
     });
   });
 
-  /* -----------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      D6: Boundary — density exactly 0.5 classifies as "moderate"
-  ----------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
   describe('D6: Boundary density = 0.5', () => {
     it('density = 0.5 classifies as "moderate" not "sparse"', () => {
       insertMemories(db, 2);
@@ -402,9 +404,9 @@ describe('Edge Density (T011)', () => {
     });
   });
 
-  /* -----------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      D7: Boundary — density exactly 1.0 classifies as "dense"
-  ----------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
   describe('D7: Boundary density = 1.0', () => {
     it('density = 1.0 classifies as "dense"', () => {
       insertMemories(db, 2);

@@ -8,9 +8,9 @@ import * as fsrsScheduler from '../lib/cache/cognitive/fsrs-scheduler';
 type AttentionDecayDb = Parameters<typeof attentionDecay.init>[0];
 const attentionDecayExports = attentionDecay as unknown as Record<string, unknown>;
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    DECAY_CONFIG
----------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('Attention Decay Module', () => {
   describe('DECAY_CONFIG', () => {
@@ -40,10 +40,10 @@ describe('Attention Decay Module', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      init()
      Production: init(database) throws if !database
-  ---------------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('init()', () => {
     it('init(null) throws error', () => {
@@ -66,11 +66,11 @@ describe('Attention Decay Module', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      getDecayRate()
      Production: getDecayRate(importanceTier: string | null | undefined): number
      NOT case-insensitive - uses exact key lookup
-  ---------------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('getDecayRate()', () => {
     it('constitutional tier returns 1.0', () => {
@@ -105,11 +105,11 @@ describe('Attention Decay Module', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      calculateRetrievabilityDecay()
      Production: calculateRetrievabilityDecay(stability: number, elapsedDays: number): number
      Uses FSRS formula: R = (1 + (19/81) * t / S)^(-0.5)
-  ---------------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('calculateRetrievabilityDecay()', () => {
     it('At t=0, R=1.0', () => {
@@ -137,10 +137,10 @@ describe('Attention Decay Module', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      applyFsrsDecay()
      Production: applyFsrsDecay(memory: object, baseScore?: number): number
-  ---------------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('applyFsrsDecay()', () => {
     it('Recent review => ~1.0', () => {
@@ -159,10 +159,10 @@ describe('Attention Decay Module', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      activateMemory() without DB
      Production: activateMemory(memoryId: number): boolean
-  ---------------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('activateMemory() without DB', () => {
     it('activateMemory returns false without DB', () => {
@@ -176,10 +176,10 @@ describe('Attention Decay Module', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      getActiveMemories() without DB
      Production: getActiveMemories(limit?: number): Array<Record<string, unknown>>
-  ---------------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('getActiveMemories() without DB', () => {
     it('getActiveMemories returns [] without DB', () => {
@@ -197,10 +197,10 @@ describe('Attention Decay Module', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      calculateCompositeAttention()
      Production: calculateCompositeAttention(memory, options?): number
-  ---------------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('calculateCompositeAttention()', () => {
     it('calculateCompositeAttention is exported', () => {
@@ -224,10 +224,10 @@ describe('Attention Decay Module', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      getAttentionBreakdown()
      Production: getAttentionBreakdown(memory): { temporal, usage, importance, pattern, citation, composite, weights }
-  ---------------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('getAttentionBreakdown()', () => {
     it('getAttentionBreakdown is exported', () => {
@@ -256,10 +256,10 @@ describe('Attention Decay Module', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      applyCompositeDecay()
      Production: applyCompositeDecay(memories: Array): Array (sorted by attentionScore)
-  ---------------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('applyCompositeDecay()', () => {
     it('applyCompositeDecay is exported', () => {
@@ -301,10 +301,10 @@ describe('Attention Decay Module', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      FSRS Scheduler Constants
      Production fsrs-scheduler.ts exports: FSRS_FACTOR=19/81, FSRS_DECAY=-0.5
-  ---------------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('FSRS Configuration', () => {
     it('FSRS_FACTOR = 19/81', () => {
@@ -336,10 +336,10 @@ describe('Attention Decay Module', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      FSRS Decay Curve
      calculateRetrievability(stability, elapsedDays): number
-  ---------------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('FSRS Decay Curve', () => {
     it('t=0 => R=1.0', () => {
@@ -381,9 +381,9 @@ describe('Attention Decay Module', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      Backward Compatibility
-  ---------------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('Backward Compatibility', () => {
     // Legacy functions still exported (calculateDecayedScore and applyDecay removed in REC-017 Phase 4)
@@ -408,9 +408,9 @@ describe('Attention Decay Module', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      Edge Cases
-  ---------------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('Edge Cases', () => {
     // Constitutional tier = infinite half-life (rate 1.0, no decay)
@@ -438,9 +438,9 @@ describe('Attention Decay Module', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      Module Exports
-  ---------------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('Module Exports', () => {
     const expectedExports = [

@@ -1,5 +1,6 @@
-// --- 1. SIMULATION FACTORY ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. SIMULATION FACTORY
+// ───────────────────────────────────────────────────────────────
 import crypto from 'crypto';
 
 // Canonical shared types — single source of truth (resolves TECH-DEBT P6-05)
@@ -75,8 +76,9 @@ export interface SimulationMetadata {
   [key: string]: unknown;
 }
 
-// --- 2. UTILITIES ---
-
+// ───────────────────────────────────────────────────────────────
+// 2. UTILITIES
+// ───────────────────────────────────────────────────────────────
 function secureRandomString(length: number = 9): string {
   return crypto.randomBytes(Math.ceil(length * 0.75))
     .toString('base64')
@@ -132,8 +134,9 @@ function generateSessionId(): string {
   return `session-${Date.now()}-${secureRandomString(9)}`;
 }
 
-// --- 3. SESSION DATA FACTORY ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. SESSION DATA FACTORY
+// ───────────────────────────────────────────────────────────────
 function createSessionData(config: SessionConfig = {}): SessionData {
   const now: Date = new Date();
   const sessionId: string = config.sessionId || generateSessionId();
@@ -198,8 +201,9 @@ function createSessionData(config: SessionConfig = {}): SessionData {
   };
 }
 
-// --- 4. CONVERSATION DATA FACTORY ---
-
+// ───────────────────────────────────────────────────────────────
+// 4. CONVERSATION DATA FACTORY
+// ───────────────────────────────────────────────────────────────
 function createConversationData(config: SessionConfig = {}): ConversationData {
   const userMessage: string = config.userMessage || 'This is a simulated user message.';
   const assistantMessage: string = config.assistantMessage || 'This is a simulated assistant response.';
@@ -244,8 +248,9 @@ function createConversationData(config: SessionConfig = {}): ConversationData {
   };
 }
 
-// --- 5. DECISION DATA FACTORY ---
-
+// ───────────────────────────────────────────────────────────────
+// 5. DECISION DATA FACTORY
+// ───────────────────────────────────────────────────────────────
 function createDecisionData(config: SessionConfig = {}): DecisionData {
   const title: string = config.title || 'Simulated Decision Example';
   const context: string = config.context || 'This is a simulated decision for testing purposes.';
@@ -316,8 +321,9 @@ function createDecisionData(config: SessionConfig = {}): DecisionData {
   };
 }
 
-// --- 6. DIAGRAM DATA FACTORY ---
-
+// ───────────────────────────────────────────────────────────────
+// 6. DIAGRAM DATA FACTORY
+// ───────────────────────────────────────────────────────────────
 function createDiagramData(config: SessionConfig = {}): DiagramData {
   const title: string = config.title || 'Example Workflow';
   const description: string = config.description || 'Simulated workflow diagram';
@@ -370,8 +376,9 @@ function createDiagramData(config: SessionConfig = {}): DiagramData {
   };
 }
 
-// --- 7. FLOWCHART AND PHASES ---
-
+// ───────────────────────────────────────────────────────────────
+// 7. FLOWCHART AND PHASES
+// ───────────────────────────────────────────────────────────────
 function createSimulationFlowchart(initialRequest: string = 'User Request'): string {
   const pad = (text: string, length: number): string => {
     const truncated: string = text.substring(0, length);
@@ -413,8 +420,9 @@ function createSimulationPhases(): PhaseEntry[] {
   ];
 }
 
-// --- 8. FULL SIMULATION AND DETECTION ---
-
+// ───────────────────────────────────────────────────────────────
+// 8. FULL SIMULATION AND DETECTION
+// ───────────────────────────────────────────────────────────────
 function createFullSimulation(config: SessionConfig = {}): FullSimulation {
   return {
     session: createSessionData(config),
@@ -436,8 +444,9 @@ function requiresSimulation(collectedData: CollectedData | null): boolean {
   return !hasUserPrompts && !hasObservations && !hasRecentContext;
 }
 
-// --- 9. SIMULATION WARNING UTILITIES ---
-
+// ───────────────────────────────────────────────────────────────
+// 9. SIMULATION WARNING UTILITIES
+// ───────────────────────────────────────────────────────────────
 function addSimulationWarning(content: string): string {
   const warning: string = `<!-- WARNING: This is simulated/placeholder content - NOT from a real session -->\n\n`;
   return warning + content;
@@ -451,8 +460,9 @@ function markAsSimulated(metadata: SimulationMetadata): SimulationMetadata {
   };
 }
 
-// --- 10. EXPORTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 10. EXPORTS
+// ───────────────────────────────────────────────────────────────
 export {
   createSessionData,
   createConversationData,

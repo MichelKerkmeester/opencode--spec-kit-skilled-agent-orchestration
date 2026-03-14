@@ -1,4 +1,6 @@
-// --- 1. RUN CHK-210 QUALITY BACKFILL ---
+// ───────────────────────────────────────────────────────────────
+// 1. RUN CHK-210 QUALITY BACKFILL
+// ───────────────────────────────────────────────────────────────
 // SCRIPT: CHK-210 Quality Metadata Backfill
 
 const fs = require('fs');

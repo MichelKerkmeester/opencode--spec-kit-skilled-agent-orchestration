@@ -1,4 +1,6 @@
-// --- 1. TEST — CLASSIFICATION DECAY (TM-03) ---
+// ───────────────────────────────────────────────────────────────
+// 1. TEST — CLASSIFICATION DECAY (TM-03)
+// ───────────────────────────────────────────────────────────────
 // Tests for CONTEXT_TYPE_STABILITY_MULTIPLIER,
 // IMPORTANCE_TIER_STABILITY_MULTIPLIER, getClassificationDecayMultiplier,
 // ApplyClassificationDecay, and the SPECKIT_CLASSIFICATION_DECAY feature flag.

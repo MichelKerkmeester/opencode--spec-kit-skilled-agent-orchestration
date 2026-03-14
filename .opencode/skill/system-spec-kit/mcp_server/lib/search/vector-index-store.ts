@@ -1,4 +1,6 @@
-// --- 1. VECTOR INDEX STORE ---
+// ───────────────────────────────────────────────────────────────
+// 1. VECTOR INDEX STORE
+// ───────────────────────────────────────────────────────────────
 // SEARCH: VECTOR INDEX
 // TypeScript port of the vector index implementation.
 // DECAY STRATEGY (ADR-004): Search-time temporal decay uses an
@@ -108,7 +110,7 @@ type EnhancedSearchOptions = {
 };
 type JsonObject = Record<string, unknown>;
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    1. CONFIGURATION — Embedding Dimension
 ----------------------------------------------------------------*/
 
@@ -204,7 +206,7 @@ export function validate_embedding_dimension(): { valid: boolean; stored: number
   }
 }
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    2. DATABASE PATH AND SECURITY
 ----------------------------------------------------------------*/
 
@@ -315,7 +317,7 @@ export function safe_parse_json(json_string: unknown, default_value = []): unkno
   }
 }
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    3. DATABASE SINGLETON
 ----------------------------------------------------------------*/
 
@@ -356,7 +358,7 @@ function is_constitutional_cache_valid() {
   return true;
 }
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    4. PREPARED STATEMENT CACHING
 ----------------------------------------------------------------*/
 
@@ -447,7 +449,7 @@ export function clear_prepared_statements(database?: Database.Database): void {
   // WeakMap entries are automatically cleared when the Database key is GC'd.
 }
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    5. CONSTITUTIONAL MEMORIES CACHE
 ----------------------------------------------------------------*/
 
@@ -561,7 +563,7 @@ export function refresh_interference_scores_for_folder(database: Database.Databa
   }
 }
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    6. DATABASE INITIALIZATION
 ----------------------------------------------------------------*/
 
@@ -638,7 +640,7 @@ export function initialize_db(custom_path: string | null = null): Database.Datab
   return db;
 }
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    7. DATABASE UTILITIES
 ----------------------------------------------------------------*/
 
@@ -679,7 +681,7 @@ export function is_vector_search_available(): boolean {
   return sqlite_vec_available_flag;
 }
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    8. IVECTORSTORE IMPLEMENTATION
 ----------------------------------------------------------------*/
 
@@ -835,7 +837,7 @@ export class SQLiteVectorStore extends IVectorStore {
   }
 }
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    9. CAMELCASE ALIASES
 ----------------------------------------------------------------*/
 

@@ -1,4 +1,6 @@
-// --- 1. INDEX ---
+// ───────────────────────────────────────────────────────────────
+// 1. INDEX
+// ───────────────────────────────────────────────────────────────
 // Barrel export for spec folder detection, validation, and setup modules
 import { detectSpecFolder, filterArchiveFolders } from './folder-detector';
 import {
@@ -14,7 +16,7 @@ import {
 } from './alignment-validator';
 import { setupContextDirectory } from './directory-setup';
 
-/* -----------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    EXPORTS - Primary (camelCase)
 ------------------------------------------------------------------*/
 
@@ -33,7 +35,7 @@ export {
   validateFolderAlignment,
 };
 
-/* -----------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    EXPORTS - Backwards compatibility aliases (snake_case)
 ------------------------------------------------------------------*/
 

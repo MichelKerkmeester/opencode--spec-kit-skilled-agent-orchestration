@@ -1,9 +1,12 @@
-// --- 1. QUERY EXPANDER ---
+// ───────────────────────────────────────────────────────────────
+// 1. QUERY EXPANDER
+// ───────────────────────────────────────────────────────────────
 // Rule-based synonym expansion for mode="deep" multi-query RAG.
 // No LLM calls — purely rule-based template substitution.
 
-// --- 2. CONSTANTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 2. CONSTANTS
+// ───────────────────────────────────────────────────────────────
 const MAX_VARIANTS = 3;
 
 /** Escape special regex characters in user input to prevent ReDoS (P1-6). */
@@ -50,8 +53,9 @@ export const DOMAIN_VOCABULARY_MAP: Record<string, string[]> = {
   fusion: ['merge', 'combine'],
 };
 
-// --- 3. CORE FUNCTION ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. CORE FUNCTION
+// ───────────────────────────────────────────────────────────────
 /**
  * Expand a query into multiple search variants using synonym maps.
  *

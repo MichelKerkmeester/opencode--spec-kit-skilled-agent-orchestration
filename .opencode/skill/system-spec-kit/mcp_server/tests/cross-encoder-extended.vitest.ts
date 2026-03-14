@@ -68,8 +68,9 @@ describe('Cross Encoder Extended Tests', () => {
     restoreAll();
   });
 
-  // --- 1. APPLYLENGTHPENALTY ---
-  describe('1. applyLengthPenalty', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 1. APPLYLENGTHPENALTY
+  // ───────────────────────────────────────────────────────────────  describe('1. applyLengthPenalty', () => {
     it('short content (<50 chars) applies 0.9 penalty', () => {
       const shortContent = mockResult(1, 'hi', 0.8);          // 2 chars < 50 → penalty 0.9
       const results = crossEncoder.applyLengthPenalty([shortContent]);
@@ -138,8 +139,9 @@ describe('Cross Encoder Extended Tests', () => {
     });
   });
 
-  // --- 2. RERANKVOYAGE ---
-  describe('2. rerankVoyage', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 2. RERANKVOYAGE
+  // ───────────────────────────────────────────────────────────────  describe('2. rerankVoyage', () => {
     it('throws when VOYAGE_API_KEY missing', async () => {
       await expect(
         crossEncoder.rerankVoyage('query', [{ id: 1, content: 'doc' }])
@@ -212,8 +214,9 @@ describe('Cross Encoder Extended Tests', () => {
     });
   });
 
-  // --- 3. RERANKCOHERE ---
-  describe('3. rerankCohere', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 3. RERANKCOHERE
+  // ───────────────────────────────────────────────────────────────  describe('3. rerankCohere', () => {
     it('throws when COHERE_API_KEY missing', async () => {
       await expect(
         crossEncoder.rerankCohere('query', [{ id: 1, content: 'doc' }])
@@ -261,8 +264,9 @@ describe('Cross Encoder Extended Tests', () => {
     });
   });
 
-  // --- 4. RERANKLOCAL ---
-  describe('4. rerankLocal', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 4. RERANKLOCAL
+  // ───────────────────────────────────────────────────────────────  describe('4. rerankLocal', () => {
     it('successful response returns sorted results', async () => {
       mockFetch(200, {
         results: [
@@ -322,8 +326,9 @@ describe('Cross Encoder Extended Tests', () => {
     });
   });
 
-  // --- 5. RERANKRESULTS WITH PROVIDER-SPECIFIC PATHS ---
-  describe('5. rerankResults (provider paths)', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 5. RERANKRESULTS WITH PROVIDER-SPECIFIC PATHS
+  // ───────────────────────────────────────────────────────────────  describe('5. rerankResults (provider paths)', () => {
     it('routes to Voyage when VOYAGE_API_KEY set', async () => {
       process.env.VOYAGE_API_KEY = 'voyage-key';
       mockFetch(200, {
@@ -421,8 +426,9 @@ describe('Cross Encoder Extended Tests', () => {
     });
   });
 
-  // --- 6. RERANKRESULTS CACHING BEHAVIOR ---
-  describe('6. rerankResults (caching)', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 6. RERANKRESULTS CACHING BEHAVIOR
+  // ───────────────────────────────────────────────────────────────  describe('6. rerankResults (caching)', () => {
     it('second call with same input uses cache', async () => {
       process.env.VOYAGE_API_KEY = 'voyage-key';
 
@@ -471,8 +477,9 @@ describe('Cross Encoder Extended Tests', () => {
     });
   });
 
-  // --- 7. RERANKRESULTS LATENCY TRACKING ---
-  describe('7. rerankResults (latency tracking)', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 7. RERANKRESULTS LATENCY TRACKING
+  // ───────────────────────────────────────────────────────────────  describe('7. rerankResults (latency tracking)', () => {
     it('tracks latency after successful provider call', async () => {
       process.env.VOYAGE_API_KEY = 'voyage-key';
       mockFetch(200, { data: [{ index: 0, relevance_score: 0.5 }] });
@@ -486,8 +493,9 @@ describe('Cross Encoder Extended Tests', () => {
     });
   });
 
-  // --- 8. VOYAGE PROVIDER PRIORITY OVER COHERE ---
-  describe('8. Provider priority', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 8. VOYAGE PROVIDER PRIORITY OVER COHERE
+  // ───────────────────────────────────────────────────────────────  describe('8. Provider priority', () => {
     it('Voyage takes priority over Cohere when both keys set', async () => {
       process.env.VOYAGE_API_KEY = 'voyage-key';
       process.env.COHERE_API_KEY = 'cohere-key';

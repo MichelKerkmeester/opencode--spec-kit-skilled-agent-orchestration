@@ -1,4 +1,6 @@
-// --- 1. RETRIEVAL TELEMETRY (C136-12) ---
+// ───────────────────────────────────────────────────────────────
+// 1. RETRIEVAL TELEMETRY (C136-12)
+// ───────────────────────────────────────────────────────────────
 // Captures latency, mode selection, fallback, and quality-proxy
 // Dimensions for governance review and Wave 2 gate decisions.
 // Feature flag: SPECKIT_EXTENDED_TELEMETRY (default false / disabled)
@@ -16,9 +18,9 @@ import type {
   MemoryRoadmapPhase,
 } from '../config/capability-flags';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    1. FEATURE FLAG
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Extended telemetry controlled by env var (default: disabled for performance).
@@ -28,9 +30,9 @@ function isExtendedTelemetryEnabled(): boolean {
   return process.env.SPECKIT_EXTENDED_TELEMETRY === 'true';
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    1b. QUALITY PROXY CONSTANTS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /** Maximum latency value (ms) for quality proxy normalization.
  *  Latencies at or above this ceiling map to a 0.0 quality score component. */
@@ -39,9 +41,9 @@ const QUALITY_PROXY_LATENCY_CEILING_MS = 5000;
 /** Result count at which the count-saturation component reaches 1.0. */
 const QUALITY_PROXY_COUNT_SATURATION_THRESHOLD = 10;
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    2. TYPES
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /** Latency breakdown by retrieval stage */
 interface LatencyMetrics {
@@ -117,9 +119,9 @@ interface RetrievalTelemetry {
 
 type LatencyStage = keyof Omit<LatencyMetrics, 'totalLatencyMs'>;
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    3. FACTORY
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 function createTelemetry(): RetrievalTelemetry {
   const roadmapDefaults = getMemoryRoadmapDefaults();
@@ -174,9 +176,9 @@ function createTelemetry(): RetrievalTelemetry {
   };
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    4. RECORDING FUNCTIONS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 function recordLatency(t: RetrievalTelemetry, stage: LatencyStage, ms: number): void {
   if (!t.enabled) return;
@@ -303,9 +305,9 @@ function recordAdaptiveEvaluation(
   };
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    5. QUALITY PROXY COMPUTATION
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Compute a 0-1 quality proxy score from the telemetry record.
@@ -336,9 +338,9 @@ function computeQualityProxy(t: RetrievalTelemetry): number {
   return Math.max(0, Math.min(1, raw));
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    6. SERIALIZATION
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 function toJSON(t: RetrievalTelemetry): Record<string, unknown> {
   if (!t.enabled) {
@@ -420,9 +422,9 @@ function toJSON(t: RetrievalTelemetry): Record<string, unknown> {
   return payload;
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    7. EXPORTS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 export {
   isExtendedTelemetryEnabled,

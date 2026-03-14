@@ -1,6 +1,8 @@
 "use strict";
 // @ts-nocheck
-// --- 1. TEST: PROGRESSIVE VALIDATION PIPELINE ---
+// ───────────────────────────────────────────────────────────────
+// 1. TEST: PROGRESSIVE VALIDATION PIPELINE
+// ───────────────────────────────────────────────────────────────
 // Tests for progressive-validate.sh — the 4-level progressive validation
 // Wrapper around validate.sh.
 //
@@ -57,7 +59,9 @@ const path = __importStar(require("path"));
 const fs = __importStar(require("fs"));
 const os = __importStar(require("os"));
 const child_process_1 = require("child_process");
-// --- 2. CONSTANTS ---
+// ───────────────────────────────────────────────────────────────
+// 2. CONSTANTS
+// ───────────────────────────────────────────────────────────────
 const SCRIPTS_DIR = path.resolve(__dirname, '..');
 const PROGRESSIVE_SCRIPT = path.join(SCRIPTS_DIR, 'spec', 'progressive-validate.sh');
 const VALIDATE_SCRIPT = path.join(SCRIPTS_DIR, 'spec', 'validate.sh');
@@ -65,7 +69,9 @@ const FIXTURES_DIR = path.join(SCRIPTS_DIR, 'tests', 'test-fixtures');
 const VALID_L1_FIXTURE = path.join(FIXTURES_DIR, '002-valid-level1');
 // Today's date in YYYY-MM-DD format (for auto-fix assertions)
 const TODAY = new Date().toISOString().split('T')[0];
-// --- 3. HELPERS ---
+// ───────────────────────────────────────────────────────────────
+// 3. HELPERS
+// ───────────────────────────────────────────────────────────────
 /**
  * Run progressive-validate.sh against a folder with optional extra flags.
  * Returns { stdout, stderr, exitCode }.
@@ -112,7 +118,9 @@ function createTempSpecDir(files) {
 function readFile(dir, name) {
     return fs.readFileSync(path.join(dir, name), 'utf8');
 }
-// --- 4. FIXTURES — MINIMAL SPEC.MD TEMPLATES FOR AUTO-FIX TESTS ---
+// ───────────────────────────────────────────────────────────────
+// 4. FIXTURES — MINIMAL SPEC.MD TEMPLATES FOR AUTO-FIX TESTS
+// ───────────────────────────────────────────────────────────────
 /** A minimal valid Level-1 spec.md without date placeholders. */
 const MINIMAL_SPEC_MD = `
 <!-- SPECKIT_TEMPLATE_SOURCE: level_1/spec.md | v2.2 -->
@@ -170,13 +178,18 @@ const MINIMAL_IMPL_MD = `
 
 Summary here.
 `.trimStart();
-// --- 5. GUARD: SKIP ENTIRE SUITE IF SCRIPT IS NOT PRESENT ---
+// ───────────────────────────────────────────────────────────────
+// 5. GUARD: SKIP ENTIRE SUITE IF SCRIPT IS NOT PRESENT
+// ───────────────────────────────────────────────────────────────
 const SCRIPT_EXISTS = fs.existsSync(PROGRESSIVE_SCRIPT);
 const VALIDATE_EXISTS = fs.existsSync(VALIDATE_SCRIPT);
-// --- 6. SUITE ---
+// ───────────────────────────────────────────────────────────────
+// 6. SUITE
+// ───────────────────────────────────────────────────────────────
 (0, vitest_1.describe)('Progressive Validation Pipeline', () => {
-    // --- 7. GUARD TESTS ---
-    (0, vitest_1.it)('T-PB2-00a: progressive-validate.sh script exists', () => {
+    // ───────────────────────────────────────────────────────────────
+    // 7. GUARD TESTS
+    // ───────────────────────────────────────────────────────────────    (0, vitest_1.it)('T-PB2-00a: progressive-validate.sh script exists', () => {
         (0, vitest_1.expect)(SCRIPT_EXISTS, `Expected progressive-validate.sh at: ${PROGRESSIVE_SCRIPT}`).toBe(true);
     });
     (0, vitest_1.it)('T-PB2-00b: validate.sh (dependency) exists', () => {
@@ -198,8 +211,9 @@ const VALIDATE_EXISTS = fs.existsSync(VALIDATE_SCRIPT);
         (0, vitest_1.expect)(exitCode).toBe(0);
         (0, vitest_1.expect)(stdout).toContain('progressive-validate.sh');
     });
-    // --- 8. T-PB2-01: LEVEL 1 DETECT — SAME BEHAVIOUR AS VALIDATE.SH ---
-    (0, vitest_1.describe)('T-PB2-01: Level 1 Detect (equivalent to validate.sh)', () => {
+    // ───────────────────────────────────────────────────────────────
+    // 8. T-PB2-01: LEVEL 1 DETECT — SAME BEHAVIOUR AS VALIDATE.SH
+    // ───────────────────────────────────────────────────────────────    (0, vitest_1.describe)('T-PB2-01: Level 1 Detect (equivalent to validate.sh)', () => {
         (0, vitest_1.it)('T-PB2-01a: exit code matches validate.sh for a passing fixture', () => {
             if (!SCRIPT_EXISTS || !VALIDATE_EXISTS || !fs.existsSync(VALID_L1_FIXTURE))
                 return;
@@ -228,8 +242,9 @@ const VALIDATE_EXISTS = fs.existsSync(VALIDATE_SCRIPT);
             (0, vitest_1.expect)(stdout).not.toMatch(/\[FIX\]/);
         });
     });
-    // --- 9. T-PB2-02: AUTO-FIX — MISSING DATES CORRECTED ---
-    (0, vitest_1.describe)('T-PB2-02: Auto-fix — Missing dates corrected', () => {
+    // ───────────────────────────────────────────────────────────────
+    // 9. T-PB2-02: AUTO-FIX — MISSING DATES CORRECTED
+    // ───────────────────────────────────────────────────────────────    (0, vitest_1.describe)('T-PB2-02: Auto-fix — Missing dates corrected', () => {
         let tmpDir;
         (0, vitest_1.afterEach)(() => {
             if (tmpDir && fs.existsSync(tmpDir)) {
@@ -310,8 +325,9 @@ Test.
             (0, vitest_1.expect)(after).toBe(before);
         });
     });
-    // --- 10. T-PB2-03: AUTO-FIX — HEADING LEVELS NORMALIZED ---
-    (0, vitest_1.describe)('T-PB2-03: Auto-fix — Heading levels normalized', () => {
+    // ───────────────────────────────────────────────────────────────
+    // 10. T-PB2-03: AUTO-FIX — HEADING LEVELS NORMALIZED
+    // ───────────────────────────────────────────────────────────────    (0, vitest_1.describe)('T-PB2-03: Auto-fix — Heading levels normalized', () => {
         let tmpDir;
         (0, vitest_1.afterEach)(() => {
             if (tmpDir && fs.existsSync(tmpDir)) {
@@ -367,8 +383,9 @@ Test.
             (0, vitest_1.expect)(stdout).toMatch(/HEADING_LEVELS|heading/i);
         });
     });
-    // --- 11. T-PB2-04: AUTO-FIX — WHITESPACE NORMALIZED ---
-    (0, vitest_1.describe)('T-PB2-04: Auto-fix — Whitespace normalized', () => {
+    // ───────────────────────────────────────────────────────────────
+    // 11. T-PB2-04: AUTO-FIX — WHITESPACE NORMALIZED
+    // ───────────────────────────────────────────────────────────────    (0, vitest_1.describe)('T-PB2-04: Auto-fix — Whitespace normalized', () => {
         let tmpDir;
         (0, vitest_1.afterEach)(() => {
             if (tmpDir && fs.existsSync(tmpDir)) {
@@ -437,8 +454,9 @@ Test.
             (0, vitest_1.expect)(stdout).toMatch(/WHITESPACE|whitespace/i);
         });
     });
-    // --- 12. T-PB2-05: ALL AUTO-FIXES LOGGED WITH BEFORE/AFTER DIFF ---
-    (0, vitest_1.describe)('T-PB2-05: All auto-fixes logged with before/after diff', () => {
+    // ───────────────────────────────────────────────────────────────
+    // 12. T-PB2-05: ALL AUTO-FIXES LOGGED WITH BEFORE/AFTER DIFF
+    // ───────────────────────────────────────────────────────────────    (0, vitest_1.describe)('T-PB2-05: All auto-fixes logged with before/after diff', () => {
         let tmpDir;
         (0, vitest_1.afterEach)(() => {
             if (tmpDir && fs.existsSync(tmpDir)) {
@@ -517,8 +535,9 @@ Test.
             (0, vitest_1.expect)(stdout).toMatch(/no auto-fixes needed/i);
         });
     });
-    // --- 13. T-PB2-06: SUGGEST LEVEL PRESENTS ISSUES WITH GUIDED OPTIONS ---
-    (0, vitest_1.describe)('T-PB2-06: Suggest level presents issues with guided options', () => {
+    // ───────────────────────────────────────────────────────────────
+    // 13. T-PB2-06: SUGGEST LEVEL PRESENTS ISSUES WITH GUIDED OPTIONS
+    // ───────────────────────────────────────────────────────────────    (0, vitest_1.describe)('T-PB2-06: Suggest level presents issues with guided options', () => {
         (0, vitest_1.it)('T-PB2-06a: [SUGGEST] markers appear for fixable but non-auto-fixable issues', () => {
             if (!SCRIPT_EXISTS || !VALIDATE_EXISTS)
                 return;
@@ -573,8 +592,9 @@ Test.
             (0, vitest_1.expect)(Array.isArray(parsed.suggestions.items)).toBe(true);
         });
     });
-    // --- 14. T-PB2-07: REPORT LEVEL PRODUCES STRUCTURED OUTPUT ---
-    (0, vitest_1.describe)('T-PB2-07: Report level produces structured output', () => {
+    // ───────────────────────────────────────────────────────────────
+    // 14. T-PB2-07: REPORT LEVEL PRODUCES STRUCTURED OUTPUT
+    // ───────────────────────────────────────────────────────────────    (0, vitest_1.describe)('T-PB2-07: Report level produces structured output', () => {
         (0, vitest_1.it)('T-PB2-07a: --level 4 output contains pipeline summary section', () => {
             if (!SCRIPT_EXISTS || !fs.existsSync(VALID_L1_FIXTURE))
                 return;
@@ -623,8 +643,9 @@ Test.
             (0, vitest_1.expect)(parsedDefault.pipelineLevel).toBe(parsedLevel.pipelineLevel);
         });
     });
-    // --- 15. T-PB2-08: DRY-RUN MODE — SHOWS CHANGES WITHOUT APPLYING ---
-    (0, vitest_1.describe)('T-PB2-08: --dry-run shows changes without applying', () => {
+    // ───────────────────────────────────────────────────────────────
+    // 15. T-PB2-08: DRY-RUN MODE — SHOWS CHANGES WITHOUT APPLYING
+    // ───────────────────────────────────────────────────────────────    (0, vitest_1.describe)('T-PB2-08: --dry-run shows changes without applying', () => {
         let tmpDir;
         (0, vitest_1.afterEach)(() => {
             if (tmpDir && fs.existsSync(tmpDir)) {
@@ -690,8 +711,9 @@ Test.
             (0, vitest_1.expect)(parsed.dryRun).toBe(true);
         });
     });
-    // --- 16. T-PB2-09: EXIT CODE COMPATIBILITY (0 / 1 / 2) ---
-    (0, vitest_1.describe)('T-PB2-09: Exit code compatibility (0 / 1 / 2)', () => {
+    // ───────────────────────────────────────────────────────────────
+    // 16. T-PB2-09: EXIT CODE COMPATIBILITY (0 / 1 / 2)
+    // ───────────────────────────────────────────────────────────────    (0, vitest_1.describe)('T-PB2-09: Exit code compatibility (0 / 1 / 2)', () => {
         (0, vitest_1.it)('T-PB2-09a: exit 0 for a passing spec (full pipeline)', () => {
             if (!SCRIPT_EXISTS || !VALIDATE_EXISTS || !fs.existsSync(VALID_L1_FIXTURE))
                 return;
@@ -740,8 +762,9 @@ Test.
             (0, vitest_1.expect)(exitCode).toBe(2);
         });
     });
-    // --- 17. T-PB2-10: --JSON PRODUCES PARSEABLE STRUCTURED OUTPUT ---
-    (0, vitest_1.describe)('T-PB2-10: --json produces parseable structured output', () => {
+    // ───────────────────────────────────────────────────────────────
+    // 17. T-PB2-10: --JSON PRODUCES PARSEABLE STRUCTURED OUTPUT
+    // ───────────────────────────────────────────────────────────────    (0, vitest_1.describe)('T-PB2-10: --json produces parseable structured output', () => {
         (0, vitest_1.it)('T-PB2-10a: --json output is valid JSON', () => {
             if (!SCRIPT_EXISTS || !fs.existsSync(VALID_L1_FIXTURE))
                 return;
@@ -791,8 +814,9 @@ Test.
             (0, vitest_1.expect)(Array.isArray(parsed.suggestions.items)).toBe(true);
         });
     });
-    // --- 18. T-PB2-11 / T-PB2-12 / T-PB2-13: --LEVEL N PIPELINE STAGES ---
-    (0, vitest_1.describe)('T-PB2-11/12/13: --level N controls pipeline depth', () => {
+    // ───────────────────────────────────────────────────────────────
+    // 18. T-PB2-11 / T-PB2-12 / T-PB2-13: --LEVEL N PIPELINE STAGES
+    // ───────────────────────────────────────────────────────────────    (0, vitest_1.describe)('T-PB2-11/12/13: --level N controls pipeline depth', () => {
         (0, vitest_1.it)('T-PB2-11: --level 1 output does NOT contain Level 2/3/4 headings', () => {
             if (!SCRIPT_EXISTS || !fs.existsSync(VALID_L1_FIXTURE))
                 return;
@@ -831,8 +855,9 @@ Test.
             (0, vitest_1.expect)(result5.exitCode).toBe(2);
         });
     });
-    // --- 19. T-PB2-15: EDGE CASES ---
-    (0, vitest_1.describe)('T-PB2-15: Edge cases', () => {
+    // ───────────────────────────────────────────────────────────────
+    // 19. T-PB2-15: EDGE CASES
+    // ───────────────────────────────────────────────────────────────    (0, vitest_1.describe)('T-PB2-15: Edge cases', () => {
         (0, vitest_1.it)('T-PB2-15a: missing folder argument exits 2 with error message', () => {
             if (!SCRIPT_EXISTS)
                 return;

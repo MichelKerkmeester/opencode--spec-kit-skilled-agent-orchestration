@@ -1,11 +1,14 @@
-// --- 1. K-VALUE SENSITIVITY ANALYSIS (T004A) ---
+// ───────────────────────────────────────────────────────────────
+// 1. K-VALUE SENSITIVITY ANALYSIS (T004A)
+// ───────────────────────────────────────────────────────────────
 // Measures the impact of different RRF K-values on ranking stability.
 // This is a measurement/analysis tool, not production code.
 import { fuseResultsMulti } from '@spec-kit/shared/algorithms/rrf-fusion';
 import type { RankedList, FusionResult } from '@spec-kit/shared/algorithms/rrf-fusion';
 
-// --- 2. TYPES ---
-
+// ───────────────────────────────────────────────────────────────
+// 2. TYPES
+// ───────────────────────────────────────────────────────────────
 /** Result metrics for a single K-value configuration. */
 interface KValueMetrics {
   /** Mean Reciprocal Rank at cutoff 5, estimated against baseline ranking. */
@@ -24,8 +27,9 @@ interface KValueAnalysisResult {
   totalItems: number;
 }
 
-// --- 3. STATISTICAL HELPERS ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. STATISTICAL HELPERS
+// ───────────────────────────────────────────────────────────────
 /**
  * Compute Kendall tau rank correlation coefficient between two rankings.
  *
@@ -112,8 +116,9 @@ function mrr5(baselineRanking: (number | string)[], candidateRanking: (number | 
   return sumRR / baselineTop.length;
 }
 
-// --- 4. MAIN ANALYSIS FUNCTION ---
-
+// ───────────────────────────────────────────────────────────────
+// 4. MAIN ANALYSIS FUNCTION
+// ───────────────────────────────────────────────────────────────
 /** K-values to test in the grid search. */
 const K_VALUES = [20, 40, 60, 80, 100] as const;
 
@@ -181,8 +186,9 @@ function analyzeKValueSensitivity(
   };
 }
 
-// --- 5. EXPORTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 5. EXPORTS
+// ───────────────────────────────────────────────────────────────
 export {
   analyzeKValueSensitivity,
   kendallTau,

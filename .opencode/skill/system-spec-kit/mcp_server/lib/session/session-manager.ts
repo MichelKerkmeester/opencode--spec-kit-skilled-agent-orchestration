@@ -1,5 +1,6 @@
-// --- 1. SESSION MANAGER ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. SESSION MANAGER
+// ───────────────────────────────────────────────────────────────
 import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
@@ -8,9 +9,9 @@ import type { DatabaseExtended as Database } from '@spec-kit/shared/types';
 // Import working-memory for immediate cleanup on session end (GAP 2).
 import * as workingMemory from '../cache/cognitive/working-memory';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    1. TYPES
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 interface SessionConfig {
   sessionTtlMinutes: number;
@@ -146,9 +147,9 @@ interface ContinueSessionInput {
   data?: Record<string, unknown> | null;
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    2. CONFIGURATION
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Session configuration with defaults from spec.md (R7 mitigation)
@@ -162,9 +163,9 @@ const SESSION_CONFIG: SessionConfig = {
   dbUnavailableMode: process.env.SESSION_DEDUP_DB_UNAVAILABLE_MODE === 'allow' ? 'allow' : 'block',
 };
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    3. DATABASE REFERENCE
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 let db: Database | null = null;
 // Track periodic cleanup interval for expired sessions
@@ -238,9 +239,9 @@ function getDb(): Database | null {
   return db;
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    4. SCHEMA MANAGEMENT
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 const SCHEMA_SQL = `
   CREATE TABLE IF NOT EXISTS session_sent_memories (
@@ -275,9 +276,9 @@ function ensureSchema(): InitResult {
   }
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    5. HASH GENERATION
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 function generateMemoryHash(memory: MemoryInput): string {
   if (!memory) {
@@ -305,9 +306,9 @@ function generateMemoryHash(memory: MemoryInput): string {
   return crypto.createHash('sha256').update(hashInput).digest('hex').slice(0, 32);
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    6. DEDUPLICATION METHODS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 function shouldSendMemory(sessionId: string, memory: MemoryInput | number): boolean {
   if (!SESSION_CONFIG.enabled) return true;
@@ -505,9 +506,9 @@ function markMemoriesSentBatch(sessionId: string, memories: MemoryInput[]): Mark
   }
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    7. SESSION PERSISTENCE
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 function enforceEntryLimit(sessionId: string): void {
   if (!db || !sessionId) return;
@@ -695,9 +696,9 @@ function getSessionStats(sessionId: string): SessionStats {
   }
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    8. INTEGRATION HELPERS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 function filterSearchResults(sessionId: string, results: MemoryInput[]): FilterResult {
   if (!SESSION_CONFIG.enabled || !sessionId || !Array.isArray(results)) {
@@ -755,9 +756,9 @@ function getConfig(): SessionConfig {
   return { ...SESSION_CONFIG };
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    9. SESSION STATE MANAGEMENT
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 const SESSION_STATE_SCHEMA_SQL = `
   CREATE TABLE IF NOT EXISTS session_state (
@@ -975,9 +976,9 @@ function getInterruptedSessions(): InterruptedSessionsResult {
   }
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    10. CONTINUE SESSION GENERATION
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 function generateContinueSessionMd(sessionState: ContinueSessionInput): string {
   const {
@@ -1112,9 +1113,9 @@ function checkpointSession(
   return { success: true, note: 'State saved to SQLite, no spec folder for CONTINUE_SESSION.md' };
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    11. SHUTDOWN
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 // Clear all background intervals on shutdown (GAP 1).
 function shutdown(): void {
@@ -1128,9 +1129,9 @@ function shutdown(): void {
   }
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    12. EXPORTS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 export {
   // Initialization

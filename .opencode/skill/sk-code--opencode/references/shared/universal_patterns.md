@@ -168,6 +168,10 @@ for (const entry of entry) { ... }  // very confusing
 2. **Focus on purposeful semantics:** Explain WHY something is done, not WHAT it does
 3. **No commented-out code:** Delete unused code (git preserves history)
 4. **Function purpose comments:** Single line above function describing intent
+5. **Capitalization:** Every inline comment sentence MUST start with a capital letter
+   - `// Process items in reverse order` (correct)
+   - `// process items in reverse order` (wrong)
+   - Exception: `eslint-disable`, `@ts-` directives, and technical identifiers (e.g., `// e.g. ...`)
 
 ### WHY Not WHAT
 

@@ -1,4 +1,6 @@
-// --- 1. TEST — CONSUMPTION LOGGER ---
+// ───────────────────────────────────────────────────────────────
+// 1. TEST — CONSUMPTION LOGGER
+// ───────────────────────────────────────────────────────────────
 // Tests for lib/telemetry/consumption-logger.ts
 // Covers: table creation, event logging, stats aggregation,
 // Pattern detection, fail-safe behavior, latency tracking.
@@ -62,9 +64,9 @@ function forceLogConsumptionEvent(db: Database.Database, event: ConsumptionEvent
   );
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    HELPERS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 function createTestDb(): Database.Database {
   const db = new Database(':memory:');
@@ -72,9 +74,9 @@ function createTestDb(): Database.Database {
   return db;
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    1. TABLE CREATION
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('T001: initConsumptionLog — table creation', () => {
   it('T001-A: creates consumption_log table', () => {
@@ -131,9 +133,9 @@ describe('T001: initConsumptionLog — table creation', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    2. EVENT LOGGING — all 3 event types
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('T002: event logging mechanics (via forceLog — flag is REMOVED)', () => {
   let db: Database.Database;
@@ -248,9 +250,9 @@ describe('T002: event logging mechanics (via forceLog — flag is REMOVED)', () 
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    3. STATS AGGREGATION
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('T003: getConsumptionStats — aggregation', () => {
   let db: Database.Database;
@@ -330,9 +332,9 @@ describe('T003: getConsumptionStats — aggregation', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    4. PATTERN DETECTION
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('T004: getConsumptionPatterns — pattern detection', () => {
   let db: Database.Database;
@@ -444,9 +446,9 @@ describe('T004: getConsumptionPatterns — pattern detection', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    5. FAIL-SAFE BEHAVIOR
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('T005: fail-safe behavior — logging errors never propagate', () => {
   it('T005-A: logConsumptionEvent does not throw on closed DB', () => {
@@ -565,9 +567,9 @@ describe('T005: fail-safe behavior — logging errors never propagate', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    6. LATENCY TRACKING
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('T006: latency tracking', () => {
   let db: Database.Database;

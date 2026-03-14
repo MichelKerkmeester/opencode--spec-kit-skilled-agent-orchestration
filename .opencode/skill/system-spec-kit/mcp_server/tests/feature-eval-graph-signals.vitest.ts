@@ -1,4 +1,6 @@
-// --- 1. TEST — FEATURE EVALUATION — GRAPH SIGNALS ---
+// ───────────────────────────────────────────────────────────────
+// 1. TEST — FEATURE EVALUATION — GRAPH SIGNALS
+// ───────────────────────────────────────────────────────────────
 // Rigorous cross-feature evaluation tests for T001, T002, T003a, T005a, T007
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';

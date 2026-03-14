@@ -1,5 +1,6 @@
-// --- 1. HANDLER EVAL REPORTING TESTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. HANDLER EVAL REPORTING TESTS
+// ───────────────────────────────────────────────────────────────
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import type {

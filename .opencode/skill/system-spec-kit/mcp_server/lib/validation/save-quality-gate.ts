@@ -1,4 +1,6 @@
-// --- 1. SAVE QUALITY GATE ---
+// ───────────────────────────────────────────────────────────────
+// 1. SAVE QUALITY GATE
+// ───────────────────────────────────────────────────────────────
 // Pre-Storage Quality Gate
 //
 // 3-layer validation before storing memories:
@@ -18,8 +20,9 @@
 // The 14-day graduation countdown survives server restarts.
 import * as vectorIndex from '../search/vector-index';
 
-// --- 2. TYPES ---
-
+// ───────────────────────────────────────────────────────────────
+// 2. TYPES
+// ───────────────────────────────────────────────────────────────
 /** Result from Layer 1: Structural validation */
 export interface StructuralValidationResult {
   pass: boolean;
@@ -85,8 +88,9 @@ type FindSimilarFn = (
   options: { limit: number; specFolder?: string }
 ) => Array<{ id: number; file_path: string; similarity: number }>;
 
-// --- 3. CONFIGURATION ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. CONFIGURATION
+// ───────────────────────────────────────────────────────────────
 /** Signal density threshold: below this score, content is too low quality */
 const SIGNAL_DENSITY_THRESHOLD = 0.4;
 
@@ -125,9 +129,9 @@ const GENERIC_TITLE_PATTERNS: RegExp[] = [
 /** Spec folder path validation pattern */
 const SPEC_FOLDER_PATTERN = /^[\w][\w\-/.]*$/;
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    3. FEATURE FLAG & WARN-ONLY MODE
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 /** SQLite config key for persisted activation timestamp */
 const ACTIVATION_CONFIG_KEY = 'quality_gate_activated_at';
@@ -279,9 +283,9 @@ function ensureActivationTimestampInitialized(): void {
   }
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    4. LAYER 1: STRUCTURAL VALIDATION
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 /**
  * Layer 1: Validate structural requirements for a memory.
@@ -327,9 +331,9 @@ export function validateStructural(params: {
   };
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    5. LAYER 2: CONTENT QUALITY SCORING
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 /**
  * Score title quality (0-1).
@@ -503,9 +507,9 @@ export function scoreContentQuality(params: {
   };
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    6. LAYER 3: SEMANTIC DEDUP
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 /**
  * Compute cosine similarity between two vectors.
@@ -596,8 +600,9 @@ export function checkSemanticDedup(
   }
 }
 
-// --- 4. UNIFIED QUALITY GATE ---
-
+// ───────────────────────────────────────────────────────────────
+// 4. UNIFIED QUALITY GATE
+// ───────────────────────────────────────────────────────────────
 /**
  * Run the full 3-layer quality gate for a memory save operation.
  *
@@ -702,9 +707,9 @@ export function runQualityGate(params: QualityGateParams): QualityGateResult {
   };
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    8. EXPORTS (re-export constants for testing)
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 export {
   SIGNAL_DENSITY_THRESHOLD,

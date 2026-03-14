@@ -1,4 +1,6 @@
-// --- 1. STAGE3 RERANK ---
+// ───────────────────────────────────────────────────────────────
+// 1. STAGE3 RERANK
+// ───────────────────────────────────────────────────────────────
 // 4-Stage Retrieval Pipeline: Stage 3 of 4
 //
 // Responsibilities (in execution order):

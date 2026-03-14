@@ -1,4 +1,6 @@
-// --- 1. BM25-ONLY BASELINE RUNNER (T008) ---
+// ───────────────────────────────────────────────────────────────
+// 1. BM25-ONLY BASELINE RUNNER (T008)
+// ───────────────────────────────────────────────────────────────
 //
 // Runs the ground truth query set through the BM25/FTS5-only
 // Search path (disabling vector, graph, and trigger channels)
@@ -30,9 +32,9 @@ import {
   type GroundTruthQuery,
 } from './ground-truth-data';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    1. PUBLIC TYPES
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /** Configuration options for the BM25 baseline runner. */
 export interface BM25BaselineConfig {
@@ -121,9 +123,9 @@ export type BM25SearchFn = (
   limit: number,
 ) => BM25SearchResult[] | Promise<BM25SearchResult[]>;
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    2. CONTINGENCY DECISION MATRIX
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Evaluate the BM25 MRR@5 value against the contingency decision matrix.
@@ -186,11 +188,11 @@ export function evaluateContingency(bm25MRR: number): ContingencyDecision {
   };
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    2a. RELATIVE CONTINGENCY (Spec-Compliant)
    Compares BM25 MRR@5 as a percentage of hybrid MRR@5.
    Spec: "BM25 >= 80% of hybrid MRR@5" → PAUSE.
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Evaluate BM25 performance relative to hybrid MRR@5 (spec-compliant).
@@ -278,11 +280,11 @@ export function evaluateContingencyRelative(
   };
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    2b. BOOTSTRAP CONFIDENCE INTERVAL (REQ-S0-004)
    Statistical significance testing for the contingency decision.
    Uses bootstrap resampling to compute 95% CI for MRR@5.
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /** Result of bootstrap confidence interval computation. */
 export interface BootstrapCIResult {
@@ -403,9 +405,9 @@ export function computeBootstrapCI(
   };
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    3. METRIC RECORDING
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Record BM25 baseline metrics to the eval DB (eval_metric_snapshots table).
@@ -459,9 +461,9 @@ export function recordBaselineMetrics(
   writeAll();
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    4. BM25 BASELINE RUNNER
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Run the BM25-only baseline measurement over the ground truth query set.
@@ -573,9 +575,9 @@ export async function runBM25Baseline(
   };
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    5. INTERNAL HELPERS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Build GroundTruthEntry[] for a single query from the relevance dataset.

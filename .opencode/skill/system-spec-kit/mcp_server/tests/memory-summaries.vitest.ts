@@ -17,9 +17,9 @@ import {
   __testables as summaryTestables,
 } from '../lib/search/memory-summaries';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    Helpers
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 const { cosineSimilarity, float32ToBuffer, bufferToFloat32 } = summaryTestables;
 

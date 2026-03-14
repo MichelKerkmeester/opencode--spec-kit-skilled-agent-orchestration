@@ -8,7 +8,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const vitest_1 = require("vitest");
 const tree_thinning_1 = require("../core/tree-thinning");
-/* -----------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    Helpers
 ------------------------------------------------------------------*/
 /** Generate a string of approximately `tokens` tokens (4 chars each). */
@@ -23,7 +23,7 @@ function specFile(name, tokens) {
 function memFile(name, tokens) {
     return { path: `specs/001-feature/memory/${name}`, content: makeContent(tokens) };
 }
-/* -----------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    T1: estimateTokenCount
 ------------------------------------------------------------------*/
 (0, vitest_1.describe)('estimateTokenCount', () => {
@@ -43,7 +43,7 @@ function memFile(name, tokens) {
         (0, vitest_1.expect)((0, tree_thinning_1.estimateTokenCount)(content)).toBe(tokens);
     });
 });
-/* -----------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    T2: isMemoryFile
 ------------------------------------------------------------------*/
 (0, vitest_1.describe)('isMemoryFile', () => {
@@ -58,7 +58,7 @@ function memFile(name, tokens) {
         (0, vitest_1.expect)((0, tree_thinning_1.isMemoryFile)('specs\\001-feature\\memory\\ctx.md')).toBe(true);
     });
 });
-/* -----------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    T3: deriveParentPath
 ------------------------------------------------------------------*/
 (0, vitest_1.describe)('deriveParentPath', () => {
@@ -72,7 +72,7 @@ function memFile(name, tokens) {
         (0, vitest_1.expect)((0, tree_thinning_1.deriveParentPath)('specs/001-feature/memory/ctx.md')).toBe('specs/001-feature/memory');
     });
 });
-/* -----------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    T4: Merge threshold (200 tokens) — standard files
 ------------------------------------------------------------------*/
 (0, vitest_1.describe)('Merge threshold (200 tokens) — standard files', () => {
@@ -113,7 +113,7 @@ function memFile(name, tokens) {
         (0, vitest_1.expect)(parents).toEqual(['specs/001-feature', 'specs/002-other']);
     });
 });
-/* -----------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    T5: Content-as-summary threshold (500 tokens) — standard files
 ------------------------------------------------------------------*/
 (0, vitest_1.describe)('Content-as-summary threshold (500 tokens) — standard files', () => {
@@ -136,7 +136,7 @@ function memFile(name, tokens) {
         (0, vitest_1.expect)(result.stats.mergedCount).toBe(0);
     });
 });
-/* -----------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    T6: Memory-specific thresholds (300/100 tokens)
 ------------------------------------------------------------------*/
 (0, vitest_1.describe)('Memory-specific thresholds (300/100 tokens)', () => {
@@ -172,7 +172,7 @@ function memFile(name, tokens) {
         (0, vitest_1.expect)(result.thinned[0].action).toBe('merged-into-parent');
     });
 });
-/* -----------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    T7: No content loss during merge
 ------------------------------------------------------------------*/
 (0, vitest_1.describe)('No content loss during merge', () => {
@@ -222,7 +222,7 @@ function memFile(name, tokens) {
         (0, vitest_1.expect)(result.stats.tokensSaved).toBe(0);
     });
 });
-/* -----------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    T8: Stats correctness
 ------------------------------------------------------------------*/
 (0, vitest_1.describe)('Stats correctness', () => {
@@ -254,7 +254,7 @@ function memFile(name, tokens) {
         (0, vitest_1.expect)(result.stats.tokensSaved).toBeGreaterThanOrEqual(0);
     });
 });
-/* -----------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    T9: Pre-pipeline boundary — thinning does NOT affect pipeline stages
 ------------------------------------------------------------------*/
 (0, vitest_1.describe)('Pre-pipeline boundary — thinning is pure, no side effects', () => {
@@ -311,7 +311,7 @@ function memFile(name, tokens) {
         }
     });
 });
-/* -----------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    T10: Mixed memory and non-memory files
 ------------------------------------------------------------------*/
 (0, vitest_1.describe)('Mixed memory and non-memory files', () => {

@@ -1,4 +1,6 @@
-// --- 1. EMBEDDING EXPANSION ---
+// ───────────────────────────────────────────────────────────────
+// 1. EMBEDDING EXPANSION
+// ───────────────────────────────────────────────────────────────
 // Sprint 5 Phase B — semantic query expansion using embedding similarity.
 //
 // R12/R15 Mutual Exclusion:
@@ -16,8 +18,9 @@ import { isEmbeddingExpansionEnabled } from './search-flags';
 import { classifyQueryComplexity } from './query-classifier';
 import * as vectorIndex from './vector-index';
 
-// --- 2. TYPES ---
-
+// ───────────────────────────────────────────────────────────────
+// 2. TYPES
+// ───────────────────────────────────────────────────────────────
 /**
  * Result produced by embedding-based query expansion.
  *
@@ -50,8 +53,9 @@ export interface EmbeddingExpansionOptions {
   maxTerms?: number;
 }
 
-// --- 3. CONSTANTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. CONSTANTS
+// ───────────────────────────────────────────────────────────────
 /** Number of semantically similar memories to mine for expansion terms. */
 const DEFAULT_CANDIDATE_LIMIT = 5;
 
@@ -71,9 +75,9 @@ const EXPANSION_STOP_WORDS: ReadonlySet<string> = new Set([
   'should', 'may', 'might', 'also', 'then', 'than',
 ]);
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    3. IDENTITY RESULT (no expansion applied)
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 /**
  * Produce a no-op ExpandedQuery that preserves the original query unchanged.
@@ -91,8 +95,9 @@ function identityResult(query: string): ExpandedQuery {
   };
 }
 
-// --- 4. TERM EXTRACTION ---
-
+// ───────────────────────────────────────────────────────────────
+// 4. TERM EXTRACTION
+// ───────────────────────────────────────────────────────────────
 /**
  * Extract candidate expansion terms from an array of memory content strings.
  *
@@ -136,8 +141,9 @@ function extractTermsFromContents(
     .map(([term]) => term);
 }
 
-// --- 5. MAIN EXPANSION FUNCTION ---
-
+// ───────────────────────────────────────────────────────────────
+// 5. MAIN EXPANSION FUNCTION
+// ───────────────────────────────────────────────────────────────
 /**
  * Expand a query using embedding-based similarity to find semantically
  * related terms from the memory index.
@@ -265,9 +271,9 @@ export async function expandQueryWithEmbeddings(
   }
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    6. UTILITY: Check whether expansion is active for a query
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 /**
  * Synchronous predicate that returns true when R12 embedding expansion

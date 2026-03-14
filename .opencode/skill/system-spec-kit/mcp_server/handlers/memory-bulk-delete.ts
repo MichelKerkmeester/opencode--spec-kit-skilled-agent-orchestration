@@ -1,4 +1,6 @@
-// --- 1. MEMORY BULK DELETE ---
+// ────────────────────────────────────────────────────────────────
+// 1. MEMORY BULK DELETE 
+// ────────────────────────────────────────────────────────────────
 // Tier-based bulk deletion of memories with safety gates.
 // Eliminates the need for direct DB scripts when cleaning up
 // Deprecated/temporary memories at scale.
@@ -18,9 +20,9 @@ import { buildMutationHookFeedback } from '../hooks/mutation-feedback';
 
 import type { MCPResponse } from './types';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    1. TYPES
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 interface BulkDeleteArgs {
   tier: string;
@@ -30,9 +32,9 @@ interface BulkDeleteArgs {
   skipCheckpoint?: boolean;
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    2. HANDLER
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 async function handleMemoryBulkDelete(args: BulkDeleteArgs): Promise<MCPResponse> {
   await checkDatabaseUpdated();
@@ -263,8 +265,8 @@ async function handleMemoryBulkDelete(args: BulkDeleteArgs): Promise<MCPResponse
   });
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    3. EXPORTS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 export { handleMemoryBulkDelete };

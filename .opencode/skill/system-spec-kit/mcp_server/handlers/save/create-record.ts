@@ -1,5 +1,6 @@
-// --- 1. CREATE RECORD ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. CREATE RECORD
+// ───────────────────────────────────────────────────────────────
 import path from 'path';
 import type BetterSqlite3 from 'better-sqlite3';
 

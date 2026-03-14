@@ -1,5 +1,6 @@
-// --- 1. COLLECT REDACTION CALIBRATION INPUTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. COLLECT REDACTION CALIBRATION INPUTS
+// ───────────────────────────────────────────────────────────────
 import fs from 'fs';
 import path from 'path';
 import { spawnSync } from 'child_process';

@@ -1,4 +1,6 @@
-// --- 1. PROVIDERS ---
+// ────────────────────────────────────────────────────────────────
+// 1. PROVIDERS 
+// ────────────────────────────────────────────────────────────────
 // @public — scripts should import from here, not lib/ internals.
 // ARCH-1 re-exports provider functions through a stable surface.
 

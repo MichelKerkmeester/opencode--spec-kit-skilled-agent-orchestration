@@ -1,4 +1,6 @@
-// --- 1. CHANNEL REPRESENTATION ---
+// ───────────────────────────────────────────────────────────────
+// 1. CHANNEL REPRESENTATION
+// ───────────────────────────────────────────────────────────────
 /* --- 1. CONSTANTS --- */
 
 /** Minimum similarity / relevance score for a result to qualify for promotion.

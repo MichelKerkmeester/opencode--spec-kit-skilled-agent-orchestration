@@ -1,4 +1,6 @@
-// --- 1. TEST: EXTRACTORS AND LOADERS COMPREHENSIVE VERIFICATION ---
+// ───────────────────────────────────────────────────────────────
+// 1. TEST: EXTRACTORS AND LOADERS COMPREHENSIVE VERIFICATION
+// ───────────────────────────────────────────────────────────────
 //
 // Covers:
 // - collect-session-data.js (424 LOC) - P0
@@ -18,7 +20,8 @@ const fs = require('fs');
 
 /* ─────────────────────────────────────────────────────────────
    1. CONFIGURATION
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 const SCRIPTS_DIR = path.join(__dirname, '..');
 const EXTRACTORS_DIR = path.join(SCRIPTS_DIR, 'dist', 'extractors');
@@ -34,7 +37,8 @@ const results = {
 
 /* ─────────────────────────────────────────────────────────────
    2. TEST UTILITIES
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 function log(msg) {
   console.log(msg);
@@ -148,7 +152,8 @@ function assertDoesNotThrow(fn, testName) {
 
 /* ─────────────────────────────────────────────────────────────
    3. TEST DATA FIXTURES
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 const MOCK_OBSERVATIONS = [
   {
@@ -244,7 +249,8 @@ const MOCK_MANUAL_DECISIONS = {
 
 /* ─────────────────────────────────────────────────────────────
    4. COLLECT-SESSION-DATA TESTS (P0)
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testCollectSessionData() {
   log('\n=== COLLECT-SESSION-DATA.JS (P0) ===');
@@ -350,7 +356,8 @@ async function testCollectSessionData() {
 
 /* ─────────────────────────────────────────────────────────────
    5. SESSION-EXTRACTOR TESTS (P1)
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testSessionExtractor() {
   log('\n=== SESSION-EXTRACTOR.JS (P1) ===');
@@ -536,7 +543,8 @@ async function testSessionExtractor() {
 
 /* ─────────────────────────────────────────────────────────────
    6. DECISION-EXTRACTOR TESTS (P1)
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testDecisionExtractor() {
   log('\n=== DECISION-EXTRACTOR.JS (P1) ===');
@@ -617,7 +625,8 @@ async function testDecisionExtractor() {
 
 /* ─────────────────────────────────────────────────────────────
    7. FILE-EXTRACTOR TESTS (P1)
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testFileExtractor() {
   log('\n=== FILE-EXTRACTOR.JS (P1) ===');
@@ -726,7 +735,8 @@ async function testFileExtractor() {
 
 /* ─────────────────────────────────────────────────────────────
    8. CONVERSATION-EXTRACTOR TESTS (P1)
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testConversationExtractor() {
   log('\n=== CONVERSATION-EXTRACTOR.JS (P1) ===');
@@ -790,7 +800,8 @@ async function testConversationExtractor() {
 
 /* ─────────────────────────────────────────────────────────────
    9. IMPLEMENTATION-GUIDE-EXTRACTOR TESTS (P1)
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testImplementationGuideExtractor() {
   log('\n=== IMPLEMENTATION-GUIDE-EXTRACTOR.JS (P1) ===');
@@ -906,7 +917,8 @@ async function testImplementationGuideExtractor() {
 
 /* ─────────────────────────────────────────────────────────────
    10. DIAGRAM-EXTRACTOR TESTS (P1)
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testDiagramExtractor() {
   log('\n=== DIAGRAM-EXTRACTOR.JS (P1) ===');
@@ -975,7 +987,8 @@ async function testDiagramExtractor() {
 
 /* ─────────────────────────────────────────────────────────────
    11. OPENCODE-CAPTURE TESTS (P1)
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testOpencodeCapture() {
   log('\n=== OPENCODE-CAPTURE.JS (P1) ===');
@@ -1055,7 +1068,8 @@ async function testOpencodeCapture() {
 
 /* ─────────────────────────────────────────────────────────────
    12. DATA-LOADER TESTS (P0)
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testDataLoader() {
   log('\n=== DATA-LOADER.JS (P0) ===');
@@ -1096,7 +1110,8 @@ async function testDataLoader() {
 
 /* ─────────────────────────────────────────────────────────────
    13. EXTRACTORS INDEX RE-EXPORTS TEST
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testExtractorsIndex() {
   log('\n=== EXTRACTORS/INDEX.JS ===');
@@ -1123,7 +1138,8 @@ async function testExtractorsIndex() {
 
 /* ─────────────────────────────────────────────────────────────
    14. ERROR HANDLING TESTS
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testErrorHandling() {
   log('\n=== ERROR HANDLING ===');
@@ -1189,7 +1205,8 @@ async function testErrorHandling() {
 
 /* ─────────────────────────────────────────────────────────────
    15. INTEGRATION TESTS
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testIntegration() {
   log('\n=== INTEGRATION TESTS ===');
@@ -1263,7 +1280,8 @@ async function testIntegration() {
 
 /* ─────────────────────────────────────────────────────────────
    16. TEST RUNNER
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function runAllTests() {
   log('');

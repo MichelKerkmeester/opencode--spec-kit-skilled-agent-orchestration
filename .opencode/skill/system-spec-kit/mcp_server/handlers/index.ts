@@ -1,4 +1,6 @@
-// --- 1. INDEX ---
+// ────────────────────────────────────────────────────────────────
+// 1. INDEX 
+// ────────────────────────────────────────────────────────────────
 
 import * as memorySearch from './memory-search';
 import * as memoryTriggers from './memory-triggers';
@@ -15,9 +17,9 @@ import * as sharedMemory from './shared-memory';
 import * as memoryContext from './memory-context';
 import * as memoryIngest from './memory-ingest';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    RE-EXPORTS: All handler functions
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 // Memory search handlers
 export {
@@ -142,9 +144,9 @@ export {
   handleSharedSpaceUpsert,
 } from './shared-memory';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    SUB-MODULE REFERENCES (for direct access)
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 export {
   memorySearch,

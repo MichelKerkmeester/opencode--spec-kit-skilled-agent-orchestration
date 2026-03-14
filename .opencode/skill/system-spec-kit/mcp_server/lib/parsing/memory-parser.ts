@@ -1,5 +1,6 @@
-// --- 1. MEMORY PARSER ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. MEMORY PARSER
+// ───────────────────────────────────────────────────────────────
 // Node stdlib
 import fs from 'fs';
 import path from 'path';
@@ -14,8 +15,9 @@ import { inferMemoryType } from '../config/type-inference';
 
 export { getCanonicalPathKey };
 
-// --- 2. TYPES ---
-
+// ───────────────────────────────────────────────────────────────
+// 2. TYPES
+// ───────────────────────────────────────────────────────────────
 /** Causal link relationship types between memories */
 export interface CausalLinks {
   caused_by: string[];
@@ -77,8 +79,9 @@ interface ExtractImportanceTierOptions {
   fallbackTier?: string | null;
 }
 
-// --- 3. CONFIGURATION ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. CONFIGURATION
+// ───────────────────────────────────────────────────────────────
 /**
  * Defines the MEMORY_FILE_PATTERN constant.
  */
@@ -109,8 +112,9 @@ export const CONTEXT_TYPE_MAP: Record<string, ContextType> = {
   'test': 'implementation',
 };
 
-// --- 4. CORE PARSING FUNCTIONS ---
-
+// ───────────────────────────────────────────────────────────────
+// 4. CORE PARSING FUNCTIONS
+// ───────────────────────────────────────────────────────────────
 /** Read file with BOM detection for UTF-16 support */
 export function readFileWithEncoding(filePath: string): string {
   const buffer = fs.readFileSync(filePath);
@@ -652,8 +656,9 @@ export function hasCausalLinks(causalLinks: CausalLinks | null | undefined): boo
   return Object.values(causalLinks).some((arr: string[]) => Array.isArray(arr) && arr.length > 0);
 }
 
-// --- 5. VALIDATION FUNCTIONS ---
-
+// ───────────────────────────────────────────────────────────────
+// 5. VALIDATION FUNCTIONS
+// ───────────────────────────────────────────────────────────────
 /** Constitutional markdown basenames intentionally excluded from indexing */
 const EXCLUDED_CONSTITUTIONAL_BASENAMES = new Set(['readme.md', 'readme.txt']);
 
@@ -799,8 +804,9 @@ export function validateParsedMemory(parsed: ParsedMemory): ParsedMemoryValidati
   };
 }
 
-// --- 6. DIRECTORY SCANNING ---
-
+// ───────────────────────────────────────────────────────────────
+// 6. DIRECTORY SCANNING
+// ───────────────────────────────────────────────────────────────
 /** Options for findMemoryFiles */
 export interface FindMemoryFilesOptions {
   specFolder?: string | null;
@@ -903,9 +909,9 @@ export function findMemoryFiles(workspacePath: string, options: FindMemoryFilesO
   return results;
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    6. MODULE EXPORTS (CommonJS compatibility)
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 module.exports = {
   // Core parsing (camelCase primary)

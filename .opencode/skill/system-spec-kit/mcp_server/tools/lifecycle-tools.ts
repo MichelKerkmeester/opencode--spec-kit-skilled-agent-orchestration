@@ -1,4 +1,6 @@
-// --- 1. LIFECYCLE TOOLS ---
+// ───────────────────────────────────────────────────────────────
+// 1. LIFECYCLE TOOLS
+// ───────────────────────────────────────────────────────────────
 // Dispatch for L6-L7 lifecycle tools: index_scan, preflight,
 // Postflight, learning_history (T303).
 import {

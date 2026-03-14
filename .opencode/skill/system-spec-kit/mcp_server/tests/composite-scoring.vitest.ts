@@ -13,8 +13,9 @@ function approxEqual(a: number, b: number, epsilon: number = 0.0001): boolean {
 
 describe('Composite Scoring', () => {
 
-  // --- 1. WEIGHT CONFIGURATION TESTS (T401-T410) ---
-
+  // ───────────────────────────────────────────────────────────────
+  // 1. WEIGHT CONFIGURATION TESTS (T401-T410)
+  // ───────────────────────────────────────────────────────────────
   describe('Weight Configuration (T401-T410)', () => {
     const weights = compositeScoring.DEFAULT_WEIGHTS
 
@@ -64,8 +65,9 @@ describe('Composite Scoring', () => {
     })
   })
 
-  // --- 2. RETRIEVABILITY INTEGRATION TESTS (T411-T420) ---
-
+  // ───────────────────────────────────────────────────────────────
+  // 2. RETRIEVABILITY INTEGRATION TESTS (T411-T420)
+  // ───────────────────────────────────────────────────────────────
   describe('Retrievability Integration (T411-T420)', () => {
     const calcR = compositeScoring.calculateRetrievabilityScore
 
@@ -244,8 +246,9 @@ describe('Composite Scoring', () => {
     })
   })
 
-  // --- 3. SCORE CALCULATION TESTS (T421-T430) ---
-
+  // ───────────────────────────────────────────────────────────────
+  // 3. SCORE CALCULATION TESTS (T421-T430)
+  // ───────────────────────────────────────────────────────────────
   describe('Score Calculation (T421-T430)', () => {
     const calcScore = compositeScoring.calculateCompositeScore
 
@@ -429,8 +432,9 @@ describe('Composite Scoring', () => {
     })
   })
 
-  // --- 4. EDGE CASES (T431-T440) ---
-
+  // ───────────────────────────────────────────────────────────────
+  // 4. EDGE CASES (T431-T440)
+  // ───────────────────────────────────────────────────────────────
   describe('Edge Cases (T431-T440)', () => {
     const calcScore = compositeScoring.calculateCompositeScore
 
@@ -577,8 +581,9 @@ describe('Composite Scoring', () => {
     })
   })
 
-  // --- 5. RANKING TESTS (T441-T445) ---
-
+  // ───────────────────────────────────────────────────────────────
+  // 5. RANKING TESTS (T441-T445)
+  // ───────────────────────────────────────────────────────────────
   describe('Ranking (T441-T445)', () => {
     const applyScoring = compositeScoring.applyCompositeScoring
 
@@ -709,8 +714,9 @@ describe('Composite Scoring', () => {
     })
   })
 
-  // --- 6. TIER BOOST TESTS ---
-
+  // ───────────────────────────────────────────────────────────────
+  // 6. TIER BOOST TESTS
+  // ───────────────────────────────────────────────────────────────
   describe('Tier Boost', () => {
     const getBoost = compositeScoring.getTierBoost
 
@@ -741,8 +747,9 @@ describe('Composite Scoring', () => {
     })
   })
 
-  // --- 7. FIVE-FACTOR MODEL TESTS (T083-T093) ---
-
+  // ───────────────────────────────────────────────────────────────
+  // 7. FIVE-FACTOR MODEL TESTS (T083-T093)
+  // ───────────────────────────────────────────────────────────────
   describe('Five-Factor Model (T083-T093)', () => {
     const weights = compositeScoring.FIVE_FACTOR_WEIGHTS
 
@@ -1006,8 +1013,9 @@ describe('Composite Scoring', () => {
     })
   })
 
-  // --- 8. MODULE EXPORTS VERIFICATION ---
-
+  // ───────────────────────────────────────────────────────────────
+  // 8. MODULE EXPORTS VERIFICATION
+  // ───────────────────────────────────────────────────────────────
   describe('Module Exports', () => {
     const expectedExports = [
       // Configuration

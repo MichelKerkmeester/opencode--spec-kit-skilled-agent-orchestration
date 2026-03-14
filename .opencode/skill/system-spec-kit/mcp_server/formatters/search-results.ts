@@ -1,4 +1,6 @@
-// --- 1. SEARCH RESULTS FORMATTER ---
+// ────────────────────────────────────────────────────────────────
+// 1. SEARCH RESULTS FORMATTER 
+// ────────────────────────────────────────────────────────────────
 
 // Node stdlib
 import fs from 'fs';
@@ -22,7 +24,9 @@ import {
 // Consolidated path validation from core/config.js (single source of truth)
 import { ALLOWED_BASE_PATHS } from '../core/config';
 
-// --- 2. TYPES ---
+// ────────────────────────────────────────────────────────────────
+// 2. TYPES 
+// ────────────────────────────────────────────────────────────────
 
 /** Token metrics for anchor-filtered content */
 export interface AnchorTokenMetrics {
@@ -123,7 +127,9 @@ export interface MemoryParserLike {
 // MCPResponse type is imported from '../lib/response/envelope'
 export type { MCPResponse };
 
-// --- 3. PATH VALIDATION ---
+// ────────────────────────────────────────────────────────────────
+// 3. PATH VALIDATION 
+// ────────────────────────────────────────────────────────────────
 
 export function validateFilePathLocal(filePath: string): string {
   const result = validateFilePath(filePath, ALLOWED_BASE_PATHS);
@@ -137,7 +143,9 @@ export function validateFilePathLocal(filePath: string): string {
   return result;
 }
 
-// --- 4. HELPER UTILITIES ---
+// ────────────────────────────────────────────────────────────────
+// 4. HELPER UTILITIES 
+// ────────────────────────────────────────────────────────────────
 
 export function safeJsonParse<T>(str: string | null | undefined, fallback: T): T {
   if (!str) return fallback;
@@ -318,7 +326,9 @@ function extractTrace(rawResult: RawSearchResult, extraData?: Record<string, unk
   };
 }
 
-// --- 5. SEARCH RESULTS FORMATTING ---
+// ────────────────────────────────────────────────────────────────
+// 5. SEARCH RESULTS FORMATTING 
+// ────────────────────────────────────────────────────────────────
 
 export async function formatSearchResults(
   results: RawSearchResult[] | null,
@@ -545,6 +555,6 @@ export async function formatSearchResults(
   });
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    5. (ESM exports above — no CommonJS module.exports needed)
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */

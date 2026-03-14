@@ -1,4 +1,6 @@
-// --- 1. CAUSAL TOOLS ---
+// ───────────────────────────────────────────────────────────────
+// 1. CAUSAL TOOLS
+// ───────────────────────────────────────────────────────────────
 // Dispatch for L6 causal memory graph tools: drift_why,
 // Causal_link, causal_stats, causal_unlink (T303).
 import {

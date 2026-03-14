@@ -1,13 +1,15 @@
-// --- 1. EVAL CEILING (T006F) ---
+// ───────────────────────────────────────────────────────────────
+// 1. EVAL CEILING (T006F)
+// ───────────────────────────────────────────────────────────────
 // Full-Context Ceiling Evaluation — computes the theoretical
 // Maximum MRR@5 assuming access to ALL memory content and
 // Perfect ranking ability. Pure functions, no DB writes,
 // No side effects (except optional async scorer).
 import { GroundTruthEntry } from './eval-metrics';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    1. TYPES
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /** A memory record used for ceiling evaluation. */
 export interface CeilingMemory {
@@ -115,16 +117,16 @@ export interface CeilingVsBaselineResult {
   recommendation: string;
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    2. CONSTANTS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /** MRR threshold separating "high" from "low" performance. */
 const HIGH_MRR_THRESHOLD = 0.6;
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    3. INTERNAL HELPERS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Group ground truth entries by queryId for O(1) access.
@@ -164,9 +166,9 @@ function computePerQueryCeiling(
   return { queryId, ceilingRank: k + 1, reciprocalRank: 0 };
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    4. CORE: computeCeilingFromGroundTruth
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Compute ceiling MRR using ground truth relevance as the score
@@ -242,9 +244,9 @@ export function computeCeilingFromGroundTruth(
   };
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    5. ASYNC: computeCeilingWithScorer
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Compute ceiling MRR using a pluggable async scorer (e.g. LLM-based).
@@ -318,9 +320,9 @@ export async function computeCeilingWithScorer(
   };
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    6. 2x2 MATRIX: interpretCeilingVsBaseline
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Classify ceiling and baseline MRR into one of four quadrants
@@ -378,9 +380,9 @@ export function interpretCeilingVsBaseline(
   };
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    7. INTERNAL: interpretation builder
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Build a human-readable interpretation string for a ceiling result.

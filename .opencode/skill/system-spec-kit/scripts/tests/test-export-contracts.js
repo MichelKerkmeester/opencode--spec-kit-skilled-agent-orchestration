@@ -15,13 +15,17 @@
 const fs = require('fs');
 const path = require('path');
 
-// --- 1. PATHS ---
+// ───────────────────────────────────────────────────────────────
+// 1. PATHS
+// ───────────────────────────────────────────────────────────────
 const MCP_ROOT = path.resolve(__dirname, '../../mcp_server');
 const SCRIPTS_ROOT = path.resolve(__dirname, '..');
 const HANDLERS_DIR = path.join(MCP_ROOT, 'handlers');
 const BASE_ROOT = path.resolve(MCP_ROOT, '..');
 
-// --- 2. TEST STATE ---
+// ───────────────────────────────────────────────────────────────
+// 2. TEST STATE
+// ───────────────────────────────────────────────────────────────
 let passed = 0;
 let failed = 0;
 let skipped = 0;
@@ -41,7 +45,9 @@ function rel(filePath) {
   return path.relative(BASE_ROOT, filePath);
 }
 
-// --- 3. HELPERS ---
+// ───────────────────────────────────────────────────────────────
+// 3. HELPERS
+// ───────────────────────────────────────────────────────────────
 function toSnakeCase(str) {
   return str.replace(/([A-Z])/g, '_$1').toLowerCase();
 }
@@ -154,7 +160,9 @@ function extractKeysFromExportClause(exportClause, lineNum, keys) {
   }
 }
 
-// --- 4. HANDLER FILES AND EXPECTED MINIMUM HANDLE* FUNCTION COUNTS ---
+// ───────────────────────────────────────────────────────────────
+// 4. HANDLER FILES AND EXPECTED MINIMUM HANDLE* FUNCTION COUNTS
+// ───────────────────────────────────────────────────────────────
 const HANDLER_FILES = [
   { file: 'causal-graph.ts', minHandleFuncs: 3 },
   { file: 'checkpoints.ts', minHandleFuncs: 3 },
@@ -167,7 +175,9 @@ const HANDLER_FILES = [
   { file: 'session-learning.ts', minHandleFuncs: 3 },
 ];
 
-// --- 5. BARREL FILES AND EXPECTED KEY EXPORTS ---
+// ───────────────────────────────────────────────────────────────
+// 5. BARREL FILES AND EXPECTED KEY EXPORTS
+// ───────────────────────────────────────────────────────────────
 const BARREL_FILES = [
   {
     file: 'scripts/dist/core/index.js',

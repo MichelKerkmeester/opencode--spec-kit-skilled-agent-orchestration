@@ -1,4 +1,6 @@
-// --- 1. MODULARIZATION TESTS ---
+// ───────────────────────────────────────────────────────────────
+// 1. MODULARIZATION TESTS
+// ───────────────────────────────────────────────────────────────
 // Source: modularization.test.js (442 lines)
 // Active tests: directory structure, module line counts, context-server imports
 // Skipped tests: index exports, core/handler/formatter/utils/hooks exports,

@@ -4,9 +4,9 @@
 import { describe, it, expect } from 'vitest';
 import * as tierClassifier from '../lib/cache/cognitive/tier-classifier';
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    1. classifyTier with TierInput partial objects
----------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('Tier Classifier — Type Unification (TierInput)', () => {
 
@@ -57,9 +57,9 @@ describe('Tier Classifier — Type Unification (TierInput)', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      2. classifyTier with extra arbitrary fields
-  ---------------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('classifyTier() with extra arbitrary fields (Record<string, unknown>)', () => {
 
@@ -101,9 +101,9 @@ describe('Tier Classifier — Type Unification (TierInput)', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      3. filterAndLimitByState with mixed-shape TierInput[]
-  ---------------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('filterAndLimitByState() with mixed-shape objects', () => {
 
@@ -138,9 +138,9 @@ describe('Tier Classifier — Type Unification (TierInput)', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      4. getStateStats with TierInput[]
-  ---------------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('getStateStats() with TierInput objects', () => {
 
@@ -170,9 +170,9 @@ describe('Tier Classifier — Type Unification (TierInput)', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      5. formatStateResponse with TierInput[]
-  ---------------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('formatStateResponse() with TierInput objects', () => {
 
@@ -203,9 +203,9 @@ describe('Tier Classifier — Type Unification (TierInput)', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      6. shouldArchive with TierInput
-  ---------------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('shouldArchive() with TierInput objects', () => {
 

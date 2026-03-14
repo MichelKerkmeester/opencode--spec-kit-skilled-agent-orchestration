@@ -1,9 +1,13 @@
-// --- 1. FILE HELPERS ---
+// ───────────────────────────────────────────────────────────────
+// 1. FILE HELPERS
+// ───────────────────────────────────────────────────────────────
 // Path normalization, description cleaning, and file categorization utilities
 
 import { posix as pathPosix } from 'node:path';
 
-// --- 2. PATH UTILITIES ---
+// ───────────────────────────────────────────────────────────────
+// 2. PATH UTILITIES
+// ───────────────────────────────────────────────────────────────
 function toRelativePath(filePath: string, projectRoot?: string): string {
   if (!filePath) return '';
   let cleaned: string = pathPosix.normalize(filePath.replace(/\\/g, '/'));
@@ -38,8 +42,9 @@ function toRelativePath(filePath: string, projectRoot?: string): string {
   return cleaned;
 }
 
-// --- 3. DESCRIPTION UTILITIES ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. DESCRIPTION UTILITIES
+// ───────────────────────────────────────────────────────────────
 // NOTE: A stricter variant exists in lib/semantic-summarizer.ts with 3 additional
 // Garbage patterns (/^changed?$/i, /^no description available$/i, /^modified?$/i).
 function isDescriptionValid(description: string): boolean {
@@ -80,8 +85,9 @@ function cleanDescription(desc: string): string {
   return cleaned;
 }
 
-// --- 4. EXPORTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 4. EXPORTS
+// ───────────────────────────────────────────────────────────────
 export {
   toRelativePath,
   isDescriptionValid,

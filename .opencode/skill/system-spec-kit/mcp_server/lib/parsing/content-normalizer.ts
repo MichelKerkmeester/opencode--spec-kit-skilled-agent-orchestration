@@ -1,4 +1,6 @@
-// --- 1. CONTENT NORMALIZER ---
+// ───────────────────────────────────────────────────────────────
+// 1. CONTENT NORMALIZER
+// ───────────────────────────────────────────────────────────────
 // Sprint 7 / S1 — Smarter Memory Content Generation
 //
 // Purpose: Normalize raw markdown content before it is passed to
@@ -15,7 +17,9 @@
 //   - bm25-index.ts     ~line 245  : where `content_text` is used for token building
 // → normalizeContentForBM25(content_text)
 //
-// --- 2. PRIMITIVE STRIP / NORMALIZE HELPERS ---
+// ───────────────────────────────────────────────────────────────
+// 2. PRIMITIVE STRIP / NORMALIZE HELPERS
+// ───────────────────────────────────────────────────────────────
 /**
  * Strip YAML frontmatter block from the top of a markdown file.
  *
@@ -166,8 +170,9 @@ export function normalizeHeadings(content: string): string {
   );
 }
 
-// --- 3. WHITESPACE CLEANUP ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. WHITESPACE CLEANUP
+// ───────────────────────────────────────────────────────────────
 /**
  * Collapse runs of blank lines to a single blank line, and trim
  * leading / trailing whitespace from the whole document.
@@ -181,8 +186,9 @@ function collapseWhitespace(content: string): string {
     .trim();
 }
 
-// --- 4. PUBLIC COMPOSITE FUNCTIONS ---
-
+// ───────────────────────────────────────────────────────────────
+// 4. PUBLIC COMPOSITE FUNCTIONS
+// ───────────────────────────────────────────────────────────────
 /**
  * Normalize markdown content for use in embedding generation.
  *

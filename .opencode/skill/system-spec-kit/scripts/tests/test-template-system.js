@@ -1,4 +1,6 @@
-// --- 1. TEST: TEMPLATE SYSTEM VERIFICATION ---
+// ───────────────────────────────────────────────────────────────
+// 1. TEST: TEMPLATE SYSTEM VERIFICATION
+// ───────────────────────────────────────────────────────────────
 //
 // Comprehensive tests for the SpecKit template system:
 // - Level folder existence and file counts
@@ -16,7 +18,8 @@ const { execSync } = require('child_process');
 
 /* ─────────────────────────────────────────────────────────────
    1. CONFIGURATION
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 const ROOT = path.join(__dirname, '..', '..');
 const TEMPLATES_DIR = path.join(ROOT, 'templates');
@@ -45,7 +48,8 @@ const results = {
 
 /* ─────────────────────────────────────────────────────────────
    2. UTILITIES
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 function log(msg) {
   console.log(msg);
@@ -107,7 +111,8 @@ function hasSingleTopFrontmatter(content) {
 
 /* ─────────────────────────────────────────────────────────────
    3. TEST SUITE: LEVEL TEMPLATES EXIST
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testLevelTemplatesExist() {
   log('\n--- TEST SUITE: Level Templates Exist ---');
@@ -231,7 +236,8 @@ async function testLevelTemplatesExist() {
 
 /* ─────────────────────────────────────────────────────────────
    4. TEST SUITE: CORE TEMPLATES
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testCoreTemplates() {
   log('\n--- TEST SUITE: Core Templates ---');
@@ -304,7 +310,8 @@ async function testCoreTemplates() {
 
 /* ─────────────────────────────────────────────────────────────
    5. TEST SUITE: ADDENDUM STRUCTURE
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testAddendumStructure() {
   log('\n--- TEST SUITE: Addendum Structure ---');
@@ -376,7 +383,8 @@ async function testAddendumStructure() {
 
 /* ─────────────────────────────────────────────────────────────
    6. TEST SUITE: PLACEHOLDER PATTERNS
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testPlaceholderPatterns() {
   log('\n--- TEST SUITE: Placeholder Patterns ---');
@@ -467,7 +475,8 @@ async function testPlaceholderPatterns() {
 
 /* ─────────────────────────────────────────────────────────────
    7. TEST SUITE: EXAMPLE TEMPLATES
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testExampleTemplates() {
   log('\n--- TEST SUITE: Example Templates ---');
@@ -545,7 +554,8 @@ async function testExampleTemplates() {
 
 /* ─────────────────────────────────────────────────────────────
    8. TEST SUITE: COMPOSE.SH FUNCTIONALITY
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testComposeScript() {
   log('\n--- TEST SUITE: compose.sh Functionality ---');
@@ -639,7 +649,8 @@ async function testComposeScript() {
 
 /* ─────────────────────────────────────────────────────────────
    9. TEST SUITE: LEVEL-SPECIFIC CONTENT
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testLevelSpecificContent() {
   log('\n--- TEST SUITE: Level-Specific Content ---');
@@ -722,7 +733,8 @@ async function testLevelSpecificContent() {
 
 /* ─────────────────────────────────────────────────────────────
    10. TEST SUITE: TEMPLATE CONSISTENCY
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testTemplateConsistency() {
   log('\n--- TEST SUITE: Template Consistency ---');
@@ -798,7 +810,8 @@ async function testTemplateConsistency() {
 
 /* ─────────────────────────────────────────────────────────────
    11. MAIN
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function main() {
   log('==================================================');

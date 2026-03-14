@@ -32,9 +32,9 @@ function makeRow(overrides: Partial<PipelineRow> = {}): PipelineRow {
   } as PipelineRow;
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    T1-T5: Quality score signal extraction
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 describe('extractValidationMetadata — quality score signals', () => {
   it('T1: extracts qualityScore from db quality_score when present and positive', () => {
@@ -94,9 +94,9 @@ describe('extractValidationMetadata — quality score signals', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    T6-T9: SPECKIT_LEVEL extraction from content
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 describe('extractValidationMetadata — SPECKIT_LEVEL from content', () => {
   it('T6: extracts specLevel 1 from <!-- SPECKIT_LEVEL: 1 --> marker', () => {
@@ -140,9 +140,9 @@ describe('extractValidationMetadata — SPECKIT_LEVEL from content', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    T10-T12: Completion status from content markers
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 describe('extractValidationMetadata — completion status', () => {
   it('T10: returns completionStatus=complete for <!-- VALIDATED --> marker', () => {
@@ -203,9 +203,9 @@ describe('extractValidationMetadata — completion status', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    T13-T14: Checklist heuristic from file_path
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 describe('extractValidationMetadata — checklist file path heuristic', () => {
   it('T13: sets hasChecklist=true when file_path contains "checklist"', () => {
@@ -225,9 +225,9 @@ describe('extractValidationMetadata — checklist file path heuristic', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    T15-T16: Edge cases — null and missing metadata
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 describe('extractValidationMetadata — edge cases', () => {
   it('T15: returns null when row has no signals (no tier, no quality_score, no content)', () => {
@@ -268,9 +268,9 @@ describe('extractValidationMetadata — edge cases', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    T17-T20: enrichResultsWithValidationMetadata — batch enrichment
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 describe('enrichResultsWithValidationMetadata — batch enrichment', () => {
   it('T17: attaches validationMetadata to rows that have signals', () => {
@@ -327,9 +327,9 @@ describe('enrichResultsWithValidationMetadata — batch enrichment', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    T21-T22: Score immutability invariant
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 describe('enrichResultsWithValidationMetadata — score immutability', () => {
   it('T21: does not modify score, rrfScore, or similarity fields', () => {
@@ -368,9 +368,9 @@ describe('enrichResultsWithValidationMetadata — score immutability', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    Exported constants completeness
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 describe('TIER_QUALITY_SCORES and VALIDATION_COMPLETE_MARKERS exports', () => {
   it('TIER_QUALITY_SCORES covers all six standard tiers', () => {
@@ -396,9 +396,9 @@ describe('TIER_QUALITY_SCORES and VALIDATION_COMPLETE_MARKERS exports', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    Stage 2 integration: validation metadata contributes to ranking
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 describe('Stage2 validation scoring integration', () => {
   it('applies higher score to higher-quality validation metadata', () => {

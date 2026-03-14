@@ -1,5 +1,6 @@
-// --- 1. COMPOSITE SCORING ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. COMPOSITE SCORING
+// ───────────────────────────────────────────────────────────────
 export * from '../../scoring/composite-scoring';
 /**
  * Re-exports related public types.

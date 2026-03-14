@@ -1,7 +1,11 @@
-// --- 1. PATH UTILS ---
+// ───────────────────────────────────────────────────────────────
+// 1. PATH UTILS
+// ───────────────────────────────────────────────────────────────
 // Secure path sanitization and resolution with traversal protection (CWE-22)
 
-// --- 2. IMPORTS ---
+// ───────────────────────────────────────────────────────────────
+// 2. IMPORTS
+// ───────────────────────────────────────────────────────────────
 // Node stdlib
 import fs from 'fs';
 import path from 'path';
@@ -9,8 +13,9 @@ import path from 'path';
 // Internal modules
 import { structuredLog } from './logger';
 
-// --- 3. PATH SANITIZATION ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. PATH SANITIZATION
+// ───────────────────────────────────────────────────────────────
 function sanitizePath(inputPath: string, allowedBases: string[] | null = null): string {
   if (!inputPath || typeof inputPath !== 'string') {
     throw new Error('Invalid path: path must be a non-empty string');
@@ -83,15 +88,17 @@ function sanitizePath(inputPath: string, allowedBases: string[] | null = null): 
   return canonicalResolved;
 }
 
-// --- 4. UTILITIES ---
-
+// ───────────────────────────────────────────────────────────────
+// 4. UTILITIES
+// ───────────────────────────────────────────────────────────────
 function getPathBasename(p: string): string {
   if (!p || typeof p !== 'string') return '';
   return p.replace(/\\/g, '/').split('/').pop() || '';
 }
 
-// --- 5. EXPORTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 5. EXPORTS
+// ───────────────────────────────────────────────────────────────
 export {
   sanitizePath,
   getPathBasename,

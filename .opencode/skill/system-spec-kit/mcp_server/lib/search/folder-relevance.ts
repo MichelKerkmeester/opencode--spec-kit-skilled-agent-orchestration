@@ -1,4 +1,6 @@
-// --- 1. FOLDER RELEVANCE ---
+// ───────────────────────────────────────────────────────────────
+// 1. FOLDER RELEVANCE
+// ───────────────────────────────────────────────────────────────
 // Computes folder-level relevance scores from individual memory
 // Scores using damped aggregation: FolderScore = (1/sqrt(M+1)) * SUM(score(m))
 //
@@ -12,8 +14,9 @@
 // Type-only
 import type Database from 'better-sqlite3';
 
-// --- 2. FEATURE FLAG ---
-
+// ───────────────────────────────────────────────────────────────
+// 2. FEATURE FLAG
+// ───────────────────────────────────────────────────────────────
 /**
  * Check if folder relevance scoring is enabled.
  * Default: TRUE (graduated). Set SPECKIT_FOLDER_SCORING=false to disable.
@@ -22,8 +25,9 @@ export function isFolderScoringEnabled(): boolean {
   return process.env.SPECKIT_FOLDER_SCORING?.toLowerCase() !== 'false';
 }
 
-// --- 3. CORE COMPUTATION ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. CORE COMPUTATION
+// ───────────────────────────────────────────────────────────────
 /**
  * Compute FolderScore for each spec folder from grouped search results.
  *
@@ -75,8 +79,9 @@ export function computeFolderRelevanceScores(
   return folderScores;
 }
 
-// --- 4. DATABASE LOOKUP ---
-
+// ───────────────────────────────────────────────────────────────
+// 4. DATABASE LOOKUP
+// ───────────────────────────────────────────────────────────────
 /**
  * Look up spec_folder values for a list of memory IDs from the database.
  *
@@ -114,8 +119,9 @@ export function lookupFolders(
   return folderMap;
 }
 
-// --- 5. RESULT ENRICHMENT ---
-
+// ───────────────────────────────────────────────────────────────
+// 5. RESULT ENRICHMENT
+// ───────────────────────────────────────────────────────────────
 /**
  * Enrich search results with folder-level relevance metadata.
  *
@@ -171,8 +177,9 @@ export function enrichResultsWithFolderScores<
   });
 }
 
-// --- 6. TWO-PHASE RETRIEVAL ---
-
+// ───────────────────────────────────────────────────────────────
+// 6. TWO-PHASE RETRIEVAL
+// ───────────────────────────────────────────────────────────────
 /**
  * Two-phase retrieval: first select top-K folders by FolderScore,
  * then return only results belonging to those folders (ordered by score).

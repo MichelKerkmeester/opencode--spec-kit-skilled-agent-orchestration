@@ -8,7 +8,8 @@ const fs = require('fs');
 
 /* ─────────────────────────────────────────────────────────────
    1. CONFIGURATION
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 const DIST_DIR = path.join(__dirname, '..', 'dist');
 
@@ -22,7 +23,8 @@ const results = {
 
 /* ─────────────────────────────────────────────────────────────
    2. TEST UTILITIES
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 function log(msg) {
   console.log(msg);
@@ -51,7 +53,8 @@ function skip(testName, reason) {
 /* ─────────────────────────────────────────────────────────────
    3. TEST: SPEC_FOLDER_PATTERN (strict)
    Regex: /^\d{3}-[a-z][a-z0-9-]*$/
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testSpecFolderPatternValid() {
   log('\n🔬 SPEC_FOLDER_PATTERN: Valid patterns match');
@@ -168,7 +171,8 @@ async function testSpecFolderPatternEdgeCases() {
 /* ─────────────────────────────────────────────────────────────
    4. TEST: SPEC_FOLDER_BASIC_PATTERN (less strict)
    Regex: /^\d{3}-[a-zA-Z]/
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testSpecFolderBasicPatternValid() {
   log('\n🔬 SPEC_FOLDER_BASIC_PATTERN: Valid patterns match');
@@ -276,7 +280,8 @@ async function testBasicPatternIsLessStrict() {
 /* ─────────────────────────────────────────────────────────────
    5. TEST: findChildFolderSync
    Uses real filesystem via getSpecsDirectories()
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testFindChildFolderSyncExisting() {
   log('\n🔬 findChildFolderSync: Finds existing unique child folder');
@@ -447,7 +452,8 @@ async function testFindChildFolderSyncAmbiguous() {
 /* ─────────────────────────────────────────────────────────────
    6. TEST: findChildFolderAsync
    Same cases as sync but verifying async behavior
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testFindChildFolderAsyncExisting() {
   log('\n🔬 findChildFolderAsync: Finds existing unique child folder');
@@ -617,7 +623,8 @@ async function testFindChildFolderAsyncAmbiguous() {
 /* ─────────────────────────────────────────────────────────────
    7. TEST: core/index.js RE-EXPORTS
    Verify all subfolder-utils exports are accessible from barrel
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testCoreIndexReExports() {
   log('\n🔬 CORE INDEX: All subfolder-utils exports accessible');
@@ -703,7 +710,8 @@ async function testCoreIndexFunctionsWork() {
 /* ─────────────────────────────────────────────────────────────
    8. TEST: CATEGORY_FOLDER_PATTERN
    Regex: /^\d{2}--[a-z][a-z0-9-]*$/
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testCategoryFolderPatternValid() {
   log('\n🔬 CATEGORY_FOLDER_PATTERN: Valid category patterns match');
@@ -772,7 +780,8 @@ async function testCategoryFolderPatternInvalid() {
 
 /* ─────────────────────────────────────────────────────────────
    9. TEST: findChildFolderSync with deep nesting (category/parent/child)
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testFindChildFolderSyncDeepNesting() {
   log('\n🔬 findChildFolderSync: Finds child in category/parent/child structure');
@@ -815,7 +824,8 @@ async function testFindChildFolderSyncDeepNesting() {
 
 /* ─────────────────────────────────────────────────────────────
    10. TEST: SEARCH_MAX_DEPTH boundary
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testSearchMaxDepthExported() {
   log('\n🔬 SEARCH_MAX_DEPTH: Exported constant is available');
@@ -909,7 +919,8 @@ async function testFindChildFolderSyncBeyondMaxDepth() {
 
 /* ─────────────────────────────────────────────────────────────
    11. TEST: isValidSpecFolder multi-segment validation
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testIsValidSpecFolderMultiSegment() {
   log('\n🔬 isValidSpecFolder: Multi-segment path validation');
@@ -983,7 +994,8 @@ async function testIsValidSpecFolderRejectsSymlinkEscape() {
 
 /* ─────────────────────────────────────────────────────────────
    12. TEST: FindChildOptions (onAmbiguity callback)
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testFindChildFolderSyncAmbiguityCallback() {
   log('\n🔬 findChildFolderSync: onAmbiguity callback receives ambiguous paths');
@@ -1031,7 +1043,8 @@ async function testFindChildFolderSyncAmbiguityCallback() {
 
 /* ─────────────────────────────────────────────────────────────
    13. MAIN TEST RUNNER
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function main() {
   log('\n═══════════════════════════════════════════════════════════════');
@@ -1039,19 +1052,22 @@ async function main() {
   log('═══════════════════════════════════════════════════════════════');
 
   // Category A: SPEC_FOLDER_PATTERN
-  log('\n── Category A: SPEC_FOLDER_PATTERN ──');
+  log('\n── Category A: SPEC_FOLDER_PATTERN ──
+');
   await testSpecFolderPatternValid();
   await testSpecFolderPatternInvalid();
   await testSpecFolderPatternEdgeCases();
 
   // Category B: SPEC_FOLDER_BASIC_PATTERN
-  log('\n── Category B: SPEC_FOLDER_BASIC_PATTERN ──');
+  log('\n── Category B: SPEC_FOLDER_BASIC_PATTERN ──
+');
   await testSpecFolderBasicPatternValid();
   await testSpecFolderBasicPatternInvalid();
   await testBasicPatternIsLessStrict();
 
   // Category C: findChildFolderSync
-  log('\n── Category C: findChildFolderSync ──');
+  log('\n── Category C: findChildFolderSync ──
+');
   await testFindChildFolderSyncExisting();
   await testFindChildFolderSyncSecondChild();
   await testFindChildFolderSyncNonexistent();
@@ -1060,7 +1076,8 @@ async function main() {
   await testFindChildFolderSyncAmbiguous();
 
   // Category D: findChildFolderAsync
-  log('\n── Category D: findChildFolderAsync ──');
+  log('\n── Category D: findChildFolderAsync ──
+');
   await testFindChildFolderAsyncExisting();
   await testFindChildFolderAsyncNonexistent();
   await testFindChildFolderAsyncReturnsPromise();
@@ -1069,33 +1086,39 @@ async function main() {
   await testFindChildFolderAsyncAmbiguous();
 
   // Category E: core/index.js re-exports
-  log('\n── Category E: core/index.js Re-exports ──');
+  log('\n── Category E: core/index.js Re-exports ──
+');
   await testCoreIndexReExports();
   await testCoreIndexPatternsAreRegExp();
   await testCoreIndexFunctionsWork();
 
   // Category F: CATEGORY_FOLDER_PATTERN
-  log('\n── Category F: CATEGORY_FOLDER_PATTERN ──');
+  log('\n── Category F: CATEGORY_FOLDER_PATTERN ──
+');
   await testCategoryFolderPatternValid();
   await testCategoryFolderPatternInvalid();
 
   // Category G: Deep nesting (category/parent/child)
-  log('\n── Category G: Deep Nesting ──');
+  log('\n── Category G: Deep Nesting ──
+');
   await testFindChildFolderSyncDeepNesting();
 
   // Category H: SEARCH_MAX_DEPTH boundary
-  log('\n── Category H: SEARCH_MAX_DEPTH Boundary ──');
+  log('\n── Category H: SEARCH_MAX_DEPTH Boundary ──
+');
   await testSearchMaxDepthExported();
   await testFindChildFolderSyncAtMaxDepth();
   await testFindChildFolderSyncBeyondMaxDepth();
 
   // Category I: isValidSpecFolder multi-segment
-  log('\n── Category I: isValidSpecFolder Multi-Segment ──');
+  log('\n── Category I: isValidSpecFolder Multi-Segment ──
+');
   await testIsValidSpecFolderMultiSegment();
   await testIsValidSpecFolderRejectsSymlinkEscape();
 
   // Category J: FindChildOptions (onAmbiguity callback)
-  log('\n── Category J: FindChildOptions ──');
+  log('\n── Category J: FindChildOptions ──
+');
   await testFindChildFolderSyncAmbiguityCallback();
 
   // Results summary

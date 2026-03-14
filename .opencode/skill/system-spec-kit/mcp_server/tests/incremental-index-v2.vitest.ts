@@ -7,9 +7,9 @@ import Database from 'better-sqlite3';
 import * as mod from '../lib/storage/incremental-index';
 import type { StoredMetadata } from '../lib/storage/incremental-index';
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    DB HELPERS
----------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Create an in-memory SQLite DB with the memory_index schema
@@ -118,9 +118,9 @@ function supportsDirectorySymlinks(): boolean {
 
 const symlinkIt = supportsDirectorySymlinks() ? it : it.skip;
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    TESTS
----------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('MTIME_FAST_PATH_MS constant', () => {
   it('MTIME_FAST_PATH_MS is a positive number', () => {

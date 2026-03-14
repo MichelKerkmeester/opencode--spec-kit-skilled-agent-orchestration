@@ -14,10 +14,10 @@ const VECTOR_INDEX_QUERIES_SOURCE = fs.readFileSync(
   'utf-8'
 );
 
-/* -------------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    Module loading — vector-index-impl.ts is plain JS and DB-dependent.
    Signature tests that call the functions need the DB, so they are skipped.
-------------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('T206 - vector_search accepts includeArchived [deferred - DB dependency]', () => {
   it('T206-VS1: vectorSearch is exported', () => {
@@ -59,10 +59,10 @@ describe('T206 - getConstitutionalMemories accepts includeArchived [deferred - D
   });
 });
 
-/* -------------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    Source code static analysis — these tests read source files directly
    and can run without DB dependencies.
-------------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('T206 - Source code contains is_archived filter', () => {
   it('T206-SRC1: vector-index-queries.ts has is_archived filters (>= 3)', () => {

@@ -1,5 +1,6 @@
-// --- 1. ROLLOUT POLICY ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. ROLLOUT POLICY
+// ───────────────────────────────────────────────────────────────
 const DEFAULT_ROLLOUT_PERCENT = 100;
 
 function getRolloutPercent(): number {

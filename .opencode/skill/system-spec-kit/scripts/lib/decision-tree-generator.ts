@@ -1,7 +1,9 @@
-// --- 1. DECISION TREE GENERATOR ---
-
-// --- 2. IMPORTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. DECISION TREE GENERATOR
+// ───────────────────────────────────────────────────────────────
+// ───────────────────────────────────────────────────────────────
+// 2. IMPORTS
+// ───────────────────────────────────────────────────────────────
 import type { OptionRecord, EvidenceRecord, CaveatRecord, FollowUpRecord } from './ascii-boxes';
 import { structuredLog } from '../utils/logger';
 
@@ -43,8 +45,9 @@ try {
   formatFollowUpBox = (followup: Array<FollowUpRecord | string>): string => `[FOLLOWUP: ${followup?.length || 0}]`;
 }
 
-// --- 3. TYPES ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. TYPES
+// ───────────────────────────────────────────────────────────────
 /** Decision node data for tree generation */
 export interface DecisionNode {
   TITLE?: string;
@@ -60,8 +63,9 @@ export interface DecisionNode {
   [key: string]: unknown;
 }
 
-// --- 4. DECISION TREE GENERATION ---
-
+// ───────────────────────────────────────────────────────────────
+// 4. DECISION TREE GENERATION
+// ───────────────────────────────────────────────────────────────
 function generateDecisionTree(decisionData: DecisionNode | string, ...args: unknown[]): string {
   // Handle legacy format (simple parameters) for backwards compatibility
   if (typeof decisionData === 'string') {
@@ -188,6 +192,7 @@ function generateDecisionTree(decisionData: DecisionNode | string, ...args: unkn
   return tree;
 }
 
-// --- 5. EXPORTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 5. EXPORTS
+// ───────────────────────────────────────────────────────────────
 export { generateDecisionTree };

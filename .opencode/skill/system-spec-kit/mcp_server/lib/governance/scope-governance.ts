@@ -2,8 +2,14 @@ import type Database from 'better-sqlite3';
 
 import { ensureGovernanceTables, ensureSharedSpaceTables } from '../search/vector-index-schema';
 
+/**
+ * Retention modes applied during governed ingest.
+ */
 export type RetentionPolicy = 'keep' | 'ephemeral' | 'shared';
 
+/**
+ * Request scope used to enforce tenancy, actor, session, and shared-space boundaries.
+ */
 export interface ScopeContext {
   tenantId?: string;
   userId?: string;
@@ -12,6 +18,9 @@ export interface ScopeContext {
   sharedSpaceId?: string;
 }
 
+/**
+ * Governed-ingest fields required to persist scope and retention metadata.
+ */
 export interface GovernedIngestInput extends ScopeContext {
   provenanceSource?: string;
   provenanceActor?: string;
@@ -20,6 +29,9 @@ export interface GovernedIngestInput extends ScopeContext {
   deleteAfter?: string;
 }
 
+/**
+ * Result of governed-ingest validation and field normalization.
+ */
 export interface GovernanceDecision {
   allowed: boolean;
   normalized: Required<Pick<GovernedIngestInput, 'tenantId' | 'sessionId' | 'provenanceSource' | 'provenanceActor' | 'governedAt' | 'retentionPolicy'>> & ScopeContext & { deleteAfter: string | null };
@@ -27,6 +39,9 @@ export interface GovernanceDecision {
   issues: string[];
 }
 
+/**
+ * Audit payload written for allow, deny, delete, and conflict events.
+ */
 export interface GovernanceAuditEntry extends ScopeContext {
   action: string;
   decision: 'allow' | 'deny' | 'delete' | 'conflict';
@@ -49,6 +64,12 @@ function normalizeIsoTimestamp(value: unknown): string | undefined {
   return date.toISOString();
 }
 
+/**
+ * Trim and normalize optional scope identifiers before enforcement.
+ *
+ * @param input - Scope values supplied by the caller.
+ * @returns Scope with blank identifiers removed.
+ */
 export function normalizeScopeContext(input: ScopeContext): ScopeContext {
   return {
     tenantId: normalizeId(input.tenantId),
@@ -59,16 +80,32 @@ export function normalizeScopeContext(input: ScopeContext): ScopeContext {
   };
 }
 
+/**
+ * Resolve whether scope filtering is active for the current process.
+ *
+ * @returns `true` when scope enforcement is enabled.
+ */
 export function isScopeEnforcementEnabled(): boolean {
   return process.env.SPECKIT_MEMORY_SCOPE_ENFORCEMENT === 'true'
     || process.env.SPECKIT_HYDRA_SCOPE_ENFORCEMENT === 'true';
 }
 
+/**
+ * Resolve whether governance guardrails are active for the current process.
+ *
+ * @returns `true` when governance guardrails are enabled.
+ */
 export function isGovernanceGuardrailsEnabled(): boolean {
   return process.env.SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS === 'true'
     || process.env.SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS === 'true';
 }
 
+/**
+ * Determine whether an ingest request must pass governed-ingest validation.
+ *
+ * @param input - Candidate ingest metadata.
+ * @returns `true` when governance or scope metadata requires enforcement.
+ */
 export function requiresGovernedIngest(input: GovernedIngestInput): boolean {
   const scope = normalizeScopeContext(input);
   return isGovernanceGuardrailsEnabled()
@@ -79,6 +116,12 @@ export function requiresGovernedIngest(input: GovernedIngestInput): boolean {
     || typeof input.deleteAfter === 'string';
 }
 
+/**
+ * Validate governed-ingest metadata and return normalized persistence fields.
+ *
+ * @param input - Candidate ingest metadata.
+ * @returns Validation result with normalized scope, provenance, and retention data.
+ */
 export function validateGovernedIngest(input: GovernedIngestInput): GovernanceDecision {
   const scope = normalizeScopeContext(input);
   const issues: string[] = [];
@@ -137,6 +180,12 @@ export function validateGovernedIngest(input: GovernedIngestInput): GovernanceDe
   };
 }
 
+/**
+ * Map a governance decision into memory-index column values.
+ *
+ * @param decision - Normalized governance decision from ingest validation.
+ * @returns Column/value pairs used after memory insertion.
+ */
 export function buildGovernancePostInsertFields(decision: GovernanceDecision): Record<string, unknown> {
   return {
     tenant_id: decision.normalized.tenantId || null,
@@ -163,11 +212,22 @@ export function buildGovernancePostInsertFields(decision: GovernanceDecision): R
   };
 }
 
+/**
+ * Ensure governance and shared-space audit tables exist before writes.
+ *
+ * @param database - Database connection that stores governance state.
+ */
 export function ensureGovernanceRuntime(database: Database.Database): void {
   ensureGovernanceTables(database);
   ensureSharedSpaceTables(database);
 }
 
+/**
+ * Persist a governance audit entry for enforcement decisions and lifecycle events.
+ *
+ * @param database - Database connection that stores governance state.
+ * @param entry - Audit payload to persist.
+ */
 export function recordGovernanceAudit(database: Database.Database, entry: GovernanceAuditEntry): void {
   ensureGovernanceRuntime(database);
   const scope = normalizeScopeContext(entry);
@@ -196,6 +256,14 @@ function matchesExactScope(rowValue: unknown, requestedValue?: string): boolean 
   return typeof rowValue === 'string' && rowValue === requestedValue;
 }
 
+/**
+ * Filter result rows to the tenant, actor, session, and shared-space scope in force.
+ *
+ * @param rows - Candidate rows that include governance scope columns.
+ * @param scope - Requested scope used for filtering.
+ * @param allowedSharedSpaceIds - Optional shared-space allowlist for the scope.
+ * @returns Rows that remain visible after governance filtering.
+ */
 export function filterRowsByScope<T extends Record<string, unknown>>(rows: T[], scope: ScopeContext, allowedSharedSpaceIds?: ReadonlySet<string>): T[] {
   const normalized = normalizeScopeContext(scope);
   if (

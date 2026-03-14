@@ -1,3 +1,10 @@
+/**
+ * Compare rows deterministically so ties resolve the same way across runs.
+ *
+ * @param a - First ranked row.
+ * @param b - Second ranked row.
+ * @returns Negative when `a` should sort before `b`.
+ */
 export function compareDeterministicRows(
   a: Record<string, unknown> & { id: number },
   b: Record<string, unknown> & { id: number },
@@ -26,6 +33,12 @@ export function compareDeterministicRows(
   return a.id - b.id;
 }
 
+/**
+ * Sort a result set with the deterministic ranking contract.
+ *
+ * @param rows - Ranked rows to sort without mutating the input array.
+ * @returns Copy of the input rows sorted with deterministic tie-breaking.
+ */
 export function sortDeterministicRows<T extends Record<string, unknown> & { id: number }>(rows: T[]): T[] {
   return [...rows].sort(compareDeterministicRows);
 }

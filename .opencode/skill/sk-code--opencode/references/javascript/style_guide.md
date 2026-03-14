@@ -290,6 +290,17 @@ Use plain comments that explain reasoning:
 - `// REQ-###|BUG-###|SEC-###|T###: traceability hook`
 - `// Safety, performance, or reliability constraint`
 
+### Capitalization
+
+All comment text MUST start with a capital letter:
+
+```javascript
+// Reverse order preserves dependency chain     // correct
+// reverse order preserves dependency chain     // wrong
+```
+
+**Exceptions**: `eslint-disable` directives, `@ts-` annotations, and inline code references.
+
 ### Reference Comments
 
 Use bracketed module prefix for inline comments:

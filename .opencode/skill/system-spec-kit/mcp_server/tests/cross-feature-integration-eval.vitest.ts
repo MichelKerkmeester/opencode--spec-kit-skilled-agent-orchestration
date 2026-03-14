@@ -1,4 +1,6 @@
-// --- 1. TEST — CROSS-FEATURE INTEGRATION EVALUATION ---
+// ───────────────────────────────────────────────────────────────
+// 1. TEST — CROSS-FEATURE INTEGRATION EVALUATION
+// ───────────────────────────────────────────────────────────────
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 // -- Query Classifier --

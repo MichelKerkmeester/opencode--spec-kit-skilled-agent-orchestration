@@ -12,7 +12,8 @@ const os = require('os');
 
 /* ─────────────────────────────────────────────────────────────
    1. CONFIGURATION
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 const SCRIPTS_DIR = path.join(__dirname, '..', 'dist');
 const SKILL_ROOT = path.join(__dirname, '..', '..'); // .opencode/skill/system-spec-kit
@@ -51,7 +52,8 @@ const results = {
 
 /* ─────────────────────────────────────────────────────────────
    2. TEST UTILITIES
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 function log(msg) {
   console.log(msg);
@@ -149,7 +151,8 @@ function cleanupTempDb(dbPath) {
 /* ─────────────────────────────────────────────────────────────
    3. TEST: DB QUERY CORRECTNESS (UNIT)
    Test the exact SQL query used by Priority 2.5 against a temp DB
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testDbQueryReturnsRecentRecord() {
   log('\n🔬 DB QUERY: Returns most recent record within 24h');
@@ -267,7 +270,8 @@ async function testDbQueryReturnsNullWhenEmpty() {
 /* ─────────────────────────────────────────────────────────────
    4. TEST: 24-HOUR BOUNDARY FILTER
    Verify that records older than 24 hours are excluded
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testBoundaryFilter24hOldRecord() {
   log('\n🔬 24H BOUNDARY: Records older than 24h are excluded');
@@ -389,7 +393,8 @@ async function testBoundaryFilterEdge23h59m() {
 /* ─────────────────────────────────────────────────────────────
    5. TEST: SILENT ERROR FALLTHROUGH
    Verify that DB failures don't throw — they are caught silently
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testSilentFallthroughMissingDb() {
   log('\n🔬 SILENT FALLTHROUGH: Missing DB file does not throw');
@@ -512,7 +517,8 @@ async function testSilentFallthroughCombinedInDetect() {
    6. TEST: FOLDER VALIDATION (fs.access check)
    Priority 2.5 resolves spec_folder against specsDir, then
    checks fs.access(). If folder doesn't exist, it falls through.
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testFolderValidationResolvesPath() {
   log('\n🔬 FOLDER VALIDATION: spec_folder path is resolved correctly');
@@ -598,7 +604,8 @@ async function testFolderValidationNonexistentFolder() {
 /* ─────────────────────────────────────────────────────────────
    7. TEST: PRIORITY CHAIN INTEGRATION
    Verify that Priority 1 (CLI arg) > Priority 2.5 (DB) > Priority 3 (CWD)
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testPriority1OverridesAll() {
   log('\n🔬 PRIORITY CHAIN: Priority 1 (CLI arg) overrides Priority 2.5 (DB)');
@@ -771,7 +778,8 @@ async function testPriorityChainOrder() {
 /* ─────────────────────────────────────────────────────────────
    8. TEST: DB STRUCTURE VALIDATION
    Verify the real DB (if available) has correct schema
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testRealDbSchema() {
   log('\n🔬 DB STRUCTURE: Real DB has session_learning table with correct columns');
@@ -847,7 +855,8 @@ async function testRealDbQueryable() {
 
 /* ─────────────────────────────────────────────────────────────
    9. TEST: filterArchiveFolders EDGE CASES
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testFilterArchiveFoldersEdgeCases() {
   log('\n🔬 FILTER ARCHIVE: Edge cases for filterArchiveFolders');
@@ -910,7 +919,8 @@ async function testFilterArchiveFoldersEdgeCases() {
 /* ─────────────────────────────────────────────────────────────
    10. TEST: CONFIG.PROJECT_ROOT ALIGNMENT
    Verify that the DB path constructed matches real filesystem
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testConfigProjectRootAlignment() {
   log('\n🔬 CONFIG ALIGNMENT: PROJECT_ROOT resolves to correct paths');
@@ -957,7 +967,8 @@ async function testConfigProjectRootAlignment() {
 
 /* ─────────────────────────────────────────────────────────────
    11. TEST: NEW REGRESSION MATRIX (SESSION SELECTION BUG)
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testArchiveCandidateExcludedWhenActiveExists() {
   log('\n🔬 REGRESSION: Active candidate preferred over archived candidate');
@@ -1257,7 +1268,8 @@ async function testApprovedRootContainmentRejectsSymlinkEscape() {
 
 /* ─────────────────────────────────────────────────────────────
    12. MAIN TEST RUNNER
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function main() {
   log('\n═══════════════════════════════════════════════════════════════');
@@ -1265,52 +1277,61 @@ async function main() {
   log('═══════════════════════════════════════════════════════════════');
 
   // Category 1: DB Query Correctness
-  log('\n── Category 1: DB Query Correctness ──');
+  log('\n── Category 1: DB Query Correctness ──
+');
   await testDbQueryReturnsRecentRecord();
   await testDbQueryReturnsMostRecentOfMultiple();
   await testDbQueryReturnsNullWhenEmpty();
 
   // Category 2: 24-Hour Boundary Filter
-  log('\n── Category 2: 24-Hour Boundary Filter ──');
+  log('\n── Category 2: 24-Hour Boundary Filter ──
+');
   await testBoundaryFilter24hOldRecord();
   await testBoundaryFilterRecentWithOld();
   await testBoundaryFilterEdge23h59m();
 
   // Category 3: Silent Error Fallthrough
-  log('\n── Category 3: Silent Error Fallthrough ──');
+  log('\n── Category 3: Silent Error Fallthrough ──
+');
   await testSilentFallthroughMissingDb();
   await testSilentFallthroughMissingTable();
   await testSilentFallthroughBadRequirePath();
   await testSilentFallthroughCombinedInDetect();
 
   // Category 4: Folder Validation
-  log('\n── Category 4: Folder Validation ──');
+  log('\n── Category 4: Folder Validation ──
+');
   await testFolderValidationResolvesPath();
   await testFolderValidationExistingFolder();
   await testFolderValidationNonexistentFolder();
 
   // Category 5: Priority Chain Integration
-  log('\n── Category 5: Priority Chain Integration ──');
+  log('\n── Category 5: Priority Chain Integration ──
+');
   await testPriority1OverridesAll();
   await testPriority2OverridesDb();
   await testPriority25BeforePriority3();
   await testPriorityChainOrder();
 
   // Category 6: Real DB Structure
-  log('\n── Category 6: Real DB Structure ──');
+  log('\n── Category 6: Real DB Structure ──
+');
   await testRealDbSchema();
   await testRealDbQueryable();
 
   // Category 7: filterArchiveFolders Edge Cases
-  log('\n── Category 7: filterArchiveFolders Edge Cases ──');
+  log('\n── Category 7: filterArchiveFolders Edge Cases ──
+');
   await testFilterArchiveFoldersEdgeCases();
 
   // Category 8: CONFIG Alignment
-  log('\n── Category 8: CONFIG Alignment ──');
+  log('\n── Category 8: CONFIG Alignment ──
+');
   await testConfigProjectRootAlignment();
 
   // Category 9: Session-Selection Regressions
-  log('\n── Category 9: Session-Selection Regressions ──');
+  log('\n── Category 9: Session-Selection Regressions ──
+');
   await testArchiveCandidateExcludedWhenActiveExists();
   await testAliasNormalizationDeterminism();
   await testRankingResistsMtimeSkew();

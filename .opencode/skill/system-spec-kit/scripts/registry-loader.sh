@@ -86,7 +86,8 @@ list_all_scripts() {
         jq '.scripts' "$REGISTRY_FILE"
     else
         echo -e "${BOLD}Spec Kit Scripts${NC}"
-        echo -e "${DIM}────────────────────────────────────────${NC}"
+        echo -e "${DIM}────────────────────────────────────────
+${NC}"
         echo ""
         
         jq -r '.scripts[] | "\(.name)|\(.type)|\(.essential)|\(.description)"' "$REGISTRY_FILE" | \
@@ -110,7 +111,8 @@ list_essential_scripts() {
         jq '.scripts | map(select(.essential == true))' "$REGISTRY_FILE"
     else
         echo -e "${BOLD}Essential Scripts${NC}"
-        echo -e "${DIM}────────────────────────────────────────${NC}"
+        echo -e "${DIM}────────────────────────────────────────
+${NC}"
         echo ""
         
         jq -r '.scripts[] | select(.essential == true) | "\(.name)|\(.type)|\(.description)"' "$REGISTRY_FILE" | \
@@ -127,7 +129,8 @@ list_optional_scripts() {
         jq '.scripts | map(select(.essential == false or .essential == null))' "$REGISTRY_FILE"
     else
         echo -e "${BOLD}Optional Scripts${NC}"
-        echo -e "${DIM}────────────────────────────────────────${NC}"
+        echo -e "${DIM}────────────────────────────────────────
+${NC}"
         echo ""
         
         jq -r '.scripts[] | select(.essential == false or .essential == null) | "\(.name)|\(.type)|\(.description)"' "$REGISTRY_FILE" | \
@@ -153,7 +156,8 @@ get_script_info() {
         echo "$result"
     else
         echo -e "${BOLD}Script: $(echo "$result" | jq -r '.name')${NC}"
-        echo -e "${DIM}────────────────────────────────────────${NC}"
+        echo -e "${DIM}────────────────────────────────────────
+${NC}"
         echo ""
         echo -e "  ${CYAN}Path:${NC}        $(echo "$result" | jq -r '.path')"
         echo -e "  ${CYAN}Type:${NC}        $(echo "$result" | jq -r '.type')"
@@ -200,7 +204,8 @@ find_by_trigger() {
         fi
         
         echo -e "${BOLD}Scripts for trigger: \"$phrase\"${NC}"
-        echo -e "${DIM}────────────────────────────────────────${NC}"
+        echo -e "${DIM}────────────────────────────────────────
+${NC}"
         echo ""
         
         echo "$results" | jq -r '.[] | "\(.name)|\(.type)|\(.description)"' | \
@@ -229,7 +234,8 @@ find_by_gate() {
         fi
         
         echo -e "${BOLD}Scripts for gate: \"$gate\"${NC}"
-        echo -e "${DIM}────────────────────────────────────────${NC}"
+        echo -e "${DIM}────────────────────────────────────────
+${NC}"
         echo ""
         
         echo "$results" | jq -r '.[] | "\(.name)|\(.gate)|\(.description)"' | \
@@ -258,7 +264,8 @@ find_by_type() {
         fi
         
         echo -e "${BOLD}Scripts of type: \"$type\"${NC}"
-        echo -e "${DIM}────────────────────────────────────────${NC}"
+        echo -e "${DIM}────────────────────────────────────────
+${NC}"
         echo ""
         
         echo "$results" | jq -r '.[] | "\(.name)|\(.essential)|\(.description)"' | \
@@ -279,7 +286,8 @@ list_rules() {
         jq '.rules' "$REGISTRY_FILE"
     else
         echo -e "${BOLD}Validation Rules${NC}"
-        echo -e "${DIM}────────────────────────────────────────${NC}"
+        echo -e "${DIM}────────────────────────────────────────
+${NC}"
         echo ""
         
         jq -r '.rules[] | "\(.name)|\(.severity)|\(.description)"' "$REGISTRY_FILE" | \

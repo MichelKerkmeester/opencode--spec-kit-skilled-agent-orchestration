@@ -1,4 +1,6 @@
-// --- 1. CONFIDENCE TRUNCATION ---
+// ───────────────────────────────────────────────────────────────
+// 1. CONFIDENCE TRUNCATION
+// ───────────────────────────────────────────────────────────────
 /* --- 1. TYPES & CONSTANTS --- */
 
 /** Generic scored result for truncation — supports both numeric and string IDs. */

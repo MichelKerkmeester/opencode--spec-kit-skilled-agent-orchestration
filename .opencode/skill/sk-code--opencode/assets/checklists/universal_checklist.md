@@ -37,7 +37,7 @@ These items MUST be fixed before any commit.
 ```markdown
 [ ] File has appropriate header comment identifying the component
     - JavaScript: Box header with 'use strict'
-    - TypeScript: Module header block `// --- MODULE: NAME ---` (no 'use strict'; tsconfig handles it)
+    - TypeScript: Module header block `// ─── MODULE: NAME ───` (no 'use strict'; tsconfig handles it)
     - Python: Shebang + COMPONENT comment block
     - Shell: Shebang + COMPONENT comment block
     - Config: JSONC comment header

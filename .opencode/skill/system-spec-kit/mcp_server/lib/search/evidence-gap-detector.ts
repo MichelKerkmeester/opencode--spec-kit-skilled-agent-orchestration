@@ -1,9 +1,12 @@
-// --- 1. EVIDENCE GAP DETECTOR ---
+// ───────────────────────────────────────────────────────────────
+// 1. EVIDENCE GAP DETECTOR
+// ───────────────────────────────────────────────────────────────
 // Transparent Reasoning Module (TRM): Z-score confidence check
 // On RRF scores to detect low-confidence retrieval and inject
 // Warnings for the MCP markdown output layer.
-// --- 2. CONSTANTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 2. CONSTANTS
+// ───────────────────────────────────────────────────────────────
 /** Z-score threshold below which retrieval confidence is considered low. */
 const Z_SCORE_THRESHOLD = 1.5;
 
@@ -16,8 +19,9 @@ const MIN_ABSOLUTE_SCORE = 0.015;
  */
 const MIN_GRAPH_MEMORY_NODES = 3;
 
-// --- 3. INTERFACES ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. INTERFACES
+// ───────────────────────────────────────────────────────────────
 /**
  * Result of a Transparent Reasoning Module evidence-gap check.
  * Summarises Z-score statistics for the RRF score distribution.
@@ -55,8 +59,9 @@ interface MemoryGraphLike {
   inbound: Map<string, string[]>;
 }
 
-// --- 4. CORE FUNCTIONS ---
-
+// ───────────────────────────────────────────────────────────────
+// 4. CORE FUNCTIONS
+// ───────────────────────────────────────────────────────────────
 /**
  * Graph-topology coverage pre-check (T014).
  *
@@ -182,8 +187,8 @@ export function formatEvidenceGapWarning(trm: TRMResult): string {
   return `> **[EVIDENCE GAP DETECTED]: Retrieved context has low mathematical confidence (Z=${trm.zScore.toFixed(2)}). Consider first principles.**`;
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    4. EXPORTS (constants for consumer use)
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 export { Z_SCORE_THRESHOLD, MIN_ABSOLUTE_SCORE, MIN_GRAPH_MEMORY_NODES };

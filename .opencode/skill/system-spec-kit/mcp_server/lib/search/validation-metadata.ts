@@ -1,4 +1,6 @@
-// --- 1. VALIDATION METADATA ---
+// ───────────────────────────────────────────────────────────────
+// 1. VALIDATION METADATA
+// ───────────────────────────────────────────────────────────────
 // PURPOSE: Extract validation signals from spec document metadata
 // And surface them as retrieval metadata on PipelineRow results.
 // This allows the scoring layer to incorporate spec quality information.

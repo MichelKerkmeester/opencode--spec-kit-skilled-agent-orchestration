@@ -1,19 +1,21 @@
-// --- 1. MEMORY PARSER TESTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. MEMORY PARSER TESTS
+// ───────────────────────────────────────────────────────────────
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as os from 'os';
 import * as memoryParser from '../lib/parsing/memory-parser';
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    TESTS: MEMORY PARSER (T500)
----------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 describe('Memory Parser Tests (T500)', () => {
 
-  // --- 5.1 FRONTMATTER PARSING (T500-01 through T500-05) ---
-
+  // ───────────────────────────────────────────────────────────────
+  // 5.1 FRONTMATTER PARSING (T500-01 through T500-05)
+  // ───────────────────────────────────────────────────────────────
   describe('Frontmatter Parsing (T500-01 to T500-05)', () => {
     it('T500-01: Valid markdown with frontmatter parses correctly', () => {
       const content = `---
@@ -168,8 +170,9 @@ importanceTier: invalid_tier
     });
   });
 
-  // --- 5.2 TRIGGER PHRASE EXTRACTION (T500-06) -------------
-
+  // ───────────────────────────────────────────────────────────────
+  // 5.2 TRIGGER PHRASE EXTRACTION (T500-06)
+  // ───────────────────────────────────────────────────────────────
   describe('Trigger Phrase Extraction (T500-06)', () => {
     it('T500-06a: Inline YAML trigger phrases extracted', () => {
       const contentInline = `---
@@ -204,8 +207,9 @@ triggerPhrases:
     });
   });
 
-  // --- 5.3 CONTENT HASH (T500-07 to T500-08) --------------
-
+  // ───────────────────────────────────────────────────────────────
+  // 5.3 CONTENT HASH (T500-07 to T500-08)
+  // ───────────────────────────────────────────────────────────────
   describe('Content Hash (T500-07 to T500-08)', () => {
     it('T500-07: Content hash computation is consistent', () => {
       const content = 'Some test content for hashing.';
@@ -225,8 +229,9 @@ triggerPhrases:
     });
   });
 
-  // --- 5.4 ANCHOR DETECTION (T500-09) ----------------------
-
+  // ───────────────────────────────────────────────────────────────
+  // 5.4 ANCHOR DETECTION (T500-09)
+  // ───────────────────────────────────────────────────────────────
   describe('Anchor Detection (T500-09)', () => {
     it('T500-09: Anchor detection works', () => {
       const content = `Some intro text.
@@ -260,8 +265,9 @@ Some text without closing tag.
     });
   });
 
-  // --- 5.5 LARGE FILE HANDLING (T500-10) -------------------
-
+  // ───────────────────────────────────────────────────────────────
+  // 5.5 LARGE FILE HANDLING (T500-10)
+  // ───────────────────────────────────────────────────────────────
   describe('Large File Handling (T500-10)', () => {
     it('T500-10: Large file handling (>10KB)', () => {
       const header = `---
@@ -283,8 +289,9 @@ title: "Large File Test"
     });
   });
 
-  // --- 5.6 ARRAY VALUES & MALFORMED YAML (T500-11 to T500-12) --
-
+  // ───────────────────────────────────────────────────────────────
+  // 5.6 ARRAY VALUES & MALFORMED YAML (T500-11 to T500-12)
+  // ───────────────────────────────────────────────────────────────
   describe('Array Values & Malformed YAML (T500-11 to T500-12)', () => {
     it('T500-11: Array values in frontmatter', () => {
       const content = `---
@@ -318,8 +325,9 @@ importanceTier: [invalid
     });
   });
 
-  // --- 5.7 BODY-ONLY & FRONTMATTER-ONLY (T500-13 to T500-14) --
-
+  // ───────────────────────────────────────────────────────────────
+  // 5.7 BODY-ONLY & FRONTMATTER-ONLY (T500-13 to T500-14)
+  // ───────────────────────────────────────────────────────────────
   describe('Body-only & Frontmatter-only (T500-13 to T500-14)', () => {
     it('T500-13: File with only frontmatter (no body)', () => {
       const content = `---
@@ -351,8 +359,9 @@ More content.
     });
   });
 
-  // --- 5.8 UNICODE CONTENT (T500-15) -----------------------
-
+  // ───────────────────────────────────────────────────────────────
+  // 5.8 UNICODE CONTENT (T500-15)
+  // ───────────────────────────────────────────────────────────────
   describe('Unicode Content Handling (T500-15)', () => {
     it('T500-15: Unicode content handling', () => {
       const content = `---

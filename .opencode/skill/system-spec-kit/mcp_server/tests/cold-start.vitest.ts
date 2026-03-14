@@ -1,4 +1,6 @@
-// --- 1. TEST — COLD START (N4) ---
+// ───────────────────────────────────────────────────────────────
+// 1. TEST — COLD START (N4)
+// ───────────────────────────────────────────────────────────────
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import {
   calculateNoveltyBoost,

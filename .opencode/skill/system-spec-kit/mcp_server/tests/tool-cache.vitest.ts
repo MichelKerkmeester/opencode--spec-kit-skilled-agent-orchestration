@@ -36,8 +36,9 @@ describe('Tool Cache (T012-T015)', () => {
     clear();
   });
 
-  // --- 1. CACHE INITIALIZATION ---
-
+  // ───────────────────────────────────────────────────────────────
+  // 1. CACHE INITIALIZATION
+  // ───────────────────────────────────────────────────────────────
   describe('Cache initialization', () => {
     it('should initialize with correct default configuration', () => {
       const config = getConfig();
@@ -72,8 +73,9 @@ describe('Tool Cache (T012-T015)', () => {
     });
   });
 
-  // --- 2. CACHE KEY GENERATION (SHA-256) ---
-
+  // ───────────────────────────────────────────────────────────────
+  // 2. CACHE KEY GENERATION (SHA-256)
+  // ───────────────────────────────────────────────────────────────
   describe('T013: Cache key generation from tool name + args hash', () => {
     it('should generate consistent keys for same inputs', () => {
       const args = { query: 'authentication', limit: 10 };
@@ -165,8 +167,9 @@ describe('Tool Cache (T012-T015)', () => {
     });
   });
 
-  // --- 3. CORE CACHE OPERATIONS (TTL) ---
-
+  // ───────────────────────────────────────────────────────────────
+  // 3. CORE CACHE OPERATIONS (TTL)
+  // ───────────────────────────────────────────────────────────────
   describe('T012: Session-scoped cache with 60s TTL', () => {
     it('should cache and retrieve values', () => {
       const key = generateCacheKey('test_tool', { query: 'test' });
@@ -231,8 +234,9 @@ describe('Tool Cache (T012-T015)', () => {
     });
   });
 
-  // --- 4. LRU EVICTION (MAX SIZE) ---
-
+  // ───────────────────────────────────────────────────────────────
+  // 4. LRU EVICTION (MAX SIZE)
+  // ───────────────────────────────────────────────────────────────
   describe('Cache max size and LRU eviction', () => {
     it('should enforce max entries limit (1000 default)', () => {
       const config = getConfig();
@@ -278,8 +282,9 @@ describe('Tool Cache (T012-T015)', () => {
     });
   });
 
-  // --- 5. CACHE BYPASS OPTION ---
-
+  // ───────────────────────────────────────────────────────────────
+  // 5. CACHE BYPASS OPTION
+  // ───────────────────────────────────────────────────────────────
   describe('T014: Cache bypass option', () => {
     it('should skip cache when bypassCache is true', async () => {
       let callCount = 0;
@@ -339,8 +344,9 @@ describe('Tool Cache (T012-T015)', () => {
     });
   });
 
-  // --- 6. CACHE INVALIDATION ---
-
+  // ───────────────────────────────────────────────────────────────
+  // 6. CACHE INVALIDATION
+  // ───────────────────────────────────────────────────────────────
   describe('T015: Cache invalidation on write operations', () => {
     it('should invalidate by tool name', () => {
       const key1 = generateCacheKey('memory_search', { query: 'test1' });
@@ -432,8 +438,9 @@ describe('Tool Cache (T012-T015)', () => {
     });
   });
 
-  // --- 7. CLEANUP EXPIRED ---
-
+  // ───────────────────────────────────────────────────────────────
+  // 7. CLEANUP EXPIRED
+  // ───────────────────────────────────────────────────────────────
   describe('Cleanup expired entries', () => {
     it('should remove expired entries on cleanup', async () => {
       const key1 = generateCacheKey('cleanup_test', { id: 'short' });
@@ -462,8 +469,9 @@ describe('Tool Cache (T012-T015)', () => {
     });
   });
 
-  // --- 8. STATISTICS AND MONITORING ---
-
+  // ───────────────────────────────────────────────────────────────
+  // 8. STATISTICS AND MONITORING
+  // ───────────────────────────────────────────────────────────────
   describe('Statistics and monitoring', () => {
     it('should track cache statistics', () => {
       const key = generateCacheKey('stats_tool', { test: true });
@@ -518,9 +526,9 @@ describe('Tool Cache (T012-T015)', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      9. LIFECYCLE (INIT/SHUTDOWN)
-  ---------------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('Lifecycle management', () => {
     it('should have init function', () => {
@@ -543,8 +551,9 @@ describe('Tool Cache (T012-T015)', () => {
     });
   });
 
-  // --- 9. EDGE CASES ---
-
+  // ───────────────────────────────────────────────────────────────
+  // 9. EDGE CASES
+  // ───────────────────────────────────────────────────────────────
   describe('Edge cases', () => {
     it('should handle complex nested objects', () => {
       const complexArgs = {
@@ -613,8 +622,9 @@ describe('Tool Cache (T012-T015)', () => {
     });
   });
 
-  // --- 10. MODULE EXPORTS ---
-
+  // ───────────────────────────────────────────────────────────────
+  // 10. MODULE EXPORTS
+  // ───────────────────────────────────────────────────────────────
   describe('Module exports', () => {
     it('should export all core operations', () => {
       expect(typeof get).toBe('function');

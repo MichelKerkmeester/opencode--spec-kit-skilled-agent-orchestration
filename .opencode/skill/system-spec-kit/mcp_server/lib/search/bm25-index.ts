@@ -1,10 +1,12 @@
-// --- 1. BM25 INDEX ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. BM25 INDEX
+// ───────────────────────────────────────────────────────────────
 import type Database from 'better-sqlite3';
 import { normalizeContentForBM25 } from '../parsing/content-normalizer';
 
-// --- 2. INTERFACES ---
-
+// ───────────────────────────────────────────────────────────────
+// 2. INTERFACES
+// ───────────────────────────────────────────────────────────────
 interface BM25SearchResult {
   id: string;
   /**
@@ -21,9 +23,9 @@ interface BM25Stats {
   avgDocLength: number;
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    1B. CONSTANTS & FEATURE FLAG
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 const DEFAULT_K1 = 1.2;
 const DEFAULT_B = 0.75;
@@ -53,8 +55,9 @@ function isBm25Enabled(): boolean {
   return process.env.ENABLE_BM25 !== 'false';
 }
 
-// --- 3. HELPERS ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. HELPERS
+// ───────────────────────────────────────────────────────────────
 const STOP_WORDS = new Set([
   'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for',
   'of', 'with', 'by', 'from', 'is', 'it', 'as', 'was', 'are', 'be',
@@ -108,8 +111,9 @@ function getTermFrequencies(tokens: string[]): Map<string, number> {
   return freq;
 }
 
-// --- 4. BM25 INDEX CLASS ---
-
+// ───────────────────────────────────────────────────────────────
+// 4. BM25 INDEX CLASS
+// ───────────────────────────────────────────────────────────────
 class BM25Index {
   private k1: number;
   private b: number;
@@ -270,8 +274,9 @@ class BM25Index {
 
 }
 
-// --- 5. SINGLETON ---
-
+// ───────────────────────────────────────────────────────────────
+// 5. SINGLETON
+// ───────────────────────────────────────────────────────────────
 let indexInstance: BM25Index | null = null;
 
 function getIndex(): BM25Index {
@@ -285,8 +290,9 @@ function resetIndex(): void {
   indexInstance = null;
 }
 
-// --- 6. FTS5 QUERY SANITIZATION (P3-06) ---
-
+// ───────────────────────────────────────────────────────────────
+// 6. FTS5 QUERY SANITIZATION (P3-06)
+// ───────────────────────────────────────────────────────────────
 /**
  * Sanitize a query string for safe use with SQLite FTS5 and return
  * the individual tokens as an array. This is the shared tokenization
@@ -330,8 +336,9 @@ function sanitizeFTS5Query(query: string): string {
     .join(' ');
 }
 
-// --- 7. EXPORTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 7. EXPORTS
+// ───────────────────────────────────────────────────────────────
 export {
   BM25Index,
   getIndex,

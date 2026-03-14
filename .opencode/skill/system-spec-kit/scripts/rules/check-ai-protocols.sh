@@ -16,7 +16,7 @@ set -euo pipefail
 # ───────────────────────────────────────────────────────────────
 
 # Extract level from spec.md
-# AI-FIX: F-20 — Support multiple level declaration formats:
+# Support multiple level declaration formats:
 # Bullet (- **Level**: N), table row (| **Level** | N |), frontmatter (level: N)
 _ai_get_declared_level() {
     local folder="$1"

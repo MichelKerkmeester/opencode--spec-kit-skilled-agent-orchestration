@@ -1,4 +1,6 @@
-// --- 1. GENERATE CONTEXT ---
+// ───────────────────────────────────────────────────────────────
+// 1. GENERATE CONTEXT
+// ───────────────────────────────────────────────────────────────
 // CLI entry point -- parses arguments, validates spec folder, and runs the memory workflow
 
 // Node stdlib
@@ -20,8 +22,9 @@ import { runWorkflow } from '../core/workflow';
 import { loadCollectedData } from '../loaders';
 import { collectSessionData } from '../extractors/collect-session-data';
 
-// --- 2. INTERFACES ---
-
+// ───────────────────────────────────────────────────────────────
+// 2. INTERFACES
+// ───────────────────────────────────────────────────────────────
 /** Result of validating a requested spec folder reference. */
 export interface SpecFolderValidation {
   valid: boolean;
@@ -29,8 +32,9 @@ export interface SpecFolderValidation {
   warning?: string;
 }
 
-// --- 3. HELP TEXT ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. HELP TEXT
+// ───────────────────────────────────────────────────────────────
 const HELP_TEXT = `
 Usage: node generate-context.js [options] <input>
 
@@ -110,8 +114,9 @@ process.on('SIGINT', () => {
   process.exit(0);
 });
 
-// --- 4. SPEC FOLDER VALIDATION ---
-
+// ───────────────────────────────────────────────────────────────
+// 4. SPEC FOLDER VALIDATION
+// ───────────────────────────────────────────────────────────────
 function isUnderApprovedSpecsRoot(normalizedInput: string): boolean {
   return validateFilePath(path.resolve(CONFIG.PROJECT_ROOT, normalizedInput), getSpecsDirectories()) !== null;
 }
@@ -180,8 +185,9 @@ function isValidSpecFolder(folderPath: string): SpecFolderValidation {
   return { valid: true };
 }
 
-// --- 5. CLI ARGUMENT PARSING ---
-
+// ───────────────────────────────────────────────────────────────
+// 5. CLI ARGUMENT PARSING
+// ───────────────────────────────────────────────────────────────
 function parseArguments(): void {
   const primaryArg: string | undefined = process.argv[2];
   const secondaryArg: string | undefined = process.argv[3];
@@ -379,8 +385,9 @@ function validateArguments(): void {
   process.exit(1);
 }
 
-// --- 6. MAIN ENTRY POINT ---
-
+// ───────────────────────────────────────────────────────────────
+// 6. MAIN ENTRY POINT
+// ───────────────────────────────────────────────────────────────
 async function main(): Promise<void> {
   console.log('Starting memory skill...\n');
 
@@ -410,8 +417,9 @@ async function main(): Promise<void> {
   }
 }
 
-// --- 7. EXPORTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 7. EXPORTS
+// ───────────────────────────────────────────────────────────────
 if (require.main === module) {
   main().catch((error: unknown) => {
     const errMsg = error instanceof Error ? error.message : String(error);

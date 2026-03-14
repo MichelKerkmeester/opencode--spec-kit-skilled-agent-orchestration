@@ -1,4 +1,6 @@
-// --- 1. HYBRID SEARCH FEATURE FLAGS TESTS ---
+// ───────────────────────────────────────────────────────────────
+// 1. HYBRID SEARCH FEATURE FLAGS TESTS
+// ───────────────────────────────────────────────────────────────
 // TEST: Hybrid Search Feature Flags
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type Database from 'better-sqlite3';

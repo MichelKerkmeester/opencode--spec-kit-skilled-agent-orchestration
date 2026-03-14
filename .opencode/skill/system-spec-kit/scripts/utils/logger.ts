@@ -1,7 +1,10 @@
-// --- 1. LOGGER ---
+// ───────────────────────────────────────────────────────────────
+// 1. LOGGER
+// ───────────────────────────────────────────────────────────────
 // Structured logging with severity levels and JSON metadata output
-// --- 2. TYPES ---
-
+// ───────────────────────────────────────────────────────────────
+// 2. TYPES
+// ───────────────────────────────────────────────────────────────
 /** Log level for structured logging */
 export type LogLevel = 'debug' | 'info' | 'warn' | 'error';
 
@@ -13,8 +16,9 @@ export interface LogEntry {
   [key: string]: unknown;
 }
 
-// --- 3. LOGGING ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. LOGGING
+// ───────────────────────────────────────────────────────────────
 function structuredLog(level: LogLevel, message: string, data: Record<string, unknown> = {}): void {
   const logEntry: LogEntry = {
     timestamp: new Date().toISOString(),
@@ -36,6 +40,7 @@ function structuredLog(level: LogLevel, message: string, data: Record<string, un
   }
 }
 
-// --- 4. EXPORTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 4. EXPORTS
+// ───────────────────────────────────────────────────────────────
 export { structuredLog };

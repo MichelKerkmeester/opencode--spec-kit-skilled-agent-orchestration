@@ -1,5 +1,6 @@
-// --- 1. EXTRACTION ADAPTER ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. EXTRACTION ADAPTER
+// ───────────────────────────────────────────────────────────────
 import type Database from 'better-sqlite3';
 import path from 'path';
 import * as workingMemory from '../cache/cognitive/working-memory';

@@ -1,4 +1,6 @@
-// --- 1. TEST — SCORE NORMALIZATION ---
+// ───────────────────────────────────────────────────────────────
+// 1. TEST — SCORE NORMALIZATION
+// ───────────────────────────────────────────────────────────────
 // Score Normalization & K-Value Analysis
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
@@ -39,9 +41,9 @@ import {
   BASELINE_K,
 } from '../lib/eval/k-value-analysis';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    Helpers
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 /** Build a simple RankedList for testing. */
 function makeList(source: string, ids: number[], weight?: number): RankedList {
@@ -63,9 +65,9 @@ function makeFusionResult(id: number, rrfScore: number): FusionResult {
   };
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    1. RRF Score Normalization
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 describe('RRF Score Normalization (T004)', () => {
   const originalEnv = process.env.SPECKIT_SCORE_NORMALIZATION;
@@ -296,9 +298,9 @@ describe('RRF Score Normalization (T004)', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    2. Composite Score Normalization
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 describe('Composite Score Normalization (T004)', () => {
   const originalEnv = process.env.SPECKIT_SCORE_NORMALIZATION;
@@ -361,9 +363,9 @@ describe('Composite Score Normalization (T004)', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    3. K-Value Sensitivity Analysis (T004a)
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 describe('K-Value Sensitivity Analysis (T004a)', () => {
   const testLists: RankedList[] = [
@@ -449,9 +451,9 @@ describe('K-Value Sensitivity Analysis (T004a)', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    4. Kendall Tau Unit Tests
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 describe('Kendall Tau (statistical helper)', () => {
   it('identical rankings have tau = 1.0', () => {
@@ -477,9 +479,9 @@ describe('Kendall Tau (statistical helper)', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    5. MRR@5 Unit Tests
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 describe('MRR@5 (statistical helper)', () => {
   it('identical rankings produce correct MRR@5', () => {

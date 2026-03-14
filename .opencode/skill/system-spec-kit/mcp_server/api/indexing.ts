@@ -1,4 +1,6 @@
-// --- 1. INDEXING ---
+// ────────────────────────────────────────────────────────────────
+// 1. INDEXING 
+// ────────────────────────────────────────────────────────────────
 // @public — scripts should import from here, not core/ or handlers/ internals.
 // ARCH-1 exposes only the runtime bootstrap and indexing hooks needed
 // By reindex orchestration without widening the general public surface.

@@ -1,4 +1,6 @@
-// --- 1. CHANNEL ATTRIBUTION ---
+// ───────────────────────────────────────────────────────────────
+// 1. CHANNEL ATTRIBUTION
+// ───────────────────────────────────────────────────────────────
 //
 // Tags each search result with its source channel(s) for evaluation analysis.
 // Computes Exclusive Contribution Rate: how often each channel is the SOLE

@@ -1,4 +1,6 @@
-// --- 1. RECONSOLIDATION ---
+// ───────────────────────────────────────────────────────────────
+// 1. RECONSOLIDATION
+// ───────────────────────────────────────────────────────────────
 // TM-06: Reconsolidation-on-Save
 //
 // After embedding generation, check top-3 most similar memories
@@ -16,8 +18,9 @@ import type Database from 'better-sqlite3';
 import { recordHistory } from './history';
 import * as causalEdges from './causal-edges';
 
-// --- 2. TYPES ---
-
+// ───────────────────────────────────────────────────────────────
+// 2. TYPES
+// ───────────────────────────────────────────────────────────────
 /** Action determined by similarity threshold comparison */
 export type ReconsolidationAction = 'merge' | 'conflict' | 'complement';
 
@@ -90,8 +93,9 @@ type StoreMemoryFn = (memory: NewMemoryData) => number;
 /** Callback for generating an embedding from content */
 type GenerateEmbeddingFn = (content: string) => Promise<Float32Array | number[] | null>;
 
-// --- 3. CONFIGURATION ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. CONFIGURATION
+// ───────────────────────────────────────────────────────────────
 /** Threshold above which memories are merged (near-duplicates) */
 const MERGE_THRESHOLD = 0.88;
 
@@ -101,8 +105,9 @@ const CONFLICT_THRESHOLD = 0.75;
 /** Maximum number of similar memories to check */
 const SIMILAR_MEMORY_LIMIT = 3;
 
-// --- 4. FEATURE FLAG ---
-
+// ───────────────────────────────────────────────────────────────
+// 4. FEATURE FLAG
+// ───────────────────────────────────────────────────────────────
 /**
  * Check if reconsolidation is enabled via feature flag.
  *
@@ -115,8 +120,9 @@ export function isReconsolidationEnabled(): boolean {
   return process.env.SPECKIT_RECONSOLIDATION?.toLowerCase().trim() === 'true';
 }
 
-// --- 5. SIMILARITY SEARCH ---
-
+// ───────────────────────────────────────────────────────────────
+// 5. SIMILARITY SEARCH
+// ───────────────────────────────────────────────────────────────
 /**
  * Find the top-N most similar memories in a spec folder.
  *
@@ -141,8 +147,9 @@ export function findSimilarMemories(
   }
 }
 
-// --- 6. ACTION DETERMINATION ---
-
+// ───────────────────────────────────────────────────────────────
+// 6. ACTION DETERMINATION
+// ───────────────────────────────────────────────────────────────
 /**
  * Determine the reconsolidation action based on similarity score.
  *
@@ -159,8 +166,9 @@ export function determineAction(similarity: number): ReconsolidationAction {
   return 'complement';
 }
 
-// --- 7. MERGE OPERATION ---
-
+// ───────────────────────────────────────────────────────────────
+// 7. MERGE OPERATION
+// ───────────────────────────────────────────────────────────────
 /**
  * Merge a new memory into an existing one (similarity >= 0.88).
  *
@@ -278,8 +286,9 @@ export function mergeContent(existing: string, incoming: string): string {
   return existing + '\n\n<!-- Merged content -->\n' + newLines.join('\n');
 }
 
-// --- 8. CONFLICT OPERATION ---
-
+// ───────────────────────────────────────────────────────────────
+// 8. CONFLICT OPERATION
+// ───────────────────────────────────────────────────────────────
 /**
  * Resolve a conflict between highly similar memories (similarity 0.75-0.88).
  *
@@ -371,8 +380,9 @@ export function executeConflict(
   }
 }
 
-// --- 9. COMPLEMENT OPERATION ---
-
+// ───────────────────────────────────────────────────────────────
+// 9. COMPLEMENT OPERATION
+// ───────────────────────────────────────────────────────────────
 /**
  * Store a new memory unchanged (similarity < 0.75).
  *
@@ -398,8 +408,9 @@ export function executeComplement(
   };
 }
 
-// --- 10. RECONSOLIDATION ORCHESTRATOR ---
-
+// ───────────────────────────────────────────────────────────────
+// 10. RECONSOLIDATION ORCHESTRATOR
+// ───────────────────────────────────────────────────────────────
 /** Options for the reconsolidation orchestrator */
 export interface ReconsolidateOptions {
   findSimilar: FindSimilarFn;
@@ -539,8 +550,9 @@ export async function reconsolidate(
   }
 }
 
-// --- 11. HELPERS ---
-
+// ───────────────────────────────────────────────────────────────
+// 11. HELPERS
+// ───────────────────────────────────────────────────────────────
 /**
  * Convert an embedding array to a Buffer for SQLite storage.
  *
@@ -554,9 +566,9 @@ function embeddingToBuffer(embedding: Float32Array | number[]): Buffer {
   return Buffer.from(new Float32Array(embedding).buffer);
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    11. EXPORTS (constants for testing)
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 export {
   MERGE_THRESHOLD,

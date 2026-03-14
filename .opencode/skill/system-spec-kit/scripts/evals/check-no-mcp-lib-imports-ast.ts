@@ -1,4 +1,6 @@
-// --- 1. CHECK NO MCP LIB IMPORTS AST ---
+// ───────────────────────────────────────────────────────────────
+// 1. CHECK NO MCP LIB IMPORTS AST
+// ───────────────────────────────────────────────────────────────
 // AST-based enforcement for prohibited internal runtime imports.
 // Includes deep transitive re-export traversal for local barrel files.
 

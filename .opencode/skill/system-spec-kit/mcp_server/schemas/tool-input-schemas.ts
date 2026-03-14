@@ -1,4 +1,6 @@
-// --- 1. TOOL INPUT SCHEMAS ---
+// ───────────────────────────────────────────────────────────────
+// 1. TOOL INPUT SCHEMAS
+// ───────────────────────────────────────────────────────────────
 // Centralized strict Zod validation schemas for MCP tool inputs.
 // Strict mode is controlled by SPECKIT_STRICT_SCHEMAS (default: true).
 import { z, ZodError, type ZodType } from 'zod';

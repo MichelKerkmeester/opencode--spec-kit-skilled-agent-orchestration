@@ -1,5 +1,6 @@
-// --- 1. HANDLER MEMORY INDEX COOLDOWN TESTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. HANDLER MEMORY INDEX COOLDOWN TESTS
+// ───────────────────────────────────────────────────────────────
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const mocks = vi.hoisted(() => ({

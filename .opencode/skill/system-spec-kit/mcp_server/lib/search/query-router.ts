@@ -1,4 +1,6 @@
-// --- 1. QUERY ROUTER ---
+// ───────────────────────────────────────────────────────────────
+// 1. QUERY ROUTER
+// ───────────────────────────────────────────────────────────────
 // Tier-to-channel-subset routing for query complexity (Sprint 3, T001b)
 // Maps classifier tiers to channel subsets for selective pipeline execution.
 
@@ -9,7 +11,7 @@ import {
   type ClassificationResult,
 } from './query-classifier';
 
-/* -----------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    1. TYPES & CONSTANTS
 ----------------------------------------------------------------*/
 
@@ -39,7 +41,7 @@ const MIN_CHANNELS = 2;
 /** Fallback channels used to pad configs that violate the minimum invariant. */
 const FALLBACK_CHANNELS: readonly ChannelName[] = ['vector', 'fts'] as const;
 
-/* -----------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    2. DEFAULT ROUTING CONFIG
 ----------------------------------------------------------------*/
 
@@ -55,7 +57,7 @@ const DEFAULT_ROUTING_CONFIG: ChannelRoutingConfig = {
   complex: ['vector', 'fts', 'bm25', 'graph', 'degree'],
 };
 
-/* -----------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    3. CHANNEL SUBSET RESOLUTION
 ----------------------------------------------------------------*/
 
@@ -96,7 +98,7 @@ function getChannelSubset(
   return enforceMinimumChannels([...channels]);
 }
 
-/* -----------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    4. CONVENIENCE: CLASSIFY + ROUTE
 ----------------------------------------------------------------*/
 
@@ -136,7 +138,7 @@ function routeQuery(
   };
 }
 
-/* -----------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    5. EXPORTS
 ----------------------------------------------------------------*/
 

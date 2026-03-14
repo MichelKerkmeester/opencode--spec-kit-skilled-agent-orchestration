@@ -1,8 +1,12 @@
-// --- 1. INPUT NORMALIZER ---
+// ───────────────────────────────────────────────────────────────
+// 1. INPUT NORMALIZER
+// ───────────────────────────────────────────────────────────────
 // Validates, normalizes, and transforms raw input data into structured session format
 import { structuredLog } from './logger';
 
-// --- 2. TYPES ---
+// ───────────────────────────────────────────────────────────────
+// 2. TYPES
+// ───────────────────────────────────────────────────────────────
 /** Data source type indicating where loaded data came from */
 export type DataSource = 'file' | 'opencode-capture' | 'simulation';
 
@@ -123,8 +127,9 @@ export interface TransformedCapture {
   _capturedAt?: string;
 }
 
-// --- 3. DECISION TRANSFORMATION ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. DECISION TRANSFORMATION
+// ───────────────────────────────────────────────────────────────
 function transformKeyDecision(decisionItem: string | DecisionItemObject | null): Observation | null {
   let decisionText: string;
   let chosenApproach: string | null;
@@ -190,8 +195,9 @@ function transformKeyDecision(decisionItem: string | DecisionItemObject | null):
   };
 }
 
-// --- 4. OBSERVATION BUILDERS ---
-
+// ───────────────────────────────────────────────────────────────
+// 4. OBSERVATION BUILDERS
+// ───────────────────────────────────────────────────────────────
 function buildSessionSummaryObservation(summary: string, triggerPhrases: string[] = []): Observation {
   const summaryTitle: string = summary.length > 100
     ? summary.substring(0, 100).replace(/\s+\S*$/, '') + '...'
@@ -248,8 +254,9 @@ function hasPersistedNextStepsObservation(observations: Observation[]): boolean 
   });
 }
 
-// --- 5. INPUT NORMALIZATION ---
-
+// ───────────────────────────────────────────────────────────────
+// 5. INPUT NORMALIZATION
+// ───────────────────────────────────────────────────────────────
 function cloneInputData<T>(data: T): T {
   if (typeof structuredClone === 'function') {
     return structuredClone(data);
@@ -354,8 +361,9 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
   return normalized;
 }
 
-// --- 6. INPUT VALIDATION ---
-
+// ───────────────────────────────────────────────────────────────
+// 6. INPUT VALIDATION
+// ───────────────────────────────────────────────────────────────
 function validateInputData(data: RawInputData, specFolderArg: string | null = null): void {
   const errors: string[] = [];
 
@@ -509,8 +517,9 @@ function containsRelevantKeyword(keywords: string[], ...parts: Array<string | un
   return keywords.some((keyword) => normalized.includes(keyword));
 }
 
-// --- 7. OPENCODE CAPTURE TRANSFORMATION ---
-
+// ───────────────────────────────────────────────────────────────
+// 7. OPENCODE CAPTURE TRANSFORMATION
+// ───────────────────────────────────────────────────────────────
 function transformOpencodeCapture(capture: OpencodeCapture, specFolderHint?: string | null): TransformedCapture {
   // F-14: Runtime guards — validate capture shape before processing
   if (!capture || typeof capture !== 'object') {
@@ -708,8 +717,9 @@ function transformOpencodeCapture(capture: OpencodeCapture, specFolderHint?: str
   };
 }
 
-// --- 8. EXPORTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 8. EXPORTS
+// ───────────────────────────────────────────────────────────────
 export {
   // Primary exports
   transformKeyDecision,

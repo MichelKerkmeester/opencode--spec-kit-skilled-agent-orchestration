@@ -12,9 +12,9 @@ type ActionInput = Parameters<typeof peGate.getActionPriority>[0];
 type TruncateInput = Parameters<typeof peGate.truncateContent>[0];
 
 describe('Prediction Error Gate Module', () => {
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      T101-T104: Threshold Constants
-  ---------------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('T101-T104: Threshold Constants', () => {
     it('T101: DUPLICATE equals 0.95', () => {
@@ -40,11 +40,11 @@ describe('Prediction Error Gate Module', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      T105-T112: evaluateMemory()
      Production signature: evaluateMemory(contentHash, content, candidates, options)
      Candidates have similarity in 0-1 scale (normalized by findSimilarMemories)
-  ---------------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('T105-T112: evaluateMemory()', () => {
     it('T105: sim>=95 returns REINFORCE', () => {
@@ -88,12 +88,12 @@ describe('Prediction Error Gate Module', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      T113-T125: Contradiction Detection
      Production: detectContradiction(newContent, existingContent)
      Returns: { detected: boolean, type: string|null, description: string|null, confidence: number }
      Patterns: negation, replacement, deprecation, correction, clarification, prohibition, obsolescence, explicit
-  ---------------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('T113-T125: Contradiction Detection', () => {
     it('T113: "not...but" detected as negation', () => {
@@ -178,9 +178,9 @@ describe('Prediction Error Gate Module', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      T126-T132: Action Constants & Decision Logic
-  ---------------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('T126-T132: Action Constants & Decision Logic', () => {
     it('T126: REINFORCE for near-duplicates', () => {
@@ -229,9 +229,9 @@ describe('Prediction Error Gate Module', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      T136-T145: Edge Cases
-  ---------------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('T136-T145: Edge Cases', () => {
     it('T136: Null candidates handled', () => {
@@ -260,9 +260,9 @@ describe('Prediction Error Gate Module', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      T146-T155: Helper Functions
-  ---------------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('T146-T155: Helper Functions', () => {
     it('T146: calculateSimilarityStats correct', () => {
@@ -347,9 +347,9 @@ describe('Prediction Error Gate Module', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      T156-T165: Conflict Logging
-  ---------------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('T156-T165: Conflict Logging', () => {
     it('T156: formatConflictRecord creates valid record', () => {
@@ -471,9 +471,9 @@ describe('Prediction Error Gate Module', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      T162-T165: batchEvaluate()
-  ---------------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('T162-T165: batchEvaluate()', () => {
     it('T162: batchEvaluate returns results + stats', () => {
@@ -512,9 +512,9 @@ describe('Prediction Error Gate Module', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      Module Exports
-  ---------------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('Module Exports', () => {
     const expectedExports = [
@@ -530,9 +530,9 @@ describe('Prediction Error Gate Module', () => {
     });
   });
 
-  /* -------------------------------------------------------------
+  /* ───────────────────────────────────────────────────────────────
      C138: Read-Time Contradiction Detection
-  ---------------------------------------------------------------- */
+  ──────────────────────────────────────────────────────────────── */
 
   describe('C138: Read-Time Contradiction Flagging', () => {
     it('C138-T1: detectContradiction function exists', () => {

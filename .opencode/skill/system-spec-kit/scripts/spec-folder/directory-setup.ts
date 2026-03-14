@@ -1,4 +1,6 @@
-// --- 1. DIRECTORY SETUP ---
+// ───────────────────────────────────────────────────────────────
+// 1. DIRECTORY SETUP
+// ───────────────────────────────────────────────────────────────
 // Creates and configures spec folder directory structure with memory subdirectories
 
 // Node stdlib
@@ -9,7 +11,7 @@ import * as path from 'path';
 import { structuredLog, sanitizePath } from '../utils';
 import { CONFIG, findActiveSpecsDir, getSpecsDirectories, SPEC_FOLDER_PATTERN } from '../core';
 
-/* -----------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    1. DIRECTORY SETUP
 ------------------------------------------------------------------*/
 
@@ -100,7 +102,7 @@ async function setupContextDirectory(specFolder: string): Promise<string> {
   return contextDir;
 }
 
-/* -----------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    2. EXPORTS
 ------------------------------------------------------------------*/
 

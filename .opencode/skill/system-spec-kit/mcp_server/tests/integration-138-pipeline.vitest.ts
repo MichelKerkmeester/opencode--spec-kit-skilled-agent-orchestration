@@ -5,11 +5,11 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { applyMMR } from '@spec-kit/shared/algorithms/mmr-reranker';
 import { detectEvidenceGap } from '../lib/search/evidence-gap-detector';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    MOCK PIPELINE STAGES
    Simulates the full hybridSearchEnhanced() flow from spec 138.
    In production these import from actual modules.
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 // Stage types
 interface SearchResult {
@@ -166,9 +166,9 @@ function hybridSearchEnhanced(query: string, mode: string, flags: Record<string,
   };
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    TESTS
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 describe('C138 Integration Pipeline', () => {
   const ALL_FLAGS_ON = {
@@ -285,10 +285,10 @@ describe('C138 Integration Pipeline', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    STAGE-LEVEL TESTS (Agent 5 — Task B additions)
    Tests targeting individual pipeline stages with production imports.
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 describe('C138 Stage: Adaptive Fusion Weights', () => {
   it('getAdaptiveWeights returns different profiles per intent', async () => {
@@ -441,11 +441,11 @@ describe('C138 Stage: Query Expander Production', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    REGRESSION: Baseline Behavior
    Ensures hybrid retrieval and graph coverage checks keep
    predictable behavior under current runtime defaults.
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 describe('C138 Regression: Flags OFF Baseline', () => {
   it('hybridAdaptiveFuse returns standard results when SPECKIT_ADAPTIVE_FUSION is off', async () => {

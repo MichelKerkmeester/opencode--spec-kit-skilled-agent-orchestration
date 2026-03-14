@@ -1,4 +1,6 @@
-// --- 1. CHECKPOINT TOOLS ---
+// ───────────────────────────────────────────────────────────────
+// 1. CHECKPOINT TOOLS
+// ───────────────────────────────────────────────────────────────
 // Dispatch for L5 checkpoint tools: create, list, restore,
 // Delete (T303).
 import {

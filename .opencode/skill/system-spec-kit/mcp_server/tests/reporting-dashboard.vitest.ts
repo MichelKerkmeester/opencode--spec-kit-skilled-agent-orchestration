@@ -13,13 +13,13 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import Database from 'better-sqlite3';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    MOCK: eval-db module
    reporting-dashboard.ts calls initEvalDb() (no args) internally.
    The singleton path check would cause it to open the real DB file
    instead of our test DB. We mock so initEvalDb always returns
    the in-memory test database.
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 let testDb: InstanceType<typeof Database>;
 
@@ -37,9 +37,9 @@ import {
   type ReportConfig,
 } from '../lib/eval/reporting-dashboard';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    SCHEMA: Replicate the eval tables needed by reporting-dashboard.
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 const EVAL_SCHEMA_SQL = `
   CREATE TABLE IF NOT EXISTS eval_metric_snapshots (
@@ -66,9 +66,9 @@ const EVAL_SCHEMA_SQL = `
   );
 `;
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    HELPERS: Seed data into the test database.
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 interface SnapshotSeed {
   eval_run_id: number;
@@ -124,9 +124,9 @@ function seedChannelResults(db: InstanceType<typeof Database>, rows: ChannelResu
   }
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    SETUP / TEARDOWN
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 beforeEach(() => {
   testDb = new Database(':memory:');

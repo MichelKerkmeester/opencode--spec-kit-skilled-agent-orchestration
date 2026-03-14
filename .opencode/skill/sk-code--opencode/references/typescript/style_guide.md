@@ -33,14 +33,14 @@ All TypeScript files MUST begin with a module header block identifying the modul
 ### Template
 
 ```typescript
-// ---------------------------------------------------------------
+// ───────────────────────────────────────────────────────────────────
 // MODULE: [Module Name]
-// ---------------------------------------------------------------
+// ───────────────────────────────────────────────────────────────────
 ```
 
 ### Requirements
 
-- Box width: 63 characters total (dash line)
+- Box width: 67 characters total (box-drawing line)
 - Module name: Left-aligned within header block
 - No `'use strict'` directive required (TypeScript `strict` mode in tsconfig replaces it)
 - Immediately followed by imports
@@ -50,13 +50,13 @@ All TypeScript files MUST begin with a module header block identifying the modul
 ### Full Header Example
 
 ```typescript
-// ---------------------------------------------------------------
+// ───────────────────────────────────────────────────────────────────
 // MODULE: Memory Search Handler
-// ---------------------------------------------------------------
+// ───────────────────────────────────────────────────────────────────
 
-// ---------------------------------------------------------------------------
+// ───────────────────────────────────────────────────────────────────
 // 1. IMPORTS
-// ---------------------------------------------------------------------------
+// ───────────────────────────────────────────────────────────────────
 
 import path from 'path';
 import type { SearchOptions } from '../types';
@@ -107,17 +107,17 @@ Two formats are acceptable. Use either consistently within a single file.
 **Format A — Line-comment dividers** (used in most files):
 
 ```typescript
-// ---------------------------------------------------------------------------
+// ───────────────────────────────────────────────────────────────────
 // 1. [SECTION NAME]
-// ---------------------------------------------------------------------------
+// ───────────────────────────────────────────────────────────────────
 ```
 
 **Format B — Block-comment dividers** (used in 27+ files across the codebase):
 
 ```typescript
-/* ---------------------------------------------------------------
- * 2. SECTION NAME
- * --------------------------------------------------------------- */
+/* ───────────────────────────────────────────────────────────────
+   2. SECTION NAME
+──────────────────────────────────────────────────────────────── */
 ```
 
 Both formats serve the same purpose: visual separation of major code sections with numbered headings. Choose one format per file and apply it consistently.
@@ -138,9 +138,9 @@ Both formats serve the same purpose: visual separation of major code sections wi
 ### TYPE DEFINITIONS Section Example
 
 ```typescript
-// ---------------------------------------------------------------------------
+// ───────────────────────────────────────────────────────────────────
 // 2. TYPE DEFINITIONS
-// ---------------------------------------------------------------------------
+// ───────────────────────────────────────────────────────────────────
 
 /** Configuration for search operations. */
 interface SearchConfig {
@@ -563,6 +563,17 @@ Use plain comments that explain reasoning:
 - `// State that must hold after execution`
 - `// REQ-###|BUG-###|SEC-###|T###: traceability`
 - `// Reliability/performance/security risk control`
+
+### Capitalization
+
+All comment text MUST start with a capital letter:
+
+```typescript
+// Reverse order preserves dependency chain     // correct
+// reverse order preserves dependency chain     // wrong
+```
+
+**Exceptions**: `eslint-disable` directives, `@ts-` annotations, and inline code references.
 
 ### TSDoc Comments (Replaces JSDoc)
 

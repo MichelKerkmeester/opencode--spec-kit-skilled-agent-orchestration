@@ -1,7 +1,10 @@
-// --- 1. RECOVERY HINTS ---
+// ───────────────────────────────────────────────────────────────
+// 1. RECOVERY HINTS
+// ───────────────────────────────────────────────────────────────
 // Error catalog with recovery hints (REQ-004, REQ-009)
-// --- 2. TYPES ---
-
+// ───────────────────────────────────────────────────────────────
+// 2. TYPES
+// ───────────────────────────────────────────────────────────────
 /**
  * Defines the Severity type.
  */
@@ -27,7 +30,9 @@ export type RecoveryHintMap = Record<string, RecoveryHint>;
  */
 export type ToolSpecificHintMap = Record<string, Record<string, RecoveryHint>>;
 
-// --- 3. ERROR CODES CATALOG ---
+// ───────────────────────────────────────────────────────────────
+// 3. ERROR CODES CATALOG
+// ───────────────────────────────────────────────────────────────
 //
 // Organized by category for maintainability.
 // Zero runtime cost - static constants.
@@ -119,7 +124,9 @@ export type ErrorCodeKey = keyof typeof ERROR_CODES;
  */
 export type ErrorCodeValue = (typeof ERROR_CODES)[ErrorCodeKey];
 
-// --- 4. RECOVERY HINTS CATALOG ---
+// ───────────────────────────────────────────────────────────────
+// 4. RECOVERY HINTS CATALOG
+// ───────────────────────────────────────────────────────────────
 //
 // Each error code has specific recovery guidance.
 // Default hint is "Run memory_health() for diagnostics".
@@ -630,8 +637,9 @@ export const RECOVERY_HINTS: RecoveryHintMap = {
   },
 };
 
-// --- 5. DEFAULT HINT (REQ-009) ---
-
+// ───────────────────────────────────────────────────────────────
+// 5. DEFAULT HINT (REQ-009)
+// ───────────────────────────────────────────────────────────────
 /**
  * Defines the DEFAULT_HINT constant.
  */
@@ -646,8 +654,9 @@ export const DEFAULT_HINT: RecoveryHint = {
   toolTip: 'memory_health()'
 };
 
-// --- 6. TOOL-SPECIFIC HINTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 6. TOOL-SPECIFIC HINTS
+// ───────────────────────────────────────────────────────────────
 /**
  * Defines the TOOL_SPECIFIC_HINTS constant.
  */
@@ -799,8 +808,9 @@ export function getRecoveryHint(toolName: string, errorCode: string): RecoveryHi
   return DEFAULT_HINT;
 }
 
-// --- 7. HELPER FUNCTIONS ---
-
+// ───────────────────────────────────────────────────────────────
+// 7. HELPER FUNCTIONS
+// ───────────────────────────────────────────────────────────────
 /**
  * Check if a specific hint exists (not default).
  */

@@ -1,4 +1,6 @@
-// --- 1. INDEX ---
+// ───────────────────────────────────────────────────────────────
+// 1. INDEX
+// ───────────────────────────────────────────────────────────────
 // Re-exports all tool dispatch modules for context-server (T303).
 import * as contextTools from './context-tools';
 import * as memoryTools from './memory-tools';

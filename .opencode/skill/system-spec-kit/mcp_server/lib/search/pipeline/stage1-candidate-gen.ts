@@ -1,4 +1,6 @@
-// --- 1. STAGE1 CANDIDATE GEN ---
+// ───────────────────────────────────────────────────────────────
+// 1. STAGE1 CANDIDATE GEN
+// ───────────────────────────────────────────────────────────────
 // Sprint 5 (R6): 4-Stage Retrieval Pipeline Architecture
 //
 // Responsibility: Execute search channels and collect raw candidate results.

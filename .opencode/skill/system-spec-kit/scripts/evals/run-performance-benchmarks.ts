@@ -1,5 +1,6 @@
-// --- 1. RUN PERFORMANCE BENCHMARKS ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. RUN PERFORMANCE BENCHMARKS
+// ───────────────────────────────────────────────────────────────
 // USAGE: npx tsx scripts/evals/run-performance-benchmarks.ts <spec-folder>
 //
 // This script MUST be run with tsx (not compiled JS) because

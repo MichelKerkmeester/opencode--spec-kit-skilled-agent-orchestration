@@ -1,7 +1,11 @@
-// --- 1. DATA LOADER ---
+// ───────────────────────────────────────────────────────────────
+// 1. DATA LOADER
+// ───────────────────────────────────────────────────────────────
 // Loads session data from file, OpenCode capture, or simulation fallback
 
-// --- 2. IMPORTS ---
+// ───────────────────────────────────────────────────────────────
+// 2. IMPORTS
+// ───────────────────────────────────────────────────────────────
 import fs from 'fs/promises';
 import path from 'path';
 import os from 'os';
@@ -16,8 +20,9 @@ import {
 } from '../utils/input-normalizer';
 import type { RawInputData, NormalizedData, OpencodeCapture, Observation, UserPrompt, RecentContext, FileEntry, DataSource } from '../utils/input-normalizer';
 
-// --- 3. TYPES ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. TYPES
+// ───────────────────────────────────────────────────────────────
 // Re-export DataSource from input-normalizer for consumers importing from loaders
 export type { DataSource };
 
@@ -37,8 +42,9 @@ interface OpencodeCaptureMod {
   captureConversation(maxExchanges: number, projectRoot: string): Promise<OpencodeCapture | null>;
 }
 
-// --- 4. LAZY-LOADED DEPENDENCIES ---
-
+// ───────────────────────────────────────────────────────────────
+// 4. LAZY-LOADED DEPENDENCIES
+// ───────────────────────────────────────────────────────────────
 // Lazy load via dynamic import() to handle missing dependencies
 let _opencodeCapture: OpencodeCaptureMod | null | undefined;
 
@@ -57,8 +63,9 @@ async function getOpencodeCapture(): Promise<OpencodeCaptureMod | null> {
   return _opencodeCapture;
 }
 
-// --- 5. LOADER FUNCTIONS ---
-
+// ───────────────────────────────────────────────────────────────
+// 5. LOADER FUNCTIONS
+// ───────────────────────────────────────────────────────────────
 interface LoadOptions {
   dataFile?: string | null;
   specFolderArg?: string | null;
@@ -176,8 +183,9 @@ async function loadCollectedData(options?: LoadOptions): Promise<LoadedData> {
   );
 }
 
-// --- 6. EXPORTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 6. EXPORTS
+// ───────────────────────────────────────────────────────────────
 export {
   loadCollectedData,
 };

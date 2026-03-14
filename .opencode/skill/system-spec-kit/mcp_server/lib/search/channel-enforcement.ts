@@ -1,4 +1,6 @@
-// --- 1. CHANNEL ENFORCEMENT ---
+// ───────────────────────────────────────────────────────────────
+// 1. CHANNEL ENFORCEMENT
+// ───────────────────────────────────────────────────────────────
 // Pipeline-ready wrapper around the channel min-representation check.
 // Provides a single enforceChannelRepresentation() entry point for
 // Use inside the hybrid-search pipeline after RRF/RSF fusion.
@@ -10,8 +12,9 @@ import {
   isChannelMinRepEnabled,
 } from './channel-representation';
 
-// --- 2. INTERFACES ---
-
+// ───────────────────────────────────────────────────────────────
+// 2. INTERFACES
+// ───────────────────────────────────────────────────────────────
 /** A fused result item returned from the search pipeline. */
 interface FusedResult {
   id: number | string;
@@ -46,8 +49,9 @@ export interface EnforcementResult {
   enforcement: EnforcementMetadata;
 }
 
-// --- 3. MAIN EXPORT ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. MAIN EXPORT
+// ───────────────────────────────────────────────────────────────
 /**
  * Apply channel min-representation enforcement to a set of fused search results.
  *
@@ -115,8 +119,9 @@ export function enforceChannelRepresentation(
   };
 }
 
-// --- 4. HELPERS ---
-
+// ───────────────────────────────────────────────────────────────
+// 4. HELPERS
+// ───────────────────────────────────────────────────────────────
 /**
  * Count how many items in a result array belong to each channel.
  * Uses the `source` field as the channel identifier.

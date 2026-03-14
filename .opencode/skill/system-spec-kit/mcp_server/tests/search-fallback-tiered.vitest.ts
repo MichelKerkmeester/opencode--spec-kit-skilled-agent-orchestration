@@ -1,4 +1,6 @@
-// --- 1. TEST — SEARCH FALLBACK TIERED ---
+// ───────────────────────────────────────────────────────────────
+// 1. TEST — SEARCH FALLBACK TIERED
+// ───────────────────────────────────────────────────────────────
 // Tests: Feature flag gating, tier progression, structuralSearch,
 // Degradation metadata, result merging, R15 invariant
 

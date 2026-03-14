@@ -1,11 +1,12 @@
-// --- 1. MEMORY TRIGGERS ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. MEMORY TRIGGERS
+// ───────────────────────────────────────────────────────────────
 // Shared packages
 import { validateFilePath } from '@spec-kit/shared/utils/path-security';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    1. DEPENDENCIES
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 // Core utilities
 import { ALLOWED_BASE_PATHS, checkDatabaseUpdated } from '../core';
@@ -34,9 +35,9 @@ import { logSearchQuery, logFinalResult } from '../lib/eval/eval-logger';
 // Shared handler types
 import type { MCPResponse } from './types';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    2. TYPES
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 interface TriggerMatch {
   memoryId: number;
@@ -100,17 +101,17 @@ interface TriggerArgs {
   include_cognitive?: boolean;
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    2b. CONSTANTS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /** Per-turn decay rate for attention scoring. */
 const TURN_DECAY_RATE = 0.98;
 const validateTieredFilePath = createFilePathValidator(ALLOWED_BASE_PATHS, validateFilePath);
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    2c. HELPER FUNCTIONS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /** Fetch full memory records required for FSRS tier classification. */
 function fetchMemoryRecords(memoryIds: number[]): Map<number, TierInput> {
@@ -162,9 +163,9 @@ async function getTieredContent(
   }
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    3. MATCH TRIGGERS HANDLER
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /** Handle memory_match_triggers tool - matches prompt against trigger phrases with cognitive decay */
 async function handleMemoryMatchTriggers(args: TriggerArgs): Promise<MCPResponse> {
@@ -465,9 +466,9 @@ async function handleMemoryMatchTriggers(args: TriggerArgs): Promise<MCPResponse
   return _triggersResponse;
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    4. EXPORTS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 export {
   handleMemoryMatchTriggers,

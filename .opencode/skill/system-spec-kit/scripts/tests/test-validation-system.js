@@ -1,4 +1,6 @@
-// --- 1. TEST: VALIDATION SYSTEM COMPREHENSIVE TESTS ---
+// ───────────────────────────────────────────────────────────────
+// 1. TEST: VALIDATION SYSTEM COMPREHENSIVE TESTS
+// ───────────────────────────────────────────────────────────────
 //
 // JavaScript-based tests for the SpecKit validation system.
 // Covers all 13 validation rules without requiring bash execution.
@@ -29,7 +31,8 @@ const { execSync } = require('child_process');
 
 /* ─────────────────────────────────────────────────────────────
    1. CONFIGURATION
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 const ROOT = path.join(__dirname, '..', '..');
 const SCRIPTS_DIR = path.join(ROOT, 'scripts');
@@ -52,7 +55,8 @@ const results = {
 
 /* ─────────────────────────────────────────────────────────────
    2. UTILITIES
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 function log(msg) {
   console.log(msg);
@@ -123,7 +127,8 @@ function setupWorkspace() {
 
 /* ─────────────────────────────────────────────────────────────
    3. VALIDATOR EXECUTION HELPERS
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 /**
  * Run the validation script against a fixture or path
@@ -302,7 +307,8 @@ Test implementation summary.
 
 /* ─────────────────────────────────────────────────────────────
    4. LEVEL DETECTION TESTS
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testLevelDetection() {
   startSuite('Level Detection Logic');
@@ -374,7 +380,8 @@ async function testLevelDetection() {
 
 /* ─────────────────────────────────────────────────────────────
    5. FILE_EXISTS RULE TESTS
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testFileExistsRule() {
   startSuite('Rule: FILE_EXISTS');
@@ -453,7 +460,8 @@ async function testFileExistsRule() {
 
 /* ─────────────────────────────────────────────────────────────
    6. PLACEHOLDER_FILLED RULE TESTS
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testPlaceholderRule() {
   startSuite('Rule: PLACEHOLDER_FILLED');
@@ -553,7 +561,8 @@ Real problem description here.
 
 /* ─────────────────────────────────────────────────────────────
    7. ANCHORS_VALID RULE TESTS
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testAnchorsRule() {
   startSuite('Rule: ANCHORS_VALID');
@@ -742,7 +751,8 @@ Second summary.
 
 /* ─────────────────────────────────────────────────────────────
    8. SECTIONS_PRESENT RULE TESTS
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testSectionsPresentRule() {
   startSuite('Rule: SECTIONS_PRESENT');
@@ -919,7 +929,8 @@ Consequences content.
 
 /* ─────────────────────────────────────────────────────────────
    9. PRIORITY_TAGS RULE TESTS
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testPriorityTagsRule() {
   startSuite('Rule: PRIORITY_TAGS');
@@ -1052,7 +1063,8 @@ async function testPriorityTagsRule() {
 
 /* ─────────────────────────────────────────────────────────────
    10. EVIDENCE_CITED RULE TESTS
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testEvidenceRule() {
   startSuite('Rule: EVIDENCE_CITED');
@@ -1182,7 +1194,8 @@ async function testEvidenceRule() {
 
 /* ─────────────────────────────────────────────────────────────
    11. EXIT CODE BEHAVIOR TESTS
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testExitCodeBehavior() {
   startSuite('Exit Code Behavior');
@@ -1282,7 +1295,8 @@ async function testExitCodeBehavior() {
 
 /* ─────────────────────────────────────────────────────────────
    12. JSON OUTPUT MODE TESTS
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testJsonOutputMode() {
   startSuite('JSON Output Mode');
@@ -1381,7 +1395,8 @@ async function testJsonOutputMode() {
 
 /* ─────────────────────────────────────────────────────────────
    13. CROSS-REFERENCE VALIDATION TESTS
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testCrossReferenceValidation() {
   startSuite('Cross-Reference Validation');
@@ -1446,7 +1461,8 @@ async function testCrossReferenceValidation() {
 
 /* ─────────────────────────────────────────────────────────────
    14. RULE SCRIPT EXISTENCE TESTS
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testRuleScriptsExist() {
   startSuite('Rule Scripts Existence');
@@ -1521,7 +1537,8 @@ async function testRuleScriptsExist() {
 
 /* ─────────────────────────────────────────────────────────────
    15. FIXTURE COVERAGE TESTS
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testFixtureCoverage() {
   startSuite('Test Fixture Coverage');
@@ -1592,7 +1609,8 @@ async function testFixtureCoverage() {
 
 /* ─────────────────────────────────────────────────────────────
    16. QUIET MODE TESTS
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testQuietMode() {
   startSuite('Quiet Mode Output');
@@ -1642,7 +1660,8 @@ async function testQuietMode() {
 
 /* ─────────────────────────────────────────────────────────────
    17. MAIN ENTRY POINT
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function main() {
   log('');
@@ -1740,7 +1759,8 @@ main().then(success => {
 
 /* ─────────────────────────────────────────────────────────────
    18. EXPORTS (for programmatic use)
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 module.exports = {
   // Test utilities

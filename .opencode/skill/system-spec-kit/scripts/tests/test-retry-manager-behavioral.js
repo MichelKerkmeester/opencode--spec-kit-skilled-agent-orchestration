@@ -8,7 +8,8 @@ const Database = require('better-sqlite3');
 
 /* ─────────────────────────────────────────────────────────────
    1. CONFIGURATION
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 const ROOT = path.join(__dirname, '..', '..');
 const MCP_DIST = path.join(ROOT, 'mcp_server', 'dist');
@@ -25,7 +26,8 @@ const results = {
 
 /* ─────────────────────────────────────────────────────────────
    2. UTILITIES
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 function log(msg) {
   console.log(msg);
@@ -53,7 +55,8 @@ function skip(testName, reason) {
 
 /* ─────────────────────────────────────────────────────────────
    3. IN-MEMORY DATABASE SETUP & MODULE PATCHING
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 let mockDb = null;
 let vectorIndex = null;
@@ -257,9 +260,12 @@ function teardownMocks() {
 
 /* ─────────────────────────────────────────────────────────────
    4. TEST SECTIONS
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
-// --- 1. CONSTANTS & CONFIGURATION ---
+// ───────────────────────────────────────────────────────────────
+// 1. CONSTANTS & CONFIGURATION
+// ───────────────────────────────────────────────────────────────
 async function testConstants() {
   log('\n🔬 SECTION 1: Constants & Configuration');
 
@@ -303,7 +309,9 @@ async function testConstants() {
   }
 }
 
-// --- 2. GETRETRYSTATS ---
+// ───────────────────────────────────────────────────────────────
+// 2. GETRETRYSTATS
+// ───────────────────────────────────────────────────────────────
 async function testGetRetryStats() {
   log('\n🔬 SECTION 2: getRetryStats');
 
@@ -355,7 +363,9 @@ async function testGetRetryStats() {
   }
 }
 
-// --- 3. GETRETRYQUEUE ---
+// ───────────────────────────────────────────────────────────────
+// 3. GETRETRYQUEUE
+// ───────────────────────────────────────────────────────────────
 async function testGetRetryQueue() {
   log('\n🔬 SECTION 3: getRetryQueue');
 
@@ -488,7 +498,9 @@ async function testGetRetryQueue() {
   }
 }
 
-// --- 4. BACKOFF DELAY CALCULATION ---
+// ───────────────────────────────────────────────────────────────
+// 4. BACKOFF DELAY CALCULATION
+// ───────────────────────────────────────────────────────────────
 async function testBackoffLogic() {
   log('\n🔬 SECTION 4: Backoff Delay Calculation (via getRetryQueue)');
 
@@ -587,7 +599,9 @@ async function testBackoffLogic() {
   }
 }
 
-// --- 5. GETFAILEDEMBEDDINGS ---
+// ───────────────────────────────────────────────────────────────
+// 5. GETFAILEDEMBEDDINGS
+// ───────────────────────────────────────────────────────────────
 async function testGetFailedEmbeddings() {
   log('\n🔬 SECTION 5: getFailedEmbeddings');
 
@@ -647,7 +661,9 @@ async function testGetFailedEmbeddings() {
   }
 }
 
-// --- 6. MARKASFAILED ---
+// ───────────────────────────────────────────────────────────────
+// 6. MARKASFAILED
+// ───────────────────────────────────────────────────────────────
 async function testMarkAsFailed() {
   log('\n🔬 SECTION 6: markAsFailed');
 
@@ -697,7 +713,9 @@ async function testMarkAsFailed() {
   }
 }
 
-// --- 7. RESETFORRETRY ---
+// ───────────────────────────────────────────────────────────────
+// 7. RESETFORRETRY
+// ───────────────────────────────────────────────────────────────
 async function testResetForRetry() {
   log('\n🔬 SECTION 7: resetForRetry');
 
@@ -765,7 +783,9 @@ async function testResetForRetry() {
   }
 }
 
-// --- 8. RETRYEMBEDDING ---
+// ───────────────────────────────────────────────────────────────
+// 8. RETRYEMBEDDING
+// ───────────────────────────────────────────────────────────────
 async function testRetryEmbedding() {
   log('\n🔬 SECTION 8: retryEmbedding');
 
@@ -894,7 +914,9 @@ async function testRetryEmbedding() {
   }
 }
 
-// --- 9. PROCESSRETRYQUEUE ---
+// ───────────────────────────────────────────────────────────────
+// 9. PROCESSRETRYQUEUE
+// ───────────────────────────────────────────────────────────────
 async function testProcessRetryQueue() {
   log('\n🔬 SECTION 9: processRetryQueue');
 
@@ -997,7 +1019,9 @@ async function testProcessRetryQueue() {
   }
 }
 
-// --- 10. BACKGROUND JOB LIFECYCLE ---
+// ───────────────────────────────────────────────────────────────
+// 10. BACKGROUND JOB LIFECYCLE
+// ───────────────────────────────────────────────────────────────
 async function testBackgroundJobLifecycle() {
   log('\n🔬 SECTION 10: Background Job Lifecycle');
 
@@ -1075,7 +1099,9 @@ async function testBackgroundJobLifecycle() {
   }
 }
 
-// --- 11. RUNBACKGROUNDJOB ---
+// ───────────────────────────────────────────────────────────────
+// 11. RUNBACKGROUNDJOB
+// ───────────────────────────────────────────────────────────────
 async function testRunBackgroundJob() {
   log('\n🔬 SECTION 11: runBackgroundJob');
 
@@ -1110,7 +1136,9 @@ async function testRunBackgroundJob() {
   }
 }
 
-// --- 12. PARSEROW (VIA GETRETRYQUEUE/GETFAILEDEMBEDDINGS) ---
+// ───────────────────────────────────────────────────────────────
+// 12. PARSEROW (VIA GETRETRYQUEUE/GETFAILEDEMBEDDINGS)
+// ───────────────────────────────────────────────────────────────
 async function testParseRow() {
   log('\n🔬 SECTION 12: Row Parsing (triggerPhrases handling)');
 
@@ -1157,7 +1185,9 @@ async function testParseRow() {
   }
 }
 
-// --- 13. EDGE CASES ---
+// ───────────────────────────────────────────────────────────────
+// 13. EDGE CASES
+// ───────────────────────────────────────────────────────────────
 async function testEdgeCases() {
   log('\n🔬 SECTION 13: Edge Cases');
 
@@ -1257,7 +1287,8 @@ async function testEdgeCases() {
 
 /* ─────────────────────────────────────────────────────────────
    5. MAIN RUNNER
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function main() {
   log('═══════════════════════════════════════════════════════════');

@@ -1,4 +1,6 @@
-// --- 1. TEST — INTENT WEIGHTING ---
+// ───────────────────────────────────────────────────────────────
+// 1. TEST — INTENT WEIGHTING
+// ───────────────────────────────────────────────────────────────
 // Verifies that intent weights are applied correctly (not double-counted)
 // Across the two independent weight systems:
 // System A: Channel fusion weights (adaptive-fusion.ts INTENT_WEIGHT_PROFILES)
@@ -18,9 +20,9 @@ import { fuseResultsMulti } from '@spec-kit/shared/algorithms/rrf-fusion';
 import type { RrfItem, FusionResult, RankedList } from '@spec-kit/shared/algorithms/rrf-fusion';
 import type { FusionWeights } from '@spec-kit/shared/algorithms/adaptive-fusion';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    HELPERS
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 function makeItems(count: number, prefix = 'item'): RrfItem[] {
   return Array.from({ length: count }, (_, i) => ({
@@ -52,8 +54,9 @@ function restoreEnv() {
   }
 }
 
-// --- 2. INTENT CLASSIFICATION TESTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 2. INTENT CLASSIFICATION TESTS
+// ───────────────────────────────────────────────────────────────
 describe('T017-G2: Intent Classification Produces Expected Weights', () => {
   it('classifyIntent returns valid intent for bug-fix queries', () => {
     const result = intentClassifier.classifyIntent('fix the login error bug');
@@ -124,8 +127,9 @@ describe('T017-G2: Intent Classification Produces Expected Weights', () => {
   });
 });
 
-// --- 3. NO DOUBLE-COUNTING VERIFICATION ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. NO DOUBLE-COUNTING VERIFICATION
+// ───────────────────────────────────────────────────────────────
 describe('T017-G2: Weights Not Double-Counted in Pipeline', () => {
   beforeEach(() => {
     setEnv(FEATURE_FLAG, 'true');
@@ -239,8 +243,9 @@ describe('T017-G2: Weights Not Double-Counted in Pipeline', () => {
   });
 });
 
-// --- 4. PIPELINE ORDERING STABILITY ---
-
+// ───────────────────────────────────────────────────────────────
+// 4. PIPELINE ORDERING STABILITY
+// ───────────────────────────────────────────────────────────────
 describe('T017-G2: Pipeline Ordering Stability (No Regression)', () => {
   beforeEach(() => {
     setEnv(FEATURE_FLAG, 'true');
@@ -316,8 +321,9 @@ describe('T017-G2: Pipeline Ordering Stability (No Regression)', () => {
   });
 });
 
-// --- 5. SCORE DISTRIBUTION VERIFICATION ---
-
+// ───────────────────────────────────────────────────────────────
+// 5. SCORE DISTRIBUTION VERIFICATION
+// ───────────────────────────────────────────────────────────────
 describe('T017-G2: Score Distribution Characteristics', () => {
   beforeEach(() => {
     setEnv(FEATURE_FLAG, 'true');
@@ -405,9 +411,9 @@ describe('T017-G2: Score Distribution Characteristics', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    5. NORMALIZATION METHOD VERIFICATION (T003d)
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 describe('T017-G2: Normalization Method — RRF + Composite Score', () => {
   it('RRF uses rank-based normalization (1/(k+rank)) not value-based', () => {

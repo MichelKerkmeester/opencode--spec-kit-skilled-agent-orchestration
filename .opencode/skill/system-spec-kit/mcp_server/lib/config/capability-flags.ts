@@ -1,4 +1,6 @@
-// --- 1. MEMORY ROADMAP FLAGS ---
+// ───────────────────────────────────────────────────────────────
+// 1. MEMORY ROADMAP FLAGS
+// ───────────────────────────────────────────────────────────────
 // Phase-gated capability switches for the memory roadmap.
 // Defaults are conservative (all disabled) unless explicitly opted in.
 import { isFeatureEnabled } from '../cache/cognitive/rollout-policy';

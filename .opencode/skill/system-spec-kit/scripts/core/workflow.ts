@@ -1,4 +1,6 @@
-// --- 1. WORKFLOW ---
+// ───────────────────────────────────────────────────────────────
+// 1. WORKFLOW
+// ───────────────────────────────────────────────────────────────
 // Main workflow orchestrator -- coordinates data loading, extraction, rendering, and file output
 // Node stdlib
 import * as path from 'path';
@@ -54,7 +56,7 @@ import type {
   ThinningResult,
 } from './tree-thinning';
 
-/* -----------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    1. INTERFACES
 ------------------------------------------------------------------*/
 
@@ -633,7 +635,7 @@ async function enrichStatelessData(
   return enriched;
 }
 
-/* -----------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    2. MAIN WORKFLOW
    Orchestrates the full generate-context pipeline: data loading,
    extraction, template rendering, file writing, and memory indexing.
@@ -1449,7 +1451,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   });
 }
 
-/* -----------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    3. EXPORTS
 ------------------------------------------------------------------*/
 

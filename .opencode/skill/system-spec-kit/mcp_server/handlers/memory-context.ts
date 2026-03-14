@@ -1,4 +1,6 @@
-// --- 1. MEMORY CONTEXT ---
+// ────────────────────────────────────────────────────────────────
+// 1. MEMORY CONTEXT 
+// ────────────────────────────────────────────────────────────────
 
 import { randomUUID } from 'crypto';
 
@@ -41,9 +43,9 @@ import type { MCPResponse, IntentClassification } from './types';
 import { discoverSpecFolder, getSpecsBasePaths } from '../lib/search/folder-discovery';
 import { isFolderDiscoveryEnabled } from '../lib/search/search-flags';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    1. TYPES
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 interface ContextMode {
   readonly name: string;
@@ -134,13 +136,13 @@ function extractResultRowsFromContextResponse(responseText: string): Array<Recor
   }
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    2. TOKEN BUDGET ENFORCEMENT (T205)
    
    Enforces per-layer/per-mode token budgets by estimating the
    token count of strategy results and truncating when exceeded.
    Uses character-based estimation: 1 token ≈ 4 chars.
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /**
  * T205: Enforce token budget on strategy results.
@@ -374,9 +376,9 @@ function enforceTokenBudget(result: ContextResult, budgetTokens: number): { resu
 }
 
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    3. CONTEXT MODE DEFINITIONS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 const CONTEXT_MODES: Record<string, ContextMode> = {
   // Auto-detect: Let the system determine the best approach
@@ -419,9 +421,9 @@ const CONTEXT_MODES: Record<string, ContextMode> = {
   }
 };
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    4. INTENT-TO-MODE ROUTING
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 const INTENT_TO_MODE: Record<string, string> = {
   add_feature: 'deep',
@@ -433,9 +435,9 @@ const INTENT_TO_MODE: Record<string, string> = {
   find_decision: 'focused'
 };
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    5. CONTEXT STRATEGY EXECUTORS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 async function executeQuickStrategy(input: string, options: ContextOptions): Promise<ContextResult> {
   const result = await handleMemoryMatchTriggers({
@@ -524,9 +526,9 @@ async function executeResumeStrategy(input: string, options: ContextOptions): Pr
   };
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    6. MAIN HANDLER
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /** Handle memory_context tool - L1 orchestration layer that routes to optimal retrieval strategy */
 async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
@@ -897,9 +899,9 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
   return _contextResponse;
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    7. EXPORTS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 export {
   handleMemoryContext,

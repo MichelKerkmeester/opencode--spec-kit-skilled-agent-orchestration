@@ -1,4 +1,6 @@
-// --- 1. FSRS SCHEDULER ---
+// ───────────────────────────────────────────────────────────────
+// 1. FSRS SCHEDULER
+// ───────────────────────────────────────────────────────────────
 // CANONICAL FSRS CONSTANTS & ALGORITHM
 // Free Spaced Repetition Scheduler v4 algorithm implementation
 //

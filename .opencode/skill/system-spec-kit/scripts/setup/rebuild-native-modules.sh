@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# ---------------------------------------------------------------
+# ───────────────────────────────────────────────────────────────
 # COMPONENT: Rebuild Native Modules
-# ---------------------------------------------------------------
+# ───────────────────────────────────────────────────────────────
 # Rebuilds native Node.js modules after a Node version change.
 # Run from spec-kit root: bash scripts/setup/rebuild-native-modules.sh
 set -euo pipefail

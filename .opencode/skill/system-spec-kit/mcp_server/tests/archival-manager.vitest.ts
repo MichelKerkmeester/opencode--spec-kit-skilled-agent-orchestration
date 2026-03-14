@@ -101,8 +101,9 @@ function insertTestMemory(data: TestMemoryInput): Database.RunResult {
 ──────────────────────────────────────────────────────────────── */
 
 describe('Archival Manager (T059)', () => {
-  // --- 1. INITIALIZATION TESTS ---
-  describe('1. Initialization', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 1. INITIALIZATION TESTS
+  // ───────────────────────────────────────────────────────────────  describe('1. Initialization', () => {
     afterEach(() => {
       teardownTestDb();
     });
@@ -130,8 +131,9 @@ describe('Archival Manager (T059)', () => {
     });
   });
 
-  // --- 2. ARCHIVAL CANDIDATE DETECTION TESTS ---
-  describe('2. Archival Candidate Detection', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 2. ARCHIVAL CANDIDATE DETECTION TESTS
+  // ───────────────────────────────────────────────────────────────  describe('2. Archival Candidate Detection', () => {
     beforeEach(() => {
       setupTestDb();
       archivalManager.init(requireDb());
@@ -223,8 +225,9 @@ describe('Archival Manager (T059)', () => {
     });
   });
 
-  // --- 3. ARCHIVAL ACTION TESTS ---
-  describe('3. Archival Actions', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 3. ARCHIVAL ACTION TESTS
+  // ───────────────────────────────────────────────────────────────  describe('3. Archival Actions', () => {
     beforeEach(() => {
       setupTestDb();
       archivalManager.init(requireDb());
@@ -384,8 +387,9 @@ describe('Archival Manager (T059)', () => {
     });
   });
 
-  // --- 4. ARCHIVAL SCAN TESTS ---
-  describe('4. Archival Scan', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 4. ARCHIVAL SCAN TESTS
+  // ───────────────────────────────────────────────────────────────  describe('4. Archival Scan', () => {
     beforeEach(() => {
       setupTestDb();
       archivalManager.init(requireDb());
@@ -469,8 +473,9 @@ describe('Archival Manager (T059)', () => {
     });
   });
 
-  // --- 5. BACKGROUND JOB TESTS ---
-  describe('5. Background Job', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 5. BACKGROUND JOB TESTS
+  // ───────────────────────────────────────────────────────────────  describe('5. Background Job', () => {
     beforeEach(() => {
       setupTestDb();
       archivalManager.init(requireDb());
@@ -502,8 +507,9 @@ describe('Archival Manager (T059)', () => {
     });
   });
 
-  // --- 6. STATISTICS TESTS ---
-  describe('6. Statistics', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 6. STATISTICS TESTS
+  // ───────────────────────────────────────────────────────────────  describe('6. Statistics', () => {
     beforeEach(() => {
       setupTestDb();
       archivalManager.init(requireDb());
@@ -581,8 +587,9 @@ describe('Archival Manager (T059)', () => {
     });
   });
 
-  // --- 7. CHECK MEMORY STATUS TESTS ---
-  describe('7. Check Memory Status', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 7. CHECK MEMORY STATUS TESTS
+  // ───────────────────────────────────────────────────────────────  describe('7. Check Memory Status', () => {
     beforeEach(() => {
       setupTestDb();
       archivalManager.init(requireDb());
@@ -624,8 +631,9 @@ describe('Archival Manager (T059)', () => {
     });
   });
 
-  // --- 8. CLEANUP AND MODULE STATE TESTS ---
-  describe('8. Cleanup and Module State', () => {
+  // ───────────────────────────────────────────────────────────────
+  // 8. CLEANUP AND MODULE STATE TESTS
+  // ───────────────────────────────────────────────────────────────  describe('8. Cleanup and Module State', () => {
     afterEach(() => {
       teardownTestDb();
     });

@@ -1,4 +1,6 @@
-// --- 1. ENTITY EXTRACTOR ---
+// ───────────────────────────────────────────────────────────────
+// 1. ENTITY EXTRACTOR
+// ───────────────────────────────────────────────────────────────
 // Deferred feature — gated via SPECKIT_AUTO_ENTITIES
 // Pure-TS rule-based extraction, zero npm dependencies.
 import { isEntityDenied } from './entity-denylist.js';
@@ -9,8 +11,9 @@ import type Database from 'better-sqlite3';
 // Re-export canonical versions from entity-linker for backward compatibility
 export { normalizeEntityName, computeEdgeDensity };
 
-// --- 2. TYPES ---
-
+// ───────────────────────────────────────────────────────────────
+// 2. TYPES
+// ───────────────────────────────────────────────────────────────
 /** A single entity extracted from memory content. */
 export interface ExtractedEntity {
   /** The raw entity text as found in content. */
@@ -21,8 +24,9 @@ export interface ExtractedEntity {
   frequency: number;
 }
 
-// --- 3. EXTRACTION RULES ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. EXTRACTION RULES
+// ───────────────────────────────────────────────────────────────
 /**
  * Main extraction function — pure-TS rule-based, no npm deps.
  *
@@ -80,8 +84,9 @@ export function extractEntities(content: string): ExtractedEntity[] {
   return deduplicateEntities(raw);
 }
 
-// --- 4. FILTERING ---
-
+// ───────────────────────────────────────────────────────────────
+// 4. FILTERING
+// ───────────────────────────────────────────────────────────────
 /**
  * Filter entities through denylist + length checks.
  *
@@ -109,8 +114,9 @@ export function filterEntities(entities: ExtractedEntity[]): ExtractedEntity[] {
   });
 }
 
-// --- 5. STORAGE ---
-
+// ───────────────────────────────────────────────────────────────
+// 5. STORAGE
+// ───────────────────────────────────────────────────────────────
 /**
  * Store extracted entities in the memory_entities table.
  *
@@ -150,8 +156,9 @@ export function storeEntities(
   }
 }
 
-// --- 6. ENTITY CATALOG ---
-
+// ───────────────────────────────────────────────────────────────
+// 6. ENTITY CATALOG
+// ───────────────────────────────────────────────────────────────
 /**
  * Upsert entities into entity_catalog with alias normalization.
  *

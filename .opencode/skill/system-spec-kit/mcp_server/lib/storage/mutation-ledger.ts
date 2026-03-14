@@ -1,11 +1,13 @@
-// --- 1. MUTATION LEDGER ---
+// ───────────────────────────────────────────────────────────────
+// 1. MUTATION LEDGER
+// ───────────────────────────────────────────────────────────────
 // Append-only audit trail for all memory mutations
 // SQLite triggers enforce immutability (no UPDATE/DELETE on ledger)
 import { createHash } from 'crypto';
 import type Database from 'better-sqlite3';
 import { runInTransaction } from './transaction-manager';
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    1. TYPES
 ----------------------------------------------------------------*/
 
@@ -79,7 +81,7 @@ interface RecordDivergenceReconcileResult {
   escalation: DivergenceEscalationPayload | null;
 }
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    2. SCHEMA SQL
 ----------------------------------------------------------------*/
 
@@ -117,7 +119,7 @@ const LEDGER_TRIGGER_SQL = `
   BEGIN SELECT RAISE(ABORT, 'mutation_ledger is append-only'); END
 `;
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    3. INITIALIZATION
 ----------------------------------------------------------------*/
 
@@ -127,7 +129,7 @@ function initLedger(db: Database.Database): void {
   db.exec(LEDGER_TRIGGER_SQL);
 }
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    4. HASH COMPUTATION
 ----------------------------------------------------------------*/
 
@@ -135,7 +137,7 @@ function computeHash(content: string): string {
   return createHash('sha256').update(content, 'utf8').digest('hex');
 }
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    5. APPEND ENTRY
 ----------------------------------------------------------------*/
 
@@ -165,7 +167,7 @@ function appendEntry(db: Database.Database, entry: AppendEntryInput): MutationLe
   return row;
 }
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    6. QUERY ENTRIES
 ----------------------------------------------------------------*/
 
@@ -216,7 +218,7 @@ function getEntryCount(db: Database.Database): number {
   return row.count;
 }
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    7. LINKED ENTRIES LOOKUP
 ----------------------------------------------------------------*/
 
@@ -230,7 +232,7 @@ function getLinkedEntries(db: Database.Database, memoryId: number): MutationLedg
   return db.prepare(sql).all(memoryId) as MutationLedgerEntry[];
 }
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    8. APPEND-ONLY VERIFICATION
 ----------------------------------------------------------------*/
 
@@ -247,7 +249,7 @@ function verifyAppendOnly(db: Database.Database): boolean {
   return names.includes('prevent_ledger_update') && names.includes('prevent_ledger_delete');
 }
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    9. DIVERGENCE RETRY + ESCALATION HOOKS
 ----------------------------------------------------------------*/
 
@@ -437,7 +439,7 @@ function recordDivergenceReconcileHook(
   });
 }
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    10. EXPORTS
 ----------------------------------------------------------------*/
 

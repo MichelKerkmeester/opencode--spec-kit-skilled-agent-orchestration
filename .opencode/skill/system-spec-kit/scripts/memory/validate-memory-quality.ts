@@ -1,5 +1,7 @@
 #!/usr/bin/env node
-// --- 1. VALIDATE MEMORY QUALITY ---
+// ───────────────────────────────────────────────────────────────
+// 1. VALIDATE MEMORY QUALITY
+// ───────────────────────────────────────────────────────────────
 // Post-render quality gate for generated memory files
 
 import fs from 'fs';

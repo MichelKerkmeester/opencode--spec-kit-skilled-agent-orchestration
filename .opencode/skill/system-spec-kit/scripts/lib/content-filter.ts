@@ -1,13 +1,15 @@
-// --- 1. CONTENT FILTER ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. CONTENT FILTER
+// ───────────────────────────────────────────────────────────────
 import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
 import { stripJsoncComments } from '@spec-kit/shared/utils/jsonc-strip';
 import { structuredLog } from '../utils/logger';
 
-// --- 2. TYPES ---
-
+// ───────────────────────────────────────────────────────────────
+// 2. TYPES
+// ───────────────────────────────────────────────────────────────
 /** Content type classification labels */
 export type ContentType = 'noise' | 'empty' | 'duplicate' | 'lowQuality' | 'valid';
 
@@ -81,8 +83,9 @@ export interface FilterPipeline {
   getStats(): FilterStats;
 }
 
-// --- 3. CONFIGURATION ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. CONFIGURATION
+// ───────────────────────────────────────────────────────────────
 function loadFilterConfig(): FilterConfig {
   const defaultConfig: FilterConfig = {
     pipeline: {
@@ -160,8 +163,9 @@ function loadFilterConfig(): FilterConfig {
   return defaultConfig;
 }
 
-// --- 4. NOISE PATTERNS ---
-
+// ───────────────────────────────────────────────────────────────
+// 4. NOISE PATTERNS
+// ───────────────────────────────────────────────────────────────
 const NOISE_PATTERNS: readonly RegExp[] = [
   // Placeholder text
   /^User message$/i,
@@ -203,8 +207,9 @@ const STRIP_PATTERNS: readonly StripPattern[] = [
   { pattern: /<system-reminder>[\s\S]*?<\/system-reminder>/g, replacement: '' },
 ] as const;
 
-// --- 5. FILTERING PIPELINE ---
-
+// ───────────────────────────────────────────────────────────────
+// 5. FILTERING PIPELINE
+// ───────────────────────────────────────────────────────────────
 // P3-20: Factory function to create a fresh stats object per invocation
 // (no longer a module-level mutable singleton)
 function createFilterStats(): FilterStats {
@@ -358,8 +363,9 @@ function calculateQualityScore(items: PromptItem[], config: FilterConfig): numbe
   );
 }
 
-// --- 6. MAIN FILTER FUNCTIONS ---
-
+// ───────────────────────────────────────────────────────────────
+// 6. MAIN FILTER FUNCTIONS
+// ───────────────────────────────────────────────────────────────
 function createFilterPipeline(customConfig: Partial<FilterConfig> = {}): FilterPipeline {
   // F-23 — Deep merge to preserve nested defaults (e.g., pipeline.stages).
   // Shallow spread drops nested defaults when customConfig partially overrides pipeline.
@@ -484,8 +490,9 @@ function filterContent(prompts: PromptItem[], options: Partial<FilterConfig> = {
   return pipeline.filter(prompts);
 }
 
-// --- 7. EXPORTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 7. EXPORTS
+// ───────────────────────────────────────────────────────────────
 export {
   createFilterPipeline,
   filterContent,

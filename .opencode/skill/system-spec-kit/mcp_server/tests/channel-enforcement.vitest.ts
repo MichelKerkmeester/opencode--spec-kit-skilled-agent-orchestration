@@ -1,4 +1,6 @@
-// --- 1. TEST — CHANNEL ENFORCEMENT ---
+// ───────────────────────────────────────────────────────────────
+// 1. TEST — CHANNEL ENFORCEMENT
+// ───────────────────────────────────────────────────────────────
 // Channel Enforcement + Precision Verification (T003b + T003c)
 //
 // Coverage:
@@ -33,9 +35,9 @@ import {
 } from '../lib/search/channel-enforcement';
 import { QUALITY_FLOOR } from '../lib/search/channel-representation';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    HELPERS
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 const FEATURE_FLAG = 'SPECKIT_CHANNEL_MIN_REP';
 
@@ -79,9 +81,9 @@ function topNIds(result: EnforcementResult, n: number): Array<string | number> {
   return result.results.slice(0, n).map(r => r.id);
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    TESTS
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 describe('T028 Channel Enforcement + Precision Verification', () => {
   beforeEach(() => {

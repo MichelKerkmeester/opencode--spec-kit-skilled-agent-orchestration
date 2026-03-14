@@ -1,4 +1,6 @@
-// --- 1. EDGE DENSITY (SPRINT 1 T003) ---
+// ───────────────────────────────────────────────────────────────
+// 1. EDGE DENSITY (SPRINT 1 T003)
+// ───────────────────────────────────────────────────────────────
 // Measures the edge density of the causal graph:
 // Density = edge_count / total_memories
 //

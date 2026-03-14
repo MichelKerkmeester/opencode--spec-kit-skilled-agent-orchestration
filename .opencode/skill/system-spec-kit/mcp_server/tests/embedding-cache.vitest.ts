@@ -1,4 +1,6 @@
-// --- 1. TEST — EMBEDDING CACHE ---
+// ───────────────────────────────────────────────────────────────
+// 1. TEST — EMBEDDING CACHE
+// ───────────────────────────────────────────────────────────────
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import Database from 'better-sqlite3';
 import {

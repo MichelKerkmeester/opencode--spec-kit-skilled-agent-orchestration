@@ -1,4 +1,6 @@
-// --- 1. SPEC FOLDER HIERARCHY ---
+// ───────────────────────────────────────────────────────────────
+// 1. SPEC FOLDER HIERARCHY
+// ───────────────────────────────────────────────────────────────
 // Builds a spec folder hierarchy from stored spec_folder paths
 // And enables hierarchy-aware retrieval (REQ-S6-006).
 //
@@ -8,7 +10,9 @@
 
 import type Database from 'better-sqlite3';
 
-// --- 2. HIERARCHY TREE CACHE ---
+// ───────────────────────────────────────────────────────────────
+// 2. HIERARCHY TREE CACHE
+// ───────────────────────────────────────────────────────────────
 //
 // BuildHierarchyTree does a full scan of spec_folder values on every call.
 // The hierarchy changes only when new spec folders are created, so we cache
@@ -35,8 +39,9 @@ export function invalidateHierarchyCache(database: Database.Database): void {
   hierarchyCache.delete(database);
 }
 
-// --- 3. TYPES ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. TYPES
+// ───────────────────────────────────────────────────────────────
 /**
  * Node in the spec-folder hierarchy tree.
  */
@@ -55,8 +60,9 @@ export interface HierarchyTree {
   nodeMap: Map<string, HierarchyNode>;
 }
 
-// --- 4. TREE CONSTRUCTION ---
-
+// ───────────────────────────────────────────────────────────────
+// 4. TREE CONSTRUCTION
+// ───────────────────────────────────────────────────────────────
 /**
  * Build a spec folder hierarchy tree from all spec_folder values in the database.
  *
@@ -141,8 +147,9 @@ function ensureNodeExists(
   return node;
 }
 
-// --- 5. PATH UTILITIES ---
-
+// ───────────────────────────────────────────────────────────────
+// 5. PATH UTILITIES
+// ───────────────────────────────────────────────────────────────
 /**
  * Get the parent path of a spec folder path.
  * "003-foo/140-bar/006-baz" -> "003-foo/140-bar"
@@ -170,8 +177,9 @@ export function getAncestorPaths(folderPath: string): string[] {
   return ancestors;
 }
 
-// --- 6. TREE TRAVERSAL ---
-
+// ───────────────────────────────────────────────────────────────
+// 6. TREE TRAVERSAL
+// ───────────────────────────────────────────────────────────────
 /**
  * Get all sibling folder paths (same parent) for a given spec folder.
  */
@@ -234,8 +242,9 @@ export function getRelatedFolders(
   return related;
 }
 
-// --- 7. HIERARCHY-AWARE QUERY ---
-
+// ───────────────────────────────────────────────────────────────
+// 7. HIERARCHY-AWARE QUERY
+// ───────────────────────────────────────────────────────────────
 /**
  * Query memories from related spec folders using hierarchy traversal.
  * Returns memory IDs from the target folder plus parent/sibling folders.

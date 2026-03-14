@@ -1,9 +1,12 @@
-// --- 1. STRUCTURE AWARE CHUNKER ---
+// ───────────────────────────────────────────────────────────────
+// 1. STRUCTURE AWARE CHUNKER
+// ───────────────────────────────────────────────────────────────
 // AST-aware markdown chunking that keeps code blocks and tables
 // Atomic, groups headings with their content, and respects a
 // Configurable maxTokens size limit.
-// --- 2. TYPES ---
-
+// ───────────────────────────────────────────────────────────────
+// 2. TYPES
+// ───────────────────────────────────────────────────────────────
 /** Options for controlling chunking behaviour */
 export interface ChunkOptions {
   /** Maximum token budget per chunk (approximate, 4 chars ≈ 1 token) */
@@ -26,16 +29,18 @@ interface Block {
   type: 'text' | 'code' | 'table' | 'heading';
 }
 
-// --- 3. CONSTANTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. CONSTANTS
+// ───────────────────────────────────────────────────────────────
 /** Default token budget per chunk */
 const DEFAULT_MAX_TOKENS = 500;
 
 /** Industry-standard approximation: 1 token ≈ 4 characters */
 const CHARS_PER_TOKEN = 4;
 
-// --- 4. BLOCK SPLITTER ---
-
+// ───────────────────────────────────────────────────────────────
+// 4. BLOCK SPLITTER
+// ───────────────────────────────────────────────────────────────
 /**
  * Split a markdown string into logical, typed blocks.
  *
@@ -105,8 +110,9 @@ export function splitIntoBlocks(markdown: string): Block[] {
   return blocks;
 }
 
-// --- 5. MAIN CHUNKER ---
-
+// ───────────────────────────────────────────────────────────────
+// 5. MAIN CHUNKER
+// ───────────────────────────────────────────────────────────────
 /**
  * Chunk a markdown string into semantically coherent segments.
  *

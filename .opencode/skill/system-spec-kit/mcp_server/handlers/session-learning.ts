@@ -1,5 +1,6 @@
-// --- 1. SESSION LEARNING ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. SESSION LEARNING
+// ───────────────────────────────────────────────────────────────
 import * as vectorIndex from '../lib/search/vector-index';
 import { checkDatabaseUpdated } from '../core';
 import { MemoryError, ErrorCodes } from '../lib/errors';
@@ -11,9 +12,9 @@ import { createMCPSuccessResponse } from '../lib/response/envelope';
 // Shared handler types
 import type { MCPResponse, DatabaseExtended as Database } from './types';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    1. TYPES
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 interface PreflightArgs {
   specFolder: string;
@@ -56,9 +57,9 @@ interface ScoreParam {
   value: number | undefined | null;
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    2. SCHEMA MANAGEMENT
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 const SCHEMA_SQL = `
   CREATE TABLE IF NOT EXISTS session_learning (
@@ -144,9 +145,9 @@ function validateScores(
   }
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    3. TASK PREFLIGHT HANDLER
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /** Handle task_preflight tool - captures baseline knowledge scores before a task begins */
 async function handleTaskPreflight(args: PreflightArgs): Promise<MCPResponse> {
@@ -294,9 +295,9 @@ async function handleTaskPreflight(args: PreflightArgs): Promise<MCPResponse> {
   }
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    4. TASK POSTFLIGHT HANDLER
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /** Handle task_postflight tool - measures learning by comparing post-task scores to baseline */
 async function handleTaskPostflight(args: PostflightArgs): Promise<MCPResponse> {
@@ -458,9 +459,9 @@ async function handleTaskPostflight(args: PostflightArgs): Promise<MCPResponse> 
   }
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    5. LEARNING HISTORY HANDLER
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /** Handle memory_get_learning_history tool - retrieves learning records with optional summary stats */
 async function handleGetLearningHistory(args: LearningHistoryArgs): Promise<MCPResponse> {
@@ -651,9 +652,9 @@ async function handleGetLearningHistory(args: LearningHistoryArgs): Promise<MCPR
   }
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    6. EXPORTS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 export {
   handleTaskPreflight,

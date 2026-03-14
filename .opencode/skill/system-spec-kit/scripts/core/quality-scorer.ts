@@ -1,4 +1,6 @@
-// --- 1. QUALITY SCORER ---
+// ───────────────────────────────────────────────────────────────
+// 1. QUALITY SCORER
+// ───────────────────────────────────────────────────────────────
 // Scores the quality of generated memory files based on multiple criteria
 
 interface FileWithDescription {

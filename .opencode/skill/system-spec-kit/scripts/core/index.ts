@@ -1,4 +1,6 @@
-// --- 1. INDEX ---
+// ───────────────────────────────────────────────────────────────
+// 1. INDEX
+// ───────────────────────────────────────────────────────────────
 // Barrel export for core modules (config, spec-folder utilities)
 // Workflow.ts not exported here to avoid circular dependencies
 // Import directly: import { runWorkflow } from './core/workflow';

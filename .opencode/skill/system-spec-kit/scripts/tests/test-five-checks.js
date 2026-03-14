@@ -1,4 +1,6 @@
-// --- 1. TEST: FIVE CHECKS FRAMEWORK VERIFICATION ---
+// ───────────────────────────────────────────────────────────────
+// 1. TEST: FIVE CHECKS FRAMEWORK VERIFICATION
+// ───────────────────────────────────────────────────────────────
 //
 // Comprehensive tests for the Five Checks Framework:
 // - Framework documentation structure validation
@@ -22,7 +24,8 @@ const fs = require('fs');
 
 /* ─────────────────────────────────────────────────────────────
    1. CONFIGURATION
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 const ROOT = path.join(__dirname, '..', '..');
 const VALIDATION_DIR = path.join(ROOT, 'references', 'validation');
@@ -88,7 +91,8 @@ const results = {
 
 /* ─────────────────────────────────────────────────────────────
    2. UTILITIES
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 function log(msg) {
   console.log(msg);
@@ -194,7 +198,8 @@ function validateFiveChecksEvaluation(checks) {
 
 /* ─────────────────────────────────────────────────────────────
    3. TEST SUITE: FRAMEWORK DOCUMENTATION STRUCTURE
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testFrameworkDocumentationStructure() {
   log('\n--- TEST SUITE: Framework Documentation Structure ---');
@@ -313,7 +318,8 @@ async function testFrameworkDocumentationStructure() {
 
 /* ─────────────────────────────────────────────────────────────
    4. TEST SUITE: CHECK CRITERIA PARSING
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testCheckCriteriaParsing() {
   log('\n--- TEST SUITE: Check Criteria Parsing ---');
@@ -409,7 +415,8 @@ async function testCheckCriteriaParsing() {
 
 /* ─────────────────────────────────────────────────────────────
    5. TEST SUITE: DECISION-RECORD.MD INTEGRATION
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testDecisionRecordIntegration() {
   log('\n--- TEST SUITE: Decision-Record.md Integration ---');
@@ -506,7 +513,8 @@ async function testDecisionRecordIntegration() {
 
 /* ─────────────────────────────────────────────────────────────
    6. TEST SUITE: LEVEL APPLICABILITY
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testLevelApplicability() {
   log('\n--- TEST SUITE: Level Applicability ---');
@@ -599,7 +607,8 @@ async function testLevelApplicability() {
 
 /* ─────────────────────────────────────────────────────────────
    7. TEST SUITE: CHECK RESPONSE VALIDATION
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testCheckResponseValidation() {
   log('\n--- TEST SUITE: Check Response Validation ---');
@@ -737,7 +746,8 @@ async function testCheckResponseValidation() {
 
 /* ─────────────────────────────────────────────────────────────
    8. TEST SUITE: CROSS-REFERENCE VALIDATION
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testCrossReferenceValidation() {
   log('\n--- TEST SUITE: Cross-Reference Validation ---');
@@ -805,7 +815,8 @@ async function testCrossReferenceValidation() {
 
 /* ─────────────────────────────────────────────────────────────
    9. TEST SUITE: SPEC FOLDER INTEGRATION
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function testSpecFolderIntegration() {
   log('\n--- TEST SUITE: Spec Folder Integration ---');
@@ -896,7 +907,8 @@ async function testSpecFolderIntegration() {
 
 /* ─────────────────────────────────────────────────────────────
    10. MAIN
-────────────────────────────────────────────────────────────────*/
+────────────────────────────────────────────────────────────────
+*/
 
 async function main() {
   log('==================================================');

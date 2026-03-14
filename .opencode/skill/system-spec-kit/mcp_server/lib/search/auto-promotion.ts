@@ -1,4 +1,6 @@
-// --- 1. AUTO PROMOTION ---
+// ───────────────────────────────────────────────────────────────
+// 1. AUTO PROMOTION
+// ───────────────────────────────────────────────────────────────
 //
 // Promotes memory importance tier based on positive validation count:
 // - >=5 positive validations: normal -> important
@@ -8,8 +10,9 @@
 // Does NOT demote -- only promotes upward.
 import type { DatabaseExtended as Database } from '@spec-kit/shared/types';
 
-// --- 2. TYPES ---
-
+// ───────────────────────────────────────────────────────────────
+// 2. TYPES
+// ───────────────────────────────────────────────────────────────
 export type { Database };
 
 /** Result of an auto-promotion check. */
@@ -26,8 +29,9 @@ export interface AutoPromotionResult {
   reason: string;
 }
 
-// --- 3. CONSTANTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. CONSTANTS
+// ───────────────────────────────────────────────────────────────
 /** Positive validations required to promote normal -> important */
 export const PROMOTE_TO_IMPORTANT_THRESHOLD = 5;
 
@@ -77,8 +81,9 @@ function resolvePositiveValidationCount(totalValidationCount: number, negativeVa
   return Math.max(0, totalValidationCount - Math.max(0, negativeValidationCount));
 }
 
-// --- 4. PROMOTION THROTTLE SAFEGUARD ---
-
+// ───────────────────────────────────────────────────────────────
+// 4. PROMOTION THROTTLE SAFEGUARD
+// ───────────────────────────────────────────────────────────────
 const PROMOTION_AUDIT_TABLE_SQL = `
   CREATE TABLE IF NOT EXISTS memory_promotion_audit (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -102,8 +107,9 @@ function countRecentPromotions(db: Database, nowMs: number): number {
   return row?.count ?? 0;
 }
 
-// --- 5. CORE FUNCTIONS ---
-
+// ───────────────────────────────────────────────────────────────
+// 5. CORE FUNCTIONS
+// ───────────────────────────────────────────────────────────────
 /**
  * Check if a memory qualifies for auto-promotion based on its positive validation count.
  * Does NOT modify the database -- read-only check.

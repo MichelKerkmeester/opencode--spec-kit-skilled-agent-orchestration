@@ -1,5 +1,9 @@
-// --- 1. DB HELPERS ---
-// --- 2. DATABASE HELPERS ---
+// ───────────────────────────────────────────────────────────────
+// 1. DB HELPERS
+// ───────────────────────────────────────────────────────────────
+// ───────────────────────────────────────────────────────────────
+// 2. DATABASE HELPERS
+// ───────────────────────────────────────────────────────────────
 // T304: Consolidated database access and error-coercion utilities
 // To eliminate duplicate getDb()+null-check and instanceof Error
 // Patterns across handler files.

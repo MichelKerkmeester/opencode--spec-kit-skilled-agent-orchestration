@@ -1,4 +1,6 @@
-// --- 1. TEST — GRAPH-SCORING INTEGRATION ---
+// ───────────────────────────────────────────────────────────────
+// 1. TEST — GRAPH-SCORING INTEGRATION
+// ───────────────────────────────────────────────────────────────
 // Verifies that graph signal activation and scoring calibration
 // Changes to shared files are correctly integrated and do not conflict.
 

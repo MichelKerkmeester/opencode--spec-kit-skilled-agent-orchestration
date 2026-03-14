@@ -69,9 +69,9 @@ import {
   RECOVERY_HALF_LIFE_MS,
 } from '../lib/scoring/negative-feedback';
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    HELPERS
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 type TestDatabase = InstanceType<typeof Database>;
 
@@ -137,8 +137,9 @@ function insertMemory(testDb: TestDatabase, id: number, opts: {
   `).run(id, title, JSON.stringify(triggerPhrases), createdAt, tier, validationCount, confidence);
 }
 
-// --- 1. DENYLIST TESTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. DENYLIST TESTS
+// ───────────────────────────────────────────────────────────────
 describe('Feedback Denylist', () => {
   it('R11-DL01: denylist contains 100+ words', () => {
     expect(getDenylistSize()).toBeGreaterThanOrEqual(100);
@@ -187,8 +188,9 @@ describe('Feedback Denylist', () => {
   });
 });
 
-// --- 2. SCHEMA MIGRATION TESTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 2. SCHEMA MIGRATION TESTS
+// ───────────────────────────────────────────────────────────────
 describe('Learned Triggers Schema', () => {
   let testDb: TestDatabase;
   let testDbPath: string;
@@ -291,9 +293,9 @@ describe('Learned Triggers Schema', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    3. FEATURE FLAG & GATING TESTS
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 describe('Learned Feedback Feature Flags', () => {
   const originalEnv = process.env;
@@ -330,8 +332,9 @@ describe('Learned Feedback Feature Flags', () => {
   });
 });
 
-// --- 3. TERM EXTRACTION TESTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 3. TERM EXTRACTION TESTS
+// ───────────────────────────────────────────────────────────────
 describe('Term Extraction', () => {
   it('R11-TE01: filters out denylist words', () => {
     const result = extractLearnableTerms(
@@ -392,8 +395,9 @@ describe('Term Extraction', () => {
   });
 });
 
-// --- 4. CORE OPERATIONS TESTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 4. CORE OPERATIONS TESTS
+// ───────────────────────────────────────────────────────────────
 describe('Learned Feedback Core Operations', () => {
   let testDb: any;
   let testDbPath: string;
@@ -560,9 +564,9 @@ describe('Learned Feedback Core Operations', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    6. EXPIRY & ROLLBACK TESTS
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 describe('Learned Feedback Expiry & Rollback', () => {
   let testDb: any;
@@ -636,8 +640,9 @@ describe('Learned Feedback Expiry & Rollback', () => {
   });
 });
 
-// --- 5. AUDIT LOG TESTS ---
-
+// ───────────────────────────────────────────────────────────────
+// 5. AUDIT LOG TESTS
+// ───────────────────────────────────────────────────────────────
 describe('Learned Feedback Audit Log (Safeguard #10)', () => {
   let testDb: any;
   let testDbPath: string;
@@ -697,9 +702,9 @@ describe('Learned Feedback Audit Log (Safeguard #10)', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    8. AUTO-PROMOTION TESTS (T002a)
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 describe('Auto-Promotion Engine (T002a)', () => {
   let testDb: any;
@@ -853,9 +858,9 @@ describe('Auto-Promotion Engine (T002a)', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    9. NEGATIVE FEEDBACK TESTS (T002b / A4)
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 describe('Negative Feedback Confidence Signal (T002b / A4)', () => {
   it('R11-NF01: no negatives -> multiplier is 1.0', () => {
@@ -943,9 +948,9 @@ describe('Negative Feedback Confidence Signal (T002b / A4)', () => {
   });
 });
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    10. INTEGRATION: FTS5 ISOLATION ACROSS ALL OPERATIONS
-   --------------------------------------------------------------- */
+   ──────────────────────────────────────────────────────────────── */
 
 describe('FTS5 Isolation Integration (CRITICAL)', () => {
   let testDb: any;

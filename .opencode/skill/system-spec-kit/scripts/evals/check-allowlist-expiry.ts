@@ -1,4 +1,6 @@
-// --- 1. CHECK ALLOWLIST EXPIRY ---
+// ───────────────────────────────────────────────────────────────
+// 1. CHECK ALLOWLIST EXPIRY
+// ───────────────────────────────────────────────────────────────
 // Warns when allowlist exceptions are within 30 days of expiry.
 // Fails when allowlist exceptions are already expired.
 

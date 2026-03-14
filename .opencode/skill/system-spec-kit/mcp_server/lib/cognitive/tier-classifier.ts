@@ -1,5 +1,6 @@
-// --- 1. TIER CLASSIFIER ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. TIER CLASSIFIER
+// ───────────────────────────────────────────────────────────────
 // Fs and path removed — unused in this module
 
 // Import FSRS constants and canonical retrievability function.
@@ -16,7 +17,7 @@ import type { MemoryDbRow } from '@spec-kit/shared/types';
  */
 type TierInput = Partial<MemoryDbRow> & Record<string, unknown>;
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    1. CONFIGURATION
 ----------------------------------------------------------------*/
 
@@ -80,7 +81,7 @@ if (TIER_CONFIG.warmThreshold <= TIER_CONFIG.coldThreshold) {
   TIER_CONFIG.coldThreshold = STATE_THRESHOLDS.COLD;
 }
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    1.5 TYPE-SPECIFIC HALF-LIVES (REQ-002, T008)
 ----------------------------------------------------------------*/
 
@@ -187,7 +188,7 @@ function halfLifeToStability(halfLifeDays: number | null): number {
   return FSRS_HALF_LIFE_FACTOR * halfLifeDays;
 }
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    2. CORE CLASSIFICATION FUNCTIONS
 ----------------------------------------------------------------*/
 
@@ -302,7 +303,7 @@ function classifyTier(memory: TierInput): {
   return { state, retrievability, effectiveHalfLife };
 }
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    3. QUERY FUNCTIONS
 ----------------------------------------------------------------*/
 
@@ -479,7 +480,7 @@ function shouldArchive(memory: TierInput): boolean {
   return state === 'ARCHIVED' || state === 'DORMANT';
 }
 
-/* -------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    4. EXPORTS
 ----------------------------------------------------------------*/
 

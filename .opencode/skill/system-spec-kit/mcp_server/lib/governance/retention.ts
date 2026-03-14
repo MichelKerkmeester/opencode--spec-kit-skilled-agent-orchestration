@@ -4,6 +4,9 @@ import * as vectorIndex from '../search/vector-index';
 import { filterRowsByScope, ensureGovernanceRuntime, recordGovernanceAudit, type ScopeContext } from './scope-governance';
 import { getAllowedSharedSpaceIds } from '../collab/shared-spaces';
 
+/**
+ * Outcome of a retention sweep scoped to the caller's governance filters.
+ */
 export interface RetentionSweepResult {
   scanned: number;
   deleted: number;
@@ -11,6 +14,13 @@ export interface RetentionSweepResult {
   deletedIds: number[];
 }
 
+/**
+ * Delete memories whose `delete_after` timestamp has expired for the requested scope.
+ *
+ * @param database - Database connection that stores memory and governance state.
+ * @param scope - Scope used to constrain eligible deletions.
+ * @returns Sweep counts and the identifiers deleted during the run.
+ */
 export function runRetentionSweep(database: Database.Database, scope: ScopeContext = {}): RetentionSweepResult {
   ensureGovernanceRuntime(database);
   const expiredRows = database.prepare(`

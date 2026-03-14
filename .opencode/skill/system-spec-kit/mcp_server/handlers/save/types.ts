@@ -1,5 +1,6 @@
-// --- 1. TYPES ---
-
+// ───────────────────────────────────────────────────────────────
+// 1. TYPES
+// ───────────────────────────────────────────────────────────────
 import { buildMutationHookFeedback } from '../../hooks/mutation-feedback';
 import type { ParsedMemory } from '../../lib/parsing/memory-parser';
 

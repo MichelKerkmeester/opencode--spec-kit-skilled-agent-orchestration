@@ -1,4 +1,6 @@
-// --- 1. TYPES ---
+// ───────────────────────────────────────────────────────────────
+// 1. TYPES
+// ───────────────────────────────────────────────────────────────
 // Shared types for tool dispatch modules (T303).
 // Re-export canonical MCPResponse from shared
 export type { MCPResponse } from '@spec-kit/shared/types';
@@ -31,9 +33,9 @@ export function parseValidatedArgs<T>(toolName: string, args: Record<string, unk
   return parseArgs<T>(validateToolArgs(toolName, args));
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    Handler Arg Types
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /** Arguments for memory context requests. */
 export interface ContextArgs {

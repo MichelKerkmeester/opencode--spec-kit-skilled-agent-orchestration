@@ -1,4 +1,6 @@
-// --- 1. TEST — ABLATION FRAMEWORK ---
+// ───────────────────────────────────────────────────────────────
+// 1. TEST — ABLATION FRAMEWORK
+// ───────────────────────────────────────────────────────────────
 //
 // Unit and integration tests for the ablation study framework.
 // Verifies feature flag gating, channel-to-flag mapping, ablation runner

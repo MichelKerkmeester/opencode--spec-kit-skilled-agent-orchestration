@@ -1,4 +1,6 @@
-// --- 1. REPORTING DASHBOARD (R13-S3) ---
+// ───────────────────────────────────────────────────────────────
+// 1. REPORTING DASHBOARD (R13-S3)
+// ───────────────────────────────────────────────────────────────
 // Sprint 7: Full reporting dashboard for eval infrastructure.
 // Aggregates metrics per sprint/eval-run, per-channel views,
 // Trend analysis, and formatted report output.
@@ -19,9 +21,9 @@ import { initEvalDb } from './eval-db';
 // Configurable limit prevents silent data loss at scale (was hardcoded 1000)
 const DASHBOARD_ROW_LIMIT = Math.max(1, parseInt(process.env.SPECKIT_DASHBOARD_LIMIT ?? '10000', 10) || 10000);
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    1. TYPES
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /** Configuration for dashboard report generation. */
 export interface ReportConfig {
@@ -105,9 +107,9 @@ export interface DashboardReport {
   summary: string;
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    2. INTERNAL HELPERS — DB QUERIES
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Lazy DB accessor. Initializes eval DB if needed.
@@ -237,9 +239,9 @@ function queryChannelResults(
   return db.prepare(sql).all(...params) as ChannelResultRow[];
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    3. AGGREGATION LOGIC
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Group snapshots by sprint label. Sprint label is derived from:
@@ -489,9 +491,9 @@ function buildSummary(
   return lines.join(' ');
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    4. PUBLIC API
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Generate the full dashboard report.
@@ -646,9 +648,9 @@ export function formatReportJSON(report: DashboardReport): string {
   return JSON.stringify(report, null, 2);
 }
 
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────
    5. EXPORTS
---------------------------------------------------------------- */
+──────────────────────────────────────────────────────────────── */
 
 export type {
   SnapshotRow,
