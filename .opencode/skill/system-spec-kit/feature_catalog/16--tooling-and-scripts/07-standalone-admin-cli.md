@@ -14,7 +14,7 @@ The standalone admin CLI provides non-MCP database maintenance commands for stat
 ## 2. CURRENT REALITY
 Non-MCP `spec-kit-cli` entry point (`cli.ts`) for database maintenance. Four commands: `stats` (tier distribution, top folders, schema version), `bulk-delete` (with --tier, --folder, --older-than, --dry-run, --skip-checkpoint, where constitutional/critical tiers require folder scope), `reindex` (--force, --eager-warmup), `schema-downgrade` (--to 15, --confirm). Transaction-wrapped deletions, checkpoint creation before bulk-delete, mutation ledger recording. Invoked as `node cli.js <command>` from any directory.
 
-### Checkpoint-before-delete contract (`bulk-delete`)
+#### Checkpoint-before-delete contract (`bulk-delete`)
 
 - `bulk-delete` attempts to create a pre-delete checkpoint before destructive deletion whenever `--skip-checkpoint` is **not** set.
 - `--skip-checkpoint` is allowed for non-critical tiers, but blocked for `constitutional` and `critical`.
@@ -51,4 +51,3 @@ This is a command-line maintenance tool for the memory database that you can run
 - Source feature title: Standalone admin CLI
 - Current reality source: 10-agent feature gap scan
 - Playbook reference: NEW-113
-
