@@ -1,17 +1,15 @@
 # Pipeline and mutation hardening
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. IN SIMPLE TERMS](#3--in-simple-terms)
-- [4. SOURCE FILES](#4--source-files)
-- [5. SOURCE METADATA](#5--source-metadata)
-
 ## 1. OVERVIEW
+
 Pipeline and mutation hardening applies ten fixes for schema completeness, pipeline metadata, embedding efficiency, stemmer quality and data cleanup.
 
+Ten small but important fixes were applied to make the system more robust. Some exposed missing options that were supposed to be available. Others fixed cleanup problems where deleting a memory left orphaned records behind. A few improved how the system handles word variations in searches. Together, these fixes close gaps that could have caused subtle data inconsistencies or missed search results over time.
+
+---
+
 ## 2. CURRENT REALITY
+
 Ten fixes addressed schema completeness, pipeline metadata, embedding efficiency, stemmer quality and data cleanup:
 
 - **Schema params exposed (#13):** `memorySearch` tool schema now includes `trackAccess`, `includeArchived` and `mode` parameters.
@@ -25,9 +23,10 @@ Ten fixes addressed schema completeness, pipeline metadata, embedding efficiency
 - **Atomic save error tracking (#22):** `atomicSaveMemory` now tracks rename-failure state with a `dbCommitted` flag for better error reporting.
 - **Dynamic preflight error code (#23):** Preflight validation uses the actual error code from `preflightResult.errors[0].code` instead of hardcoding `ANCHOR_FORMAT_INVALID`.
 
-## 3. IN SIMPLE TERMS
-Ten small but important fixes were applied to make the system more robust. Some exposed missing options that were supposed to be available. Others fixed cleanup problems where deleting a memory left orphaned records behind. A few improved how the system handles word variations in searches. Together, these fixes close gaps that could have caused subtle data inconsistencies or missed search results over time.
-## 4. SOURCE FILES
+---
+
+## 3. SOURCE FILES
+
 ### Implementation — Pipeline hardening
 
 | File | Layer | Role |
@@ -68,8 +67,10 @@ Ten small but important fixes were applied to make the system more robust. Some 
 | `mcp_server/tests/transaction-manager.vitest.ts` | Atomic-save and pending-file transaction behavior |
 | `mcp_server/tests/preflight.vitest.ts` | Preflight error-code contract used by save handler responses |
 
-## 5. SOURCE METADATA
+---
+
+## 4. SOURCE METADATA
+
 - Group: Opus review remediation (Phase 017)
 - Source feature title: Pipeline and mutation hardening
 - Current reality source: feature_catalog.md
-

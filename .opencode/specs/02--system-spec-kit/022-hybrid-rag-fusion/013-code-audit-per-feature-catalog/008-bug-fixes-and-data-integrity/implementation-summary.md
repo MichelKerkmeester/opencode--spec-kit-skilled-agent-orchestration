@@ -130,4 +130,4 @@ contextType: "general"
 
 ## Open Items
 
-- Optional `CHK-041`: Save memory context via `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js [spec-folder-path]`.
+- None.

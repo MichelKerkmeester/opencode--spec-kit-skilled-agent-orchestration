@@ -1,95 +1,149 @@
 ---
-title: "Verification Checklist: Markovian Architectures Research Refresh"
+title: "Verification Checklist: 017-markovian-architectures Planning + Readiness + Implementation"
 description: "Verification Date: 2026-03-14"
-trigger_phrases:
-  - "verification"
-  - "checklist"
-  - "markovian"
-  - "research"
+trigger_phrases: ["verification", "checklist", "planning", "readiness", "markovian"]
 importance_tier: "important"
-contextType: "research"
+contextType: "implementation"
 ---
-# Verification Checklist: Markovian Architectures Research Refresh
-
+# Verification Checklist: 017-markovian-architectures Planning + Readiness + Implementation
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## Verification Protocol
 
 | Priority | Handling | Completion Impact |
 |----------|----------|-------------------|
-| **[P0]** | HARD BLOCKER | Cannot claim done until complete |
-| **[P1]** | Required | Must complete OR get user approval |
-| **[P2]** | Optional | Can defer with documented reason |
+| **[P0]** | HARD BLOCKER | Cannot claim readiness baseline without completion |
+| **[P1]** | Required | Must complete or record as explicit caveat/defer |
+| **[P2]** | Optional | Can defer with documented rationale |
+<!-- /ANCHOR:protocol -->
 
 ---
 
-## Pre-Implementation
+<!-- ANCHOR:p0-grouping -->
+## P0 Grouping
 
-- [x] CHK-001 [P0] Existing spec folder selected and used: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/017-markovian-architectures/`
-- [x] CHK-002 [P0] Research scope clearly defined: refresh Markovian research and recommendations using current feature-catalog reality
-- [x] CHK-003 [P1] Seed materials reviewed: `research/perplexity_research.md` and `research/perplexity_recommendations.md`
-
----
-
-## Research Quality
-
-- [x] CHK-010 [P0] All 17 `research.md` sections populated with substantive content
-- [x] CHK-011 [P0] No placeholder markers remain
-- [x] CHK-012 [P1] Major findings cite internal feature-catalog evidence and/or external primary sources
-- [x] CHK-013 [P1] Recommendations distinguish current reality from proposed future work
+Critical checks grouped for hard-blocker visibility:
+- Planning scope and boundaries: `CHK-001` to `CHK-004`
+- Implementation surface/task readiness: `CHK-020`, `CHK-021`
+- Validation and rollout hard controls: `CHK-030`, `CHK-040`, `CHK-041`
+- Documentation synchronization baseline: `CHK-050`
+<!-- /ANCHOR:p0-grouping -->
 
 ---
 
-## Technical Completeness
+<!-- ANCHOR:p1-grouping -->
+## P1 Grouping
 
-- [x] CHK-020 [P0] Current retrieval/session architecture documented
-- [x] CHK-021 [P0] Current graph/cognitive mechanisms documented
-- [x] CHK-022 [P0] Lifecycle, rollback, and evaluation hooks documented as rollout enablers
-- [x] CHK-023 [P1] Outdated assumptions corrected: historical shadow scoring retired, novelty boost inactive in hot path
-- [x] CHK-024 [P1] Proposed roadmap kept within current architecture boundaries
-
----
-
-## Feasibility Assessment
-
-- [x] CHK-030 [P0] Near-term Markovian additions rated feasible as bounded additive work
-- [x] CHK-031 [P1] High-cost ideas (full MDP / MCTS planner, deep SSM runtime integration) explicitly deferred
-- [x] CHK-032 [P1] Safety rails documented: trace, adaptive ranking, checkpoints, deterministic ranking contracts
+Required checks grouped for implementation readiness quality:
+- Planning completeness and measurable outcomes: `CHK-005`, `CHK-006`
+- Branch/readiness and safety constraints: `CHK-022` to `CHK-025`
+- Validation breadth and contract coverage: `CHK-031` to `CHK-034`
+- Rollout guardrails and trace-only boundaries: `CHK-042` to `CHK-044`
+- Documentation/context caveat fidelity: `CHK-051` to `CHK-053`
+<!-- /ANCHOR:p1-grouping -->
 
 ---
 
-## Documentation Quality
+<!-- ANCHOR:planning-quality -->
+## Planning Quality
 
-- [x] CHK-040 [P1] Separate recommendations artifact created
-- [x] CHK-041 [P1] Architecture diagram included in `research.md`
-- [x] CHK-042 [P2] Code examples included for session transitions, graph-walk scoring, and lifecycle forecasting
-
----
-
-## Context Preservation
-
-- [x] CHK-050 [P1] Memory file created via `generate-context.js` (JSON mode fallback; file written to `memory/14-03-26_10-49__markovian-refresh-grounded-in-current-reality.md`)
-- [x] CHK-051 [P1] Key decisions documented for future planning
-- [x] CHK-052 [P2] Original seed files preserved untouched for comparison
+- [x] CHK-001 [P0] Problem and purpose are explicit and implementation-oriented in `spec.md` | Evidence: `spec.md` section 2
+- [x] CHK-002 [P0] Scope is bounded to the first milestone only | Evidence: `spec.md` section 3
+- [x] CHK-003 [P0] Out-of-scope section explicitly excludes MDP/MCTS/SSM-runtime | Evidence: `spec.md` section 3 (Out of Scope)
+- [x] CHK-004 [P0] Stale assumptions are corrected: shadow scoring retired, novelty boost inactive in hot path | Evidence: `research.md` section 2 (Key Findings 2), `spec.md` sections 2-4
+- [x] CHK-005 [P1] Functional contracts are defined for transition trace, graph contribution, and ingestion forecast | Evidence: `spec.md` section 5
+- [x] CHK-006 [P1] Success criteria are measurable and testable | Evidence: `spec.md` section 6
+<!-- /ANCHOR:planning-quality -->
 
 ---
 
+<!-- ANCHOR:implementation-readiness -->
+## Implementation Readiness
+
+- [x] CHK-020 [P0] File-level implementation surfaces are identified in spec and plan | Evidence: `spec.md` section 3 (Planned Implementation Surface), `plan.md` section 5
+- [x] CHK-021 [P0] Tasks are grouped by execution phases and file-aware | Evidence: `tasks.md` phases 1-5
+- [x] CHK-022 [P1] Numbered feature branch exists and prerequisites pass | Evidence: branch `017-markovian-architectures`, focused implementation suite passed on that branch
+- [x] CHK-023 [P1] Graph-walk feature-flag rollout and existing `includeTrace` trace controls are defined | Evidence: `plan.md` section 5 (Phase 1 exit criteria), `plan.md` section 7
+- [x] CHK-024 [P1] Deterministic ranking protections are explicit | Evidence: `spec.md` REQ-003, `plan.md` section 6 (Pipeline determinism)
+- [x] CHK-025 [P1] Rollback path is reversible and non-schema-destructive | Evidence: `plan.md` section 7 (Rollback Procedure), `spec.md` REQ-005
+<!-- /ANCHOR:implementation-readiness -->
+
+---
+
+<!-- ANCHOR:validation-coverage -->
+## Validation Coverage
+
+- [x] CHK-030 [P0] Validation matrix maps requirements to real Vitest suites | Evidence: `spec.md` section 10, `plan.md` section 6
+- [x] CHK-031 [P1] Transition trace tests are listed | Evidence: `spec.md` REQ-001 row, `tasks.md` T014-T016
+- [x] CHK-032 [P1] Stage 2 graph-walk deterministic tests are listed | Evidence: `spec.md` REQ-002/REQ-003 rows, `tasks.md` T026-T029
+- [x] CHK-033 [P1] Forecasting and queue edge-case tests are listed | Evidence: `spec.md` REQ-004 row, `tasks.md` T034-T035
+- [x] CHK-034 [P1] Envelope/trace formatter tests are listed | Evidence: `spec.md` REQ-007 row, `tasks.md` T016/T024/T029
+- [x] CHK-035 [P2] Rollout policy and adaptive-ranking surfaces are included for bounded graduation readiness
+<!-- /ANCHOR:validation-coverage -->
+
+---
+
+<!-- ANCHOR:rollout-safety -->
+## Rollout Safety
+
+- [x] CHK-040 [P0] Rollout ladder (`off` -> `trace_only` -> `bounded_runtime`) is defined | Evidence: `plan.md` section 7 (Rollout Ladder)
+- [x] CHK-041 [P0] Kill switch behavior is documented for all Markovian paths | Evidence: `plan.md` section 7 (Kill Switches)
+- [x] CHK-042 [P1] Rollback drill steps include verification checks | Evidence: `plan.md` section 7 (Rollback Procedure)
+- [x] CHK-043 [P1] Advisory-only semantics are preserved for lifecycle forecasts | Evidence: `spec.md` section 5.3 and section 8 (Forecasting Edge Cases)
+- [x] CHK-044 [P1] Transition inference remains trace-only and uses existing `includeTrace` / response-trace controls in this milestone | Evidence: `spec.md` section 5.1, `plan.md` section 5 (Phase 1 exit criteria)
+<!-- /ANCHOR:rollout-safety -->
+
+---
+
+<!-- ANCHOR:docs-context -->
+## Documentation and Context Preservation
+
+- [x] CHK-050 [P0] `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` are synchronized on scope | Evidence: scope/guardrail sections in all four files
+- [x] CHK-051 [P1] No placeholder/template sample markers remain | Evidence: placeholder scan (`rg`) clean in scoped docs
+- [x] CHK-052 [P1] Existing research artifacts remain referenced with concrete internal paths for traceability | Evidence: `research.md` metadata and section 3 (Research Sources table)
+- [x] CHK-053 [P1] Prior planning memory save caveat is preserved (JSON fallback + semantic indexing skipped) | Evidence: `plan.md` section 8, `checklist.md` summary caveat
+- [x] CHK-054 [P2] Handover/save-context next-step path remains documented
+<!-- /ANCHOR:docs-context -->
+
+---
+
+<!-- ANCHOR:implementation-update -->
+## Implementation Update
+
+- [x] CHK-060 [P0] Session transition trace is emitted in `memory_context` metadata and traced nested results | Evidence: `handlers/memory-context.ts`, `tests/handler-memory-context.vitest.ts`
+- [x] CHK-061 [P0] Bounded graph-walk scoring is active through the existing Stage 2 graph-signal seam | Evidence: `lib/graph/graph-signals.ts`, `tests/graph-signals.vitest.ts`
+- [x] CHK-062 [P0] Ingest status returns advisory forecast payloads and degrades safely on forecast errors | Evidence: `handlers/memory-ingest.ts`, `lib/ops/job-queue.ts`, `tests/handler-memory-ingest.vitest.ts`
+- [x] CHK-063 [P1] Focused Vitest suites pass for transition, envelope, graph, and queue coverage | Evidence: `npx vitest run tests/handler-memory-context.vitest.ts tests/mcp-response-envelope.vitest.ts tests/graph-signals.vitest.ts tests/handler-memory-ingest.vitest.ts tests/job-queue-state-edge.vitest.ts tests/job-queue.vitest.ts`
+- [x] CHK-064 [P1] TypeScript compile surface remains valid after implementation edits | Evidence: `npx tsc --noEmit`
+- [ ] CHK-065 [P1] Telemetry expansion, richer graph trace attribution, and deterministic rerun checks remain follow-up work | Evidence: `tasks.md` T013, T024-T025, T033, T040-T044
+<!-- /ANCHOR:implementation-update -->
+
+---
+
+<!-- ANCHOR:summary -->
 ## Verification Summary
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 7 | 7/7 |
-| P1 Items | 10 | 10/10 |
-| P2 Items | 2 | 2/2 |
+| P0 Items | 12 | 12/12 |
+| P1 Items | 17 | 16/17 |
+| P2 Items | 3 | 3/3 |
 
 **Verification Date**: 2026-03-14
+
+Readiness caveats:
+- Transition tracing, bounded graph-walk scoring, and advisory queue forecasting are implemented and verified, but telemetry expansion and broader rollout-hardening tasks remain deferred.
+- `CHK-065` remains open: richer graph trace attribution and deterministic rerun coverage have not been completed yet.
+- `CHK-053` passes for documentation fidelity only; both prior planning memory and the fresh implementation save used JSON fallback and skipped production indexing (`QUALITY_GATE_FAIL`), so memory artifacts remain low-quality resume aids rather than clean indexed context.
+<!-- /ANCHOR:summary -->
 
 ---
 
 <!--
-Level 2 checklist - Research verification focus
-CHK-050 is completed after memory save succeeds
+Planning + readiness checklist for 017-markovian-architectures
+Tracks planning quality and implementation readiness, not implementation completion
 -->

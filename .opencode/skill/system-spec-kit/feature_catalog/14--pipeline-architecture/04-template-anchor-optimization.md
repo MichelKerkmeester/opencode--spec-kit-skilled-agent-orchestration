@@ -1,24 +1,23 @@
 # Template anchor optimization
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. IN SIMPLE TERMS](#3--in-simple-terms)
-- [4. SOURCE FILES](#4--source-files)
-- [5. SOURCE METADATA](#5--source-metadata)
-
 ## 1. OVERVIEW
+
 Template anchor optimization parses anchor markers in memory files and attaches semantic type metadata to pipeline rows without modifying scores.
 
+Memory files contain hidden markers that label sections as things like "decision" or "summary." This feature reads those markers and attaches the labels to search results as extra information. It does not change how results are ranked. It just adds useful tags so that later steps in the pipeline know what kind of content they are looking at.
+
+---
+
 ## 2. CURRENT REALITY
+
 Anchor markers in memory files (structured sections like `<!-- ANCHOR:state -->`) are parsed and attached as metadata to search pipeline rows. The module extracts anchor IDs and derives semantic types from structured IDs (for example, `DECISION-pipeline-003` yields type `DECISION`). Simple IDs like `summary` pass through as-is.
 
 This is a pure annotation step wired into Stage 2 as step 8. It never modifies any score fields. The enrichment makes Stage 3 (rerank) and Stage 4 (filter) anchor-aware without score side-effects. No feature flag. Always active.
 
-## 3. IN SIMPLE TERMS
-Memory files contain hidden markers that label sections as things like "decision" or "summary." This feature reads those markers and attaches the labels to search results as extra information. It does not change how results are ranked. It just adds useful tags so that later steps in the pipeline know what kind of content they are looking at.
-## 4. SOURCE FILES
+---
+
+## 3. SOURCE FILES
+
 ### Implementation
 
 | File | Layer | Role |
@@ -39,8 +38,10 @@ Memory files contain hidden markers that label sections as things like "decision
 | `mcp_server/tests/unit-tier-classifier-types.vitest.ts` | Tier classifier types |
 | `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
 
-## 5. SOURCE METADATA
+---
+
+## 4. SOURCE METADATA
+
 - Group: Pipeline architecture
 - Source feature title: Template anchor optimization
 - Current reality source: feature_catalog.md
-

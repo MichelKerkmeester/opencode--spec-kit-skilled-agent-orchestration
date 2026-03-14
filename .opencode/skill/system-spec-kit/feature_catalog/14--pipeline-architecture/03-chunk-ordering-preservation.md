@@ -1,22 +1,21 @@
 # Chunk ordering preservation
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. IN SIMPLE TERMS](#3--in-simple-terms)
-- [4. SOURCE FILES](#4--source-files)
-- [5. SOURCE METADATA](#5--source-metadata)
-
 ## 1. OVERVIEW
+
 Chunk ordering preservation sorts collapsed multi-chunk results by `chunk_index` so the consuming agent reads content in document order.
 
+When a document is reassembled from its search-result pieces, the pieces need to appear in the order they were written, not in the order they scored. This feature makes sure you read the content from top to bottom, just like the original document. Without it, you would get a scrambled version where paragraph three appears before paragraph one.
+
+---
+
 ## 2. CURRENT REALITY
+
 When multi-chunk results collapse back into a single memory during MPAB aggregation, chunks are now sorted by their original `chunk_index` so the consuming agent reads content in document order rather than score order. Full parent content is loaded from the database when possible. On DB failure, the best-scoring chunk is emitted as a fallback with `contentSource: 'file_read_fallback'` metadata.
 
-## 3. IN SIMPLE TERMS
-When a document is reassembled from its search-result pieces, the pieces need to appear in the order they were written, not in the order they scored. This feature makes sure you read the content from top to bottom, just like the original document. Without it, you would get a scrambled version where paragraph three appears before paragraph one.
-## 4. SOURCE FILES
+---
+
+## 3. SOURCE FILES
+
 ### Implementation
 
 | File | Layer | Role |
@@ -35,8 +34,10 @@ When a document is reassembled from its search-result pieces, the pieces need to
 | `mcp_server/tests/search-results-format.vitest.ts` | Response formatter propagation of contentSource metadata |
 | `mcp_server/tests/regression-010-index-large-files.vitest.ts` | End-to-end chunk reassembly regression coverage |
 
-## 5. SOURCE METADATA
+---
+
+## 4. SOURCE METADATA
+
 - Group: Pipeline architecture
 - Source feature title: Chunk ordering preservation
 - Current reality source: feature_catalog.md
-

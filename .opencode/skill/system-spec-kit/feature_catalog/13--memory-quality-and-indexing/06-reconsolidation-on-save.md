@@ -1,26 +1,25 @@
 # Reconsolidation-on-save
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. IN SIMPLE TERMS](#3--in-simple-terms)
-- [4. SOURCE FILES](#4--source-files)
-- [5. SOURCE METADATA](#5--source-metadata)
-
 ## 1. OVERVIEW
+
 Reconsolidation-on-save merges, supersedes or complements new memories with existing similar memories based on cosine similarity thresholds.
 
+When you save a new memory that is very similar to one already stored, the system decides what to do with the overlap. If the two are nearly identical, it merges them into one stronger memory. If the new one contradicts the old one, the old one is retired and the new one takes over. If they are different enough, both are kept side by side. This keeps your memory collection clean and up to date instead of cluttered with redundant notes.
+
+---
+
 ## 2. CURRENT REALITY
+
 After embedding generation, the save pipeline checks the top-3 most similar memories in the same spec folder. Similarity at or above 0.88 triggers a merge where content is combined and the `importance_weight` is incremented via `Math.min(1.0, currentWeight + 0.1)`. Similarity between 0.75 and 0.88 triggers conflict resolution: the old memory is deprecated and a `supersedes` causal edge is created. Below 0.75, the memory stores as a new complement.
 
 **Sprint 8 update:** The original merge logic referenced a non-existent `frequency_counter` column, which would have caused runtime crashes on reconsolidation. This was replaced with `importance_weight` merge logic that properly uses an existing column.
 
 A checkpoint must exist for the spec folder before reconsolidation can run. When no checkpoint is found, the system logs a warning and skips reconsolidation rather than risking destructive merges without a safety net. Runs behind the `SPECKIT_RECONSOLIDATION` flag (default OFF, opt-in). Set `SPECKIT_RECONSOLIDATION=true` to enable.
 
-## 3. IN SIMPLE TERMS
-When you save a new memory that is very similar to one already stored, the system decides what to do with the overlap. If the two are nearly identical, it merges them into one stronger memory. If the new one contradicts the old one, the old one is retired and the new one takes over. If they are different enough, both are kept side by side. This keeps your memory collection clean and up to date instead of cluttered with redundant notes.
-## 4. SOURCE FILES
+---
+
+## 3. SOURCE FILES
+
 ### Implementation
 
 | File | Layer | Role |
@@ -146,8 +145,10 @@ When you save a new memory that is very similar to one already stored, the syste
 | `mcp_server/tests/vector-index-impl.vitest.ts` | Vector index implementation |
 | `shared/parsing/quality-extractors.test.ts` | Quality Extractors.Ts |
 
-## 5. SOURCE METADATA
+---
+
+## 4. SOURCE METADATA
+
 - Group: Memory quality and indexing
 - Source feature title: Reconsolidation-on-save
 - Current reality source: feature_catalog.md
-

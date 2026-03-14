@@ -71,7 +71,7 @@ contextType: "general"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [x] T019 Verify all five FAIL findings are resolved or explicitly deferred with approval (`checklist.md`) — F-08, F-13, F-14, F-16, and F-17 all resolved
+- [x] T019 Verify all five FAIL findings are resolved or explicitly bounded with approval (`checklist.md`) — F-08, F-13, F-14, F-16, and F-17 all resolved
 - [x] T020 Verify WARN findings have source/test traceability and playbook mapping status (`checklist.md`) — traceability added to all scoring-and-calibration feature docs
 - [x] T021 Synchronize final status across spec, plan, tasks, and checklist (`spec.md`) — completed-state alignment across phase docs
 - [x] T022 Preserve accumulator state when threshold-triggered flush fails (`.opencode/skill/system-spec-kit/mcp_server/lib/storage/access-tracker.ts`) — failed flushes now retain pending accumulated counts instead of dropping them

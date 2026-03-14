@@ -1,24 +1,23 @@
 # Automatic archival subsystem
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. IN SIMPLE TERMS](#3--in-simple-terms)
-- [4. SOURCE FILES](#4--source-files)
-- [5. SOURCE METADATA](#5--source-metadata)
-
 ## 1. OVERVIEW
+
 Covers the background archival job that transitions dormant memories to archived status and reclaims storage.
 
+Memories that nobody has used for a long time get automatically moved to a storage-saving archive, like moving old files to a basement filing cabinet. They are still there if you need them but they do not take up space in the active search results. Important memories are protected and never get archived automatically.
+
+---
+
 ## 2. CURRENT REALITY
+
 The archival manager (`lib/cognitive/archival-manager.ts`) is a background job that identifies dormant memories and transitions them to archived status. It queries `memory_index` for memories that have not been accessed within a configurable threshold period, demotes their tier classification and removes BM25 index entries plus vector rows (`vec_memories`) to reclaim storage. Archived memories remain in the database for SQL-based recovery but are excluded from default search result sets.
 
 The archival sweep runs periodically and respects tier-based protection: constitutional and critical-tier memories are never auto-archived. Access tracker data (`access_count`, `last_accessed`) drives the dormancy decision. On unarchive, BM25 is restored from stored text fields, while vector re-embedding is explicitly deferred and logged for the next index scan (no immediate vector row recreation). The archival manager lazy-loads the tier classifier to avoid circular dependencies at import time.
 
-## 3. IN SIMPLE TERMS
-Memories that nobody has used for a long time get automatically moved to a storage-saving archive, like moving old files to a basement filing cabinet. They are still there if you need them but they do not take up space in the active search results. Important memories are protected and never get archived automatically.
-## 4. SOURCE FILES
+---
+
+## 3. SOURCE FILES
+
 ### Implementation
 
 | File | Layer | Role |
@@ -35,8 +34,10 @@ Memories that nobody has used for a long time get automatically moved to a stora
 | `mcp_server/tests/archival-manager.vitest.ts` | Archival manager tests |
 | `mcp_server/tests/search-archival.vitest.ts` | Search archival tests |
 
-## 5. SOURCE METADATA
+---
+
+## 4. SOURCE METADATA
+
 - Group: Lifecycle
 - Source feature title: Automatic archival subsystem
 - Current reality source: audit-D04 gap backfill
-

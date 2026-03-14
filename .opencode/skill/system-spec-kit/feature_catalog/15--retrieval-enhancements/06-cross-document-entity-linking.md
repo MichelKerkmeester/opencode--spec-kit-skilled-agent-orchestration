@@ -1,17 +1,15 @@
 # Cross-document entity linking
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. IN SIMPLE TERMS](#3--in-simple-terms)
-- [4. SOURCE FILES](#4--source-files)
-- [5. SOURCE METADATA](#5--source-metadata)
-
 ## 1. OVERVIEW
+
 Cross-document entity linking creates causal edges between memories in different spec folders that reference the same entity.
 
+Different documents in different folders sometimes talk about the same thing without knowing about each other. This feature connects them automatically when it notices they reference the same concept. It is like a researcher who reads two separate reports, notices both mention the same topic and staples a note between them saying "these are related."
+
+---
+
 ## 2. CURRENT REALITY
+
 Memories in different spec folders often discuss the same concepts without any explicit connection between them. A decision record in one folder mentions "embedding cache" and an implementation summary in another folder implements it, but the retrieval system has no way to connect them unless a causal edge exists.
 
 Cross-document entity linking bridges this gap using the entity catalog populated by R10. The `buildEntityCatalog()` function groups entities from the `memory_entities` table by canonical name. The `findCrossDocumentMatches()` function identifies entities appearing in two or more distinct spec folders, which represent genuine cross-document relationships.
@@ -26,9 +24,8 @@ A density guard prevents runaway edge creation: current global edge density is c
 
 ---
 
-## 3. IN SIMPLE TERMS
-Different documents in different folders sometimes talk about the same thing without knowing about each other. This feature connects them automatically when it notices they reference the same concept. It is like a researcher who reads two separate reports, notices both mention the same topic and staples a note between them saying "these are related."
-## 4. SOURCE FILES
+## 3. SOURCE FILES
+
 ### Implementation
 
 | File | Layer | Role |
@@ -46,8 +43,10 @@ Different documents in different folders sometimes talk about the same thing wit
 | `mcp_server/tests/rollout-policy.vitest.ts` | Rollout policy tests |
 | `mcp_server/tests/search-flags.vitest.ts` | Feature flag behavior |
 
-## 5. SOURCE METADATA
+---
+
+## 4. SOURCE METADATA
+
 - Group: Retrieval enhancements
 - Source feature title: Cross-document entity linking
 - Current reality source: feature_catalog.md
-

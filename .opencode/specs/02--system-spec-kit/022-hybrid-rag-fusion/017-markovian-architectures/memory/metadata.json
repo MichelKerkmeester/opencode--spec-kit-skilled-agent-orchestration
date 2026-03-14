@@ -1,15 +1,15 @@
 {
-  "timestamp": "14-03-26 10-49",
-  "messageCount": 0,
-  "decisionCount": 1,
+  "timestamp": "14-03-26 13-24",
+  "messageCount": 1,
+  "decisionCount": 0,
   "diagramCount": 0,
   "skillVersion": "1.7.2",
   "autoTriggered": false,
   "filtering": {
-    "totalProcessed": 0,
+    "totalProcessed": 1,
     "noiseFiltered": 0,
     "duplicatesRemoved": 0,
-    "qualityScore": 0,
+    "qualityScore": 50,
     "filtered": {
       "noise": 0,
       "empty": 0,
@@ -19,17 +19,17 @@
     "_note": "qualityScore is 0-100 scale (legacy scorer); frontmatter quality_score is 0.0-1.0 (v2 scorer)"
   },
   "semanticSummary": {
-    "task": "Development session",
+    "task": "The bounded first milestone for 017-markovian-architectures and verify it properly",
     "filesCreated": 0,
-    "filesModified": 3,
+    "filesModified": 10,
     "decisions": 0,
     "messageStats": {
-      "intent": 0,
+      "intent": 1,
       "plan": 0,
       "implementation": 0,
       "result": 0,
       "decision": 0,
-      "total": 0
+      "total": 1
     }
   },
   "embedding": {

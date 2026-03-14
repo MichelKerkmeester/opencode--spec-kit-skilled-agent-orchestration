@@ -1,22 +1,21 @@
 # Contextual tree injection
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. IN SIMPLE TERMS](#3--in-simple-terms)
-- [4. SOURCE FILES](#4--source-files)
-- [5. SOURCE METADATA](#5--source-metadata)
-
 ## 1. OVERVIEW
+
 Contextual tree injection prefixes returned chunks with hierarchical context headers using cached spec folder descriptions.
 
+When search results come back, each piece of information now carries a short label showing where it belongs in the project, like "Project > Feature > Detail." Without this, you would see raw content with no clue about its context. It is like seeing a chapter heading at the top of a photocopied page so you know which part of the book it came from.
+
+---
+
 ## 2. CURRENT REALITY
+
 **IMPLEMENTED (Sprint 019).** Returned chunks are prefixed with hierarchical context headers in the format `[parent > child — description]` (max 100 chars), using existing PI-B3 cached spec folder descriptions. Gated by `SPECKIT_CONTEXT_HEADERS` (default `true`) and injected after Stage 4 token-budget truncation.
 
-## 3. IN SIMPLE TERMS
-When search results come back, each piece of information now carries a short label showing where it belongs in the project, like "Project > Feature > Detail." Without this, you would see raw content with no clue about its context. It is like seeing a chapter heading at the top of a photocopied page so you know which part of the book it came from.
-## 4. SOURCE FILES
+---
+
+## 3. SOURCE FILES
+
 ### Implementation
 
 | File | Layer | Role |
@@ -153,8 +152,10 @@ When search results come back, each piece of information now carries a short lab
 | `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
 | `mcp_server/tests/vector-index-impl.vitest.ts` | Vector index implementation |
 
-## 5. SOURCE METADATA
+---
+
+## 4. SOURCE METADATA
+
 - Group: Extra features (Sprint 019)
 - Source feature title: Contextual tree injection
 - Current reality source: feature_catalog.md
-

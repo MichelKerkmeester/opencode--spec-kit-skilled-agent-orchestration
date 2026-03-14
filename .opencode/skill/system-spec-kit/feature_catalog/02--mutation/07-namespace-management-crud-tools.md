@@ -1,22 +1,21 @@
 # Namespace management CRUD tools
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. IN SIMPLE TERMS](#3--in-simple-terms)
-- [4. SOURCE FILES](#4--source-files)
-- [5. SOURCE METADATA](#5--source-metadata)
-
 ## 1. OVERVIEW
+
 Tracks the deferred namespace CRUD tools pending demonstrated multi-tenant demand.
 
+This planned feature would let you organize memories into completely separate workspaces, like having different notebooks for different projects. Right now the system uses folder-based filtering to keep things separated, which works well enough. Full workspace management is on hold until there is a real need for it.
+
+---
+
 ## 2. CURRENT REALITY
+
 **PLANNED (Sprint 019): DEFERRED.** Namespace CRUD (`list/create/switch/delete`) remains deferred pending demonstrated multi-tenant demand. Current scoping relies on logical `specFolder` filtering. Estimated effort: S-M (3-5 days).
 
-## 3. IN SIMPLE TERMS
-This planned feature would let you organize memories into completely separate workspaces, like having different notebooks for different projects. Right now the system uses folder-based filtering to keep things separated, which works well enough. Full workspace management is on hold until there is a real need for it.
-## 4. SOURCE FILES
+---
+
+## 3. SOURCE FILES
+
 ### Implementation
 
 | File | Layer | Role |
@@ -370,8 +369,10 @@ This planned feature would let you organize memories into completely separate wo
 | `mcp_server/tests/working-memory.vitest.ts` | Working memory tests |
 | `shared/parsing/quality-extractors.test.ts` | Quality Extractors.Ts |
 
-## 5. SOURCE METADATA
+---
+
+## 4. SOURCE METADATA
+
 - Group: Extra features (Sprint 019)
 - Source feature title: Namespace management CRUD tools
 - Current reality source: feature_catalog.md
-

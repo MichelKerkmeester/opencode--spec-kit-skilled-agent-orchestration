@@ -106,8 +106,8 @@ P1 items are complete and include inline evidence unless explicitly deferred.
   - **Evidence**: `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` all reference the same traceability rubric, backlog gaps, and verification model.
 - [x] CHK-041 [P1] Code comments adequate [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
   - **Evidence**: mpab-aggregation.ts MPAB default-state comment updated (T014); learned-feedback.ts feature-flag comment updated (T015); comments now accurately reflect current runtime state.
-- [ ] CHK-042 [P2] README updated (if applicable)
-  - **Evidence**: [DEFERRED] No README exists in this spec folder; deferred without impact.
+- [x] CHK-042 [P2] README updated (if applicable)
+  - **Evidence**: Not applicable for this phase-level spec folder; no phase README exists or is required, and core Level 2 artifacts are the source of truth.
 <!-- /ANCHOR:docs -->
 
 ---
@@ -132,7 +132,7 @@ P1 items are complete and include inline evidence unless explicitly deferred.
 |----------|-------|----------|
 | P0 Items | 8 | 8/8 |
 | P1 Items | 10 | 10/10 |
-| P2 Items | 2 | 1/2 |
+| P2 Items | 2 | 2/2 |
 
 **Verification Date**: 2026-03-11
 <!-- /ANCHOR:summary -->

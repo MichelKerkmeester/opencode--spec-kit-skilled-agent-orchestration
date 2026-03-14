@@ -47,6 +47,14 @@ export interface IngestJob {
   updatedAt: string;
 }
 
+export interface IngestJobForecast {
+  etaSeconds: number | null;
+  etaConfidence: number | null;
+  failureRisk: number | null;
+  riskSignals: string[];
+  caveat: string | null;
+}
+
 interface IngestJobRow {
   id: string;
   state: IngestJobState;
@@ -415,6 +423,122 @@ export function getIngestProgressPercent(job: Pick<IngestJob, 'filesProcessed' |
   if (job.filesTotal <= 0) return 0;
   const raw = Math.round((job.filesProcessed / job.filesTotal) * 100);
   return Math.max(0, Math.min(100, raw));
+}
+
+function parseIsoTimestamp(timestamp: string): number | null {
+  if (typeof timestamp !== 'string' || timestamp.trim().length === 0) {
+    return null;
+  }
+
+  const parsed = Date.parse(timestamp);
+  return Number.isFinite(parsed) ? parsed : null;
+}
+
+function clampUnitInterval(value: number): number {
+  if (!Number.isFinite(value)) return 0;
+  return Math.max(0, Math.min(1, value));
+}
+
+export function getIngestForecast(
+  job: Pick<IngestJob, 'state' | 'filesProcessed' | 'filesTotal' | 'errors' | 'createdAt' | 'updatedAt'>,
+): IngestJobForecast {
+  const filesTotal = Math.max(0, job.filesTotal || 0);
+  const filesProcessed = Math.max(0, job.filesProcessed || 0);
+  const remaining = Math.max(0, filesTotal - filesProcessed);
+  const errorCount = Array.isArray(job.errors) ? job.errors.length : 0;
+  const errorRatio = filesTotal > 0 ? errorCount / filesTotal : 0;
+  const progressRatio = filesTotal > 0 ? filesProcessed / filesTotal : 0;
+  const riskSignals: string[] = [];
+
+  if (job.state === 'failed') {
+    return {
+      etaSeconds: 0,
+      etaConfidence: 1,
+      failureRisk: 1,
+      riskSignals: ['terminal_failed'],
+      caveat: null,
+    };
+  }
+
+  if (job.state === 'complete') {
+    return {
+      etaSeconds: 0,
+      etaConfidence: 1,
+      failureRisk: clampUnitInterval(errorRatio * 0.5),
+      riskSignals: errorCount > 0 ? ['completed_with_file_errors'] : [],
+      caveat: null,
+    };
+  }
+
+  if (job.state === 'cancelled') {
+    return {
+      etaSeconds: 0,
+      etaConfidence: 1,
+      failureRisk: 0,
+      riskSignals: ['terminal_cancelled'],
+      caveat: 'Forecast is advisory only because the job is no longer progressing.',
+    };
+  }
+
+  if (filesTotal <= 0) {
+    return {
+      etaSeconds: null,
+      etaConfidence: null,
+      failureRisk: null,
+      riskSignals,
+      caveat: 'Forecast unavailable because the queue has no file-count baseline yet.',
+    };
+  }
+
+  if (errorCount > 0) {
+    riskSignals.push('file_errors_seen');
+  }
+  if (job.state === 'queued') {
+    riskSignals.push('queued_not_started');
+  }
+
+  const createdAtMs = parseIsoTimestamp(job.createdAt);
+  const updatedAtMs = parseIsoTimestamp(job.updatedAt);
+  const elapsedSeconds = createdAtMs !== null && updatedAtMs !== null && updatedAtMs >= createdAtMs
+    ? Math.max(0, (updatedAtMs - createdAtMs) / 1000)
+    : 0;
+
+  let etaSeconds: number | null = null;
+  let etaConfidence: number | null = null;
+  let caveat: string | null = null;
+
+  if (filesProcessed <= 0 || elapsedSeconds < 1) {
+    caveat = 'Forecast is low-confidence until at least one file has been processed.';
+  } else {
+    const throughput = filesProcessed / elapsedSeconds;
+    if (throughput > 0) {
+      etaSeconds = Math.max(0, Math.round(remaining / throughput));
+      etaConfidence = clampUnitInterval(0.35 + (progressRatio * 0.45) - (errorRatio * 0.25));
+      if (etaConfidence < 0.4) {
+        caveat = 'Forecast is low-confidence because queue history is still sparse or noisy.';
+      }
+    } else {
+      caveat = 'Forecast unavailable because throughput could not be derived from queue history.';
+    }
+  }
+
+  if (progressRatio <= 0 && job.state !== 'queued') {
+    riskSignals.push('active_without_progress');
+  }
+  if (errorRatio >= 0.5 && errorCount > 0) {
+    riskSignals.push('high_error_ratio');
+  }
+
+  const stateRisk = job.state === 'indexing' ? 0.15 : (job.state === 'embedding' ? 0.1 : 0.05);
+  const failureRisk = clampUnitInterval((errorRatio * 0.7) + stateRisk + (progressRatio === 0 ? 0.05 : 0));
+
+  return {
+    etaSeconds,
+    etaConfidence,
+    failureRisk,
+    riskSignals,
+    caveat,
+  };
 }
 
 // Real state machine — states now correspond to actual work phases.

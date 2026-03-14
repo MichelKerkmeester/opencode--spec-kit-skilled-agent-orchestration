@@ -93,7 +93,7 @@ P1 items are complete unless explicitly marked pending.
 ## File Organization
 
 - [x] CHK-040 [P1] Documentation edits limited to approved packet markdown file list [EVIDENCE: `git status --short` shows only requested spec packet markdown files touched under `.opencode/specs/.../003-discovery` and `.opencode/specs/.../008-bug-fixes-and-data-integrity`]
-- [ ] CHK-041 [P2] Context saved to memory via `generate-context.js` [PENDING: not executed in this subtask]
+- [x] CHK-041 [P2] Context saved to memory via `generate-context.js` [EVIDENCE: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/008-bug-fixes-and-data-integrity/memory/14-03-26_10-42__closed-deferred-context-save-item-after-final.md`]
 <!-- /ANCHOR:file-org -->
 
 ---
@@ -105,8 +105,8 @@ P1 items are complete unless explicitly marked pending.
 |----------|-------|----------|
 | P0 Items | 7 | 7/7 |
 | P1 Items | 13 | 13/13 |
-| P2 Items | 1 | 0/1 |
-| **Total** | **21** | **20/21** |
+| P2 Items | 1 | 1/1 |
+| **Total** | **21** | **21/21** |
 
 **Verification Date**: 2026-03-13
 <!-- /ANCHOR:summary -->

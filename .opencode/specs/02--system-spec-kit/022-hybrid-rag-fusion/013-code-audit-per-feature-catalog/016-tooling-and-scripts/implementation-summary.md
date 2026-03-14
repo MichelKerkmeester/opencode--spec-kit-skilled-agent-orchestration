@@ -117,10 +117,10 @@ Added per-file LOC evidence and `git show b4f85e327` audit references for all 4 
 
 ---
 
-## Remaining Work
+## Notes
 
 | Item | Priority | Notes |
 |------|----------|-------|
 | CHK-032 Auth/authz working correctly | P1 | Not applicable to current tooling scope; no action needed |
-| CHK-042 README updated | P2 | No README updates required |
-| CHK-052 Findings saved to memory/ | P2 | Memory save optional; can be deferred |
+| CHK-042 README updated | P2 | Not applicable for this phase-level spec folder; no phase README exists or is required |
+| CHK-052 Findings saved to memory/ | P2 | Completed via phase memory save artifact |

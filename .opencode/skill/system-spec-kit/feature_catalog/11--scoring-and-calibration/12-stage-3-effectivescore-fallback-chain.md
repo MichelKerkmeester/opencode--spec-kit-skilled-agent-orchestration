@@ -1,24 +1,21 @@
 # Stage 3 effectiveScore fallback chain
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. IN SIMPLE TERMS](#3--in-simple-terms)
-- [4. SOURCE FILES](#4--source-files)
-- [5. SOURCE METADATA](#5--source-metadata)
-
 ## 1. OVERVIEW
+
 Describes the unified `effectiveScore()` fallback chain (`intentAdjustedScore -> rrfScore -> score -> similarity/100`) with `isFinite()` guards and [0,1] clamping used by Stage 3 reranking and cross-encoder mapping.
 
+A search result can carry several different scores from different stages of processing. The final ranking step was only looking at two of them and skipping the most refined ones. This fix teaches it to check the best available score first and fall back through less precise options only when needed, like reading the final exam grade before the midterm before the homework score.
+
+---
+
 ## 2. CURRENT REALITY
+
 `effectiveScore()` in `stage3-rerank.ts` only checked `score` then `similarity/100`, skipping `intentAdjustedScore` and `rrfScore` from Stage 2 enrichment. The fix updated the fallback chain to: `intentAdjustedScore -> rrfScore -> score -> similarity/100`, all clamped [0,1] with `isFinite()` guards. Cross-encoder document mapping and MMR candidate scoring now use `effectiveScore()` instead of inline fallbacks. A `stage2Score` field was added to `PipelineRow` in `types.ts` for auditability when Stage 3 overwrites scores.
 
 ---
 
-## 3. IN SIMPLE TERMS
-A search result can carry several different scores from different stages of processing. The final ranking step was only looking at two of them and skipping the most refined ones. This fix teaches it to check the best available score first and fall back through less precise options only when needed, like reading the final exam grade before the midterm before the homework score.
-## 4. SOURCE FILES
+## 3. SOURCE FILES
+
 ### Implementation
 
 | File | Layer | Role |
@@ -123,8 +120,10 @@ A search result can carry several different scores from different stages of proc
 | `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
 | `mcp_server/tests/vector-index-impl.vitest.ts` | Vector index implementation |
 
-## 5. SOURCE METADATA
+---
+
+## 4. SOURCE METADATA
+
 - Group: Gemini review P1 fixes (Phase 015)
 - Source feature title: Stage 3 effectiveScore fallback chain
 - Current reality source: feature_catalog.md
-

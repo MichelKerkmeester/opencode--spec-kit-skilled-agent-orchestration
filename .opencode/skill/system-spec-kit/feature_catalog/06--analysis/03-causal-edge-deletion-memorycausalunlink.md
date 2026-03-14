@@ -1,24 +1,23 @@
 # Causal edge deletion (memory_causal_unlink)
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. IN SIMPLE TERMS](#3--in-simple-terms)
-- [4. SOURCE FILES](#4--source-files)
-- [5. SOURCE METADATA](#5--source-metadata)
-
 ## 1. OVERVIEW
+
 Covers the causal edge deletion tool that removes relationship edges by ID with automatic cleanup on memory deletion.
 
+This removes a connection between two memories. If you delete a memory entirely, all its connections are cleaned up automatically. You only need this tool when you want to remove a specific connection while keeping both memories intact, like cutting one thread on a corkboard without taking down the pins.
+
+---
+
 ## 2. CURRENT REALITY
+
 Removes a single causal relationship edge by its numeric edge ID. You get edge IDs from `memory_drift_why` traversal results (a T202 enhancement that added edge IDs to the response specifically to enable this workflow).
 
 A library-level variant, `deleteEdgesForMemory()`, removes all edges referencing a given memory ID. This variant is called automatically during memory deletion (`memory_delete`) to maintain graph integrity. You do not need to manually clean up edges when deleting a memory. The system handles it.
 
-## 3. IN SIMPLE TERMS
-This removes a connection between two memories. If you delete a memory entirely, all its connections are cleaned up automatically. You only need this tool when you want to remove a specific connection while keeping both memories intact, like cutting one thread on a corkboard without taking down the pins.
-## 4. SOURCE FILES
+---
+
+## 3. SOURCE FILES
+
 ### Implementation
 
 | File | Layer | Role |
@@ -122,8 +121,10 @@ This removes a connection between two memories. If you delete a memory entirely,
 | `mcp_server/tests/vector-index-impl.vitest.ts` | Vector index implementation |
 | `shared/parsing/quality-extractors.test.ts` | Quality Extractors.Ts |
 
-## 5. SOURCE METADATA
+---
+
+## 4. SOURCE METADATA
+
 - Group: Analysis
 - Source feature title: Causal edge deletion (memory_causal_unlink)
 - Current reality source: feature_catalog.md
-

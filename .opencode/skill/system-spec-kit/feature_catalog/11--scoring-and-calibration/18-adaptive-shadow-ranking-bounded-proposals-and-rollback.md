@@ -1,27 +1,25 @@
 # Adaptive shadow ranking, bounded proposals, and rollback
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. IN SIMPLE TERMS](#3--in-simple-terms)
-- [4. SOURCE FILES](#4--source-files)
-- [5. SOURCE METADATA](#5--source-metadata)
-- [6. PLAYBOOK COVERAGE](#6--playbook-coverage)
-
 ## 1. OVERVIEW
+
 Describes the Phase 4 adaptive ranking module that computes bounded proposal deltas from access and validation signals in shadow mode, preserving live ordering as the production source of truth.
 
+This feature lets the system experiment with new ranking ideas without changing what you actually see. It runs alternative rankings in the background and records what would have changed, like a flight simulator for search results. The experiments have strict limits on how big a change they can propose, and a single switch turns the whole thing off if anything looks wrong. Only after a deliberate decision would any of these proposals go live.
+
+---
+
 ## 2. CURRENT REALITY
+
 Phase 4 introduced adaptive ranking in shadow mode. The adaptive module computes proposal deltas from access and validation signals while preserving live ordering as the production source of truth.
 
 Proposal magnitudes are explicitly bounded so adaptive exploration cannot produce unbounded score swings. Shadow payloads expose what would change, while the runtime result order remains unchanged unless an explicit graduation decision is made.
 
 Rollback is immediate via feature gating (`SPECKIT_MEMORY_ADAPTIVE_RANKING`). When disabled, adaptive proposal generation and related trace output are removed without schema rollback or data-loss side effects.
 
-## 3. IN SIMPLE TERMS
-This feature lets the system experiment with new ranking ideas without changing what you actually see. It runs alternative rankings in the background and records what would have changed, like a flight simulator for search results. The experiments have strict limits on how big a change they can propose, and a single switch turns the whole thing off if anything looks wrong. Only after a deliberate decision would any of these proposals go live.
-## 4. SOURCE FILES
+---
+
+## 3. SOURCE FILES
+
 ### Implementation
 
 | File | Layer | Role |
@@ -37,11 +35,16 @@ This feature lets the system experiment with new ranking ideas without changing 
 |------|-------|
 | `mcp_server/tests/adaptive-ranking.vitest.ts` | Shadow-mode proposals, bounded deltas, and disable-path rollback behavior |
 
-## 5. SOURCE METADATA
+---
+
+## 4. SOURCE METADATA
+
 - Group: Scoring and calibration
 - Source feature title: Adaptive shadow ranking, bounded proposals, and rollback
 - Current reality source: Phase 015 implementation
 
-## 6. PLAYBOOK COVERAGE
-- Mapped to manual testing playbook scenario NEW-121
+---
 
+## 5. PLAYBOOK COVERAGE
+
+- Mapped to manual testing playbook scenario NEW-121

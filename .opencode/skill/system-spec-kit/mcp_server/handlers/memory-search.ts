@@ -145,6 +145,12 @@ interface SearchArgs {
   min_quality_score?: number;
   mode?: string; // "deep" mode enables query expansion for multi-query RAG
   includeTrace?: boolean;
+  sessionTransition?: {
+    previousState: string;
+    inferredState: string;
+    confidence: number;
+    sourceSignal: string;
+  };
 }
 
 function resolveRowContextType(row: MemorySearchRow): string | undefined {
@@ -204,6 +210,63 @@ function collectEvalChannelsFromRow(row: Record<string, unknown>): string[] {
   }
 
   return Array.from(channels);
+}
+
+function attachSessionTransitionTrace(
+  response: MCPResponse,
+  sessionTransition?: {
+    previousState: string;
+    inferredState: string;
+    confidence: number;
+    sourceSignal: string;
+  },
+): MCPResponse {
+  if (!sessionTransition) {
+    return response;
+  }
+
+  const firstEntry = response?.content?.[0];
+  if (!firstEntry || typeof firstEntry.text !== 'string') {
+    return response;
+  }
+
+  try {
+    const envelope = JSON.parse(firstEntry.text) as Record<string, unknown>;
+    const data = (envelope.data && typeof envelope.data === 'object')
+      ? envelope.data as Record<string, unknown>
+      : null;
+    const results = Array.isArray(data?.results)
+      ? data.results as Array<Record<string, unknown>>
+      : null;
+
+    if (envelope.meta && typeof envelope.meta === 'object') {
+      (envelope.meta as Record<string, unknown>).sessionTransition = sessionTransition;
+    }
+
+    if (results) {
+      data!.results = results.map((result) => {
+        const currentTrace = result.trace && typeof result.trace === 'object'
+          ? result.trace as Record<string, unknown>
+          : {};
+        return {
+          ...result,
+          trace: {
+            ...currentTrace,
+            sessionTransition,
+          },
+        };
+      });
+    }
+
+    return {
+      ...response,
+      content: [{ ...firstEntry, text: JSON.stringify(envelope, null, 2) }],
+    };
+  } catch (error: unknown) {
+    const message = toErrorMessage(error);
+    console.warn('[memory-search] Failed to attach session transition trace:', message);
+    return response;
+  }
 }
 
 function buildEvalChannelPayloads(rows: Array<Record<string, unknown>>): EvalChannelPayload[] {
@@ -642,6 +705,7 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
     min_quality_score,
     mode,
     includeTrace: includeTraceArg = false,
+    sessionTransition,
   } = args;
   const includeTraceByFlag = process.env.SPECKIT_RESPONSE_TRACE === 'true';
   const includeTrace = includeTraceByFlag || includeTraceArg === true;
@@ -899,6 +963,9 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
         if (pipelineResult.trace) {
           extraData.retrievalTrace = pipelineResult.trace;
         }
+        if (includeTrace && sessionTransition) {
+          extraData.sessionTransition = sessionTransition;
+        }
 
         try {
           const adaptiveShadow = buildAdaptiveShadowProposal(
@@ -1030,6 +1097,10 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
         content: [{ type: 'text', text: JSON.stringify(resultsData, null, 2) }]
       } as MCPResponse;
     }
+  }
+
+  if (includeTrace && sessionTransition) {
+    responseToReturn = attachSessionTransitionTrace(responseToReturn, sessionTransition);
   }
 
   // Consumption instrumentation — log search event (fail-safe, never throws)

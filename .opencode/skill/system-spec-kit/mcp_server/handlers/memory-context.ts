@@ -76,6 +76,14 @@ interface SessionLifecycleMetadata {
   resumed: boolean;
   eventCounterStart: number;
   resumedContextCount: number;
+  transition?: SessionTransitionMetadata;
+}
+
+interface SessionTransitionMetadata {
+  previousState: 'none' | 'session-active';
+  inferredState: string;
+  confidence: number;
+  sourceSignal: 'session-resume' | 'explicit-mode' | 'intent-classifier' | 'pressure-override' | 'query-heuristic';
 }
 
 interface ContextResult extends Record<string, unknown> {
@@ -138,6 +146,132 @@ function extractResultRowsFromContextResponse(responseText: string): Array<Recor
       : [];
   } catch {
     return [];
+  }
+}
+
+function buildSessionTransitionMetadata(args: {
+  resumedSession: boolean;
+  effectiveMode: string;
+  requestedMode: string;
+  detectedIntent: string | null;
+  pressureOverrideApplied: boolean;
+  queryHeuristicApplied: boolean;
+}): SessionTransitionMetadata {
+  if (args.resumedSession) {
+    return {
+      previousState: 'session-active',
+      inferredState: args.effectiveMode,
+      confidence: 0.95,
+      sourceSignal: 'session-resume',
+    };
+  }
+
+  if (args.pressureOverrideApplied) {
+    return {
+      previousState: 'none',
+      inferredState: args.effectiveMode,
+      confidence: 0.9,
+      sourceSignal: 'pressure-override',
+    };
+  }
+
+  if (args.requestedMode !== 'auto') {
+    return {
+      previousState: 'none',
+      inferredState: args.effectiveMode,
+      confidence: 1,
+      sourceSignal: 'explicit-mode',
+    };
+  }
+
+  if (args.queryHeuristicApplied) {
+    return {
+      previousState: 'none',
+      inferredState: args.effectiveMode,
+      confidence: 0.7,
+      sourceSignal: 'query-heuristic',
+    };
+  }
+
+  if (args.detectedIntent) {
+    return {
+      previousState: 'none',
+      inferredState: args.effectiveMode,
+      confidence: 0.85,
+      sourceSignal: 'intent-classifier',
+    };
+  }
+
+  return {
+    previousState: 'none',
+    inferredState: args.effectiveMode,
+    confidence: 0.55,
+    sourceSignal: 'query-heuristic',
+  };
+}
+
+function injectSessionTransitionTrace(
+  result: ContextResult,
+  sessionTransition: SessionTransitionMetadata,
+  includeTrace: boolean,
+): ContextResult {
+  if (!includeTrace) {
+    return result;
+  }
+
+  const content = Array.isArray((result as Record<string, unknown>).content)
+    ? ((result as Record<string, unknown>).content as Array<Record<string, unknown>>)
+    : null;
+  const firstEntry = content?.[0];
+  const firstText = typeof firstEntry?.text === 'string' ? firstEntry.text : null;
+
+  if (!firstText) {
+    return result;
+  }
+
+  try {
+    const envelope = JSON.parse(firstText) as Record<string, unknown>;
+    const data = (envelope.data as Record<string, unknown> | undefined) ?? {};
+    const results = Array.isArray(data.results)
+      ? (data.results as Array<Record<string, unknown>>)
+      : null;
+
+    if (!results) {
+      return result;
+    }
+
+    const nextResults = results.map((row) => {
+      const existingTrace = row.trace && typeof row.trace === 'object'
+        ? row.trace as Record<string, unknown>
+        : {};
+      return {
+        ...row,
+        trace: {
+          ...existingTrace,
+          sessionTransition,
+        },
+      };
+    });
+
+    const nextEnvelope = {
+      ...envelope,
+      data: {
+        ...data,
+        results: nextResults,
+      },
+    };
+    const nextContent = (content ?? []).map((entry, index) => (
+      index === 0
+        ? { ...entry, text: JSON.stringify(nextEnvelope) }
+        : entry
+    ));
+
+    return {
+      ...result,
+      content: nextContent,
+    };
+  } catch {
+    return result;
   }
 }
 
@@ -652,6 +786,7 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
   let pressureOverrideTargetMode: 'quick' | 'focused' | null = null;
   let pressureOverrideApplied = false;
   let pressureWarning: string | null = null;
+  let resumeHeuristicApplied = false;
 
   // Handle auto mode: detect intent and select mode
   if (requested_mode === 'auto') {
@@ -669,6 +804,7 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
 
     if (/\b(resume|continue|pick up|where was i|what's next)\b/i.test(normalizedInput)) {
       effectiveMode = 'resume';
+      resumeHeuristicApplied = true;
     }
 
     const prePressureMode = effectiveMode;
@@ -692,6 +828,16 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
   if (!CONTEXT_MODES[effectiveMode]) {
     effectiveMode = 'focused';
   }
+
+  const sessionTransition = buildSessionTransitionMetadata({
+    resumedSession,
+    effectiveMode,
+    requestedMode: requested_mode,
+    detectedIntent: detectedIntent ?? null,
+    pressureOverrideApplied,
+    queryHeuristicApplied: resumeHeuristicApplied,
+  });
+  sessionLifecycle.transition = sessionTransition;
 
   // PI-B3: Automatic spec folder discovery when no folder is specified
   let discoveredFolder: string | null = null;
@@ -754,18 +900,23 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
 
   // T205: Enforce token budget on strategy results
   const { result: budgetedResult, enforcement } = enforceTokenBudget(result, effectiveBudget);
+  const tracedResult = injectSessionTransitionTrace(
+    budgetedResult,
+    sessionTransition,
+    options.includeTrace === true,
+  );
 
   if (autoResumeEnabled && effectiveMode === 'resume' && requestedSessionId) {
     const resumeContextItems = workingMemory.getSessionPromptContext(requestedSessionId, workingMemory.DECAY_FLOOR, 5);
     if (resumeContextItems.length > 0) {
       sessionLifecycle.resumedContextCount = resumeContextItems.length;
-      (budgetedResult as Record<string, unknown>).systemPromptContext = resumeContextItems.map((item) => ({
+      (tracedResult as Record<string, unknown>).systemPromptContext = resumeContextItems.map((item) => ({
         memoryId: item.memoryId,
         title: item.title,
         filePath: item.filePath,
         attentionScore: item.attentionScore,
       }));
-      (budgetedResult as Record<string, unknown>).systemPromptContextInjected = true;
+      (tracedResult as Record<string, unknown>).systemPromptContextInjected = true;
     }
   }
 
@@ -773,9 +924,9 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
   const _contextResponse = createMCPResponse({
     tool: 'memory_context',
     summary: enforcement.truncated
-      ? `Context retrieved via ${effectiveMode} mode (${budgetedResult.strategy} strategy) [truncated${enforcement.originalResultCount !== undefined ? `: ${enforcement.originalResultCount} → ${enforcement.returnedResultCount} results` : ''} to fit ${effectiveBudget} token budget]`
-      : `Context retrieved via ${effectiveMode} mode (${budgetedResult.strategy} strategy)`,
-    data: budgetedResult,
+      ? `Context retrieved via ${effectiveMode} mode (${tracedResult.strategy} strategy) [truncated${enforcement.originalResultCount !== undefined ? `: ${enforcement.originalResultCount} → ${enforcement.returnedResultCount} results` : ''} to fit ${effectiveBudget} token budget]`
+      : `Context retrieved via ${effectiveMode} mode (${tracedResult.strategy} strategy)`,
+    data: tracedResult,
     hints: [
       `Mode: ${CONTEXT_MODES[effectiveMode].description}`,
       `For more granular control, use L2 tools: memory_search, memory_match_triggers`,
@@ -786,7 +937,7 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
       layer: 'L1:Orchestration',
       mode: effectiveMode,
       requestedMode: requested_mode,
-      strategy: budgetedResult.strategy,
+      strategy: tracedResult.strategy,
       tokenUsageSource: pressurePolicy.source,
       tokenUsagePressure: pressurePolicy.ratio,
       pressureLevel: pressurePolicy.level,

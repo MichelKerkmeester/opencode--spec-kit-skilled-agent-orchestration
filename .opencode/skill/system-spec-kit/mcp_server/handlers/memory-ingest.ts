@@ -14,6 +14,7 @@ import {
   getIngestJob,
   cancelIngestJob,
   getIngestProgressPercent,
+  getIngestForecast,
   type IngestJob,
 } from '../lib/ops/job-queue';
 
@@ -58,6 +59,19 @@ function createJobId(): string {
 }
 
 function mapJobForResponse(job: IngestJob): Record<string, unknown> {
+  let forecast: Record<string, unknown>;
+  try {
+    forecast = getIngestForecast(job) as unknown as Record<string, unknown>;
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    forecast = {
+      etaSeconds: null,
+      etaConfidence: null,
+      failureRisk: null,
+      riskSignals: [],
+      caveat: `Forecast unavailable: ${message}`,
+    };
+  }
   return {
     jobId: job.id,
     state: job.state,
@@ -72,6 +86,7 @@ function mapJobForResponse(job: IngestJob): Record<string, unknown> {
     })),
     createdAt: job.createdAt,
     updatedAt: job.updatedAt,
+    forecast: forecast as unknown as Record<string, unknown>,
   };
 }
 

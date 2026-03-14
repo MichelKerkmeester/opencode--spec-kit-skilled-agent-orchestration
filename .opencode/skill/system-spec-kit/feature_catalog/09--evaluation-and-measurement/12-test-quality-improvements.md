@@ -1,18 +1,15 @@
 # Test quality improvements
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. IN SIMPLE TERMS](#3--in-simple-terms)
-- [4. SOURCE FILES](#4--source-files)
-- [5. SOURCE METADATA](#5--source-metadata)
-- [6. PLAYBOOK COVERAGE](#6--playbook-coverage)
-
 ## 1. OVERVIEW
+
 Covers four targeted test quality fixes (timeout hardening, handle leak prevention, tautological test rewrites and duplicate removal) plus 18+ test file updates for changed source behavior.
 
+Tests are supposed to catch bugs, but some of these tests had their own problems. A few would pass even when the thing they tested was broken, others would leak resources and some were testing the wrong thing entirely. This round of fixes made the tests themselves more trustworthy, because a test suite you cannot trust is worse than no tests at all.
+
+---
+
 ## 2. CURRENT REALITY
+
 Four test quality issues were addressed:
 
 **P2a:** `memory-save-extended.vitest.ts` timeout increased from 5000ms to 15000ms (eliminated flaky timeout failures).
@@ -27,9 +24,8 @@ Four test quality issues were addressed:
 
 ---
 
-## 3. IN SIMPLE TERMS
-Tests are supposed to catch bugs, but some of these tests had their own problems. A few would pass even when the thing they tested was broken, others would leak resources and some were testing the wrong thing entirely. This round of fixes made the tests themselves more trustworthy, because a test suite you cannot trust is worse than no tests at all.
-## 4. SOURCE FILES
+## 3. SOURCE FILES
+
 ### Implementation
 
 | File | Layer | Role |
@@ -44,11 +40,16 @@ Tests are supposed to catch bugs, but some of these tests had their own problems
 | `mcp_server/tests/entity-linker.vitest.ts` | Added `db.close()` in `afterEach` to prevent handle leaks |
 | `mcp_server/tests/integration-search-pipeline.vitest.ts` | Reworked flag tests to validate behavior deltas |
 
-## 5. SOURCE METADATA
+---
+
+## 4. SOURCE METADATA
+
 - Group: Comprehensive remediation (Sprint 8)
 - Source feature title: Test quality improvements
 - Current reality source: feature_catalog.md
 
-## 6. PLAYBOOK COVERAGE
-- Mapped to manual testing playbook scenario NEW-072
+---
 
+## 5. PLAYBOOK COVERAGE
+
+- Mapped to manual testing playbook scenario NEW-072

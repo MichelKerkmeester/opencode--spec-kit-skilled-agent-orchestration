@@ -24,6 +24,11 @@ const mocks = vi.hoisted(() => ({
   mockBatchUpdateMtimes: vi.fn(() => ({ updated: 0 })),
   mockListIndexedRecordIdsForDeletedPaths: vi.fn((): number[] => []),
   mockDeleteMemory: vi.fn((): boolean => true),
+  mockGetDb: vi.fn(() => ({
+    prepare: vi.fn(() => ({
+      get: vi.fn(() => undefined),
+    })),
+  })),
   mockRunPostMutationHooks: vi.fn(() => ({
     latencyMs: 0,
     triggerCacheCleared: true,
@@ -73,6 +78,7 @@ vi.mock('../lib/storage/incremental-index', () => ({
 
 vi.mock('../lib/search/vector-index', () => ({
   deleteMemory: mocks.mockDeleteMemory,
+  getDb: mocks.mockGetDb,
 }));
 
 vi.mock('../handlers/mutation-hooks', () => ({
@@ -106,6 +112,7 @@ describe('handler-memory-index cooldown behavior', () => {
     mocks.mockBatchUpdateMtimes.mockReset();
     mocks.mockListIndexedRecordIdsForDeletedPaths.mockReset();
     mocks.mockDeleteMemory.mockReset();
+    mocks.mockGetDb.mockReset();
     mocks.mockRunPostMutationHooks.mockReset();
 
     mocks.mockGetLastScanTime.mockResolvedValue(0);
@@ -128,6 +135,11 @@ describe('handler-memory-index cooldown behavior', () => {
     mocks.mockBatchUpdateMtimes.mockReturnValue({ updated: 0 });
     mocks.mockListIndexedRecordIdsForDeletedPaths.mockReturnValue([]);
     mocks.mockDeleteMemory.mockReturnValue(true);
+    mocks.mockGetDb.mockReturnValue({
+      prepare: vi.fn(() => ({
+        get: vi.fn(() => undefined),
+      })),
+    });
     mocks.mockRunPostMutationHooks.mockReturnValue({
       latencyMs: 0,
       triggerCacheCleared: true,

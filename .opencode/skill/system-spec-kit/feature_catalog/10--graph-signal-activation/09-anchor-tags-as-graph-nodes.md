@@ -1,22 +1,21 @@
 # ANCHOR tags as graph nodes
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. IN SIMPLE TERMS](#3--in-simple-terms)
-- [4. SOURCE FILES](#4--source-files)
-- [5. SOURCE METADATA](#5--source-metadata)
-
 ## 1. OVERVIEW
+
 Records the deferred plan to promote parsed ANCHOR markers into typed graph nodes, pending a dedicated 2-day feasibility spike.
 
+Anchor markers are labels placed inside memories to highlight important sections. This planned feature would turn those labels into connection points in the knowledge graph, letting the system link specific parts of different memories together instead of just linking whole memories. It has been put on hold pending further investigation into whether the added complexity is worthwhile.
+
+---
+
 ## 2. CURRENT REALITY
+
 **PLANNED (Sprint 019): DEFERRED.** Promoting parsed ANCHOR markers into typed graph nodes (most creative insight from cross-AI research, Gemini-2) is deferred behind a dedicated 2-day feasibility spike. Estimated effort: S-M (3-5 days).
 
-## 3. IN SIMPLE TERMS
-Anchor markers are labels placed inside memories to highlight important sections. This planned feature would turn those labels into connection points in the knowledge graph, letting the system link specific parts of different memories together instead of just linking whole memories. It has been put on hold pending further investigation into whether the added complexity is worthwhile.
-## 4. SOURCE FILES
+---
+
+## 3. SOURCE FILES
+
 ### Implementation
 
 | File | Layer | Role |
@@ -38,8 +37,10 @@ Anchor markers are labels placed inside memories to highlight important sections
 | `mcp_server/tests/unit-tier-classifier-types.vitest.ts` | Tier classifier types |
 | `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
 
-## 5. SOURCE METADATA
+---
+
+## 4. SOURCE METADATA
+
 - Group: Extra features (Sprint 019)
 - Source feature title: ANCHOR tags as graph nodes
 - Current reality source: feature_catalog.md
-

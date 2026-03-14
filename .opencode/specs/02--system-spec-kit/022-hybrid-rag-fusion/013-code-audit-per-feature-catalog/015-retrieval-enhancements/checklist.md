@@ -97,7 +97,7 @@ P1 items are complete and include inline evidence unless explicitly deferred.
 
 - [x] CHK-040 [P1] Spec/plan/tasks synchronized [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
 - [x] CHK-041 [P1] Code comments adequate (code comments added with implementation changes across 59 files) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [ ] CHK-042 [P2] README updated (if applicable)
+- [x] CHK-042 [P2] README updated (if applicable) [EVIDENCE: Not applicable for this phase-level spec folder; no phase README exists or is required, and canonical documentation was updated in Level 2 artifacts plus feature-catalog/manual-playbook sources]
 - [x] CHK-043 [P0] F-07 and F-08 source/test mapping corrections applied in feature catalog (T004 corrected F-07 source/test mapping to hybrid-search.ts; T006 corrected F-08 provenance ownership) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
 - [x] CHK-044 [P1] F-05 contract docs aligned with Stage-1 adaptation flow (T011 corrected F-05 summary-channel contract: querySummaryEmbeddings returns lightweight hits, Stage-1 adapts to PipelineRow) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
 - [x] CHK-045 [P1] Missing/stale source references corrected (context-server + retry references) (T010 added context-server.ts to F-01 source table; T014 removed stale retry references) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
@@ -111,7 +111,7 @@ P1 items are complete and include inline evidence unless explicitly deferred.
 
 - [x] CHK-050 [P1] Temp files in scratch/ only [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
 - [x] CHK-051 [P1] scratch/ cleaned before completion [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [ ] CHK-052 [P2] Findings saved to memory/
+- [x] CHK-052 [P2] Findings saved to memory/ [EVIDENCE: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/015-retrieval-enhancements/memory/14-03-26_10-42__closed-open-p2-checklist-items-and-saved-closure.md`]
 <!-- /ANCHOR:file-org -->
 
 ---
@@ -123,7 +123,7 @@ P1 items are complete and include inline evidence unless explicitly deferred.
 |----------|-------|----------|
 | P0 Items | 11 | 11/11 |
 | P1 Items | 19 | 19/19 |
-| P2 Items | 2 | 0/2 |
+| P2 Items | 2 | 2/2 |
 
 **Verification Date**: 2026-03-13
 <!-- /ANCHOR:summary -->

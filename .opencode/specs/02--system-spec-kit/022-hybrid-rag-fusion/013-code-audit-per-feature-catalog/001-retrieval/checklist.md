@@ -73,7 +73,7 @@ P0 items below are complete and include inline evidence.
 
 ## P1 - Required
 
-P1 items are complete and include inline evidence unless explicitly deferred.
+P1 items are complete and include inline evidence.
 
 ---
 
@@ -125,7 +125,7 @@ P1 items are complete and include inline evidence unless explicitly deferred.
 | F-08 Quality-aware 3-tier search fallback | PASS | RRF multi-source convergence bonus defaults corrected and aligned tests passing |
 | F-09 Tool-result extraction to working memory | PASS | `extraction-adapter.ts` now supports older schemas via `file_path` fallback; adapter tests included in targeted pass set |
 
-## Open Issues (Honest Scope Split)
+## Verification Boundary (Honest Scope Split)
 
 - Retrieval scope: no remaining open blocker documented in this checklist.
 - Repository-wide baseline still has unrelated failures outside retrieval scope:

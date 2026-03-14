@@ -231,7 +231,7 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
 
     for (const staleRecordId of staleRecordIds) {
       try {
-        const staleSnapshot = database?.prepare(
+        const staleSnapshot = vectorIndex.getDb()?.prepare(
           'SELECT spec_folder, file_path FROM memory_index WHERE id = ?'
         ).get(staleRecordId) as { spec_folder?: string | null; file_path?: string | null } | undefined;
 

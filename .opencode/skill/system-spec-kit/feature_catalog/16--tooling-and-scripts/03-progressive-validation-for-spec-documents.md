@@ -1,17 +1,15 @@
 # Progressive validation for spec documents
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. IN SIMPLE TERMS](#3--in-simple-terms)
-- [4. SOURCE FILES](#4--source-files)
-- [5. SOURCE METADATA](#5--source-metadata)
-
 ## 1. OVERVIEW
+
 Progressive validation runs a 4-level pipeline (detect, auto-fix, suggest, report) on top of `validate.sh` for spec documents.
 
+This tool checks your project documents for problems in four steps: find issues, fix the easy ones automatically, suggest fixes for the harder ones and write up a report. It works like a spell-checker that also auto-corrects obvious typos and highlights the rest for you to review.
+
+---
+
 ## 2. CURRENT REALITY
+
 The `progressive-validate.sh` wrapper in `scripts/spec/` runs a 4-level pipeline on top of `validate.sh`:
 
 1. **Detect (Level 1)** delegates validation to `validate.sh` and captures the compatible detect exit status.
@@ -23,9 +21,8 @@ Flags include `--level N`, `--dry-run`, `--json`, `--strict`, `--quiet` and `--v
 
 ---
 
-## 3. IN SIMPLE TERMS
-This tool checks your project documents for problems in four steps: find issues, fix the easy ones automatically, suggest fixes for the harder ones and write up a report. It works like a spell-checker that also auto-corrects obvious typos and highlights the rest for you to review.
-## 4. SOURCE FILES
+## 3. SOURCE FILES
+
 ### Implementation
 
 | File | Layer | Role |
@@ -54,8 +51,10 @@ This tool checks your project documents for problems in four steps: find issues,
 | `CHK-PI-B2-010` | Backward-compatibility of direct `validate.sh` callers |
 | `Pipeline Level Progression` | Level sequencing checks for level 2/3 behavior and level 4 defaulting |
 
-## 5. SOURCE METADATA
+---
+
+## 4. SOURCE METADATA
+
 - Group: Tooling and scripts
 - Source feature title: Progressive validation for spec documents
 - Current reality source: feature_catalog.md
-

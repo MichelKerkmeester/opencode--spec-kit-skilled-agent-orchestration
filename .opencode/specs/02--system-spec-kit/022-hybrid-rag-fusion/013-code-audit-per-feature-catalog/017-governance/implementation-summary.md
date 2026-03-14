@@ -55,7 +55,7 @@ Governance documentation now reflects runtime truth: the master catalog section 
 | `.opencode/skill/system-spec-kit/mcp_server/tests/search-flags.vitest.ts` | Modified | Add direct tests for file watcher and local reranker wrappers |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/dead-code-regression.vitest.ts` | Modified | Expand removed-symbol canary coverage |
 | `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` | Modified | Correct governance counts and rollout behavior description |
-| `.opencode/skill/system-spec-kit/feature_catalog/20--feature-flag-reference/01-1-search-pipeline-features-speckit.md` | Modified | Align rollout flag row with current runtime behavior |
+| `.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md` | Modified | Align rollout flag row with current runtime behavior |
 | `.opencode/skill/system-spec-kit/mcp_server/README.md` | Modified | Document current `isFeatureEnabled()` and rollout semantics |
 | `checklist.md` | Modified | Correct NEW-063/NEW-064 mapping, audit method, and remediation evidence |
 | `implementation-summary.md` | Created | Provide template-conformant remediation summary for this phase |

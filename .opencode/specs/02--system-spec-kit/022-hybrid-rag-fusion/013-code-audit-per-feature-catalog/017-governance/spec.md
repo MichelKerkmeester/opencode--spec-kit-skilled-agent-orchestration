@@ -75,7 +75,7 @@ Provide a standardized Level 2 governance specification that captures audit scop
 | `.opencode/skill/system-spec-kit/mcp_server/tests/search-flags.vitest.ts` | Modify | Add direct tests for `isFileWatcherEnabled` and `isLocalRerankerEnabled` |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/dead-code-regression.vitest.ts` | Modify | Expand removed-symbol canary to match governance claims |
 | `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` | Modify | Correct governance counts and rollout semantics |
-| `.opencode/skill/system-spec-kit/feature_catalog/20--feature-flag-reference/01-1-search-pipeline-features-speckit.md` | Modify | Align rollout reference text with runtime behavior |
+| `.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md` | Modify | Align rollout reference text with runtime behavior |
 | `.opencode/skill/system-spec-kit/mcp_server/README.md` | Modify | Align feature flag semantics with runtime behavior |
 <!-- /ANCHOR:scope -->
 

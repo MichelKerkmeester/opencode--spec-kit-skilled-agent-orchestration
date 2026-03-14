@@ -1,22 +1,21 @@
 # Async ingestion job lifecycle
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. IN SIMPLE TERMS](#3--in-simple-terms)
-- [4. SOURCE FILES](#4--source-files)
-- [5. SOURCE METADATA](#5--source-metadata)
-
 ## 1. OVERVIEW
+
 Covers the SQLite-persisted async job queue for batch ingestion with start, status and cancel tools.
 
+When you need to import a large batch of files, this feature queues them up and processes them one at a time in the background. You can start the import, check its progress and cancel it if needed. It works like a print queue: you submit the jobs and the system works through them at its own pace while you continue doing other things.
+
+---
+
 ## 2. CURRENT REALITY
+
 **IMPLEMENTED (Sprint 019).** Ingestion moves to a SQLite-persisted job queue (`lib/ops/job-queue.ts`) with lifecycle states `queued → parsing → embedding → indexing → complete/failed/cancelled`, a single sequential worker (one job processing at a time, rest queued), and three new tools: `memory_ingest_start`, `memory_ingest_status`, `memory_ingest_cancel`. Coexists with the existing `asyncEmbedding` path in `memory_save` as an alternative for batch operations.
 
-## 3. IN SIMPLE TERMS
-When you need to import a large batch of files, this feature queues them up and processes them one at a time in the background. You can start the import, check its progress and cancel it if needed. It works like a print queue: you submit the jobs and the system works through them at its own pace while you continue doing other things.
-## 4. SOURCE FILES
+---
+
+## 3. SOURCE FILES
+
 ### Implementation
 
 | File | Layer | Role |
@@ -116,8 +115,10 @@ When you need to import a large batch of files, this feature queues them up and 
 | `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
 | `mcp_server/tests/vector-index-impl.vitest.ts` | Vector index implementation |
 
-## 5. SOURCE METADATA
+---
+
+## 4. SOURCE METADATA
+
 - Group: Extra features (Sprint 019)
 - Source feature title: Async ingestion job lifecycle
 - Current reality source: feature_catalog.md
-

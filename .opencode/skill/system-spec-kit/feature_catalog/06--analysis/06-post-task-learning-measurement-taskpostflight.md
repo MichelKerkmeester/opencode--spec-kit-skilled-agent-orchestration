@@ -1,17 +1,15 @@
 # Post-task learning measurement (task_postflight)
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. IN SIMPLE TERMS](#3--in-simple-terms)
-- [4. SOURCE FILES](#4--source-files)
-- [5. SOURCE METADATA](#5--source-metadata)
-
 ## 1. OVERVIEW
+
 Covers the postflight tool that computes a Learning Index by comparing post-task epistemic state against the preflight baseline.
 
+After finishing a task, this tool takes the "after" measurement and compares it against the "before" baseline. It calculates a score that tells you how much you learned. A high score means you gained real new understanding. A low score means you mostly applied what you already knew. A negative score means you discovered that what you thought was true turned out to be wrong.
+
+---
+
 ## 2. CURRENT REALITY
+
 After completing implementation work, this tool captures the post-task epistemic state and computes a Learning Index by comparing against the preflight baseline. The formula weights three deltas: `LI = (KnowledgeDelta * 0.4) + (UncertaintyReduction * 0.35) + (ContextImprovement * 0.25)`.
 
 The uncertainty delta is inverted (pre minus post) so that reduced uncertainty counts as a positive learning signal. If you started at 70% uncertainty and finished at 20%, that is a +50 uncertainty reduction contributing +17.5 to the Learning Index.
@@ -20,9 +18,10 @@ Interpretation bands give the score meaning. 40 or above signals significant lea
 
 You can track gaps closed during the task and new gaps discovered. Both are stored as JSON arrays alongside the scores. The phase updates from "preflight" to "complete" after postflight runs. Calling postflight without a matching preflight record throws an error.
 
-## 3. IN SIMPLE TERMS
-After finishing a task, this tool takes the "after" measurement and compares it against the "before" baseline. It calculates a score that tells you how much you learned. A high score means you gained real new understanding. A low score means you mostly applied what you already knew. A negative score means you discovered that what you thought was true turned out to be wrong.
-## 4. SOURCE FILES
+---
+
+## 3. SOURCE FILES
+
 ### Implementation
 
 | File | Layer | Role |
@@ -123,8 +122,10 @@ After finishing a task, this tool takes the "after" measurement and compares it 
 | `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
 | `mcp_server/tests/vector-index-impl.vitest.ts` | Vector index implementation |
 
-## 5. SOURCE METADATA
+---
+
+## 4. SOURCE METADATA
+
 - Group: Analysis
 - Source feature title: Post-task learning measurement (task_postflight)
 - Current reality source: feature_catalog.md
-

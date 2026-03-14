@@ -109,8 +109,8 @@ P1 items are complete and include inline evidence unless explicitly deferred.
   - **Evidence**: All four artifacts now share aligned Level 2 structure, priority intent, and verification framing.
 - [x] CHK-041 [P1] Code comments adequate [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
   - **Evidence**: AI-WHY comments verified and preserved across standards-alignment scope (26 conversions in hybrid-search.ts, folder-discovery.ts, rsf-fusion.ts, co-activation.ts). Standards-alignment traceability confirmed.
-- [ ] CHK-042 [P2] README updated (if applicable)
-  - **Evidence**: No README updates were required for this documentation rewrite step.
+- [x] CHK-042 [P2] README updated (if applicable)
+  - **Evidence**: Not applicable for this phase-level spec folder; no phase README exists or is required, and documentation updates were applied to canonical feature-catalog and Level 2 artifacts.
 <!-- /ANCHOR:docs -->
 
 ---
@@ -122,8 +122,8 @@ P1 items are complete and include inline evidence unless explicitly deferred.
   - **Evidence**: No temp artifacts were created during this rewrite.
 - [x] CHK-051 [P1] scratch/ cleaned before completion [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
   - **Evidence**: No scratch artifacts remain from this work.
-- [ ] CHK-052 [P2] Findings saved to memory/
-  - **Evidence**: Memory save was not part of this rewrite request.
+- [x] CHK-052 [P2] Findings saved to memory/
+  - **Evidence**: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/016-tooling-and-scripts/memory/14-03-26_10-42__closed-remaining-checklist-and-summary-residual.md`.
 <!-- /ANCHOR:file-org -->
 
 ---
@@ -135,7 +135,7 @@ P1 items are complete and include inline evidence unless explicitly deferred.
 |----------|-------|----------|
 | P0 Items | 8 | 8/8 |
 | P1 Items | 10 | 10/10 |
-| P2 Items | 2 | 0/2 |
+| P2 Items | 2 | 2/2 |
 
 **Verification Date**: 2026-03-11
 <!-- /ANCHOR:summary -->

@@ -127,6 +127,12 @@ describe('MCP Protocol Response Envelope (T536)', () => {
             },
           ],
         },
+        sessionTransition: {
+          previousState: 'none',
+          inferredState: 'focused',
+          confidence: 0.85,
+          sourceSignal: 'intent-classifier',
+        },
       },
       true
     );
@@ -159,6 +165,12 @@ describe('MCP Protocol Response Envelope (T536)', () => {
     expect(result.trace?.expansionTerms).toEqual(expect.arrayContaining(['alpha', 'beta']));
     expect(result.trace?.budgetTruncated).toBe(true);
     expect(result.trace?.scoreResolution).toBe('intentAdjusted');
+    expect(result.trace?.sessionTransition).toEqual({
+      previousState: 'none',
+      inferredState: 'focused',
+      confidence: 0.85,
+      sourceSignal: 'intent-classifier',
+    });
   });
 
   it('T536-4: scoreResolution and composite follow fallback ordering', async () => {

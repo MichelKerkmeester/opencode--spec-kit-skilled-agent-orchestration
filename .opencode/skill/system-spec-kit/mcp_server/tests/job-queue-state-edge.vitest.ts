@@ -127,6 +127,46 @@ describe('ingest job queue state + edge tests (T005b)', () => {
     expect(mod.getIngestProgressPercent({ filesProcessed: -1, filesTotal: 3 })).toBe(0);
   });
 
+  it('T005b-Q3d: getIngestForecast returns low-confidence caveat before progress starts', async () => {
+    const db = createTestDb();
+    const mod = await loadJobQueueModule(db);
+
+    expect(mod.getIngestForecast({
+      state: 'queued',
+      filesProcessed: 0,
+      filesTotal: 4,
+      errors: [],
+      createdAt: '2026-03-14T10:00:00.000Z',
+      updatedAt: '2026-03-14T10:00:05.000Z',
+    })).toEqual({
+      etaSeconds: null,
+      etaConfidence: null,
+      failureRisk: 0.1,
+      riskSignals: ['queued_not_started'],
+      caveat: 'Forecast is low-confidence until at least one file has been processed.',
+    });
+  });
+
+  it('T005b-Q3e: getIngestForecast derives ETA and bounded risk from observed throughput', async () => {
+    const db = createTestDb();
+    const mod = await loadJobQueueModule(db);
+
+    const forecast = mod.getIngestForecast({
+      state: 'indexing',
+      filesProcessed: 3,
+      filesTotal: 6,
+      errors: [{ filePath: 'a.md', message: 'boom', timestamp: '2026-03-14T10:00:20.000Z' }],
+      createdAt: '2026-03-14T10:00:00.000Z',
+      updatedAt: '2026-03-14T10:00:30.000Z',
+    });
+
+    expect(forecast.etaSeconds).toBe(30);
+    expect(forecast.etaConfidence).toBeCloseTo(0.5333333333, 8);
+    expect(forecast.failureRisk).toBeCloseTo(0.2666666666, 8);
+    expect(forecast.riskSignals).toEqual(['file_errors_seen']);
+    expect(forecast.caveat).toBeNull();
+  });
+
   it('T005b-Q4: createIngestJob throws when paths array is empty', async () => {
     const db = createTestDb();
     const mod = await loadJobQueueModule(db);

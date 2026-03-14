@@ -1,17 +1,15 @@
 # Graph and cognitive memory fixes
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. IN SIMPLE TERMS](#3--in-simple-terms)
-- [4. SOURCE FILES](#4--source-files)
-- [5. SOURCE METADATA](#5--source-metadata)
-
 ## 1. OVERVIEW
+
 Covers seven fixes (of 9 planned) for graph integrity and cognitive scoring, including self-loop prevention, community debounce, WM score clamping and double-decay removal.
 
+This is a collection of seven bug fixes for the relationship graph and memory scoring systems. Problems included a memory linking to itself (a loop that makes no sense), cluster detection that could not tell when links were deleted and replaced, and scores that could climb higher than they should. Without these fixes, the graph connections and scoring would slowly drift into unreliable territory.
+
+---
+
 ## 2. CURRENT REALITY
+
 Seven fixes (of 9 planned, 2 deferred) addressed graph integrity and cognitive scoring:
 
 - **Self-loop prevention (#24):** `insertEdge()` rejects `sourceId === targetId`.
@@ -24,9 +22,10 @@ Seven fixes (of 9 planned, 2 deferred) addressed graph integrity and cognitive s
 
 **Deferred:** #26 (FK existence check on causal edges, test fixtures use synthetic IDs not in memory_index) and #31 (session entry limit off-by-one, code already correct).
 
-## 3. IN SIMPLE TERMS
-This is a collection of seven bug fixes for the relationship graph and memory scoring systems. Problems included a memory linking to itself (a loop that makes no sense), cluster detection that could not tell when links were deleted and replaced, and scores that could climb higher than they should. Without these fixes, the graph connections and scoring would slowly drift into unreliable territory.
-## 4. SOURCE FILES
+---
+
+## 3. SOURCE FILES
+
 ### Implementation
 
 | File | Layer | Role |
@@ -90,8 +89,10 @@ This is a collection of seven bug fixes for the relationship graph and memory sc
 | `mcp_server/tests/graph-search-fn.vitest.ts` | Graph search function tests |
 | `mcp_server/tests/anchor-metadata.vitest.ts` | Anchor metadata parsing tests |
 
-## 5. SOURCE METADATA
+---
+
+## 4. SOURCE METADATA
+
 - Group: Opus review remediation (Phase 017)
 - Source feature title: Graph and cognitive memory fixes
 - Current reality source: feature_catalog.md
-

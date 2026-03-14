@@ -1,17 +1,15 @@
 # Causal depth signal
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. IN SIMPLE TERMS](#3--in-simple-terms)
-- [4. SOURCE FILES](#4--source-files)
-- [5. SOURCE METADATA](#5--source-metadata)
-
 ## 1. OVERVIEW
+
 Describes the SCC-condensed longest-path depth signal that normalizes each memory's structural distance from root components to a [0,1] score, applied as a capped +0.05 additive bonus in Stage 2.
 
+Not all knowledge sits at the same level. A big decision that led to five smaller tasks is a "root" while those tasks are "leaves." This feature measures how deep each memory sits in that tree of cause-and-effect relationships. It gives a small search boost based on that depth, acting as a tiebreaker when two results are otherwise equally relevant.
+
+---
+
 ## 2. CURRENT REALITY
+
 Not all memories sit at the same level of abstraction. A root decision that caused five downstream implementation memories occupies a different position in the knowledge graph than a leaf node.
 
 Causal depth measures each memory's longest structural distance from a root strongly connected component. The causal graph is first condensed into SCCs, then longest-path depth is computed across the resulting DAG so shortcut edges do not suppress deeper chains and cycle members share one bounded depth layer. The raw component depth is normalized by the deepest reachable component chain to produce a [0,1] score. A memory in a component at depth 3 within a graph whose deepest reachable component chain is 6 scores 0.5.
@@ -20,9 +18,10 @@ Like momentum, the depth signal applies as an additive bonus in Stage 2, capped 
 
 The combined N2a+N2b adjustment is modest by design: up to +0.10 total. This keeps graph signals as a tiebreaker rather than a dominant ranking factor. Runs behind the `SPECKIT_GRAPH_SIGNALS` flag (default ON, shared with N2a).
 
-## 3. IN SIMPLE TERMS
-Not all knowledge sits at the same level. A big decision that led to five smaller tasks is a "root" while those tasks are "leaves." This feature measures how deep each memory sits in that tree of cause-and-effect relationships. It gives a small search boost based on that depth, acting as a tiebreaker when two results are otherwise equally relevant.
-## 4. SOURCE FILES
+---
+
+## 3. SOURCE FILES
+
 ### Implementation
 
 | File | Layer | Role |
@@ -40,8 +39,10 @@ Not all knowledge sits at the same level. A big decision that led to five smalle
 | `mcp_server/tests/graph-signals.vitest.ts` | Graph signal computation |
 | `mcp_server/tests/rollout-policy.vitest.ts` | Rollout policy tests |
 
-## 5. SOURCE METADATA
+---
+
+## 4. SOURCE METADATA
+
 - Group: Graph signal activation
 - Source feature title: Causal depth signal
 - Current reality source: feature_catalog.md
-

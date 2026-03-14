@@ -1,17 +1,15 @@
 # Scoring and fusion corrections
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. IN SIMPLE TERMS](#3--in-simple-terms)
-- [4. SOURCE FILES](#4--source-files)
-- [5. SOURCE METADATA](#5--source-metadata)
-
 ## 1. OVERVIEW
+
 Covers eight scoring fixes including intent weight recency, five-factor weight normalization, stack overflow prevention, BM25 specFolder filter and shared `resolveEffectiveScore` consolidation.
 
+These eight fixes address problems in how scores are calculated and combined. Issues ranged from weights that did not add up to 100% to a method that crashed when processing large batches and a filter that compared apples to oranges. Each fix makes the scoring math more accurate and stable, ensuring the final ranking truly reflects which results are most relevant to your question.
+
+---
+
 ## 2. CURRENT REALITY
+
 Eight scoring issues were fixed:
 
 - **Intent weight recency (#5):** `applyIntentWeights` now includes timestamp-based recency scoring. Uses loop-based min/max to find timestamp range (no spread operator stack overflow).
@@ -25,9 +23,10 @@ Eight scoring issues were fixed:
 
 In the non-hybrid flow, after Step 4 applies `intentAdjustedScore`, subsequent pipeline steps (artifact routing, feedback signals) write to the `score` field. Since `resolveEffectiveScore()` prefers `intentAdjustedScore` over `score`, later modifications were invisible in final ranking. A synchronization pass now updates `intentAdjustedScore` from the post-signal `score` using `Math.max(intentAdjustedScore, score)` to preserve the higher value while ensuring all pipeline signal contributions are reflected in the final ranking.
 
-## 3. IN SIMPLE TERMS
-These eight fixes address problems in how scores are calculated and combined. Issues ranged from weights that did not add up to 100% to a method that crashed when processing large batches and a filter that compared apples to oranges. Each fix makes the scoring math more accurate and stable, ensuring the final ranking truly reflects which results are most relevant to your question.
-## 4. SOURCE FILES
+---
+
+## 3. SOURCE FILES
+
 ### Implementation
 
 | File | Layer | Role |
@@ -59,8 +58,10 @@ These eight fixes address problems in how scores are calculated and combined. Is
 | #11 Shared resolveEffectiveScore | `mcp_server/lib/search/pipeline/types.ts` (`resolveEffectiveScore`), wired in `stage2-fusion.ts` and `stage3-rerank.ts` | `mcp_server/tests/pipeline-v2.vitest.ts` |
 | #12 Configurable interference threshold | `mcp_server/lib/scoring/interference-scoring.ts` (`computeInterferenceScoresBatch`) | `mcp_server/tests/interference.vitest.ts` |
 
-## 5. SOURCE METADATA
+---
+
+## 4. SOURCE METADATA
+
 - Group: Opus review remediation (Phase 017)
 - Source feature title: Scoring and fusion corrections
 - Current reality source: feature_catalog.md
-

@@ -1,18 +1,15 @@
 # Shadow scoring and channel attribution
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. IN SIMPLE TERMS](#3--in-simple-terms)
-- [4. SOURCE FILES](#4--source-files)
-- [5. SOURCE METADATA](#5--source-metadata)
-- [6. PLAYBOOK COVERAGE](#6--playbook-coverage)
-
 ## 1. OVERVIEW
+
 Describes the shadow A/B scoring infrastructure for alternative ranking comparison and channel attribution that tags each result with its source channels and computes per-channel exclusive contribution rates.
 
+This feature let the team test new ranking approaches side-by-side with the current one, without affecting what you actually see. It also tracks which search method found each result. Think of it like taste-testing a new recipe next to the old one before deciding to switch. The side-by-side testing has finished its job and been retired, but the tracking of "which method found this result" remains active.
+
+---
+
 ## 2. CURRENT REALITY
+
 Full A/B comparison infrastructure ran alternative scoring algorithms in parallel, logging results without affecting live ranking. The system computed detailed comparison metrics including Kendall tau rank correlation, per-result score deltas and production-only versus shadow-only result sets. Channel attribution tagged each result with its source channels and computed Exclusive Contribution Rate per channel: how often each channel was the sole source for a result in the top-k window.
 
 Ground truth expansion via implicit user selection tracking and an LLM-judge stub interface were included for future corpus growth.
@@ -21,9 +18,8 @@ Shadow scoring completed its evaluation purpose and has been fully removed. The 
 
 ---
 
-## 3. IN SIMPLE TERMS
-This feature let the team test new ranking approaches side-by-side with the current one, without affecting what you actually see. It also tracks which search method found each result. Think of it like taste-testing a new recipe next to the old one before deciding to switch. The side-by-side testing has finished its job and been retired, but the tracking of "which method found this result" remains active.
-## 4. SOURCE FILES
+## 3. SOURCE FILES
+
 ### Implementation
 
 | File | Layer | Role |
@@ -41,11 +37,16 @@ This feature let the team test new ranking approaches side-by-side with the curr
 | `mcp_server/tests/scoring.vitest.ts` | General scoring tests |
 | `mcp_server/tests/shadow-scoring.vitest.ts` | Shadow scoring tests |
 
-## 5. SOURCE METADATA
+---
+
+## 4. SOURCE METADATA
+
 - Group: Evaluation and measurement
 - Source feature title: Shadow scoring and channel attribution
 - Current reality source: feature_catalog.md
 
-## 6. PLAYBOOK COVERAGE
-- Mapped to manual testing playbook scenario NEW-015
+---
 
+## 5. PLAYBOOK COVERAGE
+
+- Mapped to manual testing playbook scenario NEW-015

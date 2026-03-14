@@ -1,18 +1,15 @@
 # Dead code removal
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. IN SIMPLE TERMS](#3--in-simple-terms)
-- [4. SOURCE EVIDENCE](#4--source-evidence)
-- [5. SOURCE FILES](#5--source-files)
-- [6. SOURCE METADATA](#6--source-metadata)
-
 ## 1. OVERVIEW
+
 Dead code removal eliminated approximately 360 lines of unused branches, feature flags, module-level state and function exports across the codebase.
 
+Over time, some parts of the code stopped being used but were never cleaned up. This effort identified and removed roughly 360 lines of unused code: old switches that were always off, variables that were set but never read and functions that nothing called anymore. It is like clearing out a storage closet of things nobody has touched in years so the space stays organized.
+
+---
+
 ## 2. CURRENT REALITY
+
 Approximately 360 lines of dead code were removed across four categories:
 
 **Hot-path dead branches:** Dead RSF branch and dead shadow-scoring branch removed from `hybrid-search.ts`. Both were guarded by feature flag functions that always returned `false`.
@@ -25,9 +22,10 @@ Approximately 360 lines of dead code were removed across four categories:
 
 **Preserved (NOT dead):** `computeStructuralFreshness` and `computeGraphCentrality` in `fsrs.ts` were identified as planned architectural components (not concluded experiments) and retained.
 
-## 3. IN SIMPLE TERMS
-Over time, some parts of the code stopped being used but were never cleaned up. This effort identified and removed roughly 360 lines of unused code: old switches that were always off, variables that were set but never read and functions that nothing called anymore. It is like clearing out a storage closet of things nobody has touched in years so the space stays organized.
-## 4. SOURCE EVIDENCE
+---
+
+## 3. SOURCE EVIDENCE
+
 ### 1) Hot-path dead branches (RSF + shadow-scoring)
 
 - **Files where branch logic was removed**
@@ -108,7 +106,10 @@ Over time, some parts of the code stopped being used but were never cleaned up. 
     - `rg -n "computeCausalDepth\\b|computeCausalDepthScores" mcp_server/lib/graph/graph-signals.ts` => only `computeCausalDepthScores` is present and used.
 - **Approx LOC removed:** `~118` (`graph-signals -65`, `graph-search-fn -16`, `negative-feedback -5`, `co-activation -20`, `causal-edges -12`, commit `b4f85e327`).
 
-## 5. SOURCE FILES
+---
+
+## 4. SOURCE FILES
+
 Cross-cutting evidence is distributed across:
 
 - `mcp_server/lib/search/hybrid-search.ts`
@@ -127,8 +128,10 @@ Cross-cutting evidence is distributed across:
 - `mcp_server/lib/cognitive/co-activation.ts`
 - `mcp_server/lib/storage/causal-edges.ts`
 
-## 6. SOURCE METADATA
+---
+
+## 5. SOURCE METADATA
+
 - Group: Comprehensive remediation (Sprint 8)
 - Source feature title: Dead code removal
 - Current reality source: feature_catalog.md
-

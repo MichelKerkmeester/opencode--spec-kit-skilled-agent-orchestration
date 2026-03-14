@@ -87,7 +87,7 @@ Five parallel cli-copilot agents running gpt-5.3-codex at xhigh reasoning dispat
 | Targeted phase-3 regressions (`channel`, `hybrid-search`, `search-results-format`, `mcp-response-envelope`, `hybrid-search-context-headers`) | PASS, 5 files, 138 tests, 0 failures |
 | TypeScript build (tsc --noEmit) | PASS, no TypeScript errors |
 | Feature doc source/test mapping review | PASS, 9/9 retrieval-enhancement docs validated (`MISSING_TOTAL=0` across all backticked `mcp_server/...` refs) |
-| Checklist verification | PASS, P0 11/11, P1 19/19, P2 0/2 (deferred) |
+| Checklist verification | PASS, P0 11/11, P1 19/19, P2 2/2 |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -95,9 +95,7 @@ Five parallel cli-copilot agents running gpt-5.3-codex at xhigh reasoning dispat
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **CHK-042 remains open (P2).** README updates were not part of this remediation closure and remain deferred.
-2. **CHK-052 remains open (P2).** Findings have not yet been saved to memory/ for this phase.
-3. **Feature 09 still lacks a direct manual-playbook scenario mapping.** CHK-046 is complete as "mapped or marked missing" with explicit coverage-gap documentation.
+1. **Feature 09 still lacks a direct manual-playbook scenario mapping.** CHK-046 is complete as "mapped or marked missing" with explicit coverage-gap documentation.
 <!-- /ANCHOR:limitations -->
 
 ---

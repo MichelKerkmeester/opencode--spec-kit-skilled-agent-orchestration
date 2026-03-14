@@ -11,6 +11,13 @@ const mocks = vi.hoisted(() => ({
     if (!job || typeof job.filesTotal !== 'number' || job.filesTotal <= 0) return 0;
     return Math.round((job.filesProcessed / job.filesTotal) * 100);
   }),
+  mockGetIngestForecast: vi.fn(() => ({
+    etaSeconds: null,
+    etaConfidence: null,
+    failureRisk: null,
+    riskSignals: [],
+    caveat: 'forecast unavailable',
+  })),
 }));
 
 vi.mock('../core', () => ({
@@ -25,6 +32,7 @@ vi.mock('../lib/ops/job-queue', () => ({
   getIngestJob: mocks.mockGetIngestJob,
   cancelIngestJob: mocks.mockCancelIngestJob,
   getIngestProgressPercent: mocks.mockGetIngestProgressPercent,
+  getIngestForecast: mocks.mockGetIngestForecast,
 }));
 
 import * as handler from '../handlers/memory-ingest';
@@ -41,6 +49,14 @@ describe('Handler Memory Ingest (Sprint 9 P0-3)', () => {
     mocks.mockGetIngestJob.mockReset();
     mocks.mockCancelIngestJob.mockReset();
     mocks.mockGetIngestProgressPercent.mockClear();
+    mocks.mockGetIngestForecast.mockReset();
+    mocks.mockGetIngestForecast.mockReturnValue({
+      etaSeconds: null,
+      etaConfidence: null,
+      failureRisk: null,
+      riskSignals: [],
+      caveat: 'forecast unavailable',
+    });
   });
 
   it('exports ingest handlers and aliases', () => {
@@ -125,6 +141,13 @@ describe('Handler Memory Ingest (Sprint 9 P0-3)', () => {
     expect(data.state).toBe('indexing');
     expect(data.progress).toBe(25);
     expect(data.paths).toEqual(['live.md', 'trace.json']);
+    expect(data.forecast).toEqual({
+      etaSeconds: null,
+      etaConfidence: null,
+      failureRisk: null,
+      riskSignals: [],
+      caveat: 'forecast unavailable',
+    });
     expect(data.errors).toEqual([
       {
         filePath: 'secret.md',
@@ -137,6 +160,35 @@ describe('Handler Memory Ingest (Sprint 9 P0-3)', () => {
         timestamp: '2026-03-05T00:00:01.000Z',
       },
     ]);
+  });
+
+  it('status degrades safely when forecast derivation throws', async () => {
+    mocks.mockGetIngestForecast.mockImplementationOnce(() => {
+      throw new Error('forecast boom');
+    });
+    mocks.mockGetIngestJob.mockReturnValue({
+      id: 'job_live',
+      state: 'indexing',
+      specFolder: 'specs/live',
+      paths: ['/tmp/live.md'],
+      filesTotal: 2,
+      filesProcessed: 1,
+      errors: [],
+      createdAt: '2026-03-05T00:00:00.000Z',
+      updatedAt: '2026-03-05T00:00:01.000Z',
+    });
+
+    const result = await handler.handleMemoryIngestStatus({ jobId: 'job_live' });
+    const envelope = parseEnvelope(result);
+    const data = envelope.data as Record<string, unknown>;
+
+    expect(data.forecast).toEqual({
+      etaSeconds: null,
+      etaConfidence: null,
+      failureRisk: null,
+      riskSignals: [],
+      caveat: 'Forecast unavailable: forecast boom',
+    });
   });
 
   it('cancel returns terminal state unchanged', async () => {

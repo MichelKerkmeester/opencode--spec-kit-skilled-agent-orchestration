@@ -1,17 +1,15 @@
 # Reporting dashboard (eval_reporting_dashboard)
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. IN SIMPLE TERMS](#3--in-simple-terms)
-- [4. SOURCE FILES](#4--source-files)
-- [5. SOURCE METADATA](#5--source-metadata)
-
 ## 1. OVERVIEW
+
 Covers the read-only reporting dashboard that aggregates sprint-level and channel-level evaluation metrics.
 
+This is a performance report that shows how well the search system has been working over time. It tracks metrics across different work periods and search channels so you can see whether things are getting better or worse. It only reads data and never changes anything, making it safe to run at any time.
+
+---
+
 ## 2. CURRENT REALITY
+
 Generates a sprint-level and channel-level metric dashboard from stored evaluation runs. You can filter by sprint, channel and metric, and choose between text (markdown-formatted) or JSON output.
 
 The dashboard aggregates per-sprint metric summaries (mean, min, max, latest, count) and per-channel performance views (hit count, average latency, query count) from the `eval_metric_snapshots` and `eval_channel_results` tables. Sprint labels are read from metric-snapshot metadata (`sprint` or `sprintLabel`) and fall back to `run-{eval_run_id}` when metadata is absent. Trend analysis compares consecutive sprint groups using each metric's latest value, with `isHigherBetter()` treating latency-style and inversion-style metrics as lower-is-better and most other metrics as higher-is-better.
@@ -20,9 +18,8 @@ This is a read-only module. It queries the eval database and produces reports wi
 
 ---
 
-## 3. IN SIMPLE TERMS
-This is a performance report that shows how well the search system has been working over time. It tracks metrics across different work periods and search channels so you can see whether things are getting better or worse. It only reads data and never changes anything, making it safe to run at any time.
-## 4. SOURCE FILES
+## 3. SOURCE FILES
+
 ### Implementation
 
 | File | Layer | Role |
@@ -43,8 +40,10 @@ This is a performance report that shows how well the search system has been work
 | `mcp_server/tests/reporting-dashboard.vitest.ts` | Dashboard reporting tests |
 | `mcp_server/tests/handler-eval-reporting.vitest.ts` | Handler-level eval reporting tests |
 
-## 5. SOURCE METADATA
+---
+
+## 4. SOURCE METADATA
+
 - Group: Evaluation
 - Source feature title: Reporting dashboard (eval_reporting_dashboard)
 - Current reality source: feature_catalog.md
-

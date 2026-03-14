@@ -5,6 +5,7 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import * as layerDefs from '../lib/architecture/layer-definitions';
 import * as workingMemory from '../lib/cache/cognitive/working-memory';
+import { handleMemorySearch } from '../handlers/memory-search';
 
 // Mock core/db-state to prevent real DB operations that cause timeouts.
 // This must be hoisted before any handler imports.
@@ -79,11 +80,18 @@ type ParsedContextResponse = {
       resumed?: boolean;
       eventCounterStart?: number;
       resumedContextCount?: number;
+      transition?: {
+        previousState?: string;
+        inferredState?: string;
+        confidence?: number;
+        sourceSignal?: string;
+      };
     };
   };
   data: {
     mode?: string;
     strategy?: string;
+    content?: Array<{ text?: string }>;
     systemPromptContextInjected?: boolean;
     systemPromptContext?: Array<{ memoryId: number }>;
     details?: {
@@ -414,6 +422,11 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
       expect(typeof parsed.meta.sessionLifecycle.effectiveSessionId).toBe('string');
       expect(parsed.meta.sessionLifecycle.effectiveSessionId.length).toBeGreaterThan(20);
       expect(parsed.meta.sessionLifecycle.eventCounterStart).toBe(0);
+      expect(parsed.meta.sessionLifecycle.transition).toMatchObject({
+        previousState: 'none',
+        inferredState: 'focused',
+        sourceSignal: 'intent-classifier',
+      });
     });
 
     it('T027ka: caller sessionId starts a new caller-scoped session when none exists', async () => {
@@ -436,6 +449,12 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
       expect(parsed.meta.sessionLifecycle.effectiveSessionId).toBe('session-new');
       expect(parsed.meta.sessionLifecycle.resumed).toBe(false);
       expect(parsed.meta.sessionLifecycle.eventCounterStart).toBe(0);
+      expect(parsed.meta.sessionLifecycle.transition).toEqual({
+        previousState: 'none',
+        inferredState: 'resume',
+        confidence: 0.7,
+        sourceSignal: 'query-heuristic',
+      });
       expect(getSessionEventCounterSpy).not.toHaveBeenCalled();
     });
 
@@ -468,9 +487,64 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
       expect(parsed.meta.sessionLifecycle.resumed).toBe(true);
       expect(parsed.meta.sessionLifecycle.eventCounterStart).toBe(7);
       expect(parsed.meta.sessionLifecycle.resumedContextCount).toBe(1);
+      expect(parsed.meta.sessionLifecycle.transition).toEqual({
+        previousState: 'session-active',
+        inferredState: 'resume',
+        confidence: 0.95,
+        sourceSignal: 'session-resume',
+      });
       expect(parsed.data.systemPromptContextInjected).toBe(true);
       expect(parsed.data.systemPromptContext!.length).toBe(1);
       expect(parsed.data.systemPromptContext![0].memoryId).toBe(101);
+    });
+
+    it('injects session transition into traced nested results when includeTrace=true', async () => {
+      vi.mocked(handleMemorySearch).mockResolvedValueOnce({
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify({
+              data: {
+                results: [
+                  {
+                    id: 42,
+                    trace: {
+                      channelsUsed: ['vector'],
+                    },
+                  },
+                ],
+                count: 1,
+              },
+              meta: {},
+            }),
+          },
+        ],
+        isError: false,
+      });
+
+      const result = await withTimeout(
+        handler.handleMemoryContext({
+          input: 'resume prior work',
+          sessionId: 'session-trace',
+          mode: 'resume',
+          includeTrace: true,
+        }),
+        5000,
+        'session-trace-injection'
+      );
+
+      const parsed = parseResponse(result);
+      const nestedResults = (parsed.data.content?.[0]?.text
+        ? JSON.parse(parsed.data.content[0].text as string).data.results
+        : []) as Array<{ trace?: Record<string, unknown> }>;
+
+      expect(nestedResults).toHaveLength(1);
+      expect(nestedResults[0].trace?.sessionTransition).toEqual({
+        previousState: 'none',
+        inferredState: 'resume',
+        confidence: 1,
+        sourceSignal: 'explicit-mode',
+      });
     });
 
     it('default-on contract: auto-resume injection runs when SPECKIT_AUTO_RESUME is unset', async () => {

@@ -1,22 +1,21 @@
 # Schema and type contract synchronization
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. IN SIMPLE TERMS](#3--in-simple-terms)
-- [4. SOURCE FILES](#4--source-files)
-- [5. SOURCE METADATA](#5--source-metadata)
-
 ## 1. OVERVIEW
+
 Schema and type contract synchronization aligns runtime validation with TypeScript contracts for mutation-safety behavior across handler, schema and tool boundaries.
 
+This feature makes sure every layer of the system agrees on the shape of data being passed around. When one layer expects a certain field to be required, every other layer enforces the same rule. Without this alignment, a change in one place could silently break another, like two departments using different versions of the same form.
+
+---
+
 ## 2. CURRENT REALITY
+
 Phase 014 aligned runtime validation and TypeScript contracts for mutation-safety behavior. The finalized state keeps `checkpoint_delete.confirmName` required across handler, schema and tool-boundary typing, and keeps the shared mutation-hook result contract synchronized for all mutation handlers.
 
-## 3. IN SIMPLE TERMS
-This feature makes sure every layer of the system agrees on the shape of data being passed around. When one layer expects a certain field to be required, every other layer enforces the same rule. Without this alignment, a change in one place could silently break another, like two departments using different versions of the same form.
-## 4. SOURCE FILES
+---
+
+## 3. SOURCE FILES
+
 ### Implementation
 
 | File | Layer | Role |
@@ -38,8 +37,10 @@ This feature makes sure every layer of the system agrees on the shape of data be
 | `mcp_server/tests/mutation-hooks.vitest.ts` | Mutation-hook result behavior and warning/error consistency |
 | `mcp_server/tests/memory-save-ux-regressions.vitest.ts` | Mutation response payload contract verification (`postMutationHooks`) |
 
-## 5. SOURCE METADATA
+---
+
+## 4. SOURCE METADATA
+
 - Group: UX hooks automation (Phase 014)
 - Source feature title: Schema and type contract synchronization
 - Current reality source: feature_catalog.md
-

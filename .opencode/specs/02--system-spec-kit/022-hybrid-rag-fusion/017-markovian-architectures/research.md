@@ -30,7 +30,10 @@ Refresh of the Markovian architectures research using the current hybrid-rag-fus
 - **Last Updated**: 2026-03-14
 
 **Related Documents**:
-- Spec: N/A
+- Spec: `spec.md`
+- Plan: `plan.md`
+- Tasks: `tasks.md`
+- Checklist: `checklist.md`
 - Spike: N/A
 - ADR: N/A
 - Seed research: `research/perplexity_research.md`
@@ -145,10 +148,10 @@ The external research supports that direction. State-space models remain a stron
 
 | Source Type | Description | Link/Reference | Credibility |
 |-------------|-------------|----------------|-------------|
-| Internal reference | Current `memory_context` behavior | `.opencode/specs/.../01--retrieval/01-unified-context-retrieval-memorycontext.md` | High |
-| Internal reference | Current 4-stage retrieval pipeline | `.opencode/specs/.../01--retrieval/05-4-stage-pipeline-architecture.md` | High |
-| Internal reference | Current graph retrieval / rollback | `.opencode/specs/.../10--graph-signal-activation/12-unified-graph-retrieval-deterministic-ranking-explainability-and-rollback.md` | High |
-| Internal reference | Adaptive ranking and rollback | `.opencode/specs/.../11--scoring-and-calibration/18-adaptive-shadow-ranking-bounded-proposals-and-rollback.md` | High |
+| Internal reference | Current `memory_context` behavior | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/feature_catalog/01--retrieval/01-unified-context-retrieval-memorycontext.md` | High |
+| Internal reference | Current 4-stage retrieval pipeline | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/feature_catalog/01--retrieval/05-4-stage-pipeline-architecture.md` | High |
+| Internal reference | Current graph retrieval / rollback | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/feature_catalog/10--graph-signal-activation/12-unified-graph-retrieval-deterministic-ranking-explainability-and-rollback.md` | High |
+| Internal reference | Adaptive ranking and rollback | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/feature_catalog/11--scoring-and-calibration/18-adaptive-shadow-ranking-bounded-proposals-and-rollback.md` | High |
 | Research paper | Mamba selective state spaces | https://arxiv.org/abs/2312.00752 | High |
 | Research paper | State-space duality / Mamba-2 framing | https://arxiv.org/abs/2405.21060 | High |
 | Research paper | AlphaGo / tree search planning | https://www.nature.com/articles/nature16961 | High |
@@ -230,7 +233,7 @@ type ContextRequest = {
 - Entity catalog
 
 **Current fit for Markovian work**:
-- Excellent for personalized PageRank or random-walk-with-restart style signals because the graph substrate, temporal signals, and bounded additive scoring already exist. [SOURCE: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/feature_catalog/10--graph-signal-activation/05-graph-momentum-scoring.md:15-20] [SOURCE: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/feature_catalog/10--graph-signal-activation/11-temporal-contiguity-layer.md:14-18] [SOURCE: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/feature_catalog/15--retrieval-enhancements/06-cross-document-entity-linking.md:15-25]
+- Strong but not turnkey for personalized PageRank or random-walk-with-restart style signals. The graph substrate, temporal signals, and bounded additive scoring already exist, but a true walk-based rollout would still need explicit edge normalization, restart semantics, and careful deterministic-ranking validation. [SOURCE: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/feature_catalog/10--graph-signal-activation/05-graph-momentum-scoring.md:15-20] [SOURCE: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/feature_catalog/10--graph-signal-activation/11-temporal-contiguity-layer.md:14-18] [SOURCE: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/feature_catalog/15--retrieval-enhancements/06-cross-document-entity-linking.md:15-25]
 
 ---
 

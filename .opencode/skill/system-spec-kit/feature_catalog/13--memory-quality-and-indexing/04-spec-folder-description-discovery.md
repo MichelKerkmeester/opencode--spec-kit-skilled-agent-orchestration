@@ -1,17 +1,15 @@
 # Spec folder description discovery
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. IN SIMPLE TERMS](#3--in-simple-terms)
-- [4. SOURCE FILES](#4--source-files)
-- [5. SOURCE METADATA](#5--source-metadata)
-
 ## 1. OVERVIEW
+
 Spec folder description discovery generates per-folder `description.json` metadata and uses it to short-circuit full-corpus vector search.
 
+Each project folder now has a short identity card describing what it contains. When you ask the system a question, it can check these identity cards first to figure out which folder holds the answer, skipping the need to search through everything. It is like reading the labels on filing cabinet drawers instead of opening every drawer to find what you need.
+
+---
+
 ## 2. CURRENT REALITY
+
 Each spec folder now has its own `description.json` containing identity metadata
 (`specId`, `folderSlug`, `parentChain`) and memory tracking fields
 (`memorySequence`, `memoryNameHistory`). These per-folder files are the primary
@@ -64,9 +62,10 @@ Blank `spec.md` files still produce a valid per-folder `description.json`: the
 stored `description` field remains an empty string, while aggregate discovery
 continues to derive a folder-name fallback label from the path when needed.
 
-## 3. IN SIMPLE TERMS
-Each project folder now has a short identity card describing what it contains. When you ask the system a question, it can check these identity cards first to figure out which folder holds the answer, skipping the need to search through everything. It is like reading the labels on filing cabinet drawers instead of opening every drawer to find what you need.
-## 4. SOURCE FILES
+---
+
+## 3. SOURCE FILES
+
 ### Implementation
 
 | File | Layer | Role |
@@ -88,8 +87,10 @@ Each project folder now has a short identity card describing what it contains. W
 | `mcp_server/tests/workflow-memory-tracking.vitest.ts` | Load-mutate-save cycle for `memorySequence` increment and `memoryNameHistory` ring buffer |
 | `mcp_server/tests/slug-utils-boundary.vitest.ts` | Numeric coercion and boundary cases for `Number(existing.memorySequence) \|\| 0` |
 
-## 5. SOURCE METADATA
+---
+
+## 4. SOURCE METADATA
+
 - Group: Memory quality and indexing
 - Source feature title: Spec folder description discovery
 - Current reality source: feature_catalog.md
-

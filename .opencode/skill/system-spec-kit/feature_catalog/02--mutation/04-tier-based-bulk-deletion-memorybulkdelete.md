@@ -1,17 +1,15 @@
 # Tier-based bulk deletion (memory_bulk_delete)
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. IN SIMPLE TERMS](#3--in-simple-terms)
-- [4. SOURCE FILES](#4--source-files)
-- [5. SOURCE METADATA](#5--source-metadata)
-
 ## 1. OVERVIEW
+
 Covers the bulk delete tool that targets entire importance tiers with safety checkpoints and constitutional protection.
 
+This is the cleanup tool for large-scale housekeeping. You can delete all outdated or temporary memories in one go based on their importance level, like clearing out the recycling bin. The most important memories get extra protection so they cannot be accidentally wiped. A safety snapshot is taken first so you can restore if needed.
+
+---
+
 ## 2. CURRENT REALITY
+
 For large-scale cleanup operations. Instead of targeting a folder, you target an importance tier: delete all deprecated memories, or all temporary memories older than 30 days. The tool counts affected memories first (so the response tells you exactly how many were deleted), creates a safety checkpoint, then deletes within a database transaction.
 
 Constitutional and critical tier memories receive extra protection. Unscoped deletion of these tiers is refused outright. You must provide a `specFolder` to delete constitutional or critical memories in bulk. The `skipCheckpoint` speed optimization, which skips the safety checkpoint for faster execution, is also rejected for these tiers. If the checkpoint creation itself fails for constitutional/critical, the entire operation aborts. For lower tiers, a checkpoint failure triggers a warning but the deletion proceeds because the risk of losing deprecated or temporary memories is low.
@@ -20,9 +18,10 @@ Each deleted memory gets its causal graph edges removed. A single consolidated m
 
 The `olderThanDays` parameter is validated as a positive integer (>= 1) before query construction. Values that are zero, negative, non-integer, or NaN return a validation error rather than silently removing the age filter. The `tool-schemas.ts` definition enforces `minimum: 1` at the schema level.
 
-## 3. IN SIMPLE TERMS
-This is the cleanup tool for large-scale housekeeping. You can delete all outdated or temporary memories in one go based on their importance level, like clearing out the recycling bin. The most important memories get extra protection so they cannot be accidentally wiped. A safety snapshot is taken first so you can restore if needed.
-## 4. SOURCE FILES
+---
+
+## 3. SOURCE FILES
+
 ### Implementation
 
 | File | Layer | Role |
@@ -147,8 +146,10 @@ This is the cleanup tool for large-scale housekeeping. You can delete all outdat
 | `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
 | `mcp_server/tests/vector-index-impl.vitest.ts` | Vector index implementation |
 
-## 5. SOURCE METADATA
+---
+
+## 4. SOURCE METADATA
+
 - Group: Mutation
 - Source feature title: Tier-based bulk deletion (memory_bulk_delete)
 - Current reality source: feature_catalog.md
-

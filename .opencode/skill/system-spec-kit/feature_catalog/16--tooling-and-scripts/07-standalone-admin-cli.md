@@ -1,17 +1,15 @@
 # Standalone admin CLI
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. IN SIMPLE TERMS](#3--in-simple-terms)
-- [4. SOURCE FILES](#4--source-files)
-- [5. SOURCE METADATA](#5--source-metadata)
-
 ## 1. OVERVIEW
+
 The standalone admin CLI provides non-MCP database maintenance commands for stats, bulk-delete, reindex and schema-downgrade operations.
 
+This is a command-line maintenance tool for the memory database that you can run directly without going through the normal system. It lets you check database statistics, delete old records in bulk, rebuild the search index or roll back a database upgrade. Think of it as the "service panel" for the system that only operators use when routine maintenance or emergency recovery is needed.
+
+---
+
 ## 2. CURRENT REALITY
+
 Non-MCP `spec-kit-cli` entry point (`cli.ts`) for database maintenance. Four commands: `stats` (tier distribution, top folders, schema version), `bulk-delete` (with --tier, --folder, --older-than, --dry-run, --skip-checkpoint, where constitutional/critical tiers require folder scope), `reindex` (--force, --eager-warmup), `schema-downgrade` (--to 15, --confirm). Transaction-wrapped deletions, checkpoint creation before bulk-delete, mutation ledger recording. Invoked as `node cli.js <command>` from any directory.
 
 #### Checkpoint-before-delete contract (`bulk-delete`)
@@ -24,9 +22,10 @@ Non-MCP `spec-kit-cli` entry point (`cli.ts`) for database maintenance. Four com
 
 **Decision rationale:** this CLI is an operator recovery tool and must stay usable during partial storage failures. Making checkpoints mandatory for every delete could block necessary cleanup when checkpoint persistence is degraded. Instead, the command keeps explicit safety gates (tier validation and critical-tier scope requirements) and surfaces checkpoint failure clearly.
 
-## 3. IN SIMPLE TERMS
-This is a command-line maintenance tool for the memory database that you can run directly without going through the normal system. It lets you check database statistics, delete old records in bulk, rebuild the search index or roll back a database upgrade. Think of it as the "service panel" for the system that only operators use when routine maintenance or emergency recovery is needed.
-## 4. SOURCE FILES
+---
+
+## 3. SOURCE FILES
+
 ### Implementation
 
 | File | Layer | Role |
@@ -46,7 +45,10 @@ This is a command-line maintenance tool for the memory database that you can run
 
 `mcp_server/tests/cli.vitest.ts` currently does **not** cover dry-run mode, invalid tier-value handling, or a successful schema-downgrade execution path.
 
-## 5. SOURCE METADATA
+---
+
+## 4. SOURCE METADATA
+
 - Group: Undocumented feature gap scan
 - Source feature title: Standalone admin CLI
 - Current reality source: 10-agent feature gap scan

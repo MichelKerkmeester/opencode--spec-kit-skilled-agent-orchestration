@@ -62,7 +62,7 @@ P0 items below are complete and include inline evidence.
 - [x] CHK-020 [P0] Test gaps are documented for all seven features — T009-T015 cover all 7 feature areas with new tests; 211 tests pass across 5 files [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
 - [x] CHK-021 [P0] P0 regression tests are defined for orphan coverage and depth truncation semantics — T005 (4 orphan tests: T005-R1, T005-R2, T005-HL1, T005-HL2) + T007 (2 storage + 4 handler-level depth tests) all pass [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
 - [x] CHK-022 [P1] P1 regression tests are defined for unlink, preflight, postflight, and history flows — T010 (4 unlink tests), T011 (1 overwrite guard), T012 (10 LI formula/band tests), T013 (5 ordering/threshold tests) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-023 [P1] Deferred placeholder suites are tracked for replacement with DB-backed assertions — T009 replaced all `expect(true).toBe(true)` stubs in causal-edges.vitest.ts; 77/77 DB-backed tests pass [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
+- [x] CHK-023 [P1] Placeholder suites are replaced with DB-backed assertions — T009 replaced all `expect(true).toBe(true)` stubs in causal-edges.vitest.ts; 77/77 DB-backed tests pass [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
 <!-- /ANCHOR:testing -->
 
 ---
@@ -79,7 +79,7 @@ P0 items below are complete and include inline evidence.
 
 ## P1 - Required
 
-P1 items are complete and include inline evidence unless explicitly deferred.
+P1 items are complete and include inline evidence.
 
 ---
 

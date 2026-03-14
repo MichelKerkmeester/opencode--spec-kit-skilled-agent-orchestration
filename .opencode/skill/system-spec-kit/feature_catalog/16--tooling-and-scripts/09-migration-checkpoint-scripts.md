@@ -1,18 +1,15 @@
 # Migration checkpoint scripts
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. IN SIMPLE TERMS](#3--in-simple-terms)
-- [4. SOURCE FILES](#4--source-files)
-- [5. SOURCE METADATA](#5--source-metadata)
-- [6. PLAYBOOK COVERAGE](#6--playbook-coverage)
-
 ## 1. OVERVIEW
+
 Migration checkpoint scripts create and restore raw SQLite file-level backups for pre-migration safety outside the MCP checkpoint tables.
 
+Before the system upgrades its database structure, these scripts take a full backup of the database file so you can roll back if something goes wrong. It is like making a photocopy of an important form before you fill it in: if you make a mistake, you can start over from the clean copy.
+
+---
+
 ## 2. CURRENT REALITY
+
 Two raw SQLite helpers live under `mcp_server/scripts/migrations/` for pre-migration safety outside the MCP checkpoint tables.
 
 `create-checkpoint.ts` copies a target SQLite file into a timestamped checkpoint file, writes a JSON sidecar with schema version, size, note and memory roadmap rollout metadata and supports `--json` output for automation. `restore-checkpoint.ts` restores a checkpoint into a target database path, creates a timestamped pre-restore backup when replacing an existing file and verifies that the restored file opens as SQLite before reporting success.
@@ -21,9 +18,10 @@ These scripts are intentionally separate from the `checkpoint_create` / `checkpo
 
 Both scripts now expose testable helpers (`parseArgs`, `main`, `runCreateCheckpoint`, `runRestoreCheckpoint`) so behavior can be verified without spawning a separate process.
 
-## 3. IN SIMPLE TERMS
-Before the system upgrades its database structure, these scripts take a full backup of the database file so you can roll back if something goes wrong. It is like making a photocopy of an important form before you fill it in: if you make a mistake, you can start over from the clean copy.
-## 4. SOURCE FILES
+---
+
+## 3. SOURCE FILES
+
 ### Implementation
 
 | File | Layer | Role |
@@ -38,11 +36,16 @@ Before the system upgrades its database structure, these scripts take a full bac
 |------|-------|
 | `mcp_server/tests/migration-checkpoint-scripts.vitest.ts` | Checkpoint creation, metadata sidecars, restore behavior and backup creation |
 
-## 5. SOURCE METADATA
+---
+
+## 4. SOURCE METADATA
+
 - Group: Tooling and scripts
 - Source feature title: Migration checkpoint scripts
 - Current reality source: feature_catalog.md
 
-## 6. PLAYBOOK COVERAGE
-- Mapped to manual testing playbook scenario NEW-127
+---
 
+## 5. PLAYBOOK COVERAGE
+
+- Mapped to manual testing playbook scenario NEW-127

@@ -1,26 +1,25 @@
 # Score normalization
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. IN SIMPLE TERMS](#3--in-simple-terms)
-- [4. SOURCE FILES](#4--source-files)
-- [5. SOURCE METADATA](#5--source-metadata)
-
 ## 1. OVERVIEW
+
 Covers how raw retrieval scores from RRF and composite scoring are min-max normalized to a common [0,1] range before fusion, so relevance signals compete on comparable scale.
 
+Different search methods produce scores on different scales, like comparing grades from different schools. This feature puts all scores on the same 0-to-1 scale so they can be compared fairly before picking the best results. Without it, one method might always win just because its numbers happen to be bigger, not because its results are actually better.
+
+---
+
 ## 2. CURRENT REALITY
+
 Before normalization, RRF and composite scoring used different raw scales. In `shared/algorithms/rrf-fusion.ts`, RRF uses `1 / (k + rank)` with `DEFAULT_K = 60`, so a top-ranked per-source contribution starts near `1/61 ~= 0.016` and decays by rank (with convergence bonuses potentially pushing combined raw scores above `0.1`). Composite scoring already operates in a `0-1` band.
 
 Min-max normalization now maps both outputs to `0-1`, letting relevance signals compete on comparable scale instead of whichever subsystem emits larger raw magnitudes. Single-result queries and equal-score edge cases normalize to `1.0`.
 
 Normalization is batch-relative (the same memory can score differently across different queries), which is expected for min-max. Runtime gating uses `SPECKIT_SCORE_NORMALIZATION`: `isScoreNormalizationEnabled()`/`normalizeRrfScores()` in `shared/algorithms/rrf-fusion.ts` and `isCompositeNormalizationEnabled()`/`normalizeCompositeScores()` in `mcp_server/lib/scoring/composite-scoring.ts`.
 
-## 3. IN SIMPLE TERMS
-Different search methods produce scores on different scales, like comparing grades from different schools. This feature puts all scores on the same 0-to-1 scale so they can be compared fairly before picking the best results. Without it, one method might always win just because its numbers happen to be bigger, not because its results are actually better.
-## 4. SOURCE FILES
+---
+
+## 3. SOURCE FILES
+
 ### Implementation
 
 | File | Layer | Role |
@@ -64,8 +63,10 @@ Different search methods produce scores on different scales, like comparing grad
 | Cross-variant RRF normalization path | `shared/algorithms/rrf-fusion.ts` (`fuseResultsCrossVariant`) | `mcp_server/tests/score-normalization.vitest.ts` |
 | Composite normalization gate and transform (`isCompositeNormalizationEnabled`, `normalizeCompositeScores`) | `mcp_server/lib/scoring/composite-scoring.ts` | `mcp_server/tests/score-normalization.vitest.ts` |
 
-## 5. SOURCE METADATA
+---
+
+## 4. SOURCE METADATA
+
 - Group: Scoring and calibration
 - Source feature title: Score normalization
 - Current reality source: feature_catalog.md
-

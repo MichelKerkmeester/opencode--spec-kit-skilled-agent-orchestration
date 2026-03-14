@@ -1,17 +1,15 @@
 # Checkpoint restore (checkpoint_restore)
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. IN SIMPLE TERMS](#3--in-simple-terms)
-- [4. SOURCE FILES](#4--source-files)
-- [5. SOURCE METADATA](#5--source-metadata)
-
 ## 1. OVERVIEW
+
 Covers the checkpoint restore tool that decompresses snapshots and merges or replaces memory state atomically.
 
+This brings your knowledge base back to a previous snapshot, like using the undo button on a massive scale. If the restore fails partway through, nothing changes and your current data stays safe. Restored memories are immediately searchable without any extra steps.
+
+---
+
 ## 2. CURRENT REALITY
+
 Restoring from a named checkpoint decompresses the gzip snapshot, validates every row against the database schema (a T107 fix that catches corrupted snapshots before they damage the database) and either merges with existing data or clears existing data first.
 
 The `clearExisting` mode deserves explanation. When true, the entire restore runs inside a database transaction. If the restore encounters an error halfway through, the transaction rolls back and existing data is untouched. This atomicity guarantee (a T101 fix) is critical because clearing existing data and then failing to restore would leave you with an empty database and no way back.
@@ -20,9 +18,10 @@ When merging (the default), the system checks for duplicates using a logical key
 
 After restore, vectors are restored from the checkpoint snapshot when vector payloads are present. The restore handler then clears in-memory search/constitutional caches, rebuilds BM25 from live DB content when BM25 is enabled and refreshes the trigger cache. This keeps restored memories immediately discoverable without forcing a full re-embedding pass.
 
-## 3. IN SIMPLE TERMS
-This brings your knowledge base back to a previous snapshot, like using the undo button on a massive scale. If the restore fails partway through, nothing changes and your current data stays safe. Restored memories are immediately searchable without any extra steps.
-## 4. SOURCE FILES
+---
+
+## 3. SOURCE FILES
+
 ### Implementation
 
 | File | Layer | Role |
@@ -138,8 +137,10 @@ This brings your knowledge base back to a previous snapshot, like using the undo
 | `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
 | `mcp_server/tests/vector-index-impl.vitest.ts` | Vector index implementation |
 
-## 5. SOURCE METADATA
+---
+
+## 4. SOURCE METADATA
+
 - Group: Lifecycle
 - Source feature title: Checkpoint restore (checkpoint_restore)
 - Current reality source: feature_catalog.md
-

@@ -1,22 +1,21 @@
 # Provenance-rich response envelopes
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. IN SIMPLE TERMS](#3--in-simple-terms)
-- [4. SOURCE FILES](#4--source-files)
-- [5. SOURCE METADATA](#5--source-metadata)
-
 ## 1. OVERVIEW
+
 Provenance-rich response envelopes expose internal pipeline scoring and retrieval trace data in search results when `includeTrace` is enabled.
 
+When you search for something, the system normally just gives you the answer. With this feature turned on, it also shows you how it found the answer: which search methods it used, how it scored each result and where the information came from. It is like getting a receipt with your purchase that shows every step of the transaction.
+
+---
+
 ## 2. CURRENT REALITY
+
 **IMPLEMENTED (Sprint 019).** Search results gain optional provenance envelopes (default `includeTrace: false`) exposing internal pipeline scoring that is currently dropped at Stage 4 exit. When enabled, responses include `scores` (semantic, lexical, fusion, intentAdjusted, composite, rerank, attention), `source` (file, anchorIds, anchorTypes, lastModified, memoryState) and `trace` (channelsUsed, pipelineStages, fallbackTier, queryComplexity, expansionTerms, budgetTruncated, scoreResolution).
 
-## 3. IN SIMPLE TERMS
-When you search for something, the system normally just gives you the answer. With this feature turned on, it also shows you how it found the answer: which search methods it used, how it scored each result and where the information came from. It is like getting a receipt with your purchase that shows every step of the transaction.
-## 4. SOURCE FILES
+---
+
+## 3. SOURCE FILES
+
 ### Implementation
 
 | File | Layer | Role |
@@ -36,8 +35,10 @@ When you search for something, the system normally just gives you the answer. Wi
 | `mcp_server/tests/mcp-response-envelope.vitest.ts` | Protocol-level MCP envelope validation with `includeTrace` on/off provenance assertions. |
 | `mcp_server/tests/envelope.vitest.ts` | Core response envelope contract validation (`content[]`, `meta` and wrapper behavior). |
 
-## 5. SOURCE METADATA
+---
+
+## 4. SOURCE METADATA
+
 - Group: Extra features (Sprint 019)
 - Source feature title: Provenance-rich response envelopes
 - Current reality source: feature_catalog.md
-

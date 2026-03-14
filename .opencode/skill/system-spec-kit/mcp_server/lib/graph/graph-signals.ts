@@ -19,6 +19,9 @@ const momentumCache = new Map<number, number>();
 /** Session-scoped cache for causal depth scores (memoryId -> normalized depth). */
 const depthCache = new Map<number, number>();
 
+const GRAPH_WALK_BONUS_CAP = 0.03;
+const GRAPH_WALK_SECOND_HOP_WEIGHT = 0.5;
+
 /**
  * Evict entries from a cache when it exceeds the size bound.
  * Clears the entire cache when the limit is exceeded, since Map
@@ -215,6 +218,79 @@ function buildAdjacencyList(db: Database.Database): { adjacency: Map<number, num
   }
 
   return { adjacency, allNodes, inDegree };
+}
+
+function buildUndirectedAdjacency(adjacency: Map<number, number[]>): Map<number, Set<number>> {
+  const undirected = new Map<number, Set<number>>();
+
+  const ensureNode = (nodeId: number): Set<number> => {
+    const existing = undirected.get(nodeId);
+    if (existing) return existing;
+    const created = new Set<number>();
+    undirected.set(nodeId, created);
+    return created;
+  };
+
+  for (const [source, targets] of adjacency.entries()) {
+    const sourceNeighbors = ensureNode(source);
+    for (const target of targets) {
+      sourceNeighbors.add(target);
+      ensureNode(target).add(source);
+    }
+  }
+
+  return undirected;
+}
+
+function computeGraphWalkScores(
+  db: Database.Database,
+  memoryIds: number[],
+): Map<number, number> {
+  const uniqueIds = Array.from(new Set(memoryIds.filter((memoryId) => Number.isInteger(memoryId))));
+  const scores = new Map<number, number>(uniqueIds.map((memoryId) => [memoryId, 0]));
+
+  if (uniqueIds.length < 2) {
+    return scores;
+  }
+
+  const { adjacency } = buildAdjacencyList(db);
+  const graph = buildUndirectedAdjacency(adjacency);
+  const candidateSet = new Set(uniqueIds);
+  const candidateSpan = uniqueIds.length - 1;
+
+  for (const memoryId of uniqueIds) {
+    const directNeighbors = graph.get(memoryId) ?? new Set<number>();
+    let directHits = 0;
+    const secondHopHits = new Set<number>();
+
+    for (const neighbor of directNeighbors) {
+      if (neighbor !== memoryId && candidateSet.has(neighbor)) {
+        directHits += 1;
+      }
+
+      const neighborAdjacency = graph.get(neighbor);
+      if (!neighborAdjacency) {
+        continue;
+      }
+
+      for (const secondHop of neighborAdjacency) {
+        if (
+          secondHop === memoryId
+          || !candidateSet.has(secondHop)
+          || directNeighbors.has(secondHop)
+        ) {
+          continue;
+        }
+        secondHopHits.add(secondHop);
+      }
+    }
+
+    const weightedReach = directHits + (secondHopHits.size * GRAPH_WALK_SECOND_HOP_WEIGHT);
+    const normalizedReach = clamp(weightedReach / candidateSpan, 0, 1);
+    scores.set(memoryId, normalizedReach);
+  }
+
+  return scores;
 }
 
 type StronglyConnectedComponents = {
@@ -470,22 +546,37 @@ export function applyGraphSignals(
     const ids = rows.map((row) => row.id);
     const momentumScores = computeMomentumScores(db, ids);
     const depthScores = computeCausalDepthScores(db, ids);
+    const graphWalkScores = computeGraphWalkScores(db, ids);
 
     return rows.map((row) => {
       const baseScore = typeof row.score === 'number' && Number.isFinite(row.score) ? row.score : 0;
       const momentum = momentumScores.get(row.id) ?? 0;
       const depth = depthScores.get(row.id) ?? 0;
+      const graphWalk = graphWalkScores.get(row.id) ?? 0;
 
       // Momentum bonus: up to +0.05
       const momentumBonus = clamp(momentum * 0.01, 0, 0.05);
       // Depth bonus: up to +0.05
       const depthBonus = depth * 0.05;
+      // Graph-walk bonus: bounded local connectivity bonus across candidate rows
+      const graphWalkBonus = clamp(graphWalk * GRAPH_WALK_BONUS_CAP, 0, GRAPH_WALK_BONUS_CAP);
 
-      const adjustedScore = baseScore + momentumBonus + depthBonus;
+      const adjustedScore = baseScore + momentumBonus + depthBonus + graphWalkBonus;
+      const existingContribution = (row.graphContribution && typeof row.graphContribution === 'object')
+        ? row.graphContribution as Record<string, unknown>
+        : {};
 
       return {
         ...row,
         score: adjustedScore,
+        graphContribution: {
+          ...existingContribution,
+          raw: graphWalk,
+          normalized: graphWalk,
+          appliedBonus: graphWalkBonus,
+          capApplied: graphWalk > 0 && graphWalkBonus >= GRAPH_WALK_BONUS_CAP,
+          rolloutState: 'bounded_runtime',
+        },
       };
     });
   } catch (error: unknown) {
@@ -509,6 +600,8 @@ export const __testables = {
   getCurrentDegree,
   getPastDegree,
   buildAdjacencyList,
+  buildUndirectedAdjacency,
+  computeGraphWalkScores,
   clamp,
   momentumCache,
   depthCache,

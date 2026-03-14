@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated": "2026-03-14T06:48:13.208Z",
+  "generated": "2026-03-14T12:28:31.364Z",
   "folders": [
     {
       "specFolder": "00--ai-systems-non-dev/001-global-shared/001-hvr-refinement-repo-analysis",
@@ -879,7 +879,7 @@
         "specification",
         "governance"
       ],
-      "lastUpdated": "2026-03-13T18:17:46.780Z"
+      "lastUpdated": "2026-03-14T12:28:30.604Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/018-ux-hooks",
@@ -919,7 +919,7 @@
         "specification",
         "remediation-revalidation"
       ],
-      "lastUpdated": "2026-03-14T06:48:13.208Z"
+      "lastUpdated": "2026-03-14T12:28:31.364Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-outsourced-agent-memory",
@@ -952,7 +952,7 @@
         "specification",
         "001-baseline-and-safety-rails"
       ],
-      "lastUpdated": "2026-03-14T06:47:51.385Z"
+      "lastUpdated": "2026-03-14T12:28:30.613Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/015-hydra-db-based-features/002-versioned-memory-state",
@@ -962,7 +962,7 @@
         "specification",
         "002-versioned-memory-state"
       ],
-      "lastUpdated": "2026-03-13T18:17:46.820Z"
+      "lastUpdated": "2026-03-14T12:28:30.620Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/015-hydra-db-based-features/003-unified-graph-retrieval",
@@ -972,7 +972,7 @@
         "specification",
         "003-unified-graph-retrieval"
       ],
-      "lastUpdated": "2026-03-13T18:17:46.825Z"
+      "lastUpdated": "2026-03-14T12:28:30.626Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/015-hydra-db-based-features/004-adaptive-retrieval-loops",
@@ -982,7 +982,7 @@
         "specification",
         "004-adaptive-retrieval-loops"
       ],
-      "lastUpdated": "2026-03-13T18:17:46.830Z"
+      "lastUpdated": "2026-03-14T12:28:30.632Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/015-hydra-db-based-features/005-hierarchical-scope-governance",
@@ -992,7 +992,7 @@
         "specification",
         "005-hierarchical-scope-governance"
       ],
-      "lastUpdated": "2026-03-13T18:17:46.836Z"
+      "lastUpdated": "2026-03-14T12:28:30.638Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/015-hydra-db-based-features/006-shared-memory-rollout",
@@ -1002,7 +1002,30 @@
         "specification",
         "006-shared-memory-rollout"
       ],
-      "lastUpdated": "2026-03-13T18:17:46.841Z"
+      "lastUpdated": "2026-03-14T12:28:30.645Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/016-feature-catalog-code-references",
+      "description": "Feature Specification: 016-Feature Catalog Code References",
+      "keywords": [
+        "feature",
+        "specification",
+        "016-feature",
+        "catalog",
+        "code",
+        "references"
+      ],
+      "lastUpdated": "2026-03-14T12:28:30.651Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/017-markovian-architectures",
+      "description": "Feature Specification: 017-markovian-architectures",
+      "keywords": [
+        "feature",
+        "specification",
+        "017-markovian-architectures"
+      ],
+      "lastUpdated": "2026-03-14T10:11:27.645Z"
     },
     {
       "specFolder": "02--system-spec-kit/024-sqlite-to-turso",

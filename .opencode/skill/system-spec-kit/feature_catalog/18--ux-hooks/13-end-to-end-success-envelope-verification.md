@@ -1,22 +1,21 @@
 # End-to-end success-envelope verification
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. IN SIMPLE TERMS](#3--in-simple-terms)
-- [4. SOURCE FILES](#4--source-files)
-- [5. SOURCE METADATA](#5--source-metadata)
-
 ## 1. OVERVIEW
+
 End-to-end success-envelope verification asserts that the finalized response envelope preserves hint append, auto-surface context and token metadata correctness.
 
+This is a set of automated tests that checks the entire response from start to finish: hints are included, previously surfaced context is preserved and the size count is correct. It acts as a final quality check before a response leaves the system, like a shipping inspector who opens the box, verifies everything is inside and confirms the label is accurate before it goes out the door.
+
+---
+
 ## 2. CURRENT REALITY
+
 Phase 014 verification includes end-to-end success-envelope assertions in `tests/context-server.vitest.ts`. This coverage verifies the finalized success-path hint append flow, preserved `autoSurfacedContext` and final token metadata behavior together so response-envelope regressions fail fast.
 
-## 3. IN SIMPLE TERMS
-This is a set of automated tests that checks the entire response from start to finish: hints are included, previously surfaced context is preserved and the size count is correct. It acts as a final quality check before a response leaves the system, like a shipping inspector who opens the box, verifies everything is inside and confirms the label is accurate before it goes out the door.
-## 4. SOURCE FILES
+---
+
+## 3. SOURCE FILES
+
 ### Implementation
 
 | File | Layer | Role |
@@ -33,8 +32,10 @@ This is a set of automated tests that checks the entire response from start to f
 | `mcp_server/tests/context-server.vitest.ts` | `T000j: final tokenCount matches the serialized envelope after hints and tokenBudget injection` | Verifies finalized success envelopes recompute `meta.tokenCount` from the fully serialized payload after hint/token-budget mutations. |
 | `mcp_server/tests/hooks-ux-feedback.vitest.ts` | `appendAutoSurfaceHints injects hints and sets tokenCount from the final serialized envelope JSON` | Unit-level contract coverage for envelope hint injection and final token metadata synchronization used by the end-to-end success path. |
 
-## 5. SOURCE METADATA
+---
+
+## 4. SOURCE METADATA
+
 - Group: UX hooks automation (Phase 014)
 - Source feature title: End-to-end success-envelope verification
 - Current reality source: feature_catalog.md
-

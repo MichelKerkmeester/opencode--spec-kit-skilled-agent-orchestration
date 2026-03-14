@@ -1,22 +1,21 @@
 # Cross-process DB hot rebinding
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. IN SIMPLE TERMS](#3--in-simple-terms)
-- [4. SOURCE FILES](#4--source-files)
-- [5. SOURCE METADATA](#5--source-metadata)
-
 ## 1. OVERVIEW
+
 Cross-process DB hot rebinding detects external database mutations via a marker file and reinitializes the DB connection with module rebinding.
 
+When another process changes the database while the server is running, the server needs to notice and reconnect. This feature watches for a signal file that says "the database changed" and automatically refreshes the connection. Without it, the server would keep using stale data until someone manually restarted it.
+
+---
+
 ## 2. CURRENT REALITY
+
 Process-lifetime DB connection manager via marker file (`DB_UPDATED_FILE`). When an external process mutates the database, it writes a timestamp to the marker file. On next `checkDatabaseUpdated()` call, if timestamp > lastDbCheck, triggers `reinitializeDatabase()`: closes the old DB handle, calls `vectorIndex.initializeDb()`, and rebinds 6 modules (vectorIndex, checkpoints, accessTracker, hybridSearch, sessionManager, incrementalIndex). Concurrency-safe via mutex with race-condition fix (P4-13). Also manages embedding model readiness (polling with timeout) and constitutional cache lifecycle.
 
-## 3. IN SIMPLE TERMS
-When another process changes the database while the server is running, the server needs to notice and reconnect. This feature watches for a signal file that says "the database changed" and automatically refreshes the connection. Without it, the server would keep using stale data until someone manually restarted it.
-## 4. SOURCE FILES
+---
+
+## 3. SOURCE FILES
+
 ### Implementation
 
 | File | Layer | Role |
@@ -30,9 +29,11 @@ When another process changes the database while the server is running, the serve
 |------|-------|
 | `mcp_server/tests/db-state-graph-reinit.vitest.ts` | DB state graph reinit |
 
-## 5. SOURCE METADATA
+---
+
+## 4. SOURCE METADATA
+
 - Group: Undocumented feature gap scan
 - Source feature title: Cross-process DB hot rebinding
 - Current reality source: 10-agent feature gap scan
 - Playbook reference: NEW-112
-

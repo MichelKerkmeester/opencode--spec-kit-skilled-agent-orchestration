@@ -491,27 +491,37 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
     );
   }
 
-  try {
-    const db = requireDb();
-    candidates = filterRowsByScope(
-      candidates,
-      {
+  const hasGovernanceScope = Boolean(
+    tenantId
+    || userId
+    || agentId
+    || config.sessionId
+    || sharedSpaceId
+  );
+
+  if (hasGovernanceScope) {
+    try {
+      const db = requireDb();
+      candidates = filterRowsByScope(
+        candidates,
+        {
+          tenantId,
+          userId,
+          agentId,
+          sessionId: config.sessionId,
+          sharedSpaceId,
+        },
+        getAllowedSharedSpaceIds(db, { tenantId, userId, agentId }),
+      );
+    } catch (_error: unknown) {
+      candidates = filterRowsByScope(candidates, {
         tenantId,
         userId,
         agentId,
         sessionId: config.sessionId,
         sharedSpaceId,
-      },
-      getAllowedSharedSpaceIds(db, { tenantId, userId, agentId }),
-    );
-  } catch (_error: unknown) {
-    candidates = filterRowsByScope(candidates, {
-      tenantId,
-      userId,
-      agentId,
-      sessionId: config.sessionId,
-      sharedSpaceId,
-    });
+      });
+    }
   }
 
   // -- Constitutional Memory Injection ----------------------------------------
@@ -590,11 +600,11 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
         if (summaryEmbedding) {
           const summaryResults = querySummaryEmbeddings(db, summaryEmbedding, limit);
           if (summaryResults.length > 0) {
-            const existingIds = new Set(candidates.map((r) => r.id));
+            const existingIds = new Set(candidates.map((r) => String(r.id)));
             const newSummaryHits: PipelineRow[] = [];
 
             for (const sr of summaryResults) {
-              if (!existingIds.has(sr.memoryId)) {
+              if (!existingIds.has(String(sr.memoryId))) {
                 // Fetch full memory row for the summary match
                 const memRow = db.prepare(
                   'SELECT id, title, spec_folder, file_path, importance_tier, importance_weight, quality_score, created_at, is_archived FROM memory_index WHERE id = ?'
@@ -606,7 +616,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
                     similarity: sr.similarity * 100,
                     score: sr.similarity,
                   });
-                  existingIds.add(sr.memoryId);
+                  existingIds.add(String(sr.memoryId));
                 }
               }
             }

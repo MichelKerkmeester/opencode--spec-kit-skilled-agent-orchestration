@@ -1,27 +1,25 @@
 # Memory roadmap baseline snapshot
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. IN SIMPLE TERMS](#3--in-simple-terms)
-- [4. SOURCE FILES](#4--source-files)
-- [5. SOURCE METADATA](#5--source-metadata)
-- [6. PLAYBOOK COVERAGE](#6--playbook-coverage)
-
 ## 1. OVERVIEW
+
 Describes the Phase 1 readiness baseline snapshot that captures retrieval-volume and isolation/schema metrics from eval and context databases for memory-roadmap rollout gating.
 
+Before rolling out a big upgrade, you want to take a "before" photo so you can compare it with the "after." This feature captures a snapshot of how the memory system is performing right now, including how many searches are happening and whether the storage is set up correctly. That snapshot becomes the baseline you measure progress against during the rollout.
+
+---
+
 ## 2. CURRENT REALITY
+
 `captureMemoryStateBaselineSnapshot()` records a small Phase 1 readiness baseline for the memory-roadmap rollout slice. It reads retrieval-volume metrics from the eval database (`eval_queries`, `eval_channel_results`, `eval_final_results`) and isolation/schema metrics from the target context database (`memory_index`, `schema_version`), then returns a single snapshot with timestamp, eval run ID, metrics map and metadata.
 
 When `persist: true`, every metric is written into `eval_metric_snapshots` with `channel = 'memory-state-baseline'`. The metadata attached to each persisted row includes the resolved memory-roadmap phase, the compatibility-supported roadmap capability flags, `scopeDimensionsTracked` and the resolved `contextDbPath`. Missing or unreadable context databases are non-fatal: retrieval metrics still record and context-backed metrics fall back to zero.
 
 The baseline path now initializes the eval database beside the context database under test instead of silently writing to the default eval location. That keeps ad-hoc migration and rollout checks scoped to the database actually being evaluated.
 
-## 3. IN SIMPLE TERMS
-Before rolling out a big upgrade, you want to take a "before" photo so you can compare it with the "after." This feature captures a snapshot of how the memory system is performing right now, including how many searches are happening and whether the storage is set up correctly. That snapshot becomes the baseline you measure progress against during the rollout.
-## 4. SOURCE FILES
+---
+
+## 3. SOURCE FILES
+
 ### Implementation
 
 | File | Layer | Role |
@@ -36,11 +34,16 @@ Before rolling out a big upgrade, you want to take a "before" photo so you can c
 |------|-------|
 | `mcp_server/tests/memory-state-baseline.vitest.ts` | Snapshot capture, persistence path selection, and missing-DB fallbacks |
 
-## 5. SOURCE METADATA
+---
+
+## 4. SOURCE METADATA
+
 - Group: Evaluation and measurement
 - Source feature title: Memory roadmap baseline snapshot
 - Current reality source: feature_catalog.md
 
-## 6. PLAYBOOK COVERAGE
-- Mapped to manual testing playbook scenario NEW-126
+---
 
+## 5. PLAYBOOK COVERAGE
+
+- Mapped to manual testing playbook scenario NEW-126

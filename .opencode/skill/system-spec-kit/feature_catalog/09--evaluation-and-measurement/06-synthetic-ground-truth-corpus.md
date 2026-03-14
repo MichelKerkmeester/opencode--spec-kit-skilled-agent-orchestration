@@ -1,27 +1,25 @@
 # Synthetic ground truth corpus
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. IN SIMPLE TERMS](#3--in-simple-terms)
-- [4. SOURCE FILES](#4--source-files)
-- [5. SOURCE METADATA](#5--source-metadata)
-- [6. PLAYBOOK COVERAGE](#6--playbook-coverage)
-
 ## 1. OVERVIEW
+
 Describes the 110-query ground truth corpus covering all seven intent types with hand-written natural language queries, hard negatives and agent consumption findings for realistic retrieval evaluation.
 
+To know if search results are right, you need an answer key. This is a collection of 110 test questions with known correct answers, written in everyday language rather than system keywords. It also includes trick questions designed to catch the system returning wrong results. Without this answer key, there would be no reliable way to measure whether changes actually improve or hurt search quality.
+
+---
+
 ## 2. CURRENT REALITY
+
 A corpus of 110 query-relevance pairs covers all seven intent types with at least five queries per type and at least three complexity tiers (simple factual, moderate relational, complex multi-hop).
 
 40 queries are hand-written natural language, not derived from trigger phrases. That last detail matters. If your ground truth comes from the same trigger phrases the system already matches against, you are testing the system against itself.
 
 Hard negative queries are included to verify that irrelevant memories rank low. The corpus also incorporates findings from the G-NEW-2 agent consumption analysis, so queries reflect how agents actually use the system rather than how a spec author imagines they do.
 
-## 3. IN SIMPLE TERMS
-To know if search results are right, you need an answer key. This is a collection of 110 test questions with known correct answers, written in everyday language rather than system keywords. It also includes trick questions designed to catch the system returning wrong results. Without this answer key, there would be no reliable way to measure whether changes actually improve or hurt search quality.
-## 4. SOURCE FILES
+---
+
+## 3. SOURCE FILES
+
 ### Implementation
 
 | File | Layer | Role |
@@ -35,11 +33,16 @@ To know if search results are right, you need an answer key. This is a collectio
 |------|-------|
 | `mcp_server/tests/ground-truth.vitest.ts` | Ground truth tests |
 
-## 5. SOURCE METADATA
+---
+
+## 4. SOURCE METADATA
+
 - Group: Evaluation and measurement
 - Source feature title: Synthetic ground truth corpus
 - Current reality source: feature_catalog.md
 
-## 6. PLAYBOOK COVERAGE
-- Mapped to manual testing playbook scenario NEW-010
+---
 
+## 5. PLAYBOOK COVERAGE
+
+- Mapped to manual testing playbook scenario NEW-010

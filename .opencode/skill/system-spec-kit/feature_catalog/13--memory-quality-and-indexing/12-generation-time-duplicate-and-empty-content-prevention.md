@@ -1,24 +1,23 @@
 # Generation-time duplicate and empty content prevention
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. IN SIMPLE TERMS](#3--in-simple-terms)
-- [4. SOURCE FILES](#4--source-files)
-- [5. SOURCE METADATA](#5--source-metadata)
-
 ## 1. OVERVIEW
+
 Generation-time duplicate and empty content prevention blocks template-only files and exact-match duplicates before the atomic write operation.
 
+This feature catches two common mistakes before a memory file is even written to disk: saving a file that is basically empty (just a template with no real content) and saving an exact copy of something already stored. It is like your email client warning you that you are about to send a blank message or a duplicate of something you already sent.
+
+---
+
 ## 2. CURRENT REALITY
+
 Two pre-write quality gates in `scripts/core/file-writer.ts` prevent empty and duplicate memory files at generation time, complementing the existing index-time dedup in `memory-save.ts`. The empty content gate (`validateContentSubstance`) strips YAML frontmatter, HTML comments, anchor markers, empty headings, table rows and empty list items, then rejects files with fewer than 200 characters of remaining substance. The duplicate gate (`checkForDuplicateContent`) computes a SHA-256 hash of the file content and compares it against all existing `.md` files in the target memory directory, rejecting exact matches.
 
 Both gates run inside `writeFilesAtomically()` before the atomic write operation, after the existing `validateNoLeakedPlaceholders` check. Failures throw descriptive errors that halt the save and report which validation failed. This catches the two most common quality problems (SGQS-template-only files and repeated saves of identical content) at the earliest possible point. Always active with no feature flag.
 
-## 3. IN SIMPLE TERMS
-This feature catches two common mistakes before a memory file is even written to disk: saving a file that is basically empty (just a template with no real content) and saving an exact copy of something already stored. It is like your email client warning you that you are about to send a blank message or a duplicate of something you already sent.
-## 4. SOURCE FILES
+---
+
+## 3. SOURCE FILES
+
 ### Implementation
 
 | File | Layer | Role |
@@ -135,8 +134,10 @@ This feature catches two common mistakes before a memory file is even written to
 | `mcp_server/tests/vector-index-impl.vitest.ts` | Vector index implementation |
 | `shared/parsing/quality-extractors.test.ts` | Quality Extractors.Ts |
 
-## 5. SOURCE METADATA
+---
+
+## 4. SOURCE METADATA
+
 - Group: Memory quality and indexing
 - Source feature title: Generation-time duplicate and empty content prevention
 - Current reality source: feature_catalog.md
-

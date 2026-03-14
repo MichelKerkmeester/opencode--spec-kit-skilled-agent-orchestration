@@ -27,6 +27,25 @@ import { recordHistory } from '../storage/history';
 
 const logger = createLogger('VectorIndex');
 
+function upsert_active_projection(
+  database: ReturnType<typeof initialize_db>,
+  specFolder: string,
+  canonicalFilePath: string,
+  anchorId: string | null,
+  memoryId: number,
+  updatedAt: string,
+): void {
+  const logicalKey = `${specFolder}::${canonicalFilePath}::${anchorId && anchorId.trim().length > 0 ? anchorId : '_'}`;
+  database.prepare(`
+    INSERT INTO active_memory_projection (logical_key, root_memory_id, active_memory_id, updated_at)
+    VALUES (?, ?, ?, ?)
+    ON CONFLICT(logical_key) DO UPDATE SET
+      root_memory_id = excluded.root_memory_id,
+      active_memory_id = excluded.active_memory_id,
+      updated_at = excluded.updated_at
+  `).run(logicalKey, memoryId, memoryId, updatedAt);
+}
+
 type EmbeddingInput = Float32Array | number[];
 type IndexMemoryParams = {
   readonly specFolder: string;
@@ -108,8 +127,8 @@ export function index_memory(params: IndexMemoryParams): number {
     ? null
     : stmts.get_by_folder_and_path.get(specFolder, canonicalFilePath, filePath, anchorId, anchorId);
 
-  if (existing && !appendOnly) {
-    return update_memory({
+    if (existing && !appendOnly) {
+    const updatedId = update_memory({
       id: existing.id,
       title: title ?? undefined,
       triggerPhrases,
@@ -123,6 +142,12 @@ export function index_memory(params: IndexMemoryParams): number {
       qualityFlags,
       canonicalFilePath,
     });
+    try {
+      upsert_active_projection(database, specFolder, canonicalFilePath, anchorId, updatedId, now);
+    } catch (_error: unknown) {
+      // Best-effort for legacy databases that may not have lineage projection tables.
+    }
+    return updatedId;
   }
 
   const sqlite_vec = get_sqlite_vec_available();
@@ -145,6 +170,12 @@ export function index_memory(params: IndexMemoryParams): number {
 
     const row_id = BigInt(result.lastInsertRowid);
     const metadata_id = Number(row_id);
+
+    try {
+      upsert_active_projection(database, specFolder, canonicalFilePath, anchorId, metadata_id, now);
+    } catch (_error: unknown) {
+      // Best-effort for legacy databases that may not have lineage projection tables.
+    }
 
     if (sqlite_vec) {
       // Remove orphaned vec_memories entry before insert
@@ -215,6 +246,11 @@ export function index_memory_deferred(params: IndexMemoryDeferredParams): number
           quality_flags = ?
       WHERE id = ?
     `).run(title, triggers_json, importanceWeight, canonicalFilePath, failureReason, now, encodingIntent, documentType, specLevel, contentText, qualityScore, JSON.stringify(qualityFlags), existing.id);
+    try {
+      upsert_active_projection(database, specFolder, canonicalFilePath, anchorId, existing.id, now);
+    } catch (_error: unknown) {
+      // Best-effort for legacy databases that may not have lineage projection tables.
+    }
     refresh_interference_scores_for_folder(database, specFolder);
     return existing.id;
   }
@@ -232,6 +268,11 @@ export function index_memory_deferred(params: IndexMemoryDeferredParams): number
   );
 
   const row_id = BigInt(result.lastInsertRowid);
+  try {
+    upsert_active_projection(database, specFolder, canonicalFilePath, anchorId, Number(row_id), now);
+  } catch (_error: unknown) {
+    // Best-effort for legacy databases that may not have lineage projection tables.
+  }
   refresh_interference_scores_for_folder(database, specFolder);
   logger.info(`Deferred indexing: Memory ${Number(row_id)} saved without embedding (BM25/FTS5 searchable)`);
 

@@ -8,6 +8,9 @@ const SHARED_ROOT = path.resolve(SERVER_ROOT, '..', 'shared');
 const SOURCE_ROOTS = [SERVER_ROOT, SHARED_ROOT];
 const EXCLUDED_SEGMENTS = new Set(['dist', 'node_modules', 'tests']);
 const EXCLUDED_BASENAMES = new Set(['README.md', 'INSTALL_GUIDE.md', 'cli.ts']);
+const EXCLUDED_PATH_SNIPPETS = [
+  `${path.sep}scripts${path.sep}migrations${path.sep}`,
+];
 const STDOUT_LOG_PATTERN = /\bconsole\.(log|info|debug)\s*\(|process\.stdout\.write\s*\(/;
 
 function collectRuntimeSources(root: string): string[] {
@@ -33,6 +36,10 @@ function collectRuntimeSources(root: string): string[] {
 
     const basename = path.basename(currentPath);
     if (EXCLUDED_BASENAMES.has(basename)) {
+      return;
+    }
+
+    if (EXCLUDED_PATH_SNIPPETS.some((snippet) => currentPath.includes(snippet))) {
       return;
     }
 

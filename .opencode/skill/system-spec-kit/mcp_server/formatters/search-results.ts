@@ -109,8 +109,19 @@ export interface MemoryResultTrace {
     sources: string[];
     totalDelta: number;
     injected: boolean;
+    raw?: number;
+    normalized?: number;
+    appliedBonus?: number;
+    capApplied?: boolean;
+    rolloutState?: string | null;
   };
   adaptiveMode?: string | null;
+  sessionTransition?: {
+    previousState: string;
+    inferredState: string;
+    confidence: number;
+    sourceSignal: string;
+  };
 }
 
 export interface MemoryResultEnvelope extends FormattedSearchResult {
@@ -244,6 +255,7 @@ function extractTrace(rawResult: RawSearchResult, extraData?: Record<string, unk
   let budgetTruncated = false;
   let graphContribution: MemoryResultTrace['graphContribution'];
   let adaptiveMode: string | null = null;
+  let sessionTransition: MemoryResultTrace['sessionTransition'];
 
   for (const stage of stages) {
     const meta = stage.metadata ?? {};
@@ -274,16 +286,6 @@ function extractTrace(rawResult: RawSearchResult, extraData?: Record<string, unk
     if (meta.budgetTruncated === true || meta.truncated === true) {
       budgetTruncated = true;
     }
-    if (!graphContribution && rawResult.graphContribution && typeof rawResult.graphContribution === 'object') {
-      const contribution = rawResult.graphContribution as Record<string, unknown>;
-      graphContribution = {
-        sources: Array.isArray(contribution.sources)
-          ? contribution.sources.filter((value): value is string => typeof value === 'string')
-          : [],
-        totalDelta: typeof contribution.totalDelta === 'number' ? contribution.totalDelta : 0,
-        injected: contribution.injected === true,
-      };
-    }
   }
 
   if (rawResult.fallbackRetry === true) {
@@ -313,6 +315,41 @@ function extractTrace(rawResult: RawSearchResult, extraData?: Record<string, unk
     adaptiveMode = adaptiveShadow.mode;
   }
 
+  if (rawResult.graphContribution && typeof rawResult.graphContribution === 'object') {
+    const contribution = rawResult.graphContribution as Record<string, unknown>;
+    graphContribution = {
+      sources: Array.isArray(contribution.sources)
+        ? contribution.sources.filter((value): value is string => typeof value === 'string')
+        : [],
+      totalDelta: typeof contribution.totalDelta === 'number' ? contribution.totalDelta : 0,
+      injected: contribution.injected === true,
+      raw: typeof contribution.raw === 'number' ? contribution.raw : undefined,
+      normalized: typeof contribution.normalized === 'number' ? contribution.normalized : undefined,
+      appliedBonus: typeof contribution.appliedBonus === 'number' ? contribution.appliedBonus : undefined,
+      capApplied: contribution.capApplied === true,
+      rolloutState: typeof contribution.rolloutState === 'string' ? contribution.rolloutState : null,
+    };
+  }
+
+  const rawSessionTransition = extraData?.sessionTransition;
+  if (rawSessionTransition && typeof rawSessionTransition === 'object') {
+    const candidate = rawSessionTransition as Record<string, unknown>;
+    if (
+      typeof candidate.previousState === 'string'
+      && typeof candidate.inferredState === 'string'
+      && typeof candidate.confidence === 'number'
+      && Number.isFinite(candidate.confidence)
+      && typeof candidate.sourceSignal === 'string'
+    ) {
+      sessionTransition = {
+        previousState: candidate.previousState,
+        inferredState: candidate.inferredState,
+        confidence: candidate.confidence,
+        sourceSignal: candidate.sourceSignal,
+      };
+    }
+  }
+
   return {
     channelsUsed: Array.from(channelsUsed),
     pipelineStages,
@@ -323,6 +360,7 @@ function extractTrace(rawResult: RawSearchResult, extraData?: Record<string, unk
     scoreResolution: resolveScoreResolution(rawResult),
     graphContribution,
     adaptiveMode,
+    sessionTransition,
   };
 }
 

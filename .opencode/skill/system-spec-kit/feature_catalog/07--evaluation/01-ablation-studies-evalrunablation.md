@@ -1,26 +1,25 @@
 # Ablation studies (eval_run_ablation)
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. IN SIMPLE TERMS](#3--in-simple-terms)
-- [4. SOURCE FILES](#4--source-files)
-- [5. SOURCE METADATA](#5--source-metadata)
-
 ## 1. OVERVIEW
+
 Covers the ablation study framework that measures Recall@20 deltas when individual search channels are disabled.
 
+This tool tests how important each part of the search system is by turning off one piece at a time and measuring the difference. It is like removing one ingredient from a recipe to see if the dish still tastes good. The results tell you which components are critical and which ones you could remove without hurting search quality.
+
+---
+
 ## 2. CURRENT REALITY
+
 This tool runs controlled ablation studies across the retrieval pipeline's search channels. You disable one channel at a time (vector, BM25, FTS5, graph or trigger) and measure the Recall@20 delta against a full-pipeline baseline. The answer to "what happens if we turn off the graph channel?" becomes a measured number rather than speculation.
 
 The framework uses dependency injection for the search function, making it testable without the full pipeline. Each channel ablation wraps in a try-catch so a failure in one channel's ablation produces partial results rather than a total failure. Statistical significance is assessed via a sign test (exact binomial distribution) because it is reliable with small query sets where a t-test would be unreliable. Verdict classification ranges from CRITICAL (channel removal causes significant regression) through negligible to HARMFUL (channel removal actually improves results).
 
 Results are stored in `eval_metric_snapshots` with negative timestamp IDs to distinguish ablation runs from production evaluation runs. The tool requires `SPECKIT_ABLATION=true` to activate. When the flag is off, the MCP handler returns an explicit disabled-flag error and does not execute an ablation run.
 
-## 3. IN SIMPLE TERMS
-This tool tests how important each part of the search system is by turning off one piece at a time and measuring the difference. It is like removing one ingredient from a recipe to see if the dish still tastes good. The results tell you which components are critical and which ones you could remove without hurting search quality.
-## 4. SOURCE FILES
+---
+
+## 3. SOURCE FILES
+
 ### Implementation
 
 | File | Layer | Role |
@@ -180,8 +179,10 @@ This tool tests how important each part of the search system is by turning off o
 | `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
 | `mcp_server/tests/vector-index-impl.vitest.ts` | Vector index implementation |
 
-## 5. SOURCE METADATA
+---
+
+## 4. SOURCE METADATA
+
 - Group: Evaluation
 - Source feature title: Ablation studies (eval_run_ablation)
 - Current reality source: feature_catalog.md
-

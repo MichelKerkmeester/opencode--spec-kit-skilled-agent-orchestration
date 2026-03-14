@@ -1,24 +1,23 @@
 # Legacy V1 pipeline removal
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. IN SIMPLE TERMS](#3--in-simple-terms)
-- [4. SOURCE FILES](#4--source-files)
-- [5. SOURCE METADATA](#5--source-metadata)
-
 ## 1. OVERVIEW
+
 Legacy V1 pipeline removal deleted the old monolithic handler path, making the 4-stage orchestrator the only runtime code path.
 
+The system used to have two different search paths: an old one and a new one. The old path was causing bugs and was no longer needed because the new one was already the default. This cleanup removed the old path entirely so there is only one way searches run, eliminating a whole class of bugs that came from the two paths disagreeing with each other.
+
+---
+
 ## 2. CURRENT REALITY
+
 The legacy V1 pipeline was the root cause of 3 of 4 P0 bugs: an inverted `STATE_PRIORITY` map, divergent scoring order in post-search weighting and a mismatched deep-query variant cap. Since V2 was already the default, the legacy handler path in `memory-search.ts` was removed and the 4-stage orchestrator became the only runtime path. Stage helpers with familiar names now live in stage modules (`stage1-candidate-gen.ts`, `stage2-fusion.ts`, `stage3-rerank.ts`, `stage4-filter.ts`) rather than the old monolithic V1 branch. The `isPipelineV2Enabled()` function now always returns `true` with a deprecation comment, and stale legacy-handler imports were removed.
 
 Orphaned chunk detection was added to `verify_integrity()` as the fourth P0 fix: chunks whose parent has been deleted but the chunk record persists (e.g., if FK cascade didn't fire) are now detected and optionally auto-cleaned when `autoClean=true`.
 
-## 3. IN SIMPLE TERMS
-The system used to have two different search paths: an old one and a new one. The old path was causing bugs and was no longer needed because the new one was already the default. This cleanup removed the old path entirely so there is only one way searches run, eliminating a whole class of bugs that came from the two paths disagreeing with each other.
-## 4. SOURCE FILES
+---
+
+## 3. SOURCE FILES
+
 ### Implementation
 
 | File | Layer | Role |
@@ -154,8 +153,10 @@ The system used to have two different search paths: an old one and a new one. Th
 | `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
 | `mcp_server/tests/vector-index-impl.vitest.ts` | Vector index implementation |
 
-## 5. SOURCE METADATA
+---
+
+## 4. SOURCE METADATA
+
 - Group: Opus review remediation (Phase 017)
 - Source feature title: Legacy V1 pipeline removal
 - Current reality source: feature_catalog.md
-

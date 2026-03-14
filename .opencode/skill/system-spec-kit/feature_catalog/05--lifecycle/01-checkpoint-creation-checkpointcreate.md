@@ -1,26 +1,25 @@
 # Checkpoint creation (checkpoint_create)
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. IN SIMPLE TERMS](#3--in-simple-terms)
-- [4. SOURCE FILES](#4--source-files)
-- [5. SOURCE METADATA](#5--source-metadata)
-
 ## 1. OVERVIEW
+
 Covers the checkpoint creation tool that captures gzip-compressed memory state snapshots for rollback safety.
 
+This takes a snapshot of your entire knowledge base at a point in time, like a save point in a video game. If something goes wrong later (an accidental deletion or a bad import), you can restore back to this snapshot. The system keeps up to 10 snapshots and automatically removes the oldest one when you create a new one.
+
+---
+
 ## 2. CURRENT REALITY
+
 Named snapshots capture the current memory state by serializing the `memory_index` table, `working_memory` table and vector embeddings from `vec_memories` into a gzip-compressed JSON blob stored in the `checkpoints` table. You can scope a snapshot to a specific spec folder if you only care about preserving one area of the system.
 
 A maximum of 10 checkpoints are retained. When you create the 11th, the oldest is automatically purged. Each checkpoint records arbitrary metadata you provide, plus the current git branch from environment variables. The gzip compression keeps storage manageable even with large memory databases.
 
 Checkpoints are the safety net for destructive operations. `memory_bulk_delete` creates one by default before bulk deletion, unless explicitly skipped for lower-risk tiers. `checkpoint_restore` brings it all back. The cycle works because checkpoints include vector embeddings alongside metadata, so restored memories are immediately searchable without re-running embedding generation.
 
-## 3. IN SIMPLE TERMS
-This takes a snapshot of your entire knowledge base at a point in time, like a save point in a video game. If something goes wrong later (an accidental deletion or a bad import), you can restore back to this snapshot. The system keeps up to 10 snapshots and automatically removes the oldest one when you create a new one.
-## 4. SOURCE FILES
+---
+
+## 3. SOURCE FILES
+
 ### Implementation
 
 | File | Layer | Role |
@@ -137,8 +136,10 @@ This takes a snapshot of your entire knowledge base at a point in time, like a s
 | `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
 | `mcp_server/tests/vector-index-impl.vitest.ts` | Vector index implementation |
 
-## 5. SOURCE METADATA
+---
+
+## 4. SOURCE METADATA
+
 - Group: Lifecycle
 - Source feature title: Checkpoint creation (checkpoint_create)
 - Current reality source: feature_catalog.md
-

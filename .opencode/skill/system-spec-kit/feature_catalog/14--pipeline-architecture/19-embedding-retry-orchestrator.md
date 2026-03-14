@@ -1,24 +1,23 @@
 # Embedding retry orchestrator
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. IN SIMPLE TERMS](#3--in-simple-terms)
-- [4. SOURCE FILES](#4--source-files)
-- [5. SOURCE METADATA](#5--source-metadata)
-
 ## 1. OVERVIEW
+
 The embedding retry orchestrator runs background batch retries for memories with failed embedding generation, using cache dedup and progressive backoff.
 
+Creating a numerical fingerprint for each memory requires calling an external service that can sometimes be unavailable. When that service fails, the memory is saved without a fingerprint and queued for a retry. A background worker periodically picks up these queued items and tries again. This way, a temporary service outage does not permanently prevent your memories from being fully searchable.
+
+---
+
 ## 2. CURRENT REALITY
+
 The retry manager (`lib/providers/retry-manager.ts`) orchestrates background retry of failed embedding operations. When the primary embedding provider is unavailable or returns errors during `memory_save` or `memory_index_scan`, the affected memories are marked with `embedding_status = 'pending'` and stored without vectors (lexical-only fallback). The retry manager runs as a background job with configurable interval and batch size, picking up pending memories and re-attempting embedding generation.
 
 Each retry attempt uses the embedding cache to avoid redundant API calls for content that was previously embedded successfully. The retry stats (`pending`, `retry`, `failed` counts) are exposed for monitoring. Failed memories increment a `retry_count` for progressive backoff. The orchestrator coordinates with the index-refresh module to ensure retried embeddings are properly inserted into `vec_memories`.
 
-## 3. IN SIMPLE TERMS
-Creating a numerical fingerprint for each memory requires calling an external service that can sometimes be unavailable. When that service fails, the memory is saved without a fingerprint and queued for a retry. A background worker periodically picks up these queued items and tries again. This way, a temporary service outage does not permanently prevent your memories from being fully searchable.
-## 4. SOURCE FILES
+---
+
+## 3. SOURCE FILES
+
 ### Implementation
 
 | File | Layer | Role |
@@ -35,8 +34,10 @@ Creating a numerical fingerprint for each memory requires calling an external se
 | `mcp_server/tests/retry-manager.vitest.ts` | Retry manager tests |
 | `mcp_server/tests/index-refresh.vitest.ts` | Index refresh tests |
 
-## 5. SOURCE METADATA
+---
+
+## 4. SOURCE METADATA
+
 - Group: Pipeline architecture
 - Source feature title: Embedding retry orchestrator
 - Current reality source: audit-D04 gap backfill
-

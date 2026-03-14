@@ -471,6 +471,47 @@ describe('Graph Signals (S8 — N2a + N2b)', () => {
       // No edges, so bonuses are 0
       expect(result[0].score).toBe(0);
     });
+
+    it('adds a bounded graph-walk bonus for locally connected candidate rows', () => {
+      // Chain: 1 -> 2 -> 3
+      insertEdge(db, 1, 2);
+      insertEdge(db, 2, 3);
+
+      const rows = [
+        { id: 1, score: 0 },
+        { id: 2, score: 0 },
+        { id: 3, score: 0 },
+      ];
+      const result = applyGraphSignals(rows, db);
+
+      // Node 2 sees both other candidates directly, so it receives the full walk cap (+0.03)
+      // alongside the existing depth bonus (+0.025).
+      expect(result[1].score).toBeCloseTo(0.055, 5);
+      // Endpoints still receive a smaller walk bonus and preserve ordering by structural depth.
+      expect(result[0].score).toBeCloseTo(0.0225, 5);
+      expect(result[2].score).toBeCloseTo(0.0725, 5);
+    });
+
+    it('caps graph-walk bonus at 0.03 for dense candidate neighborhoods', () => {
+      insertEdge(db, 1, 2);
+      insertEdge(db, 2, 3);
+      insertEdge(db, 3, 1);
+      insertEdge(db, 2, 1);
+      insertEdge(db, 3, 2);
+      insertEdge(db, 1, 3);
+
+      const rows = [
+        { id: 1, score: 0.2 },
+        { id: 2, score: 0.2 },
+        { id: 3, score: 0.2 },
+      ];
+      const result = applyGraphSignals(rows, db);
+
+      for (const row of result) {
+        expect(row.score).toBeGreaterThanOrEqual(0.23);
+        expect(row.score).toBeLessThanOrEqual(0.28);
+      }
+    });
   });
 
   // 7. clearGraphSignalsCache
@@ -631,6 +672,39 @@ describe('Graph Signals (S8 — N2a + N2b)', () => {
       expect(inDegree.get(1)).toBe(0); // root
       expect(inDegree.get(2)).toBe(1);
       expect(inDegree.get(3)).toBe(2);
+    });
+
+    it('buildUndirectedAdjacency mirrors edges in both directions', () => {
+      insertEdge(db, 1, 2);
+      insertEdge(db, 2, 3);
+
+      const { adjacency } = __testables.buildAdjacencyList(db);
+      const undirected = __testables.buildUndirectedAdjacency(adjacency);
+
+      expect(Array.from(undirected.get(1) ?? [])).toEqual([2]);
+      expect(Array.from(undirected.get(2) ?? [])).toEqual(expect.arrayContaining([1, 3]));
+      expect(Array.from(undirected.get(3) ?? [])).toEqual([2]);
+    });
+
+    it('computeGraphWalkScores returns bounded local connectivity scores', () => {
+      // Candidate set has one direct hub and one two-hop path.
+      insertEdge(db, 10, 20);
+      insertEdge(db, 20, 30);
+
+      const scores = __testables.computeGraphWalkScores(db, [10, 20, 30]);
+
+      expect(scores.get(10)).toBeCloseTo(0.75, 5);
+      expect(scores.get(20)).toBe(1);
+      expect(scores.get(30)).toBeCloseTo(0.75, 5);
+    });
+
+    it('computeGraphWalkScores is a no-op for singleton candidate sets', () => {
+      insertEdge(db, 1, 2);
+      insertEdge(db, 2, 3);
+
+      const scores = __testables.computeGraphWalkScores(db, [2]);
+
+      expect(scores.get(2)).toBe(0);
     });
 
     it('clamp works correctly', () => {

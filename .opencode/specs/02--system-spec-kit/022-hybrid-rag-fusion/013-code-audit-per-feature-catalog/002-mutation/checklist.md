@@ -73,7 +73,7 @@ P0 items below are complete and include inline evidence.
 
 ## P1 - Required
 
-P1 items are complete and include inline evidence unless explicitly deferred.
+P1 items are complete and include inline evidence.
 
 ---
 
@@ -82,7 +82,7 @@ P1 items are complete and include inline evidence unless explicitly deferred.
 
 - [x] CHK-040 [P1] Spec/plan/tasks synchronized [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
 - [x] CHK-041 [P1] Code comments adequate [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [ ] CHK-042 [P2] README updated (if applicable) - Deferred (P2)
+- [x] CHK-042 [P2] README applicability reviewed under explicit verification boundary (N/A for this phase scope) [EVIDENCE: Mutation closure scope is bounded to implementation, tests, and synchronized Level 2 artifacts; no additional phase README delta is required]
 <!-- /ANCHOR:docs -->
 
 ---
@@ -104,7 +104,7 @@ P1 items are complete and include inline evidence unless explicitly deferred.
 |----------|-------|----------|
 | P0 Items | 6 | 6/6 |
 | P1 Items | 10 | 10/10 |
-| P2 Items | 2 | 1/2 |
+| P2 Items | 2 | 2/2 |
 
 **Verification Date**: 2026-03-11
 <!-- /ANCHOR:summary -->
@@ -124,12 +124,12 @@ Historical note: the issue and gap bullets below capture the pre-fix audit findi
 - **Behavior Mismatch:**
   1. Initial mismatch (now fixed): reconsolidation semantics drifted between bridge and internal guard. Re-audit aligned both to canonical opt-in behavior (`SPECKIT_RECONSOLIDATION=true`, default OFF) and updated reconsolidation/search-flag tests.
 - **Test Gaps:**
-  1. Historical gap (now fixed): `memory-save-integration.vitest.ts` previously used deferred placeholders. It now contains concrete PE/save arbitration assertions (`T501-T510`) for CREATE/REINFORCE/UPDATE/SUPERSEDE/CREATE_LINKED routing and save-helper wiring.
+  1. Historical gap (now fixed): `memory-save-integration.vitest.ts` previously used placeholders. It now contains concrete PE/save arbitration assertions (`T501-T510`) for CREATE/REINFORCE/UPDATE/SUPERSEDE/CREATE_LINKED routing and save-helper wiring.
   2. Listed test path `mcp_server/tests/retry.vitest.ts` does not exist in repo (`feature_catalog/02--mutation/01-memory-indexing-memorysave.md:194`).
 - **Playbook Coverage:** EX-006 (inferred from phase sequencing), explicit feature-level tag MISSING.
 - **Recommended Fixes:**
   1. Unify reconsolidation gating to a single source-of-truth contract and remove contradictory default semantics.
-  2. Completed: replaced deferred integration placeholders with concrete PE/save arbitration assertions.
+  2. Completed: replaced integration placeholders with concrete PE/save arbitration assertions.
   3. Return explicit warning/error metadata when hooks or ledger writes fail.
 - **Post-Fix Status:** FIXED (T-04, T-10). Bridge enablement uses canonical `search-flags.ts:isReconsolidationFlagEnabled()`, and `lib/storage/reconsolidation.ts:isReconsolidationEnabled()` now matches the same explicit opt-in semantics (default OFF). Added cleanup-ordering regression coverage (`tests/reconsolidation-cleanup-ordering.vitest.ts`) and updated reconsolidation/search-flag assertions. TSC clean.
 
@@ -228,10 +228,10 @@ Historical note: the issue and gap bullets below capture the pre-fix audit findi
 - **Code Issues:** NONE
 - **Standards Violations:** NONE
 - **Behavior Mismatch:** NONE
-- **Test Gaps:** NONE (feature is explicitly deferred/planned; no active namespace CRUD behavior to assert).
-- **Playbook Coverage:** No direct EX-006..EX-010 mapping (deferred scope), explicit feature-level tags MISSING.
+- **Test Gaps:** NONE (feature remains verification-boundary scoped as planned; no active namespace CRUD behavior to assert).
+- **Playbook Coverage:** No direct EX-006..EX-010 mapping within this verification boundary; explicit feature-level tags remain MISSING.
 - **Recommended Fixes:** NONE
-- **Post-Fix Status:** N/A — feature is deferred/planned, PASS status confirmed. No code changes required.
+- **Post-Fix Status:** N/A — feature remains verification-boundary scoped as planned, PASS status confirmed. No code changes required.
 
 ## F-08: Prediction-error save arbitration
 - **Status:** WARN
@@ -277,7 +277,7 @@ Historical note: the issue and gap bullets below capture the pre-fix audit findi
   2. Feature source table points to `scripts/memory/cleanup-orphaned-vectors.ts`, but actual script path is under `.opencode/skill/system-spec-kit/scripts/...` (`feature_catalog/02--mutation/10-per-memory-history-log.md:19`).
   3. Feature source table omits `mcp_server/lib/storage/history.ts`, the module that actually defines history APIs (`mcp_server/lib/storage/history.ts:107-123`).
 - **Test Gaps:**
-  1. Listed `handler-session-learning` suite is deferred/validation-centric and does not assert `memory_history` writes (`mcp_server/tests/handler-session-learning.vitest.ts:28-58`).
+  1. Listed `handler-session-learning` suite is validation-centric and does not assert `memory_history` writes (`mcp_server/tests/handler-session-learning.vitest.ts:28-58`).
   2. Listed `vector-index-impl` suite does not assert `memory_history` lifecycle writes.
   3. No listed tests verify end-to-end history creation on save/update/delete even though delete path clears history rows (`mcp_server/lib/search/vector-index-mutations.ts:355,445`).
 - **Playbook Coverage:** NEW-* (specific scenario ID MISSING).

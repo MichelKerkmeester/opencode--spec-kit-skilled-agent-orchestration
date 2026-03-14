@@ -62,7 +62,7 @@ P0 items below are complete and include inline evidence.
 - [x] CHK-020 [P0] All lifecycle acceptance criteria are met for F-01..F-07 — SC-001 through SC-004 validated [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
 - [x] CHK-021 [P0] Boundary/concurrency/crash-recovery tests added for F-05 and F-06 — 13 ingest edge + 13 queue state + 13 recovery tests (39 total) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
 - [x] CHK-022 [P1] Checkpoint lifecycle integration gaps closed for F-01..F-04 — 12 checkpoint edge tests in `handler-checkpoints-edge.vitest.ts` [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-023 [P1] Archival regression coverage validates archive/unarchive vec/BM25 behavior (F-07) — Vector delete-on-archive and deferred vector rebuild-on-unarchive behavior confirmed; BM25 parity confirmed in source review [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
+- [x] CHK-023 [P1] Archival regression coverage validates archive/unarchive vec/BM25 behavior (F-07) — Vector delete-on-archive and explicit next-index-scan vector rebuild-on-unarchive behavior confirmed; BM25 parity confirmed in source review [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
 <!-- /ANCHOR:testing -->
 
 ---
@@ -79,7 +79,7 @@ P0 items below are complete and include inline evidence.
 
 ## P1 - Required
 
-P1 items are complete and include inline evidence unless explicitly deferred.
+P1 items are complete and include inline evidence.
 
 ---
 

@@ -1,24 +1,23 @@
 # Typed-weighted degree channel
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. IN SIMPLE TERMS](#3--in-simple-terms)
-- [4. SOURCE FILES](#4--source-files)
-- [5. SOURCE METADATA](#5--source-metadata)
-
 ## 1. OVERVIEW
+
 Describes the fifth RRF channel that scores memories by graph connectivity using typed edge weights, logarithmic normalization and hub caps to prevent connection-count dominance.
 
+This gives a search bonus to memories that are well-connected to other memories, like how a person who knows many people in a community is often a good source of information. Different types of connections count for different amounts, and there is a cap to prevent any single well-connected memory from dominating all search results just because it links to everything.
+
+---
+
 ## 2. CURRENT REALITY
+
 A fifth RRF channel scores memories by their graph connectivity. Edge type weights range from caused at 1.0 down to supports at 0.5, with logarithmic normalization and a hub cap (`MAX_TYPED_DEGREE=15`, `MAX_TOTAL_DEGREE=50`, `DEGREE_BOOST_CAP=0.15`) to prevent any single memory from dominating results through connections alone.
 
 Constitutional memories are excluded from degree boosting because they already receive top-tier visibility. The channel runs behind the `SPECKIT_DEGREE_BOOST` feature flag with a degree cache that invalidates only on graph mutations, not per query. When a memory has zero edges, the channel returns 0 rather than failing.
 
-## 3. IN SIMPLE TERMS
-This gives a search bonus to memories that are well-connected to other memories, like how a person who knows many people in a community is often a good source of information. Different types of connections count for different amounts, and there is a cap to prevent any single well-connected memory from dominating all search results just because it links to everything.
-## 4. SOURCE FILES
+---
+
+## 3. SOURCE FILES
+
 ### Implementation
 
 | File | Layer | Role |
@@ -45,8 +44,10 @@ This gives a search bonus to memories that are well-connected to other memories,
 | `mcp_server/tests/rrf-degree-channel.vitest.ts` | Degree channel integration |
 | `mcp_server/tests/spec-folder-hierarchy.vitest.ts` | Folder hierarchy tests |
 
-## 5. SOURCE METADATA
+---
+
+## 4. SOURCE METADATA
+
 - Group: Graph signal activation
 - Source feature title: Typed-weighted degree channel
 - Current reality source: feature_catalog.md
-

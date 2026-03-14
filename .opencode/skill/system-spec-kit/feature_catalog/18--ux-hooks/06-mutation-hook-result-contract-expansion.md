@@ -1,22 +1,21 @@
 # Mutation hook result contract expansion
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. IN SIMPLE TERMS](#3--in-simple-terms)
-- [4. SOURCE FILES](#4--source-files)
-- [5. SOURCE METADATA](#5--source-metadata)
-
 ## 1. OVERVIEW
+
 Mutation hook result contract expansion adds `latencyMs` and cache-clear booleans to post-mutation hook results.
 
+After the system finishes its follow-up tasks on a save, it now reports how long those tasks took and whether any caches were cleared. This gives you a clearer picture of what happened behind the scenes, like a shipping notification that tells you not just "delivered" but also the delivery time and which steps were completed.
+
+---
+
 ## 2. CURRENT REALITY
+
 The shared mutation hook result contract was expanded to include `latencyMs` and cache-clear booleans. Callers now receive explicit timing and cache invalidation signals from post-mutation hook execution.
 
-## 3. IN SIMPLE TERMS
-After the system finishes its follow-up tasks on a save, it now reports how long those tasks took and whether any caches were cleared. This gives you a clearer picture of what happened behind the scenes, like a shipping notification that tells you not just "delivered" but also the delivery time and which steps were completed.
-## 4. SOURCE FILES
+---
+
+## 3. SOURCE FILES
+
 ### Implementation
 
 | File | Layer | Role |
@@ -96,8 +95,10 @@ After the system finishes its follow-up tasks on a save, it now reports how long
 | `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
 | `mcp_server/tests/vector-index-impl.vitest.ts` | Vector index implementation |
 
-## 5. SOURCE METADATA
+---
+
+## 4. SOURCE METADATA
+
 - Group: UX hooks automation (Phase 014)
 - Source feature title: Mutation hook result contract expansion
 - Current reality source: feature_catalog.md
-
