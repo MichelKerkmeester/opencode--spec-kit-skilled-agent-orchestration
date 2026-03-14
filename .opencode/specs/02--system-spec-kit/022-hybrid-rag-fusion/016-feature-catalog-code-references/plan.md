@@ -25,8 +25,38 @@ Map each source file to its feature catalog entry and add concise `// Feature ca
 
 ---
 
+<!-- ANCHOR:technical-context -->
+## 2. TECHNICAL CONTEXT
+
+- Scope: comment-only updates in `.opencode/skill/system-spec-kit/mcp_server/` and `.opencode/skill/system-spec-kit/shared/`
+- Source of truth for names: feature catalog H1 headings in `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md`
+- Verification inputs: non-test stale-reference grep, handler coverage (40/40), script coverage (3/3), exact-name validation (0 invalid names), and `npm run typecheck`
+<!-- /ANCHOR:technical-context -->
+
+---
+
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
+
+- Inline traceability model: add `// Feature catalog: <feature-name>` at handler/module boundaries
+- Change boundary: comments only; no runtime behavior, API contracts, or logic paths changed
+- Validation model: static compile check, grep-based audits, and comment-only diff classification
+<!-- /ANCHOR:architecture -->
+
+---
+
+<!-- ANCHOR:implementation -->
+## 4. IMPLEMENTATION
+
+- Cleanup pass: remove or reword stale numbered-history comments in non-test TypeScript source
+- Annotation pass: add feature-catalog comments to all handlers and strong-match modules, including all in-scope scripts
+- Verification pass: run typecheck plus coverage and exact-name validation checks; record evidence in spec docs
+<!-- /ANCHOR:implementation -->
+
+---
+
 <!-- ANCHOR:execution -->
-## 2. EXECUTION STEPS
+## 5. EXECUTION STEPS
 
 ### Phase A: Cleanup stale references
 
@@ -55,7 +85,7 @@ Map each source file to its feature catalog entry and add concise `// Feature ca
 ---
 
 <!-- ANCHOR:dependencies -->
-## 3. ORDERING AND DEPENDENCIES
+## 6. ORDERING AND DEPENDENCIES
 
 ```
 A1-A3 (parallel scans)
@@ -70,7 +100,7 @@ A1-A3 (parallel scans)
 ---
 
 <!-- ANCHOR:scope-estimate -->
-## 4. ESTIMATED SCOPE
+## 7. ESTIMATED SCOPE
 
 | Category | File Count | Effort |
 |----------|------------|--------|

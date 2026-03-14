@@ -183,13 +183,13 @@ async function indexChunkedMemoryFile(
           if (vectorIndex.deleteMemory(existingChunk.id)) {
             // Record DELETE history only after confirmed deletion.
             try {
-              recordHistory(existingChunk.id, 'DELETE', filePath ?? null, null, 'mcp:chunking_reindex');
+              recordHistory(existingChunk.id, 'DELETE', filePath ?? null, null, 'mcp:chunking_reindex', parsed.specFolder);
             } catch (_histErr: unknown) { /* best-effort */ }
           }
         }
         if (vectorIndex.deleteMemory(existing.id)) {
           try {
-            recordHistory(existing.id, 'DELETE', filePath ?? null, null, 'mcp:chunking_reindex');
+            recordHistory(existing.id, 'DELETE', filePath ?? null, null, 'mcp:chunking_reindex', parsed.specFolder);
           } catch (_histErr: unknown) { /* best-effort */ }
         }
       }
@@ -380,13 +380,13 @@ async function indexChunkedMemoryFile(
               deletedIds.push(chunkRow.id);
               // Record DELETE history only after confirmed deletion.
               try {
-                recordHistory(chunkRow.id, 'DELETE', null, null, 'mcp:chunking_rollback');
+                recordHistory(chunkRow.id, 'DELETE', null, null, 'mcp:chunking_rollback', parsed.specFolder);
               } catch (_histErr: unknown) { /* best-effort */ }
             }
           }
           if (vectorIndex.deleteMemory(parentId)) {
             try {
-              recordHistory(parentId, 'DELETE', null, null, 'mcp:chunking_rollback');
+              recordHistory(parentId, 'DELETE', null, null, 'mcp:chunking_rollback', parsed.specFolder);
             } catch (_histErr: unknown) { /* best-effort */ }
           }
         } else if (childIds.length > 0) {
@@ -395,7 +395,7 @@ async function indexChunkedMemoryFile(
               deletedIds.push(childId);
               // Record DELETE history only after confirmed deletion.
               try {
-                recordHistory(childId, 'DELETE', null, null, 'mcp:chunking_rollback');
+                recordHistory(childId, 'DELETE', null, null, 'mcp:chunking_rollback', parsed.specFolder);
               } catch (_histErr: unknown) { /* best-effort */ }
             }
           }
@@ -506,7 +506,7 @@ async function indexChunkedMemoryFile(
       for (const oldChildId of oldChildIds) {
         if (vectorIndex.deleteMemory(oldChildId)) {
           try {
-            recordHistory(oldChildId, 'DELETE', filePath ?? null, null, 'mcp:chunking_reindex');
+            recordHistory(oldChildId, 'DELETE', filePath ?? null, null, 'mcp:chunking_reindex', parsed.specFolder);
           } catch (_histErr: unknown) { /* best-effort */ }
         }
       }
@@ -519,7 +519,7 @@ async function indexChunkedMemoryFile(
           for (const cid of childIds) {
             if (vectorIndex.deleteMemory(cid)) {
               try {
-                recordHistory(cid, 'DELETE', null, null, 'mcp:chunking_rollback');
+                recordHistory(cid, 'DELETE', null, null, 'mcp:chunking_rollback', parsed.specFolder);
               } catch (_histErr: unknown) { /* best-effort */ }
             }
           }

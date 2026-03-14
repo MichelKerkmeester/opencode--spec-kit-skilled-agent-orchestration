@@ -4,15 +4,14 @@
 
 - [1. OVERVIEW](#1--overview)
 - [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
+- [3. IN SIMPLE TERMS](#3--in-simple-terms)
+- [4. SOURCE FILES](#4--source-files)
+- [5. SOURCE METADATA](#5--source-metadata)
 
 ## 1. OVERVIEW
-
 This document captures the implemented behavior, source references, and validation scope for 3. MCP Configuration.
 
 ## 2. CURRENT REALITY
-
 | Name | Default | Type | Source File | Description |
 |---|---|---|---|---|
 | `MCP_ANCHOR_STRICT` | `false` | boolean | `lib/validation/preflight.ts` | When `'true'`, enforces strict anchor format validation during pre-flight checks. Invalid anchor IDs cause the save to be rejected. Default is lenient mode which logs warnings but does not block. |
@@ -23,12 +22,12 @@ This document captures the implemented behavior, source references, and validati
 | `MCP_MIN_CONTENT_LENGTH` | `10` | number | `lib/validation/preflight.ts` | Minimum content length in characters for a valid memory file. Files shorter than this are rejected at pre-flight. The quality gate Layer 1 requires at least 50 characters, so this lower floor catches truly empty files. |
 | `MCP_TOKEN_WARNING_THRESHOLD` | `0.8` | number | `lib/validation/preflight.ts` | Fraction of `MCP_MAX_MEMORY_TOKENS` at which a token budget warning is emitted. At 0.8, a warning fires when estimated tokens exceed 80% of the max. |
 
-## 3. SOURCE FILES
-
+## 3. IN SIMPLE TERMS
+These are guardrail settings for save-time validation. They define size limits, token estimates, duplicate thresholds, and anchor strictness so problematic files can be caught before indexing.
+## 4. SOURCE FILES
 Source file references are included in the flag table above.
 
-## 4. SOURCE METADATA
-
+## 5. SOURCE METADATA
 - Group: Feature Flag Reference
 - Source feature title: 3. MCP Configuration
 - Current reality source: feature_catalog.md

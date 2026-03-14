@@ -670,22 +670,22 @@ async function removeIndexedMemoriesForFile(filePath: string): Promise<void> {
   }
 
   const canonicalPath = getCanonicalPathKey(filePath);
-  let rows: Array<{ id: number }> = [];
+  let rows: Array<{ id: number; spec_folder: string | null }> = [];
 
   try {
     rows = database.prepare(`
-      SELECT id
+      SELECT id, spec_folder
       FROM memory_index
       WHERE canonical_file_path = ? OR file_path = ?
       ORDER BY id ASC
-    `).all(canonicalPath, filePath) as Array<{ id: number }>;
+    `).all(canonicalPath, filePath) as Array<{ id: number; spec_folder: string | null }>;
   } catch (_error: unknown) {
     rows = database.prepare(`
-      SELECT id
+      SELECT id, spec_folder
       FROM memory_index
       WHERE file_path = ?
       ORDER BY id ASC
-    `).all(filePath) as Array<{ id: number }>;
+    `).all(filePath) as Array<{ id: number; spec_folder: string | null }>;
   }
 
   let deletedCount = 0;
@@ -695,7 +695,7 @@ async function removeIndexedMemoriesForFile(filePath: string): Promise<void> {
         deletedCount += 1;
         // Record DELETE history only after confirmed deletion.
         try {
-          recordHistory(row.id, 'DELETE', filePath ?? null, null, 'mcp:file_watcher');
+          recordHistory(row.id, 'DELETE', filePath ?? null, null, 'mcp:file_watcher', row.spec_folder ?? null);
         } catch (_histErr: unknown) {
           // History recording is best-effort in file-watcher path
         }

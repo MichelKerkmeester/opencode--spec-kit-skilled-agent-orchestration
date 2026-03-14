@@ -1,7 +1,7 @@
 ---
 title: "Implementation Summary: 016-Feature Catalog Code References"
 description: "Completed implementation and verification summary for feature catalog code references."
-# SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2
+SPECKIT_TEMPLATE_SOURCE: "impl-summary-core | v2.2"
 trigger_phrases:
   - "implementation summary"
   - "feature catalog references"
@@ -31,7 +31,7 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Feature catalog traceability is now embedded directly in source comments for this implementation scope. Every handler entry point now includes a `// Feature catalog: <feature-name>` reference, and additional strongly mapped files in `mcp_server` and `shared` received the same convention. Stale sprint, phase, and spec-history references were removed or reworded from non-test source comments.
+Feature catalog traceability is now embedded directly in source comments for this implementation scope. Every handler entry point now includes a `// Feature catalog: <feature-name>` reference, additional strongly mapped files in `mcp_server` and `shared` received the same convention, and `mcp_server/scripts` reached full coverage for in-scope TypeScript scripts (3/3 annotated). Stale sprint, phase, and spec-history references were removed or reworded from non-test source comments, and final non-test source grep now returns no stale numbered-history matches.
 
 ### Feature Catalog Traceability
 
@@ -55,7 +55,7 @@ Non-test source comments no longer rely on stale project-history labels. Comment
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-Implementation used a comment-only pass: map files to feature catalog names, apply `// Feature catalog:` comments at clear boundaries, then verify typecheck, stale-reference cleanup, handler coverage, and diff classification. Verification showed no behavioral changes.
+Implementation used a comment-only pass: map files to feature catalog names, apply `// Feature catalog:` comments at clear boundaries, then verify typecheck, stale-reference cleanup, handler coverage, script coverage, exact-name validation against feature catalog H1 headings, and diff classification. Verification showed no behavioral changes.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -81,6 +81,8 @@ Implementation used a comment-only pass: map files to feature catalog names, app
 | `npm run typecheck` in `.opencode/skill/system-spec-kit` | PASS (exit 0) |
 | Non-test source grep for stale refs | PASS (no matches) |
 | Handler coverage check (`handlers/*.ts` vs files with `// Feature catalog:`) | PASS (40 handler `.ts` files, 40 with `// Feature catalog:`) |
+| Script coverage check (`mcp_server/scripts/*.ts` vs files with `// Feature catalog:`) | PASS (3 TypeScript scripts, 3 annotated) |
+| Exact-name validation against feature catalog H1 headings | PASS (0 invalid names) |
 | Comment-only diff audit for `mcp_server` + `shared` | PASS (`{\"comment_only\": true}`) |
 <!-- /ANCHOR:verification -->
 

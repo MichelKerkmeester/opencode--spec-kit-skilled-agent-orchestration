@@ -13,6 +13,7 @@ type TestMemoryInput = {
   spec_folder?: string;
   file_path?: string;
   title?: string;
+  content_text?: string;
   importance_tier?: string;
   created_at?: string;
   last_accessed?: number;
@@ -24,6 +25,10 @@ type TestMemoryInput = {
 };
 
 let db: TestDatabase | null = null;
+
+afterEach(() => {
+  archivalManager.__setEmbeddingsModuleForTests(null);
+});
 
 function requireDb(): TestDatabase {
   if (!db) {
@@ -45,6 +50,7 @@ function setupTestDb(): TestDatabase {
       spec_folder TEXT NOT NULL,
       file_path TEXT NOT NULL,
       title TEXT,
+      content_text TEXT,
       importance_tier TEXT DEFAULT 'normal',
       importance_weight REAL DEFAULT 0.5,
       created_at TEXT NOT NULL,
@@ -78,13 +84,14 @@ function insertTestMemory(data: TestMemoryInput): Database.RunResult {
     throw new Error('Test database not initialized');
   }
   const stmt = db.prepare(`
-    INSERT INTO memory_index (spec_folder, file_path, title, importance_tier, created_at, last_accessed, access_count, confidence, is_pinned, stability, half_life_days)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO memory_index (spec_folder, file_path, title, content_text, importance_tier, created_at, last_accessed, access_count, confidence, is_pinned, stability, half_life_days)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `);
   return stmt.run(
     data.spec_folder || 'test-spec',
     data.file_path || '/test/memory.md',
     data.title || 'Test Memory',
+    data.content_text || 'Test memory content',
     data.importance_tier || 'normal',
     data.created_at || new Date().toISOString(),
     data.last_accessed || 0,
@@ -359,6 +366,55 @@ describe('Archival Manager (T059)', () => {
         .prepare('SELECT rowid FROM vec_memories WHERE rowid = ?')
         .get(BigInt(memory_id));
       expect(vectorRow).toBeUndefined();
+    });
+
+    it('T059-012b: unarchiveMemory rebuilds vec_memories row when embedding generation succeeds', async () => {
+      const oldDate = new Date();
+      oldDate.setDate(oldDate.getDate() - 100);
+
+      const result = insertTestMemory({
+        title: 'Vector Rebuild Target',
+        content_text: 'Rebuild vector content on unarchive',
+        created_at: oldDate.toISOString(),
+        importance_tier: 'normal',
+      });
+      const memory_id = toMemoryId(result.lastInsertRowid);
+
+      requireDb().exec('CREATE TABLE IF NOT EXISTS vec_memories (embedding BLOB)');
+      requireDb()
+        .prepare('INSERT INTO vec_memories (rowid, embedding) VALUES (?, ?)')
+        .run(BigInt(memory_id), Buffer.from('initial-vector'));
+
+      let embeddingCalls = 0;
+      archivalManager.__setEmbeddingsModuleForTests({
+        generateDocumentEmbedding: async () => {
+          embeddingCalls += 1;
+          return new Float32Array([0.11, 0.22, 0.33]);
+        },
+      });
+
+      expect(archivalManager.archiveMemory(memory_id)).toBe(true);
+
+      const archivedVector = requireDb()
+        .prepare('SELECT rowid FROM vec_memories WHERE rowid = ?')
+        .get(BigInt(memory_id));
+      expect(archivedVector).toBeUndefined();
+
+      expect(archivalManager.unarchiveMemory(memory_id)).toBe(true);
+
+      let restoredVector = undefined as unknown;
+      for (let attempt = 0; attempt < 20; attempt += 1) {
+        restoredVector = requireDb()
+          .prepare('SELECT rowid FROM vec_memories WHERE rowid = ?')
+          .get(BigInt(memory_id));
+        if (restoredVector) {
+          break;
+        }
+        await new Promise((resolve) => setTimeout(resolve, 5));
+      }
+
+      expect(embeddingCalls).toBeGreaterThan(0);
+      expect(restoredVector).toBeDefined();
     });
 
     it('T059-011c: archiveMemory suppresses vec_memories no-such-table cleanup errors', () => {

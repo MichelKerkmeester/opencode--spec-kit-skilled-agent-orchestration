@@ -1,179 +1,132 @@
-// TEST: INCREMENTAL INDEX
-import { describe, it, expect } from 'vitest';
+// TEST: INCREMENTAL INDEX (legacy placeholder replacement)
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import Database from 'better-sqlite3';
+import * as fs from 'node:fs';
+import * as os from 'node:os';
+import * as path from 'node:path';
+import * as incrementalIndex from '../lib/storage/incremental-index';
 
-// Legacy placeholder suite retained only as a deferred spec stub.
-// Real behavioral coverage lives in incremental-index-v2.vitest.ts.
-import * as incrementalIndex from '../lib/storage/incremental-index.js';
+function createDb(): Database.Database {
+  const db = new Database(':memory:');
+  db.exec(`
+    CREATE TABLE memory_index (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      spec_folder TEXT NOT NULL,
+      file_path TEXT NOT NULL,
+      file_mtime_ms REAL,
+      content_hash TEXT,
+      embedding_status TEXT DEFAULT 'success'
+    );
+  `);
+  return db;
+}
 
-describe.skip('Incremental Indexing (T064-T066) [deferred - requires DB test fixtures]', () => {
+function createTempFile(content = 'test content'): string {
+  const filePath = path.join(
+    os.tmpdir(),
+    `inc-index-${Date.now()}-${Math.random().toString(36).slice(2)}.md`
+  );
+  fs.writeFileSync(filePath, content, 'utf8');
+  return filePath;
+}
 
-  describe('T064 - Content Hash + Mtime Tracking', () => {
-    it('should return content hash and mtime from getFileMetadata', () => {
-      expect(true).toBe(true);
-    });
+describe('Incremental index behavior (concrete)', () => {
+  let db: Database.Database;
+  const tempFiles: string[] = [];
 
-    it('should return null for non-existent file', () => {
-      expect(true).toBe(true);
-    });
-
-    it('should match crypto SHA256 hash', () => {
-      expect(true).toBe(true);
-    });
-
-    it('should return correct file_size', () => {
-      expect(true).toBe(true);
-    });
-
-    it('should return valid ISO mtime_iso', () => {
-      expect(true).toBe(true);
-    });
-
-    it('should handle empty file', () => {
-      expect(true).toBe(true);
-    });
-
-    it('should handle unicode content', () => {
-      expect(true).toBe(true);
-    });
+  beforeEach(() => {
+    db = createDb();
+    incrementalIndex.init(db);
   });
 
-  describe('T065 - shouldReindex Function', () => {
-    it('should return reindex:true for new file (not in DB)', () => {
-      expect(true).toBe(true);
-    });
-
-    it('should return reindex:true when force=true', () => {
-      expect(true).toBe(true);
-    });
-
-    it('should return reindex:false for unchanged file (mtime fast-path)', () => {
-      expect(true).toBe(true);
-    });
-
-    it('should return reindex:true for pending embedding status', () => {
-      expect(true).toBe(true);
-    });
-
-    it('should detect content change via hash comparison', () => {
-      expect(true).toBe(true);
-    });
-
-    it('should return reindex:true for failed embedding status', () => {
-      expect(true).toBe(true);
-    });
-
-    it('should return error for non-existent file', () => {
-      expect(true).toBe(true);
-    });
-
-    it('should detect content_unchanged with update_mtime flag', () => {
-      expect(true).toBe(true);
-    });
-
-    it('should include old_hash and new_hash for content_changed', () => {
-      expect(true).toBe(true);
-    });
+  afterEach(() => {
+    for (const filePath of tempFiles) {
+      fs.rmSync(filePath, { force: true });
+    }
+    tempFiles.length = 0;
+    db.close();
   });
 
-  describe('T066 - Batch Categorization', () => {
-    it('should separate files into needs_indexing, unchanged, not_found', () => {
-      expect(true).toBe(true);
-    });
-
-    it('should export MTIME_FAST_PATH_MS constant', () => {
-      expect(true).toBe(true);
-    });
-
-    it('should handle not_found files', () => {
-      expect(true).toBe(true);
-    });
-
-    it('should include needs_mtime_update category', () => {
-      expect(true).toBe(true);
-    });
-
-    it('should reindex all files when force=true', () => {
-      expect(true).toBe(true);
-    });
-
-    // T004: Renamed from the legacy mtime-only counter; still deferred (requires DB fixtures)
-    it('should track mtime_changed correctly', () => {
-      expect(true).toBe(true);
-    });
+  it('exports a positive MTIME fast-path threshold', () => {
+    expect(incrementalIndex.MTIME_FAST_PATH_MS).toBe(1000);
+    expect(incrementalIndex.MTIME_FAST_PATH_MS).toBeGreaterThan(0);
   });
 
-  describe('getStoredMetadata', () => {
-    it('should return null for non-existent file', () => {
-      expect(true).toBe(true);
-    });
-
-    it('should return stored data correctly', () => {
-      expect(true).toBe(true);
-    });
+  it('returns missing metadata shape for unknown files', () => {
+    const meta = incrementalIndex.getFileMetadata('/definitely/missing/path.md');
+    expect(meta.exists).toBe(false);
+    expect(meta.mtime).toBe(0);
+    expect(meta.size).toBe(0);
   });
 
-  describe('updateFileMtime and setIndexedMtime', () => {
-    it('should call database with correct params for updateFileMtime', () => {
-      expect(true).toBe(true);
-    });
+  it('marks an on-disk file as new when no stored metadata exists', () => {
+    const filePath = createTempFile('new file content');
+    tempFiles.push(filePath);
 
-    it('should call database with correct params for setIndexedMtime', () => {
-      expect(true).toBe(true);
-    });
+    expect(incrementalIndex.shouldReindex(filePath)).toBe('new');
   });
 
-  describe('batchUpdateMtimes', () => {
-    it('should return 0 for empty array', () => {
-      expect(true).toBe(true);
-    });
+  it('returns skip when mtime is unchanged and embedding status is success', () => {
+    const filePath = createTempFile('stable content');
+    tempFiles.push(filePath);
+    const mtime = fs.statSync(filePath).mtimeMs;
 
-    it('should process multiple updates', () => {
-      expect(true).toBe(true);
-    });
+    db.prepare(`
+      INSERT INTO memory_index (spec_folder, file_path, file_mtime_ms, content_hash, embedding_status)
+      VALUES (?, ?, ?, ?, ?)
+    `).run('specs/test', filePath, mtime, 'hash-ok', 'success');
+
+    expect(incrementalIndex.shouldReindex(filePath)).toBe('skip');
   });
 
-  describe('Backward Compatibility Aliases', () => {
-    it('should export shouldReindex as alias', () => {
-      expect(true).toBe(true);
-    });
+  it('forces reindex when embedding status is pending even if mtime is unchanged', () => {
+    const filePath = createTempFile('pending content');
+    tempFiles.push(filePath);
+    const mtime = fs.statSync(filePath).mtimeMs;
 
-    it('should export getFileMetadata as alias', () => {
-      expect(true).toBe(true);
-    });
+    db.prepare(`
+      INSERT INTO memory_index (spec_folder, file_path, file_mtime_ms, content_hash, embedding_status)
+      VALUES (?, ?, ?, ?, ?)
+    `).run('specs/test', filePath, mtime, 'hash-pending', 'pending');
 
-    it('should export getStoredMetadata as alias', () => {
-      expect(true).toBe(true);
-    });
-
-    it('should export updateFileMtime as alias', () => {
-      expect(true).toBe(true);
-    });
-
-    it('should export setIndexedMtime as alias', () => {
-      expect(true).toBe(true);
-    });
-
-    it('should export categorizeFilesForIndexing as alias', () => {
-      expect(true).toBe(true);
-    });
-
-    it('should export batchUpdateMtimes as alias', () => {
-      expect(true).toBe(true);
-    });
+    expect(incrementalIndex.shouldReindex(filePath)).toBe('reindex');
   });
 
-  describe('Module Exports Verification', () => {
-    it('should export all expected functions and constants', () => {
-      const expectedExports = [
-        'should_reindex', 'get_file_metadata', 'get_stored_metadata',
-        'update_file_mtime', 'set_indexed_mtime',
-        'categorize_files_for_indexing', 'batch_update_mtimes',
-        'MTIME_FAST_PATH_MS',
-        'shouldReindex', 'getFileMetadata', 'getStoredMetadata',
-        'updateFileMtime', 'setIndexedMtime',
-        'categorizeFilesForIndexing', 'batchUpdateMtimes',
-      ];
-      expect(expectedExports).toHaveLength(15);
-    });
+  it('categorizes files into toIndex, toSkip, and toDelete', () => {
+    const newFile = createTempFile('brand new');
+    const unchangedFile = createTempFile('unchanged');
+    tempFiles.push(newFile, unchangedFile);
+
+    const unchangedMtime = fs.statSync(unchangedFile).mtimeMs;
+    db.prepare(`
+      INSERT INTO memory_index (spec_folder, file_path, file_mtime_ms, content_hash, embedding_status)
+      VALUES (?, ?, ?, ?, ?)
+    `).run('specs/test', unchangedFile, unchangedMtime, 'hash-unchanged', 'success');
+
+    const deletedPath = `/tmp/deleted-${Date.now()}.md`;
+    db.prepare(`
+      INSERT INTO memory_index (spec_folder, file_path, file_mtime_ms, content_hash, embedding_status)
+      VALUES (?, ?, ?, ?, ?)
+    `).run('specs/test', deletedPath, Date.now(), 'hash-deleted', 'success');
+
+    const categorized = incrementalIndex.categorizeFilesForIndexing([newFile, unchangedFile]);
+
+    expect(categorized.toIndex).toContain(newFile);
+    expect(categorized.toSkip).toContain(unchangedFile);
+    expect(categorized.toDelete).toContain(deletedPath);
+  });
+
+  it('updates mtimes in batch and reports updated counts', () => {
+    const filePath = createTempFile('batch-update');
+    tempFiles.push(filePath);
+
+    db.prepare(`
+      INSERT INTO memory_index (spec_folder, file_path, file_mtime_ms, content_hash, embedding_status)
+      VALUES (?, ?, ?, ?, ?)
+    `).run('specs/test', filePath, 0, 'hash-batch', 'success');
+
+    const result = incrementalIndex.batchUpdateMtimes([filePath]);
+    expect(result.updated).toBe(1);
+    expect(result.failed).toBe(0);
   });
 });

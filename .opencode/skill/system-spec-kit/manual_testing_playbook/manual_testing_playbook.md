@@ -433,7 +433,7 @@ These 29 catalog entries are explicitly documented here even when validation is 
 | `01--retrieval/09-tool-result-extraction-to-working-memory.md` | Automated only | Covered by `working-memory.vitest.ts`, `working-memory-event-decay.vitest.ts`, and `checkpoint-working-memory.vitest.ts` |
 | `02--mutation/07-namespace-management-crud-tools.md` | Deferred | Not yet implemented |
 | `02--mutation/09-correction-tracking-with-undo.md` | Automated only | Covered by mutation regression tests; no dedicated operator scenario yet |
-| `02--mutation/10-per-memory-history-log.md` | Automated only | Covered by mutation/history suites; dedicated manual scenario still pending |
+| `02--mutation/10-per-memory-history-log.md` | Manual + automated | Covered by mutation/history suites and dedicated direct manual scenario M-007 |
 | `10--graph-signal-activation/09-anchor-tags-as-graph-nodes.md` | Deferred | Planned for Sprint 019; not yet implemented |
 | `11--scoring-and-calibration/15-tool-level-ttl-cache.md` | Automated only | Cache policy behavior is exercised in scoring/cache tests |
 | `11--scoring-and-calibration/16-access-driven-popularity-scoring.md` | Automated only | Popularity heuristics are validated by ranking tests |
@@ -533,6 +533,17 @@ These 29 catalog entries are explicitly documented here even when validation is 
 - Evidence: save stdout showing Step 3.5 enrichment, absence of false alignment aborts for matching code files, and saved memory content/search hits reflecting spec/git-derived context.
 - Pass: stateless save succeeds for matching files, emits provenance-backed context, and still blocks unrelated captures when overlap is genuinely low.
 - Fail triage: inspect `input-normalizer.ts` relevance filtering, compare captured file paths to the spec's files-to-change table, verify git scope includes the declared code paths, then rerun.
+
+### M-007 Feature 09 Direct Manual Scenario (Per-memory History Log)
+- Prompt: `Run direct manual verification for per-memory history log behavior (feature 09 gap closure).`
+- Commands:
+  - `memory_save({ filePath:"<sandbox-memory-file>", force:true })`
+  - `memory_save({ filePath:"<sandbox-memory-file>", force:true })`
+  - `memory_search({ query:"<unique phrase from sandbox memory>", specFolder:"<sandbox-spec>", includeContent:true, limit:5 })`
+- Expected: repeated save/update activity is observable via retrieval output and memory metadata remains coherent for the same memory lineage.
+- Evidence: both save outputs + follow-up search output showing the persisted memory content and metadata continuity.
+- Pass: direct operator run confirms per-memory history behavior without relying only on automated suites.
+- Fail triage: verify sandbox file path and spec scope -> rerun with `force:true` -> inspect memory metadata fields returned from save/search outputs.
 
 ## Gemini Overlay Scenario Packs
 

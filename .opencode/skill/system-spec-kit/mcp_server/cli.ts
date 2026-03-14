@@ -290,12 +290,12 @@ function runBulkDelete(): void {
   }
 
   // Fetch IDs for deletion
-  let selectSql = 'SELECT id FROM memory_index WHERE importance_tier = ?';
+  let selectSql = 'SELECT id, spec_folder FROM memory_index WHERE importance_tier = ?';
   const selectParams: unknown[] = [tier];
   if (specFolder) { selectSql += ' AND spec_folder = ?'; selectParams.push(specFolder); }
   if (olderThanDays) { selectSql += ` AND created_at < datetime('now', '-' || ? || ' days')`; selectParams.push(parseInt(olderThanDays, 10)); }
 
-  const toDelete = db.prepare(selectSql).all(...selectParams) as Array<{ id: number }>;
+  const toDelete = db.prepare(selectSql).all(...selectParams) as Array<{ id: number; spec_folder: string | null }>;
 
   // Initialize causal edges for cleanup
   causalEdges.init(db);
@@ -311,7 +311,7 @@ function runBulkDelete(): void {
         deletedIds.push(memory.id);
         // Record DELETE history only after confirmed deletion.
         try {
-          recordHistory(memory.id, 'DELETE', null, null, 'mcp:cli_bulk_delete');
+          recordHistory(memory.id, 'DELETE', null, null, 'mcp:cli_bulk_delete', memory.spec_folder ?? null);
         } catch (_histErr: unknown) {
           // History recording is best-effort
         }

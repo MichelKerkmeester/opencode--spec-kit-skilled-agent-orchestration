@@ -4,15 +4,14 @@
 
 - [1. OVERVIEW](#1--overview)
 - [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
+- [3. IN SIMPLE TERMS](#3--in-simple-terms)
+- [4. SOURCE FILES](#4--source-files)
+- [5. SOURCE METADATA](#5--source-metadata)
 
 ## 1. OVERVIEW
-
 This document captures the implemented behavior, source references, and validation scope for 6. Debug and Telemetry.
 
 ## 2. CURRENT REALITY
-
 | Name | Default | Type | Source File | Description |
 |---|---|---|---|---|
 | `DEBUG_TRIGGER_MATCHER` | _(unset)_ | string | `lib/parsing/trigger-matcher.ts` | When set to any non-empty value, emits debug-level output for trigger phrase matching operations. Useful for diagnosing why a particular memory is or is not matching a given prompt. |
@@ -29,12 +28,12 @@ This document captures the implemented behavior, source references, and validati
 | `SPECKIT_HYDRA_SHARED_MEMORY` | `false` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the shared-memory roadmap flag. Used by roadmap snapshots and shared-memory rollout compatibility checks during the rename window. |
 | `SPECKIT_CONSUMPTION_LOG` | inert | boolean | `lib/telemetry/consumption-logger.ts` | (Also listed under Search Pipeline.) Deprecated and inert. See category 1 for full description. |
 
-## 3. SOURCE FILES
-
+## 3. IN SIMPLE TERMS
+These settings control diagnostic visibility. They adjust log verbosity and optional telemetry so you can inspect runtime behavior during debugging while keeping production output stable by default.
+## 4. SOURCE FILES
 Source file references are included in the flag table above.
 
-## 4. SOURCE METADATA
-
+## 5. SOURCE METADATA
 - Group: Feature Flag Reference
 - Source feature title: 6. Debug and Telemetry
 - Current reality source: feature_catalog.md

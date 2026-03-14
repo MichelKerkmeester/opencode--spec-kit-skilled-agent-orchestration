@@ -4,15 +4,14 @@
 
 - [1. OVERVIEW](#1--overview)
 - [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
+- [3. IN SIMPLE TERMS](#3--in-simple-terms)
+- [4. SOURCE FILES](#4--source-files)
+- [5. SOURCE METADATA](#5--source-metadata)
 
 ## 1. OVERVIEW
-
 This document captures the implemented behavior, source references, and validation scope for 1. Search Pipeline Features (SPECKIT_*).
 
 ## 2. CURRENT REALITY
-
 | Name | Default | Type | Source File | Description |
 |---|---|---|---|---|
 | `SPECKIT_ABLATION` | `false` | boolean | `lib/eval/eval-metrics.ts` | Activates the ablation study framework. Must be explicitly set to `'true'` to run controlled channel ablations via MCP; when `false`, the handler rejects `eval_run_ablation` calls with a disabled-flag error. |
@@ -90,12 +89,12 @@ This document captures the implemented behavior, source references, and validati
 | `SPECKIT_TRM` | `true` | boolean | `lib/search/search-flags.ts` | Enables the Transparent Reasoning Module (evidence-gap detection). Stage 4 runs a TRM Z-score analysis to detect evidence gaps and annotate results accordingly. |
 | `SPECKIT_WORKING_MEMORY` | `true` | boolean | `lib/cognitive/working-memory.ts` | Enables the working memory system which tracks attention scores for memories seen in the current session. Working memory context is injected during resume mode and influences session-boost scoring. |
 
-## 3. SOURCE FILES
-
+## 3. IN SIMPLE TERMS
+These flags are the main control panel for how search works. They turn major retrieval behaviors on or off, like fallback logic, reranking, telemetry, and rollout gates, so you can tune quality, speed, and safety without changing code.
+## 4. SOURCE FILES
 Source file references are included in the flag table above.
 
-## 4. SOURCE METADATA
-
+## 5. SOURCE METADATA
 - Group: Feature Flag Reference
 - Source feature title: 1. Search Pipeline Features (SPECKIT_*)
 - Current reality source: feature_catalog.md

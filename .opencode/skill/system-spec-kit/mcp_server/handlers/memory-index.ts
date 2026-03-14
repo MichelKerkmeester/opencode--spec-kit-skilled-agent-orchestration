@@ -231,11 +231,22 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
 
     for (const staleRecordId of staleRecordIds) {
       try {
+        const staleSnapshot = database?.prepare(
+          'SELECT spec_folder, file_path FROM memory_index WHERE id = ?'
+        ).get(staleRecordId) as { spec_folder?: string | null; file_path?: string | null } | undefined;
+
         if (vectorIndex.deleteMemory(staleRecordId)) {
           deleted++;
           // Record DELETE history only after confirmed deletion.
           try {
-            recordHistory(staleRecordId, 'DELETE', null, null, 'mcp:memory_index_scan');
+            recordHistory(
+              staleRecordId,
+              'DELETE',
+              staleSnapshot?.file_path ?? null,
+              null,
+              'mcp:memory_index_scan',
+              staleSnapshot?.spec_folder ?? null,
+            );
           } catch (_histErr: unknown) {
             // History recording is best-effort
           }

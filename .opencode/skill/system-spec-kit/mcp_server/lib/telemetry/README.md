@@ -212,6 +212,26 @@ When `SPECKIT_EXTENDED_TELEMETRY` is disabled (default), the minimal `RetrievalT
 | `bounded` | `boolean` | Whether bounded-update safeguards remained active |
 | `maxDeltaApplied` | `number` | Largest score delta the adaptive proposal was allowed to apply |
 
+### TraceSamplingOptions
+
+**Purpose**: Configure `sampleTracePayloads()` filtering behavior when selecting trace payload examples.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `limit` | `number \| undefined` | Maximum number of sampled payloads to return |
+| `minGraphInjected` | `number \| undefined` | Minimum `graphHealth.totalGraphInjected` required for inclusion |
+| `killSwitchOnly` | `boolean \| undefined` | Restrict samples to payloads where `graphHealth.killSwitchActive` is `true` |
+
+### SampledTracePayload
+
+**Purpose**: Return shape from `sampleTracePayloads()` containing sanitized trace details and graph-health context.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `timestamp` | `string \| null` | Retrieval timestamp used for secondary sort and inspection |
+| `graphHealth` | `GraphHealthMetrics` | Graph-health counters associated with the sampled retrieval payload |
+| `tracePayload` | `TelemetryTracePayload` | Sanitized canonical retrieval trace payload |
+
 ### Scoring Observability (`scoring-observability.ts`)
 
 **Purpose**: Sampled logging of N4 cold-start boost and TM-01 interference penalty values.

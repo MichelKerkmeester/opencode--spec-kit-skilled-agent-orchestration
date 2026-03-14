@@ -149,7 +149,7 @@ async function handleMemoryBulkDelete(args: BulkDeleteArgs): Promise<MCPResponse
   }
 
   // Fetch IDs for deletion (needed for causal edge cleanup and ledger)
-  let selectSql = 'SELECT id, content_hash, file_path FROM memory_index WHERE importance_tier = ?';
+  let selectSql = 'SELECT id, content_hash, file_path, spec_folder FROM memory_index WHERE importance_tier = ?';
   const selectParams: unknown[] = [tier];
 
   if (specFolder) {
@@ -166,6 +166,7 @@ async function handleMemoryBulkDelete(args: BulkDeleteArgs): Promise<MCPResponse
     id: number;
     content_hash: string | null;
     file_path: string | null;
+    spec_folder: string | null;
   }>;
 
   // Perform deletion in a transaction
@@ -179,7 +180,14 @@ async function handleMemoryBulkDelete(args: BulkDeleteArgs): Promise<MCPResponse
       if (vectorIndex.deleteMemory(memory.id)) {
         // Record DELETE history after confirmed delete (no FK, history rows survive).
         try {
-          recordHistory(memory.id, 'DELETE', memory.file_path ?? null, null, 'mcp:memory_bulk_delete');
+          recordHistory(
+            memory.id,
+            'DELETE',
+            memory.file_path ?? null,
+            null,
+            'mcp:memory_bulk_delete',
+            memory.spec_folder ?? null,
+          );
         } catch (_histErr: unknown) {
           // History recording is best-effort inside bulk delete
         }

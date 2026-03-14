@@ -1352,7 +1352,7 @@ export function verify_integrity(options: { autoClean?: boolean } = {}): { total
   const find_orphaned_chunks = () => {
     try {
       return database.prepare(`
-        SELECT id, parent_id, chunk_index, chunk_label
+        SELECT id, parent_id, chunk_index, chunk_label, spec_folder
         FROM memory_index
         WHERE parent_id IS NOT NULL
           AND NOT EXISTS (
@@ -1360,7 +1360,7 @@ export function verify_integrity(options: { autoClean?: boolean } = {}): { total
             WHERE parent.id = memory_index.parent_id
               AND parent.parent_id IS NULL
           )
-      `).all() as Array<{ id: number; parent_id: number; chunk_index: number; chunk_label: string | null }>;
+      `).all() as Array<{ id: number; parent_id: number; chunk_index: number; chunk_label: string | null; spec_folder: string | null }>;
     } catch (e: unknown) {
       console.warn('[vector-index] Could not query orphaned chunks:', get_error_message(e));
       return [];
@@ -1380,7 +1380,7 @@ export function verify_integrity(options: { autoClean?: boolean } = {}): { total
           cleaned_chunks++;
           // Record DELETE history only after confirmed deletion.
           try {
-            recordHistory(chunk.id, 'DELETE', null, null, 'mcp:integrity_check');
+            recordHistory(chunk.id, 'DELETE', null, null, 'mcp:integrity_check', chunk.spec_folder ?? null);
           } catch (error: unknown) {
             logger.warn('Failed to record integrity-check delete history', {
               error: error instanceof Error ? error.message : String(error),

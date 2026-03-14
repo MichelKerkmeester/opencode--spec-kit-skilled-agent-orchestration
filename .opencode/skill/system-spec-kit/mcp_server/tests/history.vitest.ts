@@ -84,6 +84,42 @@ describe('History Tests (T508)', () => {
       expect(typeof id).toBe('string');
       expect(id.length).toBeGreaterThan(0);
     });
+
+    it('T508-01b: recordHistory normalizes non-string payloads', () => {
+      const id = mod.recordHistory(
+        1,
+        'UPDATE',
+        { before: 'legacy' },
+        { after: 'normalized' },
+        'mcp:normalize_test',
+        'specs/001-test',
+      );
+
+      const row = db.prepare('SELECT prev_value, new_value, actor, spec_folder FROM memory_history WHERE id = ?').get(id) as {
+        prev_value: string | null;
+        new_value: string | null;
+        actor: string;
+        spec_folder: string | null;
+      };
+
+      expect(row.prev_value).toBe('{"before":"legacy"}');
+      expect(row.new_value).toBe('{"after":"normalized"}');
+      expect(row.actor).toBe('mcp:normalize_test');
+      expect(row.spec_folder).toBe('specs/001-test');
+    });
+
+    it('T508-01c: undefined history payloads normalize to null values', () => {
+      const id = mod.recordHistory(1, 'UPDATE', undefined, undefined, '  mcp:trimmed_actor  ');
+      const row = db.prepare('SELECT prev_value, new_value, actor FROM memory_history WHERE id = ?').get(id) as {
+        prev_value: string | null;
+        new_value: string | null;
+        actor: string;
+      };
+
+      expect(row.prev_value).toBeNull();
+      expect(row.new_value).toBeNull();
+      expect(row.actor).toBe('mcp:trimmed_actor');
+    });
   });
 
   // Get History for Memory (T508-02)
@@ -163,6 +199,48 @@ describe('History Tests (T508)', () => {
       expect(folderStats).toBeDefined();
       expect(typeof folderStats.total).toBe('number');
     });
+
+    it('T508-05d: getHistoryStats includes delete events after memory row removal', () => {
+      const before = mod.getHistoryStats('specs/001-test');
+
+      db.prepare('INSERT INTO memory_index (id, title, spec_folder) VALUES (?, ?, ?)')
+        .run(9, 'Deleted Snapshot Memory', 'specs/001-test');
+      db.prepare('DELETE FROM memory_index WHERE id = ?').run(9);
+
+      mod.recordHistory(
+        9,
+        'DELETE',
+        '/tmp/specs/001-test/memory/deleted-snapshot.md',
+        null,
+        'mcp:memory_delete',
+        'specs/001-test',
+      );
+
+      const after = mod.getHistoryStats('specs/001-test');
+      expect(after.deletes).toBe(before.deletes + 1);
+      expect(after.total).toBe(before.total + 1);
+    });
+
+    it('T508-05e: getHistoryStats fallback still counts rows with null spec_folder when memory exists', () => {
+      const before = mod.getHistoryStats('specs/001-test');
+
+      db.prepare(`
+        INSERT INTO memory_history (id, memory_id, spec_folder, prev_value, new_value, event, actor)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+      `).run(
+        'legacy-null-spec-folder-row',
+        1,
+        null,
+        'legacy-before',
+        'legacy-after',
+        'UPDATE',
+        'system',
+      );
+
+      const after = mod.getHistoryStats('specs/001-test');
+      expect(after.updates).toBe(before.updates + 1);
+      expect(after.total).toBe(before.total + 1);
+    });
   });
 
   // Legacy Schema Migration (T508-06)
@@ -200,12 +278,13 @@ describe('History Tests (T508)', () => {
 
     it('T508-06d: migration preserves existing history rows', () => {
       const legacyRow = db.prepare(`
-        SELECT id, memory_id, prev_value, new_value, event, actor
+        SELECT id, memory_id, spec_folder, prev_value, new_value, event, actor
         FROM memory_history
         WHERE id = ?
       `).get(LEGACY_PRE_MIGRATION_ROW_ID) as {
         id: string;
         memory_id: number;
+        spec_folder: string | null;
         prev_value: string;
         new_value: string;
         event: string;
@@ -216,6 +295,7 @@ describe('History Tests (T508)', () => {
       expect(legacyRow!.memory_id).toBe(1);
       expect(legacyRow!.event).toBe('UPDATE');
       expect(legacyRow!.actor).toBe('system');
+      expect(legacyRow!.spec_folder).toBe('specs/001-test');
       expect(legacyRow!.prev_value).toBe('legacy-prev');
       expect(legacyRow!.new_value).toBe('legacy-new');
     });

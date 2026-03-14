@@ -98,7 +98,14 @@ async function handleMemoryDelete(args: DeleteArgs): Promise<MCPResponse> {
         // Record DELETE history after confirmed delete (no FK, history rows survive).
         // Placed after deleteMemory to avoid false audit rows for non-existent IDs.
         try {
-          recordHistory(numericId, 'DELETE', singleSnapshot?.file_path ?? null, null, 'mcp:memory_delete');
+          recordHistory(
+            numericId,
+            'DELETE',
+            singleSnapshot?.file_path ?? null,
+            null,
+            'mcp:memory_delete',
+            singleSnapshot?.spec_folder ?? null,
+          );
         } catch (_histErr: unknown) {
           // History recording is best-effort
         }
@@ -181,7 +188,14 @@ async function handleMemoryDelete(args: DeleteArgs): Promise<MCPResponse> {
           // Record DELETE history after confirmed delete (no FK, history rows survive).
           try {
             const snapshot = hashById.get(memory.id);
-            recordHistory(memory.id, 'DELETE', snapshot?.file_path ?? null, null, 'mcp:memory_delete');
+            recordHistory(
+              memory.id,
+              'DELETE',
+              snapshot?.file_path ?? null,
+              null,
+              'mcp:memory_delete',
+              snapshot?.spec_folder ?? null,
+            );
           } catch (_histErr: unknown) {
             // History recording is best-effort inside bulk delete
           }

@@ -510,7 +510,14 @@ export async function reconsolidate(
                 const deleteResult = db.prepare('DELETE FROM memory_index WHERE id = ?').run(conflictMemory.id);
                 if (deleteResult.changes > 0) {
                   try {
-                    recordHistory(conflictMemory.id!, 'DELETE', null, null, 'mcp:reconsolidation_cleanup');
+                    recordHistory(
+                      conflictMemory.id!,
+                      'DELETE',
+                      null,
+                      null,
+                      'mcp:reconsolidation_cleanup',
+                      conflictMemory.specFolder ?? null,
+                    );
                   } catch (_histErr: unknown) { /* best-effort */ }
                 }
                 // Clean up vector embedding if vec_memories table exists

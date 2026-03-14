@@ -135,6 +135,7 @@ Analysis required to build the full file list. The scope covers all `.ts` files 
 1. **Given** the updated codebase, **When** searching for sprint/phase/spec-number references in `.ts` comments, **Then** zero matches are found.
 2. **Given** any handler file, **When** opened by a developer, **Then** a feature catalog reference identifies which feature the handler implements.
 3. **Given** the feature catalog, **When** a reader looks up a feature by name, **Then** they can grep the codebase for that name and find the implementing code.
+4. **Given** all `// Feature catalog:` references in scope, **When** validated against feature catalog H1 headings, **Then** zero invalid feature names are found.
 <!-- /ANCHOR:success-criteria -->
 
 ---

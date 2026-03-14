@@ -424,20 +424,20 @@ export function delete_memory_by_path(spec_folder: string, file_path: string, an
   const canonicalPath = getCanonicalPathKey(file_path);
 
   const row = database.prepare(`
-    SELECT id FROM memory_index
+    SELECT id, spec_folder FROM memory_index
     WHERE spec_folder = ?
       AND (canonical_file_path = ? OR file_path = ?)
       AND (anchor_id = ? OR (anchor_id IS NULL AND ? IS NULL))
     ORDER BY id DESC
     LIMIT 1
-  `).get(spec_folder, canonicalPath, file_path, anchor_id, anchor_id) as { id: number } | undefined;
+  `).get(spec_folder, canonicalPath, file_path, anchor_id, anchor_id) as { id: number; spec_folder?: string | null } | undefined;
 
   if (row) {
     const deleted = delete_memory(row.id);
     if (deleted) {
       // Self-record DELETE history only after the delete succeeded.
       try {
-        recordHistory(row.id, 'DELETE', file_path ?? null, null, 'mcp:delete_by_path');
+        recordHistory(row.id, 'DELETE', file_path ?? null, null, 'mcp:delete_by_path', row.spec_folder ?? spec_folder);
       } catch (_histErr: unknown) { /* best-effort */ }
     }
     return deleted;
@@ -460,6 +460,19 @@ export function delete_memories(memory_ids: number[]): { deleted: number; failed
   let deleted = 0;
   let failed = 0;
 
+  const specFolderById = new Map<number, string | null>();
+  for (const id of memory_ids) {
+    if (!Number.isInteger(id) || id <= 0) {
+      continue;
+    }
+    try {
+      const row = database.prepare('SELECT spec_folder FROM memory_index WHERE id = ?').get(id) as { spec_folder?: string | null } | undefined;
+      specFolderById.set(id, row?.spec_folder ?? null);
+    } catch (_error: unknown) {
+      specFolderById.set(id, null);
+    }
+  }
+
   const delete_transaction = database.transaction(() => {
     let transactionDeleted = 0;
     let transactionFailed = 0;
@@ -480,7 +493,7 @@ export function delete_memories(memory_ids: number[]): { deleted: number; failed
           // Memory_history rows are intentionally preserved after deletion
           // So DELETE audit events recorded here persist as audit trail.
           try {
-            recordHistory(id, 'DELETE', null, null, 'mcp:delete_memories');
+            recordHistory(id, 'DELETE', null, null, 'mcp:delete_memories', specFolderById.get(id) ?? null);
           } catch (_histErr: unknown) { /* best-effort */ }
           transactionDeleted++;
         } else {

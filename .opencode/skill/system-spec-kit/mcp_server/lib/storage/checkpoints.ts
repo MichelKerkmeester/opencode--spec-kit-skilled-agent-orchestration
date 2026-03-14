@@ -697,7 +697,7 @@ function restoreCheckpoint(nameOrId: string | number, clearExisting: boolean = f
         if (checkpointSpecFolder) {
           // Record DELETE history only for currently-existing memories (not snapshot-only IDs)
           for (const memId of currentScopedMemoryIds) {
-            try { recordHistory(memId, 'DELETE', null, null, 'mcp:checkpoint_restore'); } catch (_histErr: unknown) { /* best-effort */ }
+            try { recordHistory(memId, 'DELETE', null, null, 'mcp:checkpoint_restore', checkpointSpecFolder); } catch (_histErr: unknown) { /* best-effort */ }
           }
           if (hasVectorSnapshot) {
             try { deleteRowsByIds(database, 'vec_memories', 'rowid', scopedMemoryIdsToReplace); } catch (_error: unknown) { /* table may not exist */ }
@@ -707,9 +707,9 @@ function restoreCheckpoint(nameOrId: string | number, clearExisting: boolean = f
           database.prepare('DELETE FROM memory_index WHERE spec_folder = ?').run(checkpointSpecFolder);
         } else {
           // Record DELETE history for all memories before full checkpoint restore
-          const allIds = database.prepare('SELECT id FROM memory_index').all() as Array<{ id: number }>;
+          const allIds = database.prepare('SELECT id, spec_folder FROM memory_index').all() as Array<{ id: number; spec_folder: string | null }>;
           for (const row of allIds) {
-            try { recordHistory(row.id, 'DELETE', null, null, 'mcp:checkpoint_restore'); } catch (_histErr: unknown) { /* best-effort */ }
+            try { recordHistory(row.id, 'DELETE', null, null, 'mcp:checkpoint_restore', row.spec_folder ?? null); } catch (_histErr: unknown) { /* best-effort */ }
           }
           database.prepare('DELETE FROM memory_index').run();
           // Only clear vec table when checkpoint contains vectors to restore.

@@ -51,6 +51,35 @@ function getBm25Index(): Bm25IndexModule | null {
   }
 }
 
+interface EmbeddingModule {
+  generateDocumentEmbedding: (content: string) => Promise<Float32Array | null>;
+}
+
+let embeddingsModule: EmbeddingModule | null = null;
+
+function getEmbeddings(): EmbeddingModule | null {
+  if (embeddingsModule !== null) return embeddingsModule;
+
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    embeddingsModule = require('../providers/embeddings') as EmbeddingModule;
+    return embeddingsModule;
+  } catch (_error: unknown) {
+    try {
+      // Support cache/cognitive symlink import path in some runtime setups.
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      embeddingsModule = require('../../providers/embeddings') as EmbeddingModule;
+      return embeddingsModule;
+    } catch (_error: unknown) {
+      return null;
+    }
+  }
+}
+
+function __setEmbeddingsModuleForTests(module: EmbeddingModule | null): void {
+  embeddingsModule = module;
+}
+
 /* ───────────────────────────────────────────────────────────────
    2. CONFIGURATION
 ----------------------------------------------------------------*/
@@ -422,11 +451,62 @@ function syncBm25OnUnarchive(memoryId: number): void {
   }
 }
 
+async function rebuildVectorOnUnarchive(memoryId: number): Promise<void> {
+  if (!db) return;
+
+  const embeddings = getEmbeddings();
+  if (!embeddings || typeof embeddings.generateDocumentEmbedding !== 'function') {
+    return;
+  }
+
+  const columns = getMemoryIndexColumns();
+  const sourceColumns = ['title', 'content_text', 'trigger_phrases', 'file_path']
+    .filter((column) => columns.has(column));
+
+  if (sourceColumns.length === 0) {
+    return;
+  }
+
+  const query = `SELECT ${sourceColumns.join(', ')} FROM memory_index WHERE id = ? AND is_archived = 0`;
+  const row = (db.prepare(query) as Database.Statement).get(memoryId) as Record<string, unknown> | undefined;
+  if (!row) {
+    return;
+  }
+
+  const embeddingInput = sourceColumns
+    .map((column) => {
+      const value = row[column];
+      return typeof value === 'string' ? value.trim() : '';
+    })
+    .filter(Boolean)
+    .join(' ');
+
+  if (!embeddingInput) {
+    return;
+  }
+
+  const embedding = await embeddings.generateDocumentEmbedding(embeddingInput);
+  if (!embedding) {
+    return;
+  }
+
+  const embeddingBuffer = Buffer.from(embedding.buffer, embedding.byteOffset, embedding.byteLength);
+  try {
+    db.prepare('DELETE FROM vec_memories WHERE rowid = ?').run(BigInt(memoryId));
+    db.prepare('INSERT INTO vec_memories (rowid, embedding) VALUES (?, ?)').run(BigInt(memoryId), embeddingBuffer);
+  } catch (error: unknown) {
+    const msg = error instanceof Error ? error.message : String(error);
+    if (!msg.includes('no such table') && !msg.includes('no such module')) {
+      console.warn(`[archival-manager] Vector unarchive sync failed: ${msg}`);
+    }
+  }
+}
+
 function syncVectorOnUnarchive(memoryId: number): void {
-  // Re-embedding requires the original text content and an embedding provider call.
-  // On unarchive, we log a notice that vectors need regeneration. The next memory_index_scan
-  // Or manual re-index will repopulate the vector entry.
-  console.warn(`[archival-manager] Memory ${memoryId} unarchived: vector re-embedding deferred to next index scan`);
+  void rebuildVectorOnUnarchive(memoryId).catch((error: unknown) => {
+    const msg = error instanceof Error ? error.message : String(error);
+    console.warn(`[archival-manager] Vector unarchive rebuild failed: ${msg}`);
+  });
 }
 
 function archiveMemory(memoryId: number): boolean {
@@ -646,6 +726,9 @@ export {
   getRecentErrors,
   resetStats,
   cleanup,
+
+  // Tests
+  __setEmbeddingsModuleForTests,
 };
 
 export type {

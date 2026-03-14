@@ -86,3 +86,7 @@ tmp/
 .opencode/skill/system-spec-kit/mcp_server/database/speckit-eval.db-wal
 
 .opencode/skill/system-spec-kit/mcp_server/database/speckit-eval.db-shm
+
+# Local symlinked repos
+# ───────────────────────────────────────────
+/anobel.com
