@@ -282,7 +282,7 @@ describe('formatSearchResults', () => {
         raw: 2,
         normalized: 1,
         appliedBonus: 0.03,
-        capApplied: false,
+        capApplied: true,
         rolloutState: 'bounded_runtime',
       },
     }];
@@ -309,7 +309,7 @@ describe('formatSearchResults', () => {
       raw: 2,
       normalized: 1,
       appliedBonus: 0.03,
-      capApplied: false,
+      capApplied: true,
       rolloutState: 'bounded_runtime',
     });
   });

@@ -14,6 +14,7 @@ import {
   isCrossEncoderEnabled,
   isContextHeadersEnabled,
   isFileWatcherEnabled,
+  isGraphSignalsEnabled,
   isLocalRerankerEnabled,
   isMMREnabled,
   isMultiQueryEnabled,
@@ -165,14 +166,22 @@ describe('Search Feature Flags', () => {
   it('supports explicit trace_only graph-walk rollout', () => {
     process.env.SPECKIT_GRAPH_WALK_ROLLOUT = 'trace_only';
     expect(resolveGraphWalkRolloutState()).toBe('trace_only');
+    expect(isGraphSignalsEnabled()).toBe(true);
     expect(getGraphWalkRolloutState()).toBe('trace_only');
     expect(isGraphWalkTraceEnabled()).toBe(true);
     expect(isGraphWalkRuntimeEnabled()).toBe(false);
   });
 
+  it('keeps broader graph signals enabled when only the graph-walk rollout is turned off', () => {
+    process.env.SPECKIT_GRAPH_WALK_ROLLOUT = 'off';
+    expect(resolveGraphWalkRolloutState()).toBe('off');
+    expect(isGraphSignalsEnabled()).toBe(true);
+  });
+
   it('disables graph-walk rollout when graph signals are turned off', () => {
     process.env.SPECKIT_GRAPH_SIGNALS = 'false';
     expect(resolveGraphWalkRolloutState()).toBe('off');
+    expect(isGraphSignalsEnabled()).toBe(false);
     expect(getGraphWalkRolloutState()).toBe('off');
     expect(isGraphWalkTraceEnabled()).toBe(false);
     expect(isGraphWalkRuntimeEnabled()).toBe(false);

@@ -589,6 +589,9 @@ export function applyGraphSignals(
       const graphWalkBonus = rolloutState === 'bounded_runtime'
         ? clampStage2GraphBonus(unclampedGraphWalkBonus)
         : 0;
+      const capApplied = rolloutState === 'bounded_runtime'
+        && graphWalk.raw > 0
+        && graphWalk.normalized >= 1;
 
       const adjustedScore = baseScore + momentumBonus + depthBonus + graphWalkBonus;
       const existingContribution = (row.graphContribution && typeof row.graphContribution === 'object')
@@ -603,7 +606,7 @@ export function applyGraphSignals(
           raw: graphWalk.raw,
           normalized: graphWalk.normalized,
           appliedBonus: graphWalkBonus,
-          capApplied: rolloutState === 'bounded_runtime' && unclampedGraphWalkBonus > STAGE2_GRAPH_BONUS_CAP,
+          capApplied,
           rolloutState,
         },
       };

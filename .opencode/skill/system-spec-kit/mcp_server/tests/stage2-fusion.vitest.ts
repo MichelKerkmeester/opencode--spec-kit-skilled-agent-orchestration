@@ -129,7 +129,7 @@ describe('Stage 2 fusion regression coverage', () => {
     expect(untouched!.score).toBeCloseTo(0.4, 9);
   });
 
-  it('keeps baseline ordering and rollout metadata when graph-walk rollout is off', async () => {
+  it('keeps broader graph signals active while graph-walk rollout off preserves baseline ordering', async () => {
     process.env.SPECKIT_GRAPH_WALK_ROLLOUT = 'off';
     const { executeStage2 } = await import('../lib/search/pipeline/stage2-fusion');
 
@@ -139,7 +139,11 @@ describe('Stage 2 fusion regression coverage', () => {
       { id: 3, score: 0.5, similarity: 79 },
     ]));
 
-    expect(mockApplyGraphSignals).not.toHaveBeenCalled();
+    expect(mockApplyGraphSignals).toHaveBeenCalledWith(
+      expect.any(Array),
+      expect.anything(),
+      expect.objectContaining({ rolloutState: 'off' }),
+    );
     expect(result.metadata.graphContribution?.rolloutState).toBe('off');
     expect(result.scored.map((row) => row.id)).toEqual([4, 9, 3]);
   });
@@ -187,7 +191,7 @@ describe('Stage 2 fusion regression coverage', () => {
               raw: 2,
               normalized: 1,
               appliedBonus: 0.03,
-              capApplied: false,
+              capApplied: true,
               rolloutState: 'bounded_runtime',
             },
           }
@@ -224,6 +228,7 @@ describe('Stage 2 fusion regression coverage', () => {
     expect(boosted.score).toBe(boosted.intentAdjustedScore);
     expect(boosted.score).toBe(boosted.attentionScore);
     expect((boosted.graphContribution as Record<string, unknown>).appliedBonus).toBe(0.03);
+    expect((boosted.graphContribution as Record<string, unknown>).capApplied).toBe(true);
     expect((boosted.graphContribution as Record<string, unknown>).rolloutState).toBe('bounded_runtime');
   });
 });

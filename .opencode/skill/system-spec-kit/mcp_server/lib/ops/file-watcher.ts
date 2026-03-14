@@ -25,6 +25,7 @@ export interface WatcherConfig {
   reindexFn: (filePath: string) => Promise<unknown>;
   removeFn?: (filePath: string) => Promise<unknown>;
   debounceMs?: number;
+  watchFactory?: (paths: string[], options: Record<string, unknown>) => FSWatcher;
 }
 
 /**
@@ -53,6 +54,11 @@ export function getWatcherMetrics(): { filesReindexed: number; avgReindexTimeMs:
     filesReindexed,
     avgReindexTimeMs: filesReindexed > 0 ? Math.round(totalReindexTimeMs / filesReindexed) : 0,
   };
+}
+
+export function resetWatcherMetrics(): void {
+  filesReindexed = 0;
+  totalReindexTimeMs = 0;
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -96,6 +102,25 @@ function shouldIgnoreWatchTarget(targetPath: string): boolean {
   return basename.startsWith('.');
 }
 
+function getWatchScopedPath(targetPath: string, watchRoots: string[]): string | null {
+  const resolvedTarget = path.resolve(targetPath);
+
+  for (const watchRoot of watchRoots) {
+    const relativeTarget = path.relative(watchRoot, resolvedTarget);
+    const isWithinRoot = relativeTarget === '' || (
+      !relativeTarget.startsWith(`..${path.sep}`) &&
+      relativeTarget !== '..' &&
+      !path.isAbsolute(relativeTarget)
+    );
+
+    if (isWithinRoot) {
+      return relativeTarget;
+    }
+  }
+
+  return null;
+}
+
 function isSqliteBusyError(error: unknown): boolean {
   const message = error instanceof Error ? error.message : String(error);
   const code = (error as { code?: unknown })?.code;
@@ -132,12 +157,15 @@ async function withBusyRetry(operation: () => Promise<void>): Promise<void> {
  * Provides the startFileWatcher helper.
  */
 export function startFileWatcher(config: WatcherConfig): FSWatcher {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const chokidar = require('chokidar') as {
-    watch: (paths: string[], options: Record<string, unknown>) => FSWatcher;
-  };
+  const watchFactory = config.watchFactory ?? (
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    require('chokidar') as {
+      watch: (paths: string[], options: Record<string, unknown>) => FSWatcher;
+    }
+  ).watch;
 
   const debounceMs = config.debounceMs ?? DEFAULT_DEBOUNCE_MS;
+  const watchRoots = config.paths.map((watchPath) => path.resolve(watchPath));
   const debounceTimers = new Map<string, NodeJS.Timeout>();
   const contentHashes = new Map<string, string>();
   const inFlightReindex = new Set<Promise<void>>();
@@ -172,10 +200,12 @@ export function startFileWatcher(config: WatcherConfig): FSWatcher {
     });
   };
 
-  const watcher = chokidar.watch(config.paths, {
+  const watcher = watchFactory(config.paths, {
     ignoreInitial: true,
     awaitWriteFinish: { stabilityThreshold: 1000 },
-    ignored: shouldIgnoreWatchTarget,
+    ignored: (targetPath: string) => {
+      return shouldIgnoreWatchTarget(getWatchScopedPath(targetPath, watchRoots) ?? targetPath);
+    },
     followSymlinks: false,
   });
 
@@ -191,7 +221,9 @@ export function startFileWatcher(config: WatcherConfig): FSWatcher {
     }
 
     const filePath = targetPath;
-    if (!isMarkdownPath(filePath) || isDotfilePath(filePath)) {
+    const watchScopedPath = getWatchScopedPath(filePath, watchRoots);
+
+    if (!isMarkdownPath(filePath) || shouldIgnoreWatchTarget(watchScopedPath ?? filePath)) {
       return;
     }
 
@@ -375,8 +407,10 @@ export function startFileWatcher(config: WatcherConfig): FSWatcher {
  * Defines the __testables constant.
  */
 export const __testables = {
+  getWatchScopedPath,
   isDotfilePath,
   isMarkdownPath,
   shouldIgnoreWatchTarget,
   isSqliteBusyError,
+  resetWatcherMetrics,
 };

@@ -6,7 +6,7 @@
 // 1. RUN BM25 BASELINE
 // ───────────────────────────────────────────────────────────────
 //
-// Sprint 0 closure: Execute the BM25-only baseline against the
+// Execute the BM25-only baseline against the
 // Live production context-index.sqlite and record results in the
 // Eval DB. Produces the contingency decision (PAUSE/RATIONALIZE/
 // PROCEED) with bootstrap 95% CI for statistical significance.

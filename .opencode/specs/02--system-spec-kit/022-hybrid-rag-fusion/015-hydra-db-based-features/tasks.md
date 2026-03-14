@@ -146,4 +146,4 @@ contextType: "implementation"
 ## Status
 
 - Status: All phases (1-6) implemented. Code and tests verified 2026-03-14.
-- Stale `[deferred]` annotations removed from T020-T068 during verification (implementation confirmed by 156 passing tests across 13 test files).
+- Stale deferred annotations removed from T020-T068 during verification (implementation confirmed by 156 passing tests across 13 test files).

@@ -751,7 +751,7 @@ async function collectSessionData(
 
   let SPEC_FILES: SpecFileEntry[] = [];
   const activeSpecsDir = findActiveSpecsDir() || path.join(CONFIG.PROJECT_ROOT, 'specs');
-  // Backfill SPEC_FOLDER from CLI-known folder name (spec 013 Phase 0)
+  // Backfill SPEC_FOLDER from CLI-known folder name
   if (!data.SPEC_FOLDER && folderName) {
     data.SPEC_FOLDER = folderName;
   }

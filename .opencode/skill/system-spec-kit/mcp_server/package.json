@@ -18,7 +18,9 @@
     "check": "npm run lint && npx tsc --noEmit",
     "check:full": "npm run check && npm run test",
     "lint": "eslint . --ext .ts",
-    "test": "vitest run",
+    "test": "npm run test:core && npm run test:file-watcher",
+    "test:core": "vitest run --exclude tests/file-watcher.vitest.ts",
+    "test:file-watcher": "vitest run tests/file-watcher.vitest.ts",
     "test:hydra:phase1": "vitest run tests/memory-roadmap-flags.vitest.ts tests/memory-state-baseline.vitest.ts tests/migration-checkpoint-scripts.vitest.ts tests/vector-index-schema-compatibility.vitest.ts",
     "test:watch": "vitest"
   },

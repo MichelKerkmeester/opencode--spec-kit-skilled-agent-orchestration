@@ -169,7 +169,7 @@ export function resolveGraphWalkRolloutState(): GraphWalkRolloutState {
 }
 
 export function isGraphSignalsEnabled(): boolean {
-  return resolveGraphWalkRolloutState() !== 'off';
+  return isFeatureEnabled('SPECKIT_GRAPH_SIGNALS');
 }
 
 /**

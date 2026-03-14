@@ -16,7 +16,7 @@ contextType: "implementation"
 | Date | 2026-03-14 |
 | Level | 3 |
 | Execution Scope | Phase 1-6 implementation, hardening, and rollout verification |
-| Overall Workflow Status | Code rollout complete with default-on semantics across all six capabilities; human sign-off remains pending |
+| Overall Workflow Status | Code rollout complete with default-on semantics across all six capabilities; AI-led independent verification and local launch dry run completed |
 
 ## What Was Built
 
@@ -50,12 +50,17 @@ This table lists representative foundational files from the baseline hardening s
 | `cd .opencode/skill/system-spec-kit/mcp_server && npm run build` | PASS |
 | `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/memory-roadmap-flags.vitest.ts tests/retrieval-telemetry.vitest.ts tests/adaptive-ranking.vitest.ts tests/memory-governance.vitest.ts tests/shared-spaces.vitest.ts tests/handler-memory-save.vitest.ts` | PASS (79 tests across 6 files) |
 | Broader Hydra suite | PASS (15 files, 160 tests) |
+| `cd .opencode/skill/system-spec-kit/mcp_server && npm test` | PASS (`test:core` + `test:file-watcher`; 278 test files passed; 7663 tests passed; 11 skipped; 28 todo; `tests/file-watcher.vitest.ts` 19/19 passed) |
+| `cd .opencode/skill/system-spec-kit && python3 ../sk-code--opencode/scripts/verify_alignment_drift.py --root .` | PASS (`Findings: 0`, `Warnings: 0`, `Violations: 0`) |
+| `cd .opencode/skill/system-spec-kit/mcp_server && SPECKIT_GRAPH_UNIFIED=false node -e "const { getMemoryRoadmapDefaults } = require('./dist/lib/config/capability-flags.js'); console.log(JSON.stringify(getMemoryRoadmapDefaults('manual-125-a')))"` | PASS (returned `phase:"shared-rollout"` with `capabilities.graphUnified:true`) |
+| `cd .opencode/skill/system-spec-kit/mcp_server && SPECKIT_HYDRA_PHASE=graph SPECKIT_HYDRA_GRAPH_UNIFIED=false node -e "const { getMemoryRoadmapDefaults } = require('./dist/lib/config/capability-flags.js'); console.log(JSON.stringify(getMemoryRoadmapDefaults('manual-125-b')))"` | PASS (returned `phase:"graph"` with `capabilities.graphUnified:false`) |
 
 ## Deviations From Plan
 
 1. The rollout posture changed from conservative opt-in to default-on across roadmap phase and capability gates.
 2. Governance ingestion validation was adjusted to avoid rejecting legacy callers solely because defaults are on.
-3. Browser/staging verification was not executed because this rollout targeted backend modules and scripts.
+3. Verification expanded beyond the earlier targeted Hydra subset to include full `mcp_server` regression coverage, alignment drift validation, and roadmap snapshot dry runs.
+4. Launch dry run was completed locally for backend/runtime scope; no staging deployment dry run was performed in this pass.
 
 ## Skill Updates
 
@@ -63,7 +68,7 @@ No skill files were modified in this implementation slice.
 
 ## Recommended Next Steps
 
-1. Complete pending human sign-off rows across phase summaries/checklists.
+1. If organizational governance requires it, complete Product Owner and Security/Compliance sign-off rows as a separate human process artifact.
 2. Keep default-on rollout behavior and explicit opt-out semantics documented in future maintenance updates.
 3. Continue operational monitoring on retrieval/governance telemetry under the shared-rollout default baseline.
 

@@ -60,6 +60,11 @@ const mappingChecks = [
   },
 ];
 
+const hydraDefaultDocs = [
+  '01-1-search-pipeline-features-speckit.md',
+  '06-6-debug-and-telemetry.md',
+] as const;
+
 describe('Feature flag reference catalog mappings', () => {
   for (const check of mappingChecks) {
     it(`${check.env} maps to ${check.source} and the source reads the symbol`, () => {
@@ -78,4 +83,39 @@ describe('Feature flag reference catalog mappings', () => {
       expect(sourceContent).toContain(check.env);
     });
   }
+});
+
+describe('Hydra roadmap flag documentation', () => {
+  for (const doc of hydraDefaultDocs) {
+    it(`${doc} reflects the delivered default-on Hydra roadmap behavior`, () => {
+      const docPath = path.join(FEATURE_FLAG_DOCS, doc);
+      const docContent = fs.readFileSync(docPath, 'utf8');
+
+      expect(docContent).toContain('| `SPECKIT_HYDRA_PHASE` | `shared-rollout` |');
+      expect(docContent).toMatch(/(?:unknown|Unsupported) values fall back to `shared-rollout`/);
+
+      for (const env of [
+        'SPECKIT_HYDRA_LINEAGE_STATE',
+        'SPECKIT_HYDRA_GRAPH_UNIFIED',
+        'SPECKIT_HYDRA_ADAPTIVE_RANKING',
+        'SPECKIT_HYDRA_SCOPE_ENFORCEMENT',
+        'SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS',
+        'SPECKIT_HYDRA_SHARED_MEMORY',
+      ]) {
+        expect(docContent).toContain(`| \`${env}\` | \`true\` |`);
+      }
+    });
+  }
+
+  it('manual playbook NEW-125 matches the runtime default-on plus explicit opt-out contract', () => {
+    const playbookPath = path.join(SKILL_ROOT, 'manual_testing_playbook', 'manual_testing_playbook.md');
+    const playbookContent = fs.readFileSync(playbookPath, 'utf8');
+
+    expect(playbookContent).toContain('NEW-125');
+    expect(playbookContent).toContain('default-on unless explicitly opted out');
+    expect(playbookContent).toContain('phase:\\"shared-rollout\\"');
+    expect(playbookContent).toContain('capabilities.graphUnified:true');
+    expect(playbookContent).toContain('SPECKIT_HYDRA_GRAPH_UNIFIED=false');
+    expect(playbookContent).toContain('capabilities.graphUnified:false');
+  });
 });
