@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. VECTOR INDEX IMPL
+// MODULE: Vector Index Impl
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Hybrid search pipeline
 // NOTE: Implementation has been split into focused modules:
 // - vector-index-types.ts
 // - vector-index-schema.ts

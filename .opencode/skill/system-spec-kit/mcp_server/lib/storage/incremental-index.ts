@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. INCREMENTAL INDEX
+// MODULE: Incremental Index
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Deferred lexical-only indexing
 // Mtime-based incremental indexing for fast re-indexing
 // Node stdlib
 import * as fs from 'fs';

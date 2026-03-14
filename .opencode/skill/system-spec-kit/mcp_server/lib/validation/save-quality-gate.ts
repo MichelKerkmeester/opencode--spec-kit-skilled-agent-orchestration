@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. SAVE QUALITY GATE
+// MODULE: Save Quality Gate
 // ───────────────────────────────────────────────────────────────
 // Pre-Storage Quality Gate
 //
@@ -21,7 +21,8 @@
 import * as vectorIndex from '../search/vector-index';
 
 // ───────────────────────────────────────────────────────────────
-// 2. TYPES
+// 1. TYPES
+
 // ───────────────────────────────────────────────────────────────
 /** Result from Layer 1: Structural validation */
 export interface StructuralValidationResult {
@@ -89,7 +90,8 @@ type FindSimilarFn = (
 ) => Array<{ id: number; file_path: string; similarity: number }>;
 
 // ───────────────────────────────────────────────────────────────
-// 3. CONFIGURATION
+// 2. CONFIGURATION
+
 // ───────────────────────────────────────────────────────────────
 /** Signal density threshold: below this score, content is too low quality */
 const SIGNAL_DENSITY_THRESHOLD = 0.4;
@@ -601,7 +603,8 @@ export function checkSemanticDedup(
 }
 
 // ───────────────────────────────────────────────────────────────
-// 4. UNIFIED QUALITY GATE
+// 3. UNIFIED QUALITY GATE
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Run the full 3-layer quality gate for a memory save operation.

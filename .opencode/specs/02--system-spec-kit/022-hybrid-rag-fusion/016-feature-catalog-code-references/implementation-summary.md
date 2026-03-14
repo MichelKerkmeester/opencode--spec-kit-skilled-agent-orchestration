@@ -91,6 +91,53 @@ Implementation used a comment-only pass: map files to feature catalog names, app
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. Non-handler comments were added only where file-to-feature mapping was strong.
-2. Future handler additions will require the same coverage check to maintain 100% handler traceability.
+1. Future handler additions will require the same coverage check to maintain 100% handler traceability.
+2. Pure utility/type/barrel-export files remain exempt from feature annotations by design.
 <!-- /ANCHOR:limitations -->
+
+---
+
+<!-- ANCHOR:phase-c -->
+## Phase C: CHK-012 Resolution, MODULE: Alignment, and Documentation
+
+### MODULE: Header Alignment
+
+All 228 non-test `.ts` files in `mcp_server/` were transformed from `// 1. ALL CAPS NAME` to `// MODULE: Title Case Name`, keeping box-drawing separators. 82 files in `scripts/` received new `// MODULE:` headers with dash separators. 2 headerless files (`session-transition.ts`, `ranking-contract.ts`) received new header blocks. The `verify_alignment_drift.py` script now returns 0 TS-MODULE-HEADER findings across the entire `system-spec-kit/` tree.
+
+### CHK-012: Multi-Feature Annotation Audit
+
+91 additional `// Feature catalog:` annotations were added across all previously-unannotated files with clear feature mappings:
+
+| Directory | Files Annotated | Example Features |
+|-----------|----------------|------------------|
+| `lib/cognitive/` | 8 | Classification-based decay, Adaptive shadow ranking, Feature flag governance |
+| `lib/search/` | 28 | Hybrid search pipeline, Query expansion, Cross-document entity linking |
+| `lib/eval/` | 12 | Ablation studies, Core metric computation, Synthetic ground truth corpus |
+| `lib/storage/` | 9 | Access-driven popularity scoring, Transaction wrappers, Checkpoint CRUD |
+| `lib/telemetry/` | 3 | Agent consumption instrumentation, Scoring observability |
+| `lib/scoring/` | 5 | MPAB aggregation, Interference scoring, Folder-level relevance |
+| `lib/graph/` | 1 | Typed-weighted degree channel |
+| Other lib modules | 17 | Feature flag governance, Auto entity extraction, Guards and edge cases |
+| `shared/` | 4 | Anchor-aware chunk thinning, Trigger phrase matching |
+
+Cross-validation: 124 unique annotation names in code, 0 invalid (all match catalog H3 headings exactly).
+
+### Documentation
+
+- Created `feature_catalog/16--tooling-and-scripts/11-feature-catalog-code-references.md` catalog snippet
+- Added H3 entry "Feature catalog code references" in main `feature_catalog.md` under Tooling section
+- Added Code Conventions section (MODULE: header + Feature catalog annotation) to `mcp_server/README.md`
+- Added traceability mention to `system-spec-kit/README.md` component description
+- Added playbook scenarios NEW-135 (grep traceability), NEW-136 (name validity), NEW-137 (multi-feature coverage), NEW-138 (MODULE: compliance)
+- Updated playbook TOC range to NEW-001..NEW-138 with coverage mappings
+
+### Phase C Verification
+
+| Check | Result |
+|-------|--------|
+| `npx tsc --noEmit` | PASS (exit 0) |
+| `verify_alignment_drift.py --root system-spec-kit` | PASS (0 TS-MODULE-HEADER findings) |
+| Annotation name cross-validation | PASS (124 unique names, 0 invalid) |
+| New catalog snippet exists | PASS |
+| Playbook scenarios NEW-135..NEW-138 exist | PASS |
+<!-- /ANCHOR:phase-c -->

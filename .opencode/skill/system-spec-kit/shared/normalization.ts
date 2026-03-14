@@ -1,6 +1,7 @@
 // ---------------------------------------------------------------
 // MODULE: Normalization
 // ---------------------------------------------------------------
+// Feature catalog: Content-aware memory filename generation
 // Converts between snake_case (database) and camelCase (application).
 // This is the SINGLE SOURCE OF TRUTH for DB ↔ App type conversions.
 //
@@ -111,6 +112,8 @@ export interface Memory {
 
 // ---------------------------------------------------------------
 // 3. CONVERSION FUNCTIONS
+
+
 // ---------------------------------------------------------------
 
 /**

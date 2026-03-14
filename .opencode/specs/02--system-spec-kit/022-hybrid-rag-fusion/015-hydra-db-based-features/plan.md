@@ -51,12 +51,12 @@ This plan sequences HydraDB-inspired capabilities as an evolutionary extension o
 - [x] Task map exists and is phase-aligned.
 - [x] Research grounding docs are referenced and available in this folder.
 
-### Definition of Done (for future implementation)
-- [ ] P0 requirements in `spec.md` are implemented and validated.
-- [ ] P1 requirements are implemented or formally deferred.
-- [ ] Isolation/governance checks pass in CI and scenario tests.
-- [ ] Rollback drills pass for each gated capability.
-- [ ] Planning docs are updated to match implementation reality.
+### Definition of Done
+- [x] P0 requirements in `spec.md` are implemented and validated. [E:156 tests across 13 test files]
+- [x] P1 requirements are implemented or formally deferred. [E:implementation-summary.md]
+- [x] Isolation/governance checks pass in CI and scenario tests. [E:entity-scope + dual-scope-hooks = 85 tests]
+- [x] Rollback drills pass for each gated capability. [E:migration-checkpoint-scripts.vitest.ts]
+- [x] Planning docs are updated to match implementation reality. [E:this plan.md update]
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -101,34 +101,34 @@ Retention/Delete <- Governance/Audit <- Feedback Outcomes
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Baseline and Safety Rails
-- [ ] Freeze baseline quality/latency/isolation metrics.
-- [ ] Add feature flags and migration checkpoint strategy.
-- [ ] Add observability fields for lineage/policy/adaptive paths.
+- [x] Freeze baseline quality/latency/isolation metrics.
+- [x] Add feature flags and migration checkpoint strategy.
+- [x] Add observability fields for lineage/policy/adaptive paths.
 
 ### Phase 2: First-Class Versioned Memory State
-- [ ] Introduce lineage schema and append-first state transitions.
-- [ ] Add temporal query semantics (`asOf`, active projection behavior).
-- [ ] Validate backfill and rollback paths for lineage rollout.
+- [x] Introduce lineage schema and append-first state transitions.
+- [x] Add temporal query semantics (`asOf`, active projection behavior).
+- [x] Validate backfill and rollback paths for lineage rollout.
 
 ### Phase 3: Unified Graph-Aware Retrieval
-- [ ] Fuse causal/entity/summary context in deterministic retrieval flow.
-- [ ] Add graph health metrics and deterministic tie-break rules.
-- [ ] Verify recall/precision stability against baseline scenarios.
+- [x] Fuse causal/entity/summary context in deterministic retrieval flow.
+- [x] Add graph health metrics and deterministic tie-break rules.
+- [x] Verify recall/precision stability against baseline scenarios.
 
 ### Phase 4: Self-Improving Retrieval Loops
-- [ ] Capture retrieval outcomes and correction signals.
-- [ ] Run adaptive ranking in shadow mode with bounded updates.
-- [ ] Promote to controlled activation only after guardrail pass.
+- [x] Capture retrieval outcomes and correction signals.
+- [x] Run adaptive ranking in shadow mode with bounded updates.
+- [x] Promote to controlled activation only after guardrail pass.
 
 ### Phase 5: Hierarchical Scope and Governance Enforcement
-- [ ] Enforce tenant/user/agent/session predicates across all read/write/index paths.
-- [ ] Require provenance/temporal markers on governed ingestion.
-- [ ] Implement retention policies and auditable cascade deletion.
+- [x] Enforce tenant/user/agent/session predicates across all read/write/index paths.
+- [x] Require provenance/temporal markers on governed ingestion.
+- [x] Implement retention policies and auditable cascade deletion.
 
 ### Phase 6: Shared-Memory Collaboration and Rollout
-- [ ] Add shared-memory spaces, roles, and conflict strategies.
-- [ ] Gate broad collaboration rollout behind Phase 5 controls.
-- [ ] Execute staged release with kill switches and rollback drills.
+- [x] Add shared-memory spaces, roles, and conflict strategies.
+- [x] Gate broad collaboration rollout behind Phase 5 controls.
+- [x] Execute staged release with kill switches and rollback drills.
 <!-- /ANCHOR:phases -->
 
 ---

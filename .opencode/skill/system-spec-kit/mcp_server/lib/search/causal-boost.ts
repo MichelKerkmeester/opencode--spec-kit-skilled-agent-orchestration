@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. CAUSAL BOOST
+// MODULE: Causal Boost
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Causal neighbor boost and injection
 // Graph-traversal score boosting via causal edge relationships.
 // Walks the causal_edges graph up to MAX_HOPS, amplifying scores
 // For results related to top seed results via weighted CTE.

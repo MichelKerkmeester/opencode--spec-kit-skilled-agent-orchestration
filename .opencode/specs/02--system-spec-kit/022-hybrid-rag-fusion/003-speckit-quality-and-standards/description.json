@@ -1,11 +1,15 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/003-speckit-quality-and-standards",
-  "description": "Consolidated spec.md",
+  "description": "Consolidated quality and standards spec — template ToC policy enforcement and code quality completion run (baseline stabilization, modularization, README modernization)",
   "keywords": [
     "consolidated",
-    "spec"
+    "quality",
+    "standards",
+    "toc-policy",
+    "modularization",
+    "baseline-stabilization"
   ],
-  "lastUpdated": "2026-03-09T18:45:51.923Z",
+  "lastUpdated": "2026-03-14T00:00:00.000Z",
   "specId": "003",
   "folderSlug": "speckit-quality-and-standards",
   "parentChain": [

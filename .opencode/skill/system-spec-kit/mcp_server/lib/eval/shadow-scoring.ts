@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. SHADOW SCORING
+// MODULE: Shadow Scoring
 // ───────────────────────────────────────────────────────────────
 // Runs a parallel scoring path alongside production results WITHOUT affecting
 // Production output. Logs both production and shadow scores for A/B comparison.

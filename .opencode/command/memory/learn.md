@@ -119,7 +119,7 @@ Use rule text from `$ARGUMENTS` (or user's answer to mandatory gate prompt).
 Verify this rule belongs in the constitutional tier:
 
 ```
-Self-check (do NOT prompt user unless ALL are "no"):
+Self-check (do NOT prompt user unless one or more answers are "no"):
   □ Does this rule apply to EVERY interaction? (not just one domain)
   □ Would forgetting it cause significant problems?
   □ Is it a safety constraint or hard requirement?
@@ -135,7 +135,7 @@ MEMORY:LEARN
   and consume shared budget (~2000 tokens).
 
 ─────────────────────────────────────────────────────
-[y] proceed anyway    [c] save as critical instead    [n] cancel
+[y] proceed anyway    [s] use /memory:save instead    [n] cancel
 ```
 
 ### Step 3: Structure the Memory
@@ -491,7 +491,7 @@ STATUS=OK ACTION=budget
 | Condition | Action |
 |-----------|--------|
 | No rule description | Shows overview dashboard with action hints |
-| Rule doesn't qualify as constitutional | Suggest `/memory:save` with critical tier |
+| Rule doesn't qualify as constitutional | Suggest `/memory:save` for spec-folder context |
 | Token budget exceeded | Warn with dashboard, offer trim/shorten/cancel |
 | File already exists with same name | ASK: overwrite or rename |
 | File not found (edit/remove) | Show list dashboard, ask user to select |

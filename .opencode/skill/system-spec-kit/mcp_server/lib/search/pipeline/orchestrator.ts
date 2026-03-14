@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. ORCHESTRATOR
+// MODULE: Orchestrator
 // ───────────────────────────────────────────────────────────────
 // 4-stage pipeline execution behind SPECKIT_PIPELINE_V2
 //

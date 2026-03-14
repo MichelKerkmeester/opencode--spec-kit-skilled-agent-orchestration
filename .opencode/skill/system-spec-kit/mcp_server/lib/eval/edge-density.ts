@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. EDGE DENSITY
+// MODULE: Edge Density
 // ───────────────────────────────────────────────────────────────
 // Measures the edge density of the causal graph:
 // Density = edge_count / total_memories

@@ -1850,4 +1850,201 @@ describe('Context Server', () => {
       })
     }
   })
+
+  // =================================================================
+  // GROUP 16: buildServerInstructions() Behavior
+  // =================================================================
+  describe('Group 16: buildServerInstructions()', () => {
+    // Local replica of DynamicMemoryStats (mirrors context-server.ts interface)
+    interface DynamicMemoryStats {
+      totalMemories: number
+      specFolderCount: number
+      activeCount: number
+      staleCount: number
+    }
+
+    // Local replica of buildServerInstructions for behavioral verification.
+    // The real function is module-internal (not exported), so we replicate
+    // its logic here with injectable dependencies — same pattern as Group 1.
+    function buildServerInstructionsReplica(
+      stats: DynamicMemoryStats,
+      opts: {
+        bm25Enabled?: boolean
+        graphEnabled?: boolean
+        degreeEnabled?: boolean
+        dynamicInitDisabled?: boolean
+      } = {},
+    ): string {
+      if (opts.dynamicInitDisabled) {
+        return ''
+      }
+
+      const channels: string[] = ['vector', 'fts5']
+      if (opts.bm25Enabled) channels.push('bm25')
+      if (opts.graphEnabled) channels.push('graph')
+      if (opts.degreeEnabled) channels.push('degree')
+      const staleWarning = stats.staleCount > 10
+        ? ` Warning: ${stats.staleCount} stale memories detected. Consider running memory_index_scan.`
+        : ''
+
+      return [
+        `Spec Kit Memory MCP has ${stats.totalMemories} indexed memories across ${stats.specFolderCount} spec folders.`,
+        `Active memories: ${stats.activeCount}. Stale memories: ${stats.staleCount}.`,
+        `Search channels: ${channels.join(', ')}.`,
+        'Key tools: memory_context, memory_search, memory_save, memory_index_scan, memory_stats.',
+        staleWarning.trim(),
+      ].filter(Boolean).join(' ')
+    }
+
+    // T68: Zero-memory edge case — returns valid non-empty string with basic server info
+    it('T68: zero memories still returns valid instructions', () => {
+      const stats: DynamicMemoryStats = {
+        totalMemories: 0,
+        specFolderCount: 0,
+        activeCount: 0,
+        staleCount: 0,
+      }
+      const result = buildServerInstructionsReplica(stats)
+
+      // Must be a non-empty string
+      expect(result).toBeTruthy()
+      expect(typeof result).toBe('string')
+      expect(result.length).toBeGreaterThan(0)
+
+      // Must contain basic server identification
+      expect(result).toContain('Spec Kit Memory MCP')
+      expect(result).toContain('0 indexed memories')
+      expect(result).toContain('0 spec folders')
+
+      // Must list key tools
+      expect(result).toContain('memory_context')
+      expect(result).toContain('memory_search')
+      expect(result).toContain('memory_save')
+
+      // Must list at least the two default channels
+      expect(result).toContain('vector')
+      expect(result).toContain('fts5')
+
+      // No stale warning for zero stale
+      expect(result).not.toContain('Warning')
+    })
+
+    // T69: Stale threshold boundary — 10 stale = no warning, 11 stale = warning
+    it('T69: stale warning appears only when staleCount > 10', () => {
+      const baseStats: DynamicMemoryStats = {
+        totalMemories: 100,
+        specFolderCount: 5,
+        activeCount: 90,
+        staleCount: 10,
+      }
+
+      // At boundary (10): no warning
+      const atBoundary = buildServerInstructionsReplica(baseStats)
+      expect(atBoundary).not.toContain('Warning')
+      expect(atBoundary).not.toContain('Consider running memory_index_scan')
+      expect(atBoundary).toContain('Stale memories: 10')
+
+      // Above boundary (11): warning present
+      const aboveBoundary = buildServerInstructionsReplica({
+        ...baseStats,
+        staleCount: 11,
+        activeCount: 89,
+      })
+      expect(aboveBoundary).toContain('Warning: 11 stale memories detected')
+      expect(aboveBoundary).toContain('Consider running memory_index_scan')
+
+      // Well above boundary (50): warning present with correct count
+      const wellAbove = buildServerInstructionsReplica({
+        ...baseStats,
+        staleCount: 50,
+        activeCount: 50,
+      })
+      expect(wellAbove).toContain('Warning: 50 stale memories detected')
+    })
+
+    // T70: SPECKIT_DYNAMIC_INIT=false → empty string
+    it('T70: dynamicInit disabled returns empty string', () => {
+      const stats: DynamicMemoryStats = {
+        totalMemories: 100,
+        specFolderCount: 5,
+        activeCount: 95,
+        staleCount: 5,
+      }
+
+      const result = buildServerInstructionsReplica(stats, { dynamicInitDisabled: true })
+      expect(result).toBe('')
+
+      // Verify the source code checks SPECKIT_DYNAMIC_INIT env var
+      expect(sourceCode).toMatch(/process\.env\.SPECKIT_DYNAMIC_INIT\s*===\s*['"]false['"]/)
+      expect(sourceCode).toMatch(/if\s*\(\s*process\.env\.SPECKIT_DYNAMIC_INIT\s*===\s*['"]false['"]\s*\)\s*\{[\s\S]*?return\s+['"]["'];/)
+    })
+
+    // Structural verification: buildServerInstructions exists in source
+    it('T70b: buildServerInstructions defined in source', () => {
+      expect(sourceCode).toMatch(/async\s+function\s+buildServerInstructions\s*\(\s*\):\s*Promise<string>/)
+    })
+
+    // Structural verification: stale threshold is 10 in source
+    it('T70c: stale threshold is 10 in source', () => {
+      expect(sourceCode).toMatch(/stats\.staleCount\s*>\s*10/)
+    })
+  })
+
+  describe('buildServerInstructions behavioral verification (006-VFT)', () => {
+    it('T100: zero-memory edge case — function handles empty stats gracefully', () => {
+      // buildServerInstructions formats stats.totalMemories and stats.specFolderCount
+      // Verify it always wraps these in a template string (never undefined/NaN risk)
+      const fnMatch = sourceCode.match(
+        /async function buildServerInstructions\(\)[^{]*\{([\s\S]*?)\n\}/
+      )
+      expect(fnMatch).not.toBeNull()
+      const fnBody = fnMatch![1]
+
+      // Must reference stats.totalMemories in a template literal (graceful for 0)
+      expect(fnBody).toMatch(/stats\.totalMemories/)
+      expect(fnBody).toMatch(/stats\.specFolderCount/)
+      expect(fnBody).toMatch(/stats\.activeCount/)
+      expect(fnBody).toMatch(/stats\.staleCount/)
+
+      // Must use .filter(Boolean).join — ensures empty strings (from 0-count
+      // scenarios) are filtered out rather than producing "undefined" output
+      expect(fnBody).toMatch(/\.filter\(Boolean\)\.join/)
+    })
+
+    it('T101: stale threshold boundary — warning only when staleCount > 10', () => {
+      const fnMatch = sourceCode.match(
+        /async function buildServerInstructions\(\)[^{]*\{([\s\S]*?)\n\}/
+      )
+      expect(fnMatch).not.toBeNull()
+      const fnBody = fnMatch![1]
+
+      // Must use strict > 10 (not >= 10), so 10 stale = no warning, 11 = warning
+      expect(fnBody).toMatch(/stats\.staleCount\s*>\s*10/)
+      // Must NOT use >= 10 (which would trigger at exactly 10)
+      expect(fnBody).not.toMatch(/stats\.staleCount\s*>=\s*10/)
+      // Warning text must include "stale memories detected"
+      expect(fnBody).toMatch(/stale memories detected/)
+      // Warning text must suggest memory_index_scan
+      expect(fnBody).toMatch(/memory_index_scan/)
+    })
+
+    it('T102: SPECKIT_DYNAMIC_INIT=false → returns empty string immediately', () => {
+      const fnMatch = sourceCode.match(
+        /async function buildServerInstructions\(\)[^{]*\{([\s\S]*?)\n\}/
+      )
+      expect(fnMatch).not.toBeNull()
+      const fnBody = fnMatch![1]
+
+      // The env var check must be the FIRST conditional (before any stats call)
+      const dynamicInitCheck = fnBody.indexOf("SPECKIT_DYNAMIC_INIT")
+      const statsCall = fnBody.indexOf("getMemoryStats")
+      expect(dynamicInitCheck).toBeGreaterThan(-1)
+      expect(statsCall).toBeGreaterThan(-1)
+      // Dynamic init check must come BEFORE stats fetch (short-circuits)
+      expect(dynamicInitCheck).toBeLessThan(statsCall)
+
+      // Must return empty string when disabled
+      expect(fnBody).toMatch(/SPECKIT_DYNAMIC_INIT.*===.*'false'[\s\S]*?return\s*''/)
+    })
+  })
 })

@@ -413,4 +413,4 @@ spec_kit_memory_memory_search({
 - `/memory:save` - Save current conversation context
 - `/memory:manage` - Database management operations
 - `/memory:continue` - Resume interrupted session
-- `/memory:learn` - Save explicit correction or preference
+- `/memory:learn` - Create and manage constitutional memories

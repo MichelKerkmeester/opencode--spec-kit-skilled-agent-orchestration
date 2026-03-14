@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. WORKING MEMORY
+// MODULE: Working Memory
 // ───────────────────────────────────────────────────────────────
 // Session-based attention management
 // DECAY STRATEGY (ADR-004): This module handles SESSION-SCOPED decay
@@ -124,6 +124,7 @@ interface SessionPromptContextEntry {
 
 let db: Database.Database | null = null;
 let schemaEnsured = false;
+const sessionModeRegistry = new Map<string, string>();
 
 /* --- 5. INITIALIZATION --- */
 
@@ -238,6 +239,7 @@ function clearSession(sessionId: string): number {
     const result = (db.prepare(
       'DELETE FROM working_memory WHERE session_id = ?'
     ) as Database.Statement).run(sessionId);
+    sessionModeRegistry.delete(sessionId);
     return (result as { changes: number }).changes;
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : String(error);
@@ -253,9 +255,15 @@ function cleanupOldSessions(): number {
   try {
     const timeoutSeconds = Math.floor(WORKING_MEMORY_CONFIG.sessionTimeoutMs / 1000);
     const nowIso = new Date(Date.now()).toISOString();
+    const staleSessionIds = (db.prepare(
+      "SELECT DISTINCT session_id FROM working_memory WHERE datetime(last_focused) < datetime(?, '-' || ? || ' seconds')"
+    ) as Database.Statement).all(nowIso, timeoutSeconds) as Array<{ session_id: string }>;
     const result = (db.prepare(
       "DELETE FROM working_memory WHERE datetime(last_focused) < datetime(?, '-' || ? || ' seconds')"
     ) as Database.Statement).run(nowIso, timeoutSeconds);
+    for (const row of staleSessionIds) {
+      sessionModeRegistry.delete(row.session_id);
+    }
     return (result as { changes: number }).changes;
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : String(error);
@@ -339,6 +347,20 @@ function getSessionPromptContext(sessionId: string, floor: number = DECAY_FLOOR,
     console.warn(`[working-memory] getSessionPromptContext error: ${msg}`);
     return [];
   }
+}
+
+function getSessionInferredMode(sessionId: string): string | null {
+  const mode = sessionModeRegistry.get(sessionId);
+  return typeof mode === 'string' && mode.length > 0 ? mode : null;
+}
+
+function setSessionInferredMode(sessionId: string, mode: string): void {
+  const normalizedSessionId = sessionId.trim();
+  const normalizedMode = mode.trim();
+  if (normalizedSessionId.length === 0 || normalizedMode.length === 0) {
+    return;
+  }
+  sessionModeRegistry.set(normalizedSessionId, normalizedMode);
 }
 
 /**
@@ -712,6 +734,8 @@ export {
   sessionExists,
   getSessionEventCounter,
   getSessionPromptContext,
+  getSessionInferredMode,
+  setSessionInferredMode,
   calculateTier,
   setAttentionScore,
   upsertExtractedEntry,

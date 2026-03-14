@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. CORE
+// MODULE: Core
 // ───────────────────────────────────────────────────────────────
 // Memory error class and utility functions
 // Migrated from lib/errors.js for proper folder organization
@@ -18,7 +18,8 @@ import type { RecoveryHint, Severity } from './recovery-hints';
 
 
 // ───────────────────────────────────────────────────────────────
-// 2. TYPES
+// 1. TYPES
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Describes the ErrorResponseData shape.
@@ -83,7 +84,8 @@ export const ErrorCodes = {
 export type LegacyErrorCodeKey = keyof typeof ErrorCodes;
 
 // ───────────────────────────────────────────────────────────────
-// 3. MEMORY ERROR CLASS
+// 2. MEMORY ERROR CLASS
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Represents the MemoryError type.
@@ -108,7 +110,8 @@ export class MemoryError extends Error {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 4. TIMEOUT WRAPPER
+// 3. TIMEOUT WRAPPER
+
 // ───────────────────────────────────────────────────────────────
 // Fixed timer leak - now properly clears timeout on success or rejection
 /**
@@ -137,7 +140,8 @@ export function withTimeout<T>(promise: Promise<T>, ms: number, operation: strin
 }
 
 // ───────────────────────────────────────────────────────────────
-// 5. USER-FRIENDLY ERROR MESSAGES
+// 4. USER-FRIENDLY ERROR MESSAGES
+
 // ───────────────────────────────────────────────────────────────
 interface ErrorPattern {
   pattern: RegExp;
@@ -169,7 +173,8 @@ export function userFriendlyError(error: Error): string {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 6. TRANSIENT ERROR DETECTION
+// 5. TRANSIENT ERROR DETECTION
+
 // ───────────────────────────────────────────────────────────────
 // Enhanced error classification with retry module
 // Try to load retry module for enhanced classification
@@ -239,7 +244,8 @@ export function isPermanentError(error: Error): boolean {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 7. ERROR RESPONSE BUILDER WITH HINTS
+// 6. ERROR RESPONSE BUILDER WITH HINTS
+
 // ───────────────────────────────────────────────────────────────
 //
 // Build standardized error responses with recovery hints.
@@ -302,7 +308,8 @@ export function createErrorWithHint(
 }
 
 // ───────────────────────────────────────────────────────────────
-// 8. RE-EXPORTS
+// 7. RE-EXPORTS
+
 // ───────────────────────────────────────────────────────────────
 export {
   ERROR_CODES,

@@ -1,14 +1,13 @@
 ---
 title: "Feature Specification: feature-flag-reference [template:level_2/spec.md]"
-description: "Audit and maintain the Feature Flag Reference catalog so each documented flag maps to authoritative implementation code, tests, and playbook coverage."
+description: "Audit closeout for Feature Flag Reference after corrected source-file mappings and automated mapping validation guard were established."
 # SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2
 trigger_phrases:
   - "feature-flag-reference"
   - "feature flag reference"
-  - "search pipeline"
-  - "session and cache"
-  - "embedding and api"
-importance_tier: "normal"
+  - "mapping guard"
+  - "catalog alignment"
+importance_tier: "high"
 contextType: "general"
 ---
 # Feature Specification: feature-flag-reference
@@ -25,8 +24,8 @@ contextType: "general"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | Draft |
-| **Created** | 2026-03-10 |
+| **Status** | Complete |
+| **Created** | 2026-03-14 |
 | **Branch** | `020-feature-flag-reference` |
 | **Parent Spec** | ../spec.md |
 | **Previous Phase** | ../019-decisions-and-deferrals/spec.md |
@@ -39,10 +38,10 @@ contextType: "general"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-The feature catalog for `feature_catalog/20--feature-flag-reference/` has drift between documented Source File mappings and actual implementation ownership. Several feature-flag rows reference barrel re-exports, stale files, or non-existent paths, which weakens traceability and increases maintenance risk. Without a normalized Level 2 audit spec package, remediation work and verification are harder to execute consistently.
+This phase packet was left in stale draft/pending mode after mapping corrections had already landed in the feature catalog and mapping-validation tests. As a result, the docs no longer reflected current repository truth.
 
 ### Purpose
-Produce a Level 2, verification-ready audit package that captures per-feature findings and prioritized remediation tasks for all seven Feature Flag Reference features.
+Publish a completed, verification-backed phase packet where mapping outcomes and guard evidence match current implementation and tests.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -51,22 +50,23 @@ Produce a Level 2, verification-ready audit package that captures per-feature fi
 ## 3. SCOPE
 
 ### In Scope
-- Audit all 7 Feature Flag Reference features and preserve PASS/WARN/FAIL findings.
-- Document correctness, standards alignment, behavior mismatches, test gaps, and playbook coverage.
-- Define prioritized remediation tasks (P0/P1/P2) for mapping drift and validation gaps.
+- Align phase 020 docs to current feature catalog location: `feature_catalog/19--feature-flag-reference/`.
+- Capture corrected mappings for `SPECKIT_ABLATION`, `SPECKIT_RRF`, `SPECKIT_LAZY_LOADING`, `MEMORY_DB_*`, `EMBEDDINGS_PROVIDER`, and `EMBEDDING_DIM`.
+- Record automated mapping-validation guard evidence from `tests/feature-flag-reference-docs.vitest.ts`.
 
 ### Out of Scope
-- Runtime code fixes in `mcp_server/` and `shared/` modules - this spec captures audit evidence and planning only.
-- Changes to `description.json`, `memory/`, or `scratch/` - explicitly excluded by task constraints.
+- Runtime code changes in `mcp_server/` or `shared/`.
+- Edits to memory artifacts or unrelated phase folders.
 
 ### Files to Change
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/020-feature-flag-reference/spec.md` | Modify | Convert legacy phase notes to Level 2 spec template with mapped audit content. |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/020-feature-flag-reference/tasks.md` | Modify | Convert issue list into Level 2 phased task format with priority-preserving tasks. |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/020-feature-flag-reference/plan.md` | Modify | Convert methodology notes into Level 2 implementation plan with quality gates and rollback. |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/020-feature-flag-reference/checklist.md` | Modify | Convert feature findings report into Level 2 verification checklist structure. |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/020-feature-flag-reference/spec.md` | Modify | Convert stale draft state to completed closeout state |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/020-feature-flag-reference/plan.md` | Modify | Mark completed execution and verification evidence |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/020-feature-flag-reference/tasks.md` | Modify | Move pending remediation tasks to completed closure tasks |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/020-feature-flag-reference/checklist.md` | Modify | Replace stale FAIL/WARN claims with current PASS evidence |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/020-feature-flag-reference/implementation-summary.md` | Modify | Document closeout and guard-validation outcome |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -78,16 +78,16 @@ Produce a Level 2, verification-ready audit package that captures per-feature fi
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | Audit package covers all 7 feature files in `feature_catalog/20--feature-flag-reference/`. | Each feature (F-01..F-07) has a documented status and findings preserved in checklist sections. |
-| REQ-002 | P0 mapping integrity issues are captured with explicit fixes. | `SPECKIT_ABLATION`, `SPECKIT_RRF`, and source-integrity CI validation gaps are documented as actionable tasks. |
+| REQ-001 | All seven feature docs in `feature_catalog/19--feature-flag-reference/` are represented in this phase packet | `spec.md`, `tasks.md`, and `checklist.md` reference all seven feature domains |
+| REQ-002 | Corrected source-file mappings are reflected as closed outcomes | F-01, F-04, and F-05 mapping findings are documented as resolved with concrete evidence |
+| REQ-003 | Automated mapping-validation guard evidence is recorded | `npm run test -- tests/feature-flag-reference-docs.vitest.ts` is captured as PASS |
 
 ### P1 - Required (complete OR user-approved deferral)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-003 | P1/P2 findings and test gaps are preserved with traceability. | Tasks include `MEMORY_DB_*`, `EMBEDDINGS_PROVIDER`, `EMBEDDING_DIM`, and barrel re-export drift coverage. |
-| REQ-004 | Audit criteria and playbook mapping are retained. | Correctness, standards, behavior, tests, and Cross-cutting playbook coverage remain documented. |
-| REQ-005 | Markdown references in this folder resolve to existing documents. | `validate.sh --no-recursive` reports no missing markdown file references for this folder. |
+| REQ-004 | Stale draft/pending claims are removed | Metadata and task/checklist states reflect complete closeout |
+| REQ-005 | Markdown references in this folder resolve | `validate.sh --no-recursive` reports no missing markdown targets |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -95,8 +95,9 @@ Produce a Level 2, verification-ready audit package that captures per-feature fi
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All seven features have preserved findings and status outcomes in the rewritten Level 2 checklist.
-- **SC-002**: Six remediation tasks remain prioritized (P0=2, P1=3, P2=1) in template-compliant task format.
+- **SC-001**: Phase 020 status is complete and no longer tracks resolved mapping issues as open FAIL/WARN.
+- **SC-002**: Mapping guard test passes and is cited in checklist and summary evidence.
+- **SC-003**: Folder validation passes with no missing markdown references.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -104,10 +105,10 @@ Produce a Level 2, verification-ready audit package that captures per-feature fi
 <!-- ANCHOR:acceptance-scenarios -->
 ## 6. ACCEPTANCE SCENARIOS
 
-1. **Given** all seven feature files are in scope, **When** the checklist is reviewed, **Then** every feature has a retained PASS/WARN/FAIL outcome and evidence summary.
-2. **Given** stale mappings exist for `SPECKIT_ABLATION` and `SPECKIT_RRF`, **When** P0 tasks are reviewed, **Then** remediation items explicitly target authoritative source-file ownership.
-3. **Given** `MEMORY_DB_*` and embedding mappings drift from implementation, **When** P1 tasks are executed, **Then** each mapping update points to an existing code path.
-4. **Given** this phase folder includes `implementation-summary.md`, **When** validation runs, **Then** spec-doc integrity passes with no missing markdown references.
+1. **Given** corrected catalog mappings exist under `19--feature-flag-reference`, **When** phase docs are reviewed, **Then** path references and status claims align with those files.
+2. **Given** the docs guard test validates critical env-var mappings, **When** the command runs, **Then** all checks pass and evidence is recorded.
+3. **Given** this phase was previously left in draft/pending state, **When** tasks and checklist are reviewed, **Then** completed closure status is explicit and traceable.
+4. **Given** markdown reference integrity requirements, **When** folder validation runs, **Then** no missing-markdown issues remain.
 <!-- /ANCHOR:acceptance-scenarios -->
 
 ---
@@ -117,10 +118,9 @@ Produce a Level 2, verification-ready audit package that captures per-feature fi
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | Feature catalog markdown files (`feature_catalog/20--feature-flag-reference/*.md`) | Missing or changed files reduce evidence quality. | Keep source references explicit in tasks and checklist findings. |
-| Dependency | Authoritative env-var read sites in `mcp_server/` and `shared/` | Re-orgs can invalidate Source File mappings. | Add CI validation task for file existence and env-var symbol presence. |
-| Risk | Template drift while rewriting docs | Structural mismatch can break SpecKit expectations. | Preserve all Level 2 anchors/comments exactly and validate section presence manually. |
-| Risk | Loss of detailed finding context | Remediation accuracy may degrade. | Map all existing issue/fix details into tasks and checklist evidence bullets. |
+| Dependency | `feature_catalog/19--feature-flag-reference/*.md` | Incorrect source paths would stale mapping claims again | Keep references pinned to current catalog folder and filenames |
+| Dependency | `mcp_server/tests/feature-flag-reference-docs.vitest.ts` | Guard evidence unavailable if test is removed or broken | Retain guard command as required verification evidence |
+| Risk | Future mapping drift after this closeout | Docs can become stale again | Keep test guard in active verification workflow |
 <!-- /ANCHOR:risks -->
 
 ---
@@ -133,16 +133,16 @@ Produce a Level 2, verification-ready audit package that captures per-feature fi
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
-- **NFR-P01**: Spec documents should remain readable and scannable (<5 seconds to locate each anchor section).
-- **NFR-P02**: Verification artifacts should support quick triage of P0 items in a single pass.
+- **NFR-P01**: Mapping verification should complete quickly enough for routine doc updates.
+- **NFR-P02**: Evidence lookup from checklist to command output should be one hop.
 
 ### Security
-- **NFR-S01**: No secrets, credentials, or sensitive runtime data are introduced in audit documents.
-- **NFR-S02**: Source references must stay path-accurate to prevent unsafe or misleading maintenance actions.
+- **NFR-S01**: No secrets or runtime-sensitive values are added to this phase packet.
+- **NFR-S02**: Source references remain repository-internal and auditable.
 
 ### Reliability
-- **NFR-R01**: The four rewritten docs must remain valid Level 2 template structures with intact anchors.
-- **NFR-R02**: Checkbox states and statuses must remain deterministic and reproducible across future audits.
+- **NFR-R01**: Completed states reflect actual command and validation outputs only.
+- **NFR-R02**: Mapping guard command remains reproducible in `mcp_server`.
 <!-- /ANCHOR:nfr -->
 
 ---
@@ -151,18 +151,18 @@ Produce a Level 2, verification-ready audit package that captures per-feature fi
 ## L2: EDGE CASES
 
 ### Data Boundaries
-- Empty input: If a feature has no findings, keep explicit `NONE` outcomes to avoid ambiguous omissions.
-- Maximum length: Preserve long evidence lines by moving detail into concise, structured checklist bullets.
-- Invalid format: Any malformed task/checklist entry must be rewritten to strict markdown checkbox format.
+- Empty input: If a feature has no open findings, closure status is still explicitly documented.
+- Maximum length: Long mapping evidence is summarized with command-level proof.
+- Invalid format: Any broken path or missing markdown target blocks closeout.
 
 ### Error Scenarios
-- External service failure: If code search tools are unavailable, rely on already captured catalog evidence.
-- Network timeout: Not applicable for local doc rewrite; no network dependency required.
-- Concurrent access: If files change mid-rewrite, re-read target docs before finalizing content.
+- External service failure: N/A for docs-only closeout.
+- Network timeout: N/A for local repository validation.
+- Concurrent access: Re-run validation if files change during closeout updates.
 
 ### State Transitions
-- Partial completion: Do not mark completion criteria until all four files are rewritten and verified.
-- Session expiry: Persist progress in rewritten files and task statuses so work is recoverable.
+- Partial completion: Keep pending markers until guard + validation commands complete.
+- Session expiry: Tasks/checklist retain command evidence so closure can resume safely.
 <!-- /ANCHOR:edge-cases -->
 
 ---
@@ -172,18 +172,17 @@ Produce a Level 2, verification-ready audit package that captures per-feature fi
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Scope | 18/25 | Four docs rewritten, seven features and six remediation items preserved. |
-| Risk | 14/25 | Primary risk is loss/misplacement of audit evidence during template migration. |
-| Research | 8/20 | Existing audit content is comprehensive; additional research is minimal. |
-| **Total** | **40/70** | **Level 2** |
+| Scope | 18/25 | Five phase docs reconciled to current mapping reality |
+| Risk | 15/25 | Main risk is future mapping drift if guard is ignored |
+| Research | 9/20 | Current catalog/test evidence was already available |
+| **Total** | **42/70** | **Level 2** |
 <!-- /ANCHOR:complexity -->
 
 ---
 
 ## 10. OPEN QUESTIONS
 
-- Should `SPECKIT_LAZY_LOADING` remain in the catalog as deprecated/inert, or be removed entirely in next audit pass?
-- Should source-file integrity validation run as a standalone CI job or be integrated into existing catalog checks?
+- Should the mapping guard test be added to the default CI gate for every PR touching `feature_catalog/19--feature-flag-reference/`?
 <!-- /ANCHOR:questions -->
 
 ---

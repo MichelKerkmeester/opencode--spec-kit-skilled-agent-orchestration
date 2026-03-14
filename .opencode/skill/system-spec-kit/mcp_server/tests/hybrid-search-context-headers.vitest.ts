@@ -138,3 +138,77 @@ describe('Contextual tree injection', () => {
     expect(postInjectionTokens).toBeLessThanOrEqual(pipelineBudget);
   });
 });
+
+describe('Contextual tree injection — edge cases', () => {
+  it('T067: no cache entry for path → header has segments but no description suffix', () => {
+    // SPECKIT_CONTEXT_HEADERS flag is checked upstream (not inside injectContextualTree).
+    // When the cache has no matching entry the function still injects a bare
+    // segment header without the " — description" suffix.
+    const row: InjectContextualTreeInput = {
+      id: 200,
+      score: 0.95,
+      source: 'hybrid',
+      file_path: '/workspace/.opencode/specs/feat-a/feat-b/memory/notes.md',
+      content: 'Body text remains intact',
+    };
+
+    const emptyCache = new Map<string, string>();
+    const injected = __testables.injectContextualTree(row, emptyCache);
+    const injectedContent = getContent(injected) ?? '';
+    const [header = '', ...rest] = injectedContent.split('\n');
+
+    // Header should be the bare segment bracket without a description
+    expect(header).toBe('[feat-a > feat-b]');
+    expect(header).not.toContain(' — ');
+    // Original content preserved after the header line
+    expect(rest.join('\n')).toBe('Body text remains intact');
+  });
+
+  it('T068: non-spec-folder path → content unchanged (graceful skip)', () => {
+    const row: InjectContextualTreeInput = {
+      id: 201,
+      score: 0.88,
+      source: 'hybrid',
+      file_path: '/workspace/notes/readme.md',
+      content: 'Plain note content',
+    };
+
+    const cache = new Map<string, string>([
+      ['some-parent/some-child', 'Irrelevant description'],
+    ]);
+
+    const injected = __testables.injectContextualTree(row, cache);
+    // Path lacks /specs/ → extractSpecSegments returns null → row returned as-is
+    expect(injected).toBe(row);
+    expect(getContent(injected)).toBe('Plain note content');
+  });
+
+  it('T069: special characters in description → header properly formatted and within limit', () => {
+    const row: InjectContextualTreeInput = {
+      id: 202,
+      score: 0.91,
+      source: 'hybrid',
+      file_path: '/workspace/.opencode/specs/module-x/sub-y/memory/log.md',
+      content: 'Content after header',
+    };
+
+    const specialDesc = 'Adds "quoted" values, [bracketed] refs & unicode: Stra\u00DFe \u2014 caf\u00E9';
+    const cache = new Map<string, string>([
+      ['module-x/sub-y', specialDesc],
+    ]);
+
+    const injected = __testables.injectContextualTree(row, cache);
+    const injectedContent = getContent(injected) ?? '';
+    const [header = ''] = injectedContent.split('\n');
+
+    // Header must start with segment bracket and end with ]
+    expect(header.startsWith('[module-x > sub-y')).toBe(true);
+    expect(header.endsWith(']')).toBe(true);
+    // Must contain the em-dash separator since description is non-empty
+    expect(header).toContain(' — ');
+    // Must respect the 100-char ceiling
+    expect(header.length).toBeLessThanOrEqual(100);
+    // Original content preserved after the header
+    expect(injectedContent).toContain('Content after header');
+  });
+});

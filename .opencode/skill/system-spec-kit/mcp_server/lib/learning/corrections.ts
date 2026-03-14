@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. CORRECTIONS
+// MODULE: Corrections
 // ───────────────────────────────────────────────────────────────
 // LEARNING: CORRECTIONS TRACKING
 import type Database from 'better-sqlite3';

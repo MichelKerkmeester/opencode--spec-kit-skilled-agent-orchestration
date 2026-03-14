@@ -1,10 +1,12 @@
 // ───────────────────────────────────────────────────────────────
-// 1. CONFIDENCE TRACKER
+// MODULE: Confidence Tracker
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Score normalization
 import type { DatabaseExtended as Database } from '@spec-kit/shared/types';
 
 // ───────────────────────────────────────────────────────────────
-// 2. TYPES
+// 1. TYPES
+
 // ───────────────────────────────────────────────────────────────
 export type { Database };
 
@@ -75,7 +77,8 @@ function isPromotionEligible(
 }
 
 // ───────────────────────────────────────────────────────────────
-// 3. CONSTANTS
+// 2. CONSTANTS
+
 // ───────────────────────────────────────────────────────────────
 export const CONFIDENCE_BASE: number = 0.5;
 export const CONFIDENCE_POSITIVE_INCREMENT: number = 0.1;
@@ -87,7 +90,8 @@ export const PROMOTION_CONFIDENCE_THRESHOLD: number = 0.9;
 export const PROMOTION_VALIDATION_THRESHOLD: number = 5;
 
 // ───────────────────────────────────────────────────────────────
-// 4. CORE FUNCTIONS
+// 3. CORE FUNCTIONS
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Record a validation event for a memory and persist confidence counters.

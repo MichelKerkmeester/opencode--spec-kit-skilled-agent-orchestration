@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. RERANKER
+// MODULE: Reranker
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Stage 3 effectiveScore fallback chain
 // Simple score-based reranking utility. Sorts results by score
 // Descending and optionally truncates to a limit.
 //

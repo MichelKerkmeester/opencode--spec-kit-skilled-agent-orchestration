@@ -1,5 +1,5 @@
 // ────────────────────────────────────────────────────────────────
-// 1. DB STATE 
+// MODULE: Db State
 // ────────────────────────────────────────────────────────────────
 
 import fs from 'fs/promises';
@@ -8,7 +8,8 @@ import type { DatabaseExtended } from '@spec-kit/shared/types';
 import type { GraphSearchFn } from '../lib/search/search-types';
 
 // ────────────────────────────────────────────────────────────────
-// 2. TYPES 
+// 1. TYPES 
+
 // ────────────────────────────────────────────────────────────────
 
 /** Minimal vector index interface for database operations */
@@ -64,7 +65,8 @@ export interface DbStateDeps {
 }
 
 // ────────────────────────────────────────────────────────────────
-// 3. STATE VARIABLES 
+// 2. STATE VARIABLES 
+
 // ────────────────────────────────────────────────────────────────
 
 let lastDbCheck: number = 0;
@@ -76,7 +78,8 @@ let constitutionalCacheTime: number = 0;
 let configTableCreated: boolean = false;
 
 // ────────────────────────────────────────────────────────────────
-// 4. MODULE REFERENCES 
+// 3. MODULE REFERENCES 
+
 // ────────────────────────────────────────────────────────────────
 
 let vectorIndex: VectorIndexLike | null = null;
@@ -107,7 +110,8 @@ export function init(deps: DbStateDeps): void {
 }
 
 // ────────────────────────────────────────────────────────────────
-// 5. DATABASE CHANGE NOTIFICATION 
+// 4. DATABASE CHANGE NOTIFICATION 
+
 // ────────────────────────────────────────────────────────────────
 
 /** Check if the database was updated externally and reinitialize if needed. */
@@ -209,7 +213,8 @@ export async function reinitializeDatabase(updatedMarkerTime?: number): Promise<
 }
 
 // ────────────────────────────────────────────────────────────────
-// 6. PERSISTENT RATE LIMITING 
+// 5. PERSISTENT RATE LIMITING 
+
 // ────────────────────────────────────────────────────────────────
 
 /** Ensure the config table exists (idempotent, runs DDL at most once per process). */
@@ -259,7 +264,8 @@ export async function setLastScanTime(time: number): Promise<void> {
 }
 
 // ────────────────────────────────────────────────────────────────
-// 7. EMBEDDING MODEL READINESS 
+// 6. EMBEDDING MODEL READINESS 
+
 // ────────────────────────────────────────────────────────────────
 
 /** Return whether the embedding model has been marked as ready. */
@@ -288,7 +294,8 @@ export async function waitForEmbeddingModel(timeoutMs: number = 30000): Promise<
 }
 
 // ────────────────────────────────────────────────────────────────
-// 8. CONSTITUTIONAL CACHE ACCESSORS 
+// 7. CONSTITUTIONAL CACHE ACCESSORS 
+
 // ────────────────────────────────────────────────────────────────
 
 /** Return the cached constitutional memory entries, or null if not cached. */

@@ -1,15 +1,22 @@
 // ───────────────────────────────────────────────────────────────
-// 1. JOB QUEUE
+// MODULE: Job Queue
 // ───────────────────────────────────────────────────────────────
 // True sequential worker, meaningful state transitions,
 // Continue-on-error for bulk ingestion, SQLITE_BUSY async retry on DB writes,
 // Crash recovery with re-enqueue, and original-path progress tracking.
+
+/* ───────────────────────────────────────────────────────────────
+   1. IMPORTS
+──────────────────────────────────────────────────────────────── */
 
 import path from 'node:path';
 import { requireDb, toErrorMessage } from '../../utils';
 
 // Feature catalog: Async ingestion job lifecycle
 
+/* ───────────────────────────────────────────────────────────────
+   2. TYPES
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Defines the IngestJobState type.
@@ -71,6 +78,10 @@ interface JobQueueConfig {
   processFile: (filePath: string) => Promise<unknown>;
 }
 
+/* ───────────────────────────────────────────────────────────────
+   3. CONSTANTS
+──────────────────────────────────────────────────────────────── */
+
 const ACTIVE_STATES = new Set<IngestJobState>(['queued', 'parsing', 'embedding', 'indexing']);
 const TERMINAL_STATES = new Set<IngestJobState>(['complete', 'failed', 'cancelled']);
 
@@ -87,11 +98,19 @@ const ALLOWED_TRANSITIONS: Record<IngestJobState, Set<IngestJobState>> = {
 // SQLITE_BUSY retry delays that match the file-watcher pattern.
 const RETRY_DELAYS_MS = [50, 200, 500];
 
+/* ───────────────────────────────────────────────────────────────
+   5. STATE MANAGEMENT
+──────────────────────────────────────────────────────────────── */
+
 // True sequential queue — only one job processes at a time.
 const pendingQueue: string[] = [];
 let workerActive = false;
 let processFileFn: ((filePath: string) => Promise<unknown>) | null = null;
 const MAX_STORED_ERRORS = 50;
+
+/* ───────────────────────────────────────────────────────────────
+   4. HELPERS
+──────────────────────────────────────────────────────────────── */
 
 function toPublicPathLabel(filePath: string): string {
   return filePath === '__job__' ? filePath : path.basename(filePath || '');
@@ -541,6 +560,10 @@ export function getIngestForecast(
   };
 }
 
+/* ───────────────────────────────────────────────────────────────
+   6. WORKER
+──────────────────────────────────────────────────────────────── */
+
 // Real state machine — states now correspond to actual work phases.
 // Progress is tracked against the original submitted path list so terminal
 // Accounting stays stable even when some files are inaccessible.
@@ -673,6 +696,10 @@ function enqueueIngestJob(jobId: string): void {
   }
 }
 
+/* ───────────────────────────────────────────────────────────────
+   7. INITIALIZATION
+──────────────────────────────────────────────────────────────── */
+
 function initIngestJobQueue(config: JobQueueConfig): { resetCount: number } {
   processFileFn = config.processFile;
   ensureIngestJobsTable();
@@ -686,6 +713,10 @@ function initIngestJobQueue(config: JobQueueConfig): { resetCount: number } {
 
   return { resetCount: resetJobIds.length };
 }
+
+/* ───────────────────────────────────────────────────────────────
+   8. EXPORTS
+──────────────────────────────────────────────────────────────── */
 
 export {
   initIngestJobQueue,

@@ -397,6 +397,8 @@ resolve_and_validate_spec_path() {
 
 # ───────────────────────────────────────────────────────────────
 # 2. REPOSITORY DETECTION
+
+
 # ───────────────────────────────────────────────────────────────
 
 # Note: SCRIPT_DIR already set above during library sourcing
@@ -420,6 +422,8 @@ mkdir -p "$SPECS_DIR"
 
 # ───────────────────────────────────────────────────────────────
 # 3. SUBFOLDER MODE
+
+
 # ───────────────────────────────────────────────────────────────
 
 if [[ "$SUBFOLDER_MODE" = true ]]; then
@@ -996,6 +1000,8 @@ create_git_branch
 
 # ───────────────────────────────────────────────────────────────
 # 5. CREATE SPEC FOLDER STRUCTURE
+
+
 # ───────────────────────────────────────────────────────────────
 
 FEATURE_DIR="$SPECS_DIR/$BRANCH_NAME"
@@ -1024,6 +1030,8 @@ touch "$FEATURE_DIR/scratch/.gitkeep" "$FEATURE_DIR/memory/.gitkeep"
 
 # ───────────────────────────────────────────────────────────────
 # 6. COPY TEMPLATES BASED ON DOCUMENTATION LEVEL
+
+
 # ───────────────────────────────────────────────────────────────
 
 # Copy all templates from the level folder (using library copy_template)
@@ -1091,6 +1099,8 @@ export SPECIFY_FEATURE="$BRANCH_NAME"
 
 # ───────────────────────────────────────────────────────────────
 # 10. OUTPUT
+
+
 # ───────────────────────────────────────────────────────────────
 
 if $JSON_MODE; then

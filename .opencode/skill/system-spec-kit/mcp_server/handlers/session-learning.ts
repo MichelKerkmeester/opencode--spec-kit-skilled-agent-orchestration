@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. SESSION LEARNING
+// MODULE: Session Learning
 // ───────────────────────────────────────────────────────────────
 import * as vectorIndex from '../lib/search/vector-index';
 import { checkDatabaseUpdated } from '../core';

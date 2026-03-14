@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. COMPOSITE SCORING
+// MODULE: Composite Scoring
 // ───────────────────────────────────────────────────────────────
 import { getTierConfig } from './importance-tiers';
 import { calculatePopularityScore } from '../storage/access-tracker';
@@ -43,7 +43,8 @@ try {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 2. TYPES
+// 1. TYPES
+
 // ───────────────────────────────────────────────────────────────
 export interface FiveFactorWeights {
   temporal: number;
@@ -112,7 +113,8 @@ export interface PatternAlignmentBonuses {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 3. CONFIGURATION
+// 2. CONFIGURATION
+
 // ───────────────────────────────────────────────────────────────
 // 5-Factor Decay Composite weights
 export const FIVE_FACTOR_WEIGHTS: FiveFactorWeights = {
@@ -222,7 +224,8 @@ export const PATTERN_ALIGNMENT_BONUSES: PatternAlignmentBonuses = {
 export { INTERFERENCE_PENALTY_COEFFICIENT } from './interference-scoring';
 
 // ───────────────────────────────────────────────────────────────
-// 4. SCORE CALCULATIONS
+// 3. SCORE CALCULATIONS
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Parse last_accessed value that may be:
@@ -555,7 +558,8 @@ function applyPostProcessingAndObserve(
 }
 
 // ───────────────────────────────────────────────────────────────
-// 5. COMPOSITE SCORING FUNCTIONS
+// 4. COMPOSITE SCORING FUNCTIONS
+
 // ───────────────────────────────────────────────────────────────
 /**
  * T032: Calculate 5-factor composite score (REQ-017)
@@ -617,7 +621,21 @@ export function calculateCompositeScore(row: ScoringInput, options: ScoringOptio
     return calculateFiveFactorScore(row, options);
   }
 
-  const weights: LegacyWeights = { ...DEFAULT_WEIGHTS, ...(options.weights as Partial<LegacyWeights>) };
+  const rawWeights: LegacyWeights = { ...DEFAULT_WEIGHTS, ...(options.weights as Partial<LegacyWeights>) };
+  // Normalize weights to sum 1.0 after merging partial overrides.
+  // Without this, partial overrides break weighted-average semantics.
+  const wSum = rawWeights.similarity + rawWeights.importance + rawWeights.recency
+    + rawWeights.popularity + rawWeights.tierBoost + rawWeights.retrievability;
+  const weights: LegacyWeights = Math.abs(wSum - 1.0) > 0.001 && wSum > 0
+    ? {
+        similarity: rawWeights.similarity / wSum,
+        importance: rawWeights.importance / wSum,
+        recency: rawWeights.recency / wSum,
+        popularity: rawWeights.popularity / wSum,
+        tierBoost: rawWeights.tierBoost / wSum,
+        retrievability: rawWeights.retrievability / wSum,
+      }
+    : rawWeights;
 
   const similarity = (Number(row.similarity) || 0) / 100;
   const importance = row.importance_weight || 0.5;
@@ -642,7 +660,8 @@ export function calculateCompositeScore(row: ScoringInput, options: ScoringOptio
 }
 
 // ───────────────────────────────────────────────────────────────
-// 6. BATCH OPERATIONS
+// 5. BATCH OPERATIONS
+
 // ───────────────────────────────────────────────────────────────
 /**
  * T032: Apply 5-factor scoring to a batch of results.
@@ -726,7 +745,17 @@ export function applyCompositeScoring(
  * @returns Detailed breakdown of each factor's value, weight, and contribution
  */
 export function getFiveFactorBreakdown(row: ScoringInput, options: ScoringOptions = {}): FiveFactorBreakdown {
-  const weights: FiveFactorWeights = { ...FIVE_FACTOR_WEIGHTS, ...(options.weights as Partial<FiveFactorWeights>) };
+  const rawWeights: FiveFactorWeights = { ...FIVE_FACTOR_WEIGHTS, ...(options.weights as Partial<FiveFactorWeights>) };
+  const wSum = rawWeights.temporal + rawWeights.usage + rawWeights.importance + rawWeights.pattern + rawWeights.citation;
+  const weights: FiveFactorWeights = Math.abs(wSum - 1.0) > 0.001 && wSum > 0
+    ? {
+        temporal: rawWeights.temporal / wSum,
+        usage: rawWeights.usage / wSum,
+        importance: rawWeights.importance / wSum,
+        pattern: rawWeights.pattern / wSum,
+        citation: rawWeights.citation / wSum,
+      }
+    : rawWeights;
   const tier = row.importance_tier || 'normal';
 
   const temporal = calculateTemporalScore(row);
@@ -760,7 +789,19 @@ export function getScoreBreakdown(row: ScoringInput, options: ScoringOptions = {
     return getFiveFactorBreakdown(row, options);
   }
 
-  const weights: LegacyWeights = { ...DEFAULT_WEIGHTS, ...(options.weights as Partial<LegacyWeights>) };
+  const rawWeights: LegacyWeights = { ...DEFAULT_WEIGHTS, ...(options.weights as Partial<LegacyWeights>) };
+  const wSum = rawWeights.similarity + rawWeights.importance + rawWeights.recency
+    + rawWeights.popularity + rawWeights.tierBoost + rawWeights.retrievability;
+  const weights: LegacyWeights = Math.abs(wSum - 1.0) > 0.001 && wSum > 0
+    ? {
+        similarity: rawWeights.similarity / wSum,
+        importance: rawWeights.importance / wSum,
+        recency: rawWeights.recency / wSum,
+        popularity: rawWeights.popularity / wSum,
+        tierBoost: rawWeights.tierBoost / wSum,
+        retrievability: rawWeights.retrievability / wSum,
+      }
+    : rawWeights;
   const tier = row.importance_tier || 'normal';
 
   const similarity = (Number(row.similarity) || 0) / 100;
@@ -785,7 +826,8 @@ export function getScoreBreakdown(row: ScoringInput, options: ScoringOptions = {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 7. SCORE NORMALIZATION
+// 6. SCORE NORMALIZATION
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Check if composite score normalization is enabled.

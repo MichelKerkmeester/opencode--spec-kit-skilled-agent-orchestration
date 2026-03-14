@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. TIER CLASSIFIER
+// MODULE: Tier Classifier
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Classification-based decay
 // Fs and path removed — unused in this module
 
 // Import FSRS constants and canonical retrievability function.

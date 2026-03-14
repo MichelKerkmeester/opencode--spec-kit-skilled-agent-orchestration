@@ -1,9 +1,9 @@
 #!/usr/bin/env node
-// Feature catalog: Migration checkpoint scripts
 // ───────────────────────────────────────────────────────────────
-// 1. MIGRATION CHECKPOINT RESTORE
+// MODULE: Migration Checkpoint Restore
 // ───────────────────────────────────────────────────────────────
 // Restore a previously created SQLite checkpoint into the target DB.
+// Feature catalog: Migration checkpoint scripts
 import * as fs from 'fs';
 import * as path from 'path';
 import Database from 'better-sqlite3';
@@ -24,6 +24,11 @@ interface RestoreCheckpointResult {
   backupPath: string | null;
 }
 
+/**
+ * Resolve the default database path from environment or known project locations.
+ *
+ * @returns Absolute path to the SQLite database file.
+ */
 function resolveDefaultDbPath(): string {
   const candidates = [
     process.env.MEMORY_DB_PATH,
@@ -41,6 +46,12 @@ function resolveDefaultDbPath(): string {
   return path.resolve(candidates[0] ?? path.resolve(process.cwd(), 'database/context-index.sqlite'));
 }
 
+/**
+ * Parse CLI arguments into a structured args object.
+ *
+ * @param argv - Raw argument strings from the command line.
+ * @returns Parsed CLI arguments with defaults applied.
+ */
 function parseArgs(argv: string[]): CliArgs {
   let checkpointPath = '';
   let dbPath = resolveDefaultDbPath();
@@ -117,6 +128,11 @@ function toTimestampId(date: Date): string {
     .replace('Z', '');
 }
 
+/**
+ * Verify that a file is a valid SQLite database by reading its master table.
+ *
+ * @param dbPath - Path to the SQLite database file to verify.
+ */
 function verifySqliteFile(dbPath: string): void {
   const db = new Database(dbPath, { fileMustExist: true });
   try {
@@ -126,6 +142,12 @@ function verifySqliteFile(dbPath: string): void {
   }
 }
 
+/**
+ * Execute the checkpoint restore workflow: backup existing DB then copy checkpoint in place.
+ *
+ * @param args - Parsed CLI arguments specifying checkpoint source and target.
+ * @returns Result containing the restored path and optional backup location.
+ */
 function runRestoreCheckpoint(args: CliArgs): RestoreCheckpointResult {
   if (!fs.existsSync(args.checkpointPath)) {
     throw new Error(`Checkpoint file not found: ${args.checkpointPath}`);
@@ -163,6 +185,12 @@ function runRestoreCheckpoint(args: CliArgs): RestoreCheckpointResult {
   return result;
 }
 
+/**
+ * CLI entry point: parse arguments, restore checkpoint, and print results.
+ *
+ * @param argv - Command-line arguments (defaults to `process.argv.slice(2)`).
+ * @returns Checkpoint restore result.
+ */
 function main(argv = process.argv.slice(2)): RestoreCheckpointResult {
   const args = parseArgs(argv);
   const result = runRestoreCheckpoint(args);

@@ -502,7 +502,7 @@ All support `:auto` and `:confirm` mode suffixes.
 | `/memory:save`     | Save context via `generate-context.js`                        |
 | `/memory:continue` | Session recovery from crash or compaction                     |
 | `/memory:context`  | Unified retrieval with intent-aware routing                   |
-| `/memory:learn`    | Explicit learning capture (`correct` subcommand for mistakes) |
+| `/memory:learn`    | Constitutional memory manager (`list`, `edit`, `remove`, `budget`) |
 | `/memory:manage`   | Database ops: stats, health, cleanup, checkpoints             |
 
 ### create/ (5 commands)

@@ -1,11 +1,13 @@
 // ───────────────────────────────────────────────────────────────
-// 1. BM25 INDEX
+// MODULE: Bm25 Index
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: BM25 trigger phrase re-index gate
 import type Database from 'better-sqlite3';
 import { normalizeContentForBM25 } from '../parsing/content-normalizer';
 
 // ───────────────────────────────────────────────────────────────
-// 2. INTERFACES
+// 1. INTERFACES
+
 // ───────────────────────────────────────────────────────────────
 interface BM25SearchResult {
   id: string;
@@ -56,7 +58,8 @@ function isBm25Enabled(): boolean {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 3. HELPERS
+// 2. HELPERS
+
 // ───────────────────────────────────────────────────────────────
 const STOP_WORDS = new Set([
   'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for',
@@ -112,7 +115,8 @@ function getTermFrequencies(tokens: string[]): Map<string, number> {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 4. BM25 INDEX CLASS
+// 3. BM25 INDEX CLASS
+
 // ───────────────────────────────────────────────────────────────
 class BM25Index {
   private k1: number;
@@ -275,7 +279,8 @@ class BM25Index {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 5. SINGLETON
+// 4. SINGLETON
+
 // ───────────────────────────────────────────────────────────────
 let indexInstance: BM25Index | null = null;
 
@@ -291,7 +296,8 @@ function resetIndex(): void {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 6. FTS5 QUERY SANITIZATION (P3-06)
+// 5. FTS5 QUERY SANITIZATION (P3-06)
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Sanitize a query string for safe use with SQLite FTS5 and return
@@ -337,7 +343,8 @@ function sanitizeFTS5Query(query: string): string {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 7. EXPORTS
+// 6. EXPORTS
+
 // ───────────────────────────────────────────────────────────────
 export {
   BM25Index,

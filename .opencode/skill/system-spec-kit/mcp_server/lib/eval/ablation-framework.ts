@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. ABLATION FRAMEWORK (R13-S3)
+// MODULE: Ablation Framework (R13-S3)
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Ablation studies (eval_run_ablation)
 //
 // Controlled ablation studies for search channel contribution analysis.
 // Selectively disables one search channel at a time, measures Recall@20

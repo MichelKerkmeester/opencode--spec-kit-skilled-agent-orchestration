@@ -1,3 +1,8 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: Scope Governance
+// ───────────────────────────────────────────────────────────────
+// Hierarchical scope enforcement, governed ingest validation,
+// provenance normalization, and governance audit persistence.
 import type Database from 'better-sqlite3';
 
 import { ensureGovernanceTables, ensureSharedSpaceTables } from '../search/vector-index-schema';

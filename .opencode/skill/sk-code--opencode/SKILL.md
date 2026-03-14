@@ -376,6 +376,8 @@ The recurring verifier at `scripts/verify_alignment_drift.py` applies severity-a
 
 7. **Preserve numbered ALL-CAPS section headers**
    - Keep `## N. UPPERCASE SECTION NAME` unchanged in standards and examples
+   - File headers, shebangs, module banners, docstrings, and strict-mode directives do not count as numbered sections
+   - The first numbered code section that appears in a file starts at `1`, then increments sequentially from the sections actually present
    - Treat header style drift as non-regression failure
 
 8. **Run alignment verifier before completion claims**

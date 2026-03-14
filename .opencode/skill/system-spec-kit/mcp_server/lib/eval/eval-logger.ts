@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. EVAL LOGGER
+// MODULE: Eval Logger
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Evaluation database and schema
 // Non-blocking, fail-safe logging hooks for search, context,
 // And trigger handlers. All writes go to the eval DB (speckit-eval.db).
 //

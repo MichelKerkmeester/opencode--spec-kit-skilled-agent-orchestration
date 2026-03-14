@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. PREFLIGHT
+// MODULE: Preflight
 // ───────────────────────────────────────────────────────────────
 import crypto from 'crypto';
 import { CHUNKING_THRESHOLD } from '../chunking/anchor-chunker';
@@ -8,7 +8,8 @@ import { CHUNKING_THRESHOLD } from '../chunking/anchor-chunker';
 
 
 // ───────────────────────────────────────────────────────────────
-// 2. TYPES
+// 1. TYPES
+
 // ───────────────────────────────────────────────────────────────
 /** Preflight error code identifiers */
 export interface PreflightErrorCodes {
@@ -161,7 +162,8 @@ type FindSimilarFn = (embedding: Float32Array | number[], options: {
 }) => Array<{ id: number; file_path: string; similarity: number }>;
 
 // ───────────────────────────────────────────────────────────────
-// 3. CONFIGURATION
+// 2. CONFIGURATION
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Defines the PreflightErrorCodes constant.
@@ -201,7 +203,8 @@ export const PREFLIGHT_CONFIG: PreflightConfig = {
 };
 
 // ───────────────────────────────────────────────────────────────
-// 4. PREFLIGHT ERROR CLASS
+// 3. PREFLIGHT ERROR CLASS
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Represents the PreflightError type.
@@ -235,7 +238,8 @@ export class PreflightError extends Error {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 5. ANCHOR FORMAT VALIDATION
+// 4. ANCHOR FORMAT VALIDATION
+
 // ───────────────────────────────────────────────────────────────
 const VALID_ANCHOR_ID_PATTERN: RegExp = /^[a-zA-Z0-9][a-zA-Z0-9-/]*$/;
 const ANCHOR_OPENING_PATTERN: RegExp = /<!--\s*(?:ANCHOR|anchor):\s*([^>\s]+)\s*-->/gi;
@@ -347,7 +351,8 @@ export function validateAnchorFormat(content: string, options: { strict?: boolea
 }
 
 // ───────────────────────────────────────────────────────────────
-// 6. DUPLICATE DETECTION
+// 5. DUPLICATE DETECTION
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Provides the computeContentHash helper.
@@ -445,7 +450,8 @@ export function checkDuplicate(params: DuplicateCheckParams, options: DuplicateC
 }
 
 // ───────────────────────────────────────────────────────────────
-// 7. TOKEN BUDGET ESTIMATION
+// 6. TOKEN BUDGET ESTIMATION
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Provides the estimateTokens helper.
@@ -518,7 +524,8 @@ export function checkTokenBudget(content: string, options: {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 8. CONTENT SIZE VALIDATION
+// 7. CONTENT SIZE VALIDATION
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Provides the validateContentSize helper.
@@ -579,7 +586,8 @@ export function validateContentSize(content: string, options: {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 9. UNIFIED PREFLIGHT CHECK
+// 8. UNIFIED PREFLIGHT CHECK
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Provides the runPreflight helper.

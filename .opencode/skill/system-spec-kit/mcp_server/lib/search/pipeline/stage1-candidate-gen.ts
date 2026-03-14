@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. STAGE1 CANDIDATE GEN
+// MODULE: Stage1 Candidate Gen
 // ───────────────────────────────────────────────────────────────
 // 4-stage retrieval pipeline architecture
 //

@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. SCHEMA DOWNGRADE (V16 -> V15)
+// MODULE: Schema Downgrade (V16 -> V15)
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Database and schema safety
 // Targeted downgrade utility for removing chunking columns added in v16:
 //   - parent_id
 //   - chunk_index

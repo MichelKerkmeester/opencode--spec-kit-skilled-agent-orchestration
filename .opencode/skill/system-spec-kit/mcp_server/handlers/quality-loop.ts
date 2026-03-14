@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. QUALITY LOOP (T008)
+// MODULE: Quality Loop (T008)
 // ───────────────────────────────────────────────────────────────
 import { initEvalDb } from '../lib/eval/eval-db';
 import { isQualityLoopEnabled } from '../lib/search/search-flags';
@@ -73,7 +73,8 @@ const QUALITY_WEIGHTS = {
 
 /** Rough token-to-char ratio: 1 token ~ 4 chars (env-configurable via MCP_CHARS_PER_TOKEN) */
 const DEFAULT_TOKEN_BUDGET = 2000;
-const CHARS_PER_TOKEN = parseFloat(process.env.MCP_CHARS_PER_TOKEN || '4');
+const _parsedCPT = parseFloat(process.env.MCP_CHARS_PER_TOKEN || '4');
+const CHARS_PER_TOKEN = Number.isFinite(_parsedCPT) ? _parsedCPT : 4;
 const DEFAULT_CHAR_BUDGET = DEFAULT_TOKEN_BUDGET * CHARS_PER_TOKEN;
 
 /**

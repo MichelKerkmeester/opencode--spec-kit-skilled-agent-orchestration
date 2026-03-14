@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. ANCHOR METADATA
+// MODULE: Anchor Metadata
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: ANCHOR tags as graph nodes
 // S2 template anchor optimization
 //
 // PURPOSE: Parse ANCHOR tags from memory content and attach the

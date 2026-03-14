@@ -1,5 +1,5 @@
 // ────────────────────────────────────────────────────────────────
-// 1. SEARCH RESULTS FORMATTER 
+// MODULE: Search Results Formatter
 // ────────────────────────────────────────────────────────────────
 
 // Node stdlib
@@ -10,6 +10,10 @@ import { estimateTokens } from './token-metrics';
 
 // Import path security utilities (migrated from shared/utils.js)
 import { validateFilePath } from '../lib/utils/path-security';
+import {
+  readSessionTransitionTrace,
+  type SessionTransitionTrace,
+} from '../lib/search/session-transition';
 
 // Import memory parser for anchor extraction (SK-005)
 import * as memoryParser from '../lib/parsing/memory-parser';
@@ -25,7 +29,8 @@ import {
 import { ALLOWED_BASE_PATHS } from '../core/config';
 
 // ────────────────────────────────────────────────────────────────
-// 2. TYPES 
+// 1. TYPES 
+
 // ────────────────────────────────────────────────────────────────
 
 /** Token metrics for anchor-filtered content */
@@ -116,12 +121,7 @@ export interface MemoryResultTrace {
     rolloutState?: string | null;
   };
   adaptiveMode?: string | null;
-  sessionTransition?: {
-    previousState: string;
-    inferredState: string;
-    confidence: number;
-    sourceSignal: string;
-  };
+  sessionTransition?: SessionTransitionTrace;
 }
 
 export interface MemoryResultEnvelope extends FormattedSearchResult {
@@ -139,7 +139,8 @@ export interface MemoryParserLike {
 export type { MCPResponse };
 
 // ────────────────────────────────────────────────────────────────
-// 3. PATH VALIDATION 
+// 2. PATH VALIDATION 
+
 // ────────────────────────────────────────────────────────────────
 
 export function validateFilePathLocal(filePath: string): string {
@@ -155,7 +156,8 @@ export function validateFilePathLocal(filePath: string): string {
 }
 
 // ────────────────────────────────────────────────────────────────
-// 4. HELPER UTILITIES 
+// 3. HELPER UTILITIES 
+
 // ────────────────────────────────────────────────────────────────
 
 export function safeJsonParse<T>(str: string | null | undefined, fallback: T): T {
@@ -255,7 +257,6 @@ function extractTrace(rawResult: RawSearchResult, extraData?: Record<string, unk
   let budgetTruncated = false;
   let graphContribution: MemoryResultTrace['graphContribution'];
   let adaptiveMode: string | null = null;
-  let sessionTransition: MemoryResultTrace['sessionTransition'];
 
   for (const stage of stages) {
     const meta = stage.metadata ?? {};
@@ -331,24 +332,7 @@ function extractTrace(rawResult: RawSearchResult, extraData?: Record<string, unk
     };
   }
 
-  const rawSessionTransition = extraData?.sessionTransition;
-  if (rawSessionTransition && typeof rawSessionTransition === 'object') {
-    const candidate = rawSessionTransition as Record<string, unknown>;
-    if (
-      typeof candidate.previousState === 'string'
-      && typeof candidate.inferredState === 'string'
-      && typeof candidate.confidence === 'number'
-      && Number.isFinite(candidate.confidence)
-      && typeof candidate.sourceSignal === 'string'
-    ) {
-      sessionTransition = {
-        previousState: candidate.previousState,
-        inferredState: candidate.inferredState,
-        confidence: candidate.confidence,
-        sourceSignal: candidate.sourceSignal,
-      };
-    }
-  }
+  const sessionTransition = readSessionTransitionTrace(extraData?.sessionTransition) ?? undefined;
 
   return {
     channelsUsed: Array.from(channelsUsed),
@@ -365,7 +349,8 @@ function extractTrace(rawResult: RawSearchResult, extraData?: Record<string, unk
 }
 
 // ────────────────────────────────────────────────────────────────
-// 5. SEARCH RESULTS FORMATTING 
+// 4. SEARCH RESULTS FORMATTING 
+
 // ────────────────────────────────────────────────────────────────
 
 export async function formatSearchResults(

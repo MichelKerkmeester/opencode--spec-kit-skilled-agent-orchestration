@@ -1,5 +1,5 @@
 // ────────────────────────────────────────────────────────────────
-// 1. STORAGE 
+// MODULE: Storage
 // ────────────────────────────────────────────────────────────────
 // @public — scripts should import from here, not lib/ internals.
 // ARCH-1 exposes minimal storage initialization hooks needed by

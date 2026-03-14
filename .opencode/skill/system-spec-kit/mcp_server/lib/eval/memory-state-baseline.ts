@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. MEMORY STATE BASELINE METRICS
+// MODULE: Memory State Baseline Metrics
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Memory roadmap baseline snapshot
 // Captures baseline retrieval/isolation metrics before phased rollout.
 // Can optionally persist snapshots into eval_metric_snapshots.
 import * as fs from 'fs';

@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. FOLDER SCORING
+// MODULE: Folder Scoring
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Folder-level relevance scoring
 // SCORING: FOLDER SCORING BARREL
 export {
   type FolderMemoryInput,

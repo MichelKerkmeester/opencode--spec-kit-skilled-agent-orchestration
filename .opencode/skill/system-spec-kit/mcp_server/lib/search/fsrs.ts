@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. FSRS
+// MODULE: Fsrs
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Classification-based decay
 // Augments FSRS stability scores with graph centrality so that
 // Central nodes decay slower and peripheral nodes decay faster.
 

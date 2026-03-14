@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// MODULE: Input Normalizer
+// ---------------------------------------------------------------
+
 // ───────────────────────────────────────────────────────────────
 // 1. INPUT NORMALIZER
 // ───────────────────────────────────────────────────────────────
@@ -225,6 +229,10 @@ function buildTechnicalContextObservation(techContext: Record<string, unknown>):
 }
 
 function buildNextStepsObservation(nextSteps: string[]): Observation {
+  if (nextSteps.length === 0) {
+    return { type: 'followup', title: 'Next Steps', narrative: '', facts: [] };
+  }
+
   const [firstStep, ...remainingSteps] = nextSteps;
 
   return {

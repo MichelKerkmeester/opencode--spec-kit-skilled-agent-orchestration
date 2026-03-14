@@ -1,5 +1,5 @@
 // ────────────────────────────────────────────────────────────────
-// 1. HANDLER UTILS 
+// MODULE: Handler Utils
 // ────────────────────────────────────────────────────────────────
 // Shared utilities extracted from handler modules to break dependency cycles.
 //

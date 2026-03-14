@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. EXTRACTION ADAPTER
+// MODULE: Extraction Adapter
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Auto entity extraction
 import type Database from 'better-sqlite3';
 import path from 'path';
 import * as workingMemory from '../cache/cognitive/working-memory';

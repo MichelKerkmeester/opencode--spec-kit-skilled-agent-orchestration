@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. CHANNEL ATTRIBUTION
+// MODULE: Channel Attribution
 // ───────────────────────────────────────────────────────────────
 //
 // Tags each search result with its source channel(s) for evaluation analysis.

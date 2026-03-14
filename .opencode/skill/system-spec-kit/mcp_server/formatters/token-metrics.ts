@@ -1,9 +1,10 @@
 // ────────────────────────────────────────────────────────────────
-// 1. TOKEN METRICS FORMATTER 
+// MODULE: Token Metrics Formatter
 // ────────────────────────────────────────────────────────────────
 // FORMATTERS: TOKEN METRICS
 // ────────────────────────────────────────────────────────────────
-// 2. TYPES 
+// 1. TYPES 
+
 // ────────────────────────────────────────────────────────────────
 
 /** Tiered search result for token metric calculation */
@@ -26,7 +27,8 @@ export interface TokenMetrics {
 }
 
 // ────────────────────────────────────────────────────────────────
-// 3. TOKEN ESTIMATION 
+// 2. TOKEN ESTIMATION 
+
 // ────────────────────────────────────────────────────────────────
 
 // Canonical implementation in shared — re-exported with original name for backward compatibility
@@ -34,7 +36,8 @@ import { estimateTokenCount } from '@spec-kit/shared/utils/token-estimate';
 export const estimateTokens = estimateTokenCount;
 
 // ────────────────────────────────────────────────────────────────
-// 4. TOKEN METRICS CALCULATION 
+// 3. TOKEN METRICS CALCULATION 
+
 // ────────────────────────────────────────────────────────────────
 
 export function calculateTokenMetrics(allMatches: unknown[], returnedResults: TieredResult[]): TokenMetrics {

@@ -1,3 +1,8 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: Shared Memory Handler
+// ───────────────────────────────────────────────────────────────
+// MCP handler layer for shared-space CRUD, membership assignment,
+// and rollout status reporting with deny-by-default access.
 import { requireDb } from '../utils';
 import { createMCPSuccessResponse } from '../lib/response/envelope';
 import type { MCPResponse } from './types';

@@ -1,5 +1,5 @@
 model = "gpt-5.4"
-model_reasoning_effort = "xhigh"
+model_reasoning_effort = "high"
 model_auto_compact_token_limit = 400000
 
 [mcp_servers.sequential_thinking]
@@ -34,39 +34,39 @@ child_agents_md = true
 # Profiles for codex exec -p <name> (non-interactive delegation)
 [profiles.context]
 sandbox_mode = "read-only"
-model_reasoning_effort = "xhigh"
+model_reasoning_effort = "high"
 
 [profiles.debug]
 sandbox_mode = "workspace-write"
-model_reasoning_effort = "xhigh"
+model_reasoning_effort = "high"
 
 [profiles.handover]
 sandbox_mode = "workspace-write"
-model_reasoning_effort = "xhigh"
+model_reasoning_effort = "high"
 
 [profiles.orchestrate]
 sandbox_mode = "read-only"
-model_reasoning_effort = "xhigh"
+model_reasoning_effort = "high"
 
 [profiles.research]
 sandbox_mode = "workspace-write"
-model_reasoning_effort = "xhigh"
+model_reasoning_effort = "high"
 
 [profiles.review]
 sandbox_mode = "read-only"
-model_reasoning_effort = "xhigh"
+model_reasoning_effort = "high"
 
 [profiles.speckit]
 sandbox_mode = "workspace-write"
-model_reasoning_effort = "xhigh"
+model_reasoning_effort = "high"
 
 [profiles.ultra-think]
 sandbox_mode = "read-only"
-model_reasoning_effort = "xhigh"
+model_reasoning_effort = "high"
 
 [profiles.write]
 sandbox_mode = "workspace-write"
-model_reasoning_effort = "xhigh"
+model_reasoning_effort = "high"
 
 # Agents for interactive multi-agent TUI (codex with multi_agent feature)
 [agents.context]

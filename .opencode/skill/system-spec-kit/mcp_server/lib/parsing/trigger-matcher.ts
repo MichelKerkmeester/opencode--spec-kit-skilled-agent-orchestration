@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. TRIGGER MATCHER
+// MODULE: Trigger Matcher
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Trigger phrase matching (memory_match_triggers)
 import * as vectorIndex from '../search/vector-index';
 import { escapeRegex } from '../utils/path-security';
 

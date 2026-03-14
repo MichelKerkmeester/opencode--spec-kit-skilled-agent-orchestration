@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. CAUSAL EDGES
+// MODULE: Causal Edges
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Causal edge creation (memory_causal_link)
 // Causal relationship graph for memory lineage
 import type Database from 'better-sqlite3';
 import { clearDegreeCache } from '../search/graph-search-fn';

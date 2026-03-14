@@ -1,6 +1,8 @@
 // ───────────────────────────────────────────────────────────────
-// 1. CHECKPOINTS
+// MODULE: Checkpoints
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Checkpoint creation (checkpoint_create)
+// Feature catalog: Checkpoint restore (checkpoint_restore)
 // Gzip-compressed database checkpoints with embedding preservation
 // Node stdlib
 import * as zlib from 'zlib';

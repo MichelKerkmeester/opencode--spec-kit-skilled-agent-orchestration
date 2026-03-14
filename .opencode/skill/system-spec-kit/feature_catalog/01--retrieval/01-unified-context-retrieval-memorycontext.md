@@ -20,7 +20,9 @@ When no `specFolder` is provided, automatic spec folder discovery attempts to id
 
 Session management is caller-scoped. Passing `sessionId` enables cross-turn deduplication and lets the handler resume an existing working-memory session. If you do not pass `sessionId`, the handler generates an ephemeral UUID for internal bookkeeping for that single call only. In resume mode, `systemPromptContext` is injected only when auto-resume is enabled, the effective mode resolves to `resume` and the caller supplied a reusable `sessionId`. Anonymous calls do not revive prior session context.
 
-Retrieval telemetry records mode selection and pressure-override fallbacks for observability when extended telemetry is enabled.
+When `includeTrace` is enabled, `memory_context` also computes a trace-only `sessionTransition` payload and forwards it through the internal `memory_search` path. The contract is `trace.sessionTransition = { previousState, currentState, confidence, signalSources, reason? }`. Cold starts use `previousState: null`, the payload is omitted when trace is disabled, and this inference does not change retrieval routing beyond the existing mode-selection path.
+
+Extended telemetry now records transition diagnostics alongside mode selection and pressure-override fallbacks for observability when enabled.
 
 ---
 
@@ -102,6 +104,7 @@ Retrieval telemetry records mode selection and pressure-override fallbacks for o
 | `mcp_server/lib/search/query-expander.ts` | Lib | Query term expansion |
 | `mcp_server/lib/search/query-router.ts` | Lib | Channel routing |
 | `mcp_server/lib/search/search-flags.ts` | Lib | Feature flag registry |
+| `mcp_server/lib/search/session-transition.ts` | Lib | Session transition trace contract and injection helpers |
 | `mcp_server/lib/search/search-types.ts` | Lib | Search type definitions |
 | `mcp_server/lib/search/session-boost.ts` | Lib | Session attention boost |
 | `mcp_server/lib/search/spec-folder-hierarchy.ts` | Lib | Spec folder hierarchy traversal |

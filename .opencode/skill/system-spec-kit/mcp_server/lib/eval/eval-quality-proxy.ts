@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. EVAL QUALITY PROXY (T006G)
+// MODULE: Eval Quality Proxy (T006G)
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Quality proxy formula
 // Automated quality proxy metric that correlates with manual
 // Quality assessment. Pure function, no DB access, no side effects.
 //

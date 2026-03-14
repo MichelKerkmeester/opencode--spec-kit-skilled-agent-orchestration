@@ -1,3 +1,8 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: Retention Policy
+// ───────────────────────────────────────────────────────────────
+// Scoped retention sweeps that delete expired memories and
+// record governance audit entries for each deletion event.
 import type Database from 'better-sqlite3';
 
 import * as vectorIndex from '../search/vector-index';

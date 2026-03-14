@@ -12,6 +12,10 @@ When you need to import a large batch of files, this feature queues them up and 
 
 **IMPLEMENTED (Sprint 019).** Ingestion moves to a SQLite-persisted job queue (`lib/ops/job-queue.ts`) with lifecycle states `queued → parsing → embedding → indexing → complete/failed/cancelled`, a single sequential worker (one job processing at a time, rest queued), and three new tools: `memory_ingest_start`, `memory_ingest_status`, `memory_ingest_cancel`. Coexists with the existing `asyncEmbedding` path in `memory_save` as an alternative for batch operations.
 
+`memory_ingest_status` now also returns an advisory `forecast` object with `etaSeconds`, `etaConfidence`, `failureRisk`, `riskSignals`, and `caveat`. Terminal jobs return deterministic terminal forecasts, sparse queues degrade to null or low-confidence values instead of throwing, and forecast derivation failures fall back to a safe `"Forecast unavailable: ..."` response rather than failing the handler.
+
+When extended telemetry is enabled, ingest-status responses also record lifecycle forecast diagnostics so ETA/risk behavior can be inspected without turning the forecast itself into a blocking dependency.
+
 ---
 
 ## 3. SOURCE FILES
@@ -44,6 +48,7 @@ When you need to import a large batch of files, this feature queues them up and 
 | `mcp_server/lib/search/vector-index-store.ts` | Lib | Vector index storage |
 | `mcp_server/lib/search/vector-index-types.ts` | Lib | Vector index type definitions |
 | `mcp_server/lib/search/vector-index.ts` | Lib | Vector index facade |
+| `mcp_server/lib/telemetry/retrieval-telemetry.ts` | Lib | Ingest forecast telemetry diagnostics |
 | `mcp_server/lib/utils/canonical-path.ts` | Lib | Canonical path resolution |
 | `mcp_server/lib/utils/format-helpers.ts` | Lib | Format utility helpers |
 | `mcp_server/lib/utils/logger.ts` | Lib | Logger utility |

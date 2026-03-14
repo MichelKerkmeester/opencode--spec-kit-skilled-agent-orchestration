@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// MODULE: Session Extractor
+// ---------------------------------------------------------------
+
 // ───────────────────────────────────────────────────────────────
 // 1. SESSION EXTRACTOR
 // ───────────────────────────────────────────────────────────────
@@ -214,42 +218,30 @@ function getBehavioralObservations(observations: Observation[]): Observation[] {
   return liveObservations.length > 0 ? liveObservations : observations;
 }
 
+function findFactByPattern(observations: Observation[], pattern: RegExp): string | null {
+  for (let i = observations.length - 1; i >= 0; i--) {
+    const obs = observations[i];
+    if (obs.facts) {
+      for (let j = obs.facts.length - 1; j >= 0; j--) {
+        const fact = obs.facts[j];
+        if (typeof fact === 'string') {
+          const match = fact.match(pattern);
+          if (match) return match[1].trim();
+        }
+      }
+    }
+  }
+  return null;
+}
+
 function extractNextAction(
   observations: Observation[],
   recentContext?: RecentContextEntry[]
 ): string {
-  const nextLabelPattern = /\bnext:\s*(.+)/i;
-  const fallbackLabelPattern = /\b(?:todo|follow-?up):\s*(.+)/i;
-
-  for (let i = observations.length - 1; i >= 0; i--) {
-    const obs = observations[i];
-    if (obs.facts) {
-      for (let j = obs.facts.length - 1; j >= 0; j--) {
-        const fact = obs.facts[j];
-        if (typeof fact === 'string') {
-          const nextMatch = fact.match(nextLabelPattern);
-          if (nextMatch) return nextMatch[1].trim();
-        }
-      }
-    }
-  }
-  for (let i = observations.length - 1; i >= 0; i--) {
-    const obs = observations[i];
-    if (obs.facts) {
-      for (let j = obs.facts.length - 1; j >= 0; j--) {
-        const fact = obs.facts[j];
-        if (typeof fact === 'string') {
-          const nextMatch = fact.match(fallbackLabelPattern);
-          if (nextMatch) return nextMatch[1].trim();
-        }
-      }
-    }
-  }
-  if (recentContext?.[0]?.learning) {
-    const nextMatch = recentContext[0].learning.match(/\b(?:next|then|afterwards?):\s*(.+)/i);
-    if (nextMatch) return nextMatch[1].trim().substring(0, 100);
-  }
-  return 'Continue implementation';
+  return findFactByPattern(observations, /\bnext:\s*(.+)/i)
+    ?? findFactByPattern(observations, /\b(?:todo|follow-?up):\s*(.+)/i)
+    ?? (recentContext?.[0]?.learning?.match(/\b(?:next|then|afterwards?):\s*(.+)/i)?.[1]?.trim().substring(0, 100))
+    ?? 'Continue implementation';
 }
 
 function extractBlockers(observations: Observation[]): string {

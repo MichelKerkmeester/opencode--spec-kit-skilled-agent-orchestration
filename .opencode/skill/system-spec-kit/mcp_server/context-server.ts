@@ -1,6 +1,6 @@
-// ────────────────────────────────────────────────────────────────
-// 1. CONTEXT SERVER 
-// ────────────────────────────────────────────────────────────────
+// ───────────────────────────────────────────────────────────────
+// MODULE: Context Server
+// ───────────────────────────────────────────────────────────────
 // T303: Decomposed — tool schemas in tool-schemas.ts, dispatch
 // Logic in tools/*.ts. This file retains server init, startup,
 // Shutdown, and main orchestration only.
@@ -829,7 +829,7 @@ async function main(): Promise<void> {
   } else {
     // T016-T019: Lazy loading - skip warmup, model loads on first use
     console.error('[context-server] Lazy loading enabled - embedding model will initialize on first use');
-    console.error('[context-server] Set SPECKIT_EAGER_WARMUP=true to restore eager warmup');
+    console.error('[context-server] SPECKIT_EAGER_WARMUP and SPECKIT_LAZY_LOADING are deprecated compatibility flags');
     // Mark embedding as "ready" since it will self-initialize on first use
     setEmbeddingModelReady(true);
   }

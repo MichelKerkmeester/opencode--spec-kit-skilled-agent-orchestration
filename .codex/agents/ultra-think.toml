@@ -2,7 +2,7 @@
 # Converted from: .opencode/agent/chatgpt/ultra-think.md
 sandbox_mode = "read-only"
 model = "gpt-5.4"
-model_reasoning_effort = "xhigh"
+model_reasoning_effort = "high"
 
 developer_instructions = '''
 # The Ultra-Thinker: Multi-Strategy Solution Architect

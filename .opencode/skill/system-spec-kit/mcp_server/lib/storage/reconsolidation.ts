@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. RECONSOLIDATION
+// MODULE: Reconsolidation
 // ───────────────────────────────────────────────────────────────
 // TM-06: Reconsolidation-on-Save
 //
@@ -22,7 +22,8 @@ import * as causalEdges from './causal-edges';
 
 
 // ───────────────────────────────────────────────────────────────
-// 2. TYPES
+// 1. TYPES
+
 // ───────────────────────────────────────────────────────────────
 /** Action determined by similarity threshold comparison */
 export type ReconsolidationAction = 'merge' | 'conflict' | 'complement';
@@ -97,7 +98,8 @@ type StoreMemoryFn = (memory: NewMemoryData) => number;
 type GenerateEmbeddingFn = (content: string) => Promise<Float32Array | number[] | null>;
 
 // ───────────────────────────────────────────────────────────────
-// 3. CONFIGURATION
+// 2. CONFIGURATION
+
 // ───────────────────────────────────────────────────────────────
 /** Threshold above which memories are merged (near-duplicates) */
 const MERGE_THRESHOLD = 0.88;
@@ -109,7 +111,8 @@ const CONFLICT_THRESHOLD = 0.75;
 const SIMILAR_MEMORY_LIMIT = 3;
 
 // ───────────────────────────────────────────────────────────────
-// 4. FEATURE FLAG
+// 3. FEATURE FLAG
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Check if reconsolidation is enabled via feature flag.
@@ -124,7 +127,8 @@ export function isReconsolidationEnabled(): boolean {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 5. SIMILARITY SEARCH
+// 4. SIMILARITY SEARCH
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Find the top-N most similar memories in a spec folder.
@@ -151,7 +155,8 @@ export function findSimilarMemories(
 }
 
 // ───────────────────────────────────────────────────────────────
-// 6. ACTION DETERMINATION
+// 5. ACTION DETERMINATION
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Determine the reconsolidation action based on similarity score.
@@ -170,7 +175,8 @@ export function determineAction(similarity: number): ReconsolidationAction {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 7. MERGE OPERATION
+// 6. MERGE OPERATION
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Merge a new memory into an existing one (similarity >= 0.88).
@@ -290,7 +296,8 @@ export function mergeContent(existing: string, incoming: string): string {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 8. CONFLICT OPERATION
+// 7. CONFLICT OPERATION
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Resolve a conflict between highly similar memories (similarity 0.75-0.88).
@@ -384,7 +391,8 @@ export function executeConflict(
 }
 
 // ───────────────────────────────────────────────────────────────
-// 9. COMPLEMENT OPERATION
+// 8. COMPLEMENT OPERATION
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Store a new memory unchanged (similarity < 0.75).
@@ -412,7 +420,8 @@ export function executeComplement(
 }
 
 // ───────────────────────────────────────────────────────────────
-// 10. RECONSOLIDATION ORCHESTRATOR
+// 9. RECONSOLIDATION ORCHESTRATOR
+
 // ───────────────────────────────────────────────────────────────
 /** Options for the reconsolidation orchestrator */
 export interface ReconsolidateOptions {
@@ -561,7 +570,8 @@ export async function reconsolidate(
 }
 
 // ───────────────────────────────────────────────────────────────
-// 11. HELPERS
+// 10. HELPERS
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Convert an embedding array to a Buffer for SQLite storage.

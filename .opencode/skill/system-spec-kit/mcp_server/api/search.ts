@@ -1,5 +1,5 @@
 // ────────────────────────────────────────────────────────────────
-// 1. SEARCH 
+// MODULE: Search
 // ────────────────────────────────────────────────────────────────
 // @public — scripts should import from here, not lib/ internals.
 // ARCH-1 stable re-export surface for search functionality.

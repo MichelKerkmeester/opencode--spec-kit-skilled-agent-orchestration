@@ -53,7 +53,7 @@ Provide a Level 2, verification-ready specification that captures final PASS/WAR
 ## 3. SCOPE
 
 ### In Scope
-- Audit summary for all five catalog features in `feature_catalog/19--decisions-and-deferrals/`
+- Audit summary for the five decisions/deferrals findings using current source evidence from `feature_catalog/10--graph-signal-activation/` and `feature_catalog/13--memory-quality-and-indexing/`
 - Closure evidence for formerly deferred WARN items F-02 and F-03
 - Final verification outcomes and residual open-question documentation
 
@@ -121,7 +121,7 @@ Provide a Level 2, verification-ready specification that captures final PASS/WAR
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | `feature_catalog/19--decisions-and-deferrals/*.md` | Missing/incorrect feature entries can skew audit conclusions | Reconcile findings against catalog source list before sign-off |
+| Dependency | `feature_catalog/10--graph-signal-activation/*.md` and `feature_catalog/13--memory-quality-and-indexing/*.md` | Missing/incorrect feature entries can skew audit conclusions | Reconcile findings against catalog source list before sign-off |
 | Dependency | `mcp_server/lib/**` and `mcp_server/tests/**` references | Incomplete file inventory can hide behavior mismatches | Include all referenced implementation and migration files in source tables |
 | Risk | Regex remediation changes extraction boundaries | Previously extracted cross-sentence entities may remain in stored data | Decide whether cleanup/backfill is required for historical rows |
 | Risk | Audit drift after closure | Future code changes can invalidate PASS evidence | Keep catalog source tables synchronized during future audits |

@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. MEMORY LINEAGE STATE
+// MODULE: Memory Lineage State
 // ───────────────────────────────────────────────────────────────
 // Provides append-first lineage transitions, active projection reads,
 // Temporal asOf resolution, and backfill/integrity helpers.

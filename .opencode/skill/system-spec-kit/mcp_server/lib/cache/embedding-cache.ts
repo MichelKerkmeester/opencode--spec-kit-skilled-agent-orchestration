@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. EMBEDDING CACHE
+// MODULE: Embedding Cache
 // ───────────────────────────────────────────────────────────────
 import { createHash } from 'crypto';
 import type Database from 'better-sqlite3';

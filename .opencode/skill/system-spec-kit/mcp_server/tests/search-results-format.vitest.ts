@@ -25,6 +25,7 @@ interface SearchResultsResponseData {
   evidenceGapWarning?: string;
   retrievalTrace?: unknown;
   appliedBoosts?: unknown;
+  graphContribution?: unknown;
   myExtra?: string;
 }
 
@@ -265,6 +266,105 @@ describe('formatSearchResults', () => {
     const envelope = parseEnvelope(res);
     expect(envelope.data.retrievalTrace).toEqual({ stages: [{ stage: 'router' }] });
     expect(envelope.data.appliedBoosts).toEqual({ session: true });
+  });
+
+  it('C10c: includeTrace preserves graph contribution details and top-level graph metadata', async () => {
+    const mockResults = [{
+      id: 41,
+      spec_folder: 'specs/041-test',
+      file_path: '/test/file41.md',
+      title: 'Graph Trace',
+      score: 0.63,
+      graphContribution: {
+        sources: ['graph-signals'],
+        totalDelta: 0.03,
+        injected: false,
+        raw: 2,
+        normalized: 1,
+        appliedBonus: 0.03,
+        capApplied: false,
+        rolloutState: 'bounded_runtime',
+      },
+    }];
+
+    const res = await formatSearchResults(
+      mockResults,
+      'semantic',
+      false,
+      null,
+      null,
+      null,
+      {
+        graphContribution: { rolloutState: 'bounded_runtime', totalGraphInjected: 1 },
+      },
+      true,
+    );
+
+    const envelope = parseEnvelope(res);
+    expect((envelope.data.graphContribution as Record<string, unknown>).rolloutState).toBe('bounded_runtime');
+    expect(envelope.data.results[0].trace?.graphContribution).toEqual({
+      sources: ['graph-signals'],
+      totalDelta: 0.03,
+      injected: false,
+      raw: 2,
+      normalized: 1,
+      appliedBonus: 0.03,
+      capApplied: false,
+      rolloutState: 'bounded_runtime',
+    });
+  });
+
+  it('C10d: includeTrace=false omits per-result graph trace even when raw results carry graphContribution', async () => {
+    const mockResults = [{
+      id: 42,
+      spec_folder: 'specs/042-test',
+      file_path: '/test/file42.md',
+      title: 'No Trace',
+      graphContribution: {
+        sources: ['graph-signals'],
+        totalDelta: 0.03,
+        raw: 1,
+        normalized: 0.5,
+        appliedBonus: 0.015,
+        capApplied: false,
+        rolloutState: 'trace_only',
+      },
+    }];
+
+    const res = await formatSearchResults(mockResults, 'semantic', false, null, null, null, {}, false);
+    const envelope = parseEnvelope(res);
+    expect(envelope.data.results[0].trace).toBeUndefined();
+  });
+
+  it('C10e: malformed graphContribution degrades safely instead of throwing', async () => {
+    const mockResults = [{
+      id: 43,
+      spec_folder: 'specs/043-test',
+      file_path: '/test/file43.md',
+      title: 'Malformed Graph Trace',
+      graphContribution: {
+        sources: 'not-an-array',
+        totalDelta: 'bad',
+        raw: 'bad',
+        normalized: 0.25,
+        appliedBonus: 'bad',
+        capApplied: 'bad',
+        rolloutState: 99,
+      },
+    }];
+
+    const res = await formatSearchResults(mockResults, 'semantic', false, null, null, null, {}, true);
+    const envelope = parseEnvelope(res);
+    expect(envelope.data.results[0].trace?.graphContribution).toEqual({
+      sources: [],
+      totalDelta: 0,
+      injected: false,
+      raw: undefined,
+      normalized: 0.25,
+      appliedBonus: undefined,
+      capApplied: false,
+      rolloutState: null,
+    });
   });
 
   it('C11: extraData merged into response data', async () => {

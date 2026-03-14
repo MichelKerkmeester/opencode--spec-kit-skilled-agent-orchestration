@@ -193,4 +193,64 @@ describe('legacy composite path — novelty boost removed', () => {
     expect(scoreWith).toBe(scoreWithout);
     nowSpy.mockRestore();
   });
+
+  it('age differences do not affect legacy composite scores even when novelty flag is enabled', () => {
+    const fixedNow = Date.now();
+    const nowSpy = vi.spyOn(Date, 'now').mockReturnValue(fixedNow);
+    vi.stubEnv('SPECKIT_NOVELTY_BOOST', 'true');
+    const stableReviewTime = new Date(fixedNow - 6 * 3600000).toISOString();
+
+    const recentRow = makeRow(fixedNow - 1000, {
+      importance_tier: 'important',
+      importance_weight: 0.8,
+      similarity: 0.42,
+      access_count: 3,
+      updated_at: stableReviewTime,
+      lastReview: stableReviewTime,
+    });
+    const olderRow = makeRow(fixedNow - 47 * 3600000, {
+      importance_tier: 'important',
+      importance_weight: 0.8,
+      similarity: 0.42,
+      access_count: 3,
+      updated_at: stableReviewTime,
+      lastReview: stableReviewTime,
+    });
+
+    expect(calculateCompositeScore(recentRow)).toBe(calculateCompositeScore(olderRow));
+    nowSpy.mockRestore();
+  });
+});
+
+describe('five-factor path — age differences stay neutral after novelty removal', () => {
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
+  it('age differences do not affect five-factor scores even when novelty flag is enabled', () => {
+    const fixedNow = Date.now();
+    const nowSpy = vi.spyOn(Date, 'now').mockReturnValue(fixedNow);
+    vi.stubEnv('SPECKIT_NOVELTY_BOOST', 'true');
+    const stableReviewTime = new Date(fixedNow - 6 * 3600000).toISOString();
+
+    const recentRow = makeRow(fixedNow - 1000, {
+      importance_tier: 'important',
+      importance_weight: 0.8,
+      similarity: 0.42,
+      access_count: 3,
+      updated_at: stableReviewTime,
+      lastReview: stableReviewTime,
+    });
+    const olderRow = makeRow(fixedNow - 47 * 3600000, {
+      importance_tier: 'important',
+      importance_weight: 0.8,
+      similarity: 0.42,
+      access_count: 3,
+      updated_at: stableReviewTime,
+      lastReview: stableReviewTime,
+    });
+
+    expect(calculateFiveFactorScore(recentRow)).toBe(calculateFiveFactorScore(olderRow));
+    nowSpy.mockRestore();
+  });
 });

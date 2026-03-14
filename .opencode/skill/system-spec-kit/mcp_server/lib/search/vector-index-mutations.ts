@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. VECTOR INDEX MUTATIONS
+// MODULE: Vector Index Mutations
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Hybrid search pipeline
 // Split from vector-index-store.ts — contains ALL mutation functions:
 // Index, update, delete, and status/confidence updates.
 

@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. RETRY MANAGER
+// MODULE: Retry Manager
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Embedding retry orchestrator
 // Node stdlib
 import * as fsPromises from 'fs/promises';
 

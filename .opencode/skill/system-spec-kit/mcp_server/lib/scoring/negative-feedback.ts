@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. NEGATIVE FEEDBACK
+// MODULE: Negative Feedback
 // ───────────────────────────────────────────────────────────────
 // When wasUseful=false is recorded via memory_validate, reduce the
 // Memory's composite score via a confidence multiplier.
@@ -13,7 +13,8 @@ import type { DatabaseExtended as Database } from '@spec-kit/shared/types';
 
 
 // ───────────────────────────────────────────────────────────────
-// 2. CONSTANTS
+// 1. CONSTANTS
+
 // ───────────────────────────────────────────────────────────────
 /** Base multiplier before any negative feedback is applied. */
 export const CONFIDENCE_MULTIPLIER_BASE = 1.0;
@@ -48,7 +49,8 @@ const NEGATIVE_FEEDBACK_INDEX_SQL = `
 `;
 
 // ───────────────────────────────────────────────────────────────
-// 3. CORE FUNCTIONS
+// 2. CORE FUNCTIONS
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Compute the confidence multiplier based on negative validation count

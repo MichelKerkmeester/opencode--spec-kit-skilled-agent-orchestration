@@ -31,6 +31,8 @@ import {
   CO_ACTIVATION_CONFIG,
   DEFAULT_COACTIVATION_STRENGTH,
 } from '../lib/cache/cognitive/co-activation';
+import { applyGraphSignals } from '../lib/graph/graph-signals';
+import { resolveGraphWalkRolloutState } from '../lib/search/search-flags';
 
 // --- T005a: Signal vocabulary ---
 import {
@@ -97,6 +99,35 @@ function createMockDb(edges: Array<{
       }
       // Default: return empty results
       return { all: (..._args: unknown[]) => [] };
+    },
+  } as unknown as import('better-sqlite3').Database;
+}
+
+function createGraphSignalsDb(edges: Array<{
+  source_id: string;
+  target_id: string;
+  relation: string;
+  strength: number;
+}>) {
+  return {
+    prepare(sql: string) {
+      if (sql.includes('SELECT COUNT(*) AS degree') && sql.includes('causal_edges')) {
+        return {
+          get: (memoryId: string) => ({
+            degree: edges.filter((edge) => edge.source_id === memoryId || edge.target_id === memoryId).length,
+          }),
+        };
+      }
+      if (sql.includes('FROM degree_snapshots')) {
+        return { get: () => undefined };
+      }
+      if (sql.includes('SELECT source_id, target_id FROM causal_edges')) {
+        return { all: () => edges };
+      }
+      return {
+        get: () => undefined,
+        all: () => [],
+      };
     },
   } as unknown as import('better-sqlite3').Database;
 }
@@ -298,6 +329,52 @@ describe('T002: RRF 5th degree channel integration', () => {
     ];
     const fused = fuseResultsMulti(lists);
     expect(fused[0].id).toBe(1);
+  });
+});
+
+describe('T028: graph-walk rollout evaluation coverage', () => {
+  const originalEnv = { ...process.env };
+
+  afterEach(() => {
+    process.env = { ...originalEnv };
+  });
+
+  it('keeps ranking unchanged in off and trace_only while bounded_runtime adds only capped bonus', () => {
+    const db = createGraphSignalsDb([
+      { source_id: '1', target_id: '2', relation: 'supports', strength: 1.0 },
+      { source_id: '2', target_id: '3', relation: 'supports', strength: 1.0 },
+    ]);
+    const rows = [
+      { id: 1, score: 0.5 },
+      { id: 2, score: 0.5 },
+      { id: 3, score: 0.5 },
+    ];
+
+    const off = applyGraphSignals(structuredClone(rows), db, { rolloutState: 'off' });
+    const traceOnly = applyGraphSignals(structuredClone(rows), db, { rolloutState: 'trace_only' });
+    const bounded = applyGraphSignals(structuredClone(rows), db, { rolloutState: 'bounded_runtime' });
+
+    expect(off.map((row) => row.score)).toEqual(traceOnly.map((row) => row.score));
+    expect(off.map((row) => row.id)).toEqual(traceOnly.map((row) => row.id));
+    expect((traceOnly[1].graphContribution as Record<string, unknown>).raw)
+      .toBe((bounded[1].graphContribution as Record<string, unknown>).raw);
+    expect((traceOnly[1].graphContribution as Record<string, unknown>).normalized)
+      .toBe((bounded[1].graphContribution as Record<string, unknown>).normalized);
+    expect((traceOnly[1].graphContribution as Record<string, unknown>).appliedBonus).toBe(0);
+    expect((bounded[1].graphContribution as Record<string, unknown>).appliedBonus).toBeGreaterThan(0);
+    expect((bounded[1].graphContribution as Record<string, unknown>).appliedBonus).toBeLessThanOrEqual(0.03);
+  });
+
+  it('resolves rollout defaults from env flags', () => {
+    delete process.env.SPECKIT_GRAPH_WALK_ROLLOUT;
+    delete process.env.SPECKIT_GRAPH_SIGNALS;
+    expect(resolveGraphWalkRolloutState()).toBe('bounded_runtime');
+
+    process.env.SPECKIT_GRAPH_SIGNALS = 'false';
+    expect(resolveGraphWalkRolloutState()).toBe('off');
+
+    process.env.SPECKIT_GRAPH_WALK_ROLLOUT = 'trace_only';
+    expect(resolveGraphWalkRolloutState()).toBe('trace_only');
   });
 });
 

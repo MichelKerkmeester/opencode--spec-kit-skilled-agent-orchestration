@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. MEMORY SUMMARIES
+// MODULE: Memory Summaries
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Memory summary search channel
 // Gated via SPECKIT_MEMORY_SUMMARIES
 
 import type Database from 'better-sqlite3';
@@ -8,7 +9,8 @@ import { generateSummary } from './tfidf-summarizer';
 import { isMemorySummariesEnabled } from './search-flags';
 
 // ───────────────────────────────────────────────────────────────
-// 2. INTERFACES
+// 1. INTERFACES
+
 // ───────────────────────────────────────────────────────────────
 interface SummarySearchResult {
   id: number;
@@ -17,7 +19,8 @@ interface SummarySearchResult {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 3. HELPERS
+// 2. HELPERS
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Compute cosine similarity between two vectors.
@@ -73,7 +76,8 @@ function bufferToFloat32(buf: Buffer): Float32Array {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 4. CORE FUNCTIONS
+// 3. CORE FUNCTIONS
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Generate summary, compute embedding, store in memory_summaries.
@@ -222,7 +226,8 @@ export function checkScaleGate(db: Database.Database): boolean {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 5. TEST EXPORTS
+// 4. TEST EXPORTS
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Internal functions exposed for unit testing.

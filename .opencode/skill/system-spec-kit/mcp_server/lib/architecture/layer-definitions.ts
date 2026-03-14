@@ -1,10 +1,12 @@
 // ───────────────────────────────────────────────────────────────
-// 1. LAYER DEFINITIONS
+// MODULE: Layer Definitions
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: 7-layer tool architecture metadata
 // LIB: LAYER DEFINITIONS
 // 7-Layer MCP Architecture with Token Budgets
 // ───────────────────────────────────────────────────────────────
-// 2. LAYER TYPES
+// 1. LAYER TYPES
+
 // ───────────────────────────────────────────────────────────────
 /** Individual layer definition in the 7-layer architecture */
 export interface LayerDefinition {

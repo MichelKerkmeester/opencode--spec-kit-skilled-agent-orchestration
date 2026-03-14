@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. ACCESS TRACKER
+// MODULE: Access Tracker
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Access-driven popularity scoring
 // Batched access tracking with accumulator
 import type Database from 'better-sqlite3';
 import { recordAdaptiveSignal } from '../cache/cognitive/adaptive-ranking';

@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. RESPONSE HINTS
+// MODULE: Response Hints
 // ───────────────────────────────────────────────────────────────
 import { estimateTokenCount } from '@spec-kit/shared/utils/token-estimate';
 

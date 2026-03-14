@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. STAGE4 FILTER
+// MODULE: Stage4 Filter
 // ───────────────────────────────────────────────────────────────
 // Final stage of the 4-stage retrieval pipeline.
 //
@@ -46,6 +46,8 @@ import { addTraceEntry } from '@spec-kit/shared/contracts/retrieval-trace';
 
 // ───────────────────────────────────────────────────────────────
 // 2. CONSTANTS
+
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Memory state priority map. Higher number = higher priority.
@@ -96,6 +98,8 @@ function resolveStateForFiltering(row: Stage4ReadonlyRow, fallbackState: string)
 
 // ───────────────────────────────────────────────────────────────
 // 3. TYPES
+
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Per-state tally produced by `filterByMemoryState`.
@@ -343,6 +347,8 @@ export async function executeStage4(input: Stage4Input): Promise<Stage4Output> {
 
 // ───────────────────────────────────────────────────────────────
 // 4. TEST SURFACE
+
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Exported internals for unit testing.

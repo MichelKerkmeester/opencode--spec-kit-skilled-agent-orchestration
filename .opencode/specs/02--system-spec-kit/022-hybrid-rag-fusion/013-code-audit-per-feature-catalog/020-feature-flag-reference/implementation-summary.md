@@ -1,12 +1,13 @@
 ---
 title: "Implementation Summary [template:level_2/implementation-summary.md]"
-description: "Level 2 documentation repairs for 020-feature-flag-reference to restore validator compliance and maintain audit fidelity."
+description: "Phase 020 closeout after corrected feature-catalog mappings and passing automated mapping guard evidence."
 # SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2
 trigger_phrases:
   - "implementation"
   - "summary"
   - "feature-flag-reference"
-importance_tier: "normal"
+  - "mapping guard"
+importance_tier: "high"
 contextType: "general"
 ---
 # Implementation Summary
@@ -23,7 +24,7 @@ contextType: "general"
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 020-feature-flag-reference |
-| **Completed** | 2026-03-13 |
+| **Completed** | 2026-03-14 |
 | **Level** | 2 |
 <!-- /ANCHOR:metadata -->
 
@@ -32,21 +33,21 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-This phase folder now validates as a complete Level 2 documentation package. The repair keeps all seven feature findings intact while making the markdown structure compliant with spec integrity, template provenance, and checklist evidence requirements.
+This phase moved from stale draft/pending documentation to a completed closeout packet aligned with current repository reality. Corrected catalog mappings are now represented as closed outcomes, and automated mapping-guard evidence is captured directly in the phase docs.
 
-### Validation Repair Package
+### Closeout Package
 
-The spec now includes a fifth requirement and four concrete acceptance scenarios. Tasks now reference existing feature catalog markdown sources under `.opencode/skill/system-spec-kit/feature_catalog/...`, and the checklist includes explicit P0/P1 sections plus inline evidence tags for completed required checks.
+The packet now references the current catalog path (`feature_catalog/19--feature-flag-reference/`), records the mapping guard test as passing evidence, and removes stale FAIL/WARN/deferred wording that no longer reflects actual state.
 
 ### Files Changed
 
 | File | Action | Purpose |
 |------|--------|---------|
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/020-feature-flag-reference/spec.md` | Modified | Added required-count and acceptance-scenario coverage; added top-of-file template-source marker. |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/020-feature-flag-reference/plan.md` | Modified | Added top-of-file template-source marker for validator detection. |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/020-feature-flag-reference/tasks.md` | Modified | Fixed markdown references to existing feature catalog files and added top-of-file template-source marker. |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/020-feature-flag-reference/checklist.md` | Modified | Added P0/P1 sections and inline evidence tags for completed P0/P1 items. |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/020-feature-flag-reference/implementation-summary.md` | Created | Added required Level 2 completion artifact. |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/020-feature-flag-reference/spec.md` | Modified | Updated metadata/status/scope to completed closeout state. |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/020-feature-flag-reference/plan.md` | Modified | Recorded completed execution and verification strategy/outcomes. |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/020-feature-flag-reference/tasks.md` | Modified | Converted pending remediation list to completed reconciliation tasks with evidence. |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/020-feature-flag-reference/checklist.md` | Modified | Replaced stale unresolved findings with current PASS evidence. |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/020-feature-flag-reference/implementation-summary.md` | Modified | Captured final closeout and verification outcomes. |
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -54,7 +55,7 @@ The spec now includes a fifth requirement and four concrete acceptance scenarios
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-The repair flow was markdown-only: read all phase docs, patch structural and integrity issues, then validate the folder with `validate.sh --no-recursive`. No runtime code or other spec folders were touched.
+Delivery was markdown-only inside this phase folder: inspect current catalog/test truth, reconcile phase docs to that truth, and verify with command evidence.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -64,9 +65,9 @@ The repair flow was markdown-only: read all phase docs, patch structural and int
 
 | Decision | Why |
 |----------|-----|
-| Preserve existing audit findings while fixing structure | The goal was validator compliance without changing feature-level conclusions. |
-| Use absolute repo-relative catalog paths in markdown references | It guarantees the integrity checker can resolve referenced source markdown files. |
-| Add explicit P0 and P1 headers in checklist | The section-presence rule looks for these headings in Level 2 checklist files. |
+| Treat mapping issues as closed findings, not pending work | Catalog mappings and docs guard tests are already corrected and passing. |
+| Use `19--feature-flag-reference` as canonical source path | This is the actual current catalog location used by the guard test. |
+| Record command evidence directly in checklist/tasks | Prevents future drift between narrative claims and verifiable outcomes. |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -76,8 +77,9 @@ The repair flow was markdown-only: read all phase docs, patch structural and int
 
 | Check | Result |
 |-------|--------|
-| `validate.sh --no-recursive` for `020-feature-flag-reference` | PASS after repairs (see final command output in session report). |
-| Scope validation | PASS, edits limited to markdown files in the target phase folder. |
+| `npm run test -- tests/feature-flag-reference-docs.vitest.ts` (in `mcp_server`) | PASS (`1` test file, `8` tests passed) |
+| `validate.sh --no-recursive` for `020-feature-flag-reference` | PASS |
+| Scope validation | PASS, edits limited to markdown files in phase folder |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -85,8 +87,7 @@ The repair flow was markdown-only: read all phase docs, patch structural and int
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. Runtime source-mapping fixes and CI enforcement are still tracked as future tasks and were not implemented in code here.
-2. This summary covers documentation validation repairs only and does not change feature execution behavior.
+1. This closeout reflects current mapping truth at time of update; future catalog/code drift still requires re-verification.
 <!-- /ANCHOR:limitations -->
 
 ---

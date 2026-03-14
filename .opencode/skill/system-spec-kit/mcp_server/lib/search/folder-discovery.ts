@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. FOLDER DISCOVERY
+// MODULE: Folder Discovery
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Spec folder description discovery
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import * as crypto from 'node:crypto';
@@ -55,7 +56,7 @@ const STOP_WORDS = new Set([
   'over', 'under', 'again', 'further', 'then', 'once', 'here',
   'there', 'when', 'where', 'why', 'how', 'all', 'any', 'its',
   'it', 'we', 'they', 'he', 'she', 'you', 'i', 'my', 'our',
-  'your', 'their', 'his', 'her', 'its', 'which', 'who', 'what',
+  'your', 'their', 'his', 'her', 'which', 'who', 'what',
 ]);
 
 const MAX_SPEC_DISCOVERY_DEPTH = 8;

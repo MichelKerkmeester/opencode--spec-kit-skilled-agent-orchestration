@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. AUTO PROMOTION
+// MODULE: Auto Promotion
 // ───────────────────────────────────────────────────────────────
 //
 // Promotes memory importance tier based on positive validation count:
@@ -14,7 +14,8 @@ import type { DatabaseExtended as Database } from '@spec-kit/shared/types';
 
 
 // ───────────────────────────────────────────────────────────────
-// 2. TYPES
+// 1. TYPES
+
 // ───────────────────────────────────────────────────────────────
 export type { Database };
 
@@ -33,7 +34,8 @@ export interface AutoPromotionResult {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 3. CONSTANTS
+// 2. CONSTANTS
+
 // ───────────────────────────────────────────────────────────────
 /** Positive validations required to promote normal -> important */
 export const PROMOTE_TO_IMPORTANT_THRESHOLD = 5;
@@ -85,7 +87,8 @@ function resolvePositiveValidationCount(totalValidationCount: number, negativeVa
 }
 
 // ───────────────────────────────────────────────────────────────
-// 4. PROMOTION THROTTLE SAFEGUARD
+// 3. PROMOTION THROTTLE SAFEGUARD
+
 // ───────────────────────────────────────────────────────────────
 const PROMOTION_AUDIT_TABLE_SQL = `
   CREATE TABLE IF NOT EXISTS memory_promotion_audit (
@@ -111,7 +114,8 @@ function countRecentPromotions(db: Database, nowMs: number): number {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 5. CORE FUNCTIONS
+// 4. CORE FUNCTIONS
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Check if a memory qualifies for auto-promotion based on its positive validation count.

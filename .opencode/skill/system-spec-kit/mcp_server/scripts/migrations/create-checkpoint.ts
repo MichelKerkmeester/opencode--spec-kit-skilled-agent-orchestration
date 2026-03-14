@@ -1,9 +1,9 @@
 #!/usr/bin/env node
-// Feature catalog: Migration checkpoint scripts
 // ───────────────────────────────────────────────────────────────
-// 1. MIGRATION CHECKPOINT CREATE
+// MODULE: Migration Checkpoint Create
 // ───────────────────────────────────────────────────────────────
 // Create a point-in-time SQLite checkpoint before schema migrations.
+// Feature catalog: Migration checkpoint scripts
 import * as fs from 'fs';
 import * as path from 'path';
 import Database from 'better-sqlite3';
@@ -25,6 +25,11 @@ interface CreateCheckpointResult {
   sizeBytes: number;
 }
 
+/**
+ * Resolve the default database path from environment or known project locations.
+ *
+ * @returns Absolute path to the SQLite database file.
+ */
 function resolveDefaultDbPath(): string {
   const candidates = [
     process.env.MEMORY_DB_PATH,
@@ -42,6 +47,12 @@ function resolveDefaultDbPath(): string {
   return path.resolve(candidates[0] ?? path.resolve(process.cwd(), 'database/context-index.sqlite'));
 }
 
+/**
+ * Parse CLI arguments into a structured args object.
+ *
+ * @param argv - Raw argument strings from the command line.
+ * @returns Parsed CLI arguments with defaults applied.
+ */
 function parseArgs(argv: string[]): CliArgs {
   const defaults = {
     dbPath: resolveDefaultDbPath(),
@@ -125,6 +136,12 @@ function toTimestampId(date: Date): string {
     .replace('Z', '');
 }
 
+/**
+ * Read the current schema version from a SQLite database.
+ *
+ * @param dbPath - Path to the SQLite database file.
+ * @returns Schema version number, or `null` if unavailable.
+ */
 function getSchemaVersion(dbPath: string): number | null {
   let db: Database.Database | null = null;
   try {
@@ -146,6 +163,12 @@ function getSchemaVersion(dbPath: string): number | null {
   }
 }
 
+/**
+ * Execute the checkpoint creation workflow: copy database and write metadata sidecar.
+ *
+ * @param args - Parsed CLI arguments specifying database, output, and label.
+ * @returns Result containing the checkpoint and metadata file paths.
+ */
 function runCreateCheckpoint(args: CliArgs): CreateCheckpointResult {
   if (!fs.existsSync(args.dbPath)) {
     throw new Error(`Database not found: ${args.dbPath}`);
@@ -186,6 +209,12 @@ function runCreateCheckpoint(args: CliArgs): CreateCheckpointResult {
   };
 }
 
+/**
+ * CLI entry point: parse arguments, create checkpoint, and print results.
+ *
+ * @param argv - Command-line arguments (defaults to `process.argv.slice(2)`).
+ * @returns Checkpoint creation result.
+ */
 function main(argv = process.argv.slice(2)): CreateCheckpointResult {
   const args = parseArgs(argv);
   const result = runCreateCheckpoint(args);

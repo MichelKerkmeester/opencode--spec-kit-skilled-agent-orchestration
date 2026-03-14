@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. TYPES
+// MODULE: Types
 // ───────────────────────────────────────────────────────────────
 // Stage interfaces with the Stage 4 immutability invariant
 import type { RetrievalTrace } from '@spec-kit/shared/contracts/retrieval-trace';
@@ -233,6 +233,7 @@ export interface Stage2Output {
       communityInjected: number;
       graphSignalsBoosted: number;
       totalGraphInjected: number;
+      rolloutState?: 'off' | 'trace_only' | 'bounded_runtime';
     };
     qualityFiltered: number;
     durationMs: number;

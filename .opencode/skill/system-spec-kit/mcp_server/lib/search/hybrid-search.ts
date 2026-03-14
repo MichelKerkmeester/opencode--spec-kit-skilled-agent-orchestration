@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. HYBRID SEARCH
+// MODULE: Hybrid Search
 // ───────────────────────────────────────────────────────────────
 // Combines vector, FTS, and BM25 search with fallback
 
@@ -98,6 +98,13 @@ interface HybridSearchResult {
   source: string;
   title?: string;
   [key: string]: unknown;
+}
+
+/** Non-enumerable shadow metadata attached to result arrays via Object.defineProperty. */
+interface ShadowMetaArray {
+  _s4shadow?: unknown;
+  _s4attribution?: unknown;
+  _degradation?: unknown;
 }
 
 /** Normalize a fused RRF result to the HybridSearchResult contract. */
@@ -973,9 +980,10 @@ async function hybridSearchEnhanced(
       }
 
       // Preserve non-enumerable eval metadata across truncation reallocation.
-      const s4shadowMeta = (reranked as unknown as Record<string, unknown>)['_s4shadow'];
-      const s4attributionMeta = (reranked as unknown as Record<string, unknown>)['_s4attribution'];
-      const degradationMeta = (reranked as unknown as Record<string, unknown>)['_degradation'];
+      const shadowMeta = reranked as HybridSearchResult[] & ShadowMetaArray;
+      const s4shadowMeta = shadowMeta._s4shadow;
+      const s4attributionMeta = shadowMeta._s4attribution;
+      const degradationMeta = shadowMeta._degradation;
 
       // Apply token budget truncation before returning live results
       // CHK-060: Reserve token overhead for contextual tree headers

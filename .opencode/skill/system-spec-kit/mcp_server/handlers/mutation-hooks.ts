@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. MUTATION HOOKS
+// MODULE: Mutation Hooks
 // ───────────────────────────────────────────────────────────────
 import * as triggerMatcher from '../lib/parsing/trigger-matcher';
 import * as toolCache from '../lib/cache/tool-cache';

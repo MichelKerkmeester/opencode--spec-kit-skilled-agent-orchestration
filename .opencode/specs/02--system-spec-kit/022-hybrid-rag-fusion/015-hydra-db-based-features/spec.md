@@ -41,7 +41,7 @@ This document defines a Level 3 roadmap for evolving `system-spec-kit` and the S
 |-------|-------|
 | **Level** | 3 |
 | **Priority** | P0 |
-| **Status** | Draft |
+| **Status** | Complete |
 | **Created** | 2026-03-13 |
 | **Updated** | 2026-03-13 |
 | **Branch** | `022-hybrid-rag-fusion` |
@@ -317,12 +317,12 @@ contextType: "general"
 
 | Phase | Folder | Scope | Dependencies | Status |
 |-------|--------|-------|--------------|--------|
-| 1 | 001-baseline-and-safety-rails/ | Build/runtime correctness, roadmap-safe capability metadata, checkpoint safety, schema compatibility, and baseline docs/tests | None | Active |
-| 2 | 002-versioned-memory-state/ | Append-first lineage, active projection, `asOf` semantics, backfill, and rollback safety | Phase 1 | Draft |
-| 3 | 003-unified-graph-retrieval/ | Deterministic causal/entity/summary fusion with score traces and regression coverage | Phases 1-2 | Draft |
-| 4 | 004-adaptive-retrieval-loops/ | Shadow-mode feedback learning with bounded updates, promotion gates, and rollback controls | Phases 1-3 | Draft |
-| 5 | 005-hierarchical-scope-governance/ | Scope enforcement, governed ingest, retention/deletion lifecycle, and auditability | Phases 1-2 and governance ADR sequencing | Draft |
-| 6 | 006-shared-memory-rollout/ | Shared spaces, membership policy, conflict handling, and staged rollout | Phases 3-5 | Draft |
+| 1 | 001-baseline-and-safety-rails/ | Build/runtime correctness, roadmap-safe capability metadata, checkpoint safety, schema compatibility, and baseline docs/tests | None | Complete |
+| 2 | 002-versioned-memory-state/ | Append-first lineage, active projection, `asOf` semantics, backfill, and rollback safety | Phase 1 | Complete |
+| 3 | 003-unified-graph-retrieval/ | Deterministic causal/entity/summary fusion with score traces and regression coverage | Phases 1-2 | Complete |
+| 4 | 004-adaptive-retrieval-loops/ | Shadow-mode feedback learning with bounded updates, promotion gates, and rollback controls | Phases 1-3 | Complete |
+| 5 | 005-hierarchical-scope-governance/ | Scope enforcement, governed ingest, retention/deletion lifecycle, and auditability | Phases 1-2 and governance ADR sequencing | Complete |
+| 6 | 006-shared-memory-rollout/ | Shared spaces, membership policy, conflict handling, and staged rollout | Phases 3-5 | Complete |
 
 ### Phase Transition Rules
 

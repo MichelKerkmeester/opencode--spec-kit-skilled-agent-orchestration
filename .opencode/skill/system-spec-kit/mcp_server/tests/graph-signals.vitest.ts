@@ -512,6 +512,57 @@ describe('Graph Signals (S8 — N2a + N2b)', () => {
         expect(row.score).toBeLessThanOrEqual(0.28);
       }
     });
+
+    it('records distinct raw and normalized graph-walk diagnostics', () => {
+      insertEdge(db, 1, 2);
+      insertEdge(db, 2, 3);
+
+      const rows = [
+        { id: 1, score: 0 },
+        { id: 2, score: 0 },
+        { id: 3, score: 0 },
+      ];
+      const result = applyGraphSignals(rows, db);
+      const graphContribution = result[1].graphContribution as {
+        raw?: number;
+        normalized?: number;
+        appliedBonus?: number;
+        capApplied?: boolean;
+        rolloutState?: string;
+      };
+
+      expect(graphContribution.raw).toBe(2);
+      expect(graphContribution.normalized).toBe(1);
+      expect(graphContribution.appliedBonus).toBeCloseTo(0.03, 5);
+      expect(graphContribution.capApplied).toBe(false);
+      expect(graphContribution.rolloutState).toBe('bounded_runtime');
+    });
+
+    it('trace_only rollout records graph-walk diagnostics without applying the graph-walk bonus', () => {
+      insertEdge(db, 1, 2);
+      insertEdge(db, 2, 3);
+
+      const rows = [
+        { id: 1, score: 0 },
+        { id: 2, score: 0 },
+        { id: 3, score: 0 },
+      ];
+      const result = applyGraphSignals(rows, db, { rolloutState: 'trace_only' });
+      const graphContribution = result[1].graphContribution as {
+        raw?: number;
+        normalized?: number;
+        appliedBonus?: number;
+        capApplied?: boolean;
+        rolloutState?: string;
+      };
+
+      expect(result[1].score).toBeCloseTo(0.025, 5);
+      expect(graphContribution.raw).toBe(2);
+      expect(graphContribution.normalized).toBe(1);
+      expect(graphContribution.appliedBonus).toBe(0);
+      expect(graphContribution.capApplied).toBe(false);
+      expect(graphContribution.rolloutState).toBe('trace_only');
+    });
   });
 
   // 7. clearGraphSignalsCache

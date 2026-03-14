@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. SESSION MANAGER
+// MODULE: Session Manager
 // ───────────────────────────────────────────────────────────────
 import crypto from 'crypto';
 import fs from 'fs';

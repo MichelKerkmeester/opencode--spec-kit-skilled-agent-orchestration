@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. CROSS ENCODER
+// MODULE: Cross Encoder
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Local GGUF reranker via node-llama-cpp
 //
 // Neural reranking via external APIs (Voyage rerank-2, Cohere
 // Rerank-english-v3.0) or a local cross-encoder model

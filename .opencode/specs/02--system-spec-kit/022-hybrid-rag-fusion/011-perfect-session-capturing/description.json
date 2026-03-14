@@ -15,6 +15,9 @@
     "02--system-spec-kit",
     "022-hybrid-rag-fusion"
   ],
-  "memorySequence": 0,
-  "memoryNameHistory": []
+  "memorySequence": 2,
+  "memoryNameHistory": [
+    "14-03-26_15-45__code-issues-found-during-review.md",
+    "14-03-26_15-47__code-issues-found-during-review.md"
+  ]
 }

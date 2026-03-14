@@ -6,7 +6,50 @@ import { setTimeout as delay } from 'node:timers/promises';
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { __testables, startFileWatcher } from '../lib/ops/file-watcher';
+const chokidarMockState = vi.hoisted(() => {
+  let listeners = new Map<string, Array<(...args: unknown[]) => void>>();
+
+  const createWatcher = () => {
+    listeners = new Map<string, Array<(...args: unknown[]) => void>>();
+    const watcher = {
+      on(event: string, listener: (...args: unknown[]) => void) {
+        const existing = listeners.get(event) ?? [];
+        existing.push(listener);
+        listeners.set(event, existing);
+        return watcher;
+      },
+      close: async () => undefined,
+    };
+    return watcher;
+  };
+
+  return {
+    createWatcher,
+    emit: (event: string, ...args: unknown[]) => {
+      for (const listener of listeners.get(event) ?? []) {
+        listener(...args);
+      }
+    },
+    reset: () => {
+      listeners = new Map<string, Array<(...args: unknown[]) => void>>();
+    },
+  };
+});
+
+vi.mock('chokidar', () => ({
+  default: {
+    watch: vi.fn(() => {
+      const watcher = chokidarMockState.createWatcher();
+      queueMicrotask(() => chokidarMockState.emit('ready'));
+      return watcher;
+    }),
+  },
+  watch: vi.fn(() => {
+    const watcher = chokidarMockState.createWatcher();
+    queueMicrotask(() => chokidarMockState.emit('ready'));
+    return watcher;
+  }),
+}));
 
 function createDeferred(): { promise: Promise<void>; resolve: () => void } {
   let resolve!: () => void;
@@ -22,6 +65,22 @@ const activeWatchers: Array<{ close: () => Promise<void> }> = [];
 function trackWatcher<T extends { close: () => Promise<void> }>(watcher: T): T {
   activeWatchers.push(watcher);
   return watcher;
+}
+
+async function waitForWatcherReady(
+  watcher: { on: (event: string, listener: (...args: unknown[]) => void) => unknown },
+  timeoutMs = 5000
+): Promise<void> {
+  await new Promise<void>((resolve, reject) => {
+    const timeout = setTimeout(() => {
+      reject(new Error(`Timed out waiting for watcher ready after ${timeoutMs}ms`));
+    }, timeoutMs);
+
+    watcher.on('ready', () => {
+      clearTimeout(timeout);
+      resolve();
+    });
+  });
 }
 
 async function closeTrackedWatcher(watcher: { close: () => Promise<void> }): Promise<void> {
@@ -90,31 +149,44 @@ async function waitFor(
 
 type FileWatcherModule = typeof import('../lib/ops/file-watcher');
 
-async function loadFreshWatcherModule(): Promise<FileWatcherModule> {
+type MockWatcherHarness = FileWatcherModule & {
+  emit: (event: string, ...args: unknown[]) => void;
+};
+
+async function loadTestables(): Promise<FileWatcherModule['__testables']> {
+  const module = await import('../lib/ops/file-watcher');
+  return module.__testables;
+}
+
+async function loadFreshWatcherModule(): Promise<MockWatcherHarness> {
   vi.resetModules();
-  vi.doUnmock('chokidar');
-  return import('../lib/ops/file-watcher');
+  const module = await import('../lib/ops/file-watcher');
+  return { ...module, emit: chokidarMockState.emit };
 }
 
 describe('file-watcher path filters', () => {
-  it('does not treat .opencode as a hidden path', () => {
-    expect(__testables.isDotfilePath('/workspace/.opencode/specs/001-test/spec.md')).toBe(false);
+  it('does not treat .opencode as a hidden path', async () => {
+    const testables = await loadTestables();
+    expect(testables.isDotfilePath('/workspace/.opencode/specs/001-test/spec.md')).toBe(false);
   });
 
-  it('treats dotfiles as hidden paths', () => {
-    expect(__testables.isDotfilePath('/workspace/specs/001-test/.DS_Store')).toBe(true);
-    expect(__testables.isDotfilePath('/workspace/specs/001-test/.git/config')).toBe(true);
+  it('treats dotfiles as hidden paths', async () => {
+    const testables = await loadTestables();
+    expect(testables.isDotfilePath('/workspace/specs/001-test/.DS_Store')).toBe(true);
+    expect(testables.isDotfilePath('/workspace/specs/001-test/.git/config')).toBe(true);
   });
 
-  it('keeps directory and non-dot targets watchable', () => {
-    expect(__testables.shouldIgnoreWatchTarget('/workspace/.opencode/specs')).toBe(false);
-    expect(__testables.shouldIgnoreWatchTarget('/workspace/specs')).toBe(false);
-    expect(__testables.shouldIgnoreWatchTarget('/workspace/specs/001-test/spec.txt')).toBe(false);
+  it('keeps directory and non-dot targets watchable', async () => {
+    const testables = await loadTestables();
+    expect(testables.shouldIgnoreWatchTarget('/workspace/.opencode/specs')).toBe(false);
+    expect(testables.shouldIgnoreWatchTarget('/workspace/specs')).toBe(false);
+    expect(testables.shouldIgnoreWatchTarget('/workspace/specs/001-test/spec.txt')).toBe(false);
   });
 
-  it('markdown detection is extension-based', () => {
-    expect(__testables.isMarkdownPath('/workspace/specs/001-test/spec.md')).toBe(true);
-    expect(__testables.isMarkdownPath('/workspace/specs/001-test/spec.txt')).toBe(false);
+  it('markdown detection is extension-based', async () => {
+    const testables = await loadTestables();
+    expect(testables.isMarkdownPath('/workspace/specs/001-test/spec.md')).toBe(true);
+    expect(testables.isMarkdownPath('/workspace/specs/001-test/spec.txt')).toBe(false);
   });
 });
 
@@ -122,42 +194,47 @@ describe('file-watcher runtime behavior', () => {
   beforeEach(() => {
     vi.restoreAllMocks();
     vi.useRealTimers();
+    chokidarMockState.reset();
   });
 
   afterEach(async () => {
     vi.useRealTimers();
-    vi.doUnmock('chokidar');
+    chokidarMockState.reset();
     await cleanupWatchers();
     await cleanupTempDirs();
   });
 
   it('forces reindex for repeated add events even when content is unchanged', async () => {
+    const { startFileWatcher: startFreshWatcher, emit } = await loadFreshWatcherModule();
     const tempDir = await createTempDir();
     const filePath = path.join(tempDir, 'sample.md');
     const reindexFn = vi.fn(async () => undefined);
 
-    const watcher = startFileWatcher({
+    const watcher = startFreshWatcher({
       paths: [tempDir],
       reindexFn,
       debounceMs: 50,
     });
     trackWatcher(watcher);
 
-    await delay(150);
+    await waitForWatcherReady(watcher);
 
     await fs.writeFile(filePath, 'same content', 'utf8');
+    emit('add', filePath);
     await waitFor(() => reindexFn.mock.calls.length >= 1, { timeoutMs: 4000 });
     const initialCallCount = reindexFn.mock.calls.length;
 
     await fs.unlink(filePath);
     await delay(1300);
     await fs.writeFile(filePath, 'same content', 'utf8');
+    emit('add', filePath);
 
     await waitFor(() => reindexFn.mock.calls.length > initialCallCount, { timeoutMs: 4000 });
     expect(reindexFn.mock.calls.length).toBeGreaterThan(initialCallCount);
   });
 
   it('waits for in-flight reindex to finish during close', async () => {
+    const { startFileWatcher: startFreshWatcher, emit } = await loadFreshWatcherModule();
     const tempDir = await createTempDir();
     const filePath = path.join(tempDir, 'sample.md');
     const deferred = createDeferred();
@@ -165,16 +242,17 @@ describe('file-watcher runtime behavior', () => {
       await deferred.promise;
     });
 
-    const watcher = startFileWatcher({
+    const watcher = startFreshWatcher({
       paths: [tempDir],
       reindexFn,
       debounceMs: 30,
     });
     trackWatcher(watcher);
 
-    await delay(150);
+    await waitForWatcherReady(watcher);
 
     await fs.writeFile(filePath, 'close-check', 'utf8');
+    emit('add', filePath);
     await waitFor(() => reindexFn.mock.calls.length >= 1, { timeoutMs: 4000 });
 
     let closeResolved = false;
@@ -193,21 +271,23 @@ describe('file-watcher runtime behavior', () => {
   });
 
   it('silently ignores ENOENT when file is removed before debounce execution', async () => {
+    const { startFileWatcher: startFreshWatcher, emit } = await loadFreshWatcherModule();
     const filePath = await createTempMarkdown('delete-me');
     const tempDir = path.dirname(filePath);
     const reindexFn = vi.fn(async () => undefined);
     const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
 
-    const watcher = startFileWatcher({
+    const watcher = startFreshWatcher({
       paths: [tempDir],
       reindexFn,
       debounceMs: 80,
     });
     trackWatcher(watcher);
 
-    await delay(150);
+    await waitForWatcherReady(watcher);
 
     await fs.writeFile(filePath, 'delete-me-again', 'utf8');
+    emit('change', filePath);
     await delay(20);
     await fs.unlink(filePath);
     await delay(180);
@@ -217,12 +297,13 @@ describe('file-watcher runtime behavior', () => {
   });
 
   it('calls removeFn when a markdown file is deleted', async () => {
+    const { startFileWatcher: startFreshWatcher, emit } = await loadFreshWatcherModule();
     const filePath = await createTempMarkdown('remove-me');
     const tempDir = path.dirname(filePath);
     const reindexFn = vi.fn(async () => undefined);
     const removeFn = vi.fn(async () => undefined);
 
-    const watcher = startFileWatcher({
+    const watcher = startFreshWatcher({
       paths: [tempDir],
       reindexFn,
       removeFn,
@@ -230,15 +311,17 @@ describe('file-watcher runtime behavior', () => {
     });
     trackWatcher(watcher);
 
-    await delay(150);
+    await waitForWatcherReady(watcher);
 
     await fs.unlink(filePath);
+    emit('unlink', filePath);
     await waitFor(() => removeFn.mock.calls.length >= 1, { timeoutMs: 4000 });
 
     expect(removeFn).toHaveBeenCalledWith(filePath);
   });
 
   it('retries SQLITE_BUSY with exponential backoff before succeeding', async () => {
+    const { startFileWatcher: startFreshWatcher, emit } = await loadFreshWatcherModule();
     const filePath = await createTempMarkdown('retry-busy');
     const tempDir = path.dirname(filePath);
     const reindexFn = vi.fn(async () => undefined);
@@ -248,16 +331,17 @@ describe('file-watcher runtime behavior', () => {
       .mockRejectedValueOnce(sqliteBusyError)
       .mockResolvedValueOnce(undefined);
 
-    const watcher = startFileWatcher({
+    const watcher = startFreshWatcher({
       paths: [tempDir],
       reindexFn,
       debounceMs: 30,
     });
     trackWatcher(watcher);
 
-    await delay(150);
+    await waitForWatcherReady(watcher);
 
     await fs.writeFile(filePath, 'retry-busy-updated', 'utf8');
+    emit('change', filePath);
 
     await waitFor(() => reindexFn.mock.calls.length >= 3, { timeoutMs: 5500 });
     expect(reindexFn).toHaveBeenCalledTimes(3);
@@ -267,23 +351,24 @@ describe('file-watcher runtime behavior', () => {
 
   // CHK-077: File watcher timing test — changed file re-indexed within 5 seconds
   it('CHK-077: changed .md file re-indexed within 5 seconds of save', async () => {
+    const { startFileWatcher: startFreshWatcher, emit } = await loadFreshWatcherModule();
     const tempDir = await createTempDir();
     const filePath = path.join(tempDir, 'timing-test.md');
     await fs.writeFile(filePath, 'initial content', 'utf8');
     const reindexFn = vi.fn(async () => undefined);
 
-    const watcher = startFileWatcher({
+    const watcher = startFreshWatcher({
       paths: [tempDir],
       reindexFn,
       debounceMs: 100,
     });
     trackWatcher(watcher);
 
-    // Wait for watcher to initialize
-    await delay(200);
+    await waitForWatcherReady(watcher);
 
     const startTime = performance.now();
     await fs.writeFile(filePath, 'updated content for timing', 'utf8');
+    emit('change', filePath);
     await waitFor(() => reindexFn.mock.calls.length >= 1, { timeoutMs: 5000 });
     const elapsed = performance.now() - startTime;
 
@@ -293,23 +378,25 @@ describe('file-watcher runtime behavior', () => {
 
   // CHK-078: Debounce coalescing — 5 rapid writes produce exactly 1 reindex
   it('CHK-078: rapid consecutive saves debounced to exactly 1 re-index', async () => {
+    const { startFileWatcher: startFreshWatcher, emit } = await loadFreshWatcherModule();
     const tempDir = await createTempDir();
     const filePath = path.join(tempDir, 'debounce-test.md');
     await fs.writeFile(filePath, 'initial', 'utf8');
     const reindexFn = vi.fn(async () => undefined);
 
-    const watcher = startFileWatcher({
+    const watcher = startFreshWatcher({
       paths: [tempDir],
       reindexFn,
       debounceMs: 200,
     });
     trackWatcher(watcher);
 
-    await delay(200);
+    await waitForWatcherReady(watcher);
 
     // Write 5 times rapidly (20ms gaps) with unique content each time
     for (let i = 0; i < 5; i++) {
       await fs.writeFile(filePath, `content-${i}-${Date.now()}`, 'utf8');
+      emit('change', filePath);
       await delay(20);
     }
 
@@ -327,6 +414,7 @@ describe('file-watcher runtime behavior', () => {
   });
 
   it('removes old entry and indexes new entry on file rename', { timeout: 10000 }, async () => {
+    const { startFileWatcher: startFreshWatcher, emit } = await loadFreshWatcherModule();
     const tempDir = await createTempDir();
     const oldPath = path.join(tempDir, 'rename-old.md');
     const newPath = path.join(tempDir, 'rename-new.md');
@@ -340,7 +428,7 @@ describe('file-watcher runtime behavior', () => {
       indexedPaths.delete(filePath);
     });
 
-    const watcher = startFileWatcher({
+    const watcher = startFreshWatcher({
       paths: [tempDir],
       reindexFn,
       removeFn,
@@ -349,8 +437,10 @@ describe('file-watcher runtime behavior', () => {
     trackWatcher(watcher);
 
     try {
-      await delay(200);
+      await waitForWatcherReady(watcher);
       await fs.rename(oldPath, newPath);
+      emit('unlink', oldPath);
+      emit('add', newPath);
 
       await waitFor(
         () =>
@@ -367,20 +457,22 @@ describe('file-watcher runtime behavior', () => {
   });
 
   it('debounces rapid changes within the 2-second default window to one reindex', { timeout: 10000 }, async () => {
+    const { startFileWatcher: startFreshWatcher, emit } = await loadFreshWatcherModule();
     const tempDir = await createTempDir();
     const filePath = path.join(tempDir, 'debounce-default-window.md');
     await fs.writeFile(filePath, 'initial', 'utf8');
 
     const reindexFn = vi.fn(async () => undefined);
-    const watcher = trackWatcher(startFileWatcher({
+    const watcher = trackWatcher(startFreshWatcher({
       paths: [tempDir],
       reindexFn,
     }));
 
     try {
-      await delay(200);
+      await waitForWatcherReady(watcher);
       for (let i = 0; i < 3; i++) {
         await fs.writeFile(filePath, `burst-${i}`, 'utf8');
+        emit('change', filePath);
         await delay(80);
       }
 
@@ -392,6 +484,7 @@ describe('file-watcher runtime behavior', () => {
   });
 
   it('handles burst renames and keeps only final path indexed', { timeout: 10000 }, async () => {
+    const { startFileWatcher: startFreshWatcher, emit } = await loadFreshWatcherModule();
     const tempDir = await createTempDir();
     let currentPath = path.join(tempDir, 'burst-0.md');
     await fs.writeFile(currentPath, 'burst-0', 'utf8');
@@ -405,7 +498,7 @@ describe('file-watcher runtime behavior', () => {
       indexedPaths.delete(filePath);
     });
 
-    const watcher = startFileWatcher({
+    const watcher = startFreshWatcher({
       paths: [tempDir],
       reindexFn,
       removeFn,
@@ -414,13 +507,16 @@ describe('file-watcher runtime behavior', () => {
     trackWatcher(watcher);
 
     try {
-      await delay(220);
+      await waitForWatcherReady(watcher);
 
       for (let i = 1; i <= 3; i++) {
         const nextPath = path.join(tempDir, `burst-${i}.md`);
+        const previousPath = currentPath;
         await fs.rename(currentPath, nextPath);
         currentPath = nextPath;
         paths.push(currentPath);
+        emit('unlink', previousPath);
+        emit('add', currentPath);
         await delay(40);
       }
 
@@ -437,6 +533,7 @@ describe('file-watcher runtime behavior', () => {
   });
 
   it('handles concurrent renames across multiple files', { timeout: 10000 }, async () => {
+    const { startFileWatcher: startFreshWatcher, emit } = await loadFreshWatcherModule();
     const tempDir = await createTempDir();
     const originals = ['alpha.md', 'beta.md', 'gamma.md'].map((name) => path.join(tempDir, name));
     const renamed = ['alpha-renamed.md', 'beta-renamed.md', 'gamma-renamed.md'].map((name) => path.join(tempDir, name));
@@ -453,7 +550,7 @@ describe('file-watcher runtime behavior', () => {
       indexedPaths.delete(filePath);
     });
 
-    const watcher = startFileWatcher({
+    const watcher = startFreshWatcher({
       paths: [tempDir],
       reindexFn,
       removeFn,
@@ -462,10 +559,12 @@ describe('file-watcher runtime behavior', () => {
     trackWatcher(watcher);
 
     try {
-      await delay(220);
+      await waitForWatcherReady(watcher);
 
       await Promise.all(originals.slice(0, 2).map((oldPath, index) => fs.rename(oldPath, renamed[index])));
       await fs.rename(originals[2], renamed[2]);
+      originals.forEach((oldPath) => emit('unlink', oldPath));
+      renamed.forEach((newPath) => emit('add', newPath));
 
       await waitFor(
         () =>
@@ -490,11 +589,12 @@ describe('file-watcher metrics', () => {
   beforeEach(() => {
     vi.restoreAllMocks();
     vi.useRealTimers();
+    chokidarMockState.reset();
   });
 
   afterEach(async () => {
     vi.useRealTimers();
-    vi.doUnmock('chokidar');
+    chokidarMockState.reset();
     await cleanupWatchers();
     await cleanupTempDirs();
   });
@@ -509,7 +609,7 @@ describe('file-watcher metrics', () => {
   });
 
   it('tracks filesReindexed after reindex operations', async () => {
-    const { startFileWatcher: startFreshWatcher, getWatcherMetrics } = await loadFreshWatcherModule();
+    const { startFileWatcher: startFreshWatcher, getWatcherMetrics, emit } = await loadFreshWatcherModule();
     const filePath = await createTempMarkdown('metrics-count-start');
     const tempDir = path.dirname(filePath);
     const reindexFn = vi.fn(async () => undefined);
@@ -521,8 +621,9 @@ describe('file-watcher metrics', () => {
     });
     trackWatcher(watcher);
 
-    await delay(150);
+    await waitForWatcherReady(watcher);
     await fs.writeFile(filePath, 'metrics-count-updated', 'utf8');
+    emit('change', filePath);
     await waitFor(() => getWatcherMetrics().filesReindexed >= 1, { timeoutMs: 5000 });
 
     const metrics = getWatcherMetrics();
@@ -531,7 +632,7 @@ describe('file-watcher metrics', () => {
   });
 
   it('computes avgReindexTimeMs as the running average of reindex timings', async () => {
-    const { startFileWatcher: startFreshWatcher, getWatcherMetrics } = await loadFreshWatcherModule();
+    const { startFileWatcher: startFreshWatcher, getWatcherMetrics, emit } = await loadFreshWatcherModule();
     const filePath = await createTempMarkdown('metrics-avg-start');
     const tempDir = path.dirname(filePath);
     const configuredDelays = [30, 90];
@@ -553,12 +654,14 @@ describe('file-watcher metrics', () => {
     });
     trackWatcher(watcher);
 
-    await delay(150);
+    await waitForWatcherReady(watcher);
     await fs.writeFile(filePath, 'metrics-avg-1', 'utf8');
+    emit('change', filePath);
     await waitFor(() => getWatcherMetrics().filesReindexed >= 1, { timeoutMs: 5000 });
     await fs.unlink(filePath);
     await delay(1300);
     await fs.writeFile(filePath, 'metrics-avg-2', 'utf8');
+    emit('add', filePath);
     await waitFor(() => reindexFn.mock.calls.length >= 2, { timeoutMs: 7000 });
 
     const metrics = getWatcherMetrics();
@@ -572,7 +675,7 @@ describe('file-watcher metrics', () => {
   });
 
   it('accumulates metrics across multiple reindex operations', async () => {
-    const { startFileWatcher: startFreshWatcher, getWatcherMetrics } = await loadFreshWatcherModule();
+    const { startFileWatcher: startFreshWatcher, getWatcherMetrics, emit } = await loadFreshWatcherModule();
     const filePath = await createTempMarkdown('metrics-accumulate-start');
     const tempDir = path.dirname(filePath);
     const reindexFn = vi.fn(async () => {
@@ -586,13 +689,15 @@ describe('file-watcher metrics', () => {
     });
     trackWatcher(watcher);
 
-    await delay(150);
+    await waitForWatcherReady(watcher);
     await fs.writeFile(filePath, 'metrics-accumulate-1', 'utf8');
+    emit('change', filePath);
     await waitFor(() => getWatcherMetrics().filesReindexed >= 1, { timeoutMs: 5000 });
     const afterFirst = getWatcherMetrics();
 
     await delay(1200);
     await fs.writeFile(filePath, 'metrics-accumulate-2', 'utf8');
+    emit('change', filePath);
     await waitFor(() => getWatcherMetrics().filesReindexed >= 2, { timeoutMs: 5000 });
     const afterSecond = getWatcherMetrics();
 

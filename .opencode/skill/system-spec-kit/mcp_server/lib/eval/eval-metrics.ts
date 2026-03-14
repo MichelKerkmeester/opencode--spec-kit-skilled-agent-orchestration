@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. EVAL METRICS
+// MODULE: Eval Metrics
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Core metric computation
 // T006a-e: Pure computation functions for 12 evaluation metrics
 // (7 core + 5 diagnostic). No DB access, no side effects.
 /* ───────────────────────────────────────────────────────────────

@@ -1,5 +1,5 @@
 // ────────────────────────────────────────────────────────────────
-// 1. INDEX 
+// MODULE: Index
 // ────────────────────────────────────────────────────────────────
 // @public — single entry point for all public API surfaces.
 // ARCH-1 consumer scripts import from '../../mcp_server/api'

@@ -35,6 +35,6 @@ contextType: "general"
 
 - [x] **CHK-010**: TypeScript compiles cleanly (`tsc --noEmit`) [Evidence: `npm run typecheck` in `.opencode/skill/system-spec-kit` exited 0]
 - [x] **CHK-011**: Comments are concise (single line where possible) [Evidence: Stable single-line `// Feature catalog: <feature-name>` format applied]
-- [ ] **CHK-012**: Files implementing multiple features list all applicable catalog entries [DEFERRED: Optional P2 follow-up]
+- [x] **CHK-012**: Files implementing multiple features list all applicable catalog entries [Evidence: 91 additional annotations added across lib/cognitive, lib/search, lib/eval, lib/telemetry, lib/storage, shared/, and other modules. Cross-validation confirmed 124 unique annotation names, 0 invalid (all match catalog H3 headings)]
 - [x] **CHK-013**: No feature catalog references point to non-existent feature names [Evidence: Exact-name validation against feature catalog H1 headings passed with zero invalid names]
 <!-- /ANCHOR:p2 -->

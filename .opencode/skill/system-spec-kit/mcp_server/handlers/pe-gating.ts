@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. PREDICTION ERROR GATING HELPERS
+// MODULE: Prediction Error Gating Helpers
 // ───────────────────────────────────────────────────────────────
 import * as vectorIndex from '../lib/search/vector-index';
 import * as fsrsScheduler from '../lib/cache/cognitive/fsrs-scheduler';

@@ -1,6 +1,6 @@
 ---
 title: "Verification Checklist: remediation-revalidation [template:level_2/checklist.md]"
-description: "Verification Date: 2026-03-13"
+description: "Verification Date: 2026-03-14"
 # SPECKIT_TEMPLATE_SOURCE: checklist | v2.2
 trigger_phrases:
   - "remediation-revalidation"
@@ -63,7 +63,7 @@ Required items are tracked in CHK-003, CHK-012, CHK-013, CHK-022, CHK-023, CHK-0
 ## Testing
 
 - [x] CHK-020 [P0] Acceptance criteria for phase packet and parent-link reconciliation are represented in docs [EVIDENCE: `spec.md` success criteria and task closures.]
-- [x] CHK-021 [P0] Recursive spec validation completed for parent + child phases [EVIDENCE: `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog --recursive` returned `RESULT: PASSED` with `Summary: Errors: 0  Warnings: 0`.]
+- [ ] CHK-021 [P0] Recursive spec validation completed for parent + child phases [EVIDENCE: In this session, `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh --recursive .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog` returned `RESULT: FAILED` with `Summary: Errors: 2  Warnings: 1`; follow-up remediation required.]
 - [x] CHK-022 [P1] Placeholder scan completed for phase 021 artifacts [EVIDENCE: `rg -n "\\[NAME\\]|\\[YYYY-MM-DD\\]|\\[###-feature-name\\]|\\[path\\]" .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/021-remediation-revalidation/*.md` returned no matches (rg exit 1).]
 - [x] CHK-023 [P1] Verification outcomes recorded in checklist and implementation summary [EVIDENCE: `checklist.md` and `implementation-summary.md` now capture real validation/scan outcomes.]
 <!-- /ANCHOR:testing -->
@@ -95,7 +95,6 @@ Required items are tracked in CHK-003, CHK-012, CHK-013, CHK-022, CHK-023, CHK-0
 
 - [x] CHK-050 [P1] Modified files are contained within `013-code-audit-per-feature-catalog/` markdown scope [EVIDENCE: in-scope paths only.]
 - [x] CHK-051 [P1] No temporary artifacts introduced in phase folder [EVIDENCE: folder listing contains expected markdown files only.]
-- [ ] CHK-052 [P2] Findings saved to memory/ (not requested in this task)
 <!-- /ANCHOR:file-org -->
 
 ---
@@ -105,9 +104,9 @@ Required items are tracked in CHK-003, CHK-012, CHK-013, CHK-022, CHK-023, CHK-0
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 8 | 8/8 |
+| P0 Items | 8 | 7/8 |
 | P1 Items | 10 | 10/10 |
-| P2 Items | 2 | 1/2 |
+| P2 Items | 1 | 1/1 |
 
-**Verification Date**: 2026-03-13
+**Verification Date**: 2026-03-14
 <!-- /ANCHOR:summary -->

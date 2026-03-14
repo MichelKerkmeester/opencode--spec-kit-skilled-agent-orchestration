@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. INTENT CLASSIFIER
+// MODULE: Intent Classifier
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Query complexity router
 /* --- 1. TYPES & CONSTANTS --- */
 
 type IntentType = 'add_feature' | 'fix_bug' | 'refactor' | 'security_audit' | 'understand' | 'find_spec' | 'find_decision';

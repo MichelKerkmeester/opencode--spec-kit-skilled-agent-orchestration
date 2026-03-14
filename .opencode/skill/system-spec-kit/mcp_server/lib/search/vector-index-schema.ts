@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. VECTOR INDEX SCHEMA
+// MODULE: Vector Index Schema
 // ───────────────────────────────────────────────────────────────
 // Split from vector-index-store.ts — contains ALL schema creation,
 // Migration, and companion-table logic.

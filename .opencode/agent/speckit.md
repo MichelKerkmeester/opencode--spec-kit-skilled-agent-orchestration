@@ -490,7 +490,7 @@ Use this template for completion reports:
 | `/spec_kit:handover`  | Session handover            | `.opencode/command/spec_kit/handover.md`  |
 | `/memory:context`     | Unified entry point         | `.opencode/command/memory/context.md`     |
 | `/memory:continue`    | Crash recovery              | `.opencode/command/memory/continue.md`    |
-| `/memory:learn`       | Explicit learning           | `.opencode/command/memory/learn.md`       |
+| `/memory:learn`       | Constitutional memory manager | `.opencode/command/memory/learn.md`       |
 | `/memory:save`        | Save session context        | `.opencode/command/memory/save.md`        |
 | `/memory:manage`      | Memory management           | `.opencode/command/memory/manage.md`      |
 

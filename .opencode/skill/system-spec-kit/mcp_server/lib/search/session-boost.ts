@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. SESSION BOOST
+// MODULE: Session Boost
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Tool-result extraction to working memory
 import type Database from 'better-sqlite3';
 import { isFeatureEnabled } from '../cache/cognitive/rollout-policy';
 

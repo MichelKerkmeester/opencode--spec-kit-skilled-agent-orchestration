@@ -13,12 +13,13 @@
     "02--system-spec-kit",
     "022-hybrid-rag-fusion"
   ],
-  "memorySequence": 5,
+  "memorySequence": 6,
   "memoryNameHistory": [
     "14-03-26_11-11__planning-scope-should-target-a-first-milestone.md",
     "14-03-26_11-47__research-traceability-is-now-concrete.md",
     "14-03-26_13-22__implemented-the-first-milestone-markovian.md",
     "14-03-26_13-23__markovian-architectures.md",
-    "14-03-26_13-24__the-bounded-first-milestone-for-017-markovian.md"
+    "14-03-26_13-24__the-bounded-first-milestone-for-017-markovian.md",
+    "14-03-26_14-52__synced-the-017-markovian-architectures-spec.md"
   ]
 }

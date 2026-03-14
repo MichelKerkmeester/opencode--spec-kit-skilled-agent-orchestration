@@ -1,8 +1,9 @@
 // ───────────────────────────────────────────────────────────────
-// 1. DB HELPERS
+// MODULE: Db Helpers
 // ───────────────────────────────────────────────────────────────
 // ───────────────────────────────────────────────────────────────
-// 2. DATABASE HELPERS
+// 1. DATABASE HELPERS
+
 // ───────────────────────────────────────────────────────────────
 // T304: Consolidated database access and error-coercion utilities
 // To eliminate duplicate getDb()+null-check and instanceof Error

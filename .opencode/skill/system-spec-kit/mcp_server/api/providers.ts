@@ -1,5 +1,5 @@
 // ────────────────────────────────────────────────────────────────
-// 1. PROVIDERS 
+// MODULE: Providers
 // ────────────────────────────────────────────────────────────────
 // @public — scripts should import from here, not lib/ internals.
 // ARCH-1 re-exports provider functions through a stable surface.

@@ -18,7 +18,7 @@ contextType: "general"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P1 |
-| **Status** | Completed (implementation + verification confirmed 2026-03-14) |
+| **Status** | Completed — all 13 checks passed including CHK-012 (2026-03-14) |
 | **Created** | 2026-03-14 |
 | **Branch** | `main` |
 | **Parent Spec** | `022-hybrid-rag-fusion` |

@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. GROUND TRUTH GENERATOR
+// MODULE: Ground Truth Generator
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Synthetic ground truth corpus
 // Functions for generating, loading, and validating the
 // Synthetic ground truth dataset for retrieval evaluation.
 //

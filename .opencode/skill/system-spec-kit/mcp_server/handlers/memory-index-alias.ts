@@ -1,5 +1,5 @@
 // ────────────────────────────────────────────────────────────────
-// 1. MEMORY INDEX ALIAS CONFLICT HELPERS 
+// MODULE: Memory Index Alias Conflict Helpers
 // ────────────────────────────────────────────────────────────────
 
 /* ------- 1. DEPENDENCIES ------- */

@@ -1,5 +1,5 @@
 // ────────────────────────────────────────────────────────────────
-// 1. MEMORY CRUD 
+// MODULE: Memory Crud
 // ────────────────────────────────────────────────────────────────
 
 import { handleMemoryDelete } from './memory-crud-delete';

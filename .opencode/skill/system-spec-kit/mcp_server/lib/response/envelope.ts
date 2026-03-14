@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. ENVELOPE
+// MODULE: Envelope
 // ───────────────────────────────────────────────────────────────
 import { estimateTokens } from '../../formatters/token-metrics';
 
@@ -7,7 +7,8 @@ import { estimateTokens } from '../../formatters/token-metrics';
 
 
 // ───────────────────────────────────────────────────────────────
-// 2. TYPES
+// 1. TYPES
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Describes the ResponseMeta shape.
@@ -96,7 +97,8 @@ export interface DefaultHints {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 3. CONSTANTS
+// 2. CONSTANTS
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Defines the DEFAULT_HINTS constant.
@@ -115,7 +117,8 @@ export const DEFAULT_HINTS: DefaultHints = {
 };
 
 // ───────────────────────────────────────────────────────────────
-// 4. RESPONSE ENVELOPE FACTORY
+// 3. RESPONSE ENVELOPE FACTORY
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Provides the createResponse helper.
@@ -231,7 +234,8 @@ export function createErrorResponse(options: CreateErrorResponseOptions): MCPEnv
 }
 
 // ───────────────────────────────────────────────────────────────
-// 5. MCP RESPONSE WRAPPER
+// 4. MCP RESPONSE WRAPPER
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Provides the wrapForMCP helper.

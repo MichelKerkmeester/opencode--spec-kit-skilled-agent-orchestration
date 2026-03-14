@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// MODULE: Workflow
+// ---------------------------------------------------------------
+
 // ───────────────────────────────────────────────────────────────
 // 1. WORKFLOW
 // ───────────────────────────────────────────────────────────────
@@ -627,7 +631,7 @@ async function enrichStatelessData(
     // Synthetic observations provide file coverage but do not influence session narrative
     enriched._narrativeObservations = narrativeObservations;
 
-  } catch (err) {
+  } catch (err: unknown) {
     // Enrichment failure is non-fatal — proceed with whatever data we have
     console.warn(`   Warning: Stateless enrichment failed: ${err instanceof Error ? err.message : String(err)}`);
   }

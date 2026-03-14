@@ -1,3 +1,9 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: Shared Memory Spaces
+// ───────────────────────────────────────────────────────────────
+// Feature catalog: Shared-memory rollout, deny-by-default membership, and kill switch
+// Shared-space definitions, membership management, rollout
+// controls, conflict resolution, and collaboration metrics.
 import type Database from 'better-sqlite3';
 
 import {

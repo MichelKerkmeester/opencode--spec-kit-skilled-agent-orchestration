@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. MPAB AGGREGATION
+// MODULE: Mpab Aggregation
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: MPAB chunk-to-memory aggregation
 // Multi-Parent Aggregated Bonus (MPAB) for chunk-to-memory score aggregation.
 // Pipeline position: after RRF fusion, before state filtering.
 // Feature flag: SPECKIT_DOCSCORE_AGGREGATION (graduated default ON)

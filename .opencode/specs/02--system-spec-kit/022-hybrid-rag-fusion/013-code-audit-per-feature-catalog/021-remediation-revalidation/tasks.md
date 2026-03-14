@@ -60,7 +60,7 @@ contextType: "general"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [x] T013 Run recursive spec validation for parent + child phase docs (`validate.sh --recursive`) [RESULT: PASS; root + all phases validated cleanly after parent closeout artifact creation]
+- [ ] T013 Run recursive spec validation for parent + child phase docs (`validate.sh --recursive`) [RESULT: In this session `validate.sh --recursive` returned `FAILED` with `Errors: 2, Warnings: 1`; remediation pending]
 - [x] T014 Run placeholder scan for phase 021 docs (`rg` placeholder pattern scan) [RESULT: PASS, no placeholder hits (rg exit 1)]
 - [x] T015 Record actual verification outputs in `checklist.md` and `implementation-summary.md` (`checklist.md`, `implementation-summary.md`)
 <!-- /ANCHOR:phase-3 -->
@@ -70,9 +70,9 @@ contextType: "general"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [x] T013-T015 marked complete with evidence
+- [ ] T013-T015 marked complete with evidence
 - [x] No `[B]` blocked tasks remaining
-- [x] Parent and phase 021 docs remain mutually consistent after verification
+- [ ] Parent and phase 021 docs remain mutually consistent after verification
 <!-- /ANCHOR:completion -->
 
 ---

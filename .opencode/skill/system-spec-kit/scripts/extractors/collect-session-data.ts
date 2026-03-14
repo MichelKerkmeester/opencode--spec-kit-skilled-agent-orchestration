@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// MODULE: Collect Session Data
+// ---------------------------------------------------------------
+
 // ───────────────────────────────────────────────────────────────
 // 1. COLLECT SESSION DATA
 // ───────────────────────────────────────────────────────────────
@@ -278,6 +282,7 @@ function extractPreflightPostflightData(collectedData: CollectedDataFull | null)
   };
 
   if (hasPostflightDelta) {
+    // Non-null safe: hasPostflightDelta guards all six score fields via Number.isFinite()
     const deltaKnow = postflight!.knowledgeScore! - preflight!.knowledgeScore!;
     const deltaUncert = preflight!.uncertaintyScore! - postflight!.uncertaintyScore!;
     const deltaContext = postflight!.contextScore! - preflight!.contextScore!;

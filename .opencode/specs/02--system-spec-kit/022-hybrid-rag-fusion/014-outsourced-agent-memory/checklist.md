@@ -52,7 +52,7 @@ contextType: "general"
 - [x] CHK-022 [P1] Non-reproducible historical numeric Vitest pass-total claims are removed from scoped spec evidence [Evidence: scoped artifacts now use deferred/unverified wording instead of historical numeric totals]
 - [x] CHK-023 [P1] Alignment drift passes for the scripts root - `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit/scripts` returned `0 findings` and `0 warnings` [Evidence: current rerun output in this task]
 - [x] CHK-024 [P1] TypeScript verification is presented as current acceptance proof only with a reproducible rerun artifact - `npm run lint` in `.opencode/skill/system-spec-kit/scripts` passed (`tsc --noEmit`) [Evidence: current rerun output in this task]
-- [x] CHK-025 [P2] Live outsourced CLI dispatch remains deferred - no current spec doc claims it passed without fresh proof
+- [x] CHK-025 [P2] Live outsourced CLI dispatch round-trip verified — `/tmp/save-context-data.json` loaded, normalized, and saved as `memory/14-03-26_15-20__live-outsourced-cli-dispatch-verification.md` (583 lines) via `generate-context.js` [Evidence: `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json 022-hybrid-rag-fusion/014-outsourced-agent-memory` exited 0]
 <!-- /ANCHOR:testing -->
 
 ---
@@ -70,7 +70,7 @@ contextType: "general"
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-040 [P1] `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` now agree on runtime behavior and deferred verification [Evidence: all 5 spec artifacts reread after edit]
+- [x] CHK-040 [P1] `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` now agree on runtime behavior and verification status [Evidence: all 5 spec artifacts reread after edit; live dispatch subsequently verified]
 - [x] CHK-041 [P1] Unverifiable 1032-line artifact claims removed from the spec folder [Evidence: no remaining `1032-line` / `1032 lines` matches in reconciled artifacts]
 - [x] CHK-042 [P1] Any retained memory reference points only to the existing 620-line artifact and does not use it as current acceptance proof [Evidence: existing memory artifact line count plus reconciled docs]
 <!-- /ANCHOR:docs -->
@@ -96,5 +96,5 @@ contextType: "general"
 | P1 Items | 12 | 12/12 |
 | P2 Items | 2 | 2/2 |
 
-**Verification Date**: 2026-03-13
+**Verification Date**: 2026-03-14
 <!-- /ANCHOR:summary -->

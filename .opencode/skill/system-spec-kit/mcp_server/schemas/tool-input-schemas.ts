@@ -1,21 +1,37 @@
 // ───────────────────────────────────────────────────────────────
-// 1. TOOL INPUT SCHEMAS
+// MODULE: Tool Input Schemas
 // ───────────────────────────────────────────────────────────────
 // Centralized strict Zod validation schemas for MCP tool inputs.
 // Strict mode is controlled by SPECKIT_STRICT_SCHEMAS (default: true).
+
+/* ───────────────────────────────────────────────────────────────
+   1. IMPORTS
+──────────────────────────────────────────────────────────────── */
+
 import { z, ZodError, type ZodType } from 'zod';
 
 // Feature catalog: Strict Zod schema validation
 
+/* ───────────────────────────────────────────────────────────────
+   2. TYPES
+──────────────────────────────────────────────────────────────── */
 
 type ToolInput = Record<string, unknown>;
 type ToolInputSchema = ZodType<ToolInput>;
+
+/* ───────────────────────────────────────────────────────────────
+   3. HELPERS
+──────────────────────────────────────────────────────────────── */
 
 export const getSchema = <T extends z.ZodRawShape>(shape: T): z.ZodObject<T> => {
   const strict = process.env.SPECKIT_STRICT_SCHEMAS !== 'false';
   const base = z.object(shape);
   return strict ? base.strict() : base.passthrough();
 };
+
+/* ───────────────────────────────────────────────────────────────
+   4. CONSTANTS
+──────────────────────────────────────────────────────────────── */
 
 // Guard against safeNumericPreprocess.pipe(z.number()) coercing "", null, and false to 0.
 // Use a safe preprocessor that only accepts actual numbers or numeric strings.
@@ -75,6 +91,10 @@ const relationEnum = z.enum([
   'derived_from',
   'supports',
 ]);
+
+/* ───────────────────────────────────────────────────────────────
+   5. SCHEMA DEFINITIONS
+──────────────────────────────────────────────────────────────── */
 
 const memoryContextSchema = getSchema({
   input: z.string().min(1),
@@ -327,6 +347,10 @@ const memoryIngestCancelSchema = getSchema({
   jobId: z.string().min(1),
 });
 
+/* ───────────────────────────────────────────────────────────────
+   6. EXPORTS
+──────────────────────────────────────────────────────────────── */
+
 export const TOOL_SCHEMAS: Record<string, ToolInputSchema> = {
   memory_context: memoryContextSchema as unknown as ToolInputSchema,
   memory_search: memorySearchSchema as unknown as ToolInputSchema,
@@ -388,6 +412,10 @@ const ALLOWED_PARAMETERS: Record<string, string[]> = {
   memory_ingest_status: ['jobId'],
   memory_ingest_cancel: ['jobId'],
 };
+
+/* ───────────────────────────────────────────────────────────────
+   7. VALIDATION
+──────────────────────────────────────────────────────────────── */
 
 export class ToolSchemaValidationError extends Error {
   public readonly toolName: string;

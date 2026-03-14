@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. DYNAMIC TOKEN BUDGET
+// MODULE: Dynamic Token Budget
 // ───────────────────────────────────────────────────────────────
 //
 // ADVISORY-ONLY: This module computes a token budget for a query

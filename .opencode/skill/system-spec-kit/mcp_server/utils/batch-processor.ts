@@ -1,10 +1,11 @@
 // ───────────────────────────────────────────────────────────────
-// 1. BATCH PROCESSOR
+// MODULE: Batch Processor
 // ───────────────────────────────────────────────────────────────
 import { isTransientError, userFriendlyError } from '../lib/errors/core';
 
 // ───────────────────────────────────────────────────────────────
-// 2. TYPES
+// 1. TYPES
+
 // ───────────────────────────────────────────────────────────────
 /** Retry options for batch processing */
 export interface RetryOptions {
@@ -30,7 +31,8 @@ export interface RetryErrorResult {
 export type ItemProcessor<T, R> = (item: T) => Promise<R>;
 
 // ───────────────────────────────────────────────────────────────
-// 3. CONFIGURATION CONSTANTS
+// 2. CONFIGURATION CONSTANTS
+
 // ───────────────────────────────────────────────────────────────
 /** Default batch size for concurrent processing */
 const parsedBatchSize = parseInt(process.env.SPEC_KIT_BATCH_SIZE || '5', 10);
@@ -54,7 +56,8 @@ function normalizeRetryValue(value: number | undefined, fallback: number): numbe
 }
 
 // ───────────────────────────────────────────────────────────────
-// 4. RETRY LOGIC
+// 3. RETRY LOGIC
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Process a single item with retry logic for transient failures.
@@ -98,7 +101,8 @@ export async function processWithRetry<T, R>(
 }
 
 // ───────────────────────────────────────────────────────────────
-// 5. BATCH PROCESSING
+// 4. BATCH PROCESSING
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Process items in batches with concurrency control and retry logic.

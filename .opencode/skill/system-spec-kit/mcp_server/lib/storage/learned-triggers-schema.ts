@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. LEARNED TRIGGERS SCHEMA MIGRATION (R11)
+// MODULE: Learned Triggers Schema Migration (R11)
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Learned relevance feedback
 // Schema migration for the learned_triggers column.
 //
 // ALTER TABLE memory_index ADD COLUMN learned_triggers TEXT DEFAULT '[]';
@@ -14,7 +15,8 @@
 import type { DatabaseExtended as Database } from '@spec-kit/shared/types';
 
 // ───────────────────────────────────────────────────────────────
-// 2. TYPES
+// 1. TYPES
+
 // ───────────────────────────────────────────────────────────────
 /**
  * A single learned trigger entry stored in the learned_triggers JSON array.
@@ -31,7 +33,8 @@ export interface LearnedTriggerEntry {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 3. CONSTANTS
+// 2. CONSTANTS
+
 // ───────────────────────────────────────────────────────────────
 /** Column name for learned triggers (NOT in FTS5 index) */
 export const LEARNED_TRIGGERS_COLUMN = 'learned_triggers';
@@ -40,7 +43,8 @@ export const LEARNED_TRIGGERS_COLUMN = 'learned_triggers';
 export const LEARNED_TRIGGERS_DEFAULT = '[]';
 
 // ───────────────────────────────────────────────────────────────
-// 4. MIGRATION
+// 3. MIGRATION
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Add the learned_triggers column to memory_index if it does not already exist.
@@ -83,7 +87,8 @@ export function migrateLearnedTriggers(db: Database): boolean {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 5. FTS5 ISOLATION VERIFICATION
+// 4. FTS5 ISOLATION VERIFICATION
+
 // ───────────────────────────────────────────────────────────────
 /**
  * CRITICAL test: Verify that learned_triggers is NOT present in the
@@ -135,7 +140,8 @@ export function verifyFts5Isolation(db: Database): boolean {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 6. ROLLBACK
+// 5. ROLLBACK
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Drop the learned_triggers column from memory_index.
@@ -165,7 +171,8 @@ export function rollbackLearnedTriggers(db: Database): boolean {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 7. HELPERS
+// 6. HELPERS
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Parse the learned_triggers JSON column value into typed entries.

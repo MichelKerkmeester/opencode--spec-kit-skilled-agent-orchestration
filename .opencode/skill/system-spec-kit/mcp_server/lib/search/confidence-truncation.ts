@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. CONFIDENCE TRUNCATION
+// MODULE: Confidence Truncation
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Confidence-based result truncation
 /* --- 1. TYPES & CONSTANTS --- */
 
 /** Generic scored result for truncation — supports both numeric and string IDs. */

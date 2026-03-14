@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. RETRIEVAL TELEMETRY (C136-12)
+// MODULE: Retrieval Telemetry (C136-12)
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Scoring observability
 // Captures latency, mode selection, fallback, and quality-proxy
 // Dimensions for governance review and Wave 2 gate decisions.
 // Feature flag: SPECKIT_EXTENDED_TELEMETRY (default false / disabled)
@@ -13,6 +14,7 @@ import type {
 import {
   getMemoryRoadmapDefaults,
 } from '../config/capability-flags';
+import type { SessionTransitionTrace } from '../search/session-transition';
 import type {
   MemoryRoadmapCapabilityFlags,
   MemoryRoadmapPhase,
@@ -103,6 +105,28 @@ interface AdaptiveMetrics {
   maxDeltaApplied: number;
 }
 
+interface GraphWalkDiagnostics {
+  rolloutState: 'off' | 'trace_only' | 'bounded_runtime';
+  rowsWithGraphContribution: number;
+  rowsWithAppliedBonus: number;
+  capAppliedCount: number;
+  maxRaw: number;
+  maxNormalized: number;
+  maxAppliedBonus: number;
+}
+
+interface LifecycleForecastDiagnostics {
+  state: string | null;
+  progress: number;
+  filesProcessed: number;
+  filesTotal: number;
+  etaSeconds: number | null;
+  etaConfidence: number | null;
+  failureRisk: number | null;
+  riskSignals: string[];
+  caveat?: string;
+}
+
 interface GraphHealthDashboardSummary {
   totalPayloads: number;
   payloadsWithGraphHealth: number;
@@ -139,6 +163,9 @@ interface RetrievalTelemetry {
   graphHealth: GraphHealthMetrics;
   adaptive: AdaptiveMetrics;
   tracePayload?: TelemetryTracePayload;
+  transitionDiagnostics?: SessionTransitionTrace;
+  graphWalkDiagnostics?: GraphWalkDiagnostics;
+  lifecycleForecastDiagnostics?: LifecycleForecastDiagnostics;
 }
 
 type LatencyStage = keyof Omit<LatencyMetrics, 'totalLatencyMs'>;
@@ -279,6 +306,117 @@ function recordTracePayload(t: RetrievalTelemetry, payload: unknown): boolean {
 
   t.tracePayload = sanitized;
   return true;
+}
+
+function recordTransitionDiagnostics(
+  t: RetrievalTelemetry,
+  transition?: SessionTransitionTrace,
+): void {
+  if (!t.enabled) return;
+  if (!transition) {
+    delete t.transitionDiagnostics;
+    return;
+  }
+
+  t.transitionDiagnostics = {
+    previousState: transition.previousState,
+    currentState: transition.currentState,
+    confidence: Math.max(0, Math.min(1, transition.confidence)),
+    signalSources: Array.isArray(transition.signalSources)
+      ? transition.signalSources.filter((signal): signal is SessionTransitionTrace['signalSources'][number] => typeof signal === 'string')
+      : [],
+    reason: typeof transition.reason === 'string' && transition.reason.length > 0 ? transition.reason : null,
+  };
+}
+
+function recordGraphWalkDiagnostics(
+  t: RetrievalTelemetry,
+  update: Partial<GraphWalkDiagnostics>,
+): void {
+  if (!t.enabled) return;
+  const current: GraphWalkDiagnostics = t.graphWalkDiagnostics ?? {
+    rolloutState: 'off',
+    rowsWithGraphContribution: 0,
+    rowsWithAppliedBonus: 0,
+    capAppliedCount: 0,
+    maxRaw: 0,
+    maxNormalized: 0,
+    maxAppliedBonus: 0,
+  };
+
+  t.graphWalkDiagnostics = {
+    rolloutState: update.rolloutState ?? current.rolloutState,
+    rowsWithGraphContribution: typeof update.rowsWithGraphContribution === 'number' && Number.isFinite(update.rowsWithGraphContribution)
+      ? Math.max(0, Math.floor(update.rowsWithGraphContribution))
+      : current.rowsWithGraphContribution,
+    rowsWithAppliedBonus: typeof update.rowsWithAppliedBonus === 'number' && Number.isFinite(update.rowsWithAppliedBonus)
+      ? Math.max(0, Math.floor(update.rowsWithAppliedBonus))
+      : current.rowsWithAppliedBonus,
+    capAppliedCount: typeof update.capAppliedCount === 'number' && Number.isFinite(update.capAppliedCount)
+      ? Math.max(0, Math.floor(update.capAppliedCount))
+      : current.capAppliedCount,
+    maxRaw: typeof update.maxRaw === 'number' && Number.isFinite(update.maxRaw)
+      ? Math.max(0, update.maxRaw)
+      : current.maxRaw,
+    maxNormalized: typeof update.maxNormalized === 'number' && Number.isFinite(update.maxNormalized)
+      ? Math.max(0, update.maxNormalized)
+      : current.maxNormalized,
+    maxAppliedBonus: typeof update.maxAppliedBonus === 'number' && Number.isFinite(update.maxAppliedBonus)
+      ? Math.max(0, update.maxAppliedBonus)
+      : current.maxAppliedBonus,
+  };
+}
+
+function recordLifecycleForecastDiagnostics(
+  t: RetrievalTelemetry,
+  forecast: Record<string, unknown> | null | undefined,
+  context: {
+    state?: string | null;
+    progress?: number;
+    filesProcessed?: number;
+    filesTotal?: number;
+  } = {},
+): void {
+  if (!t.enabled) return;
+
+  const candidate = forecast && typeof forecast === 'object'
+    ? forecast
+    : {};
+  const riskSignals = Array.isArray(candidate.riskSignals)
+    ? candidate.riskSignals.filter((signal): signal is string => typeof signal === 'string')
+    : [];
+
+  t.lifecycleForecastDiagnostics = {
+    state: typeof context.state === 'string' && context.state.length > 0 ? context.state : null,
+    progress:
+      typeof context.progress === 'number' && Number.isFinite(context.progress)
+        ? Math.max(0, Math.min(100, context.progress))
+        : 0,
+    filesProcessed:
+      typeof context.filesProcessed === 'number' && Number.isFinite(context.filesProcessed)
+        ? Math.max(0, Math.trunc(context.filesProcessed))
+        : 0,
+    filesTotal:
+      typeof context.filesTotal === 'number' && Number.isFinite(context.filesTotal)
+        ? Math.max(0, Math.trunc(context.filesTotal))
+        : 0,
+    etaSeconds:
+      typeof candidate.etaSeconds === 'number' && Number.isFinite(candidate.etaSeconds)
+        ? Math.max(0, candidate.etaSeconds)
+        : null,
+    etaConfidence:
+      typeof candidate.etaConfidence === 'number' && Number.isFinite(candidate.etaConfidence)
+        ? Math.max(0, Math.min(1, candidate.etaConfidence))
+        : null,
+    failureRisk:
+      typeof candidate.failureRisk === 'number' && Number.isFinite(candidate.failureRisk)
+        ? Math.max(0, Math.min(1, candidate.failureRisk))
+        : null,
+    riskSignals,
+    ...(typeof candidate.caveat === 'string' && candidate.caveat.length > 0
+      ? { caveat: candidate.caveat }
+      : {}),
+  };
 }
 
 function recordArchitecturePhase(
@@ -571,6 +709,46 @@ function toJSON(t: RetrievalTelemetry): Record<string, unknown> {
     payload.tracePayload = tracePayload;
   }
 
+  if (t.transitionDiagnostics) {
+    payload.transitionDiagnostics = {
+      previousState: t.transitionDiagnostics.previousState,
+      currentState: t.transitionDiagnostics.currentState,
+      confidence: Math.max(0, Math.min(1, t.transitionDiagnostics.confidence)),
+      signalSources: [...t.transitionDiagnostics.signalSources],
+      ...(typeof t.transitionDiagnostics.reason === 'string' && t.transitionDiagnostics.reason.length > 0
+        ? { reason: t.transitionDiagnostics.reason }
+        : {}),
+    };
+  }
+
+  if (t.graphWalkDiagnostics) {
+    payload.graphWalkDiagnostics = {
+      rolloutState: t.graphWalkDiagnostics.rolloutState,
+      rowsWithGraphContribution: t.graphWalkDiagnostics.rowsWithGraphContribution,
+      rowsWithAppliedBonus: t.graphWalkDiagnostics.rowsWithAppliedBonus,
+      capAppliedCount: t.graphWalkDiagnostics.capAppliedCount,
+      maxRaw: t.graphWalkDiagnostics.maxRaw,
+      maxNormalized: t.graphWalkDiagnostics.maxNormalized,
+      maxAppliedBonus: t.graphWalkDiagnostics.maxAppliedBonus,
+    };
+  }
+
+  if (t.lifecycleForecastDiagnostics) {
+    payload.lifecycleForecastDiagnostics = {
+      state: t.lifecycleForecastDiagnostics.state,
+      progress: t.lifecycleForecastDiagnostics.progress,
+      filesProcessed: t.lifecycleForecastDiagnostics.filesProcessed,
+      filesTotal: t.lifecycleForecastDiagnostics.filesTotal,
+      etaSeconds: t.lifecycleForecastDiagnostics.etaSeconds,
+      etaConfidence: t.lifecycleForecastDiagnostics.etaConfidence,
+      failureRisk: t.lifecycleForecastDiagnostics.failureRisk,
+      riskSignals: [...t.lifecycleForecastDiagnostics.riskSignals],
+      ...(typeof t.lifecycleForecastDiagnostics.caveat === 'string' && t.lifecycleForecastDiagnostics.caveat.length > 0
+        ? { caveat: t.lifecycleForecastDiagnostics.caveat }
+        : {}),
+    };
+  }
+
   return payload;
 }
 
@@ -586,6 +764,9 @@ export {
   recordFallback,
   recordQualityProxy,
   recordTracePayload,
+  recordTransitionDiagnostics,
+  recordGraphWalkDiagnostics,
+  recordLifecycleForecastDiagnostics,
   recordArchitecturePhase,
   recordGraphHealth,
   recordAdaptiveEvaluation,
@@ -607,6 +788,8 @@ export type {
   ArchitectureMetrics,
   GraphHealthMetrics,
   AdaptiveMetrics,
+  GraphWalkDiagnostics,
+  LifecycleForecastDiagnostics,
   GraphHealthDashboardSummary,
   TraceSamplingOptions,
   SampledTracePayload,

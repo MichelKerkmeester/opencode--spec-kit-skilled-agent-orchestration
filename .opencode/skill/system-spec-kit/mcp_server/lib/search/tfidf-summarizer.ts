@@ -1,9 +1,11 @@
 // ───────────────────────────────────────────────────────────────
-// 1. TFIDF SUMMARIZER
+// MODULE: Tfidf Summarizer
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Memory summary search channel
 // Pure TypeScript, zero dependencies
 // ───────────────────────────────────────────────────────────────
-// 2. INTERFACES
+// 1. INTERFACES
+
 // ───────────────────────────────────────────────────────────────
 interface ScoredSentence {
   text: string;
@@ -12,7 +14,8 @@ interface ScoredSentence {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 3. CONSTANTS
+// 2. CONSTANTS
+
 // ───────────────────────────────────────────────────────────────
 /** Minimum character length for a sentence to be considered. */
 const MIN_SENTENCE_LENGTH = 10;
@@ -24,7 +27,8 @@ const MAX_SENTENCE_LENGTH = 500;
 const DEFAULT_TOP_N = 3;
 
 // ───────────────────────────────────────────────────────────────
-// 4. INTERNAL HELPERS
+// 3. INTERNAL HELPERS
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Strip markdown syntax from text before scoring.
@@ -82,7 +86,8 @@ function splitSentences(content: string): string[] {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 5. CORE FUNCTIONS
+// 4. CORE FUNCTIONS
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Compute TF-IDF scores for sentences within a document.
@@ -227,7 +232,8 @@ export function generateSummary(content: string): { summary: string; keySentence
 }
 
 // ───────────────────────────────────────────────────────────────
-// 6. TEST EXPORTS
+// 5. TEST EXPORTS
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Internal functions exposed for unit testing.

@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. GRAPH SEARCH FN
+// MODULE: Graph Search Fn
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Unified graph retrieval, deterministic ranking, explainability, and rollback
 // Causal graph search channel — uses FTS5 for node matching
 
 import { sanitizeFTS5Query } from './bm25-index';
@@ -10,7 +11,8 @@ import type Database from 'better-sqlite3';
 import type { GraphSearchFn } from './search-types';
 
 // ───────────────────────────────────────────────────────────────
-// 2. TYPES
+// 1. TYPES
+
 // ───────────────────────────────────────────────────────────────
 interface CausalEdgeRow {
   id: string;
@@ -21,7 +23,8 @@ interface CausalEdgeRow {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 3. TYPED-DEGREE CONSTANTS
+// 2. TYPED-DEGREE CONSTANTS
+
 // ───────────────────────────────────────────────────────────────
 /** Edge type weights for typed-degree computation (R4 5th RRF channel) */
 const EDGE_TYPE_WEIGHTS: Record<string, number> = {
@@ -43,7 +46,8 @@ const MAX_TOTAL_DEGREE = 50;
 const DEGREE_BOOST_CAP = 0.15;
 
 // ───────────────────────────────────────────────────────────────
-// 4. CAUSAL EDGE CHANNEL (FTS5-BACKED)
+// 3. CAUSAL EDGE CHANNEL (FTS5-BACKED)
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Check whether the FTS5 table exists in the database.
@@ -253,7 +257,8 @@ function queryCausalEdgesLikeFallback(
 }
 
 // ───────────────────────────────────────────────────────────────
-// 5. TYPED-DEGREE COMPUTATION
+// 4. TYPED-DEGREE COMPUTATION
+
 // ───────────────────────────────────────────────────────────────
 /**
  * In-memory degree cache. Keys are stringified memory IDs.
@@ -436,7 +441,8 @@ function clearDegreeCache(): void {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 6. FACTORY FUNCTION
+// 5. FACTORY FUNCTION
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Creates a graph search function backed by causal_edges only.
@@ -470,7 +476,8 @@ function createUnifiedGraphSearchFn(
 }
 
 // ───────────────────────────────────────────────────────────────
-// 7. EXPORTS
+// 6. EXPORTS
+
 // ───────────────────────────────────────────────────────────────
 export {
   createUnifiedGraphSearchFn,

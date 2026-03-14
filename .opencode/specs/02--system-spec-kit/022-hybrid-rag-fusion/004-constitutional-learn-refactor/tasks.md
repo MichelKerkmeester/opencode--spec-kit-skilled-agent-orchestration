@@ -4,7 +4,7 @@ title: "Tasks: Refactor /memory:learn"
 status: done
 level: 2
 created: 2025-12-01
-updated: 2026-03-08
+updated: 2026-03-14
 ---
 <!-- ANCHOR:tasks -->
 # Tasks
@@ -37,4 +37,27 @@ updated: 2026-03-08
 - [x] No broken cross-references — all links verified
 - [x] Constitutional directory path correct — `.opencode/skill/system-spec-kit/constitutional/` consistent
 - [x] Token budget constant correct (~2000) — referenced in Sections 4, 5, 6, 7, 10
+
+## T6: Post-Verification Remediation and Scope-Complete Alignment [P0] — COMPLETE
+- [x] Fix stale active `/memory:learn` references in command/workspace/agent docs
+  - `.opencode/command/README.txt`
+  - `.opencode/command/memory/context.md`
+  - `.opencode/command/spec_kit/debug.md`
+  - `.opencode/command/spec_kit/complete.md`
+  - `README.md`
+  - `.opencode/README.md`
+  - `.opencode/agent/speckit.md`
+  - `.opencode/agent/chatgpt/speckit.md`
+- [x] Resolve learn.md contract drift
+  - Contradictory qualification text fixed to match branch behavior
+  - Dead "save as critical instead" option removed and replaced with `/memory:save` path
+- [x] Add documentation artifacts for verified closure
+  - Feature catalog entry: `../../../../skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/13-constitutional-memory-manager-command.md`
+  - Manual playbook scenario: `NEW-147`
+- [x] Add regression test for command/doc alignment
+  - `.opencode/skill/system-spec-kit/scripts/tests/memory-learn-command-docs.vitest.ts`
+- [x] Re-run verification after remediation
+  - `npm run typecheck` in `.opencode/skill/system-spec-kit` — PASS
+  - `memory-learn-command-docs.vitest.ts` — PASS (2/2)
+  - Targeted MCP suite — PASS (581/581)
 <!-- /ANCHOR:tasks -->

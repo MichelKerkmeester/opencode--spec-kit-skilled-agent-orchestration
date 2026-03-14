@@ -1,11 +1,13 @@
 // ───────────────────────────────────────────────────────────────
-// 1. PAGERANK
+// MODULE: Pagerank
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Graph momentum scoring
 // Iterative PageRank algorithm for memory graph authority scoring.
 // Computes convergence-based rank scores for weighted node retrieval.
 // Reference: C138-P4 — graph-based importance scoring for memory nodes.
 // ───────────────────────────────────────────────────────────────
-// 2. TYPES
+// 1. TYPES
+
 // ───────────────────────────────────────────────────────────────
 /** Adjacency list node: each node has a unique numeric id and out-edges. */
 export interface GraphNode {
@@ -24,7 +26,8 @@ export interface PageRankResult {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 3. CONSTANTS
+// 2. CONSTANTS
+
 // ───────────────────────────────────────────────────────────────
 /** Standard PageRank damping factor — probability of following an outbound link. */
 const DAMPING_FACTOR = 0.85;
@@ -36,7 +39,8 @@ const DEFAULT_ITERATIONS = 10;
 const CONVERGENCE_THRESHOLD = 1e-6;
 
 // ───────────────────────────────────────────────────────────────
-// 4. ALGORITHM
+// 3. ALGORITHM
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Compute iterative PageRank scores for a directed graph.

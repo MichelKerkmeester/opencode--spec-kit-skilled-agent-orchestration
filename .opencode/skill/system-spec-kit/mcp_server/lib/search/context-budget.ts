@@ -1,9 +1,11 @@
 // ───────────────────────────────────────────────────────────────
-// 1. CONTEXT BUDGET
+// MODULE: Context Budget
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Dynamic token budget allocation
 // Token-budget-aware result selection with graph region diversity.
 // ───────────────────────────────────────────────────────────────
-// 2. CONSTANTS
+// 1. CONSTANTS
+
 // ───────────────────────────────────────────────────────────────
 /** Default token budget when none is supplied by the caller. */
 const DEFAULT_BUDGET_TOKENS = 2000;
@@ -20,7 +22,8 @@ const CHARS_PER_TOKEN = 4;
 const REGION_DIVERSITY_THRESHOLD = 0.5;
 
 // ───────────────────────────────────────────────────────────────
-// 3. INTERFACES
+// 2. INTERFACES
+
 // ───────────────────────────────────────────────────────────────
 /**
  * A single search result eligible for context-budget selection.
@@ -45,7 +48,8 @@ export interface BudgetResult {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 4. HELPERS
+// 3. HELPERS
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Rough token count estimate for a plain-text string.
@@ -62,7 +66,8 @@ export function estimateTokens(content: string | undefined): number {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 5. CORE FUNCTION
+// 4. CORE FUNCTION
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Select results within a token budget, promoting graph-region diversity.
@@ -152,7 +157,8 @@ export function optimizeContextBudget(
 }
 
 // ───────────────────────────────────────────────────────────────
-// 6. PRIVATE HELPERS
+// 5. PRIVATE HELPERS
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Standard top-K selection: pick results in score order until budget is full.

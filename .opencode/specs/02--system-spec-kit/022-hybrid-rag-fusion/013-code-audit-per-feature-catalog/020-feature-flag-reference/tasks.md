@@ -5,10 +5,8 @@ description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "feature-flag-reference"
   - "feature flag reference"
-  - "search pipeline"
-  - "memory and storage"
-  - "embedding and api"
-importance_tier: "normal"
+  - "mapping closeout"
+importance_tier: "high"
 contextType: "general"
 ---
 # Tasks: feature-flag-reference
@@ -36,9 +34,9 @@ contextType: "general"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [ ] T001 Build feature inventory for all seven catalog entries (`feature_catalog/20--feature-flag-reference/`)
-- [ ] T002 Confirm env-var read-site baseline for SPECKIT, memory, and embedding mappings (`mcp_server/lib/search`, `mcp_server/lib/eval`, `shared/`)
-- [ ] T003 [P] Define Source File integrity validation criteria for CI (`feature_catalog/20--feature-flag-reference/`)
+- [x] T001 Build feature inventory for all seven catalog entries (`.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/`) [EVIDENCE: Seven source docs confirmed under `19--feature-flag-reference`.]
+- [x] T002 Confirm env-var mapping baseline for SPECKIT, memory, and embedding entries (`.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md`, `.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/04-4-memory-and-storage.md`, `.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/05-5-embedding-and-api.md`) [EVIDENCE: Corrected mapping rows present in catalog docs.]
+- [x] T003 [P] Identify automated mapping guard for critical env-var path validity (`.opencode/skill/system-spec-kit/mcp_server/tests/feature-flag-reference-docs.vitest.ts`) [EVIDENCE: Guard test covers 8 mapping checks.]
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -46,12 +44,12 @@ contextType: "general"
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [ ] T004 P0 Reconcile stale `SPECKIT_*` Source File mappings, including `SPECKIT_ABLATION`, `SPECKIT_RRF`, and `SPECKIT_LAZY_LOADING` (`.opencode/skill/system-spec-kit/feature_catalog/20--feature-flag-reference/01-1-search-pipeline-features-speckit.md`)
-- [ ] T005 [P] P0 Add CI validation script for Source File existence and env-var symbol presence (`feature_catalog/20--feature-flag-reference/`)
-- [ ] T006 [P] P1 Update `MEMORY_DB_DIR` and `MEMORY_DB_PATH` mappings to `lib/search/vector-index-store.ts` (`.opencode/skill/system-spec-kit/feature_catalog/20--feature-flag-reference/04-4-memory-and-storage.md`)
-- [ ] T007 [P] P1 Update `EMBEDDINGS_PROVIDER` mapping to `shared/embeddings/factory.ts` (`.opencode/skill/system-spec-kit/feature_catalog/20--feature-flag-reference/05-5-embedding-and-api.md`)
-- [ ] T008 [P] P1 Correct `EMBEDDING_DIM` mapping and clarify 768 compatibility semantics (`.opencode/skill/system-spec-kit/feature_catalog/20--feature-flag-reference/05-5-embedding-and-api.md`)
-- [ ] T009 P2 Add regression coverage for barrel re-export drift and non-768 `EMBEDDING_DIM` behavior (`.opencode/skill/system-spec-kit/feature_catalog/20--feature-flag-reference/04-4-memory-and-storage.md`, `.opencode/skill/system-spec-kit/feature_catalog/20--feature-flag-reference/05-5-embedding-and-api.md`)
+- [x] T004 Mark stale mapping findings for F-01 as resolved based on corrected catalog entries (`.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md`) [EVIDENCE: `SPECKIT_ABLATION`, `SPECKIT_RRF`, and `SPECKIT_LAZY_LOADING` map to current source files.]
+- [x] T005 [P] Mark source-integrity validation guard as implemented and verified (`.opencode/skill/system-spec-kit/mcp_server/tests/feature-flag-reference-docs.vitest.ts`) [EVIDENCE: Guard test passed with 8/8 checks.]
+- [x] T006 [P] Mark F-04 mapping drift as resolved (`.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/04-4-memory-and-storage.md`) [EVIDENCE: `MEMORY_DB_DIR` and `MEMORY_DB_PATH` both map to `lib/search/vector-index-store.ts`.]
+- [x] T007 [P] Mark F-05 provider mapping drift as resolved (`.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/05-5-embedding-and-api.md`) [EVIDENCE: `EMBEDDINGS_PROVIDER` maps to `shared/embeddings/factory.ts`.]
+- [x] T008 [P] Mark F-05 dimension semantics mismatch as resolved (`.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/05-5-embedding-and-api.md`) [EVIDENCE: `EMBEDDING_DIM` semantics now document provider-default behavior and 768 short-circuit scope.]
+- [x] T009 Close stale draft/pending language in phase 020 docs (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md`) [EVIDENCE: Status and task/checklist markers now indicate completed closeout state.]
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -59,9 +57,9 @@ contextType: "general"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [ ] T010 Verify all seven features remain represented with PASS/WARN/FAIL outcomes (`checklist.md`)
-- [ ] T011 Verify preserved priority split remains P0=2, P1=3, P2=1 (`tasks.md`)
-- [ ] T012 Update and validate cross-links and template-anchor integrity (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`)
+- [x] T010 Verify all seven features remain represented with current outcomes (`checklist.md`) [EVIDENCE: Checklist documents resolved mapping state with complete evidence coverage.]
+- [x] T011 Run and record automated mapping guard output (`mcp_server`) [EVIDENCE: `npm run test -- tests/feature-flag-reference-docs.vitest.ts` passed: 1 file, 8 tests.]
+- [x] T012 Validate markdown links and template-anchor integrity (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`) [EVIDENCE: `validate.sh --no-recursive` for phase 020 passes.]
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -69,9 +67,9 @@ contextType: "general"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [ ] All tasks marked `[x]`
-- [ ] No `[B]` blocked tasks remaining
-- [ ] Manual verification passed
+- [x] All tasks marked `[x]`
+- [x] No `[B]` blocked tasks remaining
+- [x] Manual verification passed
 <!-- /ANCHOR:completion -->
 
 ---

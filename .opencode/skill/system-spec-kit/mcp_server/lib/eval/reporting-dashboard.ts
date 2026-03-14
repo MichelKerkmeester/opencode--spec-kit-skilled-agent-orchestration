@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. REPORTING DASHBOARD (R13-S3)
+// MODULE: Reporting Dashboard (R13-S3)
 // ───────────────────────────────────────────────────────────────
 // the rollout: Full reporting dashboard for eval infrastructure.
 // Aggregates metrics per sprint/eval-run, per-channel views,

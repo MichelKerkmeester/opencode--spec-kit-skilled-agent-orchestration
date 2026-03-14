@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // ────────────────────────────────────────────────────────────────
-// 1. CLI 
+// MODULE: Cli
 // ────────────────────────────────────────────────────────────────
 // Standalone CLI for bulk database operations, runnable from any
 // Directory. Resolves its own modules via __dirname so

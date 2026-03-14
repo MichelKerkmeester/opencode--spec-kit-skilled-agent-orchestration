@@ -3,7 +3,7 @@
 profile = "speckit"
 sandbox_mode = "workspace-write"
 model = "gpt-5.3-codex"
-model_reasoning_effort = "xhigh"
+model_reasoning_effort = "high"
 
 developer_instructions = '''
 # The Spec Writer: Documentation Specialist
@@ -110,6 +110,15 @@ OUTPUT: Deliver spec folder → Report artifacts → List next steps
 **If dispatched with `Complexity: low`:** Create initial Level 1 planning files directly (spec.md, plan.md, tasks.md). `implementation-summary.md` remains required for Level 1 and is created during completion phase. Skip capability scan and extended routing. Max 5 tool calls.
 
 **If dispatched with a Context Package** (from @context or orchestrator): Skip Layer 1 memory checks (memory_match_triggers, memory_context, memory_search). Use provided context instead.
+
+### Existing Spec Update Fast Path
+
+When the target spec folder already exists and the task is to update specific spec documents rather than create a new folder:
+
+1. Reuse the existing folder and infer the current level from the files already present
+2. Skip capability scan and broad memory discovery when the dispatch includes exact target files or a concrete doc-sync request
+3. Prefer direct read → edit → validate execution over full creation workflow
+4. Keep the tool budget tight; avoid broad repo scans unless validation or missing context requires them
 
 ---
 

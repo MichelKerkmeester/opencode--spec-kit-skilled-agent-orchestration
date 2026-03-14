@@ -52,7 +52,7 @@ The spec folder now reflects closure state instead of planning state. Tasks are 
 
 - `.opencode/skill/system-spec-kit/mcp_server/lib/extraction/entity-extractor.ts`: Rule-3 regex updated to stop sentence-spanning key-phrase capture while preserving dotted tokens.
 - `.opencode/skill/system-spec-kit/mcp_server/tests/entity-extractor.vitest.ts`: regression tests added/updated for sentence-boundary and `Node.js` behavior.
-- `.opencode/skill/system-spec-kit/feature_catalog/19--decisions-and-deferrals/02-implemented-graph-centrality-and-community-detection.md`: F-02 source/test inventory references reconciled.
+- `.opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/05-graph-momentum-scoring.md`, `.opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/06-causal-depth-signal.md`, and `.opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/07-community-detection.md`: F-02 source/test inventory references reconciled.
 <!-- /ANCHOR:what-built -->
 
 ---

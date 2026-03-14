@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. MEMORY PARSER
+// MODULE: Memory Parser
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Content-aware memory filename generation
 // Node stdlib
 import fs from 'fs';
 import path from 'path';
@@ -16,7 +17,8 @@ import { inferMemoryType } from '../config/type-inference';
 export { getCanonicalPathKey };
 
 // ───────────────────────────────────────────────────────────────
-// 2. TYPES
+// 1. TYPES
+
 // ───────────────────────────────────────────────────────────────
 /** Causal link relationship types between memories */
 export interface CausalLinks {
@@ -80,7 +82,8 @@ interface ExtractImportanceTierOptions {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 3. CONFIGURATION
+// 2. CONFIGURATION
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Defines the MEMORY_FILE_PATTERN constant.
@@ -113,7 +116,8 @@ export const CONTEXT_TYPE_MAP: Record<string, ContextType> = {
 };
 
 // ───────────────────────────────────────────────────────────────
-// 4. CORE PARSING FUNCTIONS
+// 3. CORE PARSING FUNCTIONS
+
 // ───────────────────────────────────────────────────────────────
 /** Read file with BOM detection for UTF-16 support */
 export function readFileWithEncoding(filePath: string): string {
@@ -657,7 +661,8 @@ export function hasCausalLinks(causalLinks: CausalLinks | null | undefined): boo
 }
 
 // ───────────────────────────────────────────────────────────────
-// 5. VALIDATION FUNCTIONS
+// 4. VALIDATION FUNCTIONS
+
 // ───────────────────────────────────────────────────────────────
 /** Constitutional markdown basenames intentionally excluded from indexing */
 const EXCLUDED_CONSTITUTIONAL_BASENAMES = new Set(['readme.md', 'readme.txt']);
@@ -805,7 +810,8 @@ export function validateParsedMemory(parsed: ParsedMemory): ParsedMemoryValidati
 }
 
 // ───────────────────────────────────────────────────────────────
-// 6. DIRECTORY SCANNING
+// 5. DIRECTORY SCANNING
+
 // ───────────────────────────────────────────────────────────────
 /** Options for findMemoryFiles */
 export interface FindMemoryFilesOptions {

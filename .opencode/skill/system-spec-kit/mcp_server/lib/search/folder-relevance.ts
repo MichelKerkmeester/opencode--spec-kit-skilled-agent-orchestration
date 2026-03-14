@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. FOLDER RELEVANCE
+// MODULE: Folder Relevance
 // ───────────────────────────────────────────────────────────────
 // Computes folder-level relevance scores from individual memory
 // Scores using damped aggregation: FolderScore = (1/sqrt(M+1)) * SUM(score(m))
@@ -19,7 +19,8 @@ import type Database from 'better-sqlite3';
 
 
 // ───────────────────────────────────────────────────────────────
-// 2. FEATURE FLAG
+// 1. FEATURE FLAG
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Check if folder relevance scoring is enabled.
@@ -30,7 +31,8 @@ export function isFolderScoringEnabled(): boolean {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 3. CORE COMPUTATION
+// 2. CORE COMPUTATION
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Compute FolderScore for each spec folder from grouped search results.
@@ -84,7 +86,8 @@ export function computeFolderRelevanceScores(
 }
 
 // ───────────────────────────────────────────────────────────────
-// 4. DATABASE LOOKUP
+// 3. DATABASE LOOKUP
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Look up spec_folder values for a list of memory IDs from the database.
@@ -124,7 +127,8 @@ export function lookupFolders(
 }
 
 // ───────────────────────────────────────────────────────────────
-// 5. RESULT ENRICHMENT
+// 4. RESULT ENRICHMENT
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Enrich search results with folder-level relevance metadata.
@@ -182,7 +186,8 @@ export function enrichResultsWithFolderScores<
 }
 
 // ───────────────────────────────────────────────────────────────
-// 6. TWO-PHASE RETRIEVAL
+// 5. TWO-PHASE RETRIEVAL
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Two-phase retrieval: first select top-K folders by FolderScore,

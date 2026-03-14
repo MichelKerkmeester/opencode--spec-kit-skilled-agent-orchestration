@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. QUERY ROUTER
+// MODULE: Query Router
 // ───────────────────────────────────────────────────────────────
 // Tier-to-channel-subset routing for query complexity
 // Maps classifier tiers to channel subsets for selective pipeline execution.

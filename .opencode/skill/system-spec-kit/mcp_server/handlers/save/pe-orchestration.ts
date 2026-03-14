@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. PE ORCHESTRATION
+// MODULE: Pe Orchestration
 // ───────────────────────────────────────────────────────────────
 import type Database from 'better-sqlite3';
 

@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. STARTUP CHECKS
+// MODULE: Startup Checks
 // ───────────────────────────────────────────────────────────────
 // Non-critical startup checks extracted from context-server.ts (T303).
 import path from 'path';

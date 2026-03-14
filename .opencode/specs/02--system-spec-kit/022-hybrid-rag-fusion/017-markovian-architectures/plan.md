@@ -30,6 +30,8 @@ This plan translates research into a bounded first milestone with three concrete
 2. Bounded graph-walk additive scoring in Stage 2 behind explicit rollout controls.
 3. Advisory ingestion lifecycle forecasting (ETA and failure-risk) from queue state.
 
+Core code for these contracts is implemented and full targeted verification passed, including deterministic rerun and rollout hardening coverage.
+
 The milestone does not include full MDP/MCTS/SSM-runtime work, and it does not reintroduce retired shadow scoring or novelty boost hot-path behavior.
 <!-- /ANCHOR:summary -->
 
@@ -46,6 +48,7 @@ The milestone does not include full MDP/MCTS/SSM-runtime work, and it does not r
 
 ### In-Milestone Decision Boundaries
 - Transition inference is trace-only in this milestone.
+- Transition payload stays in trace surfaces (and trace-gated telemetry diagnostics), not non-trace metadata.
 - Graph-walk contribution is additive, bounded, and reversible.
 - Forecasts are advisory and confidence-scored, not operational blockers.
 - Graduation to broader adaptive runtime behavior is post-milestone work.
@@ -60,15 +63,16 @@ The milestone does not include full MDP/MCTS/SSM-runtime work, and it does not r
 - [x] Bounded first-milestone scope documented in `spec.md`.
 - [x] File-level implementation surfaces identified.
 - [x] Testing surfaces mapped to concrete Vitest suites.
-- [ ] Numbered feature branch exists (`main` prerequisite still open).
+- [x] Numbered feature branch exists (`017-markovian-architectures`).
 - [x] Existing caveats preserved (memory save used JSON fallback and skipped semantic indexing).
 
 ### Definition of Done (Implementation Completion Target)
-- [ ] Transition trace contract implemented and tested.
-- [ ] Graph-walk bounded scoring implemented and tested.
-- [ ] Ingestion lifecycle forecast contract implemented and tested.
-- [ ] Deterministic ranking and rollback drill checks pass.
-- [ ] Documentation updates reflect final implementation reality.
+- [x] Transition trace contract implemented and tested.
+- [x] Graph-walk bounded scoring implemented and tested.
+- [x] Ingestion lifecycle forecast contract implemented and tested.
+- [x] Focused verification confirms transition + graph-walk diagnostics telemetry contracts.
+- [x] Deterministic ranking and rollback drill checks pass.
+- [x] Documentation updates reflect final implementation reality.
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -87,12 +91,17 @@ Extend existing handlers/pipeline incrementally using feature flags and trace-fi
 
 ### Data Flow
 ```text
-memory_context / memory_search
-   -> transition inference helper
+memory_context
+   -> build sessionTransition { previousState, currentState, confidence, signalSources, reason? }
+   -> forward sessionTransition into memory_search
+
+memory_search
+   -> cache + dedup path
+   -> post-cache transition injection (trace path)
    -> stage1
    -> stage2 (+ optional bounded graph bonus)
    -> stage3/stage4 deterministic ordering
-   -> trace formatter + telemetry
+   -> trace formatter + retrieval telemetry (transitionDiagnostics + graphWalkDiagnostics)
 
 memory_ingest status
    -> queue lifecycle state
@@ -106,9 +115,11 @@ memory_ingest status
 <!-- ANCHOR:phase-plan -->
 ## 5. PHASE PLAN
 
+Status snapshot: Phases 1-5 are implemented and verified for this milestone.
+
 ### Phase 1: Preflight and Contract Freeze
 
-**Objective**: Lock contracts, flags, and baseline constraints before code changes.
+**Objective**: Implemented contract/flag freeze for baseline-safe rollout behavior.
 
 **Target files**:
 - `.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts`
@@ -124,7 +135,7 @@ memory_ingest status
 
 ### Phase 2: Transition Trace Implementation
 
-**Objective**: Add trace-only session-transition inference without changing routing behavior.
+**Objective**: Implemented trace-only session-transition inference without changing routing behavior.
 
 **Target files**:
 - `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts`
@@ -133,13 +144,13 @@ memory_ingest status
 - `.opencode/skill/system-spec-kit/mcp_server/lib/telemetry/retrieval-telemetry.ts`
 
 **Exit criteria**:
-- Transition trace fields emitted when trace is enabled.
+- `memory_context` forwards `sessionTransition` and `memory_search` injects it post-cache when trace is enabled.
 - Null-safe behavior for missing/sparse session state.
 - No behavior changes when trace path is disabled.
 
 ### Phase 3: Stage 2 Graph-Walk Contribution
 
-**Objective**: Integrate bounded graph-walk bonus into Stage 2 with deterministic behavior.
+**Objective**: Implement bounded graph-walk bonus in Stage 2 with deterministic behavior.
 
 **Target files**:
 - `.opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-signals.ts`
@@ -151,11 +162,11 @@ memory_ingest status
 **Exit criteria**:
 - Graph bonus is bounded and flag-gated.
 - Deterministic ordering contract holds.
-- Trace output explains contribution and cap behavior.
+- Graph diagnostics expose `raw`, `normalized`, `appliedBonus`, `capApplied`, and `rolloutState` (`off|trace_only|bounded_runtime`).
 
 ### Phase 4: Ingestion Lifecycle Forecasting
 
-**Objective**: Provide advisory ETA/failure-risk forecasts from existing queue state.
+**Objective**: Implement advisory ETA/failure-risk forecasts from existing queue state.
 
 **Target files**:
 - `.opencode/skill/system-spec-kit/mcp_server/lib/ops/job-queue.ts`
@@ -169,7 +180,7 @@ memory_ingest status
 
 ### Phase 5: Validation and Rollout Readiness
 
-**Objective**: Confirm bounded rollout, regression safety, and graduation readiness artifacts.
+**Objective**: Complete broader rollout hardening, deterministic rerun coverage, and graduation readiness artifacts.
 
 **Target files**:
 - `.opencode/skill/system-spec-kit/mcp_server/lib/cognitive/rollout-policy.ts`
@@ -177,9 +188,9 @@ memory_ingest status
 - `.opencode/skill/system-spec-kit/mcp_server/tests/*.vitest.ts` (targeted suites below)
 
 **Exit criteria**:
-- Rollback drill path documented and testable.
-- Evaluation criteria and baseline comparison defined.
-- Bounded-runtime rollout remains optional and reversible.
+- [x] Rollback drill path documented and testable.
+- [x] Evaluation criteria and baseline comparison defined.
+- [x] Bounded-runtime rollout remains optional and reversible.
 <!-- /ANCHOR:phase-plan -->
 
 ---
@@ -221,8 +232,10 @@ memory_ingest status
 2. `trace_only`: transition and graph trace visible, no ranking impact.
 3. `bounded_runtime`: bounded graph bonus enabled behind explicit flag.
 
+Resolution: `SPECKIT_GRAPH_WALK_ROLLOUT` controls explicit rollout state; when unset, rollout resolves to `bounded_runtime` only if graph signals are enabled, otherwise `off`.
+
 ### Kill Switches
-- Disable Markovian graph contribution flag.
+- Set `SPECKIT_GRAPH_WALK_ROLLOUT=off` (or disable graph signals) to remove graph-walk runtime impact.
 - Disable response traces (`includeTrace` / response-trace controls) for transition visibility.
 - Disable forecast emission path for ingest status.
 
@@ -240,9 +253,9 @@ memory_ingest status
 
 | Dependency/Caveat | Status | Impact | Mitigation |
 |-------------------|--------|--------|------------|
-| Numbered feature branch not yet created (`main`) | Open | Implementation workflow prerequisite not satisfied | Create feature branch before starting `/spec_kit:implement` |
+| Numbered feature branch `017-markovian-architectures` | Closed | Prerequisite satisfied for implementation and verification | Keep branch active for any post-milestone follow-on specs |
 | Prior research artifacts | Available | Needed for rationale and guardrails | Keep citations and constraints aligned |
-| Existing trace envelope support | Available | Needed for inspectable rollout | Route new fields through `includeTrace` path |
+| Existing trace envelope support | Available | Needed for inspectable rollout while keeping transition payload trace-only | Route new fields through `includeTrace` path and avoid non-trace transition metadata |
 | Existing graph/Stage 2 substrate | Available | Needed for bounded graph bonus | Keep additive-only integration |
 | Memory save quality caveat (JSON fallback, skipped semantic indexing) | Open caveat | Resume context may be weaker than ideal | Keep caveat documented; treat memory as partial context only |
 <!-- /ANCHOR:dependencies -->
@@ -254,12 +267,12 @@ memory_ingest status
 
 | Phase | Complexity | Estimate |
 |-------|------------|----------|
-| Phase 1: Preflight and contracts | Medium | 0.5-1 day |
-| Phase 2: Transition trace | Medium | 1-2 days |
-| Phase 3: Bounded graph-walk Stage 2 | Medium-High | 2-4 days |
-| Phase 4: Lifecycle forecasting | Medium | 1-2 days |
-| Phase 5: Validation and rollout readiness | Medium | 1-2 days |
-| **Total** | | **5.5-11 days** |
+| Phase 1: Preflight and contracts | Complete | 0 days remaining |
+| Phase 2: Transition trace | Complete | 0 days remaining |
+| Phase 3: Bounded graph-walk Stage 2 | Complete | 0 days remaining |
+| Phase 4: Lifecycle forecasting | Complete | 0 days remaining |
+| Phase 5: Validation and rollout readiness | Complete | 0 days remaining |
+| **Total** | | **0 days remaining** |
 <!-- /ANCHOR:effort -->
 
 ---
@@ -269,5 +282,5 @@ memory_ingest status
 
 - Primary execution checklist is tracked in `tasks.md`.
 - Planning/readiness state is tracked in `checklist.md`.
-- Implementation must begin from a numbered feature branch, not `main`.
+- Milestone implementation and validation are complete on `017-markovian-architectures`.
 <!-- /ANCHOR:next -->

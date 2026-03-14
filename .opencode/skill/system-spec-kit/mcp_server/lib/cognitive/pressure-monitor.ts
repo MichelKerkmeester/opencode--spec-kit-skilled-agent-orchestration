@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. PRESSURE MONITOR
+// MODULE: Pressure Monitor
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Quality-aware 3-tier search fallback
 export interface RuntimeContextStats {
   tokenCount?: number;
   tokenBudget?: number;

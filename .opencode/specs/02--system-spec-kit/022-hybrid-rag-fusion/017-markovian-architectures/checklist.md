@@ -43,7 +43,7 @@ Required checks grouped for implementation readiness quality:
 - Branch/readiness and safety constraints: `CHK-022` to `CHK-025`
 - Validation breadth and contract coverage: `CHK-031` to `CHK-034`
 - Rollout guardrails and trace-only boundaries: `CHK-042` to `CHK-044`
-- Documentation/context caveat fidelity: `CHK-051` to `CHK-053`
+- Documentation/context caveat fidelity: `CHK-051` to `CHK-055`
 <!-- /ANCHOR:p1-grouping -->
 
 ---
@@ -107,6 +107,7 @@ Required checks grouped for implementation readiness quality:
 - [x] CHK-052 [P1] Existing research artifacts remain referenced with concrete internal paths for traceability | Evidence: `research.md` metadata and section 3 (Research Sources table)
 - [x] CHK-053 [P1] Prior planning memory save caveat is preserved (JSON fallback + semantic indexing skipped) | Evidence: `plan.md` section 8, `checklist.md` summary caveat
 - [x] CHK-054 [P2] Handover/save-context next-step path remains documented
+- [x] CHK-055 [P1] Public feature catalog and manual playbook coverage for first-milestone Markovian behavior are synchronized | Evidence: `.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/01-unified-context-retrieval-memorycontext.md`, `.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/02-semantic-and-lexical-search-memorysearch.md`, `.opencode/skill/system-spec-kit/feature_catalog/05--lifecycle/05-async-ingestion-job-lifecycle.md`, `.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md`, `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` (`NEW-142` to `NEW-144`)
 <!-- /ANCHOR:docs-context -->
 
 ---
@@ -114,12 +115,12 @@ Required checks grouped for implementation readiness quality:
 <!-- ANCHOR:implementation-update -->
 ## Implementation Update
 
-- [x] CHK-060 [P0] Session transition trace is emitted in `memory_context` metadata and traced nested results | Evidence: `handlers/memory-context.ts`, `tests/handler-memory-context.vitest.ts`
-- [x] CHK-061 [P0] Bounded graph-walk scoring is active through the existing Stage 2 graph-signal seam | Evidence: `lib/graph/graph-signals.ts`, `tests/graph-signals.vitest.ts`
+- [x] CHK-060 [P0] Session transition trace is emitted as spec-shaped `trace.sessionTransition` and gated by trace controls only | Evidence: `handlers/memory-context.ts`, `handlers/memory-search.ts`, `tests/handler-memory-context.vitest.ts`
+- [x] CHK-061 [P0] Bounded graph-walk scoring records distinct `raw`/`normalized`, rollout state, and true clipping semantics for `capApplied` | Evidence: `lib/graph/graph-signals.ts`, `tests/graph-signals.vitest.ts`, `tests/search-flags.vitest.ts`
 - [x] CHK-062 [P0] Ingest status returns advisory forecast payloads and degrades safely on forecast errors | Evidence: `handlers/memory-ingest.ts`, `lib/ops/job-queue.ts`, `tests/handler-memory-ingest.vitest.ts`
-- [x] CHK-063 [P1] Focused Vitest suites pass for transition, envelope, graph, and queue coverage | Evidence: `npx vitest run tests/handler-memory-context.vitest.ts tests/mcp-response-envelope.vitest.ts tests/graph-signals.vitest.ts tests/handler-memory-ingest.vitest.ts tests/job-queue-state-edge.vitest.ts tests/job-queue.vitest.ts`
+- [x] CHK-063 [P1] Targeted Vitest suite passes for transition, envelope, graph, telemetry, deterministic reruns, rollout flags, and retirement regression coverage | Evidence: `npx vitest run tests/search-flags.vitest.ts tests/stage2-fusion.vitest.ts tests/feature-eval-graph-signals.vitest.ts tests/search-results-format.vitest.ts tests/memory-context.vitest.ts tests/handler-memory-ingest.vitest.ts tests/retrieval-telemetry.vitest.ts tests/mpab-quality-gate-integration.vitest.ts tests/cold-start.vitest.ts tests/rollout-policy.vitest.ts tests/adaptive-ranking.vitest.ts tests/graph-roadmap-finalization.vitest.ts`
 - [x] CHK-064 [P1] TypeScript compile surface remains valid after implementation edits | Evidence: `npx tsc --noEmit`
-- [ ] CHK-065 [P1] Telemetry expansion, richer graph trace attribution, and deterministic rerun checks remain follow-up work | Evidence: `tasks.md` T013, T024-T025, T033, T040-T044
+- [x] CHK-065 [P1] Broader deterministic rerun coverage, rollout hardening, and untouched-surface dependent tasks are complete | Evidence: `tasks.md` T003-T004, T015, T022, T026, T028-T029, T033, T040-T044; `tests/stage2-fusion.vitest.ts`, `tests/feature-eval-graph-signals.vitest.ts`, `tests/search-results-format.vitest.ts`, `tests/memory-context.vitest.ts`, `tests/retrieval-telemetry.vitest.ts`, `tests/mpab-quality-gate-integration.vitest.ts`, `tests/cold-start.vitest.ts`
 <!-- /ANCHOR:implementation-update -->
 
 ---
@@ -130,15 +131,13 @@ Required checks grouped for implementation readiness quality:
 | Category | Total | Verified |
 |----------|-------|----------|
 | P0 Items | 12 | 12/12 |
-| P1 Items | 17 | 16/17 |
+| P1 Items | 18 | 18/18 |
 | P2 Items | 3 | 3/3 |
 
 **Verification Date**: 2026-03-14
 
 Readiness caveats:
-- Transition tracing, bounded graph-walk scoring, and advisory queue forecasting are implemented and verified, but telemetry expansion and broader rollout-hardening tasks remain deferred.
-- `CHK-065` remains open: richer graph trace attribution and deterministic rerun coverage have not been completed yet.
-- `CHK-053` passes for documentation fidelity only; both prior planning memory and the fresh implementation save used JSON fallback and skipped production indexing (`QUALITY_GATE_FAIL`), so memory artifacts remain low-quality resume aids rather than clean indexed context.
+- None. Previously deferred deterministic rerun, rollout hardening, untouched-surface coverage, and lifecycle telemetry follow-up items are now complete for this milestone.
 <!-- /ANCHOR:summary -->
 
 ---

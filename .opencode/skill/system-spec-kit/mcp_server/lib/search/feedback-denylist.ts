@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. FEEDBACK DENYLIST
+// MODULE: Feedback Denylist
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Learned relevance feedback
 // 100+ stop words that should never be learned as trigger phrases.
 // Prevents noise injection into learned relevance feedback.
 /* ───────────────────────────────────────────────────────────────
@@ -67,7 +68,8 @@ const DOMAIN_STOP_WORDS: readonly string[] = [
 ] as const;
 
 // ───────────────────────────────────────────────────────────────
-// 2. COMBINED DENYLIST
+// 1. COMBINED DENYLIST
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Complete denylist of 100+ stop words that should never be learned
@@ -80,7 +82,8 @@ export const DENYLIST: Set<string> = new Set<string>([
 ]);
 
 // ───────────────────────────────────────────────────────────────
-// 3. PUBLIC API
+// 2. PUBLIC API
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Check if a term is on the denylist (case-insensitive).

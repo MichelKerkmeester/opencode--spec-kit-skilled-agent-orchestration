@@ -1,10 +1,12 @@
 // ───────────────────────────────────────────────────────────────
-// 1. ENTITY SCOPE
+// MODULE: Entity Scope
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Auto entity extraction
 // Provides context type detection, scope filtering, and session ID
 // Generation for the spec-kit memory system.
 // ───────────────────────────────────────────────────────────────
-// 2. CONSTANTS
+// 1. CONSTANTS
+
 // ───────────────────────────────────────────────────────────────
 /** Valid context types for memory classification */
 export const CONTEXT_TYPES: string[] = [
@@ -16,7 +18,8 @@ export const CONTEXT_TYPES: string[] = [
 ];
 
 // ───────────────────────────────────────────────────────────────
-// 3. CONTEXT TYPE DETECTION
+// 2. CONTEXT TYPE DETECTION
+
 // ───────────────────────────────────────────────────────────────
 /** Keyword-to-context-type mapping (order = priority) */
 const CONTENT_KEYWORDS: Array<{ type: string; keywords: string[] }> = [
@@ -75,7 +78,8 @@ export function detectContextTypeFromTools(
 }
 
 // ───────────────────────────────────────────────────────────────
-// 4. SCOPE FILTER BUILDER
+// 3. SCOPE FILTER BUILDER
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Build a SQL WHERE clause from a scope object.

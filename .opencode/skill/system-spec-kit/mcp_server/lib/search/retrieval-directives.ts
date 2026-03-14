@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. RETRIEVAL DIRECTIVES
+// MODULE: Retrieval Directives
 // ───────────────────────────────────────────────────────────────
 // PI-A4: Constitutional memory as retrieval directives (the rollout, deferred from the rollout REC-07)
 //

@@ -1,11 +1,12 @@
 // ───────────────────────────────────────────────────────────────
-// 1. VALIDATORS
+// MODULE: Validators
 // ───────────────────────────────────────────────────────────────
 import path from 'path';
 import os from 'os';
 
 // ───────────────────────────────────────────────────────────────
-// 2. TYPES
+// 1. TYPES
+
 // ───────────────────────────────────────────────────────────────
 /** Maximum allowed lengths for string inputs (SEC-003: CWE-400 mitigation) */
 export interface InputLimits {
@@ -34,7 +35,8 @@ export interface ValidatableArgs {
 export type SharedValidateFilePath = (filePath: string, allowedBasePaths: string[]) => string | null;
 
 // ───────────────────────────────────────────────────────────────
-// 3. CONFIGURATION CONSTANTS
+// 2. CONFIGURATION CONSTANTS
+
 // ───────────────────────────────────────────────────────────────
 export const INPUT_LIMITS: Readonly<InputLimits> = {
   query: 10000,
@@ -50,7 +52,8 @@ export const INPUT_LIMITS: Readonly<InputLimits> = {
 export const MAX_QUERY_LENGTH: number = 10000;
 
 // ───────────────────────────────────────────────────────────────
-// 4. QUERY VALIDATION
+// 3. QUERY VALIDATION
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Validate and normalize a search query
@@ -74,7 +77,8 @@ export function validateQuery(query: unknown): string {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 5. INPUT LENGTH VALIDATION
+// 4. INPUT LENGTH VALIDATION
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Validate input string lengths
@@ -102,7 +106,8 @@ export function validateInputLengths(args: ValidatableArgs | null | undefined): 
 }
 
 // ───────────────────────────────────────────────────────────────
-// 6. FILE PATH VALIDATION
+// 5. FILE PATH VALIDATION
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Create a file path validator with specified allowed base paths

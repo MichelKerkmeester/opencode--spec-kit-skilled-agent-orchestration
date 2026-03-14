@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. CONSUMPTION LOGGER (T004 — AGENT UX INSTRUMENTATION)
+// MODULE: Consumption Logger (T004 — Agent Ux Instrumentation)
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Agent consumption instrumentation
 // Logs agent consumption events to a SQLite table for G-NEW-2
 // Requirement analysis: what agents query, what results they get,
 // And (via hooks) which results they actually use.

@@ -56,8 +56,9 @@ contextType: "general"
 - [x] T011 Record current alignment-drift evidence: `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit/scripts` passed with `0 findings` and `0 warnings`
 - [x] T012 Record current TypeScript check evidence: `npm run lint` in `.opencode/skill/system-spec-kit/scripts` passed (`tsc --noEmit`)
 - [x] T013 Remove unverifiable claims about a 1032-line round-trip artifact and completed live outsourced CLI dispatch
-- [x] T014 Update `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` so they agree on runtime behavior, security wording, and deferred verification
+- [x] T014 Update `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` so they agree on runtime behavior, security wording, and verification status
 - [x] T015 Run `.opencode/skill/system-spec-kit/scripts/spec/validate.sh` on this spec folder and record the exit code
+- [x] T016 Live outsourced CLI dispatch round-trip: wrote JSON to `/tmp/save-context-data.json`, ran `generate-context.js`, produced 583-line memory file at `memory/14-03-26_15-20__live-outsourced-cli-dispatch-verification.md`
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -69,7 +70,7 @@ contextType: "general"
 - [x] Next-step persistence wording matches the implemented normalizer and session extractor, including mixed structured payload behavior
 - [x] All `cli-*` references use the real path layout and include redact-and-scrub guidance
 - [x] No spec artifact claims the unverifiable 1032-line memory file as current proof
-- [x] Live outsourced CLI dispatch remains deferred unless rerun with fresh evidence
+- [x] Live outsourced CLI dispatch verified with fresh round-trip evidence
 - [x] `validate.sh` run recorded for this spec folder
 <!-- /ANCHOR:completion -->
 

@@ -37,7 +37,7 @@ contextType: "general"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 Validate all 5 feature entries and source inventories (`feature_catalog/19--decisions-and-deferrals/`) [EVIDENCE: Catalog entries reconciled during re-audit and F-02 source table correction.]
+- [x] T001 Validate all 5 feature entries and source inventories (`feature_catalog/10--graph-signal-activation/`, `feature_catalog/13--memory-quality-and-indexing/`) [EVIDENCE: Catalog entries reconciled during re-audit and F-02 source table correction.]
 - [x] T002 Capture baseline status for F-01 through F-05 in verification checklist (`checklist.md`) [EVIDENCE: Checklist status matrix updated with final PASS outcomes.]
 - [x] T003 [P] Confirm audit criteria coverage (correctness, standards, behavior, tests) (`spec.md`) [EVIDENCE: Spec acceptance scenarios and requirements map to correctness, behavior, and tests.]
 <!-- /ANCHOR:phase-1 -->
@@ -47,8 +47,8 @@ contextType: "general"
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [x] T004 Update F-02 source inventory to include `mcp_server/lib/graph/graph-signals.ts` and migration-v19 touchpoints (`.opencode/skill/system-spec-kit/feature_catalog/19--decisions-and-deferrals/02-implemented-graph-centrality-and-community-detection.md`) [EVIDENCE: Implementation references now include graph-signals and vector-index-schema v19.]
-- [x] T005 Add/attach F-02 test references for `computeGraphMomentum` and `computeCausalDepth` plus migration-v19 expectations (`.opencode/skill/system-spec-kit/feature_catalog/19--decisions-and-deferrals/02-implemented-graph-centrality-and-community-detection.md`) [EVIDENCE: Test table includes `graph-signals.vitest.ts` and deferred-features integration coverage.]
+- [x] T004 Update F-02 source inventory to include `mcp_server/lib/graph/graph-signals.ts` and migration-v19 touchpoints (`.opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/07-community-detection.md`) [EVIDENCE: Implementation references now include graph-signals and vector-index-schema v19.]
+- [x] T005 Add/attach F-02 test references for `computeGraphMomentum` and `computeCausalDepth` plus migration-v19 expectations (`.opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/05-graph-momentum-scoring.md`, `.opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/06-causal-depth-signal.md`) [EVIDENCE: Test table includes `graph-signals.vitest.ts` and deferred-features integration coverage.]
 - [x] T006 Tighten Rule-3 continuation token to prevent cross-sentence key-phrase capture (`mcp_server/lib/extraction/entity-extractor.ts`) [EVIDENCE: Rule-3 regex updated to stop at sentence periods while preserving dotted tokens.]
 - [x] T007 Add negative tests asserting sentence-boundary termination in key-phrase extraction (`mcp_server/tests/entity-extractor.vitest.ts`) [EVIDENCE: Regression tests now assert no `'. Implements'` capture and preserve `Node.js` extraction.]
 <!-- /ANCHOR:phase-2 -->

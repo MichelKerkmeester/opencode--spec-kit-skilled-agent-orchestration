@@ -1,5 +1,13 @@
 // TEST: HANDLER MEMORY INGEST
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+
+interface IngestForecastMock {
+  etaSeconds: number | null;
+  etaConfidence: number | null;
+  failureRisk: number | null;
+  riskSignals: string[];
+  caveat: string | null;
+}
 
 const mocks = vi.hoisted(() => ({
   mockCheckDatabaseUpdated: vi.fn(async () => undefined),
@@ -11,7 +19,7 @@ const mocks = vi.hoisted(() => ({
     if (!job || typeof job.filesTotal !== 'number' || job.filesTotal <= 0) return 0;
     return Math.round((job.filesProcessed / job.filesTotal) * 100);
   }),
-  mockGetIngestForecast: vi.fn(() => ({
+  mockGetIngestForecast: vi.fn<() => IngestForecastMock>(() => ({
     etaSeconds: null,
     etaConfidence: null,
     failureRisk: null,
@@ -57,6 +65,10 @@ describe('Handler Memory Ingest (Sprint 9 P0-3)', () => {
       riskSignals: [],
       caveat: 'forecast unavailable',
     });
+  });
+
+  afterEach(() => {
+    delete process.env.SPECKIT_EXTENDED_TELEMETRY;
   });
 
   it('exports ingest handlers and aliases', () => {
@@ -160,6 +172,45 @@ describe('Handler Memory Ingest (Sprint 9 P0-3)', () => {
         timestamp: '2026-03-05T00:00:01.000Z',
       },
     ]);
+  });
+
+  it('status emits optional lifecycle telemetry when extended telemetry is enabled', async () => {
+    process.env.SPECKIT_EXTENDED_TELEMETRY = 'true';
+    mocks.mockGetIngestForecast.mockReturnValue({
+      etaSeconds: 30,
+      etaConfidence: 0.6,
+      failureRisk: 0.2,
+      riskSignals: ['file_errors_seen'],
+      caveat: null,
+    });
+    mocks.mockGetIngestJob.mockReturnValue({
+      id: 'job_live',
+      state: 'indexing',
+      specFolder: 'specs/live',
+      paths: ['/tmp/live.md'],
+      filesTotal: 4,
+      filesProcessed: 1,
+      errors: [],
+      createdAt: '2026-03-05T00:00:00.000Z',
+      updatedAt: '2026-03-05T00:00:01.000Z',
+    });
+
+    const result = await handler.handleMemoryIngestStatus({ jobId: 'job_live' });
+    const envelope = parseEnvelope(result);
+    const data = envelope.data as Record<string, unknown>;
+    const telemetry = data._telemetry as Record<string, unknown>;
+
+    expect(telemetry).toBeDefined();
+    expect((telemetry.lifecycleForecastDiagnostics as Record<string, unknown>)).toEqual({
+      state: 'indexing',
+      progress: 25,
+      filesProcessed: 1,
+      filesTotal: 4,
+      etaSeconds: 30,
+      etaConfidence: 0.6,
+      failureRisk: 0.2,
+      riskSignals: ['file_errors_seen'],
+    });
   });
 
   it('status degrades safely when forecast derivation throws', async () => {

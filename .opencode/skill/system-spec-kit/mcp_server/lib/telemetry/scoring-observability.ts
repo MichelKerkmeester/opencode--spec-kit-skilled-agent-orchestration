@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. SCORING OBSERVABILITY (T010)
+// MODULE: Scoring Observability (T010)
 // ───────────────────────────────────────────────────────────────
 // Lightweight observability logging for N4 cold-start boost and
 // TM-01 interference scoring values at query time.
@@ -14,13 +14,15 @@ import type Database from 'better-sqlite3';
 
 
 // ───────────────────────────────────────────────────────────────
-// 2. CONSTANTS
+// 1. CONSTANTS
+
 // ───────────────────────────────────────────────────────────────
 /** 5% sampling rate — logs ~1 in 20 scoring calls */
 export const SAMPLING_RATE = 0.05;
 
 // ───────────────────────────────────────────────────────────────
-// 3. TYPES
+// 2. TYPES
+
 // ───────────────────────────────────────────────────────────────
 /** Full observation record for a single scored memory */
 export interface ScoringObservation {
@@ -55,7 +57,8 @@ export interface ScoringStats {
 let _db: Database.Database | null = null;
 
 // ───────────────────────────────────────────────────────────────
-// 4. INITIALIZATION
+// 3. INITIALIZATION
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Initialize the scoring observability system.
@@ -92,7 +95,8 @@ export function initScoringObservability(db: Database.Database): void {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 5. SAMPLING
+// 4. SAMPLING
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Returns true approximately 5% of the time.
@@ -103,7 +107,8 @@ export function shouldSample(): boolean {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 6. LOGGING
+// 5. LOGGING
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Persist a scoring observation to the DB.
@@ -146,7 +151,8 @@ export function logScoringObservation(obs: ScoringObservation): void {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 7. STATS QUERY
+// 6. STATS QUERY
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Aggregate stats over all logged scoring observations.

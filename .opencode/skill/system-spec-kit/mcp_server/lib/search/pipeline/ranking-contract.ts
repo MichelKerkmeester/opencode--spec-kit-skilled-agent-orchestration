@@ -1,3 +1,27 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: Ranking Contract
+// ───────────────────────────────────────────────────────────────
+
+/**
+ * Stage 2 graph-walk additive bonus cap.
+ *
+ * Centralized here so deterministic ordering rules and additive graph-bonus
+ * bounds share one contract surface.
+ */
+export const STAGE2_GRAPH_BONUS_CAP = 0.03;
+
+/**
+ * Clamp a Stage 2 graph-derived additive bonus to the bounded contract.
+ *
+ * The contract is strictly additive and never allows negative graph bonuses.
+ */
+export function clampStage2GraphBonus(value: number): number {
+  if (!Number.isFinite(value)) {
+    return 0;
+  }
+  return Math.max(0, Math.min(STAGE2_GRAPH_BONUS_CAP, value));
+}
+
 /**
  * Compare rows deterministically so ties resolve the same way across runs.
  *

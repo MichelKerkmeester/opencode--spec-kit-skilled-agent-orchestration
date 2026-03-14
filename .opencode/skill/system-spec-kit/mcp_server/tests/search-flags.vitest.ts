@@ -6,12 +6,18 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import * as crossEncoder from '../lib/search/cross-encoder';
 import {
+  getGraphWalkRolloutState,
+  isGraphWalkRuntimeEnabled,
+  isGraphWalkTraceEnabled,
+} from '../lib/search/graph-flags';
+import {
   isCrossEncoderEnabled,
   isContextHeadersEnabled,
   isFileWatcherEnabled,
   isLocalRerankerEnabled,
   isMMREnabled,
   isMultiQueryEnabled,
+  resolveGraphWalkRolloutState,
   isReconsolidationEnabled,
   isTRMEnabled,
 } from '../lib/search/search-flags';
@@ -24,6 +30,8 @@ const FLAG_NAMES = [
   'SPECKIT_CONTEXT_HEADERS',
   'SPECKIT_RECONSOLIDATION',
   'SPECKIT_FILE_WATCHER',
+  'SPECKIT_GRAPH_SIGNALS',
+  'SPECKIT_GRAPH_WALK_ROLLOUT',
   'SPECKIT_ROLLOUT_PERCENT',
   'RERANKER_LOCAL',
   'VOYAGE_API_KEY',
@@ -148,5 +156,32 @@ describe('Search Feature Flags', () => {
 
     expect(isFileWatcherEnabled()).toBe(false);
     expect(isLocalRerankerEnabled()).toBe(false);
+  });
+
+  it('defaults graph-walk rollout to bounded_runtime when graph signals are enabled', () => {
+    expect(resolveGraphWalkRolloutState()).toBe('bounded_runtime');
+  });
+
+  it('supports explicit trace_only graph-walk rollout', () => {
+    process.env.SPECKIT_GRAPH_WALK_ROLLOUT = 'trace_only';
+    expect(resolveGraphWalkRolloutState()).toBe('trace_only');
+    expect(getGraphWalkRolloutState()).toBe('trace_only');
+    expect(isGraphWalkTraceEnabled()).toBe(true);
+    expect(isGraphWalkRuntimeEnabled()).toBe(false);
+  });
+
+  it('disables graph-walk rollout when graph signals are turned off', () => {
+    process.env.SPECKIT_GRAPH_SIGNALS = 'false';
+    expect(resolveGraphWalkRolloutState()).toBe('off');
+    expect(getGraphWalkRolloutState()).toBe('off');
+    expect(isGraphWalkTraceEnabled()).toBe(false);
+    expect(isGraphWalkRuntimeEnabled()).toBe(false);
+  });
+
+  it('treats bounded_runtime as a trace-visible runtime-enabled graph-walk mode', () => {
+    process.env.SPECKIT_GRAPH_WALK_ROLLOUT = 'bounded_runtime';
+    expect(getGraphWalkRolloutState()).toBe('bounded_runtime');
+    expect(isGraphWalkTraceEnabled()).toBe(true);
+    expect(isGraphWalkRuntimeEnabled()).toBe(true);
   });
 });

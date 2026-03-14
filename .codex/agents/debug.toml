@@ -2,7 +2,7 @@
 # Converted from: .opencode/agent/chatgpt/debug.md
 sandbox_mode = "workspace-write"
 model = "gpt-5.3-codex"
-model_reasoning_effort = "xhigh"
+model_reasoning_effort = "high"
 
 developer_instructions = '''
 # The Debugger: Fresh Perspective Specialist

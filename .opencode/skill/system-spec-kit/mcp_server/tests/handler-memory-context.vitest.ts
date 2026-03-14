@@ -80,12 +80,6 @@ type ParsedContextResponse = {
       resumed?: boolean;
       eventCounterStart?: number;
       resumedContextCount?: number;
-      transition?: {
-        previousState?: string;
-        inferredState?: string;
-        confidence?: number;
-        sourceSignal?: string;
-      };
     };
   };
   data: {
@@ -422,11 +416,7 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
       expect(typeof parsed.meta.sessionLifecycle.effectiveSessionId).toBe('string');
       expect(parsed.meta.sessionLifecycle.effectiveSessionId.length).toBeGreaterThan(20);
       expect(parsed.meta.sessionLifecycle.eventCounterStart).toBe(0);
-      expect(parsed.meta.sessionLifecycle.transition).toMatchObject({
-        previousState: 'none',
-        inferredState: 'focused',
-        sourceSignal: 'intent-classifier',
-      });
+      expect(parsed.meta.sessionLifecycle).not.toHaveProperty('transition');
     });
 
     it('T027ka: caller sessionId starts a new caller-scoped session when none exists', async () => {
@@ -449,12 +439,7 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
       expect(parsed.meta.sessionLifecycle.effectiveSessionId).toBe('session-new');
       expect(parsed.meta.sessionLifecycle.resumed).toBe(false);
       expect(parsed.meta.sessionLifecycle.eventCounterStart).toBe(0);
-      expect(parsed.meta.sessionLifecycle.transition).toEqual({
-        previousState: 'none',
-        inferredState: 'resume',
-        confidence: 0.7,
-        sourceSignal: 'query-heuristic',
-      });
+      expect(parsed.meta.sessionLifecycle).not.toHaveProperty('transition');
       expect(getSessionEventCounterSpy).not.toHaveBeenCalled();
     });
 
@@ -487,12 +472,7 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
       expect(parsed.meta.sessionLifecycle.resumed).toBe(true);
       expect(parsed.meta.sessionLifecycle.eventCounterStart).toBe(7);
       expect(parsed.meta.sessionLifecycle.resumedContextCount).toBe(1);
-      expect(parsed.meta.sessionLifecycle.transition).toEqual({
-        previousState: 'session-active',
-        inferredState: 'resume',
-        confidence: 0.95,
-        sourceSignal: 'session-resume',
-      });
+      expect(parsed.meta.sessionLifecycle).not.toHaveProperty('transition');
       expect(parsed.data.systemPromptContextInjected).toBe(true);
       expect(parsed.data.systemPromptContext!.length).toBe(1);
       expect(parsed.data.systemPromptContext![0].memoryId).toBe(101);
@@ -534,17 +514,41 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
       );
 
       const parsed = parseResponse(result);
-      const nestedResults = (parsed.data.content?.[0]?.text
-        ? JSON.parse(parsed.data.content[0].text as string).data.results
-        : []) as Array<{ trace?: Record<string, unknown> }>;
+      expect(parsed.meta.sessionLifecycle).not.toHaveProperty('transition');
+      expect(handleMemorySearch).toHaveBeenCalledWith(expect.objectContaining({
+        sessionTransition: {
+          previousState: null,
+          currentState: 'resume',
+          confidence: 1,
+          signalSources: ['explicit-mode'],
+          reason: 'explicit mode request selected resume mode',
+        },
+      }));
+    });
 
-      expect(nestedResults).toHaveLength(1);
-      expect(nestedResults[0].trace?.sessionTransition).toEqual({
-        previousState: 'none',
-        inferredState: 'resume',
-        confidence: 1,
-        sourceSignal: 'explicit-mode',
-      });
+    it('uses the last inferred mode as previousState when a traced caller session resumes', async () => {
+      vi.spyOn(workingMemory, 'sessionExists').mockReturnValue(true);
+      vi.spyOn(workingMemory, 'getSessionEventCounter').mockReturnValue(4);
+      vi.spyOn(workingMemory, 'getSessionInferredMode').mockReturnValue('focused');
+
+      await withTimeout(
+        handler.handleMemoryContext({
+          input: 'resume previous work on memory quality',
+          sessionId: 'session-known',
+          mode: 'resume',
+          includeTrace: true,
+        }),
+        5000,
+        'session-trace-previous-state'
+      );
+
+      expect(handleMemorySearch).toHaveBeenCalledWith(expect.objectContaining({
+        sessionTransition: expect.objectContaining({
+          previousState: 'focused',
+          currentState: 'resume',
+          signalSources: expect.arrayContaining(['session-resume', 'explicit-mode']),
+        }),
+      }));
     });
 
     it('default-on contract: auto-resume injection runs when SPECKIT_AUTO_RESUME is unset', async () => {

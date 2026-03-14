@@ -1,11 +1,13 @@
 // ───────────────────────────────────────────────────────────────
-// 1. EVIDENCE GAP DETECTOR
+// MODULE: Evidence Gap Detector
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Signal vocabulary expansion
 // Transparent Reasoning Module (TRM): Z-score confidence check
 // On RRF scores to detect low-confidence retrieval and inject
 // Warnings for the MCP markdown output layer.
 // ───────────────────────────────────────────────────────────────
-// 2. CONSTANTS
+// 1. CONSTANTS
+
 // ───────────────────────────────────────────────────────────────
 /** Z-score threshold below which retrieval confidence is considered low. */
 const Z_SCORE_THRESHOLD = 1.5;
@@ -20,7 +22,8 @@ const MIN_ABSOLUTE_SCORE = 0.015;
 const MIN_GRAPH_MEMORY_NODES = 3;
 
 // ───────────────────────────────────────────────────────────────
-// 3. INTERFACES
+// 2. INTERFACES
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Result of a Transparent Reasoning Module evidence-gap check.
@@ -60,7 +63,8 @@ interface MemoryGraphLike {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 4. CORE FUNCTIONS
+// 3. CORE FUNCTIONS
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Graph-topology coverage pre-check (T014).

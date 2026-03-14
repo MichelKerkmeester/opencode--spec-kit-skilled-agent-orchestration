@@ -1,3 +1,9 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: Adaptive Ranking
+// ───────────────────────────────────────────────────────────────
+// Feature catalog: Adaptive shadow ranking, bounded proposals, and rollback
+// Shadow-mode adaptive ranking with bounded feedback loops,
+// signal aggregation, threshold tuning, and promotion gates.
 import type Database from 'better-sqlite3';
 
 /**
@@ -42,12 +48,14 @@ export interface AdaptiveShadowProposal {
   demotedIds: number[];
 }
 
+/** Immutable snapshot of bounded thresholds and signal weights governing adaptive ranking. */
 export interface AdaptiveThresholdSnapshot {
   maxAdaptiveDelta: number;
   minSignalsForPromotion: number;
   signalWeights: Record<AdaptiveSignalType, number>;
 }
 
+/** Aggregate signal quality and rollout readiness metrics across stored adaptive events. */
 export interface AdaptiveSignalQualitySummary {
   totalSignals: number;
   distinctMemories: number;
@@ -59,12 +67,14 @@ export interface AdaptiveSignalQualitySummary {
   signalTotals: Record<AdaptiveSignalType, number>;
 }
 
+/** Optional overrides for adaptive threshold tuning after evaluation. */
 export interface AdaptiveThresholdOverrides {
   maxAdaptiveDelta?: number;
   minSignalsForPromotion?: number;
   signalWeights?: Partial<Record<AdaptiveSignalType, number>>;
 }
 
+/** Result of an adaptive threshold tuning pass with before/after snapshots. */
 export interface AdaptiveThresholdTuningResult {
   summary: AdaptiveSignalQualitySummary;
   previous: AdaptiveThresholdSnapshot;

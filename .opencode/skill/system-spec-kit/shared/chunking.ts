@@ -1,6 +1,7 @@
 // ---------------------------------------------------------------
 // MODULE: Chunking
 // ---------------------------------------------------------------
+// Feature catalog: Anchor-aware chunk thinning
 
 import type { PriorityPatterns, PriorityBuckets } from './types';
 

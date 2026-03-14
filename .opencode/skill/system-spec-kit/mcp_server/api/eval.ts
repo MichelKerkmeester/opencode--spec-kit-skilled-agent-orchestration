@@ -1,5 +1,5 @@
 // ────────────────────────────────────────────────────────────────
-// 1. EVAL 
+// MODULE: Eval
 // ────────────────────────────────────────────────────────────────
 // @public — scripts should import from here, not lib/ internals.
 // ARCH-1 stable re-export surface so eval scripts in scripts/evals/

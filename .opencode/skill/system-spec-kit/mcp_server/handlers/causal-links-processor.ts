@@ -1,5 +1,5 @@
 // ────────────────────────────────────────────────────────────────
-// 1. CAUSAL LINKS PROCESSOR 
+// MODULE: Causal Links Processor
 // ────────────────────────────────────────────────────────────────
 
 import type BetterSqlite3 from 'better-sqlite3';

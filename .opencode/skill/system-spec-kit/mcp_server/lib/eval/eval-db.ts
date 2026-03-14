@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. EVAL DB
+// MODULE: Eval Db
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Evaluation database and schema
 // Separate evaluation database with 5 tables for tracking
 // Retrieval quality metrics, ground truth, and eval results.
 // Node stdlib

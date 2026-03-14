@@ -196,5 +196,5 @@ Make phase 021 the canonical reconciliation record by documenting the already-ap
 
 ## 10. OPEN QUESTIONS
 
-- Which owner should take the remaining single FAIL from phase 020 into an implementation spec first?
+- Should `tests/feature-flag-reference-docs.vitest.ts` be added as a required CI gate for catalog mapping edits?
 <!-- /ANCHOR:questions -->

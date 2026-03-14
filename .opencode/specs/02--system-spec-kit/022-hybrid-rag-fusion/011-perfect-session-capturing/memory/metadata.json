@@ -1,39 +1,42 @@
 {
-  "timestamp": "09-03-26 11-28",
-  "messageCount": 1,
-  "decisionCount": 0,
+  "timestamp": "14-03-26 15-47",
+  "messageCount": 6,
+  "decisionCount": 1,
   "diagramCount": 0,
   "skillVersion": "1.7.2",
   "autoTriggered": false,
   "filtering": {
-    "totalProcessed": 1,
+    "totalProcessed": 6,
     "noiseFiltered": 0,
     "duplicatesRemoved": 0,
-    "qualityScore": 30,
+    "qualityScore": 43,
     "filtered": {
       "noise": 0,
       "empty": 0,
       "duplicate": 0,
       "lowQuality": 0
-    }
+    },
+    "_note": "qualityScore is 0-100 scale (legacy scorer); frontmatter quality_score is 0.0-1.0 (v2 scorer)"
   },
   "semanticSummary": {
-    "task": "Development session",
+    "task": "Code issues found during review",
     "filesCreated": 0,
-    "filesModified": 0,
+    "filesModified": 9,
     "decisions": 0,
     "messageStats": {
-      "intent": 0,
-      "plan": 0,
+      "intent": 2,
+      "plan": 2,
       "implementation": 1,
       "result": 0,
       "decision": 0,
-      "total": 1
+      "total": 6
     }
   },
   "embedding": {
-    "status": "pending",
+    "status": "indexed",
     "model": "nomic-ai/nomic-embed-text-v1.5",
-    "dimensions": 768
+    "dimensions": 768,
+    "memoryId": 4337,
+    "generatedAt": "2026-03-14T14:47:13.465Z"
   }
 }

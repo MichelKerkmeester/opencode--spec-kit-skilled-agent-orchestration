@@ -56,6 +56,8 @@ function restoreEnv() {
 
 // ───────────────────────────────────────────────────────────────
 // 2. INTENT CLASSIFICATION TESTS
+
+
 // ───────────────────────────────────────────────────────────────
 describe('T017-G2: Intent Classification Produces Expected Weights', () => {
   it('classifyIntent returns valid intent for bug-fix queries', () => {
@@ -129,6 +131,8 @@ describe('T017-G2: Intent Classification Produces Expected Weights', () => {
 
 // ───────────────────────────────────────────────────────────────
 // 3. NO DOUBLE-COUNTING VERIFICATION
+
+
 // ───────────────────────────────────────────────────────────────
 describe('T017-G2: Weights Not Double-Counted in Pipeline', () => {
   beforeEach(() => {
@@ -245,6 +249,8 @@ describe('T017-G2: Weights Not Double-Counted in Pipeline', () => {
 
 // ───────────────────────────────────────────────────────────────
 // 4. PIPELINE ORDERING STABILITY
+
+
 // ───────────────────────────────────────────────────────────────
 describe('T017-G2: Pipeline Ordering Stability (No Regression)', () => {
   beforeEach(() => {
@@ -323,6 +329,8 @@ describe('T017-G2: Pipeline Ordering Stability (No Regression)', () => {
 
 // ───────────────────────────────────────────────────────────────
 // 5. SCORE DISTRIBUTION VERIFICATION
+
+
 // ───────────────────────────────────────────────────────────────
 describe('T017-G2: Score Distribution Characteristics', () => {
   beforeEach(() => {

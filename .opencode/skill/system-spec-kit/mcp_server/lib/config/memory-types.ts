@@ -1,8 +1,10 @@
 // ───────────────────────────────────────────────────────────────
-// 1. MEMORY TYPES
+// MODULE: Memory Types
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Classification-based decay
 // ───────────────────────────────────────────────────────────────
-// 2. TYPES
+// 1. TYPES
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Describes the MemoryTypeConfig shape.
@@ -39,7 +41,8 @@ interface HalfLifeValidationResult {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 3. MEMORY TYPES CONFIGURATION
+// 2. MEMORY TYPES CONFIGURATION
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Defines the MEMORY_TYPES constant.
@@ -122,7 +125,8 @@ const EXPECTED_TYPES: readonly MemoryTypeName[] = [
 ] as const;
 
 // ───────────────────────────────────────────────────────────────
-// 4. TYPE INFERENCE CONFIGURATION
+// 3. TYPE INFERENCE CONFIGURATION
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Defines the PATH_TYPE_PATTERNS constant.
@@ -250,7 +254,8 @@ export const KEYWORD_TYPE_MAP: Readonly<Record<string, MemoryTypeName>> = {
 };
 
 // ───────────────────────────────────────────────────────────────
-// 5. TYPE HELPER FUNCTIONS
+// 4. TYPE HELPER FUNCTIONS
+
 // ───────────────────────────────────────────────────────────────
 export function getValidTypes(): MemoryTypeName[] {
   return [...EXPECTED_TYPES];
@@ -294,7 +299,8 @@ export function getDefaultType(): MemoryTypeName {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 6. RESET-TO-DEFAULTS
+// 5. RESET-TO-DEFAULTS
+
 // ───────────────────────────────────────────────────────────────
 export function getDefaultHalfLives(): Record<MemoryTypeName, number | null> {
   return {
@@ -310,7 +316,8 @@ export function getDefaultHalfLives(): Record<MemoryTypeName, number | null> {
   };
 }
 
-// 6. DOCUMENT TYPES
+// 5. DOCUMENT TYPES
+
 /**
  * Defines the DocumentType type.
  */
@@ -396,7 +403,8 @@ export function getSpecDocumentConfig(documentType: DocumentType): SpecDocumentC
 }
 
 // ───────────────────────────────────────────────────────────────
-// 7. HALF-LIFE VALIDATION
+// 6. HALF-LIFE VALIDATION
+
 // ───────────────────────────────────────────────────────────────
 export function validateHalfLifeConfig(config: Record<string, unknown> | null | undefined): HalfLifeValidationResult {
   const errors: string[] = [];

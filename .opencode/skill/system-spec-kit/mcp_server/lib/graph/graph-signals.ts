@@ -1,14 +1,21 @@
 // ───────────────────────────────────────────────────────────────
-// 1. GRAPH SIGNALS
+// MODULE: Graph Signals
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Typed-weighted degree channel
 // Deferred feature — gated via SPECKIT_GRAPH_SIGNALS
 // ───────────────────────────────────────────────────────────────
-// 2. IMPORTS
-// ───────────────────────────────────────────────────────────────
-import type Database from 'better-sqlite3';
+// 1. IMPORTS
 
 // ───────────────────────────────────────────────────────────────
-// 3. SESSION CACHE
+import type Database from 'better-sqlite3';
+import {
+  STAGE2_GRAPH_BONUS_CAP,
+  clampStage2GraphBonus,
+} from '../search/pipeline/ranking-contract';
+
+// ───────────────────────────────────────────────────────────────
+// 2. SESSION CACHE
+
 // ───────────────────────────────────────────────────────────────
 /** Maximum number of entries allowed in each session-scoped cache. */
 const CACHE_MAX_SIZE = 10000;
@@ -19,8 +26,14 @@ const momentumCache = new Map<number, number>();
 /** Session-scoped cache for causal depth scores (memoryId -> normalized depth). */
 const depthCache = new Map<number, number>();
 
-const GRAPH_WALK_BONUS_CAP = 0.03;
 const GRAPH_WALK_SECOND_HOP_WEIGHT = 0.5;
+
+type GraphWalkRolloutState = 'off' | 'trace_only' | 'bounded_runtime';
+
+interface GraphWalkMetrics {
+  raw: number;
+  normalized: number;
+}
 
 /**
  * Evict entries from a cache when it exceeds the size bound.
@@ -242,12 +255,14 @@ function buildUndirectedAdjacency(adjacency: Map<number, number[]>): Map<number,
   return undirected;
 }
 
-function computeGraphWalkScores(
+function computeGraphWalkMetrics(
   db: Database.Database,
   memoryIds: number[],
-): Map<number, number> {
+): Map<number, GraphWalkMetrics> {
   const uniqueIds = Array.from(new Set(memoryIds.filter((memoryId) => Number.isInteger(memoryId))));
-  const scores = new Map<number, number>(uniqueIds.map((memoryId) => [memoryId, 0]));
+  const scores = new Map<number, GraphWalkMetrics>(
+    uniqueIds.map((memoryId) => [memoryId, { raw: 0, normalized: 0 }])
+  );
 
   if (uniqueIds.length < 2) {
     return scores;
@@ -287,10 +302,18 @@ function computeGraphWalkScores(
 
     const weightedReach = directHits + (secondHopHits.size * GRAPH_WALK_SECOND_HOP_WEIGHT);
     const normalizedReach = clamp(weightedReach / candidateSpan, 0, 1);
-    scores.set(memoryId, normalizedReach);
+    scores.set(memoryId, { raw: weightedReach, normalized: normalizedReach });
   }
 
   return scores;
+}
+
+function computeGraphWalkScores(
+  db: Database.Database,
+  memoryIds: number[],
+): Map<number, number> {
+  const metrics = computeGraphWalkMetrics(db, memoryIds);
+  return new Map(Array.from(metrics.entries()).map(([memoryId, value]) => [memoryId, value.normalized]));
 }
 
 type StronglyConnectedComponents = {
@@ -514,7 +537,8 @@ export function computeCausalDepthScores(db: Database.Database, memoryIds: numbe
 }
 
 // ───────────────────────────────────────────────────────────────
-// 4. COMBINED APPLICATION
+// 3. COMBINED APPLICATION
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Clamp a value to [min, max].
@@ -539,6 +563,7 @@ function clamp(value: number, min: number, max: number): number {
 export function applyGraphSignals(
   rows: Array<{ id: number; score?: number; [key: string]: unknown }>,
   db: Database.Database,
+  options: { rolloutState?: GraphWalkRolloutState } = {},
 ): Array<{ id: number; score?: number; [key: string]: unknown }> {
   if (!rows || rows.length === 0) return rows;
 
@@ -546,20 +571,24 @@ export function applyGraphSignals(
     const ids = rows.map((row) => row.id);
     const momentumScores = computeMomentumScores(db, ids);
     const depthScores = computeCausalDepthScores(db, ids);
-    const graphWalkScores = computeGraphWalkScores(db, ids);
+    const graphWalkScores = computeGraphWalkMetrics(db, ids);
+    const rolloutState = options.rolloutState ?? 'bounded_runtime';
 
     return rows.map((row) => {
       const baseScore = typeof row.score === 'number' && Number.isFinite(row.score) ? row.score : 0;
       const momentum = momentumScores.get(row.id) ?? 0;
       const depth = depthScores.get(row.id) ?? 0;
-      const graphWalk = graphWalkScores.get(row.id) ?? 0;
+      const graphWalk = graphWalkScores.get(row.id) ?? { raw: 0, normalized: 0 };
 
       // Momentum bonus: up to +0.05
       const momentumBonus = clamp(momentum * 0.01, 0, 0.05);
       // Depth bonus: up to +0.05
       const depthBonus = depth * 0.05;
       // Graph-walk bonus: bounded local connectivity bonus across candidate rows
-      const graphWalkBonus = clamp(graphWalk * GRAPH_WALK_BONUS_CAP, 0, GRAPH_WALK_BONUS_CAP);
+      const unclampedGraphWalkBonus = graphWalk.normalized * STAGE2_GRAPH_BONUS_CAP;
+      const graphWalkBonus = rolloutState === 'bounded_runtime'
+        ? clampStage2GraphBonus(unclampedGraphWalkBonus)
+        : 0;
 
       const adjustedScore = baseScore + momentumBonus + depthBonus + graphWalkBonus;
       const existingContribution = (row.graphContribution && typeof row.graphContribution === 'object')
@@ -571,11 +600,11 @@ export function applyGraphSignals(
         score: adjustedScore,
         graphContribution: {
           ...existingContribution,
-          raw: graphWalk,
-          normalized: graphWalk,
+          raw: graphWalk.raw,
+          normalized: graphWalk.normalized,
           appliedBonus: graphWalkBonus,
-          capApplied: graphWalk > 0 && graphWalkBonus >= GRAPH_WALK_BONUS_CAP,
-          rolloutState: 'bounded_runtime',
+          capApplied: rolloutState === 'bounded_runtime' && unclampedGraphWalkBonus > STAGE2_GRAPH_BONUS_CAP,
+          rolloutState,
         },
       };
     });
@@ -587,7 +616,8 @@ export function applyGraphSignals(
 }
 
 // ───────────────────────────────────────────────────────────────
-// 5. TEST EXPORTS
+// 4. TEST EXPORTS
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Internal functions exposed for unit testing.
@@ -601,6 +631,7 @@ export const __testables = {
   getPastDegree,
   buildAdjacencyList,
   buildUndirectedAdjacency,
+  computeGraphWalkMetrics,
   computeGraphWalkScores,
   clamp,
   momentumCache,

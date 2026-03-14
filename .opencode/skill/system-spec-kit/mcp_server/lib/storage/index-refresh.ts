@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. INDEX REFRESH
+// MODULE: Index Refresh
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Workspace scanning and indexing (memory_index_scan)
 // Manages embedding index freshness on the memory_index table
 // External packages
 import type Database from 'better-sqlite3';

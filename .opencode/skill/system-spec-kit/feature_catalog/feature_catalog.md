@@ -213,9 +213,12 @@ This document indexes Spec Kit Memory feature documentation and links each featu
   - [Code standards alignment](#code-standards-alignment)
   - [Real-time filesystem watching with chokidar](#real-time-filesystem-watching-with-chokidar)
   - [Standalone admin CLI](#standalone-admin-cli)
+  - [Constitutional memory manager command](#constitutional-memory-manager-command)
   - [Migration checkpoint scripts](#migration-checkpoint-scripts)
   - [Schema compatibility validation](#schema-compatibility-validation)
   - [Watcher delete/rename cleanup](#watcher-deleterename-cleanup)
+  - [Feature catalog code references](#feature-catalog-code-references)
+  - [Session capturing pipeline quality](#session-capturing-pipeline-quality)
 - [Governance](#governance)
   - [Feature flag governance](#feature-flag-governance)
   - [Feature flag sunset audit](#feature-flag-sunset-audit)
@@ -3517,6 +3520,26 @@ See [`16--tooling-and-scripts/07-standalone-admin-cli.md`](16--tooling-and-scrip
 
 ---
 
+### Constitutional memory manager command
+
+#### Description
+
+This is the operator-facing slash command for creating and managing constitutional memories: the durable rules that always surface at the top of search results. Think of it as the system's rulebook editor rather than a generic note-taking command.
+
+#### Current Reality
+
+`/memory:learn` is now a constitutional-only workflow. The no-argument form shows an overview dashboard; natural-language input enters guided create mode; and `list`, `edit`, `remove`, and `budget` provide the rest of the lifecycle. New and edited files are written to `.opencode/skill/system-spec-kit/constitutional/`, indexed with `memory_save`, and checked against the shared `~2000` token budget for the constitutional tier.
+
+Verification also closed active documentation drift outside the original spec file list. Global command indexes, related-command references, workflow docs, workspace READMEs, and speckit agent summaries now all describe `/memory:learn` as the constitutional memory manager instead of the retired "explicit learning / corrections / patterns" workflow.
+
+#### Source Files
+
+See [`16--tooling-and-scripts/13-constitutional-memory-manager-command.md`](16--tooling-and-scripts/13-constitutional-memory-manager-command.md) for full implementation and verification file listings.
+
+> **Playbook:** [NEW-147](../manual_testing_playbook/manual_testing_playbook.md)
+
+---
+
 ### Migration checkpoint scripts
 
 #### Description
@@ -3576,6 +3599,38 @@ Scenario coverage is defined in `mcp_server/tests/file-watcher.vitest.ts`, which
 #### Source Files
 
 See [`16--tooling-and-scripts/08-watcher-delete-rename-cleanup.md`](16--tooling-and-scripts/08-watcher-delete-rename-cleanup.md) for full implementation and test file listings.
+
+---
+
+### Feature catalog code references
+
+#### Description
+
+Feature catalog code references embed inline traceability comments in every source file, linking implementation code back to the feature catalog by name. Each file declares which catalog features it implements via `// Feature catalog: <feature-name>` comments, and every non-test TypeScript file carries a standardized `// MODULE: Name` header block. This is like labeling warehouse boxes by product name instead of aisle number — anyone can grep for a feature and find every file that implements it.
+
+#### Current Reality
+
+Every non-test `.ts` file under `mcp_server/`, `shared/`, and `scripts/` carries a `// MODULE: Name` header in its first 5 lines, enforced by `verify_alignment_drift.py`. Implementation files also carry one or more `// Feature catalog: <feature-name>` annotations whose names must exactly match H3 headings in this catalog. Pure utility, type-definition, and barrel-export files are exempt from feature annotations. Stale Sprint/Phase/spec-number references have been removed from all non-test comments.
+
+#### Source Files
+
+See [`16--tooling-and-scripts/11-feature-catalog-code-references.md`](16--tooling-and-scripts/11-feature-catalog-code-references.md) for full implementation and verification file listings.
+
+---
+
+### Session capturing pipeline quality
+
+#### Description
+
+Session capturing pipeline quality covers the 20 P0-P3 fixes applied to `generate-context.js` and its supporting extractors during the Part I audit and remediation of spec 011-perfect-session-capturing. These fixes harden session ID generation, atomic writes, contamination filtering, extraction correctness, and configurability across the memory-save pipeline.
+
+#### Current Reality
+
+The session capturing pipeline enforces crypto session IDs, atomic batch writes with rollback, contamination filtering (30+ denylist patterns), quality abort thresholds, alignment blocking, file action semantics preservation, configurable pipeline constants, slug contamination rejection, descriptive observation titles, and safe postflight deltas with `Number.isFinite()` guards.
+
+#### Source Files
+
+See [`16--tooling-and-scripts/12-session-capturing-pipeline-quality.md`](16--tooling-and-scripts/12-session-capturing-pipeline-quality.md) for full implementation and verification file listings.
 
 ---
 
@@ -3972,7 +4027,7 @@ These flags are the main control panel for how search works. They turn major ret
 
 | Name | Default | Type | Source File | Description |
 |---|---|---|---|---|
-| `SPECKIT_ABLATION` | `false` | boolean | `lib/eval/eval-metrics.ts` | Activates the ablation study framework. Must be explicitly set to `'true'` to run controlled channel ablations via MCP; when `false`, the handler rejects `eval_run_ablation` calls with a disabled-flag error. |
+| `SPECKIT_ABLATION` | `false` | boolean | `lib/eval/ablation-framework.ts` | Activates the ablation study framework. Must be explicitly set to `'true'` to run controlled channel ablations via MCP; when `false`, the handler rejects `eval_run_ablation` calls with a disabled-flag error. |
 | `SPECKIT_ARCHIVAL` | `true` | boolean | `lib/cognitive/archival-manager.ts` | Enables the archival manager which promotes DORMANT memories to the ARCHIVED state based on access patterns. Disable to keep all memories in active tiers. |
 | `SPECKIT_AUTO_ENTITIES` | `true` | boolean | `lib/search/search-flags.ts` | Enables R10 automatic noun-phrase entity extraction at index time. Extracted entities feed the entity linking channel (S5). Requires `SPECKIT_ENTITY_LINKING` to create graph edges. |
 | `SPECKIT_AUTO_RESUME` | `true` | boolean | `handlers/memory-context.ts` | In resume mode, automatically injects working-memory context items as `systemPromptContext` into the response. Also subject to `SPECKIT_ROLLOUT_PERCENT`. |
@@ -3996,7 +4051,7 @@ These flags are the main control panel for how search works. They turn major ret
 | `SPECKIT_DOCSCORE_AGGREGATION` | `true` | boolean | `lib/search/search-flags.ts` | Enables R1 MPAB (Multi-Parent Aggregated Bonus) chunk-to-memory score aggregation. Collapses chunk-level results back to parent memory documents using `sMax + 0.3 * sum(remaining) / sqrt(N)` to prevent multi-chunk dominance. |
 | `SPECKIT_DYNAMIC_INIT` | `true` | boolean | `context-server.ts` | **IMPLEMENTED (Sprint 019).** P1-6: Dynamic server instructions at MCP initialization. `buildServerInstructions()` generates a memory-system overview (total memories, spec folder count, channels, stale count) and injects via `server.setInstructions()`. Instructions are computed once at startup and not refreshed during session (CHK-076). Reuses existing `memory_stats` handler data. |
 | `SPECKIT_DYNAMIC_TOKEN_BUDGET` | `true` | boolean | `lib/search/dynamic-token-budget.ts` | Sprint 3 Stage E: computes a tier-aware token limit (simple 1,500 / moderate 2,500 / complex 4,000 tokens). Advisory only; callers are responsible for respecting the budget. When disabled, defaults to 4,000 tokens for all queries. |
-| `SPECKIT_EAGER_WARMUP` | `false` | boolean | `context-server.ts` | Restores legacy eager-warmup behavior where the vector index is loaded at startup rather than lazily on first use. Default is lazy loading. Set to `'true'` to pre-warm the index at startup. |
+| `SPECKIT_EAGER_WARMUP` | inert | boolean | `shared/embeddings.ts` | Deprecated inert alias for the removed eager-warmup toggle. The embedding provider always initializes lazily now, so setting this flag does not restore startup warmup. |
 | `SPECKIT_EMBEDDING_EXPANSION` | `true` | boolean | `lib/search/search-flags.ts` | R12 query expansion for embedding-based retrieval. Generates an expanded query variant and runs it in parallel with the baseline. Suppressed when the complexity classifier marks a query as `'simple'` (mutual exclusion with R15). |
 | `SPECKIT_ENCODING_INTENT` | `true` | boolean | `lib/search/search-flags.ts` | R16 encoding-intent capture at index time. Classifies content as `document`, `code` or `structured_data` using heuristic scoring above a 0.4 threshold. Stored as read-only metadata on the `encoding_intent` column. No retrieval-time scoring impact yet; builds a labeled dataset. |
 | `SPECKIT_ENTITY_LINKING` | `true` | boolean | `lib/search/search-flags.ts` | S5 cross-document entity linking. Creates causal edges between memories sharing entities across spec folders. Depends on a populated `entity_catalog` (typically produced by R10 auto-entities). Controlled by the global density guard (`SPECKIT_ENTITY_LINKING_MAX_DENSITY`). |
@@ -4020,7 +4075,7 @@ These flags are the main control panel for how search works. They turn major ret
 | `SPECKIT_HYDRA_SHARED_MEMORY` | `false` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the shared-memory roadmap flag. It still feeds roadmap metadata and shared-memory rollout compatibility paths during the rename window. |
 | `SPECKIT_INDEX_SPEC_DOCS` | `true` | boolean | `handlers/memory-index-discovery.ts` | Controls whether `memory_index_scan` indexes spec folder documents (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`, `research.md`, `handover.md`). Set to `'false'` to skip spec docs. |
 | `SPECKIT_INTERFERENCE_SCORE` | `true` | boolean | `lib/scoring/interference-scoring.ts` | Enables interference-based penalty scoring in composite scoring. When disabled (set to `'false'`), the interference computation is bypassed and the raw score passes through unchanged. |
-| `SPECKIT_LAZY_LOADING` | `true` | boolean | `context-server.ts` | Controls lazy loading of the vector index. When `SPECKIT_EAGER_WARMUP` is not `'true'`, the index loads on first use rather than at startup. This flag reflects the default behavior; see `SPECKIT_EAGER_WARMUP` to override. |
+| `SPECKIT_LAZY_LOADING` | inert | boolean | `shared/embeddings.ts` | Deprecated inert alias for the removed eager-warmup toggle. Lazy provider initialization is now the permanent default, and both `SPECKIT_LAZY_LOADING` and `SPECKIT_EAGER_WARMUP` are documented compatibility no-ops. |
 | `SPECKIT_LEARN_FROM_SELECTION` | `true` | boolean | `lib/search/learned-feedback.ts` | **Default ON (graduated).** Set to `'false'` to disable R11 learned relevance feedback. Records user result selections into `learned_triggers`, and applies boosts after a 1-week shadow period where terms are logged but not applied. |
 | `SPECKIT_MEMORY_SUMMARIES` | `true` | boolean | `lib/search/search-flags.ts` | R8 TF-IDF extractive summary generation. At index time, generates a top-3-sentence extractive summary for each memory and joins those sentences into summary text. Summaries serve as a lightweight search channel for fallback matching. |
 | `SPECKIT_MMR` | `true` | boolean | `lib/search/search-flags.ts` | Enables Maximal Marginal Relevance reranking after fusion to promote result diversity. Uses intent-specific lambda values from `INTENT_LAMBDA_MAP` (default 0.7). Requires embeddings to be loaded from `vec_memories` for top-N candidates. |
@@ -4034,7 +4089,7 @@ These flags are the main control panel for how search works. They turn major ret
 | `SPECKIT_RELATIONS` | `true` | boolean | `lib/learning/corrections.ts` | Enables relational learning corrections that track and apply inter-memory relationship signals during the learning pipeline. Disabled with explicit `'false'`. |
 | `SPECKIT_RESPONSE_TRACE` | `false` | boolean | `handlers/memory-search.ts` | **IMPLEMENTED (Sprint 019).** P0-2: Include provenance data (scores, source, trace) in `memory_search` response envelopes. Opt-in via `includeTrace: true` parameter. Also propagates through `memory_context` when `includeTrace` is forwarded to internal search calls (CHK-040). When disabled, response format is unchanged (backward compatible). |
 | `SPECKIT_ROLLOUT_PERCENT` | `100` | number | `lib/cognitive/rollout-policy.ts` | Global rollout gate applied on top of individual feature flags. At 100, checks pass. At 0, checks fail. Between 1-99, inclusion uses deterministic identity hashing and calls without identity fail closed. Malformed rollout values fall back to 100. |
-| `SPECKIT_RRF` | `true` | boolean | `lib/search/rrf-fusion.ts` | Enables Reciprocal Rank Fusion for combining multi-channel search results. When disabled, a simpler score-passthrough merge is used. Rarely disabled in production. |
+| `SPECKIT_RRF` | `true` | boolean | `shared/algorithms/rrf-fusion.ts` | Enables Reciprocal Rank Fusion for combining multi-channel search results. When disabled, a simpler score-passthrough merge is used. Rarely disabled in production. |
 | `SPECKIT_RSF_FUSION` | inert | boolean | `lib/search/hybrid-search.ts` | **Deprecated runtime gate.** RSF shadow Stage B is no longer active in production ranking paths. Remaining RSF references are compatibility/testing artifacts and do not alter live ranking behavior. |
 | `SPECKIT_SAVE_QUALITY_GATE` | `true` | boolean | `lib/search/search-flags.ts` | TM-04 three-layer pre-storage quality gate. Layer 1: structure validation (title, content ≥50 chars, valid spec folder path). Layer 2: content quality scoring across 5 dimensions against a 0.4 signal density threshold. Layer 3: semantic dedup via cosine similarity (rejects near-duplicates above 0.92). A 14-day warn-only mode runs after activation. |
 | `SPECKIT_SCORE_NORMALIZATION` | `true` | boolean | `lib/scoring/composite-scoring.ts` | Normalizes composite and RRF scores to the [0, 1] range for consistent downstream comparison. When disabled, raw scores from individual channels are used without normalization. |
@@ -4117,8 +4172,8 @@ These variables define where memory files and databases live and how indexing ba
 |---|---|---|---|---|
 | `MEMORY_ALLOWED_PATHS` | _(cwd)_ | string | `tests/regression-010-index-large-files.vitest.ts` | Colon-separated list of filesystem paths that are allowlisted for memory file access. Used in path security validation to restrict which directories `memory_save` can read from. Defaults to `cwd` if not set. |
 | `MEMORY_BASE_PATH` | _(cwd)_ | string | `core/config.ts` | Base path prepended to relative file paths when resolving memory file locations. Defaults to `process.cwd()` when not set. Determines the root of the allowed path tree. |
-| `MEMORY_DB_DIR` | _(legacy fallback)_ | string | `lib/search/vector-index-impl.ts` | Legacy fallback for the database directory. Superseded by `SPEC_KIT_DB_DIR`. Precedence order: `SPEC_KIT_DB_DIR` > `MEMORY_DB_DIR` > default `database/` directory adjacent to the server root. |
-| `MEMORY_DB_PATH` | _(derived)_ | string | `lib/search/vector-index-impl.ts` | Full path to the SQLite database file. When set, overrides the derived path from `SPEC_KIT_DB_DIR` or `MEMORY_DB_DIR`. Use for pointing at a provider-specific or non-default database location. |
+| `MEMORY_DB_DIR` | _(legacy fallback)_ | string | `lib/search/vector-index-store.ts` | Compatibility fallback for the database directory. Superseded by `SPEC_KIT_DB_DIR`. Precedence order: `SPEC_KIT_DB_DIR` > `MEMORY_DB_DIR` > default `database/` directory adjacent to the server root. |
+| `MEMORY_DB_PATH` | _(derived)_ | string | `lib/search/vector-index-store.ts` | Full path to the SQLite database file. When set, it overrides the derived path from `SPEC_KIT_DB_DIR` or `MEMORY_DB_DIR`. Use it for provider-specific or non-default database locations. |
 | `SPECKIT_DB_DIR` | _(fallback)_ | string | `shared/config.ts` | Fallback env var for the database directory, checked after `SPEC_KIT_DB_DIR`. Added in Phase 018 (CR-P1-8) to support the underscore-less naming convention. Precedence: `SPEC_KIT_DB_DIR` > `SPECKIT_DB_DIR` > default path. |
 | `SPEC_KIT_BATCH_DELAY_MS` | `100` | number | `core/config.ts` | Delay in milliseconds between processing batches during `memory_index_scan`. Prevents exhausting I/O resources on large workspaces by introducing a small pause between embedding generation batches. |
 | `SPEC_KIT_BATCH_SIZE` | `5` | number | `core/config.ts` | Number of files processed per batch during `memory_index_scan`. Lower values reduce peak memory usage and API concurrency at the cost of longer scan times. |
@@ -4141,8 +4196,8 @@ These settings pick which embedding and reranking providers the system uses and 
 | Name | Default | Type | Source File | Description |
 |---|---|---|---|---|
 | `COHERE_API_KEY` | _(none)_ | string | `tests/search-limits-scoring.vitest.ts` | API key for the Cohere reranker provider. When present, the cross-encoder reranker uses Cohere's rerank API. Falls back to local or Voyage reranker when absent. |
-| `EMBEDDING_DIM` | _(provider default)_ | number | `lib/search/vector-index-impl.ts` | Override for the embedding vector dimension. When set, bypasses the provider's reported dimension. Use when loading a custom model with a non-standard dimension. |
-| `EMBEDDINGS_PROVIDER` | `'auto'` | string | `lib/providers/embeddings.ts` | Selects the embedding provider. Valid values include `'auto'`, `'openai'`, `'hf-local'`, and `'voyage'`. In `'auto'` mode, the system selects based on available API keys (Voyage preferred over OpenAI, local fallback). |
+| `EMBEDDING_DIM` | _(provider default)_ | number | `lib/search/vector-index-store.ts` | Compatibility check for the stored vector dimension. Runtime dimension selection comes from the active provider profile (Voyage 1024, OpenAI 1536, local 768 fallback); the env var only short-circuits confirmation when explicitly set to `'768'`. |
+| `EMBEDDINGS_PROVIDER` | `'auto'` | string | `shared/embeddings/factory.ts` | Selects the embedding provider. Valid values include `'auto'`, `'openai'`, `'hf-local'`, and `'voyage'`. In `'auto'` mode, resolution precedence is explicit `EMBEDDINGS_PROVIDER` -> `VOYAGE_API_KEY` -> `OPENAI_API_KEY` -> local fallback. |
 | `OPENAI_API_KEY` | _(none)_ | string | `tests/embeddings.vitest.ts` | API key for the OpenAI embeddings provider. Required when `EMBEDDINGS_PROVIDER` is `'openai'` or when `'auto'` mode selects OpenAI as the available provider. |
 | `RERANKER_LOCAL` | `false` | boolean | `lib/search/local-reranker.ts` | **IMPLEMENTED (Sprint 019).** When set to `'true'` (strict string equality, not truthy), enables the local GGUF reranker via `node-llama-cpp`. Requires model file on disk and sufficient total system memory (8GB default, 2GB with custom `SPECKIT_RERANKER_MODEL`). Sequential per-candidate inference; expect 200-400ms for top-20 on Apple Silicon (CHK-113). Falls back silently to algorithmic RRF scoring on any precondition failure. |
 | `VOYAGE_API_KEY` | _(none)_ | string | `tests/embeddings.vitest.ts` | API key for the Voyage AI embeddings and reranker provider. In `'auto'` mode, Voyage is preferred over OpenAI when this key is present. |
@@ -4203,4 +4258,3 @@ These variables are read at runtime to annotate checkpoint and evaluation record
 #### Source Files
 
 Source file references are included in the flag table above.
-

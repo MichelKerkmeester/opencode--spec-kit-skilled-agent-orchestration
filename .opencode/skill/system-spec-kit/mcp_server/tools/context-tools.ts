@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. CONTEXT TOOLS
+// MODULE: Context Tools
 // ───────────────────────────────────────────────────────────────
 // Dispatch for L1 Orchestration tool: memory_context (T303).
 import { handleMemoryContext } from '../handlers';

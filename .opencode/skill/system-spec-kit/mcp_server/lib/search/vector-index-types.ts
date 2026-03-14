@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. VECTOR INDEX TYPES
+// MODULE: Vector Index Types
 // ───────────────────────────────────────────────────────────────
 // SCHEMA_VERSION is now canonical in vector-index-schema.ts
 /** Maximum trigger phrases stored for each memory. */

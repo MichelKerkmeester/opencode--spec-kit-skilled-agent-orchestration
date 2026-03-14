@@ -16,10 +16,11 @@
     "02--system-spec-kit",
     "022-hybrid-rag-fusion"
   ],
-  "memorySequence": 3,
+  "memorySequence": 4,
   "memoryNameHistory": [
     "11-03-26_15-29__implemented-defense-in-depth-fix-for-bad-memory.md",
     "11-03-26_15-30__implemented-defense-in-depth-fix-for-bad-memory.md",
-    "11-03-26_15-37__analyzed-loadcollecteddata-in-data-loader-ts.md"
+    "11-03-26_15-37__analyzed-loadcollecteddata-in-data-loader-ts.md",
+    "14-03-26_15-20__live-outsourced-cli-dispatch-verification.md"
   ]
 }

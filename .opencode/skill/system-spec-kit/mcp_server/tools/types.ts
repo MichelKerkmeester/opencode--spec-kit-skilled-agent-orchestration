@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. TYPES
+// MODULE: Types
 // ───────────────────────────────────────────────────────────────
 // Shared types for tool dispatch modules (T303).
 // Re-export canonical MCPResponse from shared

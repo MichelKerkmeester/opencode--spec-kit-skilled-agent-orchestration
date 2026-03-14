@@ -707,6 +707,40 @@ mcp_server/
 
 <!-- /ANCHOR:structure -->
 
+### Code Conventions
+
+#### MODULE: Header
+
+Every non-test `.ts` file starts with a standardized 3-line header block:
+
+```typescript
+// ───────────────────────────────────────────────────────────────
+// MODULE: Module Name
+// ───────────────────────────────────────────────────────────────
+```
+
+The `verify_alignment_drift.py` script enforces this by checking for `MODULE:` in the first 40 lines of all non-test `.ts` files.
+
+#### Feature Catalog Annotations
+
+Implementation files carry `// Feature catalog: <feature-name>` comments linking code to the [feature catalog](../feature_catalog/feature_catalog.md). The feature name must exactly match an H3 heading in the catalog.
+
+```typescript
+// Feature catalog: Hybrid search pipeline
+// Feature catalog: 4-stage pipeline architecture
+```
+
+**Rules:**
+- Name must match a catalog H3 heading exactly (case-sensitive)
+- Never use folder numbers, sprint numbers, or phase numbers
+- Files implementing multiple features list all applicable annotations
+- Pure utility, type, and barrel-export files are exempt
+
+**Find all files implementing a feature:**
+```bash
+grep -r "// Feature catalog: Hybrid search pipeline" mcp_server/
+```
+
 ## 8. CONFIGURATION
 <!-- ANCHOR:configuration -->
 

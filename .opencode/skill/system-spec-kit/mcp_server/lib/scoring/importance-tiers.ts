@@ -1,8 +1,10 @@
 // ───────────────────────────────────────────────────────────────
-// 1. IMPORTANCE TIERS
+// MODULE: Importance Tiers
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Classification-based decay
 // ───────────────────────────────────────────────────────────────
-// 2. TYPES
+// 1. TYPES
+
 // ───────────────────────────────────────────────────────────────
 export interface TierConfig {
   value: number;
@@ -24,7 +26,8 @@ export type ImportanceTier =
   | 'deprecated';
 
 // ───────────────────────────────────────────────────────────────
-// 3. TIER CONFIGURATION
+// 2. TIER CONFIGURATION
+
 // ───────────────────────────────────────────────────────────────
 export const IMPORTANCE_TIERS: Readonly<Record<ImportanceTier, TierConfig>> = {
   constitutional: {
@@ -78,7 +81,8 @@ export const VALID_TIERS: readonly ImportanceTier[] = Object.keys(IMPORTANCE_TIE
 export const DEFAULT_TIER: ImportanceTier = 'normal';
 
 // ───────────────────────────────────────────────────────────────
-// 4. TIER CONFIGURATION FUNCTIONS
+// 3. TIER CONFIGURATION FUNCTIONS
+
 // ───────────────────────────────────────────────────────────────
 // Get tier configuration by name (returns normal tier if invalid)
 export function getTierConfig(tierName: string | null | undefined): TierConfig {
@@ -130,7 +134,8 @@ export function getTierValue(tier: string): number {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 5. SQL FILTER HELPERS
+// 4. SQL FILTER HELPERS
+
 // ───────────────────────────────────────────────────────────────
 // SQL WHERE clause for finding expired temporary memories
 export function getExpiredTemporaryFilter(): string {
@@ -162,7 +167,8 @@ export function getConstitutionalFilter(): string {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 6. UTILITY FUNCTIONS
+// 5. UTILITY FUNCTIONS
+
 // ───────────────────────────────────────────────────────────────
 // Normalize tier input to valid tier name (returns default if invalid)
 export function normalizeTier(tier: string | null | undefined): ImportanceTier {
@@ -187,7 +193,8 @@ export function getTiersByImportance(): ImportanceTier[] {
   });
 }
 
-// 6. DOCUMENT TYPE HELPERS
+// 5. DOCUMENT TYPE HELPERS
+
 /**
  * Get the default importance tier for a given document type.
  * Spec/plan/decision-record are 'important'; others are 'normal'.

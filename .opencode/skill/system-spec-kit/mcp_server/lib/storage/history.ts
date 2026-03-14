@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. HISTORY
+// MODULE: History
 // ───────────────────────────────────────────────────────────────
 // Tracks change history for memory entries (ADD, UPDATE, DELETE)
 // External packages

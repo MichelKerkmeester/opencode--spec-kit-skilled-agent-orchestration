@@ -1,14 +1,12 @@
 ---
 title: "Verification Checklist: feature-flag-reference [template:level_2/checklist.md]"
-description: "Verification Date: 2026-03-10"
+description: "Verification Date: 2026-03-14"
 # SPECKIT_TEMPLATE_SOURCE: checklist | v2.2
 trigger_phrases:
   - "feature-flag-reference"
   - "verification checklist"
-  - "search pipeline"
-  - "memory and storage"
-  - "embedding and api"
-importance_tier: "normal"
+  - "mapping guard"
+importance_tier: "high"
 contextType: "general"
 ---
 # Verification Checklist: feature-flag-reference
@@ -41,9 +39,9 @@ Required items are tracked in CHK-003, CHK-012, CHK-013, CHK-022, CHK-023, CHK-0
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] Requirements documented in `spec.md` for seven-feature audit scope [EVIDENCE: `spec.md` scope, requirements, and success criteria cover F-01 through F-07.]
-- [x] CHK-002 [P0] Technical approach defined in `plan.md` (inventory -> review -> findings) [EVIDENCE: `plan.md` architecture and phases describe inventory, mapping, audit, and verification.]
-- [x] CHK-003 [P1] Dependencies identified: feature catalog files, implementation paths, and Cross-cutting playbook mapping [EVIDENCE: Dependencies table in `plan.md` lists all required internal sources.]
+- [x] CHK-001 [P0] Requirements documented for seven-feature closeout scope [EVIDENCE: `spec.md` scope and requirements cover all seven feature docs under `19--feature-flag-reference`.]
+- [x] CHK-002 [P0] Technical approach defines mapping + guard closeout workflow [EVIDENCE: `plan.md` architecture and phases align on catalog-mapping verification and guard evidence.]
+- [x] CHK-003 [P1] Dependencies identified: catalog docs, guard test, and validator [EVIDENCE: `plan.md` dependencies section.]
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -51,10 +49,10 @@ Required items are tracked in CHK-003, CHK-012, CHK-013, CHK-022, CHK-023, CHK-0
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [x] CHK-010 [P0] F-01 (Search Pipeline Features) preserved as **FAIL** with stale/missing mapping evidence for `SPECKIT_ABLATION`, `SPECKIT_RRF`, and `SPECKIT_LAZY_LOADING` [EVIDENCE: F-01 findings and P0 remediation are captured in checklist/tasks.]
-- [x] CHK-011 [P0] F-02, F-03, F-06, and F-07 preserved as **PASS** with no code issues, standards violations, behavior mismatches, or test gaps [EVIDENCE: PASS outcomes are retained for all four features without regression edits.]
-- [x] CHK-012 [P1] F-04 (Memory and Storage) preserved as **WARN** with `MEMORY_DB_DIR`/`MEMORY_DB_PATH` mapping drift from `vector-index-impl.ts` to `vector-index-store.ts` [EVIDENCE: WARN context and update task are preserved in `tasks.md` T006.]
-- [x] CHK-013 [P1] F-05 (Embedding and API) preserved as **WARN** with `EMBEDDINGS_PROVIDER` re-export drift and `EMBEDDING_DIM` semantics mismatch (768 compatibility check only) [EVIDENCE: WARN context and update tasks are preserved in `tasks.md` T007-T008.]
+- [x] CHK-010 [P0] F-01 mapping findings are closed and now **PASS** [EVIDENCE: `SPECKIT_ABLATION` -> `lib/eval/ablation-framework.ts`, `SPECKIT_RRF` -> `shared/algorithms/rrf-fusion.ts`, `SPECKIT_LAZY_LOADING` -> `shared/embeddings.ts` in `.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md`.]
+- [x] CHK-011 [P0] F-02, F-03, F-06, and F-07 remain **PASS** with no new code-quality regressions [EVIDENCE: These feature docs remain stable and aligned to current source paths.]
+- [x] CHK-012 [P1] F-04 mapping findings are closed and now **PASS** [EVIDENCE: `MEMORY_DB_DIR` and `MEMORY_DB_PATH` both map to `lib/search/vector-index-store.ts` in `.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/04-4-memory-and-storage.md`.]
+- [x] CHK-013 [P1] F-05 mapping findings are closed and now **PASS** [EVIDENCE: `EMBEDDINGS_PROVIDER` -> `shared/embeddings/factory.ts` and `EMBEDDING_DIM` semantics updated in `.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/05-5-embedding-and-api.md`.]
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -62,10 +60,10 @@ Required items are tracked in CHK-003, CHK-012, CHK-013, CHK-022, CHK-023, CHK-0
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-020 [P0] All acceptance criteria represented (7 features audited; status, gaps, and fixes documented) [EVIDENCE: Acceptance outcomes for all features are retained with remediation mapping.]
-- [x] CHK-021 [P0] Manual review captured for source-file traceability and behavior alignment [EVIDENCE: Audit narrative preserves source-path and behavior alignment review results.]
-- [x] CHK-022 [P1] Edge case documented: `SPECKIT_LAZY_LOADING` has no active read site in current implementation [EVIDENCE: Edge-case note is retained and tied to F-01 remediation scope.]
-- [x] CHK-023 [P1] Error scenario documented: non-768 `EMBEDDING_DIM` does not perform a general provider dimension override [EVIDENCE: Error-scenario note is retained with follow-up task T008.]
+- [x] CHK-020 [P0] Acceptance criteria represented with closed mapping outcomes [EVIDENCE: Checklist and tasks show resolved status for previously stale mapping items.]
+- [x] CHK-021 [P0] Automated mapping guard executed successfully [EVIDENCE: `npm run test -- tests/feature-flag-reference-docs.vitest.ts` -> PASS, 1 test file, 8 tests passed.]
+- [x] CHK-022 [P1] Edge cases preserved for inert compatibility flags [EVIDENCE: `SPECKIT_LAZY_LOADING` and `SPECKIT_EAGER_WARMUP` remain documented as inert aliases in `.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md`.]
+- [x] CHK-023 [P1] Dimension-semantics scenario preserved without mismatch claim [EVIDENCE: `EMBEDDING_DIM` now documented as provider-default compatibility check behavior.]
 <!-- /ANCHOR:testing -->
 
 ---
@@ -73,9 +71,9 @@ Required items are tracked in CHK-003, CHK-012, CHK-013, CHK-022, CHK-023, CHK-0
 <!-- ANCHOR:security -->
 ## Security
 
-- [x] CHK-030 [P0] No hardcoded secrets introduced in audit docs [EVIDENCE: Documentation content contains only repository paths and feature findings.]
-- [x] CHK-031 [P0] Source-integrity validation gap captured as P0 remediation task [EVIDENCE: P0 source-integrity CI work is tracked in `tasks.md` T005.]
-- [x] CHK-032 [P1] Auth/authz not applicable to this catalog audit scope; no related regressions identified [EVIDENCE: Scope excludes auth/authz paths and no such changes are documented.]
+- [x] CHK-030 [P0] No hardcoded secrets introduced in closeout docs [EVIDENCE: Documentation contains repository paths and command outputs only.]
+- [x] CHK-031 [P0] Source-integrity validation guard is active and passing [EVIDENCE: `feature-flag-reference-docs.vitest.ts` validates doc mapping rows plus symbol presence in source files.]
+- [x] CHK-032 [P1] Auth/authz not applicable to this phase scope [EVIDENCE: No auth/authz changes in phase 020 docs-only closeout.]
 <!-- /ANCHOR:security -->
 
 ---
@@ -83,9 +81,9 @@ Required items are tracked in CHK-003, CHK-012, CHK-013, CHK-022, CHK-023, CHK-0
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-040 [P1] `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` synchronized to the same seven-feature findings set [EVIDENCE: All documents reference the same feature outcomes and remediation priorities.]
-- [x] CHK-041 [P1] Evidence context retained for stale mapping, behavior mismatch, and test-gap findings [EVIDENCE: Checklist and tasks keep explicit issue-to-fix traceability.]
-- [x] CHK-042 [P2] README update not applicable for this phase-local rewrite
+- [x] CHK-040 [P1] `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` synchronized to current mapping truth [EVIDENCE: All four docs point to `19--feature-flag-reference` and completed status.]
+- [x] CHK-041 [P1] Evidence context retained for corrected mappings and validation guard [EVIDENCE: Tasks/checklist include concrete file and command evidence.]
+- [x] CHK-042 [P2] README updates not required for this phase-local closeout
 <!-- /ANCHOR:docs -->
 
 ---
@@ -93,9 +91,8 @@ Required items are tracked in CHK-003, CHK-012, CHK-013, CHK-022, CHK-023, CHK-0
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [x] CHK-050 [P1] Only targeted docs in `020-feature-flag-reference/` were modified [EVIDENCE: Changes remain scoped to markdown files inside this phase folder.]
-- [x] CHK-051 [P1] No temporary files created in the spec folder [EVIDENCE: Folder contents contain no new temporary artifacts.]
-- [ ] CHK-052 [P2] Findings saved to memory/ (deferred, not requested in this task)
+- [x] CHK-050 [P1] Changes remain scoped to phase 020 docs under umbrella folder [EVIDENCE: No non-spec files edited for this phase closeout.]
+- [x] CHK-051 [P1] No temporary artifacts created [EVIDENCE: Phase folder contains expected markdown and metadata files only.]
 <!-- /ANCHOR:file-org -->
 
 ---
@@ -107,9 +104,9 @@ Required items are tracked in CHK-003, CHK-012, CHK-013, CHK-022, CHK-023, CHK-0
 |----------|-------|----------|
 | P0 Items | 8 | 8/8 |
 | P1 Items | 10 | 10/10 |
-| P2 Items | 2 | 1/2 |
+| P2 Items | 1 | 1/1 |
 
-**Verification Date**: 2026-03-10
+**Verification Date**: 2026-03-14
 <!-- /ANCHOR:summary -->
 
 ---

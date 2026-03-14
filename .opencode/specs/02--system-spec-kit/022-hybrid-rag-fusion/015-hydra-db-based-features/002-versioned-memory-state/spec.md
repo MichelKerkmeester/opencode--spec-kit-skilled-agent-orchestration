@@ -34,7 +34,7 @@ Phase 2 is the first true Hydra data-plane phase. It introduces append-first mem
 |-------|-------|
 | **Level** | 3+ |
 | **Priority** | P0 |
-| **Status** | Draft |
+| **Status** | Complete |
 | **Created** | 2026-03-13 |
 | **Updated** | 2026-03-13 |
 | **Branch** | `022-hybrid-rag-fusion` |

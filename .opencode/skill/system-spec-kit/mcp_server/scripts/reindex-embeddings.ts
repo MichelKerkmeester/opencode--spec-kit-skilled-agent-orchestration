@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Feature catalog: Architecture boundary enforcement
 // ───────────────────────────────────────────────────────────────
-// 1. REINDEX EMBEDDINGS COMPATIBILITY WRAPPER
+// MODULE: Reindex Embeddings Compatibility Wrapper
 // ───────────────────────────────────────────────────────────────
 import { spawnSync } from 'child_process';
 import path from 'path';

@@ -1,11 +1,12 @@
 // ───────────────────────────────────────────────────────────────
-// 1. LOGGER
+// MODULE: Logger
 // ───────────────────────────────────────────────────────────────
 // Structured logging that writes ALL output to stderr.
 // In MCP servers, stdout is reserved for JSON-RPC — diagnostic
 // Output on stdout corrupts the protocol stream.
 // ───────────────────────────────────────────────────────────────
-// 2. TYPES
+// 1. TYPES
+
 // ───────────────────────────────────────────────────────────────
 /** Log severity levels (ascending) */
 export type LogLevel = 'debug' | 'info' | 'warn' | 'error';
@@ -19,7 +20,8 @@ const LEVEL_VALUES: Record<LogLevel, number> = {
 };
 
 // ───────────────────────────────────────────────────────────────
-// 3. CONFIGURATION
+// 2. CONFIGURATION
+
 // ───────────────────────────────────────────────────────────────
 /** Minimum log level — messages below this are suppressed.
  *  Set via LOG_LEVEL env var (default: 'info'). */
@@ -30,7 +32,8 @@ function getMinLevel(): LogLevel {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 4. CORE LOGGING
+// 3. CORE LOGGING
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Write a structured log message to stderr.
@@ -55,7 +58,8 @@ function log(level: LogLevel, prefix: string, message: string, data?: Record<str
 }
 
 // ───────────────────────────────────────────────────────────────
-// 5. NAMED LOGGER FACTORY
+// 4. NAMED LOGGER FACTORY
+
 // ───────────────────────────────────────────────────────────────
 /** A logger instance scoped to a specific module prefix. */
 export interface Logger {
@@ -89,6 +93,7 @@ export function createLogger(moduleName: string): Logger {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 6. EXPORTS
+// 5. EXPORTS
+
 // ───────────────────────────────────────────────────────────────
 export { log };

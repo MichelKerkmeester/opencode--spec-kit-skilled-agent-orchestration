@@ -1,5 +1,5 @@
 // ────────────────────────────────────────────────────────────────
-// 1. MEMORY CONTEXT 
+// MODULE: Memory Context
 // ────────────────────────────────────────────────────────────────
 
 import { randomUUID } from 'crypto';
@@ -31,6 +31,11 @@ import { isIdentityInRollout } from '../lib/cache/cognitive/rollout-policy';
 // Telemetry
 import * as retrievalTelemetry from '../lib/telemetry/retrieval-telemetry';
 import { initConsumptionLog, logConsumptionEvent } from '../lib/telemetry/consumption-logger';
+import {
+  attachSessionTransitionTrace,
+  buildSessionTransitionTrace,
+  type SessionTransitionTrace,
+} from '../lib/search/session-transition';
 
 // Eval logger — fail-safe, no-op when SPECKIT_EVAL_LOGGING !== "true"
 import { logSearchQuery, logChannelResult, logFinalResult } from '../lib/eval/eval-logger';
@@ -67,6 +72,7 @@ interface ContextOptions {
   includeContent?: boolean;
   includeTrace?: boolean; // CHK-040: Forward to internal memory_search calls
   anchors?: string[];
+  sessionTransition?: SessionTransitionTrace;
 }
 
 interface SessionLifecycleMetadata {
@@ -76,14 +82,6 @@ interface SessionLifecycleMetadata {
   resumed: boolean;
   eventCounterStart: number;
   resumedContextCount: number;
-  transition?: SessionTransitionMetadata;
-}
-
-interface SessionTransitionMetadata {
-  previousState: 'none' | 'session-active';
-  inferredState: string;
-  confidence: number;
-  sourceSignal: 'session-resume' | 'explicit-mode' | 'intent-classifier' | 'pressure-override' | 'query-heuristic';
 }
 
 interface ContextResult extends Record<string, unknown> {
@@ -146,132 +144,6 @@ function extractResultRowsFromContextResponse(responseText: string): Array<Recor
       : [];
   } catch {
     return [];
-  }
-}
-
-function buildSessionTransitionMetadata(args: {
-  resumedSession: boolean;
-  effectiveMode: string;
-  requestedMode: string;
-  detectedIntent: string | null;
-  pressureOverrideApplied: boolean;
-  queryHeuristicApplied: boolean;
-}): SessionTransitionMetadata {
-  if (args.resumedSession) {
-    return {
-      previousState: 'session-active',
-      inferredState: args.effectiveMode,
-      confidence: 0.95,
-      sourceSignal: 'session-resume',
-    };
-  }
-
-  if (args.pressureOverrideApplied) {
-    return {
-      previousState: 'none',
-      inferredState: args.effectiveMode,
-      confidence: 0.9,
-      sourceSignal: 'pressure-override',
-    };
-  }
-
-  if (args.requestedMode !== 'auto') {
-    return {
-      previousState: 'none',
-      inferredState: args.effectiveMode,
-      confidence: 1,
-      sourceSignal: 'explicit-mode',
-    };
-  }
-
-  if (args.queryHeuristicApplied) {
-    return {
-      previousState: 'none',
-      inferredState: args.effectiveMode,
-      confidence: 0.7,
-      sourceSignal: 'query-heuristic',
-    };
-  }
-
-  if (args.detectedIntent) {
-    return {
-      previousState: 'none',
-      inferredState: args.effectiveMode,
-      confidence: 0.85,
-      sourceSignal: 'intent-classifier',
-    };
-  }
-
-  return {
-    previousState: 'none',
-    inferredState: args.effectiveMode,
-    confidence: 0.55,
-    sourceSignal: 'query-heuristic',
-  };
-}
-
-function injectSessionTransitionTrace(
-  result: ContextResult,
-  sessionTransition: SessionTransitionMetadata,
-  includeTrace: boolean,
-): ContextResult {
-  if (!includeTrace) {
-    return result;
-  }
-
-  const content = Array.isArray((result as Record<string, unknown>).content)
-    ? ((result as Record<string, unknown>).content as Array<Record<string, unknown>>)
-    : null;
-  const firstEntry = content?.[0];
-  const firstText = typeof firstEntry?.text === 'string' ? firstEntry.text : null;
-
-  if (!firstText) {
-    return result;
-  }
-
-  try {
-    const envelope = JSON.parse(firstText) as Record<string, unknown>;
-    const data = (envelope.data as Record<string, unknown> | undefined) ?? {};
-    const results = Array.isArray(data.results)
-      ? (data.results as Array<Record<string, unknown>>)
-      : null;
-
-    if (!results) {
-      return result;
-    }
-
-    const nextResults = results.map((row) => {
-      const existingTrace = row.trace && typeof row.trace === 'object'
-        ? row.trace as Record<string, unknown>
-        : {};
-      return {
-        ...row,
-        trace: {
-          ...existingTrace,
-          sessionTransition,
-        },
-      };
-    });
-
-    const nextEnvelope = {
-      ...envelope,
-      data: {
-        ...data,
-        results: nextResults,
-      },
-    };
-    const nextContent = (content ?? []).map((entry, index) => (
-      index === 0
-        ? { ...entry, text: JSON.stringify(nextEnvelope) }
-        : entry
-    ));
-
-    return {
-      ...result,
-      content: nextContent,
-    };
-  } catch {
-    return result;
   }
 }
 
@@ -602,6 +474,7 @@ async function executeDeepStrategy(input: string, options: ContextOptions): Prom
     includeTrace: options.includeTrace || false, // CHK-040
     anchors: options.anchors,
     sessionId: options.sessionId,
+    sessionTransition: options.sessionTransition,
     enableDedup: options.enableDedup !== false,
     useDecay: true,
     minState: 'COLD'
@@ -624,6 +497,7 @@ async function executeFocusedStrategy(input: string, intent: string | null, opti
     includeTrace: options.includeTrace || false, // CHK-040
     anchors: options.anchors,
     sessionId: options.sessionId,
+    sessionTransition: options.sessionTransition,
     enableDedup: options.enableDedup !== false,
     intent: intent ?? undefined,
     autoDetectIntent: false,
@@ -651,6 +525,7 @@ async function executeResumeStrategy(input: string, options: ContextOptions): Pr
     includeTrace: options.includeTrace || false, // CHK-040
     anchors: resumeAnchors,
     sessionId: options.sessionId,
+    sessionTransition: options.sessionTransition,
     enableDedup: false,
     useDecay: false,
     minState: 'WARM'
@@ -723,6 +598,9 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
     : null;
   const resumedSession = requestedSessionId ? workingMemory.sessionExists(requestedSessionId) : false;
   const effectiveSessionId = requestedSessionId ?? randomUUID();
+  const previousState = requestedSessionId
+    ? workingMemory.getSessionInferredMode(requestedSessionId)
+    : null;
   const eventCounterStart = resumedSession && requestedSessionId
     ? workingMemory.getSessionEventCounter(requestedSessionId)
     : 0;
@@ -829,7 +707,8 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
     effectiveMode = 'focused';
   }
 
-  const sessionTransition = buildSessionTransitionMetadata({
+  const sessionTransition = buildSessionTransitionTrace({
+    previousState,
     resumedSession,
     effectiveMode,
     requestedMode: requested_mode,
@@ -837,7 +716,7 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
     pressureOverrideApplied,
     queryHeuristicApplied: resumeHeuristicApplied,
   });
-  sessionLifecycle.transition = sessionTransition;
+  options.sessionTransition = options.includeTrace === true ? sessionTransition : undefined;
 
   // PI-B3: Automatic spec folder discovery when no folder is specified
   let discoveredFolder: string | null = null;
@@ -894,17 +773,20 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
     });
   }
 
+  workingMemory.setSessionInferredMode(effectiveSessionId, effectiveMode);
+
   // T205: Determine effective token budget from mode or layer definitions
   const modeTokenBudget = CONTEXT_MODES[effectiveMode]?.tokenBudget;
   const effectiveBudget = modeTokenBudget || tokenBudget;
 
   // T205: Enforce token budget on strategy results
   const { result: budgetedResult, enforcement } = enforceTokenBudget(result, effectiveBudget);
-  const tracedResult = injectSessionTransitionTrace(
-    budgetedResult,
-    sessionTransition,
-    options.includeTrace === true,
-  );
+  const tracedResult: ContextResult = effectiveMode === 'quick' && options.includeTrace === true
+    ? attachSessionTransitionTrace(
+      budgetedResult as ContextResult & { content?: Array<{ text?: string; type?: string }> },
+      sessionTransition,
+    ) as ContextResult
+    : budgetedResult;
 
   if (autoResumeEnabled && effectiveMode === 'resume' && requestedSessionId) {
     const resumeContextItems = workingMemory.getSessionPromptContext(requestedSessionId, workingMemory.DECAY_FLOOR, 5);
@@ -974,6 +856,7 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
         if (effectiveMode !== requested_mode && pressureOverrideApplied) {
           retrievalTelemetry.recordFallback(t, `pressure override: ${requested_mode} -> ${effectiveMode}`);
         }
+        retrievalTelemetry.recordTransitionDiagnostics(t, options.includeTrace === true ? sessionTransition : undefined);
         return { _telemetry: retrievalTelemetry.toJSON(t) };
       })() : {}),
     }

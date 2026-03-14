@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. ARCHIVAL MANAGER
+// MODULE: Archival Manager
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Automatic archival subsystem
 // Background archival job for dormant/archived memories
 import type Database from 'better-sqlite3';
 

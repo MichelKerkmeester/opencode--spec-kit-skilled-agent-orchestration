@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. LOCAL RERANKER
+// MODULE: Local Reranker
 // ───────────────────────────────────────────────────────────────
 // Optional local reranker for Stage 3. This module is fully gated by
 // RERANKER_LOCAL and gracefully degrades to unchanged ordering on any
@@ -8,6 +8,10 @@
 // [CHK-069] Eval comparison (local GGUF vs Cohere/Voyage) is deferred to the
 // Dedicated evaluation suite because runtime reranking must stay provider-agnostic.
 
+/* ───────────────────────────────────────────────────────────────
+   1. IMPORTS
+──────────────────────────────────────────────────────────────── */
+
 import os from 'os';
 import path from 'path';
 import { access } from 'fs/promises';
@@ -15,6 +19,9 @@ import { toErrorMessage } from '../../utils';
 
 // Feature catalog: Local GGUF reranker via node-llama-cpp
 
+/* ───────────────────────────────────────────────────────────────
+   2. TYPES
+──────────────────────────────────────────────────────────────── */
 
 interface NodeLlamaCppModule {
   getLlama: () => Promise<unknown>;
@@ -28,6 +35,10 @@ type LocalRerankRow = Record<string, unknown> & {
   rerankerScore?: number;
 };
 
+/* ───────────────────────────────────────────────────────────────
+   3. CONSTANTS
+──────────────────────────────────────────────────────────────── */
+
 const MIN_TOTAL_MEMORY_BYTES = 8 * 1024 * 1024 * 1024;
 // Lower total-memory threshold when custom model is configured — still
 // Prevents OOM on truly constrained systems without blocking intentional
@@ -38,6 +49,10 @@ const DEFAULT_MODEL_RELATIVE_PATH = path.join('models', 'bge-reranker-v2-m3.Q4_K
 const RERANKER_TIMEOUT_MS = Number(process.env.SPECKIT_RERANKER_TIMEOUT_MS) || 30_000;
 const MAX_PROMPT_BYTES = 10 * 1024;
 const MAX_RERANK_CANDIDATES = 50;
+
+/* ───────────────────────────────────────────────────────────────
+   4. MODEL MANAGEMENT
+──────────────────────────────────────────────────────────────── */
 
 let cachedLlama: unknown | null = null;
 let cachedModel: unknown | null = null;
@@ -124,6 +139,10 @@ async function ensureModelLoaded(modelPath: string): Promise<unknown> {
   }
 }
 
+/* ───────────────────────────────────────────────────────────────
+   5. SCORING
+──────────────────────────────────────────────────────────────── */
+
 function normalizeScore(value: number): number {
   if (!Number.isFinite(value)) return 0;
   // Keep score bounded and monotonic without assuming provider-native scale.
@@ -179,6 +198,10 @@ async function scorePrompt(context: unknown, prompt: string): Promise<number> {
 
   throw new Error('Unable to resolve a scoring method from llama context');
 }
+
+/* ───────────────────────────────────────────────────────────────
+   6. PUBLIC API
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Feature-flag gate for local reranking.
@@ -351,6 +374,10 @@ export async function disposeLocalReranker(): Promise<void> {
   cachedModelPath = null;
   modelLoadPromisePath = null;
 }
+
+/* ───────────────────────────────────────────────────────────────
+   7. EXPORTS
+──────────────────────────────────────────────────────────────── */
 
 export const __testables = {
   resolveModelPath,

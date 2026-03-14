@@ -111,7 +111,7 @@ Keep the spec folder aligned with the implemented repository state so the docume
 | Dependency | `.opencode/skill/system-spec-kit/scripts/loaders/data-loader.ts` | Governs explicit JSON-mode failure behavior | Keep docs tied to the current thrown `EXPLICIT_DATA_FILE_LOAD_FAILED: ...` contract |
 | Dependency | `.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts` and `.opencode/skill/system-spec-kit/scripts/extractors/session-extractor.ts` | Governs `nextSteps` / `next_steps` persistence and `NEXT_ACTION` extraction | Verify docs against the current normalization and extraction logic |
 | Dependency | 4 `cli-*` skills and 4 prompt templates | Handback protocol guidance must stay consistent across all entry points | Reconcile wording across all 8 docs and use the real `.opencode/skill/cli-*` layout |
-| Risk | Live outsourced CLI dispatch is not rerun during this reconciliation | Claiming it passed would overstate completion | Keep live dispatch marked deferred until it is rerun and saved as fresh evidence |
+| Risk | Live outsourced CLI dispatch was not rerun during the initial reconciliation | Claiming it passed would overstate completion | Resolved: live dispatch verified with fresh round-trip evidence (T016, CHK-025) |
 | Risk | Current repository state may drift outside this task's scope | Old verification claims can become stale | Record historical task evidence separately from current rerun results when needed |
 <!-- /ANCHOR:risks -->
 
@@ -184,5 +184,5 @@ Keep the spec folder aligned with the implemented repository state so the docume
 
 ## 10. OPEN QUESTIONS
 
-- No open implementation blockers. Follow-up only: rerun a fresh live outsourced CLI dispatch if new end-to-end acceptance evidence is required.
+- No open items. Live outsourced CLI dispatch was verified with a fresh round-trip on 2026-03-14.
 <!-- /ANCHOR:questions -->

@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. ENTITY EXTRACTOR
+// MODULE: Entity Extractor
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Auto entity extraction
 // Deferred feature — gated via SPECKIT_AUTO_ENTITIES
 // Pure-TS rule-based extraction, zero npm dependencies.
 import { isEntityDenied } from './entity-denylist.js';
@@ -12,7 +13,8 @@ import type Database from 'better-sqlite3';
 export { normalizeEntityName, computeEdgeDensity };
 
 // ───────────────────────────────────────────────────────────────
-// 2. TYPES
+// 1. TYPES
+
 // ───────────────────────────────────────────────────────────────
 /** A single entity extracted from memory content. */
 export interface ExtractedEntity {
@@ -25,7 +27,8 @@ export interface ExtractedEntity {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 3. EXTRACTION RULES
+// 2. EXTRACTION RULES
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Main extraction function — pure-TS rule-based, no npm deps.
@@ -85,7 +88,8 @@ export function extractEntities(content: string): ExtractedEntity[] {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 4. FILTERING
+// 3. FILTERING
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Filter entities through denylist + length checks.
@@ -115,7 +119,8 @@ export function filterEntities(entities: ExtractedEntity[]): ExtractedEntity[] {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 5. STORAGE
+// 4. STORAGE
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Store extracted entities in the memory_entities table.
@@ -157,7 +162,8 @@ export function storeEntities(
 }
 
 // ───────────────────────────────────────────────────────────────
-// 6. ENTITY CATALOG
+// 5. ENTITY CATALOG
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Upsert entities into entity_catalog with alias normalization.

@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. TREE THINNING TYPES
+// MODULE: Tree Thinning Types
 // ───────────────────────────────────────────────────────────────
 // Public declaration surface for tree-thinning helpers and config.
 

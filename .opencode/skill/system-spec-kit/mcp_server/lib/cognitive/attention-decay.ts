@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. ATTENTION DECAY
+// MODULE: Attention Decay
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Classification-based decay
 // DECAY STRATEGY (ADR-004): This module is the FACADE for all long-term
 // Memory decay. It exposes FSRS-based decay as the canonical path
 // (via composite-scoring.ts and fsrs-scheduler.ts).

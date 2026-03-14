@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. EMBEDDING EXPANSION
+// MODULE: Embedding Expansion
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Encoding-intent capture at index time
 // Semantic query expansion using embedding similarity.
 //
 // R12/R15 Mutual Exclusion:
@@ -22,7 +23,8 @@ import * as vectorIndex from './vector-index';
 
 
 // ───────────────────────────────────────────────────────────────
-// 2. TYPES
+// 1. TYPES
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Result produced by embedding-based query expansion.
@@ -57,7 +59,8 @@ export interface EmbeddingExpansionOptions {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 3. CONSTANTS
+// 2. CONSTANTS
+
 // ───────────────────────────────────────────────────────────────
 /** Number of semantically similar memories to mine for expansion terms. */
 const DEFAULT_CANDIDATE_LIMIT = 5;
@@ -99,7 +102,8 @@ function identityResult(query: string): ExpandedQuery {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 4. TERM EXTRACTION
+// 3. TERM EXTRACTION
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Extract candidate expansion terms from an array of memory content strings.
@@ -145,7 +149,8 @@ function extractTermsFromContents(
 }
 
 // ───────────────────────────────────────────────────────────────
-// 5. MAIN EXPANSION FUNCTION
+// 4. MAIN EXPANSION FUNCTION
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Expand a query using embedding-based similarity to find semantically

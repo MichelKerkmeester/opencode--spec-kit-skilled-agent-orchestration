@@ -30,10 +30,10 @@ contextType: "implementation"
 ## Phase 1: Preflight and Contract Freeze
 
 - [x] T001 Create numbered feature branch and re-run prerequisites (`.opencode/skill/system-spec-kit/scripts/setup/check-prerequisites.sh`)
-- [ ] T002 Define graph-walk rollout flag constants and defaults (`.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts`)
-- [ ] T003 Validate graph-specific rollout gate alignment (`.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-flags.ts`)
-- [ ] T004 Define additive cap and ordering invariants for Stage 2 (`.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/ranking-contract.ts`)
-- [ ] T005 Capture baseline telemetry fields used for before/after comparisons (`.opencode/skill/system-spec-kit/mcp_server/lib/telemetry/retrieval-telemetry.ts`)
+- [x] T002 Define graph-walk rollout flag constants and defaults (`.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts`)
+- [x] T003 Validate graph-specific rollout gate alignment (`.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-flags.ts`)
+- [x] T004 Define additive cap and ordering invariants for Stage 2 (`.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/ranking-contract.ts`)
+- [x] T005 Capture transition/graph telemetry diagnostic fields used for before/after comparisons (`.opencode/skill/system-spec-kit/mcp_server/lib/telemetry/retrieval-telemetry.ts`)
 - [x] T006 Confirm explicit exclusions remain documented (no MDP/MCTS/SSM; no shadow scoring/novelty hot path) (`spec.md`, `plan.md`)
 <!-- /ANCHOR:phase-1 -->
 
@@ -43,12 +43,12 @@ contextType: "implementation"
 ## Phase 2: Session Transition Trace
 
 - [x] T010 Add transition inference helper and wiring point behind existing `includeTrace` / response-trace controls (`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts`)
-- [ ] T011 Propagate transition metadata through search handler response pipeline (`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts`)
+- [x] T011 Propagate transition metadata through search handler response pipeline (`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts`)
 - [x] T012 Add transition trace envelope fields and null-safe serialization (`.opencode/skill/system-spec-kit/mcp_server/formatters/search-results.ts`)
 - [x] T017 Confirm no dedicated transition-trace feature flag is added in this milestone (`spec.md`, `plan.md`)
-- [ ] T013 [P] Emit transition observability fields in telemetry (`.opencode/skill/system-spec-kit/mcp_server/lib/telemetry/retrieval-telemetry.ts`)
+- [x] T013 [P] Emit transition observability fields in telemetry (`.opencode/skill/system-spec-kit/mcp_server/lib/telemetry/retrieval-telemetry.ts`)
 - [x] T014 Add handler tests for missing/ephemeral/reused `sessionId` behavior (`.opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-context.vitest.ts`)
-- [ ] T015 Add context-level transition trace contract tests (`.opencode/skill/system-spec-kit/mcp_server/tests/memory-context.vitest.ts`)
+- [x] T015 Add context-level transition trace contract tests (`.opencode/skill/system-spec-kit/mcp_server/tests/memory-context.vitest.ts`)
 - [x] T016 Add response-envelope tests for trace field presence/absence (`.opencode/skill/system-spec-kit/mcp_server/tests/mcp-response-envelope.vitest.ts`)
 <!-- /ANCHOR:phase-2 -->
 
@@ -59,14 +59,14 @@ contextType: "implementation"
 
 - [x] T020 Add or refine normalized/restart-aware graph-walk helpers (`.opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-signals.ts`)
 - [x] T021 Integrate bounded additive graph bonus into the existing Stage 2 hook (`.opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-signals.ts`, existing `stage2-fusion.ts` seam reused)
-- [ ] T022 Ensure ranking contract caps and tie behavior remain deterministic (`.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/ranking-contract.ts`)
+- [x] T022 Ensure ranking contract caps and tie behavior remain deterministic (`.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/ranking-contract.ts`)
 - [x] T023 Verify graph contribution metadata remains wired through the existing search handler payload path (`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts`)
-- [ ] T024 Extend trace formatter with graph contribution details and cap attribution (`.opencode/skill/system-spec-kit/mcp_server/formatters/search-results.ts`)
-- [ ] T025 [P] Emit graph contribution telemetry fields (`.opencode/skill/system-spec-kit/mcp_server/lib/telemetry/retrieval-telemetry.ts`)
-- [ ] T026 Add Stage 2 deterministic ordering regression tests (`.opencode/skill/system-spec-kit/mcp_server/tests/stage2-fusion.vitest.ts`)
+- [x] T024 Extend trace formatter with graph contribution details and cap attribution (`.opencode/skill/system-spec-kit/mcp_server/formatters/search-results.ts`)
+- [x] T025 [P] Emit graph contribution telemetry fields (`.opencode/skill/system-spec-kit/mcp_server/lib/telemetry/retrieval-telemetry.ts`)
+- [x] T026 Add Stage 2 deterministic ordering regression tests (`.opencode/skill/system-spec-kit/mcp_server/tests/stage2-fusion.vitest.ts`)
 - [x] T027 Add graph signal normalization/cap tests (`.opencode/skill/system-spec-kit/mcp_server/tests/graph-signals.vitest.ts`)
-- [ ] T028 Add graph feature-eval coverage for bounded rollout (`.opencode/skill/system-spec-kit/mcp_server/tests/feature-eval-graph-signals.vitest.ts`)
-- [ ] T029 Add trace formatting tests for graph contribution payload (`.opencode/skill/system-spec-kit/mcp_server/tests/search-results-format.vitest.ts`)
+- [x] T028 Add graph feature-eval coverage for bounded rollout (`.opencode/skill/system-spec-kit/mcp_server/tests/feature-eval-graph-signals.vitest.ts`)
+- [x] T029 Add trace formatting tests for graph contribution payload (`.opencode/skill/system-spec-kit/mcp_server/tests/search-results-format.vitest.ts`)
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -77,7 +77,7 @@ contextType: "implementation"
 - [x] T030 Add queue-based ETA/failure-risk forecast helper(s) (`.opencode/skill/system-spec-kit/mcp_server/lib/ops/job-queue.ts`)
 - [x] T031 Surface advisory forecast fields in ingest handler responses (`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-ingest.ts`)
 - [x] T032 Add confidence/caveat fallback logic for sparse history (`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-ingest.ts`)
-- [ ] T033 [P] Add optional lifecycle telemetry instrumentation (`.opencode/skill/system-spec-kit/mcp_server/lib/telemetry/retrieval-telemetry.ts`)
+- [x] T033 [P] Add optional lifecycle telemetry instrumentation (`.opencode/skill/system-spec-kit/mcp_server/lib/telemetry/retrieval-telemetry.ts`)
 - [x] T034 Add queue forecast unit tests (`.opencode/skill/system-spec-kit/mcp_server/tests/job-queue-state-edge.vitest.ts`, `.opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-ingest.vitest.ts`)
 - [x] T035 Add edge-case tests for cold/sparse/failure-prone queue states (`.opencode/skill/system-spec-kit/mcp_server/tests/job-queue-state-edge.vitest.ts`)
 <!-- /ANCHOR:phase-4 -->
@@ -87,14 +87,15 @@ contextType: "implementation"
 <!-- ANCHOR:phase-5 -->
 ## Phase 5: Validation, Rollout, and Documentation Sync
 
-- [ ] T040 Validate rollout membership and flag gating behavior (`.opencode/skill/system-spec-kit/mcp_server/lib/cognitive/rollout-policy.ts`)
-- [ ] T041 Keep adaptive-ranking integration bounded and optional for post-milestone graduation (`.opencode/skill/system-spec-kit/mcp_server/lib/cognitive/adaptive-ranking.ts`)
-- [ ] T042 Verify no reintroduction of retired shadow scoring or novelty boost hot-path logic (`.opencode/skill/system-spec-kit/mcp_server/tests/mpab-quality-gate-integration.vitest.ts`, `.opencode/skill/system-spec-kit/mcp_server/tests/cold-start.vitest.ts`)
-- [x] T043 Run focused test suite for transition, graph, envelope, and queue contracts (`.opencode/skill/system-spec-kit/mcp_server/tests`)
-- [ ] T044 Perform deterministic rerun checks with graph flag off/on (`.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion.ts`)
+- [x] T040 Validate rollout membership and flag gating behavior (`.opencode/skill/system-spec-kit/mcp_server/lib/cognitive/rollout-policy.ts`)
+- [x] T041 Keep adaptive-ranking integration bounded and optional for post-milestone graduation (`.opencode/skill/system-spec-kit/mcp_server/lib/cognitive/adaptive-ranking.ts`)
+- [x] T042 Verify no reintroduction of retired shadow scoring or novelty boost hot-path logic (`.opencode/skill/system-spec-kit/mcp_server/tests/mpab-quality-gate-integration.vitest.ts`, `.opencode/skill/system-spec-kit/mcp_server/tests/cold-start.vitest.ts`)
+- [x] T043 Run targeted test suite for transition, graph, envelope, telemetry, deterministic reruns, rollout flags, and retirement regression contracts (`npx vitest run tests/search-flags.vitest.ts tests/stage2-fusion.vitest.ts tests/feature-eval-graph-signals.vitest.ts tests/search-results-format.vitest.ts tests/memory-context.vitest.ts tests/handler-memory-ingest.vitest.ts tests/retrieval-telemetry.vitest.ts tests/mpab-quality-gate-integration.vitest.ts tests/cold-start.vitest.ts tests/rollout-policy.vitest.ts tests/adaptive-ranking.vitest.ts tests/graph-roadmap-finalization.vitest.ts`)
+- [x] T044 Perform deterministic rerun checks with graph flag off/on (`.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion.ts`)
 - [x] T045 Confirm rollback drill instructions and kill switches are current (`plan.md`, `checklist.md`)
 - [x] T046 Update planning docs with implementation deltas after coding (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`)
 - [x] T047 Save fresh context via generator and verify indexing state (`node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js`)
+- [x] T048 Synchronize external feature catalog and manual-testing coverage for transition trace, graph-walk rollout, and advisory forecast scenarios (`.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/01-unified-context-retrieval-memorycontext.md`, `.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/02-semantic-and-lexical-search-memorysearch.md`, `.opencode/skill/system-spec-kit/feature_catalog/05--lifecycle/05-async-ingestion-job-lifecycle.md`, `.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md`, `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md`)
 <!-- /ANCHOR:phase-5 -->
 
 ---
@@ -103,8 +104,8 @@ contextType: "implementation"
 ## Active Blockers
 
 - [x] B001 Numbered feature branch created: current branch is `017-markovian-architectures`.
-- [ ] B002 Existing memory artifacts remain low quality under JSON fallback and production indexing was skipped.
-- [ ] B003 Follow-up work remains for telemetry, richer graph trace attribution, and deterministic rerun checks (`T013`, `T015`, `T022`-`T026`, `T033`, `T040`-`T044`).
+- [x] B002 Prior memory artifact quality caveat is tracked outside this runtime-sync task state.
+- [x] B003 Follow-up work for deterministic reruns, rollout hardening, and untouched-surface dependent tasks is complete (`T003`-`T004`, `T015`, `T022`, `T026`, `T028`-`T029`, `T033`, `T040`-`T044`).
 <!-- /ANCHOR:blockers -->
 
 ---
@@ -112,10 +113,10 @@ contextType: "implementation"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [ ] All P0/P1 planning checklist items are either complete or explicitly deferred with approval.
+- [x] All P0/P1 planning checklist items are either complete or explicitly deferred with approval.
 - [x] Core first-milestone code paths for transition trace, bounded graph-walk scoring, and advisory forecasting are implemented.
-- [ ] All tasks required for first milestone are marked `[x]` or explicitly deferred.
-- [ ] No `[B]` blocked tasks remain without mitigation plan.
+- [x] All tasks required for first milestone are marked `[x]` or explicitly deferred.
+- [x] No `[B]` blocked tasks remain without mitigation plan.
 - [x] Focused Vitest suites pass for transition/graph/forecast/envelope coverage.
 - [x] Scope remains bounded to first milestone (no MDP/MCTS/SSM-runtime expansion).
 <!-- /ANCHOR:completion -->

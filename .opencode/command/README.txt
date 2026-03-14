@@ -64,7 +64,7 @@ command/
 ├── memory/                   # Memory system commands
 │   ├── context.md            # Intent-aware context retrieval
 │   ├── continue.md           # Session recovery
-│   ├── learn.md              # Capture learnings and corrections
+│   ├── learn.md              # Constitutional memory manager
 │   ├── manage.md             # Database management operations
 │   └── save.md               # Save conversation context
 └── spec_kit/                 # Spec folder workflow commands
@@ -106,7 +106,7 @@ Manage the Spec Kit Memory system for context preservation across sessions.
 |---------|------------|---------|
 | Context | `/memory:context <query>` | Intent-aware context retrieval with weight optimization |
 | Continue | `/memory:continue` | Recover session from crash, compaction, or timeout |
-| Learn | `/memory:learn <description>` | Capture learnings, corrections, and patterns |
+| Learn | `/memory:learn [rule] \| list \| edit \| remove \| budget` | Create and manage constitutional memories |
 | Manage | `/memory:manage <subcommand>` | Database operations (scan, cleanup, tier, health, checkpoint) |
 | Save | `/memory:save <spec-folder>` | Save conversation context with semantic indexing |
 

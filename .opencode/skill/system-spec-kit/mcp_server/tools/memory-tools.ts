@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. MEMORY TOOLS
+// MODULE: Memory Tools
 // ───────────────────────────────────────────────────────────────
 // Dispatch for L2-L4 memory tools: search, triggers, save,
 // List, stats, health, delete, update, validate (T303).

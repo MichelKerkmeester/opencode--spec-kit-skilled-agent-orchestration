@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. STAGE2 FUSION
+// MODULE: Stage2 Fusion
 // ───────────────────────────────────────────────────────────────
 // the rollout (R6): 4-Stage Retrieval Pipeline
 //
@@ -56,7 +56,12 @@ import type { SpreadResult } from '../../cache/cognitive/co-activation';
 import * as fsrsScheduler from '../../cache/cognitive/fsrs-scheduler';
 import { queryLearnedTriggers } from '../learned-feedback';
 import { applyNegativeFeedback, getNegativeFeedbackStats } from '../../scoring/negative-feedback';
-import { isNegativeFeedbackEnabled, isCommunityDetectionEnabled, isGraphSignalsEnabled } from '../search-flags';
+import {
+  isNegativeFeedbackEnabled,
+  isCommunityDetectionEnabled,
+  isGraphSignalsEnabled,
+  resolveGraphWalkRolloutState,
+} from '../search-flags';
 import { addTraceEntry } from '@spec-kit/shared/contracts/retrieval-trace';
 import { requireDb } from '../../../utils/db-helpers';
 import { computeRecencyScore } from '../../scoring/folder-scoring';
@@ -564,6 +569,7 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
       communityInjected: 0,
       graphSignalsBoosted: 0,
       totalGraphInjected: 0,
+      rolloutState: resolveGraphWalkRolloutState(),
     },
     qualityFiltered: 0,
     durationMs: 0,
@@ -673,7 +679,9 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
     try {
       const db = requireDb();
       const beforeScores = new Map(results.map((row) => [row.id, resolveBaseScore(row)]));
-      const signaled = applyGraphSignals(results, db);
+      const signaled = applyGraphSignals(results, db, {
+        rolloutState: resolveGraphWalkRolloutState(),
+      });
       results = (signaled as PipelineRow[]).map((row) => {
         const previous = beforeScores.get(row.id) ?? resolveBaseScore(row);
         const next = resolveBaseScore(row);

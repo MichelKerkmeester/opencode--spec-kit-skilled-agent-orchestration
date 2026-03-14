@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. REDACTION GATE
+// MODULE: Redaction Gate
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Guards and edge cases
 interface RedactionMatch {
   value: string;
   category: string;

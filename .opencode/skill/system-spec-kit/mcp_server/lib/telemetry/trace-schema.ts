@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. TELEMETRY TRACE SCHEMA
+// MODULE: Telemetry Trace Schema
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Scoring observability
 // Canonical schema + runtime validation for retrieval trace payloads
 // Used by telemetry serialization. Unknown or sensitive fields are
 // Excluded from canonical payloads.

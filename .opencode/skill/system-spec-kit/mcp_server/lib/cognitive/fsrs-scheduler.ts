@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. FSRS SCHEDULER
+// MODULE: Fsrs Scheduler
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Classification-based decay
 // CANONICAL FSRS CONSTANTS & ALGORITHM
 // Free Spaced Repetition Scheduler v4 algorithm implementation
 //

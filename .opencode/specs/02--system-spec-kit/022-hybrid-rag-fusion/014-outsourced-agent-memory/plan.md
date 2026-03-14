@@ -94,7 +94,7 @@ Caller prepares /tmp/save-context-data.json
 - [x] Remove historical numeric Vitest pass-total claims from current acceptance evidence
 - [x] Verify alignment drift currently reports `0 findings` and `0 warnings`
 - [x] Record current `npm run lint` (`tsc --noEmit`) rerun status as passing evidence
-- [x] Remove unverifiable 1032-line artifact claims and keep live outsourced CLI dispatch deferred
+- [x] Remove unverifiable 1032-line artifact claims; live outsourced CLI dispatch subsequently verified (T016)
 - [x] Run `validate.sh` on this spec folder
 <!-- /ANCHOR:phases -->
 
@@ -109,7 +109,7 @@ Caller prepares /tmp/save-context-data.json
 | Static verification | TypeScript correctness for the task scope | `npm run lint` (`tsc --noEmit`) |
 | Alignment verification | Drift between implementation and aligned standards | `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit/scripts` |
 | Spec validation | Completeness and checklist consistency inside this folder | `.opencode/skill/system-spec-kit/scripts/spec/validate.sh` |
-| Manual follow-up | Fresh live outsourced CLI dispatch | Deferred until rerun |
+| Manual follow-up | Fresh live outsourced CLI dispatch | Verified (T016, CHK-025) |
 <!-- /ANCHOR:testing -->
 
 ---

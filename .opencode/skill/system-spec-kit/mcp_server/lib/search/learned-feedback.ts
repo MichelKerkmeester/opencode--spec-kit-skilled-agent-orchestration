@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. LEARNED FEEDBACK
+// MODULE: Learned Feedback
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Learned relevance feedback
 //
 //
 // Learns from user memory selections to improve future search results.
@@ -31,6 +32,8 @@ import {
 
 // ───────────────────────────────────────────────────────────────
 // 2. TYPES
+
+
 // ───────────────────────────────────────────────────────────────
 export type { Database };
 
@@ -62,6 +65,8 @@ export interface LearnedTriggerMatch {
 
 // ───────────────────────────────────────────────────────────────
 // 3. CONSTANTS
+
+
 // ───────────────────────────────────────────────────────────────
 /** Feature flag environment variable name (graduated default ON) */
 export const FEATURE_FLAG = 'SPECKIT_LEARN_FROM_SELECTION';
@@ -92,6 +97,8 @@ export const MIN_TERM_LENGTH = 3;
 
 // ───────────────────────────────────────────────────────────────
 // 4. AUDIT LOG TABLE
+
+
 // ───────────────────────────────────────────────────────────────
 const AUDIT_TABLE_SQL = `
   CREATE TABLE IF NOT EXISTS learned_feedback_audit (
@@ -177,6 +184,8 @@ export function isMemoryEligible(memoryAgeMs: number): boolean {
 
 // ───────────────────────────────────────────────────────────────
 // 5. TERM EXTRACTION
+
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Extract learnable terms from query terms, filtering against the denylist
@@ -223,6 +232,8 @@ export function extractLearnableTerms(
 
 // ───────────────────────────────────────────────────────────────
 // 6. CORE OPERATIONS
+
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Record a user selection and learn from it (Safeguards #1-#10).
@@ -495,6 +506,8 @@ export function queryLearnedTriggers(
 
 // ───────────────────────────────────────────────────────────────
 // 7. MAINTENANCE
+
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Remove expired learned terms from all memories (Safeguard #2).
@@ -600,6 +613,8 @@ export function clearAllLearnedTriggers(db: Database): number {
 
 // ───────────────────────────────────────────────────────────────
 // 8. AUDIT LOG
+
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Retrieve the provenance audit log (Safeguard #10).

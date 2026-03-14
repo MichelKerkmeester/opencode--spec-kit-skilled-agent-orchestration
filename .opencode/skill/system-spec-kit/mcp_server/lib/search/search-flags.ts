@@ -1,10 +1,14 @@
 // ───────────────────────────────────────────────────────────────
-// 1. SEARCH FLAGS
+// MODULE: Search Flags
 // ───────────────────────────────────────────────────────────────
 // Default-on runtime gates for search pipeline controls
 //
 // Production-ready flags graduated to default-ON.
 // Set SPECKIT_<FLAG>=false to disable any graduated feature.
+
+/* ───────────────────────────────────────────────────────────────
+   1. IMPORTS
+──────────────────────────────────────────────────────────────── */
 
 import { isFeatureEnabled } from '../cache/cognitive/rollout-policy';
 
@@ -12,6 +16,9 @@ import { isFeatureEnabled } from '../cache/cognitive/rollout-policy';
 // Feature catalog: Verify-fix-verify memory quality loop
 // Feature catalog: Negative feedback confidence signal
 
+/* ───────────────────────────────────────────────────────────────
+   2. CORE FLAGS
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Graph-guided MMR diversity reranking.
@@ -136,14 +143,33 @@ export function isEncodingIntentEnabled(): boolean {
   return isFeatureEnabled('SPECKIT_ENCODING_INTENT');
 }
 
-// -- Deferred Features (graduated to default-ON) --
+/* ───────────────────────────────────────────────────────────────
+   3. GRAPH FLAGS
+──────────────────────────────────────────────────────────────── */
 
 /**
  * N2a+N2b: Graph momentum scoring and causal depth signals.
  * Default: TRUE (enabled). Set SPECKIT_GRAPH_SIGNALS=false to disable.
  */
+export type GraphWalkRolloutState = 'off' | 'trace_only' | 'bounded_runtime';
+
+export function resolveGraphWalkRolloutState(): GraphWalkRolloutState {
+  const rollout = process.env.SPECKIT_GRAPH_WALK_ROLLOUT?.trim().toLowerCase();
+  if (rollout === 'off' || rollout === 'false' || rollout === '0') {
+    return 'off';
+  }
+  if (rollout === 'trace_only' || rollout === 'trace-only') {
+    return 'trace_only';
+  }
+  if (rollout === 'bounded_runtime' || rollout === 'bounded-runtime' || rollout === 'true' || rollout === '1') {
+    return 'bounded_runtime';
+  }
+
+  return isFeatureEnabled('SPECKIT_GRAPH_SIGNALS') ? 'bounded_runtime' : 'off';
+}
+
 export function isGraphSignalsEnabled(): boolean {
-  return isFeatureEnabled('SPECKIT_GRAPH_SIGNALS');
+  return resolveGraphWalkRolloutState() !== 'off';
 }
 
 /**
@@ -183,6 +209,10 @@ export function isEntityLinkingEnabled(): boolean {
 export function isDegreeBoostEnabled(): boolean {
   return isFeatureEnabled('SPECKIT_DEGREE_BOOST');
 }
+
+/* ───────────────────────────────────────────────────────────────
+   4. SPRINT 9 FLAGS
+──────────────────────────────────────────────────────────────── */
 
 /**
  * P1-4: Contextual tree headers for Stage 4 result enrichment.

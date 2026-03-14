@@ -1,14 +1,12 @@
 ---
 title: "Implementation Plan: feature-flag-reference [template:level_2/plan.md]"
-description: "This plan executes a feature-centric code audit for the Feature Flag Reference catalog and preserves findings in SpecKit Level 2 structure. The approach inventories all seven features, validates catalog-to-code traceability, and records prioritized remediation tasks."
+description: "Closeout plan for feature-flag-reference after corrected catalog mappings and automated docs-mapping guard verification."
 # SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2
 trigger_phrases:
   - "feature-flag-reference"
   - "implementation plan"
-  - "feature flag reference"
-  - "code audit"
-  - "cross-cutting"
-importance_tier: "normal"
+  - "mapping guard"
+importance_tier: "high"
 contextType: "general"
 ---
 # Implementation Plan: feature-flag-reference
@@ -25,13 +23,13 @@ contextType: "general"
 
 | Aspect | Value |
 |--------|-------|
-| **Language/Stack** | Markdown documentation targeting a TypeScript/Node.js MCP codebase |
-| **Framework** | SpecKit Level 2 documentation workflow |
-| **Storage** | Repository file system (`specs/` + `feature_catalog/`) |
-| **Testing** | Manual audit verification + checklist gates |
+| **Language/Stack** | Markdown documentation over TypeScript/Node codebase artifacts |
+| **Framework** | SpecKit Level 2 closeout workflow |
+| **Storage** | Spec docs + feature catalog markdown |
+| **Testing** | Vitest mapping guard + spec validation |
 
 ### Overview
-Audit all seven features in `feature_catalog/20--feature-flag-reference/` and validate that documented Source File mappings reflect actual env-var read sites. Preserve per-feature findings (PASS/WARN/FAIL), standards checks, behavior mismatches, test gaps, and playbook coverage. Convert outputs into Level 2-compliant `spec.md`, `plan.md`, `tasks.md`, and `checklist.md`.
+This plan closes phase 020 by syncing docs with corrected catalog mappings in `feature_catalog/19--feature-flag-reference/` and recording automated mapping-guard evidence. No runtime code edits are required in this phase.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -45,9 +43,9 @@ Audit all seven features in `feature_catalog/20--feature-flag-reference/` and va
 - [x] Dependencies identified
 
 ### Definition of Done
-- [ ] All acceptance criteria met
-- [ ] Tests passing (if applicable)
-- [ ] Docs updated (spec/plan/tasks)
+- [x] All acceptance criteria met
+- [x] Tests passing (if applicable)
+- [x] Docs updated (spec/plan/tasks)
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -56,15 +54,15 @@ Audit all seven features in `feature_catalog/20--feature-flag-reference/` and va
 ## 3. ARCHITECTURE
 
 ### Pattern
-Documentation-driven audit workflow (catalog -> code evidence -> findings -> remediation tasks)
+Documentation closeout with test-backed mapping verification.
 
 ### Key Components
-- **Feature Catalog Files**: Source of expected flag behavior and Source File ownership claims.
-- **Implementation Read Sites**: Authoritative env-var usage in `mcp_server/` and `shared/`.
-- **Spec Artifacts**: Level 2 docs capturing findings, execution tasks, and verification state.
+- **Catalog Sources**: `feature_catalog/19--feature-flag-reference/*.md`
+- **Validation Guard**: `mcp_server/tests/feature-flag-reference-docs.vitest.ts`
+- **Spec Artifacts**: `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md`
 
 ### Data Flow
-Catalog entries are inventoried first, then mapped to implementation/test files and cross-cutting playbook coverage. Findings are classified per feature (PASS/WARN/FAIL) and translated into prioritized remediation tasks (P0/P1/P2). Verification status is then tracked in checklist gates.
+Use catalog files as current mapping truth, run docs-mapping guard test for critical env vars, then align phase docs so statuses and evidence represent the observed outcomes.
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -73,19 +71,19 @@ Catalog entries are inventoried first, then mapped to implementation/test files 
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Setup
-- [x] Project structure created
-- [x] Dependencies installed
-- [x] Development environment ready
+- [x] Confirm current catalog folder and file names
+- [x] Confirm stale draft/pending state in phase 020 docs
+- [x] Confirm command for mapping guard evidence
 
 ### Phase 2: Core Implementation
-- [x] Feature inventory + source extraction completed for all 7 features
-- [x] Code review completed for correctness, standards, behavior, and edge cases
-- [x] Findings and recommended fixes captured in prioritized task list
+- [x] Update spec/plan/tasks/checklist to completed closeout state
+- [x] Replace stale `20--feature-flag-reference` references with `19--feature-flag-reference`
+- [x] Record mapping-resolution evidence for F-01, F-04, and F-05
 
 ### Phase 3: Verification
-- [ ] Manual testing complete
-- [x] Edge cases handled
-- [ ] Documentation updated
+- [x] Run mapping guard test and capture output
+- [x] Validate phase folder markdown integrity
+- [x] Publish implementation summary with real outcomes
 <!-- /ANCHOR:phases -->
 
 ---
@@ -95,9 +93,9 @@ Catalog entries are inventoried first, then mapped to implementation/test files 
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Unit | N/A for docs-only rewrite | N/A |
-| Integration | Cross-file consistency (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`) | Manual markdown review |
-| Manual | Feature-to-finding traceability and task priority integrity | Local file inspection |
+| Unit | Docs-to-source mapping guard for critical env vars | `npm run test -- tests/feature-flag-reference-docs.vitest.ts` |
+| Integration | Cross-doc consistency within phase 020 | Manual doc review |
+| Manual | Spec validation for markdown link integrity | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh --no-recursive .../020-feature-flag-reference` |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -107,9 +105,9 @@ Catalog entries are inventoried first, then mapped to implementation/test files 
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| `feature_catalog/20--feature-flag-reference/` markdown files | Internal | Green | Cannot verify source mapping claims per feature |
-| `mcp_server/` and `shared/` implementation paths | Internal | Green | Findings become non-authoritative if unreadable |
-| Cross-cutting playbook scenario mapping | Internal | Yellow | Coverage evidence is partial |
+| `feature_catalog/19--feature-flag-reference/` markdown files | Internal | Green | Mapping closeout cannot be validated |
+| `mcp_server/tests/feature-flag-reference-docs.vitest.ts` | Internal | Green | Automated guard evidence missing |
+| `validate.sh` phase validation | Internal | Green | Closeout integrity cannot be confirmed |
 <!-- /ANCHOR:dependencies -->
 
 ---
@@ -117,12 +115,9 @@ Catalog entries are inventoried first, then mapped to implementation/test files 
 <!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: Template mismatch, accidental data loss, or missing feature findings after rewrite.
-- **Procedure**: Restore prior versions of the four docs from git history and re-run mapping with correct templates.
+- **Trigger**: Updated closeout docs fail validation or misrepresent guard outcomes.
+- **Procedure**: Restore prior phase docs and re-apply updates with command evidence.
 <!-- /ANCHOR:rollback -->
-
----
-
 
 ---
 
@@ -130,17 +125,14 @@ Catalog entries are inventoried first, then mapped to implementation/test files 
 ## L2: PHASE DEPENDENCIES
 
 ```
-Phase 1 (Inventory) ───┐
-                       ├──► Phase 2 (Audit) ──► Phase 3 (Verify)
-Phase 1.5 (Mapping) ───┘
+Phase 1 (Setup) ───► Phase 2 (Closeout) ───► Phase 3 (Verify)
 ```
 
 | Phase | Depends On | Blocks |
 |-------|------------|--------|
-| Inventory | None | Mapping, Audit |
-| Mapping | Inventory | Audit |
-| Audit | Inventory, Mapping | Verify |
-| Verify | Audit | None |
+| Setup | None | Closeout |
+| Closeout | Setup | Verify |
+| Verify | Closeout | Completion |
 <!-- /ANCHOR:phase-deps -->
 
 ---
@@ -150,10 +142,10 @@ Phase 1.5 (Mapping) ───┘
 
 | Phase | Complexity | Estimated Effort |
 |-------|------------|------------------|
-| Setup | Low | 0.5-1 hour |
-| Core Implementation | Medium | 3-5 hours |
-| Verification | Medium | 1-2 hours |
-| **Total** | | **4.5-8 hours** |
+| Setup | Low | 20-40 minutes |
+| Core Implementation | Medium | 45-90 minutes |
+| Verification | Low | 20-40 minutes |
+| **Total** | | **85-170 minutes** |
 <!-- /ANCHOR:effort -->
 
 ---
@@ -162,15 +154,15 @@ Phase 1.5 (Mapping) ───┘
 ## L2: ENHANCED ROLLBACK
 
 ### Pre-deployment Checklist
-- [x] Backup created (if data changes)
-- [x] Feature flag configured
-- [x] Monitoring alerts set
+- [x] Backup created (if data changes) - N/A (markdown-only)
+- [x] Feature flag configured - N/A
+- [x] Monitoring alerts set - N/A
 
 ### Rollback Procedure
-1. Restore previous doc versions for `spec.md`, `plan.md`, `tasks.md`, and `checklist.md`.
-2. Re-check required anchors/comments against Level 2 templates.
-3. Verify restored content still includes all seven feature findings and six remediation tasks.
-4. Notify stakeholders that rewrite output was reverted and pending correction.
+1. Restore previous `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md`.
+2. Re-run mapping guard and validation commands.
+3. Re-apply only verified status and path updates.
+4. Reconfirm no stale FAIL/WARN claims remain.
 
 ### Data Reversal
 - **Has data migrations?** No

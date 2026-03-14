@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. GROUND TRUTH FEEDBACK
+// MODULE: Ground Truth Feedback
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Synthetic ground truth corpus
 //
 // Ground Truth Expansion via Feedback + LLM-Judge
 //

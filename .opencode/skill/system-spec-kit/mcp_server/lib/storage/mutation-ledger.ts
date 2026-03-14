@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. MUTATION LEDGER
+// MODULE: Mutation Ledger
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Transaction wrappers on mutation handlers
 // Append-only audit trail for all memory mutations
 // SQLite triggers enforce immutability (no UPDATE/DELETE on ledger)
 import { createHash } from 'crypto';

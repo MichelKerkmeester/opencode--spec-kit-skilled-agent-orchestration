@@ -1,11 +1,13 @@
 // ───────────────────────────────────────────────────────────────
-// 1. QUERY EXPANDER
+// MODULE: Query Expander
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Query expansion
 // Rule-based synonym expansion for mode="deep" multi-query RAG.
 // No LLM calls — purely rule-based template substitution.
 
 // ───────────────────────────────────────────────────────────────
-// 2. CONSTANTS
+// 1. CONSTANTS
+
 // ───────────────────────────────────────────────────────────────
 const MAX_VARIANTS = 3;
 
@@ -54,7 +56,8 @@ export const DOMAIN_VOCABULARY_MAP: Record<string, string[]> = {
 };
 
 // ───────────────────────────────────────────────────────────────
-// 3. CORE FUNCTION
+// 2. CORE FUNCTION
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Expand a query into multiple search variants using synonym maps.

@@ -1,5 +1,5 @@
 // ────────────────────────────────────────────────────────────────
-// 1. CHUNKING ORCHESTRATOR 
+// MODULE: Chunking Orchestrator
 // ────────────────────────────────────────────────────────────────
 
 import type BetterSqlite3 from 'better-sqlite3';

@@ -1,6 +1,7 @@
 // ---------------------------------------------------------------
 // MODULE: Embeddings
 // ---------------------------------------------------------------
+// Feature catalog: Hybrid search pipeline
 
 // Node stdlib
 import crypto from 'crypto';

@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. VECTOR INDEX
+// MODULE: Vector Index
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Hybrid search pipeline
 // Backward-compatible export surface across split modules.
 
 export {

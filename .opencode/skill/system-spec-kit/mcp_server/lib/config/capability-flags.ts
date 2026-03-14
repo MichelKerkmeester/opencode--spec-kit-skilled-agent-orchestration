@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. MEMORY ROADMAP FLAGS
+// MODULE: Memory Roadmap Flags
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Feature flag governance
 // Phase-gated capability switches for the memory roadmap.
 // Defaults reflect the fully delivered rollout unless explicitly opted out.
 import { isFeatureEnabled } from '../cache/cognitive/rollout-policy';

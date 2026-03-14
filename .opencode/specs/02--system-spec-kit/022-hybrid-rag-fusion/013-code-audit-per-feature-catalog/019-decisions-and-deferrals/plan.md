@@ -109,7 +109,7 @@ Audit inputs (feature catalog + source/test references) are reviewed per feature
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| `feature_catalog/19--decisions-and-deferrals/` entries | Internal | Green | Source-of-truth evidence remains aligned to current implementation |
+| `feature_catalog/10--graph-signal-activation/` and `feature_catalog/13--memory-quality-and-indexing/` entries | Internal | Green | Source-of-truth evidence remains aligned to current implementation |
 | `mcp_server/lib/graph/graph-signals.ts` | Internal | Green | F-02 runtime evidence reconciled to existing implementation |
 | `mcp_server/lib/extraction/entity-extractor.ts` | Internal | Green | F-03 sentence-boundary behavior fixed |
 | `mcp_server/tests/entity-extractor.vitest.ts` and graph tests | Internal | Green | Targeted regression verification passed |

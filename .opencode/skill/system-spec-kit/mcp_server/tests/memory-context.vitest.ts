@@ -10,6 +10,10 @@ import {
   INTENT_TO_MODE,
   enforceTokenBudget,
 } from '../handlers/memory-context';
+import {
+  attachSessionTransitionTrace,
+  buildSessionTransitionTrace,
+} from '../lib/search/session-transition';
 
 /* ───────────────────────────────────────────────────────────────
    TYPE DEFINITIONS
@@ -264,6 +268,100 @@ describe('T021-T030: Main Handler Tests [deferred - requires DB test fixtures]',
     const result: MCPResponse = await invokeMemoryContext({ input: undefined });
     const parsed = parseErrorEnvelope(result);
     expect(parsed.error).toBeDefined();
+  });
+});
+
+describe('T015: Session transition contract coverage', () => {
+  it('builds a cold-start trace payload with nullable previousState and no sentinel strings', () => {
+    const transition = buildSessionTransitionTrace({
+      previousState: null,
+      resumedSession: false,
+      effectiveMode: 'focused',
+      requestedMode: 'auto',
+      detectedIntent: 'fix_bug',
+      pressureOverrideApplied: false,
+      queryHeuristicApplied: false,
+    });
+
+    expect(transition).toEqual({
+      previousState: null,
+      currentState: 'focused',
+      confidence: 0.85,
+      signalSources: ['intent-classifier'],
+      reason: 'intent classifier selected focused mode',
+    });
+    expect(JSON.stringify(transition)).not.toContain('none');
+    expect(JSON.stringify(transition)).not.toContain('session-active');
+  });
+
+  it('prioritizes resumed-session and explicit-mode reasons deterministically', () => {
+    const resumed = buildSessionTransitionTrace({
+      previousState: 'focused',
+      resumedSession: true,
+      effectiveMode: 'resume',
+      requestedMode: 'auto',
+      detectedIntent: 'find_decision',
+      pressureOverrideApplied: false,
+      queryHeuristicApplied: true,
+    });
+    expect(resumed.signalSources).toEqual([
+      'session-resume',
+      'query-heuristic',
+      'intent-classifier',
+    ]);
+    expect(resumed.confidence).toBe(0.95);
+    expect(resumed.reason).toBe('resumed session inferred resume mode');
+
+    const explicit = buildSessionTransitionTrace({
+      previousState: 'quick',
+      resumedSession: false,
+      effectiveMode: 'deep',
+      requestedMode: 'deep',
+      detectedIntent: 'add_feature',
+      pressureOverrideApplied: false,
+      queryHeuristicApplied: false,
+    });
+    expect(explicit.signalSources).toEqual([
+      'explicit-mode',
+      'intent-classifier',
+    ]);
+    expect(explicit.confidence).toBe(1);
+    expect(explicit.reason).toBe('explicit mode request selected deep mode');
+  });
+
+  it('supports quick-mode trace injection without leaking non-trace metadata', () => {
+    const response = {
+      content: [{
+        type: 'text',
+        text: JSON.stringify({
+          data: {
+            results: [{ id: 1, title: 'Test result' }],
+          },
+          meta: {
+            sessionLifecycle: {},
+          },
+        }),
+      }],
+    };
+
+    const transition = buildSessionTransitionTrace({
+      previousState: null,
+      resumedSession: false,
+      effectiveMode: 'quick',
+      requestedMode: 'quick',
+      detectedIntent: null,
+      pressureOverrideApplied: false,
+      queryHeuristicApplied: false,
+    });
+
+    const traced = attachSessionTransitionTrace(response, transition);
+    const parsed = JSON.parse(traced.content[0].text) as Record<string, unknown>;
+    const result = ((parsed.data as Record<string, unknown>).results as Array<Record<string, unknown>>)[0];
+
+    expect((result.trace as Record<string, unknown>).sessionTransition).toEqual(transition);
+    expect(JSON.stringify(parsed.meta ?? {})).not.toContain('sessionTransition');
+    expect(MEMORY_CONTEXT_SOURCE).toContain('options.sessionTransition = options.includeTrace === true ? sessionTransition : undefined;');
+    expect(MEMORY_CONTEXT_SOURCE).not.toContain('sessionLifecycle.transition');
   });
 });
 

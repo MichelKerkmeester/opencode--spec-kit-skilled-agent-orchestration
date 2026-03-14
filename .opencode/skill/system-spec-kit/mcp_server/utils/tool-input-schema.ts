@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. TOOL INPUT SCHEMA
+// MODULE: Tool Input Schema
 // ───────────────────────────────────────────────────────────────
 import type { ToolDefinition } from '../tool-schemas';
 

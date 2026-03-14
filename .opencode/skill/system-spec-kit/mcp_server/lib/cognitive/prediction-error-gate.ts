@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. PREDICTION ERROR GATE
+// MODULE: Prediction Error Gate
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Prediction-error save arbitration
 import type Database from 'better-sqlite3';
 
 /* ───────────────────────────────────────────────────────────────

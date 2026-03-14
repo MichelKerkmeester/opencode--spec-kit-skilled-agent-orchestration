@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. GROUND TRUTH DATA LOADER
+// MODULE: Ground Truth Data Loader
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Synthetic ground truth corpus
 import groundTruthData from './data/ground-truth.json';
 
 export type IntentType =

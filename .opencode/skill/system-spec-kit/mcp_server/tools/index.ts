@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. INDEX
+// MODULE: Index
 // ───────────────────────────────────────────────────────────────
 // Re-exports all tool dispatch modules for context-server (T303).
 import * as contextTools from './context-tools';

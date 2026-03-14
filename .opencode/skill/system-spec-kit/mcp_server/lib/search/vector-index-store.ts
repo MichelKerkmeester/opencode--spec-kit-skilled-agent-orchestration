@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. VECTOR INDEX STORE
+// MODULE: Vector Index Store
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Hybrid search pipeline
 // SEARCH: VECTOR INDEX
 // TypeScript port of the vector index implementation.
 // DECAY STRATEGY (ADR-004): Search-time temporal decay uses an

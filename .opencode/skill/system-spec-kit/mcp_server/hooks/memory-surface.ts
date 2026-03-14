@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. MEMORY SURFACE
+// MODULE: Memory Surface
 // ───────────────────────────────────────────────────────────────
 // Lib modules
 import * as vectorIndex from '../lib/search/vector-index';

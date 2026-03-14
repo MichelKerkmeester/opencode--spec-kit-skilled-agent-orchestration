@@ -18,10 +18,10 @@ contextType: "decision"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P1 |
-| **Status** | Draft |
+| **Status** | Implemented and verified (100% milestone complete) |
 | **Created** | 2026-03-14 |
 | **Updated** | 2026-03-14 |
-| **Branch** | `main` |
+| **Branch** | `017-markovian-architectures` |
 | **Parent Spec** | `022-hybrid-rag-fusion` |
 | **Intent** | `add_feature` |
 <!-- /ANCHOR:metadata -->
@@ -52,7 +52,7 @@ Define an implementation-ready first milestone that:
 ## 3. SCOPE
 
 ### In Scope
-- Trace-only session state transitions for `memory_context` / `memory_search` response traces.
+- Trace-only session transitions where `memory_context` forwards `sessionTransition` into `memory_search` and `memory_search` injects transition trace data post-cache.
 - Bounded Stage 2 graph-walk score contribution with normalization and restart semantics.
 - Advisory ingestion lifecycle forecasting over current job queue state.
 - Telemetry and provenance expansions so each new signal is inspectable.
@@ -64,14 +64,14 @@ Define an implementation-ready first milestone that:
 - SSM runtime redesign (including Mamba-like runtime integration).
 - Re-enabling retired historical shadow scoring.
 - Reintroducing novelty boost into the hot retrieval path.
-- Full implementation in planning artifacts; this remains planning-phase documentation.
+- Broader rollout-hardening and deterministic rerun coverage beyond the focused first-milestone implementation.
 
 ### Planned Implementation Surface
 
 | Surface | File Path | Planned Change |
 |--------|-----------|----------------|
-| Context handler | `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts` | Infer and emit trace-only transition metadata |
-| Search handler | `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts` | Propagate transition and graph-walk trace fields |
+| Context handler | `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts` | Infer transition metadata and forward `sessionTransition` to `memory_search` (trace-enabled path only) |
+| Search handler | `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts` | Own post-cache transition injection and graph-walk diagnostics/trace propagation |
 | Ingest handler | `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-ingest.ts` | Expose advisory lifecycle forecast payload |
 | Trace formatter | `.opencode/skill/system-spec-kit/mcp_server/formatters/search-results.ts` | Include Markovian trace sections with source attribution |
 | Stage 2 pipeline | `.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion.ts` | Add bounded graph-walk additive contribution |
@@ -91,7 +91,7 @@ Define an implementation-ready first milestone that:
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | Trace-only session transition support | Response trace can report previous state, inferred state, transition confidence, and source signal through existing `includeTrace` / response-trace controls; no live routing override occurs |
+| REQ-001 | Trace-only session transition support | Response trace reports `sessionTransition = { previousState, currentState, confidence, signalSources, reason? }` through existing `includeTrace` / response-trace controls; `previousState` is null on cold start (no sentinel strings), no live routing override occurs, and transition payload is excluded from non-trace metadata |
 | REQ-002 | Bounded Stage 2 graph-walk signal | Graph-walk contribution is additive, capped, flag-guarded, and computed with deterministic normalization/restart behavior |
 | REQ-003 | Deterministic ranking contract preserved | Stage 4 ordering and tie-break behavior remain deterministic with graph-walk enabled and disabled |
 | REQ-004 | Advisory ingestion lifecycle forecasting | Ingest status can return ETA and failure-risk forecasts with confidence/caveat metadata; no blocking failures on sparse data |
@@ -102,8 +102,8 @@ Define an implementation-ready first milestone that:
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-007 | Provenance trace clarity | `includeTrace` output clearly labels transition and graph-walk signal sources |
-| REQ-008 | Telemetry contract | Retrieval telemetry captures graph-walk contribution and transition-inference diagnostics |
+| REQ-007 | Provenance trace clarity | `includeTrace` output clearly labels transition and graph-walk signal sources, and transition payload remains trace-scoped |
+| REQ-008 | Telemetry contract | Retrieval telemetry emits `transitionDiagnostics` and `graphWalkDiagnostics` with stable field names and rollout attribution |
 | REQ-009 | Evaluation baseline | Plan defines baseline/candidate comparisons for ranking quality, determinism, and latency |
 | REQ-010 | Graduation boundary | Adaptive rollout is defined as optional post-milestone progression, not part of base milestone deliverable |
 | REQ-011 | File-level task decomposition | `tasks.md` contains phase-based, file-aware implementation tasks |
@@ -117,17 +117,21 @@ Define an implementation-ready first milestone that:
 
 ### 5.1 Session Transition Trace Contract
 
-Returned only when trace is requested via existing controls (`includeTrace=true` / response-trace controls). No dedicated transition-trace feature flag is introduced in this milestone.
+Wire contract: `sessionTransition = { previousState, currentState, confidence, signalSources, reason? }`.
+
+Returned only when trace is requested via existing controls (`includeTrace=true` / response-trace controls). `memory_context` forwards this payload into `memory_search`, and `memory_search` owns post-cache transition injection. No dedicated transition-trace feature flag is introduced in this milestone.
 
 | Field | Type | Description | Notes |
 |-------|------|-------------|-------|
-| `sessionTransition.previousState` | string \| null | Prior inferred state label | Null for cold start |
-| `sessionTransition.currentState` | string \| null | Current inferred state label | Trace-only, no routing enforcement |
-| `sessionTransition.confidence` | number | Inference confidence in [0, 1] | Clamped and deterministic |
-| `sessionTransition.signalSources` | string[] | Input signals used for inference | No raw sensitive payload |
-| `sessionTransition.reason` | string \| null | Human-readable explanation | Optional when evidence is weak |
+| `previousState` | string \| null | Prior inferred state label | Null for cold start; sentinel strings are not used |
+| `currentState` | string \| null | Current inferred state label | Trace-only, no routing enforcement |
+| `confidence` | number | Inference confidence in [0, 1] | Clamped and deterministic |
+| `signalSources` | string[] | Input signals used for inference | No raw sensitive payload |
+| `reason` | string \| null | Human-readable explanation | Optional when evidence is weak |
 
-### 5.2 Graph-Walk Contribution Contract
+### 5.2 Graph-Walk Diagnostics Contract
+
+Graph diagnostics expose `raw`, `normalized`, `appliedBonus`, `capApplied`, and `rolloutState`.
 
 | Field | Type | Description | Notes |
 |-------|------|-------------|-------|
@@ -135,7 +139,7 @@ Returned only when trace is requested via existing controls (`includeTrace=true`
 | `graphContribution.normalized` | number | Normalized score used for additive contribution | Stable across equal inputs |
 | `graphContribution.appliedBonus` | number | Final additive bonus applied in Stage 2 | Hard-capped by config/flag |
 | `graphContribution.capApplied` | boolean | Whether bonus cap clipped the value | Required for diagnostics |
-| `graphContribution.rolloutState` | string | `off`, `trace_only`, or `bounded_runtime` | Mirrors flag state |
+| `graphContribution.rolloutState` | string | `off`, `trace_only`, or `bounded_runtime` | Resolved via `SPECKIT_GRAPH_WALK_ROLLOUT` |
 
 ### 5.3 Ingestion Lifecycle Forecast Contract
 
@@ -213,7 +217,7 @@ Returned only when trace is requested via existing controls (`includeTrace=true`
 |------|------|--------|------------|
 | Dependency | Research artifacts in this spec folder | Planning loses rationale and guardrails | Keep planning docs linked to refreshed research outputs |
 | Dependency | Existing trace/provenance envelope support | New signals become opaque | Route all new fields through `includeTrace` contracts |
-| Dependency | Numbered feature branch not created (`main`) | Implementation start is blocked by workflow prerequisite | Create numbered branch before `/spec_kit:implement` |
+| Dependency | Numbered feature branch `017-markovian-architectures` | Satisfied for current implementation | Keep follow-up hardening work on this branch until checklist completion |
 | Risk | Stage 2 graph signal destabilizes ranking | Quality regressions and trust loss | Use additive caps, deterministic tests, and rollout gates |
 | Risk | Trace interpretation overreach | Inferred states mistaken for enforced behavior | Keep transition reporting trace-only and clearly labeled |
 | Risk | Forecast confidence noise | Misleading operations guidance | Emit confidence and caveat fields; advisory-only semantics |
@@ -234,7 +238,7 @@ Returned only when trace is requested via existing controls (`includeTrace=true`
 | REQ-004 | `tests/job-queue.vitest.ts`, `tests/job-queue-state-edge.vitest.ts` | Forecast fields degrade safely under sparse/noisy history |
 | REQ-005 | `tests/rollout-policy.vitest.ts`, `tests/adaptive-ranking.vitest.ts` | Flag-off path returns baseline behavior and clean rollback |
 | REQ-007 | `tests/search-results-format.vitest.ts` | Trace output includes source attribution for new fields |
-| REQ-008 | `tests/scoring-observability.vitest.ts` | Telemetry captures graph/transition details without schema breaks |
+| REQ-008 | `tests/retrieval-telemetry.vitest.ts`, `tests/search-flags.vitest.ts` | Telemetry captures transition/graph diagnostics and rollout-state semantics without schema breaks |
 <!-- /ANCHOR:validation -->
 
 ---
@@ -272,7 +276,7 @@ Returned only when trace is requested via existing controls (`includeTrace=true`
 |-----------|-------|-------|
 | Scope | 19/25 | Multiple handlers, Stage 2 fusion, telemetry, and queue forecasting paths |
 | Risk | 17/25 | Determinism and rollback safety are critical to trust and reversibility |
-| Research Translation | 15/20 | Strong prior research, remaining work is contract and rollout precision |
+| Research Translation | 15/20 | Strong prior research with full milestone translation and verification completed |
 | Coordination | 8/10 | Requires synchronized updates across spec/plan/tasks/checklist |
 | **Total** | **59/80** | **Level 2 (high-detail planning)** |
 <!-- /ANCHOR:complexity -->
@@ -282,6 +286,5 @@ Returned only when trace is requested via existing controls (`includeTrace=true`
 <!-- ANCHOR:questions -->
 ## 13. OPEN QUESTIONS
 
-- Should default rollout start in `trace_only` before allowing `bounded_runtime`, or allow direct bounded runtime behind disabled-by-default flag?
-- Should lifecycle forecasts expose two confidences (`etaConfidence`, `failureConfidence`) or keep one confidence plus caveat text?
+- None for this milestone. Future rollout-policy tuning and telemetry-depth expansion belong to later specs.
 <!-- /ANCHOR:questions -->

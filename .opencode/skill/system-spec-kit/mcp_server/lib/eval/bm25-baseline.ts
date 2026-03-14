@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. BM25-ONLY BASELINE RUNNER (T008)
+// MODULE: Bm25-Only Baseline Runner (T008)
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: BM25-only baseline
 //
 // Runs the ground truth query set through the BM25/FTS5-only
 // Search path (disabling vector, graph, and trigger channels)

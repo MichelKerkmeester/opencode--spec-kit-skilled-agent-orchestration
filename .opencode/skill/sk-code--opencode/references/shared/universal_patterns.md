@@ -304,20 +304,25 @@ Carry-over from 139: keep rule constants centralized and test imports referencin
 All files follow a consistent section progression:
 
 ```
-1. Header (shebang for scripts, box-drawing title)
-2. Directives ('use strict', set -euo pipefail)
-3. Imports/Dependencies
-4. Constants/Configuration
-5. Type Definitions (if applicable)
-6. Helper Functions (private/internal)
-7. Main Logic (public API)
-8. Exports (module.exports, __all__)
-9. Main Entry Point (if script)
+Preamble (unnumbered in code):
+- Header (shebang for scripts, box-drawing title)
+- Directives ('use strict', set -euo pipefail)
+
+Numbered code sections:
+1. Imports/Dependencies
+2. Constants/Configuration
+3. Type Definitions (if applicable)
+4. Helper Functions (private/internal)
+5. Main Logic (public API)
+6. Exports (module.exports, __all__)
+7. Main Entry Point (if script)
 ```
 
 ### Section Dividers
 
 Use numbered section dividers to organize code:
+
+The first numbered divider that appears in code starts at `1`. If a file omits imports or another early section, renumber the remaining sections sequentially instead of skipping to `2`.
 
 **JavaScript**:
 ```javascript

@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. ENTITY LINKER
+// MODULE: Entity Linker
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Cross-document entity linking
 // Gated via SPECKIT_ENTITY_LINKING
 // Creates causal edges between memories sharing entities across spec folders.
 import type Database from 'better-sqlite3';
@@ -8,7 +9,8 @@ import { isEntityLinkingEnabled } from './search-flags';
 import { createLogger } from '../utils/logger';
 
 // ───────────────────────────────────────────────────────────────
-// 2. CONSTANTS
+// 1. CONSTANTS
+
 // ───────────────────────────────────────────────────────────────
 /** Maximum causal edges per node to prevent graph density explosion. */
 const MAX_EDGES_PER_NODE = 20;
@@ -21,7 +23,8 @@ const ENTITY_LINKING_MAX_DENSITY_ENV = 'SPECKIT_ENTITY_LINKING_MAX_DENSITY';
 const logger = createLogger('EntityLinker');
 
 // ───────────────────────────────────────────────────────────────
-// 3. INTERFACES
+// 2. INTERFACES
+
 // ───────────────────────────────────────────────────────────────
 export interface EntityMatch {
   canonicalName: string;
@@ -51,7 +54,8 @@ export interface EntityLinkStats {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 4. HELPERS
+// 3. HELPERS
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Normalize entity name: lowercase, strip punctuation, collapse whitespace.
@@ -69,7 +73,8 @@ export function normalizeEntityName(name: string): string {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 5. CORE FUNCTIONS
+// 4. CORE FUNCTIONS
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Build entity catalog from memory_entities table.
@@ -522,7 +527,8 @@ export function runEntityLinking(db: Database.Database): EntityLinkResult {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 6. TEST EXPORTS
+// 5. TEST EXPORTS
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Internal functions exposed for unit testing.

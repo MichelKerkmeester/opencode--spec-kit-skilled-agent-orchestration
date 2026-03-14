@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. MEMORY TRIGGERS
+// MODULE: Memory Triggers
 // ───────────────────────────────────────────────────────────────
 // Shared packages
 import { validateFilePath } from '@spec-kit/shared/utils/path-security';

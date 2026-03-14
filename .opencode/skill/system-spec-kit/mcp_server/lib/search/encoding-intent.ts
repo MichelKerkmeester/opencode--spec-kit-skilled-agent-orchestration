@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. ENCODING INTENT
+// MODULE: Encoding Intent
 // ───────────────────────────────────────────────────────────────
 // Classify content intent for metadata enrichment.
 //

@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. ROLLOUT POLICY
+// MODULE: Rollout Policy
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Feature flag governance
 const DEFAULT_ROLLOUT_PERCENT = 100;
 
 function getRolloutPercent(): number {

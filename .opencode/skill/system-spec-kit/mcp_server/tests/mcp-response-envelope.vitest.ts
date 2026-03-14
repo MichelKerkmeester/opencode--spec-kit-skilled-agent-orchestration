@@ -128,10 +128,11 @@ describe('MCP Protocol Response Envelope (T536)', () => {
           ],
         },
         sessionTransition: {
-          previousState: 'none',
-          inferredState: 'focused',
+          previousState: null,
+          currentState: 'focused',
           confidence: 0.85,
-          sourceSignal: 'intent-classifier',
+          signalSources: ['intent-classifier'],
+          reason: 'intent classifier selected focused mode',
         },
       },
       true
@@ -166,10 +167,11 @@ describe('MCP Protocol Response Envelope (T536)', () => {
     expect(result.trace?.budgetTruncated).toBe(true);
     expect(result.trace?.scoreResolution).toBe('intentAdjusted');
     expect(result.trace?.sessionTransition).toEqual({
-      previousState: 'none',
-      inferredState: 'focused',
+      previousState: null,
+      currentState: 'focused',
       confidence: 0.85,
-      sourceSignal: 'intent-classifier',
+      signalSources: ['intent-classifier'],
+      reason: 'intent classifier selected focused mode',
     });
   });
 

@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. INTERFERENCE SCORING
+// MODULE: Interference Scoring
 // ───────────────────────────────────────────────────────────────
 // Interference scoring calibration
 // Computes interference scores for memories — a measure of how many
@@ -12,7 +12,8 @@ import Database from 'better-sqlite3';
 
 
 // ───────────────────────────────────────────────────────────────
-// 2. TYPES
+// 1. TYPES
+
 // ───────────────────────────────────────────────────────────────
 export interface InterferenceResult {
   memoryId: number;
@@ -21,7 +22,8 @@ export interface InterferenceResult {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 3. CONFIGURATION
+// 2. CONFIGURATION
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Cosine similarity threshold for counting a memory as "interfering".
@@ -39,7 +41,8 @@ export const INTERFERENCE_SIMILARITY_THRESHOLD = 0.75;
 export const INTERFERENCE_PENALTY_COEFFICIENT = -0.08;
 
 // ───────────────────────────────────────────────────────────────
-// 4. TEXT SIMILARITY HEURISTIC
+// 3. TEXT SIMILARITY HEURISTIC
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Compute a simple text similarity score between two texts using
@@ -80,7 +83,8 @@ export function computeTextSimilarity(textA: string, textB: string): number {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 5. CORE COMPUTATION
+// 4. CORE COMPUTATION
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Compute interference score for a single memory.
@@ -241,7 +245,8 @@ export function computeInterferenceScoresBatch(
 }
 
 // ───────────────────────────────────────────────────────────────
-// 6. PENALTY APPLICATION
+// 5. PENALTY APPLICATION
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Apply interference penalty to a composite score.

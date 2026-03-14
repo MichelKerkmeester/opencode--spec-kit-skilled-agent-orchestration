@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. CONTENT NORMALIZER
+// MODULE: Content Normalizer
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Content-aware memory filename generation
 // Smarter memory content generation
 //
 // Purpose: Normalize raw markdown content before it is passed to
@@ -18,7 +19,8 @@
 // → normalizeContentForBM25(content_text)
 //
 // ───────────────────────────────────────────────────────────────
-// 2. PRIMITIVE STRIP / NORMALIZE HELPERS
+// 1. PRIMITIVE STRIP / NORMALIZE HELPERS
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Strip YAML frontmatter block from the top of a markdown file.
@@ -171,7 +173,8 @@ export function normalizeHeadings(content: string): string {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 3. WHITESPACE CLEANUP
+// 2. WHITESPACE CLEANUP
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Collapse runs of blank lines to a single blank line, and trim
@@ -187,7 +190,8 @@ function collapseWhitespace(content: string): string {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 4. PUBLIC COMPOSITE FUNCTIONS
+// 3. PUBLIC COMPOSITE FUNCTIONS
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Normalize markdown content for use in embedding generation.

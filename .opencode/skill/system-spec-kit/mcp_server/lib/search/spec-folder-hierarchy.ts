@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. SPEC FOLDER HIERARCHY
+// MODULE: Spec Folder Hierarchy
 // ───────────────────────────────────────────────────────────────
 // Builds a spec folder hierarchy from stored spec_folder paths
 // And enables hierarchy-aware retrieval (REQ-S6-006).
@@ -14,7 +14,8 @@ import type Database from 'better-sqlite3';
 
 
 // ───────────────────────────────────────────────────────────────
-// 2. HIERARCHY TREE CACHE
+// 1. HIERARCHY TREE CACHE
+
 // ───────────────────────────────────────────────────────────────
 //
 // BuildHierarchyTree does a full scan of spec_folder values on every call.
@@ -43,7 +44,8 @@ export function invalidateHierarchyCache(database: Database.Database): void {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 3. TYPES
+// 2. TYPES
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Node in the spec-folder hierarchy tree.
@@ -64,7 +66,8 @@ export interface HierarchyTree {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 4. TREE CONSTRUCTION
+// 3. TREE CONSTRUCTION
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Build a spec folder hierarchy tree from all spec_folder values in the database.
@@ -151,7 +154,8 @@ function ensureNodeExists(
 }
 
 // ───────────────────────────────────────────────────────────────
-// 5. PATH UTILITIES
+// 4. PATH UTILITIES
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Get the parent path of a spec folder path.
@@ -181,7 +185,8 @@ export function getAncestorPaths(folderPath: string): string[] {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 6. TREE TRAVERSAL
+// 5. TREE TRAVERSAL
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Get all sibling folder paths (same parent) for a given spec folder.
@@ -246,7 +251,8 @@ export function getRelatedFolders(
 }
 
 // ───────────────────────────────────────────────────────────────
-// 7. HIERARCHY-AWARE QUERY
+// 6. HIERARCHY-AWARE QUERY
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Query memories from related spec folders using hierarchy traversal.

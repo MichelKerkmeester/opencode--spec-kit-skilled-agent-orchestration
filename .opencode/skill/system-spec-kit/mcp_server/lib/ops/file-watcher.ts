@@ -1,6 +1,11 @@
 // ───────────────────────────────────────────────────────────────
-// 1. FILE WATCHER
+// MODULE: File Watcher
 // ───────────────────────────────────────────────────────────────
+
+/* ───────────────────────────────────────────────────────────────
+   1. IMPORTS
+──────────────────────────────────────────────────────────────── */
+
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
@@ -8,6 +13,9 @@ import { createHash } from 'node:crypto';
 // Feature catalog: Real-time filesystem watching with chokidar
 // Feature catalog: Watcher delete/rename cleanup
 
+/* ───────────────────────────────────────────────────────────────
+   2. TYPES
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Describes the WatcherConfig shape.
@@ -27,6 +35,10 @@ export interface FSWatcher {
   close: () => Promise<void>;
 }
 
+/* ───────────────────────────────────────────────────────────────
+   3. CONSTANTS
+──────────────────────────────────────────────────────────────── */
+
 const DEFAULT_DEBOUNCE_MS = 2000;
 const RETRY_DELAYS_MS = [1000, 2000, 4000];
 const MAX_BUSY_RETRIES = RETRY_DELAYS_MS.length;
@@ -42,6 +54,10 @@ export function getWatcherMetrics(): { filesReindexed: number; avgReindexTimeMs:
     avgReindexTimeMs: filesReindexed > 0 ? Math.round(totalReindexTimeMs / filesReindexed) : 0,
   };
 }
+
+/* ───────────────────────────────────────────────────────────────
+   4. HELPERS
+──────────────────────────────────────────────────────────────── */
 
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -107,6 +123,10 @@ async function withBusyRetry(operation: () => Promise<void>): Promise<void> {
     }
   }
 }
+
+/* ───────────────────────────────────────────────────────────────
+   5. WATCHER CORE
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Provides the startFileWatcher helper.
@@ -346,6 +366,10 @@ export function startFileWatcher(config: WatcherConfig): FSWatcher {
 
   return watcher;
 }
+
+/* ───────────────────────────────────────────────────────────────
+   6. EXPORTS
+──────────────────────────────────────────────────────────────── */
 
 /**
  * Defines the __testables constant.

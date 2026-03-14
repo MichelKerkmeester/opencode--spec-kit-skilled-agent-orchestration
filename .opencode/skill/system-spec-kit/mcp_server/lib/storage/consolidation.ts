@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. N3-LITE CONSOLIDATION ENGINE
+// MODULE: N3-Lite Consolidation Engine
 // ───────────────────────────────────────────────────────────────
 // Lightweight graph maintenance: contradiction scan, Hebbian
 // Strengthening, staleness detection, edge bounds enforcement.

@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. CHUNK THINNING
+// MODULE: Chunk Thinning
 // ───────────────────────────────────────────────────────────────
 // Scores chunks by anchor presence + content density, then
 // Applies a thinning threshold to drop low-quality chunks.

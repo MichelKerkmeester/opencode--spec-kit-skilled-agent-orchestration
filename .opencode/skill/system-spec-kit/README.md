@@ -197,6 +197,8 @@ The cognitive memory engine. It provides 28 MCP tools over stdio for semantic se
 - Multi-query RAG fusion with domain vocabulary expansion
 - All feature flags default to enabled via `isFeatureEnabled()`
 
+All source files carry standardized `// MODULE: Name` headers and `// Feature catalog: <feature-name>` annotations for bidirectional traceability with the [feature catalog](./feature_catalog/feature_catalog.md).
+
 See [mcp_server/README.md](./mcp_server/README.md) for full architecture, configuration and API reference.
 
 ### Scripts (`scripts/`)

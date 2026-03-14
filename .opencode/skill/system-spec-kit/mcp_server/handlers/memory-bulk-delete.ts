@@ -1,5 +1,5 @@
 // ────────────────────────────────────────────────────────────────
-// 1. MEMORY BULK DELETE 
+// MODULE: Memory Bulk Delete
 // ────────────────────────────────────────────────────────────────
 // Tier-based bulk deletion of memories with safety gates.
 // Eliminates the need for direct DB scripts when cleaning up

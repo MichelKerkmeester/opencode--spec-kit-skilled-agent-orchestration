@@ -168,7 +168,7 @@ Commands are invoked with `/command_name` syntax in the chat interface.
 - `/memory:save`: Save session context to memory files (auto-indexed)
 - `/memory:continue`: Crash recovery and context restoration
 - `/memory:manage`: Memory database maintenance (stats, health, cleanup, checkpoints)
-- `/memory:learn`: Explicit learning from mistakes with stability penalties
+- `/memory:learn`: Constitutional memory manager for durable always-surface rules
 - `/memory:context`: Unified context retrieval with intent-aware routing
 
 ### Create Commands (`/create:*`)

@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// MODULE: Spec Folder Extractor
+// ---------------------------------------------------------------
+
 // ───────────────────────────────────────────────────────────────
 // 1. SPEC FOLDER EXTRACTOR
 // ───────────────────────────────────────────────────────────────
@@ -352,7 +356,7 @@ export async function extractSpecFolderContext(specFolderPath: string): Promise<
 
   return {
     observations: cappedObservations,
-    FILES: dedupe(spec.files.map((file) => JSON.stringify(file))).map((file) => JSON.parse(file) as SpecFolderExtraction['FILES'][number]),
+    FILES: [...new Map(spec.files.map((f) => [f.FILE_PATH, f])).values()],
     recentContext: summary ? [{
       learning: plan.summary || summary,
       request: cleanText([plan.phaseTitle, ...plan.nextActions].filter(Boolean).join(' | ')) || 'Review spec folder context',

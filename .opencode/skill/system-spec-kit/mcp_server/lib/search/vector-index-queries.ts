@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. VECTOR INDEX QUERIES
+// MODULE: Vector Index Queries
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Hybrid search pipeline
 // Split from vector-index-store.ts — contains ALL query/search functions,
 // Content extraction, ranking, stats, cleanup, and integrity checks.
 

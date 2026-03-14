@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. TYPE INFERENCE
+// MODULE: Type Inference
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Content-aware memory filename generation
 import {
   MEMORY_TYPES,
   PATH_TYPE_PATTERNS,
@@ -12,7 +13,8 @@ import {
 import type { MemoryTypeName, MemoryTypeConfig } from './memory-types';
 
 // ───────────────────────────────────────────────────────────────
-// 2. TYPES
+// 1. TYPES
+
 // ───────────────────────────────────────────────────────────────
 interface InferMemoryTypeParams {
   filePath?: string;
@@ -49,7 +51,8 @@ interface MemoryForBatchInference {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 3. IMPORTANCE TIER TO TYPE MAPPING
+// 2. IMPORTANCE TIER TO TYPE MAPPING
+
 // ───────────────────────────────────────────────────────────────
 const TIER_TO_TYPE_MAP: Readonly<Record<string, MemoryTypeName>> = {
   constitutional: 'meta-cognitive',  // Rules that never decay
@@ -61,7 +64,8 @@ const TIER_TO_TYPE_MAP: Readonly<Record<string, MemoryTypeName>> = {
 } as const;
 
 // ───────────────────────────────────────────────────────────────
-// 4. TYPE INFERENCE FROM FILE PATH
+// 3. TYPE INFERENCE FROM FILE PATH
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Provides the inferTypeFromPath helper.
@@ -84,7 +88,8 @@ export function inferTypeFromPath(filePath: string | null | undefined): MemoryTy
 }
 
 // ───────────────────────────────────────────────────────────────
-// 5. TYPE INFERENCE FROM FRONTMATTER
+// 4. TYPE INFERENCE FROM FRONTMATTER
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Provides the extractExplicitType helper.
@@ -133,7 +138,8 @@ export function inferTypeFromTier(content: string | null | undefined): MemoryTyp
 }
 
 // ───────────────────────────────────────────────────────────────
-// 6. TYPE INFERENCE FROM KEYWORDS
+// 5. TYPE INFERENCE FROM KEYWORDS
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Provides the inferTypeFromKeywords helper.
@@ -194,7 +200,8 @@ export function inferTypeFromKeywords(
 }
 
 // ───────────────────────────────────────────────────────────────
-// 7. MAIN INFERENCE FUNCTION
+// 6. MAIN INFERENCE FUNCTION
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Provides the inferMemoryType helper.
@@ -286,7 +293,8 @@ export function inferMemoryTypesBatch(
 }
 
 // ───────────────────────────────────────────────────────────────
-// 8. UTILITY FUNCTIONS
+// 7. UTILITY FUNCTIONS
+
 // ───────────────────────────────────────────────────────────────
 const SOURCE_EXPLANATIONS: Record<string, string> = {
   frontmatter_explicit: 'Explicit memory_type field in YAML frontmatter',

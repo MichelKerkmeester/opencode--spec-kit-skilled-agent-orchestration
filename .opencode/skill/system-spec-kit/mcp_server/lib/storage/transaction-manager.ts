@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. TRANSACTION MANAGER
+// MODULE: Transaction Manager
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Transaction wrappers on mutation handlers
 // Atomic file + index operations with pending file recovery
 import type Database from 'better-sqlite3';
 import * as fs from 'fs';

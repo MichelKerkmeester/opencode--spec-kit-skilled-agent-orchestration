@@ -301,7 +301,7 @@ Agent file: `[runtime_agent_path]/debug.md`
 
 After resolution:
 - Run: `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js [spec-folder-path]`
-- Consider `/memory:save` and `/memory:learn` to capture debugging insights
+- Consider `/memory:save` for debugging context and `/memory:learn` for durable repo-wide debugging rules
 - debug-delegation.md serves as memory for the spec folder
 
 ---
@@ -326,6 +326,6 @@ After resolution: Return to the original workflow step that triggered debugging.
 | Issue needs more analysis      | `/spec_kit:debug` (retry)              | Fresh perspective               |
 | Want to save debugging context | `/memory:save [spec-folder-path]`      | Preserve debugging insights     |
 | Debugging session complete     | `/spec_kit:handover [spec-folder-path]`| Document for future reference   |
-| Record lessons learned         | `/memory:learn [description]`          | Capture learning from debugging |
+| Record lasting debugging rule | `/memory:learn [rule]`                 | Save a constitutional rule from debugging |
 
 **ALWAYS** end with: "What would you like to do next?"

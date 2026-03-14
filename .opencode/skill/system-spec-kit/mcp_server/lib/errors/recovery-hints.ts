@@ -1,9 +1,11 @@
 // ───────────────────────────────────────────────────────────────
-// 1. RECOVERY HINTS
+// MODULE: Recovery Hints
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Guards and edge cases
 // Error catalog with recovery hints (REQ-004, REQ-009)
 // ───────────────────────────────────────────────────────────────
-// 2. TYPES
+// 1. TYPES
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Defines the Severity type.
@@ -31,7 +33,8 @@ export type RecoveryHintMap = Record<string, RecoveryHint>;
 export type ToolSpecificHintMap = Record<string, Record<string, RecoveryHint>>;
 
 // ───────────────────────────────────────────────────────────────
-// 3. ERROR CODES CATALOG
+// 2. ERROR CODES CATALOG
+
 // ───────────────────────────────────────────────────────────────
 //
 // Organized by category for maintainability.
@@ -125,7 +128,8 @@ export type ErrorCodeKey = keyof typeof ERROR_CODES;
 export type ErrorCodeValue = (typeof ERROR_CODES)[ErrorCodeKey];
 
 // ───────────────────────────────────────────────────────────────
-// 4. RECOVERY HINTS CATALOG
+// 3. RECOVERY HINTS CATALOG
+
 // ───────────────────────────────────────────────────────────────
 //
 // Each error code has specific recovery guidance.
@@ -638,7 +642,8 @@ export const RECOVERY_HINTS: RecoveryHintMap = {
 };
 
 // ───────────────────────────────────────────────────────────────
-// 5. DEFAULT HINT (REQ-009)
+// 4. DEFAULT HINT (REQ-009)
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Defines the DEFAULT_HINT constant.
@@ -655,7 +660,8 @@ export const DEFAULT_HINT: RecoveryHint = {
 };
 
 // ───────────────────────────────────────────────────────────────
-// 6. TOOL-SPECIFIC HINTS
+// 5. TOOL-SPECIFIC HINTS
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Defines the TOOL_SPECIFIC_HINTS constant.
@@ -809,7 +815,8 @@ export function getRecoveryHint(toolName: string, errorCode: string): RecoveryHi
 }
 
 // ───────────────────────────────────────────────────────────────
-// 7. HELPER FUNCTIONS
+// 6. HELPER FUNCTIONS
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Check if a specific hint exists (not default).

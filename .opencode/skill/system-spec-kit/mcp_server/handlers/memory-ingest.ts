@@ -1,6 +1,11 @@
 // ───────────────────────────────────────────────────────────────
-// 1. MEMORY INGEST HANDLERS
+// MODULE: Memory Ingest Handlers
 // ───────────────────────────────────────────────────────────────
+
+/* ───────────────────────────────────────────────────────────────
+   1. IMPORTS
+──────────────────────────────────────────────────────────────── */
+
 import { randomBytes } from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -17,12 +22,16 @@ import {
   getIngestForecast,
   type IngestJob,
 } from '../lib/ops/job-queue';
+import * as retrievalTelemetry from '../lib/telemetry/retrieval-telemetry';
 
 import type { MCPResponse } from './types';
 
 // Feature catalog: Async ingestion job lifecycle
 // Feature catalog: Workspace scanning and indexing (memory_index_scan)
 
+/* ───────────────────────────────────────────────────────────────
+   2. TYPES
+──────────────────────────────────────────────────────────────── */
 
 interface MemoryIngestStartArgs {
   paths: string[];
@@ -37,7 +46,15 @@ interface MemoryIngestCancelArgs {
   jobId: string;
 }
 
+/* ───────────────────────────────────────────────────────────────
+   3. CONSTANTS
+──────────────────────────────────────────────────────────────── */
+
 const MAX_PATH_LENGTH = 500;
+
+/* ───────────────────────────────────────────────────────────────
+   4. HELPERS
+──────────────────────────────────────────────────────────────── */
 
 function hasTraversalSegment(inputPath: string): boolean {
   return inputPath.split(/[\\/]+/).includes('..');
@@ -72,6 +89,19 @@ function mapJobForResponse(job: IngestJob): Record<string, unknown> {
       caveat: `Forecast unavailable: ${message}`,
     };
   }
+
+  let telemetryPayload: Record<string, unknown> | undefined;
+  if (retrievalTelemetry.isExtendedTelemetryEnabled()) {
+    const telemetry = retrievalTelemetry.createTelemetry();
+    retrievalTelemetry.recordLifecycleForecastDiagnostics(telemetry, forecast, {
+      state: job.state,
+      progress: getIngestProgressPercent(job),
+      filesProcessed: job.filesProcessed,
+      filesTotal: job.filesTotal,
+    });
+    telemetryPayload = retrievalTelemetry.toJSON(telemetry);
+  }
+
   return {
     jobId: job.id,
     state: job.state,
@@ -87,8 +117,13 @@ function mapJobForResponse(job: IngestJob): Record<string, unknown> {
     createdAt: job.createdAt,
     updatedAt: job.updatedAt,
     forecast: forecast as unknown as Record<string, unknown>,
+    ...(telemetryPayload ? { _telemetry: telemetryPayload } : {}),
   };
 }
+
+/* ───────────────────────────────────────────────────────────────
+   5. HANDLERS
+──────────────────────────────────────────────────────────────── */
 
 async function handleMemoryIngestStart(args: MemoryIngestStartArgs): Promise<MCPResponse> {
   await checkDatabaseUpdated();
@@ -278,6 +313,10 @@ async function handleMemoryIngestCancel(args: MemoryIngestCancelArgs): Promise<M
     data: mapJobForResponse(cancelled),
   });
 }
+
+/* ───────────────────────────────────────────────────────────────
+   6. EXPORTS
+──────────────────────────────────────────────────────────────── */
 
 const handle_memory_ingest_start = handleMemoryIngestStart;
 const handle_memory_ingest_status = handleMemoryIngestStatus;

@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. ARTIFACT ROUTING
+// MODULE: Artifact Routing
 // ───────────────────────────────────────────────────────────────
 // Splits retrieval strategy by artifact class for class-specific
 // Retrieval policies with deterministic branch behavior.

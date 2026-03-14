@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. ANCHOR CHUNKER
+// MODULE: Anchor Chunker
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Anchor-aware chunk thinning
 // Splits large memory files into chunks using ANCHOR tags as
 // Natural boundaries. Falls back to structure-aware markdown
 // Splitting when anchors are absent.

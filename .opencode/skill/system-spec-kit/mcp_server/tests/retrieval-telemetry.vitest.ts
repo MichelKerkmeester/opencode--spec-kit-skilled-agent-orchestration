@@ -8,6 +8,9 @@ import {
   recordArchitecturePhase,
   recordQualityProxy,
   recordTracePayload,
+  recordTransitionDiagnostics,
+  recordGraphWalkDiagnostics,
+  recordLifecycleForecastDiagnostics,
   computeQualityProxy,
   toJSON,
   isExtendedTelemetryEnabled,
@@ -18,17 +21,44 @@ type TelemetryJson = ReturnType<typeof toJSON> & {
   mode?: { selectedMode?: string | null; apiKey?: unknown };
   fallback?: { authorization?: unknown };
   quality?: { resultCount?: number; password?: unknown };
-  tracePayload?: {
-    traceId?: string;
-    totalDurationMs?: number;
-    finalResultCount?: number;
-    query?: unknown;
+    tracePayload?: {
+      traceId?: string;
+      totalDurationMs?: number;
+      finalResultCount?: number;
+      query?: unknown;
     sessionId?: unknown;
     token?: unknown;
-    apiKey?: unknown;
-    stages?: Array<Record<string, unknown>>;
+      apiKey?: unknown;
+      stages?: Array<Record<string, unknown>>;
+    };
+    transitionDiagnostics?: {
+      previousState?: string | null;
+      currentState?: string | null;
+      confidence?: number;
+      signalSources?: string[];
+      reason?: string;
+    };
+    graphWalkDiagnostics?: {
+      rolloutState?: string;
+      rowsWithGraphContribution?: number;
+      rowsWithAppliedBonus?: number;
+      capAppliedCount?: number;
+      maxRaw?: number;
+      maxNormalized?: number;
+      maxAppliedBonus?: number;
+    };
+    lifecycleForecastDiagnostics?: {
+      state?: string | null;
+      progress?: number;
+      filesProcessed?: number;
+      filesTotal?: number;
+      etaSeconds?: number | null;
+      etaConfidence?: number | null;
+      failureRisk?: number | null;
+      riskSignals?: string[];
+      caveat?: string;
+    };
   };
-};
 
 type TelemetryWithExtras = Omit<
   ReturnType<typeof createTelemetry>,
@@ -448,5 +478,82 @@ describe('C136-12: retrieval-telemetry', () => {
 
     const json = toJSON(t) as TelemetryJson;
     expect(json.tracePayload).toBeUndefined();
+  });
+
+  it('T12: transition diagnostics serialize the spec contract', () => {
+    const t = createEnabledTelemetry();
+    recordTransitionDiagnostics(t, {
+      previousState: null,
+      currentState: 'focused',
+      confidence: 0.85,
+      signalSources: ['intent-classifier'],
+      reason: 'intent classifier selected focused mode',
+    });
+
+    const json = toJSON(t) as TelemetryJson;
+    expect(json.transitionDiagnostics).toEqual({
+      previousState: null,
+      currentState: 'focused',
+      confidence: 0.85,
+      signalSources: ['intent-classifier'],
+      reason: 'intent classifier selected focused mode',
+    });
+  });
+
+  it('T12b: graph-walk diagnostics serialize bounded rollout metrics', () => {
+    const t = createEnabledTelemetry();
+    recordGraphWalkDiagnostics(t, {
+      rolloutState: 'bounded_runtime',
+      rowsWithGraphContribution: 3,
+      rowsWithAppliedBonus: 2,
+      capAppliedCount: 0,
+      maxRaw: 2.5,
+      maxNormalized: 1,
+      maxAppliedBonus: 0.03,
+    });
+
+    const json = toJSON(t) as TelemetryJson;
+    expect(json.graphWalkDiagnostics).toEqual({
+      rolloutState: 'bounded_runtime',
+      rowsWithGraphContribution: 3,
+      rowsWithAppliedBonus: 2,
+      capAppliedCount: 0,
+      maxRaw: 2.5,
+      maxNormalized: 1,
+      maxAppliedBonus: 0.03,
+    });
+  });
+
+  it('T12c: lifecycle forecast diagnostics clamp and serialize ingest telemetry', () => {
+    const t = createEnabledTelemetry();
+    recordLifecycleForecastDiagnostics(
+      t,
+      {
+        etaSeconds: 45,
+        etaConfidence: 1.5,
+        failureRisk: -1,
+        riskSignals: ['queue_backlog', 7, null],
+        caveat: 'eta derived from moving average',
+      },
+      {
+        state: 'indexing',
+        progress: 101,
+        filesProcessed: 3.8,
+        filesTotal: 8.2,
+      },
+    );
+
+    const json = toJSON(t) as TelemetryJson;
+    expect(json.lifecycleForecastDiagnostics).toEqual({
+      state: 'indexing',
+      progress: 100,
+      filesProcessed: 3,
+      filesTotal: 8,
+      etaSeconds: 45,
+      etaConfidence: 1,
+      failureRisk: 0,
+      riskSignals: ['queue_backlog'],
+      caveat: 'eta derived from moving average',
+    });
   });
 });

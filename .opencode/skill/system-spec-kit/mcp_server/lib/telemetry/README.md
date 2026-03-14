@@ -75,7 +75,7 @@ telemetry/
 
 | File | Purpose |
 |------|---------|
-| `retrieval-telemetry.ts` | Defines `RetrievalTelemetry`, `LatencyMetrics`, `ModeMetrics`, `FallbackMetrics`, `QualityMetrics`, `ArchitectureMetrics`, `GraphHealthMetrics`, and `AdaptiveMetrics`; exposes collection helpers |
+| `retrieval-telemetry.ts` | Defines `RetrievalTelemetry`, `LatencyMetrics`, `ModeMetrics`, `FallbackMetrics`, `QualityMetrics`, `ArchitectureMetrics`, `GraphHealthMetrics`, `AdaptiveMetrics`, `GraphWalkDiagnostics`, `LifecycleForecastDiagnostics`, and transition diagnostics support; exposes collection helpers |
 | `scoring-observability.ts` | Sampled (5%) observability logging for N4 cold-start boost and TM-01 interference penalty values; SQLite-backed `scoring_observations` table |
 | `trace-schema.ts` | Canonical schema and runtime validation for `TelemetryTracePayload`; sanitizes unknown/sensitive fields from trace data |
 | `consumption-logger.ts` | Logs agent consumption events (`search`, `context`, `triggers`) to SQLite `consumption_log` table; pattern detection for zero-result, high-frequency, and intent-mismatch queries |
@@ -120,6 +120,9 @@ When `SPECKIT_EXTENDED_TELEMETRY` is disabled (default), the minimal `RetrievalT
 | `architecture` | `ArchitectureMetrics` | Memory-roadmap phase and capability state for the run |
 | `graphHealth` | `GraphHealthMetrics` | Graph-signal injection and rollback-gate state for the run |
 | `adaptive` | `AdaptiveMetrics` | Adaptive shadow/promoted evaluation summary for the run |
+| `transitionDiagnostics` | `SessionTransitionTrace \| undefined` | Optional spec-shaped session transition diagnostics captured for trace-enabled retrievals |
+| `graphWalkDiagnostics` | `GraphWalkDiagnostics \| undefined` | Optional graph-walk rollout and contribution diagnostics captured for retrieval observability |
+| `lifecycleForecastDiagnostics` | `LifecycleForecastDiagnostics \| undefined` | Optional ingest forecast diagnostics captured when lifecycle telemetry instrumentation is enabled |
 | `tracePayload` | `TelemetryTracePayload \| undefined` | Optional canonical retrieval trace payload |
 
 ### LatencyMetrics
@@ -211,6 +214,48 @@ When `SPECKIT_EXTENDED_TELEMETRY` is disabled (default), the minimal `RetrievalT
 | `demotedCount` | `number` | Count of rows proposed to move downward |
 | `bounded` | `boolean` | Whether bounded-update safeguards remained active |
 | `maxDeltaApplied` | `number` | Largest score delta the adaptive proposal was allowed to apply |
+
+### GraphWalkDiagnostics
+
+**Purpose**: Summarize graph-walk rollout semantics and bounded contribution diagnostics for a retrieval run.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `rolloutState` | `'off' \| 'trace_only' \| 'bounded_runtime'` | Effective graph-walk rollout state for the run |
+| `rowsWithGraphContribution` | `number` | Count of rows carrying graph-walk diagnostics |
+| `rowsWithAppliedBonus` | `number` | Count of rows that received a non-zero applied graph bonus |
+| `capAppliedCount` | `number` | Count of rows where the graph bonus was actually clipped by the cap |
+| `maxRaw` | `number` | Maximum raw pre-normalization graph-walk value observed in the run |
+| `maxNormalized` | `number` | Maximum normalized graph-walk value observed in the run |
+| `maxAppliedBonus` | `number` | Maximum bounded graph bonus applied in the run |
+
+### Transition Diagnostics
+
+**Purpose**: Persist the spec-shaped session transition trace contract into retrieval telemetry when trace-enabled search paths emit transition metadata.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `previousState` | `string \| null` | Prior inferred state label, nullable on cold start |
+| `currentState` | `string \| null` | Current inferred state label |
+| `confidence` | `number` | Clamped transition confidence in the range `[0, 1]` |
+| `signalSources` | `string[]` | Deterministic list of signal sources used for the transition inference |
+| `reason` | `string \| undefined` | Optional human-readable explanation for the inferred transition |
+
+### LifecycleForecastDiagnostics
+
+**Purpose**: Capture optional ingest lifecycle forecast telemetry without making forecast generation a blocking path.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `state` | `string \| null` | Current ingest job state associated with the forecast |
+| `progress` | `number` | Progress percentage clamped to `0-100` |
+| `filesProcessed` | `number` | Count of files processed so far |
+| `filesTotal` | `number` | Total files scheduled for the ingest job |
+| `etaSeconds` | `number \| null` | Advisory ETA in seconds |
+| `etaConfidence` | `number \| null` | Confidence in the ETA estimate clamped to `[0,1]` |
+| `failureRisk` | `number \| null` | Advisory failure-risk estimate clamped to `[0,1]` |
+| `riskSignals` | `string[]` | Safe summary labels contributing to the forecast |
+| `caveat` | `string \| undefined` | Optional caveat when forecast quality is limited or unavailable |
 
 ### TraceSamplingOptions
 

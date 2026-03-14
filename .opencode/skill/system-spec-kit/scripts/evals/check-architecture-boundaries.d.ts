@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. ARCHITECTURE BOUNDARY CHECK TYPES
+// MODULE: Architecture Boundary Check Types
 // ───────────────────────────────────────────────────────────────
 // Public declaration surface for architecture-boundary audit helpers.
 

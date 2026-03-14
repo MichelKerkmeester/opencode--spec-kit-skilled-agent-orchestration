@@ -89,6 +89,8 @@ Use consistent labels in headers:
 Every significant file should have numbered sections:
 
 - Keep section titles uppercase and numbered (non-regression): `## 1. IMPORTS`, `## 2. CONSTANTS`.
+- Do not count file headers, shebangs, module banners, docstrings, or strict-mode directives as numbered sections.
+- Start at `1` for the first numbered code section that actually appears, then increment sequentially from the sections present in that file.
 - Do not convert these headers to sentence case or unnumbered variants.
 
 ```javascript

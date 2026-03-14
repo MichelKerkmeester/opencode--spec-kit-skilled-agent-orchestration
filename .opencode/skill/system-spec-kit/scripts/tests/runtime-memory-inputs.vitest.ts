@@ -72,6 +72,86 @@ describe('loadCollectedData explicit data-file handling', () => {
   });
 });
 
+describe('valid explicit dataFile happy path', () => {
+  beforeEach(() => {
+    vi.resetModules();
+    captureConversation.mockClear();
+  });
+
+  it('loads and normalizes a valid explicit dataFile successfully', async () => {
+    const validFile = path.join(os.tmpdir(), `valid-${Date.now()}.json`);
+    await fs.writeFile(validFile, JSON.stringify({
+      specFolder: '022-hybrid-rag-fusion/014-outsourced-agent-memory',
+      sessionSummary: 'Completed runtime hardening.',
+      nextSteps: ['Update documentation.'],
+    }), 'utf-8');
+
+    try {
+      const { loadCollectedData } = await import('../loaders/data-loader');
+      const result = await loadCollectedData({
+        dataFile: validFile,
+        specFolderArg: '022-hybrid-rag-fusion/014-outsourced-agent-memory',
+      });
+
+      expect(result._source).toBe('file');
+      expect(result.observations).toBeDefined();
+      expect(Array.isArray(result.observations)).toBe(true);
+      expect(captureConversation).not.toHaveBeenCalled();
+    } finally {
+      await fs.rm(validFile, { force: true });
+    }
+  });
+});
+
+describe('path traversal security', () => {
+  beforeEach(() => {
+    vi.resetModules();
+    captureConversation.mockClear();
+  });
+
+  it('rejects a dataFile path that attempts directory traversal', async () => {
+    const { loadCollectedData } = await import('../loaders/data-loader');
+
+    await expect(loadCollectedData({
+      dataFile: '../../etc/passwd',
+      specFolderArg: '022-hybrid-rag-fusion/014-outsourced-agent-memory',
+    })).rejects.toThrow(/Security|Path outside allowed directories/);
+
+    expect(captureConversation).not.toHaveBeenCalled();
+  });
+});
+
+describe('FILES field transformation', () => {
+  it('transforms path/description fields to FILE_PATH/DESCRIPTION in structured payloads', () => {
+    const normalized = normalizeInputData({
+      specFolder: '022-hybrid-rag-fusion/014-outsourced-agent-memory',
+      observations: [{
+        type: 'feature',
+        title: 'Test payload',
+        narrative: 'Testing FILES transformation',
+        facts: [],
+      }],
+      userPrompts: [{
+        prompt: 'Test structured save',
+        timestamp: '2026-03-14T10:00:00.000Z',
+      }],
+      recentContext: [{
+        request: 'Test FILES field',
+        learning: 'Verifying field mapping.',
+      }],
+      FILES: [
+        { path: 'src/index.ts', description: 'Entry point' } as unknown as import('../utils/input-normalizer').FileEntry,
+        { FILE_PATH: 'src/utils.ts', DESCRIPTION: 'Utility functions' },
+      ],
+    });
+
+    expect(normalized.FILES).toEqual([
+      { FILE_PATH: 'src/index.ts', DESCRIPTION: 'Entry point' },
+      { FILE_PATH: 'src/utils.ts', DESCRIPTION: 'Utility functions' },
+    ]);
+  });
+});
+
 describe('manual next-steps normalization', () => {
   it('preserves nextSteps through normalization into NEXT_ACTION without overwriting the summary', async () => {
     const normalized = normalizeInputData({
@@ -151,5 +231,45 @@ describe('manual next-steps normalization', () => {
     );
 
     expect(nextStepObservations).toHaveLength(1);
+  });
+
+  it('produces no Next Steps observation when nextSteps is an empty array', () => {
+    const normalized = normalizeInputData({
+      specFolder: '022-hybrid-rag-fusion/014-outsourced-agent-memory',
+      sessionSummary: 'Session with no next steps.',
+      nextSteps: [],
+    });
+
+    const nextStepObs = normalized.observations.filter((obs) => obs.title === 'Next Steps');
+    expect(nextStepObs).toHaveLength(0);
+  });
+
+  it('prefers camelCase nextSteps when both nextSteps and next_steps are present', () => {
+    const normalized = normalizeInputData({
+      specFolder: '022-hybrid-rag-fusion/014-outsourced-agent-memory',
+      sessionSummary: 'Both fields present.',
+      nextSteps: ['camelCase wins.'],
+      next_steps: ['snake_case loses.'],
+    });
+
+    const lastObs = normalized.observations.at(-1);
+    expect(lastObs).toMatchObject({
+      title: 'Next Steps',
+      facts: ['Next: camelCase wins.'],
+    });
+  });
+
+  it('documents behavior when the first next step is an empty string', () => {
+    const normalized = normalizeInputData({
+      specFolder: '022-hybrid-rag-fusion/014-outsourced-agent-memory',
+      sessionSummary: 'Edge case: empty first step.',
+      nextSteps: ['', 'Second step is real.'],
+    });
+
+    const lastObs = normalized.observations.at(-1);
+    expect(lastObs).toMatchObject({
+      title: 'Next Steps',
+      facts: ['Next: ', 'Follow-up: Second step is real.'],
+    });
   });
 });

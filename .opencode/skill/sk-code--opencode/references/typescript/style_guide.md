@@ -116,7 +116,7 @@ Two formats are acceptable. Use either consistently within a single file.
 
 ```typescript
 /* ───────────────────────────────────────────────────────────────
-   2. SECTION NAME
+   1. SECTION NAME
 ──────────────────────────────────────────────────────────────── */
 ```
 
@@ -135,7 +135,9 @@ Both formats serve the same purpose: visual separation of major code sections wi
 
 **Key difference from JavaScript**: TypeScript files include a TYPE DEFINITIONS section (section 2) between imports and constants. This is where all interfaces, type aliases, and enums are defined.
 
-### TYPE DEFINITIONS Section Example
+Number sections from the first divider actually present in the file. File headers and module banners do not count, so a file whose first numbered divider is `TYPE DEFINITIONS` should label that divider `1`, not `2`.
+
+### TYPE DEFINITIONS Section Example (when IMPORTS is present as section 1)
 
 ```typescript
 // ───────────────────────────────────────────────────────────────────

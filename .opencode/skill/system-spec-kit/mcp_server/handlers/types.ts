@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. HANDLER TYPES
+// MODULE: Handler Types
 // ───────────────────────────────────────────────────────────────
 // Re-exports canonical types from shared/ for handler convenience.
 // Previously declared duplicates locally — now imports from the

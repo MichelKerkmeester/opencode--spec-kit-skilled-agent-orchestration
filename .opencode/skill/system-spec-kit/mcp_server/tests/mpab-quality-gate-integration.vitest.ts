@@ -42,6 +42,11 @@ import {
   getChannelAttribution,
 } from '../lib/eval/channel-attribution';
 import type { ChannelSources } from '../lib/eval/channel-attribution';
+import {
+  runShadowScoring,
+  logShadowComparison,
+  getShadowStats,
+} from '../lib/eval/shadow-scoring';
 
 // Feature flags from search-flags
 import {
@@ -475,15 +480,43 @@ describe('Sprint 4 Integration: Shadow Scoring + Channel Attribution', () => {
 
   it('S4-INT-13: Shadow scoring always disabled (REMOVED flag)', withEnvVars(
     { SPECKIT_SHADOW_SCORING: 'true' },
-    () => {
-      // IsShadowScoringEnabled removed — shadow scoring permanently disabled
+    async () => {
+      const comparison = await runShadowScoring(
+        'shadow test',
+        [{ memoryId: 1, score: 0.9, rank: 1 }],
+        {
+          algorithmName: 'shadow-v2',
+          shadowScoringFn: () => [{ memoryId: 1, score: 0.95, rank: 1 }],
+        },
+      );
+
+      expect(comparison).toBeNull();
     },
   ));
 
   it('S4-INT-14: Shadow scoring disabled when flag is OFF (REMOVED)', withEnvVars(
     { SPECKIT_SHADOW_SCORING: undefined },
     () => {
-      // IsShadowScoringEnabled removed — shadow scoring permanently disabled
+      const baselineStats = getShadowStats();
+      const logged = logShadowComparison({
+        timestamp: '2026-03-14T00:00:00.000Z',
+        query: 'shadow test',
+        algorithmName: 'shadow-v2',
+        deltas: [],
+        summary: {
+          productionCount: 1,
+          shadowCount: 1,
+          overlapCount: 1,
+          meanAbsScoreDelta: 0,
+          meanAbsRankDelta: 0,
+          rankCorrelation: 1,
+          productionOnlyIds: [],
+          shadowOnlyIds: [],
+        },
+      });
+
+      expect(logged).toBe(false);
+      expect(getShadowStats()).toEqual(baselineStats);
     },
   ));
 
@@ -532,12 +565,29 @@ describe('Sprint 4 Integration: Feature Flag Independence', () => {
   });
 
   it('S4-INT-16: Each flag can be independently enabled without affecting others', () => {
+    const baselineShadowTotal = getShadowStats()?.totalComparisons ?? null;
+
     // Enable only MPAB — explicitly disable others (graduated flags default ON when unset)
     process.env.SPECKIT_DOCSCORE_AGGREGATION = 'true';
     process.env.SPECKIT_SAVE_QUALITY_GATE = 'false';
     process.env.SPECKIT_RECONSOLIDATION = 'false';
     expect(isDocscoreAggregationEnabled()).toBe(true);
-    // IsShadowScoringEnabled removed — shadow scoring permanently disabled
+    expect(logShadowComparison({
+      timestamp: '2026-03-14T00:00:00.000Z',
+      query: 'shadow test',
+      algorithmName: 'shadow-v2',
+      deltas: [],
+      summary: {
+        productionCount: 0,
+        shadowCount: 0,
+        overlapCount: 0,
+        meanAbsScoreDelta: 0,
+        meanAbsRankDelta: 0,
+        rankCorrelation: 0,
+        productionOnlyIds: [],
+        shadowOnlyIds: [],
+      },
+    })).toBe(false);
     expect(isSaveQualityGateEnabled()).toBe(false);
     expect(isReconsolidationFlag()).toBe(false);
 
@@ -547,7 +597,7 @@ describe('Sprint 4 Integration: Feature Flag Independence', () => {
     process.env.SPECKIT_SAVE_QUALITY_GATE = 'false';
     process.env.SPECKIT_RECONSOLIDATION = 'false';
     expect(isDocscoreAggregationEnabled()).toBe(false);
-    // IsShadowScoringEnabled removed — shadow scoring permanently disabled
+    expect(getShadowStats()?.totalComparisons ?? null).toBe(baselineShadowTotal);
     expect(isSaveQualityGateEnabled()).toBe(false);
     expect(isReconsolidationFlag()).toBe(false);
 

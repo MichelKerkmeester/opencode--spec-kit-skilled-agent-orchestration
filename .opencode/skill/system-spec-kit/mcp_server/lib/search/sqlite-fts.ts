@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. SQLITE FTS
+// MODULE: Sqlite Fts
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Semantic and lexical search (memory_search)
 // Weighted BM25 scoring for FTS5 full-text search.
 // Extracted from hybrid-search.ts ftsSearch() for independent
 // Testing and future delegation.
@@ -10,7 +11,8 @@ import { sanitizeQueryTokens } from './bm25-index';
 import type Database from 'better-sqlite3';
 
 // ───────────────────────────────────────────────────────────────
-// 2. CONSTANTS
+// 1. CONSTANTS
+
 // ───────────────────────────────────────────────────────────────
 /**
  * C138-P2: FTS5 bm25() column weight arguments.
@@ -27,7 +29,8 @@ import type Database from 'better-sqlite3';
 const FTS5_BM25_WEIGHTS = [10.0, 5.0, 2.0, 1.0] as const;
 
 // ───────────────────────────────────────────────────────────────
-// 3. INTERFACES
+// 2. INTERFACES
+
 // ───────────────────────────────────────────────────────────────
 interface FtsBm25Result {
   id: number;
@@ -42,7 +45,8 @@ interface FtsBm25Options {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 4. CORE FUNCTION
+// 3. CORE FUNCTION
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Execute a weighted BM25 FTS5 search against memory_fts.
@@ -135,7 +139,8 @@ function isFts5Available(db: Database.Database): boolean {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 5. EXPORTS
+// 4. EXPORTS
+
 // ───────────────────────────────────────────────────────────────
 export {
   FTS5_BM25_WEIGHTS,

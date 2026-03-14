@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. MEMORY SEARCH
+// MODULE: Memory Search
 // ───────────────────────────────────────────────────────────────
 /* ───────────────────────────────────────────────────────────────
    1. DEPENDENCIES
@@ -14,7 +14,9 @@ import { isEnabled as isCausalBoostEnabled } from '../lib/search/causal-boost';
 // 4-stage pipeline architecture
 import { executePipeline } from '../lib/search/pipeline';
 import type { PipelineConfig, PipelineResult } from '../lib/search/pipeline';
+import type { IntentWeightsConfig } from '../lib/search/pipeline/types';
 import { initConsumptionLog, logConsumptionEvent } from '../lib/telemetry/consumption-logger';
+import * as retrievalTelemetry from '../lib/telemetry/retrieval-telemetry';
 // Artifact-class routing (spec/plan/tasks/checklist/memory)
 import { applyRoutingWeights, getStrategyForQuery } from '../lib/search/artifact-routing';
 
@@ -23,14 +25,10 @@ import { logSearchQuery, logChannelResult, logFinalResult } from '../lib/eval/ev
 
 // Core utilities
 import { checkDatabaseUpdated, isEmbeddingModelReady, waitForEmbeddingModel } from '../core';
-
-// Utils
 import { validateQuery, requireDb, toErrorMessage } from '../utils';
 
-// Response envelope
+// Response envelope + formatters
 import { createMCPErrorResponse } from '../lib/response/envelope';
-
-// Formatters
 import { formatSearchResults } from '../formatters';
 
 // Shared handler types
@@ -40,6 +38,10 @@ import type { MCPResponse, IntentClassification } from './types';
 import { createTrace } from '@spec-kit/shared/contracts/retrieval-trace';
 import { buildAdaptiveShadowProposal } from '../lib/cache/cognitive/adaptive-ranking';
 import { normalizeScopeContext } from '../lib/governance/scope-governance';
+import {
+  attachSessionTransitionTrace,
+  type SessionTransitionTrace,
+} from '../lib/search/session-transition';
 
 // Type imports for casting
 import type { IntentType, IntentWeights as IntentClassifierWeights } from '../lib/search/intent-classifier';
@@ -106,6 +108,15 @@ interface ChunkReassemblyResult {
 
 type IntentWeights = IntentClassifierWeights;
 
+function toIntentWeightsConfig(weights: IntentWeights | null): IntentWeightsConfig | null {
+  if (!weights) return null;
+  return {
+    similarity: weights.similarity,
+    importance: weights.importance,
+    recency: weights.recency,
+  };
+}
+
 interface EvalChannelPayload {
   channel: string;
   resultMemoryIds: number[];
@@ -145,12 +156,7 @@ interface SearchArgs {
   min_quality_score?: number;
   mode?: string; // "deep" mode enables query expansion for multi-query RAG
   includeTrace?: boolean;
-  sessionTransition?: {
-    previousState: string;
-    inferredState: string;
-    confidence: number;
-    sourceSignal: string;
-  };
+  sessionTransition?: SessionTransitionTrace;
 }
 
 function resolveRowContextType(row: MemorySearchRow): string | undefined {
@@ -212,19 +218,10 @@ function collectEvalChannelsFromRow(row: Record<string, unknown>): string[] {
   return Array.from(channels);
 }
 
-function attachSessionTransitionTrace(
+function attachTelemetryMeta(
   response: MCPResponse,
-  sessionTransition?: {
-    previousState: string;
-    inferredState: string;
-    confidence: number;
-    sourceSignal: string;
-  },
+  telemetryPayload: Record<string, unknown>,
 ): MCPResponse {
-  if (!sessionTransition) {
-    return response;
-  }
-
   const firstEntry = response?.content?.[0];
   if (!firstEntry || typeof firstEntry.text !== 'string') {
     return response;
@@ -232,31 +229,13 @@ function attachSessionTransitionTrace(
 
   try {
     const envelope = JSON.parse(firstEntry.text) as Record<string, unknown>;
-    const data = (envelope.data && typeof envelope.data === 'object')
-      ? envelope.data as Record<string, unknown>
-      : null;
-    const results = Array.isArray(data?.results)
-      ? data.results as Array<Record<string, unknown>>
-      : null;
-
-    if (envelope.meta && typeof envelope.meta === 'object') {
-      (envelope.meta as Record<string, unknown>).sessionTransition = sessionTransition;
-    }
-
-    if (results) {
-      data!.results = results.map((result) => {
-        const currentTrace = result.trace && typeof result.trace === 'object'
-          ? result.trace as Record<string, unknown>
-          : {};
-        return {
-          ...result,
-          trace: {
-            ...currentTrace,
-            sessionTransition,
-          },
-        };
-      });
-    }
+    const meta = envelope.meta && typeof envelope.meta === 'object'
+      ? envelope.meta as Record<string, unknown>
+      : {};
+    envelope.meta = {
+      ...meta,
+      _telemetry: telemetryPayload,
+    };
 
     return {
       ...response,
@@ -264,9 +243,88 @@ function attachSessionTransitionTrace(
     };
   } catch (error: unknown) {
     const message = toErrorMessage(error);
-    console.warn('[memory-search] Failed to attach session transition trace:', message);
+    console.warn('[memory-search] Failed to attach telemetry payload:', message);
     return response;
   }
+}
+
+function extractResponseResults(response: MCPResponse): Array<Record<string, unknown>> {
+  const firstEntry = response?.content?.[0];
+  if (!firstEntry || typeof firstEntry.text !== 'string') {
+    return [];
+  }
+
+  try {
+    const envelope = JSON.parse(firstEntry.text) as Record<string, unknown>;
+    const data = envelope.data && typeof envelope.data === 'object'
+      ? envelope.data as Record<string, unknown>
+      : null;
+    return Array.isArray(data?.results)
+      ? data.results as Array<Record<string, unknown>>
+      : [];
+  } catch {
+    return [];
+  }
+}
+
+function summarizeGraphWalkDiagnostics(
+  rows: Array<Record<string, unknown>>,
+): {
+  rolloutState: 'off' | 'trace_only' | 'bounded_runtime';
+  rowsWithGraphContribution: number;
+  rowsWithAppliedBonus: number;
+  capAppliedCount: number;
+  maxRaw: number;
+  maxNormalized: number;
+  maxAppliedBonus: number;
+} {
+  let rolloutState: 'off' | 'trace_only' | 'bounded_runtime' = 'off';
+  let rowsWithGraphContribution = 0;
+  let rowsWithAppliedBonus = 0;
+  let capAppliedCount = 0;
+  let maxRaw = 0;
+  let maxNormalized = 0;
+  let maxAppliedBonus = 0;
+
+  for (const row of rows) {
+    const trace = row.trace && typeof row.trace === 'object'
+      ? row.trace as Record<string, unknown>
+      : null;
+    const graphContribution = trace?.graphContribution && typeof trace.graphContribution === 'object'
+      ? trace.graphContribution as Record<string, unknown>
+      : null;
+    if (!graphContribution) {
+      continue;
+    }
+
+    rowsWithGraphContribution += 1;
+    if (graphContribution.rolloutState === 'trace_only' || graphContribution.rolloutState === 'bounded_runtime') {
+      rolloutState = graphContribution.rolloutState;
+    }
+    if (typeof graphContribution.appliedBonus === 'number' && graphContribution.appliedBonus > 0) {
+      rowsWithAppliedBonus += 1;
+      maxAppliedBonus = Math.max(maxAppliedBonus, graphContribution.appliedBonus);
+    }
+    if (graphContribution.capApplied === true) {
+      capAppliedCount += 1;
+    }
+    if (typeof graphContribution.raw === 'number' && Number.isFinite(graphContribution.raw)) {
+      maxRaw = Math.max(maxRaw, graphContribution.raw);
+    }
+    if (typeof graphContribution.normalized === 'number' && Number.isFinite(graphContribution.normalized)) {
+      maxNormalized = Math.max(maxNormalized, graphContribution.normalized);
+    }
+  }
+
+  return {
+    rolloutState,
+    rowsWithGraphContribution,
+    rowsWithAppliedBonus,
+    capAppliedCount,
+    maxRaw,
+    maxNormalized,
+    maxAppliedBonus,
+  };
 }
 
 function buildEvalChannelPayloads(rows: Array<Record<string, unknown>>): EvalChannelPayload[] {
@@ -902,7 +960,7 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
           trackAccess,
           detectedIntent,
           intentConfidence,
-          intentWeights: intentWeights as unknown as PipelineConfig['intentWeights'],
+          intentWeights: toIntentWeightsConfig(intentWeights),
           artifactRouting: artifactRouting as unknown as PipelineConfig['artifactRouting'],
           trace,
         };
@@ -963,10 +1021,6 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
         if (pipelineResult.trace) {
           extraData.retrievalTrace = pipelineResult.trace;
         }
-        if (includeTrace && sessionTransition) {
-          extraData.sessionTransition = sessionTransition;
-        }
-
         try {
           const adaptiveShadow = buildAdaptiveShadowProposal(
             requireDb(),
@@ -1101,6 +1155,16 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
 
   if (includeTrace && sessionTransition) {
     responseToReturn = attachSessionTransitionTrace(responseToReturn, sessionTransition);
+  }
+
+  if (retrievalTelemetry.isExtendedTelemetryEnabled()) {
+    const telemetry = retrievalTelemetry.createTelemetry();
+    retrievalTelemetry.recordTransitionDiagnostics(telemetry, sessionTransition);
+    retrievalTelemetry.recordGraphWalkDiagnostics(
+      telemetry,
+      summarizeGraphWalkDiagnostics(extractResponseResults(responseToReturn)),
+    );
+    responseToReturn = attachTelemetryMeta(responseToReturn, retrievalTelemetry.toJSON(telemetry));
   }
 
   // Consumption instrumentation — log search event (fail-safe, never throws)

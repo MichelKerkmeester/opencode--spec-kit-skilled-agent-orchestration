@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. CHECKPOINT TOOLS
+// MODULE: Checkpoint Tools
 // ───────────────────────────────────────────────────────────────
 // Dispatch for L5 checkpoint tools: create, list, restore,
 // Delete (T303).

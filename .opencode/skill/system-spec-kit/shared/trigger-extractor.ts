@@ -1,6 +1,7 @@
 // ---------------------------------------------------------------
 // MODULE: Trigger Extractor
 // ---------------------------------------------------------------
+// Feature catalog: Trigger phrase matching (memory_match_triggers)
 
 import type {
   TriggerConfig,

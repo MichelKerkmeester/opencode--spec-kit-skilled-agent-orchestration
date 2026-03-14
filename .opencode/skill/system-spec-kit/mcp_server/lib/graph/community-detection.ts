@@ -1,9 +1,10 @@
 // ───────────────────────────────────────────────────────────────
-// 1. COMMUNITY DETECTION
+// MODULE: Community Detection
 // ───────────────────────────────────────────────────────────────
 // Deferred feature — gated via SPECKIT_COMMUNITY_DETECTION
 // ───────────────────────────────────────────────────────────────
-// 2. IMPORTS
+// 1. IMPORTS
+
 // ───────────────────────────────────────────────────────────────
 import type Database from "better-sqlite3";
 
@@ -11,13 +12,15 @@ import type Database from "better-sqlite3";
 
 
 // ───────────────────────────────────────────────────────────────
-// 3. TYPES
+// 2. TYPES
+
 // ───────────────────────────────────────────────────────────────
 /** Adjacency list: node ID (string) -> set of neighbor node IDs */
 type AdjacencyList = Map<string, Set<string>>;
 
 // ───────────────────────────────────────────────────────────────
-// 4. CONSTANTS
+// 3. CONSTANTS
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Community co-retrieval boost factor — 0.3 balances surfacing
@@ -31,7 +34,8 @@ type AdjacencyList = Map<string, Set<string>>;
 const COMMUNITY_EDGE_WEIGHT_THRESHOLD = 0.3;
 
 // ───────────────────────────────────────────────────────────────
-// 5. MODULE-LEVEL DEBOUNCE STATE
+// 4. MODULE-LEVEL DEBOUNCE STATE
+
 // ───────────────────────────────────────────────────────────────
 let lastDebounceHash: string = '';
 let computedThisSession: boolean = false;
@@ -45,7 +49,8 @@ export function resetCommunityDetectionState(): void {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 6. INTERNAL HELPERS
+// 5. INTERNAL HELPERS
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Build an undirected adjacency list from the `causal_edges` table.
@@ -81,7 +86,8 @@ function buildAdjacencyList(db: Database.Database): AdjacencyList {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 7. BFS CONNECTED COMPONENTS
+// 6. BFS CONNECTED COMPONENTS
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Detect communities using BFS connected-component labelling.
@@ -128,7 +134,8 @@ export function detectCommunitiesBFS(
 }
 
 // ───────────────────────────────────────────────────────────────
-// 8. ESCALATION CHECK
+// 7. ESCALATION CHECK
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Check whether the largest connected component contains >50% of all nodes.
@@ -300,7 +307,8 @@ export function detectCommunitiesLouvain(
 }
 
 // ───────────────────────────────────────────────────────────────
-// 9. ORCHESTRATOR
+// 8. ORCHESTRATOR
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Top-level community detection orchestrator.
@@ -405,7 +413,8 @@ function detectCommunitiesBFSFromAdj(
 }
 
 // ───────────────────────────────────────────────────────────────
-// 10. PERSISTENCE HELPERS
+// 9. PERSISTENCE HELPERS
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Load previously stored community assignments from the database.
@@ -471,7 +480,8 @@ export function storeCommunityAssignments(
 }
 
 // ───────────────────────────────────────────────────────────────
-// 11. QUERY HELPERS
+// 10. QUERY HELPERS
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Return the memory IDs that share the same community as `memoryId`.
@@ -550,7 +560,8 @@ export function applyCommunityBoost(
 }
 
 // ───────────────────────────────────────────────────────────────
-// 12. TEST-ONLY EXPORTS
+// 11. TEST-ONLY EXPORTS
+
 // ───────────────────────────────────────────────────────────────
 /**
  * Defines the __testables constant.

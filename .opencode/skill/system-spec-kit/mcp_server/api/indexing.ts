@@ -1,5 +1,5 @@
 // ────────────────────────────────────────────────────────────────
-// 1. INDEXING 
+// MODULE: Indexing
 // ────────────────────────────────────────────────────────────────
 // @public — scripts should import from here, not core/ or handlers/ internals.
 // ARCH-1 exposes only the runtime bootstrap and indexing hooks needed

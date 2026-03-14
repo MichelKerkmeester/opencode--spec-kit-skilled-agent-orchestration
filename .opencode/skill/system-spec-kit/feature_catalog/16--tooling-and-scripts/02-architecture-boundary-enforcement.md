@@ -30,7 +30,7 @@ GAP B scans top-level `.ts` files in `mcp_server/scripts/` (non-recursive) and v
 
 | File | Focus |
 |------|-------|
-| `mcp_server/tests/layer-definitions.vitest.ts` | Layer definitions + architecture boundary violation tests: T39 (GAP A multi-syntax imports), T40-T43 (GAP B wrapper failures and bypass patterns), T44 (valid wrapper pass) |
+| `scripts/tests/architecture-boundary-enforcement.vitest.ts` | Architecture boundary violation tests: T39 (GAP A multi-syntax imports), T40-T43 (GAP B wrapper failures and bypass patterns), T44 (valid wrapper pass), T45 (no false positives for allowed cross-module imports) |
 
 ---
 

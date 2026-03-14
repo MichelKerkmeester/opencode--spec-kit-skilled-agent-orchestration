@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
-// 1. EMBEDDINGS
+// MODULE: Embeddings
 // ───────────────────────────────────────────────────────────────
+// Feature catalog: Hybrid search pipeline
 // PROVIDERS: EMBEDDINGS
 // Re-export from shared/ (canonical source)
 // Includes multi-provider support, task-specific functions, dynamic dimensions

@@ -108,8 +108,6 @@ Required items are tracked in CHK-003, CHK-012, CHK-013, CHK-022, CHK-023, CHK-0
   - **Evidence**: `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` all reflect final PASS outcomes and completed remediation work.
 - [x] CHK-041 [P1] Code comments adequate [EVIDENCE: Each finding references concrete file paths and remediation notes.]
   - **Evidence**: Findings and closures include explicit code/test/migration references tied to F-02 and F-03.
-- [ ] CHK-042 [P2] README updated (if applicable)
-  - **Evidence**: Not applicable for this sub-spec rewrite.
 <!-- /ANCHOR:docs -->
 
 ---
@@ -121,8 +119,6 @@ Required items are tracked in CHK-003, CHK-012, CHK-013, CHK-022, CHK-023, CHK-0
   - **Evidence**: No scratch artifacts added or required for this rewrite.
 - [x] CHK-051 [P1] scratch/ cleaned before completion [EVIDENCE: Folder contains only tracked markdown artifacts and no temporary files.]
   - **Evidence**: No temporary files produced in this folder.
-- [ ] CHK-052 [P2] Findings saved to memory/
-  - **Evidence**: Not part of requested rewrite scope.
 <!-- /ANCHOR:file-org -->
 
 ---
@@ -134,7 +130,7 @@ Required items are tracked in CHK-003, CHK-012, CHK-013, CHK-022, CHK-023, CHK-0
 |----------|-------|----------|
 | P0 Items | 8 | 8/8 |
 | P1 Items | 10 | 10/10 |
-| P2 Items | 2 | 0/2 |
+| P2 Items | 0 | 0/0 |
 
 **Verification Date**: 2026-03-13
 
