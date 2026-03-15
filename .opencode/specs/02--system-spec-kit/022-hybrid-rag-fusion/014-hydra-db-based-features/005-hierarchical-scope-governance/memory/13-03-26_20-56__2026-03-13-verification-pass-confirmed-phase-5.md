@@ -1,19 +1,25 @@
 ---
-title: "2026-03-13 verification [005-hierarchical-scope-governance/13-03-26_20-56__2026-03-13-verification-pass-confirmed-phase-5]"
-description: "Session context memory template for Spec Kit indexing."
+title: "2026-03-13 verification"
+description: "2026-03-13 verification pass confirmed Phase 5 hierarchical scope governance is implemented with governed ingest, retention audit, and cascade deletion coverage."
 trigger_phrases:
-  - "memory dashboard"
-  - "session summary"
-  - "context template"
+  - "with governed ingest"
+  - "verification pass confirmed phase"
+  - "pass confirmed phase hierarchical"
+  - "confirmed phase hierarchical scope"
+  - "phase hierarchical scope governance"
+  - "hierarchical scope governance implemented"
+  - "scope governance implemented governed"
+  - "governance implemented governed ingest"
+  - "implemented governed ingest retention"
+  - "governed ingest retention audit"
+  - "ingest retention audit cascade"
+  - "retention audit cascade deletion"
 importance_tier: "normal"
 contextType: "general"
 quality_score: 0.90
 quality_flags:
   - "has_tool_state_mismatch"
 ---
-
----
-
 # 2026-03-13 verification pass confirmed Phase 5 hierarchical scope governance is implemented with...
 
 ## SESSION SUMMARY
@@ -37,8 +43,6 @@ quality_flags:
 
 ---
 
----
-
 ## TABLE OF CONTENTS
 
 - [CONTINUE SESSION](#continue-session)
@@ -52,6 +56,8 @@ quality_flags:
 - [MEMORY METADATA](#memory-metadata)
 
 ---
+<!-- ANCHOR:continue-session -->
+<a id="continue-session"></a>
 
 ## CONTINUE SESSION
 
@@ -105,6 +111,8 @@ Next: Continue implementation
 - Last: Left governance reviewer sign-off pending - The runtime is verified, but no huma
 
 ---
+<!-- ANCHOR:project-state-snapshot -->
+<a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
 
@@ -136,6 +144,8 @@ Next: Continue implementation
 **Key Topics:** `governance` | `cascade deletion` | `cascade` | `deletion` | `fixed cascade` | `deletion graph` | `graph edges` | `edges removed` | `removed reliably` | `reliably base` | `base memory` | `left governance` |
 
 ---
+<!-- ANCHOR:task-guide -->
+<a id="implementation-guide"></a>
 
 ## 1. IMPLEMENTATION GUIDE
 
@@ -160,6 +170,8 @@ Next: Continue implementation
 - **Data Normalization**: Clean and standardize data before use
 
 ---
+<!-- ANCHOR:summary -->
+<a id="overview"></a>
 
 ## 2. OVERVIEW
 
@@ -177,6 +189,8 @@ Next: Continue implementation
 | `02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/005-hierarchical-scope-governance/(merged-small-files)` | Tree-thinning merged 3 small files (tasks.md, checklist.md, implementation-summary.md). Merged from 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/005-hierarchical-scope-governance/tasks.md : File modified (description pending) | Merged from 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/005-hierarchical-scope-governance/checklist.md : File modified (description pending) | Merged from 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/005-hierarchical-scope-governance/implementation-summary.md : File modified (description pending) |
 
 ---
+<!-- ANCHOR:detailed-changes -->
+<a id="detailed-changes"></a>
 
 ## 3. DETAILED CHANGES
 
@@ -185,6 +199,8 @@ Next: Continue implementation
 2026-03-13 verification pass confirmed Phase 5 hierarchical scope governance is implemented with governed ingest, retention audit, and cascade deletion coverage.
 
 ---
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
 
 ## 4. DECISIONS
 
@@ -371,6 +387,8 @@ Next: Continue implementation
 **Confidence**: 0.5%
 
 ---
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
 
 ## 5. CONVERSATION
 
@@ -392,8 +410,8 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 2026-03-13 verification pass confirmed Phase 5 hierarchical scope governance is implemented with governed ingest, retention audit, and cascade deletion coverage.
 
 ---
-
----
+<!-- ANCHOR:recovery-hints -->
+<a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
 
@@ -447,8 +465,8 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 | No Dedup Conflicts |  |  |
 
 ---
-
----
+<!-- ANCHOR:metadata -->
+<a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 
@@ -540,49 +558,18 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/022 hybrid rag fusion/015 hydra db based features/005 hierarchical scope governance"
-  - "cleanup bug"
-  - "delete memory"
-  - "policy review"
-  - "sign off"
-  - "hydra db based features"
-  - "merged small files"
   - "with governed ingest"
-  - "fixed cascade deletion graph"
-  - "cascade deletion graph edges"
-  - "deletion graph edges removed"
-  - "graph edges removed reliably"
-  - "edges removed reliably base"
-  - "removed reliably base memory"
-  - "audit found corrected real"
-  - "found corrected real causal"
-  - "corrected real causal edges"
-  - "real causal edges cleanup"
-  - "causal edges cleanup deletememory"
-  - "runtime verified human policy-review"
-  - "verified human policy-review artifact"
-  - "human policy-review artifact exists"
-  - "memory the"
-  - "reliably base memory audit"
-  - "base memory audit found"
-  - "memory audit found corrected"
-  - "system"
-  - "spec"
-  - "kit/022"
-  - "hybrid"
-  - "rag"
-  - "fusion/015"
-  - "hydra"
-  - "based"
-  - "features/005"
-  - "hierarchical"
-  - "scope"
-  - "governance"
-
-key_files:
-  - "02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/005-hierarchical-scope-governance/(merged-small-files)"
-
-# Relationships
+  - "verification pass confirmed phase"
+  - "pass confirmed phase hierarchical"
+  - "confirmed phase hierarchical scope"
+  - "phase hierarchical scope governance"
+  - "hierarchical scope governance implemented"
+  - "scope governance implemented governed"
+  - "governance implemented governed ingest"
+  - "implemented governed ingest retention"
+  - "governed ingest retention audit"
+  - "ingest retention audit cascade"
+  - "retention audit cascade deletion"# Relationships
 related_sessions:
 
   []

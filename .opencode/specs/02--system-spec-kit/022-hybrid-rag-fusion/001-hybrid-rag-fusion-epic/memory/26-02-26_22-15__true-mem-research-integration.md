@@ -1,21 +1,17 @@
 ---
-title: "True-mem research integration findings [001-hybrid-rag-fusion-epic/26-02-26_22-15__true-mem-research-integration]"
-description: "Conducted comprehensive technical research on the true-mem repository (rizal72/true-mem v1.0.14) using 5 parallel research agents. Produced two research documents: (1) deep technical analysis of true-."
+title: "True-mem research integration findings"
+description: "Conducted comprehensive technical research on the true-mem repository (rizal72/true-mem v1.0.14) using 5 parallel research agents. Produced two research documents: (1) deep..."
 trigger_phrases:
   - "system spec kit/022 hybrid rag fusion"
   - "psychology based"
   - "dual store"
   - "false positive"
   - "root level"
-quality_score: 1.00
-quality_flags: []
 importance_tier: "important"
 contextType: "research"
+quality_score: 1.00
+quality_flags: []
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-
----
-
 # hybrid rag fusion session 26-02-26
 
 ## SESSION SUMMARY
@@ -40,6 +36,7 @@ contextType: "research"
 ---
 
 <!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -135,6 +132,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -293,6 +291,9 @@ rootCause: Spec-kit memory MCP server lacked input quality controls - no pre-sav
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-adopted-recommendations-f825ba41 -->
@@ -467,6 +468,9 @@ rootCause: Spec-kit memory MCP server lacked input quality controls - no pre-sav
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -588,6 +592,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -686,49 +691,7 @@ trigger_phrases:
   - "psychology based"
   - "dual store"
   - "false positive"
-  - "root level"
-  - "req 039"
-  - "req 045"
-  - "t054 t060"
-  - "def 015"
-  - "s0 s6"
-  - "tm 06"
-  - "tm 08"
-  - "role aware"
-  - "auto extraction"
-  - "zero dependency"
-  - "vector based"
-  - "content hash"
-  - "near zero"
-  - "behavior changing"
-  - "over filtering"
-  - "deep analysis true mem source code"
-  - "recommendations true mem patterns"
-  - "hybrid rag fusion refinement"
-  - "sprint 0 epistemological foundation"
-  - "tm-06 tm-08 address input"
-  - "tm-08 address input quality"
-  - "system"
-  - "spec"
-  - "kit/140"
-  - "hybrid"
-  - "rag"
-  - "fusion"
-  - "refinement"
-
-key_files:
-  - ".opencode/.../research/9 - deep-analysis-true-mem-source-code.md"
-  - ".opencode/.../research/10 - recommendations-true-mem-patterns.md"
-  - ".opencode/.../022-hybrid-rag-fusion/spec.md"
-  - ".opencode/.../022-hybrid-rag-fusion/plan.md"
-  - ".opencode/.../022-hybrid-rag-fusion/tasks.md"
-  - ".opencode/.../022-hybrid-rag-fusion/checklist.md"
-  - ".opencode/.../001-sprint-0-epistemological-foundation/spec.md"
-  - ".opencode/.../001-sprint-0-epistemological-foundation/plan.md"
-  - ".opencode/.../001-sprint-0-epistemological-foundation/tasks.md"
-  - ".opencode/.../001-sprint-0-epistemological-foundation/checklist.md"
-
-# Relationships
+  - "root level"# Relationships
 related_sessions:
 
   []

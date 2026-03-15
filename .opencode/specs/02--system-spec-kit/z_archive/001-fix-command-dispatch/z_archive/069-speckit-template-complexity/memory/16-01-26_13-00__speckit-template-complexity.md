@@ -1,44 +1,17 @@
 ---
-title: "SpecKit template complexity coverage expansion 2026-01-16 [069-speckit-template-complexity/16-01-26_13-00__speckit-template-complexity]"
-description: "Captured the session that expanded SpecKit template complexity coverage from an already substantial baseline to full test coverage. It highlights boundary-threshold validation, template scaling behavior, and the broader verification work completed for the dynamic complexity-based template system."
+title: "SpecKit template complexity coverage expansion 2026-01-16"
+description: "Captured the session that expanded SpecKit template complexity coverage from an already substantial baseline to full test coverage. It highlights boundary-threshold..."
 trigger_phrases:
   - "template complexity full coverage"
   - "boundary threshold validation"
   - "dynamic template scaling tests"
   - "speckit complexity regression checks"
 importance_tier: "normal"
+contextType: "general"
 quality_score: 0.60
 quality_flags:
   - "legacy_migration"
-contextType: "general"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-<!-- Constitutional Tier Promotion:
-  To promote a memory to constitutional tier (always surfaced):
-  
-  1. Via MCP tool after indexing:
-     memory_update({ id: <memory_id>, importanceTier: 'constitutional' })
-  
-  2. Criteria for constitutional:
-     - Applies to ALL future conversations (not project-specific)
-     - Core constraints/rules that should NEVER be forgotten
-     - ~2000 token budget total for constitutional tier
-     
-  3. Add trigger phrases for proactive surfacing:
-     memory_update({ 
-       id: <memory_id>, 
-       importanceTier: 'constitutional',
-       triggerPhrases: ['fix', 'implement', 'create', 'modify', ...]
-     })
-     
-  4. Examples of constitutional content:
-     - "Always ask Gate 3 spec folder question before file modifications"
-     - "Never modify production data directly"
-     - "Memory files MUST use generate-context.js script"
--->
-
----
-
 # SESSION SUMMARY
 
 | **Meta Data** | **Value** |
@@ -60,7 +33,8 @@ contextType: "general"
 
 ---
 
-<!-- ANCHOR:preflight-session-1768564828755-me5yy7lsd-003-memory-and-spec-kit/069-speckit-template-complexity -->
+<!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -95,7 +69,7 @@ contextType: "general"
 
 ---
 
-<!-- ANCHOR:continue-session-session-1768564828755-me5yy7lsd-003-memory-and-spec-kit/069-speckit-template-complexity -->
+<!-- ANCHOR:continue-session -->
 <a id="continue-session"></a>
 
 ## CONTINUE SESSION
@@ -129,6 +103,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 <!-- /ANCHOR:continue-session-session-1768564828755-me5yy7lsd-003-memory-and-spec-kit/069-speckit-template-complexity -->
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -145,7 +120,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 ---
 
-<!-- ANCHOR:summary-session-1768564828755-me5yy7lsd-003-memory-and-spec-kit/069-speckit-template-complexity -->
+<!-- ANCHOR:summary -->
 <a id="overview"></a>
 
 ## 1. OVERVIEW
@@ -186,6 +161,9 @@ Expanded test suite from 94 to 171 tests (100% coverage) for the Dynamic Complex
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 2. DECISIONS
 
 ### 2.1 Created separate test-classifier.js for boundary/feature tests
@@ -251,6 +229,9 @@ Added 77 new tests across 5 test files covering all gaps - new test-classifier.j
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 3. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -311,7 +292,7 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 
 ---
 
-<!-- ANCHOR:recovery-hints-session-1768564828755-me5yy7lsd-003-memory-and-spec-kit/069-speckit-template-complexity -->
+<!-- ANCHOR:recovery-hints -->
 <a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
@@ -336,7 +317,7 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 <!-- /ANCHOR:recovery-hints-session-1768564828755-me5yy7lsd-003-memory-and-spec-kit/069-speckit-template-complexity -->
 ---
 
-<!-- ANCHOR:postflight-session-1768564828755-me5yy7lsd-003-memory-and-spec-kit/069-speckit-template-complexity -->
+<!-- ANCHOR:postflight -->
 <a id="postflight-learning-delta"></a>
 
 ## POSTFLIGHT LEARNING DELTA
@@ -362,6 +343,7 @@ This session was migrated from an older format. Learning metrics were not captur
 <!-- /ANCHOR:postflight-session-1768564828755-me5yy7lsd-003-memory-and-spec-kit/069-speckit-template-complexity -->
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -439,30 +421,10 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "complexity detection tests"
-  - "level boundary thresholds"
-  - "100% test coverage"
-  - "171 tests"
-  - "test-classifier.js"
-  - "shouldAutoEnableFeature"
-  - "exactLevel condition"
-  - "output examples"
-  - "template scaling"
-  - "COMPLEXITY_GATE"
-  - "weight verification"
-
-key_files:
-  - "specs/003-memory-and-spec-kit/069-speckit-template-complexity/tests/test-classifier.js"
-  - "specs/003-memory-and-spec-kit/069-speckit-template-complexity/tests/test-detector.js"
-  - "specs/003-memory-and-spec-kit/069-speckit-template-complexity/tests/test-marker-parser.js"
-  - "specs/003-memory-and-spec-kit/069-speckit-template-complexity/tests/test-cli.sh"
-  - "specs/003-memory-and-spec-kit/069-speckit-template-complexity/tests/run-tests.sh"
-  - "specs/003-memory-and-spec-kit/069-speckit-template-complexity/tests/fixtures/sample-request.txt"
-  - "specs/003-memory-and-spec-kit/069-speckit-template-complexity/test-summary.md"
-  - "specs/003-memory-and-spec-kit/069-speckit-template-complexity/output-examples.md"
-
-# Relationships
-related_sessions:
+  - "template complexity full coverage"
+  - "boundary threshold validation"
+  - "dynamic template scaling tests"
+  - "speckit complexity regression checks"related_sessions:
 
   []
 

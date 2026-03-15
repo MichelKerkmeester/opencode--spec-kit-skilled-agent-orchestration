@@ -1,18 +1,24 @@
 ---
-title: "Analyzed loadCollectedData [013-outsourced-agent-memory/11-03-26_15-37__analyzed-loadcollecteddata-in-data-loader-ts]"
-description: "Session context memory template for Spec Kit indexing."
+title: "Analyzed loadCollectedData"
+description: "Analyzed loadCollectedData in data-loader.ts, including source priority order and fallback behavior. Confirmed only the final 'no data' condition throws fatally. Codex CLI..."
 trigger_phrases:
-  - "memory dashboard"
-  - "session summary"
-  - "context template"
+  - "load collected data"
+  - "data loader"
+  - "gpt 5"
+  - "analyzed loadcollecteddata data-loader.ts including"
+  - "loadcollecteddata data-loader.ts including priority"
+  - "data-loader.ts including priority order"
+  - "including priority order fallback"
+  - "priority order fallback behavior"
+  - "confirmed final data condition"
+  - "final data condition throws"
+  - "data condition throws fatally"
+  - "analyzed loadcollecteddata analyzed loadcollecteddata"
 importance_tier: "normal"
 contextType: "general"
 quality_score: 1.00
 quality_flags: []
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
----
-
 # Analyzed loadCollectedData in data-loader.ts, including source priority order and fallback...
 
 ## SESSION SUMMARY
@@ -33,8 +39,6 @@ quality_flags: []
 | Created At (Epoch) | 1773239835 |
 | Last Accessed (Epoch) | 1773239835 |
 | Access Count | 1 |
-
----
 
 ---
 
@@ -105,6 +109,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -176,6 +181,9 @@ Analyzed loadCollectedData in data-loader.ts, including source priority order an
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 3. DECISIONS
 
 <!-- ANCHOR:decision-memory-handback-protocol-validated-746c8015 -->
@@ -381,6 +389,9 @@ Analyzed loadCollectedData in data-loader.ts, including source priority order an
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 4. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -462,8 +473,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 
 ---
 
----
-
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -558,45 +568,18 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/022 hybrid rag fusion/014 outsourced agent memory"
   - "load collected data"
   - "data loader"
   - "gpt 5"
-  - "end to end"
-  - "read only"
-  - "m 005"
-  - "memory handback protocol validated"
-  - "minimal risk test validates"
-  - "codex cli gpt-5.3-codex produced"
-  - "cli gpt-5.3-codex produced correctly"
-  - "gpt-5.3-codex produced correctly delimited"
-  - "produced correctly delimited memory"
-  - "correctly delimited memory handback"
-  - "delimited memory handback fields"
-  - "memory handback fields files"
-  - "handback fields files decisions"
-  - "fields files decisions next"
-  - "files decisions next steps"
-  - "decisions next steps spec"
-  - "risk test validates protocol"
-  - "test validates protocol without"
-  - "validates protocol without modifying"
-  - "protocol without modifying files"
-  - "next steps spec folder"
-  - "steps spec folder extraction"
-  - "system"
-  - "spec"
-  - "kit/022"
-  - "hybrid"
-  - "rag"
-  - "fusion/014"
-  - "outsourced"
-  - "agent"
-  - "memory"
-
-key_files:
-
-# Relationships
+  - "analyzed loadcollecteddata data-loader.ts including"
+  - "loadcollecteddata data-loader.ts including priority"
+  - "data-loader.ts including priority order"
+  - "including priority order fallback"
+  - "priority order fallback behavior"
+  - "confirmed final data condition"
+  - "final data condition throws"
+  - "data condition throws fatally"
+  - "analyzed loadcollecteddata analyzed loadcollecteddata"# Relationships
 related_sessions:
 
   []

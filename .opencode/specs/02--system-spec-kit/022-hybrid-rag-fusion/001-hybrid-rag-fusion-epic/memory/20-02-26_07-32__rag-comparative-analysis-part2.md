@@ -7,14 +7,11 @@ trigger_phrases:
   - "retrieval precision"
   - "feature flags"
   - "phased rollout"
-quality_score: 1.00
-quality_flags: []
 importance_tier: "critical"
 contextType: "research"
+quality_score: 1.00
+quality_flags: []
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
----
-
 # SESSION SUMMARY
 
 | **Meta Data** | **Value** |
@@ -37,6 +34,7 @@ contextType: "research"
 ---
 
 <!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -130,6 +128,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -248,6 +247,9 @@ rootCause: Need durable session handoff with high signal and low noise for later
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-speckit-spec-687983d6 -->
@@ -341,6 +343,9 @@ rootCause: Need durable session handoff with high signal and low noise for later
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -461,6 +466,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -555,44 +561,11 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "system spec kit/022 hybrid rag fusion"
-  - "analysis hybrid rag patterns"
-  - "recommendations system spec kit memory mcp"
-  - "folder markdown output stay"
-  - "markdown output stay compliant"
-  - "output stay compliant documentation"
-  - "stay compliant documentation authority"
-  - "compliant documentation authority constraints"
-  - "threshold reduce retrieval quality"
-  - "reduce retrieval quality saved"
-  - "retrieval quality saved one"
-  - "quality saved one blob"
-  - "run comparison measurable quality/latency"
-  - "comparison measurable quality/latency criteria"
-  - "measurable quality/latency criteria broad"
-  - "quality/latency criteria broad enablement"
-  - "workflow was"
-  - "context preservation"
-  - "context threshold"
-  - "deliverables finalized research folder"
-  - "finalized research folder memory-save"
-  - "research folder memory-save workflow"
-  - "folder memory-save workflow prepared"
-  - "memory-save workflow prepared strict"
-  - "workflow prepared strict preflight"
-  - "prepared strict preflight checks"
-  - "system"
-  - "spec"
-  - "kit/022"
-  - "hybrid"
-  - "rag"
-  - "fusion"
-
-key_files:
-  - "specs/02--system-spec-kit/022-hybrid-rag-fusion/research/001 - analysis-hybrid-rag-patterns.md"
-  - "specs/02--system-spec-kit/022-hybrid-rag-fusion/research/002 - recommendations-system-spec-kit-memory-mcp.md"
-
-# Relationships
+  - "memory-save workflow"
+  - "preflight checks"
+  - "retrieval precision"
+  - "feature flags"
+  - "phased rollout"# Relationships
 related_sessions:
 
   []

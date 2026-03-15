@@ -1,44 +1,17 @@
 ---
-title: "Command dispatch hardening worklog for 011-context-model-optimization 2026-02-14 [011-context-model-optimization/14-02-26_11-57__context-model-optimization]"
-description: "This memory captures release-prep work that combined command dispatch hardening, create-command file review, and changelog style comparisons. It records a substantial implementation thread, but the content does not align cleanly with the context-model-optimization spec name."
+title: "Command dispatch hardening worklog for 011-context-model-optimization 2026-02-14"
+description: "This memory captures release-prep work that combined command dispatch hardening, create-command file review, and changelog style comparisons. It records a substantial..."
 trigger_phrases:
   - "command dispatch vulnerability"
   - "create command file review"
-  - "GitHub release style comparison"
+  - "github release style comparison"
   - "context model optimization archive"
 importance_tier: "normal"
+contextType: "implementation"
 quality_score: 0.40
 quality_flags:
   - "needs_review"
-contextType: "implementation"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-<!-- Constitutional Tier Promotion:
-  To promote a memory to constitutional tier (always surfaced):
-  
-  1. Via MCP tool after indexing:
-     memory_update({ id: <memory_id>, importanceTier: 'constitutional' })
-  
-  2. Criteria for constitutional:
-     - Applies to ALL future conversations (not project-specific)
-     - Core constraints/rules that should NEVER be forgotten
-     - ~2000 token budget total for constitutional tier
-     
-  3. Add trigger phrases for proactive surfacing:
-     memory_update({ 
-       id: <memory_id>, 
-       importanceTier: 'constitutional',
-       triggerPhrases: ['fix', 'implement', 'create', 'modify', ...]
-     })
-     
-  4. Examples of constitutional content:
-     - "Always ask Gate 3 spec folder question before file modifications"
-     - "Never modify production data directly"
-     - "Memory files MUST use generate-context.js script"
--->
-
----
-
 # SESSION SUMMARY
 
 | **Meta Data** | **Value** |
@@ -61,6 +34,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -153,6 +127,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -572,6 +547,9 @@ Read all create .md commands (repeated 7 times)
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 This session did not involve significant architectural or technical decisions. The work was primarily implementation, bug fixes, documentation, or research.
@@ -588,6 +566,9 @@ This session did not involve significant architectural or technical decisions. T
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -1174,6 +1155,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -1268,42 +1250,10 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "../.opencode/specs/004 agents/011 context model optimization"
-  - "bug fix"
-  - "let start phase fix"
-  - "start phase fix golden"
-  - "phase fix golden prep"
-  - "fix golden prep parallel"
-  - "first read spec kit"
-  - "read spec kit pattern"
-  - "spec kit pattern files"
-  - "kit pattern files concrete"
-  - "pattern files concrete fix"
-  - "files concrete fix step"
-  - "concrete fix step count"
-  - "fix step count bugs"
-  - "step count bugs simultaneously"
-  - ".opencode/command/create/assets/create agent.yaml create agent"
-  - "agent.yaml create agent changelog.md"
-  - "create agent changelog.md changelog"
-  - "agent changelog.md changelog ../.opencode/specs/004"
-  - "changelog.md changelog ../.opencode/specs/004 agents/011"
-  - "changelog ../.opencode/specs/004 agents/011 model"
-  - "../.opencode/specs/004 agents/011 model optimization"
-  - "context model"
-  - "good"
-  - "../.opencode/specs/004"
-  - "agents/011"
-  - "context"
-  - "model"
-  - "optimization"
-
-key_files:
-  - ".opencode/command/create/assets/create_agent.yaml"
-  - "CHANGELOG.md"
-
-# Relationships
-related_sessions:
+  - "command dispatch vulnerability"
+  - "create command file review"
+  - "github release style comparison"
+  - "context model optimization archive"related_sessions:
 
   []
 

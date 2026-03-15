@@ -1,22 +1,17 @@
 ---
-title: "refinement phase 7 session 02-03-26 [001-hybrid-rag-fusion-epic/02-03-26_17-56__8-agent-review-33-findings]"
-description: "Executed a comprehensive 8-agent orchestrated review (5 Gemini gemini-3.1-pro-preview + 3 Opus claude-opus-4-6) of the Spec Kit Memory MCP server (50K+ LOC). Phase A launched 5 parallel Gemini CLI age."
+title: "refinement phase 7 session 02-03-26"
+description: "Executed a comprehensive 8-agent orchestrated review (5 Gemini gemini-3.1-pro-preview + 3 Opus claude-opus-4-6) of the Spec Kit Memory MCP server (50K+ LOC). Phase A launched..."
 trigger_phrases:
   - "system spec kit/022 hybrid rag fusion/010 cross ai audit"
   - "gemini 3"
   - "pro preview"
   - "claude opus 4 6"
   - "ultra think"
-quality_score: 1.00
-quality_flags: []
 importance_tier: "critical"
 contextType: "research"
-
+quality_score: 1.00
+quality_flags: []
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-
----
-
 # refinement phase 7 session 02-03-26
 
 ## SESSION SUMMARY
@@ -41,6 +36,7 @@ contextType: "research"
 ---
 
 <!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -136,6 +132,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -285,6 +282,9 @@ rootCause: Prior 4-wave cross-AI audit produced 26 findings across 19 scratch fi
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-gemini-cli-agents-context-81a6c4ea -->
@@ -486,6 +486,9 @@ rootCause: Prior 4-wave cross-AI audit produced 26 findings across 19 scratch fi
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -607,6 +610,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -701,47 +705,11 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/022 hybrid rag fusion/010 cross ai audit"
+  - "system spec kit/022 hybrid rag fusion/010 cross ai audit"
   - "gemini 3"
   - "pro preview"
   - "claude opus 4 6"
-  - "ultra think"
-  - "self protection"
-  - "gemini mcp standards"
-  - "deep review"
-  - "multi wave"
-  - "new 1"
-  - "proc 1"
-  - "proc 2"
-  - "wave4 synthesis"
-  - "refinement phase 7"
-  - "tree thinning"
-  - "full detail including code"
-  - "detail including code snippets"
-  - "spec.md plan.md tasks.md checklist.md"
-  - "heavy verification prevent claude"
-  - "verification prevent claude overload"
-  - "prevent claude overload orchestrate.md"
-  - "claude overload orchestrate.md self-protection"
-  - "overload orchestrate.md self-protection rules"
-  - "orchestrate.md self-protection rules cwb"
-  - "self-protection rules cwb pattern"
-  - "rules cwb pattern tcb"
-  - "system"
-  - "spec"
-  - "kit/023"
-  - "hybrid"
-  - "rag"
-  - "fusion"
-  - "refinement/018"
-  - "refinement"
-  - "phase"
-
-key_files:
-  - ".opencode/.../scratch/(merged-small-files)"
-  - ".opencode/.../010-cross-ai-audit/(merged-small-files)"
-
-# Relationships
+  - "ultra think"# Relationships
 related_sessions:
 
   []

@@ -1,44 +1,17 @@
 ---
-title: "SpecKit reimagined review fixes 2026-02-01 [082-speckit-reimagined/01-02-26_10-17__speckit-reimagined]"
-description: "Captured the session that applied comprehensive spec fixes after a parallel review of the reimagined SpecKit initiative. It preserves the review findings, the targeted documentation corrections, and the implementation context needed to continue the reimagined rollout."
+title: "SpecKit reimagined review fixes 2026-02-01"
+description: "Captured the session that applied comprehensive spec fixes after a parallel review of the reimagined SpecKit initiative. It preserves the review findings, the targeted..."
 trigger_phrases:
   - "speckit reimagined review"
   - "parallel spec fixes"
   - "documentation correction pass"
   - "reimagined rollout context"
 importance_tier: "high"
+contextType: "implementation"
 quality_score: 0.60
 quality_flags:
   - "legacy_migration"
-contextType: "implementation"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-<!-- Constitutional Tier Promotion:
-  To promote a memory to constitutional tier (always surfaced):
-  
-  1. Via MCP tool after indexing:
-     memory_update({ id: <memory_id>, importanceTier: 'constitutional' })
-  
-  2. Criteria for constitutional:
-     - Applies to ALL future conversations (not project-specific)
-     - Core constraints/rules that should NEVER be forgotten
-     - ~2000 token budget total for constitutional tier
-     
-  3. Add trigger phrases for proactive surfacing:
-     memory_update({ 
-       id: <memory_id>, 
-       importanceTier: 'constitutional',
-       triggerPhrases: ['fix', 'implement', 'create', 'modify', ...]
-     })
-     
-  4. Examples of constitutional content:
-     - "Always ask Gate 3 spec folder question before file modifications"
-     - "Never modify production data directly"
-     - "Memory files MUST use generate-context.js script"
--->
-
----
-
 # SESSION SUMMARY
 
 | **Meta Data** | **Value** |
@@ -60,7 +33,7 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:summary-session-1769937446397-9585k6jrq-003-memory-and-spec-kit/082-speckit-reimagined -->
+<!-- ANCHOR:summary -->
 <a id="overview"></a>
 
 ## 1. OVERVIEW
@@ -80,7 +53,8 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:state-session-1769937446397-9585k6jrq-003-memory-and-spec-kit/082-speckit-reimagined -->
-<!-- ANCHOR:preflight-session-1769937446397-9585k6jrq-003-memory-and-spec-kit/082-speckit-reimagined -->
+<!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -103,7 +77,7 @@ contextType: "implementation"
 <!-- /ANCHOR:preflight-session-1769937446397-9585k6jrq-003-memory-and-spec-kit/082-speckit-reimagined -->
 ---
 
-<!-- ANCHOR:continue-session-session-1769937446397-9585k6jrq-003-memory-and-spec-kit/082-speckit-reimagined -->
+<!-- ANCHOR:continue-session -->
 <a id="continue-session"></a>
 
 ## CONTINUE SESSION
@@ -137,6 +111,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 <!-- /ANCHOR:continue-session-session-1769937446397-9585k6jrq-003-memory-and-spec-kit/082-speckit-reimagined -->
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -219,7 +194,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 ---
 
-<!-- ANCHOR:decisions-session-1769937446397-9585k6jrq-003-memory-and-spec-kit/082-speckit-reimagined -->
+<!-- ANCHOR:decisions -->
 <a id="decisions"></a>
 
 ## 3. DECISIONS
@@ -275,7 +250,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 ---
 
-<!-- ANCHOR:recovery-hints-session-1769937446397-9585k6jrq-003-memory-and-spec-kit/082-speckit-reimagined -->
+<!-- ANCHOR:recovery-hints -->
 <a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
@@ -300,7 +275,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 <!-- /ANCHOR:recovery-hints-session-1769937446397-9585k6jrq-003-memory-and-spec-kit/082-speckit-reimagined -->
 ---
 
-<!-- ANCHOR:postflight-session-1769937446397-9585k6jrq-003-memory-and-spec-kit/082-speckit-reimagined -->
+<!-- ANCHOR:postflight -->
 <a id="postflight-learning-delta"></a>
 
 ## POSTFLIGHT LEARNING DELTA
@@ -326,6 +301,7 @@ This session was migrated from an older format. Learning metrics were not captur
 <!-- /ANCHOR:postflight-session-1769937446397-9585k6jrq-003-memory-and-spec-kit/082-speckit-reimagined -->
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -394,29 +370,12 @@ key_topics:
   - "082-speckit-reimagined"
   - "implementation-ready"
 
-# Trigger Phrases
+# Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "082 speckit"
-  - "speckit reimagined"
-  - "spec fixes"
-  - "task dependencies"
-  - "checklist items"
-  - "risk matrix"
-  - "10-agent review"
-  - "implementation ready"
-  - "session deduplication"
-  - "lazy loading"
-  - "RRF fusion"
-  - "causal types"
-
-key_files:
-  - "specs/003-memory-and-spec-kit/082-speckit-reimagined/tasks.md"
-  - "specs/003-memory-and-spec-kit/082-speckit-reimagined/checklist.md"
-  - "specs/003-memory-and-spec-kit/082-speckit-reimagined/spec.md"
-  - "specs/003-memory-and-spec-kit/082-speckit-reimagined/decision-record.md"
-
-# Relationships
-parent_spec: "003-memory-and-spec-kit/082-speckit-reimagined"
+  - "speckit reimagined review"
+  - "parallel spec fixes"
+  - "documentation correction pass"
+  - "reimagined rollout context"parent_spec: "003-memory-and-spec-kit/082-speckit-reimagined"
 child_sessions: []
 ```
 

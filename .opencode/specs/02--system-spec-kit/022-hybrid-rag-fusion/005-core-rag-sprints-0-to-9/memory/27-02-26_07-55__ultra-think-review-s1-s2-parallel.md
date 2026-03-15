@@ -1,22 +1,17 @@
 ---
-title: "Ultra-Think Sprint Review [005-core-rag-sprints-0-to-8/27-02-26_07-55__ultra-think-review-s1-s2-parallel]"
+title: "Ultra-Think Sprint Review"
 description: "Conducted comprehensive 3-agent ultra-think review of the Hybrid RAG Fusion Refinement spec (140), scoring architecture 8/10 and execution readiness 6/10."
 trigger_phrases:
-  - "hybrid RAG fusion refinement"
+  - "hybrid rag fusion refinement"
   - "ultra-think review"
   - "ground truth diversification"
-  - "S1-S2 parallelization"
-  - "Sprint 4 split"
+  - "s1-s2 parallelization"
+  - "sprint 4 split"
 importance_tier: "normal"
 contextType: "general"
 quality_score: 1.00
 quality_flags: []
-
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-
----
-
 # hybrid rag fusion session 27-02-26
 
 ## SESSION SUMMARY
@@ -41,6 +36,7 @@ quality_flags: []
 ---
 
 <!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -136,6 +132,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -292,6 +289,9 @@ rootCause: Independent 3-agent ultra-think review identified 5 critical findings
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-applied-ground-truth-diversification-ef42ce60 -->
@@ -520,6 +520,9 @@ rootCause: Independent 3-agent ultra-think review identified 5 critical findings
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -641,6 +644,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -735,53 +739,11 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "system spec kit/022 hybrid rag fusion"
-  - "ultra think"
-  - "sub 1k"
-  - "s1 s2"
-  - "off ramp"
-  - "re approval"
-  - "sunk cost"
-  - "n3 lite"
-  - "research grade"
-  - "new 2"
-  - "pre analysis"
-  - "single task"
   - "hybrid rag fusion refinement"
-  - "sprint 0 epistemological foundation"
-  - "sprint 1 graph signal activation"
-  - "decision applied ground truth"
-  - "applied ground truth diversification"
-  - "ground truth diversification hard"
-  - "truth diversification hard exit"
-  - "diversification hard exit gate"
-  - "hard exit gate risk"
-  - "exit gate risk mitigation"
-  - "gate risk mitigation circular"
-  - "risk mitigation circular measurement"
-  - "mitigation circular measurement via"
-  - "circular measurement via trigger"
-  - "system"
-  - "spec"
-  - "kit/140"
-  - "hybrid"
-  - "rag"
-  - "fusion"
-  - "refinement"
-
-key_files:
-  - ".opencode/.../022-hybrid-rag-fusion/spec.md"
-  - ".opencode/.../022-hybrid-rag-fusion/plan.md"
-  - ".opencode/.../022-hybrid-rag-fusion/tasks.md"
-  - ".opencode/.../022-hybrid-rag-fusion/checklist.md"
-  - ".opencode/.../001-sprint-0-epistemological-foundation/spec.md"
-  - ".opencode/.../001-sprint-0-epistemological-foundation/plan.md"
-  - ".opencode/.../001-sprint-0-epistemological-foundation/tasks.md"
-  - ".opencode/.../001-sprint-0-epistemological-foundation/checklist.md"
-  - ".opencode/.../006-core-rag-sprints-0-to-8/spec.md"
-  - ".opencode/.../006-core-rag-sprints-0-to-8/plan.md"
-
-# Relationships
+  - "ultra-think review"
+  - "ground truth diversification"
+  - "s1-s2 parallelization"
+  - "sprint 4 split"# Relationships
 related_sessions:
 
   []

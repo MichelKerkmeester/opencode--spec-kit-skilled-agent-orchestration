@@ -1,43 +1,16 @@
 ---
-title: "Changelog release prep for remove-emojis-from-docs 2026-02-17 [005-remove-emojis-from-docs/17-02-26_00-15__remove-emojis-from-docs]"
-description: "This memory only captures an initial attempt to prepare a changelog entry, commit, tag, and release for the remove-emojis-from-docs work. It records a failed CHANGELOG read, a few follow-up tool calls, and placeholder metrics rather than a complete implementation narrative."
+title: "Changelog release prep for remove-emojis-from-docs 2026-02-17"
+description: "This memory only captures an initial attempt to prepare a changelog entry, commit, tag, and release for the remove-emojis-from-docs work. It records a failed CHANGELOG read, a..."
 trigger_phrases:
   - "changelog release prep"
   - "remove emojis docs release"
   - "changelog read attempt"
 importance_tier: "normal"
+contextType: "general"
 quality_score: 0.40
 quality_flags:
   - "needs_review"
-contextType: "general"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-<!-- Constitutional Tier Promotion:
-  To promote a memory to constitutional tier (always surfaced):
-  
-  1. Via MCP tool after indexing:
-     memory_update({ id: <memory_id>, importanceTier: 'constitutional' })
-  
-  2. Criteria for constitutional:
-     - Applies to ALL future conversations (not project-specific)
-     - Core constraints/rules that should NEVER be forgotten
-     - ~2000 token budget total for constitutional tier
-     
-  3. Add trigger phrases for proactive surfacing:
-     memory_update({ 
-       id: <memory_id>, 
-       importanceTier: 'constitutional',
-       triggerPhrases: ['fix', 'implement', 'create', 'modify', ...]
-     })
-     
-  4. Examples of constitutional content:
-     - "Always ask Gate 3 spec folder question before file modifications"
-     - "Never modify production data directly"
-     - "Memory files MUST use generate-context.js script"
--->
-
----
-
 # SESSION SUMMARY
 
 | **Meta Data** | **Value** |
@@ -60,6 +33,7 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -157,6 +131,7 @@ I'll execute this step by step. Let me start by reading the current CHANGELOG
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -295,6 +270,9 @@ Check recent git history
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 This session did not involve significant architectural or technical decisions. The work was primarily implementation, bug fixes, documentation, or research.
@@ -311,6 +289,9 @@ This session did not involve significant architectural or technical decisions. T
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -447,6 +428,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -541,36 +523,9 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "commands and skills/003 workflows documentation/005 remove emojis from docs"
-  - "let start reading current"
-  - "start reading current changelog"
-  - "reading current changelog format"
-  - "step read changelog changelog.md"
-  - "read changelog changelog.md changelog"
-  - "changelog changelog.md changelog commands"
-  - "changelog.md changelog commands skills/003"
-  - "changelog commands skills/003 workflows"
-  - "commands skills/003 workflows documentation/005"
-  - "skills/003 workflows documentation/005 remove"
-  - "workflows documentation/005 remove emojis"
-  - "documentation/005 remove emojis docs"
-  - "execute step step"
-  - "remove emojis from docs"
-  - "commands"
-  - "and"
-  - "skills/003"
-  - "workflows"
-  - "documentation/005"
-  - "remove"
-  - "emojis"
-  - "from"
-  - "docs"
-
-key_files:
-  - "CHANGELOG.md"
-
-# Relationships
-related_sessions:
+  - "changelog release prep"
+  - "remove emojis docs release"
+  - "changelog read attempt"related_sessions:
 
   []
 

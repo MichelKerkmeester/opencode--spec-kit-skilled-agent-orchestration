@@ -1,22 +1,17 @@
 ---
-title: "Sprint 9 Extra Features Implementation [006-extra-features/04-03-26_08-41__sprint-019-impl-3-phases-81-files]"
+title: "Sprint 9 Extra Features Implementation"
 description: "Implemented all 3 phases of Sprint 9 Extra Features for the Spec Kit Memory MCP server by delegating to Codex CLI (gpt-5.3-codex, xhigh reasoning, --full-auto)."
 trigger_phrases:
   - "sprint 9 implementation"
   - "codex cli delegation"
   - "zod schema validation mcp"
-  - "response envelope includeTrace"
+  - "response envelope includetrace"
   - "async ingestion job queue"
 importance_tier: "critical"
 contextType: "general"
 quality_score: 1.00
 quality_flags: []
-
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-
----
-
 # hybrid rag fusion session 04-03-26
 
 ## SESSION SUMMARY
@@ -41,6 +36,7 @@ quality_flags: []
 ---
 
 <!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -134,6 +130,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -281,6 +278,9 @@ rootCause: Sprint 9 spec folder 019-sprint-9-extra-features had complete Level 3
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-delegated-all-implementation-codex-16e1e3f7 -->
@@ -428,6 +428,9 @@ rootCause: Sprint 9 spec folder 019-sprint-9-extra-features had complete Level 3
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -549,6 +552,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -643,50 +647,11 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/022 hybrid rag fusion"
-  - "and crash"
-  - "include trace"
-  - "full auto"
-  - "provenance rich"
-  - "hybrid search"
-  - "pi b3"
-  - "real time"
-  - "sha 256"
-  - "node llama cpp"
-  - "cli codex"
-  - "prompt improver"
-  - "merged small files"
-  - "decision phased execution separate"
-  - "phased execution separate codex"
-  - "execution separate codex runs"
-  - "separate codex runs rather"
-  - "codex runs rather single"
-  - "runs rather single monolithic"
-  - "rather single monolithic run"
-  - "single monolithic run phases"
-  - "monolithic run phases dependencies"
-  - "run phases dependencies phase"
-  - "phases dependencies phase depended"
-  - "dependencies phase depended phase"
-  - "phase depended phase zod"
-  - "system"
-  - "spec"
-  - "kit/023"
-  - "hybrid"
-  - "rag"
-  - "fusion"
-  - "refinement"
-
-key_files:
-  - ".opencode/skill/system-spec-kit/mcp_server/(merged-small-files)"
-  - ".opencode/.../formatters/(merged-small-files)"
-  - ".opencode/.../handlers/(merged-small-files)"
-  - ".opencode/skill/system-spec-kit/mcp_server/handlers/(merged-small-files)"
-  - ".opencode/.../search/(merged-small-files)"
-  - ".opencode/.../pipeline/(merged-small-files)"
-  - ".opencode/.../tools/(merged-small-files)"
-
-# Relationships
+  - "sprint 9 implementation"
+  - "codex cli delegation"
+  - "zod schema validation mcp"
+  - "response envelope includetrace"
+  - "async ingestion job queue"# Relationships
 related_sessions:
 
   []

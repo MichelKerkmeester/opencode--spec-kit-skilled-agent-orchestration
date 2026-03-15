@@ -1,19 +1,18 @@
 ---
-title: "Scratch verification and date consistency review for [001-finsweet-performance/13-12-25_11-10__finsweet-performance]"
-description: "This archived memory captures a verification session that checked AGENTS references, template wiring, command paths, and a date inconsistency. The content appears mismatched with the finsweet-performance spec path, so it should be treated as a review artifact that requires manual validation before reuse."
+title: "Scratch verification and date consistency review for"
+description: "This archived memory captures a verification session that checked AGENTS references, template wiring, command paths, and a date inconsistency. The content appears mismatched..."
 trigger_phrases:
   - "scratch enforcement verification"
   - "date inconsistency review"
   - "opencode version sync check"
 importance_tier: "normal"
+contextType: "discovery"
 quality_score: 0.40
 quality_flags:
   - "legacy_migration"
-contextType: "discovery"
 date: "2025-12-13"
 spec_folder: "006-code-refinement/001-finsweet-performance"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Migrated by migrate-memory-v22.mjs -->
 
 # IMPROVED CONTEXT TEMPLATE v2.0
@@ -21,8 +20,6 @@ spec_folder: "006-code-refinement/001-finsweet-performance"
 > **Purpose**: Enhanced memory template with rich metadata for semantic search, importance-based decay, and intelligent context retrieval.
 >
 > **Changes from v1**: Added Session ID, Channel, Importance Tier, Context Type, Epoch timestamps, and machine-readable MEMORY METADATA section.
-
----
 
 ---
 
@@ -47,7 +44,8 @@ spec_folder: "006-code-refinement/001-finsweet-performance"
 
 ---
 
-<!-- ANCHOR:preflight-session-1765624224419-vkzcj71z8-006-finsweet-performance -->
+<!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -71,7 +69,7 @@ spec_folder: "006-code-refinement/001-finsweet-performance"
 
 ---
 
-<!-- ANCHOR:continue-session-session-1765624224419-vkzcj71z8-006-finsweet-performance -->
+<!-- ANCHOR:continue-session -->
 <a id="continue-session"></a>
 
 ## CONTINUE SESSION
@@ -107,6 +105,9 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 ---
 
 <!-- anchor: summary-session-1765624224419-vkzcj71z8-006-finsweet-performance -->
+<!-- ANCHOR:summary -->
+<a id="overview"></a>
+
 ## 1. OVERVIEW
 
 Captured 1 user prompts and 97 total messages
@@ -153,6 +154,9 @@ I found a critical discrepancy.
 ---
 
 <!-- anchor: detailed-changes-session-1765624224419-vkzcj71z8-006-finsweet-performance -->
+<!-- ANCHOR:detailed-changes -->
+<a id="detailed-changes"></a>
+
 ## 2. DETAILED CHANGES
 
 <!-- anchor: implementation-now-let-me-006-session-1765624224419-vkzcj71z8 -->
@@ -276,6 +280,9 @@ All 5 date references corrected from June (06) to December (12).
 ---
 
 <!-- anchor: decisions-session-1765624224419-vkzcj71z8-006-finsweet-performance -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 3. DECISIONS
 
 This session did not involve significant architectural or technical decisions. The work was primarily implementation, bug fixes, documentation, or research.
@@ -285,6 +292,9 @@ This session did not involve significant architectural or technical decisions. T
 <!-- /anchor: decisions-session-1765624224419-vkzcj71z8-006-finsweet-performance -->
 
 <!-- anchor: session-history-session-1765624224419-vkzcj71z8-006-finsweet-performance -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 4. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -316,7 +326,7 @@ Double check and verify the work done here: /Users/michelkerkmeester/MEGA/Develo
 
 ---
 
-<!-- ANCHOR:recovery-hints-session-1765624224419-vkzcj71z8-006-finsweet-performance -->
+<!-- ANCHOR:recovery-hints -->
 <a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
@@ -341,7 +351,7 @@ Double check and verify the work done here: /Users/michelkerkmeester/MEGA/Develo
 <!-- /ANCHOR:recovery-hints-session-1765624224419-vkzcj71z8-006-finsweet-performance -->
 ---
 
-<!-- ANCHOR:postflight-session-1765624224419-vkzcj71z8-006-finsweet-performance -->
+<!-- ANCHOR:postflight -->
 <a id="postflight-learning-delta"></a>
 
 ## POSTFLIGHT LEARNING DELTA
@@ -366,6 +376,8 @@ Double check and verify the work done here: /Users/michelkerkmeester/MEGA/Develo
 This session was migrated from an older format. Learning metrics were not captured in the original format.
 <!-- /ANCHOR:postflight-session-1765624224419-vkzcj71z8-006-finsweet-performance -->
 ---
+<!-- ANCHOR:metadata -->
+<a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 

@@ -1,19 +1,25 @@
 ---
-title: "Completed 018-ux-hooks code audit [018-ux-hooks/11-03-26_20-33__completed-018-ux-hooks-code-audit-remediation-17]"
-description: "Session context memory template for Spec Kit indexing."
+title: "Completed 018-ux-hooks code audit"
+description: "Completed 018-ux-hooks code audit remediation: 17 tasks executed via 5 parallel Copilot CLI agents (gpt-5.3-codex xhigh). Fixed P0 blockers (mixed-outcome repair reporting,..."
 trigger_phrases:
-  - "memory dashboard"
-  - "session summary"
-  - "context template"
+  - "confirm name"
+  - "ux hooks"
+  - "gpt 5"
+  - "mixed outcome"
+  - "completed 018-ux-hooks code audit"
+  - "018-ux-hooks code audit remediation"
+  - "code audit remediation tasks"
+  - "audit remediation tasks executed"
+  - "remediation tasks executed via"
+  - "tasks executed via parallel"
+  - "executed via parallel copilot"
+  - "via parallel copilot cli"
 importance_tier: "normal"
 contextType: "general"
 quality_score: 0.90
 quality_flags:
   - "has_tool_state_mismatch"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
----
-
 # Completed 018-ux-hooks code audit remediation: 17 tasks executed via 5 parallel Copilot CLI agents...
 
 ## SESSION SUMMARY
@@ -34,8 +40,6 @@ quality_flags:
 | Created At (Epoch) | 1773257633 |
 | Last Accessed (Epoch) | 1773257633 |
 | Access Count | 1 |
-
----
 
 ---
 
@@ -109,6 +113,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -231,6 +236,9 @@ Completed 018-ux-hooks code audit remediation: 17 tasks executed via 5 parallel 
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-partialsuccess-field-mixed-31be09e1 -->
@@ -804,6 +812,9 @@ Completed 018-ux-hooks code audit remediation: 17 tasks executed via 5 parallel 
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -886,8 +897,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 
 ---
 
----
-
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -982,51 +992,18 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/022 hybrid rag fusion/013 code audit per feature catalog/018 ux hooks"
   - "confirm name"
-  - "partial success"
-  - "run post mutation hooks"
-  - "deleted at"
-  - "append auto surface hints"
   - "ux hooks"
-  - "operation aware"
-  - "response hints"
-  - "cross agent"
-  - "tree shaking"
-  - "re exports"
-  - "merged small files"
-  - "hook wiring test suite"
-  - "kept errors optional mutationhookresult"
-  - "errors optional mutationhookresult backward"
-  - "optional mutationhookresult backward compatibility"
-  - "mutationhookresult backward compatibility always"
-  - "used conditional spread deletedat"
-  - "conditional spread deletedat field"
-  - "spread deletedat field absent"
-  - "deletedat field absent null"
-  - "field absent null failed"
-  - "parallel copilot cli agents"
-  - "replaced wildcard barrel exports"
-  - "backward compatibility always return"
-  - "system"
-  - "spec"
-  - "kit/022"
-  - "hybrid"
-  - "rag"
-  - "fusion/013"
-  - "code"
-  - "audit"
-  - "per"
-  - "feature"
-  - "catalog/018"
-  - "hooks"
-
-key_files:
-  - ".opencode/skill/system-spec-kit/mcp_server/handlers/(merged-small-files)"
-  - ".opencode/skill/system-spec-kit/mcp_server/hooks/(merged-small-files)"
-  - ".opencode/skill/system-spec-kit/mcp_server/tests/(merged-small-files)"
-
-# Relationships
+  - "gpt 5"
+  - "mixed outcome"
+  - "completed 018-ux-hooks code audit"
+  - "018-ux-hooks code audit remediation"
+  - "code audit remediation tasks"
+  - "audit remediation tasks executed"
+  - "remediation tasks executed via"
+  - "tasks executed via parallel"
+  - "executed via parallel copilot"
+  - "via parallel copilot cli"# Relationships
 related_sessions:
 
   []

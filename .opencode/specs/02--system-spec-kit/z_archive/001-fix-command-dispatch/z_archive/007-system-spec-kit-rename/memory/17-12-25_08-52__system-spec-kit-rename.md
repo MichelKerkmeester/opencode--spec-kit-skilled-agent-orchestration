@@ -1,19 +1,16 @@
 ---
-title: "Rename orchestration analysis for 007-system-spec-kit-rename 2025-12-17 [007-system-spec-kit-rename/17-12-25_08-52__system-spec-kit-rename]"
-description: "This memory records a brief orchestration-analysis step during the archived system-spec-kit rename work. The captured conversation is minimal and mainly reflects a single sequential thinking tool invocation about rename workflow discussions. It remains preserved as a migrated v2.2 session record from 2025-12-17."
+title: "Rename orchestration analysis for 007-system-spec-kit-rename 2025-12-17"
+description: "This memory records a brief orchestration-analysis step during the archived system-spec-kit rename work. The captured conversation is minimal and mainly reflects a single..."
 trigger_phrases:
   - "rename orchestration analysis"
   - "sequential thinking session"
   - "system spec kit rename"
 importance_tier: "normal"
+contextType: "general"
 quality_score: 0.40
 quality_flags:
   - "legacy_migration"
-contextType: "general"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
----
-
 # SESSION SUMMARY
 
 | **Meta Data** | **Value** |
@@ -37,7 +34,8 @@ contextType: "general"
 
 ---
 
-<!-- ANCHOR:preflight-session-1765957927691-fwjae0z3w-008-system-spec-kit-rename -->
+<!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -61,7 +59,7 @@ contextType: "general"
 
 ---
 
-<!-- ANCHOR:continue-session-session-1765957927691-fwjae0z3w-008-system-spec-kit-rename -->
+<!-- ANCHOR:continue-session -->
 <a id="continue-session"></a>
 
 ## CONTINUE SESSION
@@ -96,7 +94,9 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 ---
 
-<!-- ANCHOR:summary-session-1765957927691-fwjae0z3w-008-system-spec-kit-rename -->
+<!-- ANCHOR:summary -->
+<a id="overview"></a>
+
 ## 1. OVERVIEW
 
 [response]
@@ -108,7 +108,9 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 ---
 
-<!-- ANCHOR:detailed-changes-session-1765957927691-fwjae0z3w-008-system-spec-kit-rename -->
+<!-- ANCHOR:detailed-changes -->
+<a id="detailed-changes"></a>
+
 ## 2. DETAILED CHANGES
 
 <!-- ANCHOR:implementation-tool-sequentialthinkingsequentialthinking-4cdadb93-session-1765957927691-fwjae0z3w -->
@@ -123,7 +125,9 @@ Executed sequential_thinking_sequentialthinking
 
 ---
 
-<!-- ANCHOR:decisions-session-1765957927691-fwjae0z3w-008-system-spec-kit-rename -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 3. DECISIONS
 
 This session did not involve significant architectural or technical decisions. The work was primarily implementation, bug fixes, documentation, or research.
@@ -132,7 +136,9 @@ This session did not involve significant architectural or technical decisions. T
 
 <!-- /ANCHOR:decisions-session-1765957927691-fwjae0z3w-008-system-spec-kit-rename -->
 
-<!-- ANCHOR:session-history-session-1765957927691-fwjae0z3w-008-system-spec-kit-rename -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 4. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -166,7 +172,7 @@ Tool: sequential_thinking_sequentialthinking
 
 ---
 
-<!-- ANCHOR:recovery-hints-session-1765957927691-fwjae0z3w-008-system-spec-kit-rename -->
+<!-- ANCHOR:recovery-hints -->
 <a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
@@ -191,7 +197,7 @@ Tool: sequential_thinking_sequentialthinking
 <!-- /ANCHOR:recovery-hints-session-1765957927691-fwjae0z3w-008-system-spec-kit-rename -->
 ---
 
-<!-- ANCHOR:postflight-session-1765957927691-fwjae0z3w-008-system-spec-kit-rename -->
+<!-- ANCHOR:postflight -->
 <a id="postflight-learning-delta"></a>
 
 ## POSTFLIGHT LEARNING DELTA
@@ -216,6 +222,8 @@ Tool: sequential_thinking_sequentialthinking
 This session was migrated from an older format. Learning metrics were not captured in the original format.
 <!-- /ANCHOR:postflight-session-1765957927691-fwjae0z3w-008-system-spec-kit-rename -->
 ---
+<!-- ANCHOR:metadata -->
+<a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 

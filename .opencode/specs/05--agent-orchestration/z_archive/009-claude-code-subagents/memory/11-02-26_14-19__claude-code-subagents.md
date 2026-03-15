@@ -1,44 +1,17 @@
 ---
-title: "Claude Code subagents context capture for 009-claude-code-subagents 2026-02-11 [009-claude-code-subagents/11-02-26_14-19__claude-code-subagents]"
-description: "This session captured context around a single-file edit flow and memory generation for the Claude Code subagents spec folder. The body also mixes in TCB system notes and continuation text, so the archived session should be reviewed for topic alignment."
+title: "Claude Code subagents context capture for 009-claude-code-subagents 2026-02-11"
+description: "This session captured context around a single-file edit flow and memory generation for the Claude Code subagents spec folder. The body also mixes in TCB system notes and..."
 trigger_phrases:
   - "claude code subagents"
   - "generate context script"
-  - "TCB system notes"
+  - "tcb system notes"
   - "single file edit flow"
 importance_tier: "normal"
+contextType: "implementation"
 quality_score: 0.40
 quality_flags:
   - "needs_review"
-contextType: "implementation"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-<!-- Constitutional Tier Promotion:
-  To promote a memory to constitutional tier (always surfaced):
-  
-  1. Via MCP tool after indexing:
-     memory_update({ id: <memory_id>, importanceTier: 'constitutional' })
-  
-  2. Criteria for constitutional:
-     - Applies to ALL future conversations (not project-specific)
-     - Core constraints/rules that should NEVER be forgotten
-     - ~2000 token budget total for constitutional tier
-     
-  3. Add trigger phrases for proactive surfacing:
-     memory_update({ 
-       id: <memory_id>, 
-       importanceTier: 'constitutional',
-       triggerPhrases: ['fix', 'implement', 'create', 'modify', ...]
-     })
-     
-  4. Examples of constitutional content:
-     - "Always ask Gate 3 spec folder question before file modifications"
-     - "Never modify production data directly"
-     - "Memory files MUST use generate-context.js script"
--->
-
----
-
 # SESSION SUMMARY
 
 | **Meta Data** | **Value** |
@@ -60,7 +33,8 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:preflight-session-1770815950245-43y47835l/opencode/specs/05--agent-orchestration/z_archive/009-claude-code-subagents -->
+<!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -98,7 +72,7 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:continue-session-session-1770815950245-43y47835l/opencode/specs/05--agent-orchestration/z_archive/009-claude-code-subagents -->
+<!-- ANCHOR:continue-session -->
 <a id="continue-session"></a>
 
 ## CONTINUE SESSION
@@ -152,6 +126,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -174,6 +149,7 @@ BEFORE DISPATCH          DURING EXECUTION  |
 ---
 
 <!-- ANCHOR_EXAMPLE:task-guide-../.opencode/specs/05--agent-orchestration/z_archive/009-claude-code-subagents-../.opencode/specs/05--agent-orchestration/z_archive/009-claude-code-subagents -->
+<!-- ANCHOR:task-guide -->
 <a id="implementation-guide"></a>
 
 ## 1. IMPLEMENTATION GUIDE
@@ -237,6 +213,7 @@ You are continuing a multi-phase session working on the OpenCode public framewor
 ---
 
 <!-- ANCHOR_EXAMPLE:summary-session-1770815950245-43y47835l-../.opencode/specs/05--agent-orchestration/z_archive/009-claude-code-subagents -->
+<!-- ANCHOR:summary -->
 <a id="overview"></a>
 
 ## 2. OVERVIEW
@@ -301,6 +278,7 @@ Y
 ---
 
 <!-- ANCHOR_EXAMPLE:detailed-changes-session-1770815950245-43y47835l-../.opencode/specs/05--agent-orchestration/z_archive/009-claude-code-subagents -->
+<!-- ANCHOR:detailed-changes -->
 <a id="detailed-changes"></a>
 
 ## 3. DETAILED CHANGES
@@ -575,6 +553,9 @@ Executed spec_kit_memory_memory_stats
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 This session did not involve significant architectural or technical decisions. The work was primarily implementation, bug fixes, documentation, or research.
@@ -591,6 +572,9 @@ This session did not involve significant architectural or technical decisions. T
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -1065,6 +1049,7 @@ Tool: bash
 ---
 
 <!-- ANCHOR_EXAMPLE:recovery-hints-session-1770815950245-43y47835l-../.opencode/specs/05--agent-orchestration/z_archive/009-claude-code-subagents -->
+<!-- ANCHOR:recovery-hints -->
 <a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
@@ -1122,6 +1107,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js ../
 ---
 
 <!-- ANCHOR_EXAMPLE:postflight-session-1770815950245-43y47835l-../.opencode/specs/05--agent-orchestration/z_archive/009-claude-code-subagents -->
+<!-- ANCHOR:postflight -->
 <a id="postflight-learning-delta"></a>
 
 ## POSTFLIGHT LEARNING DELTA
@@ -1160,6 +1146,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -1254,39 +1241,10 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "../.opencode/specs/004 agents/009 claude code subagents"
-  - "generate context"
-  - "save context data"
-  - "spec folder exists level"
-  - "folder exists level docs"
-  - "let prepare data run"
-  - "prepare data run generate-context"
-  - "data run generate-context script"
-  - "changelog.md changelog public release.md"
-  - "changelog public release.md public"
-  - "public release.md public release"
-  - "release.md public release /tmp/save-context-data.json"
-  - "public release /tmp/save-context-data.json save"
-  - "release /tmp/save-context-data.json save data"
-  - "/tmp/save-context-data.json save data ../.opencode/specs/004"
-  - "save data ../.opencode/specs/004 agents/009"
-  - "data ../.opencode/specs/004 agents/009 claude"
-  - "../.opencode/specs/004 agents/009 claude code"
-  - "agents/009 claude code subagents"
-  - "memory folder empty"
-  - "../.opencode/specs/004"
-  - "agents/009"
-  - "claude"
-  - "code"
-  - "subagents"
-
-key_files:
-  - "CHANGELOG.md"
-  - "PUBLIC_RELEASE.md"
-  - "/tmp/save-context-data.json"
-
-# Relationships
-related_sessions:
+  - "claude code subagents"
+  - "generate context script"
+  - "tcb system notes"
+  - "single file edit flow"related_sessions:
 
   []
 

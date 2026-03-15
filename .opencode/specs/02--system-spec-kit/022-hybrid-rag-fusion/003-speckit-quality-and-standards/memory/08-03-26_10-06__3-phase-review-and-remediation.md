@@ -1,21 +1,17 @@
 ---
-title: "Executed a 3-phase review [003-speckit-quality-and-standards/08-03-26_10-06__3-phase-review-and-remediation]"
+title: "Executed a 3-phase review"
 description: "Executed a 3-phase review and remediation of spec folder 003-speckit-quality-and-standards, which documents ~280 file changes across the system-spec-kit codebase."
 trigger_phrases:
   - "003-speckit-quality-and-standards review"
   - "5-agent codex review"
   - "bare catch typed error handling"
-  - "ScanFileEntry interface extraction"
-  - "buildAliasBuckets deduplication"
+  - "scanfileentry interface extraction"
+  - "buildaliasbuckets deduplication"
 importance_tier: "important"
 contextType: "general"
 quality_score: 0.65
 quality_flags: []
-
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
----
-
 # Executed a 3-phase review and remediation of spec folder 003-speckit-quality-and-standards, which...
 
 ## SESSION SUMMARY
@@ -36,8 +32,6 @@ quality_flags: []
 | Created At (Epoch) | 1772960811 |
 | Last Accessed (Epoch) | 1772960811 |
 | Access Count | 1 |
-
----
 
 ---
 
@@ -111,6 +105,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -253,6 +248,9 @@ rootCause: Spec folder 003-speckit-quality-and-standards had multiple sk-code--o
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-applied-fixes-manually-after-b9b588eb -->
@@ -400,6 +398,9 @@ rootCause: Spec folder 003-speckit-quality-and-standards had multiple sk-code--o
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -483,8 +484,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 
 ---
 
----
-
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -579,46 +579,11 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/022 hybrid rag fusion"
-  - "were blocked"
-  - "not warranting"
-  - "build alias buckets"
-  - "speckit quality and standards"
-  - "gpt 5"
-  - "read only"
-  - "sk code"
-  - "sk doc"
-  - "sub agents"
-  - "self governance"
-  - "workspace write"
-  - "memory index discovery"
-  - "memory index alias"
-  - "req 001"
-  - "chk 001"
-  - "merged small files"
-  - "to plan"
-  - "gate spec folder question"
-  - "spec folder question hard"
-  - "folder question hard block"
-  - "question hard block claude.md"
-  - "hard block claude.md codex"
-  - "block claude.md codex agents"
-  - "claude.md codex agents cannot"
-  - "codex agents cannot bypass"
-  - "system"
-  - "spec"
-  - "kit/022"
-  - "hybrid"
-  - "rag"
-  - "fusion"
-
-key_files:
-  - ".opencode/.../handlers/(merged-small-files)"
-  - ".opencode/skill/system-spec-kit/scripts/spec/(merged-small-files)"
-  - ".opencode/skill/system-spec-kit/scripts/lib/(merged-small-files)"
-  - ".opencode/.../003-speckit-quality-and-standards/(merged-small-files)"
-
-# Relationships
+  - "003-speckit-quality-and-standards review"
+  - "5-agent codex review"
+  - "bare catch typed error handling"
+  - "scanfileentry interface extraction"
+  - "buildaliasbuckets deduplication"# Relationships
 related_sessions:
 
   []

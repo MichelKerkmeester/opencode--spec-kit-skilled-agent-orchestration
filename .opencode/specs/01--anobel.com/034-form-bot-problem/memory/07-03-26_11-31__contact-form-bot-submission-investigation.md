@@ -1,19 +1,16 @@
 ---
-title: "Contact form bot submission investigation [034-form-bot-problem/07-03-26_11-31__contact-form-bot-submission-investigation]"
-description: "This memory is filed under the form-bot problem spec and is labeled as a contact-form bot submission investigation. The body currently contains unrelated SGQS and 036-skill-graphs implementation analysis, so the record needs manual review before it is reused for form-bot debugging."
+title: "Contact form bot submission investigation"
+description: "This memory is filed under the form-bot problem spec and is labeled as a contact-form bot submission investigation. The body currently contains unrelated SGQS and..."
 trigger_phrases:
   - "contact form bot submission"
   - "form bot memory contamination"
   - "sgqs skill graphs mismatch"
 importance_tier: "critical"
+contextType: "implementation"
 quality_score: 0.40
 quality_flags:
   - "needs_review"
-contextType: "implementation"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
----
-
 # Contact Form Bot Submission Investigation
 
 ## SESSION SUMMARY
@@ -34,8 +31,6 @@ contextType: "implementation"
 | Created At (Epoch) | 1772879489 |
 | Last Accessed (Epoch) | 1772879489 |
 | Access Count | 1 |
-
----
 
 ---
 
@@ -107,6 +102,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -557,6 +553,9 @@ Executed edit
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 decision_count: 0
@@ -573,6 +572,9 @@ decision_count: 0
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -670,8 +672,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 01-
 
 ---
 
----
-
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -766,48 +767,9 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " anobel.com/034 form bot problem"
-  - "skill graphs"
-  - "in memory"
-  - "tree thinning"
-  - "system spec kit"
-  - "context server"
-  - "mcp tool dispatch"
-  - "merged-small-files tree-thinning merged small"
-  - "tree-thinning merged small files"
-  - "based analysis implementation associated"
-  - "analysis implementation associated scripts"
-  - "implementation associated scripts skill"
-  - "associated scripts skill graph"
-  - "scripts skill graph system"
-  - "skill graph system memory"
-  - "graph system memory integration"
-  - "system memory integration consist"
-  - "memory integration consist elegant"
-  - "integration consist elegant entirely"
-  - "consist elegant entirely in-memory"
-  - "elegant entirely in-memory graph"
-  - "entirely in-memory graph database"
-  - "in-memory graph database sgqs"
-  - "graph database sgqs enriches"
-  - "database sgqs enriches existing"
-  - "sgqs enriches existing semantic"
-  - "anobel.com/034"
-  - "form"
-  - "bot"
-  - "problem"
-
-key_files:
-  - ".opencode/.../handlers/(merged-small-files)"
-  - ".opencode/skill/system-spec-kit/mcp_server/handlers/(merged-small-files)"
-  - ".opencode/skill/system-spec-kit/mcp_server/(merged-small-files)"
-  - ".opencode/.../tools/(merged-small-files)"
-  - ".opencode/skill/system-spec-kit/mcp_server/tools/(merged-small-files)"
-  - ".opencode/.../tests/(merged-small-files)"
-  - ".opencode/.../architecture/(merged-small-files)"
-
-# Relationships
-related_sessions:
+  - "contact form bot submission"
+  - "form bot memory contamination"
+  - "sgqs skill graphs mismatch"related_sessions:
 
   []
 

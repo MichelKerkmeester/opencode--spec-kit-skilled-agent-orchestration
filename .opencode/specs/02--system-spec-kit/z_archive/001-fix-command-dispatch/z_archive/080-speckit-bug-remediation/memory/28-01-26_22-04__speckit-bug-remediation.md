@@ -1,44 +1,17 @@
 ---
-title: "SpecKit bug remediation completion 2026-01-28 [080-speckit-bug-remediation/28-01-26_22-04__speckit-bug-remediation]"
-description: "Captured the continuation session that resolved the remaining Spec Kit MCP server failures and expanded supporting documentation. It summarizes the specific bugs fixed, the reduction in failing tests, and the documentation improvements completed during the remediation pass."
+title: "SpecKit bug remediation completion 2026-01-28"
+description: "Captured the continuation session that resolved the remaining Spec Kit MCP server failures and expanded supporting documentation. It summarizes the specific bugs fixed, the..."
 trigger_phrases:
   - "speckit bug remediation"
   - "mcp server test failures"
   - "remaining bug fixes"
   - "documentation remediation pass"
 importance_tier: "normal"
+contextType: "general"
 quality_score: 0.60
 quality_flags:
   - "legacy_migration"
-contextType: "general"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-<!-- Constitutional Tier Promotion:
-  To promote a memory to constitutional tier (always surfaced):
-  
-  1. Via MCP tool after indexing:
-     memory_update({ id: <memory_id>, importanceTier: 'constitutional' })
-  
-  2. Criteria for constitutional:
-     - Applies to ALL future conversations (not project-specific)
-     - Core constraints/rules that should NEVER be forgotten
-     - ~2000 token budget total for constitutional tier
-     
-  3. Add trigger phrases for proactive surfacing:
-     memory_update({ 
-       id: <memory_id>, 
-       importanceTier: 'constitutional',
-       triggerPhrases: ['fix', 'implement', 'create', 'modify', ...]
-     })
-     
-  4. Examples of constitutional content:
-     - "Always ask Gate 3 spec folder question before file modifications"
-     - "Never modify production data directly"
-     - "Memory files MUST use generate-context.js script"
--->
-
----
-
 # SESSION SUMMARY
 
 | **Meta Data** | **Value** |
@@ -60,7 +33,8 @@ contextType: "general"
 
 ---
 
-<!-- ANCHOR:preflight-session-1769634260067-usos48ies-003-memory-and-spec-kit/080-speckit-bug-remediation -->
+<!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -98,7 +72,7 @@ contextType: "general"
 
 ---
 
-<!-- ANCHOR:continue-session-session-1769634260067-usos48ies-003-memory-and-spec-kit/080-speckit-bug-remediation -->
+<!-- ANCHOR:continue-session -->
 <a id="continue-session"></a>
 
 ## CONTINUE SESSION
@@ -132,6 +106,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 <!-- /ANCHOR:continue-session-session-1769634260067-usos48ies-003-memory-and-spec-kit/080-speckit-bug-remediation -->
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -165,7 +140,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 ---
 
-<!-- ANCHOR:task-guide-memory-and-spec-kit/080-speckit-bug-remediation-003-memory-and-spec-kit/080-speckit-bug-remediation -->
+<!-- ANCHOR:task-guide -->
 <a id="implementation-guide"></a>
 
 ## 1. IMPLEMENTATION GUIDE
@@ -208,7 +183,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 ---
 
-<!-- ANCHOR:summary-session-1769634260067-usos48ies-003-memory-and-spec-kit/080-speckit-bug-remediation -->
+<!-- ANCHOR:summary -->
 <a id="overview"></a>
 
 ## 2. OVERVIEW
@@ -239,7 +214,7 @@ Continued the Spec Kit MCP server bug remediation by fixing the remaining test f
 
 ---
 
-<!-- ANCHOR:detailed-changes-session-1769634260067-usos48ies-003-memory-and-spec-kit/080-speckit-bug-remediation -->
+<!-- ANCHOR:detailed-changes -->
 <a id="detailed-changes"></a>
 
 ## 3. DETAILED CHANGES
@@ -285,6 +260,9 @@ rootCause: tier-classifier calculate_retrievability() ran FSRS calculation even 
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-timestamp-guard-tier-1b872a75-session-1769634260067-usos48ies -->
@@ -405,6 +383,9 @@ rootCause: tier-classifier calculate_retrievability() ran FSRS calculation even 
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -430,7 +411,7 @@ Continued the Spec Kit MCP server bug remediation by fixing the remaining test f
 
 ---
 
-<!-- ANCHOR:postflight-session-1769634260067-usos48ies-003-memory-and-spec-kit/080-speckit-bug-remediation -->
+<!-- ANCHOR:postflight -->
 <a id="postflight-learning-delta"></a>
 
 ## POSTFLIGHT LEARNING DELTA
@@ -469,7 +450,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 
 ---
 
-<!-- ANCHOR:recovery-hints-session-1769634260067-usos48ies-003-memory-and-spec-kit/080-speckit-bug-remediation -->
+<!-- ANCHOR:recovery-hints -->
 <a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
@@ -494,6 +475,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 <!-- /ANCHOR:recovery-hints-session-1769634260067-usos48ies-003-memory-and-spec-kit/080-speckit-bug-remediation -->
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -570,19 +552,10 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-
-  []
-
-key_files:
-  - ".opencode/.../cognitive/tier-classifier.js"
-  - ".opencode/.../scoring/composite-scoring.js"
-  - ".opencode/.../tests/composite-scoring.test.js"
-  - ".opencode/.../tests/test-memory-handlers.js"
-  - ".opencode/skill/system-spec-kit/mcp_server/README.md"
-  - ".opencode/skill/system-spec-kit/mcp_server/lib/README.md"
-  - ".opencode/skill/system-spec-kit/README.md"
-
-# Relationships
+  - "speckit bug remediation"
+  - "mcp server test failures"
+  - "remaining bug fixes"
+  - "documentation remediation pass"# Relationships
 related_sessions:
 
   []

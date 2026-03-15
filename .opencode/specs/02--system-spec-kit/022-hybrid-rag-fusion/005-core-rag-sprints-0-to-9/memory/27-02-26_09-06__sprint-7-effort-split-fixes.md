@@ -1,22 +1,17 @@
 ---
-title: "sprint 7 long horizon session 27-02-26 [005-core-rag-sprints-0-to-8/27-02-26_09-06__sprint-7-effort-split-fixes]"
+title: "sprint 7 long horizon session 27-02-26"
 description: "Implemented UT-9 Sprint 7 review fixes across 4 documentation files (spec.md, plan.md, tasks.md, checklist.md)."
 trigger_phrases:
   - "sprint 7 review fixes"
-  - "UT-9 review"
-  - "S5 scale gate"
+  - "ut-9 review"
+  - "s5 scale gate"
   - "entity linking threshold"
   - "conditional effort scenarios"
 importance_tier: "normal"
 contextType: "general"
 quality_score: 1.00
 quality_flags: []
-
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-
----
-
 # sprint 7 long horizon session 27-02-26
 
 ## SESSION SUMMARY
@@ -41,6 +36,7 @@ quality_flags: []
 ---
 
 <!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -136,6 +132,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -278,6 +275,9 @@ rootCause: Ultra-think review (UT-9) identified 5 documentation defects in Sprin
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-scale-gate-set-active-b6b0287c -->
@@ -398,6 +398,9 @@ rootCause: Ultra-think review (UT-9) identified 5 documentation defects in Sprin
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -519,6 +522,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -613,50 +617,11 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "system spec kit/022 hybrid rag fusion/006 core rag sprints 0 to 8"
-  - "summary"
-  - "t pi s7"
-  - "files to change"
-  - "cross reference"
-  - "r13 s3"
-  - "chk 030"
-  - "chk 031"
-  - "sprint 7 long horizon"
-  - "active memories verified entities"
-  - "decision scale gate set"
-  - "scale gate set active"
-  - "gate set active memories"
-  - "set active memories verified"
-  - "memories verified entities marginal"
-  - "verified entities marginal roi"
-  - "entities marginal roi threshold"
-  - "marginal roi threshold analogous"
-  - "roi threshold analogous gate"
-  - "threshold analogous gate proportionally"
-  - "analogous gate proportionally lower"
-  - "gate proportionally lower threshold"
-  - "proportionally lower threshold entity"
-  - "lower threshold entity linking"
-  - "threshold entity linking lower"
-  - "entity linking lower computational"
-  - "system"
-  - "spec"
-  - "kit/140"
-  - "hybrid"
-  - "rag"
-  - "fusion"
-  - "refinement/008"
-  - "sprint"
-  - "long"
-  - "horizon"
-
-key_files:
-  - ".opencode/.../006-core-rag-sprints-0-to-8/spec.md"
-  - ".opencode/.../006-core-rag-sprints-0-to-8/plan.md"
-  - ".opencode/.../006-core-rag-sprints-0-to-8/tasks.md"
-  - ".opencode/.../006-core-rag-sprints-0-to-8/checklist.md"
-
-# Relationships
+  - "sprint 7 review fixes"
+  - "ut-9 review"
+  - "s5 scale gate"
+  - "entity linking threshold"
+  - "conditional effort scenarios"# Relationships
 related_sessions:
 
   []

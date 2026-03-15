@@ -1,19 +1,25 @@
 ---
-title: "Closed remaining checklist [016-tooling-and-scripts/14-03-26_10-42__closed-remaining-checklist-and-summary-residual]"
-description: "Session context memory template for Spec Kit indexing."
+title: "Closed remaining checklist"
+description: "Closed remaining checklist and summary residual items for tooling-and-scripts."
 trigger_phrases:
-  - "memory dashboard"
-  - "session summary"
-  - "context template"
+  - "tooling and scripts"
+  - "closed remaining checklist residual"
+  - "remaining checklist residual items"
+  - "checklist residual items tooling-and-scripts"
+  - "closed remaining checklist closed"
+  - "remaining checklist closed remaining"
+  - "checklist closed remaining checklist"
+  - "code audit per catalog"
+  - "audit per catalog tooling"
+  - "per catalog tooling scripts"
+  - "code"
+  - "audit"
 importance_tier: "normal"
 contextType: "general"
 quality_score: 0.90
 quality_flags:
   - "has_tool_state_mismatch"
 ---
-
----
-
 # Closed remaining checklist and summary residual items for tooling-and-scripts.
 
 ## SESSION SUMMARY
@@ -37,8 +43,6 @@ quality_flags:
 
 ---
 
----
-
 ## TABLE OF CONTENTS
 
 - [CONTINUE SESSION](#continue-session)
@@ -52,6 +56,8 @@ quality_flags:
 - [MEMORY METADATA](#memory-metadata)
 
 ---
+<!-- ANCHOR:continue-session -->
+<a id="continue-session"></a>
 
 ## CONTINUE SESSION
 
@@ -107,6 +113,8 @@ Next: Keep tooling validation outputs attached to checklist evidence.
 - Last: Next Steps
 
 ---
+<!-- ANCHOR:project-state-snapshot -->
+<a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
 
@@ -136,6 +144,8 @@ Next: Keep tooling validation outputs attached to checklist evidence.
 **Key Topics:** `removed` | `deferred` | `wording` | `closure` | `docs` | `completed` | `memory` | `save` | `removed deferred` | `deferred wording` | `wording closure` | `closure docs` |
 
 ---
+<!-- ANCHOR:task-guide -->
+<a id="implementation-guide"></a>
 
 ## 1. IMPLEMENTATION GUIDE
 
@@ -158,6 +168,8 @@ Next: Keep tooling validation outputs attached to checklist evidence.
 - **Validation**: Input validation before processing
 
 ---
+<!-- ANCHOR:summary -->
+<a id="overview"></a>
 
 ## 2. OVERVIEW
 
@@ -175,6 +187,8 @@ Closed remaining checklist and summary residual items for tooling-and-scripts.
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/016-tooling-and-scripts/(merged-small-files)` | Tree-thinning merged 2 small files (checklist.md, implementation-summary.md). Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/016-tooling-and-scripts/checklist.md : File modified (description pending) | Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/016-tooling-and-scripts/implementation-summary.md : File modified (description pending) |
 
 ---
+<!-- ANCHOR:detailed-changes -->
+<a id="detailed-changes"></a>
 
 ## 3. DETAILED CHANGES
 
@@ -191,6 +205,8 @@ Keep tooling validation outputs attached to checklist evidence.
 **Details:** Next: Keep tooling validation outputs attached to checklist evidence.
 
 ---
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
 
 ## 4. DECISIONS
 
@@ -282,6 +298,8 @@ Keep tooling validation outputs attached to checklist evidence.
 **Confidence**: 0.5%
 
 ---
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
 
 ## 5. CONVERSATION
 
@@ -302,8 +320,8 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 Closed remaining checklist and summary residual items for tooling-and-scripts.
 
 ---
-
----
+<!-- ANCHOR:recovery-hints -->
+<a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
 
@@ -357,8 +375,8 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 | No Dedup Conflicts |  |  |
 
 ---
-
----
+<!-- ANCHOR:metadata -->
+<a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 
@@ -450,50 +468,18 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/022 hybrid rag fusion/013 code audit per feature catalog/016 tooling and scripts"
   - "tooling and scripts"
-  - "code audit per feature catalog"
-  - "merged small files"
-  - "removed deferred wording closure"
-  - "deferred wording closure docs"
-  - "wording closure docs completed"
-  - "closure docs completed memory"
-  - "docs completed memory save"
-  - "memory context"
   - "closed remaining checklist residual"
   - "remaining checklist residual items"
   - "checklist residual items tooling-and-scripts"
-  - "option .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/016-tooling-and-scripts/ merged-small-files system"
-  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/016-tooling-and-scripts/ merged-small-files system spec"
-  - "merged-small-files system spec kit/022"
-  - "system spec kit/022 hybrid"
-  - "spec kit/022 hybrid rag"
-  - "kit/022 hybrid rag fusion/013"
-  - "hybrid rag fusion/013 code"
-  - "rag fusion/013 code audit"
-  - "fusion/013 code audit per"
-  - "code audit per catalog/016"
-  - "audit per catalog/016 tooling"
-  - "per catalog/016 tooling scripts"
-  - "system"
-  - "spec"
-  - "kit/022"
-  - "hybrid"
-  - "rag"
-  - "fusion/013"
+  - "closed remaining checklist closed"
+  - "remaining checklist closed remaining"
+  - "checklist closed remaining checklist"
+  - "code audit per catalog"
+  - "audit per catalog tooling"
+  - "per catalog tooling scripts"
   - "code"
-  - "audit"
-  - "per"
-  - "feature"
-  - "catalog/016"
-  - "tooling"
-  - "and"
-  - "scripts"
-
-key_files:
-  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/016-tooling-and-scripts/(merged-small-files)"
-
-# Relationships
+  - "audit"# Relationships
 related_sessions:
 
   []

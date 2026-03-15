@@ -1,19 +1,25 @@
 ---
-title: "Live outsourced CLI dispatch [013-outsourced-agent-memory/14-03-26_15-20__live-outsourced-cli-dispatch-verification]"
-description: "Session context memory template for Spec Kit indexing."
+title: "Live outsourced CLI dispatch"
+description: "Live outsourced CLI dispatch verification: hardened runtime inputs, added 6 edge-case tests, refactored extractNextAction DRY violation."
 trigger_phrases:
-  - "memory dashboard"
-  - "session summary"
-  - "context template"
+  - "extract next action"
+  - "edge case"
+  - "live outsourced cli dispatch"
+  - "outsourced cli dispatch verification"
+  - "cli dispatch verification hardened"
+  - "dispatch verification hardened runtime"
+  - "verification hardened runtime inputs"
+  - "hardened runtime inputs added"
+  - "runtime inputs added edge-case"
+  - "inputs added edge-case tests"
+  - "added edge-case tests refactored"
+  - "edge-case tests refactored extractnextaction"
 importance_tier: "normal"
 contextType: "general"
 quality_score: 0.90
 quality_flags:
   - "has_tool_state_mismatch"
 ---
-
----
-
 # Live outsourced CLI dispatch verification: hardened runtime inputs, added 6 edge-case tests,...
 
 ## SESSION SUMMARY
@@ -37,8 +43,6 @@ quality_flags:
 
 ---
 
----
-
 ## TABLE OF CONTENTS
 
 - [CONTINUE SESSION](#continue-session)
@@ -52,6 +56,8 @@ quality_flags:
 - [MEMORY METADATA](#memory-metadata)
 
 ---
+<!-- ANCHOR:continue-session -->
+<a id="continue-session"></a>
 
 ## CONTINUE SESSION
 
@@ -103,6 +109,8 @@ Next: Continue implementation
 - Last: Refactored extractNextAction into findFactByPattern helper to eliminate DRY viol
 
 ---
+<!-- ANCHOR:project-state-snapshot -->
+<a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
 
@@ -117,6 +125,8 @@ Next: Continue implementation
 **Key Topics:** `refactored extractnextaction` | `refactored` | `extractnextaction` | `dry` | `into` | `findfactbypattern` | `helper` | `eliminate` | `extractnextaction into` | `into findfactbypattern` | `findfactbypattern helper` | `helper eliminate` |
 
 ---
+<!-- ANCHOR:task-guide -->
+<a id="implementation-guide"></a>
 
 ## 1. IMPLEMENTATION GUIDE
 
@@ -145,6 +155,8 @@ Next: Continue implementation
 - **Data Normalization**: Clean and standardize data before use
 
 ---
+<!-- ANCHOR:summary -->
+<a id="overview"></a>
 
 ## 2. OVERVIEW
 
@@ -164,6 +176,8 @@ Live outsourced CLI dispatch verification: hardened runtime inputs, added 6 edge
 | `.opencode/skill/system-spec-kit/scripts/tests/(merged-small-files)` | Tree-thinning merged 1 small files (runtime-memory-inputs.vitest.ts). Merged from .opencode/skill/system-spec-kit/scripts/tests/runtime-memory-inputs.vitest.ts : File modified (description pending) |
 
 ---
+<!-- ANCHOR:detailed-changes -->
+<a id="detailed-changes"></a>
 
 ## 3. DETAILED CHANGES
 
@@ -172,6 +186,8 @@ Live outsourced CLI dispatch verification: hardened runtime inputs, added 6 edge
 Live outsourced CLI dispatch verification: hardened runtime inputs, added 6 edge-case tests, refactored extractNextAction DRY violation.
 
 ---
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
 
 ## 4. DECISIONS
 
@@ -352,6 +368,8 @@ Live outsourced CLI dispatch verification: hardened runtime inputs, added 6 edge
 **Confidence**: 0.5%
 
 ---
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
 
 ## 5. CONVERSATION
 
@@ -372,8 +390,8 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 Live outsourced CLI dispatch verification: hardened runtime inputs, added 6 edge-case tests, refactored extractNextAction DRY violation.
 
 ---
-
----
+<!-- ANCHOR:recovery-hints -->
+<a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
 
@@ -427,8 +445,8 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 | No Dedup Conflicts |  |  |
 
 ---
-
----
+<!-- ANCHOR:metadata -->
+<a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 
@@ -520,19 +538,8 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/022 hybrid rag fusion/014 outsourced agent memory"
   - "extract next action"
-  - "build next steps observation"
-  - "find fact by pattern"
   - "edge case"
-  - "defense in depth"
-  - "merged small files"
-  - "refactored extractnextaction findfactbypattern helper"
-  - "extractnextaction findfactbypattern helper eliminate"
-  - "findfactbypattern helper eliminate dry"
-  - "helper eliminate dry violation"
-  - "added empty-array guard buildnextstepsobservation"
-  - "empty-array guard buildnextstepsobservation defense-in-depth"
   - "live outsourced cli dispatch"
   - "outsourced cli dispatch verification"
   - "cli dispatch verification hardened"
@@ -542,26 +549,7 @@ trigger_phrases:
   - "runtime inputs added edge-case"
   - "inputs added edge-case tests"
   - "added edge-case tests refactored"
-  - "edge-case tests refactored extractnextaction"
-  - "tests refactored extractnextaction dry"
-  - "refactored extractnextaction dry violation"
-  - "added empty array guard"
-  - "system"
-  - "spec"
-  - "kit/022"
-  - "hybrid"
-  - "rag"
-  - "fusion/014"
-  - "outsourced"
-  - "agent"
-  - "memory"
-
-key_files:
-  - ".opencode/skill/system-spec-kit/scripts/utils/(merged-small-files)"
-  - ".opencode/skill/system-spec-kit/scripts/extractors/(merged-small-files)"
-  - ".opencode/skill/system-spec-kit/scripts/tests/(merged-small-files)"
-
-# Relationships
+  - "edge-case tests refactored extractnextaction"# Relationships
 related_sessions:
 
   []

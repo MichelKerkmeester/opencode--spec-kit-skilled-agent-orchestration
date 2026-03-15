@@ -1,44 +1,17 @@
 ---
-title: "SpecKit template complexity test-suite completion 2026-01-16 [069-speckit-template-complexity/16-01-26_11-31__speckit-template-complexity]"
-description: "Captured the session that completed a broad SpecKit template complexity test suite across complexity detection, marker parsing, template preprocessing, and CLI scripts. It records the bugs fixed during verification, including the levelToNumber fallback issue and the JSON extraction regex problem that blocked passing tests."
+title: "SpecKit template complexity test-suite completion 2026-01-16"
+description: "Captured the session that completed a broad SpecKit template complexity test suite across complexity detection, marker parsing, template preprocessing, and CLI scripts. It..."
 trigger_phrases:
   - "speckit template complexity tests"
   - "leveltonumber fallback fix"
   - "cli json extraction regex"
   - "marker parser test coverage"
 importance_tier: "high"
+contextType: "implementation"
 quality_score: 0.60
 quality_flags:
   - "legacy_migration"
-contextType: "implementation"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-<!-- Constitutional Tier Promotion:
-  To promote a memory to constitutional tier (always surfaced):
-  
-  1. Via MCP tool after indexing:
-     memory_update({ id: <memory_id>, importanceTier: 'constitutional' })
-  
-  2. Criteria for constitutional:
-     - Applies to ALL future conversations (not project-specific)
-     - Core constraints/rules that should NEVER be forgotten
-     - ~2000 token budget total for constitutional tier
-     
-  3. Add trigger phrases for proactive surfacing:
-     memory_update({ 
-       id: <memory_id>, 
-       importanceTier: 'constitutional',
-       triggerPhrases: ['fix', 'implement', 'create', 'modify', ...]
-     })
-     
-  4. Examples of constitutional content:
-     - "Always ask Gate 3 spec folder question before file modifications"
-     - "Never modify production data directly"
-     - "Memory files MUST use generate-context.js script"
--->
-
----
-
 # SESSION SUMMARY
 
 | **Meta Data** | **Value** |
@@ -60,7 +33,8 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:preflight-session-1768559489048-k11vnqidr-003-memory-and-spec-kit/069-speckit-template-complexity -->
+<!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -97,7 +71,7 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:continue-session-session-1768559489048-k11vnqidr-003-memory-and-spec-kit/069-speckit-template-complexity -->
+<!-- ANCHOR:continue-session -->
 <a id="continue-session"></a>
 
 ## CONTINUE SESSION
@@ -131,6 +105,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 <!-- /ANCHOR:continue-session-session-1768559489048-k11vnqidr-003-memory-and-spec-kit/069-speckit-template-complexity -->
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -164,7 +139,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 ---
 
-<!-- ANCHOR:task-guide-memory-and-spec-kit/069-speckit-template-complexity-003-memory-and-spec-kit/069-speckit-template-complexity -->
+<!-- ANCHOR:task-guide -->
 <a id="implementation-guide"></a>
 
 ## 1. IMPLEMENTATION GUIDE
@@ -191,7 +166,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 ---
 
-<!-- ANCHOR:summary-session-1768559489048-k11vnqidr-003-memory-and-spec-kit/069-speckit-template-complexity -->
+<!-- ANCHOR:summary -->
 <a id="overview"></a>
 
 ## 2. OVERVIEW
@@ -208,7 +183,7 @@ Completed the comprehensive test suite for the SpecKit Template Complexity syste
 
 ---
 
-<!-- ANCHOR:detailed-changes-session-1768559489048-k11vnqidr-003-memory-and-spec-kit/069-speckit-template-complexity -->
+<!-- ANCHOR:detailed-changes -->
 <a id="detailed-changes"></a>
 
 ## 3. DETAILED CHANGES
@@ -246,6 +221,9 @@ rootCause: Test failures from regex patterns not handling formatted JSON and lev
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 ### Decision 1: Fixed levelToNumber default return value
@@ -278,6 +256,9 @@ rootCause: Test failures from regex patterns not handling formatted JSON and lev
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -302,7 +283,7 @@ Manual context save
 
 ---
 
-<!-- ANCHOR:recovery-hints-session-1768559489048-k11vnqidr-003-memory-and-spec-kit/069-speckit-template-complexity -->
+<!-- ANCHOR:recovery-hints -->
 <a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
@@ -327,7 +308,7 @@ Manual context save
 <!-- /ANCHOR:recovery-hints-session-1768559489048-k11vnqidr-003-memory-and-spec-kit/069-speckit-template-complexity -->
 ---
 
-<!-- ANCHOR:postflight-session-1768559489048-k11vnqidr-003-memory-and-spec-kit/069-speckit-template-complexity -->
+<!-- ANCHOR:postflight -->
 <a id="postflight-learning-delta"></a>
 
 ## POSTFLIGHT LEARNING DELTA
@@ -353,6 +334,7 @@ This session was migrated from an older format. Learning metrics were not captur
 <!-- /ANCHOR:postflight-session-1768559489048-k11vnqidr-003-memory-and-spec-kit/069-speckit-template-complexity -->
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -429,28 +411,10 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "complexity detection test suite"
-  - "template complexity tests"
-  - "marker parser tests"
-  - "COMPLEXITY_GATE tests"
-  - "levelToNumber bug fix"
-  - "94 tests passing"
-  - "run-tests.sh"
-  - "test-detector.js"
-  - "preprocessor tests"
-  - "CLI script tests"
-
-key_files:
-  - ".opencode/skill/system-spec-kit/lib/expansion/marker-parser.js"
-  - "specs/003-memory-and-spec-kit/069-speckit-template-complexity/tests/test-cli.sh"
-  - "specs/003-memory-and-spec-kit/069-speckit-template-complexity/tests/run-tests.sh"
-  - "specs/003-memory-and-spec-kit/069-speckit-template-complexity/tests/test-detector.js"
-  - "specs/003-memory-and-spec-kit/069-speckit-template-complexity/tests/test-marker-parser.js"
-  - "specs/003-memory-and-spec-kit/069-speckit-template-complexity/tests/test-preprocessor.js"
-  - "specs/003-memory-and-spec-kit/069-speckit-template-complexity/implementation-summary.md"
-
-# Relationships
-related_sessions:
+  - "speckit template complexity tests"
+  - "leveltonumber fallback fix"
+  - "cli json extraction regex"
+  - "marker parser test coverage"related_sessions:
 
   []
 

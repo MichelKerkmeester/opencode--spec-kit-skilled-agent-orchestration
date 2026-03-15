@@ -1,20 +1,17 @@
 ---
-title: "OpenCode triad analysis snapshot for 002-speckit-leann-integration 2025-12-22 [002-speckit-leann-integration/22-12-25_09-00__speckit-leann-integration]"
-description: "This legacy session preserves a partial response placeholder about an OpenCode Triad analysis and a skill system enhancement plan. The body is truncated and only records scattered deliverables and tool references, so the memory appears both thin and cross-contaminated."
+title: "OpenCode triad analysis snapshot for 002-speckit-leann-integration 2025-12-22"
+description: "This legacy session preserves a partial response placeholder about an OpenCode Triad analysis and a skill system enhancement plan. The body is truncated and only records..."
 trigger_phrases:
   - "opencode triad analysis"
   - "skill system enhancement plan"
   - "partial response placeholder"
   - "truncated legacy memory"
 importance_tier: "normal"
+contextType: "research"
 quality_score: 0.40
 quality_flags:
   - "legacy_migration"
-contextType: "research"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
----
-
 # SESSION SUMMARY
 
 | **Meta Data** | **Value** |
@@ -38,7 +35,8 @@ contextType: "research"
 
 ---
 
-<!-- ANCHOR:preflight-session-1766390459131-2u4e3epcd-003-commands/002-speckit-leann-integration -->
+<!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -62,7 +60,7 @@ contextType: "research"
 
 ---
 
-<!-- ANCHOR:continue-session-session-1766390459131-2u4e3epcd-003-commands/002-speckit-leann-integration -->
+<!-- ANCHOR:continue-session -->
 <a id="continue-session"></a>
 
 ## CONTINUE SESSION
@@ -97,7 +95,9 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 ---
 
-<!-- ANCHOR:task-guide-commands/002-speckit-leann-integration-003-commands/002-speckit-leann-integration -->
+<!-- ANCHOR:task-guide -->
+<a id="implementation-guide"></a>
+
 ## 1. IMPLEMENTATION GUIDE
 
 **What Was Built**:
@@ -150,7 +150,9 @@ Using Sequential Thinking, I have performed a forensic analysis of your agent ar
 
 ---
 
-<!-- ANCHOR:summary-session-1766390459131-2u4e3epcd-003-commands/002-speckit-leann-integration -->
+<!-- ANCHOR:summary -->
+<a id="overview"></a>
+
 ## 2. OVERVIEW
 
 [response]
@@ -190,7 +192,9 @@ Using **Sequential Thinking**, I have
 
 ---
 
-<!-- ANCHOR:detailed-changes-session-1766390459131-2u4e3epcd-003-commands/002-speckit-leann-integration -->
+<!-- ANCHOR:detailed-changes -->
+<a id="detailed-changes"></a>
+
 ## 3. DETAILED CHANGES
 
 <!-- ANCHOR:architecture-system-analysis-opencode-triad-581f2ed2-session-1766390459131-2u4e3epcd -->
@@ -799,7 +803,9 @@ Executed bash
 
 ---
 
-<!-- ANCHOR:decisions-session-1766390459131-2u4e3epcd-003-commands/002-speckit-leann-integration -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 This session did not involve significant architectural or technical decisions. The work was primarily implementation, bug fixes, documentation, or research.
@@ -808,7 +814,9 @@ This session did not involve significant architectural or technical decisions. T
 
 <!-- /ANCHOR:decisions-session-1766390459131-2u4e3epcd-003-commands/002-speckit-leann-integration -->
 
-<!-- ANCHOR:session-history-session-1766390459131-2u4e3epcd-003-commands/002-speckit-leann-integration -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -1137,7 +1145,7 @@ Saving context
 
 ---
 
-<!-- ANCHOR:recovery-hints-session-1766390459131-2u4e3epcd-003-commands/002-speckit-leann-integration -->
+<!-- ANCHOR:recovery-hints -->
 <a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
@@ -1162,7 +1170,7 @@ Saving context
 <!-- /ANCHOR:recovery-hints-session-1766390459131-2u4e3epcd-003-commands/002-speckit-leann-integration -->
 ---
 
-<!-- ANCHOR:postflight-session-1766390459131-2u4e3epcd-003-commands/002-speckit-leann-integration -->
+<!-- ANCHOR:postflight -->
 <a id="postflight-learning-delta"></a>
 
 ## POSTFLIGHT LEARNING DELTA
@@ -1187,6 +1195,8 @@ Saving context
 This session was migrated from an older format. Learning metrics were not captured in the original format.
 <!-- /ANCHOR:postflight-session-1766390459131-2u4e3epcd-003-commands/002-speckit-leann-integration -->
 ---
+<!-- ANCHOR:metadata -->
+<a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 

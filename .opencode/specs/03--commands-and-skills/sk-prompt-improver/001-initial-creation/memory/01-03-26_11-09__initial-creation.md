@@ -1,43 +1,16 @@
 ---
-title: "Skill graph memory analysis for prompt-improver initial-creation 2026-03-01 [001-initial-creation/01-03-26_11-09__initial-creation]"
-description: "This memory captures an SGQS and semantic memory integration analysis saved under the initial-creation prompt-improver spec. It summarizes in-memory graph architecture, MCP handler changes, and related tests even though the body appears to belong to another spec."
+title: "Skill graph memory analysis for prompt-improver initial-creation 2026-03-01"
+description: "This memory captures an SGQS and semantic memory integration analysis saved under the initial-creation prompt-improver spec. It summarizes in-memory graph architecture, MCP..."
 trigger_phrases:
   - "skill graph memory analysis"
   - "sgqs memory integration"
   - "prompt improver memory audit"
 importance_tier: "critical"
+contextType: "general"
 quality_score: 0.40
 quality_flags:
   - "needs_review"
-contextType: "general"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-<!-- Constitutional Tier Promotion:
-  To promote a memory to constitutional tier (always surfaced):
-  
-  1. Via MCP tool after indexing:
-     memory_update({ id: <memory_id>, importanceTier: 'constitutional' })
-  
-  2. Criteria for constitutional:
-     - Applies to ALL future conversations (not project-specific)
-     - Core constraints/rules that should NEVER be forgotten
-     - ~2000 token budget total for constitutional tier
-     
-  3. Add trigger phrases for proactive surfacing:
-     memory_update({ 
-       id: <memory_id>, 
-       importanceTier: 'constitutional',
-       triggerPhrases: ['fix', 'implement', 'create', 'modify', ...]
-     })
-     
-  4. Examples of constitutional content:
-     - "Always ask Gate 3 spec folder question before file modifications"
-     - "Never modify production data directly"
-     - "Memory files MUST use generate-context.js script"
--->
-
----
-
 # initial creation session 01-03-26
 
 ## SESSION SUMMARY
@@ -62,6 +35,7 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -153,6 +127,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -603,6 +578,9 @@ Executed edit
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 decision_count: 0
@@ -619,6 +597,9 @@ decision_count: 0
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -755,6 +736,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -849,51 +831,9 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " commands and skills/sk prompt improver/001 initial creation"
-  - "skill graphs"
-  - "in memory"
-  - "tree thinning"
-  - "system spec kit"
-  - "context server"
-  - "mcp tool dispatch"
-  - "merged-small-files tree-thinning merged small"
-  - "tree-thinning merged small files"
-  - "based analysis implementation associated"
-  - "analysis implementation associated scripts"
-  - "implementation associated scripts skill"
-  - "associated scripts skill graph"
-  - "scripts skill graph system"
-  - "skill graph system memory"
-  - "graph system memory integration"
-  - "system memory integration consist"
-  - "memory integration consist elegant"
-  - "integration consist elegant entirely"
-  - "consist elegant entirely in-memory"
-  - "elegant entirely in-memory graph"
-  - "entirely in-memory graph database"
-  - "in-memory graph database sgqs"
-  - "graph database sgqs enriches"
-  - "database sgqs enriches existing"
-  - "sgqs enriches existing semantic"
-  - "commands"
-  - "and"
-  - "skills/sk"
-  - "prompt"
-  - "improver/001"
-  - "initial"
-  - "creation"
-
-key_files:
-  - ".opencode/.../handlers/(merged-small-files)"
-  - ".opencode/skill/system-spec-kit/mcp_server/handlers/(merged-small-files)"
-  - ".opencode/skill/system-spec-kit/mcp_server/(merged-small-files)"
-  - ".opencode/.../tools/(merged-small-files)"
-  - ".opencode/skill/system-spec-kit/mcp_server/tools/(merged-small-files)"
-  - ".opencode/.../tests/(merged-small-files)"
-  - ".opencode/.../architecture/(merged-small-files)"
-
-# Relationships
-related_sessions:
+  - "skill graph memory analysis"
+  - "sgqs memory integration"
+  - "prompt improver memory audit"related_sessions:
 
   []
 

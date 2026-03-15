@@ -1,44 +1,17 @@
 ---
-title: "Research-to-upgrade compliance remediation 2026-01-23 [077-speckit-upgrade-from-research/23-01-26_14-17__speckit-upgrade-from-research]"
-description: "Captured the Level 3+ compliance remediation session that consolidated several research specs into the unified SpecKit upgrade effort. It summarizes the governance fixes, documentation alignment, and upgrade planning needed to transition research findings into an executable spec."
+title: "Research-to-upgrade compliance remediation 2026-01-23"
+description: "Captured the Level 3+ compliance remediation session that consolidated several research specs into the unified SpecKit upgrade effort. It summarizes the governance fixes,..."
 trigger_phrases:
   - "research to upgrade remediation"
   - "level 3 plus compliance"
   - "spec consolidation workflow"
   - "speckit upgrade planning"
 importance_tier: "normal"
+contextType: "general"
 quality_score: 0.60
 quality_flags:
   - "legacy_migration"
-contextType: "general"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-<!-- Constitutional Tier Promotion:
-  To promote a memory to constitutional tier (always surfaced):
-  
-  1. Via MCP tool after indexing:
-     memory_update({ id: <memory_id>, importanceTier: 'constitutional' })
-  
-  2. Criteria for constitutional:
-     - Applies to ALL future conversations (not project-specific)
-     - Core constraints/rules that should NEVER be forgotten
-     - ~2000 token budget total for constitutional tier
-     
-  3. Add trigger phrases for proactive surfacing:
-     memory_update({ 
-       id: <memory_id>, 
-       importanceTier: 'constitutional',
-       triggerPhrases: ['fix', 'implement', 'create', 'modify', ...]
-     })
-     
-  4. Examples of constitutional content:
-     - "Always ask Gate 3 spec folder question before file modifications"
-     - "Never modify production data directly"
-     - "Memory files MUST use generate-context.js script"
--->
-
----
-
 # SESSION SUMMARY
 
 | **Meta Data** | **Value** |
@@ -60,7 +33,8 @@ contextType: "general"
 
 ---
 
-<!-- ANCHOR:preflight-session-1769174252668-r5eqned38-003-memory-and-spec-kit/077-speckit-upgrade-from-research -->
+<!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -95,7 +69,7 @@ contextType: "general"
 
 ---
 
-<!-- ANCHOR:continue-session-session-1769174252668-r5eqned38-003-memory-and-spec-kit/077-speckit-upgrade-from-research -->
+<!-- ANCHOR:continue-session -->
 <a id="continue-session"></a>
 
 ## CONTINUE SESSION
@@ -129,6 +103,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 <!-- /ANCHOR:continue-session-session-1769174252668-r5eqned38-003-memory-and-spec-kit/077-speckit-upgrade-from-research -->
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -145,7 +120,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 ---
 
-<!-- ANCHOR:summary-session-1769174252668-r5eqned38-003-memory-and-spec-kit/077-speckit-upgrade-from-research -->
+<!-- ANCHOR:summary -->
 <a id="overview"></a>
 
 ## 1. OVERVIEW
@@ -186,6 +161,9 @@ Conducted comprehensive Level 3+ compliance remediation for spec 077-speckit-upg
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 2. DECISIONS
 
 ### Decision 1: State File Scope Superseded
@@ -225,6 +203,9 @@ Conducted comprehensive Level 3+ compliance remediation for spec 077-speckit-upg
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 3. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -261,7 +242,7 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 
 ---
 
-<!-- ANCHOR:recovery-hints-session-1769174252668-r5eqned38-003-memory-and-spec-kit/077-speckit-upgrade-from-research -->
+<!-- ANCHOR:recovery-hints -->
 <a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
@@ -286,7 +267,7 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 <!-- /ANCHOR:recovery-hints-session-1769174252668-r5eqned38-003-memory-and-spec-kit/077-speckit-upgrade-from-research -->
 ---
 
-<!-- ANCHOR:postflight-session-1769174252668-r5eqned38-003-memory-and-spec-kit/077-speckit-upgrade-from-research -->
+<!-- ANCHOR:postflight -->
 <a id="postflight-learning-delta"></a>
 
 ## POSTFLIGHT LEARNING DELTA
@@ -312,6 +293,7 @@ This session was migrated from an older format. Learning metrics were not captur
 <!-- /ANCHOR:postflight-session-1769174252668-r5eqned38-003-memory-and-spec-kit/077-speckit-upgrade-from-research -->
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -385,27 +367,10 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "077 speckit upgrade"
-  - "Level 3+ compliance"
-  - "state file scope contradiction"
-  - "memory-based state persistence"
-  - "decision record superseded"
-  - "uncertainty tracking"
-  - "dual-threshold validation"
-  - "PREFLIGHT POSTFLIGHT"
-  - "Five Checks framework"
-  - "research synthesis consolidation"
-
-key_files:
-  - "specs/003-memory-and-spec-kit/077-speckit-upgrade-from-research/decision-record.md"
-  - "specs/003-memory-and-spec-kit/077-speckit-upgrade-from-research/plan.md"
-  - "specs/003-memory-and-spec-kit/077-speckit-upgrade-from-research/tasks.md"
-  - "specs/003-memory-and-spec-kit/077-speckit-upgrade-from-research/checklist.md"
-  - "specs/003-memory-and-spec-kit/077-speckit-upgrade-from-research/spec.md"
-  - "specs/003-memory-and-spec-kit/077-speckit-upgrade-from-research/files-touched.md"
-
-# Relationships
-related_sessions:
+  - "research to upgrade remediation"
+  - "level 3 plus compliance"
+  - "spec consolidation workflow"
+  - "speckit upgrade planning"related_sessions:
 
   []
 

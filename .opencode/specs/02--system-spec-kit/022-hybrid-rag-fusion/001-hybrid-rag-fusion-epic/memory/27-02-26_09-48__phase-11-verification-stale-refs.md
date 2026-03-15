@@ -1,21 +1,17 @@
 ---
-title: "Phase 11 verification and stale refs [001-hybrid-rag-fusion-epic/27-02-26_09-48__phase-11-verification-stale-refs]"
-description: "Completed Phase 11 (Verification) of the comprehensive 10-phase documentation audit and remediation plan for the hybrid RAG fusion refinement spec folder. This session continued from a previous sessio."
+title: "Phase 11 verification and stale refs"
+description: "Completed Phase 11 (Verification) of the comprehensive 10-phase documentation audit and remediation plan for the hybrid RAG fusion refinement spec folder. This session..."
 trigger_phrases:
   - "system spec kit/022 hybrid rag fusion"
   - "blocking issue"
   - "issue because"
   - "sub folder"
   - "trigger matcher"
-quality_score: 1.00
-quality_flags: []
 importance_tier: "normal"
 contextType: "discovery"
+quality_score: 1.00
+quality_flags: []
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-
----
-
 # hybrid rag fusion session 27-02-26
 
 ## SESSION SUMMARY
@@ -40,6 +36,7 @@ contextType: "discovery"
 ---
 
 <!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -135,6 +132,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -288,6 +286,9 @@ rootCause: Phase 11 verification revealed stale folder name references in Sprint
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-trigger-2cbd3575 -->
@@ -435,6 +436,9 @@ rootCause: Phase 11 verification revealed stale folder name references in Sprint
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -557,6 +561,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -655,49 +660,7 @@ trigger_phrases:
   - "blocking issue"
   - "issue because"
   - "sub folder"
-  - "trigger matcher"
-  - "epistemological foundation"
-  - "measurement foundation"
-  - "cross references"
-  - "feedback loop"
-  - "feedback and quality"
-  - "graph deepening"
-  - "indexing and graph"
-  - "pi a5"
-  - "rec 09"
-  - "g new 3"
-  - "req 057"
-  - "b8 s0"
-  - "chk b8 s6"
-  - "hybrid rag fusion refinement"
-  - "sprint 1 graph signal activation"
-  - "sprint 2 scoring calibration"
-  - "sprint 3 query intelligence"
-  - "stale folder refs pass"
-  - "extractor.ts trigger-matcher.ts active spec/plan/tasks"
-  - "trigger-matcher.ts active spec/plan/tasks files"
-  - "active spec/plan/tasks files research"
-  - "system"
-  - "spec"
-  - "kit/140"
-  - "hybrid"
-  - "rag"
-  - "fusion"
-  - "refinement"
-
-key_files:
-  - ".opencode/.../022-hybrid-rag-fusion/spec.md"
-  - ".opencode/.../022-hybrid-rag-fusion/tasks.md"
-  - ".opencode/.../006-core-rag-sprints-0-to-8/spec.md"
-  - ".opencode/.../006-core-rag-sprints-0-to-8/plan.md"
-  - ".opencode/.../006-core-rag-sprints-0-to-8/tasks.md"
-  - ".opencode/.../006-core-rag-sprints-0-to-8/checklist.md"
-  - ".opencode/.../006-core-rag-sprints-0-to-8/spec.md"
-  - ".opencode/.../006-core-rag-sprints-0-to-8/plan.md"
-  - ".opencode/.../006-core-rag-sprints-0-to-8/tasks.md"
-  - ".opencode/.../006-core-rag-sprints-0-to-8/spec.md"
-
-# Relationships
+  - "trigger matcher"# Relationships
 related_sessions:
 
   []

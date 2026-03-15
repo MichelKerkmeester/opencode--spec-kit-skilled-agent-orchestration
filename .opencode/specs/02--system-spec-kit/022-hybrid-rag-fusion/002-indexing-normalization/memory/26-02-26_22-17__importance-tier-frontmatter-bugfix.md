@@ -1,22 +1,24 @@
 ---
-title: "Importance Tier Frontmatter Fix [002-indexing-normalization/26-02-26_22-17__importance-tier-frontmatter-bugfix]"
-description: "Fixed a bug where memory export generated two conflicting importance tier frontmatter fields: a hardcoded importance_tier with value normal (snake_case) and a dynamically resolved importanceTier (camelCase)."
+title: "Importance Tier Frontmatter Fix"
+description: "Fixed a bug where memory export generated two conflicting importance tier frontmatter fields: a hardcoded importance tier with value normal (snake case) and a dynamically..."
 trigger_phrases:
-  - "importance tier"
-  - "dual fields frontmatter"
-  - "importanceTierAlias"
-  - "frontmatter-migration"
-  - "context_template"
+  - "bug where"
+  - "fixed memory export generated"
+  - "memory export generated two"
+  - "export generated two conflicting"
+  - "generated two conflicting importance"
+  - "two conflicting importance tier"
+  - "conflicting importance tier frontmatter"
+  - "importance tier frontmatter fields"
+  - "tier frontmatter fields hardcoded"
+  - "frontmatter fields hardcoded importance"
+  - "fields hardcoded importance tier"
+  - "hardcoded importance tier value"
 importance_tier: "normal"
 contextType: "general"
 quality_score: 1.00
 quality_flags: []
-
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-
----
-
 # hybrid rag fusion session 26-02-26
 
 ## SESSION SUMMARY
@@ -41,6 +43,7 @@ quality_flags: []
 ---
 
 <!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -136,6 +139,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -284,6 +288,9 @@ rootCause: Template context_template.md had hardcoded importance_tier with value
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-single-importancetier-snakecase-canonical-425b6694 -->
@@ -404,6 +411,9 @@ rootCause: Template context_template.md had hardcoded importance_tier with value
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -524,6 +534,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -618,47 +629,18 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "system spec kit/022 hybrid rag fusion"
-  - "template bug"
   - "bug where"
-  - "bug normal"
-  - "bug chosen"
-  - "camel case"
-  - "frontmatter for context template"
-  - "serialize frontmatter"
-  - "importance tier alias"
-  - "resolve importance tier value"
-  - "importance_tier"
-  - "re generation"
-  - "frontmatter migration"
-  - "opencode environment"
-  - "decision use single importance"
-  - "use single importance tier"
-  - "single importance tier snake"
-  - "importance tier snake case"
-  - "tier snake case canonical"
-  - "snake case canonical field"
-  - "case canonical field matches"
-  - "canonical field matches database"
-  - "field matches database column"
-  - "matches database column naming"
-  - "database column naming yaml"
-  - "column naming yaml conventions"
-  - "system"
-  - "spec"
-  - "kit/140"
-  - "hybrid"
-  - "rag"
-  - "fusion"
-  - "refinement"
-
-key_files:
-  - ".opencode/.../templates/context_template.md"
-  - ".opencode/.../lib/frontmatter-migration.ts"
-  - ".opencode/changelog/01--system-spec-kit/v2.3.0.12.md"
-  - ".opencode/changelog/00--opencode-environment/v2.4.0.3.md"
-
-# Relationships
+  - "fixed memory export generated"
+  - "memory export generated two"
+  - "export generated two conflicting"
+  - "generated two conflicting importance"
+  - "two conflicting importance tier"
+  - "conflicting importance tier frontmatter"
+  - "importance tier frontmatter fields"
+  - "tier frontmatter fields hardcoded"
+  - "frontmatter fields hardcoded importance"
+  - "fields hardcoded importance tier"
+  - "hardcoded importance tier value"# Relationships
 related_sessions:
 
   []

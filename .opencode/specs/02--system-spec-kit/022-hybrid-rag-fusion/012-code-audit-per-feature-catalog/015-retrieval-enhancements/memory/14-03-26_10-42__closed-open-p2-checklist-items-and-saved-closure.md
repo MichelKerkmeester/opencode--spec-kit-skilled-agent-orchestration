@@ -1,19 +1,25 @@
 ---
-title: "Closed open P2 checklist [015-retrieval-enhancements/14-03-26_10-42__closed-open-p2-checklist-items-and-saved-closure]"
-description: "Session context memory template for Spec Kit indexing."
+title: "Closed open P2 checklist"
+description: "Closed open P2 checklist items and saved closure context."
 trigger_phrases:
-  - "memory dashboard"
-  - "session summary"
-  - "context template"
+  - "closed open checklist items"
+  - "open checklist items saved"
+  - "checklist items saved closure"
+  - "closed open checklist closed"
+  - "open checklist closed open"
+  - "checklist closed open checklist"
+  - "code audit per catalog"
+  - "audit per catalog retrieval"
+  - "per catalog retrieval enhancements"
+  - "code"
+  - "audit"
+  - "per"
 importance_tier: "normal"
 contextType: "general"
 quality_score: 0.90
 quality_flags:
   - "has_tool_state_mismatch"
 ---
-
----
-
 # Closed open P2 checklist items and saved closure context.
 
 ## SESSION SUMMARY
@@ -37,8 +43,6 @@ quality_flags:
 
 ---
 
----
-
 ## TABLE OF CONTENTS
 
 - [CONTINUE SESSION](#continue-session)
@@ -52,6 +56,8 @@ quality_flags:
 - [MEMORY METADATA](#memory-metadata)
 
 ---
+<!-- ANCHOR:continue-session -->
+<a id="continue-session"></a>
 
 ## CONTINUE SESSION
 
@@ -107,6 +113,8 @@ Next: Track direct manual scenario mapping changes with playbook updates.
 - Last: Next Steps
 
 ---
+<!-- ANCHOR:project-state-snapshot -->
+<a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
 
@@ -136,6 +144,8 @@ Next: Track direct manual scenario mapping changes with playbook updates.
 **Key Topics:** `marked readme` | `readme memory` | `marked` | `readme` | `memory` | `closure` | `items` | `system spec kit/022 hybrid rag fusion/013 code audit per feature catalog/015 retrieval enhancements` | `save` | `complete` | `explicit` | `evidence` |
 
 ---
+<!-- ANCHOR:task-guide -->
+<a id="implementation-guide"></a>
 
 ## 1. IMPLEMENTATION GUIDE
 
@@ -158,6 +168,8 @@ Next: Track direct manual scenario mapping changes with playbook updates.
 - **Functional Transforms**: Use functional methods for data transformation
 
 ---
+<!-- ANCHOR:summary -->
+<a id="overview"></a>
 
 ## 2. OVERVIEW
 
@@ -175,6 +187,8 @@ Closed open P2 checklist items and saved closure context.
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/015-retrieval-enhancements/(merged-small-files)` | Tree-thinning merged 2 small files (checklist.md, implementation-summary.md). Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/015-retrieval-enhancements/checklist.md : File modified (description pending) | Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/015-retrieval-enhancements/implementation-summary.md : File modified (description pending) |
 
 ---
+<!-- ANCHOR:detailed-changes -->
+<a id="detailed-changes"></a>
 
 ## 3. DETAILED CHANGES
 
@@ -191,6 +205,8 @@ Track direct manual scenario mapping changes with playbook updates.
 **Details:** Next: Track direct manual scenario mapping changes with playbook updates.
 
 ---
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
 
 ## 4. DECISIONS
 
@@ -282,6 +298,8 @@ Track direct manual scenario mapping changes with playbook updates.
 **Confidence**: 0.5%
 
 ---
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
 
 ## 5. CONVERSATION
 
@@ -302,8 +320,8 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 Closed open P2 checklist items and saved closure context.
 
 ---
-
----
+<!-- ANCHOR:recovery-hints -->
+<a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
 
@@ -357,8 +375,8 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 | No Dedup Conflicts |  |  |
 
 ---
-
----
+<!-- ANCHOR:metadata -->
+<a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 
@@ -450,50 +468,18 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/022 hybrid rag fusion/013 code audit per feature catalog/015 retrieval enhancements"
-  - "code audit per feature catalog"
-  - "merged small files"
-  - "closure items complete explicit"
-  - "items complete explicit evidence"
-  - "marked readme memory-save closure"
-  - "readme memory-save closure items"
-  - "memory-save closure items complete"
   - "closed open checklist items"
   - "open checklist items saved"
   - "checklist items saved closure"
-  - "marked readme memory save"
-  - "readme memory save closure"
-  - "memory save closure items"
-  - "marked readme memory marked"
-  - "readme memory marked readme"
-  - "memory marked readme memory-save"
-  - "option .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/015-retrieval-enhancements/ merged-small-files system"
-  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/015-retrieval-enhancements/ merged-small-files system spec"
-  - "merged-small-files system spec kit/022"
-  - "system spec kit/022 hybrid"
-  - "spec kit/022 hybrid rag"
-  - "kit/022 hybrid rag fusion/013"
-  - "hybrid rag fusion/013 code"
-  - "rag fusion/013 code audit"
-  - "fusion/013 code audit per"
-  - "system"
-  - "spec"
-  - "kit/022"
-  - "hybrid"
-  - "rag"
-  - "fusion/013"
+  - "closed open checklist closed"
+  - "open checklist closed open"
+  - "checklist closed open checklist"
+  - "code audit per catalog"
+  - "audit per catalog retrieval"
+  - "per catalog retrieval enhancements"
   - "code"
   - "audit"
-  - "per"
-  - "feature"
-  - "catalog/015"
-  - "retrieval"
-  - "enhancements"
-
-key_files:
-  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/015-retrieval-enhancements/(merged-small-files)"
-
-# Relationships
+  - "per"# Relationships
 related_sessions:
 
   []

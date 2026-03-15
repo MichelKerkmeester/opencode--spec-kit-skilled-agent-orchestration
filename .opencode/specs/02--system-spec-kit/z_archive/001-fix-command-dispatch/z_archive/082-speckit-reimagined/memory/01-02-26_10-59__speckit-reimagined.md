@@ -1,44 +1,17 @@
 ---
-title: "Reimagined documentation accuracy audit 2026-02-01 [082-speckit-reimagined/01-02-26_10-59__speckit-reimagined]"
-description: "Captured the documentation accuracy audit for the 082-speckit-reimagined spec folder. It records the fixes to incorrect current-state claims, the feature-summary corrections, and the verification work done to keep the reimagined documentation aligned with reality."
+title: "Reimagined documentation accuracy audit 2026-02-01"
+description: "Captured the documentation accuracy audit for the 082-speckit-reimagined spec folder. It records the fixes to incorrect current-state claims, the feature-summary corrections,..."
 trigger_phrases:
   - "reimagined documentation audit"
   - "feature summary corrections"
   - "current state claim fixes"
   - "spec accuracy verification"
 importance_tier: "high"
+contextType: "implementation"
 quality_score: 0.60
 quality_flags:
   - "legacy_migration"
-contextType: "implementation"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-<!-- Constitutional Tier Promotion:
-  To promote a memory to constitutional tier (always surfaced):
-  
-  1. Via MCP tool after indexing:
-     memory_update({ id: <memory_id>, importanceTier: 'constitutional' })
-  
-  2. Criteria for constitutional:
-     - Applies to ALL future conversations (not project-specific)
-     - Core constraints/rules that should NEVER be forgotten
-     - ~2000 token budget total for constitutional tier
-     
-  3. Add trigger phrases for proactive surfacing:
-     memory_update({ 
-       id: <memory_id>, 
-       importanceTier: 'constitutional',
-       triggerPhrases: ['fix', 'implement', 'create', 'modify', ...]
-     })
-     
-  4. Examples of constitutional content:
-     - "Always ask Gate 3 spec folder question before file modifications"
-     - "Never modify production data directly"
-     - "Memory files MUST use generate-context.js script"
--->
-
----
-
 # SESSION SUMMARY
 
 | **Meta Data** | **Value** |
@@ -60,7 +33,8 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:preflight-session-1769939966999-8n0dskoz0-003-memory-and-spec-kit/082-speckit-reimagined -->
+<!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -96,7 +70,7 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:continue-session-session-1769939966999-8n0dskoz0-003-memory-and-spec-kit/082-speckit-reimagined -->
+<!-- ANCHOR:continue-session -->
 <a id="continue-session"></a>
 
 ## CONTINUE SESSION
@@ -130,6 +104,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 <!-- /ANCHOR:continue-session-session-1769939966999-8n0dskoz0-003-memory-and-spec-kit/082-speckit-reimagined -->
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -150,7 +125,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 ---
 
-<!-- ANCHOR:summary-session-1769939966999-8n0dskoz0-003-memory-and-spec-kit/082-speckit-reimagined -->
+<!-- ANCHOR:summary -->
 <a id="overview"></a>
 
 ## 1. OVERVIEW
@@ -190,6 +165,9 @@ Completed documentation accuracy audit of 082-speckit-reimagined spec folder. Fi
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 2. DECISIONS
 
 | # | Decision | Rationale |
@@ -216,6 +194,9 @@ Completed documentation accuracy audit of 082-speckit-reimagined spec folder. Fi
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 3. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -240,7 +221,7 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 
 ---
 
-<!-- ANCHOR:postflight-session-1769939966999-8n0dskoz0-003-memory-and-spec-kit/082-speckit-reimagined -->
+<!-- ANCHOR:postflight -->
 <a id="postflight-learning-delta"></a>
 
 ## POSTFLIGHT LEARNING DELTA
@@ -279,7 +260,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 
 ---
 
-<!-- ANCHOR:recovery-hints-session-1769939966999-8n0dskoz0-003-memory-and-spec-kit/082-speckit-reimagined -->
+<!-- ANCHOR:recovery-hints -->
 <a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
@@ -304,6 +285,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 <!-- /ANCHOR:recovery-hints-session-1769939966999-8n0dskoz0-003-memory-and-spec-kit/082-speckit-reimagined -->
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -377,23 +359,10 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "082-speckit-reimagined"
-  - "feature-summary accuracy"
-  - "documentation audit"
-  - "RRF fusion exists"
-  - "composite scoring exists"
-  - "5-state model exists"
-  - "tier-classifier"
-  - "relationship types"
-  - "derived_from"
-  - "spec accuracy fix"
-
-key_files:
-  - "specs/003-memory-and-spec-kit/082-speckit-reimagined/feature-summary.md"
-  - "specs/003-memory-and-spec-kit/082-speckit-reimagined/tasks.md"
-
-# Relationships
-related_sessions:
+  - "reimagined documentation audit"
+  - "feature summary corrections"
+  - "current state claim fixes"
+  - "spec accuracy verification"related_sessions:
 
   []
 

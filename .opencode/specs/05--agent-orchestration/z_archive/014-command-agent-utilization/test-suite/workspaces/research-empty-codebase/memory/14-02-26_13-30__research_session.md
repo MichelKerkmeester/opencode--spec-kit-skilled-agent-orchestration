@@ -1,5 +1,19 @@
 ---
-title: "Research Session: GraphQL API Layer for Microservices [research-empty-codebase/14-02-26_13-30__research_session]"
+title: "Research Session: GraphQL API Layer for Microservices"
+description: "Research Session: GraphQL API Layer for Microservices"
+trigger_phrases:
+  - "research session graphql api"
+  - "session graphql api layer"
+  - "graphql api layer microservices"
+  - "api layer microservices research"
+  - "layer microservices research session"
+  - "microservices research session graphql"
+  - "api layer microservices archive"
+  - "layer microservices archive command"
+  - "microservices archive command agent"
+  - "archive command agent utilization"
+  - "command agent utilization test"
+  - "agent utilization test suite"
 importance_tier: "normal"
 contextType: "general"
 ---

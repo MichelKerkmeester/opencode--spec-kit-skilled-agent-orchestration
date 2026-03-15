@@ -1,44 +1,17 @@
 ---
-title: "Memory ranking validation and bug fixes 2026-01-16 [070-memory-ranking/16-01-26_16-09__memory-ranking]"
-description: "Captured the validation and bug-fixing pass for the memory and folder ranking implementation. It summarizes the parallel-agent review, the overall quality score achieved, and the corrective work applied to ranking behavior before completion."
+title: "Memory ranking validation and bug fixes 2026-01-16"
+description: "Captured the validation and bug-fixing pass for the memory and folder ranking implementation. It summarizes the parallel-agent review, the overall quality score achieved, and..."
 trigger_phrases:
   - "memory ranking bug fixes"
   - "folder ranking validation"
   - "parallel agent ranking audit"
   - "ranking implementation quality review"
 importance_tier: "normal"
+contextType: "general"
 quality_score: 0.60
 quality_flags:
   - "legacy_migration"
-contextType: "general"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-<!-- Constitutional Tier Promotion:
-  To promote a memory to constitutional tier (always surfaced):
-  
-  1. Via MCP tool after indexing:
-     memory_update({ id: <memory_id>, importanceTier: 'constitutional' })
-  
-  2. Criteria for constitutional:
-     - Applies to ALL future conversations (not project-specific)
-     - Core constraints/rules that should NEVER be forgotten
-     - ~2000 token budget total for constitutional tier
-     
-  3. Add trigger phrases for proactive surfacing:
-     memory_update({ 
-       id: <memory_id>, 
-       importanceTier: 'constitutional',
-       triggerPhrases: ['fix', 'implement', 'create', 'modify', ...]
-     })
-     
-  4. Examples of constitutional content:
-     - "Always ask Gate 3 spec folder question before file modifications"
-     - "Never modify production data directly"
-     - "Memory files MUST use generate-context.js script"
--->
-
----
-
 # SESSION SUMMARY
 
 | **Meta Data** | **Value** |
@@ -60,7 +33,8 @@ contextType: "general"
 
 ---
 
-<!-- ANCHOR:preflight-session-1768576173547-ru40y7z20-003-memory-and-spec-kit/070-memory-ranking -->
+<!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -95,7 +69,7 @@ contextType: "general"
 
 ---
 
-<!-- ANCHOR:continue-session-session-1768576173547-ru40y7z20-003-memory-and-spec-kit/070-memory-ranking -->
+<!-- ANCHOR:continue-session -->
 <a id="continue-session"></a>
 
 ## CONTINUE SESSION
@@ -129,6 +103,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 <!-- /ANCHOR:continue-session-session-1768576173547-ru40y7z20-003-memory-and-spec-kit/070-memory-ranking -->
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -145,7 +120,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 ---
 
-<!-- ANCHOR:summary-session-1768576173547-ru40y7z20-003-memory-and-spec-kit/070-memory-ranking -->
+<!-- ANCHOR:summary -->
 <a id="overview"></a>
 
 ## 1. OVERVIEW
@@ -193,6 +168,9 @@ Comprehensive validation and bug-fixing of the Memory & Folder Ranking implement
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 2. DECISIONS
 
 **Decision 1: ARCHIVE_MULTIPLIERS Consolidated Map**
@@ -219,6 +197,9 @@ Comprehensive validation and bug-fixing of the Memory & Folder Ranking implement
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 3. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -319,7 +300,7 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 
 ---
 
-<!-- ANCHOR:recovery-hints-session-1768576173547-ru40y7z20-003-memory-and-spec-kit/070-memory-ranking -->
+<!-- ANCHOR:recovery-hints -->
 <a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
@@ -344,7 +325,7 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 <!-- /ANCHOR:recovery-hints-session-1768576173547-ru40y7z20-003-memory-and-spec-kit/070-memory-ranking -->
 ---
 
-<!-- ANCHOR:postflight-session-1768576173547-ru40y7z20-003-memory-and-spec-kit/070-memory-ranking -->
+<!-- ANCHOR:postflight -->
 <a id="postflight-learning-delta"></a>
 
 ## POSTFLIGHT LEARNING DELTA
@@ -370,6 +351,7 @@ This session was migrated from an older format. Learning metrics were not captur
 <!-- /ANCHOR:postflight-session-1768576173547-ru40y7z20-003-memory-and-spec-kit/070-memory-ranking -->
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -446,30 +428,10 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "folder-scoring"
-  - "memory-ranking"
-  - "composite scoring"
-  - "archive detection"
-  - "recency decay"
-  - "tier weights"
-  - "ARCHIVE_MULTIPLIERS"
-  - "memory-crud"
-  - "validation report"
-  - "10 agents"
-
-key_files:
-  - "specs/003-memory-and-spec-kit/070-memory-ranking/implementation-summary.md"
-  - "specs/003-memory-and-spec-kit/070-memory-ranking/files-changed.md"
-  - "specs/003-memory-and-spec-kit/070-memory-ranking/spec.md"
-  - "specs/003-memory-and-spec-kit/070-memory-ranking/plan.md"
-  - "specs/003-memory-and-spec-kit/070-memory-ranking/tasks.md"
-  - "specs/003-memory-and-spec-kit/070-memory-ranking/checklist.md"
-  - "specs/003-memory-and-spec-kit/070-memory-ranking/test/test-folder-scoring.js"
-  - ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud.js"
-  - ".opencode/skill/system-spec-kit/mcp_server/lib/scoring/folder-scoring.js"
-
-# Relationships
-related_sessions:
+  - "memory ranking bug fixes"
+  - "folder ranking validation"
+  - "parallel agent ranking audit"
+  - "ranking implementation quality review"related_sessions:
 
   []
 

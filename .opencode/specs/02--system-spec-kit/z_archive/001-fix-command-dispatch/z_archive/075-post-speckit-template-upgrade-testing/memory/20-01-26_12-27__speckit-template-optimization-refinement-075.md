@@ -1,44 +1,17 @@
 ---
-title: "Post-upgrade testing remediation notes 2026-01-20 [075-post-speckit-template-upgrade-testing/20-01-26_12-26__speckit-template-optimization-refinement]"
-description: "Captured post-upgrade remediation work following the SpecKit template upgrade and audit. The narrative preserves the follow-up fixes and verification context, while the body metadata still references the earlier 074 refinement spec and therefore signals cross-spec contamination."
+title: "Post-upgrade testing remediation notes 2026-01-20"
+description: "Captured post-upgrade remediation work following the SpecKit template upgrade and audit. The narrative preserves the follow-up fixes and verification context, while the body..."
 trigger_phrases:
   - "post upgrade testing remediation"
   - "template upgrade audit fixes"
   - "cross spec memory metadata"
   - "speckit template testing"
 importance_tier: "normal"
+contextType: "general"
 quality_score: 0.60
 quality_flags:
   - "legacy_migration"
-contextType: "general"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-<!-- Constitutional Tier Promotion:
-  To promote a memory to constitutional tier (always surfaced):
-  
-  1. Via MCP tool after indexing:
-     memory_update({ id: <memory_id>, importanceTier: 'constitutional' })
-  
-  2. Criteria for constitutional:
-     - Applies to ALL future conversations (not project-specific)
-     - Core constraints/rules that should NEVER be forgotten
-     - ~2000 token budget total for constitutional tier
-     
-  3. Add trigger phrases for proactive surfacing:
-     memory_update({ 
-       id: <memory_id>, 
-       importanceTier: 'constitutional',
-       triggerPhrases: ['fix', 'implement', 'create', 'modify', ...]
-     })
-     
-  4. Examples of constitutional content:
-     - "Always ask Gate 3 spec folder question before file modifications"
-     - "Never modify production data directly"
-     - "Memory files MUST use generate-context.js script"
--->
-
----
-
 # SESSION SUMMARY
 
 | **Meta Data** | **Value** |
@@ -60,7 +33,8 @@ contextType: "general"
 
 ---
 
-<!-- ANCHOR:preflight-session-1768908391958-cm56sxq4n-003-memory-and-spec-kit/074-speckit-template-optimization-refinement -->
+<!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -97,7 +71,7 @@ contextType: "general"
 
 ---
 
-<!-- ANCHOR:continue-session-session-1768908391958-cm56sxq4n-003-memory-and-spec-kit/074-speckit-template-optimization-refinement -->
+<!-- ANCHOR:continue-session -->
 <a id="continue-session"></a>
 
 ## CONTINUE SESSION
@@ -131,6 +105,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 <!-- /ANCHOR:continue-session-session-1768908391958-cm56sxq4n-003-memory-and-spec-kit/074-speckit-template-optimization-refinement -->
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -164,7 +139,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 ---
 
-<!-- ANCHOR:task-guide-memory-and-spec-kit/074-speckit-template-optimization-refinement-003-memory-and-spec-kit/074-speckit-template-optimization-refinement -->
+<!-- ANCHOR:task-guide -->
 <a id="implementation-guide"></a>
 
 ## 1. IMPLEMENTATION GUIDE
@@ -213,7 +188,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 ---
 
-<!-- ANCHOR:summary-session-1768908391958-cm56sxq4n-003-memory-and-spec-kit/074-speckit-template-optimization-refinement -->
+<!-- ANCHOR:summary -->
 <a id="overview"></a>
 
 ## 2. OVERVIEW
@@ -249,7 +224,7 @@ Continuation session focused on comprehensive audit and fixes for SpecKit implem
 
 ---
 
-<!-- ANCHOR:detailed-changes-session-1768908391958-cm56sxq4n-003-memory-and-spec-kit/074-speckit-template-optimization-refinement -->
+<!-- ANCHOR:detailed-changes -->
 <a id="detailed-changes"></a>
 
 ## 3. DETAILED CHANGES
@@ -295,6 +270,9 @@ rootCause: Multiple issues accumulated during Spec 073 and initial 074 implement
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-tmp-privatetmp-allowedbases-data-0ec04752-session-1768908391958-cm56sxq4n -->
@@ -469,6 +447,9 @@ rootCause: Multiple issues accumulated during Spec 073 and initial 074 implement
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -493,7 +474,7 @@ Continuation session focused on comprehensive audit and fixes for SpecKit implem
 
 ---
 
-<!-- ANCHOR:recovery-hints-session-1768908391958-cm56sxq4n-003-memory-and-spec-kit/074-speckit-template-optimization-refinement -->
+<!-- ANCHOR:recovery-hints -->
 <a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
@@ -518,7 +499,7 @@ Continuation session focused on comprehensive audit and fixes for SpecKit implem
 <!-- /ANCHOR:recovery-hints-session-1768908391958-cm56sxq4n-003-memory-and-spec-kit/074-speckit-template-optimization-refinement -->
 ---
 
-<!-- ANCHOR:postflight-session-1768908391958-cm56sxq4n-003-memory-and-spec-kit/074-speckit-template-optimization-refinement -->
+<!-- ANCHOR:postflight -->
 <a id="postflight-learning-delta"></a>
 
 ## POSTFLIGHT LEARNING DELTA
@@ -544,6 +525,7 @@ This session was migrated from an older format. Learning metrics were not captur
 <!-- /ANCHOR:postflight-session-1768908391958-cm56sxq4n-003-memory-and-spec-kit/074-speckit-template-optimization-refinement -->
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -620,33 +602,10 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "speckit audit"
-  - "template path"
-  - "data-loader"
-  - "grep pipeline"
-  - "write.md"
-  - "documentation standards"
-  - "verbose template"
-  - "validation scripts"
-  - "macOS tmp"
-  - "allowedBases"
-  - "OVERVIEW section"
-  - "RELATED RESOURCES"
-
-key_files:
-  - ".opencode/.../loaders/data-loader.js"
-  - ".opencode/skill/system-spec-kit/SKILL.md"
-  - ".opencode/skill/system-spec-kit/README.md"
-  - ".opencode/skill/system-spec-kit/scripts/spec/create.sh"
-  - ".opencode/.../level_1/spec.md"
-  - ".opencode/.../level_2/spec.md"
-  - ".opencode/.../level_3/spec.md"
-  - ".opencode/.../level_3+/spec.md"
-  - ".opencode/skill/system-spec-kit/templates/level_2/tasks.md"
-  - ".opencode/.../level_2/implementation-summary.md"
-
-# Relationships
-related_sessions:
+  - "post upgrade testing remediation"
+  - "template upgrade audit fixes"
+  - "cross spec memory metadata"
+  - "speckit template testing"related_sessions:
 
   []
 

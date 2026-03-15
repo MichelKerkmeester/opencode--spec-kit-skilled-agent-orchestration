@@ -1,19 +1,16 @@
 ---
-title: "Notification system implementation summary [007-notification-system/21-12-25_11-16__notification-system]"
-description: "This archived session summarizes the CMS-driven notification system built for the anobel.com Webflow site. It captures the queueing behavior, office-hours logic, dismiss modes, and testing scope used for the alert implementation."
+title: "Notification system implementation summary"
+description: "This archived session summarizes the CMS-driven notification system built for the anobel.com Webflow site. It captures the queueing behavior, office-hours logic, dismiss..."
 trigger_phrases:
   - "cms driven notification system"
   - "webflow alert queue behavior"
   - "office hours dismiss modes"
 importance_tier: "normal"
+contextType: "implementation"
 quality_score: 0.60
 quality_flags:
   - "legacy_migration"
-contextType: "implementation"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
----
-
 # SESSION SUMMARY
 
 | **Meta Data** | **Value** |
@@ -43,6 +40,8 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR_EXAMPLE:preflight-session-1766312167619-8gzanmfid-007-anobel.com/007-notification-system -->
+<!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -67,6 +66,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR_EXAMPLE:continue-session-session-1766312167619-8gzanmfid-007-anobel.com/007-notification-system -->
+<!-- ANCHOR:continue-session -->
 <a id="continue-session"></a>
 
 ## CONTINUE SESSION
@@ -102,6 +102,9 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 ---
 
 <!-- ANCHOR_EXAMPLE:task-guide-anobel.com/007-notification-system-007-anobel.com/007-notification-system -->
+<!-- ANCHOR:task-guide -->
+<a id="implementation-guide"></a>
+
 ## 1. IMPLEMENTATION GUIDE
 
 **What Was Built**:
@@ -143,6 +146,9 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 ---
 
 <!-- ANCHOR_EXAMPLE:summary-session-1766312167619-8gzanmfid-007-anobel.com/007-notification-system -->
+<!-- ANCHOR:summary -->
+<a id="overview"></a>
+
 ## 2. OVERVIEW
 
 Implemented a CMS-driven alert/notification system for A. Nobel & Zn. Webflow website (anobel.com). The system supports one-alert-at-a-time display with queue behavior, office hours integration, date range filtering, and three dismiss modes (session, day, until-end-date). Container auto-hides when empty. Created comprehensive test suite (12 tests) and integrated with Webflow CMS collection 'C | Notifications'.
@@ -169,6 +175,9 @@ Implemented a CMS-driven alert/notification system for A. Nobel & Zn. Webflow we
 ---
 
 <!-- ANCHOR_EXAMPLE:detailed-changes-session-1766312167619-8gzanmfid-007-anobel.com/007-notification-system -->
+<!-- ANCHOR:detailed-changes -->
+<a id="detailed-changes"></a>
+
 ## 3. DETAILED CHANGES
 
 <!-- ANCHOR_EXAMPLE:implementation-cmsdriven-alertnotification-system-nobel-7b51699e-session-1766312167619-8gzanmfid -->
@@ -191,6 +200,9 @@ webflowSiteId: 6723d26a4aa4a278cad8f59c; cmsCollectionId: 6946fcdfc4ba3d0d8abebe
 ---
 
 <!-- ANCHOR_EXAMPLE:decisions-session-1766312167619-8gzanmfid-007-anobel.com/007-notification-system -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR_EXAMPLE:decision-one-alert-time-queue-a0b34101-session-1766312167619-8gzanmfid -->
@@ -304,6 +316,9 @@ webflowSiteId: 6723d26a4aa4a278cad8f59c; cmsCollectionId: 6946fcdfc4ba3d0d8abebe
 <!-- /ANCHOR_EXAMPLE:decisions-session-1766312167619-8gzanmfid-007-anobel.com/007-notification-system -->
 
 <!-- ANCHOR_EXAMPLE:session-history-session-1766312167619-8gzanmfid-007-anobel.com/007-notification-system -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -330,6 +345,7 @@ Implemented a CMS-driven alert/notification system for A. Nobel & Zn. Webflow we
 ---
 
 <!-- ANCHOR_EXAMPLE:recovery-hints-session-1766312167619-8gzanmfid-007-anobel.com/007-notification-system -->
+<!-- ANCHOR:recovery-hints -->
 <a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
@@ -355,6 +371,7 @@ Implemented a CMS-driven alert/notification system for A. Nobel & Zn. Webflow we
 ---
 
 <!-- ANCHOR_EXAMPLE:postflight-session-1766312167619-8gzanmfid-007-anobel.com/007-notification-system -->
+<!-- ANCHOR:postflight -->
 <a id="postflight-learning-delta"></a>
 
 ## POSTFLIGHT LEARNING DELTA
@@ -379,6 +396,8 @@ Implemented a CMS-driven alert/notification system for A. Nobel & Zn. Webflow we
 This session was migrated from an older format. Learning metrics were not captured in the original format.
 <!-- /ANCHOR_EXAMPLE:postflight-session-1766312167619-8gzanmfid-007-anobel.com/007-notification-system -->
 ---
+<!-- ANCHOR:metadata -->
+<a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 

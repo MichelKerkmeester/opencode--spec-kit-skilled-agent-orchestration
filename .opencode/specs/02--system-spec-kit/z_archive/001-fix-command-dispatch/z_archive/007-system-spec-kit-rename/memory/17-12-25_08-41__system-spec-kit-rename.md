@@ -1,19 +1,16 @@
 ---
-title: "System-spec-kit rename execution for 007-system-spec-kit-rename 2025-12-17 [007-system-spec-kit-rename/17-12-25_08-41__system-spec-kit-rename]"
-description: "This memory captures the main execution session for renaming workflows-spec-kit to system-spec-kit across the codebase. The archived record describes the five-phase rollout, large-scale reference updates, and verification sweep that completed the rename. It preserves the 2025-12-17 implementation details in migrated v2.2 form."
+title: "System-spec-kit rename execution for 007-system-spec-kit-rename 2025-12-17"
+description: "This memory captures the main execution session for renaming workflows-spec-kit to system-spec-kit across the codebase. The archived record describes the five-phase rollout,..."
 trigger_phrases:
   - "system spec kit rename"
   - "skill rename rollout"
   - "reference update sweep"
 importance_tier: "normal"
+contextType: "general"
 quality_score: 0.60
 quality_flags:
   - "legacy_migration"
-contextType: "general"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
----
-
 # SESSION SUMMARY
 
 | **Meta Data** | **Value** |
@@ -43,7 +40,8 @@ contextType: "general"
 
 ---
 
-<!-- ANCHOR:preflight-session-1765957311361-l0ghyv2jl-008-system-spec-kit-rename -->
+<!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -67,7 +65,7 @@ contextType: "general"
 
 ---
 
-<!-- ANCHOR:continue-session-session-1765957311361-l0ghyv2jl-008-system-spec-kit-rename -->
+<!-- ANCHOR:continue-session -->
 <a id="continue-session"></a>
 
 ## CONTINUE SESSION
@@ -102,7 +100,9 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 ---
 
-<!-- ANCHOR:task-guide-system-spec-kit-rename-008-system-spec-kit-rename -->
+<!-- ANCHOR:task-guide -->
+<a id="implementation-guide"></a>
+
 ## 1. IMPLEMENTATION GUIDE
 
 **What Was Built**:
@@ -139,7 +139,9 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 ---
 
-<!-- ANCHOR:summary-session-1765957311361-l0ghyv2jl-008-system-spec-kit-rename -->
+<!-- ANCHOR:summary -->
+<a id="overview"></a>
+
 ## 2. OVERVIEW
 
 The workflows-spec-kit skill was successfully renamed to system-spec-kit across the entire codebase. This involved a comprehensive 5-phase approach: (1) Directory rename from .opencode/skills/workflows-spec-kit/ to .opencode/skills/system-spec-kit/, (2) 81 internal skill references updated using 6 parallel agents, (3) 109 external references updated using 8 parallel agents, (4) Verification with 8 agents plus remediation of 7 additional references found, (5) Documentation completed and checklist verified. Total of 197 replacements across approximately 41 files.
@@ -170,7 +172,9 @@ The workflows-spec-kit skill was successfully renamed to system-spec-kit across 
 
 ---
 
-<!-- ANCHOR:detailed-changes-session-1765957311361-l0ghyv2jl-008-system-spec-kit-rename -->
+<!-- ANCHOR:detailed-changes -->
+<a id="detailed-changes"></a>
+
 ## 3. DETAILED CHANGES
 
 <!-- ANCHOR:architecture-workflowsspeckit-skill-successfully-renamed-3933346a-session-1765957311361-l0ghyv2jl -->
@@ -185,7 +189,9 @@ The workflows-spec-kit skill was successfully renamed to system-spec-kit across 
 
 ---
 
-<!-- ANCHOR:decisions-session-1765957311361-l0ghyv2jl-008-system-spec-kit-rename -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-preserved-historical-documentation-specs-ca0b63d9-session-1765957311361-l0ghyv2jl -->
@@ -298,7 +304,9 @@ The workflows-spec-kit skill was successfully renamed to system-spec-kit across 
 
 <!-- /ANCHOR:decisions-session-1765957311361-l0ghyv2jl-008-system-spec-kit-rename -->
 
-<!-- ANCHOR:session-history-session-1765957311361-l0ghyv2jl-008-system-spec-kit-rename -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -323,7 +331,7 @@ The workflows-spec-kit skill was successfully renamed to system-spec-kit across 
 
 ---
 
-<!-- ANCHOR:recovery-hints-session-1765957311361-l0ghyv2jl-008-system-spec-kit-rename -->
+<!-- ANCHOR:recovery-hints -->
 <a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
@@ -348,7 +356,7 @@ The workflows-spec-kit skill was successfully renamed to system-spec-kit across 
 <!-- /ANCHOR:recovery-hints-session-1765957311361-l0ghyv2jl-008-system-spec-kit-rename -->
 ---
 
-<!-- ANCHOR:postflight-session-1765957311361-l0ghyv2jl-008-system-spec-kit-rename -->
+<!-- ANCHOR:postflight -->
 <a id="postflight-learning-delta"></a>
 
 ## POSTFLIGHT LEARNING DELTA
@@ -373,6 +381,8 @@ The workflows-spec-kit skill was successfully renamed to system-spec-kit across 
 This session was migrated from an older format. Learning metrics were not captured in the original format.
 <!-- /ANCHOR:postflight-session-1765957311361-l0ghyv2jl-008-system-spec-kit-rename -->
 ---
+<!-- ANCHOR:metadata -->
+<a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 

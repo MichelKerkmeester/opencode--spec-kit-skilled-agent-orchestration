@@ -1,19 +1,16 @@
 ---
-title: "Memory architecture consolidation for 014-anchor-enforcement 2025-12-16 [014-anchor-enforcement/16-12-25_20-48__anchor-enforcement]"
-description: "This memory captures the architectural consolidation that moved memory scripts, templates, database files, and config into the workflows-memory skill folder. The archived session describes how the relocation created a single source of truth and fixed missing-anchor failures caused by broken skill-local script paths. It remains preserved as a migrated v2.2 record from 2025-12-16."
+title: "Memory architecture consolidation for 014-anchor-enforcement 2025-12-16"
+description: "This memory captures the architectural consolidation that moved memory scripts, templates, database files, and config into the workflows-memory skill folder. The archived..."
 trigger_phrases:
   - "memory architecture consolidation"
   - "single source of truth"
   - "missing anchor root cause"
 importance_tier: "normal"
+contextType: "general"
 quality_score: 0.60
 quality_flags:
   - "legacy_migration"
-contextType: "general"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
----
-
 # SESSION SUMMARY
 
 | **Meta Data** | **Value** |
@@ -40,7 +37,8 @@ contextType: "general"
 
 ---
 
-<!-- ANCHOR:preflight-session-1765914497454-fwoxrgafu-005-memory/008-anchor-enforcement -->
+<!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -64,7 +62,7 @@ contextType: "general"
 
 ---
 
-<!-- ANCHOR:continue-session-session-1765914497454-fwoxrgafu-005-memory/008-anchor-enforcement -->
+<!-- ANCHOR:continue-session -->
 <a id="continue-session"></a>
 
 ## CONTINUE SESSION
@@ -99,7 +97,9 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 ---
 
-<!-- ANCHOR:summary-session-1765914497454-fwoxrgafu-005-memory/008-anchor-enforcement -->
+<!-- ANCHOR:summary -->
+<a id="overview"></a>
+
 ## 1. OVERVIEW
 
 Major architectural consolidation of the memory system. Moved all scripts, templates, database, and config from .opencode/memory/ to .opencode/skills/workflows-memory/ to create a single source of truth. This resolves the root cause of agents creating memory files without anchors - they couldn't find generate-context.js because SKILL.md referenced ./scripts/ which didn't exist in the skill folder.
@@ -132,7 +132,9 @@ Major architectural consolidation of the memory system. Moved all scripts, templ
 
 ---
 
-<!-- ANCHOR:detailed-changes-session-1765914497454-fwoxrgafu-005-memory/008-anchor-enforcement -->
+<!-- ANCHOR:detailed-changes -->
+<a id="detailed-changes"></a>
+
 ## 2. DETAILED CHANGES
 
 <!-- ANCHOR:architecture-major-architectural-consolidation-005-session-1765914497454-fwoxrgafu -->
@@ -194,7 +196,9 @@ oldPath: .opencode/memory/; newPath: .opencode/skills/workflows-memory/; databas
 
 ---
 
-<!-- ANCHOR:decisions-session-1765914497454-fwoxrgafu-005-memory/008-anchor-enforcement -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 3. DECISIONS
 
 <!-- ANCHOR:decision-consolidate-all-memory-005-session-1765914497454-fwoxrgafu -->
@@ -334,7 +338,9 @@ oldPath: .opencode/memory/; newPath: .opencode/skills/workflows-memory/; databas
 
 <!-- /ANCHOR:decisions-session-1765914497454-fwoxrgafu-005-memory/008-anchor-enforcement -->
 
-<!-- ANCHOR:session-history-session-1765914497454-fwoxrgafu-005-memory/008-anchor-enforcement -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 4. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -360,7 +366,7 @@ Major architectural consolidation of the memory system. Moved all scripts, templ
 
 ---
 
-<!-- ANCHOR:recovery-hints-session-1765914497454-fwoxrgafu-005-memory/008-anchor-enforcement -->
+<!-- ANCHOR:recovery-hints -->
 <a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
@@ -385,7 +391,7 @@ Major architectural consolidation of the memory system. Moved all scripts, templ
 <!-- /ANCHOR:recovery-hints-session-1765914497454-fwoxrgafu-005-memory/008-anchor-enforcement -->
 ---
 
-<!-- ANCHOR:postflight-session-1765914497454-fwoxrgafu-005-memory/008-anchor-enforcement -->
+<!-- ANCHOR:postflight -->
 <a id="postflight-learning-delta"></a>
 
 ## POSTFLIGHT LEARNING DELTA
@@ -410,6 +416,8 @@ Major architectural consolidation of the memory system. Moved all scripts, templ
 This session was migrated from an older format. Learning metrics were not captured in the original format.
 <!-- /ANCHOR:postflight-session-1765914497454-fwoxrgafu-005-memory/008-anchor-enforcement -->
 ---
+<!-- ANCHOR:metadata -->
+<a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 

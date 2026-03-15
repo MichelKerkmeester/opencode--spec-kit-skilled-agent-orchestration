@@ -1,19 +1,25 @@
 ---
-title: "Repaired the Level 2 [014-pipeline-architecture/11-03-26_18-36__repaired-the-level-2-pipeline-architecture-spec]"
-description: "Session context memory template for Spec Kit indexing."
+title: "Repaired the Level 2"
+description: "Repaired the Level 2 pipeline-architecture spec folder so it is self-contained and review-ready. Added a 21-feature traceability matrix to the core docs, replaced unsupported..."
 trigger_phrases:
-  - "memory dashboard"
-  - "session summary"
-  - "context template"
+  - "self contained"
+  - "review ready"
+  - "repaired level pipeline-architecture spec"
+  - "level pipeline-architecture spec folder"
+  - "pipeline-architecture spec folder self-contained"
+  - "spec folder self-contained review-ready"
+  - "added 21-feature traceability matrix"
+  - "21-feature traceability matrix core"
+  - "traceability matrix core docs"
+  - "matrix core docs replaced"
+  - "core docs replaced unsupported"
+  - "repaired level repaired level"
 importance_tier: "normal"
 contextType: "general"
 quality_score: 0.90
 quality_flags:
   - "has_tool_state_mismatch"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
----
-
 # Repaired the Level 2 pipeline-architecture spec folder so it is self-contained and review-ready....
 
 ## SESSION SUMMARY
@@ -34,8 +40,6 @@ quality_flags:
 | Created At (Epoch) | 1773250572 |
 | Last Accessed (Epoch) | 1773250572 |
 | Access Count | 1 |
-
----
 
 ---
 
@@ -109,6 +113,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -224,6 +229,9 @@ Repaired the Level 2 pipeline-architecture spec folder so it is self-contained a
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-move-full-feature-traceability-fb3ad77b -->
@@ -649,6 +657,9 @@ Repaired the Level 2 pipeline-architecture spec folder so it is self-contained a
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -731,8 +742,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 
 ---
 
----
-
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -827,51 +837,18 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/022 hybrid rag fusion/013 code audit per feature catalog/014 pipeline architecture"
   - "self contained"
   - "review ready"
-  - "backlog coverage"
-  - "three phase"
-  - "implementation summary"
-  - "scratch only"
-  - "f01 f21"
-  - "post implementation"
-  - "code audit per feature catalog"
-  - "merged small files"
-  - "move full traceability core"
-  - "full traceability core docs"
-  - "traceability core docs level"
-  - "core docs level folder"
-  - "docs level folder needed"
-  - "level folder needed self-contained"
-  - "folder needed self-contained review"
-  - "needed self-contained review longer"
-  - "self-contained review longer depend"
-  - "review longer depend scratch-only"
-  - "longer depend scratch-only evidence"
-  - "folder documents remediation coverage"
-  - "documents remediation coverage audit"
-  - "remediation coverage audit traceability"
-  - "coverage audit traceability verified"
-  - "system"
-  - "spec"
-  - "kit/022"
-  - "hybrid"
-  - "rag"
-  - "fusion/013"
-  - "code"
-  - "audit"
-  - "per"
-  - "feature"
-  - "catalog/014"
-  - "pipeline"
-  - "architecture"
-
-key_files:
-  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/014-pipeline-architecture/(merged-small-files)"
-  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/014-pipeline-architecture/scratch/(merged-small-files)"
-
-# Relationships
+  - "repaired level pipeline-architecture spec"
+  - "level pipeline-architecture spec folder"
+  - "pipeline-architecture spec folder self-contained"
+  - "spec folder self-contained review-ready"
+  - "added 21-feature traceability matrix"
+  - "21-feature traceability matrix core"
+  - "traceability matrix core docs"
+  - "matrix core docs replaced"
+  - "core docs replaced unsupported"
+  - "repaired level repaired level"# Relationships
 related_sessions:
 
   []

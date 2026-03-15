@@ -32,9 +32,9 @@ const PLACEHOLDER_PATTERNS: Array<{ pattern: RegExp; label: string }> = [
   { pattern: /\|\s*(Knowledge|Uncertainty|Context) Score\s*\|\s*\/100\s*\|/i, label: 'empty preflight score' },
   { pattern: /\|\s*Timestamp\s*\|\s*\|\s*Session start\s*\|/i, label: 'empty preflight timestamp' },
   { pattern: /-\s*Readiness:\s*$/im, label: 'empty readiness value' },
-  { pattern: /To promote a memory to constitutional tier/i, label: 'template instructional banner leakage' },
-  { pattern: /Template Configuration Comments/i, label: 'template configuration leakage' },
-  { pattern: /SESSION CONTEXT DOCUMENTATION v/i, label: 'template footer leakage' },
+  { pattern: /(^title:\s*"|^#\s+)To promote a memory to constitutional tier/im, label: 'template instructional banner leakage' },
+  { pattern: /^<!--\s*Template Configuration Comments/im, label: 'template configuration leakage' },
+  { pattern: /^<!--\s*SESSION CONTEXT DOCUMENTATION v/im, label: 'template footer leakage' },
 ];
 const EXECUTION_SIGNAL_PATTERNS = [
   /\*\*Tool:\s+/i,
@@ -54,6 +54,12 @@ function extractFrontMatter(content: string): string {
 
   const fencedYamlMatch = content.match(/```yaml\n([\s\S]*?)\n```/i);
   return fencedYamlMatch ? fencedYamlMatch[1] : '';
+}
+
+function stripCodeSegments(content: string): string {
+  return content
+    .replace(/```[\s\S]*?```/g, '\n')
+    .replace(/`[^`\n]+`/g, ' ');
 }
 
 function extractYamlValue(frontMatter: string, key: string): string | null {
@@ -250,7 +256,8 @@ function validateMemoryQualityContent(content: string): ValidationResult {
     message: sparseSemantic ? 'sparse semantic fields: trigger_phrases empty' : 'ok',
   });
 
-  const placeholderLeak = PLACEHOLDER_PATTERNS.find(({ pattern }) => pattern.test(content));
+  const placeholderContent = stripCodeSegments(content);
+  const placeholderLeak = PLACEHOLDER_PATTERNS.find(({ pattern }) => pattern.test(placeholderContent));
   ruleResults.push({
     ruleId: 'V6',
     passed: !placeholderLeak,

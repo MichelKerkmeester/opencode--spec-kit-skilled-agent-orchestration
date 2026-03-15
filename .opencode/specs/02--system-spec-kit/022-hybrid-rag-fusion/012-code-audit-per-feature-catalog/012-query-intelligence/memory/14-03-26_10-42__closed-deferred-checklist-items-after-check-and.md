@@ -1,19 +1,25 @@
 ---
-title: "Closed deferred checklist [012-query-intelligence/14-03-26_10-42__closed-deferred-checklist-items-after-check-and]"
-description: "Session context memory template for Spec Kit indexing."
+title: "Closed deferred checklist"
+description: "Closed deferred checklist items after check and playbook coverage verification."
 trigger_phrases:
-  - "memory dashboard"
-  - "session summary"
-  - "context template"
+  - "closed deferred checklist items"
+  - "deferred checklist items check"
+  - "checklist items check playbook"
+  - "items check playbook coverage"
+  - "check playbook coverage verification"
+  - "closed deferred checklist closed"
+  - "deferred checklist closed deferred"
+  - "checklist closed deferred checklist"
+  - "code audit per catalog"
+  - "audit per catalog query"
+  - "per catalog query intelligence"
+  - "code"
 importance_tier: "normal"
 contextType: "general"
 quality_score: 0.90
 quality_flags:
   - "has_tool_state_mismatch"
 ---
-
----
-
 # Closed deferred checklist items after check and playbook coverage verification.
 
 ## SESSION SUMMARY
@@ -37,8 +43,6 @@ quality_flags:
 
 ---
 
----
-
 ## TABLE OF CONTENTS
 
 - [CONTINUE SESSION](#continue-session)
@@ -52,6 +56,8 @@ quality_flags:
 - [MEMORY METADATA](#memory-metadata)
 
 ---
+<!-- ANCHOR:continue-session -->
+<a id="continue-session"></a>
 
 ## CONTINUE SESSION
 
@@ -107,6 +113,8 @@ Next: Maintain repo-wide check health to keep CHK-025 closed.
 - Last: Next Steps
 
 ---
+<!-- ANCHOR:project-state-snapshot -->
+<a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
 
@@ -136,6 +144,8 @@ Next: Maintain repo-wide check health to keep CHK-025 closed.
 **Key Topics:** `deferred checklist` | `checklist items` | `deferred` | `checklist` | `items` | `closed` | `promoted` | `previously` | `current` | `evidence` | `promoted previously` | `previously deferred` |
 
 ---
+<!-- ANCHOR:task-guide -->
+<a id="implementation-guide"></a>
 
 ## 1. IMPLEMENTATION GUIDE
 
@@ -158,6 +168,8 @@ Next: Maintain repo-wide check health to keep CHK-025 closed.
 - No patterns identified
 
 ---
+<!-- ANCHOR:summary -->
+<a id="overview"></a>
 
 ## 2. OVERVIEW
 
@@ -175,6 +187,8 @@ Closed deferred checklist items after check and playbook coverage verification.
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/012-query-intelligence/(merged-small-files)` | Tree-thinning merged 2 small files (checklist.md, implementation-summary.md). Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/012-query-intelligence/checklist.md : File modified (description pending) | Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/012-query-intelligence/implementation-summary.md : File modified (description pending) |
 
 ---
+<!-- ANCHOR:detailed-changes -->
+<a id="detailed-changes"></a>
 
 ## 3. DETAILED CHANGES
 
@@ -191,6 +205,8 @@ Maintain repo-wide check health to keep CHK-025 closed.
 **Details:** Next: Maintain repo-wide check health to keep CHK-025 closed.
 
 ---
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
 
 ## 4. DECISIONS
 
@@ -282,6 +298,8 @@ Maintain repo-wide check health to keep CHK-025 closed.
 **Confidence**: 0.5%
 
 ---
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
 
 ## 5. CONVERSATION
 
@@ -301,8 +319,8 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 Closed deferred checklist items after check and playbook coverage verification.
 
 ---
-
----
+<!-- ANCHOR:recovery-hints -->
+<a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
 
@@ -356,8 +374,8 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 | No Dedup Conflicts |  |  |
 
 ---
-
----
+<!-- ANCHOR:metadata -->
+<a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 
@@ -449,49 +467,18 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/022 hybrid rag fusion/013 code audit per feature catalog/012 query intelligence"
-  - "code audit per feature catalog"
-  - "merged small files"
-  - "promoted previously deferred checklist"
-  - "previously deferred checklist items"
-  - "deferred checklist items closed"
-  - "checklist items closed current"
-  - "items closed current evidence"
   - "closed deferred checklist items"
   - "deferred checklist items check"
   - "checklist items check playbook"
   - "items check playbook coverage"
   - "check playbook coverage verification"
-  - "option .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/012-query-intelligence/ merged-small-files system"
-  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/012-query-intelligence/ merged-small-files system spec"
-  - "merged-small-files system spec kit/022"
-  - "system spec kit/022 hybrid"
-  - "spec kit/022 hybrid rag"
-  - "kit/022 hybrid rag fusion/013"
-  - "hybrid rag fusion/013 code"
-  - "rag fusion/013 code audit"
-  - "fusion/013 code audit per"
-  - "code audit per catalog/012"
-  - "audit per catalog/012 query"
-  - "per catalog/012 query intelligence"
-  - "system"
-  - "spec"
-  - "kit/022"
-  - "hybrid"
-  - "rag"
-  - "fusion/013"
-  - "code"
-  - "audit"
-  - "per"
-  - "feature"
-  - "catalog/012"
-  - "query"
-  - "intelligence"
-
-key_files:
-  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/012-query-intelligence/(merged-small-files)"
-
-# Relationships
+  - "closed deferred checklist closed"
+  - "deferred checklist closed deferred"
+  - "checklist closed deferred checklist"
+  - "code audit per catalog"
+  - "audit per catalog query"
+  - "per catalog query intelligence"
+  - "code"# Relationships
 related_sessions:
 
   []

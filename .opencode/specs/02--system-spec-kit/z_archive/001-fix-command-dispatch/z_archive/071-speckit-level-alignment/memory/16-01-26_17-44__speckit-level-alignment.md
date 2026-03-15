@@ -1,44 +1,17 @@
 ---
-title: "SpecKit level alignment completion 2026-01-16 [071-speckit-level-alignment/16-01-26_17-44__speckit-level-alignment]"
-description: "Captured the session that aligned SpecKit scripts, library modules, and documentation to the level-based template architecture. It records the completion state, the broad architecture update, and the operational guidance for continuing work after the alignment landed."
+title: "SpecKit level alignment completion 2026-01-16"
+description: "Captured the session that aligned SpecKit scripts, library modules, and documentation to the level-based template architecture. It records the completion state, the broad..."
 trigger_phrases:
   - "speckit level alignment"
   - "level based template architecture"
   - "script and library alignment"
   - "template architecture migration"
 importance_tier: "normal"
+contextType: "general"
 quality_score: 0.60
 quality_flags:
   - "legacy_migration"
-contextType: "general"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-<!-- Constitutional Tier Promotion:
-  To promote a memory to constitutional tier (always surfaced):
-  
-  1. Via MCP tool after indexing:
-     memory_update({ id: <memory_id>, importanceTier: 'constitutional' })
-  
-  2. Criteria for constitutional:
-     - Applies to ALL future conversations (not project-specific)
-     - Core constraints/rules that should NEVER be forgotten
-     - ~2000 token budget total for constitutional tier
-     
-  3. Add trigger phrases for proactive surfacing:
-     memory_update({ 
-       id: <memory_id>, 
-       importanceTier: 'constitutional',
-       triggerPhrases: ['fix', 'implement', 'create', 'modify', ...]
-     })
-     
-  4. Examples of constitutional content:
-     - "Always ask Gate 3 spec folder question before file modifications"
-     - "Never modify production data directly"
-     - "Memory files MUST use generate-context.js script"
--->
-
----
-
 # SESSION SUMMARY
 
 | **Meta Data** | **Value** |
@@ -60,7 +33,8 @@ contextType: "general"
 
 ---
 
-<!-- ANCHOR:preflight-session-1768581864115-1ijqg4k70-003-memory-and-spec-kit/071-speckit-level-alignment -->
+<!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -95,7 +69,7 @@ contextType: "general"
 
 ---
 
-<!-- ANCHOR:continue-session-session-1768581864115-1ijqg4k70-003-memory-and-spec-kit/071-speckit-level-alignment -->
+<!-- ANCHOR:continue-session -->
 <a id="continue-session"></a>
 
 ## CONTINUE SESSION
@@ -129,6 +103,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 <!-- /ANCHOR:continue-session-session-1768581864115-1ijqg4k70-003-memory-and-spec-kit/071-speckit-level-alignment -->
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -145,7 +120,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 ---
 
-<!-- ANCHOR:summary-session-1768581864115-1ijqg4k70-003-memory-and-spec-kit/071-speckit-level-alignment -->
+<!-- ANCHOR:summary -->
 <a id="overview"></a>
 
 ## 1. OVERVIEW
@@ -198,6 +173,9 @@ Session completed Spec 071: SpecKit Level-Based Template Alignment. This aligned
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 2. DECISIONS
 
 **D1: Parallel Agent Delegation**
@@ -232,6 +210,9 @@ Session completed Spec 071: SpecKit Level-Based Template Alignment. This aligned
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 3. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -332,7 +313,7 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 
 ---
 
-<!-- ANCHOR:recovery-hints-session-1768581864115-1ijqg4k70-003-memory-and-spec-kit/071-speckit-level-alignment -->
+<!-- ANCHOR:recovery-hints -->
 <a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
@@ -357,7 +338,7 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 <!-- /ANCHOR:recovery-hints-session-1768581864115-1ijqg4k70-003-memory-and-spec-kit/071-speckit-level-alignment -->
 ---
 
-<!-- ANCHOR:postflight-session-1768581864115-1ijqg4k70-003-memory-and-spec-kit/071-speckit-level-alignment -->
+<!-- ANCHOR:postflight -->
 <a id="postflight-learning-delta"></a>
 
 ## POSTFLIGHT LEARNING DELTA
@@ -383,6 +364,7 @@ This session was migrated from an older format. Learning metrics were not captur
 <!-- /ANCHOR:postflight-session-1768581864115-1ijqg4k70-003-memory-and-spec-kit/071-speckit-level-alignment -->
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -458,24 +440,10 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "level template"
-  - "spec kit template"
-  - "COMPLEXITY_GATE"
-  - "create spec folder"
-  - "expand template"
-  - "level_1"
-  - "level_2"
-  - "level_3"
-  - "template architecture"
-
-key_files:
-  - ".opencode/skill/system-spec-kit/scripts/create-spec-folder.sh"
-  - ".opencode/skill/system-spec-kit/scripts/expand-template.js"
-  - ".opencode/skill/system-spec-kit/lib/expansion/preprocessor.js"
-  - ".opencode/skill/system-spec-kit/templates/level_2/checklist.md"
-
-# Relationships
-related_sessions:
+  - "speckit level alignment"
+  - "level based template architecture"
+  - "script and library alignment"
+  - "template architecture migration"related_sessions:
 
   []
 

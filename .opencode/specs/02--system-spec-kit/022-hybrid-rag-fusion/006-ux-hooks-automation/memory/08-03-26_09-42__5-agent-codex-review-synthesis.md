@@ -1,9 +1,9 @@
 ---
-title: "Completed Phase 2 synthesis of [006-ux-hooks-automation/08-03-26_09-42__5-agent-codex-review-synthesis]"
+title: "Completed Phase 2 synthesis of"
 description: "Completed a 5-agent Codex review synthesis for 011-ux-hooks-automation and fixed the save-path runPostMutationHooks try/catch gap with passing validation."
 trigger_phrases:
   - "codex review synthesis"
-  - "runPostMutationHooks"
+  - "runpostmutationhooks"
   - "response builder"
   - "memory save"
   - "ultra-think verification"
@@ -12,9 +12,6 @@ contextType: "general"
 quality_score: 0.90
 quality_flags: []
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
----
-
 # Completed Phase 2 synthesis of a 5-agent Codex CLI review for 011-ux-hooks-automation. Collected...
 
 ## SESSION SUMMARY
@@ -35,8 +32,6 @@ quality_flags: []
 | Created At (Epoch) | 1772959329 |
 | Last Accessed (Epoch) | 1772959329 |
 | Access Count | 1 |
-
----
 
 ---
 
@@ -110,6 +105,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -232,6 +228,9 @@ rootCause: The save and atomic-save mutation paths called runPostMutationHooks i
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-wrote-codex-9bac192d -->
@@ -352,6 +351,9 @@ rootCause: The save and atomic-save mutation paths called runPostMutationHooks i
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -433,8 +435,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 
 ---
 
----
-
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -529,45 +530,11 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/022 hybrid rag fusion"
-  - "run post mutation hooks"
-  - "no emit"
-  - "ux hooks automation"
-  - "a1 a3"
-  - "gpt 5"
-  - "codex review report"
-  - "defense in depth"
-  - "atomic save"
+  - "codex review synthesis"
+  - "runpostmutationhooks"
   - "response builder"
   - "memory save"
-  - "bulk delete"
-  - "cli specific"
-  - "second pass"
-  - "crud delete"
-  - "cross file"
-  - "tree thinning"
-  - "decision estimated dqi scores"
-  - "estimated dqi scores documentation"
-  - "dqi scores documentation review"
-  - "scores documentation review codex"
-  - "documentation review codex agent"
-  - "review codex agent produce"
-  - "codex agent produce final"
-  - "agent produce final scores"
-  - "produce final scores session"
-  - "system"
-  - "spec"
-  - "kit/022"
-  - "hybrid"
-  - "rag"
-  - "fusion"
-
-key_files:
-  - ".opencode/.../save/(merged-small-files)"
-  - ".opencode/.../handlers/(merged-small-files)"
-  - ".opencode/.../scratch/(merged-small-files)"
-
-# Relationships
+  - "ultra-think verification"# Relationships
 related_sessions:
 
   []

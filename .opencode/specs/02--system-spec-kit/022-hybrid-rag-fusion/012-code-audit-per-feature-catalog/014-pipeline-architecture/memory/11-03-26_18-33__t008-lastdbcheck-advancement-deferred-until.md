@@ -1,18 +1,24 @@
 ---
-title: "T008: lastDbCheck advancement [014-pipeline-architecture/11-03-26_18-33__t008-lastdbcheck-advancement-deferred-until]"
-description: "Session context memory template for Spec Kit indexing."
+title: "T008: lastDbCheck advancement"
+description: "T008: lastDbCheck advancement deferred until successful reinitializeDatabase; concurrent waiters get rebind result via lastReinitializeSucceeded flag T009: atomicSaveMemory..."
 trigger_phrases:
-  - "memory dashboard"
-  - "session summary"
-  - "context template"
+  - "last db check"
+  - "reinitialize database"
+  - "last reinitialize succeeded"
+  - "atomic save memory"
+  - "t008 lastdbcheck advancement deferred"
+  - "lastdbcheck advancement deferred successful"
+  - "advancement deferred successful reinitializedatabase"
+  - "deferred successful reinitializedatabase concurrent"
+  - "successful reinitializedatabase concurrent waiters"
+  - "reinitializedatabase concurrent waiters get"
+  - "concurrent waiters get rebind"
+  - "waiters get rebind result"
 importance_tier: "normal"
 contextType: "general"
 quality_score: 1.00
 quality_flags: []
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
----
-
 # T008: lastDbCheck advancement deferred until successful reinitializeDatabase; co
 
 ## SESSION SUMMARY
@@ -33,8 +39,6 @@ quality_flags: []
 | Created At (Epoch) | 1773250410 |
 | Last Accessed (Epoch) | 1773250410 |
 | Access Count | 1 |
-
----
 
 ---
 
@@ -105,6 +109,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -168,6 +173,9 @@ T008: lastDbCheck advancement deferred until successful reinitializeDatabase; co
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 3. DECISIONS
 
 <!-- ANCHOR:decision-t008-lastdbcheck-advancement-deferred-b1d33a71 -->
@@ -647,6 +655,9 @@ T008: lastDbCheck advancement deferred until successful reinitializeDatabase; co
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 4. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -729,8 +740,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 
 ---
 
----
-
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -825,49 +835,18 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/022 hybrid rag fusion/013 code audit per feature catalog/014 pipeline architecture"
   - "last db check"
   - "reinitialize database"
   - "last reinitialize succeeded"
   - "atomic save memory"
-  - "recover pending file"
-  - "database path override"
-  - "gpt 5"
   - "t008 lastdbcheck advancement deferred"
   - "lastdbcheck advancement deferred successful"
   - "advancement deferred successful reinitializedatabase"
-  - "t009 atomicsavememory retries indexing"
-  - "atomicsavememory retries indexing captures"
-  - "retries indexing captures previous"
-  - "indexing captures previous file"
-  - "captures previous file content"
-  - "t011 recoverpendingfile checks existence"
-  - "recoverpendingfile checks existence rename"
-  - "checks existence rename accepts"
   - "deferred successful reinitializedatabase concurrent"
   - "successful reinitializedatabase concurrent waiters"
   - "reinitializedatabase concurrent waiters get"
   - "concurrent waiters get rebind"
-  - "waiters get rebind result"
-  - "get rebind result via"
-  - "rebind result via lastreinitializesucceeded"
-  - "system"
-  - "spec"
-  - "kit/022"
-  - "hybrid"
-  - "rag"
-  - "fusion/013"
-  - "code"
-  - "audit"
-  - "per"
-  - "feature"
-  - "catalog/014"
-  - "pipeline"
-  - "architecture"
-
-key_files:
-
-# Relationships
+  - "waiters get rebind result"# Relationships
 related_sessions:
 
   []

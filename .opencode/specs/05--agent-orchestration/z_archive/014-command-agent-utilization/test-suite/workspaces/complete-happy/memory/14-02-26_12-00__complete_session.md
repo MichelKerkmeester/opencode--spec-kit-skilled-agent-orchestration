@@ -1,5 +1,19 @@
 ---
-title: "Session Context: Notification System Complete Workflow [complete-happy/14-02-26_12-00__complete_session]"
+title: "Session Context: Notification System Complete Workflow"
+description: "Session Context: Notification System Complete Workflow"
+trigger_phrases:
+  - "session notification system complete"
+  - "notification system complete workflow"
+  - "session context"
+  - "system complete workflow session"
+  - "complete workflow session notification"
+  - "workflow session notification system"
+  - "system complete workflow archive"
+  - "complete workflow archive command"
+  - "workflow archive command agent"
+  - "archive command agent utilization"
+  - "command agent utilization test"
+  - "agent utilization test suite"
 importance_tier: "normal"
 contextType: "general"
 ---

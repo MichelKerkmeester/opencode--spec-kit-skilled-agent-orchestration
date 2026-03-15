@@ -1,18 +1,24 @@
 ---
-title: "Code issues found during review [010-perfect-session-capturing/14-03-26_15-47__code-issues-found-during-review]"
-description: "Session context memory template for Spec Kit indexing."
+title: "Code issues found during review"
+description: "Shebang displacement by module headers was an unexpected finding blocking TSC and vitest."
 trigger_phrases:
-  - "memory dashboard"
-  - "session summary"
-  - "context template"
+  - "shebang displacement module headers"
+  - "displacement module headers unexpected"
+  - "module headers unexpected finding"
+  - "headers unexpected finding blocking"
+  - "unexpected finding blocking tsc"
+  - "finding blocking tsc vitest"
+  - "code issues found review"
+  - "issues found review shebang"
+  - "found review shebang displacement"
+  - "review shebang displacement module"
+  - "perfect session capturing"
+  - "perfect"
 importance_tier: "critical"
 contextType: "general"
 quality_score: 1.00
 quality_flags: []
 ---
-
----
-
 # Code issues found during review
 
 ## SESSION SUMMARY
@@ -35,6 +41,7 @@ quality_flags: []
 | Access Count | 1 |
 
 ---
+<!-- ANCHOR:preflight -->
 
 ## PREFLIGHT BASELINE
 
@@ -72,6 +79,8 @@ quality_flags: []
 - [MEMORY METADATA](#memory-metadata)
 
 ---
+<!-- ANCHOR:continue-session -->
+<a id="continue-session"></a>
 
 ## CONTINUE SESSION
 
@@ -123,6 +132,8 @@ Next: Continue implementation
 - Last: Node extractor/loader suite: 278 passed, 0 failed
 
 ---
+<!-- ANCHOR:project-state-snapshot -->
+<a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
 
@@ -154,6 +165,8 @@ Next: Continue implementation
 **Key Topics:** `spec` | `system spec kit/022 hybrid rag fusion/011 perfect session capturing` | `shebang` | `tsc` | `system` | `kit/022` | `hybrid` | `rag` | `fusion/011` | `perfect` | `capturing` | `fixes` |
 
 ---
+<!-- ANCHOR:summary -->
+<a id="overview"></a>
 
 ## 1. OVERVIEW
 
@@ -174,6 +187,8 @@ Shebang displacement by module headers was an unexpected finding blocking TSC an
 | `scripts/utils/(merged-small-files)` | Tree-thinning merged 2 small files (input-normalizer.ts, slug-utils.ts). Merged from scripts/utils/input-normalizer.ts : Descriptive tool observation titles and relevance filtering | Merged from scripts/utils/slug-utils.ts : Content-aware slug generation with contamination pattern ... |
 
 ---
+<!-- ANCHOR:detailed-changes -->
+<a id="detailed-changes"></a>
 
 ## 2. DETAILED CHANGES
 
@@ -199,6 +214,8 @@ Full node test suite passes with 278 tests, 1 skipped, 0 failures in 3.79s.
 **Details:** Tool: Bash — ran node scripts/tests/test-extractors-loaders.js (278 passed) | 1 skipped (NO_DATA_AVAILABLE in test env)
 
 ---
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
 
 ## 3. DECISIONS
 
@@ -265,6 +282,8 @@ Full node test suite passes with 278 tests, 1 skipped, 0 failures in 3.79s.
 **Confidence**: 0.5%
 
 ---
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
 
 ## 4. CONVERSATION
 
@@ -359,8 +378,8 @@ Update checklist with test evidence
 Let Codex verify all work done
 
 ---
-
----
+<!-- ANCHOR:recovery-hints -->
+<a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
 
@@ -414,6 +433,8 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 | No Dedup Conflicts |  |  |
 
 ---
+<!-- ANCHOR:postflight -->
+<a id="postflight-learning-delta"></a>
 
 ## POSTFLIGHT LEARNING DELTA
 
@@ -444,6 +465,8 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 Significant knowledge gain (+30 points). Major uncertainty reduction (-35 points). Substantial context enrichment (+33 points). Overall: Good learning session with meaningful progress.
 
 ---
+<!-- ANCHOR:metadata -->
+<a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 
@@ -535,49 +558,18 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/022 hybrid rag fusion/011 perfect session capturing"
-  - "validate memory quality"
-  - "tree thinning"
-  - "collect session data"
-  - "spec folder extractor"
-  - "contamination filter"
-  - "session extractor"
-  - "map based"
-  - "zero tool"
-  - "live over synthet"
-  - "file writer"
-  - "input normalizer"
-  - "slug utils"
-  - "content aware"
-  - "shebang fixes outside spec"
-  - "fixes outside spec scope"
-  - "merged-small-files tree-thinning merged small"
-  - "tree-thinning merged small files"
-  - "outside spec scope required"
-  - "spec scope required tsc"
-  - "scope required tsc build"
-  - "required tsc build clean"
   - "shebang displacement module headers"
   - "displacement module headers unexpected"
   - "module headers unexpected finding"
   - "headers unexpected finding blocking"
-  - "system"
-  - "spec"
-  - "kit/022"
-  - "hybrid"
-  - "rag"
-  - "fusion/011"
-  - "perfect"
-  - "session"
-  - "capturing"
-
-key_files:
-  - "scripts/memory/validate-memory-quality.ts"
-  - "scripts/extractors/(merged-small-files)"
-  - "scripts/core/(merged-small-files)"
-  - "scripts/utils/(merged-small-files)"
-
-# Relationships
+  - "unexpected finding blocking tsc"
+  - "finding blocking tsc vitest"
+  - "code issues found review"
+  - "issues found review shebang"
+  - "found review shebang displacement"
+  - "review shebang displacement module"
+  - "perfect session capturing"
+  - "perfect"# Relationships
 related_sessions:
 
   []

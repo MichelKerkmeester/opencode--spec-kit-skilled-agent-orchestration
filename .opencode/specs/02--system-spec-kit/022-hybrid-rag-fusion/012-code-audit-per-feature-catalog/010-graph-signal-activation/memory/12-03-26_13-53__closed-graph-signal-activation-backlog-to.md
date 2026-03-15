@@ -1,19 +1,25 @@
 ---
-title: "Closed graph-signal-activation [010-graph-signal-activation/12-03-26_13-53__closed-graph-signal-activation-backlog-to]"
-description: "Session context memory template for Spec Kit indexing."
+title: "Closed graph-signal-activation"
+description: "Closed graph-signal-activation backlog to verified completion: fixed causal-edge non-finite strength handling and rollback semantics, aligned feature and playbook docs, and..."
 trigger_phrases:
-  - "memory dashboard"
-  - "session summary"
-  - "context template"
+  - "causal edge"
+  - "non finite"
+  - "closed graph-signal-activation backlog verified"
+  - "graph-signal-activation backlog verified completion"
+  - "backlog verified completion fixed"
+  - "verified completion fixed causal-edge"
+  - "completion fixed causal-edge non-finite"
+  - "fixed causal-edge non-finite strength"
+  - "causal-edge non-finite strength handling"
+  - "non-finite strength handling rollback"
+  - "strength handling rollback semantics"
+  - "handling rollback semantics aligned"
 importance_tier: "normal"
 contextType: "general"
 quality_score: 0.90
 quality_flags:
   - "has_tool_state_mismatch"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
----
-
 # Closed graph-signal-activation backlog to verified completion: fixed causal-edge non-finite...
 
 ## SESSION SUMMARY
@@ -34,8 +40,6 @@ quality_flags:
 | Created At (Epoch) | 1773320020 |
 | Last Accessed (Epoch) | 1773320020 |
 | Access Count | 1 |
-
----
 
 ---
 
@@ -111,6 +115,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -250,6 +255,9 @@ Closed graph-signal-activation backlog to verified completion: fixed causal-edge
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-reject-non-71e7b214 -->
@@ -560,6 +568,9 @@ Closed graph-signal-activation backlog to verified completion: fixed causal-edge
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -642,8 +653,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 
 ---
 
----
-
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -738,55 +748,18 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/022 hybrid rag fusion/013 code audit per feature catalog/010 graph signal activation"
+  - "causal edge"
   - "non finite"
-  - "weight history"
-  - "closure blocking"
-  - "merged small files"
-  - "code audit per feature catalog"
-  - "treat documentation checklist evidence"
-  - "documentation checklist evidence drift"
-  - "prevents nan/infinity entering graph"
-  - "nan/infinity entering graph storage"
-  - "entering graph storage contaminating"
-  - "graph storage contaminating downstream"
-  - "storage contaminating downstream scoring"
-  - "ensures transactional rollback behavior"
-  - "transactional rollback behavior stays"
-  - "rollback behavior stays observable"
-  - "behavior stays observable reliable"
-  - "spec integrity required truthful"
-  - "integrity required truthful completion"
-  - "required truthful completion claims"
-  - "reject non-finite causal edge"
-  - "non-finite causal edge strengths"
-  - "causal edge strengths write"
-  - "edge strengths write boundaries"
-  - "propagate weight-history write errors"
-  - "weight-history write errors instead"
-  - "system"
-  - "spec"
-  - "kit/022"
-  - "hybrid"
-  - "rag"
-  - "fusion/013"
-  - "code"
-  - "audit"
-  - "per"
-  - "feature"
-  - "catalog/010"
-  - "graph"
-  - "signal"
-  - "activation"
-
-key_files:
-  - ".opencode/skill/system-spec-kit/mcp_server/lib/storage/(merged-small-files)"
-  - ".opencode/skill/system-spec-kit/mcp_server/tests/(merged-small-files)"
-  - ".opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/(merged-small-files)"
-  - ".opencode/skill/system-spec-kit/manual_testing_playbook/(merged-small-files)"
-  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/010-graph-signal-activation/(merged-small-files)"
-
-# Relationships
+  - "closed graph-signal-activation backlog verified"
+  - "graph-signal-activation backlog verified completion"
+  - "backlog verified completion fixed"
+  - "verified completion fixed causal-edge"
+  - "completion fixed causal-edge non-finite"
+  - "fixed causal-edge non-finite strength"
+  - "causal-edge non-finite strength handling"
+  - "non-finite strength handling rollback"
+  - "strength handling rollback semantics"
+  - "handling rollback semantics aligned"# Relationships
 related_sessions:
 
   []

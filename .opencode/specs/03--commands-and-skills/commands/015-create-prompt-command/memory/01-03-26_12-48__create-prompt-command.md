@@ -1,44 +1,17 @@
 ---
-title: "Skill graph memory integration analysis for 015-create-prompt-command 2026-03-01 [015-create-prompt-command/01-03-26_12-48__create-prompt-command]"
-description: "This session stores an analysis of the 036-skill-graphs implementation and its Memory MCP integration inside the 015-create-prompt-command memory file. It focuses on SGQS graph-query behavior instead of prompt command work, so the body appears cross-contaminated."
+title: "Skill graph memory integration analysis for 015-create-prompt-command 2026-03-01"
+description: "This session stores an analysis of the 036-skill-graphs implementation and its Memory MCP integration inside the 015-create-prompt-command memory file. It focuses on SGQS..."
 trigger_phrases:
   - "skill graph query system"
   - "memory mcp integration"
   - "semantic memory pipeline"
   - "in-memory graph database"
 importance_tier: "critical"
+contextType: "research"
 quality_score: 0.60
 quality_flags:
   - "needs_review"
-contextType: "research"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-<!-- Constitutional Tier Promotion:
-  To promote a memory to constitutional tier (always surfaced):
-  
-  1. Via MCP tool after indexing:
-     memory_update({ id: <memory_id>, importanceTier: 'constitutional' })
-  
-  2. Criteria for constitutional:
-     - Applies to ALL future conversations (not project-specific)
-     - Core constraints/rules that should NEVER be forgotten
-     - ~2000 token budget total for constitutional tier
-     
-  3. Add trigger phrases for proactive surfacing:
-     memory_update({ 
-       id: <memory_id>, 
-       importanceTier: 'constitutional',
-       triggerPhrases: ['fix', 'implement', 'create', 'modify', ...]
-     })
-     
-  4. Examples of constitutional content:
-     - "Always ask Gate 3 spec folder question before file modifications"
-     - "Never modify production data directly"
-     - "Memory files MUST use generate-context.js script"
--->
-
----
-
 # create prompt command session 01-03-26
 
 ## SESSION SUMMARY
@@ -63,6 +36,7 @@ contextType: "research"
 ---
 
 <!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -154,6 +128,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -604,6 +579,9 @@ Executed edit
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 decision_count: 0
@@ -620,6 +598,9 @@ decision_count: 0
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -756,6 +737,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -850,50 +832,10 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " commands and skills/commands/015 create prompt command"
-  - "skill graphs"
-  - "in memory"
-  - "tree thinning"
-  - "system spec kit"
-  - "context server"
-  - "mcp tool dispatch"
-  - "merged-small-files tree-thinning merged small"
-  - "tree-thinning merged small files"
-  - "based analysis implementation associated"
-  - "analysis implementation associated scripts"
-  - "implementation associated scripts skill"
-  - "associated scripts skill graph"
-  - "scripts skill graph system"
-  - "skill graph system memory"
-  - "graph system memory integration"
-  - "system memory integration consist"
-  - "memory integration consist elegant"
-  - "integration consist elegant entirely"
-  - "consist elegant entirely in-memory"
-  - "elegant entirely in-memory graph"
-  - "entirely in-memory graph database"
-  - "in-memory graph database sgqs"
-  - "graph database sgqs enriches"
-  - "database sgqs enriches existing"
-  - "sgqs enriches existing semantic"
-  - "commands"
-  - "and"
-  - "skills/commands/015"
-  - "create"
-  - "prompt"
-  - "command"
-
-key_files:
-  - ".opencode/.../handlers/(merged-small-files)"
-  - ".opencode/skill/system-spec-kit/mcp_server/handlers/(merged-small-files)"
-  - ".opencode/skill/system-spec-kit/mcp_server/(merged-small-files)"
-  - ".opencode/.../tools/(merged-small-files)"
-  - ".opencode/skill/system-spec-kit/mcp_server/tools/(merged-small-files)"
-  - ".opencode/.../tests/(merged-small-files)"
-  - ".opencode/.../architecture/(merged-small-files)"
-
-# Relationships
-related_sessions:
+  - "skill graph query system"
+  - "memory mcp integration"
+  - "semantic memory pipeline"
+  - "in-memory graph database"related_sessions:
 
   []
 

@@ -1,43 +1,16 @@
 ---
-title: "Text-only refocus for prompt-improver initial-creation 2026-03-04 [001-initial-creation/04-03-26_09-15__initial-creation]"
-description: "This session refocused sk-prompt-improver on text-only prompting by removing visual and creative mode concepts. It rewrote routing guidance, added missing framework deep dives and CLEAR rubrics, and moved interactive orchestration details into command files before release."
+title: "Text-only refocus for prompt-improver initial-creation 2026-03-04"
+description: "This session refocused sk-prompt-improver on text-only prompting by removing visual and creative mode concepts. It rewrote routing guidance, added missing framework deep dives..."
 trigger_phrases:
   - "text only refocus"
   - "visual mode removal"
   - "prompt framework deep dives"
 importance_tier: "normal"
+contextType: "general"
 quality_score: 0.60
 quality_flags:
   - "needs_review"
-contextType: "general"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-<!-- Constitutional Tier Promotion:
-  To promote a memory to constitutional tier (always surfaced):
-  
-  1. Via MCP tool after indexing:
-     memory_update({ id: <memory_id>, importanceTier: 'constitutional' })
-  
-  2. Criteria for constitutional:
-     - Applies to ALL future conversations (not project-specific)
-     - Core constraints/rules that should NEVER be forgotten
-     - ~2000 token budget total for constitutional tier
-     
-  3. Add trigger phrases for proactive surfacing:
-     memory_update({ 
-       id: <memory_id>, 
-       importanceTier: 'constitutional',
-       triggerPhrases: ['fix', 'implement', 'create', 'modify', ...]
-     })
-     
-  4. Examples of constitutional content:
-     - "Always ask Gate 3 spec folder question before file modifications"
-     - "Never modify production data directly"
-     - "Memory files MUST use generate-context.js script"
--->
-
----
-
 # initial creation session 04-03-26
 
 ## SESSION SUMMARY
@@ -62,6 +35,7 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -157,6 +131,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -317,6 +292,9 @@ rootCause: sk-prompt-improver still contained residual visual/creative mode cont
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-referencesformatguidesmd-because-individual-asset-20a6d5d2 -->
@@ -491,6 +469,9 @@ rootCause: sk-prompt-improver still contained residual visual/creative mode cont
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -612,6 +593,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -706,50 +688,9 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " commands and skills/sk prompt improver/001 initial creation"
-  - "on demand keywords"
-  - "text only"
-  - "vibe mp"
-  - "sk doc"
-  - "tree thinning"
-  - "decision delete references/format guides.md"
-  - "delete references/format guides.md individual"
-  - "references/format guides.md individual asset"
-  - "guides.md individual asset files"
-  - "individual asset files assets/format"
-  - "asset files assets/format guide"
-  - "files assets/format guide .md"
-  - "assets/format guide .md already"
-  - "guide .md already exist"
-  - ".md already exist consolidated"
-  - "already exist consolidated file"
-  - "exist consolidated file redundant"
-  - "decision delete references/interactive mode.md"
-  - "delete references/interactive mode.md move"
-  - "references/interactive mode.md move essential"
-  - "mode.md move essential content"
-  - "move essential content command"
-  - "essential content command files"
-  - "content command files interactive"
-  - "command files interactive conversation"
-  - "commands"
-  - "and"
-  - "skills/sk"
-  - "prompt"
-  - "improver/001"
-  - "initial"
-  - "creation"
-
-key_files:
-  - ".opencode/skill/sk-prompt-improver/(merged-small-files)"
-  - ".opencode/.../references/(merged-small-files)"
-  - ".opencode/skill/(merged-small-files)"
-  - ".opencode/command/create/(merged-small-files)"
-  - ".agents/commands/create/(merged-small-files)"
-  - ".opencode/changelog/13--sk-prompt-improver/(merged-small-files)"
-
-# Relationships
-related_sessions:
+  - "text only refocus"
+  - "visual mode removal"
+  - "prompt framework deep dives"related_sessions:
 
   []
 

@@ -1,17 +1,16 @@
 ---
-title: "Generate-context fix for 014-anchor-enforcement 2025-12-16 [014-anchor-enforcement/16-12-25_20-14__anchor-enforcement]"
-description: "This memory records the generate-context.js fixes captured during the archived 014-anchor-enforcement work. The session corrected JSONC inline-comment parsing, normalized manual JSON input into MCP-compatible structure, and merged manual trigger phrases with auto-extracted phrases. It is stored as a migrated v2.2 record from 2025-12-16."
+title: "Generate-context fix for 014-anchor-enforcement 2025-12-16"
+description: "This memory records the generate-context.js fixes captured during the archived 014-anchor-enforcement work. The session corrected JSONC inline-comment parsing, normalized..."
 trigger_phrases:
   - "generate context fix"
-  - "JSONC parser repair"
+  - "jsonc parser repair"
   - "manual trigger phrases"
 importance_tier: "normal"
+contextType: "general"
 quality_score: 0.60
 quality_flags:
   - "legacy_migration"
-contextType: "general"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Migrated by migrate-memory-v22.mjs -->
 
 # IMPROVED CONTEXT TEMPLATE v2.1
@@ -21,8 +20,6 @@ contextType: "general"
 > **Changes from v2.0**: Fixed anchor format to match MCP server extraction (`<!-- ANCHOR_EXAMPLE:id -->` UPPERCASE with closing tags).
 >
 > **Changes from v1**: Added Session ID, Channel, Importance Tier, Context Type, Epoch timestamps, and machine-readable MEMORY METADATA section.
-
----
 
 ---
 
@@ -51,6 +48,8 @@ contextType: "general"
 ---
 
 <!-- ANCHOR_EXAMPLE:preflight-session-1765912484525-juxybw14m-008-anchor-enforcement -->
+<!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -75,6 +74,7 @@ contextType: "general"
 ---
 
 <!-- ANCHOR_EXAMPLE:continue-session-session-1765912484525-juxybw14m-008-anchor-enforcement -->
+<!-- ANCHOR:continue-session -->
 <a id="continue-session"></a>
 
 ## CONTINUE SESSION
@@ -110,6 +110,9 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 ---
 
 <!-- ANCHOR_EXAMPLE:summary-session-1765912484525-juxybw14m-008-anchor-enforcement -->
+<!-- ANCHOR:summary -->
+<a id="overview"></a>
+
 ## 1. OVERVIEW
 
 Fixed generate-context.js script with 3 critical improvements: (1) JSONC parser now correctly handles inline comments by stripping them while respecting quoted strings and tracking brace depth, (2) Added normalizeInputData() function to transform simplified manual JSON input to MCP-compatible format, (3) Enhanced trigger phrase extraction to merge manual phrases with auto-extracted ones.
@@ -133,6 +136,9 @@ Fixed generate-context.js script with 3 critical improvements: (1) JSONC parser 
 ---
 
 <!-- ANCHOR_EXAMPLE:detailed-changes-session-1765912484525-juxybw14m-008-anchor-enforcement -->
+<!-- ANCHOR:detailed-changes -->
+<a id="detailed-changes"></a>
+
 ## 2. DETAILED CHANGES
 
 <!-- ANCHOR_EXAMPLE:implementation-generate-context-js-005-session-1765912484525-juxybw14m -->
@@ -183,6 +189,9 @@ configParserFix: Lines 46-115: New JSONC parser strips comments, tracks brace de
 ---
 
 <!-- ANCHOR_EXAMPLE:decisions-session-1765912484525-juxybw14m-008-anchor-enforcement -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 3. DECISIONS
 
 <!-- ANCHOR_EXAMPLE:decision-jsonc-parser-rewritten-005-session-1765912484525-juxybw14m -->
@@ -284,6 +293,9 @@ configParserFix: Lines 46-115: New JSONC parser strips comments, tracks brace de
 <!-- /ANCHOR_EXAMPLE:decisions-session-1765912484525-juxybw14m-008-anchor-enforcement -->
 
 <!-- ANCHOR_EXAMPLE:session-history-session-1765912484525-juxybw14m-008-anchor-enforcement -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 4. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -309,6 +321,7 @@ Fixed generate-context.js script with 3 critical improvements: (1) JSONC parser 
 ---
 
 <!-- ANCHOR_EXAMPLE:recovery-hints-session-1765912484525-juxybw14m-008-anchor-enforcement -->
+<!-- ANCHOR:recovery-hints -->
 <a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
@@ -334,6 +347,7 @@ Fixed generate-context.js script with 3 critical improvements: (1) JSONC parser 
 ---
 
 <!-- ANCHOR_EXAMPLE:postflight-session-1765912484525-juxybw14m-008-anchor-enforcement -->
+<!-- ANCHOR:postflight -->
 <a id="postflight-learning-delta"></a>
 
 ## POSTFLIGHT LEARNING DELTA
@@ -358,6 +372,8 @@ Fixed generate-context.js script with 3 critical improvements: (1) JSONC parser 
 This session was migrated from an older format. Learning metrics were not captured in the original format.
 <!-- /ANCHOR_EXAMPLE:postflight-session-1765912484525-juxybw14m-008-anchor-enforcement -->
 ---
+<!-- ANCHOR:metadata -->
+<a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 

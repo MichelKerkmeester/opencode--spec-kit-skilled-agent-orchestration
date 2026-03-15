@@ -1,20 +1,17 @@
 ---
-title: "LEANN discovery rollout for 002-speckit-leann-integration 2025-12-21 [002-speckit-leann-integration/21-12-25_11-14__speckit-leann-integration]"
-description: "This legacy session added backwards-compatible LEANN semantic discovery to six SpecKit command YAML files. It documents the SOFT_ENHANCEMENT gate pattern, graceful LEANN fallback behavior, and how discovery context feeds later parallel exploration."
+title: "LEANN discovery rollout for 002-speckit-leann-integration 2025-12-21"
+description: "This legacy session added backwards-compatible LEANN semantic discovery to six SpecKit command YAML files. It documents the SOFT ENHANCEMENT gate pattern, graceful LEANN..."
 trigger_phrases:
   - "backwards compatible leann discovery"
   - "soft enhancement gate"
   - "spec kit command yaml"
   - "parallel exploration context"
 importance_tier: "normal"
+contextType: "implementation"
 quality_score: 0.60
 quality_flags:
   - "legacy_migration"
-contextType: "implementation"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
----
-
 # SESSION SUMMARY
 
 | **Meta Data** | **Value** |
@@ -41,7 +38,8 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:preflight-session-1766312062960-n3xdfbupl-003-commands/002-speckit-leann-integration -->
+<!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -65,7 +63,7 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:continue-session-session-1766312062960-n3xdfbupl-003-commands/002-speckit-leann-integration -->
+<!-- ANCHOR:continue-session -->
 <a id="continue-session"></a>
 
 ## CONTINUE SESSION
@@ -100,7 +98,9 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 ---
 
-<!-- ANCHOR:task-guide-commands/002-speckit-leann-integration-003-commands/002-speckit-leann-integration -->
+<!-- ANCHOR:task-guide -->
+<a id="implementation-guide"></a>
+
 ## 1. IMPLEMENTATION GUIDE
 
 **What Was Built**:
@@ -139,7 +139,9 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 ---
 
-<!-- ANCHOR:summary-session-1766312062960-n3xdfbupl-003-commands/002-speckit-leann-integration -->
+<!-- ANCHOR:summary -->
+<a id="overview"></a>
+
 ## 2. OVERVIEW
 
 Added backwards-compatible LEANN semantic discovery to all 6 SpecKit command YAML files (spec_kit:plan, spec_kit:complete, spec_kit:research in both auto and confirm modes). The implementation uses a SOFT_ENHANCEMENT gate pattern that checks for LEANN availability via leann_list(), runs semantic searches if available, and gracefully skips with clear messaging if LEANN is not installed. This ensures users without LEANN continue to have fully functional workflows while users with LEANN get enhanced codebase discovery feeding into parallel agent exploration.
@@ -168,7 +170,9 @@ Added backwards-compatible LEANN semantic discovery to all 6 SpecKit command YAM
 
 ---
 
-<!-- ANCHOR:detailed-changes-session-1766312062960-n3xdfbupl-003-commands/002-speckit-leann-integration -->
+<!-- ANCHOR:detailed-changes -->
+<a id="detailed-changes"></a>
+
 ## 3. DETAILED CHANGES
 
 <!-- ANCHOR:implementation-backwardscompatible-leann-semantic-discovery-84e71db7-session-1766312062960-n3xdfbupl -->
@@ -190,7 +194,9 @@ rootCause: SpecKit commands had no semantic code search capability, missing oppo
 
 ---
 
-<!-- ANCHOR:decisions-session-1766312062960-n3xdfbupl-003-commands/002-speckit-leann-integration -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-softenhancement-gate-type-because-4d9e5170-session-1766312062960-n3xdfbupl -->
@@ -303,7 +309,9 @@ rootCause: SpecKit commands had no semantic code search capability, missing oppo
 
 <!-- /ANCHOR:decisions-session-1766312062960-n3xdfbupl-003-commands/002-speckit-leann-integration -->
 
-<!-- ANCHOR:session-history-session-1766312062960-n3xdfbupl-003-commands/002-speckit-leann-integration -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -328,7 +336,7 @@ Added backwards-compatible LEANN semantic discovery to all 6 SpecKit command YAM
 
 ---
 
-<!-- ANCHOR:recovery-hints-session-1766312062960-n3xdfbupl-003-commands/002-speckit-leann-integration -->
+<!-- ANCHOR:recovery-hints -->
 <a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
@@ -353,7 +361,7 @@ Added backwards-compatible LEANN semantic discovery to all 6 SpecKit command YAM
 <!-- /ANCHOR:recovery-hints-session-1766312062960-n3xdfbupl-003-commands/002-speckit-leann-integration -->
 ---
 
-<!-- ANCHOR:postflight-session-1766312062960-n3xdfbupl-003-commands/002-speckit-leann-integration -->
+<!-- ANCHOR:postflight -->
 <a id="postflight-learning-delta"></a>
 
 ## POSTFLIGHT LEARNING DELTA
@@ -378,6 +386,8 @@ Added backwards-compatible LEANN semantic discovery to all 6 SpecKit command YAM
 This session was migrated from an older format. Learning metrics were not captured in the original format.
 <!-- /ANCHOR:postflight-session-1766312062960-n3xdfbupl-003-commands/002-speckit-leann-integration -->
 ---
+<!-- ANCHOR:metadata -->
+<a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 

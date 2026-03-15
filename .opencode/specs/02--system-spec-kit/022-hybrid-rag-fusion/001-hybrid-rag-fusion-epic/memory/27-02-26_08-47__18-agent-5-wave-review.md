@@ -1,6 +1,6 @@
 ---
-title: "18-agent review across five waves [001-hybrid-rag-fusion-epic/27-02-26_08-47__18-agent-5-wave-review]"
-description: "Comprehensive multi-agent ultra-think review of spec 140 \"Hybrid RAG Fusion Refinement\" -- a 43+ recommendation program across 8 metric-gated sprints (458-700h) for upgrading a memory MCP server's retrieval pipeline. Dispatched 18 agents (9 ultra-think analyzers + 9 sonnet document writers) across all 8 sprints plus root documentation. Each sprint analyzed through 3 lenses (Analytical, Critical, Holistic). Produced 9 detailed review documents (184KB total). Key finding: planning quality is exceptional but 5 actionable blockers must be resolved pre-implementation."
+title: "18-agent review across five waves"
+description: "Comprehensive multi-agent ultra-think review of spec 140 \"Hybrid RAG Fusion Refinement\" -- a 43+ recommendation program across 8 metric-gated sprints (458-700h) for upgrading..."
 trigger_phrases:
   - "ultra-think review"
   - "multi-agent review"
@@ -14,17 +14,11 @@ trigger_phrases:
   - "feature flag governance"
   - "premature graph sophistication"
   - "pipeline refactor oversize"
-  - "multi-lens analysis"
-  - "analytical critical holistic"
 importance_tier: "critical"
 contextType: "research"
 quality_score: 1.00
 quality_flags: []
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-
----
-
 # hybrid rag fusion session 27-02-26
 
 ## SESSION SUMMARY
@@ -49,6 +43,7 @@ quality_flags: []
 ---
 
 <!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -146,6 +141,7 @@ Next: Resolve 5 pre-implementation blockers, then begin Sprint 0
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -332,6 +328,9 @@ The review dispatched 18 agents in a 5-wave orchestrated pattern:
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 decision_count: 5
@@ -373,6 +372,9 @@ decision_count: 5
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Session context for multi-agent ultra-think review of spec 140.
@@ -502,6 +504,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -607,22 +610,7 @@ trigger_phrases:
   - "sprint gate review"
   - "feature flag governance"
   - "premature graph sophistication"
-  - "pipeline refactor oversize"
-  - "multi-lens analysis"
-  - "analytical critical holistic"
-
-key_files:
-  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/research/11 - ultra-think-review-root-documentation.md"
-  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/research/11 - ultra-think-review-sprint-0-epistemological-foundation.md"
-  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/research/11 - ultra-think-review-sprint-1-graph-signal-activation.md"
-  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/research/11 - ultra-think-review-sprint-2-scoring-calibration.md"
-  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/research/11 - ultra-think-review-sprint-3-query-intelligence.md"
-  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/research/11 - ultra-think-review-sprint-4-feedback-loop.md"
-  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/research/11 - ultra-think-review-sprint-5-pipeline-refactor.md"
-  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/research/11 - ultra-think-review-sprint-6-graph-deepening.md"
-  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/research/11 - ultra-think-review-sprint-7-long-horizon.md"
-
-# Relationships
+  - "pipeline refactor oversize"# Relationships
 related_sessions:
 
   []

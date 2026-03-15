@@ -1,19 +1,25 @@
 ---
-title: "2026-03-13 verification [004-adaptive-retrieval-loops/13-03-26_20-56__2026-03-13-verification-pass-confirmed-phase-4]"
-description: "Session context memory template for Spec Kit indexing."
+title: "2026-03-13 verification"
+description: "2026-03-13 verification pass confirmed Phase 4 adaptive retrieval loops are implemented with bounded shadow proposals, rollback reset, and audit evidence."
 trigger_phrases:
-  - "memory dashboard"
-  - "session summary"
-  - "context template"
+  - "verification pass confirmed phase"
+  - "pass confirmed phase adaptive"
+  - "confirmed phase adaptive retrieval"
+  - "phase adaptive retrieval loops"
+  - "adaptive retrieval loops implemented"
+  - "retrieval loops implemented bounded"
+  - "loops implemented bounded shadow"
+  - "implemented bounded shadow proposals"
+  - "bounded shadow proposals rollback"
+  - "shadow proposals rollback reset"
+  - "proposals rollback reset audit"
+  - "rollback reset audit evidence"
 importance_tier: "normal"
 contextType: "general"
 quality_score: 0.90
 quality_flags:
   - "has_tool_state_mismatch"
 ---
-
----
-
 # 2026-03-13 verification pass confirmed Phase 4 adaptive retrieval loops are implemented with...
 
 ## SESSION SUMMARY
@@ -37,8 +43,6 @@ quality_flags:
 
 ---
 
----
-
 ## TABLE OF CONTENTS
 
 - [CONTINUE SESSION](#continue-session)
@@ -52,6 +56,8 @@ quality_flags:
 - [MEMORY METADATA](#memory-metadata)
 
 ---
+<!-- ANCHOR:continue-session -->
+<a id="continue-session"></a>
 
 ## CONTINUE SESSION
 
@@ -105,6 +111,8 @@ Next: Continue implementation
 - Last: Kept human policy-review rows pending - Technical verification passed, but no hu
 
 ---
+<!-- ANCHOR:project-state-snapshot -->
+<a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
 
@@ -136,6 +144,8 @@ Next: Continue implementation
 **Key Topics:** `adaptive` | `rollback` | `human` | `retrieval` | `reset` | `verified explicit` | `explicit adaptive` | `adaptive reset` | `reset helper` | `helper rollback` | `rollback drills` | `kept human` |
 
 ---
+<!-- ANCHOR:task-guide -->
+<a id="implementation-guide"></a>
 
 ## 1. IMPLEMENTATION GUIDE
 
@@ -160,6 +170,8 @@ Next: Continue implementation
 - **Helper Functions**: Encapsulate reusable logic in dedicated utility functions
 
 ---
+<!-- ANCHOR:summary -->
+<a id="overview"></a>
 
 ## 2. OVERVIEW
 
@@ -177,6 +189,8 @@ Next: Continue implementation
 | `02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/004-adaptive-retrieval-loops/(merged-small-files)` | Tree-thinning merged 3 small files (tasks.md, checklist.md, implementation-summary.md). Merged from 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/004-adaptive-retrieval-loops/tasks.md : File modified (description pending) | Merged from 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/004-adaptive-retrieval-loops/checklist.md : File modified (description pending) | Merged from 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/004-adaptive-retrieval-loops/implementation-summary.md : File modified (description pending) |
 
 ---
+<!-- ANCHOR:detailed-changes -->
+<a id="detailed-changes"></a>
 
 ## 3. DETAILED CHANGES
 
@@ -185,6 +199,8 @@ Next: Continue implementation
 2026-03-13 verification pass confirmed Phase 4 adaptive retrieval loops are implemented with bounded shadow proposals, rollback reset, and audit evidence.
 
 ---
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
 
 ## 4. DECISIONS
 
@@ -372,6 +388,8 @@ Next: Continue implementation
 **Confidence**: 0.5%
 
 ---
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
 
 ## 5. CONVERSATION
 
@@ -392,8 +410,8 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 2026-03-13 verification pass confirmed Phase 4 adaptive retrieval loops are implemented with bounded shadow proposals, rollback reset, and audit evidence.
 
 ---
-
----
+<!-- ANCHOR:recovery-hints -->
+<a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
 
@@ -447,8 +465,8 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 | No Dedup Conflicts |  |  |
 
 ---
-
----
+<!-- ANCHOR:metadata -->
+<a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 
@@ -540,49 +558,18 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/022 hybrid rag fusion/015 hydra db based features/004 adaptive retrieval loops"
-  - "policy review"
-  - "hydra db based features"
-  - "merged small files"
-  - "added verified explicit adaptive"
-  - "verified explicit adaptive reset"
-  - "explicit adaptive reset helper"
-  - "adaptive reset helper rollback"
-  - "reset helper rollback drills"
-  - "rollback clears adaptive proposal"
-  - "clears adaptive proposal state"
-  - "adaptive proposal state without"
-  - "proposal state without schema"
-  - "state without schema reversal"
-  - "without schema reversal passing"
-  - "schema reversal passing tests"
-  - "technical verification passed human"
-  - "verification passed human retrieval"
-  - "passed human retrieval maintainer"
-  - "human retrieval maintainer approval"
-  - "retrieval maintainer approval artifact"
-  - "maintainer approval artifact exists"
-  - "helper rollback drills rollback"
-  - "rollback drills rollback clears"
-  - "drills rollback clears adaptive"
-  - "kept human policy-review rows"
-  - "system"
-  - "spec"
-  - "kit/022"
-  - "hybrid"
-  - "rag"
-  - "fusion/015"
-  - "hydra"
-  - "based"
-  - "features/004"
-  - "adaptive"
-  - "retrieval"
-  - "loops"
-
-key_files:
-  - "02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/004-adaptive-retrieval-loops/(merged-small-files)"
-
-# Relationships
+  - "verification pass confirmed phase"
+  - "pass confirmed phase adaptive"
+  - "confirmed phase adaptive retrieval"
+  - "phase adaptive retrieval loops"
+  - "adaptive retrieval loops implemented"
+  - "retrieval loops implemented bounded"
+  - "loops implemented bounded shadow"
+  - "implemented bounded shadow proposals"
+  - "bounded shadow proposals rollback"
+  - "shadow proposals rollback reset"
+  - "proposals rollback reset audit"
+  - "rollback reset audit evidence"# Relationships
 related_sessions:
 
   []

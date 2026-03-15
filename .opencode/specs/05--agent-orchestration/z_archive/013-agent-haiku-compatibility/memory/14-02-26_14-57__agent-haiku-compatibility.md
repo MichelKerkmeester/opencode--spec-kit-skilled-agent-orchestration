@@ -1,43 +1,16 @@
 ---
-title: "Initial CHANGELOG review for 013-agent-haiku-compatibility 2026-02-14 [013-agent-haiku-compatibility/14-02-26_14-57__agent-haiku-compatibility]"
-description: "This memory only records the start of a session that began by reading the current CHANGELOG format. It contains no meaningful agent Haiku compatibility analysis or implemented result."
+title: "Initial CHANGELOG review for 013-agent-haiku-compatibility 2026-02-14"
+description: "This memory only records the start of a session that began by reading the current CHANGELOG format. It contains no meaningful agent Haiku compatibility analysis or implemented..."
 trigger_phrases:
   - "initial changelog review"
   - "agent haiku compatibility archive"
   - "release note preparation"
 importance_tier: "normal"
+contextType: "research"
 quality_score: 0.40
 quality_flags:
   - "needs_review"
-contextType: "research"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-<!-- Constitutional Tier Promotion:
-  To promote a memory to constitutional tier (always surfaced):
-  
-  1. Via MCP tool after indexing:
-     memory_update({ id: <memory_id>, importanceTier: 'constitutional' })
-  
-  2. Criteria for constitutional:
-     - Applies to ALL future conversations (not project-specific)
-     - Core constraints/rules that should NEVER be forgotten
-     - ~2000 token budget total for constitutional tier
-     
-  3. Add trigger phrases for proactive surfacing:
-     memory_update({ 
-       id: <memory_id>, 
-       importanceTier: 'constitutional',
-       triggerPhrases: ['fix', 'implement', 'create', 'modify', ...]
-     })
-     
-  4. Examples of constitutional content:
-     - "Always ask Gate 3 spec folder question before file modifications"
-     - "Never modify production data directly"
-     - "Memory files MUST use generate-context.js script"
--->
-
----
-
 # SESSION SUMMARY
 
 | **Meta Data** | **Value** |
@@ -60,6 +33,7 @@ contextType: "research"
 ---
 
 <!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -157,6 +131,7 @@ I'll execute this step by step. Let me start by reading the current CHANGELOG
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -295,6 +270,9 @@ Check recent git history
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 This session did not involve significant architectural or technical decisions. The work was primarily implementation, bug fixes, documentation, or research.
@@ -311,6 +289,9 @@ This session did not involve significant architectural or technical decisions. T
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -447,6 +428,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -541,29 +523,9 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "../.opencode/specs/004 agents/013 agent haiku compatibility"
-  - "let start reading current"
-  - "start reading current changelog"
-  - "reading current changelog format"
-  - "step read changelog changelog.md"
-  - "read changelog changelog.md changelog"
-  - "changelog changelog.md changelog ../.opencode/specs/004"
-  - "changelog.md changelog ../.opencode/specs/004 agents/013"
-  - "changelog ../.opencode/specs/004 agents/013 agent"
-  - "../.opencode/specs/004 agents/013 agent haiku"
-  - "agents/013 agent haiku compatibility"
-  - "execute step step"
-  - "../.opencode/specs/004"
-  - "agents/013"
-  - "agent"
-  - "haiku"
-  - "compatibility"
-
-key_files:
-  - "CHANGELOG.md"
-
-# Relationships
-related_sessions:
+  - "initial changelog review"
+  - "agent haiku compatibility archive"
+  - "release note preparation"related_sessions:
 
   []
 

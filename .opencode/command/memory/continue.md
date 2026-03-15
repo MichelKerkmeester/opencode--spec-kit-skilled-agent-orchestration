@@ -1,6 +1,6 @@
 ---
-description: Recover session from crash, compaction, or timeout - resume interrupted work
-argument-hint: "[recovery-mode:auto|manual]"
+description: Recover interrupted work using resume-mode memory retrieval plus crash-recovery breadcrumbs
+argument-hint: "[recovery-mode:auto|manual] [spec-folder]"
 allowed-tools: Read, Bash, spec_kit_memory_memory_context, spec_kit_memory_memory_search, spec_kit_memory_memory_list, spec_kit_memory_memory_stats
 ---
 
@@ -9,469 +9,336 @@ allowed-tools: Read, Bash, spec_kit_memory_memory_context, spec_kit_memory_memor
 **BEFORE READING ANYTHING ELSE IN THIS FILE, CHECK `$ARGUMENTS`:**
 
 ```text
-IF $ARGUMENTS contains ":auto":
-    → Store as: recovery_mode = "auto"
-    → Route to AUTO workflow (Section 5)
+1. PARSE execution mode:
+   - contains ":auto"   -> recovery_mode = "auto"
+   - contains ":manual" -> recovery_mode = "manual"
+   - otherwise          -> recovery_mode = "auto"
 
-IF $ARGUMENTS contains ":manual":
-    → Store as: recovery_mode = "manual"
-    → Route to MANUAL workflow (Section 6)
+2. PARSE optional spec folder:
+   - if a remaining argument looks like a spec folder path, store it as target_spec
+   - examples:
+     specs/082-speckit-reimagined
+     .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/016-command-alignment
 
-IF $ARGUMENTS is empty or invalid:
-    → Detect recovery scenario from system state
-    → CHECK for CONTINUE_SESSION.md in recent spec folders
-    → CHECK for recent memory files with state anchor
-    → CHECK for context compaction in system messages
-    → Determine scenario: crash | compaction | timeout
-    → Store as: recovery_mode = "auto", scenario = "<detected>"
+3. START with resume-mode retrieval:
+   spec_kit_memory_memory_context({
+     input: "resume previous work continue session",
+     mode: "resume",
+     specFolder: target_spec (if present),
+     includeContent: true
+   })
 
-IF detection fails:
-    → ASK user: "What caused the interruption?"
-        A) MCP server crash/restart
-        B) Context compaction (conversation too long)
-        C) Session timeout (returned after break)
-        D) Manual recovery (specify reason)
-    → WAIT for response, store scenario and recovery_mode
+4. IF resume-mode retrieval returns a clear session/spec match:
+   -> continue with AUTO or MANUAL workflow below
+
+5. IF results are empty or low-confidence:
+   -> call spec_kit_memory_memory_list({ limit: 5, sortBy: "updated_at" })
+   -> switch to MANUAL workflow
+
+6. IF nothing recoverable is found:
+   -> ASK user which spec folder/session to resume
+   -> WAIT for response
 ```
+
+**CRITICAL RULES:**
+- `memory_context(... mode: "resume")` is the primary recovery path
+- `CONTINUE_SESSION.md` is enrichment, not the primary source of truth
+- Do not invent fields that are not present in `CONTINUE_SESSION.md`
+- If the user already knows the spec folder and wants full artifact progress, prefer `/spec_kit:resume <spec-folder>`
 
 ---
 
 # Memory Continue Command
 
-Session recovery from crash, compaction, or timeout. Resume interrupted work with full context restoration.
+Recover interrupted work after crash, compaction, or timeout by reconstructing session state from resume-oriented memory retrieval and optional crash-recovery breadcrumbs.
 
 ---
 
 ```yaml
 role: Session Recovery Specialist
-purpose: Restore interrupted sessions from crash/compaction/timeout with context recovery
-action: Execute recovery workflow based on detected scenario
+purpose: Restore interrupted work with the smallest reliable recovery path
+action: Resolve the most likely session, summarize state, and route to the best next command
 
 operating_mode:
   workflow: session_recovery
   workflow_compliance: MANDATORY
   approvals: manual_mode_only
-  tracking: recovery_state
+  tracking: recovery_confidence
 ```
 
 ---
 
 ## 1. PURPOSE
 
-Enable session recovery from three interruption scenarios:
+Use `/memory:continue` when the user says some version of:
 
-1. **Crash Recovery**: MCP server crashed or restarted mid-session
-2. **Compaction Recovery**: Conversation context was compressed due to length
-3. **Session Timeout**: User returned after break (hours or days)
+- "continue from where we left off"
+- "what was I doing?"
+- "the server restarted"
+- "the chat compacted"
+- "I came back after a break"
 
-This command restores the most recent session state, loads relevant context, and presents continuation options.
+This command is optimized for **state reconstruction**:
+- recover likely session state from memory anchors
+- enrich with crash breadcrumbs when available
+- show the shortest trustworthy summary of last action, next steps, and likely files
+- route to `/spec_kit:resume` when deeper spec-folder workflow is the better next step
+
+### Command Boundary
+
+| Command | Best For |
+| ------- | -------- |
+| `/memory:continue` | Reconstructing interrupted context when the session/spec is uncertain or partial |
+| `/spec_kit:resume <spec-folder>` | Resuming a known spec folder with plan/tasks/checklist progress |
 
 ---
 
 ## 2. CONTRACT
 
-**Inputs:** `$ARGUMENTS` - Optional recovery mode flag (`:auto` or `:manual`)
-**Outputs:** `STATUS=<OK|FAIL|CANCELLED> SCENARIO=<crash|compaction|timeout> SESSION=<spec-folder>`
+**Inputs:** `$ARGUMENTS` with optional `:auto` or `:manual`, plus optional spec folder
+
+**Outputs:** `STATUS=<OK|FAIL|CANCELLED> MODE=<auto|manual> SOURCE=<memory_context|continue_session|memory_search|user> SESSION=<spec-folder|unknown>`
 
 ---
 
 ## 3. QUICK REFERENCE
 
-| Command                    | Result                            |
-| -------------------------- | --------------------------------- |
-| `/memory:continue`         | Auto-detect and recover session   |
-| `/memory:continue :auto`   | Auto-recover without confirmation |
-| `/memory:continue :manual` | Manual recovery with user prompts |
+| Command | Result |
+| ------- | ------ |
+| `/memory:continue` | Auto-detect likely interrupted session |
+| `/memory:continue :auto` | Recover using the strongest detected session with minimal prompting |
+| `/memory:continue :manual` | Recover with explicit confirmation when confidence is low |
+| `/memory:continue specs/082-speckit-reimagined` | Recover directly inside a known spec folder |
 
-### Use Cases
+### Recovery Sources
 
-#### Crash Recovery
+| Priority | Source | Use |
+| -------- | ------ | --- |
+| 1 | `memory_context(... mode: "resume")` | Primary recovery path |
+| 2 | `CONTINUE_SESSION.md` | Crash breadcrumb and quick-resume hint |
+| 3 | `memory_search()` with resume anchors | Fallback when summary is thin |
+| 4 | `memory_list()` | Recent-candidate discovery |
+| 5 | User confirmation | Final fallback |
 
-```text
-User: /memory:continue
-
-AI: MEMORY:CONTINUE
-    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-      Scenario    crash (MCP restart detected)
-      Spec        specs/082-speckit-reimagined/
-      Activity    15 minutes ago
-
-    → Last Action ──────────────────────────────────────
-      Created /memory:continue command file
-
-    → Next Steps ───────────────────────────────────────
-      1. Verify structure
-      2. Test scenarios
-
-    STATUS=OK SCENARIO=crash SESSION=specs/082-speckit-reimagined/
-```
-
-#### Compaction Recovery
-
-```text
-User: [System message: "Please continue from where we left off..."]
-
-AI: MEMORY:CONTINUE
-    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-      Scenario    compaction (context compressed)
-      Spec        specs/082-speckit-reimagined/
-      Activity    30 minutes ago
-
-    Run /memory:continue to restore context.
-
-User: /memory:continue
-
-AI: [Loads state from memory file, presents continuation options]
-```
-
-#### Session Timeout
-
-```text
-User: /memory:continue
-
-AI: MEMORY:CONTINUE
-    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-      Scenario    timeout (returned after 4 hours)
-      Spec        specs/082-speckit-reimagined/
-      Activity    4 hours ago
-
-      WARN  Codebase may have changed since last session
-
-    ─────────────────────────────────────────────────────
-    [a] continue    [b] review changes    [c] fresh start
-```
-
----
-
-## 4. RECOVERY SCENARIOS
-
-| Scenario       | Detection Signal                     | Recovery Source          | Auto-Recoverable |
-| -------------- | ------------------------------------ | ------------------------ | ---------------- |
-| **Crash**      | MCP restart detected, recent session | CONTINUE_SESSION.md      | Yes              |
-| **Compaction** | System message: "continue from..."   | Most recent memory file  | Yes              |
-| **Timeout**    | Last activity >2 hours ago           | Memory with state anchor | Yes              |
-
----
-
-## 5. AUTO MODE WORKFLOW
-
-Auto mode attempts automatic recovery without user confirmation.
-
-### Step 1: Detect Recovery Scenario
-
-Match the current state against the Recovery Scenarios table (Section 4) using this priority order:
-
-1. **Crash**: Find most recent `CONTINUE_SESSION.md` in specs (modified within last 24h). If found, load it.
-2. **Compaction**: Scan system messages for "continue from where we left off".
-3. **Timeout**: Check most recent memory file mtime (>2h ago).
-4. **Fallback**: If none detected, switch to MANUAL mode and ask user.
-
-### Step 2: Load Session State
-
-**For Crash (CONTINUE_SESSION.md exists):**
-
-Read the file and parse the session state table to extract:
-- `specFolder`, `lastAction`, `nextSteps`, `progress`, `blockers`
-
-**For Compaction/Timeout (use memory files):**
-
-```text
-spec_kit_memory_memory_list({ limit: 1, sortBy: "updated_at" })
-```
-
-Extract state from the `ANCHOR:state` section of the most recent memory.
-
-### Step 3: Validate Content vs Folder Alignment
-
-**CRITICAL**: Before displaying the recovery summary, validate that memory content matches the spec folder.
-
-Check `key_files` from memory metadata against the spec folder:
-- If >50% of key_files are in `.opencode/` but spec_folder is project-specific → **mismatch detected**
-- Infrastructure patterns to detect: `memory`, `spec-kit`, `speckit`, `opencode`, `command`, `agent`
-
-**Mismatch Detection Signals:**
-
-| Signal                                                                                   | Meaning                      |
-| ---------------------------------------------------------------------------------------- | ---------------------------- |
-| `key_files` contain `.opencode/skill/`                                                   | Skill/infrastructure work    |
-| `key_files` contain `.opencode/command/`                                                 | Command development work     |
-| `key_files` contain `.opencode/agent/`, `.opencode/agent/chatgpt/`, or `/.claude/agents` | Agent development work       |
-| `spec_folder` doesn't match patterns                                                     | Likely saved to wrong folder |
-
-**On mismatch, present options:**
-- A) Search for infrastructure-related spec folder
-- B) Continue with stored spec folder anyway
-- C) Select spec folder manually
-
-### Step 4: Display Recovery Summary
+### Example Output
 
 ```text
 MEMORY:CONTINUE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-  Scenario    <scenario> (<detection detail>)
-  Spec        <spec-folder>
-  Activity    <time ago>
+  Mode        auto
+  Source      memory_context + CONTINUE_SESSION.md
+  Spec        specs/082-speckit-reimagined
 
-→ Last Action ──────────────────────────────────────
-  <last action description>
+→ Last Action ───────────────────────────────────
+  Refined recovery flow for /memory:continue
 
-→ Next Steps ───────────────────────────────────────
-  1. <step 1>
-  2. <step 2>
-  3. <step 3>
+→ Next Steps ────────────────────────────────────
+  1. Verify the resume summary
+  2. Open the spec workflow if implementation should continue
 
-→ Progress ─────────────────────────────────────────
-  █████████░░░░░░░░░░░  47% (118/250 tasks)
+→ Likely Files ──────────────────────────────────
+  .opencode/command/memory/continue.md
+  .opencode/command/spec_kit/resume.md
+  .opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts
 
-  Blockers    none
+→ Best Next Command ─────────────────────────────
+  /spec_kit:resume specs/082-speckit-reimagined
 
-→ Key Files ────────────────────────────────────────
-  <file-path-1>
-  <file-path-2>
-  (showing first 3 of N files)
-
-STATUS=OK SCENARIO=<scenario> SESSION=<spec-folder>
-```
-
-**IMPORTANT**: Always display key files in the recovery summary so the user can verify that the spec folder makes sense for the work that was done.
-
-### Step 5: Auto-Continue
-
-In auto mode, immediately present continuation options:
-
-```text
-─────────────────────────────────────────────────────
-[a] continue from last action    [b] review session state
-[c] change direction             [d] cancel recovery
+STATUS=OK MODE=auto SOURCE=memory_context SESSION=specs/082-speckit-reimagined
 ```
 
 ---
 
-## 6. MANUAL MODE WORKFLOW
+## 4. AUTO MODE WORKFLOW
 
-Manual mode requires user confirmation at each step.
+Auto mode should stay short and deterministic. Use the first trustworthy session candidate rather than building a large custom recovery system.
 
-### Step 1: Ask User for Scenario
+### Step 1: Resolve the Candidate Session
+
+1. If `target_spec` was passed, prefer it immediately.
+2. Call:
 
 ```text
-Session interruption detected. What caused the interruption?
+spec_kit_memory_memory_context({
+  input: "resume previous work continue session",
+  mode: "resume",
+  specFolder: "<target_spec-if-known>",
+  includeContent: true
+})
+```
 
-  A) MCP server crash/restart
-  B) Context compaction (conversation too long)
-  C) Session timeout (returned after break)
-  D) Manual recovery (specify reason)
+3. Prefer a candidate when one of these is true:
+   - response metadata includes folder discovery for a spec folder
+   - top results cluster around a single `specFolder`
+   - returned content clearly contains `state`, `next-steps`, `summary`, or `blockers`
+
+4. If recovery is still ambiguous, call:
+
+```text
+spec_kit_memory_memory_list({ limit: 5, sortBy: "updated_at" })
+```
+
+and switch to MANUAL mode.
+
+### Step 2: Enrich with Crash Breadcrumbs
+
+If the chosen spec folder contains `CONTINUE_SESSION.md`, read it and extract only the fields the generator actually writes:
+
+- `Session ID`
+- `Spec Folder`
+- `Current Task`
+- `Last Action`
+- `Status`
+- `Updated`
+- `Context Summary`
+- `Pending Work`
+- `Quick Resume`
+
+Use this file to enrich the summary. Do **not** expect `Next Steps`, `Progress`, or `Blockers` table rows from this file.
+
+### Step 3: Fallback Search for Thin Summaries
+
+If `memory_context` returns the right folder but not enough state detail, run a targeted fallback:
+
+```text
+spec_kit_memory_memory_search({
+  query: "session state next steps summary blockers",
+  specFolder: "<resolved-spec-folder>",
+  anchors: ["state", "next-steps", "summary", "blockers"],
+  includeContent: true,
+  limit: 5
+})
+```
+
+Use the top 1-3 results to fill in missing next-step detail.
+
+### Step 4: Display the Recovery Summary
+
+Always show:
+
+- recovery mode
+- source(s) used
+- resolved spec folder
+- last action
+- next steps
+- likely files or titles from the recovered results
+
+If the generated quick-resume command in `CONTINUE_SESSION.md` points to `/spec_kit:resume <spec-folder>`, surface that as the recommended next command instead of paraphrasing it.
+
+---
+
+## 5. MANUAL MODE WORKFLOW
+
+Use manual mode when:
+
+- no clear session candidate exists
+- multiple recent folders look plausible
+- the user explicitly asked for `:manual`
+- recovered state conflicts with the user's expectation
+
+### Step 1: Show the Best Candidate and Alternatives
+
+Present:
+
+- detected spec folder, if any
+- top 2-3 recent folders from `memory_list()`
+- why the top candidate was selected
+
+### Step 2: Ask One Consolidated Question
+
+```text
+I found a likely interrupted session.
+
+  Detected: <best-spec-folder-or-unknown>
+  Alternatives:
+  A) Use detected session
+  B) Pick from recent folders
+  C) Enter a spec folder manually
+  D) Cancel recovery
 
 Reply with A/B/C/D
 ```
 
-### Step 2: Confirm Session Detection
+### Step 3: Load the Final State
+
+After the user chooses a folder or confirms the candidate:
+
+1. run `memory_context(... mode: "resume")` for that folder
+2. optionally read `CONTINUE_SESSION.md` if present
+3. optionally run fallback `memory_search()` if the summary is still thin
+
+### Step 4: Route to the Next Command
+
+Use this routing rule:
+
+- if the user wants a quick "what was I doing?" answer, stop after the recovery summary
+- if they want to continue structured spec work, recommend `/spec_kit:resume <spec-folder>`
+- if they want broader historical analysis, recommend `/memory:analyze history <spec-folder>`
+
+---
+
+## 6. ERROR HANDLING
+
+| Condition | Action |
+| --------- | ------ |
+| No resume results | Fall back to `memory_list()` and ask user to choose |
+| Resume results found but spec unclear | Switch to MANUAL mode |
+| `CONTINUE_SESSION.md` missing | Continue with memory-only recovery |
+| `CONTINUE_SESSION.md` conflicts with memory results | Trust `memory_context` first, use the file as supporting evidence |
+| User knows the exact spec folder already | Recommend `/spec_kit:resume <spec-folder>` |
+| Recovered summary is too thin | Run anchored `memory_search()` fallback |
+| Session looks stale after long inactivity | Warn that codebase/worktree state may have changed |
+
+---
+
+## 7. ACTUAL RUNTIME NOTES
+
+These notes should stay aligned with the live memory stack.
+
+### Resume-Mode Defaults
+
+`memory_context` resume mode currently routes to `memory_search()` with:
+
+- `anchors`: `["state", "next-steps", "summary", "blockers"]`
+- `limit`: `5`
+- `includeContent`: `true`
+- `includeConstitutional`: `false`
+- `enableDedup`: `false`
+- `useDecay`: `false`
+- `minState`: `WARM`
+
+The resume-mode token budget is `1200`.
+
+### Resume Heuristic
+
+When `memory_context` is called in `auto` mode, inputs containing words such as `resume`, `continue`, `pick up`, `where was i`, or `what's next` may be auto-routed into resume mode.
+
+### Crash-Recovery Breadcrumbs
+
+The session manager maintains crash-recovery state in SQLite and can generate `CONTINUE_SESSION.md` during checkpoints. The generated quick-resume command currently prefers:
 
 ```text
-Most recent session detected:
-
-  Spec: specs/082-speckit-reimagined/
-  Last Activity: 15 minutes ago
-  Last Memory: session-20260201-152030.md
-
-Is this the session to recover?
-
-  A) Yes, recover this session
-  B) No, select a different spec folder
-  C) Cancel recovery
-
-Reply with A/B/C
+/spec_kit:resume <spec-folder>
 ```
 
-### Step 3: Load and Confirm State
+when a spec folder is known.
 
-Same as Auto Mode Step 2, but wait for confirmation before proceeding:
+That means `/memory:continue` should treat the file as:
 
-```text
-Loaded session state. Confirm context is accurate?
+- a human-readable crash breadcrumb
+- a session-id hint
+- a route to the richer spec-folder resume workflow
 
-  Last Action: Created /memory:continue command file
-  Next Steps: Verify command structure, test scenarios
-  Progress: 47% (118/250 tasks)
-
-  A) Yes, context is accurate
-  B) Context incomplete - load more memory files
-  C) Context incorrect - investigate
-
-Reply with A/B/C
-```
-
-### Step 4: Present Continuation Options
-
-Same as Auto Mode Step 5.
+not as a full replacement for resume-mode memory retrieval.
 
 ---
 
-## 7. ERROR HANDLING
+## 8. RELATED COMMANDS
 
-| Condition                        | Action                                        |
-| -------------------------------- | --------------------------------------------- |
-| CONTINUE_SESSION.md not found    | Fall back to memory file search               |
-| Invalid CONTINUE_SESSION.md      | Use memory file fallback                      |
-| No session detected              | Ask user for spec folder or start new session |
-| Missing state anchor             | Load full memory content, extract manually    |
-| Multiple sessions detected       | Ask user to select                            |
-| Session state corrupt/incomplete | Reconstruct from multiple memory files        |
-| Spec folder not found            | List available, ask user to select            |
-| Stale session (>7 days)          | Warn about staleness, confirm recovery        |
-| Context compaction detected      | Show compaction message, load recent memory   |
-
-**Recovery Priority Order:**
-
-1. **CONTINUE_SESSION.md** (if <24h old) - Highest fidelity (~200-300 tokens)
-2. **Memory file with state anchor** - Targeted state extraction (~150-200 tokens)
-3. **Most recent memory file (full)** - Complete context (~500-1000 tokens)
-4. **checklist.md progress** - Minimal state reconstruction
-5. **User input** - Fallback when automated recovery fails
-
-> **Adaptive Fusion in Recovery:** When `SPECKIT_ADAPTIVE_FUSION` is enabled, recovery context matching uses adaptive fusion weights tuned for the `resume` mode, and recency and state-anchor relevance are boosted to improve hit rate on fragmented or post-compaction sessions. When `SPECKIT_EXTENDED_TELEMETRY` is enabled, recovery success metrics (match confidence, anchor hit rate, reconstruction steps) are captured and appended to the telemetry log for post-session analysis.
-
----
-
-## 8. NEXT STEPS AFTER RECOVERY
-
-| Condition                 | Suggested Action                       |
-| ------------------------- | -------------------------------------- |
-| Crash recovery successful | Continue from last action              |
-| Compaction recovery       | Verify context accuracy, then continue |
-| Timeout after >4 hours    | Review codebase changes first          |
-| Blockers detected         | Address blockers before continuing     |
-| Progress <50%             | Review plan.md, verify alignment       |
-| Progress >90%             | Verify completion criteria             |
-
----
-
-## 9. RELATED COMMANDS
-
-- `/memory:context`: Intent-aware context retrieval
-- `/memory:save`: Save conversation context
-- `/memory:manage`: Database management, checkpoints, ingest
-- `/memory:learn`: Constitutional memories
-- `/memory:analyze`: Analysis, causal graph, evaluation, learning history
-- `/memory:shared`: Shared-memory spaces
-- `/spec_kit:handover`: Create handover for session continuity
-- `/spec_kit:resume`: Resume work on spec folder (broader scope, includes planning)
-
----
-<!-- APPENDIX: Reference material for AI agent implementation -->
-
-## APPENDIX A: MCP TOOL REFERENCE
-
-**CRITICAL:** This command uses MCP tools directly. Native MCP only - NEVER Code Mode.
-
-### Enforcement Matrix
-
-| SCREEN     | REQUIRED MCP CALLS                                                                            | MODE   | ON FAILURE                 |
-| ---------- | --------------------------------------------------------------------------------------------- | ------ | -------------------------- |
-| DETECTION  | `spec_kit_memory_memory_context({ input: "session", mode: "resume", includeContent: false })` | SINGLE | Fall back to memory_search |
-| STATE LOAD | `spec_kit_memory_memory_context({ input: "[query]", mode: "resume", includeContent: true })`  | SINGLE | Use CONTINUE.md            |
-| STATS      | `spec_kit_memory_memory_stats`                                                                | SINGLE | Show error msg             |
-
-### Tool Call Format
-
-```text
-spec_kit_memory_memory_context({ input: "session state", mode: "resume", specFolder: "<folder>", includeContent: true })
-spec_kit_memory_memory_search({ query: "session state", specFolder: "<folder>", includeContent: true })
-spec_kit_memory_memory_list({ limit: 5, sortBy: "updated_at" })
-spec_kit_memory_memory_stats({ includeScores: true })
-Read({ filePath: "<absolute_path>" })
-```
-
----
-
-## APPENDIX B: TECHNICAL DETAILS
-
-### Crash Recovery Persistence
-
-All session state is immediately persisted to SQLite with write-ahead logging (WAL) for crash safety. State changes use IMMEDIATE transactions to survive process crashes.
-
-#### Transaction Safety
-
-| Operation         | Isolation | Recovery Guarantee     |
-| ----------------- | --------- | ---------------------- |
-| State write       | IMMEDIATE | Survives process crash |
-| Checkpoint create | EXCLUSIVE | Full consistency       |
-| Memory save       | IMMEDIATE | Write-ahead logged     |
-
-#### Database Path
-
-```text
-.opencode/skill/system-spec-kit/mcp_server/dist/database/context-index.sqlite
-```
-
-Compatibility note: `.opencode/skill/system-spec-kit/mcp_server/database/context-index.sqlite` may exist as a symlink to the canonical `dist/database` path.
-
-Recovery from SQLite returns the most recent `session_state` record for the given session ID, with `_recovered: true`, `_recovered_at` timestamp, and `_source: 'sqlite'` metadata.
-
-### Session State Structure
-
-#### CONTINUE_SESSION.md Format
-
-```markdown
-# SESSION CONTINUATION
-
-| Field       | Value                                 |
-| ----------- | ------------------------------------- |
-| Spec Folder | specs/082-speckit-reimagined/         |
-| Active Task | T118 - Implement /memory:continue     |
-| Last Action | Created /memory:continue command file |
-| Next Steps  | Verify structure, test scenarios      |
-| Progress    | 47% (118/250 tasks)                   |
-| Blockers    | None                                  |
-| Session ID  | session-20260201-152030               |
-| Timestamp   | 2026-02-01 15:20:30                   |
-
-## Context Summary
-
-Created /memory:continue command following patterns from checkpoint.md, search.md, and resume.md.
-Implemented Phase 1 detection logic, auto/manual workflows, and recovery from three scenarios.
-
-## Pending Work
-
-- [ ] Verify command structure against existing patterns
-- [ ] Test crash recovery scenario
-- [ ] Test compaction recovery scenario
-- [ ] Test timeout recovery scenario
-- [ ] Update tasks.md with completion status
-
-## Quick Resume
-
-To continue this session: `/memory:continue`
-Context will be automatically restored. Next action: Verify command structure.
-```
-
-#### Memory File State Anchor Format
-
-```markdown
-<!-- ANCHOR:state -->
-
-**Current State:** Implementing T118 - /memory:continue command
-
-**Last Action:** Created command file with Phase 1 detection logic
-
-**Next Steps:**
-1. Verify command structure against patterns
-2. Test recovery scenarios
-3. Update tasks.md with status
-
-**Progress:** 47% (118/250 tasks)
-
-**Blockers:** None
-
-<!-- /ANCHOR:state -->
-```
-
-### Session Isolation
-
-- Each recovery session is isolated; session IDs prevent cross-session data leakage
-- CONTINUE_SESSION.md contains no secrets
-- Memory files filtered by spec folder scope
-- Verify spec folder exists before loading; validate session ID format; check timestamps for staleness
+- `/memory:context`: General intent-aware context retrieval
+- `/memory:save`: Save current session context for future recovery
+- `/memory:manage`: Inspect database state, checkpoints, and ingest operations
+- `/memory:analyze history <spec-folder>`: Review epistemic history for a resumed spec folder
+- `/spec_kit:handover`: Create structured continuation notes before ending a session
+- `/spec_kit:resume <spec-folder>`: Continue structured work inside a known spec folder

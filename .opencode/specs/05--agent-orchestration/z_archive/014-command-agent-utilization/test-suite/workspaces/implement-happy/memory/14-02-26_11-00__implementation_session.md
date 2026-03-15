@@ -1,5 +1,19 @@
 ---
-title: "Implementation Session: JWT Authentication [implement-happy/14-02-26_11-00__implementation_session]"
+title: "Implementation Session: JWT Authentication"
+description: "Implementation Session: JWT Authentication"
+trigger_phrases:
+  - "implementation session jwt authentication"
+  - "session jwt authentication implementation"
+  - "jwt authentication implementation session"
+  - "authentication implementation session jwt"
+  - "session jwt authentication archive"
+  - "jwt authentication archive command"
+  - "authentication archive command agent"
+  - "archive command agent utilization"
+  - "command agent utilization test"
+  - "agent utilization test suite"
+  - "utilization test suite workspaces"
+  - "test suite workspaces implement"
 importance_tier: "normal"
 contextType: "general"
 ---

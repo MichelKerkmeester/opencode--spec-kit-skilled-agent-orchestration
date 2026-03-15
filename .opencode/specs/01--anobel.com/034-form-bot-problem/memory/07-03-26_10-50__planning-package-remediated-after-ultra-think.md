@@ -1,19 +1,16 @@
 ---
-title: "Planning package remediated after Ultra-Think review [034-form-bot-problem/07-03-26_10-50__planning-package-remediated-after-ultra-think]"
-description: "This session captures the Ultra-Think review follow-up that corrected the planning package for the form-bot investigation. It records the evidence-labeling changes, checklist and dependency fixes, and the decision to treat implementation as blocked until provider evidence prerequisites are met."
+title: "Planning package remediated after Ultra-Think review"
+description: "This session captures the Ultra-Think review follow-up that corrected the planning package for the form-bot investigation. It records the evidence-labeling changes, checklist..."
 trigger_phrases:
   - "ultra think planning remediation"
   - "form bot provider evidence prerequisites"
   - "server side first investigation"
 importance_tier: "normal"
+contextType: "research"
 quality_score: 0.60
 quality_flags:
   - "needs_review"
-contextType: "research"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
----
-
 # Planning package remediated after Ultra-Think review
 
 ## SESSION SUMMARY
@@ -34,8 +31,6 @@ contextType: "research"
 | Created At (Epoch) | 1772877030 |
 | Last Accessed (Epoch) | 1772877030 |
 | Access Count | 1 |
-
----
 
 ---
 
@@ -111,6 +106,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -265,6 +261,9 @@ The repo intended asset version and the live observed asset version diverged dur
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-serversidefirst-investigation-remains-controlling-24e0cadd -->
@@ -354,6 +353,9 @@ The repo intended asset version and the live observed asset version diverged dur
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -441,8 +443,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 01-
 
 ---
 
----
-
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -537,43 +538,9 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " anobel.com/034 form bot problem"
-  - "repo backed"
-  - "planning draft"
-  - "server side first"
-  - "tree thinning"
-  - "implementation summary"
-  - "planning package keeps server-side"
-  - "package keeps server-side verification"
-  - "keeps server-side verification observability"
-  - "server-side verification observability ahead"
-  - "verification observability ahead hardening"
-  - "botpoison enhanced path treated"
-  - "enhanced path treated advisory"
-  - "path treated advisory server-side"
-  - "treated advisory server-side enforcement"
-  - "advisory server-side enforcement provider"
-  - "server-side enforcement provider evidence"
-  - "merged-small-files tree-thinning merged small"
-  - "tree-thinning merged small files"
-  - "after provider"
-  - "and provider"
-  - "planning docs reviewed remediated"
-  - "evidence labeling separates durable"
-  - "labeling separates durable repo-backed"
-  - "separates durable repo-backed findings"
-  - "durable repo-backed findings live/session"
-  - "anobel.com/034"
-  - "form"
-  - "bot"
-  - "problem"
-
-key_files:
-  - ".opencode/specs/01--anobel.com/034-form-bot-problem/(merged-small-files)"
-  - ".opencode/.../034-form-bot-problem/(merged-small-files)"
-
-# Relationships
-related_sessions:
+  - "ultra think planning remediation"
+  - "form bot provider evidence prerequisites"
+  - "server side first investigation"related_sessions:
 
   []
 

@@ -1,21 +1,17 @@
 ---
-title: "Phase 9 Memory Naming Closure [008-architecture-audit/06-03-26_13-00__phase-9-memory-naming-closure]"
+title: "Phase 9 Memory Naming Closure"
 description: "Closed the Phase 9 memory naming regression by prioritizing stronger session summaries before folderBase and validating the fix with the correct scripts-package Vitest command."
 trigger_phrases:
   - "memory naming closure"
   - "workflow naming"
   - "task-enrichment"
-  - "QUICK_SUMMARY"
-  - "Vitest validation"
+  - "quick summary"
+  - "vitest validation"
 importance_tier: "critical"
 contextType: "general"
 quality_score: 1.00
 quality_flags: []
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-
----
-
 # hybrid rag fusion session 06-03-26
 
 ## SESSION SUMMARY
@@ -40,6 +36,7 @@ quality_flags: []
 ---
 
 <!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -131,6 +128,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -253,6 +251,9 @@ Closed the Phase 9 root-save filename regression by prioritizing QUICK_SUMMARY, 
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 decision_count: 0
@@ -269,6 +270,9 @@ decision_count: 0
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -395,6 +399,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -489,46 +494,11 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/022 hybrid rag fusion"
-  - "tree thinning"
-  - "architecture audit"
-  - "implementation summary"
-  - "merged-small-files tree-thinning merged small"
-  - "tree-thinning merged small files"
-  - "the validation"
-  - "updated tasks system"
-  - "validation blocker execution path"
-  - "blocker execution path correct"
-  - "execution path correct existing"
-  - "path correct existing scripts"
-  - "correct existing scripts package"
-  - "existing scripts package vitest"
-  - "scripts package vitest command"
-  - "package vitest command completed"
-  - "vitest command completed closure"
-  - "command completed closure run"
-  - "completed closure run right"
-  - "closure run right cwd"
-  - ".opencode/skill/system-spec-kit/scripts/core/ merged-small-files tree-thinning merged"
-  - "merged small files workflow.ts"
-  - "workflow.ts workflow .opencode/.../utils/ merged-small-files"
-  - "workflow .opencode/.../utils/ merged-small-files tree-thinning"
-  - ".opencode/.../utils/ merged-small-files tree-thinning merged"
-  - "merged small files task-enrichment.ts"
-  - "system"
-  - "spec"
-  - "kit/022"
-  - "hybrid"
-  - "rag"
-  - "fusion"
-
-key_files:
-  - ".opencode/skill/system-spec-kit/scripts/core/(merged-small-files)"
-  - ".opencode/.../utils/(merged-small-files)"
-  - ".opencode/.../tests/(merged-small-files)"
-  - "specs/.../008-architecture-audit/(merged-small-files)"
-
-# Relationships
+  - "memory naming closure"
+  - "workflow naming"
+  - "task-enrichment"
+  - "quick summary"
+  - "vitest validation"# Relationships
 related_sessions:
 
   []

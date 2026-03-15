@@ -1,22 +1,17 @@
 ---
-title: "Sprint 3 Query Intelligence Review [005-core-rag-sprints-0-to-8/27-02-26_09-07__sprint-3-query-intel-review]"
+title: "Sprint 3 Query Intelligence Review"
 description: "Implemented all 5 recommendations from the ultra-think review of Sprint 3 (Query Intelligence) spec folder."
 trigger_phrases:
   - "ultra-think review sprint 3"
-  - "PI-A2 deferred"
+  - "pi-a2 deferred"
   - "query intelligence fixes"
-  - "T001 decomposition"
-  - "T002 decomposition"
+  - "t001 decomposition"
+  - "t002 decomposition"
 importance_tier: "normal"
 contextType: "general"
 quality_score: 1.00
 quality_flags: []
-
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-
----
-
 # hybrid rag fusion session 27-02-26
 
 ## SESSION SUMMARY
@@ -41,6 +36,7 @@ quality_flags: []
 ---
 
 <!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -136,6 +132,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -283,6 +280,9 @@ rootCause: Ultra-think review identified 5 structural issues in Sprint 3 spec fo
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-defer-ccd18172 -->
@@ -430,6 +430,9 @@ rootCause: Ultra-think review identified 5 structural issues in Sprint 3 spec fo
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -551,6 +554,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -645,49 +649,11 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "system spec kit/022 hybrid rag fusion"
-  - "boundary bug"
-  - "bug found"
-  - "ultra think"
-  - "pi a2"
-  - "multi list"
-  - "cross variant"
-  - "chk 075"
-  - "kl s3 001"
-  - "no confidence score"
-  - "single pair first"
-  - "sprint 3 query intelligence"
-  - "hybrid rag fusion refinement"
-  - "decision corrected checklist verification"
-  - "corrected checklist verification counts"
-  - "checklist verification counts actual"
-  - "verification counts actual values"
-  - "counts actual values original"
-  - "actual values original counts"
-  - "values original counts significantly"
-  - "original counts significantly undercounted"
-  - "counts significantly undercounted actual"
-  - "significantly undercounted actual items"
-  - "sprint corpus scale memories"
-  - "corpus scale memories triggering"
-  - "scale memories triggering conditions"
-  - "system"
-  - "spec"
-  - "kit/140"
-  - "hybrid"
-  - "rag"
-  - "fusion"
-  - "refinement"
-
-key_files:
-  - ".opencode/.../006-core-rag-sprints-0-to-8/tasks.md"
-  - ".opencode/.../006-core-rag-sprints-0-to-8/checklist.md"
-  - ".opencode/.../006-core-rag-sprints-0-to-8/spec.md"
-  - ".opencode/.../006-core-rag-sprints-0-to-8/plan.md"
-  - ".opencode/.../022-hybrid-rag-fusion/tasks.md"
-  - ".opencode/.../022-hybrid-rag-fusion/plan.md"
-
-# Relationships
+  - "ultra-think review sprint 3"
+  - "pi-a2 deferred"
+  - "query intelligence fixes"
+  - "t001 decomposition"
+  - "t002 decomposition"# Relationships
 related_sessions:
 
   []

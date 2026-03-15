@@ -1,19 +1,16 @@
 ---
-title: "Handover trigger rollout for 012-handover-triggers 2025-12-17 [012-handover-triggers/17-12-25_16-19__handover-triggers]"
-description: "This memory captures the handover-trigger rollout in SpecKit and related skill documentation. The archived session added handover trigger keywords, reduced SKILL.md bloat, and standardized the section structure across multiple skills. It preserves the 2025-12-17 implementation details in migrated v2.2 form."
+title: "Handover trigger rollout for 012-handover-triggers 2025-12-17"
+description: "This memory captures the handover-trigger rollout in SpecKit and related skill documentation. The archived session added handover trigger keywords, reduced SKILL.md bloat, and..."
 trigger_phrases:
   - "handover trigger rollout"
   - "skill structure standardization"
-  - "SKILL.md reduction"
+  - "skill.md reduction"
 importance_tier: "normal"
+contextType: "general"
 quality_score: 0.60
 quality_flags:
   - "legacy_migration"
-contextType: "general"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
----
-
 # SESSION SUMMARY
 
 | **Meta Data** | **Value** |
@@ -43,7 +40,8 @@ contextType: "general"
 
 ---
 
-<!-- ANCHOR:preflight-session-1765984776399-42vibrek7-004-speckit/007-handover-triggers -->
+<!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -67,7 +65,7 @@ contextType: "general"
 
 ---
 
-<!-- ANCHOR:continue-session-session-1765984776399-42vibrek7-004-speckit/007-handover-triggers -->
+<!-- ANCHOR:continue-session -->
 <a id="continue-session"></a>
 
 ## CONTINUE SESSION
@@ -102,7 +100,9 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 ---
 
-<!-- ANCHOR:task-guide-speckit/007-handover-triggers-004-speckit/007-handover-triggers -->
+<!-- ANCHOR:task-guide -->
+<a id="implementation-guide"></a>
+
 ## 1. IMPLEMENTATION GUIDE
 
 **What Was Built**:
@@ -143,7 +143,9 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 ---
 
-<!-- ANCHOR:summary-session-1765984776399-42vibrek7-004-speckit/007-handover-triggers -->
+<!-- ANCHOR:summary -->
+<a id="overview"></a>
+
 ## 2. OVERVIEW
 
 Implemented handover trigger keywords in SpecKit skill, reduced SKILL.md bloat from 861 to 711 lines, and standardized skill section structure across all skills.
@@ -172,7 +174,9 @@ Implemented handover trigger keywords in SpecKit skill, reduced SKILL.md bloat f
 
 ---
 
-<!-- ANCHOR:detailed-changes-session-1765984776399-42vibrek7-004-speckit/007-handover-triggers -->
+<!-- ANCHOR:detailed-changes -->
+<a id="detailed-changes"></a>
+
 ## 3. DETAILED CHANGES
 
 <!-- ANCHOR:implementation-handover-trigger-keywords-speckit-7ba5d97d-session-1765984776399-42vibrek7 -->
@@ -187,7 +191,9 @@ Implemented handover trigger keywords in SpecKit skill, reduced SKILL.md bloat f
 
 ---
 
-<!-- ANCHOR:decisions-session-1765984776399-42vibrek7-004-speckit/007-handover-triggers -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-utility-template-triggers-skillmd-befc88cd-session-1765984776399-42vibrek7 -->
@@ -300,7 +306,9 @@ Implemented handover trigger keywords in SpecKit skill, reduced SKILL.md bloat f
 
 <!-- /ANCHOR:decisions-session-1765984776399-42vibrek7-004-speckit/007-handover-triggers -->
 
-<!-- ANCHOR:session-history-session-1765984776399-42vibrek7-004-speckit/007-handover-triggers -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -324,7 +332,7 @@ Implemented handover trigger keywords in SpecKit skill, reduced SKILL.md bloat f
 
 ---
 
-<!-- ANCHOR:recovery-hints-session-1765984776399-42vibrek7-004-speckit/007-handover-triggers -->
+<!-- ANCHOR:recovery-hints -->
 <a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
@@ -349,7 +357,7 @@ Implemented handover trigger keywords in SpecKit skill, reduced SKILL.md bloat f
 <!-- /ANCHOR:recovery-hints-session-1765984776399-42vibrek7-004-speckit/007-handover-triggers -->
 ---
 
-<!-- ANCHOR:postflight-session-1765984776399-42vibrek7-004-speckit/007-handover-triggers -->
+<!-- ANCHOR:postflight -->
 <a id="postflight-learning-delta"></a>
 
 ## POSTFLIGHT LEARNING DELTA
@@ -374,6 +382,8 @@ Implemented handover trigger keywords in SpecKit skill, reduced SKILL.md bloat f
 This session was migrated from an older format. Learning metrics were not captured in the original format.
 <!-- /ANCHOR:postflight-session-1765984776399-42vibrek7-004-speckit/007-handover-triggers -->
 ---
+<!-- ANCHOR:metadata -->
+<a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 

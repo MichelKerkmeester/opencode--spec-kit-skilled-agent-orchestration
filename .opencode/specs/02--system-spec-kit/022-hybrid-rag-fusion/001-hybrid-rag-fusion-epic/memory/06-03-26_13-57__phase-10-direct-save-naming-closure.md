@@ -1,5 +1,5 @@
 ---
-title: "Phase 10 direct save naming [001-hybrid-rag-fusion-epic/06-03-26_13-57__phase-10-direct-save-naming-closure]"
+title: "Phase 10 direct save naming"
 description: "The remaining bug was in collectSessionData quick-summary derivation, not in Phase 9 candidate ordering."
 trigger_phrases:
   - "system spec kit/022 hybrid rag fusion"
@@ -7,15 +7,11 @@ trigger_phrases:
   - "bug was"
   - "collect session data"
   - "quick summary"
-quality_score: 0.55
-quality_flags: []
 importance_tier: "critical"
 contextType: "implementation"
-
+quality_score: 0.55
+quality_flags: []
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
----
-
 # Phase 10 direct save naming closure for hybrid rag fusion
 
 ## SESSION SUMMARY
@@ -40,6 +36,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -131,6 +128,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -240,6 +238,9 @@ Confirmed the real collector path now preserves stronger semantic naming for dir
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 decision_count: 0
@@ -256,6 +257,9 @@ decision_count: 0
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -382,6 +386,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -476,45 +481,11 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/022 hybrid rag fusion"
+  - "system spec kit/022 hybrid rag fusion"
   - "remaining bug"
   - "bug was"
   - "collect session data"
-  - "quick summary"
-  - "tree thinning"
-  - "task enrichment"
-  - "architecture audit"
-  - "implementation summary"
-  - "merged-small-files tree-thinning merged small"
-  - "tree-thinning merged small files"
-  - "direct preloaded memory saves"
-  - "preloaded memory saves folder"
-  - "memory saves folder fallback"
-  - "remaining collectsessiondata quick-summary derivation"
-  - "collectsessiondata quick-summary derivation phase"
-  - "quick-summary derivation phase candidate"
-  - "derivation phase candidate ordering"
-  - ".opencode/.../extractors/ merged-small-files tree-thinning merged"
-  - "merged small files collect-session-data.ts"
-  - "collect-session-data.ts direct preloaded memory"
-  - "saves folder fallback .opencode/.../tests/"
-  - "folder fallback .opencode/.../tests/ merged-small-files"
-  - "fallback .opencode/.../tests/ merged-small-files tree-thinning"
-  - ".opencode/.../tests/ merged-small-files tree-thinning merged"
-  - "merged small files task-enrichment.vitest.ts"
-  - "system"
-  - "spec"
-  - "kit/022"
-  - "hybrid"
-  - "rag"
-  - "fusion"
-
-key_files:
-  - ".opencode/.../extractors/(merged-small-files)"
-  - ".opencode/.../tests/(merged-small-files)"
-  - "specs/.../008-architecture-audit/(merged-small-files)"
-
-# Relationships
+  - "quick summary"# Relationships
 related_sessions:
 
   []

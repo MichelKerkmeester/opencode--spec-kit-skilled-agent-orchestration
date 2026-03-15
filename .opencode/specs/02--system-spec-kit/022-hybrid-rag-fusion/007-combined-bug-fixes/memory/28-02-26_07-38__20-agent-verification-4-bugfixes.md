@@ -1,5 +1,5 @@
 ---
-title: "20-Agent Verification Bug Fixes [007-combined-bug-fixes/28-02-26_07-38__20-agent-verification-4-bugfixes]"
+title: "20-Agent Verification Bug Fixes"
 description: "Ran 20-agent verification across Hybrid RAG Fusion sprints, fixed four confirmed source bugs, and synced the root checklist with evidence-backed completion."
 trigger_phrases:
   - "20-agent verification"
@@ -12,10 +12,6 @@ contextType: "general"
 quality_score: 1.00
 quality_flags: []
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-
----
-
 # hybrid rag fusion session 28-02-26
 
 ## SESSION SUMMARY
@@ -40,6 +36,7 @@ quality_flags: []
 ---
 
 <!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -135,6 +132,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -297,6 +295,9 @@ rootCause: Root checklist.md had 0/201 items verified despite Sprints 0-3 being 
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-deploy-parallel-agents-opus-14333264 -->
@@ -471,6 +472,9 @@ rootCause: Root checklist.md had 0/201 items verified despite Sprints 0-3 being 
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -592,6 +596,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -686,51 +691,11 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "system spec kit/022 hybrid rag fusion"
-  - "create m c p error response"
-  - "define property"
-  - "ultra think"
-  - "co activation"
-  - "hard linked"
-  - "memory context"
-  - "non enumerable"
-  - "multi perspective"
-  - "hybrid search"
-  - "chk s11"
-  - "dark run"
-  - "handler memory search"
-  - "t205 token budget enforcement"
+  - "20-agent verification"
   - "hybrid rag fusion refinement"
-  - "evidence references child sprint"
-  - "references child sprint checklists"
-  - "provides multi-perspective analysis covering"
-  - "multi-perspective analysis covering architecture"
-  - "analysis covering architecture code"
-  - "covering architecture code quality"
-  - "architecture code quality documentation"
-  - "code quality documentation dependencies"
-  - "quality documentation dependencies research"
-  - "documentation dependencies research corpus"
-  - "dependencies research corpus single"
-  - "system"
-  - "spec"
-  - "kit/140"
-  - "hybrid"
-  - "rag"
-  - "fusion"
-  - "refinement"
-
-key_files:
-  - ".opencode/.../handlers/memory-context.ts"
-  - ".opencode/.../handlers/memory-search.ts"
-  - ".opencode/.../search/hybrid-search.ts"
-  - ".opencode/.../tests/handler-memory-search.vitest.ts"
-  - ".opencode/.../tests/memory-context.vitest.ts"
-  - ".opencode/.../tests/t205-token-budget-enforcement.vitest.ts"
-  - ".opencode/.../022-hybrid-rag-fusion/checklist.md"
-  - ".opencode/.../022-hybrid-rag-fusion/tasks.md"
-
-# Relationships
+  - "memory-search validation"
+  - "co-activation hard link"
+  - "root checklist"# Relationships
 related_sessions:
 
   []

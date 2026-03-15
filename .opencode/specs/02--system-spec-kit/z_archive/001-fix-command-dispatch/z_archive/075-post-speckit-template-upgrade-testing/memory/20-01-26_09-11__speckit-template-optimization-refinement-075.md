@@ -1,44 +1,17 @@
 ---
-title: "Post-upgrade template testing handoff 2026-01-20 [075-post-speckit-template-upgrade-testing/20-01-26_09-10__speckit-template-optimization-refinement]"
-description: "Captured post-upgrade testing context associated with the SpecKit template refinement rollout. The stored session details describe the large implementation pass and its verification artifacts, but the embedded body metadata still points at the prior 074 spec lineage and should be treated carefully."
+title: "Post-upgrade template testing handoff 2026-01-20"
+description: "Captured post-upgrade testing context associated with the SpecKit template refinement rollout. The stored session details describe the large implementation pass and its..."
 trigger_phrases:
   - "post upgrade template testing"
   - "template refinement verification"
   - "spec lineage mismatch"
   - "speckit rollout handoff"
 importance_tier: "critical"
+contextType: "general"
 quality_score: 0.60
 quality_flags:
   - "legacy_migration"
-contextType: "general"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-<!-- Constitutional Tier Promotion:
-  To promote a memory to constitutional tier (always surfaced):
-  
-  1. Via MCP tool after indexing:
-     memory_update({ id: <memory_id>, importanceTier: 'constitutional' })
-  
-  2. Criteria for constitutional:
-     - Applies to ALL future conversations (not project-specific)
-     - Core constraints/rules that should NEVER be forgotten
-     - ~2000 token budget total for constitutional tier
-     
-  3. Add trigger phrases for proactive surfacing:
-     memory_update({ 
-       id: <memory_id>, 
-       importanceTier: 'constitutional',
-       triggerPhrases: ['fix', 'implement', 'create', 'modify', ...]
-     })
-     
-  4. Examples of constitutional content:
-     - "Always ask Gate 3 spec folder question before file modifications"
-     - "Never modify production data directly"
-     - "Memory files MUST use generate-context.js script"
--->
-
----
-
 # SESSION SUMMARY
 
 | **Meta Data** | **Value** |
@@ -60,7 +33,8 @@ contextType: "general"
 
 ---
 
-<!-- ANCHOR:preflight-session-1768896639053-hv4o97gay-003-memory-and-spec-kit/074-speckit-template-optimization-refinement -->
+<!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -97,7 +71,7 @@ contextType: "general"
 
 ---
 
-<!-- ANCHOR:continue-session-session-1768896639053-hv4o97gay-003-memory-and-spec-kit/074-speckit-template-optimization-refinement -->
+<!-- ANCHOR:continue-session -->
 <a id="continue-session"></a>
 
 ## CONTINUE SESSION
@@ -131,6 +105,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 <!-- /ANCHOR:continue-session-session-1768896639053-hv4o97gay-003-memory-and-spec-kit/074-speckit-template-optimization-refinement -->
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -147,7 +122,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 ---
 
-<!-- ANCHOR:task-guide-memory-and-spec-kit/074-speckit-template-optimization-refinement-003-memory-and-spec-kit/074-speckit-template-optimization-refinement -->
+<!-- ANCHOR:task-guide -->
 <a id="implementation-guide"></a>
 
 ## 1. IMPLEMENTATION GUIDE
@@ -190,7 +165,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 ---
 
-<!-- ANCHOR:summary-session-1768896639053-hv4o97gay-003-memory-and-spec-kit/074-speckit-template-optimization-refinement -->
+<!-- ANCHOR:summary -->
 <a id="overview"></a>
 
 ## 2. OVERVIEW
@@ -226,7 +201,7 @@ Comprehensive implementation of SpecKit template optimization refinements. Start
 
 ---
 
-<!-- ANCHOR:detailed-changes-session-1768896639053-hv4o97gay-003-memory-and-spec-kit/074-speckit-template-optimization-refinement -->
+<!-- ANCHOR:detailed-changes -->
 <a id="detailed-changes"></a>
 
 ## 3. DETAILED CHANGES
@@ -272,6 +247,9 @@ rootCause: Spec 073 implemented CORE + ADDENDUM v2.0 architecture with 74% templ
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-parallel-opus-agent-orchestration-8edb575f-session-1768896639053-hv4o97gay -->
@@ -446,6 +424,9 @@ rootCause: Spec 073 implemented CORE + ADDENDUM v2.0 architecture with 74% templ
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -471,7 +452,7 @@ Comprehensive implementation of SpecKit template optimization refinements. Start
 
 ---
 
-<!-- ANCHOR:recovery-hints-session-1768896639053-hv4o97gay-003-memory-and-spec-kit/074-speckit-template-optimization-refinement -->
+<!-- ANCHOR:recovery-hints -->
 <a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
@@ -496,7 +477,7 @@ Comprehensive implementation of SpecKit template optimization refinements. Start
 <!-- /ANCHOR:recovery-hints-session-1768896639053-hv4o97gay-003-memory-and-spec-kit/074-speckit-template-optimization-refinement -->
 ---
 
-<!-- ANCHOR:postflight-session-1768896639053-hv4o97gay-003-memory-and-spec-kit/074-speckit-template-optimization-refinement -->
+<!-- ANCHOR:postflight -->
 <a id="postflight-learning-delta"></a>
 
 ## POSTFLIGHT LEARNING DELTA
@@ -522,6 +503,7 @@ This session was migrated from an older format. Learning metrics were not captur
 <!-- /ANCHOR:postflight-session-1768896639053-hv4o97gay-003-memory-and-spec-kit/074-speckit-template-optimization-refinement -->
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -598,33 +580,10 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "speckit"
-  - "template"
-  - "verbose template"
-  - "WHEN TO USE"
-  - "compose.sh"
-  - "SPECKIT_TEMPLATE_STYLE"
-  - "CORE ADDENDUM"
-  - "template optimization"
-  - "parallel agents"
-  - "orchestration"
-  - "level specifications"
-  - "progressive enhancement"
-
-key_files:
-  - ".opencode/skill/system-spec-kit/templates/verbose/README.md"
-  - ".opencode/.../core/spec-core-verbose.md"
-  - ".opencode/.../core/plan-core-verbose.md"
-  - ".opencode/.../core/tasks-core-verbose.md"
-  - ".opencode/.../core/impl-summary-core-verbose.md"
-  - ".opencode/skill/system-spec-kit/scripts/templates/compose.sh"
-  - ".opencode/skill/system-spec-kit/templates/level_1/spec.md"
-  - ".opencode/skill/system-spec-kit/templates/level_1/plan.md"
-  - ".opencode/skill/system-spec-kit/templates/level_2/spec.md"
-  - ".opencode/skill/system-spec-kit/templates/level_2/plan.md"
-
-# Relationships
-related_sessions:
+  - "post upgrade template testing"
+  - "template refinement verification"
+  - "spec lineage mismatch"
+  - "speckit rollout handoff"related_sessions:
 
   []
 

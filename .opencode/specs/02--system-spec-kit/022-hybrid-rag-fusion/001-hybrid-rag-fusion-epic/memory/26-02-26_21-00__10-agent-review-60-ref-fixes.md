@@ -1,22 +1,17 @@
 ---
-title: "10-agent review with 60 reference fixes [001-hybrid-rag-fusion-epic/26-02-26_21-00__10-agent-review-60-ref-fixes]"
-description: "Applied 60 REF items from a 10-agent ultra-think review (document 146-agent-review-consolidated-findings.md) to the root speckit documentation and phase sub-folders. Used 5 parallel agents (2 Opus + 3."
+title: "10-agent review with 60 reference fixes"
+description: "Applied 60 REF items from a 10-agent ultra-think review (document 146-agent-review-consolidated-findings.md) to the root speckit documentation and phase sub-folders. Used 5..."
 trigger_phrases:
   - "system spec kit/022 hybrid rag fusion"
   - "ultra think"
   - "agent review consolidated findings"
   - "sub folders"
   - "mr8 mr10"
-quality_score: 1.00
-quality_flags: []
 importance_tier: "critical"
 contextType: "implementation"
-
+quality_score: 1.00
+quality_flags: []
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-
----
-
 # hybrid rag fusion session 26-02-26
 
 ## SESSION SUMMARY
@@ -41,6 +36,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -136,6 +132,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -294,6 +291,9 @@ rootCause: 10-agent ultra-think review (146-agent-review-consolidated-findings.m
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-decomposed-ref-items-into-b0596c4b -->
@@ -468,6 +468,9 @@ rootCause: 10-agent ultra-think review (146-agent-review-consolidated-findings.m
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -588,6 +591,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -686,49 +690,7 @@ trigger_phrases:
   - "ultra think"
   - "agent review consolidated findings"
   - "sub folders"
-  - "mr8 mr10"
-  - "r 008"
-  - "r 012"
-  - "adr 001"
-  - "r13 s1"
-  - "s0 s6"
-  - "s0 s7"
-  - "hybrid rag fusion refinement"
-  - "sprint 3 query intelligence"
-  - "sprint 4 feedback loop"
-  - "sprint 5 pipeline refactor"
-  - "sprint 6 graph deepening"
-  - "sprint 7 long horizon"
-  - "agent sonnet applied edits"
-  - "decision decomposed ref items"
-  - "decomposed ref items workstreams"
-  - "ref items workstreams zero"
-  - "items workstreams zero file"
-  - "workstreams zero file overlap"
-  - "zero file overlap concurrent"
-  - "file overlap concurrent agents"
-  - "overlap concurrent agents editing"
-  - "system"
-  - "spec"
-  - "kit/140"
-  - "hybrid"
-  - "rag"
-  - "fusion"
-  - "refinement"
-
-key_files:
-  - ".opencode/.../022-hybrid-rag-fusion/spec.md"
-  - ".opencode/.../022-hybrid-rag-fusion/plan.md"
-  - ".opencode/.../022-hybrid-rag-fusion/tasks.md"
-  - ".opencode/.../022-hybrid-rag-fusion/checklist.md"
-  - ".opencode/.../006-core-rag-sprints-0-to-8/plan.md"
-  - ".opencode/.../002-sprint-4-feedback-loop/tasks.md"
-  - ".opencode/.../006-core-rag-sprints-0-to-8/checklist.md"
-  - ".opencode/.../004-sprint-6-graph-deepening/tasks.md"
-  - ".opencode/.../004-sprint-6-graph-deepening/checklist.md"
-  - ".opencode/.../006-core-rag-sprints-0-to-8/tasks.md"
-
-# Relationships
+  - "mr8 mr10"# Relationships
 related_sessions:
 
   []

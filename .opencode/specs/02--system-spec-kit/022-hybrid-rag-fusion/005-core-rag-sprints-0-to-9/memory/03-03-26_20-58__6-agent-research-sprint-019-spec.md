@@ -1,9 +1,9 @@
 ---
-title: "Cross-AI Research Synthesis [006-extra-features/03-03-26_20-58__6-agent-research-sprint-019-spec]"
-description: "Executed a 6-agent cross-AI research delegation (3 Codex gpt-5.3-codex + 3 Gemini 3.1-pro-preview) analyzing cognee, qmd, and ArtemXTech to extract improvement insights for system-spec-kit Memory MCP."
+title: "Cross-AI Research Synthesis"
+description: "Executed a 6-agent cross-AI research delegation (3 Codex gpt-5.3-codex + 3 Gemini 3.1-pro-preview) analyzing cognee, qmd, and ArtemXTech to extract improvement insights for..."
 trigger_phrases:
   - "sprint 9 extra features"
-  - "cross-AI research delegation"
+  - "cross-ai research delegation"
   - "6-agent synthesis"
   - "codex gemini research"
   - "productization operational tooling"
@@ -11,12 +11,7 @@ importance_tier: "critical"
 contextType: "general"
 quality_score: 1.00
 quality_flags: []
-
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-
----
-
 # hybrid rag fusion session 03-03-26
 
 ## SESSION SUMMARY
@@ -41,6 +36,7 @@ quality_flags: []
 ---
 
 <!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -134,6 +130,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -270,6 +267,9 @@ rootCause: The 023 refinement program delivered core architecture but the extern
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-qmd-integration-017c19d6 -->
@@ -444,6 +444,9 @@ rootCause: The 023 refinement program delivered core architecture but the extern
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -565,6 +568,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -659,44 +663,11 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/022 hybrid rag fusion"
-  - "cross ai"
-  - "gpt 5"
-  - "pro preview"
-  - "ultra think"
-  - "decision record"
   - "sprint 9 extra features"
-  - "net new"
-  - "demand driven"
-  - "local first"
-  - "zero dependency"
-  - "single user"
-  - "merged small files"
-  - "decision defer items daemon"
-  - "defer items daemon mode"
-  - "items daemon mode storage"
-  - "daemon mode storage adapters"
-  - "mode storage adapters namespaces"
-  - "storage adapters namespaces graph"
-  - "adapters namespaces graph nodes"
-  - "namespaces graph nodes ast"
-  - "graph nodes ast sections"
-  - "nodes ast sections measurable"
-  - "ast sections measurable demand"
-  - "sections measurable demand triggers"
-  - "measurable demand triggers fire"
-  - "system"
-  - "spec"
-  - "kit/023"
-  - "hybrid"
-  - "rag"
-  - "fusion"
-  - "refinement"
-
-key_files:
-  - ".opencode/.../research/(merged-small-files)"
-
-# Relationships
+  - "cross-ai research delegation"
+  - "6-agent synthesis"
+  - "codex gemini research"
+  - "productization operational tooling"# Relationships
 related_sessions:
 
   []

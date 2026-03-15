@@ -1,17 +1,16 @@
 ---
-title: "Anchor ID validation warning for 014-anchor-enforcement 2025-12-16 [014-anchor-enforcement/16-12-25_20-12__anchor-enforcement]"
-description: "This memory captures the addition of anchor ID validation warnings in the semantic-memory MCP server. The archived session introduced validateAnchorIdPattern() with a warning-only policy for anchors that do not follow the recommended naming pattern. It remains preserved as a migrated v2.2 record from 2025-12-16."
+title: "Anchor ID validation warning for 014-anchor-enforcement 2025-12-16"
+description: "This memory captures the addition of anchor ID validation warnings in the semantic-memory MCP server. The archived session introduced validateAnchorIdPattern() with a..."
 trigger_phrases:
-  - "anchor ID validation"
+  - "anchor id validation"
   - "semantic memory anchors"
   - "warning only enforcement"
 importance_tier: "normal"
+contextType: "general"
 quality_score: 0.60
 quality_flags:
   - "legacy_migration"
-contextType: "general"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Migrated by migrate-memory-v22.mjs -->
 
 # IMPROVED CONTEXT TEMPLATE v2.1
@@ -21,8 +20,6 @@ contextType: "general"
 > **Changes from v2.0**: Fixed anchor format to match MCP server extraction (`<!-- ANCHOR_EXAMPLE:id -->` UPPERCASE with closing tags).
 >
 > **Changes from v1**: Added Session ID, Channel, Importance Tier, Context Type, Epoch timestamps, and machine-readable MEMORY METADATA section.
-
----
 
 ---
 
@@ -51,6 +48,8 @@ contextType: "general"
 ---
 
 <!-- ANCHOR_EXAMPLE:preflight-session-1765912339678-asxgxjvi9-008-anchor-enforcement -->
+<!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -75,6 +74,7 @@ contextType: "general"
 ---
 
 <!-- ANCHOR_EXAMPLE:continue-session-session-1765912339678-asxgxjvi9-008-anchor-enforcement -->
+<!-- ANCHOR:continue-session -->
 <a id="continue-session"></a>
 
 ## CONTINUE SESSION
@@ -110,6 +110,9 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 ---
 
 <!-- ANCHOR_EXAMPLE:summary-session-1765912339678-asxgxjvi9-008-anchor-enforcement -->
+<!-- ANCHOR:summary -->
+<a id="overview"></a>
+
 ## 1. OVERVIEW
 
 Added anchor ID validation warning to semantic-memory MCP server. Implemented validateAnchorIdPattern() helper function that logs warnings for anchor IDs not following the recommended [CONTEXT-TYPE]-[KEYWORDS]-[SPEC#] pattern.
@@ -133,6 +136,9 @@ Added anchor ID validation warning to semantic-memory MCP server. Implemented va
 ---
 
 <!-- ANCHOR_EXAMPLE:detailed-changes-session-1765912339678-asxgxjvi9-008-anchor-enforcement -->
+<!-- ANCHOR:detailed-changes -->
+<a id="detailed-changes"></a>
+
 ## 2. DETAILED CHANGES
 
 <!-- ANCHOR_EXAMPLE:implementation-anchor-id-validation-005-session-1765912339678-asxgxjvi9 -->
@@ -183,6 +189,9 @@ functionLocation: Lines 727-752 in semantic-memory.js; validationCallLocation: L
 ---
 
 <!-- ANCHOR_EXAMPLE:decisions-session-1765912339678-asxgxjvi9-008-anchor-enforcement -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 3. DECISIONS
 
 <!-- ANCHOR_EXAMPLE:decision-warning-only-approach-005-session-1765912339678-asxgxjvi9 -->
@@ -284,6 +293,9 @@ functionLocation: Lines 727-752 in semantic-memory.js; validationCallLocation: L
 <!-- /ANCHOR_EXAMPLE:decisions-session-1765912339678-asxgxjvi9-008-anchor-enforcement -->
 
 <!-- ANCHOR_EXAMPLE:session-history-session-1765912339678-asxgxjvi9-008-anchor-enforcement -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 4. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -310,6 +322,7 @@ Added anchor ID validation warning to semantic-memory MCP server. Implemented va
 ---
 
 <!-- ANCHOR_EXAMPLE:recovery-hints-session-1765912339678-asxgxjvi9-008-anchor-enforcement -->
+<!-- ANCHOR:recovery-hints -->
 <a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
@@ -335,6 +348,7 @@ Added anchor ID validation warning to semantic-memory MCP server. Implemented va
 ---
 
 <!-- ANCHOR_EXAMPLE:postflight-session-1765912339678-asxgxjvi9-008-anchor-enforcement -->
+<!-- ANCHOR:postflight -->
 <a id="postflight-learning-delta"></a>
 
 ## POSTFLIGHT LEARNING DELTA
@@ -359,6 +373,8 @@ Added anchor ID validation warning to semantic-memory MCP server. Implemented va
 This session was migrated from an older format. Learning metrics were not captured in the original format.
 <!-- /ANCHOR_EXAMPLE:postflight-session-1765912339678-asxgxjvi9-008-anchor-enforcement -->
 ---
+<!-- ANCHOR:metadata -->
+<a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 

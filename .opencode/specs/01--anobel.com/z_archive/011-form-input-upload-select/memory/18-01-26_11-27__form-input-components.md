@@ -1,43 +1,16 @@
 ---
-title: "FilePond upload UI enhancements for [011-form-input-upload-select/18-01-26_11-27__form-input-components]"
-description: "This archived session captures the FilePond upload-component enhancements for a custom Webflow UI. It preserves the work on upload and success icons, hover and deletion behavior, error states, and CMS-configurable labels for the upload flow."
+title: "FilePond upload UI enhancements for"
+description: "This archived session captures the FilePond upload-component enhancements for a custom Webflow UI. It preserves the work on upload and success icons, hover and deletion..."
 trigger_phrases:
   - "filepond upload ui enhancements"
   - "webflow file upload labels"
   - "custom upload success icon"
 importance_tier: "normal"
+contextType: "implementation"
 quality_score: 0.60
 quality_flags:
   - "legacy_migration"
-contextType: "implementation"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-<!-- Constitutional Tier Promotion:
-  To promote a memory to constitutional tier (always surfaced):
-  
-  1. Via MCP tool after indexing:
-     memory_update({ id: <memory_id>, importanceTier: 'constitutional' })
-  
-  2. Criteria for constitutional:
-     - Applies to ALL future conversations (not project-specific)
-     - Core constraints/rules that should NEVER be forgotten
-     - ~2000 token budget total for constitutional tier
-     
-  3. Add trigger phrases for proactive surfacing:
-     memory_update({ 
-       id: <memory_id>, 
-       importanceTier: 'constitutional',
-       triggerPhrases: ['fix', 'implement', 'create', 'modify', ...]
-     })
-     
-  4. Examples of constitutional content:
-     - "Always ask Gate 3 spec folder question before file modifications"
-     - "Never modify production data directly"
-     - "Memory files MUST use generate-context.js script"
--->
-
----
-
 # SESSION SUMMARY
 
 | **Meta Data** | **Value** |
@@ -59,7 +32,8 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:preflight-session-1768732062054-tauyy0x3e-005-anobel-com/012-form-input-components -->
+<!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -96,7 +70,7 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:continue-session-session-1768732062054-tauyy0x3e-005-anobel-com/012-form-input-components -->
+<!-- ANCHOR:continue-session -->
 <a id="continue-session"></a>
 
 ## CONTINUE SESSION
@@ -130,6 +104,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 <!-- /ANCHOR:continue-session-session-1768732062054-tauyy0x3e-005-anobel-com/012-form-input-components -->
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -166,6 +141,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 ---
 
 <!-- ANCHOR_EXAMPLE:task-guide-anobel.com/012-form-input-components-005-anobel.com/012-form-input-components -->
+<!-- ANCHOR:task-guide -->
 <a id="implementation-guide"></a>
 
 ## 1. IMPLEMENTATION GUIDE
@@ -211,6 +187,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 ---
 
 <!-- ANCHOR_EXAMPLE:summary-session-1768732062054-tauyy0x3e-005-anobel.com/012-form-input-components -->
+<!-- ANCHOR:summary -->
 <a id="overview"></a>
 
 ## 2. OVERVIEW
@@ -244,6 +221,7 @@ Implemented comprehensive enhancements to the FilePond file upload component wit
 ---
 
 <!-- ANCHOR_EXAMPLE:detailed-changes-session-1768732062054-tauyy0x3e-005-anobel.com/012-form-input-components -->
+<!-- ANCHOR:detailed-changes -->
 <a id="detailed-changes"></a>
 
 ## 3. DETAILED CHANGES
@@ -289,6 +267,9 @@ rootCause: Needed custom Webflow-designed file upload UI that hides FilePond's n
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR_EXAMPLE:decision-two-separate-icon-elements-1cf197fb-session-1768732062054-tauyy0x3e -->
@@ -436,6 +417,9 @@ rootCause: Needed custom Webflow-designed file upload UI that hides FilePond's n
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -461,6 +445,7 @@ Implemented comprehensive enhancements to the FilePond file upload component wit
 ---
 
 <!-- ANCHOR_EXAMPLE:recovery-hints-session-1768732062054-tauyy0x3e-005-anobel.com/012-form-input-components -->
+<!-- ANCHOR:recovery-hints -->
 <a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
@@ -486,6 +471,7 @@ Implemented comprehensive enhancements to the FilePond file upload component wit
 ---
 
 <!-- ANCHOR_EXAMPLE:postflight-session-1768732062054-tauyy0x3e-005-anobel.com/012-form-input-components -->
+<!-- ANCHOR:postflight -->
 <a id="postflight-learning-delta"></a>
 
 ## POSTFLIGHT LEARNING DELTA
@@ -511,6 +497,7 @@ This session was migrated from an older format. Learning metrics were not captur
 <!-- /ANCHOR_EXAMPLE:postflight-session-1768732062054-tauyy0x3e-005-anobel.com/012-form-input-components -->
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -587,20 +574,9 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-
-  []
-
-key_files:
-  - "src/2_javascript/form/input_upload.js"
-  - "src/1_css/form/input_upload_webflow.css"
-  - "src/2_javascript/form/FILEPOND_WEBFLOW_GUIDE.md"
-  - "src/0_html/werken_bij.html"
-  - "src/0_html/cms/vacature.html"
-  - "src/0_html/contact.html"
-  - "src/3_staging/test-webflow-upload.html"
-  - "src/2_javascript/z_minified/form/input_upload.js"
-
-# Relationships
+  - "filepond upload ui enhancements"
+  - "webflow file upload labels"
+  - "custom upload success icon"# Relationships
 related_sessions:
 
   []

@@ -1,19 +1,25 @@
 ---
-title: "Independent review of 017-governance [017-governance/12-03-26_18-15__independent-review-of-017-governance-spec-folder]"
-description: "Session context memory template for Spec Kit indexing."
+title: "Independent review of 017-governance"
+description: "Independent review of 017-governance spec folder and related governance code/docs. Found template/documentation inconsistencies and one notable rollout-behavior risk; targeted..."
 trigger_phrases:
-  - "memory dashboard"
-  - "session summary"
-  - "context template"
+  - "rollout behavior"
+  - "independent review 017-governance spec"
+  - "review 017-governance spec folder"
+  - "017-governance spec folder governance"
+  - "spec folder governance code/docs"
+  - "found template/documentation inconsistencies one"
+  - "template/documentation inconsistencies one notable"
+  - "inconsistencies one notable rollout-behavior"
+  - "one notable rollout-behavior risk"
+  - "notable rollout-behavior risk targeted"
+  - "independent review 017-governance independent"
+  - "review 017-governance independent review"
 importance_tier: "normal"
 contextType: "general"
 quality_score: 0.90
 quality_flags:
   - "has_tool_state_mismatch"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
----
-
 # Independent review of 017-governance spec folder and related governance code/docs. Found...
 
 ## SESSION SUMMARY
@@ -34,8 +40,6 @@ quality_flags:
 | Created At (Epoch) | 1773335737 |
 | Last Accessed (Epoch) | 1773335737 |
 | Access Count | 1 |
-
----
 
 ---
 
@@ -108,6 +112,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -194,6 +199,9 @@ Independent review of 017-governance spec folder and related governance code/doc
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 3. DECISIONS
 
 <!-- ANCHOR:decision-treat-review-361002de -->
@@ -483,6 +491,9 @@ Independent review of 017-governance spec folder and related governance code/doc
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 4. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -565,8 +576,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 
 ---
 
----
-
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -661,48 +671,18 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/022 hybrid rag fusion/013 code audit per feature catalog/017 governance"
   - "rollout behavior"
-  - "implementation summary"
-  - "correction needed"
-  - "review only"
-  - "new 095"
-  - "use targeted vitest runs"
-  - "targeted vitest runs verify"
-  - "vitest runs verify governance"
-  - "runs verify governance helper"
-  - "verify governance helper behavior"
-  - "governance helper behavior claims"
-  - "mismatch implementation-summary template drift"
-  - "implementation-summary template drift correction-needed"
-  - "template drift correction-needed documentation"
-  - "drift correction-needed documentation issues"
-  - "treat review-only patches applied"
-  - "classify checklist new-095+ mismatch"
-  - "checklist new-095+ mismatch implementation-summary"
-  - "new-095+ mismatch implementation-summary template"
   - "independent review 017-governance spec"
   - "review 017-governance spec folder"
   - "017-governance spec folder governance"
   - "spec folder governance code/docs"
   - "found template/documentation inconsistencies one"
   - "template/documentation inconsistencies one notable"
-  - "system"
-  - "spec"
-  - "kit/022"
-  - "hybrid"
-  - "rag"
-  - "fusion/013"
-  - "code"
-  - "audit"
-  - "per"
-  - "feature"
-  - "catalog/017"
-  - "governance"
-
-key_files:
-
-# Relationships
+  - "inconsistencies one notable rollout-behavior"
+  - "one notable rollout-behavior risk"
+  - "notable rollout-behavior risk targeted"
+  - "independent review 017-governance independent"
+  - "review 017-governance independent review"# Relationships
 related_sessions:
 
   []

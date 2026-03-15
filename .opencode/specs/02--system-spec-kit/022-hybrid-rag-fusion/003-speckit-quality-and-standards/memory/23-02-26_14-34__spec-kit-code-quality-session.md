@@ -1,6 +1,6 @@
 ---
-title: "spec kit code quality session 23-02-26 [003-speckit-quality-and-standards/23-02-26_14-34__spec-kit-code-quality-session]"
-description: "Phase 008 quality closure gate for 139-hybrid-rag-fusion: baseline stabilization, modularization, security hardening, fixture normalization, README validation. All 28 tasks complete, all verification gates green."
+title: "spec kit code quality session 23-02-26"
+description: "Phase 008 quality closure gate for 139-hybrid-rag-fusion: baseline stabilization, modularization, security hardening, fixture normalization, README validation. All 28 tasks..."
 trigger_phrases:
   - "phase 008"
   - "anchor validation"
@@ -11,12 +11,7 @@ importance_tier: "critical"
 contextType: "implementation"
 quality_score: 1.00
 quality_flags: []
-
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-
----
-
 # spec kit code quality session 23-02-26
 
 ## SESSION SUMMARY
@@ -41,6 +36,7 @@ quality_flags: []
 ---
 
 <!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -138,6 +134,7 @@ Next: Program closure review for 139-hybrid-rag-fusion
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -300,6 +297,9 @@ validation: bash scripts/tests/test-validation.sh (55/55 pass), bash scripts/tes
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-strict-anchor-syntax-validation-ed75dd13 -->
@@ -393,6 +393,9 @@ validation: bash scripts/tests/test-validation.sh (55/55 pass), bash scripts/tes
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -517,6 +520,7 @@ Productive quality-hardening session. All 28 tasks completed. Baseline-first seq
 
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -611,57 +615,11 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "system spec kit/022 hybrid rag fusion/008 spec kit code quality"
-  - "not failed"
-  - "and fail"
-  - "memory save extended"
-  - "level specific"
-  - "wrap all templates"
-  - "check anchors"
-  - "test validation extended"
-  - "handler checkpoints"
-  - "touched files all paths"
-  - "use strict syntax validation"
-  - "strict syntax validation fail"
-  - "syntax validation fail malformed"
-  - "validation fail malformed open/close"
-  - "fail malformed open/close tags"
-  - "risk validation tests reduce"
-  - "validation tests reduce false"
-  - "tests reduce false confidence"
-  - "missing templates skipped failed"
-  - "templates skipped failed wrap-all-templates"
-  - "anchor parsing"
-  - "phase code-quality fixes repaired"
-  - "code-quality fixes repaired touched-files"
-  - "fixes repaired touched-files manifest"
-  - "repaired touched-files manifest generation"
-  - "touched-files manifest generation aligned"
-  - "system"
-  - "spec"
-  - "kit/022"
-  - "hybrid"
-  - "rag"
-  - "fusion/008"
-  - "kit"
-  - "code"
-  - "quality"
-
-key_files:
-  - ".opencode/skill/system-spec-kit/scripts/rules/check-anchors.sh"
-  - ".opencode/skill/system-spec-kit/scripts/tests/test-validation.sh"
-  - ".opencode/skill/system-spec-kit/scripts/tests/test-validation-extended.sh"
-  - ".opencode/skill/system-spec-kit/scripts/wrap-all-templates.ts"
-  - ".opencode/skill/system-spec-kit/mcp_server/tests/handler-checkpoints.vitest.ts"
-  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/004-speckit-quality-and-standards/scratch/touched-files-all-paths.md"
-  - ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-index.ts"
-  - ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-index-discovery.ts"
-  - ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-index-alias.ts"
-  - ".opencode/skill/system-spec-kit/mcp_server/lib/search/graph-search-fn.ts"
-  - ".opencode/skill/system-spec-kit/mcp_server/lib/search/query-expander.ts"
-  - ".opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts"
-
-# Relationships
+  - "phase 008"
+  - "anchor validation"
+  - "memory-save-extended"
+  - "lint gate"
+  - "touched files manifest"# Relationships
 related_sessions:
 
   []

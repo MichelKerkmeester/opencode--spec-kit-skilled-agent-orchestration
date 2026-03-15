@@ -1,22 +1,17 @@
 ---
-title: "Feature Verification Flag Graduation [005-core-rag-sprints-0-to-8/01-03-26_08-52__feature-verification-flag-graduation]"
+title: "Feature Verification Flag Graduation"
 description: "Executed full feature verification and remediation plan for Hybrid RAG Fusion Refinement."
 trigger_phrases:
-  - "hybrid RAG fusion verification"
+  - "hybrid rag fusion verification"
   - "feature flag graduation"
-  - "graduated-ON semantics"
-  - "SPECKIT_ environment variables"
+  - "graduated-on semantics"
+  - "speckit environment variables"
   - "classification decay alignment"
 importance_tier: "critical"
 contextType: "general"
 quality_score: 1.00
 quality_flags: []
-
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-
----
-
 # hybrid rag fusion session 01-03-26
 
 ## SESSION SUMMARY
@@ -41,6 +36,7 @@ quality_flags: []
 ---
 
 <!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -136,6 +132,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -292,6 +289,9 @@ rootCause: Deep verification audit of 61 features found 10 concerns: 3 functiona
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-aligned-speckitclassificationdecay-graduated-0142ba9f -->
@@ -466,6 +466,9 @@ rootCause: Deep verification audit of 61 features found 10 concerns: 3 functiona
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -588,6 +591,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -682,49 +686,11 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "system spec kit/022 hybrid rag fusion"
-  - "decay per hop"
-  - "boost factor"
-  - "shadow period ms"
-  - "classification tier stability multiplier"
-  - "summary"
-  - "tm 03"
-  - "graduated on"
-  - "co activation"
-  - "rrf fusion"
-  - "channel representation"
-  - "extraction adapter"
-  - "fsrs scheduler"
-  - "pi b1"
-  - "bm25 index"
-  - "hybrid rag fusion refinement"
-  - "scratch tier classification tier"
-  - "tier classification tier stability"
-  - "merged-small-files pi-b1 merged small"
-  - "pi-b1 merged small files"
-  - "test files to account"
-  - "decayperhop boostfactor distinct parameters"
-  - "decision removed shadow period"
-  - "removed shadow period dead"
-  - "shadow period dead constant"
-  - "period dead constant rather"
-  - "system"
-  - "spec"
-  - "kit/140"
-  - "hybrid"
-  - "rag"
-  - "fusion"
-  - "refinement"
-
-key_files:
-  - ".opencode/.../scoring/(merged-small-files)"
-  - ".opencode/.../search/(merged-small-files)"
-  - ".opencode/.../extraction/(merged-small-files)"
-  - ".opencode/.../config/(merged-small-files)"
-  - ".opencode/.../022-hybrid-rag-fusion/(merged-small-files)"
-  - ".opencode/.../tests/(merged-small-files)"
-
-# Relationships
+  - "hybrid rag fusion verification"
+  - "feature flag graduation"
+  - "graduated-on semantics"
+  - "speckit environment variables"
+  - "classification decay alignment"# Relationships
 related_sessions:
 
   []

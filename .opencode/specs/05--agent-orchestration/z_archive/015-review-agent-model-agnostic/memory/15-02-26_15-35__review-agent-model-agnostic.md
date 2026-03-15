@@ -1,44 +1,17 @@
 ---
-title: "Review agent model-agnostic update for 015-review-agent-model-agnostic 2026-02-15 [015-review-agent-model-agnostic/15-02-26_15-35__review-agent-model-agnostic]"
-description: "This session removed the hardcoded model from .opencode/agent/review.md so the review agent could inherit the dispatching model. It also recorded the scope analysis that ruled out changes to spec_kit command assets and documented the Level 1 spec folder created for the change."
+title: "Review agent model-agnostic update for 015-review-agent-model-agnostic 2026-02-15"
+description: "This session removed the hardcoded model from .opencode/agent/review.md so the review agent could inherit the dispatching model. It also recorded the scope analysis that ruled..."
 trigger_phrases:
   - "review agent model agnostic"
   - "remove model from review agent"
   - "subagent model inheritance"
   - "review md frontmatter change"
 importance_tier: "normal"
+contextType: "implementation"
 quality_score: 0.60
 quality_flags:
   - "needs_review"
-contextType: "implementation"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-<!-- Constitutional Tier Promotion:
-  To promote a memory to constitutional tier (always surfaced):
-  
-  1. Via MCP tool after indexing:
-     memory_update({ id: <memory_id>, importanceTier: 'constitutional' })
-  
-  2. Criteria for constitutional:
-     - Applies to ALL future conversations (not project-specific)
-     - Core constraints/rules that should NEVER be forgotten
-     - ~2000 token budget total for constitutional tier
-     
-  3. Add trigger phrases for proactive surfacing:
-     memory_update({ 
-       id: <memory_id>, 
-       importanceTier: 'constitutional',
-       triggerPhrases: ['fix', 'implement', 'create', 'modify', ...]
-     })
-     
-  4. Examples of constitutional content:
-     - "Always ask Gate 3 spec folder question before file modifications"
-     - "Never modify production data directly"
-     - "Memory files MUST use generate-context.js script"
--->
-
----
-
 # SESSION SUMMARY
 
 | **Meta Data** | **Value** |
@@ -61,6 +34,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -156,6 +130,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -295,6 +270,9 @@ rootCause: The review agent had a hardcoded model: github-copilot/claude-opus-4.
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-model-line-entirely-rather-fa7420a9 -->
@@ -415,6 +393,9 @@ rootCause: The review agent had a hardcoded model: github-copilot/claude-opus-4.
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -536,6 +517,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -630,47 +612,10 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "agents/015 review agent model agnostic"
-  - "github copilot"
-  - "claude opus 4"
-  - "sub agent"
-  - "implementation summary"
   - "review agent model agnostic"
-  - "opencode subagents automatically inherit"
-  - "subagents automatically inherit parent/dispatching"
-  - "automatically inherit parent/dispatching agent"
-  - "inherit parent/dispatching agent model"
-  - "parent/dispatching agent model model"
-  - "agent model model field"
-  - "model model field specified"
-  - "model field specified frontmatter"
-  - "model opus references configure"
-  - "opus references configure orchestrator/coordinator"
-  - "references configure orchestrator/coordinator dispatch"
-  - "configure orchestrator/coordinator dispatch mode"
-  - "orchestrator/coordinator dispatch mode review"
-  - "dispatch mode review agent"
-  - "mode review agent model"
-  - "user specifically asked review"
-  - "specifically asked review agent"
-  - "asked review agent agent"
-  - "review agent agent model"
-  - "agent agent model independent"
-  - "agents/015"
-  - "review"
-  - "agent"
-  - "model"
-  - "agnostic"
-
-key_files:
-  - ".opencode/agent/review.md"
-  - ".opencode/.../015-review-agent-model-agnostic/spec.md"
-  - ".opencode/.../015-review-agent-model-agnostic/plan.md"
-  - ".opencode/.../015-review-agent-model-agnostic/tasks.md"
-  - ".opencode/.../015-review-agent-model-agnostic/implementation-summary.md"
-
-# Relationships
-related_sessions:
+  - "remove model from review agent"
+  - "subagent model inheritance"
+  - "review md frontmatter change"related_sessions:
 
   []
 

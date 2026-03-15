@@ -1,19 +1,16 @@
 ---
-title: "Memory system hardening for 014-anchor-enforcement 2025-12-16 [014-anchor-enforcement/16-12-25_20-27__anchor-enforcement]"
-description: "This memory captures a broad hardening pass on the memory system during the archived 014-anchor-enforcement work. The session used parallel agents to fix template placeholders, improve decision extraction, refine phase detection, and support short manual-input sessions. It remains preserved as a migrated v2.2 record from 2025-12-16."
+title: "Memory system hardening for 014-anchor-enforcement 2025-12-16"
+description: "This memory captures a broad hardening pass on the memory system during the archived 014-anchor-enforcement work. The session used parallel agents to fix template..."
 trigger_phrases:
   - "memory system hardening"
   - "decision extraction fixes"
   - "phase detection updates"
 importance_tier: "normal"
+contextType: "general"
 quality_score: 0.60
 quality_flags:
   - "legacy_migration"
-contextType: "general"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
----
-
 # SESSION SUMMARY
 
 | **Meta Data** | **Value** |
@@ -40,7 +37,8 @@ contextType: "general"
 
 ---
 
-<!-- ANCHOR:preflight-session-1765913266122-eoj7hndgg-005-memory/008-anchor-enforcement -->
+<!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -64,7 +62,7 @@ contextType: "general"
 
 ---
 
-<!-- ANCHOR:continue-session-session-1765913266122-eoj7hndgg-005-memory/008-anchor-enforcement -->
+<!-- ANCHOR:continue-session -->
 <a id="continue-session"></a>
 
 ## CONTINUE SESSION
@@ -99,7 +97,9 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 ---
 
-<!-- ANCHOR:summary-session-1765913266122-eoj7hndgg-005-memory/008-anchor-enforcement -->
+<!-- ANCHOR:summary -->
+<a id="overview"></a>
+
 ## 1. OVERVIEW
 
 Improved the memory system with 9 parallel agents fixing template placeholders, decision extraction, phase detection, and documentation. Key improvements include: DECISION_IMPORTANCE field, manual input support, and short session handling.
@@ -120,7 +120,9 @@ Improved the memory system with 9 parallel agents fixing template placeholders, 
 
 ---
 
-<!-- ANCHOR:detailed-changes-session-1765913266122-eoj7hndgg-005-memory/008-anchor-enforcement -->
+<!-- ANCHOR:detailed-changes -->
+<a id="detailed-changes"></a>
+
 ## 2. DETAILED CHANGES
 
 <!-- ANCHOR:decision-the-memory-system-005-session-1765913266122-eoj7hndgg -->
@@ -151,7 +153,9 @@ Decision 2: Added DECISION_IMPORTANCE field - Maps confidence to high/medium/low
 
 ---
 
-<!-- ANCHOR:decisions-session-1765913266122-eoj7hndgg-005-memory/008-anchor-enforcement -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 3. DECISIONS
 
 <!-- ANCHOR:decision-used-parallel-agents-005-session-1765913266122-eoj7hndgg -->
@@ -210,7 +214,9 @@ Decision 2: Added DECISION_IMPORTANCE field - Maps confidence to high/medium/low
 
 <!-- /ANCHOR:decisions-session-1765913266122-eoj7hndgg-005-memory/008-anchor-enforcement -->
 
-<!-- ANCHOR:session-history-session-1765913266122-eoj7hndgg-005-memory/008-anchor-enforcement -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 4. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -235,7 +241,7 @@ Improved the memory system with 9 parallel agents fixing template placeholders, 
 
 ---
 
-<!-- ANCHOR:recovery-hints-session-1765913266122-eoj7hndgg-005-memory/008-anchor-enforcement -->
+<!-- ANCHOR:recovery-hints -->
 <a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
@@ -260,7 +266,7 @@ Improved the memory system with 9 parallel agents fixing template placeholders, 
 <!-- /ANCHOR:recovery-hints-session-1765913266122-eoj7hndgg-005-memory/008-anchor-enforcement -->
 ---
 
-<!-- ANCHOR:postflight-session-1765913266122-eoj7hndgg-005-memory/008-anchor-enforcement -->
+<!-- ANCHOR:postflight -->
 <a id="postflight-learning-delta"></a>
 
 ## POSTFLIGHT LEARNING DELTA
@@ -285,6 +291,8 @@ Improved the memory system with 9 parallel agents fixing template placeholders, 
 This session was migrated from an older format. Learning metrics were not captured in the original format.
 <!-- /ANCHOR:postflight-session-1765913266122-eoj7hndgg-005-memory/008-anchor-enforcement -->
 ---
+<!-- ANCHOR:metadata -->
+<a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 

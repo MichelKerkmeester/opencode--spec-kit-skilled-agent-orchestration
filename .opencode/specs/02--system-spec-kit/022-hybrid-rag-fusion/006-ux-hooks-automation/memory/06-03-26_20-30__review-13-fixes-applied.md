@@ -1,20 +1,17 @@
 ---
-title: "Applied 13 review-driven [006-ux-hooks-automation/06-03-26_20-30__review-13-fixes-applied]"
+title: "Applied 13 review-driven"
 description: "Applied 13 review-driven fixes from a 6-agent parallel review of 011-ux-hooks-automation, including follow-up security hardening and documentation updates."
 trigger_phrases:
   - "review-driven fixes"
   - "ux hooks automation"
   - "parallel agents"
-  - "MutationHookResult"
+  - "mutationhookresult"
   - "windows path regex"
 importance_tier: "important"
 contextType: "general"
 quality_score: 0.90
 quality_flags: []
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
----
-
 # Applied 13 review-driven fixes (M1-M4 Major, m1-m5+m10 Minor, s3+s6+s7 Suggestions) from a 6-agent...
 
 ## SESSION SUMMARY
@@ -35,8 +32,6 @@ quality_flags: []
 | Created At (Epoch) | 1772825441 |
 | Last Accessed (Epoch) | 1772825441 |
 | Access Count | 1 |
-
----
 
 ---
 
@@ -110,6 +105,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -248,6 +244,9 @@ rootCause: 6-agent review of 011-ux-hooks-automation identified 4 Major, 10 Mino
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-parallel-agents-exclusive-file-fe625552 -->
@@ -422,6 +421,9 @@ rootCause: 6-agent review of 011-ux-hooks-automation identified 4 Major, 10 Mino
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -504,8 +506,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 
 ---
 
----
-
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -600,45 +601,11 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/022 hybrid rag fusion"
-  - "review driven"
-  - "m1 m4"
-  - "m1 m5"
+  - "review-driven fixes"
   - "ux hooks automation"
-  - "implementation summary"
-  - "review report"
-  - "non overlapping"
-  - "token efficient"
-  - "well specified"
-  - "crud types"
-  - "re export"
-  - "mutation hooks"
-  - "merged small files"
-  - "parallel agents exclusive file"
-  - "agents exclusive file ownership"
-  - "agent owned non-overlapping set"
-  - "owned non-overlapping set files"
-  - "reliable token-efficient well-specified changes"
-  - "windows path regex repair.errors"
-  - "path regex repair.errors sanitization"
-  - "regex repair.errors sanitization security"
-  - "repair.errors sanitization security boundary"
-  - "sanitization security boundary completeness"
-  - "security boundary completeness issues"
-  - "crud-types.ts re-export mutation-hooks.ts preserves"
-  - "system"
-  - "spec"
-  - "kit/022"
-  - "hybrid"
-  - "rag"
-  - "fusion"
-
-key_files:
-  - ".opencode/.../handlers/(merged-small-files)"
-  - ".opencode/.../hooks/(merged-small-files)"
-  - ".opencode/skill/system-spec-kit/mcp_server/(merged-small-files)"
-
-# Relationships
+  - "parallel agents"
+  - "mutationhookresult"
+  - "windows path regex"# Relationships
 related_sessions:
 
   []

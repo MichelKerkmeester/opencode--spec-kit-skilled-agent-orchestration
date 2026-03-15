@@ -1,5 +1,5 @@
 ---
-title: "Phase 13 indexed direct save [001-hybrid-rag-fusion-epic/06-03-26_15-07__phase-13-indexed-direct-save-closure]"
+title: "Phase 13 indexed direct save"
 description: "The final indexing blocker was separate from naming: preflight blocks needed gating and tool counting needed case-insensitive normalization."
 trigger_phrases:
   - "system spec kit/022 hybrid rag fusion"
@@ -7,15 +7,11 @@ trigger_phrases:
   - "tree thinning"
   - "merged-small-files tree-thinning merged small"
   - "tree-thinning merged small files"
-quality_score: 1.00
-quality_flags: []
 importance_tier: "critical"
 contextType: "implementation"
-
+quality_score: 1.00
+quality_flags: []
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
----
-
 # Phase 13 indexed direct save quality closure for hybrid rag fusion
 
 ## SESSION SUMMARY
@@ -36,8 +32,6 @@ contextType: "implementation"
 | Created At (Epoch) | 1772806023 |
 | Last Accessed (Epoch) | 1772806023 |
 | Access Count | 1 |
-
----
 
 ---
 
@@ -109,6 +103,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -220,6 +215,9 @@ Confirmed the direct root save now preserves a specific filename, avoids placeho
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 decision_count: 0
@@ -236,6 +234,9 @@ decision_count: 0
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -371,8 +372,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 
 ---
 
----
-
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -467,45 +467,11 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/022 hybrid rag fusion"
-  - "context template"
+  - "system spec kit/022 hybrid rag fusion"
   - "case insensitive"
   - "tree thinning"
   - "merged-small-files tree-thinning merged small"
-  - "tree-thinning merged small files"
-  - "final indexing blocker separate"
-  - "indexing blocker separate naming"
-  - "blocker separate naming preflight"
-  - "separate naming preflight blocks"
-  - "naming preflight blocks needed"
-  - "preflight blocks needed gating"
-  - "blocks needed gating tool"
-  - "needed gating tool counting"
-  - "gating tool counting needed"
-  - "tool counting needed case-insensitive"
-  - "counting needed case-insensitive normalization"
-  - ".opencode/.../extractors/ merged-small-files tree-thinning merged"
-  - "merged small files collect-session-data.ts"
-  - "small files collect-session-data.ts session-extractor.ts"
-  - "collect-session-data.ts collect session data"
-  - "collect session data session-extractor.ts"
-  - "session data session-extractor.ts session"
-  - "data session-extractor.ts session extractor"
-  - "session-extractor.ts session extractor .opencode/.../templates/"
-  - "session extractor .opencode/.../templates/ merged-small-files"
-  - "system"
-  - "spec"
-  - "kit/022"
-  - "hybrid"
-  - "rag"
-  - "fusion"
-
-key_files:
-  - ".opencode/.../extractors/(merged-small-files)"
-  - ".opencode/.../templates/(merged-small-files)"
-  - ".opencode/.../tests/(merged-small-files)"
-
-# Relationships
+  - "tree-thinning merged small files"# Relationships
 related_sessions:
 
   []

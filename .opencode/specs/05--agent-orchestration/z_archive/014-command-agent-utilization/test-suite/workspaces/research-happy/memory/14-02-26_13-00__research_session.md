@@ -1,5 +1,19 @@
 ---
-title: "Research Session: WebSocket Real-Time Collaboration [research-happy/14-02-26_13-00__research_session]"
+title: "Research Session: WebSocket Real-Time Collaboration"
+description: "Research Session: WebSocket Real-Time Collaboration"
+trigger_phrases:
+  - "real time"
+  - "research session websocket real-time"
+  - "session websocket real-time collaboration"
+  - "websocket real-time collaboration research"
+  - "real-time collaboration research session"
+  - "collaboration research session websocket"
+  - "websocket real-time collaboration archive"
+  - "real-time collaboration archive command"
+  - "collaboration archive command agent"
+  - "archive command agent utilization"
+  - "command agent utilization test"
+  - "agent utilization test suite"
 importance_tier: "normal"
 contextType: "general"
 ---

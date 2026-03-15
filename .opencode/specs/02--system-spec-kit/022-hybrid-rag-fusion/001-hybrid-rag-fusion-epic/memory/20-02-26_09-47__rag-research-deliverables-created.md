@@ -3,18 +3,15 @@ title: "Hybrid RAG research deliverables created and indexed"
 description: "Saved and indexed the completed hybrid RAG research deliverables after producing analysis and recommendation documents for the memory MCP architecture."
 trigger_phrases:
   - "memory saved"
-  - "hybrid RAG fusion"
+  - "hybrid rag fusion"
   - "analysis-hybrid-rag-fusion-systems"
   - "recommendations-speckit-memory-mcp"
-  - "SQLite FTS5"
-quality_score: 1.00
-quality_flags: []
+  - "sqlite fts5"
 importance_tier: "normal"
 contextType: "research"
+quality_score: 1.00
+quality_flags: []
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
----
-
 # SESSION SUMMARY
 
 | **Meta Data** | **Value** |
@@ -37,6 +34,7 @@ contextType: "research"
 ---
 
 <!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -131,6 +129,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -488,6 +487,9 @@ specs/02--system-spec-kit/022-hybrid-rag-fusion/research_final/[138] - recommend
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 decision_count: 0
@@ -504,6 +506,9 @@ decision_count: 0
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -738,6 +743,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -832,52 +838,11 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "system spec kit/022 hybrid rag fusion"
-  - "research 2"
-  - "research 3"
-  - "research 4"
-  - "summary 138 hybrid rag fusion"
-  - "decision tri hybrid search 138 hybrid rag fusion"
-  - "files 138 hybrid rag fusion"
-  - "analysis hybrid rag fusion systems"
-  - "recommendations speckit memory mcp"
-  - "analysis unified hybrid rag fusion"
-  - "recommendations unified speckit memory mcp"
-  - "memory saved spec folder"
-  - "saved spec folder 02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic"
-  - "spec folder 02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic file"
-  - "folder 02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic file specs/02--system-spec-kit/022-hybrid-rag-fusion/memory/20-02-26"
-  - "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic file specs/02--system-spec-kit/022-hybrid-rag-fusion/memory/20-02-26 hybrid-rag-fusion.md"
-  - "file specs/02--system-spec-kit/022-hybrid-rag-fusion/memory/20-02-26 hybrid-rag-fusion.md memory"
-  - "specs/02--system-spec-kit/022-hybrid-rag-fusion/memory/20-02-26 hybrid-rag-fusion.md memory indexing"
-  - "hybrid-rag-fusion.md memory indexing indexed"
-  - "memory indexing indexed anchors"
-  - "indexing indexed anchors summary-022-hybrid-rag-fusion/002-hybrid-rag-fusion"
-  - "indexed anchors summary-138-hybrid-rag-fusion decision-tri-hybrid-search-022-hybrid-rag-fusion/002-hybrid-rag-fusion"
-  - "anchors summary-138-hybrid-rag-fusion decision-tri-hybrid-search-138-hybrid-rag-fusion files-022-hybrid-rag-fusion/002-hybrid-rag-fusion"
-  - "summary-138-hybrid-rag-fusion decision-tri-hybrid-search-138-hybrid-rag-fusion files-138-hybrid-rag-fusion trigger"
-  - "decision-tri-hybrid-search-138-hybrid-rag-fusion files-138-hybrid-rag-fusion trigger phrases"
-  - "files-138-hybrid-rag-fusion trigger phrases hybrid"
-  - "system"
-  - "spec"
-  - "kit/022"
-  - "hybrid"
-  - "rag"
-  - "fusion"
-
-key_files:
-  - "specs/02--system-spec-kit/022-hybrid-rag-fusion/research_2/[138] - analysis-hybrid-rag-fusion-systems.md"
-  - "specs/02--system-spec-kit/022-hybrid-rag-fusion/research_2/[138] - recommendations-speckit-memory-mcp.md"
-  - "specs/02--system-spec-kit/022-hybrid-rag-fusion/research_3/[138] - analysis-graph-hierarchical.md"
-  - "specs/02--system-spec-kit/022-hybrid-rag-fusion/research_3/[138] - recommendations-graph-hierarchical.md"
-  - "specs/02--system-spec-kit/022-hybrid-rag-fusion/research_4/[138] - analysis-ragflow-fusion.md"
-  - "specs/02--system-spec-kit/022-hybrid-rag-fusion/research_4/[138] - recommendations-ragflow-fusion.md"
-  - "specs/02--system-spec-kit/022-hybrid-rag-fusion/research_final/[138] - analysis-unified-hybrid-rag-fusion.md"
-  - "specs/02--system-spec-kit/022-hybrid-rag-fusion/research_final/[138] - recommendations-unified-speckit-memory-mcp.md"
-  - "specs/02--system-spec-kit/022-hybrid-rag-fusion/context/reddit_post_1.md"
-  - "specs/02--system-spec-kit/022-hybrid-rag-fusion/context/reddit_post_2.md"
-
-# Relationships
+  - "memory saved"
+  - "hybrid rag fusion"
+  - "analysis-hybrid-rag-fusion-systems"
+  - "recommendations-speckit-memory-mcp"
+  - "sqlite fts5"# Relationships
 related_sessions:
 
   []

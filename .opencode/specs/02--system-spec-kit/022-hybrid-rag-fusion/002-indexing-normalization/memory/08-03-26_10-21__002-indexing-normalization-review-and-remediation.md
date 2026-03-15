@@ -1,5 +1,5 @@
 ---
-title: "002-indexing-normalization [002-indexing-normalization/08-03-26_10-21__002-indexing-normalization-review-and-remediation]"
+title: "002-indexing-normalization"
 description: "Code review PASS confirmed — no P0 bugs across 5 reviewed files (memory-parser.ts, canonical-path.ts, memory-index.ts, memory-crud-list.ts, importance-tiers.ts)."
 trigger_phrases:
   - "find memory files"
@@ -11,11 +11,7 @@ importance_tier: "normal"
 contextType: "general"
 quality_score: 1.00
 quality_flags: []
-
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
----
-
 # 002-indexing-normalization review and remediation complete
 
 ## SESSION SUMMARY
@@ -36,8 +32,6 @@ quality_flags: []
 | Created At (Epoch) | 1772961693 |
 | Last Accessed (Epoch) | 1772961693 |
 | Access Count | 1 |
-
----
 
 ---
 
@@ -109,6 +103,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -182,6 +177,9 @@ Code review PASS confirmed — no P0 bugs across 5 reviewed files (memory-parser
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 3. DECISIONS
 
 <!-- ANCHOR:decision-consolidation-artifacts-classified-bydesign-730374db -->
@@ -218,6 +216,9 @@ Code review PASS confirmed — no P0 bugs across 5 reviewed files (memory-parser
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 4. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -298,8 +299,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 
 ---
 
----
-
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -394,42 +394,11 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/022 hybrid rag fusion"
   - "find memory files"
   - "find spec documents"
   - "memory parser"
   - "memory index"
-  - "memory crud list"
-  - "importance tiers"
-  - "adr 002"
-  - "chk 120"
-  - "by design"
-  - "code review pass confirmed"
-  - "review pass confirmed bugs"
-  - "pass confirmed bugs across"
-  - "confirmed bugs across reviewed"
-  - "bugs across reviewed files"
-  - "across reviewed files memory-parser.ts"
-  - "reviewed files memory-parser.ts canonical-path.ts"
-  - "files memory-parser.ts canonical-path.ts memory-index.ts"
-  - "memory-parser.ts canonical-path.ts memory-index.ts memory-crud-list.ts"
-  - "canonical-path.ts memory-index.ts memory-crud-list.ts importance-tiers.ts"
-  - "canonical path dedup correctly"
-  - "path dedup correctly implemented"
-  - "tier precedence matches adr-002"
-  - "sql parameterized queries safe"
-  - "two code observations findmemoryfiles"
-  - "code observations findmemoryfiles skips"
-  - "system"
-  - "spec"
-  - "kit/022"
-  - "hybrid"
-  - "rag"
-  - "fusion"
-
-key_files:
-
-# Relationships
+  - "memory crud list"# Relationships
 related_sessions:
 
   []

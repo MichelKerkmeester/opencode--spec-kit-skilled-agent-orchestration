@@ -1,21 +1,17 @@
 ---
-title: "22-agent audit with 34 tier fixes [001-hybrid-rag-fusion-epic/27-02-26_14-35__22-agent-audit-34-tier-fixes]"
-description: "Executed 34 remaining Tier A/B/C fixes from the comprehensive 22-agent Hybrid RAG Fusion spec audit. 5 parallel opus agents applied all fixes: Agent 1 made 16 edits to root spec.md (B8 signal ceiling ."
+title: "22-agent audit with 34 tier fixes"
+description: "Executed 34 remaining Tier A/B/C fixes from the comprehensive 22-agent Hybrid RAG Fusion spec audit. 5 parallel opus agents applied all fixes: Agent 1 made 16 edits to root..."
 trigger_phrases:
   - "system spec kit/022 hybrid rag fusion"
   - "pi b3"
   - "req 062"
   - "phase sprint"
   - "child only"
-quality_score: 1.00
-quality_flags: []
 importance_tier: "critical"
 contextType: "implementation"
+quality_score: 1.00
+quality_flags: []
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-
----
-
 # hybrid rag fusion session 27-02-26
 
 ## SESSION SUMMARY
@@ -40,6 +36,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -135,6 +132,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -299,6 +297,9 @@ rootCause: After wave 1 fixed 13 CRITICAL and 22 top MAJOR findings from the 22-
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-signal-ceiling-raised-because-ff2e6702 -->
@@ -473,6 +474,9 @@ rootCause: After wave 1 fixed 13 CRITICAL and 22 top MAJOR findings from the 22-
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -594,6 +598,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -692,49 +697,7 @@ trigger_phrases:
   - "pi b3"
   - "req 062"
   - "phase sprint"
-  - "child only"
-  - "t ip s4"
-  - "t ip s6"
-  - "t pi s6"
-  - "t s6 spike"
-  - "t doc ops"
-  - "cross cutting"
-  - "cross refs"
-  - "chk fts5 sync"
-  - "memory save"
-  - "per spec folder"
-  - "memory crud health"
-  - "startup checks"
-  - "r5 eval"
-  - "oq 002"
-  - "req 031"
-  - "single threaded"
-  - "pre existing"
-  - "hybrid rag fusion refinement"
-  - "sprint 4 feedback and quality"
-  - "r11 safeguards unified divergent"
-  - "safeguards unified divergent root"
-  - "system"
-  - "spec"
-  - "kit/140"
-  - "hybrid"
-  - "rag"
-  - "fusion"
-  - "refinement"
-
-key_files:
-  - ".opencode/.../022-hybrid-rag-fusion/spec.md"
-  - ".opencode/.../022-hybrid-rag-fusion/tasks.md"
-  - ".opencode/.../022-hybrid-rag-fusion/plan.md"
-  - ".opencode/.../022-hybrid-rag-fusion/checklist.md"
-  - ".opencode/.../002-sprint-4-feedback-and-quality/spec.md"
-  - ".opencode/.../002-sprint-4-feedback-and-quality/tasks.md"
-  - ".opencode/.../search/bm25-index.ts"
-  - ".opencode/.../handlers/memory-save.ts"
-  - ".opencode/.../handlers/memory-crud-health.ts"
-  - ".opencode/skill/system-spec-kit/mcp_server/startup-checks.ts"
-
-# Relationships
+  - "child only"# Relationships
 related_sessions:
 
   []

@@ -2,19 +2,16 @@
 title: "Hybrid RAG comparative analysis session - part 1"
 description: "Compared system-spec-kit memory MCP internals with external RAG implementations to produce code-grounded guidance on fusion, ranking, and retrieval orchestration."
 trigger_phrases:
-  - "hybrid RAG comparative analysis"
-  - "memory MCP"
-  - "graphrag_mcp"
+  - "hybrid rag comparative analysis"
+  - "memory mcp"
+  - "graphrag mcp"
   - "ragflow"
   - "retrieval orchestration"
-quality_score: 1.00
-quality_flags: []
 importance_tier: "critical"
 contextType: "research"
+quality_score: 1.00
+quality_flags: []
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
----
-
 # SESSION SUMMARY
 
 | **Meta Data** | **Value** |
@@ -37,6 +34,7 @@ contextType: "research"
 ---
 
 <!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -130,6 +128,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -256,6 +255,9 @@ rootCause: Need stronger hybrid retrieval guidance for memory MCP evolution with
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-autonomous-single-1865cfda -->
@@ -349,6 +351,9 @@ rootCause: Need stronger hybrid retrieval guidance for memory MCP evolution with
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -468,6 +473,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -562,46 +568,11 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "system spec kit/022 hybrid rag fusion"
-  - "code grounded"
-  - "implementation focused"
-  - "end to end"
-  - "hierarchical rag"
-  - "analysis hybrid rag patterns"
-  - "recommendations system spec kit memory mcp"
-  - "agent execution spec folder"
-  - "execution spec folder uninterrupted"
-  - "spec folder uninterrupted end-to-end"
-  - "folder uninterrupted end-to-end research"
-  - "uninterrupted end-to-end research drafting"
-  - "end-to-end research drafting required"
-  - "hierarchical-rag ragflow extract actionable"
-  - "ragflow extract actionable architecture"
-  - "extract actionable architecture patterns"
-  - "actionable architecture patterns rather"
-  - "architecture patterns rather generic"
-  - "patterns rather generic rag"
-  - "rather generic rag theory"
-  - "context artifacts"
-  - "completed for system"
   - "hybrid rag comparative analysis"
-  - "rag comparative analysis completed"
-  - "comparative analysis completed system-spec-kit"
-  - "analysis completed system-spec-kit memory"
-  - "system"
-  - "spec"
-  - "kit/022"
-  - "hybrid"
-  - "rag"
-  - "fusion"
-
-key_files:
-  - "specs/02--system-spec-kit/022-hybrid-rag-fusion/context/reddit_post_1.md"
-  - "specs/02--system-spec-kit/022-hybrid-rag-fusion/context/reddit_post_2.md"
-  - "specs/02--system-spec-kit/022-hybrid-rag-fusion/research/001 - analysis-hybrid-rag-patterns.md"
-  - "specs/02--system-spec-kit/022-hybrid-rag-fusion/research/002 - recommendations-system-spec-kit-memory-mcp.md"
-
-# Relationships
+  - "memory mcp"
+  - "graphrag mcp"
+  - "ragflow"
+  - "retrieval orchestration"# Relationships
 related_sessions:
 
   []

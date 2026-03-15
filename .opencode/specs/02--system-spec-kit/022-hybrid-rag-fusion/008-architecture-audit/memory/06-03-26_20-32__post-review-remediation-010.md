@@ -1,20 +1,17 @@
 ---
-title: "Executed a comprehensive [008-architecture-audit/06-03-26_20-32__post-review-remediation-010]"
+title: "Executed a comprehensive"
 description: "Executed post-review remediation for 008-architecture-audit, fixed all P0/P1 issues plus minor findings, and re-validated the spec with zero warnings."
 trigger_phrases:
   - "post-review remediation"
   - "architecture audit"
   - "allowlist expiry"
-  - "ADR-006"
+  - "adr-006"
   - "cross-file consistency"
 importance_tier: "important"
 contextType: "general"
 quality_score: 0.65
 quality_flags: []
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
----
-
 # Executed a comprehensive post-review remediation of the 008-architecture-audit spec folder. A...
 
 ## SESSION SUMMARY
@@ -35,8 +32,6 @@ quality_flags: []
 | Created At (Epoch) | 1772825574 |
 | Last Accessed (Epoch) | 1772825574 |
 | Access Count | 1 |
-
----
 
 ---
 
@@ -110,6 +105,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -243,6 +239,9 @@ rootCause: 10-agent comprehensive review of 008-architecture-audit found 2 P0 (s
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-applied-all-p0p1-review-6feadd8c -->
@@ -390,6 +389,9 @@ rootCause: 10-agent comprehensive review of 008-architecture-audit found 2 P0 (s
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -473,8 +475,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 
 ---
 
----
-
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -569,45 +570,11 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/022 hybrid rag fusion"
+  - "post-review remediation"
   - "architecture audit"
-  - "review 2026 03 06"
-  - "check allowlist expiry"
-  - "adr 004"
-  - "adr 002"
-  - "adr 006"
-  - "implementation summary"
-  - "chk 201"
-  - "chk 700"
-  - "chk 724"
-  - "dual perspective"
-  - "tree thinning"
-  - "edits documentation hygiene code"
-  - "documentation hygiene code risk"
-  - "record.md edits spec.md edits"
-  - "edits spec.md edits doing"
-  - "spec.md edits doing simple"
-  - "edits doing simple files"
-  - "doing simple files directly"
-  - "simple files directly maximized"
-  - "files directly maximized parallelism"
-  - "directly maximized parallelism without"
-  - "maximized parallelism without agent"
-  - "parallelism without agent overhead"
-  - "without agent overhead trivial"
-  - "system"
-  - "spec"
-  - "kit/022"
-  - "hybrid"
-  - "rag"
-  - "fusion"
-
-key_files:
-  - ".opencode/skill/system-spec-kit/scripts/(merged-small-files)"
-  - ".opencode/.../008-architecture-audit/(merged-small-files)"
-  - ".opencode/.../review-2026-03-06/(merged-small-files)"
-
-# Relationships
+  - "allowlist expiry"
+  - "adr-006"
+  - "cross-file consistency"# Relationships
 related_sessions:
 
   []

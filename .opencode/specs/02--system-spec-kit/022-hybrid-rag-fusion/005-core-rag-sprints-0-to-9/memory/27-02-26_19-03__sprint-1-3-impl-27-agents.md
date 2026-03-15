@@ -1,22 +1,17 @@
 ---
-title: "Sprint 1-3 Pipeline Implementation [005-core-rag-sprints-0-to-8/27-02-26_19-03__sprint-1-3-impl-27-agents]"
+title: "Sprint 1-3 Pipeline Implementation"
 description: "Completed the full 8-wave, 27-agent Hybrid RAG Fusion pipeline implementation across Sprints 1-3."
 trigger_phrases:
   - "sprint 3 query intelligence"
   - "query complexity router"
-  - "RSF fusion"
+  - "rsf fusion"
   - "channel min-representation"
   - "confidence truncation"
 importance_tier: "critical"
 contextType: "general"
 quality_score: 1.00
 quality_flags: []
-
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-
----
-
 # hybrid rag fusion session 27-02-26
 
 ## SESSION SUMMARY
@@ -41,6 +36,7 @@ quality_flags: []
 ---
 
 <!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -136,6 +132,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -293,6 +290,9 @@ rootCause: Full pipeline executed 27 agents across 8 waves implementing Sprints 
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-rsf-accepted-kendall-tau-aea0796b -->
@@ -440,6 +440,9 @@ rootCause: Full pipeline executed 27 agents across 8 waves implementing Sprints 
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -560,6 +563,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -654,53 +658,11 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "system spec kit/022 hybrid rag fusion"
-  - "single pair"
-  - "cross variant"
-  - "off ramp"
-  - "flag gated"
-  - "t022 query classifier"
-  - "t023 rsf fusion"
-  - "rsf accepted kendall tau"
-  - "accepted kendall tau across"
-  - "kendall tau across scenarios"
-  - "tau across scenarios means"
-  - "across scenarios means rsf"
-  - "scenarios means rsf rankings"
-  - "means rsf rankings highly"
-  - "rsf rankings highly correlated"
-  - "rankings highly correlated rrf"
-  - "highly correlated rrf safe"
-  - "correlated rrf safe use"
-  - "rrf safe use alternative"
-  - "test data achieves 66"
-  - "confidence truncation dynamic token"
-  - "truncation dynamic token budget"
-  - "safe use alternative rsf"
-  - "use alternative rsf accepted"
-  - "alternative rsf accepted kendall"
-  - "ramp triggered thresholds unviolated"
-  - "system"
-  - "spec"
-  - "kit/140"
-  - "hybrid"
-  - "rag"
-  - "fusion"
-  - "refinement"
-
-key_files:
-  - ".opencode/.../search/query-classifier.ts"
-  - ".opencode/.../search/query-router.ts"
-  - ".opencode/.../search/rsf-fusion.ts"
-  - ".opencode/.../search/channel-representation.ts"
-  - ".opencode/.../search/channel-enforcement.ts"
-  - ".opencode/.../search/folder-discovery.ts"
-  - ".opencode/.../search/confidence-truncation.ts"
-  - ".opencode/.../search/dynamic-token-budget.ts"
-  - ".opencode/.../tests/t022-query-classifier.vitest.ts"
-  - ".opencode/.../tests/t023-rsf-fusion.vitest.ts"
-
-# Relationships
+  - "sprint 3 query intelligence"
+  - "query complexity router"
+  - "rsf fusion"
+  - "channel min-representation"
+  - "confidence truncation"# Relationships
 related_sessions:
 
   []

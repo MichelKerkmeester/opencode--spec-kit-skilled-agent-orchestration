@@ -1,22 +1,17 @@
 ---
-title: "Sprint 9 Documentation Fixes [006-extra-features/04-03-26_11-31__sprint-019-doc-updates-6-fixes]"
+title: "Sprint 9 Documentation Fixes"
 description: "Continuation session following context overflow."
 trigger_phrases:
   - "feature catalog update"
-  - "PLANNED to IMPLEMENTED"
-  - "Sprint 019 documentation"
+  - "planned to implemented"
+  - "sprint 019 documentation"
   - "manual test playbook"
-  - "NEW-095 through NEW-102"
+  - "new-095 through new-102"
 importance_tier: "normal"
 contextType: "general"
 quality_score: 1.00
 quality_flags: []
-
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-
----
-
 # hybrid rag fusion session 04-03-26
 
 ## SESSION SUMMARY
@@ -41,6 +36,7 @@ quality_flags: []
 ---
 
 <!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -134,6 +130,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -253,6 +250,9 @@ rootCause: Gemini 3.1 Pro Preview agents from previous session were stuck on rat
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-applied-all-doc-changes-6056c2e7 -->
@@ -373,6 +373,9 @@ rootCause: Gemini 3.1 Pro Preview agents from previous session were stuck on rat
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -494,6 +497,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -588,45 +592,11 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/022 hybrid rag fusion"
-  - "had wrong"
-  - "and missing"
-  - "build server instructions"
-  - "inject contextual tree"
-  - "feature catalog"
-  - "manual test playbooks"
-  - "new 095"
-  - "new 102"
-  - "gpt 5"
-  - "new 097"
-  - "new 096"
-  - "rate limited"
-  - "hybrid rag fusion refinement"
-  - "tree thinning"
-  - "but still labeled planned"
-  - "file watcher retry timing"
-  - "implemented sprint features p0-1"
-  - "sprint features p0-1 p1-7"
-  - "decision fixed file watcher"
-  - "fixed file watcher retry"
-  - "watcher retry timing attempts"
-  - "retry timing attempts delays"
-  - "timing attempts delays delay"
-  - "attempts delays delay slot"
-  - "delays delay slot unreachable"
-  - "system"
-  - "spec"
-  - "kit/023"
-  - "hybrid"
-  - "rag"
-  - "fusion"
-  - "refinement"
-
-key_files:
-  - ".opencode/.../022-hybrid-rag-fusion/(merged-small-files)"
-  - ".opencode/.../manual-testing-playbook/(merged-small-files)"
-
-# Relationships
+  - "feature catalog update"
+  - "planned to implemented"
+  - "sprint 019 documentation"
+  - "manual test playbook"
+  - "new-095 through new-102"# Relationships
 related_sessions:
 
   []

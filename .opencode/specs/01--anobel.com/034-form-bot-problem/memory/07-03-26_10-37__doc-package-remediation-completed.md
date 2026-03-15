@@ -1,19 +1,16 @@
 ---
-title: "Doc-package remediation completed [034-form-bot-problem/07-03-26_10-37__doc-package-remediation-completed]"
-description: "This session records the remediation of the form-bot planning documents after review. It captures the tightened evidence labeling, checklist alignment, and follow-up requirement to continue implementation only after provider evidence work."
+title: "Doc-package remediation completed"
+description: "This session records the remediation of the form-bot planning documents after review. It captures the tightened evidence labeling, checklist alignment, and follow-up..."
 trigger_phrases:
   - "form bot doc package remediation"
   - "botpoison planning evidence labeling"
   - "server side planning decision"
 importance_tier: "normal"
+contextType: "research"
 quality_score: 0.60
 quality_flags:
   - "needs_review"
-contextType: "research"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
----
-
 # Doc-package remediation completed
 
 ## SESSION SUMMARY
@@ -34,8 +31,6 @@ contextType: "research"
 | Created At (Epoch) | 1772876250 |
 | Last Accessed (Epoch) | 1772876250 |
 | Access Count | 1 |
-
----
 
 ---
 
@@ -110,6 +105,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -214,6 +210,9 @@ Planning notes now explicitly track version drift and service-worker caching as 
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 3. DECISIONS
 
 <!-- ANCHOR:decision-docpackage-remediation-completed-9c62f210 -->
@@ -358,6 +357,9 @@ Planning notes now explicitly track version drift and service-worker caching as 
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 4. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -439,8 +441,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 01-
 
 ---
 
----
-
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -535,43 +536,9 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " anobel.com/034 form bot problem"
-  - "doc package"
-  - "server side first"
-  - "tree thinning"
-  - "decision record"
-  - "implementation summary"
-  - "reviewed planning package remediated"
-  - "planning package remediated spec"
-  - "package remediated spec artifacts"
-  - "remediated spec artifacts reflect"
-  - "spec artifacts reflect review"
-  - "artifacts reflect review corrections"
-  - "reflect review corrections instead"
-  - "review corrections instead overstated"
-  - "corrections instead overstated conclusions"
-  - "plan treats server-side controls"
-  - "treats server-side controls evidence"
-  - "server-side controls evidence gathering"
-  - "controls evidence gathering primary"
-  - "evidence gathering primary path"
-  - "gathering primary path client"
-  - "primary path client changes"
-  - "path client changes deferred"
-  - "client changes deferred provider"
-  - "changes deferred provider evidence"
-  - "deferred provider evidence confirms"
-  - "anobel.com/034"
-  - "form"
-  - "bot"
-  - "problem"
-
-key_files:
-  - ".opencode/specs/01--anobel.com/034-form-bot-problem/(merged-small-files)"
-  - ".opencode/.../034-form-bot-problem/(merged-small-files)"
-
-# Relationships
-related_sessions:
+  - "form bot doc package remediation"
+  - "botpoison planning evidence labeling"
+  - "server side planning decision"related_sessions:
 
   []
 

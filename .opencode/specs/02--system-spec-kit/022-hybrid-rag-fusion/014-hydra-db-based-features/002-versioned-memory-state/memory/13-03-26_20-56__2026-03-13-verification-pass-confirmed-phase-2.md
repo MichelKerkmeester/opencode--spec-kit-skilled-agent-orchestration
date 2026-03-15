@@ -1,19 +1,25 @@
 ---
-title: "2026-03-13 verification [002-versioned-memory-state/13-03-26_20-56__2026-03-13-verification-pass-confirmed-phase-2]"
-description: "Session context memory template for Spec Kit indexing."
+title: "2026-03-13 verification"
+description: "2026-03-13 verification pass confirmed Phase 2 versioned memory state is implemented with lineage writes, active projection, asOf semantics, backfill, and rollback evidence."
 trigger_phrases:
-  - "memory dashboard"
-  - "session summary"
-  - "context template"
+  - "as of"
+  - "with lineage writes"
+  - "verification pass confirmed phase"
+  - "pass confirmed phase versioned"
+  - "confirmed phase versioned memory"
+  - "phase versioned memory state"
+  - "versioned memory state implemented"
+  - "memory state implemented lineage"
+  - "state implemented lineage writes"
+  - "implemented lineage writes active"
+  - "lineage writes active projection"
+  - "writes active projection asof"
 importance_tier: "normal"
 contextType: "general"
 quality_score: 0.90
 quality_flags:
   - "has_tool_state_mismatch"
 ---
-
----
-
 # 2026-03-13 verification pass confirmed Phase 2 versioned memory state is implemented with lineage...
 
 ## SESSION SUMMARY
@@ -37,8 +43,6 @@ quality_flags:
 
 ---
 
----
-
 ## TABLE OF CONTENTS
 
 - [CONTINUE SESSION](#continue-session)
@@ -52,6 +56,8 @@ quality_flags:
 - [MEMORY METADATA](#memory-metadata)
 
 ---
+<!-- ANCHOR:continue-session -->
+<a id="continue-session"></a>
 
 ## CONTINUE SESSION
 
@@ -105,6 +111,8 @@ Next: Continue implementation
 - Last: Left human maintainer review rows pending - Technical verification is complete,
 
 ---
+<!-- ANCHOR:project-state-snapshot -->
+<a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
 
@@ -136,6 +144,8 @@ Next: Continue implementation
 **Key Topics:** `complete` | `evidence` | `human` | `lineage` | `backfill` | `marked lineage` | `lineage write` | `write read` | `read backfill` | `backfill items` | `items complete` | `complete runtime` |
 
 ---
+<!-- ANCHOR:task-guide -->
+<a id="implementation-guide"></a>
 
 ## 1. IMPLEMENTATION GUIDE
 
@@ -160,6 +170,8 @@ Next: Continue implementation
 - No patterns identified
 
 ---
+<!-- ANCHOR:summary -->
+<a id="overview"></a>
 
 ## 2. OVERVIEW
 
@@ -177,6 +189,8 @@ Next: Continue implementation
 | `02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/002-versioned-memory-state/(merged-small-files)` | Tree-thinning merged 3 small files (tasks.md, checklist.md, implementation-summary.md). Merged from 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/002-versioned-memory-state/tasks.md : File modified (description pending) | Merged from 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/002-versioned-memory-state/checklist.md : File modified (description pending) | Merged from 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/002-versioned-memory-state/implementation-summary.md : File modified (description pending) |
 
 ---
+<!-- ANCHOR:detailed-changes -->
+<a id="detailed-changes"></a>
 
 ## 3. DETAILED CHANGES
 
@@ -185,6 +199,8 @@ Next: Continue implementation
 2026-03-13 verification pass confirmed Phase 2 versioned memory state is implemented with lineage writes, active projection, asOf semantics, backfill, and rollback evidence.
 
 ---
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
 
 ## 4. DECISIONS
 
@@ -371,6 +387,8 @@ Next: Continue implementation
 **Confidence**: 0.5%
 
 ---
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
 
 ## 5. CONVERSATION
 
@@ -392,8 +410,8 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 2026-03-13 verification pass confirmed Phase 2 versioned memory state is implemented with lineage writes, active projection, asOf semantics, backfill, and rollback evidence.
 
 ---
-
----
+<!-- ANCHOR:recovery-hints -->
+<a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
 
@@ -447,8 +465,8 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 | No Dedup Conflicts |  |  |
 
 ---
-
----
+<!-- ANCHOR:metadata -->
+<a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 
@@ -540,49 +558,18 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/022 hybrid rag fusion/015 hydra db based features/002 versioned memory state"
   - "as of"
-  - "append first"
-  - "data plane"
-  - "hydra db based features"
-  - "merged small files"
   - "with lineage writes"
-  - "marked lineage write read"
-  - "lineage write read backfill"
-  - "write read backfill items"
-  - "read backfill items complete"
-  - "backfill items complete runtime"
-  - "items complete runtime evidence"
-  - "left human maintainer review"
-  - "human maintainer review rows"
-  - "maintainer review rows pending"
-  - "implementation tests cover append-first"
-  - "tests cover append-first writes"
-  - "cover append-first writes deterministic"
-  - "append-first writes deterministic active"
-  - "writes deterministic active projection"
-  - "deterministic active projection temporal"
-  - "active projection temporal reads"
-  - "projection temporal reads rollback"
-  - "review rows pending technical"
-  - "rows pending technical verification"
-  - "system"
-  - "spec"
-  - "kit/022"
-  - "hybrid"
-  - "rag"
-  - "fusion/015"
-  - "hydra"
-  - "based"
-  - "features/002"
-  - "versioned"
-  - "memory"
-  - "state"
-
-key_files:
-  - "02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/002-versioned-memory-state/(merged-small-files)"
-
-# Relationships
+  - "verification pass confirmed phase"
+  - "pass confirmed phase versioned"
+  - "confirmed phase versioned memory"
+  - "phase versioned memory state"
+  - "versioned memory state implemented"
+  - "memory state implemented lineage"
+  - "state implemented lineage writes"
+  - "implemented lineage writes active"
+  - "lineage writes active projection"
+  - "writes active projection asof"# Relationships
 related_sessions:
 
   []

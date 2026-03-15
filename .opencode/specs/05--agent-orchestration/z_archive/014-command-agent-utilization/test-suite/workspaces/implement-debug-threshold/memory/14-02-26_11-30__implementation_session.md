@@ -1,5 +1,19 @@
 ---
-title: "Implementation Session: JWT Authentication (Debug [implement-debug-threshold/14-02-26_11-30__implementation_session]"
+title: "Implementation Session: JWT Authentication (Debug"
+description: "Implementation Session: JWT Authentication (Debug Path)"
+trigger_phrases:
+  - "implementation session jwt authentication"
+  - "session jwt authentication debug"
+  - "jwt authentication debug implementation"
+  - "authentication debug implementation session"
+  - "debug implementation session jwt"
+  - "jwt authentication debug path"
+  - "authentication debug path archive"
+  - "debug path archive command"
+  - "path archive command agent"
+  - "archive command agent utilization"
+  - "command agent utilization test"
+  - "agent utilization test suite"
 importance_tier: "normal"
 contextType: "general"
 ---

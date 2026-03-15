@@ -1,43 +1,16 @@
 ---
-title: "Mobile label fix for FilePond upload select [011-form-input-upload-select/25-01-26_11-09__form-input-upload-select]"
-description: "This archived session documents the fix for mobile labels not appearing on the FilePond upload component. It records the duplicate Webflow DOM root cause, the switch from querySelector to querySelectorAll, and the mobile-specific label handling that resolved the issue."
+title: "Mobile label fix for FilePond upload select"
+description: "This archived session documents the fix for mobile labels not appearing on the FilePond upload component. It records the duplicate Webflow DOM root cause, the switch from..."
 trigger_phrases:
   - "mobile filepond labels fix"
   - "webflow duplicate dom labels"
   - "queryselectorall upload labels"
 importance_tier: "normal"
+contextType: "implementation"
 quality_score: 0.60
 quality_flags:
   - "needs_review"
-contextType: "implementation"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-<!-- Constitutional Tier Promotion:
-  To promote a memory to constitutional tier (always surfaced):
-  
-  1. Via MCP tool after indexing:
-     memory_update({ id: <memory_id>, importanceTier: 'constitutional' })
-  
-  2. Criteria for constitutional:
-     - Applies to ALL future conversations (not project-specific)
-     - Core constraints/rules that should NEVER be forgotten
-     - ~2000 token budget total for constitutional tier
-     
-  3. Add trigger phrases for proactive surfacing:
-     memory_update({ 
-       id: <memory_id>, 
-       importanceTier: 'constitutional',
-       triggerPhrases: ['fix', 'implement', 'create', 'modify', ...]
-     })
-     
-  4. Examples of constitutional content:
-     - "Always ask Gate 3 spec folder question before file modifications"
-     - "Never modify production data directly"
-     - "Memory files MUST use generate-context.js script"
--->
-
----
-
 # SESSION SUMMARY
 
 | **Meta Data** | **Value** |
@@ -59,7 +32,8 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:preflight-session-1769335781904-bjxfc4vt7-005-anobel-com/012-form-input-upload-select -->
+<!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -95,7 +69,7 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:continue-session-session-1769335781904-bjxfc4vt7-005-anobel-com/012-form-input-upload-select -->
+<!-- ANCHOR:continue-session -->
 <a id="continue-session"></a>
 
 ## CONTINUE SESSION
@@ -129,6 +103,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 <!-- /ANCHOR:continue-session-session-1769335781904-bjxfc4vt7-005-anobel-com/012-form-input-upload-select -->
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -146,6 +121,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 ---
 
 <!-- ANCHOR_EXAMPLE:summary-session-1769335781904-bjxfc4vt7-005-anobel.com/012-form-input-upload-select -->
+<!-- ANCHOR:summary -->
 <a id="overview"></a>
 
 ## 1. OVERVIEW
@@ -184,6 +160,9 @@ Fixed mobile labels not appearing on FilePond upload component. Root cause: Webf
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 2. DECISIONS
 
 ### Decision 1: Use querySelectorAll + forEach instead of querySelector
@@ -246,6 +225,9 @@ Changed querySelector to querySelectorAll + forEach to update ALL matching text/
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 3. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -319,6 +301,7 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 ---
 
 <!-- ANCHOR_EXAMPLE:postflight-session-1769335781904-bjxfc4vt7-005-anobel.com/012-form-input-upload-select -->
+<!-- ANCHOR:postflight -->
 <a id="postflight-learning-delta"></a>
 
 ## POSTFLIGHT LEARNING DELTA
@@ -358,6 +341,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 ---
 
 <!-- ANCHOR_EXAMPLE:recovery-hints-session-1769335781904-bjxfc4vt7-005-anobel.com/012-form-input-upload-select -->
+<!-- ANCHOR:recovery-hints -->
 <a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
@@ -382,6 +366,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 <!-- /ANCHOR_EXAMPLE:recovery-hints-session-1769335781904-bjxfc4vt7-005-anobel.com/012-form-input-upload-select -->
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -453,25 +438,9 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "FilePond mobile labels"
-  - "upload component mobile"
-  - "querySelectorAll forEach"
-  - "Webflow duplicate elements"
-  - "u--hide-mobile u--hide-desktop"
-  - "data-label-idle-text-mobile"
-  - "input_upload.js"
-  - "responsive DOM elements"
-  - "querySelector only first element"
-  - "mobile text not showing"
-
-key_files:
-  - "src/2_javascript/form/input_upload.js"
-  - "src/2_javascript/z_minified/form/input_upload.js"
-  - "src/0_html/werken_bij.html"
-  - "src/0_html/cms/vacature.html"
-
-# Relationships
-related_sessions:
+  - "mobile filepond labels fix"
+  - "webflow duplicate dom labels"
+  - "queryselectorall upload labels"related_sessions:
 
   []
 

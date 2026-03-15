@@ -1,43 +1,16 @@
 ---
-title: "validate_document rename for style-enforcement 2026-02-03 [004-style-enforcement/03-02-26_17-30__validate-document-rename]"
-description: "Completed the rename from validate_readme.py to validate_document.py because the validator covers multiple document types. The session updated internal references, spec documentation, and AGENTS files, then verified tests and remaining references across the codebase."
+title: "validate document rename for style-enforcement 2026-02-03"
+description: "Completed the rename from validate readme.py to validate document.py because the validator covers multiple document types. The session updated internal references, spec..."
 trigger_phrases:
   - "validate document rename"
   - "readme validator rename"
   - "style enforcement docs"
 importance_tier: "normal"
+contextType: "general"
 quality_score: 0.60
 quality_flags:
   - "needs_review"
-contextType: "general"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-<!-- Constitutional Tier Promotion:
-  To promote a memory to constitutional tier (always surfaced):
-  
-  1. Via MCP tool after indexing:
-     memory_update({ id: <memory_id>, importanceTier: 'constitutional' })
-  
-  2. Criteria for constitutional:
-     - Applies to ALL future conversations (not project-specific)
-     - Core constraints/rules that should NEVER be forgotten
-     - ~2000 token budget total for constitutional tier
-     
-  3. Add trigger phrases for proactive surfacing:
-     memory_update({ 
-       id: <memory_id>, 
-       importanceTier: 'constitutional',
-       triggerPhrases: ['fix', 'implement', 'create', 'modify', ...]
-     })
-     
-  4. Examples of constitutional content:
-     - "Always ask Gate 3 spec folder question before file modifications"
-     - "Never modify production data directly"
-     - "Memory files MUST use generate-context.js script"
--->
-
----
-
 # SESSION SUMMARY
 
 | **Meta Data** | **Value** |
@@ -59,7 +32,8 @@ contextType: "general"
 
 ---
 
-<!-- ANCHOR:preflight-session-1770136207570-co50n1c6d-005-anobel-com -->
+<!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -97,7 +71,7 @@ contextType: "general"
 
 ---
 
-<!-- ANCHOR:continue-session-session-1770136207570-co50n1c6d-005-anobel-com -->
+<!-- ANCHOR:continue-session -->
 <a id="continue-session"></a>
 
 ## CONTINUE SESSION
@@ -153,6 +127,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -170,6 +145,7 @@ Next: Continue implementation
 ---
 
 <!-- ANCHOR_EXAMPLE:task-guide-anobel.com-005-anobel.com -->
+<!-- ANCHOR:task-guide -->
 <a id="implementation-guide"></a>
 
 ## 1. IMPLEMENTATION GUIDE
@@ -205,6 +181,7 @@ Next: Continue implementation
 ---
 
 <!-- ANCHOR_EXAMPLE:summary-session-1770136207570-co50n1c6d-005-anobel.com -->
+<!-- ANCHOR:summary -->
 <a id="overview"></a>
 
 ## 2. OVERVIEW
@@ -233,6 +210,7 @@ Completed the rename of validate_readme.py to validate_document.py across the en
 ---
 
 <!-- ANCHOR_EXAMPLE:detailed-changes-session-1770136207570-co50n1c6d-005-anobel.com -->
+<!-- ANCHOR:detailed-changes -->
 <a id="detailed-changes"></a>
 
 ## 3. DETAILED CHANGES
@@ -278,6 +256,9 @@ rootCause: The validate_readme.py script name was misleading - it validates 5 do
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR_EXAMPLE:decision-renamed-validatereadmepy-validatedocumentpy-because-cac6d8ab-session-1770136207570-co50n1c6d -->
@@ -371,6 +352,9 @@ rootCause: The validate_readme.py script name was misleading - it validates 5 do
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -397,6 +381,7 @@ Completed the rename of validate_readme.py to validate_document.py across the en
 ---
 
 <!-- ANCHOR_EXAMPLE:recovery-hints-session-1770136207570-co50n1c6d-005-anobel.com -->
+<!-- ANCHOR:recovery-hints -->
 <a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
@@ -454,6 +439,7 @@ node .opencode/skill/system-spec-kit/scripts/memory/generate-context.js 005-anob
 ---
 
 <!-- ANCHOR_EXAMPLE:postflight-session-1770136207570-co50n1c6d-005-anobel.com -->
+<!-- ANCHOR:postflight -->
 <a id="postflight-learning-delta"></a>
 
 ## POSTFLIGHT LEARNING DELTA
@@ -492,6 +478,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -584,17 +571,9 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-
-  []
-
-key_files:
-  - ".opencode/.../scripts/validate_document.py"
-  - "specs/.../004-style-enforcement/tasks.md"
-  - "specs/.../004-style-enforcement/plan.md"
-  - "/.../coder/AGENTS.md"
-  - "/.../Public/AGENTS.md"
-
-# Relationships
+  - "validate document rename"
+  - "readme validator rename"
+  - "style enforcement docs"# Relationships
 related_sessions:
 
   []

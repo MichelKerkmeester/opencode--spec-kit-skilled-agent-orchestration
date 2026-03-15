@@ -1,19 +1,25 @@
 ---
-title: "Completed the feature-ce [012-code-audit-per-feature-catalog/13-03-26_07-28__completed-the-feature-centric-code-audit-for-spec]"
-description: "Session context memory template for Spec Kit indexing."
+title: "Completed the feature-ce"
+description: "Completed the feature-centric code audit for Spec Kit Memory MCP across 20 feature-catalog phases covering 180 audited features. The synthesis found 41 FAIL, 106 WARN, and 33..."
 trigger_phrases:
-  - "memory dashboard"
-  - "session summary"
-  - "context template"
+  - "feature centric"
+  - "feature catalog"
+  - "completed feature-centric code audit"
+  - "feature-centric code audit spec"
+  - "code audit spec kit"
+  - "audit spec kit memory"
+  - "spec kit memory mcp"
+  - "kit memory mcp across"
+  - "memory mcp across feature-catalog"
+  - "mcp across feature-catalog phases"
+  - "across feature-catalog phases covering"
+  - "feature-catalog phases covering audited"
 importance_tier: "normal"
 contextType: "general"
 quality_score: 0.90
 quality_flags:
   - "has_tool_state_mismatch"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
----
-
 # Completed the feature-centric code audit for Spec Kit Memory MCP across 20 feature-catalog phases...
 
 ## SESSION SUMMARY
@@ -34,8 +40,6 @@ quality_flags:
 | Created At (Epoch) | 1773383333 |
 | Last Accessed (Epoch) | 1773383333 |
 | Access Count | 1 |
-
----
 
 ---
 
@@ -111,6 +115,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -232,6 +237,9 @@ Completed the feature-centric code audit for Spec Kit Memory MCP across 20 featu
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-audit-structure-feature-ce5a1d90 -->
@@ -438,6 +446,9 @@ Completed the feature-centric code audit for Spec Kit Memory MCP across 20 featu
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -519,8 +530,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 
 ---
 
----
-
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -615,48 +625,18 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/022 hybrid rag fusion/013 code audit per feature catalog"
   - "feature centric"
-  - "pending file"
-  - "hot rebind"
-  - "source table"
-  - "cross phase"
-  - "highest impact"
-  - "feature category"
-  - "roll up"
-  - "code audit per feature catalog"
-  - "merged small files"
-  - "synthesis report became canonical"
-  - "mapping feature-catalog category phase"
-  - "feature-catalog category phase kept"
-  - "category phase kept findings"
-  - "phase kept findings traceable"
-  - "kept findings traceable docs"
-  - "findings traceable docs test"
-  - "traceable docs test evidence"
-  - "docs test evidence remediation"
-  - "test evidence remediation work"
-  - "single cross-phase report makes"
-  - "cross-phase report makes systemic"
-  - "report makes systemic bugs"
-  - "makes systemic bugs catalog"
-  - "systemic bugs catalog drift"
-  - "system"
-  - "spec"
-  - "kit/022"
-  - "hybrid"
-  - "rag"
-  - "fusion/013"
-  - "code"
-  - "audit"
-  - "per"
-  - "feature"
-  - "catalog"
-
-key_files:
-  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/(merged-small-files)"
-
-# Relationships
+  - "feature catalog"
+  - "completed feature-centric code audit"
+  - "feature-centric code audit spec"
+  - "code audit spec kit"
+  - "audit spec kit memory"
+  - "spec kit memory mcp"
+  - "kit memory mcp across"
+  - "memory mcp across feature-catalog"
+  - "mcp across feature-catalog phases"
+  - "across feature-catalog phases covering"
+  - "feature-catalog phases covering audited"# Relationships
 related_sessions:
 
   []

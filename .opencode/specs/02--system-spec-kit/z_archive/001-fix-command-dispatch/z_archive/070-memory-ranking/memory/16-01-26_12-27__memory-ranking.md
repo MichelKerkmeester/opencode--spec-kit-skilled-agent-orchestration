@@ -1,44 +1,17 @@
 ---
-title: "Memory ranking documentation review 2026-01-16 [070-memory-ranking/16-01-26_12-27__memory-ranking]"
-description: "Captured the session that created and reviewed Level 3 documentation for memory and folder ranking improvements. It summarizes the ranking formula, phased rollout plan, and quality fixes applied to the documentation set, including the constitutional decay exemption and added research coverage."
+title: "Memory ranking documentation review 2026-01-16"
+description: "Captured the session that created and reviewed Level 3 documentation for memory and folder ranking improvements. It summarizes the ranking formula, phased rollout plan, and..."
 trigger_phrases:
   - "memory ranking documentation review"
   - "folder ranking formula"
   - "constitutional decay exemption"
   - "level 3 ranking spec"
 importance_tier: "normal"
+contextType: "general"
 quality_score: 0.60
 quality_flags:
   - "legacy_migration"
-contextType: "general"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-<!-- Constitutional Tier Promotion:
-  To promote a memory to constitutional tier (always surfaced):
-  
-  1. Via MCP tool after indexing:
-     memory_update({ id: <memory_id>, importanceTier: 'constitutional' })
-  
-  2. Criteria for constitutional:
-     - Applies to ALL future conversations (not project-specific)
-     - Core constraints/rules that should NEVER be forgotten
-     - ~2000 token budget total for constitutional tier
-     
-  3. Add trigger phrases for proactive surfacing:
-     memory_update({ 
-       id: <memory_id>, 
-       importanceTier: 'constitutional',
-       triggerPhrases: ['fix', 'implement', 'create', 'modify', ...]
-     })
-     
-  4. Examples of constitutional content:
-     - "Always ask Gate 3 spec folder question before file modifications"
-     - "Never modify production data directly"
-     - "Memory files MUST use generate-context.js script"
--->
-
----
-
 # SESSION SUMMARY
 
 | **Meta Data** | **Value** |
@@ -60,7 +33,8 @@ contextType: "general"
 
 ---
 
-<!-- ANCHOR:preflight-session-1768562878943-pqvza91mv-003-memory-and-spec-kit/071-memory-ranking -->
+<!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -95,7 +69,7 @@ contextType: "general"
 
 ---
 
-<!-- ANCHOR:continue-session-session-1768562878943-pqvza91mv-003-memory-and-spec-kit/071-memory-ranking -->
+<!-- ANCHOR:continue-session -->
 <a id="continue-session"></a>
 
 ## CONTINUE SESSION
@@ -129,6 +103,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 <!-- /ANCHOR:continue-session-session-1768562878943-pqvza91mv-003-memory-and-spec-kit/071-memory-ranking -->
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -146,7 +121,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 ---
 
 <!-- ANCHOR:summary-071 -->
-<!-- ANCHOR:summary-session-1768562878943-pqvza91mv-003-memory-and-spec-kit/071-memory-ranking -->
+<!-- ANCHOR:summary -->
 <a id="overview"></a>
 
 ## 1. OVERVIEW
@@ -189,6 +164,9 @@ Created comprehensive Level 3 documentation for memory and folder ranking improv
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 2. DECISIONS
 
 ### D1: Composite Ranking Formula
@@ -229,6 +207,9 @@ Created comprehensive Level 3 documentation for memory and folder ranking improv
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 3. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -271,7 +252,7 @@ This session followed a **Linear Sequential** conversation pattern with **2** di
 
 ---
 
-<!-- ANCHOR:recovery-hints-session-1768562878943-pqvza91mv-003-memory-and-spec-kit/071-memory-ranking -->
+<!-- ANCHOR:recovery-hints -->
 <a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
@@ -296,7 +277,7 @@ This session followed a **Linear Sequential** conversation pattern with **2** di
 <!-- /ANCHOR:recovery-hints-session-1768562878943-pqvza91mv-003-memory-and-spec-kit/071-memory-ranking -->
 ---
 
-<!-- ANCHOR:postflight-session-1768562878943-pqvza91mv-003-memory-and-spec-kit/071-memory-ranking -->
+<!-- ANCHOR:postflight -->
 <a id="postflight-learning-delta"></a>
 
 ## POSTFLIGHT LEARNING DELTA
@@ -322,6 +303,7 @@ This session was migrated from an older format. Learning metrics were not captur
 <!-- /ANCHOR:postflight-session-1768562878943-pqvza91mv-003-memory-and-spec-kit/071-memory-ranking -->
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -395,27 +377,10 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "memory ranking"
-  - "folder ranking"
-  - "composite scoring"
-  - "recency decay"
-  - "archive detection"
-  - "dashboard sections"
-  - "constitutional exemption"
-  - "importance tier weights"
-  - "half-life calculation"
-  - "top folders"
-
-key_files:
-  - "specs/003-memory-and-spec-kit/071-memory-ranking/spec.md"
-  - "specs/003-memory-and-spec-kit/071-memory-ranking/plan.md"
-  - "specs/003-memory-and-spec-kit/071-memory-ranking/tasks.md"
-  - "specs/003-memory-and-spec-kit/071-memory-ranking/checklist.md"
-  - "specs/003-memory-and-spec-kit/071-memory-ranking/decision-record.md"
-  - "specs/003-memory-and-spec-kit/071-memory-ranking/research.md"
-
-# Relationships
-related_sessions:
+  - "memory ranking documentation review"
+  - "folder ranking formula"
+  - "constitutional decay exemption"
+  - "level 3 ranking spec"related_sessions:
 
   []
 

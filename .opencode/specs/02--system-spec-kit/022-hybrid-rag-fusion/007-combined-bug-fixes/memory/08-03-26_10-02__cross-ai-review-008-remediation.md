@@ -1,20 +1,17 @@
 ---
-title: "Comprehensive cross-AI [007-combined-bug-fixes/08-03-26_10-02__cross-ai-review-008-remediation]"
+title: "Comprehensive cross-AI"
 description: "Completed cross-AI review remediation for 007-combined-bug-fixes by resolving all 25 findings and verifying 7,129 tests with zero alignment drift."
 trigger_phrases:
-  - "cross-AI review"
+  - "cross-ai review"
   - "combined bug fixes"
   - "convergence bonus"
-  - "CASCADE delete"
+  - "cascade delete"
   - "debounce fingerprint"
 importance_tier: "critical"
 contextType: "general"
 quality_score: 0.90
 quality_flags: []
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
----
-
 # Comprehensive cross-AI review of the 007-combined-bug-fixes spec folder using 5 Codex CLI agents...
 
 ## SESSION SUMMARY
@@ -35,8 +32,6 @@ quality_flags: []
 | Created At (Epoch) | 1772960529 |
 | Last Accessed (Epoch) | 1772960529 |
 | Access Count | 1 |
-
----
 
 ---
 
@@ -110,6 +105,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -256,6 +252,9 @@ rootCause: Codex review identified 25 findings across 007-combined-bug-fixes: 8 
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-dispatched-codex-cli-review-62595d04 -->
@@ -430,6 +429,9 @@ rootCause: Codex review identified 25 findings across 007-combined-bug-fixes: 8 
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -512,8 +514,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 
 ---
 
----
-
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -608,49 +609,11 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/022 hybrid rag fusion"
-  - "and blocked"
-  - "not subtracting"
-  - "convergence bonus"
-  - "max id"
-  - "source id"
-  - "target id"
-  - "cross ai"
+  - "cross-ai review"
   - "combined bug fixes"
-  - "gpt 5"
-  - "workspace write"
-  - "non interactive"
-  - "a1 a2"
-  - "same model"
-  - "cross variant"
-  - "merged small files"
-  - "chosen approach decision fixed"
-  - "decision fixed cascade delete"
-  - "fixed cascade delete chain"
-  - "cascade delete chain delete"
-  - "delete chain delete set"
-  - "chain delete set null"
-  - "delete set null instead"
-  - "set null instead removing"
-  - "null instead removing entirely"
-  - "instead removing entirely preserving"
-  - "system"
-  - "spec"
-  - "kit/022"
-  - "hybrid"
-  - "rag"
-  - "fusion"
-
-key_files:
-  - ".opencode/.../algorithms/(merged-small-files)"
-  - ".opencode/.../storage/(merged-small-files)"
-  - ".opencode/.../handlers/(merged-small-files)"
-  - ".opencode/.../graph/(merged-small-files)"
-  - ".opencode/.../tests/(merged-small-files)"
-  - ".opencode/.../spec-folder/(merged-small-files)"
-  - ".opencode/skill/system-spec-kit/scripts/core/(merged-small-files)"
-
-# Relationships
+  - "convergence bonus"
+  - "cascade delete"
+  - "debounce fingerprint"# Relationships
 related_sessions:
 
   []

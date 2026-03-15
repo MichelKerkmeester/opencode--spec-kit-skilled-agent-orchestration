@@ -1,44 +1,17 @@
 ---
-title: "Command logic improvement rollout for 004-command-logic-improvement 2026-01-01 [004-command-logic-improvement/01-01-26_15-02__command-logic-improvement]"
-description: "This legacy session completed a large command logic improvement rollout across 29 files. It added plain-language gates, auto and confirm modes, confidence checkpoints, navigation tables, command chaining guidance, and optional workflow integrations."
+title: "Command logic improvement rollout for 004-command-logic-improvement 2026-01-01"
+description: "This legacy session completed a large command logic improvement rollout across 29 files. It added plain-language gates, auto and confirm modes, confidence checkpoints,..."
 trigger_phrases:
   - "command logic improvement rollout"
   - "plain language gates"
   - "auto confirm mode flags"
   - "confidence checkpoint workflow"
 importance_tier: "normal"
+contextType: "implementation"
 quality_score: 0.60
 quality_flags:
   - "legacy_migration"
-contextType: "implementation"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-<!-- Constitutional Tier Promotion:
-  To promote a memory to constitutional tier (always surfaced):
-  
-  1. Via MCP tool after indexing:
-     memory_update({ id: <memory_id>, importanceTier: 'constitutional' })
-  
-  2. Criteria for constitutional:
-     - Applies to ALL future conversations (not project-specific)
-     - Core constraints/rules that should NEVER be forgotten
-     - ~2000 token budget total for constitutional tier
-     
-  3. Add trigger phrases for proactive surfacing:
-     memory_update({ 
-       id: <memory_id>, 
-       importanceTier: 'constitutional',
-       triggerPhrases: ['fix', 'implement', 'create', 'modify', ...]
-     })
-     
-  4. Examples of constitutional content:
-     - "Always ask Gate 3 spec folder question before file modifications"
-     - "Never modify production data directly"
-     - "Memory files MUST use generate-context.js script"
--->
-
----
-
 # SESSION SUMMARY
 
 | **Meta Data** | **Value** |
@@ -60,7 +33,8 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:preflight-session-1767276142528-p83tjlxr3-03--commands-and-skills/commands/004-command-logic-improvement -->
+<!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -97,7 +71,7 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:continue-session-session-1767276142528-p83tjlxr3-03--commands-and-skills/commands/004-command-logic-improvement -->
+<!-- ANCHOR:continue-session -->
 <a id="continue-session"></a>
 
 ## CONTINUE SESSION
@@ -131,6 +105,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 <!-- /ANCHOR:continue-session-session-1767276142528-p83tjlxr3-03--commands-and-skills/commands/004-command-logic-improvement -->
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -162,7 +137,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 ---
 
-<!-- ANCHOR:task-guide-commands-and-skills/001-commands/003-command-logic-improvement-03--commands-and-skills/commands/004-command-logic-improvement -->
+<!-- ANCHOR:task-guide -->
 <a id="implementation-guide"></a>
 
 ## 1. IMPLEMENTATION GUIDE
@@ -197,7 +172,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 ---
 
-<!-- ANCHOR:summary-session-1767276142528-p83tjlxr3-03--commands-and-skills/commands/004-command-logic-improvement -->
+<!-- ANCHOR:summary -->
 <a id="overview"></a>
 
 ## 2. OVERVIEW
@@ -227,7 +202,7 @@ Completed comprehensive command logic improvement implementation across 29 files
 
 ---
 
-<!-- ANCHOR:detailed-changes-session-1767276142528-p83tjlxr3-03--commands-and-skills/commands/004-command-logic-improvement -->
+<!-- ANCHOR:detailed-changes -->
 <a id="detailed-changes"></a>
 
 ## 3. DETAILED CHANGES
@@ -273,6 +248,9 @@ rootCause: Commands had technical gate markers (HARD BLOCK) that were being igno
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-plain-5a1a53c6-session-1767276142528-p83tjlxr3 -->
@@ -420,6 +398,9 @@ rootCause: Commands had technical gate markers (HARD BLOCK) that were being igno
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -444,7 +425,7 @@ Completed comprehensive command logic improvement implementation across 29 files
 
 ---
 
-<!-- ANCHOR:recovery-hints-session-1767276142528-p83tjlxr3-03--commands-and-skills/commands/004-command-logic-improvement -->
+<!-- ANCHOR:recovery-hints -->
 <a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
@@ -469,7 +450,7 @@ Completed comprehensive command logic improvement implementation across 29 files
 <!-- /ANCHOR:recovery-hints-session-1767276142528-p83tjlxr3-03--commands-and-skills/commands/004-command-logic-improvement -->
 ---
 
-<!-- ANCHOR:postflight-session-1767276142528-p83tjlxr3-03--commands-and-skills/commands/004-command-logic-improvement -->
+<!-- ANCHOR:postflight -->
 <a id="postflight-learning-delta"></a>
 
 ## POSTFLIGHT LEARNING DELTA
@@ -495,6 +476,7 @@ This session was migrated from an older format. Learning metrics were not captur
 <!-- /ANCHOR:postflight-session-1767276142528-p83tjlxr3-03--commands-and-skills/commands/004-command-logic-improvement -->
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -571,17 +553,10 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-
-  []
-
-key_files:
-  - ".opencode/command/spec_kit/complete.md"
-  - ".opencode/.../assets/spec_kit_complete_auto.yaml"
-  - ".opencode/.../assets/spec_kit_complete_confirm.yaml"
-  - "AGENTS.md"
-  - ".opencode/command/README.md"
-
-# Relationships
+  - "command logic improvement rollout"
+  - "plain language gates"
+  - "auto confirm mode flags"
+  - "confidence checkpoint workflow"# Relationships
 related_sessions:
 
   []

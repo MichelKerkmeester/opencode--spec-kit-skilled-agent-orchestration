@@ -1,22 +1,17 @@
 ---
-title: "Gemini and Codex review findings [001-hybrid-rag-fusion-epic/02-03-26_19-40__gemini-codex-review-14-findings]"
-description: "Delegated comprehensive review of 010-cross-ai-audit to two independent AI reviewers: Gemini 3.1 Pro (graded A) and Codex gpt-5.3-codex (graded C+). Gemini was generous on process quality and effo."
+title: "Gemini and Codex review findings"
+description: "Delegated comprehensive review of 010-cross-ai-audit to two independent AI reviewers: Gemini 3.1 Pro (graded A) and Codex gpt-5.3-codex (graded C+). Gemini was generous on..."
 trigger_phrases:
   - "system spec kit/022 hybrid rag fusion"
   - "refinement phase 7"
   - "false pass"
   - "top k"
   - "undefined id"
-quality_score: 1.00
-quality_flags: []
 importance_tier: "important"
 contextType: "research"
-
+quality_score: 1.00
+quality_flags: []
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-
----
-
 # hybrid rag fusion session 02-03-26
 
 ## SESSION SUMMARY
@@ -41,6 +36,7 @@ contextType: "research"
 ---
 
 <!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -134,6 +130,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -257,6 +254,9 @@ rootCause: Original multi-agent audit (8 agents, 4 waves) missed several correct
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-both-gemini-pro-codex-e23ff6e9 -->
@@ -404,6 +404,9 @@ rootCause: Original multi-agent audit (8 agents, 4 waves) missed several correct
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -526,6 +529,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -620,44 +624,11 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/022 hybrid rag fusion"
+  - "system spec kit/022 hybrid rag fusion"
   - "refinement phase 7"
   - "false pass"
   - "top k"
-  - "undefined id"
-  - "cross document"
-  - "cr prefixed"
-  - "cross ai"
-  - "cross review"
-  - "t series"
-  - "tree thinning"
-  - "decision preserved gemini codex"
-  - "preserved gemini codex attribution"
-  - "gemini codex attribution finding"
-  - "codex attribution finding knowing"
-  - "attribution finding knowing model"
-  - "finding knowing model found"
-  - "knowing model found helps"
-  - "model found helps assess"
-  - "found helps assess confidence"
-  - "helps assess confidence level"
-  - "plan.md added tier steps"
-  - "added tier steps tasks.md"
-  - "5.3-codex independent cross-ai validation"
-  - "independent cross-ai validation different"
-  - "cross-ai validation different models"
-  - "system"
-  - "spec"
-  - "kit/023"
-  - "hybrid"
-  - "rag"
-  - "fusion"
-  - "refinement"
-
-key_files:
-  - ".opencode/.../010-cross-ai-audit/(merged-small-files)"
-
-# Relationships
+  - "undefined id"# Relationships
 related_sessions:
 
   []

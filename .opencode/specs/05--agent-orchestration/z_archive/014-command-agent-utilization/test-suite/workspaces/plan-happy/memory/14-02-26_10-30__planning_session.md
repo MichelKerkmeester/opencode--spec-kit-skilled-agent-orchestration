@@ -1,5 +1,19 @@
 ---
-title: "Planning Session: JWT Authentication with RS256 Signing [plan-happy/14-02-26_10-30__planning_session]"
+title: "Planning Session: JWT Authentication with RS256 Signing"
+description: "Planning Session: JWT Authentication with RS256 Signing"
+trigger_phrases:
+  - "planning session jwt authentication"
+  - "session jwt authentication rs256"
+  - "jwt authentication rs256 signing"
+  - "authentication rs256 signing planning"
+  - "rs256 signing planning session"
+  - "signing planning session jwt"
+  - "authentication rs256 signing archive"
+  - "rs256 signing archive command"
+  - "signing archive command agent"
+  - "archive command agent utilization"
+  - "command agent utilization test"
+  - "agent utilization test suite"
 importance_tier: "normal"
 contextType: "general"
 ---
@@ -28,7 +42,9 @@ Planning session for JWT authentication feature (spec 042). Completed full speci
 
 ---
 
-<!-- ANCHOR:DECISION-AUTH-APPROACH-042 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## Decisions
 
 ### D1: RS256 over HS256

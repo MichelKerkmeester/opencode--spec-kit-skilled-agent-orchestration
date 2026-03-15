@@ -1,43 +1,16 @@
 ---
-title: "Narsil command reference review for [009-security-remediation/25-12-25_14-50__security-remediation]"
-description: "This archived memory captures a review of Narsil command locations and related reference updates. The body content appears unrelated to the security-remediation spec path, so the record requires manual review before it is used as security context."
+title: "Narsil command reference review for"
+description: "This archived memory captures a review of Narsil command locations and related reference updates. The body content appears unrelated to the security-remediation spec path, so..."
 trigger_phrases:
   - "narsil command location review"
   - "security remediation memory mismatch"
   - "command reference update audit"
 importance_tier: "normal"
+contextType: "discovery"
 quality_score: 0.40
 quality_flags:
   - "needs_review"
-contextType: "discovery"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-<!-- Constitutional Tier Promotion:
-  To promote a memory to constitutional tier (always surfaced):
-  
-  1. Via MCP tool after indexing:
-     memory_update({ id: <memory_id>, importanceTier: 'constitutional' })
-  
-  2. Criteria for constitutional:
-     - Applies to ALL future conversations (not project-specific)
-     - Core constraints/rules that should NEVER be forgotten
-     - ~500 token budget total for constitutional tier
-     
-  3. Add trigger phrases for proactive surfacing:
-     memory_update({ 
-       id: <memory_id>, 
-       importanceTier: 'constitutional',
-       triggerPhrases: ['fix', 'implement', 'create', 'modify', ...]
-     })
-     
-  4. Examples of constitutional content:
-     - "Always ask Gate 3 spec folder question before file modifications"
-     - "Never modify production data directly"
-     - "Memory files MUST use generate-context.js script"
--->
-
----
-
 # SESSION SUMMARY
 
 | **Meta Data** | **Value** |
@@ -59,7 +32,8 @@ contextType: "discovery"
 
 ---
 
-<!-- ANCHOR:preflight-session-1766670613954-rlpvll559-004-anobel-com/009-security-remediation -->
+<!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -96,7 +70,7 @@ contextType: "discovery"
 
 ---
 
-<!-- ANCHOR:continue-session-session-1766670613954-rlpvll559-004-anobel-com/009-security-remediation -->
+<!-- ANCHOR:continue-session -->
 <a id="continue-session"></a>
 
 ## CONTINUE SESSION
@@ -130,6 +104,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 <!-- /ANCHOR:continue-session-session-1766670613954-rlpvll559-004-anobel-com/009-security-remediation -->
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -147,6 +122,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 ---
 
 <!-- ANCHOR_EXAMPLE:task-guide-anobel.com/009-security-remediation-004-anobel.com/009-security-remediation -->
+<!-- ANCHOR:task-guide -->
 <a id="implementation-guide"></a>
 
 ## 1. IMPLEMENTATION GUIDE
@@ -184,6 +160,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 ---
 
 <!-- ANCHOR_EXAMPLE:summary-session-1766670613954-rlpvll559-004-anobel.com/009-security-remediation -->
+<!-- ANCHOR:summary -->
 <a id="overview"></a>
 
 ## 2. OVERVIEW
@@ -218,6 +195,7 @@ I'll verify the Narsil command location and check for any references that need u
 ---
 
 <!-- ANCHOR_EXAMPLE:detailed-changes-session-1766670613954-rlpvll559-004-anobel.com/009-security-remediation -->
+<!-- ANCHOR:detailed-changes -->
 <a id="detailed-changes"></a>
 
 ## 3. DETAILED CHANGES
@@ -548,6 +526,7 @@ Update all invocation patterns in quick-continue.md
 ---
 
 <!-- ANCHOR_EXAMPLE:decisions-session-1766670613954-rlpvll559-004-anobel.com/009-security-remediation -->
+<!-- ANCHOR:decisions -->
 <a id="decisions"></a>
 
 ## 4. DECISIONS
@@ -559,6 +538,7 @@ This session did not involve significant architectural or technical decisions. T
 <!-- /ANCHOR_EXAMPLE:decisions-session-1766670613954-rlpvll559-004-anobel.com/009-security-remediation -->
 
 <!-- ANCHOR_EXAMPLE:session-history-session-1766670613954-rlpvll559-004-anobel.com/009-security-remediation -->
+<!-- ANCHOR:session-history -->
 <a id="conversation"></a>
 
 ## 5. CONVERSATION
@@ -624,6 +604,7 @@ Tool: read
 ---
 
 <!-- ANCHOR_EXAMPLE:recovery-hints-session-1766670613954-rlpvll559-004-anobel.com/009-security-remediation -->
+<!-- ANCHOR:recovery-hints -->
 <a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
@@ -649,6 +630,7 @@ Tool: read
 ---
 
 <!-- ANCHOR_EXAMPLE:postflight-session-1766670613954-rlpvll559-004-anobel.com/009-security-remediation -->
+<!-- ANCHOR:postflight -->
 <a id="postflight-learning-delta"></a>
 
 ## POSTFLIGHT LEARNING DELTA
@@ -674,6 +656,7 @@ This session was migrated from an older format. Learning metrics were not captur
 <!-- /ANCHOR_EXAMPLE:postflight-session-1766670613954-rlpvll559-004-anobel.com/009-security-remediation -->
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -748,18 +731,9 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-
-  []
-
-key_files:
-  - "specs/.../memory/2025-12-25_command-and-testing.md"
-  - "specs/.../testing/test_cases.md"
-  - "specs/.../testing/test_plan.md"
-  - "specs/03--commands-and-skills/008-mcp-narsil/handover.md"
-  - ".opencode/command/search/narsil.md"
-  - ".opencode/command/README.md"
-
-# Relationships
+  - "narsil command location review"
+  - "security remediation memory mismatch"
+  - "command reference update audit"# Relationships
 related_sessions:
 
   []

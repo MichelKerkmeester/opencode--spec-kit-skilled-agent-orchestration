@@ -1,21 +1,17 @@
 ---
-title: "Comprehensive review and [003-speckit-quality-and-standards/08-03-26_10-13__comprehensive-review-and-remediation]"
+title: "Comprehensive review and"
 description: "Comprehensive review and remediation of the 004-constitutional-learn-refactor spec folder."
 trigger_phrases:
   - "constitutional learn refactor review"
   - "004 constitutional learn"
   - "learn.md review"
   - "codex parallel agents review"
-  - "feature flag default OFF vs ON"
+  - "feature flag default off vs on"
 importance_tier: "normal"
 contextType: "general"
 quality_score: 0.65
 quality_flags: []
-
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
----
-
 # Comprehensive review and remediation of the 004-constitutional-learn-refactor spec folder....
 
 ## SESSION SUMMARY
@@ -36,8 +32,6 @@ quality_flags: []
 | Created At (Epoch) | 1772961238 |
 | Last Accessed (Epoch) | 1772961238 |
 | Access Count | 1 |
-
----
 
 ---
 
@@ -111,6 +105,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -249,6 +244,9 @@ rootCause: The 004-constitutional-learn-refactor spec folder had complete implem
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-parallel-codex-cli-agents-2893b538 -->
@@ -423,6 +421,9 @@ rootCause: The 004-constitutional-learn-refactor spec folder had complete implem
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -506,8 +507,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 
 ---
 
----
-
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -602,45 +602,11 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/022 hybrid rag fusion"
-  - "created missing"
-  - "is in shadow period"
-  - "parse learned triggers"
-  - "query learned triggers"
-  - "added at"
-  - "expires at"
-  - "shadow period ms"
-  - "constitutional learn refactor"
-  - "gpt 5"
-  - "read only"
-  - "learned triggers schema"
-  - "tier classifier"
-  - "tool schemas"
-  - "to function"
-  - "tree thinning"
-  - "merged-small-files tree-thinning merged small"
-  - "tree-thinning merged small files"
-  - "parallel codex cli agents"
-  - "read-only review covering core"
-  - "review covering core handler"
-  - "validates findings across agents"
-  - "feedback.ts module header stale"
-  - "module header stale graduation"
-  - "header stale graduation creating"
-  - "stale graduation creating confusion"
-  - "system"
-  - "spec"
-  - "kit/022"
-  - "hybrid"
-  - "rag"
-  - "fusion"
-
-key_files:
-  - ".opencode/.../004-constitutional-learn-refactor/(merged-small-files)"
-  - ".opencode/.../search/(merged-small-files)"
-  - ".opencode/.../storage/(merged-small-files)"
-
-# Relationships
+  - "constitutional learn refactor review"
+  - "004 constitutional learn"
+  - "learn.md review"
+  - "codex parallel agents review"
+  - "feature flag default off vs on"# Relationships
 related_sessions:
 
   []

@@ -1,44 +1,17 @@
 ---
-title: "Unified setup phase YAML cleanup for 005-agent-system-improvements 2026-01-28 [005-agent-system-improvements/28-01-26_09-11__agent-system-improvements]"
-description: "This session updated six create-command YAML assets to remove stale version references and align them with the unified setup phase terminology. It recorded the phase-reference migration and the verification approach used to confirm the old labels were gone."
+title: "Unified setup phase YAML cleanup for 005-agent-system-improvements 2026-01-28"
+description: "This session updated six create-command YAML assets to remove stale version references and align them with the unified setup phase terminology. It recorded the phase-reference..."
 trigger_phrases:
   - "unified setup phase update"
   - "create command yaml cleanup"
   - "remove hardcoded version references"
   - "workflow terminology migration"
 importance_tier: "normal"
+contextType: "implementation"
 quality_score: 0.60
 quality_flags:
   - "legacy_migration"
-contextType: "implementation"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-<!-- Constitutional Tier Promotion:
-  To promote a memory to constitutional tier (always surfaced):
-  
-  1. Via MCP tool after indexing:
-     memory_update({ id: <memory_id>, importanceTier: 'constitutional' })
-  
-  2. Criteria for constitutional:
-     - Applies to ALL future conversations (not project-specific)
-     - Core constraints/rules that should NEVER be forgotten
-     - ~2000 token budget total for constitutional tier
-     
-  3. Add trigger phrases for proactive surfacing:
-     memory_update({ 
-       id: <memory_id>, 
-       importanceTier: 'constitutional',
-       triggerPhrases: ['fix', 'implement', 'create', 'modify', ...]
-     })
-     
-  4. Examples of constitutional content:
-     - "Always ask Gate 3 spec folder question before file modifications"
-     - "Never modify production data directly"
-     - "Memory files MUST use generate-context.js script"
--->
-
----
-
 # SESSION SUMMARY
 
 | **Meta Data** | **Value** |
@@ -60,7 +33,8 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:preflight-session-1769587914279-32gfx0374-05--agent-orchestration/z_archive/005-agent-system-improvements -->
+<!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -98,7 +72,7 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:continue-session-session-1769587914279-32gfx0374-05--agent-orchestration/z_archive/005-agent-system-improvements -->
+<!-- ANCHOR:continue-session -->
 <a id="continue-session"></a>
 
 ## CONTINUE SESSION
@@ -132,6 +106,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 <!-- /ANCHOR:continue-session-session-1769587914279-32gfx0374-05--agent-orchestration/z_archive/005-agent-system-improvements -->
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -148,7 +123,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 ---
 
-<!-- ANCHOR:task-guide-agents/005-agent-system-improvements-05--agent-orchestration/z_archive/005-agent-system-improvements -->
+<!-- ANCHOR:task-guide -->
 <a id="implementation-guide"></a>
 
 ## 1. IMPLEMENTATION GUIDE
@@ -185,7 +160,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 ---
 
-<!-- ANCHOR:summary-session-1769587914279-32gfx0374-05--agent-orchestration/z_archive/005-agent-system-improvements -->
+<!-- ANCHOR:summary -->
 <a id="overview"></a>
 
 ## 2. OVERVIEW
@@ -214,7 +189,7 @@ Updated all 6 create command YAML configuration files to remove hardcoded versio
 
 ---
 
-<!-- ANCHOR:detailed-changes-session-1769587914279-32gfx0374-05--agent-orchestration/z_archive/005-agent-system-improvements -->
+<!-- ANCHOR:detailed-changes -->
 <a id="detailed-changes"></a>
 
 ## 3. DETAILED CHANGES
@@ -260,6 +235,9 @@ rootCause: YAML files contained hardcoded version references and outdated phase 
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-all-version-string-references-c5a777c6-session-1769587914279-32gfx0374 -->
@@ -353,6 +331,9 @@ rootCause: YAML files contained hardcoded version references and outdated phase 
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -376,7 +357,7 @@ Updated all 6 create command YAML configuration files to remove hardcoded versio
 
 ---
 
-<!-- ANCHOR:postflight-session-1769587914279-32gfx0374-05--agent-orchestration/z_archive/005-agent-system-improvements -->
+<!-- ANCHOR:postflight -->
 <a id="postflight-learning-delta"></a>
 
 ## POSTFLIGHT LEARNING DELTA
@@ -415,7 +396,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 
 ---
 
-<!-- ANCHOR:recovery-hints-session-1769587914279-32gfx0374-05--agent-orchestration/z_archive/005-agent-system-improvements -->
+<!-- ANCHOR:recovery-hints -->
 <a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
@@ -440,6 +421,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 <!-- /ANCHOR:recovery-hints-session-1769587914279-32gfx0374-05--agent-orchestration/z_archive/005-agent-system-improvements -->
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -516,18 +498,10 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-
-  []
-
-key_files:
-  - ".opencode/command/create/assets/create_agent.yaml"
-  - ".opencode/command/create/assets/create_skill.yaml"
-  - ".opencode/command/create/assets/create_folder_readme.yaml"
-  - ".opencode/command/create/assets/create_install_guide.yaml"
-  - ".opencode/command/create/assets/create_skill_asset.yaml"
-  - ".opencode/command/create/assets/create_skill_reference.yaml"
-
-# Relationships
+  - "unified setup phase update"
+  - "create command yaml cleanup"
+  - "remove hardcoded version references"
+  - "workflow terminology migration"# Relationships
 related_sessions:
 
   []

@@ -1,22 +1,17 @@
 ---
-title: "sprint 0 measurement foundation [005-core-rag-sprints-0-to-8/27-02-26_16-26__sprint-0-closure-bm25-baseline]"
+title: "sprint 0 measurement foundation"
 description: "Completed Sprint 0 closure for the Hybrid RAG Fusion Refinement initiative."
 trigger_phrases:
   - "sprint 0 closure"
-  - "BM25 baseline"
-  - "contingency decision PROCEED"
-  - "MRR@5 0.2083"
-  - "ground truth ID mapping"
+  - "bm25 baseline"
+  - "contingency decision proceed"
+  - "mrr@5 0.2083"
+  - "ground truth id mapping"
 importance_tier: "critical"
 contextType: "general"
 quality_score: 1.00
 quality_flags: []
-
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-
----
-
 # sprint 0 measurement foundation session 27-02-26
 
 ## SESSION SUMMARY
@@ -41,6 +36,7 @@ quality_flags: []
 ---
 
 <!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -136,6 +132,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -296,6 +293,9 @@ rootCause: Sprint 0 had 3 PARTIAL exit gates (3, 5, 6) blocked by: (a) placehold
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-bm25-contingency-proceed-because-7c6ef34d -->
@@ -443,6 +443,9 @@ rootCause: Sprint 0 had 3 PARTIAL exit gates (3, 5, 6) blocked by: (a) placehold
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -564,6 +567,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -658,55 +662,11 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "system spec kit/022 hybrid rag fusion/006 core rag sprints 0 to 8"
-  - "evaluate contingency relative"
-  - "relevance weight"
-  - "recency weight"
-  - "bm25 only"
-  - "spec compliant"
-  - "ratio based"
-  - "search weights"
-  - "run bm25 baseline"
-  - "map ground truth ids"
-  - "non hard negative"
-  - "s0 004"
-  - "ground truth data"
-  - "ground truth generator"
-  - "t007 ground truth"
-  - "t008 bm25 baseline"
-  - "t009 exit gate verification"
-  - "decision added evaluatecontingencyrelative new"
-  - "added evaluatecontingencyrelative new function"
-  - "evaluatecontingencyrelative new function rather"
-  - "new function rather modifying"
-  - "function rather modifying evaluatecontingency"
-  - "rather modifying evaluatecontingency preserve"
-  - "modifying evaluatecontingency preserve backward"
-  - "evaluatecontingency preserve backward compatibility"
-  - "preserve backward compatibility sprint"
-  - "system"
-  - "spec"
-  - "kit/140"
-  - "hybrid"
-  - "rag"
-  - "fusion"
-  - "refinement/001"
-  - "sprint"
-  - "measurement"
-  - "foundation"
-
-key_files:
-  - ".opencode/.../eval/bm25-baseline.ts"
-  - ".opencode/.../eval/ground-truth-data.ts"
-  - ".opencode/.../eval/ground-truth-generator.ts"
-  - ".opencode/.../configs/search-weights.json"
-  - ".opencode/.../tests/t007-ground-truth.vitest.ts"
-  - ".opencode/.../tests/t008-bm25-baseline.vitest.ts"
-  - ".opencode/.../scripts/run-bm25-baseline.ts"
-  - ".opencode/.../scripts/map-ground-truth-ids.ts"
-  - ".opencode/.../scratch/t009-exit-gate-verification.md"
-
-# Relationships
+  - "sprint 0 closure"
+  - "bm25 baseline"
+  - "contingency decision proceed"
+  - "mrr@5 0.2083"
+  - "ground truth id mapping"# Relationships
 related_sessions:
 
   []

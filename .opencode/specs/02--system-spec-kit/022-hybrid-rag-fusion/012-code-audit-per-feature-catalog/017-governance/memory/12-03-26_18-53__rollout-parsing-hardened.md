@@ -1,19 +1,25 @@
 ---
-title: "Rollout parsing hardened [017-governance/12-03-26_18-53__rollout-parsing-hardened]"
-description: "Session context memory template for Spec Kit indexing."
+title: "Rollout parsing hardened"
+description: "Targeted tests and focused type checks are sufficient for scoped remediation validation."
 trigger_phrases:
-  - "memory dashboard"
-  - "session summary"
-  - "context template"
+  - "targeted tests focused type"
+  - "tests focused type checks"
+  - "focused type checks sufficient"
+  - "type checks sufficient scoped"
+  - "checks sufficient scoped remediation"
+  - "sufficient scoped remediation validation"
+  - "rollout parsing hardened targeted"
+  - "parsing hardened targeted tests"
+  - "hardened targeted tests focused"
+  - "code audit per catalog"
+  - "audit per catalog governance"
+  - "code"
 importance_tier: "normal"
 contextType: "general"
 quality_score: 0.80
 quality_flags:
   - "has_tool_state_mismatch"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
----
-
 # Rollout parsing hardened
 
 ## SESSION SUMMARY
@@ -38,6 +44,7 @@ quality_flags:
 ---
 
 <!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -135,6 +142,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -282,6 +290,9 @@ Direct tests were added for isFileWatcherEnabled and isLocalRerankerEnabled and 
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 decision_count: 0
@@ -298,6 +309,9 @@ decision_count: 0
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -429,6 +443,7 @@ Significant knowledge gain (+33 points). Major uncertainty reduction (-28 points
 
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -523,51 +538,18 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/022 hybrid rag fusion/013 code audit per feature catalog/017 governance"
-  - "and fail"
-  - "tree thinning"
-  - "rollout policy"
-  - "search flags"
-  - "dead code regression"
-  - "fail closed"
-  - "code audit per feature catalog"
-  - "merged-small-files tree-thinning merged small"
-  - "tree-thinning merged small files"
   - "targeted tests focused type"
   - "tests focused type checks"
   - "focused type checks sufficient"
   - "type checks sufficient scoped"
   - "checks sufficient scoped remediation"
   - "sufficient scoped remediation validation"
-  - ".opencode/skill/system-spec-kit/mcp server/tests/ merged-small-files tree-thinning"
-  - "server/tests/ merged-small-files tree-thinning merged"
-  - "merged small files rollout-policy.vitest.ts"
-  - "small files rollout-policy.vitest.ts search-flags.vitest.ts"
-  - "files rollout-policy.vitest.ts search-flags.vitest.ts dead-code-regression.vitest.ts"
-  - "merged .opencode/skill/system-spec-kit/mcp server/tests/rollout-policy.vitest.ts added"
-  - ".opencode/skill/system-spec-kit/mcp server/tests/rollout-policy.vitest.ts added malformed"
-  - "server/tests/rollout-policy.vitest.ts added malformed rollout"
-  - "added malformed rollout fail-closed"
-  - "malformed rollout fail-closed identity"
-  - "system"
-  - "spec"
-  - "kit/022"
-  - "hybrid"
-  - "rag"
-  - "fusion/013"
-  - "code"
-  - "audit"
-  - "per"
-  - "feature"
-  - "catalog/017"
-  - "governance"
-
-key_files:
-  - ".opencode/skill/system-spec-kit/mcp_server/tests/(merged-small-files)"
-  - ".opencode/skill/system-spec-kit/feature_catalog/(merged-small-files)"
-  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/017-governance/(merged-small-files)"
-
-# Relationships
+  - "rollout parsing hardened targeted"
+  - "parsing hardened targeted tests"
+  - "hardened targeted tests focused"
+  - "code audit per catalog"
+  - "audit per catalog governance"
+  - "code"# Relationships
 related_sessions:
 
   []

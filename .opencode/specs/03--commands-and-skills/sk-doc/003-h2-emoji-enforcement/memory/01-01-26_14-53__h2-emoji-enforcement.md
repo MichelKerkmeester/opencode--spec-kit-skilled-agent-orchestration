@@ -1,43 +1,16 @@
 ---
-title: "H2 emoji enforcement rollout for h2-emoji-enforcement 2026-01-01 [003-h2-emoji-enforcement/01-01-26_14-53__h2-emoji-enforcement]"
-description: "Implemented a copy-first, validate-all workflow to stop template-based documents from losing required H2 emojis. The session added blocking validation in extract_structure.py, updated write guidance, and verified compliant files return clean results."
+title: "H2 emoji enforcement rollout for h2-emoji-enforcement 2026-01-01"
+description: "Implemented a copy-first, validate-all workflow to stop template-based documents from losing required H2 emojis. The session added blocking validation in extract structure.py,..."
 trigger_phrases:
   - "h2 emoji enforcement"
   - "copy first validate all"
   - "missing emoji blocking"
 importance_tier: "normal"
+contextType: "general"
 quality_score: 0.60
 quality_flags:
   - "needs_review"
-contextType: "general"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-<!-- Constitutional Tier Promotion:
-  To promote a memory to constitutional tier (always surfaced):
-  
-  1. Via MCP tool after indexing:
-     memory_update({ id: <memory_id>, importanceTier: 'constitutional' })
-  
-  2. Criteria for constitutional:
-     - Applies to ALL future conversations (not project-specific)
-     - Core constraints/rules that should NEVER be forgotten
-     - ~2000 token budget total for constitutional tier
-     
-  3. Add trigger phrases for proactive surfacing:
-     memory_update({ 
-       id: <memory_id>, 
-       importanceTier: 'constitutional',
-       triggerPhrases: ['fix', 'implement', 'create', 'modify', ...]
-     })
-     
-  4. Examples of constitutional content:
-     - "Always ask Gate 3 spec folder question before file modifications"
-     - "Never modify production data directly"
-     - "Memory files MUST use generate-context.js script"
--->
-
----
-
 # SESSION SUMMARY
 
 | **Meta Data** | **Value** |
@@ -59,7 +32,8 @@ contextType: "general"
 
 ---
 
-<!-- ANCHOR:preflight-session-1767275591347-v3d2bwtqw-03--commands-and-skills/003-h2-emoji-enforcement -->
+<!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -96,7 +70,7 @@ contextType: "general"
 
 ---
 
-<!-- ANCHOR:continue-session-session-1767275591347-v3d2bwtqw-03--commands-and-skills/003-h2-emoji-enforcement -->
+<!-- ANCHOR:continue-session -->
 <a id="continue-session"></a>
 
 ## CONTINUE SESSION
@@ -130,6 +104,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 <!-- /ANCHOR:continue-session-session-1767275591347-v3d2bwtqw-03--commands-and-skills/003-h2-emoji-enforcement -->
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -165,7 +140,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 ---
 
-<!-- ANCHOR:task-guide-commands-and-skills/003-sk-doc/001-h2-emoji-enforcement-03--commands-and-skills/003-h2-emoji-enforcement -->
+<!-- ANCHOR:task-guide -->
 <a id="implementation-guide"></a>
 
 ## 1. IMPLEMENTATION GUIDE
@@ -212,7 +187,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 ---
 
-<!-- ANCHOR:summary-session-1767275591347-v3d2bwtqw-03--commands-and-skills/003-h2-emoji-enforcement -->
+<!-- ANCHOR:summary -->
 <a id="overview"></a>
 
 ## 2. OVERVIEW
@@ -244,7 +219,7 @@ Implemented a comprehensive 'Copy-First, Validate-All' approach to prevent H2 em
 
 ---
 
-<!-- ANCHOR:detailed-changes-session-1767275591347-v3d2bwtqw-03--commands-and-skills/003-h2-emoji-enforcement -->
+<!-- ANCHOR:detailed-changes -->
 <a id="detailed-changes"></a>
 
 ## 3. DETAILED CHANGES
@@ -290,6 +265,9 @@ rootCause: Headers were being reconstructed from memory instead of copied from t
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-error-severity-blocking-missing-d26ba1ac-session-1767275591347-v3d2bwtqw -->
@@ -437,6 +415,9 @@ rootCause: Headers were being reconstructed from memory instead of copied from t
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -463,7 +444,7 @@ Implemented a comprehensive 'Copy-First, Validate-All' approach to prevent H2 em
 
 ---
 
-<!-- ANCHOR:recovery-hints-session-1767275591347-v3d2bwtqw-03--commands-and-skills/003-h2-emoji-enforcement -->
+<!-- ANCHOR:recovery-hints -->
 <a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
@@ -488,7 +469,7 @@ Implemented a comprehensive 'Copy-First, Validate-All' approach to prevent H2 em
 <!-- /ANCHOR:recovery-hints-session-1767275591347-v3d2bwtqw-03--commands-and-skills/003-h2-emoji-enforcement -->
 ---
 
-<!-- ANCHOR:postflight-session-1767275591347-v3d2bwtqw-03--commands-and-skills/003-h2-emoji-enforcement -->
+<!-- ANCHOR:postflight -->
 <a id="postflight-learning-delta"></a>
 
 ## POSTFLIGHT LEARNING DELTA
@@ -514,6 +495,7 @@ This session was migrated from an older format. Learning metrics were not captur
 <!-- /ANCHOR:postflight-session-1767275591347-v3d2bwtqw-03--commands-and-skills/003-h2-emoji-enforcement -->
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -590,19 +572,9 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-
-  []
-
-key_files:
-  - ".opencode/agent/write.md"
-  - ".opencode/.../scripts/extract_structure.py"
-  - ".opencode/skill/sk-doc/SKILL.md"
-  - ".opencode/.../references/core_standards.md"
-  - "specs/.../001-h2-emoji-enforcement/checklist.md"
-  - "specs/.../001-h2-emoji-enforcement/tasks.md"
-  - "specs/.../001-h2-emoji-enforcement/implementation-summary.md"
-
-# Relationships
+  - "h2 emoji enforcement"
+  - "copy first validate all"
+  - "missing emoji blocking"# Relationships
 related_sessions:
 
   []

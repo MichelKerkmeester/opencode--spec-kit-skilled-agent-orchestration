@@ -67,6 +67,13 @@ Output:
   Creates a memory file in <spec-folder>/memory/ with ANCHOR format
   for indexing by the Spec Kit Memory system.
 
+Preferred native capture override:
+  - In direct mode only, set SYSTEM_SPEC_KIT_CAPTURE_SOURCE to one of:
+    opencode | claude | codex | copilot | gemini
+  - That preferred backend is tried first, then the remaining native backends
+    continue in the documented fallback order.
+  - Explicit JSON mode remains authoritative and ignores native capture preference.
+
 Direct CLI target rule:
   - When a spec folder is passed on the CLI, that explicit target is authoritative.
   - Session learning, JSON SPEC_FOLDER fields, and auto-detect may inform logging,

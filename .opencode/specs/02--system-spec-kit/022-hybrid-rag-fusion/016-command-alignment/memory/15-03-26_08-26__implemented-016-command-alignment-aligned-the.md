@@ -1,19 +1,25 @@
 ---
-title: "Implemented 016-command-alignment: [016-command-alignment/15-03-26_08-26__implemented-016-command-alignment-aligned-the]"
-description: "Session context memory template for Spec Kit indexing."
+title: "Implemented 016-command-alignment"
+description: "Implemented 016-command-alignment: aligned the memory command documentation suite with the current 31-tool Spec Kit Memory MCP surface. Updated 5 existing command files..."
 trigger_phrases:
-  - "memory dashboard"
-  - "session summary"
-  - "context template"
+  - "command alignment"
+  - "implemented 016-command-alignment aligned memory"
+  - "016-command-alignment aligned memory command"
+  - "aligned memory command documentation"
+  - "memory command documentation suite"
+  - "command documentation suite current"
+  - "documentation suite current 31-tool"
+  - "suite current 31-tool spec"
+  - "current 31-tool spec kit"
+  - "31-tool spec kit memory"
+  - "spec kit memory mcp"
+  - "kit memory mcp surface"
 importance_tier: "normal"
 contextType: "general"
 quality_score: 0.90
 quality_flags:
   - "has_tool_state_mismatch"
 ---
-
----
-
 # Implemented 016-command-alignment: aligned the memory command documentation suite with the current...
 
 ## SESSION SUMMARY
@@ -37,8 +43,6 @@ quality_flags:
 
 ---
 
----
-
 ## TABLE OF CONTENTS
 
 - [CONTINUE SESSION](#continue-session)
@@ -52,6 +56,8 @@ quality_flags:
 - [MEMORY METADATA](#memory-metadata)
 
 ---
+<!-- ANCHOR:continue-session -->
+<a id="continue-session"></a>
 
 ## CONTINUE SESSION
 
@@ -105,6 +111,8 @@ Next: Continue implementation
 - Last: Decision: memory_get_learning_history owned by /memory:manage history <specFolde
 
 ---
+<!-- ANCHOR:project-state-snapshot -->
+<a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
 
@@ -132,6 +140,8 @@ Next: Continue implementation
 **Key Topics:** `decision` | `memory` | `command` | `analyze` | `spec` | `eval` | `commands` | `manage` | `separate` | `per` | `all commands` | `analyze shared` |
 
 ---
+<!-- ANCHOR:task-guide -->
+<a id="implementation-guide"></a>
 
 ## 1. IMPLEMENTATION GUIDE
 
@@ -168,6 +178,8 @@ Next: Continue implementation
 - **Validation**: Input validation before processing
 
 ---
+<!-- ANCHOR:summary -->
+<a id="overview"></a>
 
 ## 2. OVERVIEW
 
@@ -194,6 +206,8 @@ Implemented 016-command-alignment: aligned the memory command documentation suit
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/016-command-alignment/(merged-small-files)` | Tree-thinning merged 1 small files (tasks.md). Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/016-command-alignment/tasks.md : File modified (description pending) |
 
 ---
+<!-- ANCHOR:detailed-changes -->
+<a id="detailed-changes"></a>
 
 ## 3. DETAILED CHANGES
 
@@ -204,6 +218,8 @@ Implemented 016-command-alignment: aligned the memory command documentation suit
 **Details:** command alignment | memory commands | 016 command alignment | tool coverage matrix | MCP command surface | 31 tools | 8 commands | analyze command | shared command | ingest command | confirmName | minQualityScore | learning history
 
 ---
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
 
 ## 4. DECISIONS
 
@@ -564,6 +580,8 @@ Implemented 016-command-alignment: aligned the memory command documentation suit
 **Confidence**: 0.5%
 
 ---
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
 
 ## 5. CONVERSATION
 
@@ -584,8 +602,8 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 Implemented 016-command-alignment: aligned the memory command documentation suite with the current 31-tool Spec Kit Memory MCP surface. Updated 5 existing command files (context.md, save.md, manage.md, learn.md, continue.md), created 3 new command files (analyze.md, shared.md, ingest.md), and refreshed the README with a complete 31-tool coverage matrix. Fixed manage.md numbering error (189 to 19), documented confirmName safety contract for checkpoint_delete, added memory_context trace/budget params, memory_search advanced params with minQualityScore deprecated alias, memory_match_triggers cognitive params, governance/provenance/retention docs for save, history subcommand for manage, and cross-link updates across all 8 commands.
 
 ---
-
----
+<!-- ANCHOR:recovery-hints -->
+<a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
 
@@ -639,8 +657,8 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 | No Dedup Conflicts |  |  |
 
 ---
-
----
+<!-- ANCHOR:metadata -->
+<a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 
@@ -732,54 +750,18 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/022 hybrid rag fusion/016 command alignment"
-  - "confirm name"
-  - "min quality score"
-  - "tenant id"
-  - "user id"
-  - "spec folder"
-  - "memory context"
-  - "memory get learning history"
-  - "cross link"
-  - "merged small files"
-  - "specfolder"
-  - "command per spec decision"
-  - "per spec decision decision"
-  - "decision eval tools remain"
-  - "eval tools remain inside"
-  - "tools remain inside /memory"
-  - "remain inside /memory analyze"
-  - "inside /memory analyze rather"
-  - "/memory analyze rather creating"
-  - "decision new commands analyze"
-  - "new commands analyze shared"
-  - "commands analyze shared ingest"
-  - "analyze shared ingest follow"
-  - "shared ingest follow established"
-  - "decision memory get learning"
-  - "get learning history owned"
-  - "system"
-  - "spec"
-  - "kit/022"
-  - "hybrid"
-  - "rag"
-  - "fusion/016"
-  - "command"
-  - "alignment"
-
-key_files:
-  - ".opencode/command/memory/context.md"
-  - ".opencode/command/memory/save.md"
-  - ".opencode/command/memory/manage.md"
-  - ".opencode/command/memory/learn.md"
-  - ".opencode/command/memory/continue.md"
-  - ".opencode/command/memory/analyze.md"
-  - ".opencode/command/memory/shared.md"
-  - ".opencode/command/memory/ingest.md"
-  - ".opencode/command/memory/README.txt"
-  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/016-command-alignment/(merged-small-files)"
-
-# Relationships
+  - "command alignment"
+  - "implemented 016-command-alignment aligned memory"
+  - "016-command-alignment aligned memory command"
+  - "aligned memory command documentation"
+  - "memory command documentation suite"
+  - "command documentation suite current"
+  - "documentation suite current 31-tool"
+  - "suite current 31-tool spec"
+  - "current 31-tool spec kit"
+  - "31-tool spec kit memory"
+  - "spec kit memory mcp"
+  - "kit memory mcp surface"# Relationships
 related_sessions:
 
   []
@@ -798,4 +780,3 @@ chunk_count: 1
 ---
 
 *Generated by system-spec-kit skill v1.7.2*
-

@@ -1,44 +1,17 @@
 ---
-title: "Create changelog command refinements for 014-create-changelog-command 2026-03-01 [014-create-changelog-command/01-03-26_14-30__create-changelog-command]"
-description: "This continuation session refined the create changelog command implementation. It fixed Unicode styling in changelog output, replaced a hardcoded component list with runtime folder discovery, and added a Gemini CLI changelog wrapper."
+title: "Create changelog command refinements for 014-create-changelog-command 2026-03-01"
+description: "This continuation session refined the create changelog command implementation. It fixed Unicode styling in changelog output, replaced a hardcoded component list with runtime..."
 trigger_phrases:
   - "create changelog command"
   - "dynamic folder discovery"
   - "unicode changelog styling"
   - "gemini changelog wrapper"
 importance_tier: "normal"
+contextType: "implementation"
 quality_score: 0.60
 quality_flags:
   - "needs_review"
-contextType: "implementation"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-<!-- Constitutional Tier Promotion:
-  To promote a memory to constitutional tier (always surfaced):
-  
-  1. Via MCP tool after indexing:
-     memory_update({ id: <memory_id>, importanceTier: 'constitutional' })
-  
-  2. Criteria for constitutional:
-     - Applies to ALL future conversations (not project-specific)
-     - Core constraints/rules that should NEVER be forgotten
-     - ~2000 token budget total for constitutional tier
-     
-  3. Add trigger phrases for proactive surfacing:
-     memory_update({ 
-       id: <memory_id>, 
-       importanceTier: 'constitutional',
-       triggerPhrases: ['fix', 'implement', 'create', 'modify', ...]
-     })
-     
-  4. Examples of constitutional content:
-     - "Always ask Gate 3 spec folder question before file modifications"
-     - "Never modify production data directly"
-     - "Memory files MUST use generate-context.js script"
--->
-
----
-
 # create changelog command session 01-03-26
 
 ## SESSION SUMMARY
@@ -63,6 +36,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -158,6 +132,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -298,6 +273,9 @@ rootCause: Initial implementation had ASCII diagram characters and a hardcoded 1
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-dynamic-folder-discovery-instead-52d07dac -->
@@ -418,6 +396,9 @@ rootCause: Initial implementation had ASCII diagram characters and a hardcoded 1
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -538,6 +519,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -632,47 +614,10 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " commands and skills/commands/014 create changelog command"
-  - "box drawing"
-  - "tree thinning"
-  - "changelog.md replaced ascii box-drawing"
-  - "replaced ascii box-drawing characters"
-  - "match install guide.md styling"
-  - "changelog subfolders differ per"
-  - "subfolders differ per repository"
-  - "differ per repository hardcoding"
-  - "per repository hardcoding creates"
-  - "repository hardcoding creates maintenance"
-  - "hardcoding creates maintenance burden"
-  - "prefix provides multiple resolution"
-  - "provides multiple resolution paths"
-  - "multiple resolution paths graceful"
-  - "resolution paths graceful degradation"
-  - "-component-name used runtime parsing"
-  - "used runtime parsing pattern"
-  - "runtime parsing pattern consistent"
-  - "parsing pattern consistent existing"
-  - "pattern consistent existing convention"
-  - "consistent existing convention enables"
-  - "existing convention enables sorted"
-  - "convention enables sorted discovery"
-  - "ensures visual consistency across"
-  - "visual consistency across create"
-  - "commands"
-  - "and"
-  - "skills/commands/014"
-  - "create"
-  - "changelog"
-  - "command"
-
-key_files:
-  - ".opencode/command/create/(merged-small-files)"
-  - ".opencode/command/create/assets/(merged-small-files)"
-  - ".opencode/.../assets/(merged-small-files)"
-  - ".gemini/commands/create/(merged-small-files)"
-
-# Relationships
-related_sessions:
+  - "create changelog command"
+  - "dynamic folder discovery"
+  - "unicode changelog styling"
+  - "gemini changelog wrapper"related_sessions:
 
   []
 

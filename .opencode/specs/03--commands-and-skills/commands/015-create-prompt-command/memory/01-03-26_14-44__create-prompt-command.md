@@ -1,44 +1,17 @@
 ---
-title: "Create prompt command implementation for 015-create-prompt-command 2026-03-01 [015-create-prompt-command/01-03-26_14-44__create-prompt-command]"
-description: "This session completed the /create:prompt command implementation around the sk-prompt-improver skill. It also embedded full Gemini CLI TOML command content across 21 wrappers and verified byte-level parity with the OpenCode markdown sources."
+title: "Create prompt command implementation for 015-create-prompt-command 2026-03-01"
+description: "This session completed the /create:prompt command implementation around the sk-prompt-improver skill. It also embedded full Gemini CLI TOML command content across 21 wrappers..."
 trigger_phrases:
   - "create prompt command"
   - "prompt improver wrapper"
   - "gemini toml embedding"
   - "clear scoring workflow"
 importance_tier: "normal"
+contextType: "implementation"
 quality_score: 0.60
 quality_flags:
   - "needs_review"
-contextType: "implementation"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-<!-- Constitutional Tier Promotion:
-  To promote a memory to constitutional tier (always surfaced):
-  
-  1. Via MCP tool after indexing:
-     memory_update({ id: <memory_id>, importanceTier: 'constitutional' })
-  
-  2. Criteria for constitutional:
-     - Applies to ALL future conversations (not project-specific)
-     - Core constraints/rules that should NEVER be forgotten
-     - ~2000 token budget total for constitutional tier
-     
-  3. Add trigger phrases for proactive surfacing:
-     memory_update({ 
-       id: <memory_id>, 
-       importanceTier: 'constitutional',
-       triggerPhrases: ['fix', 'implement', 'create', 'modify', ...]
-     })
-     
-  4. Examples of constitutional content:
-     - "Always ask Gate 3 spec folder question before file modifications"
-     - "Never modify production data directly"
-     - "Memory files MUST use generate-context.js script"
--->
-
----
-
 # create prompt command session 01-03-26
 
 ## SESSION SUMMARY
@@ -63,6 +36,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -158,6 +132,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -303,6 +278,9 @@ rootCause: Gemini TOML command files used @{} file references which may not reso
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-embed-full-content-gemini-0f280d2e -->
@@ -423,6 +401,9 @@ rootCause: Gemini TOML command files used @{} file references which may not reso
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -542,6 +523,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -636,46 +618,10 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " commands and skills/commands/015 create prompt command"
-  - "agent_router"
-  - "sk prompt improver"
-  - "byte level"
-  - "self contained"
-  - "merged small files"
-  - "decision v2.2.0.0 new changelog"
-  - "v2.2.0.0 new changelog /create"
-  - "new changelog /create prompt"
-  - "changelog /create prompt new"
-  - "/create prompt new command"
-  - "prompt new command patch"
-  - "decision used parallel sonnet"
-  - "used parallel sonnet agents"
-  - "parallel sonnet agents rewrite"
-  - "sonnet agents rewrite tomls"
-  - "agents rewrite tomls across"
-  - "rewrite tomls across directories"
-  - "tomls across directories simultaneously"
-  - "across directories simultaneously efficiency"
-  - "decision python script exact"
-  - "python script exact file"
-  - "script exact file rebuilding"
-  - "exact file rebuilding sed/edit"
-  - "file rebuilding sed/edit couldn"
-  - "rebuilding sed/edit couldn handle"
-  - "commands"
-  - "and"
-  - "skills/commands/015"
-  - "create"
-  - "prompt"
-  - "command"
-
-key_files:
-  - ".gemini/commands/memory/save.toml"
-  - ".opencode/changelog/04--commands/(merged-small-files)"
-  - ".gemini/commands/create/(merged-small-files)"
-
-# Relationships
-related_sessions:
+  - "create prompt command"
+  - "prompt improver wrapper"
+  - "gemini toml embedding"
+  - "clear scoring workflow"related_sessions:
 
   []
 

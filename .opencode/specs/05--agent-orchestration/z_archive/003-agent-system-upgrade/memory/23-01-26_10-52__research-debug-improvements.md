@@ -1,44 +1,17 @@
 ---
-title: "Research and debug agent improvements for 003-agent-system-upgrade 2026-01-23 [003-agent-system-upgrade/23-01-26_10-52__research-debug-improvements]"
-description: "This session completed research-agent improvements and added a dedicated debug sub-agent for the archived agent system upgrade work. It standardized agent model preferences, updated templates and routing, and fixed Claude Code versus OpenCode subagent type compatibility across multiple files."
+title: "Research and debug agent improvements for 003-agent-system-upgrade 2026-01-23"
+description: "This session completed research-agent improvements and added a dedicated debug sub-agent for the archived agent system upgrade work. It standardized agent model preferences,..."
 trigger_phrases:
   - "research agent improvements"
   - "debug sub-agent creation"
-  - "Claude Code subagent compatibility"
+  - "claude code subagent compatibility"
   - "agent model standardization"
 importance_tier: "normal"
+contextType: "implementation"
 quality_score: 0.60
 quality_flags:
   - "legacy_migration"
-contextType: "implementation"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-<!-- Constitutional Tier Promotion:
-  To promote a memory to constitutional tier (always surfaced):
-  
-  1. Via MCP tool after indexing:
-     memory_update({ id: <memory_id>, importanceTier: 'constitutional' })
-  
-  2. Criteria for constitutional:
-     - Applies to ALL future conversations (not project-specific)
-     - Core constraints/rules that should NEVER be forgotten
-     - ~2000 token budget total for constitutional tier
-     
-  3. Add trigger phrases for proactive surfacing:
-     memory_update({ 
-       id: <memory_id>, 
-       importanceTier: 'constitutional',
-       triggerPhrases: ['fix', 'implement', 'create', 'modify', ...]
-     })
-     
-  4. Examples of constitutional content:
-     - "Always ask Gate 3 spec folder question before file modifications"
-     - "Never modify production data directly"
-     - "Memory files MUST use generate-context.js script"
--->
-
----
-
 # SESSION SUMMARY
 
 | **Meta Data** | **Value** |
@@ -60,7 +33,8 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:preflight-session-1769161968510-r2t6m0y4m-05--agent-orchestration/006-research-debug-improvements -->
+<!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -97,7 +71,7 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:continue-session-session-1769161968510-r2t6m0y4m-05--agent-orchestration/006-research-debug-improvements -->
+<!-- ANCHOR:continue-session -->
 <a id="continue-session"></a>
 
 ## CONTINUE SESSION
@@ -131,6 +105,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 <!-- /ANCHOR:continue-session-session-1769161968510-r2t6m0y4m-05--agent-orchestration/006-research-debug-improvements -->
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -166,7 +141,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 ---
 
-<!-- ANCHOR:task-guide-agents/006-research-debug-improvements-05--agent-orchestration/006-research-debug-improvements -->
+<!-- ANCHOR:task-guide -->
 <a id="implementation-guide"></a>
 
 ## 1. IMPLEMENTATION GUIDE
@@ -211,7 +186,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 ---
 
-<!-- ANCHOR:summary-session-1769161968510-r2t6m0y4m-05--agent-orchestration/006-research-debug-improvements -->
+<!-- ANCHOR:summary -->
 <a id="overview"></a>
 
 ## 2. OVERVIEW
@@ -246,7 +221,7 @@ Completed implementation of Research Agent Improvements & Debug Sub-Agent Creati
 
 ---
 
-<!-- ANCHOR:detailed-changes-session-1769161968510-r2t6m0y4m-05--agent-orchestration/006-research-debug-improvements -->
+<!-- ANCHOR:detailed-changes -->
 <a id="detailed-changes"></a>
 
 ## 3. DETAILED CHANGES
@@ -292,6 +267,9 @@ rootCause: Agents lacked standardization (model preferences, output verification
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-default-all-agents-opus-83b79660-session-1769161968510-r2t6m0y4m -->
@@ -439,6 +417,9 @@ rootCause: Agents lacked standardization (model preferences, output verification
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -464,7 +445,7 @@ Completed implementation of Research Agent Improvements & Debug Sub-Agent Creati
 
 ---
 
-<!-- ANCHOR:recovery-hints-session-1769161968510-r2t6m0y4m-05--agent-orchestration/006-research-debug-improvements -->
+<!-- ANCHOR:recovery-hints -->
 <a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
@@ -489,7 +470,7 @@ Completed implementation of Research Agent Improvements & Debug Sub-Agent Creati
 <!-- /ANCHOR:recovery-hints-session-1769161968510-r2t6m0y4m-05--agent-orchestration/006-research-debug-improvements -->
 ---
 
-<!-- ANCHOR:postflight-session-1769161968510-r2t6m0y4m-05--agent-orchestration/006-research-debug-improvements -->
+<!-- ANCHOR:postflight -->
 <a id="postflight-learning-delta"></a>
 
 ## POSTFLIGHT LEARNING DELTA
@@ -515,6 +496,7 @@ This session was migrated from an older format. Learning metrics were not captur
 <!-- /ANCHOR:postflight-session-1769161968510-r2t6m0y4m-05--agent-orchestration/006-research-debug-improvements -->
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -591,22 +573,10 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-
-  []
-
-key_files:
-  - ".opencode/agent/debug.md"
-  - ".opencode/agent/research.md"
-  - ".opencode/agent/review.md"
-  - ".opencode/agent/write.md"
-  - ".opencode/agent/speckit.md"
-  - ".opencode/agent/orchestrate.md"
-  - ".opencode/command/spec_kit/research.md"
-  - ".opencode/command/spec_kit/debug.md"
-  - ".opencode/command/spec_kit/complete.md"
-  - ".opencode/command/spec_kit/implement.md"
-
-# Relationships
+  - "research agent improvements"
+  - "debug sub-agent creation"
+  - "claude code subagent compatibility"
+  - "agent model standardization"# Relationships
 related_sessions:
 
   []

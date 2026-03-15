@@ -1,19 +1,25 @@
 ---
-title: "2026-03-13 verification [006-shared-memory-rollout/13-03-26_20-56__2026-03-13-verification-pass-confirmed-phase-6]"
-description: "Session context memory template for Spec Kit indexing."
+title: "2026-03-13 verification"
+description: "2026-03-13 verification pass confirmed Phase 6 shared memory rollout is implemented with deny-by-default access, rollout gating, conflict audit, and kill-switch behavior."
 trigger_phrases:
-  - "memory dashboard"
-  - "session summary"
-  - "context template"
+  - "deny by default"
+  - "kill switch"
+  - "verification pass confirmed phase"
+  - "pass confirmed phase shared"
+  - "confirmed phase shared memory"
+  - "phase shared memory rollout"
+  - "shared memory rollout implemented"
+  - "memory rollout implemented deny-by-default"
+  - "rollout implemented deny-by-default access"
+  - "implemented deny-by-default access rollout"
+  - "deny-by-default access rollout gating"
+  - "access rollout gating conflict"
 importance_tier: "normal"
 contextType: "general"
 quality_score: 0.90
 quality_flags:
   - "has_tool_state_mismatch"
 ---
-
----
-
 # 2026-03-13 verification pass confirmed Phase 6 shared memory rollout is implemented with...
 
 ## SESSION SUMMARY
@@ -37,8 +43,6 @@ quality_flags:
 
 ---
 
----
-
 ## TABLE OF CONTENTS
 
 - [CONTINUE SESSION](#continue-session)
@@ -52,6 +56,8 @@ quality_flags:
 - [MEMORY METADATA](#memory-metadata)
 
 ---
+<!-- ANCHOR:continue-session -->
+<a id="continue-session"></a>
 
 ## CONTINUE SESSION
 
@@ -105,6 +111,8 @@ Next: Continue implementation
 - Last: Left collaboration reviewer sign-off pending - Technical evidence exists, but no
 
 ---
+<!-- ANCHOR:project-state-snapshot -->
+<a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
 
@@ -136,6 +144,8 @@ Next: Continue implementation
 **Key Topics:** `shared` | `rollout` | `technical` | `memory` | `reviewer` | `marked technical` | `technical shared` | `left collaboration` | `collaboration reviewer` | `reviewer sign` | `marked` | `left` |
 
 ---
+<!-- ANCHOR:task-guide -->
+<a id="implementation-guide"></a>
 
 ## 1. IMPLEMENTATION GUIDE
 
@@ -160,6 +170,8 @@ Next: Continue implementation
 - **Graceful Fallback**: Provide sensible defaults when primary method fails
 
 ---
+<!-- ANCHOR:summary -->
+<a id="overview"></a>
 
 ## 2. OVERVIEW
 
@@ -177,6 +189,8 @@ Next: Continue implementation
 | `02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/006-shared-memory-rollout/(merged-small-files)` | Tree-thinning merged 3 small files (tasks.md, checklist.md, implementation-summary.md). Merged from 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/006-shared-memory-rollout/tasks.md : File modified (description pending) | Merged from 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/006-shared-memory-rollout/checklist.md : File modified (description pending) | Merged from 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/006-shared-memory-rollout/implementation-summary.md : File modified (description pending) |
 
 ---
+<!-- ANCHOR:detailed-changes -->
+<a id="detailed-changes"></a>
 
 ## 3. DETAILED CHANGES
 
@@ -185,6 +199,8 @@ Next: Continue implementation
 2026-03-13 verification pass confirmed Phase 6 shared memory rollout is implemented with deny-by-default access, rollout gating, conflict audit, and kill-switch behavior.
 
 ---
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
 
 ## 4. DECISIONS
 
@@ -371,6 +387,8 @@ Next: Continue implementation
 **Confidence**: 0.5%
 
 ---
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
 
 ## 5. CONVERSATION
 
@@ -391,8 +409,8 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 2026-03-13 verification pass confirmed Phase 6 shared memory rollout is implemented with deny-by-default access, rollout gating, conflict audit, and kill-switch behavior.
 
 ---
-
----
+<!-- ANCHOR:recovery-hints -->
+<a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
 
@@ -446,8 +464,8 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 | No Dedup Conflicts |  |  |
 
 ---
-
----
+<!-- ANCHOR:metadata -->
+<a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 
@@ -539,49 +557,18 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/022 hybrid rag fusion/015 hydra db based features/006 shared memory rollout"
   - "deny by default"
   - "kill switch"
-  - "shared space"
-  - "rollout disabled"
-  - "sign off"
-  - "hydra db based features"
-  - "merged small files"
-  - "gating conflict audit kill-switch"
-  - "conflict audit kill-switch behavior"
-  - "shared-space handlers membership checks"
-  - "handlers membership checks rollout-disabled"
-  - "membership checks rollout-disabled gating"
-  - "checks rollout-disabled gating conflict"
-  - "rollout-disabled gating conflict audit"
-  - "technical evidence exists platform"
-  - "evidence exists platform product"
-  - "exists platform product reviewer"
-  - "platform product reviewer artifact"
-  - "product reviewer artifact present"
-  - "audit kill-switch behavior passed"
-  - "kill-switch behavior passed verification"
-  - "marked technical shared-memory rollout"
-  - "technical shared-memory rollout items"
-  - "shared-memory rollout items complete"
-  - "rollout items complete runtime"
-  - "system"
-  - "spec"
-  - "kit/022"
-  - "hybrid"
-  - "rag"
-  - "fusion/015"
-  - "hydra"
-  - "based"
-  - "features/006"
-  - "shared"
-  - "memory"
-  - "rollout"
-
-key_files:
-  - "02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/006-shared-memory-rollout/(merged-small-files)"
-
-# Relationships
+  - "verification pass confirmed phase"
+  - "pass confirmed phase shared"
+  - "confirmed phase shared memory"
+  - "phase shared memory rollout"
+  - "shared memory rollout implemented"
+  - "memory rollout implemented deny-by-default"
+  - "rollout implemented deny-by-default access"
+  - "implemented deny-by-default access rollout"
+  - "deny-by-default access rollout gating"
+  - "access rollout gating conflict"# Relationships
 related_sessions:
 
   []

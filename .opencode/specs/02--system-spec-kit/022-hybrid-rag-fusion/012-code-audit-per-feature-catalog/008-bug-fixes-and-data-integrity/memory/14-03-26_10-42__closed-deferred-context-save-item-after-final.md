@@ -1,19 +1,25 @@
 ---
-title: "Closed deferred [008-bug-fixes-and-data-integrity/14-03-26_10-42__closed-deferred-context-save-item-after-final]"
-description: "Session context memory template for Spec Kit indexing."
+title: "Closed deferred"
+description: "Closed deferred context-save item after final verification and documentation sync."
 trigger_phrases:
-  - "memory dashboard"
-  - "session summary"
-  - "context template"
+  - "catalog bug"
+  - "bug fixes"
+  - "context save"
+  - "closed deferred context-save item"
+  - "deferred context-save item final"
+  - "context-save item final verification"
+  - "item final verification documentation"
+  - "final verification documentation sync"
+  - "closed deferred closed deferred"
+  - "deferred closed deferred context-save"
+  - "code audit per catalog"
+  - "audit per catalog fixes"
 importance_tier: "normal"
 contextType: "general"
 quality_score: 0.90
 quality_flags:
   - "has_tool_state_mismatch"
 ---
-
----
-
 # Closed deferred context-save item after final verification and documentation sync.
 
 ## SESSION SUMMARY
@@ -37,8 +43,6 @@ quality_flags:
 
 ---
 
----
-
 ## TABLE OF CONTENTS
 
 - [CONTINUE SESSION](#continue-session)
@@ -52,6 +56,8 @@ quality_flags:
 - [MEMORY METADATA](#memory-metadata)
 
 ---
+<!-- ANCHOR:continue-session -->
+<a id="continue-session"></a>
 
 ## CONTINUE SESSION
 
@@ -107,6 +113,8 @@ Next: Keep verification evidence synchronized with checklist status.
 - Last: Next Steps
 
 ---
+<!-- ANCHOR:project-state-snapshot -->
+<a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
 
@@ -136,6 +144,8 @@ Next: Keep verification evidence synchronized with checklist status.
 **Key Topics:** `final` | `saved final` | `final via` | `via generate` | `saved` | `via` | `generate` | `system spec kit/022 hybrid rag fusion/013 code audit per feature catalog/008 bug fixes and data integrity` | `json` | `mode` | `external` | `cli` |
 
 ---
+<!-- ANCHOR:task-guide -->
+<a id="implementation-guide"></a>
 
 ## 1. IMPLEMENTATION GUIDE
 
@@ -156,6 +166,8 @@ Next: Keep verification evidence synchronized with checklist status.
 - No patterns identified
 
 ---
+<!-- ANCHOR:summary -->
+<a id="overview"></a>
 
 ## 2. OVERVIEW
 
@@ -173,6 +185,8 @@ Closed deferred context-save item after final verification and documentation syn
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/008-bug-fixes-and-data-integrity/(merged-small-files)` | Tree-thinning merged 1 small files (checklist.md). Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/008-bug-fixes-and-data-integrity/checklist.md : File modified (description pending) |
 
 ---
+<!-- ANCHOR:detailed-changes -->
+<a id="detailed-changes"></a>
 
 ## 3. DETAILED CHANGES
 
@@ -189,6 +203,8 @@ Keep verification evidence synchronized with checklist status.
 **Details:** Next: Keep verification evidence synchronized with checklist status.
 
 ---
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
 
 ## 4. DECISIONS
 
@@ -280,6 +296,8 @@ Keep verification evidence synchronized with checklist status.
 **Confidence**: 0.5%
 
 ---
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
 
 ## 5. CONVERSATION
 
@@ -300,8 +318,8 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 Closed deferred context-save item after final verification and documentation sync.
 
 ---
-
----
+<!-- ANCHOR:recovery-hints -->
+<a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
 
@@ -355,8 +373,8 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 | No Dedup Conflicts |  |  |
 
 ---
-
----
+<!-- ANCHOR:metadata -->
+<a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 
@@ -448,53 +466,18 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/022 hybrid rag fusion/013 code audit per feature catalog/008 bug fixes and data integrity"
-  - "008 bug"
+  - "catalog bug"
+  - "bug fixes"
   - "context save"
-  - "generate context"
-  - "code audit per feature catalog"
-  - "bug fixes and data integrity"
-  - "merged small files"
-  - "json mode external cli"
-  - "mode external cli compatibility"
-  - "context via"
-  - "saved final via generate-context"
-  - "final via generate-context json"
-  - "via generate-context json mode"
-  - "generate-context json mode external"
   - "closed deferred context-save item"
   - "deferred context-save item final"
   - "context-save item final verification"
   - "item final verification documentation"
   - "final verification documentation sync"
-  - "final via generate json"
-  - "via generate json mode"
-  - "generate json mode external"
-  - "final via generate saved"
-  - "via generate saved final"
-  - "generate saved final via"
-  - "external cli compatib saved"
-  - "system"
-  - "spec"
-  - "kit/022"
-  - "hybrid"
-  - "rag"
-  - "fusion/013"
-  - "code"
-  - "audit"
-  - "per"
-  - "feature"
-  - "catalog/008"
-  - "bug"
-  - "fixes"
-  - "and"
-  - "data"
-  - "integrity"
-
-key_files:
-  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/008-bug-fixes-and-data-integrity/(merged-small-files)"
-
-# Relationships
+  - "closed deferred closed deferred"
+  - "deferred closed deferred context-save"
+  - "code audit per catalog"
+  - "audit per catalog fixes"# Relationships
 related_sessions:
 
   []

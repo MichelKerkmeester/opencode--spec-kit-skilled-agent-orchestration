@@ -1,19 +1,25 @@
 ---
-title: "2026-03-13 verification [003-unified-graph-retrieval/13-03-26_20-56__2026-03-13-verification-pass-confirmed-phase-3]"
-description: "Session context memory template for Spec Kit indexing."
+title: "2026-03-13 verification"
+description: "2026-03-13 verification pass confirmed Phase 3 unified graph retrieval is implemented, tested, and documented with current evidence."
 trigger_phrases:
-  - "memory dashboard"
-  - "session summary"
-  - "context template"
+  - "verification pass confirmed phase"
+  - "pass confirmed phase unified"
+  - "confirmed phase unified graph"
+  - "phase unified graph retrieval"
+  - "unified graph retrieval implemented"
+  - "graph retrieval implemented tested"
+  - "retrieval implemented tested documented"
+  - "implemented tested documented current"
+  - "tested documented current evidence"
+  - "verification verification pass confirmed"
+  - "hydra based features unified"
+  - "based features unified graph"
 importance_tier: "normal"
 contextType: "general"
 quality_score: 0.90
 quality_flags:
   - "has_tool_state_mismatch"
 ---
-
----
-
 # 2026-03-13 verification pass confirmed Phase 3 unified graph retrieval is implemented, tested, and...
 
 ## SESSION SUMMARY
@@ -37,8 +43,6 @@ quality_flags:
 
 ---
 
----
-
 ## TABLE OF CONTENTS
 
 - [CONTINUE SESSION](#continue-session)
@@ -52,6 +56,8 @@ quality_flags:
 - [MEMORY METADATA](#memory-metadata)
 
 ---
+<!-- ANCHOR:continue-session -->
+<a id="continue-session"></a>
 
 ## CONTINUE SESSION
 
@@ -105,6 +111,8 @@ Next: Continue implementation
 - Last: Left human maintainer review rows pending - No human reviewer evidence was avail
 
 ---
+<!-- ANCHOR:project-state-snapshot -->
+<a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
 
@@ -136,6 +144,8 @@ Next: Continue implementation
 **Key Topics:** `human` | `graph` | `phase` | `marked technical` | `technical phase` | `phase tasks` | `tasks checklist` | `checklist items` | `items complete` | `complete verified` | `left human` | `human maintainer` |
 
 ---
+<!-- ANCHOR:task-guide -->
+<a id="implementation-guide"></a>
 
 ## 1. IMPLEMENTATION GUIDE
 
@@ -160,6 +170,8 @@ Next: Continue implementation
 - No patterns identified
 
 ---
+<!-- ANCHOR:summary -->
+<a id="overview"></a>
 
 ## 2. OVERVIEW
 
@@ -177,6 +189,8 @@ Next: Continue implementation
 | `02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/003-unified-graph-retrieval/(merged-small-files)` | Tree-thinning merged 3 small files (tasks.md, checklist.md, implementation-summary.md). Merged from 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/003-unified-graph-retrieval/tasks.md : File modified (description pending) | Merged from 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/003-unified-graph-retrieval/checklist.md : File modified (description pending) | Merged from 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/003-unified-graph-retrieval/implementation-summary.md : File modified (description pending) |
 
 ---
+<!-- ANCHOR:detailed-changes -->
+<a id="detailed-changes"></a>
 
 ## 3. DETAILED CHANGES
 
@@ -185,6 +199,8 @@ Next: Continue implementation
 2026-03-13 verification pass confirmed Phase 3 unified graph retrieval is implemented, tested, and documented with current evidence.
 
 ---
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
 
 ## 4. DECISIONS
 
@@ -371,6 +387,8 @@ Next: Continue implementation
 **Confidence**: 0.5%
 
 ---
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
 
 ## 5. CONVERSATION
 
@@ -391,8 +409,8 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 2026-03-13 verification pass confirmed Phase 3 unified graph retrieval is implemented, tested, and documented with current evidence.
 
 ---
-
----
+<!-- ANCHOR:recovery-hints -->
+<a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
 
@@ -446,8 +464,8 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 | No Dedup Conflicts |  |  |
 
 ---
-
----
+<!-- ANCHOR:metadata -->
+<a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 
@@ -539,49 +557,18 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/022 hybrid rag fusion/015 hydra db based features/003 unified graph retrieval"
-  - "hydra db based features"
-  - "merged small files"
-  - "marked technical phase tasks"
-  - "technical phase tasks checklist"
-  - "phase tasks checklist items"
-  - "tasks checklist items complete"
-  - "checklist items complete verified"
-  - "items complete verified code"
-  - "left human maintainer review"
-  - "human maintainer review rows"
-  - "maintainer review rows pending"
-  - "complete verified code tests"
-  - "deterministic ranking graph explainability"
-  - "ranking graph explainability rollback"
-  - "graph explainability rollback gating"
-  - "explainability rollback gating latency"
-  - "rollback gating latency microbenchmark"
-  - "gating latency microbenchmark passed"
-  - "review rows pending human"
-  - "rows pending human reviewer"
-  - "pending human reviewer evidence"
-  - "human reviewer evidence available"
-  - "reviewer evidence available audit"
-  - "evidence available audit pass"
-  - "verified code tests deterministic"
-  - "system"
-  - "spec"
-  - "kit/022"
-  - "hybrid"
-  - "rag"
-  - "fusion/015"
-  - "hydra"
-  - "based"
-  - "features/003"
-  - "unified"
-  - "graph"
-  - "retrieval"
-
-key_files:
-  - "02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/003-unified-graph-retrieval/(merged-small-files)"
-
-# Relationships
+  - "verification pass confirmed phase"
+  - "pass confirmed phase unified"
+  - "confirmed phase unified graph"
+  - "phase unified graph retrieval"
+  - "unified graph retrieval implemented"
+  - "graph retrieval implemented tested"
+  - "retrieval implemented tested documented"
+  - "implemented tested documented current"
+  - "tested documented current evidence"
+  - "verification verification pass confirmed"
+  - "hydra based features unified"
+  - "based features unified graph"# Relationships
 related_sessions:
 
   []

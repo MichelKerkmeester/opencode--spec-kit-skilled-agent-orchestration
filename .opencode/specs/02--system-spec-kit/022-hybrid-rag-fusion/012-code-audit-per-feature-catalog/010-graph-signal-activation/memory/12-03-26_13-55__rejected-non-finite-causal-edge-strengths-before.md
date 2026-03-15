@@ -1,19 +1,25 @@
 ---
-title: "Rejected non-finite [010-graph-signal-activation/12-03-26_13-55__rejected-non-finite-causal-edge-strengths-before]"
-description: "Session context memory template for Spec Kit indexing."
+title: "Rejected non-finite"
+description: "Treat evidence drift and documentation drift as closure blockers."
 trigger_phrases:
-  - "memory dashboard"
-  - "session summary"
-  - "context template"
+  - "non finite"
+  - "treat evidence drift documentation"
+  - "evidence drift documentation drift"
+  - "drift documentation drift closure"
+  - "documentation drift closure blockers"
+  - "rejected non-finite treat evidence"
+  - "non-finite treat evidence drift"
+  - "code audit per catalog"
+  - "audit per catalog graph"
+  - "per catalog graph signal"
+  - "catalog graph signal activation"
+  - "code"
 importance_tier: "normal"
 contextType: "general"
 quality_score: 0.90
 quality_flags:
   - "has_tool_state_mismatch"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
----
-
 # Rejected non-finite causal edge strengths before writes
 
 ## SESSION SUMMARY
@@ -34,8 +40,6 @@ quality_flags:
 | Created At (Epoch) | 1773320121 |
 | Last Accessed (Epoch) | 1773320121 |
 | Access Count | 1 |
-
----
 
 ---
 
@@ -109,6 +113,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -261,6 +266,9 @@ Ran TypeScript, targeted Vitest, alignment drift, spec validation, and sk-doc va
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-prioritized-truthfulness-over-partialclose-94898835 -->
@@ -339,6 +347,9 @@ Ran TypeScript, targeted Vitest, alignment drift, spec validation, and sk-doc va
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -422,8 +433,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 
 ---
 
----
-
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -518,54 +528,18 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/022 hybrid rag fusion/013 code audit per feature catalog/010 graph signal activation"
-  - "partial close"
-  - "partial remediation"
-  - "full closure"
-  - "tree thinning"
-  - "causal edges"
-  - "finite strength"
-  - "rollback safe"
-  - "temporal contiguity"
   - "non finite"
-  - "sk do"
-  - "code audit per feature catalog"
-  - "chk 052"
-  - "merged-small-files tree-thinning merged small"
-  - "tree-thinning merged small files"
-  - "spec and"
-  - "spec plan partial-remediation language"
-  - "plan partial-remediation language verified"
-  - "partial-remediation language verified full-closure"
-  - "language verified full-closure language"
-  - "verified full-closure language avoid"
-  - "full-closure language avoid contradictory"
-  - "language avoid contradictory completion"
-  - "avoid contradictory completion claims"
   - "treat evidence drift documentation"
   - "evidence drift documentation drift"
-  - "system"
-  - "spec"
-  - "kit/022"
-  - "hybrid"
-  - "rag"
-  - "fusion/013"
-  - "code"
-  - "audit"
-  - "per"
-  - "feature"
-  - "catalog/010"
-  - "graph"
-  - "signal"
-  - "activation"
-
-key_files:
-  - ".opencode/skill/system-spec-kit/mcp_server/lib/storage/(merged-small-files)"
-  - ".opencode/skill/system-spec-kit/mcp_server/tests/(merged-small-files)"
-  - ".opencode/skill/system-spec-kit/manual_testing_playbook/(merged-small-files)"
-  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/010-graph-signal-activation/(merged-small-files)"
-
-# Relationships
+  - "drift documentation drift closure"
+  - "documentation drift closure blockers"
+  - "rejected non-finite treat evidence"
+  - "non-finite treat evidence drift"
+  - "code audit per catalog"
+  - "audit per catalog graph"
+  - "per catalog graph signal"
+  - "catalog graph signal activation"
+  - "code"# Relationships
 related_sessions:
 
   []

@@ -1,19 +1,25 @@
 ---
-title: "2026-03-13 verification [001-baseline-and-safety-rails/13-03-26_20-56__2026-03-13-verification-pass-confirmed-phase-1]"
-description: "Session context memory template for Spec Kit indexing."
+title: "2026-03-13 verification"
+description: "2026-03-13 verification pass confirmed Phase 1 baseline safety rails are implemented, verified, and documented with current names and evidence."
 trigger_phrases:
-  - "memory dashboard"
-  - "session summary"
-  - "context template"
+  - "verification pass confirmed phase"
+  - "pass confirmed phase baseline"
+  - "confirmed phase baseline safety"
+  - "phase baseline safety rails"
+  - "baseline safety rails implemented"
+  - "safety rails implemented verified"
+  - "rails implemented verified documented"
+  - "implemented verified documented current"
+  - "verified documented current names"
+  - "documented current names evidence"
+  - "verification verification pass confirmed"
+  - "hydra based features baseline"
 importance_tier: "normal"
 contextType: "general"
 quality_score: 0.90
 quality_flags:
   - "has_tool_state_mismatch"
 ---
-
----
-
 # 2026-03-13 verification pass confirmed Phase 1 baseline safety rails are implemented, verified, and...
 
 ## SESSION SUMMARY
@@ -37,8 +43,6 @@ quality_flags:
 
 ---
 
----
-
 ## TABLE OF CONTENTS
 
 - [CONTINUE SESSION](#continue-session)
@@ -52,6 +56,8 @@ quality_flags:
 - [MEMORY METADATA](#memory-metadata)
 
 ---
+<!-- ANCHOR:continue-session -->
+<a id="continue-session"></a>
 
 ## CONTINUE SESSION
 
@@ -105,6 +111,8 @@ Next: Continue implementation
 - Last: Moved residual observability expansion out of Phase 1 - The current baseline sli
 
 ---
+<!-- ANCHOR:project-state-snapshot -->
+<a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
 
@@ -136,6 +144,8 @@ Next: Continue implementation
 **Key Topics:** `baseline` | `phase` | `observability` | `kept phase` | `phase focused` | `focused baseline` | `baseline control` | `moved residual` | `residual observability` | `observability expansion` | `expansion out` | `out phase` |
 
 ---
+<!-- ANCHOR:task-guide -->
+<a id="implementation-guide"></a>
 
 ## 1. IMPLEMENTATION GUIDE
 
@@ -160,6 +170,8 @@ Next: Continue implementation
 - **Helper Functions**: Encapsulate reusable logic in dedicated utility functions
 
 ---
+<!-- ANCHOR:summary -->
+<a id="overview"></a>
 
 ## 2. OVERVIEW
 
@@ -177,6 +189,8 @@ Next: Continue implementation
 | `02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/001-baseline-and-safety-rails/(merged-small-files)` | Tree-thinning merged 3 small files (tasks.md, checklist.md, implementation-summary.md). Merged from 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/001-baseline-and-safety-rails/tasks.md : File modified (description pending) | Merged from 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/001-baseline-and-safety-rails/checklist.md : File modified (description pending) | Merged from 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/001-baseline-and-safety-rails/implementation-summary.md : File modified (description pending) |
 
 ---
+<!-- ANCHOR:detailed-changes -->
+<a id="detailed-changes"></a>
 
 ## 3. DETAILED CHANGES
 
@@ -185,6 +199,8 @@ Next: Continue implementation
 2026-03-13 verification pass confirmed Phase 1 baseline safety rails are implemented, verified, and documented with current names and evidence.
 
 ---
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
 
 ## 4. DECISIONS
 
@@ -372,6 +388,8 @@ Next: Continue implementation
 **Confidence**: 0.5%
 
 ---
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
 
 ## 5. CONVERSATION
 
@@ -393,8 +411,8 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 2026-03-13 verification pass confirmed Phase 1 baseline safety rails are implemented, verified, and documented with current names and evidence.
 
 ---
-
----
+<!-- ANCHOR:recovery-hints -->
+<a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
 
@@ -448,8 +466,8 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 | No Dedup Conflicts |  |  |
 
 ---
-
----
+<!-- ANCHOR:metadata -->
+<a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 
@@ -541,50 +559,18 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/022 hybrid rag fusion/015 hydra db based features/001 baseline and safety rails"
-  - "follow up"
-  - "control plane"
-  - "hydra db based features"
-  - "baseline and safety rails"
-  - "merged small files"
-  - "kept phase focused baseline"
-  - "moved residual observability expansion"
-  - "residual observability expansion phase"
-  - "capability flags baseline snapshots"
-  - "flags baseline snapshots checkpoint"
-  - "baseline snapshots checkpoint helpers"
-  - "snapshots checkpoint helpers schema"
-  - "checkpoint helpers schema compatibility"
-  - "helpers schema compatibility form"
-  - "schema compatibility form safe"
-  - "compatibility form safe base"
-  - "form safe base later"
-  - "safe base later phases"
-  - "observability expansion phase current"
-  - "expansion phase current baseline"
-  - "current baseline slice complete"
-  - "baseline slice complete without"
-  - "slice complete without broader"
-  - "complete without broader observability"
-  - "without broader observability work"
-  - "system"
-  - "spec"
-  - "kit/022"
-  - "hybrid"
-  - "rag"
-  - "fusion/015"
-  - "hydra"
-  - "based"
-  - "features/001"
-  - "baseline"
-  - "and"
-  - "safety"
-  - "rails"
-
-key_files:
-  - "02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/001-baseline-and-safety-rails/(merged-small-files)"
-
-# Relationships
+  - "verification pass confirmed phase"
+  - "pass confirmed phase baseline"
+  - "confirmed phase baseline safety"
+  - "phase baseline safety rails"
+  - "baseline safety rails implemented"
+  - "safety rails implemented verified"
+  - "rails implemented verified documented"
+  - "implemented verified documented current"
+  - "verified documented current names"
+  - "documented current names evidence"
+  - "verification verification pass confirmed"
+  - "hydra based features baseline"# Relationships
 related_sessions:
 
   []

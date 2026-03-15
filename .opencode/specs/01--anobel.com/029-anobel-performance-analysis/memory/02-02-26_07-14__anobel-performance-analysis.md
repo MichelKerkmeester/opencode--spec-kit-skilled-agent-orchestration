@@ -1,43 +1,16 @@
 ---
-title: "Performance optimization documentation for [029-anobel-performance-analysis/02-02-26_07-14__anobel-performance-analysis]"
-description: "This session documents the Level 3+ planning package for anobel.com performance optimization, including more than fifty issues, six implementation phases, and multiple ADRs. It preserves the overview, verification checklist framing, and research context needed to continue the performance-analysis specification."
+title: "Performance optimization documentation for"
+description: "This session documents the Level 3+ planning package for anobel.com performance optimization, including more than fifty issues, six implementation phases, and multiple ADRs...."
 trigger_phrases:
   - "anobel performance optimization documentation"
   - "performance analysis adr decisions"
   - "webflow performance verification checklist"
 importance_tier: "normal"
+contextType: "research"
 quality_score: 0.60
 quality_flags:
   - "needs_review"
-contextType: "research"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-<!-- Constitutional Tier Promotion:
-  To promote a memory to constitutional tier (always surfaced):
-  
-  1. Via MCP tool after indexing:
-     memory_update({ id: <memory_id>, importanceTier: 'constitutional' })
-  
-  2. Criteria for constitutional:
-     - Applies to ALL future conversations (not project-specific)
-     - Core constraints/rules that should NEVER be forgotten
-     - ~2000 token budget total for constitutional tier
-     
-  3. Add trigger phrases for proactive surfacing:
-     memory_update({ 
-       id: <memory_id>, 
-       importanceTier: 'constitutional',
-       triggerPhrases: ['fix', 'implement', 'create', 'modify', ...]
-     })
-     
-  4. Examples of constitutional content:
-     - "Always ask Gate 3 spec folder question before file modifications"
-     - "Never modify production data directly"
-     - "Memory files MUST use generate-context.js script"
--->
-
----
-
 # SESSION SUMMARY
 
 | **Meta Data** | **Value** |
@@ -59,7 +32,8 @@ contextType: "research"
 
 ---
 
-<!-- ANCHOR:preflight-session-1770012882357-hyk40psi8-005-anobel.com/031-anobel-performance-analysis -->
+<!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -97,7 +71,7 @@ contextType: "research"
 
 ---
 
-<!-- ANCHOR:continue-session-session-1770012882357-hyk40psi8-005-anobel.com/031-anobel-performance-analysis -->
+<!-- ANCHOR:continue-session -->
 <a id="continue-session"></a>
 
 ## CONTINUE SESSION
@@ -155,6 +129,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -190,7 +165,7 @@ Next: Continue implementation
 
 ---
 
-<!-- ANCHOR:task-guide-anobel.com/031-anobel-performance-analysis-005-anobel.com/031-anobel-performance-analysis -->
+<!-- ANCHOR:task-guide -->
 <a id="implementation-guide"></a>
 
 ## 1. IMPLEMENTATION GUIDE
@@ -225,7 +200,7 @@ Next: Continue implementation
 
 ---
 
-<!-- ANCHOR:summary-session-1770012882357-hyk40psi8-005-anobel.com/031-anobel-performance-analysis -->
+<!-- ANCHOR:summary -->
 <a id="overview"></a>
 
 ## 2. OVERVIEW
@@ -256,7 +231,7 @@ Created comprehensive Level 3+ SpecKit documentation for anobel.com performance 
 
 ---
 
-<!-- ANCHOR:detailed-changes-session-1770012882357-hyk40psi8-005-anobel.com/031-anobel-performance-analysis -->
+<!-- ANCHOR:detailed-changes -->
 <a id="detailed-changes"></a>
 
 ## 3. DETAILED CHANGES
@@ -302,6 +277,9 @@ rootCause: 20-second mobile LCP caused by JavaScript timeout bugs in hero script
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-implementation-phases-because-comprehensive-134939d7-session-1770012882357-hyk40psi8 -->
@@ -476,6 +454,9 @@ rootCause: 20-second mobile LCP caused by JavaScript timeout bugs in hero script
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -501,7 +482,7 @@ Created comprehensive Level 3+ SpecKit documentation for anobel.com performance 
 
 ---
 
-<!-- ANCHOR:recovery-hints-session-1770012882357-hyk40psi8-005-anobel.com/031-anobel-performance-analysis -->
+<!-- ANCHOR:recovery-hints -->
 <a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
@@ -558,7 +539,7 @@ node .opencode/skill/system-spec-kit/scripts/memory/generate-context.js 005-anob
 
 ---
 
-<!-- ANCHOR:postflight-session-1770012882357-hyk40psi8-005-anobel.com/031-anobel-performance-analysis -->
+<!-- ANCHOR:postflight -->
 <a id="postflight-learning-delta"></a>
 
 ## POSTFLIGHT LEARNING DELTA
@@ -597,6 +578,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -689,17 +671,9 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-
-  []
-
-key_files:
-  - "specs/005-anobel.com/031-anobel-performance-analysis/plan.md"
-  - "specs/.../031-anobel-performance-analysis/tasks.md"
-  - "specs/.../031-anobel-performance-analysis/checklist.md"
-  - "specs/.../031-anobel-performance-analysis/decision-record.md"
-  - "specs/.../031-anobel-performance-analysis/research.md"
-
-# Relationships
+  - "anobel performance optimization documentation"
+  - "performance analysis adr decisions"
+  - "webflow performance verification checklist"# Relationships
 related_sessions:
 
   []

@@ -1,22 +1,17 @@
 ---
-title: "Cross-AI final review audit [001-hybrid-rag-fusion-epic/03-03-26_18-36__cross-ai-final-review-phase-018]"
-description: "Session 8: Cross-AI final review of Phase 018 (Refinement Phase 7) using 8 parallel agents — 5 Codex gpt-5.3-codex (xhigh reasoning) and 3 Gemini gemini-3.1-pro-preview. All 8 agents independently aud."
+title: "Cross-AI final review audit"
+description: "Session 8: Cross-AI final review of Phase 018 (Refinement Phase 7) using 8 parallel agents — 5 Codex gpt-5.3-codex (xhigh reasoning) and 3 Gemini gemini-3.1-pro-preview. All 8..."
 trigger_phrases:
   - "system spec kit/022 hybrid rag fusion"
   - "resolve effective score"
   - "cross ai"
   - "gpt 5"
   - "gemini 3"
-quality_score: 1.00
-quality_flags: []
 importance_tier: "critical"
 contextType: "research"
-
+quality_score: 1.00
+quality_flags: []
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-
----
-
 # hybrid rag fusion session 03-03-26
 
 ## SESSION SUMMARY
@@ -41,6 +36,7 @@ contextType: "research"
 ---
 
 <!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -134,6 +130,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -265,6 +262,9 @@ rootCause: Phase 018 needed independent cross-AI validation to confirm code chan
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-codex-gemini-agents-not-7619fe40 -->
@@ -385,6 +385,9 @@ rootCause: Phase 018 needed independent cross-AI validation to confirm code chan
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -506,6 +509,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -600,45 +604,11 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/022 hybrid rag fusion"
+  - "system spec kit/022 hybrid rag fusion"
   - "resolve effective score"
   - "cross ai"
   - "gpt 5"
-  - "gemini 3"
-  - "pro preview"
-  - "doc only"
-  - "pre existing"
-  - "same model"
-  - "check then act"
-  - "p1 10"
-  - "p1 11"
-  - "refinement phase 7"
-  - "tree thinning"
-  - "implementation summary"
-  - "tasks.md checkbox sync items"
-  - "model cross-ai review catches"
-  - "cross-ai review catches blind"
-  - "review catches blind spots"
-  - "catches blind spots same-model"
-  - "blind spots same-model bias"
-  - "spots same-model bias confirmed"
-  - "same-model bias confirmed minimal"
-  - "bias confirmed minimal finding"
-  - "confirmed minimal finding overlap"
-  - "minimal finding overlap two"
-  - "system"
-  - "spec"
-  - "kit/023"
-  - "hybrid"
-  - "rag"
-  - "fusion"
-  - "refinement"
-
-key_files:
-  - ".opencode/.../scratch/(merged-small-files)"
-  - ".opencode/.../010-cross-ai-audit/(merged-small-files)"
-
-# Relationships
+  - "gemini 3"# Relationships
 related_sessions:
 
   []

@@ -1,21 +1,17 @@
 ---
-title: "Root docs R1-R8 fixes [001-hybrid-rag-fusion-epic/27-02-26_09-06__root-doc-r1-r8-fixes]"
-description: "Implemented all 8 recommendations (R1-R8) from the ultra-think review of Spec 140 root documentation. Applied 14 edits across 4 files (spec.md, plan.md, tasks.md, checklist.md). Changes include: resol."
+title: "Root docs R1-R8 fixes"
+description: "Implemented all 8 recommendations (R1-R8) from the ultra-think review of Spec 140 root documentation. Applied 14 edits across 4 files (spec.md, plan.md, tasks.md,..."
 trigger_phrases:
   - "system spec kit/022 hybrid rag fusion"
   - "replace all"
   - "r1 r8"
   - "ultra think"
   - "channel drop"
-quality_score: 1.00
-quality_flags: []
 importance_tier: "normal"
 contextType: "implementation"
+quality_score: 1.00
+quality_flags: []
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-
----
-
 # hybrid rag fusion session 27-02-26
 
 ## SESSION SUMMARY
@@ -40,6 +36,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -135,6 +132,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -276,6 +274,9 @@ rootCause: Ultra-think review identified 8 documentation issues: stale counts, w
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-applied-all-af396313 -->
@@ -423,6 +424,9 @@ rootCause: Ultra-think review identified 8 documentation issues: stale counts, w
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -545,6 +549,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -643,43 +648,7 @@ trigger_phrases:
   - "replace all"
   - "r1 r8"
   - "ultra think"
-  - "channel drop"
-  - "chk 111"
-  - "tm 04"
-  - "hand labeling"
-  - "cross references"
-  - "documentation only"
-  - "tm 06"
-  - "hybrid rag fusion refinement"
-  - "resolving recommendation count narrative"
-  - "recommendation count narrative ambiguity"
-  - "updating stale checklist frontmatter"
-  - "stale checklist frontmatter count"
-  - "fixes documentation-only changes ultra-think"
-  - "documentation-only changes ultra-think review"
-  - "changes ultra-think review identified"
-  - "ultra-think review identified governance"
-  - "review identified governance gaps"
-  - "identified governance gaps stale"
-  - "governance gaps stale references"
-  - "gaps stale references without"
-  - "stale references without requiring"
-  - "references without requiring code"
-  - "system"
-  - "spec"
-  - "kit/140"
-  - "hybrid"
-  - "rag"
-  - "fusion"
-  - "refinement"
-
-key_files:
-  - ".opencode/.../022-hybrid-rag-fusion/spec.md"
-  - ".opencode/.../022-hybrid-rag-fusion/plan.md"
-  - ".opencode/.../022-hybrid-rag-fusion/tasks.md"
-  - ".opencode/.../022-hybrid-rag-fusion/checklist.md"
-
-# Relationships
+  - "channel drop"# Relationships
 related_sessions:
 
   []

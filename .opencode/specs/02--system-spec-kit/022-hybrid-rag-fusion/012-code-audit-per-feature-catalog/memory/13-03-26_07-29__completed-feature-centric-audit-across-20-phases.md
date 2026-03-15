@@ -1,19 +1,25 @@
 ---
-title: "Completed feature-centri [012-code-audit-per-feature-catalog/13-03-26_07-29__completed-feature-centric-audit-across-20-phases]"
-description: "Session context memory template for Spec Kit indexing."
+title: "Completed feature-centri"
+description: "The 20-phase feature-catalog audit completed with 180 audited features and a synthesis identifying 41 FAIL, 106 WARN, and 33 PASS outcomes."
 trigger_phrases:
-  - "memory dashboard"
-  - "session summary"
-  - "context template"
+  - "feature centri"
+  - "feature catalog"
+  - "20-phase feature-catalog audit completed"
+  - "feature-catalog audit completed audited"
+  - "audit completed audited features"
+  - "completed audited features synthesis"
+  - "audited features synthesis identifying"
+  - "features synthesis identifying fail"
+  - "synthesis identifying fail warn"
+  - "identifying fail warn pass"
+  - "fail warn pass outcomes"
+  - "completed feature-centri 20-phase feature-catalog"
 importance_tier: "normal"
 contextType: "general"
 quality_score: 0.90
 quality_flags:
   - "has_tool_state_mismatch"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
----
-
 # Completed feature-centric audit across 20 phases
 
 ## SESSION SUMMARY
@@ -34,8 +40,6 @@ quality_flags:
 | Created At (Epoch) | 1773383361 |
 | Last Accessed (Epoch) | 1773383361 |
 | Access Count | 1 |
-
----
 
 ---
 
@@ -111,6 +115,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -230,6 +235,9 @@ The Spec Kit Memory MCP feature catalog audit finished across 20 phase folders c
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-phasepercategory-audit-structure-42b0432b -->
@@ -374,6 +382,9 @@ The Spec Kit Memory MCP feature catalog audit finished across 20 phase folders c
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -456,8 +467,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 
 ---
 
----
-
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -552,48 +562,18 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/022 hybrid rag fusion/013 code audit per feature catalog"
-  - "phase per category"
-  - "roll up"
-  - "cross cutting"
-  - "source table"
-  - "placeholder test"
-  - "code audit per feature catalog"
-  - "tree thinning"
-  - "master fix plan"
-  - "cross phase"
-  - "highest impact"
-  - "audit organized feature-catalog category"
-  - "organized feature-catalog category phase"
-  - "feature-catalog category phase folder"
-  - "category phase folder keeping"
-  - "phase folder keeping findings"
-  - "folder keeping findings traceable"
-  - "keeping findings traceable specific"
-  - "findings traceable specific files"
-  - "traceable specific files tests"
-  - "specific files tests remediation"
-  - "files tests remediation work"
-  - "single synthesis report treated"
-  - "synthesis report treated canonical"
-  - "report treated canonical roll-up"
-  - "treated canonical roll-up cross-cutting"
-  - "system"
-  - "spec"
-  - "kit/022"
-  - "hybrid"
-  - "rag"
-  - "fusion/013"
-  - "code"
-  - "audit"
-  - "per"
-  - "feature"
-  - "catalog"
-
-key_files:
-  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/(merged-small-files)"
-
-# Relationships
+  - "feature centri"
+  - "feature catalog"
+  - "20-phase feature-catalog audit completed"
+  - "feature-catalog audit completed audited"
+  - "audit completed audited features"
+  - "completed audited features synthesis"
+  - "audited features synthesis identifying"
+  - "features synthesis identifying fail"
+  - "synthesis identifying fail warn"
+  - "identifying fail warn pass"
+  - "fail warn pass outcomes"
+  - "completed feature-centri 20-phase feature-catalog"# Relationships
 related_sessions:
 
   []

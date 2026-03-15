@@ -1,44 +1,17 @@
 ---
-title: "Level 3+ spec planning for 005-agent-system-improvements 2026-01-27 [005-agent-system-improvements/27-01-26_11-24__agent-system-improvements]"
-description: "This session documented a Level 3+ spec folder for agent system improvements. It captured requirements, planning phases, checklist priorities, and ADRs for nine documentation improvements informed by ten-agent research."
+title: "Level 3+ spec planning for 005-agent-system-improvements 2026-01-27"
+description: "This session documented a Level 3+ spec folder for agent system improvements. It captured requirements, planning phases, checklist priorities, and ADRs for nine documentation..."
 trigger_phrases:
   - "agent system improvements spec"
   - "level 3 documentation planning"
   - "parallel agent research"
   - "output verification guidance"
 importance_tier: "normal"
+contextType: "implementation"
 quality_score: 0.60
 quality_flags:
   - "legacy_migration"
-contextType: "implementation"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-<!-- Constitutional Tier Promotion:
-  To promote a memory to constitutional tier (always surfaced):
-  
-  1. Via MCP tool after indexing:
-     memory_update({ id: <memory_id>, importanceTier: 'constitutional' })
-  
-  2. Criteria for constitutional:
-     - Applies to ALL future conversations (not project-specific)
-     - Core constraints/rules that should NEVER be forgotten
-     - ~2000 token budget total for constitutional tier
-     
-  3. Add trigger phrases for proactive surfacing:
-     memory_update({ 
-       id: <memory_id>, 
-       importanceTier: 'constitutional',
-       triggerPhrases: ['fix', 'implement', 'create', 'modify', ...]
-     })
-     
-  4. Examples of constitutional content:
-     - "Always ask Gate 3 spec folder question before file modifications"
-     - "Never modify production data directly"
-     - "Memory files MUST use generate-context.js script"
--->
-
----
-
 # SESSION SUMMARY
 
 | **Meta Data** | **Value** |
@@ -60,7 +33,8 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:preflight-session-1769509458579-x1sjjexqq-05--agent-orchestration/z_archive/005-agent-system-improvements -->
+<!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -98,7 +72,7 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:continue-session-session-1769509458579-x1sjjexqq-05--agent-orchestration/z_archive/005-agent-system-improvements -->
+<!-- ANCHOR:continue-session -->
 <a id="continue-session"></a>
 
 ## CONTINUE SESSION
@@ -132,6 +106,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 <!-- /ANCHOR:continue-session-session-1769509458579-x1sjjexqq-05--agent-orchestration/z_archive/005-agent-system-improvements -->
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -167,7 +142,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 ---
 
-<!-- ANCHOR:task-guide-agents/005-agent-system-improvements-05--agent-orchestration/z_archive/005-agent-system-improvements -->
+<!-- ANCHOR:task-guide -->
 <a id="implementation-guide"></a>
 
 ## 1. IMPLEMENTATION GUIDE
@@ -206,7 +181,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 ---
 
-<!-- ANCHOR:summary-session-1769509458579-x1sjjexqq-05--agent-orchestration/z_archive/005-agent-system-improvements -->
+<!-- ANCHOR:summary -->
 <a id="overview"></a>
 
 ## 2. OVERVIEW
@@ -237,7 +212,7 @@ Completed Level 3+ Spec Kit documentation for agent system improvements. Created
 
 ---
 
-<!-- ANCHOR:detailed-changes-session-1769509458579-x1sjjexqq-05--agent-orchestration/z_archive/005-agent-system-improvements -->
+<!-- ANCHOR:detailed-changes -->
 <a id="detailed-changes"></a>
 
 ## 3. DETAILED CHANGES
@@ -283,6 +258,9 @@ rootCause: Agent documentation had gaps: missing verification sections in specki
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-documentation-1b7ec32e-session-1769509458579-x1sjjexqq -->
@@ -403,6 +381,9 @@ rootCause: Agent documentation had gaps: missing verification sections in specki
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -428,7 +409,7 @@ Completed Level 3+ Spec Kit documentation for agent system improvements. Created
 
 ---
 
-<!-- ANCHOR:postflight-session-1769509458579-x1sjjexqq-05--agent-orchestration/z_archive/005-agent-system-improvements -->
+<!-- ANCHOR:postflight -->
 <a id="postflight-learning-delta"></a>
 
 ## POSTFLIGHT LEARNING DELTA
@@ -467,7 +448,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 
 ---
 
-<!-- ANCHOR:recovery-hints-session-1769509458579-x1sjjexqq-05--agent-orchestration/z_archive/005-agent-system-improvements -->
+<!-- ANCHOR:recovery-hints -->
 <a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
@@ -492,6 +473,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 <!-- /ANCHOR:recovery-hints-session-1769509458579-x1sjjexqq-05--agent-orchestration/z_archive/005-agent-system-improvements -->
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -568,19 +550,10 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-
-  []
-
-key_files:
-  - "specs/05--agent-orchestration/z_archive/005-agent-system-improvements/spec.md"
-  - "specs/05--agent-orchestration/z_archive/005-agent-system-improvements/plan.md"
-  - "specs/05--agent-orchestration/z_archive/005-agent-system-improvements/tasks.md"
-  - "specs/05--agent-orchestration/z_archive/005-agent-system-improvements/checklist.md"
-  - "specs/.../005-agent-system-improvements/decision-record.md"
-  - "specs/.../005-agent-system-improvements/001-analysis-agent-system-architecture.md"
-  - "specs/.../005-agent-system-improvements/002-recommendations-agent-system-improvements.md"
-
-# Relationships
+  - "agent system improvements spec"
+  - "level 3 documentation planning"
+  - "parallel agent research"
+  - "output verification guidance"# Relationships
 related_sessions:
 
   []

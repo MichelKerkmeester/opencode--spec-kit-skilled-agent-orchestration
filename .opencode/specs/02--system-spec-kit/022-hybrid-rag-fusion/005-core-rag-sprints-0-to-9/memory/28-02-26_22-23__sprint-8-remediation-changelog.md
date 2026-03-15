@@ -1,22 +1,17 @@
 ---
-title: "comprehensive remediation session 28-02-26 [005-core-rag-sprints-0-to-8/28-02-26_22-23__sprint-8-remediation-changelog]"
+title: "comprehensive remediation session 28-02-26"
 description: "Continued comprehensive MCP server remediation session."
 trigger_phrases:
   - "summary of new features"
   - "feature summary update"
-  - "Sprint 8 remediation"
+  - "sprint 8 remediation"
   - "comprehensive remediation changelog"
   - "v2.3.0.15"
 importance_tier: "normal"
 contextType: "general"
 quality_score: 1.00
 quality_flags: []
-
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-
----
-
 # comprehensive remediation session 28-02-26
 
 ## SESSION SUMMARY
@@ -41,6 +36,7 @@ quality_flags: []
 ---
 
 <!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -134,6 +130,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -250,6 +247,9 @@ rootCause: summary_of_new_features.md was outdated after Sprint 8 remediation - 
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-feature-sections-inline-sprint-cdfceb2e -->
@@ -343,6 +343,9 @@ rootCause: summary_of_new_features.md was outdated after Sprint 8 remediation - 
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -463,6 +466,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -557,47 +561,11 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "system spec kit/022 hybrid rag fusion/006 core rag sprints 0 to 8"
-  - "bug fixes"
   - "summary of new features"
-  - "b1 b4"
-  - "c1 c4"
-  - "d1 d3"
-  - "e1 e2"
-  - "a1 a2"
-  - "p1 p4"
-  - "pi b1"
-  - "new features.md sprint annotations"
-  - "features.md sprint annotations across"
-  - "sprint annotations across sections"
-  - "preserves original descriptions clearly"
-  - "original descriptions clearly marking"
-  - "descriptions clearly marking changed"
-  - "level new features.md full"
-  - "new features.md full accounting"
-  - "features.md full accounting fixes"
-  - "follows existing patch increment"
-  - "existing patch increment pattern"
-  - "patch increment pattern 01--system-spec-kit"
-  - "continued comprehensive mcp server"
-  - "comprehensive mcp server remediation"
-  - "mcp server remediation session"
-  - "annotations across sections reflecting"
-  - "system"
-  - "spec"
-  - "kit/140"
-  - "hybrid"
-  - "rag"
-  - "fusion"
-  - "refinement/010"
-  - "comprehensive"
-  - "remediation"
-
-key_files:
-  - "specs/.../022-hybrid-rag-fusion/(merged-small-files)"
-  - ".opencode/changelog/01--system-spec-kit/(merged-small-files)"
-
-# Relationships
+  - "feature summary update"
+  - "sprint 8 remediation"
+  - "comprehensive remediation changelog"
+  - "v2.3.0.15"# Relationships
 related_sessions:
 
   []

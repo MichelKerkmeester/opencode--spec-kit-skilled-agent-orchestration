@@ -1,44 +1,17 @@
 ---
-title: "Haiku vs Sonnet context comparison setup for 012-context-model-comparison 2026-02-14 [012-context-model-comparison/14-02-26_13-23__context-model-comparison]"
-description: "This session implemented the Haiku-versus-Sonnet comparison harness for the context agent. It created four model-specific agent variants plus the spec, checklist, test protocol, scoring rubric, and results templates needed for evaluation."
+title: "Haiku vs Sonnet context comparison setup for 012-context-model-comparison 2026-02-14"
+description: "This session implemented the Haiku-versus-Sonnet comparison harness for the context agent. It created four model-specific agent variants plus the spec, checklist, test..."
 trigger_phrases:
   - "haiku vs sonnet comparison"
   - "context agent variants"
   - "agent scoring rubric"
   - "verbatim body verification"
 importance_tier: "normal"
+contextType: "implementation"
 quality_score: 0.60
 quality_flags:
   - "needs_review"
-contextType: "implementation"
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-<!-- Constitutional Tier Promotion:
-  To promote a memory to constitutional tier (always surfaced):
-  
-  1. Via MCP tool after indexing:
-     memory_update({ id: <memory_id>, importanceTier: 'constitutional' })
-  
-  2. Criteria for constitutional:
-     - Applies to ALL future conversations (not project-specific)
-     - Core constraints/rules that should NEVER be forgotten
-     - ~2000 token budget total for constitutional tier
-     
-  3. Add trigger phrases for proactive surfacing:
-     memory_update({ 
-       id: <memory_id>, 
-       importanceTier: 'constitutional',
-       triggerPhrases: ['fix', 'implement', 'create', 'modify', ...]
-     })
-     
-  4. Examples of constitutional content:
-     - "Always ask Gate 3 spec folder question before file modifications"
-     - "Never modify production data directly"
-     - "Memory files MUST use generate-context.js script"
--->
-
----
-
 # SESSION SUMMARY
 
 | **Meta Data** | **Value** |
@@ -61,6 +34,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -154,6 +128,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -299,6 +274,9 @@ specNumber: 012; specCategory: 05--agent-orchestration; agentVariants: 4 files (
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-awk-body-extraction-cat-1afec7d3 -->
@@ -473,6 +451,9 @@ specNumber: 012; specCategory: 05--agent-orchestration; agentVariants: 4 files (
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -595,6 +576,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -689,52 +671,10 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "../.opencode/specs/004 agents/012 context model comparison"
-  - "chk 001"
-  - "chk 036"
-  - "copy pasteable"
-  - "scoring rubric"
-  - "no go"
-  - "claude haiku 4"
-  - "claude sonnet 4"
-  - "context haiku"
-  - "context sonnet"
-  - "context model comparison"
-  - "awk body extraction cat"
-  - "body extraction cat reconstruction"
-  - "used awk body extraction"
-  - "extraction cat reconstruction verbatim"
-  - "cat reconstruction verbatim body"
-  - "reconstruction verbatim body content"
-  - "claude code model fields"
-  - "code model fields haiku"
-  - "model fields haiku sonnet"
-  - "temperature stays copilot variants"
-  - "stays copilot variants matching"
-  - "test protocol alternates execution"
-  - "protocol alternates execution order"
-  - "alternates execution order swaps"
-  - "execution order swaps rounds"
-  - "../.opencode/specs/004"
-  - "agents/012"
-  - "context"
-  - "model"
-  - "comparison"
-
-key_files:
-  - ".opencode/agent/context-haiku.md"
-  - ".opencode/agent/context-sonnet.md"
-  - ".claude/agents/context-haiku.md"
-  - ".claude/agents/context-sonnet.md"
-  - ".opencode/.../012-context-model-comparison/spec.md"
-  - ".opencode/.../012-context-model-comparison/plan.md"
-  - ".opencode/.../012-context-model-comparison/checklist.md"
-  - ".opencode/.../012-context-model-comparison/test-protocol.md"
-  - ".opencode/.../012-context-model-comparison/scoring-rubric.md"
-  - ".opencode/.../012-context-model-comparison/results.md"
-
-# Relationships
-related_sessions:
+  - "haiku vs sonnet comparison"
+  - "context agent variants"
+  - "agent scoring rubric"
+  - "verbatim body verification"related_sessions:
 
   []
 

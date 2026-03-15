@@ -1,22 +1,17 @@
 ---
-title: "sprint 2 scoring calibration session [005-core-rag-sprints-0-to-8/27-02-26_09-07__sprint-2-scoring-review-21-edits]"
+title: "sprint 2 scoring calibration session"
 description: "Implemented 21 documentation-only edits across 4 spec files (spec.md, tasks.md, plan.md, checklist.md) in the Sprint 2 Scoring Calibration spec folder."
 trigger_phrases:
   - "sprint 2 review fixes"
   - "scoring calibration review"
-  - "REC-S2 recommendations"
-  - "TM-01 calibration values"
-  - "N4 cap clipping"
+  - "rec-s2 recommendations"
+  - "tm-01 calibration values"
+  - "n4 cap clipping"
 importance_tier: "normal"
 contextType: "general"
 quality_score: 1.00
 quality_flags: []
-
 ---
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-
----
-
 # sprint 2 scoring calibration session 27-02-26
 
 ## SESSION SUMMARY
@@ -41,6 +36,7 @@ quality_flags: []
 ---
 
 <!-- ANCHOR:preflight -->
+
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -136,6 +132,7 @@ Next: Continue implementation
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -279,6 +276,9 @@ rootCause: Sprint 2 review identified 7 recommendations, 2 structural defects (w
   | Yes        | Yes          | No       | 4              |
   | Yes        | Yes          | Yes      | 5              |
 -->
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-applied-all-review-recommendations-1a0c403a -->
@@ -426,6 +426,9 @@ rootCause: Sprint 2 review identified 7 recommendations, 2 structural defects (w
   See DECISIONS section comment for the full matrix.
   Range: 3-6 depending on optional sections present.
 -->
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -547,6 +550,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
@@ -641,50 +645,11 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "system spec kit/022 hybrid rag fusion/006 core rag sprints 0 to 8"
-  - "documentation only"
-  - "rec s2 01"
-  - "rec s2 07"
-  - "tm 01"
-  - "fut s2 001"
-  - "post eval"
-  - "nfr p04"
-  - "nfr r04"
-  - "oq s2 003"
-  - "pi a1"
-  - "chk 069"
-  - "post verification"
-  - "sprint 2 scoring calibration"
-  - "edits code changes needed"
-  - "interaction edge cases single"
-  - "edge cases single data"
-  - "cases single data boundaries"
-  - "single data boundaries edit"
-  - "phase verification tasks.md pi-a1"
-  - "verification tasks.md pi-a1 post-verification"
-  - "tasks.md pi-a1 post-verification extension"
-  - "pi-a1 post-verification extension structural"
-  - "post-verification extension structural defect"
-  - "extension structural defect fix"
-  - "structural defect fix chosen"
-  - "system"
-  - "spec"
-  - "kit/140"
-  - "hybrid"
-  - "rag"
-  - "fusion"
-  - "refinement/003"
-  - "sprint"
-  - "scoring"
-  - "calibration"
-
-key_files:
-  - ".opencode/.../006-core-rag-sprints-0-to-8/spec.md"
-  - ".opencode/.../006-core-rag-sprints-0-to-8/tasks.md"
-  - ".opencode/.../006-core-rag-sprints-0-to-8/plan.md"
-  - ".opencode/.../006-core-rag-sprints-0-to-8/checklist.md"
-
-# Relationships
+  - "sprint 2 review fixes"
+  - "scoring calibration review"
+  - "rec-s2 recommendations"
+  - "tm-01 calibration values"
+  - "n4 cap clipping"# Relationships
 related_sessions:
 
   []
