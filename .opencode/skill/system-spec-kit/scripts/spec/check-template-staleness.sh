@@ -162,8 +162,10 @@ main() {
                        basename_md=$(basename "$md_file")
                        case "$basename_md" in
                            spec.md|plan.md|tasks.md|checklist.md|decision-record.md|implementation-summary.md)
-                               if head -n 10 "$md_file" | grep -q "SPECKIT_TEMPLATE_SOURCE:"; then
-                                   sed -i '' "s/SPECKIT_TEMPLATE_SOURCE:.*|.*$/SPECKIT_TEMPLATE_SOURCE: spec-core | $current_version -->/" "$md_file" 2>/dev/null || true
+                               if head -n 30 "$md_file" | grep -q "SPECKIT_TEMPLATE_SOURCE:"; then
+                                   # Only bump the version portion (vN.N), preserving the template ID
+                                   # e.g., "plan-core | v2.0" → "plan-core | v2.2"
+                                   sed -i '' "s/\(SPECKIT_TEMPLATE_SOURCE:.*| \)v[0-9][0-9]*\.[0-9][0-9]*/\1$current_version/" "$md_file" 2>/dev/null || true
                                fi
                                ;;
                        esac

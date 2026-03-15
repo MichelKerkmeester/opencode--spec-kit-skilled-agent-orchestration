@@ -134,7 +134,15 @@ main() {
                $VERBOSE && echo "WARN: $folder_name" ;;
             2) ((fail_count++)) || true
                worst_folders+=("$folder_name")
-               $VERBOSE && echo "FAIL: $folder_name" ;;
+               $VERBOSE && echo "FAIL: $folder_name"
+               # --fix: re-run staleness auto-upgrade on failing folders
+               if $FIX_MODE; then
+                   local staleness_script="$SCRIPT_DIR/check-template-staleness.sh"
+                   if [[ -f "$staleness_script" ]]; then
+                       bash "$staleness_script" --auto-upgrade --root "$folder" 2>/dev/null || true
+                   fi
+               fi
+               ;;
         esac
 
         if $JSON_MODE; then

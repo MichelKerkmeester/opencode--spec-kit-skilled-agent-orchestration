@@ -418,10 +418,20 @@ function prepareParsedMemoryForIndexing(
   const templateContract = validateMemoryTemplateContract(parsed.content);
 
   // Non-blocking spec doc health annotation
+  // parsed.specFolder is a relative key (e.g., "02--system-spec-kit/100-feature"),
+  // so resolve the absolute spec folder by walking up from the memory file path.
   let specDocHealth: SpecDocHealthResult | null = null;
-  if (parsed.specFolder) {
+  if (parsed.specFolder && parsed.filePath) {
     try {
-      specDocHealth = evaluateSpecDocHealth(path.resolve(parsed.specFolder));
+      const absFilePath = path.resolve(parsed.filePath);
+      // Memory files live at .../NNN-name/memory/*.md — walk up to the spec folder
+      const memoryDir = path.dirname(absFilePath);
+      const parentDir = path.dirname(memoryDir);
+      // Verify this is actually a spec folder (has spec.md)
+      const specMdPath = path.join(parentDir, 'spec.md');
+      if (fs.existsSync(specMdPath)) {
+        specDocHealth = evaluateSpecDocHealth(parentDir);
+      }
     } catch {
       // Health check failure must not block memory save
     }
