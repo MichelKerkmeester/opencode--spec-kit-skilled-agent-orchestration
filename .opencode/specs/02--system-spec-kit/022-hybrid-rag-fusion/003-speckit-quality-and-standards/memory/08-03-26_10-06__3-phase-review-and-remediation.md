@@ -12,7 +12,8 @@ contextType: "general"
 quality_score: 0.65
 quality_flags: []
 ---
-# Executed a 3-phase review and remediation of spec folder 003-speckit-quality-and-standards, which...
+
+# 3 Phase Review And Remediation
 
 ## SESSION SUMMARY
 
@@ -119,6 +120,7 @@ Next: Continue implementation
 | Blockers | Phase 3 dispatched 5 workspace-write fix agents — 3 completed successfully (Code Agents 1-2, Doc Age |
 
 **Key Topics:** `decision` | `agents` | `spec` | `memory index` | `codex` | `buildaliasbuckets helper` | `system` | `system spec kit/022 hybrid rag fusion` | `gate` | `across` | `section` | `headers` | 
+<!-- /ANCHOR:project-state-snapshot -->
 
 ---
 
@@ -226,28 +228,6 @@ rootCause: Spec folder 003-speckit-quality-and-standards had multiple sk-code--o
 
 ---
 
-<!-- ANCHOR:decisions -->
-<a id="decisions"></a>
-
-<!-- DYNAMIC SECTION NUMBERING:
-  This section number depends on which optional sections are present:
-  - Base: 2 (after Overview)
-  - +1 if HAS_IMPLEMENTATION_GUIDE (adds section 1)
-  - +1 if HAS_OBSERVATIONS (adds Detailed Changes)
-  - +1 if HAS_WORKFLOW_DIAGRAM (adds Workflow Visualization)
-  
-  Result matrix:
-  | IMPL_GUIDE | OBSERVATIONS | WORKFLOW | This Section # |
-  |------------|--------------|----------|----------------|
-  | No         | No           | No       | 2              |
-  | No         | No           | Yes      | 3              |
-  | No         | Yes          | No       | 3              |
-  | No         | Yes          | Yes      | 4              |
-  | Yes        | No           | No       | 3              |
-  | Yes        | No           | Yes      | 4              |
-  | Yes        | Yes          | No       | 4              |
-  | Yes        | Yes          | Yes      | 5              |
--->
 <!-- ANCHOR:decisions -->
 <a id="decisions"></a>
 
@@ -393,14 +373,6 @@ rootCause: Spec folder 003-speckit-quality-and-standards had multiple sk-code--o
 <!-- ANCHOR:session-history -->
 <a id="conversation"></a>
 
-<!-- DYNAMIC SECTION NUMBERING:
-  This section number = DECISIONS section + 1
-  See DECISIONS section comment for the full matrix.
-  Range: 3-6 depending on optional sections present.
--->
-<!-- ANCHOR:session-history -->
-<a id="conversation"></a>
-
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -483,13 +455,11 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 <!-- /ANCHOR:recovery-hints -->
 
 ---
-
 <!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 
-<!-- ANCHOR:metadata -->
 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
@@ -583,10 +553,7 @@ trigger_phrases:
   - "5-agent codex review"
   - "bare catch typed error handling"
   - "scanfileentry interface extraction"
-  - "buildaliasbuckets deduplication"# Relationships
-related_sessions:
-
-  []
+  - "buildaliasbuckets deduplication"  []
 
 parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion"
 child_sessions:

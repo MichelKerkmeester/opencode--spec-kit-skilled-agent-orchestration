@@ -12,7 +12,10 @@ quality_score: 0.60
 quality_flags:
   - "legacy_migration"
 ---
-# SESSION SUMMARY
+
+# Command Logic Improvement
+
+## SESSION SUMMARY
 
 | **Meta Data** | **Value** |
 |:--------------|:----------|
@@ -54,7 +57,7 @@ quality_flags:
 - Confidence: N/A
 - Uncertainty: N/A
 - Readiness: N/A
-<!-- /ANCHOR:preflight-session-1767276142528-p83tjlxr3-03--commands-and-skills/commands/004-command-logic-improvement -->
+<!-- /ANCHOR:preflight -->
 ---
 
 ## Table of Contents
@@ -102,7 +105,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 ```
 /spec_kit:resume 03--commands-and-skills/commands/004-command-logic-improvement
 ```
-<!-- /ANCHOR:continue-session-session-1767276142528-p83tjlxr3-03--commands-and-skills/commands/004-command-logic-improvement -->
+<!-- /ANCHOR:continue-session -->
 ---
 
 <!-- ANCHOR:project-state-snapshot -->
@@ -134,6 +137,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 - [`research.md`](./research.md) - Research findings
 
 **Key Topics:** `recommendations` | `implementation` | `representation` | `comprehensive` | `understanding` | `improvement` | `implemented` | `checkpoints` | `integration` | `interaction` | 
+<!-- /ANCHOR:project-state-snapshot -->
 
 ---
 
@@ -168,7 +172,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 - No patterns identified
 
-<!-- /ANCHOR:task-guide-commands-and-skills/001-commands/003-command-logic-improvement-03--commands-and-skills/commands/004-command-logic-improvement -->
+<!-- /ANCHOR:task-guide -->
 
 ---
 
@@ -198,7 +202,7 @@ Completed comprehensive command logic improvement implementation across 29 files
 | `AGENTS.md` | Automatic debug delegation after 3+ failures |
 | `.opencode/command/README.md` | Modified during session |
 
-<!-- /ANCHOR:summary-session-1767276142528-p83tjlxr3-03--commands-and-skills/commands/004-command-logic-improvement -->
+<!-- /ANCHOR:summary -->
 
 ---
 
@@ -222,11 +226,10 @@ rootCause: Commands had technical gate markers (HARD BLOCK) that were being igno
 
 <!-- /ANCHOR:implementation-technical-implementation-details-15970bfb-session-1767276142528-p83tjlxr3 -->
 
-<!-- /ANCHOR:detailed-changes-session-1767276142528-p83tjlxr3-03--commands-and-skills/commands/004-command-logic-improvement -->
+<!-- /ANCHOR:detailed-changes -->
 
 ---
 
-<!-- ANCHOR:decisions-session-1767276142528-p83tjlxr3-03--commands-and-skills/commands/004-command-logic-improvement -->
 <a id="decisions"></a>
 
 <!-- DYNAMIC SECTION NUMBERING:
@@ -388,9 +391,8 @@ rootCause: Commands had technical gate markers (HARD BLOCK) that were being igno
 
 ---
 
-<!-- /ANCHOR:decisions-session-1767276142528-p83tjlxr3-03--commands-and-skills/commands/004-command-logic-improvement -->
+<!-- /ANCHOR:decisions -->
 
-<!-- ANCHOR:session-history-session-1767276142528-p83tjlxr3-03--commands-and-skills/commands/004-command-logic-improvement -->
 <a id="conversation"></a>
 
 <!-- DYNAMIC SECTION NUMBERING:
@@ -421,7 +423,7 @@ Completed comprehensive command logic improvement implementation across 29 files
 
 ---
 
-<!-- /ANCHOR:session-history-session-1767276142528-p83tjlxr3-03--commands-and-skills/commands/004-command-logic-improvement -->
+<!-- /ANCHOR:session-history -->
 
 ---
 
@@ -447,7 +449,7 @@ Completed comprehensive command logic improvement implementation across 29 files
 3. **Review last session state** - Check PROJECT STATE SNAPSHOT
 4. **Validate pending tasks** - Review CONTINUE SESSION section
 5. **Resume with handover prompt** - Use continuation template above
-<!-- /ANCHOR:recovery-hints-session-1767276142528-p83tjlxr3-03--commands-and-skills/commands/004-command-logic-improvement -->
+<!-- /ANCHOR:recovery-hints -->
 ---
 
 <!-- ANCHOR:postflight -->
@@ -473,7 +475,7 @@ Completed comprehensive command logic improvement implementation across 29 files
 
 **Session Learning Summary:**
 This session was migrated from an older format. Learning metrics were not captured in the original format.
-<!-- /ANCHOR:postflight-session-1767276142528-p83tjlxr3-03--commands-and-skills/commands/004-command-logic-improvement -->
+<!-- /ANCHOR:postflight -->
 ---
 
 <!-- ANCHOR:metadata -->
@@ -481,7 +483,6 @@ This session was migrated from an older format. Learning metrics were not captur
 
 ## MEMORY METADATA
 
-<!-- ANCHOR:metadata-session-1767276142528-p83tjlxr3-03--commands-and-skills/commands/004-command-logic-improvement -->
 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
@@ -572,7 +573,7 @@ embedding_version: "1.0"
 chunk_count: 1
 ```
 
-<!-- /ANCHOR:metadata-session-1767276142528-p83tjlxr3-03--commands-and-skills/commands/004-command-logic-improvement -->
+<!-- /ANCHOR:metadata -->
 
 ---
 

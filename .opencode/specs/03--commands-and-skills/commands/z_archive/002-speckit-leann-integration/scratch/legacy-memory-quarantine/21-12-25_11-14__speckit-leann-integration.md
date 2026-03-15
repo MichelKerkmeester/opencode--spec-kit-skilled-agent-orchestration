@@ -12,7 +12,7 @@ quality_score: 0.60
 quality_flags:
   - "legacy_migration"
 ---
-# SESSION SUMMARY
+## SESSION SUMMARY
 
 | **Meta Data** | **Value** |
 |:--------------|:----------|
@@ -59,7 +59,7 @@ quality_flags:
 - Confidence: N/A
 - Uncertainty: N/A
 - Readiness: N/A
-<!-- /ANCHOR:preflight-session-1766312062960-n3xdfbupl-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:preflight -->
 
 ---
 
@@ -94,7 +94,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 ```
 /spec_kit:resume 003-commands/002-speckit-leann-integration
 ```
-<!-- /ANCHOR:continue-session-session-1766312062960-n3xdfbupl-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:continue-session -->
 
 ---
 
@@ -135,7 +135,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 - **Graceful Fallback**: Provide sensible defaults when primary method fails
 
-<!-- /ANCHOR:task-guide-commands/002-speckit-leann-integration-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:task-guide -->
 
 ---
 
@@ -166,7 +166,7 @@ Added backwards-compatible LEANN semantic discovery to all 6 SpecKit command YAM
 | `.opencode/.../assets/spec_kit_complete_confirm.yaml` | Modified during session |
 | `specs/003-commands/002-speckit-leann-integration/spec.md` | Modified during session |
 
-<!-- /ANCHOR:summary-session-1766312062960-n3xdfbupl-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:summary -->
 
 ---
 
@@ -190,7 +190,7 @@ rootCause: SpecKit commands had no semantic code search capability, missing oppo
 
 <!-- /ANCHOR:implementation-technical-implementation-details-a5bd7d6c-session-1766312062960-n3xdfbupl -->
 
-<!-- /ANCHOR:detailed-changes-session-1766312062960-n3xdfbupl-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:detailed-changes -->
 
 ---
 
@@ -307,7 +307,7 @@ rootCause: SpecKit commands had no semantic code search capability, missing oppo
 
 ---
 
-<!-- /ANCHOR:decisions-session-1766312062960-n3xdfbupl-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:decisions -->
 
 <!-- ANCHOR:session-history -->
 <a id="conversation"></a>
@@ -332,7 +332,7 @@ Added backwards-compatible LEANN semantic discovery to all 6 SpecKit command YAM
 
 ---
 
-<!-- /ANCHOR:session-history-session-1766312062960-n3xdfbupl-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:session-history -->
 
 ---
 
@@ -358,7 +358,7 @@ Added backwards-compatible LEANN semantic discovery to all 6 SpecKit command YAM
 3. **Review last session state** - Check PROJECT STATE SNAPSHOT
 4. **Validate pending tasks** - Review CONTINUE SESSION section
 5. **Resume with handover prompt** - Use continuation template above
-<!-- /ANCHOR:recovery-hints-session-1766312062960-n3xdfbupl-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:recovery-hints -->
 ---
 
 <!-- ANCHOR:postflight -->
@@ -384,14 +384,13 @@ Added backwards-compatible LEANN semantic discovery to all 6 SpecKit command YAM
 
 **Session Learning Summary:**
 This session was migrated from an older format. Learning metrics were not captured in the original format.
-<!-- /ANCHOR:postflight-session-1766312062960-n3xdfbupl-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:postflight -->
 ---
 <!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 
-<!-- ANCHOR:metadata-session-1766312062960-n3xdfbupl-003-commands/002-speckit-leann-integration -->
 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
@@ -486,7 +485,7 @@ embedding_version: "1.0"
 chunk_count: 1
 ```
 
-<!-- /ANCHOR:metadata-session-1766312062960-n3xdfbupl-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:metadata -->
 
 ---
 

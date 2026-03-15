@@ -12,7 +12,8 @@ contextType: "implementation"
 quality_score: 1.00
 quality_flags: []
 ---
-# Phase 13 indexed direct save quality closure for hybrid rag fusion
+
+# Phase 13 Indexed Direct Save Closure
 
 ## SESSION SUMMARY
 
@@ -117,6 +118,7 @@ Next: Continue implementation
 | Blockers | None |
 
 **Key Topics:** `system spec kit/022 hybrid rag fusion` | `system` | `spec` | `kit/022` | `hybrid` | `rag` | `fusion` | `final indexing` | `indexing blocker` | `blocker separate` | `separate naming` | `naming preflight` | 
+<!-- /ANCHOR:project-state-snapshot -->
 
 ---
 
@@ -196,28 +198,6 @@ Confirmed the direct root save now preserves a specific filename, avoids placeho
 <!-- ANCHOR:decisions -->
 <a id="decisions"></a>
 
-<!-- DYNAMIC SECTION NUMBERING:
-  This section number depends on which optional sections are present:
-  - Base: 2 (after Overview)
-  - +1 if HAS_IMPLEMENTATION_GUIDE (adds section 1)
-  - +1 if HAS_OBSERVATIONS (adds Detailed Changes)
-  - +1 if HAS_WORKFLOW_DIAGRAM (adds Workflow Visualization)
-  
-  Result matrix:
-  | IMPL_GUIDE | OBSERVATIONS | WORKFLOW | This Section # |
-  |------------|--------------|----------|----------------|
-  | No         | No           | No       | 2              |
-  | No         | No           | Yes      | 3              |
-  | No         | Yes          | No       | 3              |
-  | No         | Yes          | Yes      | 4              |
-  | Yes        | No           | No       | 3              |
-  | Yes        | No           | Yes      | 4              |
-  | Yes        | Yes          | No       | 4              |
-  | Yes        | Yes          | Yes      | 5              |
--->
-<!-- ANCHOR:decisions -->
-<a id="decisions"></a>
-
 ## 4. DECISIONS
 
 decision_count: 0
@@ -226,14 +206,6 @@ decision_count: 0
 
 <!-- /ANCHOR:decisions -->
 
-<!-- ANCHOR:session-history -->
-<a id="conversation"></a>
-
-<!-- DYNAMIC SECTION NUMBERING:
-  This section number = DECISIONS section + 1
-  See DECISIONS section comment for the full matrix.
-  Range: 3-6 depending on optional sections present.
--->
 <!-- ANCHOR:session-history -->
 <a id="conversation"></a>
 
@@ -272,7 +244,6 @@ gated preflight and postflight rendering for direct saves
 ```
 
 
-
 **Tool: read**
 scripts/extractors/session-extractor.ts Result: canonicalized tool counting for lowercase capture facts
 
@@ -282,7 +253,6 @@ Result Preview
 ```
 canonicalized tool counting for lowercase capture facts
 ```
-
 
 
 **Tool: bash**
@@ -296,7 +266,6 @@ direct preloaded render quality regression passed
 ```
 
 
-
 **Tool: bash**
 scripts/spec/validate.sh Result: 012 architecture audit spec validation passed
 
@@ -306,7 +275,6 @@ Result Preview
 ```
 012 architecture audit spec validation passed
 ```
-
 
 
 ---
@@ -371,13 +339,11 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 <!-- /ANCHOR:recovery-hints -->
 
 ---
-
 <!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 
-<!-- ANCHOR:metadata -->
 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
@@ -471,10 +437,7 @@ trigger_phrases:
   - "case insensitive"
   - "tree thinning"
   - "merged-small-files tree-thinning merged small"
-  - "tree-thinning merged small files"# Relationships
-related_sessions:
-
-  []
+  - "tree-thinning merged small files"  []
 
 parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion"
 child_sessions:

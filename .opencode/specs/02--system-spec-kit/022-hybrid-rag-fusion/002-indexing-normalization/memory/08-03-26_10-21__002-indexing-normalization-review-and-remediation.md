@@ -12,7 +12,8 @@ contextType: "general"
 quality_score: 1.00
 quality_flags: []
 ---
-# 002-indexing-normalization review and remediation complete
+
+# 002 Indexing Normalization Review And Remediation
 
 ## SESSION SUMMARY
 
@@ -117,6 +118,7 @@ Next: Continue implementation
 | Blockers | None |
 
 **Key Topics:** `ts` | `system spec kit/022 hybrid rag fusion` | `memory` | `system` | `spec` | `kit/022` | `hybrid` | `rag` | `fusion` | `consolidation artifacts` | `artifacts classified` | `classified design` | 
+<!-- /ANCHOR:project-state-snapshot -->
 
 ---
 
@@ -158,28 +160,6 @@ Code review PASS confirmed — no P0 bugs across 5 reviewed files (memory-parser
 <!-- ANCHOR:decisions -->
 <a id="decisions"></a>
 
-<!-- DYNAMIC SECTION NUMBERING:
-  This section number depends on which optional sections are present:
-  - Base: 2 (after Overview)
-  - +1 if HAS_IMPLEMENTATION_GUIDE (adds section 1)
-  - +1 if HAS_OBSERVATIONS (adds Detailed Changes)
-  - +1 if HAS_WORKFLOW_DIAGRAM (adds Workflow Visualization)
-  
-  Result matrix:
-  | IMPL_GUIDE | OBSERVATIONS | WORKFLOW | This Section # |
-  |------------|--------------|----------|----------------|
-  | No         | No           | No       | 2              |
-  | No         | No           | Yes      | 3              |
-  | No         | Yes          | No       | 3              |
-  | No         | Yes          | Yes      | 4              |
-  | Yes        | No           | No       | 3              |
-  | Yes        | No           | Yes      | 4              |
-  | Yes        | Yes          | No       | 4              |
-  | Yes        | Yes          | Yes      | 5              |
--->
-<!-- ANCHOR:decisions -->
-<a id="decisions"></a>
-
 ## 3. DECISIONS
 
 <!-- ANCHOR:decision-consolidation-artifacts-classified-bydesign-730374db -->
@@ -208,14 +188,6 @@ Code review PASS confirmed — no P0 bugs across 5 reviewed files (memory-parser
 
 <!-- /ANCHOR:decisions -->
 
-<!-- ANCHOR:session-history -->
-<a id="conversation"></a>
-
-<!-- DYNAMIC SECTION NUMBERING:
-  This section number = DECISIONS section + 1
-  See DECISIONS section comment for the full matrix.
-  Range: 3-6 depending on optional sections present.
--->
 <!-- ANCHOR:session-history -->
 <a id="conversation"></a>
 
@@ -298,13 +270,11 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 <!-- /ANCHOR:recovery-hints -->
 
 ---
-
 <!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 
-<!-- ANCHOR:metadata -->
 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
@@ -398,10 +368,7 @@ trigger_phrases:
   - "find spec documents"
   - "memory parser"
   - "memory index"
-  - "memory crud list"# Relationships
-related_sessions:
-
-  []
+  - "memory crud list"  []
 
 parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion"
 child_sessions:

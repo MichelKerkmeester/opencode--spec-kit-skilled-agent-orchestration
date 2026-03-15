@@ -12,7 +12,8 @@ contextType: "general"
 quality_score: 1.00
 quality_flags: []
 ---
-# hybrid rag fusion session 04-03-26
+
+# Sprint 019 Doc Updates 6 Fixes
 
 ## SESSION SUMMARY
 
@@ -144,6 +145,7 @@ Next: Continue implementation
 | Blockers | Completed 2 remaining documentation updates that Gemini agents failed to finish (feature-catalog. |
 
 **Key Topics:** `decision` | `retry` | `retry timing` | `count` | `fixed` | `timing` | `watcher retry` | `system spec kit/022 hybrid rag fusion` | `all` | `implemented` | `watcher` | `system` | 
+<!-- /ANCHOR:project-state-snapshot -->
 
 ---
 
@@ -228,28 +230,6 @@ rootCause: Gemini 3.1 Pro Preview agents from previous session were stuck on rat
 
 ---
 
-<!-- ANCHOR:decisions -->
-<a id="decisions"></a>
-
-<!-- DYNAMIC SECTION NUMBERING:
-  This section number depends on which optional sections are present:
-  - Base: 2 (after Overview)
-  - +1 if HAS_IMPLEMENTATION_GUIDE (adds section 1)
-  - +1 if HAS_OBSERVATIONS (adds Detailed Changes)
-  - +1 if HAS_WORKFLOW_DIAGRAM (adds Workflow Visualization)
-  
-  Result matrix:
-  | IMPL_GUIDE | OBSERVATIONS | WORKFLOW | This Section # |
-  |------------|--------------|----------|----------------|
-  | No         | No           | No       | 2              |
-  | No         | No           | Yes      | 3              |
-  | No         | Yes          | No       | 3              |
-  | No         | Yes          | Yes      | 4              |
-  | Yes        | No           | No       | 3              |
-  | Yes        | No           | Yes      | 4              |
-  | Yes        | Yes          | No       | 4              |
-  | Yes        | Yes          | Yes      | 5              |
--->
 <!-- ANCHOR:decisions -->
 <a id="decisions"></a>
 
@@ -365,14 +345,6 @@ rootCause: Gemini 3.1 Pro Preview agents from previous session were stuck on rat
 
 <!-- /ANCHOR:decisions -->
 
-<!-- ANCHOR:session-history -->
-<a id="conversation"></a>
-
-<!-- DYNAMIC SECTION NUMBERING:
-  This section number = DECISIONS section + 1
-  See DECISIONS section comment for the full matrix.
-  Range: 3-6 depending on optional sections present.
--->
 <!-- ANCHOR:session-history -->
 <a id="conversation"></a>
 
@@ -496,13 +468,11 @@ Learning metrics will be calculated when both preflight and postflight data are 
 <!-- /ANCHOR:postflight -->
 
 ---
-
 <!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 
-<!-- ANCHOR:metadata -->
 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
@@ -596,10 +566,7 @@ trigger_phrases:
   - "planned to implemented"
   - "sprint 019 documentation"
   - "manual test playbook"
-  - "new-095 through new-102"# Relationships
-related_sessions:
-
-  []
+  - "new-095 through new-102"  []
 
 parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion"
 child_sessions:

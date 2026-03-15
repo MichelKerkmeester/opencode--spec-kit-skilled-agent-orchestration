@@ -13,7 +13,10 @@ quality_score: 0.6
 quality_flags:
   - "legacy_migration"
 ---
-# SESSION SUMMARY
+
+# Spec Kit Phase System
+
+## SESSION SUMMARY
 
 | **Meta Data** | **Value** |
 |:--------------|:----------|
@@ -162,6 +165,7 @@ Next: Continue implementation
 - [`decision-record.md`](./decision-record.md) - Architecture decisions
 
 **Key Topics:** `phase` | `decision` | `system` | `spec` | `because` | `existing` | `level` | `phase system` | `tasks` | `wave` | `behavioral overlay` | `gate option` | 
+<!-- /ANCHOR:project-state-snapshot -->
 
 ---
 
@@ -295,28 +299,6 @@ rootCause: SpecKit lacked first-class support for decomposing large specs (L3/L3
 
 ---
 
-<!-- ANCHOR:decisions -->
-<a id="decisions"></a>
-
-<!-- DYNAMIC SECTION NUMBERING:
-  This section number depends on which optional sections are present:
-  - Base: 2 (after Overview)
-  - +1 if HAS_IMPLEMENTATION_GUIDE (adds section 1)
-  - +1 if HAS_OBSERVATIONS (adds Detailed Changes)
-  - +1 if HAS_WORKFLOW_DIAGRAM (adds Workflow Visualization)
-  
-  Result matrix:
-  | IMPL_GUIDE | OBSERVATIONS | WORKFLOW | This Section # |
-  |------------|--------------|----------|----------------|
-  | No         | No           | No       | 2              |
-  | No         | No           | Yes      | 3              |
-  | No         | Yes          | No       | 3              |
-  | No         | Yes          | Yes      | 4              |
-  | Yes        | No           | No       | 3              |
-  | Yes        | No           | Yes      | 4              |
-  | Yes        | Yes          | No       | 4              |
-  | Yes        | Yes          | Yes      | 5              |
--->
 <!-- ANCHOR:decisions -->
 <a id="decisions"></a>
 
@@ -516,14 +498,6 @@ rootCause: SpecKit lacked first-class support for decomposing large specs (L3/L3
 <!-- ANCHOR:session-history -->
 <a id="conversation"></a>
 
-<!-- DYNAMIC SECTION NUMBERING:
-  This section number = DECISIONS section + 1
-  See DECISIONS section comment for the full matrix.
-  Range: 3-6 depending on optional sections present.
--->
-<!-- ANCHOR:session-history -->
-<a id="conversation"></a>
-
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -645,13 +619,11 @@ Learning metrics will be calculated when both preflight and postflight data are 
 <!-- /ANCHOR:postflight -->
 
 ---
-
 <!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 
-<!-- ANCHOR:metadata -->
 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
@@ -745,10 +717,7 @@ trigger_phrases:
   - "spec 139"
   - "phase decomposition workflow"
   - "spec kit:phase"
-  - "recommend-level phasing"# Relationships
-related_sessions:
-
-  []
+  - "recommend-level phasing"  []
 
 parent_spec: "02--system-spec-kit/021-spec-kit-phase-system"
 child_sessions:

@@ -20,7 +20,8 @@ quality_score: 0.90
 quality_flags:
   - "has_tool_state_mismatch"
 ---
-# Independent review of 017-governance spec folder and related governance code/docs. Found...
+
+# Independent Review Of 017 Governance Spec Folder
 
 ## SESSION SUMMARY
 
@@ -141,6 +142,7 @@ Next: Continue implementation
 - [`checklist.md`](./checklist.md) - QA checklist
 
 **Key Topics:** `governance` | `targeted` | `behavior` | `review` | `treat this` | `this review` | `vitest` | `runs` | `verify` | `helper` | `claims` | `targeted vitest` |
+<!-- /ANCHOR:project-state-snapshot -->
 
 ---
 
@@ -177,28 +179,6 @@ Independent review of 017-governance spec folder and related governance code/doc
 
 ---
 
-<!-- ANCHOR:decisions -->
-<a id="decisions"></a>
-
-<!-- DYNAMIC SECTION NUMBERING:
-  This section number depends on which optional sections are present:
-  - Base: 2 (after Overview)
-  - +1 if HAS_IMPLEMENTATION_GUIDE (adds section 1)
-  - +1 if HAS_OBSERVATIONS (adds Detailed Changes)
-  - +1 if HAS_WORKFLOW_DIAGRAM (adds Workflow Visualization)
-
-  Result matrix:
-  | IMPL_GUIDE | OBSERVATIONS | WORKFLOW | This Section # |
-  |------------|--------------|----------|----------------|
-  | No         | No           | No       | 2              |
-  | No         | No           | Yes      | 3              |
-  | No         | Yes          | No       | 3              |
-  | No         | Yes          | Yes      | 4              |
-  | Yes        | No           | No       | 3              |
-  | Yes        | No           | Yes      | 4              |
-  | Yes        | Yes          | No       | 4              |
-  | Yes        | Yes          | Yes      | 5              |
--->
 <!-- ANCHOR:decisions -->
 <a id="decisions"></a>
 
@@ -486,14 +466,6 @@ Independent review of 017-governance spec folder and related governance code/doc
 <!-- ANCHOR:session-history -->
 <a id="conversation"></a>
 
-<!-- DYNAMIC SECTION NUMBERING:
-  This section number = DECISIONS section + 1
-  See DECISIONS section comment for the full matrix.
-  Range: 3-6 depending on optional sections present.
--->
-<!-- ANCHOR:session-history -->
-<a id="conversation"></a>
-
 ## 4. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -575,13 +547,11 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 <!-- /ANCHOR:recovery-hints -->
 
 ---
-
 <!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 
-<!-- ANCHOR:metadata -->
 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
@@ -682,10 +652,7 @@ trigger_phrases:
   - "one notable rollout-behavior risk"
   - "notable rollout-behavior risk targeted"
   - "independent review 017-governance independent"
-  - "review 017-governance independent review"# Relationships
-related_sessions:
-
-  []
+  - "review 017-governance independent review"  []
 
 parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/017-governance"
 child_sessions:

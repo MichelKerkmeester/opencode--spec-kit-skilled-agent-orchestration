@@ -12,7 +12,8 @@ contextType: "implementation"
 quality_score: 1.00
 quality_flags: []
 ---
-# spec kit code quality session 23-02-26
+
+# Spec Kit Code Quality Session
 
 ## SESSION SUMMARY
 
@@ -165,6 +166,7 @@ Next: Program closure review for 139-hybrid-rag-fusion
 - [`decision-record.md`](./decision-record.md) - Architecture decisions
 
 **Key Topics:** `spec` | `validation` | `quality` | `system spec kit/022 hybrid rag fusion/008 spec kit code quality` | `anchor` | `system` | `kit/022` | `hybrid` | `rag` | `fusion/008` | `kit` | `strict` | 
+<!-- /ANCHOR:project-state-snapshot -->
 
 ---
 
@@ -278,28 +280,6 @@ validation: bash scripts/tests/test-validation.sh (55/55 pass), bash scripts/tes
 <!-- ANCHOR:decisions -->
 <a id="decisions"></a>
 
-<!-- DYNAMIC SECTION NUMBERING:
-  This section number depends on which optional sections are present:
-  - Base: 2 (after Overview)
-  - +1 if HAS_IMPLEMENTATION_GUIDE (adds section 1)
-  - +1 if HAS_OBSERVATIONS (adds Detailed Changes)
-  - +1 if HAS_WORKFLOW_DIAGRAM (adds Workflow Visualization)
-  
-  Result matrix:
-  | IMPL_GUIDE | OBSERVATIONS | WORKFLOW | This Section # |
-  |------------|--------------|----------|----------------|
-  | No         | No           | No       | 2              |
-  | No         | No           | Yes      | 3              |
-  | No         | Yes          | No       | 3              |
-  | No         | Yes          | Yes      | 4              |
-  | Yes        | No           | No       | 3              |
-  | Yes        | No           | Yes      | 4              |
-  | Yes        | Yes          | No       | 4              |
-  | Yes        | Yes          | Yes      | 5              |
--->
-<!-- ANCHOR:decisions -->
-<a id="decisions"></a>
-
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-strict-anchor-syntax-validation-ed75dd13 -->
@@ -385,14 +365,6 @@ validation: bash scripts/tests/test-validation.sh (55/55 pass), bash scripts/tes
 
 <!-- /ANCHOR:decisions -->
 
-<!-- ANCHOR:session-history -->
-<a id="conversation"></a>
-
-<!-- DYNAMIC SECTION NUMBERING:
-  This section number = DECISIONS section + 1
-  See DECISIONS section comment for the full matrix.
-  Range: 3-6 depending on optional sections present.
--->
 <!-- ANCHOR:session-history -->
 <a id="conversation"></a>
 
@@ -519,13 +491,11 @@ Productive quality-hardening session. All 28 tasks completed. Baseline-first seq
 <!-- /ANCHOR:postflight -->
 
 ---
-
 <!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 
-<!-- ANCHOR:metadata -->
 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
@@ -619,10 +589,7 @@ trigger_phrases:
   - "anchor validation"
   - "memory-save-extended"
   - "lint gate"
-  - "touched files manifest"# Relationships
-related_sessions:
-
-  []
+  - "touched files manifest"  []
 
 parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/004-speckit-quality-and-standards"
 child_sessions:

@@ -11,7 +11,8 @@ quality_score: 0.60
 quality_flags:
   - "needs_review"
 ---
-# Planning package remediated after Ultra-Think review
+
+# Planning Package Remediated After Ultra Think
 
 ## SESSION SUMMARY
 
@@ -139,6 +140,7 @@ Next: Continue implementation
 - [`handover.md`](./handover.md) - Session handover notes
 
 **Key Topics:** `anobel.com/034 form bot problem` | `server` | `side` | `anobel.com/034` | `form` | `bot` | `problem` | `server side` | `side first` | `first investigation` | `investigation remains` | `remains controlling` | 
+<!-- /ANCHOR:project-state-snapshot -->
 
 ---
 
@@ -242,28 +244,6 @@ The repo intended asset version and the live observed asset version diverged dur
 <!-- ANCHOR:decisions -->
 <a id="decisions"></a>
 
-<!-- DYNAMIC SECTION NUMBERING:
-  This section number depends on which optional sections are present:
-  - Base: 2 (after Overview)
-  - +1 if HAS_IMPLEMENTATION_GUIDE (adds section 1)
-  - +1 if HAS_OBSERVATIONS (adds Detailed Changes)
-  - +1 if HAS_WORKFLOW_DIAGRAM (adds Workflow Visualization)
-  
-  Result matrix:
-  | IMPL_GUIDE | OBSERVATIONS | WORKFLOW | This Section # |
-  |------------|--------------|----------|----------------|
-  | No         | No           | No       | 2              |
-  | No         | No           | Yes      | 3              |
-  | No         | Yes          | No       | 3              |
-  | No         | Yes          | Yes      | 4              |
-  | Yes        | No           | No       | 3              |
-  | Yes        | No           | Yes      | 4              |
-  | Yes        | Yes          | No       | 4              |
-  | Yes        | Yes          | Yes      | 5              |
--->
-<!-- ANCHOR:decisions -->
-<a id="decisions"></a>
-
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-serversidefirst-investigation-remains-controlling-24e0cadd -->
@@ -345,14 +325,6 @@ The repo intended asset version and the live observed asset version diverged dur
 
 <!-- /ANCHOR:decisions -->
 
-<!-- ANCHOR:session-history -->
-<a id="conversation"></a>
-
-<!-- DYNAMIC SECTION NUMBERING:
-  This section number = DECISIONS section + 1
-  See DECISIONS section comment for the full matrix.
-  Range: 3-6 depending on optional sections present.
--->
 <!-- ANCHOR:session-history -->
 <a id="conversation"></a>
 
@@ -442,13 +414,11 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 01-
 <!-- /ANCHOR:recovery-hints -->
 
 ---
-
 <!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 
-<!-- ANCHOR:metadata -->
 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
@@ -540,11 +510,7 @@ key_topics:
 trigger_phrases:
   - "ultra think planning remediation"
   - "form bot provider evidence prerequisites"
-  - "server side first investigation"related_sessions:
-
-  []
-
-parent_spec: "01--anobel.com/034-form-bot-problem"
+  - "server side first investigation"parent_spec: "01--anobel.com/034-form-bot-problem"
 child_sessions:
 
   []

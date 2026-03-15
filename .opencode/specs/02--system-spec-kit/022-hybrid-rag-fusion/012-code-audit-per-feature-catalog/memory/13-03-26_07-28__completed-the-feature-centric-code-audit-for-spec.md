@@ -20,7 +20,8 @@ quality_score: 0.90
 quality_flags:
   - "has_tool_state_mismatch"
 ---
-# Completed the feature-centric code audit for Spec Kit Memory MCP across 20 feature-catalog phases...
+
+# Completed The Feature Centric Code Audit For Spec
 
 ## SESSION SUMMARY
 
@@ -140,6 +141,7 @@ Next: Continue implementation
 - [`plan.md`](./plan.md) - Implementation plan
 
 **Key Topics:** `feature` | `catalog` | `audit` | `report` | `audit structure` | `structure feature` | `phase` | `synthesis` | `synthesis report` | `report became` | `became canonical` | `canonical roll` |
+<!-- /ANCHOR:project-state-snapshot -->
 
 ---
 
@@ -215,28 +217,6 @@ Completed the feature-centric code audit for Spec Kit Memory MCP across 20 featu
 
 ---
 
-<!-- ANCHOR:decisions -->
-<a id="decisions"></a>
-
-<!-- DYNAMIC SECTION NUMBERING:
-  This section number depends on which optional sections are present:
-  - Base: 2 (after Overview)
-  - +1 if HAS_IMPLEMENTATION_GUIDE (adds section 1)
-  - +1 if HAS_OBSERVATIONS (adds Detailed Changes)
-  - +1 if HAS_WORKFLOW_DIAGRAM (adds Workflow Visualization)
-
-  Result matrix:
-  | IMPL_GUIDE | OBSERVATIONS | WORKFLOW | This Section # |
-  |------------|--------------|----------|----------------|
-  | No         | No           | No       | 2              |
-  | No         | No           | Yes      | 3              |
-  | No         | Yes          | No       | 3              |
-  | No         | Yes          | Yes      | 4              |
-  | Yes        | No           | No       | 3              |
-  | Yes        | No           | Yes      | 4              |
-  | Yes        | Yes          | No       | 4              |
-  | Yes        | Yes          | Yes      | 5              |
--->
 <!-- ANCHOR:decisions -->
 <a id="decisions"></a>
 
@@ -441,14 +421,6 @@ Completed the feature-centric code audit for Spec Kit Memory MCP across 20 featu
 <!-- ANCHOR:session-history -->
 <a id="conversation"></a>
 
-<!-- DYNAMIC SECTION NUMBERING:
-  This section number = DECISIONS section + 1
-  See DECISIONS section comment for the full matrix.
-  Range: 3-6 depending on optional sections present.
--->
-<!-- ANCHOR:session-history -->
-<a id="conversation"></a>
-
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -529,13 +501,11 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 <!-- /ANCHOR:recovery-hints -->
 
 ---
-
 <!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 
-<!-- ANCHOR:metadata -->
 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
@@ -636,10 +606,7 @@ trigger_phrases:
   - "memory mcp across feature-catalog"
   - "mcp across feature-catalog phases"
   - "across feature-catalog phases covering"
-  - "feature-catalog phases covering audited"# Relationships
-related_sessions:
-
-  []
+  - "feature-catalog phases covering audited"  []
 
 parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog"
 child_sessions:

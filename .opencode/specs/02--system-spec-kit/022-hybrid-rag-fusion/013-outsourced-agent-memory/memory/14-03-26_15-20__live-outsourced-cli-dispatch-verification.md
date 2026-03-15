@@ -20,7 +20,8 @@ quality_score: 0.90
 quality_flags:
   - "has_tool_state_mismatch"
 ---
-# Live outsourced CLI dispatch verification: hardened runtime inputs, added 6 edge-case tests,...
+
+# Live Outsourced Cli Dispatch Verification
 
 ## SESSION SUMMARY
 
@@ -107,6 +108,7 @@ Next: Continue implementation
 - Files modified: .opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts, .opencode/skill/system-spec-kit/scripts/extractors/session-extractor.ts, .opencode/skill/system-spec-kit/scripts/tests/runtime-memory-inputs.vitest.ts
 
 - Last: Refactored extractNextAction into findFactByPattern helper to eliminate DRY viol
+<!-- /ANCHOR:continue-session -->
 
 ---
 <!-- ANCHOR:project-state-snapshot -->
@@ -123,6 +125,7 @@ Next: Continue implementation
 | Blockers | None |
 
 **Key Topics:** `refactored extractnextaction` | `refactored` | `extractnextaction` | `dry` | `into` | `findfactbypattern` | `helper` | `eliminate` | `extractnextaction into` | `into findfactbypattern` | `findfactbypattern helper` | `helper eliminate` |
+<!-- /ANCHOR:project-state-snapshot -->
 
 ---
 <!-- ANCHOR:task-guide -->
@@ -153,6 +156,7 @@ Next: Continue implementation
 - **Helper Functions**: Encapsulate reusable logic in dedicated utility functions
 
 - **Data Normalization**: Clean and standardize data before use
+<!-- /ANCHOR:task-guide -->
 
 ---
 <!-- ANCHOR:summary -->
@@ -174,6 +178,7 @@ Live outsourced CLI dispatch verification: hardened runtime inputs, added 6 edge
 | `.opencode/skill/system-spec-kit/scripts/utils/(merged-small-files)` | Tree-thinning merged 1 small files (input-normalizer.ts). Merged from .opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts : File modified (description pending) |
 | `.opencode/skill/system-spec-kit/scripts/extractors/(merged-small-files)` | Tree-thinning merged 1 small files (session-extractor.ts). Merged from .opencode/skill/system-spec-kit/scripts/extractors/session-extractor.ts : File modified (description pending) |
 | `.opencode/skill/system-spec-kit/scripts/tests/(merged-small-files)` | Tree-thinning merged 1 small files (runtime-memory-inputs.vitest.ts). Merged from .opencode/skill/system-spec-kit/scripts/tests/runtime-memory-inputs.vitest.ts : File modified (description pending) |
+<!-- /ANCHOR:summary -->
 
 ---
 <!-- ANCHOR:detailed-changes -->
@@ -184,6 +189,7 @@ Live outsourced CLI dispatch verification: hardened runtime inputs, added 6 edge
 ### FEATURE: Live outsourced CLI dispatch verification: hardened runtime inputs, added 6 edge-case tests,...
 
 Live outsourced CLI dispatch verification: hardened runtime inputs, added 6 edge-case tests, refactored extractNextAction DRY violation.
+<!-- /ANCHOR:detailed-changes -->
 
 ---
 <!-- ANCHOR:decisions -->
@@ -366,6 +372,7 @@ Live outsourced CLI dispatch verification: hardened runtime inputs, added 6 edge
 #### Trade-offs
 
 **Confidence**: 0.5%
+<!-- /ANCHOR:decisions -->
 
 ---
 <!-- ANCHOR:session-history -->
@@ -388,6 +395,7 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 > **User** | 2026-03-14 @ 15:20:34
 
 Live outsourced CLI dispatch verification: hardened runtime inputs, added 6 edge-case tests, refactored extractNextAction DRY violation.
+<!-- /ANCHOR:session-history -->
 
 ---
 <!-- ANCHOR:recovery-hints -->
@@ -443,6 +451,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 | Index Entry Valid |  | Last indexed:  |
 | Checksums Match |  |  |
 | No Dedup Conflicts |  |  |
+<!-- /ANCHOR:recovery-hints -->
 
 ---
 <!-- ANCHOR:metadata -->
@@ -549,10 +558,7 @@ trigger_phrases:
   - "runtime inputs added edge-case"
   - "inputs added edge-case tests"
   - "added edge-case tests refactored"
-  - "edge-case tests refactored extractnextaction"# Relationships
-related_sessions:
-
-  []
+  - "edge-case tests refactored extractnextaction"  []
 
 parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/013-outsourced-agent-memory"
 child_sessions:
@@ -564,6 +570,9 @@ embedding_model: "nomic-ai/nomic-embed-text-v1.5"
 embedding_version: "1.0"
 chunk_count: 1
 ```
+
+<!-- /ANCHOR:metadata -->
+
 
 ---
 

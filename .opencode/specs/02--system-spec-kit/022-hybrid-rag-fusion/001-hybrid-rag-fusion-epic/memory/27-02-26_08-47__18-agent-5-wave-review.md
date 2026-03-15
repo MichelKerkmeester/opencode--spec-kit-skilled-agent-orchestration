@@ -19,7 +19,8 @@ contextType: "research"
 quality_score: 1.00
 quality_flags: []
 ---
-# hybrid rag fusion session 27-02-26
+
+# 18 Agent 5 Wave Review
 
 ## SESSION SUMMARY
 
@@ -155,6 +156,7 @@ Next: Resolve 5 pre-implementation blockers, then begin Sprint 0
 | Blockers | (1) Circular eval bias, (2) Sprint 5 oversize + 2 unresolved OQs, (3) Premature graph sophistication S6, (4) Feature flag governance gap, (5) Missing REQ-S0-007 task |
 
 **Key Topics:** `ultra-think review` | `multi-agent analysis` | `hybrid rag fusion` | `circular evaluation bias` | `sprint gate review` | `feature flag governance` | `pipeline refactor` | `graph deepening` | `query intelligence` | `scoring calibration` |
+<!-- /ANCHOR:project-state-snapshot -->
 
 ---
 
@@ -309,28 +311,6 @@ The review dispatched 18 agents in a 5-wave orchestrated pattern:
 <!-- ANCHOR:decisions -->
 <a id="decisions"></a>
 
-<!-- DYNAMIC SECTION NUMBERING:
-  This section number depends on which optional sections are present:
-  - Base: 2 (after Overview)
-  - +1 if HAS_IMPLEMENTATION_GUIDE (adds section 1)
-  - +1 if HAS_OBSERVATIONS (adds Detailed Changes)
-  - +1 if HAS_WORKFLOW_DIAGRAM (adds Workflow Visualization)
-  
-  Result matrix:
-  | IMPL_GUIDE | OBSERVATIONS | WORKFLOW | This Section # |
-  |------------|--------------|----------|----------------|
-  | No         | No           | No       | 2              |
-  | No         | No           | Yes      | 3              |
-  | No         | Yes          | No       | 3              |
-  | No         | Yes          | Yes      | 4              |
-  | Yes        | No           | No       | 3              |
-  | Yes        | No           | Yes      | 4              |
-  | Yes        | Yes          | No       | 4              |
-  | Yes        | Yes          | Yes      | 5              |
--->
-<!-- ANCHOR:decisions -->
-<a id="decisions"></a>
-
 ## 4. DECISIONS
 
 decision_count: 5
@@ -364,14 +344,6 @@ decision_count: 5
 
 <!-- /ANCHOR:decisions -->
 
-<!-- ANCHOR:session-history -->
-<a id="conversation"></a>
-
-<!-- DYNAMIC SECTION NUMBERING:
-  This section number = DECISIONS section + 1
-  See DECISIONS section comment for the full matrix.
-  Range: 3-6 depending on optional sections present.
--->
 <!-- ANCHOR:session-history -->
 <a id="conversation"></a>
 
@@ -503,13 +475,11 @@ Learning metrics will be calculated when both preflight and postflight data are 
 <!-- /ANCHOR:postflight -->
 
 ---
-
 <!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 
-<!-- ANCHOR:metadata -->
 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
@@ -610,10 +580,7 @@ trigger_phrases:
   - "sprint gate review"
   - "feature flag governance"
   - "premature graph sophistication"
-  - "pipeline refactor oversize"# Relationships
-related_sessions:
-
-  []
+  - "pipeline refactor oversize"  []
 
 parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion"
 child_sessions:

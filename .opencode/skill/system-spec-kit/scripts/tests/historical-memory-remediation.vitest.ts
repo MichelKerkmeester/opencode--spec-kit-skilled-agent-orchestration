@@ -10,6 +10,7 @@ import {
   repairHistoricalMemoryContent,
   runHistoricalMemoryRemediation,
 } from '../memory/historical-memory-remediation';
+import { validateMemoryTemplateContract } from '../../shared/parsing/memory-template-contract';
 
 const ROOT = '/repo/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion';
 
@@ -242,6 +243,9 @@ describe('historical memory remediation audit', () => {
     expect(repaired).toContain('<a id="project-state-snapshot"></a>');
     expect(repaired).toContain('<!-- ANCHOR:metadata -->');
     expect(repaired).toContain('<a id="memory-metadata"></a>');
+    expect(repaired.match(/<!-- ANCHOR:metadata -->/g)?.length ?? 0).toBe(1);
+    expect(repaired).toContain('<!-- /ANCHOR:metadata -->');
+    expect(repaired.match(/<!-- \/ANCHOR:metadata -->/g)?.length ?? 0).toBe(1);
     expect(repaired).not.toContain('\n---\n\n---\n');
   });
 
@@ -323,6 +327,93 @@ describe('historical memory remediation audit', () => {
     expect(manifest.summary.regenerate_from_authoritative_evidence).toBe(1);
     expect(fs.existsSync(filePath)).toBe(false);
     expect(fs.existsSync(path.join(specFolder, 'scratch', 'legacy-memory-quarantine', filename))).toBe(true);
+
+    const postApplyManifest = runHistoricalMemoryRemediation({
+      root: tempRoot,
+      reportDir,
+      apply: false,
+    });
+    expect(postApplyManifest.summary.total).toBe(0);
+  });
+
+  it('leaves repaired files validator-clean after apply', () => {
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'historical-remediation-'));
+    tempDirs.push(tempRoot);
+
+    const specFolder = path.join(tempRoot, '013-outsourced-agent-memory');
+    const memoryDir = path.join(specFolder, 'memory');
+    const reportDir = path.join(tempRoot, 'reports');
+    const filename = 'repair-me.md';
+    const filePath = path.join(memoryDir, filename);
+
+    fs.mkdirSync(memoryDir, { recursive: true });
+    fs.writeFileSync(filePath, [
+      '---',
+      'title: "Repair me"',
+      'description: "Session context memory template for Spec Kit indexing."',
+      'trigger_phrases:',
+      '  - "memory dashboard"',
+      '  - "session summary"',
+      '  - "context template"',
+      'importance_tier: "normal"',
+      'contextType: "implementation"',
+      '---',
+      '',
+      '# Repair me',
+      '',
+      '**Summary:** Preserved a specific loader analysis with durable content.',
+      '',
+      '## SESSION SUMMARY',
+      '',
+      '| **Meta Data** | **Value** |',
+      '|:--------------|:----------|',
+      '| Total Messages | 3 |',
+      '| Tool Executions | 2 |',
+      '| Decisions Made | 1 |',
+      '',
+      '## CONTINUE SESSION',
+      '',
+      'Continue the historical repair test.',
+      '',
+      '## PROJECT STATE SNAPSHOT',
+      '',
+      'Historical repair state.',
+      '',
+      '## 2. DECISIONS',
+      '',
+      'Repair in place should keep durable memories active.',
+      '',
+      '## 3. CONVERSATION',
+      '',
+      'Repairable historical memory content.',
+      '',
+      '## RECOVERY HINTS',
+      '',
+      'No recovery work required.',
+      '',
+      '## MEMORY METADATA',
+      '',
+      '```yaml',
+      'session_id: "repair-me"',
+      '```',
+    ].join('\n'));
+
+    runHistoricalMemoryRemediation({
+      root: tempRoot,
+      reportDir,
+      apply: true,
+    });
+
+    const repaired = fs.readFileSync(filePath, 'utf-8');
+    expect(validateMemoryTemplateContract(repaired).valid).toBe(true);
+
+    const postApplyManifest = runHistoricalMemoryRemediation({
+      root: tempRoot,
+      reportDir,
+      apply: false,
+    });
+    expect(postApplyManifest.summary.clean).toBe(1);
+    expect(postApplyManifest.summary.repair_in_place).toBe(0);
   });
 
   it('quarantines low-signal memories instead of repairing them in place', () => {
@@ -377,6 +468,60 @@ describe('historical memory remediation audit', () => {
         '# Clean historical memory',
         '',
         '**Summary:** Preserved a specific and already compliant memory.',
+        '',
+        '## SESSION SUMMARY',
+        '',
+        '| **Meta Data** | **Value** |',
+        '|:--------------|:----------|',
+        '| Total Messages | 3 |',
+        '| Tool Executions | 1 |',
+        '| Decisions Made | 1 |',
+        '',
+        '<!-- ANCHOR:continue-session -->',
+        '<a id="continue-session"></a>',
+        '',
+        '## CONTINUE SESSION',
+        '',
+        'Continue from the last clean checkpoint.',
+        '',
+        '<!-- ANCHOR:project-state-snapshot -->',
+        '<a id="project-state-snapshot"></a>',
+        '',
+        '## PROJECT STATE SNAPSHOT',
+        '',
+        'Historical clean memory fixture.',
+        '',
+        '<!-- ANCHOR:decisions -->',
+        '<a id="decisions"></a>',
+        '',
+        '## 2. DECISIONS',
+        '',
+        'This fixture should remain classified as clean.',
+        '',
+        '<!-- ANCHOR:session-history -->',
+        '<a id="conversation"></a>',
+        '',
+        '## 3. CONVERSATION',
+        '',
+        'Captured a compliant historical memory body.',
+        '',
+        '<!-- ANCHOR:recovery-hints -->',
+        '<a id="recovery-hints"></a>',
+        '',
+        '## RECOVERY HINTS',
+        '',
+        'No repair required.',
+        '',
+        '<!-- ANCHOR:metadata -->',
+        '<a id="memory-metadata"></a>',
+        '',
+        '## MEMORY METADATA',
+        '',
+        '```yaml',
+        'session_id: "clean-memory"',
+        '```',
+        '',
+        '<!-- /ANCHOR:metadata -->',
       ].join('\n')
     );
     const repairFile = auditHistoricalMemoryFile(

@@ -20,7 +20,8 @@ quality_score: 0.90
 quality_flags:
   - "has_tool_state_mismatch"
 ---
-# Closed remaining checklist and summary residual items for tooling-and-scripts.
+
+# Closed Remaining Checklist And Summary Residual
 
 ## SESSION SUMMARY
 
@@ -111,6 +112,7 @@ Next: Keep tooling validation outputs attached to checklist evidence.
 - Check: plan.md, tasks.md, checklist.md
 
 - Last: Next Steps
+<!-- /ANCHOR:continue-session -->
 
 ---
 <!-- ANCHOR:project-state-snapshot -->
@@ -142,6 +144,7 @@ Next: Keep tooling validation outputs attached to checklist evidence.
 - [`checklist.md`](./checklist.md) - QA checklist
 
 **Key Topics:** `removed` | `deferred` | `wording` | `closure` | `docs` | `completed` | `memory` | `save` | `removed deferred` | `deferred wording` | `wording closure` | `closure docs` |
+<!-- /ANCHOR:project-state-snapshot -->
 
 ---
 <!-- ANCHOR:task-guide -->
@@ -166,6 +169,7 @@ Next: Keep tooling validation outputs attached to checklist evidence.
 **Common Patterns**:
 
 - **Validation**: Input validation before processing
+<!-- /ANCHOR:task-guide -->
 
 ---
 <!-- ANCHOR:summary -->
@@ -185,6 +189,7 @@ Closed remaining checklist and summary residual items for tooling-and-scripts.
 | **File** | **Description** |
 |:---------|:----------------|
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/016-tooling-and-scripts/(merged-small-files)` | Tree-thinning merged 2 small files (checklist.md, implementation-summary.md). Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/016-tooling-and-scripts/checklist.md : File modified (description pending) | Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/016-tooling-and-scripts/implementation-summary.md : File modified (description pending) |
+<!-- /ANCHOR:summary -->
 
 ---
 <!-- ANCHOR:detailed-changes -->
@@ -203,6 +208,7 @@ Closed remaining checklist and summary residual items for tooling-and-scripts.
 Keep tooling validation outputs attached to checklist evidence.
 
 **Details:** Next: Keep tooling validation outputs attached to checklist evidence.
+<!-- /ANCHOR:detailed-changes -->
 
 ---
 <!-- ANCHOR:decisions -->
@@ -296,6 +302,7 @@ Keep tooling validation outputs attached to checklist evidence.
 #### Trade-offs
 
 **Confidence**: 0.5%
+<!-- /ANCHOR:decisions -->
 
 ---
 <!-- ANCHOR:session-history -->
@@ -318,6 +325,7 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 > **User** | 2026-03-14 @ 10:42:23
 
 Closed remaining checklist and summary residual items for tooling-and-scripts.
+<!-- /ANCHOR:session-history -->
 
 ---
 <!-- ANCHOR:recovery-hints -->
@@ -373,6 +381,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 | Index Entry Valid |  | Last indexed:  |
 | Checksums Match |  |  |
 | No Dedup Conflicts |  |  |
+<!-- /ANCHOR:recovery-hints -->
 
 ---
 <!-- ANCHOR:metadata -->
@@ -479,10 +488,7 @@ trigger_phrases:
   - "audit per catalog tooling"
   - "per catalog tooling scripts"
   - "code"
-  - "audit"# Relationships
-related_sessions:
-
-  []
+  - "audit"  []
 
 parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/016-tooling-and-scripts"
 child_sessions:
@@ -494,6 +500,9 @@ embedding_model: "nomic-ai/nomic-embed-text-v1.5"
 embedding_version: "1.0"
 chunk_count: 1
 ```
+
+<!-- /ANCHOR:metadata -->
+
 
 ---
 

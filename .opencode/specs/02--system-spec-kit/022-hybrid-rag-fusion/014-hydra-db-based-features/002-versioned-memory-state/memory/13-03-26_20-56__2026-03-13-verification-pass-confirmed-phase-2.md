@@ -20,7 +20,8 @@ quality_score: 0.90
 quality_flags:
   - "has_tool_state_mismatch"
 ---
-# 2026-03-13 verification pass confirmed Phase 2 versioned memory state is implemented with lineage...
+
+# 2026-03-13 Verification Pass Confirmed Phase 2
 
 ## SESSION SUMMARY
 
@@ -109,6 +110,7 @@ Next: Continue implementation
 - Check: plan.md, tasks.md, checklist.md
 
 - Last: Left human maintainer review rows pending - Technical verification is complete,
+<!-- /ANCHOR:continue-session -->
 
 ---
 <!-- ANCHOR:project-state-snapshot -->
@@ -142,6 +144,7 @@ Next: Continue implementation
 - [`decision-record.md`](./decision-record.md) - Architecture decisions
 
 **Key Topics:** `complete` | `evidence` | `human` | `lineage` | `backfill` | `marked lineage` | `lineage write` | `write read` | `read backfill` | `backfill items` | `items complete` | `complete runtime` |
+<!-- /ANCHOR:project-state-snapshot -->
 
 ---
 <!-- ANCHOR:task-guide -->
@@ -168,6 +171,7 @@ Next: Continue implementation
 **Common Patterns**:
 
 - No patterns identified
+<!-- /ANCHOR:task-guide -->
 
 ---
 <!-- ANCHOR:summary -->
@@ -187,6 +191,7 @@ Next: Continue implementation
 | **File** | **Description** |
 |:---------|:----------------|
 | `02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/002-versioned-memory-state/(merged-small-files)` | Tree-thinning merged 3 small files (tasks.md, checklist.md, implementation-summary.md). Merged from 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/002-versioned-memory-state/tasks.md : File modified (description pending) | Merged from 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/002-versioned-memory-state/checklist.md : File modified (description pending) | Merged from 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/002-versioned-memory-state/implementation-summary.md : File modified (description pending) |
+<!-- /ANCHOR:summary -->
 
 ---
 <!-- ANCHOR:detailed-changes -->
@@ -197,6 +202,7 @@ Next: Continue implementation
 ### FEATURE: 2026-03-13 verification pass confirmed Phase 2 versioned memory state is implemented with lineage...
 
 2026-03-13 verification pass confirmed Phase 2 versioned memory state is implemented with lineage writes, active projection, asOf semantics, backfill, and rollback evidence.
+<!-- /ANCHOR:detailed-changes -->
 
 ---
 <!-- ANCHOR:decisions -->
@@ -385,6 +391,7 @@ Next: Continue implementation
 #### Trade-offs
 
 **Confidence**: 0.5%
+<!-- /ANCHOR:decisions -->
 
 ---
 <!-- ANCHOR:session-history -->
@@ -408,6 +415,7 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 > **User** | 2026-03-13 @ 20:56:02
 
 2026-03-13 verification pass confirmed Phase 2 versioned memory state is implemented with lineage writes, active projection, asOf semantics, backfill, and rollback evidence.
+<!-- /ANCHOR:session-history -->
 
 ---
 <!-- ANCHOR:recovery-hints -->
@@ -463,6 +471,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 | Index Entry Valid |  | Last indexed:  |
 | Checksums Match |  |  |
 | No Dedup Conflicts |  |  |
+<!-- /ANCHOR:recovery-hints -->
 
 ---
 <!-- ANCHOR:metadata -->
@@ -569,10 +578,7 @@ trigger_phrases:
   - "state implemented lineage writes"
   - "implemented lineage writes active"
   - "lineage writes active projection"
-  - "writes active projection asof"# Relationships
-related_sessions:
-
-  []
+  - "writes active projection asof"  []
 
 parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/002-versioned-memory-state"
 child_sessions:
@@ -584,6 +590,9 @@ embedding_model: "nomic-ai/nomic-embed-text-v1.5"
 embedding_version: "1.0"
 chunk_count: 1
 ```
+
+<!-- /ANCHOR:metadata -->
+
 
 ---
 

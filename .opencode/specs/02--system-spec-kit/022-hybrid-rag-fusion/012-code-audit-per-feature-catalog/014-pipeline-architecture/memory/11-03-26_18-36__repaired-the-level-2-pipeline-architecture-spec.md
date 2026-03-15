@@ -20,7 +20,8 @@ quality_score: 0.90
 quality_flags:
   - "has_tool_state_mismatch"
 ---
-# Repaired the Level 2 pipeline-architecture spec folder so it is self-contained and review-ready....
+
+# Repaired The Level 2 Pipeline Architecture Spec
 
 ## SESSION SUMMARY
 
@@ -127,6 +128,7 @@ Next: Continue implementation
 | Blockers | Added a 21-feature traceability matrix to the core docs, replaced unsupported PASS/WARN/FAIL languag |
 
 **Key Topics:** `traceability` | `scratch` | `implementation` | `feature` | `folder` | `feature traceability` | `core docs` | `scratch traceability` | `core` | `docs` | `move full` | `full feature` |
+<!-- /ANCHOR:project-state-snapshot -->
 
 ---
 
@@ -207,28 +209,6 @@ Repaired the Level 2 pipeline-architecture spec folder so it is self-contained a
 
 ---
 
-<!-- ANCHOR:decisions -->
-<a id="decisions"></a>
-
-<!-- DYNAMIC SECTION NUMBERING:
-  This section number depends on which optional sections are present:
-  - Base: 2 (after Overview)
-  - +1 if HAS_IMPLEMENTATION_GUIDE (adds section 1)
-  - +1 if HAS_OBSERVATIONS (adds Detailed Changes)
-  - +1 if HAS_WORKFLOW_DIAGRAM (adds Workflow Visualization)
-
-  Result matrix:
-  | IMPL_GUIDE | OBSERVATIONS | WORKFLOW | This Section # |
-  |------------|--------------|----------|----------------|
-  | No         | No           | No       | 2              |
-  | No         | No           | Yes      | 3              |
-  | No         | Yes          | No       | 3              |
-  | No         | Yes          | Yes      | 4              |
-  | Yes        | No           | No       | 3              |
-  | Yes        | No           | Yes      | 4              |
-  | Yes        | Yes          | No       | 4              |
-  | Yes        | Yes          | Yes      | 5              |
--->
 <!-- ANCHOR:decisions -->
 <a id="decisions"></a>
 
@@ -652,14 +632,6 @@ Repaired the Level 2 pipeline-architecture spec folder so it is self-contained a
 <!-- ANCHOR:session-history -->
 <a id="conversation"></a>
 
-<!-- DYNAMIC SECTION NUMBERING:
-  This section number = DECISIONS section + 1
-  See DECISIONS section comment for the full matrix.
-  Range: 3-6 depending on optional sections present.
--->
-<!-- ANCHOR:session-history -->
-<a id="conversation"></a>
-
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -741,13 +713,11 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 <!-- /ANCHOR:recovery-hints -->
 
 ---
-
 <!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 
-<!-- ANCHOR:metadata -->
 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
@@ -848,10 +818,7 @@ trigger_phrases:
   - "traceability matrix core docs"
   - "matrix core docs replaced"
   - "core docs replaced unsupported"
-  - "repaired level repaired level"# Relationships
-related_sessions:
-
-  []
+  - "repaired level repaired level"  []
 
 parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/014-pipeline-architecture"
 child_sessions:

@@ -20,7 +20,8 @@ quality_score: 0.90
 quality_flags:
   - "has_tool_state_mismatch"
 ---
-# Closed deferred context-save item after final verification and documentation sync.
+
+# Closed Deferred Context Save Item After Final
 
 ## SESSION SUMMARY
 
@@ -111,6 +112,7 @@ Next: Keep verification evidence synchronized with checklist status.
 - Check: plan.md, tasks.md, checklist.md
 
 - Last: Next Steps
+<!-- /ANCHOR:continue-session -->
 
 ---
 <!-- ANCHOR:project-state-snapshot -->
@@ -142,6 +144,7 @@ Next: Keep verification evidence synchronized with checklist status.
 - [`checklist.md`](./checklist.md) - QA checklist
 
 **Key Topics:** `final` | `saved final` | `final via` | `via generate` | `saved` | `via` | `generate` | `system spec kit/022 hybrid rag fusion/013 code audit per feature catalog/008 bug fixes and data integrity` | `json` | `mode` | `external` | `cli` |
+<!-- /ANCHOR:project-state-snapshot -->
 
 ---
 <!-- ANCHOR:task-guide -->
@@ -164,6 +167,7 @@ Next: Keep verification evidence synchronized with checklist status.
 **Common Patterns**:
 
 - No patterns identified
+<!-- /ANCHOR:task-guide -->
 
 ---
 <!-- ANCHOR:summary -->
@@ -183,6 +187,7 @@ Closed deferred context-save item after final verification and documentation syn
 | **File** | **Description** |
 |:---------|:----------------|
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/008-bug-fixes-and-data-integrity/(merged-small-files)` | Tree-thinning merged 1 small files (checklist.md). Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/008-bug-fixes-and-data-integrity/checklist.md : File modified (description pending) |
+<!-- /ANCHOR:summary -->
 
 ---
 <!-- ANCHOR:detailed-changes -->
@@ -201,6 +206,7 @@ Closed deferred context-save item after final verification and documentation syn
 Keep verification evidence synchronized with checklist status.
 
 **Details:** Next: Keep verification evidence synchronized with checklist status.
+<!-- /ANCHOR:detailed-changes -->
 
 ---
 <!-- ANCHOR:decisions -->
@@ -294,6 +300,7 @@ Keep verification evidence synchronized with checklist status.
 #### Trade-offs
 
 **Confidence**: 0.5%
+<!-- /ANCHOR:decisions -->
 
 ---
 <!-- ANCHOR:session-history -->
@@ -316,6 +323,7 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 > **User** | 2026-03-14 @ 10:42:00
 
 Closed deferred context-save item after final verification and documentation sync.
+<!-- /ANCHOR:session-history -->
 
 ---
 <!-- ANCHOR:recovery-hints -->
@@ -371,6 +379,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 | Index Entry Valid |  | Last indexed:  |
 | Checksums Match |  |  |
 | No Dedup Conflicts |  |  |
+<!-- /ANCHOR:recovery-hints -->
 
 ---
 <!-- ANCHOR:metadata -->
@@ -477,10 +486,7 @@ trigger_phrases:
   - "closed deferred closed deferred"
   - "deferred closed deferred context-save"
   - "code audit per catalog"
-  - "audit per catalog fixes"# Relationships
-related_sessions:
-
-  []
+  - "audit per catalog fixes"  []
 
 parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/008-bug-fixes-and-data-integrity"
 child_sessions:
@@ -492,6 +498,9 @@ embedding_model: "nomic-ai/nomic-embed-text-v1.5"
 embedding_version: "1.0"
 chunk_count: 1
 ```
+
+<!-- /ANCHOR:metadata -->
+
 
 ---
 

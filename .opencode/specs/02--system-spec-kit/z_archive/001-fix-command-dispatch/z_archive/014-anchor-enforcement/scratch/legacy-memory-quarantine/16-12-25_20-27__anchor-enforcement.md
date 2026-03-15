@@ -11,7 +11,7 @@ quality_score: 0.60
 quality_flags:
   - "legacy_migration"
 ---
-# SESSION SUMMARY
+## SESSION SUMMARY
 
 | **Meta Data** | **Value** |
 |:--------------|:----------|
@@ -58,7 +58,7 @@ quality_flags:
 - Confidence: N/A
 - Uncertainty: N/A
 - Readiness: N/A
-<!-- /ANCHOR:preflight-session-1765913266122-eoj7hndgg-005-memory/008-anchor-enforcement -->
+<!-- /ANCHOR:preflight -->
 
 ---
 
@@ -93,7 +93,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 ```
 /spec_kit:resume 005-memory/008-anchor-enforcement
 ```
-<!-- /ANCHOR:continue-session-session-1765913266122-eoj7hndgg-005-memory/008-anchor-enforcement -->
+<!-- /ANCHOR:continue-session -->
 
 ---
 
@@ -116,7 +116,7 @@ Improved the memory system with 9 parallel agents fixing template placeholders, 
 | `.opencode/memory/scripts/generate-context.js` | Modified during session |
 | `.opencode/skills/workflows-memory/SKILL.md` | Modified during session |
 
-<!-- /ANCHOR:summary-session-1765913266122-eoj7hndgg-005-memory/008-anchor-enforcement -->
+<!-- /ANCHOR:summary -->
 
 ---
 
@@ -149,7 +149,7 @@ Decision 2: Added DECISION_IMPORTANCE field - Maps confidence to high/medium/low
 **Details:** Option 1: Decision 2: Added DECISION_IMPORTANCE field - Maps confidence to high/medium/low | Chose: Decision 2: Added DECISION_IMPORTANCE field - Maps confidence to high/medium/low | Rationale: Decision 2: Added DECISION_IMPORTANCE field - Maps confidence to high/medium/low tiers for better filtering
 <!-- /ANCHOR:decision-decision-2-field-005-session-1765913266122-eoj7hndgg -->
 
-<!-- /ANCHOR:detailed-changes-session-1765913266122-eoj7hndgg-005-memory/008-anchor-enforcement -->
+<!-- /ANCHOR:detailed-changes -->
 
 ---
 
@@ -212,7 +212,7 @@ Decision 2: Added DECISION_IMPORTANCE field - Maps confidence to high/medium/low
 
 ---
 
-<!-- /ANCHOR:decisions-session-1765913266122-eoj7hndgg-005-memory/008-anchor-enforcement -->
+<!-- /ANCHOR:decisions -->
 
 <!-- ANCHOR:session-history -->
 <a id="conversation"></a>
@@ -237,7 +237,7 @@ Improved the memory system with 9 parallel agents fixing template placeholders, 
 
 ---
 
-<!-- /ANCHOR:session-history-session-1765913266122-eoj7hndgg-005-memory/008-anchor-enforcement -->
+<!-- /ANCHOR:session-history -->
 
 ---
 
@@ -263,7 +263,7 @@ Improved the memory system with 9 parallel agents fixing template placeholders, 
 3. **Review last session state** - Check PROJECT STATE SNAPSHOT
 4. **Validate pending tasks** - Review CONTINUE SESSION section
 5. **Resume with handover prompt** - Use continuation template above
-<!-- /ANCHOR:recovery-hints-session-1765913266122-eoj7hndgg-005-memory/008-anchor-enforcement -->
+<!-- /ANCHOR:recovery-hints -->
 ---
 
 <!-- ANCHOR:postflight -->
@@ -289,14 +289,13 @@ Improved the memory system with 9 parallel agents fixing template placeholders, 
 
 **Session Learning Summary:**
 This session was migrated from an older format. Learning metrics were not captured in the original format.
-<!-- /ANCHOR:postflight-session-1765913266122-eoj7hndgg-005-memory/008-anchor-enforcement -->
+<!-- /ANCHOR:postflight -->
 ---
 <!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 
-<!-- ANCHOR:metadata-session-1765913266122-eoj7hndgg-005-memory/008-anchor-enforcement -->
 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
@@ -386,7 +385,7 @@ embedding_version: "1.0"
 chunk_count: 1
 ```
 
-<!-- /ANCHOR:metadata-session-1765913266122-eoj7hndgg-005-memory/008-anchor-enforcement -->
+<!-- /ANCHOR:metadata -->
 
 ---
 

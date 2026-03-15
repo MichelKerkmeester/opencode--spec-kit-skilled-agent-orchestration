@@ -20,6 +20,13 @@ A three-layer quality gate runs before storage when `SPECKIT_SAVE_QUALITY_GATE` 
 
 When `SPECKIT_QUALITY_LOOP=true`, the save path also runs a verify-fix-verify loop before storage. The runtime performs one initial evaluation and then up to 2 immediate auto-fix retries by default. The reported `attempts` count is the actual number of evaluations used, so early-break cases do not claim the full configured retry budget. Accepted saves persist quality-loop metadata fixes, while rewritten body content stays in-memory until later hard-reject gates clear under the per-spec-folder lock. If the loop rejects the save, `indexMemoryFile()` returns `status: 'rejected'`, and `atomicSaveMemory()` rolls back the just-written file instead of retrying indexing again.
 
+Two earlier hard-blocks now sit between the quality loop and the older pre-storage quality gate:
+
+1. the shared semantic sufficiency gate, which rejects thin aligned memories with `INSUFFICIENT_CONTEXT_ABORT`
+2. the rendered-memory template contract validator, which rejects malformed files when required frontmatter, mandatory section anchors/HTML ids, or cleanup invariants are missing
+
+That means `memory_save` no longer treats a merely parseable file as good enough. It must be both semantically durable and structurally compliant before the pre-storage quality gate runs.
+
 Reconsolidation-on-save runs after embedding generation only when `SPECKIT_RECONSOLIDATION=true` (default OFF). The system checks the top-3 most similar memories in the same spec folder. Similarity at or above 0.88 triggers a merge where content is combined and `importance_weight` is boosted (capped at 1.0). Similarity between 0.75 and 0.88 triggers conflict resolution: the old memory is deprecated and a `supersedes` causal edge is created. Below 0.75, the memory stores unchanged. A checkpoint must exist for the spec folder before reconsolidation can run.
 
 For large files exceeding the chunking threshold, the system splits into a parent record (metadata only) plus child chunk records, each with its own embedding. Before indexing, anchor-aware chunk thinning scores each chunk using a composite of anchor presence (weight 0.6, binary) and content density (weight 0.4, 0-1). Chunks scoring below 0.3 are dropped to reduce storage and search noise. The thinning never returns an empty array. Chunk embedding cache keys now hash normalized content, matching the main embedding path, so structurally equivalent chunks reuse the same cache entry.
@@ -52,7 +59,7 @@ Document type affects importance weighting automatically: constitutional files g
 | `mcp_server/handlers/handler-utils.ts` | Handler | Handler utility helpers |
 | `mcp_server/handlers/memory-crud-types.ts` | Handler | CRUD type definitions |
 | `mcp_server/handlers/memory-crud-utils.ts` | Handler | CRUD utility helpers |
-| `mcp_server/handlers/memory-save.ts` | Handler | Save handler entry point |
+| `mcp_server/handlers/memory-save.ts` | Handler | Save handler entry point, sufficiency enforcement, and template-contract rejection |
 | `mcp_server/handlers/mutation-hooks.ts` | Handler | Post-mutation hook dispatch |
 | `mcp_server/handlers/pe-gating.ts` | Handler | Prediction error gating |
 | `mcp_server/handlers/quality-loop.ts` | Handler | Quality loop handler |
@@ -130,6 +137,7 @@ Document type affects importance weighting automatically: constitutional files g
 | `mcp_server/utils/json-helpers.ts` | Util | JSON utility helpers |
 | `mcp_server/utils/tool-input-schema.ts` | Util | Tool Input Schema |
 | `mcp_server/utils/validators.ts` | Util | Input validators |
+| `shared/parsing/memory-template-contract.ts` | Shared | Rendered-memory structural contract validator |
 | `shared/chunking.ts` | Shared | Content chunking |
 | `shared/config.ts` | Shared | Shared configuration |
 | `shared/embeddings.ts` | Shared | Embedding utilities |
@@ -176,7 +184,7 @@ Document type affects importance weighting automatically: constitutional files g
 | `mcp_server/tests/graph-signals.vitest.ts` | Graph signal computation |
 | `mcp_server/tests/handler-memory-index-cooldown.vitest.ts` | Index cooldown validation |
 | `mcp_server/tests/handler-memory-index.vitest.ts` | Index handler validation |
-| `mcp_server/tests/handler-memory-save.vitest.ts` | Save handler validation |
+| `mcp_server/tests/handler-memory-save.vitest.ts` | Save handler validation, no-write rejection, and template-contract enforcement |
 | `mcp_server/tests/hybrid-search-flags.vitest.ts` | Hybrid search flag behavior |
 | `mcp_server/tests/importance-tiers.vitest.ts` | Importance tier tests |
 | `mcp_server/tests/incremental-index-v2.vitest.ts` | Incremental index behavioral tests |

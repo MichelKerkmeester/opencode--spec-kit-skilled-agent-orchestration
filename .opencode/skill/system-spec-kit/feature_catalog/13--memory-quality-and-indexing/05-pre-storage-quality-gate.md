@@ -17,10 +17,13 @@ Current save ordering is:
 1. parse and validate
 2. quality-loop auto-fixes for recoverable formatting issues
 3. shared semantic sufficiency gate
-4. pre-storage quality gate
-5. embedding, deduplication, and persistence
+4. rendered-memory template contract validation
+5. pre-storage quality gate
+6. embedding, deduplication, and persistence
 
 The shared sufficiency gate is now the earlier hard-block for memories that do not contain enough durable evidence to stand alone later. Those saves fail with `INSUFFICIENT_CONTEXT_ABORT` and do not depend on the older warn-only behavior of this gate.
+
+The rendered-memory template contract is the next hard-block. It rejects malformed outputs before storage when required frontmatter keys, mandatory section anchors/HTML ids, or cleanup invariants are missing, or when raw Mustache/template artifacts leak into the rendered file.
 
 The three-layer pre-storage quality gate then handles the memories that are already semantically sufficient:
 
@@ -58,8 +61,9 @@ The gate still supports its existing warn-only rollout behavior for threshold tu
 | `mcp_server/lib/utils/logger.ts` | Lib | Logger utility |
 | `mcp_server/lib/utils/path-security.ts` | Lib | Path security validation |
 | `mcp_server/lib/validation/save-quality-gate.ts` | Lib | Pre-storage quality gate |
-| `mcp_server/handlers/memory-save.ts` | Handler | Orders quality-loop, insufficiency, and quality-gate evaluation before persistence |
+| `mcp_server/handlers/memory-save.ts` | Handler | Orders quality-loop, insufficiency, template-contract, and quality-gate evaluation before persistence |
 | `shared/parsing/memory-sufficiency.ts` | Shared | Shared semantic sufficiency gate that now runs before this quality gate |
+| `shared/parsing/memory-template-contract.ts` | Shared | Rendered-memory structural contract validator that now runs before this quality gate |
 | `shared/chunking.ts` | Shared | Content chunking |
 | `shared/config.ts` | Shared | Shared configuration |
 | `shared/embeddings.ts` | Shared | Embedding utilities |

@@ -11,7 +11,10 @@ quality_score: 0.60
 quality_flags:
   - "needs_review"
 ---
-# SESSION SUMMARY
+
+# Anobel Performance Analysis
+
+## SESSION SUMMARY
 
 | **Meta Data** | **Value** |
 |:--------------|:----------|
@@ -53,7 +56,7 @@ quality_flags:
 - Confidence: [TBD]%
 - Uncertainty: [TBD]
 - Readiness: [TBD]
-<!-- /ANCHOR:preflight-session-1770012882357-hyk40psi8-005-anobel.com/031-anobel-performance-analysis -->
+<!-- /ANCHOR:preflight -->
 
 ---
 
@@ -125,7 +128,7 @@ Next: Continue implementation
 
 - Last: Created comprehensive Level 3+ SpecKit documentation for anobel.com performance 
 
-<!-- /ANCHOR:continue-session-session-1770012882357-hyk40psi8-005-anobel.com/031-anobel-performance-analysis -->
+<!-- /ANCHOR:continue-session -->
 
 ---
 
@@ -162,6 +165,7 @@ Next: Continue implementation
 - [`research.md`](./research.md) - Research findings
 
 **Key Topics:** `implementation` | `comprehensive` | `documentation` | `optimization` | `architecture` | `verification` | `coordination` | `improvements` | `standardized` | `requirements` | 
+<!-- /ANCHOR:project-state-snapshot -->
 
 ---
 
@@ -196,7 +200,7 @@ Next: Continue implementation
 
 - **Functional Transforms**: Use functional methods for data transformation
 
-<!-- /ANCHOR:task-guide-anobel.com/031-anobel-performance-analysis-005-anobel.com/031-anobel-performance-analysis -->
+<!-- /ANCHOR:task-guide -->
 
 ---
 
@@ -227,7 +231,7 @@ Created comprehensive Level 3+ SpecKit documentation for anobel.com performance 
 | `specs/.../031-anobel-performance-analysis/decision-record.md` | File modified (description pending) |
 | `specs/.../031-anobel-performance-analysis/research.md` | File modified (description pending) |
 
-<!-- /ANCHOR:summary-session-1770012882357-hyk40psi8-005-anobel.com/031-anobel-performance-analysis -->
+<!-- /ANCHOR:summary -->
 
 ---
 
@@ -251,11 +255,10 @@ rootCause: 20-second mobile LCP caused by JavaScript timeout bugs in hero script
 
 <!-- /ANCHOR:implementation-technical-implementation-details-fb81fbf6-session-1770012882357-hyk40psi8 -->
 
-<!-- /ANCHOR:detailed-changes-session-1770012882357-hyk40psi8-005-anobel.com/031-anobel-performance-analysis -->
+<!-- /ANCHOR:detailed-changes -->
 
 ---
 
-<!-- ANCHOR:decisions-session-1770012882357-hyk40psi8-005-anobel.com/031-anobel-performance-analysis -->
 <a id="decisions"></a>
 
 <!-- DYNAMIC SECTION NUMBERING:
@@ -444,9 +447,8 @@ rootCause: 20-second mobile LCP caused by JavaScript timeout bugs in hero script
 
 ---
 
-<!-- /ANCHOR:decisions-session-1770012882357-hyk40psi8-005-anobel.com/031-anobel-performance-analysis -->
+<!-- /ANCHOR:decisions -->
 
-<!-- ANCHOR:session-history-session-1770012882357-hyk40psi8-005-anobel.com/031-anobel-performance-analysis -->
 <a id="conversation"></a>
 
 <!-- DYNAMIC SECTION NUMBERING:
@@ -478,7 +480,7 @@ Created comprehensive Level 3+ SpecKit documentation for anobel.com performance 
 
 ---
 
-<!-- /ANCHOR:session-history-session-1770012882357-hyk40psi8-005-anobel.com/031-anobel-performance-analysis -->
+<!-- /ANCHOR:session-history -->
 
 ---
 
@@ -535,7 +537,7 @@ node .opencode/skill/system-spec-kit/scripts/memory/generate-context.js 005-anob
 | Index Entry Valid |  | Last indexed:  |
 | Checksums Match |  |  |
 | No Dedup Conflicts |  |  |
-<!-- /ANCHOR:recovery-hints-session-1770012882357-hyk40psi8-005-anobel.com/031-anobel-performance-analysis -->
+<!-- /ANCHOR:recovery-hints -->
 
 ---
 
@@ -574,7 +576,7 @@ node .opencode/skill/system-spec-kit/scripts/memory/generate-context.js 005-anob
 
 **Session Learning Summary:**
 Learning metrics will be calculated when both preflight and postflight data are provided.
-<!-- /ANCHOR:postflight-session-1770012882357-hyk40psi8-005-anobel.com/031-anobel-performance-analysis -->
+<!-- /ANCHOR:postflight -->
 
 ---
 
@@ -583,7 +585,6 @@ Learning metrics will be calculated when both preflight and postflight data are 
 
 ## MEMORY METADATA
 
-<!-- ANCHOR:metadata-session-1770012882357-hyk40psi8-005-anobel.com/031-anobel-performance-analysis -->
 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
@@ -689,7 +690,7 @@ embedding_version: "1.0"
 chunk_count: 1
 ```
 
-<!-- /ANCHOR:metadata-session-1770012882357-hyk40psi8-005-anobel.com/031-anobel-performance-analysis -->
+<!-- /ANCHOR:metadata -->
 
 ---
 

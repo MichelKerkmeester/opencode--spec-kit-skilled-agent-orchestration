@@ -12,7 +12,7 @@ quality_score: 0.40
 quality_flags:
   - "legacy_migration"
 ---
-# SESSION SUMMARY
+## SESSION SUMMARY
 
 | **Meta Data** | **Value** |
 |:--------------|:----------|
@@ -56,7 +56,7 @@ quality_flags:
 - Confidence: N/A
 - Uncertainty: N/A
 - Readiness: N/A
-<!-- /ANCHOR:preflight-session-1766390459131-2u4e3epcd-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:preflight -->
 
 ---
 
@@ -91,7 +91,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 ```
 /spec_kit:resume 003-commands/002-speckit-leann-integration
 ```
-<!-- /ANCHOR:continue-session-session-1766390459131-2u4e3epcd-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:continue-session -->
 
 ---
 
@@ -146,7 +146,7 @@ Using Sequential Thinking, I have performed a forensic analysis of your agent ar
 
 - **Functional Transforms**: Use functional methods for data transformation
 
-<!-- /ANCHOR:task-guide-commands/002-speckit-leann-integration-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:task-guide -->
 
 ---
 
@@ -188,7 +188,7 @@ Using **Sequential Thinking**, I have
 | `specs/002-skills/007-skill-system-improvements/checklist.md` | Updated checklist |
 | `.spec-active` | Updated  |
 
-<!-- /ANCHOR:summary-session-1766390459131-2u4e3epcd-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:summary -->
 
 ---
 
@@ -799,7 +799,7 @@ Executed bash
 **Details:** Tool: bash | Status: running
 <!-- /ANCHOR:implementation-tool-bash-8f3b8c02-3-session-1766390459131-2u4e3epcd -->
 
-<!-- /ANCHOR:detailed-changes-session-1766390459131-2u4e3epcd-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:detailed-changes -->
 
 ---
 
@@ -812,7 +812,7 @@ This session did not involve significant architectural or technical decisions. T
 
 ---
 
-<!-- /ANCHOR:decisions-session-1766390459131-2u4e3epcd-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:decisions -->
 
 <!-- ANCHOR:session-history -->
 <a id="conversation"></a>
@@ -1141,7 +1141,7 @@ Saving context
 
 ---
 
-<!-- /ANCHOR:session-history-session-1766390459131-2u4e3epcd-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:session-history -->
 
 ---
 
@@ -1167,7 +1167,7 @@ Saving context
 3. **Review last session state** - Check PROJECT STATE SNAPSHOT
 4. **Validate pending tasks** - Review CONTINUE SESSION section
 5. **Resume with handover prompt** - Use continuation template above
-<!-- /ANCHOR:recovery-hints-session-1766390459131-2u4e3epcd-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:recovery-hints -->
 ---
 
 <!-- ANCHOR:postflight -->
@@ -1193,14 +1193,13 @@ Saving context
 
 **Session Learning Summary:**
 This session was migrated from an older format. Learning metrics were not captured in the original format.
-<!-- /ANCHOR:postflight-session-1766390459131-2u4e3epcd-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:postflight -->
 ---
 <!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 
-<!-- ANCHOR:metadata-session-1766390459131-2u4e3epcd-003-commands/002-speckit-leann-integration -->
 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
@@ -1289,7 +1288,7 @@ embedding_version: "1.0"
 chunk_count: 1
 ```
 
-<!-- /ANCHOR:metadata-session-1766390459131-2u4e3epcd-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:metadata -->
 
 ---
 

@@ -12,7 +12,8 @@ contextType: "general"
 quality_score: 1.00
 quality_flags: []
 ---
-# hybrid rag fusion session 03-03-26
+
+# 6 Agent Research Sprint 019 Spec
 
 ## SESSION SUMMARY
 
@@ -144,6 +145,7 @@ Next: Continue implementation
 | Blockers | Decision: Zod strict schemas for all 24 MCP tools — prevents LLM parameter hallucination with action |
 
 **Key Topics:** `decision` | `qmd` | `mcp` | `spec` | `all` | `memory` | `items` | `feature flags` | `memory mcp` | `system` | `hybrid` | `system spec kit/022 hybrid rag fusion` | 
+<!-- /ANCHOR:project-state-snapshot -->
 
 ---
 
@@ -245,28 +247,6 @@ rootCause: The 023 refinement program delivered core architecture but the extern
 
 ---
 
-<!-- ANCHOR:decisions -->
-<a id="decisions"></a>
-
-<!-- DYNAMIC SECTION NUMBERING:
-  This section number depends on which optional sections are present:
-  - Base: 2 (after Overview)
-  - +1 if HAS_IMPLEMENTATION_GUIDE (adds section 1)
-  - +1 if HAS_OBSERVATIONS (adds Detailed Changes)
-  - +1 if HAS_WORKFLOW_DIAGRAM (adds Workflow Visualization)
-  
-  Result matrix:
-  | IMPL_GUIDE | OBSERVATIONS | WORKFLOW | This Section # |
-  |------------|--------------|----------|----------------|
-  | No         | No           | No       | 2              |
-  | No         | No           | Yes      | 3              |
-  | No         | Yes          | No       | 3              |
-  | No         | Yes          | Yes      | 4              |
-  | Yes        | No           | No       | 3              |
-  | Yes        | No           | Yes      | 4              |
-  | Yes        | Yes          | No       | 4              |
-  | Yes        | Yes          | Yes      | 5              |
--->
 <!-- ANCHOR:decisions -->
 <a id="decisions"></a>
 
@@ -439,14 +419,6 @@ rootCause: The 023 refinement program delivered core architecture but the extern
 <!-- ANCHOR:session-history -->
 <a id="conversation"></a>
 
-<!-- DYNAMIC SECTION NUMBERING:
-  This section number = DECISIONS section + 1
-  See DECISIONS section comment for the full matrix.
-  Range: 3-6 depending on optional sections present.
--->
-<!-- ANCHOR:session-history -->
-<a id="conversation"></a>
-
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -567,13 +539,11 @@ Learning metrics will be calculated when both preflight and postflight data are 
 <!-- /ANCHOR:postflight -->
 
 ---
-
 <!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 
-<!-- ANCHOR:metadata -->
 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
@@ -667,10 +637,7 @@ trigger_phrases:
   - "cross-ai research delegation"
   - "6-agent synthesis"
   - "codex gemini research"
-  - "productization operational tooling"# Relationships
-related_sessions:
-
-  []
+  - "productization operational tooling"  []
 
 parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion"
 child_sessions:

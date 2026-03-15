@@ -63,13 +63,19 @@ function cleanupExcessiveNewlines(text: string): string {
 }
 
 function stripTemplateConfigComments(text: string): string {
-  let result: string = text.replace(/<!--\s*Template Configuration Comments[\s\S]*?-->\s*\n*/g, '');
+  let result: string = text.replace(/<!--\s*TEMPLATE:\s*context_template[\s\S]*?-->\s*\n*/g, '');
+  result = result.replace(/<!--\s*Template Configuration Comments[\s\S]*?-->\s*\n*/g, '');
   result = result.replace(/<!--\s*Context Type Detection:[\s\S]*?-->\s*\n*/g, '');
   result = result.replace(/<!--\s*Importance Tier Guidelines:[\s\S]*?-->\s*\n*/g, '');
   result = result.replace(/<!--\s*Constitutional Tier Promotion:[\s\S]*?-->\s*\n*/g, '');
   result = result.replace(/<!--\s*Channel\/Branch Association:[\s\S]*?-->\s*\n*/g, '');
   result = result.replace(/<!--\s*SESSION CONTEXT DOCUMENTATION[\s\S]*?-->\s*$/g, '');
-  return result.replace(/\n{3,}/g, '\n\n');
+  result = result.replace(/\n{3,}/g, '\n\n');
+
+  // Ensure a blank line between frontmatter close --- and body content (e.g. # H1)
+  result = result.replace(/(^---\n[\s\S]*?\n---)\n(?!\n)/, '$1\n\n');
+
+  return result;
 }
 
 // ───────────────────────────────────────────────────────────────

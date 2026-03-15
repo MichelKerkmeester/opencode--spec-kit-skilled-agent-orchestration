@@ -12,7 +12,10 @@ quality_score: 0.60
 quality_flags:
   - "legacy_migration"
 ---
-# SESSION SUMMARY
+
+# Research Debug Improvements
+
+## SESSION SUMMARY
 
 | **Meta Data** | **Value** |
 |:--------------|:----------|
@@ -54,7 +57,7 @@ quality_flags:
 - Confidence: N/A
 - Uncertainty: N/A
 - Readiness: N/A
-<!-- /ANCHOR:preflight-session-1769161968510-r2t6m0y4m-05--agent-orchestration/006-research-debug-improvements -->
+<!-- /ANCHOR:preflight -->
 ---
 
 ## Table of Contents
@@ -102,7 +105,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 ```
 /spec_kit:resume 05--agent-orchestration/006-research-debug-improvements
 ```
-<!-- /ANCHOR:continue-session-session-1769161968510-r2t6m0y4m-05--agent-orchestration/006-research-debug-improvements -->
+<!-- /ANCHOR:continue-session -->
 ---
 
 <!-- ANCHOR:project-state-snapshot -->
@@ -138,6 +141,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 - [`research.md`](./research.md) - Research findings
 
 **Key Topics:** `accomplishments` | `implementation` | `compatibility` | `improvements` | `intelligence` | `standardized` | `conversation` | `environments` | `integration` | `methodology` | 
+<!-- /ANCHOR:project-state-snapshot -->
 
 ---
 
@@ -182,7 +186,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 - **Functional Transforms**: Use functional methods for data transformation
 
-<!-- /ANCHOR:task-guide-agents/006-research-debug-improvements-05--agent-orchestration/006-research-debug-improvements -->
+<!-- /ANCHOR:task-guide -->
 
 ---
 
@@ -217,7 +221,7 @@ Completed implementation of Research Agent Improvements & Debug Sub-Agent Creati
 | `.opencode/command/spec_kit/complete.md` | File modified (description pending) |
 | `.opencode/command/spec_kit/implement.md` | File modified (description pending) |
 
-<!-- /ANCHOR:summary-session-1769161968510-r2t6m0y4m-05--agent-orchestration/006-research-debug-improvements -->
+<!-- /ANCHOR:summary -->
 
 ---
 
@@ -241,11 +245,10 @@ rootCause: Agents lacked standardization (model preferences, output verification
 
 <!-- /ANCHOR:implementation-technical-implementation-details-6da36e02-session-1769161968510-r2t6m0y4m -->
 
-<!-- /ANCHOR:detailed-changes-session-1769161968510-r2t6m0y4m-05--agent-orchestration/006-research-debug-improvements -->
+<!-- /ANCHOR:detailed-changes -->
 
 ---
 
-<!-- ANCHOR:decisions-session-1769161968510-r2t6m0y4m-05--agent-orchestration/006-research-debug-improvements -->
 <a id="decisions"></a>
 
 <!-- DYNAMIC SECTION NUMBERING:
@@ -407,9 +410,8 @@ rootCause: Agents lacked standardization (model preferences, output verification
 
 ---
 
-<!-- /ANCHOR:decisions-session-1769161968510-r2t6m0y4m-05--agent-orchestration/006-research-debug-improvements -->
+<!-- /ANCHOR:decisions -->
 
-<!-- ANCHOR:session-history-session-1769161968510-r2t6m0y4m-05--agent-orchestration/006-research-debug-improvements -->
 <a id="conversation"></a>
 
 <!-- DYNAMIC SECTION NUMBERING:
@@ -441,7 +443,7 @@ Completed implementation of Research Agent Improvements & Debug Sub-Agent Creati
 
 ---
 
-<!-- /ANCHOR:session-history-session-1769161968510-r2t6m0y4m-05--agent-orchestration/006-research-debug-improvements -->
+<!-- /ANCHOR:session-history -->
 
 ---
 
@@ -467,7 +469,7 @@ Completed implementation of Research Agent Improvements & Debug Sub-Agent Creati
 3. **Review last session state** - Check PROJECT STATE SNAPSHOT
 4. **Validate pending tasks** - Review CONTINUE SESSION section
 5. **Resume with handover prompt** - Use continuation template above
-<!-- /ANCHOR:recovery-hints-session-1769161968510-r2t6m0y4m-05--agent-orchestration/006-research-debug-improvements -->
+<!-- /ANCHOR:recovery-hints -->
 ---
 
 <!-- ANCHOR:postflight -->
@@ -493,7 +495,7 @@ Completed implementation of Research Agent Improvements & Debug Sub-Agent Creati
 
 **Session Learning Summary:**
 This session was migrated from an older format. Learning metrics were not captured in the original format.
-<!-- /ANCHOR:postflight-session-1769161968510-r2t6m0y4m-05--agent-orchestration/006-research-debug-improvements -->
+<!-- /ANCHOR:postflight -->
 ---
 
 <!-- ANCHOR:metadata -->
@@ -501,7 +503,6 @@ This session was migrated from an older format. Learning metrics were not captur
 
 ## MEMORY METADATA
 
-<!-- ANCHOR:metadata-session-1769161968510-r2t6m0y4m-05--agent-orchestration/006-research-debug-improvements -->
 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
@@ -592,7 +593,7 @@ embedding_version: "1.0"
 chunk_count: 1
 ```
 
-<!-- /ANCHOR:metadata-session-1769161968510-r2t6m0y4m-05--agent-orchestration/006-research-debug-improvements -->
+<!-- /ANCHOR:metadata -->
 
 ---
 

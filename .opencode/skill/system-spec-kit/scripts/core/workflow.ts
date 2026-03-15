@@ -61,6 +61,7 @@ import {
   type MemoryEvidenceSnapshot,
   type MemorySufficiencyResult,
 } from '@spec-kit/shared/parsing/memory-sufficiency';
+import { validateMemoryTemplateContract } from '@spec-kit/shared/parsing/memory-template-contract';
 import { extractTriggerPhrases } from '../lib/trigger-extractor';
 import { indexMemory, updateMetadataWithEmbedding } from './memory-indexer';
 import * as simFactory from '../lib/simulation-factory';
@@ -110,6 +111,7 @@ const WORKFLOW_HTML_COMMENT_RE = /<!--(?!\s*\/?ANCHOR:)[\s\S]*?-->/g;
 const WORKFLOW_DANGEROUS_HTML_BLOCK_RE = /<(?:iframe|math|noscript|object|script|style|svg|template)\b[^>]*>[\s\S]*?<\/(?:iframe|math|noscript|object|script|style|svg|template)>/gi;
 const WORKFLOW_BLOCK_HTML_TAG_RE = /<\/?(?:article|aside|blockquote|body|br|dd|details|div|dl|dt|figcaption|figure|footer|h[1-6]|header|hr|li|main|nav|ol|p|pre|section|summary|table|tbody|td|th|thead|tr|ul)\b[^>]*\/?>/gi;
 const WORKFLOW_INLINE_HTML_TAG_RE = /<\/?(?:code|em|i|kbd|small|span|strong|sub|sup|u)\b[^>]*\/?>/gi;
+const WORKFLOW_PRESERVED_ANCHOR_ID_RE = /<a id="[^"]+"><\/a>/gi;
 const WORKFLOW_ANY_HTML_TAG_RE = /<\/?\s*[A-Za-z][\w:-]*(?:\s[^<>]*?)?\s*\/?>/g;
 
 function ensureMinSemanticTopics(existing: string[], enhancedFiles: FileChange[], specFolderName: string): string[] {
@@ -181,7 +183,14 @@ function stripWorkflowHtmlOutsideCodeFences(rawContent: string): string {
       return segment;
     }
 
-    return segment
+    const preservedAnchorIds: string[] = [];
+    const protectedSegment = segment.replace(WORKFLOW_PRESERVED_ANCHOR_ID_RE, (match: string) => {
+      const token = `__WORKFLOW_ANCHOR_ID_${preservedAnchorIds.length}__`;
+      preservedAnchorIds.push(match);
+      return token;
+    });
+
+    let cleaned = protectedSegment
       .replace(WORKFLOW_HTML_COMMENT_RE, '')
       .replace(WORKFLOW_DANGEROUS_HTML_BLOCK_RE, '\n')
       .replace(WORKFLOW_BLOCK_HTML_TAG_RE, '\n')
@@ -189,6 +198,12 @@ function stripWorkflowHtmlOutsideCodeFences(rawContent: string): string {
       .replace(WORKFLOW_ANY_HTML_TAG_RE, '')
       .replace(/[ \t]+\n/g, '\n')
       .replace(/\n{3,}/g, '\n\n');
+
+    preservedAnchorIds.forEach((anchor, index) => {
+      cleaned = cleaned.replace(`__WORKFLOW_ANCHOR_ID_${index}__`, anchor);
+    });
+
+    return cleaned;
   }).join('');
 }
 
@@ -432,15 +447,29 @@ function truncateMemoryTitle(title: string, maxLength: number = 110): string {
   return `${truncated}...`;
 }
 
-function buildMemoryTitle(implementationTask: string, specFolderName: string, date: string): string {
-  const preferredTitle = pickBestContentName([implementationTask]);
+function slugToTitle(slug: string): string {
+  return slug
+    .replace(/(?<=\d)-(?=\d)/g, '\x00')   // protect digit-digit hyphens (dates like 2026-03-13)
+    .replace(/-/g, ' ')
+    .replace(/\x00/g, '-')                 // restore digit-digit hyphens
+    .replace(/\s{2,}/g, ' ')              // collapse consecutive spaces
+    .replace(/\b\w/g, (ch) => ch.toUpperCase());
+}
+
+function buildMemoryTitle(_implementationTask: string, _specFolderName: string, _date: string, contentSlug?: string): string {
+  if (contentSlug && contentSlug.length > 0) {
+    return truncateMemoryTitle(slugToTitle(contentSlug));
+  }
+
+  // Fallback (should not happen — contentSlug is always available at call site)
+  const preferredTitle = pickBestContentName([_implementationTask]);
   if (preferredTitle.length > 0) {
     return truncateMemoryTitle(normalizeMemoryTitleCandidate(preferredTitle));
   }
 
-  const folderLeaf = specFolderName.split('/').filter(Boolean).pop() || specFolderName;
+  const folderLeaf = _specFolderName.split('/').filter(Boolean).pop() || _specFolderName;
   const readableFolder = normalizeMemoryTitleCandidate(folderLeaf.replace(/^\d+-/, '').replace(/-/g, ' '));
-  const fallback = readableFolder.length > 0 ? `${readableFolder} session ${date}` : `Session ${date}`;
+  const fallback = readableFolder.length > 0 ? `${readableFolder} session ${_date}` : `Session ${_date}`;
   return truncateMemoryTitle(fallback);
 }
 
@@ -1244,7 +1273,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   const keyTopicsInitial: string[] = extractKeyTopics(sessionData.SUMMARY, decisions.DECISIONS, specFolderName);
   const keyTopics: string[] = ensureMinSemanticTopics(keyTopicsInitial, effectiveFiles, specFolderName);
   const keyFiles = effectiveFiles.map((f) => ({ FILE_PATH: f.FILE_PATH }));
-  const memoryTitle = buildMemoryTitle(preferredMemoryTask, specFolderName, sessionData.DATE);
+  const memoryTitle = buildMemoryTitle(preferredMemoryTask, specFolderName, sessionData.DATE, contentSlug);
   const memoryDashboardTitle = buildMemoryDashboardTitle(memoryTitle, specFolderName, ctxFilename);
   const memoryDescription = deriveMemoryDescription({
     summary: sessionData.SUMMARY,
@@ -1499,6 +1528,16 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       `To force save, pass data via JSON file instead of stateless mode.`;
     warn(abortMsg);
     throw new Error(abortMsg);
+  }
+
+  const templateContract = validateMemoryTemplateContract(files[ctxFilename]);
+  if (!templateContract.valid) {
+    const contractDetails = templateContract.violations
+      .map((violation: { code: string; sectionId?: string }) => violation.sectionId ? `${violation.code}:${violation.sectionId}` : violation.code)
+      .join(', ');
+    const contractAbortMsg = `QUALITY_GATE_ABORT: Rendered memory violated template contract: ${contractDetails}`;
+    warn(contractAbortMsg);
+    throw new Error(contractAbortMsg);
   }
 
   // Step 9: Write files with atomic writes and rollback on failure

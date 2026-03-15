@@ -12,7 +12,10 @@ contextType: "research"
 quality_score: 1.00
 quality_flags: []
 ---
-# SESSION SUMMARY
+
+# Rag Comparative Analysis Part2
+
+## SESSION SUMMARY
 
 | **Meta Data** | **Value** |
 |:--------------|:----------|
@@ -142,6 +145,7 @@ Next: Continue implementation
 | Blockers | None |
 
 **Key Topics:** `decision` | `spec` | `memory save` | `system spec kit/022 hybrid rag fusion` | `memory` | `system` | `kit/022` | `hybrid` | `rag` | `fusion` | `decision speckit` | `speckit spec` | 
+<!-- /ANCHOR:project-state-snapshot -->
 
 ---
 
@@ -225,28 +229,6 @@ rootCause: Need durable session handoff with high signal and low noise for later
 
 ---
 
-<!-- ANCHOR:decisions -->
-<a id="decisions"></a>
-
-<!-- DYNAMIC SECTION NUMBERING:
-  This section number depends on which optional sections are present:
-  - Base: 2 (after Overview)
-  - +1 if HAS_IMPLEMENTATION_GUIDE (adds section 1)
-  - +1 if HAS_OBSERVATIONS (adds Detailed Changes)
-  - +1 if HAS_WORKFLOW_DIAGRAM (adds Workflow Visualization)
-  
-  Result matrix:
-  | IMPL_GUIDE | OBSERVATIONS | WORKFLOW | This Section # |
-  |------------|--------------|----------|----------------|
-  | No         | No           | No       | 2              |
-  | No         | No           | Yes      | 3              |
-  | No         | Yes          | No       | 3              |
-  | No         | Yes          | Yes      | 4              |
-  | Yes        | No           | No       | 3              |
-  | Yes        | No           | Yes      | 4              |
-  | Yes        | Yes          | No       | 4              |
-  | Yes        | Yes          | Yes      | 5              |
--->
 <!-- ANCHOR:decisions -->
 <a id="decisions"></a>
 
@@ -335,14 +317,6 @@ rootCause: Need durable session handoff with high signal and low noise for later
 
 <!-- /ANCHOR:decisions -->
 
-<!-- ANCHOR:session-history -->
-<a id="conversation"></a>
-
-<!-- DYNAMIC SECTION NUMBERING:
-  This section number = DECISIONS section + 1
-  See DECISIONS section comment for the full matrix.
-  Range: 3-6 depending on optional sections present.
--->
 <!-- ANCHOR:session-history -->
 <a id="conversation"></a>
 
@@ -465,13 +439,11 @@ Learning metrics will be calculated when both preflight and postflight data are 
 <!-- /ANCHOR:postflight -->
 
 ---
-
 <!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 
-<!-- ANCHOR:metadata -->
 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
@@ -565,10 +537,7 @@ trigger_phrases:
   - "preflight checks"
   - "retrieval precision"
   - "feature flags"
-  - "phased rollout"# Relationships
-related_sessions:
-
-  []
+  - "phased rollout"  []
 
 parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic"
 child_sessions:

@@ -12,7 +12,8 @@ quality_score: 0.60
 quality_flags:
   - "needs_review"
 ---
-# create changelog command session 01-03-26
+
+# Create Changelog Command
 
 ## SESSION SUMMARY
 
@@ -142,6 +143,7 @@ Next: Continue implementation
 | Blockers | opencode/skill/system-spec-kit/mcp_server/tests/prediction-error-gate. |
 
 **Key Topics:** `memory` | `skill graph` | `commands and skills/commands/014 create changelog command` | `skill` | `graph` | `commands` | `skills/commands/014` | `create` | `changelog` | `command` | `sgqs` | `analysis` | 
+<!-- /ANCHOR:project-state-snapshot -->
 
 ---
 
@@ -560,28 +562,6 @@ Executed edit
 <!-- ANCHOR:decisions -->
 <a id="decisions"></a>
 
-<!-- DYNAMIC SECTION NUMBERING:
-  This section number depends on which optional sections are present:
-  - Base: 2 (after Overview)
-  - +1 if HAS_IMPLEMENTATION_GUIDE (adds section 1)
-  - +1 if HAS_OBSERVATIONS (adds Detailed Changes)
-  - +1 if HAS_WORKFLOW_DIAGRAM (adds Workflow Visualization)
-  
-  Result matrix:
-  | IMPL_GUIDE | OBSERVATIONS | WORKFLOW | This Section # |
-  |------------|--------------|----------|----------------|
-  | No         | No           | No       | 2              |
-  | No         | No           | Yes      | 3              |
-  | No         | Yes          | No       | 3              |
-  | No         | Yes          | Yes      | 4              |
-  | Yes        | No           | No       | 3              |
-  | Yes        | No           | Yes      | 4              |
-  | Yes        | Yes          | No       | 4              |
-  | Yes        | Yes          | Yes      | 5              |
--->
-<!-- ANCHOR:decisions -->
-<a id="decisions"></a>
-
 ## 4. DECISIONS
 
 decision_count: 0
@@ -590,14 +570,6 @@ decision_count: 0
 
 <!-- /ANCHOR:decisions -->
 
-<!-- ANCHOR:session-history -->
-<a id="conversation"></a>
-
-<!-- DYNAMIC SECTION NUMBERING:
-  This section number = DECISIONS section + 1
-  See DECISIONS section comment for the full matrix.
-  Range: 3-6 depending on optional sections present.
--->
 <!-- ANCHOR:session-history -->
 <a id="conversation"></a>
 
@@ -736,13 +708,11 @@ Learning metrics will be calculated when both preflight and postflight data are 
 <!-- /ANCHOR:postflight -->
 
 ---
-
 <!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 
-<!-- ANCHOR:metadata -->
 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
@@ -835,11 +805,7 @@ trigger_phrases:
   - "skill graph query system"
   - "memory mcp integration"
   - "semantic memory pipeline"
-  - "in-memory graph database"related_sessions:
-
-  []
-
-parent_spec: "03--commands-and-skills/commands/014-create-changelog-command"
+  - "in-memory graph database"parent_spec: "03--commands-and-skills/commands/014-create-changelog-command"
 child_sessions:
 
   []

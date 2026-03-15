@@ -19,7 +19,8 @@ contextType: "general"
 quality_score: 1.00
 quality_flags: []
 ---
-# Analyzed loadCollectedData in data-loader.ts, including source priority order and fallback...
+
+# Analyzed Loadcollecteddata In Data Loader Ts
 
 ## SESSION SUMMARY
 
@@ -123,6 +124,7 @@ Next: Continue implementation
 | Blockers | None |
 
 **Key Topics:** `end` | `memory` | `protocol` | `codex` | `memory handback` | `handback protocol` | `handback` | `protocol validated` | `validated end` | `spec` | `validated` | `cli` |
+<!-- /ANCHOR:project-state-snapshot -->
 
 ---
 
@@ -159,28 +161,6 @@ Analyzed loadCollectedData in data-loader.ts, including source priority order an
 
 ---
 
-<!-- ANCHOR:decisions -->
-<a id="decisions"></a>
-
-<!-- DYNAMIC SECTION NUMBERING:
-  This section number depends on which optional sections are present:
-  - Base: 2 (after Overview)
-  - +1 if HAS_IMPLEMENTATION_GUIDE (adds section 1)
-  - +1 if HAS_OBSERVATIONS (adds Detailed Changes)
-  - +1 if HAS_WORKFLOW_DIAGRAM (adds Workflow Visualization)
-
-  Result matrix:
-  | IMPL_GUIDE | OBSERVATIONS | WORKFLOW | This Section # |
-  |------------|--------------|----------|----------------|
-  | No         | No           | No       | 2              |
-  | No         | No           | Yes      | 3              |
-  | No         | Yes          | No       | 3              |
-  | No         | Yes          | Yes      | 4              |
-  | Yes        | No           | No       | 3              |
-  | Yes        | No           | Yes      | 4              |
-  | Yes        | Yes          | No       | 4              |
-  | Yes        | Yes          | Yes      | 5              |
--->
 <!-- ANCHOR:decisions -->
 <a id="decisions"></a>
 
@@ -384,14 +364,6 @@ Analyzed loadCollectedData in data-loader.ts, including source priority order an
 <!-- ANCHOR:session-history -->
 <a id="conversation"></a>
 
-<!-- DYNAMIC SECTION NUMBERING:
-  This section number = DECISIONS section + 1
-  See DECISIONS section comment for the full matrix.
-  Range: 3-6 depending on optional sections present.
--->
-<!-- ANCHOR:session-history -->
-<a id="conversation"></a>
-
 ## 4. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -472,13 +444,11 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 <!-- /ANCHOR:recovery-hints -->
 
 ---
-
 <!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 
-<!-- ANCHOR:metadata -->
 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
@@ -579,10 +549,7 @@ trigger_phrases:
   - "confirmed final data condition"
   - "final data condition throws"
   - "data condition throws fatally"
-  - "analyzed loadcollecteddata analyzed loadcollecteddata"# Relationships
-related_sessions:
-
-  []
+  - "analyzed loadcollecteddata analyzed loadcollecteddata"  []
 
 parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/013-outsourced-agent-memory"
 child_sessions:

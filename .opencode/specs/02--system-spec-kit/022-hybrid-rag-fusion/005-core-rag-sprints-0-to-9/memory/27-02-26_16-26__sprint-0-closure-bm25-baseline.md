@@ -12,7 +12,8 @@ contextType: "general"
 quality_score: 1.00
 quality_flags: []
 ---
-# sprint 0 measurement foundation session 27-02-26
+
+# Sprint 0 Closure Bm25 Baseline
 
 ## SESSION SUMMARY
 
@@ -163,6 +164,7 @@ Next: Continue implementation
 - [`handover.md`](./handover.md) - Session handover notes
 
 **Key Topics:** `decision` | `sprint` | `ground truth` | `because` | `truth ids` | `spec` | `hybrid` | `rag` | `fusion` | `system spec kit/022 hybrid rag fusion/006 core rag sprints 0 to 8` | `bm25` | `proceed` | 
+<!-- /ANCHOR:project-state-snapshot -->
 
 ---
 
@@ -271,28 +273,6 @@ rootCause: Sprint 0 had 3 PARTIAL exit gates (3, 5, 6) blocked by: (a) placehold
 
 ---
 
-<!-- ANCHOR:decisions -->
-<a id="decisions"></a>
-
-<!-- DYNAMIC SECTION NUMBERING:
-  This section number depends on which optional sections are present:
-  - Base: 2 (after Overview)
-  - +1 if HAS_IMPLEMENTATION_GUIDE (adds section 1)
-  - +1 if HAS_OBSERVATIONS (adds Detailed Changes)
-  - +1 if HAS_WORKFLOW_DIAGRAM (adds Workflow Visualization)
-  
-  Result matrix:
-  | IMPL_GUIDE | OBSERVATIONS | WORKFLOW | This Section # |
-  |------------|--------------|----------|----------------|
-  | No         | No           | No       | 2              |
-  | No         | No           | Yes      | 3              |
-  | No         | Yes          | No       | 3              |
-  | No         | Yes          | Yes      | 4              |
-  | Yes        | No           | No       | 3              |
-  | Yes        | No           | Yes      | 4              |
-  | Yes        | Yes          | No       | 4              |
-  | Yes        | Yes          | Yes      | 5              |
--->
 <!-- ANCHOR:decisions -->
 <a id="decisions"></a>
 
@@ -438,14 +418,6 @@ rootCause: Sprint 0 had 3 PARTIAL exit gates (3, 5, 6) blocked by: (a) placehold
 <!-- ANCHOR:session-history -->
 <a id="conversation"></a>
 
-<!-- DYNAMIC SECTION NUMBERING:
-  This section number = DECISIONS section + 1
-  See DECISIONS section comment for the full matrix.
-  Range: 3-6 depending on optional sections present.
--->
-<!-- ANCHOR:session-history -->
-<a id="conversation"></a>
-
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -566,13 +538,11 @@ Learning metrics will be calculated when both preflight and postflight data are 
 <!-- /ANCHOR:postflight -->
 
 ---
-
 <!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 
-<!-- ANCHOR:metadata -->
 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
@@ -666,10 +636,7 @@ trigger_phrases:
   - "bm25 baseline"
   - "contingency decision proceed"
   - "mrr@5 0.2083"
-  - "ground truth id mapping"# Relationships
-related_sessions:
-
-  []
+  - "ground truth id mapping"  []
 
 parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-8"
 child_sessions:

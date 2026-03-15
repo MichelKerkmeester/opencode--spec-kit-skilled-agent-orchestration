@@ -12,7 +12,7 @@ quality_score: 0.60
 quality_flags:
   - "legacy_migration"
 ---
-# SESSION SUMMARY
+## SESSION SUMMARY
 
 | **Meta Data** | **Value** |
 |:--------------|:----------|
@@ -56,7 +56,7 @@ quality_flags:
 - Confidence: N/A
 - Uncertainty: N/A
 - Readiness: N/A
-<!-- /ANCHOR:preflight-session-1766312698292-nuy9ysusw-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:preflight -->
 
 ---
 
@@ -91,7 +91,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 ```
 /spec_kit:resume 003-commands/002-speckit-leann-integration
 ```
-<!-- /ANCHOR:continue-session-session-1766312698292-nuy9ysusw-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:continue-session -->
 
 ---
 
@@ -150,7 +150,7 @@ Let me check the `.
 
 - **Graceful Fallback**: Provide sensible defaults when primary method fails
 
-<!-- /ANCHOR:task-guide-commands/002-speckit-leann-integration-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:task-guide -->
 
 ---
 
@@ -193,7 +193,7 @@ Let me check the `.spec-active` marker and v
 | `specs/003-commands/002-speckit-leann-integration` | Updated 002 speckit leann integration |
 | `.opencode/skills/system-memory/scripts/generate-context.js` | Updated generate context |
 
-<!-- /ANCHOR:summary-session-1766312698292-nuy9ysusw-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:summary -->
 
 ---
 
@@ -797,7 +797,7 @@ Executed bash
 **Details:** Tool: bash | Status: running
 <!-- /ANCHOR:implementation-tool-bash-5162dc7c-4-session-1766312698292-nuy9ysusw -->
 
-<!-- /ANCHOR:detailed-changes-session-1766312698292-nuy9ysusw-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:detailed-changes -->
 
 ---
 
@@ -810,7 +810,7 @@ This session did not involve significant architectural or technical decisions. T
 
 ---
 
-<!-- /ANCHOR:decisions-session-1766312698292-nuy9ysusw-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:decisions -->
 
 <!-- ANCHOR:session-history -->
 <a id="conversation"></a>
@@ -1263,7 +1263,7 @@ Saving memory: concise summary task
 
 ---
 
-<!-- /ANCHOR:session-history-session-1766312698292-nuy9ysusw-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:session-history -->
 
 ---
 
@@ -1289,7 +1289,7 @@ Saving memory: concise summary task
 3. **Review last session state** - Check PROJECT STATE SNAPSHOT
 4. **Validate pending tasks** - Review CONTINUE SESSION section
 5. **Resume with handover prompt** - Use continuation template above
-<!-- /ANCHOR:recovery-hints-session-1766312698292-nuy9ysusw-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:recovery-hints -->
 ---
 
 <!-- ANCHOR:postflight -->
@@ -1315,14 +1315,13 @@ Saving memory: concise summary task
 
 **Session Learning Summary:**
 This session was migrated from an older format. Learning metrics were not captured in the original format.
-<!-- /ANCHOR:postflight-session-1766312698292-nuy9ysusw-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:postflight -->
 ---
 <!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 
-<!-- ANCHOR:metadata-session-1766312698292-nuy9ysusw-003-commands/002-speckit-leann-integration -->
 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
@@ -1418,7 +1417,7 @@ embedding_version: "1.0"
 chunk_count: 1
 ```
 
-<!-- /ANCHOR:metadata-session-1766312698292-nuy9ysusw-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:metadata -->
 
 ---
 

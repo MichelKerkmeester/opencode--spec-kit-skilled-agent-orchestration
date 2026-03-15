@@ -12,7 +12,8 @@ contextType: "general"
 quality_score: 1.00
 quality_flags: []
 ---
-# comprehensive remediation session 28-02-26
+
+# Sprint 8 Remediation Changelog
 
 ## SESSION SUMMARY
 
@@ -144,6 +145,7 @@ Next: Continue implementation
 | Blockers | None |
 
 **Key Topics:** `remediation` | `comprehensive` | `decision` | `sprint` | `feature sections` | `sprint annotations` | `system` | `spec` | `system spec kit/022 hybrid rag fusion/006 core rag sprints 0 to 8` | `feature` | `fixes` | `kit/140` | 
+<!-- /ANCHOR:project-state-snapshot -->
 
 ---
 
@@ -225,28 +227,6 @@ rootCause: summary_of_new_features.md was outdated after Sprint 8 remediation - 
 
 ---
 
-<!-- ANCHOR:decisions -->
-<a id="decisions"></a>
-
-<!-- DYNAMIC SECTION NUMBERING:
-  This section number depends on which optional sections are present:
-  - Base: 2 (after Overview)
-  - +1 if HAS_IMPLEMENTATION_GUIDE (adds section 1)
-  - +1 if HAS_OBSERVATIONS (adds Detailed Changes)
-  - +1 if HAS_WORKFLOW_DIAGRAM (adds Workflow Visualization)
-  
-  Result matrix:
-  | IMPL_GUIDE | OBSERVATIONS | WORKFLOW | This Section # |
-  |------------|--------------|----------|----------------|
-  | No         | No           | No       | 2              |
-  | No         | No           | Yes      | 3              |
-  | No         | Yes          | No       | 3              |
-  | No         | Yes          | Yes      | 4              |
-  | Yes        | No           | No       | 3              |
-  | Yes        | No           | Yes      | 4              |
-  | Yes        | Yes          | No       | 4              |
-  | Yes        | Yes          | Yes      | 5              |
--->
 <!-- ANCHOR:decisions -->
 <a id="decisions"></a>
 
@@ -335,14 +315,6 @@ rootCause: summary_of_new_features.md was outdated after Sprint 8 remediation - 
 
 <!-- /ANCHOR:decisions -->
 
-<!-- ANCHOR:session-history -->
-<a id="conversation"></a>
-
-<!-- DYNAMIC SECTION NUMBERING:
-  This section number = DECISIONS section + 1
-  See DECISIONS section comment for the full matrix.
-  Range: 3-6 depending on optional sections present.
--->
 <!-- ANCHOR:session-history -->
 <a id="conversation"></a>
 
@@ -465,13 +437,11 @@ Learning metrics will be calculated when both preflight and postflight data are 
 <!-- /ANCHOR:postflight -->
 
 ---
-
 <!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 
-<!-- ANCHOR:metadata -->
 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
@@ -565,10 +535,7 @@ trigger_phrases:
   - "feature summary update"
   - "sprint 8 remediation"
   - "comprehensive remediation changelog"
-  - "v2.3.0.15"# Relationships
-related_sessions:
-
-  []
+  - "v2.3.0.15"  []
 
 parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-8"
 child_sessions:

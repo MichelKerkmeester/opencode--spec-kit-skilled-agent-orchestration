@@ -12,7 +12,10 @@ quality_score: 0.60
 quality_flags:
   - "legacy_migration"
 ---
-# SESSION SUMMARY
+
+# Speckit Template Optimization Refinement 075
+
+## SESSION SUMMARY
 
 | **Meta Data** | **Value** |
 |:--------------|:----------|
@@ -54,7 +57,7 @@ quality_flags:
 - Confidence: N/A
 - Uncertainty: N/A
 - Readiness: N/A
-<!-- /ANCHOR:preflight-session-1768896639053-hv4o97gay-003-memory-and-spec-kit/074-speckit-template-optimization-refinement -->
+<!-- /ANCHOR:preflight -->
 ---
 
 ## Table of Contents
@@ -102,7 +105,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 ```
 /spec_kit:resume 003-memory-and-spec-kit/074-speckit-template-optimization-refinement
 ```
-<!-- /ANCHOR:continue-session-session-1768896639053-hv4o97gay-003-memory-and-spec-kit/074-speckit-template-optimization-refinement -->
+<!-- /ANCHOR:continue-session -->
 ---
 
 <!-- ANCHOR:project-state-snapshot -->
@@ -119,6 +122,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 | Blockers | None |
 
 **Key Topics:** `recommendations` | `implementations` | `implementation` | `comprehensive` | `documentation` | `retroactively` | `demonstration` | `orchestration` | `optimization` | `improvements` | 
+<!-- /ANCHOR:project-state-snapshot -->
 
 ---
 
@@ -161,7 +165,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 - **Data Normalization**: Clean and standardize data before use
 
-<!-- /ANCHOR:task-guide-memory-and-spec-kit/074-speckit-template-optimization-refinement-003-memory-and-spec-kit/074-speckit-template-optimization-refinement -->
+<!-- /ANCHOR:task-guide -->
 
 ---
 
@@ -197,7 +201,7 @@ Comprehensive implementation of SpecKit template optimization refinements. Start
 | `.opencode/skill/system-spec-kit/templates/level_2/spec.md` | File modified (description pending) |
 | `.opencode/skill/system-spec-kit/templates/level_2/plan.md` | File modified (description pending) |
 
-<!-- /ANCHOR:summary-session-1768896639053-hv4o97gay-003-memory-and-spec-kit/074-speckit-template-optimization-refinement -->
+<!-- /ANCHOR:summary -->
 
 ---
 
@@ -221,11 +225,10 @@ rootCause: Spec 073 implemented CORE + ADDENDUM v2.0 architecture with 74% templ
 
 <!-- /ANCHOR:implementation-technical-implementation-details-70a45849-session-1768896639053-hv4o97gay -->
 
-<!-- /ANCHOR:detailed-changes-session-1768896639053-hv4o97gay-003-memory-and-spec-kit/074-speckit-template-optimization-refinement -->
+<!-- /ANCHOR:detailed-changes -->
 
 ---
 
-<!-- ANCHOR:decisions-session-1768896639053-hv4o97gay-003-memory-and-spec-kit/074-speckit-template-optimization-refinement -->
 <a id="decisions"></a>
 
 <!-- DYNAMIC SECTION NUMBERING:
@@ -414,9 +417,8 @@ rootCause: Spec 073 implemented CORE + ADDENDUM v2.0 architecture with 74% templ
 
 ---
 
-<!-- /ANCHOR:decisions-session-1768896639053-hv4o97gay-003-memory-and-spec-kit/074-speckit-template-optimization-refinement -->
+<!-- /ANCHOR:decisions -->
 
-<!-- ANCHOR:session-history-session-1768896639053-hv4o97gay-003-memory-and-spec-kit/074-speckit-template-optimization-refinement -->
 <a id="conversation"></a>
 
 <!-- DYNAMIC SECTION NUMBERING:
@@ -448,7 +450,7 @@ Comprehensive implementation of SpecKit template optimization refinements. Start
 
 ---
 
-<!-- /ANCHOR:session-history-session-1768896639053-hv4o97gay-003-memory-and-spec-kit/074-speckit-template-optimization-refinement -->
+<!-- /ANCHOR:session-history -->
 
 ---
 
@@ -474,7 +476,7 @@ Comprehensive implementation of SpecKit template optimization refinements. Start
 3. **Review last session state** - Check PROJECT STATE SNAPSHOT
 4. **Validate pending tasks** - Review CONTINUE SESSION section
 5. **Resume with handover prompt** - Use continuation template above
-<!-- /ANCHOR:recovery-hints-session-1768896639053-hv4o97gay-003-memory-and-spec-kit/074-speckit-template-optimization-refinement -->
+<!-- /ANCHOR:recovery-hints -->
 ---
 
 <!-- ANCHOR:postflight -->
@@ -500,7 +502,7 @@ Comprehensive implementation of SpecKit template optimization refinements. Start
 
 **Session Learning Summary:**
 This session was migrated from an older format. Learning metrics were not captured in the original format.
-<!-- /ANCHOR:postflight-session-1768896639053-hv4o97gay-003-memory-and-spec-kit/074-speckit-template-optimization-refinement -->
+<!-- /ANCHOR:postflight -->
 ---
 
 <!-- ANCHOR:metadata -->
@@ -508,7 +510,6 @@ This session was migrated from an older format. Learning metrics were not captur
 
 ## MEMORY METADATA
 
-<!-- ANCHOR:metadata-session-1768896639053-hv4o97gay-003-memory-and-spec-kit/074-speckit-template-optimization-refinement -->
 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
@@ -598,7 +599,7 @@ embedding_version: "1.0"
 chunk_count: 1
 ```
 
-<!-- /ANCHOR:metadata-session-1768896639053-hv4o97gay-003-memory-and-spec-kit/074-speckit-template-optimization-refinement -->
+<!-- /ANCHOR:metadata -->
 
 ---
 

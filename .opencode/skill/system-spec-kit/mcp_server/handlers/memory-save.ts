@@ -16,6 +16,10 @@ import {
   type MemoryEvidenceSnapshot,
   type MemorySufficiencyResult,
 } from '@spec-kit/shared/parsing/memory-sufficiency';
+import {
+  validateMemoryTemplateContract,
+  type MemoryTemplateContractResult,
+} from '@spec-kit/shared/parsing/memory-template-contract';
 
 // Internal modules
 import { ALLOWED_BASE_PATHS, checkDatabaseUpdated } from '../core';
@@ -131,6 +135,7 @@ interface PreparedParsedMemory {
   validation: ReturnType<typeof memoryParser.validateParsedMemory>;
   qualityLoopResult: QualityLoopResult;
   sufficiencyResult: MemorySufficiencyResult;
+  templateContract: MemoryTemplateContractResult;
 }
 
 const MARKDOWN_HEADING_RE = /^(#{2,6})\s+(.+?)\s*$/;
@@ -321,9 +326,39 @@ function buildInsufficiencyRejectionResult(
   };
 }
 
-function buildDryRunSummary(sufficiencyResult: MemorySufficiencyResult, qualityLoopResult: QualityLoopResult): string {
+function buildTemplateContractRejectionResult(
+  parsed: ReturnType<typeof memoryParser.parseMemoryFile>,
+  validation: ReturnType<typeof memoryParser.validateParsedMemory>,
+  templateContract: MemoryTemplateContractResult,
+): IndexResult {
+  const violationSummary = templateContract.violations.map((violation) => violation.code).join(', ');
+  return {
+    status: 'rejected',
+    id: 0,
+    specFolder: parsed.specFolder,
+    title: parsed.title ?? '',
+    triggerPhrases: parsed.triggerPhrases,
+    contextType: parsed.contextType,
+    importanceTier: parsed.importanceTier,
+    qualityScore: parsed.qualityScore,
+    qualityFlags: Array.from(new Set([...(parsed.qualityFlags || []), 'violates_template_contract'])),
+    warnings: validation.warnings,
+    rejectionReason: `Template contract validation failed: ${violationSummary}`,
+    message: 'Memory file does not match the required template contract.',
+  };
+}
+
+function buildDryRunSummary(
+  sufficiencyResult: MemorySufficiencyResult,
+  qualityLoopResult: QualityLoopResult,
+  templateContract: MemoryTemplateContractResult,
+): string {
   if (!qualityLoopResult.passed && qualityLoopResult.rejected) {
     return qualityLoopResult.rejectionReason ?? 'Quality loop rejected the save';
+  }
+
+  if (!templateContract.valid) {
+    return 'Dry-run detected structural template-contract violations';
   }
 
   if (!sufficiencyResult.pass) {
@@ -375,12 +410,14 @@ function prepareParsedMemoryForIndexing(
     buildParsedMemoryEvidenceSnapshot(parsed),
   );
   applyInsufficiencyMetadata(parsed, sufficiencyResult);
+  const templateContract = validateMemoryTemplateContract(parsed.content);
 
   return {
     parsed,
     validation,
     qualityLoopResult,
     sufficiencyResult,
+    templateContract,
   };
 }
 
@@ -390,7 +427,7 @@ async function processPreparedMemory(
   options: { force?: boolean; asyncEmbedding?: boolean; persistQualityLoopContent?: boolean } = {},
 ): Promise<IndexResult> {
   const { force = false, asyncEmbedding = false, persistQualityLoopContent = true } = options;
-  const { parsed, validation, qualityLoopResult, sufficiencyResult } = prepared;
+  const { parsed, validation, qualityLoopResult, sufficiencyResult, templateContract } = prepared;
 
   if (!qualityLoopResult.passed && qualityLoopResult.rejected) {
     return {
@@ -411,6 +448,10 @@ async function processPreparedMemory(
 
   if (!sufficiencyResult.pass) {
     return buildInsufficiencyRejectionResult(parsed, validation, sufficiencyResult);
+  }
+
+  if (!templateContract.valid) {
+    return buildTemplateContractRejectionResult(parsed, validation, templateContract);
   }
 
   return withSpecFolderLock(parsed.specFolder, async () => {
@@ -639,7 +680,11 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
     const parsedForDryRun = memoryParser.parseMemoryFile(validatedPath);
     const preparedDryRun = prepareParsedMemoryForIndexing(parsedForDryRun, database);
     const { createMCPSuccessResponse } = await import('../lib/response/envelope');
-    const dryRunSummary = buildDryRunSummary(preparedDryRun.sufficiencyResult, preparedDryRun.qualityLoopResult);
+    const dryRunSummary = buildDryRunSummary(
+      preparedDryRun.sufficiencyResult,
+      preparedDryRun.qualityLoopResult,
+      preparedDryRun.templateContract,
+    );
 
     return createMCPSuccessResponse({
       tool: 'memory_save',
@@ -648,6 +693,7 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
         status: 'dry_run',
         would_pass: preparedDryRun.validation.valid
           && preparedDryRun.qualityLoopResult.rejected !== true
+          && preparedDryRun.templateContract.valid
           && preparedDryRun.sufficiencyResult.pass,
         file_path: validatedPath,
         spec_folder: parsedForDryRun.specFolder,
@@ -664,11 +710,12 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
           fixes: preparedDryRun.qualityLoopResult.fixes,
           rejectionReason: preparedDryRun.qualityLoopResult.rejectionReason,
         },
+        templateContract: preparedDryRun.templateContract,
         sufficiency: preparedDryRun.sufficiencyResult,
         rejectionCode: preparedDryRun.sufficiencyResult.pass ? undefined : MEMORY_SUFFICIENCY_REJECTION_CODE,
         message: dryRunSummary,
       },
-      hints: preparedDryRun.sufficiencyResult.pass
+      hints: preparedDryRun.templateContract.valid && preparedDryRun.sufficiencyResult.pass
         ? [
             'Dry-run complete - no changes made',
             'Pre-flight checks were skipped because skipPreflight=true',
@@ -676,6 +723,9 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
         : [
             'Dry-run complete - no changes made',
             'Pre-flight checks were skipped because skipPreflight=true',
+            ...(!preparedDryRun.templateContract.valid
+              ? ['Rendered content must match the memory template contract before indexing']
+              : []),
             'Not enough context was available to save a durable memory',
           ],
     });
@@ -767,7 +817,11 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
       const { createMCPSuccessResponse } = await import('../lib/response/envelope');
       const dryRunSummary = !preflightResult.dry_run_would_pass
         ? `Pre-flight validation failed: ${preflightResult.errors.length} error(s)`
-        : buildDryRunSummary(preparedDryRun.sufficiencyResult, preparedDryRun.qualityLoopResult);
+        : buildDryRunSummary(
+            preparedDryRun.sufficiencyResult,
+            preparedDryRun.qualityLoopResult,
+            preparedDryRun.templateContract,
+          );
 
       return createMCPSuccessResponse({
         tool: 'memory_save',
@@ -777,6 +831,7 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
           would_pass: preflightResult.dry_run_would_pass
             && preparedDryRun.validation.valid
             && preparedDryRun.qualityLoopResult.rejected !== true
+            && preparedDryRun.templateContract.valid
             && preparedDryRun.sufficiencyResult.pass,
           file_path: validatedPath,
           spec_folder: parsedForPreflight.specFolder,
@@ -792,16 +847,20 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
             fixes: preparedDryRun.qualityLoopResult.fixes,
             rejectionReason: preparedDryRun.qualityLoopResult.rejectionReason,
           },
+          templateContract: preparedDryRun.templateContract,
           sufficiency: preparedDryRun.sufficiencyResult,
           rejectionCode: preparedDryRun.sufficiencyResult.pass ? undefined : MEMORY_SUFFICIENCY_REJECTION_CODE,
           message: dryRunSummary,
         },
         hints: !preflightResult.dry_run_would_pass
           ? ['Fix validation errors before saving', 'Use skipPreflight: true to bypass validation']
-          : preparedDryRun.sufficiencyResult.pass
+          : preparedDryRun.templateContract.valid && preparedDryRun.sufficiencyResult.pass
             ? ['Dry-run complete - no changes made']
             : [
                 'Dry-run complete - no changes made',
+                ...(!preparedDryRun.templateContract.valid
+                  ? ['Rendered content must match the memory template contract before indexing']
+                  : []),
                 'Not enough context was available to save a durable memory',
                 'Add concrete file, tool, decision, blocker, next action, or outcome evidence and retry',
               ],

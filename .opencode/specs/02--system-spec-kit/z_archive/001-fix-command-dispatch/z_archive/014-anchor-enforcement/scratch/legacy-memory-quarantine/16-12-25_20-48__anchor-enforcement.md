@@ -11,7 +11,7 @@ quality_score: 0.60
 quality_flags:
   - "legacy_migration"
 ---
-# SESSION SUMMARY
+## SESSION SUMMARY
 
 | **Meta Data** | **Value** |
 |:--------------|:----------|
@@ -58,7 +58,7 @@ quality_flags:
 - Confidence: N/A
 - Uncertainty: N/A
 - Readiness: N/A
-<!-- /ANCHOR:preflight-session-1765914497454-fwoxrgafu-005-memory/008-anchor-enforcement -->
+<!-- /ANCHOR:preflight -->
 
 ---
 
@@ -93,7 +93,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 ```
 /spec_kit:resume 005-memory/008-anchor-enforcement
 ```
-<!-- /ANCHOR:continue-session-session-1765914497454-fwoxrgafu-005-memory/008-anchor-enforcement -->
+<!-- /ANCHOR:continue-session -->
 
 ---
 
@@ -128,7 +128,7 @@ Major architectural consolidation of the memory system. Moved all scripts, templ
 | `/.../lib/vector-index.js` | Modified during session |
 | `opencode.json` | Modified during session |
 
-<!-- /ANCHOR:summary-session-1765914497454-fwoxrgafu-005-memory/008-anchor-enforcement -->
+<!-- /ANCHOR:summary -->
 
 ---
 
@@ -192,7 +192,7 @@ oldPath: .opencode/memory/; newPath: .opencode/skills/workflows-memory/; databas
 
 <!-- /ANCHOR:implementation-technical-implementation-details-005-session-1765914497454-fwoxrgafu -->
 
-<!-- /ANCHOR:detailed-changes-session-1765914497454-fwoxrgafu-005-memory/008-anchor-enforcement -->
+<!-- /ANCHOR:detailed-changes -->
 
 ---
 
@@ -336,7 +336,7 @@ oldPath: .opencode/memory/; newPath: .opencode/skills/workflows-memory/; databas
 
 ---
 
-<!-- /ANCHOR:decisions-session-1765914497454-fwoxrgafu-005-memory/008-anchor-enforcement -->
+<!-- /ANCHOR:decisions -->
 
 <!-- ANCHOR:session-history -->
 <a id="conversation"></a>
@@ -362,7 +362,7 @@ Major architectural consolidation of the memory system. Moved all scripts, templ
 
 ---
 
-<!-- /ANCHOR:session-history-session-1765914497454-fwoxrgafu-005-memory/008-anchor-enforcement -->
+<!-- /ANCHOR:session-history -->
 
 ---
 
@@ -388,7 +388,7 @@ Major architectural consolidation of the memory system. Moved all scripts, templ
 3. **Review last session state** - Check PROJECT STATE SNAPSHOT
 4. **Validate pending tasks** - Review CONTINUE SESSION section
 5. **Resume with handover prompt** - Use continuation template above
-<!-- /ANCHOR:recovery-hints-session-1765914497454-fwoxrgafu-005-memory/008-anchor-enforcement -->
+<!-- /ANCHOR:recovery-hints -->
 ---
 
 <!-- ANCHOR:postflight -->
@@ -414,14 +414,13 @@ Major architectural consolidation of the memory system. Moved all scripts, templ
 
 **Session Learning Summary:**
 This session was migrated from an older format. Learning metrics were not captured in the original format.
-<!-- /ANCHOR:postflight-session-1765914497454-fwoxrgafu-005-memory/008-anchor-enforcement -->
+<!-- /ANCHOR:postflight -->
 ---
 <!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 
-<!-- ANCHOR:metadata-session-1765914497454-fwoxrgafu-005-memory/008-anchor-enforcement -->
 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
@@ -519,7 +518,7 @@ embedding_version: "1.0"
 chunk_count: 1
 ```
 
-<!-- /ANCHOR:metadata-session-1765914497454-fwoxrgafu-005-memory/008-anchor-enforcement -->
+<!-- /ANCHOR:metadata -->
 
 ---
 

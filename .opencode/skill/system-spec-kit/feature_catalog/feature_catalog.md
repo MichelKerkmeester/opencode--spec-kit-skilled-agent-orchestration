@@ -468,6 +468,8 @@ A three-layer quality gate runs before storage when `SPECKIT_SAVE_QUALITY_GATE` 
 
 When `SPECKIT_QUALITY_LOOP=true`, the save path also runs a verify-fix-verify loop before storage. The runtime performs one initial evaluation and then up to 2 immediate auto-fix retries by default. The reported `attempts` count is the actual number of evaluations used, so early-break cases do not claim the full configured retry budget. Accepted saves persist quality-loop metadata fixes, while rewritten body content stays in-memory until later hard-reject gates clear under the per-spec-folder lock. If the loop rejects the save, `indexMemoryFile()` returns `status: 'rejected'`, and `atomicSaveMemory()` rolls back the just-written file instead of retrying indexing again.
 
+Two earlier hard-blocks now sit between the quality loop and the older pre-storage quality gate. First, a shared semantic sufficiency evaluator rejects thin aligned memories with `INSUFFICIENT_CONTEXT_ABORT`. Second, a rendered-memory template contract validator rejects malformed outputs when required frontmatter keys, mandatory section anchors/HTML ids, or cleanup invariants are missing, or when raw Mustache/template artifacts leak into the final markdown. Dry-run responses can surface these rejection reasons without indexing side effects.
+
 Reconsolidation-on-save runs after embedding generation only when `SPECKIT_RECONSOLIDATION=true` (default OFF). The system checks the top-3 most similar memories in the same spec folder. Similarity at or above 0.88 triggers a merge where content is combined and `importance_weight` is boosted (capped at 1.0). Similarity between 0.75 and 0.88 triggers conflict resolution: the old memory is deprecated and a `supersedes` causal edge is created. Below 0.75, the memory stores unchanged. A checkpoint must exist for the spec folder before reconsolidation can run.
 
 For large files exceeding the chunking threshold, the system splits into a parent record (metadata only) plus child chunk records, each with its own embedding. Before indexing, anchor-aware chunk thinning scores each chunk using a composite of anchor presence (weight 0.6, binary) and content density (weight 0.4, 0-1). Chunks scoring below 0.3 are dropped to reduce storage and search noise. The thinning never returns an empty array. Chunk embedding cache keys now hash normalized content, matching the main embedding path, so structurally equivalent chunks reuse the same cache entry.
@@ -2704,7 +2706,7 @@ Before committing a memory to storage, you can do a practice run to see if it wo
 
 #### Current Reality
 
-The `memory_save` tool accepts a `dryRun` parameter that runs preflight validation only (content size, anchor validation, token budget estimation and exact duplicate checks) without indexing, database mutation, or file writes. In dry-run mode, handler responses are returned from the preflight result (`would_pass`, validation errors/warnings/details) and the save/index pipeline is not executed.
+The `memory_save` tool accepts a `dryRun` parameter that runs preflight validation only (content size, anchor validation, token budget estimation and exact duplicate checks) without indexing, database mutation, or file writes. In dry-run mode, handler responses are returned from the preflight result (`would_pass`, validation errors/warnings/details) and can also preview later save-path rejection reasons such as semantic insufficiency or rendered-template-contract failure.
 
 This allows agents to preview validation outcomes before committing while still using the same preflight validator used by non-dry-run requests. In non-dry-run mode, the same preflight checks run first (unless `skipPreflight=true`) and then `indexMemoryFile` executes quality-loop, quality-gate, PE-gating and persistence flows.
 
@@ -3628,7 +3630,7 @@ Session capturing pipeline quality covers the 20 P0-P3 fixes applied to `generat
 
 #### Current Reality
 
-The session capturing pipeline enforces crypto session IDs, atomic batch writes with rollback, contamination filtering (30+ denylist patterns), quality abort thresholds, alignment blocking, file action semantics preservation, configurable pipeline constants, slug contamination rejection, descriptive observation titles, and safe postflight deltas with `Number.isFinite()` guards.
+The session capturing pipeline enforces crypto session IDs, atomic batch writes with rollback, contamination filtering (30+ denylist patterns), quality abort thresholds, alignment blocking, file action semantics preservation, configurable pipeline constants, slug contamination rejection, descriptive observation titles, and safe postflight deltas with `Number.isFinite()` guards. It now also enforces one shared rendered-memory template contract before successful write/index, and the same contract is used by the historical remediation tooling to keep active `memory/` folders structurally clean.
 
 #### Source Files
 

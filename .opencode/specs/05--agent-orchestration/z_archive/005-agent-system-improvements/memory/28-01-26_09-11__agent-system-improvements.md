@@ -12,7 +12,10 @@ quality_score: 0.60
 quality_flags:
   - "legacy_migration"
 ---
-# SESSION SUMMARY
+
+# Agent System Improvements
+
+## SESSION SUMMARY
 
 | **Meta Data** | **Value** |
 |:--------------|:----------|
@@ -54,7 +57,7 @@ quality_flags:
 - Confidence: [TBD]%
 - Uncertainty: [TBD]
 - Readiness: [TBD]
-<!-- /ANCHOR:preflight-session-1769587914279-32gfx0374-05--agent-orchestration/z_archive/005-agent-system-improvements -->
+<!-- /ANCHOR:preflight -->
 
 ---
 
@@ -103,7 +106,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 ```
 /spec_kit:resume 05--agent-orchestration/z_archive/005-agent-system-improvements
 ```
-<!-- /ANCHOR:continue-session-session-1769587914279-32gfx0374-05--agent-orchestration/z_archive/005-agent-system-improvements -->
+<!-- /ANCHOR:continue-session -->
 ---
 
 <!-- ANCHOR:project-state-snapshot -->
@@ -120,6 +123,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 | Blockers | None |
 
 **Key Topics:** `configurations` | `configuration` | `documentation` | `consolidated` | `terminology` | `appropriate` | `identifiers` | `maintenance` | `references` | `refactored` | 
+<!-- /ANCHOR:project-state-snapshot -->
 
 ---
 
@@ -156,7 +160,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 - No patterns identified
 
-<!-- /ANCHOR:task-guide-agents/005-agent-system-improvements-05--agent-orchestration/z_archive/005-agent-system-improvements -->
+<!-- /ANCHOR:task-guide -->
 
 ---
 
@@ -185,7 +189,7 @@ Updated all 6 create command YAML configuration files to remove hardcoded versio
 | `.opencode/command/create/assets/create_skill_asset.yaml` | File modified (description pending) |
 | `.opencode/command/create/assets/create_skill_reference.yaml` | File modified (description pending) |
 
-<!-- /ANCHOR:summary-session-1769587914279-32gfx0374-05--agent-orchestration/z_archive/005-agent-system-improvements -->
+<!-- /ANCHOR:summary -->
 
 ---
 
@@ -209,11 +213,10 @@ rootCause: YAML files contained hardcoded version references and outdated phase 
 
 <!-- /ANCHOR:implementation-technical-implementation-details-8f2d4e66-session-1769587914279-32gfx0374 -->
 
-<!-- /ANCHOR:detailed-changes-session-1769587914279-32gfx0374-05--agent-orchestration/z_archive/005-agent-system-improvements -->
+<!-- /ANCHOR:detailed-changes -->
 
 ---
 
-<!-- ANCHOR:decisions-session-1769587914279-32gfx0374-05--agent-orchestration/z_archive/005-agent-system-improvements -->
 <a id="decisions"></a>
 
 <!-- DYNAMIC SECTION NUMBERING:
@@ -321,9 +324,8 @@ rootCause: YAML files contained hardcoded version references and outdated phase 
 
 ---
 
-<!-- /ANCHOR:decisions-session-1769587914279-32gfx0374-05--agent-orchestration/z_archive/005-agent-system-improvements -->
+<!-- /ANCHOR:decisions -->
 
-<!-- ANCHOR:session-history-session-1769587914279-32gfx0374-05--agent-orchestration/z_archive/005-agent-system-improvements -->
 <a id="conversation"></a>
 
 <!-- DYNAMIC SECTION NUMBERING:
@@ -353,7 +355,7 @@ Updated all 6 create command YAML configuration files to remove hardcoded versio
 
 ---
 
-<!-- /ANCHOR:session-history-session-1769587914279-32gfx0374-05--agent-orchestration/z_archive/005-agent-system-improvements -->
+<!-- /ANCHOR:session-history -->
 
 ---
 
@@ -392,7 +394,7 @@ Updated all 6 create command YAML configuration files to remove hardcoded versio
 
 **Session Learning Summary:**
 Learning metrics will be calculated when both preflight and postflight data are provided.
-<!-- /ANCHOR:postflight-session-1769587914279-32gfx0374-05--agent-orchestration/z_archive/005-agent-system-improvements -->
+<!-- /ANCHOR:postflight -->
 
 ---
 
@@ -418,7 +420,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 3. **Review last session state** - Check PROJECT STATE SNAPSHOT
 4. **Validate pending tasks** - Review CONTINUE SESSION section
 5. **Resume with handover prompt** - Use continuation template above
-<!-- /ANCHOR:recovery-hints-session-1769587914279-32gfx0374-05--agent-orchestration/z_archive/005-agent-system-improvements -->
+<!-- /ANCHOR:recovery-hints -->
 ---
 
 <!-- ANCHOR:metadata -->
@@ -426,7 +428,6 @@ Learning metrics will be calculated when both preflight and postflight data are 
 
 ## MEMORY METADATA
 
-<!-- ANCHOR:metadata-session-1769587914279-32gfx0374-05--agent-orchestration/z_archive/005-agent-system-improvements -->
 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
@@ -517,7 +518,7 @@ embedding_version: "1.0"
 chunk_count: 1
 ```
 
-<!-- /ANCHOR:metadata-session-1769587914279-32gfx0374-05--agent-orchestration/z_archive/005-agent-system-improvements -->
+<!-- /ANCHOR:metadata -->
 
 ---
 

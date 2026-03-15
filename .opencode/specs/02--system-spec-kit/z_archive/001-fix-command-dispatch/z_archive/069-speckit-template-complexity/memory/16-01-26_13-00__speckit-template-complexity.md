@@ -12,7 +12,10 @@ quality_score: 0.60
 quality_flags:
   - "legacy_migration"
 ---
-# SESSION SUMMARY
+
+# Speckit Template Complexity
+
+## SESSION SUMMARY
 
 | **Meta Data** | **Value** |
 |:--------------|:----------|
@@ -54,7 +57,7 @@ quality_flags:
 - Confidence: N/A
 - Uncertainty: N/A
 - Readiness: N/A
-<!-- /ANCHOR:preflight-session-1768564828755-me5yy7lsd-003-memory-and-spec-kit/069-speckit-template-complexity -->
+<!-- /ANCHOR:preflight -->
 ---
 
 ## Table of Contents
@@ -100,7 +103,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 ```
 /spec_kit:resume 003-memory-and-spec-kit/069-speckit-template-complexity
 ```
-<!-- /ANCHOR:continue-session-session-1768564828755-me5yy7lsd-003-memory-and-spec-kit/069-speckit-template-complexity -->
+<!-- /ANCHOR:continue-session -->
 ---
 
 <!-- ANCHOR:project-state-snapshot -->
@@ -117,6 +120,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 | Blockers | None |
 
 **Key Topics:** `complexity detection tests` | `level boundary thresholds` | `100% test coverage` | `171 tests` | `test-classifier.js` | `shouldAutoEnableFeature` | `exactLevel condition` | `output examples` | `template scaling` | `COMPLEXITY_GATE` | `weight verification` | 
+<!-- /ANCHOR:project-state-snapshot -->
 
 ---
 
@@ -135,11 +139,10 @@ Expanded test suite from 94 to 171 tests (100% coverage) for the Dynamic Complex
 - Tested all 8 shouldAutoEnableFeature thresholds
 - Created output-examples.md with comprehensive CLI examples
 
-<!-- /ANCHOR:summary-session-1768564828755-me5yy7lsd-003-memory-and-spec-kit/069-speckit-template-complexity -->
+<!-- /ANCHOR:summary -->
 
 ---
 
-<!-- ANCHOR:decisions-session-1768564828755-me5yy7lsd-003-memory-and-spec-kit/069-speckit-template-complexity -->
 <a id="decisions"></a>
 
 <!-- DYNAMIC SECTION NUMBERING:
@@ -188,7 +191,7 @@ Expanded test suite from 94 to 171 tests (100% coverage) for the Dynamic Complex
 
 ---
 
-<!-- /ANCHOR:decisions-session-1768564828755-me5yy7lsd-003-memory-and-spec-kit/069-speckit-template-complexity -->
+<!-- /ANCHOR:decisions -->
 
 ---
 
@@ -221,7 +224,6 @@ Added 77 new tests across 5 test files covering all gaps - new test-classifier.j
 
 <!-- /ANCHOR:technical-context-session-1768564828755-me5yy7lsd-003-memory-and-spec-kit/069-speckit-template-complexity -->
 
-<!-- ANCHOR:session-history-session-1768564828755-me5yy7lsd-003-memory-and-spec-kit/069-speckit-template-complexity -->
 <a id="conversation"></a>
 
 <!-- DYNAMIC SECTION NUMBERING:
@@ -288,7 +290,7 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 
 ---
 
-<!-- /ANCHOR:session-history-session-1768564828755-me5yy7lsd-003-memory-and-spec-kit/069-speckit-template-complexity -->
+<!-- /ANCHOR:session-history -->
 
 ---
 
@@ -314,7 +316,7 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 3. **Review last session state** - Check PROJECT STATE SNAPSHOT
 4. **Validate pending tasks** - Review CONTINUE SESSION section
 5. **Resume with handover prompt** - Use continuation template above
-<!-- /ANCHOR:recovery-hints-session-1768564828755-me5yy7lsd-003-memory-and-spec-kit/069-speckit-template-complexity -->
+<!-- /ANCHOR:recovery-hints -->
 ---
 
 <!-- ANCHOR:postflight -->
@@ -340,7 +342,7 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 
 **Session Learning Summary:**
 This session was migrated from an older format. Learning metrics were not captured in the original format.
-<!-- /ANCHOR:postflight-session-1768564828755-me5yy7lsd-003-memory-and-spec-kit/069-speckit-template-complexity -->
+<!-- /ANCHOR:postflight -->
 ---
 
 <!-- ANCHOR:metadata -->
@@ -348,7 +350,6 @@ This session was migrated from an older format. Learning metrics were not captur
 
 ## MEMORY METADATA
 
-<!-- ANCHOR:metadata-session-1768564828755-me5yy7lsd-003-memory-and-spec-kit/069-speckit-template-complexity -->
 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
@@ -439,7 +440,7 @@ embedding_version: "1.0"
 chunk_count: 1
 ```
 
-<!-- /ANCHOR:metadata-session-1768564828755-me5yy7lsd-003-memory-and-spec-kit/069-speckit-template-complexity -->
+<!-- /ANCHOR:metadata -->
 
 ---
 

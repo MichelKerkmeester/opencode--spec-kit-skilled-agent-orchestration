@@ -12,7 +12,10 @@ quality_score: 0.60
 quality_flags:
   - "legacy_migration"
 ---
-# SESSION SUMMARY
+
+# Memory Ranking
+
+## SESSION SUMMARY
 
 | **Meta Data** | **Value** |
 |:--------------|:----------|
@@ -54,7 +57,7 @@ quality_flags:
 - Confidence: N/A
 - Uncertainty: N/A
 - Readiness: N/A
-<!-- /ANCHOR:preflight-session-1768576173547-ru40y7z20-003-memory-and-spec-kit/070-memory-ranking -->
+<!-- /ANCHOR:preflight -->
 ---
 
 ## Table of Contents
@@ -100,7 +103,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 ```
 /spec_kit:resume 003-memory-and-spec-kit/070-memory-ranking
 ```
-<!-- /ANCHOR:continue-session-session-1768576173547-ru40y7z20-003-memory-and-spec-kit/070-memory-ranking -->
+<!-- /ANCHOR:continue-session -->
 ---
 
 <!-- ANCHOR:project-state-snapshot -->
@@ -117,6 +120,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 | Blockers | None |
 
 **Key Topics:** `folder-scoring` | `memory-ranking` | `composite-scoring` | `archive-detection` | `recency-decay` | `tier-weights` | `ARCHIVE_MULTIPLIERS` | `memory-crud` | `validation-report` | `10-agents` 
+<!-- /ANCHOR:project-state-snapshot -->
 
 ---
 
@@ -142,11 +146,10 @@ Comprehensive validation and bug-fixing of the Memory & Folder Ranking implement
 - Added 5 new edge case tests (custom decay_rate, unknown tiers, invalid limits, invalid regex, long paths)
 - All 61 tests pass (up from 56)
 
-<!-- /ANCHOR:summary-session-1768576173547-ru40y7z20-003-memory-and-spec-kit/070-memory-ranking -->
+<!-- /ANCHOR:summary -->
 
 ---
 
-<!-- ANCHOR:decisions-session-1768576173547-ru40y7z20-003-memory-and-spec-kit/070-memory-ranking -->
 <a id="decisions"></a>
 
 <!-- DYNAMIC SECTION NUMBERING:
@@ -187,9 +190,8 @@ Comprehensive validation and bug-fixing of the Memory & Folder Ranking implement
 
 ---
 
-<!-- /ANCHOR:decisions-session-1768576173547-ru40y7z20-003-memory-and-spec-kit/070-memory-ranking -->
+<!-- /ANCHOR:decisions -->
 
-<!-- ANCHOR:session-history-session-1768576173547-ru40y7z20-003-memory-and-spec-kit/070-memory-ranking -->
 <a id="conversation"></a>
 
 <!-- DYNAMIC SECTION NUMBERING:
@@ -296,7 +298,7 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 
 ---
 
-<!-- /ANCHOR:session-history-session-1768576173547-ru40y7z20-003-memory-and-spec-kit/070-memory-ranking -->
+<!-- /ANCHOR:session-history -->
 
 ---
 
@@ -322,7 +324,7 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 3. **Review last session state** - Check PROJECT STATE SNAPSHOT
 4. **Validate pending tasks** - Review CONTINUE SESSION section
 5. **Resume with handover prompt** - Use continuation template above
-<!-- /ANCHOR:recovery-hints-session-1768576173547-ru40y7z20-003-memory-and-spec-kit/070-memory-ranking -->
+<!-- /ANCHOR:recovery-hints -->
 ---
 
 <!-- ANCHOR:postflight -->
@@ -348,7 +350,7 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 
 **Session Learning Summary:**
 This session was migrated from an older format. Learning metrics were not captured in the original format.
-<!-- /ANCHOR:postflight-session-1768576173547-ru40y7z20-003-memory-and-spec-kit/070-memory-ranking -->
+<!-- /ANCHOR:postflight -->
 ---
 
 <!-- ANCHOR:metadata -->
@@ -356,7 +358,6 @@ This session was migrated from an older format. Learning metrics were not captur
 
 ## MEMORY METADATA
 
-<!-- ANCHOR:metadata-session-1768576173547-ru40y7z20-003-memory-and-spec-kit/070-memory-ranking -->
 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
@@ -446,7 +447,7 @@ embedding_version: "1.0"
 chunk_count: 1
 ```
 
-<!-- /ANCHOR:metadata-session-1768576173547-ru40y7z20-003-memory-and-spec-kit/070-memory-ranking -->
+<!-- /ANCHOR:metadata -->
 
 ---
 

@@ -20,7 +20,8 @@ quality_score: 0.90
 quality_flags:
   - "has_tool_state_mismatch"
 ---
-# Implemented sk-doc DQI alignment across all 8 memory command files (README.txt, shared.md,...
+
+# Implemented Sk Doc Dqi Alignment Across All 8
 
 ## SESSION SUMMARY
 
@@ -109,6 +110,7 @@ Next: Continue implementation
 - Check: plan.md, tasks.md, checklist.md
 
 - Last: Decision: Em dashes in display/output template blocks, frontmatter descriptions,
+<!-- /ANCHOR:continue-session -->
 
 ---
 <!-- ANCHOR:project-state-snapshot -->
@@ -140,6 +142,7 @@ Next: Continue implementation
 - [`checklist.md`](./checklist.md) - QA checklist
 
 **Key Topics:** `decision` | `not` | `blocks` | `output` | `rationale` | `actual` | `spec` | `spec folder` | `commands not` | `commands` | `decision tag` | `tag selection` |
+<!-- /ANCHOR:project-state-snapshot -->
 
 ---
 <!-- ANCHOR:task-guide -->
@@ -180,6 +183,7 @@ Next: Continue implementation
 - **Filter Pipeline**: Chain filters for data transformation
 
 - **Module Pattern**: Organize code into importable modules
+<!-- /ANCHOR:task-guide -->
 
 ---
 <!-- ANCHOR:summary -->
@@ -208,6 +212,7 @@ Implemented sk-doc DQI alignment across all 8 memory command files (README.txt, 
 | `.opencode/command/memory/manage.md` | Proper punctuation per sk-doc HVR rules |
 | `.opencode/skill/system-spec-kit/scripts/(merged-small-files)` | Tree-thinning merged 1 small files (package.json). Merged from .opencode/skill/system-spec-kit/scripts/package.json : File modified (description pending) |
 | `.opencode/skill/system-spec-kit/scripts/evals/(merged-small-files)` | Tree-thinning merged 1 small files (import-policy-allowlist.json). Merged from .opencode/skill/system-spec-kit/scripts/evals/import-policy-allowlist.json : File modified (description pending) |
+<!-- /ANCHOR:summary -->
 
 ---
 <!-- ANCHOR:detailed-changes -->
@@ -220,6 +225,7 @@ Implemented sk-doc DQI alignment across all 8 memory command files (README.txt, 
 Implemented sk-doc DQI alignment across all 8 memory command files (README.txt, shared.md, analyze.md, context.md, continue.md, learn.md, save.md, manage.md). Added language tags to ~90 bare code blocks and replaced ~92 prose em dashes with proper punctuation per sk-doc HVR rules. Fixed CI pipeline failure caused by sqlite-vec-darwin-arm64 being listed under dependencies instead of optionalDependencies in scripts/package.json. Finalized the 016-command-alignment spec folder: created checklist.md, updated status to Complete, and corrected deviations from the original plan (7 commands not 8, history under analyze not manage, ingest folded into manage).
 
 **Details:** sk-doc alignment | code block language tags | em dash removal | DQI compliance | memory commands | 016 command alignment | CI pipeline fix | sqlite-vec optionalDependencies | boundary enforcement workflow | spec folder finalization
+<!-- /ANCHOR:detailed-changes -->
 
 ---
 <!-- ANCHOR:decisions -->
@@ -668,6 +674,7 @@ Implemented sk-doc DQI alignment across all 8 memory command files (README.txt, 
 #### Trade-offs
 
 **Confidence**: 0.65%
+<!-- /ANCHOR:decisions -->
 
 ---
 <!-- ANCHOR:session-history -->
@@ -691,6 +698,7 @@ This session followed a **Sequential with Decision Points** conversation pattern
 > **User** | 2026-03-15 @ 11:13:40
 
 Implemented sk-doc DQI alignment across all 8 memory command files (README.txt, shared.md, analyze.md, context.md, continue.md, learn.md, save.md, manage.md). Added language tags to ~90 bare code blocks and replaced ~92 prose em dashes with proper punctuation per sk-doc HVR rules. Fixed CI pipeline failure caused by sqlite-vec-darwin-arm64 being listed under dependencies instead of optionalDependencies in scripts/package.json. Finalized the 016-command-alignment spec folder: created checklist.md, updated status to Complete, and corrected deviations from the original plan (7 commands not 8, history under analyze not manage, ingest folded into manage).
+<!-- /ANCHOR:session-history -->
 
 ---
 <!-- ANCHOR:recovery-hints -->
@@ -746,6 +754,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 | Index Entry Valid |  | Last indexed:  |
 | Checksums Match |  |  |
 | No Dedup Conflicts |  |  |
+<!-- /ANCHOR:recovery-hints -->
 
 ---
 <!-- ANCHOR:metadata -->
@@ -852,10 +861,7 @@ trigger_phrases:
   - "files readme.txt shared.md analyze.md"
   - "readme.txt shared.md analyze.md context.md"
   - "shared.md analyze.md context.md continue.md"
-  - "analyze.md context.md continue.md learn.md"# Relationships
-related_sessions:
-
-  []
+  - "analyze.md context.md continue.md learn.md"  []
 
 parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/016-command-alignment"
 child_sessions:
@@ -867,6 +873,9 @@ embedding_model: "nomic-ai/nomic-embed-text-v1.5"
 embedding_version: "1.0"
 chunk_count: 1
 ```
+
+<!-- /ANCHOR:metadata -->
+
 
 ---
 

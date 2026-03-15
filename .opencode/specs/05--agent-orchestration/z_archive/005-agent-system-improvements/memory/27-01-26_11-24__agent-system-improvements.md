@@ -12,7 +12,10 @@ quality_score: 0.60
 quality_flags:
   - "legacy_migration"
 ---
-# SESSION SUMMARY
+
+# Agent System Improvements
+
+## SESSION SUMMARY
 
 | **Meta Data** | **Value** |
 |:--------------|:----------|
@@ -54,7 +57,7 @@ quality_flags:
 - Confidence: [TBD]%
 - Uncertainty: [TBD]
 - Readiness: [TBD]
-<!-- /ANCHOR:preflight-session-1769509458579-x1sjjexqq-05--agent-orchestration/z_archive/005-agent-system-improvements -->
+<!-- /ANCHOR:preflight -->
 
 ---
 
@@ -103,7 +106,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 ```
 /spec_kit:resume 05--agent-orchestration/z_archive/005-agent-system-improvements
 ```
-<!-- /ANCHOR:continue-session-session-1769509458579-x1sjjexqq-05--agent-orchestration/z_archive/005-agent-system-improvements -->
+<!-- /ANCHOR:continue-session -->
 ---
 
 <!-- ANCHOR:project-state-snapshot -->
@@ -139,6 +142,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 - [`research.md`](./research.md) - Research findings
 
 **Key Topics:** `recommendations` | `implementation` | `parallelizable` | `documentation` | `comprehensive` | `improvements` | `requirements` | `verification` | `instruction` | `reliability` | 
+<!-- /ANCHOR:project-state-snapshot -->
 
 ---
 
@@ -177,7 +181,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 - **Template Pattern**: Use templates with placeholder substitution
 
-<!-- /ANCHOR:task-guide-agents/005-agent-system-improvements-05--agent-orchestration/z_archive/005-agent-system-improvements -->
+<!-- /ANCHOR:task-guide -->
 
 ---
 
@@ -208,7 +212,7 @@ Completed Level 3+ Spec Kit documentation for agent system improvements. Created
 | `specs/.../005-agent-system-improvements/001-analysis-agent-system-architecture.md` | File modified (description pending) |
 | `specs/.../005-agent-system-improvements/002-recommendations-agent-system-improvements.md` | File modified (description pending) |
 
-<!-- /ANCHOR:summary-session-1769509458579-x1sjjexqq-05--agent-orchestration/z_archive/005-agent-system-improvements -->
+<!-- /ANCHOR:summary -->
 
 ---
 
@@ -232,11 +236,10 @@ rootCause: Agent documentation had gaps: missing verification sections in specki
 
 <!-- /ANCHOR:implementation-technical-implementation-details-9fdeeace-session-1769509458579-x1sjjexqq -->
 
-<!-- /ANCHOR:detailed-changes-session-1769509458579-x1sjjexqq-05--agent-orchestration/z_archive/005-agent-system-improvements -->
+<!-- /ANCHOR:detailed-changes -->
 
 ---
 
-<!-- ANCHOR:decisions-session-1769509458579-x1sjjexqq-05--agent-orchestration/z_archive/005-agent-system-improvements -->
 <a id="decisions"></a>
 
 <!-- DYNAMIC SECTION NUMBERING:
@@ -371,9 +374,8 @@ rootCause: Agent documentation had gaps: missing verification sections in specki
 
 ---
 
-<!-- /ANCHOR:decisions-session-1769509458579-x1sjjexqq-05--agent-orchestration/z_archive/005-agent-system-improvements -->
+<!-- /ANCHOR:decisions -->
 
-<!-- ANCHOR:session-history-session-1769509458579-x1sjjexqq-05--agent-orchestration/z_archive/005-agent-system-improvements -->
 <a id="conversation"></a>
 
 <!-- DYNAMIC SECTION NUMBERING:
@@ -405,7 +407,7 @@ Completed Level 3+ Spec Kit documentation for agent system improvements. Created
 
 ---
 
-<!-- /ANCHOR:session-history-session-1769509458579-x1sjjexqq-05--agent-orchestration/z_archive/005-agent-system-improvements -->
+<!-- /ANCHOR:session-history -->
 
 ---
 
@@ -444,7 +446,7 @@ Completed Level 3+ Spec Kit documentation for agent system improvements. Created
 
 **Session Learning Summary:**
 Learning metrics will be calculated when both preflight and postflight data are provided.
-<!-- /ANCHOR:postflight-session-1769509458579-x1sjjexqq-05--agent-orchestration/z_archive/005-agent-system-improvements -->
+<!-- /ANCHOR:postflight -->
 
 ---
 
@@ -470,7 +472,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 3. **Review last session state** - Check PROJECT STATE SNAPSHOT
 4. **Validate pending tasks** - Review CONTINUE SESSION section
 5. **Resume with handover prompt** - Use continuation template above
-<!-- /ANCHOR:recovery-hints-session-1769509458579-x1sjjexqq-05--agent-orchestration/z_archive/005-agent-system-improvements -->
+<!-- /ANCHOR:recovery-hints -->
 ---
 
 <!-- ANCHOR:metadata -->
@@ -478,7 +480,6 @@ Learning metrics will be calculated when both preflight and postflight data are 
 
 ## MEMORY METADATA
 
-<!-- ANCHOR:metadata-session-1769509458579-x1sjjexqq-05--agent-orchestration/z_archive/005-agent-system-improvements -->
 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
@@ -569,7 +570,7 @@ embedding_version: "1.0"
 chunk_count: 1
 ```
 
-<!-- /ANCHOR:metadata-session-1769509458579-x1sjjexqq-05--agent-orchestration/z_archive/005-agent-system-improvements -->
+<!-- /ANCHOR:metadata -->
 
 ---
 

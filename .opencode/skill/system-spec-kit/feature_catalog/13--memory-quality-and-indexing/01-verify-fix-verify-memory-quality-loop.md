@@ -19,8 +19,9 @@ What changed is the handoff after the loop:
 - if the loop rejects for quality reasons, the save still stops there
 - if the loop passes or repairs the structure, the runtime now runs the shared semantic sufficiency gate next
 - if sufficiency fails, the save aborts with `INSUFFICIENT_CONTEXT_ABORT`
+- if sufficiency passes, the runtime still validates the rendered-memory template contract before storage
 
-That means the quality loop can improve structure, but it cannot invent semantic evidence. A memory that still lacks a specific title, durable file/tool/decision evidence, or enough semantic substance remains rejected even after successful auto-fixes.
+That means the quality loop can improve structure, but it cannot invent semantic evidence or bless malformed rendered output. A memory that still lacks a specific title, durable file/tool/decision evidence, enough semantic substance, or the required anchor/frontmatter contract remains rejected even after successful auto-fixes.
 
 `attempts` still reports the actual number of evaluations used, not the configured ceiling. If a retry applies no fixes, the loop breaks early, so a case with `maxRetries=5` can still reject after only 2 total attempts (1 initial evaluation + 1 no-op retry). The rejection reason also reports the actual auto-fix attempt count.
 
@@ -37,8 +38,9 @@ The `CHARS_PER_TOKEN` ratio defaults to `4` and is shared with `preflight.ts` th
 | File | Layer | Role |
 |------|-------|------|
 | `mcp_server/handlers/quality-loop.ts` | Handler | Quality scoring, retry loop, auto-fix logic, and actual-attempt reporting |
-| `mcp_server/handlers/memory-save.ts` | Handler | Save-path integration, rejected status handling, fixed-content persistence, and sufficiency handoff |
+| `mcp_server/handlers/memory-save.ts` | Handler | Save-path integration, rejected status handling, fixed-content persistence, sufficiency handoff, and template-contract enforcement |
 | `shared/parsing/memory-sufficiency.ts` | Shared | Shared semantic sufficiency evaluation that runs after quality-loop fixes |
+| `shared/parsing/memory-template-contract.ts` | Shared | Rendered-memory structural contract that runs after quality-loop fixes |
 
 ### Tests
 

@@ -11,7 +11,7 @@ quality_score: 0.60
 quality_flags:
   - "legacy_migration"
 ---
-# SESSION SUMMARY
+## SESSION SUMMARY
 
 | **Meta Data** | **Value** |
 |:--------------|:----------|
@@ -61,7 +61,7 @@ quality_flags:
 - Confidence: N/A
 - Uncertainty: N/A
 - Readiness: N/A
-<!-- /ANCHOR:preflight-session-1765957311361-l0ghyv2jl-008-system-spec-kit-rename -->
+<!-- /ANCHOR:preflight -->
 
 ---
 
@@ -96,7 +96,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 ```
 /spec_kit:resume 008-system-spec-kit-rename
 ```
-<!-- /ANCHOR:continue-session-session-1765957311361-l0ghyv2jl-008-system-spec-kit-rename -->
+<!-- /ANCHOR:continue-session -->
 
 ---
 
@@ -135,7 +135,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 - **Template Pattern**: Use templates with placeholder substitution
 
-<!-- /ANCHOR:task-guide-system-spec-kit-rename-008-system-spec-kit-rename -->
+<!-- /ANCHOR:task-guide -->
 
 ---
 
@@ -168,7 +168,7 @@ The workflows-spec-kit skill was successfully renamed to system-spec-kit across 
 | `.opencode/skills/system-spec-kit/templates/handover.md` | Modified during session |
 | `.opencode/.../templates/debug-delegation.md` | Modified during session |
 
-<!-- /ANCHOR:summary-session-1765957311361-l0ghyv2jl-008-system-spec-kit-rename -->
+<!-- /ANCHOR:summary -->
 
 ---
 
@@ -185,7 +185,7 @@ The workflows-spec-kit skill was successfully renamed to system-spec-kit across 
 **Details:** system-spec-kit rename | workflows-spec-kit migration | skill rename complete | spec-kit consolidation | 197 replacements | skill directory rename | parallel agent execution | 25 sub-agents | reference update cascade
 <!-- /ANCHOR:architecture-workflowsspeckit-skill-successfully-renamed-3933346a-session-1765957311361-l0ghyv2jl -->
 
-<!-- /ANCHOR:detailed-changes-session-1765957311361-l0ghyv2jl-008-system-spec-kit-rename -->
+<!-- /ANCHOR:detailed-changes -->
 
 ---
 
@@ -302,7 +302,7 @@ The workflows-spec-kit skill was successfully renamed to system-spec-kit across 
 
 ---
 
-<!-- /ANCHOR:decisions-session-1765957311361-l0ghyv2jl-008-system-spec-kit-rename -->
+<!-- /ANCHOR:decisions -->
 
 <!-- ANCHOR:session-history -->
 <a id="conversation"></a>
@@ -327,7 +327,7 @@ The workflows-spec-kit skill was successfully renamed to system-spec-kit across 
 
 ---
 
-<!-- /ANCHOR:session-history-session-1765957311361-l0ghyv2jl-008-system-spec-kit-rename -->
+<!-- /ANCHOR:session-history -->
 
 ---
 
@@ -353,7 +353,7 @@ The workflows-spec-kit skill was successfully renamed to system-spec-kit across 
 3. **Review last session state** - Check PROJECT STATE SNAPSHOT
 4. **Validate pending tasks** - Review CONTINUE SESSION section
 5. **Resume with handover prompt** - Use continuation template above
-<!-- /ANCHOR:recovery-hints-session-1765957311361-l0ghyv2jl-008-system-spec-kit-rename -->
+<!-- /ANCHOR:recovery-hints -->
 ---
 
 <!-- ANCHOR:postflight -->
@@ -379,14 +379,13 @@ The workflows-spec-kit skill was successfully renamed to system-spec-kit across 
 
 **Session Learning Summary:**
 This session was migrated from an older format. Learning metrics were not captured in the original format.
-<!-- /ANCHOR:postflight-session-1765957311361-l0ghyv2jl-008-system-spec-kit-rename -->
+<!-- /ANCHOR:postflight -->
 ---
 <!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 
-<!-- ANCHOR:metadata-session-1765957311361-l0ghyv2jl-008-system-spec-kit-rename -->
 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
@@ -484,7 +483,7 @@ embedding_version: "1.0"
 chunk_count: 1
 ```
 
-<!-- /ANCHOR:metadata-session-1765957311361-l0ghyv2jl-008-system-spec-kit-rename -->
+<!-- /ANCHOR:metadata -->
 
 ---
 

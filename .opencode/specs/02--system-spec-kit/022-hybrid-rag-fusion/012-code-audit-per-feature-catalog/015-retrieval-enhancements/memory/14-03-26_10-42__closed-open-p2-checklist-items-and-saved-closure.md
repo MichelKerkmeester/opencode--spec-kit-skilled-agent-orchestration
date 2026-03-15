@@ -20,7 +20,8 @@ quality_score: 0.90
 quality_flags:
   - "has_tool_state_mismatch"
 ---
-# Closed open P2 checklist items and saved closure context.
+
+# Closed Open P2 Checklist Items And Saved Closure
 
 ## SESSION SUMMARY
 
@@ -111,6 +112,7 @@ Next: Track direct manual scenario mapping changes with playbook updates.
 - Check: plan.md, tasks.md, checklist.md
 
 - Last: Next Steps
+<!-- /ANCHOR:continue-session -->
 
 ---
 <!-- ANCHOR:project-state-snapshot -->
@@ -142,6 +144,7 @@ Next: Track direct manual scenario mapping changes with playbook updates.
 - [`checklist.md`](./checklist.md) - QA checklist
 
 **Key Topics:** `marked readme` | `readme memory` | `marked` | `readme` | `memory` | `closure` | `items` | `system spec kit/022 hybrid rag fusion/013 code audit per feature catalog/015 retrieval enhancements` | `save` | `complete` | `explicit` | `evidence` |
+<!-- /ANCHOR:project-state-snapshot -->
 
 ---
 <!-- ANCHOR:task-guide -->
@@ -166,6 +169,7 @@ Next: Track direct manual scenario mapping changes with playbook updates.
 **Common Patterns**:
 
 - **Functional Transforms**: Use functional methods for data transformation
+<!-- /ANCHOR:task-guide -->
 
 ---
 <!-- ANCHOR:summary -->
@@ -185,6 +189,7 @@ Closed open P2 checklist items and saved closure context.
 | **File** | **Description** |
 |:---------|:----------------|
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/015-retrieval-enhancements/(merged-small-files)` | Tree-thinning merged 2 small files (checklist.md, implementation-summary.md). Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/015-retrieval-enhancements/checklist.md : File modified (description pending) | Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/015-retrieval-enhancements/implementation-summary.md : File modified (description pending) |
+<!-- /ANCHOR:summary -->
 
 ---
 <!-- ANCHOR:detailed-changes -->
@@ -203,6 +208,7 @@ Closed open P2 checklist items and saved closure context.
 Track direct manual scenario mapping changes with playbook updates.
 
 **Details:** Next: Track direct manual scenario mapping changes with playbook updates.
+<!-- /ANCHOR:detailed-changes -->
 
 ---
 <!-- ANCHOR:decisions -->
@@ -296,6 +302,7 @@ Track direct manual scenario mapping changes with playbook updates.
 #### Trade-offs
 
 **Confidence**: 0.5%
+<!-- /ANCHOR:decisions -->
 
 ---
 <!-- ANCHOR:session-history -->
@@ -318,6 +325,7 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 > **User** | 2026-03-14 @ 10:42:23
 
 Closed open P2 checklist items and saved closure context.
+<!-- /ANCHOR:session-history -->
 
 ---
 <!-- ANCHOR:recovery-hints -->
@@ -373,6 +381,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 | Index Entry Valid |  | Last indexed:  |
 | Checksums Match |  |  |
 | No Dedup Conflicts |  |  |
+<!-- /ANCHOR:recovery-hints -->
 
 ---
 <!-- ANCHOR:metadata -->
@@ -479,10 +488,7 @@ trigger_phrases:
   - "per catalog retrieval enhancements"
   - "code"
   - "audit"
-  - "per"# Relationships
-related_sessions:
-
-  []
+  - "per"  []
 
 parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/015-retrieval-enhancements"
 child_sessions:
@@ -494,6 +500,9 @@ embedding_model: "nomic-ai/nomic-embed-text-v1.5"
 embedding_version: "1.0"
 chunk_count: 1
 ```
+
+<!-- /ANCHOR:metadata -->
+
 
 ---
 

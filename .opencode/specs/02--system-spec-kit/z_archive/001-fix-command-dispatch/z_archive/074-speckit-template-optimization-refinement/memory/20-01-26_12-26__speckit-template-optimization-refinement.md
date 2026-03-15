@@ -12,7 +12,10 @@ quality_score: 0.60
 quality_flags:
   - "legacy_migration"
 ---
-# SESSION SUMMARY
+
+# Speckit Template Optimization Refinement
+
+## SESSION SUMMARY
 
 | **Meta Data** | **Value** |
 |:--------------|:----------|
@@ -54,7 +57,7 @@ quality_flags:
 - Confidence: N/A
 - Uncertainty: N/A
 - Readiness: N/A
-<!-- /ANCHOR:preflight-session-1768908391958-cm56sxq4n-003-memory-and-spec-kit/074-speckit-template-optimization-refinement -->
+<!-- /ANCHOR:preflight -->
 ---
 
 ## Table of Contents
@@ -102,7 +105,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 ```
 /spec_kit:resume 003-memory-and-spec-kit/074-speckit-template-optimization-refinement
 ```
-<!-- /ANCHOR:continue-session-session-1768908391958-cm56sxq4n-003-memory-and-spec-kit/074-speckit-template-optimization-refinement -->
+<!-- /ANCHOR:continue-session -->
 ---
 
 <!-- ANCHOR:project-state-snapshot -->
@@ -136,6 +139,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 - [`decision-record.md`](./decision-record.md) - Architecture decisions
 
 **Key Topics:** `maintainability` | `implementation` | `comprehensive` | `compatibility` | `uninitialized` | `demonstration` | `documentation` | `misalignments` | `inconsistency` | `continuation` | 
+<!-- /ANCHOR:project-state-snapshot -->
 
 ---
 
@@ -184,7 +188,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 - **Filter Pipeline**: Chain filters for data transformation
 
-<!-- /ANCHOR:task-guide-memory-and-spec-kit/074-speckit-template-optimization-refinement-003-memory-and-spec-kit/074-speckit-template-optimization-refinement -->
+<!-- /ANCHOR:task-guide -->
 
 ---
 
@@ -220,7 +224,7 @@ Continuation session focused on comprehensive audit and fixes for SpecKit implem
 | `.opencode/skill/system-spec-kit/templates/level_2/tasks.md` | File modified (description pending) |
 | `.opencode/.../level_2/implementation-summary.md` | File modified (description pending) |
 
-<!-- /ANCHOR:summary-session-1768908391958-cm56sxq4n-003-memory-and-spec-kit/074-speckit-template-optimization-refinement -->
+<!-- /ANCHOR:summary -->
 
 ---
 
@@ -244,11 +248,10 @@ rootCause: Multiple issues accumulated during Spec 073 and initial 074 implement
 
 <!-- /ANCHOR:implementation-technical-implementation-details-144a2f45-session-1768908391958-cm56sxq4n -->
 
-<!-- /ANCHOR:detailed-changes-session-1768908391958-cm56sxq4n-003-memory-and-spec-kit/074-speckit-template-optimization-refinement -->
+<!-- /ANCHOR:detailed-changes -->
 
 ---
 
-<!-- ANCHOR:decisions-session-1768908391958-cm56sxq4n-003-memory-and-spec-kit/074-speckit-template-optimization-refinement -->
 <a id="decisions"></a>
 
 <!-- DYNAMIC SECTION NUMBERING:
@@ -437,9 +440,8 @@ rootCause: Multiple issues accumulated during Spec 073 and initial 074 implement
 
 ---
 
-<!-- /ANCHOR:decisions-session-1768908391958-cm56sxq4n-003-memory-and-spec-kit/074-speckit-template-optimization-refinement -->
+<!-- /ANCHOR:decisions -->
 
-<!-- ANCHOR:session-history-session-1768908391958-cm56sxq4n-003-memory-and-spec-kit/074-speckit-template-optimization-refinement -->
 <a id="conversation"></a>
 
 <!-- DYNAMIC SECTION NUMBERING:
@@ -470,7 +472,7 @@ Continuation session focused on comprehensive audit and fixes for SpecKit implem
 
 ---
 
-<!-- /ANCHOR:session-history-session-1768908391958-cm56sxq4n-003-memory-and-spec-kit/074-speckit-template-optimization-refinement -->
+<!-- /ANCHOR:session-history -->
 
 ---
 
@@ -496,7 +498,7 @@ Continuation session focused on comprehensive audit and fixes for SpecKit implem
 3. **Review last session state** - Check PROJECT STATE SNAPSHOT
 4. **Validate pending tasks** - Review CONTINUE SESSION section
 5. **Resume with handover prompt** - Use continuation template above
-<!-- /ANCHOR:recovery-hints-session-1768908391958-cm56sxq4n-003-memory-and-spec-kit/074-speckit-template-optimization-refinement -->
+<!-- /ANCHOR:recovery-hints -->
 ---
 
 <!-- ANCHOR:postflight -->
@@ -522,7 +524,7 @@ Continuation session focused on comprehensive audit and fixes for SpecKit implem
 
 **Session Learning Summary:**
 This session was migrated from an older format. Learning metrics were not captured in the original format.
-<!-- /ANCHOR:postflight-session-1768908391958-cm56sxq4n-003-memory-and-spec-kit/074-speckit-template-optimization-refinement -->
+<!-- /ANCHOR:postflight -->
 ---
 
 <!-- ANCHOR:metadata -->
@@ -530,7 +532,6 @@ This session was migrated from an older format. Learning metrics were not captur
 
 ## MEMORY METADATA
 
-<!-- ANCHOR:metadata-session-1768908391958-cm56sxq4n-003-memory-and-spec-kit/074-speckit-template-optimization-refinement -->
 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
@@ -620,7 +621,7 @@ embedding_version: "1.0"
 chunk_count: 1
 ```
 
-<!-- /ANCHOR:metadata-session-1768908391958-cm56sxq4n-003-memory-and-spec-kit/074-speckit-template-optimization-refinement -->
+<!-- /ANCHOR:metadata -->
 
 ---
 

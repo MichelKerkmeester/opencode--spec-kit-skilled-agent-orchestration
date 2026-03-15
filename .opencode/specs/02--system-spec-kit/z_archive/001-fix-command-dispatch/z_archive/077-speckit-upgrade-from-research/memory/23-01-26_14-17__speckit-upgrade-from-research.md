@@ -12,7 +12,10 @@ quality_score: 0.60
 quality_flags:
   - "legacy_migration"
 ---
-# SESSION SUMMARY
+
+# Speckit Upgrade From Research
+
+## SESSION SUMMARY
 
 | **Meta Data** | **Value** |
 |:--------------|:----------|
@@ -54,7 +57,7 @@ quality_flags:
 - Confidence: N/A
 - Uncertainty: N/A
 - Readiness: N/A
-<!-- /ANCHOR:preflight-session-1769174252668-r5eqned38-003-memory-and-spec-kit/077-speckit-upgrade-from-research -->
+<!-- /ANCHOR:preflight -->
 ---
 
 ## Table of Contents
@@ -100,7 +103,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 ```
 /spec_kit:resume 003-memory-and-spec-kit/077-speckit-upgrade-from-research
 ```
-<!-- /ANCHOR:continue-session-session-1769174252668-r5eqned38-003-memory-and-spec-kit/077-speckit-upgrade-from-research -->
+<!-- /ANCHOR:continue-session -->
 ---
 
 <!-- ANCHOR:project-state-snapshot -->
@@ -117,6 +120,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 | Blockers | None - all scope contradictions resolved |
 
 **Key Topics:** `Level 3+ compliance` | `speckit upgrade` | `state file scope` | `memory-based persistence` | `research synthesis` | 
+<!-- /ANCHOR:project-state-snapshot -->
 
 ---
 
@@ -135,11 +139,10 @@ Conducted comprehensive Level 3+ compliance remediation for spec 077-speckit-upg
 - Fixed source references to point to research/ synthesis documents
 - Achieved 100% Level 3+ compliance
 
-<!-- /ANCHOR:summary-session-1769174252668-r5eqned38-003-memory-and-spec-kit/077-speckit-upgrade-from-research -->
+<!-- /ANCHOR:summary -->
 
 ---
 
-<!-- ANCHOR:decisions-session-1769174252668-r5eqned38-003-memory-and-spec-kit/077-speckit-upgrade-from-research -->
 <a id="decisions"></a>
 
 <!-- DYNAMIC SECTION NUMBERING:
@@ -193,9 +196,8 @@ Conducted comprehensive Level 3+ compliance remediation for spec 077-speckit-upg
 
 ---
 
-<!-- /ANCHOR:decisions-session-1769174252668-r5eqned38-003-memory-and-spec-kit/077-speckit-upgrade-from-research -->
+<!-- /ANCHOR:decisions -->
 
-<!-- ANCHOR:session-history-session-1769174252668-r5eqned38-003-memory-and-spec-kit/077-speckit-upgrade-from-research -->
 <a id="conversation"></a>
 
 <!-- DYNAMIC SECTION NUMBERING:
@@ -238,7 +240,7 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 
 ---
 
-<!-- /ANCHOR:session-history-session-1769174252668-r5eqned38-003-memory-and-spec-kit/077-speckit-upgrade-from-research -->
+<!-- /ANCHOR:session-history -->
 
 ---
 
@@ -264,7 +266,7 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 3. **Review last session state** - Check PROJECT STATE SNAPSHOT
 4. **Validate pending tasks** - Review CONTINUE SESSION section
 5. **Resume with handover prompt** - Use continuation template above
-<!-- /ANCHOR:recovery-hints-session-1769174252668-r5eqned38-003-memory-and-spec-kit/077-speckit-upgrade-from-research -->
+<!-- /ANCHOR:recovery-hints -->
 ---
 
 <!-- ANCHOR:postflight -->
@@ -290,7 +292,7 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 
 **Session Learning Summary:**
 This session was migrated from an older format. Learning metrics were not captured in the original format.
-<!-- /ANCHOR:postflight-session-1769174252668-r5eqned38-003-memory-and-spec-kit/077-speckit-upgrade-from-research -->
+<!-- /ANCHOR:postflight -->
 ---
 
 <!-- ANCHOR:metadata -->
@@ -298,7 +300,6 @@ This session was migrated from an older format. Learning metrics were not captur
 
 ## MEMORY METADATA
 
-<!-- ANCHOR:metadata-session-1769174252668-r5eqned38-003-memory-and-spec-kit/077-speckit-upgrade-from-research -->
 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
@@ -385,7 +386,7 @@ embedding_version: "1.0"
 chunk_count: 1
 ```
 
-<!-- /ANCHOR:metadata-session-1769174252668-r5eqned38-003-memory-and-spec-kit/077-speckit-upgrade-from-research -->
+<!-- /ANCHOR:metadata -->
 
 ---
 

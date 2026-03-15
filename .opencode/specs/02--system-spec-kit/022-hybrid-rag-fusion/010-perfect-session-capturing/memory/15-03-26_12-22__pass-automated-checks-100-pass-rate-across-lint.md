@@ -19,7 +19,8 @@ contextType: "general"
 quality_score: 1.00
 quality_flags: []
 ---
-# PASS * **Automated Checks:** 100% pass rate across lint, build, unit tests
+
+# Pass Automated Checks 100 Pass Rate Across Lint
 
 ## SESSION SUMMARY
 
@@ -144,6 +145,7 @@ Next: Continue implementation
 - [`decision-record.md`](./decision-record.md) - Architecture decisions
 
 **Key Topics:** `opencode` | `quality` | `system` | `spec` | `system spec kit/022 hybrid rag fusion/010 perfect session capturing` | `json` | `runtime` | `codex` | `kit/022` | `hybrid` | `rag` | `fusion/010` |
+<!-- /ANCHOR:project-state-snapshot -->
 
 ---
 
@@ -756,7 +758,6 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 
 ## MEMORY METADATA
 
-<!-- ANCHOR:metadata -->
 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
@@ -857,10 +858,7 @@ trigger_phrases:
   - "no data available"
   - "quality gate abort"
   - "memory save"
-  - "spec folder"# Relationships
-related_sessions:
-
-  []
+  - "spec folder"  []
 
 parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing"
 child_sessions:

@@ -11,7 +11,8 @@ quality_score: 0.60
 quality_flags:
   - "needs_review"
 ---
-# Doc-package remediation completed
+
+# Doc Package Remediation Completed
 
 ## SESSION SUMMARY
 
@@ -136,6 +137,7 @@ Next: Continue implementation
 - [`decision-record.md`](./decision-record.md) - Architecture decisions
 
 **Key Topics:** `anobel.com/034 form bot problem` | `planning` | `evidence` | `anobel.com/034` | `form` | `bot` | `problem` | `package` | `doc package` | `package remediation` | `remediation completed` | `server` | 
+<!-- /ANCHOR:project-state-snapshot -->
 
 ---
 
@@ -188,28 +190,6 @@ Planning notes now explicitly track version drift and service-worker caching as 
 
 ---
 
-<!-- ANCHOR:decisions -->
-<a id="decisions"></a>
-
-<!-- DYNAMIC SECTION NUMBERING:
-  This section number depends on which optional sections are present:
-  - Base: 2 (after Overview)
-  - +1 if HAS_IMPLEMENTATION_GUIDE (adds section 1)
-  - +1 if HAS_OBSERVATIONS (adds Detailed Changes)
-  - +1 if HAS_WORKFLOW_DIAGRAM (adds Workflow Visualization)
-  
-  Result matrix:
-  | IMPL_GUIDE | OBSERVATIONS | WORKFLOW | This Section # |
-  |------------|--------------|----------|----------------|
-  | No         | No           | No       | 2              |
-  | No         | No           | Yes      | 3              |
-  | No         | Yes          | No       | 3              |
-  | No         | Yes          | Yes      | 4              |
-  | Yes        | No           | No       | 3              |
-  | Yes        | No           | Yes      | 4              |
-  | Yes        | Yes          | No       | 4              |
-  | Yes        | Yes          | Yes      | 5              |
--->
 <!-- ANCHOR:decisions -->
 <a id="decisions"></a>
 
@@ -352,14 +332,6 @@ Planning notes now explicitly track version drift and service-worker caching as 
 <!-- ANCHOR:session-history -->
 <a id="conversation"></a>
 
-<!-- DYNAMIC SECTION NUMBERING:
-  This section number = DECISIONS section + 1
-  See DECISIONS section comment for the full matrix.
-  Range: 3-6 depending on optional sections present.
--->
-<!-- ANCHOR:session-history -->
-<a id="conversation"></a>
-
 ## 4. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -440,13 +412,11 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 01-
 <!-- /ANCHOR:recovery-hints -->
 
 ---
-
 <!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 
-<!-- ANCHOR:metadata -->
 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
@@ -538,11 +508,7 @@ key_topics:
 trigger_phrases:
   - "form bot doc package remediation"
   - "botpoison planning evidence labeling"
-  - "server side planning decision"related_sessions:
-
-  []
-
-parent_spec: "01--anobel.com/034-form-bot-problem"
+  - "server side planning decision"parent_spec: "01--anobel.com/034-form-bot-problem"
 child_sessions:
 
   []

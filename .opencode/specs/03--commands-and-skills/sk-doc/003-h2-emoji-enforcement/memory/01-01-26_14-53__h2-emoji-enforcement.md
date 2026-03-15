@@ -11,7 +11,10 @@ quality_score: 0.60
 quality_flags:
   - "needs_review"
 ---
-# SESSION SUMMARY
+
+# H2 Emoji Enforcement
+
+## SESSION SUMMARY
 
 | **Meta Data** | **Value** |
 |:--------------|:----------|
@@ -53,7 +56,7 @@ quality_flags:
 - Confidence: N/A
 - Uncertainty: N/A
 - Readiness: N/A
-<!-- /ANCHOR:preflight-session-1767275591347-v3d2bwtqw-03--commands-and-skills/003-h2-emoji-enforcement -->
+<!-- /ANCHOR:preflight -->
 ---
 
 ## Table of Contents
@@ -101,7 +104,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 ```
 /spec_kit:resume 03--commands-and-skills/003-h2-emoji-enforcement
 ```
-<!-- /ANCHOR:continue-session-session-1767275591347-v3d2bwtqw-03--commands-and-skills/003-h2-emoji-enforcement -->
+<!-- /ANCHOR:continue-session -->
 ---
 
 <!-- ANCHOR:project-state-snapshot -->
@@ -137,6 +140,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 - [`handover.md`](./handover.md) - Session handover notes
 
 **Key Topics:** `reconstruction` | `comprehensive` | `documentation` | `reconstructed` | `instructions` | `implemented` | `enforcement` | `prevention` | `documents` | `detection` | 
+<!-- /ANCHOR:project-state-snapshot -->
 
 ---
 
@@ -183,7 +187,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 - **Functional Transforms**: Use functional methods for data transformation
 
-<!-- /ANCHOR:task-guide-commands-and-skills/003-sk-doc/001-h2-emoji-enforcement-03--commands-and-skills/003-h2-emoji-enforcement -->
+<!-- /ANCHOR:task-guide -->
 
 ---
 
@@ -215,7 +219,7 @@ Implemented a comprehensive 'Copy-First, Validate-All' approach to prevent H2 em
 | `specs/.../001-h2-emoji-enforcement/tasks.md` | Modified during session |
 | `specs/.../001-h2-emoji-enforcement/implementation-summary.md` | Modified during session |
 
-<!-- /ANCHOR:summary-session-1767275591347-v3d2bwtqw-03--commands-and-skills/003-h2-emoji-enforcement -->
+<!-- /ANCHOR:summary -->
 
 ---
 
@@ -239,11 +243,10 @@ rootCause: Headers were being reconstructed from memory instead of copied from t
 
 <!-- /ANCHOR:implementation-technical-implementation-details-8d37d69c-session-1767275591347-v3d2bwtqw -->
 
-<!-- /ANCHOR:detailed-changes-session-1767275591347-v3d2bwtqw-03--commands-and-skills/003-h2-emoji-enforcement -->
+<!-- /ANCHOR:detailed-changes -->
 
 ---
 
-<!-- ANCHOR:decisions-session-1767275591347-v3d2bwtqw-03--commands-and-skills/003-h2-emoji-enforcement -->
 <a id="decisions"></a>
 
 <!-- DYNAMIC SECTION NUMBERING:
@@ -405,9 +408,8 @@ rootCause: Headers were being reconstructed from memory instead of copied from t
 
 ---
 
-<!-- /ANCHOR:decisions-session-1767275591347-v3d2bwtqw-03--commands-and-skills/003-h2-emoji-enforcement -->
+<!-- /ANCHOR:decisions -->
 
-<!-- ANCHOR:session-history-session-1767275591347-v3d2bwtqw-03--commands-and-skills/003-h2-emoji-enforcement -->
 <a id="conversation"></a>
 
 <!-- DYNAMIC SECTION NUMBERING:
@@ -440,7 +442,7 @@ Implemented a comprehensive 'Copy-First, Validate-All' approach to prevent H2 em
 
 ---
 
-<!-- /ANCHOR:session-history-session-1767275591347-v3d2bwtqw-03--commands-and-skills/003-h2-emoji-enforcement -->
+<!-- /ANCHOR:session-history -->
 
 ---
 
@@ -466,7 +468,7 @@ Implemented a comprehensive 'Copy-First, Validate-All' approach to prevent H2 em
 3. **Review last session state** - Check PROJECT STATE SNAPSHOT
 4. **Validate pending tasks** - Review CONTINUE SESSION section
 5. **Resume with handover prompt** - Use continuation template above
-<!-- /ANCHOR:recovery-hints-session-1767275591347-v3d2bwtqw-03--commands-and-skills/003-h2-emoji-enforcement -->
+<!-- /ANCHOR:recovery-hints -->
 ---
 
 <!-- ANCHOR:postflight -->
@@ -492,7 +494,7 @@ Implemented a comprehensive 'Copy-First, Validate-All' approach to prevent H2 em
 
 **Session Learning Summary:**
 This session was migrated from an older format. Learning metrics were not captured in the original format.
-<!-- /ANCHOR:postflight-session-1767275591347-v3d2bwtqw-03--commands-and-skills/003-h2-emoji-enforcement -->
+<!-- /ANCHOR:postflight -->
 ---
 
 <!-- ANCHOR:metadata -->
@@ -500,7 +502,6 @@ This session was migrated from an older format. Learning metrics were not captur
 
 ## MEMORY METADATA
 
-<!-- ANCHOR:metadata-session-1767275591347-v3d2bwtqw-03--commands-and-skills/003-h2-emoji-enforcement -->
 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
@@ -590,7 +591,7 @@ embedding_version: "1.0"
 chunk_count: 1
 ```
 
-<!-- /ANCHOR:metadata-session-1767275591347-v3d2bwtqw-03--commands-and-skills/003-h2-emoji-enforcement -->
+<!-- /ANCHOR:metadata -->
 
 ---
 

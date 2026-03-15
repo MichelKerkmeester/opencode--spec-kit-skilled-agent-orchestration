@@ -11,7 +11,7 @@ quality_score: 0.60
 quality_flags:
   - "legacy_migration"
 ---
-# SESSION SUMMARY
+## SESSION SUMMARY
 
 | **Meta Data** | **Value** |
 |:--------------|:----------|
@@ -61,7 +61,7 @@ quality_flags:
 - Confidence: N/A
 - Uncertainty: N/A
 - Readiness: N/A
-<!-- /ANCHOR:preflight-session-1765984776399-42vibrek7-004-speckit/007-handover-triggers -->
+<!-- /ANCHOR:preflight -->
 
 ---
 
@@ -96,7 +96,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 ```
 /spec_kit:resume 004-speckit/007-handover-triggers
 ```
-<!-- /ANCHOR:continue-session-session-1765984776399-42vibrek7-004-speckit/007-handover-triggers -->
+<!-- /ANCHOR:continue-session -->
 
 ---
 
@@ -139,7 +139,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 - **Functional Transforms**: Use functional methods for data transformation
 
-<!-- /ANCHOR:task-guide-speckit/007-handover-triggers-004-speckit/007-handover-triggers -->
+<!-- /ANCHOR:task-guide -->
 
 ---
 
@@ -170,7 +170,7 @@ Implemented handover trigger keywords in SpecKit skill, reduced SKILL.md bloat f
 | `.opencode/.../assets/skill_md_template.md - Updated templates with correct structure` | Modified during session |
 | `specs/.../007-handover-triggers/ - Created spec folder with Level 2 docs` | Modified during session |
 
-<!-- /ANCHOR:summary-session-1765984776399-42vibrek7-004-speckit/007-handover-triggers -->
+<!-- /ANCHOR:summary -->
 
 ---
 
@@ -187,7 +187,7 @@ Implemented handover trigger keywords in SpecKit skill, reduced SKILL.md bloat f
 **Details:** handover triggers | skill section structure | Navigation Guide anti-pattern | Smart Routing pattern | SKILL.md reduction | sub-folder versioning | parallel dispatch config | When to Use section | Resource Router pseudocode | Activation Detection flowchart
 <!-- /ANCHOR:implementation-handover-trigger-keywords-speckit-7ba5d97d-session-1765984776399-42vibrek7 -->
 
-<!-- /ANCHOR:detailed-changes-session-1765984776399-42vibrek7-004-speckit/007-handover-triggers -->
+<!-- /ANCHOR:detailed-changes -->
 
 ---
 
@@ -304,7 +304,7 @@ Implemented handover trigger keywords in SpecKit skill, reduced SKILL.md bloat f
 
 ---
 
-<!-- /ANCHOR:decisions-session-1765984776399-42vibrek7-004-speckit/007-handover-triggers -->
+<!-- /ANCHOR:decisions -->
 
 <!-- ANCHOR:session-history -->
 <a id="conversation"></a>
@@ -328,7 +328,7 @@ Implemented handover trigger keywords in SpecKit skill, reduced SKILL.md bloat f
 
 ---
 
-<!-- /ANCHOR:session-history-session-1765984776399-42vibrek7-004-speckit/007-handover-triggers -->
+<!-- /ANCHOR:session-history -->
 
 ---
 
@@ -354,7 +354,7 @@ Implemented handover trigger keywords in SpecKit skill, reduced SKILL.md bloat f
 3. **Review last session state** - Check PROJECT STATE SNAPSHOT
 4. **Validate pending tasks** - Review CONTINUE SESSION section
 5. **Resume with handover prompt** - Use continuation template above
-<!-- /ANCHOR:recovery-hints-session-1765984776399-42vibrek7-004-speckit/007-handover-triggers -->
+<!-- /ANCHOR:recovery-hints -->
 ---
 
 <!-- ANCHOR:postflight -->
@@ -380,14 +380,13 @@ Implemented handover trigger keywords in SpecKit skill, reduced SKILL.md bloat f
 
 **Session Learning Summary:**
 This session was migrated from an older format. Learning metrics were not captured in the original format.
-<!-- /ANCHOR:postflight-session-1765984776399-42vibrek7-004-speckit/007-handover-triggers -->
+<!-- /ANCHOR:postflight -->
 ---
 <!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 
-<!-- ANCHOR:metadata-session-1765984776399-42vibrek7-004-speckit/007-handover-triggers -->
 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
@@ -483,7 +482,7 @@ embedding_version: "1.0"
 chunk_count: 1
 ```
 
-<!-- /ANCHOR:metadata-session-1765984776399-42vibrek7-004-speckit/007-handover-triggers -->
+<!-- /ANCHOR:metadata -->
 
 ---
 

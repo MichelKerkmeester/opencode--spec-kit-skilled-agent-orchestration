@@ -347,13 +347,13 @@ Fast trigger phrase matching with cognitive memory features. Returns matches bas
 
 #### `memory_save`
 
-Index a memory file into the database. Reads the file, extracts metadata, generates an embedding and stores everything in the index. Runs a 3-layer pre-flight validation gate before saving: structure check, content quality score and semantic duplicate detection.
+Index a memory file into the database. Reads the file, extracts metadata, validates rendered-memory structure, generates an embedding and stores everything in the index. Before persistence it can reject for structural contract violations, insufficient durable evidence, quality-gate failures, or semantic duplicates.
 
 | Parameter | Type | Notes |
 |-----------|------|-------|
 | `filePath` | string | **Required.** Absolute path to the `.md` file to index. |
 | `force` | boolean | Overwrite if already indexed |
-| `dryRun` | boolean | Validate and estimate tokens without saving |
+| `dryRun` | boolean | Preview validation, sufficiency, and rejection details without saving |
 | `skipPreflight` | boolean | Bypass quality gate (not recommended) |
 | `asyncEmbedding` | boolean | Return immediately, generate embedding in background |
 | `retentionPolicy` | string | `keep` (default), `ephemeral`, `shared` |
@@ -1144,9 +1144,12 @@ Then re-run with a higher `min_quality_score`:
 
 #### `memory_save` Rejected by Quality Gate
 
-**Symptom**: Save returns an error like `PREFLIGHT_FAILED: content quality score below threshold`.
+**Symptom**: Save returns an error like `PREFLIGHT_FAILED: ...`, `INSUFFICIENT_CONTEXT_ABORT`, or `Template contract validation failed: ...`.
 
-**Cause**: The memory file does not meet the minimum content quality score (`SPECKIT_MIN_QUALITY_SCORE`, default 0.3). Common causes: file is empty, has only headers, or content is too short.
+**Cause**: The memory file failed one of the save-time gates. Common causes:
+- too little durable evidence (`INSUFFICIENT_CONTEXT_ABORT`)
+- malformed rendered structure (missing required anchors/ids, raw Mustache leakage, duplicate separators)
+- low content quality or semantic duplication at the pre-storage quality gate
 
 **Solution**: Check what the dry run says about the file:
 ```json
@@ -1159,7 +1162,7 @@ Then re-run with a higher `min_quality_score`:
 }
 ```
 
-Add more content to the file, or lower the threshold temporarily with `SPECKIT_MIN_QUALITY_SCORE=0.1` for low-content files like stubs.
+If dry-run shows `INSUFFICIENT_CONTEXT_ABORT`, add real file/tool/decision evidence instead of forcing the save. If it shows a template-contract failure, fix the rendered markdown shape first. Only use threshold changes for legitimate quality-gate tuning, not to bypass insufficiency or malformed structure.
 
 ---
 

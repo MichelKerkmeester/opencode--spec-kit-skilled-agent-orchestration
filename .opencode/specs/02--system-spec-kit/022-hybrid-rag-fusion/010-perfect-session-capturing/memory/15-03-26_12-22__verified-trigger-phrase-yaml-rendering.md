@@ -19,7 +19,8 @@ contextType: "general"
 quality_score: 1.00
 quality_flags: []
 ---
-# Verified trigger phrase YAML rendering
+
+# Verified Trigger Phrase Yaml Rendering
 
 ## SESSION SUMMARY
 
@@ -122,6 +123,7 @@ Next: Continue implementation
 | Blockers | Confirmed the template now renders exactly one trigger_phrases YAML block in both frontmatter and tr |
 
 **Key Topics:** `system spec kit/022 hybrid rag fusion/010 perfect session capturing` | `system` | `spec` | `kit/022` | `hybrid` | `rag` | `fusion/010` | `perfect` | `capturing` | `successful save` | `save must` | `must preserve` |
+<!-- /ANCHOR:project-state-snapshot -->
 
 ---
 
@@ -326,7 +328,6 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 
 ## MEMORY METADATA
 
-<!-- ANCHOR:metadata -->
 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
@@ -427,10 +428,7 @@ trigger_phrases:
   - "tree-thinning merged small files"
   - "index only"
   - "raw mustache tags leaking"
-  - "mustache tags leaking memory"# Relationships
-related_sessions:
-
-  []
+  - "mustache tags leaking memory"  []
 
 parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing"
 child_sessions:

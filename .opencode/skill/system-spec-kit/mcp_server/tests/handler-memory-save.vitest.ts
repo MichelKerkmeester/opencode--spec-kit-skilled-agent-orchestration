@@ -114,7 +114,70 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         filePath: targetPath,
         title: 'Atomic Save FI',
         triggerPhrases: ['atomic-save-fi'],
-        content: '# Atomic Save FI',
+        content: [
+          '---',
+          'title: "Atomic Save FI"',
+          'description: "Contract-compliant memory-save fixture."',
+          'trigger_phrases:',
+          '  - "atomic save fi"',
+          'importance_tier: "normal"',
+          'contextType: "general"',
+          '---',
+          '',
+          '# Atomic Save FI',
+          '',
+          '## SESSION SUMMARY',
+          '',
+          '| **Meta Data** | **Value** |',
+          '|:--------------|:----------|',
+          '| Total Messages | 2 |',
+          '',
+          '<!-- ANCHOR:continue-session -->',
+          '<a id="continue-session"></a>',
+          '',
+          '## CONTINUE SESSION',
+          '',
+          'Continue from the last stable checkpoint.',
+          '',
+          '<!-- ANCHOR:project-state-snapshot -->',
+          '<a id="project-state-snapshot"></a>',
+          '',
+          '## PROJECT STATE SNAPSHOT',
+          '',
+          'Memory save handler regression fixture.',
+          '',
+          '<!-- ANCHOR:decisions -->',
+          '<a id="decisions"></a>',
+          '',
+          '## 2. DECISIONS',
+          '',
+          'Atomic save flow should preserve durable data.',
+          '',
+          '<!-- ANCHOR:session-history -->',
+          '<a id="conversation"></a>',
+          '',
+          '## 3. CONVERSATION',
+          '',
+          'Single fixture memory for indexing tests.',
+          '',
+          '<!-- ANCHOR:recovery-hints -->',
+          '<a id="recovery-hints"></a>',
+          '',
+          '## RECOVERY HINTS',
+          '',
+          'Retry the atomic save test with the same fixture.',
+          '',
+          '<!-- ANCHOR:metadata -->',
+          '<a id="memory-metadata"></a>',
+          '',
+          '## MEMORY METADATA',
+          '',
+          '```yaml',
+          'session_id: "atomic-save-fi"',
+          '```',
+          '',
+          '<!-- /ANCHOR:metadata -->',
+        ].join('\n'),
         contentHash: 'fi-hash',
         contextType: 'general',
         importanceTier: 'normal',
@@ -584,7 +647,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         fixes: ['Re-extracted 4 trigger phrases from content'],
         passed: true,
         rejected: false,
-        fixedContent: '# updated content',
+        fixedContent: buildParsedMemory('quality-loop-trigger-fix.md').content,
         fixedTriggerPhrases: ['alpha', 'beta', 'gamma', 'delta'],
       } as any);
 
@@ -596,8 +659,8 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       expect(result.status).toBe('indexed');
       expect(createMemoryRecordMock).toHaveBeenCalledTimes(1);
       expect((createMemoryRecordMock.mock.calls[0] as any)?.[1].triggerPhrases).toEqual(['alpha', 'beta', 'gamma', 'delta']);
-      expect((createMemoryRecordMock.mock.calls[0] as any)?.[1].content).toBe('# updated content');
-      expect(fs.readFileSync(filePath, 'utf8')).toBe('# updated content');
+      expect((createMemoryRecordMock.mock.calls[0] as any)?.[1].content).toBe(buildParsedMemory('quality-loop-trigger-fix.md').content);
+      expect(fs.readFileSync(filePath, 'utf8')).toBe(buildParsedMemory('quality-loop-trigger-fix.md').content);
     });
 
     it('passes same-path exclusion into content-hash dedup after unchanged miss', async () => {
@@ -665,7 +728,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         fixes: ['Re-extracted 4 trigger phrases from content'],
         passed: true,
         rejected: false,
-        fixedContent: '# rewritten by quality loop',
+        fixedContent: buildParsedMemory('reject-no-prewrite.md').content,
         fixedTriggerPhrases: ['alpha', 'beta', 'gamma', 'delta'],
       } as any);
 
@@ -713,7 +776,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         fixes: ['Re-extracted 4 trigger phrases from content'],
         passed: true,
         rejected: false,
-        fixedContent: '# rewritten by quality loop',
+        fixedContent: buildParsedMemory('pe-early-return-no-prewrite.md').content,
         fixedTriggerPhrases: ['alpha', 'beta', 'gamma', 'delta'],
       } as any);
 
@@ -759,6 +822,45 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       expect(result.status).toBe('rejected');
       expect(result.rejectionCode).toBe('INSUFFICIENT_CONTEXT_ABORT');
       expect(result.sufficiency?.pass).toBe(false);
+      expect(generateOrCacheEmbeddingMock).not.toHaveBeenCalled();
+    });
+
+    it('rejects template-contract violations before embedding', async () => {
+      const generateOrCacheEmbeddingMock = vi.fn();
+      const harness = await loadAtomicSaveHarness({
+        parseMemoryFileMock: vi.fn((targetPath: string) => ({
+          ...buildParsedMemory(targetPath),
+          content: [
+            '---',
+            'title: "Broken contract memory"',
+            'description: "Looks plausible but is missing required anchors."',
+            'trigger_phrases:',
+            '  - "broken contract memory"',
+            'importance_tier: "normal"',
+            'contextType: "general"',
+            '---',
+            '',
+            '# Broken contract memory',
+            '',
+            '## SESSION SUMMARY',
+            '',
+            'No mandatory sections follow.',
+          ].join('\n'),
+        })),
+        checkExistingRowMock: vi.fn(() => null),
+        embeddingPipelineModuleFactory: () => ({
+          generateOrCacheEmbedding: generateOrCacheEmbeddingMock,
+          persistPendingEmbeddingCacheWrite: vi.fn(),
+        }),
+      });
+
+      const filePath = createAtomicSaveTargetPath('template-contract-invalid.md');
+      fs.writeFileSync(filePath, '# broken', 'utf8');
+
+      const result = await harness.module.indexMemoryFile(filePath, { force: true, asyncEmbedding: false });
+
+      expect(result.status).toBe('rejected');
+      expect(result.rejectionReason).toMatch(/Template contract validation failed/);
       expect(generateOrCacheEmbeddingMock).not.toHaveBeenCalled();
     });
 
@@ -850,7 +952,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         fixes: ['normalized structure'],
         passed: true,
         rejected: false,
-        fixedContent: '# rewritten chunked content',
+        fixedContent: buildParsedMemory('chunked-quality-fix.md').content,
       } as any);
 
       const filePath = createAtomicSaveTargetPath('chunked-quality-fix.md');
@@ -858,7 +960,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
 
       const result = await harness.module.indexMemoryFile(filePath, { force: true, asyncEmbedding: false });
       expect(result.status).toBe('indexed');
-      expect(fs.readFileSync(filePath, 'utf8')).toBe('# rewritten chunked content');
+      expect(fs.readFileSync(filePath, 'utf8')).toBe(buildParsedMemory('chunked-quality-fix.md').content);
     });
 
     it('does not persist quality-loop fixed content when chunked indexing fails', async () => {
@@ -886,7 +988,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         fixes: ['normalized structure'],
         passed: true,
         rejected: false,
-        fixedContent: '# rewritten chunked content',
+        fixedContent: buildParsedMemory('chunked-quality-fix-error.md').content,
       } as any);
 
       const filePath = createAtomicSaveTargetPath('chunked-quality-fix-error.md');

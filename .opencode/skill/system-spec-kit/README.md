@@ -283,6 +283,7 @@ The MCP uses a 4-stage hybrid pipeline: scatter-gather across Vector, FTS5/BM25,
 **ANCHOR Format:**
 
 Memory files use the ANCHOR format (`<!-- ANCHOR:section --> ... <!-- /ANCHOR:section -->`) for fine-grained section retrieval. The `context_template.md` (~26K) defines all standard anchors.
+Active memories are now also checked against a rendered-memory contract before write/index: required frontmatter keys, mandatory section anchors and HTML ids, no raw Mustache leakage, and no duplicate top-of-body separators.
 
 ### MCP Tools
 

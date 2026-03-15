@@ -46,7 +46,7 @@ Primary script directories:
 - `spec/` - 10 lifecycle scripts (`create.sh`, `upgrade-level.sh`, `check-placeholders.sh`, `validate.sh`, `progressive-validate.sh`, `test-validation.sh`, `check-completion.sh`, `calculate-completeness.sh`, `recommend-level.sh`, `archive.sh`)
 - `spec-folder/` - 5 TypeScript modules (`generate-description.ts`, `folder-detector.ts`, `alignment-validator.ts`, `directory-setup.ts`, `index.ts`)
 - `rules/` - 18 modular validation rules used by `spec/validate.sh` (`LINKS_VALID` runs only when `SPECKIT_VALIDATE_LINKS=true`)
-- `memory/` - 7 TypeScript CLIs (`generate-context.ts`, `rank-memories.ts`, `cleanup-orphaned-vectors.ts`, `validate-memory-quality.ts`, `reindex-embeddings.ts`, `ast-parser.ts`, `backfill-frontmatter.ts`)
+- `memory/` - 9 TypeScript CLIs (`generate-context.ts`, `rank-memories.ts`, `cleanup-orphaned-vectors.ts`, `validate-memory-quality.ts`, `reindex-embeddings.ts`, `ast-parser.ts`, `backfill-frontmatter.ts`, `historical-memory-remediation.ts`, `rebuild-auto-entities.ts`)
 - `core/` - 8 TypeScript workflow modules plus barrel export
 - `extractors/` - 14 files total (12 TypeScript extraction modules, barrel export, and directory README)
 - `loaders/` - 1 TypeScript loading module (`data-loader.ts`) plus barrel export
@@ -110,6 +110,13 @@ JSON mode is also supported:
 ```bash
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/<###-spec-name>
 ```
+
+Generated memories are now blocked before write/index when they violate the rendered-memory contract:
+- missing required frontmatter keys
+- missing mandatory anchors or HTML ids
+- raw Mustache/template leakage
+- duplicate top-of-body separators
+- aligned but under-evidenced saves that now fail `INSUFFICIENT_CONTEXT_ABORT`
 
 
 <!-- /ANCHOR:build-and-runtime -->

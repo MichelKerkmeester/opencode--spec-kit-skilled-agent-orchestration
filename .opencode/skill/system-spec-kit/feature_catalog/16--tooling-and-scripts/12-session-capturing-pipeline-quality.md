@@ -14,7 +14,8 @@ Session capturing pipeline quality is the closure feature for spec `010-perfect-
    - `Copilot CLI`
    - `Gemini CLI`
 5. One shared semantic sufficiency gate so aligned but under-evidenced memories fail explicitly instead of indexing.
-6. A fully refreshed canonical verification and manual-testing record.
+6. One shared rendered-memory template contract so malformed ANCHOR/frontmatter output fails before write/index.
+7. A fully refreshed canonical verification, remediation, and manual-testing record.
 
 ---
 
@@ -58,6 +59,13 @@ The shipped session-capture pipeline enforces the following behavior:
 21. Direct-path mode can prefer the calling CLI's native capture source with `SYSTEM_SPEC_KIT_CAPTURE_SOURCE=opencode|claude|codex|copilot|gemini`, then resume the documented fallback order if that hinted source is empty.
 22. Explicit JSON mode accepts the documented snake_case save contract as well as the existing camelCase fields.
 23. Literal Mustache tokens and literal anchor examples from captured operator text are treated as content, not structural leakage.
+24. Rendered output is now validated against a shared template contract before successful write/index:
+   - required frontmatter keys must exist
+   - mandatory section anchors and HTML ids must exist
+   - raw Mustache leakage is rejected
+   - duplicate top-of-body separators are rejected
+25. Historical active-memory remediation now uses that same template contract and moves non-repairable files out of active `memory/` use.
+26. The H1 body heading (`# title`) is derived from the content slug via `slugToTitle(contentSlug)` — the same slug used for the filename — instead of `pickBestContentName()`. A blank line separates the frontmatter close `---` from the H1 to satisfy the `missing_blank_line_after_frontmatter` contract rule.
 
 Status: Implemented, verified, and documentation-clean as of 2026-03-15.
 
@@ -157,6 +165,8 @@ The closure feature consists of these distinct shipped capabilities:
 - Post-render cleanup preserves real `<!-- ANCHOR:id -->` comments while still stripping non-anchor workflow comments.
 - Trigger phrases are rendered from one workflow-built YAML block so frontmatter and trailing metadata cannot drift or leak raw Mustache control tags.
 - Literal template syntax or anchor examples quoted in captured session text are escaped or ignored by validation rules unless they appear as real rendered structure.
+- The final rendered file must also satisfy the shared template contract before a save is allowed to complete.
+- Historical active memories can be audited against that same contract with `historical-memory-remediation.ts`.
 
 ### 3.10 Operator expectations
 
@@ -191,6 +201,7 @@ The closure feature consists of these distinct shipped capabilities:
 | `scripts/utils/workspace-identity.ts` | Canonical `.opencode` workspace identity and path equivalence |
 | `scripts/utils/spec-affinity.ts` | Shared target-spec anchor evaluation for stateless alignment and normalization |
 | `shared/parsing/memory-sufficiency.ts` | Shared semantic sufficiency evaluator used by `generate-context.js` and `memory_save` |
+| `shared/parsing/memory-template-contract.ts` | Shared rendered-memory structural contract validator |
 | `scripts/utils/input-normalizer.ts` | `DataSource` typing, safe stateless fallback, snake_case JSON compatibility, and tool-evidence shaping |
 | `scripts/extractors/opencode-capture.ts` | Native OpenCode capture |
 | `scripts/extractors/claude-code-capture.ts` | Native Claude transcript parsing |
@@ -199,7 +210,8 @@ The closure feature consists of these distinct shipped capabilities:
 | `scripts/extractors/gemini-cli-capture.ts` | Native Gemini history/tmp session parsing |
 | `scripts/extractors/spec-folder-extractor.ts` | Spec-folder enrichment |
 | `scripts/extractors/git-context-extractor.ts` | Git-context enrichment |
-| `scripts/core/workflow.ts` | Alignment blocking, insufficiency blocking, enrichment insertion, quality abort, and stateless tool-count recovery |
+| `scripts/core/workflow.ts` | Alignment blocking, insufficiency blocking, template-contract blocking, enrichment insertion, quality abort, and stateless tool-count recovery |
+| `scripts/memory/historical-memory-remediation.ts` | Historical corpus audit/repair/quarantine against the current rendered-memory contract |
 | `scripts/utils/validation-utils.ts` | Render validation helpers that ignore literal template syntax inside code spans |
 | `scripts/memory/validate-memory-quality.ts` | V5 and V6 quality checks for rendered memory output |
 | `scripts/utils/slug-utils.ts` | Memory title and filename normalization after captured operator/debug text |
@@ -220,11 +232,13 @@ The closure feature consists of these distinct shipped capabilities:
 | `scripts/tests/spec-affinity.vitest.ts` | Target-spec anchor detection and same-workspace rejection |
 | `scripts/tests/runtime-memory-inputs.vitest.ts` | Full native fallback ordering |
 | `scripts/tests/memory-sufficiency.vitest.ts` | Shared insufficiency contract |
+| `scripts/tests/memory-template-contract.vitest.ts` | Rendered-memory structural contract coverage |
 | `scripts/tests/quality-scorer-calibration.vitest.ts` | Rich vs thin score differentiation |
 | `scripts/tests/stateless-enrichment.vitest.ts` | Stateless enrichment correctness |
 | `scripts/tests/task-enrichment.vitest.ts` | Task and summary enrichment behavior |
 | `scripts/tests/memory-render-fixture.vitest.ts` | Rendered-memory regression coverage |
 | `scripts/tests/generate-context-cli-authority.vitest.ts` | Explicit CLI root-spec authority coverage |
+| `scripts/tests/historical-memory-remediation.vitest.ts` | Historical active-memory repair/quarantine contract coverage |
 | `scripts/tests/test-extractors-loaders.js` | Dist/export regression suite for extractors and loader |
 | `scripts/tests/test-bug-fixes.js` | Bug-fix verification stack |
 | `scripts/tests/test-integration.js` | End-to-end script workflows |
@@ -263,6 +277,7 @@ Manual coverage lives in `M-007` and is expected to explicitly cover:
 12. Rendered-memory anchor preservation and frontmatter trigger-phrase quality.
 13. Direct-mode `SYSTEM_SPEC_KIT_CAPTURE_SOURCE` preference behavior.
 14. Cross-reference to `NEW-133` for MCP `memory_save` dry-run and insufficiency verification.
+15. Cross-reference to `NEW-149` for rendered-memory contract and active-corpus remediation verification.
 
 ---
 

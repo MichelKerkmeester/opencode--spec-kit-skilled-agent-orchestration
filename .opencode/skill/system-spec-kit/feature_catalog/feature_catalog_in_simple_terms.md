@@ -271,6 +271,8 @@ When the system finds something useful during a search, it keeps a mental note o
 
 This is how you add new knowledge to the system. You point it at a file and it reads, understands and stores the content so it becomes searchable. Before storing, it checks whether the same information already exists and decides whether to add it fresh, update an older version or skip it entirely. Quality checks catch low-value content before it clutters up the knowledge base.
 
+Today that save path has two extra hard stops before storage: thin aligned memories fail with `INSUFFICIENT_CONTEXT_ABORT`, and malformed rendered files fail a shared template contract check if required anchors, ids, frontmatter keys or cleanup invariants are missing. Dry-run can preview those rejections without writing or indexing anything.
+
 ### Memory metadata update (memory_update)
 
 You can rename a memory or change its priority without deleting and re-creating it. When you change the title, the system automatically updates its internal search index to match. If the update fails partway through, everything rolls back to the way it was before so you never end up with a half-changed record.
@@ -751,6 +753,8 @@ Sometimes the system cannot create a full searchable fingerprint for a memory be
 
 Before committing a memory to storage, you can do a practice run to see if it would pass all the checks. Nothing gets saved or changed. It is like using the "print preview" button before printing: you catch problems before they become permanent, without wasting paper.
 
+That preview is no longer limited to token and duplicate checks. It can now tell you if the memory is too thin to stand on its own later or if the rendered markdown shape itself is invalid.
+
 ### Outsourced agent memory capture
 
 When work is delegated to an external helper (like a different AI tool), the results need to come back in a clean format the memory system can understand. This feature makes sure that incoming data files are properly validated and that follow-up actions are captured, so nothing important gets lost when work passes between different tools.
@@ -758,6 +762,8 @@ When work is delegated to an external helper (like a different AI tool), the res
 ### Stateless enrichment and alignment guards
 
 When a memory is saved with minimal context, the system fills in the gaps by pulling relevant details from the project folder and recent changes. At the same time, it checks that the memory actually belongs to the project it claims to be part of and blocks saves that clearly belong somewhere else. Think of it as an assistant who fills out missing form fields for you but refuses to file the form in the wrong cabinet.
+
+The session-capture flow now also refuses to keep malformed output around as “good enough.” The same rendered-memory contract used by `memory_save` and `generate-context.js` is also used to audit and clean active historical memories.
 
 ---
 
@@ -1062,4 +1068,3 @@ These settings control diagnostic visibility. They adjust log verbosity and opti
 ### 7. CI and Build (informational)
 
 These are informational CI metadata variables, not feature toggles. They annotate records with branch context for traceability but do not change retrieval, scoring, or storage behavior.
-

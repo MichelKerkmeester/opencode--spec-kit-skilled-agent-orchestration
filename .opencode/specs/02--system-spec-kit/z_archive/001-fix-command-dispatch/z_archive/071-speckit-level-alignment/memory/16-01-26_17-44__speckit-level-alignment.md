@@ -12,7 +12,10 @@ quality_score: 0.60
 quality_flags:
   - "legacy_migration"
 ---
-# SESSION SUMMARY
+
+# Speckit Level Alignment
+
+## SESSION SUMMARY
 
 | **Meta Data** | **Value** |
 |:--------------|:----------|
@@ -54,7 +57,7 @@ quality_flags:
 - Confidence: N/A
 - Uncertainty: N/A
 - Readiness: N/A
-<!-- /ANCHOR:preflight-session-1768581864115-1ijqg4k70-003-memory-and-spec-kit/071-speckit-level-alignment -->
+<!-- /ANCHOR:preflight -->
 ---
 
 ## Table of Contents
@@ -100,7 +103,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 ```
 /spec_kit:resume 003-memory-and-spec-kit/071-speckit-level-alignment
 ```
-<!-- /ANCHOR:continue-session-session-1768581864115-1ijqg4k70-003-memory-and-spec-kit/071-speckit-level-alignment -->
+<!-- /ANCHOR:continue-session -->
 ---
 
 <!-- ANCHOR:project-state-snapshot -->
@@ -117,6 +120,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 | Blockers | None |
 
 **Key Topics:** `level-based-templates` | `spec-kit` | `parallel-agents` | `template-alignment` | `COMPLEXITY_GATE-removal` | 
+<!-- /ANCHOR:project-state-snapshot -->
 
 ---
 
@@ -147,11 +151,10 @@ Session completed Spec 071: SpecKit Level-Based Template Alignment. This aligned
 - Documentation: `SKILL.md`, `README.md`, `level_specifications.md`, `template_guide.md`, `complexity_guide.md`, `quick_reference.md`, `template_mapping.md`, `validation_rules.md`, `phase_checklists.md`, `plan.md`, `tasks.md`
 - Templates: `level_2/checklist.md`
 
-<!-- /ANCHOR:summary-session-1768581864115-1ijqg4k70-003-memory-and-spec-kit/071-speckit-level-alignment -->
+<!-- /ANCHOR:summary -->
 
 ---
 
-<!-- ANCHOR:decisions-session-1768581864115-1ijqg4k70-003-memory-and-spec-kit/071-speckit-level-alignment -->
 <a id="decisions"></a>
 
 <!-- DYNAMIC SECTION NUMBERING:
@@ -200,9 +203,8 @@ Session completed Spec 071: SpecKit Level-Based Template Alignment. This aligned
 
 ---
 
-<!-- /ANCHOR:decisions-session-1768581864115-1ijqg4k70-003-memory-and-spec-kit/071-speckit-level-alignment -->
+<!-- /ANCHOR:decisions -->
 
-<!-- ANCHOR:session-history-session-1768581864115-1ijqg4k70-003-memory-and-spec-kit/071-speckit-level-alignment -->
 <a id="conversation"></a>
 
 <!-- DYNAMIC SECTION NUMBERING:
@@ -309,7 +311,7 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 
 ---
 
-<!-- /ANCHOR:session-history-session-1768581864115-1ijqg4k70-003-memory-and-spec-kit/071-speckit-level-alignment -->
+<!-- /ANCHOR:session-history -->
 
 ---
 
@@ -335,7 +337,7 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 3. **Review last session state** - Check PROJECT STATE SNAPSHOT
 4. **Validate pending tasks** - Review CONTINUE SESSION section
 5. **Resume with handover prompt** - Use continuation template above
-<!-- /ANCHOR:recovery-hints-session-1768581864115-1ijqg4k70-003-memory-and-spec-kit/071-speckit-level-alignment -->
+<!-- /ANCHOR:recovery-hints -->
 ---
 
 <!-- ANCHOR:postflight -->
@@ -361,7 +363,7 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 
 **Session Learning Summary:**
 This session was migrated from an older format. Learning metrics were not captured in the original format.
-<!-- /ANCHOR:postflight-session-1768581864115-1ijqg4k70-003-memory-and-spec-kit/071-speckit-level-alignment -->
+<!-- /ANCHOR:postflight -->
 ---
 
 <!-- ANCHOR:metadata -->
@@ -369,7 +371,6 @@ This session was migrated from an older format. Learning metrics were not captur
 
 ## MEMORY METADATA
 
-<!-- ANCHOR:metadata-session-1768581864115-1ijqg4k70-003-memory-and-spec-kit/071-speckit-level-alignment -->
 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
@@ -458,7 +459,7 @@ embedding_version: "1.0"
 chunk_count: 1
 ```
 
-<!-- /ANCHOR:metadata-session-1768581864115-1ijqg4k70-003-memory-and-spec-kit/071-speckit-level-alignment -->
+<!-- /ANCHOR:metadata -->
 
 ---
 

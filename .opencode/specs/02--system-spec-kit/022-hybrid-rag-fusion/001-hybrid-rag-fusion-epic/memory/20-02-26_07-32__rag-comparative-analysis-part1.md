@@ -12,7 +12,10 @@ contextType: "research"
 quality_score: 1.00
 quality_flags: []
 ---
-# SESSION SUMMARY
+
+# Rag Comparative Analysis Part1
+
+## SESSION SUMMARY
 
 | **Meta Data** | **Value** |
 |:--------------|:----------|
@@ -142,6 +145,7 @@ Next: Continue implementation
 | Blockers | None |
 
 **Key Topics:** `rag` | `decision` | `spec` | `memory mcp` | `system` | `hybrid` | `fusion` | `system spec kit/022 hybrid rag fusion` | `kit/022` | `decision autonomous` | `autonomous single` | `current` | 
+<!-- /ANCHOR:project-state-snapshot -->
 
 ---
 
@@ -236,28 +240,6 @@ rootCause: Need stronger hybrid retrieval guidance for memory MCP evolution with
 <!-- ANCHOR:decisions -->
 <a id="decisions"></a>
 
-<!-- DYNAMIC SECTION NUMBERING:
-  This section number depends on which optional sections are present:
-  - Base: 2 (after Overview)
-  - +1 if HAS_IMPLEMENTATION_GUIDE (adds section 1)
-  - +1 if HAS_OBSERVATIONS (adds Detailed Changes)
-  - +1 if HAS_WORKFLOW_DIAGRAM (adds Workflow Visualization)
-  
-  Result matrix:
-  | IMPL_GUIDE | OBSERVATIONS | WORKFLOW | This Section # |
-  |------------|--------------|----------|----------------|
-  | No         | No           | No       | 2              |
-  | No         | No           | Yes      | 3              |
-  | No         | Yes          | No       | 3              |
-  | No         | Yes          | Yes      | 4              |
-  | Yes        | No           | No       | 3              |
-  | Yes        | No           | Yes      | 4              |
-  | Yes        | Yes          | No       | 4              |
-  | Yes        | Yes          | Yes      | 5              |
--->
-<!-- ANCHOR:decisions -->
-<a id="decisions"></a>
-
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-autonomous-single-1865cfda -->
@@ -343,14 +325,6 @@ rootCause: Need stronger hybrid retrieval guidance for memory MCP evolution with
 
 <!-- /ANCHOR:decisions -->
 
-<!-- ANCHOR:session-history -->
-<a id="conversation"></a>
-
-<!-- DYNAMIC SECTION NUMBERING:
-  This section number = DECISIONS section + 1
-  See DECISIONS section comment for the full matrix.
-  Range: 3-6 depending on optional sections present.
--->
 <!-- ANCHOR:session-history -->
 <a id="conversation"></a>
 
@@ -472,13 +446,11 @@ Learning metrics will be calculated when both preflight and postflight data are 
 <!-- /ANCHOR:postflight -->
 
 ---
-
 <!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 
-<!-- ANCHOR:metadata -->
 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
@@ -572,10 +544,7 @@ trigger_phrases:
   - "memory mcp"
   - "graphrag mcp"
   - "ragflow"
-  - "retrieval orchestration"# Relationships
-related_sessions:
-
-  []
+  - "retrieval orchestration"  []
 
 parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic"
 child_sessions:

@@ -20,7 +20,8 @@ quality_score: 0.90
 quality_flags:
   - "has_tool_state_mismatch"
 ---
-# 2026-03-13 verification pass confirmed Phase 4 adaptive retrieval loops are implemented with...
+
+# 2026-03-13 Verification Pass Confirmed Phase 4
 
 ## SESSION SUMMARY
 
@@ -109,6 +110,7 @@ Next: Continue implementation
 - Check: plan.md, tasks.md, checklist.md
 
 - Last: Kept human policy-review rows pending - Technical verification passed, but no hu
+<!-- /ANCHOR:continue-session -->
 
 ---
 <!-- ANCHOR:project-state-snapshot -->
@@ -142,6 +144,7 @@ Next: Continue implementation
 - [`decision-record.md`](./decision-record.md) - Architecture decisions
 
 **Key Topics:** `adaptive` | `rollback` | `human` | `retrieval` | `reset` | `verified explicit` | `explicit adaptive` | `adaptive reset` | `reset helper` | `helper rollback` | `rollback drills` | `kept human` |
+<!-- /ANCHOR:project-state-snapshot -->
 
 ---
 <!-- ANCHOR:task-guide -->
@@ -168,6 +171,7 @@ Next: Continue implementation
 **Common Patterns**:
 
 - **Helper Functions**: Encapsulate reusable logic in dedicated utility functions
+<!-- /ANCHOR:task-guide -->
 
 ---
 <!-- ANCHOR:summary -->
@@ -187,6 +191,7 @@ Next: Continue implementation
 | **File** | **Description** |
 |:---------|:----------------|
 | `02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/004-adaptive-retrieval-loops/(merged-small-files)` | Tree-thinning merged 3 small files (tasks.md, checklist.md, implementation-summary.md). Merged from 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/004-adaptive-retrieval-loops/tasks.md : File modified (description pending) | Merged from 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/004-adaptive-retrieval-loops/checklist.md : File modified (description pending) | Merged from 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/004-adaptive-retrieval-loops/implementation-summary.md : File modified (description pending) |
+<!-- /ANCHOR:summary -->
 
 ---
 <!-- ANCHOR:detailed-changes -->
@@ -197,6 +202,7 @@ Next: Continue implementation
 ### FEATURE: 2026-03-13 verification pass confirmed Phase 4 adaptive retrieval loops are implemented with...
 
 2026-03-13 verification pass confirmed Phase 4 adaptive retrieval loops are implemented with bounded shadow proposals, rollback reset, and audit evidence.
+<!-- /ANCHOR:detailed-changes -->
 
 ---
 <!-- ANCHOR:decisions -->
@@ -386,6 +392,7 @@ Next: Continue implementation
 #### Trade-offs
 
 **Confidence**: 0.5%
+<!-- /ANCHOR:decisions -->
 
 ---
 <!-- ANCHOR:session-history -->
@@ -408,6 +415,7 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 > **User** | 2026-03-13 @ 20:56:03
 
 2026-03-13 verification pass confirmed Phase 4 adaptive retrieval loops are implemented with bounded shadow proposals, rollback reset, and audit evidence.
+<!-- /ANCHOR:session-history -->
 
 ---
 <!-- ANCHOR:recovery-hints -->
@@ -463,6 +471,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 | Index Entry Valid |  | Last indexed:  |
 | Checksums Match |  |  |
 | No Dedup Conflicts |  |  |
+<!-- /ANCHOR:recovery-hints -->
 
 ---
 <!-- ANCHOR:metadata -->
@@ -569,10 +578,7 @@ trigger_phrases:
   - "bounded shadow proposals rollback"
   - "shadow proposals rollback reset"
   - "proposals rollback reset audit"
-  - "rollback reset audit evidence"# Relationships
-related_sessions:
-
-  []
+  - "rollback reset audit evidence"  []
 
 parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/004-adaptive-retrieval-loops"
 child_sessions:
@@ -584,6 +590,9 @@ embedding_model: "nomic-ai/nomic-embed-text-v1.5"
 embedding_version: "1.0"
 chunk_count: 1
 ```
+
+<!-- /ANCHOR:metadata -->
+
 
 ---
 

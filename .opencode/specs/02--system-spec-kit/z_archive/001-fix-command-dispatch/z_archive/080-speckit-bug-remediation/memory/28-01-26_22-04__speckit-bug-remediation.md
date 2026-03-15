@@ -12,7 +12,10 @@ quality_score: 0.60
 quality_flags:
   - "legacy_migration"
 ---
-# SESSION SUMMARY
+
+# Speckit Bug Remediation
+
+## SESSION SUMMARY
 
 | **Meta Data** | **Value** |
 |:--------------|:----------|
@@ -54,7 +57,7 @@ quality_flags:
 - Confidence: [TBD]%
 - Uncertainty: [TBD]
 - Readiness: [TBD]
-<!-- /ANCHOR:preflight-session-1769634260067-usos48ies-003-memory-and-spec-kit/080-speckit-bug-remediation -->
+<!-- /ANCHOR:preflight -->
 
 ---
 
@@ -103,7 +106,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 ```
 /spec_kit:resume 003-memory-and-spec-kit/080-speckit-bug-remediation
 ```
-<!-- /ANCHOR:continue-session-session-1769634260067-usos48ies-003-memory-and-spec-kit/080-speckit-bug-remediation -->
+<!-- /ANCHOR:continue-session -->
 ---
 
 <!-- ANCHOR:project-state-snapshot -->
@@ -137,6 +140,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 - [`decision-record.md`](./decision-record.md) - Architecture decisions
 
 **Key Topics:** `comprehensively` | `retrievability` | `modularization` | `significantly` | `documentation` | `configuration` | `additionally` | `combinations` | `remediation` | `calculation` | 
+<!-- /ANCHOR:project-state-snapshot -->
 
 ---
 
@@ -179,7 +183,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 - **Module Pattern**: Organize code into importable modules
 
-<!-- /ANCHOR:task-guide-memory-and-spec-kit/080-speckit-bug-remediation-003-memory-and-spec-kit/080-speckit-bug-remediation -->
+<!-- /ANCHOR:task-guide -->
 
 ---
 
@@ -210,7 +214,7 @@ Continued the Spec Kit MCP server bug remediation by fixing the remaining test f
 | `.opencode/skill/system-spec-kit/mcp_server/lib/README.md` | File modified (description pending) |
 | `.opencode/skill/system-spec-kit/README.md` | File modified (description pending) |
 
-<!-- /ANCHOR:summary-session-1769634260067-usos48ies-003-memory-and-spec-kit/080-speckit-bug-remediation -->
+<!-- /ANCHOR:summary -->
 
 ---
 
@@ -234,11 +238,10 @@ rootCause: tier-classifier calculate_retrievability() ran FSRS calculation even 
 
 <!-- /ANCHOR:implementation-technical-implementation-details-01bbf4a7-session-1769634260067-usos48ies -->
 
-<!-- /ANCHOR:detailed-changes-session-1769634260067-usos48ies-003-memory-and-spec-kit/080-speckit-bug-remediation -->
+<!-- /ANCHOR:detailed-changes -->
 
 ---
 
-<!-- ANCHOR:decisions-session-1769634260067-usos48ies-003-memory-and-spec-kit/080-speckit-bug-remediation -->
 <a id="decisions"></a>
 
 <!-- DYNAMIC SECTION NUMBERING:
@@ -373,9 +376,8 @@ rootCause: tier-classifier calculate_retrievability() ran FSRS calculation even 
 
 ---
 
-<!-- /ANCHOR:decisions-session-1769634260067-usos48ies-003-memory-and-spec-kit/080-speckit-bug-remediation -->
+<!-- /ANCHOR:decisions -->
 
-<!-- ANCHOR:session-history-session-1769634260067-usos48ies-003-memory-and-spec-kit/080-speckit-bug-remediation -->
 <a id="conversation"></a>
 
 <!-- DYNAMIC SECTION NUMBERING:
@@ -407,7 +409,7 @@ Continued the Spec Kit MCP server bug remediation by fixing the remaining test f
 
 ---
 
-<!-- /ANCHOR:session-history-session-1769634260067-usos48ies-003-memory-and-spec-kit/080-speckit-bug-remediation -->
+<!-- /ANCHOR:session-history -->
 
 ---
 
@@ -446,7 +448,7 @@ Continued the Spec Kit MCP server bug remediation by fixing the remaining test f
 
 **Session Learning Summary:**
 Learning metrics will be calculated when both preflight and postflight data are provided.
-<!-- /ANCHOR:postflight-session-1769634260067-usos48ies-003-memory-and-spec-kit/080-speckit-bug-remediation -->
+<!-- /ANCHOR:postflight -->
 
 ---
 
@@ -472,7 +474,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 3. **Review last session state** - Check PROJECT STATE SNAPSHOT
 4. **Validate pending tasks** - Review CONTINUE SESSION section
 5. **Resume with handover prompt** - Use continuation template above
-<!-- /ANCHOR:recovery-hints-session-1769634260067-usos48ies-003-memory-and-spec-kit/080-speckit-bug-remediation -->
+<!-- /ANCHOR:recovery-hints -->
 ---
 
 <!-- ANCHOR:metadata -->
@@ -480,7 +482,6 @@ Learning metrics will be calculated when both preflight and postflight data are 
 
 ## MEMORY METADATA
 
-<!-- ANCHOR:metadata-session-1769634260067-usos48ies-003-memory-and-spec-kit/080-speckit-bug-remediation -->
 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
@@ -571,7 +572,7 @@ embedding_version: "1.0"
 chunk_count: 1
 ```
 
-<!-- /ANCHOR:metadata-session-1769634260067-usos48ies-003-memory-and-spec-kit/080-speckit-bug-remediation -->
+<!-- /ANCHOR:metadata -->
 
 ---
 

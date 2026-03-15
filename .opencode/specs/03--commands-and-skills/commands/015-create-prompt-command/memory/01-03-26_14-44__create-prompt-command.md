@@ -12,7 +12,8 @@ quality_score: 0.60
 quality_flags:
   - "needs_review"
 ---
-# create prompt command session 01-03-26
+
+# Create Prompt Command
 
 ## SESSION SUMMARY
 
@@ -161,6 +162,7 @@ Next: Continue implementation
 - [`checklist.md`](./checklist.md) - QA checklist
 
 **Key Topics:** `decision` | `command` | `create` | `prompt` | `tomls` | `create prompt` | `prompt command` | `commands` | `commands and skills/commands/015 create prompt command` | `content` | `changelog` | `skills/commands/015` | 
+<!-- /ANCHOR:project-state-snapshot -->
 
 ---
 
@@ -256,28 +258,6 @@ rootCause: Gemini TOML command files used @{} file references which may not reso
 
 ---
 
-<!-- ANCHOR:decisions -->
-<a id="decisions"></a>
-
-<!-- DYNAMIC SECTION NUMBERING:
-  This section number depends on which optional sections are present:
-  - Base: 2 (after Overview)
-  - +1 if HAS_IMPLEMENTATION_GUIDE (adds section 1)
-  - +1 if HAS_OBSERVATIONS (adds Detailed Changes)
-  - +1 if HAS_WORKFLOW_DIAGRAM (adds Workflow Visualization)
-  
-  Result matrix:
-  | IMPL_GUIDE | OBSERVATIONS | WORKFLOW | This Section # |
-  |------------|--------------|----------|----------------|
-  | No         | No           | No       | 2              |
-  | No         | No           | Yes      | 3              |
-  | No         | Yes          | No       | 3              |
-  | No         | Yes          | Yes      | 4              |
-  | Yes        | No           | No       | 3              |
-  | Yes        | No           | Yes      | 4              |
-  | Yes        | Yes          | No       | 4              |
-  | Yes        | Yes          | Yes      | 5              |
--->
 <!-- ANCHOR:decisions -->
 <a id="decisions"></a>
 
@@ -393,14 +373,6 @@ rootCause: Gemini TOML command files used @{} file references which may not reso
 
 <!-- /ANCHOR:decisions -->
 
-<!-- ANCHOR:session-history -->
-<a id="conversation"></a>
-
-<!-- DYNAMIC SECTION NUMBERING:
-  This section number = DECISIONS section + 1
-  See DECISIONS section comment for the full matrix.
-  Range: 3-6 depending on optional sections present.
--->
 <!-- ANCHOR:session-history -->
 <a id="conversation"></a>
 
@@ -522,13 +494,11 @@ Learning metrics will be calculated when both preflight and postflight data are 
 <!-- /ANCHOR:postflight -->
 
 ---
-
 <!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 
-<!-- ANCHOR:metadata -->
 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
@@ -621,11 +591,7 @@ trigger_phrases:
   - "create prompt command"
   - "prompt improver wrapper"
   - "gemini toml embedding"
-  - "clear scoring workflow"related_sessions:
-
-  []
-
-parent_spec: "03--commands-and-skills/commands/015-create-prompt-command"
+  - "clear scoring workflow"parent_spec: "03--commands-and-skills/commands/015-create-prompt-command"
 child_sessions:
 
   []

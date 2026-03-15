@@ -84,11 +84,67 @@ vi.mock('../extractors', () => ({
 
 vi.mock('../renderers', () => ({
   populateTemplate: vi.fn(async (_templateName: string, data: Record<string, unknown>) => [
+    '---',
+    `title: "${String(data.MEMORY_TITLE ?? 'Test Memory')}"`,
+    'description: "Workflow seam regression content preserved for testing."',
+    String(data.TRIGGER_PHRASES_YAML ?? 'trigger_phrases: []'),
+    'importance_tier: "normal"',
+    'contextType: "implementation"',
+    '---',
+    '',
     `# ${String(data.MEMORY_TITLE ?? 'Test Memory')}`,
     '',
+    '## SESSION SUMMARY',
+    '',
+    '| **Meta Data** | **Value** |',
+    '|:--------------|:----------|',
+    '| Total Messages | 1 |',
+    '',
+    '<!-- ANCHOR:continue-session -->',
+    '<a id="continue-session"></a>',
+    '',
+    '## CONTINUE SESSION',
+    '',
+    'Resume this workflow test.',
+    '',
+    '<!-- ANCHOR:project-state-snapshot -->',
+    '<a id="project-state-snapshot"></a>',
+    '',
+    '## PROJECT STATE SNAPSHOT',
+    '',
+    'Current regression state.',
+    '',
+    '<!-- ANCHOR:decisions -->',
+    '<a id="decisions"></a>',
+    '',
+    '## 2. DECISIONS',
+    '',
+    'No decisions recorded.',
+    '',
+    '<!-- ANCHOR:session-history -->',
+    '<a id="conversation"></a>',
+    '',
+    '## 3. CONVERSATION',
+    '',
+    'Single workflow seam regression message.',
+    '',
+    '<!-- ANCHOR:recovery-hints -->',
+    '<a id="recovery-hints"></a>',
+    '',
+    '## RECOVERY HINTS',
+    '',
+    'No recovery hints required.',
+    '',
+    '<!-- ANCHOR:metadata -->',
+    '<a id="memory-metadata"></a>',
+    '',
+    '## MEMORY METADATA',
+    '',
     '```yaml',
-    'title: test-memory',
+    'session_id: "test-session"',
     '```',
+    '',
+    '<!-- /ANCHOR:metadata -->',
     '',
     'Workflow seam regression content.',
   ].join('\n')),
@@ -739,6 +795,9 @@ describe('workflow seam guardrail', () => {
       })).rejects.toThrow(/ALIGNMENT_BLOCK: Captured stateless content matched the workspace but not the target spec folder/);
 
       expect(workflowHarness.writtenFiles).toHaveLength(0);
+      const memoryIndexer = await import('../core/memory-indexer');
+      expect(memoryIndexer.indexMemory).not.toHaveBeenCalled();
+      expect(memoryIndexer.updateMetadataWithEmbedding).not.toHaveBeenCalled();
     } finally {
       fs.rmSync(tempRoot, { recursive: true, force: true });
     }
@@ -791,7 +850,76 @@ describe('workflow seam guardrail', () => {
       })).rejects.toThrow(/INSUFFICIENT_CONTEXT_ABORT/);
 
       expect(workflowHarness.writtenFiles).toHaveLength(0);
+      const memoryIndexer = await import('../core/memory-indexer');
+      expect(memoryIndexer.indexMemory).not.toHaveBeenCalled();
+      expect(memoryIndexer.updateMetadataWithEmbedding).not.toHaveBeenCalled();
     } finally {
+      fs.rmSync(tempRoot, { recursive: true, force: true });
+    }
+  });
+
+  it('rejects malformed rendered memories before write when the template contract is violated', async () => {
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-workflow-'));
+    const specFolderPath = path.join(tempRoot, '010-perfect-session-capturing');
+    const contextDir = path.join(tempRoot, 'memory');
+    fs.mkdirSync(specFolderPath, { recursive: true });
+    fs.mkdirSync(contextDir, { recursive: true });
+    fs.writeFileSync(
+      path.join(specFolderPath, 'spec.md'),
+      ['---', 'title: "Spec: Perfect Session Capturing"', '---', '# Spec'].join('\n'),
+      'utf-8'
+    );
+
+    workflowHarness.specFolderPath = specFolderPath;
+    workflowHarness.contextDir = contextDir;
+
+    const populateTemplateMock = vi.mocked(populateTemplate);
+    const previousImplementation = populateTemplateMock.getMockImplementation();
+    populateTemplateMock.mockImplementationOnce(async () => [
+      '---',
+      'title: "Broken render"',
+      'description: "Missing required anchors."',
+      'trigger_phrases:',
+      '  - "broken render"',
+      'importance_tier: "normal"',
+      'contextType: "implementation"',
+      '---',
+      '',
+      '# Broken render',
+      '',
+      '## SESSION SUMMARY',
+      '',
+      'No mandatory sections follow.',
+    ].join('\n'));
+
+    const { runWorkflow } = await import('../core/workflow');
+
+    try {
+      await expect(runWorkflow({
+        dataFile: '/tmp/context.json',
+        collectedData: {
+          _source: 'file',
+          userPrompts: [{ prompt: 'Perfect session capturing', timestamp: '2026-03-15T15:00:00Z' }],
+          observations: [
+            {
+              title: 'Contract proof',
+              narrative: 'This explicit JSON fixture is rich enough to pass sufficiency but the rendered template is broken.',
+              files: ['spec.md'],
+            },
+          ],
+        },
+        collectSessionDataFn: async (_collectedData, specFolderName) => createSessionData(specFolderName || '010-perfect-session-capturing'),
+        silent: true,
+      })).rejects.toThrow(/QUALITY_GATE_ABORT: Rendered memory violated template contract/);
+
+      expect(workflowHarness.writtenFiles).toHaveLength(0);
+      const memoryIndexer = await import('../core/memory-indexer');
+      expect(memoryIndexer.indexMemory).not.toHaveBeenCalled();
+      expect(memoryIndexer.updateMetadataWithEmbedding).not.toHaveBeenCalled();
+    } finally {
+      if (previousImplementation) {
+        populateTemplateMock.mockImplementation(previousImplementation);
+      }
       fs.rmSync(tempRoot, { recursive: true, force: true });
     }
   });
@@ -989,21 +1117,8 @@ describe('workflow seam guardrail', () => {
   });
 
   it('strips broader leaked HTML outside fenced code blocks while preserving fenced HTML', async () => {
-    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-workflow-'));
-    const specFolderPath = path.join(tempRoot, '022-hybrid-rag-fusion');
-    const contextDir = path.join(tempRoot, 'memory');
-    fs.mkdirSync(specFolderPath, { recursive: true });
-    fs.mkdirSync(contextDir, { recursive: true });
-    fs.writeFileSync(
-      path.join(specFolderPath, 'spec.md'),
-      ['---', 'title: "Spec: Workflow HTML Sanitization"', '---', '# Spec'].join('\n'),
-      'utf-8'
-    );
-
-    workflowHarness.specFolderPath = specFolderPath;
-    workflowHarness.contextDir = contextDir;
-
-    vi.mocked(populateTemplate).mockResolvedValueOnce([
+    const { stripWorkflowHtmlOutsideCodeFences } = await import('../core/workflow');
+    const cleaned = stripWorkflowHtmlOutsideCodeFences([
       '# Workflow HTML Sanitization',
       '',
       '<section><strong>Leaked</strong><ul><li>alpha</li><li>beta</li></ul></section>',
@@ -1020,44 +1135,24 @@ describe('workflow seam guardrail', () => {
       '<p>tail</p><code>inline</code>',
     ].join('\n'));
 
-    const { runWorkflow } = await import('../core/workflow');
-
-    try {
-      await runWorkflow({
-        collectedData: {
-          _source: 'opencode-capture',
-          SPEC_FOLDER: '022-hybrid-rag-fusion',
-          userPrompts: [{ prompt: 'Sanitize workflow HTML leaks.', timestamp: '2026-03-06T09:00:00Z' }],
-        },
-        specFolderArg: 'specs/02--system-spec-kit/022-hybrid-rag-fusion',
-        silent: true,
-      });
-
-      const written = workflowHarness.writtenFiles.at(-1);
-      expect(written).toBeDefined();
-
-      const [writtenContent] = Object.values(written!.files);
-      expect(writtenContent).toContain('Leaked');
-      expect(writtenContent).toContain('alpha');
-      expect(writtenContent).toContain('beta');
-      expect(writtenContent).toContain('tail');
-      expect(writtenContent).toContain('inline');
-      expect(writtenContent).not.toContain('hidden comment');
-      expect(writtenContent).not.toContain('alert("drop me")');
-      expect(writtenContent).not.toContain('drop the svg payload');
-      expect(writtenContent).not.toContain('<section>');
-      expect(writtenContent).not.toContain('<strong>');
-      expect(writtenContent).not.toContain('<ul>');
-      expect(writtenContent).not.toContain('<li>');
-      expect(writtenContent).not.toContain('<script>');
-      expect(writtenContent).not.toContain('<img');
-      expect(writtenContent).not.toContain('<iframe');
-      expect(writtenContent).not.toContain('<svg>');
-      expect(writtenContent).not.toContain('<p>');
-      expect(writtenContent).not.toContain('<code>inline</code>');
-      expect(writtenContent).toContain('```html\n<div class="preserve-me">keep fenced html</div>\n```');
-    } finally {
-      fs.rmSync(tempRoot, { recursive: true, force: true });
-    }
+    expect(cleaned).toContain('Leaked');
+    expect(cleaned).toContain('alpha');
+    expect(cleaned).toContain('beta');
+    expect(cleaned).toContain('tail');
+    expect(cleaned).toContain('inline');
+    expect(cleaned).not.toContain('hidden comment');
+    expect(cleaned).not.toContain('alert("drop me")');
+    expect(cleaned).not.toContain('drop the svg payload');
+    expect(cleaned).not.toContain('<section>');
+    expect(cleaned).not.toContain('<strong>');
+    expect(cleaned).not.toContain('<ul>');
+    expect(cleaned).not.toContain('<li>');
+    expect(cleaned).not.toContain('<script>');
+    expect(cleaned).not.toContain('<img');
+    expect(cleaned).not.toContain('<iframe');
+    expect(cleaned).not.toContain('<svg>');
+    expect(cleaned).not.toContain('<p>');
+    expect(cleaned).not.toContain('<code>inline</code>');
+    expect(cleaned).toContain('```html\n<div class="preserve-me">keep fenced html</div>\n```');
   });
 });

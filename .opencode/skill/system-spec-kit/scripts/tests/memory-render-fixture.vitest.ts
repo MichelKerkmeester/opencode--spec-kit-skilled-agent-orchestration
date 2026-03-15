@@ -8,6 +8,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { validateMemoryQualityContent } from '../memory/validate-memory-quality';
 import type { SessionData } from '../types/session-types';
+import { validateMemoryTemplateContract } from '../../shared/parsing/memory-template-contract';
 
 const workflowHarness = vi.hoisted(() => ({
   specFolderPath: '',
@@ -207,6 +208,7 @@ describe('rendered memory fixture regression', () => {
       const renderedPath = path.join(result.contextDir, result.contextFilename);
       const rendered = fs.readFileSync(renderedPath, 'utf-8');
       const validation = validateMemoryQualityContent(rendered);
+      const contract = validateMemoryTemplateContract(rendered);
       const frontmatterTitle = rendered.match(/^title:\s*"([^"]+)"$/m)?.[1] ?? '';
       const heading = rendered.match(/^#\s+(.+)$/m)?.[1] ?? '';
       const frontmatter = rendered.match(/^---\n([\s\S]*?)\n---/m)?.[1] ?? '';
@@ -233,6 +235,7 @@ describe('rendered memory fixture regression', () => {
 
       expect(validation.failedRules).toEqual([]);
       expect(validation.valid).toBe(true);
+      expect(contract.valid).toBe(true);
     } finally {
       CONFIG.TEMPLATE_DIR = previousTemplateDir;
       fs.rmSync(tempRoot, { recursive: true, force: true });

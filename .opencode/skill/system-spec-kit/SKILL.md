@@ -555,7 +555,7 @@ Context preservation across sessions via hybrid search (vector similarity + BM25
 - **Decay scoring** — FSRS v4 power-law model; recent memories rank higher
 - **Import-path hardening** - Spec 126 fixed MCP import-path regressions in memory runtime modules (including context server + attention decay wiring)
 - **Metadata preservation pipeline** - `memory_save` update/reinforce paths preserve `document_type` and `spec_level`, and vector-index metadata updates stay in sync
-- **Descriptive memory titles** - context generation writes `MEMORY_TITLE` into frontmatter and heading; parser falls back to feature/overview content when the top heading is generic (for example, "SESSION SUMMARY")
+- **Descriptive memory titles** - context generation derives `MEMORY_TITLE` from the content slug (the same `generateContentSlug()` output used for the filename), title-cased via `slugToTitle()`. This guarantees every memory H1 is unique, deterministic, and descriptive. The parser falls back to feature/overview content when the top heading is generic
 - **Causal edge stability** - conflict-update semantics keep causal edge IDs stable during re-link and graph maintenance operations
 - **Real-time sync** — Use `memory_save` or `memory_index_scan` after creating files
 - **Checkpoints** — Gzip-compressed JSON snapshots of memory_index + working_memory; max 10 stored; transaction-wrapped restore

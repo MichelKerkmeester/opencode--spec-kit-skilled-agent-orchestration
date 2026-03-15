@@ -109,8 +109,6 @@ contextType: "general"
   Format: {branch_name} or "detached:{commit_hash}" if detached HEAD
 -->
 
----
-
 # {{MEMORY_TITLE}}
 
 ## SESSION SUMMARY
@@ -236,6 +234,7 @@ Next: {{NEXT_ACTION}}
 
 ---
 
+<!-- ANCHOR:project-state-snapshot -->
 <a id="project-state-snapshot"></a>
 
 ## PROJECT STATE SNAPSHOT
@@ -267,6 +266,7 @@ Next: {{NEXT_ACTION}}
 {{#HAS_KEY_TOPICS}}
 **Key Topics:** {{#TOPICS}}`{{.}}`{{^LAST}} | {{/LAST}}{{/TOPICS}}
 {{/HAS_KEY_TOPICS}}
+<!-- /ANCHOR:project-state-snapshot -->
 
 ---
 
@@ -371,6 +371,7 @@ Next: {{NEXT_ACTION}}
 {{/HAS_OBSERVATIONS}}
 {{#HAS_WORKFLOW_DIAGRAM}}
 
+<!-- ANCHOR:workflow-visualization -->
 <a id="workflow-visualization"></a>
 
 <!-- DYNAMIC SECTION NUMBERING:
@@ -435,6 +436,7 @@ Next: {{NEXT_ACTION}}
 >
 > For detailed pattern examples, see:
 > `.opencode/skill/system-spec-kit/references/`
+<!-- /ANCHOR:workflow-visualization -->
 
 ---
 {{/HAS_WORKFLOW_DIAGRAM}}
@@ -709,11 +711,10 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js {{S
 
 ---
 
+<!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
-
-<!-- ANCHOR:metadata -->
 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
