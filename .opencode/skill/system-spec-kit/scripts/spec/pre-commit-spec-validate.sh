@@ -38,6 +38,22 @@ load_enforcement_config() {
 
     val=$(grep -E '^\s+created_after:\s*' "$ENFORCE_CONFIG" 2>/dev/null | head -1 | sed 's/.*created_after:\s*//' | tr -d '[:space:]"'"'" || true)
     [[ -n "$val" ]] && CREATED_AFTER="$val"
+
+    # Parse pre_commit_rules list from config
+    local in_rules=false rules_str=""
+    while IFS= read -r line; do
+        if [[ "$line" =~ ^pre_commit_rules: ]]; then
+            in_rules=true; continue
+        elif $in_rules; then
+            if [[ "$line" =~ ^[[:space:]]*-[[:space:]]+([A-Za-z0-9_]+) ]]; then
+                [[ -n "$rules_str" ]] && rules_str+=","
+                rules_str+="${BASH_REMATCH[1]}"
+            elif [[ ! "$line" =~ ^[[:space:]]*- ]]; then
+                break
+            fi
+        fi
+    done < "$ENFORCE_CONFIG"
+    [[ -n "$rules_str" ]] && FAST_RULES="$rules_str"
 }
 
 # ───────────────────────────────────────────────────────────────
@@ -97,7 +113,7 @@ is_after_enforcement_date() {
     # Check git log for earliest commit of spec.md in this folder
     local folder_rel="${folder#"$REPO_ROOT"/}"
     local first_commit_date
-    first_commit_date=$(git log --diff-filter=A --format="%Y-%m-%d" -- "$folder_rel/spec.md" 2>/dev/null | tail -1 || true)
+    first_commit_date=$(git log --diff-filter=A --date=short --format=%ad -- "$folder_rel/spec.md" 2>/dev/null | tail -1 || true)
 
     # If not yet committed (new file), it's after the date
     if [[ -z "$first_commit_date" ]]; then
