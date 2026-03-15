@@ -14,10 +14,12 @@ contextType: "implementation"
 spec: "089"
 total-tasks: 28
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks: system-spec-kit Reimagined Refinement
 
 ---
 
+<!-- ANCHOR:notation -->
 ## Phase 1: CRITICAL (P0)
 
 | # | Task | File(s) | Status | Notes |
@@ -28,6 +30,7 @@ total-tasks: 28
 | 1.4 | Reconcile LOC counts across 3 documents | `SKILL.md`, `level_specifications.md`, `level_selection_guide.md` | [ ] | Count actual LOC, update all 3 |
 | 1.5 | Fix Voyage model version contradiction | `embedding_resilience.md`, `environment_variables.md` | [ ] | voyage-3 vs voyage-4 |
 
+<!-- /ANCHOR:notation -->
 ## Phase 2: HIGH (P1)
 
 | # | Task | File(s) | Status | Notes |

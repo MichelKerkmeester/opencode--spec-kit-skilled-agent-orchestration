@@ -10,6 +10,7 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks: Spec 016 — Handover Haiku + Codex Agent Conversion
 
 <!-- ANCHOR:phase-1 -->

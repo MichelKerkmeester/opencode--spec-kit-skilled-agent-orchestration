@@ -10,8 +10,10 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # MCP Embedding Failure - Tasks
 
+<!-- ANCHOR:notation -->
 ## Task Overview
 
 | ID | Task | Priority | Status | Owner |
@@ -24,6 +26,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## P0: Critical
 
 ### T001: Provide Immediate Fix Instructions to User

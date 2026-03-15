@@ -1,8 +1,15 @@
+---
+title: "Spec: Adversarial Self-Check for Review, Debug, Ultra-Think Agents"
+---
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Spec: Adversarial Self-Check for Review, Debug, Ultra-Think Agents
 
+<!-- ANCHOR:metadata -->
 ## Problem
 LLM agents are vulnerable to sycophancy bias: reviewers may find phantom issues to appear thorough or approve too readily; debuggers anchor on first hypotheses; planners converge strategies artificially. Single-pass analysis misses issues that adversarial tension would catch.
 
+<!-- /ANCHOR:metadata -->
 ## Solution
 Incorporate the Hunter/Skeptic/Referee adversarial methodology (inspired by @systematicls) as an internal multi-pass protocol into three LEAF agents: @review, @debug, and @ultra-think. This creates adversarial tension through biased scoring incentives without requiring sub-agent dispatch.
 

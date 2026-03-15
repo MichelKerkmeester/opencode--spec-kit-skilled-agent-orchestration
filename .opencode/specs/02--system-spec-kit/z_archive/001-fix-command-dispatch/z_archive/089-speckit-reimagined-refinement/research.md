@@ -15,6 +15,7 @@ methodology: "10 parallel Opus 4.6 research agents"
 spec: "089"
 total-findings: "~120+"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: research | v1.0 -->
 # Research: system-spec-kit Ecosystem Audit
 
 > Complete findings from 10 parallel research agents analyzing the entire system-spec-kit skill ecosystem.

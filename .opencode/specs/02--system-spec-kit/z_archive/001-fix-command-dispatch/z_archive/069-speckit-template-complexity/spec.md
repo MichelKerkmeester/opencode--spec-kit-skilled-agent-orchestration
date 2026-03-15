@@ -13,6 +13,7 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 3 -->
 # Feature Specification: Level-Based Template Architecture
 
 Transform static system-spec-kit templates into a level-based folder system with pre-expanded templates for each documentation level.
@@ -21,6 +22,7 @@ Transform static system-spec-kit templates into a level-based folder system with
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. OBJECTIVE
 
 ### Metadata
@@ -59,6 +61,7 @@ Provide level-appropriate templates through dedicated folder structure, eliminat
 
 ---
 
+<!-- /ANCHOR:metadata -->
 ## 2. SCOPE
 
 ### In Scope

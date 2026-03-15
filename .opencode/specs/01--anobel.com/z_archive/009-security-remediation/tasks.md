@@ -9,6 +9,7 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Security Remediation Tasks
 
 <!-- ANCHOR:xss-fixes -->

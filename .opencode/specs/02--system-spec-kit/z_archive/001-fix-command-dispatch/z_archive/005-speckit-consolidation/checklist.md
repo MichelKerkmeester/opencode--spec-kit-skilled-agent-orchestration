@@ -19,6 +19,7 @@ Quality assurance checklist for verifying the SpecKit consolidation migration.
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## P0: CRITICAL (Hard Blockers - Must Complete)
 
 ### File Migration
@@ -73,6 +74,7 @@ Quality assurance checklist for verifying the SpecKit consolidation migration.
 
 ---
 
+<!-- /ANCHOR:protocol -->
 ## P1: HIGH (Must Complete or Defer with Approval)
 
 ### Documentation Updates

@@ -20,6 +20,7 @@ Implementation plan for adding automatic keyword detection for handover.md and d
 
 ---
 
+<!-- ANCHOR:summary -->
 ## 1. OBJECTIVE
 
 ### Metadata
@@ -50,6 +51,7 @@ Add three targeted modifications to SKILL.md: (1) new "Utility Template Triggers
 
 ---
 
+<!-- /ANCHOR:summary -->
 ## 2. QUALITY GATES
 
 **GATE: Must pass before implementation.**

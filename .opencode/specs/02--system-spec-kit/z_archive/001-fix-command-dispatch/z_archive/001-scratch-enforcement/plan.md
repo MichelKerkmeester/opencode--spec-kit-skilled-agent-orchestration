@@ -19,6 +19,7 @@ Implementation plan defining the recommended changes to enforce scratch folder u
 
 ---
 
+<!-- ANCHOR:summary -->
 ## 1. OBJECTIVE
 
 ### Metadata
@@ -41,6 +42,7 @@ Based on analysis from 8 parallel agents, implement documentation-based enforcem
 
 ---
 
+<!-- /ANCHOR:summary -->
 ## 2. OPENCODE COMPATIBILITY STRATEGY
 
 ### The Problem

@@ -19,6 +19,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:notation -->
 ## Task Overview
 
 | Phase | Tasks | Status |
@@ -30,6 +31,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## Phase 1 Tasks
 
 ### TASK-001: Cognitive Module Fixes (Agent 1)

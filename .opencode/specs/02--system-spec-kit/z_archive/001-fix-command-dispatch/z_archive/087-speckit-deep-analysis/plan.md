@@ -19,6 +19,7 @@ contextType: "decision"
 
 ---
 
+<!-- ANCHOR:summary -->
 ## 1. SUMMARY
 
 ### Technical Context
@@ -35,6 +36,7 @@ Fix 3 critical bugs (SQL constraint, ghost tools, stale references), 15+ moderat
 
 ---
 
+<!-- /ANCHOR:summary -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready

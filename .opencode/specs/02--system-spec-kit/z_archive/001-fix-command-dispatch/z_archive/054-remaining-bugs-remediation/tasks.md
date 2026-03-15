@@ -10,6 +10,7 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks: Remaining Bugs Remediation
 
 | Field | Value |
@@ -21,6 +22,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:notation -->
 ## Task Status Legend
 
 | Status | Meaning |
@@ -33,6 +35,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## Phase 1: Critical Fixes (P0)
 
 ### BUG-001: Race Condition - Dual Database Connection

@@ -12,6 +12,7 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Task Breakdown: Post-Merge Refinement Final
 
 | **Field** | **Value** |
@@ -24,6 +25,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:notation -->
 ## Phase 1: Critical Fixes (P0)
 
 ### TASK-P0-001: Remove Duplicate getConstitutionalMemories
@@ -200,6 +202,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## Phase 2: Documentation Alignment (P1-DOC)
 
 ### TASK-P1-001: Fix Gate Numbering

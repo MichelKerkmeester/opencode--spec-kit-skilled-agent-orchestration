@@ -11,6 +11,7 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Plan: Constitutional Memory System README
 
 | Metadata | Value |
@@ -21,6 +22,7 @@ contextType: "decision"
 
 ---
 
+<!-- ANCHOR:summary -->
 ## 1. Technical Approach
 
 ### Research Phase
@@ -57,6 +59,7 @@ Create README.md with sections:
 
 ---
 
+<!-- /ANCHOR:summary -->
 ## 2. Implementation Phases
 
 ### Phase 1: Research (Complete)

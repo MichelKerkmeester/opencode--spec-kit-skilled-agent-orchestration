@@ -19,6 +19,7 @@ contextType: "decision"
 
 ---
 
+<!-- ANCHOR:summary -->
 ## 1. SUMMARY
 
 ### Technical Context
@@ -36,6 +37,7 @@ Fix 4 known limitations from the 087-speckit-deep-analysis: unify the `memory_co
 
 ---
 
+<!-- /ANCHOR:summary -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready

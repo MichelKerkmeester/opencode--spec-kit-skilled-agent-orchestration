@@ -19,6 +19,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:notation -->
 ## Task Notation
 
 | Prefix | Meaning |
@@ -32,6 +33,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## Phase 1: SQLite Schema Unification (KL-1)
 
 - [x] T001 [P0] Design unified memory_conflicts DDL merging Schema A + Schema C columns → CHK-010

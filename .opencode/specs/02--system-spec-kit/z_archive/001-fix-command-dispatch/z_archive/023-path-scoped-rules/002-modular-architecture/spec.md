@@ -10,8 +10,11 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Modular Validation Architecture
 
+<!-- ANCHOR:metadata -->
 ## Metadata
 
 | Field | Value |
@@ -23,6 +26,7 @@ contextType: "decision"
 | **Parent** | 012-path-scoped-rules |
 | **Predecessor** | 001-mvp-monolithic (72% complete) |
 
+<!-- /ANCHOR:metadata -->
 ## 1. Problem Statement
 
 The current `validate-spec.sh` script is a monolithic ~600 line file. Adding all planned features (PRIORITY_TAGS, EVIDENCE_CITED, ANCHORS_VALID, .speckit.yaml config, glob patterns) would bloat it to ~1400 lines, making it:

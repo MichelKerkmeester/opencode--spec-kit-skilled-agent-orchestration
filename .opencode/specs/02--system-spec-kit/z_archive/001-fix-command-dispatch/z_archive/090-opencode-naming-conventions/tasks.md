@@ -18,6 +18,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:notation -->
 ## Task Notation
 
 | Prefix | Meaning |
@@ -29,6 +30,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## Phase 1: Spec Folder Setup
 
 - [x] T001 Create spec folder structure (090-opencode-naming-conventions/)

@@ -1,3 +1,6 @@
+---
+title: "Decision Record: Perfect Session Capturing"
+---
 # Decision Record: Perfect Session Capturing
 
 <!-- SPECKIT_LEVEL: 3 -->

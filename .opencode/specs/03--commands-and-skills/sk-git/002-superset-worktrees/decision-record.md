@@ -10,6 +10,7 @@ contextType: "decision"
 # Decision Record: sk-git Superset Worktree Alignment
 
 <!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
 
 ---
 

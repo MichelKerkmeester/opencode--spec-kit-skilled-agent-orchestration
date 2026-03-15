@@ -11,8 +11,10 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Task Breakdown by Agent
 
+<!-- ANCHOR:notation -->
 ## Agent 1: Buffer & Embedding Core
 - [x] P0-001: Fix Buffer.from() byteOffset (vector-index.js:41-48)
 - [ ] P0-002: Fix query buffer conversion (vector-index.js:748-750)
@@ -22,6 +24,7 @@ contextType: "implementation"
 - [ ] P2-001: Fix constitutional token estimation (vector-index.js:786-789)
 - [ ] P2-002: Add embedding dimension validation
 
+<!-- /ANCHOR:notation -->
 ## Agent 2: MCP Schema & Validation
 - [ ] P0-003: Fix memory_load schema (semantic-memory.js:253)
 - [ ] P1-004: Add includeContiguity to hybrid search (semantic-memory.js:601-631)

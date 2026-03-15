@@ -11,11 +11,15 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: CORE -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Debug Delegation Integration
 
+<!-- ANCHOR:metadata -->
 ## Problem Statement
 The `debug-delegation.md` template exists in SpecKit but is underutilized. There's no active workflow that triggers its use, and debugging tasks are handled ad-hoc without structured context handoff to sub-agents.
 
+<!-- /ANCHOR:metadata -->
 ## Solution
 Create a `/spec_kit:debug` command and auto-detection system that:
 1. **Always uses parallel sub-agent** for debugging via Task tool

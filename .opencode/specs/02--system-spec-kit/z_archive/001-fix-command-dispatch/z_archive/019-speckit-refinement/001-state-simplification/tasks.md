@@ -12,6 +12,7 @@ contextType: "implementation"
 # State Simplification: Tasks
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks | v1.1 -->
 
+<!-- ANCHOR:notation -->
 ## Tasks
 
 ### T1: Modify generate-context.js
@@ -58,6 +59,7 @@ contextType: "implementation"
   2. Update implementation-summary.md in parent spec folder
 - **Priority:** P2
 
+<!-- /ANCHOR:notation -->
 ## Dependencies
 
 ```

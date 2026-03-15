@@ -11,8 +11,10 @@ importance_tier: "normal"
 contextType: "implementation"
 id: 036-post-merge-refinement
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks
 
+<!-- ANCHOR:notation -->
 ## Epic: Post-Merger System Refinement
 
 ### P0 - Critical (Must Fix First)
@@ -73,6 +75,7 @@ id: 036-post-merge-refinement
 - [ ] **TASK-016**: Add automated test suite
 - [ ] **TASK-017**: Refactor generate-context.js complexity
 
+<!-- /ANCHOR:notation -->
 ## Progress Tracking
 
 | Priority | Total | Done | Remaining |

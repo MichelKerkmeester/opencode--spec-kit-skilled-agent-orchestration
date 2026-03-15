@@ -10,6 +10,7 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Plan: Spec 016 — Handover Haiku + Codex Agent Conversion
 
 <!-- ANCHOR:architecture -->

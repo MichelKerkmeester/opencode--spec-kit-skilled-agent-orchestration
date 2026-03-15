@@ -19,6 +19,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## Verification Protocol
 
 | Priority | Handling | Completion Impact |
@@ -29,6 +30,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:protocol -->
 ## Pre-Implementation
 
 - [ ] CHK-001 [P0] Requirements documented in spec.md

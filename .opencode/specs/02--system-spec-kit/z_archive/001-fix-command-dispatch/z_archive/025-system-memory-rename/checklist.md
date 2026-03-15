@@ -11,8 +11,10 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 # Checklist: Rename workflows-memory → system-memory
 
+<!-- ANCHOR:protocol -->
 ## Overview
 
 | Priority | Count | Status |
@@ -24,6 +26,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:protocol -->
 ## P0: Critical (HARD BLOCKERS)
 
 These items MUST pass before claiming completion.

@@ -9,14 +9,17 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Implementation Plan
 
+<!-- ANCHOR:summary -->
 ## Overview
 
 Three-phase approach addressing issues by priority. Each phase must complete before the next begins (P0 fixes may unblock P1 work).
 
 ---
 
+<!-- /ANCHOR:summary -->
 ## Phase 1: P0 Critical Fixes
 
 **Timeline**: First priority - complete before any other work

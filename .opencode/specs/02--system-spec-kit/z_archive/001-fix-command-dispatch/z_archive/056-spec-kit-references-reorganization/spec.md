@@ -11,12 +11,16 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # system-spec-kit References Reorganization
 
+<!-- ANCHOR:metadata -->
 ## Problem Statement
 
 The `system-spec-kit` skill's `references/` folder currently has a flat structure with all reference files at the root level. This makes navigation difficult, slows down discovery of relevant documentation, and creates inconsistency with other skills like `workflows-code` that use organized sub-folder structures.
 
+<!-- /ANCHOR:metadata -->
 ## Goals
 
 1. **Organize references into logical sub-folders** - Group related files by domain/purpose

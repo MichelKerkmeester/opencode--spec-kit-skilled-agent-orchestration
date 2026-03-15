@@ -19,6 +19,7 @@ Task list for removing Claude Code Hook references from workflows-memory skill.
 
 ---
 
+<!-- ANCHOR:notation -->
 ## 1. OBJECTIVE
 
 ### Metadata
@@ -31,6 +32,7 @@ Analysis results from spec.md identifying 2 problematic hook references in READM
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## 2. TASK LIST
 
 ### Phase 1: README.md Updates

@@ -9,12 +9,16 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Test Spec Level 1
 
 | **Level** | 1 |
 
+<!-- ANCHOR:metadata -->
 ## Overview
 Test specification for validation testing of Level 1 spec folders.
 
+<!-- /ANCHOR:metadata -->
 ## Requirements
 - R1: Test requirement for validation

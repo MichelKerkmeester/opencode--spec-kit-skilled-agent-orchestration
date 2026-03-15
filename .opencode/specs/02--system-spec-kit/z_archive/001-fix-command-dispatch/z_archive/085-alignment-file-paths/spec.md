@@ -11,12 +11,16 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: CORE -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # 085: Alignment Validator File Path Analysis
 
+<!-- ANCHOR:metadata -->
 ## Problem Statement
 
 Memory files are being saved to incorrect spec folders because the alignment scoring ignores file paths. When work is done on shared infrastructure (`.opencode/skill/system-spec-kit/`), the memory is saved to a project-specific folder (e.g., `005-anobel.com`) based on text matching alone.
 
+<!-- /ANCHOR:metadata -->
 ## Root Cause
 
 ### Chain of Failure

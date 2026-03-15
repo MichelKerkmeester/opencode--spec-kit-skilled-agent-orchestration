@@ -20,6 +20,7 @@ Implementation tasks for aligning SpecKit with level-based template architecture
 
 ---
 
+<!-- ANCHOR:notation -->
 ## Task Overview
 
 | Phase | Tasks | Priority | Status |
@@ -32,6 +33,7 @@ Implementation tasks for aligning SpecKit with level-based template architecture
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## Phase 1: Script Updates (P0 - CRITICAL)
 
 ### TASK-001: Update create-spec-folder.sh [P0]

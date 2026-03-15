@@ -12,8 +12,11 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # System Health Audit - Comprehensive Bug Fix
 
+<!-- ANCHOR:metadata -->
 ## Overview
 
 **Spec ID:** 032-system-health-audit  
@@ -22,6 +25,7 @@ contextType: "decision"
 **Level:** 3 (Complex/Architecture)  
 **Actual LOC Changed:** 500+
 
+<!-- /ANCHOR:metadata -->
 ## Problem Statement
 
 A comprehensive audit combining **20-agent deep analysis** and **System Health Dashboard** findings revealed critical bugs, alignment issues, and UX problems across multiple systems:

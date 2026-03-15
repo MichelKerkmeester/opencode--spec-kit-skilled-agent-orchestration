@@ -19,6 +19,7 @@ Validation checklist for research task completion. All P0 items must be complete
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## VERIFICATION STATUS
 
 | Priority | Total | Complete | Deferred | Remaining |
@@ -35,6 +36,7 @@ Validation checklist for research task completion. All P0 items must be complete
 
 ---
 
+<!-- /ANCHOR:protocol -->
 ## P0: CRITICAL (Must Complete)
 
 ### Analysis Completeness

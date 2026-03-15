@@ -10,6 +10,7 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 # QA Checklist - Load Toggle Component
 
 <!-- ANCHOR:summary -->

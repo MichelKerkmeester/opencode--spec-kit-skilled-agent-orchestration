@@ -19,6 +19,7 @@ contextType: "decision"
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## EXECUTIVE SUMMARY
 
 Enterprise-scale refinement of the SpecKit template optimization (Spec 073), conducted through multi-agent orchestration with 20+ Opus 4.5 agents executing parallel research, implementation, and verification workstreams. The work delivered comprehensive analysis documents, implemented 5 priority recommendations, and updated 25+ files across the entire skill system, resulting in version bump to v1.9.0.
@@ -29,6 +30,7 @@ Enterprise-scale refinement of the SpecKit template optimization (Spec 073), con
 
 ---
 
+<!-- /ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |

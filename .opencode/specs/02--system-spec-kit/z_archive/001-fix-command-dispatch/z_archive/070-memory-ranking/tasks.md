@@ -11,6 +11,7 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks: Memory & Folder Ranking Implementation
 
 > **Spec:** `070-memory-ranking`  
@@ -18,6 +19,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:notation -->
 ## Phase 1: Quick Wins (No MCP Changes)
 
 ### P1-1: Implement Archive Detection Function
@@ -290,6 +292,7 @@ Add option to show/hide archived folders in dashboard.
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## Phase 2: MCP Enhancements
 
 ### P2-1: Add Ranking Parameters to memory_stats()

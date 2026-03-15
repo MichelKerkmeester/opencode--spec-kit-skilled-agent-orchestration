@@ -13,12 +13,14 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Task Breakdown: Spec Kit Bug Fixes
 
 > Detailed task list for implementing all bug fixes identified in the 15-agent audit.
 
 ---
 
+<!-- ANCHOR:notation -->
 ## Document Information
 
 | Field | Value |
@@ -29,6 +31,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## Task Summary by Phase
 
 | Phase | Priority | Tasks | Status |

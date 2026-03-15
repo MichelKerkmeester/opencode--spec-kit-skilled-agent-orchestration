@@ -11,8 +11,10 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks: Memory Plugin bun:sqlite Migration
 
+<!-- ANCHOR:notation -->
 ## CRITICAL FINDING
 
 **bun:sqlite is API-compatible with better-sqlite3!**
@@ -28,6 +30,7 @@ Bun's SQLite implementation was specifically designed to be a drop-in replacemen
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## Overview
 Migration of the memory plugin from better-sqlite3 to bun:sqlite to fix compatibility with OpenCode's Bun runtime.
 

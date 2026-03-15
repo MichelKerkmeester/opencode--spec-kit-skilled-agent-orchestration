@@ -9,12 +9,15 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Plan: Invalid Anchors Fixture
 
+<!-- ANCHOR:summary -->
 ## Technical Context
 
 Testing detection of malformed anchor tags in memory files.
 
+<!-- /ANCHOR:summary -->
 ## Architecture
 
 Level 1 spec with memory folder containing invalid anchors.

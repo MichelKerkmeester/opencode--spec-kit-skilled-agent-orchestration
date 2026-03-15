@@ -14,8 +14,11 @@ id: 039-node-modules-consolidation
 level: 2
 status: Complete
 ---
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Node Modules Consolidation
 
+<!-- ANCHOR:metadata -->
 ## Problem Statement
 
 The `system-spec-kit` skill has **duplicate node_modules directories** consuming ~1.9GB:
@@ -27,6 +30,7 @@ The `system-spec-kit` skill has **duplicate node_modules directories** consuming
 
 **Key finding:** All 79 packages in `scripts/` are duplicated in `mcp_server/` (100% overlap).
 
+<!-- /ANCHOR:metadata -->
 ## Current State
 
 ### scripts/package.json (3 dependencies)

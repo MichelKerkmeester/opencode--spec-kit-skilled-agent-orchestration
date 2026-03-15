@@ -16,6 +16,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:notation -->
 ## TASK NOTATION
 
 | Prefix | Meaning |
@@ -47,6 +48,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## Phase 1: Quick Wins (Week 1)
 
 ### Day 1: Session Deduplication

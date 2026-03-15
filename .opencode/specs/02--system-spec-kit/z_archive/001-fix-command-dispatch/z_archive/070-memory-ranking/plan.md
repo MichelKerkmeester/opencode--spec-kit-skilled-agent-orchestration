@@ -11,6 +11,7 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Plan: Memory & Folder Ranking Implementation
 
 > **Spec:** `070-memory-ranking`  
@@ -19,6 +20,7 @@ contextType: "decision"
 
 ---
 
+<!-- ANCHOR:summary -->
 ## 1. Implementation Strategy
 
 ### Phase Overview
@@ -45,6 +47,7 @@ Phase 3: Advanced Ranking (Future)
 
 ---
 
+<!-- /ANCHOR:summary -->
 ## 2. Phase 1: Quick Wins
 
 **Timeline:** Immediate  

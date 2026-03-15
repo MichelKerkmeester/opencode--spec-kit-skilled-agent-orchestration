@@ -13,6 +13,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## P0: Critical (Must Pass)
 
 - [x] **No old model references in cli-gemini** — `grep -rn "gemini-2\." .opencode/skill/cli-gemini/` returns zero results
@@ -26,6 +27,7 @@ contextType: "implementation"
 - [x] **Symlink works** — .claude/skills/cli-codex → ../../.opencode/skill/cli-codex
   [EVIDENCE: ls -la shows correct symlink target]
 
+<!-- /ANCHOR:protocol -->
 ## P1: Important (Should Pass)
 
 - [x] **skill_advisor.py recognizes cli-codex** — entries in INTENT_BOOSTERS, MULTI_SKILL_BOOSTERS, PHRASE_INTENT_BOOSTERS

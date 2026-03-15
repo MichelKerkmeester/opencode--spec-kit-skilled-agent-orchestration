@@ -1,3 +1,6 @@
+---
+title: "Implementation Plan"
+---
 <!-- SPECKIT_TEMPLATE_SOURCE: .opencode/skill/system-spec-kit/templates/plan.md -->
 ---
 title: "Implementation Plan: Refactor /memory:learn → Constitutional Memory Manager"

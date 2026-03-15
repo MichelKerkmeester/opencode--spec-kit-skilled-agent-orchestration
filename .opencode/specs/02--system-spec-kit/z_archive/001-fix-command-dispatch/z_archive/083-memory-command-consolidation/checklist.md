@@ -10,6 +10,7 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 # Checklist: Memory Command Consolidation
 
 **Spec ID:** 083-memory-command-consolidation
@@ -19,6 +20,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## Pre-Implementation Checklist
 
 - [x] CHK-001: Spec folder created and approved
@@ -30,6 +32,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:protocol -->
 ## Phase 1: Search → Context (P0) 
 
 ### T1: Audit search.md patterns

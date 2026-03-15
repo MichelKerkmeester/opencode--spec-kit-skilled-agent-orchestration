@@ -9,12 +9,15 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Plan: Valid Evidence Fixture
 
+<!-- ANCHOR:summary -->
 ## Technical Context
 
 Testing that completed high-priority items include evidence.
 
+<!-- /ANCHOR:summary -->
 ## Architecture
 
 Level 2 spec with properly evidenced checklist items.

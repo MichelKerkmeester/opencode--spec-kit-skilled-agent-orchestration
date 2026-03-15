@@ -12,6 +12,8 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: CORE -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Feature Specification: Tab Main Component
 
 Attribute-based tab component for linking tab buttons to content panels via matching data attribute values.

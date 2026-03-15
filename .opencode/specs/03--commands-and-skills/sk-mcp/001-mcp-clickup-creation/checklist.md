@@ -2,9 +2,11 @@
 title: "Checklist: Create mcp-clickup Skill"
 status: complete
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
 # Checklist: Create mcp-clickup Skill
 
+<!-- ANCHOR:protocol -->
 ## P0 - Critical (Must Pass)
 
 - [x] SKILL.md exists at `.opencode/skill/mcp-clickup/SKILL.md`
@@ -16,6 +18,7 @@ status: complete
 - [x] Skills README count updated (15 -> 16)
 - [x] Skills README catalog entry added
 
+<!-- /ANCHOR:protocol -->
 ## P1 - Important (Should Pass)
 
 - [x] INSTALL_GUIDE.md covers both CLI and MCP installation

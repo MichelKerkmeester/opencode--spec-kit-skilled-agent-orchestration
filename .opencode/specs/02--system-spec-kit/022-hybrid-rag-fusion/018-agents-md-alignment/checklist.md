@@ -6,8 +6,10 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "checklist"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 # Checklist: 018-agents-md-alignment
 
+<!-- ANCHOR:protocol -->
 ## P0 — Must Pass
 
 - [x] Constitutional memory row updated in all 3 files — shows `list | edit | remove | budget` subcommands
@@ -21,6 +23,7 @@ contextType: "checklist"
 - [x] Barter READ-ONLY git policy preserved
   - Evidence: Grep `GIT POLICY: READ-ONLY` → 1 match (Barter:63)
 
+<!-- /ANCHOR:protocol -->
 ## P1 — Should Pass
 
 - [x] FS-Enterprises Research/exploration row includes `memory_context()` unified alternative

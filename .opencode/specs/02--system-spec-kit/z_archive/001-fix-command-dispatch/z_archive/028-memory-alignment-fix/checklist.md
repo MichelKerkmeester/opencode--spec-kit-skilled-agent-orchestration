@@ -10,8 +10,10 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 # Checklist - Memory Alignment Fix
 
+<!-- ANCHOR:protocol -->
 ## P0 - Critical (HARD BLOCK)
 
 ### Phase 1: Immediate Fix
@@ -39,6 +41,7 @@ contextType: "implementation"
 - [x] Return top 3 matches with confidence scores → In `validateFolderAlignment()`
 - [x] Integrate into detectSpecFolder() flow → Calls added at lines 2263, 2282
 
+<!-- /ANCHOR:protocol -->
 ## P1 - Must Complete
 
 ### Testing

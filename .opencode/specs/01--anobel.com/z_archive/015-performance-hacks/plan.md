@@ -10,6 +10,7 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Implementation Plan - Performance Hacks
 
 > **Goal:** Apply quick wins to boost LCP and FCP.

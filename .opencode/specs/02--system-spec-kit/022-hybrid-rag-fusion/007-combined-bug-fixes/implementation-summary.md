@@ -1,3 +1,6 @@
+---
+title: "Combined Implementation Summary"
+---
 <!-- SPECKIT_TEMPLATE_SOURCE: .opencode/skill/system-spec-kit/templates/implementation-summary.md -->
 ---
 title: "Combined Implementation Summary: Bug Fixes (003, 008, 013, 015, 016, 017)"

@@ -9,8 +9,10 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 # Verification Checklist
 
+<!-- ANCHOR:protocol -->
 ## Summary
 
 | Metric | Count |
@@ -41,6 +43,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:protocol -->
 ## P0 Critical Bugs (Must Fix)
 - [x] P0-001: Buffer conversion byteOffset fix verified *(Agent 1)*
 - [x] P0-002: Query buffer conversion fix verified *(Agent 1)*

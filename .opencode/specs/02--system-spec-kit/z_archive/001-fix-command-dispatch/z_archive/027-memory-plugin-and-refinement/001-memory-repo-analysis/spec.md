@@ -12,6 +12,7 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 3 -->
 # Feature Specification: Memory System Analysis & Roampal Comparison - Requirements & User Stories
 
 Complete research specification for analyzing our semantic memory system and comparing with roampal-core for improvement opportunities.
@@ -20,6 +21,7 @@ Complete research specification for analyzing our semantic memory system and com
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. OBJECTIVE
 
 ### Metadata
@@ -54,6 +56,7 @@ Analyze our semantic memory system architecture, compare with roampal-core's inn
 
 ---
 
+<!-- /ANCHOR:metadata -->
 ## 2. SCOPE
 
 ### In Scope

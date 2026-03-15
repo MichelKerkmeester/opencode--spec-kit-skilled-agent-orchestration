@@ -11,16 +11,19 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 # Verification Checklist: Memory Plugin bun:sqlite Migration
 
 > **SIMPLIFIED**: Only import statement change required - `bun:sqlite` is API-compatible with `better-sqlite3`. The `db.prepare()`, `db.query()`, and `db.close()` methods work identically in both libraries.
 
+<!-- ANCHOR:protocol -->
 ## Pre-Implementation Checks
 
 - [ ] **P0**: Backup of original plugin file created
 - [ ] **P0**: Current plugin code reviewed and all change locations identified
 - [ ] **P1**: bun:sqlite API compatibility verified for all query patterns
 
+<!-- /ANCHOR:protocol -->
 ## Code Changes (P0 - Critical)
 
 ### Import Statement (ONLY REQUIRED CHANGE)

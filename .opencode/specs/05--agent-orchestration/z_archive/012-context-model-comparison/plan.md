@@ -11,6 +11,7 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Plan: Context Agent Model Comparison
 
 **Spec**: 012-context-model-comparison

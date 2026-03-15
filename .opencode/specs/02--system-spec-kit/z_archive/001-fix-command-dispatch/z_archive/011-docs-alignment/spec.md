@@ -13,6 +13,7 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 1 -->
 # Feature Specification: [YOUR_VALUE_HERE: Feature-Name] - Requirements & User Stories
 
 Complete feature specification defining requirements, user stories, and success criteria.
@@ -21,6 +22,7 @@ Complete feature specification defining requirements, user stories, and success 
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. OBJECTIVE
 
 ### Metadata
@@ -54,6 +56,7 @@ Complete feature specification defining requirements, user stories, and success 
 
 ---
 
+<!-- /ANCHOR:metadata -->
 ## 2. SCOPE
 
 ### In Scope

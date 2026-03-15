@@ -18,6 +18,7 @@ Checklist for validating the complete Spec Kit Memory workflow end-to-end.
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## 1. OBJECTIVE
 
 ### Metadata
@@ -36,6 +37,7 @@ Validate that all components of the Spec Kit Memory workflow function correctly 
 
 ---
 
+<!-- /ANCHOR:protocol -->
 ## 2. LINKS
 
 ### Related Documents

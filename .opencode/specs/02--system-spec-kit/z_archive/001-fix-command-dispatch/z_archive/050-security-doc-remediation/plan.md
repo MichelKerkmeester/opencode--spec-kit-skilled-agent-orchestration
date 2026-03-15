@@ -11,12 +11,15 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Implementation Plan: Security & Documentation Remediation
 
+<!-- ANCHOR:summary -->
 ## Metadata
 - **Created:** 2024-12-31
 - **Level:** 2
 
+<!-- /ANCHOR:summary -->
 ## Phase 1: Security Fixes
 
 ### P0: generate-context.js CLI Path Validation

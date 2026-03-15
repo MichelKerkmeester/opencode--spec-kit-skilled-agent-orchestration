@@ -15,6 +15,7 @@ contextType: "implementation"
 # Implementation Summary: Agent Haiku Compatibility
 
 <!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 
 ---
 

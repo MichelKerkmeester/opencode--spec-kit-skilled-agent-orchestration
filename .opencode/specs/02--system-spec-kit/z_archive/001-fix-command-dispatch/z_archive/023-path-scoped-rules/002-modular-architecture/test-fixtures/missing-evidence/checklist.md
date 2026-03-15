@@ -9,14 +9,17 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 # Checklist: Missing Evidence Fixture
 
+<!-- ANCHOR:protocol -->
 ## P0 - Critical
 
 - [x] **P0**: Critical item completed WITHOUT evidence
 - [x] **P0**: Another critical item - no evidence here either
 - [ ] **P0**: Pending critical item
 
+<!-- /ANCHOR:protocol -->
 ## P1 - Important
 
 - [x] **P1**: Important item completed but missing evidence

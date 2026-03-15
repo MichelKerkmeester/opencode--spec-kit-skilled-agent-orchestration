@@ -10,10 +10,12 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 # Checklist - Gate 3 Enforcement
 
 > Verification checklist for Gate 3 enforcement implementation.
 
+<!-- ANCHOR:protocol -->
 ## P0: Critical Items
 
 ### Constitutional Memory
@@ -36,6 +38,7 @@ contextType: "implementation"
 - [x] **AG-004**: No syntax errors in AGENTS.md ✓ YAML-lint passes, markdown structure intact
 - [x] **AG-005**: No conflicts with existing gates ✓ First Message Protocol complements Gate 3
 
+<!-- /ANCHOR:protocol -->
 ## P1: Verification Items
 
 ### Trigger Phrase Testing

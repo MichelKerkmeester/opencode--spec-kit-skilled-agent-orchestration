@@ -10,9 +10,12 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks: Invalid Priority Tags Fixture
 
+<!-- ANCHOR:notation -->
 ## Current Tasks
 
 - [x] Create Level 2 spec structure
 - [x] Add checklist with formatting errors
+<!-- /ANCHOR:notation -->

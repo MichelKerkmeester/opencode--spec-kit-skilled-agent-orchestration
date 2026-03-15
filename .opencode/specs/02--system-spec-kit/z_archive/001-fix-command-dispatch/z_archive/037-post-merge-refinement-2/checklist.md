@@ -1,5 +1,6 @@
 ---
 title: "Checklist [037-post-merge-refinement-2/checklist]"
+<!-- ANCHOR:protocol -->
 description: "checklist document for 037-post-merge-refinement-2."
 trigger_phrases:
   - "checklist"
@@ -8,6 +9,7 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 # Checklist
 
 - [x] Analyze feature gap between v11 and v12
@@ -16,3 +18,5 @@ contextType: "implementation"
 - [x] Update `scripts/generate-context.js` to require the shared library
 - [x] Verify `generate-context.js` runs successfully
 - [x] Delete `scripts/lib/vector-index.js`
+
+<!-- /ANCHOR:protocol -->

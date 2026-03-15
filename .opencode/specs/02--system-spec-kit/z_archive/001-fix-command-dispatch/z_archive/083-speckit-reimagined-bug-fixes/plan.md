@@ -12,12 +12,14 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Implementation Plan: Spec Kit Bug Fixes
 
 > Phased approach to resolving all identified bugs in the Spec Kit v1.2.1.0 release.
 
 ---
 
+<!-- ANCHOR:summary -->
 ## Document Information
 
 | Field | Value |
@@ -29,6 +31,7 @@ contextType: "decision"
 
 ---
 
+<!-- /ANCHOR:summary -->
 ## 1. Implementation Strategy
 
 ### 1.1 Phased Approach

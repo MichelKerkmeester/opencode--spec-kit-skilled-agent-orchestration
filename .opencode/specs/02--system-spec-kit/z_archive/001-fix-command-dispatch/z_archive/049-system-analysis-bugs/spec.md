@@ -11,14 +11,18 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # System-Spec-Kit Bug Analysis and Remediation
 
+<!-- ANCHOR:metadata -->
 ## Metadata
 - **Created:** 2024-12-31
 - **Level:** 3 (≥500 LOC impact)
 - **Status:** Planning
 - **Owner:** Development Team
 
+<!-- /ANCHOR:metadata -->
 ## 1. PROBLEM STATEMENT
 
 A comprehensive 20-agent parallel analysis of the `system-spec-kit` skill revealed **1 CRITICAL bug**, **2 HIGH severity issues**, and **6 MEDIUM issues** that impact the memory indexing system, validation logic, and documentation consistency.

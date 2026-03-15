@@ -14,6 +14,7 @@ contextType: "implementation"
 # Implementation Checklist: Agent Haiku Compatibility
 
 <!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
 ---
 

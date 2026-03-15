@@ -12,6 +12,7 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 3 -->
 # Feature Specification: System-Spec-Kit Bug Analysis and Fix - Requirements & User Stories
 
 Complete feature specification for addressing ~231 identified issues across the system-spec-kit skill and spec_kit commands.
@@ -20,6 +21,7 @@ Complete feature specification for addressing ~231 identified issues across the 
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. OBJECTIVE
 
 ### Metadata
@@ -68,6 +70,7 @@ Systematically fix all identified issues (including re-analysis findings) to ens
 
 ---
 
+<!-- /ANCHOR:metadata -->
 ## 2. SCOPE
 
 ### In Scope

@@ -11,12 +11,15 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Plan: Fix SQLite Transaction Nesting Issue
 
+<!-- ANCHOR:summary -->
 ## Problem Statement
 
 The `memory_index_scan` MCP tool fails with "cannot start a transaction within a transaction" when bulk indexing memory files. This prevents reindexing the memory database after switching embedding providers (e.g., from local to Voyage).
 
+<!-- /ANCHOR:summary -->
 ## Root Cause Analysis
 
 The error occurs due to inconsistent transaction handling between two functions:

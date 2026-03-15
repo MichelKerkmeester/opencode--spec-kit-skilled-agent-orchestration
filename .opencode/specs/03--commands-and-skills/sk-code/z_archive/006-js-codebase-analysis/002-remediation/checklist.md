@@ -17,5 +17,7 @@ contextType: "implementation"
 N/A - legacy spec artifact.
 <!-- /ANCHOR: summary -->
 
+<!-- ANCHOR:protocol -->
 ## P0 - Blockers
 - [ ] [P0] N/A - legacy spec artifact.
+<!-- /ANCHOR:protocol -->

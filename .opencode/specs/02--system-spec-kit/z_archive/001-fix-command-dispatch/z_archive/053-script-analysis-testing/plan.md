@@ -19,6 +19,7 @@ Implementation plan for end-to-end workflow testing of the Spec Kit Memory syste
 
 ---
 
+<!-- ANCHOR:summary -->
 ## 1. OBJECTIVE
 
 ### Metadata
@@ -46,6 +47,7 @@ Execute end-to-end testing of the complete Spec Kit Memory workflow as documente
 
 ---
 
+<!-- /ANCHOR:summary -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready (DoR)

@@ -10,12 +10,15 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Plan: Valid Priority Tags Fixture
 
+<!-- ANCHOR:summary -->
 ## Technical Context
 
 Testing that properly formatted priority tags pass validation.
 
+<!-- /ANCHOR:summary -->
 ## Architecture
 
 Standard Level 2 spec structure with checklist.md.

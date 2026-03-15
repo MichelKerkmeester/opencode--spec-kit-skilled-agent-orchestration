@@ -15,12 +15,14 @@ estimated-effort: "3-5 sessions"
 phases: 4
 spec: "089"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Plan: system-spec-kit Reimagined Refinement
 
 > Phased remediation plan addressing ~120+ findings across the entire system-spec-kit ecosystem.
 
 ---
 
+<!-- ANCHOR:summary -->
 ## Phase 1: CRITICAL Bug Fixes (P0)
 
 **Goal:** Eliminate all CRITICAL severity bugs that affect runtime behavior or agent decision-making.
@@ -58,6 +60,7 @@ spec: "089"
 
 ---
 
+<!-- /ANCHOR:summary -->
 ## Phase 2: HIGH Priority Fixes (P1)
 
 **Goal:** Fix security issues, broken references, and logic bugs.

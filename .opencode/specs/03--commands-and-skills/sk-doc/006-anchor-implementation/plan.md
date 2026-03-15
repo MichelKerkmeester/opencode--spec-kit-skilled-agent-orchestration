@@ -25,6 +25,7 @@ contextType: "decision"
 
 ---
 
+<!-- ANCHOR:summary -->
 ## 1. ARCHITECTURE OVERVIEW
 
 ### System Context
@@ -102,6 +103,7 @@ contextType: "decision"
 
 ---
 
+<!-- /ANCHOR:summary -->
 ## 2. ANCHOR SPECIFICATION
 
 ### Anchor Format

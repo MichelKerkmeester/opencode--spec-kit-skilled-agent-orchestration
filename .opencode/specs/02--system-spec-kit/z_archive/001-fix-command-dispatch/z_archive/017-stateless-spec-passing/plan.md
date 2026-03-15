@@ -16,6 +16,7 @@ contextType: "decision"
 <!-- SPECKIT_TEMPLATE_SOURCE: plan | v2.0.0 -->
 <!-- MERGED: 009-stateless-spec-passing + 010-stateless-alignment on 2025-12-22 -->
 
+<!-- ANCHOR:summary -->
 ## Phase 1: Critical Commands (High Impact)
 
 Core commands that actively read/write `.spec-active` - MUST be refactored.
@@ -38,6 +39,7 @@ Core commands that actively read/write `.spec-active` - MUST be refactored.
     - Remove "Check .spec-active" step
     - Update to CLI-first detection
 
+<!-- /ANCHOR:summary -->
 ## Phase 2: Script Cleanup
 
 Remove fallback code from generate-context.js (user confirmed: REMOVE).

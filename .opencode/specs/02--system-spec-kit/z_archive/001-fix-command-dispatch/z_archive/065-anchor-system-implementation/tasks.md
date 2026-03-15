@@ -14,11 +14,13 @@ contextType: "implementation"
 
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks | v1.0 -->
 
+<!-- ANCHOR:notation -->
 ## 1. Parser Implementation
 - [x] Create test fixture (`fixture-memory.md`)
 - [x] Implement `extract_anchors` in `memory-parser.js`
 - [x] Verify with `test-parser.js`
 
+<!-- /ANCHOR:notation -->
 ## 2. MCP Server Updates
 - [x] Update `memory_search` schema in `context-server.js`
 - [x] Update `handleMemorySearch` to propagate `anchors` arg

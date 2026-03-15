@@ -11,8 +11,10 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Implementation Plan - Memory Alignment Fix
 
+<!-- ANCHOR:summary -->
 ## Phase 1: Immediate Fix (Memory Relocation)
 
 ### Task 1.1: Move Memory #95
@@ -24,6 +26,7 @@ contextType: "decision"
 - Delete old index entry (ID: 95)
 - Index new file location
 
+<!-- /ANCHOR:summary -->
 ## Phase 2: Layer A - AI Gate Compliance
 
 ### Task 2.1: Update AGENTS.md Gate 5

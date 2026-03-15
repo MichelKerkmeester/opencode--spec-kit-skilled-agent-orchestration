@@ -19,6 +19,7 @@ contextType: "decision"
 
 ---
 
+<!-- ANCHOR:summary -->
 ## 1. SUMMARY
 
 ### Technical Context
@@ -36,6 +37,7 @@ This implementation adds FSRS-based memory decay, prediction error gating for co
 
 ---
 
+<!-- /ANCHOR:summary -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready

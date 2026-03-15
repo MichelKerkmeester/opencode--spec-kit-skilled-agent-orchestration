@@ -17,5 +17,7 @@ contextType: "implementation"
 N/A - legacy spec artifact.
 <!-- /ANCHOR: summary -->
 
+<!-- ANCHOR:notation -->
 ## Task List
 - [ ] N/A - legacy spec artifact.
+<!-- /ANCHOR:notation -->

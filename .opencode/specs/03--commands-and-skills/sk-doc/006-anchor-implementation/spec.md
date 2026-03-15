@@ -28,6 +28,7 @@ contextType: "decision"
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. PROBLEM STATEMENT
 
 ### Current State
@@ -54,6 +55,7 @@ Skills were designed before the anchor-based retrieval system (ANCHOR tags) was 
 
 ---
 
+<!-- /ANCHOR:metadata -->
 ## 2. SCOPE
 
 ### In Scope

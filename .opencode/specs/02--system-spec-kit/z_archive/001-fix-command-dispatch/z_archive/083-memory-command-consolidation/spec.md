@@ -10,6 +10,8 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Memory Command Consolidation
 
 **Spec ID:** 083-memory-command-consolidation
@@ -23,6 +25,7 @@ contextType: "decision"
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. Problem Statement
 
 The `/memory:*` command namespace has grown to **9 separate commands**, creating:
@@ -65,6 +68,7 @@ Also analyzed but **NO consolidation recommended** - these are workflow orchestr
 
 ---
 
+<!-- /ANCHOR:metadata -->
 ## 2. Solution Overview
 
 Consolidate from **9 commands → 5 commands** (44% reduction) through:

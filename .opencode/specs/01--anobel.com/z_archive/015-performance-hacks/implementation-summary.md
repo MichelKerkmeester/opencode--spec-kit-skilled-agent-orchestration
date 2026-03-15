@@ -11,6 +11,7 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 # Implementation Summary - Performance Hacks
 
 > **Goal:** High-impact, low-effort optimizations for Core Web Vitals (LCP/FCP).

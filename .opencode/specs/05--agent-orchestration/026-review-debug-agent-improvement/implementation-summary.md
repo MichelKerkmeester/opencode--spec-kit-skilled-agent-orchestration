@@ -1,3 +1,7 @@
+---
+title: "Implementation Summary"
+---
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 # Implementation Summary
 
 ## What Was Done

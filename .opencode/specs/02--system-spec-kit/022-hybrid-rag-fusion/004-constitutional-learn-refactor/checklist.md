@@ -1,3 +1,6 @@
+---
+title: "Verification Checklist"
+---
 <!-- SPECKIT_TEMPLATE_SOURCE: .opencode/skill/system-spec-kit/templates/checklist.md -->
 ---
 title: "Constitutional Learn Refactor Checklist"

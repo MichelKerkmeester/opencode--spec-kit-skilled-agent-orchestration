@@ -12,6 +12,7 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 2 -->
 # Feature Specification: SpecKit Scratch Folder Enforcement - Requirements & Analysis
 
 Complete specification for enforcing scratch folder usage to prevent root folder pollution.
@@ -20,6 +21,7 @@ Complete specification for enforcing scratch folder usage to prevent root folder
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. OBJECTIVE
 
 ### Metadata
@@ -46,6 +48,7 @@ Ensure AI agents never place random scripts, tests, or temporary files in the pr
 
 ---
 
+<!-- /ANCHOR:metadata -->
 ## 2. SCOPE
 
 ### In Scope

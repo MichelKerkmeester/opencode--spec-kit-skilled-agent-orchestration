@@ -1,3 +1,6 @@
+---
+title: "Consolidated tasks"
+---
 # Consolidated tasks
 <!-- SPECKIT_TEMPLATE_SOURCE: consolidated-epic-merge | v1 -->
 

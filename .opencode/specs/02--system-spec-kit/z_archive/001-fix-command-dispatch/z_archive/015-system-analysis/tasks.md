@@ -17,12 +17,14 @@ contextType: "implementation"
 
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks | v1.1 -->
 
+<!-- ANCHOR:notation -->
 ## User Story 1: Protocol Injection
 
 - [x] TASK-001: Create revised plan.md with Pattern Reference Protocol
 - [x] TASK-002: Insert Section 3 "COMMAND PATTERN REFERENCE PROTOCOL" into SKILL.md
 - [x] TASK-003: Renumber SKILL.md Sections 4-9
 
+<!-- /ANCHOR:notation -->
 ## User Story 2: Integrity & Verification
 
 - [x] TASK-004: Update internal references (Section 5 -> Section 7)

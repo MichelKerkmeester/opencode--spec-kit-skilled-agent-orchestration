@@ -18,6 +18,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:notation -->
 ## Task Notation
 
 | Prefix | Meaning |
@@ -29,6 +30,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## Phase 1: Test Infrastructure
 
 - [x] T001 Create `test-naming-migration.js` scaffold (test runner, helpers, file discovery)

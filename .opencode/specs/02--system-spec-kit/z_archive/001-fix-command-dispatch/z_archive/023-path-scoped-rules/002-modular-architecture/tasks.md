@@ -10,8 +10,10 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks: Modular Validation Architecture
 
+<!-- ANCHOR:notation -->
 ## Task Overview
 
 | Phase | Tasks | Est. Time |
@@ -26,6 +28,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## Phase 1: Extract Libraries
 
 ### Task 1.1: Create lib/common.sh

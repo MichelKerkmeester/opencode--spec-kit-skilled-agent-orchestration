@@ -15,6 +15,7 @@ contextType: "research"
 # Research: Root Cause Analysis — Template/Anchor Non-Compliance & Speckit Under-Utilization
 
 <!-- SPECKIT_LEVEL: 3+ -->
+<!-- SPECKIT_TEMPLATE_SOURCE: research | v1.0 -->
 <!-- RESEARCH_DATE: 2026-02-17 -->
 <!-- RESEARCH_AGENT: @general (direct investigation) -->
 

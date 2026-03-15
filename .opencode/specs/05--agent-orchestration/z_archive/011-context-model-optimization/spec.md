@@ -14,7 +14,7 @@ contextType: "decision"
 ---
 # Feature Specification: Context Agent Model Optimization
 
-<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_LEVEL: CORE -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->
 
 ---

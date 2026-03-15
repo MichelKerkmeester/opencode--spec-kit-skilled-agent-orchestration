@@ -1,3 +1,8 @@
+---
+title: "SQLite-to-Turso Migration Research"
+---
+<!-- SPECKIT_LEVEL: CORE -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # SQLite-to-Turso Migration Research
 
 | Field       | Value                                                    |
@@ -8,10 +13,12 @@
 | **Status**  | In Progress                                              |
 | **Created** | 2026-03-05                                               |
 
+<!-- ANCHOR:metadata -->
 ## Objective
 
 Evaluate Turso Database (Beta 0.5.0-pre.20) as a potential replacement for the current SQLite stack (`better-sqlite3` v12.6.2 + `sqlite-vec` v0.1.7-alpha.2 + FTS5) powering the Spec Kit Memory MCP server.
 
+<!-- /ANCHOR:metadata -->
 ## Context
 
 The MCP server is a production-grade semantic memory system featuring:

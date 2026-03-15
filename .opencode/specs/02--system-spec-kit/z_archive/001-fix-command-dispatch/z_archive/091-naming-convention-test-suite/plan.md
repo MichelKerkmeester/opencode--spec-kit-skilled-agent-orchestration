@@ -18,6 +18,7 @@ contextType: "decision"
 
 ---
 
+<!-- ANCHOR:summary -->
 ## 1. SUMMARY
 
 ### Technical Context
@@ -34,6 +35,7 @@ Build 3 test files that comprehensively verify every script adjusted during the 
 
 ---
 
+<!-- /ANCHOR:summary -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready

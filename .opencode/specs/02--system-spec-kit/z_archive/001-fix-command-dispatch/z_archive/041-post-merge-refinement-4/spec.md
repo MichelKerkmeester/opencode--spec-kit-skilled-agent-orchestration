@@ -12,6 +12,7 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 3 -->
 # Feature Specification: Post-Merge Refinement 4 - Comprehensive System Alignment
 
 Complete specification for addressing 75+ issues identified by 10-agent analysis across documentation, code, UX, and integration.
@@ -20,6 +21,7 @@ Complete specification for addressing 75+ issues identified by 10-agent analysis
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. OBJECTIVE
 
 ### Metadata
@@ -63,6 +65,7 @@ Resolve all identified issues to achieve full alignment between documentation an
 
 ---
 
+<!-- /ANCHOR:metadata -->
 ## 2. SCOPE
 
 ### In Scope

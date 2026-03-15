@@ -12,6 +12,7 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
 # Decision Record: Post-Merge Refinement Final
 
 This document records architecture decisions made during the post-merge refinement phase, including accepted technical debt and deferred improvements.

@@ -11,6 +11,7 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Implementation Plan: Memory Command Consolidation
 
 **Spec ID:** 083-memory-command-consolidation
@@ -19,6 +20,7 @@ contextType: "decision"
 
 ---
 
+<!-- ANCHOR:summary -->
 ## Overview
 
 Consolidate 9 memory commands into 5 through absorption, subcommands, and deletion.
@@ -50,6 +52,7 @@ Consolidate 9 memory commands into 5 through absorption, subcommands, and deleti
 
 ---
 
+<!-- /ANCHOR:summary -->
 ## Phase 1: Search → Context Absorption (P0)
 
 **Duration:** 1-2 days

@@ -11,8 +11,10 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Plan: Rename workflows-memory → system-memory
 
+<!-- ANCHOR:summary -->
 ## Implementation Architecture
 
 ### 5-Phase Execution Model
@@ -76,6 +78,7 @@ Based on the proven pattern from `.opencode/specs/02--system-spec-kit/z_archive/
 
 ---
 
+<!-- /ANCHOR:summary -->
 ## Phase 1: Directory Rename (BLOCKING)
 
 **Agent Count:** 1 (Orchestrator direct)

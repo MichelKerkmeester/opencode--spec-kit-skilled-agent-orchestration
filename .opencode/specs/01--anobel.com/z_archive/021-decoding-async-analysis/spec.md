@@ -14,7 +14,7 @@ contextType: "decision"
 ---
 # Feature Specification: Image Decoding Async Analysis
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: CORE -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.0 -->
 
 ---

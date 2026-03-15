@@ -19,6 +19,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:notation -->
 ## Task Notation
 
 | Prefix | Meaning |
@@ -32,6 +33,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## Phase 1: Setup
 
 - [ ] T001 Generate RSA key pair for RS256 signing (scripts/generate-keys.sh)

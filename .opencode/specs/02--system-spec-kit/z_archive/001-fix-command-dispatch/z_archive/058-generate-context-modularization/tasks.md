@@ -10,8 +10,10 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks: generate-context.js Modularization
 
+<!-- ANCHOR:notation -->
 ## Task Overview
 
 | Phase | Tasks | Estimated Effort | Priority |
@@ -28,6 +30,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## Phase 1: Preparation
 
 ### Task 1.1: Create Test Fixtures

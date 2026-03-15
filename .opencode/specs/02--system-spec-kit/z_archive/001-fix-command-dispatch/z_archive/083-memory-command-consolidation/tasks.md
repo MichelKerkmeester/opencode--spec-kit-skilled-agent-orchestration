@@ -10,6 +10,7 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks: Memory Command Consolidation
 
 **Spec ID:** 083-memory-command-consolidation
@@ -19,6 +20,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:notation -->
 ## Task Overview
 
 | ID | Task | Phase | Priority | Status |
@@ -41,6 +43,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## Phase 1: Search → Context (P0)  COMPLETE
 
 ### T1: Audit search.md patterns ✅

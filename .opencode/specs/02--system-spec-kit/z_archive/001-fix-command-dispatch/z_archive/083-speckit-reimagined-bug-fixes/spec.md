@@ -12,12 +12,15 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Spec Kit Reimagined Bug Fixes (Consolidated)
 
 > Comprehensive remediation of bugs, misalignments, and inconsistencies discovered in Spec Kit commands and documentation through multi-agent audits.
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## Document Information
 
 | Field | Value |
@@ -31,6 +34,7 @@ contextType: "decision"
 
 ---
 
+<!-- /ANCHOR:metadata -->
 ## 1. Overview
 
 ### 1.1 Problem Statement

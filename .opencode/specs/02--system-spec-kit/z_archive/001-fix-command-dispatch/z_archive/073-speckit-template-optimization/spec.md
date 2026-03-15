@@ -19,6 +19,7 @@ contextType: "decision"
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -31,6 +32,7 @@ contextType: "decision"
 
 ---
 
+<!-- /ANCHOR:metadata -->
 ## 2. EXECUTIVE SUMMARY
 
 This specification defines a comprehensive restructuring of the SpecKit template system from monolithic templates to a CORE + ADDENDUM compositional architecture. The optimization addresses three critical issues: template bloat from unused sections, lack of meaningful differentiation between levels, and absence of parallel sub-agent support for spec creation.

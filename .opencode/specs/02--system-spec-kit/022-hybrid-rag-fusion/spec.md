@@ -9,7 +9,7 @@ trigger_phrases:
 importance_tier: "critical"
 contextType: "implementation"
 ---
-<!-- SPECKIT_LEVEL: 3+ -->
+<!-- SPECKIT_LEVEL: CORE -->
 # Epic Specification: 022-hybrid-rag-fusion
 
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch + level3plus-govern | v2.2 -->

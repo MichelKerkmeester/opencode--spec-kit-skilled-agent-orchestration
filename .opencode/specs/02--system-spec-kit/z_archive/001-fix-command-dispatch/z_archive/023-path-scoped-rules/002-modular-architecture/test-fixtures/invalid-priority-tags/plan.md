@@ -10,12 +10,15 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Plan: Invalid Priority Tags Fixture
 
+<!-- ANCHOR:summary -->
 ## Technical Context
 
 Testing detection of malformed priority tags in checklists.
 
+<!-- /ANCHOR:summary -->
 ## Architecture
 
 Level 2 spec with intentionally broken checklist format.

@@ -1,5 +1,6 @@
 ---
 title: "Tasks [067-voyage-4-upgrade/tasks]"
+<!-- ANCHOR:notation -->
 description: "tasks document for 067-voyage-4-upgrade."
 trigger_phrases:
   - "tasks"
@@ -8,6 +9,7 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks
 
 - [ ] **Phase 1: Code Updates** <!-- id: 1 -->
@@ -22,3 +24,5 @@ contextType: "implementation"
 - [ ] **Phase 3: Verification** <!-- id: 3 -->
     - [ ] Verify `memory_health` detects new default <!-- id: 3.1 -->
     - [ ] Run `memory_index_scan` to test indexing with new model <!-- id: 3.2 -->
+
+<!-- /ANCHOR:notation -->

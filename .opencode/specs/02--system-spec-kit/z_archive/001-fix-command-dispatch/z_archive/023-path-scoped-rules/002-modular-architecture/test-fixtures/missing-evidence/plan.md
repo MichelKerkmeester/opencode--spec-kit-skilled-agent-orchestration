@@ -9,12 +9,15 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Plan: Missing Evidence Fixture
 
+<!-- ANCHOR:summary -->
 ## Technical Context
 
 Testing detection of missing evidence tags on completed items.
 
+<!-- /ANCHOR:summary -->
 ## Architecture
 
 Level 2 spec with checklist missing required evidence.

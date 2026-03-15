@@ -17,6 +17,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## Verification Protocol
 
 | Priority | Handling | Completion Impact |
@@ -27,6 +28,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:protocol -->
 ## Evidence Documentation
 
 When marking items complete, include evidence references using this format:

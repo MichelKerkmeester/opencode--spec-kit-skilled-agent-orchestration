@@ -19,6 +19,7 @@ Task breakdown for parallel agent testing.
 
 ---
 
+<!-- ANCHOR:notation -->
 ## 1. AGENT TASKS
 
 ### Agent 1: Script Functionality Testing
@@ -58,6 +59,7 @@ Task breakdown for parallel agent testing.
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## 2. ORCHESTRATOR TASKS
 
 - [x] T100 Synthesize agent outputs

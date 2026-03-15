@@ -11,8 +11,10 @@ contextType: "implementation"
 id: 039-node-modules-consolidation
 level: 2
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 # Completion Checklist
 
+<!-- ANCHOR:protocol -->
 ## Pre-Implementation
 
 - [x] **PRE.1**: Current MCP server works
@@ -24,6 +26,7 @@ level: 2
   - mcp_server/node_modules: 967MB
   - **Total before: 1.878GB**
 
+<!-- /ANCHOR:protocol -->
 ## Implementation
 
 - [x] **IMPL.1**: Root package.json created with workspaces config

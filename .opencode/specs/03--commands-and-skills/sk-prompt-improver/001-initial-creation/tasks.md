@@ -4,9 +4,11 @@ title: "Tasks: sk-prompt-improver Initial Creation"
 # Tasks: sk-prompt-improver Initial Creation
 
 <!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
 ---
 
+<!-- ANCHOR:notation -->
 ## Task Notation
 
 | Prefix | Meaning |
@@ -20,6 +22,7 @@ title: "Tasks: sk-prompt-improver Initial Creation"
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## Phase 1: Setup
 
 - [x] T001 Create skill directory structure (.opencode/skill/sk-prompt-improver/)

@@ -14,6 +14,7 @@ importance_tier: "important"
 contextType: "decision"
 spec: "089"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
 # Decision Record: system-spec-kit Reimagined Refinement
 
 ---

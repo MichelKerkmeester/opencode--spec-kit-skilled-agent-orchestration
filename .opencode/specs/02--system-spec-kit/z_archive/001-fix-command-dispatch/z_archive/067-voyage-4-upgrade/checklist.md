@@ -1,5 +1,6 @@
 ---
 title: "Checklist [067-voyage-4-upgrade/checklist]"
+<!-- ANCHOR:protocol -->
 description: "checklist document for 067-voyage-4-upgrade."
 trigger_phrases:
   - "checklist"
@@ -8,6 +9,7 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 # Checklist
 
 - [ ] Spec folder created and analyzed
@@ -16,3 +18,5 @@ contextType: "implementation"
 - [ ] Narsil analysis completed (decision: no change)
 - [ ] Database compatibility strategy defined (parallel databases)
 - [ ] Rollback plan defined
+
+<!-- /ANCHOR:protocol -->

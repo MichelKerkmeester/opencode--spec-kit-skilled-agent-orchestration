@@ -26,6 +26,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:notation -->
 ## TASK LEGEND
 
 | Symbol | Meaning |
@@ -45,6 +46,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## PHASE 1: CRITICAL BUG FIXES (P0)
 
 ### C1: Fix Duplicate Entries on Checkpoint Restore

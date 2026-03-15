@@ -11,6 +11,8 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Performance Optimization - anobel.com
 
 <!-- ANCHOR:metadata -->

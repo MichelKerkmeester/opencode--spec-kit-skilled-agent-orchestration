@@ -19,6 +19,7 @@ Implementation plan for optimizing the semantic memory plugin to inject a compac
 
 ---
 
+<!-- ANCHOR:summary -->
 ## 1. OBJECTIVE
 
 ### Metadata
@@ -48,6 +49,7 @@ Refactor the semantic memory plugin to replace full content injection with a com
 
 ---
 
+<!-- /ANCHOR:summary -->
 ## 2. QUALITY GATES
 
 **GATE: Must pass before implementation.**

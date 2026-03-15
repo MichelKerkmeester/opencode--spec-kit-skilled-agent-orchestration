@@ -6,8 +6,10 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "tasks"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks: 018-agents-md-alignment
 
+<!-- ANCHOR:notation -->
 ## Task List
 
 - [x] **T1: Read and verify gaps** — Read all 3 AGENTS.md files, confirm 5 gaps exist
@@ -17,6 +19,7 @@ contextType: "tasks"
 - [x] **T5: Verification greps** — Run 6 grep checks, confirm all pass
 - [x] **T6: Create spec documentation** — spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md
 
+<!-- /ANCHOR:notation -->
 ## Summary
 
 | Metric | Value |

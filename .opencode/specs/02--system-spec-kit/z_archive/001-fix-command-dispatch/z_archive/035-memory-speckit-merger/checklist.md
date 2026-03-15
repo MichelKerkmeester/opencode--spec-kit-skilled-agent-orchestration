@@ -10,8 +10,10 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 # Checklist: Memory System Integration
 
+<!-- ANCHOR:protocol -->
 ## Overview
 
 | Priority | Count | Description |
@@ -27,6 +29,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:protocol -->
 ## P0 - Hard Blockers (MUST PASS)
 
 These items block completion. Cannot claim "done" until all pass.

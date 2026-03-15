@@ -1,3 +1,6 @@
+---
+title: "Tasks: Combined Bug Fixes"
+---
 <!-- SPECKIT_TEMPLATE_SOURCE: .opencode/skill/system-spec-kit/templates/tasks.md -->
 ---
 title: "Tasks: Combined Bug Fixes"

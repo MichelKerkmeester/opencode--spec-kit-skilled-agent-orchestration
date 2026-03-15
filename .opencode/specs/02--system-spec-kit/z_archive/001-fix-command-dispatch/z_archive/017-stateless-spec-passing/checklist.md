@@ -15,6 +15,7 @@ contextType: "implementation"
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.0.0 -->
 <!-- MERGED: 009-stateless-spec-passing + 010-stateless-alignment on 2025-12-22 -->
 
+<!-- ANCHOR:protocol -->
 ## Pre-Requisites
 - [x] P0: Create spec folder (merged from 009 + 010)
 - [x] P0: Read `AGENTS.md` Gate 5 rules
@@ -23,6 +24,7 @@ contextType: "implementation"
 - [x] P0: Verify `common.sh` is clean
 - [x] P0: Get user confirmation on 3 key decisions
 
+<!-- /ANCHOR:protocol -->
 ## User Decisions (Confirmed)
 - [x] `spec_folder_detection.md`: Rewrite completely (CLI-first)
 - [x] `generate-context.js` fallback: REMOVE entirely

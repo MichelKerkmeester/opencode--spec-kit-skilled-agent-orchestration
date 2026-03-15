@@ -11,12 +11,16 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Spec: Codebase Fixes - Embedding Dimension & Performance
 
+<!-- ANCHOR:metadata -->
 ## Overview
 
 Fix critical bugs and performance issues identified during comprehensive codebase analysis.
 
+<!-- /ANCHOR:metadata -->
 ## Problem Statement
 
 1. **P0-1: Checkpoint dimension mismatch** - `checkpoints.js` hardcodes `EMBEDDING_DIM = 768` but system uses Voyage (1024 dimensions). All checkpoint restores fail to restore embeddings.

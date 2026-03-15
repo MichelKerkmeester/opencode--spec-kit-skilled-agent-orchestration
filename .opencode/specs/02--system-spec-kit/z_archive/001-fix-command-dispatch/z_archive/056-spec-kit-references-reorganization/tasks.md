@@ -11,8 +11,10 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks: system-spec-kit References Reorganization
 
+<!-- ANCHOR:notation -->
 ## Phase 1: Analyze Current Structure
 
 - [x] List all files in system-spec-kit `references/` folder
@@ -20,6 +22,7 @@ contextType: "implementation"
 - [x] Document file inventory with descriptions
 - [x] Identify logical groupings based on content domains
 
+<!-- /ANCHOR:notation -->
 ## Phase 2: Design Sub-folder Organization
 
 - [x] Define sub-folder categories based on Phase 1 analysis

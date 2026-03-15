@@ -19,6 +19,7 @@ Comprehensive task breakdown for fixing ~231 identified issues across the SpecKi
 
 ---
 
+<!-- ANCHOR:notation -->
 ## QUICK REFERENCE FOR AI AGENTS
 
 ### Critical Path (Must Complete First)
@@ -61,6 +62,7 @@ scratch/debug-notes.md           # Investigation notes
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## Task Notation
 
 | Prefix | Meaning                                      |

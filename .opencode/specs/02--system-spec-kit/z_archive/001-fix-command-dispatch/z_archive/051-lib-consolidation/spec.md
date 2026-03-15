@@ -12,8 +12,11 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: CORE -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Lib Consolidation - Shared Module Unification
 
+<!-- ANCHOR:metadata -->
 ## Metadata
 - **Created:** 2024-12-31
 - **Status:** Draft
@@ -21,6 +24,7 @@ contextType: "decision"
 - **Parent:** 003-memory-and-spec-kit
 - **Estimated LOC:** 500-800
 
+<!-- /ANCHOR:metadata -->
 ## Problem Statement
 
 The system-spec-kit has shared JavaScript modules duplicated or re-exported across two separate lib folders, creating several issues:

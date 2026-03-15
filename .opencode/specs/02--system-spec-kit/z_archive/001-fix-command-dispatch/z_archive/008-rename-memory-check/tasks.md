@@ -11,8 +11,10 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks: Rename Memory Command (Two-Phase Rename)
 
+<!-- ANCHOR:notation -->
 ## Phase 1: `/memory` → `/memory:check` (COMPLETED)
 
 ### Task Breakdown
@@ -47,6 +49,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## Phase 2: `/memory:check` → `/memory:search` (COMPLETED)
 
 ### Task Breakdown

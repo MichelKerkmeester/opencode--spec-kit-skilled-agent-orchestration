@@ -8,11 +8,14 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 # Checklist
 
+<!-- ANCHOR:protocol -->
 ## P0
 - [ ] P0: Required item - critical validation
 
+<!-- /ANCHOR:protocol -->
 ## P1
 - [ ] P1: Important item - standard validation
 

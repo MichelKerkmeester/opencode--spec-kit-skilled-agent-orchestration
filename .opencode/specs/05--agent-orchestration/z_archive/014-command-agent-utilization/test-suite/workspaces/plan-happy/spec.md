@@ -20,6 +20,7 @@ contextType: "decision"
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -31,6 +32,7 @@ contextType: "decision"
 
 ---
 
+<!-- /ANCHOR:metadata -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement

@@ -1,3 +1,6 @@
+---
+title: "Implementation Summary: 022-hybrid-rag-fusion"
+---
 # Implementation Summary: 022-hybrid-rag-fusion
 
 <!-- SPECKIT_LEVEL: 3+ -->

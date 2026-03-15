@@ -19,6 +19,7 @@ Implementation plan defining technical approach, project structure, and executio
 
 ---
 
+<!-- ANCHOR:summary -->
 ## 1. OBJECTIVE
 
 ### Metadata
@@ -49,6 +50,7 @@ Address critical bugs affecting system stability and data integrity (P0), signif
 
 ---
 
+<!-- /ANCHOR:summary -->
 ## 2. QUALITY GATES
 
 **GATE: Must pass before Phase 1 implementation. Re-check after each phase.**

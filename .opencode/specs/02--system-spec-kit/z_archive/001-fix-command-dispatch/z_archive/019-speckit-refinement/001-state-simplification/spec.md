@@ -11,9 +11,11 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 1 -->
 # State Simplification: Integrate State into Memory Files
 <!-- SPECKIT_TEMPLATE_SOURCE: spec | v1.0 -->
 
+<!-- ANCHOR:metadata -->
 ## 1. Overview
 
 | Field | Value |
@@ -23,6 +25,7 @@ contextType: "decision"
 | **Priority** | High |
 | **Status** | Planning |
 
+<!-- /ANCHOR:metadata -->
 ## 2. Problem Statement
 
 Current implementation has 3 context mechanisms:

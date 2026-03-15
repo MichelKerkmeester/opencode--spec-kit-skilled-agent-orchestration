@@ -9,8 +9,10 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks: Codebase Fixes
 
+<!-- ANCHOR:notation -->
 ## Task Breakdown
 
 ### T1: Fix checkpoints.js Dimension Handling [P0]
@@ -50,6 +52,7 @@ contextType: "implementation"
   2. Test MCP server startup
   3. Verify dimension detection
 
+<!-- /ANCHOR:notation -->
 ## Dependencies
 
 ```

@@ -10,12 +10,14 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Task Breakdown
 
 Actionable tasks for each checklist item. Complete in order within each phase.
 
 ---
 
+<!-- ANCHOR:notation -->
 ## Phase 1: P0 Critical
 
 ### P0.1 - Fix YAML Syntax Errors
@@ -52,6 +54,7 @@ Actionable tasks for each checklist item. Complete in order within each phase.
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## Phase 2: P1 High Priority
 
 ### P1.1 - Bash Version Compatibility

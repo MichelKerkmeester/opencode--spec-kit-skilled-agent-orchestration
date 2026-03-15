@@ -12,6 +12,7 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: CORE -->
 # Feature Specification: Notification System - Requirements & User Stories
 
 CMS-driven notification system for navbar banners and hero toasts with office hours integration.

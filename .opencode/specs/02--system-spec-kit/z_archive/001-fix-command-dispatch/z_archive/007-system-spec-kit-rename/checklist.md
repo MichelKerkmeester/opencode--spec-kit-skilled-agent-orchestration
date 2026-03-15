@@ -12,8 +12,10 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 # Verification Checklist: workflows-spec-kit → system-spec-kit Rename
 
+<!-- ANCHOR:protocol -->
 ## Overview
 
 | Field | Value |
@@ -26,6 +28,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:protocol -->
 ## P0: Critical (HARD BLOCKERS)
 
 ### Directory Rename

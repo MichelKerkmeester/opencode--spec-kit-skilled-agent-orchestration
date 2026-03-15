@@ -1,5 +1,10 @@
+---
+title: "Tasks: 017 — Agent Alignment"
+---
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks: 017 — Agent Alignment
 
+<!-- ANCHOR:notation -->
 ## Phase 0: Spec Setup + Diff Analysis
 
 - [x] T001: Create spec.md
@@ -9,6 +14,7 @@
 - [x] T005: Read all 9 Claude agent files, identify frontmatter to preserve
 - [x] T006: Read all 9 Gemini agent files, identify frontmatter to preserve
 
+<!-- /ANCHOR:notation -->
 ## Phase 1: Claude Runtime Sync (`.claude/agents/`)
 
 - [x] T007: Sync `context.md` — preserved `tools: [Read, Grep, Glob]`, `model: sonnet`

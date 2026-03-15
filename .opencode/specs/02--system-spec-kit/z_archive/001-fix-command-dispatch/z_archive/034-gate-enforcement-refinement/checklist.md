@@ -9,8 +9,10 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 # Verification Checklist
 
+<!-- ANCHOR:protocol -->
 ## Content
 - [x] Gate 0 section added with compaction detection
 - [x] Gate 3 section preserved
@@ -20,6 +22,7 @@ contextType: "implementation"
 - [x] Summary table updated (4 gates)
 - [x] Self-check updated (4 gates)
 
+<!-- /ANCHOR:protocol -->
 ## Format
 - [x] YAML frontmatter uses camelCase (triggerPhrases, importanceTier, contextType)
 - [x] ANCHOR tags preserved

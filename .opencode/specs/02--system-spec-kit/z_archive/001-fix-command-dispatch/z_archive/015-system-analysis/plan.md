@@ -20,6 +20,7 @@ contextType: "decision"
 
 ---
 
+<!-- ANCHOR:summary -->
 ## 1. OBJECTIVE
 
 ### Metadata
@@ -34,6 +35,7 @@ Inject a **"Command Pattern Reference Protocol"** into `SKILL.md`. This protocol
 
 ---
 
+<!-- /ANCHOR:summary -->
 ## 2. TECHNICAL APPROACH
 
 ### The "Reference Pattern" Philosophy

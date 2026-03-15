@@ -18,6 +18,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## P0 - HARD BLOCKERS
 
 - [x] CHK-001 All 200 JS files pass `node --check` (syntax valid)
@@ -33,6 +34,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:protocol -->
 ## P1 - REQUIRED
 
 - [x] CHK-011 handlers/ export maps match expected function names (9/9 handlers pass)

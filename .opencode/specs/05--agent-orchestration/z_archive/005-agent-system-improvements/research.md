@@ -11,6 +11,7 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "research"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: research | v1.0 -->
 # Research: Oh My Opencode Agent System (2026 Analysis)
 
 **Research ID**: OMO-AGENT-2026-01

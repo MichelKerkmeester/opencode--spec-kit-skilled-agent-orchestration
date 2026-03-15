@@ -14,9 +14,11 @@ contextType: "implementation"
 # Checklist: Memory Command Dashboard Visual Design System
 
 <!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## P0 - Blockers
 
 - [x] REQ-001: Shared visual component library defined — 10 components with examples
@@ -24,6 +26,7 @@ contextType: "implementation"
 - [x] REQ-003: Consistent status line format — all commands use `STATUS=<OK|FAIL> KEY=value`
 - [x] REQ-004: Consistent divider style — `━━━` thick for headers, `───` thin for sections/menus
 
+<!-- /ANCHOR:protocol -->
 ## P1 - Required
 
 - [x] REQ-005: Consistent table/key-value format — 2-space indent, 12-char padded labels

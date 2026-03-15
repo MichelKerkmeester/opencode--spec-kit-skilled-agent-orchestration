@@ -11,6 +11,7 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks: Constitutional Memory System README
 
 | Metadata | Value |
@@ -21,6 +22,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:notation -->
 ## Task List
 
 ### Phase 1: Research
@@ -59,6 +61,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## Summary
 
 All tasks completed. README.md created with comprehensive documentation for the constitutional memory system.

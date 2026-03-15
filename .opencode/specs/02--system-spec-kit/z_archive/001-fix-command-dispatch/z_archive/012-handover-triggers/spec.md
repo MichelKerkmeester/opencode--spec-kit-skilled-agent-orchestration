@@ -13,6 +13,7 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 2 -->
 # Feature Specification: Utility Template Trigger Keywords - Requirements & User Stories
 
 Add automatic keyword detection for handover.md and debug-delegation.md templates to the SpecKit skill, enabling AI agents to recognize session transfer, work continuation, and debug delegation intent.
@@ -21,6 +22,7 @@ Add automatic keyword detection for handover.md and debug-delegation.md template
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. OBJECTIVE
 
 ### Metadata
@@ -53,6 +55,7 @@ Enable AI agents to automatically suggest handover.md or debug-delegation.md tem
 
 ---
 
+<!-- /ANCHOR:metadata -->
 ## 2. SCOPE
 
 ### In Scope

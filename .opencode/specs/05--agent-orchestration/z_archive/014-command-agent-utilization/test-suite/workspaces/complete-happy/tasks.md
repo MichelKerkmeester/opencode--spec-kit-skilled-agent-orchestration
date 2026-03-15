@@ -19,6 +19,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:notation -->
 ## Task Notation
 
 | Prefix | Meaning |
@@ -32,6 +33,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## Phase 1: Setup
 
 - [x] T001 Create database migration for notifications table (src/migrations/20260214_notifications.sql)

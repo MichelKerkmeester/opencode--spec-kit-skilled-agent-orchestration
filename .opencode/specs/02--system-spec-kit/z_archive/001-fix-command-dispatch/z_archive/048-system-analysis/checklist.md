@@ -21,6 +21,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## Checklist Summary
 
 | Section | Items | Complete |
@@ -42,6 +43,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:protocol -->
 ## Pre-Implementation Checks
 
 - [ ] **CHK-PRE-001**: Git branch created for changes (`git checkout -b fix/048-system-remediation`)

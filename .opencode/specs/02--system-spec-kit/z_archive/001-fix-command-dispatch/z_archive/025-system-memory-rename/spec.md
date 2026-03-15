@@ -11,8 +11,11 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Spec: Rename workflows-memory → system-memory
 
+<!-- ANCHOR:metadata -->
 ## Overview
 
 | Field | Value |
@@ -23,6 +26,7 @@ contextType: "decision"
 | **Status** | ✅ Complete |
 | **Created** | 2024-12-17 |
 
+<!-- /ANCHOR:metadata -->
 ## Problem Statement
 
 The `workflows-memory` skill needs to be renamed to `system-memory` to align with the naming convention established by the recent `workflows-spec-kit` → `system-spec-kit` rename. The "system-" prefix better reflects that this is a core infrastructure skill rather than a domain workflow.

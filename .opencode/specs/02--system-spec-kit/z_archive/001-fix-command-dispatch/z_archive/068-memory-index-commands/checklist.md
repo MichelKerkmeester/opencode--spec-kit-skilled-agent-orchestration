@@ -19,6 +19,7 @@ Checklist for validating the memory command separation implementation.
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## 1. OBJECTIVE
 
 ### Metadata
@@ -37,6 +38,7 @@ Ensure the command separation preserves all functionality while properly isolati
 
 ---
 
+<!-- /ANCHOR:protocol -->
 ## 2. LINKS
 
 ### Related Documents

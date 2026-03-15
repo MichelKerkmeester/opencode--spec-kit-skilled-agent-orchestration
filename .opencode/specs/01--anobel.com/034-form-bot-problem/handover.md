@@ -10,6 +10,7 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "general"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: handover | v1.0 -->
 # Session Handover Document
 
 ---

@@ -10,6 +10,7 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "general"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: handover | v1.0 -->
 # Session Handover: JWT Authentication
 
 **Spec Folder**: specs/042-jwt-authentication

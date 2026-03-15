@@ -10,6 +10,7 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks: Finsweet Performance Optimization
 
 <!-- ANCHOR:us-001-deferred-finsweet-loading -->

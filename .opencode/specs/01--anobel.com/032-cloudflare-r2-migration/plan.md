@@ -17,5 +17,7 @@ contextType: "decision"
 N/A - legacy spec artifact.
 <!-- /ANCHOR: summary -->
 
+<!-- ANCHOR:summary -->
 ## Notes
 N/A - legacy spec artifact.
+<!-- /ANCHOR:summary -->

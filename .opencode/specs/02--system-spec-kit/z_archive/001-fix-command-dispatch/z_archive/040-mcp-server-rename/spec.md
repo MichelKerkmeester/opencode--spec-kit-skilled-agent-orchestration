@@ -12,11 +12,15 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # MCP Server Rename: semantic_memory → spec_kit_memory
 
+<!-- ANCHOR:metadata -->
 ## Overview
 Rename the semantic memory MCP server from `semantic_memory` to `spec_kit_memory` across all configuration files, documentation, and code references.
 
+<!-- /ANCHOR:metadata -->
 ## Goals
 1. Update MCP server name in opencode.json configuration
 2. Update all documentation references

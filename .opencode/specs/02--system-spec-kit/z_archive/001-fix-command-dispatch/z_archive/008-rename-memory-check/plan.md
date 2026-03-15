@@ -10,13 +10,16 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Plan: Rename `/memory` Command to `/memory:check`
 
+<!-- ANCHOR:summary -->
 ## Approach
 Parallel agent delegation with domain isolation:
 - 3 agents process independent domains simultaneously
 - 1 agent performs final verification
 
+<!-- /ANCHOR:summary -->
 ## Execution Strategy
 
 ```

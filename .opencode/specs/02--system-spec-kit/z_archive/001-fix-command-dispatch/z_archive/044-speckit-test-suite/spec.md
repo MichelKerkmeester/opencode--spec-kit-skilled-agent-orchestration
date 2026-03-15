@@ -11,6 +11,8 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Spec Kit Test Suite
 
 | Metadata | Value |
@@ -22,6 +24,7 @@ contextType: "decision"
 | **Level** | 3 |
 | **Created** | 2025-12-26 |
 
+<!-- ANCHOR:metadata -->
 ## Problem Statement
 
 The Spec Kit Memory MCP and related tools lacked comprehensive testing:
@@ -30,6 +33,7 @@ The Spec Kit Memory MCP and related tools lacked comprehensive testing:
 - No confidence in refactoring or extending the ecosystem
 - Manual testing was time-consuming and inconsistent
 
+<!-- /ANCHOR:metadata -->
 ## Requirements
 
 ### Functional Requirements

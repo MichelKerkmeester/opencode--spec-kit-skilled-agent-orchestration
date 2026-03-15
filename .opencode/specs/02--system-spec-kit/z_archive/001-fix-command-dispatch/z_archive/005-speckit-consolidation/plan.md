@@ -19,6 +19,7 @@ Implementation plan for consolidating `.opencode/speckit/` into `.opencode/skill
 
 ---
 
+<!-- ANCHOR:summary -->
 ## 1. OBJECTIVE
 
 ### Metadata
@@ -40,6 +41,7 @@ Migrate all templates, scripts, and supporting files from the standalone `.openc
 
 ---
 
+<!-- /ANCHOR:summary -->
 ## 2. MIGRATION ARCHITECTURE
 
 ### Directory Depth Analysis

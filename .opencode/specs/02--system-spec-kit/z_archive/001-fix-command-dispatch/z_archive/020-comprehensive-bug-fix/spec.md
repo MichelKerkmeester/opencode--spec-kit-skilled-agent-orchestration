@@ -11,9 +11,11 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: CORE -->
 # Comprehensive Bug Fix: System-Spec-Kit & Spec_Kit Commands
 <!-- SPECKIT_TEMPLATE_SOURCE: spec.md | v1.0 -->
 
+<!-- ANCHOR:metadata -->
 ## Metadata
 
 | Field | Value |
@@ -26,6 +28,7 @@ contextType: "decision"
 | **Status** | Complete |
 | **Level** | 3 |
 
+<!-- /ANCHOR:metadata -->
 ## 1. Overview
 
 Comprehensive analysis and fix of the `system-spec-kit` skill and all `spec_kit` commands. This work identified and resolved **36+ issues** across P0-P3 priority levels, using **40 parallel AI agents** for analysis, implementation, and verification.

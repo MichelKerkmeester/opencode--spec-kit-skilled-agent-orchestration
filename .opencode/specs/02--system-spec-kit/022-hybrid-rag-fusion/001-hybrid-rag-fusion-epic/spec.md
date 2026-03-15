@@ -5,6 +5,7 @@ level: 3
 created: "2025-12-01"
 updated: "2026-03-08"
 ---
+<!-- SPECKIT_LEVEL: 3 -->
 # Consolidated spec
 <!-- SPECKIT_TEMPLATE_SOURCE: consolidated-epic-merge | v1 -->
 

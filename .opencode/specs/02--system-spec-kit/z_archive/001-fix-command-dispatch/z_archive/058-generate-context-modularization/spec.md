@@ -11,8 +11,11 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Specification: generate-context.js Modularization
 
+<!-- ANCHOR:metadata -->
 ## Overview
 
 | Field | Value |
@@ -25,6 +28,7 @@ contextType: "decision"
 | Documentation Level | 3 (Complex Architecture Change) |
 | Created | 2026-01-01 |
 
+<!-- /ANCHOR:metadata -->
 ## Problem Statement
 
 The `generate-context.js` script is a **4,837-line monolithic file** containing 84 functions across 18 sections. This creates several problems:

@@ -1,3 +1,7 @@
+---
+title: "Checklist: 017 — Agent Alignment"
+---
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 # Checklist: 017 — Agent Alignment
 
 **Date:** 2026-03-15
@@ -5,6 +9,7 @@
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## Pre-Implementation
 
 - [x] Spec.md created with 9 requirements (AA-001 to AA-009)
@@ -12,6 +17,7 @@
 - [x] Tasks.md created with 31 tasks
 - [x] Drift analysis completed — identified 18 stale files across 2 runtimes
 
+<!-- /ANCHOR:protocol -->
 ## P0 Requirements
 
 - [x] **AA-001:** Body content parity — verified for context, orchestrate, speckit across canonical/Claude/Gemini

@@ -12,12 +12,15 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: CORE -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Comprehensive Skills & MCP Server Bug Fix
 
 > Systematic analysis and fix of 63+ bugs across 9 skills, 5 MCP servers, and 25+ library files.
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## Overview
 
 **Date**: December 24, 2024
@@ -28,6 +31,7 @@ This spec documents the comprehensive bug fix effort that addressed critical sec
 
 ---
 
+<!-- /ANCHOR:metadata -->
 ## Problem Statement
 
 The skills and MCP server codebase had accumulated technical debt including:

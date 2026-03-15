@@ -10,8 +10,10 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 # Verification Checklist - UX Deep Analysis
 
+<!-- ANCHOR:protocol -->
 ## Analysis Phase
 - [x] Memory SKILL.md analyzed (Agent 1)
 - [x] Memory README & onboarding analyzed (Agent 2)
@@ -34,6 +36,7 @@ contextType: "implementation"
 - [x] Cross-platform compatibility analyzed (Agent 19)
 - [x] Integration & consistency analyzed (Agent 20)
 
+<!-- /ANCHOR:protocol -->
 ## Synthesis Phase
 - [x] All agent findings collected
 - [x] Issues categorized by severity (P0-P3)

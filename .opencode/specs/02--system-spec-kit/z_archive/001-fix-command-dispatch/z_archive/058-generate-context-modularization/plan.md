@@ -11,8 +11,10 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Implementation Plan: generate-context.js Modularization
 
+<!-- ANCHOR:summary -->
 ## Approach Summary
 
 **Strategy**: Incremental extraction with validation between each phase
@@ -21,6 +23,7 @@ contextType: "decision"
 
 **Estimated Effort**: 4-6 focused sessions
 
+<!-- /ANCHOR:summary -->
 ## Phase Overview
 
 ```

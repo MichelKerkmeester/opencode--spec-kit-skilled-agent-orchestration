@@ -291,6 +291,7 @@ Create a fully functional `sk-prompt-improver` OpenCode skill that enables devel
 
 ---
 
+<!-- ANCHOR:questions -->
 ## 12. OPEN QUESTIONS
 
 - **Q-001**: How will interactive prompts (e.g., "let's iterate on this together") be handled in non-interactive OpenCode environment? Should Interactive mode default to guided checklist approach?

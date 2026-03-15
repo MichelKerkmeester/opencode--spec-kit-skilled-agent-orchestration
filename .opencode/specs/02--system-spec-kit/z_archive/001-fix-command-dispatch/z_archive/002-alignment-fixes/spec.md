@@ -11,8 +11,11 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: CORE -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Memory Command Alignment Fixes
 
+<!-- ANCHOR:metadata -->
 ## Overview
 
 This spec documents the alignment fixes applied to memory command files to ensure consistency with:
@@ -21,6 +24,7 @@ This spec documents the alignment fixes applied to memory command files to ensur
 3. MCP ENFORCEMENT MATRIX in each command file showing required tool calls
 4. Native MCP tool calls replacing inline bash scripts where possible
 
+<!-- /ANCHOR:metadata -->
 ## User Story
 
 **As a** developer using the memory system  

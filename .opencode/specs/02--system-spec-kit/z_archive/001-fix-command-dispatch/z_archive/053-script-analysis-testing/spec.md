@@ -12,6 +12,7 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: CORE -->
 # Feature Specification: Script Analysis Testing - End-to-End Workflow Validation
 
 Complete feature specification defining the end-to-end testing requirements for the Spec Kit Memory workflow.
@@ -20,6 +21,7 @@ Complete feature specification defining the end-to-end testing requirements for 
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. OBJECTIVE
 
 ### Metadata
@@ -49,6 +51,7 @@ Validate that the complete Spec Kit Memory workflow functions correctly from Gat
 
 ---
 
+<!-- /ANCHOR:metadata -->
 ## 2. SCOPE
 
 ### In Scope

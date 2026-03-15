@@ -1,3 +1,6 @@
+---
+title: "Verification Checklist: Feature Catalog Audit & Remediation"
+---
 # Verification Checklist: Feature Catalog Audit & Remediation
 
 <!-- SPECKIT_LEVEL: 3 -->

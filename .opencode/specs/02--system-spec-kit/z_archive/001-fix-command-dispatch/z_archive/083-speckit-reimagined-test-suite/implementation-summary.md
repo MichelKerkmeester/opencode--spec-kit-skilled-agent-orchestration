@@ -12,6 +12,7 @@ importance_tier: "normal"
 contextType: "implementation"
 ---
 <!-- SPECKIT_LEVEL: L3+ -->
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 <!-- SOURCE: 083-speckit-reimagined-test-suite -->
 <!-- GENERATED: 2026-02-01 -->
 <!-- PARENT_SPEC: 003-memory-and-spec-kit -->

@@ -9,8 +9,10 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks - UX Deep Analysis
 
+<!-- ANCHOR:notation -->
 ## P0 Tasks (Must Complete)
 - [x] P0-1: Fix MCP tool naming in save.md, search.md, load.md, checkpoint.md (30+ instances fixed in 4 files)
 - [x] P0-2: Create root README.md with intro and getting started (already comprehensive - verified)
@@ -25,6 +27,7 @@ contextType: "implementation"
 - [x] P0-11: Document OpenCode CLI installation (already documented in README - verified)
 - [x] P0-12: Add .gitattributes for line endings
 
+<!-- /ANCHOR:notation -->
 ## P1 Tasks (High Priority)
 - [x] P1-1: Fix decay formula to ~62-day half-life everywhere (12+ instances fixed)
 - [x] P1-2: Standardize command notation to colon format (already standardized - verified)

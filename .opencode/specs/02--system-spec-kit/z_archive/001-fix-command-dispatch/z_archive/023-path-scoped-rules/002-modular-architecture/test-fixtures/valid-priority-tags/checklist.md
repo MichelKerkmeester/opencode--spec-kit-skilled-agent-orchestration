@@ -10,14 +10,17 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 # Checklist: Valid Priority Tags Fixture
 
+<!-- ANCHOR:protocol -->
 ## P0 - Critical (Must Complete)
 
 - [x] **P0**: First critical item [EVIDENCE: Verified in test run]
 - [x] **P0**: Second critical item [EVIDENCE: Confirmed working]
 - [ ] **P0**: Pending critical item
 
+<!-- /ANCHOR:protocol -->
 ## P1 - Important (Should Complete)
 
 - [x] **P1**: Important completed item [EVIDENCE: Tested successfully]

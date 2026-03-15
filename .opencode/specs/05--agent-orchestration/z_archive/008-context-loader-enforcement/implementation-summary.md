@@ -12,6 +12,7 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 # Implementation Summary: Aggressive @context_loader Enforcement
 
 > **Spec Folder:** `.opencode/specs/05--agent-orchestration/z_archive/008-context-loader-enforcement/`

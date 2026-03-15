@@ -12,8 +12,10 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Implementation Plan - bun:sqlite Migration
 
+<!-- ANCHOR:summary -->
 ## Overview
 
 Migrate the semantic memory plugin from `better-sqlite3` to `bun:sqlite` to fix the "Loaded 0 memories" issue.
@@ -21,6 +23,7 @@ Migrate the semantic memory plugin from `better-sqlite3` to `bun:sqlite` to fix 
 **Estimated Effort**: Low (30-60 minutes)
 **Risk Level**: Low (isolated changes, easy rollback)
 
+<!-- /ANCHOR:summary -->
 ## Prerequisites
 
 - [ ] Read current plugin source code

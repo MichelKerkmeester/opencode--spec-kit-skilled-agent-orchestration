@@ -15,8 +15,10 @@ created: 2025-12-13
 level: 2
 status: active
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Plan: SpecKit Skill Refinement (Conservative Approach)
 
+<!-- ANCHOR:summary -->
 ## 1. Philosophy
 
 **Principle:** Improve without restructuring. Each file keeps its current purpose and structure. Changes focus on:
@@ -34,6 +36,7 @@ status: active
 
 ---
 
+<!-- /ANCHOR:summary -->
 ## 2. Proposed Changes by File
 
 ### 2.1 SKILL.md (724 lines)

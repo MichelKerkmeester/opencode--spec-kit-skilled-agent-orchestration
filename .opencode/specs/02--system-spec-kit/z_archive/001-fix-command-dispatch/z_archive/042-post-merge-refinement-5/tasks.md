@@ -20,6 +20,7 @@ Implementation breakdown for Spec Kit and Memory System bug fixes and refinement
 
 ---
 
+<!-- ANCHOR:notation -->
 ## Task Notation
 
 | Prefix | Meaning |
@@ -31,6 +32,7 @@ Implementation breakdown for Spec Kit and Memory System bug fixes and refinement
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## 1. OBJECTIVE
 
 ### Metadata

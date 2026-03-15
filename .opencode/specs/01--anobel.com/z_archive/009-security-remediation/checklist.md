@@ -9,6 +9,7 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 # Security Remediation Checklist
 
 <!-- ANCHOR:p0---must-complete -->

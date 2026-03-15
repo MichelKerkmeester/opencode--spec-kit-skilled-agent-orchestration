@@ -14,6 +14,7 @@ contextType: "implementation"
 
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v1.0 -->
 
+<!-- ANCHOR:protocol -->
 ## P0 - Blockers (Must Complete)
 - [x] **Parser Logic**
     - [x] `extract_anchors` implemented in `memory-parser.js`
@@ -24,6 +25,7 @@ contextType: "implementation"
     - [x] `formatSearchResults` handles content filtering
     - [x] Missing anchors handled gracefully (returns warning comments)
 
+<!-- /ANCHOR:protocol -->
 ## P1 - Required (Must Complete or Defer)
 - [x] **Token Metrics**
     - [x] Savings calculated and returned in metadata

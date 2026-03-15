@@ -11,14 +11,17 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Implementation Plan: System-Spec-Kit Bug Remediation
 
+<!-- ANCHOR:summary -->
 ## Metadata
 - **Created:** 2024-12-31
 - **Level:** 3
 - **Estimated Effort:** 3-5 days
 - **Priority:** Critical (memory system non-functional)
 
+<!-- /ANCHOR:summary -->
 ## 1. OVERVIEW
 
 This plan addresses bugs and misalignments discovered during a comprehensive 20-agent analysis of the system-spec-kit skill. The work is organized into 4 phases, prioritized by severity.

@@ -4,6 +4,7 @@ title: "Decision Record: sk-prompt-improver Initial Creation"
 # Decision Record: sk-prompt-improver Initial Creation
 
 <!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
 
 ---
 

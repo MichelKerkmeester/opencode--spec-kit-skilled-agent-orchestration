@@ -11,6 +11,7 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks: Multi-Agent Dispatch Implementation
 
 <!-- ANCHOR:task-list -->

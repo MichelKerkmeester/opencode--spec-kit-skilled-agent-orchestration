@@ -1,3 +1,6 @@
+---
+title: "Consolidated research"
+---
 # Consolidated research
 
 Consolidated from the following source docs:
@@ -33,6 +36,7 @@ contextType: "research"
 # Research: Practical Integration Roadmap -- Skill Graphs x Hybrid RAG Fusion
 
 <!-- SPECKIT_LEVEL: 3+ -->
+<!-- SPECKIT_TEMPLATE_SOURCE: research | v1.0 -->
 
 ---
 

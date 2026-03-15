@@ -14,6 +14,7 @@ contextType: "implementation"
 
 # Checklist: Post-Merge Refinement 4
 
+<!-- ANCHOR:protocol -->
 ## Overview
 
 | Phase | Items | Status |
@@ -27,6 +28,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:protocol -->
 ## Pre-Implementation Checks
 
 ### Environment Verification

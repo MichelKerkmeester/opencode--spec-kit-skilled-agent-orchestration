@@ -11,8 +11,10 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks: Post-SpecKit Template Upgrade - Command Alignment
 
+<!-- ANCHOR:notation -->
 ## Phase Overview
 
 | Phase | Description | Status |
@@ -26,6 +28,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## Phase 0: Research & Analysis [COMPLETE]
 
 - [x] Task 0.1: Analyze Spec 072 findings

@@ -1,3 +1,6 @@
+---
+title: "Tasks: Feature Catalog Audit & Remediation"
+---
 # Tasks: Feature Catalog Audit & Remediation
 
 <!-- SPECKIT_LEVEL: 3 -->

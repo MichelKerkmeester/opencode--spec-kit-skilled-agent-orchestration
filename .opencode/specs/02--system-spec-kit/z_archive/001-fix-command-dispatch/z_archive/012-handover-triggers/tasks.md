@@ -20,6 +20,7 @@ Task list for adding automatic keyword detection for handover.md and debug-deleg
 
 ---
 
+<!-- ANCHOR:notation -->
 ## 1. OBJECTIVE
 
 ### Metadata
@@ -39,6 +40,7 @@ Tasks are grouped by the three required SKILL.md modifications.
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## 2. CONVENTIONS
 
 ### Task Format

@@ -3,6 +3,7 @@ title: "Implementation Summary: Create mcp-clickup Skill"
 status: complete
 completed: 2026-03-08
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 
 # Implementation Summary: Create mcp-clickup Skill
 

@@ -11,6 +11,7 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Implementation Plan: Post-Merge Refinement Final
 
 | **Field** | **Value** |
@@ -20,6 +21,7 @@ contextType: "decision"
 | **Duration** | 2-3 weeks |
 | **Phases** | 4 |
 
+<!-- ANCHOR:summary -->
 ## Phase 1: Critical Fixes (P0)
 **Duration:** 3-4 days | **Effort:** ~10 hours
 
@@ -43,6 +45,7 @@ contextType: "decision"
 
 ---
 
+<!-- /ANCHOR:summary -->
 ## Phase 2: Documentation Alignment (P1-DOC)
 **Duration:** 2-3 days | **Effort:** ~8 hours
 

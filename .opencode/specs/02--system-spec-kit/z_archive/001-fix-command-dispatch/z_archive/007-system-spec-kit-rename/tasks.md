@@ -11,8 +11,10 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks: workflows-spec-kit → system-spec-kit Rename
 
+<!-- ANCHOR:notation -->
 ## Overview
 
 | Field | Value |
@@ -23,6 +25,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## Phase 1: Directory Rename
 
 ### Task 1.1: Rename Skill Folder

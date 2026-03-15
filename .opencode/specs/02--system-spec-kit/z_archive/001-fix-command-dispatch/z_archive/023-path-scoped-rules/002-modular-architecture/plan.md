@@ -11,8 +11,10 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Implementation Plan: Modular Validation Architecture
 
+<!-- ANCHOR:summary -->
 ## Technical Context
 
 ### Current State
@@ -27,6 +29,7 @@ contextType: "decision"
 - 13 test fixtures (7 new)
 - Full feature complete at 100%
 
+<!-- /ANCHOR:summary -->
 ## Architecture
 
 ### Directory Structure

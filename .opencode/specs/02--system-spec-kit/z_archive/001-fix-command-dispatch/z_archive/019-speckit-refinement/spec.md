@@ -12,11 +12,13 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 2 -->
 # SpecKit Refinement: ECP Analysis & Improvements
 <!-- SPECKIT_TEMPLATE_SOURCE: spec | v1.0 -->
 <!-- SPECKIT_STATUS: COMPLETE -->
 <!-- SPECKIT_LAST_MODIFIED: 2024-12-23T14:00:00Z -->
 
+<!-- ANCHOR:metadata -->
 ## 1. Overview
 
 | Field | Value |
@@ -30,6 +32,7 @@ contextType: "decision"
 
 ---
 
+<!-- /ANCHOR:metadata -->
 ## 2. Research Source: Extended Context Protocol (ECP)
 
 ### 2.1 ECP Core Philosophy

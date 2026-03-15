@@ -9,6 +9,7 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Security Remediation Plan
 
 <!-- ANCHOR:phase-1-xss-remediation-high -->

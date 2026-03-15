@@ -12,6 +12,7 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 1 -->
 # Feature Specification: SpecKit Post-Rename Testing
 
 Comprehensive testing of system-spec-kit skill after rename from workflows-spec-kit.
@@ -20,6 +21,7 @@ Comprehensive testing of system-spec-kit skill after rename from workflows-spec-
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. OBJECTIVE
 
 ### Metadata
@@ -43,6 +45,7 @@ Total: 197 replacements across ~41 files
 
 ---
 
+<!-- /ANCHOR:metadata -->
 ## 2. SCOPE
 
 ### In Scope

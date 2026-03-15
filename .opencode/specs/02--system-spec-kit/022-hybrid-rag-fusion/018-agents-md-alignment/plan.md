@@ -7,12 +7,15 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "plan"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Plan: 018-agents-md-alignment
 
+<!-- ANCHOR:summary -->
 ## Approach
 
 Direct edit of 3 AGENTS.md files to close 5 identified gaps in Quick Reference workflow tables. All gaps are documentation-only changes to markdown tables — no code, no scripts, no tests.
 
+<!-- /ANCHOR:summary -->
 ## Gap Analysis
 
 | Gap | Description | Files Affected |

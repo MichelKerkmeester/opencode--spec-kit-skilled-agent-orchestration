@@ -9,6 +9,7 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Implementation Plan
 
 <!-- ANCHOR:phase-1-add-new-attribute-constants -->
@@ -41,6 +42,7 @@ contextType: "decision"
 - Test edge cases (trailing slashes, etc.)
 <!-- /ANCHOR_EXAMPLE:phase-4-testing -->
 
+<!-- ANCHOR:files-modified -->
 <!-- ANCHOR_EXAMPLE:files-modified -->
 ## Files Modified
 - `src/2_javascript/cms/social_share.js`

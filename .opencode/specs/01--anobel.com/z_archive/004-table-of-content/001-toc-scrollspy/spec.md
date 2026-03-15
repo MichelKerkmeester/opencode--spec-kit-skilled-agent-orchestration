@@ -12,6 +12,7 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 1 -->
 # Feature Specification: Custom TOC ScrollSpy - Requirements & User Stories
 
 Custom Table of Contents implementation with flexible styling options, replacing Finsweet's Webflow-dependent approach with a standalone IntersectionObserver-based solution.

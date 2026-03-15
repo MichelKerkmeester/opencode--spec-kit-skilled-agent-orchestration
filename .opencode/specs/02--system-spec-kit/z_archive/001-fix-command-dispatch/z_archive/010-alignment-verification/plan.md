@@ -11,6 +11,7 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Memory System Alignment Verification Plan
 
 **Created**: 2025-12-16
@@ -18,6 +19,7 @@ contextType: "decision"
 
 ---
 
+<!-- ANCHOR:summary -->
 ## 1. SOURCE OF TRUTH
 
 **Location**: `/Users/michelkerkmeester/MEGA/MCP Servers/semantic-memory/`
@@ -28,6 +30,7 @@ contextType: "decision"
 
 ---
 
+<!-- /ANCHOR:summary -->
 ## 2. CANONICAL CAPABILITIES (MCP Server v12.0.0)
 
 ### 14 MCP Tools

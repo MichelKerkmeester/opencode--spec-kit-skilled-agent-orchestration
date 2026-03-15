@@ -17,6 +17,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:notation -->
 ## Task Notation
 
 | Prefix | Meaning |
@@ -30,6 +31,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## Phase 1: Setup
 
 - [x] T001 Install auth dependencies - passport, @nestjs/jwt, bcrypt (package.json)

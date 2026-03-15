@@ -12,8 +12,10 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Implementation Plan: workflows-spec-kit → system-spec-kit Rename
 
+<!-- ANCHOR:summary -->
 ## Overview
 
 | Field | Value |
@@ -23,6 +25,7 @@ contextType: "decision"
 | **Phases** | 5 |
 | **Parallelization** | Phases 2-3 fully parallelizable |
 
+<!-- /ANCHOR:summary -->
 ## Phase Architecture
 
 ```

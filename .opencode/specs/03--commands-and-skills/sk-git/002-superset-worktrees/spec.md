@@ -10,7 +10,7 @@ contextType: "implementation"
 ---
 # Feature Specification: sk-git Superset Worktree Alignment
 
-<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_LEVEL: CORE -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->
 
 ---
@@ -35,6 +35,7 @@ Adapt the sk-git skill's worktree handling from Superset IDE's git worktree mode
 | **Priority** | P1 |
 | **Status** | Draft |
 | **Created** | 2026-02-28 |
+<!-- ANCHOR:metadata -->
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -257,6 +258,7 @@ Adapt sk-git's worktree handling from Superset IDE's proven workspace model: cen
 
 ---
 
+<!-- ANCHOR:questions -->
 ## 12. OPEN QUESTIONS
 
 - None — all architectural decisions resolved through Superset source code analysis.

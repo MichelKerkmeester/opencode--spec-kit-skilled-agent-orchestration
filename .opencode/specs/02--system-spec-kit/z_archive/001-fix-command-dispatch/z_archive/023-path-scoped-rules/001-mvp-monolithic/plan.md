@@ -15,6 +15,7 @@ contextType: "decision"
 # Implementation Plan: Path-Scoped Validation Rules
 <!-- SPECKIT_TEMPLATE_SOURCE: plan.md | v1.0 -->
 
+<!-- ANCHOR:summary -->
 ## Metadata
 
 | Field | Value |
@@ -28,6 +29,7 @@ contextType: "decision"
 
 ---
 
+<!-- /ANCHOR:summary -->
 ## 1. Technical Context
 
 ### Technology Stack

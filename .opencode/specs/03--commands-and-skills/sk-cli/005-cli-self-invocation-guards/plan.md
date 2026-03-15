@@ -1,9 +1,15 @@
+---
+title: "Plan: CLI Self-Invocation Guards"
+---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Plan: CLI Self-Invocation Guards
 
+<!-- ANCHOR:summary -->
 ## Approach
 
 Add consistent self-invocation guards to all 4 CLI SKILL.md files. Each guard follows the same pattern but is customized with CLI-specific native capabilities and env var detection.
 
+<!-- /ANCHOR:summary -->
 ## Guard Template
 
 Each skill gets:

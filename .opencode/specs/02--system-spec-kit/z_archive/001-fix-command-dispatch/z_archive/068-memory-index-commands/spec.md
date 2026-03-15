@@ -12,6 +12,7 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 3 -->
 # Feature Specification: Memory Command Separation - Requirements & User Stories
 
 Separate the unified `/memory:search` command into two focused commands: a read-only search command and a database management command.
@@ -20,6 +21,7 @@ Separate the unified `/memory:search` command into two focused commands: a read-
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. OBJECTIVE
 
 ### Metadata
@@ -63,6 +65,7 @@ Split the unified memory command into two focused commands with clear single res
 
 ---
 
+<!-- /ANCHOR:metadata -->
 ## 2. SCOPE
 
 ### In Scope

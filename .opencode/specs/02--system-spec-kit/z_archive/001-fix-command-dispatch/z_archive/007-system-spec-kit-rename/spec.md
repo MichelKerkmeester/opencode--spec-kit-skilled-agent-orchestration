@@ -12,8 +12,11 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Skill Rename: workflows-spec-kit → system-spec-kit
 
+<!-- ANCHOR:metadata -->
 ## Overview
 
 | Field | Value |
@@ -23,6 +26,7 @@ contextType: "decision"
 | **Level** | 2 (Verification Required) |
 | **Created** | 2025-12-17 |
 
+<!-- /ANCHOR:metadata -->
 ## Objective
 
 Rename the `workflows-spec-kit` skill to `system-spec-kit` across the entire codebase, ensuring all references are properly updated while preserving historical documentation.

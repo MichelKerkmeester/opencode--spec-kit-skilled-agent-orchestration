@@ -11,8 +11,10 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 # Verification Checklist: generate-context.js Modularization
 
+<!-- ANCHOR:protocol -->
 ## P0 - Critical (Must Complete)
 
 ### Functional Correctness
@@ -31,6 +33,7 @@ contextType: "implementation"
 - [x] Snapshot tests pass after each phase
   - Evidence: test-snapshot.sh exits 0 (4/4 tests pass)
 
+<!-- /ANCHOR:protocol -->
 ## P1 - Required
 
 ### Module Structure

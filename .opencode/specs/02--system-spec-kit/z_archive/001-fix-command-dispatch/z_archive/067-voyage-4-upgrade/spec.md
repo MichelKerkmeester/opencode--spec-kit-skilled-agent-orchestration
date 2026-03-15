@@ -11,8 +11,11 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Voyage 4 Model Upgrade Analysis
 
+<!-- ANCHOR:metadata -->
 ## Overview
 
 **Objective**: Evaluate and plan the upgrade from current Voyage models to the newly released Voyage 4 model family for both Spec Kit Memory MCP and Narsil MCP systems.
@@ -26,6 +29,7 @@ contextType: "decision"
 
 ---
 
+<!-- /ANCHOR:metadata -->
 ## Current State Analysis
 
 ### System 1: Spec Kit Memory MCP

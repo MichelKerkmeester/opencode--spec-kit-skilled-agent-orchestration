@@ -12,6 +12,7 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Task Breakdown: SpecKit & Memory System Remediation
 
 > **Spec**: 048-system-analysis
@@ -20,6 +21,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:notation -->
 ## Task Summary
 
 | Priority | Count | Status |
@@ -32,6 +34,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## P0: Critical Tasks (MUST COMPLETE)
 
 ### T-P0-001: Add null check to getFailedEmbeddings()

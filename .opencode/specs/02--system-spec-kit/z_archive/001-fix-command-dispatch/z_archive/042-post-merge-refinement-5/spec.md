@@ -12,6 +12,7 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 3 -->
 # Feature Specification: Spec Kit & Memory System Post-Merge Refinement (Phase 5)
 
 Complete feature specification defining requirements, user stories, and success criteria for fixing critical bugs and improving quality following the Spec Kit Memory merger.
@@ -20,6 +21,7 @@ Complete feature specification defining requirements, user stories, and success 
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. OBJECTIVE
 
 ### Metadata
@@ -71,6 +73,7 @@ Stabilize the Spec Kit Memory system by fixing all critical bugs, resolving sign
 
 ---
 
+<!-- /ANCHOR:metadata -->
 ## 2. SCOPE
 
 ### In Scope

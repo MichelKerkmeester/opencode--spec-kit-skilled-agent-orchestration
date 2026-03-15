@@ -19,6 +19,7 @@ Comprehensive verification checklist for the Handover System MVP implementation.
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## 1. OBJECTIVE
 
 ### Metadata
@@ -37,6 +38,7 @@ Verify that all Phase 1 MVP components are correctly implemented, integrated, an
 
 ---
 
+<!-- /ANCHOR:protocol -->
 ## 2. LINKS
 
 ### Related Documents

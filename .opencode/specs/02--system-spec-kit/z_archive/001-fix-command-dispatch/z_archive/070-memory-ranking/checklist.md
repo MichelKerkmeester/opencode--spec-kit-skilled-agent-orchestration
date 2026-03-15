@@ -11,6 +11,7 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 # Checklist: Memory & Folder Ranking Implementation
 
 > **Spec:** `070-memory-ranking`  
@@ -18,6 +19,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## Phase 1: Quick Wins
 
 ### P1-1: Archive Detection Function
@@ -72,6 +74,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:protocol -->
 ## Phase 2: MCP Enhancements
 
 ### P2-1: Ranking Parameters

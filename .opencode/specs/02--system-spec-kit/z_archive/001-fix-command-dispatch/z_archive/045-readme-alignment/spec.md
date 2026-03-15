@@ -11,8 +11,11 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Spec: README & Install Guide Alignment
 
+<!-- ANCHOR:metadata -->
 ## 1. Metadata
 
 | Field | Value |
@@ -27,6 +30,7 @@ contextType: "decision"
 
 ---
 
+<!-- /ANCHOR:metadata -->
 ## 2. Objective
 
 Fix documentation misalignments, incorrect counts, and inconsistencies discovered by 10 parallel Opus agents auditing README files and install guides across the skill system.

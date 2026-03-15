@@ -10,12 +10,15 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Plan: MCP Server Rename
 
+<!-- ANCHOR:summary -->
 ## Phase 1: Discovery (Complete)
 - [x] Identify all files containing "semantic_memory" references
 - [x] Document current state and occurrences
 
+<!-- /ANCHOR:summary -->
 ## Phase 2: Configuration Updates
 - [ ] Update opencode.json MCP server name
 - [ ] Verify MCP server restart behavior

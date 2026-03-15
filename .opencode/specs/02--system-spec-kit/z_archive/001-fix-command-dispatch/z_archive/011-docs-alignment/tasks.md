@@ -20,6 +20,7 @@ Task list template for feature implementation with user story organization and i
 
 ---
 
+<!-- ANCHOR:notation -->
 ## IMPORTANT: REPLACE SAMPLE TASKS
 
 **⚠️ THIS TEMPLATE CONTAINS SAMPLE TASKS FOR ILLUSTRATION ONLY**
@@ -39,6 +40,7 @@ Tasks MUST be organized by user story so each story can be:
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## 1. OBJECTIVE
 
 ### Metadata

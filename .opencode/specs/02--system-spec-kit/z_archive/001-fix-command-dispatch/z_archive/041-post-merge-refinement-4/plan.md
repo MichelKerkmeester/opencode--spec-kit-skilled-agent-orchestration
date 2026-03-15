@@ -19,6 +19,7 @@ Implementation plan defining phased approach to resolve 75+ issues identified by
 
 ---
 
+<!-- ANCHOR:summary -->
 ## 1. OBJECTIVE
 
 ### Metadata
@@ -49,6 +50,7 @@ Systematic remediation of issues discovered during post-merge analysis. Organize
 
 ---
 
+<!-- /ANCHOR:summary -->
 ## 2. QUALITY GATES
 
 **GATE: Must pass before Phase 1 implementation. Re-check after each phase.**

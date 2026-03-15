@@ -16,6 +16,7 @@ completion_date: 2026-01-15
 spec_folder: .opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/064-bug-analysis-and-fix
 status: COMPLETE
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 # Implementation Summary: SpecKit Bug Fix Project
 
 ## Executive Summary

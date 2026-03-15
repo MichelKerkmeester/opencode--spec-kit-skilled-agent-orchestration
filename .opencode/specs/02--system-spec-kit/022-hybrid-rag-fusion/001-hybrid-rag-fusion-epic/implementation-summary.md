@@ -1,3 +1,6 @@
+---
+title: "Consolidated implementation-summary"
+---
 # Consolidated implementation-summary
 <!-- SPECKIT_TEMPLATE_SOURCE: consolidated-epic-merge | v1 -->
 

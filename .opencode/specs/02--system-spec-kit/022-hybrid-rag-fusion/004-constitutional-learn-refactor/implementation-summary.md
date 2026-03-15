@@ -1,3 +1,6 @@
+---
+title: "Implementation Summary"
+---
 <!-- SPECKIT_TEMPLATE_SOURCE: .opencode/skill/system-spec-kit/templates/implementation-summary.md -->
 ---
 title: "Implementation Summary: Refactor /memory:learn → Constitutional Memory Manager"

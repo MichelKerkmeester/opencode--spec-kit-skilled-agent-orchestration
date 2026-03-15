@@ -11,6 +11,7 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "research"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: research | v1.0 -->
 # Research Summary: Post-SpecKit Template Upgrade - Command Alignment
 
 ## Research Methodology

@@ -7,6 +7,7 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "implementation-summary"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 # Implementation Summary: 018-agents-md-alignment
 
 ## What Changed

@@ -19,6 +19,7 @@ contextType: "decision"
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## EXECUTIVE SUMMARY
 
 Align JavaScript naming conventions in the OpenCode framework with ecosystem standards (camelCase) instead of the current non-standard snake_case enforcement. Migrate all ~206 JS files in `.opencode/skill/system-spec-kit/` and update the `sk-code--opencode` skill documentation.
@@ -29,6 +30,7 @@ Align JavaScript naming conventions in the OpenCode framework with ecosystem sta
 
 ---
 
+<!-- /ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |

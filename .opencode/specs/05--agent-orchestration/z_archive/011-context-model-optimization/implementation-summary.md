@@ -15,6 +15,7 @@ contextType: "implementation"
 # Implementation Summary: Context Agent Model Optimization
 
 <!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 
 ---
 

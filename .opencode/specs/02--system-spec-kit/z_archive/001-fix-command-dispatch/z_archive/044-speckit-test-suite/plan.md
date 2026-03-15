@@ -13,8 +13,10 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Spec Kit Test Suite - Implementation Plan
 
+<!-- ANCHOR:summary -->
 ## 1. Overview
 
 Comprehensive test suite covering 4 domains:
@@ -25,6 +27,7 @@ Comprehensive test suite covering 4 domains:
 
 **Total: ~830 test cases**
 
+<!-- /ANCHOR:summary -->
 ## Technical Context
 
 ### Technology Stack

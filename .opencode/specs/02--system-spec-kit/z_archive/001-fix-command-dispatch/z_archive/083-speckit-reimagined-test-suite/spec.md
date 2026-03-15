@@ -19,6 +19,7 @@ contextType: "decision"
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## EXECUTIVE SUMMARY
 
 This specification defines comprehensive test coverage for the SpecKit Reimagined implementation (082-speckit-reimagined). The test suite covers 33 features across 8 categories (Search, Decay, Session, Graph, Performance, UX, Architecture, Specialized Tools), extending existing test files and adding new test coverage for 107 implementation tasks across 5 workstreams (W-S, W-R, W-D, W-G, W-I).
@@ -29,6 +30,7 @@ This specification defines comprehensive test coverage for the SpecKit Reimagine
 
 ---
 
+<!-- /ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |

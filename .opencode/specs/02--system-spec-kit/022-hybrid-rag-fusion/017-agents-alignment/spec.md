@@ -1,3 +1,8 @@
+---
+title: "017 — Agent Alignment: Sync Runtime Agent Definitions"
+---
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # 017 — Agent Alignment: Sync Runtime Agent Definitions
 
 | Field       | Value                                                    |
@@ -11,6 +16,7 @@
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## Problem
 
 Runtime agent copies at `.claude/agents/` (10–17 days stale, last updated Feb 26 – Mar 5) and `.gemini/agents/` (10–13 days stale, last updated Mar 2 – Mar 5) have drifted from the canonical `.opencode/agent/` definitions (last updated Mar 14–15).
@@ -29,6 +35,7 @@ The canonical source was refreshed on Mar 14 (8 agents) and Mar 15 (speckit.md),
 
 ---
 
+<!-- /ANCHOR:metadata -->
 ## Scope
 
 **In scope:** Sync body content from canonical `.opencode/agent/*.md` to `.claude/agents/*.md` and `.gemini/agents/*.md` for all 9 agents, preserving runtime-specific frontmatter.

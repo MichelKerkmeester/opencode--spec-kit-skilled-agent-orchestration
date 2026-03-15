@@ -11,14 +11,18 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Stateless Spec Passing & System Alignment
 
 > Merged spec combining initial stateless implementation (009) and full system alignment (010).
 
+<!-- ANCHOR:metadata -->
 ## 1. Overview
 
 Remove all system reliance on the `.spec-active` marker file, enforcing a strictly stateless architecture. This aligns with `AGENTS.md` Gate 5: "NEVER create/write to .spec-active file (Stateless only)".
 
+<!-- /ANCHOR:metadata -->
 ## 2. Problem Statement
 
 ### Initial Discovery (009)

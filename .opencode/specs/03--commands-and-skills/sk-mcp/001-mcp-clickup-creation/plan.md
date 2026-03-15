@@ -2,13 +2,16 @@
 title: "Plan: Create mcp-clickup Skill"
 status: complete
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 # Plan: Create mcp-clickup Skill
 
+<!-- ANCHOR:summary -->
 ## Approach
 
 Follow the hybrid CLI+MCP pattern established by `mcp-chrome-devtools` skill, adapted for ClickUp's two tools.
 
+<!-- /ANCHOR:summary -->
 ## Steps
 
 ### Step 1: Verify Tool Installation

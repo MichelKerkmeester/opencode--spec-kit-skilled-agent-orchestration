@@ -1,3 +1,7 @@
+---
+title: "Task Management"
+---
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 [← Back to Documentation Index](../DOCUMENTATION.md)  
 [← Back to README](../../README.md)  
 
@@ -5,6 +9,7 @@
 
 The core of ClickUp MCP Server — create, update, move, delete, and query tasks across your workspace. Supports global task lookup by name, bulk operations, subtasks, file attachments, task linking, and natural language dates.
 
+<!-- ANCHOR:notation -->
 ## Tool Reference
 
 | Tool | Description | Required Parameters | Optional Parameters |
@@ -30,6 +35,7 @@ The core of ClickUp MCP Server — create, update, move, delete, and query tasks
 | add_task_dependency | Add a blocking dependency between tasks | `task` (Name or ID), and exactly one of `depends_on` or `dependency_of` | `listName`, `depends_on_list`, `dependency_of_list` |
 | delete_task_dependency | Remove a blocking dependency between tasks | `task` (Name or ID), and exactly one of `depends_on` or `dependency_of` | `listName`, `depends_on_list`, `dependency_of_list` |
 
+<!-- /ANCHOR:notation -->
 ## manage_comments Actions
 
 | Action | Context | Description | Required Params | Optional Params |

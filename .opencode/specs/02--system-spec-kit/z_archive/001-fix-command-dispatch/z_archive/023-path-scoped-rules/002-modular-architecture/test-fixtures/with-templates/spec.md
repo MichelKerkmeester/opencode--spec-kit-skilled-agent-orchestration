@@ -11,6 +11,8 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Spec: Template Test Fixture
 
 | Field       | Value                    |
@@ -19,10 +21,12 @@ contextType: "decision"
 | Status      | Complete                 |
 | Created     | 2024-12-25               |
 
+<!-- ANCHOR:metadata -->
 ## Problem Statement
 
 This fixture tests that template directories are excluded from validation.
 
+<!-- /ANCHOR:metadata -->
 ## Requirements
 
 - Validate that templates/ folder is ignored

@@ -1,3 +1,6 @@
+---
+title: "Feature Specification: Perfect Session Capturing"
+---
 # Feature Specification: Perfect Session Capturing
 
 <!-- SPECKIT_LEVEL: 3 -->

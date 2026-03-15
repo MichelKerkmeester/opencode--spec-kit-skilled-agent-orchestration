@@ -1,3 +1,6 @@
+---
+title: "Combined Implementation Plan: Bug Fixes (003 + 008 + 013 + 015 + 016 + 017)"
+---
 <!-- SPECKIT_TEMPLATE_SOURCE: .opencode/skill/system-spec-kit/templates/plan.md -->
 ---
 title: "Combined Plan: Bug Fixes 003 + 008 + 013 + 015 + 016 + 017"

@@ -10,8 +10,10 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 # Verification Checklist: Codebase Fixes
 
+<!-- ANCHOR:protocol -->
 ## Metadata
 - **Created:** 2024-12-31
 - **Level:** 2
@@ -20,6 +22,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:protocol -->
 ## P0 - Critical (Must Complete)
 
 ### CHK001: Remove Hardcoded EMBEDDING_DIM from checkpoints.js

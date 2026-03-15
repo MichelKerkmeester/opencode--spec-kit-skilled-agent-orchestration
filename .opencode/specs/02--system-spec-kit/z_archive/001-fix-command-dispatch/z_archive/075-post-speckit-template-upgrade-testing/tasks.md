@@ -18,6 +18,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:notation -->
 ## Task Notation
 
 | Prefix | Meaning |
@@ -31,6 +32,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## Phase 1: Template System Tests
 
 **Objective**: Verify CORE+ADDENDUM v2.0 template composition and file requirements

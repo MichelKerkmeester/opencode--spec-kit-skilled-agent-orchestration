@@ -1,3 +1,6 @@
+---
+title: "Tasks: Perfect Session Capturing"
+---
 # Tasks: Perfect Session Capturing
 
 <!-- SPECKIT_LEVEL: 3 -->

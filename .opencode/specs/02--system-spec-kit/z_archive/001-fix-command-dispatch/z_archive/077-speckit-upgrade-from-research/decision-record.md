@@ -12,6 +12,7 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
 # Decision Record: SpecKit Upgrade from Research
 
 > **Spec Folder**: 077-speckit-upgrade-from-research

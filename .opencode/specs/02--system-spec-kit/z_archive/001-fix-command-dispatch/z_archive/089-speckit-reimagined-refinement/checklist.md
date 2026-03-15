@@ -13,10 +13,12 @@ importance_tier: "normal"
 contextType: "implementation"
 spec: "089"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 # Checklist: system-spec-kit Reimagined Refinement
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## P0 - HARD BLOCKERS (Must Complete)
 
 ### Config: Path Resolution & Naming
@@ -43,6 +45,7 @@ spec: "089"
 
 ---
 
+<!-- /ANCHOR:protocol -->
 ## P1 - MUST COMPLETE (Or User-Approved Deferral)
 
 ### Scripts: Security & Logic

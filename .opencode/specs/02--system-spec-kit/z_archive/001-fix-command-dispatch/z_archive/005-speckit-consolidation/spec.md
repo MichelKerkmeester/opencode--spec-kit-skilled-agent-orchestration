@@ -12,6 +12,7 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 2 -->
 # Feature Specification: SpecKit Skill Consolidation - Requirements & Migration Strategy
 
 Consolidate the standalone `.opencode/speckit/` folder into the `.opencode/skills/workflows-spec-kit/` skill folder, following the self-contained architecture pattern established by `workflows-memory`.
@@ -20,6 +21,7 @@ Consolidate the standalone `.opencode/speckit/` folder into the `.opencode/skill
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. OBJECTIVE
 
 ### Metadata
@@ -46,6 +48,7 @@ Enable users to update the SpecKit functionality by updating a single skill fold
 
 ---
 
+<!-- /ANCHOR:metadata -->
 ## 2. SCOPE
 
 ### In Scope

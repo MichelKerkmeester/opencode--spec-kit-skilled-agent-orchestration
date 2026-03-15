@@ -11,12 +11,15 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Implementation Plan: system-spec-kit References Reorganization
 
+<!-- ANCHOR:summary -->
 ## Overview
 
 Reorganize the system-spec-kit `references/` folder from a flat structure into logical sub-folders, following patterns established in workflows-code skill improvement.
 
+<!-- /ANCHOR:summary -->
 ## Phase 1: Analyze Current Structure
 
 **Objective:** Understand existing references/ contents and identify logical groupings

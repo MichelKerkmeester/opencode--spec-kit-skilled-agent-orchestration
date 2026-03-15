@@ -11,8 +11,11 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: CORE -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Spec: Fix SQLite Transaction Nesting Issue
 
+<!-- ANCHOR:metadata -->
 ## Overview
 
 | Field | Value |
@@ -23,6 +26,7 @@ contextType: "decision"
 | **Category** | Bug Fix |
 | **LOC Impact** | ~50 lines modified |
 
+<!-- /ANCHOR:metadata -->
 ## Problem
 
 The `memory_index_scan` MCP tool fails with SQLite error:

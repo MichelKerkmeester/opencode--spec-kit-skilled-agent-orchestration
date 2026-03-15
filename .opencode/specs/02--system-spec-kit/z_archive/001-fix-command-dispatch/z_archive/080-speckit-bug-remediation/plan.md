@@ -19,6 +19,7 @@ contextType: "decision"
 
 ---
 
+<!-- ANCHOR:summary -->
 ## 1. Implementation Strategy
 
 ### Approach: Phased Parallel Execution
@@ -70,6 +71,7 @@ Given the scope (30 bugs across 13 files), use **parallel agent delegation** wit
 
 ---
 
+<!-- /ANCHOR:summary -->
 ## 2. Phase 1 Tasks (Critical/High)
 
 ### Agent 1: Cognitive Module Fixes

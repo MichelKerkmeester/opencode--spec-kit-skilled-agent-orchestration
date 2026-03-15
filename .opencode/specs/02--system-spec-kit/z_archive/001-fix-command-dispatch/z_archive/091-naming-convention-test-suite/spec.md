@@ -19,6 +19,7 @@ contextType: "decision"
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## EXECUTIVE SUMMARY
 
 Comprehensive test suite to verify all ~246 files adjusted during the OpenCode naming convention migration (spec 090). Tests confirm that every JS, shell, and Python script works correctly after renaming snake_case identifiers to camelCase, that 3 discovered runtime bugs are fixed, and that backward-compatible MCP handler exports function properly.
@@ -28,6 +29,7 @@ Comprehensive test suite to verify all ~246 files adjusted during the OpenCode n
 
 ---
 
+<!-- /ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |

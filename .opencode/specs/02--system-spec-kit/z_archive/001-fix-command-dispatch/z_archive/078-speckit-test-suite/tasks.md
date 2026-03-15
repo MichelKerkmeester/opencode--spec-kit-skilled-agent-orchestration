@@ -19,6 +19,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:notation -->
 ## Task Notation
 
 | Prefix | Meaning |
@@ -32,6 +33,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## Phase 1: MCP Handler Tests (~900 LOC)
 
 - [ ] T001 [P0] Implement test-session-learning.js (~400 LOC) → CHK-020

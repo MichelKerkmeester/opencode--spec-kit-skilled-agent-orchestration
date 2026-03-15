@@ -12,12 +12,14 @@ contextType: "implementation"
 # Tasks: Stateless Alignment
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks | v2.0.0 -->
 
+<!-- ANCHOR:notation -->
 ## Phase 1: Critical Commands
 - [ ] Refactor `.opencode/command/spec_kit/resume.md` (7 refs) @critical
 - [ ] Clean up `.opencode/command/spec_kit/research.md` (2 refs - creates marker!) @critical
 - [ ] Update `.opencode/command/spec_kit/assets/spec_kit_resume_auto.yaml` (7 refs) @high
 - [ ] Update `.opencode/command/spec_kit/assets/spec_kit_resume_confirm.yaml` (7 refs) @high
 
+<!-- /ANCHOR:notation -->
 ## Phase 2: Script
 - [ ] Remove fallback from `.opencode/skills/system-memory/scripts/generate-context.js` (lines 2251-2283) @critical
 

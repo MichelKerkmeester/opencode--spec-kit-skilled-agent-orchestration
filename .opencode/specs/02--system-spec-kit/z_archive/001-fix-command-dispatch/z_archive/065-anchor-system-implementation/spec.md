@@ -12,6 +12,7 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 3 -->
 # Feature Specification: Anchor System Implementation - Targeted Memory Retrieval
 
 Complete feature specification defining requirements, user stories, and success criteria for the Anchor System implementation.

@@ -15,6 +15,7 @@ contextType: "implementation"
 # Implementation Summary: OpenCode Naming Convention Alignment
 
 <!-- SPECKIT_LEVEL: 3+ -->
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 
 ---
 

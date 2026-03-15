@@ -19,6 +19,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## Phase 1: Critical/High Bugs - COMPLETE
 
 ### Critical Bugs (P0) - 3/3 DONE
@@ -77,6 +78,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:protocol -->
 ## Phase 2: Medium Bugs - COMPLETE
 
 - [x] **BUG-012** [P2] Add cache mutex to prevent thundering herd

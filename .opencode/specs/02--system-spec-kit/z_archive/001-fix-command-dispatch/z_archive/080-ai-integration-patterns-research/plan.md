@@ -10,12 +10,15 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Research Plan: AI Integration Patterns
 
+<!-- ANCHOR:summary -->
 ## Objective
 
 Extract actionable patterns from three AI-focused repositories to improve system-spec-kit MCP.
 
+<!-- /ANCHOR:summary -->
 ## Research Phases
 
 ### Phase 1: Repository Analysis (Completed)

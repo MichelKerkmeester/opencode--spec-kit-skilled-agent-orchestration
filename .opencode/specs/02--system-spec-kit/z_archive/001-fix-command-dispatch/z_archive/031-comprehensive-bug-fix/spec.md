@@ -16,11 +16,15 @@ id: 018-comprehensive-bug-fix
 priority: P0
 status: in-progress
 ---
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Memory System Comprehensive Bug Fix
 
+<!-- ANCHOR:metadata -->
 ## Overview
 Comprehensive fix for 80 bugs identified across the semantic memory system through deep analysis by 10 parallel Opus agents.
 
+<!-- /ANCHOR:metadata -->
 ## Scope
 
 ### In Scope

@@ -16,6 +16,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## EXECUTIVE SUMMARY
 
 The three AGENTS.md governance framework files reference outdated Quick Reference workflow tables that show 5 memory commands instead of the current 7. The `/memory:learn` constitutional memory row only documents the `[rule]` creation subcommand, missing `list`, `edit`, `remove`, and `budget`. The `/memory:manage` database maintenance row is missing the `ingest` subcommand. Two entirely new commands (`/memory:analyze`, `/memory:shared`) have no rows at all. Additionally, the FS-Enterprises variant has a stale Research/exploration row missing the `memory_context()` unified alternative.
@@ -25,10 +26,12 @@ The three AGENTS.md governance framework files reference outdated Quick Referenc
 - 5 gaps identified and fixed
 - 7 memory commands now represented in Quick Reference tables (was 5)
 - ~36 LOC total change
+<!-- /ANCHOR:metadata -->
 
 ---
 
 <!-- ANCHOR:metadata -->
+<!-- /ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -71,6 +74,7 @@ The three AGENTS.md governance framework files reference outdated Quick Referenc
 | 1 | `AGENTS.md` | `Opencode Env/Public/AGENTS.md` |
 | 2 | `AGENTS_example_fs_enterprises.md` | `Opencode Env/Public/AGENTS_example_fs_enterprises.md` |
 | 3 | `AGENTS.md` | `Opencode Env/Barter/coder/AGENTS.md` |
+<!-- /ANCHOR:scope -->
 
 ---
 
@@ -94,6 +98,7 @@ The three AGENTS.md governance framework files reference outdated Quick Referenc
 | NF1 | Barter READ-ONLY git policy preserved | P0 |
 | NF2 | FS-Enterprises stack detection table preserved | P0 |
 | NF3 | Table column alignment consistent within each file | P1 |
+<!-- /ANCHOR:requirements -->
 
 ---
 
@@ -108,3 +113,4 @@ The three AGENTS.md governance framework files reference outdated Quick Referenc
 | Subcommand surface in Constitutional | Grep `list.*edit.*remove.*budget` | 3 matches |
 | Barter git policy intact | Grep `GIT POLICY: READ-ONLY` | 1 match |
 | FS research row aligned | Grep `memory_context.*unified` | 1 match (FS) |
+<!-- /ANCHOR:verification -->

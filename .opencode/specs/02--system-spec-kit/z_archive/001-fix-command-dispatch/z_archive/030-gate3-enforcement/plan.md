@@ -11,6 +11,7 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Implementation Plan - Gate 3 Enforcement
 
 > Step-by-step plan to implement multi-layered Gate 3 enforcement.

@@ -11,8 +11,10 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Plan: Fix generate-context.js Issues
 
+<!-- ANCHOR:summary -->
 ## Approach
 
 **Option A (Selected):** Add snake_case aliases to vector-index.js exports
@@ -22,6 +24,7 @@ This is the safest approach because:
 2. Fixes the immediate issue without risk of breaking other consumers
 3. Follows the existing pattern (file already has some aliases)
 
+<!-- /ANCHOR:summary -->
 ## Implementation Steps
 
 ### Step 1: Add snake_case aliases to vector-index.js

@@ -12,8 +12,10 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 # Checklist: Spec Kit Test Suite
 
+<!-- ANCHOR:protocol -->
 ## Post-Fix Verification (2025-12-26)
 
 ### 20-Agent Test Suite Results
@@ -72,6 +74,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:protocol -->
 ## Test Execution Summary
 
 | Metric | Value |

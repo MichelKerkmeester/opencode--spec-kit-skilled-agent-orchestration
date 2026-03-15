@@ -10,8 +10,10 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Fix Plan - UX Deep Analysis
 
+<!-- ANCHOR:summary -->
 ## Phase 1: P0 Critical Fixes (Blocking)
 1. Fix MCP tool naming in all memory commands
 2. Create root README.md
@@ -20,6 +22,7 @@ contextType: "decision"
 5. Add spec folder validation to generate-context.js
 6. Fix template count documentation
 
+<!-- /ANCHOR:summary -->
 ## Phase 2: P1 High-Impact Fixes
 1. Fix decay formula (90-day → ~62-day)
 2. Standardize command notation (colon format)

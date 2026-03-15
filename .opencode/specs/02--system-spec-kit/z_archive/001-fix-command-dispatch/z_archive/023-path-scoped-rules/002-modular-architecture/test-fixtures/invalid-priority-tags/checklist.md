@@ -10,8 +10,10 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 # Checklist: Invalid Priority Tags Fixture
 
+<!-- ANCHOR:protocol -->
 ## Tasks
 
 - [ ] Item without any priority tag
@@ -23,3 +25,4 @@ contextType: "implementation"
 - [ ] P0: Missing bold on priority
 - [ ] **p0**: Lowercase priority tag
 - [ ] **P3**: Invalid priority level
+<!-- /ANCHOR:protocol -->

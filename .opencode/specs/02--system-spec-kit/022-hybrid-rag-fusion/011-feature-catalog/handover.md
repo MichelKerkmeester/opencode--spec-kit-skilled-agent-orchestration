@@ -1,3 +1,7 @@
+---
+title: "Session Handover: Feature Catalog Audit & Remediation"
+---
+<!-- SPECKIT_TEMPLATE_SOURCE: handover | v1.0 -->
 # Session Handover: Feature Catalog Audit & Remediation
 
 **Date**: 2026-03-08

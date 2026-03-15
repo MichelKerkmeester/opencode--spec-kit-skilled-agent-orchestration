@@ -9,6 +9,8 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Spec: Missing Evidence Fixture
 
 | Field       | Value                    |
@@ -17,10 +19,12 @@ contextType: "decision"
 | Status      | Active                   |
 | Created     | 2024-12-25               |
 
+<!-- ANCHOR:metadata -->
 ## Problem Statement
 
 This fixture tests detection of missing evidence on completed items.
 
+<!-- /ANCHOR:metadata -->
 ## Requirements
 
 - Validator must catch P0 completed items without evidence

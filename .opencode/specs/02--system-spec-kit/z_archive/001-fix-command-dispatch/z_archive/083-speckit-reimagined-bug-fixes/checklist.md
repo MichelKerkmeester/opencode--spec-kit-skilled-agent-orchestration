@@ -12,12 +12,14 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 # Verification Checklist: Spec Kit Bug Fixes
 
 > Quality assurance checklist for validating all bug fixes before release.
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## Document Information
 
 | Field | Value |
@@ -29,6 +31,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:protocol -->
 ## P0 - Hard Blockers (MUST Complete)
 
 ### README ANCHOR Format (BUG-001)

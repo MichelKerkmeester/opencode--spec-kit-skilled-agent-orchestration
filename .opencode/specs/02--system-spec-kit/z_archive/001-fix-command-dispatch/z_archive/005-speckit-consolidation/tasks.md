@@ -20,6 +20,7 @@ Detailed task breakdown for migrating `.opencode/speckit/` into `.opencode/skill
 
 ---
 
+<!-- ANCHOR:notation -->
 ## PHASE 1: FILE MIGRATION
 
 ### Task 1.1: Create Directory Structure
@@ -102,6 +103,7 @@ find .opencode/skills/workflows-spec-kit -type f | wc -l
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## PHASE 2: SCRIPT PATH UPDATES
 
 ### Task 2.1: Update common.sh

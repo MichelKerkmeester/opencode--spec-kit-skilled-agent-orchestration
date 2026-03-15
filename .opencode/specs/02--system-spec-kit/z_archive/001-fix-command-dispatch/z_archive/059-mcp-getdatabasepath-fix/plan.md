@@ -11,8 +11,10 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Plan: Fix MCP Server Method Name Mismatches
 
+<!-- ANCHOR:summary -->
 ## Problem
 
 The Spec Kit Memory MCP server fails with multiple errors due to import naming mismatches:
@@ -22,6 +24,7 @@ The Spec Kit Memory MCP server fails with multiple errors due to import naming m
 3. `isTransientError is not a function` (E040)
 4. `escapeRegex is not a function` (E040)
 
+<!-- /ANCHOR:summary -->
 ## Root Cause
 
 During refactoring to snake_case naming convention, the exports in source files were updated but imports in consuming files were not:

@@ -1,11 +1,17 @@
+---
+title: "Plan: 017 — Agent Alignment"
+---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Plan: 017 — Agent Alignment
 
+<!-- ANCHOR:summary -->
 ## Overview
 
 Sync 18 stale agent files across 2 runtimes (Claude, Gemini) with canonical `.opencode/agent/` definitions. ~18 files, body-content sync with frontmatter preservation.
 
 ---
 
+<!-- /ANCHOR:summary -->
 ## Phases
 
 ### Phase 0: Diff Analysis

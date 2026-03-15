@@ -10,8 +10,10 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 # Debug Delegation Checklist
 
+<!-- ANCHOR:protocol -->
 ## P0 - Must Complete
 - [x] `/spec_kit:debug` command file created (591 lines at .opencode/command/spec_kit/debug.md)
 - [x] Model selection phase is MANDATORY (Phase 2 with HARD STOP)
@@ -19,6 +21,7 @@ contextType: "implementation"
 - [x] SKILL.md updated with debug workflow (Section 6, lines 514-585)
 - [x] Command table updated (7 commands, line 77)
 
+<!-- /ANCHOR:protocol -->
 ## P1 - Should Complete
 - [x] Auto-suggestion logic implemented in SKILL.md (debug_triggers, lines 527-538)
 - [x] Trigger keywords expanded (frustration, help requests, repeated failures)

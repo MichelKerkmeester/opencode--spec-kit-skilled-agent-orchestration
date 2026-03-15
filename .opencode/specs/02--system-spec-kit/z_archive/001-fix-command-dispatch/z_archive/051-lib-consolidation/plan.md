@@ -10,13 +10,16 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Implementation Plan: Lib Consolidation
 
+<!-- ANCHOR:summary -->
 ## Metadata
 - **Created:** 2024-12-31
 - **Level:** 3
 - **Estimated Effort:** 1-2 days
 
+<!-- /ANCHOR:summary -->
 ## Phase 1: Create Shared Lib Directory Structure
 
 ### 1.1 Create Directory

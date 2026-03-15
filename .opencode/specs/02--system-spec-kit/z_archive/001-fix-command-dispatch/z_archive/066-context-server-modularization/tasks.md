@@ -19,6 +19,7 @@ Task list for decomposing context-server.js into focused modules.
 
 ---
 
+<!-- ANCHOR:notation -->
 ## Task Notation
 
 | Prefix | Meaning |
@@ -29,6 +30,7 @@ Task list for decomposing context-server.js into focused modules.
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## 1. OBJECTIVE
 
 ### Metadata

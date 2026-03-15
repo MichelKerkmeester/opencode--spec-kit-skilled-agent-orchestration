@@ -4,9 +4,11 @@ title: "Verification Checklist: sk-prompt-improver Initial Creation"
 # Verification Checklist: sk-prompt-improver Initial Creation
 
 <!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## P0: Hard Blockers
 
 These must be completed before claiming readiness.
@@ -44,6 +46,7 @@ These must be completed before claiming readiness.
 
 ---
 
+<!-- /ANCHOR:protocol -->
 ## P1: Required Items
 
 These must be completed or explicitly deferred with user approval.

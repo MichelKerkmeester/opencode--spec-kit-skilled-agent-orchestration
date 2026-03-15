@@ -20,6 +20,7 @@ Validation checklist for ensuring SpecKit alignment with level-based template ar
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## 1. OBJECTIVE
 
 ### Metadata
@@ -39,6 +40,7 @@ Verify that all SpecKit scripts, lib modules, and documentation are aligned with
 
 ---
 
+<!-- /ANCHOR:protocol -->
 ## 2. LINKS
 
 ### Related Documents

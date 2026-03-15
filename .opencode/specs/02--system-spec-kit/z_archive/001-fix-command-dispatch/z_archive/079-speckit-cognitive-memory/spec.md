@@ -20,6 +20,7 @@ contextType: "decision"
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## EXECUTIVE SUMMARY
 
 Upgrade the Spec Kit Memory MCP server with cognitive science-inspired memory patterns: FSRS power-law decay, prediction error gating for conflict detection, and dual-strength tracking. This transforms the system from "store everything forever" to intelligent memory that naturally retains what matters and forgets what doesn't.
@@ -30,6 +31,7 @@ Upgrade the Spec Kit Memory MCP server with cognitive science-inspired memory pa
 
 ---
 
+<!-- /ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |

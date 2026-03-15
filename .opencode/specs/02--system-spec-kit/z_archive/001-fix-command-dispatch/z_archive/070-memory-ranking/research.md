@@ -11,6 +11,7 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "research"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: research | v1.0 -->
 # Research: Memory & Folder Ranking Approaches
 
 > **Spec:** `071-memory-ranking`  

@@ -13,6 +13,7 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 # Implementation Summary: Spec Kit Bug Fixes
 
 > Complete record of all bug fixes implemented for Spec Kit v1.2.2.0

@@ -11,8 +11,10 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks: Rename workflows-memory → system-memory
 
+<!-- ANCHOR:notation -->
 ## Task Overview
 
 | Phase | Tasks | Status |
@@ -26,6 +28,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## Phase 1: Directory Rename
 
 ### Task 1.1: Rename Skill Directory

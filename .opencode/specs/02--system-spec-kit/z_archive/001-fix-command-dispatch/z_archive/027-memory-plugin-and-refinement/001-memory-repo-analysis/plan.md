@@ -20,6 +20,7 @@ Research plan defining the analysis approach, deliverables, and execution strate
 
 ---
 
+<!-- ANCHOR:summary -->
 ## 1. OBJECTIVE
 
 ### Metadata
@@ -50,6 +51,7 @@ Conduct comprehensive comparative analysis between our system-memory skill (v11.
 
 ---
 
+<!-- /ANCHOR:summary -->
 ## 2. QUALITY GATES
 
 **GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.**

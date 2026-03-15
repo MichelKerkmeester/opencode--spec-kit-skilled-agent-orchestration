@@ -167,6 +167,7 @@ Create all 9 agent TOML definition files by converting the existing ChatGPT agen
 
 ---
 
+<!-- ANCHOR:questions -->
 ## 10. OPEN QUESTIONS
 
 - None remaining. All questions resolved during implementation.

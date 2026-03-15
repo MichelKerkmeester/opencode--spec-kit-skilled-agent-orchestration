@@ -10,12 +10,14 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 # Checklist - Comprehensive Bug Fix
 
 > All items completed and verified.
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## P0: Critical Security Issues
 
 - [x] **SEC-001**: Add `.utcp_config.json` to .gitignore
@@ -24,6 +26,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:protocol -->
 ## P0: High Severity Bugs
 
 ### MCP Server Core

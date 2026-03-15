@@ -12,6 +12,7 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 3 -->
 # Feature Specification: SpecKit System Architecture Analysis
 
 > Deep architectural analysis of the SpecKit system, covering the interaction between AGENTS.md, Skills, Commands, and Data.
@@ -20,6 +21,7 @@ contextType: "decision"
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. OBJECTIVE
 
 ### Metadata
@@ -44,6 +46,7 @@ To deconstruct and analyze the SpecKit system's architecture, identifying streng
 
 ---
 
+<!-- /ANCHOR:metadata -->
 ## 2. SCOPE
 
 ### In Scope

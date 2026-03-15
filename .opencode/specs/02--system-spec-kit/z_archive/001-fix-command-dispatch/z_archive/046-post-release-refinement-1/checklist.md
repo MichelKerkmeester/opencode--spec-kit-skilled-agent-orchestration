@@ -25,6 +25,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## CHECKLIST LEGEND
 
 | Symbol | Meaning |
@@ -42,6 +43,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:protocol -->
 ## PRE-IMPLEMENTATION CHECKLIST
 
 ### CHK-PRE-001: Backup & Safety

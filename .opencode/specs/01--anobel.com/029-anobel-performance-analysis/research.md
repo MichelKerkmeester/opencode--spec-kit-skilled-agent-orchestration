@@ -15,6 +15,7 @@ contextType: "research"
 # Research Summary: 10-Agent Performance Analysis - anobel.com
 
 <!-- SPECKIT_LEVEL: 3+ -->
+<!-- SPECKIT_TEMPLATE_SOURCE: research | v1.0 -->
 <!-- RESEARCH_DATE: 2025-02-01 -->
 <!-- METHODOLOGY: Parallel 10-agent dispatch with domain-specific focus -->
 

@@ -9,6 +9,7 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 # QA Verification Checklist
 
 > **Spec:** 077-speckit-upgrade-from-research
@@ -17,6 +18,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## Pre-Implementation Checks
 
 ### P0 - Must Complete Before Starting
@@ -32,6 +34,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:protocol -->
 ## Phase 1 Validation: Uncertainty Tracking & Core Epistemic
 
 ### P0 - Core Epistemic Infrastructure

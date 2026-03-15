@@ -11,12 +11,16 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # MCP Embedding Failure Investigation
 
+<!-- ANCHOR:metadata -->
 ## Problem Statement
 
 Users report that the `spec_kit_memory` MCP server fails to generate semantic embeddings due to a corrupted local HuggingFace embedding model cache. The ONNX model fails protobuf parsing.
 
+<!-- /ANCHOR:metadata -->
 ## Symptoms
 
 1. MCP server starts but semantic embeddings fail

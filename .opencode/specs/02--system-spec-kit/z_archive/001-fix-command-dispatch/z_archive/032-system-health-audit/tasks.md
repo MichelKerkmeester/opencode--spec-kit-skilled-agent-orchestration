@@ -11,12 +11,15 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks - System Health Audit (Completed)
 
+<!-- ANCHOR:notation -->
 ## Quick Reference
 
 All 34 tasks completed on 2025-12-25.
 
+<!-- /ANCHOR:notation -->
 ## P0: BROKEN - Fixed
 
 ### P0-001: Skill Advisor Python Path ✅

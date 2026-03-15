@@ -11,8 +11,10 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 # Checklist: Post-SpecKit Template Upgrade - Command Alignment
 
+<!-- ANCHOR:protocol -->
 ## P0 - HARD BLOCKERS (Must Complete)
 
 ### Research Phase
@@ -36,6 +38,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:protocol -->
 ## P1 - Must Complete (Can Defer with Approval)
 
 ### Frontmatter Corrections

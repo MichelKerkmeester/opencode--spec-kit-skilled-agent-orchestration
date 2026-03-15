@@ -12,11 +12,15 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # UX Deep Analysis - Memory & SpecKit Systems
 
+<!-- ANCHOR:metadata -->
 ## Problem Statement
 The Memory Skill, Memory Server, SpecKit Skill, and Commands need comprehensive UX analysis for public repo readiness. A dev team cloning this repo should have a seamless first-time experience.
 
+<!-- /ANCHOR:metadata -->
 ## Scope
 - Memory Skill (.opencode/skill/system-memory/)
 - Memory MCP Server (mcp_server/)

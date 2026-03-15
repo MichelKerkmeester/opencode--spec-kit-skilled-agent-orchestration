@@ -1,5 +1,10 @@
+---
+title: "Plan: Adversarial Self-Check for Review, Debug, Ultra-Think Agents"
+---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Plan: Adversarial Self-Check for Review, Debug, Ultra-Think Agents
 
+<!-- ANCHOR:summary -->
 ## Implementation Order
 
 ### Step 1: Edit @review across all 5 directories
@@ -27,3 +32,4 @@
 - Verify TOML string escaping in .codex files
 
 ### Step 5: Create implementation-summary.md
+<!-- /ANCHOR:summary -->

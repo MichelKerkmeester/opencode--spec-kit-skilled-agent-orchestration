@@ -22,6 +22,7 @@ contextType: "decision"
 
 ---
 
+<!-- ANCHOR:summary -->
 ## Verification Status 
 
 **Verified on 2026-01-16, RE-VERIFIED after spec 069 closure:**
@@ -38,6 +39,7 @@ contextType: "decision"
 
 ---
 
+<!-- /ANCHOR:summary -->
 ## Executive Summary
 
 Align ALL SpecKit scripts, lib modules, and documentation with the new level-based template architecture from Spec 069. The architecture changed from COMPLEXITY_GATE markers in flat templates to dedicated pre-expanded templates in level folders (`level_1/`, `level_2/`, `level_3/`, `level_3+/`).

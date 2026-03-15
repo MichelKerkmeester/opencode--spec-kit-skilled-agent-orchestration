@@ -19,6 +19,7 @@ Custom checklist for scratch folder enforcement implementation validation.
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## 1. OBJECTIVE
 
 ### Metadata
@@ -37,6 +38,7 @@ Verify that all scratch folder enforcement rules are properly implemented across
 
 ---
 
+<!-- /ANCHOR:protocol -->
 ## 2. LINKS
 
 ### Related Documents

@@ -15,6 +15,7 @@ contextType: "decision"
 <!-- SPECKIT_STATUS: COMPLETE -->
 <!-- SPECKIT_LAST_MODIFIED: 2024-12-23T14:00:00Z -->
 
+<!-- ANCHOR:summary -->
 ## 1. Overview
 
 | Field | Value |
@@ -27,6 +28,7 @@ contextType: "decision"
 
 ---
 
+<!-- /ANCHOR:summary -->
 ## 2. Phased Implementation Strategy
 
 ### Why Phased?

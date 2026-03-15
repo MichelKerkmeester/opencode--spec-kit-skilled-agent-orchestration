@@ -11,8 +11,10 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Plan: README & Install Guide Alignment
 
+<!-- ANCHOR:summary -->
 ## 1. Overview
 
 | Field | Value |
@@ -24,6 +26,7 @@ contextType: "decision"
 
 ---
 
+<!-- /ANCHOR:summary -->
 ## 2. Implementation Strategy
 
 ### Approach: Sequential File Fixing

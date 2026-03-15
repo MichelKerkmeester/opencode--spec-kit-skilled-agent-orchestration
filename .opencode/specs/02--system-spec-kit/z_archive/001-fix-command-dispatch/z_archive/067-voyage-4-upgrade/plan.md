@@ -9,8 +9,10 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Voyage 4 Upgrade Plan
 
+<!-- ANCHOR:summary -->
 ## Phase 1: Code Updates (Spec Kit Memory)
 
 ### 1.1 Update Voyage Provider
@@ -55,6 +57,7 @@ contextType: "decision"
 
 ---
 
+<!-- /ANCHOR:summary -->
 ## Phase 2: Documentation Updates
 
 ### 2.1 Spec Kit README

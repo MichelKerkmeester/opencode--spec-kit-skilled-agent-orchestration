@@ -19,6 +19,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:notation -->
 ## Task Notation
 
 | Prefix | Meaning |
@@ -32,6 +33,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## Phase 0: Spec Folder
 
 - [x] T001 Create spec folder `087-speckit-deep-analysis/` with Level 3+ templates

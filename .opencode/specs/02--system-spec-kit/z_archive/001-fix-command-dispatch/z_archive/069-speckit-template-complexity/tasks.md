@@ -20,6 +20,7 @@ Implementation task breakdown for complexity detection and level-based template 
 
 ---
 
+<!-- ANCHOR:notation -->
 ## Task Notation
 
 | Prefix | Meaning |
@@ -31,6 +32,7 @@ Implementation task breakdown for complexity detection and level-based template 
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## 1. OBJECTIVE
 
 ### Metadata

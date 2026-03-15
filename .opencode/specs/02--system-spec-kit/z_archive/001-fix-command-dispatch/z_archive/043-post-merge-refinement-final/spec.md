@@ -12,6 +12,8 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Specification: Post-Merge Refinement Final
 
 | **Field** | **Value** |
@@ -21,6 +23,7 @@ contextType: "decision"
 | **Created** | 2025-12-25 |
 | **Spec Folder** | 043-post-merge-refinement-final |
 
+<!-- ANCHOR:metadata -->
 ## Problem Statement
 
 After the major Spec Kit + Memory system merger (spec 035), eight refinement attempts (036-042) identified ~300+ issues. However, many were:
@@ -36,6 +39,7 @@ A comprehensive 10-agent research sweep across all 42 specs with code verificati
 - Enables focused, prioritized remediation
 - Closes out specs 036-042 by incorporating their findings
 
+<!-- /ANCHOR:metadata -->
 ## Goals
 
 1. **Close P0 Critical Issues (8)** - System stability

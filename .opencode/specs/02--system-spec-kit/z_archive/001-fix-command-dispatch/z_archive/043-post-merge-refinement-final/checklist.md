@@ -11,6 +11,7 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 # QA Checklist: Post-Merge Refinement Final
 
 | **Field** | **Value** |
@@ -24,6 +25,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## P0 - Critical Bug Fixes
 
 ### P0-001: Duplicate getConstitutionalMemories
@@ -77,6 +79,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:protocol -->
 ## P1 - Documentation Alignment
 
 ### P1-001: Gate Numbering

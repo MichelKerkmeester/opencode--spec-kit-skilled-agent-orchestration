@@ -10,8 +10,10 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks: MCP Server Rename
 
+<!-- ANCHOR:notation -->
 ## Task List
 
 ### T1: Update opencode.json
@@ -48,3 +50,4 @@ contextType: "implementation"
 - Grep for remaining occurrences
 - Verify no broken references
 - Status: pending
+<!-- /ANCHOR:notation -->

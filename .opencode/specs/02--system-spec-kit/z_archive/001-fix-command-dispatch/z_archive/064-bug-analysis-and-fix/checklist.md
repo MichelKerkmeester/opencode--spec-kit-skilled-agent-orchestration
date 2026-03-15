@@ -19,6 +19,7 @@ Comprehensive checklist for validating the SpecKit bug fix implementation across
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## 1. OBJECTIVE
 
 ### Metadata
@@ -37,6 +38,7 @@ This checklist validates all bug fixes identified in the 20-agent research and r
 
 ---
 
+<!-- /ANCHOR:protocol -->
 ## AI VERIFICATION PROTOCOL
 
 ### ⚠️ CRITICAL: AI Agent Must Read This Section

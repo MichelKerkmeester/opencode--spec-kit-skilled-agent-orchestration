@@ -12,6 +12,7 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 3 -->
 # Post-Release Refinement 1: Infrastructure Bug Fixes
 
 <!-- SPECKIT_TEMPLATE_SOURCE: system-spec-kit/templates/spec.md -->
@@ -26,12 +27,14 @@ contextType: "decision"
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## OBJECTIVE
 
 Systematically address all bugs, misalignments, and technical debt identified during the comprehensive 20-agent deep dive analysis of the OpenCode infrastructure. This includes fixes for the Memory MCP Server, Spec-Kit scripts, Skills system, Commands, and cross-system integration issues.
 
 ---
 
+<!-- /ANCHOR:metadata -->
 ## SCOPE
 
 ### In Scope

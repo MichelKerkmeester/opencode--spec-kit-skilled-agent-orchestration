@@ -9,8 +9,10 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Implementation Plan
 
+<!-- ANCHOR:summary -->
 ## Phase 1: alignment-validator.js Updates
 
 ### Step 1.1: Add detect_work_domain() function
@@ -35,6 +37,7 @@ contextType: "decision"
 - Pass work domain to scoring
 - Add explicit warning when infrastructure work → project folder
 
+<!-- /ANCHOR:summary -->
 ## Phase 2: continue.md Updates
 
 ### Step 2.1: Add validation section

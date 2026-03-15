@@ -13,6 +13,7 @@ contextType: "decision"
 # State Simplification: Implementation Plan
 <!-- SPECKIT_TEMPLATE_SOURCE: plan | v1.0 -->
 
+<!-- ANCHOR:summary -->
 ## 1. Overview
 
 | Field | Value |
@@ -21,6 +22,7 @@ contextType: "decision"
 | **Risk Level** | Low |
 | **Approach** | Single phase refactoring |
 
+<!-- /ANCHOR:summary -->
 ## 2. Changes Required
 
 ### 2.1 generate-context.js (~50 LOC)

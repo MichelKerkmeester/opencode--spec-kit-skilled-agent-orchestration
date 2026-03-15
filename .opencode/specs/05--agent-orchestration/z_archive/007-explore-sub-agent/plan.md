@@ -12,6 +12,7 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Plan: Context Loader Sub-Agent (@context_loader)
 
 > **Spec Folder:** `.opencode/specs/05--agent-orchestration/z_archive/007-explore-sub-agent/`

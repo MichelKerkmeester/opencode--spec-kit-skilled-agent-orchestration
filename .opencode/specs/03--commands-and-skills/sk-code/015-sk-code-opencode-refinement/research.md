@@ -6,6 +6,7 @@ created: "2026-02-22"
 updated: "2026-02-22"
 contextType: "research"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: research | v1.0 -->
 
 # Research: sk-code--opencode Refinement
 

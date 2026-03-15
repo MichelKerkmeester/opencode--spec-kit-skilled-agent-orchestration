@@ -14,6 +14,7 @@ contextType: "implementation"
 # Verification Checklist: Modular Validation Architecture
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist.md | v1.0 -->
 
+<!-- ANCHOR:protocol -->
 ## Metadata
 
 | Field | Value |
@@ -23,6 +24,7 @@ contextType: "implementation"
 | **Created** | 2024-12-24 |
 | **Status** | ✅ 100% Complete |
 
+<!-- /ANCHOR:protocol -->
 ## Priority Definitions
 
 | Priority | Enforcement |

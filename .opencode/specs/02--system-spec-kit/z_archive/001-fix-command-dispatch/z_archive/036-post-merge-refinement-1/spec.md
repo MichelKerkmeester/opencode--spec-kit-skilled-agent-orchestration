@@ -15,8 +15,11 @@ id: 036-post-merge-refinement
 priority: High
 status: Active
 ---
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Post-Merger System Refinement
 
+<!-- ANCHOR:metadata -->
 ## Overview
 
 | Field | Value |
@@ -27,6 +30,7 @@ status: Active
 | **Priority** | High |
 | **Created** | 2025-12-25 |
 
+<!-- /ANCHOR:metadata -->
 ## Problem Statement
 
 Following the successful merger of system-memory and system-spec-kit (035-memory-speckit-merger), a comprehensive analysis revealed **29 issues** requiring attention:

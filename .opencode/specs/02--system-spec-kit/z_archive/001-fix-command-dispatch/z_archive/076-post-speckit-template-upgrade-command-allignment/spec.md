@@ -10,12 +10,16 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: CORE -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Spec 076: Post-SpecKit Template Upgrade - Command Alignment
 
+<!-- ANCHOR:metadata -->
 ## Overview
 
 Comprehensive alignment of 19 OpenCode commands with command_template.md standards following SpecKit v1.9.0 CORE + ADDENDUM v2.0 template architecture upgrade.
 
+<!-- /ANCHOR:metadata -->
 ## Scope
 
 ### In Scope

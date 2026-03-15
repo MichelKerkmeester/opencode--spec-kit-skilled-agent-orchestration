@@ -20,6 +20,7 @@ Validation checklist for adding automatic keyword detection for handover.md and 
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## 1. OBJECTIVE
 
 ### Metadata
@@ -38,6 +39,7 @@ Verify all three SKILL.md modifications are complete and correctly integrated.
 
 ---
 
+<!-- /ANCHOR:protocol -->
 ## 2. LINKS
 
 ### Related Documents

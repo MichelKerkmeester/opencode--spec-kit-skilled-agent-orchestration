@@ -11,9 +11,12 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks: Template Test Fixture
 
+<!-- ANCHOR:notation -->
 ## Current Tasks
 
 - [x] Create test fixture structure
 - [x] Add template with placeholders
+<!-- /ANCHOR:notation -->

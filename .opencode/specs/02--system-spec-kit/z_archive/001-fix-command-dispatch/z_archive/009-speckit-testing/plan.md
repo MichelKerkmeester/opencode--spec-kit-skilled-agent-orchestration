@@ -19,6 +19,7 @@ Technical approach for comprehensive testing of system-spec-kit skill.
 
 ---
 
+<!-- ANCHOR:summary -->
 ## 1. OBJECTIVE
 
 ### Metadata
@@ -34,6 +35,7 @@ Execute comprehensive testing of all SpecKit features using 5 parallel agents to
 
 ---
 
+<!-- /ANCHOR:summary -->
 ## 2. TEST STRATEGY
 
 ### Parallel Agent Deployment

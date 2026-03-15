@@ -11,8 +11,10 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 # Checklist: README & Install Guide Alignment
 
+<!-- ANCHOR:protocol -->
 ## Summary
 
 | Category | Total | P0 | P1 | P2 |
@@ -28,6 +30,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:protocol -->
 ## Phase 1: system-spec-kit/README.md
 
 ### Template Count Fixes

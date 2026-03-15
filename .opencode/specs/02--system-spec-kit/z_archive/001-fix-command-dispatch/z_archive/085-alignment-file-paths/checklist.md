@@ -10,8 +10,10 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 # Checklist: 085 Alignment File Paths
 
+<!-- ANCHOR:protocol -->
 ## P0 - Must Complete
 
 - [x] `detect_work_domain()` correctly identifies infrastructure work
@@ -29,6 +31,7 @@ contextType: "implementation"
 - [x] All new functions are exported
   - Evidence: `detect_work_domain`, `calculate_alignment_score_with_domain` in exports
 
+<!-- /ANCHOR:protocol -->
 ## P1 - Should Complete
 
 - [x] Test: spec-kit files → 003-memory-and-spec-kit scores higher than 005-anobel.com

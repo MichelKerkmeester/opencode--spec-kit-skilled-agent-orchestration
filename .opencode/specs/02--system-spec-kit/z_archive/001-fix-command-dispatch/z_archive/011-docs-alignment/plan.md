@@ -20,6 +20,7 @@ Implementation plan defining technical approach, project structure, and executio
 
 ---
 
+<!-- ANCHOR:summary -->
 ## 1. OBJECTIVE
 
 ### Metadata
@@ -50,6 +51,7 @@ Feature specification from `/specs/[###-feature-name]/spec.md`
 
 ---
 
+<!-- /ANCHOR:summary -->
 ## 2. QUALITY GATES
 
 **GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.**

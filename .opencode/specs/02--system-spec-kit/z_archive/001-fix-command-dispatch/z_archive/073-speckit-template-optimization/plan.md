@@ -18,12 +18,14 @@ contextType: "decision"
 
 ---
 
+<!-- ANCHOR:summary -->
 ## 1. SUMMARY
 
 Restructure the SpecKit template system from monolithic templates to a CORE + ADDENDUM compositional architecture. Core templates (~270 LOC) provide the foundation shared across all levels, while level-specific addendums add distinct VALUE: L2 adds verification (+120 LOC), L3 adds architecture (+150 LOC), and L3+ adds governance (+100 LOC).
 
 ---
 
+<!-- /ANCHOR:summary -->
 ## 2. TECHNICAL CONTEXT
 
 - **Language**: Markdown templates

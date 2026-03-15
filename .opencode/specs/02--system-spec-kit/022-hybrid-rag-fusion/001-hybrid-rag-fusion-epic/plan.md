@@ -1,3 +1,6 @@
+---
+title: "Consolidated plan"
+---
 # Consolidated plan
 <!-- SPECKIT_TEMPLATE_SOURCE: consolidated-epic-merge | v1 -->
 

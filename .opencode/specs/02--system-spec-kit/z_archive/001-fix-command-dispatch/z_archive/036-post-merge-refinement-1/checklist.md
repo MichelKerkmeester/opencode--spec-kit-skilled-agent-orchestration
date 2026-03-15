@@ -11,8 +11,10 @@ contextType: "implementation"
 id: 036-post-merge-refinement
 level: 2
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 # Completion Checklist
 
+<!-- ANCHOR:protocol -->
 ## P0 - Critical Issues (HARD BLOCKERS)
 
 - [ ] **P0.1**: validate-spec.sh exists and is functional
@@ -30,6 +32,7 @@ level: 2
   - [ ] Script created OR reference removed
   - [ ] SKILL.md:172 accurate
 
+<!-- /ANCHOR:protocol -->
 ## P1 - High Priority (Must Complete)
 
 - [ ] **P1.1**: Placeholder validation detects Mustache syntax

@@ -12,6 +12,7 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 1 -->
 # Feature Specification: Memory Plugin Dashboard Optimization - Requirements & User Stories
 
 Optimize the semantic memory plugin to inject a compact "memory dashboard" instead of full content, reducing token consumption while maintaining context visibility.
@@ -20,6 +21,7 @@ Optimize the semantic memory plugin to inject a compact "memory dashboard" inste
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. OBJECTIVE
 
 ### Metadata
@@ -53,6 +55,7 @@ Reduce token consumption from ~2,000-5,000 tokens to ~500-1,000 tokens per sessi
 
 ---
 
+<!-- /ANCHOR:metadata -->
 ## 2. SCOPE
 
 ### In Scope

@@ -20,6 +20,7 @@ Implementation plan for systematically addressing ~231 identified issues across 
 
 ---
 
+<!-- ANCHOR:summary -->
 ## EXECUTIVE SUMMARY FOR AI AGENTS
 
 ### What This Plan Accomplishes
@@ -66,6 +67,7 @@ Phase 1 (BLOCKING) → Phase 2 → Phase 3 → Phase 4
 
 ---
 
+<!-- /ANCHOR:summary -->
 ## 1. OBJECTIVE
 
 ### Metadata

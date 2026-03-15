@@ -11,8 +11,10 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # MCP Embedding Failure - Investigation Plan
 
+<!-- ANCHOR:summary -->
 ## Executive Summary
 
 After comprehensive parallel investigation by 12 opus agents, the root cause of the "Protobuf parsing failed" error is identified as:
@@ -25,6 +27,7 @@ After comprehensive parallel investigation by 12 opus agents, the root cause of 
 
 ---
 
+<!-- /ANCHOR:summary -->
 ## Root Cause Analysis
 
 ### Evidence Summary

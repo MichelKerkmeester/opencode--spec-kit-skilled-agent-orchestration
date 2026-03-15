@@ -11,6 +11,7 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 # Checklist - System Health Audit (COMPLETED)
 
 > **Status:** ALL ITEMS COMPLETE ✅
@@ -18,6 +19,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## P0: BROKEN - Fix TODAY 
 
 - [x] **P0-001:** Fix Skill Advisor Python path
@@ -37,6 +39,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:protocol -->
 ## P1: CRITICAL - Fix This Week 
 
 - [x] **P1-001:** Fix decay formula documentation

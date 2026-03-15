@@ -13,12 +13,15 @@ created: 2025-12-13
 level: 2
 status: complete
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks: SpecKit Skill Refinement
 
+<!-- ANCHOR:notation -->
 ## Overview
 
 Breaking down the refactoring into ordered tasks with dependencies.
 
+<!-- /ANCHOR:notation -->
 ## Task List
 
 ### Phase 1: Establish Canonical Sources

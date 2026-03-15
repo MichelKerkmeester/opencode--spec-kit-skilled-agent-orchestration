@@ -11,8 +11,10 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Implementation Plan - System Health Audit (Retrospective)
 
+<!-- ANCHOR:summary -->
 ## Execution Overview
 
 ```
@@ -28,6 +30,7 @@ Phase 1 (Analysis)     Phase 2 (Implementation)
       │ identified             │ applied
 ```
 
+<!-- /ANCHOR:summary -->
 ## Phase 1: Analysis (20 Agents)
 
 ### Agent Distribution

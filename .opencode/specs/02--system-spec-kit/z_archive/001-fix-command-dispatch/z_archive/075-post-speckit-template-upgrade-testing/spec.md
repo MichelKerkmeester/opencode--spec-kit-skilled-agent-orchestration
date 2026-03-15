@@ -19,6 +19,7 @@ contextType: "decision"
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## EXECUTIVE SUMMARY
 
 This specification defines a comprehensive test suite to validate the system-spec-kit v1.9.0 after the CORE+ADDENDUM template architecture upgrade. The test suite covers 44 JavaScript modules, 14 MCP tools, 17 shell scripts, and the complete template system to ensure all components function correctly post-upgrade.
@@ -29,6 +30,7 @@ This specification defines a comprehensive test suite to validate the system-spe
 
 ---
 
+<!-- /ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |

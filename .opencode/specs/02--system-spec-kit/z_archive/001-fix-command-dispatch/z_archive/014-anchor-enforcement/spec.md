@@ -10,12 +10,16 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: CORE -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Anchor System Enforcement
 
+<!-- ANCHOR:metadata -->
 ## Overview
 
 Enforce correct anchor format throughout memory system to enable section-specific retrieval with 93% token savings.
 
+<!-- /ANCHOR:metadata -->
 ## Problem Statement
 
 Memory files were using inconsistent anchor formats:

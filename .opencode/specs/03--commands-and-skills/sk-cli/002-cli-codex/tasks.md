@@ -13,6 +13,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:notation -->
 ## Task List
 
 ### T001: Consolidate cli-gemini models
@@ -46,3 +47,4 @@ contextType: "implementation"
 - [x] plan.md
 - [x] tasks.md
 - [x] checklist.md
+<!-- /ANCHOR:notation -->

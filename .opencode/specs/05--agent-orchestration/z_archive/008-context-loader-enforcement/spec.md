@@ -11,6 +11,8 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Spec: Aggressive @context_loader Enforcement
 
 > **Spec Folder:** `.opencode/specs/05--agent-orchestration/z_archive/008-context-loader-enforcement/`

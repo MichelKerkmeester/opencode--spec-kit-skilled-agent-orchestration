@@ -11,6 +11,7 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Implementation Plan: SpecKit & Memory System Remediation
 
 > **Spec**: 048-system-analysis
@@ -19,6 +20,7 @@ contextType: "decision"
 
 ---
 
+<!-- ANCHOR:summary -->
 ## Executive Summary
 
 This plan addresses **35 verified issues** identified in the system analysis, organized into **9 work streams** across **4 phases**. The approach prioritizes critical bug fixes first, followed by alignment and improvements.
@@ -27,6 +29,7 @@ This plan addresses **35 verified issues** identified in the system analysis, or
 
 ---
 
+<!-- /ANCHOR:summary -->
 ## Phase Overview
 
 ```

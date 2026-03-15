@@ -21,6 +21,7 @@ Task breakdown by user story for implementing the hybrid 3-layer context injecti
 
 ---
 
+<!-- ANCHOR:notation -->
 ## TASK STATUS OVERVIEW
 
 | Story | Total | Done | In Progress | Deferred |
@@ -34,6 +35,7 @@ Task breakdown by user story for implementing the hybrid 3-layer context injecti
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## US-005: Plugin Development
 
 **As a** memory system user

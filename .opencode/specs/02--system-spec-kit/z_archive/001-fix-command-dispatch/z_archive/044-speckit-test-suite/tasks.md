@@ -12,8 +12,10 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks: Spec Kit Test Suite
 
+<!-- ANCHOR:notation -->
 ## Overview
 
 Total: ~830 test cases across 4 domains
@@ -27,6 +29,7 @@ Total: ~830 test cases across 4 domains
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## Phase 1: Foundation Setup (Week 1)
 
 ### Task 1.1: Test Infrastructure

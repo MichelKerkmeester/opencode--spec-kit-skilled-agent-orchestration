@@ -10,8 +10,10 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks: AI Integration Patterns Research
 
+<!-- ANCHOR:notation -->
 ## Completed Tasks
 
 - [x] **T1**: Fetch and analyze dotmd repository
@@ -39,6 +41,7 @@ contextType: "implementation"
   - Evidence citations
   - Anti-patterns
 
+<!-- /ANCHOR:notation -->
 ## Future Tasks (If Implementing Recommendations)
 
 - [ ] **F1**: Implement hierarchical compression in memory_search

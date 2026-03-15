@@ -11,8 +11,10 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks: Fix generate-context.js Warnings
 
+<!-- ANCHOR:notation -->
 ## Completed
 
 - [x] Analyze root cause of `get_db is not a function` error
@@ -24,6 +26,7 @@ contextType: "implementation"
 - [x] Test fix - warnings suppressed
 - [x] Create spec folder documentation
 
+<!-- /ANCHOR:notation -->
 ## Not Needed
 
 - [ ] Refactor retry-manager.js to use camelCase - Not needed, aliases work

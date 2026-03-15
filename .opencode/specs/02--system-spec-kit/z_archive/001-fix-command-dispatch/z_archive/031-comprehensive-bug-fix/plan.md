@@ -10,11 +10,14 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Comprehensive Bug Fix Plan
 
+<!-- ANCHOR:summary -->
 ## Approach
 10 parallel Opus agents, each assigned a specific domain with non-overlapping file sections.
 
+<!-- /ANCHOR:summary -->
 ## Agent Assignments
 
 | Agent | Domain | Primary Files | Bug Count |

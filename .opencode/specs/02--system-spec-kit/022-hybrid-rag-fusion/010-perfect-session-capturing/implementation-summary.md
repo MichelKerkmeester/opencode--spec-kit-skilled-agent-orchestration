@@ -1,3 +1,6 @@
+---
+title: "Implementation Summary: Perfect Session Capturing"
+---
 # Implementation Summary: Perfect Session Capturing
 
 <!-- SPECKIT_LEVEL: 3 -->

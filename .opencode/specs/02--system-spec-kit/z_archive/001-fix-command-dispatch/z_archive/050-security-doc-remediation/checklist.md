@@ -11,8 +11,10 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 # Verification Checklist: Security & Documentation Remediation
 
+<!-- ANCHOR:protocol -->
 ## Metadata
 - **Created:** 2024-12-31
 - **Level:** 2
@@ -20,6 +22,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:protocol -->
 ## P0 - Critical Security
 
 ### SEC001: CLI Path Validation (generate-context.js)

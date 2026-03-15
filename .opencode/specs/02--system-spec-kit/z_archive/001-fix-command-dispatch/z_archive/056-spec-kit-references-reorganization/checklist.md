@@ -11,8 +11,10 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 # Verification Checklist: system-spec-kit References Reorganization
 
+<!-- ANCHOR:protocol -->
 ## P0 - Critical (Must Complete)
 
 - [x] All file references in SKILL.md are valid and resolve correctly
@@ -24,6 +26,7 @@ contextType: "implementation"
 - [x] Internal links within reference files are valid
   - Evidence: Fixed 69 broken links across 17 reference files (see implementation-summary.md)
 
+<!-- /ANCHOR:protocol -->
 ## P1 - Required
 
 - [x] References organized into logical sub-folders

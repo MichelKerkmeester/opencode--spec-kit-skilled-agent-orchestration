@@ -10,6 +10,8 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Spec 016: Handover Model Downgrade + Codex Agent Compatibility
 
 <!-- ANCHOR:problem -->

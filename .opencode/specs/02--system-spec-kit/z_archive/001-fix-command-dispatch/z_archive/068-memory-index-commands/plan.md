@@ -19,6 +19,7 @@ Implementation plan for separating the unified `/memory:search` command into two
 
 ---
 
+<!-- ANCHOR:summary -->
 ## 1. OBJECTIVE
 
 ### Metadata
@@ -49,6 +50,7 @@ Refactor the 667-line `/memory:search` command into two focused commands: a read
 
 ---
 
+<!-- /ANCHOR:summary -->
 ## 2. QUALITY GATES
 
 **GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.**

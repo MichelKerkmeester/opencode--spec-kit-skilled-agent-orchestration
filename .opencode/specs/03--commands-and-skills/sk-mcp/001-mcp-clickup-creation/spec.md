@@ -5,15 +5,19 @@ level: 2
 created: 2026-03-08
 scope: ".opencode/skill/mcp-clickup/"
 ---
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
 # Create mcp-clickup Skill
 
+<!-- ANCHOR:metadata -->
 ## Problem
 
 No unified ClickUp skill exists. Currently "clickup" routes to `mcp-code-mode` as a generic fallback (skill_advisor.py:373). Two dedicated ClickUp tools are available but lack a proper orchestration skill:
 - **clickup-cli** (`@krodak/clickup-cli` v0.13.0) - MIT, CLI-first, agent-optimized with Markdown output, 30+ commands
 - **clickup-mcp-server** (`@taazkareem/clickup-mcp-server` v0.13.1) - MCP server with 46 tools via Code Mode
 
+<!-- /ANCHOR:metadata -->
 ## Scope
 
 Create a proper `mcp-clickup` skill following the hybrid CLI+MCP pattern (like `mcp-chrome-devtools`), aligned with existing MCP skill standards and sk-doc conventions.

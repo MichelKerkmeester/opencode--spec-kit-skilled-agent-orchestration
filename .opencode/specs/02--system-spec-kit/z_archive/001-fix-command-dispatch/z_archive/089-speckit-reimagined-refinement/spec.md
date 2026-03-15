@@ -16,12 +16,15 @@ level: "3+"
 scope: "system-spec-kit ecosystem audit and remediation"
 status: "Active"
 ---
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Spec 089: system-spec-kit Reimagined Refinement
 
 > Comprehensive audit and remediation plan for the entire system-spec-kit skill ecosystem, covering SKILL.md, references, assets, scripts, config, MCP server, agents, and commands.
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. SCOPE
 
 ### In Scope
@@ -49,6 +52,7 @@ status: "Active"
 
 ---
 
+<!-- /ANCHOR:metadata -->
 ## 2. REQUIREMENTS
 
 ### Functional Requirements

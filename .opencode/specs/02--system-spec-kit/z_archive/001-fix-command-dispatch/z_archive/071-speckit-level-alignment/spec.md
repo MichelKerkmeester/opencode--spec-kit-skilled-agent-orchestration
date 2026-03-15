@@ -21,6 +21,7 @@ Align ALL SpecKit scripts, lib modules, and documentation with the new level-bas
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. OBJECTIVE
 
 ### Metadata
@@ -75,6 +76,7 @@ Enable the SpecKit system to automatically use level-appropriate pre-expanded te
 
 ---
 
+<!-- /ANCHOR:metadata -->
 ## 2. SCOPE
 
 ### In Scope

@@ -9,12 +9,15 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Plan: Valid Anchors Fixture
 
+<!-- ANCHOR:summary -->
 ## Technical Context
 
 Testing that properly paired anchors pass validation.
 
+<!-- /ANCHOR:summary -->
 ## Architecture
 
 Level 1 spec with memory folder containing valid anchors.

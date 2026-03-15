@@ -8,10 +8,13 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Test Plan
 
+<!-- ANCHOR:summary -->
 ## Approach
 Test approach for evidence validation.
 
+<!-- /ANCHOR:summary -->
 ## Tasks
 1. Task one

@@ -11,8 +11,11 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Spec-Kit Comprehensive Alignment Fix
 
+<!-- ANCHOR:metadata -->
 ## Problem Statement
 
 A comprehensive audit identified **49 issues** across the Spec-Kit command/skill ecosystem. These issues fall into categories of:
@@ -28,6 +31,7 @@ This spec addresses the **16 prioritized fixes** organized by severity:
 - **P1 High**: 8 issues (significant impact)
 - **P2 Medium**: 4 issues (quality improvements)
 
+<!-- /ANCHOR:metadata -->
 ## Scope
 
 ### In Scope

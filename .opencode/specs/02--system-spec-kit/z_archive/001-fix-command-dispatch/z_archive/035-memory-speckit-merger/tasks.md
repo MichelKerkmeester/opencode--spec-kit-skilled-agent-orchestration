@@ -10,8 +10,10 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks: Memory System Integration
 
+<!-- ANCHOR:notation -->
 ## Task Overview
 
 **STATUS: COMPLETE** - Implementation used different approach than originally planned.
@@ -43,6 +45,7 @@ The actual implementation differed from this plan:
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## Phase 1: Create Directory Structure
 
 ### T1.1: Create target directories

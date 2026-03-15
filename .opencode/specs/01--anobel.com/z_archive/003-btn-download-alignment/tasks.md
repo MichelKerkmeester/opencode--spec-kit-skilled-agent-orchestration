@@ -12,6 +12,7 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks: Download Button Code Standards Alignment
 
 <!-- ANCHOR:us-1-javascript-standards-alignment -->

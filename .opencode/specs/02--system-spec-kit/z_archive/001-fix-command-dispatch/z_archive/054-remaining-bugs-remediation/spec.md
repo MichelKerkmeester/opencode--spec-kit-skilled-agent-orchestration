@@ -10,6 +10,8 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Spec: Remaining Bugs Remediation
 
 | Field | Value |
@@ -22,6 +24,7 @@ contextType: "decision"
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. Problem Statement
 
 Following comprehensive analysis of spec folders 052-codebase-fixes and 053-script-analysis-testing, along with a deep bug hunt of the Spec Kit Memory system, **13 bugs** were identified that require remediation:
@@ -40,6 +43,7 @@ Following comprehensive analysis of spec folders 052-codebase-fixes and 053-scri
 
 ---
 
+<!-- /ANCHOR:metadata -->
 ## 2. Bug Inventory
 
 ### 2.1 Critical Bugs (P0)

@@ -12,6 +12,7 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 # Checklist: Context Loader Sub-Agent (@context_loader)
 
 > **Spec Folder:** `.opencode/specs/05--agent-orchestration/z_archive/007-explore-sub-agent/`

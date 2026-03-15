@@ -14,6 +14,7 @@ contextType: "implementation"
 
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v1.0 -->
 
+<!-- ANCHOR:protocol -->
 ## 1. Artifact Verification
 
 - [x] CHK001 [P0] `analysis-report.md` created and populated | Evidence: File exists
@@ -21,6 +22,7 @@ contextType: "implementation"
 - [x] CHK003 [P0] `plan.md` reflects analysis approach | Evidence: File updated
 - [x] CHK004 [P0] `tasks.md` tracks execution | Evidence: File updated
 
+<!-- /ANCHOR:protocol -->
 ## 2. Analysis Quality
 
 - [x] CHK005 [P1] Executive Summary included | Evidence: Section 1 of report

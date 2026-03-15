@@ -19,6 +19,7 @@ Implementation plan for decomposing context-server.js (2,703 LOC) into focused m
 
 ---
 
+<!-- ANCHOR:summary -->
 ## 1. OBJECTIVE
 
 ### Metadata
@@ -47,6 +48,7 @@ Decompose the monolithic context-server.js (2,703 lines) into 17 focused modules
 
 ---
 
+<!-- /ANCHOR:summary -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready (DoR)

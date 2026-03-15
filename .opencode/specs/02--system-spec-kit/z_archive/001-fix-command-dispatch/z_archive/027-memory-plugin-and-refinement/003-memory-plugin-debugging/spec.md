@@ -12,8 +12,11 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Memory Plugin Debugging - bun:sqlite Migration
 
+<!-- ANCHOR:metadata -->
 ## Problem Statement
 
 The semantic memory plugin fails to load memories into the AI context dashboard, showing "Loaded 0 memories for dashboard" despite 66+ memories existing in the database. This prevents the AI from having automatic access to relevant context at session start.
@@ -29,6 +32,7 @@ The plugin uses `better-sqlite3`, a native Node.js addon that is incompatible wi
 - Users must manually load context via MCP tools
 - Reduces effectiveness of the semantic memory system
 
+<!-- /ANCHOR:metadata -->
 ## Scope
 
 ### In Scope

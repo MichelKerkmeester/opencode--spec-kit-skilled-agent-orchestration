@@ -12,8 +12,10 @@ contextType: "decision"
 id: 036-post-merge-refinement
 phase: Planning
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Implementation Plan
 
+<!-- ANCHOR:summary -->
 ## Phase 1: Critical Fixes (P0)
 
 ### 1.1 Create validate-spec.sh Script
@@ -50,6 +52,7 @@ phase: Planning
 - Option A: Create script that analyzes LOC and recommends level
 - Option B: Remove reference from SKILL.md:172
 
+<!-- /ANCHOR:summary -->
 ## Phase 2: High-Priority Fixes (P1)
 
 ### 2.1 Fix Placeholder Validation

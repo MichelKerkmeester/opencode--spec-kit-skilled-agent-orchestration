@@ -10,13 +10,16 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 # Checklist: MCP Server Rename
 
+<!-- ANCHOR:protocol -->
 ## Pre-Implementation
 - [x] P0: Spec folder created
 - [x] P0: All target files identified (159 occurrences found across 30+ files)
 - [x] P0: Current occurrences documented
 
+<!-- /ANCHOR:protocol -->
 ## Implementation
 - [x] P0: opencode.json updated (1 replacement)
 - [x] P0: AGENTS.md updated (5 replacements)

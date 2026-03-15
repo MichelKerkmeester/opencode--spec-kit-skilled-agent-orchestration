@@ -11,8 +11,11 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Memory System Integration into Spec-Kit
 
+<!-- ANCHOR:metadata -->
 ## Overview
 
 | Field | Value |
@@ -26,6 +29,7 @@ contextType: "decision"
 
 ---
 
+<!-- /ANCHOR:metadata -->
 ## Problem Statement
 
 The current architecture has **two overlapping skill folders** for documentation and context management:

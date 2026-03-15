@@ -8,11 +8,15 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: CORE -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Test Spec T10.1
 
+<!-- ANCHOR:metadata -->
 ## Overview
 This is a test specification for end-to-end integration testing.
 
+<!-- /ANCHOR:metadata -->
 ## Goal
 Verify the complete save → search → find workflow works correctly.
 

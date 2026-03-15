@@ -15,8 +15,11 @@ estimated_loc: 400
 level: 2
 status: active
 ---
+<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Spec: SpecKit Skill Refinement
 
+<!-- ANCHOR:metadata -->
 ## 1. OBJECTIVE
 
 Comprehensively improve the `workflows-spec-kit` skill by reducing redundancy, improving structure, updating accuracy, enhancing clarity, and simplifying content while maintaining completeness.
@@ -24,6 +27,7 @@ Comprehensively improve the `workflows-spec-kit` skill by reducing redundancy, i
 **Scope:** SKILL.md and all references/ files (5 files) + assets/ files (2 files)
 **Out of scope:** README.md, templates/, scripts/
 
+<!-- /ANCHOR:metadata -->
 ## 2. PROBLEM STATEMENT
 
 The current SpecKit skill documentation has several issues:

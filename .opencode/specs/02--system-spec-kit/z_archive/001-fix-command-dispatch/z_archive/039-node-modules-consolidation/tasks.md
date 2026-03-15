@@ -11,8 +11,10 @@ importance_tier: "normal"
 contextType: "implementation"
 id: 039-node-modules-consolidation
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks
 
+<!-- ANCHOR:notation -->
 ## Phase 1: Preparation
 
 - [ ] **TASK-001**: Verify current systems work
@@ -20,6 +22,7 @@ id: 039-node-modules-consolidation
   - Test generate-context.js --help
   - Document current sizes
 
+<!-- /ANCHOR:notation -->
 ## Phase 2: Implementation
 
 - [ ] **TASK-002**: Create root package.json

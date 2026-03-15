@@ -12,10 +12,13 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Gate 3 Enforcement - Preventing Spec Folder Bypass
 
 > Multi-layered enforcement to ensure Gate 3 (spec folder question) is never skipped, especially on large or exciting tasks.
 
+<!-- ANCHOR:metadata -->
 ## Overview
 
 | Field | Value |
@@ -25,6 +28,7 @@ contextType: "decision"
 | Status | COMPLETE - All 31 checklist items verified, 24 tests passed |
 | Incident | 017-comprehensive-bug-fix |
 
+<!-- /ANCHOR:metadata -->
 ## Problem Statement
 
 ### The Incident

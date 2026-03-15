@@ -11,6 +11,8 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # 048: SpecKit & Memory System Remediation
 
 > **Level**: 3 (Complex - Architectural implications)
@@ -20,6 +22,7 @@ contextType: "decision"
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. Problem Statement
 
 A comprehensive audit of the SpecKit and Memory systems identified **16 verified bugs**, **10 alignment issues**, and **9 improvement opportunities** (35 total tasks). While the systems are fundamentally well-designed, several high-severity bugs require immediate attention to prevent crashes and data loss.
@@ -37,6 +40,7 @@ A comprehensive audit of the SpecKit and Memory systems identified **16 verified
 
 ---
 
+<!-- /ANCHOR:metadata -->
 ## 2. Success Criteria
 
 ### Must Have (P0)

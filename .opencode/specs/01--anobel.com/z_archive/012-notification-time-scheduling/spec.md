@@ -12,6 +12,7 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: CORE -->
 # Feature Specification: Notification Time-Based Scheduling
 
 Enable time-based scheduling for CMS alerts, allowing notifications to appear at specific times rather than just dates.

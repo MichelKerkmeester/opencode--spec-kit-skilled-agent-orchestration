@@ -11,8 +11,10 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks: System-Spec-Kit Bug Remediation
 
+<!-- ANCHOR:notation -->
 ## Metadata
 - **Created:** 2024-12-31
 - **Level:** 3
@@ -22,6 +24,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## Phase 1: Critical - Embedding Dimension Fix
 
 ### T001: Make EMBEDDING_DIM Dynamic

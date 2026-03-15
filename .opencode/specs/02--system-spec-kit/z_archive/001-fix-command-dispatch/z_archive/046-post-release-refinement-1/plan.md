@@ -25,12 +25,14 @@ contextType: "decision"
 
 ---
 
+<!-- ANCHOR:summary -->
 ## OBJECTIVE
 
 Execute systematic bug fixes across the OpenCode infrastructure in priority order, ensuring stability at each phase before proceeding to the next. Each phase includes validation gates to prevent regressions.
 
 ---
 
+<!-- /ANCHOR:summary -->
 ## QUALITY GATES
 
 | Gate | Criteria | Enforcement |

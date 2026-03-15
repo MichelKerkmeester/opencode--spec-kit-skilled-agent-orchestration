@@ -20,6 +20,7 @@ Technical approach and architecture for complexity detection and level-based tem
 
 ---
 
+<!-- ANCHOR:summary -->
 ## 1. OBJECTIVE
 
 ### Metadata
@@ -48,6 +49,7 @@ Implement a complexity detection module that scores task descriptions across 5 d
 
 ---
 
+<!-- /ANCHOR:summary -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready (DoR)

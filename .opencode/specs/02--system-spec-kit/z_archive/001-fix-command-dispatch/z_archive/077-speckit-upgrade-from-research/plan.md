@@ -11,10 +11,12 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Implementation Plan: SpecKit Upgrade from Research Consolidation
 
 ---
 
+<!-- ANCHOR:summary -->
 ## Metadata
 
 | Property | Value |
@@ -29,6 +31,7 @@ contextType: "decision"
 
 ---
 
+<!-- /ANCHOR:summary -->
 ## Phase Overview Table
 
 | Phase | Version | Items | Estimated Effort | Priority | Dependencies |

@@ -1,5 +1,6 @@
 ---
 title: "Checklist: CSS Performance Upgrade [010-css-performance-cv/checklist]"
+<!-- ANCHOR:protocol -->
 description: "checklist document for 010-css-performance-cv."
 trigger_phrases:
   - "checklist"
@@ -10,6 +11,7 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 # Checklist: CSS Performance Upgrade
 
 - [x] Spec folder created `.opencode/specs/01--anobel.com/z_archive/010-css-performance-cv`
@@ -22,3 +24,5 @@ contextType: "implementation"
 - [x] Case-insensitivity `i` flag added to attribute selectors
 - [x] `i` flag documentation added to `code_quality_standards.md`
 - [x] Overflow-safe variant added for CTA sections (`data-render-content="overflow"`)
+
+<!-- /ANCHOR:protocol -->

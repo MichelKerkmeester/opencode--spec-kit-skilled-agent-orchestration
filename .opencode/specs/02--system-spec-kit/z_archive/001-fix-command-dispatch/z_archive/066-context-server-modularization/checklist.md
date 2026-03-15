@@ -19,6 +19,7 @@ Validation checklist for context-server.js modularization.
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## 1. OBJECTIVE
 
 ### Metadata
@@ -37,6 +38,7 @@ Ensure context-server.js modularization maintains identical behavior while achie
 
 ---
 
+<!-- /ANCHOR:protocol -->
 ## 2. LINKS
 
 ### Related Documents

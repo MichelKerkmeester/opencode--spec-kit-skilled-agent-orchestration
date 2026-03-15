@@ -18,6 +18,7 @@ contextType: "decision"
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. Overview
 
 | Field | Value |
@@ -44,6 +45,7 @@ Comprehensive audit by 10 parallel Opus agents identified **45+ bugs** across th
 
 ---
 
+<!-- /ANCHOR:metadata -->
 ## 2. Scope
 
 ### In Scope

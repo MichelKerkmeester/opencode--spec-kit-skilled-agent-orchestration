@@ -10,14 +10,18 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: CORE -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Security & Documentation Remediation
 
+<!-- ANCHOR:metadata -->
 ## Metadata
 - **Created:** 2024-12-31
 - **Status:** In Progress
 - **Level:** 2
 - **Parent:** 003-memory-and-spec-kit
 
+<!-- /ANCHOR:metadata -->
 ## Problem Statement
 
 Security audit of system-spec-kit identified 4 medium-severity and 5 low-severity issues. Additionally, documentation gaps exist from changes made in 048-system-analysis and 049-system-analysis-bugs that need to be addressed.

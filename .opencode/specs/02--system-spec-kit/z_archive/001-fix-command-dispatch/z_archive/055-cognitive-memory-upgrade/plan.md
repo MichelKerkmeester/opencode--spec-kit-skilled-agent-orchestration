@@ -11,8 +11,10 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Plan: Cognitive Memory Upgrade Research
 
+<!-- ANCHOR:summary -->
 ## Research Phases
 
 ### Phase 1: Current State Analysis
@@ -35,6 +37,7 @@ contextType: "decision"
 - [ ] Propose alternative implementations for hook-dependent features
 - [ ] Create actionable roadmap
 
+<!-- /ANCHOR:summary -->
 ## Deliverables
 - research.md with comprehensive findings
 - Recommendations with implementation paths

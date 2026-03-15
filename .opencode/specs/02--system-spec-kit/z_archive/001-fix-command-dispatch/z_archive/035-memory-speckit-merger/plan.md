@@ -11,8 +11,10 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Implementation Plan: Memory System Integration
 
+<!-- ANCHOR:summary -->
 ## Technical Approach
 
 This merger is a **pure file migration** with path updates. No functional changes.
@@ -25,6 +27,7 @@ This merger is a **pure file migration** with path updates. No functional change
 
 ---
 
+<!-- /ANCHOR:summary -->
 ## Architecture: Final Directory Structure
 
 ```

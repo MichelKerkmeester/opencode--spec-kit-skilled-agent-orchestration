@@ -11,6 +11,7 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Implementation Plan: Remaining Bugs Remediation
 
 | Field | Value |
@@ -22,6 +23,7 @@ contextType: "decision"
 
 ---
 
+<!-- ANCHOR:summary -->
 ## 1. Implementation Strategy
 
 ### 1.1 Phased Approach
@@ -51,6 +53,7 @@ Phase 4: Verification      → Integration testing, regression checks
 
 ---
 
+<!-- /ANCHOR:summary -->
 ## 2. Phase 1: Critical Fixes (P0)
 
 **Duration**: 1-2 hours

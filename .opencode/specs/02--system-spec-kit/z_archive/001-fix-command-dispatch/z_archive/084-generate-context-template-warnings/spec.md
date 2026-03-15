@@ -11,8 +11,11 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Spec: Fix generate-context.js Template Warnings and API Mismatch
 
+<!-- ANCHOR:metadata -->
 ## Problem Statement
 
 When running `generate-context.js`, two issues occur:
@@ -20,6 +23,7 @@ When running `generate-context.js`, two issues occur:
 1. **Critical Error**: `vector_index.get_db is not a function` - Prevents retry processing
 2. **Warnings**: 17 template placeholders not populated (cosmetic but noisy)
 
+<!-- /ANCHOR:metadata -->
 ## Root Cause Analysis
 
 ### Issue 1: API Naming Mismatch

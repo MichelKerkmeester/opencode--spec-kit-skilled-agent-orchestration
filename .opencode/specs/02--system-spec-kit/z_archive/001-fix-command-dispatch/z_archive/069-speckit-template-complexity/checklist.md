@@ -20,6 +20,7 @@ Verification items for complexity detection and level-based template folder impl
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## 1. OBJECTIVE
 
 ### Metadata
@@ -38,6 +39,7 @@ Verify that the complexity detection and level-based template folder system meet
 
 ---
 
+<!-- /ANCHOR:protocol -->
 ## 2. LINKS
 
 ### Related Documents

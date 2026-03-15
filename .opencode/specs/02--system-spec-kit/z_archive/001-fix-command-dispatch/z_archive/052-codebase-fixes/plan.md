@@ -10,8 +10,10 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Implementation Plan: Codebase Fixes
 
+<!-- ANCHOR:summary -->
 ## Phase 1: P0 Critical Fixes
 
 ### Step 1.1: Fix checkpoints.js Dimension Handling
@@ -72,6 +74,7 @@ function getEmbeddingDimension() {
 }
 ```
 
+<!-- /ANCHOR:summary -->
 ## Phase 2: P1 Performance Fixes
 
 ### Step 2.1: Parallel Batch Embeddings

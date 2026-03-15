@@ -1,3 +1,6 @@
+---
+title: "Consolidated decision-record"
+---
 # Consolidated decision-record
 <!-- SPECKIT_TEMPLATE_SOURCE: consolidated-epic-merge | v1 -->
 

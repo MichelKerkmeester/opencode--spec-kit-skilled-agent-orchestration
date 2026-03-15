@@ -12,8 +12,10 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks: System-Spec-Kit Upgrade from Research
 
+<!-- ANCHOR:notation -->
 ## Metadata
 
 | Field | Value |
@@ -28,6 +30,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## Task Summary Table
 
 | ID | Task | Priority | Source | Effort | Dependencies | Status |

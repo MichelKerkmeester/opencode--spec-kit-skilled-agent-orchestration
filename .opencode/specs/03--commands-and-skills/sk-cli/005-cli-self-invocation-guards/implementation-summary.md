@@ -1,3 +1,7 @@
+---
+title: "Implementation Summary: CLI Self-Invocation Guards"
+---
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 # Implementation Summary: CLI Self-Invocation Guards
 
 ## Overview

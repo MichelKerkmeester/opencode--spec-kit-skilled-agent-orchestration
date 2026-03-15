@@ -11,8 +11,10 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks: README & Install Guide Alignment
 
+<!-- ANCHOR:notation -->
 ## Task Overview
 
 | Phase | File | Tasks | Priority |
@@ -26,6 +28,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## Phase 1: system-spec-kit/README.md
 
 ### T1.1: Fix Overview Template Count

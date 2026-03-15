@@ -11,12 +11,14 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Implementation Plan - Comprehensive Bug Fix
 
 > Systematic approach to analyzing and fixing 63+ bugs across the skills and MCP server ecosystem.
 
 ---
 
+<!-- ANCHOR:summary -->
 ## Phase 1: Analysis (15 Parallel Agents)
 
 ### Approach
@@ -60,6 +62,7 @@ Agent Allocation:
 
 ---
 
+<!-- /ANCHOR:summary -->
 ## Phase 2: Fix Implementation (15 Parallel Agents)
 
 ### File-Based Agent Assignment

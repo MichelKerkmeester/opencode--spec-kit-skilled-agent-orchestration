@@ -17,6 +17,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:notation -->
 ## Task Notation
 
 | Prefix | Meaning |
@@ -30,6 +31,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## Phase 1: Research & Analysis
 
 - [x] T001 Analyze real spec folder usage patterns (9+ folders)

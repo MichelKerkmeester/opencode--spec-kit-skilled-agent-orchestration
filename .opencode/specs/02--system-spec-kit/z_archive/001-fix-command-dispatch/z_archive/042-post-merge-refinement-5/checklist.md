@@ -20,6 +20,7 @@ Comprehensive validation checklist for the Spec Kit and Memory System refinement
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## 1. OBJECTIVE
 
 ### Metadata
@@ -40,6 +41,7 @@ Validate all critical bug fixes, significant improvements, and refinements ident
 
 ---
 
+<!-- /ANCHOR:protocol -->
 ## 2. LINKS
 
 ### Related Documents

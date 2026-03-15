@@ -12,6 +12,7 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 1 -->
 # Feature Specification: Memory Hook Cleanup - Remove Claude Code Hook References
 
 Remove outdated Claude Code Hook references from workflows-memory skill for OpenCode compatibility.
@@ -20,6 +21,7 @@ Remove outdated Claude Code Hook references from workflows-memory skill for Open
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. OBJECTIVE
 
 ### Metadata
@@ -45,6 +47,7 @@ Remove misleading Claude Code Hook references from the workflows-memory skill do
 
 ---
 
+<!-- /ANCHOR:metadata -->
 ## 2. SCOPE
 
 ### In Scope

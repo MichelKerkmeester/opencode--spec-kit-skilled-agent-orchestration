@@ -11,14 +11,17 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 # Checklist: Transaction Nesting Fix (BUG-057)
 
+<!-- ANCHOR:protocol -->
 ## Pre-Implementation
 
 - [x] P0: Root cause identified - `indexMemory()` uses explicit BEGIN/COMMIT while caller uses `database.transaction()` wrapper
 - [x] P0: Solution designed - Convert to `database.transaction()` pattern matching `updateMemory()`
 - [x] P1: Impact analysis - Internal change only, no API changes
 
+<!-- /ANCHOR:protocol -->
 ## Implementation
 
 - [x] P0: Modified `indexMemory()` in `vector-index.js` to use `database.transaction()` wrapper

@@ -11,12 +11,15 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Plan: Template Test Fixture
 
+<!-- ANCHOR:summary -->
 ## Technical Context
 
 Testing template exclusion from validation rules.
 
+<!-- /ANCHOR:summary -->
 ## Architecture
 
 Simple fixture structure with templates/ subdirectory.

@@ -1,3 +1,7 @@
+---
+title: "Implementation Summary: 017 — Agent Alignment"
+---
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 # Implementation Summary: 017 — Agent Alignment
 
 **Completed:** 2026-03-15

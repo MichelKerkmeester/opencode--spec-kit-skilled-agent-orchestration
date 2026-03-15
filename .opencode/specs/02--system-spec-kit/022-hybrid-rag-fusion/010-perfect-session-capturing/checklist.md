@@ -1,3 +1,6 @@
+---
+title: "Checklist: Perfect Session Capturing"
+---
 # Checklist: Perfect Session Capturing
 
 <!-- SPECKIT_LEVEL: 3 -->

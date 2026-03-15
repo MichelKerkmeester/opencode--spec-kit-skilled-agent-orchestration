@@ -19,6 +19,7 @@ Task list for resolving 75+ issues identified by 10-agent analysis across docume
 
 ---
 
+<!-- ANCHOR:notation -->
 ## Task Notation
 
 | Prefix | Meaning |
@@ -30,6 +31,7 @@ Task list for resolving 75+ issues identified by 10-agent analysis across docume
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## Task Summary
 
 | Priority | Count | Status |

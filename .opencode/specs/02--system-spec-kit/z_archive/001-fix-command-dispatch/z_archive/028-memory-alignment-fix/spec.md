@@ -12,12 +12,16 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: CORE -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Memory Alignment Fix - Three-Layer Defense System
 
+<!-- ANCHOR:metadata -->
 ## Overview
 
 Implement a comprehensive 3-layer defense system to prevent memory saves to incorrect spec folders.
 
+<!-- /ANCHOR:metadata -->
 ## Problem Statement
 
 Memory saves were being directed to wrong spec folders due to:

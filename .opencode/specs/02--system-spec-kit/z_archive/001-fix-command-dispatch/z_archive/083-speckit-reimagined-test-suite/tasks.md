@@ -18,6 +18,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:notation -->
 ## TASK NOTATION
 
 | Prefix | Meaning |
@@ -44,6 +45,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## W-TS: Test Suite - Session Management (T001-T020)
 
 ### Session Deduplication Tests

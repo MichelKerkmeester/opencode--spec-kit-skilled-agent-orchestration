@@ -10,11 +10,15 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Spec: Rename `/memory` Command to `/memory:check`
 
+<!-- ANCHOR:metadata -->
 ## Overview
 Rename the unified memory dashboard command from `/memory` to `/memory:check` and update all references across the codebase.
 
+<!-- /ANCHOR:metadata -->
 ## User Story
 As a developer, I want the memory dashboard command renamed from `/memory` to `/memory:check` so that the command naming is more explicit and distinguishable from other memory-related commands.
 

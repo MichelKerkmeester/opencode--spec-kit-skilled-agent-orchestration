@@ -19,6 +19,7 @@ Implementation plan for removing Claude Code Hook references from workflows-memo
 
 ---
 
+<!-- ANCHOR:summary -->
 ## 1. OBJECTIVE
 
 ### Metadata
@@ -40,6 +41,7 @@ Remove 2 misleading Claude Code Hook references from README.md in the workflows-
 
 ---
 
+<!-- /ANCHOR:summary -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready (DoR)

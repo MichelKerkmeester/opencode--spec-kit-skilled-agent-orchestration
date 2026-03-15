@@ -19,6 +19,7 @@ Task list for scratch folder enforcement implementation - documentation-based en
 
 ---
 
+<!-- ANCHOR:notation -->
 ## 1. OBJECTIVE
 
 ### Metadata
@@ -38,6 +39,7 @@ Tasks grouped by documentation layer (4-layer enforcement strategy).
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## 2. CONVENTIONS
 
 ### Task Format

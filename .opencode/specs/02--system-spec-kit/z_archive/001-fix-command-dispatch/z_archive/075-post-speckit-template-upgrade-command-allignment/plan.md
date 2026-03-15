@@ -11,14 +11,17 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Plan: Post-SpecKit Template Upgrade - Command Alignment
 
+<!-- ANCHOR:summary -->
 ## Executive Summary
 
 Multi-agent analysis (10 Opus agents) of specs 072-075 and current system-spec-kit state reveals **19 commands** requiring alignment updates due to recent SpecKit v1.9.0 CORE + ADDENDUM v2.0 template architecture changes. The primary issue is **section structure standardization** across all commands.
 
 ---
 
+<!-- /ANCHOR:summary -->
 ## 1. Research Synthesis
 
 ### Specs 072-075 Key Changes

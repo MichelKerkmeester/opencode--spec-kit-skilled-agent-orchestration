@@ -10,8 +10,10 @@ importance_tier: "important"
 contextType: "decision"
 id: 039-node-modules-consolidation
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Implementation Plan
 
+<!-- ANCHOR:summary -->
 ## Phase 1: Preparation (Pre-flight)
 
 ### 1.1 Backup Current State
@@ -24,6 +26,7 @@ id: 039-node-modules-consolidation
 - [ ] Determine target versions (newest compatible)
 - [ ] Check for peer dependency requirements
 
+<!-- /ANCHOR:summary -->
 ## Phase 2: Implementation
 
 ### 2.1 Create Root Workspace

@@ -1,3 +1,6 @@
+---
+title: "006 Core RAG Sprints 0 to 8 - Consolidated handover"
+---
 # 006 Core RAG Sprints 0 to 8 - Consolidated handover
 
 This file consolidates `handover.md` from sprint folders 006 through 018.

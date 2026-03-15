@@ -14,7 +14,7 @@ contextType: "decision"
 ---
 # Feature Specification: Memory Command Dashboard Visual Design System
 
-<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_LEVEL: CORE -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
 ---

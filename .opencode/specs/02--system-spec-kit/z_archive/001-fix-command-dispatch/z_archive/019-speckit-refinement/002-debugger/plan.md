@@ -11,13 +11,16 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Debug Delegation Implementation Plan
 
+<!-- ANCHOR:summary -->
 ## Phase 1: Command Creation
 - Create `.opencode/command/spec_kit/debug.md`
 - 5-phase workflow: Context → Model Selection → Report → Dispatch → Integration
 - Model options: Sonnet, Opus, o1/o3, Other
 
+<!-- /ANCHOR:summary -->
 ## Phase 2: SKILL.md Updates
 - Add Section: "Debug Delegation Workflow"
 - Expand trigger keywords for auto-suggestion

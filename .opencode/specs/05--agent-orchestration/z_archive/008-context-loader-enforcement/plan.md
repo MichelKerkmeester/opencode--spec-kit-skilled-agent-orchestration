@@ -11,6 +11,7 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Plan: Aggressive @context_loader Enforcement
 
 > **Spec Folder:** `.opencode/specs/05--agent-orchestration/z_archive/008-context-loader-enforcement/`

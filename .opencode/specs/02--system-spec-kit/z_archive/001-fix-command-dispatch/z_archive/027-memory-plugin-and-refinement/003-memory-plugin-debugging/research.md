@@ -12,6 +12,7 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "research"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: research | v1.0 -->
 # OpenCode Plugin Memory Database Access - Research Document
 
 ## 1. Executive Summary

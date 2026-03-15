@@ -12,6 +12,7 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 3 -->
 # Feature Specification: Context-Server Modularization - Requirements & User Stories
 
 Decompose the monolithic context-server.js (2,703 LOC) into focused modules following the Spec 058 pattern.
@@ -20,6 +21,7 @@ Decompose the monolithic context-server.js (2,703 LOC) into focused modules foll
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. OBJECTIVE
 
 ### Metadata
@@ -55,6 +57,7 @@ Reduce context-server.js to ~150-200 lines by extracting orchestration code into
 
 ---
 
+<!-- /ANCHOR:metadata -->
 ## 2. SCOPE
 
 ### In Scope

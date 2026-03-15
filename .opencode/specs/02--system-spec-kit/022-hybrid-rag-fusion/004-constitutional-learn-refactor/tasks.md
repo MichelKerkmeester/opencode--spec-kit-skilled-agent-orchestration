@@ -1,3 +1,6 @@
+---
+title: "Tasks"
+---
 <!-- SPECKIT_TEMPLATE_SOURCE: .opencode/skill/system-spec-kit/templates/tasks.md -->
 ---
 title: "Tasks: Refactor /memory:learn"

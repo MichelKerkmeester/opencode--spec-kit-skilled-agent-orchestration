@@ -5,6 +5,7 @@ status: "complete"
 created: "2026-03-06"
 updated: "2026-03-06"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: research | v1.0 -->
 
 # Research: UX Hook Improvement Opportunities
 

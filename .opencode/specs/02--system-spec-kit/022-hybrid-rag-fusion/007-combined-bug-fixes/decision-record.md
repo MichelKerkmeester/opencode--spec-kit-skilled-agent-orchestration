@@ -1,3 +1,6 @@
+---
+title: "Decision Record: Combined Bug Fixes"
+---
 <!-- SPECKIT_TEMPLATE_SOURCE: .opencode/skill/system-spec-kit/templates/decision-record.md -->
 ---
 title: "Decision Record: Combined Bug Fixes"

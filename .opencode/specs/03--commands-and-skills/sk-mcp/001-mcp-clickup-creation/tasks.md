@@ -2,9 +2,11 @@
 title: "Tasks: Create mcp-clickup Skill"
 status: complete
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
 # Tasks: Create mcp-clickup Skill
 
+<!-- ANCHOR:notation -->
 ## Task Breakdown
 
 ### T001: Verify Tool Installation
@@ -59,3 +61,4 @@ status: complete
 - [x] Verify symlink: `.claude/skills/mcp-clickup/` resolves
 - [x] Complete checklist.md
 - [x] Create implementation-summary.md
+<!-- /ANCHOR:notation -->

@@ -11,6 +11,8 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Spec: Constitutional Memory System README
 
 | Metadata | Value |
@@ -24,12 +26,14 @@ contextType: "decision"
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. Objective
 
 Create comprehensive documentation (README.md) for the constitutional memory system located at `.opencode/skill/system-spec-kit/constitutional/`. The README should explain how constitutional memories work, how to create new ones, and how to customize existing ones.
 
 ---
 
+<!-- /ANCHOR:metadata -->
 ## 2. Scope
 
 ### In Scope

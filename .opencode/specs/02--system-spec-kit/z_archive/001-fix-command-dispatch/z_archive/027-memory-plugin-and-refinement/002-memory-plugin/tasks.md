@@ -19,6 +19,7 @@ Task breakdown by user story for the Memory Plugin Dashboard Optimization featur
 
 ---
 
+<!-- ANCHOR:notation -->
 ## Task Status Summary
 
 | Status | Count |
@@ -31,6 +32,7 @@ Task breakdown by user story for the Memory Plugin Dashboard Optimization featur
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## User Story 1: Compact Context Injection (P0)
 
 > As an AI agent, I need a compact memory dashboard injected at session start so that I can see available context without consuming excessive tokens.

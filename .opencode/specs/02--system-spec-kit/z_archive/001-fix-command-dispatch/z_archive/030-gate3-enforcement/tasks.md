@@ -10,10 +10,12 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks - Gate 3 Enforcement
 
 > Granular task breakdown for implementing Gate 3 enforcement mechanisms.
 
+<!-- ANCHOR:notation -->
 ## Task Status Legend
 
 - `[ ]` Pending
@@ -22,6 +24,7 @@ contextType: "implementation"
 - `[-]` Blocked
 - `[!]` Needs Review
 
+<!-- /ANCHOR:notation -->
 ## Phase 1: Constitutional Memory Draft
 
 | ID | Task | Status | Notes |

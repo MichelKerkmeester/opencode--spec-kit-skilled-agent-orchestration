@@ -10,8 +10,10 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks: Post-Merge Refinement 2
 
+<!-- ANCHOR:notation -->
 ## Task List
 
 ### Task 1: Analyze code differences
@@ -31,3 +33,4 @@ contextType: "implementation"
 - [x] Delete scripts/lib/vector-index.js
 - [x] Verify no orphan references
 - Status: completed
+<!-- /ANCHOR:notation -->

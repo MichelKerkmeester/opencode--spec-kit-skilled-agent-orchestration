@@ -10,6 +10,7 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 # Checklist: Remaining Bugs Remediation
 
 | Field | Value |
@@ -20,6 +21,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## Priority Legend
 
 | Priority | Meaning | Action |
@@ -30,6 +32,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:protocol -->
 ## 1. Critical Bug Fixes (P0)
 
 ### BUG-001: Race Condition - Dual Database Connection

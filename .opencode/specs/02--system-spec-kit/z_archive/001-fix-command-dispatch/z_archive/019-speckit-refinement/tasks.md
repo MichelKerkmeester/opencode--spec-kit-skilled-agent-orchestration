@@ -20,6 +20,7 @@ Task list for Phase 1 MVP implementation of the Handover System based on ECP res
 
 ---
 
+<!-- ANCHOR:notation -->
 ## 1. OBJECTIVE
 
 ### Metadata
@@ -38,6 +39,7 @@ Tasks grouped by component for Phase 1 MVP (~140 LOC total).
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## 2. CONVENTIONS
 
 ### Task Format

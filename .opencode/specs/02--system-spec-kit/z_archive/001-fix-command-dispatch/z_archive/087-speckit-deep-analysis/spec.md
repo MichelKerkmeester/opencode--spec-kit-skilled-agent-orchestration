@@ -19,6 +19,7 @@ contextType: "decision"
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## EXECUTIVE SUMMARY
 
 Comprehensive audit and remediation of the entire system-spec-kit ecosystem: MCP server code, skill files, agent definitions, command files, constitutional memories, scripts, and AGENTS.md integration. Found and fixed 3 critical bugs (SQL constraint violation, ghost tool references, stale file references), 15+ moderate misalignments (gate numbering, threshold inconsistencies, missing commands), and performed ecosystem-wide AGENTS.md-to-AGENTS.md migration across 30+ files.
@@ -29,6 +30,7 @@ Comprehensive audit and remediation of the entire system-spec-kit ecosystem: MCP
 
 ---
 
+<!-- /ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |

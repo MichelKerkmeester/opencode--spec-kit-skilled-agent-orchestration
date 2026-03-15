@@ -11,6 +11,8 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Spec: Memory & Folder Ranking Improvements
 
 > **Level:** 3 (≥500 LOC, architecture changes)  
@@ -21,6 +23,7 @@ contextType: "decision"
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. Problem Statement
 
 ### Current Behavior
@@ -58,6 +61,7 @@ The memory dashboard displays "top folders" ranked purely by **memory file count
 
 ---
 
+<!-- /ANCHOR:metadata -->
 ## 2. Proposed Solution
 
 ### 2.1 Composite Folder Ranking

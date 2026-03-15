@@ -1,5 +1,11 @@
+---
+title: "Spec: CLI Self-Invocation Guards"
+---
+<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Spec: CLI Self-Invocation Guards
 
+<!-- ANCHOR:metadata -->
 ## Problem
 
 The 4 CLI orchestration skills (`cli-gemini`, `cli-codex`, `cli-claude-code`, `cli-copilot`) are designed for **cross-AI delegation** — an external AI delegates tasks TO a different CLI. However, the shared skill system (symlinked across all CLI environments) means `skill_advisor.py` can recommend a CLI skill to the very AI that IS that CLI.
@@ -24,6 +30,7 @@ The skill system is shared via symlinks:
 
 `skill_advisor.py` scores by keyword match and does not know which runtime is active.
 
+<!-- /ANCHOR:metadata -->
 ## Solution
 
 Add explicit **self-invocation guards** to all 4 CLI SKILL.md files:

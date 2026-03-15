@@ -10,8 +10,10 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "implementation"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 # Comprehensive Alignment Fix Checklist
 
+<!-- ANCHOR:protocol -->
 ## Status Legend
 - `[ ]` Not started
 - `[~]` In progress
@@ -20,6 +22,7 @@ contextType: "implementation"
 
 ---
 
+<!-- /ANCHOR:protocol -->
 ## [P0] Critical - Must Fix First
 
 - [x] **P0.1** YAML syntax errors fixed in command definitions (Fixed in 6 files: implement_auto.yaml:593, implement_confirm.yaml:668, plan_auto.yaml:650, plan_confirm.yaml:703, research_auto.yaml:688, research_confirm.yaml:756)

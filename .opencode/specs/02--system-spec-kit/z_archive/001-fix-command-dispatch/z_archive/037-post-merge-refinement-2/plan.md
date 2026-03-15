@@ -8,13 +8,16 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Plan
 
+<!-- ANCHOR:summary -->
 ## Phase 1: Analysis (Diff v11 vs v12)
 - Compare `scripts/lib/vector-index.js` (v11) and `mcp_server/lib/vector-index.js` (v12).
 - Identify specific code blocks for "Smart Ranking" and "Content Extraction".
 - Audit path handling logic.
 
+<!-- /ANCHOR:summary -->
 ## Phase 2: Implementation (Port features, fix paths)
 - Update `mcp_server/lib/vector-index.js` with missing features from v11.
 - Refactor `DEFAULT_DB_PATH` resolution to use `__dirname` instead of `process.cwd()`.

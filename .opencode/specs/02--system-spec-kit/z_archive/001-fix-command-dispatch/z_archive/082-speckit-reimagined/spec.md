@@ -18,6 +18,7 @@ contextType: "decision"
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## EXECUTIVE SUMMARY
 
 SpecKit Reimagined synthesizes findings from 25 parallel agent analyses of 8 pre-analysis documents examining dotmd, seu-claude, drift, and system-speckit architectures. This specification defines 15 P0 blockers (10 original + 5 embedding resilience), 18 P1 requirements, and establishes a unified 6-7 week implementation roadmap to transform SpecKit into a best-in-class memory system with hybrid search, causal graphs, embedding resilience, and self-improvement capabilities.
@@ -30,6 +31,7 @@ SpecKit Reimagined synthesizes findings from 25 parallel agent analyses of 8 pre
 
 ---
 
+<!-- /ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |

@@ -11,6 +11,7 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "general"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: handover | v1.0 -->
 # Handover: Form Upload File Type Issues
 
 **Spec:** `035-form-upload-issues`

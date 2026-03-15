@@ -12,9 +12,11 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
+<!-- SPECKIT_LEVEL: 3 -->
 # Path-Scoped Validation Rules
 <!-- SPECKIT_TEMPLATE_SOURCE: spec.md | v1.0 -->
 
+<!-- ANCHOR:metadata -->
 ## Metadata
 
 | Field | Value |
@@ -31,6 +33,7 @@ contextType: "decision"
 
 ---
 
+<!-- /ANCHOR:metadata -->
 ## 1. Problem Statement
 
 ### Current State

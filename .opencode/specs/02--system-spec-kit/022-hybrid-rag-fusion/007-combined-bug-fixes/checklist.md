@@ -1,3 +1,6 @@
+---
+title: "Combined Verification Checklist: Bug Fixes"
+---
 <!-- SPECKIT_TEMPLATE_SOURCE: .opencode/skill/system-spec-kit/templates/checklist.md -->
 ---
 title: "Combined Bug Fixes Checklist"

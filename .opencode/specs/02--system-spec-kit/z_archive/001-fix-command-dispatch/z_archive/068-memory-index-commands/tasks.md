@@ -19,6 +19,7 @@ Task list for separating `/memory:search` into `/memory:search` (read-only) and 
 
 ---
 
+<!-- ANCHOR:notation -->
 ## Task Notation
 
 | Prefix | Meaning |
@@ -30,6 +31,7 @@ Task list for separating `/memory:search` into `/memory:search` (read-only) and 
 
 ---
 
+<!-- /ANCHOR:notation -->
 ## 1. OBJECTIVE
 
 ### Metadata
