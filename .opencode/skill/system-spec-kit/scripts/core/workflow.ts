@@ -62,6 +62,7 @@ import {
   type MemorySufficiencyResult,
 } from '@spec-kit/shared/parsing/memory-sufficiency';
 import { validateMemoryTemplateContract } from '@spec-kit/shared/parsing/memory-template-contract';
+import { evaluateSpecDocHealth, type SpecDocHealthResult } from '@spec-kit/shared/parsing/spec-doc-health';
 import { extractTriggerPhrases } from '../lib/trigger-extractor';
 import { indexMemory, updateMetadataWithEmbedding } from './memory-indexer';
 import * as simFactory from '../lib/simulation-factory';
@@ -582,6 +583,24 @@ function injectQualityMetadata(content: string, qualityScore: number, qualityFla
   const prefix = content.slice(0, frontmatterMatch.index);
   const suffix = content.slice(frontmatterMatch.index + frontmatterMatch[0].length).replace(/^\r?\n/, '');
   return `${updatedFrontmatter}${newline}${prefix}${suffix}`;
+}
+
+function injectSpecDocHealthMetadata(content: string, health: SpecDocHealthResult): string {
+  const frontmatterMatch = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+  if (!frontmatterMatch || frontmatterMatch.index === undefined) return content;
+
+  const newline = content.includes('\r\n') ? '\r\n' : '\n';
+  const lines = frontmatterMatch[1].split(/\r?\n/);
+
+  // Remove existing spec_folder_health lines
+  const filtered = lines.filter(l => !l.trimStart().startsWith('spec_folder_health'));
+  const healthLine = `spec_folder_health: ${JSON.stringify({ pass: health.pass, score: health.score, errors: health.errors, warnings: health.warnings })}`;
+  filtered.push(healthLine);
+
+  const updated = ['---', ...filtered, '---'].join(newline);
+  const prefix = content.slice(0, frontmatterMatch.index);
+  const suffix = content.slice(frontmatterMatch.index + frontmatterMatch[0].length).replace(/^\r?\n/, '');
+  return `${updated}${newline}${prefix}${suffix}`;
 }
 
 function extractAnchorIds(content: string): string[] {
@@ -1456,6 +1475,20 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     insufficientContext: !sufficiencyResult.pass,
   });
   files[ctxFilename] = injectQualityMetadata(files[ctxFilename], qualityV2.qualityScore, qualityV2.qualityFlags);
+
+  // Step 8.5b: Spec document health annotation (non-blocking)
+  let specDocHealth: SpecDocHealthResult | null = null;
+  try {
+    const specFolderAbsForHealth = path.resolve(specFolder);
+    specDocHealth = evaluateSpecDocHealth(specFolderAbsForHealth);
+    if (!specDocHealth.pass) {
+      log(`   Spec doc health: ${specDocHealth.errors} errors, ${specDocHealth.warnings} warnings (score: ${specDocHealth.score})`);
+    }
+    files[ctxFilename] = injectSpecDocHealthMetadata(files[ctxFilename], specDocHealth);
+  } catch (e) {
+    // Non-blocking — health annotation failure must not prevent memory save
+    log(`   Spec doc health check skipped: ${e instanceof Error ? e.message : String(e)}`);
+  }
 
   if (filterStats.qualityScore < 20) {
     const warningHeader = `> **Note:** This session had limited actionable content (quality score: ${filterStats.qualityScore}/100). ${filterStats.noiseFiltered} noise entries and ${filterStats.duplicatesRemoved} duplicates were filtered.\n\n`;

@@ -1,0 +1,22 @@
+# Spec Folder Quality Enforcement Configuration
+# Controls pre-commit validation behavior for spec documents.
+#
+# Modes:
+#   warn   — show warnings but allow commit
+#   block  — block commit on errors (allow warnings)
+#   strict — block commit on errors AND warnings
+#
+enforcement:
+  mode: warn
+  new_folder_mode: block
+  created_after: "2026-03-15"
+
+# Fast rule subset for pre-commit validation (6 rules).
+# Full 18-rule suite runs via validate.sh directly.
+pre_commit_rules:
+  - FILE_EXISTS
+  - LEVEL_DECLARED
+  - FRONTMATTER_VALID
+  - TEMPLATE_SOURCE
+  - ANCHORS_VALID
+  - FOLDER_NAMING

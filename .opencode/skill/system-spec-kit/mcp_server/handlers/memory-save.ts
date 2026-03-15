@@ -20,6 +20,10 @@ import {
   validateMemoryTemplateContract,
   type MemoryTemplateContractResult,
 } from '@spec-kit/shared/parsing/memory-template-contract';
+import {
+  evaluateSpecDocHealth,
+  type SpecDocHealthResult,
+} from '@spec-kit/shared/parsing/spec-doc-health';
 
 // Internal modules
 import { ALLOWED_BASE_PATHS, checkDatabaseUpdated } from '../core';
@@ -136,6 +140,7 @@ interface PreparedParsedMemory {
   qualityLoopResult: QualityLoopResult;
   sufficiencyResult: MemorySufficiencyResult;
   templateContract: MemoryTemplateContractResult;
+  specDocHealth: SpecDocHealthResult | null;
 }
 
 const MARKDOWN_HEADING_RE = /^(#{2,6})\s+(.+?)\s*$/;
@@ -412,12 +417,23 @@ function prepareParsedMemoryForIndexing(
   applyInsufficiencyMetadata(parsed, sufficiencyResult);
   const templateContract = validateMemoryTemplateContract(parsed.content);
 
+  // Non-blocking spec doc health annotation
+  let specDocHealth: SpecDocHealthResult | null = null;
+  if (parsed.specFolder) {
+    try {
+      specDocHealth = evaluateSpecDocHealth(path.resolve(parsed.specFolder));
+    } catch {
+      // Health check failure must not block memory save
+    }
+  }
+
   return {
     parsed,
     validation,
     qualityLoopResult,
     sufficiencyResult,
     templateContract,
+    specDocHealth,
   };
 }
 
@@ -712,6 +728,7 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
         },
         templateContract: preparedDryRun.templateContract,
         sufficiency: preparedDryRun.sufficiencyResult,
+        specDocHealth: preparedDryRun.specDocHealth,
         rejectionCode: preparedDryRun.sufficiencyResult.pass ? undefined : MEMORY_SUFFICIENCY_REJECTION_CODE,
         message: dryRunSummary,
       },
@@ -849,6 +866,7 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
           },
           templateContract: preparedDryRun.templateContract,
           sufficiency: preparedDryRun.sufficiencyResult,
+          specDocHealth: preparedDryRun.specDocHealth,
           rejectionCode: preparedDryRun.sufficiencyResult.pass ? undefined : MEMORY_SUFFICIENCY_REJECTION_CODE,
           message: dryRunSummary,
         },

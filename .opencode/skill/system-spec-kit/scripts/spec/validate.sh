@@ -141,6 +141,18 @@ apply_env_overrides() {
     [[ "${SPECKIT_VERBOSE:-}" == "true" ]] && VERBOSE=true
     [[ "${SPECKIT_JSON:-}" == "true" ]] && JSON_MODE=true
     [[ "${SPECKIT_QUIET:-}" == "true" ]] && QUIET_MODE=true
+    # SPECKIT_RULES: comma-separated rule subset (e.g., "FILE_EXISTS,LEVEL_DECLARED")
+    # Used by pre-commit hook for fast 6-rule validation
+    if [[ -n "${SPECKIT_RULES:-}" ]]; then
+        RULE_ORDER=()
+        IFS=',' read -ra _rules <<< "$SPECKIT_RULES"
+        for _r in "${_rules[@]}"; do
+            local _canonical
+            _canonical=$(canonicalize_rule_name "$_r")
+            [[ -n "$_canonical" ]] && RULE_ORDER+=("$_canonical")
+        done
+        unset _rules _r _canonical
+    fi
     return 0
 }
 

@@ -490,7 +490,12 @@ if [[ "$SUBFOLDER_MODE" = true ]]; then
         echo ""
         echo "───────────────────────────────────────────────────────────────────"
     fi
-    
+
+    # Post-creation validation: catch template regressions early
+    if [[ "${SPECKIT_SKIP_POST_VALIDATE:-}" != "1" ]]; then
+        bash "$SCRIPT_DIR/validate.sh" "$FEATURE_DIR" --quiet 2>/dev/null || true
+    fi
+
     exit 0
 fi
 
@@ -988,6 +993,11 @@ if [[ "$PHASE_MODE" = true ]]; then
         echo "───────────────────────────────────────────────────────────────────"
     fi
 
+    # Post-creation validation: catch template regressions early
+    if [[ "${SPECKIT_SKIP_POST_VALIDATE:-}" != "1" ]]; then
+        bash "$SCRIPT_DIR/validate.sh" "$FEATURE_DIR" --quiet 2>/dev/null || true
+    fi
+
     exit 0
 fi
 
@@ -1188,6 +1198,11 @@ else
     [[ "${DOC_LEVEL/+/}" -ge 3 ]] && echo "    5. Document decisions in decision-record.md"
     echo ""
     echo "───────────────────────────────────────────────────────────────────"
+fi
+
+# Post-creation validation: catch template regressions early
+if [[ "${SPECKIT_SKIP_POST_VALIDATE:-}" != "1" ]]; then
+    bash "$SCRIPT_DIR/validate.sh" "$FEATURE_DIR" --quiet 2>/dev/null || true
 fi
 
 # Exit codes:
