@@ -1,8 +1,8 @@
 # Spec Kit Memory MCP Server: Installation Guide
 
-> Version 3.0.0 | 2026-02-20
+> MCP Server v1.7.2 | 2026-03-15
 
-Complete installation and configuration guide for the Spec Kit Memory MCP server. This guide enables AI-powered context retrieval and conversation memory across your project. The system indexes markdown documentation from spec folders and constitutional rules to surface relevant information during AI interactions. It provides semantic search, trigger-based memory surfacing, intent-aware context loading and causal relationship tracking.
+Complete installation and configuration guide for the Spec Kit Memory MCP server. This guide enables AI-powered context retrieval and conversation memory across your project. The system indexes markdown documentation from spec folders and constitutional rules to surface relevant information during AI interactions. It provides 32 tools covering semantic search, trigger-based memory surfacing, intent-aware context loading, causal relationship tracking, shared memory spaces, session learning, evaluation, validation, and auto-indexing.
 
 > **Part of OpenCode Installation.** See the [Master Installation Guide](../README.md) for complete setup.
 
@@ -168,8 +168,15 @@ npm install
 
 This installs:
 - `better-sqlite3` (SQLite with native bindings)
-- `sqlite-vec` + `sqlite-vec-darwin-arm64` (vector extension for semantic search)
-- Workspace dependencies including `@spec-kit/shared`
+- `sqlite-vec` (vector extension for semantic search)
+- `@huggingface/transformers` (local embedding model)
+- `@modelcontextprotocol/sdk` (MCP protocol implementation)
+- `chokidar` (file watching for auto-indexing)
+- `onnxruntime-common` (ONNX model runtime)
+- `zod` (schema validation)
+
+Platform-specific optional packages installed automatically when the platform matches:
+- `sqlite-vec-darwin-arm64` (Apple Silicon vector extension, optional)
 
 ### Step 3: Build the MCP Server
 
@@ -486,7 +493,7 @@ The server supports phase folders for multi-phase spec work. Phase folders follo
 **Modes:**
 - `auto` (default): Detect intent and route optimally
 - `quick`: Fast trigger-based matching
-- `deep`: Comprehensive semantic search with query expansion
+- `deep`: Full semantic search with query expansion
 - `focused`: Intent-optimized retrieval
 - `resume`: Session recovery (loads previous state)
 
@@ -778,7 +785,7 @@ ls mcp_server/node_modules/sqlite-vec-darwin-arm64/vec0.dylib
 ls scripts/node_modules/sqlite-vec-darwin-arm64/vec0.dylib
 ```
 
-Both `mcp_server/` and `scripts/` require `sqlite-vec-darwin-arm64` as a direct dependency. The server degrades to non-vector behavior when sqlite-vec is unavailable. Semantic similarity quality drops until you fix the extension.
+`sqlite-vec-darwin-arm64` is an optional dependency installed automatically on Apple Silicon. On other platforms, the equivalent platform package is resolved by npm. The server degrades to non-vector behavior when sqlite-vec is unavailable. Semantic similarity quality drops until you fix the extension.
 
 **Server runs but returns no memories**
 
@@ -841,6 +848,68 @@ The four most common failure modes after a major update:
 
 ---
 
+### Rollback Procedure
+
+Use this procedure when an update leaves the server broken and you need to restore a working state.
+
+**Step 1: Back up the current database (if it has data you want to keep)**
+
+```bash
+cp .opencode/skill/system-spec-kit/mcp_server/dist/database/context-index.sqlite \
+   .opencode/skill/system-spec-kit/mcp_server/dist/database/rollback-$(date +%Y%m%d-%H%M%S).sqlite
+```
+
+**Step 2: Remove built output and reinstalled modules**
+
+```bash
+cd .opencode/skill/system-spec-kit
+rm -rf mcp_server/dist
+rm -rf mcp_server/node_modules
+rm -rf shared/node_modules
+rm -rf node_modules
+```
+
+**Step 3: Reinstall and rebuild from a clean state**
+
+```bash
+cd .opencode/skill/system-spec-kit
+npm install
+npm run build
+```
+
+**Step 4: Verify the server starts**
+
+```bash
+node mcp_server/dist/context-server.js
+# Must start without errors — press Ctrl+C to exit
+```
+
+**Step 5: Rebuild native modules if needed**
+
+```bash
+bash scripts/setup/rebuild-native-modules.sh
+bash scripts/setup/check-native-modules.sh
+```
+
+**Step 6: Restore the database backup if the fresh database is empty**
+
+```bash
+cp .opencode/skill/system-spec-kit/mcp_server/dist/database/rollback-YYYYMMDD-HHMMSS.sqlite \
+   .opencode/skill/system-spec-kit/mcp_server/dist/database/context-index.sqlite
+```
+
+**Step 7: Restart your AI client and re-index**
+
+Restart OpenCode, Claude Code, or Claude Desktop. Then ask your AI assistant to index all memory files:
+
+```
+Index all memory files
+```
+
+This calls `memory_index_scan({ force: true })` to repopulate the search index from the restored database.
+
+---
+
 ## 10. Resources
 
 ### File Locations
@@ -850,6 +919,7 @@ The four most common failure modes after a major update:
 | `.opencode/skill/system-spec-kit/mcp_server/dist/context-server.js` | MCP server entry point |
 | `.opencode/skill/system-spec-kit/mcp_server/dist/database/context-index.sqlite` | Canonical database (runtime) |
 | `.opencode/skill/system-spec-kit/mcp_server/database/context-index.sqlite` | Compatibility symlink |
+| `.opencode/skill/system-spec-kit/scripts/setup/check-prerequisites.sh` | Verify Node.js version and prerequisites |
 | `.opencode/skill/system-spec-kit/scripts/setup/check-native-modules.sh` | Native module diagnostics |
 | `.opencode/skill/system-spec-kit/scripts/setup/rebuild-native-modules.sh` | Native module rebuild |
 | `.opencode/skill/system-spec-kit/scripts/check-links.sh` | Documentation wikilink validator |
@@ -864,6 +934,9 @@ The four most common failure modes after a major update:
 cd .opencode/skill/system-spec-kit
 npm install
 npm run build
+
+# Prerequisites check
+bash scripts/setup/check-prerequisites.sh
 
 # Native module diagnostics
 bash scripts/setup/check-native-modules.sh
@@ -897,6 +970,7 @@ bash .opencode/skill/system-spec-kit/scripts/validate.sh specs/NNN-name --recurs
 
 ```
 INSTALL:      cd .opencode/skill/system-spec-kit && npm install && npm run build
+PREREQS:      bash scripts/setup/check-prerequisites.sh
 NATIVE CHECK: bash scripts/setup/check-native-modules.sh
 NATIVE FIX:   bash scripts/setup/rebuild-native-modules.sh
 SMOKE TEST:   node mcp_server/dist/context-server.js
@@ -925,6 +999,6 @@ MCP TOOLS: memory_context, memory_search, memory_match_triggers,
 
 | Version | Date | Summary |
 |---|---|---|
-| v3.0.0 | 2026-02-20 | Cross-encoder reranking enabled by default. Co-activation score boost fix. Query expansion on deep mode. Evidence gap warnings. MMR reranking with intent-mapped lambda. Phase system support (recursive validation, phase detection scoring). Feature flag updates. `memory_context` tokenUsage parameter. |
-| v2.x | 2025 | Adaptive fusion, extended telemetry, artifact-class routing, append-only mutation ledger, typed retrieval contracts. |
-| v1.x | 2024 | Initial release. Semantic search, trigger matching, intent-aware context, session deduplication. |
+| v1.7.2 | 2026-03-15 | Dependency audit: `sqlite-vec-darwin-arm64` moved to `optionalDependencies`. Added `@huggingface/transformers`, `chokidar`, `onnxruntime-common`, `zod`. `node-llama-cpp` added as optional. Rollback procedure added. Prerequisites script (`check-prerequisites.sh`) documented. |
+| v1.7.x | 2026-02-20 | Cross-encoder reranking enabled by default. Co-activation score boost fix. Query expansion on deep mode. Evidence gap warnings. MMR reranking with intent-mapped lambda. Phase system support (recursive validation, phase detection scoring). Feature flag updates. `memory_context` tokenUsage parameter. 28-tool surface area. |
+| v1.x | 2025 | Adaptive fusion, extended telemetry, artifact-class routing, append-only mutation ledger, typed retrieval contracts. Semantic search, trigger matching, intent-aware context, session deduplication. |

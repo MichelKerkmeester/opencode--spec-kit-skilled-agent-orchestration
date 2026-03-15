@@ -1,1281 +1,1367 @@
 ---
 title: "Spec Kit Memory - MCP Server"
-description: "Model Context Protocol server providing semantic memory, hybrid search and graph intelligence for AI-assisted development."
+description: "Model Context Protocol server providing semantic memory, hybrid search and graph intelligence for AI-assisted development across sessions, models and tools."
 trigger_phrases:
   - "MCP server"
   - "spec kit memory"
   - "hybrid search"
   - "cognitive memory"
+  - "memory_context"
+  - "memory_search"
+  - "32 tools"
+  - "FSRS decay"
 ---
 
 # Spec Kit Memory - MCP Server
 
-> AI memory that persists without poisoning your context window.
-
-Model Context Protocol server providing semantic memory, hybrid search and graph intelligence for AI-assisted development. Context works across sessions, models, projects and tools without re-explaining everything every conversation.
+> AI memory that persists across sessions, models and tools without poisoning your context window.
 
 ---
 
-## TABLE OF CONTENTS
 <!-- ANCHOR:table-of-contents -->
+## TABLE OF CONTENTS
 
 - [1. OVERVIEW](#1--overview)
 - [2. QUICK START](#2--quick-start)
-- [3. ARCHITECTURE](#3--architecture)
+- [3. STRUCTURE](#3--structure)
 - [4. MCP TOOLS](#4--mcp-tools)
 - [5. SEARCH SYSTEM](#5--search-system)
-- [6. COGNITIVE MEMORY](#6--cognitive-memory)
-- [7. STRUCTURE](#7--structure)
-- [8. CONFIGURATION](#8--configuration)
-- [9. USAGE EXAMPLES](#9--usage-examples)
-- [10. TROUBLESHOOTING](#10--troubleshooting)
-- [11. FAQ](#11--faq)
-- [12. RELATED RESOURCES](#12--related-resources)
-
----
+- [6. CONFIGURATION](#6--configuration)
+- [7. USAGE EXAMPLES](#7--usage-examples)
+- [8. TROUBLESHOOTING](#8--troubleshooting)
+- [9. FAQ](#9--faq)
+- [10. RELATED DOCUMENTS](#10--related-documents)
 
 <!-- /ANCHOR:table-of-contents -->
 
-## 1. OVERVIEW
+---
+
 <!-- ANCHOR:overview -->
+## 1. OVERVIEW
 
 ### What This Is
 
-`@spec-kit/mcp-server` v1.7.2 is a Model Context Protocol server that gives AI assistants persistent, intelligent memory. It implements a cognitive memory system with biologically-inspired attention dynamics, replacing naive context-window stuffing with structured retrieval.
+`@spec-kit/mcp-server` is a Model Context Protocol server that gives AI assistants persistent memory. It stores decisions, code context and project history in a local SQLite database, then retrieves exactly what is relevant using a 5-channel hybrid search pipeline. Context works across sessions, models and tools without re-explaining everything every conversation.
 
-### The Problem
+The server exposes **32 MCP tools** organized across 7 architecture layers, from a single unified entry point (`memory_context`) down to async ingestion jobs and causal graph operations. A newcomer uses two or three tools. A power user has full control over decay rates, retention policies, shared spaces and evaluation metrics.
 
-Your AI assistant has amnesia. Every conversation starts fresh. You explain your architecture Monday, by Wednesday it is a blank slate. Context disappears. Decisions vanish. That auth system you documented? Gone.
+Your AI assistant has amnesia. Every conversation starts fresh. You explain your architecture Monday, by Wednesday it is a blank slate. This server fixes that by storing what matters, decaying what does not, and routing retrieval through a search pipeline that understands query intent, not just keyword overlap.
 
-You have tried:
-- **Chat logs**: Ctrl+F through thousands of messages
-- **Plain RAG**: Everything indexed, nothing prioritized
-- **Manual notes**: "I'll document it later" (you won't)
-- **Copy-pasting context**: Bloated prompts, wasted tokens, wrong priorities
+### Key Statistics
 
-None of it works because none of it understands what matters.
-
-### The Solution
-
-This MCP server gives your AI assistant persistent memory with intelligence built in:
-
-- **5-channel hybrid search** (Vector, FTS5, BM25, Skill Graph, Degree) finds what you mean, not what you typed
-- **Post-fusion enhancements**: RRF, RSF, Adaptive Fusion, MMR, Co-activation, Recency Boost, Interference Scoring, Confidence Truncation and Dynamic Token Budget are applied after retrieval, not separate search channels
-- **Cognitive decay** keeps relevant memories fresh and lets stale ones fade
-- **Causal graph** traces decision lineage ("Why did we choose JWT?")
-- **Session awareness** prevents duplicate context and saves tokens
-- **Evidence gap detection** flags missing context before retrieval
-
----
+| Metric | Value | Details |
+|--------|-------|---------|
+| **MCP tools** | 32 | Across 7 layers (L1-L7) |
+| **Search channels** | 5 | Vector, FTS5, BM25, Skill Graph, Degree |
+| **Pipeline stages** | 4 | Candidate Generation, Fusion+Signals, Rerank+Aggregate, Filter+Annotate |
+| **Importance tiers** | 6 | constitutional through deprecated |
+| **Memory states** | 5 | HOT, WARM, COLD, DORMANT, ARCHIVED |
+| **Intent types** | 7 | add_feature, fix_bug, refactor, security_audit, understand, find_spec, find_decision |
+| **Causal relation types** | 6 | caused, enabled, supersedes, contradicts, derived_from, supports |
+| **Retrieval modes** | 5 | auto, quick, deep, focused, resume |
+| **Embedding providers** | 3 | Voyage AI, OpenAI, HuggingFace local |
+| **Database tables** | 12 | memory_index, vec_memories, checkpoints, causal_edges and more |
+| **Feature flag categories** | 7 | Search, Session/Cache, MCP Config, Memory/Storage, Embedding, Debug, CI |
 
 ### What Makes This Different
 
-| Capability        | Basic RAG           | This MCP Server                                          |
-| ----------------- | ------------------- | -------------------------------------------------------- |
-| **"Why" queries** | Impossible          | Causal graph traversal (6 relationship types)            |
-| **Recovery**      | Hope                | Crash recovery with zero data loss                       |
-| **Sessions**      | None                | Deduplication with ~50% tokens saved on follow-up        |
-| **Context**       | Full documents      | ANCHOR-based section retrieval (93% token savings)       |
-| **Search**        | Vector only         | 5-channel (Vector, FTS5, BM25, Graph, Degree) with RRF + RSF fusion |
-| **State**         | Stateless           | 5-state cognitive model (HOT/WARM/COLD/DORMANT/ARCHIVED) |
-| **Tiers**         | None                | 6-tier importance with configurable boosts               |
-| **Decay**         | None or exponential | FSRS power-law (validated on 100M+ users)                |
-| **Duplicates**    | Index everything    | Prediction Error Gating (4-tier thresholds)              |
-| **Ranking**       | Score order         | MMR diversity reranking with lambda-intent mapping       |
+| Capability | Basic RAG | Spec Kit Memory |
+|------------|-----------|-----------------|
+| **"Why" queries** | Not possible | Causal graph traversal with 6 relationship types |
+| **Decay** | None or exponential | FSRS power-law validated on 100M+ users |
+| **Sessions** | None | Deduplication with ~50% tokens saved on follow-up queries |
+| **Section retrieval** | Full documents | ANCHOR-based chunking with ~93% token savings |
+| **Search** | Vector only | 5-channel fusion with RRF + adaptive reranking |
+| **State** | Stateless | 5-state cognitive model (HOT/WARM/COLD/DORMANT/ARCHIVED) |
+| **Duplicates** | Index everything | Prediction Error Gating with 4-tier thresholds |
+| **Governance** | None | Hierarchical scope, shared spaces, retention policies |
 
----
+### Key Features
 
-### By The Numbers
-
-| Category                | Count                                                    |
-| ----------------------- | -------------------------------------------------------- |
-| **MCP tool surface**    | See Section 4 for the current tool groups and tool names                         |
-| **Runtime source**      | `context-server.ts` and sibling TypeScript modules                               |
-| **Runtime entry**       | `dist/context-server.js` after build                                             |
-| **Embedding Providers** | Voyage, OpenAI, and HuggingFace local                                            |
-| **Feature Flags**       | See `references/config/environment_variables.md` for canonical defaults           |
-| **Tests**               | Run `npx vitest run` for current file and test totals                            |
+| Feature | Description |
+|---------|-------------|
+| **Hybrid search** | BM25, vector similarity and graph channels fused with Reciprocal Rank Fusion |
+| **FSRS decay** | Power-law memory strength model keeps relevant memories fresh and lets stale ones fade |
+| **Causal graph** | Traces decision lineage across 6 relationship types for "why did we choose X?" queries |
+| **Intent routing** | 7 task intents adjust channel weights and reranking parameters automatically |
+| **Shared spaces** | Deny-by-default multi-agent memory with role-based membership and kill switches |
+| **Quality gates** | 3-layer pre-storage validation prevents low-quality content from entering the index |
+| **Checkpoints** | Named snapshots of memory state for safe bulk operations and rollback |
+| **Learning metrics** | Epistemic pre/post flight captures knowledge delta across task sessions |
 
 ### Requirements
 
 | Requirement | Minimum | Recommended |
-| ----------- | ------- | ----------- |
-| Node.js     | 18.0.0  | 20+         |
-| npm         | 9+      | 10+         |
-
----
+|-------------|---------|-------------|
+| Node.js | 18.x | 20.x LTS |
+| SQLite | Bundled | Bundled (better-sqlite3) |
+| Embedding API | None (HuggingFace local) | Voyage AI (`VOYAGE_API_KEY`) |
+| Memory | 512 MB | 1 GB+ |
+| Disk | 100 MB | 500 MB (grows with index size) |
 
 <!-- /ANCHOR:overview -->
 
-## 2. QUICK START
+---
+
 <!-- ANCHOR:quick-start -->
+## 2. QUICK START
+
+This section covers the minimum steps to get the server running. For full installation with embedding providers, database migration and environment setup, see [INSTALL_GUIDE.md](./INSTALL_GUIDE.md).
 
 ### 30-Second Setup
 
-The server is typically started via MCP configuration, not manually.
-
 ```bash
-# 1. Navigate to mcp_server directory
+# 1. Install dependencies (from the mcp_server directory)
 cd .opencode/skill/system-spec-kit/mcp_server
+npm ci
 
-# 2. Install dependencies
-npm install
+# 2. Build the TypeScript source
+npm run build
 
-# 3. Compile TypeScript to generated JavaScript
-tsc
-# Outputs compiled .js files to dist/ (generated build output; do not edit by hand)
-
-# 4. Start server (for testing)
-npm start
-# Runs: node dist/context-server.js
+# 3. Verify the server starts
+node dist/context-server.js --help
 ```
 
-### Verify Installation
+### Add to Your MCP Configuration
 
-```bash
-# Check Node.js version
-node --version
-# Expected: v18.0.0 or higher
-
-# Check dependencies installed
-ls node_modules/@modelcontextprotocol/sdk
-
-# Verify TypeScript compilation
-ls dist/context-server.js
-# Expected: file exists after running tsc
-
-# Run full test suite
-npx vitest run
-# Use the current Vitest summary as the source of truth for totals
-```
-
-### MCP Configuration
-
-Add to your MCP client configuration (e.g., `opencode.json`):
+Add this block to your MCP client configuration (e.g., `opencode.json` or Claude Desktop config):
 
 ```json
 {
   "mcpServers": {
-    "spec_kit_memory": {
+    "spec-kit-memory": {
       "command": "node",
-      "args": [".opencode/skill/system-spec-kit/mcp_server/dist/context-server.js"],
-      "cwd": "${workspaceFolder}",
-      "_note": "Executes compiled JS from dist/; source is context-server.ts"
+      "args": ["/absolute/path/to/.opencode/skill/system-spec-kit/mcp_server/dist/context-server.js"],
+      "env": {
+        "VOYAGE_API_KEY": "your-key-here"
+      }
     }
+  }
+}
+```
+
+### Verify It Works
+
+After connecting your MCP client, call the health check tool:
+
+```json
+{
+  "tool": "memory_health",
+  "arguments": { "reportMode": "full" }
+}
+```
+
+Expected: a JSON response with `status: "ok"` and database table counts.
+
+### First Memory Save
+
+Save your first memory file to the index:
+
+```json
+{
+  "tool": "memory_save",
+  "arguments": {
+    "filePath": "/absolute/path/to/your/memory-file.md"
+  }
+}
+```
+
+### First Search
+
+```json
+{
+  "tool": "memory_context",
+  "arguments": {
+    "input": "how did we decide on the auth architecture?",
+    "mode": "auto"
+  }
+}
+```
+
+<!-- /ANCHOR:quick-start -->
+
+---
+
+<!-- ANCHOR:structure -->
+## 3. STRUCTURE
+
+```
+mcp_server/
+├── context-server.ts          # MCP server entry point, tool registration
+├── tool-schemas.ts            # All 32 tool definitions (Zod schemas)
+├── handlers/                  # Per-tool request handlers
+│   ├── memory-save.ts         # Save handler with pre-flight validation
+│   ├── memory-search.ts       # Core search handler
+│   ├── memory-context.ts      # Unified context entry point
+│   ├── save/                  # Save sub-modules (types, response-builder)
+│   └── ...                    # One handler file per tool or tool group
+├── lib/
+│   ├── search/                # 4-stage hybrid search pipeline
+│   │   ├── README.md          # Per-stage module mapping
+│   │   ├── stage1-candidates/ # Channel retrieval (vector, FTS5, BM25, graph)
+│   │   ├── stage2-fusion/     # RRF fusion, signals integration
+│   │   ├── stage3-rerank/     # Cross-encoder reranking, MPAB aggregation
+│   │   └── stage4-filter/     # Score invariants, state filtering, TRM
+│   ├── db/                    # Database adapters, migration, schema
+│   ├── embedding/             # Provider adapters (Voyage, OpenAI, HuggingFace)
+│   ├── graph/                 # Causal graph and co-activation modules
+│   └── errors/                # Typed error classes and recovery hints
+├── hooks/
+│   ├── README.md              # Lifecycle hook documentation
+│   └── ...                    # Post-mutation hooks, UX payload builders
+├── shared/                    # Types and utilities shared with CLI scripts
+├── tests/                     # Vitest test suites
+│   └── *.vitest.ts
+├── INSTALL_GUIDE.md           # Full installation walkthrough
+└── README.md                  # This file
+```
+
+### Key Files
+
+| File | Purpose |
+|------|---------|
+| `context-server.ts` | Server entry point. Registers all 32 tools and starts the MCP listener. |
+| `tool-schemas.ts` | Single source of truth for all tool names, descriptions and Zod parameter schemas. |
+| `handlers/memory-save.ts` | Save handler with 3-layer pre-flight quality gate, duplicate detection and embedding. |
+| `lib/search/README.md` | Detailed per-stage module mapping for the 4-stage search pipeline. |
+| `hooks/README.md` | Lifecycle hook documentation for post-mutation wiring. |
+| `INSTALL_GUIDE.md` | Full installation guide with embedding provider setup and environment variables. |
+
+### 7-Layer Tool Architecture
+
+| Layer | Name | Tool Count | Token Budget | Purpose |
+|-------|------|-----------|--------------|---------|
+| L1 | Orchestration | 1 | 2000 | Unified entry point with intent-aware routing |
+| L2 | Core | 3 | 1500 | Search, trigger matching and memory save |
+| L3 | Discovery | 3 | 800 | Browse, statistics and health diagnostics |
+| L4 | Mutation | 4 | 500 | Update, delete, validate and bulk operations |
+| L5 | Lifecycle | 8 | 600 | Checkpoints, shared spaces and enable |
+| L6 | Analysis | 8 | 1200 | Causal graph, learning metrics and evaluation |
+| L7 | Maintenance | 5 | 1000 | Index scan, learning history and async ingestion |
+
+<!-- /ANCHOR:structure -->
+
+---
+
+<!-- ANCHOR:mcp-tools -->
+## 4. MCP TOOLS
+
+All 32 tools are listed below, organized by architecture layer. Each entry shows the tool name, a short description and the key parameters to know. For full parameter schemas with types and defaults, see `tool-schemas.ts`.
+
+**Start here for most operations**: `memory_context` (L1) automatically routes to the right retrieval strategy. Use the lower-level tools when you need precise control.
+
+---
+
+### L1: Orchestration (1 tool, token budget: 2000)
+
+#### `memory_context`
+
+Unified entry point for context retrieval. Start here for most memory operations. Detects task intent, selects retrieval mode and routes to the optimal strategy automatically.
+
+| Parameter | Type | Notes |
+|-----------|------|-------|
+| `input` | string | **Required.** Your query or task description. |
+| `mode` | string | `auto` (default), `quick`, `deep`, `focused`, `resume` |
+| `intent` | string | Override auto-detected intent: `add_feature`, `fix_bug`, `refactor`, `security_audit`, `understand`, `find_spec`, `find_decision` |
+| `specFolder` | string | Scope results to a spec folder (e.g., `specs/022-hybrid-rag-fusion`) |
+| `limit` | number | Max results to return (default varies by mode) |
+| `sessionId` | string | Session ID for deduplication across turns |
+| `anchors` | string[] | Retrieve specific ANCHOR sections: `["state", "next-steps"]` |
+| `tokenUsage` | number | Current token budget fraction (0.0-1.0) for adaptive depth |
+| `enableDedup` | boolean | Skip memories already seen this session |
+| `includeContent` | boolean | Include full memory content in response |
+| `includeTrace` | boolean | Include retrieval trace for debugging |
+
+```json
+{
+  "tool": "memory_context",
+  "arguments": {
+    "input": "implement JWT refresh token rotation",
+    "intent": "add_feature",
+    "specFolder": "specs/005-auth",
+    "anchors": ["decisions", "next-steps"]
   }
 }
 ```
 
 ---
 
-<!-- /ANCHOR:quick-start -->
+### L2: Core (3 tools, token budget: 1500)
 
-## 3. ARCHITECTURE
-<!-- ANCHOR:architecture -->
+#### `memory_search`
 
-### Entry Point to Handler Flow
+Semantic search using vector similarity with optional BM25, FTS5 and graph channels. Returns ranked results with scores. Constitutional tier always surfaces at the top.
 
+| Parameter | Type | Notes |
+|-----------|------|-------|
+| `query` | string | Free-text search query (use `query` OR `concepts`, not both) |
+| `concepts` | string[] | AND search: 2-5 strings that must all match |
+| `specFolder` | string | Scope to a folder |
+| `limit` | number | 1-100 results (default 10) |
+| `tier` | string | Filter by importance tier |
+| `minState` | string | Minimum memory state: `HOT`, `WARM`, `COLD`, `DORMANT`, `ARCHIVED` |
+| `rerank` | boolean | Apply cross-encoder reranking |
+| `useDecay` | boolean | Apply FSRS decay to scores |
+| `intent` | string | Adjust channel weights for task type |
+| `mode` | string | `auto` or `deep` |
+| `min_quality_score` | number | Filter out low-quality results |
+
+```json
+{
+  "tool": "memory_search",
+  "arguments": {
+    "query": "database migration strategy",
+    "specFolder": "specs/010-db-refactor",
+    "rerank": true,
+    "limit": 5
+  }
+}
 ```
-context-server.ts          (server init, startup, shutdown, main orchestration)
-        |
-        v
-tool-schemas.ts            (TOOL_DEFINITIONS: tool schemas)
-        |
-        v
-tools/index.ts             (dispatchTool: routes call to correct handler)
-        |
-        +-------+-------+-------+-------+-------+-------+-------+-------+
-        |       |       |       |       |       |       |       |       |
-  memory-  memory-  memory-  memory- memory-  check-  session- memory-  causal-
-  search   triggers  save   context   index   points  learning  crud    graph
-        |
-        v
-lib/                       (runtime libraries: search, cognitive, storage, eval, etc.)
-        |
-        v
-dist/context-server.js     (compiled output, executed at runtime by node)
+
+---
+
+#### `memory_match_triggers`
+
+Fast trigger phrase matching with cognitive memory features. Returns matches based on phrase overlap, not embedding similarity. Supports attention-based decay and tiered content injection: HOT state returns full content, WARM state returns summaries.
+
+| Parameter | Type | Notes |
+|-----------|------|-------|
+| `prompt` | string | **Required.** The user's current prompt text. |
+| `limit` | number | Max matches to return |
+| `session_id` | string | Session context for co-activation |
+| `turnNumber` | number | Current conversation turn for attention decay |
+| `include_cognitive` | boolean | Include HOT/WARM tiered content injection |
+
+```json
+{
+  "tool": "memory_match_triggers",
+  "arguments": {
+    "prompt": "fix the token refresh bug in auth service",
+    "turnNumber": 3,
+    "include_cognitive": true
+  }
+}
 ```
 
-### Key Entry Points
+---
 
-| File                | Purpose                                                                                  |
-| ------------------- | ---------------------------------------------------------------------------------------- |
-| `context-server.ts` | Server init, stdio transport, startup/shutdown lifecycle                                 |
-| `tool-schemas.ts`   | Tool schema definitions (decomposed from server in T303)                                 |
-| `cli.ts`            | CLI entry point for maintenance commands (stats, bulk-delete, reindex, schema-downgrade) |
-| `tools/index.ts`    | `dispatchTool()` routes an MCP call to the correct handler module                        |
-| `core/config.ts`    | Path resolution (`SERVER_DIR`, `LIB_DIR`, `SHARED_DIR`)                                  |
-| `core/db-state.ts`  | Database connection state shared across handlers                                         |
+#### `memory_save`
 
-### Directory Map
+Index a memory file into the database. Reads the file, extracts metadata, generates an embedding and stores everything in the index. Runs a 3-layer pre-flight validation gate before saving: structure check, content quality score and semantic duplicate detection.
 
-| Directory     | Purpose                                                        |
-| ------------- | -------------------------------------------------------------- |
-| `api/`        | Stable cross-boundary consumption surface for scripts          |
-| `configs/`    | Runtime configuration files (cognitive, smart-ranking, search) |
-| `core/`       | Initialization, config, database state                                 |
-| `database/`   | SQLite storage files and profile-based DB instances            |
-| `formatters/` | Search result and token-metric formatting                              |
-| `handlers/`   | Handler modules for tool dispatch and infrastructure                    |
-| `hooks/`      | Lifecycle hooks (post-save, post-delete, indexing)             |
-| `lib/`        | Runtime libraries for cognitive, search, scoring, eval, storage, etc.  |
-| `schemas/`    | Zod input validation schemas for all 28 MCP tools              |
-| `scripts/`    | CLI utilities                                                          |
-| `tools/`      | Tool registration wrappers per category                                |
-| `utils/`      | Shared runtime utilities (token counting, input schemas)       |
-| `tests/`      | Source-owned Vitest suite                                              |
-| `dist/`       | Generated JavaScript output that Node executes at runtime              |
+| Parameter | Type | Notes |
+|-----------|------|-------|
+| `filePath` | string | **Required.** Absolute path to the `.md` file to index. |
+| `force` | boolean | Overwrite if already indexed |
+| `dryRun` | boolean | Validate and estimate tokens without saving |
+| `skipPreflight` | boolean | Bypass quality gate (not recommended) |
+| `asyncEmbedding` | boolean | Return immediately, generate embedding in background |
+| `retentionPolicy` | string | `keep` (default), `ephemeral`, `shared` |
+| `deleteAfter` | string | ISO date for automatic deletion |
+| `tenantId` | string | Governance: tenant scope |
+| `userId` | string | Governance: user attribution |
+| `agentId` | string | Governance: agent attribution |
+
+```json
+{
+  "tool": "memory_save",
+  "arguments": {
+    "filePath": "/absolute/path/to/specs/022-auth/memory/auth-decision.md",
+    "dryRun": true
+  }
+}
+```
 
 ---
 
-<!-- /ANCHOR:architecture -->
+### L3: Discovery (3 tools, token budget: 800)
 
-## 4. MCP TOOLS
-<!-- ANCHOR:mcp-tools -->
+#### `memory_list`
 
-### Tool Categories
+Browse stored memories with pagination. Use to discover what is in the index and find IDs for delete or update operations.
 
-| Category                 | Tools | Purpose                                                |
-| ------------------------ | ----- | ------------------------------------------------------ |
-| **Orchestration**        | 1     | Unified entry point with intent-aware routing          |
-| **Search and Retrieval** | 4     | Find and match memories                                |
-| **CRUD Operations**      | 5     | Create, update, delete, validate, and bulk-delete      |
-| **Checkpoints**          | 4     | State snapshots for recovery                           |
-| **Session Learning**     | 2     | Capture pre/post task learning state                   |
-| **Causal and Drift**     | 4     | Causal graph traversal and lineage analysis            |
-| **Evaluation**           | 2     | Ablation studies and reporting dashboards              |
-| **Maintenance**          | 5     | Re-indexing, ingest jobs, and learning-history review  |
-| **System**               | 1     | Health monitoring                                      |
-
-### Orchestration Tools
-
-| Tool             | Purpose                                                                                         | Latency |
-| ---------------- | ----------------------------------------------------------------------------------------------- | ------- |
-| `memory_context` | Unified entry with intent-aware routing (L1 Orchestration). START HERE for most retrieval tasks | ~500ms  |
-
-### Search and Retrieval Tools
-
-| Tool                    | Purpose                                                                         | Latency |
-| ----------------------- | ------------------------------------------------------------------------------- | ------- |
-| `memory_search`         | Hybrid retrieval with adaptive RRF across vector/FTS/BM25/graph/degree channels | ~500ms  |
-| `memory_match_triggers` | Fast trigger phrase matching with cognitive features                            | <50ms   |
-| `memory_list`           | Browse memories with pagination                                                 | <50ms   |
-| `memory_stats`          | System statistics and folder rankings                                           | <10ms   |
-
-### CRUD Tools
-
-| Tool                 | Purpose                                                                                            | Latency             |
-| -------------------- | -------------------------------------------------------------------------------------------------- | ------------------- |
-| `memory_save`        | Index a single memory file                                                                         | ~1s                 |
-| `memory_update`      | Update metadata, tier, triggers                                                                    | <50ms*              |
-| `memory_delete`      | Delete by ID or spec folder                                                                        | <50ms               |
-| `memory_bulk_delete` | Bulk delete by tier with checkpoint safety gates. Supports `skipCheckpoint` for non-critical tiers | <100ms + checkpoint |
-| `memory_validate`    | Record validation feedback                                                                         | <50ms               |
-
-*+~400ms if title changed (triggers embedding regeneration)
-
-### Checkpoint Tools
-
-| Tool                 | Purpose                     | Latency |
-| -------------------- | --------------------------- | ------- |
-| `checkpoint_create`  | Create named state snapshot | <100ms  |
-| `checkpoint_list`    | List available checkpoints  | <50ms   |
-| `checkpoint_restore` | Restore from checkpoint     | varies  |
-| `checkpoint_delete`  | Delete a checkpoint         | <50ms   |
-
-### Session Learning Tools
-
-| Tool                          | Purpose                                            | Latency |
-| ----------------------------- | -------------------------------------------------- | ------- |
-| `task_preflight`              | Capture epistemic baseline before task             | <50ms   |
-| `task_postflight`             | Capture state after task, calculate learning delta | <50ms   |
-
-### Causal and Drift Tools
-
-| Tool                   | Purpose                                      | Latency |
-| ---------------------- | -------------------------------------------- | ------- |
-| `memory_drift_why`     | Trace causal chain for decision lineage      | varies  |
-| `memory_causal_link`   | Create causal relationships between memories | <50ms   |
-| `memory_causal_stats`  | Graph statistics and coverage metrics        | <50ms   |
-| `memory_causal_unlink` | Remove causal relationships                  | <50ms   |
-
-### Evaluation Tools
-
-| Tool                       | Purpose                                                       | Latency |
-| -------------------------- | ------------------------------------------------------------- | ------- |
-| `eval_run_ablation`        | Run controlled channel-ablation experiments and report deltas | varies  |
-| `eval_reporting_dashboard` | Aggregate eval metrics into sprint and channel dashboards     | varies  |
-
-### Maintenance Tools
-
-| Tool                          | Purpose                                              | Latency |
-| ----------------------------- | ---------------------------------------------------- | ------- |
-| `memory_index_scan`           | Bulk scan and index workspace (3-source pipeline)    | varies  |
-| `memory_get_learning_history` | Review preflight/postflight learning history         | <50ms   |
-| `memory_ingest_start`         | Start async multi-file ingestion                     | <50ms   |
-| `memory_ingest_status`        | Poll ingest job progress                             | <50ms   |
-| `memory_ingest_cancel`        | Cancel a running ingest job                          | <50ms   |
-
-### System Tools
-
-| Tool            | Purpose                                                                                                 | Latency |
-| --------------- | ------------------------------------------------------------------------------------------------------- | ------- |
-| `memory_health` | Check system health or return compact divergent-alias triage output (`reportMode: 'divergent_aliases'`) | <10ms   |
+| Parameter | Type | Notes |
+|-----------|------|-------|
+| `limit` | number | Max 100 per page |
+| `offset` | number | Pagination offset |
+| `specFolder` | string | Scope to a folder |
+| `sortBy` | string | `created_at`, `updated_at` or `importance_weight` |
+| `includeChunks` | boolean | Include chunk-level detail |
 
 ---
 
-### Causal Relationship Types
+#### `memory_stats`
 
-The causal graph supports 6 relationship types for tracing decision history:
+Statistics about the memory system: counts, dates, status breakdowns and top folders. Supports multiple ranking modes for folder importance.
 
-| Relation       | Meaning                                       |
-| -------------- | --------------------------------------------- |
-| `caused`       | A directly led to B                           |
-| `enabled`      | A made B possible without directly causing it |
-| `supersedes`   | A replaces B as the current truth             |
-| `contradicts`  | A and B are mutually incompatible             |
-| `derived_from` | A was built upon or derived from B            |
-| `supports`     | A provides evidence or support for B          |
+| Parameter | Type | Notes |
+|-----------|------|-------|
+| `folderRanking` | string | `count`, `recency`, `importance` or `composite` |
+| `excludePatterns` | string[] | Glob patterns to exclude from stats |
+| `includeScores` | boolean | Include composite quality scores |
+| `includeArchived` | boolean | Include ARCHIVED state memories in counts |
+| `limit` | number | Max folders to return |
+
+---
+
+#### `memory_health`
+
+Check health status with full diagnostics or compact divergent-alias triage output. Run this when search quality degrades or after schema changes.
+
+| Parameter | Type | Notes |
+|-----------|------|-------|
+| `reportMode` | string | `full` (default) or `divergent_aliases` |
+| `limit` | number | Max items to report |
+| `specFolder` | string | Scope to a folder |
+| `autoRepair` | boolean | Attempt automatic repairs |
+| `confirmed` | boolean | Confirm destructive repair operations |
 
 ---
 
-### 7-Layer MCP Architecture
+### L4: Mutation (4 tools, token budget: 500)
 
-| Layer | Name          | Token Budget | Tools |
-| ----- | ------------- | ------------ | ----- |
-| L1    | Orchestration | 2000         | `memory_context` |
-| L2    | Core          | 1500         | `memory_search`, `memory_match_triggers`, `memory_save` |
-| L3    | Discovery     | 800          | `memory_list`, `memory_stats`, `memory_health` |
-| L4    | Mutation      | 500          | `memory_delete`, `memory_bulk_delete`, `memory_update`, `memory_validate` |
-| L5    | Lifecycle     | 600          | `checkpoint_create`, `checkpoint_list`, `checkpoint_restore`, `checkpoint_delete` |
-| L6    | Analysis      | 1200         | `task_preflight`, `task_postflight`, `memory_drift_why`, `memory_causal_link`, `memory_causal_stats`, `memory_causal_unlink`, `eval_run_ablation`, `eval_reporting_dashboard` |
-| L7    | Maintenance   | 1000         | `memory_index_scan`, `memory_get_learning_history`, `memory_ingest_start`, `memory_ingest_status`, `memory_ingest_cancel` |
+#### `memory_delete`
+
+Delete a memory by ID, or delete all memories in a spec folder with explicit confirmation.
+
+| Parameter | Type | Notes |
+|-----------|------|-------|
+| `id` | number | Memory ID to delete (use OR with specFolder) |
+| `specFolder` | string | Delete all memories in folder (requires `confirm: true`) |
+| `confirm` | boolean | **Required when using specFolder** to prevent accidents |
 
 ---
+
+#### `memory_update`
+
+Update an existing memory with corrections. Re-generates the embedding when content changes. Supports partial updates so you can fix just the importance tier without touching the content.
+
+| Parameter | Type | Notes |
+|-----------|------|-------|
+| `id` | number | **Required.** Memory ID to update. |
+| `title` | string | Updated title |
+| `triggerPhrases` | string[] | Updated trigger phrases |
+| `importanceWeight` | number | Updated weight (0.0-1.0) |
+| `importanceTier` | string | `constitutional`, `critical`, `important`, `normal`, `temporary`, `deprecated` |
+| `allowPartialUpdate` | boolean | Update only provided fields (default false) |
+
+---
+
+#### `memory_validate`
+
+Record validation feedback on a memory. Tracks whether memories are useful in context, updating confidence scores. High-confidence memories can be auto-promoted to the `critical` importance tier.
+
+| Parameter | Type | Notes |
+|-----------|------|-------|
+| `id` | number | **Required.** Memory ID to validate. |
+| `wasUseful` | boolean | **Required.** Was this memory helpful? |
+| `queryId` | string | Query that retrieved this memory |
+| `resultRank` | number | Position in results where this appeared |
+| `notes` | string | Optional notes on why it was or was not useful |
+
+---
+
+#### `memory_bulk_delete`
+
+Bulk delete memories by importance tier. Auto-creates a checkpoint before deletion. Refuses to delete `constitutional` or `critical` tier memories without explicit per-ID confirmation.
+
+| Parameter | Type | Notes |
+|-----------|------|-------|
+| `tier` | string | **Required.** Tier to delete: `temporary`, `deprecated`, `normal`, etc. |
+| `confirm` | boolean | **Required.** Must be `true`. |
+| `specFolder` | string | Scope deletion to a folder |
+| `olderThanDays` | number | Only delete memories older than N days |
+| `skipCheckpoint` | boolean | Skip automatic checkpoint (not recommended) |
+
+---
+
+### L5: Lifecycle (8 tools, token budget: 600)
+
+#### `checkpoint_create`
+
+Create a named checkpoint of the current memory state. Used before bulk operations or risky changes.
+
+| Parameter | Type | Notes |
+|-----------|------|-------|
+| `name` | string | **Required.** Checkpoint identifier. |
+| `specFolder` | string | Scope to a folder |
+| `metadata` | object | Optional metadata to store with the checkpoint |
+
+---
+
+#### `checkpoint_list`
+
+List all available checkpoints, optionally scoped to a spec folder.
+
+| Parameter | Type | Notes |
+|-----------|------|-------|
+| `specFolder` | string | Scope to a folder |
+| `limit` | number | Max checkpoints to return |
+
+---
+
+#### `checkpoint_restore`
+
+Restore memory state from a named checkpoint. Replaces current index with the checkpoint snapshot.
+
+| Parameter | Type | Notes |
+|-----------|------|-------|
+| `name` | string | **Required.** Checkpoint name to restore. |
+| `clearExisting` | boolean | Clear current memories before restoring |
+
+---
+
+#### `checkpoint_delete`
+
+Delete a checkpoint. Requires the `confirmName` field to match `name` as a safety measure.
+
+| Parameter | Type | Notes |
+|-----------|------|-------|
+| `name` | string | **Required.** Checkpoint name to delete. |
+| `confirmName` | string | **Required.** Must exactly match `name`. |
+
+---
+
+#### `shared_space_upsert`
+
+Create or update a shared-memory space. Shared spaces start deny-by-default: no agent or user can read or write until explicit membership is added via `shared_space_membership_set`.
+
+| Parameter | Type | Notes |
+|-----------|------|-------|
+| `spaceId` | string | **Required.** Unique identifier for the space. |
+| `tenantId` | string | **Required.** Tenant scope. |
+| `name` | string | **Required.** Human-readable name. |
+| `rolloutEnabled` | boolean | Enable or disable this space |
+| `rolloutCohort` | string | Limit access to a specific cohort ID |
+| `killSwitch` | boolean | Hard disable for emergency shutoff |
+
+---
+
+#### `shared_space_membership_set`
+
+Set deny-by-default membership for a user or agent in a shared space. Assign `owner`, `editor` or `viewer` roles.
+
+| Parameter | Type | Notes |
+|-----------|------|-------|
+| `spaceId` | string | **Required.** Space to configure. |
+| `subjectType` | string | **Required.** `user` or `agent` |
+| `subjectId` | string | **Required.** User or agent identifier. |
+| `role` | string | **Required.** `owner`, `editor` or `viewer` |
+
+---
+
+#### `shared_memory_status`
+
+Inspect shared-memory rollout state and the spaces accessible to a given tenant, user or agent.
+
+| Parameter | Type | Notes |
+|-----------|------|-------|
+| `tenantId` | string | Filter by tenant |
+| `userId` | string | Filter by user |
+| `agentId` | string | Filter by agent |
+
+---
+
+#### `shared_memory_enable`
+
+Enable the shared-memory subsystem. First-run setup creates infrastructure tables and a README file. Idempotent: safe to call multiple times.
+
+| Parameter | Type | Notes |
+|-----------|------|-------|
+| _(none required)_ | | Call with empty arguments object. |
+
+---
+
+### L6: Analysis (8 tools, token budget: 1200)
+
+#### `task_preflight`
+
+Capture epistemic baseline before task execution. Records knowledge, uncertainty and context scores. These scores are compared to `task_postflight` to calculate the Learning Index.
+
+| Parameter | Type | Notes |
+|-----------|------|-------|
+| `specFolder` | string | **Required.** Spec folder for this task. |
+| `taskId` | string | **Required.** Unique task identifier. |
+| `knowledgeScore` | number | **Required.** 0-100: how well do you understand the domain? |
+| `uncertaintyScore` | number | **Required.** 0-100: how uncertain are you? |
+| `contextScore` | number | **Required.** 0-100: how much relevant context do you have? |
+| `knowledgeGaps` | string[] | Known gaps before starting |
+| `sessionId` | string | Session identifier |
+
+---
+
+#### `task_postflight`
+
+Capture epistemic state after a task. Calculates Learning Index delta against the preflight baseline.
+
+**Formula:** `LI = (KnowledgeDelta × 0.4) + (UncertaintyReduction × 0.35) + (ContextImprovement × 0.25)`
+
+| Parameter | Type | Notes |
+|-----------|------|-------|
+| `specFolder` | string | **Required.** Must match the preflight call. |
+| `taskId` | string | **Required.** Must match the preflight call. |
+| `knowledgeScore` | number | **Required.** Post-task knowledge score. |
+| `uncertaintyScore` | number | **Required.** Post-task uncertainty score. |
+| `contextScore` | number | **Required.** Post-task context score. |
+| `gapsClosed` | string[] | Gaps that were resolved |
+| `newGapsDiscovered` | string[] | Gaps discovered during the task |
+
+---
+
+#### `memory_drift_why`
+
+Trace the causal chain for a memory. Answers "why was this decision made?" by traversing causal edges up to `maxDepth` hops and grouping results by relationship type.
+
+| Parameter | Type | Notes |
+|-----------|------|-------|
+| `memoryId` | string | **Required.** Memory to trace from. |
+| `maxDepth` | number | Max hops to traverse (default 3, max 10) |
+| `direction` | string | `outgoing`, `incoming` or `both` |
+| `relations` | string[] | Filter to specific relationship types |
+| `includeMemoryDetails` | boolean | Include full memory content in results |
+
+---
+
+#### `memory_causal_link`
+
+Create a causal relationship between two memories. Use this to build decision lineage ("this refactor was caused by that bug fix").
+
+| Parameter | Type | Notes |
+|-----------|------|-------|
+| `sourceId` | string | **Required.** Cause memory ID. |
+| `targetId` | string | **Required.** Effect memory ID. |
+| `relation` | string | **Required.** `caused`, `enabled`, `supersedes`, `contradicts`, `derived_from` or `supports` |
+| `strength` | number | Edge weight (0.0-1.0, default 1.0) |
+| `evidence` | string | Free-text evidence supporting this link |
+
+---
+
+#### `memory_causal_stats`
+
+Statistics about the causal memory graph: total edges, coverage percentage, breakdown by relationship type. Target coverage is 60% of memories linked.
+
+| Parameter | Type | Notes |
+|-----------|------|-------|
+| _(none required)_ | | Returns global stats. |
+
+---
+
+#### `memory_causal_unlink`
+
+Remove a causal relationship by edge ID.
+
+| Parameter | Type | Notes |
+|-----------|------|-------|
+| `edgeId` | string | **Required.** Edge ID from `memory_drift_why` results. |
+
+---
+
+#### `eval_run_ablation`
+
+Run a controlled channel ablation study. Tests which search channels contribute most to recall. Requires `SPECKIT_ABLATION=true` environment variable. Can persist Recall@20 deltas to the eval metrics database.
+
+| Parameter | Type | Notes |
+|-----------|------|-------|
+| `channels` | string[] | Channels to test: `vector`, `bm25`, `fts5`, `graph`, `trigger` |
+| `groundTruthQueryIds` | string[] | Query IDs with known-correct results |
+| `recallK` | number | K value for Recall@K metric |
+| `storeResults` | boolean | Persist results to eval_metric_snapshots table |
+| `includeFormattedReport` | boolean | Return human-readable report |
+
+---
+
+#### `eval_reporting_dashboard`
+
+Generate a reporting dashboard with sprint and channel trend aggregation from eval database metrics.
+
+| Parameter | Type | Notes |
+|-----------|------|-------|
+| `sprintFilter` | string | Filter by sprint ID |
+| `channelFilter` | string | Filter by channel name |
+| `metricFilter` | string | Filter by metric type |
+| `limit` | number | Max records to include |
+| `format` | string | `text` (default) or `json` |
+
+---
+
+### L7: Maintenance (5 tools, token budget: 1000)
+
+#### `memory_index_scan`
+
+Scan the workspace for new or changed memory files and index them. Processes 3 source families: constitutional rules, spec documents and spec memories. Use after adding files manually or after a git pull.
+
+| Parameter | Type | Notes |
+|-----------|------|-------|
+| `specFolder` | string | Scope scan to a folder |
+| `force` | boolean | Re-index even if file hash unchanged |
+| `includeConstitutional` | boolean | Include constitutional rules directory |
+| `includeSpecDocs` | boolean | Include spec folder documents |
+| `incremental` | boolean | Only process files changed since last scan |
+
+---
+
+#### `memory_get_learning_history`
+
+Get learning history (PREFLIGHT/POSTFLIGHT records) for a spec folder. Shows Learning Index trends over time.
+
+| Parameter | Type | Notes |
+|-----------|------|-------|
+| `specFolder` | string | **Required.** Spec folder to query. |
+| `sessionId` | string | Filter by session |
+| `limit` | number | Max records to return |
+| `onlyComplete` | boolean | Only return paired preflight+postflight records |
+| `includeSummary` | boolean | Include aggregated LI summary statistics |
+
+---
+
+#### `memory_ingest_start`
+
+Start an async ingestion job for multiple markdown files. Returns immediately with a `jobId`. Check progress with `memory_ingest_status`.
+
+| Parameter | Type | Notes |
+|-----------|------|-------|
+| `paths` | string[] | **Required.** 1 to N absolute file paths. |
+| `specFolder` | string | Associate ingested files with a spec folder |
+
+---
+
+#### `memory_ingest_status`
+
+Get the current state and progress for a running async ingestion job.
+
+| Parameter | Type | Notes |
+|-----------|------|-------|
+| `jobId` | string | **Required.** Job ID from `memory_ingest_start`. |
+
+---
+
+#### `memory_ingest_cancel`
+
+Cancel a running async ingestion job. Cancellation is checked between files, so the current file finishes before stopping.
+
+| Parameter | Type | Notes |
+|-----------|------|-------|
+| `jobId` | string | **Required.** Job ID to cancel. |
 
 <!-- /ANCHOR:mcp-tools -->
 
-## 5. SEARCH SYSTEM
+---
+
 <!-- ANCHOR:search-system -->
+## 5. SEARCH SYSTEM
 
-### 5-Channel Hybrid Search Pipeline
+The search system is a 4-stage pipeline that runs every time you call `memory_context` or `memory_search`. It starts with multi-channel candidate generation and ends with annotated, diversity-ranked results.
 
-Specs 137-139 expanded the pipeline from 3 to 4 primary retrieval channels. Sprint 1 (spec 140) added a 5th degree channel with typed-weighted graph degree computation. Sprint 3 added RSF fusion, query complexity routing, confidence truncation, channel min-representation and dynamic token budgets. Post-fusion enhancements are applied after retrieval and are not counted as separate channels:
+### Query Pipeline
 
-```
-Query
-   |
-   v
-+------------------+
-|  QUERY CLASSIFY  |  (simple / moderate / complex — Sprint 3)
-|  + INTENT DETECT |  (add_feature, fix_bug, refactor,
-|  + ARTIFACT      |   security_audit, understand, find_spec, find_decision)
-|  ROUTING         |  (9 artifact classes with per-type strategies)
-+--------+---------+
-         |
-         v
-+--------+--------+---------+---------+---------+
-| VECTOR | FTS5   | BM25    | SKILL   | DEGREE  |
-| 1024d  | Full-  | Keyword | GRAPH   | Typed-  |
-| (1.0x) | text   | ranking | (1.5x)  | weight  |
-+---+----+---+----+---+-----+---+-----+---+-----+
-    |        |        |         |         |
-    +--------+--------+---------+---------+
-                      |
-                      v
-       +--------------+--------------+
-       |  ADAPTIVE RRF FUSION        |
-       |  k=60, +10% convergence     |
-       |  intent-weighted profiles    |
-       |  5th degree channel (Sprint 1)|
-       +--------------+--------------+
-                      |
-                      v
-       +--------------+--------------+
-       |  RSF EVALUATION PATH        |
-       |  retained for offline eval  |
-       |  not used in live ranking   |
-       +--------------+--------------+
-                      |
-                      v
-       +--------------+--------------+
-       |  CHANNEL MIN-REP (Sprint 3) |
-       |  QUALITY_FLOOR = 0.005      |
-       |  R2 representation guard    |
-       +--------------+--------------+
-                      |
-                      v
-       +--------------+--------------+
-       |  POST-FUSION ENHANCEMENTS   |
-       |  Co-activation (+0.25)      |
-       |  Session/Recency Boost      |
-       |  Causal 2-hop boost         |
-       |  Interference penalty (S2)  |
-       |  Cold-start N4 boost (S2)   |
-       +--------------+--------------+
-                      |
-                      v
-       +--------------+--------------+
-       |  MMR DIVERSITY RERANKING    |
-       |  lambda mapped to intent    |
-       +--------------+--------------+
-                      |
-                      v
-       +--------------+--------------+
-       |  CONFIDENCE TRUNCATION (S3) |
-       |  2x median gap cutoff       |
-       +--------------+--------------+
-                      |
-                      v
-       +--------------+--------------+
-       |  EVIDENCE GAP DETECTION     |
-       |  TRM with Z-score confidence|
-       +--------------+--------------+
-                      |
-                      v
-       +--------------+--------------+
-       |  DYNAMIC TOKEN BUDGET (S3)  |
-       |  1500 / 2500 / 4000 tokens  |
-       |  Scaled by query complexity  |
-       +--------------+--------------+
-                      |
-                      v
-              Final Ranked Results
-```
+Before retrieval starts, every query goes through three classification steps:
 
-### Channel Descriptions
+1. **Complexity routing**: `simple` (2 channels), `moderate` (4 channels) or `complex` (all 5 channels)
+2. **Intent detection**: Maps query text to one of 7 task intents, adjusting channel weights and reranking parameters
+3. **Artifact routing**: Classifies the target into 9 artifact classes (spec, plan, decision, code, config, test, doc, memory, scratch) for tier-aware filtering
 
-| Channel    | Source                            | Weight | Purpose                                      |
-| ---------- | --------------------------------- | ------ | -------------------------------------------- |
-| Vector     | `sqlite-vec` 1024d embeddings     | 1.0x   | Semantic similarity                          |
-| FTS5       | SQLite full-text search           | 1.0x   | Full-text lexical matching                   |
-| BM25       | SQLite FTS5 BM25 ranking          | 1.0x   | Keyword relevance scoring                    |
-| Skill Graph| Causal edge graph traversal       | 1.5x   | Graph-aware relevance                        |
-| Degree     | Typed-weighted graph degree (S1)  | 1.0x   | Hub importance via SQL + TS normalization    |
+### 5 Search Channels
+
+| Channel | Technology | Base Weight | Best For |
+|---------|-----------|-------------|----------|
+| **Vector** | sqlite-vec 1024-dimension embeddings | 1.0x | Semantic meaning, paraphrased queries |
+| **FTS5** | SQLite full-text search | 1.0x | Exact phrase matching, keyword lookup |
+| **BM25** | In-memory BM25 (gated: `ENABLE_BM25`) | 1.0x | TF-IDF keyword relevance scoring |
+| **Skill Graph** | Causal edge traversal | 1.5x | Connected decision lineage, "why" queries |
+| **Degree** | Typed-weighted graph degree | 1.0x | Hub memories (high connectivity = importance) |
+
+### 4-Stage Pipeline
+
+**Stage 1: Candidate Generation**
+Runs active channels in parallel. Applies constitutional injection (constitutional-tier memories always included), quality score filtering and importance tier filters.
+
+**Stage 2: Fusion and Signal Integration**
+Merges channel results with Adaptive Reciprocal Rank Fusion (`k=60`, intent-weighted profiles). Then applies post-fusion signals:
+
+| Signal | Effect | Magnitude |
+|--------|--------|-----------|
+| Co-activation boost | Memories that co-occur with query-matched memories | +0.25 |
+| Session/recency boost | Recently accessed memories in current session | cap 0.20 |
+| Causal 2-hop boost | Memories 1-2 hops from retrieved causal neighbors | variable |
+| FSRS decay | Adjusts score by memory retrievability R(t,S) | multiplicative |
+| Intent weights | Channel contribution weights per task intent | variable |
+| Interference penalty | Over-retrieved memories suppressed | -0.08 |
+| Cold-start boost | New memories with few access events boosted | +N4 formula |
+| Channel min-rep | Floor ensures each active channel has at least one result | 0.005 |
+
+**Stage 3: Reranking and Aggregation**
+Optional cross-encoder reranking for precision improvement. MPAB (Multi-Pass Aggregation with Boundary) collapses individual chunks back to their parent memory.
+
+**Stage 4: Filter and Annotate**
+Enforces score immutability invariant (no score modification after Stage 2). Applies state filtering by `minState` parameter. TRM (Threshold Relevance Measure) Z-score detects evidence gaps. Annotates results with feature flag states.
 
 ### Post-Fusion Enhancements
 
-These processing stages are applied after the 5 primary channels are fused via RRF. They boost or rerank results but are not independent search channels:
+The following operate at Stage 2 and Stage 3, not as separate search channels:
 
-| Enhancement            | Source                         | Effect                    | Purpose                                       |
-| ---------------------- | ------------------------------ | ------------------------- | --------------------------------------------- |
-| Co-activation          | Working memory patterns        | +0.25 boost               | Related memory surfacing                      |
-| Recency Boost          | `working_memory` table         | Hard cap 0.20             | Session context recency                       |
-| Causal 2-hop           | Causal edge traversal          | Injected                  | Transitively related memories                 |
-| RSF (offline eval)     | Reciprocal Similarity Fusion   | Evaluation-only           | Compare against RRF; not in live ranking path |
-| Interference (S2)      | TM-01 interference penalty     | -0.08 * score             | Penalize competing/contradictory memories     |
-| Cold-start N4 (S2)     | Novelty boost                  | 0.15 * exp(-elapsed/12)  | Boost recently indexed memories               |
-| Channel min-rep (S3)   | R2 representation guard        | QUALITY_FLOOR = 0.005     | Ensure all channels contribute to results     |
-| Confidence trunc. (S3) | 2x median gap cutoff           | Tail removal              | Remove low-confidence trailing results        |
-| Dynamic budget (S3)    | Query complexity classification | 1500/2500/4000 tokens     | Scale token budget to query complexity        |
+- **MMR diversity reranking**: Maximum Marginal Relevance with intent-specific lambda to balance relevance vs. diversity
+- **Confidence truncation**: Cuts off results at 2x the median score gap to avoid surfacing low-confidence tail results
+- **Evidence gap detection**: TRM Z-score flags when retrieved memories do not adequately cover the query
+- **Dynamic token budget**: 1500/2500/4000 tokens allocated by query complexity tier
 
-### Adaptive RRF Fusion
+### ANCHOR-Based Section Retrieval
 
-When `SPECKIT_ADAPTIVE_FUSION=true` (default enabled), standard fixed-weight RRF is replaced with intent-aware weighted RRF. Fusion weights shift dynamically based on detected query intent:
+Memory files can include `<!-- ANCHOR:name -->` markers. The search system extracts and indexes individual sections, allowing retrieval of just `decisions` or `next-steps` from a large context document. Without ANCHOR markers, the full file is indexed as a single chunk. With them, each section is a separate retrievable unit.
 
-| Intent           | Vector Weight | BM25 Weight | Graph Weight |
-| ---------------- | ------------- | ----------- | ------------ |
-| `add_feature`    | 1.2x          | 0.8x        | 1.0x         |
-| `fix_bug`        | 0.8x          | 1.4x        | 1.2x         |
-| `understand`     | 1.4x          | 0.7x        | 1.0x         |
-| `find_decision`  | 0.8x          | 0.9x        | 1.8x         |
-| `security_audit` | 1.1x          | 1.1x        | 1.3x         |
+The chunking threshold is 50K characters. Files above this threshold are always chunk-split regardless of ANCHOR markers.
 
-### Multi-Query RAG Fusion
-
-The `memory_context` tool expands queries using domain vocabulary before scatter-gather. Multiple query variants are fused using RRF, improving recall for domain-specific terminology.
-
-### MMR Diversity Reranking
-
-Maximum Marginal Relevance reranking balances relevance with diversity in the result set. The lambda parameter maps to the detected intent:
-
-- Exploratory intents (`understand`, `find_spec`): lower lambda (more diversity)
-- Targeted intents (`fix_bug`, `find_decision`): higher lambda (more relevance)
-
-### Evidence Gap Detection
-
-The Token Relevance Monitor (TRM) applies Z-score confidence scoring to detect when retrieved memories do not adequately cover the query context. Gaps surface as advisory hints in the response.
-
-### 4-Stage Pipeline Architecture
-
-The search subsystem uses a 4-stage pipeline (candidate generation, fusion + signal enrichment, reranking + aggregation, filtering + annotation). Each stage has bounded score mutation rules and an immutability invariant on upstream scores. See `lib/search/README.md` for detailed architecture and per-stage module mapping.
-
-### ANCHOR Format (93% Token Savings)
-
-Memory files use ANCHOR markers for section-level retrieval:
-
-```markdown
-<!-- ANCHOR: decisions -->
-## Authentication Decision
-We chose JWT with refresh tokens because stateless auth scales better.
-<!-- /ANCHOR: decisions -->
-```
-
-**Coverage**: ANCHOR retrieval is applied across indexed spec docs, spec memories, and constitutional docs.
-
-**Token comparison**:
-- Full document: ~3000 tokens
-- Summary anchor only: ~200 tokens
-- Savings: 93%
-
-### Large-File Anchor Chunking
-
-Files exceeding 50,000 characters are automatically split into smaller chunks for embedding. The chunker (`lib/chunking/anchor-chunker.ts`) uses ANCHOR tags as natural boundaries when present, falling back to structure-aware markdown splitting otherwise.
-
-| Parameter          | Value                             |
-| ------------------ | --------------------------------- |
-| Chunking threshold | 50,000 characters                 |
-| Target chunk size  | ~4,000 characters (~1,000 tokens) |
-| Max chunk size     | 12,000 characters (hard cap)      |
-
-Each chunk is indexed as a child record linked to a parent via `parent_id`. Search results from chunked files include metadata: `isChunk`, `parentId`, `chunkIndex`, `chunkLabel` and `chunkCount`. When `includeContent: true` is set, child chunks are reassembled into full content automatically.
-
----
+For detailed per-stage module mapping, see `lib/search/README.md`.
 
 <!-- /ANCHOR:search-system -->
 
-## 6. COGNITIVE MEMORY
-<!-- ANCHOR:cognitive-memory -->
-
-This is not basic memory storage. The system implements biologically-inspired cognitive features that go well beyond simple retrieval.
-
-### FSRS Power-Law Decay with Tier-Based Modulation
-
-Memory strength follows the Free Spaced Repetition Scheduler formula, validated on 100M+ Anki users. Specs 137-139 added tier-based decay modulation so importance tier also gates how fast memories fade:
-
-```
-R(t, S) = (1 + (19/81) * t/S)^(-0.5)    where R(S,S) = 0.9
-```
-
-Where `R(t, S)` = retrievability at time t with stability S. Higher importance tiers receive a stability multiplier, slowing their decay independent of access patterns.
-
-### 5-State Memory Model
-
-| State        | Retrievability   | Content Returned | Max Items | Behavior                                   |
-| ------------ | ---------------- | ---------------- | --------- | ------------------------------------------ |
-| **HOT**      | R >= 0.80        | Full content     | 5         | Active working memory, top priority        |
-| **WARM**     | 0.25 <= R < 0.80 | Summary only     | 10        | Accessible background context              |
-| **COLD**     | 0.05 <= R < 0.25 | None             | N/A       | Inactive but retrievable on demand         |
-| **DORMANT**  | 0.02 <= R < 0.05 | None             | N/A       | Very weak, needs explicit revival          |
-| **ARCHIVED** | R < 0.02 or 90d+ | None             | N/A       | Time-based archival, effectively forgotten |
-
-### Type-Specific Half-Lives
-
-| Memory Type        | Half-Life | Example                                 |
-| ------------------ | --------- | --------------------------------------- |
-| **constitutional** | Never     | "Never edit without reading first"      |
-| **procedural**     | 90+ days  | "How to deploy to production"           |
-| **semantic**       | 60 days   | "RRF stands for Reciprocal Rank Fusion" |
-| **contextual**     | 30 days   | "Auth module uses JWT"                  |
-| **episodic**       | 14 days   | "Fixed bug XYZ on Tuesday"              |
-| **working**        | 1 day     | "Currently debugging auth flow"         |
-| **temporary**      | 4 hours   | "Testing this config"                   |
-| **debug**          | 1 hour    | "Stack trace from crash"                |
-| **scratch**        | Session   | "Rough notes"                           |
-
-### Prediction Error Gating
-
-Prevents duplicate memories from polluting the index:
-
-| Similarity | Category     | Action                                       |
-| ---------- | ------------ | -------------------------------------------- |
-| >= 0.95    | DUPLICATE    | Block save, reinforce existing               |
-| 0.90-0.94  | HIGH_MATCH   | Check for contradiction. UPDATE or SUPERSEDE |
-| 0.70-0.89  | MEDIUM_MATCH | Create with link to related memory           |
-| 0.50-0.69  | LOW_MATCH    | Create new, note similarity                  |
-| < 0.50     | UNIQUE       | Create new memory normally                   |
-
-### 3-Source Indexing Pipeline
-
-`memory_index_scan` indexes only three source families:
-
-| Source               | Path Pattern                            | Weight              |
-| -------------------- | --------------------------------------- | ------------------- |
-| Constitutional rules | `.opencode/skill/*/constitutional/*.md` | Per-file metadata   |
-| Spec documents       | `.opencode/specs/**/*.md`               | Per-type multiplier |
-| Spec memories        | `specs/**/memory/*.{md,txt}`            | 0.5                 |
-
-README files and skill documentation trees (`sk-*`, including `references/` and `assets/`) are excluded.
-
 ---
 
-<!-- /ANCHOR:cognitive-memory -->
-
-## 7. STRUCTURE
-<!-- ANCHOR:structure -->
-
-```
-mcp_server/
-├── context-server.ts       # Main MCP server entry point [source]
-├── tool-schemas.ts         # Tool schema definitions
-├── cli.ts                  # CLI entry point (stats, bulk-delete, reindex, schema-downgrade)
-├── package.json            # @spec-kit/mcp-server v1.7.2
-├── tsconfig.json           # TypeScript config (outDir: ./dist)
-├── vitest.config.ts        # Vitest test configuration
-├── startup-checks.ts       # Startup validation
-├── README.md               # This file
-│
-├── core/                   # Core initialization
-│   ├── index.ts            # Core exports
-│   ├── config.ts           # Path resolution (SERVER_DIR, LIB_DIR, SHARED_DIR)
-│   └── db-state.ts         # Database connection state
-│
-├── handlers/               # MCP tool handlers
-│   ├── index.ts            # Handler aggregator
-│   ├── types.ts            # Shared handler types
-│   ├── memory-search.ts    # memory_search + Testing Effect
-│   ├── memory-triggers.ts  # memory_match_triggers + cognitive
-│   ├── memory-save.ts      # memory_save + PE gating
-│   ├── memory-ingest.ts    # memory_ingest_start/status/cancel
-│   ├── memory-crud.ts      # stable CRUD facade + compatibility aliases
-│   ├── memory-crud-delete.ts # memory_delete
-│   ├── memory-crud-update.ts # memory_update
-│   ├── memory-crud-list.ts   # memory_list
-│   ├── memory-crud-stats.ts  # memory_stats
-│   ├── memory-crud-health.ts # memory_health
-│   ├── memory-crud-utils.ts  # CRUD shared helper utilities
-│   ├── memory-crud-types.ts  # CRUD argument and helper types
-│   ├── memory-bulk-delete.ts # memory_bulk_delete + skipCheckpoint
-│   ├── memory-index.ts     # memory_index_scan + 3-source pipeline
-│   ├── memory-index-alias.ts # index alias management
-│   ├── memory-index-discovery.ts # spec-folder discovery for indexing
-│   ├── checkpoints.ts      # checkpoint_create/list/restore/delete + memory_validate
-│   ├── session-learning.ts # preflight/postflight/learning history
-│   ├── memory-context.ts   # memory_context + unified entry
-│   ├── causal-graph.ts     # causal_link/unlink/stats/drift_why
-│   ├── causal-links-processor.ts # causal link extraction and processing
-│   ├── chunking-orchestrator.ts # anchor-aware chunking orchestration
-│   ├── mutation-hooks.ts   # post-mutation hook runner
-│   ├── quality-loop.ts     # save-time quality feedback loop
-│   ├── save/               # decomposed save pipeline modules
-│   ├── eval-reporting.ts   # eval_run_ablation + eval_reporting_dashboard
-│
-├── hooks/                  # MCP lifecycle hooks
-│   ├── index.ts            # Hook exports
-│   └── memory-surface.ts   # Memory surfacing hook
-│
-├── lib/                    # Library modules
-│   ├── architecture/       # Layer definitions and tool-to-layer mapping
-│   ├── cache/              # Tool result caching and embedding cache helpers
-│   ├── chunking/           # Anchor-aware large-file chunker (50K threshold)
-│   ├── cognitive/          # FSRS, PE gating, state model, co-activation, rollout policy
-│   ├── config/             # Memory types and type inference helpers
-│   ├── contracts/          # Proxy docs only; canonical retrieval contracts are exported from ../shared/index.ts
-│   ├── errors/             # Core errors and recovery hints
-│   ├── eval/               # Eval framework: logger, metrics, ground truth and baselines
-│   ├── extraction/         # Extraction adapter and redaction gate
-│   ├── graph/              # Graph signals and community detection helpers
-│   ├── interfaces/         # Vector store interface
-│   ├── learning/           # Corrections tracking
-│   ├── manage/             # PageRank scoring
-│   ├── ops/                # File watcher and job queue operations
-│   ├── parsing/            # Memory parser, trigger matcher, entity scope
-│   ├── providers/          # Embedding providers and retry manager
-│   ├── response/           # MCP response envelope helpers
-│   ├── scoring/            # Composite scoring, tiers, folder scoring, interference scoring
-│   ├── search/             # Vector, BM25, RRF, RSF, adaptive fusion, MMR, graph search, budgets, folder discovery
-│   ├── session/            # Session deduplication
-│   ├── storage/            # SQLite, causal edges, mutation ledger, incremental index, schema downgrade
-│   ├── telemetry/          # Retrieval telemetry and scoring observability
-│   ├── utils/              # Format helpers, path security, retry, logger, canonical path
-│   └── validation/         # Pre-flight validation
-│
-├── tools/                  # Tool registration wrappers
-│   ├── index.ts            # dispatchTool() aggregator
-│   ├── memory-tools.ts     # Memory tool registrations
-│   ├── context-tools.ts    # Context tool registrations
-│   ├── lifecycle-tools.ts  # Lifecycle tool registrations
-│   ├── checkpoint-tools.ts # Checkpoint tool registrations
-│   └── causal-tools.ts     # Causal tool registrations
-│
-├── formatters/             # Output formatting
-│   ├── search-results.ts   # Format search results
-│   └── token-metrics.ts    # Token estimation
-│
-├── tests/                  # Test suite
-├── dist/                   # Generated JavaScript output (generated via tsc)
-│   └── context-server.js   # Runtime entry point
-├── database/               # SQLite database storage
-│   └── context-index.sqlite
-└── configs/                # Configuration files
-    └── search-weights.json
-```
-
-> **Note:** All source files are TypeScript (`.ts`). The compiler outputs generated runtime files to `dist/` via `outDir: "./dist"` in `tsconfig.json`. At runtime, `node` executes `dist/context-server.js`. Treat `dist/` as generated build output, not authored source. The `__dirname` in `config.ts` resolves to `dist/core/`, so `SERVER_DIR = path.join(__dirname, '..')` reaches `dist/` and `LIB_DIR = path.join(__dirname, '..', 'lib')` reaches `dist/lib/`.
-
----
-
-<!-- /ANCHOR:structure -->
-
-### Code Conventions
-
-#### MODULE: Header
-
-Every non-test `.ts` file starts with a standardized 3-line header block:
-
-```typescript
-// ───────────────────────────────────────────────────────────────
-// MODULE: Module Name
-// ───────────────────────────────────────────────────────────────
-```
-
-The `verify_alignment_drift.py` script enforces this by checking for `MODULE:` in the first 40 lines of all non-test `.ts` files.
-
-#### Feature Catalog Annotations
-
-Implementation files carry `// Feature catalog: <feature-name>` comments linking code to the [feature catalog](../feature_catalog/feature_catalog.md). The feature name must exactly match an H3 heading in the catalog.
-
-```typescript
-// Feature catalog: Hybrid search pipeline
-// Feature catalog: 4-stage pipeline architecture
-```
-
-**Rules:**
-- Name must match a catalog H3 heading exactly (case-sensitive)
-- Never use folder numbers, sprint numbers, or phase numbers
-- Files implementing multiple features list all applicable annotations
-- Pure utility, type, and barrel-export files are exempt
-
-**Find all files implementing a feature:**
-```bash
-grep -r "// Feature catalog: Hybrid search pipeline" mcp_server/
-```
-
-## 8. CONFIGURATION
 <!-- ANCHOR:configuration -->
+## 6. CONFIGURATION
 
-### Environment Variables
-
-| Variable                | Default                                | Description                     |
-| ----------------------- | -------------------------------------- | ------------------------------- |
-| `MEMORY_DB_PATH`        | `./dist/database/context-index.sqlite` | Database location               |
-| `MEMORY_BASE_PATH`      | CWD                                    | Workspace root for memory files |
-| `DEBUG_TRIGGER_MATCHER` | `false`                                | Enable verbose trigger logs     |
-| `SPECKIT_ENTITY_LINKING_MAX_DENSITY` | `1.0`                      | S5 density guard threshold for cross-document entity linking |
-
-S5 density guard behavior in `lib/search/entity-linker.ts`: if current global edge density (`causal_edges / memory_index`) is already above the threshold, entity linking is skipped for that run. During link creation, inserts that would push projected density above the threshold are skipped. Invalid values (non-numeric or non-finite) and negative values for `SPECKIT_ENTITY_LINKING_MAX_DENSITY` fall back to `1.0`.
+For the canonical list of all environment variables with defaults and examples, see `../references/config/environment_variables.md`.
 
 ### Embedding Providers
 
-| Variable              | Required   | Description                             |
-| --------------------- | ---------- | --------------------------------------- |
-| `EMBEDDINGS_PROVIDER` | No         | Force: `voyage`, `openai` or `hf-local` |
-| `VOYAGE_API_KEY`      | For Voyage | Voyage AI API key (1024d, recommended)  |
-| `OPENAI_API_KEY`      | For OpenAI | OpenAI API key (1536d/3072d)            |
+Set one provider and its API key:
 
-**Auto-detection priority:** `EMBEDDINGS_PROVIDER` env > `VOYAGE_API_KEY` detected > `OPENAI_API_KEY` detected > HuggingFace local (768d, default fallback)
+| Provider | Environment Variables | Notes |
+|----------|-----------------------|-------|
+| **Voyage AI** (recommended) | `EMBEDDING_PROVIDER=voyage`, `VOYAGE_API_KEY=your-key` | Best retrieval quality |
+| **OpenAI** | `EMBEDDING_PROVIDER=openai`, `OPENAI_API_KEY=your-key` | Widely available |
+| **HuggingFace local** | `EMBEDDING_PROVIDER=huggingface` | No API key, runs locally |
 
-### Feature Flags
+### Feature Flag Behavior
 
-Most runtime search flags are evaluated via `isFeatureEnabled()`. That helper treats absent, empty, and `'true'` values as enabled, and treats `'false'` or `'0'` as disabled. For partial rollouts (`SPECKIT_ROLLOUT_PERCENT` between 1 and 99), identity-less checks fail closed. Malformed rollout values fall back to 100.
+Feature flags are evaluated by `isFeatureEnabled()` with this rule: absent, empty or `'true'` is enabled. `'false'` or `'0'` is disabled.
 
-Operator-only and observational flags can still remain explicit opt-in. Notable examples are `SPECKIT_EXTENDED_TELEMETRY`, `SPECKIT_EVAL_LOGGING`, and `SPECKIT_ABLATION`. Phase 015 roadmap controls now default to the fully delivered rollout unless explicitly disabled.
+The global rollout gate `SPECKIT_ROLLOUT_PERCENT` (default `100`) applies a percentage filter on top of all individual flags. Set to `0` to disable the entire pipeline.
 
-After specs 137-139, the core retrieval flags defaulted to enabled. Expensive or experimental paths introduced later remain opt-in.
+### Feature Flag Categories
 
-#### Default Enabled (specs 137-139)
+**Search Pipeline** (`SPECKIT_*`) -- ~50 flags, most default ON:
 
-| Flag                         | Default | Description                                                                           |
-| ---------------------------- | ------- | ------------------------------------------------------------------------------------- |
-| `SPECKIT_RRF`                | `true`  | Enable RRF search fusion                                                              |
-| `SPECKIT_MMR`                | `true`  | Enable MMR diversity reranking                                                        |
-| `SPECKIT_TRM`                | `true`  | Enable Transparent Reasoning Module (evidence-gap detection)                          |
-| `SPECKIT_MULTI_QUERY`        | `true`  | Enable multi-query expansion for deep-mode retrieval                                  |
-| `SPECKIT_CROSS_ENCODER`      | `true`  | Enable cross-encoder reranking when a provider is configured (set `false` to disable) |
-| `SPECKIT_RELATIONS`          | `true`  | Enable causal memory graph                                                            |
-| `SPECKIT_INDEX_SPEC_DOCS`    | `true`  | Enable spec folder document indexing                                                  |
-| `SPECKIT_CAUSAL_BOOST`       | `true`  | Enable 2-hop causal-neighbor score boost                                              |
-| `SPECKIT_SESSION_BOOST`      | `true`  | Enable session-attention score boost                                                  |
-| `SPECKIT_ADAPTIVE_FUSION`    | `true`  | Enable intent-aware weighted RRF fusion                                               |
-| `SPECKIT_PRESSURE_POLICY`    | `true`  | Enable token-pressure mode override in `memory_context` (set `false` to disable)      |
+| Flag | Default | Controls |
+|------|---------|----------|
+| `ENABLE_BM25` | `true` | BM25 keyword scoring channel |
+| `ENABLE_GRAPH_SEARCH` | `true` | Causal graph traversal channel |
+| `ENABLE_RERANKER` | `true` | Cross-encoder reranking at Stage 3 |
+| `ENABLE_MMR` | `true` | MMR diversity reranking |
+| `ENABLE_CO_ACTIVATION` | `true` | Co-activation spreading boost |
+| `ENABLE_FSRS_DECAY` | `true` | FSRS power-law decay scoring |
+| `ENABLE_INTERFERENCE_PENALTY` | `true` | Suppresses over-retrieved memories |
+| `SPECKIT_ROLLOUT_PERCENT` | `100` | Global percentage gate (0-100) |
+| `SPECKIT_ABLATION` | `false` | Enable ablation study mode |
+| `SPECKIT_RESPONSE_TRACE` | `false` | Include retrieval trace in responses |
 
-#### Runtime Search Flags (current defaults)
+**Session and Cache** -- 10 flags:
 
-Graduated search flags are default-on and use `FLAG=false` to disable. Evaluation-only flags remain opt-in.
-Canonical source of truth: `../references/config/environment_variables.md`.
+| Flag | Default | Controls |
+|------|---------|----------|
+| `ENABLE_SESSION_DEDUP` | `true` | Skip memories seen in current session |
+| `ENABLE_TOOL_CACHE` | `true` | TTL cache for tool-level results |
+| `SESSION_CACHE_TTL` | `300` | Session cache TTL in seconds |
 
-| Flag                            | Default | Description |
-| ------------------------------- | ------- | ----------- |
-| `SPECKIT_SEARCH_FALLBACK`       | `true`  | PI-A2 3-tier fallback chain |
-| `SPECKIT_DEGREE_BOOST`          | `true`  | Typed-weighted degree channel |
-| `SPECKIT_INTERFERENCE_SCORE`    | `true`  | TM-01 interference penalty |
-| `SPECKIT_CLASSIFICATION_DECAY`  | `true`  | TM-03 FSRS tier/context decay |
-| `SPECKIT_SCORE_NORMALIZATION`   | `true`  | Normalize RRF/composite scores to [0,1] |
-| `SPECKIT_COMPLEXITY_ROUTER`     | `true`  | Query complexity routing |
-| `SPECKIT_CHANNEL_MIN_REP`       | `true`  | R2 min representation (QUALITY_FLOOR=0.005) |
-| `SPECKIT_CONFIDENCE_TRUNCATION` | `true`  | Low-confidence tail truncation |
-| `SPECKIT_DYNAMIC_TOKEN_BUDGET`  | `true`  | Complexity-tier token budgets |
-| `SPECKIT_STRICT_SCHEMAS`        | `true`  | Enforce strict Zod input validation for all MCP tools (`false` allows passthrough unknown keys) |
-| `SPECKIT_RESPONSE_TRACE`        | `false` | Include provenance-rich `scores` / `source` / `trace` response envelopes by default |
-| `SPECKIT_EXTENDED_TELEMETRY`    | `false` | Opt-in detailed retrieval telemetry; when enabled, records latency/mode/fallback/quality metrics and architecture snapshots |
-| `SPECKIT_DYNAMIC_INIT`          | `true`  | Inject dynamic startup instructions with live memory/index counts |
-| `SPECKIT_CONTEXT_HEADERS`       | `true`  | Prepend contextual tree headers to markdown content chunks in search results |
-| `SPECKIT_FILE_WATCHER`          | `false` | Enable chokidar-based real-time markdown re-indexing |
-| `RERANKER_LOCAL`                | `false` | Use local GGUF reranker path (`node-llama-cpp`) instead of remote Cohere/Voyage in Stage 3 |
-| `SPECKIT_RERANKER_MODEL`        | `models/bge-reranker-v2-m3.Q4_K_M.gguf` | Optional custom model path override for local reranker |
-| `SPECKIT_EVAL_LOGGING`          | `false` | Evaluation telemetry logging |
-| `SPECKIT_ABLATION`              | `false` | Ablation tool execution |
-| `SPECKIT_LEARN_FROM_SELECTION`  | `true`  | Learned-feedback from selection events (R11 — 9 safeguards, 0.7x boost weight) |
+**MCP Configuration** -- 7 flags:
 
-#### Memory Roadmap Metadata Controls
+| Flag | Default | Controls |
+|------|---------|----------|
+| `SPECKIT_MIN_QUALITY_SCORE` | `0.3` | Minimum content quality score to save |
+| `SPECKIT_PREFLIGHT_STRICT` | `false` | Reject saves that fail quality gate |
+| `SPECKIT_MAX_CHUNK_SIZE` | `50000` | Character threshold for ANCHOR chunking |
 
-These env vars now default to the fully delivered Phase 015 rollout so telemetry, eval baselines, and migration checkpoint sidecars reflect the live default state. They can still be set explicitly to disable a roadmap capability for rollback drills or compatibility tests. `SPECKIT_MEMORY_GRAPH_UNIFIED` remains distinct from live runtime `SPECKIT_GRAPH_UNIFIED`.
+**Memory and Storage** -- 8 flags:
 
-| Flag | Default | Description |
-| ---- | ------- | ----------- |
-| `SPECKIT_MEMORY_ROADMAP_PHASE` | `shared-rollout` | Recorded roadmap phase for telemetry, eval baselines, and migration checkpoints (`baseline`, `lineage`, `graph`, `adaptive`, `scope-governance`, `shared-rollout`) |
-| `SPECKIT_MEMORY_LINEAGE_STATE` | `true` | Default-on roadmap capability for the lineage-state milestone; set `false` to suppress the snapshot |
-| `SPECKIT_MEMORY_GRAPH_UNIFIED` | `true` | Default-on roadmap capability for the unified-graph milestone; distinct from runtime `SPECKIT_GRAPH_UNIFIED` |
-| `SPECKIT_MEMORY_ADAPTIVE_RANKING` | `true` | Default-on adaptive-ranking gate; unset runs in the default shadow-mode path |
-| `SPECKIT_MEMORY_SCOPE_ENFORCEMENT` | `true` | Default-on scope-enforcement gate; set `false` to disable scoped filtering |
-| `SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS` | `true` | Default-on governance guardrails gate; set `false` to disable governance checks |
-| `SPECKIT_MEMORY_SHARED_MEMORY` | `true` | Default-on shared-memory gate; deny-by-default membership and rollout controls still apply |
+| Flag | Default | Controls |
+|------|---------|----------|
+| `DB_PATH` | `shared/mcp_server/database/spec-kit.db` | SQLite database path |
+| `SPECKIT_EMBEDDING_CACHE` | `true` | Cache embeddings to avoid re-generation |
+| `SPECKIT_BATCH_SIZE` | `50` | Batch size for bulk indexing operations |
 
-#### Phase 1 Readiness Helpers
+**Embedding and API** -- 6 flags:
 
-The Phase 1 hardening slice adds a few low-level helpers outside the main MCP tool surface:
+| Flag | Default | Controls |
+|------|---------|----------|
+| `EMBEDDING_PROVIDER` | `voyage` | Provider: `voyage`, `openai`, `huggingface` |
+| `VOYAGE_API_KEY` | _(none)_ | Voyage AI API key |
+| `OPENAI_API_KEY` | _(none)_ | OpenAI API key |
 
-- `lib/eval/memory-state-baseline.ts` captures baseline retrieval/isolation metrics and can persist them into `eval_metric_snapshots`.
-- `scripts/migrations/create-checkpoint.ts` and `scripts/migrations/restore-checkpoint.ts` operate on raw SQLite files for pre-migration safety.
-- `lib/search/vector-index-schema.ts` exports `validateBackwardCompatibility()` for non-throwing schema readiness checks.
+**Debug and Telemetry**:
 
-#### Local GGUF Reranker Setup (Sprint 9 P1-5)
-
-When `RERANKER_LOCAL=true`, Stage 3 reranking uses `node-llama-cpp` with a local GGUF model.
-
-1. Install runtime:
-   - `cd .opencode/skill/system-spec-kit`
-   - `npm install node-llama-cpp`
-2. Verify platform (Apple Silicon):
-   - `uname -sm` should report `Darwin arm64`
-   - `node -p "process.platform + ' ' + process.arch"` should report `darwin arm64`
-3. Place model file:
-   - `models/bge-reranker-v2-m3.Q4_K_M.gguf` (about `350MB`)
-4. Configure environment:
-   - `RERANKER_LOCAL=true`
-   - `SPECKIT_RERANKER_MODEL=models/bge-reranker-v2-m3.Q4_K_M.gguf`
-
-#### Save-Time and Feedback Flags
-
-Flags governing save-time processing and feedback-driven scoring. Some remain graduated default-on, while reconsolidation stays opt-in.
-
-| Flag                           | Default | Description |
-| ------------------------------ | ------- | ----------- |
-| `SPECKIT_SAVE_QUALITY_GATE`    | `true`  | Pre-storage quality gate rejects content below 0.4 signal density (TM-04) |
-| `SPECKIT_RECONSOLIDATION`      | `false` | Auto-merges similar memories on save at >=0.88 similarity (TM-06). Opt in with `SPECKIT_RECONSOLIDATION=true` |
-| `SPECKIT_NEGATIVE_FEEDBACK`    | `true`  | `wasUseful=false` applies score demotion with 30-day recovery (A4) |
-| `SPECKIT_EMBEDDING_EXPANSION`  | `true`  | Expands queries with semantic neighbors before search (R12) |
-| `SPECKIT_AUTO_ENTITIES`        | `true`  | Extracts entities at save time for cross-document linking (R10) |
-| `SPECKIT_ENTITY_LINKING`       | `true`  | Links memories sharing extracted entities (S5) |
+| Flag | Default | Controls |
+|------|---------|----------|
+| `SPECKIT_DEBUG` | `false` | Verbose debug logging |
+| `SPECKIT_SCORE_TRACE` | `false` | Log per-channel scores for each result |
 
 ### Database Schema
 
-| Table                | Purpose                                                            |
-| -------------------- | ------------------------------------------------------------------ |
-| `memory_index`       | Memory metadata (title, tier, triggers, document_type, spec_level) |
-| `vec_memories`       | Vector embeddings (sqlite-vec)                                     |
-| `memory_fts`         | Full-text search index (FTS5)                                      |
-| `checkpoints`        | State snapshots                                                    |
-| `memory_history`     | Access and modification history                                    |
-| `learning_records`   | Session learning preflight/postflight                              |
-| `working_memory`     | Session-scoped attention scores                                    |
-| `memory_conflicts`   | PE gating decisions (audit trail)                                  |
-| `causal_edges`       | Causal relationships (6 types)                                     |
-| `memory_corrections` | Learning from corrections                                          |
-| `session_state`      | Crash recovery state                                               |
-| `schema_version`     | Database schema version tracking                                   |
+12 tables in the SQLite database:
 
-**v16 chunking columns** (added to `memory_index`):
-
-| Column        | Purpose                          |
-| ------------- | -------------------------------- |
-| `parent_id`   | Links chunk to parent record     |
-| `chunk_index` | Ordering within parent           |
-| `chunk_label` | Human-readable chunk description |
-
-### Dependencies
-
-| Dependency                  | Version        | Purpose                  |
-| --------------------------- | -------------- | ------------------------ |
-| `@modelcontextprotocol/sdk` | ^1.24.3        | MCP protocol             |
-| `@huggingface/transformers` | ^3.8.1         | Local embeddings         |
-| `better-sqlite3`            | ^12.6.2        | SQLite database          |
-| `node-llama-cpp`            | ^3.15.1        | Local GGUF reranker runtime (optional) |
-| `sqlite-vec`                | ^0.1.7-alpha.2 | Vector similarity search |
-| `zod`                       | ^4.1.12        | Schema validation        |
-
----
+| Table | Purpose |
+|-------|---------|
+| `memory_index` | Core memory records (id, path, title, content, metadata) |
+| `vec_memories` | Vector embeddings for similarity search |
+| `memory_fts` | FTS5 full-text search index |
+| `checkpoints` | Named memory state snapshots |
+| `memory_history` | Per-memory change history |
+| `learning_records` | Preflight/postflight epistemic snapshots |
+| `working_memory` | Session-scoped attention tracking |
+| `memory_conflicts` | Conflict detection records |
+| `causal_edges` | Typed causal relationships between memories |
+| `memory_corrections` | User-submitted corrections and feedback |
+| `session_state` | Cross-turn session context |
+| `schema_version` | Migration version tracking |
 
 <!-- /ANCHOR:configuration -->
 
-## 9. USAGE EXAMPLES
+---
+
 <!-- ANCHOR:usage-examples -->
+## 7. USAGE EXAMPLES
 
-### Basic Memory Search
+### Example 1: Find Context for a Feature Task
 
-```typescript
-// Simple semantic search
-memory_search({
-  query: "how does authentication work",
-  limit: 5
-})
-// Returns: constitutional memories at top + semantic matches
+Start a new feature and pull all relevant prior decisions and context:
+
+```json
+{
+  "tool": "memory_context",
+  "arguments": {
+    "input": "add rate limiting to the auth API",
+    "intent": "add_feature",
+    "specFolder": "specs/005-auth",
+    "mode": "deep",
+    "anchors": ["decisions", "state", "next-steps"]
+  }
+}
 ```
 
-### ANCHOR-Based Retrieval (Token Efficient)
-
-```typescript
-// Only retrieve specific sections (93% token savings)
-memory_search({
-  query: "auth decisions",
-  anchors: ['decisions', 'context'],
-  includeContent: true
-})
-```
-
-When chunked files are indexed, `includeContent: true` now reassembles child chunks into full content from indexed `content_text` values. Each result can include:
-- `isChunk`
-- `parentId`
-- `chunkIndex`
-- `chunkLabel`
-- `chunkCount`
-- `contentSource` (`reassembled_chunks` or `file_read_fallback`)
-
-```typescript
-memory_search({
-  query: "large file summary",
-  includeContent: true
-})
-// Chunked hits return reassembled content + chunk metadata.
-// includeContent: false keeps metadata-only behavior.
-```
-
-### Intent-Aware Context
-
-```typescript
-// Get context optimized for debugging
-memory_context({
-  input: "debugging auth issues",
-  mode: "focused",
-  intent: 'fix_bug'
-})
-// Returns: error logs, recent changes, debug history weighted high
-```
-
-### Trace Decision Lineage
-
-```typescript
-// Why was this decision made?
-memory_drift_why({
-  memoryId: 'jwt-auth-decision-123',
-  maxDepth: 3
-})
-// Returns causal chain: causedBy, enabledBy, supersedes
-```
-
-### Create Causal Link
-
-```typescript
-// Document that decision A supersedes decision B
-memory_causal_link({
-  sourceId: 'new-auth-approach-456',
-  targetId: 'old-auth-approach-123',
-  relation: 'supersedes',
-  evidence: 'JWT better for microservices scale'
-})
-```
-
-### Session Learning Workflow
-
-```typescript
-// 1. Before starting, capture baseline
-task_preflight({
-  specFolder: "specs/<###-spec-name>",
-  taskId: "T1",
-  knowledgeScore: 40,
-  uncertaintyScore: 70,
-  contextScore: 50
-})
-
-// 2. Do the work
-
-// 3. After completing, measure improvement
-task_postflight({
-  specFolder: "specs/<###-spec-name>",
-  taskId: "T1",
-  knowledgeScore: 85,
-  uncertaintyScore: 20,
-  contextScore: 90
-})
-// Result: Learning Index = (45 * 0.4) + (50 * 0.35) + (40 * 0.25) = 45.5
-```
-
-### Checkpoint Recovery
-
-```typescript
-// Before risky operation
-checkpoint_create({
-  name: "pre-cleanup",
-  metadata: { reason: "Safety before bulk delete" }
-})
-
-// Do risky operation
-memory_delete({ specFolder: "specs/<###-spec-name>", confirm: true })
-
-// If something went wrong
-checkpoint_restore({ name: "pre-cleanup" })
-```
-
-### Divergent Alias Triage Report
-
-Use `memory_health` in `divergent_aliases` mode when you need a compact manual-triage view instead of the full health payload.
-
-```typescript
-memory_health({
-  reportMode: "divergent_aliases",
-  limit: 25,
-  specFolder: "specs/<###-spec-name>"
-})
-// Returns only divergent alias groups:
-// - normalizedPath (canonical key)
-// - variants[] with filePath + contentHash
-// - totalDivergentGroups and returnedGroups
-```
-
-### Common Patterns
-
-| Pattern                          | Tool Call                                                       | When to Use                               |
-| -------------------------------- | --------------------------------------------------------------- | ----------------------------------------- |
-| Find related context             | `memory_search({ query: "..." })`                               | Before starting work                      |
-| Token-efficient retrieval        | `memory_search({ anchors: ['summary'] })`                       | Large context, limited budget             |
-| Intent-aware context             | `memory_context({ input: "...", intent: "fix_bug" })`           | Task-specific context                     |
-| Decision archaeology             | `memory_drift_why({ memoryId: "..." })`                         | Understanding past decisions              |
-| Track learning                   | `task_preflight` -> work -> `task_postflight`                   | Implementation tasks                      |
-| Check system health              | `memory_health({})`                                             | Debugging issues                          |
-| Triage divergent alias anomalies | `memory_health({ reportMode: "divergent_aliases", limit: 20 })` | Fast manual review of path/hash conflicts |
-| Recover from error               | `checkpoint_restore({ name: "..." })`                           | After mistakes                            |
+**Result**: Returns constitutional rules at top, then spec decisions, then prior auth implementation notes. ANCHOR filtering means you get only the relevant subsections from large documents.
 
 ---
 
+### Example 2: Save a Decision Memory
+
+After making an architectural decision, save it for future retrieval:
+
+```bash
+# 1. Generate the memory file using the CLI script
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js specs/005-auth
+
+# 2. Index it via MCP
+```
+
+```json
+{
+  "tool": "memory_save",
+  "arguments": {
+    "filePath": "/absolute/path/to/specs/005-auth/memory/2026-03-15_auth-decision.md"
+  }
+}
+```
+
+**Result**: File is validated, embedded and indexed. Returns memory ID, quality score and duplicate check results.
+
+---
+
+### Example 3: Trace a Decision's Origin
+
+Find out why a particular architectural choice was made:
+
+```json
+{
+  "tool": "memory_drift_why",
+  "arguments": {
+    "memoryId": "mem_abc123",
+    "maxDepth": 4,
+    "direction": "incoming",
+    "relations": ["caused", "enabled"]
+  }
+}
+```
+
+**Result**: A causal chain showing which decisions, bugs or requirements led to this memory being created.
+
+---
+
+### Example 4: Checkpoint Before Bulk Cleanup
+
+Before deleting old temporary memories, create a safety checkpoint:
+
+```json
+{
+  "tool": "checkpoint_create",
+  "arguments": {
+    "name": "before-temp-cleanup-2026-03-15",
+    "specFolder": "specs/022-hybrid-rag-fusion"
+  }
+}
+```
+
+Then delete:
+
+```json
+{
+  "tool": "memory_bulk_delete",
+  "arguments": {
+    "tier": "temporary",
+    "confirm": true,
+    "specFolder": "specs/022-hybrid-rag-fusion",
+    "olderThanDays": 30
+  }
+}
+```
+
+If something goes wrong, restore:
+
+```json
+{
+  "tool": "checkpoint_restore",
+  "arguments": {
+    "name": "before-temp-cleanup-2026-03-15"
+  }
+}
+```
+
+---
+
+### Example 5: Async Ingest a Large Set of Files
+
+When indexing many files at once, use async ingestion to avoid timeouts:
+
+```json
+{
+  "tool": "memory_ingest_start",
+  "arguments": {
+    "paths": [
+      "/absolute/path/to/file1.md",
+      "/absolute/path/to/file2.md",
+      "/absolute/path/to/file3.md"
+    ],
+    "specFolder": "specs/022-hybrid-rag-fusion"
+  }
+}
+```
+
+**Result**: Returns `{ "jobId": "job_xyz789" }`. Check progress:
+
+```json
+{
+  "tool": "memory_ingest_status",
+  "arguments": { "jobId": "job_xyz789" }
+}
+```
+
+---
+
+### Example 6: Measure Learning Across a Task
+
+Before starting a complex task:
+
+```json
+{
+  "tool": "task_preflight",
+  "arguments": {
+    "specFolder": "specs/022-hybrid-rag-fusion",
+    "taskId": "implement-channel-fusion",
+    "knowledgeScore": 40,
+    "uncertaintyScore": 70,
+    "contextScore": 35,
+    "knowledgeGaps": ["RRF k-value tuning", "MPAB aggregation logic"]
+  }
+}
+```
+
+After completing the task:
+
+```json
+{
+  "tool": "task_postflight",
+  "arguments": {
+    "specFolder": "specs/022-hybrid-rag-fusion",
+    "taskId": "implement-channel-fusion",
+    "knowledgeScore": 85,
+    "uncertaintyScore": 25,
+    "contextScore": 80,
+    "gapsClosed": ["RRF k-value tuning", "MPAB aggregation logic"]
+  }
+}
+```
+
+**Result**: Learning Index calculated as `(45×0.4) + (45×0.35) + (45×0.25) = 45 LI points`.
+
+---
+
+### Common Patterns
+
+| Pattern | Tool | When to Use |
+|---------|------|-------------|
+| Resume a session | `memory_context` with `mode: "resume"` | Starting a new conversation on existing work |
+| Find a decision | `memory_context` with `intent: "find_decision"` | "Why did we choose X?" questions |
+| Quick keyword lookup | `memory_search` with `concepts: ["term1", "term2"]` | AND search for specific terms |
+| Scan for surface triggers | `memory_match_triggers` | Every new user prompt in an AI workflow |
+| Discover what's indexed | `memory_list` + `memory_stats` | Auditing or cleanup |
+| Health check | `memory_health` with `reportMode: "full"` | Diagnosing search quality issues |
+| Dry-run a save | `memory_save` with `dryRun: true` | Validating quality before committing |
+
 <!-- /ANCHOR:usage-examples -->
 
-## 10. TROUBLESHOOTING
+---
+
 <!-- ANCHOR:troubleshooting -->
+## 8. TROUBLESHOOTING
+
+For the feature flag rollback procedure, see `../references/workflows/rollback_runbook.md`.
 
 ### Common Issues
 
-#### Model Download Failures
+#### Search Returns Low-Quality Results
 
-**Symptom:** `Error: Failed to download embedding model` or `Failed to parse ONNX model`
+**Symptom**: `memory_search` or `memory_context` returns irrelevant or low-scoring memories.
 
-```bash
-# Clear the in-project HuggingFace model cache (most common)
-rm -rf node_modules/@huggingface/transformers/.cache
+**Cause**: Common causes are stale BM25 index, divergent aliases in the FTS5 index, or memories with low quality scores surfacing due to missing minimum threshold.
 
-# Also clear global HuggingFace cache if needed
-rm -rf ~/.cache/huggingface/
-
-# Server re-downloads on next start
+**Solution**:
+```json
+{
+  "tool": "memory_health",
+  "arguments": { "reportMode": "full", "autoRepair": true }
+}
 ```
 
-#### Database Corruption
-
-**Symptom:** `SQLITE_CORRUPT` or search returns no results
-
-```bash
-# Delete database
-rm .opencode/skill/system-spec-kit/mcp_server/dist/database/context-index.sqlite
-
-# Restart MCP server (recreates database), then re-index
-memory_index_scan({ force: true })
+Then re-run with a higher `min_quality_score`:
+```json
+{
+  "tool": "memory_search",
+  "arguments": {
+    "query": "your query",
+    "min_quality_score": 0.5
+  }
+}
 ```
 
-#### Embedding Dimension Mismatch
+---
 
-**Symptom:** `Error: Vector dimension mismatch`
+#### `memory_save` Rejected by Quality Gate
 
-**Cause:** Switched embedding providers mid-project.
+**Symptom**: Save returns an error like `PREFLIGHT_FAILED: content quality score below threshold`.
 
-```bash
-# Delete database (clears old embeddings), then re-index
-rm .opencode/skill/system-spec-kit/mcp_server/dist/database/context-index.sqlite
-memory_index_scan({ force: true })
+**Cause**: The memory file does not meet the minimum content quality score (`SPECKIT_MIN_QUALITY_SCORE`, default 0.3). Common causes: file is empty, has only headers, or content is too short.
+
+**Solution**: Check what the dry run says about the file:
+```json
+{
+  "tool": "memory_save",
+  "arguments": {
+    "filePath": "/path/to/file.md",
+    "dryRun": true
+  }
+}
 ```
 
-#### Empty Search Results
+Add more content to the file, or lower the threshold temporarily with `SPECKIT_MIN_QUALITY_SCORE=0.1` for low-content files like stubs.
 
-1. Database empty: run `memory_index_scan({ force: true })`
-2. Embedding model not ready: check `memory_health({})` for `embeddingModelReady: true`
-3. Query too specific: try broader search terms
-4. Wrong specFolder: check `memory_list({})` for available folders
+---
+
+#### Embeddings Fail or Return Zeros
+
+**Symptom**: Saved memories have zero vector scores. Search returns no semantic matches.
+
+**Cause**: Embedding provider API key is missing or invalid, or the `EMBEDDING_PROVIDER` variable is set to a provider without a configured key.
+
+**Solution**:
+```bash
+# Verify environment
+echo $EMBEDDING_PROVIDER
+echo $VOYAGE_API_KEY
+
+# Test the embedding provider directly
+node dist/context-server.js --test-embedding "hello world"
+```
+
+Switch to local HuggingFace if no API key is available:
+```bash
+EMBEDDING_PROVIDER=huggingface
+```
+
+---
+
+#### Memory Count Discrepancy After Bulk Operations
+
+**Symptom**: `memory_stats` shows fewer memories than expected after a bulk delete.
+
+**Cause**: Auto-checkpoint was skipped or failed before the delete operation.
+
+**Solution**: Check available checkpoints:
+```json
+{
+  "tool": "checkpoint_list",
+  "arguments": {}
+}
+```
+
+If a checkpoint exists before the deletion, restore it:
+```json
+{
+  "tool": "checkpoint_restore",
+  "arguments": { "name": "the-checkpoint-name" }
+}
+```
+
+---
+
+#### Server Fails to Start
+
+**Symptom**: `node dist/context-server.js` exits immediately with a module error or `DB_PATH` error.
+
+**Cause**: Build not run, or database path is invalid.
+
+**Solution**:
+```bash
+# Rebuild from source
+cd .opencode/skill/system-spec-kit/mcp_server
+npm run build
+
+# Check DB path resolves
+node -e "require('./dist/context-server.js')" 2>&1 | head -20
+```
+
+---
 
 ### Quick Fixes
 
-| Problem                   | Quick Fix                                        |
-| ------------------------- | ------------------------------------------------ |
-| Empty search results      | `memory_index_scan({ force: true })`             |
-| Slow embeddings           | Set `VOYAGE_API_KEY` for faster API embeddings   |
-| Missing constitutional    | Check files in `constitutional/` directory       |
-| Duplicate detection       | Check `memory_conflicts` table for decisions     |
-| Causal graph empty        | Use `memory_causal_link` to create relationships |
-| Session not deduplicating | Ensure `session_id` is consistent                |
-
-### Feature Flag Rollback
-
-Use this procedure when rollout metrics regress (rank instability, elevated context errors or extraction quality drop):
-
-```bash
-# 1. Disable automation flags
-SPECKIT_SESSION_BOOST=false
-SPECKIT_PRESSURE_POLICY=false
-SPECKIT_CAUSAL_BOOST=false
-SPECKIT_ADAPTIVE_FUSION=false
-
-# 2. Restart MCP server and run smoke checks
-npx vitest run tests/handler-memory-context.vitest.ts
-
-# 3. Re-enable flags one at a time after metrics recover
-```
+| Problem | Fix |
+|---------|-----|
+| All search returning empty | Run `memory_index_scan` to re-index |
+| Tools not appearing in MCP client | Restart the MCP client after config changes |
+| BM25 index out of date | Set `ENABLE_BM25=false` to fall back to FTS5 |
+| Slow responses on large index | Set `ENABLE_TOOL_CACHE=true` and check `SESSION_CACHE_TTL` |
+| Embedding API rate limit | Add retry delay with `SPECKIT_EMBEDDING_RETRY_DELAY_MS=1000` |
+| Shared memory not working | Call `shared_memory_enable` first, then `shared_space_upsert` |
 
 ### Diagnostic Commands
 
 ```bash
-# Check database status
-sqlite3 dist/database/context-index.sqlite "SELECT COUNT(*) FROM memory_index;"
-
-# Check schema version
-sqlite3 dist/database/context-index.sqlite "PRAGMA user_version;"
-
-# Check memory states (use <> not != in zsh to avoid glob negation)
-sqlite3 dist/database/context-index.sqlite "SELECT importance_tier, COUNT(*) FROM memory_index GROUP BY importance_tier;"
-
-# Check causal graph stats
-sqlite3 dist/database/context-index.sqlite "SELECT relation, COUNT(*) FROM causal_edges GROUP BY relation;"
-```
-
-### CLI Operations (`spec-kit-cli`)
-
-```bash
-# Show database stats
-node dist/cli.js stats
-
-# Bulk delete with optional checkpoint bypass (non-critical tiers only)
-node dist/cli.js bulk-delete --tier temporary --older-than 30 --skip-checkpoint
-# --skip-checkpoint is blocked for constitutional/critical tiers
-
-# Reindex with optional eager warmup (lazy warmup is default)
-node dist/cli.js reindex --eager-warmup
-
-# Targeted schema downgrade (v16 -> v15 only)
-node dist/cli.js schema-downgrade --to 15 --confirm
-```
-
-### Spec Kit Utility Scripts
-
-Additional utility scripts are available in the parent `scripts/` directory:
-
-| Script | Purpose |
-| ------ | ------- |
-| `scripts/spec/progressive-validate.sh` | 4-level progressive validation for spec documents (lint, structure, content, cross-ref) |
-| `scripts/core/workflow.ts` | Tree thinning for spec folder consolidation (token-budget-aware merge of low-value nodes) |
-
-### Run Tests
-
-```bash
-# Run full test suite (from mcp_server directory)
+# Run full test suite
+cd .opencode/skill/system-spec-kit/mcp_server
 npx vitest run
-# Use the current Vitest summary as the source of truth for totals
 
-# Run specific test file
-npx vitest run tests/fsrs-scheduler.vitest.ts
-npx vitest run tests/rrf-fusion.vitest.ts
-npx vitest run tests/causal-edges.vitest.ts
+# Check database tables directly
+sqlite3 shared/mcp_server/database/spec-kit.db ".tables"
+
+# Count indexed memories
+sqlite3 shared/mcp_server/database/spec-kit.db "SELECT COUNT(*) FROM memory_index;"
+
+# Check for divergent aliases
 ```
 
----
+```json
+{
+  "tool": "memory_health",
+  "arguments": { "reportMode": "divergent_aliases", "limit": 20 }
+}
+```
 
 <!-- /ANCHOR:troubleshooting -->
 
-## 11. FAQ
+---
+
 <!-- ANCHOR:faq -->
+## 9. FAQ
 
-**Q: Which tool should I call first for most retrieval tasks?**
+### General Questions
 
-A: Start with `memory_context`. It routes by intent, applies multi-query RAG fusion and picks the best retrieval path for the query.
+**Q: Do I need an API key to use this?**
 
-**Q: When should I use `memory_search` instead of `memory_context`?**
-
-A: Use `memory_search` when you need direct control over search parameters or want to inspect raw ranked results. Use `memory_context` for all standard retrieval tasks.
-
-**Q: When should I use `memory_match_triggers` instead of `memory_search`?**
-
-A: Use `memory_match_triggers` for fast phrase matching when you already know likely trigger terms. It runs at <50ms and is suitable for Gate 1 context surfacing.
-
-**Q: How do I reduce token usage in responses?**
-
-A: Request focused anchors like `state` and `next-steps`, keep `includeContent` off unless needed and use session deduplication with a stable `sessionId`.
-
-**Q: Do I need a cloud embedding API key?**
-
-A: No. The server falls back to local HuggingFace embeddings when cloud keys are not configured. Voyage AI is recommended for production quality.
-
-**Q: Are all feature flags enabled by default after specs 137-139?**
-
-A: Yes. Flags are default-on and only explicit `FLAG=false` disables them. `SPECKIT_CROSS_ENCODER` is default-on but still requires a configured reranker provider to be active.
+A: No. The server runs with HuggingFace local embeddings out of the box. Set `EMBEDDING_PROVIDER=huggingface` and no API key is required. Voyage AI (`VOYAGE_API_KEY`) gives better retrieval quality but is optional.
 
 ---
 
+**Q: What happens to my memories when I switch AI models or tools?**
+
+A: Nothing changes. Memories live in the local SQLite database, not in any AI's context. When you connect a different model to the same MCP server, it reads from the same database. The `sessionId` parameter controls what gets deduplicated within a session, not what persists.
+
+---
+
+**Q: How is this different from plain RAG with a vector database?**
+
+A: Three main differences. First, this system uses 5 search channels fused with RRF, not just vector similarity. Second, it applies FSRS decay so recently accessed memories rank higher without any manual curation. Third, the causal graph lets you answer "why was this decision made?" which no vector database supports natively.
+
+---
+
+**Q: What is the `constitutional` tier and why does it always appear at the top?**
+
+A: Constitutional memories are rules that never change: coding standards, architectural constraints, project non-negotiables. They get importance weight `1.0` and are injected into every retrieval result regardless of semantic score. Store things like "always use TypeScript strict mode" or "never commit secrets" at the constitutional tier.
+
+---
+
+**Q: How much disk space does the database use?**
+
+A: A typical project with a few hundred memory files uses 10-50 MB. The `vec_memories` table (1024-dimension float32 vectors) is the largest contributor. You can estimate with `memory_stats` and the `includeScores: true` flag.
+
+---
+
+### Technical Questions
+
+**Q: Can multiple AI agents share the same memory space?**
+
+A: Yes, through the shared memory subsystem. Call `shared_memory_enable`, create a space with `shared_space_upsert`, and grant access with `shared_space_membership_set`. Spaces are deny-by-default: no agent can read or write until you explicitly add membership.
+
+---
+
+**Q: What does "FSRS decay" mean in practice?**
+
+A: FSRS (Free Spaced Repetition Scheduler) is a memory model validated on 100M+ Anki flashcard users. The formula `R(t, S) = (1 + (19/81) × t/S)^(-0.5)` calculates a retrievability score where `t` is time since last access and `S` is a stability parameter. A memory you accessed yesterday has `R` near 1.0. A memory you have not accessed in months has `R` near 0. Higher importance tiers get larger `S` multipliers, slowing their decay.
+
+---
+
+**Q: How do I know which tool to call for a given task?**
+
+A: Start with `memory_context` for all retrieval tasks. It handles intent detection and routing automatically. Use `memory_search` when you want explicit control over channel selection. Use `memory_match_triggers` when processing a raw prompt text at the start of each AI turn. Use the L4-L7 tools only when you need mutation, analysis or maintenance operations.
+
+---
+
+**Q: What is the `dryRun` parameter on `memory_save`?**
+
+A: A dry run validates the file against the quality gate, estimates the token budget, checks for duplicates and returns a preflight report, all without writing anything to the database. Use it to verify a file will pass quality checks before committing, or to see what the duplicate detection threshold would return.
+
+---
+
+**Q: How do I roll back a bad feature flag change?**
+
+A: The rollback runbook at `../references/workflows/rollback_runbook.md` walks through the procedure step by step. The short version: set the flag to `false` or `0` in your environment, restart the server, and the pipeline falls back to the last working configuration. Use `eval_reporting_dashboard` to verify metrics returned to baseline.
+
 <!-- /ANCHOR:faq -->
 
-## 12. RELATED RESOURCES
-<!-- ANCHOR:related -->
+---
 
-### Parent Documentation
+<!-- ANCHOR:related-documents -->
+## 10. RELATED DOCUMENTS
 
-| Document         | Location                                      | Purpose                             |
-| ---------------- | --------------------------------------------- | ----------------------------------- |
-| Skill README     | `../README.md`                                | Complete skill documentation        |
-| SKILL.md         | `../SKILL.md`                                 | Workflow instructions for AI agents |
-| Install Guide    | `INSTALL_GUIDE.md`                            | Detailed installation               |
-| Rollback Runbook | `../references/workflows/rollback_runbook.md` | Feature-flag rollback procedure     |
+### Internal Documentation
 
-### Related Specs
-
-| Spec | Path                                               | Purpose                                   |
-| ---- | -------------------------------------------------- | ----------------------------------------- |
-| 137  | `specs/02--system-spec-kit/020-*`                  | Pre-hybrid-RAG search improvements        |
-| 138  | `specs/02--system-spec-kit/022-hybrid-rag-fusion/` | Hybrid RAG fusion (adaptive RRF, MMR)     |
-| 139  | `specs/02--system-spec-kit/023-*`                  | Post-fusion enhancements and phase system |
-
-### Key Library Modules
-
-| Module                                   | Purpose                                          |
-| ---------------------------------------- | ------------------------------------------------ |
-| `lib/search/hybrid-search.ts`            | Hybrid scatter-gather retrieval pipeline         |
-| `lib/search/adaptive-fusion.ts`          | Intent-aware weighted RRF fusion                 |
-| `lib/search/rrf-fusion.ts`               | RRF algorithm implementation                     |
-| `lib/search/causal-boost.ts`             | 2-hop causal-neighbor score boost                |
-| `lib/search/session-boost.ts`            | Session-attention score boost                    |
-| `lib/cognitive/fsrs-scheduler.ts`        | FSRS power-law decay algorithm                   |
-| `lib/cognitive/tier-classifier.ts`       | 5-state memory classification                    |
-| `lib/cognitive/prediction-error-gate.ts` | Duplicate detection                              |
-| `lib/scoring/composite-scoring.ts`       | Multi-factor ranking                             |
-| `lib/storage/causal-edges.ts`            | Causal graph storage                             |
-| `lib/storage/mutation-ledger.ts`         | Append-only tamper-proof audit trail             |
-| `lib/telemetry/retrieval-telemetry.ts`   | 4-dimension retrieval telemetry                  |
-| `lib/errors/recovery-hints.ts`           | 49 error codes with recovery guidance            |
-| `lib/chunking/anchor-chunker.ts`         | Large-file anchor-aware chunking (50K threshold) |
-| `lib/architecture/layer-definitions.ts`  | 7-layer tool architecture and token budgets      |
+| Document | Purpose |
+|----------|---------|
+| [INSTALL_GUIDE.md](./INSTALL_GUIDE.md) | Full installation walkthrough: embedding providers, database setup, MCP client configuration and post-install verification |
+| [lib/search/README.md](./lib/search/README.md) | Detailed per-stage module mapping for the 4-stage search pipeline |
+| [hooks/README.md](./hooks/README.md) | Lifecycle hook documentation for post-mutation wiring |
+| [../README.md](../README.md) | Parent skill README: system-spec-kit overview and workflow |
+| [../SKILL.md](../SKILL.md) | AI agent workflow instructions for invoking this skill |
+| [../feature_catalog/feature_catalog.md](../feature_catalog/feature_catalog.md) | Complete feature inventory with all 22 categories, code references and implementation details. The authoritative deep-dive for every feature mentioned in this README. |
+| [../references/config/environment_variables.md](../references/config/environment_variables.md) | Canonical source of truth for all environment variables with types, defaults and examples |
+| [../references/workflows/rollback_runbook.md](../references/workflows/rollback_runbook.md) | Feature flag rollback procedure for reverting pipeline changes |
 
 ### External Resources
 
-| Resource          | URL                                                       |
-| ----------------- | --------------------------------------------------------- |
-| MCP Protocol Spec | https://modelcontextprotocol.io/                          |
-| FSRS Algorithm    | https://github.com/open-spaced-repetition/fsrs4anki/wiki  |
-| sqlite-vec        | https://github.com/asg017/sqlite-vec                      |
-| Voyage AI         | https://www.voyageai.com/                                 |
-| FTS5 Docs         | https://www.sqlite.org/fts5.html                          |
-| RRF Paper         | https://plg.uwaterloo.ca/~gvcormac/cormacksigir09-rrf.pdf |
+| Resource | Description |
+|----------|-------------|
+| [Model Context Protocol Spec](https://modelcontextprotocol.io) | Official MCP specification and client documentation |
+| [FSRS Algorithm Paper](https://github.com/open-spaced-repetition/fsrs4anki/wiki/The-Algorithm) | The memory decay formula this server implements |
+| [sqlite-vec](https://github.com/asg017/sqlite-vec) | The vector similarity extension used for embedding storage |
+| [Reciprocal Rank Fusion](https://dl.acm.org/doi/10.1145/1571941.1572114) | The fusion algorithm used to combine channel results |
 
-<!-- /ANCHOR:related -->
+<!-- /ANCHOR:related-documents -->
+
+---
+
+*Documentation version: 2.0 | Last updated: 2026-03-15 | Server version: @spec-kit/mcp-server*

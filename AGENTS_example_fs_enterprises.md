@@ -61,7 +61,7 @@
 | Task                      | Flow                                                                                                                     |
 | ------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
 | **File modification**     | Gate 1 → Gate 2 → Gate 3 (ask spec folder) → Load memory context → Execute                                               |
-| **Research/exploration**  | `memory_match_triggers()` → `memory_search()` → Document findings                                                        |
+| **Research/exploration**  | `memory_match_triggers()` → `memory_context()` (unified) OR `memory_search()` (targeted) → Document findings              |
 | **Code search**           | `Grep()` for text patterns, `Glob()` for file discovery, `Read()` for file contents                                      |
 | **Resume prior work**     | Load memory files from spec folder → Review checklist → Continue                                                         |
 | **Save context**          | Execute `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js [spec-folder-path]` → Auto-indexed |
@@ -77,9 +77,11 @@
 | **React verification**    | `npm test` → `npx eslint .` → `npm run build`                                                                            |
 | **React Native verify**   | `npm test` → `npx eslint .` → `npx expo export`                                                                          |
 | **Swift verification**    | `swift test` → `swiftlint` → `swift build`                                                                               |
-| **Constitutional memory** | `/memory:learn [rule]` → Qualify → Structure with triggers → Budget check → Write to `constitutional/` → Index           |
+| **Constitutional memory** | `/memory:learn [rule]` \| `list` \| `edit` \| `remove` \| `budget` → Qualify → Structure with triggers → Budget check → Write to `constitutional/` → Index |
 | **Phase workflow**        | `/spec_kit:phase` → Decompose → `create.sh --phase` → Populate parent/children → `validate.sh --recursive`               |
-| **Database maintenance**  | `/memory:manage` → stats, health, cleanup, checkpoint operations                                                         |
+| **Database maintenance**  | `/memory:manage` → stats, health, cleanup, checkpoint, ingest operations                                                           |
+| **Analysis/evaluation**   | `/memory:analyze` → preflight, postflight, causal graph, ablation, dashboard, history                                              |
+| **Shared memory**         | `/memory:shared` → create, member, status (deny-by-default governance)                                                             |
 
 ### Coding Analysis Lenses
 

@@ -10,9 +10,25 @@ This is the bouncer at the door before a memory enters the system. It checks thr
 
 ## 2. CURRENT REALITY
 
-A three-layer quality gate on memory save validates content before it enters the index. Layer 1 checks structural validity (title exists, content at least 50 characters, valid spec folder path format). Layer 2 scores content quality across five dimensions (title quality, trigger quality, length quality, anchor quality, metadata quality) with a 0.4 signal density threshold. Layer 3 checks semantic deduplication via cosine similarity against existing memories in the same spec folder, rejecting near-duplicates above 0.92.
+The pre-storage quality gate still validates structure, content quality, and semantic deduplication before a memory enters the index, but it is no longer the first semantic stop in the save pipeline.
 
-The gate starts in warn-only mode for 14 days after activation per the MR12 mitigation: it logs would-reject decisions without blocking saves while the thresholds are being validated. After the warn-only period, hard rejections apply. Runs behind the `SPECKIT_SAVE_QUALITY_GATE` flag (default ON).
+Current save ordering is:
+
+1. parse and validate
+2. quality-loop auto-fixes for recoverable formatting issues
+3. shared semantic sufficiency gate
+4. pre-storage quality gate
+5. embedding, deduplication, and persistence
+
+The shared sufficiency gate is now the earlier hard-block for memories that do not contain enough durable evidence to stand alone later. Those saves fail with `INSUFFICIENT_CONTEXT_ABORT` and do not depend on the older warn-only behavior of this gate.
+
+The three-layer pre-storage quality gate then handles the memories that are already semantically sufficient:
+
+- Layer 1: structural validity
+- Layer 2: content quality scoring across five dimensions
+- Layer 3: semantic deduplication against existing memories in the same spec folder
+
+The gate still supports its existing warn-only rollout behavior for threshold tuning, but that warn-only mode does not override insufficiency rejection.
 
 ---
 
@@ -42,6 +58,8 @@ The gate starts in warn-only mode for 14 days after activation per the MR12 miti
 | `mcp_server/lib/utils/logger.ts` | Lib | Logger utility |
 | `mcp_server/lib/utils/path-security.ts` | Lib | Path security validation |
 | `mcp_server/lib/validation/save-quality-gate.ts` | Lib | Pre-storage quality gate |
+| `mcp_server/handlers/memory-save.ts` | Handler | Orders quality-loop, insufficiency, and quality-gate evaluation before persistence |
+| `shared/parsing/memory-sufficiency.ts` | Shared | Shared semantic sufficiency gate that now runs before this quality gate |
 | `shared/chunking.ts` | Shared | Content chunking |
 | `shared/config.ts` | Shared | Shared configuration |
 | `shared/embeddings.ts` | Shared | Embedding utilities |
@@ -72,6 +90,7 @@ The gate starts in warn-only mode for 14 days after activation per the MR12 miti
 | `mcp_server/tests/retry-manager.vitest.ts` | Retry manager tests |
 | `mcp_server/tests/retry-manager.vitest.ts` | Retry utility tests |
 | `mcp_server/tests/save-quality-gate.vitest.ts` | Quality gate tests |
+| `mcp_server/tests/handler-memory-save.vitest.ts` | Save handler ordering and insufficiency hard-block coverage |
 | `mcp_server/tests/score-normalization.vitest.ts` | Score normalization tests |
 | `mcp_server/tests/scoring.vitest.ts` | General scoring tests |
 | `mcp_server/tests/trigger-config-extended.vitest.ts` | Trigger config extended |

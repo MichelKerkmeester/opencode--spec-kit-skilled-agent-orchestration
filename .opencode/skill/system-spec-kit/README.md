@@ -1,872 +1,692 @@
 ---
 title: "System Spec Kit"
-description: "Unified documentation and context preservation skill providing spec folder workflows, memory management and MCP-powered semantic search."
+description: "Unified documentation and context preservation skill: spec folder workflows (Levels 1-3+), CORE + ADDENDUM v2.2 templates, validation scripts, and Spec Kit Memory MCP with hybrid multi-channel retrieval."
 trigger_phrases:
   - "spec kit"
   - "spec folder"
   - "memory system"
   - "hybrid search"
   - "context preservation"
+  - "documentation levels"
+  - "memory save"
+  - "spec folder workflow"
 ---
 
 # System Spec Kit
 
-> Your AI assistant forgets everything between sessions. Not anymore.
-
-Unified documentation and context preservation skill providing spec folder workflows, memory management and MCP-powered semantic search with multi-channel hybrid retrieval (Vector, FTS5/BM25, Graph, Degree) and causal graph intelligence.
+> Mandatory spec folder and context preservation skill for all file-modifying conversations. Version 2.2.26.0.
 
 ---
 
-## TABLE OF CONTENTS
 <!-- ANCHOR:table-of-contents -->
+## TABLE OF CONTENTS
 
 - [1. OVERVIEW](#1--overview)
 - [2. QUICK START](#2--quick-start)
-- [3. COMPONENTS](#3--components)
-- [4. DOCUMENTATION LEVELS](#4--documentation-levels)
-- [5. MEMORY SYSTEM](#5--memory-system)
-- [6. MCP TOOLS](#6--mcp-tools)
-- [7. COMMANDS](#7--commands)
-- [8. TEMPLATES](#8--templates)
-- [9. SCRIPTS](#9--scripts)
-- [10. TROUBLESHOOTING](#10--troubleshooting)
-- [11. FAQ](#11--faq)
-- [12. RELATED RESOURCES](#12--related-resources)
-
----
+- [3. STRUCTURE](#3--structure)
+- [4. FEATURES](#4--features)
+- [5. CONFIGURATION](#5--configuration)
+- [6. USAGE EXAMPLES](#6--usage-examples)
+- [7. TROUBLESHOOTING](#7--troubleshooting)
+- [8. FAQ](#8--faq)
+- [9. RELATED DOCUMENTS](#9--related-documents)
 
 <!-- /ANCHOR:table-of-contents -->
 
-## 1. OVERVIEW
+---
+
 <!-- ANCHOR:overview -->
+## 1. OVERVIEW
 
-### The Problem Nobody Talks About
+### What is System Spec Kit?
 
-AI coding assistants are powerful but stateless. Every session starts from zero:
+System Spec Kit is an AI skill that enforces documentation and context preservation across all file-modifying conversations. It creates spec folders at the right documentation level (1 through 3+), applies CORE + ADDENDUM v2.2 templates, runs validation scripts, and stores context in a Spec Kit Memory MCP that survives session boundaries.
 
-- Monday: "Here's how our auth system works..."
-- Wednesday: Blank slate. Explain it all again.
-- Friday: That spec folder you created? Lost in chat history.
-- Next sprint: Same conversation, different day.
+Every time an AI assistant modifies files, Spec Kit ensures the work is documented in a spec folder, tracked at the appropriate level, and saved to semantic memory so the next session can pick up where the last one left off.
 
-### The Solution
+### Key Statistics
 
-Spec Kit adds the missing layers: persistent memory, enforced documentation and cross-session context. Documentation is not optional. Gate 3 blocks file changes without a spec folder. Memory persists across sessions, models, projects, tools and runtimes.
+| Category | Count | Details |
+|----------|-------|---------|
+| MCP Tools | 32 | Across 7 layers (L1-L7) |
+| Commands | 15 | 8 spec_kit + 7 memory |
+| Documentation Levels | 4 | Levels 1, 2, 3 and 3+ |
+| Script Modules | 11 spec + 8 memory | TypeScript and Bash |
+| Feature Entries | 189 | Across 19 categories in feature catalog |
+| Template LOC | ~455 to ~1350 | Scales with documentation level |
+| Requirements | Node.js 18+ | TypeScript 5.0+, OpenCode 1.0.190+ |
 
-Cross-workflow alignment is mandatory:
-- All code created or updated must fully align with `sk-code--opencode`.
-- All documentation created or updated must fully align with `sk-doc`.
+### Key Features
 
----
-
-### What Makes This Different
-
-| Capability | Basic Approach | Spec Kit |
-| --- | --- | --- |
-| **Decision Archaeology** | "Why did we build it this way?" | Causal graph traces decision lineage |
-| **Token Usage** | Re-send same memories every query | Session deduplication saves ~50% on follow-ups |
-| **Context** | Re-explain everything every session | Memory persists across sessions, models, projects, tools and runtimes |
-| **Search** | Vector only | Hybrid search with adaptive RRF fusion |
-| **Ranking** | Score order | MMR diversity reranking + evidence gap detection |
-| **Documentation** | "I'll document later" (never happens) | Gate 3 enforces spec folders on every file change |
-| **Quality Gates** | Trust the AI did it right | PREFLIGHT/POSTFLIGHT validation at operation boundaries |
-| **Handoffs** | 2-hour "what did you do" meetings | `/spec_kit:handover` produces a 15-line summary |
-
----
-
-### Key Capabilities (Post Spec 138)
-
-| Capability | Description |
-| --- | --- |
-| **Hybrid Search + Post-Fusion** | Primary scatter-gather across vector, FTS5/BM25, graph and degree; co-activation/session/causal signals are applied post-fusion |
-| **Adaptive RRF Fusion** | Intent-weighted profiles replace fixed-weight RRF when `SPECKIT_ADAPTIVE_FUSION=true` |
-| **RSF Fusion (Eval Path)** | Reciprocal Similarity Fusion kept for offline/evaluation comparison, not live ranking |
-| **Degree Channel + Co-Activation** | 5th RRF channel with typed-weighted degree scoring and fan-effect sqrt divisor |
-| **Embedding Cache** | Persistent SQLite cache with LRU eviction for embedding reuse |
-| **Query Complexity Routing** | Classifier routes simple/moderate/complex queries to optimal pipeline |
-| **Interference Scoring** | TM-01 penalizes high-similarity near-duplicates in result sets |
-| **Classification Decay** | TM-03 tier-based and context-type stability multipliers for FSRS |
-| **Confidence Truncation** | Removes low-confidence tail results using 2x median gap detection |
-| **Dynamic Token Budget** | Tier-aware budgets (1500/2500/4000) for result delivery |
-| **Causal Lineage Insights** | Causal tools and boosts surface decision lineage for "why" and dependency questions |
-| **MMR Diversity Reranking** | Lambda mapped to detected intent for relevance-diversity balance |
-| **Evidence Gap Detection** | TRM with Z-score confidence flags missing context before retrieval |
-| **Multi-Query RAG Fusion** | Query expansion with domain vocabulary before scatter-gather |
-| **FSRS Spaced Repetition** | Power-law decay with tier-based modulation (validated on 100M+ users) |
-| **Semantic Memory** | Voyage AI 1024d embeddings stored in sqlite-vec |
-| **Spec Folder Documentation** | Levels 1-3+ with CORE + ADDENDUM v2.2 template architecture |
-| **Frontmatter Normalization + Dashboard Titles** | Managed metadata keys and scoped title suffixes keep template/spec/memory entries disambiguated in the memory dashboard |
-
----
-
-### By The Numbers
-
-| Category | Count |
-| --- | --- |
-| **MCP Tools** | 28 (memory, checkpoint, causal, drift, learning, eval, ingest, health) |
-| **Templates** | 10 (specs, plans, research, decisions) |
-| **Commands** | 13 (8 spec_kit + 5 memory) |
-| **Importance Tiers** | 6 (constitutional to deprecated) |
-| **Memory Types** | 9 (working, episodic, procedural, semantic, etc.) |
-| **ANCHOR Coverage** | 533 anchors across 78 skill READMEs |
-| **Test Coverage** | 265 `.vitest.ts` files in `mcp_server/tests/` (run `npx vitest run` for the current total test count) |
-| **Last Verified** | 2026-03-13 |
+| Feature | Description |
+|---------|-------------|
+| **Spec Folder Workflow** | Mandatory documentation for all file modifications, scaled to 4 levels based on scope and risk |
+| **CORE + ADDENDUM Templates** | Composable template architecture where each level inherits from lower levels |
+| **Spec Kit Memory MCP** | 32 MCP tools providing hybrid multi-channel retrieval (Vector, FTS5/BM25, Graph, Degree) |
+| **Session Continuity** | Context preserved across session boundaries via `generate-context.js` and semantic indexing |
+| **Validation Scripts** | 13-rule validation orchestrator, completeness checks and placeholder detection |
+| **Hybrid RAG Fusion** | Intent-weighted adaptive RRF with co-activation, causal lineage and FSRS spaced repetition |
+| **Constitutional Memory** | Always-surface rules with 3.0x boost that never decay across sessions |
 
 ### Requirements
 
-| Requirement | Minimum |
-| --- | --- |
-| Node.js | 18+ |
-| TypeScript | 5.0+ (compile with `npm run build`) |
-| OpenCode | 1.0.190+ |
-| Bash | 4.0+ |
-
----
+| Requirement | Minimum | Notes |
+|-------------|---------|-------|
+| Node.js | 18+ | Required for scripts and MCP server |
+| TypeScript | 5.0+ | Compiled to `dist/` directories |
+| OpenCode | 1.0.190+ | Agent workflow integration |
+| Bash | 4.0+ | Spec management shell scripts |
 
 <!-- /ANCHOR:overview -->
 
-## 2. QUICK START
-<!-- ANCHOR:quick-start -->
-
-### Create a Spec Folder
-
-```bash
-# 1. Find the next spec folder number
-ls -d specs/[0-9]*/ | sed 's/.*\/\([0-9]*\)-.*/\1/' | sort -n | tail -1
-
-# 2. Create your spec folder
-.opencode/skill/system-spec-kit/scripts/spec/create.sh "Add user authentication" --level 2
-
-# 3. Verify creation
-ls specs/###-user-authentication/
-# Expected: spec.md  plan.md  tasks.md  checklist.md  memory/  scratch/
-```
-
-### Use Commands (Faster)
-
-```bash
-# Full workflow (plan + implement)
-/spec_kit:complete add user authentication :auto
-
-# Planning only
-/spec_kit:plan refactor database layer :confirm
-
-# Research first
-/spec_kit:research evaluate GraphQL vs REST
-```
-
-### Level Selection
-
-| LOC Estimate | Level | What You Get |
-| --- | --- | --- |
-| <100 | 1 | spec.md + plan.md + tasks.md + implementation-summary.md |
-| 100-499 | 2 | Level 1 + checklist.md |
-| >=500 | 3 | Level 2 + decision-record.md |
-| Complex | 3+ | Level 3 + extended governance |
-
-When in doubt, choose the higher level.
-
 ---
+
+<!-- ANCHOR:quick-start -->
+## 2. QUICK START
+
+### Start a New Spec Folder
+
+When an AI assistant asks "Which spec folder?" at Gate 3, choose Option B (New) to create one:
+
+```bash
+# Create a new spec folder (Level 1 by default)
+bash .opencode/skill/system-spec-kit/scripts/spec/create.sh 042-my-feature
+
+# Creates: .opencode/specs/[project]/042-my-feature/
+# Files: spec.md, plan.md, tasks.md (Level 1 starters)
+```
+
+### Save Context During a Session
+
+```bash
+# Save current conversation context to a spec folder
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js \
+  .opencode/specs/[project]/042-my-feature/
+
+# Output: memory/DD-MM-YY_HH-MM__topic.md (auto-indexed in MCP)
+```
+
+### Validate a Spec Folder
+
+```bash
+# Run all 13 validation rules on a spec folder
+bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh \
+  .opencode/specs/[project]/042-my-feature/
+
+# Expected: 13/13 rules pass, exit 0
+```
+
+### Verify the MCP is Running
+
+Check that Spec Kit Memory tools are available in your AI assistant by calling:
+
+```
+memory_match_triggers({ prompt: "spec folder" })
+```
+
+The response should return relevant memory entries. If it returns an error, see the Troubleshooting section.
 
 <!-- /ANCHOR:quick-start -->
 
-## 3. COMPONENTS
-<!-- ANCHOR:components -->
+---
 
-### Component Map
-
-| Component | Path | Purpose |
-| --- | --- | --- |
-| **MCP Server** | `mcp_server/` | Hybrid search, graph intelligence, memory indexing |
-| **Scripts** | `scripts/` | CLI tools for spec management and memory generation |
-| **Templates** | `templates/` | Spec folder templates (Level 1-3+, CORE + ADDENDUM v2.2) |
-| **References** | `references/` | Reference documentation (19 files) |
-| **Assets** | `assets/` | Workflow assets, YAML configs, checklists |
-| **Constitutional** | `constitutional/` | Always-surface project rules (never decay) |
-
-### MCP Server (`mcp_server/`)
-
-The cognitive memory engine. It provides 28 MCP tools over stdio for semantic search, memory management, causal graph operations, checkpoints and session learning.
-
-**Key characteristics after spec 138:**
-- Hybrid scatter-gather search pipeline
-- Adaptive RRF fusion with 7 intent profiles
-- Unified causal graph search for decision lineage
-- MMR diversity reranking with intent-mapped lambda
-- Evidence gap detection (TRM with Z-score confidence)
-- Multi-query RAG fusion with domain vocabulary expansion
-- All feature flags default to enabled via `isFeatureEnabled()`
-
-All source files carry standardized `// MODULE: Name` headers and `// Feature catalog: <feature-name>` annotations for bidirectional traceability with the [feature catalog](./feature_catalog/feature_catalog.md).
-
-See [mcp_server/README.md](./mcp_server/README.md) for full architecture, configuration and API reference.
-
-### Scripts (`scripts/`)
-
-CLI tools for day-to-day spec kit operations:
-
-| Script | Purpose |
-| --- | --- |
-| `spec/create.sh` | Create feature branch and spec folder; `--phase` creates parent + child phase folders |
-| `spec/validate.sh` | Validation orchestrator (13 rules); `--recursive` validates parent and all child phase folders |
-| `spec/calculate-completeness.sh` | Calculate completeness percentage |
-| `spec/check-placeholders.sh` | Verify zero placeholders after upgrade |
-| `spec/recommend-level.sh` | Recommend documentation level with phased decomposition detection |
-| `spec/archive.sh` | Archive completed spec folders |
-| `memory/generate-context.ts` | Memory file generation (source) |
-| `memory/backfill-frontmatter.ts` | Bulk frontmatter normalization for templates/spec docs/memory files with dry-run/apply/report modes |
-| `memory/reindex-embeddings.ts` | Force embedding refresh after metadata migrations or parser/template updates |
-| `spec-folder/generate-description.ts` | Generate per-folder `description.json` metadata from `spec.md` or explicit `--description` override |
-| `templates/compose.sh` | Compose level templates |
-
-**Memory generation is mandatory via script:**
-
-```bash
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js specs/<###-feature-name>/
-```
-
-Never create memory files with the Write tool. The script enforces format and indexing consistency.
-
-**Frontmatter normalization workflow:**
-
-```bash
-# 1) Preview normalization across discovered specs roots (includes archive)
-#    Strict mode is default: malformed frontmatter is reported and exits non-zero.
-node .opencode/skill/system-spec-kit/scripts/dist/memory/backfill-frontmatter.js \
-  --dry-run --include-archive --report /tmp/frontmatter-dry-run.json
-
-# 2) Apply frontmatter updates
-node .opencode/skill/system-spec-kit/scripts/dist/memory/backfill-frontmatter.js \
-  --apply --include-archive --report /tmp/frontmatter-apply.json
-
-# Optional compatibility mode (do not fail on malformed frontmatter)
-node .opencode/skill/system-spec-kit/scripts/dist/memory/backfill-frontmatter.js \
-  --dry-run --allow-malformed --report /tmp/frontmatter-relaxed.json
-
-# 3) Recompose templates and verify single-frontmatter outputs
-bash .opencode/skill/system-spec-kit/scripts/templates/compose.sh
-bash .opencode/skill/system-spec-kit/scripts/templates/compose.sh --verify
-
-# 4) Refresh embedding index with new metadata
-node .opencode/skill/system-spec-kit/scripts/dist/memory/reindex-embeddings.js
-```
-
-Frontmatter contract for indexed markdown uses managed keys:
-`title`, `description`, `trigger_phrases`, `importance_tier`, `contextType`.
-
-Parser compatibility is non-breaking: both `contextType` and `context_type` are accepted.
-Migration reports include a dedicated `malformed` summary counter for strict-mode diagnostics.
-
-### Code Alignment Verifier Workflow
-
-Run the OpenCode alignment verifier on changed code paths before completion claims:
-
-```bash
-python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py \
-  --root .opencode/skill/system-spec-kit
-```
-
-### Templates (`templates/`)
-
-Spec folder templates using CORE + ADDENDUM v2.2 architecture:
+<!-- ANCHOR:structure -->
+## 3. STRUCTURE
 
 ```
-Level 1:  [CORE templates only]        -> 4 files, ~455 LOC
-Level 2:  [CORE] + [L2-VERIFY]         -> 6 files, ~875 LOC
-Level 3:  [CORE] + [L2] + [L3-ARCH]    -> 7 files, ~1090 LOC
-Level 3+: [CORE] + [all addendums]     -> 7 files, ~1350 LOC
+.opencode/skill/system-spec-kit/
+├── SKILL.md                    # AI workflow instructions (788 lines)
+├── README.md                   # This file
+├── ARCHITECTURE.md             # Boundary contract: scripts/ vs mcp_server/
+├── templates/                  # Template system (CORE + ADDENDUM v2.2)
+│   ├── core/                   # Foundation templates (spec, plan, tasks, impl-summary)
+│   ├── addendum/               # Level-specific additions (level2, level3, level3plus, phase)
+│   ├── level_1/ - level_3+/    # Pre-merged composed templates by level
+│   ├── context_template.md     # Memory context template (~26K)
+│   ├── research.md             # Research template (~20K)
+│   ├── handover.md             # Session continuity template
+│   └── debug-delegation.md     # Debug delegation template
+├── scripts/                    # CLI tools (TypeScript source + Bash)
+│   ├── spec/                   # Spec folder management (11 scripts)
+│   ├── memory/                 # Memory system scripts (8 scripts)
+│   ├── templates/              # Template composition (compose.sh)
+│   ├── core/                   # Core library (config, quality-scorer, workflow, etc.)
+│   ├── extractors/             # Session data extractors (18 extractors)
+│   ├── utils/                  # Utility modules (14 utilities)
+│   ├── loaders/                # Data loading
+│   ├── renderers/              # Output rendering
+│   └── dist/                   # Compiled JavaScript output
+├── mcp_server/                 # Spec Kit Memory MCP (TypeScript)
+│   ├── context-server.ts       # MCP server entry (~682 lines, 32 tools)
+│   ├── handlers/               # Tool handlers (9 functional + 2 infra)
+│   ├── lib/                    # cognitive/, search/, cache/, storage/, providers/
+│   ├── tests/                  # MCP test suite
+│   └── database/               # SQLite + vector search
+├── shared/                     # Shared workspace (@spec-kit/shared)
+├── references/                 # Reference documentation (19 files)
+├── assets/                     # Decision matrices, YAML configs
+├── constitutional/             # Always-surface rules (never decay)
+└── feature_catalog/            # Feature documentation (19 categories, 189 features)
 ```
 
-Update CORE once and all levels inherit changes without duplication.
+### Key Files
+
+| File | Purpose |
+|------|---------|
+| `SKILL.md` | AI agent instructions: routing, gates, validation, templates |
+| `ARCHITECTURE.md` | API boundary contract between `scripts/` and `mcp_server/` |
+| `templates/core/` | Four foundation templates used at all documentation levels |
+| `scripts/spec/create.sh` | Create spec folders with level-appropriate template files |
+| `scripts/spec/validate.sh` | Run 13-rule validation on any spec folder |
+| `scripts/memory/generate-context.ts` | Primary workflow for saving session context to memory |
+| `mcp_server/context-server.ts` | MCP server entry point exposing 32 tools |
+| `feature_catalog/feature_catalog.md` | Complete catalog of 189 implemented features |
+| `references/memory/memory_system.md` | Detailed memory system reference |
+
+<!-- /ANCHOR:structure -->
 
 ---
 
-<!-- /ANCHOR:components -->
+<!-- ANCHOR:features -->
+## 4. FEATURES
 
-## 4. DOCUMENTATION LEVELS
-<!-- ANCHOR:documentation-levels -->
+### Documentation Levels
 
-### Progressive Enhancement
+Spec Kit uses four documentation levels. The required LOC ranges are guidance: risk, complexity and number of affected files can push a task to a higher level. When in doubt, choose the higher level.
 
-Every file modification requires a spec folder. Level is determined by estimated LOC, risk and complexity:
+| Level | LOC Guidance | Required Files | Template LOC |
+|-------|-------------|----------------|-------------|
+| **1** | <100 | spec.md, plan.md, tasks.md, implementation-summary.md | ~455 |
+| **2** | 100-499 | Level 1 + checklist.md | ~875 |
+| **3** | 500+ | Level 2 + decision-record.md | ~1090 |
+| **3+** | Complexity 80+ | Level 3 + governance extensions | ~1350 |
 
-| Level | LOC Estimate | Required Files | Use When |
-| --- | --- | --- | --- |
-| **1** | <100 | spec.md, plan.md, tasks.md, implementation-summary.md | All features (minimum) |
-| **2** | 100-499 | Level 1 + checklist.md | QA validation needed |
-| **3** | >=500 | Level 2 + decision-record.md | Complex/architecture changes |
-| **3+** | Complexity 80+ | Level 3 + AI protocols, extended checklist, sign-offs | Multi-agent, enterprise governance |
+**Spec Folder Structure** (created by `create.sh`):
 
-> LOC is soft guidance. Risk and complexity can override. When in doubt, choose the higher level.
-
-### When to Use Each Level
-
-| Task | Level | Rationale |
-| --- | --- | --- |
-| Fix CSS alignment | 1 | Simple, low risk |
-| Add form validation | 1-2 | Borderline, low complexity |
-| Modal component | 2 | Multiple files, needs QA |
-| Auth system refactor | 3 | Architecture change, high risk |
-| Database migration | 3 | High risk overrides LOC estimate |
-
-### Spec Folder Structure
-
-```
+```text
 specs/<###-feature-name>/
-├── description.json             # Spec identity + memory tracking metadata
-├── spec.md                    # Feature specification
-├── plan.md                    # Implementation plan
-├── tasks.md                   # Task breakdown
-├── checklist.md               # QA validation (Level 2+)
-├── decision-record.md         # ADRs (Level 3+)
-├── implementation-summary.md  # Post-implementation summary
-├── memory/                    # Context preservation (generated via script)
+├── description.json             # Spec identity and memory tracking metadata
+├── spec.md                      # Feature specification
+├── plan.md                      # Implementation plan
+├── tasks.md                     # Task breakdown
+├── checklist.md                 # QA validation (Level 2+)
+├── decision-record.md           # ADRs (Level 3+)
+├── implementation-summary.md    # Post-implementation summary
+├── memory/                      # Context via generate-context.js
 │   └── DD-MM-YY_HH-MM__topic.md
-└── scratch/                   # Temporary files (git-ignored)
+└── scratch/                     # Temporary files (git-ignored)
 ```
 
-### @speckit Exclusivity
+**Checklist Priority System** (Level 2+):
 
-`@speckit` is the ONLY agent permitted to create or substantively write spec folder documentation (*.md files). Routing spec documentation to `@general`, `@write` or other agents is a hard violation.
+| Priority | Meaning | Deferral |
+|----------|---------|---------|
+| P0 | Hard blocker | Cannot defer |
+| P1 | Required | Must complete or get user approval to defer |
+| P2 | Optional | Can defer without approval |
 
-Exceptions: `memory/` uses `generate-context.js`, `scratch/` allows any agent, `handover.md` uses `@handover`, `research.md` uses `@research` and `debug-delegation.md` uses `@debug`.
+### CORE + ADDENDUM Template Architecture
 
----
+Templates compose from a CORE layer plus level-specific ADDENDUM layers. Each level inherits from the level below.
 
-<!-- /ANCHOR:documentation-levels -->
-
-## 5. MEMORY SYSTEM
-<!-- ANCHOR:memory-system -->
-
-### Architecture
-
-The memory system implements biologically-inspired cognitive features:
-
-| Basic Chat Logs | This Memory System |
-| --- | --- |
-| Search: Ctrl+F (text only) | Search: hybrid retrieval with adaptive RRF fusion |
-| Prioritization: None | Prioritization: 6-tier importance (constitutional to deprecated) |
-| Token Efficiency: Load everything | Token Efficiency: ANCHOR format (93% savings) + session dedup (~50%) |
-| Recovery: Hope you backed up | Recovery: Checkpoints = undo button for your index |
-| "Why" queries: Impossible | "Why" queries: Causal graph traces decision lineage |
-
-### Search Pipeline
-
-After spec 138 and Sprints 1-3, `memory_search` and `memory_context` use a scatter-gather architecture across multiple channels:
-
-```
-Vector (1.0x) + FTS5/BM25 (1.0x) + Graph (1.5x) + Degree (1.0x)
-+ Co-Activation (+0.25) + Session Boost (capped) + Causal Edges (2-hop)
-         |
-         v
-Adaptive RRF Fusion (intent-weighted profiles, k=60)
-── RSF retained for evaluation-only comparisons (not live ranking) ──
-          |
-          v
-Query Complexity Routing (simple → fast path, complex → full pipeline)
-         |
-         v
-MMR Diversity Reranking (lambda mapped to intent)
-         |
-         v
-Confidence Truncation (2x median gap, min 3 results)
-         |
-         v
-Dynamic Token Budget (1500/2500/4000 by tier)
-         |
-         v
-Evidence Gap Detection (TRM with Z-score confidence)
+```text
+Level 1:  CORE only               → 4 files, ~455 LOC
+Level 2:  CORE + L2-VERIFY        → 6 files, ~875 LOC  (adds checklist.md)
+Level 3:  CORE + L2 + L3-ARCH     → 7 files, ~1090 LOC (adds decision-record.md)
+Level 3+: CORE + all addendums    → 7 files, ~1350 LOC (adds governance)
 ```
 
-### The Six Importance Tiers
+**Core Templates** (`templates/core/`):
 
-| Tier | Boost | Decay | Use Case |
-| --- | --- | --- | --- |
-| **constitutional** | 3.0x | Never | Project rules, always-surface |
-| **critical** | 2.0x | Never | Architecture decisions, breaking changes |
-| **important** | 1.5x | Never | Key implementations, major features |
-| **normal** | 1.0x | 90-day | Standard development context (default) |
-| **temporary** | 0.5x | 7-day | Debug sessions, experiments |
-| **deprecated** | 0.0x | Excluded | Outdated information |
+| File | Purpose |
+|------|---------|
+| `spec-core.md` | Foundation specification template |
+| `plan-core.md` | Foundation implementation plan |
+| `tasks-core.md` | Foundation task breakdown |
+| `impl-summary-core.md` | Foundation implementation summary |
 
-### 5-State Memory Model
+**Addendum Layers** (`templates/addendum/`):
 
-| State | Score Range | Behavior | Max Items |
-| --- | --- | --- | --- |
-| **HOT** | 0.80-1.00 | Always retrieve | 5 |
-| **WARM** | 0.25-0.80 | Retrieve on match | 10 |
-| **COLD** | 0.05-0.25 | Retrieve if nothing else | N/A |
-| **DORMANT** | 0.02-0.05 | Skip unless explicit | N/A |
-| **ARCHIVED** | 0.00-0.02 | Exclude from search | N/A |
+| Addendum | Level | What It Adds |
+|----------|-------|-------------|
+| `level2-verify/` | 2+ | Quality gates, NFRs, edge cases, checklist sections |
+| `level3-arch/` | 3+ | Architecture decisions, ADRs, risk matrix |
+| `level3plus-govern/` | 3+ | Enterprise governance, AI protocols, sign-offs |
+| `phase/` | Any | Phase decomposition for multi-session work |
 
-ARCHIVED memories are preserved but hidden from search. No deletion needed.
+Run `templates/compose.sh` after editing core or addendum templates to regenerate the pre-merged `level_N/` directories.
 
-### FSRS Decay with Tier Modulation
+### Memory System
 
-Memory strength follows the Free Spaced Repetition Scheduler power-law formula. After spec 138, importance tier applies a stability multiplier so higher-tier memories decay slower regardless of access frequency.
+Spec Kit Memory stores context from each working session and retrieves it across session boundaries. For full architecture details and MCP configuration, see [`mcp_server/README.md`](./mcp_server/README.md).
 
-### Causal Memory Graph
+**How it works:**
 
-Answer "why" queries by tracing decision lineage:
+1. During a session, the AI calls `generate-context.js` to write a memory file to `memory/`
+2. The MCP server indexes the file (vector + BM25 + graph)
+3. In the next session, `memory_match_triggers()` or `memory_context()` retrieves relevant context
+4. Retrieved context is injected before the AI starts working
 
-```typescript
-memory_drift_why({ memoryId: 'abc123', maxDepth: 3 })
-// Returns: { memory: {...}, causedBy: [...], enabledBy: [...], supersedes: [...] }
-```
+**Memory Tiers:**
 
-**6 Relationship Types:** `caused`, `enabled`, `supersedes`, `contradicts`, `derived_from`, `supports`
+| Tier | Description | Retention |
+|------|-------------|-----------|
+| **Constitutional** | Always-surface rules (3.0x boost) | Never decays |
+| **Core** | High-importance decisions and patterns | FSRS power-law decay |
+| **Working** | Session context and task details | Standard FSRS decay |
+| **Archive** | Low-signal content moved to cold storage | No retrieval |
 
-### Session Deduplication
+**Search Pipeline:**
 
-| Without Dedup | With Dedup |
-| --- | --- |
-| Query 1: 5000 tokens | Query 1: 5000 tokens |
-| Query 2: same 5000 tokens | Query 2: ~2000 tokens (skips seen memories) |
-| Query 3: same 5000 tokens | Query 3: ~500 tokens (skips seen memories) |
-| **Total: 15,000 tokens** | **Total: ~7,500 tokens (~50% savings)** |
+The MCP uses a 4-stage hybrid pipeline: scatter-gather across Vector, FTS5/BM25, Graph and Degree channels, followed by intent-weighted adaptive RRF fusion, then MMR diversity reranking, then confidence truncation. Query complexity routing directs simple queries to fast paths and complex queries to the full pipeline.
 
-### ANCHOR Format
+**ANCHOR Format:**
 
-```markdown
-<!-- ANCHOR: decisions -->
-## Authentication Decision
-We chose JWT with refresh tokens because stateless auth scales better.
-<!-- /ANCHOR: decisions -->
-```
+Memory files use the ANCHOR format (`<!-- ANCHOR:section --> ... <!-- /ANCHOR:section -->`) for fine-grained section retrieval. The `context_template.md` (~26K) defines all standard anchors.
 
-**Coverage:** ANCHOR retrieval is applied across the indexed memory corpus (spec docs, spec memories, constitutional docs).
-**Token savings:** ~93% vs loading full documents.
-**Common anchors:** `summary`, `decisions`, `metadata`, `state`, `context`, `artifacts`, `blockers`, `next-steps`
+### MCP Tools
 
-### 3-Source Indexing Pipeline
+The Spec Kit Memory MCP exposes **32 tools** across 7 functional groups. All tools use the `spec_kit_memory_` prefix in MCP calls.
 
-| # | Source | Location Pattern | Weight |
-| --- | --- | --- | --- |
-| 1 | Constitutional rules | `.opencode/skill/*/constitutional/*.md` | Per-file metadata |
-| 2 | Spec documents | `.opencode/specs/**/*.md` | Per-type multiplier |
-| 3 | Spec memories | `specs/*/memory/*.{md,txt}` | 0.5 |
+| Group | Tools | Count |
+|-------|-------|-------|
+| Search and Retrieval | memory_context, memory_search, memory_match_triggers, memory_list, memory_stats | 5 |
+| CRUD Operations | memory_save, memory_update, memory_delete, memory_bulk_delete, memory_validate, memory_index_scan | 6 |
+| Checkpoints | checkpoint_create, checkpoint_list, checkpoint_restore, checkpoint_delete | 4 |
+| Session Learning | task_preflight, task_postflight, memory_get_learning_history | 3 |
+| Causal Tools | memory_drift_why, memory_causal_link, memory_causal_stats, memory_causal_unlink | 4 |
+| Evaluation | eval_run_ablation, eval_reporting_dashboard | 2 |
+| Async Ingest | memory_ingest_start, memory_ingest_status, memory_ingest_cancel | 3 |
+| Shared Memory | shared_space_upsert, shared_space_membership_set, shared_memory_status, shared_memory_enable | 4 |
+| System | memory_health | 1 |
 
-README files and skill documentation trees (`sk-*`, including `references/` and `assets/`) are excluded from indexing.
+For full API reference including parameters, return types and configuration, see [`mcp_server/README.md`](./mcp_server/README.md).
 
----
+### Commands
 
-<!-- /ANCHOR:memory-system -->
-
-## 6. MCP TOOLS
-<!-- ANCHOR:mcp-tools -->
-
-### Tool Overview
-
-All tools use the `spec_kit_memory_` prefix in MCP calls (e.g., `spec_kit_memory_memory_search`).
-
-**Search and Retrieval**
-
-| Tool | Purpose |
-| --- | --- |
-| `memory_search` | Hybrid search with adaptive RRF, MMR reranking and evidence gap detection |
-| `memory_match_triggers` | Fast keyword matching (<50ms) for Gate 1 context surfacing |
-| `memory_list` | Browse stored memories with pagination |
-| `memory_stats` | System statistics and folder rankings |
-
-**CRUD Operations**
-
-| Tool | Purpose |
-| --- | --- |
-| `memory_save` | Index a memory file with PE gating |
-| `memory_index_scan` | Bulk scan workspace (3-source pipeline, incremental) |
-| `memory_bulk_delete` | Bulk delete memories by tier with checkpoint safety gates |
-| `memory_update` | Update memory metadata and tier |
-| `memory_delete` | Delete memories by ID or folder |
-| `memory_validate` | Record validation feedback |
-
-**Checkpoints**
-
-| Tool | Purpose |
-| --- | --- |
-| `checkpoint_create` | Snapshot current state with embeddings |
-| `checkpoint_list` | List available checkpoints |
-| `checkpoint_restore` | Restore from checkpoint |
-| `checkpoint_delete` | Remove checkpoint |
-
-**Session Learning**
-
-| Tool | Purpose |
-| --- | --- |
-| `task_preflight` | Capture epistemic baseline before task |
-| `task_postflight` | Capture post-task state, calculate Learning Index |
-| `memory_get_learning_history` | Get learning trends and summaries |
-
-**Causal Tools**
-
-| Tool | Purpose |
-| --- | --- |
-| `memory_drift_why` | Trace causal chain for decision lineage |
-| `memory_causal_link` | Create causal relationships between memories |
-| `memory_causal_stats` | Graph statistics and coverage metrics |
-| `memory_causal_unlink` | Remove causal relationships |
-| `memory_context` | L1 Orchestration unified entry point with multi-query RAG fusion |
-
-**Evaluation**
-
-| Tool | Purpose |
-| --- | --- |
-| `eval_run_ablation` | Run channel-ablation studies and report recall deltas |
-| `eval_reporting_dashboard` | Aggregate eval metrics into sprint and channel dashboards |
-
-**Async Ingest**
-
-| Tool | Purpose |
-| --- | --- |
-| `memory_ingest_start` | Start an async multi-file ingestion job |
-| `memory_ingest_status` | Check async ingestion job progress |
-| `memory_ingest_cancel` | Cancel a running async ingestion job |
-
-**System**
-
-| Tool | Purpose |
-| --- | --- |
-| `memory_health` | Check health status of the memory system |
-
-### Causal Lineage Support
-
-`memory_context` can surface decision lineage via causal relationships and related retrieval signals, improving "why" and dependency-focused queries.
-
----
-
-<!-- /ANCHOR:mcp-tools -->
-
-## 7. COMMANDS
-<!-- ANCHOR:commands -->
-
-### Spec Kit Commands
+**Spec Kit Commands (8):**
 
 | Command | Steps | Purpose |
-| --- | --- | --- |
-| `/spec_kit:complete` | 14 | Full end-to-end workflow |
-| `/spec_kit:plan` | 7 | Planning only (no implementation) |
-| `/spec_kit:implement` | 11 | Execute pre-planned work with PREFLIGHT/POSTFLIGHT |
-| `/spec_kit:research` | 9 | Technical investigation |
-| `/spec_kit:resume` | 4 | Resume previous session |
-| `/spec_kit:handover` | 4 | Create session handover document |
-| `/spec_kit:debug` | 5 | Delegate debugging to sub-agent |
-| `/spec_kit:phase` | N/A | Decompose complex features into parent and child phase folders |
+|---------|-------|---------|
+| `/spec_kit:complete` | 14 | Full end-to-end workflow. Supports `:auto`, `:confirm`, `:with-research`, `:auto-debug` |
+| `/spec_kit:plan` | 7 | Planning only, no implementation. Supports `:auto`, `:confirm` |
+| `/spec_kit:implement` | 9 | Execute pre-planned work with PREFLIGHT/POSTFLIGHT gates. Requires existing `plan.md` |
+| `/spec_kit:research` | 9 | Technical investigation and documentation |
+| `/spec_kit:resume` | 4 | Resume a previous session on an existing spec folder |
+| `/spec_kit:handover` | 4 | Create a session handover document |
+| `/spec_kit:debug` | 5 | Delegate debugging to a specialized sub-agent |
+| `/spec_kit:phase` | N/A | Create and manage phase decomposition for complex spec folders |
 
-### Memory Commands
+**Mode Suffixes** (apply to spec_kit commands):
+
+| Suffix | Behavior |
+|--------|---------|
+| `:auto` | Execute without approval gates |
+| `:confirm` | Pause at each step for approval |
+| `:with-research` | Dispatch `@research` before verification (`/spec_kit:complete` only) |
+| `:auto-debug` | Auto-dispatch `@debug` on 3+ failures (`/spec_kit:complete` only) |
+
+**Memory Commands (7):**
 
 | Command | Purpose |
-| --- | --- |
-| `/memory:save [folder]` | Save context via `generate-context.js` |
-| `/memory:context <query>` | Unified entry with intent awareness |
-| `/memory:manage` | Database management operations |
-| `/memory:continue` | Session recovery from crash or compaction |
-| `/memory:learn` | Constitutional memory manager (create, list, edit, remove, budget) |
+|---------|---------|
+| `/memory:save [folder]` | Save conversation context to spec folder `memory/` with semantic indexing |
+| `/memory:context <query>` | Unified intent-aware context retrieval. Auto-detects task intent from 7 types and applies task-specific weights |
+| `/memory:continue` | Session recovery from crash, compaction or timeout via resume-mode memory retrieval |
+| `/memory:manage` | Database management: stats, scan, cleanup, bulk-delete, tier, validate, health, checkpoint, ingest |
+| `/memory:learn` | Constitutional memory manager: create, list, edit, remove, budget. Manages always-surface rules |
+| `/memory:analyze` | Analysis and evaluation: preflight, postflight, causal graph, ablation, dashboard, learning history |
+| `/memory:shared` | Shared-memory space lifecycle: create spaces, manage memberships, inspect rollout status |
 
-### Mode Suffixes
+### Validation Scripts
 
-| Suffix | Behavior | Applies To |
-| --- | --- | --- |
-| `:auto` | Execute without approval gates | Most commands |
-| `:confirm` | Pause at each step for approval | Most commands |
-| `:with-research` | Dispatch @research before verification | `/spec_kit:complete` only |
-| `:auto-debug` | Auto-dispatch @debug on 3+ failures | `/spec_kit:complete` only |
+The spec management scripts in `scripts/spec/` cover the full lifecycle of a spec folder.
 
-### Workflow Decision Guide
+| Script | Purpose |
+|--------|---------|
+| `create.sh` | Create spec folder with level-appropriate template files. `--phase` creates parent + child phase folders |
+| `validate.sh` | Run 13 validation rules. `--recursive` validates parent and all child phase folders |
+| `calculate-completeness.sh` | Calculate spec folder completeness percentage |
+| `check-placeholders.sh` | Verify zero placeholders remain after level upgrade |
+| `recommend-level.sh` | Recommend documentation level based on scope and risk |
+| `archive.sh` | Archive completed spec folders |
+| `upgrade-level.sh` | Inject addendum templates to upgrade a folder to a higher level |
 
-```
-START: New Task
-     |
-     v
-Do you understand requirements clearly?
-├── YES -> Need to plan for later?
-│         ├── YES -> /spec_kit:plan
-│         └── NO  -> /spec_kit:complete
-└── NO  -> /spec_kit:research
-              |
-              v
-         Then: /spec_kit:plan or /spec_kit:complete
-```
+<!-- /ANCHOR:features -->
 
 ---
 
-<!-- /ANCHOR:commands -->
+<!-- ANCHOR:configuration -->
+## 5. CONFIGURATION
 
-## 8. TEMPLATES
-<!-- ANCHOR:templates -->
+### Feature Flags
 
-### Template Overview
+Spec Kit Memory uses feature flags stored in `assets/` to control which pipeline features are active. Six flag groups exist:
 
-| Template | Level | Description |
-| --- | --- | --- |
-| `spec.md` | 1+ | Feature specification with user stories |
-| `plan.md` | 1+ | Implementation plan with architecture |
-| `tasks.md` | 1+ | Task breakdown by user story |
-| `implementation-summary.md` | 1+ | Post-implementation summary |
-| `checklist.md` | 2+ | Validation and QA checklists (P0/P1/P2) |
-| `decision-record.md` | 3+ | Architecture Decision Records |
-| `research.md` | 3 | Comprehensive multi-domain research |
-| `handover.md` | Any | Full session continuity |
-| `debug-delegation.md` | Any | Sub-agent debugging delegation |
-| `context_template.md` | Any | Memory context template |
+| Group | Purpose |
+|-------|---------|
+| Search Pipeline | Hybrid channels, adaptive RRF, query complexity routing, MMR diversity |
+| Session and Cache | Embedding cache, session deduplication, crash recovery |
+| MCP Config | Server warm mode, dynamic instructions, cross-process rebinding |
+| Memory and Storage | Atomic write-index, mutation ledger, causal graph |
+| Embedding and API | Voyage AI, OpenAI, HuggingFace local providers |
+| Debug and Telemetry | Shadow scoring, observability, eval reporting |
 
-### Copy Commands
+For the full flag reference and rollback procedures, see [`references/workflows/rollback_runbook.md`](./references/workflows/rollback_runbook.md).
 
-```bash
-# Level 1 (Baseline)
-cp .opencode/skill/system-spec-kit/templates/level_1/*.md specs/###-name/
+### Embedding Providers
 
-# Level 2 (Add verification)
-cp .opencode/skill/system-spec-kit/templates/level_2/*.md specs/###-name/
+| Provider | Dimensions | Notes |
+|----------|-----------|-------|
+| Voyage AI | 1024 | Recommended. Requires `VOYAGE_API_KEY` |
+| OpenAI | 1536 | Requires `OPENAI_API_KEY` |
+| HuggingFace Local | Varies | No API key needed, higher latency |
 
-# Level 3 (Full documentation)
-cp .opencode/skill/system-spec-kit/templates/level_3/*.md specs/###-name/
-```
+### Environment Variables
 
-### Priority System (checklist.md)
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `VOYAGE_API_KEY` | Recommended | Voyage AI embeddings (1024d, best retrieval quality) |
+| `OPENAI_API_KEY` | Alternative | OpenAI embeddings fallback |
+| `SPEC_KIT_DB_PATH` | No | Override default SQLite database path |
+| `SPEC_KIT_LOG_LEVEL` | No | Log verbosity: `debug`, `info`, `warn`, `error` |
 
-| Priority | Meaning | Deferral Rules |
-| --- | --- | --- |
-| **P0** | HARD BLOCKER | Must complete, cannot defer |
-| **P1** | Required | Must complete OR user-approved deferral |
-| **P2** | Optional | Can defer without approval |
+### Dynamic Token Budget
+
+The memory system adjusts token budgets per tier:
+
+| Tier | Budget |
+|------|--------|
+| Working | 1500 tokens |
+| Core | 2500 tokens |
+| Constitutional | 4000 tokens |
+
+<!-- /ANCHOR:configuration -->
 
 ---
 
-<!-- /ANCHOR:templates -->
+<!-- ANCHOR:usage-examples -->
+## 6. USAGE EXAMPLES
 
-## 9. SCRIPTS
-<!-- ANCHOR:scripts -->
+### Example 1: Start a New Feature (Level 2)
 
-### Validation Rules (13 Total)
-
-| Rule | Severity | Description |
-| --- | --- | --- |
-| `FILE_EXISTS` | ERROR | Required files present for level |
-| `PLACEHOLDER_FILLED` | ERROR | No unfilled `[YOUR_VALUE_HERE:]` patterns |
-| `SECTIONS_PRESENT` | WARNING | Required markdown sections exist |
-| `LEVEL_DECLARED` | INFO | Level explicitly stated |
-| `PRIORITY_TAGS` | WARNING | P0/P1/P2 format validated |
-| `EVIDENCE_CITED` | WARNING | Non-P2 items cite evidence |
-| `ANCHORS_VALID` | ERROR | Memory file anchor pairs matched |
-| `FOLDER_NAMING` | ERROR | Follows `###-short-name` convention |
-| `FRONTMATTER_VALID` | WARNING | YAML frontmatter structured correctly |
-| `COMPLEXITY_MATCH` | WARNING | Content metrics match declared level |
-| `AI_PROTOCOL` | WARNING | Level 3/3+ has AI execution protocols |
-| `LEVEL_MATCH` | ERROR | Level consistent across all files |
-| `SECTION_COUNTS` | WARNING | Section counts within expected ranges |
-
-**Exit Codes:** `0` = Pass | `1` = Warnings | `2` = Errors
-
-### Feature Creation
+A new feature affects 3 files and needs QA verification. Use Level 2.
 
 ```bash
-# Create spec folder with level 2 templates
-./scripts/spec/create.sh "Add OAuth2 with MFA" --level 2
+# Create the spec folder
+bash .opencode/skill/system-spec-kit/scripts/spec/create.sh 043-user-profile-update
 
-# Skip git branch creation
-./scripts/spec/create.sh "Add OAuth2" --level 1 --skip-branch
+# Validate it was created correctly
+bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh \
+  .opencode/specs/[project]/043-user-profile-update/
 ```
 
-### Memory Generation
+Then fill `spec.md`, `plan.md`, `tasks.md` and `checklist.md` using the pre-merged templates in `templates/level_2/`.
+
+**Result**: A Level 2 spec folder ready for implementation with QA verification gates.
+
+### Example 2: Save Context Mid-Session
+
+After implementing the first phase of a feature, save context so the next session can resume:
 
 ```bash
-# Generate memory file (executes compiled JS from dist/)
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js specs/<###-feature-name>/
-
-# Explicit CLI targets are authoritative and are not rerouted
+# Generate a memory file (direct path mode)
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js \
-  .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion
+  .opencode/specs/[project]/043-user-profile-update/
 
-# Generate for nested phase folder
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/121-child-name
+# Force immediate MCP indexing
+# In your AI assistant, call:
+# memory_index_scan({ specFolder: "043-user-profile-update" })
 ```
 
-### Spec Folder Description Generator
+**Result**: A timestamped file in `memory/` is indexed and searchable in the next session.
 
-Generate a `description.json` file for a spec folder:
+### Example 3: Resume a Previous Session
+
+Start a new session on a spec folder you worked on before:
+
+```text
+/memory:continue
+```
+
+Or retrieve context directly:
+
+```text
+/memory:context "user profile update implementation state"
+```
+
+**Result**: The AI assistant receives your prior decisions, file changes and next steps before starting work.
+
+### Example 4: Upgrade a Spec Folder to Level 3
+
+A feature grew in scope and now requires architecture decision records:
 
 ```bash
-node .opencode/skill/system-spec-kit/scripts/dist/spec-folder/generate-description.js <folder-path> <base-path>
+# Inject Level 3 addendum templates
+bash .opencode/skill/system-spec-kit/scripts/spec/upgrade-level.sh \
+  .opencode/specs/[project]/043-user-profile-update/ 3
 
-# With explicit description override
-node .opencode/skill/system-spec-kit/scripts/dist/spec-folder/generate-description.js <folder-path> <base-path> --description "Short summary"
+# Verify zero placeholders after upgrade
+bash .opencode/skill/system-spec-kit/scripts/spec/check-placeholders.sh \
+  .opencode/specs/[project]/043-user-profile-update/
 ```
+
+**Result**: `decision-record.md` is added to the spec folder. All placeholders should be replaced before continuing.
+
+### Common Patterns
+
+| Pattern | Command | When to Use |
+|---------|---------|-------------|
+| New feature, small scope | `create.sh NNN-name` | <100 LOC, single file |
+| New feature, needs QA | `create.sh NNN-name` + Level 2 templates | 100-499 LOC |
+| Architecture change | `create.sh NNN-name` + Level 3 templates | 500+ LOC, multiple systems |
+| Save session progress | `generate-context.js [folder]` | Before ending any session |
+| Recover after crash | `/memory:continue` | Session interrupted unexpectedly |
+| Check prior decisions | `/memory:context "query"` | Starting a related task |
+
+<!-- /ANCHOR:usage-examples -->
 
 ---
 
-<!-- /ANCHOR:scripts -->
-
-## 10. TROUBLESHOOTING
 <!-- ANCHOR:troubleshooting -->
+## 7. TROUBLESHOOTING
 
 ### Common Issues
 
-#### Spec Folder Not Found
+#### MCP Tools Return "Tool Not Found"
 
+**Symptom**: Calling `memory_match_triggers()` returns an error or the tool is not recognized.
+
+**Cause**: The Spec Kit Memory MCP server is not running or not registered in your MCP config.
+
+**Solution**:
 ```bash
-# Check current branch
-git branch --show-current
+# Check MCP server can start
+node .opencode/skill/system-spec-kit/mcp_server/dist/context-server.js
 
-# List existing spec folders
-ls -d specs/[0-9]*/
-
-# Create spec folder if missing
-./scripts/spec/create.sh "feature name" --level 2
+# Expected: Server starts and logs "ready" or similar
+# If it fails, check Node.js version (requires 18+)
+node --version
 ```
 
-#### Template Placeholders Not Replaced
+Verify `system-spec-kit` appears in your `opencode.json` or equivalent MCP config file.
 
+#### Memory Save Fails or Creates an Empty File
+
+**Symptom**: `generate-context.js` runs but creates an empty memory file or exits with an error.
+
+**Cause**: Usually a missing spec folder path or uncompiled TypeScript.
+
+**Solution**:
 ```bash
-# Find all placeholders
-grep -r "\[YOUR_VALUE_HERE\]" specs/<###-feature-name>/
+# Rebuild the scripts
+cd .opencode/skill/system-spec-kit
+npm run build
 
-# Replace with actual content (check-placeholders.sh helps)
-.opencode/skill/system-spec-kit/scripts/spec/check-placeholders.sh specs/<###-feature-name>/
+# Then retry with an absolute path
+node scripts/dist/memory/generate-context.js \
+  /absolute/path/to/specs/[project]/NNN-feature/
 ```
 
-#### Memory Loading Issues
+#### Validation Fails with "Missing Required Files"
 
+**Symptom**: `validate.sh` reports missing files like `spec.md` or `plan.md`.
+
+**Cause**: The spec folder was created manually without using `create.sh`, or the wrong level templates were applied.
+
+**Solution**:
 ```bash
-# Verify memory folder exists
-ls -la specs/###-folder/memory/
+# Check what files are present
+ls -la .opencode/specs/[project]/NNN-feature/
 
-# Force re-index
-memory_index_scan({ specFolder: "###-folder" })
+# Run level recommendation to confirm the right level
+bash .opencode/skill/system-spec-kit/scripts/spec/recommend-level.sh \
+  .opencode/specs/[project]/NNN-feature/
+
+# Upgrade if needed
+bash .opencode/skill/system-spec-kit/scripts/spec/upgrade-level.sh \
+  .opencode/specs/[project]/NNN-feature/ [target-level]
 ```
 
-#### MCP Server Issues
+#### Memory Retrieval Returns Stale Results
 
-See [mcp_server/README.md](./mcp_server/README.md) for:
-- Embedding model download failures
-- Database corruption recovery
-- Dimension mismatch after switching providers
-- Empty search results diagnostics
-- Feature flag rollback procedure
+**Symptom**: `memory_context()` returns results from old sessions even after saving new context.
+
+**Cause**: The embedding index was not updated after the save.
+
+**Solution**:
+```bash
+# Force index rebuild for the spec folder
+# In your AI assistant, call:
+# memory_index_scan({ specFolder: "NNN-feature" })
+
+# Or check database health
+# memory_health({})
+```
 
 ### Quick Fixes
 
 | Problem | Quick Fix |
-| --- | --- |
-| Spec folder not found | `./scripts/spec/create.sh "name" --level 1` |
-| Validation failing | `./scripts/spec/validate.sh <folder> --verbose` |
-| Memory not indexing | `memory_index_scan({ specFolder: "..." })` |
-| ANCHOR tag mismatch | Every `<!-- ANCHOR: name -->` needs matching `<!-- /ANCHOR: name -->` |
-| Embedding API errors | Check API key or set `EMBEDDINGS_PROVIDER=hf-local` |
-| Empty search results | `memory_index_scan({ force: true })` |
+|---------|-----------|
+| `generate-context.js` not found | Run `npm run build` in `system-spec-kit/` directory |
+| Spec folder fails validation | Run `validate.sh` and read each failing rule output |
+| Memory context seems wrong | Call `memory_stats({})` to check index counts |
+| Session context lost after crash | Use `/memory:continue` to recover from last checkpoint |
+| Placeholder check fails | Run `check-placeholders.sh` and replace all `[PLACEHOLDER]` values |
 
-### Testing
+### Diagnostic Commands
 
 ```bash
-# Run full MCP server test suite (from mcp_server directory)
-cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run
-# Use the Vitest summary as the source of truth for current file and test totals
-```
+# Check spec folder completeness
+bash .opencode/skill/system-spec-kit/scripts/spec/calculate-completeness.sh \
+  .opencode/specs/[project]/NNN-feature/
 
----
+# Check validation rules
+bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh \
+  .opencode/specs/[project]/NNN-feature/ --verbose
+
+# Check API boundary (scripts/ vs mcp_server/)
+bash .opencode/skill/system-spec-kit/check-api-boundary.sh
+```
 
 <!-- /ANCHOR:troubleshooting -->
 
-## 11. FAQ
+---
+
 <!-- ANCHOR:faq -->
+## 8. FAQ
 
-**Q: Do I need a spec folder for every file change?**
+### General Questions
 
-A: Yes for non-trivial file changes. Single typo fixes under five characters in one file and whitespace-only edits are exempt.
+**Q: Is System Spec Kit mandatory for every file change?**
 
-**Q: When should I choose Level 2 instead of Level 1?**
-
-A: Use Level 2 when a change spans multiple files or needs verification evidence in `checklist.md`.
-
-**Q: How do I recover context after a crash or compaction?**
-
-A: Start with `/memory:continue`. If you need focused context, call `memory_context` with anchors such as `state` and `next-steps`.
-
-**Q: Can I write memory files manually?**
-
-A: No. Use `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js <spec-folder>` so format and indexing stay consistent.
-
-**Q: Which tool should I call first for most retrieval tasks?**
-
-A: Start with `memory_context`. It routes by intent, applies multi-query RAG fusion and picks the best retrieval path for the query.
-
-**Q: Are all major feature flags enabled by default after spec 138?**
-
-A: Yes. Major flags including `SPECKIT_ADAPTIVE_FUSION`, `SPECKIT_CAUSAL_BOOST` and `SPECKIT_SESSION_BOOST` default to enabled via `isFeatureEnabled()`. See [mcp_server/README.md](./mcp_server/README.md) for the full flag table.
+A: Yes, for any conversation that modifies files. The only exemption is single-file fixes under 5 characters (typo or whitespace corrections). For everything else, Gate 3 in AGENTS.md requires a spec folder before any file modification begins.
 
 ---
 
+**Q: What is the difference between SKILL.md and README.md?**
+
+A: SKILL.md contains instructions for AI agents: routing rules, gates, validation workflows and template application procedures. README.md (this file) is for humans: what Spec Kit does, how to use it, and where to find things. Both live at the skill root.
+
+---
+
+**Q: Can I create a spec folder manually without using create.sh?**
+
+A: You can, but `create.sh` is faster and error-free. It creates the folder, copies the right level templates, initializes `description.json` and sets up the `memory/` and `scratch/` subdirectories. Manual creation risks missing files that validation will catch later.
+
+---
+
+**Q: What happens if I save memory without a spec folder?**
+
+A: The Memory Save Rule in AGENTS.md blocks it. If no spec folder was established at Gate 3, the save is blocked until you answer the Gate 3 question. Never use the Write tool directly to create files in `memory/` directories: always go through `generate-context.js`.
+
+---
+
+### Technical Questions
+
+**Q: How does the hybrid search pipeline work?**
+
+A: At query time, the MCP runs a scatter-gather across four channels: vector similarity (Voyage AI 1024d embeddings in sqlite-vec), full-text FTS5/BM25, graph connectivity (co-activation and causal signals) and typed-weighted degree scoring. Results from each channel are fused using intent-weighted adaptive RRF, then re-ranked with MMR diversity to avoid near-duplicate results, then trimmed at a confidence gap.
+
+---
+
+**Q: What is the ANCHOR format and why does it matter?**
+
+A: Memory files use HTML comment anchors (`<!-- ANCHOR:section --> ... <!-- /ANCHOR:section -->`) to mark logical sections. The MCP can retrieve individual sections instead of loading entire files. This keeps token budgets low and improves retrieval precision. The `context_template.md` defines the standard set of anchors.
+
+---
+
+**Q: What is Constitutional Memory?**
+
+A: Constitutional memories are rules that always surface in every retrieval, regardless of recency or score. They carry a 3.0x boost and never decay. Use `/memory:learn` to create them. Typical use cases: team coding standards, mandatory workflow steps, known failure modes.
+
+---
+
+**Q: How do I upgrade a Level 1 folder to Level 2 after the fact?**
+
+A: Run `upgrade-level.sh` with the target level. It injects the addendum templates for that level into the existing folder. Then run `check-placeholders.sh` to find all new placeholder values that need to be filled in before validation passes.
+
+```bash
+bash .opencode/skill/system-spec-kit/scripts/spec/upgrade-level.sh \
+  .opencode/specs/[project]/NNN-feature/ 2
+```
+
 <!-- /ANCHOR:faq -->
 
-## 12. RELATED RESOURCES
-<!-- ANCHOR:related -->
+---
+
+<!-- ANCHOR:related-documents -->
+## 9. RELATED DOCUMENTS
 
 ### Internal Documentation
 
 | Document | Purpose |
-| --- | --- |
-| [SKILL.md](./SKILL.md) | AI workflow instructions (routing, validation, command protocols) |
-| [mcp_server/README.md](./mcp_server/README.md) | Memory MCP installation, architecture and API reference |
-| [references/memory/memory_system.md](./references/memory/memory_system.md) | Memory system detailed reference |
-| [references/validation/validation_rules.md](./references/validation/validation_rules.md) | All validation rules and fixes |
-| [references/validation/five_checks.md](./references/validation/five_checks.md) | Five Checks evaluation framework |
-| [references/workflows/rollback_runbook.md](./references/workflows/rollback_runbook.md) | Feature-flag rollback and smoke-test procedure |
-| [../sk-code--opencode/SKILL.md](../sk-code--opencode/SKILL.md) | Mandatory standard for all code creation and updates |
-| [../sk-doc/SKILL.md](../sk-doc/SKILL.md) | Mandatory standard for all documentation creation and updates |
-| [ARCHITECTURE.md](./ARCHITECTURE.md) | Boundary contract between scripts/ and mcp_server/ with import policy and enforcement |
+|----------|---------|
+| [`SKILL.md`](./SKILL.md) | AI agent instructions: routing, gates, validation, template application |
+| [`ARCHITECTURE.md`](./ARCHITECTURE.md) | API boundary contract between `scripts/` and `mcp_server/` |
+| [`mcp_server/README.md`](./mcp_server/README.md) | Full MCP architecture, 32-tool API reference, search system, cognitive memory, configuration |
+| [`references/memory/memory_system.md`](./references/memory/memory_system.md) | Detailed memory system reference |
+| [`references/validation/validation_rules.md`](./references/validation/validation_rules.md) | All 13 validation rules and their fixes |
+| [`references/validation/five_checks.md`](./references/validation/five_checks.md) | Five Checks evaluation framework |
+| [`references/workflows/rollback_runbook.md`](./references/workflows/rollback_runbook.md) | Feature-flag rollback and smoke-test procedures |
+| [`feature_catalog/feature_catalog.md`](./feature_catalog/feature_catalog.md) | Complete catalog of 189 implemented features across 19 categories |
 
-### Directory Structure
+### Cross-Skill Alignment
 
-```
-.opencode/skill/system-spec-kit/
-├── SKILL.md                   # AI workflow instructions
-├── README.md                  # This file
-├── templates/                 # Template system (CORE + ADDENDUM v2.2)
-│   ├── core/                  # Foundation templates (4 files)
-│   ├── addendum/              # Level-specific additions
-│   ├── level_1/ - level_3+/   # Composed templates by level
-│   └── *.md                   # Utility templates
-├── scripts/                   # Automation scripts [TypeScript source]
-│   ├── spec/                  # Spec folder management
-│   ├── memory/                # Memory system scripts
-│   ├── rules/                 # Validation rules (13)
-│   └── dist/                  # Compiled JavaScript output
-├── shared/                    # Shared workspace (@spec-kit/shared)
-├── mcp_server/                # Spec Kit Memory MCP [TypeScript source]
-│   ├── context-server.ts      # MCP server entry (28 tools)
-│   ├── core/                  # Core initialization
-│   ├── handlers/              # Tool handlers (9 functional + 2 infra)
-│   ├── lib/                   # Library modules
-│   │   ├── cognitive/         # FSRS, PE gating, 5-state model
-│   │   ├── search/            # Vector, BM25, adaptive RRF, RSF, MMR, query classifier, confidence truncation, dynamic token budget, channel representation, folder discovery, causal boost
-│   │   ├── cache/             # Persistent embedding cache (SQLite with LRU eviction)
-│   │   ├── eval/              # Edge density measurement
-│   │   ├── session/           # Deduplication, crash recovery
-│   │   ├── storage/           # SQLite, causal edges, mutation ledger
-│   │   ├── providers/         # Embedding providers (Voyage, OpenAI, HF local)
-│   │   └── errors/            # Recovery hints (49 codes)
-│   ├── dist/                  # Compiled JavaScript output
-│   └── database/              # SQLite + vector search
-├── references/                # Documentation (19 files)
-├── assets/                    # Decision matrices, YAML configs
-└── constitutional/            # Always-surface rules (never decay)
-```
+| Skill | Purpose |
+|-------|---------|
+| [`sk-doc SKILL.md`](../sk-doc/SKILL.md) | Mandatory documentation alignment standard for all documentation created or updated |
+| [`sk-code--opencode SKILL.md`](../sk-code--opencode/SKILL.md) | Mandatory code alignment standard for all code created or updated |
 
-### Key Locations
-
-| Resource | Location |
-| --- | --- |
-| **Templates** | `.opencode/skill/system-spec-kit/templates/` |
-| **Scripts** | `.opencode/skill/system-spec-kit/scripts/` |
-| **Memory MCP** | `.opencode/skill/system-spec-kit/mcp_server/` |
-| **References** | `.opencode/skill/system-spec-kit/references/` |
-| **Commands** | `.opencode/command/spec_kit/` and `.opencode/command/memory/` |
-| **Root Build Manifests** | `.opencode/skill/system-spec-kit/package.json` and `.opencode/skill/system-spec-kit/tsconfig*.json` |
-
-### External Dependencies
+### Project-Level References
 
 | Resource | Purpose |
-| --- | --- |
-| `AGENTS.md` | Project-level AI behavior framework, gate definitions and enforcement |
-| `specs/` | Directory for all spec folders |
-| Voyage AI | Recommended embedding provider (1024d, `VOYAGE_API_KEY`) |
+|----------|---------|
+| `AGENTS.md` (project root) | Gate definitions, AI behavior framework, mandatory workflow rules |
+| `.opencode/specs/` | All spec folders created by Spec Kit |
 
-<!-- /ANCHOR:related -->
+<!-- /ANCHOR:related-documents -->
+
+---
+
+*Documentation version: 2.2 | Last updated: 2026-03-15 | Skill version: 2.2.26.0*

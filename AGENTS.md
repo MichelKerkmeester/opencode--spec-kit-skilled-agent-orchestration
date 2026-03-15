@@ -50,9 +50,11 @@
 | **Documentation**         | sk-doc skill → Classify → Load template → Fill → Validate (`validate_document.py`) → DQI score → Verify                            |
 | **CDN deployment**        | Minify → Verify → Update HTML versions → Upload to R2 → Browser test                                                               |
 | **JavaScript minify**     | `minify-webflow.mjs` → `verify-minification.mjs` → `test-minified-runtime.mjs` → Browser test                                      |
-| **Constitutional memory** | `/memory:learn [rule]` → Qualify → Structure with triggers → Budget check → Write to `constitutional/` → Index                     |
+| **Constitutional memory** | `/memory:learn [rule]` \| `list` \| `edit` \| `remove` \| `budget` → Qualify → Structure with triggers → Budget check → Write to `constitutional/` → Index |
 | **Phase workflow**        | `/spec_kit:phase` → Decompose → `create.sh --phase` → Populate parent/children → `validate.sh --recursive`                         |
-| **Database maintenance**  | `/memory:manage` → stats, health, cleanup, checkpoint operations                                                                   |
+| **Database maintenance**  | `/memory:manage` → stats, health, cleanup, checkpoint, ingest operations                                                           |
+| **Analysis/evaluation**   | `/memory:analyze` → preflight, postflight, causal graph, ablation, dashboard, history                                              |
+| **Shared memory**         | `/memory:shared` → create, member, status (deny-by-default governance)                                                             |
 
 ### Coding Analysis Lenses 
 
