@@ -633,6 +633,63 @@ describe('workflow seam guardrail', () => {
     }
   });
 
+  it('hard-blocks same-workspace stateless saves when no target-spec anchor exists', async () => {
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-workflow-'));
+    const specFolderPath = path.join(tempRoot, '010-perfect-session-capturing');
+    const contextDir = path.join(tempRoot, 'memory');
+    fs.mkdirSync(specFolderPath, { recursive: true });
+    fs.mkdirSync(contextDir, { recursive: true });
+    fs.writeFileSync(
+      path.join(specFolderPath, 'spec.md'),
+      [
+        '# Spec',
+        '',
+        '## 3. SCOPE',
+        '',
+        '### Files to Change',
+        '',
+        '| File Path | Change Type | Description |',
+        '|-----------|-------------|-------------|',
+        '| `scripts/core/workflow.ts` | Modify | Insert enrichment after alignment guards |',
+      ].join('\n'),
+      'utf-8'
+    );
+
+    workflowHarness.specFolderPath = specFolderPath;
+    workflowHarness.contextDir = contextDir;
+    workflowHarness.loaderDataWithoutFile = {
+      _source: 'opencode-capture',
+      userPrompts: [{ prompt: 'Route to the media editor and convert images to webp.', timestamp: '2026-03-15T11:20:00Z' }],
+      observations: [
+        {
+          title: 'Prepare media editor flow',
+          narrative: 'Queued the image conversion workflow for hero assets.',
+          files: ['.opencode/skill/system-spec-kit/scripts/core/config.ts'],
+        },
+      ],
+      FILES: [
+        {
+          FILE_PATH: '.opencode/skill/system-spec-kit/scripts/core/config.ts',
+          DESCRIPTION: 'Generic infrastructure path touched during unrelated media workflow.',
+        },
+      ],
+    };
+
+    const { runWorkflow } = await import('../core/workflow');
+
+    try {
+      await expect(runWorkflow({
+        specFolderArg: specFolderPath,
+        collectSessionDataFn: async (_collectedData, specFolderName) => createSessionData(specFolderName || '010-perfect-session-capturing'),
+        silent: true,
+      })).rejects.toThrow(/ALIGNMENT_BLOCK: Captured stateless content matched the workspace but not the target spec folder/);
+
+      expect(workflowHarness.writtenFiles).toHaveLength(0);
+    } finally {
+      fs.rmSync(tempRoot, { recursive: true, force: true });
+    }
+  });
+
   it('does not let file-backed state leak into a later stateless workflow run', async () => {
     const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-workflow-'));
     const specFolderPath = path.join(tempRoot, '013-memory-search-bug-fixes');

@@ -29,7 +29,7 @@ Seventeen remediation tasks spanning nine retrieval-enhancement features have be
 
 ### P0 Critical Fixes (T004-T006)
 
-T004 corrected the F-07 tier-2 fallback feature doc to point at hybrid-search.ts as the true owner of forceAllChannels behavior. T005 added 3 executable channel tests (F07-CH-01/02/03) in channel.vitest.ts, replacing placeholder assertions. T006 updated F-08 provenance ownership to reference search-results.ts, memory-search.ts, and envelope.ts with trace field coverage.
+T004 corrected the F-07 tier-2 fallback feature doc to point at hybrid-search.ts as the true owner of forceAllChannels behavior. T005 added 3 executable channel tests (F07-CH-01/02/03) in channel.vitest.ts, replacing legacy non-behavioral assertions. T006 updated F-08 provenance ownership to reference search-results.ts, memory-search.ts, and envelope.ts with trace field coverage.
 
 ### Code Standards (T007-T009, T012-T013)
 
@@ -41,7 +41,7 @@ T010 added context-server.ts to the F-01 dual-scope auto-surface source table. T
 
 ### Test Coverage Expansion (T014-T020)
 
-T014: 2 hook dispatch/compaction tests in dual-scope-hooks.vitest.ts. T015: 2 constitutional enrichment tests in retrieval-directives.vitest.ts. T016: 2 cache invalidation tests in spec-folder-hierarchy.vitest.ts. T017: 3 summary merge/dedupe/threshold tests in stage1-expansion.vitest.ts. T018: 4 batched edge-count tests in entity-linker.vitest.ts. T019: 2 post-truncation ordering/budget tests in hybrid-search-context-headers.vitest.ts. T020: 4 concrete payload validation tests in mcp-response-envelope.vitest.ts replacing deferred envelope branches.
+T014: 2 hook dispatch/compaction tests in dual-scope-hooks.vitest.ts. T015: 2 constitutional enrichment tests in retrieval-directives.vitest.ts. T016: 2 cache invalidation tests in spec-folder-hierarchy.vitest.ts. T017: 3 summary merge/dedupe/threshold tests in stage1-expansion.vitest.ts. T018: 4 batched edge-count tests in entity-linker.vitest.ts. T019: 2 post-truncation ordering/budget tests in hybrid-search-context-headers.vitest.ts. T020: 4 concrete payload validation tests in mcp-response-envelope.vitest.ts replacing legacy non-behavioral envelope branches.
 
 ### Execution Overview
 
@@ -93,9 +93,9 @@ Five parallel cli-copilot agents running gpt-5.3-codex at xhigh reasoning dispat
 ---
 
 <!-- ANCHOR:limitations -->
-## Known Limitations
+## Current Reality Notes
 
-1. **Feature 09 still lacks a direct manual-playbook scenario mapping.** CHK-046 is complete as "mapped or marked missing" with explicit coverage-gap documentation.
+1. Feature 09 now maps directly to NEW-145 in the manual testing playbook and in the feature-catalog cross-reference index.
 <!-- /ANCHOR:limitations -->
 
 ---

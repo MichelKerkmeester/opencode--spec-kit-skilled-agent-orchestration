@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """SQLAlchemy dialect for pyturso.
 
 This module provides SQLAlchemy integration for pyturso:

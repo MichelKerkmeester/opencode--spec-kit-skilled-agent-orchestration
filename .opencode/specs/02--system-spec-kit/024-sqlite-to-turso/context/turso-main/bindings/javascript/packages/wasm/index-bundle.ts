@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Index Bundle
+// ────────────────────────────────────────────────────────────────
 import { setupMainThread } from "@tursodatabase/database-wasm-common";
 //@ts-ignore
 import TursoWorker from "./worker.js?worker&inline";

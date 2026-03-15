@@ -92,9 +92,9 @@ The main implementation pass already established the technical baseline for this
 ---
 
 <!-- ANCHOR:limitations -->
-## Known Limitations
+## Current Reality Notes
 
-1. **No fresh workspace-wide rerun in the close-out step** The final documentation pass relies on the previously recorded targeted implementation verification and the narrower follow-up regression additions, not on a new full-repo lint or test sweep.
+1. The earlier closeout note about no fresh workspace-wide rerun is now superseded by the umbrella strict-closure verification on 2026-03-15.
 <!-- /ANCHOR:limitations -->
 
 ---

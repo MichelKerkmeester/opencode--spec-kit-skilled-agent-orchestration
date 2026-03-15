@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Sprint
+// ────────────────────────────────────────────────────────────────
 import { ClickUpClient } from '../api.js'
 import type { Task, List, Space } from '../api.js'
 import type { Config } from '../config.js'

@@ -40,6 +40,16 @@
       "createdAt": "2026-03-08",
       "lastReviewedAt": "2026-03-08",
       "expiresAt": "2026-06-08"
+    },
+    {
+      "file": "scripts/memory/rebuild-auto-entities.ts",
+      "import": "../../mcp_server/lib/extraction/entity-extractor",
+      "owner": "spec-kit-maintainers",
+      "reason": "CLI script needs direct access to entity extraction internals for rebuild operations",
+      "removeWhen": "rebuildAutoEntities exposed via api/",
+      "createdAt": "2026-03-15",
+      "lastReviewedAt": "2026-03-15",
+      "expiresAt": "2026-06-15"
     }
   ]
 }

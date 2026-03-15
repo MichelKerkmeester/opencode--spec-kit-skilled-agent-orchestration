@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Promise Turbopack Hack
+// ────────────────────────────────────────────────────────────────
 import { registerFileAtWorker, unregisterFileAtWorker, ioNotifier } from "@tursodatabase/database-wasm-common"
 import { DatabasePromise } from "@tursodatabase/database-common"
 import { ProtocolIo, run, DatabaseOpts, EncryptionOpts, RunOpts, DatabaseRowMutation, DatabaseRowStatement, DatabaseRowTransformResult, DatabaseStats, SyncEngineGuards, Runner, runner, RemoteWriter, RemoteWriteStatement } from "@tursodatabase/sync-common";

@@ -7,12 +7,28 @@
 // ───────────────────────────────────────────────────────────────
 // Validates, normalizes, and transforms raw input data into structured session format
 import { structuredLog } from './logger';
+import {
+  buildSpecAffinityTargets,
+  evaluateSpecAffinityText,
+  matchesSpecAffinityFilePath,
+  matchesSpecAffinityText,
+  normalizeText,
+} from './spec-affinity';
 
 // ───────────────────────────────────────────────────────────────
 // 2. TYPES
 // ───────────────────────────────────────────────────────────────
 /** Data source type indicating where loaded data came from */
-export type DataSource = 'file' | 'opencode-capture' | 'simulation';
+export type DataSource =
+  | 'file'
+  | 'opencode-capture'
+  | 'claude-code-capture'
+  | 'codex-cli-capture'
+  | 'copilot-cli-capture'
+  | 'gemini-cli-capture'
+  | 'simulation';
+
+export type CaptureDataSource = Exclude<DataSource, 'file' | 'simulation'>;
 
 /** A single observation record produced by transformation */
 export interface Observation {
@@ -102,6 +118,7 @@ export interface CaptureToolCall {
   title?: string;
   status?: string;
   timestamp?: number | string;
+  output?: string;
   input?: {
     filePath?: string;
     file_path?: string;
@@ -129,6 +146,7 @@ export interface TransformedCapture {
   _source: DataSource;
   _sessionId?: string;
   _capturedAt?: string;
+  _toolCallCount?: number;
 }
 
 // ───────────────────────────────────────────────────────────────
@@ -455,6 +473,9 @@ function buildToolObservationTitle(tool: CaptureToolCall): string {
 
   const filePath = input.filePath || input.file_path || input.path || '';
   const shortPath = filePath ? filePath.split('/').slice(-2).join('/') : '';
+  const outputSummary = typeof tool.output === 'string'
+    ? tool.output.replace(/\s+/g, ' ').trim().slice(0, 60)
+    : '';
 
   switch (toolName.toLowerCase()) {
     case 'read':
@@ -474,19 +495,13 @@ function buildToolObservationTitle(tool: CaptureToolCall): string {
     case 'bash': {
       const desc = typeof input.description === 'string' ? input.description.substring(0, 60) : '';
       const cmd = typeof input.command === 'string' ? input.command.substring(0, 40) : '';
-      return desc || cmd || 'Bash command';
+      return shortPath ? `Bash ${shortPath}` : (desc || cmd || outputSummary || 'Bash command');
     }
     default:
-      return shortPath ? `${toolName}: ${shortPath}` : `Tool: ${toolName}`;
+      return shortPath
+        ? `${toolName}: ${shortPath}`
+        : (outputSummary ? `${toolName}: ${outputSummary}` : `Tool: ${toolName}`);
   }
-}
-
-function normalizeRelevanceText(value: string): string {
-  return value
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
 }
 
 function buildSpecRelevanceKeywords(specFolderHint?: string | null): string[] {
@@ -499,7 +514,7 @@ function buildSpecRelevanceKeywords(specFolderHint?: string | null): string[] {
     .filter(Boolean);
 
   for (const segment of segments) {
-    const normalizedSegment = normalizeRelevanceText(segment);
+    const normalizedSegment = normalizeText(segment);
     if (normalizedSegment.length > 2) {
       keywords.add(normalizedSegment);
     }
@@ -511,7 +526,7 @@ function buildSpecRelevanceKeywords(specFolderHint?: string | null): string[] {
     }
   }
 
-  const normalizedHint = normalizeRelevanceText(specFolderHint);
+  const normalizedHint = normalizeText(specFolderHint);
   if (normalizedHint.length > 2) {
     keywords.add(normalizedHint);
   }
@@ -521,17 +536,45 @@ function buildSpecRelevanceKeywords(specFolderHint?: string | null): string[] {
 
 function containsRelevantKeyword(keywords: string[], ...parts: Array<string | undefined>): boolean {
   if (keywords.length === 0) return true;
-  const normalized = normalizeRelevanceText(parts.filter(Boolean).join(' '));
+  const normalized = normalizeText(parts.filter(Boolean).join(' '));
   return keywords.some((keyword) => normalized.includes(keyword));
+}
+
+const SPEC_ID_REGEX = /\b\d{3}-[a-z0-9][a-z0-9-]*\b/g;
+
+function extractSpecIds(value: string): string[] {
+  return Array.from(new Set((value.match(SPEC_ID_REGEX) || []).map((specId) => specId.toLowerCase())));
+}
+
+function getCurrentSpecId(specFolderHint?: string | null): string | null {
+  if (!specFolderHint) {
+    return null;
+  }
+
+  const specIds = extractSpecIds(specFolderHint);
+  return specIds.at(-1) || null;
+}
+
+function isSafeSpecFallback(currentSpecId: string | null, ...parts: Array<string | undefined>): boolean {
+  const discoveredIds = extractSpecIds(parts.filter(Boolean).join(' '));
+  if (discoveredIds.length === 0) {
+    return true;
+  }
+
+  return currentSpecId !== null && discoveredIds.every((specId) => specId === currentSpecId);
 }
 
 // ───────────────────────────────────────────────────────────────
 // 7. OPENCODE CAPTURE TRANSFORMATION
 // ───────────────────────────────────────────────────────────────
-function transformOpencodeCapture(capture: OpencodeCapture, specFolderHint?: string | null): TransformedCapture {
+function transformOpencodeCapture(
+  capture: OpencodeCapture,
+  specFolderHint?: string | null,
+  source: CaptureDataSource = 'opencode-capture',
+): TransformedCapture {
   // F-14: Runtime guards — validate capture shape before processing
   if (!capture || typeof capture !== 'object') {
-    return { userPrompts: [], observations: [], recentContext: [], FILES: [], _source: 'opencode-capture' };
+    return { userPrompts: [], observations: [], recentContext: [], FILES: [], _source: source };
   }
 
   // RC-10: Normalize snake_case fields from ConversationCapture to camelCase OpencodeCapture.
@@ -547,6 +590,7 @@ function transformOpencodeCapture(capture: OpencodeCapture, specFolderHint?: str
   };
 
   const { exchanges, toolCalls, metadata, sessionTitle } = normalizedCapture;
+  const specAffinityTargets = buildSpecAffinityTargets(specFolderHint);
 
   // --- Spec-folder relevance filter ---
   // When a spec folder hint is provided, filter tool calls to only those
@@ -554,12 +598,65 @@ function transformOpencodeCapture(capture: OpencodeCapture, specFolderHint?: str
   // Unrelated session content (e.g., from prior conversations in the same
   // OpenCode session) from polluting the memory file.
   const relevanceKeywords = buildSpecRelevanceKeywords(specFolderHint);
+  const currentSpecId = getCurrentSpecId(specFolderHint);
+  const alignedExchangeTexts = exchanges.filter((exchange) => (
+    matchesSpecAffinityText([exchange.userInput || '', exchange.assistantResponse || ''].join(' '), specAffinityTargets)
+    || containsRelevantKeyword(relevanceKeywords, exchange.userInput, exchange.assistantResponse)
+  ));
+
+  function flattenToolContextStrings(value: unknown, output: string[] = [], depth: number = 0): string[] {
+    if (depth > 2 || value === null || value === undefined) {
+      return output;
+    }
+
+    if (typeof value === 'string') {
+      const trimmed = value.trim();
+      if (trimmed) {
+        output.push(trimmed);
+      }
+      return output;
+    }
+
+    if (Array.isArray(value)) {
+      for (const item of value) {
+        flattenToolContextStrings(item, output, depth + 1);
+      }
+      return output;
+    }
+
+    if (typeof value === 'object') {
+      for (const nestedValue of Object.values(value as Record<string, unknown>)) {
+        flattenToolContextStrings(nestedValue, output, depth + 1);
+      }
+    }
+
+    return output;
+  }
 
   function isToolRelevant(tool: CaptureToolCall): boolean {
-    if (relevanceKeywords.length === 0) return true; // no filter
-    const filePath = tool.input?.filePath || tool.input?.file_path || tool.input?.path || '';
-    const title = tool.title || '';
-    return containsRelevantKeyword(relevanceKeywords, filePath, title);
+    if (!specFolderHint) {
+      return true;
+    }
+
+    const toolTextParts = flattenToolContextStrings({
+      title: tool.title || '',
+      output: tool.output || '',
+      input: tool.input || {},
+    });
+
+    if ((tool.input?.filePath && matchesSpecAffinityFilePath(tool.input.filePath, specAffinityTargets))
+      || (tool.input?.file_path && matchesSpecAffinityFilePath(tool.input.file_path, specAffinityTargets))
+      || (tool.input?.path && matchesSpecAffinityFilePath(tool.input.path, specAffinityTargets))
+    ) {
+      return true;
+    }
+
+    if (toolTextParts.some((part) => matchesSpecAffinityText(part, specAffinityTargets))) {
+      return true;
+    }
+
+    const safeToolContext = toolTextParts.some((part) => isSafeSpecFallback(currentSpecId, part));
+    return safeToolContext && alignedExchangeTexts.length > 0;
   }
 
   const filteredToolCalls = specFolderHint
@@ -593,24 +690,42 @@ function transformOpencodeCapture(capture: OpencodeCapture, specFolderHint?: str
   }));
 
   // RC-2: Filter userPrompts by spec-folder relevance — prevents cross-spec
-  // Content (e.g., SGQS/skill-graphs) from leaking into unrelated memory files.
-  // Falls back to all prompts when no keyword match is found, because generic
-  // Prompts ("continue from previous work") are common and losing them erases
-  // The entire conversation timeline (extractConversations iterates userPrompts).
+  // Content from leaking into unrelated memory files. When no keyword match
+  // exists, keep only generic/current-spec prompts instead of re-including
+  // obviously foreign-spec content.
   const userPrompts: UserPrompt[] = (() => {
     if (!specFolderHint || relevanceKeywords.length === 0) return allUserPrompts;
     const filtered = allUserPrompts.filter(p => {
-      return containsRelevantKeyword(relevanceKeywords, p.prompt);
+      return containsRelevantKeyword(relevanceKeywords, p.prompt)
+        || matchesSpecAffinityText(p.prompt, specAffinityTargets);
     });
-    if (filtered.length === 0) {
-      structuredLog('warn', 'Spec relevance filter produced no user prompt matches — using all prompts', {
-        specFolderHint,
-        relevanceKeywordsCount: relevanceKeywords.length,
-        totalUserPrompts: allUserPrompts.length
-      });
-      return allUserPrompts;
+    if (filtered.length > 0) {
+      return filtered;
     }
-    return filtered;
+
+    const safeFallback = alignedExchangeTexts.length > 0
+      ? allUserPrompts.filter((prompt) =>
+      isSafeSpecFallback(currentSpecId, prompt.prompt)
+      )
+      : [];
+    if (safeFallback.length > 0) {
+      structuredLog('warn', 'Spec relevance filter produced no prompt keyword matches — using generic/current-spec prompts only', {
+        specFolderHint,
+        currentSpecId,
+        relevanceKeywordsCount: relevanceKeywords.length,
+        totalUserPrompts: allUserPrompts.length,
+        retainedUserPrompts: safeFallback.length,
+      });
+      return safeFallback;
+    }
+
+    structuredLog('warn', 'Spec relevance filter produced no safe user prompt matches', {
+      specFolderHint,
+      currentSpecId,
+      relevanceKeywordsCount: relevanceKeywords.length,
+      totalUserPrompts: allUserPrompts.length,
+    });
+    return [];
   })();
 
   const observations: Observation[] = [];
@@ -631,9 +746,13 @@ function transformOpencodeCapture(capture: OpencodeCapture, specFolderHint?: str
         // When spec folder hint is provided, skip exchanges whose content
         // Doesn't mention any relevant keyword
         if (specFolderHint && relevanceKeywords.length > 0) {
-          const responseRelevant = containsRelevantKeyword(relevanceKeywords, ex.assistantResponse);
+          const responseRelevant = containsRelevantKeyword(relevanceKeywords, ex.assistantResponse)
+            || matchesSpecAffinityText(ex.assistantResponse, specAffinityTargets);
           const inputRelevant = ex.userInput
-            ? containsRelevantKeyword(relevanceKeywords, ex.userInput)
+            ? (
+              containsRelevantKeyword(relevanceKeywords, ex.userInput)
+              || matchesSpecAffinityText(ex.userInput, specAffinityTargets)
+            )
             : false;
           if (!responseRelevant && !inputRelevant) {
             continue; // skip irrelevant exchange
@@ -659,7 +778,11 @@ function transformOpencodeCapture(capture: OpencodeCapture, specFolderHint?: str
       title: toolTitle,
       narrative: tool.title || `Executed ${tool.tool}`,
       timestamp: toSafeISOString(tool.timestamp),
-      facts: [`Tool: ${tool.tool}`, `Status: ${tool.status}`],
+      facts: [
+        `Tool: ${tool.tool}`,
+        `Status: ${tool.status}`,
+        ...(tool.output ? [`Result: ${tool.output.substring(0, 160)}`] : []),
+      ],
       files: []
     };
 
@@ -680,18 +803,42 @@ function transformOpencodeCapture(capture: OpencodeCapture, specFolderHint?: str
   // Foreign-spec content from propagating into SUMMARY via learning field.
   const relevantExchanges = (specFolderHint && relevanceKeywords.length > 0)
     ? exchanges.filter(ex => {
-        return containsRelevantKeyword(relevanceKeywords, ex.userInput, ex.assistantResponse);
+        return containsRelevantKeyword(relevanceKeywords, ex.userInput, ex.assistantResponse)
+          || matchesSpecAffinityText([ex.userInput || '', ex.assistantResponse || ''].join(' '), specAffinityTargets);
       })
     : exchanges;
   const contextExchanges = (() => {
-    if (specFolderHint && relevanceKeywords.length > 0 && relevantExchanges.length === 0) {
-      structuredLog('warn', 'Spec relevance filter produced no context exchange matches', {
-        specFolderHint,
-        relevanceKeywordsCount: relevanceKeywords.length,
-        totalExchanges: exchanges.length
-      });
+    if (!specFolderHint || relevanceKeywords.length === 0) {
+      return relevantExchanges;
     }
-    return relevantExchanges;
+
+    if (relevantExchanges.length > 0) {
+      return relevantExchanges;
+    }
+
+    const safeFallback = alignedExchangeTexts.length > 0
+      ? exchanges.filter((exchange) =>
+      isSafeSpecFallback(currentSpecId, exchange.userInput, exchange.assistantResponse)
+      )
+      : [];
+    if (safeFallback.length > 0) {
+      structuredLog('warn', 'Spec relevance filter produced no context keyword matches — using generic/current-spec exchanges only', {
+        specFolderHint,
+        currentSpecId,
+        relevanceKeywordsCount: relevanceKeywords.length,
+        totalExchanges: exchanges.length,
+        retainedExchanges: safeFallback.length,
+      });
+      return safeFallback;
+    }
+
+    structuredLog('warn', 'Spec relevance filter produced no safe context exchange matches', {
+      specFolderHint,
+      currentSpecId,
+      relevanceKeywordsCount: relevanceKeywords.length,
+      totalExchanges: exchanges.length,
+    });
+    return [];
   })();
   const recentContext: RecentContext[] = contextExchanges.length > 0 ? [{
     request: contextExchanges[0].userInput || sessionTitle || 'OpenCode session',
@@ -719,9 +866,10 @@ function transformOpencodeCapture(capture: OpencodeCapture, specFolderHint?: str
     observations,
     recentContext,
     FILES,
-    _source: 'opencode-capture',
+    _source: source,
     _sessionId: normalizedCapture.sessionId,
-    _capturedAt: normalizedCapture.capturedAt
+    _capturedAt: normalizedCapture.capturedAt,
+    _toolCallCount: filteredToolCalls.length,
   };
 }
 

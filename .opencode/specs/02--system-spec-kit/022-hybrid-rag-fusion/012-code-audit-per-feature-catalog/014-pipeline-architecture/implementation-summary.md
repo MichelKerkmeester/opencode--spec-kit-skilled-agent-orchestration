@@ -103,7 +103,7 @@ All changes were validated with `tsc --noEmit` (0 errors) and `vitest run` (483 
 | `atomicSaveMemory` retries indexing once with rollback on double failure (T009) | A single transient index error should not orphan the saved file; double failure must clean up to avoid leaving the DB in a split state. |
 | `recoverPendingFile` checks DB existence before rename (T011) | Startup recovery must skip rename if the target DB does not yet exist, preventing a crash on first boot; `databasePathOverride` makes the check testable without filesystem side effects. |
 | Wave-parallel execution (A1+A2+A3 then A4+A5) | Catalog and code fixes are independent of each other within Wave 1; test additions in Wave 2 require the Wave 1 code fixes to be stable before asserting against them. |
-| Feature gaps F04, F05, F16 left without direct backlog tasks | These features have no actionable remediation identified yet; explicit `No direct backlog task` labeling in the traceability matrix makes the audit gap visible rather than hiding it. |
+| Previously indirect traceability for F04/F05/F11/F16 was converted to direct evidence-backed closure | The strict-closure pass wired the existing owners/tests into the traceability matrix so no pipeline-architecture feature remains gap-labeled. |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -126,11 +126,10 @@ All changes were validated with `tsc --noEmit` (0 errors) and `vitest run` (483 
 ---
 
 <!-- ANCHOR:limitations -->
-## Known Limitations
+## Current Reality Notes
 
-1. **Feature gaps F04, F05, F16 remain without direct remediation tasks.** These three features (`04-template-anchor-optimization`, `05-validation-signals-as-retrieval-metadata`, `16-backend-storage-adapter-abstraction`) are explicitly marked as `No direct backlog task` in the traceability matrix. No code or test work addresses them in this audit cycle.
-2. **F11 is shared-task-backed.** Pipeline-and-mutation hardening (`F11`) overlaps T004, T009, and T011 but has no single dedicated task. Coverage is real but indirect.
-3. **Channel-representation threshold comment (T016).** The quality-floor comment and retry-test reference were verified rather than changed; no behavioral modification was made.
+1. F04, F05, F11, and F16 now have direct traceability entries backed by the feature docs and current test inventory.
+2. T016 remains a verification-only cleanup item: the threshold comment/reference was confirmed accurate without requiring a behavioral code change.
 <!-- /ANCHOR:limitations -->
 
 ---

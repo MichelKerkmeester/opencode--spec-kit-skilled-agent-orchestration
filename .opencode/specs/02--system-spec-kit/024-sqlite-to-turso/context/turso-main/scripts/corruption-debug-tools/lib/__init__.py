@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 SQLite/Limbo corruption debugging library.
 

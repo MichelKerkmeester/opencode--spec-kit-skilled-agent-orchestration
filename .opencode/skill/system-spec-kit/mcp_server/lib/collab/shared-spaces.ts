@@ -104,6 +104,15 @@ function isDefaultOnFlagEnabled(...flagNames: string[]): boolean {
   return true;
 }
 
+function isDefaultOffFlagEnabled(...flagNames: string[]): boolean {
+  for (const flagName of flagNames) {
+    const rawValue = process.env[flagName]?.trim().toLowerCase();
+    if (rawValue === 'true' || rawValue === '1') return true;
+    if (rawValue === 'false' || rawValue === '0') return false;
+  }
+  return false;
+}
+
 function normalizeConflictKind(metadata: Record<string, unknown> | undefined): string | null {
   const value = metadata?.conflictKind;
   if (typeof value !== 'string') return null;
@@ -164,13 +173,38 @@ function resolveSharedConflictStrategy(
 /**
  * Resolve whether shared-memory rollout is enabled for the process.
  *
+ * Tier 1: Env var override (highest priority) — `SPECKIT_MEMORY_SHARED_MEMORY` or `SPECKIT_HYDRA_SHARED_MEMORY`.
+ * Tier 2: Database config persistence — `shared_memory_enabled` key in `config` table.
+ * Default: OFF (requires explicit enablement via env var or first-run setup).
+ *
+ * @param database - Optional database to check for persisted enablement state.
  * @returns `true` when shared-memory access is allowed at runtime.
  */
-export function isSharedMemoryEnabled(): boolean {
-  return isDefaultOnFlagEnabled(
-    'SPECKIT_MEMORY_SHARED_MEMORY',
-    'SPECKIT_HYDRA_SHARED_MEMORY',
-  );
+export function isSharedMemoryEnabled(database?: Database.Database): boolean {
+  // Tier 1: Env var override (highest priority)
+  if (isDefaultOffFlagEnabled('SPECKIT_MEMORY_SHARED_MEMORY', 'SPECKIT_HYDRA_SHARED_MEMORY')) {
+    return true;
+  }
+  // Tier 2: Database config persistence
+  if (database) {
+    try {
+      const row = database.prepare('SELECT value FROM config WHERE key = ?')
+        .get('shared_memory_enabled') as { value: string } | undefined;
+      return row?.value === 'true';
+    } catch { return false; }
+  }
+  return false;
+}
+
+/**
+ * Persist the shared-memory enabled state to the database config table.
+ *
+ * @param database - Database connection to write the config key.
+ */
+export function enableSharedMemory(database: Database.Database): void {
+  database.exec('CREATE TABLE IF NOT EXISTS config (key TEXT PRIMARY KEY, value TEXT)');
+  database.prepare('INSERT OR REPLACE INTO config (key, value) VALUES (?, ?)')
+    .run('shared_memory_enabled', 'true');
 }
 
 /**
@@ -447,7 +481,7 @@ export function assertSharedSpaceAccess(
   ensureSharedCollabRuntime(database);
   const normalizedScope = normalizeScopeContext(scope);
 
-  if (!isSharedMemoryEnabled()) {
+  if (!isSharedMemoryEnabled(database)) {
     return { allowed: false, reason: 'shared_memory_disabled' };
   }
 

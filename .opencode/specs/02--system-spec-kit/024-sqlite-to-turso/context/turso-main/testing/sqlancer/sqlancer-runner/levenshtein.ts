@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Levenshtein
+// ────────────────────────────────────────────────────────────────
 /**
  * Calculate the Levenshtein distance between two strings.
  * Used for deduplicating GitHub issues by comparing titles.

@@ -60,7 +60,8 @@ contextType: "general"
 
 - [x] T008 Re-run targeted graph/entity extraction tests after updates (`mcp_server/tests/*.vitest.ts`) [EVIDENCE: `npm run test -- tests/entity-extractor.vitest.ts tests/graph-signals.vitest.ts` passed (85/85).]
 - [x] T009 Re-audit F-02 and F-03 status after remediation (`checklist.md`) [EVIDENCE: F-02 and F-03 both moved from WARN to PASS with linked source/test evidence.]
-- [x] T010 Update final PASS/WARN/FAIL outcomes and close deferred items (`tasks.md`) [EVIDENCE: Task/checklist/spec now represent closure state and only residual open question remains.]
+- [x] T010 Update final audit outcomes and close remaining closure items (`tasks.md`) [EVIDENCE: Task/checklist/spec now represent closure state with no residual open question.]
+- [x] T011 Add deterministic cleanup/backfill path for pre-fix auto-generated entity rows (`mcp_server/lib/extraction/entity-extractor.ts`, `scripts/memory/rebuild-auto-entities.ts`) [EVIDENCE: `rebuildAutoEntities()` rebuilds scoped `created_by='auto'` rows from current memory content and is covered by entity-extractor regression tests.]
 <!-- /ANCHOR:phase-3 -->
 
 ---

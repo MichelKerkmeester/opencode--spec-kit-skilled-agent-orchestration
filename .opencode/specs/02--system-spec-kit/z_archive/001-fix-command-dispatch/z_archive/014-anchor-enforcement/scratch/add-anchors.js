@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+'use strict';
+
 
 /**
  * Add Anchors to Memory Files

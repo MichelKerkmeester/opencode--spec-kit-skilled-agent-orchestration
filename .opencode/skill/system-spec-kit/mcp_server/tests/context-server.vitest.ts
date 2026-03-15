@@ -154,7 +154,7 @@ describe('Context Server', () => {
   // =================================================================
   // GROUP 2: Tool Definition Completeness
   // =================================================================
-  describe('Group 2: Tool Definitions (25 tools)', () => {
+  describe('Group 2: Tool Definitions (32 tools)', () => {
     const EXPECTED_TOOLS = [
       'memory_context',
       'memory_search',
@@ -174,6 +174,7 @@ describe('Context Server', () => {
       'shared_space_upsert',
       'shared_space_membership_set',
       'shared_memory_status',
+      'shared_memory_enable',
       'task_preflight',
       'task_postflight',
       'memory_drift_why',
@@ -265,6 +266,7 @@ describe('Context Server', () => {
       'memory_ingest_start', 'memory_ingest_status', 'memory_ingest_cancel',
       'memory_drift_why', 'memory_causal_link', 'memory_causal_stats', 'memory_causal_unlink',
       'eval_run_ablation', 'eval_reporting_dashboard',
+      'shared_space_upsert', 'shared_space_membership_set', 'shared_memory_status', 'shared_memory_enable',
     ]
 
     // T16: CallToolRequestSchema handler exists

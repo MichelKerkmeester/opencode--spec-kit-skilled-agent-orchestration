@@ -1,4 +1,4 @@
-// TEST: INCREMENTAL INDEX (legacy placeholder replacement)
+// TEST: INCREMENTAL INDEX (focused compatibility coverage)
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import Database from 'better-sqlite3';
 import * as fs from 'node:fs';

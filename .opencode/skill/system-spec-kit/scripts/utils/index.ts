@@ -10,6 +10,30 @@ export { structuredLog } from './logger';
 export type { LogLevel, LogEntry } from './logger';
 
 export { sanitizePath, getPathBasename } from './path-utils';
+export {
+  buildWorkspaceIdentity,
+  getWorkspacePathVariants,
+  isSameWorkspacePath,
+  toWorkspaceRelativePath,
+  findNearestOpencodeDirectory,
+  normalizeAbsolutePath,
+} from './workspace-identity';
+export type { WorkspaceIdentity } from './workspace-identity';
+
+export {
+  buildSpecAffinityTargets,
+  evaluateCollectedDataSpecAffinity,
+  evaluateSpecAffinityText,
+  matchesSpecAffinityFilePath,
+  matchesSpecAffinityText,
+  extractSpecIds,
+  normalizePathLike,
+  normalizeText,
+} from './spec-affinity';
+export type {
+  SpecAffinityTargets,
+  SpecAffinityEvaluation,
+} from './spec-affinity';
 
 export {
   ARRAY_FLAG_MAPPINGS,

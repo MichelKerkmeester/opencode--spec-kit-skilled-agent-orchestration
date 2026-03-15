@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Index
+// ────────────────────────────────────────────────────────────────
 import { NativeDatabase, NativeStatement, DatabaseOpts, EncryptionCipher, EncryptionOpts } from "./types.js";
 import { Database as DatabaseCompat, Statement as StatementCompat } from "./compat.js";
 import { Database as DatabasePromise, Statement as StatementPromise } from "./promise.js";

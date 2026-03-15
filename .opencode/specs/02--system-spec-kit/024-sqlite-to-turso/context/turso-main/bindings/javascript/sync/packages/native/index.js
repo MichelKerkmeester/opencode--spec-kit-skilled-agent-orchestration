@@ -1,3 +1,5 @@
+'use strict';
+
 // prettier-ignore
 /* eslint-disable */
 // @ts-nocheck

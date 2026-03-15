@@ -71,6 +71,9 @@ contextType: "general"
 - [x] T018 Add strict-vs-passthrough schema tests and stderr logging assertion (`mcp_server/tests/tool-input-schema.vitest.ts`)
 - [x] T019 Add dynamic server-instructions regression coverage and clean stale test references (`mcp_server/context-server.ts` and related tests)
 - [x] T020 Add end-to-end embedding retry save/index failure-path test (`mcp_server/tests/retry-manager.vitest.ts` and `mcp_server/tests/index-refresh.vitest.ts`)
+- [x] T021 Wire direct traceability for F04/F05 to their owning implementation/tests (`../../feature_catalog/14--pipeline-architecture/04-template-anchor-optimization.md`, `../../feature_catalog/14--pipeline-architecture/05-validation-signals-as-retrieval-metadata.md`) — Evidence: feature docs now cite direct implementation/test ownership including `pipeline-architecture-remediation.vitest.ts`.
+- [x] T022 Convert F11 from shared traceability to direct traceability (`../../feature_catalog/14--pipeline-architecture/11-pipeline-and-mutation-hardening.md`) — Evidence: matrix now points directly at T004/T009/T011 and the feature doc keeps the concrete pipeline/mutation test inventory.
+- [x] T023 Close F16 as implemented vector-store abstraction seam with direct evidence (`../../feature_catalog/14--pipeline-architecture/16-backend-storage-adapter-abstraction.md`) — Evidence: feature doc now reflects `IVectorStore` + `SQLiteVectorStore` plus `interfaces.vitest.ts`, `pipeline-architecture-remediation.vitest.ts`, and `vector-index-impl.vitest.ts`.
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -83,8 +86,7 @@ contextType: "general"
 | Status | Meaning |
 |--------|---------|
 | `Directly task-backed` | A backlog task or task pair directly addresses the feature's documented remediation need. |
-| `Shared-task-backed` | The feature is covered through a broader shared remediation task and may overlap adjacent runtime/test work. |
-| `No direct backlog task` | The feature appears in the audit inventory, but no dedicated T001-T020 item exists yet. |
+| `Directly task-backed` | The feature has an explicit task/evidence link in this packet. |
 
 ### Matrix
 
@@ -93,19 +95,19 @@ contextType: "general"
 | F01 | `../../feature_catalog/14--pipeline-architecture/01-4-stage-pipeline-refactor.md` | Directly task-backed | `T013` | Remove nonexistent retry-test inventory entry. |
 | F02 | `../../feature_catalog/14--pipeline-architecture/02-mpab-chunk-to-memory-aggregation.md` | Directly task-backed | `T014` | Correct stale MPAB comment state. |
 | F03 | `../../feature_catalog/14--pipeline-architecture/03-chunk-ordering-preservation.md` | Directly task-backed | `T001` | Reconcile source/test inventory. |
-| F04 | `../../feature_catalog/14--pipeline-architecture/04-template-anchor-optimization.md` | No direct backlog task | None | Audit gap remains explicit in this folder. |
-| F05 | `../../feature_catalog/14--pipeline-architecture/05-validation-signals-as-retrieval-metadata.md` | No direct backlog task | None | Audit gap remains explicit in this folder. |
+| F04 | `../../feature_catalog/14--pipeline-architecture/04-template-anchor-optimization.md` | Directly task-backed | `T021` | Direct implementation/test ownership captured, including `anchor-metadata.vitest.ts` and `pipeline-architecture-remediation.vitest.ts`. |
+| F05 | `../../feature_catalog/14--pipeline-architecture/05-validation-signals-as-retrieval-metadata.md` | Directly task-backed | `T021` | Direct implementation/test ownership captured, including `validation-metadata.vitest.ts` and `pipeline-architecture-remediation.vitest.ts`. |
 | F06 | `../../feature_catalog/14--pipeline-architecture/06-learned-relevance-feedback.md` | Directly task-backed | `T015` | Update stale learned-feedback comment. |
 | F07 | `../../feature_catalog/14--pipeline-architecture/07-search-pipeline-safety.md` | Directly task-backed | `T016` | Fix stale quality-floor and retry-reference comments. |
 | F08 | `../../feature_catalog/14--pipeline-architecture/08-performance-improvements.md` | Directly task-backed | `T002` | Reconcile performance feature inventory. |
 | F09 | `../../feature_catalog/14--pipeline-architecture/09-activation-window-persistence.md` | Directly task-backed | `T003` | Correct source/test mapping. |
 | F10 | `../../feature_catalog/14--pipeline-architecture/10-legacy-v1-pipeline-removal.md` | Directly task-backed | `T017` | Remove nonexistent retry-test entry and trim legacy inventory. |
-| F11 | `../../feature_catalog/14--pipeline-architecture/11-pipeline-and-mutation-hardening.md` | Shared-task-backed | `T004` primary; overlaps `T009`, `T011` | Shared remediation spans inventory plus atomic-save and recovery work. |
+| F11 | `../../feature_catalog/14--pipeline-architecture/11-pipeline-and-mutation-hardening.md` | Directly task-backed | `T022` with `T004`, `T009`, `T011` | Direct traceability now points at the inventory split plus the paired runtime hardening tasks. |
 | F12 | `../../feature_catalog/14--pipeline-architecture/12-dbpath-extraction-and-import-standardization.md` | Directly task-backed | `T005` | Add DB path references and resolver tests. |
 | F13 | `../../feature_catalog/14--pipeline-architecture/13-strict-zod-schema-validation.md` | Directly task-backed | `T018` | Add strict-vs-passthrough validation coverage. |
 | F14 | `../../feature_catalog/14--pipeline-architecture/14-dynamic-server-instructions-at-mcp-initialization.md` | Directly task-backed | `T019` | Add regression coverage and clean stale references. |
 | F15 | `../../feature_catalog/14--pipeline-architecture/15-warm-server-daemon-mode.md` | Directly task-backed | `T007` | Trim deferred feature tables and remove nonexistent tests. |
-| F16 | `../../feature_catalog/14--pipeline-architecture/16-backend-storage-adapter-abstraction.md` | No direct backlog task | None | Audit gap remains explicit in this folder. |
+| F16 | `../../feature_catalog/14--pipeline-architecture/16-backend-storage-adapter-abstraction.md` | Directly task-backed | `T023` | Current runtime seam is documented as implemented vector-store abstraction rather than a deferred gap. |
 | F17 | `../../feature_catalog/14--pipeline-architecture/17-cross-process-db-hot-rebinding.md` | Directly task-backed | `T008` | Fix `lastDbCheck` advancement ordering. |
 | F18 | `../../feature_catalog/14--pipeline-architecture/18-atomic-write-then-index-api.md` | Directly task-backed | `T009`, `T010` | Implementation and failure-injection coverage are paired. |
 | F19 | `../../feature_catalog/14--pipeline-architecture/19-embedding-retry-orchestrator.md` | Directly task-backed | `T020` | Add end-to-end retry failure-path coverage. |
@@ -115,9 +117,7 @@ contextType: "general"
 ### Coverage Summary
 
 - 21 total features mapped in the core docs.
-- 17 features are `Directly task-backed`.
-- 1 feature is `Shared-task-backed` (`F11`).
-- 3 features have `No direct backlog task` (`F04`, `F05`, `F16`).
+- 21 features are `Directly task-backed`.
 <!-- /ANCHOR:traceability -->
 
 ---

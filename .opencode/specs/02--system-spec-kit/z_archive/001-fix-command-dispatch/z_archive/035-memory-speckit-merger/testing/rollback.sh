@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 # Memory System Rollback
 # Restores database from backup if issues occur
 #

@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+"""Tests for test database sync."""
+
 import logging
 import multiprocessing
 import os

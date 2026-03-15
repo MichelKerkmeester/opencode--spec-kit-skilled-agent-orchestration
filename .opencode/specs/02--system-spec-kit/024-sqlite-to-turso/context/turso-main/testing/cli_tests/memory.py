@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+"""Module for memory."""
+
 import os
 
 from cli_tests import console

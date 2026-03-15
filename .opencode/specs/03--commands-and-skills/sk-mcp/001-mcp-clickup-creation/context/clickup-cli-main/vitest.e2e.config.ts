@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Vitest E2e Config
+// ────────────────────────────────────────────────────────────────
 import { defineConfig } from 'vitest/config'
 
 export default defineConfig({

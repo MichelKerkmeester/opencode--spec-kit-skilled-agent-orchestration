@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Slack
+// ────────────────────────────────────────────────────────────────
 /**
  * Slack client for posting SQLancer run summaries.
  * Posts to configured Slack channel when runs complete.

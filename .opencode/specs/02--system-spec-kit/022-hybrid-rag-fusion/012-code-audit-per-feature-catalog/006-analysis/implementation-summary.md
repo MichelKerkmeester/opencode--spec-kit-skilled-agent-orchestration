@@ -118,11 +118,11 @@ Implementation used parallel cli-copilot Codex 5.3 xhigh agents dispatched in Pa
 ---
 
 <!-- ANCHOR:limitations -->
-## Known Limitations
+## Current Reality Notes
 
-1. **Playbook mapping gaps remain open.** EX-019 through EX-025 coverage mappings were documented in spec.md open questions but not expanded in this phase.
-2. **Wildcard export remediation is local to error modules only.** Other barrel files in the codebase may still use `export *` but were out of scope for 006-analysis.
-3. **LearningHistoryRow type extension is test-local.** The type augmentation lives in the test file rather than the source module. A future cleanup could move it to the source type definition.
+1. EX-019 through EX-025 are now linked directly from the seven analysis feature files and remain indexed in the manual testing playbook.
+2. The learning-history response shape is now exported from `handlers/session-learning.ts`, so tests no longer need a local `LearningHistoryRow` shadow type.
+3. The broader export sweep now includes the analysis-owned learning surfaces touched in this closeout.
 <!-- /ANCHOR:limitations -->
 
 ---

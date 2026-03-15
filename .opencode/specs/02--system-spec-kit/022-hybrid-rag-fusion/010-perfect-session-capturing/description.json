@@ -1,27 +1,39 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing",
-  "description": "Feature Specification: Generate-Context Pipeline Quality",
+  "description": "Feature Specification: Perfect Session Capturing",
   "keywords": [
-    "feature",
-    "specification",
-    "generate-context",
-    "pipeline",
-    "quality",
-    "git context extractor",
-    "stateless memory save",
-    "memory save git context",
-    "extractor"
+    "perfect session capturing",
+    "workspace identity",
+    ".opencode",
+    "stateless native capture",
+    "opencode",
+    "claude code",
+    "codex cli",
+    "copilot cli",
+    "gemini cli",
+    "memory quality"
   ],
-  "lastUpdated": "2026-03-14T12:00:00.000Z",
+  "lastUpdated": "2026-03-15T10:10:00.000Z",
   "specId": "010",
   "folderSlug": "perfect-session-capturing",
   "parentChain": [
     "02--system-spec-kit",
     "022-hybrid-rag-fusion"
   ],
-  "memorySequence": 2,
+  "memorySequence": 13,
   "memoryNameHistory": [
     "14-03-26_15-45__code-issues-found-during-review.md",
-    "14-03-26_15-47__code-issues-found-during-review.md"
+    "14-03-26_15-47__code-issues-found-during-review.md",
+    "15-03-26_09-37__authoritative-json-mode-remains-preferred.md",
+    "15-03-26_09-37__authoritative-json-mode-remains-preferred.md",
+    "15-03-26_09-38__authoritative-json-mode-remains-preferred.md",
+    "15-03-26_09-39__perfect-session-capturing.md",
+    "15-03-26_09-40__i-ve-read-all-8-files-i-have-a-clear-picture-of.md",
+    "15-03-26_09-41__efficiently-finds-files-matching-specific-glob.md",
+    "15-03-26_10-11__validated-canonical-opencode-workspace-identity.md",
+    "15-03-26_10-11__routing-to-media-editor-let-me-locate-and-load.md",
+    "15-03-26_10-47__i-found-a-large-dirty-worktree-with-many.md",
+    "15-03-26_10-47__pass-automated-validation-is-strong-all-listed.md",
+    "15-03-26_10-47__pass-automated-checks-100-pass-rate-across-lint.md"
   ]
 }

@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Config
+// ────────────────────────────────────────────────────────────────
 import { loadRawConfig, writeConfig, getConfigPath } from '../config.js'
 import type { Config } from '../config.js'
 

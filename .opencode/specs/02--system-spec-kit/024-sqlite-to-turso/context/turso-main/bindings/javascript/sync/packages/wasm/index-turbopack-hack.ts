@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Index Turbopack Hack
+// ────────────────────────────────────────────────────────────────
 import { setupMainThread } from "@tursodatabase/database-wasm-common";
 import { tursoWasm } from "./wasm-inline.js";
 

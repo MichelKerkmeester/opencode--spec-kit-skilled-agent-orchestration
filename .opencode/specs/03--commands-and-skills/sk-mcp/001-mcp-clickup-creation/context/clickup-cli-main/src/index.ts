@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Index
+// ────────────────────────────────────────────────────────────────
 import { Command } from 'commander'
 import { createRequire } from 'module'
 import { loadConfig } from './config.js'

@@ -3,21 +3,9 @@ import { describe, it, expect, beforeAll } from 'vitest';
 
 import * as handler from '../handlers/session-learning';
 import * as vectorIndex from '../lib/search/vector-index';
+import type { LearningHistoryPayload, LearningHistoryRow } from '../handlers/session-learning';
 
-type LearningHistoryRow = {
-  taskId?: string;
-  sessionId?: string;
-  phase?: string;
-  createdAt?: string;
-};
-
-type LearningHistoryResponse = {
-  summary?: {
-    totalTasks: number;
-    completedTasks: number;
-  };
-  learningHistory: LearningHistoryRow[];
-};
+type LearningHistoryResponse = LearningHistoryPayload;
 
 type JsonTextEnvelope = {
   content?: Array<{ text?: string }>;
@@ -423,9 +411,10 @@ describe('T503: Learning Stats SQL Filter Tests', () => {
       });
 
       const data = expectLearningResponse(parseResponse(result));
-      if (data.summary && (data.summary as any).completedTasks > 0) {
-        expect((data.summary as any).interpretation).toBeDefined();
-        expect(typeof (data.summary as any).interpretation).toBe('string');
+      const summary = expectSummary(data);
+      if (summary.completedTasks > 0) {
+        expect(summary.interpretation).toBeDefined();
+        expect(typeof summary.interpretation).toBe('string');
       }
     });
   });

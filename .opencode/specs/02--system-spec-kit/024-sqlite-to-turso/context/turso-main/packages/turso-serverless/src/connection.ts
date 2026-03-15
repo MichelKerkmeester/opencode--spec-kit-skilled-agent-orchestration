@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Connection
+// ────────────────────────────────────────────────────────────────
 import { Session, type SessionConfig } from './session.js';
 import { Statement } from './statement.js';
 

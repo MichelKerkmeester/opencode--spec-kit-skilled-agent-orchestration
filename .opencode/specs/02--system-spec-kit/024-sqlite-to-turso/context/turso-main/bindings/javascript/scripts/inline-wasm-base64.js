@@ -1,3 +1,5 @@
+'use strict';
+
 import { readFileSync, writeFileSync } from "node:fs";
 
 const data = readFileSync(process.env.WASM_FILE);

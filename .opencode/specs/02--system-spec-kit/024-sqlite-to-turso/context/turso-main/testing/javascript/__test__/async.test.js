@@ -1,3 +1,5 @@
+'use strict';
+
 import test from "ava";
 import crypto from 'crypto';
 import fs from 'fs';

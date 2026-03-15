@@ -27,7 +27,7 @@ contextType: "general"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P1 |
-| **Status** | Implemented |
+| **Status** | Complete |
 | **Created** | 2026-03-10 |
 | **Branch** | `019-decisions-and-deferrals` |
 | **Parent Spec** | ../spec.md |
@@ -44,7 +44,7 @@ contextType: "general"
 The decisions-and-deferrals audit identified two WARN findings (F-02 and F-03) that blocked closure due to incomplete evidence mapping and a real sentence-boundary extraction bug. The spec folder now needs to reflect post-remediation reality with traceable verification evidence.
 
 ### Purpose
-Provide a Level 2, verification-ready specification that captures final PASS/WARN outcomes after remediation, plus any residual follow-up questions that still need product/ops decisions.
+Provide a Level 2, verification-ready specification that captures final PASS outcomes after remediation with concrete closure evidence and no remaining product or ops decisions.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -54,8 +54,8 @@ Provide a Level 2, verification-ready specification that captures final PASS/WAR
 
 ### In Scope
 - Audit summary for the five decisions/deferrals findings using current source evidence from `feature_catalog/10--graph-signal-activation/` and `feature_catalog/13--memory-quality-and-indexing/`
-- Closure evidence for formerly deferred WARN items F-02 and F-03
-- Final verification outcomes and residual open-question documentation
+- Closure evidence for the original WARN items F-02 and F-03
+- Final verification outcomes and deterministic entity-refresh closure documentation
 
 ### Out of Scope
 - New feature development beyond F-02/F-03 remediation and audit closure
@@ -88,7 +88,7 @@ Provide a Level 2, verification-ready specification that captures final PASS/WAR
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-003 | Create actionable follow-up tasks for WARN findings | Tasks capture owner action, target file, and expected correction |
+| REQ-003 | Create actionable closure tasks for the original WARN findings | Tasks capture owner action, target file, and expected correction |
 | REQ-004 | Preserve audit methodology and verification workflow | Plan and checklist map directly to audit criteria and acceptance checks |
 | REQ-005 | Ensure feature-catalog references resolve to existing markdown sources | All markdown references in this folder validate via `validate.sh --no-recursive` |
 <!-- /ANCHOR:requirements -->
@@ -108,7 +108,7 @@ Provide a Level 2, verification-ready specification that captures final PASS/WAR
 <!-- ANCHOR:acceptance-scenarios -->
 ## 6. ACCEPTANCE SCENARIOS
 
-1. **Given** all five catalog features are listed in scope, **When** checklist verification runs, **Then** each feature appears with PASS/WARN/FAIL status and a finding summary.
+1. **Given** all five catalog features are listed in scope, **When** checklist verification runs, **Then** each feature appears with its final status and a finding summary.
 2. **Given** F-02 previously failed on evidence completeness, **When** feature-catalog sources are reconciled, **Then** graph-signals implementation/tests and migration-v19 touchpoints are explicitly referenced and F-02 can be marked PASS.
 3. **Given** F-03 previously failed on cross-sentence extraction, **When** Rule-3 regex and regression tests are updated, **Then** sentence-boundary capture is prevented while dotted tokens like `Node.js` still extract correctly.
 4. **Given** markdown cross-references are updated, **When** `validate.sh --no-recursive` runs for this folder, **Then** spec documentation integrity passes with no missing markdown targets.
@@ -123,7 +123,7 @@ Provide a Level 2, verification-ready specification that captures final PASS/WAR
 |------|------|--------|------------|
 | Dependency | `feature_catalog/10--graph-signal-activation/*.md` and `feature_catalog/13--memory-quality-and-indexing/*.md` | Missing/incorrect feature entries can skew audit conclusions | Reconcile findings against catalog source list before sign-off |
 | Dependency | `mcp_server/lib/**` and `mcp_server/tests/**` references | Incomplete file inventory can hide behavior mismatches | Include all referenced implementation and migration files in source tables |
-| Risk | Regex remediation changes extraction boundaries | Previously extracted cross-sentence entities may remain in stored data | Decide whether cleanup/backfill is required for historical rows |
+| Risk | Regex remediation changes extraction boundaries | Previously extracted cross-sentence entities may remain in stored data | Use the deterministic auto-entity rebuild path to refresh historical auto-generated rows when needed |
 | Risk | Audit drift after closure | Future code changes can invalidate PASS evidence | Keep catalog source tables synchronized during future audits |
 <!-- /ANCHOR:risks -->
 
@@ -165,7 +165,7 @@ Provide a Level 2, verification-ready specification that captures final PASS/WAR
 - Concurrent access: Re-run file diff verification before final sign-off if multiple editors update the same folder
 
 ### State Transitions
-- Partial completion: Preserve PASS/WARN status and carry unresolved items into tasks.md
+- Partial completion: Preserve current evidence and do not mark the phase complete until all closure items are recorded in tasks.md
 - Session expiry: Resume from saved spec/task/checklist anchors without losing finding context
 <!-- /ANCHOR:edge-cases -->
 
@@ -186,7 +186,7 @@ Provide a Level 2, verification-ready specification that captures final PASS/WAR
 
 ## 10. OPEN QUESTIONS
 
-- Should the F-03 regex correction include a migration/backfill strategy for previously extracted entities in `memory_entities`?
+- None. Historical auto-generated entity rows can be refreshed with the deterministic rebuild path documented in code and scripts.
 <!-- /ANCHOR:questions -->
 
 ---

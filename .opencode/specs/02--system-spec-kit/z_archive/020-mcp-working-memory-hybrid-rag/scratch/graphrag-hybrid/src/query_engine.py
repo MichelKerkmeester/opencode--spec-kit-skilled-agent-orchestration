@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Query engine for hybrid Neo4j and Qdrant search
 """

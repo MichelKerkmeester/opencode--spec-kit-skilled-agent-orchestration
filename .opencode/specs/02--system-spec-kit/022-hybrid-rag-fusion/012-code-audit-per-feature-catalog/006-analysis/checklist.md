@@ -88,7 +88,7 @@ P1 items are complete and include inline evidence.
 
 - [x] CHK-040 [P1] `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` are synchronized — all 4 docs updated with implementation evidence [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
 - [x] CHK-041 [P1] Stale `retry.vitest.ts` references are tracked across F-01..F-07 — T016-T022 removed all 7 references; grep confirms 0 matches [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-042 [P2] Playbook mapping gaps (EX-019..EX-025) are documented — gaps noted in spec.md open questions; no additional mapping needed for this phase [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
+- [x] CHK-042 [P2] Playbook mappings (EX-019..EX-025) are explicit in the feature catalog — all seven analysis feature docs now reference their direct manual scenarios [EVIDENCE: `../../../../../skill/system-spec-kit/feature_catalog/06--analysis/*.md` manual coverage sections + `../../../../../skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` cross-reference index.]
 <!-- /ANCHOR:docs -->
 
 ---

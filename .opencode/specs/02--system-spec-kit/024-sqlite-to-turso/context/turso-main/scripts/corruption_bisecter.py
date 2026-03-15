@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+"""Module for corruption bisecter."""
+
 # Usage e.g.: uv run scripts/corruption_bisecter.py -i corruption.sql -o bisected.sql
 # To clean up input data for this script, consider using `scripts/clean_interactions.sh`
 import argparse

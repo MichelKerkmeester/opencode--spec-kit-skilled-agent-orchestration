@@ -1,4 +1,7 @@
 #!/usr/bin/env bun
+// ────────────────────────────────────────────────────────────────
+// MODULE: Docker Entrypoint Simulator
+// ────────────────────────────────────────────────────────────────
 
 import { spawn } from "bun";
 import { GithubClient } from "./github";

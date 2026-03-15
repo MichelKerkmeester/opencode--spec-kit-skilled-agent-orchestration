@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Document processor for parsing and chunking documents
 """

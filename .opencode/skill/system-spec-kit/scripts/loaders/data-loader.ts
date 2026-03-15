@@ -5,7 +5,7 @@
 // ───────────────────────────────────────────────────────────────
 // 1. DATA LOADER
 // ───────────────────────────────────────────────────────────────
-// Loads session data from file, OpenCode capture, or simulation fallback
+// Loads session data from file, native CLI capture, or hard-fail
 
 // ───────────────────────────────────────────────────────────────
 // 2. IMPORTS
@@ -46,11 +46,35 @@ interface OpencodeCaptureMod {
   captureConversation(maxExchanges: number, projectRoot: string): Promise<OpencodeCapture | null>;
 }
 
+/** Claude Code capture module interface (lazy-loaded) */
+interface ClaudeCodeCaptureMod {
+  captureClaudeConversation(maxExchanges: number, projectRoot: string): Promise<OpencodeCapture | null>;
+}
+
+/** Codex CLI capture module interface (lazy-loaded) */
+interface CodexCliCaptureMod {
+  captureCodexConversation(maxExchanges: number, projectRoot: string): Promise<OpencodeCapture | null>;
+}
+
+/** Copilot CLI capture module interface (lazy-loaded) */
+interface CopilotCliCaptureMod {
+  captureCopilotConversation(maxExchanges: number, projectRoot: string): Promise<OpencodeCapture | null>;
+}
+
+/** Gemini CLI capture module interface (lazy-loaded) */
+interface GeminiCliCaptureMod {
+  captureGeminiConversation(maxExchanges: number, projectRoot: string): Promise<OpencodeCapture | null>;
+}
+
 // ───────────────────────────────────────────────────────────────
 // 4. LAZY-LOADED DEPENDENCIES
 // ───────────────────────────────────────────────────────────────
 // Lazy load via dynamic import() to handle missing dependencies
 let _opencodeCapture: OpencodeCaptureMod | null | undefined;
+let _claudeCodeCapture: ClaudeCodeCaptureMod | null | undefined;
+let _codexCliCapture: CodexCliCaptureMod | null | undefined;
+let _copilotCliCapture: CopilotCliCaptureMod | null | undefined;
+let _geminiCliCapture: GeminiCliCaptureMod | null | undefined;
 
 async function getOpencodeCapture(): Promise<OpencodeCaptureMod | null> {
   if (_opencodeCapture === undefined) {
@@ -67,12 +91,82 @@ async function getOpencodeCapture(): Promise<OpencodeCaptureMod | null> {
   return _opencodeCapture;
 }
 
+async function getClaudeCodeCapture(): Promise<ClaudeCodeCaptureMod | null> {
+  if (_claudeCodeCapture === undefined) {
+    try {
+      _claudeCodeCapture = await import('../extractors/claude-code-capture') as ClaudeCodeCaptureMod;
+    } catch (err: unknown) {
+      const errMsg = err instanceof Error ? err.message : String(err);
+      structuredLog('warn', 'claude-code-capture library not available', {
+        error: errMsg
+      });
+      _claudeCodeCapture = null;
+    }
+  }
+  return _claudeCodeCapture;
+}
+
+async function getCodexCliCapture(): Promise<CodexCliCaptureMod | null> {
+  if (_codexCliCapture === undefined) {
+    try {
+      _codexCliCapture = await import('../extractors/codex-cli-capture') as CodexCliCaptureMod;
+    } catch (err: unknown) {
+      const errMsg = err instanceof Error ? err.message : String(err);
+      structuredLog('warn', 'codex-cli-capture library not available', {
+        error: errMsg
+      });
+      _codexCliCapture = null;
+    }
+  }
+  return _codexCliCapture;
+}
+
+async function getCopilotCliCapture(): Promise<CopilotCliCaptureMod | null> {
+  if (_copilotCliCapture === undefined) {
+    try {
+      _copilotCliCapture = await import('../extractors/copilot-cli-capture') as CopilotCliCaptureMod;
+    } catch (err: unknown) {
+      const errMsg = err instanceof Error ? err.message : String(err);
+      structuredLog('warn', 'copilot-cli-capture library not available', {
+        error: errMsg
+      });
+      _copilotCliCapture = null;
+    }
+  }
+  return _copilotCliCapture;
+}
+
+async function getGeminiCliCapture(): Promise<GeminiCliCaptureMod | null> {
+  if (_geminiCliCapture === undefined) {
+    try {
+      _geminiCliCapture = await import('../extractors/gemini-cli-capture') as GeminiCliCaptureMod;
+    } catch (err: unknown) {
+      const errMsg = err instanceof Error ? err.message : String(err);
+      structuredLog('warn', 'gemini-cli-capture library not available', {
+        error: errMsg
+      });
+      _geminiCliCapture = null;
+    }
+  }
+  return _geminiCliCapture;
+}
+
 // ───────────────────────────────────────────────────────────────
 // 5. LOADER FUNCTIONS
 // ───────────────────────────────────────────────────────────────
 interface LoadOptions {
   dataFile?: string | null;
   specFolderArg?: string | null;
+}
+
+function hasUsableCaptureContent(conversation: OpencodeCapture | null): conversation is OpencodeCapture {
+  if (!conversation) {
+    return false;
+  }
+
+  const exchangeCount = Array.isArray(conversation.exchanges) ? conversation.exchanges.length : 0;
+  const toolCallCount = Array.isArray(conversation.toolCalls) ? conversation.toolCalls.length : 0;
+  return exchangeCount > 0 || toolCallCount > 0;
 }
 
 async function loadCollectedData(options?: LoadOptions): Promise<LoadedData> {
@@ -157,11 +251,11 @@ async function loadCollectedData(options?: LoadOptions): Promise<LoadedData> {
         CONFIG.PROJECT_ROOT
       );
 
-      if (conversation && conversation.exchanges && conversation.exchanges.length > 0) {
+      if (hasUsableCaptureContent(conversation)) {
         console.log(`   \u2713 Captured ${conversation.exchanges.length} exchanges from OpenCode`);
         console.log(`   \u2713 Session: ${conversation.sessionTitle || 'Unnamed'}`);
 
-        const data = transformOpencodeCapture(conversation, specFolderArg);
+        const data = transformOpencodeCapture(conversation, specFolderArg, 'opencode-capture');
         return data as LoadedData;
       } else {
         structuredLog('debug', 'OpenCode capture returned empty data', {
@@ -179,9 +273,161 @@ async function loadCollectedData(options?: LoadOptions): Promise<LoadedData> {
     }
   }
 
-  // Priority 3: No data available — refuse to proceed
+  // Priority 3: Claude Code session capture
+  console.log('   🔍 Attempting Claude Code session capture...');
+
+  const claudeCodeCapture = await getClaudeCodeCapture();
+  if (!claudeCodeCapture) {
+    structuredLog('debug', 'Claude Code capture not available', {
+      projectRoot: CONFIG.PROJECT_ROOT
+    });
+    console.log('   ⚠️  Claude Code capture not available');
+  } else {
+    try {
+      const conversation: OpencodeCapture | null = await claudeCodeCapture.captureClaudeConversation(
+        20,
+        CONFIG.PROJECT_ROOT
+      );
+
+      if (hasUsableCaptureContent(conversation)) {
+        console.log(`   ✓ Captured ${conversation.exchanges.length} exchanges from Claude Code`);
+        console.log(`   ✓ Session: ${conversation.sessionTitle || 'Unnamed'}`);
+
+        const data = transformOpencodeCapture(conversation, specFolderArg, 'claude-code-capture');
+        return { ...data, _source: 'claude-code-capture' } as LoadedData;
+      } else {
+        structuredLog('debug', 'Claude Code capture returned empty data', {
+          projectRoot: CONFIG.PROJECT_ROOT
+        });
+        console.log('   ⚠️  Claude Code capture returned empty data');
+      }
+    } catch (captureError: unknown) {
+      const captureErrMsg = captureError instanceof Error ? captureError.message : String(captureError);
+      structuredLog('debug', 'Claude Code capture failed', {
+        projectRoot: CONFIG.PROJECT_ROOT,
+        error: captureErrMsg
+      });
+      console.log(`   ⚠️  Claude Code capture unavailable: ${captureErrMsg}`);
+    }
+  }
+
+  // Priority 4: Codex CLI session capture
+  console.log('   🔍 Attempting Codex CLI session capture...');
+
+  const codexCliCapture = await getCodexCliCapture();
+  if (!codexCliCapture) {
+    structuredLog('debug', 'Codex CLI capture not available', {
+      projectRoot: CONFIG.PROJECT_ROOT
+    });
+    console.log('   ⚠️  Codex CLI capture not available');
+  } else {
+    try {
+      const conversation: OpencodeCapture | null = await codexCliCapture.captureCodexConversation(
+        20,
+        CONFIG.PROJECT_ROOT
+      );
+
+      if (hasUsableCaptureContent(conversation)) {
+        console.log(`   ✓ Captured ${conversation.exchanges.length} exchanges from Codex CLI`);
+        console.log(`   ✓ Session: ${conversation.sessionTitle || 'Unnamed'}`);
+
+        const data = transformOpencodeCapture(conversation, specFolderArg, 'codex-cli-capture');
+        return { ...data, _source: 'codex-cli-capture' } as LoadedData;
+      } else {
+        structuredLog('debug', 'Codex CLI capture returned empty data', {
+          projectRoot: CONFIG.PROJECT_ROOT
+        });
+        console.log('   ⚠️  Codex CLI capture returned empty data');
+      }
+    } catch (captureError: unknown) {
+      const captureErrMsg = captureError instanceof Error ? captureError.message : String(captureError);
+      structuredLog('debug', 'Codex CLI capture failed', {
+        projectRoot: CONFIG.PROJECT_ROOT,
+        error: captureErrMsg
+      });
+      console.log(`   ⚠️  Codex CLI capture unavailable: ${captureErrMsg}`);
+    }
+  }
+
+  // Priority 5: Copilot CLI session capture
+  console.log('   🔍 Attempting Copilot CLI session capture...');
+
+  const copilotCliCapture = await getCopilotCliCapture();
+  if (!copilotCliCapture) {
+    structuredLog('debug', 'Copilot CLI capture not available', {
+      projectRoot: CONFIG.PROJECT_ROOT
+    });
+    console.log('   ⚠️  Copilot CLI capture not available');
+  } else {
+    try {
+      const conversation: OpencodeCapture | null = await copilotCliCapture.captureCopilotConversation(
+        20,
+        CONFIG.PROJECT_ROOT
+      );
+
+      if (hasUsableCaptureContent(conversation)) {
+        console.log(`   ✓ Captured ${conversation.exchanges.length} exchanges from Copilot CLI`);
+        console.log(`   ✓ Session: ${conversation.sessionTitle || 'Unnamed'}`);
+
+        const data = transformOpencodeCapture(conversation, specFolderArg, 'copilot-cli-capture');
+        return { ...data, _source: 'copilot-cli-capture' } as LoadedData;
+      } else {
+        structuredLog('debug', 'Copilot CLI capture returned empty data', {
+          projectRoot: CONFIG.PROJECT_ROOT
+        });
+        console.log('   ⚠️  Copilot CLI capture returned empty data');
+      }
+    } catch (captureError: unknown) {
+      const captureErrMsg = captureError instanceof Error ? captureError.message : String(captureError);
+      structuredLog('debug', 'Copilot CLI capture failed', {
+        projectRoot: CONFIG.PROJECT_ROOT,
+        error: captureErrMsg
+      });
+      console.log(`   ⚠️  Copilot CLI capture unavailable: ${captureErrMsg}`);
+    }
+  }
+
+  // Priority 6: Gemini CLI session capture
+  console.log('   🔍 Attempting Gemini CLI session capture...');
+
+  const geminiCliCapture = await getGeminiCliCapture();
+  if (!geminiCliCapture) {
+    structuredLog('debug', 'Gemini CLI capture not available', {
+      projectRoot: CONFIG.PROJECT_ROOT
+    });
+    console.log('   ⚠️  Gemini CLI capture not available');
+  } else {
+    try {
+      const conversation: OpencodeCapture | null = await geminiCliCapture.captureGeminiConversation(
+        20,
+        CONFIG.PROJECT_ROOT
+      );
+
+      if (hasUsableCaptureContent(conversation)) {
+        console.log(`   ✓ Captured ${conversation.exchanges.length} exchanges from Gemini CLI`);
+        console.log(`   ✓ Session: ${conversation.sessionTitle || 'Unnamed'}`);
+
+        const data = transformOpencodeCapture(conversation, specFolderArg, 'gemini-cli-capture');
+        return { ...data, _source: 'gemini-cli-capture' } as LoadedData;
+      } else {
+        structuredLog('debug', 'Gemini CLI capture returned empty data', {
+          projectRoot: CONFIG.PROJECT_ROOT
+        });
+        console.log('   ⚠️  Gemini CLI capture returned empty data');
+      }
+    } catch (captureError: unknown) {
+      const captureErrMsg = captureError instanceof Error ? captureError.message : String(captureError);
+      structuredLog('debug', 'Gemini CLI capture failed', {
+        projectRoot: CONFIG.PROJECT_ROOT,
+        error: captureErrMsg
+      });
+      console.log(`   ⚠️  Gemini CLI capture unavailable: ${captureErrMsg}`);
+    }
+  }
+
+  // Priority 7: No data available — refuse to proceed
   throw new Error(
-    'NO_DATA_AVAILABLE: No session data found. Neither JSON data file nor OpenCode session capture provided usable content. ' +
+    'NO_DATA_AVAILABLE: No session data found. Neither JSON data file, OpenCode session capture, Claude Code session capture, Codex CLI session capture, Copilot CLI session capture, nor Gemini CLI session capture provided usable content. ' +
     'External CLI agents must provide data via JSON mode: ' +
     'write session data to /tmp/save-context-data.json, then run: node generate-context.js /tmp/save-context-data.json [spec-folder]'
   );

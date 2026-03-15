@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 # ───────────────────────────────────────────────────────────────
 # Test Runner: SpecKit Template Complexity System
 #

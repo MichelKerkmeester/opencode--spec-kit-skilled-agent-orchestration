@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 # Compare TPC-H query performance between main branch and current branch
 # Usage: ./compare.sh [main_binary] [current_binary]
 # This is for manual testing convenience.

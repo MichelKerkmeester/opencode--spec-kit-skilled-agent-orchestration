@@ -12,6 +12,7 @@ import * as fsSync from 'fs';
 import * as path from 'path';
 import * as readline from 'readline';
 import { CONFIG } from '../core';
+import { isSameWorkspacePath } from '../utils';
 
 /* ───────────────────────────────────────────────────────────────
    1. INTERFACES
@@ -255,7 +256,7 @@ function getProjectId(directory: string): string | null {
           const content = fsSync.readFileSync(sessionFile, 'utf-8');
           const session = JSON.parse(content) as Record<string, unknown>;
 
-          if (session.directory === directory) {
+          if (typeof session.directory === 'string' && isSameWorkspacePath(directory, session.directory)) {
             return projectId;
           }
         } catch {

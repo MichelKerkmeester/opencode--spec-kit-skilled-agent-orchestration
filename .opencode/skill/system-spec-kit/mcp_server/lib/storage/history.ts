@@ -64,6 +64,7 @@ export interface LineageTransitionAnchor {
 let db: Database.Database | null = null;
 let insertHistoryStatement: Database.Statement | null = null;
 let resolveSpecFolderStatement: Database.Statement | null = null;
+let resolveHistorySpecFolderStatement: Database.Statement | null = null;
 const specFolderCache = new Map<number, string | null>();
 const SPEC_FOLDER_CACHE_MAX = 5000;
 
@@ -159,6 +160,15 @@ export function init(database: Database.Database): void {
   resolveSpecFolderStatement = database.prepare(
     'SELECT spec_folder FROM memory_index WHERE id = ? LIMIT 1'
   ) as Database.Statement;
+  resolveHistorySpecFolderStatement = database.prepare(`
+    SELECT spec_folder
+    FROM memory_history
+    WHERE memory_id = ?
+      AND spec_folder IS NOT NULL
+      AND trim(spec_folder) <> ''
+    ORDER BY timestamp DESC, rowid DESC
+    LIMIT 1
+  `) as Database.Statement;
 }
 
 function hasTable(database: Database.Database, tableName: string): boolean {
@@ -238,7 +248,19 @@ function resolveSpecFolder(memoryId: number, override?: string | null): string |
   }
 
   const row = resolveSpecFolderStatement.get(memoryId) as { spec_folder?: string | null } | undefined;
-  const resolved = normalizeSpecFolder(row?.spec_folder ?? null);
+  const resolvedFromIndex = normalizeSpecFolder(row?.spec_folder ?? null);
+  if (resolvedFromIndex) {
+    setSpecFolderCache(memoryId, resolvedFromIndex);
+    return resolvedFromIndex;
+  }
+
+  if (!resolveHistorySpecFolderStatement) {
+    setSpecFolderCache(memoryId, null);
+    return null;
+  }
+
+  const historyRow = resolveHistorySpecFolderStatement.get(memoryId) as { spec_folder?: string | null } | undefined;
+  const resolved = normalizeSpecFolder(historyRow?.spec_folder ?? null);
   setSpecFolderCache(memoryId, resolved);
   return resolved;
 }
@@ -401,7 +423,15 @@ export function getHistoryStats(specFolder?: string): HistoryStats {
                AND m.spec_folder = ?
            )
          )
-    `).get(specFolder, specFolder) as Record<string, number>;
+         OR (
+           h.spec_folder IS NULL
+           AND EXISTS (
+             SELECT 1 FROM memory_history hx
+             WHERE hx.memory_id = h.memory_id
+               AND hx.spec_folder = ?
+           )
+         )
+    `).get(specFolder, specFolder, specFolder) as Record<string, number>;
 
     return {
       total: row.total ?? 0,

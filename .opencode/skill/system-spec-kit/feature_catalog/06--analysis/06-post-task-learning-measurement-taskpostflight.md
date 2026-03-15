@@ -100,7 +100,7 @@ You can track gaps closed during the task and new gaps discovered. Both are stor
 | `mcp_server/tests/handler-memory-index.vitest.ts` | Index handler validation |
 | `mcp_server/tests/handler-session-learning.vitest.ts` | Session learning validation |
 | `mcp_server/tests/incremental-index-v2.vitest.ts` | Incremental index behavioral tests |
-| `mcp_server/tests/incremental-index.vitest.ts` | Legacy deferred placeholder suite (skipped; not behavioral evidence) |
+| `mcp_server/tests/incremental-index.vitest.ts` | Focused incremental-index coverage (supplemental to `incremental-index-v2.vitest.ts`; concrete fast-path assertions) |
 | `mcp_server/tests/index-refresh.vitest.ts` | Index refresh tests |
 | `mcp_server/tests/interference.vitest.ts` | Interference scoring tests |
 | `mcp_server/tests/mcp-response-envelope.vitest.ts` | MCP envelope tests |
@@ -124,7 +124,15 @@ You can track gaps closed during the task and new gaps discovered. Both are stor
 
 ---
 
-## 4. SOURCE METADATA
+## 4. MANUAL PLAYBOOK COVERAGE
+
+| Scenario | Role |
+|----------|------|
+| `EX-024` | Direct manual validation for postflight closeout and Learning Index persistence |
+
+---
+
+## 5. SOURCE METADATA
 
 - Group: Analysis
 - Source feature title: Post-task learning measurement (task_postflight)

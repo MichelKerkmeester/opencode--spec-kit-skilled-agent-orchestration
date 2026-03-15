@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Status
+// ────────────────────────────────────────────────────────────────
 export function matchStatus(input: string, statuses: string[]): string | null {
   if (!input) return null
 

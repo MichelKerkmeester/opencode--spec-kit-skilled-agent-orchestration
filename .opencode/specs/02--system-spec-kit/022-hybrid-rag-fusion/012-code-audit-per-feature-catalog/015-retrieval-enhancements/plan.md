@@ -111,7 +111,7 @@ Feature definitions are reviewed first to extract claimed implementation/test ow
 | `feature_catalog/15--retrieval-enhancements/` | Internal | Green | Source/test mapping validation completed (`MISSING_TOTAL=0`); future drift risk remains if mapping checks are skipped. |
 | `mcp_server/lib/search/*` implementation files | Internal | Green | Core behavioral issues cannot be validated or fixed. |
 | `mcp_server/tests/*.vitest.ts` coverage ownership | Internal | Yellow | Regressions may remain undetected for P0 features. |
-| Manual playbook scenarios (NEW-085+) | External | Yellow | Eight retrieval features are mapped; feature 09 currently lacks a direct manual scenario mapping. |
+| Manual playbook scenarios (NEW-085+) | External | Green | All nine retrieval-enhancement features are mapped, including NEW-145 for feature 09. |
 <!-- /ANCHOR:dependencies -->
 
 ---

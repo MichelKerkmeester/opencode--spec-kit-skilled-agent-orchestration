@@ -60,7 +60,7 @@ contextType: "general"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [ ] T013 Run recursive spec validation for parent + child phase docs (`validate.sh --recursive`) [RESULT: In this session `validate.sh --recursive` returned `FAILED` with `Errors: 2, Warnings: 1`; remediation pending]
+- [x] T013 Run recursive spec validation for parent + child phase docs (`validate.sh --recursive`) [RESULT: PASS on 2026-03-15 — `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh --recursive .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog` returned `All 21 phases passed. Summary: Errors: 0, Warnings: 0`.]
 - [x] T014 Run placeholder scan for phase 021 docs (`rg` placeholder pattern scan) [RESULT: PASS, no placeholder hits (rg exit 1)]
 - [x] T015 Record actual verification outputs in `checklist.md` and `implementation-summary.md` (`checklist.md`, `implementation-summary.md`)
 <!-- /ANCHOR:phase-3 -->
@@ -70,9 +70,9 @@ contextType: "general"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [ ] T013-T015 marked complete with evidence
+- [x] T013-T015 marked complete with evidence
 - [x] No `[B]` blocked tasks remaining
-- [ ] Parent and phase 021 docs remain mutually consistent after verification
+- [x] Parent and phase 021 docs remain mutually consistent after verification
 <!-- /ANCHOR:completion -->
 
 ---

@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Lists
+// ────────────────────────────────────────────────────────────────
 import { ClickUpClient } from '../api.js'
 import type { Config } from '../config.js'
 import { isTTY, shouldOutputJson, formatTable } from '../output.js'

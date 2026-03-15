@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+"""Module for lib sync aio."""
+
 from __future__ import annotations
 
 from typing import Callable, Optional, Union, cast

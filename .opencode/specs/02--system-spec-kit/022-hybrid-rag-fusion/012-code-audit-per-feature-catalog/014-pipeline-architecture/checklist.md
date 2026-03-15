@@ -95,7 +95,7 @@ P0 items below are complete and include inline evidence.
 
 ## P1 - Required
 
-P1 items are complete and include inline evidence unless explicitly deferred.
+P1 items are complete and include inline evidence.
 
 ---
 

@@ -1,6 +1,8 @@
 {
   "name": "tursodb sandbox",
-  "dockerComposeFile": ["docker-compose.yml"],
+  "dockerComposeFile": [
+    "docker-compose.yml"
+  ],
   "service": "tursodb",
   "remoteUser": "node",
   "workspaceFolder": "/workspace",
@@ -10,18 +12,10 @@
       "extensions": [
         "anthropic.claude-code",
         "eamodio.gitlens",
-
-        // Rust
         "rust-lang.rust-analyzer",
-
-        // Go
         "golang.Go",
-
-        // Python
         "ms-python.python",
         "ms-python.vscode-pylance",
-
-        // JavaScript / TypeScript
         "dbaeumer.vscode-eslint",
         "esbenp.prettier-vscode",
         "ms-vscode.vscode-typescript-next"

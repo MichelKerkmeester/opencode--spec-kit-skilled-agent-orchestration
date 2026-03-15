@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Delete
+// ────────────────────────────────────────────────────────────────
 import { ClickUpClient } from '../api.js'
 import type { Config } from '../config.js'
 import { isTTY } from '../output.js'

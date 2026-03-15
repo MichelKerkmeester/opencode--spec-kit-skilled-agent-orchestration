@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+"""Module for console."""
+
 from typing import Any, Optional, Union
 
 from rich.console import Console, JustifyMethod

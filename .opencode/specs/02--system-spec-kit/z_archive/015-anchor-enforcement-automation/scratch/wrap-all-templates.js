@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+'use strict';
+
 /**
  * Wraps all level_1-3+ template files with ANCHOR tags
  * Uses anchor-generator.ts wrapSectionsWithAnchors() function

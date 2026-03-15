@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+"""Module for merge pr."""
+
 #
 # Copyright 2024 the Turso authors. All rights reserved. MIT license.
 #

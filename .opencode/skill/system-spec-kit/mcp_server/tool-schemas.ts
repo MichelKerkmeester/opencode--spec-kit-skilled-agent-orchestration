@@ -374,6 +374,17 @@ const sharedMemoryStatus: ToolDefinition = {
   },
 };
 
+const sharedMemoryEnable: ToolDefinition = {
+  name: 'shared_memory_enable',
+  description: '[L5:Lifecycle] Enable the shared-memory subsystem. First-run setup: persists enablement, creates infrastructure tables, and generates a README. Idempotent — subsequent calls return alreadyEnabled: true.',
+  inputSchema: {
+    type: 'object',
+    additionalProperties: false,
+    properties: {},
+    required: [],
+  },
+};
+
 // L6: Analysis - Deep inspection and lineage (Token Budget: 1200)
 const taskPreflight: ToolDefinition = {
   name: 'task_preflight',
@@ -547,6 +558,7 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
   sharedSpaceUpsert,
   sharedSpaceMembershipSet,
   sharedMemoryStatus,
+  sharedMemoryEnable,
   // L6: Analysis
   taskPreflight,
   taskPostflight,

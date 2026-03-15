@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Index
+// ────────────────────────────────────────────────────────────────
 import {
     createOnMessage as __wasmCreateOnMessageForFsProxy,
     getDefaultContext as __emnapiGetDefaultContext,

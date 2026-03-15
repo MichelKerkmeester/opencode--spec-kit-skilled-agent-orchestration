@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Promise
+// ────────────────────────────────────────────────────────────────
 import { AsyncLock } from "./async-lock.js";
 import { bindParams } from "./bind.js";
 import { SqliteError } from "./sqlite-error.js";

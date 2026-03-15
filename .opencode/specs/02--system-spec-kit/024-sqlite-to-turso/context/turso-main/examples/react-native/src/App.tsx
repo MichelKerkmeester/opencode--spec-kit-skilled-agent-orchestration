@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: App
+// ────────────────────────────────────────────────────────────────
 import { useEffect, useState } from 'react';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';

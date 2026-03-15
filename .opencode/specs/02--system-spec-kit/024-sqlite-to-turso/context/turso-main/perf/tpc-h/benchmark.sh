@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 # TPC-H benchmark script
 
 REPO_ROOT=$(git rev-parse --show-toplevel)

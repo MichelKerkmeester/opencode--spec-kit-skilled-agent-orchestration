@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """AFL crash/hang filename parser."""
 
 import re

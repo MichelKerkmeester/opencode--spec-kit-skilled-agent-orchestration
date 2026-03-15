@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: LogParse
+// ────────────────────────────────────────────────────────────────
 /**
  * SQLancer output parsing and failure type definitions.
  * Extracts failure information from SQLancer logs and stdout/stderr.

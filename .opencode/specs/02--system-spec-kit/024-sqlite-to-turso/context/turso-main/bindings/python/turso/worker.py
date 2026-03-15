@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import asyncio
 from queue import SimpleQueue
 from threading import Thread

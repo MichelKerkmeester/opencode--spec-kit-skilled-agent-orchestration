@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Slack
+// ────────────────────────────────────────────────────────────────
 export class SlackClient {
   private botToken: string;
   private channel: string;

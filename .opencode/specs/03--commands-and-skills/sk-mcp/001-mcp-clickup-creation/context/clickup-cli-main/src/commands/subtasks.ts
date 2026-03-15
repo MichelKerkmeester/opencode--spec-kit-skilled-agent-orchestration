@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Subtasks
+// ────────────────────────────────────────────────────────────────
 import { ClickUpClient } from '../api.js'
 import type { Config } from '../config.js'
 import type { TaskSummary } from './tasks.js'

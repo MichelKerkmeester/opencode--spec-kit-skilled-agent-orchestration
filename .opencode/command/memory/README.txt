@@ -1,6 +1,6 @@
 ---
 title: "Memory Commands"
-description: "Slash commands for managing the Spec Kit Memory system including context retrieval, session recovery, constitutional memory management, and database operations."
+description: "Slash commands for managing the Spec Kit Memory system including context retrieval, session recovery, constitutional memory management, database operations, analysis, shared spaces, and async ingestion."
 trigger_phrases:
   - "memory command"
   - "memory save"
@@ -8,6 +8,8 @@ trigger_phrases:
   - "memory continue"
   - "memory learn"
   - "memory manage"
+  - "memory analyze"
+  - "memory shared"
 ---
 
 # Memory Commands
@@ -24,8 +26,9 @@ trigger_phrases:
 - [3. STRUCTURE](#3-structure)
 - [4. USAGE EXAMPLES](#4-usage-examples)
 - [5. MANAGE SUBCOMMANDS](#5-manage-subcommands)
-- [6. TROUBLESHOOTING](#6-troubleshooting)
-- [7. RELATED DOCUMENTS](#7-related-documents)
+- [6. TOOL COVERAGE MATRIX](#6-tool-coverage-matrix)
+- [7. TROUBLESHOOTING](#7-troubleshooting)
+- [8. RELATED DOCUMENTS](#8-related-documents)
 
 ---
 
@@ -33,9 +36,21 @@ trigger_phrases:
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-The `memory` command group provides operations for the Spec Kit Memory MCP system. These commands handle context preservation across sessions, intent-aware retrieval, session recovery, constitutional memory management, and database maintenance.
+The `memory` command group provides operations for the Spec Kit Memory MCP system. These 7 commands cover context preservation, intent-aware retrieval, session recovery, constitutional memory management, database maintenance (including async ingest), analysis/evaluation, and shared-memory spaces.
 
 All commands interact with the memory MCP server tools (`spec_kit_memory_*`). They follow a gate-based argument validation pattern: if required arguments are missing, the command prompts the user before proceeding.
+
+### Canonical Section Order
+
+All 7 commands follow a consistent user-first section order:
+
+```text
+GATE → TITLE → §1 PURPOSE → §2 CONTRACT → §3 QUICK REFERENCE
+→ §4 ARGUMENT ROUTING → [MODE/WORKFLOW HANDLERS] → ERROR HANDLING
+→ RELATED COMMANDS → APPENDIX A: MCP TOOL REFERENCE → [APPENDIX B+]
+```
+
+Everything above the `---` divider is for users. Appendices below are AI agent reference material.
 
 ---
 
@@ -48,8 +63,10 @@ All commands interact with the memory MCP server tools (`spec_kit_memory_*`). Th
 | **context** | `/memory:context <query> [--intent:<type>]` | Intent-aware context retrieval with task-specific weight optimization |
 | **continue** | `/memory:continue [recovery-mode:auto\|manual]` | Recover session from crash, compaction, or timeout |
 | **learn** | `/memory:learn [rule] \| list \| edit \| remove \| budget` | Create and manage constitutional memories (always-surface rules) |
-| **manage** | `/memory:manage <subcommand>` | Database operations (scan with source-scope prompt, cleanup, tier, health, checkpoint) |
+| **manage** | `/memory:manage <subcommand>` | Database operations (scan, cleanup, tier, health, checkpoint, ingest) |
 | **save** | `/memory:save <spec-folder>` | Save conversation context with semantic indexing |
+| **analyze** | `/memory:analyze <subcommand>` | Epistemic baselines, causal graph, ablation, and reporting dashboards |
+| **shared** | `/memory:shared <subcommand>` | Shared-memory space lifecycle (create, membership, status) |
 
 ### Intent Types for Context Command
 
@@ -73,19 +90,47 @@ All commands interact with the memory MCP server tools (`spec_kit_memory_*`). Th
 | remove | `/memory:learn remove <filename>` | Remove constitutional memory |
 | budget | `/memory:learn budget` | Token budget status (~2000 max) |
 
+### Analyze Subcommands
+
+| Subcommand | Invocation | Description |
+|------------|------------|-------------|
+| preflight | `/memory:analyze preflight <specFolder> <taskId>` | Capture epistemic baseline before task |
+| postflight | `/memory:analyze postflight <specFolder> <taskId>` | Calculate learning delta after task |
+| causal | `/memory:analyze causal <memoryId>` | Trace causal chain for a memory |
+| link | `/memory:analyze link <source> <target> <relation>` | Create causal relationship |
+| unlink | `/memory:analyze unlink <edgeId>` | Remove causal relationship |
+| causal-stats | `/memory:analyze causal-stats` | View causal graph statistics |
+| ablation | `/memory:analyze ablation` | Run channel ablation study |
+| dashboard | `/memory:analyze dashboard` | View reporting dashboard |
+| history | `/memory:analyze history <specFolder>` | View learning history and LI trends |
+
+### Shared Subcommands
+
+| Subcommand | Invocation | Description |
+|------------|------------|-------------|
+| enable | `/memory:shared enable` | Enable shared memory (first-time setup, required) |
+| create | `/memory:shared create <spaceId> <tenantId> <name>` | Create or update shared space |
+| member | `/memory:shared member <spaceId> <type> <id> <role>` | Set membership |
+| status | `/memory:shared status [--tenant <id>] [--user <id>] [--agent <id>]` | Inspect rollout status |
+
+> **Note:** Shared memory is disabled by default. Run `/memory:shared` or `/memory:shared enable` to complete first-time setup before using other subcommands.
+
 ---
 
 <!-- /ANCHOR:commands -->
 <!-- ANCHOR:structure -->
 ## 3. STRUCTURE
 
-```
+```text
 memory/
+├── README.txt      # This file — 7-command index and coverage matrix
+├── analyze.md      # /memory:analyze - Epistemic baselines, causal graph, eval
 ├── context.md      # /memory:context - Intent-aware retrieval
 ├── continue.md     # /memory:continue - Session recovery
 ├── learn.md        # /memory:learn - Constitutional memory manager
-├── manage.md       # /memory:manage - Database management
-└── save.md         # /memory:save - Context saving
+├── manage.md       # /memory:manage - Database management, ingest
+├── save.md         # /memory:save - Context saving
+└── shared.md       # /memory:shared - Shared-memory space lifecycle
 ```
 
 No `assets/` folder exists for memory commands. Workflows are defined inline within each command file.
@@ -124,7 +169,7 @@ No `assets/` folder exists for memory commands. Workflows are defined inline wit
 # View database stats
 /memory:manage stats
 
-# Scan for new memory files (prompts source scope: [a]ll/[c]ore/[b]ack)
+# Scan for new memory files
 /memory:manage scan
 
 # Force re-index all files
@@ -132,6 +177,48 @@ No `assets/` folder exists for memory commands. Workflows are defined inline wit
 
 # Check system health
 /memory:manage health
+
+# View learning history for a spec folder
+/memory:analyze history specs/007-auth
+
+# Capture epistemic baseline before a task
+/memory:analyze preflight specs/007-auth T1
+
+# Calculate learning delta after a task
+/memory:analyze postflight specs/007-auth T1
+
+# Trace causal chain for a memory
+/memory:analyze causal 42
+
+# Create causal link between memories
+/memory:analyze link 42 43 caused
+
+# View causal graph statistics
+/memory:analyze causal-stats
+
+# Run channel ablation study
+/memory:analyze ablation
+
+# View reporting dashboard
+/memory:analyze dashboard
+
+# Create a shared-memory space
+/memory:shared create team-alpha tenant-1 "Team Alpha"
+
+# Set membership for a user
+/memory:shared member team-alpha user user-42 editor
+
+# View rollout status
+/memory:shared status
+
+# Start async ingestion of multiple files
+/memory:manage ingest start /path/to/file1.md /path/to/file2.md
+
+# Check ingestion job progress
+/memory:manage ingest status abc-123
+
+# Cancel a running ingestion job
+/memory:manage ingest cancel abc-123
 ```
 
 ---
@@ -145,38 +232,102 @@ The `/memory:manage` command accepts these subcommands:
 | Subcommand | Arguments | Description |
 |------------|-----------|-------------|
 | `stats` | (none) | Show memory database statistics |
-| `scan` | `[--force]` | Scan workspace for new/changed memory files (asks source scope each run) |
+| `scan` | `[--force]` | Scan workspace for new/changed memory files |
 | `cleanup` | (none) | Remove orphaned or invalid entries |
+| `bulk-delete` | `<tier> [--older-than <days>] [--folder <spec>]` | Bulk delete by tier |
 | `tier` | `<id> <tier>` | Change importance tier of a memory |
 | `triggers` | `<id>` | View trigger phrases for a memory |
 | `validate` | `<id> <useful\|not>` | Record validation feedback for a memory |
 | `delete` | `<id>` | Delete a specific memory |
 | `health` | (none) | Check memory system health status |
 | `checkpoint` | `create\|list\|restore\|delete` | Manage named checkpoints of memory state |
+| `ingest` | `start\|status\|cancel` | Async bulk ingestion of specific files |
 
 ---
 
 <!-- /ANCHOR:manage-subcommands -->
+<!-- ANCHOR:tool-coverage -->
+## 6. TOOL COVERAGE MATRIX
+
+All 32 MCP tools mapped to their primary command home:
+
+| # | Tool | Layer | Primary Command |
+|---|------|-------|-----------------|
+| 1 | `memory_context` | L1 | `/memory:context` |
+| 2 | `memory_search` | L2 | `/memory:context` |
+| 3 | `memory_match_triggers` | L2 | `/memory:context` |
+| 4 | `memory_save` | L2 | `/memory:save` |
+| 5 | `memory_list` | L3 | `/memory:manage` |
+| 6 | `memory_stats` | L3 | `/memory:manage` |
+| 7 | `memory_health` | L3 | `/memory:manage` |
+| 8 | `memory_delete` | L4 | `/memory:manage` |
+| 9 | `memory_update` | L4 | `/memory:manage` |
+| 10 | `memory_validate` | L4 | `/memory:manage` |
+| 11 | `memory_bulk_delete` | L4 | `/memory:manage` |
+| 12 | `checkpoint_create` | L5 | `/memory:manage` |
+| 13 | `checkpoint_list` | L5 | `/memory:manage` |
+| 14 | `checkpoint_restore` | L5 | `/memory:manage` |
+| 15 | `checkpoint_delete` | L5 | `/memory:manage` |
+| 16 | `shared_space_upsert` | L5 | `/memory:shared` |
+| 17 | `shared_space_membership_set` | L5 | `/memory:shared` |
+| 18 | `shared_memory_status` | L5 | `/memory:shared` |
+| 19 | `shared_memory_enable` | L5 | `/memory:shared` |
+| 20 | `task_preflight` | L6 | `/memory:analyze` |
+| 21 | `task_postflight` | L6 | `/memory:analyze` |
+| 22 | `memory_drift_why` | L6 | `/memory:analyze` |
+| 23 | `memory_causal_link` | L6 | `/memory:analyze` |
+| 24 | `memory_causal_stats` | L6 | `/memory:analyze` |
+| 25 | `memory_causal_unlink` | L6 | `/memory:analyze` |
+| 26 | `eval_run_ablation` | L6 | `/memory:analyze` |
+| 27 | `eval_reporting_dashboard` | L6 | `/memory:analyze` |
+| 28 | `memory_index_scan` | L7 | `/memory:manage` |
+| 29 | `memory_get_learning_history` | L7 | `/memory:analyze` |
+| 30 | `memory_ingest_start` | L7 | `/memory:manage ingest` |
+| 31 | `memory_ingest_status` | L7 | `/memory:manage ingest` |
+| 32 | `memory_ingest_cancel` | L7 | `/memory:manage ingest` |
+
+### Coverage by Command
+
+| Command | Tools Owned | Layers |
+|---------|-------------|--------|
+| `/memory:context` | 3 | L1, L2 |
+| `/memory:save` | 1 | L2 |
+| `/memory:manage` | 15 | L3, L4, L5, L7 |
+| `/memory:learn` | 0 (uses manage/save tools) | — |
+| `/memory:continue` | 0 (uses context/manage tools) | — |
+| `/memory:analyze` | 9 | L6, L7 |
+| `/memory:shared` | 4 | L5 |
+| **Total** | **32** | **L1-L7** |
+
+---
+
+<!-- /ANCHOR:tool-coverage -->
 <!-- ANCHOR:troubleshooting -->
-## 6. TROUBLESHOOTING
+## 7. TROUBLESHOOTING
 
 | Problem | Cause | Fix |
 |---------|-------|-----|
 | "No results" from context | Query too narrow or no matching memories | Broaden query or try different intent |
 | Save fails | Spec folder path invalid or missing | Verify path exists under `specs/` |
 | Continue finds no session | No saved context from prior session | Use `/memory:context` with manual query instead |
-| Manage scan finds 0 files | No memory files in expected directories | Check `specs/**/memory/`, `.opencode/skill/*/constitutional/`, and configured `.opencode/skill/*/{references,assets}/` paths |
+| Manage scan finds 0 files | No memory files in expected directories | Check `specs/**/memory/`, `.opencode/skill/*/constitutional/`, and `.opencode/specs/` |
 | Learn file not found | Wrong filename for edit/remove | Run `/memory:learn list` to see available files |
+| Analyze ablation fails | `SPECKIT_ABLATION=true` not set | Set environment variable and retry |
+| Shared space access denied | No membership | Use `/memory:shared member` to grant access |
+| Ingest job not found | Invalid or expired job ID | Start a new job with `/memory:manage ingest start` |
+| History returns empty | No PREFLIGHT/POSTFLIGHT records | Use `/memory:analyze preflight` before tasks, view with `/memory:analyze history` |
 
 ---
 
 <!-- /ANCHOR:troubleshooting -->
 <!-- ANCHOR:related-documents -->
-## 7. RELATED DOCUMENTS
+## 8. RELATED DOCUMENTS
 
 | Document | Purpose |
 |----------|---------|
 | [Parent: OpenCode Commands](../README.txt) | Overview of all command groups |
 | [system-spec-kit SKILL.md](../../skill/system-spec-kit/SKILL.md) | Memory system architecture and spec folder workflow |
 | [Spec Kit Memory MCP](../../skill/system-spec-kit/mcp_server/) | MCP server implementation for memory operations |
+| [Tool Schemas](../../skill/system-spec-kit/mcp_server/tool-schemas.ts) | Canonical 32-tool inventory and property definitions |
+| [Tool Input Schemas](../../skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts) | Zod validation schemas and ALLOWED_PARAMETERS |
 <!-- /ANCHOR:related-documents -->

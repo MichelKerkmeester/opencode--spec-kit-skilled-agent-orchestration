@@ -48,6 +48,64 @@ interface LearningHistoryArgs {
   includeSummary?: boolean;
 }
 
+export interface LearningScoreSnapshot {
+  knowledge: number | null;
+  uncertainty: number | null;
+  context: number | null;
+  timestamp: string | null;
+}
+
+export interface LearningDeltaSnapshot {
+  knowledge: number | null;
+  uncertainty: number | null;
+  context: number | null;
+}
+
+export interface LearningHistoryBaseRow {
+  taskId: string;
+  specFolder: string;
+  sessionId: string | null;
+  phase: 'preflight' | 'complete';
+  preflight: LearningScoreSnapshot;
+  knowledgeGaps: string[];
+  createdAt: string | null;
+}
+
+export interface PreflightLearningHistoryRow extends LearningHistoryBaseRow {
+  phase: 'preflight';
+}
+
+export interface CompletedLearningHistoryRow extends LearningHistoryBaseRow {
+  phase: 'complete';
+  postflight: LearningScoreSnapshot;
+  deltas: LearningDeltaSnapshot;
+  learningIndex: number | null;
+  gapsClosed: string[];
+  newGapsDiscovered: string[];
+  completedAt: string | null;
+}
+
+export type LearningHistoryRow = PreflightLearningHistoryRow | CompletedLearningHistoryRow;
+
+export interface LearningHistorySummary {
+  totalTasks: number;
+  completedTasks: number;
+  averageLearningIndex: number | null;
+  maxLearningIndex: number | null;
+  minLearningIndex: number | null;
+  averageKnowledgeGain: number | null;
+  averageUncertaintyReduction: number | null;
+  averageContextImprovement: number | null;
+  interpretation?: string;
+}
+
+export interface LearningHistoryPayload {
+  specFolder: string;
+  count: number;
+  learningHistory: LearningHistoryRow[];
+  summary?: LearningHistorySummary;
+}
+
 interface PreflightRecord extends Record<string, unknown> {
   id: number;
   pre_knowledge_score: number;
@@ -512,7 +570,7 @@ async function handleGetLearningHistory(args: LearningHistoryArgs): Promise<MCPR
 
     const rows = database.prepare(sql).all(...params) as Record<string, unknown>[];
 
-    const learningHistory = rows.map((row: Record<string, unknown>) => {
+    const learningHistory: LearningHistoryRow[] = rows.map((row: Record<string, unknown>) => {
       let knowledgeGaps: string[] = [];
       let gapsClosed: string[] = [];
       let newGapsDiscovered: string[] = [];
@@ -521,43 +579,50 @@ async function handleGetLearningHistory(args: LearningHistoryArgs): Promise<MCPR
       try { gapsClosed = row.gaps_closed ? JSON.parse(row.gaps_closed as string) : []; } catch (_error: unknown) { /* ignore */ }
       try { newGapsDiscovered = row.new_gaps_discovered ? JSON.parse(row.new_gaps_discovered as string) : []; } catch (_error: unknown) { /* ignore */ }
 
-      const result: Record<string, unknown> = {
-        taskId: row.task_id,
-        specFolder: row.spec_folder,
-        sessionId: row.session_id,
-        phase: row.phase,
+      const baseResult: LearningHistoryBaseRow = {
+        taskId: row.task_id as string,
+        specFolder: row.spec_folder as string,
+        sessionId: (row.session_id as string | null) ?? null,
+        phase: row.phase as 'preflight' | 'complete',
         preflight: {
-          knowledge: row.pre_knowledge_score,
-          uncertainty: row.pre_uncertainty_score,
-          context: row.pre_context_score,
-          timestamp: row.created_at
+          knowledge: (row.pre_knowledge_score as number | null) ?? null,
+          uncertainty: (row.pre_uncertainty_score as number | null) ?? null,
+          context: (row.pre_context_score as number | null) ?? null,
+          timestamp: (row.created_at as string | null) ?? null,
         },
         knowledgeGaps: knowledgeGaps,
-        createdAt: row.created_at
+        createdAt: (row.created_at as string | null) ?? null,
       };
 
       if (row.phase === 'complete') {
-        result.postflight = {
-          knowledge: row.post_knowledge_score,
-          uncertainty: row.post_uncertainty_score,
-          context: row.post_context_score,
-          timestamp: row.completed_at
+        return {
+          ...baseResult,
+          phase: 'complete',
+          postflight: {
+            knowledge: (row.post_knowledge_score as number | null) ?? null,
+            uncertainty: (row.post_uncertainty_score as number | null) ?? null,
+            context: (row.post_context_score as number | null) ?? null,
+            timestamp: (row.completed_at as string | null) ?? null,
+          },
+          deltas: {
+            knowledge: (row.delta_knowledge as number | null) ?? null,
+            uncertainty: (row.delta_uncertainty as number | null) ?? null,
+            context: (row.delta_context as number | null) ?? null,
+          },
+          learningIndex: (row.learning_index as number | null) ?? null,
+          gapsClosed: gapsClosed,
+          newGapsDiscovered: newGapsDiscovered,
+          completedAt: (row.completed_at as string | null) ?? null,
         };
-        result.deltas = {
-          knowledge: row.delta_knowledge,
-          uncertainty: row.delta_uncertainty,
-          context: row.delta_context
-        };
-        result.learningIndex = row.learning_index;
-        result.gapsClosed = gapsClosed;
-        result.newGapsDiscovered = newGapsDiscovered;
-        result.completedAt = row.completed_at;
       }
 
-      return result;
+      return {
+        ...baseResult,
+        phase: 'preflight',
+      };
     });
 
-    let responseSummary: Record<string, unknown> | null = null;
+    let responseSummary: LearningHistorySummary | null = null;
     if (include_summary) {
       // T503: Build summary SQL with the same filters as the records query
       let summarySql = `
@@ -586,9 +651,9 @@ async function handleGetLearningHistory(args: LearningHistoryArgs): Promise<MCPR
 
       const stats = database.prepare(summarySql).get(...summaryParams) as Record<string, unknown>;
 
-      responseSummary = {
-        totalTasks: stats.total_tasks,
-        completedTasks: stats.completed_tasks,
+      const summary: LearningHistorySummary = {
+        totalTasks: Number(stats.total_tasks ?? 0),
+        completedTasks: Number(stats.completed_tasks ?? 0),
         averageLearningIndex: stats.avg_learning_index !== null
           ? Math.round((stats.avg_learning_index as number) * 100) / 100
           : null,
@@ -612,17 +677,19 @@ async function handleGetLearningHistory(args: LearningHistoryArgs): Promise<MCPR
       if (stats.avg_learning_index !== null) {
         const avgLI = stats.avg_learning_index as number;
         if (avgLI > 15) {
-          responseSummary.interpretation = 'Strong learning trend - significant knowledge gains across tasks';
+          summary.interpretation = 'Strong learning trend - significant knowledge gains across tasks';
         } else if (avgLI > 7) {
-          responseSummary.interpretation = 'Positive learning trend - moderate knowledge improvement';
+          summary.interpretation = 'Positive learning trend - moderate knowledge improvement';
         } else if (avgLI > 0) {
-          responseSummary.interpretation = 'Slight learning trend - minor improvements detected';
+          summary.interpretation = 'Slight learning trend - minor improvements detected';
         } else if (avgLI === 0) {
-          responseSummary.interpretation = 'Neutral - no measurable change in knowledge state';
+          summary.interpretation = 'Neutral - no measurable change in knowledge state';
         } else {
-          responseSummary.interpretation = 'Negative trend - knowledge regression detected across tasks';
+          summary.interpretation = 'Negative trend - knowledge regression detected across tasks';
         }
       }
+
+      responseSummary = summary;
     }
 
     const completedCount = learningHistory.filter(h => h.phase === 'complete').length;

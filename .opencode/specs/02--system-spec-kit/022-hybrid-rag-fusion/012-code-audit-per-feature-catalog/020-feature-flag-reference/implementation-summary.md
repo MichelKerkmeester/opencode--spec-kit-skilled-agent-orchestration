@@ -85,9 +85,9 @@ Delivery was markdown-only inside this phase folder: inspect current catalog/tes
 ---
 
 <!-- ANCHOR:limitations -->
-## Known Limitations
+## Current Reality Notes
 
-1. This closeout reflects current mapping truth at time of update; future catalog/code drift still requires re-verification.
+1. This closeout now aligns with the latest passing feature-flag reference docs suite and the umbrella recursive-validation rerun.
 <!-- /ANCHOR:limitations -->
 
 ---

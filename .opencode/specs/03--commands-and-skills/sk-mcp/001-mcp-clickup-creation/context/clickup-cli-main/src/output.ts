@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Output
+// ────────────────────────────────────────────────────────────────
 import chalk from 'chalk'
 import type { TaskSummary } from './commands/tasks.js'
 

@@ -16,7 +16,7 @@ Canonical source artifacts:
 - [GLOBAL EVIDENCE REQUIREMENTS](#global-evidence-requirements)
 - [DETERMINISTIC COMMAND NOTATION](#deterministic-command-notation)
 - [EXISTING FEATURES (`EX-001..EX-035`)](#existing-features-ex-001ex-035)
-- [NEW FEATURES (`NEW-001..NEW-147`)](#new-features-new-001new-147)
+- [NEW FEATURES (`NEW-001..NEW-148`)](#new-features-new-001new-147)
 - [CATALOG COVERAGE NOTES FOR PHASES 001-018](#catalog-coverage-notes-for-phases-001-018)
 
 ## 1. OVERVIEW
@@ -83,7 +83,7 @@ This playbook is the operator-facing manual validation matrix for canonical Spec
 | EX-034 | 7. CI and Build (informational) | Branch metadata source audit | `Find branch env vars used in checkpoint metadata` | `memory_search({ query:"GIT_BRANCH BRANCH_NAME checkpoint metadata", limit:20 })` | Branch source vars surfaced | Search output | PASS if all listed vars are found | Search CI scripts and runtime helpers |
 | EX-035 | Startup runtime compatibility guards | Startup diagnostics verification | `Run the dedicated startup guard validation suite` | `cd .opencode/skill/system-spec-kit/mcp_server` -> `npm test -- --run tests/startup-checks.vitest.ts` | Targeted suite passes; runtime mismatch, marker creation, and SQLite diagnostics coverage are visible in the transcript | Test transcript + suite summary | PASS if `startup-checks.vitest.ts` completes with all tests passing and no failures | Re-run `npm test -- --run tests/startup-checks.vitest.ts -t detectRuntimeMismatch`; inspect `startup-checks.ts` and test expectations if counts or assertions drift |
 
-## New Features (`NEW-001..NEW-147`)
+## New Features (`NEW-001..NEW-148`)
 
 Note: Each NEW scenario uses this evidence+verdict baseline unless overridden:
 - Evidence: command transcript + key output snapshot + any DB/log artifact
@@ -152,6 +152,7 @@ Note: Each NEW scenario uses this evidence+verdict baseline unless overridden:
 | NEW-121 | Adaptive shadow proposal and rollback (Phase 4) | Confirm adaptive scoring runs in shadow mode only, captures bounded proposals, and can be disabled cleanly | `Validate Phase 4 adaptive shadow proposal flow.` | 1) Set `SPECKIT_MEMORY_ADAPTIVE_RANKING=true` and leave `SPECKIT_MEMORY_ADAPTIVE_MODE` unset 2) Trigger access/validation events for one memory 3) Run `memory_search({ query:"adaptive shadow check", includeTrace:true })` 4) Verify response includes `adaptiveShadow` proposal data while production ordering remains the live result order 5) Disable the flag and repeat | Adaptive proposal is present in shadow mode, proposal deltas are bounded, production ordering is unchanged by the shadow run, and disabling the flag removes adaptive proposal output | Search output with `adaptiveShadow` payload + before/after flag comparison + signal capture evidence from validation/access paths | PASS: Shadow proposal emitted without mutating live order; disable flag removes proposal cleanly; FAIL: Live order changes under shadow mode or proposal persists after disable | Verify adaptive signals were recorded from access/validation → Inspect bounded delta cap → Confirm disable path clears proposal output without schema rollback |
 | NEW-122 | Governed ingest and scope isolation (Phase 5) | Confirm governed saves require provenance and scope markers and scoped retrieval blocks cross-actor leakage | `Validate Phase 5 governed ingest and retrieval isolation.` | 1) Attempt `memory_save()` with `tenantId/sessionId` but missing provenance fields and verify rejection 2) Save with full `{tenantId,userId|agentId,sessionId,provenanceSource,provenanceActor}` metadata 3) Query with matching scope and verify hit appears 4) Query with mismatched user/agent or tenant and verify hit is filtered out 5) Review `governance_audit` rows | Missing provenance rejects governed ingest; successful governed ingest persists scope metadata; mismatched scope cannot retrieve the memory; allow/deny decisions are written to `governance_audit` | Save/search outputs + DB query of scoped columns + audit rows showing allow/deny decisions | PASS: Missing provenance rejected, valid governed save succeeds, cross-scope retrieval returns no hit, and audit rows exist; FAIL: Ungoverned save slips through or cross-scope retrieval leaks data | Verify `tenant_id/user_id/agent_id/session_id` persistence → Inspect Stage 1 scope filter path → Confirm audit rows for both allow and deny cases |
 | NEW-123 | Shared-space deny-by-default rollout (Phase 6) | Confirm shared-memory spaces require explicit membership and respect rollout/kill-switch controls | `Validate Phase 6 shared-memory rollout controls.` | 1) Create space with `shared_space_upsert({ spaceId, tenantId, name, rolloutEnabled:true })` 2) Call `shared_memory_status()` for a non-member and verify no accessible spaces 3) Attempt shared-space save/search as a non-member and verify rejection/filtering 4) Grant membership with `shared_space_membership_set()` 5) Verify shared access succeeds 6) Flip `killSwitch:true` and verify access is blocked again | Non-members are denied by default; explicit membership grants access; kill switch blocks access immediately even for existing members | Tool outputs for space creation, membership update, status checks, and shared save/search attempts across all three states | PASS: Non-member denied, member allowed, kill switch blocks again; FAIL: Shared access works without membership or kill switch does not stop access | Verify membership rows in `shared_space_members` → Inspect rollout_enabled and kill_switch flags on `shared_spaces` → Confirm shared-space access path reuses governance checks |
+| NEW-148 | Shared-memory disabled-by-default and first-run setup | Confirm shared memory is off by default, enable flow works, persistence survives restart, env var overrides DB, and enable is idempotent | `Validate shared-memory default-off enablement and first-run setup.` | 1) Start MCP server without env var → call `shared_memory_status()` → verify `enabled: false` 2) Call `shared_memory_enable()` → verify `enabled: true, alreadyEnabled: false, readmeCreated: true` 3) Call `shared_memory_enable()` again → verify `alreadyEnabled: true` (idempotent) 4) Verify `shared-spaces/README.md` exists on disk 5) Restart MCP server (no env var) → call `shared_memory_status()` → verify `enabled: true` (DB persistence) 6) Set `SPECKIT_MEMORY_SHARED_MEMORY=true` env var → call `shared_memory_status()` without DB → verify `enabled: true` (env override) 7) Run `/memory:shared` with feature disabled → verify first-run setup prompt appears | Default-off: status returns disabled without env var or DB config; enable persists to DB config table; enable is idempotent; README created in shared-spaces/; DB persistence survives restart; env var override takes priority over DB state; /memory:shared command shows setup prompt when disabled | Tool outputs for status (disabled state), enable (first run + idempotent), status (enabled state after restart), env override verification, README existence check, command setup prompt | PASS: Default off, enable persists, idempotent, README created, restart persistence, env override works, command gate triggers; FAIL: Feature enabled without setup, enable not idempotent, README missing, persistence lost on restart, env override ignored, or command gate skipped | Verify `config` table has `shared_memory_enabled=true` row → Check `isSharedMemoryEnabled()` two-tier resolution → Inspect `handleSharedMemoryEnable()` idempotency check → Verify `createSharedSpacesReadme()` skip-if-exists logic → Confirm `/memory:shared` Section 0 enablement gate |
 | NEW-055 | Dual-scope memory auto-surface (TM-05) | Confirm auto-surface hooks | `Validate dual-scope auto-surface (TM-05).` | 1) invoke non-memory-aware tool path 2) trigger compaction 3) verify surfaced memories | Non-memory-aware tool path triggers auto-surface hook; compaction event surfaces relevant memories; surfaced memories match current context | Auto-surface hook trace + surfaced memory list + context relevance assessment | PASS: Hook triggers on non-memory tool path; compaction surfaces context-relevant memories; FAIL: Hook does not fire or surfaced memories irrelevant | Verify auto-surface hook registration → Check compaction trigger logic → Inspect context matching for surfaced memories |
 | NEW-056 | Constitutional memory as expert knowledge injection (PI-A4) | Confirm directive enrichment | `Verify constitutional memory directive injection (PI-A4).` | 1) save constitutional directive 2) run retrieval 3) inspect directive metadata | Directive metadata appears in retrieval results; constitutional tier classification applied; enrichment fields populated | Save output + retrieval output showing directive metadata + tier classification evidence | PASS if constitutional directives are injected into retrieval results with correct metadata and tier | Verify constitutional/ directory contains valid directives; check tier classification logic; inspect enrichment pipeline for directive handling |
 | NEW-057 | Spec folder hierarchy as retrieval structure (S4) | Confirm hierarchy-aware retrieval | `Validate spec-folder hierarchy retrieval (S4).` | 1) create nested hierarchy 2) query 3) verify self/parent/sibling scoring | Self-folder results ranked highest; parent and sibling folders contribute scored results; hierarchy depth reflected in ranking | Query output showing hierarchy-aware ranking + folder path evidence in results | PASS if retrieval respects folder hierarchy with self > parent > sibling ordering | Verify nested hierarchy exists; check hierarchy scoring weights; inspect folder-path resolution in retrieval pipeline |
@@ -294,7 +295,7 @@ Catalog base path: `feature_catalog/` (relative to `022-hybrid-rag-fusion/`)
 | EX-034 | [19--feature-flag-reference/07-7-ci-and-build-informational.md](../feature_catalog/19--feature-flag-reference/07-7-ci-and-build-informational.md) |
 | EX-035 | [04--maintenance/02-startup-runtime-compatibility-guards.md](../feature_catalog/04--maintenance/02-startup-runtime-compatibility-guards.md) |
 
-### New Features (NEW-001..NEW-147)
+### New Features (NEW-001..NEW-148)
 
 Note: NEW-042, NEW-119, NEW-131, and NEW-132 all map to the same catalog entry for spec folder description discovery.
 
@@ -443,10 +444,11 @@ Note: NEW-042, NEW-119, NEW-131, and NEW-132 all map to the same catalog entry f
 | NEW-146 | [14--pipeline-architecture/14-dynamic-server-instructions-at-mcp-initialization.md](../feature_catalog/14--pipeline-architecture/14-dynamic-server-instructions-at-mcp-initialization.md) |
 | NEW-147 | [16--tooling-and-scripts/13-constitutional-memory-manager-command.md](../feature_catalog/16--tooling-and-scripts/13-constitutional-memory-manager-command.md) |
 | NEW-139 | [16--tooling-and-scripts/12-session-capturing-pipeline-quality.md](../feature_catalog/16--tooling-and-scripts/12-session-capturing-pipeline-quality.md) |
+| NEW-148 | [17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md](../feature_catalog/17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md) |
 
 ### Catalog Coverage Notes for Phases 001-018
 
-These 29 catalog entries are explicitly documented here even when validation is automated-only, indirectly covered by another scenario, or deferred because the feature is not implemented yet.
+These 29 catalog entries are explicitly documented here even when validation is automated-only or routed through a shared operator scenario.
 
 | Catalog Entry | Coverage Status | Coverage Path / Notes |
 |---|---|---|
@@ -464,11 +466,11 @@ These 29 catalog entries are explicitly documented here even when validation is 
 | `13--memory-quality-and-indexing/17-outsourced-agent-memory-capture.md` | Manual + automated | Dedicated memory workflow coverage exists in M-005 |
 | `14--pipeline-architecture/14-dynamic-server-instructions-at-mcp-initialization.md` | Automated only | Startup concern; validated implicitly by startup/runtime coverage |
 | `14--pipeline-architecture/15-warm-server-daemon-mode.md` | Deferred | Not yet implemented |
-| `14--pipeline-architecture/16-backend-storage-adapter-abstraction.md` | Deferred | Not yet implemented |
+| `14--pipeline-architecture/16-backend-storage-adapter-abstraction.md` | Automated only | Covered by `interfaces.vitest.ts`, `pipeline-architecture-remediation.vitest.ts`, and `vector-index-impl.vitest.ts`; no operator-facing manual step is required today |
 | `14--pipeline-architecture/18-atomic-write-then-index-api.md` | Indirect scenario coverage | Covered by NEW-104 and atomic-save failure-injection tests |
 | `14--pipeline-architecture/19-embedding-retry-orchestrator.md` | Automated only | Covered by `retry-manager.vitest.ts` and `index-refresh.vitest.ts` |
 | `14--pipeline-architecture/20-7-layer-tool-architecture-metadata.md` | Automated only | Dispatch behavior is covered by context-server and dispatch-matrix tests |
-| `15--retrieval-enhancements/09-contextual-tree-injection.md` | Indirect scenario coverage | Covered implicitly via context retrieval scenarios |
+| `15--retrieval-enhancements/09-contextual-tree-injection.md` | Manual + automated | Covered directly by NEW-145 and `hybrid-search-context-headers.vitest.ts` |
 | `16--tooling-and-scripts/02-architecture-boundary-enforcement.md` | Build-time only | Enforced by build/test tooling rather than runtime playbook steps |
 | `16--tooling-and-scripts/08-watcher-delete-rename-cleanup.md` | Automated only | Covered by `mcp_server/tests/file-watcher.vitest.ts`; no dedicated manual operator scenario yet |
 | `18--ux-hooks/01-shared-post-mutation-hook-wiring.md` | Indirect scenario coverage | Covered by NEW-085, NEW-103, and NEW-104 |
@@ -582,18 +584,77 @@ These 29 catalog entries are explicitly documented here even when validation is 
 4. Verify: recent commit observations do not include the foreign folder path, and the target result remains empty or limited to genuinely in-scope history.
 
 ### M-007 Session Capturing Pipeline Quality
-- Prompt: `Verify the 20 P0-P3 pipeline quality fixes from spec 010-perfect-session-capturing`
+- Prompt: `Run full closure verification for spec 010-perfect-session-capturing, including JSON authority, stateless enrichment, the full native fallback chain (OpenCode, Claude, Codex, Copilot, Gemini), numeric quality calibration, and indexing readiness.`
+- Canonical workspace rule:
+  - Native capture targets the repo-local `.opencode` workspace identity.
+  - Backend-native repo-root, `.opencode`, and git-root path forms count as equivalent only when they normalize to the same workspace.
+- Scenario set:
+  - `M-007a` JSON authority and successful indexing
+  - `M-007b` Thin JSON scorer differentiation and conditional low-quality abort
+  - `M-007c` Mis-scoped stateless save rejection path
+  - `M-007d` Spec-folder and git-context enrichment presence
+  - `M-007e` OpenCode precedence
+  - `M-007f` Claude fallback
+  - `M-007g` Codex fallback
+  - `M-007h` Copilot fallback
+  - `M-007i` Gemini fallback
+  - `M-007j` Final `NO_DATA_AVAILABLE` hard-fail
 - Commands:
-  - Crypto session ID: `grep -n 'crypto.randomBytes' .opencode/skill/system-spec-kit/scripts/extractors/session-extractor.ts`
-  - Batch write rollback: simulate failure by writing to a read-only directory, verify no partial files remain
-  - Quality abort threshold: run `generate-context.js` with artificially low-quality data, verify abort at score < 15
-  - Contamination filter coverage: `grep -c 'new RegExp\|/.*/' .opencode/skill/system-spec-kit/scripts/extractors/contamination-filter.ts` — expect 30+
-  - File action semantics: verify Created/Modified/Deleted/Read/Renamed propagate through `file-extractor.ts` output
-  - Alignment blocking: run stateless save against unrelated spec folder, verify `ALIGNMENT_BLOCK` abort
-- Expected: all security, quality, and configurability fixes from Part I audit are operational
-- Evidence: grep outputs confirming crypto IDs and filter patterns, abort logs for low-quality and misaligned saves, clean batch rollback on simulated failure
-- Pass: all 6 verification commands produce expected output with no regressions
-- Fail triage: inspect `config.ts` thresholds → verify `file-writer.ts` rollback loop → check contamination-filter pattern count → rerun
+  - Part I hardening spot checks:
+    - `grep -n 'crypto.randomBytes' .opencode/skill/system-spec-kit/scripts/extractors/session-extractor.ts`
+    - `grep -n 'qualityAbortThreshold' .opencode/skill/system-spec-kit/scripts/core/workflow.ts .opencode/skill/system-spec-kit/scripts/core/config.ts`
+    - `grep -n 'claude-code-capture\|codex-cli-capture\|copilot-cli-capture\|gemini-cli-capture' .opencode/skill/system-spec-kit/scripts/loaders/data-loader.ts .opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts`
+  - Targeted automated closure suite:
+    - `cd .opencode/skill/system-spec-kit/scripts && npm test -- --run tests/claude-code-capture.vitest.ts tests/codex-cli-capture.vitest.ts tests/copilot-cli-capture.vitest.ts tests/gemini-cli-capture.vitest.ts tests/quality-scorer-calibration.vitest.ts tests/runtime-memory-inputs.vitest.ts tests/stateless-enrichment.vitest.ts tests/task-enrichment.vitest.ts tests/memory-render-fixture.vitest.ts tests/generate-context-cli-authority.vitest.ts`
+  - JS verification suites:
+    - `cd .opencode/skill/system-spec-kit/scripts/tests && node test-extractors-loaders.js`
+    - `cd .opencode/skill/system-spec-kit/scripts/tests && node test-bug-fixes.js`
+    - `cd .opencode/skill/system-spec-kit/scripts/tests && node test-integration.js`
+    - `cd .opencode/skill/system-spec-kit/scripts/tests && node test-memory-quality-lane.js`
+  - Standards checks:
+    - `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit/scripts`
+    - `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing`
+  - Manual/e2e scenarios:
+    - `M-007a` Rich JSON-mode save: run `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js <json-data-file> 010-perfect-session-capturing` with a populated synthetic or sandbox JSON file and verify `qualityValidation.valid === true`, indexing succeeds, and a memory ID is returned.
+    - `M-007b` Thin JSON scorer differentiation: rerun `generate-context.js` with intentionally thin JSON input and verify the resulting numeric score is materially lower than `M-007a`. If the thin fixture falls below `QUALITY_ABORT_THRESHOLD`, abort is expected; if it remains above threshold, record it as lower-scoring but allowed instead of treating that outcome as a regression.
+    - `M-007c` Mis-scoped stateless rejection: run a same-workspace stateless save whose prompts, tool metadata, and file hints do not contain any target-spec anchor and verify it fails `ALIGNMENT_BLOCK` before enrichment or indexing.
+    - `M-007d` Git/spec-folder enrichment: inspect generated output and confirm provenance-tagged observations/files from both git and spec-folder enrichment are present.
+    - `M-007e` OpenCode precedence: when a usable OpenCode session exists, verify the loader selects OpenCode first. If the session is same-workspace but off-spec, discovery may still succeed, but the run must hard-fail `ALIGNMENT_BLOCK` instead of indexing.
+    - `M-007f` Claude fallback: temporarily force the OpenCode path empty, then verify a matching Claude transcript is selected when its stored repo-root or `.opencode` path resolves to the same workspace identity. If the matched transcript has no target-spec anchor, `ALIGNMENT_BLOCK` is expected; if it does and foreign-spec ids dominate later content, `QUALITY_GATE_ABORT` via `V8` is still acceptable.
+    - `M-007g` Codex fallback: temporarily force OpenCode and Claude empty, then verify a matching Codex transcript is selected when `session_meta.payload.cwd` resolves to the same workspace identity. For an aligned tool-rich transcript, verify the run no longer false-fails `V7`.
+    - `M-007h` Copilot fallback: temporarily force OpenCode, Claude, and Codex empty, then verify a matching Copilot workspace/session is selected when `cwd` or `git_root` resolves to the same workspace identity. Thin sessions may pass or fail depending on whether the captured prompt/title/tool evidence provides a real target-spec anchor.
+    - `M-007i` Gemini fallback: temporarily force all earlier native backends empty, then verify a matching Gemini session is selected when `.project_root` resolves to the same workspace identity. Thin sessions may pass or fail depending on whether the captured prompt/title/tool evidence provides a real target-spec anchor.
+    - `M-007j` Full hard-fail: ensure no usable JSON input or native backend is available and verify the loader returns explicit `NO_DATA_AVAILABLE` rather than partial or contaminated output.
+- Expected:
+  - Part I hardening remains active.
+  - Stateless enrichment remains active.
+  - Native fallback ordering behaves deterministically across all five supported backends.
+  - Native discovery uses canonical `.opencode` workspace identity rather than raw path equality.
+  - Same-workspace generic infrastructure activity is not sufficient evidence for saving into a specific spec folder.
+  - Rich saves score materially above thin saves.
+  - Indexing succeeds when validation passes.
+- Evidence:
+  - Grep output for crypto IDs, quality abort threshold, and five-backend loader wiring.
+  - Passing `npm test` targeted Vitest output.
+  - Passing JS suite summaries from `scripts/tests/`.
+  - Passing alignment drift output.
+  - Passing `spec/validate.sh` output.
+  - `generate-context.js` output or capture logs showing results for `M-007a` through `M-007j`.
+- Pass:
+  - All automated commands pass.
+  - `M-007a` validates and indexes successfully.
+  - `M-007b` proves scorer differentiation and, if the thin fixture drops below threshold, the abort reason is recorded explicitly.
+  - `M-007c` proves the mis-scoped same-workspace stateless run hard-fails `ALIGNMENT_BLOCK`.
+  - `M-007d` shows provenance-tagged enrichment.
+  - `M-007e` proves OpenCode precedence does not override save-path alignment blocking.
+  - `M-007f` through `M-007i` prove per-backend fallback behavior under canonical `.opencode` workspace identity and the tightened spec-affinity gate.
+  - `M-007j` proves final `NO_DATA_AVAILABLE` behavior.
+- Fail triage:
+  - Check `data-loader.ts` fallback ordering.
+  - Check project-matching logic inside the relevant native extractor.
+  - Check `quality-scorer.ts` scoring heuristics versus boolean validation.
+  - Check `workflow.ts` abort/alignment thresholds.
+  - Check test fixtures for backend-specific transcript assumptions and stateless-input coverage.
 
 ### M-008 Feature 09 Direct Manual Scenario (Per-memory History Log)
 - Prompt: `Run direct manual verification for per-memory history log behavior (feature 09 gap closure).`

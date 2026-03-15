@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+"""Module for plot thread scaling."""
+
 import sys
 
 import matplotlib.pyplot as plt

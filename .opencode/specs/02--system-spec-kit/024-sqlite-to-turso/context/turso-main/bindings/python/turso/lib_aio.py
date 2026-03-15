@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+"""Module for lib aio."""
+
 from __future__ import annotations
 
 import asyncio

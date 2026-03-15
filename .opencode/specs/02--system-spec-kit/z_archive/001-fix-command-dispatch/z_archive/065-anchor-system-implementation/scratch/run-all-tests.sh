@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 # Test Runner for Anchor System & System Spec Kit
 
 OUTPUT_FILE="test-output.txt"

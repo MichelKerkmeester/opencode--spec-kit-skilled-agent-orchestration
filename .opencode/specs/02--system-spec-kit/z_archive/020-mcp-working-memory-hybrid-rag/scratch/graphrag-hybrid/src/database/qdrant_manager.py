@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Qdrant vector database manager for GraphRAG
 """

@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Compat
+// ────────────────────────────────────────────────────────────────
 import { Session, type SessionConfig } from './session.js';
 import { DatabaseError } from './error.js';
 

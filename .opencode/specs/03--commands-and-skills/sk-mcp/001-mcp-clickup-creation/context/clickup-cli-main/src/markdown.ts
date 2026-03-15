@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Markdown
+// ────────────────────────────────────────────────────────────────
 import type { Task } from './api.js'
 import type { TaskSummary } from './commands/tasks.js'
 import type { CommentSummary } from './commands/comments.js'

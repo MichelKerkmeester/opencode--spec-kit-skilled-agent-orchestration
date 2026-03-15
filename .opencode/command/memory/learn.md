@@ -8,7 +8,7 @@ allowed-tools: Read, Write, Edit, Glob, Bash, spec_kit_memory_memory_save, spec_
 
 **BEFORE READING ANYTHING ELSE IN THIS FILE, CHECK `$ARGUMENTS`:**
 
-```
+```text
 IF $ARGUMENTS is empty, undefined, or contains only whitespace:
     → SHOW OVERVIEW DASHBOARD (Section 6)
     → Dashboard includes action hints at the bottom
@@ -28,7 +28,7 @@ IF $ARGUMENTS starts with "remove" and has NO <filename>:
     → WAIT for user selection
 
 IF $ARGUMENTS contains recognized input:
-    → Continue reading this file and route per Section 3
+    → Continue reading this file and route per Section 4
 ```
 
 **CRITICAL RULES:**
@@ -38,19 +38,34 @@ IF $ARGUMENTS contains recognized input:
 
 ---
 
-# /memory:learn — Constitutional Memory Manager
+# /memory:learn, Constitutional Memory Manager
 
-Create, list, edit, and remove **constitutional memories** — the highest-tier rules that surface at the top of every search result, never decay, and carry a 3.0x search boost.
+Create, list, edit, and remove **constitutional memories**, the highest-tier rules that surface at the top of every search result, never decay, and carry a 3.0x search boost.
 
 ---
 
 ## 1. PURPOSE
 
-Provide a dedicated command for managing constitutional memories — the most powerful tier in the Spec Kit Memory system. Constitutional memories always appear at the top of every `memory_search()` result, never decay, and are exempt from archival. This command handles the full lifecycle: creation with proper frontmatter and ANCHOR format, budget validation, editing, and removal.
+Provide a dedicated command for managing constitutional memories, the most powerful tier in the Spec Kit Memory system. Constitutional memories always appear at the top of every `memory_search()` result, never decay, and are exempt from archival. This command handles the full lifecycle: creation with proper frontmatter and ANCHOR format, budget validation, editing, and removal.
 
 **Key difference from `/memory:save`:**
 - `/memory:save` = Session context saved to `specs/*/memory/` (any tier)
 - `/memory:learn` = Constitutional rules saved to `constitutional/` (always-surface tier)
+
+### Constitutional Tier Reference
+
+| Property | Constitutional | Critical | Normal |
+|----------|---------------|----------|--------|
+| Surfaces in | EVERY search | Relevant only | Relevant only |
+| Search boost | 3.0x | 2.0x | 1.0x |
+| Decays | Never | Never | Yes (90-day) |
+| Token budget | ~2000 total | Unlimited | Unlimited |
+| Location | `constitutional/` | `specs/*/memory/` | `specs/*/memory/` |
+
+**When NOT constitutional** (suggest `/memory:save` instead):
+- Session-specific context
+- Rules for one project area only
+- Temporary notes or implementation details
 
 ---
 
@@ -62,14 +77,26 @@ purpose: Create and manage always-surface rules in the constitutional tier
 destination: .opencode/skill/system-spec-kit/constitutional/
 ```
 
-**Inputs:** `$ARGUMENTS` — Rule description, or subcommand (list, edit, remove, budget)
+**Inputs:** `$ARGUMENTS`: Rule description, or subcommand (list, edit, remove, budget)
 **Outputs:** `STATUS=<OK|FAIL|CANCELLED> ACTION=<overview|created|listed|edited|removed|budget>`
 
 ---
 
-## 3. ARGUMENT ROUTING
+## 3. QUICK REFERENCE
 
-```
+| Command | Result |
+|---------|--------|
+| `/memory:learn Never commit API keys` | Create constitutional memory |
+| `/memory:learn list` | Show all constitutional memories + budget |
+| `/memory:learn edit never-commit-secrets.md` | Edit existing memory |
+| `/memory:learn remove never-commit-secrets.md` | Remove memory (destructive) |
+| `/memory:learn budget` | Token budget status (~2000 max) |
+
+---
+
+## 4. ARGUMENT ROUTING
+
+```text
 $ARGUMENTS
     │
     ├─► Empty (no args)
@@ -87,28 +114,7 @@ $ARGUMENTS
 
 ---
 
-## 4. REFERENCE: CONSTITUTIONAL TIER
-
-| Property | Constitutional | Critical | Normal |
-|----------|---------------|----------|--------|
-| Surfaces in | EVERY search | Relevant only | Relevant only |
-| Search boost | 3.0x | 2.0x | 1.0x |
-| Decays | Never | Never | Yes (90-day) |
-| Token budget | ~2000 total | Unlimited | Unlimited |
-| Location | `constitutional/` | `specs/*/memory/` | `specs/*/memory/` |
-
-**When NOT constitutional** (suggest `/memory:save` instead):
-- Session-specific context
-- Rules for one project area only
-- Temporary notes or implementation details
-
----
-
-## 5. INSTRUCTIONS
-
-Execute the action determined by argument routing (Section 3). Each mode below is a self-contained workflow.
-
-### CREATE MODE (Default)
+## 5. CREATE MODE
 
 ### Step 1: Extract Rule
 
@@ -118,7 +124,7 @@ Use rule text from `$ARGUMENTS` (or user's answer to mandatory gate prompt).
 
 Verify this rule belongs in the constitutional tier:
 
-```
+```text
 Self-check (do NOT prompt user unless one or more answers are "no"):
   □ Does this rule apply to EVERY interaction? (not just one domain)
   □ Would forgetting it cause significant problems?
@@ -177,14 +183,14 @@ triggerPhrases:
 - Title: ALL CAPS descriptor, max 60 chars
 - Filename: `kebab-case.md` (e.g., `never-commit-secrets.md`)
 - Trigger phrases: 5-20 specific action words. No common words ("the", "a")
-- Content: Concise — each file should be <200 tokens
+- Content: Concise, each file should be <200 tokens
 - ANCHOR tags: Wrap main sections for section-level retrieval
 
 **SHOW the generated file to user and WAIT for approval before writing.**
 
 ### Step 4: Budget Check
 
-```
+```text
 1. Glob(".opencode/skill/system-spec-kit/constitutional/*.md")
    → Exclude README.md
 
@@ -202,7 +208,7 @@ triggerPhrases:
 
 ### Step 5: Write, Index, Verify
 
-```
+```text
 1. WRITE file:
    Write(".opencode/skill/system-spec-kit/constitutional/<filename>.md")
 
@@ -219,7 +225,7 @@ triggerPhrases:
 
 ### Step 6: Display Confirmation
 
-```
+```text
 MEMORY:LEARN
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -248,7 +254,7 @@ STATUS=OK ACTION=created
 
 ### Step 1: Discover Files
 
-```
+```text
 Glob(".opencode/skill/system-spec-kit/constitutional/*.md")
 → Exclude README.md
 → Read each, estimate tokens (~4 chars per token)
@@ -256,7 +262,7 @@ Glob(".opencode/skill/system-spec-kit/constitutional/*.md")
 
 ### Step 2: Display Dashboard
 
-```
+```text
 MEMORY:LEARN
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -283,7 +289,7 @@ STATUS=OK ACTION=overview
 
 ### Step 1: Discover Files
 
-```
+```text
 Glob(".opencode/skill/system-spec-kit/constitutional/*.md")
 → Exclude README.md
 ```
@@ -294,7 +300,7 @@ Extract from frontmatter: title, triggerPhrases. Estimate token count per file.
 
 ### Step 3: Display Dashboard
 
-```
+```text
 MEMORY:LEARN LIST
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -327,7 +333,7 @@ STATUS=OK ACTION=listed
 
 ### Step 1: Validate File Exists
 
-```
+```text
 IF file not found in constitutional/:
   → Display LIST dashboard
   → ASK user to select a file
@@ -349,7 +355,7 @@ Use Edit tool. Preserve frontmatter structure and ANCHOR tags.
 
 ### Step 5: Re-index
 
-```
+```text
 memory_save({
   filePath: ".opencode/skill/system-spec-kit/constitutional/<filename>",
   force: true
@@ -358,7 +364,7 @@ memory_save({
 
 ### Step 6: Display Confirmation
 
-```
+```text
 MEMORY:LEARN EDIT
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -380,7 +386,7 @@ STATUS=OK ACTION=edited
 
 ### Step 1: Validate File Exists
 
-```
+```text
 IF file not found in constitutional/:
   → Display LIST dashboard
   → ASK user to select a file
@@ -391,7 +397,7 @@ IF file not found in constitutional/:
 
 Read the file and display. Then:
 
-```
+```text
 MEMORY:LEARN REMOVE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -409,14 +415,14 @@ MEMORY:LEARN REMOVE
 
 ### Step 3: Delete + Re-index
 
-```
+```text
 1. Delete file via Bash: rm "<path>"
 2. Re-index: memory_index_scan({ force: true })
 ```
 
 ### Step 4: Display Confirmation
 
-```
+```text
 MEMORY:LEARN REMOVE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -437,7 +443,7 @@ STATUS=OK ACTION=removed
 
 ### Step 1: Read All Constitutional Files
 
-```
+```text
 Glob(".opencode/skill/system-spec-kit/constitutional/*.md")
 → Exclude README.md
 → Read each, estimate tokens (~4 chars per token)
@@ -445,7 +451,7 @@ Glob(".opencode/skill/system-spec-kit/constitutional/*.md")
 
 ### Step 2: Display Dashboard
 
-```
+```text
 MEMORY:LEARN BUDGET
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -472,21 +478,7 @@ STATUS=OK ACTION=budget
 
 ---
 
-## 11. TOOL SIGNATURES
-
-| Step | Tool | Purpose |
-|------|------|---------|
-| Discover files | `Glob(".opencode/skill/system-spec-kit/constitutional/*.md")` | Find constitutional files |
-| Write new file | `Write("<path>")` | Create constitutional memory |
-| Edit existing | `Edit("<path>")` | Modify constitutional memory |
-| Index new file | `memory_save({ filePath, force: true })` | Add to search index |
-| Verify surfaces | `memory_search({ query })` | Confirm isConstitutional: true |
-| Remove from index | `memory_index_scan({ force: true })` | Rebuild index after deletion |
-| Check stats | `memory_stats()` | Verify tier breakdown |
-
----
-
-## 12. ERROR HANDLING
+## 11. ERROR HANDLING
 
 | Condition | Action |
 |-----------|--------|
@@ -500,51 +492,29 @@ STATUS=OK ACTION=budget
 
 ---
 
-## 13. EXAMPLES
+## 12. RELATED COMMANDS
 
-### Example 1: Create a Security Rule
-
-```bash
-/memory:learn Never commit API keys or secrets to git
-```
-
-```
-MEMORY:LEARN
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  Created     never-commit-secrets.md
-  Title       NEVER COMMIT SECRETS
-  Tier        constitutional (3.0x boost · no decay)
-  Location    .opencode/skill/system-spec-kit/constitutional/
-
-→ Triggers ──────────────────────────────────────────
-  secret · api key · credential · password · commit
-
-→ Budget ────────────────────────────────────────────
-  ██████░░░░  ~520/2000 tokens  (3 files)
-
-STATUS=OK ACTION=created
-```
-
-### Example 2: List All Memories
-
-```bash
-/memory:learn list
-```
-
-### Example 3: Check Budget
-
-```bash
-/memory:learn budget
-```
-
----
-
-## 14. RELATED COMMANDS
-
-- `/memory:save` — Save session context (episodic memory, any tier)
-- `/memory:context` — Search and retrieve memories
-- `/memory:manage` — Database operations (scan, cleanup, tier changes, health)
+- `/memory:context`: Intent-aware context retrieval
+- `/memory:save`: Save conversation context
+- `/memory:manage`: Database management, checkpoints, ingest
+- `/memory:continue`: Session recovery
+- `/memory:analyze`: Analysis, causal graph, evaluation, learning history
+- `/memory:shared`: Shared-memory spaces
 
 **Constitutional directory:** `.opencode/skill/system-spec-kit/constitutional/`
 **Full documentation:** `.opencode/skill/system-spec-kit/constitutional/README.md`
+
+---
+<!-- APPENDIX: Reference material for AI agent implementation -->
+
+## APPENDIX A: MCP TOOL REFERENCE
+
+| Step | Tool | Purpose |
+|------|------|---------|
+| Discover files | `Glob(".opencode/skill/system-spec-kit/constitutional/*.md")` | Find constitutional files |
+| Write new file | `Write("<path>")` | Create constitutional memory |
+| Edit existing | `Edit("<path>")` | Modify constitutional memory |
+| Index new file | `memory_save({ filePath, force: true })` | Add to search index |
+| Verify surfaces | `memory_search({ query })` | Confirm isConstitutional: true |
+| Remove from index | `memory_index_scan({ force: true })` | Rebuild index after deletion |
+| Check stats | `memory_stats()` | Verify tier breakdown |

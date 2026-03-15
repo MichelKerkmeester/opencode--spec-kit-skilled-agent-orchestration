@@ -1,3 +1,5 @@
+'use strict';
+
 // ═══════════════════════════════════════════════════════════════
 // TOC SCROLL DIAGNOSTIC SCRIPT
 // Paste this in browser console to debug scroll behavior

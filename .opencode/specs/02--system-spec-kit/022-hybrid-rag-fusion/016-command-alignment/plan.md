@@ -1,6 +1,6 @@
 ---
 title: "Plan: Command Alignment"
-description: "Implementation plan for aligning 5 existing memory commands + 3 new commands with 29 MCP tools across 7 layers."
+description: "Implementation plan for aligning the memory command docs with the current 32-tool MCP surface."
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 # Plan: 016-command-alignment
@@ -9,240 +9,209 @@ description: "Implementation plan for aligning 5 existing memory commands + 3 ne
 
 ---
 
+<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-Align the memory command suite with the current MCP tool surface. The work splits into 4 phases executed sequentially: update existing commands, create new commands, update the index, and verify.
+Align the memory command documentation set with the current Spec Kit Memory MCP surface. The implementation stays scoped to command docs and the memory README, but it must start with a schema-sync pass so the work is grounded in the live 32-tool surface rather than the older 29-tool draft.
 
-**Effort Estimate:** ~800 LOC across 9 files (5 updates + 3 new + 1 README update)
+**Effort Estimate:** ~900 LOC across 9 command-doc deliverables plus verification artifacts
+<!-- /ANCHOR:overview -->
 
 ---
 
-## 2. PHASES
+<!-- ANCHOR:technical-context -->
+## 2. TECHNICAL CONTEXT
 
-### Phase 1: Update Existing Commands (5 files)
+### Source of Truth
 
-Update each of the 5 existing command files to document all missing parameters, fix structural issues, and add missing tool references.
+- Tool inventory: `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts`
+- Allowed/validated parameter mirror: `.opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts`
+- Current command docs: `.opencode/command/memory/*.md`
+- README index: `.opencode/command/memory/README.txt`
+
+### Current Repo Truth
+
+- `TOOL_DEFINITIONS` contains **32** tools.
+- 16 tools currently have no command home in the memory command suite.
+- Existing command docs still use stale counts, stale naming, and incomplete parameter coverage.
+- `memory_get_learning_history` is currently undocumented and must be owned by `/memory:manage history <specFolder>`.
+
+### Documentation Constraints
+
+- This phase edits only `spec.md`, `plan.md`, and `tasks.md`.
+- The later implementation pass must still update the actual command docs and README.
+- `checklist.md` remains intentionally out of scope for this refinement pass.
+<!-- /ANCHOR:technical-context -->
+
+---
+
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
+
+These decisions are fixed for the implementation pass:
+
+1. `/memory:manage history <specFolder>` is the command home for `memory_get_learning_history`.
+2. `/memory:analyze` owns both analysis and eval tools.
+3. `/memory:shared` owns all shared-memory lifecycle tools.
+4. `/memory:ingest` owns async ingest start/status/cancel workflows.
+5. `context.md` must document `minQualityScore` as a deprecated alias of `min_quality_score`.
+6. `context.md` must document `memory_match_triggers` cognitive parameters if they remain missing.
+7. Feature-flag notes should appear only when they materially change command behavior in the current repo.
+8. Verification must use both `tool-schemas.ts` and `tool-input-schemas.ts`, not just one file.
+<!-- /ANCHOR:architecture -->
+
+---
+
+<!-- ANCHOR:phases -->
+## 4. PHASES
+
+### Phase 0: Schema Sync Pre-Pass
+
+Before editing command docs, generate a current baseline from the live 32-tool surface.
+
+| Step | Action | Output | Priority |
+|------|--------|--------|----------|
+| 0.1 | Recount `TOOL_DEFINITIONS` and verify the total is 32 | Verified tool inventory baseline | P0 |
+| 0.2 | Compare `tool-schemas.ts` properties with `ALLOWED_PARAMETERS` | Current parameter/alias baseline | P0 |
+| 0.3 | Generate a tool-to-command coverage table for the current docs | Uncovered/partial coverage list | P0 |
+
+### Phase 1: Update Existing Commands
+
+Update the 5 existing command files to match the current surface and fixed ownership decisions.
 
 | Step | File | Changes | Priority |
 |------|------|---------|----------|
-| 1.1 | `context.md` | Add 21 missing params to MCP Tool Signature section; add concepts search mode; add governance params subsection; add includeTrace/tokenUsage to memory_context call; add advanced search params table | P1 |
-| 1.2 | `save.md` | Add 10 governance/provenance/retention params to memory_save tool signature; add reference to new /memory:ingest command for bulk ingestion; add retention policy section | P1 |
-| 1.3 | `manage.md` | Fix section "189" → "19"; add 20 missing params across memory_stats, memory_health, memory_list, memory_update, memory_validate, memory_bulk_delete; add confirmName to checkpoint_delete; add memory_get_learning_history section | P0 |
-| 1.4 | `learn.md` | Verify tool signatures match current schemas; add confirmName note for checkpoint_delete if referenced; minor alignment updates | P2 |
-| 1.5 | `continue.md` | Verify tool signatures match current schemas; add memory_get_learning_history reference for session context enrichment; minor alignment updates | P2 |
+| 1.1 | `context.md` | Add `memory_context` trace/budget params, advanced `memory_search` controls, `minQualityScore`, and `memory_match_triggers` cognitive parameters | P1 |
+| 1.2 | `save.md` | Add governance/provenance/retention docs and route async bulk ingestion to `/memory:ingest` | P1 |
+| 1.3 | `manage.md` | Fix section numbering, add `confirmName`, document current stats/health/mutation params, and add `/memory:manage history <specFolder>` | P0 |
+| 1.4 | `learn.md` | Refresh tool signatures and checkpoint-delete references against current schemas | P2 |
+| 1.5 | `continue.md` | Refresh retrieval signatures and reference `/memory:manage history <specFolder>` for session enrichment | P2 |
 
-**Dependencies:** None. All steps can execute in parallel.
+### Phase 2: Create New Commands
 
-### Phase 2: Create New Commands (3 files)
-
-Create 3 new command files following the established pattern from existing commands (frontmatter with description/argument-hint/allowed-tools, mandatory first action gate, sections for purpose/contract/workflow/MCP enforcement/error handling/quick reference/related commands).
+Create 3 new command files using the established command pattern and the ownership decisions above.
 
 | Step | File | Scope | Priority |
 |------|------|-------|----------|
-| 2.1 | `analyze.md` | 8 L6 Analysis tools: task_preflight, task_postflight, memory_drift_why, memory_causal_link, memory_causal_stats, memory_causal_unlink, eval_run_ablation, eval_reporting_dashboard | P1 |
-| 2.2 | `shared.md` | 3 L5 Shared Memory tools: shared_space_upsert, shared_space_membership_set, shared_memory_status | P1 |
-| 2.3 | `ingest.md` | 3 L7 Async Ingestion tools: memory_ingest_start, memory_ingest_status, memory_ingest_cancel | P1 |
+| 2.1 | `analyze.md` | `task_preflight`, `task_postflight`, causal graph tools, and eval/reporting tools | P1 |
+| 2.2 | `shared.md` | `shared_space_upsert`, `shared_space_membership_set`, `shared_memory_status`, `shared_memory_enable` | P1 |
+| 2.3 | `ingest.md` | `memory_ingest_start`, `memory_ingest_status`, `memory_ingest_cancel` | P1 |
 
-**Dependencies:** None. All steps can execute in parallel. Reference existing commands for template pattern.
-
-### Phase 3: Update Index (1 file)
+### Phase 3: Update the README
 
 | Step | File | Changes | Priority |
 |------|------|---------|----------|
-| 3.1 | `README.txt` | Update from 5-command to 8-command structure; add analyze/shared/ingest to command table; update examples; add tool coverage summary; update troubleshooting section | P1 |
-
-**Dependencies:** Phase 1 and Phase 2 must complete first.
+| 3.1 | `README.txt` | Expand from 5 to 8 commands, update usage examples, and normalize all history references to the final `history` name | P1 |
+| 3.2 | `README.txt` | Add a full tool-coverage table mapping each of the 32 tools to its primary command home | P1 |
 
 ### Phase 4: Verification
 
 | Step | Action | Success Criteria |
 |------|--------|-----------------|
-| 4.1 | Cross-reference tool-schemas.ts | Every tool in TOOL_DEFINITIONS has a command home |
-| 4.2 | Parameter completeness check | Every inputSchema property documented in a command |
-| 4.3 | Internal link verification | All related commands sections reference correct files |
-| 4.4 | Quick reference accuracy | All quick reference tables match actual invocation patterns |
-
-**Dependencies:** Phases 1-3 must complete first.
-
----
-
-## 3. IMPLEMENTATION DETAILS
-
-### 3.1 Pattern for Existing Command Updates
-
-For each existing command update (Steps 1.1-1.5):
-
-1. **Read** the command file and tool-schemas.ts
-2. **Compare** every parameter in the relevant tool schemas against what the command documents
-3. **Add** missing parameters using the existing documentation style:
-   - For MCP Tool Signature sections: add to the `properties` in the example call
-   - For parameter tables: add rows with param name, type, default, description
-   - For workflow sections: reference new params where they affect the workflow
-4. **Verify** the tool call examples use the correct parameter names (snake_case vs camelCase per schema)
-
-### 3.2 Pattern for New Commands
-
-For each new command (Steps 2.1-2.3), use this template structure derived from existing commands:
-
-```
----
-description: [one-line description]
-argument-hint: "[argument format]"
-allowed-tools: [list of MCP tools this command uses]
----
-
-# MANDATORY FIRST ACTION - DO NOT SKIP
-[Argument validation gate]
-
-# Command Name
-[Purpose section]
-
-## 1. PURPOSE
-## 2. CONTRACT
-## 3. ARGUMENT ROUTING
-## 4. MCP ENFORCEMENT MATRIX
-## 5. WORKFLOW
-## 6. [Mode-specific sections]
-## N-2. ERROR HANDLING
-## N-1. QUICK REFERENCE
-## N. RELATED COMMANDS
-```
-
-### 3.3 New Command: /memory:analyze
-
-**Argument Routing:**
-```
-$ARGUMENTS
-    ├─ Empty → OVERVIEW DASHBOARD
-    ├─ "preflight <spec> <task>" → EPISTEMIC PREFLIGHT
-    ├─ "postflight <spec> <task>" → EPISTEMIC POSTFLIGHT
-    ├─ "causal <memoryId>" → CAUSAL TRACE (memory_drift_why)
-    ├─ "link <sourceId> <targetId> <relation>" → CREATE CAUSAL LINK
-    ├─ "unlink <edgeId>" → REMOVE CAUSAL LINK
-    ├─ "causal-stats" → CAUSAL GRAPH STATS
-    ├─ "ablation [channels]" → RUN ABLATION STUDY
-    └─ "dashboard [filters]" → EVAL REPORTING DASHBOARD
-```
-
-**Allowed Tools:** task_preflight, task_postflight, memory_drift_why, memory_causal_link, memory_causal_stats, memory_causal_unlink, eval_run_ablation, eval_reporting_dashboard
-
-### 3.4 New Command: /memory:shared
-
-**Argument Routing:**
-```
-$ARGUMENTS
-    ├─ Empty → STATUS OVERVIEW
-    ├─ "create <spaceId> <tenantId> <name>" → CREATE/UPDATE SPACE
-    ├─ "member <spaceId> <type> <id> <role>" → SET MEMBERSHIP
-    └─ "status [tenantId] [userId] [agentId]" → INSPECT ROLLOUT
-```
-
-**Allowed Tools:** shared_space_upsert, shared_space_membership_set, shared_memory_status
-
-### 3.5 New Command: /memory:ingest
-
-**Argument Routing:**
-```
-$ARGUMENTS
-    ├─ Empty → LIST ACTIVE JOBS
-    ├─ "start <paths...> [--folder <spec>]" → START INGESTION
-    ├─ "status <jobId>" → CHECK JOB STATUS
-    └─ "cancel <jobId>" → CANCEL JOB
-```
-
-**Allowed Tools:** memory_ingest_start, memory_ingest_status, memory_ingest_cancel
-
-### 3.6 manage.md Specific Fixes
-
-1. **Section numbering:** Line 839, change `## 189. RELATED COMMANDS` to `## 19. RELATED COMMANDS`
-2. **checkpoint_delete:** Add `confirmName` (string, REQUIRED) to checkpoint delete section. Must exactly match `name`.
-3. **New section:** Add "Learning History" section for `memory_get_learning_history` tool between Health and Checkpoints (as section 15.5 or renumber).
-4. **memory_stats params:** Add `folderRanking` (enum: count/recency/importance/composite), `excludePatterns` (array), `includeArchived` (boolean), `limit` (number).
-5. **memory_health params:** Add `reportMode` (enum: full/divergent_aliases), `autoRepair` (boolean), `confirmed` (boolean), `specFolder` (string).
-6. **memory_validate params:** Add 8 new params: queryId, queryTerms, resultRank, totalResultsShown, searchMode, intent, sessionId, notes.
-7. **memory_update params:** Add `allowPartialUpdate` (boolean).
-8. **memory_list params:** Add `includeChunks` (boolean).
-9. **memory_bulk_delete params:** Add `skipCheckpoint` (boolean).
+| 4.1 | Generate post-change coverage table | All 32 tools mapped to a command home |
+| 4.2 | Run parameter completeness audit | All live properties and aliases documented |
+| 4.3 | Verify command/index naming consistency | README, command docs, and related-command sections all agree |
+| 4.4 | Verify quick-reference and workflow routing | Examples and subcommand names match the intended command contract |
+| 4.5 | Run spec validation for the planning docs | Validation passes except for the known out-of-scope `checklist.md` gap |
+<!-- /ANCHOR:phases -->
 
 ---
 
-## 4. EXECUTION ORDER
+<!-- ANCHOR:implementation-details -->
+## 5. IMPLEMENTATION DETAILS
 
-```
-Phase 1 (parallel):  1.1 ──┐
-                      1.2 ──┤
-                      1.3 ──┤── All 5 existing command updates
-                      1.4 ──┤
-                      1.5 ──┘
-                           │
-Phase 2 (parallel):  2.1 ──┐
-                      2.2 ──┤── 3 new commands
-                      2.3 ──┘
-                           │
-Phase 3 (sequential): 3.1 ── README.txt update
-                           │
-Phase 4 (sequential): 4.1 ── Cross-reference verification
-                      4.2 ── Parameter completeness
-                      4.3 ── Link verification
-                      4.4 ── Quick reference check
+### Existing Command Update Pattern
+
+For each existing command update:
+
+1. Read the command file plus both schema sources.
+2. Compare the documented surface against the current tool inventory and allowed-parameter mirror.
+3. Add missing parameters using the command's existing documentation style.
+4. Update workflow sections only where parameter behavior changes the command contract.
+5. Remove stale naming and make command ownership explicit.
+
+### New Command Pattern
+
+Each new command should follow the existing memory-command structure:
+
+```text
+Frontmatter
+MANDATORY FIRST ACTION
+Purpose / Contract
+Argument Routing
+MCP Enforcement Matrix
+Workflow Sections
+Error Handling
+Quick Reference
+Related Commands
 ```
 
-Phases 1 and 2 can execute in parallel. Phase 3 depends on 1+2. Phase 4 depends on 3.
+### Command Ownership Model
+
+- `context.md`: L1-L2 retrieval entry points and advanced retrieval controls
+- `save.md`: synchronous save/index flows and save-related advanced parameters
+- `manage.md`: maintenance, mutations, checkpoints, and learning history
+- `analyze.md`: analysis, causal graph, eval, and reporting
+- `shared.md`: shared-space lifecycle and rollout status
+- `ingest.md`: async ingest lifecycle
+<!-- /ANCHOR:implementation-details -->
 
 ---
 
-## 5. RESEARCH FINDINGS
+<!-- ANCHOR:verification -->
+## 6. VERIFICATION STRATEGY
 
-### Multi-Agent Research (10 agents dispatched)
+Verification must prove:
 
-Research was conducted via 10 parallel agents:
-- **5 Copilot (gpt-5.3-codex):** Per-command gap analysis against tool-schemas.ts
-- **3 Sonnet (native Claude):** Hydra capabilities, RAG sprint impact, uncovered tool matrix
-- **1 Codex (gpt-5.4):** Tool layer architecture cross-reference
-- **1 Gemini (gemini-3.1-pro):** New command structure proposals
+- every tool in `TOOL_DEFINITIONS` (32 total) has a command home
+- every current property and alias in the command-facing schemas is documented
+- `README.txt` describes the final 8-command surface
+- the command suite consistently uses the final `history` subcommand name
+- all open questions from the earlier draft have been resolved in the docs
 
-Key findings synthesized into the gap analysis in spec.md section 5.
+Recommended checks:
 
-### Source of Truth
+```bash
+python3 - <<'PY'
+# Count tools and generate coverage table from TOOL_DEFINITIONS
+PY
 
-`tool-schemas.ts` is the canonical source for all MCP tool definitions. The `TOOL_DEFINITIONS` array at the bottom of the file contains the ordered list of all 29 tools. Each tool's `inputSchema.properties` object defines the complete parameter surface.
+rg -n "<stale-count-or-open-question-pattern>" \
+  .opencode/command/memory .opencode/command/memory/README.txt
+
+bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh \
+  .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/016-command-alignment
+```
+<!-- /ANCHOR:verification -->
 
 ---
 
-## 6. RISKS & MITIGATIONS
+<!-- ANCHOR:risks -->
+## 7. RISKS & MITIGATIONS
 
 | Risk | Probability | Impact | Mitigation |
-|------|------------|--------|------------|
-| manage.md becomes too long | Medium | Medium | Keep advanced params in dedicated "Advanced Parameters" subsections; use collapsible sections if format supports it |
-| analyze.md too complex (8 tools) | Medium | Low | Group tools by function: epistemic (2), causal (4), eval (2); use clear argument routing |
-| Governance params irrelevant for single-user | Low | Low | Mark as "Multi-Agent / Enterprise" with skip guidance |
-| Tool schemas change during implementation | Low | Medium | Implementation reads tool-schemas.ts live; no hardcoded assumptions |
+|------|-------------|--------|------------|
+| Schema files diverge from each other | Medium | High | Phase 0 must compare both schema sources before command edits begin |
+| New commands fragment discoverability | Low | Medium | README coverage matrix and related-command sections must provide the unified index |
+| Shared/governance docs are overexplained for basic users | Low | Low | Keep rollout-dependent behavior in advanced callouts rather than the primary happy path |
+| Validation still reports spec-folder hygiene issues | High | Low | Treat missing `checklist.md` as a known out-of-scope artifact for this pass |
+<!-- /ANCHOR:risks -->
 
 ---
 
-## 7. OPEN QUESTIONS
+<!-- ANCHOR:assumptions -->
+## 8. ASSUMPTIONS
 
-1. Should `memory_get_learning_history` go in `manage.md` or in the new `analyze.md`? (Recommendation: `manage.md` since it's L7 Maintenance, not L6 Analysis)
-2. Should governance params (tenantId, userId, agentId) be documented in every command that uses memory_search, or in a shared reference section? (Recommendation: shared reference in README.txt + brief mention in each command)
-3. Should feature flag behavior (SPECKIT_ADAPTIVE_FUSION, SPECKIT_EXTENDED_TELEMETRY) be documented per-command or in a central reference? (Recommendation: brief per-command notes with full details in SKILL.md. Per S2 agent finding: do NOT hardcode flag names in commands — reference the flag registry, since Sprint 7 sunsets earlier sprint flags.)
-4. Should eval tools (eval_run_ablation, eval_reporting_dashboard) be in `/memory:analyze` or a separate `/memory:eval`? (S3 agent proposed separate `/memory:eval`; current plan groups them in `/memory:analyze` for fewer command files. Either is viable.)
-5. Should ingest tools get their own `/memory:ingest` command or be subcommands of `/memory:manage`? (S3 agent proposed extending manage.md; current plan uses a separate command for clarity. Decision: keep separate — manage.md is already 866 lines.)
-
-## 8. AGENT RESEARCH INSIGHTS (for implementation reference)
-
-Key insights from multi-agent research that should inform implementation:
-
-- **S1 (Hydra):** Governed ingest rejection (Phase 5 REQ-502) — saves without `provenanceSource`/`provenanceActor` are rejected when governance guardrails active. save.md needs a "Governance Mode" callout explaining when these fields are required vs optional.
-- **S1 (Hydra):** Kill switch (`shared_space_upsert.killSwitch`) is an emergency operation for instantly disabling shared spaces. Needs prominent documentation in /memory:shared.
-- **S2 (RAG Sprints):** Sprint 6 N3-lite auto-populates `contradicts` edges (tagged `created_by='auto'`). The `/memory:analyze causal` docs should explain system-generated vs user-created edges.
-- **S2 (RAG Sprints):** `specFolder` on memory_search is now a performance optimization (early pre-filter before Stage 1 candidate generation), not just a relevance filter. context.md should note this.
-- **S2 (RAG Sprints):** `tokenUsage` on memory_context ties into lifecycle hooks (`hooks/memory-surface.ts`) and 4000-token per-point budget. context.md should document when to pass this.
-- **S3 (Coverage):** Recommends `memory_get_learning_history` as `manage history <spec>` subcommand. Adopted.
+- The implementation pass will edit the actual command docs and README after this refinement lands.
+- The command set after implementation is fixed at 8 commands.
+- The planning docs should reflect current repo truth even if earlier research drafts used older counts.
+- This pass should remove ambiguity, not perform any MCP or command implementation changes.
+<!-- /ANCHOR:assumptions -->
 
 ---
 
 <!--
-PLAN: 016-command-alignment (~200 lines)
-4 phases, 13 steps, 9 deliverables
-Phases 1+2 parallelizable, 3+4 sequential
+PLAN: 016-command-alignment
+Planning-doc refresh only
+32-tool schema baseline, fixed command ownership, and verification-first implementation plan
 -->

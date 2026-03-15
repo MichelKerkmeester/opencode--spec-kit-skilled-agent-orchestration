@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Embedding processor for converting text to vector embeddings
 """

@@ -142,6 +142,7 @@ export {
 } from './memory-context';
 
 export {
+  handleSharedMemoryEnable,
   handleSharedMemoryStatus,
   handleSharedSpaceMembershipSet,
   handleSharedSpaceUpsert,

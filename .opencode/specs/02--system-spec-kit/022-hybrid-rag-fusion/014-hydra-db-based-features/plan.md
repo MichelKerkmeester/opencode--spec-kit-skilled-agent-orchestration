@@ -1,6 +1,6 @@
 ---
 title: "Implementation Plan: 014-hydra-db-based-features"
-description: "Six-phase implementation roadmap for HydraDB-inspired memory-state capabilities in system-spec-kit and the Spec Kit Memory MCP server."
+description: "Delivered six-phase implementation record for HydraDB-inspired memory-state capabilities in system-spec-kit and the Spec Kit Memory MCP server."
 trigger_phrases:
   - "implementation plan"
   - "hydra roadmap"
@@ -28,14 +28,15 @@ contextType: "implementation"
 | **Language/Stack** | TypeScript, Node.js (Memory MCP server) |
 | **Framework** | MCP server handlers + modular retrieval/storage subsystems |
 | **Storage** | SQLite + vector/FTS indexes (current baseline) |
-| **Testing** | Vitest + scenario/integration suites (future implementation phases) |
+| **Testing** | Vitest targeted Hydra/doc suites, full `mcp_server` regression, and alignment-drift verification |
 
 ### Overview
-This plan sequences HydraDB-inspired capabilities as an evolutionary extension of the existing Memory MCP server, not a greenfield rewrite. The six phases move from safe baseline setup to lineage, graph unification, adaptive retrieval, hierarchy/governance enforcement, and finally shared-memory collaboration rollout.
+This plan records the delivered HydraDB-inspired implementation as an evolutionary extension of the existing Memory MCP server, not a greenfield rewrite. The six phases were shipped in sequence from baseline hardening through lineage, graph unification, adaptive retrieval, hierarchy and governance enforcement, and shared-memory collaboration rollout.
 
-**Present vs Target**:
-- Present: capabilities exist in separate modules and are not yet a single governed memory-state platform.
-- Target: one coherent memory-state lifecycle with lineage, policy boundaries, adaptive quality loops, and controlled collaboration.
+**Baseline vs Delivered**:
+- Baseline: memory primitives existed across separate modules without a single governed memory-state story.
+- Delivered: one coordinated runtime surface spanning lineage state, graph-aware retrieval, adaptive shadow proposals, hierarchical governance, retention and deletion controls, and shared-memory rollout safety.
+- Public API note: lineage and `asOf` remain internal storage-layer APIs plus save/search integration, not a standalone public MCP query tool.
 
 [Assumes: Public HydraDB materials describe product direction suitable for roadmap inspiration, but not directly reusable implementation code.]
 <!-- /ANCHOR:summary -->
@@ -52,11 +53,11 @@ This plan sequences HydraDB-inspired capabilities as an evolutionary extension o
 - [x] Research grounding docs are referenced and available in this folder.
 
 ### Definition of Done
-- [x] P0 requirements in `spec.md` are implemented and validated. [E:156 tests across 13 test files]
-- [x] P1 requirements are implemented or formally deferred. [E:implementation-summary.md]
-- [x] Isolation/governance checks pass in CI and scenario tests. [E:entity-scope + dual-scope-hooks = 85 tests]
-- [x] Rollback drills pass for each gated capability. [E:migration-checkpoint-scripts.vitest.ts]
-- [x] Planning docs are updated to match implementation reality. [E:this plan.md update]
+- [x] P0 requirements in `spec.md` are implemented and locally revalidated. [E:2026-03-15 `npx tsc --noEmit`, `npm run build`, targeted Hydra/doc suites, `npm test`]
+- [x] P1 requirements are implemented with no remaining spec-level deferrals in this parent pack. [E:tasks.md + implementation-summary.md]
+- [x] Isolation/governance checks pass in targeted and full-suite verification. [E:entity-scope.vitest.ts + dual-scope-hooks.vitest.ts + memory-governance.vitest.ts + shared-spaces.vitest.ts]
+- [x] Rollback drills pass through roadmap flag opt-outs, adaptive-state reset, and migration checkpoint tests. [E:memory-roadmap-flags.vitest.ts + adaptive-ranking.vitest.ts + migration-checkpoint-scripts.vitest.ts]
+- [x] Planning docs are updated to match runtime reality. [E:2026-03-15 truth-sync audit]
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -141,13 +142,13 @@ Retention/Delete <- Governance/Audit <- Feedback Outcomes
 | Unit | Lineage transitions, scope predicates, adaptive policy bounds | Vitest |
 | Integration | Ingest -> lineage -> retrieval -> feedback -> governance lifecycle | Vitest + SQLite fixtures |
 | Isolation/Security | Tenant/user/agent/session leak prevention and shared-space boundaries | Scenario test matrix |
-| Migration | Forward/backward schema compatibility and checkpoint restore | Migration harness scripts |
+| Migration | Forward/backward schema compatibility and checkpoint restore | Migration harness tests + checkpoint CLIs |
 | Performance | Retrieval latency, adaptive overhead, queue throughput | Benchmark scripts + telemetry |
-| Manual/Staging | Rollback drills and governance audit walkthroughs | Staging runbooks |
+| Manual/Operator | Rollback drills, roadmap flag snapshots, and governance audit walkthroughs | Local runbooks + playbooks |
 
 Notes:
-- This planning phase does not claim these tests have been executed.
-- Test execution and evidence collection occur during implementation phases.
+- Local re-verification was rerun on 2026-03-15 with typecheck, build, targeted Hydra/doc suites, full `npm test`, and alignment-drift validation.
+- Evidence in this plan is limited to commands rerun during implementation delivery and the 2026-03-15 truth-sync audit.
 <!-- /ANCHOR:testing -->
 
 ---
@@ -173,7 +174,7 @@ Notes:
 
 - **Trigger**: isolation leak, lineage corruption risk, severe retrieval regression, governance enforcement failure, or failed migration checkpoint validation.
 - **Procedure**:
-1. Disable affected feature flags (`lineage_state`, `adaptive_retrieval`, `scope_enforcement`, `shared_memory`).
+1. Disable affected roadmap flags (`SPECKIT_MEMORY_LINEAGE_STATE`, `SPECKIT_MEMORY_ADAPTIVE_RANKING`, `SPECKIT_MEMORY_SCOPE_ENFORCEMENT`, `SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS`, `SPECKIT_MEMORY_SHARED_MEMORY`) or their `SPECKIT_HYDRA_*` compatibility aliases.
 2. Route retrieval to prior stable baseline pipeline.
 3. Restore migration checkpoint if schema regression is detected.
 4. Re-run smoke scenarios for save/search/delete scope behavior.

@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+"""Package initialization for turso."""
+
 import logging
 
 logging.getLogger(__name__).addHandler(logging.NullHandler())

@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Update
+// ────────────────────────────────────────────────────────────────
 import { ClickUpClient } from '../api.js'
 import type { UpdateTaskOptions, Priority } from '../api.js'
 import type { Config } from '../config.js'

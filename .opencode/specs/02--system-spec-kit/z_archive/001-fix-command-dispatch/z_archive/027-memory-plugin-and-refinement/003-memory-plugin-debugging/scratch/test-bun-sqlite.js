@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Test script to verify bun:sqlite works with the plugin's patterns
  * Run with: bun run test-bun-sqlite.js

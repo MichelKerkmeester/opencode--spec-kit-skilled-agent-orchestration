@@ -128,7 +128,7 @@ The cognitive path fetches 2x the requested limit from the trigger matcher to gi
 | `mcp_server/tests/handler-memory-triggers.vitest.ts` | Trigger handler validation |
 | `mcp_server/tests/importance-tiers.vitest.ts` | Importance tier tests |
 | `mcp_server/tests/incremental-index-v2.vitest.ts` | Incremental index behavioral tests |
-| `mcp_server/tests/incremental-index.vitest.ts` | Legacy deferred placeholder suite (skipped; not behavioral evidence) |
+| `mcp_server/tests/incremental-index.vitest.ts` | Focused incremental-index coverage (supplemental to `incremental-index-v2.vitest.ts`; concrete fast-path assertions) |
 | `mcp_server/tests/index-refresh.vitest.ts` | Index refresh tests |
 | `mcp_server/tests/interference.vitest.ts` | Interference scoring tests |
 | `mcp_server/tests/mcp-response-envelope.vitest.ts` | MCP envelope tests |

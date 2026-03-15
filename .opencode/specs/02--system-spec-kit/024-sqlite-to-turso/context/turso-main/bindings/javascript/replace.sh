@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+set -euo pipefail
 sed -i "s/$NAME_FROM/$NAME_TO/g" packages/common/package.json
 sed -i "s/$NAME_FROM/$NAME_TO/g" packages/native/package.json
 sed -i "s/$NAME_FROM/$NAME_TO/g" packages/browser/package.json

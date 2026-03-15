@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Index Default
+// ────────────────────────────────────────────────────────────────
 import { isWebWorker, setupWebWorker, setupMainThread } from "@tursodatabase/database-wasm-common";
 
 export let MainWorker = null;

@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+"""Module for plot."""
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd

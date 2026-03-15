@@ -97,7 +97,7 @@ Provide a Level 2, template-compliant analysis specification that preserves all 
 |----|-------------|---------------------|
 | REQ-004 | Standards alignment gaps are tracked across impacted features. | Wildcard export and pattern-violation findings are mapped into tasks/checklist entries. |
 | REQ-005 | Test coverage gaps are traceable to concrete regression tasks. | P0/P1/P2 test gaps are represented in tasks with T### numbering and file context. |
-| REQ-006 | Manual playbook mapping status is recorded. | EX-019..EX-025 mapping state is explicitly noted with gap visibility. |
+| REQ-006 | Manual playbook mapping status is recorded. | EX-019..EX-025 are explicitly linked from the corresponding analysis feature files and the playbook index. |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -189,8 +189,7 @@ Provide a Level 2, template-compliant analysis specification that preserves all 
 
 ## 10. OPEN QUESTIONS
 
-- Should per-feature manual test scenarios be expanded beyond EX-019..EX-025 in a follow-up phase?
-- Should wildcard export remediation be tracked as a shared cross-phase task instead of repeated per feature?
+- No open questions remain for the phase closure packet. Future analysis additions should introduce new scenarios instead of reopening EX-019..EX-025 mapping.
 <!-- /ANCHOR:questions -->
 
 ---

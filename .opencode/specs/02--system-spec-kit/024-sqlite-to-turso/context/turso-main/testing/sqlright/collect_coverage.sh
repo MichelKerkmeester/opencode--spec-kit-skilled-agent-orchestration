@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 # Collect code coverage from a SQLRight fuzzing corpus.
 # Builds a coverage-instrumented binary and replays the corpus through it.
 # Usage: ./collect_coverage.sh [CORPUS_DIR] [REPORT_DIR]

@@ -55,12 +55,12 @@ Standardize this folder to the Level 2 Spec Kit structure, move the full 21-feat
 
 ### In Scope
 - Rewrite `spec.md`, `tasks.md`, `plan.md`, and `checklist.md` to Level 2 template structure with all required anchors/comments.
-- Add a self-contained 21-feature traceability matrix to the core docs using the rubric `Directly task-backed`, `Shared-task-backed`, or `No direct backlog task`.
+- Add a self-contained 21-feature traceability matrix to the core docs using direct task/evidence links for every feature.
 - Maintain a prioritized remediation backlog (P0/P1/P2) linked to concrete files and behaviors.
 - Remove redundant scratch traceability inventory if the core docs fully carry that burden.
 
 ### Out of Scope
-- Implementing code fixes in `mcp_server/` modules - tracked as follow-up tasks, not part of this rewrite.
+- Implementing unrelated new `mcp_server/` behavior outside the evidence-backed closure already captured in this phase.
 - Editing `description.json`, any `memory/` content, or files outside this spec folder.
 - Creating the implementation summary artifact - explicitly excluded for this task.
 
@@ -95,7 +95,7 @@ Standardize this folder to the Level 2 Spec Kit structure, move the full 21-feat
 | REQ-004 | Preserve remediation prioritization from the prior task inventory. | P0/P1/P2 remediation actions are retained in `tasks.md` with clear file targets. |
 | REQ-005 | Replace unsupported PASS/WARN/FAIL claims with truthful, evidence-backed language. | `spec.md`, `tasks.md`, and `checklist.md` describe coverage through the approved rubric and do not claim implementation verification without cited evidence. |
 | REQ-006 | Use trigger phrases aligned to folder name and pipeline features. | Frontmatter `trigger_phrases` include pipeline-architecture and representative feature keywords. |
-| REQ-007 | Make backlog gaps explicit where no direct remediation task exists. | Features F04, F05, and F16 are identified as `No direct backlog task`, and F11 is identified as `Shared-task-backed`. |
+| REQ-007 | Make traceability explicit for previously indirect features. | Features F04, F05, F11, and F16 each point to direct task/evidence entries rather than residual gap labels. |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -104,13 +104,13 @@ Standardize this folder to the Level 2 Spec Kit structure, move the full 21-feat
 ## 5. SUCCESS CRITERIA
 
 - **SC-001**: `spec.md`, `tasks.md`, `plan.md`, and `checklist.md` all follow Level 2 template sections and anchors.
-- **SC-002**: A reviewer can trace every pipeline-architecture feature from F01-F21 to a direct task, shared-task coverage, or an explicit backlog gap without opening scratch artifacts.
+- **SC-002**: A reviewer can trace every pipeline-architecture feature from F01-F21 to direct task and evidence links without opening scratch artifacts.
 - **SC-003**: Core docs describe documentation evidence truthfully and do not rely on unsupported PASS/WARN/FAIL shorthand.
-- **SC-004**: A reviewer can identify P0/P1/P2 remediation actions, the three uncovered features, and the one shared-task-backed feature in under 5 minutes.
+- **SC-004**: A reviewer can identify P0/P1/P2 remediation actions and the direct closure path for all 21 features in under 5 minutes.
 
 ### Acceptance Scenarios
 
-- **Given** the core docs only, **when** a reviewer checks feature coverage, **then** all 21 features resolve to direct coverage, shared coverage, or an explicit backlog gap in `tasks.md`.
+- **Given** the core docs only, **when** a reviewer checks feature coverage, **then** all 21 features resolve to direct task and evidence coverage in `tasks.md`.
 - **Given** a reviewer compares requirements and verification text, **when** they inspect `spec.md`, `tasks.md`, and `checklist.md`, **then** they do not find unsupported PASS/WARN/FAIL implementation claims.
 - **Given** the plan phases and dependency graph, **when** a reviewer reads `plan.md`, **then** the folder describes one consistent three-phase workflow with no orphaned Config phase.
 - **Given** scratch cleanup is expected, **when** a reviewer inspects the folder, **then** the traceability burden is satisfied by core docs and `scratch/phase14_features.json` is no longer needed.
@@ -134,7 +134,7 @@ Standardize this folder to the Level 2 Spec Kit structure, move the full 21-feat
 <!-- ANCHOR:questions -->
 ## 7. OPEN QUESTIONS
 
-- None for this documentation repair. Remaining uncertainty is expressed as explicit backlog gaps in `tasks.md`, not as open-ended implementation claims.
+- None. This strict-closure pass removed the earlier indirect-gap framing and left all 21 features with direct traceability.
 <!-- /ANCHOR:questions -->
 
 ---

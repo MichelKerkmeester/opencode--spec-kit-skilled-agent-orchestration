@@ -32,7 +32,7 @@ contextType: "general"
 | **Testing** | Vitest + feature-catalog/source consistency review |
 
 ### Overview
-This plan operationalized the decisions-and-deferrals audit by closing both prior WARN areas: F-02 evidence completeness for graph signals and F-03 sentence-boundary extraction behavior. The current focus is closure documentation, verification traceability, and one residual data backfill question.
+This plan operationalized the decisions-and-deferrals audit by closing both prior WARN areas: F-02 evidence completeness for graph signals and F-03 sentence-boundary extraction behavior. The strict-closure pass also resolved the historical auto-entity data question with a deterministic rebuild path and regression coverage.
 <!-- /ANCHOR:summary -->
 
 ---

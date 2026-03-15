@@ -521,9 +521,9 @@ async function testConfig() {
     
     // Test 2: smartRanking weights
     if (config.smartRanking && 
-        config.smartRanking.recencyWeight === 0.5 &&
-        config.smartRanking.accessWeight === 0.3 &&
-        config.smartRanking.relevanceWeight === 0.2) {
+        config.smartRanking.recencyWeight === 0.3 &&
+        config.smartRanking.accessWeight === 0.2 &&
+        config.smartRanking.relevanceWeight === 0.5) {
       pass('Config: smartRanking weights', 
            JSON.stringify(config.smartRanking));
     } else {

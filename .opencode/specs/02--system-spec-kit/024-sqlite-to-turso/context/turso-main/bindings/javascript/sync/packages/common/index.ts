@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Index
+// ────────────────────────────────────────────────────────────────
 import { run, memoryIO, runner, SyncEngineGuards, Runner } from "./run.js"
 import {
     DatabaseOpts,

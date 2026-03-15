@@ -1,191 +1,202 @@
 ---
-title: "Skill Alignment: system-spec-kit SKILL.md, References, and Assets"
-description: "Align system-spec-kit skill artifacts (SKILL.md, 25 references, 4 assets) with the 022-hybrid-rag-fusion epic deliverables — 51 spec folders, 189 features, 8 RAG sprints, and multi-agent campaign patterns."
-trigger_phrases:
-  - "skill alignment"
-  - "015 alignment"
-  - "speckit skill update"
-  - "SKILL.md update"
+title: "Feature Specification: Skill Alignment — system-spec-kit"
+description: "Research-backed Level 2 specification for aligning system-spec-kit documentation with the delivered 022-hybrid-rag-fusion program without changing MCP runtime behavior."
+trigger_phrases: ["skill alignment", "015 alignment", "speckit skill update", "system skill guide update"]
 importance_tier: "important"
 contextType: "implementation"
 ---
-<!-- SPECKIT_LEVEL: 1 -->
-# Spec: 015-skill-alignment
-
+# Feature Specification: Skill Alignment — system-spec-kit
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
 |-------|-------|
-| **Level** | 1 |
+| **Level** | 2 |
 | **Priority** | P1 |
 | **Status** | Draft |
 | **Created** | 2026-03-14 |
-| **Updated** | 2026-03-14 |
+| **Updated** | 2026-03-15 |
 | **Branch** | `017-markovian-architectures` |
 | **Parent** | `022-hybrid-rag-fusion` |
-| **Complexity** | 45/100 |
+| **Complexity** | 48/70 |
+<!-- /ANCHOR:metadata -->
 
 ---
 
+<!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
 
-The system-spec-kit skill artifacts (SKILL.md, 25 reference files, 4 asset files) contain stale metadata, missing documentation for delivered features, and structural gaps that emerged from the 022-hybrid-rag-fusion epic. A 10-agent cross-model gap analysis (5 Codex gpt-5.3-codex via Copilot, 1 GPT-5.4 via Codex CLI, 1 Gemini 3.1 Pro, 3 Sonnet 4.6 native) identified 32 P0 gaps, 40+ P1 gaps, and 15+ P2 gaps.
+The `system-spec-kit` documentation surface no longer cleanly matches the delivered state of the 022-hybrid-rag-fusion program. Scratch research for this phase identified stale metadata in the system skill guide, missing governance and campaign guidance across multiple reference files, and outdated assets that still describe a smaller pre-epic execution model.
 
-Key categories of misalignment:
-
-1. **Stale server metadata** in SKILL.md: tool count (25 vs 31 actual), handler count (12 vs 40), LOC (682 vs 1073), lib subdirs (20 vs 26), schema version (v13 vs v22)
-2. **Missing RAG pipeline documentation**: Sprint 4-7 features (feedback loop, quality gate, reconsolidation, contradiction detection, ablation framework) absent or underspecified
-3. **No epic-scale patterns**: Phase definitions cap at 4 phases (epic has 16), no sprint-gate model, no parent-child verification workflows, no multi-agent campaign patterns
-4. **Reference file gaps**: Validation rules don't cover nested hierarchies, rollback runbook scoped to single spec, worked examples all single-folder
-5. **Asset file gaps**: Parallel dispatch config outdated (4-agent vs 16-agent), complexity matrix doesn't scale, template mappings missing audit/synthesis archetypes
+This phase is currently a **research-complete, pre-implementation** documentation phase. Some related improvements have already landed elsewhere in the repo, so the main risk is now duplicating work or re-adding stale backlog items instead of targeting the gaps that remain open.
 
 ### Purpose
 
-Update system-spec-kit skill artifacts to accurately reflect the post-epic state: 31 MCP tools, schema v22, 10 feature flags (of 86 total), 4-stage pipeline, sprint-gate validation, multi-child phase hierarchies, and multi-agent campaign execution patterns.
+Produce an implementation-ready documentation spec that accurately tracks the **still-open** alignment work for `system-spec-kit`, preserves already-landed changes, and defines verification rules that use live repo truth instead of hand-maintained assumptions.
+<!-- /ANCHOR:problem -->
 
 ---
 
+<!-- ANCHOR:scope -->
 ## 3. SCOPE
 
 ### In Scope
-
-**SKILL.md (1 file):**
-- §1 When to Use: Update activation examples, add phase/rollout trigger phrases
-- §2 Smart Routing: Add RAG-specific intents, expand RESOURCE_MAP, update COMMAND_BOOSTS
-- §3 How It Works: Fix stale server shape, update feature flags, add phase workflow to Gate 3, expand complexity detection, add recursive validation, update Memory System section
-- §4 Rules: Add program integrity, flag governance, campaign verification rules
-- §5 Success Criteria: Add phase program, recursive verification, sprint-gate criteria
-- §6 Integration Points: Add phase-aware triggers, multi-CLI workflows
-- §7 Related Resources: Fix stale metadata, add feature catalog and playbook links
-
-**References (25 files across 7 domains):**
-- memory/ (5 files): Update tool counts, add Sprint 4-7 features, quality gate, reconsolidation
-- validation/ (5 files): Update path patterns for nested hierarchies, add multi-child verification, add Sprint 4+ evidence contracts
-- structure/ (4 files): Add 3-level nesting, NN--category convention, program-scale phase definitions, sprint-gate model
-- templates/ (4 files): Add audit child archetype, epic-scale patterns, Level 3+ guidance
-- workflows/ (4 files): Add epic-scale examples, sprint-gate evaluation, multi-agent campaigns, general rollback runbook
-- debugging/ (2 files): Add recursive validation failures, multi-child errors, stale metadata troubleshooting
-- config/ (1 file): Add SPECKIT_GRAPH_UNIFIED, update SPEC_KIT_ENABLE_CAUSAL description
-
-**Assets (4 files):**
-- complexity_decision_matrix.md: Add epic/program tier
-- level_decision_matrix.md: Add parent-child phase relationships
-- parallel_dispatch_config.md: Add wave-based execution, multi-model mixing
-- template_mapping.md: Add audit child, root synthesis, sprint gate archetypes
+- Upgrade this phase to a Level 2 spec folder with anchors, checklist coverage, and valid local cross-references.
+- Rewrite the backlog so it tracks only documentation gaps that remain open in the system skill guide, selected references, and selected assets.
+- Record canonical-source rules for counts, flags, and verification commands so future implementation work does not rely on brittle grep shortcuts or stale prose.
 
 ### Out of Scope
+- MCP server runtime code changes - this phase remains documentation-only.
+- Command alignment work owned by `016-command-alignment`.
+- Agent alignment, README rewrites, and finalization work owned by `999-finalization`.
+- Re-implementing documentation changes that are already present elsewhere in the repo.
 
-- MCP server code changes (this is documentation alignment only)
-- New feature implementation
-- Command alignment (covered by 016-command-alignment)
-- Agent alignment (covered by 999/017-agents-alignment)
+### Files to Change
+
+| File Path | Change Type | Description |
+|-----------|-------------|-------------|
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/015-skill-alignment/spec.md` | Modify | Upgrade to Level 2 and rewrite scope/requirements around confirmed open gaps |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/015-skill-alignment/plan.md` | Modify | Replace the old implementation plan with a doc-refresh execution plan |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/015-skill-alignment/tasks.md` | Modify | Replace duplicate/stale tasks with an actionable open backlog |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/015-skill-alignment/checklist.md` | Create | Add Level 2 verification for this pre-implementation documentation phase |
+| `../../../../skill/system-spec-kit/` | Future modify | Primary documentation alignment target for the system skill guide, metadata, routing, rules, and resource guidance |
+| `.opencode/skill/system-spec-kit/references/**` | Future modify | Reference targets that still lag epic-scale behavior, rollout guidance, and verification patterns |
+| `.opencode/skill/system-spec-kit/assets/**` | Future modify | Asset targets that still describe pre-epic complexity and dispatch patterns |
+<!-- /ANCHOR:scope -->
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 
-### P0 - Must Fix
+### P0 - Blockers (MUST complete)
 
-| ID | Requirement | Source |
-|----|-------------|--------|
-| SA-001 | Fix SKILL.md server shape: LOC 682→1073, handlers 12→40, libs 20→26, tools 25→31 | Agent 2, 4, 10 |
-| SA-002 | Fix schema version: v13→v22 | Agent 10 |
-| SA-003 | Fix chars/token approximation: 3.5→4 | Agent 10 |
-| SA-004 | Fix document type list: remove research (1.1x), add scratch (0.6x) | Agent 10 |
-| SA-005 | Add RAG-specific intents to smart routing (RETRIEVAL_TUNING, SCORING_CALIBRATION, etc.) | Agent 1 |
-| SA-006 | Update RESOURCE_MAP for RAG operational references | Agent 1 |
-| SA-007 | Update validation_rules.md for nested .opencode/specs/ hierarchies | Agent 3 |
-| SA-008 | Update phase_checklists.md for 21-child/6-child verification workflows | Agent 3 |
-| SA-009 | Update path_scoped_rules.md for epic-era nested topologies | Agent 3 |
-| SA-010 | Update folder_routing.md for 3-level deep paths | Agent 8 |
-| SA-011 | Update folder_structure.md with NN--category-name convention | Agent 8 |
-| SA-012 | Update phase_definitions.md: expand cap beyond 4, add sprint-gate model | Agent 8 |
-| SA-013 | Update sub_folder_versioning.md for deep nesting (3+ levels) | Agent 8 |
-| SA-014 | Add parent-child phase integrity rule to §4 | Agent 6 |
-| SA-015 | Add sprint-gate progression rule to §4 | Agent 6 |
-| SA-016 | Add recursive verification criteria to §5 | Agent 6 |
-| SA-017 | Add feature-flag governance rule to §4 | Agent 6 |
-| SA-018 | Update parallel_dispatch_config.md for wave-based execution (16 agents) | Agent 5 |
-| SA-019 | Create general-purpose rollback runbook (not spec-specific) | Agent 9 |
-| SA-020 | Add recursive validation troubleshooting entry | Agent 9 |
-| SA-021 | Add sprint-gate entry to worked_examples.md | Agent 9 |
-| SA-022 | Add epic-scale worked example (parent-child hierarchy) | Agent 9 |
-| SA-023 | Add --recursive flag documentation to execution_methods.md | Agent 9 |
-| SA-024 | Add wave-based dispatch execution method | Agent 9 |
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-001 | Normalize this spec folder as a Level 2 pre-implementation phase | `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` declare Level 2, include valid anchors, and use working local references from the `015-skill-alignment` folder |
+| REQ-002 | Track only confirmed open documentation gaps | The rewritten backlog maps to scratch research and live repo inspection; already-landed items are removed or explicitly marked "do not re-implement" |
+| REQ-003 | Preserve the documentation-only boundary | The spec states that runtime TypeScript, handler behavior, and command alignment are out of scope for this phase |
+| REQ-004 | Define canonical source-of-truth rules for future implementation | Tool inventory points to `mcp_server/tool-schemas.ts`; runtime/documentation counts are verified from live files; verification commands avoid brittle `grep -c "name:"` shortcuts |
+| REQ-005 | Make open skill-guide alignment work explicit | The spec retains open work for stale metadata, routing gaps, governance gaps, and shared-space/shared-memory layer treatment where the repo still lacks alignment |
 
-### P1 - Should Fix
+### P1 - Required (complete OR user-approved deferral)
 
-| ID | Requirement | Source |
-|----|-------------|--------|
-| SA-025 | Expand COMMAND_BOOSTS for /memory:* prefixes | Agent 1 |
-| SA-026 | Refresh §1 activation examples with spec-kit-native cases | Agent 1 |
-| SA-027 | Add phase workflow block to Gate 3 | Agent 2 |
-| SA-028 | Add hybrid complexity rubric (non-LOC triggers) | Agent 2 |
-| SA-029 | Split feature flags into gate-governed vs platform tables | Agent 2 |
-| SA-030 | Add campaign-level checklist guidance to §3 | Agent 2 |
-| SA-031 | Add Sprint 4-7 features to memory_system.md | Agent 3, 4 |
-| SA-032 | Add save pipeline quality controls to save_workflow.md | Agent 3 |
-| SA-033 | Update trigger_config.md with learned trigger behavior | Agent 3 |
-| SA-034 | Add feedback/learning signals across trigger_config.md and validation refs | Agent 3 |
-| SA-035 | Extend decision_format.md with telemetry, ledger, quality-gate fields | Agent 3 |
-| SA-036 | Add campaign execution rule to §4 | Agent 6 |
-| SA-037 | Add deferred-work governance rule to §4 | Agent 6 |
-| SA-038 | Add metadata freshness criteria to §5 | Agent 6 |
-| SA-039 | Add phase-aware validation triggers to §6 | Agent 7 |
-| SA-040 | Add multi-CLI campaign orchestration to cross-skill workflows | Agent 7 |
-| SA-041 | Add feature catalog and manual testing playbook to §7 | Agent 7 |
-| SA-042 | Add phase-system resource links to §7 | Agent 7 |
-| SA-043 | Update quick reference commands for phase/flag operations | Agent 7 |
-| SA-044 | Add audit child template archetype to level_specifications.md | Agent 8 |
-| SA-045 | Add SPECKIT_GRAPH_UNIFIED to environment_variables.md | Agent 10 |
-| SA-046 | Update shared-space tools layer assignment in SKILL.md | Agent 10 |
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-006 | Separate open work from already-landed work | The spec explicitly calls out repo changes that already landed, including recursive validation shortcuts, phase-aware template guidance, and nested child-path support |
+| REQ-007 | Reframe the execution plan around future doc refresh work | `plan.md` uses five documentation phases: normalization, skill-guide refresh, references refresh, assets refresh, and verification/drift-proofing |
+| REQ-008 | Rewrite the task backlog into a non-duplicative implementation list | `tasks.md` starts with spec-folder remediation, keeps only open alignment targets, and includes a guard task that forbids runtime behavior changes |
+| REQ-009 | Add Level 2 verification tailored to this phase | `checklist.md` verifies structure, links, canonical-source usage, open-gap accuracy, and the docs-only boundary |
 
-### P2 - Nice to Have
+### Already-Landed Items (Do Not Re-Implement)
 
-| ID | Requirement |
-|----|-------------|
-| SA-047 | Update template LOC estimates (Level 1: ~533, Level 2: ~769, Level 3+: ~1193) |
-| SA-048 | Add phase/rollout trigger phrases to §1 |
-| SA-049 | Add framing note to feature flag table linking to full 86-entry reference |
-| SA-050 | Update complexity_decision_matrix.md with epic/program tier |
-| SA-051 | Update level_decision_matrix.md with parent-child rules |
-| SA-052 | Update template_mapping.md with audit child and root synthesis archetypes |
-| SA-053 | Add Level 3+ row to worked_examples overview table |
-| SA-054 | Update SPEC_KIT_ENABLE_CAUSAL description in env vars |
+- Recursive validation shortcuts are already documented in `../../../../skill/system-spec-kit/references/workflows/quick_reference.md` and related template guidance.
+- Phase-aware template guidance is already present in `../../../../skill/system-spec-kit/references/templates/level_specifications.md`.
+- Nested child-path support is already present in `../../../../skill/system-spec-kit/references/structure/sub_folder_versioning.md`.
+- Environment variable coverage is broadly current except for the missing runtime `SPECKIT_GRAPH_UNIFIED` entry and stale wording for `SPEC_KIT_ENABLE_CAUSAL`.
+
+### Out-of-Scope Backlog Boundaries
+
+- Do not queue runtime MCP handler or library edits in this spec.
+- Do not fold `016-command-alignment` tasks into this phase.
+- Do not invent new feature behavior to satisfy documentation drift; document existing behavior or mark gaps for later documentation work.
+<!-- /ANCHOR:requirements -->
 
 ---
 
-## 5. APPROACH
+<!-- ANCHOR:success-criteria -->
+## 5. SUCCESS CRITERIA
 
-### Strategy
+- **SC-001**: The `015-skill-alignment` spec folder is clearly documented as a Level 2, draft, pre-implementation documentation phase.
+- **SC-002**: The rewritten backlog reflects only still-open alignment work supported by scratch research and live repo inspection.
+- **SC-003**: At least one canonical verification method is documented for tool counts, runtime flags, and stale-doc detection without relying on brittle grep counts.
+- **SC-004**: Local cross-references in the spec folder resolve from the `015-skill-alignment` directory and do not reference sibling or child files with broken relative paths.
+- **SC-005**: The spec explicitly protects already-landed documentation work from being re-added as future implementation scope.
 
-This is a **documentation-only alignment task**: update existing files to match delivered reality. No code changes. All changes are additive or corrective — no feature removals.
+### Acceptance Scenarios
 
-### Execution Model
-
-Phased by domain with parallel execution where possible:
-
-1. **Phase A — SKILL.md P0 fixes**: Stale data corrections (server shape, schema, chars/token, document types)
-2. **Phase B — SKILL.md content additions**: New intents, rules, criteria, integration points
-3. **Phase C — References updates**: All 7 reference domains
-4. **Phase D — Assets updates**: All 4 asset files
-5. **Phase E — Cross-reference verification**: Ensure consistency across all updated files
-
-### Evidence Sources
-
-All gap findings are documented in `015-skill-alignment/scratch/agent-01` through `agent-10` markdown files, produced by the 10-agent cross-model analysis.
+- **AS-001**: A future implementer can distinguish open alignment work from already-landed documentation work without rereading the scratch research.
+- **AS-002**: A reviewer can trace tool-count guidance back to `tool-schemas.ts` instead of a brittle grep heuristic.
+- **AS-003**: A reviewer can verify the docs-only boundary without inspecting runtime TypeScript diffs.
+- **AS-004**: A validator can resolve all local references in the spec folder except for policy-required artifacts that are intentionally deferred.
+<!-- /ANCHOR:success-criteria -->
 
 ---
 
-## RELATED DOCUMENTS
+<!-- ANCHOR:risks -->
+## 6. RISKS & DEPENDENCIES
 
-- **Parent epic**: `022-hybrid-rag-fusion/spec.md`
-- **Implementation summary**: `022-hybrid-rag-fusion/implementation-summary.md`
-- **Gap analysis**: `015-skill-alignment/scratch/agent-01-skill-routing.md` through `agent-10-refs-config.md`
-- **SKILL.md**: `.opencode/skill/system-spec-kit/SKILL.md`
+| Type | Item | Impact | Mitigation |
+|------|------|--------|------------|
+| Dependency | Scratch research files in `./scratch/agent-01...agent-10` | Missing or stale findings would weaken the backlog rewrite | Keep the research files as the primary decision source and cross-check against live repo files before writing requirements |
+| Dependency | Parent epic docs in `../spec.md` and `../implementation-summary.md` | Without parent context, open-vs-landed decisions drift | Use the parent epic as the authoritative delivery summary for 022 |
+| Risk | Validation policy requires artifacts that are unusual for a draft docs-only phase | The spec folder can fail validation even when the backlog rewrite is correct | Resolve all validator issues that can be fixed in the spec folder now and document any policy tension honestly |
+| Risk | Future implementer re-adds already-landed tasks | Wasted work and renewed drift | Keep explicit "already landed" notes in spec, plan, tasks, and checklist |
+| Risk | Numeric claims drift again before implementation begins | Future backlog becomes stale quickly | Require canonical-source verification during future implementation and final review |
+<!-- /ANCHOR:risks -->
+
+---
+
+<!-- ANCHOR:questions -->
+## 7. IMPLEMENTATION NOTES
+
+- This phase is **ready for implementation planning**, not implementation completion.
+- Future implementation should prefer live-file verification over transcribing counts from prior notes.
+- Shared-space and shared-memory tools must be documented either within the 7-layer architecture or as explicitly out-of-band utilities; the spec should not leave them ambiguous.
+<!-- /ANCHOR:questions -->
+
+---
+
+<!-- ANCHOR:nfr -->
+## L2: NON-FUNCTIONAL REQUIREMENTS
+
+### Documentation Quality
+- **NFR-D01**: Cross-references in the spec folder must resolve from the local folder without relying on repository-root assumptions.
+- **NFR-D02**: The backlog must be traceable to research files or live repo evidence for every retained open item.
+
+### Verification Safety
+- **NFR-V01**: Verification commands must use canonical-source methods that do not overcount JSON schema properties or unrelated matches.
+- **NFR-V02**: The spec must not require future implementers to infer whether a task is already landed or still open.
+
+### Change Control
+- **NFR-C01**: This phase must not authorize runtime TypeScript behavior changes.
+- **NFR-C02**: This phase must remain compatible with the current `system-spec-kit` validation and drift-check workflows.
+<!-- /ANCHOR:nfr -->
+
+---
+
+<!-- ANCHOR:edge-cases -->
+## L2: EDGE CASES
+
+### Documentation Boundaries
+- Already-landed repo change: keep it out of the open backlog and label it as preserved behavior.
+- Research/live repo conflict: prefer live repo truth and record the research note as stale context rather than turning it into a task.
+- Validator policy conflict: fix what is fixable in-folder, then document the remaining policy issue instead of fabricating implementation progress.
+
+### Verification Edge Cases
+- Tool-count verification: count actual tool definition entries, not every `name:` token in schema files.
+- Runtime flag coverage: distinguish runtime flags from Hydra roadmap metadata flags when documenting env vars.
+- Shared-space tool routing: do not assume the current 7-layer writeup already covers shared-memory utilities unless the live docs explicitly do so.
+<!-- /ANCHOR:edge-cases -->
+
+---
+
+<!-- ANCHOR:complexity -->
+## L2: COMPLEXITY ASSESSMENT
+
+| Dimension | Score | Notes |
+|-----------|-------|-------|
+| Scope | 18/25 | Touches four spec files now and prepares a later 30+ file documentation refresh |
+| Risk | 12/25 | Incorrect backlog curation could duplicate already-landed work or hide genuine gaps |
+| Research | 18/20 | Ten scratch research files plus live repo inspection must be reconciled accurately |
+| **Total** | **48/70** | **Level 2** |
+<!-- /ANCHOR:complexity -->
+
+---

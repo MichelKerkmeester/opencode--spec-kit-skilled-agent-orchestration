@@ -134,7 +134,7 @@ Required items are tracked in CHK-003, CHK-012, CHK-013, CHK-022, CHK-023, CHK-0
 
 **Verification Date**: 2026-03-13
 
-Residual open question: whether a cleanup/backfill is needed for pre-fix `memory_entities` rows that may have captured cross-sentence key phrases.
+Deterministic cleanup path: run `scripts/memory/rebuild-auto-entities.ts` (optionally with `--spec-folder` or `--dry-run`) to rebuild pre-fix auto-generated entity rows from current memory content.
 <!-- /ANCHOR:summary -->
 
 ---

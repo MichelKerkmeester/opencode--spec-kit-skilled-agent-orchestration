@@ -3,10 +3,12 @@ import { afterEach, describe, expect, it } from 'vitest';
 
 import {
   assertSharedSpaceAccess,
+  enableSharedMemory,
   getAllowedSharedSpaceIds,
   getSharedConflictStrategySummary,
   getSharedRolloutCohortSummary,
   getSharedRolloutMetrics,
+  isSharedMemoryEnabled,
   recordSharedConflict,
   upsertSharedMembership,
   upsertSharedSpace,
@@ -15,6 +17,7 @@ import {
 describe('Phase 6 shared spaces', () => {
   afterEach(() => {
     delete process.env.SPECKIT_MEMORY_SHARED_MEMORY;
+    delete process.env.SPECKIT_HYDRA_SHARED_MEMORY;
   });
 
   it('enforces deny-by-default membership for shared spaces', () => {
@@ -478,5 +481,36 @@ describe('Phase 6 shared spaces', () => {
         latestCreatedAt: expect.any(String),
       },
     ]);
+  });
+
+  it('returns false by default when no env var and no DB config', () => {
+    expect(isSharedMemoryEnabled()).toBe(false);
+    const db = new Database(':memory:');
+    expect(isSharedMemoryEnabled(db)).toBe(false);
+  });
+
+  it('returns true after enableSharedMemory is called', () => {
+    const db = new Database(':memory:');
+    expect(isSharedMemoryEnabled(db)).toBe(false);
+    enableSharedMemory(db);
+    expect(isSharedMemoryEnabled(db)).toBe(true);
+  });
+
+  it('env var override takes priority over DB config', () => {
+    process.env.SPECKIT_MEMORY_SHARED_MEMORY = 'true';
+    const db = new Database(':memory:');
+    // Enabled via env var even without DB config
+    expect(isSharedMemoryEnabled(db)).toBe(true);
+    expect(isSharedMemoryEnabled()).toBe(true);
+  });
+
+  it('enableSharedMemory is idempotent', () => {
+    const db = new Database(':memory:');
+    enableSharedMemory(db);
+    enableSharedMemory(db);
+    expect(isSharedMemoryEnabled(db)).toBe(true);
+    const rows = db.prepare('SELECT COUNT(*) AS count FROM config WHERE key = ?')
+      .get('shared_memory_enabled') as { count: number };
+    expect(rows.count).toBe(1);
   });
 });

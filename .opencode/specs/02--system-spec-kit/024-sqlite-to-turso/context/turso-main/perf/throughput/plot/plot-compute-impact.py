@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+"""Module for plot compute impact."""
+
 import sys
 
 import matplotlib.pyplot as plt

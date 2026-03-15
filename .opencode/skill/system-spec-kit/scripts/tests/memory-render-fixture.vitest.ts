@@ -342,4 +342,94 @@ describe('rendered memory fixture regression', () => {
       fs.rmSync(tempRoot, { recursive: true, force: true });
     }
   });
+
+  it('promotes stateless native tool evidence into rendered tool_count even without file entries', async () => {
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-render-tool-evidence-'));
+    const { CONFIG } = await import('../core');
+    const previousTemplateDir = CONFIG.TEMPLATE_DIR;
+    const templatesDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..', 'templates');
+
+    try {
+      const specFolderPath = path.join(tempRoot, '016-stateless-tool-evidence');
+      const contextDir = path.join(specFolderPath, 'memory');
+      fs.mkdirSync(contextDir, { recursive: true });
+      fs.writeFileSync(
+        path.join(specFolderPath, 'spec.md'),
+        [
+          '---',
+          'title: "Spec: Stateless Tool Evidence Guardrail"',
+          '---',
+          '# Spec',
+        ].join('\n'),
+        'utf-8'
+      );
+
+      workflowHarness.specFolderPath = specFolderPath;
+      workflowHarness.contextDir = contextDir;
+      CONFIG.TEMPLATE_DIR = templatesDir;
+
+      const { runWorkflow } = await import('../core/workflow');
+      const result = await runWorkflow({
+        collectedData: {
+          _source: 'codex-cli-capture',
+          _toolCallCount: 2,
+          userPrompts: [
+            {
+              prompt: 'Validate stateless tool evidence without edited files.',
+              timestamp: '2026-03-15T13:00:00Z',
+            },
+          ],
+          recentContext: [
+            {
+              request: 'Validate stateless tool evidence without edited files.',
+              learning: 'Read and bash executions should keep tool_count above zero.',
+            },
+          ],
+          observations: [
+            {
+              title: 'Read loader state',
+              narrative: 'Inspected the loader precedence order in stateless mode.',
+              facts: ['Tool: Read', 'Status: completed'],
+              files: [],
+              timestamp: '2026-03-15T13:00:10Z',
+            },
+            {
+              title: 'Run verification command',
+              narrative: 'Executed a bash verification command without editing files.',
+              facts: ['Tool: Bash', 'Status: completed'],
+              files: [],
+              timestamp: '2026-03-15T13:00:20Z',
+            },
+          ],
+          FILES: [],
+        },
+        collectSessionDataFn: async (_input, specFolderName) => createSessionData(
+          specFolderName || '016-stateless-tool-evidence',
+          {
+            TITLE: 'Stateless Tool Evidence Guardrail',
+            SUMMARY: 'Stateless native capture preserved tool evidence even without file edits.',
+            QUICK_SUMMARY: 'Stateless tool evidence guardrail',
+            TOOL_COUNT: 0,
+            TOOL_COUNTS: { Read: 0, Edit: 0, Write: 0, Bash: 0, Grep: 0, Glob: 0, Task: 0, WebFetch: 0, WebSearch: 0, Skill: 0 },
+            FILES: [],
+            HAS_FILES: false,
+            FILE_COUNT: 0,
+            FILE_PROGRESS: [],
+            HAS_FILE_PROGRESS: false,
+          }
+        ),
+        silent: true,
+      });
+
+      const rendered = fs.readFileSync(path.join(result.contextDir, result.contextFilename), 'utf-8');
+      const validation = validateMemoryQualityContent(rendered);
+
+      expect(rendered).not.toMatch(/\|\s*Tool Executions\s*\|\s*0\s*\|/);
+      expect(validation.failedRules).not.toContain('V7');
+      expect(validation.valid).toBe(true);
+    } finally {
+      CONFIG.TEMPLATE_DIR = previousTemplateDir;
+      fs.rmSync(tempRoot, { recursive: true, force: true });
+    }
+  });
 });

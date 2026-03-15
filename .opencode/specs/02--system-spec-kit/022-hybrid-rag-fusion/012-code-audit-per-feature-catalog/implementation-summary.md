@@ -23,7 +23,7 @@ contextType: "general"
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 012-code-audit-per-feature-catalog |
-| **Completed** | 2026-03-14 |
+| **Completed** | 2026-03-15 |
 | **Level** | 1 |
 <!-- /ANCHOR:metadata -->
 
@@ -32,7 +32,7 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-The umbrella root packet is now structurally complete and validation-oriented. You can now validate this phased spec tree without failing on missing parent completion artifacts, and root-level acceptance scenarios explicitly cover parent file requirements, phase reference integrity, and truthfulness of verification claims.
+The umbrella root packet is now structurally complete and closed against the current repo state. You can validate this phased spec tree without missing parent artifacts, and the root packet now points at the current green verification record instead of preserving stale failure narratives.
 
 ### Parent Packet Completion
 
@@ -53,7 +53,7 @@ This pass adds the missing root completion artifact (`implementation-summary.md`
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-I applied only markdown edits inside the umbrella folder, resolved the exact validator-reported root and phase-020 issues, and reran recursive validation to verify outcomes.
+I completed the root packet in two steps: first the structural Level 1 closeout, then the strict-closure reconciliation that refreshed stale verification language after the repo-wide gates were rerun successfully.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -75,7 +75,7 @@ I applied only markdown edits inside the umbrella folder, resolved the exact val
 
 | Check | Result |
 |-------|--------|
-| Recursive validator on umbrella packet (`validate.sh --recursive`) | Executed after these edits; see current session output for pass/fail status. |
+| Recursive validator on umbrella packet (`validate.sh --recursive`) | PASS on 2026-03-15 (`All 21 phases passed`, `Summary: Errors: 0  Warnings: 0`). |
 | Root Level 1 required files present | `spec.md`, `plan.md`, `tasks.md`, and `implementation-summary.md` are now present. |
 | Phase 020 markdown references | Updated to fully qualified resolvable catalog markdown paths. |
 <!-- /ANCHOR:verification -->
@@ -83,9 +83,9 @@ I applied only markdown edits inside the umbrella folder, resolved the exact val
 ---
 
 <!-- ANCHOR:limitations -->
-## Known Limitations
+## Current Reality Notes
 
-1. Validation status depends on current repo state at run time; any later edits can reintroduce integrity warnings.
+1. The root packet is structurally complete and the latest umbrella verification rerun is green; any future drift should be recorded as a new verification snapshot rather than preserved here as a stale warning.
 <!-- /ANCHOR:limitations -->
 
 ---

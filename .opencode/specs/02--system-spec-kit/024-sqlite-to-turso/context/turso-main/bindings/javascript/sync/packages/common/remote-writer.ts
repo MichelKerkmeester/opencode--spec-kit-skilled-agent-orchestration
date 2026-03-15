@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Remote Writer
+// ────────────────────────────────────────────────────────────────
 import { Session, type SessionConfig } from "@tursodatabase/serverless";
 
 export interface RemoteWriterConfig {

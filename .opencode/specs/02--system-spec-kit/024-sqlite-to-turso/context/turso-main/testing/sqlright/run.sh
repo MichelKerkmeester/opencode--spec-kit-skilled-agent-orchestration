@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 # SQLRight fuzzer for Turso.
 # Usage: ./run.sh [OPTIONS]
 #   --oracle NOREC|TLP|INDEX|ROWID  Oracle type (default: NOREC)

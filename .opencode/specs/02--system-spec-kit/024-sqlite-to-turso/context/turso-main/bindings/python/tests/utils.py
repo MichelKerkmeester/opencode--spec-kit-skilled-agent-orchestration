@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+"""Tests for utils."""
+
 import os
 import random
 import string

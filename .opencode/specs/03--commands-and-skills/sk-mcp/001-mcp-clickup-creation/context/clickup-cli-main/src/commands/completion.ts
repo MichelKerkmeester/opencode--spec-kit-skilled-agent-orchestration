@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Completion
+// ────────────────────────────────────────────────────────────────
 function bashCompletion(): string {
   return `_cu_completions() {
   local cur prev words cword

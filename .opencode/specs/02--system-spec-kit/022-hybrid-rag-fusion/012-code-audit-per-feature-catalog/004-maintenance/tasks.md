@@ -56,7 +56,7 @@ contextType: "general"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [x] T008 Validate manual playbook mapping accuracy — F-01 maps to EX-014; F-02 maps to EX-035; behavioral evidence uses `incremental-index-v2.vitest.ts` (43/43 pass) + `startup-checks.vitest.ts` (14/14 pass), while `incremental-index.vitest.ts` is intentionally skipped (36 skipped)
+- [x] T008 Validate manual playbook mapping accuracy — F-01 maps to EX-014; F-02 maps to EX-035; behavioral evidence uses `incremental-index-v2.vitest.ts` as the primary indexing suite plus `startup-checks.vitest.ts` for startup guards, while `incremental-index.vitest.ts` remains supplemental focused coverage
 - [x] T009 Test edge cases for mtime-accounting semantics and startup checks — SQLite boundary 3.35.0, major<3, query failure, and pure runtime mismatch logic coverage verified
 - [x] T010 Update documentation after verification (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md`) — all 5 docs aligned to corrected mapping and evidence phrasing
 <!-- /ANCHOR:phase-3 -->

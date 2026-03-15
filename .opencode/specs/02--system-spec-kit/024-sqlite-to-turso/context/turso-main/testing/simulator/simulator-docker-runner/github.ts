@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Github
+// ────────────────────────────────────────────────────────────────
 import { App } from "octokit";
 import { AssertionFailureInfo, StackTraceInfo } from "./logParse";
 import { levenshtein } from "./levenshtein";

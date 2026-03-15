@@ -136,18 +136,17 @@ Delivery started as an iterative cross-AI review loop, with GPT-5.4 review round
 | TypeScript (`npx tsc --noEmit`) | PASS - clean, 0 errors |
 | Targeted history suite (`npx vitest run tests/history.vitest.ts --reporter=verbose`) | PASS - `35 passed` |
 | Focused mutation verification run | PASS - `8 files`, `167 tests` passed |
-| Full repository suite (`npx vitest run --reporter=verbose`) | PARTIAL - `254 passed files / 5 failed files`, `7331 passed / 8 failed / 1 skipped / 30 todo`; failing files are outside mutation scope (`tests/checkpoints-storage.vitest.ts`, `tests/file-watcher.vitest.ts`, `tests/five-factor-scoring.vitest.ts`, `tests/rrf-fusion.vitest.ts`, `tests/unit-rrf-fusion.vitest.ts`) |
+| Historical full repository suite snapshot (`npx vitest run --reporter=verbose`) | Retained as phase-local history only; later umbrella closeout reran repo-wide gates successfully (`npm run check:full` PASS on 2026-03-15). |
 | Historical cross-AI reference (pre re-audit) | Earlier rounds included `Claude @review 82/100` and `GPT-5.4 R11 98/100`; these are historical snapshots, not the current March 11 verification state |
 <!-- /ANCHOR:verification -->
 
 ---
 
 <!-- ANCHOR:limitations -->
-## Known Limitations
+## Current Reality Notes
 
-1. **5 non-mutation full-suite failures remain.** The current repository-wide Vitest run still reports failures outside 002-mutation in: `tests/checkpoints-storage.vitest.ts`, `tests/file-watcher.vitest.ts` (3 failures), `tests/five-factor-scoring.vitest.ts`, `tests/rrf-fusion.vitest.ts`, and `tests/unit-rrf-fusion.vitest.ts`. These should be addressed separately so the broader baseline catches up with the mutation slice.
-2. **`getHistoryStats(specFolder)` still undercounts delete history for fully removed memories.** The current implementation joins `memory_history` against live `memory_index` rows, so spec-folder stats cannot attribute deleted rows once the parent memory is gone. This is a reporting limitation, not a data-loss issue.
-3. **Two lower-priority history improvements remain deferred.** `prevValue` normalization edge cases and per-row history insert performance tuning remain follow-up work.
+1. `getHistoryStats(specFolder)` now preserves spec-folder attribution for deleted memories by falling back to prior history rows when the live `memory_index` row is gone.
+2. The older repo-wide failure snapshot in this phase summary is superseded by the umbrella closeout rerun on 2026-03-15.
 <!-- /ANCHOR:limitations -->
 
 ---
@@ -183,7 +182,7 @@ These score entries are retained as historical context from earlier review round
 9. R5-P1-2: `cli.ts` CLI bulk-delete path unaudited -> **Fixed**: added `recordHistory('DELETE')` with `mcp:cli_bulk_delete` actor
 10. R5-P1-3: `handlers/memory-index.ts` stale-record cleanup unaudited -> **Fixed**: added `recordHistory('DELETE')` with `mcp:memory_index_scan` actor
 11. R5-P1-4: `handlers/chunking-orchestrator.ts` force re-chunk and rollback paths unaudited -> **Fixed**: added `recordHistory('DELETE')` with `mcp:chunking_reindex` and `mcp:chunking_rollback` actors
-12. R5-P2: `getHistoryStats(specFolder)` inner join loses deleted memories' history -> **Deferred** (stats reporting, not data loss)
+12. R5-P2: `getHistoryStats(specFolder)` inner join loses deleted memories' history -> **Fixed in strict closure**: stats now fall back to prior `memory_history.spec_folder` rows and targeted regression coverage proves deleted-memory attribution remains correct
 13. R6-P1-1: `chunking-orchestrator.ts:445` safe-swap raw SQL deletes old children without history -> **Fixed**: select old child IDs + `recordHistory` per child before delete
 14. R6-P1-2: `chunking-orchestrator.ts:496` failed finalize cleanup raw SQL deletes staged chunks without history -> **Fixed**: `recordHistory` per child before raw delete
 15. R6-P1-3: `reconsolidation.ts:519` orphan conflict cleanup raw SQL without history -> **Fixed**: added `recordHistory('DELETE')` with `mcp:reconsolidation_cleanup` actor

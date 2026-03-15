@@ -1,25 +1,15 @@
 {
-    "autoHidePlus.autoHideLeftSideBar": false,
-
-    // --- GitHub Copilot: Agent Integration ---
-    // MCP servers (configured in .vscode/mcp.json)
-    "github.copilot.chat.mcp.enabled": true,
-
-    // Custom instructions discovery
-    "github.copilot.chat.codeGeneration.useInstructionFiles": true,
-    "chat.useAgentsMdFile": true,
-    "chat.useNestedAgentsMdFiles": true,
-    "chat.includeReferencedInstructions": true,
-    "chat.includeApplyingInstructions": true,
-
-    // Agent Skills: .opencode/skill/ (agentskills.io spec)
-    "chat.agentSkillsLocations": [
-        ".opencode/skill"
-    ],
-
-    // Custom Agents: .opencode/agent/
-    // Note: Copilot requires .agent.md extension; OpenCode uses .md
-    "chat.agentFilesLocations": [
-        ".opencode/agent"
-    ]
+  "autoHidePlus.autoHideLeftSideBar": false,
+  "github.copilot.chat.mcp.enabled": true,
+  "github.copilot.chat.codeGeneration.useInstructionFiles": true,
+  "chat.useAgentsMdFile": true,
+  "chat.useNestedAgentsMdFiles": true,
+  "chat.includeReferencedInstructions": true,
+  "chat.includeApplyingInstructions": true,
+  "chat.agentSkillsLocations": [
+    ".opencode/skill"
+  ],
+  "chat.agentFilesLocations": [
+    ".opencode/agent"
+  ]
 }

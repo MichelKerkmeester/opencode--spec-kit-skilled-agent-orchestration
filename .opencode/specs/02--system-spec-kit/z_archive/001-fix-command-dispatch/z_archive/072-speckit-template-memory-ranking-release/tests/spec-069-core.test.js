@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+'use strict';
+
 /**
  * Test Suite: Spec 069 - Template Complexity Detection (Core Features)
  *

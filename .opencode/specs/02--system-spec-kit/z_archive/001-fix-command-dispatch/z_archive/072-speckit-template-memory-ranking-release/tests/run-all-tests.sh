@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 # ───────────────────────────────────────────────────────────────
 # TEST RUNNER - Spec 072 Test Infrastructure (Shell Wrapper)
 # Runs Node.js tests and any shell-based tests with colored output

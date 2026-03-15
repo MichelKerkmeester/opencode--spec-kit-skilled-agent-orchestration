@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Search
+// ────────────────────────────────────────────────────────────────
 import { ClickUpClient } from '../api.js'
 import type { Config } from '../config.js'
 import { matchStatus } from '../status.js'

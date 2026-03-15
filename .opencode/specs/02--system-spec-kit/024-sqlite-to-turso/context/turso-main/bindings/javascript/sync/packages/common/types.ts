@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Types
+// ────────────────────────────────────────────────────────────────
 export declare const enum DatabaseChangeType {
     Insert = 'insert',
     Update = 'update',

@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import turso
 
 # Use the context manager to automatically close the connection

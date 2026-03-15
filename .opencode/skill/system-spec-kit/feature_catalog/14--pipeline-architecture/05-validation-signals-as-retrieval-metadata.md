@@ -31,6 +31,7 @@ The combined multiplier is bounded to 0.8-1.2 via a clamping function, composed 
 | File | Focus |
 |------|-------|
 | `mcp_server/tests/memory-types.vitest.ts` | Memory type tests |
+| `mcp_server/tests/pipeline-architecture-remediation.vitest.ts` | Direct audit traceability coverage for validation metadata ownership |
 | `mcp_server/tests/retrieval-trace.vitest.ts` | Retrieval trace tests |
 | `mcp_server/tests/unit-composite-scoring-types.vitest.ts` | Scoring type tests |
 | `mcp_server/tests/unit-folder-scoring-types.vitest.ts` | Folder scoring type tests |

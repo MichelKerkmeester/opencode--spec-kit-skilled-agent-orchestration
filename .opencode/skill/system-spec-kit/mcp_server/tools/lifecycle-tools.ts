@@ -13,6 +13,7 @@ import {
   handleGetLearningHistory,
   handleEvalRunAblation,
   handleEvalReportingDashboard,
+  handleSharedMemoryEnable,
   handleSharedMemoryStatus,
   handleSharedSpaceMembershipSet,
   handleSharedSpaceUpsert,
@@ -41,6 +42,7 @@ export const TOOL_NAMES = new Set([
   'shared_space_upsert',
   'shared_space_membership_set',
   'shared_memory_status',
+  'shared_memory_enable',
 ]);
 
 /** Dispatch a tool call. Returns null if tool name not handled. */
@@ -58,6 +60,7 @@ export async function handleTool(name: string, args: Record<string, unknown>): P
     case 'shared_space_upsert':        return handleSharedSpaceUpsert(parseArgs<SharedSpaceUpsertArgs>(validateToolArgs('shared_space_upsert', args)));
     case 'shared_space_membership_set': return handleSharedSpaceMembershipSet(parseArgs<SharedSpaceMembershipArgs>(validateToolArgs('shared_space_membership_set', args)));
     case 'shared_memory_status':       return handleSharedMemoryStatus(parseArgs<SharedMemoryStatusArgs>(validateToolArgs('shared_memory_status', args)));
+    case 'shared_memory_enable':       return handleSharedMemoryEnable(parseArgs<Record<string, unknown>>(validateToolArgs('shared_memory_enable', args)));
     default: return null;
   }
 }

@@ -2,15 +2,15 @@
 
 ## 1. OVERVIEW
 
-Backend storage adapter abstraction is a deferred plan for vector/graph/document storage abstractions while SQLite handles current scale.
+Backend storage adapter abstraction now exists as a shipped vector-store seam while SQLite remains the concrete backend.
 
-Right now the system is tightly connected to one specific type of database. This planned feature would add a flexible layer so the database could be swapped out for a different one without rewriting the rest of the system. It is deferred because the current database handles the workload fine, and building the swap layer before it is needed would be premature effort.
+The system is still SQLite-backed, but it is no longer hard-wired directly at every vector-search call site. A small adapter layer now defines the vector-store contract and keeps the storage implementation swappable at the vector boundary. It is like changing from plugging appliances straight into the wall to using a standardized socket adapter first. You still use the same power source today, but the coupling point is cleaner and easier to replace later if scale ever demands it.
 
 ---
 
 ## 2. CURRENT REALITY
 
-**PLANNED (Sprint 019): DEFERRED.** Vector/graph/document storage abstractions (`IVectorStore`, `IGraphStore`, `IDocumentStore`) are deferred to avoid premature abstraction while SQLite coupling handles current scale. Estimated effort: M-L (1-2 weeks).
+**IMPLEMENTED (Sprint 019 closeout).** `IVectorStore` defines the vector-storage contract and `SQLiteVectorStore` provides the current production implementation. The broader graph/document storage stack still runs concretely on SQLite, so the shipped seam is intentionally scoped: vector storage is abstracted, while graph/document stores remain direct SQLite integrations until a real multi-backend need appears.
 
 ---
 
@@ -20,7 +20,17 @@ Right now the system is tightly connected to one specific type of database. This
 
 | File | Layer | Role |
 |------|-------|------|
-| `mcp_server/lib/interfaces/vector-store.ts` | Lib | Vector store interface |
+| `mcp_server/lib/interfaces/vector-store.ts` | Lib | Vector store contract consumed by the search/storage layer |
+| `mcp_server/lib/search/vector-index-store.ts` | Lib | SQLite implementation of the vector-store contract |
+| `mcp_server/lib/search/vector-index.ts` | Lib | Stable facade re-exporting the storage seam |
+
+### Tests
+
+| File | Focus |
+|------|-------|
+| `mcp_server/tests/interfaces.vitest.ts` | Interface contract coverage for `IVectorStore` |
+| `mcp_server/tests/pipeline-architecture-remediation.vitest.ts` | Direct audit traceability coverage for the adapter seam |
+| `mcp_server/tests/vector-index-impl.vitest.ts` | Vector-index implementation coverage through the storage facade |
 
 ---
 

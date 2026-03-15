@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 # Memory System Testing Suite
 # Tests the merged memory system in system-spec-kit
 #

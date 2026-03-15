@@ -63,7 +63,7 @@ Required maintenance checks are tagged inline below and include explicit evidenc
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-020 [P0] F-01 acceptance criteria and behavior mismatch checks validated — `skipped_hash` removed, `mtime_changed` naming matches mtime-only reality; behavioral evidence is `incremental-index-v2.vitest.ts` (primary suite). Legacy `incremental-index.vitest.ts` remains placeholder coverage and is not behavioral evidence. [EVIDENCE: `npm test -- --run tests/incremental-index.vitest.ts tests/incremental-index-v2.vitest.ts` -> 43 passed, 36 skipped]
+- [x] CHK-020 [P0] F-01 acceptance criteria and behavior mismatch checks validated — `skipped_hash` removed, `mtime_changed` naming matches mtime-only reality; behavioral evidence is `incremental-index-v2.vitest.ts` (primary suite). `incremental-index.vitest.ts` remains supplemental focused coverage and is not the primary behavioral evidence. [EVIDENCE: `npm test -- --run tests/incremental-index.vitest.ts tests/incremental-index-v2.vitest.ts` -> all assertions passed across both suites during the maintenance closure run]
 - [x] CHK-021 [P0] Startup runtime compatibility logic validated by automated tests — dedicated `startup-checks.vitest.ts` covers marker creation/match/mismatch, runtime mismatch detection, and SQLite validation, and the manual mapping now uses EX-035 instead of incorrect EX-021/EX-022 references. [EVIDENCE: `npm test -- --run tests/startup-checks.vitest.ts` + EX-035 playbook entry]
 - [x] CHK-022 [P1] SQLite version pass/warn/extraction-failure scenarios tested — startup-checks.vitest.ts: 14/14 pass (match, mismatch, marker creation, >=3.35.0, <3.35.0, major<3, malformed version, query failure, non-Error throwable, boundary 3.35.0, exact version string) [EVIDENCE: targeted Vitest run output]
 - [x] CHK-023 [P1] Manual playbook coverage mapped or gap-noted — F-01 maps to EX-014 (`memory_index_scan`); F-02 (startup runtime compatibility guards) maps to EX-035 and is no longer gap-noted or mis-mapped to EX-021/EX-022 [EVIDENCE: manual_testing_playbook.md existing-features table + cross-reference index]
@@ -86,7 +86,7 @@ Required maintenance checks are tagged inline below and include explicit evidenc
 
 - [x] CHK-040 [P1] `spec.md`, `plan.md`, and `tasks.md` stay synchronized with F-01/F-02 findings — spec REQ-001/002 match tasks T004/T007, plan Phase 2 matches implementation [EVIDENCE: cross-doc review after EX-035 remap]
 - [x] CHK-041 [P1] Feature catalog Current Reality text matches implemented behavior — "changed content hash" → "changed mtime", "skipped-by-hash" removed from both catalog files [EVIDENCE: maintenance feature catalog files updated]
-- [x] CHK-042 [P2] Maintenance test inventory references updated (including stale retry test cleanup) — `incremental-index-v2.vitest.ts` and `startup-checks.vitest.ts` treated as behavioral suites; legacy `incremental-index.vitest.ts` kept as non-behavioral placeholder coverage only
+- [x] CHK-042 [P2] Maintenance test inventory references updated (including stale retry test cleanup) — `incremental-index-v2.vitest.ts` and `startup-checks.vitest.ts` are documented as the primary behavioral suites, while `incremental-index.vitest.ts` is retained as supplemental focused coverage only
 <!-- /ANCHOR:docs -->
 
 ---

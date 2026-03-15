@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Promise
+// ────────────────────────────────────────────────────────────────
 import { DatabasePromise, NativeDatabase, SqliteError, DatabaseOpts } from "@tursodatabase/database-common"
 import { Database as NativeDB } from "#index";
 

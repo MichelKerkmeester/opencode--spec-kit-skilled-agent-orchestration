@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Error
+// ────────────────────────────────────────────────────────────────
 export class DatabaseError extends Error {
   /** Machine-readable error code (e.g., "SQLITE_CONSTRAINT") */
   code?: string;

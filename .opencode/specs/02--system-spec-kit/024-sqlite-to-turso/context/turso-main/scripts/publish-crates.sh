@@ -1,4 +1,5 @@
-#!/bin/sh
+#!/usr/bin/env bash
+set -euo pipefail
 
 cargo publish -p turso_macros
 cargo publish -p turso_ext

@@ -86,7 +86,7 @@ Standardize the maintenance audit into a Level 2 spec so requirements, risks, an
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
 | REQ-003 | Audit F-02 startup runtime compatibility guards with behavior and coverage assessment. | Findings include status, source evidence, dedicated automated coverage for SQLite validation + pure runtime mismatch logic, and a dedicated manual playbook scenario reference. |
-| REQ-004 | Capture non-critical remediation and documentation updates for maintenance findings. | Phase 2 tasks include numbered follow-up actions for F-02 tests and catalog/test inventory alignment. |
+| REQ-004 | Capture non-critical remediation and documentation updates for maintenance findings. | Phase 2 tasks include numbered closure actions for F-02 tests and catalog/test inventory alignment. |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -115,10 +115,10 @@ Standardize the maintenance audit into a Level 2 spec so requirements, risks, an
 - **When** coverage references are reviewed
 - **Then** the docs cite `startup-checks.vitest.ts` for automated coverage and `EX-035` for manual coverage
 
-### Scenario 3: Placeholder incremental tests are not used as behavioral proof
-- **Given** the legacy incremental-index placeholder suite still exists
+### Scenario 3: Supplemental incremental tests stay clearly non-primary
+- **Given** the focused `incremental-index.vitest.ts` suite remains alongside the broader v2 suite
 - **When** behavioral evidence is summarized
-- **Then** `incremental-index-v2.vitest.ts` is treated as the primary behavioral suite and the placeholder suite is called out as deferred
+- **Then** `incremental-index-v2.vitest.ts` remains the primary behavioral suite and `incremental-index.vitest.ts` is described as supplemental focused coverage
 
 ### Scenario 4: Completion evidence remains internally consistent
 - **Given** the Level 2 maintenance spec is marked complete
@@ -174,7 +174,7 @@ Standardize the maintenance audit into a Level 2 spec so requirements, risks, an
 
 ### State Transitions
 - Draft to in-progress: once remediation begins, update status and completion checks.
-- Deferred P1/P2 items: require explicit approval and tracking note before closure.
+- Closure updates: if supporting suites or mappings change, refresh the evidence language before marking the phase complete.
 <!-- /ANCHOR:edge-cases -->
 
 ---
@@ -195,7 +195,7 @@ Standardize the maintenance audit into a Level 2 spec so requirements, risks, an
 <!-- ANCHOR:questions -->
 ## 11. OPEN QUESTIONS
 
-- Should the legacy placeholder suite `incremental-index.vitest.ts` be archived to prevent accidental use as behavioral evidence?
+- None. `incremental-index.vitest.ts` now serves as supplemental focused coverage and is no longer described as a placeholder.
 <!-- /ANCHOR:questions -->
 
 ---

@@ -90,6 +90,96 @@ describe('stateless enrichment guardrails', () => {
     expect(transformed.recentContext).toHaveLength(1);
   });
 
+  it('does not fall back to foreign-spec prompts when relevance filtering finds no safe match', () => {
+    const transformed = transformOpencodeCapture({
+      exchanges: [
+        {
+          userInput: 'Investigate 031-memory-search-state-filter-fix regressions.',
+          assistantResponse: 'Updated 031-memory-search-state-filter-fix notes and findings.',
+          timestamp: '2026-03-09T10:10:00Z',
+        },
+      ],
+      toolCalls: [],
+      metadata: {},
+      sessionTitle: 'Foreign Spec Session',
+      sessionId: 'foreign-session',
+      capturedAt: '2026-03-09T10:11:00Z',
+    }, '02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing');
+
+    expect(transformed.userPrompts).toEqual([]);
+    expect(transformed.observations).toEqual([]);
+    expect(transformed.recentContext).toEqual([]);
+  });
+
+  it('keeps Codex tool evidence when command/output reference target spec files without direct filePath fields', () => {
+    const transformed = transformOpencodeCapture({
+      exchanges: [
+        {
+          userInput: 'Perfect session capturing hardening for stateless mode',
+          assistantResponse: 'Validated the stateless alignment guard for perfect session capturing.',
+          timestamp: '2026-03-15T12:00:00Z',
+        },
+      ],
+      toolCalls: [
+        {
+          tool: 'bash',
+          status: 'completed',
+          timestamp: '2026-03-15T12:00:10Z',
+          input: {
+            command: "sed -n '680,760p' .opencode/skill/system-spec-kit/scripts/core/workflow.ts",
+          },
+          output: 'Confirmed scripts/core/workflow.ts still blocks mis-scoped 010-perfect-session-capturing saves.',
+        },
+      ],
+      metadata: {},
+      sessionTitle: 'Codex stateless evidence preservation',
+      sessionId: 'codex-evidence',
+      capturedAt: '2026-03-15T12:00:30Z',
+    }, '02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing', 'codex-cli-capture');
+
+    expect(transformed._toolCallCount).toBe(1);
+    expect(transformed.observations).toEqual(expect.arrayContaining([
+      expect.objectContaining({
+        title: expect.stringMatching(/bash|workflow\.ts|sed -n/i),
+        facts: expect.arrayContaining([
+          expect.stringContaining('Tool: bash'),
+          expect.stringContaining('Result: Confirmed scripts/core/workflow.ts'),
+        ]),
+      }),
+    ]));
+  });
+
+  it('drops generic same-workspace infrastructure tool evidence when no target-spec anchor exists', () => {
+    const transformed = transformOpencodeCapture({
+      exchanges: [
+        {
+          userInput: 'Route to the media editor and convert images to webp.',
+          assistantResponse: 'Prepared the media editor conversion workflow.',
+          timestamp: '2026-03-15T12:10:00Z',
+        },
+      ],
+      toolCalls: [
+        {
+          tool: 'bash',
+          status: 'completed',
+          timestamp: '2026-03-15T12:10:10Z',
+          input: {
+            command: "node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js .opencode/specs/01--anobel.com/036-hero-contact-success",
+          },
+          output: 'Prepared unrelated image conversion follow-up.',
+        },
+      ],
+      metadata: {},
+      sessionTitle: 'Generic infrastructure session',
+      sessionId: 'generic-infra',
+      capturedAt: '2026-03-15T12:10:30Z',
+    }, '02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing');
+
+    expect(transformed._toolCallCount).toBe(0);
+    expect(transformed.observations).toEqual([]);
+    expect(transformed.recentContext).toEqual([]);
+  });
+
   it('extracts trigger phrases from merged specs that embed a second frontmatter block', async () => {
     const specRoot = makeTempRoot('speckit-spec-folder-');
     fs.writeFileSync(path.join(specRoot, 'description.json'), JSON.stringify({

@@ -1,191 +1,197 @@
 ---
-title: "Plan: Skill Alignment — system-spec-kit"
-description: "Execution plan for aligning SKILL.md, 25 references, and 4 assets with 022-hybrid-rag-fusion epic deliverables."
+title: "Implementation Plan: Skill Alignment — system-spec-kit"
+description: "Five-phase documentation refresh plan for turning 015-skill-alignment into an implementation-ready, non-duplicative documentation backlog."
+trigger_phrases: ["implementation", "plan", "skill alignment", "015 alignment"]
+importance_tier: "important"
+contextType: "implementation"
 ---
-<!-- SPECKIT_LEVEL: 1 -->
-# Plan: 015-skill-alignment
-
+# Implementation Plan: Skill Alignment — system-spec-kit
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---
 
-## 1. OVERVIEW
+<!-- ANCHOR:summary -->
+## 1. SUMMARY
 
-Align system-spec-kit skill artifacts with the post-epic state. Five execution phases, parallelizable at the domain level. All changes are documentation corrections or additions — no code modifications.
+### Technical Context
 
-**Estimated scope:** ~30 files modified, ~2000 LOC net additions across all files.
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | Markdown spec artifacts plus documented TypeScript runtime references |
+| **Framework** | Spec Kit spec-folder workflow |
+| **Storage** | Local markdown docs in `.opencode/specs/` and `.opencode/skill/system-spec-kit/` |
+| **Testing** | `validate.sh`, `check-completion.sh`, `verify_alignment_drift.py`, targeted `rg`/`wc` verification |
 
----
+### Overview
 
-## 2. PHASES
-
-### Phase A: SKILL.md P0 Stale Data Fixes
-**Priority:** P0 | **Effort:** Low | **Dependencies:** None
-
-Fix all factual inaccuracies in SKILL.md identified by agents 2, 4, and 10.
-
-| Task | What Changes | Line(s) | Source |
-|------|-------------|---------|--------|
-| A1 | Server shape: 682→1073 LOC, 12→40 handlers, 20→26 libs, 25→31 tools | ~512 | SA-001 |
-| A2 | Tool table header: "8 most-used of 25" → "8 most-used of 31" | ~514 | SA-001 |
-| A3 | Schema version note: add "schema v22 (current)" | Key Concepts | SA-002 |
-| A4 | Chars/token: "chars/3.5" → "chars/4 (MCP_CHARS_PER_TOKEN default)" | ~588 | SA-003 |
-| A5 | Document type list: remove research (1.1x), add scratch (0.6x) | ~554 | SA-004 |
-| A6 | External Dependencies: "~682 lines" → "~1073 lines" | ~781 | SA-001 |
-
-**Verification:** Grep SKILL.md for all updated values. Cross-check against `wc -l context-server.ts`, `tool-schemas.ts` TOOL_DEFINITIONS count, `vector-index-schema.ts` SCHEMA_VERSION.
+This phase does not implement the `system-spec-kit` documentation alignment itself. It prepares a clean, Level 2, research-backed specification so the future implementation phase can update the system skill guide, references, and assets without redoing already-landed work or drifting from live repo truth.
+<!-- /ANCHOR:summary -->
 
 ---
 
-### Phase B: SKILL.md Content Additions
-**Priority:** P0-P1 | **Effort:** Medium | **Dependencies:** Phase A
+<!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
 
-Add new content to SKILL.md sections 1-7.
+### Definition of Ready
+- [x] Scratch research reviewed across `./scratch/agent-01...agent-10`
+- [x] Parent epic docs reviewed in `../spec.md` and `../implementation-summary.md`
+- [x] Live repo spot-checks performed to separate open gaps from already-landed work
 
-| Task | Section | What to Add | Priority | Source |
-|------|---------|-------------|----------|--------|
-| B1 | §2 Smart Routing | Add 6 RAG intents (RETRIEVAL_TUNING, SCORING_CALIBRATION, PIPELINE_ARCHITECTURE, EVALUATION, ROLLOUT_FLAGS, GOVERNANCE) with keywords | P0 | SA-005 |
-| B2 | §2 Smart Routing | Update RESOURCE_MAP with new intent→resource mappings | P0 | SA-006 |
-| B3 | §2 Smart Routing | Expand COMMAND_BOOSTS with /memory:* prefixes | P1 | SA-025 |
-| B4 | §3 How It Works | Add Phase Workflow block under Gate 3 | P1 | SA-027 |
-| B5 | §3 How It Works | Add hybrid complexity rubric (scope/risk/research/multi-agent/coordination) | P1 | SA-028 |
-| B6 | §3 How It Works | Split feature flags into gate-governed vs platform tables | P1 | SA-029 |
-| B7 | §3 How It Works | Add recursive validation to Validation Workflow subsection | P0 | SA-016 |
-| B8 | §3 How It Works | Update Memory System: add Sprint 4-7 key concepts (feedback loop, contradiction detection, ablation, flag sunset) | P1 | SA-031 |
-| B9 | §3 How It Works | Add campaign-level checklist guidance | P1 | SA-030 |
-| B10 | §4 Rules | Add ALWAYS: Program Integrity (parent-child rollup, recursive validation, gate progression) | P0 | SA-014, SA-015 |
-| B11 | §4 Rules | Add ALWAYS: Flag Governance (owner, state, rollout stage, rollback, sunset) | P0 | SA-017 |
-| B12 | §4 Rules | Add ALWAYS: Campaign Execution (wave plan, closure verification) | P1 | SA-036 |
-| B13 | §5 Success Criteria | Add Phase Program Completion subsection | P0 | SA-016 |
-| B14 | §5 Success Criteria | Add Flag Governance Compliance subsection | P0 | SA-017 |
-| B15 | §5 Success Criteria | Add Campaign Verification subsection | P1 | SA-038 |
-| B16 | §6 Integration Points | Add phase-aware validation triggers | P1 | SA-039 |
-| B17 | §6 Integration Points | Add multi-CLI campaign orchestration workflow | P1 | SA-040 |
-| B18 | §7 Related Resources | Add feature_catalog/ and manual_testing_playbook/ | P1 | SA-041 |
-| B19 | §7 Related Resources | Add phase-system resource links | P1 | SA-042 |
-| B20 | §7 Quick Reference | Add phase, recursive validation, and flag commands | P1 | SA-043 |
-| B21 | §1 When to Use | Refresh activation examples with spec-kit-native cases | P1 | SA-026 |
-
-**Verification:** Read updated SKILL.md sections. Check that new intents have keywords and RESOURCE_MAP entries. Validate new rules are numbered consistently. Confirm new criteria have evidence format examples.
+### Definition of Done
+- [ ] `015-skill-alignment` spec docs are Level 2, anchored, and locally cross-linked
+- [ ] Backlog contains only still-open documentation work
+- [ ] Verification methods use canonical repo truth rather than brittle grep shortcuts
+- [ ] Validation and drift checks complete with any remaining policy conflicts documented
+<!-- /ANCHOR:quality-gates -->
 
 ---
 
-### Phase C: References Updates
-**Priority:** P0-P1 | **Effort:** High | **Dependencies:** None (parallel with A/B)
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
 
-Update all 25 reference files across 7 domains. Organized by domain for parallel execution.
+### Pattern
+Documentation refresh and backlog curation.
 
-#### C1: memory/ domain (5 files)
-| Task | File | Changes | Priority |
-|------|------|---------|----------|
-| C1a | memory_system.md | Update tool count (23→31), add Sprint 4-7 retrieval features section, add adaptive/shadow fusion, telemetry, guardrails | P0, P1 |
-| C1b | save_workflow.md | Add quality gate documentation, reconsolidation flow, mutation ledger provenance | P1 |
-| C1c | trigger_config.md | Add learned trigger behavior, negative feedback suppression, safeguard stack | P1 |
-| C1d | embedding_resilience.md | Add retrieval telemetry for degraded mode, adaptive fusion routing during degradation | P1 |
-| C1e | epistemic_vectors.md | Add integration guidance for adaptive retrieval loops, telemetry-driven uncertainty | P2 |
+### Key Components
+- **Spec folder docs**: `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` define the future implementation contract.
+- **Research evidence**: Scratch agent findings and parent-epic docs define what is still open versus already landed.
+- **Future target docs**: `../../../../skill/system-spec-kit/`, `../../../../skill/system-spec-kit/references/**`, and `../../../../skill/system-spec-kit/assets/**` remain implementation targets, not part of this phase's direct behavior changes.
 
-#### C2: validation/ domain (5 files)
-| Task | File | Changes | Priority |
-|------|------|---------|----------|
-| C2a | validation_rules.md | Update path patterns for nested hierarchies, add PHASE_LINKS for 21-child/6-child, add quality artifact evidence | P0 |
-| C2b | path_scoped_rules.md | Align patterns to .opencode/specs/** topologies, update memory validation posture, add child-phase file matrices | P0 |
-| C2c | phase_checklists.md | Add multi-child verification workflows, audit campaign closure, Hydra governance checks | P0 |
-| C2d | decision_format.md | Add telemetry fields, mutation ledger references, quality gate pass/fail, multi-child audit format | P1 |
-| C2e | five_checks.md | Add measured retrieval evidence requirement, flag safety/rollback evidence, phase-campaign governance | P1 |
+### Data Flow
+Research notes and live repo inspection feed the rewritten spec. The rewritten spec then drives the future documentation refresh by separating: open work, already-landed work, verification method, and documentation-only boundaries.
 
-#### C3: structure/ domain (4 files)
-| Task | File | Changes | Priority |
-|------|------|---------|----------|
-| C3a | folder_routing.md | Add 3-level deep path resolution, multi-level alignment scoring, deep glob patterns | P0 |
-| C3b | folder_structure.md | Add NN--category-name convention, epic-root pattern, 10+ children guidance, archive within active parent | P0 |
-| C3c | phase_definitions.md | Expand phase cap, add hierarchical phase map, sprint-gate model, stub/deferred/partial statuses, dependency table format | P0 |
-| C3d | sub_folder_versioning.md | Add 3+ level nesting, coordination-only parent pattern, disambiguation at scale | P0 |
-
-#### C4: templates/ domain (4 files)
-| Task | File | Changes | Priority |
-|------|------|---------|----------|
-| C4a | level_specifications.md | Add audit child template archetype, update LOC estimates, add Level 3+ epic patterns | P0, P1 |
-| C4b | template_guide.md | Add guidance for audit children, root synthesis, sprint gate evaluation templates | P1 |
-| C4c | template_style_guide.md | Add style guidance for multi-child documentation, campaign reports | P1 |
-| C4d | level_selection_guide.md | Add non-LOC selection criteria, parent-child level inheritance rules | P1 |
-
-#### C5: workflows/ domain (4 files)
-| Task | File | Changes | Priority |
-|------|------|---------|----------|
-| C5a | worked_examples.md | Add 3 new examples: epic-scale program, parent-child hierarchy, sprint-gate validation | P0 |
-| C5b | execution_methods.md | Add --recursive flag, wave-based dispatch, sprint-gate evaluation, multi-model agent mixing | P0 |
-| C5c | rollback_runbook.md | Generalize beyond single spec, add sprint regression, phase failure recovery, campaign failure patterns | P0 |
-| C5d | quick_reference.md | Add sprint-gate entry, expand phase quick reference for 16+ phases, add troubleshooting for recursive failures | P1 |
-
-#### C6: debugging/ domain (2 files)
-| Task | File | Changes | Priority |
-|------|------|---------|----------|
-| C6a | troubleshooting.md | Add recursive validation failures, multi-child errors, stale MCP metadata, campaign verification failures | P0 |
-| C6b | universal_debugging_methodology.md | Add RAG pipeline debugging lens, scoring calibration methodology, retrieval quality measurement | P1 |
-
-#### C7: config/ domain (1 file)
-| Task | File | Changes | Priority |
-|------|------|---------|----------|
-| C7a | environment_variables.md | Add SPECKIT_GRAPH_UNIFIED entry, update SPEC_KIT_ENABLE_CAUSAL description | P1, P2 |
-
-**Verification:** Run `validate.sh` on skill folder. Check cross-references between updated files. Verify no broken links.
+### Verification Methodology
+- **Repo-truth validation**: confirm counts and behaviors from live files such as `tool-schemas.ts`, `context-server.ts`, and env-var references.
+- **Doc-link and anchor validation**: ensure this spec folder resolves locally and follows Spec Kit anchor expectations.
+- **Already-landed checks**: prune items that are already documented elsewhere in the repo.
+- **Still-open checks**: retain only gaps that remain observable in live files after research reconciliation.
+<!-- /ANCHOR:architecture -->
 
 ---
 
-### Phase D: Assets Updates
-**Priority:** P1-P2 | **Effort:** Medium | **Dependencies:** None (parallel with A/B/C)
+<!-- ANCHOR:phases -->
+## 4. IMPLEMENTATION PHASES
 
-| Task | File | Changes | Priority |
-|------|------|---------|----------|
-| D1 | complexity_decision_matrix.md | Add epic/program tier (15+ phases, 50+ folders, 150+ features) | P1 |
-| D2 | level_decision_matrix.md | Add parent-child phase relationships, non-code task guidance | P1 |
-| D3 | parallel_dispatch_config.md | Add wave-based execution model, 16-agent campaigns, multi-model mixing, root synthesis delegation | P0 |
-| D4 | template_mapping.md | Add audit child, root synthesis, sprint gate evaluation archetypes | P1 |
+### Phase 1: Spec-Folder Normalization
+- [x] Upgrade `015` to Level 2 and add `checklist.md`
+- [x] Add anchors and fix broken local relative references
+- [x] Keep the phase marked `Draft` and explicitly pre-implementation
 
-**Verification:** Review against epic patterns documented in implementation-summary.md.
+### Phase 2: Skill-Guide Backlog Refresh
+- [ ] Retain open skill-guide gaps for stale metadata, routing, rules, governance, and shared-space/shared-memory tool positioning
+- [ ] Remove or downgrade tasks already satisfied by current repo docs
+- [ ] Require canonical-source verification for future metadata updates
+
+### Phase 3: Reference Backlog Refresh
+- [ ] Keep only open reference-file work across memory, validation, structure, workflows, debugging, and config
+- [ ] Remove items already covered by quick-reference, phase-aware template guidance, or nested path support
+- [ ] Keep runtime-flag documentation work focused on missing runtime `SPECKIT_GRAPH_UNIFIED` coverage and stale causal wording
+
+### Phase 4: Asset Backlog Refresh
+- [ ] Keep only open asset work for dispatch, complexity, level-decision, and template-mapping docs
+- [ ] Remove asset tasks that research or live repo inspection no longer support as open gaps
+
+### Phase 5: Verification and Drift-Proofing
+- [ ] Validate this spec folder with `validate.sh`
+- [ ] Confirm Level 2 checklist recognition with `check-completion.sh`
+- [ ] Run `verify_alignment_drift.py --root .opencode/skill/system-spec-kit`
+- [ ] Re-run targeted searches to ensure the backlog still matches live repo truth
+<!-- /ANCHOR:phases -->
 
 ---
 
-### Phase E: Cross-Reference Verification
-**Priority:** P1 | **Effort:** Low | **Dependencies:** Phases A-D complete
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
 
-| Task | What | Method |
-|------|------|--------|
-| E1 | Verify SKILL.md links resolve to updated files | Automated link check |
-| E2 | Verify tool/handler/flag counts consistent across SKILL.md, memory_system.md, env_vars.md | Grep for all numeric claims |
-| E3 | Verify new RESOURCE_MAP entries point to existing resources | Cross-reference check |
-| E4 | Run alignment drift verifier | `verify_alignment_drift.py --root .opencode/skill/system-spec-kit` |
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Structure validation | Spec-folder level, anchors, file set, local references | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh` |
+| Completion check | Level 2 checklist recognition and progress accounting | `bash .opencode/skill/system-spec-kit/scripts/spec/check-completion.sh` |
+| Drift check | Confirm no runtime/code alignment drift is introduced by this planning phase | `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit` |
+| Manual evidence review | Ensure open gaps match scratch research and live repo truth | `rg`, `sed`, `wc -l`, targeted spot checks |
+<!-- /ANCHOR:testing -->
 
 ---
 
-## 3. EXECUTION ORDER
+<!-- ANCHOR:dependencies -->
+## 6. DEPENDENCIES
+
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| `./scratch/agent-01...agent-10` | Internal | Green | Backlog cannot be accurately rewritten without the research summaries |
+| `../spec.md` | Internal | Green | Parent phase context would be incomplete |
+| `../implementation-summary.md` | Internal | Green | Open-vs-landed reconciliation would be weaker |
+| Spec Kit validation scripts | Internal | Green | Completion evidence cannot be checked consistently |
+<!-- /ANCHOR:dependencies -->
+
+---
+
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
+
+- **Trigger**: The rewritten spec folder introduces stale tasks, broken local references, or incorrect claims about already-landed documentation work.
+- **Procedure**: Revert only the `015-skill-alignment` spec-folder docs, restore the prior backlog, and re-run the same research-backed comparison before editing again.
+<!-- /ANCHOR:rollback -->
+
+---
+
+<!-- ANCHOR:phase-deps -->
+## L2: PHASE DEPENDENCIES
 
 ```
-Phase A (P0 fixes) ──────────┐
-                              ├──► Phase E (cross-ref verification)
-Phase B (content additions) ──┤
-                              │
-Phase C (references) ─────────┤
-                              │
-Phase D (assets) ─────────────┘
+Phase 1 (Normalize Spec Folder) ──► Phase 2 (SKILL Backlog)
+                                      │
+                                      ├──► Phase 3 (References Backlog)
+                                      │
+                                      ├──► Phase 4 (Assets Backlog)
+                                      │
+                                      └──► Phase 5 (Verification)
 ```
 
-Phases A-D can execute in parallel across different files. Phase E requires all others to complete first.
-
-**Recommended agent allocation for implementation:**
-- Phase A: 1 agent (surgical edits, low risk)
-- Phase B: 2-3 agents (SKILL.md is one file, but sections are independent)
-- Phase C: 5-7 agents (one per domain, parallelizable)
-- Phase D: 1-2 agents (4 small files)
-- Phase E: 1 agent (verification only)
+| Phase | Depends On | Blocks |
+|-------|------------|--------|
+| Normalize Spec Folder | None | All later phases |
+| Skill-Guide Backlog Refresh | Normalize Spec Folder | Verification |
+| References Backlog Refresh | Normalize Spec Folder | Verification |
+| Assets Backlog Refresh | Normalize Spec Folder | Verification |
+| Verification | All prior phases | Completion claim |
+<!-- /ANCHOR:phase-deps -->
 
 ---
 
-## 4. RISKS
+<!-- ANCHOR:effort -->
+## L2: EFFORT ESTIMATION
 
-| Risk | Impact | Mitigation |
-|------|--------|------------|
-| SKILL.md edits create internal inconsistencies | HIGH | Phase E cross-reference verification |
-| Stale data exists beyond what agents found | MEDIUM | Agent 10 checked all cross-references; run alignment drift verifier |
-| Reference updates break existing workflows | LOW | All changes are additive; no removals |
-| Template LOC estimates change again with updates | LOW | Use approximate (~) notation |
+| Phase | Complexity | Estimated Effort |
+|-------|------------|------------------|
+| Spec-Folder Normalization | Medium | 1-2 hours |
+| Skill-Guide Backlog Refresh | Medium | 1-2 hours |
+| References Backlog Refresh | High | 2-4 hours |
+| Assets Backlog Refresh | Medium | 1-2 hours |
+| Verification | Medium | 1 hour |
+| **Total** | | **6-11 hours** |
+<!-- /ANCHOR:effort -->
+
+---
+
+<!-- ANCHOR:enhanced-rollback -->
+## L2: ENHANCED ROLLBACK
+
+### Pre-execution Checklist
+- [x] Research corpus loaded
+- [x] Parent epic context loaded
+- [x] Live repo spot-checks completed before backlog rewrite
+
+### Rollback Procedure
+1. Revert spec-folder doc edits if they introduce broken links, stale tasks, or incorrect scope boundaries.
+2. Re-run targeted repo inspection for the disputed claim before restoring a task to the backlog.
+3. Re-run validation and drift checks after the fix.
+4. Record any unresolved policy conflicts explicitly in the spec instead of hiding them.
+
+### Data Reversal
+- **Has data migrations?** No
+- **Reversal procedure**: N/A
+<!-- /ANCHOR:enhanced-rollback -->
+
+---

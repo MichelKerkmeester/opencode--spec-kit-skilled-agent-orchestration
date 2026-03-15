@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Bind
+// ────────────────────────────────────────────────────────────────
 // Bind parameters to a statement.
 //
 // This function is used to bind parameters to a statement. It supports both

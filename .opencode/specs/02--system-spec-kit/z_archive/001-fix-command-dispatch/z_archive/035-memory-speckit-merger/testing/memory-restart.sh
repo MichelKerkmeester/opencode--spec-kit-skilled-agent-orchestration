@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 # Memory System Restart
 # Cleans database and prepares for re-indexing
 #

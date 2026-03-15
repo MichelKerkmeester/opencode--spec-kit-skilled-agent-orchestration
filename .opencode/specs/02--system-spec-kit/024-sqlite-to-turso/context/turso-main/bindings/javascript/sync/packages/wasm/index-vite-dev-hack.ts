@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Index Vite Dev Hack
+// ────────────────────────────────────────────────────────────────
 import { isWebWorker, setupMainThread, setupWebWorker } from "@tursodatabase/database-wasm-common";
 import { tursoWasm } from "./wasm-inline.js";
 

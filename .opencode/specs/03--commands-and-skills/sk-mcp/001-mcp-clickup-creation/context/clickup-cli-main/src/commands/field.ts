@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Field
+// ────────────────────────────────────────────────────────────────
 import { ClickUpClient } from '../api.js'
 import type { CustomField } from '../api.js'
 import type { Config } from '../config.js'

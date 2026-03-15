@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 
 # Setup script for the Neo4j and Qdrant GraphRAG project
 

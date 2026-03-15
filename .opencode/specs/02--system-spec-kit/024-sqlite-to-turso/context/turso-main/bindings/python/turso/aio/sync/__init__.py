@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+"""Package initialization for sync."""
+
 from ...lib_sync import (
     ConnectionSync,
     PartialSyncOpts,

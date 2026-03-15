@@ -7,7 +7,7 @@ trigger_phrases:
   - "revalidation"
   - "chunk thinning timeout"
   - "stale parent synthesis"
-  - "placeholder suite coverage"
+  - "legacy compatibility coverage"
 importance_tier: "high"
 contextType: "general"
 ---
@@ -56,8 +56,8 @@ Make phase 021 the canonical reconciliation record by documenting the already-ap
 - Update phase 020 metadata so `Next Phase` points to phase 021.
 - Document already-applied remediation outcomes:
   - `tests/chunk-thinning.vitest.ts` R7 timeout increased to `60_000`,
-  - `.opencode/skill/system-spec-kit/mcp_server/tests/README.md` labels `incremental-index.vitest.ts` as a legacy deferred placeholder suite,
-  - feature-catalog updates across phases 001-018 classify `incremental-index-v2.vitest.ts` as behavioral coverage and `incremental-index.vitest.ts` as skipped placeholder/non-behavioral evidence.
+  - `.opencode/skill/system-spec-kit/mcp_server/tests/README.md` and related catalog entries treat `incremental-index.vitest.ts` as supplemental legacy compatibility coverage,
+  - feature-catalog updates across phases 001-018 keep `incremental-index-v2.vitest.ts` as the primary behavioral suite and `incremental-index.vitest.ts` as supplemental compatibility coverage.
 
 ### Out of Scope
 - New code changes outside the spec folder in this phase.
@@ -97,7 +97,7 @@ Make phase 021 the canonical reconciliation record by documenting the already-ap
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-004 | Reflect placeholder-suite coverage wording remediation | Phase 021 docs capture README and feature-catalog wording alignment for behavioral vs placeholder suites |
+| REQ-004 | Reflect legacy-suite coverage wording remediation | Phase 021 docs capture README and feature-catalog wording alignment for primary behavioral coverage vs supplemental compatibility coverage |
 | REQ-005 | Keep phase 021 free of template placeholders | No unresolved template tokens remain in `021-remediation-revalidation/*.md` |
 | REQ-006 | Record real verification outcomes | If validation is run, record actual result; if not run, explicitly state not run |
 <!-- /ANCHOR:requirements -->
@@ -119,7 +119,7 @@ Make phase 021 the canonical reconciliation record by documenting the already-ap
 ## 6. ACCEPTANCE SCENARIOS
 
 1. **Given** remediation fixes exist in repository tests, **When** phase 021 docs are reviewed, **Then** timeout stabilization evidence is documented without claiming new code edits in this phase.
-2. **Given** placeholder-suite labeling changed in test docs, **When** coverage drift notes are reviewed, **Then** README and feature-catalog wording alignment is explicit.
+2. **Given** legacy compatibility coverage labeling changed in test docs, **When** coverage drift notes are reviewed, **Then** README and feature-catalog wording alignment is explicit.
 3. **Given** parent synthesis previously presented stale totals as current, **When** `../synthesis.md` is read, **Then** those totals are clearly labeled historical/superseded.
 4. **Given** phase navigation requirements, **When** phase 020 metadata is checked, **Then** `Next Phase` points to `../021-remediation-revalidation/spec.md`.
 <!-- /ANCHOR:acceptance-scenarios -->
@@ -196,5 +196,5 @@ Make phase 021 the canonical reconciliation record by documenting the already-ap
 
 ## 10. OPEN QUESTIONS
 
-- Should `tests/feature-flag-reference-docs.vitest.ts` be added as a required CI gate for catalog mapping edits?
+- None. `tests/feature-flag-reference-docs.vitest.ts` now serves as recorded verification evidence for this closeout pass.
 <!-- /ANCHOR:questions -->

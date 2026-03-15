@@ -115,7 +115,7 @@ When search results come back, each piece of information now carries a short lab
 | `mcp_server/tests/hybrid-search-flags.vitest.ts` | Hybrid search flag behavior |
 | `mcp_server/tests/hybrid-search.vitest.ts` | Hybrid search orchestration |
 | `mcp_server/tests/incremental-index-v2.vitest.ts` | Incremental index behavioral tests |
-| `mcp_server/tests/incremental-index.vitest.ts` | Legacy deferred placeholder suite (skipped, not behavioral evidence) |
+| `mcp_server/tests/incremental-index.vitest.ts` | Focused incremental-index coverage (supplemental to `incremental-index-v2.vitest.ts`; concrete fast-path assertions) |
 | `mcp_server/tests/index-refresh.vitest.ts` | Index refresh tests |
 | `mcp_server/tests/intent-classifier.vitest.ts` | Intent classification accuracy |
 | `mcp_server/tests/interference.vitest.ts` | Interference scoring tests |
@@ -154,7 +154,15 @@ When search results come back, each piece of information now carries a short lab
 
 ---
 
-## 4. SOURCE METADATA
+## 4. MANUAL PLAYBOOK COVERAGE
+
+| Scenario | Role |
+|----------|------|
+| `NEW-145` | Direct manual validation for enabled/disabled contextual header injection behavior |
+
+---
+
+## 5. SOURCE METADATA
 
 - Group: Extra features (Sprint 019)
 - Source feature title: Contextual tree injection

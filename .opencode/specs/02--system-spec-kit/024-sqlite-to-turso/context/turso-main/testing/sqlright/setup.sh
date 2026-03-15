@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 # Clone, patch, and build SQLRight for Turso fuzzing.
 # Usage: ./setup.sh [--force]
 set -e

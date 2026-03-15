@@ -73,6 +73,10 @@ TS_TEST_SUFFIXES = (
     ".vitest.tsx",
 )
 TSCONFIG_JSON_RE = re.compile(r"^tsconfig(\..+)?\.json$")
+KNOWN_MALFORMED_JSON_FIXTURE_SUFFIXES = (
+    "/.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/"
+    "z_archive/044-speckit-test-suite/scratch/001-test-agent-08/malformed.json",
+)
 
 
 @dataclass
@@ -219,6 +223,11 @@ def is_ts_pattern_asset(path: str) -> bool:
     return "/assets/" in normalized and "/patterns/" in normalized
 
 
+def is_known_malformed_json_fixture(path: str) -> bool:
+    normalized = normalize_path(path)
+    return any(normalized.endswith(suffix) for suffix in KNOWN_MALFORMED_JSON_FIXTURE_SUFFIXES)
+
+
 def should_skip_ts_module_header(path: str) -> bool:
     return is_test_heavy_path(path) or is_ts_pattern_asset(path)
 
@@ -326,6 +335,9 @@ def check_shell(path: str, lines: List[str]) -> List[Finding]:
 
 def check_json(path: str, content: str) -> List[Finding]:
     findings: List[Finding] = []
+    if is_known_malformed_json_fixture(path):
+        return findings
+
     try:
         json.loads(content)
     except json.JSONDecodeError as error:

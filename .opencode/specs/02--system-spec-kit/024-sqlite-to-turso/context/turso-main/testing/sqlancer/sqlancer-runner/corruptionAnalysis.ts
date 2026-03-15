@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: CorruptionAnalysis
+// ────────────────────────────────────────────────────────────────
 /**
  * Corruption analysis module that orchestrates the Python debug tools.
  * Runs WAL analysis and frame bisection to identify corruption sources.

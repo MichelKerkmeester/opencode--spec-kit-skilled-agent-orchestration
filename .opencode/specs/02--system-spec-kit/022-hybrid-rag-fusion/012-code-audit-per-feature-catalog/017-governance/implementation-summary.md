@@ -99,10 +99,10 @@ We used the prior multi-agent audit output as the source of truth for gap triage
 ---
 
 <!-- ANCHOR:limitations -->
-## Known Limitations
+## Current Reality Notes
 
-1. **Partial rollout with identity-less wrappers** wrapper calls without session identity remain disabled when `SPECKIT_ROLLOUT_PERCENT` is between 1 and 99.
-2. **Targeted validation scope** this remediation run validates touched governance and rollout suites, not the full repository test matrix.
+1. Identity-less wrappers remain intentionally excluded from partial rollout math by design.
+2. The targeted governance validation recorded here is now complemented by the umbrella closeout's successful repo-wide verification pass.
 <!-- /ANCHOR:limitations -->
 
 ---

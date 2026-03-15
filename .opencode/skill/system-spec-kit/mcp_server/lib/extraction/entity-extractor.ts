@@ -2,7 +2,7 @@
 // MODULE: Entity Extractor
 // ───────────────────────────────────────────────────────────────
 // Feature catalog: Auto entity extraction
-// Deferred feature — gated via SPECKIT_AUTO_ENTITIES
+// Feature-flagged via SPECKIT_AUTO_ENTITIES
 // Pure-TS rule-based extraction, zero npm dependencies.
 import { isEntityDenied } from './entity-denylist.js';
 import { normalizeEntityName, computeEdgeDensity } from '../search/entity-linker.js';
@@ -24,6 +24,34 @@ export interface ExtractedEntity {
   type: 'proper_noun' | 'technology' | 'key_phrase' | 'heading' | 'quoted';
   /** Number of occurrences in the source content. */
   frequency: number;
+}
+
+export interface RebuildAutoEntitiesOptions {
+  specFolder?: string | null;
+  dryRun?: boolean;
+}
+
+export interface RebuildAutoEntitiesResult {
+  dryRun: boolean;
+  specFolder: string | null;
+  memoriesScanned: number;
+  memoriesReprocessed: number;
+  autoRowsRemoved: number;
+  extractedEntities: number;
+  storedEntities: number;
+  catalogEntriesRebuilt: number;
+}
+
+interface AutoEntitySourceRow {
+  id: number;
+  spec_folder: string | null;
+  content_text: string | null;
+}
+
+interface CatalogEntityRow {
+  memory_id: number;
+  entity_text: string;
+  entity_type: ExtractedEntity['type'];
 }
 
 // ───────────────────────────────────────────────────────────────
@@ -239,6 +267,172 @@ export function updateEntityCatalog(
     console.warn(`[entity-extractor] updateEntityCatalog failed: ${msg}`);
     return { upserted: 0 };
   }
+}
+
+/**
+ * Rebuild entity_catalog deterministically from current memory_entities rows.
+ */
+export function rebuildEntityCatalog(db: Database.Database): { rebuilt: number } {
+  try {
+    const rows = db.prepare(`
+      SELECT memory_id, entity_text, entity_type
+      FROM memory_entities
+      ORDER BY id ASC
+    `).all() as CatalogEntityRow[];
+
+    const aggregates = new Map<string, {
+      aliases: Set<string>;
+      entityType: ExtractedEntity['type'];
+      memoryIds: Set<number>;
+    }>();
+
+    for (const row of rows) {
+      const canonical = normalizeEntityName(row.entity_text);
+      if (!canonical) {
+        continue;
+      }
+
+      const existing = aggregates.get(canonical);
+      if (existing) {
+        existing.aliases.add(row.entity_text);
+        existing.memoryIds.add(row.memory_id);
+        continue;
+      }
+
+      aggregates.set(canonical, {
+        aliases: new Set([row.entity_text]),
+        entityType: row.entity_type,
+        memoryIds: new Set([row.memory_id]),
+      });
+    }
+
+    const deleteStmt = db.prepare('DELETE FROM entity_catalog');
+    const insertStmt = db.prepare(`
+      INSERT INTO entity_catalog (canonical_name, aliases, entity_type, memory_count, created_at)
+      VALUES (?, ?, ?, ?, datetime('now'))
+    `);
+
+    const runInTransaction = db.transaction(() => {
+      deleteStmt.run();
+
+      for (const canonical of Array.from(aggregates.keys()).sort()) {
+        const aggregate = aggregates.get(canonical);
+        if (!aggregate) {
+          continue;
+        }
+
+        insertStmt.run(
+          canonical,
+          JSON.stringify(Array.from(aggregate.aliases).sort()),
+          aggregate.entityType,
+          aggregate.memoryIds.size,
+        );
+      }
+    });
+    runInTransaction();
+
+    return { rebuilt: aggregates.size };
+  } catch (error: unknown) {
+    const msg = error instanceof Error ? error.message : String(error);
+    console.warn(`[entity-extractor] rebuildEntityCatalog failed: ${msg}`);
+    return { rebuilt: 0 };
+  }
+}
+
+/**
+ * Rebuild auto-generated entity rows from current memory content.
+ *
+ * This provides a deterministic cleanup path for pre-fix entity rows by
+ * deleting only `created_by='auto'` entries in scope, re-extracting from the
+ * live `memory_index.content_text`, and then rebuilding `entity_catalog`
+ * exactly from the resulting entity rows.
+ */
+export function rebuildAutoEntities(
+  db: Database.Database,
+  options: RebuildAutoEntitiesOptions = {},
+): RebuildAutoEntitiesResult {
+  const specFolder = typeof options.specFolder === 'string' && options.specFolder.trim().length > 0
+    ? options.specFolder.trim()
+    : null;
+  const dryRun = options.dryRun === true;
+
+  const memories = db.prepare(`
+    SELECT id, spec_folder, content_text
+    FROM memory_index
+    WHERE (? IS NULL OR spec_folder = ?)
+    ORDER BY id ASC
+  `).all(specFolder, specFolder) as AutoEntitySourceRow[];
+
+  const extractedByMemory = memories.map((memory) => {
+    const filtered = filterEntities(extractEntities(memory.content_text ?? ''));
+    return { memoryId: memory.id, entities: filtered, hasContent: (memory.content_text ?? '').trim().length > 0 };
+  });
+
+  const autoRowCount = db.prepare(`
+    SELECT COUNT(*) AS count
+    FROM memory_entities me
+    WHERE me.created_by = 'auto'
+      AND EXISTS (
+        SELECT 1
+        FROM memory_index m
+        WHERE m.id = me.memory_id
+          AND (? IS NULL OR m.spec_folder = ?)
+      )
+  `).get(specFolder, specFolder) as { count?: number };
+
+  const extractedEntities = extractedByMemory.reduce((sum, row) => sum + row.entities.length, 0);
+  const memoriesReprocessed = extractedByMemory.filter((row) => row.hasContent).length;
+
+  if (dryRun) {
+    return {
+      dryRun: true,
+      specFolder,
+      memoriesScanned: memories.length,
+      memoriesReprocessed,
+      autoRowsRemoved: autoRowCount.count ?? 0,
+      extractedEntities,
+      storedEntities: extractedEntities,
+      catalogEntriesRebuilt: 0,
+    };
+  }
+
+  const deleteAutoRows = db.prepare(`
+    DELETE FROM memory_entities
+    WHERE created_by = 'auto'
+      AND EXISTS (
+        SELECT 1
+        FROM memory_index m
+        WHERE m.id = memory_entities.memory_id
+          AND (? IS NULL OR m.spec_folder = ?)
+      )
+  `);
+
+  let storedEntities = 0;
+  const runInTransaction = db.transaction(() => {
+    deleteAutoRows.run(specFolder, specFolder);
+
+    for (const row of extractedByMemory) {
+      if (row.entities.length === 0) {
+        continue;
+      }
+
+      storedEntities += storeEntities(db, row.memoryId, row.entities).stored;
+    }
+  });
+  runInTransaction();
+
+  const rebuiltCatalog = rebuildEntityCatalog(db);
+
+  return {
+    dryRun: false,
+    specFolder,
+    memoriesScanned: memories.length,
+    memoriesReprocessed,
+    autoRowsRemoved: autoRowCount.count ?? 0,
+    extractedEntities,
+    storedEntities,
+    catalogEntriesRebuilt: rebuiltCatalog.rebuilt,
+  };
 }
 
 // 6. INTERNAL HELPERS (exported for testing)

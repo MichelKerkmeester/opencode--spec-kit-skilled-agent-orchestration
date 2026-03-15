@@ -8,7 +8,7 @@ allowed-tools: Read, spec_kit_memory_memory_context, spec_kit_memory_memory_sear
 
 **BEFORE READING ANYTHING ELSE IN THIS FILE, CHECK `$ARGUMENTS`:**
 
-```
+```text
 IF $ARGUMENTS is empty, undefined, or contains only whitespace:
     → STOP IMMEDIATELY
     → Present the user with this question:
@@ -92,7 +92,7 @@ When evidence quality is low, responses may include an explicit evidence-gap war
 
 ## 2. CONTRACT
 
-**Inputs:** `$ARGUMENTS` — Query with optional intent override
+**Inputs:** `$ARGUMENTS`: Query with optional intent override
 **Outputs:** Context with relevance scores and intent explanation
 
 ### Argument Patterns
@@ -104,7 +104,21 @@ When evidence quality is low, responses may include an explicit evidence-gap war
 
 ---
 
-## 3. INTENT TYPES AND WEIGHTS
+## 3. QUICK REFERENCE
+
+| Command                                       | Result                                 |
+| --------------------------------------------- | -------------------------------------- |
+| `/memory:context "implement auth"`            | Auto-detect add_feature, apply weights |
+| `/memory:context "auth bug" --intent:fix_bug` | Explicit fix_bug intent                |
+| `/memory:context "how does auth work?"`       | Auto-detect understand intent          |
+| `/memory:context "optimize auth code"`        | Auto-detect refactor intent            |
+| `/memory:context "auth security review"`      | Auto-detect security_audit intent      |
+| `/memory:context "find the spec for auth"`    | Auto-detect find_spec intent           |
+| `/memory:context "why did we choose JWT"`     | Auto-detect find_decision intent       |
+
+---
+
+## 4. INTENT TYPES AND WEIGHTS
 
 ### Intent Classification
 
@@ -136,13 +150,42 @@ Intent is detected via keyword matching against the query. Keywords are phrase-b
 
 **Default fallback:** If no keywords match, defaults to `understand`.
 
+### Anchor Mapping by Intent
+
+| Intent             | Primary Anchors                        | Secondary Anchors              | Why These?                                    |
+| ------------------ | -------------------------------------- | ------------------------------ | --------------------------------------------- |
+| **add_feature**    | implementation, architecture, patterns | decisions, code-examples       | Need existing patterns + structure            |
+| **fix_bug**        | decisions, implementation, errors      | debugging, troubleshooting     | Need decision history + error context         |
+| **refactor**       | architecture, patterns, decisions      | technical-specs, code-quality  | Need structure understanding + rationale      |
+| **security_audit** | decisions, implementation, security    | validation, auth, sanitization | Need security decisions + validation patterns |
+| **understand**     | architecture, decisions, summary       | overview, context, background  | Need high-level understanding first           |
+| **find_spec**      | spec-doc, architecture, overview       | specification, structure       | Need spec document content + structure        |
+| **find_decision**  | decisions, rationale, architecture     | context, background, history   | Need decision records + rationale context     |
+
+### Example: add_feature Intent
+
+```text
+Query: "implement oauth token refresh"
+Intent: add_feature (detected)
+
+Anchors Selected:
+  1. implementation (1.5x weight)
+  2. architecture (1.3x weight)
+  3. patterns (1.2x weight)
+
+Reasoning:
+  - Need existing OAuth implementation patterns
+  - Need architecture understanding for integration points
+  - Need code examples for token handling
+```
+
 ---
 
-## 4. WORKFLOW
+## 5. WORKFLOW
 
 ### Step 1: Parse Query and Detect Intent
 
-```
+```text
 Input: $ARGUMENTS
     ↓
 Extract Query + Intent Override (if --intent: flag)
@@ -157,7 +200,7 @@ Store: query, intent
 
 ### Step 2: Apply Intent-Specific Weights
 
-```
+```text
 Based on detected intent:
     ↓
 Select appropriate anchors:
@@ -192,7 +235,7 @@ spec_kit_memory_memory_context({
 
 Format response:
 
-```
+```text
 MEMORY:CONTEXT
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -217,84 +260,11 @@ MEMORY:CONTEXT
 STATUS=OK INTENT=<intent> RESULTS=<count>
 ```
 
----
-
-## 5. INTENT-SPECIFIC ANCHOR SELECTION
-
-### Anchor Mapping by Intent
-
-| Intent             | Primary Anchors                        | Secondary Anchors              | Why These?                                    |
-| ------------------ | -------------------------------------- | ------------------------------ | --------------------------------------------- |
-| **add_feature**    | implementation, architecture, patterns | decisions, code-examples       | Need existing patterns + structure            |
-| **fix_bug**        | decisions, implementation, errors      | debugging, troubleshooting     | Need decision history + error context         |
-| **refactor**       | architecture, patterns, decisions      | technical-specs, code-quality  | Need structure understanding + rationale      |
-| **security_audit** | decisions, implementation, security    | validation, auth, sanitization | Need security decisions + validation patterns |
-| **understand**     | architecture, decisions, summary       | overview, context, background  | Need high-level understanding first           |
-| **find_spec**      | spec-doc, architecture, overview       | specification, structure       | Need spec document content + structure        |
-| **find_decision**  | decisions, rationale, architecture     | context, background, history   | Need decision records + rationale context     |
-
-### Example: add_feature Intent
-
-```
-Query: "implement oauth token refresh"
-Intent: add_feature (detected)
-
-Anchors Selected:
-  1. implementation (1.5x weight)
-  2. architecture (1.3x weight)
-  3. patterns (1.2x weight)
-
-Reasoning:
-  - Need existing OAuth implementation patterns
-  - Need architecture understanding for integration points
-  - Need code examples for token handling
-```
-
----
-
-## 6. INTENT DETECTION EXAMPLES
-
-### Example 1: Auto-Detect add_feature
-
-```
-/memory:context "implement JWT token validation"
-
-Detection:
-  Keyword: "implement" → add_feature intent
-
-Weights Applied:
-  - implementation: 1.5x
-  - architecture: 1.3x
-  - patterns: 1.2x
-
-Anchors:
-  ['implementation', 'architecture', 'patterns']
-```
-
-### Example 2: Explicit Intent Override
-
-```
-/memory:context "auth system" --intent:security_audit
-
-Detection:
-  Explicit override: security_audit
-
-Weights Applied:
-  - decisions: 1.4x
-  - implementation: 1.3x
-  - security: 1.5x
-
-Anchors:
-  ['decisions', 'implementation', 'security']
-```
-
----
-
-## 7. TOKEN BUDGET ENFORCEMENT
+### Token Budget Enforcement
 
 **memory_context L1 Budget:** ~2000 tokens total (mode-managed)
 
-### Budget Guidance by Mode
+#### Budget Guidance by Mode
 
 | Mode      | Target Budget | Typical Use                                  |
 | --------- | ------------- | -------------------------------------------- |
@@ -304,7 +274,7 @@ Anchors:
 | `deep`    | ~2000         | Broader context for complex work             |
 | `auto`    | mode-routed   | Server selects mode from detected intent     |
 
-### Truncation Logic
+#### Truncation Logic
 
 When results exceed token budget:
 1. Sort results by intent-specific relevance score
@@ -312,21 +282,19 @@ When results exceed token budget:
 3. If last result causes overage but >90% budget used, truncate to fit remaining budget
 4. Output includes: `Token Budget: ~<tokens> / <budget> tokens (<percentage>% used)` and `Truncation: <none|partial|significant>`
 
----
+### Session Deduplication
 
-## 8. SESSION DEDUPLICATION
-
-### Purpose
+#### Purpose
 
 Prevent duplicate context when the same query spans multiple sessions or when overlapping sessions contain redundant information.
 
-### Strategy
+#### Strategy
 
 - Content hashing: Each result is hashed; duplicates with same hash are merged (keeping most recent version)
 - Cross-session detection via `sessionId` metadata and content hash comparison
 - Timestamp-based recency preference when duplicates found
 
-### Deduplication Metadata
+#### Deduplication Metadata
 
 When deduplication occurs, the response includes:
 
@@ -341,9 +309,34 @@ deduplication:
 
 ---
 
-## 9. MCP ENFORCEMENT MATRIX
+## 6. ERROR HANDLING
+
+| Condition      | Response                                  |
+| -------------- | ----------------------------------------- |
+| Query empty    | Ask user for query (see top of file)      |
+| Intent invalid | Default to 'understand' with warning      |
+| No results     | Suggest broader query or different intent |
+| Search fails   | Fall back to unweighted search            |
+
+---
+
+## 7. RELATED COMMANDS
+
+- `/memory:save`: Save conversation context
+- `/memory:manage`: Database management, checkpoints, ingest
+- `/memory:learn`: Constitutional memories
+- `/memory:continue`: Session recovery
+- `/memory:analyze`: Analysis, causal graph, evaluation, learning history
+- `/memory:shared`: Shared-memory spaces
+
+---
+<!-- APPENDIX: Reference material for AI agent implementation -->
+
+## APPENDIX A: MCP TOOL REFERENCE
 
 **CRITICAL:** Use the correct MCP tools for each step.
+
+### Enforcement Matrix
 
 | STEP            | REQUIRED CALLS                                           | PATTERN  | ON FAILURE                |
 | --------------- | -------------------------------------------------------- | -------- | ------------------------- |
@@ -352,7 +345,7 @@ deduplication:
 | TRIGGER CHECK   | `spec_kit_memory_memory_match_triggers({ prompt: query })`| OPTIONAL | Continue without          |
 | SEARCH (MANUAL) | `spec_kit_memory_memory_search({ query, anchors, includeContent: true })` | SINGLE | Show error msg |
 
-### MCP Tool Signature
+### Tool Signatures
 
 > **Note:** The dedicated `spec_kit_memory_memory_context()` tool provides unified intent-aware retrieval server-side. It accepts `input`, `mode`, `intent`, `specFolder`, `limit`, `sessionId`, `enableDedup`, `includeContent`, and `anchors` params. This is the recommended unified approach. The manual orchestration below is for advanced use cases requiring fine-grained control.
 
@@ -383,34 +376,63 @@ spec_kit_memory_memory_search({
 
 ---
 
-## 10. ERROR HANDLING
+## APPENDIX B: ADVANCED PARAMETERS
 
-| Condition      | Response                                  |
-| -------------- | ----------------------------------------- |
-| Query empty    | Ask user for query (see top of file)      |
-| Intent invalid | Default to 'understand' with warning      |
-| No results     | Suggest broader query or different intent |
-| Search fails   | Fall back to unweighted search            |
+### memory_context: Full Parameters
 
----
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `input` | string | *required* | Query, prompt, or context description |
+| `mode` | string | `auto` | `auto`, `quick`, `deep`, `focused`, `resume` |
+| `intent` | string | auto-detect | `add_feature`, `fix_bug`, `refactor`, `security_audit`, `understand`, `find_spec`, `find_decision` |
+| `specFolder` | string | — | Limit context to specific spec folder |
+| `limit` | number | mode-specific | Maximum results (1-100) |
+| `sessionId` | string | ephemeral | Caller-supplied session identifier |
+| `enableDedup` | boolean | true | Enable session deduplication |
+| `includeContent` | boolean | false | Include full file content in results |
+| `includeTrace` | boolean | false | Include provenance-rich trace data (scores, source, trace) in results when underlying `memory_search` is called |
+| `tokenUsage` | number | — | Caller token usage ratio (0.0-1.0). Helps the server budget-aware pruning when the caller is near context limits |
+| `anchors` | string[] | — | Filter content to specific anchors (e.g., `["state", "next-steps"]` for resume mode) |
 
-## 11. QUICK REFERENCE
+### memory_search: Advanced Parameters
 
-| Command                                       | Result                                 |
-| --------------------------------------------- | -------------------------------------- |
-| `/memory:context "implement auth"`            | Auto-detect add_feature, apply weights |
-| `/memory:context "auth bug" --intent:fix_bug` | Explicit fix_bug intent                |
-| `/memory:context "how does auth work?"`       | Auto-detect understand intent          |
-| `/memory:context "optimize auth code"`        | Auto-detect refactor intent            |
-| `/memory:context "auth security review"`      | Auto-detect security_audit intent      |
-| `/memory:context "find the spec for auth"`    | Auto-detect find_spec intent           |
-| `/memory:context "why did we choose JWT"`     | Auto-detect find_decision intent       |
+The full `memory_search` parameter surface is available when using Option 2 (manual search). Key advanced parameters:
 
----
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `query` | string | — | Natural language search query (required unless `concepts` provided) |
+| `concepts` | string[] | — | 2-5 concept strings for multi-concept AND search (required unless `query` provided) |
+| `specFolder` | string | — | Limit search to specific spec folder |
+| `tier` | string | — | Filter by importance tier |
+| `contextType` | string | — | Filter by context type |
+| `useDecay` | boolean | true | Apply temporal decay scoring |
+| `includeContiguity` | boolean | false | Include adjacent/contiguous memories |
+| `includeConstitutional` | boolean | true | Include constitutional tier memories at top |
+| `enableSessionBoost` | boolean | env flag | Enable session-based score boost from working_memory attention signals |
+| `enableCausalBoost` | boolean | env flag | Enable causal-neighbor boost (2-hop traversal on causal_edges) |
+| `min_quality_score` | number | — | Minimum quality score threshold (0.0-1.0) |
+| `minQualityScore` | number | — | **Deprecated alias** for `min_quality_score`. Prefer the snake_case parameter name |
+| `bypassCache` | boolean | false | Skip tool cache and force fresh search |
+| `rerank` | boolean | true | Enable cross-encoder reranking |
+| `applyLengthPenalty` | boolean | true | Penalize very long memories during reranking |
+| `applyStateLimits` | boolean | false | Enforce per-tier quantity limits for result diversity |
+| `minState` | string | `WARM` | Minimum memory state: `HOT`, `WARM`, `COLD`, `DORMANT`, `ARCHIVED` |
+| `autoDetectIntent` | boolean | true | Auto-detect intent from query if not explicitly set |
+| `trackAccess` | boolean | false | Write FSRS strengthening updates on read (off by default to avoid write-on-read) |
+| `includeArchived` | boolean | false | Include archived memories in results |
+| `mode` | string | `auto` | `auto` (standard) or `deep` (multi-query expansion). Note: deep mode does not guarantee expansion for simple queries |
+| `includeTrace` | boolean | false | Include provenance-rich scores/source/trace fields in each result |
 
-## 12. RELATED COMMANDS
+> **Governance scoping:** `tenantId`, `userId`, `agentId`, and `sharedSpaceId` are advertised in the tool schema for governed retrieval. When shared-memory scope enforcement is active, results are isolated to the specified boundaries. These parameters are rollout-dependent.
 
-- `/memory:save` - Save current conversation context
-- `/memory:manage` - Database management operations
-- `/memory:continue` - Resume interrupted session
-- `/memory:learn` - Create and manage constitutional memories
+### memory_match_triggers: Cognitive Parameters
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `prompt` | string | *required* | User prompt or text to match against trigger phrases |
+| `limit` | number | 3 | Maximum matching memories to return |
+| `session_id` | string | — | Session identifier for cognitive features. Enables attention decay and tiered content injection |
+| `turnNumber` | number | — | Current conversation turn number. Used with `session_id` for decay calculations |
+| `include_cognitive` | boolean | true | Enable cognitive features (decay, tiers, co-activation). Requires `session_id` |
+
+When cognitive features are enabled (`session_id` + `include_cognitive`), trigger matching uses attention-based decay and tiered content injection: HOT memories return full content, WARM memories return summaries, with co-activation of related memories.

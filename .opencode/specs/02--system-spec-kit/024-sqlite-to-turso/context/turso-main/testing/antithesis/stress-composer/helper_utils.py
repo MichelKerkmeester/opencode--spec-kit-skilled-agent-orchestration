@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+"""Module for helper utils."""
+
 import string
 
 from antithesis.random import get_random, random_choice

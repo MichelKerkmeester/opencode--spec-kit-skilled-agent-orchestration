@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Promise
+// ────────────────────────────────────────────────────────────────
 import { DatabasePromise } from "@tursodatabase/database-common"
 import { ProtocolIo, run, DatabaseOpts, EncryptionOpts, RunOpts, DatabaseRowMutation, DatabaseRowStatement, DatabaseRowTransformResult, DatabaseStats, SyncEngineGuards, Runner, runner, RemoteWriter, RemoteWriteStatement } from "@tursodatabase/sync-common";
 import { SyncEngine, SyncEngineProtocolVersion, Database as NativeDatabase } from "#index";

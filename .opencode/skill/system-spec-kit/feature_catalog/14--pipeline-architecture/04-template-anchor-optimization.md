@@ -32,6 +32,7 @@ This is a pure annotation step wired into Stage 2 as step 8. It never modifies a
 |------|-------|
 | `mcp_server/tests/anchor-metadata.vitest.ts` | Anchor metadata tests |
 | `mcp_server/tests/memory-types.vitest.ts` | Memory type tests |
+| `mcp_server/tests/pipeline-architecture-remediation.vitest.ts` | Direct audit traceability coverage for anchor metadata ownership |
 | `mcp_server/tests/retrieval-trace.vitest.ts` | Retrieval trace tests |
 | `mcp_server/tests/unit-composite-scoring-types.vitest.ts` | Scoring type tests |
 | `mcp_server/tests/unit-folder-scoring-types.vitest.ts` | Folder scoring type tests |

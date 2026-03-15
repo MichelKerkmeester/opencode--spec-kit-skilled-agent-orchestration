@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Database connection and operations for crash report collection."""
 
 import hashlib

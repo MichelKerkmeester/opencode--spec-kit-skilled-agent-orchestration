@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Activity
+// ────────────────────────────────────────────────────────────────
 import chalk from 'chalk'
 import { ClickUpClient } from '../api.js'
 import type { Task } from '../api.js'

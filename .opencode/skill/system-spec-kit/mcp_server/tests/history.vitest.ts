@@ -3,24 +3,36 @@ import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import * as path from 'path';
 import * as os from 'os';
 import * as fs from 'fs';
+import type Database from 'better-sqlite3';
 
 import * as mod from '../lib/storage/history';
+import type { HistoryEntry } from '../lib/storage/history';
 import { memoryBulkDeleteSchema } from '../schemas/tool-input-schemas';
 
-let Database: any = null;
-let db: any = null;
+type DatabaseConstructor = new (filename: string) => Database.Database;
+
+let DatabaseImpl: DatabaseConstructor | null = null;
+let db: Database.Database | null = null;
 let dbPath: string = '';
 const LEGACY_PRE_MIGRATION_ROW_ID = 'legacy-pre-migration-row';
 
+function requireDb(): Database.Database {
+  if (!db) {
+    throw new Error('History test database was not initialized');
+  }
+  return db;
+}
+
 describe('History Tests (T508)', () => {
   beforeAll(() => {
-    Database = require('better-sqlite3');
+    DatabaseImpl = require('better-sqlite3') as DatabaseConstructor;
 
     dbPath = path.join(os.tmpdir(), `history-test-${Date.now()}.sqlite`);
-    db = new Database(dbPath);
+    db = new DatabaseImpl(dbPath);
+    const activeDb = requireDb();
 
     // Create memory_index table (required for joins)
-    db.exec(`
+    activeDb.exec(`
       CREATE TABLE IF NOT EXISTS memory_index (
         id INTEGER PRIMARY KEY,
         title TEXT,
@@ -34,7 +46,7 @@ describe('History Tests (T508)', () => {
     `);
 
     // Create memory_history table with legacy constraints to test migration
-    db.exec(`
+    activeDb.exec(`
       CREATE TABLE IF NOT EXISTS memory_history (
         id TEXT PRIMARY KEY,
         memory_id INTEGER NOT NULL,
@@ -49,13 +61,13 @@ describe('History Tests (T508)', () => {
     `);
 
     // Insert test memories
-    const insert = db.prepare('INSERT INTO memory_index (id, title, spec_folder) VALUES (?, ?, ?)');
+    const insert = activeDb.prepare('INSERT INTO memory_index (id, title, spec_folder) VALUES (?, ?, ?)');
     insert.run(1, 'Test Memory 1', 'specs/001-test');
     insert.run(2, 'Test Memory 2', 'specs/001-test');
     insert.run(3, 'Test Memory 3', 'specs/002-other');
 
     // Insert a legacy-row fixture before init() runs migration.
-    db.prepare(`
+    activeDb.prepare(`
       INSERT INTO memory_history (id, memory_id, prev_value, new_value, event, actor)
       VALUES (?, ?, ?, ?, ?, ?)
     `).run(
@@ -67,7 +79,7 @@ describe('History Tests (T508)', () => {
       'system'
     );
 
-    mod.init(db);
+    mod.init(activeDb);
   });
 
   afterAll(() => {
@@ -86,6 +98,7 @@ describe('History Tests (T508)', () => {
     });
 
     it('T508-01b: recordHistory normalizes non-string payloads', () => {
+      const activeDb = requireDb();
       const id = mod.recordHistory(
         1,
         'UPDATE',
@@ -95,7 +108,7 @@ describe('History Tests (T508)', () => {
         'specs/001-test',
       );
 
-      const row = db.prepare('SELECT prev_value, new_value, actor, spec_folder FROM memory_history WHERE id = ?').get(id) as {
+      const row = activeDb.prepare('SELECT prev_value, new_value, actor, spec_folder FROM memory_history WHERE id = ?').get(id) as {
         prev_value: string | null;
         new_value: string | null;
         actor: string;
@@ -109,8 +122,9 @@ describe('History Tests (T508)', () => {
     });
 
     it('T508-01c: undefined history payloads normalize to null values', () => {
+      const activeDb = requireDb();
       const id = mod.recordHistory(1, 'UPDATE', undefined, undefined, '  mcp:trimmed_actor  ');
-      const row = db.prepare('SELECT prev_value, new_value, actor FROM memory_history WHERE id = ?').get(id) as {
+      const row = activeDb.prepare('SELECT prev_value, new_value, actor FROM memory_history WHERE id = ?').get(id) as {
         prev_value: string | null;
         new_value: string | null;
         actor: string;
@@ -201,30 +215,36 @@ describe('History Tests (T508)', () => {
     });
 
     it('T508-05d: getHistoryStats includes delete events after memory row removal', () => {
+      const activeDb = requireDb();
       const before = mod.getHistoryStats('specs/001-test');
 
-      db.prepare('INSERT INTO memory_index (id, title, spec_folder) VALUES (?, ?, ?)')
+      activeDb.prepare('INSERT INTO memory_index (id, title, spec_folder) VALUES (?, ?, ?)')
         .run(9, 'Deleted Snapshot Memory', 'specs/001-test');
-      db.prepare('DELETE FROM memory_index WHERE id = ?').run(9);
+      mod.recordHistory(9, 'ADD', null, 'snapshot-added', 'system');
+      activeDb.prepare('DELETE FROM memory_index WHERE id = ?').run(9);
 
-      mod.recordHistory(
+      const id = mod.recordHistory(
         9,
         'DELETE',
         '/tmp/specs/001-test/memory/deleted-snapshot.md',
         null,
         'mcp:memory_delete',
-        'specs/001-test',
       );
+      const row = activeDb.prepare('SELECT spec_folder FROM memory_history WHERE id = ?').get(id) as {
+        spec_folder: string | null;
+      };
 
       const after = mod.getHistoryStats('specs/001-test');
+      expect(row.spec_folder).toBe('specs/001-test');
       expect(after.deletes).toBe(before.deletes + 1);
-      expect(after.total).toBe(before.total + 1);
+      expect(after.total).toBe(before.total + 2);
     });
 
     it('T508-05e: getHistoryStats fallback still counts rows with null spec_folder when memory exists', () => {
+      const activeDb = requireDb();
       const before = mod.getHistoryStats('specs/001-test');
 
-      db.prepare(`
+      activeDb.prepare(`
         INSERT INTO memory_history (id, memory_id, spec_folder, prev_value, new_value, event, actor)
         VALUES (?, ?, ?, ?, ?, ?, ?)
       `).run(
@@ -241,14 +261,42 @@ describe('History Tests (T508)', () => {
       expect(after.updates).toBe(before.updates + 1);
       expect(after.total).toBe(before.total + 1);
     });
+
+    it('T508-05f: getHistoryStats counts legacy null-folder rows after memory deletion when earlier history captured the folder', () => {
+      const activeDb = requireDb();
+      const before = mod.getHistoryStats('specs/001-test');
+
+      activeDb.prepare('INSERT INTO memory_index (id, title, spec_folder) VALUES (?, ?, ?)')
+        .run(10, 'Legacy Deleted Memory', 'specs/001-test');
+      mod.recordHistory(10, 'ADD', null, 'created-before-delete', 'system');
+      activeDb.prepare('DELETE FROM memory_index WHERE id = ?').run(10);
+
+      activeDb.prepare(`
+        INSERT INTO memory_history (id, memory_id, spec_folder, prev_value, new_value, event, actor)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+      `).run(
+        'legacy-null-spec-folder-after-delete',
+        10,
+        null,
+        'legacy-before',
+        'legacy-after',
+        'UPDATE',
+        'system',
+      );
+
+      const after = mod.getHistoryStats('specs/001-test');
+      expect(after.updates).toBe(before.updates + 1);
+      expect(after.total).toBe(before.total + 2);
+    });
   });
 
   // Legacy Schema Migration (T508-06)
   describe('Legacy Schema Migration', () => {
     it('T508-06a: init() migrates legacy CHECK(actor IN ...) and FOREIGN KEY constraints', () => {
+      const activeDb = requireDb();
       // The beforeAll created the table with CHECK(actor IN ('user','system','hook','decay'))
       // And FOREIGN KEY, then called mod.init(db) which should have migrated it.
-      const tableInfo = db.prepare(
+      const tableInfo = activeDb.prepare(
         "SELECT sql FROM sqlite_master WHERE type='table' AND name='memory_history'"
       ).get() as { sql: string };
       expect(tableInfo.sql).not.toContain('CHECK(actor IN');
@@ -261,7 +309,7 @@ describe('History Tests (T508)', () => {
       expect(id.length).toBe(36);
 
       const history = mod.getHistory(1);
-      const entry = history.find((h: any) => h.id === id);
+      const entry = history.find((h: HistoryEntry) => h.id === id);
       expect(entry).toBeDefined();
       expect(entry!.actor).toBe('mcp:memory_save');
     });
@@ -271,13 +319,14 @@ describe('History Tests (T508)', () => {
       expect(typeof id).toBe('string');
 
       const history = mod.getHistory(3);
-      const entry = history.find((h: any) => h.id === id);
+      const entry = history.find((h: HistoryEntry) => h.id === id);
       expect(entry).toBeDefined();
       expect(entry!.actor).toBe('mcp:memory_bulk_delete');
     });
 
     it('T508-06d: migration preserves existing history rows', () => {
-      const legacyRow = db.prepare(`
+      const activeDb = requireDb();
+      const legacyRow = activeDb.prepare(`
         SELECT id, memory_id, spec_folder, prev_value, new_value, event, actor
         FROM memory_history
         WHERE id = ?
@@ -318,7 +367,7 @@ describe('History Tests (T508)', () => {
     ])('T508-06e: actor naming accepts %s', (actor) => {
       const id = mod.recordHistory(2, 'UPDATE', null, `actor-test:${actor}`, actor);
       const history = mod.getHistory(2);
-      const entry = history.find((h: any) => h.id === id);
+      const entry = history.find((h: HistoryEntry) => h.id === id);
       expect(entry).toBeDefined();
       expect(entry!.actor).toBe(actor);
     });

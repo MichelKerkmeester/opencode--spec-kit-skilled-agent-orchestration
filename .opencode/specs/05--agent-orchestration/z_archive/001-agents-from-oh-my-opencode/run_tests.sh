@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 # Agent System Test Runner
 # Usage: bash run_tests.sh
 

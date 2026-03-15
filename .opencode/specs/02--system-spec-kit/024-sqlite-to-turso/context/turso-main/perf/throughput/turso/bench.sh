@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 
 RUNS=${1:-10}
 CMD="cargo run --release --bin write-throughput -- -t 6 --mode legacy -i 1000"

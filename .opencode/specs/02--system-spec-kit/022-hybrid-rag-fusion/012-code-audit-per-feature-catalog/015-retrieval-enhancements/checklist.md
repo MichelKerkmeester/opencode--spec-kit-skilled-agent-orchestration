@@ -88,7 +88,7 @@ P0 items below are complete and include inline evidence.
 
 ## P1 - Required
 
-P1 items are complete and include inline evidence unless explicitly deferred.
+P1 items are complete and include inline evidence.
 
 ---
 
@@ -101,7 +101,7 @@ P1 items are complete and include inline evidence unless explicitly deferred.
 - [x] CHK-043 [P0] F-07 and F-08 source/test mapping corrections applied in feature catalog (T004 corrected F-07 source/test mapping to hybrid-search.ts; T006 corrected F-08 provenance ownership) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
 - [x] CHK-044 [P1] F-05 contract docs aligned with Stage-1 adaptation flow (T011 corrected F-05 summary-channel contract: querySummaryEmbeddings returns lightweight hits, Stage-1 adapts to PipelineRow) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
 - [x] CHK-045 [P1] Missing/stale source references corrected (context-server + retry references) (T010 added context-server.ts to F-01 source table; T014 removed stale retry references) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-046 [P1] Playbook scenario coverage mapped or marked missing for all 9 features (`01->NEW-055`, `02->NEW-056`, `03->NEW-057`, `04->NEW-058`, `05->NEW-059`, `06->NEW-060`, `07->NEW-077`, `08->NEW-096`, `09->MISSING_DIRECT_SCENARIO`) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
+- [x] CHK-046 [P1] Playbook scenario coverage mapped for all 9 features (`01->NEW-055`, `02->NEW-056`, `03->NEW-057`, `04->NEW-058`, `05->NEW-059`, `06->NEW-060`, `07->NEW-077`, `08->NEW-096`, `09->NEW-145`) [EVIDENCE: `../../../../../skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` scenario table + cross-reference index and the feature doc `../../../../../skill/system-spec-kit/feature_catalog/15--retrieval-enhancements/09-contextual-tree-injection.md`.]
 <!-- /ANCHOR:docs -->
 
 ---

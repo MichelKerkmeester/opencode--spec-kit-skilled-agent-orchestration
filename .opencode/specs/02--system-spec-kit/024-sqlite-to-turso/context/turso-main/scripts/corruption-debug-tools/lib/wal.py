@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 WAL (Write-Ahead Log) parsing utilities.
 

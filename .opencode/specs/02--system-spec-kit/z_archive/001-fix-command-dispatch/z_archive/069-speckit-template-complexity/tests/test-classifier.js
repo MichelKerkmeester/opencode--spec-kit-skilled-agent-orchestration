@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+'use strict';
+
 /**
  * Test Suite: Complexity Classifier & Features
  *

@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Date
+// ────────────────────────────────────────────────────────────────
 export function formatDate(ms: string | number): string {
   const d = new Date(Number(ms))
   const year = d.getUTCFullYear()

@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Index Default
+// ────────────────────────────────────────────────────────────────
 import { setupMainThread } from "@tursodatabase/database-wasm-common";
 
 const __wasmUrl = new URL('./turso.wasm32-wasi.wasm', import.meta.url).href;

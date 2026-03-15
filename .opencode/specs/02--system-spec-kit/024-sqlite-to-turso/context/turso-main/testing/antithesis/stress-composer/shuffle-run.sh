@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 
 # Get list of parallel*.py files into an array
 test_drivers=($(find . -name "parallel*.py"))

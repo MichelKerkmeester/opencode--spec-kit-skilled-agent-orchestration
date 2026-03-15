@@ -37,7 +37,7 @@ Maintenance documentation now reflects the real remediation state instead of sta
 
 ### Workspace Scanning and Indexing (F-01)
 
-F-01 mapping was corrected from EX-021/EX-022 to EX-014. Behavioral test evidence was also corrected to use `incremental-index-v2.vitest.ts` as the primary suite. The legacy `incremental-index.vitest.ts` suite is explicitly treated as placeholder/deferred and no longer presented as behavioral proof.
+F-01 mapping was corrected from EX-021/EX-022 to EX-014. Behavioral test evidence was also corrected to use `incremental-index-v2.vitest.ts` as the primary suite. The focused `incremental-index.vitest.ts` suite is retained as supplemental compatibility coverage and is no longer described as a placeholder.
 
 ### Startup Runtime Compatibility Guards (F-02)
 
@@ -50,7 +50,7 @@ Startup coverage language was updated to reflect the dedicated `startup-checks.v
 | `spec.md` | Modified | Corrected playbook mapping and success criteria; repaired malformed anchor structure |
 | `plan.md` | Modified | Marked phases complete, fixed manual testing row, removed phantom Config phase dependency |
 | `tasks.md` | Modified | Corrected mapping/evidence phrasing and completion criteria wording |
-| `checklist.md` | Modified | Removed incorrect/deferred P0 evidence claims and aligned testing/playbook checks |
+| `checklist.md` | Modified | Removed stale P0 evidence claims and aligned testing/playbook checks |
 | `implementation-summary.md` | Created | Recorded completion outcomes and verification state |
 <!-- /ANCHOR:what-built -->
 
@@ -70,7 +70,7 @@ The update was delivered by reconciling the maintenance spec docs against the ma
 | Decision | Why |
 |----------|-----|
 | Map maintenance workspace scanning to EX-014 only | EX-014 is the canonical playbook scenario for `memory_index_scan`; EX-021/EX-022 belong to causal-analysis features |
-| Treat `incremental-index-v2.vitest.ts` as behavioral evidence and demote `incremental-index.vitest.ts` to deferred placeholder status | The v2 suite contains real behavioral assertions; the legacy suite is placeholder-heavy and not suitable for behavioral proof |
+| Treat `incremental-index-v2.vitest.ts` as behavioral evidence and keep `incremental-index.vitest.ts` as supplemental focused coverage | The v2 suite contains the broader behavioral assertions, while the focused suite provides concrete fast-path checks without standing in for primary behavioral proof |
 | Add EX-035 for F-02 manual validation | Startup runtime compatibility is an existing maintenance feature and now has a dedicated playbook scenario without reusing unrelated causal-analysis entries |
 <!-- /ANCHOR:decisions -->
 
@@ -89,10 +89,10 @@ The update was delivered by reconciling the maintenance spec docs against the ma
 ---
 
 <!-- ANCHOR:limitations -->
-## Known Limitations
+## Current Reality Notes
 
-1. **Legacy placeholder suite still exists.** `incremental-index.vitest.ts` remains in-repo for deferred work and can still be mistaken for behavioral evidence if not called out explicitly.
-2. **EX-035 depends on the targeted startup suite contract.** If `startup-checks.vitest.ts` scope changes materially, the playbook scenario should be updated in the same change.
+1. `incremental-index-v2.vitest.ts` is the primary behavioral suite, while `incremental-index.vitest.ts` is documented consistently as supplemental focused compatibility coverage.
+2. EX-035 remains the direct startup/runtime manual scenario; keep it synchronized if the startup suite contract changes materially.
 <!-- /ANCHOR:limitations -->
 
 ---

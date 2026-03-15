@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: 014-hydra-db-based-features"
-description: "Level 3 roadmap for HydraDB-inspired memory-state capabilities in system-spec-kit and the Spec Kit Memory MCP server."
+description: "Level 3 delivery record for HydraDB-inspired memory-state capabilities in system-spec-kit and the Spec Kit Memory MCP server."
 trigger_phrases:
   - "hydra"
   - "memory state"
@@ -24,13 +24,13 @@ contextType: "decision"
 
 ## EXECUTIVE SUMMARY
 
-This document defines a Level 3 roadmap for evolving `system-spec-kit` and the Spec Kit Memory MCP server toward a HydraDB-inspired memory-state architecture. It is a planning artifact for future implementation and does not claim these roadmap features already exist.
+This document records the delivered Level 3 HydraDB-inspired memory-state implementation for `system-spec-kit` and the Spec Kit Memory MCP server. The six planned phases are shipped in the live runtime and were re-verified locally on 2026-03-15.
 
-**Present (today)**: the MCP server already includes useful primitives (hybrid retrieval, causal edges, history/conflict logs, working memory, access tracking, ingest queue), but they are distributed across subsystems.
+**Delivered runtime**: versioned lineage state, unified graph-aware retrieval, adaptive shadow ranking, hierarchical scope governance, governed ingest and retention controls, shared-memory rollout controls, and supporting telemetry/checkpoint behavior.
 
-**Target (roadmap)**: unify those primitives into first-class versioned memory state with lineage, graph-aware retrieval, adaptive feedback loops, hierarchical scope isolation, governed ingestion/lifecycle controls, and shared-memory collaboration spaces.
+**Surface note**: lineage and `asOf` resolution are currently exposed as internal storage APIs plus save/search integration. This spec does not claim a standalone public `memory_query` MCP tool is shipped.
 
-**Key Decisions**: evolutionary extension of the existing MCP server, lineage-first milestone ordering, governance-before-collaboration enforcement.
+**Key Decisions**: evolutionary extension of the existing MCP server, internal lineage API surface retained, governance-before-collaboration enforcement, and truth-sync documentation aligned to the runtime as the source of truth.
 
 **Critical Dependencies**: local research docs in this folder, existing MCP storage/retrieval subsystems, and policy/governance design decisions.
 
@@ -47,7 +47,7 @@ This document defines a Level 3 roadmap for evolving `system-spec-kit` and the S
 | **Priority** | P0 |
 | **Status** | Complete |
 | **Created** | 2026-03-13 |
-| **Updated** | 2026-03-13 |
+| **Updated** | 2026-03-15 |
 | **Branch** | `022-hybrid-rag-fusion` |
 
 ---
@@ -59,7 +59,7 @@ This document defines a Level 3 roadmap for evolving `system-spec-kit` and the S
 The current Memory MCP stack has strong retrieval and memory primitives, but no single end-to-end state model that guarantees lineage, temporal correctness, strict hierarchy boundaries, and governed collaboration. That gap limits reliability for long-running multi-agent workflows and enterprise governance requirements.
 
 ### Purpose
-Define an implementation-ready roadmap that turns the current memory toolset into a coherent memory-state platform while preserving backward compatibility and rollout safety.
+Record the shipped six-phase implementation, its verification evidence, and the remaining explicit non-goals so completion claims stay truthful and reproducible.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -68,34 +68,29 @@ Define an implementation-ready roadmap that turns the current memory toolset int
 ## 3. SCOPE
 
 ### In Scope
-- Roadmap for first-class versioned memory state and lineage.
-- Roadmap for unified graph-aware retrieval across causal/entity/summary signals.
-- Roadmap for self-improving retrieval loops from access/outcome/correction signals.
-- Roadmap for hierarchical isolation across tenant/user/agent/session boundaries.
-- Roadmap for governed ingestion with provenance, temporal markers, retention, and deletion.
-- Roadmap for shared-memory collaboration spaces with policy controls.
-- Sequencing, risks, and verification criteria for future implementation.
+- Delivered first-class versioned memory state, lineage tracking, and deterministic `asOf` resolution via internal storage APIs.
+- Delivered unified graph-aware retrieval across causal, entity, and summary signals.
+- Delivered adaptive retrieval feedback capture and bounded shadow-ranking behavior.
+- Delivered hierarchical tenant, user or agent, session, and shared-space governance controls.
+- Delivered governed ingestion, retention, cascade deletion, shared-memory rollout controls, and rollback-compatible verification.
+- Truth-sync of the parent Hydra spec pack to the actual runtime, tests, and operator documentation.
 
 ### Out of Scope
-- Immediate implementation of roadmap phases.
-- Claims that Hydra-inspired capabilities are already shipped.
+- Introducing a new standalone public lineage or `asOf` MCP query tool.
+- Reopening or rewriting the research inputs in `research/`.
 - Greenfield rewrite of the Memory MCP server.
-- `implementation-summary.md` creation in this planning step.
-- Edits to the two existing research docs in this folder.
+- Browser or staging deployment work beyond local verification evidence.
 
-### Files Likely to Change (Future Implementation)
+### Representative Runtime Surfaces
 
-| File Path | Change Type | Description |
-|-----------|-------------|-------------|
-| `.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts` | Modify | Lineage, scope, provenance, retention, and collaboration schema extensions |
-| `.opencode/skill/system-spec-kit/mcp_server/lib/storage/history.ts` | Modify | Event-to-lineage transition mapping |
-| `.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage1-candidate-gen.ts` | Modify | Scope/time prefilters and graph-aware candidate fusion hooks |
-| `.opencode/skill/system-spec-kit/mcp_server/lib/search/causal-boost.ts` | Modify | Unified graph scoring across causal/entity/summary relations |
-| `.opencode/skill/system-spec-kit/mcp_server/lib/storage/access-tracker.ts` | Modify | Retrieval outcome and correction signal capture |
-| `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts` | Modify | Provenance validation and governance gates on ingestion |
-| `.opencode/skill/system-spec-kit/mcp_server/lib/ops/job-queue.ts` | Modify | Retention/deletion pipeline jobs and replay-safe lifecycle |
-| `.opencode/skill/system-spec-kit/mcp_server/lib/governance/` | Create | Policy, retention, audit, and deletion enforcement modules |
-| `.opencode/skill/system-spec-kit/mcp_server/lib/collab/` | Create | Shared-memory space policy and conflict strategy modules |
+| File Path | Layer | Description |
+|-----------|-------|-------------|
+| `.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts` | Schema | Lineage tables, scope columns, governance audit tables, and shared-space schema support |
+| `.opencode/skill/system-spec-kit/mcp_server/lib/storage/lineage-state.ts` | Storage | Append-first lineage writes, active projection reads, deterministic `asOf` resolution, and backfill helpers |
+| `.opencode/skill/system-spec-kit/mcp_server/lib/cognitive/adaptive-ranking.ts` | Cognitive | Adaptive signal capture, bounded shadow proposals, threshold tuning, and resettable rollback state |
+| `.opencode/skill/system-spec-kit/mcp_server/lib/governance/scope-governance.ts` | Governance | Scope normalization, governed-ingest validation, retention metadata, and governance audit writes |
+| `.opencode/skill/system-spec-kit/mcp_server/lib/collab/shared-spaces.ts` | Collaboration | Shared-space membership, deny-by-default access, conflict recording, and rollout summaries |
+| `.opencode/skill/system-spec-kit/mcp_server/handlers/shared-memory.ts` | Handler | Shared-space CRUD, membership assignment, and rollout-status MCP handlers |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -129,12 +124,13 @@ Define an implementation-ready roadmap that turns the current memory toolset int
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All six focus areas are traceable from `spec.md` to `plan.md` and `tasks.md`.
-- **SC-002**: The roadmap explicitly distinguishes present capabilities from target capabilities in all planning docs.
-- **SC-003**: At least 90% of tasks in `tasks.md` are implementation-pending, with completed items limited to existing research/planning groundwork.
-- **SC-004**: The three ADR decisions are documented and reflected in phase ordering.
-- **SC-005**: Checklist confirms planning readiness without claiming implementation test execution.
-- **SC-006**: No template placeholders remain in the five planning artifacts.
+- **SC-001**: All six capability areas are traceable from `spec.md` to `plan.md`, `tasks.md`, and runtime evidence.
+- **SC-002**: Parent planning artifacts describe delivered behavior and no longer contradict the shipped implementation state.
+- **SC-003**: `tasks.md` references only existing runtime files, truthful globs, or explicitly internal API surfaces.
+- **SC-004**: The three ADR decisions remain documented and reflected in the delivered phase ordering.
+- **SC-005**: Checklist and implementation summary record the exact local verification commands rerun on 2026-03-15.
+- **SC-006**: Feature catalog and manual testing links referenced by the Hydra work resolve to live files.
+- **SC-007**: No template placeholders or stale future-implementation claims remain in the parent Hydra pack.
 <!-- /ANCHOR:success-criteria -->
 
 ---

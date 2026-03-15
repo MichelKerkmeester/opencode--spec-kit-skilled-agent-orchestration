@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Github
+// ────────────────────────────────────────────────────────────────
 import { App } from "octokit";
 import { levenshtein } from "./levenshtein.ts";
 import type { SqlancerFailure, CorruptionAnalysis } from "./logParse.ts";

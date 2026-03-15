@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Random
+// ────────────────────────────────────────────────────────────────
 export function randomSeed() {
   const high32 = Math.floor(Math.random() * Math.pow(2, 32));
   const low32 = Math.floor(Math.random() * Math.pow(2, 32));

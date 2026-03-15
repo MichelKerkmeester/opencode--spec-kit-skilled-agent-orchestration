@@ -103,7 +103,7 @@ Orphaned edges (edges referencing source or target memories that no longer exist
 | `mcp_server/tests/handler-memory-index-cooldown.vitest.ts` | Index cooldown validation |
 | `mcp_server/tests/handler-memory-index.vitest.ts` | Index handler validation |
 | `mcp_server/tests/incremental-index-v2.vitest.ts` | Incremental index behavioral tests |
-| `mcp_server/tests/incremental-index.vitest.ts` | Legacy deferred placeholder suite (skipped; not behavioral evidence) |
+| `mcp_server/tests/incremental-index.vitest.ts` | Focused incremental-index coverage (supplemental to `incremental-index-v2.vitest.ts`; concrete fast-path assertions) |
 | `mcp_server/tests/index-refresh.vitest.ts` | Index refresh tests |
 | `mcp_server/tests/integration-causal-graph.vitest.ts` | Causal graph integration |
 | `mcp_server/tests/interference.vitest.ts` | Interference scoring tests |
@@ -129,7 +129,15 @@ Orphaned edges (edges referencing source or target memories that no longer exist
 
 ---
 
-## 4. SOURCE METADATA
+## 4. MANUAL PLAYBOOK COVERAGE
+
+| Scenario | Role |
+|----------|------|
+| `EX-020` | Direct manual validation for causal graph statistics and coverage reporting |
+
+---
+
+## 5. SOURCE METADATA
 
 - Group: Analysis
 - Source feature title: Causal graph statistics (memory_causal_stats)

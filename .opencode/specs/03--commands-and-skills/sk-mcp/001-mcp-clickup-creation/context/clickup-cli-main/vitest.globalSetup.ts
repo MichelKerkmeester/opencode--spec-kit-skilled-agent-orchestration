@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Vitest GlobalSetup
+// ────────────────────────────────────────────────────────────────
 import { execSync } from 'child_process'
 import { fileURLToPath } from 'url'
 import { dirname } from 'path'

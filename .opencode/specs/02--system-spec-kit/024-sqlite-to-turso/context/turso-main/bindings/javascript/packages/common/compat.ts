@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Compat
+// ────────────────────────────────────────────────────────────────
 import { bindParams } from "./bind.js";
 import { SqliteError } from "./sqlite-error.js";
 import { NativeDatabase, NativeStatement, STEP_IO, STEP_ROW, STEP_DONE } from "./types.js";

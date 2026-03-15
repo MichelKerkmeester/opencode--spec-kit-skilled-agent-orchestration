@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Types
+// ────────────────────────────────────────────────────────────────
 export type ExperimentalFeature = 'views' | 'strict' | 'encryption' | 'index_method' | 'autovacuum' | 'triggers' | 'attach';
 
 /** Supported encryption ciphers for local database encryption. */

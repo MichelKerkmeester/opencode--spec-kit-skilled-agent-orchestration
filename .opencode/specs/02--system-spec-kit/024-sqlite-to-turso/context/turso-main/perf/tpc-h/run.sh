@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 # This script will run the TPC-H queries and compare timings.
 
 export RUST_LOG=off

@@ -10,6 +10,8 @@ import {
   filterEntities,
   storeEntities,
   updateEntityCatalog,
+  rebuildEntityCatalog,
+  rebuildAutoEntities,
   computeEdgeDensity,
   normalizeEntityName,
   __testables,
@@ -514,7 +516,144 @@ describe('updateEntityCatalog', () => {
 });
 
 // ===============================================================
-// 6. computeEdgeDensity (~3 tests)
+// 6. rebuildEntityCatalog / rebuildAutoEntities
+// ===============================================================
+
+describe('rebuildEntityCatalog', () => {
+  let db: Database.Database;
+
+  beforeEach(() => {
+    db = createTestDb();
+  });
+
+  it('rebuilds catalog counts and aliases from current memory_entities rows', () => {
+    db.prepare('INSERT INTO memory_index (id, spec_folder, file_path, title, content_text) VALUES (?, ?, ?, ?, ?)')
+      .run(1, 'specs/a', '/tmp/1.md', 'Memory 1', 'Built using React Framework.');
+    db.prepare('INSERT INTO memory_index (id, spec_folder, file_path, title, content_text) VALUES (?, ?, ?, ?, ?)')
+      .run(2, 'specs/b', '/tmp/2.md', 'Memory 2', 'Built using react framework.');
+
+    db.prepare(`
+      INSERT INTO memory_entities (memory_id, entity_text, entity_type, frequency, created_by)
+      VALUES (?, ?, ?, ?, ?)
+    `).run(1, 'React Framework', 'technology', 1, 'auto');
+    db.prepare(`
+      INSERT INTO memory_entities (memory_id, entity_text, entity_type, frequency, created_by)
+      VALUES (?, ?, ?, ?, ?)
+    `).run(2, 'react framework', 'technology', 1, 'manual');
+    db.prepare(`
+      INSERT INTO entity_catalog (canonical_name, aliases, entity_type, memory_count, created_at)
+      VALUES (?, ?, ?, ?, datetime('now'))
+    `).run('stale entry', '["stale"]', 'technology', 99);
+
+    const result = rebuildEntityCatalog(db);
+
+    expect(result.rebuilt).toBe(1);
+
+    const row = db.prepare(`
+      SELECT canonical_name, aliases, entity_type, memory_count
+      FROM entity_catalog
+      WHERE canonical_name = ?
+    `).get('react framework') as {
+      canonical_name: string;
+      aliases: string;
+      entity_type: string;
+      memory_count: number;
+    };
+
+    expect(row.canonical_name).toBe('react framework');
+    expect(JSON.parse(row.aliases)).toEqual(['React Framework', 'react framework']);
+    expect(row.entity_type).toBe('technology');
+    expect(row.memory_count).toBe(2);
+  });
+});
+
+describe('rebuildAutoEntities', () => {
+  let db: Database.Database;
+
+  beforeEach(() => {
+    db = createTestDb();
+  });
+
+  it('dry-run reports the targeted cleanup without changing stored rows', () => {
+    db.prepare('INSERT INTO memory_index (id, spec_folder, file_path, title, content_text) VALUES (?, ?, ?, ?, ?)')
+      .run(1, 'specs/001-test', '/tmp/1.md', 'Memory 1', 'Built using Node.js with Next.js Adapter.');
+
+    db.prepare(`
+      INSERT INTO memory_entities (memory_id, entity_text, entity_type, frequency, created_by)
+      VALUES (?, ?, ?, ?, ?)
+    `).run(1, 'Node.js. With Next.js Adapter', 'technology', 1, 'auto');
+
+    const beforeCount = db.prepare('SELECT COUNT(*) AS cnt FROM memory_entities').get() as { cnt: number };
+    const result = rebuildAutoEntities(db, { specFolder: 'specs/001-test', dryRun: true });
+    const afterCount = db.prepare('SELECT COUNT(*) AS cnt FROM memory_entities').get() as { cnt: number };
+
+    expect(result.dryRun).toBe(true);
+    expect(result.memoriesScanned).toBe(1);
+    expect(result.memoriesReprocessed).toBe(1);
+    expect(result.autoRowsRemoved).toBe(1);
+    expect(result.extractedEntities).toBeGreaterThanOrEqual(2);
+    expect(beforeCount.cnt).toBe(afterCount.cnt);
+  });
+
+  it('rebuilds auto rows in scope and preserves manual rows', () => {
+    db.prepare('INSERT INTO memory_index (id, spec_folder, file_path, title, content_text) VALUES (?, ?, ?, ?, ?)')
+      .run(1, 'specs/001-test', '/tmp/1.md', 'Scoped Memory', 'Built using Node.js with Next.js Adapter.');
+    db.prepare('INSERT INTO memory_index (id, spec_folder, file_path, title, content_text) VALUES (?, ?, ?, ?, ?)')
+      .run(2, 'specs/002-other', '/tmp/2.md', 'Other Memory', 'Built using Python Toolkit.');
+
+    db.prepare(`
+      INSERT INTO memory_entities (memory_id, entity_text, entity_type, frequency, created_by)
+      VALUES (?, ?, ?, ?, ?)
+    `).run(1, 'Node.js. With Next.js Adapter', 'technology', 1, 'auto');
+    db.prepare(`
+      INSERT INTO memory_entities (memory_id, entity_text, entity_type, frequency, created_by)
+      VALUES (?, ?, ?, ?, ?)
+    `).run(1, 'Curated Alias', 'quoted', 1, 'manual');
+    db.prepare(`
+      INSERT INTO memory_entities (memory_id, entity_text, entity_type, frequency, created_by)
+      VALUES (?, ?, ?, ?, ?)
+    `).run(2, 'Python Toolkit', 'technology', 1, 'auto');
+
+    const result = rebuildAutoEntities(db, { specFolder: 'specs/001-test' });
+
+    expect(result.dryRun).toBe(false);
+    expect(result.autoRowsRemoved).toBe(1);
+    expect(result.storedEntities).toBeGreaterThanOrEqual(2);
+    expect(result.catalogEntriesRebuilt).toBeGreaterThanOrEqual(3);
+
+    const scopedRows = db.prepare(`
+      SELECT entity_text, created_by
+      FROM memory_entities
+      WHERE memory_id = 1
+      ORDER BY entity_text ASC
+    `).all() as Array<{ entity_text: string; created_by: string }>;
+    expect(scopedRows.some((row) => row.entity_text === 'Curated Alias' && row.created_by === 'manual')).toBe(true);
+    expect(scopedRows.some((row) => row.entity_text === 'Node.js. With Next.js Adapter')).toBe(false);
+    expect(scopedRows.some((row) => row.entity_text === 'Node.js' && row.created_by === 'auto')).toBe(true);
+    expect(scopedRows.some((row) => row.entity_text === 'Next.js Adapter' && row.created_by === 'auto')).toBe(true);
+
+    const untouchedOther = db.prepare(`
+      SELECT entity_text, created_by
+      FROM memory_entities
+      WHERE memory_id = 2
+    `).get() as { entity_text: string; created_by: string };
+    expect(untouchedOther.entity_text).toBe('Python Toolkit');
+    expect(untouchedOther.created_by).toBe('auto');
+
+    const catalogRows = db.prepare(`
+      SELECT canonical_name, memory_count
+      FROM entity_catalog
+      ORDER BY canonical_name ASC
+    `).all() as Array<{ canonical_name: string; memory_count: number }>;
+    expect(catalogRows.some((row) => row.canonical_name === 'node js' && row.memory_count === 1)).toBe(true);
+    expect(catalogRows.some((row) => row.canonical_name === 'next js adapter' && row.memory_count === 1)).toBe(true);
+    expect(catalogRows.some((row) => row.canonical_name === 'curated alias' && row.memory_count === 1)).toBe(true);
+    expect(catalogRows.some((row) => row.canonical_name === 'python toolkit' && row.memory_count === 1)).toBe(true);
+  });
+});
+
+// ===============================================================
+// 7. computeEdgeDensity (~3 tests)
 // ===============================================================
 
 describe('computeEdgeDensity', () => {
@@ -557,7 +696,7 @@ describe('computeEdgeDensity', () => {
 });
 
 // ===============================================================
-// 7. normalizeEntityName (~3 tests)
+// 8. normalizeEntityName (~3 tests)
 // ===============================================================
 
 describe('normalizeEntityName', () => {
@@ -583,7 +722,7 @@ describe('normalizeEntityName', () => {
 });
 
 // ===============================================================
-// 8. __testables.deduplicateEntities (internal helper)
+// 9. __testables.deduplicateEntities (internal helper)
 // ===============================================================
 
 describe('__testables.deduplicateEntities', () => {

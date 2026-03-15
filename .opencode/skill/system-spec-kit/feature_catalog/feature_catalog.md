@@ -2330,7 +2330,7 @@ Every answer the system gives takes up space in a limited response window. This 
 
 Returning 4,000 tokens for a simple trigger-phrase lookup wastes context window. Token budgets now scale with query complexity: simple queries receive 1,500 tokens, moderate queries 2,500 and complex queries 4,000.
 
-The budget is computed early in the pipeline (before channel execution) so downstream stages can enforce it. When contextual tree headers are enabled (`SPECKIT_CONTEXT_HEADERS`), the effective budget is reduced by header overhead (~12 tokens per result, floor 200 tokens) before truncation (CHK-060). When the flag is disabled, all queries fall back to the 4,000-token default.
+The budget is computed early in the pipeline (before channel execution) so downstream stages can enforce it. When contextual tree headers are enabled (`SPECKIT_CONTEXT_HEADERS`), the effective budget is reduced by calibrated header overhead (~26 tokens per result, floor 200 tokens) before truncation (CHK-060). When the flag is disabled, all queries fall back to the 4,000-token default.
 
 The savings add up. If 60% of your queries are simple, you recover roughly 40% of the token budget that was previously wasted on over-delivering.
 
@@ -3069,11 +3069,11 @@ See [`14--pipeline-architecture/15-warm-server-daemon-mode.md`](14--pipeline-arc
 
 #### Description
 
-Right now the system is tightly connected to one specific type of database. This planned feature would add a flexible layer so the database could be swapped out for a different one without rewriting the rest of the system. It is deferred because the current database handles the workload fine, and building the swap layer before it is needed would be premature effort.
+The system is still SQLite-backed, but it is no longer hard-wired directly at every vector-search call site. A small adapter layer now defines the vector-store contract and keeps the storage implementation swappable at the vector boundary. It is like changing from plugging appliances straight into the wall to using a standardized socket adapter first. You still use the same power source today, but the coupling point is cleaner and easier to replace later if scale ever demands it.
 
 #### Current Reality
 
-**PLANNED (Sprint 019): DEFERRED.** Vector/graph/document storage abstractions (`IVectorStore`, `IGraphStore`, `IDocumentStore`) are deferred to avoid premature abstraction while SQLite coupling handles current scale. Estimated effort: M-L (1-2 weeks).
+**IMPLEMENTED (Sprint 019 closeout).** `IVectorStore` defines the vector-storage contract and `SQLiteVectorStore` provides the current production implementation. The broader graph/document storage stack still runs concretely on SQLite, so the shipped seam is intentionally scoped: vector storage is abstracted, while graph/document stores remain direct SQLite integrations until a real multi-backend need appears.
 
 #### Source Files
 
@@ -3706,13 +3706,13 @@ See [`17--governance/03-hierarchical-scope-governance-governed-ingest-retention-
 
 #### Description
 
-Shared memory spaces let multiple users or agents access the same pool of knowledge. This feature makes sure nobody gets access unless they are explicitly granted membership, and it includes an emergency "off" switch that immediately blocks everyone if something goes wrong. It is like a shared office with a keycard lock: you only get in if your name is on the list, and building management can lock it down instantly in an emergency.
+Shared memory spaces let multiple users or agents access the same pool of knowledge. The subsystem is **disabled by default** and requires explicit first-run setup via `shared_memory_enable` or `/memory:shared`. Access is deny-by-default: nobody gets access unless explicitly granted membership. An emergency kill switch immediately blocks everyone if something goes wrong.
 
 #### Current Reality
 
-Phase 6 introduced shared-memory spaces with governance-first rollout controls. Access is deny-by-default: a caller can use a shared space only when explicit membership exists for the current identity.
+Phase 6 introduced shared-memory spaces with governance-first rollout controls. The subsystem is disabled by default with two-tier enablement: env var override (`SPECKIT_MEMORY_SHARED_MEMORY=true`) or DB config persistence via `shared_memory_enable`. The `/memory:shared` command includes a first-run enablement gate.
 
-Rollout is controlled per space and supports immediate kill-switch behavior. Even previously authorized members are blocked when the kill switch is enabled, providing a hard operational stop for incident response or controlled rollback.
+Access is deny-by-default: a caller can use a shared space only when explicit membership exists for the current identity. Rollout is controlled per space and supports immediate kill-switch behavior. Even previously authorized members are blocked when the kill switch is enabled, providing a hard operational stop for incident response or controlled rollback.
 
 Shared-memory handlers and lifecycle tools use the same membership and rollout checks so save, search and status flows enforce one consistent governance boundary.
 
@@ -3720,7 +3720,7 @@ Shared-memory handlers and lifecycle tools use the same membership and rollout c
 
 See [`17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md`](17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md) for full implementation and test file listings.
 
-> **Playbook:** [NEW-123](../manual_testing_playbook/manual_testing_playbook.md)
+> **Playbook:** [NEW-123](../manual_testing_playbook/manual_testing_playbook.md), [NEW-148](../manual_testing_playbook/manual_testing_playbook.md)
 
 ---
 
@@ -4045,7 +4045,7 @@ These flags are the main control panel for how search works. They turn major ret
 | `SPECKIT_CONFIDENCE_TRUNCATION` | `true` | boolean | `lib/search/confidence-truncation.ts` | Sprint 3 Stage D: trims the low-confidence tail from fused results. A consecutive score gap exceeding 2× the median gap triggers truncation. Always returns at least 3 results. |
 | `SPECKIT_CONSOLIDATION` | `true` | boolean | `lib/search/search-flags.ts` | Enables the N3-lite consolidation engine which runs after every successful save. Scans for contradictions (>0.85 cosine similarity with negation conflicts), applies Hebbian strengthening (+0.05/cycle, 30-day decay), detects stale edges (>90 days unfetched) and enforces 20 edges per node. Runs weekly. |
 | `SPECKIT_CONSUMPTION_LOG` | inert | boolean | `lib/telemetry/consumption-logger.ts` | **Deprecated.** Eval complete (Sprint 7 audit). Telemetry is baked into core. The env var is accepted but has no effect; the function always returns `false`. |
-| `SPECKIT_CONTEXT_HEADERS` | `true` | boolean | `lib/search/hybrid-search.ts` | **IMPLEMENTED (Sprint 019).** P1-4: Contextual tree injection into returned chunks. When enabled, `injectContextualTree()` string-prepends hierarchical context headers (`[parent > child — description]`, max 100 chars) using PI-B3 cached spec folder descriptions. Token budget adjusted for header overhead (~12 tokens/result) before truncation (CHK-060). |
+| `SPECKIT_CONTEXT_HEADERS` | `true` | boolean | `lib/search/hybrid-search.ts` | **IMPLEMENTED (Sprint 019).** P1-4: Contextual tree injection into returned chunks. When enabled, `injectContextualTree()` string-prepends hierarchical context headers (`[parent > child — description]`, max 100 chars) using PI-B3 cached spec folder descriptions. Token budget adjusted for calibrated header overhead (~26 tokens/result) before truncation (CHK-060). |
 | `SPECKIT_CROSS_ENCODER` | `true` | boolean | `lib/search/search-flags.ts` | Enables cross-encoder reranking in Stage 3 of the 4-stage pipeline. When enabled, the reranker rescores candidates using a more expensive cross-attention model. Disabling falls back to vector-only ranking from fusion. |
 | `SPECKIT_DASHBOARD_LIMIT` | `10000` | number | `lib/eval/reporting-dashboard.ts` | Maximum number of rows fetched for the reporting dashboard. Parsed as integer with NaN guard (`|| 10000`). Replaces a previously hardcoded limit of 1000. Added in Phase 018 (CR-P2-3). |
 | `SPECKIT_DEBUG_INDEX_SCAN` | `false` | boolean | `handlers/memory-index.ts` | When `'true'`, emits additional file-count diagnostics during `memory_index_scan` runs. Off by default; intended for debugging index coverage issues. Must be explicitly set to `'true'`. |

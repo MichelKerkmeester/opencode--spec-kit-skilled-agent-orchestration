@@ -27,6 +27,10 @@ import type { DecisionForTopics } from './topic-extractor';
 import { writeFilesAtomically } from './file-writer';
 import { generateContentSlug, pickBestContentName, ensureUniqueMemoryFilename } from '../utils/slug-utils';
 import { normalizeSpecTitleForMemory, pickPreferredMemoryTask, shouldEnrichTaskFromSpecTitle } from '../utils/task-enrichment';
+import {
+  buildSpecAffinityTargets,
+  evaluateCollectedDataSpecAffinity,
+} from '../utils/spec-affinity';
 import { shouldAutoSave, collectSessionData } from '../extractors/collect-session-data';
 import type { SessionData, CollectedDataFull } from '../extractors/collect-session-data';
 import type { FileChange, SemanticFileInfo } from '../extractors/file-extractor';
@@ -696,6 +700,17 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     const isStatelessMode = !activeDataFile && !preloadedData;
     if (isStatelessMode && activeSpecFolderArg && (collectedData.observations || collectedData.FILES)) {
       const alignmentTargets = await resolveAlignmentTargets(activeSpecFolderArg);
+      const specAffinityTargets = buildSpecAffinityTargets(activeSpecFolderArg);
+      const specAffinity = evaluateCollectedDataSpecAffinity(collectedData, specAffinityTargets);
+
+      if (!specAffinity.hasAnchor) {
+        const alignMsg = `ALIGNMENT_BLOCK: Captured stateless content matched the workspace but not the target spec folder "${activeSpecFolderArg}". ` +
+          `No spec-specific anchors were found beyond workspace identity (matched files: ${specAffinity.matchedFileTargets.length}, ` +
+          `matched phrases: ${specAffinity.matchedPhrases.length}, matched spec id: ${specAffinity.matchedSpecId ? 'yes' : 'no'}). ` +
+          `Aborting to prevent same-workspace cross-spec contamination. To force, pass data via JSON file.`;
+        warn(`   ${alignMsg}`);
+        throw new Error(alignMsg);
+      }
 
       const allFilePaths = (collectedData.observations || [])
         .flatMap((obs: { files?: string[] }) => obs.files || [])
@@ -950,8 +965,13 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     sessionData.TOOL_COUNT = 0;
   }
   const enrichedFileCount = collectedData.FILES?.length ?? 0;
-  if (isStatelessMode && sessionData.TOOL_COUNT === 0 && enrichedFileCount > 0) {
-    sessionData.TOOL_COUNT = enrichedFileCount;
+  const captureToolEvidenceCount = typeof collectedData._toolCallCount === 'number'
+    && Number.isFinite(collectedData._toolCallCount)
+    ? collectedData._toolCallCount
+    : 0;
+  const inferredToolCount = Math.max(enrichedFileCount, captureToolEvidenceCount);
+  if (isStatelessMode && sessionData.TOOL_COUNT === 0 && inferredToolCount > 0) {
+    sessionData.TOOL_COUNT = inferredToolCount;
   }
 
   // Step 7.5: Generate semantic implementation summary

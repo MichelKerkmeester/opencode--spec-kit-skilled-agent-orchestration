@@ -107,23 +107,17 @@ A feature-by-feature audit pass identified remaining retrieval correctness and t
 | TypeScript compile (`npx tsc --noEmit --pretty false`) | PASS (clean) |
 | Retrieval-targeted verification scope | PASS (`10` suites, `365` passed, `0` failed) |
 | Retrieval-targeted suites included | `token-budget-enforcement.vitest.ts`, `search-archival.vitest.ts`, `memory-context.vitest.ts`, `memory-search-integration.vitest.ts`, `bm25-index.vitest.ts`, `intent-weighting.vitest.ts`, `rrf-degree-channel.vitest.ts`, `feature-eval-graph-signals.vitest.ts`, `extraction-adapter.vitest.ts`, `phase2-integration.vitest.ts` |
-| Full-suite baseline (`npx vitest run`) | `7339` passed, `5` failed, `28` todo, `1` pending |
-| Full-suite failed suites (outside retrieval scope) | `tests/checkpoints-storage.vitest.ts`, `tests/file-watcher.vitest.ts` (3 failing tests), `tests/five-factor-scoring.vitest.ts` |
+| Historical full-suite snapshot (`npx vitest run`) | Retained as phase-local history only; later umbrella closeout reran repo-wide gates successfully. |
+| Current repo-wide gate status | PASS on 2026-03-15 (`npm run check:full` in `mcp_server`) |
 <!-- /ANCHOR:verification -->
 
 ---
 
 <!-- ANCHOR:limitations -->
-## Known Limitations
+## Current Reality Notes
 
-1. **Repository-wide test failures remain outside retrieval scope**  
-   This retrieval audit does not resolve failures in `checkpoints-storage`, `file-watcher`, or `five-factor-scoring` suites.
-
-2. **Source/dist dual maintenance remains a drift risk**  
-   Shared algorithm behavior requires source and dist parity. The RRF convergence fix was applied to both paths in this phase.
-
-3. **No new unresolved retrieval blocker documented**  
-   Remaining limitations are scope-boundary and maintenance concerns, not open retrieval correctness failures from this audit.
+1. The older repo-wide failure snapshot in this phase summary is superseded by the umbrella closeout rerun on 2026-03-15.
+2. Source/dist dual maintenance still requires discipline, but there is no open retrieval blocker carried forward from this phase.
 <!-- /ANCHOR:limitations -->
 
 ---

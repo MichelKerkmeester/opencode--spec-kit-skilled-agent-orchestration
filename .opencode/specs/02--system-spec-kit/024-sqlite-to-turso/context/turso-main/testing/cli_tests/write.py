@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+"""Module for write."""
+
 import os
 import tempfile
 from time import sleep

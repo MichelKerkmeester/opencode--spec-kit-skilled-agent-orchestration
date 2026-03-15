@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Neo4j database manager for GraphRAG
 """

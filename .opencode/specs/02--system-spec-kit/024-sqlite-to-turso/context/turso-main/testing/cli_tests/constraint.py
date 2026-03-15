@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Module for constraint."""
 
 # Eventually extract these tests to be in the fuzzing integration tests
 import os

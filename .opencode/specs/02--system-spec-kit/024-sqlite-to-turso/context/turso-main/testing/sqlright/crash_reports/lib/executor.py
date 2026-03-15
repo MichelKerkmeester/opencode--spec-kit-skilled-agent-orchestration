@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Crash testing and differential analysis."""
 
 import logging

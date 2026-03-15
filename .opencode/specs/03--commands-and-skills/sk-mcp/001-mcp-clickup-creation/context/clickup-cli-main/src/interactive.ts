@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Interactive
+// ────────────────────────────────────────────────────────────────
 import { execFileSync } from 'node:child_process'
 import { checkbox, confirm, Separator } from '@inquirer/prompts'
 import chalk from 'chalk'

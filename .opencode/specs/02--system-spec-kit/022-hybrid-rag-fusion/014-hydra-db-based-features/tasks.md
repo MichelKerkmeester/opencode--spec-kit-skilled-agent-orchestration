@@ -60,8 +60,8 @@ contextType: "implementation"
 - [x] T021 [W:VERS] Implement lineage migrations with rollback pairs (`mcp_server/lib/search/vector-index-schema.ts`)
 - [x] T022 [W:VERS] Extend history bridge for version transitions (`mcp_server/lib/storage/history.ts`)
 - [x] T023 [W:VERS] Map conflict actions to supersede/version semantics (`mcp_server/lib/search/vector-index-schema.ts`)
-- [x] T024 [W:VERS] Add `asOf` and lineage read APIs (`mcp_server/handlers/memory-query*.ts`)
-- [x] T025 [P] [W:VERS] Add lineage integrity tests (`mcp_server/test/lineage/*.test.ts`)
+- [x] T024 [W:VERS] Add internal `asOf` and lineage read APIs consumed by save/query integration (`mcp_server/lib/storage/lineage-state.ts`)
+- [x] T025 [P] [W:VERS] Add lineage integrity and rollback tests (`mcp_server/tests/memory-lineage-state.vitest.ts`, `mcp_server/tests/memory-lineage-backfill.vitest.ts`)
 
 ---
 
@@ -71,8 +71,8 @@ contextType: "implementation"
 - [x] T031 [W:GRAPH] Implement graph materialization updates from save/index paths (`mcp_server/handlers/memory-save.ts`)
 - [x] T032 [W:GRAPH] Extend causal traversal with entity/summary neighbors (`mcp_server/lib/search/causal-boost.ts`)
 - [x] T033 [W:GRAPH] Add deterministic graph dedup/fusion policy (`mcp_server/lib/search/pipeline/stage2-fusion.ts`)
-- [x] T034 [P] [W:GRAPH] Add graph coverage and orphan diagnostics (`mcp_server/lib/search/graph-health.ts`)
-- [x] T035 [P] [W:GRAPH] Add graph retrieval regression tests (`mcp_server/test/search/graph-fusion.test.ts`)
+- [x] T034 [P] [W:GRAPH] Add graph rollout diagnostics and health telemetry (`mcp_server/lib/graph/graph-signals.ts`, `mcp_server/lib/telemetry/retrieval-telemetry.ts`)
+- [x] T035 [P] [W:GRAPH] Add graph retrieval regression tests (`mcp_server/tests/graph-roadmap-finalization.vitest.ts`, `mcp_server/tests/feature-eval-graph-signals.vitest.ts`, `mcp_server/tests/graph-search-fn.vitest.ts`)
 
 ---
 
@@ -81,22 +81,22 @@ contextType: "implementation"
 - [x] T040 [W:LEARN] Define retrieval outcome event schema (`mcp_server/lib/search/vector-index-schema.ts`)
 - [x] T041 [W:LEARN] Emit outcome events from search handlers (`mcp_server/handlers/memory-search.ts`)
 - [x] T042 [W:LEARN] Connect access tracker signals to adaptation input (`mcp_server/lib/storage/access-tracker.ts`)
-- [x] T043 [W:LEARN] Add bounded adaptive ranking policy engine (`mcp_server/lib/search/adaptive-ranking.ts`)
-- [x] T044 [W:LEARN] Add shadow-mode evaluation runner (`mcp_server/lib/eval/adaptive-shadow.ts`)
+- [x] T043 [W:LEARN] Add bounded adaptive ranking policy engine (`mcp_server/lib/cognitive/adaptive-ranking.ts`)
+- [x] T044 [W:LEARN] Add shadow-mode proposal generation and search-path integration (`mcp_server/lib/cognitive/adaptive-ranking.ts`, `mcp_server/handlers/memory-search.ts`)
 - [x] T045 [P] [W:LEARN] Add rollback-safe parameter history (`mcp_server/lib/search/vector-index-schema.ts`)
-- [x] T046 [P] [W:LEARN] Add feedback loop safety tests (`mcp_server/test/search/adaptive-ranking.test.ts`)
+- [x] T046 [P] [W:LEARN] Add feedback loop safety tests (`mcp_server/tests/adaptive-ranking.vitest.ts`)
 
 ---
 
 ## Phase 5: Hierarchical Scopes and Governance (Isolation Before Collaboration)
 
 - [x] T050 [W:SCOPE] Add hierarchical scope columns and indexes (`mcp_server/lib/search/vector-index-schema.ts`)
-- [x] T051 [W:SCOPE] Build centralized scope predicate builder (`mcp_server/lib/governance/scope-policy.ts`)
+- [x] T051 [W:SCOPE] Build centralized scope predicate builder (`mcp_server/lib/governance/scope-governance.ts`)
 - [x] T052 [W:SCOPE] Enforce scope checks in Stage 1 candidate generation (`mcp_server/lib/search/pipeline/stage1-candidate-gen.ts`)
 - [x] T053 [W:SCOPE] Enforce scope checks in lexical fallback path (`mcp_server/lib/search/sqlite-fts.ts`)
 - [x] T054 [W:SCOPE] Enforce scope checks in save/update handlers (`mcp_server/handlers/memory-save.ts`)
-- [x] T055 [P] [W:SCOPE] Add isolation leak test matrix (`mcp_server/test/security/scope-isolation.test.ts`)
-- [x] T056 [W:GOV] Define ingestion provenance contract (`mcp_server/lib/governance/provenance.ts`)
+- [x] T055 [P] [W:SCOPE] Add isolation leak test matrix (`mcp_server/tests/entity-scope.vitest.ts`, `mcp_server/tests/dual-scope-hooks.vitest.ts`)
+- [x] T056 [W:GOV] Define ingestion provenance contract (`mcp_server/lib/governance/scope-governance.ts`)
 - [x] T057 [W:GOV] Add provenance + temporal marker validation (`mcp_server/handlers/memory-save.ts`)
 - [x] T058 [W:GOV] Extend durable queue for retention/deletion operations (`mcp_server/lib/ops/job-queue.ts`)
 - [x] T059 [W:GOV] Implement retention and cascade deletion executors (`mcp_server/lib/governance/*`)
@@ -107,13 +107,13 @@ contextType: "implementation"
 ## Phase 6: Shared Memory, Verification, and Rollout Readiness
 
 - [x] T060 [W:HIVE] Design shared-context space schema (`mcp_server/lib/search/vector-index-schema.ts`)
-- [x] T061 [W:HIVE] Add shared-space membership and role policies (`mcp_server/lib/governance/shared-policy.ts`)
-- [x] T062 [W:HIVE] Implement shared-memory read/write handlers (`mcp_server/handlers/memory-share*.ts`)
-- [x] T063 [W:HIVE] Implement collaboration conflict strategies (`mcp_server/lib/collab/conflict-strategy.ts`)
-- [x] T064 [P] [W:HIVE] Add private-vs-shared propagation tests (`mcp_server/test/collab/shared-memory.test.ts`)
+- [x] T061 [W:HIVE] Add shared-space membership and role policies (`mcp_server/lib/collab/shared-spaces.ts`)
+- [x] T062 [W:HIVE] Implement shared-memory rollout handlers and scoped read/write enforcement (`mcp_server/handlers/shared-memory.ts`, `mcp_server/handlers/memory-save.ts`, `mcp_server/handlers/memory-search.ts`)
+- [x] T063 [W:HIVE] Implement collaboration conflict strategies (`mcp_server/lib/collab/shared-spaces.ts`)
+- [x] T064 [P] [W:HIVE] Add private-vs-shared propagation tests (`mcp_server/tests/shared-spaces.vitest.ts`, `mcp_server/tests/memory-governance.vitest.ts`)
 - [x] T065 [W:VER] Execute architecture verification checklist (`checklist.md`)
 - [x] T066 [W:VER] Run performance/isolation benchmark suite (`mcp_server/lib/eval/*`)
-- [x] T067 [W:VER] Run rollback drill for each capability flag (`mcp_server/scripts/rollback/*`)
+- [x] T067 [W:VER] Run rollback drill for each capability flag (`mcp_server/tests/memory-roadmap-flags.vitest.ts`, `mcp_server/tests/migration-checkpoint-scripts.vitest.ts`, `mcp_server/tests/adaptive-ranking.vitest.ts`)
 - [x] T068 [W:VER] Sync spec/plan/tasks/checklist/ADR artifacts after implementation (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`)
 <!-- /ANCHOR:phase-3 -->
 
@@ -123,10 +123,10 @@ contextType: "implementation"
 ## Completion Criteria
 
 - [x] Research and planning groundwork completed.
-- [x] All Phase 1 P0/P1 implementation tasks completed; remaining roadmap tasks are explicitly deferred with approval.
-- [x] No `[B]` blocked tasks remain on Phase 1 critical path.
-- [x] Phase 1 isolation baseline, compatibility, and rollback checkpoint controls pass.
-- [x] Architecture documents and ADRs are synchronized for current implementation scope.
+- [x] All Phase 1-6 P0/P1 implementation tasks in this parent pack are completed with no active deferrals.
+- [x] No `[B]` blocked tasks remain on the Hydra implementation critical path.
+- [x] Baseline, lineage, graph, governance, and shared-rollout verification commands pass in local re-validation.
+- [x] Parent architecture documents and ADRs are synchronized to the delivered runtime scope.
 <!-- /ANCHOR:completion -->
 
 ---
@@ -145,8 +145,8 @@ contextType: "implementation"
 
 ## Status
 
-- Status: All phases (1-6) implemented. Code and tests verified 2026-03-14.
-- Stale deferred annotations removed from T020-T068 during verification (implementation confirmed by 156 passing tests across 13 test files).
+- Status: All phases (1-6) implemented. Parent pack truth-synced and locally re-verified 2026-03-15.
+- Runtime evidence now points to the live module and test surfaces used by the shipped implementation, with no public `memory_query` MCP tool claim.
 
 ---
 

@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Query utilities for the GraphRAG system.
 

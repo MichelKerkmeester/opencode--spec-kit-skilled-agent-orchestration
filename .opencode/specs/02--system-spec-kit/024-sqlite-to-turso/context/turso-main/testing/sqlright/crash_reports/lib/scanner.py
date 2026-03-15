@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """O(n) crash/hang file scanner with checkpointing."""
 
 import logging

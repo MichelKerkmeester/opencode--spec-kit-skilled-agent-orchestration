@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 # This is a modified version of the clickbench benchmark script from:
 # https://github.com/ClickHouse/ClickBench/tree/main/sqlite
 # It runs the queries in the queries.sql file, and prints the results for both tursodb and Sqlite.

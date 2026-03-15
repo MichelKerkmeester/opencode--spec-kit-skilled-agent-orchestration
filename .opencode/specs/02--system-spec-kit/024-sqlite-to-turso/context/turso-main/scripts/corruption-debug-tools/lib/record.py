@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 SQLite record format parsing utilities.
 

@@ -1,3 +1,5 @@
+'use strict';
+
 import { run, bench, group, baseline } from 'mitata';
 
 import Database from 'better-sqlite3';

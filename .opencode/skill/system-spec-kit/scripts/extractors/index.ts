@@ -35,6 +35,10 @@ export type {
 } from './implementation-guide-extractor';
 export * from './collect-session-data';
 export * from './opencode-capture';
+export * from './claude-code-capture';
+export * from './codex-cli-capture';
+export * from './copilot-cli-capture';
+export * from './gemini-cli-capture';
 export * from './contamination-filter';
 export * from './quality-scorer';
 export * from './spec-folder-extractor';

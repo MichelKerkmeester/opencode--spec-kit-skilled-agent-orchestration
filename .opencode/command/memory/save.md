@@ -8,7 +8,7 @@ allowed-tools: Read, Bash, Task, spec_kit_memory_memory_save, spec_kit_memory_me
 
 **BEFORE READING ANYTHING ELSE IN THIS FILE, CHECK `$ARGUMENTS`:**
 
-```
+```text
 IF $ARGUMENTS is empty, undefined, or contains only whitespace:
     → STOP IMMEDIATELY
     → List recent/related spec folders
@@ -37,11 +37,44 @@ IF $ARGUMENTS contains a spec folder path:
 
 ---
 
-## 1. PRE-FLIGHT VALIDATION (PHASE 0)
+## 1. PURPOSE
+
+Save the current conversation context, including session summary, key decisions, modified files, and trigger phrases, to a spec folder's `memory/` directory with semantic indexing for future retrieval.
+
+**Key difference from `/memory:learn`:**
+- `/memory:save` = Session context saved to `specs/*/memory/` (any tier)
+- `/memory:learn` = Constitutional rules saved to `constitutional/` (always-surface tier)
+
+---
+
+## 2. CONTRACT
+
+| Field   | Value                                                                                        |
+| ------- | -------------------------------------------------------------------------------------------- |
+| Input   | Spec folder path (from Gate 3 or `$ARGUMENTS`)                                               |
+| Output  | Memory file in `[spec]/memory/` + indexed in MCP                                             |
+| Script  | `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js [spec-folder]` |
+| Trigger | "save context", "save memory", `/memory:save`                                                |
+
+---
+
+## 3. QUICK REFERENCE
+
+| Usage                                                  | Behavior                                                |
+| ------------------------------------------------------ | ------------------------------------------------------- |
+| `/memory:save`                                         | Ask for folder (or use active Gate 3 folder), then save |
+| `/memory:save 011-memory`                              | Save to specific spec folder                            |
+| `/memory:save specs/006-semantic-memory/003-debugging` | Save to nested spec folder                              |
+
+---
+
+## 4. VALIDATION
+
+### Pre-Flight Checks (Phase 0)
 
 Execute BEFORE folder validation to prevent data quality issues. All checks must pass.
 
-### Check 1: Anchor Format Validation
+#### Check 1: Anchor Format Validation
 
 - Scan conversation for existing memory file references
 - If memory files were read during session, verify they contain BOTH opening AND closing ANCHOR tags
@@ -49,7 +82,7 @@ Execute BEFORE folder validation to prevent data quality issues. All checks must
 - If missing closing tags → WARN user before proceeding
 - Why: Broken anchors break section-specific retrieval (93% token waste)
 
-### Check 2: Duplicate Session Detection
+#### Check 2: Duplicate Session Detection
 
 - Call `spec_kit_memory_memory_stats({})`
 - Compare `lastSessionHash` vs current conversation fingerprint
@@ -59,7 +92,7 @@ Execute BEFORE folder validation to prevent data quality issues. All checks must
   - ASK: `[O]verwrite | [A]ppend | [N]ew file | [C]ancel`
   - WAIT for explicit response
 
-### Check 3: Token Budget Validation
+#### Check 3: Token Budget Validation
 
 - Estimate conversation size: `message_count * avg_tokens_per_message`
 - If estimated > 50,000 tokens:
@@ -67,12 +100,12 @@ Execute BEFORE folder validation to prevent data quality issues. All checks must
   - OPTIONS: `[C]ontinue anyway | [S]plit save | [E]dit scope`
   - WAIT for response
 
-### Check 4: Spec Folder Existence
+#### Check 4: Spec Folder Existence
 
 - If `$ARGUMENTS` contains folder → validate exists, store as `pending_folder`
 - If `$ARGUMENTS` empty → defer to Phase 1
 
-### Check 5: File Naming Conflict
+#### Check 5: File Naming Conflict
 
 - Generate filename: `{DD-MM-YY}_{HH-MM}__{topic}.md`
 - If file already exists (and not duplicate from Check 2):
@@ -80,7 +113,7 @@ Execute BEFORE folder validation to prevent data quality issues. All checks must
   - ASK: `[A]uto-increment | [R]ename | [O]verwrite`
 
 **Phase 0 Output:**
-```
+```text
 anchor_validation: PASSED | WARNED
 duplicate_check:   PASSED | DUPLICATE_RESOLVED
 token_budget:      PASSED | SPLIT_REQUESTED
@@ -88,11 +121,9 @@ folder_existence:  PASSED
 filename_conflict:  PASSED | RENAMED_TO=[new_name]
 ```
 
----
+### Spec Folder Validation (Phase 1)
 
-## 2. SPEC FOLDER VALIDATION (PHASE 1)
-
-```
+```text
 IF $ARGUMENTS contains spec folder:
   → Validate folder exists → Store as target_folder
 IF $ARGUMENTS is empty:
@@ -103,7 +134,7 @@ IF folder invalid:
 
 **HARD STOP:** Do NOT proceed to save workflow until `target_folder` is set.
 
-### Phase 1B: Content Alignment Check
+#### Content Alignment Check
 
 After Phase 1, validate the conversation topic matches the target folder:
 
@@ -117,57 +148,7 @@ After Phase 1, validate the conversation topic matches the target folder:
 
 ---
 
-## 3. CONTRACT
-
-| Field   | Value                                                                                        |
-| ------- | -------------------------------------------------------------------------------------------- |
-| Input   | Spec folder path (from Gate 3 or `$ARGUMENTS`)                                               |
-| Output  | Memory file in `[spec]/memory/` + indexed in MCP                                             |
-| Script  | `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js [spec-folder]` |
-| Trigger | "save context", "save memory", `/memory:save`                                                |
-
----
-
-## 4. MCP ENFORCEMENT MATRIX
-
-> **Tool Restriction (Memory Save Rule - HARD BLOCK):** `Write` and `Edit` tools are intentionally excluded from this command's `allowed-tools`. Memory files MUST be created via the `generate-context.js` script to ensure proper ANCHOR tags, SESSION SUMMARY table, and MEMORY METADATA YAML block. See AGENTS.md Memory Save Rule.
-
-> **Mutation Ledger & Artifact Routing:** Every save operation is now recorded in the mutation ledger — an append-only audit trail that captures the file path, spec folder, timestamp, and indexing outcome. Artifact metadata associated with the saved memory may also be classified via artifact-class routing before indexing, ensuring consistent type tagging across the database.
-
-```
-STEP            REQUIRED CALLS                            ON FAILURE
-─────────────── ───────────────────────────────────────── ──────────────
-FOLDER DETECT   Bash (ls, CLI argument)                   Prompt user
-CONTEXT SAVE    Bash (node generate-context.js)           Show error msg
-IMMEDIATE INDEX spec_kit_memory_memory_save (optional)    Auto on restart
-```
-
-**Script Location:** `.opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js`
-
-**Auto-Indexing:** Memory files in `specs/*/memory/` are automatically indexed on MCP server start. For immediate indexing:
-
-```
-spec_kit_memory_memory_save({
-  filePath: "specs/<folder>/memory/<filename>.md"
-})
-```
-
----
-
-## 5. WORKFLOW OVERVIEW
-
-| Step | Name              | Purpose                            | Output           |
-| ---- | ----------------- | ---------------------------------- | ---------------- |
-| 1    | Folder Detection  | Identify target spec folder        | target_folder    |
-| 2    | Context Analysis  | Extract key information            | context_data     |
-| 3    | Anchor Generation | Create section anchors (MANDATORY) | anchors[]        |
-| 4    | JSON Data         | Structure data for processing      | json_payload     |
-| 5    | File Generation   | Create memory file with metadata   | memory_file_path |
-| 6    | Report            | Show results to user               | status_report    |
-
----
-
-## 6. WORKFLOW INSTRUCTIONS
+## 5. WORKFLOW
 
 ### Step 1: Folder Detection
 
@@ -175,7 +156,7 @@ Use the `target_folder` value from Phase 1.
 
 ### Step 2: Context Analysis (AI MUST PERFORM)
 
-**CRITICAL:** The AI agent MUST analyze the conversation and extract this data. The script does NOT auto-extract — the AI constructs this manually.
+**CRITICAL:** The AI agent MUST analyze the conversation and extract this data. The script does NOT auto-extract: the AI constructs this manually.
 
 Extract from the current conversation:
 - **Session summary**: 2-4 sentences describing what was accomplished
@@ -197,7 +178,7 @@ Content for this section...
 
 **Rules:**
 - Use UPPERCASE `ANCHOR` (recommended, though lowercase works)
-- **MUST include BOTH opening AND closing tags** — closing tag is REQUIRED
+- **MUST include BOTH opening AND closing tags**: closing tag is REQUIRED
 - No space after colon: `ANCHOR:id` not `ANCHOR: id`
 - Without closing tag, extraction fails silently
 
@@ -246,7 +227,7 @@ Content...
 
 ### Step 4: Create JSON Data (AI CONSTRUCTS THIS)
 
-**CRITICAL:** The AI MUST construct this JSON from Step 2 analysis. Without proper JSON, the script falls back to stateless mode — automatic extraction from the spec folder rather than rich conversation context.
+**CRITICAL:** The AI MUST construct this JSON from Step 2 analysis. Without proper JSON, the script falls back to stateless mode: automatic extraction from the spec folder rather than rich conversation context.
 
 **Required JSON Structure:**
 ```json
@@ -277,7 +258,7 @@ Content...
 
 | Field              | Min Length | Purpose                             |
 | ------------------ | ---------- | ----------------------------------- |
-| `sessionSummary`   | 100+ chars | Becomes OVERVIEW — be comprehensive |
+| `sessionSummary`   | 100+ chars | Becomes OVERVIEW: be comprehensive  |
 | `keyDecisions`     | 1+ items   | Each decision with rationale        |
 | `filesModified`    | 0+ items   | Actual paths modified               |
 | `triggerPhrases`   | 5-10 items | Keywords for semantic search        |
@@ -294,7 +275,7 @@ Content...
 
 > **Cross-Platform Note:** `${TMPDIR:-/tmp}` uses the system temp directory. On macOS/Linux this resolves to `/tmp` or `$TMPDIR`. On Windows (Git Bash/WSL), use `$TEMP` or `%TEMP%`.
 
-**Mode 1 (Recommended) — Write JSON to temp file, then execute:**
+**Mode 1 (Recommended):** Write JSON to temp file, then execute:
 ```bash
 TEMP_FILE="${TMPDIR:-/tmp}/save-context-data.json"
 
@@ -311,7 +292,7 @@ rm "$TEMP_FILE"
 ```
 
 **Expected Output (Success):**
-```
+```text
 ✓ Loaded conversation data
 ✓ Transformed manual format to MCP-compatible structure
 ✓ Found N messages
@@ -323,52 +304,27 @@ rm "$TEMP_FILE"
 
 **If you see "stateless mode" warnings, the JSON was not loaded correctly.**
 
-**Mode 2 (Direct Path) — Minimal save:**
+**Mode 2 (Direct Path):** Minimal save:
 ```bash
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js specs/005-memory
 ```
 
 When to use: Quick saves without rich context, testing, or when Mode 1 fails.
 
-### Step 6: Report Results
+### File Output
 
-Display the completion report (see Section 10).
-
----
-
-## 7. FILE OUTPUT
-
-### File Naming
-
-`{DD-MM-YY}_{HH-MM}__{topic}.md`
-
+**Naming:** `{DD-MM-YY}_{HH-MM}__{topic}.md`
 Example: `08-12-25_12-30__semantic-memory.md`
 
-### File Location
+**Location:** `specs/{spec-folder}/memory/{timestamp}__{topic}.md`
 
-```
-specs/{spec-folder}/memory/{timestamp}__{topic}.md
-```
+### Step 6: Report Results
 
----
-
-## 8. ERROR HANDLING
-
-| Condition               | Action                                          |
-| ----------------------- | ----------------------------------------------- |
-| No spec folder found    | Prompt user to create one                       |
-| Folder not found        | Show available folders, ask user                |
-| Topic-folder mismatch   | Warn, suggest alternatives, ask to confirm      |
-| Empty conversation      | Return `STATUS=FAIL ERROR="No context to save"` |
-| Script execution fails  | Show error, suggest manual save                 |
-| Embedding fails         | File saved, will auto-index on MCP restart      |
-| MCP unavailable         | File saved, indexing deferred to restart        |
-| Duplicate session (<1h) | Warn, offer: Overwrite / Append / New / Cancel  |
-| "Stateless mode"        | JSON not loaded — check temp file path/content  |
+Display the completion report (see Section 6).
 
 ---
 
-## 9. COMPLETION REPORT
+## 6. COMPLETION REPORT
 
 ### Structured Response Envelope
 
@@ -412,7 +368,7 @@ specs/{spec-folder}/memory/{timestamp}__{topic}.md
 
 ### Human-Friendly Display
 
-```
+```text
 MEMORY:SAVE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -444,7 +400,7 @@ STATUS=OK PATH=<file_path> ANCHORS=<count>
 
 ### Trigger Edit (if selected)
 
-```
+```text
 MEMORY:TRIGGERS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -463,11 +419,83 @@ STATUS=OK ID=<id> TRIGGERS=<count>
 
 ---
 
-## 10. INDEXING OPTIONS
+## 7. ERROR HANDLING
+
+| Condition               | Action                                          |
+| ----------------------- | ----------------------------------------------- |
+| No spec folder found    | Prompt user to create one                       |
+| Folder not found        | Show available folders, ask user                |
+| Topic-folder mismatch   | Warn, suggest alternatives, ask to confirm      |
+| Empty conversation      | Return `STATUS=FAIL ERROR="No context to save"` |
+| Script execution fails  | Show error, suggest manual save                 |
+| Embedding fails         | File saved, will auto-index on MCP restart      |
+| MCP unavailable         | File saved, indexing deferred to restart        |
+| Duplicate session (<1h) | Warn, offer: Overwrite / Append / New / Cancel  |
+| "Stateless mode"        | JSON not loaded: check temp file path/content   |
+
+---
+
+## 8. NEXT STEPS
+
+| Condition                    | Suggested Command                          | Reason                        |
+| ---------------------------- | ------------------------------------------ | ----------------------------- |
+| Context saved, continue work | Return to previous task                    | Memory preserved, continue    |
+| Ending session               | `/spec_kit:handover [spec-folder-path]`    | Create full handover document |
+| Search saved memories        | `/memory:context [query]`                  | Find related context          |
+| Start new work               | `/spec_kit:complete [feature-description]` | Begin new feature             |
+
+**ALWAYS** end with: "Context saved. What would you like to do next?"
+
+---
+
+## 9. RELATED COMMANDS
+
+- `/memory:context`: Intent-aware context retrieval
+- `/memory:manage`: Database management, checkpoints, ingest
+- `/memory:learn`: Constitutional memories
+- `/memory:continue`: Session recovery
+- `/memory:analyze`: Analysis, causal graph, evaluation, learning history
+- `/memory:shared`: Shared-memory spaces
+- `/spec_kit:handover`: Full session handover document
+
+---
+<!-- APPENDIX: Reference material for AI agent implementation -->
+
+## APPENDIX A: MCP TOOL REFERENCE
+
+> **Tool Restriction (Memory Save Rule - HARD BLOCK):** `Write` and `Edit` tools are intentionally excluded from this command's `allowed-tools`. Memory files MUST be created via the `generate-context.js` script to ensure proper ANCHOR tags, SESSION SUMMARY table, and MEMORY METADATA YAML block. See AGENTS.md Memory Save Rule.
+
+> **Mutation Ledger & Artifact Routing:** Every save operation is now recorded in the mutation ledger, an append-only audit trail that captures the file path, spec folder, timestamp, and indexing outcome. Artifact metadata associated with the saved memory may also be classified via artifact-class routing before indexing, ensuring consistent type tagging across the database.
+
+### Enforcement Matrix
+
+```text
+STEP            REQUIRED CALLS                            ON FAILURE
+─────────────── ───────────────────────────────────────── ──────────────
+FOLDER DETECT   Bash (ls, CLI argument)                   Prompt user
+CONTEXT SAVE    Bash (node generate-context.js)           Show error msg
+IMMEDIATE INDEX spec_kit_memory_memory_save (optional)    Auto on restart
+```
+
+**Script Location:** `.opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js`
+
+**Auto-Indexing:** Memory files in `specs/*/memory/` are automatically indexed on MCP server start. For immediate indexing:
+
+```javascript
+spec_kit_memory_memory_save({
+  filePath: "specs/<folder>/memory/<filename>.md"
+})
+```
+
+---
+
+## APPENDIX B: ADVANCED REFERENCE
+
+### Indexing Options
 
 Four indexing methods are available: auto-indexing on MCP startup (default), `generate-context.js` (standard save workflow), `memory_save` (single file), and `memory_index_scan` (bulk). See full parameter references below.
 
-### Normalization Before Bulk Rebuild
+#### Normalization Before Bulk Rebuild
 
 When corpus-wide markdown metadata has changed (templates/spec docs/memory docs), run normalization before force re-index:
 
@@ -484,7 +512,7 @@ spec_kit_memory_memory_index_scan({ force: true })
 
 Recommended order: **normalize → verify → rebuild**.
 
-### Deferred Indexing (Graceful Degradation)
+#### Deferred Indexing (Graceful Degradation)
 
 When MCP is unavailable or embedding fails, the system uses deferred indexing:
 
@@ -494,14 +522,14 @@ When MCP is unavailable or embedding fails, the system uses deferred indexing:
 4. File includes `indexing_status: deferred` metadata for tracking
 
 **Manual Retry:**
-```
-# Single file
+```javascript
+// Single file
 spec_kit_memory_memory_save({ filePath: "specs/.../memory/context.md", force: true })
 
-# Single file (non-blocking embedding)
+// Single file (non-blocking embedding)
 spec_kit_memory_memory_save({ filePath: "specs/.../memory/context.md", asyncEmbedding: true })
 
-# Entire folder
+// Entire folder
 spec_kit_memory_memory_index_scan({ specFolder: "011-memory", force: true })
 ```
 
@@ -514,7 +542,7 @@ spec_kit_memory_memory_index_scan({ specFolder: "011-memory", force: true })
 | Corrupted file         | Read file, verify ANCHOR tags, re-save with corrections                                                                        |
 | Database locked        | Delete `.opencode/skill/system-spec-kit/mcp_server/dist/database/context-index.sqlite` (and `-wal` / `-shm` sidecars), restart |
 
-### Full Parameter Reference: memory_save
+#### Full Parameter Reference: memory_save
 
 | Parameter        | Type    | Default    | Description                                         |
 | ---------------- | ------- | ---------- | --------------------------------------------------- |
@@ -524,7 +552,7 @@ spec_kit_memory_memory_index_scan({ specFolder: "011-memory", force: true })
 | `skipPreflight`  | boolean | false      | Skip pre-flight validation checks (not recommended) |
 | `asyncEmbedding` | boolean | false      | Defer embedding generation for non-blocking saves   |
 
-### Full Parameter Reference: memory_index_scan
+#### Full Parameter Reference: memory_index_scan
 
 | Parameter               | Type    | Default | Description                        |
 | ----------------------- | ------- | ------- | ---------------------------------- |
@@ -534,15 +562,13 @@ spec_kit_memory_memory_index_scan({ specFolder: "011-memory", force: true })
 | `includeConstitutional` | boolean | true    | Include constitutional rule files  |
 | `incremental`           | boolean | true    | Skip unchanged files (mtime check) |
 
----
-
-## 11. SUB-AGENT DELEGATION
+### Sub-Agent Delegation
 
 The save workflow delegates execution to a sub-agent for token efficiency. The main agent handles folder validation and user interaction; the sub-agent handles context analysis and file generation.
 
-### Architecture
+#### Architecture
 
-```
+```text
 Main Agent (reads command):
 ├── PHASE 0-1: Pre-flight + Spec Folder Validation
 ├── DISPATCH: Task tool with sub-agent
@@ -555,7 +581,7 @@ Main Agent (reads command):
 └── Step 6: Report Results (always main agent)
 ```
 
-### Sub-Agent Dispatch
+#### Sub-Agent Dispatch
 
 When phases pass, dispatch via Task tool:
 
@@ -566,7 +592,7 @@ When phases pass, dispatch via Task tool:
   2. Instructions for Steps 2-5 (context analysis → anchor generation → JSON construction → script execution)
   3. Expected return format: `{ status, file_path, memory_id, anchors_created, trigger_phrases, spec_folder }`
 
-### Fallback Logic
+#### Fallback Logic
 
 Fallback triggers if Task tool returns error, times out, or sub-agent returns `status: FAIL`.
 
@@ -578,9 +604,7 @@ Fallback triggers if Task tool returns error, times out, or sub-agent returns `s
 | Main agent responsive | Validation and reporting stay lightweight             |
 | Fallback safety       | Commands always work, even without Task tool          |
 
----
-
-## 12. SESSION DEDUPLICATION
+### Session Deduplication
 
 Prevents redundant saves of the same conversation content (accidental duplicates, post-compaction saves, database bloat).
 
@@ -597,34 +621,47 @@ Prevents redundant saves of the same conversation content (accidental duplicates
 
 **Metadata** in YAML frontmatter: `session_hash`, `session_timestamp`, `previous_session_id`, `dedup_status`, `related_sessions[]`.
 
----
+### Governance, Provenance & Retention
 
-## 13. QUICK REFERENCE
+The `memory_save` tool schema advertises advanced governance parameters for multi-tenant, multi-agent, and compliance-aware deployments. These parameters are rollout-dependent: they take effect only when governance guardrails are enabled.
 
-| Usage                                                  | Behavior                                                |
-| ------------------------------------------------------ | ------------------------------------------------------- |
-| `/memory:save`                                         | Ask for folder (or use active Gate 3 folder), then save |
-| `/memory:save 011-memory`                              | Save to specific spec folder                            |
-| `/memory:save specs/006-semantic-memory/003-debugging` | Save to nested spec folder                              |
+#### Governance Scoping
 
----
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `tenantId` | string | Tenant boundary for governed ingest |
+| `userId` | string | User boundary for governed ingest |
+| `agentId` | string | Agent boundary for governed ingest |
+| `sessionId` | string | Session boundary for governed ingest |
+| `sharedSpaceId` | string | Shared-memory space for collaboration saves. Requires explicit membership (see `/memory:shared`) |
 
-## 14. NEXT STEPS
+#### Provenance
 
-| Condition                    | Suggested Command                          | Reason                        |
-| ---------------------------- | ------------------------------------------ | ----------------------------- |
-| Context saved, continue work | Return to previous task                    | Memory preserved, continue    |
-| Ending session               | `/spec_kit:handover [spec-folder-path]`    | Create full handover document |
-| Search saved memories        | `/memory:context [query]`                  | Find related context          |
-| Start new work               | `/spec_kit:complete [feature-description]` | Begin new feature             |
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `provenanceSource` | string | Required provenance source when governance guardrails are enabled |
+| `provenanceActor` | string | Required provenance actor when governance guardrails are enabled |
+| `governedAt` | string | ISO timestamp for governed ingest. Defaults to now when omitted |
 
-**ALWAYS** end with: "Context saved. What would you like to do next?"
+#### Retention
 
----
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `retentionPolicy` | string | Retention class: `keep` (permanent), `ephemeral` (short-lived), `shared` (shared-space lifecycle) |
+| `deleteAfter` | string | Optional ISO timestamp after which retention sweep may delete the memory |
 
-## 15. RELATED COMMANDS
+> **Note:** These parameters are present in the tool schema definition but not all are validated in strict mode. They are documented here for future-readiness and to reflect the live tool surface.
 
-- `/memory:context` — Find saved memories with intent-aware search
-- `/memory:manage` — Database management, checkpoints, cleanup
-- `/spec_kit:handover` — Full session handover document
-- Full documentation: `.opencode/skill/system-spec-kit/SKILL.md`
+#### Async Bulk Ingestion
+
+For ingesting multiple files at once without blocking, use `/memory:manage ingest` instead:
+
+```bash
+# Start async ingestion of multiple files
+/memory:manage ingest start /path/to/file1.md /path/to/file2.md --folder 007-auth
+
+# Check progress
+/memory:manage ingest status <jobId>
+```
+
+See `/memory:manage ingest` for the full async ingestion workflow.

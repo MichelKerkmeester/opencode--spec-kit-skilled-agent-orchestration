@@ -7,6 +7,13 @@
 // ───────────────────────────────────────────────────────────────
 // Scores the quality of generated memory files based on multiple criteria
 
+import {
+  isContaminatedMemoryName,
+  isGenericContentTask,
+  normalizeMemoryNameCandidate,
+  pickBestContentName,
+} from '../utils/slug-utils';
+
 interface FileWithDescription {
   DESCRIPTION?: string;
 }
@@ -38,11 +45,52 @@ function hasMeaningfulDescription(description?: string): boolean {
   }
 
   const normalized = description.trim().toLowerCase();
-  if (normalized.length <= 5) {
+  if (normalized.length < 20) {
     return false;
   }
 
-  return !normalized.includes('description pending') && !normalized.includes('(description pending)');
+  if (
+    normalized.includes('description pending')
+    || normalized.includes('(description pending)')
+    || normalized === 'modified during session'
+    || normalized === 'tracked file history snapshot'
+  ) {
+    return false;
+  }
+
+  return !/^(?:created|edited|updated|modified|touched)\b.+\b(?:via|during)\b/.test(normalized);
+}
+
+function extractFrontmatterTitle(content: string): string {
+  const titleMatch = content.match(/^title:\s*"([^"]+)"$/m);
+  return titleMatch?.[1]?.trim() || '';
+}
+
+function extractHeadingTitle(content: string): string {
+  const headingMatch = content.match(/^#\s+(.+)$/m);
+  return headingMatch?.[1]?.trim() || '';
+}
+
+function hasSpecificPrimaryTitle(content: string): boolean {
+  const titleCandidate = pickBestContentName([
+    extractFrontmatterTitle(content),
+    extractHeadingTitle(content),
+  ]);
+
+  return titleCandidate.length >= 8;
+}
+
+function hasMeaningfulObservationTitle(title?: string): boolean {
+  if (!title) {
+    return false;
+  }
+
+  const normalized = normalizeMemoryNameCandidate(title);
+  if (normalized.length < 10) {
+    return false;
+  }
+
+  return !isGenericContentTask(normalized) && !isContaminatedMemoryName(normalized);
 }
 
 /**
@@ -93,7 +141,8 @@ export function scoreMemoryQuality(
   // This rewards memory files that remain self-explanatory in future sessions.
   const filesWithDesc = files.filter((file) => hasMeaningfulDescription(file.DESCRIPTION));
   if (files.length === 0) {
-    breakdown.fileDescriptions = 20; // No files = not applicable, full score
+    breakdown.fileDescriptions = 10;
+    warnings.push('No file context captured — semantic density reduced');
   } else {
     const ratio = filesWithDesc.length / files.length;
     breakdown.fileDescriptions = Math.round(ratio * 20);
@@ -104,12 +153,22 @@ export function scoreMemoryQuality(
 
   // 4. Content length (0-15 points)
   const contentLines = content.split('\n').length;
-  if (contentLines >= 100) {
+  const hasSpecificTitle = hasSpecificPrimaryTitle(content);
+  if (contentLines >= 100 && hasSpecificTitle) {
     breakdown.contentLength = 15;
-  } else if (contentLines >= 50) {
+  } else if (contentLines >= 50 && hasSpecificTitle) {
+    breakdown.contentLength = 12;
+  } else if (contentLines >= 20 && hasSpecificTitle) {
+    breakdown.contentLength = 8;
+  } else if (contentLines >= 100) {
     breakdown.contentLength = 10;
-  } else if (contentLines >= 20) {
+    warnings.push('Primary memory title is generic — long output still lacks specificity');
+  } else if (contentLines >= 50) {
     breakdown.contentLength = 5;
+    warnings.push('Primary memory title is generic — medium-length output lacks specificity');
+  } else if (contentLines >= 20) {
+    breakdown.contentLength = 3;
+    warnings.push('Primary memory title is generic — short output lacks specificity');
   } else {
     warnings.push(`Very short content (${contentLines} lines) — may lack useful context`);
   }
@@ -134,14 +193,22 @@ export function scoreMemoryQuality(
   // 6. Observation deduplication quality (0-15 points)
   // Repeated titles usually indicate low-information duplication.
   if (observations.length === 0) {
-    breakdown.observationDedup = 15; // No observations = not applicable
+    breakdown.observationDedup = 5;
+    warnings.push('No observations captured — memory lacks concrete session evidence');
   } else {
-    const titles = observations.map(o => o.TITLE || '').filter(t => t.length > 0);
+    const titles = observations
+      .map((observation) => normalizeMemoryNameCandidate(observation.TITLE || ''))
+      .filter((title) => title.length > 0);
     const uniqueTitles = new Set(titles);
     const dedupRatio = titles.length > 0 ? uniqueTitles.size / titles.length : 1;
-    breakdown.observationDedup = Math.round(dedupRatio * 15);
+    const meaningfulTitles = titles.filter((title) => hasMeaningfulObservationTitle(title));
+    const meaningfulRatio = titles.length > 0 ? meaningfulTitles.length / titles.length : 0;
+    breakdown.observationDedup = Math.round(dedupRatio * meaningfulRatio * 15);
     if (dedupRatio < 0.6) {
       warnings.push(`High observation duplication: ${titles.length - uniqueTitles.size} duplicate titles`);
+    }
+    if (meaningfulRatio < 0.7) {
+      warnings.push('Observation titles remain too generic — semantic diversity reduced');
     }
   }
 

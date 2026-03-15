@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Compat
+// ────────────────────────────────────────────────────────────────
 import { DatabaseCompat, NativeDatabase, SqliteError, DatabaseOpts, EncryptionCipher } from "@tursodatabase/database-common"
 import { Database as NativeDB, EncryptionCipher as NativeEncryptionCipher } from "#index";
 

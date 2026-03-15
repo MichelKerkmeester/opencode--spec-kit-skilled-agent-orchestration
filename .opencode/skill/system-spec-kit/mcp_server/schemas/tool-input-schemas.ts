@@ -380,6 +380,26 @@ export const TOOL_SCHEMAS: Record<string, ToolInputSchema> = {
   memory_ingest_start: memoryIngestStartSchema as unknown as ToolInputSchema,
   memory_ingest_status: memoryIngestStatusSchema as unknown as ToolInputSchema,
   memory_ingest_cancel: memoryIngestCancelSchema as unknown as ToolInputSchema,
+  shared_space_upsert: getSchema({
+    spaceId: z.string(),
+    tenantId: z.string(),
+    name: z.string(),
+    rolloutEnabled: z.boolean().optional(),
+    rolloutCohort: z.string().optional(),
+    killSwitch: z.boolean().optional(),
+  }) as unknown as ToolInputSchema,
+  shared_space_membership_set: getSchema({
+    spaceId: z.string(),
+    subjectType: z.enum(['user', 'agent']),
+    subjectId: z.string(),
+    role: z.enum(['owner', 'editor', 'viewer']),
+  }) as unknown as ToolInputSchema,
+  shared_memory_status: getSchema({
+    tenantId: z.string().optional(),
+    userId: z.string().optional(),
+    agentId: z.string().optional(),
+  }) as unknown as ToolInputSchema,
+  shared_memory_enable: getSchema({}) as unknown as ToolInputSchema,
 };
 
 const ALLOWED_PARAMETERS: Record<string, string[]> = {
@@ -411,6 +431,10 @@ const ALLOWED_PARAMETERS: Record<string, string[]> = {
   memory_ingest_start: ['paths', 'specFolder'],
   memory_ingest_status: ['jobId'],
   memory_ingest_cancel: ['jobId'],
+  shared_space_upsert: ['spaceId', 'tenantId', 'name', 'rolloutEnabled', 'rolloutCohort', 'killSwitch'],
+  shared_space_membership_set: ['spaceId', 'subjectType', 'subjectId', 'role'],
+  shared_memory_status: ['tenantId', 'userId', 'agentId'],
+  shared_memory_enable: [],
 };
 
 /* ───────────────────────────────────────────────────────────────

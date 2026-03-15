@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Sqlite Error
+// ────────────────────────────────────────────────────────────────
 export class SqliteError extends Error {
   name: string;
   code: string;

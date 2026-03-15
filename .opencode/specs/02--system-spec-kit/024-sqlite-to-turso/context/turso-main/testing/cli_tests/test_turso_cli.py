@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+"""Tests for test turso cli."""
+
 import os
 import select
 import subprocess

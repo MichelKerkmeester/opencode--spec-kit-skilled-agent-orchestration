@@ -1,6 +1,6 @@
 ---
 title: "Verification Checklist: 014-hydra-db-based-features [template:level_3/checklist.md]"
-description: "Verification Date: 2026-03-14"
+description: "Verification Date: 2026-03-15"
 SPECKIT_TEMPLATE_SOURCE: "checklist | v2.2"
 trigger_phrases:
   - "verification"
@@ -77,7 +77,7 @@ The sections below track work that blocks truthful completion claims for the Hyd
 <!-- ANCHOR:testing -->
 ## Testing and Validation (Implementation Phase)
 
-- [x] CHK-020 [P0] Acceptance criteria in `spec.md` validated by implementation tests [E:156 tests across 13 test files validate spec acceptance criteria] (verified)
+- [x] CHK-020 [P0] Acceptance criteria in `spec.md` validated by implementation tests [E:2026-03-15 rerun of `npx tsc --noEmit`, `npm run build`, `npm run test:hydra:phase1`, targeted Hydra/doc Vitest suites, and full `npm test`] (verified)
 - [x] CHK-021 [P0] Isolation leak matrix passes tenant/user/agent/session scenarios [E:entity-scope.vitest.ts (19 tests) + dual-scope-hooks.vitest.ts (66 tests)] (verified)
 - [x] CHK-022 [P1] Temporal query behavior (`asOf`, supersede) validated with fixtures [E:memory-lineage-state.vitest.ts covers asOf + supersede (5 tests)] (verified)
 - [x] CHK-023 [P1] Retention/deletion cascade behavior validated end to end [E:memory-governance.vitest.ts (8 tests including cascade)] (verified)
@@ -101,7 +101,7 @@ The sections below track required but phase-dependent work that must either comp
 - [x] CHK-032 [P0] Provenance fields are required and validated on ingestion [E:memory-governance.vitest.ts validates provenance enforcement] (verified)
 - [x] CHK-033 [P1] Retention policy executor produces audit evidence [E:retention.ts + memory-governance.vitest.ts] (verified)
 - [x] CHK-034 [P1] Cascade delete removes derived artifacts and records completion status [E:memory-governance.vitest.ts cascade coverage] (verified)
-- [x] CHK-035 [P1] Governance incident rollback runbook tested in staging [E:006-shared-memory-rollout/decision-record.md rollback procedure documented] (verified)
+- [x] CHK-035 [P1] Governance incident rollback runbook verified through local rollback evidence and documented procedure [E:006-shared-memory-rollout/decision-record.md + memory-roadmap-flags/adaptive-ranking/migration-checkpoint tests] (verified)
 <!-- /ANCHOR:security -->
 
 ---
@@ -109,7 +109,7 @@ The sections below track required but phase-dependent work that must either comp
 <!-- ANCHOR:docs -->
 ## Documentation Synchronization
 
-- [x] CHK-040 [P1] `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md` are aligned for planning state [E:spec.md|plan.md|tasks.md|checklist.md|decision-record.md] (verified)
+- [x] CHK-040 [P1] `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md` are aligned for delivered implementation state [E:spec.md|plan.md|tasks.md|checklist.md|decision-record.md] (verified)
 - [x] CHK-041 [P1] Implementation evidence links added during execution phase [E:implementation-summary.md] (verified)
 - [x] CHK-042 [P2] Operator playbooks updated for support handoff [E:manual_testing_playbook includes Hydra scenarios NEW-121, NEW-123, NEW-129, NEW-130] (verified)
 - [x] CHK-043 [P2] Post-implementation summary added after execution [E:implementation-summary.md] (verified)
@@ -135,7 +135,7 @@ The sections below track required but phase-dependent work that must either comp
 - [x] CHK-101 [P1] All ADRs include status/date/alternatives [E:decision-record.md] (verified)
 - [x] CHK-102 [P1] Rejected alternatives include rationale [E:decision-record.md] (verified)
 - [x] CHK-103 [P1] Migration and rollback path documented in plan [E:plan.md] (verified)
-- [x] CHK-104 [P2] Independent architecture verification review completed (AI-led, evidence-backed) [E:2026-03-14 verification pass: `npm test` full-suite success, `verify_alignment_drift.py` pass, `decision-record.md` architecture traceability] (verified)
+- [x] CHK-104 [P2] Independent architecture verification review completed (AI-led, evidence-backed) [E:2026-03-15 truth-sync pass: full `npm test`, targeted Hydra/doc suites, `verify_alignment_drift.py`, and Hydra spec-pack consistency test] (verified)
 <!-- /ANCHOR:arch-verify -->
 
 ---
@@ -143,7 +143,7 @@ The sections below track required but phase-dependent work that must either comp
 <!-- ANCHOR:perf-verify -->
 ## L3+: PERFORMANCE VERIFICATION
 
-- [x] CHK-110 [P1] Retrieval latency target (NFR-P01) validated [E:benchmarkLineageWritePath and benchmarkScopeFilter timing available; test suite completes in <10s] (verified)
+- [x] CHK-110 [P1] Retrieval latency target (NFR-P01) has local benchmark support and regression guard coverage [E:benchmarkLineageWritePath + benchmarkScopeFilter timing helpers + `graph-roadmap-finalization.vitest.ts` local microbenchmark guard] (verified)
 - [x] CHK-111 [P1] Queue throughput and retry behavior validated [E:handler tests verify idempotent save paths under retry] (verified)
 - [x] CHK-112 [P2] Adaptive feedback overhead benchmarked [E:adaptive-ranking.vitest.ts + bounded delta tests confirm overhead stays within MAX_ADAPTIVE_DELTA] (verified)
 - [x] CHK-113 [P2] Graph traversal budget monitored under load [E:graph-signals.vitest.ts verifies bounded traversal; telemetry tracks graphWalkDiagnostics] (verified)
@@ -158,7 +158,7 @@ The sections below track required but phase-dependent work that must either comp
 - [x] CHK-121 [P0] Migration checkpoint/restore drill completed [E:migration-checkpoint-scripts.vitest.ts (2 tests for create + restore)] (verified)
 - [x] CHK-122 [P1] Alerting for isolation and governance failures configured [E:governance_audit table captures deny/conflict events; retrieval-telemetry tracks graphHealth] (verified)
 - [x] CHK-123 [P1] On-call runbook updated and reviewed [E:006-shared-memory-rollout decision-record documents rollback procedures] (verified)
-- [x] CHK-124 [P2] Launch checklist dry run completed in local verification scope (no staging dependency) [E:full local `npm test` pass including `tests/file-watcher.vitest.ts` 19/19; roadmap snapshot dry-run commands validated expected phase/capability behavior] (verified)
+- [x] CHK-124 [P2] Launch checklist dry run completed in local verification scope (no staging dependency) [E:full local `npm test` pass including `tests/file-watcher.vitest.ts` 20/20; roadmap snapshot dry-run commands validated expected phase/capability behavior] (verified)
 <!-- /ANCHOR:deploy-ready -->
 
 ---
@@ -177,7 +177,7 @@ The sections below track required but phase-dependent work that must either comp
 <!-- ANCHOR:docs-verify -->
 ## L3+: DOCUMENTATION VERIFICATION
 
-- [x] CHK-140 [P1] Planning docs in this folder are synchronized [E:spec.md|plan.md|tasks.md|checklist.md|decision-record.md] (verified)
+- [x] CHK-140 [P1] Parent docs in this folder are synchronized to the delivered runtime state [E:spec.md|plan.md|tasks.md|checklist.md|decision-record.md] (verified)
 - [x] CHK-141 [P1] API-level docs updated during implementation [E:TSDoc added to all Hydra exports across 13 source files] (verified)
 - [x] CHK-142 [P2] User-facing documentation updated if behavior changes [E:feature_catalog.md and feature_catalog_in_simple_terms.md include Hydra entries] (verified)
 - [x] CHK-143 [P2] Knowledge transfer artifacts prepared for handover [E:implementation-summary.md + phase spec.md files document all deliverables] (verified)
@@ -212,8 +212,8 @@ The sections below track required but phase-dependent work that must either comp
 | Feature catalog/playbook/runtime README sync | Verified |
 | Code standards (module headers + TSDoc) | Verified (13 files aligned) |
 
-**Verification Date**: 2026-03-14
-**Status**: All 6 Hydra phases verified with an AI-led independent pass: `npm test` passed in `mcp_server` (278 test files passed; 7663 tests passed; 11 skipped; 28 todo) plus `tests/file-watcher.vitest.ts` 19/19 passed; `python3 ../sk-code--opencode/scripts/verify_alignment_drift.py --root .` passed with 0 findings; manual roadmap snapshots validated default-on vs explicit opt-out behavior (`shared-rollout` + `graphUnified:true` under `SPECKIT_GRAPH_UNIFIED=false`, and `graph` + `graphUnified:false` under `SPECKIT_HYDRA_PHASE=graph SPECKIT_HYDRA_GRAPH_UNIFIED=false`). No checklist items remain deferred.
+**Verification Date**: 2026-03-15
+**Status**: All 6 Hydra phases verified with a truth-synced independent pass: `npm run test:hydra:phase1`, targeted Hydra/doc suites, and full `npm test` passed in `mcp_server` (`test:core` 279 test files passed; 7667 tests passed; 11 skipped; 28 todo, plus `tests/file-watcher.vitest.ts` 20/20 passed); `python3 ../sk-code--opencode/scripts/verify_alignment_drift.py --root .` passed with 0 findings; manual roadmap snapshots validated default-on vs explicit opt-out behavior (`shared-rollout` + `graphUnified:true` under `SPECKIT_GRAPH_UNIFIED=false`, and `graph` + `graphUnified:false` under `SPECKIT_HYDRA_PHASE=graph SPECKIT_HYDRA_GRAPH_UNIFIED=false`); Hydra spec-pack documentation consistency is now covered by a dedicated regression test. No checklist items remain deferred.
 <!-- /ANCHOR:summary -->
 
 ---

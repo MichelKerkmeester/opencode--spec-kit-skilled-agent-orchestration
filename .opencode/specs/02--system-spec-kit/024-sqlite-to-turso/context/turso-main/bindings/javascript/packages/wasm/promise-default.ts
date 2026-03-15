@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Promise Default
+// ────────────────────────────────────────────────────────────────
 import { DatabasePromise, DatabaseOpts, SqliteError, } from "@tursodatabase/database-common"
 import { registerFileAtWorker, unregisterFileAtWorker, ioNotifier } from "@tursodatabase/database-wasm-common";
 import { initThreadPool, MainWorker, Database as NativeDatabase } from "./index-default.js";

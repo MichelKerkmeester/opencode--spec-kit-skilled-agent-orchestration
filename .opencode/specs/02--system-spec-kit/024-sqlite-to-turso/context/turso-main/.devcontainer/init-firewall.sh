@@ -1,5 +1,5 @@
-#!/bin/bash
-set -euo pipefail  # Exit on error, undefined vars, and pipeline failures
+#!/usr/bin/env bash
+set -euo pipefail
 IFS=$'\n\t'       # Stricter word splitting
 
 # 1. Extract Docker DNS info BEFORE any flushing

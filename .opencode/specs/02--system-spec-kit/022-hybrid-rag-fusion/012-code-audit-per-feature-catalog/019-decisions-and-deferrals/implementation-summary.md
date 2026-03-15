@@ -72,7 +72,7 @@ The folder was updated by reconciling implementation evidence into the five phas
 |----------|-----|
 | Treat F-02 as evidence reconciliation, not runtime reimplementation | Graph-signals runtime and tests already existed; the gap was source/test mapping in audit artifacts. |
 | Close F-03 with code + tests before documentation closure | The cross-sentence key-phrase capture was a real behavior issue and needed runtime remediation. |
-| Keep one residual open question on historical extracted data | Backfill/cleanup is a product/data decision, not something to invent in a doc-only closure pass. |
+| Resolve historical extracted-data cleanup with a deterministic rebuild path | The closeout should not leave a product/data decision open when the repo can already rebuild scoped auto-generated entity rows safely. |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -85,16 +85,17 @@ The folder was updated by reconciling implementation evidence into the five phas
 | `npm run test -- tests/entity-extractor.vitest.ts tests/graph-signals.vitest.ts` | PASS (85/85) in `mcp_server` |
 | `npm run check` | PASS (eslint + `tsc --noEmit`) in `mcp_server` |
 | `validate.sh --no-recursive` for `019-decisions-and-deferrals` | PASS |
-| Scope validation | PASS, edits limited to markdown files in the target phase folder. |
+| Auto-entity rebuild coverage | PASS (`npx vitest run tests/entity-extractor.vitest.ts`) |
+| Scope validation | PASS, closeout adds the documented rebuild path plus packet updates. |
 <!-- /ANCHOR:verification -->
 
 ---
 
 <!-- ANCHOR:limitations -->
-## Known Limitations
+## Current Reality Notes
 
-1. A backfill/cleanup decision for previously extracted cross-sentence entities remains open.
-2. F-02 closure depends on keeping feature-catalog evidence in sync with runtime code/tests in future audits.
+1. Historical auto-generated entity rows can now be refreshed with `rebuildAutoEntities()` or the dry-runable `scripts/memory/rebuild-auto-entities.ts` CLI.
+2. F-02 closure still depends on keeping feature-catalog evidence synchronized with runtime code/tests in future audits.
 <!-- /ANCHOR:limitations -->
 
 ---

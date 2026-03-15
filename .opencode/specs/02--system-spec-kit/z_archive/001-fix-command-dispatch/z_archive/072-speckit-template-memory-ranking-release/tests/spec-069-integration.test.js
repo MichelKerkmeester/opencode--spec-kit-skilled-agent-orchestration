@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+'use strict';
+
 /**
  * Spec 069 Integration Tests - Level-Based Template Architecture
  *

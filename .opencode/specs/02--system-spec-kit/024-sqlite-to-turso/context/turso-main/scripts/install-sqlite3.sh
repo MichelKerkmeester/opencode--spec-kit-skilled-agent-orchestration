@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 
 # Portable script to download and extract SQLite3 binary
 # Works on Linux (x64), macOS (x64/arm64), and Windows (x64)

@@ -1,435 +1,253 @@
-# Feature Specification: Generate-Context Pipeline Quality
+# Feature Specification: Perfect Session Capturing
 
 <!-- SPECKIT_LEVEL: 3 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + merged-partitions | v2.2 -->
-
-## Part I: Audit & Remediation
-
-### Unified Scope Table (Part I + Part II)
-
-| Scope Source | Path / Directory | Files / Change Type | LOC / Description |
-|---|---|---|---|
-| Part I (012) | `scripts/extractors/` | opencode-capture.ts, collect-session-data.ts, session-extractor.ts, file-extractor.ts, decision-extractor.ts, conversation-extractor.ts, diagram-extractor.ts, quality-scorer.ts (v2), contamination-filter.ts | ~3,467 |
-| Part I (012) | `scripts/core/` | workflow.ts, config.ts, quality-scorer.ts (v1), file-writer.ts, tree-thinning.ts | ~1,714 |
-| Part I (012) | `scripts/loaders/` | data-loader.ts | 195 |
-| Part I (012) | `scripts/renderers/` | template-renderer.ts | 201 |
-| Part I (012) | `scripts/utils/` | input-normalizer.ts | 499 |
-| Part I (012) | `scripts/memory/` | generate-context.ts | 502 |
-| Part I (012) | `templates/` | context_template.md | ~27KB |
-| Part II (013) | `scripts/utils/input-normalizer.ts` | Modify | Fix snake_case/camelCase mismatch, add prompt relevance filtering |
-| Part II (013) | `scripts/extractors/collect-session-data.ts` | Modify | Backfill SPEC_FOLDER, add richer context mining |
-| Part II (013) | `scripts/extractors/opencode-capture.ts` | Modify | Improve OpenCode session capture depth |
-| Part II (013) | `scripts/extractors/file-extractor.ts` | Modify | Better file change detection, preserve ACTION field |
-| Part II (013) | `scripts/loaders/data-loader.ts` | Modify | Enhance stateless data loading |
-| Part II (013) | `scripts/core/workflow.ts` | Modify | Insert enrichment after alignment guards |
-| Part II (013) | `scripts/extractors/spec-folder-extractor.ts` | Create | Parse spec folder docs for structured context |
-| Part II (013) | `scripts/extractors/git-context-extractor.ts` | Create | Mine git status, diff, commits |
-
-### Part I Success Criteria Status (012)
-
-- [x] Zero TypeScript compilation errors (`npx tsc --build`) — COMPLETE
-- [x] All CRITICAL and HIGH findings from 25-agent audit resolved — COMPLETE
-- [ ] Quality scores on well-formed sessions >= 85% — PARTIAL: legacy 100/100 passes, v2 score 0.80 below 0.85 target; needs v2 calibration
-- [x] No content leakage (irrelevant session content in memory files) — COMPLETE
-- [x] No truncation artifacts in generated memory files — COMPLETE
-- [x] No placeholder leakage in template rendering — COMPLETE
-- [x] Session IDs use cryptographic randomness (not `Math.random()`) — COMPLETE
-- [x] Contamination filter catches >=25 AI chatter patterns (up from 7) — COMPLETE
-- [x] All hardcoded magic numbers moved to config or documented — COMPLETE
-
-### Preserved Source Content (Part I Source: 012/spec.md)
-
-# Spec: Perfect Session Capturing
-
-## Problem Statement
-
-The Spec Kit Memory session capturing system (`generate-context.js`) converts AI conversation state into indexed memory files for context recovery. The pipeline spans 18 TypeScript files (~6,400 LOC) across `scripts/extractors/`, `scripts/loaders/`, `scripts/core/`, `scripts/renderers/`, `scripts/utils/`, and `scripts/memory/`. Systematic exploration reveals **20+ quality issues** across the pipeline: fragile regex-based detection, hardcoded values, loose timestamp matching, truncated outputs, limited contamination filtering, and inconsistent error handling.
-
-## Scope
-
-**In scope:** All TypeScript files that participate in the session capture → memory file generation pipeline:
-
-| Directory | Files | LOC |
-|-----------|-------|-----|
-| `scripts/extractors/` | opencode-capture.ts, collect-session-data.ts, session-extractor.ts, file-extractor.ts, decision-extractor.ts, conversation-extractor.ts, diagram-extractor.ts, quality-scorer.ts (v2), contamination-filter.ts | ~3,467 |
-| `scripts/core/` | workflow.ts, config.ts, quality-scorer.ts (v1), file-writer.ts, tree-thinning.ts | ~1,714 |
-| `scripts/loaders/` | data-loader.ts | 195 |
-| `scripts/renderers/` | template-renderer.ts | 201 |
-| `scripts/utils/` | input-normalizer.ts | 499 |
-| `scripts/memory/` | generate-context.ts | 502 |
-| `templates/` | context_template.md | ~27KB |
-
-**Out of scope:** MCP server code, embedding system, search pipeline, spec folder validation scripts, test files.
-
-## Success Criteria
-
-1. Zero TypeScript compilation errors (`npx tsc --build`)
-2. All CRITICAL and HIGH findings from 25-agent audit resolved
-3. Quality scores on well-formed sessions ≥ 85%
-4. No content leakage (irrelevant session content in memory files)
-5. No truncation artifacts in generated memory files
-6. No placeholder leakage in template rendering
-7. Session IDs use cryptographic randomness (not `Math.random()`)
-8. Contamination filter catches ≥25 AI chatter patterns (up from 7)
-9. All hardcoded magic numbers moved to config or documented
-
-## Non-Functional Requirements
-
-- **Reliability:** 100% quality score on well-formed sessions with complete data
-- **Security:** No path traversal, no weak randomness, atomic file writes
-- **Performance:** No regression in pipeline execution time
-- **Maintainability:** All magic numbers configurable, consistent error handling patterns
-
----
-
-## Part II: Stateless Quality Improvements
-
-### Preserved Source Content (Part II Source: 013/spec.md)
-
----
-title: "Feature Specification: Improve Stateless Mode Quality"
-description: "Stateless memory saves via generate-context.js produce ~30/100 quality because they lack structured session data. This spec targets 60+/100 by mining richer context from available sources."
-trigger_phrases:
-  - "stateless mode"
-  - "memory save quality"
-  - "generate-context quality"
-  - "improve stateless"
-importance_tier: "normal"
-contextType: "general"
----
-# Feature Specification: Improve Stateless Mode Quality
-
-<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
 ---
 
+## Executive Summary
+
+Spec `010-perfect-session-capturing` now defines the shipped session-capture behavior around one canonical rule: the repo-local `.opencode` folder is the workspace identity anchor for stateless native capture. `generate-context.js` still treats explicit JSON as authoritative, but native fallback can now safely accept equivalent backend paths recorded as repo root, `.opencode`, or git root as long as they normalize to the same workspace.
+
+This closure also fixes the two stateless validation drifts discovered during manual verification:
+
+1. `V7` no longer fires just because a stateless capture has tool evidence but sparse `FILES`.
+2. `V8` no longer reintroduces foreign-spec prompt text when relevance filtering finds no safe keyword hit.
+
+The final native support matrix remains:
+
+1. `OpenCode`
+2. `Claude Code`
+3. `Codex CLI`
+4. `Copilot CLI`
+5. `Gemini CLI`
+6. `NO_DATA_AVAILABLE`
+
 <!-- ANCHOR:metadata -->
-## 1. METADATA
+## 1. Metadata
 
 | Field | Value |
 |-------|-------|
-| **Level** | 2 |
-| **Priority** | P1 |
-| **Status** | Draft |
-| **Created** | 2026-03-08 |
-| **Parent** | 022-hybrid-rag-fusion |
+| Level | 3 |
+| Priority | P1 |
+| Status | Complete |
+| Created | 2026-03-08 |
+| Completed | 2026-03-15 |
+| Parent | 022-hybrid-rag-fusion |
+| Scope | Canonical workspace identity, native capture matching, stateless validation drift, and canonical docs |
 <!-- /ANCHOR:metadata -->
 
 ---
 
 <!-- ANCHOR:problem -->
-## 2. PROBLEM AND PURPOSE
+## 2. Problem And Purpose
 
 ### Problem Statement
-Stateless memory saves (when `generate-context.js` receives a spec folder path instead of a pre-built JSON file) produce quality scores around 30/100. The system falls back to OpenCode session capture which only extracts minimal conversation data (2-3 exchanges), missing observations, decisions, learning metrics, and file change context. This makes stateless saves nearly useless for future context retrieval.
+
+The earlier native-capture expansion proved the five-backend matrix in fixture coverage, but live verification exposed three remaining closure gaps:
+
+1. Native backends were still comparing raw absolute paths, even though different CLIs persist equivalent workspace paths in different forms.
+2. Stateless validation could falsely abort on `V7` when real tool activity survived normalization but `FILES` stayed sparse.
+3. Relevance fallback could still re-include foreign-spec prompt text and trip `V8`, while the manual playbook overstated what precedence alone guarantees about save success.
 
 ### Purpose
-Increase stateless mode quality scores from ~30/100 to 60+/100 by mining richer context from available sources (git history, file modifications, conversation logs, spec folder contents) without requiring callers to pre-build a JSON data file.
+
+Make `.opencode` the canonical workspace identity, route every native backend through that equivalence layer, preserve strict contamination safety, and refresh the operator docs so `M-007` reflects actual shipped behavior instead of stale assumptions.
 <!-- /ANCHOR:problem -->
 
 ---
 
 <!-- ANCHOR:scope -->
-## 3. SCOPE
+## 3. Scope
 
 ### In Scope
-- Fix existing OpenCode-path defects (field-name mismatches, prompt relevance filtering)
-- Analyze the full stateless code path to identify where data is lost
-- Identify all available context sources that stateless mode could tap
-- Design improvements to session data collection in stateless mode
-- Add provenance-aware enrichment from git and spec folder sources
-- Calibrate quality scoring for stateless-specific data patterns (Phase 4, deferred)
-- Create a concrete implementation plan with estimated LOC and risk
 
-### Out of Scope
-- Modifying the stateful (JSON) mode, it already works well
-- Adding new CLI flags or changing the CLI interface
-- Modifying the MCP tool interface
+- Keep JSON-mode input as the only authoritative stateful input path.
+- Normalize native backend matching through the nearest repo-local `.opencode` directory.
+- Accept repo root, `.opencode`, and git-root backend paths only when they resolve to the same workspace identity.
+- Preserve fallback order: `OpenCode -> Claude -> Codex -> Copilot -> Gemini -> NO_DATA_AVAILABLE`.
+- Keep all native backends stateless-only and normalized through the shared capture contract.
+- Fix false stateless aborts caused by incomplete tool-count recovery.
+- Prevent foreign-spec prompt fallback from contaminating generated memory content.
+- Update spec `010`, feature-catalog entry `NEW-139`, and manual scenario `M-007` to the final contract.
 
-### Files to Change (Estimated)
+### Out Of Scope
 
-| File Path | Change Type | Description |
-|-----------|-------------|-------------|
-| `scripts/utils/input-normalizer.ts` | Modify | Fix snake_case/camelCase mismatch, add prompt relevance filtering |
-| `scripts/extractors/collect-session-data.ts` | Modify | Backfill SPEC_FOLDER, add richer context mining |
-| `scripts/extractors/opencode-capture.ts` | Modify | Improve OpenCode session capture depth |
-| `scripts/extractors/file-extractor.ts` | Modify | Better file change detection, preserve ACTION field |
-| `scripts/loaders/data-loader.ts` | Modify | Enhance stateless data loading |
-| `scripts/core/workflow.ts` | Modify | Insert enrichment after alignment guards |
-| `scripts/extractors/spec-folder-extractor.ts` | Create | Parse spec folder docs for structured context |
-| `scripts/extractors/git-context-extractor.ts` | Create | Mine git status, diff, commits |
+- Changing the `generate-context.js` CLI signature.
+- Changing the JSON-mode input contract.
+- Relaxing contamination, alignment, or quality gates.
+- Adding new native backends beyond the shipped five-source matrix.
+
+### Files Changed
+
+| Path | Change Type | Purpose |
+|------|-------------|---------|
+| `scripts/utils/workspace-identity.ts` | Create | Canonical `.opencode` workspace identity and equivalence helpers |
+| `scripts/utils/index.ts` | Modify | Export workspace identity helpers |
+| `scripts/extractors/opencode-capture.ts` | Modify | Match OpenCode sessions via canonical workspace identity |
+| `scripts/extractors/claude-code-capture.ts` | Modify | Match Claude history/transcripts via canonical workspace identity |
+| `scripts/extractors/codex-cli-capture.ts` | Modify | Match Codex `cwd` via canonical workspace identity |
+| `scripts/extractors/copilot-cli-capture.ts` | Modify | Match Copilot `cwd` / `git_root` via canonical workspace identity |
+| `scripts/extractors/gemini-cli-capture.ts` | Modify | Match Gemini `.project_root` via canonical workspace identity |
+| `scripts/utils/input-normalizer.ts` | Modify | Safe prompt/context fallback and native tool-call evidence tracking |
+| `scripts/core/workflow.ts` | Modify | Recover stateless `TOOL_COUNT` from actual native tool evidence |
+| `scripts/tests/workspace-identity.vitest.ts` | Create | `.opencode` equivalence coverage |
+| `scripts/tests/claude-code-capture.vitest.ts` | Modify | Claude repo-root vs `.opencode` matching coverage |
+| `scripts/tests/codex-cli-capture.vitest.ts` | Modify | Codex repo-root vs `.opencode` matching coverage |
+| `scripts/tests/copilot-cli-capture.vitest.ts` | Modify | Copilot repo-root vs `.opencode` matching coverage |
+| `scripts/tests/gemini-cli-capture.vitest.ts` | Modify | Gemini repo-root vs `.opencode` matching coverage |
+| `scripts/tests/stateless-enrichment.vitest.ts` | Modify | Foreign-spec prompt fallback guardrail coverage |
+| `scripts/tests/memory-render-fixture.vitest.ts` | Modify | `V7` stateless tool-evidence regression coverage |
+| Canonical spec markdown set | Modify | Final workspace-identity contract and current evidence |
+| Feature catalog entry `NEW-139` | Modify | Final source-of-truth operator guidance |
+| Manual playbook scenario `M-007` | Modify | Final scenario pack and expectation wording |
 <!-- /ANCHOR:scope -->
 
 ---
 
 <!-- ANCHOR:requirements -->
-## 4. REQUIREMENTS
+## 4. Requirements
 
-### P0 - Blockers (MUST complete)
+### P0
 
-| ID | Requirement | Acceptance Criteria |
-|----|-------------|---------------------|
-| REQ-001 | `qualityValidation.valid === true` for stateless saves | No V-rule failures (V7, V8, V9) block indexing |
-| REQ-002 | No regression in stateful (JSON) mode quality | Existing stateful tests still pass |
-| REQ-003 | No new CLI arguments required | Script signature unchanged |
-| REQ-004 | OpenCode field-name mismatch fixed | snake_case capture fields correctly mapped to camelCase |
-| REQ-005 | Cross-spec contamination bounded | Unfiltered `userPrompts` do not leak foreign spec content |
+| ID | Requirement | Acceptance |
+|----|-------------|------------|
+| REQ-001 | JSON-mode remains authoritative | Loader still returns explicit JSON immediately when a data file is provided |
+| REQ-002 | Native fallback order stays fixed | Loader still tries `OpenCode`, `Claude`, `Codex`, `Copilot`, `Gemini`, then `NO_DATA_AVAILABLE` |
+| REQ-003 | Native matching uses canonical workspace identity | Repo root, `.opencode`, and git-root forms only match when they normalize to the same repo-local `.opencode` anchor |
+| REQ-004 | Native thought/reasoning-only content is excluded | Claude `thinking`, Codex reasoning items, and Gemini `thoughts` do not appear in normalized output |
+| REQ-005 | Out-of-workspace file hints are stripped | Foreign absolute paths are removed from normalized tool-call inputs and derived file hints |
+| REQ-006 | Stateless tool evidence does not false-fail `V7` | Tool-rich captures without edited files can still produce non-zero rendered `tool_count` |
+| REQ-007 | Relevance fallback does not reintroduce foreign-spec contamination | When no safe keyword hit exists, prompts/context either remain generic/current-spec or are dropped entirely |
+| REQ-008 | The spec folder validates cleanly | `spec/validate.sh` returns zero errors and zero warnings |
 
-### P1 - Required (complete OR user-approved deferral)
+### P1
 
-| ID | Requirement | Acceptance Criteria |
-|----|-------------|---------------------|
-| REQ-006 | Stateless saves produce legacy quality score >= 60/100 on repos with git history | Run on repo with recent commits and verify |
-| REQ-007 | File modifications detected and listed accurately | Compare file list in output vs `git status` |
-| REQ-008 | Semantic indexing succeeds for stateless saves | Indexing proceeds after save, memory ID assigned |
-| REQ-009 | Synthetic observations carry provenance markers | Git/spec-derived data distinguishable from live session evidence |
+| ID | Requirement | Acceptance |
+|----|-------------|------------|
+| REQ-009 | A shared workspace-identity helper exists | Extractors reuse one internal `.opencode` equivalence layer |
+| REQ-010 | Backend-specific matcher updates are regression-tested | Workspace-identity tests and backend parser tests pass |
+| REQ-011 | Discovery precedence is distinct from final save success | Docs and `M-007` describe backend selection separately from later quality/alignment aborts |
+| REQ-012 | Canonical docs reflect the final workspace-identity contract | Spec `010`, `NEW-139`, and `M-007` all describe `.opencode` as the workspace identity anchor |
+| REQ-013 | Verification evidence is current | Final automated reruns on 2026-03-15 are recorded in canonical docs |
 <!-- /ANCHOR:requirements -->
 
 ---
 
-<!-- ANCHOR:success-criteria -->
-## 5. SUCCESS CRITERIA
+<!-- ANCHOR:success -->
+## 5. Success Criteria
 
-- **SC-001**: `qualityValidation.valid === true` (no V-rule failures) for stateless saves
-- **SC-002**: Legacy quality score >= 60/100 on repos with git history (secondary signal)
-- **SC-003**: Semantic indexing does not skip stateless saves due to quality gate failure
-- **SC-004**: No regression in stateful mode quality or behavior
-- **SC-005**: No cross-spec contamination (V8) or generic title (V9) failures
-<!-- /ANCHOR:success-criteria -->
+- Native capture works across all five supported local backends without relying on raw path equality.
+- Equivalent repo-root and `.opencode` transcript/workspace records are accepted only when they resolve to the same workspace.
+- Tool-rich stateless captures no longer false-abort on `V7`.
+- Foreign-spec prompt fallback no longer contaminates generated memory content when relevance matching fails.
+- The targeted closure Vitest suite passes with `11` files and `87` tests.
+- `test-extractors-loaders.js` passes with `288` passed, `0` failed, `0` skipped.
+- Alignment drift passes with `219` scanned files and `0` findings.
+- Final spec validation returns zero errors and zero warnings.
+<!-- /ANCHOR:success -->
 
 ---
 
 <!-- ANCHOR:risks -->
-## 6. RISKS AND DEPENDENCIES
+## 6. Risks And Dependencies
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Risk | Git history mining could be slow on large repos | Medium | Limit to last N commits or time window |
-| Risk | OpenCode session log format may vary across versions | Medium | Defensive parsing with fallbacks |
-| Risk | Cross-spec contamination via unfiltered userPrompts | High | Add prompt-level relevance filtering |
-| Risk | Synthetic data treated as live session evidence | High | Provenance markers on all enriched data |
-| Risk | Git commands fail on shallow/large repos (HEAD~5 unavailable) | Medium | Graceful fallback, check rev count |
-| Dependency | OpenCode session log availability | High if missing | Graceful degradation to git-only signals |
-| Risk | Spec folder contents may be minimal on new folders | Low | Fall back to git and file signals |
+| Risk | Native CLIs persist different filesystem spellings for the same workspace | High | Canonical `.opencode` identity layer accepts only equivalent paths, not nearby guesses |
+| Risk | Broader path equivalence could weaken contamination safety if over-broad | High | Matching still requires one shared `.opencode` anchor and file hints remain workspace-scoped |
+| Risk | Stateless captures with sparse file edits can still look low-signal | Medium | Keep numeric scorer active and preserve quality/alignment aborts after discovery succeeds |
+| Dependency | Existing stateless enrichment pipeline | High | Native backends still feed the same downstream transform and render path |
+| Dependency | Local CLI storage layouts | Medium | Each backend remains bounded, fixture-tested, and empty-state safe |
 <!-- /ANCHOR:risks -->
 
 ---
 
 <!-- ANCHOR:nfr -->
-## L2: NON-FUNCTIONAL REQUIREMENTS
+## 7. Non-Functional Requirements
 
-### Performance
-- **NFR-P01**: Stateless save completes in < 10 seconds (same as current)
-- **NFR-P02**: Git history mining adds < 2 seconds overhead
-
-### Reliability
-- **NFR-R01**: Graceful degradation when git or session logs unavailable
-- **NFR-R02**: No crashes on empty repos or missing spec folder contents
+- Reliability: no crash when backend storage is absent, malformed, or mismatched.
+- Security: workspace matching must stay exact via canonical `.opencode` identity and must not accept cross-workspace opportunistic matches.
+- Maintainability: one shared path-equivalence layer replaces duplicated raw-path logic.
+- Documentation integrity: manual scenarios describe discovery precedence, validation gates, and hard-fail behavior separately.
 <!-- /ANCHOR:nfr -->
 
 ---
 
-<!-- ANCHOR:edge-cases -->
-## L2: EDGE CASES
+## 8. Edge Cases
 
-### Data Boundaries
-- Empty git history: Fall back to file-only signals
-- Shallow repo (HEAD~5 unavailable): Use available rev count, graceful fallback
-- No OpenCode session log: Use git + spec folder contents only
-- Very large git history: Cap at last 20 commits or 24 hours
-- Foreign-spec prompt leakage: Filter userPrompts by spec-folder relevance
-
-### Error Scenarios
-- Git not available: Skip git mining, proceed with other sources
-- Spec folder is new (no existing files): Produce minimal but valid output
-- Git rename/delete: Preserve ACTION through file extraction pipeline
-- Concurrent saves: No special handling needed (saves are idempotent)
-
-### State Transitions
-- Partial data collection: Produce output with available data, log warnings
-- Synthetic timestamps: Use stable ordering so enriched data does not distort lastAction/nextAction
-<!-- /ANCHOR:edge-cases -->
+- A backend stores repo root while the runtime is anchored at `.opencode`: the transcript is accepted only if both resolve to the same workspace identity.
+- A backend stores `.opencode` directly: the transcript is accepted as the canonical identity form.
+- A stateless capture contains real read/search/bash telemetry but no edited files: rendered memory still reports non-zero `tool_count`.
+- Relevance filtering finds no keyword hit but the prompt is generic: the prompt can remain as a safe fallback.
+- Relevance filtering finds only foreign-spec prompt text: the prompt/context is dropped instead of reintroduced wholesale.
+- Discovery succeeds but later quality or alignment gates fail: docs and manual testing treat that as a save-path result, not a discovery-order regression.
 
 ---
 
-<!-- ANCHOR:complexity -->
-## L2: COMPLEXITY ASSESSMENT
+## 9. Complexity Assessment
 
-| Dimension | Score | Notes |
-|-----------|-------|-------|
-| Scope | 18/25 | 8 files, ~650-1000 LOC estimated (5 phases) |
-| Risk | 12/25 | Contamination and provenance risks require care |
-| Research | 15/20 | 10 research agents completed, some findings stale |
-| **Total** | **45/70** | **Level 2** |
-<!-- /ANCHOR:complexity -->
+| Dimension | Notes |
+|-----------|-------|
+| Scope | Crosses five extractors, one shared utility, stateless validation behavior, tests, and canonical docs |
+| Risk | Medium because discovery correctness directly affects memory integrity |
+| Coordination | Requires code, tests, docs, and validation evidence to land together |
+| Level | Remains Level 3 because the change spans architecture, verification, and operator documentation |
 
 ---
 
-## L3: ACCEPTANCE SCENARIOS
+## 10. User Stories
 
-### Scenario AS-001: Stateless save applies OpenCode hardening
-- **Given** a stateless run with snake_case OpenCode fields
-- **When** `generate-context.js` runs with this spec folder path
-- **Then** normalized fields are preserved and prompts are filtered by spec relevance
+### US-001: Portable Stateless Discovery
 
-### Scenario AS-002: Stateless enrichment injects spec-folder signals
-- **Given** a spec folder with `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `decision-record.md`
-- **When** stateless enrichment runs
-- **Then** observations/files/decisions include `_provenance: 'spec-folder'` markers
+As a maintainer, I want repo-root and `.opencode` transcript metadata to resolve to the same workspace when they are genuinely equivalent, so native fallback works across different local CLI storage formats.
 
-### Scenario AS-003: Stateless enrichment injects git signals
-- **Given** a repository with recent commits and uncommitted file changes
-- **When** `git-context-extractor` runs in stateless mode
-- **Then** extracted FILES include ACTION data and observations include `_provenance: 'git'`
+### US-002: Safe Stateless Saves
 
-### Scenario AS-004: Stateful mode remains authoritative
-- **Given** a file-backed JSON save (`_source === 'file'`)
-- **When** workflow executes
-- **Then** enrichment is skipped and file-backed data remains authoritative
+As a maintainer, I want valid tool-rich stateless captures to survive quality validation without weakening contamination protection, so discovery does not fail for the wrong reason.
 
-### Scenario AS-005: Quality gates protect indexing path
-- **Given** a low-signal or contaminated stateless save
-- **When** validation detects failed V-rules
-- **Then** indexing is blocked and the workflow reports `QUALITY_GATE_ABORT`/contamination gate failure
+### US-003: Accurate Operator Guidance
 
-### Scenario AS-006: Deferred phases remain out of completion scope
-- **Given** current implementation state
-- **When** completion is evaluated
-- **Then** Phase 3 (Claude capture) and Phase 4 (scoring calibration) remain deferred and unchecked
+As a future operator, I want `M-007` and the feature catalog to distinguish discovery precedence from later save-path aborts, so manual verification reflects the shipped system truth.
 
 ---
 
-## 10. OPEN QUESTIONS (RESOLVED)
+## 11. Acceptance Scenarios
 
-- **Indexing gate**: `qualityValidation.valid` (v2 validator), not legacy score. Indexing proceeds when no V-rules fail. (Resolved by code review of workflow.ts:842-933)
-- **Claude Code logs**: Yes, JSONL transcripts at `~/.claude/projects/` with full tool traces. Deferred to Phase 4 due to schema drift and privacy risks. (Resolved by R05)
-- **V2 scoring**: Base 1.0, -0.25 per failed V-rule, +0.05/0.05/0.10 bonuses. Structural validity, not semantic richness. (Resolved by R06)
+### Scenario 1: Canonical workspace equivalence
 
-## 11. REVIEW FINDINGS (GPT-5.4 xhigh)
+**Given** the runtime is anchored at repo-local `.opencode`, **when** a backend persists the enclosing repo root or a nested `.opencode` path for the same workspace, **then** the transcript is accepted.
 
-Review verdict: **REVISE** (applied). Key fixes incorporated:
-1. Added Phase 0 for OpenCode-path defect hardening
-2. Reframed acceptance around `qualityValidation.valid`, not just legacy score
-3. Added provenance markers as named requirement
-4. Added cross-spec contamination filtering as P0 requirement
-5. Moved enrichment insertion after alignment guards
-6. Deferred Claude Code capture and scoring calibration to later phases
+### Scenario 2: Foreign workspace rejection
 
----
+**Given** a backend artifact points at another repo with a different `.opencode` anchor, **when** the loader evaluates it, **then** the artifact is rejected even if the basename is similar.
 
-## Merged Section: 018-git-context-extractor
+### Scenario 3: Stateless tool evidence
 
-> **Merge note (2026-03-14)**: The content below was originally in `018-git-context-extractor/spec.md` (Level 1, Implemented). It documents the git-context extractor that is part of 011's Part II scope (line 26 of the unified scope table: `scripts/extractors/git-context-extractor.ts | Create | Mine git status, diff, commits`). The 018 spec folder has been absorbed into 011 to reduce folder count.
+**Given** a stateless capture contains tool telemetry but no edited files, **when** the workflow renders memory output, **then** `tool_count` is non-zero and `V7` does not fail spuriously.
 
-# Feature Specification: Git Context Extractor for Stateless Memory Saves
+### Scenario 4: Safe prompt fallback
 
-<!-- SPECKIT_LEVEL: 1 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
+**Given** relevance filtering finds no keyword hit and only foreign-spec prompts are present, **when** the transform runs, **then** those prompts do not return as fallback content.
 
----
+### Scenario 5: Backend precedence
 
-<!-- ANCHOR:metadata -->
-## 1. METADATA
+**Given** multiple native sources are available for the same workspace, **when** the loader runs, **then** it still picks the first usable backend in the documented order.
 
-| Field | Value |
-|-------|-------|
-| **Level** | 1 |
-| **Priority** | P1 |
-| **Status** | Implemented |
-| **Created** | 2026-03-08 |
-| **Branch** | `018-git-context-extractor` |
-<!-- /ANCHOR:metadata -->
+### Scenario 6: Final hard fail
+
+**Given** explicit JSON is absent and every backend is empty or mismatched, **when** the loader runs, **then** it returns `NO_DATA_AVAILABLE`.
+
+### Scenario 7: Canonical docs validate
+
+**Given** the rewritten `010` markdown set, **when** `spec/validate.sh` runs, **then** it returns zero errors and zero warnings.
 
 ---
 
-<!-- ANCHOR:problem -->
-## 2. PROBLEM & PURPOSE
+## 12. Related Documents
 
-### Problem Statement
-Stateless memory saves need a reliable way to attach current repository context such as branch, commit reference, and dirty-state hints. This work introduced a focused git-context module so save-time context gathering is consistent and reusable.
-
-### Purpose
-Provide a dedicated TypeScript extractor that returns normalized git context for stateless memory-save workflows.
-<!-- /ANCHOR:problem -->
-
----
-
-<!-- ANCHOR:scope -->
-## 3. SCOPE
-
-### In Scope
-- Create `.opencode/skill/system-spec-kit/scripts/extractors/git-context-extractor.ts`.
-- Follow existing extractor conventions for input, output, and error handling.
-- Return a safe fallback shape when git metadata is unavailable.
-- Wire extractor usage through the stateless enrichment path in workflow orchestration.
-
-### Out of Scope
-- Changing the broader memory-save storage schema beyond what the extractor returns.
-- Reworking unrelated extractor modules or the memory indexing pipeline.
-- Adding new repository analytics beyond the minimal save-time git snapshot.
-
-### Files to Change
-
-| File Path | Change Type | Description |
-|-----------|-------------|-------------|
-| `.opencode/skill/system-spec-kit/scripts/extractors/git-context-extractor.ts` | Created | Dedicated extractor for git metadata used by stateless memory saves. |
-| `.opencode/skill/system-spec-kit/scripts/extractors/index.ts` | Modified | Barrel export wiring for the new extractor. |
-| `.opencode/skill/system-spec-kit/scripts/core/workflow.ts` | Modified | Stateless enrichment flow calls and merges git-context extraction output. |
-| `.opencode/skill/system-spec-kit/scripts/tests/stateless-enrichment.vitest.ts` | Modified | Regression coverage for git-context scoping and fallback behavior. |
-<!-- /ANCHOR:scope -->
-
----
-
-<!-- ANCHOR:requirements -->
-## 4. REQUIREMENTS
-
-### P0 - Blockers (MUST complete)
-
-| ID | Requirement | Acceptance Criteria |
-|----|-------------|---------------------|
-| REQ-001 | Create a dedicated git-context extractor module. | The new TypeScript file exists in the extractor directory and follows the local module style used by adjacent extractors. |
-| REQ-002 | Capture the minimum git context needed for stateless saves. | The extractor returns a normalized object that includes current branch or head reference, a commit identifier when available, and a repo-state indicator such as dirty or unavailable. |
-
-### P1 - Required (complete OR user-approved deferral)
-
-| ID | Requirement | Acceptance Criteria |
-|----|-------------|---------------------|
-| REQ-003 | Handle missing git context safely. | Running outside a git repo, in detached HEAD, or without git installed does not crash the save flow and returns an explicit fallback state. |
-| REQ-004 | Keep the integration surface small and reusable. | The plan and tasks define a minimal integration path so stateless memory saves can call the extractor without introducing unrelated pipeline changes. |
-
-### Acceptance Scenarios
-
-1. **Given** the save flow runs inside a normal git repository, **when** the extractor is called, **then** it returns the current branch or head reference plus commit and repo-state details in the expected response shape.
-2. **Given** the save flow runs where git metadata cannot be resolved, **when** the extractor is called, **then** it returns a documented unavailable-state object and the caller can continue without an unhandled error.
-<!-- /ANCHOR:requirements -->
-
----
-
-<!-- ANCHOR:success-criteria -->
-## 5. SUCCESS CRITERIA
-
-- **SC-001**: Stateless memory-save work has a dedicated extractor file for repository context instead of ad hoc git lookups.
-- **SC-002**: The implementation can distinguish normal repo state from unavailable or detached-head cases without throwing.
-<!-- /ANCHOR:success-criteria -->
-
----
-
-<!-- ANCHOR:risks -->
-## 6. RISKS & DEPENDENCIES
-
-| Type | Item | Impact | Mitigation |
-|------|------|--------|------------|
-| Dependency | Local git CLI and repository metadata | Missing or unexpected git output could leave save payloads incomplete. | Treat git access as best-effort and return a documented fallback object. |
-| Risk | Extractor contract drift | If the stateless save flow expects a different response shape, follow-up wiring work may be needed. | Inspect adjacent extractors first and keep the output shape explicit in implementation notes. |
-<!-- /ANCHOR:risks -->
-
----
-
-<!-- ANCHOR:questions -->
-## 7. OPEN QUESTIONS
-
-- None. The extractor is implemented, exported, and wired through workflow enrichment.
-<!-- /ANCHOR:questions -->
-
----
+- `plan`
+- `tasks`
+- `checklist`
+- `decision record`
+- `implementation summary`

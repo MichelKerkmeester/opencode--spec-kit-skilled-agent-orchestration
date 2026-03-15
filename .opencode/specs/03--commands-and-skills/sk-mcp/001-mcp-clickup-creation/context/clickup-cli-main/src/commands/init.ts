@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Init
+// ────────────────────────────────────────────────────────────────
 import { password, select, confirm } from '@inquirer/prompts'
 import { ClickUpClient } from '../api.js'
 import { getConfigPath, writeConfig } from '../config.js'

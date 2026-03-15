@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Comments
+// ────────────────────────────────────────────────────────────────
 import chalk from 'chalk'
 import { ClickUpClient } from '../api.js'
 import type { Config } from '../config.js'

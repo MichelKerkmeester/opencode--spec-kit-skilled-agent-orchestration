@@ -79,7 +79,7 @@ Standardize the retrieval-enhancements audit into Level 2 format so remediation 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
 | REQ-001 | Correct F-07 tier-2 fallback source and test mapping to `hybrid-search.ts` and `hybrid-search.vitest.ts`. | Feature catalog references and linked tests point to actual `forceAllChannels` implementation and regression coverage. |
-| REQ-002 | Replace placeholder/deferred channel assertions with executable behavior tests for fallback forcing. | `channel.vitest.ts` (or designated owner suite) contains runnable assertions for channel forcing behavior. |
+| REQ-002 | Replace legacy non-behavioral channel assertions with executable behavior tests for fallback forcing. | `channel.vitest.ts` (or designated owner suite) contains runnable assertions for channel forcing behavior. |
 | REQ-003 | Correct F-08 provenance source ownership and enforce trace field assertions when `includeTrace` is enabled. | Provenance owner files are documented and tests assert required `scores/source/trace` fields. |
 
 ### P1 - Required (complete OR user-approved deferral)
@@ -89,7 +89,7 @@ Standardize the retrieval-enhancements audit into Level 2 format so remediation 
 | REQ-004 | Address standards gaps (wildcard exports, silent catch blocks, weak logging paths) tied to F-01/F-06/F-09. | Affected files use explicit exports and typed, minimally logged exception handling. |
 | REQ-005 | Align F-05 summary-channel contract docs with actual `SummarySearchResult[]` to Stage-1 adaptation flow. | Feature documentation and source table match implementation contract and integration boundaries. |
 | REQ-006 | Close test gaps for hook lifecycle behavior, summary merge/dedupe/filtering, batched edge-count retrieval, and context header ordering. | Dedicated tests exist and exercise each behavior under normal and constrained conditions. |
-| REQ-007 | Capture manual playbook mapping coverage (NEW-085+) for all nine features or explicitly document gaps. | Each feature has a mapped scenario ID or a documented "missing coverage" finding. |
+| REQ-007 | Capture manual playbook mapping coverage (NEW-085+) for all nine features. | Each feature has a direct mapped scenario ID, including NEW-145 for F-09. |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -118,7 +118,7 @@ Standardize the retrieval-enhancements audit into Level 2 format so remediation 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
 | Dependency | Feature catalog owners (`feature_catalog/15--retrieval-enhancements/`) | Incorrect ownership mapping can persist across audits. | Update source tables and add verification checks in checklist/tasks before completion. |
-| Dependency | MCP server test suites (`mcp_server/tests/`) | Missing or deferred assertions can hide regressions. | Add targeted assertions for P0 behaviors and record evidence in checklist. |
+| Dependency | MCP server test suites (`mcp_server/tests/`) | Missing or stale assertions can hide regressions. | Add targeted assertions for P0 behaviors and record evidence in checklist. |
 | Risk | Stale references (for example missing `retry.vitest.ts`) | Audit credibility degrades if references are unresolved. | Remove stale references or restore files with explicit ownership notes. |
 | Risk | Heuristic token/header budgets diverge from real usage | False confidence in retrieval budget guarantees. | Add explicit measurement-based enforcement and constrained-budget tests. |
 <!-- /ANCHOR:risks -->
@@ -182,9 +182,7 @@ Standardize the retrieval-enhancements audit into Level 2 format so remediation 
 
 ## 10. OPEN QUESTIONS
 
-- Should tier-2 fallback ownership remain in `hybrid-search.vitest.ts` exclusively, or be mirrored in channel-focused suites?
-- Which exact manual playbook scenarios (beyond NEW-085+) should cover each of F-01 through F-09?
-- Should token/header budget enforcement use a tokenizer-backed estimate or a calibrated deterministic approximation?
+- None. Tier-2 fallback ownership, direct manual-playbook coverage, and header-budget calibration are all closed in the current packet.
 <!-- /ANCHOR:questions -->
 
 ---

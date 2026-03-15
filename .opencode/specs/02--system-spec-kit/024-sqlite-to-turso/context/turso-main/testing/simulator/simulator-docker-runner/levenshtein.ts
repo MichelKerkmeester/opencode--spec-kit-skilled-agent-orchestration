@@ -1,3 +1,6 @@
+// ────────────────────────────────────────────────────────────────
+// MODULE: Levenshtein
+// ────────────────────────────────────────────────────────────────
 /**
  * Calculate the Levenshtein distance between two strings.
  * @param a - The first string.

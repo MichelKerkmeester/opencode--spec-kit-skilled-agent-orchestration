@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Comparison and diff utilities for pages and records.
 """

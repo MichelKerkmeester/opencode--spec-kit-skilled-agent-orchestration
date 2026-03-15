@@ -107,7 +107,7 @@ When contradictions are found, the response includes warning hints. Two memories
 | `mcp_server/tests/handler-memory-index-cooldown.vitest.ts` | Index cooldown validation |
 | `mcp_server/tests/handler-memory-index.vitest.ts` | Index handler validation |
 | `mcp_server/tests/incremental-index-v2.vitest.ts` | Incremental index behavioral tests |
-| `mcp_server/tests/incremental-index.vitest.ts` | Legacy deferred placeholder suite (skipped; not behavioral evidence) |
+| `mcp_server/tests/incremental-index.vitest.ts` | Focused incremental-index coverage (supplemental to `incremental-index-v2.vitest.ts`; concrete fast-path assertions) |
 | `mcp_server/tests/index-refresh.vitest.ts` | Index refresh tests |
 | `mcp_server/tests/integration-causal-graph.vitest.ts` | Causal graph integration |
 | `mcp_server/tests/interference.vitest.ts` | Interference scoring tests |
@@ -133,7 +133,15 @@ When contradictions are found, the response includes warning hints. Two memories
 
 ---
 
-## 4. SOURCE METADATA
+## 4. MANUAL PLAYBOOK COVERAGE
+
+| Scenario | Role |
+|----------|------|
+| `EX-022` | Direct manual validation for bidirectional causal-chain tracing |
+
+---
+
+## 5. SOURCE METADATA
 
 - Group: Analysis
 - Source feature title: Causal chain tracing (memory_drift_why)
