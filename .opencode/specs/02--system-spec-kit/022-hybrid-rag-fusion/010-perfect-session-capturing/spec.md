@@ -135,6 +135,7 @@ Make `.opencode` the canonical workspace identity, require a second target-spec 
 | `mcp_server/handlers/save/types.ts` | Modify | Carry sufficiency metadata through rejected save results |
 | `mcp_server/handlers/save/response-builder.ts` | Modify | Return insufficiency rejection details in MCP responses |
 | `mcp_server/lib/errors/recovery-hints.ts` | Modify | Add insufficiency-specific recovery guidance |
+| `mcp_server/lib/collab/shared-spaces.ts` | Modify | Remove the stale unused helper so package-wide MCP lint returns cleanly |
 | `scripts/tests/spec-affinity.vitest.ts` | Create | Target-spec affinity anchor coverage and same-workspace rejection |
 | `scripts/tests/workspace-identity.vitest.ts` | Create | `.opencode` equivalence coverage |
 | `scripts/tests/memory-sufficiency.vitest.ts` | Create | Shared sufficiency contract coverage |
@@ -145,6 +146,8 @@ Make `.opencode` the canonical workspace identity, require a second target-spec 
 | `scripts/tests/stateless-enrichment.vitest.ts` | Modify | Foreign-spec prompt fallback guardrail coverage |
 | `scripts/tests/memory-render-fixture.vitest.ts` | Modify | `V7` stateless tool-evidence regression coverage |
 | `scripts/tests/task-enrichment.vitest.ts` | Modify | Thin explicit JSON insufficiency rejection coverage |
+| `scripts/tests/test-bug-fixes.js` | Modify | Remap bug-fix assertions to current compiled modules and remove stale deferred skips |
+| `scripts/tests/test-integration.js` | Modify | Remap integration assertions to current entrypoints and replace obsolete module-not-found skips |
 | `mcp_server/tests/handler-memory-save.vitest.ts` | Modify | Dry-run and force-path insufficiency coverage |
 | `mcp_server/tests/recovery-hints.vitest.ts` | Modify | Insufficiency recovery-hint coverage |
 | Canonical spec markdown set | Modify | Final workspace-identity contract and current evidence |
@@ -206,10 +209,13 @@ Make `.opencode` the canonical workspace identity, require a second target-spec 
 - `memory_save({ force:true })` does not bypass insufficiency, alignment, or contamination blocks.
 - Tool-rich stateless captures no longer false-abort on `V7`.
 - Foreign-spec prompt fallback no longer contaminates generated memory content when relevance matching fails.
-- The targeted scripts Vitest suite passes with `12` files and `106` tests.
-- The targeted MCP save-quality suite passes with `6` files and `297` tests.
+- The targeted scripts Vitest suite passes with `14` files and `125` tests.
+- `test-bug-fixes.js` passes from `scripts/tests` with `27` passed, `0` failed, `0` skipped.
+- `test-integration.js` passes from `scripts/tests` with `36` passed, `0` failed, `0` skipped.
+- The targeted MCP save-quality suite passes with `6` files and `298` tests.
+- Package-clean MCP verification passes for `npm run lint`, `npm run build`, and `npm run test`.
 - `test-extractors-loaders.js` passes with `288` passed, `0` failed, `0` skipped.
-- Alignment drift passes with `222` scanned files and `0` findings.
+- Alignment drift passes with `226` scanned files and `0` findings.
 - Final spec validation returns zero errors and zero warnings.
 - Rich snake_case JSON saves index successfully, while thin snake_case JSON inputs fail `INSUFFICIENT_CONTEXT_ABORT` before file write.
 <!-- /ANCHOR:success -->
@@ -349,3 +355,5 @@ As a future operator, I want `M-007`, `NEW-133`, and the feature catalog to dist
 - `checklist`
 - `decision record`
 - `implementation summary`
+
+Scratch audit artifacts under `scratch/` are historical research only. Canonical completion evidence for spec `010` lives in this markdown set plus fresh verification command output.

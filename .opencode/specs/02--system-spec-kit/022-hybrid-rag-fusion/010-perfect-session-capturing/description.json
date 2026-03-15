@@ -27,13 +27,8 @@
     "02--system-spec-kit",
     "022-hybrid-rag-fusion"
   ],
-  "memorySequence": 28,
+  "memorySequence": 33,
   "memoryNameHistory": [
-    "15-03-26_10-11__validated-canonical-opencode-workspace-identity.md",
-    "15-03-26_10-11__routing-to-media-editor-let-me-locate-and-load.md",
-    "15-03-26_10-47__i-found-a-large-dirty-worktree-with-many.md",
-    "15-03-26_10-47__pass-automated-validation-is-strong-all-listed.md",
-    "15-03-26_10-47__pass-automated-checks-100-pass-rate-across-lint.md",
     "15-03-26_10-58__routing-to-media-editor-let-me-locate-and-load.md",
     "15-03-26_10-58__i-ve-read-all-8-files-this-is-a-large-batch-of.md",
     "15-03-26_10-58__i-found-a-large-dirty-worktree-with-many.md",
@@ -48,6 +43,11 @@
     "15-03-26_12-24__i-m-starting-with-the-repo-s-own-runbook-and.md",
     "15-03-26_12-25__how-is-used-later-in-the-template-to-match-th.md",
     "15-03-26_12-25__i-m-starting-with-the-repo-s-own-runbook-and.md",
-    "15-03-26_12-27__i-m-starting-with-the-repo-s-own-runbook-and.md"
+    "15-03-26_12-27__i-m-starting-with-the-repo-s-own-runbook-and.md",
+    "15-03-26_16-03__remapped-stale-regression-checks-to-live-compiled.md",
+    "15-03-26_16-05__remapped-stale-regression-checks-to-live-compiled.md",
+    "15-03-26_16-08__validated-010-perfect-session-capturing-package.md",
+    "15-03-26_16-08__i-reviewed-the-thin-capture-path-for-010-perfect.md",
+    "15-03-26_16-08__i-checked-the-save-path-for-010-perfect-session.md"
   ]
 }

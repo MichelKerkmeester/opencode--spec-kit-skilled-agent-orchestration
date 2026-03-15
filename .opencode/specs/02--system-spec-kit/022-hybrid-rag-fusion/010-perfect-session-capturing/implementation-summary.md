@@ -193,16 +193,18 @@ The finished save behavior is now:
 
 | Command | Result |
 |---------|--------|
-| `npm run lint` | PASS |
-| `npm run build` | PASS |
-| `npm test -- --run tests/spec-affinity.vitest.ts tests/claude-code-capture.vitest.ts tests/codex-cli-capture.vitest.ts tests/copilot-cli-capture.vitest.ts tests/gemini-cli-capture.vitest.ts tests/quality-scorer-calibration.vitest.ts tests/runtime-memory-inputs.vitest.ts tests/stateless-enrichment.vitest.ts tests/task-enrichment.vitest.ts tests/memory-render-fixture.vitest.ts tests/generate-context-cli-authority.vitest.ts tests/memory-sufficiency.vitest.ts` | PASS, `12` files and `106` tests passed |
-| `node test-extractors-loaders.js` | PASS, `288` passed, `0` failed, `0` skipped |
-| `node test-bug-fixes.js` | PASS, `16` passed, `0` failed, `10` skipped |
-| `node test-integration.js` | PASS, `26` passed, `0` failed, `2` skipped |
-| `node test-memory-quality-lane.js` | PASS |
+| `cd .opencode/skill/system-spec-kit/scripts && npm run check` | PASS |
+| `cd .opencode/skill/system-spec-kit/scripts && npm run build` | PASS |
+| `cd .opencode/skill/system-spec-kit/scripts && npm test -- --run tests/spec-affinity.vitest.ts tests/claude-code-capture.vitest.ts tests/codex-cli-capture.vitest.ts tests/copilot-cli-capture.vitest.ts tests/gemini-cli-capture.vitest.ts tests/quality-scorer-calibration.vitest.ts tests/runtime-memory-inputs.vitest.ts tests/stateless-enrichment.vitest.ts tests/task-enrichment.vitest.ts tests/memory-render-fixture.vitest.ts tests/generate-context-cli-authority.vitest.ts tests/memory-sufficiency.vitest.ts tests/memory-template-contract.vitest.ts tests/historical-memory-remediation.vitest.ts` | PASS, `14` files and `125` tests passed |
+| `cd .opencode/skill/system-spec-kit/scripts/tests && node test-extractors-loaders.js` | PASS, `288` passed, `0` failed, `0` skipped |
+| `cd .opencode/skill/system-spec-kit/scripts/tests && node test-bug-fixes.js` | PASS, `27` passed, `0` failed, `0` skipped |
+| `cd .opencode/skill/system-spec-kit/scripts/tests && node test-integration.js` | PASS, `36` passed, `0` failed, `0` skipped |
+| `cd .opencode/skill/system-spec-kit/scripts/tests && node test-memory-quality-lane.js` | PASS |
+| `cd .opencode/skill/system-spec-kit/mcp_server && npm run lint` | PASS |
 | `cd .opencode/skill/system-spec-kit/mcp_server && npm run build` | PASS |
-| `npm run test:core -- tests/handler-memory-save.vitest.ts tests/recovery-hints.vitest.ts tests/quality-loop.vitest.ts tests/save-quality-gate.vitest.ts tests/preflight.vitest.ts tests/integration-save-pipeline.vitest.ts` | PASS, `6` files and `297` tests passed |
-| `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit/scripts` | PASS, `222` scanned, `0` findings |
+| `cd .opencode/skill/system-spec-kit/mcp_server && npm run test:core -- tests/handler-memory-save.vitest.ts tests/recovery-hints.vitest.ts tests/quality-loop.vitest.ts tests/save-quality-gate.vitest.ts tests/preflight.vitest.ts tests/integration-save-pipeline.vitest.ts` | PASS, `6` files and `298` tests passed |
+| `cd .opencode/skill/system-spec-kit/mcp_server && npm run test` | PASS |
+| `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit/scripts` | PASS, `226` scanned, `0` findings |
 | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing` | PASS, `0` errors and `0` warnings |
 <!-- /ANCHOR:verification -->
 
@@ -223,6 +225,50 @@ The finished save behavior is now:
 - Feature-catalog entry for `memory_save` dry-run preflight
 - Manual-testing playbook scenario `M-007`
 - Manual-testing playbook scenario `NEW-133`
+- Manual-testing playbook scenario `NEW-149`
 - `scripts/core/workflow.ts` (ANCHOR-preserving HTML comment regex)
 - `context_template` (shared trigger-phrase YAML rendering with empty-list fallback)
 <!-- /ANCHOR:docs -->
+
+---
+
+<!-- ANCHOR:remediation -->
+## 7. Remediation Pass: GPT-5.4 Review Findings (2026-03-15)
+
+A GPT-5.4 code review and ultra-think analysis identified 6 issues (1 P0, 3 P1, 2 P2) in the spec folder canonicalization implementation. All findings were remediated in a single pass.
+
+### P0: Inner-Symlink Tests Prove the Bug
+
+Added 4 tests to `mcp_server/tests/spec-folder-canonicalization.vitest.ts` that create a symlink **inside** `/specs/` aliasing a spec folder name. Without canonicalization, `extractSpecFolder("specs/current/memory/ctx.md")` returns `"current"` (wrong); with canonicalization it returns `"02--domain/010-feature"` (correct). One test explicitly demonstrates the naive regex producing the wrong result.
+
+### P1-1: Migration Runs Once via Schema v23
+
+Bumped `SCHEMA_VERSION` from 22 to 23 in `mcp_server/lib/search/vector-index-schema.ts`. The one-time re-canonicalization of `spec_folder` values now runs as a proper schema migration instead of on every startup via `normalizeStoredSpecFolders()`.
+
+### P1-2: SQL Guard Replaced with JS Filter
+
+Migration v23 selects all rows with non-empty `file_path`, then filters in JavaScript with normalized separators (`/specs/` or `specs/` prefix) instead of using `LIKE '%/specs/%'` which missed backslash and relative paths.
+
+### P1-3: `session_state.spec_folder` Migrated
+
+Added `migrateSessionStateSpecFolders()` helper that propagates the old-to-new spec_folder mapping from `memory_index` to `session_state`, skipping ambiguous 1:N mappings.
+
+### P2-1: Error Handling Narrowed to ENOENT/ENOTDIR
+
+Added `isMissingPathError()` helper in `mcp_server/lib/utils/canonical-path.ts`. The parent-walk fallback now only triggers for ENOENT/ENOTDIR. EACCES, ELOOP, and EPERM return `path.resolve()` without parent-walk, preserving the no-throw API contract.
+
+### P2-2: Fallback Uses `normalizedPath`
+
+Changed `memory-parser.ts:311` from `path.dirname(path.dirname(filePath))` to `path.dirname(path.dirname(normalizedPath))` so the last-resort fallback also uses the canonicalized path.
+
+### Remediation Verification
+
+| Command | Result |
+|---------|--------|
+| `npx tsc --noEmit` (mcp_server) | PASS, zero errors |
+| `npx vitest run tests/spec-folder-canonicalization.vitest.ts` (mcp_server) | PASS, 20 tests (7 new) |
+| `npx vitest run` (mcp_server full suite) | PASS, 282 files, 7,787 tests, 0 failures |
+<!-- /ANCHOR:remediation -->
+
+Scratch artifacts under `scratch/` remain historical investigation notes only. Canonical closure evidence lives in the validated spec markdown set and the verification commands recorded above.
+For historical remediation, apply-mode evidence must be read from the final canonical manifest and summary artifacts; preserved `*.pre-apply.*` sidecars are pre-repair snapshots only.

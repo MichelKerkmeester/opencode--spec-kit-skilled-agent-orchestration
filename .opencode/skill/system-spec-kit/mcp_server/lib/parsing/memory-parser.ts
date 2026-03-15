@@ -9,7 +9,7 @@ import crypto from 'crypto';
 
 // Internal modules
 import { escapeRegex } from '../utils/path-security';
-import { getCanonicalPathKey } from '../utils/canonical-path';
+import { getCanonicalPathKey, canonicalizeForSpecFolderExtraction } from '../utils/canonical-path';
 import { getDefaultTierForDocumentType, isValidTier, normalizeTier } from '../scoring/importance-tiers';
 // Import type inference for memory_type classification
 import { inferMemoryType } from '../config/type-inference';
@@ -268,8 +268,9 @@ export function extractDocumentType(filePath: string): string {
 
 /** Extract spec folder name from file path */
 export function extractSpecFolder(filePath: string): string {
-  // Handle UNC paths (\\server\share or //server/share)
-  let normalizedPath = filePath;
+  // Canonicalize first so symlinked paths (e.g. .claude/specs → .opencode/specs)
+  // produce the same spec_folder as the real path.
+  let normalizedPath = canonicalizeForSpecFolderExtraction(filePath);
   if (normalizedPath.startsWith('\\\\') || normalizedPath.startsWith('//')) {
     // Remove UNC prefix for pattern matching
     normalizedPath = normalizedPath.replace(/^(\\\\|\/\/)[^/\\]+[/\\][^/\\]+/, '');
@@ -306,8 +307,8 @@ export function extractSpecFolder(filePath: string): string {
     }
   }
 
-  // Last resort: use parent directory name
-  const parentDir = path.dirname(path.dirname(filePath));
+  // Last resort: use parent directory name (use normalizedPath, not raw filePath)
+  const parentDir = path.dirname(path.dirname(normalizedPath));
   return path.basename(parentDir);
 }
 

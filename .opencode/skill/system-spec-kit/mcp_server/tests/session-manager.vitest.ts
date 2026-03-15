@@ -3,6 +3,7 @@ import { describe, it, expect, beforeAll, beforeEach, afterAll } from 'vitest';
 
 import Database from 'better-sqlite3';
 import * as sessionManager from '../lib/session/session-manager';
+import { extractSpecFolder } from '../lib/parsing/memory-parser';
 
 // TESTS: SESSION MANAGER (T001-T008)
 // T001-T008: Core session deduplication functionality
@@ -364,6 +365,63 @@ describe('Session Manager Tests (T001-T008)', () => {
 
       const { dedupStats: noSavingsStats }: FilterResult = sessionManager.filterSearchResults(sessionId, searchResults);
       expect(noSavingsStats.tokenSavingsEstimate).toBe('0');
+    });
+  });
+
+  // T009: CROSS-PATH SESSION CONSISTENCY
+  describe('T009: Cross-path session consistency via spec folder canonicalization', () => {
+    it('T009: extractSpecFolder produces same result for symlink and real paths', () => {
+      // Simulates the scenario where the same memory file is accessed
+      // via .claude/specs (symlink) and .opencode/specs (real path).
+      // Both should produce the same spec_folder for session state consistency.
+      const fs = require('fs');
+      const path = require('path');
+      const os = require('os');
+
+      const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'sess-cross-'));
+      try {
+        // Create real structure
+        const realMemDir = path.join(tmpDir, '.opencode', 'specs', '010-test', 'memory');
+        fs.mkdirSync(realMemDir, { recursive: true });
+        fs.writeFileSync(path.join(realMemDir, 'session.md'), 'content');
+
+        // Create symlink
+        const claudeDir = path.join(tmpDir, '.claude');
+        fs.mkdirSync(claudeDir, { recursive: true });
+        fs.symlinkSync(path.join('..', '.opencode', 'specs'), path.join(claudeDir, 'specs'));
+
+        const realPath = path.join(tmpDir, '.opencode', 'specs', '010-test', 'memory', 'session.md');
+        const symPath = path.join(tmpDir, '.claude', 'specs', '010-test', 'memory', 'session.md');
+
+        const specReal = extractSpecFolder(realPath);
+        const specSym = extractSpecFolder(symPath);
+
+        // Critical: both paths must yield the same spec_folder
+        expect(specReal).toBe(specSym);
+        expect(specReal).toBe('010-test');
+      } finally {
+        fs.rmSync(tmpDir, { recursive: true, force: true });
+      }
+    });
+
+    it('T009: Hash consistency across symlink paths', () => {
+      const memory1: MemoryObject = createMemory({
+        id: 700,
+        file_path: '/project/.opencode/specs/010-test/memory/ctx.md',
+        anchorId: 'cross-path-1',
+        content_hash: 'cross-path-hash-123',
+      });
+      const memory2: MemoryObject = createMemory({
+        id: 700,
+        file_path: '/project/.claude/specs/010-test/memory/ctx.md',
+        anchorId: 'cross-path-1',
+        content_hash: 'cross-path-hash-123',
+      });
+
+      // Same content_hash → same dedup hash regardless of path
+      const hash1 = sessionManager.generateMemoryHash(memory1);
+      const hash2 = sessionManager.generateMemoryHash(memory2);
+      expect(hash1).toBe(hash2);
     });
   });
 });

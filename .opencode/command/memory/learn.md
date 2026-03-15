@@ -38,7 +38,7 @@ IF $ARGUMENTS contains recognized input:
 
 ---
 
-# /memory:learn, Constitutional Memory Manager
+# /memory:learn — Constitutional Memory Manager
 
 Create, list, edit, and remove **constitutional memories**, the highest-tier rules that surface at the top of every search result, never decay, and carry a 3.0x search boost.
 

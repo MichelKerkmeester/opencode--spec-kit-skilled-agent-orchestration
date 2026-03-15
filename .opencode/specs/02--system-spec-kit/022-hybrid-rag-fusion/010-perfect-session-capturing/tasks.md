@@ -58,15 +58,17 @@
 <!-- ANCHOR:verification -->
 ## 2. Verification
 
-- [x] Run `npm run lint`.
-- [x] Run `npm run build`.
-- [x] Run the targeted scripts Vitest suite including `memory-sufficiency.vitest.ts`.
-- [x] Run `node test-extractors-loaders.js`.
-- [x] Run `node test-bug-fixes.js`.
-- [x] Run `node test-integration.js`.
-- [x] Run `node test-memory-quality-lane.js`.
+- [x] Run `cd .opencode/skill/system-spec-kit/scripts && npm run check`.
+- [x] Run `cd .opencode/skill/system-spec-kit/scripts && npm run build`.
+- [x] Run the expanded targeted scripts Vitest suite including `memory-sufficiency.vitest.ts`, `memory-template-contract.vitest.ts`, and `historical-memory-remediation.vitest.ts`.
+- [x] Run `cd .opencode/skill/system-spec-kit/scripts/tests && node test-extractors-loaders.js`.
+- [x] Run `cd .opencode/skill/system-spec-kit/scripts/tests && node test-bug-fixes.js`.
+- [x] Run `cd .opencode/skill/system-spec-kit/scripts/tests && node test-integration.js`.
+- [x] Run `cd .opencode/skill/system-spec-kit/scripts/tests && node test-memory-quality-lane.js`.
+- [x] Run `cd .opencode/skill/system-spec-kit/mcp_server && npm run lint`.
 - [x] Run `cd .opencode/skill/system-spec-kit/mcp_server && npm run build`.
 - [x] Run the targeted MCP save-quality suite.
+- [x] Run `cd .opencode/skill/system-spec-kit/mcp_server && npm run test`.
 - [x] Run alignment drift verification.
 - [x] Run final spec validation after canonical doc refresh.
 <!-- /ANCHOR:verification -->
@@ -115,6 +117,7 @@
 
 - Report code-path fixes before doc truth updates.
 - Report exact counts and dates for rerun verification commands.
+- Treat `scratch/` artifacts as historical research, not canonical completion evidence.
 - Do not claim completion before zero-warning spec validation.
 
 ### Blocked Task Protocol
@@ -124,8 +127,32 @@
 
 ---
 
+<!-- ANCHOR:remediation -->
+## 5. Remediation: GPT-5.4 Review Findings
+
+### Remediation Tasks
+
+- [x] P2-2: Fix fallback in `memory-parser.ts:311` to use `normalizedPath` instead of raw `filePath`.
+- [x] P2-1: Add `isMissingPathError()` helper in `canonical-path.ts` and narrow catch to ENOENT/ENOTDIR only.
+- [x] P0: Add 4 inner-symlink tests proving the bug exists without canonicalization and is fixed with it.
+- [x] P2-1: Add ELOOP regression test using real circular symlinks.
+- [x] P2-2: Add backslash fallback regression test.
+- [x] P1-1: Bump `SCHEMA_VERSION` to 23 so re-canonicalization runs once as a migration.
+- [x] P1-2: Replace SQL `LIKE '%/specs/%'` with JS-side normalized filter in migration v23.
+- [x] P1-3: Add `migrateSessionStateSpecFolders()` to propagate old→new mapping to `session_state`.
+- [x] Remove `normalizeStoredSpecFolders()` from `create_schema` hot path (replaced by v23 migration).
+
+### Remediation Verification
+
+- [x] `npx tsc --noEmit` in `mcp_server` — zero errors.
+- [x] `npx vitest run tests/spec-folder-canonicalization.vitest.ts` — 20 tests pass (7 new).
+- [x] `npx vitest run` full MCP suite — 282 files, 7,787 tests, 0 failures.
+<!-- /ANCHOR:remediation -->
+
+---
+
 <!-- ANCHOR:completion -->
-## 5. Completion Criteria
+## 6. Completion Criteria
 
 - [x] The native support matrix still includes `OpenCode`, `Claude`, `Codex`, `Copilot`, and `Gemini`.
 - [x] Canonical `.opencode` workspace identity is enforced across all native backends.

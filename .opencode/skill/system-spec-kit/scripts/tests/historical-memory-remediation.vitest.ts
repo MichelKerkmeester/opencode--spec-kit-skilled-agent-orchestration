@@ -2,12 +2,13 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import {
   auditHistoricalMemoryFile,
   buildHistoricalMemoryAuditManifest,
   repairHistoricalMemoryContent,
+  runHistoricalMemoryRemediationCli,
   runHistoricalMemoryRemediation,
 } from '../memory/historical-memory-remediation';
 import { validateMemoryTemplateContract } from '../../shared/parsing/memory-template-contract';
@@ -414,6 +415,174 @@ describe('historical memory remediation audit', () => {
     });
     expect(postApplyManifest.summary.clean).toBe(1);
     expect(postApplyManifest.summary.repair_in_place).toBe(0);
+  });
+
+  it('preserves a pre-apply snapshot while canonical reports reflect post-apply state', () => {
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'historical-remediation-'));
+    tempDirs.push(tempRoot);
+
+    const specFolder = path.join(tempRoot, '013-outsourced-agent-memory');
+    const memoryDir = path.join(specFolder, 'memory');
+    const reportDir = path.join(tempRoot, 'reports');
+    const filePath = path.join(memoryDir, 'repair-me.md');
+
+    fs.mkdirSync(memoryDir, { recursive: true });
+    fs.writeFileSync(filePath, [
+      '---',
+      'title: "Repair me"',
+      'description: "Session context memory template for Spec Kit indexing."',
+      'trigger_phrases:',
+      '  - "memory dashboard"',
+      '  - "session summary"',
+      '  - "context template"',
+      'importance_tier: "normal"',
+      'contextType: "implementation"',
+      '---',
+      '',
+      '# Repair me',
+      '',
+      '**Summary:** Preserved a specific loader analysis with durable content.',
+      '',
+      '## SESSION SUMMARY',
+      '',
+      '| **Meta Data** | **Value** |',
+      '|:--------------|:----------|',
+      '| Total Messages | 3 |',
+      '| Tool Executions | 2 |',
+      '| Decisions Made | 1 |',
+      '',
+      '## CONTINUE SESSION',
+      '',
+      'Continue the historical repair test.',
+      '',
+      '## PROJECT STATE SNAPSHOT',
+      '',
+      'Historical repair state.',
+      '',
+      '## 2. DECISIONS',
+      '',
+      'Repair in place should keep durable memories active.',
+      '',
+      '## 3. CONVERSATION',
+      '',
+      'Repairable historical memory content.',
+      '',
+      '## RECOVERY HINTS',
+      '',
+      'No recovery work required.',
+      '',
+      '## MEMORY METADATA',
+      '',
+      '```yaml',
+      'session_id: "repair-me"',
+      '```',
+    ].join('\n'));
+
+    const result = runHistoricalMemoryRemediationCli({
+      root: tempRoot,
+      reportDir,
+      apply: true,
+    });
+
+    expect(result.preApplyManifest.summary.repair_in_place).toBe(1);
+    expect(result.postApplyManifest?.summary.clean).toBe(1);
+    expect(result.outputManifest.summary.clean).toBe(1);
+
+    const preApplyManifest = JSON.parse(fs.readFileSync(path.join(reportDir, 'manifest.pre-apply.json'), 'utf-8')) as {
+      summary: { repair_in_place: number };
+    };
+    const postApplyManifest = JSON.parse(fs.readFileSync(path.join(reportDir, 'manifest.json'), 'utf-8')) as {
+      summary: { clean: number; repair_in_place: number };
+    };
+    const preApplySummary = fs.readFileSync(path.join(reportDir, 'summary.pre-apply.md'), 'utf-8');
+    const postApplySummary = fs.readFileSync(path.join(reportDir, 'summary.md'), 'utf-8');
+
+    expect(preApplyManifest.summary.repair_in_place).toBe(1);
+    expect(postApplyManifest.summary.clean).toBe(1);
+    expect(postApplyManifest.summary.repair_in_place).toBe(0);
+    expect(preApplySummary).toContain('- Repair in place: 1');
+    expect(postApplySummary).toContain('- Clean: 1');
+    expect(postApplySummary).toContain('- Repair in place: 0');
+  });
+
+  it('treats the post-apply manifest as the CLI output truth', () => {
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'historical-remediation-'));
+    tempDirs.push(tempRoot);
+
+    const specFolder = path.join(tempRoot, '013-outsourced-agent-memory');
+    const memoryDir = path.join(specFolder, 'memory');
+    const reportDir = path.join(tempRoot, 'reports');
+    const filePath = path.join(memoryDir, 'repair-me.md');
+
+    fs.mkdirSync(memoryDir, { recursive: true });
+    fs.writeFileSync(filePath, [
+      '---',
+      'title: "Repair me"',
+      'description: "Session context memory template for Spec Kit indexing."',
+      'trigger_phrases:',
+      '  - "memory dashboard"',
+      '  - "session summary"',
+      '  - "context template"',
+      'importance_tier: "normal"',
+      'contextType: "implementation"',
+      '---',
+      '',
+      '# Repair me',
+      '',
+      '**Summary:** Preserved a specific loader analysis with durable content.',
+      '',
+      '## SESSION SUMMARY',
+      '',
+      '| **Meta Data** | **Value** |',
+      '|:--------------|:----------|',
+      '| Total Messages | 3 |',
+      '| Tool Executions | 2 |',
+      '| Decisions Made | 1 |',
+      '',
+      '## CONTINUE SESSION',
+      '',
+      'Continue the historical repair test.',
+      '',
+      '## PROJECT STATE SNAPSHOT',
+      '',
+      'Historical repair state.',
+      '',
+      '## 2. DECISIONS',
+      '',
+      'Repair in place should keep durable memories active.',
+      '',
+      '## 3. CONVERSATION',
+      '',
+      'Repairable historical memory content.',
+      '',
+      '## RECOVERY HINTS',
+      '',
+      'No recovery work required.',
+      '',
+      '## MEMORY METADATA',
+      '',
+      '```yaml',
+      'session_id: "repair-me"',
+      '```',
+    ].join('\n'));
+
+    const consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+
+    try {
+      const result = runHistoricalMemoryRemediationCli({
+        root: tempRoot,
+        reportDir,
+        apply: true,
+      });
+      const expectedSummary = JSON.stringify(result.postApplyManifest?.summary, null, 2);
+
+      console.log(JSON.stringify(result.outputManifest.summary, null, 2));
+
+      expect(consoleLogSpy).toHaveBeenLastCalledWith(expectedSummary);
+      expect(result.outputManifest.summary).toEqual(result.postApplyManifest?.summary);
+    } finally {
+      consoleLogSpy.mockRestore();
+    }
   });
 
   it('quarantines low-signal memories instead of repairing them in place', () => {

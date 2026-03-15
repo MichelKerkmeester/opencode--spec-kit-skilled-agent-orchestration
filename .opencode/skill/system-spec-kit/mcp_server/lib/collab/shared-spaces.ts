@@ -91,19 +91,6 @@ const HIGH_RISK_CONFLICT_KINDS = new Set([
   'semantic_divergence',
 ]);
 
-function isDefaultOnFlagEnabled(...flagNames: string[]): boolean {
-  for (const flagName of flagNames) {
-    const rawValue = process.env[flagName]?.trim().toLowerCase();
-    if (rawValue === 'false' || rawValue === '0') {
-      return false;
-    }
-    if (rawValue === 'true' || rawValue === '1') {
-      return true;
-    }
-  }
-  return true;
-}
-
 function isDefaultOffFlagEnabled(...flagNames: string[]): boolean {
   for (const flagName of flagNames) {
     const rawValue = process.env[flagName]?.trim().toLowerCase();

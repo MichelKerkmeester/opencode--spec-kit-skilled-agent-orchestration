@@ -8,18 +8,22 @@
 <!-- ANCHOR:evidence -->
 ## 1. Evidence Snapshot
 
-- `npm run lint` in `.opencode/skill/system-spec-kit/scripts` passed on 2026-03-15. [Evidence: TypeScript/no-emit lint exited `0`.]
+- `npm run check` in `.opencode/skill/system-spec-kit/scripts` passed on 2026-03-15. [Evidence: check pipeline exited `0`.]
 - `npm run build` in `.opencode/skill/system-spec-kit/scripts` passed on 2026-03-15. [Evidence: `tsc --build` exited `0`.]
-- Targeted scripts Vitest passed on 2026-03-15. [Evidence: `12` files, `106` tests passed.]
-- `node test-extractors-loaders.js` passed on 2026-03-15. [Evidence: `288` passed, `0` failed, `0` skipped.]
-- `node test-bug-fixes.js` passed on 2026-03-15. [Evidence: `16` passed, `0` failed, `10` skipped.]
-- `node test-integration.js` passed on 2026-03-15. [Evidence: `26` passed, `0` failed, `2` skipped.]
-- `node test-memory-quality-lane.js` passed on 2026-03-15. [Evidence: `test-memory-quality-lane: PASS`.]
-- Targeted MCP save-quality Vitest passed on 2026-03-15. [Evidence: `6` files, `297` tests passed.]
+- Targeted scripts Vitest passed on 2026-03-15. [Evidence: `14` files, `125` tests passed.]
+- `cd .opencode/skill/system-spec-kit/scripts/tests && node test-extractors-loaders.js` passed on 2026-03-15. [Evidence: `288` passed, `0` failed, `0` skipped.]
+- `cd .opencode/skill/system-spec-kit/scripts/tests && node test-bug-fixes.js` passed on 2026-03-15. [Evidence: `27` passed, `0` failed, `0` skipped.]
+- `cd .opencode/skill/system-spec-kit/scripts/tests && node test-integration.js` passed on 2026-03-15. [Evidence: `36` passed, `0` failed, `0` skipped.]
+- `cd .opencode/skill/system-spec-kit/scripts/tests && node test-memory-quality-lane.js` passed on 2026-03-15. [Evidence: `test-memory-quality-lane: PASS`.]
+- `npm run lint` in `.opencode/skill/system-spec-kit/mcp_server` passed on 2026-03-15. [Evidence: package-wide MCP lint exited `0`.]
+- Targeted MCP save-quality Vitest passed on 2026-03-15. [Evidence: `6` files, `298` tests passed.]
 - `npm run build` in `.opencode/skill/system-spec-kit/mcp_server` passed on 2026-03-15. [Evidence: `tsc --build` exited `0`.]
-- Alignment drift verification passed on 2026-03-15. [Evidence: `222` files scanned, `0` findings.]
+- `npm run test` in `.opencode/skill/system-spec-kit/mcp_server` passed on 2026-03-15. [Evidence: full MCP package suite exited `0`.]
+- Alignment drift verification passed on 2026-03-15. [Evidence: `226` files scanned, `0` findings.]
 - Final spec validation passed on 2026-03-15. [Evidence: `spec/validate.sh` returned `0` errors and `0` warnings.]
 <!-- /ANCHOR:evidence -->
+
+Scratch audit artifacts in `scratch/` are historical research only. Canonical closure evidence for spec `010` is limited to this checklist, the rest of the canonical markdown set, and the rerun commands recorded here.
 
 ---
 
@@ -65,8 +69,25 @@
 ## 4. P2 Closure
 
 - [x] [P2] Canonical `010` docs now describe discovery, alignment, insufficiency, and contamination as separate gates. [Evidence: spec, plan, tasks, decision record, and implementation summary all distinguish those stages explicitly.]
-- [x] [P2] Manual verification guidance matches actual repo commands. [Evidence: `M-007` uses `npm test` for Vitest, direct `node` commands from `scripts/tests/`, and the final `spec/validate.sh` invocation; `NEW-133` documents `memory_save` dry-run and insufficiency behavior.]
-- [x] [P2] Verification counts in spec `010` are current. [Evidence: targeted scripts suite (`12` files, `106` tests), targeted MCP suite (`6` files, `297` tests), JS suites, and alignment counts were refreshed to the 2026-03-15 rerun results.]
+- [x] [P2] Manual verification guidance matches actual repo commands. [Evidence: `M-007` now uses `scripts/tests` for the JS suites, includes scripts `check`/build, and records the package-clean MCP lint/build/test bar; `NEW-133` documents `memory_save` dry-run and insufficiency behavior.]
+- [x] [P2] Verification counts in spec `010` are current. [Evidence: targeted scripts suite (`14` files, `125` tests), targeted MCP suite (`6` files, `298` tests), JS suites, and alignment counts were refreshed to the 2026-03-15 rerun results.]
+- [x] [P2] Package-clean MCP closure evidence is part of the canonical bar. [Evidence: the canonical spec set, feature catalog, and `M-007` now record `mcp_server` lint/build/full-test verification rather than relying only on the targeted save suite.]
 - [x] [P2] Live manual `M-007` evidence matches the final written contract. [Evidence: 2026-03-15 manual reruns produced `#4347` for rich snake_case JSON, `#4348` for Copilot, `#4349` for Gemini, `#4351` for Claude, `#4353` for Codex, `ALIGNMENT_BLOCK` for OpenCode off-spec direct mode, and `NO_DATA_AVAILABLE` for the empty-home run.]
 - [x] [P2] No deferred save-quality or native-capture work remains in canonical docs for this feature. [Evidence: canonical markdown now treats workspace identity, spec affinity, and cross-platform sufficiency as shipped behavior rather than pending work.]
 <!-- /ANCHOR:p2 -->
+
+---
+
+<!-- ANCHOR:remediation -->
+## 5. Remediation Pass: GPT-5.4 Review Findings
+
+- [x] [P0] Inner-symlink tests prove the canonicalization bug and its fix. [Evidence: 4 new tests in `spec-folder-canonicalization.vitest.ts` create a symlink inside `/specs/` that aliases a spec folder name; naive regex returns `"current"` (wrong), `extractSpecFolder` returns `"02--domain/010-feature"` (correct).]
+- [x] [P1] Migration runs once via schema v23, not on every startup. [Evidence: `SCHEMA_VERSION` bumped to 23; `normalizeStoredSpecFolders()` removed from `create_schema`; migration v23 runs re-canonicalization inside `run_migrations` transaction.]
+- [x] [P1] SQL guard replaced with JS-side normalized filter. [Evidence: migration v23 selects all rows then filters with `normalized.includes('/specs/')` instead of SQL `LIKE '%/specs/%'`.]
+- [x] [P1] `session_state.spec_folder` migrated via old→new mapping. [Evidence: `migrateSessionStateSpecFolders()` added and called from migration v23; skips ambiguous 1:N mappings safely.]
+- [x] [P2] Error handling narrowed to ENOENT/ENOTDIR for parent-walk. [Evidence: `isMissingPathError()` helper added; ELOOP test passes with real circular symlinks returning resolved path without parent-walk.]
+- [x] [P2] Fallback uses canonicalized `normalizedPath`. [Evidence: `memory-parser.ts:311` changed from `filePath` to `normalizedPath`; backslash test confirms forward-slash output.]
+- [x] [P2] TypeScript compiles cleanly after remediation. [Evidence: `npx tsc --noEmit` in `mcp_server` — zero errors.]
+- [x] [P2] All canonicalization tests pass including 7 new tests. [Evidence: `npx vitest run tests/spec-folder-canonicalization.vitest.ts` — 20 tests, 0 failures.]
+- [x] [P2] Full MCP suite passes with zero regressions. [Evidence: `npx vitest run` — 282 files, 7,787 tests passed, 0 failures.]
+<!-- /ANCHOR:remediation -->

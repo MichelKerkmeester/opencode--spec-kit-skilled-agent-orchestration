@@ -130,6 +130,11 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/historical-memory-remed
   --root ./.opencode/specs --report-dir /tmp/memory-remediation-audit
 ```
 
+When `historical-memory-remediation.js` runs with `--apply`, the canonical
+`manifest.json` and `summary.md` in `--report-dir` now describe the final
+post-apply state. The pre-apply audit is preserved alongside them as
+`manifest.pre-apply.json` and `summary.pre-apply.md`.
+
 To target specific roots, pass `--roots`:
 
 ```bash

@@ -831,7 +831,7 @@ Right now, the memory server starts fresh every time it is called and shuts down
 
 ### Backend storage adapter abstraction
 
-Right now the system is tightly connected to one specific type of database. This planned feature would add a flexible layer so the database could be swapped out for a different one without rewriting the rest of the system. It is deferred because the current database handles the workload fine, and building the swap layer before it is needed would be premature effort.
+The system now has a small adapter layer (`IVectorStore` / `SQLiteVectorStore`) that defines the vector-storage contract and keeps the storage implementation swappable at the vector boundary. It is like changing from plugging appliances straight into the wall to using a standardized socket adapter first. SQLite remains the concrete backend, but the coupling point is cleaner and easier to replace later if scale ever demands it.
 
 ### Cross-process DB hot rebinding
 

@@ -10,6 +10,7 @@ import * as os from 'os';
 import * as path from 'path';
 import { validateFilePath } from '@spec-kit/shared/utils/path-security';
 import { getCanonicalPathKey } from '../utils/canonical-path';
+import { extractSpecFolder } from '../parsing/memory-parser';
 import { createLogger } from '../utils/logger';
 import { initEmbeddingCache } from '../cache/embedding-cache';
 import {
@@ -137,8 +138,9 @@ function getMigrationAllowedBasePaths(): string[] {
 // V20: memory_summaries + memory_entities + entity_catalog (R8/R10/S5)
 // V21: Add learned_triggers column (R11 learned feedback)
 // V22: Step 2 memory lineage tables + active projection support
+// V23: One-time spec_folder re-canonicalization + session_state migration
 /** Current schema version for vector-index migrations. */
-export const SCHEMA_VERSION = 22;
+export const SCHEMA_VERSION = 23;
 
 // Run schema migrations from one version to another
 // Each migration is idempotent - safe to run multiple times
@@ -828,6 +830,45 @@ export function run_migrations(database: Database.Database, from_version: number
         console.warn('[VectorIndex] Migration v22 warning (memory lineage):', get_error_message(e));
       }
     }
+  };
+
+  // V22 -> V23: One-time re-canonicalization of spec_folder values
+  migrations[23] = () => {
+    const rows = database.prepare(`
+      SELECT id, file_path, spec_folder FROM memory_index
+      WHERE file_path IS NOT NULL AND file_path != ''
+    `).all() as Array<{ id: number; file_path: string; spec_folder: string }>;
+
+    // P1-2 fix: Filter in JS with normalized separators (not SQL LIKE)
+    const specRows = rows.filter(row => {
+      const normalized = row.file_path.replace(/\\/g, '/');
+      return normalized.includes('/specs/') || normalized.startsWith('specs/');
+    });
+
+    const updates: Array<{ id: number; canonical: string; oldSpecFolder: string }> = [];
+    for (const row of specRows) {
+      try {
+        const canonical = extractSpecFolder(row.file_path);
+        if (canonical !== row.spec_folder) {
+          updates.push({ id: row.id, canonical, oldSpecFolder: row.spec_folder });
+        }
+      } catch {
+        logger.warn(`Migration v23: Skipping row ${row.id} — canonicalization failed`);
+      }
+    }
+
+    if (updates.length > 0) {
+      const updateStmt = database.prepare(
+        'UPDATE memory_index SET spec_folder = ? WHERE id = ? AND spec_folder = ?'
+      );
+      for (const u of updates) {
+        updateStmt.run(u.canonical, u.id, u.oldSpecFolder);
+      }
+      logger.info(`Migration v23: Re-canonicalized spec_folder for ${updates.length} memory rows`);
+    }
+
+    // P1-3 fix: Migrate session_state.spec_folder using old→new mapping
+    migrateSessionStateSpecFolders(database, updates);
   };
 
   // BUG-019 FIX: Wrap all migrations in a transaction for atomicity
@@ -1711,6 +1752,49 @@ export function ensureCompanionTables(database: Database.Database): void {
     CREATE INDEX IF NOT EXISTS idx_conflicts_memory ON memory_conflicts(existing_memory_id);
     CREATE INDEX IF NOT EXISTS idx_conflicts_timestamp ON memory_conflicts(timestamp DESC);
   `);
+}
+
+/**
+ * Migrate session_state.spec_folder values using the old→new mapping
+ * produced by the memory_index re-canonicalization in migration v23.
+ */
+function migrateSessionStateSpecFolders(
+  database: Database.Database,
+  updates: Array<{ canonical: string; oldSpecFolder: string }>
+): void {
+  if (!hasTable(database, 'session_state')) return;
+  if (updates.length === 0) return;
+
+  // Build old→new mapping, keep only unambiguous 1:1 mappings
+  const mapping = new Map<string, Set<string>>();
+  for (const u of updates) {
+    if (!mapping.has(u.oldSpecFolder)) mapping.set(u.oldSpecFolder, new Set());
+    mapping.get(u.oldSpecFolder)!.add(u.canonical);
+  }
+
+  const updateStmt = database.prepare(
+    'UPDATE session_state SET spec_folder = ? WHERE session_id = ? AND spec_folder = ?'
+  );
+
+  const sessionRows = database.prepare(
+    `SELECT session_id, spec_folder FROM session_state WHERE spec_folder IS NOT NULL`
+  ).all() as Array<{ session_id: string; spec_folder: string }>;
+
+  let updated = 0;
+  for (const row of sessionRows) {
+    const targets = mapping.get(row.spec_folder);
+    if (targets && targets.size === 1) {
+      const canonical = [...targets][0];
+      updateStmt.run(canonical, row.session_id, row.spec_folder);
+      updated++;
+    } else if (targets && targets.size > 1) {
+      logger.warn(`Migration v23: Ambiguous session_state mapping for "${row.spec_folder}". Skipping.`);
+    }
+  }
+
+  if (updated > 0) {
+    logger.info(`Migration v23: Updated spec_folder for ${updated} session_state rows`);
+  }
 }
 
 // Create database schema

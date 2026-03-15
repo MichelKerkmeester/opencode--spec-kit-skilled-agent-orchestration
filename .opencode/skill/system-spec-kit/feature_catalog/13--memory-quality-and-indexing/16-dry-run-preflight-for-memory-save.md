@@ -47,7 +47,7 @@ In non-dry-run mode, the same preflight checks run first (unless `skipPreflight=
 
 ### Validation coverage snapshot
 
-- Targeted save-quality rerun on 2026-03-15 passed with `6` files and `297` tests.
+- Targeted save-quality rerun on 2026-03-15 passed with `6` files and `298` tests.
 - That scoped rerun included:
   - `tests/handler-memory-save.vitest.ts`
   - `tests/recovery-hints.vitest.ts`

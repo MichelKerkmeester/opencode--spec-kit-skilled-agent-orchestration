@@ -12,16 +12,113 @@ const TEST_DB_PATH = path.join(TEST_DB_DIR, 'speckit-memory.db');
 const FIXTURE_ROOT = path.join(process.cwd(), 'tmp-test-fixtures', 'specs', '999-memory-save-ux-fixtures');
 
 function buildMemoryContent(title: string, body: string): string {
+  const titleSlug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
   return `---
 title: "${title}"
+description: "Durable regression fixture for memory_save UX contract coverage."
 trigger_phrases:
-  - "${title.toLowerCase().replace(/\s+/g, '-')}"
+  - "${titleSlug}"
+  - "memory-save-ux"
 importance_tier: "normal"
-contextType: "general"
+contextType: "implementation"
 ---
+
 # ${title}
 
+## SESSION SUMMARY
+
+| **Meta Data** | **Value** |
+|:--------------|:----------|
+| Total Messages | 4 |
+| Fixture Type | memory-save-ux |
+
+<!-- ANCHOR:continue-session -->
+<a id="continue-session"></a>
+
+## CONTINUE SESSION
+
+Continue validating the \`memory_save\` UX contract with a fixture that is rich enough to satisfy the durable-memory gate while still exercising duplicate no-op, deferred embedding, and post-mutation feedback behavior.
+
+<!-- /ANCHOR:continue-session -->
+
+<!-- ANCHOR:project-state-snapshot -->
+<a id="project-state-snapshot"></a>
+
+## PROJECT STATE SNAPSHOT
+
+The handler is saving into a sandbox spec folder. This fixture intentionally captures concrete file roles, operator-visible save outcomes, and enough semantic detail to survive the shared insufficiency contract before duplicate detection or success-response shaping occurs.
+
+<!-- /ANCHOR:project-state-snapshot -->
+
+<!-- ANCHOR:summary -->
+<a id="overview"></a>
+
+## OVERVIEW
+
 ${body}
+
+This regression fixture exists to prove that successful saves and duplicate no-op saves still report the correct UX payloads after the shared insufficiency gate and rendered-memory template contract were added to the save pipeline.
+
+<!-- /ANCHOR:summary -->
+
+<!-- ANCHOR:detailed-changes -->
+<a id="detailed-changes"></a>
+
+## DETAILED CHANGES
+
+### Key Files
+
+| File | Role |
+|------|------|
+| \`mcp_server/handlers/memory-save.ts\` | Coordinates atomic save, sufficiency enforcement, duplicate detection, and post-mutation feedback for the memory save path. |
+| \`mcp_server/handlers/save/response-builder.ts\` | Shapes MCP success, duplicate, deferred-indexing, and rejected response payloads for operators. |
+
+### Observation: atomic save verification
+
+Executed the save path with a durable fixture so the test reaches duplicate handling and post-mutation hook feedback instead of stopping early on insufficient context. Verified that successful saves surface cache invalidation feedback while duplicate no-op saves leave caches unchanged.
+
+<!-- /ANCHOR:detailed-changes -->
+
+<!-- ANCHOR:decisions -->
+<a id="decisions"></a>
+
+## DECISIONS
+
+- Decided to keep the insufficiency gate active before duplicate and response UX handling so thin memories reject early instead of producing misleading save results.
+- Chosen fixture content keeps the duplicate regression exact-match behavior while preserving concrete file, decision, and workflow evidence for the newer durable-memory contract.
+
+<!-- /ANCHOR:decisions -->
+
+<!-- ANCHOR:session-history -->
+<a id="conversation"></a>
+
+## CONVERSATION
+
+The operator requested regression coverage for duplicate no-op responses, post-mutation feedback fields, and deferred-indexing hints. The handler parsed this memory, ran save-path enforcement, and then returned the resulting UX payload for assertion.
+
+<!-- /ANCHOR:session-history -->
+
+<!-- ANCHOR:recovery-hints -->
+<a id="recovery-hints"></a>
+
+## RECOVERY HINTS
+
+- If this fixture starts failing insufficiency again, add more concrete file, decision, blocker, next action, or outcome evidence instead of weakening the gate.
+- Re-run the UX regression suite and the full MCP package test suite after changing the save contract.
+
+<!-- /ANCHOR:recovery-hints -->
+
+<!-- ANCHOR:metadata -->
+<a id="memory-metadata"></a>
+
+## MEMORY METADATA
+
+\`\`\`yaml
+session_id: "${titleSlug}-fixture"
+fixture_title: "${title}"
+\`\`\`
+
+<!-- /ANCHOR:metadata -->
 `;
 }
 

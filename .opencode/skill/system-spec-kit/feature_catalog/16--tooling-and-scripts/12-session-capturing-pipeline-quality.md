@@ -187,6 +187,7 @@ The closure feature consists of these distinct shipped capabilities:
 - Useful historical memories may be repaired in place with narrow mechanical frontmatter fixes only.
 - Memories that are too malformed for honest repair should be regenerated only from authoritative evidence through the supported pipeline.
 - Memories that are low-signal, misleading, or not honestly repairable are moved out of active `memory/` into preserved spec-local quarantine so they stop participating in indexing.
+- When `historical-memory-remediation.ts` runs with `--apply`, canonical report files describe the final post-apply state and preserved `*.pre-apply.*` files remain historical snapshots only.
 
 ---
 
@@ -242,20 +243,34 @@ The closure feature consists of these distinct shipped capabilities:
 | `scripts/tests/test-extractors-loaders.js` | Dist/export regression suite for extractors and loader |
 | `scripts/tests/test-bug-fixes.js` | Bug-fix verification stack |
 | `scripts/tests/test-integration.js` | End-to-end script workflows |
+| `scripts/tests/test-memory-quality-lane.js` | Legacy/v2 diagnostic quality and insufficiency regression suite |
 
 ---
 
 ## 5. Verification Sources
 
-- `npm run lint`
-- `npm run build`
-- `npm test -- --run tests/spec-affinity.vitest.ts tests/claude-code-capture.vitest.ts tests/codex-cli-capture.vitest.ts tests/copilot-cli-capture.vitest.ts tests/gemini-cli-capture.vitest.ts tests/quality-scorer-calibration.vitest.ts tests/runtime-memory-inputs.vitest.ts tests/stateless-enrichment.vitest.ts tests/task-enrichment.vitest.ts tests/memory-render-fixture.vitest.ts tests/generate-context-cli-authority.vitest.ts tests/memory-sufficiency.vitest.ts`
-- `node test-extractors-loaders.js`
-- `node test-bug-fixes.js`
-- `node test-integration.js`
-- `node test-memory-quality-lane.js`
+- `cd .opencode/skill/system-spec-kit/scripts && npm run check`
+- `cd .opencode/skill/system-spec-kit/scripts && npm run build`
+- `cd .opencode/skill/system-spec-kit/scripts && npm test -- --run tests/spec-affinity.vitest.ts tests/claude-code-capture.vitest.ts tests/codex-cli-capture.vitest.ts tests/copilot-cli-capture.vitest.ts tests/gemini-cli-capture.vitest.ts tests/quality-scorer-calibration.vitest.ts tests/runtime-memory-inputs.vitest.ts tests/stateless-enrichment.vitest.ts tests/task-enrichment.vitest.ts tests/memory-render-fixture.vitest.ts tests/generate-context-cli-authority.vitest.ts tests/memory-sufficiency.vitest.ts tests/memory-template-contract.vitest.ts tests/historical-memory-remediation.vitest.ts`
+- `cd .opencode/skill/system-spec-kit/scripts/tests && node test-extractors-loaders.js`
+- `cd .opencode/skill/system-spec-kit/scripts/tests && node test-bug-fixes.js`
+- `cd .opencode/skill/system-spec-kit/scripts/tests && node test-integration.js`
+- `cd .opencode/skill/system-spec-kit/scripts/tests && node test-memory-quality-lane.js`
+- `cd .opencode/skill/system-spec-kit/mcp_server && npm run lint`
+- `cd .opencode/skill/system-spec-kit/mcp_server && npm run build`
+- `cd .opencode/skill/system-spec-kit/mcp_server && npm run test:core -- tests/handler-memory-save.vitest.ts tests/recovery-hints.vitest.ts tests/quality-loop.vitest.ts tests/save-quality-gate.vitest.ts tests/preflight.vitest.ts tests/integration-save-pipeline.vitest.ts`
+- `cd .opencode/skill/system-spec-kit/mcp_server && npm run test`
 - `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit/scripts`
 - `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing`
+
+### Latest verification snapshot
+
+- Scripts targeted suite rerun on 2026-03-15 passed with `14` files and `125` tests.
+- `test-bug-fixes.js` rerun on 2026-03-15 passed with `27` passed, `0` failed, `0` skipped.
+- `test-integration.js` rerun on 2026-03-15 passed with `36` passed, `0` failed, `0` skipped.
+- Targeted MCP save-quality rerun on 2026-03-15 passed with `6` files and `298` tests.
+- Package-clean MCP verification rerun on 2026-03-15 passed for `npm run lint`, `npm run build`, and `npm run test`.
+- Alignment drift rerun on 2026-03-15 passed with `226` scanned files and `0` findings.
 
 ---
 

@@ -73,6 +73,12 @@ export interface HistoricalMemoryAuditManifest {
   files: HistoricalMemoryAuditEntry[];
 }
 
+export interface HistoricalMemoryCliRunResult {
+  preApplyManifest: HistoricalMemoryAuditManifest;
+  postApplyManifest: HistoricalMemoryAuditManifest | null;
+  outputManifest: HistoricalMemoryAuditManifest;
+}
+
 interface HistoricalMemoryFrontmatter {
   title: string | null;
   description: string | null;
@@ -151,7 +157,7 @@ Usage:
 Options:
   --root <path>        Root folder to audit (default: 022-hybrid-rag-fusion)
   --report-dir <path>  Directory for manifest + summary output
-  --apply              Apply repairs and quarantine moves
+  --apply              Apply repairs/quarantine moves, preserve pre-apply sidecars, and emit final post-apply summary
   --help, -h           Show this help
 `);
 }
@@ -868,6 +874,17 @@ function serializeSummary(manifest: HistoricalMemoryAuditManifest): string {
   return `${lines.join('\n')}\n`;
 }
 
+function writeHistoricalMemoryAuditReports(
+  reportDir: string,
+  manifest: HistoricalMemoryAuditManifest,
+  label?: 'pre-apply'
+): void {
+  fs.mkdirSync(reportDir, { recursive: true });
+  const suffix = label ? `.${label}` : '';
+  fs.writeFileSync(path.join(reportDir, `manifest${suffix}.json`), JSON.stringify(manifest, null, 2));
+  fs.writeFileSync(path.join(reportDir, `summary${suffix}.md`), serializeSummary(manifest));
+}
+
 export function repairHistoricalMemoryContent(filePath: string, root: string, content: string): string {
   const specFolder = getSpecFolderFromMemoryPath(filePath, root);
   const frontmatter = parseFrontmatterSections(content);
@@ -887,9 +904,7 @@ export function runHistoricalMemoryRemediation(options: RunOptions): HistoricalM
   const auditEntries = files.map((filePath) => auditHistoricalMemoryFile(filePath, options.root, fs.readFileSync(filePath, 'utf-8')));
   const manifest = buildHistoricalMemoryAuditManifest(options.root, auditEntries);
 
-  fs.mkdirSync(options.reportDir, { recursive: true });
-  fs.writeFileSync(path.join(options.reportDir, 'manifest.json'), JSON.stringify(manifest, null, 2));
-  fs.writeFileSync(path.join(options.reportDir, 'summary.md'), serializeSummary(manifest));
+  writeHistoricalMemoryAuditReports(options.reportDir, manifest);
 
   if (!options.apply) {
     return manifest;
@@ -925,11 +940,36 @@ export function runHistoricalMemoryRemediation(options: RunOptions): HistoricalM
   return manifest;
 }
 
+export function runHistoricalMemoryRemediationCli(options: RunOptions): HistoricalMemoryCliRunResult {
+  if (!options.apply) {
+    const manifest = runHistoricalMemoryRemediation(options);
+    return {
+      preApplyManifest: manifest,
+      postApplyManifest: null,
+      outputManifest: manifest,
+    };
+  }
+
+  const preApplyManifest = runHistoricalMemoryRemediation(options);
+  writeHistoricalMemoryAuditReports(options.reportDir, preApplyManifest, 'pre-apply');
+
+  const postApplyManifest = runHistoricalMemoryRemediation({
+    ...options,
+    apply: false,
+  });
+
+  return {
+    preApplyManifest,
+    postApplyManifest,
+    outputManifest: postApplyManifest,
+  };
+}
+
 if (require.main === module) {
   try {
     const options = parseArgs(process.argv.slice(2));
-    const manifest = runHistoricalMemoryRemediation(options);
-    console.log(JSON.stringify(manifest.summary, null, 2));
+    const result = runHistoricalMemoryRemediationCli(options);
+    console.log(JSON.stringify(result.outputManifest.summary, null, 2));
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : String(error);
     console.error(message);

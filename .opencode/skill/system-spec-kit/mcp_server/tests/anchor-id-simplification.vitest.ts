@@ -28,6 +28,8 @@ const EXPECTED_ANCHORS = [
   'postflight',
   'metadata',
   'graph-context',
+  'project-state-snapshot',
+  'workflow-visualization',
 ];
 
 /**
@@ -127,10 +129,10 @@ describe('ANCHOR ID SIMPLIFICATION — context_template.md', () => {
 
       for (const anchor of staticAnchors) {
         const segments = anchor.split('-');
-        // Anchors like 'continue-session', 'next-steps', 'session-history',
-        // 'recovery-hints', 'task-guide', 'detailed-changes' have 2 segments.
-        // No static anchor should have more than 2 segments (old format had 5+).
-        expect(segments.length).toBeLessThanOrEqual(2);
+        // Most anchors have 2 segments (e.g., 'continue-session', 'task-guide').
+        // Some anchors have 3 segments (e.g., 'project-state-snapshot').
+        // No static anchor should have more than 3 segments (old format had 5+).
+        expect(segments.length).toBeLessThanOrEqual(3);
       }
     });
   });

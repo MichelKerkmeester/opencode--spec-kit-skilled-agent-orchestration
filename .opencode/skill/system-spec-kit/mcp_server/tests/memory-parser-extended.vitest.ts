@@ -298,6 +298,51 @@ describe('MEMORY PARSER EXTENDED TESTS', () => {
       expect(typeof result).toBe('string');
       expect(result.length).toBeGreaterThan(0);
     });
+
+    // Symlink regression cases
+    it('T16b: symlinked specs path resolves to same spec_folder as real path', () => {
+      // Create a temp symlink structure
+      const symlinkRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'esf-sym-'));
+      try {
+        const realDir = path.join(symlinkRoot, '.opencode', 'specs', '010-test', 'memory');
+        fs.mkdirSync(realDir, { recursive: true });
+        fs.writeFileSync(path.join(realDir, 'ctx.md'), 'content');
+
+        const claudeDir = path.join(symlinkRoot, '.claude');
+        fs.mkdirSync(claudeDir, { recursive: true });
+        fs.symlinkSync(path.join('..', '.opencode', 'specs'), path.join(claudeDir, 'specs'));
+
+        const realPath = path.join(symlinkRoot, '.opencode', 'specs', '010-test', 'memory', 'ctx.md');
+        const symPath = path.join(symlinkRoot, '.claude', 'specs', '010-test', 'memory', 'ctx.md');
+
+        expect(mod.extractSpecFolder(realPath)).toBe(mod.extractSpecFolder(symPath));
+      } finally {
+        fs.rmSync(symlinkRoot, { recursive: true, force: true });
+      }
+    });
+
+    it('T16c: nested spec folder through symlink matches real path', () => {
+      const symlinkRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'esf-nest-'));
+      try {
+        const realDir = path.join(symlinkRoot, '.opencode', 'specs', '02--domain', '010-test', 'memory');
+        fs.mkdirSync(realDir, { recursive: true });
+        fs.writeFileSync(path.join(realDir, 'n.md'), 'content');
+
+        const claudeDir = path.join(symlinkRoot, '.claude');
+        fs.mkdirSync(claudeDir, { recursive: true });
+        fs.symlinkSync(path.join('..', '.opencode', 'specs'), path.join(claudeDir, 'specs'));
+
+        const realPath = path.join(symlinkRoot, '.opencode', 'specs', '02--domain', '010-test', 'memory', 'n.md');
+        const symPath = path.join(symlinkRoot, '.claude', 'specs', '02--domain', '010-test', 'memory', 'n.md');
+
+        const specReal = mod.extractSpecFolder(realPath);
+        const specSym = mod.extractSpecFolder(symPath);
+        expect(specReal).toBe(specSym);
+        expect(specReal).toBe('02--domain/010-test');
+      } finally {
+        fs.rmSync(symlinkRoot, { recursive: true, force: true });
+      }
+    });
   });
 
   // ───────────────────────────────────────────────────────────────

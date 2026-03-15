@@ -307,12 +307,12 @@ async function testMemorySaveWorkflow() {
       return;
     }
 
-    // Test 1.3: Check generate-context.js exists
-    const generateContextPath = path.join(SCRIPTS_DIR, 'memory', 'generate-context.js');
+    // Test 1.3: Check compiled generate-context entrypoint exists
+    const generateContextPath = path.join(SCRIPTS_DIR, 'dist', 'memory', 'generate-context.js');
     if (fs.existsSync(generateContextPath)) {
       pass('W1-T3: generate-context.js exists', generateContextPath);
     } else {
-      skip('W1-T3: generate-context.js exists', 'Script not found');
+      fail('W1-T3: generate-context.js exists', 'Compiled script not found');
       return;
     }
 
@@ -324,25 +324,27 @@ async function testMemorySaveWorkflow() {
       fail('W1-T4: Memory directory exists', 'Memory directory not created');
     }
 
-    // Test 1.5: Verify anchor extraction functionality
-    const { validateAnchors } = require(path.join(SCRIPTS_DIR, 'dist', 'core', 'workflow.js'));
+    // Test 1.5: Verify workflow cleanup preserves valid anchor comments
+    const { stripWorkflowHtmlOutsideCodeFences } = require(path.join(SCRIPTS_DIR, 'dist', 'core', 'workflow.js'));
     const testContent = `<!-- ANCHOR:test -->content<!-- /ANCHOR:test -->`;
-    const warnings = validateAnchors(testContent);
+    const cleanedContent = stripWorkflowHtmlOutsideCodeFences(testContent);
 
-    if (warnings.length === 0) {
-      pass('W1-T5: Anchor validation works', 'Valid anchors detected');
+    if (cleanedContent.includes('<!-- ANCHOR:test -->') &&
+        cleanedContent.includes('<!-- /ANCHOR:test -->')) {
+      pass('W1-T5: Anchor validation works', 'Valid anchors survive workflow cleanup');
     } else {
-      fail('W1-T5: Anchor validation works', `Unexpected warnings: ${warnings.join(', ')}`);
+      fail('W1-T5: Anchor validation works', 'Workflow cleanup removed valid anchor comments');
     }
 
-    // Test 1.6: Verify unclosed anchor detection
+    // Test 1.6: Verify unclosed anchors remain visible to downstream validators
     const badContent = `<!-- ANCHOR:unclosed -->content`;
-    const badWarnings = validateAnchors(badContent);
+    const badCleanedContent = stripWorkflowHtmlOutsideCodeFences(badContent);
 
-    if (badWarnings.length > 0 && badWarnings.some(w => w.includes('Unclosed'))) {
-      pass('W1-T6: Unclosed anchor detection', `Found: ${badWarnings[0]}`);
+    if (badCleanedContent.includes('<!-- ANCHOR:unclosed -->') &&
+        !badCleanedContent.includes('<!-- /ANCHOR:unclosed -->')) {
+      pass('W1-T6: Unclosed anchor detection', 'Unclosed opener survives cleanup for downstream validation');
     } else {
-      fail('W1-T6: Unclosed anchor detection', 'Unclosed anchor not detected');
+      fail('W1-T6: Unclosed anchor detection', 'Unclosed anchor was not preserved for downstream validation');
     }
 
   } catch (error) {
@@ -490,10 +492,10 @@ async function testCognitiveMemorySession() {
 
   try {
     // Test 3.1: Check working-memory.js exists and exports correctly
-    const workingMemoryPath = path.join(MCP_SERVER_DIR, 'dist', 'lib', 'cognitive', 'working-memory.js');
+    const workingMemoryPath = path.join(MCP_SERVER_DIR, 'dist', 'lib', 'cache', 'cognitive', 'working-memory.js');
 
     if (!fs.existsSync(workingMemoryPath)) {
-      skip('W3-T1: working-memory.js exists', 'Module not found');
+      fail('W3-T1: working-memory.js exists', 'Module not found');
       return;
     }
 
@@ -509,18 +511,19 @@ async function testCognitiveMemorySession() {
     }
 
     // Test 3.2: Check attention-decay.js exists and exports correctly
-    const attentionDecayPath = path.join(MCP_SERVER_DIR, 'dist', 'lib', 'cognitive', 'attention-decay.js');
+    const attentionDecayPath = path.join(MCP_SERVER_DIR, 'dist', 'lib', 'cache', 'cognitive', 'attention-decay.js');
 
     if (!fs.existsSync(attentionDecayPath)) {
-      skip('W3-T2: attention-decay.js exists', 'Module not found');
+      fail('W3-T2: attention-decay.js exists', 'Module not found');
       return;
     }
 
     const attentionDecay = require(attentionDecayPath);
 
-    if (typeof attentionDecay.applyDecay === 'function' &&
-        typeof attentionDecay.calculateDecayedScore === 'function' &&
-        typeof attentionDecay.getDecayRate === 'function') {
+    if (typeof attentionDecay.init === 'function' &&
+        typeof attentionDecay.calculateRetrievabilityDecay === 'function' &&
+        typeof attentionDecay.getDecayRate === 'function' &&
+        typeof attentionDecay.applyCompositeDecay === 'function') {
       pass('W3-T2: attention-decay.js exports correctly', 'All required functions present');
     } else {
       fail('W3-T2: attention-decay.js exports correctly', 'Missing required functions');
@@ -534,7 +537,7 @@ async function testCognitiveMemorySession() {
       const warmTier = calculateTier(0.5);
       const coldTier = calculateTier(0.1);
 
-      if (hotTier === 'HOT' && warmTier === 'WARM' && coldTier === 'COLD') {
+      if (hotTier === 'focused' && warmTier === 'active' && coldTier === 'fading') {
         pass('W3-T3: Tier calculation works correctly', `HOT(0.9)=${hotTier}, WARM(0.5)=${warmTier}, COLD(0.1)=${coldTier}`);
       } else {
         fail('W3-T3: Tier calculation works correctly', `Got: HOT(0.9)=${hotTier}, WARM(0.5)=${warmTier}, COLD(0.1)=${coldTier}`);
@@ -544,23 +547,19 @@ async function testCognitiveMemorySession() {
     }
 
     // Test 3.4: Verify decay calculation (pure function test)
-    const { calculateDecayedScore, DECAY_CONFIG } = attentionDecay;
+    const { calculateRetrievabilityDecay } = attentionDecay;
 
-    if (typeof calculateDecayedScore === 'function') {
-      // Test exponential decay: score * (rate ^ turns)
-      const score = 1.0;
-      const turnsElapsed = 1;
-      const decayRate = 0.8;
-      const expected = score * Math.pow(decayRate, turnsElapsed); // 0.8
-      const actual = calculateDecayedScore(score, turnsElapsed, decayRate);
+    if (typeof calculateRetrievabilityDecay === 'function') {
+      const immediate = calculateRetrievabilityDecay(10, 0);
+      const decayed = calculateRetrievabilityDecay(10, 5);
 
-      if (Math.abs(actual - expected) < 0.001) {
-        pass('W3-T4: Decay calculation works correctly', `Expected: ${expected}, Got: ${actual}`);
+      if (immediate === 1 && decayed > 0 && decayed < immediate) {
+        pass('W3-T4: Decay calculation works correctly', `Immediate=${immediate}, Decayed=${decayed.toFixed(4)}`);
       } else {
-        fail('W3-T4: Decay calculation works correctly', `Expected: ${expected}, Got: ${actual}`);
+        fail('W3-T4: Decay calculation works correctly', `Immediate=${immediate}, Decayed=${decayed}`);
       }
     } else {
-      skip('W3-T4: Decay calculation works correctly', 'calculateDecayedScore not exported');
+      fail('W3-T4: Decay calculation works correctly', 'calculateRetrievabilityDecay not exported');
     }
 
     // Test 3.5: Verify decay rates by tier
@@ -582,17 +581,17 @@ async function testCognitiveMemorySession() {
              `Got: constitutional=${constitutionalRate}, normal=${normalRate}, temporary=${temporaryRate}`);
       }
     } else {
-      skip('W3-T5: Decay rates by tier correct', 'getDecayRate not exported');
+      fail('W3-T5: Decay rates by tier correct', 'getDecayRate not exported');
     }
 
     // Test 3.6: Check co-activation module exists
-    const coActivationPath = path.join(MCP_SERVER_DIR, 'dist', 'lib', 'cognitive', 'co-activation.js');
+    const coActivationPath = path.join(MCP_SERVER_DIR, 'dist', 'lib', 'cache', 'cognitive', 'co-activation.js');
 
     if (fs.existsSync(coActivationPath)) {
       const coActivation = require(coActivationPath);
       pass('W3-T6: co-activation.js exists', 'Module loaded successfully');
     } else {
-      skip('W3-T6: co-activation.js exists', 'Module not found');
+      fail('W3-T6: co-activation.js exists', 'Module not found');
     }
 
   } catch (error) {

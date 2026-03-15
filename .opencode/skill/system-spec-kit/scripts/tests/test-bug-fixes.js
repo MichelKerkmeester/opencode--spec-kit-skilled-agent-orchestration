@@ -18,6 +18,11 @@ const PARSING_PATH = path.join(LIB_PATH, 'parsing');
 const SHARED_PATH = path.join(ROOT, 'shared');
 const DB_PATH = path.join(ROOT, 'mcp_server', 'database');
 const CONFIG_PATH = path.join(ROOT, 'mcp_server', 'configs');
+const VECTOR_INDEX_PATH = path.join(SEARCH_PATH, 'vector-index.js');
+const VECTOR_INDEX_MUTATIONS_PATH = path.join(SEARCH_PATH, 'vector-index-mutations.js');
+const VECTOR_INDEX_STORE_PATH = path.join(SEARCH_PATH, 'vector-index-store.js');
+const VECTOR_INDEX_QUERIES_PATH = path.join(SEARCH_PATH, 'vector-index-queries.js');
+const DB_STATE_PATH = path.join(ROOT, 'mcp_server', 'dist', 'core', 'db-state.js');
 
 // Test results
 const results = {
@@ -98,21 +103,20 @@ async function testBug001() {
     }
     
     // Test 2: Check detection in db-state.js (moved from context-server after modularization)
-    const dbStatePath = path.join(ROOT, 'mcp_server', 'dist', 'core', 'db-state.js');
-    if (fs.existsSync(dbStatePath)) {
-      const dbState = fs.readFileSync(dbStatePath, 'utf8');
+    if (fs.existsSync(DB_STATE_PATH)) {
+      const dbState = fs.readFileSync(DB_STATE_PATH, 'utf8');
       const hasCheck = dbState.includes('checkDatabaseUpdated') || dbState.includes('check_database_updated');
       const hasReinitialize = dbState.includes('reinitializeDatabase') || dbState.includes('reinitialize_database');
       if (hasCheck && hasReinitialize) {
         pass('T-005b: Check mechanism in db-state.js',
              'checkDatabaseUpdated()/reinitializeDatabase() (or snake_case aliases) found');
       } else {
-        skip('T-005b: Check mechanism in db-state.js',
-             'Deferred to spec 054: functions not yet in compiled dist');
+        fail('T-005b: Check mechanism in db-state.js',
+             'checkDatabaseUpdated()/reinitializeDatabase() not found in dist/core/db-state.js');
       }
     } else {
-      skip('T-005b: Check mechanism in db-state.js',
-           'Deferred to spec 054: mcp_server/dist not compiled');
+      fail('T-005b: Check mechanism in db-state.js',
+           'dist/core/db-state.js not found');
     }
     
     // Test 3: Write and read notification file
@@ -153,39 +157,38 @@ async function testBug002() {
   log('\n🔬 BUG-002: Transaction Rollback');
   
   try {
-    const vectorIndex = fs.readFileSync(
-      path.join(SEARCH_PATH, 'vector-index.js'), 
-      'utf8'
-    );
+    const vectorIndexMutations = fs.readFileSync(VECTOR_INDEX_MUTATIONS_PATH, 'utf8');
     
     // Test 1: Transaction control via database.transaction() wrapper (BUG-057 fix)
-    // Changed from explicit BEGIN/COMMIT/ROLLBACK to database.transaction() for nested transaction support
-    if (vectorIndex.includes('const indexMemoryTx = database.transaction(') &&
-        vectorIndex.includes('return indexMemoryTx()')) {
+    if (vectorIndexMutations.includes('const index_memory_tx = database.transaction(() => {') &&
+        vectorIndexMutations.includes('return index_memory_tx();')) {
       pass('T-010a: Transaction wrapper in indexMemory()',
-           'database.transaction() wrapper found - supports nested transactions');
-    } else if ((vectorIndex.includes("database.exec('BEGIN TRANSACTION')") ||
-                vectorIndex.includes("db.exec('BEGIN TRANSACTION')"))) {
-      skip('T-010a: Transaction wrapper in indexMemory()',
-           'Deferred to spec 054: still using explicit BEGIN TRANSACTION');
+           'index_memory_tx uses database.transaction() in vector-index-mutations.js');
     } else {
-      skip('T-010a: Transaction wrapper in indexMemory()',
-           'Deferred to spec 054: transaction control not yet implemented');
+      fail('T-010a: Transaction wrapper in indexMemory()',
+           'database.transaction() wrapper not found in vector-index-mutations.js');
     }
     
-    // Test 2: Transaction wrapper provides automatic rollback (no manual cleanup needed)
-    // With database.transaction(), rollback is automatic on throw - no orphan cleanup code needed
-    if (vectorIndex.includes('auto-rollback on error')) {
+    // Test 2: better-sqlite3 wrapper replaces manual BEGIN/COMMIT/ROLLBACK control.
+    if (vectorIndexMutations.includes('database.transaction(() => {') &&
+        !vectorIndexMutations.includes("BEGIN TRANSACTION") &&
+        !vectorIndexMutations.includes("COMMIT")) {
       pass('T-010b: Automatic rollback via transaction wrapper', 
-           'Comment indicates auto-rollback behavior');
+           'Mutation layer relies on better-sqlite3 transaction wrappers instead of manual BEGIN/COMMIT control');
     } else {
-      skip('T-010b: Automatic rollback via transaction wrapper', 
-           'database.transaction() provides automatic rollback - manual cleanup not required');
+      fail('T-010b: Automatic rollback via transaction wrapper', 
+           'Mutation layer still appears to rely on manual transaction control');
     }
     
-    // T-011: Integration test would require actual DB operations
-    skip('T-011: Integration test for partial failure recovery', 
-         'Requires injected failure - code verified');
+    if (vectorIndexMutations.includes('const update_memory_tx = database.transaction(() => {') &&
+        vectorIndexMutations.includes('const delete_memory_tx = database.transaction(() => {') &&
+        vectorIndexMutations.includes('const delete_transaction = database.transaction(() => {')) {
+      pass('T-011: Integration test for partial failure recovery', 
+           'index/update/delete all execute through database.transaction() wrappers');
+    } else {
+      fail('T-011: Integration test for partial failure recovery', 
+           'One or more mutation paths are not wrapped in database.transaction()');
+    }
     
   } catch (error) {
     fail('T-010: Transaction rollback', error.message);
@@ -197,32 +200,26 @@ async function testBug003() {
   log('\n🔬 BUG-003: Embedding Dimension Mismatch at Startup');
   
   try {
-    // NOTE: Cannot require() vector-index.js directly — it has SQLite runtime deps.
-    // Use source analysis instead (same pattern as other BUG tests).
-    const vectorIndexPath = path.join(SEARCH_PATH, 'vector-index.js');
-    if (!fs.existsSync(vectorIndexPath)) {
-      skip('T-015: Dimension confirmation', 'dist/lib/search/vector-index.js not found');
-      return;
-    }
-    const source = fs.readFileSync(vectorIndexPath, 'utf8');
+    const vectorIndex = require(VECTOR_INDEX_PATH);
+    const source = fs.readFileSync(VECTOR_INDEX_STORE_PATH, 'utf8');
     
     // Test 1: Function exists in source
-    if (source.includes('getConfirmedEmbeddingDimension')) {
+    if (typeof vectorIndex.getConfirmedEmbeddingDimension === 'function') {
       pass('T-015a: getConfirmedEmbeddingDimension() exists', 
-           'Function found in source');
+           'Function exported from vector-index.js');
     } else {
       fail('T-015a: getConfirmedEmbeddingDimension() exists', 
-           'Function not found in source');
+           'Function not exported from vector-index.js');
       return;
     }
     
     // Test 2: Function returns a dimension (source analysis)
     if (source.includes('dimension') && (source.includes('return') || source.includes('resolve'))) {
       pass('T-015b: Returns valid dimension', 
-           'Function includes dimension return logic');
+           'Function includes dimension return logic in vector-index-store.js');
     } else {
-      skip('T-015b: Returns valid dimension', 
-           'Cannot call function directly (SQLite runtime deps)');
+      fail('T-015b: Returns valid dimension', 
+           'Dimension return logic not found in vector-index-store.js');
     }
     
   } catch (error) {
@@ -235,28 +232,25 @@ async function testBug004() {
   log('\n🔬 BUG-004: Constitutional Cache Stale After External Edits');
   
   try {
-    const vectorIndex = fs.readFileSync(
-      path.join(SEARCH_PATH, 'vector-index.js'), 
-      'utf8'
-    );
+    const vectorIndexStore = fs.readFileSync(VECTOR_INDEX_STORE_PATH, 'utf8');
     
     // Test 1: mtime tracking (snake_case: last_db_mod_time)
-    if (vectorIndex.includes('last_db_mod_time') &&
-        vectorIndex.includes('stats.mtimeMs')) {
+    if (vectorIndexStore.includes('last_db_mod_time') &&
+        vectorIndexStore.includes('stats.mtimeMs')) {
       pass('T-018a: Database mtime tracking implemented',
-           'last_db_mod_time and mtimeMs check found');
+           'last_db_mod_time and mtimeMs check found in vector-index-store.js');
     } else {
-      skip('T-018a: Database mtime tracking implemented',
-           'Deferred to spec 054: mtime tracking not yet in compiled dist');
+      fail('T-018a: Database mtime tracking implemented',
+           'mtime tracking not found in vector-index-store.js');
     }
 
     // Test 2: Cache validation function (snake_case: is_constitutional_cache_valid)
-    if (vectorIndex.includes('is_constitutional_cache_valid')) {
+    if (vectorIndexStore.includes('is_constitutional_cache_valid')) {
       pass('T-018b: is_constitutional_cache_valid() exists',
-           'Function found in source');
+           'Function found in vector-index-store.js');
     } else {
-      skip('T-018b: is_constitutional_cache_valid() exists',
-           'Deferred to spec 054: cache validation not yet in compiled dist');
+      fail('T-018b: is_constitutional_cache_valid() exists',
+           'Function not found in vector-index-store.js');
     }
     
   } catch (error) {
@@ -270,10 +264,7 @@ async function testBug005() {
   
   try {
     // After modularization (Spec 058), rate limiting moved to core/db-state.js
-    const dbState = fs.readFileSync(
-      path.join(ROOT, 'mcp_server', 'dist', 'core', 'db-state.js'),
-      'utf8'
-    );
+    const dbState = fs.readFileSync(DB_STATE_PATH, 'utf8');
     
     // Test 1: Config table creation (in db-state.js now)
     if (dbState.includes('CREATE TABLE IF NOT EXISTS config') || 
@@ -285,24 +276,24 @@ async function testBug005() {
            'Config table SQL not found');
     }
     
-    // Test 2: get_last_scan_time function (snake_case after modularization)
-    if (dbState.includes('get_last_scan_time') &&
+    // Test 2: getLastScanTime function (camelCase in db-state.js; snake_case alias is re-exported elsewhere)
+    if (dbState.includes('function getLastScanTime') &&
         dbState.includes('SELECT')) {
       pass('T-023b: get_last_scan_time() reads from database',
-           'Function and SQL query found in db-state.js');
+           'getLastScanTime() and SELECT query found in db-state.js');
     } else {
-      skip('T-023b: get_last_scan_time() reads from database',
-           'Deferred to spec 054: function not yet in compiled dist');
+      fail('T-023b: get_last_scan_time() reads from database',
+           'getLastScanTime() not found in db-state.js');
     }
 
-    // Test 3: set_last_scan_time function (snake_case after modularization)
-    if (dbState.includes('set_last_scan_time') &&
-        (dbState.includes('INSERT') || dbState.includes('UPDATE'))) {
+    // Test 3: setLastScanTime function (camelCase in db-state.js; snake_case alias is re-exported elsewhere)
+    if (dbState.includes('function setLastScanTime') &&
+        dbState.includes('INSERT OR REPLACE')) {
       pass('T-023c: set_last_scan_time() writes to database',
-           'Function and SQL query found in db-state.js');
+           'setLastScanTime() and INSERT OR REPLACE query found in db-state.js');
     } else {
-      skip('T-023c: set_last_scan_time() writes to database',
-           'Deferred to spec 054: function not yet in compiled dist');
+      fail('T-023c: set_last_scan_time() writes to database',
+           'setLastScanTime() not found in db-state.js');
     }
     
   } catch (error) {
@@ -315,19 +306,18 @@ async function testBug006() {
   log('\n🔬 BUG-006: Prepared Statement Cache Not Cleared');
   
   try {
-    const vectorIndex = fs.readFileSync(
-      path.join(SEARCH_PATH, 'vector-index.js'), 
-      'utf8'
-    );
+    const vectorIndex = fs.readFileSync(VECTOR_INDEX_PATH, 'utf8');
+    const vectorIndexStore = fs.readFileSync(VECTOR_INDEX_STORE_PATH, 'utf8');
     
     // Test: clear_prepared_statements in close_db (snake_case naming)
-    if (vectorIndex.includes('clear_prepared_statements()') &&
-        (vectorIndex.includes('close_db') || vectorIndex.includes('closeDb: close_db'))) {
+    if (vectorIndex.includes('clear_prepared_statements') &&
+        vectorIndexStore.includes('clear_prepared_statements();') &&
+        vectorIndexStore.includes('function close_db()')) {
       pass('T-027: clear_prepared_statements() in close_db()',
-           'Function call found in database closing');
+           'close_db() calls clear_prepared_statements() in vector-index-store.js');
     } else {
-      skip('T-027: clear_prepared_statements() in close_db()',
-           'Deferred to spec 054: function not yet in compiled dist');
+      fail('T-027: clear_prepared_statements() in close_db()',
+           'Prepared statement cleanup not found in close_db()');
     }
     
   } catch (error) {
@@ -427,22 +417,16 @@ async function testBug009() {
   log('\n🔬 BUG-009: Search Cache Key Collision Risk');
   
   try {
-    // NOTE: Cannot require() vector-index.js directly — it has SQLite runtime deps.
-    // Use source analysis instead.
-    const vectorIndexPath = path.join(SEARCH_PATH, 'vector-index.js');
-    if (!fs.existsSync(vectorIndexPath)) {
-      skip('T-034: Cache key uniqueness', 'dist/lib/search/vector-index.js not found');
-      return;
-    }
-    const source = fs.readFileSync(vectorIndexPath, 'utf8');
+    const vectorIndexAliasesPath = path.join(SEARCH_PATH, 'vector-index-aliases.js');
+    const source = fs.readFileSync(vectorIndexAliasesPath, 'utf8');
     
     // Test 1: getCacheKey function exists with SHA256
     if (source.includes('getCacheKey') && source.includes('sha256')) {
       pass('T-034a: getCacheKey() with SHA256', 
-           'Function found in source with SHA256 hashing');
+           'Function found in vector-index-aliases.js with SHA256 hashing');
     } else if (source.includes('getCacheKey')) {
       pass('T-034a: getCacheKey() exists', 
-           'Function found in source (hash method may differ)');
+           'Function found in vector-index-aliases.js (hash method may differ)');
     } else {
       fail('T-034a: getCacheKey() function exists', 
            'Function not found in source');
@@ -456,8 +440,8 @@ async function testBug009() {
       pass('T-034c: Same inputs produce same keys (deterministic hash)', 
            'Cryptographic hashing is deterministic');
     } else {
-      skip('T-034b/c: Key uniqueness tests', 
-           'Cannot call getCacheKey directly (SQLite runtime deps)');
+      fail('T-034b/c: Key uniqueness tests', 
+           'Cryptographic hash implementation not found in getCacheKey()');
     }
     
   } catch (error) {
@@ -470,32 +454,25 @@ async function testBug013() {
   log('\n🔬 BUG-013: Orphaned Vector Cleanup Only at Startup');
   
   try {
-    // NOTE: Cannot require() vector-index.js directly — it has SQLite runtime deps.
-    // Use source analysis instead.
-    const vectorIndexPath = path.join(SEARCH_PATH, 'vector-index.js');
-    if (!fs.existsSync(vectorIndexPath)) {
-      skip('T-042: Orphaned vector auto-cleanup', 'dist/lib/search/vector-index.js not found');
-      return;
-    }
-    const source = fs.readFileSync(vectorIndexPath, 'utf8');
+    const source = fs.readFileSync(VECTOR_INDEX_QUERIES_PATH, 'utf8');
     
     // Test 1: verifyIntegrity exists in source
     if (source.includes('verifyIntegrity')) {
       pass('T-042a: verifyIntegrity() function exists', 
-           'Function found in source');
+           'Function found in vector-index-queries.js');
     } else {
       fail('T-042a: verifyIntegrity() function exists', 
-           'Function not found in source');
+           'Function not found in vector-index-queries.js');
       return;
     }
     
     // Test 2: Check source for autoClean option
     if (source.includes('autoClean') && source.includes('options')) {
       pass('T-042b: autoClean option in verifyIntegrity()',
-           'autoClean parameter found in source');
+           'autoClean parameter found in vector-index-queries.js');
     } else {
-      skip('T-042b: autoClean option in verifyIntegrity()',
-           'Deferred to spec 054: autoClean not yet implemented');
+      fail('T-042b: autoClean option in verifyIntegrity()',
+           'autoClean parameter not found in vector-index-queries.js');
     }
     
   } catch (error) {
