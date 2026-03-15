@@ -33,7 +33,7 @@ jobs:
           cache-dependency-path: .opencode/skill/system-spec-kit/package-lock.json
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --ignore-optional
 
       - name: Build referenced TypeScript declarations
         run: npx tsc -b shared/tsconfig.json mcp_server/tsconfig.json
