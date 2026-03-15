@@ -16,7 +16,8 @@ type QualityFlag =
   | 'sparse_semantic_fields'
   | 'has_tool_state_mismatch'
   | 'has_spec_relevance_mismatch'
-  | 'has_contaminated_title';
+  | 'has_contaminated_title'
+  | 'has_insufficient_context';
 
 interface ValidationSignal {
   ruleId: QualityRuleId;
@@ -30,6 +31,8 @@ interface QualityInputs {
   messageCount?: number;
   toolCount?: number;
   decisionCount?: number;
+  sufficiencyScore?: number;
+  insufficientContext?: boolean;
 }
 
 interface QualityResult {
@@ -51,6 +54,8 @@ function scoreMemoryQuality(inputs: QualityInputs): QualityResult {
     messageCount = 0,
     toolCount = 0,
     decisionCount = 0,
+    sufficiencyScore,
+    insufficientContext = false,
   } = inputs;
 
   if (!content || typeof content !== 'string' || content.trim().length === 0) {
@@ -67,6 +72,7 @@ function scoreMemoryQuality(inputs: QualityInputs): QualityResult {
 
   let qualityScore = 1.0;
   const qualityFlags = new Set<QualityFlag>();
+  let sufficiencyCap: number | null = null;
 
   const failedRules = validatorSignals.filter((signal) => !signal.passed);
   qualityScore -= failedRules.length * PENALTY_PER_FAILED_RULE;
@@ -99,6 +105,20 @@ function scoreMemoryQuality(inputs: QualityInputs): QualityResult {
     qualityFlags.add('has_contamination');
   }
 
+  const normalizedSufficiencyScore = typeof sufficiencyScore === 'number' && Number.isFinite(sufficiencyScore)
+    ? clamp01(sufficiencyScore)
+    : null;
+  if (normalizedSufficiencyScore !== null) {
+    sufficiencyCap = normalizedSufficiencyScore;
+    qualityScore = Math.min(qualityScore, sufficiencyCap);
+  }
+
+  if (insufficientContext) {
+    qualityFlags.add('has_insufficient_context');
+    sufficiencyCap = normalizedSufficiencyScore !== null ? normalizedSufficiencyScore * 0.6 : 0.35;
+    qualityScore = Math.min(qualityScore, sufficiencyCap);
+  }
+
   if (messageCount > 0) {
     qualityScore += 0.05;
   }
@@ -109,6 +129,10 @@ function scoreMemoryQuality(inputs: QualityInputs): QualityResult {
 
   if (decisionCount >= 1) {
     qualityScore += 0.10;
+  }
+
+  if (sufficiencyCap !== null) {
+    qualityScore = Math.min(qualityScore, sufficiencyCap);
   }
 
   qualityScore = clamp01(qualityScore);

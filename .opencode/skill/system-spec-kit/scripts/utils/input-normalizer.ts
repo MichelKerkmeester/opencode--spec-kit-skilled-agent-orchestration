@@ -66,19 +66,27 @@ export interface FileEntry {
 /** Raw input data that may be in manual or MCP-compatible format */
 export interface RawInputData {
   specFolder?: string;
+  spec_folder?: string;
   SPEC_FOLDER?: string;
   filesModified?: string[];
+  files_modified?: string[];
   sessionSummary?: string;
+  session_summary?: string;
   keyDecisions?: Array<string | DecisionItemObject>;
+  key_decisions?: Array<string | DecisionItemObject>;
   nextSteps?: string[];
   next_steps?: string[];
   technicalContext?: Record<string, unknown>;
   triggerPhrases?: string[];
+  trigger_phrases?: string[];
   importanceTier?: string;
+  importance_tier?: string;
   FILES?: Array<FileEntry | Record<string, unknown>>;
   observations?: Observation[];
   userPrompts?: UserPrompt[];
+  user_prompts?: UserPrompt[];
   recentContext?: RecentContext[];
+  recent_context?: RecentContext[];
   [key: string]: unknown;
 }
 
@@ -297,13 +305,28 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
     : Array.isArray(data.next_steps)
       ? data.next_steps
       : [];
+  const userPrompts = Array.isArray(data.userPrompts)
+    ? data.userPrompts
+    : Array.isArray(data.user_prompts)
+      ? data.user_prompts
+      : [];
+  const recentContext = Array.isArray(data.recentContext)
+    ? data.recentContext
+    : Array.isArray(data.recent_context)
+      ? data.recent_context
+      : [];
+  const triggerPhrases = Array.isArray(data.triggerPhrases)
+    ? data.triggerPhrases
+    : Array.isArray(data.trigger_phrases)
+      ? data.trigger_phrases
+      : [];
 
   // F-15: Field-by-field completion instead of early return — backfill missing arrays
-  if (data.userPrompts || data.observations || data.recentContext) {
+  if (data.userPrompts || data.user_prompts || data.observations || data.recentContext || data.recent_context) {
     const cloned = cloneInputData(data) as NormalizedData;
+    if (!Array.isArray(cloned.userPrompts)) cloned.userPrompts = userPrompts;
+    if (!Array.isArray(cloned.recentContext)) cloned.recentContext = recentContext;
     if (!Array.isArray(cloned.observations)) cloned.observations = [];
-    if (!Array.isArray(cloned.userPrompts)) cloned.userPrompts = [];
-    if (!Array.isArray(cloned.recentContext)) cloned.recentContext = [];
     // F-16: Ensure FILES uses FileEntry format
     if (cloned.FILES && Array.isArray(cloned.FILES)) {
       cloned.FILES = cloned.FILES.map((f) => {
@@ -318,6 +341,12 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
     if (nextSteps.length > 0 && !hasPersistedNextStepsObservation(cloned.observations)) {
       cloned.observations.push(buildNextStepsObservation(nextSteps));
     }
+    if (triggerPhrases.length > 0) {
+      cloned._manualTriggerPhrases = [...triggerPhrases];
+    }
+    if (data.specFolder || data.spec_folder || data.SPEC_FOLDER) {
+      cloned.SPEC_FOLDER = (data.specFolder || data.spec_folder || data.SPEC_FOLDER) as string;
+    }
 
     return cloned;
   }
@@ -328,13 +357,18 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
     recentContext: [],
   };
 
-  if (data.specFolder || data.SPEC_FOLDER) {
-    normalized.SPEC_FOLDER = data.specFolder || data.SPEC_FOLDER;
+  if (data.specFolder || data.spec_folder || data.SPEC_FOLDER) {
+    normalized.SPEC_FOLDER = (data.specFolder || data.spec_folder || data.SPEC_FOLDER) as string;
   }
 
   // F-16: Convert filesModified to FileEntry format with ACTION field
-  if (data.filesModified && Array.isArray(data.filesModified)) {
-    normalized.FILES = data.filesModified.map((filePath: string) => ({
+  const filesModified = Array.isArray(data.filesModified)
+    ? data.filesModified
+    : Array.isArray(data.files_modified)
+      ? data.files_modified
+      : [];
+  if (filesModified.length > 0) {
+    normalized.FILES = filesModified.map((filePath: string) => ({
       FILE_PATH: filePath,
       DESCRIPTION: 'File modified (description pending)',
     }));
@@ -342,12 +376,21 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
 
   const observations: Observation[] = [];
 
-  if (data.sessionSummary) {
-    observations.push(buildSessionSummaryObservation(data.sessionSummary, data.triggerPhrases));
+  const sessionSummary = typeof data.sessionSummary === 'string'
+    ? data.sessionSummary
+    : (typeof data.session_summary === 'string' ? data.session_summary : '');
+
+  if (sessionSummary) {
+    observations.push(buildSessionSummaryObservation(sessionSummary, triggerPhrases));
   }
 
-  if (data.keyDecisions && Array.isArray(data.keyDecisions)) {
-    for (const decisionItem of data.keyDecisions) {
+  const keyDecisions = Array.isArray(data.keyDecisions)
+    ? data.keyDecisions
+    : Array.isArray(data.key_decisions)
+      ? data.key_decisions
+      : [];
+  if (keyDecisions.length > 0) {
+    for (const decisionItem of keyDecisions) {
       const observation = transformKeyDecision(decisionItem);
       if (observation) {
         observations.push(observation);
@@ -366,21 +409,21 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
   normalized.observations = observations;
 
   normalized.userPrompts = [{
-    prompt: data.sessionSummary || 'Manual context save',
+    prompt: sessionSummary || 'Manual context save',
     timestamp: new Date().toISOString()
   }];
 
   normalized.recentContext = [{
-    request: data.sessionSummary || 'Manual context save',
-    learning: data.sessionSummary || ''
+    request: sessionSummary || 'Manual context save',
+    learning: sessionSummary || ''
   }];
 
-  if (data.triggerPhrases) {
-    normalized._manualTriggerPhrases = [...data.triggerPhrases];
+  if (triggerPhrases.length > 0) {
+    normalized._manualTriggerPhrases = [...triggerPhrases];
   }
 
-  if (data.keyDecisions && Array.isArray(data.keyDecisions)) {
-    normalized._manualDecisions = data.keyDecisions.map((decision) => cloneInputData(decision));
+  if (keyDecisions.length > 0) {
+    normalized._manualDecisions = keyDecisions.map((decision) => cloneInputData(decision));
   }
 
   console.log('   \u2713 Transformed manual format to MCP-compatible structure');
@@ -397,8 +440,8 @@ function validateInputData(data: RawInputData, specFolderArg: string | null = nu
     throw new Error('Input validation failed: data must be a non-null object');
   }
 
-  if (specFolderArg === null && !data.specFolder && !data.SPEC_FOLDER) {
-    if (!data.userPrompts && !data.observations && !data.recentContext) {
+  if (specFolderArg === null && !data.specFolder && !data.spec_folder && !data.SPEC_FOLDER) {
+    if (!data.userPrompts && !data.user_prompts && !data.observations && !data.recentContext && !data.recent_context) {
       errors.push('Missing required field: specFolder (or use CLI argument)');
     }
   }
@@ -406,13 +449,22 @@ function validateInputData(data: RawInputData, specFolderArg: string | null = nu
   if (data.triggerPhrases !== undefined && !Array.isArray(data.triggerPhrases)) {
     errors.push('triggerPhrases must be an array');
   }
+  if (data.trigger_phrases !== undefined && !Array.isArray(data.trigger_phrases)) {
+    errors.push('trigger_phrases must be an array');
+  }
 
   if (data.keyDecisions !== undefined && !Array.isArray(data.keyDecisions)) {
     errors.push('keyDecisions must be an array');
   }
+  if (data.key_decisions !== undefined && !Array.isArray(data.key_decisions)) {
+    errors.push('key_decisions must be an array');
+  }
 
   if (data.filesModified !== undefined && !Array.isArray(data.filesModified)) {
     errors.push('filesModified must be an array');
+  }
+  if (data.files_modified !== undefined && !Array.isArray(data.files_modified)) {
+    errors.push('files_modified must be an array');
   }
 
   if (data.nextSteps !== undefined && !Array.isArray(data.nextSteps)) {
@@ -426,6 +478,9 @@ function validateInputData(data: RawInputData, specFolderArg: string | null = nu
   const validTiers: string[] = ['constitutional', 'critical', 'important', 'normal', 'temporary', 'deprecated'];
   if (data.importanceTier !== undefined && !validTiers.includes(data.importanceTier)) {
     errors.push(`Invalid importanceTier: ${data.importanceTier}. Valid values: ${validTiers.join(', ')}`);
+  }
+  if (data.importance_tier !== undefined && !validTiers.includes(data.importance_tier)) {
+    errors.push(`Invalid importance_tier: ${data.importance_tier}. Valid values: ${validTiers.join(', ')}`);
   }
 
   if (data.FILES !== undefined) {
@@ -447,6 +502,12 @@ function validateInputData(data: RawInputData, specFolderArg: string | null = nu
     if (!Array.isArray(data.observations)) {
       errors.push('observations must be an array');
     }
+  }
+  if (data.user_prompts !== undefined && !Array.isArray(data.user_prompts)) {
+    errors.push('user_prompts must be an array');
+  }
+  if (data.recent_context !== undefined && !Array.isArray(data.recent_context)) {
+    errors.push('recent_context must be an array');
   }
 
   if (errors.length > 0) {

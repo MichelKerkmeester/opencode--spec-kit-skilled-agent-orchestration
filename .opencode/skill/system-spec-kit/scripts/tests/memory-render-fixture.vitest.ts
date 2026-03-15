@@ -132,6 +132,26 @@ afterEach(() => {
 });
 
 describe('rendered memory fixture regression', () => {
+  it('preserves ANCHOR comments while stripping non-anchor HTML comments outside code fences', async () => {
+    const { stripWorkflowHtmlOutsideCodeFences } = await import('../core/workflow');
+    const raw = [
+      '<!-- Template Configuration: remove this -->',
+      '<!-- ANCHOR:metadata -->',
+      '## Metadata',
+      '<!-- /ANCHOR:metadata -->',
+      '```md',
+      '<!-- keep this inside code fence -->',
+      '```',
+    ].join('\n');
+
+    const cleaned = stripWorkflowHtmlOutsideCodeFences(raw);
+
+    expect(cleaned).toContain('<!-- ANCHOR:metadata -->');
+    expect(cleaned).toContain('<!-- /ANCHOR:metadata -->');
+    expect(cleaned).not.toContain('Template Configuration: remove this');
+    expect(cleaned).toContain('<!-- keep this inside code fence -->');
+  });
+
   it('renders a specific filename and non-contaminated title that passes the quality gate', async () => {
     const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-render-fixture-'));
     const { CONFIG } = await import('../core');
@@ -189,6 +209,8 @@ describe('rendered memory fixture regression', () => {
       const validation = validateMemoryQualityContent(rendered);
       const frontmatterTitle = rendered.match(/^title:\s*"([^"]+)"$/m)?.[1] ?? '';
       const heading = rendered.match(/^#\s+(.+)$/m)?.[1] ?? '';
+      const frontmatter = rendered.match(/^---\n([\s\S]*?)\n---/m)?.[1] ?? '';
+      const anchorMatches = rendered.match(/<!--\s*\/?ANCHOR:[^>]+-->/g) ?? [];
 
       expect(result.contextFilename).toBe('06-03-26_09-30__memory-generator-naming-guardrail.md');
       expect(result.contextFilename).not.toContain('development-session');
@@ -199,6 +221,15 @@ describe('rendered memory fixture regression', () => {
       expect(frontmatterTitle).toContain('Memory Generator Naming Guardrail');
       expect(frontmatterTitle).not.toMatch(/to promote a memory|epistemic state captured at session start|table of contents/i);
       expect(rendered).not.toMatch(/^#\s*(To promote a memory|Epistemic state captured at session start|Table of Contents)\b/im);
+      expect(anchorMatches.length).toBeGreaterThan(0);
+      expect(frontmatter).toContain('trigger_phrases:');
+      expect(frontmatter).not.toContain('{{#TRIGGER_PHRASES}}');
+      expect(frontmatter).not.toContain('{{/TRIGGER_PHRASES}}');
+      expect(frontmatter.match(/trigger_phrases:/g)?.length ?? 0).toBe(1);
+      expect(frontmatter).toMatch(/trigger_phrases:\n  - "/);
+      expect(frontmatter).not.toContain('memory dashboard');
+      expect(frontmatter).not.toContain('session summary');
+      expect(frontmatter).not.toContain('context template');
 
       expect(validation.failedRules).toEqual([]);
       expect(validation.valid).toBe(true);
@@ -280,6 +311,53 @@ describe('rendered memory fixture regression', () => {
     }
   });
 
+  it('renders an empty trigger list when no trigger phrases are provided', async () => {
+    const { CONFIG } = await import('../core');
+    const { populateTemplate } = await import('../renderers');
+    const previousTemplateDir = CONFIG.TEMPLATE_DIR;
+    const templatesDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..', 'templates');
+
+    try {
+      CONFIG.TEMPLATE_DIR = templatesDir;
+      const rendered = await populateTemplate('context', {
+        MEMORY_DASHBOARD_TITLE: 'Trigger Fallback Fixture',
+        IMPORTANCE_TIER: 'normal',
+        TRIGGER_PHRASES: [],
+        TRIGGER_PHRASES_YAML: 'trigger_phrases: []',
+        DATE: '15-03-26',
+        CREATED_AT_EPOCH: 1,
+        LAST_ACCESSED_EPOCH: 1,
+        EXPIRES_AT_EPOCH: 0,
+        MESSAGE_COUNT: 0,
+        DECISION_COUNT: 0,
+        TOOL_COUNT: 0,
+        FILE_COUNT: 0,
+        FOLLOWUP_COUNT: 0,
+        ACCESS_COUNT: 0,
+        LAST_SEARCH_QUERY: '',
+        RELEVANCE_BOOST: 1,
+        TOPICS: [],
+        KEY_FILES: [],
+        RELATED_SESSIONS: [],
+        PARENT_SPEC: '',
+        CHILD_SESSIONS: [],
+        EMBEDDING_MODEL: '',
+        EMBEDDING_VERSION: '',
+        CHUNK_COUNT: 0,
+      });
+
+      const frontmatter = rendered.match(/^---\n([\s\S]*?)\n---/m)?.[1] ?? '';
+      expect(frontmatter).toContain('trigger_phrases: []');
+      expect(frontmatter).not.toContain('{{#TRIGGER_PHRASES}}');
+      expect(frontmatter.match(/trigger_phrases:/g)?.length ?? 0).toBe(1);
+      expect(rendered).not.toContain('memory dashboard');
+      expect(rendered).not.toContain('session summary');
+      expect(rendered).not.toContain('context template');
+    } finally {
+      CONFIG.TEMPLATE_DIR = previousTemplateDir;
+    }
+  });
+
   it('renders direct preloaded saves without placeholder leakage and with a non-zero tool count', async () => {
     const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-render-direct-'));
     const { CONFIG } = await import('../core');
@@ -336,6 +414,64 @@ describe('rendered memory fixture regression', () => {
       expect(rendered).not.toContain('## POSTFLIGHT LEARNING DELTA');
       expect(rendered).not.toMatch(/\|\s*Tool Executions\s*\|\s*0\s*\|/);
       expect(validation.valid).toBe(true);
+      expect(validation.failedRules).toEqual([]);
+    } finally {
+      CONFIG.TEMPLATE_DIR = previousTemplateDir;
+      fs.rmSync(tempRoot, { recursive: true, force: true });
+    }
+  });
+
+  it('escapes literal anchor examples from captured session text without breaking real anchors', async () => {
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-render-anchor-escape-'));
+    const { CONFIG } = await import('../core');
+    const previousTemplateDir = CONFIG.TEMPLATE_DIR;
+    const templatesDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..', 'templates');
+
+    try {
+      const specFolderPath = path.join(tempRoot, '010-perfect-session-capturing');
+      const contextDir = path.join(specFolderPath, 'memory');
+      fs.mkdirSync(contextDir, { recursive: true });
+      fs.writeFileSync(
+        path.join(specFolderPath, 'spec.md'),
+        ['---', 'title: "Spec: Perfect Session Capturing"', '---', '# Spec'].join('\n'),
+        'utf-8'
+      );
+
+      workflowHarness.specFolderPath = specFolderPath;
+      workflowHarness.contextDir = contextDir;
+      CONFIG.TEMPLATE_DIR = templatesDir;
+
+      const { runWorkflow } = await import('../core/workflow');
+      const result = await runWorkflow({
+        collectedData: {
+          _source: 'codex-cli-capture',
+          userPrompts: [
+            {
+              prompt: 'Document why the literal example <!-- ANCHOR:id --> / <!-- /ANCHOR:id --> should be preserved as text in the memory body.',
+              timestamp: '2026-03-15T12:40:00Z',
+            },
+          ],
+          observations: [
+            {
+              title: 'Escaped anchor example in captured prompt',
+              narrative: 'Verified that literal anchor examples from the session render as escaped text instead of malformed real anchors.',
+              facts: ['Tool: Read File: scripts/core/workflow.ts Result: escaped literal anchor examples before template render'],
+              files: ['scripts/core/workflow.ts'],
+              timestamp: '2026-03-15T12:41:00Z',
+            },
+          ],
+        },
+        collectSessionDataFn: async (_input, specFolderName) => createSessionData(specFolderName || '010-perfect-session-capturing'),
+        silent: true,
+      });
+
+      const rendered = fs.readFileSync(path.join(result.contextDir, result.contextFilename), 'utf-8');
+      const validation = validateMemoryQualityContent(rendered);
+      const anchorMatches = rendered.match(/<!--\s*\/?ANCHOR:[^>]+-->/g) ?? [];
+
+      expect(rendered).toContain('&lt;!-- ANCHOR:id --&gt;');
+      expect(rendered).toContain('&lt;!-- /ANCHOR:id --&gt;');
+      expect(anchorMatches.length).toBeGreaterThan(0);
       expect(validation.failedRules).toEqual([]);
     } finally {
       CONFIG.TEMPLATE_DIR = previousTemplateDir;

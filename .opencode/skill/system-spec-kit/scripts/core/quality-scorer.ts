@@ -13,6 +13,7 @@ import {
   normalizeMemoryNameCandidate,
   pickBestContentName,
 } from '../utils/slug-utils';
+import type { MemorySufficiencyResult } from '@spec-kit/shared/parsing/memory-sufficiency';
 
 interface FileWithDescription {
   DESCRIPTION?: string;
@@ -103,7 +104,8 @@ export function scoreMemoryQuality(
   triggerPhrases: string[],
   keyTopics: string[],
   files: FileWithDescription[],
-  observations: ObservationWithNarrative[]
+  observations: ObservationWithNarrative[],
+  sufficiencyResult?: MemorySufficiencyResult,
 ): QualityScore {
   const warnings: string[] = [];
   const breakdown: QualityBreakdown = {
@@ -212,6 +214,14 @@ export function scoreMemoryQuality(
     }
   }
 
-  const score = Object.values(breakdown).reduce((sum, v) => sum + v, 0);
+  let score = Object.values(breakdown).reduce((sum, v) => sum + v, 0);
+
+  if (sufficiencyResult && !sufficiencyResult.pass) {
+    score = Math.min(score, Math.round(sufficiencyResult.score * 40));
+    warnings.push(
+      `Insufficient context for a durable memory: ${sufficiencyResult.reasons.join(' ')}`
+    );
+  }
+
   return { score, warnings, breakdown };
 }

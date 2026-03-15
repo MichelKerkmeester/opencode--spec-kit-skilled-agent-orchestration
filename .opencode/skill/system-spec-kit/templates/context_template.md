@@ -1,10 +1,7 @@
 ---
 title: "{{MEMORY_DASHBOARD_TITLE}}"
-description: "Session context memory template for Spec Kit indexing."
-trigger_phrases:
-  - "memory dashboard"
-  - "session summary"
-  - "context template"
+description: "{{MEMORY_DESCRIPTION}}"
+{{TRIGGER_PHRASES_YAML}}
 importance_tier: "{{IMPORTANCE_TIER}}"
 contextType: "general"
 ---
@@ -804,11 +801,7 @@ key_topics:
 {{/TOPICS}}
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
-trigger_phrases:
-{{#TRIGGER_PHRASES}}  - "{{.}}"
-{{/TRIGGER_PHRASES}}
-{{^TRIGGER_PHRASES}}  []
-{{/TRIGGER_PHRASES}}
+{{TRIGGER_PHRASES_YAML}}
 
 key_files:
 {{#KEY_FILES}}  - "{{FILE_PATH}}"

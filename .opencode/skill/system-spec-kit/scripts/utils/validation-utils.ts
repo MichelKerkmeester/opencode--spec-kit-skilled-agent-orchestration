@@ -10,22 +10,30 @@
 // ───────────────────────────────────────────────────────────────
 // 2. PLACEHOLDER VALIDATION
 // ───────────────────────────────────────────────────────────────
+function stripCodeSegments(content: string): string {
+  return content
+    .replace(/```[\s\S]*?```/g, '\n')
+    .replace(/`[^`\n]+`/g, ' ');
+}
+
 function validateNoLeakedPlaceholders(content: string, filename: string): void {
-  const leaked: RegExpMatchArray | null = content.match(/\{\{[A-Z_]+\}\}/g);
+  const validationContent = stripCodeSegments(content);
+  const leaked: RegExpMatchArray | null = validationContent.match(/\{\{[A-Z_]+\}\}/g);
   if (leaked) {
     console.warn(`\u26A0\uFE0F  Leaked placeholders detected in ${filename}: ${leaked.join(', ')}`);
-    console.warn(`   Context around leak: ${content.substring(content.indexOf(leaked[0]) - 100, content.indexOf(leaked[0]) + 100)}`);
+    const leakIndex = validationContent.indexOf(leaked[0]);
+    console.warn(`   Context around leak: ${validationContent.substring(Math.max(0, leakIndex - 100), leakIndex + 100)}`);
     throw new Error(`\u274C Leaked placeholders in ${filename}: ${leaked.join(', ')}`);
   }
 
-  const partialLeaked: RegExpMatchArray | null = content.match(/\{\{[^}]*$/g);
+  const partialLeaked: RegExpMatchArray | null = validationContent.match(/\{\{[^}]*$/g);
   if (partialLeaked) {
     console.warn(`\u26A0\uFE0F  Partial placeholder detected in ${filename}: ${partialLeaked.join(', ')}`);
     throw new Error(`\u274C Malformed placeholder in ${filename}`);
   }
 
-  const openBlocks: string[] = (content.match(/\{\{[#^][A-Z_]+\}\}/g) || []);
-  const closeBlocks: string[] = (content.match(/\{\{\/[A-Z_]+\}\}/g) || []);
+  const openBlocks: string[] = (validationContent.match(/\{\{[#^][A-Z_]+\}\}/g) || []);
+  const closeBlocks: string[] = (validationContent.match(/\{\{\/[A-Z_]+\}\}/g) || []);
   if (openBlocks.length !== closeBlocks.length) {
     console.warn(`\u26A0\uFE0F  Template has ${openBlocks.length} open blocks but ${closeBlocks.length} close blocks`);
   }

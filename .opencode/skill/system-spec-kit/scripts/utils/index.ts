@@ -108,3 +108,13 @@ export {
   validateAnchors,
   logAnchorValidation,
 } from './validation-utils';
+
+export {
+  GENERIC_MEMORY_DESCRIPTION,
+  LEGACY_GENERIC_MEMORY_TRIGGER_PHRASES,
+  hasLegacyGenericTriggerPhrases,
+  hasGenericMemoryDescription,
+  sanitizeMemoryFrontmatterTitle,
+  deriveMemoryDescription,
+  deriveMemoryTriggerPhrases,
+} from './memory-frontmatter';

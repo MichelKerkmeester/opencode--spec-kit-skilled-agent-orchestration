@@ -15,6 +15,7 @@ import { runPostMutationHooks } from '../mutation-hooks';
 import type { MCPResponse } from '../types';
 import { buildMutationHookFeedback } from '../../hooks/mutation-feedback';
 import type { IndexResult } from './types';
+import { MEMORY_SUFFICIENCY_REJECTION_CODE } from '@spec-kit/shared/parsing/memory-sufficiency';
 
 // Feature catalog: Mutation response UX payload exposure
 // Feature catalog: Duplicate-save no-op feedback hardening
@@ -209,6 +210,7 @@ export function buildSaveResponse({ result, filePath, asyncEmbedding, requestId 
   }
 
   if (result.status === 'rejected') {
+    const isInsufficientContext = result.rejectionCode === MEMORY_SUFFICIENCY_REJECTION_CODE;
     return createMCPSuccessResponse({
       tool: 'memory_save',
       summary: result.message ?? result.rejectionReason ?? 'Memory save rejected',
@@ -219,12 +221,21 @@ export function buildSaveResponse({ result, filePath, asyncEmbedding, requestId 
         title: result.title,
         qualityScore: result.qualityScore,
         qualityFlags: result.qualityFlags,
+        ...(result.rejectionCode ? { rejectionCode: result.rejectionCode } : {}),
         rejectionReason: result.rejectionReason ?? result.message,
+        ...(result.sufficiency ? { sufficiency: result.sufficiency } : {}),
         ...(result.qualityGate ? { qualityGate: result.qualityGate } : {}),
         ...(result.warnings ? { warnings: result.warnings } : {}),
         message: result.message ?? result.rejectionReason ?? 'Memory save rejected',
       },
-      hints: ['Rejected saves do not mutate the memory index', 'Review quality issues and retry the save'],
+      hints: isInsufficientContext
+        ? [
+            'Rejected saves do not mutate the memory index',
+            'Not enough context was available to save a durable memory',
+            'Add at least one concrete file, tool result, decision, blocker, next action, or outcome and retry',
+            'Use dryRun: true to inspect insufficiency reasons and evidence counts without writing',
+          ]
+        : ['Rejected saves do not mutate the memory index', 'Review quality issues and retry the save'],
     });
   }
 

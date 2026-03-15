@@ -142,6 +142,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       checkContentHashDedupMock?: ReturnType<typeof vi.fn>;
       runQualityGateMock?: ReturnType<typeof vi.fn>;
       isSaveQualityGateEnabledMock?: ReturnType<typeof vi.fn>;
+      evaluateMemorySufficiencyMock?: ReturnType<typeof vi.fn>;
       embeddingPipelineModuleFactory?: () => Record<string, unknown>;
       peOrchestrationModuleFactory?: () => Record<string, unknown>;
       createRecordModuleFactory?: () => unknown;
@@ -173,6 +174,22 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         ?? vi.fn(() => ({ pass: true, warnOnly: false, reasons: [], layers: {} }));
       const isSaveQualityGateEnabledMock = options.isSaveQualityGateEnabledMock
         ?? vi.fn(() => false);
+      const evaluateMemorySufficiencyMock = options.evaluateMemorySufficiencyMock
+        ?? vi.fn(() => ({
+          pass: true,
+          rejectionCode: 'INSUFFICIENT_CONTEXT_ABORT',
+          reasons: [],
+          evidenceCounts: {
+            primary: 2,
+            support: 2,
+            total: 4,
+            semanticChars: 420,
+            uniqueWords: 72,
+            anchors: 2,
+            triggerPhrases: 4,
+          },
+          score: 0.92,
+        }));
 
       const transactionManagerActual = await vi.importActual<typeof import('../lib/storage/transaction-manager')>(
         '../lib/storage/transaction-manager'
@@ -272,6 +289,11 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         };
       });
 
+      vi.doMock('@spec-kit/shared/parsing/memory-sufficiency', () => ({
+        MEMORY_SUFFICIENCY_REJECTION_CODE: 'INSUFFICIENT_CONTEXT_ABORT',
+        evaluateMemorySufficiency: evaluateMemorySufficiencyMock,
+      }));
+
       vi.doMock('../utils', async (importOriginal) => {
         const actual = await importOriginal<typeof import('../utils')>();
         return {
@@ -293,6 +315,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         parseMemoryFileMock,
         parseMemoryContentMock,
         runQualityLoopMock,
+        evaluateMemorySufficiencyMock,
         checkExistingRowMock,
         checkContentHashDedupMock,
         executeAtomicSaveMock,
@@ -317,6 +340,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         vi.doUnmock('../handlers/chunking-orchestrator');
         vi.doUnmock('../lib/validation/save-quality-gate');
         vi.doUnmock('../lib/search/search-flags');
+        vi.doUnmock('@spec-kit/shared/parsing/memory-sufficiency');
         vi.doUnmock('../utils/validators');
         vi.doUnmock('../utils');
         vi.restoreAllMocks();
@@ -700,6 +724,83 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
 
       expect(result.status).toBe('reinforced');
       expect(fs.readFileSync(filePath, 'utf8')).toBe('# original on disk');
+    });
+
+    it('rejects insufficient context before embedding even when force=true', async () => {
+      const generateOrCacheEmbeddingMock = vi.fn();
+      const harness = await loadAtomicSaveHarness({
+        checkExistingRowMock: vi.fn(() => null),
+        evaluateMemorySufficiencyMock: vi.fn(() => ({
+          pass: false,
+          rejectionCode: 'INSUFFICIENT_CONTEXT_ABORT',
+          reasons: ['No primary evidence was captured for this memory.'],
+          evidenceCounts: {
+            primary: 0,
+            support: 1,
+            total: 1,
+            semanticChars: 88,
+            uniqueWords: 16,
+            anchors: 1,
+            triggerPhrases: 1,
+          },
+          score: 0.18,
+        })),
+        embeddingPipelineModuleFactory: () => ({
+          generateOrCacheEmbedding: generateOrCacheEmbeddingMock,
+          persistPendingEmbeddingCacheWrite: vi.fn(),
+        }),
+      });
+
+      const filePath = createAtomicSaveTargetPath('insufficient-context.md');
+      fs.writeFileSync(filePath, '# too thin', 'utf8');
+
+      const result = await harness.module.indexMemoryFile(filePath, { force: true, asyncEmbedding: false });
+
+      expect(result.status).toBe('rejected');
+      expect(result.rejectionCode).toBe('INSUFFICIENT_CONTEXT_ABORT');
+      expect(result.sufficiency?.pass).toBe(false);
+      expect(generateOrCacheEmbeddingMock).not.toHaveBeenCalled();
+    });
+
+    it('reports insufficiency explicitly during dry-run without indexing', async () => {
+      const checkExistingRowMock = vi.fn(() => buildIndexResult({ status: 'indexed', id: 1001 }));
+      const harness = await loadAtomicSaveHarness({
+        checkExistingRowMock,
+        evaluateMemorySufficiencyMock: vi.fn(() => ({
+          pass: false,
+          rejectionCode: 'INSUFFICIENT_CONTEXT_ABORT',
+          reasons: [
+            'No primary evidence was captured for this memory.',
+            'Fewer than two spec-relevant evidence items were captured.',
+          ],
+          evidenceCounts: {
+            primary: 0,
+            support: 1,
+            total: 1,
+            semanticChars: 96,
+            uniqueWords: 18,
+            anchors: 1,
+            triggerPhrases: 1,
+          },
+          score: 0.2,
+        })),
+      });
+
+      const filePath = createAtomicSaveTargetPath('dryrun-insufficient.md');
+      fs.writeFileSync(filePath, '# dry run insufficient', 'utf8');
+
+      const response = await harness.module.handleMemorySave({
+        filePath,
+        dryRun: true,
+        skipPreflight: true,
+      } as Parameters<typeof harness.module.handleMemorySave>[0]);
+
+      const payload = JSON.parse(String(response?.content?.[0]?.text ?? '{}'));
+      expect(payload?.data?.status).toBe('dry_run');
+      expect(payload?.data?.would_pass).toBe(false);
+      expect(payload?.data?.rejectionCode).toBe('INSUFFICIENT_CONTEXT_ABORT');
+      expect(payload?.data?.sufficiency?.pass).toBe(false);
+      expect(checkExistingRowMock).not.toHaveBeenCalled();
     });
 
     it('returns dry-run response without indexing when dryRun and skipPreflight are both true', async () => {

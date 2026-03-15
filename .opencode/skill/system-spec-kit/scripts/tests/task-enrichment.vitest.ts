@@ -20,6 +20,21 @@ const workflowHarness = vi.hoisted(() => ({
   loaderDataWithFile: null as Record<string, unknown> | null,
   loaderDataWithoutFile: null as Record<string, unknown> | null,
 }));
+const evaluateMemorySufficiencyMock = vi.hoisted(() => vi.fn(() => ({
+  pass: true,
+  rejectionCode: 'INSUFFICIENT_CONTEXT_ABORT' as const,
+  reasons: [],
+  evidenceCounts: {
+    primary: 2,
+    support: 2,
+    total: 4,
+    semanticChars: 420,
+    uniqueWords: 72,
+    anchors: 2,
+    triggerPhrases: 4,
+  },
+  score: 0.92,
+})));
 
 vi.mock('../spec-folder', () => ({
   detectSpecFolder: vi.fn(async (_collectedData: unknown, options?: { specFolderArg?: string | null }) => {
@@ -161,6 +176,11 @@ vi.mock('../core/memory-indexer', () => ({
   updateMetadataWithEmbedding: vi.fn(async () => undefined),
 }));
 
+vi.mock('@spec-kit/shared/parsing/memory-sufficiency', () => ({
+  MEMORY_SUFFICIENCY_REJECTION_CODE: 'INSUFFICIENT_CONTEXT_ABORT',
+  evaluateMemorySufficiency: evaluateMemorySufficiencyMock,
+}));
+
 vi.mock('@spec-kit/mcp-server/api/providers', () => ({
   retryManager: {
     getRetryStats: () => ({ queue_size: 0 }),
@@ -224,6 +244,22 @@ function createDeferred<T = void>(): {
 
 beforeEach(() => {
   vi.clearAllMocks();
+  evaluateMemorySufficiencyMock.mockReset();
+  evaluateMemorySufficiencyMock.mockReturnValue({
+    pass: true,
+    rejectionCode: 'INSUFFICIENT_CONTEXT_ABORT',
+    reasons: [],
+    evidenceCounts: {
+      primary: 2,
+      support: 2,
+      total: 4,
+      semanticChars: 420,
+      uniqueWords: 72,
+      anchors: 2,
+      triggerPhrases: 4,
+    },
+    score: 0.92,
+  });
   workflowHarness.writtenFiles = [];
   workflowHarness.loaderSnapshots = [];
   workflowHarness.detectSnapshots = [];
@@ -350,6 +386,13 @@ describe('slug outcome guardrail', () => {
     )).toBe('hybrid-search-relevance-drift-remediation');
   });
 
+  it('strips literal mustache tokens from candidate titles before slug generation', () => {
+    expect(generateContentSlug(
+      'How `{{TRIGGER_PHRASES}}` is used later in the template',
+      folderBase
+    )).toBe('how-is-used-later-in-the-template');
+  });
+
   it('picks the best specific memory task from task, spec title, and folder base', () => {
     expect(pickPreferredMemoryTask(
       'To promote a memory to constitutional tier (always surfaced):',
@@ -462,6 +505,17 @@ describe('memory quality lint gate', () => {
 
     expect(result.valid).toBe(false);
     expect(result.failedRules).toContain('V6');
+  });
+
+  it('does not treat quoted template tokens in session content as V6 leakage', () => {
+    const result = validateMemoryQualityContent(buildMemoryContent({
+      body: [
+        'Documented the render fix for the literal token `{{TRIGGER_PHRASES}}` so debugging notes can mention it safely.',
+        'The old banner phrase was discussed in prose, but it did not render as the memory title or heading.',
+      ],
+    }));
+
+    expect(result.failedRules).not.toContain('V6');
   });
 
   it('fails when tool_count is zero but execution evidence is present', () => {
@@ -683,6 +737,58 @@ describe('workflow seam guardrail', () => {
         collectSessionDataFn: async (_collectedData, specFolderName) => createSessionData(specFolderName || '010-perfect-session-capturing'),
         silent: true,
       })).rejects.toThrow(/ALIGNMENT_BLOCK: Captured stateless content matched the workspace but not the target spec folder/);
+
+      expect(workflowHarness.writtenFiles).toHaveLength(0);
+    } finally {
+      fs.rmSync(tempRoot, { recursive: true, force: true });
+    }
+  });
+
+  it('rejects thin explicit JSON saves with INSUFFICIENT_CONTEXT_ABORT', async () => {
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-workflow-'));
+    const specFolderPath = path.join(tempRoot, '010-perfect-session-capturing');
+    const contextDir = path.join(tempRoot, 'memory');
+    fs.mkdirSync(specFolderPath, { recursive: true });
+    fs.mkdirSync(contextDir, { recursive: true });
+    fs.writeFileSync(
+      path.join(specFolderPath, 'spec.md'),
+      ['---', 'title: "Spec: Perfect Session Capturing"', '---', '# Spec'].join('\n'),
+      'utf-8'
+    );
+
+    workflowHarness.specFolderPath = specFolderPath;
+    workflowHarness.contextDir = contextDir;
+    evaluateMemorySufficiencyMock.mockReturnValueOnce({
+      pass: false,
+      rejectionCode: 'INSUFFICIENT_CONTEXT_ABORT',
+      reasons: [
+        'No primary evidence was captured for this memory.',
+        'Fewer than two spec-relevant evidence items were captured.',
+      ],
+      evidenceCounts: {
+        primary: 0,
+        support: 1,
+        total: 1,
+        semanticChars: 96,
+        uniqueWords: 18,
+        anchors: 1,
+        triggerPhrases: 1,
+      },
+      score: 0.18,
+    });
+
+    const { runWorkflow } = await import('../core/workflow');
+
+    try {
+      await expect(runWorkflow({
+        dataFile: '/tmp/context.json',
+        collectedData: {
+          _source: 'file',
+          userPrompts: [{ prompt: 'Perfect session capturing', timestamp: '2026-03-15T15:00:00Z' }],
+        },
+        collectSessionDataFn: async (_collectedData, specFolderName) => createSessionData(specFolderName || '010-perfect-session-capturing'),
+        silent: true,
+      })).rejects.toThrow(/INSUFFICIENT_CONTEXT_ABORT/);
 
       expect(workflowHarness.writtenFiles).toHaveLength(0);
     } finally {

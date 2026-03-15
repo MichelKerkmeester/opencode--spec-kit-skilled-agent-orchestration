@@ -3,6 +3,7 @@
 // ───────────────────────────────────────────────────────────────
 import { buildMutationHookFeedback } from '../../hooks/mutation-feedback';
 import type { ParsedMemory } from '../../lib/parsing/memory-parser';
+import type { MemorySufficiencyResult } from '@spec-kit/shared/parsing/memory-sufficiency';
 
 // Feature catalog: Memory indexing (memory_save)
 // Feature catalog: Validation feedback (memory_validate)
@@ -60,6 +61,8 @@ export interface IndexResult extends Record<string, unknown> {
   qualityScore?: number;
   qualityFlags?: string[];
   rejectionReason?: string;
+  rejectionCode?: string;
+  sufficiency?: MemorySufficiencyResult;
   qualityGate?: {
     pass: boolean;
     reasons: string[];

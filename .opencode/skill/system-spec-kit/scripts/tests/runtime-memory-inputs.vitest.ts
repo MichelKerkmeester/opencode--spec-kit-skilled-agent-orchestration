@@ -48,6 +48,22 @@ function resetCaptureMocks(): void {
   captureGeminiConversation.mockResolvedValue(null);
 }
 
+function clearNativeCaptureHintEnv(): void {
+  vi.stubEnv('SYSTEM_SPEC_KIT_CAPTURE_SOURCE', '');
+  vi.stubEnv('CODEX_SHELL', '');
+  vi.stubEnv('CODEX_CI', '');
+  vi.stubEnv('CODEX_INTERNAL_ORIGINATOR_OVERRIDE', '');
+  vi.stubEnv('COPILOT_SESSION', '');
+  vi.stubEnv('CLAUDECODE', '');
+  vi.stubEnv('CLAUDE_CODE', '');
+  vi.stubEnv('CLAUDE_CODE_SESSION', '');
+  vi.stubEnv('CLAUDE_CODE_ENTRYPOINT', '');
+  vi.stubEnv('GEMINI_CLI', '');
+  vi.stubEnv('GEMINI_SESSION_ID', '');
+  vi.stubEnv('OPENCODE_SESSION_ID', '');
+  vi.stubEnv('OPENCODE_RUNTIME', '');
+}
+
 describe('loadCollectedData explicit data-file handling', () => {
   beforeEach(() => {
     vi.resetModules();
@@ -151,6 +167,51 @@ describe('valid explicit dataFile happy path', () => {
       await fs.rm(validFile, { force: true });
     }
   });
+
+  it('accepts the documented snake_case JSON shape without dropping prompts or context', async () => {
+    const validFile = path.join(os.tmpdir(), `valid-snake-${Date.now()}.json`);
+    await fs.writeFile(validFile, JSON.stringify({
+      spec_folder: '022-hybrid-rag-fusion/010-perfect-session-capturing',
+      session_summary: 'Verified generated memory render quality in snake_case JSON mode.',
+      trigger_phrases: ['perfect session capturing', 'render quality', 'trigger phrases'],
+      user_prompts: [
+        {
+          prompt: 'Verify the documented snake_case JSON contract works end to end.',
+          timestamp: '2026-03-15T12:15:00Z',
+        },
+      ],
+      recent_context: [
+        {
+          request: 'Validate snake_case JSON input handling',
+          learning: 'The documented user_prompts and recent_context fields must survive normalization.',
+        },
+      ],
+    }), 'utf-8');
+
+    try {
+      const { loadCollectedData } = await import('../loaders/data-loader');
+      const result = await loadCollectedData({
+        dataFile: validFile,
+        specFolderArg: '022-hybrid-rag-fusion/010-perfect-session-capturing',
+      });
+
+      expect(result._source).toBe('file');
+      expect(result.userPrompts?.[0]?.prompt).toContain('documented snake_case JSON contract');
+      expect(result.recentContext?.[0]?.request).toContain('snake_case JSON input handling');
+      expect(result._manualTriggerPhrases).toEqual([
+        'perfect session capturing',
+        'render quality',
+        'trigger phrases',
+      ]);
+      expect(captureConversation).not.toHaveBeenCalled();
+      expect(captureClaudeConversation).not.toHaveBeenCalled();
+      expect(captureCodexConversation).not.toHaveBeenCalled();
+      expect(captureCopilotConversation).not.toHaveBeenCalled();
+      expect(captureGeminiConversation).not.toHaveBeenCalled();
+    } finally {
+      await fs.rm(validFile, { force: true });
+    }
+  });
 });
 
 describe('path traversal security', () => {
@@ -179,6 +240,7 @@ describe('native CLI fallback handling', () => {
   beforeEach(() => {
     vi.resetModules();
     resetCaptureMocks();
+    clearNativeCaptureHintEnv();
   });
 
   it('falls back to Claude Code capture when OpenCode capture returns no usable content', async () => {
@@ -327,6 +389,84 @@ describe('native CLI fallback handling', () => {
     expect(captureCodexConversation).toHaveBeenCalledTimes(1);
     expect(captureCopilotConversation).toHaveBeenCalledTimes(1);
     expect(captureGeminiConversation).toHaveBeenCalledTimes(1);
+  });
+
+  it.each([
+    ['claude', 'claude-code-capture', captureClaudeConversation],
+    ['codex', 'codex-cli-capture', captureCodexConversation],
+    ['copilot', 'copilot-cli-capture', captureCopilotConversation],
+    ['gemini', 'gemini-cli-capture', captureGeminiConversation],
+  ] as const)('prefers %s when SYSTEM_SPEC_KIT_CAPTURE_SOURCE is set', async (hint, expectedSource, preferredMock) => {
+    vi.stubEnv('SYSTEM_SPEC_KIT_CAPTURE_SOURCE', hint);
+
+    captureConversation.mockResolvedValueOnce({
+      exchanges: [
+        {
+          userInput: 'OpenCode should be skipped when a preferred source is available.',
+          assistantResponse: 'OpenCode response',
+          timestamp: '2026-03-15T12:00:00.000Z',
+        },
+      ],
+      toolCalls: [],
+      metadata: {},
+      sessionTitle: 'OpenCode default fallback',
+      sessionId: 'opencode-default',
+      capturedAt: '2026-03-15T12:00:01.000Z',
+    });
+
+    preferredMock.mockResolvedValueOnce({
+      exchanges: [
+        {
+          userInput: `Use ${hint} as the preferred direct-mode capture source.`,
+          assistantResponse: `Loaded ${hint} successfully.`,
+          timestamp: '2026-03-15T12:00:00.000Z',
+        },
+      ],
+      toolCalls: [],
+      metadata: {},
+      sessionTitle: `${hint} preferred source`,
+      sessionId: `${hint}-preferred`,
+      capturedAt: '2026-03-15T12:00:01.000Z',
+    });
+
+    const { loadCollectedData } = await import('../loaders/data-loader');
+    const result = await loadCollectedData({
+      specFolderArg: '022-hybrid-rag-fusion/010-perfect-session-capturing',
+    });
+
+    expect(result._source).toBe(expectedSource);
+    expect(preferredMock).toHaveBeenCalledTimes(1);
+    expect(captureConversation).not.toHaveBeenCalled();
+  });
+
+  it('tries the hinted source first, then resumes the documented fallback order', async () => {
+    vi.stubEnv('SYSTEM_SPEC_KIT_CAPTURE_SOURCE', 'codex');
+
+    captureCodexConversation.mockResolvedValueOnce(null);
+    captureConversation.mockResolvedValueOnce({
+      exchanges: [
+        {
+          userInput: 'Fallback to OpenCode after the preferred Codex source is empty.',
+          assistantResponse: 'Loaded OpenCode after trying Codex first.',
+          timestamp: '2026-03-15T12:10:00.000Z',
+        },
+      ],
+      toolCalls: [],
+      metadata: {},
+      sessionTitle: 'OpenCode after preferred Codex miss',
+      sessionId: 'opencode-after-codex',
+      capturedAt: '2026-03-15T12:10:01.000Z',
+    });
+
+    const { loadCollectedData } = await import('../loaders/data-loader');
+    const result = await loadCollectedData({
+      specFolderArg: '022-hybrid-rag-fusion/010-perfect-session-capturing',
+    });
+
+    expect(result._source).toBe('opencode-capture');
+    expect(captureCodexConversation).toHaveBeenCalledTimes(1);
+    expect(captureConversation).toHaveBeenCalledTimes(1);
+    expect(captureClaudeConversation).not.toHaveBeenCalled();
   });
 });
 

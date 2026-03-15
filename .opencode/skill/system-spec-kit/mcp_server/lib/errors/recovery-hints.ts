@@ -504,7 +504,8 @@ export const RECOVERY_HINTS: RecoveryHintMap = {
     actions: [
       'Check file path is valid and in allowed directory',
       'Verify file content is valid markdown with YAML frontmatter',
-      'Use memory_save({ dryRun: true }) to validate first'
+      'Use memory_save({ dryRun: true }) to validate first',
+      'If the response includes INSUFFICIENT_CONTEXT_ABORT, gather at least one concrete file, tool result, decision, blocker, next action, or outcome before retrying'
     ],
     severity: 'medium',
     toolTip: 'memory_save({ dryRun: true })'

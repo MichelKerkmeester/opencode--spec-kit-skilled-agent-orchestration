@@ -165,6 +165,28 @@ function runQualityScorerTests() {
     decisionCount: 10,
   });
   assert(bonusClamp.qualityScore <= 1, 'bonus case should clamp to 1.0');
+
+  const insufficient = qualityScorer.scoreMemoryQuality({
+    content: '# thin but aligned',
+    validatorSignals: [
+      { ruleId: 'V1', passed: true },
+      { ruleId: 'V2', passed: true },
+      { ruleId: 'V3', passed: true },
+      { ruleId: 'V4', passed: true },
+      { ruleId: 'V5', passed: true },
+    ],
+    messageCount: 3,
+    toolCount: 1,
+    decisionCount: 0,
+    sufficiencyScore: 0.2,
+    insufficientContext: true,
+  });
+  assert(inadequateFlagPresent(insufficient.qualityFlags), 'insufficient context should add explicit flag');
+  assert(insufficient.qualityScore <= 0.2, 'insufficient context should cap the v2 score');
+}
+
+function inadequateFlagPresent(flags) {
+  return Array.isArray(flags) && flags.includes('has_insufficient_context');
 }
 
 function runBenchmarkFixtureTest() {

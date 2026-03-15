@@ -10,6 +10,12 @@ import path from 'path';
 
 // Shared packages
 import { validateFilePath } from '@spec-kit/shared/utils/path-security';
+import {
+  evaluateMemorySufficiency,
+  MEMORY_SUFFICIENCY_REJECTION_CODE,
+  type MemoryEvidenceSnapshot,
+  type MemorySufficiencyResult,
+} from '@spec-kit/shared/parsing/memory-sufficiency';
 
 // Internal modules
 import { ALLOWED_BASE_PATHS, checkDatabaseUpdated } from '../core';
@@ -124,6 +130,207 @@ interface PreparedParsedMemory {
   parsed: ReturnType<typeof memoryParser.parseMemoryFile>;
   validation: ReturnType<typeof memoryParser.validateParsedMemory>;
   qualityLoopResult: QualityLoopResult;
+  sufficiencyResult: MemorySufficiencyResult;
+}
+
+const MARKDOWN_HEADING_RE = /^(#{2,6})\s+(.+?)\s*$/;
+const MARKDOWN_BULLET_RE = /^\s*(?:[-*]|\d+\.)\s+(.*)$/;
+
+function stripMarkdownDecorators(value: string): string {
+  return value
+    .replace(/`+/g, '')
+    .replace(/\*\*/g, '')
+    .replace(/\[(.*?)\]\((.*?)\)/g, '$1 $2')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function extractMarkdownSections(content: string): Array<{ heading: string; body: string }> {
+  const sections: Array<{ heading: string; body: string }> = [];
+  const lines = content.split(/\r?\n/);
+  let currentHeading = '';
+  let currentBody: string[] = [];
+
+  const flush = (): void => {
+    const body = currentBody.join('\n').trim();
+    if (body.length > 0) {
+      sections.push({ heading: currentHeading, body });
+    }
+    currentBody = [];
+  };
+
+  for (const line of lines) {
+    const headingMatch = line.match(MARKDOWN_HEADING_RE);
+    if (headingMatch) {
+      flush();
+      currentHeading = stripMarkdownDecorators(headingMatch[2]);
+      continue;
+    }
+
+    currentBody.push(line);
+  }
+
+  flush();
+  return sections;
+}
+
+function extractMarkdownListItems(body: string): string[] {
+  return body
+    .split(/\r?\n/)
+    .map((line) => line.match(MARKDOWN_BULLET_RE)?.[1] ?? '')
+    .map(stripMarkdownDecorators)
+    .filter(Boolean);
+}
+
+function extractMarkdownTableFiles(body: string): Array<{ path?: string; description?: string }> {
+  const files: Array<{ path?: string; description?: string }> = [];
+
+  for (const line of body.split(/\r?\n/)) {
+    const trimmed = line.trim();
+    if (!trimmed.startsWith('|')) {
+      continue;
+    }
+    if (/^\|[:\-|\s]+\|?$/.test(trimmed)) {
+      continue;
+    }
+
+    const cells = trimmed
+      .split('|')
+      .slice(1, -1)
+      .map((cell) => stripMarkdownDecorators(cell));
+
+    if (cells.length < 2 || /^file$/i.test(cells[0])) {
+      continue;
+    }
+
+    files.push({
+      path: cells[0],
+      description: cells[1],
+    });
+  }
+
+  return files;
+}
+
+function buildParsedMemoryEvidenceSnapshot(
+  parsed: ReturnType<typeof memoryParser.parseMemoryFile>,
+): MemoryEvidenceSnapshot {
+  const sections = extractMarkdownSections(parsed.content);
+  const files: Array<{ path?: string; description?: string }> = [];
+  const observations: Array<{ title?: string; narrative?: string }> = [];
+  const decisions: string[] = [];
+  const nextActions: string[] = [];
+  const blockers: string[] = [];
+  const outcomes: string[] = [];
+  const recentContext: Array<{ request?: string; learning?: string }> = [];
+
+  for (const section of sections) {
+    const heading = section.heading.toLowerCase();
+    const listItems = extractMarkdownListItems(section.body);
+
+    if (
+      heading.includes('key files')
+      || heading.includes('files changed')
+      || heading.includes('files and their roles')
+      || heading === 'files'
+    ) {
+      files.push(...extractMarkdownTableFiles(section.body));
+      continue;
+    }
+
+    if (/^(?:feature|implementation|observation|read|write|edit|bash|grep|glob|search|tool)\s*:/.test(heading)) {
+      observations.push({
+        title: section.heading,
+        narrative: stripMarkdownDecorators(section.body),
+      });
+      continue;
+    }
+
+    if (heading === 'decisions' || /^decision\s+\d+:/i.test(section.heading)) {
+      decisions.push(stripMarkdownDecorators(section.body));
+      continue;
+    }
+
+    if (heading.includes('next steps') || heading.includes('pending work') || heading.includes('follow-up actions')) {
+      nextActions.push(...(listItems.length > 0 ? listItems : [stripMarkdownDecorators(section.body)]));
+      continue;
+    }
+
+    if (heading.includes('blockers')) {
+      blockers.push(...(listItems.length > 0 ? listItems : [stripMarkdownDecorators(section.body)]));
+      continue;
+    }
+
+    if (heading.includes('key outcomes') || heading === 'outcomes' || heading === 'outcome') {
+      outcomes.push(...(listItems.length > 0 ? listItems : [stripMarkdownDecorators(section.body)]));
+      continue;
+    }
+
+    if (heading.includes('context summary') || heading.includes('session summary') || heading === 'overview') {
+      recentContext.push({
+        request: section.heading,
+        learning: stripMarkdownDecorators(section.body),
+      });
+    }
+  }
+
+  return {
+    title: parsed.title,
+    content: parsed.content,
+    triggerPhrases: parsed.triggerPhrases,
+    files,
+    observations,
+    decisions,
+    nextActions,
+    blockers,
+    outcomes,
+    recentContext,
+  };
+}
+
+function applyInsufficiencyMetadata(
+  parsed: ReturnType<typeof memoryParser.parseMemoryFile>,
+  sufficiencyResult: MemorySufficiencyResult,
+): void {
+  if (!sufficiencyResult.pass) {
+    parsed.qualityScore = Math.min(parsed.qualityScore ?? 1, sufficiencyResult.score * 0.6);
+    parsed.qualityFlags = Array.from(new Set([...(parsed.qualityFlags || []), 'has_insufficient_context']));
+  }
+}
+
+function buildInsufficiencyRejectionResult(
+  parsed: ReturnType<typeof memoryParser.parseMemoryFile>,
+  validation: ReturnType<typeof memoryParser.validateParsedMemory>,
+  sufficiencyResult: MemorySufficiencyResult,
+): IndexResult {
+  return {
+    status: 'rejected',
+    id: 0,
+    specFolder: parsed.specFolder,
+    title: parsed.title ?? '',
+    triggerPhrases: parsed.triggerPhrases,
+    contextType: parsed.contextType,
+    importanceTier: parsed.importanceTier,
+    qualityScore: parsed.qualityScore,
+    qualityFlags: parsed.qualityFlags,
+    warnings: validation.warnings,
+    rejectionCode: MEMORY_SUFFICIENCY_REJECTION_CODE,
+    rejectionReason: `${MEMORY_SUFFICIENCY_REJECTION_CODE}: ${sufficiencyResult.reasons.join(' ')}`,
+    message: 'Not enough context for a proper memory.',
+    sufficiency: sufficiencyResult,
+  };
+}
+
+function buildDryRunSummary(sufficiencyResult: MemorySufficiencyResult, qualityLoopResult: QualityLoopResult): string {
+  if (!qualityLoopResult.passed && qualityLoopResult.rejected) {
+    return qualityLoopResult.rejectionReason ?? 'Quality loop rejected the save';
+  }
+
+  if (!sufficiencyResult.pass) {
+    return 'Dry-run detected insufficient context for a durable memory';
+  }
+
+  return 'Dry-run validation passed';
 }
 
 function buildQualityLoopMetadata(
@@ -164,10 +371,16 @@ function prepareParsedMemoryForIndexing(
     parsed.contentHash = memoryParser.computeContentHash(parsed.content);
   }
 
+  const sufficiencyResult = evaluateMemorySufficiency(
+    buildParsedMemoryEvidenceSnapshot(parsed),
+  );
+  applyInsufficiencyMetadata(parsed, sufficiencyResult);
+
   return {
     parsed,
     validation,
     qualityLoopResult,
+    sufficiencyResult,
   };
 }
 
@@ -177,7 +390,7 @@ async function processPreparedMemory(
   options: { force?: boolean; asyncEmbedding?: boolean; persistQualityLoopContent?: boolean } = {},
 ): Promise<IndexResult> {
   const { force = false, asyncEmbedding = false, persistQualityLoopContent = true } = options;
-  const { parsed, validation, qualityLoopResult } = prepared;
+  const { parsed, validation, qualityLoopResult, sufficiencyResult } = prepared;
 
   if (!qualityLoopResult.passed && qualityLoopResult.rejected) {
     return {
@@ -194,6 +407,10 @@ async function processPreparedMemory(
       rejectionReason: qualityLoopResult.rejectionReason,
       message: qualityLoopResult.rejectionReason,
     };
+  }
+
+  if (!sufficiencyResult.pass) {
+    return buildInsufficiencyRejectionResult(parsed, validation, sufficiencyResult);
   }
 
   return withSpecFolderLock(parsed.specFolder, async () => {
@@ -415,19 +632,23 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
   }
 
   const validatedPath: string = validateFilePathLocal(file_path);
+  const database = requireDb();
 
   // DryRun must remain non-mutating even when preflight is explicitly skipped.
   if (dryRun && skipPreflight) {
     const parsedForDryRun = memoryParser.parseMemoryFile(validatedPath);
+    const preparedDryRun = prepareParsedMemoryForIndexing(parsedForDryRun, database);
     const { createMCPSuccessResponse } = await import('../lib/response/envelope');
-    const dryRunSummary = 'Pre-flight validation skipped (dry-run mode)';
+    const dryRunSummary = buildDryRunSummary(preparedDryRun.sufficiencyResult, preparedDryRun.qualityLoopResult);
 
     return createMCPSuccessResponse({
       tool: 'memory_save',
       summary: dryRunSummary,
       data: {
         status: 'dry_run',
-        would_pass: true,
+        would_pass: preparedDryRun.validation.valid
+          && preparedDryRun.qualityLoopResult.rejected !== true
+          && preparedDryRun.sufficiencyResult.pass,
         file_path: validatedPath,
         spec_folder: parsedForDryRun.specFolder,
         title: parsedForDryRun.title,
@@ -437,16 +658,29 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
           warnings: [],
           details: { skipped: true },
         },
+        qualityLoop: {
+          passed: preparedDryRun.qualityLoopResult.passed,
+          rejected: preparedDryRun.qualityLoopResult.rejected,
+          fixes: preparedDryRun.qualityLoopResult.fixes,
+          rejectionReason: preparedDryRun.qualityLoopResult.rejectionReason,
+        },
+        sufficiency: preparedDryRun.sufficiencyResult,
+        rejectionCode: preparedDryRun.sufficiencyResult.pass ? undefined : MEMORY_SUFFICIENCY_REJECTION_CODE,
         message: dryRunSummary,
       },
-      hints: [
-        'Dry-run complete - no changes made',
-        'Pre-flight checks were skipped because skipPreflight=true',
-      ],
+      hints: preparedDryRun.sufficiencyResult.pass
+        ? [
+            'Dry-run complete - no changes made',
+            'Pre-flight checks were skipped because skipPreflight=true',
+          ]
+        : [
+            'Dry-run complete - no changes made',
+            'Pre-flight checks were skipped because skipPreflight=true',
+            'Not enough context was available to save a durable memory',
+          ],
     });
   }
 
-  const database = requireDb();
   ensureGovernanceRuntime(database);
 
   const governanceDecision = validateGovernedIngest({
@@ -529,17 +763,21 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
     );
 
     if (dryRun) {
+      const preparedDryRun = prepareParsedMemoryForIndexing(parsedForPreflight, database);
       const { createMCPSuccessResponse } = await import('../lib/response/envelope');
-      const dryRunSummary = preflightResult.dry_run_would_pass
-        ? 'Pre-flight validation passed (dry-run mode)'
-        : `Pre-flight validation failed: ${preflightResult.errors.length} error(s)`;
+      const dryRunSummary = !preflightResult.dry_run_would_pass
+        ? `Pre-flight validation failed: ${preflightResult.errors.length} error(s)`
+        : buildDryRunSummary(preparedDryRun.sufficiencyResult, preparedDryRun.qualityLoopResult);
 
       return createMCPSuccessResponse({
         tool: 'memory_save',
         summary: dryRunSummary,
         data: {
           status: 'dry_run',
-          would_pass: preflightResult.dry_run_would_pass,
+          would_pass: preflightResult.dry_run_would_pass
+            && preparedDryRun.validation.valid
+            && preparedDryRun.qualityLoopResult.rejected !== true
+            && preparedDryRun.sufficiencyResult.pass,
           file_path: validatedPath,
           spec_folder: parsedForPreflight.specFolder,
           title: parsedForPreflight.title,
@@ -548,11 +786,25 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
             warnings: preflightResult.warnings,
             details: preflightResult.details,
           },
+          qualityLoop: {
+            passed: preparedDryRun.qualityLoopResult.passed,
+            rejected: preparedDryRun.qualityLoopResult.rejected,
+            fixes: preparedDryRun.qualityLoopResult.fixes,
+            rejectionReason: preparedDryRun.qualityLoopResult.rejectionReason,
+          },
+          sufficiency: preparedDryRun.sufficiencyResult,
+          rejectionCode: preparedDryRun.sufficiencyResult.pass ? undefined : MEMORY_SUFFICIENCY_REJECTION_CODE,
           message: dryRunSummary,
         },
-        hints: preflightResult.dry_run_would_pass
-          ? ['Dry-run complete - no changes made']
-          : ['Fix validation errors before saving', 'Use skipPreflight: true to bypass validation'],
+        hints: !preflightResult.dry_run_would_pass
+          ? ['Fix validation errors before saving', 'Use skipPreflight: true to bypass validation']
+          : preparedDryRun.sufficiencyResult.pass
+            ? ['Dry-run complete - no changes made']
+            : [
+                'Dry-run complete - no changes made',
+                'Not enough context was available to save a durable memory',
+                'Add concrete file, tool, decision, blocker, next action, or outcome evidence and retry',
+              ],
       });
     }
 

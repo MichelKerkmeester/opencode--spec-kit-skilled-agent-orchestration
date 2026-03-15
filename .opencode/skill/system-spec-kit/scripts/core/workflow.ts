@@ -31,6 +31,7 @@ import {
   buildSpecAffinityTargets,
   evaluateCollectedDataSpecAffinity,
 } from '../utils/spec-affinity';
+import { deriveMemoryDescription } from '../utils/memory-frontmatter';
 import { shouldAutoSave, collectSessionData } from '../extractors/collect-session-data';
 import type { SessionData, CollectedDataFull } from '../extractors/collect-session-data';
 import type { FileChange, SemanticFileInfo } from '../extractors/file-extractor';
@@ -54,6 +55,12 @@ import {
 } from '../lib/semantic-summarizer';
 import { EMBEDDING_DIM, MODEL_NAME } from '../lib/embeddings';
 import { retryManager } from '@spec-kit/mcp-server/api/providers';
+import {
+  evaluateMemorySufficiency,
+  MEMORY_SUFFICIENCY_REJECTION_CODE,
+  type MemoryEvidenceSnapshot,
+  type MemorySufficiencyResult,
+} from '@spec-kit/shared/parsing/memory-sufficiency';
 import { extractTriggerPhrases } from '../lib/trigger-extractor';
 import { indexMemory, updateMetadataWithEmbedding } from './memory-indexer';
 import * as simFactory from '../lib/simulation-factory';
@@ -99,7 +106,7 @@ export interface WorkflowResult {
 }
 
 const CODE_FENCE_SEGMENT_RE = /(```[\s\S]*?```)/g;
-const WORKFLOW_HTML_COMMENT_RE = /<!--[\s\S]*?-->/g;
+const WORKFLOW_HTML_COMMENT_RE = /<!--(?!\s*\/?ANCHOR:)[\s\S]*?-->/g;
 const WORKFLOW_DANGEROUS_HTML_BLOCK_RE = /<(?:iframe|math|noscript|object|script|style|svg|template)\b[^>]*>[\s\S]*?<\/(?:iframe|math|noscript|object|script|style|svg|template)>/gi;
 const WORKFLOW_BLOCK_HTML_TAG_RE = /<\/?(?:article|aside|blockquote|body|br|dd|details|div|dl|dt|figcaption|figure|footer|h[1-6]|header|hr|li|main|nav|ol|p|pre|section|summary|table|tbody|td|th|thead|tr|ul)\b[^>]*\/?>/gi;
 const WORKFLOW_INLINE_HTML_TAG_RE = /<\/?(?:code|em|i|kbd|small|span|strong|sub|sup|u)\b[^>]*\/?>/gi;
@@ -153,6 +160,19 @@ function ensureMinTriggerPhrases(existing: string[], enhancedFiles: FileChange[]
   return ['session', 'context'];
 }
 
+function renderTriggerPhrasesYaml(triggerPhrases: string[]): string {
+  if (!Array.isArray(triggerPhrases) || triggerPhrases.length === 0) {
+    return 'trigger_phrases: []';
+  }
+
+  const escapedPhrases = triggerPhrases.map((phrase) => {
+    const normalized = String(phrase).trim();
+    return `  - "${normalized.replace(/\\/g, '\\\\').replace(/"/g, '\\"')}"`;
+  });
+
+  return ['trigger_phrases:', ...escapedPhrases].join('\n');
+}
+
 function stripWorkflowHtmlOutsideCodeFences(rawContent: string): string {
   const segments = rawContent.split(CODE_FENCE_SEGMENT_RE);
 
@@ -170,6 +190,12 @@ function stripWorkflowHtmlOutsideCodeFences(rawContent: string): string {
       .replace(/[ \t]+\n/g, '\n')
       .replace(/\n{3,}/g, '\n\n');
   }).join('');
+}
+
+function escapeLiteralAnchorExamples(input: string): string {
+  return input.replace(/<!--\s*(\/?ANCHOR:[^>]+?)\s*-->/g, (_match: string, anchor: string) => (
+    `&lt;!-- ${anchor.trim()} --&gt;`
+  ));
 }
 
 const PREFERRED_PARENT_FILES = new Set([
@@ -529,6 +555,129 @@ function injectQualityMetadata(content: string, qualityScore: number, qualityFla
   return `${updatedFrontmatter}${newline}${prefix}${suffix}`;
 }
 
+function extractAnchorIds(content: string): string[] {
+  const matches = content.matchAll(/<!--\s*(?:\/)?ANCHOR:\s*([a-zA-Z0-9][a-zA-Z0-9-]*)\s*-->/g);
+  return Array.from(new Set(Array.from(matches, (match) => match[1])));
+}
+
+function normalizeEvidenceLine(value: unknown): string {
+  if (typeof value === 'string') {
+    return value.trim();
+  }
+
+  if (value && typeof value === 'object' && typeof (value as { text?: unknown }).text === 'string') {
+    return String((value as { text?: unknown }).text).trim();
+  }
+
+  return '';
+}
+
+type WorkflowObservationEvidence = {
+  TITLE?: string;
+  title?: string;
+  NARRATIVE?: string;
+  narrative?: string;
+  FACTS?: unknown[];
+  facts?: unknown[];
+  _synthetic?: boolean;
+  _provenance?: string;
+  _specRelevant?: boolean;
+};
+
+type WorkflowDecisionEvidence = {
+  TITLE?: string;
+  CHOSEN?: string;
+  RATIONALE?: string;
+  CONTEXT?: string;
+};
+
+type WorkflowOutcomeEvidence = {
+  OUTCOME?: string;
+};
+
+function buildWorkflowMemoryEvidenceSnapshot(params: {
+  title: string;
+  content: string;
+  triggerPhrases: string[];
+  files: FileChange[];
+  observations: WorkflowObservationEvidence[];
+  decisions: WorkflowDecisionEvidence[];
+  outcomes: WorkflowOutcomeEvidence[];
+  nextAction?: string;
+  blockers?: string;
+  recentContext?: Array<{ request?: string; learning?: string }>;
+}): MemoryEvidenceSnapshot {
+  const {
+    title,
+    content,
+    triggerPhrases,
+    files,
+    observations,
+    decisions,
+    outcomes,
+    nextAction,
+    blockers,
+    recentContext,
+  } = params;
+
+  const meaningfulBlockers = typeof blockers === 'string'
+    && blockers.trim().length > 0
+    && !/^none$/i.test(blockers.trim())
+    ? [blockers.trim()]
+    : [];
+
+  return {
+    title,
+    content,
+    triggerPhrases,
+    files: files.map((file) => ({
+      path: file.FILE_PATH,
+      description: file.DESCRIPTION,
+      specRelevant: true,
+    })),
+    observations: observations.map((observation) => ({
+      title: typeof observation.TITLE === 'string'
+        ? observation.TITLE
+        : (typeof observation.title === 'string' ? observation.title : ''),
+      narrative: typeof observation.NARRATIVE === 'string'
+        ? observation.NARRATIVE
+        : (typeof observation.narrative === 'string' ? observation.narrative : ''),
+      facts: Array.isArray(observation.FACTS)
+        ? observation.FACTS.map(normalizeEvidenceLine).filter(Boolean)
+        : (Array.isArray(observation.facts) ? observation.facts.map(normalizeEvidenceLine).filter(Boolean) : []),
+      synthetic: observation._synthetic === true,
+      provenance: typeof observation._provenance === 'string' ? observation._provenance : undefined,
+      specRelevant: observation._specRelevant !== false,
+    })),
+    decisions: decisions.map((decision) => (
+      [
+        typeof decision.TITLE === 'string' ? decision.TITLE : '',
+        typeof decision.CHOSEN === 'string' ? decision.CHOSEN : '',
+        typeof decision.RATIONALE === 'string' ? decision.RATIONALE : '',
+        typeof decision.CONTEXT === 'string' ? decision.CONTEXT : '',
+      ].filter(Boolean).join(' ')
+    )).filter(Boolean),
+    nextActions: typeof nextAction === 'string' && nextAction.trim().length > 0 ? [nextAction.trim()] : [],
+    blockers: meaningfulBlockers,
+    outcomes: outcomes
+      .map((outcome) => (typeof outcome.OUTCOME === 'string' ? outcome.OUTCOME.trim() : ''))
+      .filter(Boolean),
+    recentContext: (recentContext || []).map((context) => ({
+      request: context.request,
+      learning: context.learning,
+    })),
+    anchors: extractAnchorIds(content),
+  };
+}
+
+function formatSufficiencyAbort(result: MemorySufficiencyResult): string {
+  return `${MEMORY_SUFFICIENCY_REJECTION_CODE}: Not enough context for a proper memory. `
+    + `${result.reasons.join(' ')} `
+    + `Evidence counts: primary=${result.evidenceCounts.primary}, `
+    + `support=${result.evidenceCounts.support}, total=${result.evidenceCounts.total}, `
+    + `semanticChars=${result.evidenceCounts.semanticChars}, uniqueWords=${result.evidenceCounts.uniqueWords}.`;
+}
+
 async function enrichStatelessData(
   collectedData: CollectedDataFull,
   specFolder: string,
@@ -786,7 +935,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       if (filtered.hadContamination) {
         hadContamination = true;
       }
-      return filtered.cleanedText;
+      return escapeLiteralAnchorExamples(filtered.cleanedText);
     };
     const cleanObservations = (
       observations: CollectedDataFull['observations'] | undefined
@@ -1097,6 +1246,10 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   const keyFiles = effectiveFiles.map((f) => ({ FILE_PATH: f.FILE_PATH }));
   const memoryTitle = buildMemoryTitle(preferredMemoryTask, specFolderName, sessionData.DATE);
   const memoryDashboardTitle = buildMemoryDashboardTitle(memoryTitle, specFolderName, ctxFilename);
+  const memoryDescription = deriveMemoryDescription({
+    summary: sessionData.SUMMARY,
+    title: memoryTitle,
+  });
 
   // Pre-extract trigger phrases for template embedding AND later indexing
   let preExtractedTriggers: string[] = [];
@@ -1184,6 +1337,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       TOPICS: keyTopics,
       HAS_KEY_TOPICS: keyTopics.length > 0,
       TRIGGER_PHRASES: preExtractedTriggers,
+      TRIGGER_PHRASES_YAML: renderTriggerPhrasesYaml(preExtractedTriggers),
       KEY_FILES: keyFiles,
       RELATED_SESSIONS: [],
       PARENT_SPEC: sessionData.SPEC_FOLDER || '',
@@ -1193,6 +1347,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       CHUNK_COUNT: 1,
       MEMORY_TITLE: memoryTitle,
       MEMORY_DASHBOARD_TITLE: memoryDashboardTitle,
+      MEMORY_DESCRIPTION: memoryDescription,
       GRAPH_CONTEXT: '',
       HAS_GRAPH_CONTEXT: false
     }),
@@ -1248,6 +1403,19 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     ruleId: rule.ruleId,
     passed: rule.passed,
   }));
+  const sufficiencySnapshot = buildWorkflowMemoryEvidenceSnapshot({
+    title: memoryTitle,
+    content: files[ctxFilename],
+    triggerPhrases: preExtractedTriggers,
+    files: effectiveFiles,
+    observations: sessionData.OBSERVATIONS || [],
+    decisions: decisions.DECISIONS,
+    outcomes: sessionData.OUTCOMES || [],
+    nextAction: sessionData.NEXT_ACTION,
+    blockers: sessionData.BLOCKERS,
+    recentContext: collectedData.recentContext,
+  });
+  const sufficiencyResult = evaluateMemorySufficiency(sufficiencySnapshot);
   const qualityV2 = scoreMemoryQualityV2({
     content: files[ctxFilename],
     validatorSignals: qualitySignals,
@@ -1255,6 +1423,8 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     messageCount: conversations.MESSAGES.length,
     toolCount: sessionData.TOOL_COUNT,
     decisionCount: decisions.DECISIONS.length,
+    sufficiencyScore: sufficiencyResult.score,
+    insufficientContext: !sufficiencyResult.pass,
   });
   files[ctxFilename] = injectQualityMetadata(files[ctxFilename], qualityV2.qualityScore, qualityV2.qualityFlags);
 
@@ -1273,19 +1443,13 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   if (!qualityValidation.valid) {
     warn(`QUALITY_GATE_FAIL: ${qualityValidation.failedRules.join(', ')}`);
   }
-  // F-22: Defensive _source access with optional chaining
-  if (collectedData?._source !== 'file' && !qualityValidation.valid) {
-    const statelessValidationAbortMsg = `QUALITY_GATE_ABORT: Stateless save blocked due to failed validation rules: ${qualityValidation.failedRules.join(', ')}`;
-    warn(statelessValidationAbortMsg);
-    throw new Error(statelessValidationAbortMsg);
-  }
-
   const qualityResult = scoreMemoryQuality(
     files[ctxFilename],
     preExtractedTriggers,
     keyTopics,
     effectiveFiles,
-    sessionData.OBSERVATIONS || []
+    sessionData.OBSERVATIONS || [],
+    sufficiencyResult,
   );
   log(`   Memory quality score: ${qualityResult.score}/100 (legacy), ${qualityV2.qualityScore.toFixed(2)} (v2)`);
   if (qualityResult.warnings.length > 0) {
@@ -1295,16 +1459,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   }
   log(`   Breakdown: triggers=${qualityResult.breakdown.triggerPhrases}/20, topics=${qualityResult.breakdown.keyTopics}/15, fileDesc=${qualityResult.breakdown.fileDescriptions}/20, length=${qualityResult.breakdown.contentLength}/15, html=${qualityResult.breakdown.noLeakedTags}/15, dedup=${qualityResult.breakdown.observationDedup}/15`);
 
-  // Step 8.7: Quality gate — abort save if quality is too low
-  const QUALITY_ABORT_THRESHOLD = CONFIG.QUALITY_ABORT_THRESHOLD;
-  if (qualityResult.score < QUALITY_ABORT_THRESHOLD) {
-    const abortMsg = `QUALITY_GATE_ABORT: Memory quality score ${qualityResult.score}/100 is below minimum threshold (${QUALITY_ABORT_THRESHOLD}). ` +
-      `This typically means the captured session data does not contain meaningful content for this spec folder. ` +
-      `To force save, pass data via JSON file instead of stateless mode.`;
-    warn(abortMsg);
-    throw new Error(abortMsg);
-  }
-
+  // Step 8.7: Hard blocks before write/index
   // RC-5: V8/V9 contamination hard-block — prevent writing files when
   // Critical contamination rules fail. Previously these produced warnings
   // But files were still written and sometimes indexed.
@@ -1323,6 +1478,27 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       warn(contaminationAbortMsg);
       throw new Error(contaminationAbortMsg);
     }
+  }
+
+  if (!sufficiencyResult.pass) {
+    const insufficiencyAbortMsg = formatSufficiencyAbort(sufficiencyResult);
+    warn(insufficiencyAbortMsg);
+    throw new Error(insufficiencyAbortMsg);
+  }
+
+  if (collectedData?._source !== 'file' && !qualityValidation.valid) {
+    const statelessValidationAbortMsg = `QUALITY_GATE_ABORT: Stateless save blocked due to failed validation rules: ${qualityValidation.failedRules.join(', ')}`;
+    warn(statelessValidationAbortMsg);
+    throw new Error(statelessValidationAbortMsg);
+  }
+
+  const QUALITY_ABORT_THRESHOLD = CONFIG.QUALITY_ABORT_THRESHOLD;
+  if (qualityResult.score < QUALITY_ABORT_THRESHOLD) {
+    const abortMsg = `QUALITY_GATE_ABORT: Memory quality score ${qualityResult.score}/100 is below minimum threshold (${QUALITY_ABORT_THRESHOLD}). ` +
+      `This typically means the captured session data does not contain meaningful content for this spec folder. ` +
+      `To force save, pass data via JSON file instead of stateless mode.`;
+    warn(abortMsg);
+    throw new Error(abortMsg);
   }
 
   // Step 9: Write files with atomic writes and rollback on failure
@@ -1481,4 +1657,5 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
 
 export {
   runWorkflow,
+  stripWorkflowHtmlOutsideCodeFences,
 };

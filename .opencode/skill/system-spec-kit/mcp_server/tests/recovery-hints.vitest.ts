@@ -682,6 +682,14 @@ describe('Action Content - T081-T090', () => {
     expect(hasDryRun).toBe(true);
   });
 
+  it('T088b: MEMORY_SAVE_FAILED mentions insufficient context recovery', () => {
+    const saveFailedHint = RECOVERY_HINTS[ERROR_CODES.MEMORY_SAVE_FAILED];
+    const mentionsInsufficientContext = saveFailedHint.actions.some((a: string) =>
+      a.includes('INSUFFICIENT_CONTEXT_ABORT')
+    );
+    expect(mentionsInsufficientContext).toBe(true);
+  });
+
   it('T089: MEMORY_DUPLICATE suggests force=true', () => {
     const duplicateHint = RECOVERY_HINTS[ERROR_CODES.MEMORY_DUPLICATE];
     const hasForce = duplicateHint.actions.some((a: string) =>

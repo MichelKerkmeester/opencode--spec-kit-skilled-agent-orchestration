@@ -73,6 +73,7 @@ export function normalizeMemoryNameCandidate(raw: string): string {
     .replace(/^[-*]\s+/, '')
     .replace(/^(feature\s+)?spec(ification)?:\s*/i, '')
     .replace(/\s*\[template:[^\]]*\]\s*$/i, '')
+    .replace(/\{\{[^}]+\}\}/g, ' ')
     .replace(/^['"`]+|['"`]+$/g, '')
     .replace(/\s+/g, ' ')
     .trim()
