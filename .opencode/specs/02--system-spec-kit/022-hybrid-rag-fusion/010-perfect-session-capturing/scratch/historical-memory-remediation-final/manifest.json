@@ -1,0 +1,795 @@
+{
+  "generatedAt": "2026-03-15T11:57:57.163Z",
+  "root": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion",
+  "summary": {
+    "total": 70,
+    "clean": 70,
+    "repair_in_place": 0,
+    "regenerate_from_authoritative_evidence": 0,
+    "quarantine": 0
+  },
+  "bySpecFolder": {
+    "001-hybrid-rag-fusion-epic": {
+      "total": 20,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 0
+    },
+    "002-indexing-normalization": {
+      "total": 2,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 0
+    },
+    "003-speckit-quality-and-standards": {
+      "total": 3,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 0
+    },
+    "005-core-rag-sprints-0-to-9": {
+      "total": 12,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 0
+    },
+    "006-ux-hooks-automation": {
+      "total": 2,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 0
+    },
+    "007-combined-bug-fixes": {
+      "total": 2,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 0
+    },
+    "008-architecture-audit": {
+      "total": 2,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 0
+    },
+    "010-perfect-session-capturing": {
+      "total": 4,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 0
+    },
+    "012-code-audit-per-feature-catalog/008-bug-fixes-and-data-integrity": {
+      "total": 1,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 0
+    },
+    "012-code-audit-per-feature-catalog/010-graph-signal-activation": {
+      "total": 2,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 0
+    },
+    "012-code-audit-per-feature-catalog/012-query-intelligence": {
+      "total": 1,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 0
+    },
+    "012-code-audit-per-feature-catalog/014-pipeline-architecture": {
+      "total": 2,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 0
+    },
+    "012-code-audit-per-feature-catalog/015-retrieval-enhancements": {
+      "total": 1,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 0
+    },
+    "012-code-audit-per-feature-catalog/016-tooling-and-scripts": {
+      "total": 1,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 0
+    },
+    "012-code-audit-per-feature-catalog/017-governance": {
+      "total": 2,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 0
+    },
+    "012-code-audit-per-feature-catalog/018-ux-hooks": {
+      "total": 1,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 0
+    },
+    "012-code-audit-per-feature-catalog": {
+      "total": 2,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 0
+    },
+    "013-outsourced-agent-memory": {
+      "total": 2,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 0
+    },
+    "014-hydra-db-based-features/001-baseline-and-safety-rails": {
+      "total": 1,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 0
+    },
+    "014-hydra-db-based-features/002-versioned-memory-state": {
+      "total": 1,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 0
+    },
+    "014-hydra-db-based-features/003-unified-graph-retrieval": {
+      "total": 1,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 0
+    },
+    "014-hydra-db-based-features/004-adaptive-retrieval-loops": {
+      "total": 1,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 0
+    },
+    "014-hydra-db-based-features/005-hierarchical-scope-governance": {
+      "total": 1,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 0
+    },
+    "014-hydra-db-based-features/006-shared-memory-rollout": {
+      "total": 1,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 0
+    },
+    "016-command-alignment": {
+      "total": 2,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 0
+    }
+  },
+  "files": [
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/02-03-26_16-36__cross-ai-review-phase-018-launch.md",
+      "specFolder": "001-hybrid-rag-fusion-epic",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/02-03-26_17-56__8-agent-review-33-findings.md",
+      "specFolder": "001-hybrid-rag-fusion-epic",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/02-03-26_19-40__gemini-codex-review-14-findings.md",
+      "specFolder": "001-hybrid-rag-fusion-epic",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/03-03-26_18-36__cross-ai-final-review-phase-018.md",
+      "specFolder": "001-hybrid-rag-fusion-epic",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/06-03-26_13-57__phase-10-direct-save-naming-closure.md",
+      "specFolder": "001-hybrid-rag-fusion-epic",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/06-03-26_15-07__phase-13-indexed-direct-save-closure.md",
+      "specFolder": "001-hybrid-rag-fusion-epic",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/20-02-26_07-32__rag-comparative-analysis-part1.md",
+      "specFolder": "001-hybrid-rag-fusion-epic",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/20-02-26_07-32__rag-comparative-analysis-part2.md",
+      "specFolder": "001-hybrid-rag-fusion-epic",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/20-02-26_09-32__multi-agent-rag-architecture-research.md",
+      "specFolder": "001-hybrid-rag-fusion-epic",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/20-02-26_09-47__rag-research-deliverables-created.md",
+      "specFolder": "001-hybrid-rag-fusion-epic",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/20-02-26_11-54__rag-research-extended-session.md",
+      "specFolder": "001-hybrid-rag-fusion-epic",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/20-02-26_16-57__continuation-attempt-3-spec-138.md",
+      "specFolder": "001-hybrid-rag-fusion-epic",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/20-02-26_18-23__level-3-implementation-summaries.md",
+      "specFolder": "001-hybrid-rag-fusion-epic",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/26-02-26_21-00__10-agent-review-60-ref-fixes.md",
+      "specFolder": "001-hybrid-rag-fusion-epic",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/26-02-26_22-15__true-mem-research-integration.md",
+      "specFolder": "001-hybrid-rag-fusion-epic",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/27-02-26_08-05__tri-agent-review-28-amendments.md",
+      "specFolder": "001-hybrid-rag-fusion-epic",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/27-02-26_08-47__18-agent-5-wave-review.md",
+      "specFolder": "001-hybrid-rag-fusion-epic",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/27-02-26_09-06__root-doc-r1-r8-fixes.md",
+      "specFolder": "001-hybrid-rag-fusion-epic",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/27-02-26_09-48__phase-11-verification-stale-refs.md",
+      "specFolder": "001-hybrid-rag-fusion-epic",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/27-02-26_14-35__22-agent-audit-34-tier-fixes.md",
+      "specFolder": "001-hybrid-rag-fusion-epic",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/memory/08-03-26_10-21__002-indexing-normalization-review-and-remediation.md",
+      "specFolder": "002-indexing-normalization",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/memory/26-02-26_22-17__importance-tier-frontmatter-bugfix.md",
+      "specFolder": "002-indexing-normalization",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/003-speckit-quality-and-standards/memory/08-03-26_10-06__3-phase-review-and-remediation.md",
+      "specFolder": "003-speckit-quality-and-standards",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/003-speckit-quality-and-standards/memory/08-03-26_10-13__comprehensive-review-and-remediation.md",
+      "specFolder": "003-speckit-quality-and-standards",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/003-speckit-quality-and-standards/memory/23-02-26_14-34__spec-kit-code-quality-session.md",
+      "specFolder": "003-speckit-quality-and-standards",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-9/memory/01-03-26_08-52__feature-verification-flag-graduation.md",
+      "specFolder": "005-core-rag-sprints-0-to-9",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-9/memory/03-03-26_20-58__6-agent-research-sprint-019-spec.md",
+      "specFolder": "005-core-rag-sprints-0-to-9",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-9/memory/04-03-26_08-41__sprint-019-impl-3-phases-81-files.md",
+      "specFolder": "005-core-rag-sprints-0-to-9",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-9/memory/04-03-26_11-31__sprint-019-doc-updates-6-fixes.md",
+      "specFolder": "005-core-rag-sprints-0-to-9",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-9/memory/08-03-26_09-42__comprehensive-review-sprint-009.md",
+      "specFolder": "005-core-rag-sprints-0-to-9",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-9/memory/27-02-26_07-55__ultra-think-review-s1-s2-parallel.md",
+      "specFolder": "005-core-rag-sprints-0-to-9",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-9/memory/27-02-26_09-06__sprint-7-effort-split-fixes.md",
+      "specFolder": "005-core-rag-sprints-0-to-9",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-9/memory/27-02-26_09-07__sprint-2-scoring-review-21-edits.md",
+      "specFolder": "005-core-rag-sprints-0-to-9",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-9/memory/27-02-26_09-07__sprint-3-query-intel-review.md",
+      "specFolder": "005-core-rag-sprints-0-to-9",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-9/memory/27-02-26_16-26__sprint-0-closure-bm25-baseline.md",
+      "specFolder": "005-core-rag-sprints-0-to-9",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-9/memory/27-02-26_19-03__sprint-1-3-impl-27-agents.md",
+      "specFolder": "005-core-rag-sprints-0-to-9",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-9/memory/28-02-26_22-23__sprint-8-remediation-changelog.md",
+      "specFolder": "005-core-rag-sprints-0-to-9",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-ux-hooks-automation/memory/06-03-26_20-30__review-13-fixes-applied.md",
+      "specFolder": "006-ux-hooks-automation",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-ux-hooks-automation/memory/08-03-26_09-42__5-agent-codex-review-synthesis.md",
+      "specFolder": "006-ux-hooks-automation",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-combined-bug-fixes/memory/08-03-26_10-02__cross-ai-review-008-remediation.md",
+      "specFolder": "007-combined-bug-fixes",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-combined-bug-fixes/memory/28-02-26_07-38__20-agent-verification-4-bugfixes.md",
+      "specFolder": "007-combined-bug-fixes",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-architecture-audit/memory/06-03-26_13-00__phase-9-memory-naming-closure.md",
+      "specFolder": "008-architecture-audit",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-architecture-audit/memory/06-03-26_20-32__post-review-remediation-010.md",
+      "specFolder": "008-architecture-audit",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/memory/14-03-26_15-47__code-issues-found-during-review.md",
+      "specFolder": "010-perfect-session-capturing",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/memory/15-03-26_12-22__pass-automated-checks-100-pass-rate-across-lint.md",
+      "specFolder": "010-perfect-session-capturing",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/memory/15-03-26_12-22__pass-automated-validation-is-strong-all-listed.md",
+      "specFolder": "010-perfect-session-capturing",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/memory/15-03-26_12-22__verified-trigger-phrase-yaml-rendering.md",
+      "specFolder": "010-perfect-session-capturing",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/008-bug-fixes-and-data-integrity/memory/14-03-26_10-42__closed-deferred-context-save-item-after-final.md",
+      "specFolder": "012-code-audit-per-feature-catalog/008-bug-fixes-and-data-integrity",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/010-graph-signal-activation/memory/12-03-26_13-53__closed-graph-signal-activation-backlog-to.md",
+      "specFolder": "012-code-audit-per-feature-catalog/010-graph-signal-activation",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/010-graph-signal-activation/memory/12-03-26_13-55__rejected-non-finite-causal-edge-strengths-before.md",
+      "specFolder": "012-code-audit-per-feature-catalog/010-graph-signal-activation",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/012-query-intelligence/memory/14-03-26_10-42__closed-deferred-checklist-items-after-check-and.md",
+      "specFolder": "012-code-audit-per-feature-catalog/012-query-intelligence",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/014-pipeline-architecture/memory/11-03-26_18-33__t008-lastdbcheck-advancement-deferred-until.md",
+      "specFolder": "012-code-audit-per-feature-catalog/014-pipeline-architecture",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/014-pipeline-architecture/memory/11-03-26_18-36__repaired-the-level-2-pipeline-architecture-spec.md",
+      "specFolder": "012-code-audit-per-feature-catalog/014-pipeline-architecture",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/015-retrieval-enhancements/memory/14-03-26_10-42__closed-open-p2-checklist-items-and-saved-closure.md",
+      "specFolder": "012-code-audit-per-feature-catalog/015-retrieval-enhancements",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/016-tooling-and-scripts/memory/14-03-26_10-42__closed-remaining-checklist-and-summary-residual.md",
+      "specFolder": "012-code-audit-per-feature-catalog/016-tooling-and-scripts",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/017-governance/memory/12-03-26_18-15__independent-review-of-017-governance-spec-folder.md",
+      "specFolder": "012-code-audit-per-feature-catalog/017-governance",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/017-governance/memory/12-03-26_18-53__rollout-parsing-hardened.md",
+      "specFolder": "012-code-audit-per-feature-catalog/017-governance",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/018-ux-hooks/memory/11-03-26_20-33__completed-018-ux-hooks-code-audit-remediation-17.md",
+      "specFolder": "012-code-audit-per-feature-catalog/018-ux-hooks",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/memory/13-03-26_07-28__completed-the-feature-centric-code-audit-for-spec.md",
+      "specFolder": "012-code-audit-per-feature-catalog",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/memory/13-03-26_07-29__completed-feature-centric-audit-across-20-phases.md",
+      "specFolder": "012-code-audit-per-feature-catalog",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-outsourced-agent-memory/memory/11-03-26_15-37__analyzed-loadcollecteddata-in-data-loader-ts.md",
+      "specFolder": "013-outsourced-agent-memory",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-outsourced-agent-memory/memory/14-03-26_15-20__live-outsourced-cli-dispatch-verification.md",
+      "specFolder": "013-outsourced-agent-memory",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/001-baseline-and-safety-rails/memory/13-03-26_20-56__2026-03-13-verification-pass-confirmed-phase-1.md",
+      "specFolder": "014-hydra-db-based-features/001-baseline-and-safety-rails",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/002-versioned-memory-state/memory/13-03-26_20-56__2026-03-13-verification-pass-confirmed-phase-2.md",
+      "specFolder": "014-hydra-db-based-features/002-versioned-memory-state",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/003-unified-graph-retrieval/memory/13-03-26_20-56__2026-03-13-verification-pass-confirmed-phase-3.md",
+      "specFolder": "014-hydra-db-based-features/003-unified-graph-retrieval",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/004-adaptive-retrieval-loops/memory/13-03-26_20-56__2026-03-13-verification-pass-confirmed-phase-4.md",
+      "specFolder": "014-hydra-db-based-features/004-adaptive-retrieval-loops",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/005-hierarchical-scope-governance/memory/13-03-26_20-56__2026-03-13-verification-pass-confirmed-phase-5.md",
+      "specFolder": "014-hydra-db-based-features/005-hierarchical-scope-governance",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/006-shared-memory-rollout/memory/13-03-26_20-56__2026-03-13-verification-pass-confirmed-phase-6.md",
+      "specFolder": "014-hydra-db-based-features/006-shared-memory-rollout",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/016-command-alignment/memory/15-03-26_08-26__implemented-016-command-alignment-aligned-the.md",
+      "specFolder": "016-command-alignment",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/016-command-alignment/memory/15-03-26_11-13__implemented-sk-doc-dqi-alignment-across-all-8.md",
+      "specFolder": "016-command-alignment",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    }
+  ]
+}
