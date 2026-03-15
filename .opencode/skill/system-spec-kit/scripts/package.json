@@ -16,7 +16,9 @@
   },
   "dependencies": {
     "better-sqlite3": "12.6.2",
-    "sqlite-vec": "0.1.7-alpha.2",
+    "sqlite-vec": "0.1.7-alpha.2"
+  },
+  "optionalDependencies": {
     "sqlite-vec-darwin-arm64": "0.1.7-alpha.2"
   },
   "devDependencies": {
