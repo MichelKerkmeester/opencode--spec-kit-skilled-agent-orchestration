@@ -13,8 +13,8 @@
 |-------|-------|
 | **Spec Folder** | 022-hybrid-rag-fusion |
 | **Level** | 3+ |
-| **Status** | In Progress (~80% complete; 8/16 main phases complete, 27/34 children complete) |
-| **Last Updated** | 2026-03-14 |
+| **Status** | In Progress (~85% complete; 10/16 main phases complete, 27/34 children complete) |
+| **Last Updated** | 2026-03-15 |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -98,10 +98,19 @@ Eight sprints transformed retrieval quality from speculation to measurement:
 
 - **Phase 013 (Outsourced Agent Memory)** reconciled runtime behavior with CLI handback documentation: explicit JSON-mode failures now hard-fail, next-steps normalized to `Next:`/`NEXT_ACTION` patterns, and all 8 CLI docs aligned on redact-and-scrub handback flow. 11 tests.
 
-### Pending Work (Phases 015-016, 999)
+### Documentation Alignment (Phases 015-016)
 
-- **015 (Skill Alignment)** and **016 (Command Alignment)** remain empty stubs with only memory/scratch scaffolds.
-- **999 (Finalization)** contains 7 stub children for agent alignment, AGENTS.md alignment, manual testing, readme rewrites (Memory MCP, install guide, System Speckit, repo root). None have spec.md or plan.md files.
+- **Phase 015 (Skill Alignment)** completed a research-backed Level 2 specification for aligning system-spec-kit documentation with the delivered program. Open skill-guide alignment work is explicitly tracked; already-landed changes are preserved. Status: Complete.
+
+- **Phase 016 (Command Alignment)** aligned the memory command documentation set with the current 32-tool MCP surface across L1-L7. Updated 5 existing commands, created 2 new commands (`analyze.md`, `shared.md`), and refreshed the README with a complete 32-tool coverage matrix. Status: Complete.
+
+### Documentation Rewrites (Phases 020-022, In Progress)
+
+- **Phase 020 (MCP README Rewrite + Install Guide Update)** covers two deliverables: a complete rewrite of the MCP server README to document all 32 tools, hybrid search pipeline, and cognitive memory architecture; and an update of the install guide against current dependencies. Status: In Progress.
+
+- **Phase 021 (System Spec Kit README Rewrite)** is a complete rewrite of the Spec Kit README documenting the full skill surface: documentation levels 1-3+, memory system, 32 MCP tools, 13 commands, templates, scripts, and validation. Status: In Progress.
+
+- **Phase 022 (Repo README Rewrite)** is a complete rewrite of the root README as a top-level overview of the OpenCode system: 11 agents, 16 skills, 32 MCP tools, gate system, and code mode with role-based navigation. Status: In Progress.
 
 ### Feature Catalog Coverage (19 categories)
 
@@ -216,9 +225,9 @@ Multiple multi-agent verification campaigns were executed:
 
 4. **012/016 still in Draft.** The tooling-and-scripts code audit has spec metadata showing Draft status despite 177 tests passing.
 
-5. **015/016 are empty stubs.** Skill alignment and command alignment phases contain only scaffold directories (memory/.gitkeep, scratch/.gitkeep) with no spec, plan, or tasks.
+5. **015/016 are now complete.** Skill alignment (015) and command alignment (016) delivered Level 2 specs with full 32-tool coverage. Previously listed as empty stubs.
 
-6. **999-finalization has structural issues.** Two `020-*` folders (numbering collision) and a description.json referencing the wrong path (`015-finalization` instead of `999-finalization`).
+6. **Phases 020-022 are in progress.** Documentation rewrites for MCP README, install guide, Spec Kit README, and root README are underway with spec folders created and multi-agent research/drafting pipeline active.
 
 7. **Session capture (010) deferred 67 medium findings.** Phases 3-4 (Claude capture, score calibration) are deferred.
 

@@ -1,0 +1,21 @@
+{
+  "specFolder": "01--anobel.com/035-hero-contact-success",
+  "description": "Spec: Hero Webshop Selector Scoping",
+  "keywords": [
+    "spec",
+    "hero",
+    "webshop",
+    "selector",
+    "scoping"
+  ],
+  "lastUpdated": "2026-03-15T10:14:22.623Z",
+  "specId": "035",
+  "folderSlug": "hero-contact-success",
+  "parentChain": [
+    "01--anobel.com"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "15-03-26_11-14__manual-context-save.md"
+  ]
+}

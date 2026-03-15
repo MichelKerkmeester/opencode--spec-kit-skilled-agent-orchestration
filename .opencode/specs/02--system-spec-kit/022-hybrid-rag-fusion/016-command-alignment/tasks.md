@@ -346,6 +346,6 @@ Phase 4:
 
 <!--
 TASKS: 016-command-alignment
-24/24 tasks complete
-Built around 32-tool schema sync, fixed command ownership, and proof-oriented verification
+24/24 tasks complete — finalized 2026-03-15
+7-command suite (ingest in manage, history in analyze) + sk-doc DQI pass
 -->

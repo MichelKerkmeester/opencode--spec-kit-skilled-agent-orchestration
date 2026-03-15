@@ -1,0 +1,39 @@
+{
+  "generatedAt": "2026-03-15T12:11:12.402Z",
+  "root": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/016-command-alignment",
+  "summary": {
+    "total": 2,
+    "clean": 2,
+    "repair_in_place": 0,
+    "regenerate_from_authoritative_evidence": 0,
+    "quarantine": 0
+  },
+  "bySpecFolder": {
+    "memory": {
+      "total": 2,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 0
+    }
+  },
+  "files": [
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/016-command-alignment/memory/15-03-26_08-26__implemented-016-command-alignment-aligned-the.md",
+      "specFolder": "memory",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    },
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/016-command-alignment/memory/15-03-26_11-13__implemented-sk-doc-dqi-alignment-across-all-8.md",
+      "specFolder": "memory",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null
+    }
+  ]
+}

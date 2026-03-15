@@ -1,0 +1,19 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/022-rewrite-repo-readme",
+  "description": "Specification: 022-rewrite-repo-readme",
+  "keywords": [
+    "specification",
+    "022-rewrite-repo-readme"
+  ],
+  "lastUpdated": "2026-03-15T11:50:39.347Z",
+  "specId": "022",
+  "folderSlug": "rewrite-repo-readme",
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "15-03-26_13-03__fixed-anchor-destruction-bug-and-hardcoded.md"
+  ]
+}

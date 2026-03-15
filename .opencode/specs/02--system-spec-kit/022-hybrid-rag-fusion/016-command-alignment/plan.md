@@ -212,6 +212,6 @@ bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh \
 
 <!--
 PLAN: 016-command-alignment
-Planning-doc refresh only
-32-tool schema baseline, fixed command ownership, and verification-first implementation plan
+Complete (2026-03-15)
+32-tool schema baseline, 7-command final suite (ingest in manage, history in analyze)
 -->

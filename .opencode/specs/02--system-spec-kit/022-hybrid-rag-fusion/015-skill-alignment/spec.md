@@ -18,7 +18,7 @@ contextType: "implementation"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P1 |
-| **Status** | Draft |
+| **Status** | Complete |
 | **Created** | 2026-03-14 |
 | **Updated** | 2026-03-15 |
 | **Branch** | `017-markovian-architectures` |
@@ -54,7 +54,7 @@ Produce an implementation-ready documentation spec that accurately tracks the **
 
 ### Out of Scope
 - MCP server runtime code changes - this phase remains documentation-only.
-- Command alignment work owned by `016-command-alignment`.
+- Command alignment work completed by `016-command-alignment` (32/32 tools, 7 commands).
 - Agent alignment, README rewrites, and finalization work owned by `999-finalization`.
 - Re-implementing documentation changes that are already present elsewhere in the repo.
 
@@ -101,6 +101,7 @@ Produce an implementation-ready documentation spec that accurately tracks the **
 - Phase-aware template guidance is already present in `../../../../skill/system-spec-kit/references/templates/level_specifications.md`.
 - Nested child-path support is already present in `../../../../skill/system-spec-kit/references/structure/sub_folder_versioning.md`.
 - Environment variable coverage is broadly current except for the missing runtime `SPECKIT_GRAPH_UNIFIED` entry and stale wording for `SPEC_KIT_ENABLE_CAUSAL`.
+- Full 32-tool command documentation suite delivered by `016-command-alignment` (7 commands: context, save, manage, learn, continue, analyze, shared).
 
 ### Out-of-Scope Backlog Boundaries
 
@@ -140,6 +141,7 @@ Produce an implementation-ready documentation spec that accurately tracks the **
 | Risk | Validation policy requires artifacts that are unusual for a draft docs-only phase | The spec folder can fail validation even when the backlog rewrite is correct | Resolve all validator issues that can be fixed in the spec folder now and document any policy tension honestly |
 | Risk | Future implementer re-adds already-landed tasks | Wasted work and renewed drift | Keep explicit "already landed" notes in spec, plan, tasks, and checklist |
 | Risk | Numeric claims drift again before implementation begins | Future backlog becomes stale quickly | Require canonical-source verification during future implementation and final review |
+| Dependency | `016-command-alignment` | Completed | Command documentation coverage is fully delivered (32/32 tools, 7 commands); only SKILL.md metadata/routing/rules remain as 015 scope |
 <!-- /ANCHOR:risks -->
 
 ---

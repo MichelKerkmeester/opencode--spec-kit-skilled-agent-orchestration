@@ -24,8 +24,8 @@ The Spec Kit Memory MCP server now exposes **32 tools** across 7 architectural l
 **Key Metrics**
 - 32 MCP tools in `TOOL_DEFINITIONS`
 - 16 tools currently have zero command coverage (50% uncovered)
-- 8-command target surface after alignment
-- 1 reserved new subcommand: `/memory:manage history <specFolder>`
+- 7-command target surface after alignment (ingest folded into manage)
+- Learning history owned by `/memory:analyze history <specFolder>`
 - Live documentation source of truth is the combined command-facing surface from `tool-schemas.ts` and `schemas/tool-input-schemas.ts`
 - `shared_memory_enable` (tool #32) added as part of the default-off enablement feature
 
@@ -38,7 +38,7 @@ The Spec Kit Memory MCP server now exposes **32 tools** across 7 architectural l
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P1 |
-| **Status** | Draft |
+| **Status** | Complete |
 | **Created** | 2026-03-14 |
 | **Updated** | 2026-03-15 |
 | **Branch** | `017-markovian-architectures` |
@@ -112,10 +112,9 @@ Bring the memory command docs into full alignment with the current MCP tool sche
 | D3 | Updated `manage.md` | Add missing mutation/health/history docs, fix numbering, and document `confirmName` |
 | D4 | Updated `learn.md` | Verify current schema references and checkpoint-delete behavior notes |
 | D5 | Updated `continue.md` | Add history reference and refresh recovery tool signatures |
-| D6 | New `analyze.md` | Command home for all L6 analysis and eval tools |
+| D6 | New `analyze.md` | Command home for all L6 analysis and eval tools + learning history |
 | D7 | New `shared.md` | Command home for all L5 shared-memory tools |
-| D8 | New `ingest.md` | Command home for all L7 async ingest tools |
-| D9 | Updated `README.txt` | Accurate 8-command index, examples, and tool coverage matrix |
+| D8 | Updated `README.txt` | Accurate 7-command index, examples, and tool coverage matrix |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -262,10 +261,10 @@ then it shows 8 commands, current examples, and a complete tool coverage table.
 
 The following decisions are locked for implementation:
 
-1. `memory_get_learning_history` belongs to `/memory:manage history <specFolder>`.
+1. `memory_get_learning_history` belongs to `/memory:analyze history <specFolder>` (moved from planned `/memory:manage` to co-locate with other epistemic measurement tools).
 2. Eval tools remain inside `/memory:analyze`; no `/memory:eval` command is introduced.
 3. Shared-memory lifecycle tools belong to `/memory:shared`.
-4. Async ingestion tools belong to `/memory:ingest`, not `/memory:manage`.
+4. Async ingestion tools belong to `/memory:manage ingest` (folded into manage instead of a separate `/memory:ingest` command, reducing command count from 8 to 7).
 5. `context.md` must treat `minQualityScore` as a deprecated alias of `min_quality_score`, not a separate capability.
 6. Feature flags should be documented only where they materially affect command behavior in the current repo.
 7. Verification must produce a generated 32-tool coverage table so implementation can prove nothing was missed.
@@ -325,7 +324,7 @@ Confirm that every live tool and every live parameter has a documented home, com
 
 <!--
 SPEC: 016-command-alignment
-Level 2 planning artifact refreshed on 2026-03-15
-Scope: planning docs only for 5 command updates + 3 new commands + 1 README update
+Level 2 — Complete (2026-03-15)
+Actual: 5 command updates + 2 new commands + 1 README update + sk-doc DQI pass
 Source of truth: tool-schemas.ts + schemas/tool-input-schemas.ts (32 tools)
 -->

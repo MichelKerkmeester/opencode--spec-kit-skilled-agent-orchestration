@@ -39,10 +39,10 @@ This phase does not implement the `system-spec-kit` documentation alignment itse
 - [x] Live repo spot-checks performed to separate open gaps from already-landed work
 
 ### Definition of Done
-- [ ] `015-skill-alignment` spec docs are Level 2, anchored, and locally cross-linked
-- [ ] Backlog contains only still-open documentation work
-- [ ] Verification methods use canonical repo truth rather than brittle grep shortcuts
-- [ ] Validation and drift checks complete with any remaining policy conflicts documented
+- [x] `015-skill-alignment` spec docs are Level 2, anchored, and locally cross-linked
+- [x] Backlog contains only still-open documentation work
+- [x] Verification methods use canonical repo truth rather than brittle grep shortcuts
+- [x] Validation and drift checks complete with any remaining policy conflicts documented
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -79,24 +79,24 @@ Research notes and live repo inspection feed the rewritten spec. The rewritten s
 - [x] Keep the phase marked `Draft` and explicitly pre-implementation
 
 ### Phase 2: Skill-Guide Backlog Refresh
-- [ ] Retain open skill-guide gaps for stale metadata, routing, rules, governance, and shared-space/shared-memory tool positioning
-- [ ] Remove or downgrade tasks already satisfied by current repo docs
-- [ ] Require canonical-source verification for future metadata updates
+- [x] Retain open skill-guide gaps for stale metadata, routing, rules, governance, and shared-space/shared-memory tool positioning
+- [x] Remove or downgrade tasks already satisfied by current repo docs
+- [x] Require canonical-source verification for future metadata updates
 
 ### Phase 3: Reference Backlog Refresh
-- [ ] Keep only open reference-file work across memory, validation, structure, workflows, debugging, and config
-- [ ] Remove items already covered by quick-reference, phase-aware template guidance, or nested path support
-- [ ] Keep runtime-flag documentation work focused on missing runtime `SPECKIT_GRAPH_UNIFIED` coverage and stale causal wording
+- [x] Keep only open reference-file work across memory, validation, structure, workflows, debugging, and config
+- [x] Remove items already covered by quick-reference, phase-aware template guidance, or nested path support
+- [x] Keep runtime-flag documentation work focused on missing runtime `SPECKIT_GRAPH_UNIFIED` coverage and stale causal wording
 
 ### Phase 4: Asset Backlog Refresh
-- [ ] Keep only open asset work for dispatch, complexity, level-decision, and template-mapping docs
-- [ ] Remove asset tasks that research or live repo inspection no longer support as open gaps
+- [x] Keep only open asset work for dispatch, complexity, level-decision, and template-mapping docs
+- [x] Remove asset tasks that research or live repo inspection no longer support as open gaps
 
 ### Phase 5: Verification and Drift-Proofing
-- [ ] Validate this spec folder with `validate.sh`
-- [ ] Confirm Level 2 checklist recognition with `check-completion.sh`
-- [ ] Run `verify_alignment_drift.py --root .opencode/skill/system-spec-kit`
-- [ ] Re-run targeted searches to ensure the backlog still matches live repo truth
+- [x] Validate this spec folder with `validate.sh`
+- [x] Confirm Level 2 checklist recognition with `check-completion.sh`
+- [x] Run `verify_alignment_drift.py --root .opencode/skill/system-spec-kit`
+- [x] Re-run targeted searches to ensure the backlog still matches live repo truth
 <!-- /ANCHOR:phases -->
 
 ---
@@ -123,6 +123,7 @@ Research notes and live repo inspection feed the rewritten spec. The rewritten s
 | `../spec.md` | Internal | Green | Parent phase context would be incomplete |
 | `../implementation-summary.md` | Internal | Green | Open-vs-landed reconciliation would be weaker |
 | Spec Kit validation scripts | Internal | Green | Completion evidence cannot be checked consistently |
+| `016-command-alignment` | Internal | Green (Completed) | Command documentation suite fully delivered (32/32 tools, 7 commands); 015 scope narrowed to SKILL.md metadata/routing/rules only |
 <!-- /ANCHOR:dependencies -->
 
 ---
