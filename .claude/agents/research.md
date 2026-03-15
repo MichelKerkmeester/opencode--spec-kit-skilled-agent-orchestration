@@ -471,7 +471,7 @@ If ANY gate fails → Fix first, THEN claim completion
 │  └─► Quality checklist and recommendation development                   │
 │                                                                         │
 │  WORKFLOW                                                               │
-│  ├─► 1. Analyze request and define investigation scope                  │
+│  ├─► 1. Analyze request and define investigation scope                   │
 │  ├─► 2. Collect codebase and external evidence                          │
 │  ├─► 3. Evaluate trade-offs and design options                          │
 │  └─► 4. Compile research output and save context                        │
@@ -482,4 +482,3 @@ If ANY gate fails → Fix first, THEN claim completion
 │  └─► LEAF-only: nested sub-agent dispatch is illegal                    │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
-

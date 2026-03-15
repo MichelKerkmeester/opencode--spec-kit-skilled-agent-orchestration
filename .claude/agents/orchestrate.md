@@ -97,7 +97,7 @@ flowchart TD
 
 ### Nesting Depth Protocol (NDP)
 
-This profile enforces **single-hop delegation**. Nested sub-agent dispatch is illegal.
+This Copilot profile enforces **single-hop delegation**. Nested sub-agent dispatch is illegal.
 
 #### Agent Tier Classification
 
@@ -158,8 +158,8 @@ When dispatching ANY non-orchestrator agent, append this to the Task prompt:
 
 ### Agent Files
 
-| Agent     | File                         | Notes                                                                                  |
-| --------- | ---------------------------- | -------------------------------------------------------------------------------------- |
+| Agent     | File                          | Notes                                                                                  |
+| --------- | ----------------------------- | -------------------------------------------------------------------------------------- |
 | @context  | `.claude/agents/context.md`  | Sub-agent with direct retrieval only. Routes ALL exploration tasks                     |
 | @research | `.claude/agents/research.md` | Sub-agent; outputs research.md                                                         |
 | @ultra-think | `.claude/agents/ultra-think.md` | Planning-only multi-strategy architect (max 3 strategies)                              |
@@ -271,7 +271,7 @@ If DEG does not clearly justify splitting, stay in direct-first mode.
 
 ### Sub-Orchestrator Pattern (Disabled)
 
-Sub-orchestrator fan-out is disabled in this profile because nested dispatch is illegal. When work is large, keep orchestration at depth 0 and run additional waves directly from the top-level orchestrator.
+Sub-orchestrator fan-out is disabled in this Copilot profile because nested dispatch is illegal. When work is large, keep orchestration at depth 0 and run additional waves directly from the top-level orchestrator.
 
 ### Conditional Branching
 
@@ -512,17 +512,17 @@ Isolate failures to prevent cascading issues. States: CLOSED (normal) → OPEN (
 | Context budget exceeded      | Stop dispatching, synthesize current results, report to user (§8)                                |
 | Context pressure detected    | Stop new dispatches → synthesize completed results → suggest file-based collection for remainder |
 
-### Compaction Recovery Protocol
+### Session Recovery Protocol
 
-**If context compaction occurs:**
+**If context becomes degraded or session state is lost:**
 1. **STOP** — take no action, use no tools
-2. Re-read CLAUDE.md and MEMORY.md completely
+2. Re-read AGENTS.md and any project configuration files
 3. Summarize: current task, last instruction, modified files, errors, git state
 4. **WAIT** for user confirmation before proceeding
-5. Do NOT assume the compacted summary's next steps are correct
+5. Do NOT assume the recovered summary's next steps are correct
 
-**After 2+ compactions in one session:**
-- Recommend `/clear` and a fresh start
+**After repeated session degradation:**
+- Recommend starting a fresh session
 - Use `@handover` to create a continuation document first
 
 ### Timeout Handling
@@ -581,9 +581,9 @@ After complex multi-agent workflows, save orchestration context via: `node .open
 When ANY context pressure signal fires:
 
 1. **PAUSE** — do not dispatch another agent
-2. **ANNOUNCE** — tell the user: "Context pressure detected — recommend `/compact` focused on [current task]"
+2. **ANNOUNCE** — tell the user: "Context pressure detected — recommend saving context before continuing"
 3. **WAIT** — for user confirmation before continuing
-4. If user does not compact: synthesize completed results and suggest `/spec_kit:handover`
+4. If user does not save context: synthesize completed results and suggest `/spec_kit:handover`
 
 ### Command Suggestions
 
@@ -747,8 +747,8 @@ The orchestrator's own behavior can cause context overload. Follow these rules:
 ❌ **Never echo full tool output (>50 lines) into conversation**
 - Raw tool output accumulates rapidly. Always summarize to 3-5 bullet points. See §7 Output Discipline.
 
-❌ **Never continue after compaction without user confirmation**
-- Compaction loses nuance. Stop, re-read CLAUDE.md, summarize state, and wait for confirmation before proceeding. See §6 Compaction Recovery Protocol.
+❌ **Never continue after session degradation without user confirmation**
+- Lost context leads to incorrect assumptions. Stop, re-read AGENTS.md, summarize state, and wait for confirmation before proceeding. See §6 Session Recovery Protocol.
 
 ---
 

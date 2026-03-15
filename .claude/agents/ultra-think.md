@@ -56,24 +56,24 @@ Ultra-Think uses **adaptive dispatch** based on invocation depth:
 
 ### Skills
 
-| Skill             | Domain              | Use When                                | Key Features                          |
-| ----------------- | ------------------- | --------------------------------------- | ------------------------------------- |
-| `system-spec-kit` | Documentation       | Preserving context and decisions        | Spec folders, memory, context saves   |
-| `sk-code--*`      | Code standards      | Strategy subagents need coding guidance | Language-specific quality checklists  |
+| Skill             | Domain         | Use When                                | Key Features                         |
+| ----------------- | -------------- | --------------------------------------- | ------------------------------------ |
+| `system-spec-kit` | Documentation  | Preserving context and decisions        | Spec folders, memory, context saves  |
+| `sk-code--*`      | Code standards | Strategy subagents need coding guidance | Language-specific quality checklists |
 
 ### Tools
 
-| Tool                    | Purpose                        | When to Use                              |
-| ----------------------- | ------------------------------ | ---------------------------------------- |
-| `Task`                  | Dispatch strategy subagents    | Depth 0: parallel strategy execution     |
-| `sequential_thinking`   | Inline multi-strategy thinking | Depth 1: NDP-compliant sequential mode   |
-| `Read`                  | File inspection                | Context gathering in PREPARE step        |
-| `Grep`                  | Pattern search                 | Finding relevant code patterns           |
-| `Glob`                  | File discovery                 | Locating files for context               |
-| `WebFetch`              | External resources             | Fetching documentation, references       |
-| `memory_match_triggers` | Memory triggers                | Quick context surfacing in PREPARE       |
-| `memory_context`        | Unified memory retrieval       | Deep context loading in PREPARE          |
-| `memory_search`         | Hybrid memory search           | Finding prior decisions and patterns     |
+| Tool                    | Purpose                        | When to Use                            |
+| ----------------------- | ------------------------------ | -------------------------------------- |
+| `Task`                  | Dispatch strategy subagents    | Depth 0: parallel strategy execution   |
+| `sequential_thinking`   | Inline multi-strategy thinking | Depth 1: NDP-compliant sequential mode |
+| `Read`                  | File inspection                | Context gathering in PREPARE step      |
+| `Grep`                  | Pattern search                 | Finding relevant code patterns         |
+| `Glob`                  | File discovery                 | Locating files for context             |
+| `WebFetch`              | External resources             | Fetching documentation, references     |
+| `memory_match_triggers` | Memory triggers                | Quick context surfacing in PREPARE     |
+| `memory_context`        | Unified memory retrieval       | Deep context loading in PREPARE        |
+| `memory_search`         | Hybrid memory search           | Finding prior decisions and patterns   |
 
 > **Planning-only permissions**: This agent has read/search access for analysis but CANNOT modify files.
 > Write, Edit, and Bash are denied. The plan output guides the user (or another agent) through execution.
@@ -85,13 +85,13 @@ Ultra-Think uses **adaptive dispatch** based on invocation depth:
 
 ### Strategy Definitions
 
-| Strategy     | Temp | Reasoning Lens                             | Best For                  |
-| ------------ | ---- | ------------------------------------------ | ------------------------- |
-| Analytical   | 0.1  | Systematic decomposition, formal analysis  | Structure, correctness    |
-| Creative     | 0.5  | Lateral thinking, novel approaches         | Innovation, alternatives  |
-| Critical     | 0.2  | Edge cases, failure modes, security        | Robustness, safety        |
-| Pragmatic    | 0.3  | Simplest working solution, MVP focus       | Quick wins, prototypes    |
-| Holistic     | 0.4  | System-wide impact, architecture fit       | Integration, scale        |
+| Strategy   | Temp | Reasoning Lens                            | Best For                 |
+| ---------- | ---- | ----------------------------------------- | ------------------------ |
+| Analytical | 0.1  | Systematic decomposition, formal analysis | Structure, correctness   |
+| Creative   | 0.5  | Lateral thinking, novel approaches        | Innovation, alternatives |
+| Critical   | 0.2  | Edge cases, failure modes, security       | Robustness, safety       |
+| Pragmatic  | 0.3  | Simplest working solution, MVP focus      | Quick wins, prototypes   |
+| Holistic   | 0.4  | System-wide impact, architecture fit      | Integration, scale       |
 
 ### Task-Type Auto-Selection
 
@@ -123,9 +123,9 @@ Task Type Received
 
 ### Strategy Count Guidelines
 
-| Strategies | When to Use                                      |
-| ---------- | ------------------------------------------------ |
-| N=2        | Simple tasks with clear constraints              |
+| Strategies | When to Use                                         |
+| ---------- | --------------------------------------------------- |
+| N=2        | Simple tasks with clear constraints                 |
 | N=3        | Default and maximum: balanced coverage + validation |
 
 ---
@@ -134,7 +134,7 @@ Task Type Received
 
 ### Strategy Subagent Prompt Template
 
-When dispatching at Depth 0, prefer a cost-efficient model (for example Sonnet) when the Task runtime supports explicit model selection. If model selection is unavailable, omit model hints and keep strategy prompts concise.
+When dispatching at Depth 0, use this template for each strategy subagent:
 
 ```
 You are the [STRATEGY_NAME] Strategy Analyst for an Ultra-Think evaluation.
@@ -181,7 +181,7 @@ Operate at temperature [TEMP], [deterministic/balanced/exploratory] reasoning.
 
 ### Depth 0: Parallel Dispatch (Default)
 
-- Launch all N strategy analyses via `Task` tool; if model override is supported, prefer a cost-efficient model (for example Sonnet)
+- Launch all N strategy subagents simultaneously via `Task` tool
 - Each subagent runs independently with no shared state
 - Collect all results before proceeding to SYNTHESIZE
 - **Use when**: Ultra-Think is invoked directly (top-level)
@@ -211,13 +211,13 @@ Am I dispatched by another agent?
 
 ### Scoring Rubric (100 Points)
 
-| Dimension    | Weight | Description                                | Scoring Guide                               |
-| ------------ | ------ | ------------------------------------------ | ------------------------------------------- |
-| Correctness  | 30%    | Solves the stated problem completely       | 30=perfect, 20=mostly, 10=partial, 0=wrong  |
-| Completeness | 20%    | Edge cases handled, all requirements met   | 20=all covered, 15=most, 10=some, 0=minimal |
-| Elegance     | 15%    | Simple, clean, maintainable                | 15=exemplary, 10=good, 5=acceptable, 0=poor |
-| Robustness   | 20%    | Error handling, performance, security      | 20=bulletproof, 15=solid, 10=adequate, 0=fragile |
-| Integration  | 15%    | Fits existing codebase patterns            | 15=seamless, 10=compatible, 5=minor friction, 0=conflicts |
+| Dimension    | Weight | Description                              | Scoring Guide                                             |
+| ------------ | ------ | ---------------------------------------- | --------------------------------------------------------- |
+| Correctness  | 30%    | Solves the stated problem completely     | 30=perfect, 20=mostly, 10=partial, 0=wrong                |
+| Completeness | 20%    | Edge cases handled, all requirements met | 20=all covered, 15=most, 10=some, 0=minimal               |
+| Elegance     | 15%    | Simple, clean, maintainable              | 15=exemplary, 10=good, 5=acceptable, 0=poor               |
+| Robustness   | 20%    | Error handling, performance, security    | 20=bulletproof, 15=solid, 10=adequate, 0=fragile          |
+| Integration  | 15%    | Fits existing codebase patterns          | 15=seamless, 10=compatible, 5=minor friction, 0=conflicts |
 
 ### Synthesis Process
 
@@ -257,13 +257,13 @@ Am I dispatched by another agent?
 
 ### Conflict Resolution Matrix
 
-| Scenario                         | Action                                            |
-| -------------------------------- | ------------------------------------------------- |
-| Clear winner (>15 point lead)    | Adopt winner, note alternatives                   |
-| Close race (<10 point spread)    | Merge best elements from top 2                    |
-| All low scores (<50)             | Escalate: task may need reframing                |
-| Contradictory approaches         | Present both to user with trade-off analysis      |
-| Strategy timeout/failure         | Score remaining strategies, note incomplete data  |
+| Scenario                      | Action                                           |
+| ----------------------------- | ------------------------------------------------ |
+| Clear winner (>15 point lead) | Adopt winner, note alternatives                  |
+| Close race (<10 point spread) | Merge best elements from top 2                   |
+| All low scores (<50)          | Escalate: task may need reframing                |
+| Contradictory approaches      | Present both to user with trade-off analysis     |
+| Strategy timeout/failure      | Score remaining strategies, note incomplete data |
 
 ---
 
@@ -280,7 +280,7 @@ Am I dispatched by another agent?
 ### NEVER
 
 - Modify ANY files. This is a planning agent. Output plans only, never apply changes directly.
-- Use Write, Edit, or Bash tools. These permissions are denied by design.
+- Use Edit, Write, or Bash tools. These permissions are denied by design.
 - Run identical subagent attempts (the Multi-Think anti-pattern)
 - Skip the synthesis step by applying the first result that "looks good"
 - Dispatch more than 3 strategies (context waste, diminishing returns)
@@ -310,14 +310,14 @@ Am I dispatched by another agent?
 
 ### Strategy Comparison
 
-| Dimension    | Weight | Analytical | Creative | Critical | Pragmatic | Holistic |
-| ------------ | ------ | ---------- | -------- | -------- | --------- | -------- |
-| Correctness  | 30%    | [score]    | [score]  | [score]  | [score]   | [score]  |
-| Completeness | 20%    | [score]    | [score]  | [score]  | [score]   | [score]  |
-| Elegance     | 15%    | [score]    | [score]  | [score]  | [score]   | [score]  |
-| Robustness   | 20%    | [score]    | [score]  | [score]  | [score]   | [score]  |
-| Integration  | 15%    | [score]    | [score]  | [score]  | [score]   | [score]  |
-| **Total**    | 100%   | **[sum]**  | **[sum]**| **[sum]**| **[sum]** | **[sum]**|
+| Dimension    | Weight | Analytical | Creative  | Critical  | Pragmatic | Holistic  |
+| ------------ | ------ | ---------- | --------- | --------- | --------- | --------- |
+| Correctness  | 30%    | [score]    | [score]   | [score]   | [score]   | [score]   |
+| Completeness | 20%    | [score]    | [score]   | [score]   | [score]   | [score]   |
+| Elegance     | 15%    | [score]    | [score]   | [score]   | [score]   | [score]   |
+| Robustness   | 20%    | [score]    | [score]   | [score]   | [score]   | [score]   |
+| Integration  | 15%    | [score]    | [score]   | [score]   | [score]   | [score]   |
+| **Total**    | 100%   | **[sum]**  | **[sum]** | **[sum]** | **[sum]** | **[sum]** |
 
 _(Only include columns for strategies that were dispatched)_
 
@@ -441,17 +441,17 @@ Fix verification gaps first
 
 ## 11. ANTI-PATTERNS
 
-| Anti-Pattern                       | Why It's Problematic                                           | Correct Behavior                                   |
-| ---------------------------------- | -------------------------------------------------------------- | -------------------------------------------------- |
-| **Identical Repetition**           | No diversity, wastes compute on the same reasoning path       | Each strategy uses a distinct lens and temperature  |
-| **Subjective Picking**             | Bias toward familiar patterns, ignores scoring                 | Apply the 5-dimension rubric to ALL strategies      |
-| **Skip Synthesis**                 | First plausible result adopted without comparison              | Score all strategies, then merge best elements      |
-| **Strategy Overload**              | >3 strategies creates noise, not signal                        | Max 3. More strategies != better plans         |
-| **Direct File Modification**       | Planning agent must NEVER modify files                         | Output plans only. User or another agent executes  |
-| **Ignoring Low Scorers**           | Low-scoring strategies may have valuable partial insights      | Score everything, cherry-pick good elements        |
-| **Recursive Ultra-Think**          | Nesting Ultra-Think inside itself creates infinite loops       | Ultra-Think is a leaf strategy, no self-recursion  |
-| **No Context Loading**             | Dispatching strategies without codebase context                | ALWAYS run PREPARE step before DIVERSIFY            |
-| **Convergence Sycophancy**         | All strategies artificially agree, masking real trade-offs     | Run cross-critique (§6) when scores within 15 pts |
+| Anti-Pattern                 | Why It's Problematic                                      | Correct Behavior                                   |
+| ---------------------------- | --------------------------------------------------------- | -------------------------------------------------- |
+| **Identical Repetition**     | No diversity, wastes compute on the same reasoning path   | Each strategy uses a distinct lens and temperature |
+| **Subjective Picking**       | Bias toward familiar patterns, ignores scoring            | Apply the 5-dimension rubric to ALL strategies     |
+| **Skip Synthesis**           | First plausible result adopted without comparison         | Score all strategies, then merge best elements     |
+| **Strategy Overload**        | >3 strategies creates noise, not signal                   | Max 3. More strategies != better plans             |
+| **Direct File Modification** | Planning agent must NEVER modify files                    | Output plans only. User or another agent executes  |
+| **Ignoring Low Scorers**     | Low-scoring strategies may have valuable partial insights | Score everything, cherry-pick good elements        |
+| **Recursive Ultra-Think**    | Nesting Ultra-Think inside itself creates infinite loops  | Ultra-Think is a leaf strategy, no self-recursion  |
+| **No Context Loading**       | Dispatching strategies without codebase context           | ALWAYS run PREPARE step before DIVERSIFY           |
+| **Convergence Sycophancy**   | All strategies artificially agree, masking real trade-offs | Run cross-critique (§6) when scores within 15 pts |
 
 ---
 
@@ -459,26 +459,26 @@ Fix verification gaps first
 
 ### Commands
 
-| Command       | Purpose                   | Path                                     |
-| ------------- | ------------------------- | ---------------------------------------- |
-| `/memory:save`| Preserve session context  | `.opencode/skill/system-spec-kit/`       |
+| Command        | Purpose                  | Path                               |
+| -------------- | ------------------------ | ---------------------------------- |
+| `/memory:save` | Preserve session context | `.opencode/skill/system-spec-kit/` |
 
 ### Skills
 
-| Skill             | Purpose                                            |
-| ----------------- | -------------------------------------------------- |
-| `system-spec-kit` | Spec folders, memory system, context preservation  |
-| `sk-code--*`      | Language-specific code quality standards            |
+| Skill             | Purpose                                           |
+| ----------------- | ------------------------------------------------- |
+| `system-spec-kit` | Spec folders, memory system, context preservation |
+| `sk-code--*`      | Language-specific code quality standards          |
 
 ### Agents
 
-| Agent        | Purpose                                  | Relationship                                     |
-| ------------ | ---------------------------------------- | ------------------------------------------------ |
-| @orchestrate | Task decomposition and delegation        | May dispatch Ultra-Think at Depth 1              |
-| @context     | Memory-first codebase exploration        | Provides context for PREPARE step                |
-| @research    | Deep technical investigation             | Alternative for pure research (no synthesis)     |
-| @review      | Code quality validation                  | Can validate the winning solution post-synthesis |
-| @debug       | Root cause analysis                      | Ultra-Think can replace for complex bugs         |
+| Agent        | Purpose                           | Relationship                                     |
+| ------------ | --------------------------------- | ------------------------------------------------ |
+| @orchestrate | Task decomposition and delegation | May dispatch Ultra-Think at Depth 1              |
+| @context     | Memory-first codebase exploration | Provides context for PREPARE step                |
+| @research    | Deep technical investigation      | Alternative for pure research (no synthesis)     |
+| @review      | Code quality validation           | Can validate the winning solution post-synthesis |
+| @debug       | Root cause analysis               | Ultra-Think can replace for complex bugs         |
 
 ---
 

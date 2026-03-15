@@ -83,17 +83,17 @@ flowchart TD
 
 ### Agent Selection (Priority Order)
 
-| Priority | Task Type                                                                 | Agent                  | Tier | Skills                                                               | subagent_type |
-| -------- | ------------------------------------------------------------------------- | ---------------------- | ---- | -------------------------------------------------------------------- | ------------- |
-| 1        | ALL codebase exploration, file search, pattern discovery, context loading | `@context`             | LEAF | Memory tools, Glob, Grep, Read                                       | `"general"`   |
-| 2        | Evidence / investigation                                                  | `@research`            | LEAF | `system-spec-kit`                                                    | `"general"`   |
-| 3        | Multi-strategy planning and architecture synthesis                        | `@ultra-think`         | LEAF | Multi-lens planning rubric (planning-only)                           | `"general"`   |
-| 4        | Spec folder docs                                                          | `@speckit` ⛔ EXCLUSIVE | LEAF | `system-spec-kit`                                                    | `"general"`   |
-| 5        | Code review / security                                                    | `@review`              | LEAF | `sk-code` baseline + one `sk-code--*` overlay (auto-detected)        | `"general"`   |
-| 6        | Documentation (non-spec)                                                  | `@write`               | LEAF | `sk-doc`                                                             | `"general"`   |
+| Priority | Task Type                                                                 | Agent                  | Tier | Skills                                                                            | subagent_type |
+| -------- | ------------------------------------------------------------------------- | ---------------------- | ---- | --------------------------------------------------------------------------------- | ------------- |
+| 1        | ALL codebase exploration, file search, pattern discovery, context loading | `@context`             | LEAF | Memory tools, Glob, Grep, Read                                                    | `"general"`   |
+| 2        | Evidence / investigation                                                  | `@research`            | LEAF | `system-spec-kit`                                                                 | `"general"`   |
+| 3        | Multi-strategy planning and architecture synthesis                        | `@ultra-think`         | LEAF | Multi-lens planning rubric (planning-only)                                        | `"general"`   |
+| 4        | Spec folder docs                                                          | `@speckit` ⛔ EXCLUSIVE | LEAF | `system-spec-kit`                                                                 | `"general"`   |
+| 5        | Code review / security                                                    | `@review`              | LEAF | `sk-code` baseline + one `sk-code--*` overlay (auto-detected)      | `"general"`   |
+| 6        | Documentation (non-spec)                                                  | `@write`               | LEAF | `sk-doc`                                                         | `"general"`   |
 | 7        | Implementation / testing                                                  | `@general`             | LEAF | `sk-code--*` (auto-detects available variant), `mcp-chrome-devtools` | `"general"`   |
-| 8        | Debugging (stuck, 3+ fails)                                               | `@debug`               | LEAF | Code analysis tools                                                  | `"general"`   |
-| 9        | Session handover                                                          | `@handover`            | LEAF | `system-spec-kit`                                                    | `"general"`   |
+| 8        | Debugging (stuck, 3+ fails)                                               | `@debug`               | LEAF | Code analysis tools                                                               | `"general"`   |
+| 9        | Session handover                                                          | `@handover`            | LEAF | `system-spec-kit`                                                                 | `"general"`   |
 
 ### Nesting Depth Protocol (NDP)
 
@@ -101,9 +101,9 @@ This Copilot profile enforces **single-hop delegation**. Nested sub-agent dispat
 
 #### Agent Tier Classification
 
-| Tier             | Dispatch Authority               | Who                                                                                                 |
-| ---------------- | -------------------------------- | --------------------------------------------------------------------------------------------------- |
-| **ORCHESTRATOR** | Can dispatch LEAF agents         | Top-level orchestrator only                                                                         |
+| Tier             | Dispatch Authority               | Who                                                                                   |
+| ---------------- | -------------------------------- | ------------------------------------------------------------------------------------- |
+| **ORCHESTRATOR** | Can dispatch LEAF agents         | Top-level orchestrator only                                                           |
 | **LEAF**         | MUST NOT dispatch any sub-agents | @context, @general, @ultra-think, @write, @review, @speckit, @debug, @handover, @explore, @research |
 
 #### Absolute Depth Rules
@@ -158,16 +158,16 @@ When dispatching ANY non-orchestrator agent, append this to the Task prompt:
 
 ### Agent Files
 
-| Agent        | File                             | Notes                                                                                  |
-| ------------ | -------------------------------- | -------------------------------------------------------------------------------------- |
-| @context     | `.opencode/agent/context.md`     | Sub-agent with direct retrieval only. Routes ALL exploration tasks                     |
-| @research    | `.opencode/agent/research.md`    | Sub-agent; outputs research.md                                                         |
-| @ultra-think | `.opencode/agent/ultra-think.md` | Planning-only multi-strategy architect (max 3 strategies)                              |
-| @speckit     | `.opencode/agent/speckit.md`     | ⛔ ALL spec folder docs (*.md). Exceptions: memory/, scratch/, handover.md, research.md |
-| @review      | `.opencode/agent/review.md`      | Codebase-agnostic quality scoring                                                      |
-| @write       | `.opencode/agent/write.md`       | DQI standards enforcement                                                              |
-| @debug       | `.opencode/agent/debug.md`       | Isolated by design (no conversation context)                                           |
-| @handover    | `.opencode/agent/handover.md`    | Sub-agent; context preservation                                                        |
+| Agent     | File                          | Notes                                                                                  |
+| --------- | ----------------------------- | -------------------------------------------------------------------------------------- |
+| @context  | `.gemini/agents/context.md`  | Sub-agent with direct retrieval only. Routes ALL exploration tasks                     |
+| @research | `.gemini/agents/research.md` | Sub-agent; outputs research.md                                                         |
+| @ultra-think | `.gemini/agents/ultra-think.md` | Planning-only multi-strategy architect (max 3 strategies)                              |
+| @speckit  | `.gemini/agents/speckit.md`  | ⛔ ALL spec folder docs (*.md). Exceptions: memory/, scratch/, handover.md, research.md |
+| @review   | `.gemini/agents/review.md`   | Codebase-agnostic quality scoring                                                      |
+| @write    | `.gemini/agents/write.md`    | DQI standards enforcement                                                              |
+| @debug    | `.gemini/agents/debug.md`    | Isolated by design (no conversation context)                                           |
+| @handover | `.gemini/agents/handover.md` | Sub-agent; context preservation                                                        |
 
 > **Note**: ALL exploration tasks route through `@context` exclusively. @context executes retrieval directly (no nested sub-agent dispatch).
 
@@ -187,7 +187,7 @@ TASK #N: [Descriptive Title]
 ├─ Boundary: [What this agent MUST NOT do]
 ├─ Agent: @general | @context | @research | @ultra-think | @write | @review | @speckit | @debug | @handover
 ├─ Subagent Type: "general" (ALL dispatches use "general" — exploration routes through @context)
-├─ Agent Definition: [.opencode/agent/<name>.md — MUST be read and included in prompt | "built-in" for @general]
+├─ Agent Definition: [.gemini/agents/<name>.md — MUST be read and included in prompt | "built-in" for @general]
 ├─ Skills: [Specific skills the agent should use]
 ├─ Output Format: [Structured format with example]
 ├─ Output Size: [full | summary-only (30 lines) | minimal (3 lines)] ← CWB §8
@@ -209,7 +209,7 @@ PRE-DELEGATION REASONING [Task #N]:
 ├─ Intent: [What does this task accomplish?]
 ├─ Complexity: [low/medium/high] → Because: [cite criteria below]
 ├─ Agent: @[agent] → Because: [cite §2 (Agent Routing)]
-├─ Agent Def: [loaded | built-in | prior-session] → [.opencode/agent/<name>.md]
+├─ Agent Def: [loaded | built-in | prior-session] → [.gemini/agents/<name>.md]
 ├─ Depth: [N] → Tier: [ORCHESTRATOR|LEAF] (§2 NDP)
 ├─ Parallel: [Yes/No] → Because: [data dependency]
 ├─ Risk: [Low/Medium/High] → [If High: fallback agent]
@@ -360,7 +360,7 @@ TASK #2: Implement Notification System
 - **Reading** spec docs is permitted by any agent
 - **Minor status updates** (e.g., checking task boxes) by implementing agents are acceptable
 **Logic:** `@speckit` enforces template structure, Level 1-3+ standards, and validation that other agents lack. Bypassing `@speckit` produces non-standard documentation that fails quality gates.
-**Dispatch Protocol:** When dispatching @speckit, READ `.opencode/agent/speckit.md` and include its content in the Task prompt. This ensures template structure, Level 1-3+ standards, and validation workflows are enforced. Simply instructing a general agent to "act as @speckit" bypasses all enforcement.
+**Dispatch Protocol:** When dispatching @speckit, READ `.gemini/agents/speckit.md` and include its content in the Task prompt. This ensures template structure, Level 1-3+ standards, and validation workflows are enforced. Simply instructing a general agent to "act as @speckit" bypasses all enforcement.
 
 ### Rule 6: Routing Violation Detection
 
@@ -733,7 +733,7 @@ The orchestrator's own behavior can cause context overload. Follow these rules:
 - Single agents with too many sequential operations exceed system execution limits, returning "Tool execution aborted" and losing all progress. Always estimate tool calls before dispatch and split at 12+. See §8.
 
 ❌ **Never improvise custom agent instructions instead of loading their definition file**
-- Every custom agent has a definition file in `.opencode/agent/`. These files contain specialized templates, enforcement rules, and quality standards. Dispatching a generic agent with "you are @speckit" in the prompt produces documentation without template enforcement, validation, or Level 1-3+ compliance. ALWAYS read and include the actual agent definition file. See §2.
+- Every custom agent has a definition file in `.gemini/agents/`. These files contain specialized templates, enforcement rules, and quality standards. Dispatching a generic agent with "you are @speckit" in the prompt produces documentation without template enforcement, validation, or Level 1-3+ compliance. ALWAYS read and include the actual agent definition file. See §2.
 
 ❌ **Never dispatch beyond maximum depth 2 (depth counter 0-1)**
 - Nested chains are illegal in this profile. Every dispatch must include `Depth: N` and respect single-hop NDP rules: only depth-0 orchestrator dispatches; depth-1 agents MUST NOT dispatch. If a task cannot be completed at depth 1, return partial results and escalate to the parent. See §2.
@@ -756,32 +756,32 @@ The orchestrator's own behavior can cause context overload. Follow these rules:
 
 ### Skills (.opencode/skill/)
 
-| Skill                 | Domain                 | Use When                                                             | Key Commands/Tools         |
-| --------------------- | ---------------------- | -------------------------------------------------------------------- | -------------------------- |
-| `system-spec-kit`     | Documentation          | Spec folders, memory, validation, context preservation               | `/spec_kit:*`, `/memory:*` |
-| `sk-code`             | Review baseline        | Findings-first review floor, mandatory security/correctness minimums | -                          |
-| `sk-code--*`          | Implementation/overlay | Code changes, debugging, stack-specific standards and verification   | -                          |
-| `sk-git`              | Version Control        | See skill for details                                                | -                          |
-| `sk-doc`              | Markdown               | Doc quality, DQI scoring, skill creation, flowcharts                 | `/create:*`                |
-| `mcp-chrome-devtools` | Browser                | DevTools automation, screenshots, console, CDP                       | `bdg` CLI                  |
-| `mcp-code-mode`       | External Tools         | Webflow, Figma, ClickUp, Chrome DevTools via MCP                     | `call_tool_chain()`        |
+| Skill                       | Domain          | Use When                                                         | Key Commands/Tools         |
+| --------------------------- | --------------- | ---------------------------------------------------------------- | -------------------------- |
+| `system-spec-kit`           | Documentation   | Spec folders, memory, validation, context preservation           | `/spec_kit:*`, `/memory:*` |
+| `sk-code`         | Review baseline | Findings-first review floor, mandatory security/correctness minimums | -                       |
+| `sk-code--*`         | Implementation/overlay | Code changes, debugging, stack-specific standards and verification | -                    |
+| `sk-git`             | Version Control | See skill for details                                            | -                          |
+| `sk-doc`   | Markdown        | Doc quality, DQI scoring, skill creation, flowcharts             | `/create:*`                |
+| `mcp-chrome-devtools` | Browser         | DevTools automation, screenshots, console, CDP                   | `bdg` CLI                  |
+| `mcp-code-mode`             | External Tools  | Webflow, Figma, ClickUp, Chrome DevTools via MCP                 | `call_tool_chain()`        |
 
 ### Related Resources
 
-| Resource              | Purpose                                        | Path                                     |
-| --------------------- | ---------------------------------------------- | ---------------------------------------- |
-| `/spec_kit:debug`     | Debug delegation with model selection          | `.opencode/command/spec_kit/debug.md`    |
-| `/spec_kit:handover`  | Session continuation                           | `.opencode/command/spec_kit/handover.md` |
-| `/spec_kit:complete`  | Verification workflow                          | `.opencode/command/spec_kit/complete.md` |
-| `/spec_kit:research`  | 9-step investigation                           | `.opencode/command/spec_kit/research.md` |
-| `/memory:save`        | Context preservation                           | `.opencode/command/memory/save.md`       |
-| `system-spec-kit`     | Spec folders, memory, validation               | `.opencode/skill/system-spec-kit/`       |
-| `sk-code`             | Review baseline lifecycle                      | `.opencode/skill/sk-code/`               |
-| `sk-code--*`          | Stack overlay lifecycle (auto-detects variant) | `.opencode/skill/sk-code--*/`            |
-| `sk-git`              | Version control workflows                      | `.opencode/skill/sk-git/`                |
-| `sk-doc`              | Doc quality, DQI scoring, skill creation       | `.opencode/skill/sk-doc/`                |
-| `mcp-chrome-devtools` | Browser debugging, screenshots, CDP            | `.opencode/skill/mcp-chrome-devtools/`   |
-| `mcp-code-mode`       | External tool integration via MCP              | `.opencode/skill/mcp-code-mode/`         |
+| Resource                    | Purpose                                         | Path                                         |
+| --------------------------- | ----------------------------------------------- | -------------------------------------------- |
+| `/spec_kit:debug`           | Debug delegation with model selection           | `.opencode/command/spec_kit/debug.md`        |
+| `/spec_kit:handover`        | Session continuation                            | `.opencode/command/spec_kit/handover.md`     |
+| `/spec_kit:complete`        | Verification workflow                           | `.opencode/command/spec_kit/complete.md`     |
+| `/spec_kit:research`        | 9-step investigation                            | `.opencode/command/spec_kit/research.md`     |
+| `/memory:save`              | Context preservation                            | `.opencode/command/memory/save.md`           |
+| `system-spec-kit`           | Spec folders, memory, validation                | `.opencode/skill/system-spec-kit/`           |
+| `sk-code`         | Review baseline lifecycle | `.opencode/skill/sk-code/` |
+| `sk-code--*`         | Stack overlay lifecycle (auto-detects variant) | `.opencode/skill/sk-code--*/` |
+| `sk-git`             | Version control workflows                       | `.opencode/skill/sk-git/`             |
+| `sk-doc`   | Doc quality, DQI scoring, skill creation        | `.opencode/skill/sk-doc/`   |
+| `mcp-chrome-devtools` | Browser debugging, screenshots, CDP             | `.opencode/skill/mcp-chrome-devtools/` |
+| `mcp-code-mode`             | External tool integration via MCP               | `.opencode/skill/mcp-code-mode/`             |
 
 ---
 

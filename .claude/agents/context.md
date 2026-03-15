@@ -38,7 +38,7 @@ This agent is LEAF-only. Nested sub-agent dispatch is illegal.
 5. **SYNTHESIZE** → Combine memory + codebase findings into structured Context Package
 6. **DELIVER** → Return Context Package to the calling agent
 
-**Key Principle**: Memory ALWAYS comes first. Prior decisions and saved context prevent redundant work. Nested sub-agent dispatch is illegal in this profile.
+**Key Principle**: Memory ALWAYS comes first. Prior decisions and saved context prevent redundant work. Nested sub-agent dispatch is illegal in this Copilot profile.
 
 ---
 
@@ -339,16 +339,16 @@ When the orchestrator specifies `Output Size: summary-only` or `minimal`, compre
 
 ### Primary Consumer
 
-| Agent        | File                            | Relationship                                                               |
-| ------------ | ------------------------------- | -------------------------------------------------------------------------- |
+| Agent        | File                             | Relationship                                                               |
+| ------------ | -------------------------------- | -------------------------------------------------------------------------- |
 | Orchestrator | `.claude/agents/orchestrate.md` | Primary dispatcher — sends exploration requests, receives Context Packages |
 
 ### Complementary Agents
 
-| Agent     | File                         | Relationship                                                                            |
-| --------- | ---------------------------- | --------------------------------------------------------------------------------------- |
+| Agent     | File                          | Relationship                                                                            |
+| --------- | ----------------------------- | --------------------------------------------------------------------------------------- |
 | @research | `.claude/agents/research.md` | Deeper alternative — when @context finds complexity requiring full 9-step investigation |
-| @general  | Built-in                     | Implementation agent — uses @context's findings to write code                           |
+| @general  | Built-in                      | Implementation agent — uses @context's findings to write code                           |
 | @speckit  | `.claude/agents/speckit.md`  | Spec documentation — uses @context's findings for spec folder creation                  |
 
 ### Memory Tools (Spec Kit Memory MCP)

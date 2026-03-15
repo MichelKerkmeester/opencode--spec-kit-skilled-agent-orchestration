@@ -92,13 +92,13 @@ python .opencode/skill/sk-doc/scripts/validate_document.py <file.md>
 
 | Document Type    | Template File                 | Location                                        |
 | ---------------- | ----------------------------- | ----------------------------------------------- |
-| SKILL.md         | `skill_md_template.md`        | `sk-doc/assets/opencode/`      |
-| Reference file   | `skill_reference_template.md` | `sk-doc/assets/opencode/`      |
-| Asset file       | `skill_asset_template.md`     | `sk-doc/assets/opencode/`      |
+| SKILL.md         | `skill_md_template.md`        | `sk-doc/assets/skill/`         |
+| Reference file   | `skill_reference_template.md` | `sk-doc/assets/skill/`         |
+| Asset file       | `skill_asset_template.md`     | `sk-doc/assets/skill/`         |
 | README           | `readme_template.md`          | `sk-doc/assets/documentation/` |
 | Install guide    | `install_guide_template.md`   | `sk-doc/assets/documentation/` |
-| Command          | `command_template.md`         | `sk-doc/assets/opencode/`      |
-| **Agent file**   | `agent_template.md`           | `sk-doc/assets/opencode/`      |
+| Command          | `command_template.md`         | `sk-doc/assets/agents/`        |
+| **Agent file**   | `agent_template.md`           | `sk-doc/assets/agents/`        |
 | Spec folder docs | System-spec-kit templates     | `system-spec-kit/templates/`                    |
 
 ### Universal Template Pattern
@@ -176,21 +176,17 @@ All template files follow this consistent structure:
 
 ### Command Integration
 
-| Mode                       | Related Commands          | Description                            |
-| -------------------------- | ------------------------- | -------------------------------------- |
-| **Mode 2: Skill Creation** | `/create:skill`           | Scaffold complete skill structure      |
-|                            | `/create:skill_reference` | Create reference file from template    |
-|                            | `/create:skill_asset`     | Create asset file from template        |
-| **Mode 4: Install Guides** | `/create:install_guide`   | Generate 5-phase install documentation |
-| **General**                | `/create:folder_readme`   | Create folder README with structure    |
+| Mode                       | Related Commands          | Description                                 |
+| -------------------------- | ------------------------- | ------------------------------------------- |
+| **Mode 1: README**         | `/create:folder_readme`   | Unified README creation (default operation) |
+| **Mode 2: Skill Creation** | `/create:sk-skill`        | Unified skill create/update/file flows      |
+| **Mode 4: Install Guides** | `/create:folder_readme install` | Install guide creation via unified command |
 
 **Command → Mode Mapping:**
 ```
-/create:skill           → Mode 2 (init_skill.py + templates)
-/create:skill_reference → Mode 2 (reference template)
-/create:skill_asset     → Mode 2 (asset template)
-/create:install_guide   → Mode 4 (5-phase template)
-/create:folder_readme   → Mode 1 (README quality standards)
+/create:folder_readme            → Mode 1 (README quality standards, default)
+/create:folder_readme install    → Mode 4 (5-phase install workflow)
+/create:sk-skill                 → Mode 2 (full-create/full-update/reference-only/asset-only)
 ```
 
 ---
@@ -263,7 +259,7 @@ All template files follow this consistent structure:
 ### Skill Creation Workflow
 
 1. Scaffold: `python .opencode/skill/sk-doc/scripts/init_skill.py skill-name --path .opencode/skill/`
-2. Load and apply SKILL.md template from `sk-doc/assets/opencode/skill_md_template.md`
+2. Load and apply SKILL.md template from `sk-doc/assets/skill/skill_md_template.md`
 3. Create references using `skill_reference_template.md`, assets using `skill_asset_template.md`
 4. Validate alignment for ALL files, then run: `python .opencode/skill/sk-doc/scripts/package_skill.py .opencode/skill/skill-name/`
 5. Verify DQI: `python .opencode/skill/sk-doc/scripts/extract_structure.py .opencode/skill/skill-name/SKILL.md`
@@ -350,7 +346,8 @@ Before reporting "done": (1) Read ALL created files, (2) Run extract_structure.p
 
 | Resource                                                                                                | Path                                               |
 | ------------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
-| Templates (SKILL, reference, asset, command, agent)                                                     | `sk-doc/assets/opencode/`         |
+| Templates (SKILL, reference, asset)                                                                     | `sk-doc/assets/skill/`            |
+| Templates (command, agent)                                                                              | `sk-doc/assets/agents/`           |
 | Templates (README, install guide)                                                                       | `sk-doc/assets/documentation/`    |
 | sk-doc skill                                                                           | `.opencode/skill/sk-doc/SKILL.md` |
 | system-spec-kit skill                                                                                   | `.opencode/skill/system-spec-kit/SKILL.md`         |
@@ -365,7 +362,7 @@ Before reporting "done": (1) Read ALL created files, (2) Run extract_structure.p
 │        THE DOCUMENTATION WRITER: QUALITY DOCUMENTATION SPECIALIST       │
 ├─────────────────────────────────────────────────────────────────────────┤
 │  AUTHORITY                                                              │
-│  ├─► Template-first creation of non-spec documentation                  │
+│  ├─► Template-first creation of non-spec documentation                   │
 │  ├─► DQI-oriented quality enforcement and alignment checks              │
 │  ├─► Formatting/structure validation before delivery                    │
 │  └─► Documentation routing to correct templates and modes               │
@@ -374,10 +371,10 @@ Before reporting "done": (1) Read ALL created files, (2) Run extract_structure.p
 │  ├─► 1. Classify doc type and load matching template                    │
 │  ├─► 2. Invoke standards skill and build content                        │
 │  ├─► 3. Validate format, run DQI checks, verify output                  │
-│  └─► 4. Deliver only after evidence-backed verification                 │
+│  └─► 4. Deliver only after evidence-backed verification                  │
 │                                                                         │
 │  QUALITY GATES                                                          │
-│  ├─► Template fidelity, section completeness, and emoji rules           │
+│  ├─► Template fidelity, section completeness, and emoji rules            │
 │  └─► File existence, placeholder scan, and DQI evidence                 │
 │                                                                         │
 │  LIMITS                                                                 │
@@ -386,4 +383,3 @@ Before reporting "done": (1) Read ALL created files, (2) Run extract_structure.p
 │  └─► LEAF-only: nested sub-agent dispatch is illegal                    │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
-

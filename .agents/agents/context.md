@@ -47,17 +47,17 @@ This agent is LEAF-only. Nested sub-agent dispatch is illegal.
 
 ### Tools
 
-| Tool                    | Type        | Purpose                                                      | When to Use                          |
-| ----------------------- | ----------- | ------------------------------------------------------------ | ------------------------------------ |
-| `Glob`                  | Codebase    | File discovery by pattern                                    | Find files matching name/extension   |
-| `Grep`                  | Codebase    | Text/code pattern search                                     | Find keywords, function calls, usage |
-| `Read`                  | Codebase    | File content inspection                                      | Examine implementations, configs     |
-| `List`                  | Codebase    | Directory listing                                            | Explore folder structure             |
-| `memory_match_triggers` | Memory (L2) | Trigger phrase matching                                      | Quick context surfacing (Layer 1)    |
-| `memory_context`        | Memory (L1) | Unified context retrieval                                    | Intent-aware routing (Layer 1/3)     |
-| `memory_search`         | Memory (L2) | 3-channel hybrid search (Vector, BM25, FTS5) with RRF fusion | Deep memory retrieval (Layer 3)      |
-| `memory_list`           | Memory (L3) | Browse stored memories                                       | Discover what memories exist         |
-| `memory_stats`          | Memory (L3) | Memory system statistics                                     | Check memory health and coverage     |
+| Tool                    | Type        | Purpose                   | When to Use                          |
+| ----------------------- | ----------- | ------------------------- | ------------------------------------ |
+| `Glob`                  | Codebase    | File discovery by pattern | Find files matching name/extension   |
+| `Grep`                  | Codebase    | Text/code pattern search  | Find keywords, function calls, usage |
+| `Read`                  | Codebase    | File content inspection   | Examine implementations, configs     |
+| `List`                  | Codebase    | Directory listing         | Explore folder structure             |
+| `memory_match_triggers` | Memory (L2) | Trigger phrase matching   | Quick context surfacing (Layer 1)    |
+| `memory_context`        | Memory (L1) | Unified context retrieval | Intent-aware routing (Layer 1/3)     |
+| `memory_search`         | Memory (L2) | 3-channel hybrid search (Vector, BM25, FTS5) with RRF fusion | Deep memory retrieval (Layer 3) |
+| `memory_list`           | Memory (L3) | Browse stored memories    | Discover what memories exist         |
+| `memory_stats`          | Memory (L3) | Memory system statistics  | Check memory health and coverage     |
 
 ### Tool Selection Guide
 
@@ -342,25 +342,25 @@ When the orchestrator specifies `Output Size: summary-only` or `minimal`, compre
 
 | Agent        | File                             | Relationship                                                               |
 | ------------ | -------------------------------- | -------------------------------------------------------------------------- |
-| Orchestrator | `.opencode/agent/orchestrate.md` | Primary dispatcher — sends exploration requests, receives Context Packages |
+| Orchestrator | `.gemini/agents/orchestrate.md` | Primary dispatcher — sends exploration requests, receives Context Packages |
 
 ### Complementary Agents
 
 | Agent     | File                          | Relationship                                                                            |
 | --------- | ----------------------------- | --------------------------------------------------------------------------------------- |
-| @research | `.opencode/agent/research.md` | Deeper alternative — when @context finds complexity requiring full 9-step investigation |
+| @research | `.gemini/agents/research.md` | Deeper alternative — when @context finds complexity requiring full 9-step investigation |
 | @general  | Built-in                      | Implementation agent — uses @context's findings to write code                           |
-| @speckit  | `.opencode/agent/speckit.md`  | Spec documentation — uses @context's findings for spec folder creation                  |
+| @speckit  | `.gemini/agents/speckit.md`  | Spec documentation — uses @context's findings for spec folder creation                  |
 
 ### Memory Tools (Spec Kit Memory MCP)
 
-| Tool                    | Level | Purpose                                                      |
-| ----------------------- | ----- | ------------------------------------------------------------ |
-| `memory_context`        | L1    | Unified entry point for context retrieval                    |
-| `memory_match_triggers` | L2    | Fast trigger phrase matching                                 |
+| Tool                    | Level | Purpose                                   |
+| ----------------------- | ----- | ----------------------------------------- |
+| `memory_context`        | L1    | Unified entry point for context retrieval |
+| `memory_match_triggers` | L2    | Fast trigger phrase matching              |
 | `memory_search`         | L2    | 3-channel hybrid search (Vector, BM25, FTS5) with RRF fusion |
-| `memory_list`           | L3    | Browse stored memories                                       |
-| `memory_stats`          | L3    | Memory system statistics                                     |
+| `memory_list`           | L3    | Browse stored memories                    |
+| `memory_stats`          | L3    | Memory system statistics                  |
 
 ### Skills
 

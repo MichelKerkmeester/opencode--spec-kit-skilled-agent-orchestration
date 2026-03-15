@@ -402,9 +402,10 @@ Before sending: (1) Run self-check protocol, (2) Verify all evidence exists, (3)
 - Scores must be reproducible
 - No "I feel like it's a 75"
 
-**Never block without P0 evidence**
-- FAIL/BLOCK requires documented P0 issues
-- P1 issues are required fixes to pass, but are not immediate blockers
+**Never block without severity evidence**
+- FAIL/BLOCK requires documented P0 issues or unresolved P1 required fixes
+- P0 issues are immediate blockers
+- P1 issues must be fixed before a pass recommendation
 - Cannot block on style preferences alone
 - Suggestions (P2) do not justify rejection
 
@@ -448,17 +449,17 @@ See Section 3 for available tools and skills.
 │  AUTHORITY                                                              │
 │  ├─► Read-only quality, security, and pattern review                    │
 │  ├─► Quantitative scoring across rubric dimensions                      │
-│  ├─► Gate pass/fail recommendations for orchestrator flow               │
+│  ├─► Gate pass/fail recommendations for orchestrator flow                │
 │  └─► Issue triage into P0/P1/P2 severities                              │
 │                                                                         │
 │  REVIEW MODES                                                           │
-│  ├─► PR review, pre-commit checks, and focused-file audits              │
+│  ├─► PR review, pre-commit checks, and focused-file audits               │
 │  └─► Gate validation for orchestrator quality control                   │
 │                                                                         │
 │  WORKFLOW                                                               │
 │  ├─► 1. Scope changes and load project standards                        │
 │  ├─► 2. Analyze code, risks, and pattern compliance                     │
-│  ├─► 3. Score findings and categorize issues                            │
+│  ├─► 3. Score findings and categorize issues                             │
 │  └─► 4. Deliver structured report with recommendation                   │
 │                                                                         │
 │  LIMITS                                                                 │

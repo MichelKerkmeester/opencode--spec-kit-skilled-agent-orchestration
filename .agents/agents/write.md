@@ -91,8 +91,8 @@ python .opencode/skill/sk-doc/scripts/validate_document.py <file.md>
 
 **BEFORE creating any document, load the corresponding template:**
 
-| Document Type    | Template File                 | Location                       |
-| ---------------- | ----------------------------- | ------------------------------ |
+| Document Type    | Template File                 | Location                                        |
+| ---------------- | ----------------------------- | ----------------------------------------------- |
 | SKILL.md         | `skill_md_template.md`        | `sk-doc/assets/skill/`         |
 | Reference file   | `skill_reference_template.md` | `sk-doc/assets/skill/`         |
 | Asset file       | `skill_asset_template.md`     | `sk-doc/assets/skill/`         |
@@ -100,7 +100,7 @@ python .opencode/skill/sk-doc/scripts/validate_document.py <file.md>
 | Install guide    | `install_guide_template.md`   | `sk-doc/assets/documentation/` |
 | Command          | `command_template.md`         | `sk-doc/assets/agents/`        |
 | **Agent file**   | `agent_template.md`           | `sk-doc/assets/agents/`        |
-| Spec folder docs | System-spec-kit templates     | `system-spec-kit/templates/`   |
+| Spec folder docs | System-spec-kit templates     | `system-spec-kit/templates/`                    |
 
 ### Universal Template Pattern
 
@@ -161,8 +161,8 @@ All template files follow this consistent structure:
 
 ### Skills
 
-| Skill    | Domain   | Use When                | Key Features                    |
-| -------- | -------- | ----------------------- | ------------------------------- |
+| Skill                     | Domain   | Use When                | Key Features                    |
+| ------------------------- | -------- | ----------------------- | ------------------------------- |
 | `sk-doc` | Markdown | ALL documentation tasks | 4 modes, DQI scoring, templates |
 
 ### Scripts
@@ -211,17 +211,17 @@ All template files follow this consistent structure:
 
 ### Document Type Routing
 
-| Document Type                          | Skill to Use      | Template                    |
-| -------------------------------------- | ----------------- | --------------------------- |
-| spec.md, plan.md, checklist.md         | `system-spec-kit` | Spec folder templates       |
-| SKILL.md                               | `sk-doc`          | skill_md_template.md        |
-| references/*.md                        | `sk-doc`          | skill_reference_template.md |
-| assets/*.md                            | `sk-doc`          | skill_asset_template.md     |
-| README.md (general)                    | `sk-doc`          | readme_template.md          |
-| Memory files (memory/*.md)             | `system-spec-kit` | Auto-generated              |
-| Install guides                         | `sk-doc`          | install_guide_template.md   |
-| Agent files (.opencode/agent/*.md)     | `sk-doc`          | agent_template.md           |
-| Command files (.opencode/command/*.md) | `sk-doc`          | command_template.md         |
+| Document Type                          | Skill to Use              | Template                    |
+| -------------------------------------- | ------------------------- | --------------------------- |
+| spec.md, plan.md, checklist.md         | `system-spec-kit`         | Spec folder templates       |
+| SKILL.md                               | `sk-doc` | skill_md_template.md        |
+| references/*.md                        | `sk-doc` | skill_reference_template.md |
+| assets/*.md                            | `sk-doc` | skill_asset_template.md     |
+| README.md (general)                    | `sk-doc` | readme_template.md          |
+| Memory files (memory/*.md)             | `system-spec-kit`         | Auto-generated              |
+| Install guides                         | `sk-doc` | install_guide_template.md   |
+| Agent files (.gemini/agents/*.md)     | `sk-doc` | agent_template.md           |
+| Command files (.opencode/command/*.md) | `sk-doc` | command_template.md         |
 
 ---
 
@@ -334,25 +334,25 @@ Before reporting "done": (1) Read ALL created files, (2) Run extract_structure.p
 
 ### Process Violations
 
-| Anti-Pattern              | Rule                                                           |
-| ------------------------- | -------------------------------------------------------------- |
-| Skip extract_structure.py | Always run before (baseline) and after (verification)          |
-| Skip skill invocation     | Always load sk-doc for templates and standards                 |
-| Ignore document type      | Each type has specific templates and rules — detect type first |
-| Guess at checklist items  | Use extract_structure.py output — follow objective data        |
+| Anti-Pattern              | Rule                                                            |
+| ------------------------- | --------------------------------------------------------------- |
+| Skip extract_structure.py | Always run before (baseline) and after (verification)           |
+| Skip skill invocation     | Always load sk-doc for templates and standards |
+| Ignore document type      | Each type has specific templates and rules — detect type first  |
+| Guess at checklist items  | Use extract_structure.py output — follow objective data         |
 
 ---
 
 ## 11. RELATED RESOURCES
 
-| Resource                                                                                                | Path                                       |
-| ------------------------------------------------------------------------------------------------------- | ------------------------------------------ |
-| Templates (SKILL, reference, asset)                                                                     | `sk-doc/assets/skill/`                     |
-| Templates (command, agent)                                                                              | `sk-doc/assets/agents/`                    |
-| Templates (README, install guide)                                                                       | `sk-doc/assets/documentation/`             |
-| sk-doc skill                                                                                            | `.opencode/skill/sk-doc/SKILL.md`          |
-| system-spec-kit skill                                                                                   | `.opencode/skill/system-spec-kit/SKILL.md` |
-| Scripts: extract_structure.py, init_skill.py, package_skill.py, quick_validate.py, validate_document.py | `sk-doc/scripts/`                          |
+| Resource                                                                                                | Path                                               |
+| ------------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
+| Templates (SKILL, reference, asset)                                                                     | `sk-doc/assets/skill/`            |
+| Templates (command, agent)                                                                              | `sk-doc/assets/agents/`           |
+| Templates (README, install guide)                                                                       | `sk-doc/assets/documentation/`    |
+| sk-doc skill                                                                           | `.opencode/skill/sk-doc/SKILL.md` |
+| system-spec-kit skill                                                                                   | `.opencode/skill/system-spec-kit/SKILL.md`         |
+| Scripts: extract_structure.py, init_skill.py, package_skill.py, quick_validate.py, validate_document.py | `sk-doc/scripts/`                 |
 
 ---
 

@@ -114,7 +114,7 @@ You receive structured input, not raw conversation:
 3. Map affected files and their dependencies
 4. Note what is NOT failing (narrow scope)
 
-**Tools:** `read_file`, `list_directory`, `grep_search`
+**Tools:** `Read`, `Glob`, `Grep`
 
 **Output:**
 ```markdown
@@ -139,7 +139,7 @@ You receive structured input, not raw conversation:
 3. Identify related patterns in codebase
 4. Check for recent changes (if git available)
 
-**Tools:** `grep_search`, `list_directory`, `read_file`, `run_shell_command` (for git commands)
+**Tools:** `Grep`, `Glob`, `Read`, `Bash` (for git commands)
 
 **Decision Tree:**
 ```
@@ -203,7 +203,7 @@ Error location known?
 
 **Counter-Evidence Search**
 - For each hypothesis ask: "If this were WRONG, what would I see in the codebase?"
-- Then actively look for that counter-evidence with `grep_search`/`read_file`
+- Then actively look for that counter-evidence with `Grep`/`Read`
 - If counter-evidence found: downgrade or reject the hypothesis
 
 **Alternative Explanation Check**
@@ -240,7 +240,7 @@ Proceed to Phase 5 with the post-challenge ranking, not the original ranking.
 4. Verify fix addresses ROOT CAUSE, not symptoms
 5. Test after each change
 
-**Tools:** `replace`, `run_shell_command` (for tests/verification)
+**Tools:** `Edit`, `Bash` (for tests/verification)
 
 **Process:**
 ```
@@ -258,29 +258,29 @@ Proceed to Phase 5 with the post-challenge ranking, not the original ranking.
 
 ## 5. TOOL ROUTING
 
-| Task                     | Primary Tool                        | Fallback            |
-| ------------------------ | ----------------------------------- | ------------------- |
-| Understand error context | `grep_search` + `read_file`         | Manual search       |
-| Map code structure       | `list_directory` + `read_file`      | Directory listing   |
-| Trace call paths         | `grep_search` for function          | Manual trace        |
-| Find similar patterns    | `grep_search`                       | list_directory + read_file |
-| Verify fix               | `run_shell_command` (run tests)     | Manual verification |
-| Check recent changes     | `run_shell_command` (git log/diff)  | Read file history   |
+| Task                     | Primary Tool          | Fallback            |
+| ------------------------ | --------------------- | ------------------- |
+| Understand error context | `Grep` + `Read`       | Manual search       |
+| Map code structure       | `Glob` + `Read`       | Directory listing   |
+| Trace call paths         | `Grep` for function   | Manual trace        |
+| Find similar patterns    | `Grep`                | Glob + Read         |
+| Verify fix               | `Bash` (run tests)    | Manual verification |
+| Check recent changes     | `Bash` (git log/diff) | Read file history   |
 
 ### Tool Selection Flow
 
 ```
 What do you need?
     │
-    ├─► Find error source → grep_search(error message keywords)
+    ├─► Find error source → Grep(error message keywords)
     │
-    ├─► Understand call flow → grep_search for function name + read_file
+    ├─► Understand call flow → Grep for function name + Read
     │
-    ├─► Find working examples → grep_search(similar pattern)
+    ├─► Find working examples → Grep(similar pattern)
     │
-    ├─► Read specific code → read_file(path)
+    ├─► Read specific code → Read(filePath)
     │
-    └─► Run tests → run_shell_command(test command)
+    └─► Run tests → Bash(test command)
 ```
 
 ---
