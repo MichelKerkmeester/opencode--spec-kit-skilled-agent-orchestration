@@ -33,11 +33,55 @@ interface QualityBreakdown {
   observationDedup: number;
 }
 
+export type QualityFlag =
+  | 'has_contamination'
+  | 'has_insufficient_context'
+  | 'missing_trigger_phrases'
+  | 'missing_key_topics'
+  | 'missing_file_context'
+  | 'generic_title'
+  | 'short_content'
+  | 'leaked_html'
+  | 'duplicate_observations'
+  | 'has_placeholders'
+  | 'has_fallback_decision'
+  | 'sparse_semantic_fields'
+  | 'has_tool_state_mismatch'
+  | 'has_spec_relevance_mismatch'
+  | 'has_contaminated_title';
+
+export interface QualityDimensionScore {
+  id: string;
+  score01: number;
+  score100: number;
+  maxScore100: number;
+  passed?: boolean;
+}
+
+export interface QualityInsufficiencySummary {
+  pass: boolean;
+  score01: number | null;
+  reasons: string[];
+}
+
 /** Represents quality score. */
-export interface QualityScore {
+export interface QualityScoreResult {
   score: number;
+  score01: number;
+  score100: number;
+  qualityScore: number;
   warnings: string[];
-  breakdown: QualityBreakdown;
+  qualityFlags: QualityFlag[];
+  hadContamination: boolean;
+  dimensions: QualityDimensionScore[];
+  breakdown?: QualityBreakdown;
+  insufficiency: QualityInsufficiencySummary | null;
+}
+
+export type QualityScore = QualityScoreResult;
+
+function clamp01(value: number): number {
+  return Math.max(0, Math.min(1, value));
 }
 
 function hasMeaningfulDescription(description?: string): boolean {
@@ -97,7 +141,7 @@ function hasMeaningfulObservationTitle(title?: string): boolean {
 /**
  * Score the quality of a generated memory file.
  * Runs after template rendering, before file writing.
- * Score 0-100, with breakdown per criterion.
+ * Returns canonical score01 plus a score100 compatibility alias and a per-criterion breakdown.
  */
 export function scoreMemoryQuality(
   content: string,
@@ -106,8 +150,10 @@ export function scoreMemoryQuality(
   files: FileWithDescription[],
   observations: ObservationWithNarrative[],
   sufficiencyResult?: MemorySufficiencyResult,
-): QualityScore {
+  hadContamination = false,
+): QualityScoreResult {
   const warnings: string[] = [];
+  const qualityFlags = new Set<QualityFlag>();
   const breakdown: QualityBreakdown = {
     triggerPhrases: 0,
     keyTopics: 0,
@@ -125,6 +171,7 @@ export function scoreMemoryQuality(
   } else if (triggerPhrases.length > 0) {
     breakdown.triggerPhrases = 10;
   } else {
+    qualityFlags.add('missing_trigger_phrases');
     warnings.push('No trigger phrases extracted — memory will not surface via trigger matching');
   }
 
@@ -136,6 +183,7 @@ export function scoreMemoryQuality(
   } else if (keyTopics.length > 0) {
     breakdown.keyTopics = 5;
   } else {
+    qualityFlags.add('missing_key_topics');
     warnings.push('No key topics extracted — memory searchability reduced');
   }
 
@@ -143,12 +191,14 @@ export function scoreMemoryQuality(
   // This rewards memory files that remain self-explanatory in future sessions.
   const filesWithDesc = files.filter((file) => hasMeaningfulDescription(file.DESCRIPTION));
   if (files.length === 0) {
+    qualityFlags.add('missing_file_context');
     breakdown.fileDescriptions = 10;
     warnings.push('No file context captured — semantic density reduced');
   } else {
     const ratio = filesWithDesc.length / files.length;
     breakdown.fileDescriptions = Math.round(ratio * 20);
     if (ratio < 0.5) {
+      qualityFlags.add('missing_file_context');
       warnings.push(`${files.length - filesWithDesc.length}/${files.length} files missing descriptions`);
     }
   }
@@ -163,15 +213,19 @@ export function scoreMemoryQuality(
   } else if (contentLines >= 20 && hasSpecificTitle) {
     breakdown.contentLength = 8;
   } else if (contentLines >= 100) {
+    qualityFlags.add('generic_title');
     breakdown.contentLength = 10;
     warnings.push('Primary memory title is generic — long output still lacks specificity');
   } else if (contentLines >= 50) {
+    qualityFlags.add('generic_title');
     breakdown.contentLength = 5;
     warnings.push('Primary memory title is generic — medium-length output lacks specificity');
   } else if (contentLines >= 20) {
+    qualityFlags.add('generic_title');
     breakdown.contentLength = 3;
     warnings.push('Primary memory title is generic — short output lacks specificity');
   } else {
+    qualityFlags.add('short_content');
     warnings.push(`Very short content (${contentLines} lines) — may lack useful context`);
   }
 
@@ -185,9 +239,11 @@ export function scoreMemoryQuality(
   if (realLeakedTags <= 0) {
     breakdown.noLeakedTags = 15;
   } else if (realLeakedTags <= 2) {
+    qualityFlags.add('leaked_html');
     breakdown.noLeakedTags = 10;
     warnings.push(`${realLeakedTags} HTML tag(s) leaked into content`);
   } else {
+    qualityFlags.add('leaked_html');
     breakdown.noLeakedTags = 5;
     warnings.push(`${realLeakedTags} HTML tags leaked into content — content may have raw HTML`);
   }
@@ -195,6 +251,7 @@ export function scoreMemoryQuality(
   // 6. Observation deduplication quality (0-15 points)
   // Repeated titles usually indicate low-information duplication.
   if (observations.length === 0) {
+    qualityFlags.add('duplicate_observations');
     breakdown.observationDedup = 5;
     warnings.push('No observations captured — memory lacks concrete session evidence');
   } else {
@@ -207,21 +264,63 @@ export function scoreMemoryQuality(
     const meaningfulRatio = titles.length > 0 ? meaningfulTitles.length / titles.length : 0;
     breakdown.observationDedup = Math.round(dedupRatio * meaningfulRatio * 15);
     if (dedupRatio < 0.6) {
+      qualityFlags.add('duplicate_observations');
       warnings.push(`High observation duplication: ${titles.length - uniqueTitles.size} duplicate titles`);
     }
     if (meaningfulRatio < 0.7) {
+      qualityFlags.add('duplicate_observations');
       warnings.push('Observation titles remain too generic — semantic diversity reduced');
     }
   }
 
-  let score = Object.values(breakdown).reduce((sum, v) => sum + v, 0);
+  let score01 = clamp01(Object.values(breakdown).reduce((sum, v) => sum + v, 0) / 100);
+  let scoreCap: number | null = null;
+
+  if (hadContamination) {
+    qualityFlags.add('has_contamination');
+    score01 -= 0.25;
+    scoreCap = Math.min(scoreCap ?? 1, 0.6);
+    warnings.push('Contamination detected — quality score penalized and capped at 0.60');
+  }
 
   if (sufficiencyResult && !sufficiencyResult.pass) {
-    score = Math.min(score, Math.round(sufficiencyResult.score * 40));
+    qualityFlags.add('has_insufficient_context');
+    scoreCap = Math.min(scoreCap ?? 1, clamp01(sufficiencyResult.score * 0.4));
     warnings.push(
       `Insufficient context for a durable memory: ${sufficiencyResult.reasons.join(' ')}`
     );
   }
 
-  return { score, warnings, breakdown };
+  if (scoreCap !== null) {
+    score01 = Math.min(score01, scoreCap);
+  }
+
+  score01 = clamp01(score01);
+  const score100 = Math.round(score01 * 100);
+  const dimensions: QualityDimensionScore[] = [
+    { id: 'trigger_phrases', score01: breakdown.triggerPhrases / 20, score100: breakdown.triggerPhrases, maxScore100: 20, passed: triggerPhrases.length > 0 },
+    { id: 'key_topics', score01: breakdown.keyTopics / 15, score100: breakdown.keyTopics, maxScore100: 15, passed: keyTopics.length > 0 },
+    { id: 'file_descriptions', score01: breakdown.fileDescriptions / 20, score100: breakdown.fileDescriptions, maxScore100: 20, passed: files.length === 0 || filesWithDesc.length / files.length >= 0.5 },
+    { id: 'content_length', score01: breakdown.contentLength / 15, score100: breakdown.contentLength, maxScore100: 15, passed: contentLines >= 20 },
+    { id: 'html_safety', score01: breakdown.noLeakedTags / 15, score100: breakdown.noLeakedTags, maxScore100: 15, passed: realLeakedTags <= 0 },
+    { id: 'observation_dedup', score01: breakdown.observationDedup / 15, score100: breakdown.observationDedup, maxScore100: 15, passed: observations.length > 0 },
+    { id: 'contamination', score01: hadContamination ? 0.75 : 1, score100: hadContamination ? 75 : 100, maxScore100: 100, passed: !hadContamination },
+  ];
+
+  return {
+    score: score100,
+    score01,
+    score100,
+    qualityScore: score01,
+    warnings,
+    qualityFlags: [...qualityFlags],
+    hadContamination,
+    dimensions,
+    breakdown,
+    insufficiency: sufficiencyResult ? {
+      pass: sufficiencyResult.pass,
+      score01: clamp01(sufficiencyResult.score),
+      reasons: [...sufficiencyResult.reasons],
+    } : null,
+  };
 }

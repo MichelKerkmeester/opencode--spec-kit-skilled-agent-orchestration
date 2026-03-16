@@ -17,6 +17,20 @@ import { structuredLog } from '../utils/logger';
 /** Content type classification labels */
 export type ContentType = 'noise' | 'empty' | 'duplicate' | 'lowQuality' | 'valid';
 
+export interface NoisePatternConfig {
+  pattern: string;
+  flags?: string;
+}
+
+export interface ContaminationAuditRecord extends Record<string, unknown> {
+  stage: 'content-filter';
+  timestamp: string;
+  patternsChecked: string[];
+  matchesFound: string[];
+  actionsTaken: string[];
+  passedThrough: string[];
+}
+
 /** Filter pipeline configuration */
 export interface FilterConfig {
   pipeline: {
@@ -27,7 +41,7 @@ export interface FilterConfig {
     enabled: boolean;
     minContentLength: number;
     minUniqueWords: number;
-    patterns: RegExp[];
+    patterns: Array<RegExp | string | NoisePatternConfig>;
   };
   dedupe: {
     enabled: boolean;
@@ -55,6 +69,7 @@ export interface FilterStats {
   noiseFiltered: number;
   duplicatesRemoved: number;
   qualityScore: number;
+  contaminationAudit: ContaminationAuditRecord[];
   filtered: {
     noise: number;
     empty: number;
@@ -85,6 +100,66 @@ export interface FilterPipeline {
   getQualityScore(): number;
   isLowQuality(): boolean;
   getStats(): FilterStats;
+}
+
+function cloneRegExp(pattern: RegExp): RegExp {
+  return new RegExp(pattern.source, pattern.flags);
+}
+
+function describePattern(pattern: RegExp): string {
+  return pattern.toString();
+}
+
+function compileNoisePatterns(patterns: unknown): RegExp[] {
+  if (!Array.isArray(patterns)) {
+    return [];
+  }
+
+  const compiled: RegExp[] = [];
+  for (const entry of patterns) {
+    try {
+      if (entry instanceof RegExp) {
+        compiled.push(cloneRegExp(entry));
+        continue;
+      }
+
+      if (typeof entry === 'string') {
+        const literalMatch = entry.match(/^\/(.+)\/([a-z]*)$/i);
+        compiled.push(
+          literalMatch
+            ? new RegExp(literalMatch[1], literalMatch[2])
+            : new RegExp(entry)
+        );
+        continue;
+      }
+
+      if (entry && typeof entry === 'object' && typeof (entry as NoisePatternConfig).pattern === 'string') {
+        compiled.push(new RegExp(
+          (entry as NoisePatternConfig).pattern,
+          typeof (entry as NoisePatternConfig).flags === 'string' ? (entry as NoisePatternConfig).flags : ''
+        ));
+      }
+    } catch (error: unknown) {
+      const errMsg = error instanceof Error ? error.message : String(error);
+      structuredLog('warn', `Skipping invalid noise pattern: ${errMsg}`);
+    }
+  }
+
+  return compiled;
+}
+
+function collectMatchedPatternLabels(content: string, patterns: readonly RegExp[]): string[] {
+  const matches: string[] = [];
+  for (const pattern of patterns) {
+    if (cloneRegExp(pattern).test(content)) {
+      matches.push(describePattern(pattern));
+    }
+  }
+  return matches;
+}
+
+function summarizeMatchCounts(matchCounts: Map<string, number>): string[] {
+  return [...matchCounts.entries()].map(([label, count]) => `${label} x${count}`);
 }
 
 // ───────────────────────────────────────────────────────────────
@@ -152,9 +227,13 @@ function loadFilterConfig(): FilterConfig {
       // Merged config has been reconstructed with all FilterConfig keys.
       // Per-property casts from unknown → specific type are safe here because
       // The merge loop preserves defaultConfig's structure for every section.
+      const mergedNoise = merged.noise as FilterConfig['noise'];
       return {
         pipeline: merged.pipeline as FilterConfig['pipeline'],
-        noise: merged.noise as FilterConfig['noise'],
+        noise: {
+          ...mergedNoise,
+          patterns: compileNoisePatterns(mergedNoise.patterns),
+        },
         dedupe: merged.dedupe as FilterConfig['dedupe'],
         quality: merged.quality as FilterConfig['quality'],
       };
@@ -222,6 +301,7 @@ function createFilterStats(): FilterStats {
     noiseFiltered: 0,
     duplicatesRemoved: 0,
     qualityScore: 100,
+    contaminationAudit: [],
     filtered: { noise: 0, empty: 0, duplicate: 0, lowQuality: 0 },
   };
 }
@@ -237,7 +317,7 @@ function getFilterStats(): FilterStats {
   return createFilterStats();
 }
 
-function isNoiseContent(content: string): boolean {
+function isNoiseContent(content: string, additionalPatterns: readonly RegExp[] = []): boolean {
   if (!content || typeof content !== 'string') return true;
 
   const trimmed: string = content.trim();
@@ -246,14 +326,11 @@ function isNoiseContent(content: string): boolean {
     .replace(/^\s+/, '')
     .trim();
 
-  for (const pattern of NOISE_PATTERNS) {
-    if (pattern.test(cleaned)) return true;
-  }
+  const patterns = [...NOISE_PATTERNS, ...additionalPatterns];
+  if (collectMatchedPatternLabels(cleaned, patterns).length > 0) return true;
 
   if (cleaned !== trimmed) {
-    for (const pattern of NOISE_PATTERNS) {
-      if (pattern.test(trimmed)) return true;
-    }
+    if (collectMatchedPatternLabels(trimmed, patterns).length > 0) return true;
   }
 
   return false;
@@ -382,7 +459,24 @@ function createFilterPipeline(customConfig: Partial<FilterConfig> = {}): FilterP
       ...(customConfig.pipeline || {}),
       stages: customConfig.pipeline?.stages ?? defaults.pipeline?.stages ?? [],
     },
-  } as FilterConfig;
+    noise: {
+      ...defaults.noise,
+      ...(customConfig.noise || {}),
+      patterns: compileNoisePatterns(customConfig.noise?.patterns ?? defaults.noise.patterns),
+    },
+    dedupe: {
+      ...defaults.dedupe,
+      ...(customConfig.dedupe || {}),
+    },
+    quality: {
+      ...defaults.quality,
+      ...(customConfig.quality || {}),
+      factors: {
+        ...defaults.quality.factors,
+        ...(customConfig.quality?.factors || {}),
+      },
+    },
+  };
   // P3-20: Each pipeline gets its own stats (no shared mutable singleton)
   const filterStats = createFilterStats();
 
@@ -415,18 +509,33 @@ function createFilterPipeline(customConfig: Partial<FilterConfig> = {}): FilterP
     },
 
     filterNoise(prompts: PromptItem[]): PromptItem[] {
+      const configuredPatterns = compileNoisePatterns(config.noise?.patterns ?? []);
+      const noisePatternLabels = [
+        ...NOISE_PATTERNS.map((pattern) => describePattern(pattern)),
+        ...configuredPatterns.map((pattern) => describePattern(pattern)),
+      ];
+      const matchCounts = new Map<string, number>();
+      let strippedWrapperCount = 0;
+
       // P3-21: Return new array with new objects — never mutate input
-      return prompts
+      const filtered = prompts
         .map((p: PromptItem) => ({ ...p }))
         .filter((p: PromptItem) => {
           const content: string = p.prompt || p.content || '';
-          if (isNoiseContent(content)) {
+          const matchedPatterns = collectMatchedPatternLabels(content, configuredPatterns);
+          const hardcodedMatches = collectMatchedPatternLabels(content, NOISE_PATTERNS);
+          const allMatches = [...hardcodedMatches, ...matchedPatterns];
+          if (allMatches.length > 0 || isNoiseContent(content, configuredPatterns)) {
+            for (const label of allMatches) {
+              matchCounts.set(label, (matchCounts.get(label) ?? 0) + 1);
+            }
             filterStats.filtered.noise++;
             filterStats.noiseFiltered++;
             return false;
           }
           const cleaned: string = stripNoiseWrappers(content);
           if (cleaned !== content) {
+            strippedWrapperCount++;
             // P3-21: Modify the cloned object, not the original
             p.prompt = cleaned;
             p.content = cleaned;
@@ -438,6 +547,26 @@ function createFilterPipeline(customConfig: Partial<FilterConfig> = {}): FilterP
           }
           return true;
         });
+
+      const auditRecord: ContaminationAuditRecord = {
+        stage: 'content-filter',
+        timestamp: new Date().toISOString(),
+        patternsChecked: [...new Set(noisePatternLabels)],
+        matchesFound: summarizeMatchCounts(matchCounts),
+        actionsTaken: [
+          `filtered_noise:${filterStats.filtered.noise}`,
+          `filtered_empty:${filterStats.filtered.empty}`,
+          `stripped_wrappers:${strippedWrapperCount}`,
+        ],
+        passedThrough: [
+          `input_items:${prompts.length}`,
+          `kept_items:${filtered.length}`,
+        ],
+      };
+      filterStats.contaminationAudit.push(auditRecord);
+      structuredLog('info', 'contamination_audit', auditRecord);
+
+      return filtered;
     },
 
     deduplicate(prompts: PromptItem[]): PromptItem[] {
@@ -484,7 +613,11 @@ function createFilterPipeline(customConfig: Partial<FilterConfig> = {}): FilterP
     },
 
     getStats(): FilterStats {
-      return { ...filterStats, filtered: { ...filterStats.filtered } };
+      return {
+        ...filterStats,
+        contaminationAudit: [...filterStats.contaminationAudit],
+        filtered: { ...filterStats.filtered },
+      };
     },
   };
 }

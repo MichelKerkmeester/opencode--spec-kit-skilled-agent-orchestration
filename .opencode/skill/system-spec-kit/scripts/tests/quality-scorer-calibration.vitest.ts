@@ -57,6 +57,8 @@ describe('scoreMemoryQuality calibration', () => {
     );
 
     expect(richResult.score).toBeGreaterThan(thinResult.score);
+    expect(richResult.score01).toBeCloseTo(richResult.score100 / 100, 5);
+    expect(thinResult.score01).toBeCloseTo(thinResult.score100 / 100, 5);
     expect(richResult.score).toBeGreaterThanOrEqual(85);
     expect(thinResult.score).toBeLessThan(60);
     expect(thinResult.warnings).toEqual(expect.arrayContaining([
@@ -89,5 +91,46 @@ describe('scoreMemoryQuality calibration', () => {
       expect.stringMatching(/files missing descriptions/i),
       expect.stringMatching(/generic/i),
     ]));
+  });
+
+  it('applies a canonical contamination penalty while preserving the score100 compatibility alias', () => {
+    const clean = scoreMemoryQuality(
+      buildContent(
+        'Quality scorer unification seam',
+        Array.from({ length: 30 }, (_, index) => `Evidence line ${index + 1} for contamination penalty coverage.`),
+      ),
+      ['quality scorer', 'contamination penalty', 'workflow threshold', 'canonical score'],
+      ['quality', 'contamination', 'threshold'],
+      [
+        { DESCRIPTION: 'Captures the scorer contract change for the canonical 0.0-1.0 scale.' },
+      ],
+      [
+        { TITLE: 'Implement score01 contract', NARRATIVE: 'Unified the scorer return shape and legacy aliases.' },
+      ],
+      undefined,
+      false,
+    );
+
+    const contaminated = scoreMemoryQuality(
+      buildContent(
+        'Quality scorer unification seam',
+        Array.from({ length: 30 }, (_, index) => `Evidence line ${index + 1} for contamination penalty coverage.`),
+      ),
+      ['quality scorer', 'contamination penalty', 'workflow threshold', 'canonical score'],
+      ['quality', 'contamination', 'threshold'],
+      [
+        { DESCRIPTION: 'Captures the scorer contract change for the canonical 0.0-1.0 scale.' },
+      ],
+      [
+        { TITLE: 'Implement score01 contract', NARRATIVE: 'Unified the scorer return shape and legacy aliases.' },
+      ],
+      undefined,
+      true,
+    );
+
+    expect(contaminated.score01).toBeLessThanOrEqual(0.6);
+    expect(contaminated.score01).toBeLessThan(clean.score01);
+    expect(contaminated.score100).toBe(Math.round(contaminated.score01 * 100));
+    expect(contaminated.qualityFlags).toContain('has_contamination');
   });
 });

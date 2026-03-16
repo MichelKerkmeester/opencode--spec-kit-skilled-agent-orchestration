@@ -7,17 +7,13 @@
 // ───────────────────────────────────────────────────────────────
 // Computes deterministic quality score and flags for rendered memories
 
-type QualityRuleId = 'V1' | 'V2' | 'V3' | 'V4' | 'V5' | 'V6' | 'V7' | 'V8' | 'V9';
+import type {
+  QualityDimensionScore,
+  QualityFlag,
+  QualityScoreResult,
+} from '../core/quality-scorer';
 
-type QualityFlag =
-  | 'has_placeholders'
-  | 'has_fallback_decision'
-  | 'has_contamination'
-  | 'sparse_semantic_fields'
-  | 'has_tool_state_mismatch'
-  | 'has_spec_relevance_mismatch'
-  | 'has_contaminated_title'
-  | 'has_insufficient_context';
+type QualityRuleId = 'V1' | 'V2' | 'V3' | 'V4' | 'V5' | 'V6' | 'V7' | 'V8' | 'V9';
 
 interface ValidationSignal {
   ruleId: QualityRuleId;
@@ -35,10 +31,7 @@ interface QualityInputs {
   insufficientContext?: boolean;
 }
 
-interface QualityResult {
-  qualityScore: number;
-  qualityFlags: QualityFlag[];
-}
+const QUALITY_RULE_IDS: QualityRuleId[] = ['V1', 'V2', 'V3', 'V4', 'V5', 'V6', 'V7', 'V8', 'V9'];
 
 const PENALTY_PER_FAILED_RULE = 0.25;
 
@@ -46,7 +39,21 @@ function clamp01(value: number): number {
   return Math.max(0, Math.min(1, value));
 }
 
-function scoreMemoryQuality(inputs: QualityInputs): QualityResult {
+function buildRuleDimensions(validatorSignals: ValidationSignal[]): QualityDimensionScore[] {
+  return QUALITY_RULE_IDS.map((ruleId) => {
+    const signal = validatorSignals.find((entry) => entry.ruleId === ruleId);
+    const passed = signal?.passed ?? true;
+    return {
+      id: ruleId,
+      score01: passed ? 1 : 0,
+      score100: passed ? 100 : 0,
+      maxScore100: 100,
+      passed,
+    };
+  });
+}
+
+function scoreMemoryQuality(inputs: QualityInputs): QualityScoreResult {
   const {
     content,
     validatorSignals = [],
@@ -60,18 +67,26 @@ function scoreMemoryQuality(inputs: QualityInputs): QualityResult {
 
   if (!content || typeof content !== 'string' || content.trim().length === 0) {
     return {
+      score: 0,
+      score01: 0,
+      score100: 0,
       qualityScore: 0,
+      warnings: ['No rendered content was available for quality scoring.'],
       qualityFlags: [
         'has_placeholders',
         'has_fallback_decision',
         'has_contamination',
         'sparse_semantic_fields',
       ],
+      hadContamination,
+      dimensions: buildRuleDimensions(validatorSignals),
+      insufficiency: null,
     };
   }
 
   let qualityScore = 1.0;
   const qualityFlags = new Set<QualityFlag>();
+  const warnings: string[] = [];
   let sufficiencyCap: number | null = null;
 
   const failedRules = validatorSignals.filter((signal) => !signal.passed);
@@ -103,6 +118,9 @@ function scoreMemoryQuality(inputs: QualityInputs): QualityResult {
 
   if (hadContamination) {
     qualityFlags.add('has_contamination');
+    qualityScore -= PENALTY_PER_FAILED_RULE;
+    sufficiencyCap = Math.min(sufficiencyCap ?? 1, 0.6);
+    warnings.push('Contamination detected — quality score penalized and capped at 0.60');
   }
 
   const normalizedSufficiencyScore = typeof sufficiencyScore === 'number' && Number.isFinite(sufficiencyScore)
@@ -138,8 +156,19 @@ function scoreMemoryQuality(inputs: QualityInputs): QualityResult {
   qualityScore = clamp01(qualityScore);
 
   return {
+    score: Math.round(qualityScore * 100),
+    score01: qualityScore,
+    score100: Math.round(qualityScore * 100),
     qualityScore,
+    warnings,
     qualityFlags: [...qualityFlags],
+    hadContamination,
+    dimensions: buildRuleDimensions(validatorSignals),
+    insufficiency: normalizedSufficiencyScore !== null || insufficientContext ? {
+      pass: !insufficientContext,
+      score01: normalizedSufficiencyScore,
+      reasons: insufficientContext ? ['Insufficient context flag set during rendered-memory quality scoring.'] : [],
+    } : null,
   };
 }
 
@@ -150,6 +179,6 @@ export {
 export type {
   QualityFlag,
   QualityInputs,
-  QualityResult,
+  QualityScoreResult,
   ValidationSignal,
 };

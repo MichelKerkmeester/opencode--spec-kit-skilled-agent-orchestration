@@ -131,6 +131,8 @@ function runQualityScorerTests() {
     decisionCount: 2,
   });
   assert(allGood.qualityScore >= 0.9, 'all good case should be >= 0.9');
+  assert(allGood.score01 === allGood.qualityScore, 'score01 should be the canonical alias for qualityScore');
+  assert(allGood.score100 === Math.round(allGood.score01 * 100), 'score100 should mirror the canonical score01 scale');
 
   const mixed = qualityScorer.scoreMemoryQuality({
     content: '# mixed',
@@ -147,6 +149,23 @@ function runQualityScorerTests() {
     decisionCount: 0,
   });
   assert(Math.abs(mixed.qualityScore - 0.5) < 0.0001, 'mixed two-failure case should equal 0.5');
+
+  const contaminated = qualityScorer.scoreMemoryQuality({
+    content: '# contaminated',
+    validatorSignals: [
+      { ruleId: 'V1', passed: true },
+      { ruleId: 'V2', passed: true },
+      { ruleId: 'V3', passed: true },
+      { ruleId: 'V4', passed: true },
+      { ruleId: 'V5', passed: true },
+    ],
+    hadContamination: true,
+    messageCount: 10,
+    toolCount: 7,
+    decisionCount: 2,
+  });
+  assert(contaminated.qualityScore <= 0.6, 'contamination should cap the v2 score at 0.6');
+  assert(inadequateFlagPresent(contaminated.qualityFlags, 'has_contamination'), 'contamination should add explicit flag');
 
   const empty = qualityScorer.scoreMemoryQuality({ content: '' });
   assert(empty.qualityScore === 0, 'empty file should score 0');
@@ -185,8 +204,8 @@ function runQualityScorerTests() {
   assert(insufficient.qualityScore <= 0.2, 'insufficient context should cap the v2 score');
 }
 
-function inadequateFlagPresent(flags) {
-  return Array.isArray(flags) && flags.includes('has_insufficient_context');
+function inadequateFlagPresent(flags, flag = 'has_insufficient_context') {
+  return Array.isArray(flags) && flags.includes(flag);
 }
 
 function runBenchmarkFixtureTest() {

@@ -9,6 +9,7 @@
 
 import fs from 'fs';
 import path from 'path';
+import { structuredLog } from '../utils/logger';
 
 type QualityRuleId = 'V1' | 'V2' | 'V3' | 'V4' | 'V5' | 'V6' | 'V7' | 'V8' | 'V9';
 
@@ -22,6 +23,16 @@ interface ValidationResult {
   valid: boolean;
   failedRules: QualityRuleId[];
   ruleResults: RuleResult[];
+  contaminationAudit: ContaminationAuditRecord;
+}
+
+interface ContaminationAuditRecord extends Record<string, unknown> {
+  stage: 'post-render';
+  timestamp: string;
+  patternsChecked: string[];
+  matchesFound: string[];
+  actionsTaken: string[];
+  passedThrough: string[];
 }
 
 const FALLBACK_DECISION_REGEX = /No (specific )?decisions were made/i;
@@ -45,6 +56,12 @@ const EXECUTION_SIGNAL_PATTERNS = [
   /`[^`]+\.(ts|tsx|js|jsx|py|sh|md|json|jsonc|yml|yaml|toml|css|html)`/i,
 ];
 const SPEC_ID_REGEX = /\b\d{3}-[a-z0-9][a-z0-9-]*\b/g;
+const TITLE_CONTAMINATION_PATTERNS: Array<{ pattern: RegExp; label: string }> = [
+  { pattern: /^(to promote a memory|epistemic state captured at session start|table of contents)\b/i, label: 'template instructional heading' },
+  { pattern: /^\[[^\]]+\]$/i, label: 'placeholder bracket title' },
+  { pattern: /^(untitled|draft|todo|tbd)(?:\s+(memory|session|summary|document|notes?))?$/i, label: 'generic stub title' },
+  { pattern: /^\d{3}(?:-[a-z0-9][a-z0-9-]*)?$/i, label: 'spec-id-only title' },
+];
 
 function extractFrontMatter(content: string): string {
   const frontMatterMatch = content.match(/^---\n([\s\S]*?)\n---/);
@@ -195,9 +212,18 @@ function countDistinctSpecIds(content: string): Map<string, number> {
   return counts;
 }
 
+function countSpecIdsInValues(values: string[]): Map<string, number> {
+  return countDistinctSpecIds(values.join('\n'));
+}
+
 function extractCurrentSpecId(specFolder: string): string | null {
   const matches = specFolder.match(SPEC_ID_REGEX);
   return matches ? matches[matches.length - 1] : null;
+}
+
+function extractFirstHeading(content: string): string {
+  const headingMatch = content.match(/^#\s+(.+)$/m);
+  return headingMatch ? headingMatch[1].trim() : '';
 }
 
 function hasExecutionSignals(content: string): boolean {
@@ -272,39 +298,87 @@ function validateMemoryQualityContent(content: string): ValidationResult {
   });
 
   const currentSpecId = extractCurrentSpecId(specFolder);
-  const specIdCounts = countDistinctSpecIds(content.replace(/^---\n[\s\S]*?\n---\n?/, ''));
+  const bodyContent = content.replace(/^---\n[\s\S]*?\n---\n?/, '');
+  const specIdCounts = countDistinctSpecIds(bodyContent);
+  const keyTopics = parseYamlListFromContent(content, 'key_topics');
+  const frontmatterSpecCounts = countSpecIdsInValues([...triggerPhrases, ...keyTopics]);
+  const foreignFrontmatterMentions = [...frontmatterSpecCounts.entries()]
+    .filter(([specId]) => specId !== currentSpecId)
+    .map(([specId, count]) => `${specId} x${count}`);
   let dominatesForeignSpec = false;
+  let scatteredForeignSpec = false;
+  const scatteredForeignMentions: string[] = [];
   if (specIdCounts.size > 0) {
     const currentSpecMentions = currentSpecId ? (specIdCounts.get(currentSpecId) ?? 0) : 0;
     let strongestForeignMentions = 0;
+    let totalForeignMentions = 0;
     for (const [specId, count] of specIdCounts.entries()) {
-      if (specId !== currentSpecId && count > strongestForeignMentions) {
-        strongestForeignMentions = count;
+      if (specId !== currentSpecId) {
+        totalForeignMentions += count;
+        if (count > strongestForeignMentions) {
+          strongestForeignMentions = count;
+        }
+        if (count <= 2) {
+          scatteredForeignMentions.push(`${specId} x${count}`);
+        }
       }
     }
     dominatesForeignSpec = strongestForeignMentions >= 3 && strongestForeignMentions >= currentSpecMentions + 2;
+    scatteredForeignSpec = scatteredForeignMentions.length >= 2 && totalForeignMentions >= 2 && strongestForeignMentions <= 2;
   }
+  const frontmatterForeignSpec = foreignFrontmatterMentions.length > 0;
+  const v8Matches = [
+    ...(frontmatterForeignSpec ? foreignFrontmatterMentions.map((match) => `frontmatter:${match}`) : []),
+    ...(dominatesForeignSpec ? ['body:foreign spec ids dominate rendered content'] : []),
+    ...(scatteredForeignSpec ? scatteredForeignMentions.map((match) => `body-scattered:${match}`) : []),
+  ];
   ruleResults.push({
     ruleId: 'V8',
-    passed: !dominatesForeignSpec,
-    message: dominatesForeignSpec ? 'spec relevance mismatch: foreign spec ids dominate generated memory content' : 'ok',
+    passed: v8Matches.length === 0,
+    message: v8Matches.length > 0
+      ? `spec relevance mismatch: ${v8Matches.join(', ')}`
+      : 'ok',
   });
 
-  const titleValue = extractYamlValueFromContent(content, 'title') || '';
-  const genericLeakedTitle =
-    /^#\s*(to promote a memory|epistemic state captured at session start|table of contents)\b/im.test(content) ||
-    /^(to promote a memory|epistemic state captured at session start|table of contents)\b/i.test(titleValue);
+  const titleValue = extractYamlValueFromContent(content, 'title') || extractFirstHeading(content);
+  const titlePatternMatch = TITLE_CONTAMINATION_PATTERNS.find(({ pattern }) => pattern.test(titleValue));
   ruleResults.push({
     ruleId: 'V9',
-    passed: !genericLeakedTitle,
-    message: genericLeakedTitle ? 'contaminated title: leaked template/instructional text used as heading' : 'ok',
+    passed: !titlePatternMatch,
+    message: titlePatternMatch ? `contaminated title: ${titlePatternMatch.label}` : 'ok',
   });
 
   const failedRules = ruleResults.filter((rule) => !rule.passed).map((rule) => rule.ruleId);
+  const contaminationAudit: ContaminationAuditRecord = {
+    stage: 'post-render',
+    timestamp: new Date().toISOString(),
+    patternsChecked: [
+      'frontmatter:trigger_phrases',
+      'frontmatter:key_topics',
+      'body:foreign-spec-dominance',
+      'body:foreign-spec-scatter',
+      ...TITLE_CONTAMINATION_PATTERNS.map(({ label }) => `title:${label}`),
+    ],
+    matchesFound: [
+      ...v8Matches,
+      ...(titlePatternMatch ? [`title:${titlePatternMatch.label}`] : []),
+    ],
+    actionsTaken: [
+      `failed_rules:${failedRules.filter((ruleId) => ruleId === 'V8' || ruleId === 'V9').join(',') || 'none'}`,
+    ],
+    passedThrough: [
+      `current_spec:${currentSpecId ?? 'unknown'}`,
+      `trigger_phrases:${triggerPhrases.length}`,
+      `key_topics:${keyTopics.length}`,
+    ],
+  };
+  structuredLog('info', 'contamination_audit', contaminationAudit);
+
   return {
     valid: failedRules.length === 0,
     failedRules,
     ruleResults,
+    contaminationAudit,
   };
 }
 
@@ -319,6 +393,14 @@ function validateMemoryQualityFile(filePath: string): ValidationResult {
       valid: false,
       failedRules: ['V1'],
       ruleResults: [{ ruleId: 'V1', passed: false, message: `Cannot read file: ${message}` }],
+      contaminationAudit: {
+        stage: 'post-render',
+        timestamp: new Date().toISOString(),
+        patternsChecked: [],
+        matchesFound: [`file-read-error:${message}`],
+        actionsTaken: ['failed_rules:V1'],
+        passedThrough: [],
+      },
     };
   }
   return validateMemoryQualityContent(content);

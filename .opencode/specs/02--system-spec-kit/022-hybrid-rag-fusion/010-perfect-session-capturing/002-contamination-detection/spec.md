@@ -15,7 +15,7 @@ title: "Feature Specification: Contamination Detection"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P1 |
-| **Status** | Draft |
+| **Status** | Complete |
 | **Created** | 2026-03-16 |
 | **Branch** | `main` |
 | **Parent** | [010-perfect-session-capturing](../spec.md) |
@@ -60,10 +60,11 @@ Strengthen V8 to inspect frontmatter and detect non-dominant foreign-spec signal
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `scripts/validators/validate-memory-quality.ts` | Modify | Extend V8 to inspect frontmatter and handle non-dominant foreign-spec signals; broaden V9 pattern set |
+| `scripts/memory/validate-memory-quality.ts` | Modify | Extend V8 to inspect frontmatter and low-volume cross-spec signals; broaden V9 title contamination patterns; emit post-render audit records |
 | `scripts/lib/content-filter.ts` | Modify | Wire `noise.patterns` config into actual filtering logic; add structured audit logging |
-| `scripts/extractors/collect-session-data.ts` | Modify | Add contamination audit logging at extractor scrub point |
-| `scripts/renderers/` | Modify | Add post-render contamination audit logging point |
+| `scripts/core/workflow.ts` | Modify | Record extractor-scrub contamination audit output and aggregate all three audit stages into `metadata.json` |
+| `scripts/extractors/contamination-filter.ts` | Modify | Preserve lexical scrubber behavior while exposing denylist match metadata for audit reporting |
+| `scripts/tests/task-enrichment.vitest.ts` | Modify | Add regression coverage for frontmatter V8, scattered foreign-spec V8, expanded V9, config-driven noise patterns, and workflow audit aggregation |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -95,6 +96,17 @@ Strengthen V8 to inspect frontmatter and detect non-dominant foreign-spec signal
 - **SC-001**: Cross-spec contamination with fewer than 3 foreign mentions is detected and flagged by V8
 - **SC-002**: Audit trail shows what contamination was caught versus missed at each pipeline stage, enabling post-hoc analysis of detection coverage
 <!-- /ANCHOR:success-criteria -->
+
+---
+
+<!-- ANCHOR:acceptance-scenarios -->
+## ACCEPTANCE SCENARIOS
+
+1. **Given** a rendered memory whose `trigger_phrases` include `031-memory-search-state-filter-fix`, **when** post-render validation runs, **then** V8 fails even if the body is otherwise short and clean.
+2. **Given** a rendered memory that mentions two different foreign specs once each in the body, **when** post-render validation runs, **then** V8 fails for scattered low-volume contamination instead of passing as “non-dominant.”
+3. **Given** a rendered memory titled `Draft`, `[TITLE]`, or a bare spec id, **when** V9 evaluates the rendered title, **then** the memory fails before write/index.
+4. **Given** a workflow run that reaches the save path, **when** `metadata.json` is written, **then** it includes `extractor-scrub`, `content-filter`, and `post-render` contamination audit entries with pattern labels/counts but without raw prompt content.
+<!-- /ANCHOR:acceptance-scenarios -->
 
 ---
 

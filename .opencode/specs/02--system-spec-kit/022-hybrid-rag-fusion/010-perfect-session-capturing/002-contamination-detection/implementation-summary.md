@@ -14,7 +14,7 @@ title: "Implementation Summary [template:level_2/implementation-summary.md]"
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 002-contamination-detection |
-| **Completed** | — |
+| **Completed** | 2026-03-16 |
 | **Level** | 2 |
 <!-- /ANCHOR:metadata -->
 
@@ -23,7 +23,13 @@ title: "Implementation Summary [template:level_2/implementation-summary.md]"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Pre-implementation — to be completed after implementation.
+This phase shipped contamination-detection hardening across the live save pipeline rather than the earlier draft file map.
+
+1. `scripts/memory/validate-memory-quality.ts` now treats foreign spec ids in `trigger_phrases` and `key_topics` as V8 signals, detects scattered low-volume foreign-spec mentions across multiple specs, broadens V9 to catch placeholder/stub/spec-id-only titles, and emits a structured post-render contamination audit record.
+2. `scripts/lib/content-filter.ts` now compiles config-driven `noise.patterns`, applies them alongside the hardcoded rules, and emits a structured content-filter audit record without exposing raw prompt bodies.
+3. `scripts/extractors/contamination-filter.ts` now exposes denylist labels and matched-pattern metadata so the existing lexical scrubber can feed audit reporting without changing its cleaning behavior.
+4. `scripts/core/workflow.ts` now records extractor-scrub contamination audit data and aggregates extractor, content-filter, and post-render audit records into `metadata.json`.
+5. `scripts/tests/task-enrichment.vitest.ts` now covers frontmatter V8 detection, scattered foreign-spec V8 detection, expanded V9 patterns, config-driven noise-pattern filtering, and end-to-end audit aggregation.
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -31,7 +37,12 @@ Pre-implementation — to be completed after implementation.
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-Pre-implementation — to be completed after implementation.
+The implementation stayed intentionally narrow:
+
+1. Reused the existing contamination scrubber instead of rewriting it, adding only labeled pattern metadata so the workflow could audit what it already removes.
+2. Kept the three-layer architecture intact: extractor scrub, content filter, and post-render validation still run in the same order.
+3. Used structured JSON logs plus `metadata.json` aggregation so downstream inspection can see each stage’s matches, actions, and pass-through counts without storing sensitive raw content.
+4. Updated the phase tests in-place instead of adding a new suite, which kept the regression coverage close to the current workflow seam harness.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -41,7 +52,9 @@ Pre-implementation — to be completed after implementation.
 
 | Decision | Why |
 |----------|-----|
-| — | Pre-implementation |
+| Audit records store pattern labels/counts, not raw memory text | Meets the observability goal without leaking sensitive session content into logs or metadata |
+| Extractor-scrub auditing lives in `workflow.ts` | The live lexical scrub seam runs there today, so documenting the real execution path is more accurate than forcing the draft file map |
+| V8 frontmatter detection hard-fails any foreign spec id in `trigger_phrases` or `key_topics` | Those fields should stay target-spec-specific, so foreign spec ids there are contamination signals rather than benign cross-references |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -51,7 +64,12 @@ Pre-implementation — to be completed after implementation.
 
 | Check | Result |
 |-------|--------|
-| — | Pre-implementation |
+| `npm run test:task-enrichment` | Passed — 1 file, 43 tests, 0 failures |
+| `node scripts/tests/test-memory-quality-lane.js` | Passed |
+| `npm run typecheck` | Passed |
+| `npm run build` | Passed |
+| `scripts/spec/validate.sh <phase-folder>` | Passed — 0 errors, 0 warnings |
+| `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js <phase-folder>` | Passed — saved `memory/16-03-26_18-23__contamination-detection.md` and refreshed `metadata.json` |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -59,5 +77,6 @@ Pre-implementation — to be completed after implementation.
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. Pre-implementation — to be completed after implementation.
+1. The extractor scrubber still relies on the existing lexical denylist; this phase adds auditability around that behavior but does not redesign the scrubber itself.
+2. Post-render contamination detection remains spec-id driven, so future work could still make the semantic cross-spec heuristics more context-aware if false-positive data ever appears.
 <!-- /ANCHOR:limitations -->

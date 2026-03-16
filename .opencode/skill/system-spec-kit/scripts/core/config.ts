@@ -95,6 +95,30 @@ const SCRIPTS_DIR: string = findScriptsRoot(__dirname);
  * Validates merged config values and falls back to defaults for invalid entries.
  * Never throws — logs warnings and returns a safe config.
  */
+export function normalizeQualityAbortThreshold(
+  value: number,
+  defaultValue: number,
+  log: typeof structuredLog = structuredLog,
+): number {
+  if (typeof value !== 'number' || !Number.isFinite(value) || value <= 0 || value > 100) {
+    log('warn', 'qualityAbortThreshold invalid or out of range 0.0-1.0 (or legacy 1-100), using default', {
+      value,
+    });
+    return defaultValue;
+  }
+
+  if (value > 1) {
+    const normalized = value / 100;
+    log('warn', 'qualityAbortThreshold uses legacy 1-100 scale and was auto-converted to canonical 0.0-1.0', {
+      value,
+      normalized,
+    });
+    return normalized;
+  }
+
+  return value;
+}
+
 function validateConfig(merged: WorkflowConfig, defaults: WorkflowConfig): WorkflowConfig {
   const validated = { ...merged };
 
@@ -124,14 +148,10 @@ function validateConfig(merged: WorkflowConfig, defaults: WorkflowConfig): Workf
     }
   }
 
-  // Quality score percentage: 1-100 (default 15)
-  if (typeof validated.qualityAbortThreshold !== 'number' || !Number.isFinite(validated.qualityAbortThreshold)
-    || validated.qualityAbortThreshold < 1 || validated.qualityAbortThreshold > 100) {
-    structuredLog('warn', 'qualityAbortThreshold invalid or out of range 1-100, using default', {
-      value: validated.qualityAbortThreshold
-    });
-    validated.qualityAbortThreshold = defaults.qualityAbortThreshold;
-  }
+  validated.qualityAbortThreshold = normalizeQualityAbortThreshold(
+    validated.qualityAbortThreshold,
+    defaults.qualityAbortThreshold,
+  );
 
   // Non-negative integer fields (must be >= 0)
   const nonNegativeFields: (keyof WorkflowConfig)[] = [
@@ -216,7 +236,7 @@ function loadConfig(): WorkflowConfig {
     toolPreviewLines: 10,
     toolOutputMaxLength: 500,
     timestampMatchToleranceMs: 5000,
-    qualityAbortThreshold: 15,
+    qualityAbortThreshold: 0.15,
     learningWeights: {
       knowledge: 0.4,
       context: 0.35,

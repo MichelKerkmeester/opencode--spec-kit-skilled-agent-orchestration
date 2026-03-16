@@ -35,7 +35,7 @@ import { deriveMemoryDescription } from '../utils/memory-frontmatter';
 import { shouldAutoSave, collectSessionData } from '../extractors/collect-session-data';
 import type { SessionData, CollectedDataFull } from '../extractors/collect-session-data';
 import type { FileChange, SemanticFileInfo } from '../extractors/file-extractor';
-import { filterContamination } from '../extractors/contamination-filter';
+import { filterContamination, getContaminationPatternLabels } from '../extractors/contamination-filter';
 import {
   scoreMemoryQuality as scoreMemoryQualityV2,
   type ValidationSignal,
@@ -68,6 +68,7 @@ import { indexMemory, updateMetadataWithEmbedding } from './memory-indexer';
 import * as simFactory from '../lib/simulation-factory';
 import { loadCollectedData as loadCollectedDataFromLoader } from '../loaders/data-loader';
 import { applyTreeThinning } from './tree-thinning';
+import { structuredLog } from '../utils/logger';
 import type {
   FileEntry as ThinningFileEntry,
   ThinningResult,
@@ -243,6 +244,10 @@ function capText(value: string, maxLength: number): string {
 
   const truncated = value.slice(0, maxLength - 3).trim();
   return `${truncated}...`;
+}
+
+function summarizeAuditCounts(counts: Map<string, number>): string[] {
+  return [...counts.entries()].map(([label, count]) => `${label} x${count}`);
 }
 
 function pickCarrierIndex(indices: number[], files: FileChange[]): number {
@@ -978,10 +983,21 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
 
     // F-23: Define contamination cleaning functions before enrichment
     let hadContamination = false;
+    const contaminationAuditTrail: Array<Record<string, unknown>> = [];
+    const extractorPatternCounts = new Map<string, number>();
+    let extractorProcessedFieldCount = 0;
+    let extractorCleanedFieldCount = 0;
+    let extractorRemovedPhraseCount = 0;
     const cleanContaminationText = (input: string): string => {
+      extractorProcessedFieldCount++;
       const filtered = filterContamination(input);
       if (filtered.hadContamination) {
         hadContamination = true;
+        extractorCleanedFieldCount++;
+        extractorRemovedPhraseCount += filtered.removedPhrases.length;
+        for (const label of filtered.matchedPatterns) {
+          extractorPatternCounts.set(label, (extractorPatternCounts.get(label) ?? 0) + 1);
+        }
       }
       return escapeLiteralAnchorExamples(filtered.cleanedText);
     };
@@ -1015,6 +1031,21 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       const preCleanedSummary = (typeof collectedData.SUMMARY === 'string' && collectedData.SUMMARY.length > 0)
         ? cleanContaminationText(collectedData.SUMMARY) : collectedData.SUMMARY;
       collectedData = { ...collectedData, observations: preCleanedObservations, SUMMARY: preCleanedSummary };
+      const extractorAudit = {
+        stage: 'extractor-scrub',
+        timestamp: new Date().toISOString(),
+        patternsChecked: getContaminationPatternLabels(),
+        matchesFound: summarizeAuditCounts(extractorPatternCounts),
+        actionsTaken: [
+          `cleaned_fields:${extractorCleanedFieldCount}`,
+          `removed_phrases:${extractorRemovedPhraseCount}`,
+        ],
+        passedThrough: [
+          `processed_fields:${extractorProcessedFieldCount}`,
+        ],
+      };
+      contaminationAuditTrail.push(extractorAudit);
+      structuredLog('info', 'contamination_audit', extractorAudit);
     }
 
     // Step 3.5: Enrich stateless data with spec folder and git context
@@ -1200,6 +1231,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     };
   });
   const filterStats: FilterStats = filterPipeline.getStats();
+  contaminationAuditTrail.push(...filterStats.contaminationAudit);
 
   log(`   Content quality: ${filterStats.qualityScore}/100 (${filterStats.noiseFiltered} noise, ${filterStats.duplicatesRemoved} duplicates filtered from ${filterStats.totalProcessed} items)`);
   if (filterPipeline.isLowQuality()) {
@@ -1437,6 +1469,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
         // Frontmatter quality_score is 0.0-1.0 (v2 scorer). Different metrics.
         _note: 'qualityScore is 0-100 scale (legacy scorer); frontmatter quality_score is 0.0-1.0 (v2 scorer)',
       },
+      contaminationAudit: contaminationAuditTrail,
       semanticSummary: {
         task: implSummary.task.substring(0, 100),
         filesCreated: implSummary.filesCreated.length,
@@ -1471,6 +1504,10 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   // Step 8.6: Quality validation + scoring
   log('Step 8.6: Quality scoring...');
   const qualityValidation = validateMemoryQualityContent(files[ctxFilename]);
+  contaminationAuditTrail.push(qualityValidation.contaminationAudit);
+  const metadataJson = JSON.parse(files['metadata.json']) as Record<string, unknown>;
+  metadataJson.contaminationAudit = contaminationAuditTrail;
+  files['metadata.json'] = JSON.stringify(metadataJson, null, 2);
   const qualitySignals: ValidationSignal[] = qualityValidation.ruleResults.map((rule) => ({
     ruleId: rule.ruleId,
     passed: rule.passed,
@@ -1498,7 +1535,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     sufficiencyScore: sufficiencyResult.score,
     insufficientContext: !sufficiencyResult.pass,
   });
-  files[ctxFilename] = injectQualityMetadata(files[ctxFilename], qualityV2.qualityScore, qualityV2.qualityFlags);
+  files[ctxFilename] = injectQualityMetadata(files[ctxFilename], qualityV2.score01, qualityV2.qualityFlags);
 
   // Step 8.5b: Spec document health annotation (non-blocking)
   let specDocHealth: SpecDocHealthResult | null = null;
@@ -1536,14 +1573,19 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     effectiveFiles,
     sessionData.OBSERVATIONS || [],
     sufficiencyResult,
+    hadContamination,
   );
-  log(`   Memory quality score: ${qualityResult.score}/100 (legacy), ${qualityV2.qualityScore.toFixed(2)} (v2)`);
+  log(
+    `   Memory quality score: ${qualityResult.score100}/100 (${qualityResult.score01.toFixed(2)}) ` +
+    `canonical, ${qualityV2.score100}/100 (${qualityV2.score01.toFixed(2)}) (v2)`
+  );
   if (qualityResult.warnings.length > 0) {
     for (const warning of qualityResult.warnings) {
       warn(`   Quality warning: ${warning}`);
     }
   }
-  log(`   Breakdown: triggers=${qualityResult.breakdown.triggerPhrases}/20, topics=${qualityResult.breakdown.keyTopics}/15, fileDesc=${qualityResult.breakdown.fileDescriptions}/20, length=${qualityResult.breakdown.contentLength}/15, html=${qualityResult.breakdown.noLeakedTags}/15, dedup=${qualityResult.breakdown.observationDedup}/15`);
+  const qualityBreakdown = qualityResult.breakdown!;
+  log(`   Breakdown: triggers=${qualityBreakdown.triggerPhrases}/20, topics=${qualityBreakdown.keyTopics}/15, fileDesc=${qualityBreakdown.fileDescriptions}/20, length=${qualityBreakdown.contentLength}/15, html=${qualityBreakdown.noLeakedTags}/15, dedup=${qualityBreakdown.observationDedup}/15`);
 
   // Step 8.7: Hard blocks before write/index
   // RC-5: V8/V9 contamination hard-block — prevent writing files when
@@ -1579,19 +1621,20 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   }
 
   const QUALITY_ABORT_THRESHOLD = CONFIG.QUALITY_ABORT_THRESHOLD;
-  if (qualityResult.score < QUALITY_ABORT_THRESHOLD) {
-    const abortMsg = `QUALITY_GATE_ABORT: Memory quality score ${qualityResult.score}/100 is below minimum threshold (${QUALITY_ABORT_THRESHOLD}). ` +
+  if (qualityResult.score01 < QUALITY_ABORT_THRESHOLD) {
+    const abortMsg = `QUALITY_GATE_ABORT: Memory quality score ${qualityResult.score100}/100 (${qualityResult.score01.toFixed(2)}) ` +
+      `is below minimum threshold (${QUALITY_ABORT_THRESHOLD.toFixed(2)}). ` +
       `This typically means the captured session data does not contain meaningful content for this spec folder. ` +
       `To force save, pass data via JSON file instead of stateless mode.`;
     warn(abortMsg);
     throw new Error(abortMsg);
   }
 
-  // CG-07: Add warning banner for medium-quality scores (30-60)
-  if (qualityResult.score < 60 && qualityResult.score >= QUALITY_ABORT_THRESHOLD) {
-    const mediumQualityWarning = `> **Warning:** Memory quality score is ${qualityResult.score}/100, which is below the recommended threshold of 60. Content may have issues with: ${qualityResult.warnings.slice(0, 3).join('; ')}.\n\n`;
+  // CG-07: Add warning banner for medium-quality scores (0.30-0.60 legacy 30-60)
+  if (qualityResult.score01 < 0.6 && qualityResult.score01 >= QUALITY_ABORT_THRESHOLD) {
+    const mediumQualityWarning = `> **Warning:** Memory quality score is ${qualityResult.score100}/100 (${qualityResult.score01.toFixed(2)}), which is below the recommended threshold of 0.60. Content may have issues with: ${qualityResult.warnings.slice(0, 3).join('; ')}.\n\n`;
     files[ctxFilename] = mediumQualityWarning + files[ctxFilename];
-    log(`   Medium quality warning added (score: ${qualityResult.score}/100)`);
+    log(`   Medium quality warning added (score: ${qualityResult.score100}/100)`);
   }
 
   const templateContract = validateMemoryTemplateContract(files[ctxFilename]);

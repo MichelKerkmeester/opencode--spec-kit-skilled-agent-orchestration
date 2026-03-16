@@ -5,6 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
+import { normalizeQualityAbortThreshold } from '../core/config';
 import { collectSessionData } from '../extractors/collect-session-data';
 import { normalizeInputData } from '../utils/input-normalizer';
 
@@ -467,6 +468,26 @@ describe('native CLI fallback handling', () => {
     expect(captureCodexConversation).toHaveBeenCalledTimes(1);
     expect(captureConversation).toHaveBeenCalledTimes(1);
     expect(captureClaudeConversation).not.toHaveBeenCalled();
+  });
+});
+
+describe('qualityAbortThreshold normalization', () => {
+  it('keeps canonical 0.0-1.0 thresholds unchanged', () => {
+    const log = vi.fn();
+
+    expect(normalizeQualityAbortThreshold(0.15, 0.15, log as never)).toBe(0.15);
+    expect(log).not.toHaveBeenCalled();
+  });
+
+  it('auto-converts legacy 1-100 thresholds to the canonical 0.0-1.0 scale', () => {
+    const log = vi.fn();
+
+    expect(normalizeQualityAbortThreshold(15, 0.15, log as never)).toBe(0.15);
+    expect(log).toHaveBeenCalledWith(
+      'warn',
+      expect.stringMatching(/legacy 1-100 scale/i),
+      expect.objectContaining({ value: 15, normalized: 0.15 }),
+    );
   });
 });
 

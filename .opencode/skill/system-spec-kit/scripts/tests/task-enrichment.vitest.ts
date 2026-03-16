@@ -7,6 +7,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { generateContentSlug, isContaminatedMemoryName, isGenericContentTask, pickBestContentName } from '../utils/slug-utils';
 import { normalizeSpecTitleForMemory, pickPreferredMemoryTask, shouldEnrichTaskFromSpecTitle } from '../utils/task-enrichment';
 import { validateMemoryQualityContent } from '../memory/validate-memory-quality';
+import { createFilterPipeline } from '../lib/content-filter';
 import type { SessionData } from '../types/session-types';
 import { collectSessionData } from '../extractors/collect-session-data';
 import { populateTemplate } from '../renderers';
@@ -19,6 +20,38 @@ const workflowHarness = vi.hoisted(() => ({
   detectSnapshots: [] as Array<{ specFolderArg: string | null }>,
   loaderDataWithFile: null as Record<string, unknown> | null,
   loaderDataWithoutFile: null as Record<string, unknown> | null,
+}));
+const qualityHarness = vi.hoisted(() => ({
+  legacyResult: {
+    score: 100,
+    score01: 1,
+    score100: 100,
+    qualityScore: 1,
+    warnings: [] as string[],
+    qualityFlags: [] as string[],
+    hadContamination: false,
+    dimensions: [] as Array<Record<string, unknown>>,
+    breakdown: {
+      triggerPhrases: 20,
+      keyTopics: 15,
+      fileDescriptions: 20,
+      contentLength: 15,
+      noLeakedTags: 15,
+      observationDedup: 15,
+    },
+    insufficiency: null,
+  },
+  v2Result: {
+    score: 100,
+    score01: 1,
+    score100: 100,
+    qualityScore: 1,
+    warnings: [] as string[],
+    qualityFlags: [] as string[],
+    hadContamination: false,
+    dimensions: [] as Array<Record<string, unknown>>,
+    insufficiency: null,
+  },
 }));
 const evaluateMemorySufficiencyMock = vi.hoisted(() => vi.fn(() => ({
   pass: true,
@@ -179,22 +212,11 @@ vi.mock('../loaders/data-loader', () => ({
 }));
 
 vi.mock('../core/quality-scorer', () => ({
-  scoreMemoryQuality: vi.fn(() => ({
-    score: 100,
-    warnings: [],
-    breakdown: {
-      triggerPhrases: 20,
-      keyTopics: 15,
-      fileDescriptions: 20,
-      contentLength: 15,
-      noLeakedTags: 15,
-      observationDedup: 15,
-    },
-  })),
+  scoreMemoryQuality: vi.fn(() => qualityHarness.legacyResult),
 }));
 
 vi.mock('../extractors/quality-scorer', () => ({
-  scoreMemoryQuality: vi.fn(() => ({ qualityScore: 100, qualityFlags: [] })),
+  scoreMemoryQuality: vi.fn(() => qualityHarness.v2Result),
 }));
 
 vi.mock('../lib/semantic-summarizer', () => ({
@@ -321,6 +343,36 @@ beforeEach(() => {
   workflowHarness.detectSnapshots = [];
   workflowHarness.loaderDataWithFile = null;
   workflowHarness.loaderDataWithoutFile = null;
+  qualityHarness.legacyResult = {
+    score: 100,
+    score01: 1,
+    score100: 100,
+    qualityScore: 1,
+    warnings: [],
+    qualityFlags: [],
+    hadContamination: false,
+    dimensions: [],
+    breakdown: {
+      triggerPhrases: 20,
+      keyTopics: 15,
+      fileDescriptions: 20,
+      contentLength: 15,
+      noLeakedTags: 15,
+      observationDedup: 15,
+    },
+    insufficiency: null,
+  };
+  qualityHarness.v2Result = {
+    score: 100,
+    score01: 1,
+    score100: 100,
+    qualityScore: 1,
+    warnings: [],
+    qualityFlags: [],
+    hadContamination: false,
+    dimensions: [],
+    insufficiency: null,
+  };
 });
 
 afterEach(() => {
@@ -593,6 +645,39 @@ describe('memory quality lint gate', () => {
     expect(result.failedRules).toContain('V8');
   });
 
+  it('fails when frontmatter trigger phrases reference a foreign spec id', () => {
+    const result = validateMemoryQualityContent(buildMemoryContent({
+      triggerPhrases: [
+        '013-memory-search-bug-fixes',
+        '031-memory-search-state-filter-fix',
+      ],
+    }));
+
+    expect(result.valid).toBe(false);
+    expect(result.failedRules).toContain('V8');
+    expect(result.contaminationAudit.matchesFound).toEqual(
+      expect.arrayContaining([expect.stringMatching(/^frontmatter:031-memory-search-state-filter-fix/)])
+    );
+  });
+
+  it('fails when low-volume foreign spec ids are scattered across multiple specs', () => {
+    const result = validateMemoryQualityContent(buildMemoryContent({
+      body: [
+        'Compared the save guard with 031-memory-search-state-filter-fix during regression review.',
+        'Cross-checked edge cases from 041-memory-quality-loop-follow-up while tightening the final wording.',
+      ],
+    }));
+
+    expect(result.valid).toBe(false);
+    expect(result.failedRules).toContain('V8');
+    expect(result.contaminationAudit.matchesFound).toEqual(
+      expect.arrayContaining([
+        expect.stringMatching(/^body-scattered:031-memory-search-state-filter-fix/),
+        expect.stringMatching(/^body-scattered:041-memory-quality-loop-follow-up/),
+      ])
+    );
+  });
+
   it('fails when template instructional text leaks into the title', () => {
     const result = validateMemoryQualityContent(buildMemoryContent({
       title: 'To promote a memory to constitutional tier (always surfaced)',
@@ -602,11 +687,51 @@ describe('memory quality lint gate', () => {
     expect(result.failedRules).toContain('V9');
   });
 
+  it('fails when a generic stub title survives into the rendered output', () => {
+    const result = validateMemoryQualityContent(buildMemoryContent({
+      title: 'Draft',
+    }));
+
+    expect(result.valid).toBe(false);
+    expect(result.failedRules).toContain('V9');
+    expect(result.contaminationAudit.matchesFound).toContain('title:generic stub title');
+  });
+
   it('passes practical generated memory content', () => {
     const result = validateMemoryQualityContent(buildMemoryContent());
 
     expect(result.valid).toBe(true);
     expect(result.failedRules).toEqual([]);
+  });
+});
+
+describe('content filter contamination audit', () => {
+  it('applies configured noise patterns and emits an audit trail', () => {
+    const pipeline = createFilterPipeline({
+      pipeline: {
+        enabled: true,
+        stages: ['noise'],
+      },
+      noise: {
+        enabled: true,
+        minContentLength: 3,
+        minUniqueWords: 1,
+        patterns: [{ pattern: '^custom placeholder$', flags: 'i' }],
+      },
+    });
+
+    const filtered = pipeline.filter([
+      { prompt: 'Custom placeholder' },
+      { prompt: 'Implemented contamination audit trail in workflow metadata.' },
+    ]);
+    const stats = pipeline.getStats();
+
+    expect(filtered).toHaveLength(1);
+    expect(filtered[0].prompt).toContain('Implemented contamination audit trail');
+    expect(stats.contaminationAudit).toHaveLength(1);
+    expect(stats.contaminationAudit[0].matchesFound).toEqual(
+      expect.arrayContaining([expect.stringMatching(/custom placeholder/i)])
+    );
   });
 });
 
@@ -680,6 +805,55 @@ describe('workflow seam guardrail', () => {
 
       expect(result.contextFilename).toContain('__hybrid-rag-fusion-recall-regression-audit.md');
       expect(result.contextFilename).not.toBe('06-03-26_09-00__hybrid-rag-fusion.md');
+    } finally {
+      fs.rmSync(tempRoot, { recursive: true, force: true });
+    }
+  });
+
+  it('records the three-stage contamination audit trail in metadata.json', async () => {
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-workflow-'));
+    const specFolderPath = path.join(tempRoot, '010-perfect-session-capturing');
+    const contextDir = path.join(tempRoot, 'memory');
+    fs.mkdirSync(specFolderPath, { recursive: true });
+    fs.mkdirSync(contextDir, { recursive: true });
+    fs.writeFileSync(
+      path.join(specFolderPath, 'spec.md'),
+      ['---', 'title: "Spec: Perfect Session Capturing"', '---', '# Spec'].join('\n'),
+      'utf-8'
+    );
+
+    workflowHarness.specFolderPath = specFolderPath;
+    workflowHarness.contextDir = contextDir;
+
+    const { runWorkflow } = await import('../core/workflow');
+
+    try {
+      await runWorkflow({
+        dataFile: '/tmp/context.json',
+        collectedData: {
+          _source: 'file',
+          SUMMARY: "I'll execute this step by step before tightening contamination validation.",
+          observations: [
+            {
+              title: 'Implementation and updates',
+              narrative: 'Added contamination audit coverage for the rendered output.',
+            },
+          ],
+          userPrompts: [{ prompt: 'Perfect session capturing', timestamp: '2026-03-15T15:00:00Z' }],
+        },
+        collectSessionDataFn: async (_collectedData, specFolderName) => createSessionData(specFolderName || '010-perfect-session-capturing'),
+        silent: true,
+      });
+
+      expect(workflowHarness.writtenFiles).toHaveLength(1);
+      const metadata = JSON.parse(workflowHarness.writtenFiles[0].files['metadata.json']) as {
+        contaminationAudit: Array<{ stage: string }>;
+      };
+      expect(metadata.contaminationAudit.map((entry) => entry.stage)).toEqual([
+        'extractor-scrub',
+        'content-filter',
+        'post-render',
+      ]);
     } finally {
       fs.rmSync(tempRoot, { recursive: true, force: true });
     }
@@ -854,6 +1028,66 @@ describe('workflow seam guardrail', () => {
       expect(memoryIndexer.indexMemory).not.toHaveBeenCalled();
       expect(memoryIndexer.updateMetadataWithEmbedding).not.toHaveBeenCalled();
     } finally {
+      fs.rmSync(tempRoot, { recursive: true, force: true });
+    }
+  });
+
+  it('uses canonical score01 when applying the workflow quality abort threshold', async () => {
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-workflow-'));
+    const specFolderPath = path.join(tempRoot, '010-perfect-session-capturing');
+    const contextDir = path.join(tempRoot, 'memory');
+    fs.mkdirSync(specFolderPath, { recursive: true });
+    fs.mkdirSync(contextDir, { recursive: true });
+    fs.writeFileSync(
+      path.join(specFolderPath, 'spec.md'),
+      ['---', 'title: "Spec: Perfect Session Capturing"', '---', '# Spec'].join('\n'),
+      'utf-8'
+    );
+
+    workflowHarness.specFolderPath = specFolderPath;
+    workflowHarness.contextDir = contextDir;
+    qualityHarness.legacyResult = {
+      ...qualityHarness.legacyResult,
+      score: 40,
+      score01: 0.4,
+      score100: 40,
+      qualityScore: 0.4,
+      warnings: ['Canonical score intentionally below threshold for workflow gating coverage.'],
+    };
+    qualityHarness.v2Result = {
+      ...qualityHarness.v2Result,
+      score: 90,
+      score01: 0.9,
+      score100: 90,
+      qualityScore: 0.9,
+    };
+
+    const { runWorkflow } = await import('../core/workflow');
+    const { CONFIG } = await import('../core');
+    const previousThreshold = CONFIG.QUALITY_ABORT_THRESHOLD;
+    CONFIG.QUALITY_ABORT_THRESHOLD = 0.5;
+
+    try {
+      await expect(runWorkflow({
+        dataFile: '/tmp/context.json',
+        collectedData: {
+          _source: 'file',
+          userPrompts: [{ prompt: 'Perfect session capturing', timestamp: '2026-03-15T15:00:00Z' }],
+          observations: [
+            {
+              title: 'Threshold coverage',
+              narrative: 'This fixture proves workflow gating compares the canonical 0.0-1.0 score.',
+              files: ['spec.md'],
+            },
+          ],
+        },
+        collectSessionDataFn: async (_collectedData, specFolderName) => createSessionData(specFolderName || '010-perfect-session-capturing'),
+        silent: true,
+      })).rejects.toThrow(/QUALITY_GATE_ABORT: Memory quality score 40\/100 \(0\.40\) is below minimum threshold \(0\.50\)/);
+
+      expect(workflowHarness.writtenFiles).toHaveLength(0);
+    } finally {
+      CONFIG.QUALITY_ABORT_THRESHOLD = previousThreshold;
       fs.rmSync(tempRoot, { recursive: true, force: true });
     }
   });
