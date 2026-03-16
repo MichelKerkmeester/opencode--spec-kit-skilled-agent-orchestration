@@ -34,8 +34,8 @@ describe('scoreMemoryQuality calibration', () => {
       ['claude capture', 'stateless fallback', 'quality scoring', 'transcript parser', 'history matching', 'memory save', 'alignment blocking', 'provenance'],
       ['claude', 'capture', 'fallback', 'quality', 'alignment'],
       [
-        { DESCRIPTION: 'Integrates Claude transcript fallback into the stateless data loader with exact session matching.' },
-        { DESCRIPTION: 'Calibrates numeric quality scoring so generic summaries and weak observations do not look healthy.' },
+        { DESCRIPTION: 'Integrates Claude transcript fallback into the stateless data loader with exact session matching.', _provenance: 'git' as const },
+        { DESCRIPTION: 'Calibrates numeric quality scoring so generic summaries and weak observations do not look healthy.', _provenance: 'git' as const },
       ],
       [
         { TITLE: 'Inspect scripts/loaders/data-loader.ts', NARRATIVE: 'Mapped the missing fallback seam in the loader.' },

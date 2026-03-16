@@ -9,7 +9,13 @@
 
 import { CONFIG } from '../core';
 import { coerceFactToText, coerceFactsToText } from '../utils/fact-coercion';
-import { toRelativePath, cleanDescription, isDescriptionValid } from '../utils/file-helpers';
+import {
+  toRelativePath,
+  cleanDescription,
+  isDescriptionValid,
+  getDescriptionTierRank,
+  validateDescription,
+} from '../utils/file-helpers';
 import { getPathBasename } from '../utils/path-utils';
 import {
   extractSpecNumber,
@@ -19,7 +25,9 @@ import {
 } from '../lib/anchor-generator';
 import type {
   CollectedDataBase,
+  DescriptionProvenance,
   FileChange,
+  ModificationMagnitude,
   Observation,
   ObservationDetailed,
 } from '../types/session-types';
@@ -103,7 +111,8 @@ function extractFilesFromData(
   const filesMap = new Map<string, {
     description: string;
     action?: string;
-    _provenance?: 'git' | 'spec-folder';
+    MODIFICATION_MAGNITUDE: ModificationMagnitude;
+    _provenance?: DescriptionProvenance;
     _synthetic?: boolean;
   }>();
   const sourcePathToKey = new Map<string, string>();
@@ -115,8 +124,9 @@ function extractFilesFromData(
     rawPath: string,
     description: string,
     action?: string,
-    provenance?: 'git' | 'spec-folder',
-    synthetic?: boolean
+    provenance?: DescriptionProvenance,
+    synthetic?: boolean,
+    modificationMagnitude?: ModificationMagnitude,
   ): void => {
     const normalized = toRelativePath(rawPath, CONFIG.PROJECT_ROOT);
     if (!normalized) return;
@@ -144,32 +154,43 @@ function extractFilesFromData(
 
     const existing = filesMap.get(mapKey);
     const cleaned = cleanDescription(description);
+    const cleanedTierRank = getDescriptionTierRank(validateDescription(cleaned).tier);
     const nextProvenance = provenance ?? existing?._provenance;
     const nextSynthetic = synthetic ?? existing?._synthetic;
+    const nextMagnitude = modificationMagnitude && modificationMagnitude !== 'unknown'
+      ? modificationMagnitude
+      : (existing?.MODIFICATION_MAGNITUDE ?? modificationMagnitude ?? 'unknown');
 
     if (existing) {
       // Merge: always prefer a more specific action when the existing one is generic
       const mergedAction = action || existing.action;
       const mergedProvenance = nextProvenance || existing._provenance;
       const mergedSynthetic = nextSynthetic ?? existing._synthetic;
+      const existingTierRank = getDescriptionTierRank(validateDescription(existing.description).tier);
 
-      if (isDescriptionValid(cleaned) && (!isDescriptionValid(existing.description) || cleaned.length > existing.description.length)) {
+      if (
+        cleanedTierRank > existingTierRank
+        || (cleanedTierRank === existingTierRank && cleaned.length > existing.description.length)
+      ) {
         // Better description available — use it, and merge action/provenance
         filesMap.set(mapKey, {
           description: cleaned,
           action: mergedAction,
+          MODIFICATION_MAGNITUDE: nextMagnitude,
           ...(mergedProvenance ? { _provenance: mergedProvenance } : {}),
           ...(mergedSynthetic !== undefined ? { _synthetic: mergedSynthetic } : {}),
         });
       } else {
         // Keep existing description, but still merge action and provenance if newer
         const needsUpdate = (action && action !== existing.action)
+          || nextMagnitude !== existing.MODIFICATION_MAGNITUDE
           || (mergedProvenance && mergedProvenance !== existing._provenance)
           || (mergedSynthetic !== existing._synthetic);
         if (needsUpdate) {
           filesMap.set(mapKey, {
             ...existing,
             action: mergedAction,
+            MODIFICATION_MAGNITUDE: nextMagnitude,
             ...(mergedProvenance ? { _provenance: mergedProvenance } : {}),
             ...(mergedSynthetic !== undefined ? { _synthetic: mergedSynthetic } : {}),
           });
@@ -179,6 +200,7 @@ function extractFilesFromData(
       filesMap.set(mapKey, {
         description: cleaned || 'Modified during session',
         action,
+        MODIFICATION_MAGNITUDE: nextMagnitude,
         ...(nextProvenance ? { _provenance: nextProvenance } : {}),
         ...(nextSynthetic !== undefined ? { _synthetic: nextSynthetic } : {}),
       });
@@ -192,7 +214,10 @@ function extractFilesFromData(
       const description = fileInfo.DESCRIPTION || fileInfo.description || 'Modified during session';
       const action = fileInfo.ACTION ?? fileInfo.action;
       const normalizedAction = action ? (ACTION_NORMALIZE[action.toLowerCase()] ?? action) : undefined;
-      if (filePath) addFile(filePath, description, normalizedAction, fileInfo._provenance, fileInfo._synthetic);
+      const modificationMagnitude = fileInfo.MODIFICATION_MAGNITUDE;
+      if (filePath) {
+        addFile(filePath, description, normalizedAction, fileInfo._provenance, fileInfo._synthetic, modificationMagnitude);
+      }
     }
   }
 
@@ -240,6 +265,7 @@ function extractFilesFromData(
       FILE_PATH: filePath,
       DESCRIPTION: data.description,
       ...(data.action ? { ACTION: data.action } : {}),
+      MODIFICATION_MAGNITUDE: data.MODIFICATION_MAGNITUDE,
       ...(data._provenance ? { _provenance: data._provenance } : {}),
       ...(data._synthetic !== undefined ? { _synthetic: data._synthetic } : {}),
     }));

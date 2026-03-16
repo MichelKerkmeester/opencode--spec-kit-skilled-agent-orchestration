@@ -62,8 +62,9 @@ export interface FileEntry {
   FILE_PATH: string;
   DESCRIPTION: string;
   ACTION?: string;
+  MODIFICATION_MAGNITUDE?: 'trivial' | 'small' | 'medium' | 'large' | 'unknown';
   action?: string;
-  _provenance?: 'git' | 'spec-folder';
+  _provenance?: 'git' | 'spec-folder' | 'tool';
   _synthetic?: boolean;
 }
 
@@ -307,8 +308,17 @@ function normalizeFileEntryLike(file: Record<string, unknown>): FileEntry {
   const action = typeof file.ACTION === 'string'
     ? file.ACTION
     : (typeof file.action === 'string' ? file.action : undefined);
-  const provenance = file._provenance === 'git' || file._provenance === 'spec-folder'
+  const provenance = file._provenance === 'git' || file._provenance === 'spec-folder' || file._provenance === 'tool'
     ? file._provenance
+    : undefined;
+  const modificationMagnitude = (
+    file.MODIFICATION_MAGNITUDE === 'trivial'
+    || file.MODIFICATION_MAGNITUDE === 'small'
+    || file.MODIFICATION_MAGNITUDE === 'medium'
+    || file.MODIFICATION_MAGNITUDE === 'large'
+    || file.MODIFICATION_MAGNITUDE === 'unknown'
+  )
+    ? file.MODIFICATION_MAGNITUDE
     : undefined;
   const synthetic = typeof file._synthetic === 'boolean'
     ? file._synthetic
@@ -318,6 +328,7 @@ function normalizeFileEntryLike(file: Record<string, unknown>): FileEntry {
     FILE_PATH: (file.FILE_PATH || file.path || '') as string,
     DESCRIPTION: (file.DESCRIPTION || file.description || 'Modified during session') as string,
     ...(action ? { ACTION: action } : {}),
+    ...(modificationMagnitude ? { MODIFICATION_MAGNITUDE: modificationMagnitude } : {}),
     ...(provenance ? { _provenance: provenance } : {}),
     ...(synthetic !== undefined ? { _synthetic: synthetic } : {}),
   };

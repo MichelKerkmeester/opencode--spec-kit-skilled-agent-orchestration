@@ -1280,7 +1280,7 @@ async function testExtractorsFile() {
 
     // Test 4: extractFilesFromData extracts from FILES array
     const dataWithFiles = {
-      FILES: [{ FILE_PATH: '/test/file.js', DESCRIPTION: 'Test file' }],
+      FILES: [{ FILE_PATH: 'src/test/file.js', DESCRIPTION: 'Test file' }],
       observations: []
     };
     const extractedFiles = extractFilesFromData(dataWithFiles, []);
@@ -2555,6 +2555,7 @@ async function testUtilsFileHelpers() {
   try {
     const {
       toRelativePath,
+      validateDescription,
       isDescriptionValid,
       cleanDescription
     } = require(path.join(SCRIPTS_DIR, 'utils', 'file-helpers'));
@@ -2596,6 +2597,11 @@ async function testUtilsFileHelpers() {
 
     // Test 7: isDescriptionValid accepts valid descriptions
     assertEqual(isDescriptionValid('Implemented OAuth authentication handler'), true, 'T-034i: isDescriptionValid accepts valid descriptions');
+
+    // Test 7b: validateDescription tiers catch placeholder and semantic descriptions
+    assertEqual(validateDescription('Recent commit: modify in repository history').tier, 'placeholder', 'T-034i2: validateDescription rejects generic recent-commit stub');
+    assertEqual(validateDescription('Updated code').tier, 'activity-only', 'T-034i3: validateDescription classifies low-context activity descriptions');
+    assertEqual(validateDescription('Added provenance-aware scoring to the memory quality pipeline').tier, 'semantic', 'T-034i4: validateDescription accepts semantic descriptions');
 
     // Test 8: cleanDescription removes markdown
     const dirtyDesc = '## Heading with **bold** and `code`';

@@ -9,7 +9,7 @@
 import os from 'os';
 
 // Internal modules
-import { extractTriggerPhrases } from './trigger-extractor';
+import { SemanticSignalExtractor } from './semantic-signal-extractor';
 import { cleanDescription } from '../utils/file-helpers';
 import { CONFIG } from '../core';
 
@@ -569,7 +569,12 @@ function generateImplementationSummary(messages: SemanticMessage[], observations
   const allContent: string = messages
     .map((m: SemanticMessage) => m.prompt || m.content || '')
     .join('\n\n');
-  const triggerPhrases: string[] = extractTriggerPhrases(allContent);
+  const triggerPhrases: string[] = SemanticSignalExtractor.extract({
+    text: allContent,
+    mode: 'summary',
+    stopwordProfile: 'balanced',
+    ngramDepth: 3,
+  }).phrases;
 
   return {
     task,

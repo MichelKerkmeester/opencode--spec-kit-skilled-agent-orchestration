@@ -11,6 +11,7 @@ import { execFileSync } from 'child_process';
 import path from 'path';
 
 import { extractSpecFolderContext } from './spec-folder-extractor';
+import type { ModificationMagnitude } from '../types/session-types';
 
 const GIT_TIMEOUT_MS = 5_000;
 const MAX_FILES = 50;
@@ -54,6 +55,7 @@ export interface GitContextExtraction {
     FILE_PATH: string;
     DESCRIPTION: string;
     ACTION?: string;
+    MODIFICATION_MAGNITUDE: ModificationMagnitude;
     _provenance: 'git';
   }>;
   summary: string;
@@ -167,6 +169,54 @@ function parseCommits(projectRoot: string, logOutput: string): CommitInfo[] {
     })
     .filter((commit) => Boolean(commit.hash && commit.subject));
 }
+
+interface ModificationMagnitudeInput {
+  changeScore?: number;
+  action?: ChangeAction;
+  commitTouches?: number;
+}
+
+export function deriveModificationMagnitude({
+  changeScore,
+  action,
+  commitTouches = 0,
+}: ModificationMagnitudeInput): ModificationMagnitude {
+  const hasChangeScore = typeof changeScore === 'number' && Number.isFinite(changeScore);
+  if (!hasChangeScore && commitTouches <= 0) {
+    return 'unknown';
+  }
+
+  let normalizedScore = hasChangeScore ? Math.max(0, changeScore as number) / 10 : 0;
+
+  if (action === 'add' || action === 'delete') {
+    normalizedScore = Math.max(normalizedScore, 0.25);
+  } else if (action === 'rename') {
+    normalizedScore = Math.max(normalizedScore, 0.15);
+  }
+
+  if (commitTouches >= 4) {
+    normalizedScore = Math.max(normalizedScore, 0.85);
+  } else if (commitTouches >= 3) {
+    normalizedScore = Math.max(normalizedScore, 0.75);
+  } else if (commitTouches >= 2) {
+    normalizedScore = Math.max(normalizedScore, 0.55);
+  }
+
+  if (normalizedScore < 0.1) {
+    return 'trivial';
+  }
+
+  if (normalizedScore < 0.3) {
+    return 'small';
+  }
+
+  if (normalizedScore < 0.7) {
+    return 'medium';
+  }
+
+  return 'large';
+}
+
 function detectCommitType(subject: string): string {
   const prefix = subject.match(/^([a-z]+)(?:\([^)]+\))?!?:/i)?.[1]?.toLowerCase();
   return prefix ? COMMIT_TYPE_MAP[prefix] || 'observation' : 'observation';
@@ -319,14 +369,31 @@ export async function extractGitContext(projectRoot: string, specFolderHint?: st
         }))
         .filter((commit) => commit.files.length > 0)
       : [];
+    const commitTouches = new Map<string, number>();
+    commits.forEach((commit) => {
+      commit.files.forEach((filePath) => {
+        commitTouches.set(filePath, (commitTouches.get(filePath) || 0) + 1);
+      });
+    });
 
     const FILES: GitContextExtraction['FILES'] = [];
     const seenFiles = new Set<string>();
     const addFile = (filePath: string, action: ChangeAction, description: string): void => {
       if (!filePath || seenFiles.has(filePath) || FILES.length >= MAX_FILES) return;
-      FILES.push({ FILE_PATH: filePath, DESCRIPTION: description, ACTION: action, _provenance: 'git' });
-      seenFiles.add(filePath);
       changeScores.set(filePath, (changeScores.get(filePath) || 0) + 1);
+      const modificationMagnitude = deriveModificationMagnitude({
+        changeScore: changeScores.get(filePath),
+        action,
+        commitTouches: commitTouches.get(filePath) || 0,
+      });
+      FILES.push({
+        FILE_PATH: filePath,
+        DESCRIPTION: description,
+        ACTION: action,
+        MODIFICATION_MAGNITUDE: modificationMagnitude,
+        _provenance: 'git',
+      });
+      seenFiles.add(filePath);
     };
 
     statusEntries.forEach((entry) => addFile(entry.filePath, entry.action, `Uncommitted: ${entry.action} during session`));

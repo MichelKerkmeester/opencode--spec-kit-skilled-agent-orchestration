@@ -8,12 +8,17 @@
 // Canonical type definitions shared between simulation-factory and extractors.
 // Eliminates parallel type hierarchies (TECH-DEBT P6-05).
 
+export type DescriptionProvenance = 'git' | 'spec-folder' | 'tool';
+
+export type ModificationMagnitude = 'trivial' | 'small' | 'medium' | 'large' | 'unknown';
+
 /** Captures a file change discovered in session data. */
 export interface FileChange {
   FILE_PATH: string;
   DESCRIPTION: string;
   ACTION?: string;
-  _provenance?: 'git' | 'spec-folder';
+  MODIFICATION_MAGNITUDE?: ModificationMagnitude;
+  _provenance?: DescriptionProvenance;
   _synthetic?: boolean;
 }
 
@@ -23,10 +28,11 @@ export interface CollectedFileEntry {
   FILE_NAME?: string;
   DESCRIPTION?: string;
   ACTION?: string;
+  MODIFICATION_MAGNITUDE?: ModificationMagnitude;
   path?: string;
   description?: string;
   action?: string;
-  _provenance?: 'git' | 'spec-folder';
+  _provenance?: DescriptionProvenance;
   _synthetic?: boolean;
 }
 
@@ -55,7 +61,7 @@ export interface Observation {
   files?: string[];
   timestamp?: string;
   _manualDecision?: ManualDecisionInfo;
-  _provenance?: 'git' | 'spec-folder';
+  _provenance?: DescriptionProvenance;
   _synthetic?: boolean;
 }
 

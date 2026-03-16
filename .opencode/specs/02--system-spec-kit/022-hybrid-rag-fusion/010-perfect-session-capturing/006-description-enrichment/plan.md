@@ -38,9 +38,9 @@ This plan implements a validator unification pattern: merge `isDescriptionValid(
 
 ### Definition of Done
 
-- [ ] All acceptance criteria met (REQ-001 through REQ-004)
-- [ ] Tests passing -- unified validator catches all stub patterns; magnitude populated for git entries
-- [ ] Docs updated (spec/plan in this folder)
+- [x] All acceptance criteria met (REQ-001 through REQ-004)
+- [x] Tests passing -- unified validator catches all stub patterns; magnitude populated for git entries
+- [x] Docs updated (spec/plan in this folder)
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -76,40 +76,40 @@ Validator unification -- merge two overlapping validation functions into one sha
 
 ### Phase 1: Unified Validator
 
-- [ ] Create shared `validateDescription(description: string): DescriptionTier` function
-- [ ] Implement tier classification:
+- [x] Create shared `validateDescription(description: string): DescriptionTier` function in `utils/file-helpers.ts`
+- [x] Implement tier classification:
   - `placeholder`: empty, whitespace-only, TBD, todo, pending, n/a, "Recent commit:", bare changed/modified
   - `activity-only`: describes action without semantic content (e.g., "modified file", "updated code")
   - `semantic`: contains meaningful description of what changed and why
   - `high-confidence`: semantic content with specific technical details
-- [ ] Replace `isDescriptionValid()` calls in `file-extractor.ts` with unified validator
-- [ ] Replace `hasMeaningfulDescription()` calls in `quality-scorer.ts` with unified validator
+- [x] Replace `isDescriptionValid()` calls in `file-extractor.ts` with unified validator (now imports from `file-helpers.ts`)
+- [x] Replace `hasMeaningfulDescription()` calls in `quality-scorer.ts` with unified validator
 
 ### Phase 2: Provenance Trust Weighting
 
-- [ ] Add trust multiplier lookup: `{ git: 1.0, tool: 0.8, synthetic: 0.5, unknown: 0.3 }`
-- [ ] Update quality scorer description dimension to apply `tier_score * trust_multiplier`
-- [ ] Ensure provenance is available at scoring time (already attached as `_provenance`)
+- [x] Add trust multiplier lookup: `{ git: 1.0, tool/spec-folder: 0.8, synthetic: 0.5, unknown: 0.3 }`
+- [x] Update quality scorer description dimension to apply `tier_score * trust_multiplier`
+- [x] Ensure provenance is available at scoring time (already attached as `_provenance`)
 
 ### Phase 3: Modification Magnitude
 
-- [ ] Add `MODIFICATION_MAGNITUDE` enum to `session-types.ts`: `'trivial' | 'small' | 'medium' | 'large' | 'unknown'`
-- [ ] Add derivation logic in `git-context-extractor.ts`:
-  - `trivial`: changeScore < 0.1 or only whitespace/formatting changes
-  - `small`: changeScore 0.1-0.3, single-file touch
-  - `medium`: changeScore 0.3-0.7, multiple file sections or moderate diff
-  - `large`: changeScore > 0.7, structural changes or many commit touches
+- [x] Add `MODIFICATION_MAGNITUDE` enum to `session-types.ts`: `'trivial' | 'small' | 'medium' | 'large' | 'unknown'`
+- [x] Add derivation logic in `git-context-extractor.ts`:
+  - `trivial`: normalizedScore < 0.1
+  - `small`: normalizedScore 0.1-0.3
+  - `medium`: normalizedScore 0.3-0.7
+  - `large`: normalizedScore > 0.7
   - `unknown`: non-git entries or missing changeScore data
-- [ ] Add `MODIFICATION_MAGNITUDE` field to `FileChange` type
-- [ ] Populate field during git-context extraction
+- [x] Add `MODIFICATION_MAGNITUDE` field to `FileChange` type
+- [x] Populate field during git-context extraction via `addFile()` → `deriveModificationMagnitude()`
 
 ### Phase 4: Verification
 
-- [ ] Add unit tests for unified validator with all stub patterns
-- [ ] Add unit tests for provenance trust multiplier application
-- [ ] Add unit tests for magnitude derivation from changeScores ranges
-- [ ] Verify no description passes one former gate but fails the other
-- [ ] Verify existing test baselines still pass
+- [x] Add unit tests for unified validator with all stub patterns (`description-enrichment.vitest.ts`, 5 tests)
+- [x] Add unit tests for provenance trust multiplier application
+- [x] Add unit tests for magnitude derivation from changeScores ranges
+- [x] Verify no description passes one former gate but fails the other
+- [x] Verify existing test baselines still pass
 <!-- /ANCHOR:phases -->
 
 ---
@@ -132,7 +132,7 @@ Validator unification -- merge two overlapping validation functions into one sha
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| R-04 type consolidation (004-type-consolidation) | Internal | Yellow | `FileChange` type must be canonical before adding `MODIFICATION_MAGNITUDE`; blocked until A1 completes |
+| R-04 type consolidation (004-type-consolidation) | Internal | Green | `FileChange` type was extended directly in canonical `session-types.ts`; 004 not yet complete but `MODIFICATION_MAGNITUDE` was added without conflict |
 <!-- /ANCHOR:dependencies -->
 
 ---

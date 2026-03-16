@@ -15,11 +15,7 @@ import * as path from 'path';
 
 // Internal modules
 import { CONFIG } from '../core';
-import {
-  createValidShortTerms,
-  shouldIncludeTopicWord,
-  tokenizeTopicWords,
-} from '../lib/topic-keywords';
+import { SemanticSignalExtractor } from '../lib/semantic-signal-extractor';
 import type {
   FileEntry,
   FileProgressEntry,
@@ -342,57 +338,31 @@ interface DecisionForTopics {
 // - Broader placeholder detection (checks SIMULATION MODE, [response], placeholder, <20 chars)
 // - Processes TITLE, RATIONALE, and CHOSEN from decisions (workflow.ts only uses TITLE/RATIONALE)
 function extractKeyTopics(summary: string | undefined, decisions: DecisionForTopics[] = []): string[] {
-  const topics = new Set<string>();
-
-  const stopwords = new Set([
-    'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for',
-    'of', 'with', 'by', 'from', 'as', 'is', 'was', 'are', 'were', 'been',
-    'be', 'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'could',
-    'should', 'may', 'might', 'must', 'shall', 'can', 'need', 'dare', 'ought',
-    'used', 'this', 'that', 'these', 'those', 'i', 'you', 'he', 'she', 'it',
-    'we', 'they', 'what', 'which', 'who', 'whom', 'when', 'where', 'why', 'how',
-    'all', 'each', 'every', 'both', 'few', 'more', 'most', 'other', 'some',
-    'such', 'no', 'nor', 'not', 'only', 'own', 'same', 'so', 'than', 'too',
-    'very', 'just', 'also', 'now', 'here', 'there', 'then', 'once',
-    'file', 'files', 'code', 'update', 'updated', 'add', 'added', 'remove', 'removed',
-    'change', 'changed', 'fix', 'fixed', 'new', 'session', 'using', 'used',
-    'response', 'request', 'message', 'user', 'assistant', 'processed',
-    'initiated', 'conversation', 'unknown', 'placeholder', 'simulation',
-    'simulated', 'fallback', 'default', 'undefined', 'null', 'empty',
-    'get', 'set', 'run', 'make', 'made', 'create', 'created', 'delete', 'deleted',
-    'start', 'started', 'stop', 'stopped', 'done', 'complete', 'completed'
-  ]);
-
-  const validShortTerms = createValidShortTerms();
-
   const isPlaceholderSummary: boolean = !summary ||
     summary.includes('SIMULATION MODE') ||
     summary.includes('[response]') ||
     summary.includes('placeholder') ||
     summary.length < 20;
 
-  const addTopics = (text: string): void => {
-    const words = tokenizeTopicWords(text);
-    words.forEach((word) => {
-      if (shouldIncludeTopicWord(word, stopwords, validShortTerms)) {
-        topics.add(word);
-      }
-    });
-  };
+  const weightedSegments: string[] = [];
 
   if (summary && !isPlaceholderSummary) {
-    addTopics(summary);
+    weightedSegments.push(summary);
   }
 
   if (Array.isArray(decisions)) {
     for (const dec of decisions) {
-      addTopics(`${dec.TITLE || ''} ${dec.RATIONALE || ''} ${dec.CHOSEN || ''}`);
+      const decisionText = `${dec.TITLE || ''} ${dec.RATIONALE || ''} ${dec.CHOSEN || ''}`.trim();
+      if (decisionText.length > 0) {
+        weightedSegments.push(decisionText, decisionText);
+      }
     }
   }
 
-  return Array.from(topics)
-    .sort((a, b) => b.length - a.length)
-    .slice(0, 10);
+  return SemanticSignalExtractor.extractTopicTerms(weightedSegments.join('\n\n'), {
+    stopwordProfile: 'aggressive',
+    ngramDepth: 2,
+  }).slice(0, 10);
 }
 
 /* ───────────────────────────────────────────────────────────────

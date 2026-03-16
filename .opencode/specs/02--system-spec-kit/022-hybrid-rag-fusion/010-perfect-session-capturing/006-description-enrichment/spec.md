@@ -15,7 +15,7 @@ title: "Feature Specification: Description Enrichment"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | Draft |
+| **Status** | Complete |
 | **Created** | 2026-03-16 |
 | **Branch** | `main` |
 | **Parent** | [010-perfect-session-capturing](../spec.md) |
@@ -64,6 +64,7 @@ Unify the two description validators into a single shared gate with tiered outco
 | `scripts/extractors/file-extractor.ts` | Modify | Replace `isDescriptionValid()` with unified validator; add stub pattern matching for TBD/todo/pending/n/a/bare-changed/"Recent commit:" |
 | `scripts/core/quality-scorer.ts` | Modify | Replace `hasMeaningfulDescription()` calls with unified validator; add provenance-based trust weighting to description quality dimension |
 | `scripts/extractors/git-context-extractor.ts` | Modify | Expose `MODIFICATION_MAGNITUDE` derived from existing `changeScores`, action type, and commit-touch counts |
+| `scripts/utils/file-helpers.ts` | Modify | Home of unified `validateDescription()` with tiered outcomes, `isDescriptionValid()` wrapper, and stub pattern detection |
 | `scripts/types/session-types.ts` | Modify | Add `MODIFICATION_MAGNITUDE` enum and field to `FileChange` type |
 <!-- /ANCHOR:scope -->
 

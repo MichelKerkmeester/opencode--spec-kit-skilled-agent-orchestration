@@ -85,6 +85,8 @@ export {
 
 export {
   toRelativePath,
+  getDescriptionTierRank,
+  validateDescription,
   isDescriptionValid,
   cleanDescription,
 } from './file-helpers';

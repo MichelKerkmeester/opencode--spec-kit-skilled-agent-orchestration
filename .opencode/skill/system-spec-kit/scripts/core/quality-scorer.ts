@@ -13,10 +13,18 @@ import {
   normalizeMemoryNameCandidate,
   pickBestContentName,
 } from '../utils/slug-utils';
+import {
+  getDescriptionTierRank,
+  type DescriptionTier,
+  validateDescription,
+} from '../utils/file-helpers';
 import type { MemorySufficiencyResult } from '@spec-kit/shared/parsing/memory-sufficiency';
+import type { DescriptionProvenance } from '../types/session-types';
 
 interface FileWithDescription {
   DESCRIPTION?: string;
+  _provenance?: DescriptionProvenance;
+  _synthetic?: boolean;
 }
 
 interface ObservationWithNarrative {
@@ -84,26 +92,32 @@ function clamp01(value: number): number {
   return Math.max(0, Math.min(1, value));
 }
 
-function hasMeaningfulDescription(description?: string): boolean {
-  if (!description) {
-    return false;
+const DESCRIPTION_TIER_SCORES: Record<DescriptionTier, number> = {
+  placeholder: 0,
+  'activity-only': 0.35,
+  semantic: 0.75,
+  'high-confidence': 1,
+};
+
+function getDescriptionTrustMultiplier(file: FileWithDescription): number {
+  if (file._synthetic) {
+    return 0.5;
   }
 
-  const normalized = description.trim().toLowerCase();
-  if (normalized.length < 20) {
-    return false;
+  if (file._provenance === 'git') {
+    return 1.0;
   }
 
-  if (
-    normalized.includes('description pending')
-    || normalized.includes('(description pending)')
-    || normalized === 'modified during session'
-    || normalized === 'tracked file history snapshot'
-  ) {
-    return false;
+  if (file._provenance === 'spec-folder' || file._provenance === 'tool') {
+    return 0.8;
   }
 
-  return !/^(?:created|edited|updated|modified|touched)\b.+\b(?:via|during)\b/.test(normalized);
+  return 0.3;
+}
+
+function getDescriptionQualityScore(file: FileWithDescription): number {
+  const tier = validateDescription(file.DESCRIPTION || '').tier;
+  return DESCRIPTION_TIER_SCORES[tier] * getDescriptionTrustMultiplier(file);
 }
 
 function extractFrontmatterTitle(content: string): string {
@@ -189,15 +203,15 @@ export function scoreMemoryQuality(
 
   // 3. File descriptions populated (0-20 points)
   // This rewards memory files that remain self-explanatory in future sessions.
-  const filesWithDesc = files.filter((file) => hasMeaningfulDescription(file.DESCRIPTION));
+  const filesWithDesc = files.filter((file) => getDescriptionTierRank(validateDescription(file.DESCRIPTION || '').tier) >= getDescriptionTierRank('semantic'));
   if (files.length === 0) {
     qualityFlags.add('missing_file_context');
     breakdown.fileDescriptions = 10;
     warnings.push('No file context captured — semantic density reduced');
   } else {
-    const ratio = filesWithDesc.length / files.length;
-    breakdown.fileDescriptions = Math.round(ratio * 20);
-    if (ratio < 0.5) {
+    const descriptionQualityAverage = files.reduce((sum, file) => sum + getDescriptionQualityScore(file), 0) / files.length;
+    breakdown.fileDescriptions = Math.round(descriptionQualityAverage * 20);
+    if (descriptionQualityAverage < 0.5) {
       qualityFlags.add('missing_file_context');
       warnings.push(`${files.length - filesWithDesc.length}/${files.length} files missing descriptions`);
     }
@@ -300,7 +314,7 @@ export function scoreMemoryQuality(
   const dimensions: QualityDimensionScore[] = [
     { id: 'trigger_phrases', score01: breakdown.triggerPhrases / 20, score100: breakdown.triggerPhrases, maxScore100: 20, passed: triggerPhrases.length > 0 },
     { id: 'key_topics', score01: breakdown.keyTopics / 15, score100: breakdown.keyTopics, maxScore100: 15, passed: keyTopics.length > 0 },
-    { id: 'file_descriptions', score01: breakdown.fileDescriptions / 20, score100: breakdown.fileDescriptions, maxScore100: 20, passed: files.length === 0 || filesWithDesc.length / files.length >= 0.5 },
+    { id: 'file_descriptions', score01: breakdown.fileDescriptions / 20, score100: breakdown.fileDescriptions, maxScore100: 20, passed: files.length === 0 || breakdown.fileDescriptions / 20 >= 0.5 },
     { id: 'content_length', score01: breakdown.contentLength / 15, score100: breakdown.contentLength, maxScore100: 15, passed: contentLines >= 20 },
     { id: 'html_safety', score01: breakdown.noLeakedTags / 15, score100: breakdown.noLeakedTags, maxScore100: 15, passed: realLeakedTags <= 0 },
     { id: 'observation_dedup', score01: breakdown.observationDedup / 15, score100: breakdown.observationDedup, maxScore100: 15, passed: observations.length > 0 },

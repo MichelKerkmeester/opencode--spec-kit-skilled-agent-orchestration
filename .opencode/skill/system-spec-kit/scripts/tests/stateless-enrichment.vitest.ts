@@ -335,6 +335,7 @@ describe('stateless enrichment guardrails', () => {
     expect(gitContext.FILES).toEqual(expect.arrayContaining([
       expect.objectContaining({
         FILE_PATH: '.opencode/skill/system-spec-kit/scripts/core/workflow.ts',
+        MODIFICATION_MAGNITUDE: expect.any(String),
       }),
     ]));
     expect(gitContext.observations).toEqual(expect.arrayContaining([
@@ -385,6 +386,7 @@ describe('stateless enrichment guardrails', () => {
       expect.objectContaining({
         FILE_PATH: 'scripts/core/workflow.ts',
         ACTION: 'add',
+        MODIFICATION_MAGNITUDE: expect.any(String),
       }),
     ]));
     expect(gitContext.summary).toContain('head scratch-branch');
