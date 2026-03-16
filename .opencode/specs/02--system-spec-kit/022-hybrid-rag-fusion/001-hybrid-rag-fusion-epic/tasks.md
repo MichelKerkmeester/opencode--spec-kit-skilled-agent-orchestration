@@ -64,7 +64,7 @@ contextType: "implementation"
 > *Effort note: +8-15h optional for full corpus labeling per T008b*
 
 > **Goal**: Establish that retrieval is measurable. BLOCKING — nothing proceeds without exit gate.
-> **Child folder**: `005-core-rag-sprints-0-to-9` <!-- was 006-measurement-foundation -->
+> **Child folder**: `001-sprint-0-measurement-foundation/`
 
 - [x] T000a [W-C] Record pre-Sprint-0 performance baseline — current p95 search latency, memory count, existing system behavior snapshot [1-2h] {} — Baseline
 - [x] T000b [W-A] Establish feature flag governance rules — document NFR-O01 flag budget (target <=6 active flags per gate, hard ceiling <=8), 90-day lifespan, naming convention, monthly sunset audit process, and INCONCLUSIVE state (extend measurement window by max 14 days, one extension per flag, mandatory hard-deadline decision date) [1-2h] {} — NFR-O01/O02/O03
@@ -122,7 +122,7 @@ contextType: "implementation"
 > *Effort note: includes PI-A5 12-16h and PI-A3 4-6h deferred from S0*
 
 > **Goal**: Make graph the system's differentiating signal.
-> **Child folder**: `005-core-rag-sprints-0-to-9` <!-- was 011-graph-signal-activation -->
+> **Child folder**: `002-sprint-1-graph-signal-activation/`
 
 - [x] T010 [W-B] Implement typed-weighted degree as 5th RRF channel with edge type weights, MAX_TYPED_DEGREE=15, MAX_TOTAL_DEGREE=50 behind `SPECKIT_DEGREE_BOOST` flag [12-16h] {T009} — R4
   - T010a [P] Increase co-activation boost strength from 0.1x to 0.25-0.3x [2-4h] {T003} — A7/REQ-032
@@ -143,7 +143,7 @@ contextType: "implementation"
 ## Sprint 2: Scoring Calibration + Operational Efficiency [28-43h]
 
 > **Goal**: Resolve dual scoring magnitude mismatch; enable zero-cost re-indexing.
-> **Child folder**: `005-core-rag-sprints-0-to-9` <!-- was 012-scoring-calibration -->
+> **Child folder**: `003-sprint-2-scoring-calibration/`
 
 - [x] T015 [P] [W-A] Implement embedding cache (`embedding_cache` table) for instant rebuild [8-12h] {T009} — R18
 - [x] T016 [P] [W-A] Implement cold-start boost with exponential decay (12h half-life) behind `SPECKIT_NOVELTY_BOOST` flag [3-5h] {T009} — N4
@@ -163,7 +163,7 @@ contextType: "implementation"
 ## Sprint 3: Query Intelligence + Fusion Alternatives [34-53h]
 
 > **Goal**: Add query routing and evaluate fusion alternatives.
-> **Child folder**: `005-core-rag-sprints-0-to-9` <!-- was 013-query-intelligence -->
+> **Child folder**: `004-sprint-3-query-intelligence/`
 
 - [x] T021 [P] [W-D] Implement query complexity router (3-tier: simple/moderate/complex, min 2 channels) behind `SPECKIT_COMPLEXITY_ROUTER` flag [10-16h] {T020} — R15
 - [x] T022 [P] [W-D] Implement Relative Score Fusion parallel to RRF (all 3 fusion variants) behind `SPECKIT_RSF_FUSION` flag [10-14h] {T020} — R14/N1
@@ -184,7 +184,7 @@ contextType: "implementation"
 
 > **Goal**: Close the feedback loop; aggregate chunk scores safely.
 > **Prerequisite**: R13 must have completed at least 2 full eval cycles.
-> **Child folder**: `005-core-rag-sprints-0-to-9` <!-- was 014-feedback-and-quality -->
+> **Child folder**: `005-sprint-4-feedback-and-quality/`
 > **Effort note**: Header total (73-111h) includes sub-task effort not individually listed in root (e.g., T026a, T027c, T027d, T028a) and T-IP-S4 integration testing. Sprint 4 child plan estimates 64-97h. See child tasks.md for authoritative detailed breakdown.
 
 - [ ] T025c [GATE-PRE] Create checkpoint: `memory_checkpoint_create("pre-r11-feedback")` [0h] {T025-GATE} — Safety gate
@@ -216,7 +216,7 @@ contextType: "implementation"
 ## Sprint 5: Pipeline Refactor + Spec-Kit Logic [68-98h]
 
 > **Goal**: Modernize pipeline architecture; add spec-kit retrieval optimizations.
-> **Child folder**: `005-core-rag-sprints-0-to-9` <!-- was 015-pipeline-refactor -->
+> **Child folder**: `006-sprint-5-pipeline-refactor/`
 
 **Phase A (Pipeline): R6 — 40-55h**
 - [x] T032 [W-D] Create checkpoint: `memory_checkpoint_create("pre-pipeline-refactor")` [0h] {T031} — completed in Sprint 5 child
@@ -242,7 +242,7 @@ contextType: "implementation"
 ## Sprint 6a: Practical Improvements [36-57h]
 
 > **Goal**: Deliver practical retrieval quality improvements at any graph scale.
-> **Child folder**: `005-core-rag-sprints-0-to-9` <!-- was 016-indexing-and-graph -->
+> **Child folder**: `007-sprint-6-indexing-and-graph/`
 
 - [x] T040a [GATE-PRE] Create checkpoint: `memory_checkpoint_create("pre-graph-mutations")` [0h] {T040} — Safety gate — completed in Sprint 6 child
 - [x] T041d [W-B] **MR10 mitigation: weight_history audit tracking** — add `weight_history` column or log weight changes to eval DB for N3-lite Hebbian modifications; enables rollback of weight changes independent of edge creation [2-3h] {T040} — MR10 — completed in Sprint 6 child
@@ -269,7 +269,7 @@ contextType: "implementation"
 ## Sprint 6b: Graph Sophistication [45-69h] (GATED)
 
 > **Goal**: Deepen graph with centrality/community detection and entity extraction. GATED on feasibility spike.
-> **Child folder**: `005-core-rag-sprints-0-to-9` <!-- was 016-indexing-and-graph -->
+> **Child folder**: `007-sprint-6-indexing-and-graph/`
 > **Entry gates**: Feasibility spike completed, OQ-S6-001 resolved, OQ-S6-002 resolved, REQ-S6-004 revisited
 
 - [ ] T-S6B-GATE [GATE-PRE] Sprint 6b entry gate — feasibility spike completed, OQ-S6-001/002 resolved, REQ-S6-004 density-conditioned [0h] {T047a}
@@ -294,7 +294,7 @@ contextType: "implementation"
 
 > **Goal**: Address scale-dependent features and complete evaluation infrastructure.
 > **Priority**: P1-P3 (conditional — P0/P1/P2/P3 items per child spec; all gated on scale thresholds)
-> **Child folder**: `005-core-rag-sprints-0-to-9` <!-- was 017-long-horizon -->
+> **Child folder**: `008-sprint-7-long-horizon/`
 > **Effort note**: 3 scenarios per child plan — minimal (16-22h), moderate (33-48h), full (48-68h). Root header uses conditional range.
 
 - [x] T048 [P] [W-D] Implement memory summary generation (only if >5K memories) behind `SPECKIT_MEMORY_SUMMARIES` flag [15-20h] {T047a} — R8 — completed in Sprint 7 child (SKIPPED — scale gate not met, 2411/5000)
@@ -390,7 +390,7 @@ contextType: "implementation"
   - Sprint: Cross-cutting (all sprints) | Priority: Low
   - Update: configuration guide, troubleshooting playbook, migration notes
   - Cadence: Update at each sprint gate review
-- [x] T061 [W-D] Execute DOC-01 feature-catalog decomposition — generate feature.md for every numbered feature folder in `011-feature-catalog/` using canonical sections from feature_catalog.md and optional enrichments from summary_of_new_features.md [6-10h] {} — DOC-01 (completed 2026-03-04)
+- [x] T061 [W-D] Execute DOC-01 feature-catalog decomposition — generate feature.md for every numbered feature folder in `006-feature-catalog/` using canonical sections from feature_catalog.md and optional enrichments from summary_of_new_features.md [6-10h] {} — DOC-01 (completed 2026-03-04)
   - Tooling: cli-gemini workflow with `gemini-3.1-pro-preview` + deterministic local mapping/validation pass
   - Output contract: each artifact includes title, canonical documentation, new/updated context, and source metadata
 - [x] T061a [W-D] Resolve numbering drift in feature catalog folders to preserve strict `##/###` order mapping [0.5-1h] {T061} — DOC-01 (completed 2026-03-04)

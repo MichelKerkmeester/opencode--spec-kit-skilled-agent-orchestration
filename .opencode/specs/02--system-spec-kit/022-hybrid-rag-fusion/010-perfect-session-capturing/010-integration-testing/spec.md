@@ -45,9 +45,10 @@ Add `workflow-e2e.vitest.ts` targeting the real gate chain with real write and d
 ### In Scope
 
 - Create `workflow-e2e.vitest.ts` with a temp repo factory producing realistic spec folder + JSON input fixtures
-- Three test cases: happy-path save, alignment block abort, duplicate save dedup
+- Six test cases: happy-path save, alignment block abort, duplicate save dedup, insufficiency abort, indexing failure resilience, tree-thinning merge notes
 - Post-write bookkeeping verification: `description.json` mutation, sequence increment, memory file on disk
 - Real gate chain exercised without mocks for the critical path (write + index boundary)
+- Shared `SessionData` fixture factory in `tests/fixtures/session-data-factory.ts`
 
 ### Out of Scope
 
@@ -59,9 +60,9 @@ Add `workflow-e2e.vitest.ts` targeting the real gate chain with real write and d
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `scripts/tests/workflow-e2e.vitest.ts` | Create | New E2E test with temp repo fixture factory and 3 test cases |
-| `scripts/tests/fixtures/` | Create | Minimal spec folder structure + JSON input fixtures for E2E tests |
-| `scripts/tests/test-integration.js` | Modify | Consider migration to Vitest (P2 scope, light touch only in this phase) |
+| `scripts/tests/workflow-e2e.vitest.ts` | Create | New E2E test with temp repo fixture factory and 6 test cases |
+| `scripts/tests/fixtures/session-data-factory.ts` | Create | Shared SessionData fixture factory for E2E tests |
+| `scripts/tests/test-integration.vitest.ts` | Create | Vitest migration of `test-integration.js` (REQ-006 completed) |
 | `scripts/tests/task-enrichment.vitest.ts` | Reference | Heavily-mocked test to compare against E2E coverage (research baseline) |
 | `scripts/tests/memory-render-fixture.vitest.ts` | Reference | Heavily-mocked test to compare against E2E coverage (research baseline) |
 <!-- /ANCHOR:scope -->
@@ -93,7 +94,7 @@ Add `workflow-e2e.vitest.ts` targeting the real gate chain with real write and d
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: `workflow-e2e.vitest.ts` passes in CI with `npm test` -- all 3 test cases green
+- **SC-001**: `workflow-e2e.vitest.ts` passes in CI with `npm test` -- all 6 test cases green
 - **SC-002**: Real gate chain exercised without mocks for the critical path (write + index boundary) -- no mock on file writer, quality scorer, or sufficiency evaluator in the E2E tests
 <!-- /ANCHOR:success-criteria -->
 
@@ -107,7 +108,7 @@ Add `workflow-e2e.vitest.ts` targeting the real gate chain with real write and d
 | Dependency | R-01 (quality scorer unification) | Quality scorer unified first so tests use canonical 0.0-1.0 scale | E2E tests can use score01 interface; if R-01 not landed, tests adapt to current scale |
 | Dependency | R-04 (type consolidation) | Types stable before E2E test fixtures are defined | Fixture types can be updated when R-04 lands; core test logic is type-agnostic |
 | Risk | Temp repo factory leaks files on test failure | Low | Use Vitest `afterEach` with `fs.rm(tempDir, { recursive: true, force: true })` cleanup |
-| Risk | E2E tests are slow due to real I/O | Medium | Limit to 3 focused test cases; use minimal fixture data; set reasonable timeout |
+| Risk | E2E tests are slow due to real I/O | Medium | Limit to 6 focused test cases; use minimal fixture data; set 30s timeout |
 <!-- /ANCHOR:risks -->
 
 ---
@@ -115,5 +116,5 @@ Add `workflow-e2e.vitest.ts` targeting the real gate chain with real write and d
 <!-- ANCHOR:questions -->
 ## 7. OPEN QUESTIONS
 
-- **OQ-001**: Minimal 3-case fixture (current) or extended coverage including filter pipeline + tree thinning interaction?
+- **OQ-001**: ~~Minimal 3-case fixture (current) or extended coverage?~~ Resolved — extended to 6 cases including insufficiency, indexing resilience, and tree-thinning.
 <!-- /ANCHOR:questions -->

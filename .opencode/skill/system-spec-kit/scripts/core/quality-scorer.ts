@@ -55,6 +55,7 @@ export type QualityFlag =
   | 'has_fallback_decision'
   | 'sparse_semantic_fields'
   | 'has_tool_state_mismatch'
+  | 'has_session_source_mismatch'
   | 'has_spec_relevance_mismatch'
   | 'has_contaminated_title';
 

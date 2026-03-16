@@ -1,0 +1,19 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/009-evaluation-and-measurement",
+  "description": "Feature Specification: evaluation-and-measurement",
+  "keywords": [
+    "feature",
+    "specification",
+    "evaluation-and-measurement"
+  ],
+  "lastUpdated": "2026-03-16T13:20:01.818Z",
+  "specId": "009",
+  "folderSlug": "evaluation-and-measurement",
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion",
+    "007-code-audit-per-feature-catalog"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

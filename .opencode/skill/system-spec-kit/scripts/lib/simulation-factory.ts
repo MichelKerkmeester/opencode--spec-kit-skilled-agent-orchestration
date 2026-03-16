@@ -165,6 +165,9 @@ function createSessionData(config: SessionConfig = {}): SessionData {
     ],
     HAS_FILES: true,
     FILE_COUNT: 1,
+    CAPTURED_FILE_COUNT: 1,
+    FILESYSTEM_FILE_COUNT: 1,
+    GIT_CHANGED_FILE_COUNT: 0,
     OUTCOMES: [
       { OUTCOME: '\u26A0\uFE0F SIMULATION MODE - Real conversation data not available', TYPE: 'simulation' },
     ],
@@ -236,6 +239,10 @@ function createSessionData(config: SessionConfig = {}): SessionData {
     PENDING_TASKS: [],
     RESUME_CONTEXT: [],
     CONTEXT_SUMMARY: 'Simulation session placeholder data.',
+    SOURCE_TRANSCRIPT_PATH: '',
+    SOURCE_SESSION_ID: '',
+    SOURCE_SESSION_CREATED: 0,
+    SOURCE_SESSION_UPDATED: 0,
   };
 }
 

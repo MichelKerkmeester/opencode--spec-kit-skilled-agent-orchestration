@@ -281,6 +281,14 @@ const NOISE_PATTERNS: readonly RegExp[] = [
   // Hook output noise
   /^UserPromptSubmit hook/i,
   /^Hook \w+ (success|failed|running)/i,
+  // CLI-agnostic: generic XML wrapper tags (single-line complete tags)
+  /^<[a-z_-]+>\s*<\/[a-z_-]+>$/,
+  // Copilot CLI lifecycle noise
+  /^tool\.execution_start/i,
+  /^tool\.execution_complete/i,
+  // Codex CLI reasoning block markers
+  /^reasoning$/i,
+  /^<reasoning>.*<\/reasoning>$/s,
 ] as const;
 
 // Strip wrappers but preserve value

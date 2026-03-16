@@ -414,6 +414,9 @@ export interface SessionData {
   FILES: FileChange[];
   HAS_FILES: boolean;
   FILE_COUNT: number;
+  CAPTURED_FILE_COUNT: number;
+  FILESYSTEM_FILE_COUNT: number;
+  GIT_CHANGED_FILE_COUNT: number;
   OUTCOMES: OutcomeEntry[];
   TOOL_COUNT: number;
   MESSAGE_COUNT: number;
@@ -483,4 +486,8 @@ export interface SessionData {
   PENDING_TASKS: PendingTask[];
   RESUME_CONTEXT: ContextItem[];
   CONTEXT_SUMMARY: string;
+  SOURCE_TRANSCRIPT_PATH: string;
+  SOURCE_SESSION_ID: string;
+  SOURCE_SESSION_CREATED: number;
+  SOURCE_SESSION_UPDATED: number;
 }

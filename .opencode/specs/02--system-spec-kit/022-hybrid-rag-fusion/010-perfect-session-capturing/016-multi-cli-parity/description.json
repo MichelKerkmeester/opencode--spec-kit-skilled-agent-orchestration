@@ -1,0 +1,24 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/016-multi-cli-parity",
+  "description": "Feature Specification: Multi-CLI Parity Fixes",
+  "keywords": [
+    "multi-cli",
+    "parity",
+    "tool-name-aliases",
+    "noise-patterns",
+    "provenance",
+    "copilot",
+    "codex",
+    "gemini"
+  ],
+  "lastUpdated": "2026-03-16T19:47:00.000Z",
+  "specId": "016",
+  "folderSlug": "multi-cli-parity",
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion",
+    "010-perfect-session-capturing"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

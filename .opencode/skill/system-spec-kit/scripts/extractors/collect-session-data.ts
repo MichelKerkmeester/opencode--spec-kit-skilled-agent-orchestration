@@ -652,6 +652,26 @@ function resolveSpecFolderRelative(normalizedDetected: string, candidateSpecsDir
   return path.basename(normalizedDetected);
 }
 
+function countDistinctFilePaths(
+  files: FileChange[],
+  predicate?: (file: FileChange) => boolean,
+): number {
+  const normalizedPaths = new Set<string>();
+
+  for (const file of files) {
+    if (!file?.FILE_PATH) {
+      continue;
+    }
+    if (predicate && !predicate(file)) {
+      continue;
+    }
+
+    normalizedPaths.add(file.FILE_PATH.replace(/\\/g, '/').toLowerCase());
+  }
+
+  return normalizedPaths.size;
+}
+
 async function collectSessionData(
   collectedData: CollectedDataFull | null,
   specFolderName: string | null = null
@@ -709,6 +729,31 @@ async function collectSessionData(
 
   const duration: string = calculateSessionDuration(userPrompts, now);
   const FILES: FileChange[] = extractFilesFromData(data, observations);
+  const capturedFileCount = countDistinctFilePaths(
+    FILES,
+    (file) => file._provenance !== 'git' && file._provenance !== 'spec-folder',
+  );
+  const filesystemDerivedCount = countDistinctFilePaths(
+    FILES,
+    (file) => file._provenance === 'git' || file._provenance === 'spec-folder',
+  );
+  const gitChangedFileCount = countDistinctFilePaths(
+    FILES,
+    (file) => file._provenance === 'git',
+  );
+  const filesystemFileCount = filesystemDerivedCount > 0 ? filesystemDerivedCount : capturedFileCount;
+  const sourceTranscriptPath = typeof data._sourceTranscriptPath === 'string' ? data._sourceTranscriptPath : '';
+  const sourceSessionId = typeof data._sourceSessionId === 'string'
+    ? data._sourceSessionId
+    : typeof data._sessionId === 'string'
+      ? data._sessionId
+      : '';
+  const sourceSessionCreated = typeof data._sourceSessionCreated === 'number' && Number.isFinite(data._sourceSessionCreated)
+    ? data._sourceSessionCreated
+    : 0;
+  const sourceSessionUpdated = typeof data._sourceSessionUpdated === 'number' && Number.isFinite(data._sourceSessionUpdated)
+    ? data._sourceSessionUpdated
+    : 0;
 
   const OUTCOMES: OutcomeEntry[] = observations
     .slice(0, 10)
@@ -828,7 +873,10 @@ async function collectSessionData(
     SUMMARY,
     FILES: FILES.length > 0 ? FILES : [],
     HAS_FILES: FILES.length > 0,
-    FILE_COUNT: FILES.length,
+    FILE_COUNT: filesystemFileCount,
+    CAPTURED_FILE_COUNT: capturedFileCount,
+    FILESYSTEM_FILE_COUNT: filesystemFileCount,
+    GIT_CHANGED_FILE_COUNT: gitChangedFileCount,
     OUTCOMES: OUTCOMES.length > 0 ? OUTCOMES : [{ OUTCOME: 'Session in progress', TYPE: 'status' }],
     TOOL_COUNT,
     MESSAGE_COUNT: messageCount,
@@ -858,6 +906,10 @@ async function collectSessionData(
     BLOCKERS: blockers,
     FILE_PROGRESS: fileProgress,
     HAS_FILE_PROGRESS: fileProgress.length > 0,
+    SOURCE_TRANSCRIPT_PATH: sourceTranscriptPath,
+    SOURCE_SESSION_ID: sourceSessionId,
+    SOURCE_SESSION_CREATED: sourceSessionCreated,
+    SOURCE_SESSION_UPDATED: sourceSessionUpdated,
     ...preflightPostflightData,
     ...continueSessionData
   };

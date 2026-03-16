@@ -89,20 +89,22 @@ This epic encompasses 16 main phases spanning:
 |---|-------|--------|-------|------------|
 | 001 | Hybrid RAG Fusion Epic | In Progress (this root + child spec) | 3+ | Program coordination |
 | 002 | Indexing Normalization | **Complete** | 3 | 238 tests, canonical dedup |
-| 003 | Speckit Quality & Standards | In Progress | 3 | 76 tests + 189 validation checks |
-| 004 | Constitutional Learn Refactor | **Complete** | 2 | 583 tests, full rewrite |
-| 005 | Core RAG Sprints 0-9 | In Progress (S0-S7 complete, S8-S9 partial) | 3 | 6,589+ tests, 8 sprints |
-| 006 | UX Hooks Automation | **Complete** | 2 | 1,466 test executions |
-| 007 | Combined Bug Fixes | In Progress | 3 | 7,536 passed, 11 deferred |
-| 008 | Architecture Audit | **Complete** | 3 | 50 files, boundary contract |
-| 009 | Spec Descriptions | **Complete** | 2 | 150 tests, per-folder metadata |
+| 003 | Constitutional Learn Refactor | **Complete** | 2 | 583 tests, full rewrite |
+| 004 | UX Hooks Automation | **Complete** | 2 | 1,466 test executions |
+| 005 | Architecture Audit | **Complete** | 3 | 50 files, boundary contract |
+| 006 | Feature Catalog | In Progress | 3 | 40/40 handlers traced |
+| 007 | Code Audit per Feature Catalog | **Complete** (parent) | 1 | 21 children, all audited |
+| 008 | Hydra DB-Based Features | **Complete** | 3 | 6 children, all verified |
+| 009 | Skill Alignment | Stub | - | Empty scaffold |
 | 010 | Perfect Session Capturing | In Progress | 3 | 375 tests, 67 deferred |
-| 011 | Feature Catalog | In Progress | 3 | 40/40 handlers traced |
-| 012 | Code Audit per Feature Catalog | **Complete** (parent) | 1 | 21 children, all audited |
-| 013 | Outsourced Agent Memory | **Complete** | 2 | 11 tests, alignment verified |
-| 014 | Hydra DB-Based Features | **Complete** | 3 | 6 children, all verified |
-| 015 | Skill Alignment | Stub | - | Empty scaffold |
-| 016 | Command Alignment | Stub | - | Empty scaffold |
+| 011 | Command Alignment | Stub | - | Empty scaffold |
+| 012 | Agents Alignment | Stub | - | Empty scaffold |
+| 013 | Agents MD Alignment | Stub | - | Empty scaffold |
+| 014 | Manual Testing per Playbook | Stub | - | Empty scaffold |
+| 015 | Rewrite Memory MCP README | Stub | - | Empty scaffold |
+| 016 | Update Install Guide | Stub | - | Empty scaffold |
+| 017 | Rewrite System SpecKit README | Stub | - | Empty scaffold |
+| 018 | Rewrite Repo README | Stub | - | Empty scaffold |
 | 999 | Finalization | Pending | - | 7 children, all stubs |
 <!-- /ANCHOR:scope -->
 
@@ -110,29 +112,31 @@ This epic encompasses 16 main phases spanning:
 
 ## 4. PHASE DOCUMENTATION MAP
 
-### Main Phases (001-016 + 999)
+### Main Phases (001-018 + 999)
 
 | Phase | Folder | Children | Status | Last Updated |
 |-------|--------|----------|--------|--------------|
 | 001 | `001-hybrid-rag-fusion-epic` | 0 | In Progress | 2026-03-14 |
 | 002 | `002-indexing-normalization` | 0 | Complete | 2026-03-08 |
-| 003 | `003-speckit-quality-and-standards` | 0 | In Progress | 2026-03-08 |
-| 004 | `004-constitutional-learn-refactor` | 0 | Complete | 2026-03-08 |
-| 005 | `005-core-rag-sprints-0-to-9` | 0 (sprints inline) | In Progress | 2026-03-14 |
-| 006 | `006-ux-hooks-automation` | 0 | Complete | 2026-03-08 |
-| 007 | `007-combined-bug-fixes` | 0 | In Progress | 2026-03-14 |
-| 008 | `008-architecture-audit` | 0 | Complete | 2026-03-08 |
-| 009 | `009-spec-descriptions` | 0 | Complete | 2026-03-08 |
+| 003 | `003-constitutional-learn-refactor` | 0 | Complete | 2026-03-08 |
+| 004 | `004-ux-hooks-automation` | 0 | Complete | 2026-03-08 |
+| 005 | `005-architecture-audit` | 0 | Complete | 2026-03-08 |
+| 006 | `006-feature-catalog` | 0 | In Progress | 2026-03-14 |
+| 007 | `007-code-audit-per-feature-catalog` | 21 | Complete | 2026-03-14 |
+| 008 | `008-hydra-db-based-features` | 6 | Complete | 2026-03-14 |
+| 009 | `009-skill-alignment` | 0 | Stub | 2026-03-14 |
 | 010 | `010-perfect-session-capturing` | 0 | In Progress | 2026-03-14 |
-| 011 | `011-feature-catalog` | 0 | In Progress | 2026-03-14 |
-| 012 | `012-code-audit-per-feature-catalog` | 21 | Complete | 2026-03-14 |
-| 013 | `013-outsourced-agent-memory` | 0 | Complete | 2026-03-14 |
-| 014 | `014-hydra-db-based-features` | 6 | Complete | 2026-03-14 |
-| 015 | `015-skill-alignment` | 0 | Stub | 2026-03-14 |
-| 016 | `016-command-alignment` | 0 | Stub | 2026-03-14 |
+| 011 | `011-command-alignment` | 0 | Stub | 2026-03-14 |
+| 012 | `012-agents-alignment` | 0 | Stub | 2026-03-14 |
+| 013 | `013-agents-md-alignment` | 0 | Stub | 2026-03-14 |
+| 014 | `014-manual-testing-per-playbook` | 0 | Stub | 2026-03-14 |
+| 015 | `015-rewrite-memory-mcp-readme` | 0 | Stub | 2026-03-14 |
+| 016 | `016-update-install-guide` | 0 | Stub | 2026-03-14 |
+| 017 | `017-rewrite-system-speckit-readme` | 0 | Stub | 2026-03-14 |
+| 018 | `018-rewrite-repo-readme` | 0 | Stub | 2026-03-14 |
 | 999 | `999-finalization` | 7 | Pending | 2026-03-14 |
 
-### 012 Code Audit Children (21 folders)
+### 007 Code Audit Children (21 folders)
 
 | # | Folder | Scope | Status |
 |---|--------|-------|--------|
@@ -158,7 +162,7 @@ This epic encompasses 16 main phases spanning:
 | 020 | `020-feature-flag-reference` | 7 features: flag mapping, doc/test guards | Complete |
 | 021 | `021-remediation-revalidation` | Reconciliation record | In Progress (validation failures) |
 
-### 014 Hydra Children (6 folders)
+### 008 Hydra Children (6 folders)
 
 | # | Folder | Scope | Status |
 |---|--------|-------|--------|
@@ -173,13 +177,13 @@ This epic encompasses 16 main phases spanning:
 
 | # | Folder | Status | Notes |
 |---|--------|--------|-------|
-| 017 | `017-agents-alignment` | Stub | Empty scaffold |
-| 018 | `018-agents-md-alignment` | Stub | Empty scaffold |
-| 019 | `019-manual-testing-per-playbook` | Stub | Empty scaffold |
-| 020 | `020-rewrite-memory-mcp-readme` | Stub | Empty scaffold |
-| 020 | `020-update-install-guide` | Stub | Numbering collision with above |
-| 021 | `021-rewrite-system-speckit-readme` | Stub | Empty scaffold |
-| 022 | `022-rewrite-repo-readme` | Stub | Empty scaffold |
+| 012 | `012-agents-alignment` | Stub | Empty scaffold |
+| 013 | `013-agents-md-alignment` | Stub | Empty scaffold |
+| 014 | `014-manual-testing-per-playbook` | Stub | Empty scaffold |
+| 015 | `015-rewrite-memory-mcp-readme` | Stub | Empty scaffold |
+| 016 | `016-update-install-guide` | Stub | Empty scaffold |
+| 017 | `017-rewrite-system-speckit-readme` | Stub | Empty scaffold |
+| 018 | `018-rewrite-repo-readme` | Stub | Empty scaffold |
 
 ---
 
@@ -223,7 +227,7 @@ The feature catalog (4,262 lines, 189 feature files) covers 19 categories organi
 | EP-002 | Evaluation infrastructure operational (R13 5-table schema) | **Complete** (Sprint 0) |
 | EP-003 | BM25 baseline recorded and contingency evaluated | **Complete** (Sprint 0) |
 | EP-004 | Content-hash deduplication in save pipeline | **Complete** (Sprint 0) |
-| EP-005 | Architecture boundary contract defined and enforced | **Complete** (Phase 008) |
+| EP-005 | Architecture boundary contract defined and enforced | **Complete** (Phase 005) |
 
 ### P1 - Required
 
@@ -231,22 +235,22 @@ The feature catalog (4,262 lines, 189 feature files) covers 19 categories organi
 |----|-------------|--------|
 | EP-006 | Scoring calibrated (min-max normalization, [0,1] scale) | **Complete** (Sprint 2) |
 | EP-007 | Query complexity routing operational | **Complete** (Sprint 3) |
-| EP-008 | Feature catalog comprehensive (all features documented) | **Complete** (Phase 011) |
-| EP-009 | Code audit complete for all 19 feature categories | **Complete** (Phase 012) |
-| EP-010 | Hydra database architecture roadmap delivered | **Complete** (Phase 014) |
-| EP-011 | UX hooks standardized across mutation handlers | **Complete** (Phase 006) |
-| EP-012 | Per-folder description metadata system | **Complete** (Phase 009) |
-| EP-013 | Constitutional memory management rewritten | **Complete** (Phase 004) |
+| EP-008 | Feature catalog comprehensive (all features documented) | **Complete** (Phase 006) |
+| EP-009 | Code audit complete for all 19 feature categories | **Complete** (Phase 007) |
+| EP-010 | Hydra database architecture roadmap delivered | **Complete** (Phase 008) |
+| EP-011 | UX hooks standardized across mutation handlers | **Complete** (Phase 004) |
+| EP-012 | Per-folder description metadata system | **Complete** (Phase 009, merged) |
+| EP-013 | Constitutional memory management rewritten | **Complete** (Phase 003) |
 
 ### P2 - Desired / Pending
 
 | ID | Requirement | Status |
 |----|-------------|--------|
-| EP-014 | Skill alignment to RAG architecture | Stub (015) |
-| EP-015 | Command alignment to RAG architecture | Stub (016) |
+| EP-014 | Skill alignment to RAG architecture | Stub (009) |
+| EP-015 | Command alignment to RAG architecture | Stub (011) |
 | EP-016 | Finalization: agent alignment, readme rewrites, manual testing | Pending (999) |
-| EP-017 | Sprint 4+ RAG improvements (feedback, pipeline refactor, indexing) | Pending (005 S4-S7) |
-| EP-018 | Session capture Phase 3-4 (Claude capture, score calibration) | Deferred (010) |
+| EP-017 | Sprint 4+ RAG improvements (feedback, pipeline refactor, indexing) | Pending (001 S4-S7) |
+| EP-018 | Session capture Phase 3-4 (Claude capture, score calibration) | Deferred (010, unchanged) |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -282,8 +286,8 @@ The feature catalog (4,262 lines, 189 feature files) covers 19 categories organi
 | MR8 | R4+N3+R10 three-way interaction | HIGH | Mitigated (entity quality gate, caps) |
 | MR13 | Concurrent write corruption | HIGH | Mitigated (per-spec-folder mutex, WAL mode) |
 | ER-001 | Sprint 4+ not yet approved (scope cap at S2+3) | MEDIUM | Open |
-| ER-002 | 015/016 stubs never populated | LOW | Open |
-| ER-003 | 999-finalization has numbering collision (two 020 folders) | LOW | Open |
+| ER-002 | 009/011 stubs never populated | LOW | Open |
+| ER-003 | 999-finalization numbering resolved (015 and 016 distinct) | LOW | Resolved |
 | ER-004 | 999-finalization description.json references wrong path (015 vs 999) | LOW | Open |
 
 ### Cross-Phase Dependencies
@@ -309,21 +313,21 @@ All dependencies are internal. The sprint-gate model ensures sequential progress
 ## 10. OPEN QUESTIONS
 
 1. **Sprint 4+ approval**: Sprints 0-3 constituted the approved scope. Sprints 4-7 require NEW approval based on S0-S3 metrics (evidence of measured deficiencies, updated effort estimates, updated ROI).
-2. **015/016 stubs**: Will skill and command alignment proceed, or should these be removed?
-3. **999-finalization numbering collision**: Two `020-*` folders exist; one needs renumbering.
+2. **009/011 stubs**: Will skill and command alignment proceed, or should these be removed?
+3. **999-finalization numbering collision**: Resolved — folders are now numbered 015 and 016 distinctly.
 4. **999 description.json path error**: References `015-finalization` instead of `999-finalization`.
-5. **012/021 validation failure**: Recursive spec validation reported 2 errors, 1 warning.
-6. **012/016 still in Draft**: Tooling-and-scripts audit has spec metadata showing Draft status.
+5. **007/021 validation failure**: Recursive spec validation reported 2 errors, 1 warning.
+6. **007/016 still in Draft**: Tooling-and-scripts audit has spec metadata showing Draft status.
 
 ---
 
 ## RELATED DOCUMENTS
 
 - **Child Spec (001)**: `001-hybrid-rag-fusion-epic/spec.md` (detailed requirements, signal ordering, NFRs)
-- **Core RAG Sprints**: `005-core-rag-sprints-0-to-9/spec.md` (8 sprints, ~4,400 lines)
+- **Core RAG Sprints**: `001-hybrid-rag-fusion-epic/spec.md` (8 sprints merged inline, ~4,400 lines)
 - **Feature Catalog**: `feature_catalog/feature_catalog.md` (4,262 lines, 19 categories)
-- **Code Audit Synthesis**: `012-code-audit-per-feature-catalog/synthesis.md`
-- **Hydra Roadmap**: `014-hydra-db-based-features/spec.md`
+- **Code Audit Synthesis**: `007-code-audit-per-feature-catalog/synthesis.md`
+- **Hydra Roadmap**: `008-hydra-db-based-features/spec.md`
 - **Manual Testing Playbook**: `manual_testing_playbook/`
 
 ---

@@ -405,3 +405,6 @@ Each research item (R-01 through R-13) has a corresponding implementation phase 
 | 011 | `011-session-source-validation/` | R-11 | Session-ID-first transcript resolution & V10 validator | P0 | A0.1-A0.5 |
 | 012 | `012-template-compliance/` | R-12 | Template structural fingerprint & delegation hardening | P2 | B5 |
 | 013 | `013-auto-detection-fixes/` | R-13 | Git-status signal, decision dedup, key_files fallback, blocker fix | P0 | A0.6-A0.8, B9 |
+| 014 | `014-spec-descriptions/` | R-14 | Per-folder description.json infrastructure & unique memory filenames | P1 | B4 |
+| 015 | `015-outsourced-agent-handback/` | R-15 | External CLI handback protocol, hard-fail JSON input, redact-and-scrub | P1 | B5 |
+| 016 | `016-multi-cli-parity/` | R-16 | Cross-CLI tool name aliases, noise patterns, provenance, view tool | P1 | B6 |

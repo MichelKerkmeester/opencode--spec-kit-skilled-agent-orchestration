@@ -4,6 +4,13 @@ description: "{{MEMORY_DESCRIPTION}}"
 {{TRIGGER_PHRASES_YAML}}
 importance_tier: "{{IMPORTANCE_TIER}}"
 contextType: "general"
+_sourceTranscriptPath: "{{SOURCE_TRANSCRIPT_PATH}}"
+_sourceSessionId: "{{SOURCE_SESSION_ID}}"
+_sourceSessionCreated: {{SOURCE_SESSION_CREATED}}
+_sourceSessionUpdated: {{SOURCE_SESSION_UPDATED}}
+captured_file_count: {{CAPTURED_FILE_COUNT}}
+filesystem_file_count: {{FILESYSTEM_FILE_COUNT}}
+git_changed_file_count: {{GIT_CHANGED_FILE_COUNT}}
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Template Configuration Comments (stripped during generation) -->
@@ -794,6 +801,9 @@ message_count: {{MESSAGE_COUNT}}
 decision_count: {{DECISION_COUNT}}
 tool_count: {{TOOL_COUNT}}
 file_count: {{FILE_COUNT}}
+captured_file_count: {{CAPTURED_FILE_COUNT}}
+filesystem_file_count: {{FILESYSTEM_FILE_COUNT}}
+git_changed_file_count: {{GIT_CHANGED_FILE_COUNT}}
 followup_count: {{FOLLOWUP_COUNT}}
 
 # Access Analytics

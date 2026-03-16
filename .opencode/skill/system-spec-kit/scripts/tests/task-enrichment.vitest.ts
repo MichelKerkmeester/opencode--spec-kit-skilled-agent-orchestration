@@ -123,6 +123,11 @@ vi.mock('../renderers', () => ({
     String(data.TRIGGER_PHRASES_YAML ?? 'trigger_phrases: []'),
     'importance_tier: "normal"',
     'contextType: "implementation"',
+    `_sourceTranscriptPath: "${String(data.SOURCE_TRANSCRIPT_PATH ?? '')}"`,
+    `_sourceSessionId: "${String(data.SOURCE_SESSION_ID ?? '')}"`,
+    `captured_file_count: ${String(data.CAPTURED_FILE_COUNT ?? 0)}`,
+    `filesystem_file_count: ${String(data.FILESYSTEM_FILE_COUNT ?? 0)}`,
+    `git_changed_file_count: ${String(data.GIT_CHANGED_FILE_COUNT ?? 0)}`,
     '---',
     '',
     `# ${String(data.MEMORY_TITLE ?? 'Test Memory')}`,
@@ -277,6 +282,9 @@ function createSessionData(specFolderName: string): SessionData {
     FILES: [],
     HAS_FILES: false,
     FILE_COUNT: 0,
+    CAPTURED_FILE_COUNT: 0,
+    FILESYSTEM_FILE_COUNT: 0,
+    GIT_CHANGED_FILE_COUNT: 0,
     OUTCOMES: [{ OUTCOME: 'Session completed', TYPE: 'status' }],
     TOOL_COUNT: 0,
     MESSAGE_COUNT: 1,
@@ -346,6 +354,10 @@ function createSessionData(specFolderName: string): SessionData {
     PENDING_TASKS: [],
     RESUME_CONTEXT: [],
     CONTEXT_SUMMARY: '',
+    SOURCE_TRANSCRIPT_PATH: '',
+    SOURCE_SESSION_ID: '',
+    SOURCE_SESSION_CREATED: 0,
+    SOURCE_SESSION_UPDATED: 0,
   };
 }
 
@@ -594,6 +606,9 @@ describe('memory quality lint gate', () => {
     specFolder?: string;
     toolCount?: number;
     triggerPhrases?: string[];
+    capturedFileCount?: number;
+    filesystemFileCount?: number;
+    gitChangedFileCount?: number;
     body?: string[];
   } = {}): string {
     const triggerLines = (overrides.triggerPhrases ?? ['memory audit', 'lint gate'])
@@ -604,6 +619,9 @@ describe('memory quality lint gate', () => {
       '---',
       `title: "${overrides.title ?? 'Memory Audit Naming Fix'}"`,
       `spec_folder: "${overrides.specFolder ?? '022-hybrid-rag-fusion/013-memory-search-bug-fixes'}"`,
+      `captured_file_count: ${String(overrides.capturedFileCount ?? 2)}`,
+      `filesystem_file_count: ${String(overrides.filesystemFileCount ?? 2)}`,
+      `git_changed_file_count: ${String(overrides.gitChangedFileCount ?? 1)}`,
       '---',
       '# Memory Audit Naming Fix',
       '',
@@ -738,6 +756,27 @@ describe('memory quality lint gate', () => {
     expect(result.contaminationAudit.matchesFound).toContain('title:generic stub title');
   });
 
+  it('fails V10 when filesystem truth diverges sharply from captured transcript counts', () => {
+    const result = validateMemoryQualityContent(buildMemoryContent({
+      capturedFileCount: 9,
+      filesystemFileCount: 3,
+      gitChangedFileCount: 2,
+    }));
+
+    expect(result.valid).toBe(false);
+    expect(result.failedRules).toContain('V10');
+  });
+
+  it('passes V10 when small count differences stay within the tolerance window', () => {
+    const result = validateMemoryQualityContent(buildMemoryContent({
+      capturedFileCount: 4,
+      filesystemFileCount: 3,
+      gitChangedFileCount: 2,
+    }));
+
+    expect(result.failedRules).not.toContain('V10');
+  });
+
   it('passes practical generated memory content', () => {
     const result = validateMemoryQualityContent(buildMemoryContent());
 
@@ -804,6 +843,42 @@ describe('workflow seam guardrail', () => {
 
     expect(sessionData.TITLE).toBe('hybrid rag fusion');
     expect(sessionData.QUICK_SUMMARY).toBe('Direct save naming fix for hybrid RAG fusion collector path');
+  });
+
+  it('splits captured, filesystem, and git file counts while treating filesystem truth as FILE_COUNT', async () => {
+    const sessionData = await collectSessionData({
+      SPEC_FOLDER: '010-perfect-session-capturing',
+      userPrompts: [{ prompt: 'Validate session source counts', timestamp: '2026-03-16T08:00:00Z' }],
+      observations: [],
+      FILES: [
+        {
+          FILE_PATH: 'scripts/extractors/claude-code-capture.ts',
+          DESCRIPTION: 'Captured from transcript tool evidence.',
+          _provenance: 'tool',
+        },
+        {
+          FILE_PATH: 'scripts/core/workflow.ts',
+          DESCRIPTION: 'Recovered from git truth.',
+          _provenance: 'git',
+        },
+        {
+          FILE_PATH: 'scripts/memory/validate-memory-quality.ts',
+          DESCRIPTION: 'Declared in spec scope.',
+          _provenance: 'spec-folder',
+        },
+      ],
+      _sourceTranscriptPath: '/tmp/.claude/projects/spec-kit/session-123.jsonl',
+      _sourceSessionId: 'session-123',
+      _sourceSessionCreated: 1_763_308_800_000,
+      _sourceSessionUpdated: 1_763_309_100_000,
+    }, '010-perfect-session-capturing');
+
+    expect(sessionData.CAPTURED_FILE_COUNT).toBe(1);
+    expect(sessionData.FILESYSTEM_FILE_COUNT).toBe(2);
+    expect(sessionData.GIT_CHANGED_FILE_COUNT).toBe(1);
+    expect(sessionData.FILE_COUNT).toBe(2);
+    expect(sessionData.SOURCE_TRANSCRIPT_PATH).toContain('session-123.jsonl');
+    expect(sessionData.SOURCE_SESSION_ID).toBe('session-123');
   });
 
   it('uses quick summary for file-backed root saves before falling back to the folder slug', async () => {
@@ -895,6 +970,71 @@ describe('workflow seam guardrail', () => {
         'content-filter',
         'post-render',
       ]);
+    } finally {
+      fs.rmSync(tempRoot, { recursive: true, force: true });
+    }
+  });
+
+  it('persists source provenance fields and excludes raw path noise from trigger extraction', async () => {
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-workflow-'));
+    const specFolderPath = path.join(tempRoot, '011-session-source-validation');
+    const contextDir = path.join(tempRoot, 'memory');
+    fs.mkdirSync(specFolderPath, { recursive: true });
+    fs.mkdirSync(contextDir, { recursive: true });
+    fs.writeFileSync(
+      path.join(specFolderPath, 'spec.md'),
+      ['---', 'title: "Spec: Session Source Validation"', '---', '# Spec'].join('\n'),
+      'utf-8'
+    );
+
+    workflowHarness.specFolderPath = specFolderPath;
+    workflowHarness.contextDir = contextDir;
+
+    const { runWorkflow } = await import('../core/workflow');
+
+    try {
+      const result = await runWorkflow({
+        dataFile: '/tmp/context.json',
+        collectedData: {
+          _source: 'file',
+          userPrompts: [{ prompt: 'Validate Claude session source provenance', timestamp: '2026-03-16T12:00:00Z' }],
+        },
+        collectSessionDataFn: async (_collectedData, specFolderName) => ({
+          ...createSessionData(specFolderName || '011-session-source-validation'),
+          SUMMARY: 'Bound Claude transcript selection to expected session id and history timestamps.',
+          FILES: [
+            {
+              FILE_PATH: 'scripts/extractors/claude-code-capture.ts',
+              DESCRIPTION: 'Bound Claude transcript selection to expected session id and history timestamps.',
+              _provenance: 'tool',
+            },
+            {
+              FILE_PATH: 'src/zorbiumsessionpath.ts',
+              DESCRIPTION: 'Merged tiny files under synthnoisedesc aggregator.',
+              _synthetic: true,
+              _provenance: 'spec-folder',
+            },
+          ],
+          HAS_FILES: true,
+          FILE_COUNT: 1,
+          CAPTURED_FILE_COUNT: 1,
+          FILESYSTEM_FILE_COUNT: 1,
+          GIT_CHANGED_FILE_COUNT: 0,
+          SOURCE_TRANSCRIPT_PATH: '/tmp/.claude/projects/spec-kit/session-abc.jsonl',
+          SOURCE_SESSION_ID: 'session-abc',
+          SOURCE_SESSION_CREATED: 1_763_328_000_000,
+          SOURCE_SESSION_UPDATED: 1_763_328_300_000,
+        }),
+        silent: true,
+      });
+
+      const rendered = workflowHarness.writtenFiles[0].files[result.contextFilename];
+      expect(rendered).toContain('_sourceTranscriptPath: "/tmp/.claude/projects/spec-kit/session-abc.jsonl"');
+      expect(rendered).toContain('_sourceSessionId: "session-abc"');
+      expect(rendered).toContain('captured_file_count: 1');
+      expect(rendered).toContain('filesystem_file_count: 1');
+      expect(rendered).not.toContain('zorbiumsessionpath');
+      expect(rendered).not.toContain('synthnoisedesc');
     } finally {
       fs.rmSync(tempRoot, { recursive: true, force: true });
     }

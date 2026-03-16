@@ -74,6 +74,15 @@ const PHASE_PRIORITY: readonly ConversationPhaseLabel[] = [
 const RESEARCH_TOOLS = new Set(['read', 'grep', 'glob', 'webfetch', 'websearch']);
 const IMPLEMENTATION_TOOLS = new Set(['edit', 'write', 'bash']);
 
+/** Map alternative CLI tool names to canonical names for cross-CLI parity. */
+const TOOL_NAME_ALIASES: Record<string, string> = {
+  view: 'read',       // Copilot CLI
+  shell: 'bash',      // alternative CLI names
+  execute: 'bash',
+  search: 'grep',
+  find: 'glob',
+};
+
 const PHASE_KEYWORDS: Record<Exclude<ConversationPhaseLabel, 'Discussion'>, readonly string[]> = {
   Research: ['research', 'explore', 'investigate', 'understand', 'inspect', 'analyze', 'analyse', 'review'],
   Planning: ['plan', 'approach', 'design', 'option', 'tradeoff', 'decision', 'decide', 'strategy', 'proposal'],
@@ -223,7 +232,13 @@ function buildExchangeSignals(exchange: PhaseClassifierExchangeInput): ExchangeS
     addWeight(semanticVector, token, 1);
   }
 
-  for (const toolName of exchange.toolNames) {
+  // Normalize tool names through alias map for cross-CLI parity
+  const normalizedToolNames = exchange.toolNames.map((name) => {
+    const lower = name.toLowerCase();
+    return TOOL_NAME_ALIASES[lower] ?? lower;
+  });
+
+  for (const toolName of normalizedToolNames) {
     addWeight(vector, toolName, 2);
   }
 
@@ -236,7 +251,7 @@ function buildExchangeSignals(exchange: PhaseClassifierExchangeInput): ExchangeS
     semanticVector,
     dominantTerms: rankedKeys(semanticVector).slice(0, 4),
     combinedText: combinedText.toLowerCase(),
-    toolNames: exchange.toolNames.map((toolName) => toolName.toLowerCase()),
+    toolNames: normalizedToolNames,
     observationTypes: exchange.observationTypes.map((observationType) => observationType.toLowerCase()),
   };
 }

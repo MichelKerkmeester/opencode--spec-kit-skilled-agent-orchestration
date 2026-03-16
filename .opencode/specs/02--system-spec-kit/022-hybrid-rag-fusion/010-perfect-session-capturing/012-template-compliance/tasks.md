@@ -1,5 +1,10 @@
 ---
-title: "Tasks: Template Compliance [template:level_1/tasks.md]"
+title: "Tasks: Template Compliance"
+description: "Task Format: T### [P?] Description (file path)"
+trigger_phrases:
+  - "template compliance"
+importance_tier: "high"
+contextType: "general"
 ---
 # Tasks: Template Compliance
 
@@ -26,10 +31,9 @@ title: "Tasks: Template Compliance [template:level_1/tasks.md]"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [ ] T001 Read existing template files under `templates/core/` and `templates/extended/` to inventory fingerprint targets
-- [ ] T002 Review current `check-template-headers.sh` WARN-level behavior and identify lines to upgrade (`scripts/validators/check-template-headers.sh`)
-- [ ] T003 Review current `check-anchors.sh` to identify extension point for `--fingerprint` flag (`scripts/validators/check-anchors.sh`)
-- [ ] T004 Confirm delegation prompt builder file location and interface for REQ-003 (`scripts/lib/delegation-prompt-builder.ts`)
+- [x] T001 Review parent `010` docs and prior child phases for repo-aligned context (`.opencode/specs/.../010-perfect-session-capturing/`)
+- [x] T002 Locate the actual runtime prompt surfaces that replace the stale draft references (`.opencode/agent/`, `.claude/agents/`, `.gemini/agents/`, `.opencode/command/spec_kit/assets/`)
+- [x] T003 Confirm no repo-local or home-directory Codex speckit runtime file exists to patch (`/Users/michelkerkmeester/.codex`)
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -37,36 +41,13 @@ title: "Tasks: Template Compliance [template:level_1/tasks.md]"
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-### Fingerprint Generation (REQ-001)
-
-- [ ] T005 Create `scripts/validators/generate-fingerprint.sh` that extracts ordered header sequence and anchor sequence from a template file (`scripts/validators/generate-fingerprint.sh`)
-- [ ] T006 Define fingerprint JSON format with `headers: string[]` and `anchors: string[]` arrays preserving order (`scripts/validators/generate-fingerprint.sh`)
-- [ ] T007 [P] Generate `.fingerprint` sidecar files for all templates under `templates/core/` (`templates/core/*.fingerprint`)
-- [ ] T008 [P] Generate `.fingerprint` sidecar files for all templates under `templates/extended/` (`templates/extended/*.fingerprint`)
-
-### Anchor Validator Extension (REQ-002)
-
-- [ ] T009 Add `--fingerprint` flag to `check-anchors.sh` (`scripts/validators/check-anchors.sh`)
-- [ ] T010 Implement `SPECKIT_TEMPLATE_SOURCE` reading from target file to locate the template fingerprint (`scripts/validators/check-anchors.sh`)
-- [ ] T011 Implement anchor sequence comparison: exit non-zero on mismatch, report missing/extra/reordered anchors (`scripts/validators/check-anchors.sh`)
-
-### Header Validator Upgrade (REQ-001, REQ-002)
-
-- [ ] T012 Upgrade `check-template-headers.sh` from WARN to ERROR for missing required headers (`scripts/validators/check-template-headers.sh`)
-- [ ] T013 Add header-order validation against fingerprint in `check-template-headers.sh` (`scripts/validators/check-template-headers.sh`)
-- [ ] T014 Keep WARN for non-critical deviations (extra custom headers appended after standard sections) (`scripts/validators/check-template-headers.sh`)
-
-### Post-Agent Validation Gate (REQ-004)
-
-- [ ] T015 Add `--strict` flag to `validate.sh` enabling fingerprint comparison after standard validation (`scripts/validators/validate.sh`)
-- [ ] T016 Wire `--strict` into post-agent workflow so agent-created spec docs are validated before indexing (`scripts/validators/validate.sh`)
-- [ ] T017 Ensure `--strict` returns exit code 2 (error) on structural deviation (`scripts/validators/validate.sh`)
-
-### Delegation Prompt Inlining (REQ-003)
-
-- [ ] T018 Update delegation prompt builder to read full template content and embed inline (`scripts/lib/delegation-prompt-builder.ts`)
-- [ ] T019 Remove path-only template references from delegation prompts for external agents (`scripts/lib/delegation-prompt-builder.ts`)
-- [ ] T020 Verify inlined templates are complete and untruncated in generated prompts (`scripts/lib/delegation-prompt-builder.ts`)
+- [x] T004 Create the shared live template contract helper at `.opencode/skill/system-spec-kit/scripts/utils/template-structure.js`
+- [x] T005 Update `check-template-headers.sh` for live required-header order, checklist H1, and `CHK-NNN` enforcement
+- [x] T006 [P] Update `check-anchors.sh` for live required-anchor comparison and custom-anchor warnings
+- [x] T007 Update `validate.sh` so `TEMPLATE_HEADERS` structural mismatches are errors in normal validation
+- [x] T008 [P] Update the shared/OpenCode runtime speckit agent docs under `.agents/agents/` and `.opencode/agent/`
+- [x] T009 [P] Update the Claude and Gemini runtime speckit agent docs
+- [x] T010 Update `/spec_kit` plan/implement/complete auto+confirm workflow assets with inline scaffolds and strict post-write validation
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -74,13 +55,11 @@ title: "Tasks: Template Compliance [template:level_1/tasks.md]"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [ ] T021 Test fingerprint generation: run `generate-fingerprint.sh` on each template, verify output JSON correctness
-- [ ] T022 Test anchor fingerprint comparison: run `check-anchors.sh --fingerprint` on compliant and non-compliant fixture files
-- [ ] T023 Test header validator: confirm ERROR on missing required headers, WARN on extra custom headers
-- [ ] T024 Test `validate.sh --strict` end-to-end on compliant and non-compliant fixture spec docs
-- [ ] T025 Test delegation prompt builder: verify external agent dispatch includes full template markdown inline
-- [ ] T026 Verify zero false negatives: run `validate.sh --strict` against all existing compliant spec docs (SC-001)
-- [ ] T027 Verify structural deviations produce ERROR-level output before indexing (SC-002)
+- [x] T011 Add compliant and mutation fixtures for pass/warn/fail template-compliance paths under `scripts/test-fixtures/053-060-*`
+- [x] T012 Add Vitest coverage for template contract resolution and optional-section handling in `scripts/tests/template-structure.vitest.ts`
+- [x] T013 Extend workflow prompt assertions to include `.agents`, OpenCode x2, Claude, and Gemini runtime agent docs in `scripts/tests/test-phase-command-workflows.js`
+- [x] T014 Update targeted shell validation categories to use the new compliant/mutation fixture lane in the `scripts/tests/test-validation*` runners
+- [x] T015 Validate the compliant fixture and targeted shell/Vitest commands, then align this phase’s docs and summary with the shipped implementation
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -88,9 +67,9 @@ title: "Tasks: Template Compliance [template:level_1/tasks.md]"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [ ] All tasks marked `[x]`
-- [ ] No `[B]` blocked tasks remaining
-- [ ] Manual verification passed
+- [x] All tasks marked `[x]`
+- [x] No `[B]` blocked tasks remaining
+- [x] Manual verification passed
 <!-- /ANCHOR:completion -->
 
 ---
@@ -98,6 +77,6 @@ title: "Tasks: Template Compliance [template:level_1/tasks.md]"
 <!-- ANCHOR:cross-refs -->
 ## Cross-References
 
-- **Specification**: See `spec.md`
-- **Plan**: See `plan.md`
+- **Specification**: See the specification document in this phase folder
+- **Plan**: See the implementation plan document in this phase folder
 <!-- /ANCHOR:cross-refs -->

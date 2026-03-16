@@ -119,6 +119,30 @@ available_templates:
     handover: .opencode/skill/system-spec-kit/templates/handover.md
     debug_delegation: .opencode/skill/system-spec-kit/templates/debug-delegation.md
 
+template_compliance:
+  strict_validation_command: ".opencode/skill/system-spec-kit/scripts/spec/validate.sh [SPEC_FOLDER] --strict"
+  prompt_contract:
+    rule: "When a workflow step writes spec docs, embed the matching inline scaffold below in the authoring prompt and preserve the required ANCHOR/H2 order from the canonical template."
+  inline_scaffolds:
+    spec_md: |
+      # Feature Specification: [NAME]
+      <!-- ANCHOR:metadata --> ## 1. METADATA
+      <!-- ANCHOR:problem --> ## 2. PROBLEM & PURPOSE
+      <!-- ANCHOR:scope --> ## 3. SCOPE
+      <!-- ANCHOR:requirements --> ## 4. REQUIREMENTS
+      <!-- ANCHOR:success-criteria --> ## 5. SUCCESS CRITERIA
+      <!-- ANCHOR:risks --> ## 6. RISKS & DEPENDENCIES
+      <!-- ANCHOR:questions --> ## 7. OPEN QUESTIONS
+    plan_md: |
+      # Implementation Plan: [NAME]
+      <!-- ANCHOR:summary --> ## 1. SUMMARY
+      <!-- ANCHOR:quality-gates --> ## 2. QUALITY GATES
+      <!-- ANCHOR:architecture --> ## 3. ARCHITECTURE
+      <!-- ANCHOR:phases --> ## 4. IMPLEMENTATION PHASES
+      <!-- ANCHOR:testing --> ## 5. TESTING STRATEGY
+      <!-- ANCHOR:dependencies --> ## 6. DEPENDENCIES
+      <!-- ANCHOR:rollback --> ## 7. ROLLBACK PLAN
+
 # ─────────────────────────────────────────────────────────────────
 # PARALLEL DISPATCH CONFIGURATION
 # ─────────────────────────────────────────────────────────────────
@@ -299,6 +323,10 @@ workflow:
     activities: [Run create.sh (scripts/spec/create.sh), "Estimate complexity and select doc level (L1:<100 LOC, L2:100-499, L3:>=500)", Load and fill spec.md, Generate functional requirements, Define success criteria]
     outputs: [spec.md]
     template: .opencode/skill/system-spec-kit/templates/level_2/spec.md
+    template_prompt_contract:
+      canonical_template: .opencode/skill/system-spec-kit/templates/level_2/spec.md
+      inline_scaffold_key: spec_md
+      writing_rule: "Embed template_compliance.inline_scaffolds.spec_md in the prompt before writing spec.md and preserve the required anchors/headers in order."
     confidence_checkpoint:
       evaluate_at: "After drafting spec.md"
       scoring_factors:
@@ -313,6 +341,9 @@ workflow:
           format: '"Spec confidence low ([NN%]). Need clarity: A) [ambiguity 1] B) [ambiguity 2] C) [research spike suggestion]"'
           wait_for: "User response before finalizing spec.md"
       citation_requirement: "[SOURCE: file.md:lines] for code | [CITATION: URL] for external | [CITATION: NONE] for general knowledge"
+    post_write_validation:
+      command: ".opencode/skill/system-spec-kit/scripts/spec/validate.sh [SPEC_FOLDER] --strict"
+      on_fail: "STOP and repair spec.md template drift before proceeding"
     validation: spec_complete
 
   step_4_clarification:
@@ -361,6 +392,10 @@ workflow:
     activities: [Run check-prerequisites.sh --json --paths-only, Load plan.md, Fill Technical Context, Fill Constitution Check, "Phase 0: Generate research.md", "Phase 1: Define component structure/interfaces", Generate Testing Strategy, Generate Success Metrics, Import Risk Matrix from spec, Generate Dependencies Tables, Generate Phase 2-4 outlines]
     outputs: [plan.md, research.md]
     template: .opencode/skill/system-spec-kit/templates/level_2/plan.md
+    template_prompt_contract:
+      canonical_template: .opencode/skill/system-spec-kit/templates/level_2/plan.md
+      inline_scaffold_key: plan_md
+      writing_rule: "Embed template_compliance.inline_scaffolds.plan_md in the prompt before writing plan.md and keep custom sections after the required template structure."
     confidence_checkpoint:
       evaluate_at: "After drafting plan.md"
       scoring_factors:
@@ -376,6 +411,9 @@ workflow:
           format: '"Planning confidence low ([NN%]). A) Research spike: [question] B) Simplify scope C) Clarify requirements: [question]"'
           wait_for: "User decision"
       escalation: { trigger: "2 failed attempts OR 10 minutes elapsed", action: "Present options with current findings" }
+    post_write_validation:
+      command: ".opencode/skill/system-spec-kit/scripts/spec/validate.sh [SPEC_FOLDER] --strict"
+      on_fail: "STOP and repair plan.md template drift before proceeding"
     validation: approach_defined
 
   step_6_save_context:

@@ -13,7 +13,7 @@ import type {
   QualityScoreResult,
 } from '../core/quality-scorer';
 
-type QualityRuleId = 'V1' | 'V2' | 'V3' | 'V4' | 'V5' | 'V6' | 'V7' | 'V8' | 'V9';
+type QualityRuleId = 'V1' | 'V2' | 'V3' | 'V4' | 'V5' | 'V6' | 'V7' | 'V8' | 'V9' | 'V10';
 
 interface ValidationSignal {
   ruleId: QualityRuleId;
@@ -31,7 +31,7 @@ interface QualityInputs {
   insufficientContext?: boolean;
 }
 
-const QUALITY_RULE_IDS: QualityRuleId[] = ['V1', 'V2', 'V3', 'V4', 'V5', 'V6', 'V7', 'V8', 'V9'];
+const QUALITY_RULE_IDS: QualityRuleId[] = ['V1', 'V2', 'V3', 'V4', 'V5', 'V6', 'V7', 'V8', 'V9', 'V10'];
 
 const PENALTY_PER_FAILED_RULE = 0.25;
 
@@ -113,6 +113,9 @@ function scoreMemoryQuality(inputs: QualityInputs): QualityScoreResult {
     }
     if (failed.ruleId === 'V9') {
       qualityFlags.add('has_contaminated_title');
+    }
+    if (failed.ruleId === 'V10') {
+      qualityFlags.add('has_session_source_mismatch');
     }
   }
 

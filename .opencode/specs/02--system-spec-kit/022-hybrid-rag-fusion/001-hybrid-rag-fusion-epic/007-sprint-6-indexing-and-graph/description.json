@@ -1,0 +1,11 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/007-sprint-6-indexing-and-graph",
+  "description": "Feature Specification: Sprint 6 — Indexing and Graph",
+  "keywords": ["sprint", "6", "indexing", "graph", "persistence"],
+  "lastUpdated": "2026-03-16T21:00:00.000Z",
+  "specId": "007",
+  "folderSlug": "sprint-6-indexing-and-graph",
+  "parentChain": ["02--system-spec-kit", "022-hybrid-rag-fusion", "001-hybrid-rag-fusion-epic"],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

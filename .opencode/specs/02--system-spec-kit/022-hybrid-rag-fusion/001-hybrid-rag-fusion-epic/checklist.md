@@ -755,10 +755,10 @@ Updated by campaign Wave 6 (2026-03-08). Statuses reflect multi-agent verificati
 | Folder | Status | P0 Complete | P1 Complete | Notes |
 |--------|--------|-------------|-------------|-------|
 | 002-indexing-normalization | complete | Yes | Yes | 6 P1 deferred with formal notes |
-| 004-constitutional-learn-refactor | complete | Yes | Yes | - |
-| 005-core-rag-sprints-0-to-9 | in-progress | Sprint 0 complete; Sprint 9 ~80% | Sprint 0 complete; Sprint 9 ~60% | S1-7 not started; Sprint 9 merged from former 006-extra-features |
-| 006-ux-hooks-automation | near-complete | Yes | 7/10 | 3 items need evidence |
-| 008-architecture-audit | complete | Yes | Yes | Path drift + exceptions reconciled |
+| 003-constitutional-learn-refactor | complete | Yes | Yes | - |
+| *(merged into 001)* Sprint children 001–010 | in-progress | Sprint 0 complete; Sprint 9 ~80% | Sprint 0 complete; Sprint 9 ~60% | Sprint children now live directly under 001-hybrid-rag-fusion-epic/ (merged from former 005-core-rag-sprints-0-to-9 on 2026-03-16) |
+| 004-ux-hooks-automation | near-complete | Yes | 7/10 | 3 items need evidence |
+| 005-architecture-audit | complete | Yes | Yes | Path drift + exceptions reconciled |
 | 009-spec-descriptions | in-progress | 8/10 | 12/19 | Phase 3-4 confirmed, gap items remain |
 | 012-command-alignment | complete | Yes | Yes | CHK-052 P2 deferred |
 

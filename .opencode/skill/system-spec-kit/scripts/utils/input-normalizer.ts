@@ -160,6 +160,10 @@ export interface TransformedCapture {
   _sessionId?: string;
   _capturedAt?: string;
   _toolCallCount?: number;
+  _sourceTranscriptPath?: string;
+  _sourceSessionId?: string;
+  _sourceSessionCreated?: number;
+  _sourceSessionUpdated?: number;
 }
 
 // ───────────────────────────────────────────────────────────────
@@ -593,6 +597,7 @@ function buildToolObservationTitle(tool: CaptureToolCall): string {
     : '';
 
   switch (toolName.toLowerCase()) {
+    case 'view':  // Copilot CLI equivalent of 'read'
     case 'read':
       return shortPath ? `Read ${shortPath}` : 'Read file';
     case 'edit':
@@ -970,7 +975,8 @@ function transformOpencodeCapture(
         seenPaths.add(filePath);
         FILES.push({
           FILE_PATH: filePath,
-          DESCRIPTION: tool.title || `${tool.tool === 'write' ? 'Created' : 'Edited'} via ${tool.tool} tool`
+          DESCRIPTION: tool.title || `${tool.tool === 'write' ? 'Created' : 'Edited'} via ${tool.tool} tool`,
+          _provenance: 'tool',
         });
       }
     }
@@ -985,6 +991,22 @@ function transformOpencodeCapture(
     _sessionId: normalizedCapture.sessionId,
     _capturedAt: normalizedCapture.capturedAt,
     _toolCallCount: filteredToolCalls.length,
+    _sourceTranscriptPath: typeof metadata?.file_summary === 'object' && metadata?.file_summary !== null
+      ? (metadata.file_summary as Record<string, unknown>).transcriptPath as string | undefined
+      : undefined,
+    _sourceSessionId: typeof metadata?._sourceSessionId === 'string'
+      ? metadata._sourceSessionId as string
+      : normalizedCapture.sessionId,
+    _sourceSessionCreated: typeof metadata?._sourceSessionCreated === 'number'
+      ? metadata._sourceSessionCreated as number
+      : typeof metadata?.session_created === 'number'
+        ? metadata.session_created as number
+        : undefined,
+    _sourceSessionUpdated: typeof metadata?._sourceSessionUpdated === 'number'
+      ? metadata._sourceSessionUpdated as number
+      : typeof metadata?.session_updated === 'number'
+        ? metadata.session_updated as number
+        : undefined,
   };
 }
 

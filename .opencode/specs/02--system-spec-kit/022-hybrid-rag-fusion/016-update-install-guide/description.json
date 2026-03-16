@@ -1,0 +1,17 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/016-update-install-guide",
+  "description": "Specification: 016-update-install-guide",
+  "keywords": [
+    "specification",
+    "016-update-install-guide"
+  ],
+  "lastUpdated": "2026-03-15T11:50:37.310Z",
+  "specId": "016",
+  "folderSlug": "update-install-guide",
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

@@ -1,0 +1,17 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/015-rewrite-memory-mcp-readme",
+  "description": "Specification: 015-rewrite-memory-mcp-readme",
+  "keywords": [
+    "specification",
+    "015-rewrite-memory-mcp-readme"
+  ],
+  "lastUpdated": "2026-03-15T11:50:36.425Z",
+  "specId": "015",
+  "folderSlug": "rewrite-memory-mcp-readme",
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

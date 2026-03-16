@@ -17,6 +17,9 @@ set -euo pipefail
 run_check() {
     local folder="$1"
     local level="$2"
+    local rule_dir
+    rule_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    local helper_script="$rule_dir/../utils/template-structure.js"
 
     RULE_NAME="ANCHORS_VALID"
     RULE_STATUS="pass"
@@ -58,8 +61,14 @@ run_check() {
 # ───────────────────────────────────────────────────────────────
 
     local -a errors=()
+    local -a warnings=()
     local -a missing_anchors=()
     local file_count=0
+
+    # Create temp files once before the loop; cleaned up at function end.
+    local tmp_opens tmp_closes
+    tmp_opens=$(mktemp)
+    tmp_closes=$(mktemp)
 
     # T007: Check that major spec docs have at least 1 ANCHOR tag
     local -a major_docs=("spec.md" "plan.md" "tasks.md" "checklist.md" "decision-record.md")
@@ -89,9 +98,6 @@ run_check() {
             display_name="memory/$filename"
         fi
 
-        local tmp_opens="" tmp_closes=""
-        tmp_opens=$(mktemp)
-        tmp_closes=$(mktemp)
         # Detect malformed opening anchor syntax.
         while IFS=: read -r line_num line_text; do
             [[ -z "$line_num" ]] && continue
@@ -136,51 +142,52 @@ run_check() {
             fi
         done
 
-        rm -f "$tmp_opens" "$tmp_closes"
     done
 
+    rm -f "$tmp_opens" "$tmp_closes"
+
 # ───────────────────────────────────────────────────────────────
-# 4. REQUIRED ANCHOR ID VALIDATION
+# 4. REQUIRED ANCHOR ORDER VALIDATION
 # ───────────────────────────────────────────────────────────────
 
-    # Verify that spec documents contain the required anchor IDs for their file type.
-    # This goes beyond pair matching — it checks that the correct anchors are present.
     local -a missing_required=()
+    local -a out_of_order_required=()
 
-    check_required_anchors() {
+    compare_required_anchors() {
         local file="$1"
         local display_name="$2"
-        shift 2
-        local -a required_ids=("$@")
 
         if [[ ! -f "$file" ]]; then
             return
         fi
 
-        for req_id in "${required_ids[@]}"; do
-            if ! grep -q "<!-- ANCHOR:${req_id} -->" "$file" 2>/dev/null; then
-                missing_required+=("$display_name: Missing required anchor '$req_id'")
-            fi
-        done
+        local compare_output
+        compare_output=$(node "$helper_script" compare "$level" "$(basename "$file")" "$file" anchors 2>/dev/null || true)
+        if ! grep -q $'^supported\ttrue$' <<< "$compare_output"; then
+            return
+        fi
+
+        while IFS=$'\t' read -r kind value; do
+            case "$kind" in
+                missing_anchor)
+                    missing_required+=("$display_name: Missing required anchor '$value'")
+                    ;;
+                out_of_order_anchor)
+                    out_of_order_required+=("$display_name: Required anchor out of order '$value'")
+                    ;;
+                extra_anchor)
+                    warnings+=("$display_name: Extra custom anchor '$value' does not exist in the active template")
+                    ;;
+            esac
+        done <<< "$compare_output"
     }
 
-    # spec.md required anchors
-    check_required_anchors "$folder/spec.md" "spec.md" \
-        metadata problem scope requirements success-criteria risks questions
-
-    # plan.md required anchors
-    check_required_anchors "$folder/plan.md" "plan.md" \
-        summary quality-gates architecture phases testing dependencies rollback
-
-    # tasks.md required anchors
-    check_required_anchors "$folder/tasks.md" "tasks.md" \
-        notation phase-1 phase-2 phase-3 completion cross-refs
-
-    # checklist.md required anchors (only if file exists)
-    if [[ -f "$folder/checklist.md" ]]; then
-        check_required_anchors "$folder/checklist.md" "checklist.md" \
-            protocol pre-impl code-quality testing security docs file-org summary
-    fi
+    compare_required_anchors "$folder/spec.md" "spec.md"
+    compare_required_anchors "$folder/plan.md" "plan.md"
+    compare_required_anchors "$folder/tasks.md" "tasks.md"
+    compare_required_anchors "$folder/checklist.md" "checklist.md"
+    compare_required_anchors "$folder/decision-record.md" "decision-record.md"
+    compare_required_anchors "$folder/implementation-summary.md" "implementation-summary.md"
 
 # ───────────────────────────────────────────────────────────────
 # 5. RESULTS
@@ -217,13 +224,30 @@ run_check() {
         has_errors=true
     fi
 
+    if [[ ${#out_of_order_required[@]} -gt 0 ]]; then
+        if [[ "$has_errors" == true ]]; then
+            RULE_MESSAGE="$RULE_MESSAGE; ${#out_of_order_required[@]} required anchor(s) out of order"
+        else
+            RULE_STATUS="fail"
+            RULE_MESSAGE="${#out_of_order_required[@]} required anchor(s) out of order"
+        fi
+        RULE_DETAILS+=("${out_of_order_required[@]}")
+        has_errors=true
+    fi
+
     if [[ "$has_errors" == false ]]; then
-        RULE_STATUS="pass"
-        RULE_MESSAGE="All anchor pairs valid in $file_count file(s)"
+        if [[ ${#warnings[@]} -gt 0 ]]; then
+            RULE_STATUS="warn"
+            RULE_MESSAGE="${#warnings[@]} non-blocking anchor deviation(s) in $file_count file(s)"
+            RULE_DETAILS+=("${warnings[@]}")
+        else
+            RULE_STATUS="pass"
+            RULE_MESSAGE="All anchor pairs valid in $file_count file(s)"
+        fi
     else
         RULE_REMEDIATION="1. Add ANCHOR tags to major spec docs (spec.md, plan.md, tasks.md, checklist.md, decision-record.md)
 2. Ensure each <!-- ANCHOR:id --> has matching <!-- /ANCHOR:id -->
-3. Use anchor-generator.ts to auto-wrap sections with ANCHOR tags"
+3. Restore the active template's required anchor order before custom anchors"
     fi
 }
 

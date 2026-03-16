@@ -12,7 +12,7 @@ import path from 'path';
 import { structuredLog } from '../utils/logger';
 import type { ContaminationAuditRecord } from '../lib/content-filter';
 
-type QualityRuleId = 'V1' | 'V2' | 'V3' | 'V4' | 'V5' | 'V6' | 'V7' | 'V8' | 'V9';
+type QualityRuleId = 'V1' | 'V2' | 'V3' | 'V4' | 'V5' | 'V6' | 'V7' | 'V8' | 'V9' | 'V10';
 
 interface RuleResult {
   ruleId: QualityRuleId;
@@ -193,6 +193,39 @@ function parseToolCount(content: string): number {
   return 0;
 }
 
+function parseYamlIntegerFromContent(content: string, key: string): number | null {
+  const raw = extractYamlValueFromContent(content, key);
+  if (!raw) {
+    return null;
+  }
+
+  const parsed = Number.parseInt(raw, 10);
+  return Number.isFinite(parsed) ? parsed : null;
+}
+
+function hasSignificantFileCountDivergence(
+  filesystemFileCount: number | null,
+  capturedFileCount: number | null,
+): boolean {
+  if (filesystemFileCount === null || capturedFileCount === null) {
+    return false;
+  }
+
+  const maxCount = Math.max(filesystemFileCount, capturedFileCount);
+  const minCount = Math.min(filesystemFileCount, capturedFileCount);
+  if (maxCount <= 2) {
+    return false;
+  }
+
+  if (minCount === 0) {
+    return maxCount >= 4;
+  }
+
+  const ratio = maxCount / minCount;
+  const absoluteDifference = maxCount - minCount;
+  return ratio >= 2 && absoluteDifference >= 3;
+}
+
 function countDistinctSpecIds(content: string): Map<string, number> {
   const matches = content.match(SPEC_ID_REGEX) ?? [];
   const counts = new Map<string, number>();
@@ -340,6 +373,17 @@ function validateMemoryQualityContent(content: string): ValidationResult {
     message: titlePatternMatch ? `contaminated title: ${titlePatternMatch.label}` : 'ok',
   });
 
+  const capturedFileCount = parseYamlIntegerFromContent(content, 'captured_file_count');
+  const filesystemFileCount = parseYamlIntegerFromContent(content, 'filesystem_file_count');
+  const divergentSessionSource = hasSignificantFileCountDivergence(filesystemFileCount, capturedFileCount);
+  ruleResults.push({
+    ruleId: 'V10',
+    passed: !divergentSessionSource,
+    message: divergentSessionSource
+      ? `session source mismatch: filesystem_file_count=${filesystemFileCount}, captured_file_count=${capturedFileCount}`
+      : 'ok',
+  });
+
   const failedRules = ruleResults.filter((rule) => !rule.passed).map((rule) => rule.ruleId);
   const contaminationAudit: ContaminationAuditRecord = {
     stage: 'post-render',
@@ -362,6 +406,8 @@ function validateMemoryQualityContent(content: string): ValidationResult {
       `current_spec:${currentSpecId ?? 'unknown'}`,
       `trigger_phrases:${triggerPhrases.length}`,
       `key_topics:${keyTopics.length}`,
+      `captured_file_count:${capturedFileCount ?? 'unknown'}`,
+      `filesystem_file_count:${filesystemFileCount ?? 'unknown'}`,
     ],
   };
   structuredLog('info', 'contamination_audit', contaminationAudit);

@@ -29,7 +29,6 @@ const CLAUDE_HOME = path.join(
 );
 const CLAUDE_PROJECTS = path.join(CLAUDE_HOME, 'projects');
 const CLAUDE_HISTORY = path.join(CLAUDE_HOME, 'history.jsonl');
-const MAX_HISTORY_CANDIDATES = 5;
 const MAX_EXCHANGES_DEFAULT = 20;
 
 type ClaudeHistoryEntry = {
@@ -56,6 +55,21 @@ type ClaudeTranscriptEvent = {
 type PendingPrompt = {
   prompt: string;
   timestamp: string;
+};
+
+export interface ClaudeSessionHints {
+  expectedSessionId?: string | null;
+  sessionStartTs?: number | null;
+  invocationTs?: number | null;
+}
+
+type TranscriptCandidate = {
+  transcriptPath: string;
+  sessionId: string;
+  transcriptLines: unknown[];
+  sessionCreated: number;
+  sessionUpdated: number;
+  historyTimestamp: number;
 };
 
 function sanitizeProjectRoot(projectRoot: string): string {
@@ -91,53 +105,241 @@ async function readJsonl(filePath: string): Promise<unknown[]> {
   }
 }
 
-async function getRecentSessionCandidates(projectRoot: string): Promise<string[]> {
+async function readHistoryEntries(projectRoot: string): Promise<ClaudeHistoryEntry[]> {
   if (!fsSync.existsSync(CLAUDE_HISTORY)) {
     return [];
   }
 
   try {
     const content = await fs.readFile(CLAUDE_HISTORY, 'utf-8');
-    const seen = new Set<string>();
-    const candidates: string[] = [];
-    const lines = content.split('\n');
-
-    for (let i = lines.length - 1; i >= 0; i--) {
-      const line = lines[i].trim();
-      if (!line) {
-        continue;
-      }
-
-      let parsed: ClaudeHistoryEntry;
-      try {
-        parsed = JSON.parse(line) as ClaudeHistoryEntry;
-      } catch {
-        continue;
-      }
-
-      if (!isSameWorkspacePath(projectRoot, parsed.project) || typeof parsed.sessionId !== 'string') {
-        continue;
-      }
-
-      if (seen.has(parsed.sessionId)) {
-        continue;
-      }
-
-      seen.add(parsed.sessionId);
-      candidates.push(parsed.sessionId);
-
-      if (candidates.length >= MAX_HISTORY_CANDIDATES) {
-        break;
-      }
-    }
-
-    return candidates;
+    return content
+      .split('\n')
+      .map((line) => line.trim())
+      .filter(Boolean)
+      .map((line) => {
+        try {
+          return JSON.parse(line) as ClaudeHistoryEntry;
+        } catch {
+          return null;
+        }
+      })
+      .filter((entry): entry is ClaudeHistoryEntry => (
+        entry !== null && isSameWorkspacePath(projectRoot, entry.project)
+      ));
   } catch {
     return [];
   }
 }
 
-async function resolveTranscriptPath(projectRoot: string): Promise<string | null> {
+function collectActiveTaskSessionIds(tasksRoot: string): string[] {
+  if (!fsSync.existsSync(tasksRoot)) {
+    return [];
+  }
+
+  const sessionIds = new Set<string>();
+  const queue: string[] = [tasksRoot];
+
+  while (queue.length > 0) {
+    const currentDir = queue.pop();
+    if (!currentDir) {
+      continue;
+    }
+
+    let entries: fsSync.Dirent[];
+    try {
+      entries = fsSync.readdirSync(currentDir, { withFileTypes: true });
+    } catch {
+      continue;
+    }
+
+    for (const entry of entries) {
+      const fullPath = path.join(currentDir, entry.name);
+      if (entry.isDirectory()) {
+        queue.push(fullPath);
+        continue;
+      }
+
+      if (!entry.isFile() || entry.name !== '.lock') {
+        continue;
+      }
+
+      const candidateSessionId = path.basename(path.dirname(fullPath));
+      if (candidateSessionId && candidateSessionId !== 'tasks') {
+        sessionIds.add(candidateSessionId);
+      }
+    }
+  }
+
+  return [...sessionIds];
+}
+
+function collectTranscriptEventBounds(transcriptLines: unknown[], transcriptPath: string): {
+  sessionCreated: number;
+  sessionUpdated: number;
+  sessionId: string;
+} {
+  let sessionCreated = 0;
+  let sessionUpdated = 0;
+  let discoveredSessionId = path.basename(transcriptPath, '.jsonl');
+
+  for (const line of transcriptLines) {
+    const event = line as ClaudeTranscriptEvent;
+    if (typeof event.sessionId === 'string' && event.sessionId.trim().length > 0) {
+      discoveredSessionId = event.sessionId.trim();
+    }
+
+    const timestamp = Math.max(
+      transcriptTimestamp(event.timestamp),
+      transcriptTimestamp(event.snapshot?.timestamp),
+    );
+    if (timestamp <= 0) {
+      continue;
+    }
+
+    if (sessionCreated === 0 || timestamp < sessionCreated) {
+      sessionCreated = timestamp;
+    }
+    if (timestamp > sessionUpdated) {
+      sessionUpdated = timestamp;
+    }
+  }
+
+  return {
+    sessionCreated,
+    sessionUpdated,
+    sessionId: discoveredSessionId,
+  };
+}
+
+function candidateMatchesTimeWindow(candidate: TranscriptCandidate, sessionHints?: ClaudeSessionHints): boolean {
+  if (!sessionHints) {
+    return true;
+  }
+
+  const sessionUpdated = candidate.sessionUpdated || candidate.sessionCreated;
+  if (sessionUpdated <= 0) {
+    return false;
+  }
+
+  const lowerBound = typeof sessionHints.sessionStartTs === 'number' && Number.isFinite(sessionHints.sessionStartTs)
+    ? sessionHints.sessionStartTs - (5 * 60 * 1000)
+    : typeof sessionHints.invocationTs === 'number' && Number.isFinite(sessionHints.invocationTs)
+      ? sessionHints.invocationTs - (12 * 60 * 60 * 1000)
+      : null;
+  const upperBound = typeof sessionHints.invocationTs === 'number' && Number.isFinite(sessionHints.invocationTs)
+    ? sessionHints.invocationTs + (10 * 60 * 1000)
+    : null;
+
+  if (lowerBound !== null && sessionUpdated < lowerBound) {
+    return false;
+  }
+
+  if (upperBound !== null && sessionUpdated > upperBound) {
+    return false;
+  }
+
+  return true;
+}
+
+async function buildTranscriptCandidates(
+  projectDirs: string[],
+  historyEntries: ClaudeHistoryEntry[],
+): Promise<TranscriptCandidate[]> {
+  const historyTimestamps = new Map<string, number>();
+  for (const entry of historyEntries) {
+    if (typeof entry.sessionId !== 'string') {
+      continue;
+    }
+
+    const timestamp = typeof entry.timestamp === 'number' && Number.isFinite(entry.timestamp)
+      ? entry.timestamp
+      : 0;
+    const existing = historyTimestamps.get(entry.sessionId) ?? 0;
+    if (timestamp > existing) {
+      historyTimestamps.set(entry.sessionId, timestamp);
+    }
+  }
+
+  const transcriptPaths = (await Promise.all(
+    projectDirs.map(async (projectDir) =>
+      (await fs.readdir(projectDir))
+        .filter((entry) => entry.endsWith('.jsonl'))
+        .map((entry) => path.join(projectDir, entry))
+    )
+  )).flat();
+
+  const candidates: TranscriptCandidate[] = [];
+  for (const transcriptPath of transcriptPaths) {
+    const transcriptLines = await readJsonl(transcriptPath);
+    if (transcriptLines.length === 0) {
+      continue;
+    }
+
+    const bounds = collectTranscriptEventBounds(transcriptLines, transcriptPath);
+    candidates.push({
+      transcriptPath,
+      transcriptLines,
+      sessionId: bounds.sessionId,
+      sessionCreated: bounds.sessionCreated,
+      sessionUpdated: bounds.sessionUpdated,
+      historyTimestamp: historyTimestamps.get(bounds.sessionId) ?? 0,
+    });
+  }
+
+  return candidates;
+}
+
+function pickBestCandidate(
+  candidates: TranscriptCandidate[],
+  sessionHints?: ClaudeSessionHints,
+): TranscriptCandidate | null {
+  if (candidates.length === 0) {
+    return null;
+  }
+
+  const sortedByHistory = [...candidates].sort((a, b) => (
+    b.historyTimestamp - a.historyTimestamp
+    || b.sessionUpdated - a.sessionUpdated
+    || a.transcriptPath.localeCompare(b.transcriptPath)
+  ));
+  const sortedByFreshness = [...candidates].sort((a, b) => (
+    b.sessionUpdated - a.sessionUpdated
+    || b.historyTimestamp - a.historyTimestamp
+    || a.transcriptPath.localeCompare(b.transcriptPath)
+  ));
+
+  const exactSessionMatches = typeof sessionHints?.expectedSessionId === 'string' && sessionHints.expectedSessionId.trim().length > 0
+    ? sortedByFreshness.filter((candidate) => candidate.sessionId === sessionHints.expectedSessionId)
+    : [];
+  const activeTaskMatches = collectActiveTaskSessionIds(path.join(CLAUDE_HOME, 'tasks'))
+    .map((sessionId) => sortedByFreshness.find((candidate) => candidate.sessionId === sessionId) || null)
+    .filter((candidate): candidate is TranscriptCandidate => candidate !== null);
+
+  const rankedGroups: TranscriptCandidate[][] = [
+    exactSessionMatches,
+    activeTaskMatches,
+    sortedByHistory.filter((candidate) => candidate.historyTimestamp > 0),
+    sortedByFreshness,
+  ];
+  const seen = new Set<string>();
+
+  for (const group of rankedGroups) {
+    for (const candidate of group) {
+      if (seen.has(candidate.transcriptPath)) {
+        continue;
+      }
+      seen.add(candidate.transcriptPath);
+
+      if (candidateMatchesTimeWindow(candidate, sessionHints)) {
+        return candidate;
+      }
+    }
+  }
+
+  return null;
+}
+
+async function resolveTranscript(projectRoot: string, sessionHints?: ClaudeSessionHints): Promise<TranscriptCandidate | null> {
   const projectDirs = Array.from(new Set(
     getWorkspacePathVariants(projectRoot)
       .map((workspacePath) => path.join(CLAUDE_PROJECTS, sanitizeProjectRoot(workspacePath)))
@@ -148,44 +350,14 @@ async function resolveTranscriptPath(projectRoot: string): Promise<string | null
     return null;
   }
 
-  const sessionCandidates = await getRecentSessionCandidates(projectRoot);
-  const matchingCandidates = projectDirs.flatMap((projectDir) =>
-    sessionCandidates
-      .map((sessionId) => path.join(projectDir, `${sessionId}.jsonl`))
-      .filter((candidatePath) => fsSync.existsSync(candidatePath))
-  );
+  const historyEntries = await readHistoryEntries(projectRoot);
+  const candidatePool = await buildTranscriptCandidates(projectDirs, historyEntries);
 
-  if (matchingCandidates.length > 0) {
-    const stats = await Promise.all(
-      matchingCandidates.map(async (candidatePath) => ({
-        candidatePath,
-        mtimeMs: (await fs.stat(candidatePath)).mtimeMs,
-      })),
-    );
-    stats.sort((a, b) => b.mtimeMs - a.mtimeMs);
-    return stats[0]?.candidatePath || null;
-  }
-
-  const allCandidates = (await Promise.all(
-    projectDirs.map(async (projectDir) =>
-      (await fs.readdir(projectDir))
-        .filter((entry) => entry.endsWith('.jsonl'))
-        .map((entry) => path.join(projectDir, entry))
-    )
-  )).flat();
-
-  if (allCandidates.length === 0) {
+  if (candidatePool.length === 0) {
     return null;
   }
 
-  const stats = await Promise.all(
-    allCandidates.map(async (candidatePath) => ({
-      candidatePath,
-      mtimeMs: (await fs.stat(candidatePath)).mtimeMs,
-    })),
-  );
-  stats.sort((a, b) => b.mtimeMs - a.mtimeMs);
-  return stats[0]?.candidatePath || null;
+  return pickBestCandidate(candidatePool, sessionHints);
 }
 
 function extractTextContent(content: unknown): string {
@@ -298,13 +470,14 @@ function buildSessionTitle(exchanges: CaptureExchange[], sessionId: string): str
 export async function captureClaudeConversation(
   maxExchanges: number = MAX_EXCHANGES_DEFAULT,
   projectRoot: string,
+  sessionHints?: ClaudeSessionHints,
 ): Promise<OpencodeCapture | null> {
-  const transcriptPath = await resolveTranscriptPath(projectRoot);
-  if (!transcriptPath) {
+  const transcript = await resolveTranscript(projectRoot, sessionHints);
+  if (!transcript) {
     return null;
   }
 
-  const transcriptLines = await readJsonl(transcriptPath);
+  const { transcriptPath, transcriptLines, sessionCreated, sessionUpdated, sessionId: resolvedSessionId } = transcript;
   if (transcriptLines.length === 0) {
     return null;
   }
@@ -314,7 +487,7 @@ export async function captureClaudeConversation(
   const toolCalls: CaptureToolCall[] = [];
   const toolCallIndexById = new Map<string, number>();
   const snapshotPaths = new Set<string>();
-  let discoveredSessionId = path.basename(transcriptPath, '.jsonl');
+  let discoveredSessionId = resolvedSessionId || path.basename(transcriptPath, '.jsonl');
 
   for (const line of transcriptLines) {
     const event = line as ClaudeTranscriptEvent;
@@ -468,12 +641,16 @@ export async function captureClaudeConversation(
         total_messages: sortedExchanges.length,
         total_responses: sortedExchanges.filter((exchange) => (exchange.assistantResponse || '').trim().length > 0).length,
         total_tool_calls: toolCalls.length,
-      session_created: transcriptTimestamp(String(sortedExchanges[0]?.timestamp || '')),
-      session_updated: transcriptTimestamp(String(sortedExchanges.at(-1)?.timestamp || '')),
-      file_summary: {
-        transcriptPath,
+        session_created: sessionCreated || transcriptTimestamp(String(sortedExchanges[0]?.timestamp || '')),
+        session_updated: sessionUpdated || transcriptTimestamp(String(sortedExchanges.at(-1)?.timestamp || '')),
+        file_summary: {
+          transcriptPath,
+        },
+        _sourceTranscriptPath: transcriptPath,
+        _sourceSessionId: discoveredSessionId,
+        _sourceSessionCreated: sessionCreated || transcriptTimestamp(String(sortedExchanges[0]?.timestamp || '')),
+        _sourceSessionUpdated: sessionUpdated || transcriptTimestamp(String(sortedExchanges.at(-1)?.timestamp || '')),
       },
-    },
     sessionId: discoveredSessionId,
     sessionTitle,
     capturedAt: new Date().toISOString(),

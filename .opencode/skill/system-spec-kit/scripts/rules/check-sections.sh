@@ -11,7 +11,7 @@ set -euo pipefail
 # Description: Checks for required markdown sections based on documentation level (warning only).
 #   Spec.md: Problem Statement, Requirements, Scope
 #   Plan.md: Technical Context, Architecture, Implementation
-#   Checklist.md (L2+): P0, P1
+#   Checklist.md (L2+): Verification Protocol, Code Quality
 #   Decision-record.md (L3): Context, Decision, Consequences
 
 # ───────────────────────────────────────────────────────────────
@@ -41,7 +41,7 @@ run_check() {
         "plan.md:Technical Context,Architecture,Implementation"
     )
     
-    [[ "$numeric_level" -ge 2 ]] && file_sections+=("checklist.md:P0,P1")
+    [[ "$numeric_level" -ge 2 ]] && file_sections+=("checklist.md:Verification Protocol,Code Quality")
     [[ "$numeric_level" -ge 3 ]] && file_sections+=("decision-record.md:Context,Decision,Consequences")
     
     for entry in "${file_sections[@]-}"; do

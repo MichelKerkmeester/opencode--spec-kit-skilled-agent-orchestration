@@ -1,0 +1,25 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/002-mutation",
+  "description": "Feature Specification: 002-Mutation Code Audit",
+  "keywords": [
+    "feature",
+    "specification",
+    "002-mutation",
+    "code",
+    "audit"
+  ],
+  "lastUpdated": "2026-03-16T13:20:01.779Z",
+  "specId": "002",
+  "folderSlug": "mutation",
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion",
+    "007-code-audit-per-feature-catalog"
+  ],
+  "memorySequence": 3,
+  "memoryNameHistory": [
+    "10-03-26_16-52__review-spec-folder-context.md",
+    "10-03-26_17-13__review-spec-folder-context.md",
+    "10-03-26_18-59__review-spec-folder-context.md"
+  ]
+}

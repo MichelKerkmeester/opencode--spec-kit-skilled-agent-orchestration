@@ -120,10 +120,62 @@ function testAssetPhaseFolderNotes() {
   }
 }
 
+function testTemplateCompliancePromptContracts() {
+  const planImplementCompleteAssets = [
+    'spec_kit_plan_auto.yaml',
+    'spec_kit_plan_confirm.yaml',
+    'spec_kit_implement_auto.yaml',
+    'spec_kit_implement_confirm.yaml',
+    'spec_kit_complete_auto.yaml',
+    'spec_kit_complete_confirm.yaml',
+  ];
+
+  for (const yaml of planImplementCompleteAssets) {
+    const filePath = path.join(ASSETS_ROOT, yaml);
+    assertTrue(exists(filePath), `${yaml} exists for template compliance checks`);
+
+    const text = readFile(filePath);
+    assertTrue(
+      text.includes('template_compliance:') && text.includes('inline_scaffolds:'),
+      `${yaml} embeds inline template scaffold guidance`
+    );
+    assertTrue(
+      text.includes('validate.sh [SPEC_FOLDER] --strict'),
+      `${yaml} requires strict validation after spec-doc writes`
+    );
+    assertTrue(
+      text.includes('template_prompt_contract:') || text.includes('summary_document:'),
+      `${yaml} ties authoring steps back to the inline scaffold contract`
+    );
+  }
+
+  const agentDocs = [
+    path.join(REPO_ROOT, '.agents', 'agents', 'speckit.md'),
+    path.join(REPO_ROOT, '.opencode', 'agent', 'speckit.md'),
+    path.join(REPO_ROOT, '.opencode', 'agent', 'chatgpt', 'speckit.md'),
+    path.join(REPO_ROOT, '.claude', 'agents', 'speckit.md'),
+    path.join(REPO_ROOT, '.gemini', 'agents', 'speckit.md'),
+  ];
+
+  for (const agentDoc of agentDocs) {
+    assertTrue(exists(agentDoc), `${path.relative(REPO_ROOT, agentDoc)} exists`);
+    const text = readFile(agentDoc);
+    assertTrue(
+      text.includes('Inline Scaffold Contract'),
+      `${path.relative(REPO_ROOT, agentDoc)} documents inline scaffold usage`
+    );
+    assertTrue(
+      text.includes('validate.sh [SPEC_FOLDER] --strict'),
+      `${path.relative(REPO_ROOT, agentDoc)} requires strict post-write validation`
+    );
+  }
+}
+
 function main() {
   testPhaseCommandContracts();
   testPhaseFolderContracts();
   testAssetPhaseFolderNotes();
+  testTemplateCompliancePromptContracts();
 
   console.log(`\nResult: passed=${passed} failed=${failed}`);
   process.exit(failed > 0 ? 1 : 0);

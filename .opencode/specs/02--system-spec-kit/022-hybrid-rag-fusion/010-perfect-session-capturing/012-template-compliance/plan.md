@@ -1,5 +1,10 @@
 ---
 title: "Implementation Plan: Template Compliance"
+description: "Live template contract derivation, validator hardening, runtime prompt updates, and targeted coverage."
+trigger_phrases:
+  - "template compliance"
+importance_tier: "high"
+contextType: "general"
 ---
 # Implementation Plan: Template Compliance
 
@@ -15,14 +20,13 @@ title: "Implementation Plan: Template Compliance"
 
 | Aspect | Value |
 |--------|-------|
-| **Language/Stack** | Shell (Bash), TypeScript |
-| **Framework** | system-spec-kit validator pipeline |
-| **Storage** | `.fingerprint` sidecar files alongside templates |
-| **Testing** | Shell script assertions, manual validation runs |
+| **Language/Stack** | Bash, CommonJS, Vitest, Markdown/YAML agent assets |
+| **Framework** | system-spec-kit validator and command runtime |
+| **Storage** | Live template files under `templates/level_*` |
+| **Testing** | Shell validation runs, Node assertion script, Vitest |
 
 ### Overview
-
-This plan implements a fingerprint validation pattern: generate structural fingerprints (header sequence + anchor sequence) from each template file, add fingerprint comparison to the existing anchor validator, upgrade template-header checks from WARN to ERROR for critical deviations, and wire a `--strict` post-agent gate into `validate.sh`. The delegation prompt builder will also be updated to inline template content rather than referencing paths, ensuring external agents without filesystem access generate from the actual template structure.
+The implementation replaces the draft sidecar-fingerprint idea with one runtime helper that resolves the active template contract directly from the existing level templates. Validator rules consume that contract for header and anchor enforcement, while runtime speckit agents and workflow assets now carry inline scaffold guidance and strict post-write validation so spec docs are checked immediately after authoring.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -31,17 +35,16 @@ This plan implements a fingerprint validation pattern: generate structural finge
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-
-- [x] Problem statement clear and scope documented
-- [x] Success criteria measurable
-- [x] Dependencies identified (none -- builds on existing R-12 work)
+- [x] Parent `010` docs and phases `001` through `009` reviewed as context
+- [x] Actual runtime surfaces identified (`.opencode`, `.claude`, `.gemini`; no separate Codex speckit file present)
+- [x] Draft-phase mismatches identified (`.fingerprint` sidecars, stale prompt-builder reference)
 
 ### Definition of Done
-
-- [ ] All acceptance criteria met (REQ-001 through REQ-004)
-- [ ] Fingerprint files generated for all templates under `templates/`
-- [ ] `validate.sh --strict` catches structural deviations in test fixtures
-- [ ] Docs updated (spec/plan in this folder)
+- [x] Shared live template contract helper shipped
+- [x] Header and anchor validators enforce live structural requirements
+- [x] Runtime speckit prompts include inline scaffold guidance and strict post-write validation
+- [x] Targeted fixture, shell, and Vitest coverage added
+- [x] `012-template-compliance` docs updated to reflect the shipped design
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -50,23 +53,20 @@ This plan implements a fingerprint validation pattern: generate structural finge
 ## 3. ARCHITECTURE
 
 ### Pattern
-
-Fingerprint validation -- generate reference fingerprints from templates, compare generated output against reference at validation time.
+Single-source template contract derivation with shared validator and prompt enforcement.
 
 ### Key Components
-
-- **Fingerprint generator**: Shell script that extracts ordered header sequence (`## N. TITLE`) and ordered anchor pairs (`ANCHOR:id`) from a template file and writes a `.fingerprint` sidecar
-- **`check-anchors.sh --fingerprint`**: Extended anchor validator that loads the template fingerprint (via `SPECKIT_TEMPLATE_SOURCE` comment) and compares the generated file's anchor sequence against it
-- **`check-template-headers.sh`**: Existing header validator upgraded from WARN to ERROR for missing required headers and wrong header order
-- **`validate.sh --strict`**: New flag that adds fingerprint comparison to the standard validation pipeline as a post-agent gate
-- **Delegation prompt builder**: Updated to embed full template markdown inline when dispatching to external agents
+- **`template-structure.js`**: Resolves template path by level/basename, parses required/optional headers, derives ordered required anchors, and compares docs against the live contract
+- **`check-template-headers.sh`**: Consumes the shared contract, fails missing/out-of-order required headers, preserves warning-only behavior for extra custom headers, and enforces checklist H1 / `CHK-NNN` format
+- **`check-anchors.sh`**: Validates anchor balance plus ordered required anchor presence/order against the same live contract
+- **Runtime speckit agents and YAML assets**: Carry inline scaffold snippets and require `validate.sh [SPEC_FOLDER] --strict` after spec-doc writes
+- **Targeted fixtures/tests**: Provide one compliant Level 2 folder and focused mutation folders for warning/error paths
 
 ### Data Flow
-
-1. At build time: fingerprint generator reads each template, extracts header + anchor sequences, writes `.fingerprint` sidecar files
-2. At validation time: `validate.sh --strict` reads `SPECKIT_TEMPLATE_SOURCE` from the generated file, locates the matching `.fingerprint`, and runs `check-anchors.sh --fingerprint` to compare sequences
-3. `check-template-headers.sh` independently validates header presence and order against the fingerprint, emitting ERROR for critical deviations
-4. At delegation time: prompt builder reads full template content and embeds it in the agent dispatch prompt
+1. `validate.sh` determines level and runs rules.
+2. Template rules call `template-structure.js` with level + basename to load the active template contract.
+3. Header and anchor rules compare the real document against the shared contract and return pass/warn/fail.
+4. Runtime speckit prompts instruct agents to write from inline scaffolds, then run `validate.sh --strict` before continuing.
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -74,35 +74,26 @@ Fingerprint validation -- generate reference fingerprints from templates, compar
 <!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
-### Phase 1: Fingerprint Generation
+### Phase 1: Live Contract Runtime
+- [x] Add `template-structure.js`
+- [x] Support level normalization and template path resolution
+- [x] Derive required/optional headers and allowed anchor IDs from live templates
 
-- [ ] Create `scripts/validators/generate-fingerprint.sh` that extracts header sequence and anchor sequence from a template file
-- [ ] Generate `.fingerprint` sidecar files for all templates under `templates/core/` and `templates/extended/`
-- [ ] Fingerprint format: JSON with `headers: string[]` and `anchors: string[]` arrays preserving order
+### Phase 2: Validator Hardening
+- [x] Wire shared contract into `check-template-headers.sh`
+- [x] Wire shared contract into `check-anchors.sh`
+- [x] Promote `TEMPLATE_HEADERS` structural failures to errors in `validate.sh`
 
-### Phase 2: Anchor Validator Extension
+### Phase 3: Runtime Prompt Hardening
+- [x] Update the shared/OpenCode runtime speckit agent docs under `.agents/agents/` and `.opencode/agent/`
+- [x] Update the Claude and Gemini runtime speckit agent docs
+- [x] Update `/spec_kit` plan, implement, and complete auto/confirm assets with inline scaffolds and strict post-write validation
 
-- [ ] Add `--fingerprint` flag to `check-anchors.sh`
-- [ ] When `--fingerprint` is set, read `SPECKIT_TEMPLATE_SOURCE` from the target file to locate the template fingerprint
-- [ ] Compare generated file's anchor sequence against the template fingerprint; exit non-zero on mismatch
-- [ ] Report which anchors are missing, extra, or out of order
-
-### Phase 3: Header Validator Upgrade
-
-- [ ] Upgrade `check-template-headers.sh` from WARN to ERROR for: missing required headers, headers in wrong order relative to fingerprint
-- [ ] Keep WARN for non-critical deviations (e.g., extra custom headers appended after standard sections)
-
-### Phase 4: Post-Agent Validation Gate
-
-- [ ] Add `--strict` flag to `validate.sh` that enables fingerprint comparison after standard validation passes
-- [ ] Wire `--strict` into the post-agent workflow so any agent-created spec docs are validated before indexing
-- [ ] Ensure `--strict` returns exit code 2 (error) on structural deviation, not just exit code 1 (warning)
-
-### Phase 5: Delegation Prompt Inlining
-
-- [ ] Update delegation prompt builder to read full template content and embed it inline in dispatch prompts
-- [ ] Remove path-only template references from delegation prompts for external agents (Copilot, Gemini)
-- [ ] Verify inlined templates are complete and untruncated in generated prompts
+### Phase 4: Verification
+- [x] Add compliant and mutated fixtures `053` through `060`
+- [x] Add `template-structure.vitest.ts`
+- [x] Extend workflow assertion coverage in `test-phase-command-workflows.js`
+- [x] Update shell test suites to use the compliant/mutation fixture set for template-compliance paths
 <!-- /ANCHOR:phases -->
 
 ---
@@ -112,10 +103,10 @@ Fingerprint validation -- generate reference fingerprints from templates, compar
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Unit | Fingerprint generation correctness for each template | Shell assertions comparing output against expected JSON |
-| Unit | Anchor sequence comparison: match, mismatch, missing, extra, reordered | Shell assertions on `check-anchors.sh --fingerprint` exit codes |
-| Integration | `validate.sh --strict` end-to-end on compliant and non-compliant fixtures | Shell script with fixture files |
-| Manual | External agent delegation produces structurally valid output | Generate spec docs via Copilot/Gemini and run `validate.sh --strict` |
+| Unit | Template path resolution, required header/anchor extraction, optional-template allowance, dynamic decision-record handling | `cd .opencode/skill/system-spec-kit/scripts && npx vitest run --config ../mcp_server/vitest.config.ts --root . tests/template-structure.vitest.ts` |
+| Integration | Runtime agent and workflow prompt assertions | `node .opencode/skill/system-spec-kit/scripts/tests/test-phase-command-workflows.js` |
+| Integration | Compliant fixture strict validation | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .../053-template-compliant-level2 --strict` |
+| Integration | Warning/failure fixtures and targeted shell suite categories | `test-validation.sh`, `test-validation-extended.sh` targeted categories |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -125,9 +116,9 @@ Fingerprint validation -- generate reference fingerprints from templates, compar
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| Existing `check-template-headers.sh` | Internal | Green | Already implemented in R-12 partial; this phase upgrades severity |
-| Existing `check-anchors.sh` | Internal | Green | Already validates anchor balance; this phase adds fingerprint mode |
-| Template files under `templates/` | Internal | Green | Source of truth for fingerprint generation |
+| `templates/level_*` | Internal | Green | Shared contract cannot resolve structure |
+| Existing validator entrypoint | Internal | Green | Template errors cannot be surfaced consistently |
+| Runtime speckit agent assets | Internal | Green | Prompt guidance would stay path-only |
 <!-- /ANCHOR:dependencies -->
 
 ---
@@ -135,6 +126,7 @@ Fingerprint validation -- generate reference fingerprints from templates, compar
 <!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: Fingerprint comparison produces false positives on legitimate spec docs, blocking validation for existing compliant files
-- **Procedure**: Remove `--strict` flag from post-agent gate calls; revert `check-template-headers.sh` severity back to WARN; fingerprint sidecar files can remain without impact since they are only consumed in `--fingerprint` mode
+- **Trigger**: Live template comparison causes false positives on compliant spec docs
+- **Procedure**: Revert the shared helper and validator rule wiring, then restore the previous prompt/workflow text
+- **Fallback**: Keep the fixture and test additions to preserve a clear reproduction lane for the regression
 <!-- /ANCHOR:rollback -->

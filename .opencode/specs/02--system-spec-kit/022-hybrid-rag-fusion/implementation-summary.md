@@ -27,7 +27,7 @@ title: "Implementation Summary: 022-hybrid-rag-fusion"
 
 The Spec Kit Memory MCP server went from a broken retrieval system with zero quality metrics to a metric-gated, graph-differentiated engine with 189 cataloged features, 7,500+ passing tests, and every feature audited against source code. This epic delivered the work across 16 phases, 51 spec folders, and multiple multi-agent verification campaigns.
 
-### Core RAG Pipeline (Phase 005)
+### Core RAG Pipeline (Phase 001)
 
 Eight sprints transformed retrieval quality from speculation to measurement:
 
@@ -47,33 +47,27 @@ Eight sprints transformed retrieval quality from speculation to measurement:
 
 - **Sprint 7 (Long Horizon)** built the ablation framework and R13-S3 reporting dashboard, content normalization pipeline (S1), evaluated R5 INT8 quantization (decision: NO-GO, activation criteria unmet), and completed the flag sunset audit. R8 (memory summaries) and S5 (entity linking) were skipped via gating conditions.
 
-### Quality & Standards (Phases 002-004)
+### Quality & Standards (Phases 002-003)
 
 - **Phase 002 (Indexing Normalization)** eliminated double-indexing from alias/symlink overlap, enforced deterministic tier precedence, and built idempotent frontmatter migration tooling. 238 tests passing.
 
-- **Phase 003 (Speckit Quality & Standards)** stabilized test contracts, applied scoped ToC cleanup, and modularized the MCP server codebase at natural seams. 76 tests plus 189 validation script checks.
+- **Phase 003 (Constitutional Learn Refactor)** completely rewrote `/memory:learn` from a generic classifier into a dedicated constitutional memory manager with list/edit/remove/budget subcommands and lifecycle operations. 583 tests passing.
 
-- **Phase 004 (Constitutional Learn Refactor)** completely rewrote `/memory:learn` from a generic classifier into a dedicated constitutional memory manager with list/edit/remove/budget subcommands and lifecycle operations. 583 tests passing.
+### Bug Fixes & Hardening (Phase 005)
 
-### Bug Fixes & Hardening (Phases 007-008)
+- **Phase 005 (Architecture Audit)** defined enforceable ownership boundaries between build/CLI scripts and runtime MCP server code, created an API-first import policy, and built enforcement tooling. 50 files across 18 new + 32 modified. Architecture boundary contract is now canonical.
 
-- **Phase 007 (Combined Bug Fixes)** consolidated multiple bug-fix streams: session auto-detection (active-folder preference, alias determinism), subfolder resolution for deep hierarchies, and memory-search edge cases. Three multi-wave remediation campaigns delivered 49 + 62 P1 fixes. 7,536 tests passing with 11 items deferred.
+### UX & Automation (Phases 004, 010)
 
-- **Phase 008 (Architecture Audit)** defined enforceable ownership boundaries between build/CLI scripts and runtime MCP server code, created an API-first import policy, and built enforcement tooling. 50 files across 18 new + 32 modified. Architecture boundary contract is now canonical.
-
-### UX & Automation (Phases 006, 009-010)
-
-- **Phase 006 (UX Hooks Automation)** standardized post-mutation behavior across all handlers with shared hook modules (mutation-feedback, response-hints), checkpoint confirmName safety, and health autoRepair reporting. 1,466 test executions.
-
-- **Phase 009 (Spec Descriptions)** moved from centralized descriptions.json to per-folder description.json with collision-resistant naming (memorySequence + bounded memoryNameHistory). 150 tests.
+- **Phase 004 (UX Hooks Automation)** standardized post-mutation behavior across all handlers with shared hook modules (mutation-feedback, response-hints), checkpoint confirmName safety, and health autoRepair reporting. 1,466 test executions.
 
 - **Phase 010 (Perfect Session Capturing)** applied 20 fixes across 11 pipeline files (security, extraction quality, config), shipped stateless enrichment (spec-folder + git-context extraction), and established abort thresholds. Parts 3-4 deferred. 375 tests.
 
-### Catalog & Audit (Phases 011-012)
+### Catalog & Audit (Phases 006-007)
 
-- **Phase 011 (Feature Catalog)** embedded `// Feature catalog:` traceability comments across all 40 handlers and 3 scripts, removed stale sprint/phase references, and verified handler coverage. The catalog itself spans 4,262 lines across 19 categories and 189 feature files.
+- **Phase 006 (Feature Catalog)** embedded `// Feature catalog:` traceability comments across all 40 handlers and 3 scripts, removed stale sprint/phase references, and verified handler coverage. The catalog itself spans 4,262 lines across 19 categories and 189 feature files.
 
-- **Phase 012 (Code Audit per Feature Catalog)** executed a systematic 21-child audit campaign where each child audited one feature category against its source code. Key outcomes across children:
+- **Phase 007 (Code Audit per Feature Catalog)** executed a systematic 21-child audit campaign where each child audited one feature category against its source code. Key outcomes across children:
   - **Retrieval** (001): Token-budget enforcement compaction fallback, delete commit-count accuracy, RRF convergence default. 365 tests.
   - **Mutation** (002): Schema alignment for olderThanDays, relation-scoped undo, recordHistory ordering. 167 tests.
   - **Discovery** (003): Pre-query failure envelope, schema synchronization. 95 tests.
@@ -86,9 +80,9 @@ Eight sprints transformed retrieval quality from speculation to measurement:
   - **Pipeline Architecture** (014): Evidence-backed traceability rubric, lastDbCheck fix, atomic save retry/rollback. 483 tests.
   - **UX Hooks** (018): Mixed-outcome auto-repair, checkpoint contract tightening. 445 tests.
 
-### Architecture & Roadmap (Phase 014)
+### Architecture & Roadmap (Phase 008)
 
-- **Phase 014 (Hydra DB-Based Features)** delivered a 6-phase database architecture roadmap with default-on semantics:
+- **Phase 008 (Hydra DB-Based Features)** delivered a 6-phase database architecture roadmap with default-on semantics:
   - **001 Baseline & Safety Rails**: Capability flags, checkpoint hardening, schema compatibility validation.
   - **002 Versioned Memory State**: Append-first lineage, active projection, temporal `asOf` semantics.
   - **003 Unified Graph Retrieval**: Deterministic ranking contract, graph explainability and telemetry.
@@ -97,47 +91,49 @@ Eight sprints transformed retrieval quality from speculation to measurement:
   - **006 Shared Memory Rollout**: Shared spaces, deny-by-default membership, conflict handling with escalation.
   All 6 children verified: TypeScript, build, Vitest, alignment drift, and manual smoke checks all PASS.
 
-### Agent & Session Improvements (Phase 013)
+### Agent & Session Improvements (Phase 010)
 
-- **Phase 013 (Outsourced Agent Memory)** reconciled runtime behavior with CLI handback documentation: explicit JSON-mode failures now hard-fail, next-steps normalized to `Next:`/`NEXT_ACTION` patterns, and all 8 CLI docs aligned on redact-and-scrub handback flow. 11 tests.
+- **Phase 010 (Perfect Session Capturing)** includes session-source validation, template compliance, and auto-detection fixes in addition to the Part 1-2 work. The outsourced agent memory reconciliation work (explicit JSON-mode failures, next-steps normalization, CLI doc alignment) was absorbed into this phase.
 
-### Documentation Alignment (Phases 015-016)
+### Documentation Alignment (Phases 009, 011)
 
-- **Phase 015 (Skill Alignment)** completed a research-backed Level 2 specification for aligning system-spec-kit documentation with the delivered program. Open skill-guide alignment work is explicitly tracked; already-landed changes are preserved. Status: Complete.
+- **Phase 009 (Skill Alignment)** completed a research-backed Level 2 specification for aligning system-spec-kit documentation with the delivered program. Open skill-guide alignment work is explicitly tracked; already-landed changes are preserved. Status: Complete.
 
-- **Phase 016 (Command Alignment)** aligned the memory command documentation set with the current 32-tool MCP surface across L1-L7. Updated 5 existing commands, created 2 new commands (`analyze.md`, `shared.md`), and refreshed the README with a complete 32-tool coverage matrix. Status: Complete.
+- **Phase 011 (Command Alignment)** aligned the memory command documentation set with the current 32-tool MCP surface across L1-L7. Updated 5 existing commands, created 2 new commands (`analyze.md`, `shared.md`), and refreshed the README with a complete 32-tool coverage matrix. Status: Complete.
 
-### Documentation Rewrites (Phases 020-022, In Progress)
+### Documentation Rewrites (Phases 015-018, In Progress)
 
-- **Phase 020 (MCP README Rewrite + Install Guide Update)** covers two deliverables: a complete rewrite of the MCP server README to document all 32 tools, hybrid search pipeline, and cognitive memory architecture; and an update of the install guide against current dependencies. Status: In Progress.
+- **Phase 015 (Rewrite Memory MCP README)** is a complete rewrite of the MCP server README to document all 32 tools, hybrid search pipeline, and cognitive memory architecture. Status: In Progress.
 
-- **Phase 021 (System Spec Kit README Rewrite)** is a complete rewrite of the Spec Kit README documenting the full skill surface: documentation levels 1-3+, memory system, 32 MCP tools, 13 commands, templates, scripts, and validation. Status: In Progress.
+- **Phase 016 (Update Install Guide)** updates the install guide against current dependencies. Status: In Progress.
 
-- **Phase 022 (Repo README Rewrite)** is a complete rewrite of the root README as a top-level overview of the OpenCode system: 11 agents, 16 skills, 32 MCP tools, gate system, and code mode with role-based navigation. Status: In Progress.
+- **Phase 017 (Rewrite System Spec Kit README)** is a complete rewrite of the Spec Kit README documenting the full skill surface: documentation levels 1-3+, memory system, 32 MCP tools, 13 commands, templates, scripts, and validation. Status: In Progress.
+
+- **Phase 018 (Rewrite Repo README)** is a complete rewrite of the root README as a top-level overview of the OpenCode system: 11 agents, 16 skills, 32 MCP tools, gate system, and code mode with role-based navigation. Status: In Progress.
 
 ### Feature Catalog Coverage (19 categories)
 
 | Category | Features | Audit Status |
 |----------|----------|-------------|
-| 01 Retrieval | 9 | Audited (012/001) |
-| 02 Mutation | 10 | Audited (012/002) |
-| 03 Discovery | 3 | Audited (012/003) |
-| 04 Maintenance | 2 | Audited (012/004) |
-| 05 Lifecycle | 7 | Audited (012/005) |
-| 06 Analysis | 7 | Audited (012/006) |
-| 07 Evaluation | 2 | Audited (012/007) |
-| 08 Bug Fixes & Data Integrity | 11 | Audited (012/008) |
-| 09 Evaluation & Measurement | 16 | Audited (012/009) |
-| 10 Graph Signal Activation | 12 | Audited (012/010) |
-| 11 Scoring & Calibration | 18 | Audited (012/011) |
-| 12 Query Intelligence | 6 | Audited (012/012) |
-| 13 Memory Quality & Indexing | 18 | Audited (012/013) |
-| 14 Pipeline Architecture | 22 | Audited (012/014) |
-| 15 Retrieval Enhancements | 9 | Audited (012/015) |
-| 16 Tooling & Scripts | 13 | Audited (012/016, Draft) |
-| 17 Governance | 4 | Audited (012/017) |
-| 18 UX Hooks | 13 | Audited (012/018) |
-| 19 Feature Flag Reference | 7 | Audited (012/020) |
+| 01 Retrieval | 9 | Audited (007/001) |
+| 02 Mutation | 10 | Audited (007/002) |
+| 03 Discovery | 3 | Audited (007/003) |
+| 04 Maintenance | 2 | Audited (007/004) |
+| 05 Lifecycle | 7 | Audited (007/005) |
+| 06 Analysis | 7 | Audited (007/006) |
+| 07 Evaluation | 2 | Audited (007/007) |
+| 08 Bug Fixes & Data Integrity | 11 | Audited (007/008) |
+| 09 Evaluation & Measurement | 16 | Audited (007/009) |
+| 10 Graph Signal Activation | 12 | Audited (007/010) |
+| 11 Scoring & Calibration | 18 | Audited (007/011) |
+| 12 Query Intelligence | 6 | Audited (007/012) |
+| 13 Memory Quality & Indexing | 18 | Audited (007/013) |
+| 14 Pipeline Architecture | 22 | Audited (007/014) |
+| 15 Retrieval Enhancements | 9 | Audited (007/015) |
+| 16 Tooling & Scripts | 13 | Audited (007/016, Draft) |
+| 17 Governance | 4 | Audited (007/017) |
+| 18 UX Hooks | 13 | Audited (007/018) |
+| 19 Feature Flag Reference | 7 | Audited (007/020) |
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -149,7 +145,7 @@ The program used phased spec folders with sprint-gate validation and multi-agent
 
 ### Delivery Model
 
-Work was organized into independent phases that could be executed in parallel where no dependencies existed. The core RAG sprints (005) required sequential execution due to sprint gates, while phases like 002 (indexing), 004 (constitutional), 006 (UX hooks), 008 (architecture), and 009 (descriptions) ran independently.
+Work was organized into independent phases that could be executed in parallel where no dependencies existed. The core RAG sprints (001) required sequential execution due to sprint gates, while phases like 002 (indexing), 003 (constitutional), 004 (UX hooks), and 005 (architecture) ran independently.
 
 ### Multi-Agent Campaigns
 
@@ -200,18 +196,15 @@ Multiple multi-agent verification campaigns were executed:
 | Phase 001 (epic): `npx tsc --noEmit` | PASS (0 errors) |
 | Phase 001 (epic): `npx vitest run` | PASS (7,008/7,008 in 226 files) |
 | Phase 002 (indexing): targeted tests | PASS (238 tests) |
-| Phase 004 (constitutional): MCP suite | PASS (581/581) |
-| Phase 005 Sprint 0: full suite | PASS (4,876 tests) |
-| Phase 005 Sprint 5: full suite | PASS (6,469/6,473; 4 pre-existing) |
-| Phase 005 Sprint 6: full regression | PASS (6,589/6,593; 4 pre-existing) |
-| Phase 006 (UX hooks): affected suites | PASS (416/416 + full suite) |
-| Phase 007 (bug fixes): full suite | PASS (7,536 passed, 47 skipped) |
-| Phase 008 (architecture): spec validation | PASS (0 errors, 0 warnings) |
-| Phase 009 (descriptions): 5 suites | PASS (150/150) |
+| Phase 003 (constitutional): MCP suite | PASS (581/581) |
+| Phase 001 Sprint 0: full suite | PASS (4,876 tests) |
+| Phase 001 Sprint 5: full suite | PASS (6,469/6,473; 4 pre-existing) |
+| Phase 001 Sprint 6: full regression | PASS (6,589/6,593; 4 pre-existing) |
+| Phase 004 (UX hooks): affected suites | PASS (416/416 + full suite) |
+| Phase 005 (architecture): spec validation | PASS (0 errors, 0 warnings) |
 | Phase 010 (session): targeted + node suite | PASS (40 + 278 + 57) |
-| Phase 012 (audit): 21 children verified | 19 PASS, 1 Draft (016), 1 FAIL (021 recursive) |
-| Phase 013 (agent memory): targeted Vitest | PASS (11/11) |
-| Phase 014 (Hydra): six-phase sweep | PASS (all 6 children: tsc, build, Vitest, alignment) |
+| Phase 007 (audit): 21 children verified | 19 PASS, 1 Draft (016), 1 FAIL (021 recursive) |
+| Phase 008 (Hydra): six-phase sweep | PASS (all 6 children: tsc, build, Vitest, alignment) |
 | Campaign verification (2026-03-08) | 3 folders closed, 237 checklist items addressed |
 <!-- /ANCHOR:verification -->
 
@@ -224,13 +217,13 @@ Multiple multi-agent verification campaigns were executed:
 
 2. **Four pre-existing test failures.** Full-suite regressions consistently show 4 pre-existing unrelated test failures across Sprint 5-6 snapshots (outside sprint scope).
 
-3. **012/021 recursive validation failure.** The remediation-revalidation child reports 2 errors and 1 warning from recursive spec validation.
+3. **007/021 recursive validation failure.** The remediation-revalidation child reports 2 errors and 1 warning from recursive spec validation.
 
-4. **012/016 still in Draft.** The tooling-and-scripts code audit has spec metadata showing Draft status despite 177 tests passing.
+4. **007/016 still in Draft.** The tooling-and-scripts code audit has spec metadata showing Draft status despite 177 tests passing.
 
-5. **015/016 are now complete.** Skill alignment (015) and command alignment (016) delivered Level 2 specs with full 32-tool coverage. Previously listed as empty stubs.
+5. **009/011 are now complete.** Skill alignment (009) and command alignment (011) delivered Level 2 specs with full 32-tool coverage. Previously listed as empty stubs.
 
-6. **Phases 020-022 are in progress.** Documentation rewrites for MCP README, install guide, Spec Kit README, and root README are underway with spec folders created and multi-agent research/drafting pipeline active.
+6. **Phases 015-018 are in progress.** Documentation rewrites for MCP README, install guide, Spec Kit README, and root README are underway with spec folders created and multi-agent research/drafting pipeline active.
 
 7. **Session capture (010) deferred 67 medium findings.** Phases 3-4 (Claude capture, score calibration) are deferred.
 

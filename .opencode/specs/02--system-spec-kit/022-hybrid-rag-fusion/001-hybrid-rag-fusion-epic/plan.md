@@ -908,10 +908,10 @@ Implement during or after Sprint 4-5. These require more invasive changes.
 ## Documentation Addendum Plan (DOC-01)
 
 ### Objective
-- Generate one per-feature artifact file (feature.md) inside every numbered feature folder under `011-feature-catalog/`, using canonical content from feature_catalog.md plus optional enrichment from summary_of_new_features.md.
+- Generate one per-feature artifact file (feature.md) inside every numbered feature folder under `006-feature-catalog/`, using canonical content from feature_catalog.md plus optional enrichment from summary_of_new_features.md.
 
 ### Execution Strategy
-1. Parse canonical inventory from 011-feature-catalog/feature_catalog.md (`##` group + `###` feature hierarchy).
+1. Parse canonical inventory from 006-feature-catalog/feature_catalog.md (`##` group + `###` feature hierarchy).
 2. Normalize feature titles with trailing ticket-parenthetical stripping (only when parenthetical includes digits) for folder mapping parity.
 3. Resolve each feature to its numbered target folder (`NN-group/NN-feature`), then write feature.md with:
    - H1 feature title
@@ -1214,7 +1214,7 @@ Audit-first, contract-driven hardening with release-gated invariants and self-he
 | `002-hybrid-rag-fusion` | Tri-hybrid retrieval + MMR/TRM pipeline | Baseline for retrieval/fusion determinism and channel governance |
 | `003-index-tier-anomalies` | Canonical path dedup + tier precedence | Elevated to parser/index + storage integrity gates |
 | `004-frontmatter-indexing` | Frontmatter normalization + idempotent reindex | Enforced as parser/index invariant and metadata consistency precondition |
-| `007-combined-bug-fixes` | Confidence-aware folder/session detection | Extended into session manager and session-learning quality/performance controls |
+| `007-combined-bug-fixes` *(deleted 2026-03-16)* | Confidence-aware folder/session detection | Extended into session manager and session-learning quality/performance controls |
 
 | Expanded Area | Primary Continuity Source | Implementation Note |
 |---------------|---------------------------|---------------------|

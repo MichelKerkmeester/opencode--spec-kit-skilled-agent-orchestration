@@ -168,6 +168,66 @@ available_templates:
     handover: .opencode/skill/system-spec-kit/templates/handover.md
     debug_delegation: .opencode/skill/system-spec-kit/templates/debug-delegation.md
 
+template_compliance:
+  strict_validation_command: ".opencode/skill/system-spec-kit/scripts/spec/validate.sh [SPEC_FOLDER] --strict"
+  prompt_contract:
+    rule: "When a workflow step writes spec docs, embed the matching inline scaffold below in the authoring prompt and preserve required ANCHOR/H2 order from the canonical template."
+  inline_scaffolds:
+    spec_md: |
+      # Feature Specification: [NAME]
+      <!-- ANCHOR:metadata --> ## 1. METADATA
+      <!-- ANCHOR:problem --> ## 2. PROBLEM & PURPOSE
+      <!-- ANCHOR:scope --> ## 3. SCOPE
+      <!-- ANCHOR:requirements --> ## 4. REQUIREMENTS
+      <!-- ANCHOR:success-criteria --> ## 5. SUCCESS CRITERIA
+      <!-- ANCHOR:risks --> ## 6. RISKS & DEPENDENCIES
+      <!-- ANCHOR:questions --> ## 7. OPEN QUESTIONS
+    checklist_md: |
+      # Verification Checklist: [NAME]
+      <!-- ANCHOR:protocol --> ## Verification Protocol
+      <!-- ANCHOR:pre-impl --> ## Pre-Implementation
+      <!-- ANCHOR:code-quality --> ## Code Quality
+      <!-- ANCHOR:testing --> ## Testing
+      <!-- ANCHOR:security --> ## Security
+      <!-- ANCHOR:docs --> ## Documentation
+      <!-- ANCHOR:file-org --> ## File Organization
+      <!-- ANCHOR:summary --> ## Verification Summary
+      Checklist item format: - [ ] CHK-001 [P0] Description
+    plan_md: |
+      # Implementation Plan: [NAME]
+      <!-- ANCHOR:summary --> ## 1. SUMMARY
+      <!-- ANCHOR:quality-gates --> ## 2. QUALITY GATES
+      <!-- ANCHOR:architecture --> ## 3. ARCHITECTURE
+      <!-- ANCHOR:phases --> ## 4. IMPLEMENTATION PHASES
+      <!-- ANCHOR:testing --> ## 5. TESTING STRATEGY
+      <!-- ANCHOR:dependencies --> ## 6. DEPENDENCIES
+      <!-- ANCHOR:rollback --> ## 7. ROLLBACK PLAN
+    tasks_md: |
+      # Tasks: [NAME]
+      <!-- ANCHOR:notation --> ## Task Notation
+      <!-- ANCHOR:phase-1 --> ## Phase 1: Setup
+      <!-- ANCHOR:phase-2 --> ## Phase 2: Implementation
+      <!-- ANCHOR:phase-3 --> ## Phase 3: Verification
+      <!-- ANCHOR:completion --> ## Completion Criteria
+      <!-- ANCHOR:cross-refs --> ## Cross-References
+    decision_record_md: |
+      # Decision Record: [NAME]
+      <!-- ANCHOR:adr-001 --> ## ADR-001: [Decision Title]
+      <!-- ANCHOR:adr-001-context --> ### Context
+      <!-- ANCHOR:adr-001-decision --> ### Decision
+      <!-- ANCHOR:adr-001-alternatives --> ### Alternatives Considered
+      <!-- ANCHOR:adr-001-consequences --> ### Consequences
+      <!-- ANCHOR:adr-001-five-checks --> ### Five Checks Evaluation
+      <!-- ANCHOR:adr-001-impl --> ### Implementation
+    implementation_summary_md: |
+      # Implementation Summary
+      <!-- ANCHOR:metadata --> ## Metadata
+      <!-- ANCHOR:what-built --> ## What Was Built
+      <!-- ANCHOR:how-delivered --> ## How It Was Delivered
+      <!-- ANCHOR:decisions --> ## Key Decisions
+      <!-- ANCHOR:verification --> ## Verification
+      <!-- ANCHOR:limitations --> ## Known Limitations
+
 # ─────────────────────────────────────────────────────────────────
 # PARALLEL DISPATCH CONFIGURATION
 # ─────────────────────────────────────────────────────────────────
@@ -489,6 +549,13 @@ workflow:
     outputs:
     - spec.md: acceptance_criteria
     template: .opencode/skill/system-spec-kit/templates/level_2/spec.md
+    template_prompt_contract:
+      canonical_template: .opencode/skill/system-spec-kit/templates/level_2/spec.md
+      inline_scaffold_key: spec_md
+      writing_rule: "Embed template_compliance.inline_scaffolds.spec_md in the prompt before writing spec.md and preserve the required anchors/headers in order."
+    post_write_validation:
+      command: ".opencode/skill/system-spec-kit/scripts/spec/validate.sh [SPEC_FOLDER] --strict"
+      on_fail: "STOP and repair spec.md template drift before proceeding"
     confidence_checkpoint:
       evaluate_at: "After drafting spec.md content"
       scoring_factors: ["Requirements completeness (0.35)", "Acceptance criteria clarity (0.35)", "Technical feasibility (0.30)"]
@@ -538,6 +605,13 @@ workflow:
     - checklist_status: pass_or_fail
     - p0_status: "all_complete or blocked"
     template: .opencode/skill/system-spec-kit/templates/level_2/checklist.md
+    template_prompt_contract:
+      canonical_template: .opencode/skill/system-spec-kit/templates/level_2/checklist.md
+      inline_scaffold_key: checklist_md
+      writing_rule: "Embed template_compliance.inline_scaffolds.checklist_md in the prompt before writing checklist.md and preserve CHK-NNN [P0/P1/P2] format."
+    post_write_validation:
+      command: ".opencode/skill/system-spec-kit/scripts/spec/validate.sh [SPEC_FOLDER] --strict"
+      on_fail: "STOP and repair checklist.md template drift before proceeding"
     validation: checklist_verified_and_marked
     checkpoint:
       question: "Step 5 Complete: Checklist verified. How would you like to proceed?"
@@ -607,6 +681,10 @@ workflow:
     - plan.md: technical_approach
     - research.md: resolved_unknowns
     template: .opencode/skill/system-spec-kit/templates/level_2/plan.md
+    template_prompt_contract:
+      canonical_template: .opencode/skill/system-spec-kit/templates/level_2/plan.md
+      inline_scaffold_key: plan_md
+      writing_rule: "Embed template_compliance.inline_scaffolds.plan_md in the prompt before writing plan.md and keep custom sections after the required template structure."
     confidence_checkpoint:
       evaluate_at: "After drafting plan.md content"
       scoring_factors: ["Technical approach clarity (0.30)", "Risk identification (0.25)", "Dependency mapping (0.25)", "Pattern alignment (0.20)"]
@@ -615,6 +693,9 @@ workflow:
         medium_40_79: { action: "Proceed but flag uncertainties", requirement: "Add RISK markers" }
         low_below_40: { action: "STOP - Request research spike or clarification", wait_for: "User decision" }
       escalation: { trigger: "2 failed attempts OR 10 minutes", action: "Present options to user" }
+    post_write_validation:
+      command: ".opencode/skill/system-spec-kit/scripts/spec/validate.sh [SPEC_FOLDER] --strict"
+      on_fail: "STOP and repair plan.md or decision-record.md template drift before proceeding"
     validation: approach_defined
     checkpoint:
       question: "Step 6 Complete: Technical plan created. Review plan.md?"
@@ -651,6 +732,13 @@ workflow:
     outputs:
     - tasks.md: implementation_breakdown
     template: .opencode/skill/system-spec-kit/templates/level_2/tasks.md
+    template_prompt_contract:
+      canonical_template: .opencode/skill/system-spec-kit/templates/level_2/tasks.md
+      inline_scaffold_key: tasks_md
+      writing_rule: "Embed template_compliance.inline_scaffolds.tasks_md in the prompt before writing tasks.md and preserve the required anchors/headers in order."
+    post_write_validation:
+      command: ".opencode/skill/system-spec-kit/scripts/spec/validate.sh [SPEC_FOLDER] --strict"
+      on_fail: "STOP and repair tasks.md template drift before proceeding"
     validation: tasks_documented
     checkpoint:
       question: "Step 7 Complete: Tasks broken down. Review tasks.md?"
@@ -852,10 +940,16 @@ workflow:
     summary_document:
       location: "[SPEC_FOLDER]/implementation-summary.md"
       required_sections: [files_modified_created, verification_steps_taken, deviations_from_plan, skill_updates, recommended_next_steps, browser_testing_results]
+      canonical_template: .opencode/skill/system-spec-kit/templates/level_2/implementation-summary.md
+      inline_scaffold_key: implementation_summary_md
+      writing_rule: "Embed template_compliance.inline_scaffolds.implementation_summary_md in the prompt before writing implementation-summary.md."
     verification_summary:
       checklist_verification:
         required: true
         must_include: [total_items_count, p0_status, p1_status, deferred_p2_items, checklist_link]
+    post_write_validation:
+      command: ".opencode/skill/system-spec-kit/scripts/spec/validate.sh [SPEC_FOLDER] --strict"
+      on_fail: "STOP and repair implementation-summary.md template drift before marking completion"
     validation: implementation_complete
     checkpoint:
       question: "Step 12 Complete: Implementation summary generated. Review summary?"

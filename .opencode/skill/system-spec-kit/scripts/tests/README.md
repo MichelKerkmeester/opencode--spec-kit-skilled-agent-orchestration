@@ -39,7 +39,6 @@ JavaScript tests:
 - `test-extractors-loaders.js`
 - `test-five-checks.js`
 - `test-folder-detector-functional.js`
-- `test-integration.js`
 - `test-ast-parser.js`
 - `test-naming-migration.js`
 - `test-phase-command-workflows.js`
@@ -68,6 +67,8 @@ Vitest regression suites:
 - `runtime-memory-inputs.vitest.ts` - covers explicit JSON-mode hard-fail behavior plus `nextSteps` / `next_steps` preservation into `NEXT_ACTION`
 - `task-enrichment.vitest.ts` - candidate selection, generic-name rejection, content-aware slug coverage, and stateless alignment workflow seams
 - `memory-render-fixture.vitest.ts` - rendered-memory regression coverage for naming fallback and quality validation
+- `test-integration.vitest.ts` - validation pipeline, cognitive memory, spec-folder creation, checkpoint, and export surface parity (migrated from `test-integration.js`)
+- `workflow-e2e.vitest.ts` - real save-pipeline E2E coverage with temp-repo factory: happy-path, alignment block, dedup, insufficiency, indexing resilience, tree-thinning
 - `stateless-enrichment.vitest.ts` - stateless relevance filtering, sparse-spec extraction, git scoping/fallbacks, live-over-synthetic session snapshot behavior, and extractor barrel export coverage
 - import-policy Vitest suites under `tests/` - boundary enforcement coverage for package-form, relative, dynamic, and AST-backed checks
 
@@ -91,7 +92,7 @@ node test-scripts-modules.js
 bash test-phase-system.sh
 node test-phase-validation.js
 node test-extractors-loaders.js
-node test-integration.js
+npx vitest run tests/test-integration.vitest.ts
 bash test-upgrade-level.sh
 bash test-validation.sh
 python3 test_dual_threshold.py

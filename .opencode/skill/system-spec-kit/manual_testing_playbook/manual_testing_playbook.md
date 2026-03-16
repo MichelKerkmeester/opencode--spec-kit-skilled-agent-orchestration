@@ -629,7 +629,7 @@ These 29 catalog entries are explicitly documented here even when validation is 
   - JS verification suites:
     - `cd .opencode/skill/system-spec-kit/scripts/tests && node test-extractors-loaders.js`
     - `cd .opencode/skill/system-spec-kit/scripts/tests && node test-bug-fixes.js`
-    - `cd .opencode/skill/system-spec-kit/scripts/tests && node test-integration.js`
+    - `cd .opencode/skill/system-spec-kit/scripts && npx vitest run tests/test-integration.vitest.ts`
     - `cd .opencode/skill/system-spec-kit/scripts/tests && node test-memory-quality-lane.js`
   - Standards checks:
     - `cd .opencode/skill/system-spec-kit/mcp_server && npm run lint`

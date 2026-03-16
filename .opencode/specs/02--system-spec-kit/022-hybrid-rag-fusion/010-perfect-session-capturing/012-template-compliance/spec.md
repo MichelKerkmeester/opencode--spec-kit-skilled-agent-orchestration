@@ -1,5 +1,11 @@
 ---
 title: "Feature Specification: Template Compliance"
+description: "Repo-aligned hardening for live template comparison, stricter structural validation, and inline scaffold prompt enforcement."
+trigger_phrases:
+  - "template compliance"
+  - "spec templates"
+importance_tier: "high"
+contextType: "general"
 ---
 # Feature Specification: Template Compliance
 
@@ -14,13 +20,13 @@ title: "Feature Specification: Template Compliance"
 | Field | Value |
 |-------|-------|
 | **Level** | 2 |
-| **Priority** | P2 |
-| **Status** | Draft |
+| **Priority** | P1 |
+| **Status** | Complete |
 | **Created** | 2026-03-16 |
 | **Branch** | `main` |
 | **Parent** | [010-perfect-session-capturing](../spec.md) |
-| **R-Item** | R-12 |
-| **Sequence** | B5 |
+| **R-Item** | R-12 follow-up |
+| **Sequence** | 012 |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -29,12 +35,10 @@ title: "Feature Specification: Template Compliance"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-
-External agents (Copilot, Gemini) deviate from spec-kit templates because `validate.sh` checks syntax (anchor pairs balanced) not semantics (correct headers, correct anchors, correct format). 18 validation rules exist but none compare generated content against template structure. The existing `check-template-headers.sh` rule and required-anchor extension from the R-12 partial implementation only WARN on deviations -- they do not block structurally invalid output. Additionally, delegation prompts reference template paths rather than inlining template content, so agents that lack filesystem access generate from memory rather than from the actual template.
+The deferred R-12 work still relied on draft assumptions that do not match the current repo: there are no checked-in `.fingerprint` sidecars, the validator only partially enforced template structure, and runtime speckit prompts mostly pointed at template paths instead of carrying inline structure for the exact document being written. That gap let structurally invalid spec docs drift through normal validation and made post-write strict validation unreliable for agent workflows.
 
 ### Purpose
-
-Generate template structural fingerprints for automated comparison, inline template content in delegation prompts, and add a post-agent validation gate so that structurally non-compliant spec docs are caught and rejected before indexing.
+Use the live template files as the single source of truth for required header and anchor order, promote real structural drift to validator errors, and harden every active speckit runtime/workflow surface so generated docs are written from inline scaffolds and checked with `validate.sh --strict` immediately after writing.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -43,28 +47,30 @@ Generate template structural fingerprints for automated comparison, inline templ
 ## 3. SCOPE
 
 ### In Scope
-
-- Generate structural fingerprints (header sequence + anchor sequence) from each template file under `templates/`
-- Add fingerprint comparison mode to `check-anchors.sh` that validates generated files against their template's fingerprint
-- Upgrade `check-template-headers.sh` from WARN to ERROR for critical structural deviations (missing required headers, wrong header order)
-- Add post-agent validation gate to `validate.sh` (`--strict` mode) that runs fingerprint comparison after any agent creates spec docs
-- Ensure delegation prompts inline template content rather than referencing template paths only
+- Add one shared runtime helper that derives required headers and anchors from `templates/level_1`, `level_2`, `level_3`, and `level_3+`
+- Use that helper in `check-template-headers.sh` and `check-anchors.sh`
+- Promote `TEMPLATE_HEADERS` structural failures to normal validator errors in `validate.sh`
+- Update runtime speckit agents and `/spec_kit` plan, implement, and complete workflow assets to include inline scaffolds plus strict post-write validation
+- Add template-compliant fixtures and targeted shell/Vitest coverage for compliant, warning, and failure cases
 
 ### Out of Scope
-
-- Changing template content or adding new templates -- only fingerprinting existing templates
-- Semantic validation of field values (e.g., checking that dates are valid) -- only structural compliance
-- Modifying how agents are invoked -- only what content is included in the prompt
+- Adding or checking in `.fingerprint` sidecar files
+- Rewriting the parent `010` phase set beyond this child phase
+- Inventing a new Codex runtime speckit file when no repo-local or home-directory definition exists
+- Semantic field validation beyond current structural/template compliance
 
 ### Files to Change
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `scripts/validators/check-template-headers.sh` | Modify | Upgrade critical deviations from WARN to ERROR; add header-order validation |
-| `scripts/validators/check-anchors.sh` | Modify | Add `--fingerprint` mode that compares generated file anchor sequence against template fingerprint |
-| `scripts/validators/validate.sh` | Modify | Add `--strict` flag triggering post-agent fingerprint validation gate |
-| `templates/` | Modify | Generate and store `.fingerprint` sidecar files (header + anchor sequence) for each template |
-| `scripts/lib/delegation-prompt-builder.ts` | Modify | Inline full template content in delegation prompts instead of path references (REQ-003) |
+| .opencode/skill/system-spec-kit/scripts/utils/template-structure.js | Create | Shared live template contract parser/comparator |
+| .opencode/skill/system-spec-kit/scripts/rules/check-template-headers.sh | Modify | Fail on missing/out-of-order required headers, warn on extra custom headers |
+| .opencode/skill/system-spec-kit/scripts/rules/check-anchors.sh | Modify | Compare ordered required anchors against live template contracts |
+| .opencode/skill/system-spec-kit/scripts/spec/validate.sh | Modify | Treat `TEMPLATE_HEADERS` as an error in normal validation |
+| OpenCode runtime speckit agent docs in `.opencode/agent/` plus `.agents/agents/` | Modify | Inline scaffold and strict post-write validation rules |
+| Claude and Gemini runtime speckit agent docs | Modify | Match runtime prompt contract with inline scaffolds and strict validation |
+| .opencode/command/spec_kit/assets/spec_kit_{plan,implement,complete}_{auto,confirm}.yaml | Modify | Embed scaffold contracts and `validate.sh --strict` post-write steps |
+| System-spec-kit fixture and test lanes under `.opencode/skill/system-spec-kit/scripts/` | Create/Modify | Add compliant and mutated fixtures plus targeted test coverage |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -76,15 +82,16 @@ Generate template structural fingerprints for automated comparison, inline templ
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | Template structural fingerprint generated from each template file: ordered list of headers and ordered list of ANCHOR open/close pairs | Running `generate-fingerprint.sh templates/core/spec-core.md` produces a `.fingerprint` file listing header sequence and anchor sequence |
-| REQ-002 | Validation compares generated file fingerprint against its template fingerprint | `check-anchors.sh --fingerprint spec.md` exits non-zero when anchor sequence differs from the template declared in `SPECKIT_TEMPLATE_SOURCE` |
+| REQ-001 | Live template structure derives from the active template files at runtime | `template-structure.js` resolves headers/anchors from `SPECKIT_LEVEL` + basename without `.fingerprint` files |
+| REQ-002 | Structural header drift fails validation in normal mode | Missing/out-of-order required headers return validator exit code 2 through `TEMPLATE_HEADERS` |
 
 ### P1 - Required (complete OR user-approved deferral)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-003 | Delegation prompts include inline template content, not just path references | Delegation prompt builder embeds full template markdown when dispatching to external agents |
-| REQ-004 | Post-agent validation gate: `validate.sh --strict` runs fingerprint comparison after any agent creates spec docs | `validate.sh --strict` returns non-zero when generated docs have structural deviations from their template |
+| REQ-003 | Ordered required anchors come from the same live contract source | Missing/out-of-order required anchors fail `ANCHORS_VALID` using the shared helper |
+| REQ-004 | Active speckit runtime prompts include inline scaffolds and strict post-write validation | `.agents`, OpenCode x2, Claude, and Gemini speckit docs plus plan/implement/complete YAML assets reference inline scaffolds and `validate.sh [SPEC_FOLDER] --strict` |
+| REQ-005 | Template compliance coverage includes compliant, warning, and failure fixtures | Shell/Vitest coverage exists for compliant docs, extra custom sections, missing/reordered headers, missing/reordered anchors, and checklist format enforcement |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -92,8 +99,16 @@ Generate template structural fingerprints for automated comparison, inline templ
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: Generated spec docs structurally match their templates -- header sequence and anchor sequence validated automatically with zero false negatives on compliant files
-- **SC-002**: Structural deviations (missing headers, reordered anchors, dropped sections) are caught automatically before indexing, with ERROR-level output
+- **SC-001**: `validate.sh` passes on a template-compliant Level 2 fixture with zero warnings, and `validate.sh --strict` also passes.
+- **SC-002**: Missing or reordered required headers/anchors fail with exit code 2 and point back to the active template contract.
+- **SC-003**: Extra custom sections warn without failing in normal mode, but fail under `--strict`.
+- **SC-004**: Runtime speckit prompts now carry inline scaffold guidance across `.agents`, OpenCode x2, Claude, and Gemini surfaces; no separate Codex speckit file is falsely claimed.
+
+### Acceptance Scenarios
+- **Given** a compliant Level 2 spec folder using the active level templates, **when** `validate.sh --strict` runs, **then** `TEMPLATE_HEADERS` and `ANCHORS_VALID` both pass without warnings.
+- **Given** a spec document with a missing required template section, **when** normal validation runs, **then** `TEMPLATE_HEADERS` fails with exit code 2.
+- **Given** a spec document with required anchors out of template order, **when** validation runs, **then** `ANCHORS_VALID` fails against the live template contract.
+- **Given** an agent-authored spec document created through `/spec_kit`, **when** the writing step completes, **then** the workflow reruns strict validation before allowing the phase to continue.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -103,15 +118,67 @@ Generate template structural fingerprints for automated comparison, inline templ
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | None -- builds on existing R-12 partial implementation | N/A | check-template-headers.sh and required-anchor checks already exist; this phase hardens them |
-| Risk | Fingerprint comparison may be too strict for templates with optional sections | Medium | Fingerprint marks optional sections explicitly; comparison only enforces required header/anchor pairs |
-| Risk | Inlining full template content in delegation prompts increases prompt size | Low | Templates are ~80-120 lines; well within context limits for all supported agents |
+| Dependency | Active level templates remain the source of truth | High | Compare only against live template files and keep helper logic centralized |
+| Risk | Optional template sections or nested anchors get mislabeled as custom drift | Medium | Allow optional template headers and all template anchor IDs through the shared contract |
+| Risk | Strict post-write validation blocks runtime workflows if legacy warning rules misfire on compliant docs | Medium | Align fixture content and stale section heuristics so a compliant fixture passes `--strict` |
+| Risk | Codex runtime parity is assumed without a file on disk | Low | Explicitly record that no separate Codex speckit file exists in the repo or `/Users/michelkerkmeester/.codex` |
 <!-- /ANCHOR:risks -->
+
+---
+
+<!-- ANCHOR:nfr -->
+## L2: NON-FUNCTIONAL REQUIREMENTS
+
+### Performance
+- **NFR-P01**: Shared template parsing must stay lightweight enough for validator invocations across single folders and test fixtures without introducing noticeable CLI latency.
+- **NFR-P02**: Prompt/workflow hardening must reuse existing assets and avoid duplicating full template catalogs in multiple runtime surfaces.
+
+### Security
+- **NFR-S01**: Template compliance checks must remain read-only with no dynamic execution of template content.
+- **NFR-S02**: Runtime prompt updates must not fabricate unsupported agent surfaces just to satisfy parity expectations.
+
+### Reliability
+- **NFR-R01**: Header and anchor validation must derive from the same runtime contract so the rules cannot silently drift apart.
+- **NFR-R02**: Compliant fixture coverage must prove stable pass behavior before stricter validation is enforced in authoring workflows.
+<!-- /ANCHOR:nfr -->
+
+---
+
+<!-- ANCHOR:edge-cases -->
+## L2: EDGE CASES
+
+### Data Boundaries
+- Empty optional template blocks: optional Level 2 headers can be absent without becoming structural failures.
+- Nested anchor sets in templates: allowed template anchor IDs must not be mislabeled as custom drift.
+- Decision-record naming variance: ADR and DR header patterns must both validate when the runtime resolves that template.
+
+### Error Scenarios
+- Missing required header: fail immediately in normal validation instead of warning-only behavior.
+- Reordered required anchor: fail using the live template sequence rather than pair-balance checks alone.
+- Bare markdown filename references in phase docs: keep wording validator-safe so spec-doc integrity does not fail on false positives.
+
+### State Transitions
+- Pre-hardening fixture lanes: legacy minimalist fixtures may continue to exist, but template-compliance coverage must run through the compliant/mutation lane.
+- Post-write workflow step: strict validation must run after authoring and block downstream indexing or completion if structure drifts.
+<!-- /ANCHOR:edge-cases -->
+
+---
+
+<!-- ANCHOR:complexity -->
+## L2: COMPLEXITY ASSESSMENT
+
+| Dimension | Score | Notes |
+|-----------|-------|-------|
+| Scope | 19/25 | Touches validator rules, shared runtime parsing, workflow assets, agent guidance, and fixture/test coverage |
+| Risk | 17/25 | Structural validation affects authoring workflows and validator exit behavior, so regressions would be user-visible |
+| Research | 11/20 | Required review of parent/phase docs, existing templates, and all active runtime prompt surfaces |
+| **Total** | **47/70** | **Level 2** |
+<!-- /ANCHOR:complexity -->
 
 ---
 
 <!-- ANCHOR:questions -->
 ## 7. OPEN QUESTIONS
 
-- **OQ-001**: Which file owns delegation prompt construction? Candidates: `scripts/lib/delegation-prompt-builder.ts` (if it exists) or the workflow orchestrator that dispatches to external agents. Needs confirmation before REQ-003 implementation.
+- None. The draft references to `.fingerprint` storage and `delegation-prompt-builder.ts` were removed in favor of the runtime surfaces that actually exist.
 <!-- /ANCHOR:questions -->

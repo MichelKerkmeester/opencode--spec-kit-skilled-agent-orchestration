@@ -58,7 +58,15 @@ interface OpencodeCaptureMod {
 
 /** Claude Code capture module interface (lazy-loaded) */
 interface ClaudeCodeCaptureMod {
-  captureClaudeConversation(maxExchanges: number, projectRoot: string): Promise<OpencodeCapture | null>;
+  captureClaudeConversation(
+    maxExchanges: number,
+    projectRoot: string,
+    sessionHints?: {
+      expectedSessionId?: string | null;
+      sessionStartTs?: number | null;
+      invocationTs?: number | null;
+    },
+  ): Promise<OpencodeCapture | null>;
 }
 
 /** Codex CLI capture module interface (lazy-loaded) */
@@ -168,6 +176,39 @@ interface LoadOptions {
   dataFile?: string | null;
   specFolderArg?: string | null;
   preferredCaptureSource?: CaptureDataSource | null;
+}
+
+function parseEpochMs(rawValue: string | undefined): number | null {
+  if (!rawValue) {
+    return null;
+  }
+
+  const numeric = Number(rawValue);
+  if (Number.isFinite(numeric) && numeric > 0) {
+    return numeric > 1_000_000_000_000 ? numeric : numeric * 1000;
+  }
+
+  const parsed = new Date(rawValue).getTime();
+  return Number.isFinite(parsed) ? parsed : null;
+}
+
+function buildClaudeSessionHints(env: NodeJS.ProcessEnv = process.env): {
+  expectedSessionId?: string | null;
+  sessionStartTs?: number | null;
+  invocationTs: number;
+} {
+  const expectedSessionId = env.CLAUDE_CODE_SESSION?.trim()
+    || env.CLAUDE_CODE_SESSION_ID?.trim()
+    || null;
+  const sessionStartTs = parseEpochMs(env.CLAUDE_CODE_SESSION_STARTED_AT)
+    ?? parseEpochMs(env.CLAUDE_CODE_START_TS)
+    ?? null;
+
+  return {
+    expectedSessionId,
+    sessionStartTs,
+    invocationTs: Date.now(),
+  };
 }
 
 function hasUsableCaptureContent(conversation: OpencodeCapture | null): conversation is OpencodeCapture {
@@ -310,7 +351,11 @@ async function attemptNativeCapture(
       }
 
       try {
-        const conversation = await claudeCodeCapture.captureClaudeConversation(20, projectRoot);
+        const conversation = await claudeCodeCapture.captureClaudeConversation(
+          20,
+          projectRoot,
+          buildClaudeSessionHints(),
+        );
         if (hasUsableCaptureContent(conversation)) {
           console.log(`   ✓ Captured ${conversation.exchanges.length} exchanges from Claude Code`);
           console.log(`   ✓ Session: ${conversation.sessionTitle || 'Unnamed'}`);

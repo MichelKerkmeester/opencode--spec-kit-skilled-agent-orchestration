@@ -242,7 +242,8 @@ The closure feature consists of these distinct shipped capabilities:
 | `scripts/tests/historical-memory-remediation.vitest.ts` | Historical active-memory repair/quarantine contract coverage |
 | `scripts/tests/test-extractors-loaders.js` | Dist/export regression suite for extractors and loader |
 | `scripts/tests/test-bug-fixes.js` | Bug-fix verification stack |
-| `scripts/tests/test-integration.js` | End-to-end script workflows |
+| `scripts/tests/test-integration.vitest.ts` | End-to-end script workflows (migrated from `test-integration.js`) |
+| `scripts/tests/workflow-e2e.vitest.ts` | Real save-pipeline E2E coverage with temp-repo factory |
 | `scripts/tests/test-memory-quality-lane.js` | Legacy/v2 diagnostic quality and insufficiency regression suite |
 
 ---
@@ -254,7 +255,7 @@ The closure feature consists of these distinct shipped capabilities:
 - `cd .opencode/skill/system-spec-kit/scripts && npm test -- --run tests/spec-affinity.vitest.ts tests/claude-code-capture.vitest.ts tests/codex-cli-capture.vitest.ts tests/copilot-cli-capture.vitest.ts tests/gemini-cli-capture.vitest.ts tests/quality-scorer-calibration.vitest.ts tests/runtime-memory-inputs.vitest.ts tests/stateless-enrichment.vitest.ts tests/task-enrichment.vitest.ts tests/memory-render-fixture.vitest.ts tests/generate-context-cli-authority.vitest.ts tests/memory-sufficiency.vitest.ts tests/memory-template-contract.vitest.ts tests/historical-memory-remediation.vitest.ts`
 - `cd .opencode/skill/system-spec-kit/scripts/tests && node test-extractors-loaders.js`
 - `cd .opencode/skill/system-spec-kit/scripts/tests && node test-bug-fixes.js`
-- `cd .opencode/skill/system-spec-kit/scripts/tests && node test-integration.js`
+- `cd .opencode/skill/system-spec-kit/scripts && npx vitest run tests/test-integration.vitest.ts tests/workflow-e2e.vitest.ts`
 - `cd .opencode/skill/system-spec-kit/scripts/tests && node test-memory-quality-lane.js`
 - `cd .opencode/skill/system-spec-kit/mcp_server && npm run lint`
 - `cd .opencode/skill/system-spec-kit/mcp_server && npm run build`
@@ -267,7 +268,7 @@ The closure feature consists of these distinct shipped capabilities:
 
 - Scripts targeted suite rerun on 2026-03-16 passed with `14` files and `127` tests.
 - `test-bug-fixes.js` rerun on 2026-03-16 passed with `27` passed, `0` failed, `0` skipped.
-- `test-integration.js` rerun on 2026-03-16 passed with `36` passed, `0` failed, `0` skipped.
+- `test-integration.vitest.ts` + `workflow-e2e.vitest.ts` rerun on 2026-03-16 passed with `17` tests across `2` files.
 - Targeted MCP save-quality rerun on 2026-03-16 passed with `6` files and `298` tests.
 - Package-clean MCP verification rerun on 2026-03-16 passed for `npm run lint`, `npm run build`, and `npm run test`, with the full MCP package suite reporting `282` files, `7787` passed, `11` skipped, and `28` todo.
 - Alignment drift rerun on 2026-03-16 passed with `229` scanned files and `0` findings.

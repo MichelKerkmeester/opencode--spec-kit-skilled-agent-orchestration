@@ -1,0 +1,11 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/002-sprint-1-graph-signal-activation",
+  "description": "Feature Specification: Sprint 1 — Graph Signal Activation",
+  "keywords": ["sprint", "1", "graph", "signal", "degree", "R4", "RRF", "activation"],
+  "lastUpdated": "2026-03-16T21:00:00.000Z",
+  "specId": "002",
+  "folderSlug": "sprint-1-graph-signal-activation",
+  "parentChain": ["02--system-spec-kit", "022-hybrid-rag-fusion", "001-hybrid-rag-fusion-epic"],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

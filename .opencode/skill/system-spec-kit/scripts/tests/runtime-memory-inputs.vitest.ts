@@ -58,7 +58,10 @@ function clearNativeCaptureHintEnv(): void {
   vi.stubEnv('CLAUDECODE', '');
   vi.stubEnv('CLAUDE_CODE', '');
   vi.stubEnv('CLAUDE_CODE_SESSION', '');
+  vi.stubEnv('CLAUDE_CODE_SESSION_ID', '');
   vi.stubEnv('CLAUDE_CODE_ENTRYPOINT', '');
+  vi.stubEnv('CLAUDE_CODE_SESSION_STARTED_AT', '');
+  vi.stubEnv('CLAUDE_CODE_START_TS', '');
   vi.stubEnv('GEMINI_CLI', '');
   vi.stubEnv('GEMINI_SESSION_ID', '');
   vi.stubEnv('OPENCODE_SESSION_ID', '');
@@ -268,6 +271,13 @@ describe('native CLI fallback handling', () => {
 
     expect(captureConversation).toHaveBeenCalledTimes(1);
     expect(captureClaudeConversation).toHaveBeenCalledTimes(1);
+    expect(captureClaudeConversation).toHaveBeenCalledWith(
+      20,
+      expect.any(String),
+      expect.objectContaining({
+        invocationTs: expect.any(Number),
+      }),
+    );
     expect(captureCodexConversation).not.toHaveBeenCalled();
     expect(captureCopilotConversation).not.toHaveBeenCalled();
     expect(captureGeminiConversation).not.toHaveBeenCalled();

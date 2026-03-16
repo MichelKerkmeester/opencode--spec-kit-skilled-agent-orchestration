@@ -49,6 +49,9 @@ function createSessionData(specFolderName: string, overrides: Partial<SessionDat
     ],
     HAS_FILES: true,
     FILE_COUNT: 1,
+    CAPTURED_FILE_COUNT: 1,
+    FILESYSTEM_FILE_COUNT: 1,
+    GIT_CHANGED_FILE_COUNT: 0,
     OUTCOMES: [{ OUTCOME: 'Rendered memory output stays specific and passes the lint gate.', TYPE: 'status' }],
     TOOL_COUNT: 3,
     MESSAGE_COUNT: 2,
@@ -118,6 +121,10 @@ function createSessionData(specFolderName: string, overrides: Partial<SessionDat
     PENDING_TASKS: [],
     NEXT_CONTINUATION_COUNT: 1,
     RESUME_CONTEXT: [{ CONTEXT_ITEM: 'Review the generated memory heading and metadata title.' }],
+    SOURCE_TRANSCRIPT_PATH: '',
+    SOURCE_SESSION_ID: '',
+    SOURCE_SESSION_CREATED: 0,
+    SOURCE_SESSION_UPDATED: 0,
     ...overrides,
   };
 }
@@ -315,6 +322,65 @@ describe('rendered memory fixture regression', () => {
     }
   });
 
+  it('renders session-source provenance and split file counts into frontmatter', async () => {
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-render-fixture-'));
+    const { CONFIG } = await import('../core');
+    const previousTemplateDir = CONFIG.TEMPLATE_DIR;
+    const templatesDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..', 'templates');
+
+    try {
+      const specFolderPath = path.join(tempRoot, '011-session-source-validation');
+      const contextDir = path.join(specFolderPath, 'memory');
+      fs.mkdirSync(contextDir, { recursive: true });
+      fs.writeFileSync(
+        path.join(specFolderPath, 'spec.md'),
+        ['---', 'title: "Spec: Session Source Validation"', '---', '# Spec'].join('\n'),
+        'utf-8'
+      );
+
+      workflowHarness.specFolderPath = specFolderPath;
+      workflowHarness.contextDir = contextDir;
+      CONFIG.TEMPLATE_DIR = templatesDir;
+
+      const { runWorkflow } = await import('../core/workflow');
+      const result = await runWorkflow({
+        collectedData: {
+          _source: 'file',
+          userPrompts: [{ prompt: 'Validate session source provenance', timestamp: '2026-03-16T12:00:00Z' }],
+        },
+        collectSessionDataFn: async (_input, specFolderName) => createSessionData(
+          specFolderName || '011-session-source-validation',
+          {
+            SOURCE_TRANSCRIPT_PATH: '/tmp/.claude/projects/spec-kit/session-xyz.jsonl',
+            SOURCE_SESSION_ID: 'session-xyz',
+            SOURCE_SESSION_CREATED: 1_763_328_000_000,
+            SOURCE_SESSION_UPDATED: 1_763_328_300_000,
+            CAPTURED_FILE_COUNT: 3,
+            FILESYSTEM_FILE_COUNT: 2,
+            GIT_CHANGED_FILE_COUNT: 1,
+            FILE_COUNT: 2,
+          },
+        ),
+        silent: true,
+      });
+
+      const rendered = fs.readFileSync(path.join(result.contextDir, result.contextFilename), 'utf-8');
+      const frontmatter = rendered.match(/^---\n([\s\S]*?)\n---/m)?.[1] ?? '';
+
+      expect(frontmatter).toContain('_sourceTranscriptPath: "/tmp/.claude/projects/spec-kit/session-xyz.jsonl"');
+      expect(frontmatter).toContain('_sourceSessionId: "session-xyz"');
+      expect(frontmatter).toContain('_sourceSessionCreated: 1763328000000');
+      expect(frontmatter).toContain('_sourceSessionUpdated: 1763328300000');
+      expect(frontmatter).toContain('captured_file_count: 3');
+      expect(frontmatter).toContain('filesystem_file_count: 2');
+      expect(frontmatter).toContain('git_changed_file_count: 1');
+      expect(rendered).toContain('file_count: 2');
+    } finally {
+      CONFIG.TEMPLATE_DIR = previousTemplateDir;
+      fs.rmSync(tempRoot, { recursive: true, force: true });
+    }
+  });
+
   it('renders an empty trigger list when no trigger phrases are provided', async () => {
     const { CONFIG } = await import('../core');
     const { populateTemplate } = await import('../renderers');
@@ -336,10 +402,17 @@ describe('rendered memory fixture regression', () => {
         DECISION_COUNT: 0,
         TOOL_COUNT: 0,
         FILE_COUNT: 0,
+        CAPTURED_FILE_COUNT: 0,
+        FILESYSTEM_FILE_COUNT: 0,
+        GIT_CHANGED_FILE_COUNT: 0,
         FOLLOWUP_COUNT: 0,
         ACCESS_COUNT: 0,
         LAST_SEARCH_QUERY: '',
         RELEVANCE_BOOST: 1,
+        SOURCE_TRANSCRIPT_PATH: '',
+        SOURCE_SESSION_ID: '',
+        SOURCE_SESSION_CREATED: 0,
+        SOURCE_SESSION_UPDATED: 0,
         TOPICS: [],
         KEY_FILES: [],
         RELATED_SESSIONS: [],

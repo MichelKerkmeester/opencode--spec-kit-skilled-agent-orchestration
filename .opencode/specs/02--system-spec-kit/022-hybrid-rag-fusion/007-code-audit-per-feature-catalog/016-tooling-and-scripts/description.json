@@ -1,0 +1,21 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/016-tooling-and-scripts",
+  "description": "Feature Specification: tooling-and-scripts",
+  "keywords": [
+    "feature",
+    "specification",
+    "tooling-and-scripts"
+  ],
+  "lastUpdated": "2026-03-16T13:20:01.853Z",
+  "specId": "016",
+  "folderSlug": "tooling-and-scripts",
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion",
+    "007-code-audit-per-feature-catalog"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "14-03-26_10-42__closed-remaining-checklist-and-summary-residual.md"
+  ]
+}

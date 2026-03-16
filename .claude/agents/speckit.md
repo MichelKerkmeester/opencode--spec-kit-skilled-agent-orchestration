@@ -231,9 +231,11 @@ Additional content in existing files:
 ### ✅ ALWAYS
 
 - Copy templates from `templates/level_N/` (NEVER create from scratch)
+- Inline the exact scaffold for the specific spec doc being written: include the canonical template path plus the matching H1, required ANCHOR IDs, required H2 order, and checklist `CHK-NNN [P0/P1/P2]` format when applicable
 - Remove ALL placeholder content `[PLACEHOLDER]` and sample text
 - Use 3-digit padding for spec numbers (001, 042, 099)
 - Run `validate.sh` before claiming completion
+- Run `scripts/spec/validate.sh [SPEC_FOLDER] --strict` immediately after each spec-doc write or update; if it fails, repair template drift before continuing
 - Use kebab-case for folder names (e.g., `007-add-auth`)
 - Fill spec.md FIRST, then plan.md, then tasks.md
 
@@ -312,6 +314,29 @@ Mark checklist items with evidence references:
 ### Reference Formats
 
 Use these prefix formats for cross-referencing and filtering in spec documentation:
+
+### Inline Scaffold Contract
+
+When drafting or updating `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, or `implementation-summary.md`:
+
+1. Read the canonical template from `templates/level_N/`.
+2. Copy the matching scaffold into the working prompt: H1, required ANCHOR tags, required H2 sequence, and checklist item format when relevant.
+3. Keep custom sections only after the required template structure.
+4. Run `scripts/spec/validate.sh [SPEC_FOLDER] --strict` before moving to the next workflow step.
+
+#### Quick Reference: Level 2 spec.md scaffold
+
+```
+# Feature Specification: [Title]
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- ANCHOR:metadata --> ## 1. METADATA <!-- /ANCHOR:metadata -->
+<!-- ANCHOR:problem --> ## 2. PROBLEM & PURPOSE <!-- /ANCHOR:problem -->
+<!-- ANCHOR:scope --> ## 3. SCOPE <!-- /ANCHOR:scope -->
+<!-- ANCHOR:requirements --> ## 4. REQUIREMENTS <!-- /ANCHOR:requirements -->
+<!-- ANCHOR:success-criteria --> ## 5. SUCCESS CRITERIA <!-- /ANCHOR:success-criteria -->
+<!-- ANCHOR:risks --> ## 6. RISKS & DEPENDENCIES <!-- /ANCHOR:risks -->
+<!-- ANCHOR:questions --> ## 10. OPEN QUESTIONS <!-- /ANCHOR:questions -->
+```
 
 | Format         | Purpose                                      | Example                         |
 | -------------- | -------------------------------------------- | ------------------------------- |
@@ -410,6 +435,7 @@ All spec operations should return structured responses:
 □ File existence verified (Glob/Read, not assumptions)
 □ No placeholder text remains (grep -r "\[PLACEHOLDER\]")
 □ validate.sh run successfully (exit code 0 or 1)
+□ validate.sh --strict run after final spec-doc write/update
 □ File sizes reasonable (not empty)
 □ All required files for level present
 □ Checklist items marked with evidence (Level 2+)
@@ -455,6 +481,9 @@ Use this template for completion reports:
 ```
 
 **Rule**: This verification report MUST accompany every completion claim.
+
+---
+
 ## 11. ANTI-PATTERNS
 
 ❌ **Never create from memory** — Always read and copy from template files. Memory-based creation leads to missing sections and format errors.

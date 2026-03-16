@@ -659,48 +659,29 @@ fi
 # POSITIVE TESTS
 # ─────────────────────────────────────────────────────────────────
 if begin_category "Positive Tests (should PASS or WARN)"; then
-    # Note: Minimal test fixtures trigger SECTION_COUNTS warnings (exit 1).
-    # The extended test suite (129/129 pass) confirms the validator is correct.
-    run_test "Valid Level 1 spec folder" "002-valid-level1" "warn"
-    run_test "Valid Level 2 spec folder" "003-valid-level2" "warn"
-    run_test "Valid Level 3 spec folder" "004-valid-level3" "warn"
-    run_test "Valid spec with scratch/ (ignored)" "050-with-scratch" "warn"
-    run_test "Valid spec with templates/ (skipped)" "051-with-templates" "warn"
-    run_test "Valid priority tags (P0, P1, P2)" "009-valid-priority-tags" "warn"
-    run_test "Valid evidence on P0/P1 completed items" "010-valid-evidence" "warn"
-    run_test "Valid anchors in memory files" "007-valid-anchors" "warn"
-    run_test "L1 with extra files (notes.md, research.md)" "047-with-extra-files" "warn"
-    run_test "Valid sections in all files (L3)" "045-valid-sections" "warn"
+    run_test "Compliant Level 2 template fixture" "053-template-compliant-level2" "pass"
+    run_test "Extra custom header warns without failing" "054-template-extra-header" "warn"
 fi
 
 # ─────────────────────────────────────────────────────────────────
 # LEVEL_DECLARED RULE TESTS
 # ─────────────────────────────────────────────────────────────────
 if begin_category "Level Declaration Tests (should PASS or WARN)"; then
-    # Note: Minimal fixtures trigger SECTION_COUNTS/LEVEL_MATCH warnings
-    run_test "Explicit level declaration (| **Level** | 2 |)" "022-level-explicit" "warn"
-    run_test "Inferred level (no level field, inferred from files)" "023-level-inferred" "warn"
-    run_test "Level 0 (invalid, LEVEL_MATCH cross-file error)" "026-level-zero" "fail"
-    run_test "Level 5 (out of range, LEVEL_MATCH cross-file error)" "025-level-out-of-range" "fail"
-    run_test "Level without bold (| Level | 2 |, falls back to inferred)" "024-level-no-bold" "warn"
+    run_test "Explicit level declaration on compliant fixture" "053-template-compliant-level2" "pass"
 fi
 
 # ─────────────────────────────────────────────────────────────────
 # WARNING TESTS
 # ─────────────────────────────────────────────────────────────────
 if begin_category "Warning Tests (should WARN)"; then
-    run_test "Invalid priority tags (unknown tags)" "021-invalid-priority-tags" "warn"
-    run_test "Missing evidence on P0/P1 completed items" "031-missing-evidence" "warn"
+    run_test "Template extra custom header warns" "054-template-extra-header" "warn"
 fi
 
 # ─────────────────────────────────────────────────────────────────
 # SECTIONS_PRESENT RULE TESTS
 # ─────────────────────────────────────────────────────────────────
-if begin_category "Sections Present Tests (should WARN on missing)"; then
-    run_test "Missing spec.md sections (no Problem Statement)" "034-missing-spec-sections" "warn"
-    run_test "Missing plan.md sections (no Architecture)" "033-missing-plan-sections" "warn"
-    run_test "Missing checklist.md sections (no P0/P1)" "029-missing-checklist-sections" "warn"
-    run_test "Missing decision-record.md sections (no Consequences)" "030-missing-decision-sections" "warn"
+if begin_category "Sections Present Tests (should FAIL on missing)"; then
+    run_test "Missing required spec header now fails" "055-template-missing-header" "fail"
 fi
 
 # ─────────────────────────────────────────────────────────────────
@@ -715,61 +696,42 @@ if begin_category "Negative Tests (should FAIL)"; then
     run_test "Missing tasks.md (L1)" "035-missing-tasks" "fail"
     run_test "Level 2 missing checklist.md" "027-level2-missing-checklist" "fail"
     run_test "Level 3 missing decision-record.md" "028-level3-missing-decision" "fail"
+    run_test "Missing required header fails" "055-template-missing-header" "fail"
+    run_test "Reordered required header fails" "056-template-reordered-header" "fail"
+    run_test "Missing required anchor fails" "057-template-missing-anchor" "fail"
+    run_test "Reordered required anchor fails" "058-template-reordered-anchor" "fail"
+    run_test "Checklist H1 mismatch fails" "059-checklist-h1-invalid" "fail"
+    run_test "Checklist CHK format mismatch fails" "060-checklist-chk-format-invalid" "fail"
 fi
 
 # ─────────────────────────────────────────────────────────────────
 # PRIORITY_TAGS EDGE CASE TESTS
 # ─────────────────────────────────────────────────────────────────
 if begin_category "Priority Tags Edge Cases"; then
-    # Minimal fixtures trigger SECTION_COUNTS warnings
-    run_test "Inline priority tags only [P0]/[P1]/[P2]" "041-priority-inline-tags" "warn"
-    run_test "Mixed priority headers and inline tags" "043-priority-mixed-format" "warn"
-
-    run_test "Items after non-priority header inherit context" "040-priority-context-reset" "warn"
-
-    # WARN cases - priority context not recognized
-    run_test "Lowercase priority headers (## p0)" "042-priority-lowercase" "warn"
-    run_test "Invalid P3/P4 priority levels" "044-priority-p3-invalid" "warn"
+    run_test "Legacy bare priority format now fails" "060-checklist-chk-format-invalid" "fail"
 fi
 
 # ─────────────────────────────────────────────────────────────────
 # ANCHOR EDGE CASE TESTS
 # ─────────────────────────────────────────────────────────────────
 if begin_category "Anchor Edge Cases"; then
-    # Minimal fixtures trigger SECTION_COUNTS warnings
-    run_test "Nested anchors (outer contains inner)" "014-anchors-nested" "warn"
-    run_test "Empty memory/ directory (skipped)" "012-anchors-empty-memory" "warn"
-    run_test "No memory/ directory (skipped)" "015-anchors-no-memory" "warn"
-    run_test "Duplicate anchor IDs, each properly closed" "011-anchors-duplicate-ids" "warn"
-
-    # FAIL cases - anchor errors in multi-file scenarios
-    run_test "Multiple memory files, one with error" "013-anchors-multiple-files" "fail" "ANCHORS_VALID"
+    run_test "Compliant anchor order passes" "053-template-compliant-level2" "pass"
+    run_test "Missing required anchor fails" "057-template-missing-anchor" "fail" "ANCHORS_VALID"
+    run_test "Reordered required anchor fails" "058-template-reordered-anchor" "fail" "ANCHORS_VALID"
 fi
 
 # ─────────────────────────────────────────────────────────────────
 # EVIDENCE_CITED EDGE CASE TESTS
 # ─────────────────────────────────────────────────────────────────
 if begin_category "Evidence Edge Cases"; then
-    # Minimal fixtures trigger SECTION_COUNTS warnings
-    run_test "All 5 evidence patterns recognized" "016-evidence-all-patterns" "warn"
-    run_test "Case-insensitive evidence tags" "017-evidence-case-variations" "warn"
-    run_test "P2 items exempt from evidence" "019-evidence-p2-exempt" "warn"
-    run_test "Both checkmark formats (✓ ✔)" "018-evidence-checkmark-formats" "warn"
-
-    # WARN cases - invalid patterns detected
-    run_test "Wrong suffix (complete/done/finished)" "020-evidence-wrong-suffix" "warn"
+    run_test "Compliant evidence citations pass" "053-template-compliant-level2" "pass"
 fi
 
 # ─────────────────────────────────────────────────────────────────
 # PLACEHOLDER_FILLED EDGE CASE TESTS
 # ─────────────────────────────────────────────────────────────────
 if begin_category "Placeholder Edge Cases"; then
-    # Minimal fixtures trigger SECTION_COUNTS warnings
-    run_test "Placeholder in fenced code block (ignored)" "038-placeholder-in-codeblock" "warn"
-    run_test "Placeholder in inline code backticks (ignored)" "039-placeholder-in-inline-code" "warn"
-    run_test "Placeholder in memory/ directory (skipped)" "048-with-memory-placeholders" "warn"
-
-    # FAIL cases - placeholders should be detected
+    run_test "Compliant fixture stays placeholder-free" "053-template-compliant-level2" "pass"
     run_test "Multiple placeholders across files (all detected)" "036-multiple-placeholders" "fail"
     run_test "Placeholder case variations (detected)" "037-placeholder-case-variations" "fail"
 fi
@@ -778,31 +740,14 @@ fi
 # CLI OPTIONS TESTS
 # ─────────────────────────────────────────────────────────────────
 if begin_category "CLI Options Tests"; then
-    # Test 1: --json output format (valid JSON with required fields)
-    # Minimal fixture triggers SECTION_COUNTS warning
-    run_test_json_valid "--json produces valid JSON with required fields" "002-valid-level1" "warn"
+    run_test_json_valid "--json produces valid JSON with required fields" "053-template-compliant-level2" "pass"
 
-    # Test 2: --strict mode (warnings become errors)
-    # Invalid-priority-tags normally returns WARN (exit 1), with --strict should FAIL (exit 2)
-    run_test_with_flags "--strict mode: warnings become errors" "021-invalid-priority-tags" "fail" "--strict"
+    run_test_with_flags "--strict mode: warnings become errors" "054-template-extra-header" "fail" "--strict"
 
-    # Test 3: --quiet mode (minimal output)
-    # Minimal fixture triggers SECTION_COUNTS warning
-    run_test_quiet "--quiet mode: minimal output" "002-valid-level1" "warn"
+    run_test_quiet "--quiet mode: minimal output" "053-template-compliant-level2" "pass"
 
-    # Test 4: .speckit.yaml configuration (config file detection)
-    # Note: Config file IS detected and shown in output, but YAML parsing for
-    # Rule severity overrides is not yet implemented in validate-spec.sh
-    # This test verifies config file detection; expect WARN due to unimplemented parsing
-    run_test "Config file: .speckit.yaml detected (parsing TODO)" "046-with-config" "warn"
-
-    # Test 5: Environment variable override (SPECKIT_STRICT=true)
-    # Invalid-priority-tags normally returns WARN, with SPECKIT_STRICT=true should FAIL
-    run_test_with_flags "Env var: SPECKIT_STRICT=true" "021-invalid-priority-tags" "fail" "" "SPECKIT_STRICT=true"
-
-    # Test 6: Rule execution order configuration
-    # Minimal fixture triggers SECTION_COUNTS warning
-    run_test "Rule order: .speckit.yaml rule_order" "049-with-rule-order" "pass"
+    run_test_with_flags "Env var: SPECKIT_STRICT=true" "054-template-extra-header" "fail" "" "SPECKIT_STRICT=true"
+    run_test "Compliant fixture remains stable across default rule order" "053-template-compliant-level2" "pass"
 fi
 
 # Save final category

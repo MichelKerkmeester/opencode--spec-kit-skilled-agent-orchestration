@@ -125,6 +125,28 @@ available_templates:
     handover: .opencode/skill/system-spec-kit/templates/handover.md
     debug_delegation: .opencode/skill/system-spec-kit/templates/debug-delegation.md
 
+template_compliance:
+  strict_validation_command: ".opencode/skill/system-spec-kit/scripts/spec/validate.sh [SPEC_FOLDER] --strict"
+  prompt_contract:
+    rule: "When this workflow writes tasks.md or implementation-summary.md, embed the matching inline scaffold below in the authoring prompt and preserve required ANCHOR/H2 order."
+  inline_scaffolds:
+    tasks_md: |
+      # Tasks: [NAME]
+      <!-- ANCHOR:notation --> ## Task Notation
+      <!-- ANCHOR:phase-1 --> ## Phase 1: Setup
+      <!-- ANCHOR:phase-2 --> ## Phase 2: Implementation
+      <!-- ANCHOR:phase-3 --> ## Phase 3: Verification
+      <!-- ANCHOR:completion --> ## Completion Criteria
+      <!-- ANCHOR:cross-refs --> ## Cross-References
+    implementation_summary_md: |
+      # Implementation Summary
+      <!-- ANCHOR:metadata --> ## Metadata
+      <!-- ANCHOR:what-built --> ## What Was Built
+      <!-- ANCHOR:how-delivered --> ## How It Was Delivered
+      <!-- ANCHOR:decisions --> ## Key Decisions
+      <!-- ANCHOR:verification --> ## Verification
+      <!-- ANCHOR:limitations --> ## Known Limitations
+
 # ─────────────────────────────────────────────────────────────────
 # PARALLEL DISPATCH CONFIGURATION
 # ─────────────────────────────────────────────────────────────────
@@ -312,6 +334,13 @@ workflow:
     - Create/validate tasks.md
     outputs: [tasks.md]
     template: .opencode/skill/system-spec-kit/templates/level_2/tasks.md
+    template_prompt_contract:
+      canonical_template: .opencode/skill/system-spec-kit/templates/level_2/tasks.md
+      inline_scaffold_key: tasks_md
+      writing_rule: "Embed template_compliance.inline_scaffolds.tasks_md in the prompt before writing tasks.md and preserve the required anchors/headers in order."
+    post_write_validation:
+      command: ".opencode/skill/system-spec-kit/scripts/spec/validate.sh [SPEC_FOLDER] --strict"
+      on_fail: "STOP and repair tasks.md template drift before proceeding"
     validation: tasks_documented
 
   step_3_analysis:
@@ -421,10 +450,16 @@ workflow:
     summary_document:
       location: "[SPEC_FOLDER]/implementation-summary.md"
       required_sections: [files_modified_created, verification_steps_taken, deviations_from_plan, skill_updates, recommended_next_steps, browser_testing_results]
+      canonical_template: .opencode/skill/system-spec-kit/templates/level_2/implementation-summary.md
+      inline_scaffold_key: implementation_summary_md
+      writing_rule: "Embed template_compliance.inline_scaffolds.implementation_summary_md in the prompt before writing implementation-summary.md."
     verification_summary:
       checklist_verification:
         required: true
         must_include: [Total items verified, P0 status (all complete), P1 status (complete or deferred), Deferred P2 with reasons, Link to checklist.md]
+    post_write_validation:
+      command: ".opencode/skill/system-spec-kit/scripts/spec/validate.sh [SPEC_FOLDER] --strict"
+      on_fail: "STOP and repair implementation-summary.md template drift before marking completion"
     validation: implementation_complete
     completion_checkpoint:
       enforcement: HARD_BLOCK

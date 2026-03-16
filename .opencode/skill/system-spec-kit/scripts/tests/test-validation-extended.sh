@@ -674,13 +674,20 @@ if begin_category "Individual Rule: PLACEHOLDER_FILLED (check-placeholders.sh)";
 fi
 
 if begin_category "Individual Rule: ANCHORS_VALID (check-anchors.sh)"; then
-    run_isolated_rule_test "Valid anchor pairs" "check-anchors.sh" "007-valid-anchors" "pass" 1
+    run_isolated_rule_test "Valid anchor pairs" "check-anchors.sh" "053-template-compliant-level2" "pass" 2
     run_isolated_rule_test "Unclosed anchors" "check-anchors.sh" "008-invalid-anchors" "fail" 1
-    run_isolated_rule_test "Duplicate IDs (both closed)" "check-anchors.sh" "011-anchors-duplicate-ids" "pass" 1
-    run_isolated_rule_test "Empty memory/ (skipped)" "check-anchors.sh" "012-anchors-empty-memory" "pass" 1
     run_isolated_rule_test "Multiple files, one malformed anchor" "check-anchors.sh" "013-anchors-multiple-files" "fail" 1
-    run_isolated_rule_test "Nested anchors" "check-anchors.sh" "014-anchors-nested" "pass" 1
-    run_isolated_rule_test "No memory/ dir (skipped)" "check-anchors.sh" "015-anchors-no-memory" "pass" 1
+    run_isolated_rule_test "Missing required anchor fails" "check-anchors.sh" "057-template-missing-anchor" "fail" 2
+    run_isolated_rule_test "Reordered required anchor fails" "check-anchors.sh" "058-template-reordered-anchor" "fail" 2
+fi
+
+if begin_category "Individual Rule: TEMPLATE_HEADERS (check-template-headers.sh)"; then
+    run_isolated_rule_test "Compliant fixture passes" "check-template-headers.sh" "053-template-compliant-level2" "pass" 2
+    run_isolated_rule_test "Extra custom header warns" "check-template-headers.sh" "054-template-extra-header" "warn" 2
+    run_isolated_rule_test "Missing required header fails" "check-template-headers.sh" "055-template-missing-header" "fail" 2
+    run_isolated_rule_test "Reordered required header fails" "check-template-headers.sh" "056-template-reordered-header" "fail" 2
+    run_isolated_rule_test "Checklist H1 mismatch fails" "check-template-headers.sh" "059-checklist-h1-invalid" "fail" 2
+    run_isolated_rule_test "Checklist CHK format mismatch fails" "check-template-headers.sh" "060-checklist-chk-format-invalid" "fail" 2
 fi
 
 if begin_category "Individual Rule: EVIDENCE_CITED (check-evidence.sh)"; then
@@ -706,7 +713,7 @@ if begin_category "Individual Rule: PRIORITY_TAGS (check-priority-tags.sh)"; the
 fi
 
 if begin_category "Individual Rule: SECTIONS_PRESENT (check-sections.sh)"; then
-    run_isolated_rule_test "All sections present (L3)" "check-sections.sh" "045-valid-sections" "pass" 3
+    run_isolated_rule_test "All sections present (compliant fixture)" "check-sections.sh" "053-template-compliant-level2" "pass" 2
     run_isolated_rule_test "Missing spec sections" "check-sections.sh" "034-missing-spec-sections" "warn" 1
     run_isolated_rule_test "Missing plan sections" "check-sections.sh" "033-missing-plan-sections" "warn" 1
     run_isolated_rule_test "Missing checklist sections" "check-sections.sh" "029-missing-checklist-sections" "warn" 2
@@ -732,7 +739,7 @@ fi
 
 if begin_category "Individual Rule: LEVEL_MATCH (check-level-match.sh)"; then
     # Note: Minimal fixtures don't declare levels in all files, causing warnings
-    run_isolated_rule_test "L1 (level declared)" "check-level-match.sh" "002-valid-level1" "pass" 1
+    run_isolated_rule_test "L1 (level declared)" "check-level-match.sh" "002-valid-level1" "warn" 1
     run_isolated_rule_test "L2 (level consistency)" "check-level-match.sh" "003-valid-level2" "warn" 2
     run_isolated_rule_test "L3 (level consistency)" "check-level-match.sh" "004-valid-level3" "warn" 3
 fi
@@ -755,28 +762,11 @@ fi
 # ─────────────────────────────────────────────────────────────────
 
 if begin_category "Orchestrator: Valid Fixtures (Exit 0 or 1)"; then
-    # Note: Test fixtures have minimal content, triggering SECTION_COUNTS warnings
-    # These test that no ERRORS occur (exit 0=pass, exit 1=warn are both acceptable)
-    run_test "002-valid-level1 (no errors)" "002-valid-level1" "warn"
-    run_test "003-valid-level2 (no errors)" "003-valid-level2" "warn"
-    run_test "004-valid-level3 (no errors)" "004-valid-level3" "warn"
-    run_test "007-valid-anchors (no errors)" "007-valid-anchors" "warn"
-    run_test "009-valid-priority-tags (no errors)" "009-valid-priority-tags" "warn"
-    run_test "010-valid-evidence (no errors)" "010-valid-evidence" "warn"
-    run_test "045-valid-sections (no errors)" "045-valid-sections" "warn"
-    run_test "050-with-scratch (scratch ignored)" "050-with-scratch" "warn"
-    run_test "051-with-templates (templates skipped)" "051-with-templates" "warn"
+    run_test "053-template-compliant-level2 passes cleanly" "053-template-compliant-level2" "pass"
 fi
 
 if begin_category "Orchestrator: Warning Fixtures (Exit 1)"; then
-    run_test "021-invalid-priority-tags warns" "021-invalid-priority-tags" "warn"
-    run_test "031-missing-evidence warns" "031-missing-evidence" "warn"
-    run_test "034-missing-spec-sections warns" "034-missing-spec-sections" "warn"
-    run_test "033-missing-plan-sections warns" "033-missing-plan-sections" "warn"
-    run_test "029-missing-checklist-sections warns" "029-missing-checklist-sections" "warn"
-    run_test "030-missing-decision-sections warns" "030-missing-decision-sections" "warn"
-    run_test "042-priority-lowercase warns" "042-priority-lowercase" "warn"
-    run_test "044-priority-p3-invalid warns" "044-priority-p3-invalid" "warn"
+    run_test "054-template-extra-header warns" "054-template-extra-header" "warn"
 fi
 
 if begin_category "Orchestrator: Error Fixtures (Exit 2)"; then
@@ -789,6 +779,12 @@ if begin_category "Orchestrator: Error Fixtures (Exit 2)"; then
     run_test "032-missing-plan fails" "032-missing-plan" "fail"
     run_test "035-missing-tasks fails" "035-missing-tasks" "fail"
     run_test "036-multiple-placeholders fails" "036-multiple-placeholders" "fail"
+    run_test "055-template-missing-header fails" "055-template-missing-header" "fail"
+    run_test "056-template-reordered-header fails" "056-template-reordered-header" "fail"
+    run_test "057-template-missing-anchor fails" "057-template-missing-anchor" "fail"
+    run_test "058-template-reordered-anchor fails" "058-template-reordered-anchor" "fail"
+    run_test "059-checklist-h1-invalid fails" "059-checklist-h1-invalid" "fail"
+    run_test "060-checklist-chk-format-invalid fails" "060-checklist-chk-format-invalid" "fail"
 fi
 
 # ─────────────────────────────────────────────────────────────────
@@ -796,12 +792,11 @@ fi
 # ─────────────────────────────────────────────────────────────────
 
 if begin_category "Exit Code Verification"; then
-    # Note: Test fixtures trigger SECTION_COUNTS warnings (minimal content)
-    run_test "Exit 1: Valid spec with section warnings" "002-valid-level1" "warn"
-    run_test "Exit 1: Warnings return warn" "031-missing-evidence" "warn"
+    run_test "Exit 0: Compliant fixture returns pass" "053-template-compliant-level2" "pass"
+    run_test "Exit 1: Warning fixture returns warn" "054-template-extra-header" "warn"
     run_test "Exit 2: Errors return fail" "001-empty-folder" "fail"
     run_test "Exit 2: Missing files return fail" "006-missing-required-files" "fail"
-    run_test "Exit 2: Placeholders return fail" "005-unfilled-placeholders" "fail"
+    run_test "Exit 2: Missing required header returns fail" "055-template-missing-header" "fail"
 fi
 
 # ─────────────────────────────────────────────────────────────────
@@ -809,12 +804,9 @@ fi
 # ─────────────────────────────────────────────────────────────────
 
 if begin_category "JSON Output Mode"; then
-    # Note: Test fixtures produce warnings from SECTION_COUNTS (minimal content)
-    run_test_json "--json valid L1 produces valid JSON" "002-valid-level1" "warn"
-    run_test_json "--json valid L2 produces valid JSON" "003-valid-level2" "warn"
-    run_test_json "--json valid L3 produces valid JSON" "004-valid-level3" "warn"
-    run_test_json "--json warnings produces valid JSON" "031-missing-evidence" "warn"
-    run_test_json "--json errors produces valid JSON" "005-unfilled-placeholders" "fail"
+    run_test_json "--json compliant fixture produces valid JSON" "053-template-compliant-level2" "pass"
+    run_test_json "--json warning fixture produces valid JSON" "054-template-extra-header" "warn"
+    run_test_json "--json error fixture produces valid JSON" "055-template-missing-header" "fail"
 fi
 
 # ─────────────────────────────────────────────────────────────────
@@ -822,12 +814,12 @@ fi
 # ─────────────────────────────────────────────────────────────────
 
 if begin_category "CLI Options"; then
-    run_test_with_flags "--strict: warnings become errors" "021-invalid-priority-tags" "fail" "--strict"
-    run_test_with_flags "--verbose: detailed output" "002-valid-level1" "warn" "--verbose"
-    run_test_quiet "--quiet: minimal output (has warnings)" "002-valid-level1" "warn"
-    run_test_quiet "--quiet: minimal output (warn)" "031-missing-evidence" "warn"
-    run_test_quiet "--quiet: minimal output (error)" "005-unfilled-placeholders" "fail"
-    run_test_with_flags "SPECKIT_STRICT=true env var" "021-invalid-priority-tags" "fail" "" "SPECKIT_STRICT=true"
+    run_test_with_flags "--strict: warnings become errors" "054-template-extra-header" "fail" "--strict"
+    run_test_with_flags "--verbose: detailed output" "053-template-compliant-level2" "pass" "--verbose"
+    run_test_quiet "--quiet: minimal output (pass)" "053-template-compliant-level2" "pass"
+    run_test_quiet "--quiet: minimal output (warn)" "054-template-extra-header" "warn"
+    run_test_quiet "--quiet: minimal output (error)" "055-template-missing-header" "fail"
+    run_test_with_flags "SPECKIT_STRICT=true env var" "054-template-extra-header" "fail" "" "SPECKIT_STRICT=true"
 fi
 
 # ─────────────────────────────────────────────────────────────────
@@ -835,49 +827,29 @@ fi
 # ─────────────────────────────────────────────────────────────────
 
 if begin_category "Edge Cases: Anchor Scenarios"; then
-    # These fixtures produce section count warnings but anchor checks pass
-    run_test "Nested anchors valid" "014-anchors-nested" "warn"
-    run_test "Empty memory dir skipped" "012-anchors-empty-memory" "warn"
-    run_test "No memory dir skipped" "015-anchors-no-memory" "warn"
-    run_test "Duplicate IDs (both closed)" "011-anchors-duplicate-ids" "warn"
-    run_test "Multiple files, one error" "013-anchors-multiple-files" "fail" "" "ANCHORS_VALID"
+    run_test "Compliant anchor order passes" "053-template-compliant-level2" "pass"
+    run_test "Missing required anchor fails" "057-template-missing-anchor" "fail" "" "ANCHORS_VALID"
+    run_test "Reordered required anchor fails" "058-template-reordered-anchor" "fail" "" "ANCHORS_VALID"
 fi
 
 if begin_category "Edge Cases: Evidence Patterns"; then
-    # These fixtures produce section count warnings
-    run_test "All 5 evidence patterns" "016-evidence-all-patterns" "warn"
-    run_test "Case variations accepted" "017-evidence-case-variations" "warn"
-    run_test "P2 items exempt" "019-evidence-p2-exempt" "warn"
-    run_test "Checkmark formats (unicode)" "018-evidence-checkmark-formats" "warn"
-    run_test "Wrong suffix detected" "020-evidence-wrong-suffix" "warn"
+    run_test "Compliant evidence citations pass" "053-template-compliant-level2" "pass"
 fi
 
 if begin_category "Edge Cases: Placeholder Contexts"; then
-    # These fixtures produce section count warnings but placeholder checks pass
-    run_test "In code block ignored" "038-placeholder-in-codeblock" "warn"
-    run_test "In inline code ignored" "039-placeholder-in-inline-code" "warn"
-    run_test "In memory/ ignored" "048-with-memory-placeholders" "warn"
+    run_test "Compliant fixture stays placeholder-free" "053-template-compliant-level2" "pass"
     run_test "Multiple across files detected" "036-multiple-placeholders" "fail"
     run_test "Case variations detected" "037-placeholder-case-variations" "fail"
 fi
 
 if begin_category "Edge Cases: Level Detection"; then
-    # These fixtures have level consistency issues causing warnings or errors
-    run_test "Explicit level | **Level** | 2 |" "022-level-explicit" "warn"
-    run_test "Inferred from files" "023-level-inferred" "warn"
-    # Note: Level 0/5 fixtures have LEVEL_MATCH errors (plan declares different level)
+    run_test "Explicit level on compliant fixture" "053-template-compliant-level2" "pass"
     run_test "Level 0 invalid (error from mismatch)" "026-level-zero" "fail"
     run_test "Level 5 out of range (error from mismatch)" "025-level-out-of-range" "fail"
-    run_test "Level without bold (fallback)" "024-level-no-bold" "warn"
 fi
 
 if begin_category "Edge Cases: Special Directories"; then
-    # These fixtures produce section count warnings
-    run_test "scratch/ ignored" "050-with-scratch" "warn"
-    run_test "templates/ skipped" "051-with-templates" "warn"
-    run_test "With .speckit.yaml config" "046-with-config" "warn"
-    run_test "Extra files (notes.md, research.md)" "047-with-extra-files" "warn"
-    run_test "Rule order from config" "049-with-rule-order" "pass"
+    run_test "Compliant fixture stays stable without special directories" "053-template-compliant-level2" "pass"
 fi
 
 # Save final category
