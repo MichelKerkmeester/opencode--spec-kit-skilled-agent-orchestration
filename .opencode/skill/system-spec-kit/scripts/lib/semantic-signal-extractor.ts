@@ -286,7 +286,13 @@ function buildTopicTerms(filteredTokens: string[], ngramDepth: NgramDepth): stri
     .slice(0, 12);
 }
 
+/**
+ * Unified semantic signal extraction engine.
+ * Provides mode-aware extraction for topics, triggers, summaries, or all signals combined.
+ * All script-side extractors (trigger, topic, session, summary) delegate to this class.
+ */
 export class SemanticSignalExtractor {
+  /** Extracts semantic signals from text based on the specified mode and stopword profile. */
   static extract(options: SemanticSignalExtractOptions): SemanticSignalResult {
     const text = typeof options.text === 'string' ? options.text : '';
     const stopwordProfile = options.stopwordProfile ?? 'balanced';
@@ -366,6 +372,7 @@ export class SemanticSignalExtractor {
     };
   }
 
+  /** Extracts trigger phrases from text using balanced stopwords and ngram depth 4 by default. */
   static extractTriggerPhrases(text: string, overrides: Omit<SemanticSignalExtractOptions, 'text' | 'mode'> = {}): string[] {
     return SemanticSignalExtractor.extract({
       text,
@@ -377,6 +384,7 @@ export class SemanticSignalExtractor {
     }).phrases;
   }
 
+  /** Extracts trigger phrases with extraction stats and breakdown metadata. */
   static extractTriggerPhrasesWithStats(text: string, overrides: Omit<SemanticSignalExtractOptions, 'text' | 'mode'> = {}): ExtractionResult {
     const result = SemanticSignalExtractor.extract({
       text,
@@ -394,6 +402,7 @@ export class SemanticSignalExtractor {
     };
   }
 
+  /** Extracts topic terms from text using aggressive stopwords and ngram depth 2 by default. */
   static extractTopicTerms(text: string, overrides: Omit<SemanticSignalExtractOptions, 'text' | 'mode'> = {}): string[] {
     return SemanticSignalExtractor.extract({
       text,

@@ -10,12 +10,13 @@
 export * from '@spec-kit/shared/trigger-extractor';
 
 import { SemanticSignalExtractor } from './semantic-signal-extractor';
+import type { ExtractionResult } from '@spec-kit/shared/types';
 
 export function extractTriggerPhrases(text: string): string[] {
   return SemanticSignalExtractor.extractTriggerPhrases(text);
 }
 
-export function extractTriggerPhrasesWithStats(text: string) {
+export function extractTriggerPhrasesWithStats(text: string): ExtractionResult {
   return SemanticSignalExtractor.extractTriggerPhrasesWithStats(text);
 }
 
