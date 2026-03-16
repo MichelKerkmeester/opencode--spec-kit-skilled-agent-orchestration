@@ -140,7 +140,7 @@ Next: Continue implementation
 - [`spec.md`](./spec.md) - Requirements specification
 - [`plan.md`](./plan.md) - Implementation plan
 
-**Key Topics:** `audit` | `phase` | `per` | `feature` | `catalog` | `system spec kit/022 hybrid rag fusion/013 code audit per feature catalog` | `synthesis` | `system` | `spec` | `kit/022` | `hybrid` | `rag` |
+**Key Topics:** `audit` | `phase` | `per` | `feature` | `catalog` | `system spec kit/022 hybrid rag fusion/007 code audit per feature catalog` | `synthesis` | `system` | `spec` | `kit/022` | `hybrid` | `rag` |
 <!-- /ANCHOR:project-state-snapshot -->
 
 ---
@@ -522,7 +522,7 @@ key_topics:
   - "per"
   - "feature"
   - "catalog"
-  - "system spec kit/022 hybrid rag fusion/013 code audit per feature catalog"
+  - "system spec kit/022 hybrid rag fusion/007 code audit per feature catalog"
   - "synthesis"
   - "system"
   - "spec"

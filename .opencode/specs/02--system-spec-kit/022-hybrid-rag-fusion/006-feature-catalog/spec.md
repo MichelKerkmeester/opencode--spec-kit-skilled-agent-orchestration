@@ -314,7 +314,7 @@ Feature catalog references MUST use the human-readable feature name as it appear
 - Folder numbers (e.g., `01--retrieval`, `11-scoring-and-ranking-corrections`)
 - Sprint numbers (e.g., `Sprint 8`, `Sprint 019`)
 - Phase numbers (e.g., `Phase 017`, `Phase 015`)
-- Spec folder paths (e.g., `specs/013-code-audit`)
+- Spec folder paths (e.g., `specs/007-code-audit-per-feature-catalog`)
 
 ### Files to Change
 

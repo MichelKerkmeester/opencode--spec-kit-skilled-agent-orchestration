@@ -246,6 +246,18 @@ function extractCurrentSpecId(specFolder: string): string | null {
   return matches ? matches[matches.length - 1] : null;
 }
 
+/**
+ * CG-07c: Extract all spec IDs from the full spec folder path.
+ * Child specs (nested paths) legitimately reference parent spec IDs,
+ * so all ancestor IDs must be treated as "allowed" rather than foreign.
+ * Example: "010-perfect-session-capturing/012-template-compliance"
+ *   → allowed = { "010-perfect-session-capturing", "012-template-compliance" }
+ */
+function extractAllowedSpecIds(specFolder: string): Set<string> {
+  const matches = specFolder.match(SPEC_ID_REGEX) ?? [];
+  return new Set(matches);
+}
+
 function extractFirstHeading(content: string): string {
   const headingMatch = content.match(/^#\s+(.+)$/m);
   return headingMatch ? headingMatch[1].trim() : '';
@@ -323,12 +335,16 @@ function validateMemoryQualityContent(content: string): ValidationResult {
   });
 
   const currentSpecId = extractCurrentSpecId(specFolder);
+  // CG-07c: Use the full set of allowed IDs (current + all ancestors in path).
+  // Child spec memory files legitimately reference parent spec IDs, so ancestor
+  // IDs must not be treated as foreign contamination.
+  const allowedSpecIds = extractAllowedSpecIds(specFolder);
   const bodyContent = content.replace(/^---\n[\s\S]*?\n---\n?/, '');
   const specIdCounts = countDistinctSpecIds(bodyContent);
   const keyTopics = parseYamlListFromContent(content, 'key_topics');
   const frontmatterSpecCounts = countSpecIdsInValues([...triggerPhrases, ...keyTopics]);
   const foreignFrontmatterMentions = [...frontmatterSpecCounts.entries()]
-    .filter(([specId]) => specId !== currentSpecId)
+    .filter(([specId]) => !allowedSpecIds.has(specId))
     .map(([specId, count]) => `${specId} x${count}`);
   let dominatesForeignSpec = false;
   let scatteredForeignSpec = false;
@@ -338,7 +354,7 @@ function validateMemoryQualityContent(content: string): ValidationResult {
     let strongestForeignMentions = 0;
     let totalForeignMentions = 0;
     for (const [specId, count] of specIdCounts.entries()) {
-      if (specId !== currentSpecId) {
+      if (!allowedSpecIds.has(specId)) {
         totalForeignMentions += count;
         if (count > strongestForeignMentions) {
           strongestForeignMentions = count;

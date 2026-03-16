@@ -181,7 +181,7 @@ interface PerFolderDescription {
 ### Phase 5: Documentation & Testing Playbook
 **Goal**: Update all documentation
 
-- [ ] Update feature catalog `04-spec-folder-description-discovery.md`
+- [ ] Update feature catalog `.opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/04-spec-folder-description-discovery.md`
   - Add per-folder architecture section
   - Update source files table
   - Add uniqueness guarantee documentation
@@ -319,8 +319,7 @@ Phase 4 (Aggregation) ───────────────────�
 
 ---
 
-<!-- ANCHOR:key-findings -->
-## APPENDIX: KEY CODEBASE FINDINGS
+### Key Codebase Findings
 
 ### Finding 1: No Filename Collision Detection
 **Source**: `file-writer.ts:55-82`
@@ -347,7 +346,6 @@ Always writes to the first base path's root. Per-folder files require a new code
 ### Finding 5: Content-Hash Dedup Exists but Insufficient
 **Source**: `file-writer.ts:30-53`
 `checkForDuplicateContent()` catches identical content but NOT similar-but-different saves (e.g., slightly different conversation contexts with the same task slug).
-<!-- /ANCHOR:key-findings -->
 
 ---
 

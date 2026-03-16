@@ -156,7 +156,7 @@ Addresses findings from the triple ultra-think cross-AI review (Claude Opus 4.6 
 - [x] Add transitive dependency checks for re-export evasion.
 
 ### Phase 6: Feature Catalog Parity (Implementation vs Documentation)
-Derived from the 5-agent phase audit of `034-feature-catalog` groups 01-18.
+Derived from the 5-agent phase audit of `006-feature-catalog` groups 01-18.
 
 #### Code Fixes First (behavioral)
 - [x] Fix `memory_match_triggers` cognitive-path limit leak so final output never exceeds caller limit.

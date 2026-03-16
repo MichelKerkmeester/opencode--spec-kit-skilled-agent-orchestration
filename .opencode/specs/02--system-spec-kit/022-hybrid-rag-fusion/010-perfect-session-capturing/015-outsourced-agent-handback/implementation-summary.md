@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: Outsourced Agent Handback Protocol"
-description: "External CLI handback protocol — hard-fail JSON input, next-step persistence, redact-and-scrub security, with post-010 sufficiency/contamination gate awareness."
+description: "External CLI handback protocol — hard-fail JSON input, next-step persistence, richer caller guidance, and post-010 save-gate awareness."
 trigger_phrases: ["outsourced agent summary", "memory handback summary", "runtime memory inputs"]
 importance_tier: "normal"
 contextType: "general"
@@ -18,10 +18,10 @@ contextType: "general"
 | Field | Value |
 |-------|-------|
 | **Status** | Complete |
-| **Completed** | 2026-03-14 |
+| **Completed** | 2026-03-16 |
 | **Parent** | 010-perfect-session-capturing |
 | **R-Item** | R-15 |
-| **Total LOC** | ~600 (runtime ~60, tests ~400, CLI docs ~540) |
+| **Total LOC** | ~700 (runtime ~60, tests ~470, CLI docs + catalog ~620) |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -31,23 +31,23 @@ contextType: "general"
 
 ### 1. Runtime Input Hardening (`data-loader.ts`)
 
-Three-branch `EXPLICIT_DATA_FILE_LOAD_FAILED` error contract: ENOENT, bad JSON, validation failure. No fallback to native capture. Path security via `sanitizePath()` against fixed allowlist.
+Three-branch `EXPLICIT_DATA_FILE_LOAD_FAILED` error contract: ENOENT, bad JSON, validation failure. No fallback to native capture. Path security via `sanitizePath()` against the fixed allowlist.
 
 ### 2. Next-Step Persistence (`input-normalizer.ts` + `session-extractor.ts`)
 
-Accepts `nextSteps` (camelCase, priority) and `next_steps` (snake_case). `buildNextStepsObservation()` → `Next:` / `Follow-up:` facts. `extractNextAction()` via `findFactByPattern()` → `NEXT_ACTION`. Dedup guard via `hasPersistedNextStepsObservation()`.
+Accepts `nextSteps` (camelCase, priority) and `next_steps` (snake_case). `buildNextStepsObservation()` emits `Next:` / `Follow-up:` facts. `extractNextAction()` pulls the first persisted next-step fact into `NEXT_ACTION`.
 
 ### 3. CLI Handback Documentation (4 skills + 4 templates)
 
-Identical 7-step Memory Handback Protocol in all 4 CLI skills (`cli-codex`, `cli-copilot`, `cli-gemini`, `cli-claude-code`): extract `MEMORY_HANDBACK` section, parse to JSON, redact secrets, write `/tmp/save-context-data.json`, run `generate-context.js`, index.
+All 8 caller-facing handback docs now explain the same post-010 contract: extract `MEMORY_HANDBACK`, redact and scrub it, write `/tmp/save-context-data.json`, accept the documented snake_case fields, and expect `INSUFFICIENT_CONTEXT_ABORT` or `CONTAMINATION_GATE_ABORT` when the payload is too thin or cross-spec.
 
-### 4. Code Hardening
+### 4. Feature-Catalog and Doc Regression Guardrail
 
-Empty-array guard on `buildNextStepsObservation`, `extractNextAction` DRY refactor via `findFactByPattern`, test expansion from 5 to 25 tests.
+The feature-catalog entry for outsourced handbacks now points at phase `015-outsourced-agent-handback`, and `scripts/tests/outsourced-agent-handback-docs.vitest.ts` locks the 8 CLI docs plus the catalog to the same rejection-code and payload-richness guidance.
 
 ### 5. Post-010 Gate Awareness
 
-File-backed saves bypass alignment and quality gates but hit sufficiency and contamination gates. Minimum viable payload documented for callers.
+File-backed saves bypass stateless alignment and `QUALITY_GATE_ABORT`, but they still hit sufficiency and contamination gates and can still log non-blocking `QUALITY_GATE_FAIL` warnings that skip production indexing. Minimum viable payload guidance now documents that nuance explicitly for callers.
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -55,12 +55,11 @@ File-backed saves bypass alignment and quality gates but hit sufficiency and con
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-3 implementation phases:
-1. **Runtime safeguards**: Hard-fail JSON errors, normalize next-steps, regression tests
-2. **CLI handback documentation**: 4 SKILL files + 4 prompt templates with redact-and-scrub guidance
-3. **Verification and reconciliation**: Remove stale claims, record current alignment drift, validate
-
-Post-010 integration analysis added as a fourth delivery layer — gate interaction documentation and minimum payload guidance.
+4 implementation phases:
+1. **Runtime safeguards**: Re-verify the explicit JSON hard-fail and next-step persistence behavior already shipped in the system-spec-kit runtime.
+2. **CLI handback documentation**: Update the 4 SKILL files and 4 prompt templates with post-010 rejection codes, snake_case guidance, and richer `FILES` examples.
+3. **Doc guardrails**: Align the feature catalog and add a dedicated Vitest lane so the caller-facing contract does not drift silently.
+4. **Verification and reconciliation**: Record fresh 2026-03-16 lint, Vitest, alignment-drift, JSON-mode write/reject behavior, and spec validation.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -68,11 +67,11 @@ Post-010 integration analysis added as a fourth delivery layer — gate interact
 <!-- ANCHOR:decisions -->
 ## Key Decisions
 
-1. **Hard-fail over silent fallback**: Explicit JSON errors throw immediately — no native capture fallback. Prevents mysterious behavior when outsourced CLI writes bad data.
-2. **camelCase priority**: When both `nextSteps` and `next_steps` present, camelCase wins. Consistent with broader normalizer convention.
-3. **Sufficiency gate not bypassed for file-backed saves**: By design — thin outsourced payloads should fail rather than index low-value context.
-4. **Quality gate IS bypassed for file-backed saves**: `_source !== 'file'` guard at `workflow.ts` line 1633. This is intentional — JSON callers control their own data quality.
-5. **Identical protocol across all 4 CLIs**: Same 7-step flow, same delimiters, same error handling. Prevents drift.
+1. **Hard-fail over silent fallback**: Explicit JSON errors throw immediately, with no native capture fallback. That keeps outsourced failures visible instead of silently mutating into a different capture mode.
+2. **camelCase priority**: When both `nextSteps` and `next_steps` are present, camelCase wins. This stays consistent with the broader normalizer convention.
+3. **Sufficiency gate not bypassed for file-backed saves**: Thin outsourced payloads should fail rather than index low-value context.
+4. **File-backed saves bypass `QUALITY_GATE_ABORT`, not all quality validation**: The `_source !== 'file'` guard exempts file-backed saves from the abort path, but the workflow still emits `QUALITY_GATE_FAIL` warnings and skips production indexing when rendered validation rules fail.
+5. **Identical protocol across all 4 CLIs**: Same delimiter, same rejection-code guidance, and same minimum payload expectations. This prevents drift.
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -85,7 +84,8 @@ Post-010 integration analysis added as a fourth delivery layer — gate interact
 | Alignment | **No** | Yes | `ALIGNMENT_BLOCK` |
 | Sufficiency | **Yes** | Yes | `INSUFFICIENT_CONTEXT_ABORT` |
 | Contamination | **Yes** | Yes | `CONTAMINATION_GATE_ABORT` |
-| Quality | **No** | Yes | `QUALITY_GATE_ABORT` |
+| Quality abort | **No** | Yes | `QUALITY_GATE_ABORT` |
+| Non-blocking quality validation | **Yes** | Yes | Warning-only (`QUALITY_GATE_FAIL`) |
 
 ---
 
@@ -94,13 +94,14 @@ Post-010 integration analysis added as a fourth delivery layer — gate interact
 
 | Check | Result |
 |-------|--------|
-| `runtime-memory-inputs.vitest.ts` | 25/25 PASS |
-| Alignment drift | 0 findings, 0 warnings |
+| `npx vitest run --config ../mcp_server/vitest.config.ts --root . tests/runtime-memory-inputs.vitest.ts tests/outsourced-agent-handback-docs.vitest.ts` | PASS (`2` files, `28` tests) |
+| Alignment drift | PASS (`244` scanned, `0` findings, `0` warnings) |
 | `npm run lint` | PASS |
-| Live outsourced CLI dispatch | 583-line memory file |
+| Rich JSON-mode handback | Wrote `memory/16-03-26_22-23__updated-the-outsourced-agent-handback-docs-so.md` (`557` lines) |
+| Thin JSON-mode handback | Rejected with `INSUFFICIENT_CONTEXT_ABORT` before file write |
 | Spec validation | 0 errors, 0 warnings |
 
-**Verification Date**: 2026-03-14
+**Verification Date**: 2026-03-16
 <!-- /ANCHOR:verification -->
 
 ---
@@ -108,7 +109,7 @@ Post-010 integration analysis added as a fourth delivery layer — gate interact
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **L1**: CLI docs do not yet document `INSUFFICIENT_CONTEXT_ABORT` as a possible response code (gap in REQ-006 for future update)
-2. **L2**: Native capture mode for external CLIs (same workspace) not covered by handback protocol
-3. **L3**: Snake_case field names not yet shown in CLI prompt template JSON examples (documented camelCase only)
+1. **L1**: File-backed saves can still write successfully while logging `QUALITY_GATE_FAIL` and skipping production indexing if rendered validation rules fail.
+2. **L2**: Native capture mode for external CLIs (same workspace) is still outside this protocol’s scope.
+3. **L3**: Structured payloads that arrive pre-populated with `user_prompts`, `recent_context`, or `observations` need equivalent durable evidence because they bypass part of the manual-format synthesis path.
 <!-- /ANCHOR:limitations -->

@@ -76,7 +76,7 @@ Give each spec folder its own `description.json` containing identity metadata (`
 - Changing the memory MCP server's search/indexing pipeline beyond the description discovery layer
 - Migrating existing centralized data (backward compat maintained during transition)
 - Changing the memory anchor format or template system
-- Adding `triggerPhrases` to the `PerFolderDescription` schema (see §7 Known Limitations)
+- Adding `triggerPhrases` to the `PerFolderDescription` schema (see open questions and known limitations below)
 
 ### Files Changed
 
@@ -127,6 +127,28 @@ Give each spec folder its own `description.json` containing identity metadata (`
 - Centralized `descriptions.json` is buildable from per-folder files
 - `memorySequence` does not increment on aborted saves (sufficiency/quality/contamination rejections)
 - 150/150 Vitest tests pass across 5 suites (folder-discovery 92, folder-discovery-integration 39, workflow-memory-tracking 5, slug-utils-boundary 6, slug-uniqueness 8)
+
+### Acceptance Scenarios
+
+### Scenario 1: Creation-time metadata
+**Given** a new spec folder created through `create.sh`
+**When** template generation completes
+**Then** the new folder already contains a sibling `description.json`
+
+### Scenario 2: Same-minute memory saves
+**Given** multiple saves targeting the same spec folder in the same minute
+**When** the generated base slug repeats
+**Then** the saved filenames remain unique and do not overwrite prior memory files
+
+### Scenario 3: Stale description repair
+**Given** a spec folder whose `spec.md` changed after `description.json` was written
+**When** discovery or cache regeneration runs
+**Then** the stale per-folder description is regenerated from the newer spec content
+
+### Scenario 4: Mixed-mode aggregation
+**Given** a repository where some spec folders have `description.json` and others do not
+**When** `generateFolderDescriptions()` rebuilds the aggregate cache
+**Then** fresh per-folder metadata is preferred while missing folders still fall back to `spec.md`
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -165,22 +187,24 @@ Give each spec folder its own `description.json` containing identity metadata (`
 
 ---
 
+<!-- ANCHOR:edge-cases -->
 ## L2: EDGE CASES
 
 - Blank/whitespace-only spec.md: description.json is valid with empty `description`, empty `keywords`, intact identity metadata
 - Very long spec titles (>150 chars): Truncated per `extractDescription()` logic
 - description.json write failure: Logged as warning, save continues (non-fatal)
 - Stale/corrupt description.json: Repaired from spec.md during `generateFolderDescriptions()` scan
-- 10 memories saved in same second: Sequence counter appended (`__slug-1.md`, `__slug-2.md`)
+- 10 memories saved in same second: Sequence counter appends collision suffixes such as `-1` and `-2`
 - Save aborted by sufficiency gate: `memorySequence` not incremented (gated on `ctxFileWritten`)
 - O_CREAT/O_EXCL probe for aborted save: File immediately unlinked; no phantom reservation
+<!-- /ANCHOR:edge-cases -->
 
 ---
 
 <!-- ANCHOR:questions -->
-## 7. OPEN QUESTIONS & KNOWN LIMITATIONS
+## 10. OPEN QUESTIONS
 
-### Resolved
+### Resolved Decisions
 
 - **Q1**: Should per-folder files include memory name history? **YES** — `memoryNameHistory` ring buffer (max 20) + `memorySequence` counter.
 - **Q2**: Should centralized file be deprecated? **NO** — Retained as build-time aggregation artifact.
@@ -189,11 +213,8 @@ Give each spec folder its own `description.json` containing identity metadata (`
 
 - **L1: spec-affinity schema gap**: `spec-affinity.ts` (`buildSpecAffinityTargets()` line 244) reads `description.json` looking for `triggerPhrases` and `title` fields. The `PerFolderDescription` schema defines `keywords` and `description` but not `triggerPhrases` or `title`. The affinity system falls back to spec.md frontmatter trigger_phrases, so this is functional but suboptimal. Adding `triggerPhrases` to the schema is a potential future enhancement.
 - **L2: CHK-027 concurrent writes**: Deferred as P2. OS-level safety provided by atomic temp-then-rename pattern.
-<!-- /ANCHOR:questions -->
 
----
-
-## 8. INTEGRATION WITH 010 PIPELINE
+### 010 Pipeline Integration
 
 This phase provides prerequisite infrastructure consumed by the 010 session-capture pipeline:
 
@@ -206,3 +227,4 @@ This phase provides prerequisite infrastructure consumed by the 010 session-capt
 | Embedding pipeline | Indirect — description metadata could feed `buildWeightedDocumentText()` (Phase 009) | Potential future integration |
 
 The `memorySequence` counter correctly does NOT increment on saves aborted by 010's sufficiency gate (`INSUFFICIENT_CONTEXT_ABORT`), contamination gate, or quality gate, because the tracking code at line 1674 is gated on `ctxFileWritten`.
+<!-- /ANCHOR:questions -->

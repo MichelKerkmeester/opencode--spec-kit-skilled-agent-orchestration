@@ -1,5 +1,5 @@
 ---
-title: "Task Breakdown: Spec Folder Description System Refactor"
+title: "Tasks: Spec Folder Description System Refactor"
 description: "Implementation tasks derived from plan.md phases."
 trigger_phrases:
   - "description tasks"
@@ -7,17 +7,31 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "general"
 ---
-# Task Breakdown: Spec Folder Description System Refactor
+# Tasks: Spec Folder Description System Refactor
 
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
 ---
 
-<!-- ANCHOR:tasks -->
-## TASKS
+<!-- ANCHOR:notation -->
+## Task Notation
 
-### Phase 1: Per-Folder Description Infrastructure
+| Prefix | Meaning |
+|--------|---------|
+| `[x]` | Completed |
+| `[ ]` | Pending |
+| `TASK-###` | Phase-local task identifier preserved from the original implementation campaign |
+
+**Task Format**: `TASK-###: Description (primary file or seam)`
+<!-- /ANCHOR:notation -->
+
+---
+
+<!-- ANCHOR:phase-1 -->
+## Phase 1: Setup
+
+### Per-Folder Description Infrastructure
 
 - [x] TASK-001: Define the per-folder description data model in `folder-discovery.ts`
   - [x] Add the `PerFolderDescription` interface with identity and memory naming fields.
@@ -34,8 +48,14 @@ contextType: "general"
 - [x] TASK-005: Add unit coverage for the new per-folder description helpers
   - [x] Test generation output shape and extracted field values.
   - [x] Test load/save behavior and stale detection paths. [EVIDENCE: T009 loadPerFolderDescription/savePerFolderDescription suite (5 tests); T046-25/25b stale detection tests]
+<!-- /ANCHOR:phase-1 -->
 
-### Phase 2: create.sh Integration
+---
+
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
+
+### create.sh Integration
 
 - [x] TASK-006: Add spec folder description generation to `create.sh`
   - [x] Introduce a `generate_description_json()` helper in the script.
@@ -53,7 +73,7 @@ contextType: "general"
   - [x] Verify L1, L2, and L3 folder creation all produce `description.json`.
   - [x] Verify generation works for nested and phase-based folder paths.
 
-### Phase 3: Memory Uniqueness Guarantees
+### Memory Uniqueness Guarantees
 
 - [x] TASK-011: Add collision-resistant slug generation in `slug-utils.ts`
   - [x] Implement `ensureUniqueMemoryFilename(contextDir, filename)`.
@@ -74,7 +94,7 @@ contextType: "general"
   - [x] Verify 10 rapid saves produce 10 unique files.
   - [x] Verify repeated saves with the same base slug receive sequential suffixes.
 
-### Phase 4: Aggregation & Backward Compatibility
+### Aggregation & Backward Compatibility
 
 - [x] TASK-017: Refactor centralized description aggregation to prefer per-folder files
   - [x] Update `generateFolderDescriptions()` to read `description.json` when present.
@@ -91,11 +111,17 @@ contextType: "general"
 - [x] TASK-021: Add integration coverage for mixed per-folder and legacy discovery
   - [x] Test scenarios where some folders contain `description.json` and others do not.
   - [x] Verify aggregation remains correct across both data sources.
+<!-- /ANCHOR:phase-2 -->
 
-### Phase 5: Documentation & Testing Playbook
+---
+
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
+
+### Documentation & Testing Playbook
 
 - [x] TASK-022: Update the feature catalog documentation for the refactored description system
-  - [x] Revise `04-spec-folder-description-discovery.md` with the per-folder architecture flow.
+  - [x] Revise `.opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/04-spec-folder-description-discovery.md` with the per-folder architecture flow.
   - [x] Update the source file inventory and uniqueness behavior notes.
 - [x] TASK-023: Expand the testing playbook for the new description workflow
   - [x] Add scenarios for per-folder generation, stale detection, and aggregation behavior.
@@ -106,7 +132,27 @@ contextType: "general"
 - [x] TASK-025: Run regression verification for the full description system refactor
   - [x] Ensure all existing relevant tests pass without regressions.
   - [x] Confirm the final documentation and test suite reflect the implemented behavior.
+<!-- /ANCHOR:phase-3 -->
 
-<!-- AUDIT-2026-03-13: All 25 tasks remain complete. Phase 1-2 verified in prior rounds. Phase 3-4 behavior now also confirms reserved random fallback after 100 collisions, discovery-time repair for stale/corrupt existing description.json files, and blank-spec per-folder metadata generation. Latest targeted verification: npm run typecheck passed and 150/150 Vitest tests passed across folder-discovery, folder-discovery-integration, workflow-memory-tracking, slug-utils-boundary, and slug-uniqueness suites. -->
+---
 
-<!-- /ANCHOR:tasks -->
+<!-- ANCHOR:completion -->
+## Completion Criteria
+
+- [x] All 25 implementation tasks remain complete under the current Level 2 template structure.
+- [x] Targeted regression coverage passes for `folder-discovery`, `folder-discovery-integration`, `workflow-memory-tracking`, `slug-utils-boundary`, and `slug-uniqueness`.
+- [x] Strict validation hard errors were remediated by aligning this phase folder to the live template contract from `012-template-compliance`.
+<!-- /ANCHOR:completion -->
+
+---
+
+<!-- ANCHOR:cross-refs -->
+## Cross-References
+
+- **Specification**: See `spec.md`
+- **Plan**: See `plan.md`
+- **Checklist**: See `checklist.md`
+- **Feature Catalog**: See `.opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/04-spec-folder-description-discovery.md`
+
+<!-- AUDIT-2026-03-16: All 25 tasks remain complete. Phase 1-2 shipped the per-folder description lifecycle and create.sh integration. Phase 2 shipped uniqueness and aggregation hardening, including reserved random fallback after 100 collisions, discovery-time repair for stale/corrupt existing description.json files, and blank-spec per-folder metadata generation. Latest targeted verification used the current workspace commands: scripts `npm run lint`; scripts `npx vitest run --config ../mcp_server/vitest.config.ts --root . tests/slug-uniqueness.vitest.ts`; mcp_server `npx vitest run tests/folder-discovery.vitest.ts tests/folder-discovery-integration.vitest.ts tests/workflow-memory-tracking.vitest.ts tests/slug-utils-boundary.vitest.ts`. -->
+<!-- /ANCHOR:cross-refs -->

@@ -143,7 +143,7 @@ Next: Track direct manual scenario mapping changes with playbook updates.
 - [`tasks.md`](./tasks.md) - Task breakdown
 - [`checklist.md`](./checklist.md) - QA checklist
 
-**Key Topics:** `marked readme` | `readme memory` | `marked` | `readme` | `memory` | `closure` | `items` | `system spec kit/022 hybrid rag fusion/013 code audit per feature catalog/015 retrieval enhancements` | `save` | `complete` | `explicit` | `evidence` |
+**Key Topics:** `marked readme` | `readme memory` | `marked` | `readme` | `memory` | `closure` | `items` | `system spec kit/022 hybrid rag fusion/007 code audit per feature catalog/015 retrieval enhancements` | `save` | `complete` | `explicit` | `evidence` |
 <!-- /ANCHOR:project-state-snapshot -->
 
 ---
@@ -469,7 +469,7 @@ key_topics:
   - "memory"
   - "closure"
   - "items"
-  - "system spec kit/022 hybrid rag fusion/013 code audit per feature catalog/015 retrieval enhancements"
+  - "system spec kit/022 hybrid rag fusion/007 code audit per feature catalog/015 retrieval enhancements"
   - "save"
   - "complete"
   - "explicit"

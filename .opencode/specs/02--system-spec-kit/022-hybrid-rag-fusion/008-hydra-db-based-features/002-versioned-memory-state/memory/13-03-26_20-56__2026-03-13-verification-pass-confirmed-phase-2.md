@@ -29,7 +29,7 @@ quality_flags:
 |:--------------|:----------|
 | Session Date | 2026-03-13 |
 | Session ID | session-1773431762937-2f88492113dd |
-| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/002-versioned-memory-state |
+| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/002-versioned-memory-state |
 | Channel | main |
 | Importance Tier | normal |
 | Context Type | general |
@@ -92,20 +92,20 @@ quality_flags:
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/002-versioned-memory-state
+/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/002-versioned-memory-state
 ```
 
 **Or paste this continuation prompt:**
 ```
 CONTINUATION - Attempt 2
-Spec: 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/002-versioned-memory-state
+Spec: 02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/002-versioned-memory-state
 Last: Left human maintainer review rows pending - Technical verification is complete,
 Next: Continue implementation
 ```
 
 **Key Context to Review:**
 
-- Files modified: 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/002-versioned-memory-state/tasks.md, 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/002-versioned-memory-state/checklist.md, 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/002-versioned-memory-state/implementation-summary.md
+- Files modified: 02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/002-versioned-memory-state/tasks.md, 02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/002-versioned-memory-state/checklist.md, 02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/002-versioned-memory-state/implementation-summary.md
 
 - Check: plan.md, tasks.md, checklist.md
 
@@ -121,7 +121,7 @@ Next: Continue implementation
 | Field | Value |
 |-------|-------|
 | Phase | RESEARCH |
-| Active File | 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/002-versioned-memory-state/tasks.md |
+| Active File | 02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/002-versioned-memory-state/tasks.md |
 | Last Action | Left human maintainer review rows pending - Technical verification is complete, |
 | Next Action | Continue implementation |
 | Blockers | None |
@@ -158,11 +158,11 @@ Next: Continue implementation
 
 **Key Files and Their Roles**:
 
-- `02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/002-versioned-memory-state/tasks.md` - Documentation
+- `02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/002-versioned-memory-state/tasks.md` - Documentation
 
-- `02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/002-versioned-memory-state/checklist.md` - Documentation
+- `02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/002-versioned-memory-state/checklist.md` - Documentation
 
-- `02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/002-versioned-memory-state/implementation-summary.md` - Documentation
+- `02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/002-versioned-memory-state/implementation-summary.md` - Documentation
 
 **How to Extend**:
 
@@ -190,7 +190,7 @@ Next: Continue implementation
 
 | **File** | **Description** |
 |:---------|:----------------|
-| `02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/002-versioned-memory-state/(merged-small-files)` | Tree-thinning merged 3 small files (tasks.md, checklist.md, implementation-summary.md). Merged from 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/002-versioned-memory-state/tasks.md : File modified (description pending) | Merged from 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/002-versioned-memory-state/checklist.md : File modified (description pending) | Merged from 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/002-versioned-memory-state/implementation-summary.md : File modified (description pending) |
+| `02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/002-versioned-memory-state/(merged-small-files)` | Tree-thinning merged 3 small files (tasks.md, checklist.md, implementation-summary.md). Merged from 02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/002-versioned-memory-state/tasks.md : File modified (description pending) | Merged from 02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/002-versioned-memory-state/checklist.md : File modified (description pending) | Merged from 02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/002-versioned-memory-state/implementation-summary.md : File modified (description pending) |
 <!-- /ANCHOR:summary -->
 
 ---
@@ -429,9 +429,9 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/002-versioned-memory-state` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/002-versioned-memory-state` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/002-versioned-memory-state" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/002-versioned-memory-state" })` |
 | Stale Context | Information seems outdated | Check `last_accessed_epoch` vs current time |
 | Incomplete Handover | Missing continuation context | Review CONTINUE SESSION section above |
 | Dedup Collision | Wrong memory surfaced | Check `fingerprint_hash` for conflicts |
@@ -443,16 +443,16 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 node .opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts --status
 
 # List memories for this spec folder
-memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/002-versioned-memory-state", limit: 10 })
+memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/002-versioned-memory-state", limit: 10 })
 
 # Verify memory file integrity
-ls -la 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/002-versioned-memory-state/memory/
+ls -la 02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/002-versioned-memory-state/memory/
 
 # Check for orphaned memories
 memory_search({ query: "orphaned", anchors: ["state"] })
 
 # Force re-index of this spec folder
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/002-versioned-memory-state --force
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/002-versioned-memory-state --force
 ```
 
 ### Recovery Priority
@@ -484,7 +484,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 ```yaml
 # Core Identifiers
 session_id: "session-1773431762937-2f88492113dd"
-spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/002-versioned-memory-state"
+spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/002-versioned-memory-state"
 channel: "main"
 
 # Classification
@@ -580,7 +580,7 @@ trigger_phrases:
   - "lineage writes active projection"
   - "writes active projection asof"  []
 
-parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/002-versioned-memory-state"
+parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/002-versioned-memory-state"
 child_sessions:
 
   []

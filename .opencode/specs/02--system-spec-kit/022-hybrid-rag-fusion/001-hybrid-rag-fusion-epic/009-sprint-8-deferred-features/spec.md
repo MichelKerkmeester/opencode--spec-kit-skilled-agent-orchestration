@@ -121,7 +121,7 @@ Define a contained implementation phase for deferred work, with explicit depende
 
 ## Phase Navigation
 
-- Successor: `012-command-alignment`
+- Successor: `011-command-alignment`
 
 ## Acceptance Scenarios (Validator Coverage)
 1. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.

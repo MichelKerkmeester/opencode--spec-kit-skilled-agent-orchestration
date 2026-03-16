@@ -21,7 +21,7 @@ contextType: "general"
 | **Priority** | P1 |
 | **Status** | Complete |
 | **Created** | 2026-03-11 |
-| **Completed** | 2026-03-14 |
+| **Completed** | 2026-03-16 |
 | **Parent** | 010-perfect-session-capturing |
 | **R-Item** | R-15 |
 | **Sequence** | B5 (after 011) |
@@ -45,7 +45,7 @@ The original 013 spec addressed layers 1 and 2. This rewrite adds layer 3 awaren
 
 ### Purpose
 
-Ensure the outsourced agent handback protocol produces saves that survive the full 010 pipeline — not just input validation, but also sufficiency evaluation, contamination detection, and quality scoring. Callers must know what minimum payload richness is required and what rejection codes they may encounter.
+Ensure the outsourced agent handback protocol produces saves that survive the full 010 pipeline as far as caller-provided evidence allows — not just input validation, but also sufficiency evaluation, contamination detection, and post-render quality scoring. Callers must know what minimum payload richness is required, what rejection codes they may encounter, and that file-backed saves bypass `QUALITY_GATE_ABORT` without bypassing all quality-related warnings.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -75,11 +75,13 @@ Ensure the outsourced agent handback protocol produces saves that survive the fu
 | `scripts/utils/input-normalizer.ts` | Modify | Accept `nextSteps`/`next_steps`, persist as `Next:`/`Follow-up:` facts |
 | `scripts/extractors/session-extractor.ts` | Modify | `extractNextAction()` reads `Next:` facts into `NEXT_ACTION` |
 | `scripts/tests/runtime-memory-inputs.vitest.ts` | Modify | Regression coverage for explicit failures and next-step persistence |
+| `scripts/tests/outsourced-agent-handback-docs.vitest.ts` | Create | Guard the 8 handback docs and feature catalog against post-010 drift |
 | `skill/cli-codex/SKILL.md` | Modify | Memory Handback Protocol with redact-and-scrub guidance |
 | `skill/cli-copilot/SKILL.md` | Modify | Same |
 | `skill/cli-gemini/SKILL.md` | Modify | Same |
 | `skill/cli-claude-code/SKILL.md` | Modify | Same |
 | 4 prompt_templates.md files | Modify | `MEMORY_HANDBACK_START`/`END` delimiters and extraction guidance |
+| `feature_catalog/13--memory-quality-and-indexing/17-outsourced-agent-memory-capture.md` | Modify | Align the catalog entry to phase `015` and the post-010 gate contract |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -114,10 +116,12 @@ Ensure the outsourced agent handback protocol produces saves that survive the fu
 - Explicit `dataFile` failures stop with `EXPLICIT_DATA_FILE_LOAD_FAILED: ...`
 - Both `nextSteps` and `next_steps` persist into `Next: ...`, `Follow-up: ...`, and `NEXT_ACTION`
 - All 8 CLI docs tell caller to redact and scrub before writing `/tmp/save-context-data.json`
-- Snake_case JSON payloads with rich content pass sufficiency and index successfully
+- All 8 CLI docs and the feature catalog document `INSUFFICIENT_CONTEXT_ABORT`, `CONTAMINATION_GATE_ABORT`, and richer `FILES` metadata guidance
+- A representative manual-format JSON handback writes successfully and produces a fresh memory file for phase `015`
 - Thin snake_case JSON payloads fail with `INSUFFICIENT_CONTEXT_ABORT` before file write
-- 25/25 tests pass in `runtime-memory-inputs.vitest.ts`
-- Live outsourced CLI dispatch verified with fresh round-trip (583-line memory file)
+- The targeted verification lane passes with `2` files and `28` tests
+- Alignment drift passes with `244` scanned files and `0` findings
+- Spec validation returns zero errors and zero warnings after the phase artifacts are reconciled
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -150,9 +154,9 @@ Ensure the outsourced agent handback protocol produces saves that survive the fu
 
 ### Known Limitations
 
-- **L1**: Quality gate may reject low-description payloads in stateless mode, but file-backed saves are exempt from `QUALITY_GATE_ABORT`. However, they are NOT exempt from `INSUFFICIENT_CONTEXT_ABORT` (sufficiency gate).
-- **L2**: CLI docs do not yet document `INSUFFICIENT_CONTEXT_ABORT` as a possible response code. This is documented as a gap in REQ-006 for future CLI doc updates.
-- **L3**: Native capture mode for external CLIs (when CLI runs in same workspace) is an alternative path not covered by this protocol. The handback protocol only covers the JSON-mode path.
+- **L1**: File-backed saves bypass `QUALITY_GATE_ABORT`, but the workflow still records non-blocking `QUALITY_GATE_FAIL` warnings and may skip production indexing when rendered validation rules fail.
+- **L2**: Native capture mode for external CLIs (when CLI runs in the same workspace) is an alternative path not covered by this protocol. The handback protocol only covers the JSON-mode path.
+- **L3**: Payloads that already use `user_prompts`, `recent_context`, or `observations` bypass parts of the manual-format synthesis path, so callers should provide equivalent durable evidence rather than relying on a single summary string.
 <!-- /ANCHOR:questions -->
 
 ---
@@ -167,10 +171,11 @@ Understanding which gates apply to outsourced (file-backed) saves vs stateless s
 | Alignment check | **No** | Yes | `ALIGNMENT_BLOCK` |
 | Sufficiency evaluation | **Yes** | Yes | `INSUFFICIENT_CONTEXT_ABORT` |
 | Contamination detection | **Yes** | Yes | `CONTAMINATION_GATE_ABORT` |
-| Quality validation | **No** | Yes | `QUALITY_GATE_ABORT` |
+| Quality abort | **No** | Yes | `QUALITY_GATE_ABORT` |
+| Non-blocking quality validation | **Yes** | Yes | Warning-only (`QUALITY_GATE_FAIL`) |
 | Stateless enrichment | **No** (early return) | Yes | N/A |
 
-**Key insight**: Outsourced saves bypass alignment and quality gates (both are `isStatelessMode`-only) but still hit sufficiency and contamination gates. Callers need to provide enough durable evidence for the sufficiency evaluator to pass.
+**Key insight**: Outsourced saves bypass stateless alignment and `QUALITY_GATE_ABORT`, but they still hit sufficiency and contamination gates and can still log non-blocking `QUALITY_GATE_FAIL` warnings that skip production indexing. Callers need to provide enough durable evidence for the sufficiency evaluator to pass and enough structured detail for the rendered memory to stay healthy.
 
 ### Minimum Viable Payload
 
@@ -179,6 +184,7 @@ For a file-backed save to pass the sufficiency gate, it should include:
 - At least one `FILES` entry with a descriptive `DESCRIPTION` (not "description pending")
 - At least one meaningful observation or recent-context entry
 - Substantive content that would produce non-empty rendered sections
+- `ACTION`, `MODIFICATION_MAGNITUDE`, and `_provenance` when known so quality scoring and later recovery have more durable evidence
 
 ---
 

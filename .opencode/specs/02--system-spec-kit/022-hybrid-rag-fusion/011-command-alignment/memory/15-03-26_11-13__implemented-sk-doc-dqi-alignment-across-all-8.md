@@ -29,7 +29,7 @@ quality_flags:
 |:--------------|:----------|
 | Session Date | 2026-03-15 |
 | Session ID | session-1773569620744-e854b6e2dd8c |
-| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/016-command-alignment |
+| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/011-command-alignment |
 | Channel | main |
 | Importance Tier | normal |
 | Context Type | general |
@@ -92,13 +92,13 @@ quality_flags:
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/016-command-alignment
+/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/011-command-alignment
 ```
 
 **Or paste this continuation prompt:**
 ```
 CONTINUATION - Attempt 2
-Spec: 02--system-spec-kit/022-hybrid-rag-fusion/016-command-alignment
+Spec: 02--system-spec-kit/022-hybrid-rag-fusion/011-command-alignment
 Last: Decision: Em dashes in display/output template blocks, frontmatter descriptions,
 Next: Continue implementation
 ```
@@ -191,7 +191,7 @@ Next: Continue implementation
 
 ## 2. OVERVIEW
 
-Implemented sk-doc DQI alignment across all 8 memory command files (README.txt, shared.md, analyze.md, context.md, continue.md, learn.md, save.md, manage.md). Added language tags to ~90 bare code blocks and replaced ~92 prose em dashes with proper punctuation per sk-doc HVR rules. Fixed CI pipeline failure caused by sqlite-vec-darwin-arm64 being listed under dependencies instead of optionalDependencies in scripts/package.json. Finalized the 016-command-alignment spec folder: created checklist.md, updated status to Complete, and corrected deviations from the original plan (7 commands not 8, history under analyze not manage, ingest folded into manage).
+Implemented sk-doc DQI alignment across all 8 memory command files (README.txt, shared.md, analyze.md, context.md, continue.md, learn.md, save.md, manage.md). Added language tags to ~90 bare code blocks and replaced ~92 prose em dashes with proper punctuation per sk-doc HVR rules. Fixed CI pipeline failure caused by sqlite-vec-darwin-arm64 being listed under dependencies instead of optionalDependencies in scripts/package.json. Finalized the 011-command-alignment spec folder: created checklist.md, updated status to Complete, and corrected deviations from the original plan (7 commands not 8, history under analyze not manage, ingest folded into manage).
 
 **Key Outcomes**:
 - Implemented sk-doc DQI alignment across all 8 memory command files (README.txt, shared.md,...
@@ -222,7 +222,7 @@ Implemented sk-doc DQI alignment across all 8 memory command files (README.txt, 
 
 ### FEATURE: Implemented sk-doc DQI alignment across all 8 memory command files (README.txt, shared.md,...
 
-Implemented sk-doc DQI alignment across all 8 memory command files (README.txt, shared.md, analyze.md, context.md, continue.md, learn.md, save.md, manage.md). Added language tags to ~90 bare code blocks and replaced ~92 prose em dashes with proper punctuation per sk-doc HVR rules. Fixed CI pipeline failure caused by sqlite-vec-darwin-arm64 being listed under dependencies instead of optionalDependencies in scripts/package.json. Finalized the 016-command-alignment spec folder: created checklist.md, updated status to Complete, and corrected deviations from the original plan (7 commands not 8, history under analyze not manage, ingest folded into manage).
+Implemented sk-doc DQI alignment across all 8 memory command files (README.txt, shared.md, analyze.md, context.md, continue.md, learn.md, save.md, manage.md). Added language tags to ~90 bare code blocks and replaced ~92 prose em dashes with proper punctuation per sk-doc HVR rules. Fixed CI pipeline failure caused by sqlite-vec-darwin-arm64 being listed under dependencies instead of optionalDependencies in scripts/package.json. Finalized the 011-command-alignment spec folder: created checklist.md, updated status to Complete, and corrected deviations from the original plan (7 commands not 8, history under analyze not manage, ingest folded into manage).
 
 **Details:** sk-doc alignment | code block language tags | em dash removal | DQI compliance | memory commands | 016 command alignment | CI pipeline fix | sqlite-vec optionalDependencies | boundary enforcement workflow | spec folder finalization
 <!-- /ANCHOR:detailed-changes -->
@@ -697,7 +697,7 @@ This session followed a **Sequential with Decision Points** conversation pattern
 
 > **User** | 2026-03-15 @ 11:13:40
 
-Implemented sk-doc DQI alignment across all 8 memory command files (README.txt, shared.md, analyze.md, context.md, continue.md, learn.md, save.md, manage.md). Added language tags to ~90 bare code blocks and replaced ~92 prose em dashes with proper punctuation per sk-doc HVR rules. Fixed CI pipeline failure caused by sqlite-vec-darwin-arm64 being listed under dependencies instead of optionalDependencies in scripts/package.json. Finalized the 016-command-alignment spec folder: created checklist.md, updated status to Complete, and corrected deviations from the original plan (7 commands not 8, history under analyze not manage, ingest folded into manage).
+Implemented sk-doc DQI alignment across all 8 memory command files (README.txt, shared.md, analyze.md, context.md, continue.md, learn.md, save.md, manage.md). Added language tags to ~90 bare code blocks and replaced ~92 prose em dashes with proper punctuation per sk-doc HVR rules. Fixed CI pipeline failure caused by sqlite-vec-darwin-arm64 being listed under dependencies instead of optionalDependencies in scripts/package.json. Finalized the 011-command-alignment spec folder: created checklist.md, updated status to Complete, and corrected deviations from the original plan (7 commands not 8, history under analyze not manage, ingest folded into manage).
 <!-- /ANCHOR:session-history -->
 
 ---
@@ -712,9 +712,9 @@ Implemented sk-doc DQI alignment across all 8 memory command files (README.txt, 
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/016-command-alignment` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/011-command-alignment` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/016-command-alignment" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/011-command-alignment" })` |
 | Stale Context | Information seems outdated | Check `last_accessed_epoch` vs current time |
 | Incomplete Handover | Missing continuation context | Review CONTINUE SESSION section above |
 | Dedup Collision | Wrong memory surfaced | Check `fingerprint_hash` for conflicts |
@@ -726,16 +726,16 @@ Implemented sk-doc DQI alignment across all 8 memory command files (README.txt, 
 node .opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts --status
 
 # List memories for this spec folder
-memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/016-command-alignment", limit: 10 })
+memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/011-command-alignment", limit: 10 })
 
 # Verify memory file integrity
-ls -la 02--system-spec-kit/022-hybrid-rag-fusion/016-command-alignment/memory/
+ls -la 02--system-spec-kit/022-hybrid-rag-fusion/011-command-alignment/memory/
 
 # Check for orphaned memories
 memory_search({ query: "orphaned", anchors: ["state"] })
 
 # Force re-index of this spec folder
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/016-command-alignment --force
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/011-command-alignment --force
 ```
 
 ### Recovery Priority
@@ -767,7 +767,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 ```yaml
 # Core Identifiers
 session_id: "session-1773569620744-e854b6e2dd8c"
-spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/016-command-alignment"
+spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/011-command-alignment"
 channel: "main"
 
 # Classification
@@ -863,7 +863,7 @@ trigger_phrases:
   - "shared.md analyze.md context.md continue.md"
   - "analyze.md context.md continue.md learn.md"  []
 
-parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/016-command-alignment"
+parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/011-command-alignment"
 child_sessions:
 
   []

@@ -450,7 +450,22 @@ cat > /tmp/save-context-data.json << 'JSONEOF'
 {
   "sessionSummary": "<extracted summary>",
   "filesModified": ["<extracted paths>"],
+  "FILES": [
+    {
+      "FILE_PATH": "<extracted path when known>",
+      "DESCRIPTION": "<what changed and why it matters>",
+      "ACTION": "modify",
+      "MODIFICATION_MAGNITUDE": "small",
+      "_provenance": "tool"
+    }
+  ],
   "keyDecisions": ["<extracted decisions>"],
+  "recentContext": [
+    {
+      "request": "<user goal or delegated ask>",
+      "learning": "<durable implementation detail or verification result>"
+    }
+  ],
   "nextSteps": ["<extracted remaining work>"],
   "specFolder": "<extracted or provided by calling AI>",
   "triggerPhrases": ["<auto-derived from task>"]
@@ -461,8 +476,12 @@ JSONEOF
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json [spec-folder]
 ```
 
-Accepted next-step field names: `nextSteps` or `next_steps`. Persistence behavior: the first item becomes `Next: ...` and sets `NEXT_ACTION`; additional items become `Follow-up: ...`.
+Accepted field names include camelCase and the documented snake_case equivalents such as `session_summary`, `files_modified`, `trigger_phrases`, `recent_context`, and `next_steps`. Persistence behavior for next-step fields: the first item becomes `Next: ...` and sets `NEXT_ACTION`; additional items become `Follow-up: ...`.
 
 If `/tmp/save-context-data.json` is passed explicitly and cannot be loaded, `generate-context.js` fails with `EXPLICIT_DATA_FILE_LOAD_FAILED: ...`. Do not fall back to OpenCode capture for that error.
+
+Valid JSON can still be rejected after normalization. File-backed handbacks skip stateless alignment and `QUALITY_GATE_ABORT`, but thin payloads fail with `INSUFFICIENT_CONTEXT_ABORT` and cross-spec payloads fail with `CONTAMINATION_GATE_ABORT`.
+
+Minimum viable payload: include a specific summary, at least one meaningful `recentContext` entry or equivalent observation, and `FILES` entries with a descriptive `DESCRIPTION`. Add `ACTION`, `MODIFICATION_MAGNITUDE`, and `_provenance` when known.
 
 <!-- /ANCHOR:memory_epilogue -->

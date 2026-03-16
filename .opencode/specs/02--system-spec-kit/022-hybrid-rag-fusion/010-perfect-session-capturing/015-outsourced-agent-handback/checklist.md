@@ -1,11 +1,11 @@
 ---
-title: "Verification Checklist: Outsourced Agent Memory Capture"
-description: "Verification checklist for the outsourced agent memory capture protocol"
+title: "Verification Checklist: Outsourced Agent Handback Protocol"
+description: "Verification checklist for the outsourced agent handback protocol"
 trigger_phrases: ["outsourced agent checklist", "memory handback checklist"]
 importance_tier: "normal"
 contextType: "general"
 ---
-# Verification Checklist: Outsourced Agent Memory Capture
+# Verification Checklist: Outsourced Agent Handback Protocol
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
@@ -26,9 +26,9 @@ contextType: "general"
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] Requirements documented in `spec.md` - explicit hard-fail, next-step persistence, CLI doc alignment, and evidence reconciliation captured [Evidence: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-outsourced-agent-memory/spec.md`]
-- [x] CHK-002 [P0] Technical approach defined in `plan.md` - runtime, CLI-doc, and reconciliation phases documented [Evidence: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-outsourced-agent-memory/plan.md`]
-- [x] CHK-003 [P1] Dependencies identified and available - runtime files, 8 CLI docs, `scratch/`, and existing `memory/` contents verified in repo [Evidence: runtime sources plus spec folder directories read during reconciliation]
+- [x] CHK-001 [P0] Requirements documented in `spec.md` - explicit hard-fail, next-step persistence, post-010 gate awareness, and evidence reconciliation captured [Evidence: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/015-outsourced-agent-handback/spec.md`]
+- [x] CHK-002 [P0] Technical approach defined in `plan.md` - runtime, CLI-doc, catalog/test, and reconciliation phases documented [Evidence: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/015-outsourced-agent-handback/plan.md`]
+- [x] CHK-003 [P1] Dependencies identified and available - runtime files, 8 CLI docs, the feature catalog, `scratch/`, and the phase `memory/` directory verified in repo [Evidence: runtime sources plus spec folder directories read during reconciliation]
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -36,10 +36,10 @@ contextType: "general"
 <!-- ANCHOR:code-quality -->
 ## P0 - Runtime Behavior
 
-- [x] CHK-010 [P0] Explicit missing-file failures hard-fail with `EXPLICIT_DATA_FILE_LOAD_FAILED: ...` - verified in `.opencode/skill/system-spec-kit/scripts/loaders/data-loader.ts` [Evidence: `.opencode/skill/system-spec-kit/scripts/loaders/data-loader.ts`]
-- [x] CHK-011 [P0] Explicit invalid JSON and invalid-shape payloads do not fall back to OpenCode capture - verified in `.opencode/skill/system-spec-kit/scripts/loaders/data-loader.ts` and `.opencode/skill/system-spec-kit/scripts/tests/runtime-memory-inputs.vitest.ts` [Evidence: `.opencode/skill/system-spec-kit/scripts/loaders/data-loader.ts`, `.opencode/skill/system-spec-kit/scripts/tests/runtime-memory-inputs.vitest.ts`]
-- [x] CHK-012 [P0] `nextSteps` and `next_steps` are both accepted - verified in `.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts` [Evidence: `.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts`]
-- [x] CHK-013 [P1] First next step persists as `Next: ...`, remaining steps persist as `Follow-up: ...`, `NEXT_ACTION` reads the first step, and mixed structured payloads preserve missing next-step facts without duplicate `Next:` / `Follow-up:` observations - verified in `.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts`, `.opencode/skill/system-spec-kit/scripts/extractors/session-extractor.ts`, and `.opencode/skill/system-spec-kit/scripts/tests/runtime-memory-inputs.vitest.ts` [Evidence: `.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts`, `.opencode/skill/system-spec-kit/scripts/extractors/session-extractor.ts`, `.opencode/skill/system-spec-kit/scripts/tests/runtime-memory-inputs.vitest.ts`]
+- [x] CHK-010 [P0] Explicit missing-file failures hard-fail with `EXPLICIT_DATA_FILE_LOAD_FAILED: ...` [Evidence: `.opencode/skill/system-spec-kit/scripts/loaders/data-loader.ts`]
+- [x] CHK-011 [P0] Explicit invalid JSON and invalid-shape payloads do not fall back to OpenCode capture [Evidence: `.opencode/skill/system-spec-kit/scripts/loaders/data-loader.ts`, `.opencode/skill/system-spec-kit/scripts/tests/runtime-memory-inputs.vitest.ts`]
+- [x] CHK-012 [P0] `nextSteps` and `next_steps` are both accepted [Evidence: `.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts`]
+- [x] CHK-013 [P1] First next step persists as `Next: ...`, remaining steps persist as `Follow-up: ...`, `NEXT_ACTION` reads the first step, and mixed structured payloads preserve missing next-step facts without duplicate `Next:` / `Follow-up:` observations [Evidence: `.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts`, `.opencode/skill/system-spec-kit/scripts/extractors/session-extractor.ts`, `.opencode/skill/system-spec-kit/scripts/tests/runtime-memory-inputs.vitest.ts`]
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -47,12 +47,14 @@ contextType: "general"
 <!-- ANCHOR:testing -->
 ## P1 - Verification Evidence
 
-- [x] CHK-020 [P0] All 4 `cli-*` SKILL files include Memory Handback guidance with redact-and-scrub and explicit failure wording - verified by repo search [Evidence: `Memory Handback|redact|scrub|EXPLICIT_DATA_FILE_LOAD_FAILED` in `.opencode/skill/cli-*/SKILL.md`]
-- [x] CHK-021 [P0] All 4 `cli-*` prompt templates include memory epilogue updates with redact-and-scrub and explicit failure wording - verified by repo search [Evidence: `MEMORY EPILOGUE|redact|scrub|nextSteps|next_steps|EXPLICIT_DATA_FILE_LOAD_FAILED` in `.opencode/skill/cli-*/assets/prompt_templates.md`]
-- [x] CHK-022 [P1] Non-reproducible historical numeric Vitest pass-total claims are removed from scoped spec evidence [Evidence: scoped artifacts now use deferred/unverified wording instead of historical numeric totals]
-- [x] CHK-023 [P1] Alignment drift passes for the scripts root - `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit/scripts` returned `0 findings` and `0 warnings` [Evidence: current rerun output in this task]
-- [x] CHK-024 [P1] TypeScript verification is presented as current acceptance proof only with a reproducible rerun artifact - `npm run lint` in `.opencode/skill/system-spec-kit/scripts` passed (`tsc --noEmit`) [Evidence: current rerun output in this task]
-- [x] CHK-025 [P2] Live outsourced CLI dispatch round-trip verified — `/tmp/save-context-data.json` loaded, normalized, and saved as `memory/14-03-26_15-20__live-outsourced-cli-dispatch-verification.md` (583 lines) via `generate-context.js` [Evidence: `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json 022-hybrid-rag-fusion/013-outsourced-agent-memory` exited 0]
+- [x] CHK-020 [P0] All 4 `cli-*` SKILL files include handback guidance with redact-and-scrub, rejection-code, and minimum-payload wording [Evidence: `.opencode/skill/system-spec-kit/scripts/tests/outsourced-agent-handback-docs.vitest.ts` plus repo reads of `.opencode/skill/cli-*/SKILL.md`]
+- [x] CHK-021 [P0] All 4 `cli-*` prompt templates include richer `FILES` examples, accepted snake_case field names, and explicit failure wording [Evidence: `.opencode/skill/system-spec-kit/scripts/tests/outsourced-agent-handback-docs.vitest.ts` plus repo reads of `.opencode/skill/cli-*/assets/prompt_templates.md`]
+- [x] CHK-022 [P0] Feature-catalog entry reflects phase `015` rather than stale `013` wording [Evidence: `.opencode/skill/system-spec-kit/scripts/tests/outsourced-agent-handback-docs.vitest.ts`, `.opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/17-outsourced-agent-memory-capture.md`]
+- [x] CHK-023 [P1] Targeted runtime-plus-doc verification passes - `npx vitest run --config ../mcp_server/vitest.config.ts --root . tests/runtime-memory-inputs.vitest.ts tests/outsourced-agent-handback-docs.vitest.ts` returned `2` files and `28` tests [Evidence: current rerun output in this task]
+- [x] CHK-024 [P1] Alignment drift passes for the scripts root - `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit/scripts` returned `244` scanned files, `0` findings`, and `0` warnings [Evidence: current rerun output in this task]
+- [x] CHK-025 [P1] TypeScript verification is presented as current acceptance proof only with a reproducible rerun artifact - `npm run lint` in `.opencode/skill/system-spec-kit/scripts` passed (`tsc --noEmit`) [Evidence: current rerun output in this task]
+- [x] CHK-026 [P2] Fresh rich JSON-mode handback write succeeded — `generate-context.js` wrote `memory/16-03-26_22-23__updated-the-outsourced-agent-handback-docs-so.md` (557 lines) for this phase folder [Evidence: current rerun output in this task]
+- [x] CHK-027 [P2] Fresh thin JSON-mode handback payload rejected with `INSUFFICIENT_CONTEXT_ABORT` before file write [Evidence: current rerun output in this task]
 <!-- /ANCHOR:testing -->
 
 ---
@@ -60,9 +62,11 @@ contextType: "general"
 <!-- ANCHOR:security -->
 ## Security and Protocol Wording
 
-- [x] CHK-030 [P0] Redact-and-scrub guidance is reflected in the CLI handback docs - verified by repo search across all 8 relevant docs [Evidence: `redact|scrub` across `.opencode/skill/cli-*/*.md`]
-- [x] CHK-031 [P1] Accepted next-step field names are documented as `nextSteps` or `next_steps` - verified by repo search across all 8 relevant docs [Evidence: `nextSteps|next_steps` across `.opencode/skill/cli-*/*.md`]
+- [x] CHK-030 [P0] Redact-and-scrub guidance is reflected in the CLI handback docs [Evidence: `outsourced-agent-handback-docs.vitest.ts`]
+- [x] CHK-031 [P1] Accepted next-step field names are documented as `nextSteps` or `next_steps` [Evidence: `outsourced-agent-handback-docs.vitest.ts`]
 - [x] CHK-032 [P1] Path wording uses `.opencode/skill/cli-*` rather than `.opencode/skill/sk-cli/` in the reconciled spec docs [Evidence: reconciled spec artifacts]
+- [x] CHK-033 [P1] Rejection-code wording covers both `INSUFFICIENT_CONTEXT_ABORT` and `CONTAMINATION_GATE_ABORT` across the caller-facing docs [Evidence: `outsourced-agent-handback-docs.vitest.ts`]
+- [x] CHK-034 [P1] Payload-richness wording recommends `DESCRIPTION`, `ACTION`, `MODIFICATION_MAGNITUDE`, and `_provenance` for `FILES` entries [Evidence: `outsourced-agent-handback-docs.vitest.ts`]
 <!-- /ANCHOR:security -->
 
 ---
@@ -70,9 +74,9 @@ contextType: "general"
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-040 [P1] `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` now agree on runtime behavior and verification status [Evidence: all 5 spec artifacts reread after edit; live dispatch subsequently verified]
-- [x] CHK-041 [P1] Unverifiable 1032-line artifact claims removed from the spec folder [Evidence: no remaining `1032-line` / `1032 lines` matches in reconciled artifacts]
-- [x] CHK-042 [P1] Any retained memory reference points only to the existing 620-line artifact and does not use it as current acceptance proof [Evidence: existing memory artifact line count plus reconciled docs]
+- [x] CHK-040 [P1] `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` now agree on runtime behavior, quality-gate nuance, and verification status [Evidence: all 5 spec artifacts reread after edit]
+- [x] CHK-041 [P1] Stale `013-outsourced-agent-memory` references were removed from acceptance evidence in this phase folder [Evidence: reconciled spec artifacts]
+- [x] CHK-042 [P1] Fresh 2026-03-16 verification replaced inherited historical round-trip wording in the phase docs [Evidence: reconciled verification sections]
 <!-- /ANCHOR:docs -->
 
 ---
@@ -80,9 +84,9 @@ contextType: "general"
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [x] CHK-050 [P1] Temp files remain in `scratch/` only - `scratch/` contains `.gitkeep` [Evidence: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-outsourced-agent-memory/scratch`]
-- [x] CHK-051 [P1] `memory/` was not manually edited during reconciliation - only existing files were read [Evidence: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-outsourced-agent-memory/memory`]
-- [x] CHK-052 [P2] Existing memory evidence preserved - `memory/11-03-26_15-37__analyzed-loadcollecteddata-in-data-loader-ts.md` exists and is 620 lines
+- [x] CHK-050 [P1] Temp files remain in `scratch/` only - `scratch/` contains `.gitkeep` [Evidence: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/015-outsourced-agent-handback/scratch`]
+- [x] CHK-051 [P1] `memory/` was changed only via `generate-context.js` during verification, not by manual edits [Evidence: rich JSON-mode verification commands in this task]
+- [x] CHK-052 [P2] Fresh phase-local memory evidence preserved - `memory/16-03-26_22-23__updated-the-outsourced-agent-handback-docs-so.md` exists and is 557 lines
 <!-- /ANCHOR:file-org -->
 
 ---
@@ -93,8 +97,8 @@ contextType: "general"
 | Category | Total | Verified |
 |----------|-------|----------|
 | P0 Items | 8 | 8/8 |
-| P1 Items | 12 | 12/12 |
-| P2 Items | 2 | 2/2 |
+| P1 Items | 13 | 13/13 |
+| P2 Items | 3 | 3/3 |
 
-**Verification Date**: 2026-03-14
+**Verification Date**: 2026-03-16
 <!-- /ANCHOR:summary -->

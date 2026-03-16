@@ -405,10 +405,10 @@ get_rule_scripts() {
 
 run_all_rules() {
     local folder="$1" level="$2"
-    # T501 FIX: Normalize level for numeric comparisons (strip "+" suffix)
-    # Rule scripts receive the numeric value; they read "3+" from spec.md themselves if needed
-    local numeric_level="${level//[^0-9]/}"
-    level="$numeric_level"
+    # Level "3+" is a valid value — pass it through to rule scripts unchanged.
+    # Rule scripts that need numeric comparisons (check-files, check-sections)
+    # do their own local stripping; template-aware rules (check-template-headers,
+    # check-anchors) forward the value to template-structure.js which handles "3+".
     local rule_scripts; rule_scripts=$(get_rule_scripts "$folder")
     
     while IFS= read -r rule_script; do

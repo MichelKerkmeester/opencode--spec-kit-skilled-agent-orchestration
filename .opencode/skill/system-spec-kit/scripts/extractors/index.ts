@@ -11,6 +11,7 @@ export * from './diagram-extractor';
 export * from './conversation-extractor';
 export * from './decision-extractor';
 export * from './session-extractor';
+export * from './session-activity-signal';
 /** Re-export extractor functions and helpers. */
 export {
   buildImplementationGuideData,

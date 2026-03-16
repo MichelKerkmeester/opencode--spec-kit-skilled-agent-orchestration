@@ -188,6 +188,32 @@ function findFactByPattern(observations: Observation[], pattern: RegExp): string
   return null;
 }
 
+const INVALID_BLOCKER_PATTERNS: RegExp[] = [
+  /^##\s+/,
+  /^['"` ]/,
+  /'\s+to\s+'/i,
+  /^\d+(?:\.\d+)*\s+[A-Z][A-Z0-9 _-]*$/,
+  /^[A-Z][A-Z0-9 _-]{2,}\s+blocked\b/i,
+  /(?:=>|{|\(|\)|;)\s*$/,
+];
+
+function isInvalidBlockerText(value: string): boolean {
+  const trimmed = value.trim();
+  if (trimmed.length < 8) {
+    return true;
+  }
+
+  return INVALID_BLOCKER_PATTERNS.some((pattern) => pattern.test(trimmed));
+}
+
+function splitBlockerCandidates(narrative: string): string[] {
+  return narrative
+    .split(/\n+/)
+    .flatMap((line) => line.match(/[^.!?]+[.!?]+|[^.!?]+$/g) || [])
+    .map((entry) => entry.trim())
+    .filter(Boolean);
+}
+
 function extractNextAction(
   observations: Observation[],
   recentContext?: RecentContextEntry[]
@@ -203,9 +229,20 @@ function extractBlockers(observations: Observation[]): string {
   for (const obs of observations) {
     const narrative = obs.narrative || '';
     if (blockerKeywords.test(narrative)) {
-      const sentences = narrative.match(/[^.!?]+[.!?]+/g) || [narrative];
+      const sentences = splitBlockerCandidates(narrative);
       for (const sentence of sentences) {
-        if (blockerKeywords.test(sentence)) return sentence.trim().substring(0, 100);
+        if (!blockerKeywords.test(sentence)) {
+          continue;
+        }
+
+        if (isInvalidBlockerText(sentence)) {
+          if (process.env.DEBUG) {
+            console.debug(`[session-extractor] rejected blocker artifact: ${sentence.trim()}`);
+          }
+          continue;
+        }
+
+        return sentence.trim().substring(0, 100);
       }
     }
   }

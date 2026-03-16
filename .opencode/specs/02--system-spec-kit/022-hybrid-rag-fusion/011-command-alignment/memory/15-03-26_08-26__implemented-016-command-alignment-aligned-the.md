@@ -1,10 +1,10 @@
 ---
-title: "Implemented 016-command-alignment"
-description: "Implemented 016-command-alignment: aligned the memory command documentation suite with the current 31-tool Spec Kit Memory MCP surface. Updated 5 existing command files..."
+title: "Implemented 011-command-alignment"
+description: "Implemented 011-command-alignment: aligned the memory command documentation suite with the current 31-tool Spec Kit Memory MCP surface. Updated 5 existing command files..."
 trigger_phrases:
   - "command alignment"
-  - "implemented 016-command-alignment aligned memory"
-  - "016-command-alignment aligned memory command"
+  - "implemented 011-command-alignment aligned memory"
+  - "011-command-alignment aligned memory command"
   - "aligned memory command documentation"
   - "memory command documentation suite"
   - "command documentation suite current"
@@ -29,7 +29,7 @@ quality_flags:
 |:--------------|:----------|
 | Session Date | 2026-03-15 |
 | Session ID | session-1773559562812-29965e65077b |
-| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/016-command-alignment |
+| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/011-command-alignment |
 | Channel | main |
 | Importance Tier | normal |
 | Context Type | general |
@@ -78,11 +78,11 @@ quality_flags:
 
 **Phase:** RESEARCH
 
-**Recent:** Implemented 016-command-alignment: aligned the memory command documentation suite with the current..., Decision: Governance scoping params (tenantId, userId, etc., Decision: memory_get_learning_history owned by /memory:manage history <specFolde
+**Recent:** Implemented 011-command-alignment: aligned the memory command documentation suite with the current..., Decision: Governance scoping params (tenantId, userId, etc., Decision: memory_get_learning_history owned by /memory:manage history <specFolde
 
 **Decisions:** 2 decisions recorded
 
-**Summary:** Implemented 016-command-alignment: aligned the memory command documentation suite with the current 31-tool Spec Kit Memory MCP surface. Updated 5 existing command files (context.md, save.md, manage.md...
+**Summary:** Implemented 011-command-alignment: aligned the memory command documentation suite with the current 31-tool Spec Kit Memory MCP surface. Updated 5 existing command files (context.md, save.md, manage.md...
 
 ### Pending Work
 
@@ -92,13 +92,13 @@ quality_flags:
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/016-command-alignment
+/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/011-command-alignment
 ```
 
 **Or paste this continuation prompt:**
 ```
 CONTINUATION - Attempt 2
-Spec: 02--system-spec-kit/022-hybrid-rag-fusion/016-command-alignment
+Spec: 02--system-spec-kit/022-hybrid-rag-fusion/011-command-alignment
 Last: Decision: memory_get_learning_history owned by /memory:manage history <specFolde
 Next: Continue implementation
 ```
@@ -150,7 +150,7 @@ Next: Continue implementation
 
 **What Was Built**:
 
-- **016-command-alignment: aligned the memory command documentation suite with the current...** - Implemented 016-command-alignment: aligned the memory command documentation suite with the current 31-tool Spec Kit Memory MCP surface.
+- **011-command-alignment: aligned the memory command documentation suite with the current...** - Implemented 011-command-alignment: aligned the memory command documentation suite with the current 31-tool Spec Kit Memory MCP surface.
 
 **Key Files and Their Roles**:
 
@@ -187,10 +187,10 @@ Next: Continue implementation
 
 ## 2. OVERVIEW
 
-Implemented 016-command-alignment: aligned the memory command documentation suite with the current 31-tool Spec Kit Memory MCP surface. Updated 5 existing command files (context.md, save.md, manage.md, learn.md, continue.md), created 3 new command files (analyze.md, shared.md, ingest.md), and refreshed the README with a complete 31-tool coverage matrix. Fixed manage.md numbering error (189 to 19), documented confirmName safety contract for checkpoint_delete, added memory_context trace/budget params, memory_search advanced params with minQualityScore deprecated alias, memory_match_triggers cognitive params, governance/provenance/retention docs for save, history subcommand for manage, and cross-link updates across all 8 commands.
+Implemented 011-command-alignment: aligned the memory command documentation suite with the current 31-tool Spec Kit Memory MCP surface. Updated 5 existing command files (context.md, save.md, manage.md, learn.md, continue.md), created 3 new command files (analyze.md, shared.md, ingest.md), and refreshed the README with a complete 31-tool coverage matrix. Fixed manage.md numbering error (189 to 19), documented confirmName safety contract for checkpoint_delete, added memory_context trace/budget params, memory_search advanced params with minQualityScore deprecated alias, memory_match_triggers cognitive params, governance/provenance/retention docs for save, history subcommand for manage, and cross-link updates across all 8 commands.
 
 **Key Outcomes**:
-- Implemented 016-command-alignment: aligned the memory command documentation suite with the current...
+- Implemented 011-command-alignment: aligned the memory command documentation suite with the current...
 - Decision: Governance scoping params (tenantId, userId, etc.
 - Decision: memory_get_learning_history owned by /memory:manage history <specFolde
 
@@ -207,7 +207,7 @@ Implemented 016-command-alignment: aligned the memory command documentation suit
 | `.opencode/command/memory/shared.md` | Checkpoint_delete |
 | `.opencode/command/memory/ingest.md` | Checkpoint_delete |
 | `.opencode/command/memory/README.txt` | File modified (description pending) |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/016-command-alignment/(merged-small-files)` | Tree-thinning merged 1 small files (tasks.md). Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/016-command-alignment/tasks.md : File modified (description pending) |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/011-command-alignment/(merged-small-files)` | Tree-thinning merged 1 small files (tasks.md). Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/011-command-alignment/tasks.md : File modified (description pending) |
 <!-- /ANCHOR:summary -->
 
 ---
@@ -216,9 +216,9 @@ Implemented 016-command-alignment: aligned the memory command documentation suit
 
 ## 3. DETAILED CHANGES
 
-### FEATURE: Implemented 016-command-alignment: aligned the memory command documentation suite with the current...
+### FEATURE: Implemented 011-command-alignment: aligned the memory command documentation suite with the current...
 
-Implemented 016-command-alignment: aligned the memory command documentation suite with the current 31-tool Spec Kit Memory MCP surface. Updated 5 existing command files (context.md, save.md, manage.md, learn.md, continue.md), created 3 new command files (analyze.md, shared.md, ingest.md), and refreshed the README with a complete 31-tool coverage matrix. Fixed manage.md numbering error (189 to 19), documented confirmName safety contract for checkpoint_delete, added memory_context trace/budget params, memory_search advanced params with minQualityScore deprecated alias, memory_match_triggers cognitive params, governance/provenance/retention docs for save, history subcommand for manage, and cross-link updates across all 8 commands.
+Implemented 011-command-alignment: aligned the memory command documentation suite with the current 31-tool Spec Kit Memory MCP surface. Updated 5 existing command files (context.md, save.md, manage.md, learn.md, continue.md), created 3 new command files (analyze.md, shared.md, ingest.md), and refreshed the README with a complete 31-tool coverage matrix. Fixed manage.md numbering error (189 to 19), documented confirmName safety contract for checkpoint_delete, added memory_context trace/budget params, memory_search advanced params with minQualityScore deprecated alias, memory_match_triggers cognitive params, governance/provenance/retention docs for save, history subcommand for manage, and cross-link updates across all 8 commands.
 
 **Details:** command alignment | memory commands | 016 command alignment | tool coverage matrix | MCP command surface | 31 tools | 8 commands | analyze command | shared command | ingest command | confirmName | minQualityScore | learning history
 <!-- /ANCHOR:detailed-changes -->
@@ -606,7 +606,7 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 
 > **User** | 2026-03-15 @ 08:26:02
 
-Implemented 016-command-alignment: aligned the memory command documentation suite with the current 31-tool Spec Kit Memory MCP surface. Updated 5 existing command files (context.md, save.md, manage.md, learn.md, continue.md), created 3 new command files (analyze.md, shared.md, ingest.md), and refreshed the README with a complete 31-tool coverage matrix. Fixed manage.md numbering error (189 to 19), documented confirmName safety contract for checkpoint_delete, added memory_context trace/budget params, memory_search advanced params with minQualityScore deprecated alias, memory_match_triggers cognitive params, governance/provenance/retention docs for save, history subcommand for manage, and cross-link updates across all 8 commands.
+Implemented 011-command-alignment: aligned the memory command documentation suite with the current 31-tool Spec Kit Memory MCP surface. Updated 5 existing command files (context.md, save.md, manage.md, learn.md, continue.md), created 3 new command files (analyze.md, shared.md, ingest.md), and refreshed the README with a complete 31-tool coverage matrix. Fixed manage.md numbering error (189 to 19), documented confirmName safety contract for checkpoint_delete, added memory_context trace/budget params, memory_search advanced params with minQualityScore deprecated alias, memory_match_triggers cognitive params, governance/provenance/retention docs for save, history subcommand for manage, and cross-link updates across all 8 commands.
 <!-- /ANCHOR:session-history -->
 
 ---
@@ -621,9 +621,9 @@ Implemented 016-command-alignment: aligned the memory command documentation suit
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/016-command-alignment` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/011-command-alignment` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/016-command-alignment" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/011-command-alignment" })` |
 | Stale Context | Information seems outdated | Check `last_accessed_epoch` vs current time |
 | Incomplete Handover | Missing continuation context | Review CONTINUE SESSION section above |
 | Dedup Collision | Wrong memory surfaced | Check `fingerprint_hash` for conflicts |
@@ -635,16 +635,16 @@ Implemented 016-command-alignment: aligned the memory command documentation suit
 node .opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts --status
 
 # List memories for this spec folder
-memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/016-command-alignment", limit: 10 })
+memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/011-command-alignment", limit: 10 })
 
 # Verify memory file integrity
-ls -la 02--system-spec-kit/022-hybrid-rag-fusion/016-command-alignment/memory/
+ls -la 02--system-spec-kit/022-hybrid-rag-fusion/011-command-alignment/memory/
 
 # Check for orphaned memories
 memory_search({ query: "orphaned", anchors: ["state"] })
 
 # Force re-index of this spec folder
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/016-command-alignment --force
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/011-command-alignment --force
 ```
 
 ### Recovery Priority
@@ -676,7 +676,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 ```yaml
 # Core Identifiers
 session_id: "session-1773559562812-29965e65077b"
-spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/016-command-alignment"
+spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/011-command-alignment"
 channel: "main"
 
 # Classification
@@ -760,8 +760,8 @@ key_topics:
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
   - "command alignment"
-  - "implemented 016-command-alignment aligned memory"
-  - "016-command-alignment aligned memory command"
+  - "implemented 011-command-alignment aligned memory"
+  - "011-command-alignment aligned memory command"
   - "aligned memory command documentation"
   - "memory command documentation suite"
   - "command documentation suite current"
@@ -772,7 +772,7 @@ trigger_phrases:
   - "spec kit memory mcp"
   - "kit memory mcp surface"  []
 
-parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/016-command-alignment"
+parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/011-command-alignment"
 child_sessions:
 
   []

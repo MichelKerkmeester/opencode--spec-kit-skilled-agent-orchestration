@@ -21,7 +21,7 @@ quality_flags: []
 |:--------------|:----------|
 | Session Date | 2026-02-27 |
 | Session ID | session-1772179611540-48i59pr3e |
-| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-8 |
+| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/008-sprint-7-long-horizon |
 | Channel | main |
 | Importance Tier | normal |
 | Context Type | general |
@@ -110,13 +110,13 @@ quality_flags: []
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-8
+/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/008-sprint-7-long-horizon
 ```
 
 **Or paste this continuation prompt:**
 ```
 CONTINUATION - Attempt 2
-Spec: 02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-8
+Spec: 02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/008-sprint-7-long-horizon
 Last: Technical Implementation Details
 Next: Continue implementation
 ```
@@ -409,9 +409,9 @@ Implemented UT-9 Sprint 7 review fixes across 4 documentation files (spec.md, pl
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-8` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/008-sprint-7-long-horizon` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-8" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/008-sprint-7-long-horizon" })` |
 | Stale Context | Information seems outdated | Check `last_accessed_epoch` vs current time |
 | Incomplete Handover | Missing continuation context | Review CONTINUE SESSION section above |
 | Dedup Collision | Wrong memory surfaced | Check `fingerprint_hash` for conflicts |
@@ -423,16 +423,16 @@ Implemented UT-9 Sprint 7 review fixes across 4 documentation files (spec.md, pl
 node .opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts --status
 
 # List memories for this spec folder
-memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-8", limit: 10 })
+memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/008-sprint-7-long-horizon", limit: 10 })
 
 # Verify memory file integrity
-ls -la 02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-8/memory/
+ls -la 02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/008-sprint-7-long-horizon/memory/
 
 # Check for orphaned memories
 memory_search({ query: "orphaned", anchors: ["state"] })
 
 # Force re-index of this spec folder
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-8 --force
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/008-sprint-7-long-horizon --force
 ```
 
 ### Recovery Priority
@@ -504,7 +504,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 ```yaml
 # Core Identifiers
 session_id: "session-1772179611540-48i59pr3e"
-spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-8"
+spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/008-sprint-7-long-horizon"
 channel: "main"
 
 # Classification
@@ -593,7 +593,7 @@ trigger_phrases:
   - "entity linking threshold"
   - "conditional effort scenarios"  []
 
-parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-8"
+parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/008-sprint-7-long-horizon"
 child_sessions:
 
   []

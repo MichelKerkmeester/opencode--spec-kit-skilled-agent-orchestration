@@ -1,8 +1,8 @@
 ---
-title: "Executed C1 C5 Edits [022-rewrite-repo-readme/16-03-26_12-15__executed-c1-c5-edits-directly-instead-of-spawning]"
+title: "Executed C1 C5 Edits [018-rewrite-repo-readme/16-03-26_12-15__executed-c1-c5-edits-directly-instead-of-spawning]"
 description: "Executed C1-C5 edits directly instead of spawning 5 cli-copilot agents for efficiency Used N1 background agent for 7 stale catalog entries Added feature catalog and manual..."
 trigger_phrases:
-  - "system spec kit/022 hybrid rag fusion/022 rewrite repo readme"
+  - "system spec kit/022 hybrid rag fusion/018 rewrite repo readme"
   - "feature catalog"
   - "c1 c5"
   - "cli copilot"
@@ -29,7 +29,7 @@ trigger_phrases:
   - "entries used background agent"
   - "references command merge fixed"
   - "kit/022"
-  - "fusion/022"
+  - "fusion/018"
   - "rewrite"
   - "repo"
   - "readme"
@@ -49,7 +49,7 @@ spec_folder_health: {"pass":true,"score":0.95,"errors":0,"warnings":1}
 |:--------------|:----------|
 | Session Date | 2026-03-16 |
 | Session ID | session-1773659726043-9cf6f10f32a8 |
-| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/022-rewrite-repo-readme |
+| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/018-rewrite-repo-readme |
 | Channel | main |
 | Importance Tier | critical |
 | Context Type | general |
@@ -115,13 +115,13 @@ spec_folder_health: {"pass":true,"score":0.95,"errors":0,"warnings":1}
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/022-rewrite-repo-readme
+/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/018-rewrite-repo-readme
 ```
 
 **Or paste this continuation prompt:**
 ```
 CONTINUATION - Attempt 2
-Spec: 02--system-spec-kit/022-hybrid-rag-fusion/022-rewrite-repo-readme
+Spec: 02--system-spec-kit/022-hybrid-rag-fusion/018-rewrite-repo-readme
 Last: Added feature_catalog and manual_testing_playbook references to SKILL.
 Next: Continue implementation
 ```
@@ -180,7 +180,7 @@ Next: Continue implementation
 
 - `10 spec_kit YAML assets - /memory:context → /memory:analyze` - File modified (description pending)
 
-- `015-skill-alignment/tasks.md - +Phase 5 (T020-T026)` - File modified (description pending)
+- `009-skill-alignment/tasks.md - +Phase 5 (T020-T026)` - File modified (description pending)
 
 **How to Extend**:
 
@@ -223,7 +223,7 @@ Executed C1-C5 edits directly instead of spawning 5 cli-copilot agents for effic
 | `.opencode/skill/system-spec-kit/references/debugging/(merged-small-files)` | Tree-thinning merged 1 small files (troubleshooting.md - +Known Resolved Issues (7 entries)).  Merged from .opencode/skill/system-spec-kit/references/debugging/troubleshooting.md - +Known Resolved Issues (7 entries) : File modified (description pending) |
 | `(merged-small-files)` | Tree-thinning merged 1 small files (7 feature_catalog entries updated (namespace mgmt, validation feedback, co-activation, cold-start, anchor-tags, flag defaults x2)).  Merged from 7 feature_catalog entries updated (namespace mgmt, validation feedback, co-activation, cold-start, anchor-tags, flag defaults x2) : File modified (description pending) |
 | `10 spec_kit YAML assets - /memory:context → /(merged-small-files)` | Tree-thinning merged 1 small files (memory:analyze).  Merged from 10 spec_kit YAML assets - /memory:context → /memory:analyze : File modified (description pending) |
-| `015-skill-alignment/(merged-small-files)` | Tree-thinning merged 3 small files (tasks.md - +Phase 5 (T020-T026), checklist.md - +CHK-060 through CHK-068, implementation-summary.md - Phase 5 results).  Merged from 015-skill-alignment/tasks.md - +Phase 5 (T020-T026) : File modified (description pending) | Merged from 015-skill-alignment/checklist.md - +CHK-060 through CHK-068 : File modified (description pending) | Merged from 015-skill-alignment/implementation-summary.md - Phase 5 results : File modified (description pending) |
+| `009-skill-alignment/(merged-small-files)` | Tree-thinning merged 3 small files (tasks.md - +Phase 5 (T020-T026), checklist.md - +CHK-060 through CHK-068, implementation-summary.md - Phase 5 results).  Merged from 009-skill-alignment/tasks.md - +Phase 5 (T020-T026) : File modified (description pending) | Merged from 009-skill-alignment/checklist.md - +CHK-060 through CHK-068 : File modified (description pending) | Merged from 009-skill-alignment/implementation-summary.md - Phase 5 results : File modified (description pending) |
 
 <!-- /ANCHOR:summary -->
 
@@ -655,9 +655,9 @@ Manual context save
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/022-rewrite-repo-readme` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/018-rewrite-repo-readme` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/022-rewrite-repo-readme" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/018-rewrite-repo-readme" })` |
 | Stale Context | Information seems outdated | Check `last_accessed_epoch` vs current time |
 | Incomplete Handover | Missing continuation context | Review CONTINUE SESSION section above |
 | Dedup Collision | Wrong memory surfaced | Check `fingerprint_hash` for conflicts |
@@ -669,16 +669,16 @@ Manual context save
 node .opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts --status
 
 # List memories for this spec folder
-memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/022-rewrite-repo-readme", limit: 10 })
+memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/018-rewrite-repo-readme", limit: 10 })
 
 # Verify memory file integrity
-ls -la 02--system-spec-kit/022-hybrid-rag-fusion/022-rewrite-repo-readme/memory/
+ls -la 02--system-spec-kit/022-hybrid-rag-fusion/018-rewrite-repo-readme/memory/
 
 # Check for orphaned memories
 memory_search({ query: "orphaned", anchors: ["state"] })
 
 # Force re-index of this spec folder
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/022-rewrite-repo-readme --force
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/018-rewrite-repo-readme --force
 ```
 
 ### Recovery Priority
@@ -713,7 +713,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 ```yaml
 # Core Identifiers
 session_id: "session-1773659726043-9cf6f10f32a8"
-spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/022-rewrite-repo-readme"
+spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/018-rewrite-repo-readme"
 channel: "main"
 
 # Classification
@@ -796,7 +796,7 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "system spec kit/022 hybrid rag fusion/022 rewrite repo readme"
+  - "system spec kit/022 hybrid rag fusion/018 rewrite repo readme"
   - "feature catalog"
   - "c1 c5"
   - "cli copilot"
@@ -823,7 +823,7 @@ trigger_phrases:
   - "entries used background agent"
   - "references command merge fixed"
   - "kit/022"
-  - "fusion/022"
+  - "fusion/018"
   - "rewrite"
   - "repo"
   - "readme"
@@ -836,14 +836,14 @@ key_files:
   - ".opencode/skill/system-spec-kit/references/debugging/(merged-small-files)"
   - "(merged-small-files)"
   - "10 spec_kit YAML assets - /memory:context → /(merged-small-files)"
-  - "015-skill-alignment/(merged-small-files)"
+  - "009-skill-alignment/(merged-small-files)"
 
 # Relationships
 related_sessions:
 
   []
 
-parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/022-rewrite-repo-readme"
+parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/018-rewrite-repo-readme"
 child_sessions:
 
   []

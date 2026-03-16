@@ -2,7 +2,7 @@
 title: "Aligned All 38 Document [014-manual-testing-per-playbook/16-03-26_15-31__aligned-all-38-document-files-19-spec-md-19]"
 description: "Aligned all 38 document files (19 spec.md + 19 checklist.md) across the 014-manual-testing-per-playbook folder tree to system-spec-kit template standards. Fixed spec.md..."
 trigger_phrases:
-  - "system spec kit/022 hybrid rag fusion/019 manual testing per playbook"
+  - "system spec kit/022 hybrid rag fusion/014 manual testing per playbook"
   - "speckit template source"
   - "manual testing per playbook"
   - "backtick wrapped"
@@ -29,7 +29,7 @@ trigger_phrases:
   - "tree-thinning merged small files"
   - "merged small files spec.md"
   - "kit/022"
-  - "fusion/019"
+  - "fusion/014"
   - "manual"
   - "testing"
   - "per"
@@ -814,7 +814,7 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "system spec kit/022 hybrid rag fusion/019 manual testing per playbook"
+  - "system spec kit/022 hybrid rag fusion/014 manual testing per playbook"
   - "speckit template source"
   - "manual testing per playbook"
   - "backtick wrapped"
@@ -841,7 +841,7 @@ trigger_phrases:
   - "tree-thinning merged small files"
   - "merged small files spec.md"
   - "kit/022"
-  - "fusion/019"
+  - "fusion/014"
   - "manual"
   - "testing"
   - "per"

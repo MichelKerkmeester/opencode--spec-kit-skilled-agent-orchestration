@@ -383,8 +383,8 @@ interface PipelineRow {
 ## Phase Navigation
 
 | **Parent Spec** | ../spec.md |
-- Predecessor: `007-combined-bug-fixes` (includes folded historical continuity from retired `008-architecture-audit`)
-- Successor: `008-architecture-audit`
+- Predecessor: `007-combined-bug-fixes` *(deleted 2026-03-16)* (includes folded historical continuity from retired `008-architecture-audit` *(now 005-architecture-audit)*)
+- Successor: `005-architecture-audit`
 
 ## Acceptance Scenarios (Validator Coverage)
 1. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.

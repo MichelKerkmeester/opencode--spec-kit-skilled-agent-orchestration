@@ -29,7 +29,7 @@ quality_flags:
 |:--------------|:----------|
 | Session Date | 2026-03-13 |
 | Session ID | session-1773431763422-de52b2b3b0d6 |
-| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/005-hierarchical-scope-governance |
+| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/005-hierarchical-scope-governance |
 | Channel | main |
 | Importance Tier | normal |
 | Context Type | general |
@@ -92,20 +92,20 @@ quality_flags:
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/005-hierarchical-scope-governance
+/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/005-hierarchical-scope-governance
 ```
 
 **Or paste this continuation prompt:**
 ```
 CONTINUATION - Attempt 2
-Spec: 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/005-hierarchical-scope-governance
+Spec: 02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/005-hierarchical-scope-governance
 Last: Left governance reviewer sign-off pending - The runtime is verified, but no huma
 Next: Continue implementation
 ```
 
 **Key Context to Review:**
 
-- Files modified: 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/005-hierarchical-scope-governance/tasks.md, 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/005-hierarchical-scope-governance/checklist.md, 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/005-hierarchical-scope-governance/implementation-summary.md
+- Files modified: 02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/005-hierarchical-scope-governance/tasks.md, 02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/005-hierarchical-scope-governance/checklist.md, 02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/005-hierarchical-scope-governance/implementation-summary.md
 
 - Check: plan.md, tasks.md, checklist.md
 
@@ -121,7 +121,7 @@ Next: Continue implementation
 | Field | Value |
 |-------|-------|
 | Phase | RESEARCH |
-| Active File | 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/005-hierarchical-scope-governance/tasks.md |
+| Active File | 02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/005-hierarchical-scope-governance/tasks.md |
 | Last Action | Left governance reviewer sign-off pending - The runtime is verified, but no huma |
 | Next Action | Continue implementation |
 | Blockers | None |
@@ -158,11 +158,11 @@ Next: Continue implementation
 
 **Key Files and Their Roles**:
 
-- `02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/005-hierarchical-scope-governance/tasks.md` - Documentation
+- `02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/005-hierarchical-scope-governance/tasks.md` - Documentation
 
-- `02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/005-hierarchical-scope-governance/checklist.md` - Documentation
+- `02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/005-hierarchical-scope-governance/checklist.md` - Documentation
 
-- `02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/005-hierarchical-scope-governance/implementation-summary.md` - Documentation
+- `02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/005-hierarchical-scope-governance/implementation-summary.md` - Documentation
 
 **How to Extend**:
 
@@ -190,7 +190,7 @@ Next: Continue implementation
 
 | **File** | **Description** |
 |:---------|:----------------|
-| `02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/005-hierarchical-scope-governance/(merged-small-files)` | Tree-thinning merged 3 small files (tasks.md, checklist.md, implementation-summary.md). Merged from 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/005-hierarchical-scope-governance/tasks.md : File modified (description pending) | Merged from 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/005-hierarchical-scope-governance/checklist.md : File modified (description pending) | Merged from 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/005-hierarchical-scope-governance/implementation-summary.md : File modified (description pending) |
+| `02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/005-hierarchical-scope-governance/(merged-small-files)` | Tree-thinning merged 3 small files (tasks.md, checklist.md, implementation-summary.md). Merged from 02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/005-hierarchical-scope-governance/tasks.md : File modified (description pending) | Merged from 02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/005-hierarchical-scope-governance/checklist.md : File modified (description pending) | Merged from 02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/005-hierarchical-scope-governance/implementation-summary.md : File modified (description pending) |
 <!-- /ANCHOR:summary -->
 
 ---
@@ -429,9 +429,9 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/005-hierarchical-scope-governance` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/005-hierarchical-scope-governance` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/005-hierarchical-scope-governance" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/005-hierarchical-scope-governance" })` |
 | Stale Context | Information seems outdated | Check `last_accessed_epoch` vs current time |
 | Incomplete Handover | Missing continuation context | Review CONTINUE SESSION section above |
 | Dedup Collision | Wrong memory surfaced | Check `fingerprint_hash` for conflicts |
@@ -443,16 +443,16 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 node .opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts --status
 
 # List memories for this spec folder
-memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/005-hierarchical-scope-governance", limit: 10 })
+memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/005-hierarchical-scope-governance", limit: 10 })
 
 # Verify memory file integrity
-ls -la 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/005-hierarchical-scope-governance/memory/
+ls -la 02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/005-hierarchical-scope-governance/memory/
 
 # Check for orphaned memories
 memory_search({ query: "orphaned", anchors: ["state"] })
 
 # Force re-index of this spec folder
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/005-hierarchical-scope-governance --force
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/005-hierarchical-scope-governance --force
 ```
 
 ### Recovery Priority
@@ -484,7 +484,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 ```yaml
 # Core Identifiers
 session_id: "session-1773431763422-de52b2b3b0d6"
-spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/005-hierarchical-scope-governance"
+spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/005-hierarchical-scope-governance"
 channel: "main"
 
 # Classification
@@ -580,7 +580,7 @@ trigger_phrases:
   - "ingest retention audit cascade"
   - "retention audit cascade deletion"  []
 
-parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/005-hierarchical-scope-governance"
+parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/005-hierarchical-scope-governance"
 child_sessions:
 
   []

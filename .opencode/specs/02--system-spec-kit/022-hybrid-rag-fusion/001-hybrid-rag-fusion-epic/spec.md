@@ -24,8 +24,8 @@ Consolidated from the following source docs:
   006-measurement-foundation through 017-long-horizon → 001-hybrid-rag-fusion-epic (sprint children now live directly here; merged from former 005-core-rag-sprints-0-to-9 on 2026-03-16)
   006-extra-features (Sprint 9) → merged into 001-hybrid-rag-fusion-epic sprint children (2026-03-16)
   018-git-context-extractor → merged into 010-perfect-session-capturing (2026-03-14)
-  016-feature-catalog-code-references → merged into 011-feature-catalog (2026-03-14)
-  017-markovian-architectures → merged into 014-hydra-db-based-features (2026-03-14)
+  016-feature-catalog-code-references → merged into 011-feature-catalog (2026-03-14) *(now 006-feature-catalog)*
+  017-markovian-architectures → merged into 014-hydra-db-based-features (2026-03-14) *(now 008-hydra-db-based-features)*
   025-git-context-extractor → deleted (was duplicate of 018, never existed as separate folder)
   007→006, 008→007, 009→008, 010→009, 011→010, 012→011, 013→012, 014→013, 015→014, 999→015 (2026-03-14 sequential renumbering)
 -->
@@ -67,8 +67,8 @@ The spec-kit memory MCP server's graph channel produces a 0% hit rate due to an 
 <!-- AUDIT-2026-03-14: Dashboard updated to reflect current folder structure after consolidation merges.
   005+006 merged into 005-core-rag-sprints-0-to-9 (2026-03-14)
   011+018 merged into 010-perfect-session-capturing (2026-03-14): 018-git-context-extractor absorbed
-  012+016 merged into 011-feature-catalog (2026-03-14): 016-feature-catalog-code-references absorbed
-  015+017 merged into 014-hydra-db-based-features (2026-03-14): 017-markovian-architectures absorbed
+  012+016 merged into 011-feature-catalog (2026-03-14): 016-feature-catalog-code-references absorbed *(now 006-feature-catalog)*
+  015+017 merged into 014-hydra-db-based-features (2026-03-14): 017-markovian-architectures absorbed *(now 008-hydra-db-based-features)*
   Deleted folders: 006, 016, 017, 018, 025
 AUDIT-2026-03-16: 005-core-rag-sprints-0-to-9 merged into 001-hybrid-rag-fusion-epic.
   Sprint children (001-sprint-0-measurement-foundation through 010-sprint-9-extra-features) now live directly under 001-hybrid-rag-fusion-epic/.

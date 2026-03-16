@@ -21,7 +21,7 @@ quality_flags: []
 |:--------------|:----------|
 | Session Date | 2026-02-28 |
 | Session ID | session-1772313827308-9895faq5y |
-| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-8 |
+| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/009-sprint-8-deferred-features |
 | Channel | main |
 | Importance Tier | normal |
 | Context Type | general |
@@ -110,13 +110,13 @@ quality_flags: []
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-8
+/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/009-sprint-8-deferred-features
 ```
 
 **Or paste this continuation prompt:**
 ```
 CONTINUATION - Attempt 2
-Spec: 02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-8
+Spec: 02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/009-sprint-8-deferred-features
 Last: Technical Implementation Details
 Next: Continue implementation
 ```
@@ -144,7 +144,7 @@ Next: Continue implementation
 | Next Action | Continue implementation |
 | Blockers | None |
 
-**Key Topics:** `remediation` | `comprehensive` | `decision` | `sprint` | `feature sections` | `sprint annotations` | `system` | `spec` | `system spec kit/022 hybrid rag fusion/006 core rag sprints 0 to 8` | `feature` | `fixes` | `kit/140` | 
+**Key Topics:** `remediation` | `comprehensive` | `decision` | `sprint` | `feature sections` | `sprint annotations` | `system` | `spec` | `system spec kit/022 hybrid rag fusion/001 hybrid rag fusion epic` | `feature` | `fixes` | `kit/140` | 
 <!-- /ANCHOR:project-state-snapshot -->
 
 ---
@@ -353,9 +353,9 @@ Continued comprehensive MCP server remediation session. Updated summary_of_new_f
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-8` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/009-sprint-8-deferred-features` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-8" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/009-sprint-8-deferred-features" })` |
 | Stale Context | Information seems outdated | Check `last_accessed_epoch` vs current time |
 | Incomplete Handover | Missing continuation context | Review CONTINUE SESSION section above |
 | Dedup Collision | Wrong memory surfaced | Check `fingerprint_hash` for conflicts |
@@ -367,16 +367,16 @@ Continued comprehensive MCP server remediation session. Updated summary_of_new_f
 node .opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts --status
 
 # List memories for this spec folder
-memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-8", limit: 10 })
+memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/009-sprint-8-deferred-features", limit: 10 })
 
 # Verify memory file integrity
-ls -la 02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-8/memory/
+ls -la 02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/009-sprint-8-deferred-features/memory/
 
 # Check for orphaned memories
 memory_search({ query: "orphaned", anchors: ["state"] })
 
 # Force re-index of this spec folder
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-8 --force
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/009-sprint-8-deferred-features --force
 ```
 
 ### Recovery Priority
@@ -448,7 +448,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 ```yaml
 # Core Identifiers
 session_id: "session-1772313827308-9895faq5y"
-spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-8"
+spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/009-sprint-8-deferred-features"
 channel: "main"
 
 # Classification
@@ -524,7 +524,7 @@ key_topics:
   - "sprint annotations"
   - "system"
   - "spec"
-  - "system spec kit/022 hybrid rag fusion/006 core rag sprints 0 to 8"
+  - "system spec kit/022 hybrid rag fusion/001 hybrid rag fusion epic"
   - "feature"
   - "fixes"
   - "kit/140"
@@ -537,7 +537,7 @@ trigger_phrases:
   - "comprehensive remediation changelog"
   - "v2.3.0.15"  []
 
-parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-8"
+parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/009-sprint-8-deferred-features"
 child_sessions:
 
   []

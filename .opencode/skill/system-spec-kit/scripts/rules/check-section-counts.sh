@@ -119,7 +119,10 @@ run_check() {
             min_scenarios=2
             ;;
         2)
-            min_spec_h2=8
+            # Level 2 template has 6 required sections + 1 questions section = 7 H2 minimum.
+            # The 3 optional L2 sections (NFR, EDGE CASES, COMPLEXITY ASSESSMENT) may be
+            # legitimately absent; template-structural compliance is enforced by TEMPLATE_HEADERS.
+            min_spec_h2=7
             min_plan_h2=6
             min_requirements=5
             min_scenarios=4

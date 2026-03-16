@@ -10,6 +10,7 @@
 // Node stdlib
 import * as fs from 'fs/promises';
 import * as path from 'path';
+import { execFileSync } from 'child_process';
 
 // External packages
 import Database from 'better-sqlite3';
@@ -28,6 +29,7 @@ import {
   validateFolderAlignment,
 } from './alignment-validator';
 import type { CollectedDataForAlignment } from './alignment-validator';
+import { buildSessionActivitySignal } from '../extractors/session-activity-signal';
 
 /* ───────────────────────────────────────────────────────────────
    1. INTERFACES
@@ -64,8 +66,13 @@ interface AutoDetectCandidate {
   folderName: string;
   quality: FolderQualityAssessment;
   depth: number;
+  effectiveDepth: number;
   idVector: number[];
   mtimeMs: number;
+  gitStatusCount: number;
+  sessionActivityBoost: number;
+  sessionActivitySignalCount: number;
+  recentlyActiveChildCount: number;
 }
 
 interface CandidateConfidence {
@@ -84,6 +91,11 @@ interface AutoCandidateTestInput {
   relativePath?: string;
   mtimeMs: number;
   canonicalKey?: string;
+  effectiveDepth?: number;
+  gitStatusCount?: number;
+  sessionActivityBoost?: number;
+  sessionActivitySignalCount?: number;
+  recentlyActiveChildCount?: number;
 }
 
 function getSpecFolderFromCollectedData(collectedData: CollectedDataForAlignment | null): string | null {
@@ -117,6 +129,7 @@ const SCRATCH_MARKERS: string[] = ['scratch', 'tmp', 'temp'];
 const SESSION_LOOKBACK_HOURS = 24;
 const SESSION_ROW_LIMIT = 25;
 const LOW_CONFIDENCE_RECENCY_WINDOW_MS = 10 * 60 * 1000;
+const RECENT_CHILD_WINDOW_MS = SESSION_LOOKBACK_HOURS * 60 * 60 * 1000;
 
 function filterArchiveFolders(folders: string[]): string[] {
   return folders.filter((folder) => !isArchiveFolder(folder));
@@ -348,12 +361,204 @@ function assessSessionConfidence(candidates: SessionCandidate[]): CandidateConfi
   return { lowConfidence: false, reason: 'clear ranked winner' };
 }
 
+function getCandidateParentRelativePath(relativePath: string): string | null {
+  const segments = splitPathSegments(relativePath);
+  if (segments.length <= 1) {
+    return null;
+  }
+  return segments.slice(0, -1).join('/');
+}
+
+function cloneAutoDetectCandidate(candidate: AutoDetectCandidate): AutoDetectCandidate {
+  return {
+    ...candidate,
+    idVector: [...candidate.idVector],
+  };
+}
+
+function applyParentAffinityBoost(candidates: AutoDetectCandidate[]): AutoDetectCandidate[] {
+  const now = Date.now();
+  const clones = candidates.map(cloneAutoDetectCandidate);
+
+  for (const candidate of clones) {
+    const childCandidates = clones.filter((other) => (
+      getCandidateParentRelativePath(other.relativePath) === candidate.relativePath
+      && now - other.mtimeMs <= RECENT_CHILD_WINDOW_MS
+    ));
+
+    candidate.recentlyActiveChildCount = childCandidates.length;
+    if (childCandidates.length > 3) {
+      candidate.effectiveDepth = Math.max(
+        candidate.depth,
+        ...childCandidates.map((child) => child.depth),
+      );
+    }
+  }
+
+  return clones;
+}
+
+function parseGitStatusPath(rawPath: string): string | null {
+  const trimmed = rawPath.trim();
+  if (trimmed.length === 0) {
+    return null;
+  }
+
+  const renamed = trimmed.includes(' -> ')
+    ? trimmed.split(' -> ').pop() || trimmed
+    : trimmed;
+
+  return normalizeSlashes(renamed.replace(/^"+|"+$/g, '').trim()) || null;
+}
+
+function collectGitStatusPaths(specsDirs: string[]): string[] {
+  try {
+    const output = execFileSync(
+      'git',
+      ['status', '--porcelain', '--untracked-files=all'],
+      {
+        cwd: CONFIG.PROJECT_ROOT,
+        encoding: 'utf8',
+        stdio: ['ignore', 'pipe', 'pipe'],
+      },
+    );
+
+    const paths = new Set<string>();
+    for (const line of output.split(/\r?\n/)) {
+      if (line.length < 4) {
+        continue;
+      }
+
+      const parsed = parseGitStatusPath(line.slice(3));
+      if (!parsed) {
+        continue;
+      }
+
+      const resolved = path.resolve(CONFIG.PROJECT_ROOT, parsed);
+      if (!specsDirs.some((specsDir) => isPathWithin(specsDir, resolved))) {
+        continue;
+      }
+
+      paths.add(resolved);
+    }
+
+    return [...paths];
+  } catch (error: unknown) {
+    if (process.env.DEBUG && error instanceof Error) {
+      console.debug(`   [Priority 2.7] git status lookup skipped: ${error.message}`);
+    }
+    return [];
+  }
+}
+
+function annotateAutoDetectCandidates(
+  candidates: AutoDetectCandidate[],
+  specsDirs: string[],
+  collectedData: CollectedDataForAlignment | null,
+): AutoDetectCandidate[] {
+  const gitStatusPaths = collectGitStatusPaths(specsDirs);
+  const boostedCandidates = applyParentAffinityBoost(candidates);
+
+  return boostedCandidates.map((candidate) => {
+    const gitStatusCount = gitStatusPaths.filter((changedPath) => isPathWithin(candidate.path, changedPath)).length;
+    const sessionActivity = buildSessionActivitySignal(collectedData, candidate.relativePath);
+
+    return {
+      ...candidate,
+      gitStatusCount,
+      sessionActivityBoost: sessionActivity.confidenceBoost,
+      sessionActivitySignalCount:
+        sessionActivity.toolCallPaths.length
+        + sessionActivity.gitChangedFiles.length
+        + sessionActivity.transcriptMentions.length,
+    };
+  });
+}
+
+function compareGitStatusCandidates(a: AutoDetectCandidate, b: AutoDetectCandidate): number {
+  if (a.gitStatusCount !== b.gitStatusCount) {
+    return b.gitStatusCount - a.gitStatusCount;
+  }
+
+  return compareAutoDetectCandidates(a, b);
+}
+
+function rankGitStatusCandidates(candidates: AutoDetectCandidate[]): AutoDetectCandidate[] {
+  return [...pickPreferredCandidates(candidates.filter((candidate) => candidate.gitStatusCount > 0))]
+    .sort(compareGitStatusCandidates);
+}
+
+function assessGitStatusConfidence(candidates: AutoDetectCandidate[]): CandidateConfidence {
+  if (candidates.length === 0) {
+    return { lowConfidence: true, reason: 'no git-status candidates matched spec paths' };
+  }
+
+  if (candidates.length === 1) {
+    return { lowConfidence: false, reason: 'single git-status candidate' };
+  }
+
+  const top = candidates[0];
+  const second = candidates[1];
+  if (top.gitStatusCount === second.gitStatusCount) {
+    return { lowConfidence: true, reason: 'top git-status candidates tie on changed file count' };
+  }
+
+  return { lowConfidence: false, reason: 'clear git-status winner' };
+}
+
+function compareSessionActivityCandidates(a: AutoDetectCandidate, b: AutoDetectCandidate): number {
+  if (a.sessionActivityBoost !== b.sessionActivityBoost) {
+    return b.sessionActivityBoost - a.sessionActivityBoost;
+  }
+
+  if (a.sessionActivitySignalCount !== b.sessionActivitySignalCount) {
+    return b.sessionActivitySignalCount - a.sessionActivitySignalCount;
+  }
+
+  return compareAutoDetectCandidates(a, b);
+}
+
+function rankSessionActivityCandidates(candidates: AutoDetectCandidate[]): AutoDetectCandidate[] {
+  return [...pickPreferredCandidates(candidates.filter((candidate) => candidate.sessionActivityBoost > 0))]
+    .sort(compareSessionActivityCandidates);
+}
+
+function assessSessionActivityConfidence(candidates: AutoDetectCandidate[]): CandidateConfidence {
+  if (candidates.length === 0) {
+    return { lowConfidence: true, reason: 'no session activity matched candidate folders' };
+  }
+
+  if (candidates.length === 1) {
+    return { lowConfidence: false, reason: 'single session-activity candidate' };
+  }
+
+  const top = candidates[0];
+  const second = candidates[1];
+  if (
+    top.sessionActivityBoost === second.sessionActivityBoost
+    && top.sessionActivitySignalCount === second.sessionActivitySignalCount
+  ) {
+    return { lowConfidence: true, reason: 'top session-activity candidates tie on boost and signal count' };
+  }
+
+  return { lowConfidence: false, reason: 'clear session-activity winner' };
+}
+
 function compareAutoDetectCandidates(a: AutoDetectCandidate, b: AutoDetectCandidate): number {
   if (a.quality.score !== b.quality.score) {
     return b.quality.score - a.quality.score;
   }
-  if (a.depth !== b.depth) {
-    return b.depth - a.depth;
+  if (a.gitStatusCount !== b.gitStatusCount) {
+    return b.gitStatusCount - a.gitStatusCount;
+  }
+  if (a.sessionActivityBoost !== b.sessionActivityBoost) {
+    return b.sessionActivityBoost - a.sessionActivityBoost;
+  }
+  if (a.effectiveDepth !== b.effectiveDepth) {
+    return b.effectiveDepth - a.effectiveDepth;
+  }
+  if (a.recentlyActiveChildCount !== b.recentlyActiveChildCount) {
+    return b.recentlyActiveChildCount - a.recentlyActiveChildCount;
   }
   const idCompare = compareIdVectorsDesc(a.idVector, b.idVector);
   if (idCompare !== 0) {
@@ -385,10 +590,13 @@ function assessAutoDetectConfidence(candidates: AutoDetectCandidate[]): Candidat
 
   const second = candidates[1];
   const sameQuality = top.quality.score === second.quality.score;
-  const sameDepth = top.depth === second.depth;
+  const sameGitStatus = top.gitStatusCount === second.gitStatusCount;
+  const sameActivity = top.sessionActivityBoost === second.sessionActivityBoost;
+  const sameDepth = top.effectiveDepth === second.effectiveDepth;
+  const sameChildActivity = top.recentlyActiveChildCount === second.recentlyActiveChildCount;
   const sameIdVector = compareIdVectorsDesc(top.idVector, second.idVector) === 0;
 
-  if (sameQuality && sameDepth && sameIdVector) {
+  if (sameQuality && sameGitStatus && sameActivity && sameDepth && sameChildActivity && sameIdVector) {
     return { lowConfidence: true, reason: 'top auto-detect candidates tie except for recency/path tiebreakers' };
   }
 
@@ -654,8 +862,13 @@ async function collectAutoDetectCandidates(specsDirs: string[]): Promise<AutoDet
       folderName: path.basename(folderPath),
       quality,
       depth: splitPathSegments(relativePath).length,
+      effectiveDepth: splitPathSegments(relativePath).length,
       idVector: parseFolderIdVector(relativePath),
       mtimeMs,
+      gitStatusCount: 0,
+      sessionActivityBoost: 0,
+      sessionActivitySignalCount: 0,
+      recentlyActiveChildCount: 0,
     };
 
     const existing = byCanonicalKey.get(canonicalKey);
@@ -829,8 +1042,13 @@ function buildAutoCandidatesForTesting(inputs: AutoCandidateTestInput[]): AutoDe
       folderName: path.basename(relativePath),
       quality: assessFolderQuality(relativePath),
       depth: splitPathSegments(relativePath).length,
+      effectiveDepth: input.effectiveDepth ?? splitPathSegments(relativePath).length,
       idVector: parseFolderIdVector(relativePath),
       mtimeMs: input.mtimeMs,
+      gitStatusCount: input.gitStatusCount ?? 0,
+      sessionActivityBoost: input.sessionActivityBoost ?? 0,
+      sessionActivitySignalCount: input.sessionActivitySignalCount ?? 0,
+      recentlyActiveChildCount: input.recentlyActiveChildCount ?? 0,
     };
   });
 }
@@ -847,6 +1065,8 @@ const TEST_HELPERS = {
   collectAutoDetectCandidates,
   rankSessionCandidates: (inputs: SessionCandidateTestInput[]) => rankSessionCandidates(buildSessionCandidatesForTesting(inputs)),
   rankAutoDetectCandidates: (inputs: AutoCandidateTestInput[]) => rankAutoDetectCandidates(buildAutoCandidatesForTesting(inputs)),
+  rankGitStatusCandidates: (inputs: AutoCandidateTestInput[]) => rankGitStatusCandidates(buildAutoCandidatesForTesting(inputs)),
+  rankSessionActivityCandidates: (inputs: AutoCandidateTestInput[]) => rankSessionActivityCandidates(buildAutoCandidatesForTesting(inputs)),
   assessSessionConfidence: (inputs: SessionCandidateTestInput[]) => assessSessionConfidence(rankSessionCandidates(buildSessionCandidatesForTesting(inputs))),
   assessAutoDetectConfidence: (inputs: AutoCandidateTestInput[]) => assessAutoDetectConfidence(rankAutoDetectCandidates(buildAutoCandidatesForTesting(inputs))),
   decideSessionAction: (inputs: SessionCandidateTestInput[], interactive: boolean) => {
@@ -1140,6 +1360,42 @@ async function detectSpecFolder(
     }
   }
 
+  const autoDetectSpecsDirs = specsDirsForDetection.length > 0
+    ? specsDirsForDetection
+    : (specsDir ? [specsDir] : []);
+
+  let cachedAutoDetectCandidates: AutoDetectCandidate[] | null = null;
+  const loadAutoDetectCandidates = async (): Promise<AutoDetectCandidate[]> => {
+    if (cachedAutoDetectCandidates) {
+      return cachedAutoDetectCandidates;
+    }
+
+    const discoveredCandidates = await collectAutoDetectCandidates(autoDetectSpecsDirs);
+    cachedAutoDetectCandidates = annotateAutoDetectCandidates(
+      discoveredCandidates,
+      autoDetectSpecsDirs,
+      collectedData,
+    );
+    return cachedAutoDetectCandidates;
+  };
+
+  // Priority 2.7: Git-status signal for spec paths
+  if (autoDetectSpecsDirs.length > 0) {
+    const gitStatusCandidates = rankGitStatusCandidates(await loadAutoDetectCandidates());
+    if (gitStatusCandidates.length > 0) {
+      const confidence = assessGitStatusConfidence(gitStatusCandidates);
+      const selected = gitStatusCandidates[0];
+      logSelectionRationale(
+        'Priority 2.7',
+        selected.path,
+        autoDetectSpecsDirs,
+        selected.quality,
+        `git_status=${selected.gitStatusCount}, reason=${confidence.reason}`,
+      );
+      return selected.path;
+    }
+  }
+
   // Priority 3: Current working directory
   for (const detectedSpecsDir of specsDirsForDetection) {
     const resolvedSpecsDir = path.resolve(detectedSpecsDir);
@@ -1171,18 +1427,31 @@ async function detectSpecFolder(
     }
   }
 
-  // Priority 4: Auto-detect from specs directory
-  const autoDetectSpecsDirs = specsDirsForDetection.length > 0
-    ? specsDirsForDetection
-    : (specsDir ? [specsDir] : []);
+  // Priority 3.5: Session-activity signal
+  if (autoDetectSpecsDirs.length > 0 && collectedData) {
+    const sessionActivityCandidates = rankSessionActivityCandidates(await loadAutoDetectCandidates());
+    if (sessionActivityCandidates.length > 0) {
+      const confidence = assessSessionActivityConfidence(sessionActivityCandidates);
+      const selected = sessionActivityCandidates[0];
+      logSelectionRationale(
+        'Priority 3.5',
+        selected.path,
+        autoDetectSpecsDirs,
+        selected.quality,
+        `activity_boost=${selected.sessionActivityBoost.toFixed(2)}, signals=${selected.sessionActivitySignalCount}, reason=${confidence.reason}`,
+      );
+      return selected.path;
+    }
+  }
 
+  // Priority 4: Auto-detect from specs directory
   if (autoDetectSpecsDirs.length === 0) {
     printNoSpecFolderError();
     throw new Error('No specs/ directory found');
   }
 
   try {
-    const autoDetectCandidates = await collectAutoDetectCandidates(autoDetectSpecsDirs);
+    const autoDetectCandidates = await loadAutoDetectCandidates();
     const rankedAutoDetectCandidates = rankAutoDetectCandidates(autoDetectCandidates);
 
     if (rankedAutoDetectCandidates.length === 0) {
@@ -1210,7 +1479,7 @@ async function detectSpecFolder(
       selectedAutoCandidate.path,
       autoDetectSpecsDirs,
       selectedAutoCandidate.quality,
-      `ranking=quality>depth>id>mtime, confidence=${autoConfidence.reason}`
+      `ranking=quality>git-status>activity>depth>id>mtime, confidence=${autoConfidence.reason}`
     );
 
     if (!collectedData || rankedAutoDetectCandidates.length === 1 || process.env.AUTO_SAVE_MODE === 'true') {

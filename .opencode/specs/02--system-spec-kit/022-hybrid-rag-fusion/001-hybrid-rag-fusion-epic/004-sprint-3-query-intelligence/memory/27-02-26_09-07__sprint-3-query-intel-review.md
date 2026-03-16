@@ -21,7 +21,7 @@ quality_flags: []
 |:--------------|:----------|
 | Session Date | 2026-02-27 |
 | Session ID | session-1772179642530-mm059kza1 |
-| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-8 |
+| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/004-sprint-3-query-intelligence |
 | Channel | main |
 | Importance Tier | normal |
 | Context Type | general |
@@ -464,7 +464,7 @@ ls -la 02--system-spec-kit/022-hybrid-rag-fusion/memory/
 memory_search({ query: "orphaned", anchors: ["state"] })
 
 # Force re-index of this spec folder
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-8 --force
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/004-sprint-3-query-intelligence --force
 ```
 
 ### Recovery Priority

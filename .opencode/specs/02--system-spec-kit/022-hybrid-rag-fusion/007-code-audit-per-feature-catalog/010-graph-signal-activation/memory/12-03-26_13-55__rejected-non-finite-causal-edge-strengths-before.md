@@ -142,7 +142,7 @@ Next: Continue implementation
 - [`tasks.md`](./tasks.md) - Task breakdown
 - [`checklist.md`](./checklist.md) - QA checklist
 
-**Key Topics:** `spec` | `system spec kit/022 hybrid rag fusion/013 code audit per feature catalog/010 graph signal activation` | `system` | `kit/022` | `hybrid` | `rag` | `fusion/013` | `audit` | `per` | `feature` | `catalog/010` | `graph` |
+**Key Topics:** `spec` | `system spec kit/022 hybrid rag fusion/007 code audit per feature catalog/010 graph signal activation` | `system` | `kit/022` | `hybrid` | `rag` | `fusion/007` | `audit` | `per` | `feature` | `catalog/010` | `graph` |
 <!-- /ANCHOR:project-state-snapshot -->
 
 ---
@@ -484,12 +484,12 @@ relevance_boost: 1  # 1.0 default, increased by access patterns
 # Content Indexing
 key_topics:
   - "spec"
-  - "system spec kit/022 hybrid rag fusion/013 code audit per feature catalog/010 graph signal activation"
+  - "system spec kit/022 hybrid rag fusion/007 code audit per feature catalog/010 graph signal activation"
   - "system"
   - "kit/022"
   - "hybrid"
   - "rag"
-  - "fusion/013"
+  - "fusion/007"
   - "audit"
   - "per"
   - "feature"

@@ -9,6 +9,7 @@
 // Node stdlib
 import * as path from 'path';
 import * as fsSync from 'fs';
+import * as crypto from 'crypto';
 
 // Internal modules
 import { CONFIG, findActiveSpecsDir, getSpecsDirectories } from './config';
@@ -514,6 +515,341 @@ function extractSpecTitle(specFolderPath: string): string {
     }
     return '';
   }
+}
+
+type MemoryClassificationContext = {
+  MEMORY_TYPE: string;
+  HALF_LIFE_DAYS: number;
+  BASE_DECAY_RATE: number;
+  ACCESS_BOOST_FACTOR: number;
+  RECENCY_WEIGHT: number;
+  IMPORTANCE_MULTIPLIER: number;
+};
+
+type SessionDedupContext = {
+  MEMORIES_SURFACED_COUNT: number;
+  DEDUP_SAVINGS_TOKENS: number;
+  FINGERPRINT_HASH: string;
+  SIMILAR_MEMORIES: Array<{ MEMORY_ID: string; SIMILARITY_SCORE: number }>;
+};
+
+type CausalLinksContext = {
+  CAUSED_BY: string[];
+  SUPERSEDES: string[];
+  DERIVED_FROM: string[];
+  BLOCKS: string[];
+  RELATED_TO: string[];
+};
+
+function isWithinDirectory(parentDir: string, candidatePath: string): boolean {
+  const relative = path.relative(parentDir, candidatePath);
+  return relative === '' || (!relative.startsWith('..') && !path.isAbsolute(relative));
+}
+
+function resolveTreeThinningContent(file: FileChange, specFolderPath: string): string {
+  const rawPath = typeof file.FILE_PATH === 'string' ? file.FILE_PATH.trim() : '';
+  if (rawPath.length === 0) {
+    return file.DESCRIPTION || '';
+  }
+
+  const candidatePath = path.isAbsolute(rawPath)
+    ? rawPath
+    : path.resolve(specFolderPath, rawPath);
+
+  if (!isWithinDirectory(path.resolve(specFolderPath), path.resolve(candidatePath))) {
+    return file.DESCRIPTION || '';
+  }
+
+  try {
+    const stat = fsSync.statSync(candidatePath);
+    if (!stat.isFile()) {
+      return file.DESCRIPTION || '';
+    }
+
+    return fsSync.readFileSync(candidatePath, 'utf8').slice(0, 500) || file.DESCRIPTION || '';
+  } catch {
+    return file.DESCRIPTION || '';
+  }
+}
+
+function listSpecFolderKeyFiles(specFolderPath: string): Array<{ FILE_PATH: string }> {
+  const collected: string[] = [];
+  const ignoredDirs = new Set(['memory', 'scratch', '.git', 'node_modules']);
+
+  const visit = (currentDir: string, relativeDir: string): void => {
+    const entries = fsSync.readdirSync(currentDir, { withFileTypes: true });
+    for (const entry of entries) {
+      if (entry.isDirectory()) {
+        if (ignoredDirs.has(entry.name)) {
+          continue;
+        }
+
+        visit(path.join(currentDir, entry.name), path.join(relativeDir, entry.name));
+        continue;
+      }
+
+      if (!entry.isFile() || !/\.(?:md|json)$/i.test(entry.name)) {
+        continue;
+      }
+
+      collected.push(normalizeFilePath(path.join(relativeDir, entry.name)));
+    }
+  };
+
+  try {
+    visit(specFolderPath, '');
+  } catch {
+    return [];
+  }
+
+  return collected
+    .sort((a, b) => a.localeCompare(b))
+    .map((filePath) => ({ FILE_PATH: filePath }));
+}
+
+function buildKeyFiles(effectiveFiles: FileChange[], specFolderPath: string): Array<{ FILE_PATH: string }> {
+  const explicitKeyFiles = effectiveFiles
+    .filter((file) => !file.FILE_PATH.includes('(merged-small-files)'))
+    .map((file) => ({ FILE_PATH: file.FILE_PATH }));
+
+  if (explicitKeyFiles.length > 0) {
+    return explicitKeyFiles;
+  }
+
+  return listSpecFolderKeyFiles(specFolderPath);
+}
+
+function readNamedObject(source: Record<string, unknown> | null | undefined, ...keys: string[]): Record<string, unknown> | null {
+  if (!source) {
+    return null;
+  }
+
+  for (const key of keys) {
+    const value = source[key];
+    if (value && typeof value === 'object' && !Array.isArray(value)) {
+      return value as Record<string, unknown>;
+    }
+  }
+
+  return null;
+}
+
+function readStringArray(source: Record<string, unknown> | null | undefined, ...keys: string[]): string[] {
+  if (!source) {
+    return [];
+  }
+
+  for (const key of keys) {
+    const value = source[key];
+    if (Array.isArray(value)) {
+      return value
+        .map((entry) => (typeof entry === 'string' ? entry.trim() : ''))
+        .filter(Boolean);
+    }
+  }
+
+  return [];
+}
+
+function readNumber(source: Record<string, unknown> | null | undefined, fallback: number, ...keys: string[]): number {
+  if (!source) {
+    return fallback;
+  }
+
+  for (const key of keys) {
+    const value = source[key];
+    if (typeof value === 'number' && Number.isFinite(value)) {
+      return value;
+    }
+  }
+
+  return fallback;
+}
+
+function readString(source: Record<string, unknown> | null | undefined, fallback: string, ...keys: string[]): string {
+  if (!source) {
+    return fallback;
+  }
+
+  for (const key of keys) {
+    const value = source[key];
+    if (typeof value === 'string' && value.trim().length > 0) {
+      return value.trim();
+    }
+  }
+
+  return fallback;
+}
+
+function inferMemoryType(contextType: string, importanceTier: string): string {
+  if (importanceTier === 'constitutional') {
+    return 'constitutional';
+  }
+  if (contextType === 'implementation') {
+    return 'procedural';
+  }
+  if (contextType === 'decision' || contextType === 'research' || contextType === 'discovery') {
+    return 'semantic';
+  }
+  return 'episodic';
+}
+
+function defaultHalfLifeDays(memoryType: string): number {
+  switch (memoryType) {
+    case 'constitutional':
+      return 0;
+    case 'procedural':
+      return 180;
+    case 'semantic':
+      return 365;
+    case 'episodic':
+    default:
+      return 30;
+  }
+}
+
+function baseDecayRateFromHalfLife(halfLifeDays: number): number {
+  if (halfLifeDays <= 0) {
+    return 0;
+  }
+
+  return Number(Math.pow(0.5, 1 / halfLifeDays).toFixed(4));
+}
+
+function importanceMultiplier(importanceTier: string): number {
+  switch (importanceTier) {
+    case 'constitutional':
+      return 2;
+    case 'critical':
+      return 1.6;
+    case 'important':
+      return 1.3;
+    case 'temporary':
+      return 0.6;
+    case 'deprecated':
+      return 0.2;
+    case 'normal':
+    default:
+      return 1;
+  }
+}
+
+function buildMemoryClassificationContext(
+  collectedData: CollectedDataFull,
+  sessionData: { CONTEXT_TYPE: string; IMPORTANCE_TIER: string },
+): MemoryClassificationContext {
+  const rawClassification = readNamedObject(collectedData, 'memory_classification', 'memoryClassification');
+  const rawDecayFactors = readNamedObject(rawClassification, 'decay_factors', 'decayFactors');
+  const fallbackType = inferMemoryType(sessionData.CONTEXT_TYPE, sessionData.IMPORTANCE_TIER);
+  const memoryType = readString(
+    rawClassification,
+    readString(collectedData, fallbackType, 'memory_type', 'memoryType'),
+    'memory_type',
+    'memoryType',
+  );
+  const halfLifeDays = readNumber(
+    rawClassification,
+    defaultHalfLifeDays(memoryType),
+    'half_life_days',
+    'halfLifeDays',
+  );
+
+  return {
+    MEMORY_TYPE: memoryType,
+    HALF_LIFE_DAYS: halfLifeDays,
+    BASE_DECAY_RATE: readNumber(
+      rawDecayFactors || rawClassification,
+      baseDecayRateFromHalfLife(halfLifeDays),
+      'base_decay_rate',
+      'baseDecayRate',
+    ),
+    ACCESS_BOOST_FACTOR: readNumber(
+      rawDecayFactors || rawClassification,
+      0.1,
+      'access_boost_factor',
+      'accessBoostFactor',
+    ),
+    RECENCY_WEIGHT: readNumber(
+      rawDecayFactors || rawClassification,
+      0.5,
+      'recency_weight',
+      'recencyWeight',
+    ),
+    IMPORTANCE_MULTIPLIER: readNumber(
+      rawDecayFactors || rawClassification,
+      importanceMultiplier(sessionData.IMPORTANCE_TIER),
+      'importance_multiplier',
+      'importanceMultiplier',
+    ),
+  };
+}
+
+function buildSessionDedupContext(
+  collectedData: CollectedDataFull,
+  sessionData: { SESSION_ID: string; SUMMARY: string },
+  memoryTitle: string,
+): SessionDedupContext {
+  const rawDedup = readNamedObject(collectedData, 'session_dedup', 'sessionDedup');
+  const rawSimilarMemories = rawDedup?.['similar_memories'] ?? rawDedup?.['similarMemories'];
+  const similarMemories = Array.isArray(rawSimilarMemories)
+    ? rawSimilarMemories.flatMap((entry) => {
+      if (typeof entry === 'string' && entry.trim().length > 0) {
+        return [{ MEMORY_ID: entry.trim(), SIMILARITY_SCORE: 0 }];
+      }
+      if (entry && typeof entry === 'object') {
+        const item = entry as Record<string, unknown>;
+        const memoryId = readString(item, '', 'id', 'memory_id', 'memoryId');
+        if (memoryId.length === 0) {
+          return [];
+        }
+        return [{
+          MEMORY_ID: memoryId,
+          SIMILARITY_SCORE: readNumber(item, 0, 'similarity', 'similarity_score', 'similarityScore'),
+        }];
+      }
+      return [];
+    })
+    : [];
+  const fallbackFingerprint = crypto
+    .createHash('sha1')
+    .update(`${sessionData.SESSION_ID}\n${memoryTitle}\n${sessionData.SUMMARY}`)
+    .digest('hex');
+
+  return {
+    MEMORIES_SURFACED_COUNT: readNumber(
+      rawDedup,
+      similarMemories.length,
+      'memories_surfaced',
+      'memoriesSurfaced',
+      'memories_surfaced_count',
+      'memoriesSurfacedCount',
+    ),
+    DEDUP_SAVINGS_TOKENS: readNumber(
+      rawDedup,
+      0,
+      'dedup_savings_tokens',
+      'dedupSavingsTokens',
+    ),
+    FINGERPRINT_HASH: readString(
+      rawDedup,
+      fallbackFingerprint,
+      'fingerprint_hash',
+      'fingerprintHash',
+    ),
+    SIMILAR_MEMORIES: similarMemories,
+  };
+}
+
+function buildCausalLinksContext(collectedData: CollectedDataFull): CausalLinksContext {
+  const rawCausalLinks = readNamedObject(collectedData, 'causal_links', 'causalLinks');
+
+  return {
+    CAUSED_BY: readStringArray(rawCausalLinks, 'caused_by', 'causedBy'),
+    SUPERSEDES: readStringArray(rawCausalLinks, 'supersedes'),
+    DERIVED_FROM: readStringArray(rawCausalLinks, 'derived_from', 'derivedFrom'),
+    BLOCKS: readStringArray(rawCausalLinks, 'blocks'),
+    RELATED_TO: readStringArray(rawCausalLinks, 'related_to', 'relatedTo'),
+  };
 }
 
 let workflowRunQueue: Promise<void> = Promise.resolve();
@@ -1262,7 +1598,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   log('Step 7.6: Applying tree thinning...');
   const thinFileInputs: ThinningFileEntry[] = enhancedFiles.map((f) => ({
     path: f.FILE_PATH,
-    content: f.DESCRIPTION || '',
+    content: resolveTreeThinningContent(f, specFolder),
   }));
   const thinningResult = applyTreeThinning(thinFileInputs);
   const effectiveFiles = applyThinningToFileChanges(enhancedFiles, thinningResult);
@@ -1323,10 +1659,6 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
 
   const keyTopicsInitial: string[] = extractKeyTopics(sessionData.SUMMARY, decisions.DECISIONS, specFolderName);
   const keyTopics: string[] = ensureMinSemanticTopics(keyTopicsInitial, effectiveFiles, specFolderName);
-  // P1-5: Filter synthetic tree-thinning paths from key_files metadata
-  const keyFiles = effectiveFiles
-    .filter((f) => !f.FILE_PATH.includes('(merged-small-files)'))
-    .map((f) => ({ FILE_PATH: f.FILE_PATH }));
   const memoryTitle = buildMemoryTitle(preferredMemoryTask, specFolderName, sessionData.DATE, contentSlug);
   // Keep dashboard titles stable across duplicate-save retries so content dedup
   // compares the rendered memory itself, not a collision suffix.
@@ -1397,6 +1729,11 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     warn(`   Warning: Pre-extraction of trigger phrases failed: ${errMsg}`);
   }
 
+  const keyFiles = buildKeyFiles(effectiveFiles, specFolder);
+  const memoryClassification = buildMemoryClassificationContext(collectedData, sessionData);
+  const sessionDedup = buildSessionDedupContext(collectedData, sessionData, memoryTitle);
+  const causalLinks = buildCausalLinksContext(collectedData);
+
   const files: Record<string, string> = {
     [ctxFilename]: await populateTemplate('context', {
       ...sessionData,
@@ -1454,6 +1791,9 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       TRIGGER_PHRASES: preExtractedTriggers,
       TRIGGER_PHRASES_YAML: renderTriggerPhrasesYaml(preExtractedTriggers),
       KEY_FILES: keyFiles,
+      ...memoryClassification,
+      ...sessionDedup,
+      ...causalLinks,
       RELATED_SESSIONS: [],
       PARENT_SPEC: sessionData.SPEC_FOLDER || '',
       CHILD_SESSIONS: [],
@@ -1574,6 +1914,20 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     log(`   Spec doc health check skipped: ${e instanceof Error ? e.message : String(e)}`);
   }
 
+  // CG-07b: Validate template contract BEFORE any banner/warning is prepended.
+  // Banners prepended after this point (low-quality, simulation, medium-quality)
+  // would shift the frontmatter away from position 0, causing false
+  // missing_frontmatter violations when the contract is checked later.
+  const templateContractEarly = validateMemoryTemplateContract(files[ctxFilename]);
+  if (!templateContractEarly.valid) {
+    const contractDetails = templateContractEarly.violations
+      .map((violation: { code: string; sectionId?: string }) => violation.sectionId ? `${violation.code}:${violation.sectionId}` : violation.code)
+      .join(', ');
+    const contractAbortMsg = `QUALITY_GATE_ABORT: Rendered memory violated template contract: ${contractDetails}`;
+    warn(contractAbortMsg);
+    throw new Error(contractAbortMsg);
+  }
+
   if (filterStats.qualityScore < 20) {
     const warningHeader = `> **Note:** This session had limited actionable content (quality score: ${filterStats.qualityScore}/100). ${filterStats.noiseFiltered} noise entries and ${filterStats.duplicatesRemoved} duplicates were filtered.\n\n`;
     files[ctxFilename] = warningHeader + files[ctxFilename];
@@ -1660,16 +2014,6 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     const mediumQualityWarning = `> **Warning:** Memory quality score is ${qualityResult.score100}/100 (${qualityResult.score01.toFixed(2)}), which is below the recommended threshold of 0.60. Content may have issues with: ${qualityResult.warnings.slice(0, 3).join('; ')}.\n\n`;
     files[ctxFilename] = mediumQualityWarning + files[ctxFilename];
     log(`   Medium quality warning added (score: ${qualityResult.score100}/100)`);
-  }
-
-  const templateContract = validateMemoryTemplateContract(files[ctxFilename]);
-  if (!templateContract.valid) {
-    const contractDetails = templateContract.violations
-      .map((violation: { code: string; sectionId?: string }) => violation.sectionId ? `${violation.code}:${violation.sectionId}` : violation.code)
-      .join(', ');
-    const contractAbortMsg = `QUALITY_GATE_ABORT: Rendered memory violated template contract: ${contractDetails}`;
-    warn(contractAbortMsg);
-    throw new Error(contractAbortMsg);
   }
 
   // Step 9: Write files with atomic writes and rollback on failure

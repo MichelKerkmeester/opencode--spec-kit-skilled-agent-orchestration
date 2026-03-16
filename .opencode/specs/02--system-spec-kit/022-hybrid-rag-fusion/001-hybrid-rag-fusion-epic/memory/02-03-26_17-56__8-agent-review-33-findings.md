@@ -2,7 +2,7 @@
 title: "refinement phase 7 session 02-03-26"
 description: "Executed a comprehensive 8-agent orchestrated review (5 Gemini gemini-3.1-pro-preview + 3 Opus claude-opus-4-6) of the Spec Kit Memory MCP server (50K+ LOC). Phase A launched..."
 trigger_phrases:
-  - "system spec kit/022 hybrid rag fusion/010 cross ai audit"
+  - "system spec kit/022 hybrid rag fusion/001 hybrid rag fusion epic"
   - "gemini 3"
   - "pro preview"
   - "claude opus 4 6"
@@ -161,7 +161,7 @@ Next: Continue implementation
 - [`tasks.md`](./tasks.md) - Task breakdown
 - [`checklist.md`](./checklist.md) - QA checklist
 
-**Key Topics:** `decision` | `spec` | `phase` | `gemini` | `review` | `gemini cli` | `cli agents` | `zero critical` | `critical bugs` | `system spec kit/022 hybrid rag fusion/010 cross ai audit` | `agents` | `score` | 
+**Key Topics:** `decision` | `spec` | `phase` | `gemini` | `review` | `gemini cli` | `cli agents` | `zero critical` | `critical bugs` | `system spec kit/022 hybrid rag fusion/001 hybrid rag fusion epic` | `agents` | `score` | 
 <!-- /ANCHOR:project-state-snapshot -->
 
 ---
@@ -187,13 +187,13 @@ Next: Continue implementation
 
 - `.opencode/.../scratch/opus-synthesis-audit.md` - Documentation
 
-- `.opencode/.../010-cross-ai-audit/spec.md` - Documentation
+- `.opencode/.../010-cross-ai-audit *(historical, deleted)*/spec.md` - Documentation
 
-- `.opencode/.../010-cross-ai-audit/plan.md` - Documentation
+- `.opencode/.../010-cross-ai-audit *(historical, deleted)*/plan.md` - Documentation
 
-- `.opencode/.../010-cross-ai-audit/tasks.md` - Documentation
+- `.opencode/.../010-cross-ai-audit *(historical, deleted)*/tasks.md` - Documentation
 
-- `.opencode/.../010-cross-ai-audit/checklist.md` - Documentation
+- `.opencode/.../010-cross-ai-audit *(historical, deleted)*/checklist.md` - Documentation
 
 **How to Extend**:
 
@@ -232,7 +232,7 @@ Executed a comprehensive 8-agent orchestrated review (5 Gemini gemini-3.1-pro-pr
 | **File** | **Description** |
 |:---------|:----------------|
 | `.opencode/.../scratch/(merged-small-files)` | Tree-thinning merged 4 small files (master-consolidated-review.md, opus-findings-registry.md, opus-coverage-gaps.md, opus-synthesis-audit.md). master-consolidated-review.md: File modified (description pending) | opus-findings-registry.md: File modified (description pending) |
-| `.opencode/.../010-cross-ai-audit/(merged-small-files)` | Tree-thinning merged 4 small files (spec.md, plan.md, tasks.md, checklist.md). spec.md: Full detail including code snippets | plan.md: Full detail including code snippets |
+| `.opencode/.../010-cross-ai-audit *(historical, deleted)*/(merged-small-files)` | Tree-thinning merged 4 small files (spec.md, plan.md, tasks.md, checklist.md). spec.md: Full detail including code snippets | plan.md: Full detail including code snippets |
 
 <!-- /ANCHOR:summary -->
 
@@ -669,13 +669,13 @@ key_topics:
   - "cli agents"
   - "zero critical"
   - "critical bugs"
-  - "system spec kit/022 hybrid rag fusion/010 cross ai audit"
+  - "system spec kit/022 hybrid rag fusion/001 hybrid rag fusion epic"
   - "agents"
   - "score"
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "system spec kit/022 hybrid rag fusion/010 cross ai audit"
+  - "system spec kit/022 hybrid rag fusion/001 hybrid rag fusion epic"
   - "gemini 3"
   - "pro preview"
   - "claude opus 4 6"

@@ -123,7 +123,7 @@ Next: Continue implementation
 
 **Key Context to Review:**
 
-- Files modified: .opencode/.../022-hybrid-rag-fusion/spec.md, .opencode/.../022-hybrid-rag-fusion/tasks.md, .opencode/.../006-core-rag-sprints-0-to-8/spec.md
+- Files modified: .opencode/.../022-hybrid-rag-fusion/spec.md, .opencode/.../022-hybrid-rag-fusion/tasks.md, .opencode/.../001-hybrid-rag-fusion-epic *(was 006-core-rag-sprints-0-to-8, merged 2026-03-16)*/spec.md
 
 - Check: plan.md, tasks.md, checklist.md
 
@@ -183,17 +183,17 @@ Next: Continue implementation
 
 - `.opencode/.../022-hybrid-rag-fusion/tasks.md` - Documentation
 
-- `.opencode/.../006-core-rag-sprints-0-to-8/spec.md` - Documentation
+- `.opencode/.../001-hybrid-rag-fusion-epic *(was 006-core-rag-sprints-0-to-8, merged 2026-03-16)*/spec.md` - Documentation
 
-- `.opencode/.../006-core-rag-sprints-0-to-8/plan.md` - Documentation
+- `.opencode/.../001-hybrid-rag-fusion-epic *(was 006-core-rag-sprints-0-to-8, merged 2026-03-16)*/plan.md` - Documentation
 
-- `.opencode/.../006-core-rag-sprints-0-to-8/tasks.md` - Documentation
+- `.opencode/.../001-hybrid-rag-fusion-epic *(was 006-core-rag-sprints-0-to-8, merged 2026-03-16)*/tasks.md` - Documentation
 
-- `.opencode/.../006-core-rag-sprints-0-to-8/checklist.md` - Documentation
+- `.opencode/.../001-hybrid-rag-fusion-epic *(was 006-core-rag-sprints-0-to-8, merged 2026-03-16)*/checklist.md` - Documentation
 
-- `.opencode/.../006-core-rag-sprints-0-to-8/spec.md` - Documentation
+- `.opencode/.../001-hybrid-rag-fusion-epic *(was 006-core-rag-sprints-0-to-8, merged 2026-03-16)*/spec.md` - Documentation
 
-- `.opencode/.../006-core-rag-sprints-0-to-8/plan.md` - Documentation
+- `.opencode/.../001-hybrid-rag-fusion-epic *(was 006-core-rag-sprints-0-to-8, merged 2026-03-16)*/plan.md` - Documentation
 
 **How to Extend**:
 
@@ -229,14 +229,14 @@ Completed Phase 11 (Verification) of the comprehensive 10-phase documentation au
 |:---------|:----------------|
 | `.opencode/.../022-hybrid-rag-fusion/spec.md` | Trigger-extractor |
 | `.opencode/.../022-hybrid-rag-fusion/tasks.md` | Trigger-extractor |
-| `.opencode/.../006-core-rag-sprints-0-to-8/spec.md` | Trigger-extractor |
-| `.opencode/.../006-core-rag-sprints-0-to-8/plan.md` | File modified (description pending) |
-| `.opencode/.../006-core-rag-sprints-0-to-8/tasks.md` | Trigger-extractor |
-| `.opencode/.../006-core-rag-sprints-0-to-8/checklist.md` | Stale folder refs (PASS) |
-| `.opencode/.../006-core-rag-sprints-0-to-8/spec.md` | Trigger-extractor |
-| `.opencode/.../006-core-rag-sprints-0-to-8/plan.md` | File modified (description pending) |
-| `.opencode/.../006-core-rag-sprints-0-to-8/tasks.md` | Trigger-extractor |
-| `.opencode/.../006-core-rag-sprints-0-to-8/spec.md` | Trigger-extractor |
+| `.opencode/.../001-hybrid-rag-fusion-epic *(was 006-core-rag-sprints-0-to-8, merged 2026-03-16)*/spec.md` | Trigger-extractor |
+| `.opencode/.../001-hybrid-rag-fusion-epic *(was 006-core-rag-sprints-0-to-8, merged 2026-03-16)*/plan.md` | File modified (description pending) |
+| `.opencode/.../001-hybrid-rag-fusion-epic *(was 006-core-rag-sprints-0-to-8, merged 2026-03-16)*/tasks.md` | Trigger-extractor |
+| `.opencode/.../001-hybrid-rag-fusion-epic *(was 006-core-rag-sprints-0-to-8, merged 2026-03-16)*/checklist.md` | Stale folder refs (PASS) |
+| `.opencode/.../001-hybrid-rag-fusion-epic *(was 006-core-rag-sprints-0-to-8, merged 2026-03-16)*/spec.md` | Trigger-extractor |
+| `.opencode/.../001-hybrid-rag-fusion-epic *(was 006-core-rag-sprints-0-to-8, merged 2026-03-16)*/plan.md` | File modified (description pending) |
+| `.opencode/.../001-hybrid-rag-fusion-epic *(was 006-core-rag-sprints-0-to-8, merged 2026-03-16)*/tasks.md` | Trigger-extractor |
+| `.opencode/.../001-hybrid-rag-fusion-epic *(was 006-core-rag-sprints-0-to-8, merged 2026-03-16)*/spec.md` | Trigger-extractor |
 
 <!-- /ANCHOR:summary -->
 

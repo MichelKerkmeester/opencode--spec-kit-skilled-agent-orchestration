@@ -21,7 +21,7 @@ quality_flags: []
 |:--------------|:----------|
 | Session Date | 2026-03-04 |
 | Session ID | session-1772620316495-ea10iixih |
-| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/006-extra-features |
+| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/010-sprint-9-extra-features |
 | Channel | main |
 | Importance Tier | normal |
 | Context Type | general |
@@ -407,7 +407,7 @@ ls -la 02--system-spec-kit/022-hybrid-rag-fusion/memory/
 memory_search({ query: "orphaned", anchors: ["state"] })
 
 # Force re-index of this spec folder
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/006-extra-features --force
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/010-sprint-9-extra-features --force
 ```
 
 ### Recovery Priority

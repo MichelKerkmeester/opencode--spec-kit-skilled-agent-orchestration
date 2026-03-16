@@ -21,7 +21,7 @@ quality_flags: []
 |:--------------|:----------|
 | Session Date | 2026-02-27 |
 | Session ID | session-1772179671925-vwkivnlni |
-| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-8 |
+| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/003-sprint-2-scoring-calibration |
 | Channel | main |
 | Importance Tier | normal |
 | Context Type | general |
@@ -110,13 +110,13 @@ quality_flags: []
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-8
+/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/003-sprint-2-scoring-calibration
 ```
 
 **Or paste this continuation prompt:**
 ```
 CONTINUATION - Attempt 2
-Spec: 02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-8
+Spec: 02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/003-sprint-2-scoring-calibration
 Last: Technical Implementation Details
 Next: Continue implementation
 ```
@@ -437,9 +437,9 @@ Implemented 21 documentation-only edits across 4 spec files (spec.md, tasks.md, 
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-8` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/003-sprint-2-scoring-calibration` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-8" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/003-sprint-2-scoring-calibration" })` |
 | Stale Context | Information seems outdated | Check `last_accessed_epoch` vs current time |
 | Incomplete Handover | Missing continuation context | Review CONTINUE SESSION section above |
 | Dedup Collision | Wrong memory surfaced | Check `fingerprint_hash` for conflicts |
@@ -451,16 +451,16 @@ Implemented 21 documentation-only edits across 4 spec files (spec.md, tasks.md, 
 node .opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts --status
 
 # List memories for this spec folder
-memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-8", limit: 10 })
+memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/003-sprint-2-scoring-calibration", limit: 10 })
 
 # Verify memory file integrity
-ls -la 02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-8/memory/
+ls -la 02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/003-sprint-2-scoring-calibration/memory/
 
 # Check for orphaned memories
 memory_search({ query: "orphaned", anchors: ["state"] })
 
 # Force re-index of this spec folder
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-8 --force
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/003-sprint-2-scoring-calibration --force
 ```
 
 ### Recovery Priority
@@ -532,7 +532,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 ```yaml
 # Core Identifiers
 session_id: "session-1772179671925-vwkivnlni"
-spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-8"
+spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/003-sprint-2-scoring-calibration"
 channel: "main"
 
 # Classification
@@ -621,7 +621,7 @@ trigger_phrases:
   - "tm-01 calibration values"
   - "n4 cap clipping"  []
 
-parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-8"
+parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/003-sprint-2-scoring-calibration"
 child_sessions:
 
   []

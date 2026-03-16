@@ -1,8 +1,8 @@
 ---
-title: "Verified And Refined Spec 017 [017-agents-alignment/16-03-26_11-32__verified-and-refined-spec-017-agents-alignment]"
-description: "Verified and refined spec 017-agents-alignment: dispatched 5 parallel agents (doc quality review 8.5/10, T031 closure, feature catalog gap analysis, implementation existence..."
+title: "Verified And Refined Spec 017 [012-agents-alignment/16-03-26_11-32__verified-and-refined-spec-012-agents-alignment]"
+description: "Verified and refined spec 012-agents-alignment: dispatched 5 parallel agents (doc quality review 8.5/10, T031 closure, feature catalog gap analysis, implementation existence..."
 trigger_phrases:
-  - "system spec kit/022 hybrid rag fusion/017 agents alignment"
+  - "system spec kit/022 hybrid rag fusion/012 agents alignment"
   - "gpt 5"
   - "ultra think"
   - "cross review"
@@ -33,7 +33,7 @@ trigger_phrases:
   - "kit/022"
   - "hybrid"
   - "rag"
-  - "fusion/017"
+  - "fusion/012"
   - "agents"
   - "alignment"
 importance_tier: "normal"
@@ -52,7 +52,7 @@ spec_folder_health: {"pass":true,"score":1,"errors":0,"warnings":0}
 |:--------------|:----------|
 | Session Date | 2026-03-16 |
 | Session ID | session-1773657125628-aef19d3f83e5 |
-| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/017-agents-alignment |
+| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/012-agents-alignment |
 | Channel | main |
 | Importance Tier | normal |
 | Context Type | general |
@@ -104,11 +104,11 @@ spec_folder_health: {"pass":true,"score":1,"errors":0,"warnings":0}
 
 **Phase:** RESEARCH
 
-**Recent:** Verified and refined spec 017-agents-alignment: dispatched 5 parallel agents (doc quality review..., Removed stale 015-finalization row from parent epic dashboard (no corresponding, ChatGPT agent model fields removed — agents now inherit from global config inste
+**Recent:** Verified and refined spec 012-agents-alignment: dispatched 5 parallel agents (doc quality review..., Removed stale 015-finalization row from parent epic dashboard (no corresponding, ChatGPT agent model fields removed — agents now inherit from global config inste
 
 **Decisions:** 2 decisions recorded
 
-**Summary:** Verified and refined spec 017-agents-alignment: dispatched 5 parallel agents (doc quality review 8.5/10, T031 closure, feature catalog gap analysis, implementation existence verification 47/47 files, ...
+**Summary:** Verified and refined spec 012-agents-alignment: dispatched 5 parallel agents (doc quality review 8.5/10, T031 closure, feature catalog gap analysis, implementation existence verification 47/47 files, ...
 
 ### Pending Work
 
@@ -118,20 +118,20 @@ spec_folder_health: {"pass":true,"score":1,"errors":0,"warnings":0}
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/017-agents-alignment
+/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/012-agents-alignment
 ```
 
 **Or paste this continuation prompt:**
 ```
 CONTINUATION - Attempt 2
-Spec: 02--system-spec-kit/022-hybrid-rag-fusion/017-agents-alignment
+Spec: 02--system-spec-kit/022-hybrid-rag-fusion/012-agents-alignment
 Last: ChatGPT agent model fields removed — agents now inherit from global config inste
 Next: Continue implementation
 ```
 
 **Key Context to Review:**
 
-- Files modified: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/spec.md, .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/017-agents-alignment/tasks.md, .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/017-agents-alignment/spec.md
+- Files modified: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/spec.md, .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-agents-alignment/tasks.md, .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-agents-alignment/spec.md
 
 - Last: ChatGPT agent model fields removed — agents now inherit from global config inste
 
@@ -165,15 +165,15 @@ Next: Continue implementation
 
 **What Was Built**:
 
-- **Verified and refined spec 017-agents-alignment: dispatched 5 parallel agents (doc quality review...** - Verified and refined spec 017-agents-alignment: dispatched 5 parallel agents (doc quality review 8.
+- **Verified and refined spec 012-agents-alignment: dispatched 5 parallel agents (doc quality review...** - Verified and refined spec 012-agents-alignment: dispatched 5 parallel agents (doc quality review 8.
 
 **Key Files and Their Roles**:
 
 - `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/spec.md` - Documentation
 
-- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/017-agents-alignment/tasks.md` - Documentation
+- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-agents-alignment/tasks.md` - Documentation
 
-- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/017-agents-alignment/spec.md` - Documentation
+- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-agents-alignment/spec.md` - Documentation
 
 - `.opencode/agent/chatgpt/context.md` - React context provider
 
@@ -202,10 +202,10 @@ Next: Continue implementation
 
 ## 2. OVERVIEW
 
-Verified and refined spec 017-agents-alignment: dispatched 5 parallel agents (doc quality review 8.5/10, T031 closure, feature catalog gap analysis, implementation existence verification 47/47 files, agent sync completeness 45/45 files). GPT-5.4 ultra-think cross-review via cli-copilot caught duplicate 015 row in parent epic. Fixed duplicate, closed T031, updated parent epic dashboard with 015-018 alignment rows. Subsequently removed pre-specified model and reasoningEffort fields from all 7 ChatGPT agent definitions. Created changelog v2.3.1.0.
+Verified and refined spec 012-agents-alignment: dispatched 5 parallel agents (doc quality review 8.5/10, T031 closure, feature catalog gap analysis, implementation existence verification 47/47 files, agent sync completeness 45/45 files). GPT-5.4 ultra-think cross-review via cli-copilot caught duplicate 015 row in parent epic. Fixed duplicate, closed T031, updated parent epic dashboard with 015-018 alignment rows. Subsequently removed pre-specified model and reasoningEffort fields from all 7 ChatGPT agent definitions. Created changelog v2.3.1.0.
 
 **Key Outcomes**:
-- Verified and refined spec 017-agents-alignment: dispatched 5 parallel agents (doc quality review...
+- Verified and refined spec 012-agents-alignment: dispatched 5 parallel agents (doc quality review...
 - Removed stale 015-finalization row from parent epic dashboard (no corresponding
 - ChatGPT agent model fields removed — agents now inherit from global config inste
 
@@ -214,7 +214,7 @@ Verified and refined spec 017-agents-alignment: dispatched 5 parallel agents (do
 | **File** | **Description** |
 |:---------|:----------------|
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/(merged-small-files)` | Tree-thinning merged 1 small files (spec.md). Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/spec.md : File modified (description pending) |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/017-agents-alignment/(merged-small-files)` | Tree-thinning merged 2 small files (tasks.md, spec.md). Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/017-agents-alignment/tasks.md : File modified (description pending) | Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/017-agents-alignment/spec.md : File modified (description pending) |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-agents-alignment/(merged-small-files)` | Tree-thinning merged 2 small files (tasks.md, spec.md). Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-agents-alignment/tasks.md : File modified (description pending) | Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-agents-alignment/spec.md : File modified (description pending) |
 | `.opencode/agent/chatgpt/(merged-small-files)` | Tree-thinning merged 7 small files (context.md, debug.md, handover.md, research.md, review.md, speckit.md, write.md). Merged from .opencode/agent/chatgpt/context.md : File modified (description pending) | Merged from .opencode/agent/chatgpt/debug.md : File modified (description pending) | Merged from .opencode/agent/chatgpt/handover.md : File modified (description pending) | Merged from .opencode/agent/chatgpt/research.md : File modified (description pending) | Merged from .opencode/agent/chatgpt/review.md : File modified (description pending) | Merged from .opencode/agent/chatgpt/speckit.md : File modified (description pending) | Merged from .opencode/agent/chatgpt/write.md : File modified (description pending) |
 
 <!-- /ANCHOR:summary -->
@@ -227,9 +227,9 @@ Verified and refined spec 017-agents-alignment: dispatched 5 parallel agents (do
 ## 3. DETAILED CHANGES
 
 <!-- ANCHOR:implementation-verified-refined-spec-017agentsalignment-b5203fce -->
-### FEATURE: Verified and refined spec 017-agents-alignment: dispatched 5 parallel agents (doc quality review...
+### FEATURE: Verified and refined spec 012-agents-alignment: dispatched 5 parallel agents (doc quality review...
 
-Verified and refined spec 017-agents-alignment: dispatched 5 parallel agents (doc quality review 8.5/10, T031 closure, feature catalog gap analysis, implementation existence verification 47/47 files, agent sync completeness 45/45 files). GPT-5.4 ultra-think cross-review via cli-copilot caught duplicate 015 row in parent epic. Fixed duplicate, closed T031, updated parent epic dashboard with 015-018 alignment rows. Subsequently removed pre-specified model and reasoningEffort fields from all 7 ChatGPT agent definitions. Created changelog v2.3.1.0.
+Verified and refined spec 012-agents-alignment: dispatched 5 parallel agents (doc quality review 8.5/10, T031 closure, feature catalog gap analysis, implementation existence verification 47/47 files, agent sync completeness 45/45 files). GPT-5.4 ultra-think cross-review via cli-copilot caught duplicate 015 row in parent epic. Fixed duplicate, closed T031, updated parent epic dashboard with 015-018 alignment rows. Subsequently removed pre-specified model and reasoningEffort fields from all 7 ChatGPT agent definitions. Created changelog v2.3.1.0.
 
 **Details:** agent alignment | 017 agents | ChatGPT agent config | reasoning effort | xhigh vs high | parent epic dashboard | alignment specs 015-018
 <!-- /ANCHOR:implementation-verified-refined-spec-017agentsalignment-b5203fce -->
@@ -731,7 +731,7 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 
 > **User** | 2026-03-16 @ 11:32:05
 
-Verified and refined spec 017-agents-alignment: dispatched 5 parallel agents (doc quality review 8.5/10, T031 closure, feature catalog gap analysis, implementation existence verification 47/47 files, agent sync completeness 45/45 files). GPT-5.4 ultra-think cross-review via cli-copilot caught duplicate 015 row in parent epic. Fixed duplicate, closed T031, updated parent epic dashboard with 015-018 alignment rows. Subsequently removed pre-specified model and reasoningEffort fields from all 7 ChatGPT agent definitions. Created changelog v2.3.1.0.
+Verified and refined spec 012-agents-alignment: dispatched 5 parallel agents (doc quality review 8.5/10, T031 closure, feature catalog gap analysis, implementation existence verification 47/47 files, agent sync completeness 45/45 files). GPT-5.4 ultra-think cross-review via cli-copilot caught duplicate 015 row in parent epic. Fixed duplicate, closed T031, updated parent epic dashboard with 015-018 alignment rows. Subsequently removed pre-specified model and reasoningEffort fields from all 7 ChatGPT agent definitions. Created changelog v2.3.1.0.
 
 ---
 
@@ -750,9 +750,9 @@ Verified and refined spec 017-agents-alignment: dispatched 5 parallel agents (do
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/017-agents-alignment` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/012-agents-alignment` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/017-agents-alignment" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/012-agents-alignment" })` |
 | Stale Context | Information seems outdated | Check `last_accessed_epoch` vs current time |
 | Incomplete Handover | Missing continuation context | Review CONTINUE SESSION section above |
 | Dedup Collision | Wrong memory surfaced | Check `fingerprint_hash` for conflicts |
@@ -764,16 +764,16 @@ Verified and refined spec 017-agents-alignment: dispatched 5 parallel agents (do
 node .opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts --status
 
 # List memories for this spec folder
-memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/017-agents-alignment", limit: 10 })
+memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/012-agents-alignment", limit: 10 })
 
 # Verify memory file integrity
-ls -la 02--system-spec-kit/022-hybrid-rag-fusion/017-agents-alignment/memory/
+ls -la 02--system-spec-kit/022-hybrid-rag-fusion/012-agents-alignment/memory/
 
 # Check for orphaned memories
 memory_search({ query: "orphaned", anchors: ["state"] })
 
 # Force re-index of this spec folder
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/017-agents-alignment --force
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/012-agents-alignment --force
 ```
 
 ### Recovery Priority
@@ -808,7 +808,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 ```yaml
 # Core Identifiers
 session_id: "session-1773657125628-aef19d3f83e5"
-spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/017-agents-alignment"
+spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/012-agents-alignment"
 channel: "main"
 
 # Classification
@@ -891,7 +891,7 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "system spec kit/022 hybrid rag fusion/017 agents alignment"
+  - "system spec kit/022 hybrid rag fusion/012 agents alignment"
   - "gpt 5"
   - "ultra think"
   - "cross review"
@@ -922,13 +922,13 @@ trigger_phrases:
   - "kit/022"
   - "hybrid"
   - "rag"
-  - "fusion/017"
+  - "fusion/012"
   - "agents"
   - "alignment"
 
 key_files:
   - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/(merged-small-files)"
-  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/017-agents-alignment/(merged-small-files)"
+  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-agents-alignment/(merged-small-files)"
   - ".opencode/agent/chatgpt/(merged-small-files)"
 
 # Relationships
@@ -936,7 +936,7 @@ related_sessions:
 
   []
 
-parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/017-agents-alignment"
+parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/012-agents-alignment"
 child_sessions:
 
   []

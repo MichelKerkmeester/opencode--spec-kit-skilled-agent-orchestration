@@ -143,7 +143,7 @@ Next: Keep verification evidence synchronized with checklist status.
 - [`tasks.md`](./tasks.md) - Task breakdown
 - [`checklist.md`](./checklist.md) - QA checklist
 
-**Key Topics:** `final` | `saved final` | `final via` | `via generate` | `saved` | `via` | `generate` | `system spec kit/022 hybrid rag fusion/013 code audit per feature catalog/008 bug fixes and data integrity` | `json` | `mode` | `external` | `cli` |
+**Key Topics:** `final` | `saved final` | `final via` | `via generate` | `saved` | `via` | `generate` | `system spec kit/022 hybrid rag fusion/007 code audit per feature catalog/008 bug fixes and data integrity` | `json` | `mode` | `external` | `cli` |
 <!-- /ANCHOR:project-state-snapshot -->
 
 ---
@@ -467,7 +467,7 @@ key_topics:
   - "saved"
   - "via"
   - "generate"
-  - "system spec kit/022 hybrid rag fusion/013 code audit per feature catalog/008 bug fixes and data integrity"
+  - "system spec kit/022 hybrid rag fusion/007 code audit per feature catalog/008 bug fixes and data integrity"
   - "json"
   - "mode"
   - "external"

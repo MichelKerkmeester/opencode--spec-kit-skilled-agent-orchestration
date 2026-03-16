@@ -24,7 +24,7 @@ contextType: "general"
 | **Testing** | Targeted Vitest, `npm run lint` (`tsc --noEmit`), alignment-drift verification, `validate.sh` |
 
 ### Overview
-This work landed in three layers: runtime safeguards for explicit JSON-mode input handling, CLI handback documentation updates across all 8 relevant `cli-*` docs, and spec-folder reconciliation so the written evidence matches the implemented repository state. The plan keeps historical task evidence separate from current rerun status so the spec folder does not overstate a live outsourced CLI round-trip that has not been freshly revalidated.
+This work now lands in four layers: runtime safeguards for explicit JSON-mode input handling, CLI handback documentation updates across all 8 relevant `cli-*` docs, a dedicated doc-regression test plus feature-catalog alignment, and spec-folder reconciliation so the written evidence matches the current repository state. The plan uses fresh 2026-03-16 verification instead of inherited 013-era claims.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -40,8 +40,9 @@ This work landed in three layers: runtime safeguards for explicit JSON-mode inpu
 ### Definition of Done
 - [x] Runtime loader hard-fails explicit `dataFile` errors without fallback
 - [x] Next-step normalization and `NEXT_ACTION` persistence are documented correctly
-- [x] All 8 relevant `cli-*` docs reflect redact-and-scrub and explicit failure behavior
-- [x] Spec docs no longer claim the unverifiable 1032-line artifact or a completed live round-trip
+- [x] All 8 relevant `cli-*` docs reflect redact-and-scrub, snake_case acceptance, rejection-code guidance, and minimum-payload guidance
+- [x] Feature-catalog and regression-test coverage protect the handback contract from drifting
+- [x] Spec docs use fresh 2026-03-16 verification and no longer rely on stale 013-era evidence
 - [x] Spec-folder validation run recorded
 <!-- /ANCHOR:quality-gates -->
 
@@ -58,17 +59,21 @@ Repository-side runtime hardening plus documentation alignment.
 - **`input-normalizer.ts`**: Accepts `nextSteps` or `next_steps`, persists `Next: ...` / `Follow-up: ...`, and preserves mixed structured payload next steps when those facts are missing.
 - **`session-extractor.ts`**: Reads the persisted `Next: ...` fact into `NEXT_ACTION`.
 - **`runtime-memory-inputs.vitest.ts`**: Guards the explicit-failure path and next-step persistence behavior.
-- **4 `cli-*` skills + 4 prompt templates**: Tell the caller to extract handback data, redact and scrub it, and stop on explicit JSON-mode failures.
+- **`outsourced-agent-handback-docs.vitest.ts`**: Keeps the 8 CLI handback docs and the feature catalog aligned on post-010 save-gate guidance.
+- **4 `cli-*` skills + 4 prompt templates**: Tell the caller to extract handback data, redact and scrub it, include richer `FILES` metadata, and stop on explicit JSON-mode failures.
+- **Feature catalog entry `17-outsourced-agent-memory-capture.md`**: Tracks the handback protocol as a current phase `015` concern rather than a stale `013` snapshot.
 
 ### Data Flow
 ```text
 Caller prepares /tmp/save-context-data.json
   -> Caller redacts and scrubs sensitive values
+  -> Caller includes durable evidence (specific summary, richer FILES metadata, meaningful context)
   -> generate-context runtime loads explicit dataFile
   -> invalid file / JSON / shape throws EXPLICIT_DATA_FILE_LOAD_FAILED: ...
   -> valid input normalizes nextSteps or next_steps (including mixed structured payloads)
   -> first persisted fact becomes Next: ...
   -> session extractor maps Next: ... to NEXT_ACTION
+  -> sufficiency / contamination / render validation evaluate the result
   -> saved memory and spec docs describe the same behavior
 ```
 <!-- /ANCHOR:architecture -->
@@ -85,16 +90,16 @@ Caller prepares /tmp/save-context-data.json
 - [x] Add regression coverage in `runtime-memory-inputs.vitest.ts`
 
 ### Phase 2: CLI Handback Documentation
-- [x] Update all 4 `cli-*` SKILL files with redact-and-scrub guidance
-- [x] Update all 4 `cli-*` prompt templates with accepted next-step fields and explicit hard-fail behavior
-- [x] Correct `cli-codex` prompt template numbering
-- [x] Use the real `.opencode/skill/cli-*` path layout in spec references
+- [x] Update all 4 `cli-*` SKILL files with redact-and-scrub, rejection-code, and minimum-payload guidance
+- [x] Update all 4 `cli-*` prompt templates with accepted snake_case fields, richer `FILES` examples, and explicit hard-fail behavior
+- [x] Align the feature catalog entry to phase `015` and the post-010 gate contract
+- [x] Add doc-regression coverage for the 8 handback docs plus the catalog entry
 
 ### Phase 3: Verification and Reconciliation
-- [x] Remove historical numeric Vitest pass-total claims from current acceptance evidence
-- [x] Verify alignment drift currently reports `0 findings` and `0 warnings`
+- [x] Rerun the targeted runtime-plus-doc Vitest lane and record the actual `2 files / 28 tests` result
+- [x] Verify alignment drift currently reports `244` scanned files, `0 findings`, and `0 warnings`
 - [x] Record current `npm run lint` (`tsc --noEmit`) rerun status as passing evidence
-- [x] Remove unverifiable 1032-line artifact claims; live outsourced CLI dispatch subsequently verified (T016)
+- [x] Verify fresh JSON-mode handback behavior with one successful write and one thin-payload `INSUFFICIENT_CONTEXT_ABORT`
 - [x] Run `validate.sh` on this spec folder
 <!-- /ANCHOR:phases -->
 
@@ -105,11 +110,11 @@ Caller prepares /tmp/save-context-data.json
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Targeted regression | Explicit `dataFile` failure handling and next-step persistence | `runtime-memory-inputs.vitest.ts` |
+| Targeted regression | Explicit `dataFile` failure handling, next-step persistence, and doc-contract drift | `runtime-memory-inputs.vitest.ts`, `outsourced-agent-handback-docs.vitest.ts` |
 | Static verification | TypeScript correctness for the task scope | `npm run lint` (`tsc --noEmit`) |
 | Alignment verification | Drift between implementation and aligned standards | `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit/scripts` |
 | Spec validation | Completeness and checklist consistency inside this folder | `.opencode/skill/system-spec-kit/scripts/spec/validate.sh` |
-| Manual follow-up | Fresh live outsourced CLI dispatch | Verified (T016, CHK-025) |
+| Manual follow-up | Fresh JSON-mode handback write plus thin-payload rejection | `generate-context.js` with representative rich and thin payloads |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -122,7 +127,7 @@ Caller prepares /tmp/save-context-data.json
 | `data-loader.ts` | Internal | Green | Explicit JSON-mode failures would drift from documented behavior |
 | `input-normalizer.ts` + `session-extractor.ts` | Internal | Green | `nextSteps` / `next_steps` docs would not match persisted memory state |
 | 4 `cli-*` skills + 4 prompt templates | Internal | Green | Callers would miss scrub guidance or hard-fail semantics |
-| Prior Tasks #1-2 verification notes | Internal | Green | Historical evidence would be lost or misrepresented |
+| Feature catalog entry + new doc regression test | Internal | Green | Caller guidance could drift away from the runtime contract |
 <!-- /ANCHOR:dependencies -->
 
 ---
@@ -157,9 +162,9 @@ Phase 1 (Runtime Safeguards) -> Phase 2 (CLI Docs) -> Phase 3 (Verify and Reconc
 
 | Phase | Complexity | Estimated Effort |
 |-------|------------|------------------|
-| Runtime Safeguards | Med | Completed in Tasks #1-2 |
-| CLI Handback Documentation | Med | Completed in Tasks #1-2 |
-| Verification and Reconciliation | Med | 1 focused documentation pass plus validation |
+| Runtime Safeguards | Med | Previously shipped and re-verified in this phase |
+| CLI Handback Documentation | Med | One focused pass across 8 docs plus the catalog |
+| Verification and Reconciliation | Med | Targeted test reruns, manual JSON-mode verification, and spec validation |
 | **Total** | | **Level 2 scope maintained** |
 <!-- /ANCHOR:effort -->
 

@@ -349,9 +349,13 @@ async function extractDecisions(
   }
 
   // Process MCP data - extract decision observations
-  const decisionObservations = (collectedData.observations || [])
+  let decisionObservations = (collectedData.observations || [])
     .filter((obs) => obs.type === 'decision')
     .filter((obs) => !(processedManualDecisions.length > 0 && obs._manualDecision));
+
+  if (processedManualDecisions.length > 0) {
+    decisionObservations = [];
+  }
 
   // P0-3: Also suppress lexical extraction when manual decisions exist,
   // since those observations were already built from the same manual decisions

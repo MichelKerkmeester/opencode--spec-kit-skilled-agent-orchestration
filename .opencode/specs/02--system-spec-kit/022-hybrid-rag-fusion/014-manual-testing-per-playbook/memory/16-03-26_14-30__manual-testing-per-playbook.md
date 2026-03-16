@@ -2,7 +2,7 @@
 title: "Manual Testing Per Playbook [014-manual-testing-per-playbook/16-03-26_14-30__manual-testing-per-playbook]"
 description: "Excellent research. Now I have a complete picture. Let me design the plan using native sonnet agents."
 trigger_phrases:
-  - "system spec kit/022 hybrid rag fusion/019 manual testing per playbook"
+  - "system spec kit/022 hybrid rag fusion/014 manual testing per playbook"
   - "manual testing per playbook"
   - "tree thinning"
   - "merged-small-files tree-thinning merged small"
@@ -29,7 +29,7 @@ trigger_phrases:
   - "map merged 014-manual-testing-per-playbook/plan.md parent"
   - "merged 014-manual-testing-per-playbook/plan.md parent implementation"
   - "kit/022"
-  - "fusion/019"
+  - "fusion/014"
   - "manual"
   - "testing"
   - "per"
@@ -161,7 +161,7 @@ Next: Continue implementation
 - [`spec.md`](./spec.md) - Requirements specification
 - [`plan.md`](./plan.md) - Implementation plan
 
-**Key Topics:** `system spec kit/022 hybrid rag fusion/019 manual testing per playbook` | `system` | `spec` | `kit/022` | `hybrid` | `rag` | `fusion/019` | `manual` | `testing` | `per` | `playbook` | `excellent research` |
+**Key Topics:** `system spec kit/022 hybrid rag fusion/014 manual testing per playbook` | `system` | `spec` | `kit/022` | `hybrid` | `rag` | `fusion/014` | `manual` | `testing` | `per` | `playbook` | `excellent research` |
 
 <!-- /ANCHOR:project-state-snapshot -->
 
@@ -578,13 +578,13 @@ relevance_boost: 1  # 1.0 default, increased by access patterns
 
 # Content Indexing
 key_topics:
-  - "system spec kit/022 hybrid rag fusion/019 manual testing per playbook"
+  - "system spec kit/022 hybrid rag fusion/014 manual testing per playbook"
   - "system"
   - "spec"
   - "kit/022"
   - "hybrid"
   - "rag"
-  - "fusion/019"
+  - "fusion/014"
   - "manual"
   - "testing"
   - "per"
@@ -593,7 +593,7 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "system spec kit/022 hybrid rag fusion/019 manual testing per playbook"
+  - "system spec kit/022 hybrid rag fusion/014 manual testing per playbook"
   - "manual testing per playbook"
   - "tree thinning"
   - "merged-small-files tree-thinning merged small"
@@ -620,7 +620,7 @@ trigger_phrases:
   - "map merged 014-manual-testing-per-playbook/plan.md parent"
   - "merged 014-manual-testing-per-playbook/plan.md parent implementation"
   - "kit/022"
-  - "fusion/019"
+  - "fusion/014"
   - "manual"
   - "testing"
   - "per"

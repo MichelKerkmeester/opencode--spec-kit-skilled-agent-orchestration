@@ -406,8 +406,8 @@ Source: 019-extra-features/handover.md
 | `scripts/package.json` | Added stage 4 to `check` script |
 | `ARCHITECTURE_BOUNDARIES` | Added enforcement table row |
 | `scripts/evals/README` | Added inventory entry |
-| `../008-architecture-audit/tasks.md` | Phase 5 added, T046-T049 marked [x] |
-| `../008-architecture-audit/checklist.md` | Phase 5 section added, CHK-300-304 marked [x], 8 P2s fixed |
+| `../005-architecture-audit/tasks.md` | Phase 5 added, T046-T049 marked [x] |
+| `../005-architecture-audit/checklist.md` | Phase 5 section added, CHK-300-304 marked [x], 8 P2s fixed |
 | `tasks.md` | T126-T128 marked [x] |
 | `checklist.md` | Removed incorrect `88/88 verified` summary; added remediation note and targeted verification status |
 | `implementation-summary.md` | Expanded from stub to full summary |

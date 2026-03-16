@@ -29,7 +29,7 @@ quality_flags:
 |:--------------|:----------|
 | Session Date | 2026-03-13 |
 | Session ID | session-1773431762753-68769d7b9950 |
-| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/001-baseline-and-safety-rails |
+| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/001-baseline-and-safety-rails |
 | Channel | main |
 | Importance Tier | normal |
 | Context Type | general |
@@ -92,20 +92,20 @@ quality_flags:
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/001-baseline-and-safety-rails
+/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/001-baseline-and-safety-rails
 ```
 
 **Or paste this continuation prompt:**
 ```
 CONTINUATION - Attempt 2
-Spec: 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/001-baseline-and-safety-rails
+Spec: 02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/001-baseline-and-safety-rails
 Last: Moved residual observability expansion out of Phase 1 - The current baseline sli
 Next: Continue implementation
 ```
 
 **Key Context to Review:**
 
-- Files modified: 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/001-baseline-and-safety-rails/tasks.md, 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/001-baseline-and-safety-rails/checklist.md, 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/001-baseline-and-safety-rails/implementation-summary.md
+- Files modified: 02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/001-baseline-and-safety-rails/tasks.md, 02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/001-baseline-and-safety-rails/checklist.md, 02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/001-baseline-and-safety-rails/implementation-summary.md
 
 - Check: plan.md, tasks.md, checklist.md
 
@@ -121,7 +121,7 @@ Next: Continue implementation
 | Field | Value |
 |-------|-------|
 | Phase | RESEARCH |
-| Active File | 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/001-baseline-and-safety-rails/tasks.md |
+| Active File | 02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/001-baseline-and-safety-rails/tasks.md |
 | Last Action | Moved residual observability expansion out of Phase 1 - The current baseline sli |
 | Next Action | Continue implementation |
 | Blockers | None |
@@ -158,11 +158,11 @@ Next: Continue implementation
 
 **Key Files and Their Roles**:
 
-- `02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/001-baseline-and-safety-rails/tasks.md` - Documentation
+- `02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/001-baseline-and-safety-rails/tasks.md` - Documentation
 
-- `02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/001-baseline-and-safety-rails/checklist.md` - Documentation
+- `02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/001-baseline-and-safety-rails/checklist.md` - Documentation
 
-- `02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/001-baseline-and-safety-rails/implementation-summary.md` - Documentation
+- `02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/001-baseline-and-safety-rails/implementation-summary.md` - Documentation
 
 **How to Extend**:
 
@@ -190,7 +190,7 @@ Next: Continue implementation
 
 | **File** | **Description** |
 |:---------|:----------------|
-| `02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/001-baseline-and-safety-rails/(merged-small-files)` | Tree-thinning merged 3 small files (tasks.md, checklist.md, implementation-summary.md). Merged from 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/001-baseline-and-safety-rails/tasks.md : File modified (description pending) | Merged from 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/001-baseline-and-safety-rails/checklist.md : File modified (description pending) | Merged from 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/001-baseline-and-safety-rails/implementation-summary.md : File modified (description pending) |
+| `02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/001-baseline-and-safety-rails/(merged-small-files)` | Tree-thinning merged 3 small files (tasks.md, checklist.md, implementation-summary.md). Merged from 02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/001-baseline-and-safety-rails/tasks.md : File modified (description pending) | Merged from 02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/001-baseline-and-safety-rails/checklist.md : File modified (description pending) | Merged from 02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/001-baseline-and-safety-rails/implementation-summary.md : File modified (description pending) |
 <!-- /ANCHOR:summary -->
 
 ---
@@ -430,9 +430,9 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/001-baseline-and-safety-rails` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/001-baseline-and-safety-rails` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/001-baseline-and-safety-rails" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/001-baseline-and-safety-rails" })` |
 | Stale Context | Information seems outdated | Check `last_accessed_epoch` vs current time |
 | Incomplete Handover | Missing continuation context | Review CONTINUE SESSION section above |
 | Dedup Collision | Wrong memory surfaced | Check `fingerprint_hash` for conflicts |
@@ -444,16 +444,16 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 node .opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts --status
 
 # List memories for this spec folder
-memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/001-baseline-and-safety-rails", limit: 10 })
+memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/001-baseline-and-safety-rails", limit: 10 })
 
 # Verify memory file integrity
-ls -la 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/001-baseline-and-safety-rails/memory/
+ls -la 02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/001-baseline-and-safety-rails/memory/
 
 # Check for orphaned memories
 memory_search({ query: "orphaned", anchors: ["state"] })
 
 # Force re-index of this spec folder
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/001-baseline-and-safety-rails --force
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/001-baseline-and-safety-rails --force
 ```
 
 ### Recovery Priority
@@ -485,7 +485,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 ```yaml
 # Core Identifiers
 session_id: "session-1773431762753-68769d7b9950"
-spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/001-baseline-and-safety-rails"
+spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/001-baseline-and-safety-rails"
 channel: "main"
 
 # Classification
@@ -581,7 +581,7 @@ trigger_phrases:
   - "verification verification pass confirmed"
   - "hydra based features baseline"  []
 
-parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/001-baseline-and-safety-rails"
+parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/001-baseline-and-safety-rails"
 child_sessions:
 
   []

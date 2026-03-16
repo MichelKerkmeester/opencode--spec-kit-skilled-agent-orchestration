@@ -21,7 +21,7 @@ quality_flags: []
 |:--------------|:----------|
 | Session Date | 2026-02-27 |
 | Session ID | session-1772205983019-asrcgom60 |
-| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-8 |
+| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/001-sprint-0-measurement-foundation |
 | Channel | main |
 | Importance Tier | normal |
 | Context Type | general |
@@ -110,13 +110,13 @@ quality_flags: []
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-8
+/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/001-sprint-0-measurement-foundation
 ```
 
 **Or paste this continuation prompt:**
 ```
 CONTINUATION - Attempt 2
-Spec: 02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-8
+Spec: 02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/001-sprint-0-measurement-foundation
 Last: Technical Implementation Details
 Next: Continue implementation
 ```
@@ -163,7 +163,7 @@ Next: Continue implementation
 - [`checklist.md`](./checklist.md) - QA checklist
 - [`handover.md`](./handover.md) - Session handover notes
 
-**Key Topics:** `decision` | `sprint` | `ground truth` | `because` | `truth ids` | `spec` | `hybrid` | `rag` | `fusion` | `system spec kit/022 hybrid rag fusion/006 core rag sprints 0 to 8` | `bm25` | `proceed` | 
+**Key Topics:** `decision` | `sprint` | `ground truth` | `because` | `truth ids` | `spec` | `hybrid` | `rag` | `fusion` | `system spec kit/022 hybrid rag fusion/001 hybrid rag fusion epic` | `bm25` | `proceed` | 
 <!-- /ANCHOR:project-state-snapshot -->
 
 ---
@@ -454,9 +454,9 @@ Completed Sprint 0 closure for the Hybrid RAG Fusion Refinement initiative. Exec
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-8` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/001-sprint-0-measurement-foundation` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-8" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/001-sprint-0-measurement-foundation" })` |
 | Stale Context | Information seems outdated | Check `last_accessed_epoch` vs current time |
 | Incomplete Handover | Missing continuation context | Review CONTINUE SESSION section above |
 | Dedup Collision | Wrong memory surfaced | Check `fingerprint_hash` for conflicts |
@@ -468,16 +468,16 @@ Completed Sprint 0 closure for the Hybrid RAG Fusion Refinement initiative. Exec
 node .opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts --status
 
 # List memories for this spec folder
-memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-8", limit: 10 })
+memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/001-sprint-0-measurement-foundation", limit: 10 })
 
 # Verify memory file integrity
-ls -la 02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-8/memory/
+ls -la 02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/001-sprint-0-measurement-foundation/memory/
 
 # Check for orphaned memories
 memory_search({ query: "orphaned", anchors: ["state"] })
 
 # Force re-index of this spec folder
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-8 --force
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/001-sprint-0-measurement-foundation --force
 ```
 
 ### Recovery Priority
@@ -549,7 +549,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 ```yaml
 # Core Identifiers
 session_id: "session-1772205983019-asrcgom60"
-spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-8"
+spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/001-sprint-0-measurement-foundation"
 channel: "main"
 
 # Classification
@@ -626,7 +626,7 @@ key_topics:
   - "hybrid"
   - "rag"
   - "fusion"
-  - "system spec kit/022 hybrid rag fusion/006 core rag sprints 0 to 8"
+  - "system spec kit/022 hybrid rag fusion/001 hybrid rag fusion epic"
   - "bm25"
   - "proceed"
 
@@ -638,7 +638,7 @@ trigger_phrases:
   - "mrr@5 0.2083"
   - "ground truth id mapping"  []
 
-parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-8"
+parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/001-sprint-0-measurement-foundation"
 child_sessions:
 
   []
