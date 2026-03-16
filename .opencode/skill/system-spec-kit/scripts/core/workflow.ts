@@ -145,13 +145,7 @@ function ensureMinTriggerPhrases(existing: string[], enhancedFiles: FileChange[]
     .split(/[-_]/)
     .map((token) => token.trim().toLowerCase())
     .filter((token) => token.length >= 3);
-
-  const fileTokens = enhancedFiles
-    .flatMap((file) => path.basename(file.FILE_PATH).replace(/\.[^.]+$/, '').split(/[-_]/))
-    .map((token) => token.trim().toLowerCase())
-    .filter((token) => token.length >= 3);
-
-  const combined = [...new Set([...existing, ...fileTokens, ...folderTokens])];
+  const combined = [...new Set([...existing, ...folderTokens])];
   if (combined.length >= 2) {
     return combined;
   }
@@ -420,6 +414,7 @@ function applyThinningToFileChanges(
       FILE_PATH: syntheticPath,
       DESCRIPTION: mergeNote,
       ACTION: 'Merged',
+      _synthetic: true,
     };
 
     const idx = reducedFiles.push(syntheticEntry) - 1;
@@ -1333,7 +1328,9 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     .filter((f) => !f.FILE_PATH.includes('(merged-small-files)'))
     .map((f) => ({ FILE_PATH: f.FILE_PATH }));
   const memoryTitle = buildMemoryTitle(preferredMemoryTask, specFolderName, sessionData.DATE, contentSlug);
-  const memoryDashboardTitle = buildMemoryDashboardTitle(memoryTitle, specFolderName, ctxFilename);
+  // Keep dashboard titles stable across duplicate-save retries so content dedup
+  // compares the rendered memory itself, not a collision suffix.
+  const memoryDashboardTitle = buildMemoryDashboardTitle(memoryTitle, specFolderName, rawCtxFilename);
   const memoryDescription = deriveMemoryDescription({
     summary: sessionData.SUMMARY,
     title: memoryTitle,
@@ -1342,7 +1339,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   // Pre-extract trigger phrases for template embedding AND later indexing
   let preExtractedTriggers: string[] = [];
   try {
-    // Build enriched text for trigger extraction: summary + decisions + file paths
+    // Build enriched text for trigger extraction from semantic session content only.
     const triggerSourceParts: string[] = [];
     if (sessionData.SUMMARY && sessionData.SUMMARY.length > 20) {
       triggerSourceParts.push(sessionData.SUMMARY);
@@ -1354,7 +1351,9 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       if (d.CHOSEN) triggerSourceParts.push(d.CHOSEN);
     });
     effectiveFiles.forEach(f => {
-      if (f.FILE_PATH) triggerSourceParts.push(f.FILE_PATH);
+      if (f._synthetic) {
+        return;
+      }
       if (f.DESCRIPTION && !f.DESCRIPTION.includes('pending')) triggerSourceParts.push(f.DESCRIPTION);
     });
     // Add spec folder name tokens as trigger source
@@ -1488,6 +1487,18 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
         filesModified: implSummary.filesModified.length,
         decisions: implSummary.decisions.length,
         messageStats: implSummary.messageStats
+      },
+      fileCounts: {
+        fileCount: sessionData.FILE_COUNT,
+        capturedFileCount: sessionData.CAPTURED_FILE_COUNT,
+        filesystemFileCount: sessionData.FILESYSTEM_FILE_COUNT,
+        gitChangedFileCount: sessionData.GIT_CHANGED_FILE_COUNT,
+      },
+      sourceProvenance: {
+        transcriptPath: sessionData.SOURCE_TRANSCRIPT_PATH,
+        sessionId: sessionData.SOURCE_SESSION_ID,
+        sessionCreated: sessionData.SOURCE_SESSION_CREATED,
+        sessionUpdated: sessionData.SOURCE_SESSION_UPDATED,
       },
       embedding: {
         status: 'pending',

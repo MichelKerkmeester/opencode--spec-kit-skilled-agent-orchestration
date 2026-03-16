@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Session Source Validation [template:level_1/tasks.md]"
+title: "Tasks: Session Source Validation [template:level_2/tasks.md]"
 ---
 # Tasks: Session Source Validation
 
@@ -28,7 +28,7 @@ title: "Tasks: Session Source Validation [template:level_1/tasks.md]"
 
 - [ ] T001 Review current mtime-based transcript selection in capture function (`scripts/extractors/claude-code-capture.ts`)
 - [ ] T002 Review data loader invocation context for available session hints (`scripts/loaders/data-loader.ts`)
-- [ ] T003 Review existing validators to understand V10 placement (`scripts/validators/validate-memory-quality.ts`)
+- [ ] T003 Review existing validators to understand V10 placement (`scripts/memory/validate-memory-quality.ts`)
 - [ ] T004 Review V1 and V2 scorer interfaces for contamination extension points (`scripts/core/quality-scorer.ts`, `scripts/extractors/quality-scorer.ts`)
 - [ ] T005 Review trigger extraction for synthetic description input sources (`scripts/core/workflow.ts`)
 <!-- /ANCHOR:phase-1 -->
@@ -55,8 +55,8 @@ title: "Tasks: Session Source Validation [template:level_1/tasks.md]"
 
 - [ ] T013 Persist provenance metadata in frontmatter: `_sourceTranscriptPath`, `_sourceSessionId`, `_sourceSessionCreated`, `_sourceSessionUpdated` (`scripts/extractors/claude-code-capture.ts`)
 - [ ] T014 Split file counts in `collect-session-data.ts`: `captured_file_count`, `filesystem_file_count`, `git_changed_file_count` (`scripts/extractors/collect-session-data.ts`)
-- [ ] T015 Add V10 validator: compare `filesystem_file_count` vs `captured_file_count` divergence (`scripts/validators/validate-memory-quality.ts`)
-- [ ] T016 Define ratio-based divergence threshold calibrated against real spec folder sizes (`scripts/validators/validate-memory-quality.ts`)
+- [ ] T015 Add V10 validator: compare `filesystem_file_count` vs `captured_file_count` divergence (`scripts/memory/validate-memory-quality.ts`)
+- [ ] T016 Define ratio-based divergence threshold calibrated against real spec folder sizes (`scripts/memory/validate-memory-quality.ts`)
 
 ### Contamination Score Penalty -- A0.4 (REQ-007, REQ-008)
 

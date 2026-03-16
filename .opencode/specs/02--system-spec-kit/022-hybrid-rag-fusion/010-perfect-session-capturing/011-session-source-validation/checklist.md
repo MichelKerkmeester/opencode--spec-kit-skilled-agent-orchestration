@@ -38,10 +38,10 @@ title: "Verification Checklist: Session Source Validation [template:level_2/chec
 - [ ] CHK-012 [P0] Wrong-session transcript rejected when session ID or timestamp does not match (mtime no longer outranks)
 - [ ] CHK-013 [P0] Provenance metadata persisted in frontmatter: `_sourceTranscriptPath`, `_sourceSessionId`, `_sourceSessionCreated`, `_sourceSessionUpdated`
 - [ ] CHK-014 [P0] Three file count metrics present: `captured_file_count`, `filesystem_file_count`, `git_changed_file_count`
-- [ ] CHK-015 [P1] V10 validator fires on `filesystem_file_count` vs `captured_file_count` divergence with ratio-based threshold
+- [ ] CHK-015 [P0] V10 validator fires on `filesystem_file_count` vs `captured_file_count` divergence with ratio-based threshold
 - [ ] CHK-016 [P1] Contamination penalty applied in V2 scorer: -0.25, cap at 0.6
 - [ ] CHK-017 [P1] V1 scorer extended with `hadContamination` parameter and equivalent penalty
-- [ ] CHK-018 [P1] Trigger phrases reflect actual session content, not FILE_PATH artifacts or synthetic descriptions
+- [ ] CHK-018 [P0] Trigger phrases reflect actual session content, not FILE_PATH artifacts or synthetic descriptions
 - [ ] CHK-019 [P2] Weight/threshold values are configurable (not hardcoded magic numbers)
 <!-- /ANCHOR:code-quality -->
 
@@ -93,8 +93,8 @@ title: "Verification Checklist: Session Source Validation [template:level_2/chec
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 9 | [ ]/9 |
-| P1 Items | 13 | [ ]/13 |
+| P0 Items | 11 | [ ]/11 |
+| P1 Items | 11 | [ ]/11 |
 | P2 Items | 4 | [ ]/4 |
 
 **Verification Date**: [YYYY-MM-DD]

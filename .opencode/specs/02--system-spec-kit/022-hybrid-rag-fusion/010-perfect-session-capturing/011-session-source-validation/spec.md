@@ -15,7 +15,7 @@ title: "Feature Specification: Session Source Validation"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | Draft |
+| **Status** | Implemented |
 | **Created** | 2026-03-16 |
 | **Branch** | `main` |
 | **Parent** | [010-perfect-session-capturing](../spec.md) |
@@ -64,7 +64,7 @@ Fix transcript resolution to use session-ID-first selection instead of mtime-bas
 |-----------|-------------|-------------|
 | `scripts/extractors/claude-code-capture.ts` | Modify | Add `expectedSessionId` parameter, implement history-timestamp fallback chain |
 | `scripts/loaders/data-loader.ts` | Modify | Pass session hints (`expectedSessionId`, `sessionStartTs`, `invocationTs`) to `captureClaudeConversation` |
-| `scripts/validators/validate-memory-quality.ts` | Modify | Add V10 same-spec wrong-session validator (file count divergence) |
+| `scripts/memory/validate-memory-quality.ts` | Modify | Add V10 same-spec wrong-session validator (file count divergence) |
 | `scripts/extractors/quality-scorer.ts` | Modify | Add contamination score penalty (-0.25, cap 0.6) |
 | `scripts/core/quality-scorer.ts` | Modify | Extend signature for `hadContamination` input |
 | `scripts/core/workflow.ts` | Modify | Add `filesystem_file_count`, sanitize trigger input to exclude synthetic descriptions |
@@ -124,6 +124,6 @@ Fix transcript resolution to use session-ID-first selection instead of mtime-bas
 <!-- ANCHOR:questions -->
 ## 7. OPEN QUESTIONS
 
-- **OQ-001**: Session ID: require `expectedSessionId` (breaking change) or accept optionally with mtime fallback?
-- **OQ-002**: Contamination penalty ownership boundary: 011 triggers contamination detection and calls the `hadContamination` parameter defined by 001-quality-scorer-unification. 001 owns the scorer interface; 011 owns the validation trigger.
+- **OQ-001**: ~~Session ID: require `expectedSessionId` (breaking change) or accept optionally with mtime fallback?~~ **RESOLVED**: `sessionHints` is optional (`ClaudeSessionHints` with nullable fields). The parameter is accepted optionally with fallback degradation when unavailable.
+- **OQ-002**: ~~Contamination penalty ownership boundary: 011 triggers contamination detection and calls the `hadContamination` parameter defined by 001-quality-scorer-unification. 001 owns the scorer interface; 011 owns the validation trigger.~~ **RESOLVED**: Both V1 and V2 scorers already accept `hadContamination` and apply the -0.25 / cap 0.6 penalty. Ownership is shared: scorer interface is in the scorer modules; contamination detection trigger is in the validator.
 <!-- /ANCHOR:questions -->

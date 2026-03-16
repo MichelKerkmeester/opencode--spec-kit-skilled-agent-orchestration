@@ -57,7 +57,7 @@ Session boundary protocol -- session identity hints propagated from invocation t
 - **Session hints API (`scripts/extractors/claude-code-capture.ts`)**: Extended `captureClaudeConversation` accepting `{ expectedSessionId, sessionStartTs, invocationTs }`
 - **Data loader (`scripts/loaders/data-loader.ts`)**: Passes session hints from invocation context to the capture function
 - **Fallback resolution chain**: Four-step degradation: exact sessionId match, active lock/session file, newest by history timestamp (not mtime), reject if no time-window match
-- **V10 validator (`scripts/validators/validate-memory-quality.ts`)**: Detects `filesystem_file_count` vs `captured_file_count` divergence as a wrong-session signal
+- **V10 validator (`scripts/memory/validate-memory-quality.ts`)**: Detects `filesystem_file_count` vs `captured_file_count` divergence as a wrong-session signal
 - **Contamination penalty (`scripts/extractors/quality-scorer.ts`, `scripts/core/quality-scorer.ts`)**: Both scorers penalize contaminated memories
 - **File count splitter (`scripts/extractors/collect-session-data.ts`)**: Produces three independent file count metrics
 - **Trigger sanitizer (`scripts/core/workflow.ts`)**: Filters out raw FILE_PATH and synthetic descriptions before trigger extraction
@@ -91,6 +91,7 @@ Session boundary protocol -- session identity hints propagated from invocation t
 - [ ] Implement step 2: check active lock/session file for current session marker
 - [ ] Implement step 3: sort candidates by history timestamp (not filesystem mtime)
 - [ ] Implement step 4: reject if no candidate's last event falls within the time window of `invocationTs`
+  - Time window constants: lower bound = `sessionStartTs - 5min` or `invocationTs - 12hr`, upper bound = `invocationTs + 10min`
 - [ ] Unit test each fallback step in isolation and the full chain with various scenarios
 
 ### Phase 3: Source Provenance and V10 Validator (A0.3)
