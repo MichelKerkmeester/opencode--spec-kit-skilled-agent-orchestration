@@ -1,18 +1,15 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/005-core-rag-sprints-0-to-9",
-  "description": "005 Core RAG Sprints 0 to 9 - Consolidated spec (Sprints 0-8 + Sprint 9 Extra Features)",
+  "description": "005 Core RAG Sprints 0 to 9 - Consolidated spec",
   "keywords": [
     "005",
     "core",
     "rag",
     "sprints",
     "consolidated",
-    "spec",
-    "sprint-9",
-    "extra-features",
-    "productization"
+    "spec"
   ],
-  "lastUpdated": "2026-03-14T18:00:00.000Z",
+  "lastUpdated": "2026-03-16T13:20:01.729Z",
   "specId": "005",
   "folderSlug": "core-rag-sprints-0-to-9",
   "parentChain": [

@@ -587,7 +587,11 @@ function generateResumeContext(
 
   const lastMeaningful = [...observations].reverse().find((o) => o.narrative && o.narrative.length > 50);
   if (lastMeaningful) {
-    items.push({ CONTEXT_ITEM: `Last: ${(lastMeaningful.title || lastMeaningful.narrative || '').substring(0, 80)}` });
+    const lastText = (lastMeaningful.title || lastMeaningful.narrative || '').substring(0, 80);
+    const lastTruncated = lastText.length >= 80
+      ? (lastText.lastIndexOf(' ', 77) > 30 ? lastText.substring(0, lastText.lastIndexOf(' ', 77)) : lastText.substring(0, 77)) + '...'
+      : lastText;
+    items.push({ CONTEXT_ITEM: `Last: ${lastTruncated}` });
   }
 
   return items.slice(0, 5);

@@ -211,6 +211,12 @@ Preserve the March 8 snapshot as historical record while extending documentation
 **Acceptance Criteria**:
 1. Given all agent reports, When findings are synthesized, Then each finding has an action category and priority
 
+### Additional Acceptance Scenarios
+
+1. **Given** the March 8 historical audit is referenced in a current-state doc update, **When** the spec is refreshed, **Then** the 180-snippet snapshot remains clearly labeled as historical rather than current completeness.
+2. **Given** omitted live-tree snippets are classified in the March 16 addendum, **When** follow-up remediation is later completed, **Then** the spec records that completion as post-addendum work instead of rewriting the original addendum state.
+3. **Given** a validator-repair pass updates spec-folder markdown only, **When** validation is rerun, **Then** the result reports the exact remaining warnings or a clean pass without introducing unrelated scope changes.
+
 ---
 
 ## 12. OPEN QUESTIONS

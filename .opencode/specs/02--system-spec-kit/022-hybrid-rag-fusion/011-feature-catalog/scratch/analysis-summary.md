@@ -188,9 +188,9 @@ The audit verified all 180 feature snippet files and investigated all 55 known u
 | 7 | `14--pipeline-architecture/22-lineage-state-active-projection-and-asof-resolution.md` | CURRENT-TREE-ADDITION | NONE |
 | 8 | `16--tooling-and-scripts/09-migration-checkpoint-scripts.md` | CURRENT-TREE-ADDITION | NONE |
 | 9 | `16--tooling-and-scripts/10-schema-compatibility-validation.md` | CURRENT-TREE-ADDITION | NONE |
-| 10 | `16--tooling-and-scripts/11-feature-catalog-code-references.md` | CURRENT-TREE-ADDITION + SOURCE-PATH-NORMALIZE | FOLLOW-UP (P1) |
+| 10 | `16--tooling-and-scripts/11-feature-catalog-code-references.md` | CURRENT-TREE-ADDITION + SOURCE-PATH-NORMALIZE | COMPLETED POST-ADDENDUM |
 | 11 | `16--tooling-and-scripts/12-session-capturing-pipeline-quality.md` | CURRENT-TREE-ADDITION | NONE |
-| 12 | `16--tooling-and-scripts/13-constitutional-memory-manager-command.md` | CURRENT-TREE-ADDITION + SOURCE-PATH-CORRECT | FOLLOW-UP (P1) |
+| 12 | `16--tooling-and-scripts/13-constitutional-memory-manager-command.md` | CURRENT-TREE-ADDITION + SOURCE-PATH-CORRECT | COMPLETED POST-ADDENDUM |
 | 13 | `17--governance/03-hierarchical-scope-governance-governed-ingest-retention-and-audit.md` | CURRENT-TREE-ADDITION | NONE |
 | 14 | `17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md` | CURRENT-TREE-ADDITION | NONE |
 
@@ -199,11 +199,13 @@ The audit verified all 180 feature snippet files and investigated all 55 known u
 | Outcome | Count |
 |---------|-------|
 | Structurally current, no immediate remediation | 12 |
-| Follow-up remediation required | 2 |
+| Follow-up remediation completed post-addendum | 2 |
+| Outstanding addendum follow-up items | 0 |
 
-Addendum follow-up items:
-1. Normalize non-canonical source-path references (broad globs + external verifier alias) in `16--tooling-and-scripts/11-feature-catalog-code-references.md`.
-2. Correct/remove invalid `command/memory/context.md` source-path reference in `16--tooling-and-scripts/13-constitutional-memory-manager-command.md`.
+Post-addendum completion evidence:
+1. `16--tooling-and-scripts/11-feature-catalog-code-references.md`: broad-glob SOURCE FILES entries and the verifier alias path were replaced with canonical repo-resolved references.
+2. `16--tooling-and-scripts/13-constitutional-memory-manager-command.md`: invalid `command/memory/context.md` reference was removed, command/agent doc references were normalized to `.opencode/...` paths, and the inline CURRENT REALITY wording was aligned.
+3. Verification result after cleanup: both affected snippets now resolve `0` missing backticked markdown-path references.
 
 ---
 

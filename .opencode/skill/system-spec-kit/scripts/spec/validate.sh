@@ -315,7 +315,7 @@ log_detail() { ! $JSON_MODE && ! $QUIET_MODE && printf "    - %s\n" "$1"; true; 
 get_rule_severity() {
     case "$1" in
         FILE_EXISTS|FILES|PLACEHOLDER_FILLED|PLACEHOLDERS|ANCHORS_VALID|ANCHORS|TOC_POLICY) echo "error" ;;
-        SECTIONS_PRESENT|SECTIONS|PRIORITY_TAGS|EVIDENCE_CITED|EVIDENCE|PRIORITY|PHASE_LINKS|LINKS_VALID|LINKS) echo "warn" ;;
+        SECTIONS_PRESENT|SECTIONS|PRIORITY_TAGS|EVIDENCE_CITED|EVIDENCE|PRIORITY|PHASE_LINKS|LINKS_VALID|LINKS|TEMPLATE_HEADERS) echo "warn" ;;
         SPEC_DOC_INTEGRITY|DOC_INTEGRITY) echo "error" ;;
         LEVEL_DECLARED|LEVEL) echo "info" ;;
         *) echo "error" ;;
@@ -347,6 +347,7 @@ canonicalize_rule_name() {
         SECTION_COUNTS) echo "SECTION_COUNTS" ;;
         SPEC_DOC_INTEGRITY|DOC_INTEGRITY) echo "SPEC_DOC_INTEGRITY" ;;
         TEMPLATE_SOURCE) echo "TEMPLATE_SOURCE" ;;
+        TEMPLATE_HEADERS) echo "TEMPLATE_HEADERS" ;;
         *) echo "$normalized" ;;
     esac
 }
@@ -372,6 +373,7 @@ rule_name_to_script() {
         SECTION_COUNTS) echo "section-counts" ;;
         TEMPLATE_SOURCE) echo "template-source" ;;
         SPEC_DOC_INTEGRITY) echo "spec-doc-integrity" ;;
+        TEMPLATE_HEADERS) echo "template-headers" ;;
         *) echo "" ;;
     esac
 }

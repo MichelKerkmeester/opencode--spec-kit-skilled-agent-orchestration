@@ -1091,6 +1091,9 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       userPrompts: filteredUserPrompts,
       SUMMARY: filteredSummary,
       observations: filteredObservations,
+      // P0-1: Force CLI-resolved spec folder into collectedData so all parallel
+      // extractors (decisions, diagrams, conversations) see the authoritative value
+      SPEC_FOLDER: specFolderName || collectedData.SPEC_FOLDER,
     };
     collectedDataWithNarrative._narrativeObservations = filteredNarrativeObservations;
 
@@ -1291,7 +1294,10 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
 
   const keyTopicsInitial: string[] = extractKeyTopics(sessionData.SUMMARY, decisions.DECISIONS, specFolderName);
   const keyTopics: string[] = ensureMinSemanticTopics(keyTopicsInitial, effectiveFiles, specFolderName);
-  const keyFiles = effectiveFiles.map((f) => ({ FILE_PATH: f.FILE_PATH }));
+  // P1-5: Filter synthetic tree-thinning paths from key_files metadata
+  const keyFiles = effectiveFiles
+    .filter((f) => !f.FILE_PATH.includes('(merged-small-files)'))
+    .map((f) => ({ FILE_PATH: f.FILE_PATH }));
   const memoryTitle = buildMemoryTitle(preferredMemoryTask, specFolderName, sessionData.DATE, contentSlug);
   const memoryDashboardTitle = buildMemoryDashboardTitle(memoryTitle, specFolderName, ctxFilename);
   const memoryDescription = deriveMemoryDescription({
@@ -1374,7 +1380,11 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       DECISION_COUNT: decisions.DECISIONS.length,
       DIAGRAM_COUNT: diagrams.DIAGRAMS.length,
       PHASE_COUNT: conversations.PHASE_COUNT,
-      DECISIONS: decisions.DECISIONS,
+      // P1-4: Convert 0-1 confidence to 0-100 for template percentage rendering
+      DECISIONS: decisions.DECISIONS.map((d) => ({
+        ...d,
+        CONFIDENCE: d.CONFIDENCE <= 1 ? Math.round(d.CONFIDENCE * 100) : d.CONFIDENCE,
+      })),
       HIGH_CONFIDENCE_COUNT: decisions.HIGH_CONFIDENCE_COUNT,
       MEDIUM_CONFIDENCE_COUNT: decisions.MEDIUM_CONFIDENCE_COUNT,
       LOW_CONFIDENCE_COUNT: decisions.LOW_CONFIDENCE_COUNT,

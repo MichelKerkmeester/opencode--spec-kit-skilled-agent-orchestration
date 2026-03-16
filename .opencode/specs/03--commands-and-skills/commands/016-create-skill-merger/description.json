@@ -1,10 +1,14 @@
 {
   "specFolder": "03--commands-and-skills/commands/016-create-skill-merger",
-  "description": "SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2",
+  "description": "Feature Specification: Create Skill Merger",
   "keywords": [
-    "spec-core"
+    "feature",
+    "specification",
+    "create",
+    "skill",
+    "merger"
   ],
-  "lastUpdated": "2026-03-08T11:09:00.144Z",
+  "lastUpdated": "2026-03-16T13:20:02.838Z",
   "specId": "016",
   "folderSlug": "create-skill-merger",
   "parentChain": [

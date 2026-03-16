@@ -54,7 +54,7 @@ title: "Verification Checklist: Feature Catalog Audit & Remediation"
 - [x] CHK-033 [P1] Analysis summary includes per-category statistics — [Evidence: scratch/analysis-summary.md has 20-category table]
 - [ ] CHK-034 [P2] Remediation items have effort estimates — [Evidence: total ~9 hours estimated in manifest]
 - [x] CHK-035 [P0] 2026-03-16 omitted current snippets explicitly listed and classified — [Evidence: 14-item addendum table in analysis-summary.md and remediation-manifest.md]
-- [x] CHK-036 [P1] Addendum follow-up remediation captured for source-path issues — [Evidence: 2 addendum follow-up items (path-normalize, path-correct/remove)]
+- [x] CHK-036 [P1] Addendum follow-up remediation completed for source-path issues — [Evidence: post-addendum cleanup completed in the two affected catalog snippets; 11-feature-catalog-code-references.md and 13-constitutional-memory-manager-command.md both now resolve 0 missing backticked markdown-path references]
 
 ---
 

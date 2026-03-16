@@ -368,10 +368,33 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
       ? data.files_modified
       : [];
   if (filesModified.length > 0) {
-    normalized.FILES = filesModified.map((filePath: string) => ({
-      FILE_PATH: filePath,
-      DESCRIPTION: 'File modified (description pending)',
-    }));
+    normalized.FILES = filesModified.map((entry: string | { path?: string; changes_summary?: string }) => {
+      let filePath: string;
+      let changesSummary: string;
+      if (typeof entry === 'string') {
+        // P0-2: Parse "path - description" compound format
+        const sepIdx = entry.indexOf(' - ');
+        if (sepIdx > 0 && (entry.substring(0, sepIdx).includes('.') || entry.substring(0, sepIdx).includes('/'))) {
+          filePath = entry.substring(0, sepIdx).trim();
+          changesSummary = entry.substring(sepIdx + 3).trim();
+        } else {
+          filePath = entry;
+          changesSummary = '';
+        }
+      } else {
+        filePath = entry.path || '';
+        changesSummary = entry.changes_summary || '';
+      }
+      // CG-06: Generate description from changes_summary or filename instead of "description pending"
+      let description = changesSummary;
+      if (!description) {
+        const basename = filePath.replace(/\\/g, '/').split('/').pop()?.replace(/\.[^.]+$/, '') || '';
+        description = basename
+          ? `Modified ${basename.replace(/[-_]/g, ' ')}`
+          : 'File modified';
+      }
+      return { FILE_PATH: filePath, DESCRIPTION: description };
+    });
   }
 
   const observations: Observation[] = [];

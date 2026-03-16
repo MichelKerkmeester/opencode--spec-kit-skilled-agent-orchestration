@@ -1,10 +1,17 @@
 {
   "specFolder": "03--commands-and-skills/commands/017-create-readme-install-merger",
-  "description": "SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2",
+  "description": "Feature Specification: Merge create README and install guide commands",
   "keywords": [
-    "spec-core"
+    "feature",
+    "specification",
+    "merge",
+    "create",
+    "readme",
+    "install",
+    "guide",
+    "commands"
   ],
-  "lastUpdated": "2026-03-08T11:09:00.196Z",
+  "lastUpdated": "2026-03-16T13:20:02.843Z",
   "specId": "017",
   "folderSlug": "create-readme-install-merger",
   "parentChain": [

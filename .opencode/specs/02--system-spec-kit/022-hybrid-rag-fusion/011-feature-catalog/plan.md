@@ -46,6 +46,38 @@ Historical plan: verify ~180 feature snippets and investigate 55 known gaps, the
 
 ---
 
+## AI EXECUTION PROTOCOL
+
+### Pre-Task Checklist
+
+- Confirm whether the task is operating on the 2026-03-08 historical snapshot, the 2026-03-16 addendum, or both.
+- Read the target spec document before editing and keep changes inside this spec folder only.
+- Verify whether the change is historical framing, current-state alignment, or validator-only cleanup.
+- Re-run spec validation before claiming completion.
+
+### Execution Rules
+
+| Rule | Requirement |
+|------|-------------|
+| TASK-SEQ-001 | Preserve March 8 historical metrics as snapshot values unless an explicit post-snapshot addendum note is being added. |
+| TASK-SCOPE-001 | Edit only the minimum spec-folder markdown needed for the requested audit/remediation update. |
+| TASK-EVIDENCE-001 | When marking work complete, cite file-based evidence or validator-confirmed outcomes. |
+| TASK-VERIFY-001 | Re-run `validate.sh` after documentation edits and report exact pass/warn/fail status. |
+
+### Status Reporting Format
+
+- Start state: what historical/current boundary the pass is updating.
+- Work state: which spec files were changed and why.
+- End state: validator result plus any residual warnings left intentionally unresolved.
+
+### Blocked Task Protocol
+
+1. If a requested update would rewrite historical facts, stop and preserve the prior snapshot wording.
+2. If a referenced file/path cannot be verified on disk, mark it as unresolved and do not invent evidence.
+3. If validation introduces new errors outside the requested warning cleanup, stop after reporting the exact blocker and leave unrelated content unchanged.
+
+---
+
 ## 3. ARCHITECTURE
 
 ### Pattern

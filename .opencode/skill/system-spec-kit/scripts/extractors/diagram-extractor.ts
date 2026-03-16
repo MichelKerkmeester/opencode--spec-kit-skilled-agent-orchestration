@@ -179,29 +179,10 @@ async function extractDiagrams(
     userPrompts[0]?.prompt || 'User request'
   );
 
-  // CG-01: Guard AUTO_DECISION_TREES to prevent duplication with per-decision DECISION_TREE fields.
-  // Decisions already contain individual DECISION_TREE via the {{#DECISIONS}} template loop.
-  // Only generate AUTO_DECISION_TREES when decisions lack individual trees.
-  const decisionsAlreadyHaveTrees = decisions.some((dec) => {
-    const opts = dec.facts?.filter((f) => f.includes('Option') || f.includes('Alternative')) || [];
-    return opts.length > 0;
-  });
-
-  const AUTO_DECISION_TREES: AutoDecisionTree[] = decisionsAlreadyHaveTrees
-    ? []  // Skip - individual DECISION_TREE fields in {{#DECISIONS}} loop handle rendering
-    : decisions.map((dec, index) => {
-        const options: string[] = dec.facts
-          ?.filter((f) => f.includes('Option') || f.includes('Alternative'))
-          .map((f) => f.split(':')[0]?.trim() || f.substring(0, 20)) || [];
-
-        const chosen: string | undefined = dec.narrative?.match(/(?:chose|selected):?\s+([^\.\n]+)/i)?.[1]?.trim() || options[0];
-
-        return {
-          INDEX: index + 1,
-          DECISION_TITLE: dec.title || `Decision ${index + 1}`,
-          DECISION_TREE: generateDecisionTree(dec.title || 'Decision', options, chosen)
-        };
-      });
+  // CG-01: Always return empty AUTO_DECISION_TREES to prevent duplication.
+  // The {{#DECISIONS}} template loop already renders per-decision DECISION_TREE
+  // fields via {{#HAS_DECISION_TREE}}. AUTO_DECISION_TREES would duplicate them.
+  const AUTO_DECISION_TREES: AutoDecisionTree[] = [];
 
   const diagramTypeCounts = new Map<string, number>();
   for (const diagram of DIAGRAMS) {

@@ -140,11 +140,54 @@ run_check() {
     done
 
 # ───────────────────────────────────────────────────────────────
-# 4. RESULTS
+# 4. REQUIRED ANCHOR ID VALIDATION
+# ───────────────────────────────────────────────────────────────
+
+    # Verify that spec documents contain the required anchor IDs for their file type.
+    # This goes beyond pair matching — it checks that the correct anchors are present.
+    local -a missing_required=()
+
+    check_required_anchors() {
+        local file="$1"
+        local display_name="$2"
+        shift 2
+        local -a required_ids=("$@")
+
+        if [[ ! -f "$file" ]]; then
+            return
+        fi
+
+        for req_id in "${required_ids[@]}"; do
+            if ! grep -q "<!-- ANCHOR:${req_id} -->" "$file" 2>/dev/null; then
+                missing_required+=("$display_name: Missing required anchor '$req_id'")
+            fi
+        done
+    }
+
+    # spec.md required anchors
+    check_required_anchors "$folder/spec.md" "spec.md" \
+        metadata problem scope requirements success-criteria risks questions
+
+    # plan.md required anchors
+    check_required_anchors "$folder/plan.md" "plan.md" \
+        summary quality-gates architecture phases testing dependencies rollback
+
+    # tasks.md required anchors
+    check_required_anchors "$folder/tasks.md" "tasks.md" \
+        notation phase-1 phase-2 phase-3 completion cross-refs
+
+    # checklist.md required anchors (only if file exists)
+    if [[ -f "$folder/checklist.md" ]]; then
+        check_required_anchors "$folder/checklist.md" "checklist.md" \
+            protocol pre-impl code-quality testing security docs file-org summary
+    fi
+
+# ───────────────────────────────────────────────────────────────
+# 5. RESULTS
 # ───────────────────────────────────────────────────────────────
 
     local has_errors=false
-    
+
     if [[ ${#missing_anchors[@]} -gt 0 ]]; then
         RULE_STATUS="fail"
         RULE_MESSAGE="ANCHOR tags missing in ${#missing_anchors[@]} major spec document(s)"
@@ -162,7 +205,18 @@ run_check() {
         RULE_DETAILS+=("${errors[@]}")
         has_errors=true
     fi
-    
+
+    if [[ ${#missing_required[@]} -gt 0 ]]; then
+        if [[ "$has_errors" == true ]]; then
+            RULE_MESSAGE="$RULE_MESSAGE; ${#missing_required[@]} required anchor(s) missing"
+        else
+            RULE_STATUS="fail"
+            RULE_MESSAGE="${#missing_required[@]} required anchor(s) missing"
+        fi
+        RULE_DETAILS+=("${missing_required[@]}")
+        has_errors=true
+    fi
+
     if [[ "$has_errors" == false ]]; then
         RULE_STATUS="pass"
         RULE_MESSAGE="All anchor pairs valid in $file_count file(s)"

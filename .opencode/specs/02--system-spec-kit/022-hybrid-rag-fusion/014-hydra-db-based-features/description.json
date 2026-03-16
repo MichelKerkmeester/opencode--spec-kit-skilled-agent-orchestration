@@ -1,16 +1,12 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features",
-  "description": "Feature Specification: 014-hydra-db-based-features (includes merged 017-markovian-architectures)",
+  "description": "Feature Specification: 014-hydra-db-based-features",
   "keywords": [
     "feature",
     "specification",
-    "014-hydra-db-based-features",
-    "markovian",
-    "session transitions",
-    "graph walk",
-    "ingestion lifecycle"
+    "014-hydra-db-based-features"
   ],
-  "lastUpdated": "2026-03-14T18:00:00.000Z",
+  "lastUpdated": "2026-03-16T13:20:01.884Z",
   "specId": "014",
   "folderSlug": "hydra-db-based-features",
   "parentChain": [

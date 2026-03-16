@@ -55,9 +55,10 @@ title: "Session Handover: Feature Catalog Audit & Remediation"
 - Reconciled historical snapshot vs current tree: `180` snapshot snippets vs `189` live snippets.
 - Audited 14 omitted current snippets that were outside executed March 8 ranges.
 - Classified 12 omitted snippets as structurally current (no immediate remediation required).
-- Added 2 follow-up remediation items:
+- Added 2 follow-up remediation items at addendum time:
   1. Normalize broad-glob/non-canonical source-path references in `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/11-feature-catalog-code-references.md`.
   2. Correct/remove the invalid source-path reference (legacy command/memory/context.md entry) in `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/13-constitutional-memory-manager-command.md`.
+- Post-addendum update: both follow-up items were completed after the addendum was created. The two affected catalog snippets now resolve `0` missing backticked markdown-path references.
 - Clarified historical taxonomy labels (`19-decisions`, `20-flags`) vs current monolith headings (`20 UX HOOKS`, `21 PHASE SYSTEM`, `22 FEATURE FLAG REFERENCE`).
 - Clarified tooling narrative drift: execution artifacts are Codex-based even where plan text still reflected Copilot wording.
 
@@ -83,7 +84,8 @@ title: "Session Handover: Feature Catalog Audit & Remediation"
 | Current live snippet count | 189 |
 | Omitted current snippets audited | 14 |
 | No immediate remediation | 12 |
-| Follow-up remediation required | 2 |
+| Follow-up remediation completed post-addendum | 2 |
+| Outstanding addendum follow-up items | 0 |
 
 ### Three Invalid Paths (P0 Batch-Fixable)
 1. `retry.vitest.ts` -> `retry-manager.vitest.ts` (52 snippets)
@@ -94,7 +96,7 @@ title: "Session Handover: Feature Catalog Audit & Remediation"
 
 ## What Remains: Phase F (Remediation Execution)
 
-Phase F is defined in `tasks.md` (T100-T171 plus T128-T129 addendum follow-ups) and `scratch/remediation-manifest.md`.
+Phase F is defined in `tasks.md` (remaining open work is T100-T171; T128-T129 addendum follow-ups are now complete) and `scratch/remediation-manifest.md`.
 
 ### Execution Order
 
@@ -107,7 +109,6 @@ Phase F is defined in `tasks.md` (T100-T171 plus T128-T129 addendum follow-ups) 
 | E5: Desc-Only Updates (P1) | 11 features | Manual | ~30 min | T150 |
 | E6: New Feature Entries (P2) | 77 entries | Agent-assisted | ~2 hrs | T160-T161 |
 | E7: Monolith Sync | 1 sync | Script | ~5 min | T170-T171 |
-| Addendum follow-up | 2 items | Manual/semi-automated | ~20-30 min | T128-T129 |
 
 ### Recommended Approach for Phase E
 
@@ -186,7 +187,7 @@ Spec folder: 02--system-spec-kit/022-hybrid-rag-fusion/011-feature-catalog
 
 Load memory context for this spec folder, then read:
 1. scratch/remediation-manifest.md (the prioritized action list)
-2. tasks.md (Phase F tasks T100-T171 plus addendum follow-ups T128-T129)
+2. tasks.md (Phase F tasks T100-T171; addendum follow-ups T128-T129 are already complete)
 
 Start with E1: Batch Fixes (P0) — the three invalid path corrections:
 - T100: Global replace retry.vitest.ts -> retry-manager.vitest.ts across 52 snippets
@@ -194,5 +195,5 @@ Start with E1: Batch Fixes (P0) — the three invalid path corrections:
 - T102: Remove check-architecture-boundaries.ts from 1 snippet
 - T103: Run replace-monolith-source-files.mjs
 
-Then proceed to F2: 18 feature rewrites (T110-T127), and include addendum follow-up tasks T128-T129.
+Then proceed to F2: 18 feature rewrites (T110-T127). Addendum follow-up tasks T128-T129 are already complete and do not need rework.
 ```

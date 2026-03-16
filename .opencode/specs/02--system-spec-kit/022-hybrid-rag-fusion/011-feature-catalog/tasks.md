@@ -138,8 +138,8 @@ title: "Tasks: Feature Catalog Audit & Remediation"
 - [ ] T125 [P] Rewrite 17-governance/02-feature-flag-sunset-audit
 - [ ] T126 [P] Rewrite 20-flags/01-1-search-pipeline-features-speckit
 - [ ] T127 [P] Rewrite 20-flags/05-5-embedding-and-api
-- [ ] T128 [P] Normalize SOURCE FILES path style in `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/11-feature-catalog-code-references.md` (replace broad globs/external verifier alias with canonical repo-resolved references)
-- [ ] T129 [P] Correct/remove invalid command/memory/context.md SOURCE FILES entry in `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/13-constitutional-memory-manager-command.md`
+- [x] T128 [P] Normalize SOURCE FILES path style in `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/11-feature-catalog-code-references.md` (replace broad globs/external verifier alias with canonical repo-resolved references) [Evidence: broad-glob SOURCE FILES entries and verifier alias path were replaced with canonical repo-resolved references; backticked markdown-path resolution check now returns 0 unresolved references]
+- [x] T129 [P] Correct/remove invalid command/memory/context.md SOURCE FILES entry in `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/13-constitutional-memory-manager-command.md` [Evidence: invalid command/memory/context.md entry removed, command/agent doc references normalized to `.opencode/...` paths including CURRENT REALITY text, and backticked markdown-path resolution check now returns 0 unresolved references]
 
 ### E3: Description + Path Updates (P1 — 63 features)
 - [ ] T130 [P] Update BOTH features across all 20 categories (per manifest)

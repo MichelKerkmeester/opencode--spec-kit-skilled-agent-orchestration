@@ -3,8 +3,9 @@
 > **Date:** 2026-03-08 historical baseline + 2026-03-16 current-state addendum
 > **Source:** 30-agent audit (20 verification + 10 gap investigation) + omitted-snippet addendum audit (14 current snippets)
 > **Historical remediation base (2026-03-08):** 202 (173 existing features + 29 new features)
-> **Addendum follow-up items (2026-03-16):** 2
-> **Current combined actionable total:** 204
+> **Addendum follow-up items created in addendum (2026-03-16):** 2
+> **Addendum follow-up items now completed:** 2
+> **Current open actionable total:** 202
 
 ---
 
@@ -43,15 +44,19 @@ These 14 snippets were outside executed March 8 verification ranges and therefor
 - `17--governance/03-hierarchical-scope-governance-governed-ingest-retention-and-audit.md`
 - `17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md`
 
-### Addendum Follow-up Required (2)
+### Addendum Follow-up Completed Post-Addendum (2)
 
 #### AD-001: `16--tooling-and-scripts/11-feature-catalog-code-references.md` — PATH-NORMALIZE (P1)
 - **Issue:** `## SOURCE FILES` uses broad glob entries (`mcp_server/**/*.ts`, `shared/**/*.ts`, `scripts/**/*.ts`) and an external verifier alias path (`sk-code--opencode/scripts/verify_alignment_drift.py`) instead of canonical repo-resolved references.
 - **Fix:** Normalize source references to canonical, resolvable repo-relative paths and explicit verification references.
+- **Status:** Completed post-addendum.
+- **Evidence:** Broad-glob SOURCE FILES entries and verifier alias path were replaced with canonical repo-resolved references; backticked markdown-path resolution check now returns 0 unresolved references.
 
 #### AD-002: `16--tooling-and-scripts/13-constitutional-memory-manager-command.md` — PATH-REMOVE/PATH-CORRECT (P1)
 - **Issue:** Lists `command/memory/context.md`, which is not present at `.opencode/command/memory/context.md`.
 - **Fix:** Remove or replace with the valid command documentation path(s).
+- **Status:** Completed post-addendum.
+- **Evidence:** Invalid `command/memory/context.md` entry removed, command/agent doc references normalized to `.opencode/...` paths including CURRENT REALITY text, and backticked markdown-path resolution check now returns 0 unresolved references.
 
 ---
 
@@ -211,8 +216,7 @@ New undocumented capabilities discovered during gap investigation.
 ## Remediation Execution Plan
 
 ### Phase 0: Addendum Follow-up (P1)
-1. Normalize source-path style in `16--tooling-and-scripts/11-feature-catalog-code-references.md`
-2. Correct/remove invalid `command/memory/context.md` entry in `16--tooling-and-scripts/13-constitutional-memory-manager-command.md`
+Status: Completed post-addendum. No open work remains in this phase.
 
 ### Phase 1: Batch Fixes (P0) — Scriptable
 1. Global replace `retry.vitest.ts` → `retry-manager.vitest.ts` across all 52 affected snippets
@@ -251,5 +255,4 @@ Run `replace-monolith-source-files.mjs` to update `feature_catalog.md`.
 | Phase 5 | 11 desc fixes | Manual | ~30 min |
 | Phase 6 | 29 new features | Agent-assisted | ~2 hours |
 | Phase 7 | 1 sync | Script | ~5 min |
-| Addendum follow-up | 2 items | Manual | ~20-30 min |
-| **Total** | | | **~9.5 hours** |
+| **Total** | | | **~9 hours** |

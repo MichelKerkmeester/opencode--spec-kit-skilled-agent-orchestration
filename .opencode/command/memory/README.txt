@@ -4,12 +4,10 @@ description: "Slash commands for managing the Spec Kit Memory system including c
 trigger_phrases:
   - "memory command"
   - "memory save"
-  - "memory knowledge"
+  - "memory analyze"
   - "memory continue"
   - "memory learn"
   - "memory manage"
-  - "memory analyze"
-  - "memory knowledge"
   - "memory shared"
 ---
 
@@ -61,7 +59,7 @@ Everything above the `---` divider is for users. Appendices below are AI agent r
 
 | Command | Invocation | Description |
 |---------|------------|-------------|
-| **knowledge** | `/memory:analyze <query> [--intent:<type>]` or `/memory:analyze <subcommand>` | Unified retrieval + analysis: intent-aware search, epistemic baselines, causal graph, ablation, dashboard |
+| **analyze** | `/memory:analyze <query> [--intent:<type>]` or `/memory:analyze <subcommand>` | Unified retrieval + analysis: intent-aware search, epistemic baselines, causal graph, ablation, dashboard |
 | **continue** | `/memory:continue [recovery-mode:auto\|manual]` | Recover session from crash, compaction, or timeout |
 | **learn** | `/memory:learn [rule] \| list \| edit \| remove \| budget` | Create and manage constitutional memories (always-surface rules) |
 | **manage** | `/memory:manage <subcommand>` | Database operations (scan, cleanup, tier, health, checkpoint, ingest) |

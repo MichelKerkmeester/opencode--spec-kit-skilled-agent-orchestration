@@ -260,9 +260,12 @@ async function extractDecisions(
   const decisionObservations = (collectedData.observations || [])
     .filter((obs) => obs.type === 'decision');
 
-  const lexicalDecisionObservations = decisionObservations.length === 0
-    ? buildLexicalDecisionObservations(collectedData)
-    : [];
+  // P0-3: Also suppress lexical extraction when manual decisions exist,
+  // since those observations were already built from the same manual decisions
+  const lexicalDecisionObservations =
+    decisionObservations.length === 0 && processedManualDecisions.length === 0
+      ? buildLexicalDecisionObservations(collectedData)
+      : [];
 
   const allDecisionObservations = decisionObservations.length > 0
     ? decisionObservations

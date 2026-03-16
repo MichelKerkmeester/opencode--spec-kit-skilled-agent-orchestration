@@ -38,7 +38,7 @@ Commands are organized into three groups:
 | Group | Path | Commands | Purpose |
 |-------|------|----------|---------|
 | **create** | `command/create/` | 7 | Scaffold OpenCode components and create unified visual HTML artifacts |
-| **memory** | `command/memory/` | 6 | Memory system operations (save, knowledge, continue, learn, manage, shared) |
+| **memory** | `command/memory/` | 6 | Memory system operations (analyze, save, continue, learn, manage, shared) |
 | **spec_kit** | `command/spec_kit/` | 7 | Spec folder workflows (plan, implement, research, debug, handover, resume, complete) |
 
 One standalone command (`agent_router.md`) lives at the root level for routing requests to AI systems.

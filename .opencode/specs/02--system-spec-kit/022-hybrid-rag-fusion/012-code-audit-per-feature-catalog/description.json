@@ -1,15 +1,12 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog",
-  "description": "013 — Code Audit Per Feature Catalog",
+  "description": "Feature Specification: code-audit-per-feature-catalog",
   "keywords": [
-    "013",
-    "code",
-    "audit",
-    "per",
     "feature",
-    "catalog"
+    "specification",
+    "code-audit-per-feature-catalog"
   ],
-  "lastUpdated": "2026-03-10T10:16:39.612Z",
+  "lastUpdated": "2026-03-16T13:20:01.769Z",
   "specId": "012",
   "folderSlug": "code-audit-per-feature-catalog",
   "parentChain": [

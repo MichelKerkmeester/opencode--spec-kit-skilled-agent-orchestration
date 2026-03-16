@@ -1,0 +1,36 @@
+{
+  "generatedAt": "2026-03-15T15:32:03.017Z",
+  "root": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.tmp/spec010-new149-manual/remediation-specs",
+  "summary": {
+    "total": 1,
+    "clean": 1,
+    "repair_in_place": 0,
+    "regenerate_from_authoritative_evidence": 0,
+    "quarantine": 0
+  },
+  "bySpecFolder": {
+    "013-outsourced-agent-memory": {
+      "total": 1,
+      "repair_in_place": 0,
+      "regenerate_from_authoritative_evidence": 0,
+      "quarantine": 0
+    }
+  },
+  "files": [
+    {
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.tmp/spec010-new149-manual/remediation-specs/013-outsourced-agent-memory/memory/repair-me.md",
+      "specFolder": "013-outsourced-agent-memory",
+      "issues": [],
+      "classification": "clean",
+      "repairStrategy": "none",
+      "indexAction": "keep",
+      "quarantinePath": null,
+      "templateContract": {
+        "valid": true,
+        "violations": [],
+        "missingAnchors": [],
+        "unexpectedTemplateArtifacts": []
+      }
+    }
+  ]
+}
