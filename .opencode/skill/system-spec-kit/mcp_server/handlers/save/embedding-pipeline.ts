@@ -9,6 +9,7 @@ import { computeContentHash, lookupEmbedding, storeEmbedding } from '../../lib/c
 import { normalizeContentForEmbedding } from '../../lib/parsing/content-normalizer';
 import type { ParsedMemory } from '../../lib/parsing/memory-parser';
 import { toErrorMessage } from '../../utils';
+import type { WeightedDocumentSections } from '@spec-kit/shared/index';
 
 // Feature catalog: Memory indexing (memory_save)
 // Feature catalog: Deferred lexical-only indexing
@@ -24,6 +25,86 @@ export interface EmbeddingResult {
     modelId: string;
     embeddingBuffer: Buffer;
     dimensions: number;
+  };
+}
+
+interface MarkdownSectionMatch {
+  content: string;
+  start: number;
+  end: number;
+}
+
+function normalizeHeadingLabel(heading: string): string {
+  return heading
+    .replace(/^\d+\.\s*/, '')
+    .trim()
+    .toLowerCase();
+}
+
+function extractMarkdownSection(markdown: string, headingNames: string[]): MarkdownSectionMatch | null {
+  const headingPattern = /^#{1,6}\s+(.+)$/gm;
+  const headings = Array.from(markdown.matchAll(headingPattern));
+  const normalizedHeadingNames = headingNames.map((heading) => heading.toLowerCase());
+
+  for (let index = 0; index < headings.length; index++) {
+    const match = headings[index];
+    const label = normalizeHeadingLabel(match[1] || '');
+    if (!normalizedHeadingNames.includes(label)) {
+      continue;
+    }
+
+    const start = match.index ?? 0;
+    const contentStart = start + match[0].length;
+    const end = index + 1 < headings.length
+      ? (headings[index + 1].index ?? markdown.length)
+      : markdown.length;
+
+    return {
+      content: markdown.slice(contentStart, end).trim(),
+      start,
+      end,
+    };
+  }
+
+  return null;
+}
+
+function extractSectionBullets(content: string): string[] {
+  return content
+    .split('\n')
+    .map((line) => line.trim())
+    .filter((line) => /^[-*]\s+/.test(line))
+    .map((line) => line.replace(/^[-*]\s+/, '').trim())
+    .filter(Boolean);
+}
+
+function removeMarkdownSections(markdown: string, sections: Array<MarkdownSectionMatch | null>): string {
+  const matches = sections
+    .filter((section): section is MarkdownSectionMatch => Boolean(section))
+    .sort((left, right) => right.start - left.start);
+
+  let nextMarkdown = markdown;
+  for (const match of matches) {
+    nextMarkdown = `${nextMarkdown.slice(0, match.start)}\n\n${nextMarkdown.slice(match.end)}`;
+  }
+
+  return nextMarkdown
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+}
+
+function buildParsedMemoryWeightedSections(parsed: ParsedMemory): WeightedDocumentSections {
+  const decisionSection = extractMarkdownSection(parsed.content, ['decisions']);
+  const outcomeSection = extractMarkdownSection(parsed.content, ['key outcomes', 'outcomes']);
+  const decisions = extractSectionBullets(decisionSection?.content || '');
+  const outcomes = extractSectionBullets(outcomeSection?.content || '');
+  const generalMarkdown = removeMarkdownSections(parsed.content, [decisionSection, outcomeSection]);
+
+  return {
+    title: parsed.title || path.basename(parsed.filePath, path.extname(parsed.filePath)),
+    decisions,
+    outcomes,
+    general: normalizeContentForEmbedding(generalMarkdown),
   };
 }
 
@@ -66,8 +147,8 @@ export async function generateOrCacheEmbedding(
       } else {
         // Cache miss: normalize content then generate embedding via provider
         // S1: strip structural noise (frontmatter, anchors, HTML comments) before embedding
-        const normalizedContent = normalizeContentForEmbedding(parsed.content);
-        embedding = await embeddings.generateDocumentEmbedding(normalizedContent);
+        const weightedInput = embeddings.buildWeightedDocumentText(buildParsedMemoryWeightedSections(parsed));
+        embedding = await embeddings.generateDocumentEmbedding(weightedInput);
         if (embedding) {
           embeddingStatus = 'success';
           const embBuf = Buffer.from(embedding.buffer, embedding.byteOffset, embedding.byteLength);

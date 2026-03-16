@@ -159,6 +159,7 @@ describe('Embeddings Architecture (T513)', () => {
   describe('MCP embeddings facade', () => {
     it('T513-04a: exports expected embedding API surface', () => {
       expect(typeof embeddingsFacade.generateDocumentEmbedding).toBe('function');
+      expect(typeof embeddingsFacade.buildWeightedDocumentText).toBe('function');
       expect(typeof embeddingsFacade.generateQueryEmbedding).toBe('function');
       expect(typeof embeddingsFacade.getEmbeddingDimension).toBe('function');
       expect(typeof embeddingsFacade.getProviderMetadata).toBe('function');

@@ -12,6 +12,7 @@ import os from 'os';
 import { SemanticSignalExtractor } from './semantic-signal-extractor';
 import { cleanDescription } from '../utils/file-helpers';
 import { CONFIG } from '../core';
+import type { WeightedDocumentSections } from '@spec-kit/shared/index';
 
 // ───────────────────────────────────────────────────────────────
 // 2. TYPES
@@ -88,6 +89,12 @@ export interface ImplementationSummary {
   messageStats: MessageStats;
 }
 
+interface MarkdownSectionMatch {
+  content: string;
+  start: number;
+  end: number;
+}
+
 // ───────────────────────────────────────────────────────────────
 // 3. CONSTANTS
 // ───────────────────────────────────────────────────────────────
@@ -138,6 +145,7 @@ const CLASSIFICATION_PATTERNS = {
 
 const DESC_MIN_LENGTH: number = 10;
 const DESC_MAX_LENGTH: number = 100;
+const FRONTMATTER_RE: RegExp = /^---[\s\S]*?\n---\s*\n?/;
 
 // ───────────────────────────────────────────────────────────────
 // 4. MESSAGE CLASSIFICATION
@@ -638,6 +646,108 @@ function formatSummaryAsMarkdown(summary: ImplementationSummary): string {
   return lines.join('\n');
 }
 
+function stripFrontmatter(markdown: string): string {
+  return markdown.replace(FRONTMATTER_RE, '');
+}
+
+function normalizeHeadingLabel(heading: string): string {
+  return heading
+    .replace(/^\d+\.\s*/, '')
+    .trim()
+    .toLowerCase();
+}
+
+function extractMarkdownTitle(markdown: string): string {
+  const titleMatch = markdown.match(/^#\s+(.+)$/m);
+  return titleMatch ? titleMatch[1].trim() : '';
+}
+
+function extractMarkdownSection(markdown: string, headingNames: string[]): MarkdownSectionMatch | null {
+  const headingPattern = /^#{1,6}\s+(.+)$/gm;
+  const headings = Array.from(markdown.matchAll(headingPattern));
+  const normalizedHeadingNames = headingNames.map((name) => name.toLowerCase());
+
+  for (let index = 0; index < headings.length; index++) {
+    const heading = headings[index];
+    const label = normalizeHeadingLabel(heading[1] || '');
+    if (!normalizedHeadingNames.includes(label)) {
+      continue;
+    }
+
+    const start = heading.index ?? 0;
+    const contentStart = start + heading[0].length;
+    const end = index + 1 < headings.length
+      ? (headings[index + 1].index ?? markdown.length)
+      : markdown.length;
+    const content = markdown.slice(contentStart, end).trim();
+
+    return {
+      content,
+      start,
+      end,
+    };
+  }
+
+  return null;
+}
+
+function extractSectionBullets(sectionContent: string): string[] {
+  return sectionContent
+    .split('\n')
+    .map((line) => line.trim())
+    .filter((line) => /^[-*]\s+/.test(line))
+    .map((line) => line.replace(/^[-*]\s+/, '').trim())
+    .filter(Boolean);
+}
+
+function removeMarkdownSections(markdown: string, sections: Array<MarkdownSectionMatch | null>): string {
+  const matches = sections
+    .filter((section): section is MarkdownSectionMatch => Boolean(section))
+    .sort((left, right) => right.start - left.start);
+
+  let nextMarkdown = markdown;
+  for (const match of matches) {
+    nextMarkdown = `${nextMarkdown.slice(0, match.start)}\n\n${nextMarkdown.slice(match.end)}`;
+  }
+
+  return nextMarkdown
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+}
+
+function buildWeightedEmbeddingSections(
+  summary: ImplementationSummary,
+  markdownContent: string,
+): WeightedDocumentSections {
+  const markdown = stripFrontmatter(markdownContent || '');
+  const decisionSection = extractMarkdownSection(markdown, ['decisions']);
+  const outcomeSection = extractMarkdownSection(markdown, ['key outcomes', 'outcomes']);
+  const markdownDecisions = extractSectionBullets(decisionSection?.content || '');
+  const markdownOutcomes = extractSectionBullets(outcomeSection?.content || '');
+  const summaryDecisions = summary.decisions.map((decision) => {
+    const question = decision.question?.trim();
+    const choice = decision.choice?.trim();
+    return question && choice ? `${question}: ${choice}` : (choice || question || '');
+  }).filter(Boolean);
+  const summaryOutcomes = summary.outcomes.filter((outcome) => outcome !== 'Session completed');
+  const generalFallback = removeMarkdownSections(markdown, [decisionSection, outcomeSection]);
+  const fileDescriptions = [...summary.filesCreated, ...summary.filesModified]
+    .map((entry) => `${entry.path}: ${entry.description}`)
+    .filter(Boolean)
+    .join('\n');
+  const general = [summary.solution, fileDescriptions, generalFallback]
+    .filter(Boolean)
+    .join('\n\n')
+    .trim();
+
+  return {
+    title: extractMarkdownTitle(markdown) || summary.task,
+    decisions: summaryDecisions.length > 0 ? summaryDecisions : markdownDecisions,
+    outcomes: summaryOutcomes.length > 0 ? summaryOutcomes : markdownOutcomes,
+    general,
+  };
+}
+
 // ───────────────────────────────────────────────────────────────
 // 9. EXPORTS
 // ───────────────────────────────────────────────────────────────
@@ -648,5 +758,6 @@ export {
   extractFileChanges,
   extractDecisions,
   generateImplementationSummary,
+  buildWeightedEmbeddingSections,
   formatSummaryAsMarkdown,
 };

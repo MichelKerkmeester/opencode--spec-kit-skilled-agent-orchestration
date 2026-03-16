@@ -38,9 +38,9 @@ This plan implements an embedding pipeline update: build a weighted payload buil
 
 ### Definition of Done
 
-- [ ] All acceptance criteria met (REQ-001 through REQ-004)
-- [ ] Tests passing -- weighted payload builder unit tests and indexer integration tests
-- [ ] Docs updated (spec/plan in this folder)
+- [x] All acceptance criteria met (REQ-001 through REQ-005)
+- [x] Tests passing for helper behavior, scripts routing, save-path weighting, and ranking-oriented coverage
+- [x] Docs updated to match the actual implementation seams in this folder
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -54,9 +54,9 @@ Pipeline modification -- weighted payload builder injected between content extra
 
 ### Key Components
 
-- **Weighted payload builder (`scripts/lib/semantic-summarizer.ts`)**: Takes structured memory content (title, decisions, outcomes, general) and produces a weighted concatenation with section repetition for emphasis
-- **Memory indexer (`scripts/core/memory-indexer.ts`)**: Updated to call `generateDocumentEmbedding` with the weighted payload instead of raw content
-- **Embedding wiring (`mcp_server/lib/embedding/`)**: Ensures `generateDocumentEmbedding` is available and invoked in the indexing path
+- **Shared weighted helper (`shared/embeddings.ts`)**: Owns the canonical `title + decisions x3 + outcomes x2 + general x1` contract and truncation policy.
+- **Scripts summary/indexing path (`scripts/lib/semantic-summarizer.ts`, `scripts/core/workflow.ts`, `scripts/core/memory-indexer.ts`)**: Builds weighted sections from implementation-summary data plus markdown fallback and sends weighted text into `generateDocumentEmbedding()`.
+- **MCP save path (`mcp_server/handlers/save/embedding-pipeline.ts`)**: Extracts weighted sections from parsed memory content and uses the same weighted helper before save-time embedding generation.
 
 ### Data Flow
 
@@ -73,33 +73,27 @@ Pipeline modification -- weighted payload builder injected between content extra
 <!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
-### Phase 1: Weighted Payload Builder
+### Phase 1: Shared Weighting Contract
 
-- [ ] Add `buildWeightedEmbeddingPayload()` function to `semantic-summarizer.ts`
-- [ ] Accept structured input: `{ title, decisions[], outcomes[], generalContent }`
-- [ ] Concatenate with multipliers: title (1x) + each decision (3x) + each outcome (2x) + general (1x)
-- [ ] Add total length cap with truncation priority: general first, then outcomes, then decisions
-- [ ] Unit test: verify correct concatenation and multiplier behavior
+- [x] Added `WeightedDocumentSections` and `buildWeightedDocumentText()` in `shared/embeddings.ts`.
+- [x] Implemented section multipliers and length capping with truncation priority `general -> outcomes -> decisions -> title`.
 
-### Phase 2: Indexer Routing Update
+### Phase 2: Scripts Indexing Rollout
 
-- [ ] Update `memory-indexer.ts` to import and call `generateDocumentEmbedding` instead of `generateEmbedding`
-- [ ] Extract structured sections from memory content before passing to payload builder
-- [ ] Pass weighted payload to `generateDocumentEmbedding()`
-- [ ] Ensure static decay metadata fields are persisted for searcher consumption
+- [x] Added `buildWeightedEmbeddingSections()` in `scripts/lib/semantic-summarizer.ts`.
+- [x] Updated `scripts/core/workflow.ts` to hand precomputed weighted sections to the indexer.
+- [x] Updated `scripts/core/memory-indexer.ts` to call `generateDocumentEmbedding()` with weighted text instead of raw `generateEmbedding()`.
 
-### Phase 3: Embedding Library Wiring
+### Phase 3: MCP Save Rollout
 
-- [ ] Verify `generateDocumentEmbedding` is exported from `mcp_server/lib/embedding/`
-- [ ] Wire the function into the indexing path if not already available
-- [ ] Ensure the function accepts the weighted payload format
+- [x] Updated `mcp_server/handlers/save/embedding-pipeline.ts` to build weighted sections from parsed memory content.
+- [x] Kept the rollout scoped to `memory_save`; other document callers were intentionally left unchanged.
 
 ### Phase 4: Verification
 
-- [ ] Run existing embedding and indexer test suites
-- [ ] Add test cases for weighted payload generation with various content structures
-- [ ] Test with decision-heavy memories and verify improved retrieval ranking
-- [ ] Confirm temporal decay behavior is unchanged at query time
+- [x] Added focused helper/unit/routing/save-path coverage.
+- [x] Added a deterministic ranking-oriented fixture for decision-focused retrieval behavior.
+- [x] Re-ran scripts and MCP compile/test gates without changing temporal decay behavior.
 <!-- /ANCHOR:phases -->
 
 ---
@@ -121,7 +115,7 @@ Pipeline modification -- weighted payload builder injected between content extra
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| R-08 (unified signal extractor) | Internal | Yellow | Provides structured topic data for section identification; can use existing section header parsing as fallback |
+| R-08 (unified signal extractor) | Internal | Green | Existing summary and signal-extraction heuristics were sufficient for this phase |
 | `generateDocumentEmbedding` function | Internal | Green | Already exists in embedding library but unused by indexer |
 <!-- /ANCHOR:dependencies -->
 

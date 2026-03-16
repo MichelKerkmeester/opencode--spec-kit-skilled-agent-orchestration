@@ -14,6 +14,7 @@ export {
   generateDocumentEmbedding,
   generateQueryEmbedding,
   generateClusteringEmbedding,
+  buildWeightedDocumentText,
   semanticChunk,
   getEmbeddingDimension,
   getModelName,

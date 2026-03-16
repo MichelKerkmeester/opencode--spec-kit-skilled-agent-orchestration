@@ -22,6 +22,13 @@ import type {
   EmbeddingProfileData,
 } from './types';
 
+export interface WeightedDocumentSections {
+  title?: string | null;
+  decisions?: string[];
+  outcomes?: string[];
+  general?: string | null;
+}
+
 // ---------------------------------------------------------------
 // 1. EMBEDDING CACHE
 // ---------------------------------------------------------------
@@ -63,6 +70,155 @@ function getErrorStatus(error: unknown): number | undefined {
 
   const status = Reflect.get(error, 'status');
   return typeof status === 'number' ? status : undefined;
+}
+
+function normalizeWeightedSectionText(text: string | null | undefined): string {
+  if (typeof text !== 'string') {
+    return '';
+  }
+
+  return text
+    .replace(/\r\n/g, '\n')
+    .replace(/[ \t]+/g, ' ')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+}
+
+function trimToWordBoundary(text: string, maxLength: number): string {
+  if (text.length <= maxLength) {
+    return text;
+  }
+
+  if (maxLength <= MIN_SECTION_LENGTH) {
+    return '';
+  }
+
+  const hardTrimmed = text.slice(0, maxLength).trimEnd();
+  const lastWhitespace = Math.max(
+    hardTrimmed.lastIndexOf(' '),
+    hardTrimmed.lastIndexOf('\n')
+  );
+
+  if (lastWhitespace >= Math.floor(maxLength * 0.6)) {
+    return hardTrimmed.slice(0, lastWhitespace).trimEnd();
+  }
+
+  return hardTrimmed;
+}
+
+function buildWeightedSectionBlock(entries: string[], multiplier: number): string {
+  if (entries.length === 0 || multiplier <= 0) {
+    return '';
+  }
+
+  const weightedEntries: string[] = [];
+  for (const entry of entries) {
+    for (let index = 0; index < multiplier; index++) {
+      weightedEntries.push(entry);
+    }
+  }
+
+  return weightedEntries.join('\n\n');
+}
+
+function trimWeightedBlock(block: string, overflow: number): string {
+  if (!block || overflow <= 0) {
+    return block;
+  }
+
+  const nextLength = Math.max(0, block.length - overflow);
+  return trimToWordBoundary(block, nextLength);
+}
+
+function joinWeightedBlocks(blocks: string[]): string {
+  return blocks.filter(Boolean).join('\n\n').trim();
+}
+
+function prepareWeightedEntries(entries: string[] | null | undefined): string[] {
+  if (!Array.isArray(entries)) {
+    return [];
+  }
+
+  return entries
+    .map((entry) => normalizeWeightedSectionText(entry))
+    .filter(Boolean);
+}
+
+function buildGeneralWeightedBlock(sections: WeightedDocumentSections): string {
+  const general = normalizeWeightedSectionText(sections.general);
+  return general;
+}
+
+function buildDecisionWeightedBlock(sections: WeightedDocumentSections): string {
+  return buildWeightedSectionBlock(prepareWeightedEntries(sections.decisions), 3);
+}
+
+function buildOutcomeWeightedBlock(sections: WeightedDocumentSections): string {
+  return buildWeightedSectionBlock(prepareWeightedEntries(sections.outcomes), 2);
+}
+
+function buildTitleWeightedBlock(sections: WeightedDocumentSections): string {
+  return normalizeWeightedSectionText(sections.title);
+}
+
+function truncateWeightedBlocksToBudget(
+  blocks: { title: string; decisions: string; outcomes: string; general: string },
+  maxLength: number,
+): { title: string; decisions: string; outcomes: string; general: string } {
+  let nextBlocks = { ...blocks };
+  let combined = joinWeightedBlocks([
+    nextBlocks.title,
+    nextBlocks.decisions,
+    nextBlocks.outcomes,
+    nextBlocks.general,
+  ]);
+
+  if (combined.length <= maxLength) {
+    return nextBlocks;
+  }
+
+  let overflow = combined.length - maxLength;
+  nextBlocks.general = trimWeightedBlock(nextBlocks.general, overflow);
+  combined = joinWeightedBlocks([nextBlocks.title, nextBlocks.decisions, nextBlocks.outcomes, nextBlocks.general]);
+
+  if (combined.length <= maxLength) {
+    return nextBlocks;
+  }
+
+  overflow = combined.length - maxLength;
+  nextBlocks.outcomes = trimWeightedBlock(nextBlocks.outcomes, overflow);
+  combined = joinWeightedBlocks([nextBlocks.title, nextBlocks.decisions, nextBlocks.outcomes, nextBlocks.general]);
+
+  if (combined.length <= maxLength) {
+    return nextBlocks;
+  }
+
+  overflow = combined.length - maxLength;
+  nextBlocks.decisions = trimWeightedBlock(nextBlocks.decisions, overflow);
+  combined = joinWeightedBlocks([nextBlocks.title, nextBlocks.decisions, nextBlocks.outcomes, nextBlocks.general]);
+
+  if (combined.length <= maxLength) {
+    return nextBlocks;
+  }
+
+  overflow = combined.length - maxLength;
+  nextBlocks.title = trimWeightedBlock(nextBlocks.title, overflow);
+  return nextBlocks;
+}
+
+function buildWeightedDocumentText(
+  sections: WeightedDocumentSections,
+  maxLength: number = MAX_TEXT_LENGTH,
+): string {
+  const safeMaxLength = Number.isFinite(maxLength) && maxLength > 0 ? Math.floor(maxLength) : MAX_TEXT_LENGTH;
+  const blocks = truncateWeightedBlocksToBudget({
+    title: buildTitleWeightedBlock(sections),
+    decisions: buildDecisionWeightedBlock(sections),
+    outcomes: buildOutcomeWeightedBlock(sections),
+    general: buildGeneralWeightedBlock(sections),
+  }, safeMaxLength);
+
+  return joinWeightedBlocks([blocks.title, blocks.decisions, blocks.outcomes, blocks.general]);
 }
 
 /**
@@ -601,6 +757,7 @@ export {
   generateDocumentEmbedding,
   generateQueryEmbedding,
   generateClusteringEmbedding,
+  buildWeightedDocumentText,
   // Re-exported from chunking
   semanticChunk,
   // Utility functions

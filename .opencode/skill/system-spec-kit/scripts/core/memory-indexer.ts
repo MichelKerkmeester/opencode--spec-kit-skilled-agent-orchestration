@@ -13,12 +13,13 @@ import * as fsSync from 'fs';
 import * as path from 'path';
 
 import { structuredLog } from '../utils';
-import { generateEmbedding, EMBEDDING_DIM, MODEL_NAME } from '../lib/embeddings';
+import { generateDocumentEmbedding, EMBEDDING_DIM, MODEL_NAME } from '../lib/embeddings';
 import { vectorIndex } from '@spec-kit/mcp-server/api/search';
 import { DB_UPDATED_FILE } from '@spec-kit/shared/config';
 import { extractTriggerPhrases } from '../lib/trigger-extractor';
 import type { CollectedDataFull } from '../extractors/collect-session-data';
 import { extractQualityScore, extractQualityFlags } from '@spec-kit/shared/parsing/quality-extractors';
+import { buildWeightedDocumentText, type WeightedDocumentSections } from '@spec-kit/shared/index';
 
 function notifyDatabaseUpdated(): void {
   try {
@@ -41,10 +42,17 @@ async function indexMemory(
   content: string,
   specFolderName: string,
   collectedData: CollectedDataFull | null = null,
-  preExtractedTriggers: string[] = []
+  preExtractedTriggers: string[] = [],
+  embeddingSections: WeightedDocumentSections | null = null,
 ): Promise<number | null> {
   const embeddingStart = Date.now();
-  const embedding = await generateEmbedding(content);
+  const weightedEmbeddingInput = buildWeightedDocumentText(
+    embeddingSections ?? {
+      title: contextFilename.replace('.md', ''),
+      general: content,
+    }
+  );
+  const embedding = await generateDocumentEmbedding(weightedEmbeddingInput);
 
   if (!embedding) {
     console.warn('   Warning: Embedding generation returned null - skipping indexing');

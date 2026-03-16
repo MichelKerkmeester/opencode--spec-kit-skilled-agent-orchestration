@@ -50,6 +50,7 @@ import { createFilterPipeline } from '../lib/content-filter';
 import type { FilterStats, ContaminationAuditRecord } from '../lib/content-filter';
 import {
   generateImplementationSummary,
+  buildWeightedEmbeddingSections,
   formatSummaryAsMarkdown,
   extractFileChanges,
 } from '../lib/semantic-summarizer';
@@ -1757,7 +1758,16 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   } else {
     try {
       if (qualityValidation.valid) {
-        memoryId = await indexMemory(contextDir, ctxFilename, files[ctxFilename], specFolderName, collectedData, preExtractedTriggers);
+        const embeddingSections = buildWeightedEmbeddingSections(implSummary, files[ctxFilename]);
+        memoryId = await indexMemory(
+          contextDir,
+          ctxFilename,
+          files[ctxFilename],
+          specFolderName,
+          collectedData,
+          preExtractedTriggers,
+          embeddingSections
+        );
         if (memoryId !== null) {
           log(`   Indexed as memory #${memoryId} (${EMBEDDING_DIM} dimensions)`);
           await updateMetadataWithEmbedding(contextDir, memoryId);

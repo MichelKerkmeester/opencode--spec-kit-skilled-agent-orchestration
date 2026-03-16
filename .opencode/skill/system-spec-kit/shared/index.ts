@@ -67,6 +67,8 @@ export type {
   TaskType,
 } from './types';
 
+export type { WeightedDocumentSections } from './embeddings';
+
 // DB normalization functions
 export {
   dbRowToMemory,
@@ -85,6 +87,7 @@ export {
   generateDocumentEmbedding,
   generateQueryEmbedding,
   generateClusteringEmbedding,
+  buildWeightedDocumentText,
   // Utility functions
   getEmbeddingDimension,
   getModelName,
