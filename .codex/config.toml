@@ -1,6 +1,6 @@
 model = "gpt-5.4"
 model_reasoning_effort = "high"
-model_auto_compact_token_limit = 400000
+model_auto_compact_token_limit = 500000
 
 [mcp_servers.sequential_thinking]
 command = "npx"

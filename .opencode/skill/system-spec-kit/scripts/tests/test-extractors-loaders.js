@@ -558,7 +558,7 @@ async function testSessionExtractor() {
     const { extractKeyTopics } = sessionExtractor;
     const topics = extractKeyTopics('Implemented OAuth authentication with JWT tokens');
     assertArray(topics, 'EXT-Session-047: extractKeyTopics returns array');
-    if (topics.includes('oauth') || topics.includes('authentication') || topics.includes('tokens')) {
+    if (topics.some(t => t.includes('oauth')) || topics.some(t => t.includes('authentication')) || topics.some(t => t.includes('tokens'))) {
       pass('EXT-Session-048: Relevant topics extracted', topics.slice(0, 3).join(', '));
     } else {
       fail('EXT-Session-048: Relevant topics extracted', topics.join(', '));

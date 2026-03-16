@@ -332,11 +332,11 @@ interface DecisionForTopics {
   CHOSEN?: string;
 }
 
-// NOTE: Similar to core/workflow.ts:extractKeyTopics but differs in:
-// - Larger stopwords set (~3x more stopwords for thorough filtering)
-// - Accepts `string | undefined` (workflow.ts requires `string`)
+// NOTE: Similar to core/topic-extractor.ts:extractKeyTopics but differs in:
+// - Accepts `string | undefined` (topic-extractor requires `string`)
 // - Broader placeholder detection (checks SIMULATION MODE, [response], placeholder, <20 chars)
-// - Processes TITLE, RATIONALE, and CHOSEN from decisions (workflow.ts only uses TITLE/RATIONALE)
+// - Processes TITLE, RATIONALE, and CHOSEN from decisions (topic-extractor only uses TITLE/RATIONALE)
+// - Both delegate to SemanticSignalExtractor with aggressive stopword profile
 function extractKeyTopics(summary: string | undefined, decisions: DecisionForTopics[] = []): string[] {
   const isPlaceholderSummary: boolean = !summary ||
     summary.includes('SIMULATION MODE') ||

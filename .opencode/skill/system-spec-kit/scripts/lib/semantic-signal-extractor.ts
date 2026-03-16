@@ -295,7 +295,8 @@ export class SemanticSignalExtractor {
     const minPhraseCount = options.minPhraseCount ?? TRIGGER_CONFIG.MIN_PHRASE_COUNT;
     const start = Date.now();
 
-    if (!text || text.length < TRIGGER_CONFIG.MIN_CONTENT_LENGTH || isPlaceholderText(text)) {
+    const minLength = options.mode === 'topics' ? 20 : TRIGGER_CONFIG.MIN_CONTENT_LENGTH;
+    if (!text || text.length < minLength || isPlaceholderText(text)) {
       return {
         mode: options.mode,
         stopwordProfile,
@@ -370,7 +371,7 @@ export class SemanticSignalExtractor {
       text,
       mode: 'triggers',
       stopwordProfile: overrides.stopwordProfile ?? 'balanced',
-      ngramDepth: overrides.ngramDepth,
+      ngramDepth: overrides.ngramDepth ?? 4,
       maxPhrases: overrides.maxPhrases,
       minPhraseCount: overrides.minPhraseCount,
     }).phrases;
@@ -381,7 +382,7 @@ export class SemanticSignalExtractor {
       text,
       mode: 'triggers',
       stopwordProfile: overrides.stopwordProfile ?? 'balanced',
-      ngramDepth: overrides.ngramDepth,
+      ngramDepth: overrides.ngramDepth ?? 4,
       maxPhrases: overrides.maxPhrases,
       minPhraseCount: overrides.minPhraseCount,
     });
