@@ -103,5 +103,5 @@ title: "Tasks: Type Consolidation [template:level_1/tasks.md]"
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
-- **Downstream**: 003-data-fidelity (R-03) depends on canonical `FileChange` type from this phase
+- **Downstream**: 003-data-fidelity (R-03) used a forward-compatible local `FileChange` approach; this phase canonicalizes it in `session-types.ts`
 <!-- /ANCHOR:cross-refs -->

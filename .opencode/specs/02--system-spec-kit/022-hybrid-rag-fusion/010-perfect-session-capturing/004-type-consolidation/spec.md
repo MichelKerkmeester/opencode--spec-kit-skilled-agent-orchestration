@@ -65,6 +65,11 @@ Move `FileChange`, `ObservationDetailed`, `ToolCounts`, and `SpecFileEntry` into
 | `scripts/extractors/session-extractor.ts` | Modify | Remove local type definitions, re-export from `session-types` |
 | `scripts/extractors/collect-session-data.ts` | Modify | Use canonical types, replace local `CollectedDataFor*` with `Pick`/`Omit` from canonical |
 | `scripts/core/workflow.ts` | Modify | Import types from `session-types` instead of extractor files |
+| `scripts/extractors/conversation-extractor.ts` | Modify | Replace local `CollectedDataForConversation` with `Pick` from canonical type |
+| `scripts/extractors/decision-extractor.ts` | Modify | Replace local `CollectedDataForDecisions` with `Pick` from canonical type |
+| `scripts/extractors/diagram-extractor.ts` | Modify | Replace local `CollectedDataForDiagrams` with `Pick` from canonical type |
+| `scripts/spec-folder/alignment-validator.ts` | Modify | Replace local `CollectedDataForAlignment` with `Pick`/`Omit` from canonical type |
+| `scripts/utils/spec-affinity.ts` | Modify | Replace local `CollectedDataForSpecAffinity` with `Pick`/`Omit` from canonical type |
 <!-- /ANCHOR:scope -->
 
 ---

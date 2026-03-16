@@ -38,7 +38,7 @@ This plan implements a 7-step type migration: canonicalize leaked types in `sess
 
 ### Definition of Done
 
-- [ ] All acceptance criteria met (REQ-001 through REQ-005)
+- [ ] All acceptance criteria met (REQ-001 through REQ-006)
 - [ ] `tsc --noEmit` passes with zero errors
 - [ ] Full test suite passes
 - [ ] Docs updated (spec/plan in this folder)
