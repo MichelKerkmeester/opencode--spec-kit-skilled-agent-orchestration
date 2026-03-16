@@ -11,7 +11,7 @@ contextType: "general"
 # Implementation Plan: Feature Catalog Audit & Remediation
 
 <!-- SPECKIT_LEVEL: 3 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core -->
 
 ---
 
@@ -280,7 +280,7 @@ Phase A (Spec Upgrade) ──► Phase B (30 Agents) ──► Phase C (Synthesi
 
 ## Merged Section: 016-feature-catalog-code-references Plan
 
-> **Merge note (2026-03-14)**: Originally `016-feature-catalog-code-references/plan.md`.
+> **Merge note (2026-03-14)**: Originally the 016 plan document in the prior folder layout.
 
 # Plan: 016-Feature Catalog Code References
 <!-- SPECKIT_LEVEL: 2 -->

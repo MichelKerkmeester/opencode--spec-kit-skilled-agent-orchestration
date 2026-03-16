@@ -10,7 +10,7 @@ This command replaces the older "explicit learning" workflow. Instead of classif
 
 ## 2. CURRENT REALITY
 
-`/memory:learn` is implemented entirely as a markdown command contract in `command/memory/learn.md`. The command has five supported flows:
+`/memory:learn` is implemented entirely as a markdown command contract in `.opencode/command/memory/learn.md`. The command has five supported flows:
 
 - No arguments: show an overview dashboard with action hints instead of prompting for missing input.
 - Default create mode: qualify the proposed rule, structure a constitutional markdown file, check the shared `~2000` token budget, write the file, index it with `memory_save`, and verify retrieval with `memory_search`.
@@ -29,16 +29,15 @@ The supporting command indexes and operator-facing docs now consistently describ
 
 | File | Layer | Role |
 |------|-------|------|
-| `command/memory/learn.md` | Command | Primary constitutional memory manager contract and subcommand routing |
-| `command/memory/README.txt` | Command docs | Memory command group index and usage examples |
-| `command/README.txt` | Command docs | Global command registry entry for `/memory:learn` |
-| `command/memory/context.md` | Command docs | Related-command reference for `/memory:learn` |
-| `command/spec_kit/debug.md` | Command docs | Debug workflow guidance for when `/memory:learn` is appropriate |
-| `command/spec_kit/complete.md` | Command docs | Completion workflow guidance for constitutional-rule capture |
+| `.opencode/command/memory/learn.md` | Command | Primary constitutional memory manager contract and subcommand routing |
+| `.opencode/command/memory/README.txt` | Command docs | Memory command group index and usage examples |
+| `.opencode/command/README.txt` | Command docs | Global command registry entry for `/memory:learn` |
+| `.opencode/command/spec_kit/debug.md` | Command docs | Debug workflow guidance for when `/memory:learn` is appropriate |
+| `.opencode/command/spec_kit/complete.md` | Command docs | Completion workflow guidance for constitutional-rule capture |
 | `.opencode/README.md` | Workspace docs | High-level environment command summary |
 | `README.md` | Workspace docs | Root command inventory |
-| `agent/speckit.md` | Agent docs | Speckit agent command summary |
-| `agent/chatgpt/speckit.md` | Agent docs | ChatGPT-profile speckit agent command summary |
+| `.opencode/agent/speckit.md` | Agent docs | Speckit agent command summary |
+| `.opencode/agent/chatgpt/speckit.md` | Agent docs | ChatGPT-profile speckit agent command summary |
 | `scripts/tests/memory-learn-command-docs.vitest.ts` | Scripts test | Regression test for `/memory:learn` contract and active doc alignment |
 
 ### Verification

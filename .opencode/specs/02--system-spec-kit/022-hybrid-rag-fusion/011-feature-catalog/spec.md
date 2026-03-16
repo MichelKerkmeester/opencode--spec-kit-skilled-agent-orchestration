@@ -8,7 +8,7 @@ updated: "2026-03-16"
 # Feature Catalog Comprehensive Audit & Remediation
 
 <!-- SPECKIT_LEVEL: 3 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch -->
 
 ---
 
@@ -28,7 +28,7 @@ The Spec Kit Memory MCP server's feature catalog had a verified **2026-03-08 his
 - Current tree now contains 189 snippets (net +9 versus snapshot baseline after taxonomy/category drift and post-snapshot additions).
 - 14 current snippets were outside executed March 8 verification ranges and are now classified in the addendum:
   - 12 appear structurally current with no immediate remediation.
-  - 2 require follow-up (`16--tooling-and-scripts/11-feature-catalog-code-references.md`, `16--tooling-and-scripts/13-constitutional-memory-manager-command.md`) for source-path normalization/correction.
+  - 2 require follow-up (`.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/11-feature-catalog-code-references.md`, `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/13-constitutional-memory-manager-command.md`) for source-path normalization/correction.
 - Tooling narrative is clarified as planned-vs-executed: some plan text says Copilot for Stream 1, but execution artifacts are Codex-based.
 
 ---
@@ -69,22 +69,22 @@ Preserve the March 8 snapshot as historical record while extending documentation
 - Actual remediation edits to snippet files (separate follow-up phase)
 - Restructuring the 20-category taxonomy
 - Changes to MCP server source code
-- Updating the monolithic `feature_catalog.md` (done after snippet remediation)
+- Updating the monolithic `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` (done after snippet remediation)
 
 ### Files to Change
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `011-feature-catalog/spec.md` | Modify | Rewrite for L3 audit scope |
-| `011-feature-catalog/tasks.md` | Modify | New task breakdown |
-| `011-feature-catalog/plan.md` | Create | L3 implementation plan |
-| `011-feature-catalog/checklist.md` | Create | Audit verification checks |
-| `011-feature-catalog/decision-record.md` | Create | 3 ADRs |
+| `spec.md` | Modify | Rewrite for L3 audit scope |
+| `tasks.md` | Modify | New task breakdown |
+| `plan.md` | Create | L3 implementation plan |
+| `checklist.md` | Create | Audit verification checks |
+| `decision-record.md` | Create | 3 ADRs |
 | `011-feature-catalog/description.json` | Modify | Update level to 3 |
 | `011-feature-catalog/scratch/verification-C*.md` | Create | 20 agent outputs |
 | `011-feature-catalog/scratch/investigation-X*.md` | Create | 10 agent outputs |
-| `011-feature-catalog/scratch/remediation-manifest.md` | Create | Synthesis output |
-| `011-feature-catalog/scratch/analysis-summary.md` | Create | Statistics |
+| `scratch/remediation-manifest.md` | Create | Synthesis output |
+| `scratch/analysis-summary.md` | Create | Statistics |
 
 ---
 
@@ -231,7 +231,7 @@ Preserve the March 8 snapshot as historical record while extending documentation
 
 ## Merged Section: 016-feature-catalog-code-references
 
-> **Merge note (2026-03-14)**: The content below was originally in `016-feature-catalog-code-references/spec.md` (Level 2, Complete). It documents the code-to-catalog traceability work that is a direct downstream remediation action from 011's audit findings. The 016 spec folder has been absorbed into 011 to reduce folder count.
+> **Merge note (2026-03-14)**: The content below was originally in the 016 spec document (Level 2, Complete). It documents the code-to-catalog traceability work that is a direct downstream remediation action from 011's audit findings. The 016 spec folder has been absorbed into 011 to reduce folder count.
 
 # Feature Specification: 016-Feature Catalog Code References
 <!-- SPECKIT_LEVEL: 2 -->

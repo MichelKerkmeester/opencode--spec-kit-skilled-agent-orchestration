@@ -119,6 +119,20 @@ JSON authority with additive stateless native fallbacks, fronted by canonical `.
 - Rewrite spec `010` docs to the workspace-identity plus insufficiency contract.
 - Update `NEW-139`, the memory-quality catalog entries, `M-007`, and `NEW-133`.
 - Rerun the requested verification stack and record exact results, including package-clean MCP lint/build/test evidence.
+
+### Phase 6: Content Generation Quality
+
+Improve the template population pipeline to produce higher-quality memory files:
+
+- Eliminate decision duplication (compact + ASCII tree rendered twice) in `diagram-extractor.ts`.
+- Word-boundary-aware string truncation in `file-helpers.ts` and `decision-extractor.ts`.
+- Accurate session state detection for JSON-mode saves in `collect-session-data.ts`.
+- Trigger phrase quality filtering (domain stopwords for single-word folder tokens) in `workflow.ts`.
+- Semantic summary extraction from messages containing file paths regardless of classification in `semantic-summarizer.ts`.
+- Quality gate medium-quality warning banner (30-60 score range) in `workflow.ts`.
+- Tree thinning description generation (replace "description pending" with file-based descriptions) in `tree-thinning.ts`.
+- File classification improvements (agent file detection, narrower React context pattern) in `implementation-guide-extractor.ts`.
+- Speckit-enforce backend refinements: unrecognized rule warnings, YAML comment handling, mode validation, date format checks, and bullet-metadata level detection.
 <!-- /ANCHOR:phases -->
 
 ---

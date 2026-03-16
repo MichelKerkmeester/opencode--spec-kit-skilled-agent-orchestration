@@ -4,7 +4,7 @@ title: "Session Handover: Feature Catalog Audit & Remediation"
 <!-- SPECKIT_TEMPLATE_SOURCE: handover | v1.0 -->
 # Session Handover: Feature Catalog Audit & Remediation
 
-**Date**: 2026-03-08
+**Date**: 2026-03-08 (historical snapshot), addendum updated 2026-03-16
 **Spec Folder**: `02--system-spec-kit/022-hybrid-rag-fusion/011-feature-catalog`
 **Branch**: `main`
 **Session Duration**: ~2 hours (across context continuations)
@@ -50,6 +50,19 @@ title: "Session Handover: Feature Catalog Audit & Remediation"
 
 ---
 
+## 2026-03-16 Addendum: Current-State Alignment
+
+- Reconciled historical snapshot vs current tree: `180` snapshot snippets vs `189` live snippets.
+- Audited 14 omitted current snippets that were outside executed March 8 ranges.
+- Classified 12 omitted snippets as structurally current (no immediate remediation required).
+- Added 2 follow-up remediation items:
+  1. Normalize broad-glob/non-canonical source-path references in `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/11-feature-catalog-code-references.md`.
+  2. Correct/remove the invalid source-path reference (legacy command/memory/context.md entry) in `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/13-constitutional-memory-manager-command.md`.
+- Clarified historical taxonomy labels (`19-decisions`, `20-flags`) vs current monolith headings (`20 UX HOOKS`, `21 PHASE SYSTEM`, `22 FEATURE FLAG REFERENCE`).
+- Clarified tooling narrative drift: execution artifacts are Codex-based even where plan text still reflected Copilot wording.
+
+---
+
 ## Key Findings
 
 | Metric | Value |
@@ -64,6 +77,14 @@ title: "Session Handover: Feature Catalog Audit & Remediation"
 | Invalid file paths | 3 unique (affecting 55 snippets) |
 | Features needing REWRITE | 18 |
 
+### Addendum Findings (2026-03-16)
+| Metric | Value |
+|--------|-------|
+| Current live snippet count | 189 |
+| Omitted current snippets audited | 14 |
+| No immediate remediation | 12 |
+| Follow-up remediation required | 2 |
+
 ### Three Invalid Paths (P0 Batch-Fixable)
 1. `retry.vitest.ts` -> `retry-manager.vitest.ts` (52 snippets)
 2. `slug-utils.ts` -> REMOVE (2 snippets)
@@ -71,9 +92,9 @@ title: "Session Handover: Feature Catalog Audit & Remediation"
 
 ---
 
-## What Remains: Phase E (Remediation Execution)
+## What Remains: Phase F (Remediation Execution)
 
-Phase E is defined in `tasks.md` (T100-T171) and `scratch/remediation-manifest.md`. Estimated ~9 hours.
+Phase F is defined in `tasks.md` (T100-T171 plus T128-T129 addendum follow-ups) and `scratch/remediation-manifest.md`.
 
 ### Execution Order
 
@@ -86,6 +107,7 @@ Phase E is defined in `tasks.md` (T100-T171) and `scratch/remediation-manifest.m
 | E5: Desc-Only Updates (P1) | 11 features | Manual | ~30 min | T150 |
 | E6: New Feature Entries (P2) | 77 entries | Agent-assisted | ~2 hrs | T160-T161 |
 | E7: Monolith Sync | 1 sync | Script | ~5 min | T170-T171 |
+| Addendum follow-up | 2 items | Manual/semi-automated | ~20-30 min | T128-T129 |
 
 ### Recommended Approach for Phase E
 
@@ -127,7 +149,7 @@ Phase E is defined in `tasks.md` (T100-T171) and `scratch/remediation-manifest.m
   feature_catalog.md               # Monolithic catalog (sync after snippets)
   01--retrieval/                   # 9 snippet files
   02--mutation/                    # 10 snippet files
-  ... (20 categories total, ~180 files)
+  ... (live tree currently 189 snippet files; historical audit baseline was 180)
 ```
 
 ### Utilities
@@ -158,13 +180,13 @@ Phase E is defined in `tasks.md` (T100-T171) and `scratch/remediation-manifest.m
 ## Continuation Prompt
 
 ```
-Resume Phase E of the Feature Catalog Audit & Remediation.
+Resume Phase F of the Feature Catalog Audit & Remediation.
 
 Spec folder: 02--system-spec-kit/022-hybrid-rag-fusion/011-feature-catalog
 
 Load memory context for this spec folder, then read:
 1. scratch/remediation-manifest.md (the prioritized action list)
-2. tasks.md (Phase E tasks T100-T171)
+2. tasks.md (Phase F tasks T100-T171 plus addendum follow-ups T128-T129)
 
 Start with E1: Batch Fixes (P0) — the three invalid path corrections:
 - T100: Global replace retry.vitest.ts -> retry-manager.vitest.ts across 52 snippets
@@ -172,5 +194,5 @@ Start with E1: Batch Fixes (P0) — the three invalid path corrections:
 - T102: Remove check-architecture-boundaries.ts from 1 snippet
 - T103: Run replace-monolith-source-files.mjs
 
-Then proceed to E2: 18 feature rewrites (T110-T127).
+Then proceed to F2: 18 feature rewrites (T110-T127), and include addendum follow-up tasks T128-T129.
 ```

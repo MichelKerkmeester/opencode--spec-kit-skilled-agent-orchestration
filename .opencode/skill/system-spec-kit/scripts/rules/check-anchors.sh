@@ -92,9 +92,6 @@ run_check() {
         local tmp_opens="" tmp_closes=""
         tmp_opens=$(mktemp)
         tmp_closes=$(mktemp)
-        # SE-04: Ensure temp files are cleaned up on early exit
-        trap 'rm -f "$tmp_opens" "$tmp_closes" 2>/dev/null' RETURN
-
         # Detect malformed opening anchor syntax.
         while IFS=: read -r line_num line_text; do
             [[ -z "$line_num" ]] && continue

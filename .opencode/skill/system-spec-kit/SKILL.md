@@ -165,6 +165,7 @@ RESOURCE_MAP = {
     "DEBUG": [
         "references/debugging/troubleshooting.md",
         "references/workflows/quick_reference.md",
+        "manual_testing_playbook/manual_testing_playbook.md",
     ],
     "COMPLETE": [
         "references/validation/validation_rules.md",
@@ -189,12 +190,14 @@ RESOURCE_MAP = {
     "EVALUATION": [
         "references/memory/epistemic_vectors.md",
         "references/config/environment_variables.md",
+        "manual_testing_playbook/manual_testing_playbook.md",
     ],
     "SCORING_CALIBRATION": [
         "references/config/environment_variables.md",
     ],
     "ROLLOUT_FLAGS": [
         "references/config/environment_variables.md",
+        "feature_catalog/19--feature-flag-reference/",
     ],
     "GOVERNANCE": [
         "references/config/environment_variables.md",
@@ -209,12 +212,11 @@ COMMAND_BOOSTS = {
     "/spec_kit:complete": "COMPLETE",
     "/spec_kit:handover": "HANDOVER",
     "/spec_kit:phase": "PHASE",
-    "/memory:context": "MEMORY",
+    "/memory:analyze": "MEMORY",
     "/memory:save": "MEMORY",
     "/memory:manage": "MEMORY",
     "/memory:learn": "MEMORY",
     "/memory:continue": "MEMORY",
-    "/memory:analyze": "EVALUATION",
     "/memory:shared": "GOVERNANCE",
 }
 
@@ -603,6 +605,8 @@ Context preservation across sessions via hybrid search (vector similarity + BM25
 - **Mutation ledger** — Append-only audit trail for all memory mutations (create, update, delete, reinforce); implemented via SQLite triggers; queryable for compliance and rollback
 - **Retrieval telemetry** — 4-dimension metrics (latency, retrieval mode, fallback activation, quality score) plus Hydra architecture metadata. Enabled only when `SPECKIT_EXTENDED_TELEMETRY=true` (default: off)
 - **Hydra roadmap metadata** — `SPECKIT_HYDRA_PHASE` plus prefixed `SPECKIT_HYDRA_*` capability flags annotate telemetry, eval baselines, and migration checkpoint sidecars without changing live retrieval behavior by themselves
+- **Feature catalog** — 191 entries across 19 categories (`feature_catalog/01--retrieval/` through `19--feature-flag-reference/`) document every MCP server feature with current-reality status, source files, and catalog references. Use for audit, alignment checks, and understanding what exists. See [feature_catalog/](./feature_catalog/)
+- **Manual testing playbook** — Operator-facing validation matrix covering existing (`EX-*`) and new (`NEW-*`) features with deterministic prompts, execution sequences, and pass/fail triage. Includes review protocol and subagent utilization ledger. See [manual_testing_playbook/](./manual_testing_playbook/)
 - **Validation scoring** — `wasUseful=false` applies a demotion penalty to memory scores; 5+ positive validations may promote a memory's importance tier
 
 **Feature Flags:**
@@ -833,6 +837,8 @@ Automated validation of spec folder contents via `validate.sh`.
 | MCP Server        | `mcp_server/context-server.ts`                                             | Spec Kit Memory MCP (~682 lines)  |
 | Database          | `mcp_server/dist/database/context-index.sqlite`                            | Vector search index (canonical runtime path) |
 | Constitutional    | `constitutional/`                                                          | Always-surface rules              |
+| Feature Catalog   | `feature_catalog/` (19 categories, 191 entries)                            | Per-feature current-reality docs  |
+| Testing Playbook  | `manual_testing_playbook/` (3 files)                                       | Manual validation matrix          |
 
 ---
 

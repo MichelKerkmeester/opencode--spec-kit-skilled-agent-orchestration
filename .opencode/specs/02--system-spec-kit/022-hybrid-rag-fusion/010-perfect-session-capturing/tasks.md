@@ -54,6 +54,25 @@ title: "Tasks: Perfect Session Capturing"
 - [x] Expand `mcp_server/tests/handler-memory-save.vitest.ts` with `dryRun` and `force` insufficiency coverage.
 - [x] Expand `mcp_server/tests/recovery-hints.vitest.ts` with insufficiency guidance coverage.
 - [x] Keep the existing fallback-order, scorer-calibration, and JS verification suites green.
+
+### Phase 6: Content Generation Quality
+
+- [x] CG-01: Guard `AUTO_DECISION_TREES` duplication in `diagram-extractor.ts`.
+- [x] CG-02: Word-boundary-aware truncation in `file-helpers.ts` and `decision-extractor.ts`.
+- [x] CG-03: Session state detection for JSON-mode in `collect-session-data.ts`.
+- [x] CG-04: Trigger phrase domain-stopword filter in `workflow.ts`.
+- [x] CG-05: Semantic summary file extraction from any message with file paths in `semantic-summarizer.ts`.
+- [x] CG-06: Tree thinning description generation in `tree-thinning.ts`.
+- [x] CG-07: Quality gate medium-quality warning banner in `workflow.ts`.
+- [x] CG-08: File classification for agent files in `implementation-guide-extractor.ts`.
+
+#### speckit-enforce.yaml Backend (co-located)
+
+- [x] SE-01: Warn on unrecognized `SPECKIT_RULES` in `validate.sh`.
+- [x] SE-02: YAML comment handling in `pre-commit-spec-validate.sh`.
+- [x] SE-03: Mode value validation in `pre-commit-spec-validate.sh`.
+- [x] SE-04: Date format check in `pre-commit-spec-validate.sh`.
+- [x] SE-05: Bullet-metadata level detection pattern in `validate.sh`.
 <!-- /ANCHOR:implementation -->
 
 ---

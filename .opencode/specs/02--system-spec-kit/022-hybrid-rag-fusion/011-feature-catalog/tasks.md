@@ -104,8 +104,8 @@ title: "Tasks: Feature Catalog Audit & Remediation"
 - [x] T172 Reconcile snapshot vs live-tree counts (180 historical vs 189 current)
 - [x] T173 Audit 14 omitted current snippets and classify remediation status
 - [x] T174 Mark 12/14 omitted snippets as structurally current, no immediate remediation
-- [x] T175 Add source-path normalization follow-up for `16--tooling-and-scripts/11-feature-catalog-code-references.md`
-- [x] T176 Add source-path correction/removal follow-up for invalid `command/memory/context.md` reference in `16--tooling-and-scripts/13-constitutional-memory-manager-command.md`
+- [x] T175 Add source-path normalization follow-up for `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/11-feature-catalog-code-references.md`
+- [x] T176 Add source-path correction/removal follow-up for invalid command/memory/context.md reference in `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/13-constitutional-memory-manager-command.md`
 - [x] T177 Clarify tooling narrative drift (plan said Copilot; execution artifacts are Codex)
 - [x] T178 Clarify taxonomy drift (`19-decisions`/`20-flags` historical labels vs current monolith sections 20/21/22)
 
@@ -138,8 +138,8 @@ title: "Tasks: Feature Catalog Audit & Remediation"
 - [ ] T125 [P] Rewrite 17-governance/02-feature-flag-sunset-audit
 - [ ] T126 [P] Rewrite 20-flags/01-1-search-pipeline-features-speckit
 - [ ] T127 [P] Rewrite 20-flags/05-5-embedding-and-api
-- [ ] T128 [P] Normalize SOURCE FILES path style in `16--tooling-and-scripts/11-feature-catalog-code-references.md` (replace broad globs/external verifier alias with canonical repo-resolved references)
-- [ ] T129 [P] Correct/remove invalid `command/memory/context.md` SOURCE FILES entry in `16--tooling-and-scripts/13-constitutional-memory-manager-command.md`
+- [ ] T128 [P] Normalize SOURCE FILES path style in `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/11-feature-catalog-code-references.md` (replace broad globs/external verifier alias with canonical repo-resolved references)
+- [ ] T129 [P] Correct/remove invalid command/memory/context.md SOURCE FILES entry in `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/13-constitutional-memory-manager-command.md`
 
 ### E3: Description + Path Updates (P1 — 63 features)
 - [ ] T130 [P] Update BOTH features across all 20 categories (per manifest)
@@ -184,7 +184,7 @@ title: "Tasks: Feature Catalog Audit & Remediation"
 
 ## Merged Section: 016-feature-catalog-code-references Tasks
 
-> **Merge note (2026-03-14)**: Originally `016-feature-catalog-code-references/tasks.md`.
+> **Merge note (2026-03-14)**: Originally the 016 tasks document in the prior folder layout.
 
 # Tasks: 016-Feature Catalog Code References
 <!-- SPECKIT_LEVEL: 2 -->
@@ -230,8 +230,8 @@ title: "Tasks: Feature Catalog Audit & Remediation"
 - [x] **T-C2**: Add `// MODULE: Name` headers to 82 scripts/ .ts files [Evidence: Headers added; verify_alignment_drift.py PASS]
 - [x] **T-C3**: Add `// MODULE: Name` headers to 2 headerless files (session-transition.ts, ranking-contract.ts) [Evidence: Headers added manually]
 - [x] **T-C4**: Add missing `// Feature catalog:` annotations to 91 unannotated files across lib/cognitive, lib/search, lib/eval, lib/telemetry, lib/storage, lib/scoring, lib/graph, shared/ [Evidence: Cross-validation: 124 unique annotations, 0 invalid names]
-- [x] **T-C5**: Create feature catalog snippet `16--tooling-and-scripts/11-feature-catalog-code-references.md` [Evidence: File created with OVERVIEW, CURRENT REALITY, SOURCE FILES, METADATA, PLAYBOOK sections]
-- [x] **T-C6**: Add H3 entry in main `feature_catalog.md` under Tooling section [Evidence: Entry added with Description, Current Reality, Source Files]
+- [x] **T-C5**: Create feature catalog snippet `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/11-feature-catalog-code-references.md` [Evidence: File created with OVERVIEW, CURRENT REALITY, SOURCE FILES, METADATA, PLAYBOOK sections]
+- [x] **T-C6**: Add H3 entry in main `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` under Tooling section [Evidence: Entry added with Description, Current Reality, Source Files]
 - [x] **T-C7**: Add manual testing playbook scenarios NEW-135..NEW-138 [Evidence: 4 scenarios added with grep traceability, name validity, multi-feature coverage, MODULE: compliance]
 - [x] **T-C8**: Update playbook TOC range to NEW-001..NEW-138 and add coverage mappings [Evidence: TOC and section heading updated, 4 coverage mapping rows added]
 - [x] **T-C9**: Add Code Conventions section to mcp_server/README.md [Evidence: MODULE: header and Feature catalog annotation conventions documented]

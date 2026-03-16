@@ -12,8 +12,9 @@
     "02--system-spec-kit",
     "022-hybrid-rag-fusion"
   ],
-  "memorySequence": 1,
+  "memorySequence": 2,
   "memoryNameHistory": [
-    "15-03-26_13-03__fixed-anchor-destruction-bug-and-hardcoded.md"
+    "15-03-26_13-03__fixed-anchor-destruction-bug-and-hardcoded.md",
+    "16-03-26_12-15__executed-c1-c5-edits-directly-instead-of-spawning.md"
   ]
 }

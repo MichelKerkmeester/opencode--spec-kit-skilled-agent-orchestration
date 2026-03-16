@@ -1,8 +1,10 @@
 # Feature Catalog Remediation Manifest
 
-> **Date:** 2026-03-08
-> **Source:** 30-agent audit (20 verification + 10 gap investigation)
-> **Total remediation items:** 202 (173 existing features + 29 new features)
+> **Date:** 2026-03-08 historical baseline + 2026-03-16 current-state addendum
+> **Source:** 30-agent audit (20 verification + 10 gap investigation) + omitted-snippet addendum audit (14 current snippets)
+> **Historical remediation base (2026-03-08):** 202 (173 existing features + 29 new features)
+> **Addendum follow-up items (2026-03-16):** 2
+> **Current combined actionable total:** 204
 
 ---
 
@@ -14,10 +16,42 @@
 | **P1** | DESC-UPDATE | Description inaccurate or incomplete |
 | **P1** | PATH-ADD | Missing source file paths |
 | **P1** | PATH-REMOVE | Invalid/incorrect paths |
+| **P1** | PATH-NORMALIZE | Non-canonical source references that require normalization |
 | **P1** | REWRITE | Feature needs complete rewrite |
 | **P1** | NEW-FEATURE (high-sig) | New feature entry needed |
 | **P2** | NEW-FEATURE (med/low) | New feature entry needed |
 | **P2** | CATEGORY-MOVE | Feature in wrong category |
+
+---
+
+## 2026-03-16 Addendum: Omitted Current Snippets (14)
+
+These 14 snippets were outside executed March 8 verification ranges and therefore were not part of the 180-feature historical coverage claim. Addendum classification:
+
+### No Immediate Remediation (12)
+
+- `09--evaluation-and-measurement/15-memory-roadmap-baseline-snapshot.md`
+- `09--evaluation-and-measurement/16-int8-quantization-evaluation.md`
+- `10--graph-signal-activation/12-unified-graph-retrieval-deterministic-ranking-explainability-and-rollback.md`
+- `11--scoring-and-calibration/18-adaptive-shadow-ranking-bounded-proposals-and-rollback.md`
+- `13--memory-quality-and-indexing/17-outsourced-agent-memory-capture.md`
+- `13--memory-quality-and-indexing/18-stateless-enrichment-and-alignment-guards.md`
+- `14--pipeline-architecture/22-lineage-state-active-projection-and-asof-resolution.md`
+- `16--tooling-and-scripts/09-migration-checkpoint-scripts.md`
+- `16--tooling-and-scripts/10-schema-compatibility-validation.md`
+- `16--tooling-and-scripts/12-session-capturing-pipeline-quality.md`
+- `17--governance/03-hierarchical-scope-governance-governed-ingest-retention-and-audit.md`
+- `17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md`
+
+### Addendum Follow-up Required (2)
+
+#### AD-001: `16--tooling-and-scripts/11-feature-catalog-code-references.md` — PATH-NORMALIZE (P1)
+- **Issue:** `## SOURCE FILES` uses broad glob entries (`mcp_server/**/*.ts`, `shared/**/*.ts`, `scripts/**/*.ts`) and an external verifier alias path (`sk-code--opencode/scripts/verify_alignment_drift.py`) instead of canonical repo-resolved references.
+- **Fix:** Normalize source references to canonical, resolvable repo-relative paths and explicit verification references.
+
+#### AD-002: `16--tooling-and-scripts/13-constitutional-memory-manager-command.md` — PATH-REMOVE/PATH-CORRECT (P1)
+- **Issue:** Lists `command/memory/context.md`, which is not present at `.opencode/command/memory/context.md`.
+- **Fix:** Remove or replace with the valid command documentation path(s).
 
 ---
 
@@ -176,6 +210,10 @@ New undocumented capabilities discovered during gap investigation.
 
 ## Remediation Execution Plan
 
+### Phase 0: Addendum Follow-up (P1)
+1. Normalize source-path style in `16--tooling-and-scripts/11-feature-catalog-code-references.md`
+2. Correct/remove invalid `command/memory/context.md` entry in `16--tooling-and-scripts/13-constitutional-memory-manager-command.md`
+
 ### Phase 1: Batch Fixes (P0) — Scriptable
 1. Global replace `retry.vitest.ts` → `retry-manager.vitest.ts` across all 52 affected snippets
 2. Remove `slug-utils.ts` reference from 2 snippets
@@ -213,4 +251,5 @@ Run `replace-monolith-source-files.mjs` to update `feature_catalog.md`.
 | Phase 5 | 11 desc fixes | Manual | ~30 min |
 | Phase 6 | 29 new features | Agent-assisted | ~2 hours |
 | Phase 7 | 1 sync | Script | ~5 min |
-| **Total** | | | **~9 hours** |
+| Addendum follow-up | 2 items | Manual | ~20-30 min |
+| **Total** | | | **~9.5 hours** |

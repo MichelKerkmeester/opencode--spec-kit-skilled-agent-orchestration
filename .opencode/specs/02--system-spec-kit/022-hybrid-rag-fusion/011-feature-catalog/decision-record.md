@@ -9,6 +9,7 @@ title: "Decision Record: Feature Catalog Audit & Remediation"
 
 ---
 
+<!-- ANCHOR:adr-001 -->
 ## ADR-001: 30-Agent Partitioning Strategy
 
 ### Metadata
@@ -95,6 +96,8 @@ We need to verify ~180 feature snippets against source code AND investigate 55 u
 
 ---
 
+<!-- /ANCHOR:adr-001 -->
+<!-- ANCHOR:adr-002 -->
 ## ADR-002: Gap Classification Methodology
 
 ### Metadata
@@ -174,6 +177,8 @@ The prior 10-agent scan found 55 gaps with 3 significance tiers (high/medium/low
 
 ---
 
+<!-- /ANCHOR:adr-002 -->
+<!-- ANCHOR:adr-003 -->
 ## ADR-003: Catalog Structure Preservation
 
 ### Metadata
@@ -193,7 +198,7 @@ The prior scan recommended creating new categories (Server Operations, Save Path
 ### Constraints
 
 - Restructuring would invalidate all existing `## Source Metadata` references
-- The monolithic `feature_catalog.md` uses category-based section ordering
+- The monolithic `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` uses category-based section ordering
 - Other tooling (generate-source-files.mjs, replace-monolith-source-files.mjs) depends on category directory names
 
 ---
@@ -250,3 +255,4 @@ The prior scan recommended creating new categories (Server Operations, Save Path
 - Remediation manifest maps new features to existing categories
 
 **How to roll back**: Create new categories if the 20-category structure proves inadequate during remediation.
+<!-- /ANCHOR:adr-003 -->

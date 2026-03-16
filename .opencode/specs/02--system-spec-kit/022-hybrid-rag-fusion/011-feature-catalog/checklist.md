@@ -31,7 +31,7 @@ title: "Verification Checklist: Feature Catalog Audit & Remediation"
 - [x] CHK-010 [P0] All 20 verification agents (C01-C20) produced reports — [Evidence: 20 files, 44-139KB each]
 - [x] CHK-011 [P0] All 10 investigation agents (X01-X10) produced reports — [Evidence: 10 files, 39-110KB each]
 - [x] CHK-012 [P0] All 30 scratch files are non-empty and follow structured format — [Evidence: all contain FEATURE/GAP blocks after "tokens used"]
-- [x] CHK-013 [P1] Each verification report covers all assigned snippet files — [Evidence: 180 FEATURE entries extracted across 20 reports]
+- [x] CHK-013 [P1] Each verification report covers all assigned historical-snapshot snippet files — [Evidence: 180 FEATURE entries extracted across 20 reports]
 - [x] CHK-014 [P1] Each investigation report addresses all assigned gaps — [Evidence: 55 gaps + 29 new gaps reported]
 
 ---
@@ -53,6 +53,8 @@ title: "Verification Checklist: Feature Catalog Audit & Remediation"
 - [x] CHK-032 [P1] Cross-stream validation completed — [Evidence: 7 false positives identified where Stream 2 gaps matched Stream 1 existing entries]
 - [x] CHK-033 [P1] Analysis summary includes per-category statistics — [Evidence: scratch/analysis-summary.md has 20-category table]
 - [ ] CHK-034 [P2] Remediation items have effort estimates — [Evidence: total ~9 hours estimated in manifest]
+- [x] CHK-035 [P0] 2026-03-16 omitted current snippets explicitly listed and classified — [Evidence: 14-item addendum table in analysis-summary.md and remediation-manifest.md]
+- [x] CHK-036 [P1] Addendum follow-up remediation captured for source-path issues — [Evidence: 2 addendum follow-up items (path-normalize, path-correct/remove)]
 
 ---
 
@@ -77,7 +79,7 @@ title: "Verification Checklist: Feature Catalog Audit & Remediation"
 - [x] CHK-100 [P0] Architecture decisions documented in decision-record.md — [Evidence: 3 ADRs (partitioning, classification, catalog structure)]
 - [x] CHK-101 [P1] All ADRs have status (Proposed/Accepted) — [Evidence: all 3 are Accepted]
 - [x] CHK-102 [P1] Alternatives documented with rejection rationale — [Evidence: each ADR has 3+ alternatives with scores]
-- [x] CHK-103 [P2] Agent partitioning validated against actual feature distribution — [Evidence: all 180 features covered by C01-C20]
+- [x] CHK-103 [P2] Agent partitioning validated against historical snapshot feature distribution — [Evidence: all 180 snapshot features covered by C01-C20]
 
 ---
 
@@ -85,11 +87,11 @@ title: "Verification Checklist: Feature Catalog Audit & Remediation"
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 9 | 9/9 |
-| P1 Items | 11 | 10/11 |
+| P0 Items | 10 | 10/10 |
+| P1 Items | 12 | 11/12 |
 | P2 Items | 4 | 2/4 |
 
-**P1 gap:** CHK-022 (description accuracy 49.4% vs 95% target) — this is a finding, not a process failure. The audit correctly identified the accuracy gap, which Phase E remediation will address.
+**P1 gap:** CHK-022 (description accuracy 49.4% vs 95% target) — this is a finding, not a process failure. The audit correctly identified the accuracy gap, which remediation Phase F will address.
 
 **Verification Date**: 2026-03-08
 
@@ -97,7 +99,7 @@ title: "Verification Checklist: Feature Catalog Audit & Remediation"
 
 ## Merged Section: 016-feature-catalog-code-references Checklist
 
-> **Merge note (2026-03-14)**: Originally `016-feature-catalog-code-references/checklist.md`.
+> **Merge note (2026-03-14)**: Originally the 016 checklist document in the prior folder layout.
 
 # Checklist: 016-Feature Catalog Code References
 <!-- SPECKIT_LEVEL: 2 -->

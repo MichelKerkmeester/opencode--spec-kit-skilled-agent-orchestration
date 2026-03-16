@@ -24,15 +24,17 @@ Stale references to "Sprint N", "Phase NNN", or "spec NNN" in non-test comments 
 
 | File | Layer | Role |
 |------|-------|------|
-| `mcp_server/**/*.ts` (228 files) | All layers | `// MODULE: Name` headers and `// Feature catalog:` annotations |
-| `shared/**/*.ts` (25 files) | Shared | `// MODULE: Name` headers and `// Feature catalog:` annotations |
-| `scripts/**/*.ts` (82 files) | Scripts | `// MODULE: Name` headers |
+| `mcp_server/handlers/index.ts` | Handler | Representative in-repo handler surface showing `// MODULE:` and `// Feature catalog:` conventions in live code |
+| `shared/trigger-extractor.ts` | Shared | Representative shared module carrying a `// Feature catalog:` annotation and `// MODULE:` header |
+| `scripts/utils/workspace-identity.ts` | Scripts | Representative script module using the standardized `// MODULE:` header convention |
+| `mcp_server/README.md` | Docs | Documents code conventions for `// MODULE:` headers and `// Feature catalog:` annotations |
+| `README.md` | Docs | Skill-level component documentation summarizing the traceability convention |
 
 ### Verification
 
 | File | Focus |
 |------|-------|
-| `sk-code--opencode/scripts/verify_alignment_drift.py` | Enforces `MODULE:` header in first 40 lines of all non-test `.ts` files |
+| `.opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py` | Enforces `MODULE:` header in first 40 lines of all non-test `.ts` files |
 
 ---
 

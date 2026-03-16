@@ -4,12 +4,13 @@ title: "Implementation Summary: Feature Catalog Audit & Remediation"
 # Implementation Summary: Feature Catalog Audit & Remediation
 
 <!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 
 ---
 
 ## Merged Section: 016-feature-catalog-code-references Implementation Summary
 
-> **Merge note (2026-03-14)**: Originally `016-feature-catalog-code-references/implementation-summary.md`.
+> **Merge note (2026-03-14)**: Originally the 016 implementation summary document in the prior folder layout.
 
 # Implementation Summary
 
@@ -23,7 +24,8 @@ title: "Implementation Summary: Feature Catalog Audit & Remediation"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 016-feature-catalog-code-references |
+| **Spec Folder** | 011-feature-catalog |
+| **Historical Source** | 016-feature-catalog-code-references (merged into 011) |
 | **Completed** | 2026-03-14 |
 | **Level** | 2 |
 <!-- /ANCHOR:metadata -->
@@ -126,10 +128,10 @@ Cross-validation: 124 unique annotation names in code, 0 invalid (all match cata
 
 ### Documentation
 
-- Created `feature_catalog/16--tooling-and-scripts/11-feature-catalog-code-references.md` catalog snippet
-- Added H3 entry "Feature catalog code references" in main `feature_catalog.md` under Tooling section
-- Added Code Conventions section (MODULE: header + Feature catalog annotation) to `mcp_server/README.md`
-- Added traceability mention to `system-spec-kit/README.md` component description
+- Created `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/11-feature-catalog-code-references.md` catalog snippet
+- Added H3 entry "Feature catalog code references" in main `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` under Tooling section
+- Added Code Conventions section (MODULE: header + Feature catalog annotation) to `.opencode/skill/system-spec-kit/mcp_server/README.md`
+- Added traceability mention to `.opencode/skill/system-spec-kit/README.md` component description
 - Added playbook scenarios NEW-135 (grep traceability), NEW-136 (name validity), NEW-137 (multi-feature coverage), NEW-138 (MODULE: compliance)
 - Updated playbook TOC range to NEW-001..NEW-138 with coverage mappings
 

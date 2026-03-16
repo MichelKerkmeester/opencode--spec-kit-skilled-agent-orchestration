@@ -1,7 +1,7 @@
 # Feature Catalog Audit — Analysis Summary
 
-> **Date:** 2026-03-08
-> **Method:** 30 Codex agents (20 verification + 10 investigation) scanned 180 feature snippets and 55 known gaps
+> **Date:** 2026-03-08 (historical snapshot) + 2026-03-16 (current-state addendum)
+> **Method:** 30 Codex agents (20 verification + 10 investigation) scanned 180 historical-snapshot feature snippets and 55 known gaps; addendum audited 14 omitted current snippets against the 189-snippet live tree
 > **Duration:** ~12 minutes total (parallel execution)
 
 ---
@@ -9,6 +9,8 @@
 ## Executive Summary
 
 The audit verified all 180 feature snippet files and investigated all 55 known undocumented gaps. Only **7 features (3.9%) passed with no issues**. The remaining 173 features need some level of remediation. Additionally, **29 new gaps** were discovered beyond the original 55, while **7 of the original 55 were false positives**.
+
+**Boundary note:** all metrics above are the 2026-03-08 historical snapshot baseline. They do not include the 2026-03-16 omitted-snippet addendum.
 
 ---
 
@@ -44,6 +46,8 @@ The audit verified all 180 feature snippet files and investigated all 55 known u
 | LOW | 47 | 26.1% |
 
 ### Category-Level Summary
+
+> **Historical label note:** category labels `19-decisions` and `20-feature-flags` reflect the March 8 snapshot vocabulary. Current monolith headings now include `20. UX HOOKS`, `21. PHASE SYSTEM`, and `22. FEATURE FLAG REFERENCE`.
 
 | Category | Files | PASS | Issues | Primary Issue Type |
 |----------|-------|------|--------|-------------------|
@@ -160,6 +164,49 @@ The audit verified all 180 feature snippet files and investigated all 55 known u
 
 ---
 
+## 2026-03-16 Current-State Addendum
+
+### Current Tree Drift
+
+| Metric | Value |
+|--------|-------|
+| Historical snapshot snippets (2026-03-08) | 180 |
+| Current live snippets (2026-03-16) | 189 |
+| Omitted current snippets outside executed snapshot ranges | 14 |
+| Net drift vs historical baseline | +9 |
+
+### Omitted Snippet Classification (14)
+
+| # | Snippet | Addendum Classification | Immediate Action |
+|---|---------|--------------------------|------------------|
+| 1 | `09--evaluation-and-measurement/15-memory-roadmap-baseline-snapshot.md` | CURRENT-TREE-ADDITION | NONE |
+| 2 | `09--evaluation-and-measurement/16-int8-quantization-evaluation.md` | CURRENT-TREE-ADDITION | NONE |
+| 3 | `10--graph-signal-activation/12-unified-graph-retrieval-deterministic-ranking-explainability-and-rollback.md` | CURRENT-TREE-ADDITION | NONE |
+| 4 | `11--scoring-and-calibration/18-adaptive-shadow-ranking-bounded-proposals-and-rollback.md` | CURRENT-TREE-ADDITION | NONE |
+| 5 | `13--memory-quality-and-indexing/17-outsourced-agent-memory-capture.md` | CURRENT-TREE-ADDITION | NONE |
+| 6 | `13--memory-quality-and-indexing/18-stateless-enrichment-and-alignment-guards.md` | CURRENT-TREE-ADDITION | NONE |
+| 7 | `14--pipeline-architecture/22-lineage-state-active-projection-and-asof-resolution.md` | CURRENT-TREE-ADDITION | NONE |
+| 8 | `16--tooling-and-scripts/09-migration-checkpoint-scripts.md` | CURRENT-TREE-ADDITION | NONE |
+| 9 | `16--tooling-and-scripts/10-schema-compatibility-validation.md` | CURRENT-TREE-ADDITION | NONE |
+| 10 | `16--tooling-and-scripts/11-feature-catalog-code-references.md` | CURRENT-TREE-ADDITION + SOURCE-PATH-NORMALIZE | FOLLOW-UP (P1) |
+| 11 | `16--tooling-and-scripts/12-session-capturing-pipeline-quality.md` | CURRENT-TREE-ADDITION | NONE |
+| 12 | `16--tooling-and-scripts/13-constitutional-memory-manager-command.md` | CURRENT-TREE-ADDITION + SOURCE-PATH-CORRECT | FOLLOW-UP (P1) |
+| 13 | `17--governance/03-hierarchical-scope-governance-governed-ingest-retention-and-audit.md` | CURRENT-TREE-ADDITION | NONE |
+| 14 | `17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md` | CURRENT-TREE-ADDITION | NONE |
+
+### Addendum Outcome
+
+| Outcome | Count |
+|---------|-------|
+| Structurally current, no immediate remediation | 12 |
+| Follow-up remediation required | 2 |
+
+Addendum follow-up items:
+1. Normalize non-canonical source-path references (broad globs + external verifier alias) in `16--tooling-and-scripts/11-feature-catalog-code-references.md`.
+2. Correct/remove invalid `command/memory/context.md` source-path reference in `16--tooling-and-scripts/13-constitutional-memory-manager-command.md`.
+
+---
+
 ## Key Findings
 
 1. **Path staleness is the #1 issue**: 81 features need path updates, primarily due to the renamed `retry.vitest.ts` affecting 52 files. This is batch-fixable.
@@ -175,3 +222,5 @@ The audit verified all 180 feature snippet files and investigated all 55 known u
 6. **14-pipeline-architecture is the worst category**: 5 rewrites needed, highest concentration of stale documentation.
 
 7. **18-ux-hooks paths are all stale**: Every single UX hook feature needs path updates (likely a systematic path change).
+
+8. **Historical completeness vs current completeness now separated**: the 180-feature March 8 snapshot remains valid as historical evidence, and the March 16 addendum closes visibility on 14 omitted current snippets without rewriting historical metrics.
