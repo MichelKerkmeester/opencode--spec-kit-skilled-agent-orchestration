@@ -1,0 +1,189 @@
+{
+  "timestamp": "16-03-26 20-18",
+  "messageCount": 5,
+  "decisionCount": 1,
+  "diagramCount": 14,
+  "skillVersion": "1.7.2",
+  "autoTriggered": false,
+  "filtering": {
+    "totalProcessed": 5,
+    "noiseFiltered": 0,
+    "duplicatesRemoved": 0,
+    "qualityScore": 76,
+    "contaminationAudit": [
+      {
+        "stage": "content-filter",
+        "timestamp": "2026-03-16T19:18:34.525Z",
+        "patternsChecked": [
+          "/^User message$/i",
+          "/^User prompt$/i",
+          "/^Assistant message$/i",
+          "/^Assistant response$/i",
+          "/^<command-name>.*<\\/command-name>$/s",
+          "/^<local-command-stdout>.*<\\/local-command-stdout>$/s",
+          "/^<command-message>.*<\\/command-message>$/s",
+          "/^<command-args>.*<\\/command-args>$/s",
+          "/Command:\\s*\\/\\w+\\s*\\n\\s*<command-message>.*<\\/command-message>/is",
+          "/Command:\\s*\\/\\w+\\s*\\n\\s*<command-args>.*<\\/command-args>/is",
+          "/^<command-name>\\/?\\w*<\\/command-name>$/",
+          "/^<local-command-stdout>\\s*<\\/local-command-stdout>$/",
+          "/^<command-args>\\s*<\\/command-args>$/",
+          "/^<command-message>\\s*<\\/command-message>$/",
+          "/^Caveat:\\s*The messages below/i",
+          "/^Caveat:\\s*DO NOT respond/i",
+          "/^\\[Image #\\d+\\]$/",
+          "/^\\.{1,3}$/",
+          "/^[\\s\\u00A0]*$/",
+          "/^<system-reminder>/",
+          "/^UserPromptSubmit hook/i",
+          "/^Hook \\w+ (success|failed|running)/i"
+        ],
+        "matchesFound": [],
+        "actionsTaken": [
+          "filtered_noise:0",
+          "filtered_empty:0",
+          "stripped_wrappers:0"
+        ],
+        "passedThrough": [
+          "input_items:5",
+          "kept_items:5"
+        ]
+      }
+    ],
+    "filtered": {
+      "noise": 0,
+      "empty": 0,
+      "duplicate": 0,
+      "lowQuality": 0
+    },
+    "_note": "qualityScore is 0-100 scale (legacy scorer); frontmatter quality_score is 0.0-1.0 (v2 scorer)"
+  },
+  "contaminationAudit": [
+    {
+      "stage": "extractor-scrub",
+      "timestamp": "2026-03-16T19:18:34.073Z",
+      "patternsChecked": [
+        "step-by-step orchestration",
+        "analysis preamble",
+        "progress narration",
+        "step narration",
+        "check preamble",
+        "start-by preamble",
+        "start preamble",
+        "read preamble",
+        "look-into preamble",
+        "begin preamble",
+        "proceed preamble",
+        "handle preamble",
+        "will-now preamble",
+        "analysis heading",
+        "review heading",
+        "transition phrase",
+        "close-reading transition",
+        "first-step narration",
+        "now-step narration",
+        "next-step narration",
+        "ai self-reference",
+        "language-model self-reference",
+        "assistant self-reference",
+        "generic affirmation",
+        "sure filler",
+        "absolute filler",
+        "tool usage narration",
+        "tool usage narration active",
+        "tool usage preamble",
+        "tool title with path"
+      ],
+      "matchesFound": [],
+      "actionsTaken": [
+        "cleaned_fields:0",
+        "removed_phrases:0"
+      ],
+      "passedThrough": [
+        "processed_fields:1259"
+      ]
+    },
+    {
+      "stage": "content-filter",
+      "timestamp": "2026-03-16T19:18:34.525Z",
+      "patternsChecked": [
+        "/^User message$/i",
+        "/^User prompt$/i",
+        "/^Assistant message$/i",
+        "/^Assistant response$/i",
+        "/^<command-name>.*<\\/command-name>$/s",
+        "/^<local-command-stdout>.*<\\/local-command-stdout>$/s",
+        "/^<command-message>.*<\\/command-message>$/s",
+        "/^<command-args>.*<\\/command-args>$/s",
+        "/Command:\\s*\\/\\w+\\s*\\n\\s*<command-message>.*<\\/command-message>/is",
+        "/Command:\\s*\\/\\w+\\s*\\n\\s*<command-args>.*<\\/command-args>/is",
+        "/^<command-name>\\/?\\w*<\\/command-name>$/",
+        "/^<local-command-stdout>\\s*<\\/local-command-stdout>$/",
+        "/^<command-args>\\s*<\\/command-args>$/",
+        "/^<command-message>\\s*<\\/command-message>$/",
+        "/^Caveat:\\s*The messages below/i",
+        "/^Caveat:\\s*DO NOT respond/i",
+        "/^\\[Image #\\d+\\]$/",
+        "/^\\.{1,3}$/",
+        "/^[\\s\\u00A0]*$/",
+        "/^<system-reminder>/",
+        "/^UserPromptSubmit hook/i",
+        "/^Hook \\w+ (success|failed|running)/i"
+      ],
+      "matchesFound": [],
+      "actionsTaken": [
+        "filtered_noise:0",
+        "filtered_empty:0",
+        "stripped_wrappers:0"
+      ],
+      "passedThrough": [
+        "input_items:5",
+        "kept_items:5"
+      ]
+    },
+    {
+      "stage": "post-render",
+      "timestamp": "2026-03-16T19:18:34.891Z",
+      "patternsChecked": [
+        "frontmatter:trigger_phrases",
+        "frontmatter:key_topics",
+        "body:foreign-spec-dominance",
+        "body:foreign-spec-scatter",
+        "title:template instructional heading",
+        "title:placeholder bracket title",
+        "title:generic stub title",
+        "title:spec-id-only title"
+      ],
+      "matchesFound": [],
+      "actionsTaken": [
+        "failed_rules:none"
+      ],
+      "passedThrough": [
+        "current_spec:007-phase-classification",
+        "trigger_phrases:31",
+        "key_topics:12"
+      ]
+    }
+  ],
+  "semanticSummary": {
+    "task": "Development session",
+    "filesCreated": 63,
+    "filesModified": 19,
+    "decisions": 0,
+    "messageStats": {
+      "intent": 0,
+      "plan": 0,
+      "implementation": 4,
+      "result": 0,
+      "decision": 0,
+      "total": 5
+    }
+  },
+  "embedding": {
+    "status": "indexed",
+    "model": "nomic-ai/nomic-embed-text-v1.5",
+    "dimensions": 768,
+    "memoryId": 4367,
+    "generatedAt": "2026-03-16T19:18:35.362Z"
+  }
+}

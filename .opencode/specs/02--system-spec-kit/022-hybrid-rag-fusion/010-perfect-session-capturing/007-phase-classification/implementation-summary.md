@@ -14,7 +14,7 @@ title: "Implementation Summary [template:level_2/implementation-summary.md]"
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 007-phase-classification |
-| **Completed** | — |
+| **Completed** | 2026-03-16 |
 | **Level** | 2 |
 <!-- /ANCHOR:metadata -->
 
@@ -23,7 +23,14 @@ title: "Implementation Summary [template:level_2/implementation-summary.md]"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Pre-implementation — to be completed after implementation.
+This phase shipped the conversation-phase classifier on top of the completed `008` semantic signal contract.
+
+1. `scripts/utils/phase-classifier.ts` now owns exchange signal construction, deterministic weighted vectors, contiguous clustering, phase scoring, cluster confidence, and flow-pattern derivation.
+2. `scripts/extractors/conversation-extractor.ts` now builds exchanges from user prompts plus matched observations, then emits ordered `PHASES`, `TOPIC_CLUSTERS`, `UNIQUE_PHASE_COUNT`, and the upgraded `FLOW_PATTERN`.
+3. `scripts/utils/tool-detection.ts` now stays focused on tool/prose detection and delegates `classifyConversationPhase()` through a compatibility wrapper into the new classifier.
+4. `scripts/types/session-types.ts` now defines `ConversationPhaseLabel`, `PhaseScoreMap`, `TopicCluster`, and richer `ConversationPhase` / `ConversationData` metadata.
+5. `scripts/extractors/file-extractor.ts` now classifies `test`, `documentation`, and `performance` observations, and `scripts/lib/simulation-factory.ts` plus the context template were aligned to the richer conversation contract.
+6. `scripts/tests/phase-classification.vitest.ts` was added, while `test-extractors-loaders.js` and `test-scripts-modules.js` were updated to verify compatibility and regression behavior.
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -31,7 +38,12 @@ Pre-implementation — to be completed after implementation.
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-Pre-implementation — to be completed after implementation.
+The implementation stayed centered on the actual runtime ownership boundaries rather than forcing the old plan onto the wrong modules.
+
+1. Kept `conversation-extractor.ts` as the exchange/timeline owner and moved rich classification into a dedicated utility module instead of overloading `tool-detection.ts`.
+2. Reused `SemanticSignalExtractor.extract({ mode: 'all', stopwordProfile: 'aggressive', ngramDepth: 2 })` from `008` rather than adding new local tokenization or phase-specific stopword lists.
+3. Used deterministic vector weights and contiguous-first clustering so repeated returns remain separate timeline segments instead of being silently merged.
+4. Tightened verification around the known failure modes: grep-plus-debug ambiguity, repeated phase returns, expanded observation taxonomy, all 4 flow-pattern outputs, and low-signal fallback behavior.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -41,7 +53,10 @@ Pre-implementation — to be completed after implementation.
 
 | Decision | Why |
 |----------|-----|
-| — | Pre-implementation |
+| Put the real implementation in `scripts/utils/phase-classifier.ts` and keep `tool-detection.ts` as a shim | The shipped codebase already uses `conversation-extractor.ts` for phase output and `tool-detection.ts` for tool/prose helpers, so a dedicated classifier keeps responsibilities clear |
+| Build phase signals from the `008` extractor contract instead of new phase-specific preprocessing | This phase was explicitly unblocked by `008`, and reintroducing local tokenization would recreate the divergence `008` removed |
+| Keep clustering contiguous-first instead of merging non-contiguous revisits | The spec requires repeated returns like Research -> Implementation -> Research to remain distinct timeline segments |
+| Treat the remaining module-suite failures as unrelated baseline issues | `T-024e`, `T-024f`, and `T-032` were already outside the changed phase-classification seams and remained the only failures after the new classifier tests were fixed |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -51,7 +66,12 @@ Pre-implementation — to be completed after implementation.
 
 | Check | Result |
 |-------|--------|
-| — | Pre-implementation |
+| `npm run typecheck` | Passed |
+| `npm run build` | Passed |
+| `node mcp_server/node_modules/vitest/vitest.mjs run tests/phase-classification.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts` | Passed — 1 file, 6 tests |
+| `node mcp_server/node_modules/vitest/vitest.mjs run tests/phase-classification.vitest.ts tests/semantic-signal-golden.vitest.ts tests/decision-confidence.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts` | Passed — 3 files, 17 tests |
+| `node scripts/tests/test-extractors-loaders.js` | Passed — 305 passed, 0 failed |
+| `node scripts/tests/test-scripts-modules.js` | Still reports the known unrelated baseline failures `T-024e`, `T-024f`, and `T-032`; the new `T-008g`, `T-008h`, `T-008i`, and `T-008j` phase-classification expectations passed |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -59,5 +79,6 @@ Pre-implementation — to be completed after implementation.
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. Pre-implementation — to be completed after implementation.
+1. `scripts/tests/test-scripts-modules.js` still has unrelated baseline failures outside this phase (`notifyDatabaseUpdated` exports and `retry-manager` re-export coverage), so the clean verification bar for `007` relies on the targeted phase/extractor suites above rather than that broader legacy suite.
+2. `FLOW_PATTERN` is still metadata-only in this phase; `AUTO_GENERATED_FLOW` and `scripts/lib/flowchart-generator.ts` were intentionally left unchanged.
 <!-- /ANCHOR:limitations -->

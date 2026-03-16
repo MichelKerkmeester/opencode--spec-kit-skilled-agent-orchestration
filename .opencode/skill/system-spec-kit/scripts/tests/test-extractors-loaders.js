@@ -791,7 +791,10 @@ async function testFileExtractor() {
     assertEqual(detectObservationType({ type: 'observation', narrative: 'Decided to use PostgreSQL' }), 'decision', 'EXT-File-009: Decision keywords = decision');
     assertEqual(detectObservationType({ type: 'observation', narrative: 'Researched caching options' }), 'research', 'EXT-File-010: Research keywords = research');
     assertEqual(detectObservationType({ type: 'observation', narrative: 'Discovered new API endpoint' }), 'discovery', 'EXT-File-011: Discovery keywords = discovery');
-    assertEqual(detectObservationType({ type: 'observation', narrative: 'Updated the file' }), 'observation', 'EXT-File-012: No keywords = observation');
+    assertEqual(detectObservationType({ type: 'observation', narrative: 'Ran Vitest assertions and verified coverage' }), 'test', 'EXT-File-012: Test keywords = test');
+    assertEqual(detectObservationType({ type: 'observation', narrative: 'Updated README markdown guide' }), 'documentation', 'EXT-File-012b: Documentation keywords = documentation');
+    assertEqual(detectObservationType({ type: 'observation', narrative: 'Optimized performance benchmark latency' }), 'performance', 'EXT-File-012c: Performance keywords = performance');
+    assertEqual(detectObservationType({ type: 'observation', narrative: 'Updated the file' }), 'observation', 'EXT-File-012d: No keywords = observation');
 
     // Test extractFilesFromData
     const { extractFilesFromData } = fileExtractor;
@@ -929,7 +932,7 @@ async function testConversationExtractor() {
     }
 
     // Test flow pattern detection
-    const patterns = ['Sequential with Decision Points', 'Multi-Phase Workflow', 'Linear Sequential'];
+    const patterns = ['Linear Sequential', 'Iterative Loop', 'Branching Investigation', 'Exploratory Sweep'];
     if (patterns.includes(result.FLOW_PATTERN)) {
       pass('EXT-Conv-015: Valid FLOW_PATTERN', result.FLOW_PATTERN);
     } else {
@@ -963,6 +966,43 @@ async function testConversationExtractor() {
       pass('EXT-Conv-020: Object facts still drive conversation tool-call detection', toolNames.join(', '));
     } else {
       fail('EXT-Conv-020: Object facts still drive conversation tool-call detection', JSON.stringify(objectFactConversation.MESSAGES));
+    }
+
+    assertType(result.UNIQUE_PHASE_COUNT, 'number', 'EXT-Conv-021: UNIQUE_PHASE_COUNT is number');
+    assertArray(result.TOPIC_CLUSTERS, 'EXT-Conv-022: TOPIC_CLUSTERS is array');
+
+    const iterativeConversation = await extractConversations({
+      userPrompts: [
+        { prompt: 'Research adapter patterns', timestamp: '2026-03-16T10:00:00.000Z' },
+        { prompt: 'Implement the phase classifier', timestamp: '2026-03-16T10:06:00.000Z' },
+        { prompt: 'Research fallback handling again', timestamp: '2026-03-16T10:12:00.000Z' },
+      ],
+      observations: [
+        {
+          timestamp: '2026-03-16T10:00:30.000Z',
+          narrative: 'Researched adapter patterns with Read and Grep.',
+          facts: ['Tool: Read docs/phase-classifier.md', 'Tool: Grep phase classifier'],
+          type: 'research',
+        },
+        {
+          timestamp: '2026-03-16T10:06:30.000Z',
+          narrative: 'Implemented the classifier with Edit and Write tools.',
+          facts: ['Tool: Edit scripts/utils/phase-classifier.ts', 'Tool: Write scripts/extractors/conversation-extractor.ts'],
+          type: 'feature',
+        },
+        {
+          timestamp: '2026-03-16T10:12:30.000Z',
+          narrative: 'Researched tie-break handling after implementation.',
+          facts: ['Tool: Read docs/tie-breaks.md'],
+          type: 'research',
+        },
+      ],
+    });
+
+    if (iterativeConversation.PHASES.length === 3 && iterativeConversation.UNIQUE_PHASE_COUNT === 2) {
+      pass('EXT-Conv-023: Non-contiguous phases remain separate segments', iterativeConversation.PHASES.map((phase) => phase.PHASE_NAME).join(' -> '));
+    } else {
+      fail('EXT-Conv-023: Non-contiguous phases remain separate segments', JSON.stringify(iterativeConversation.PHASES));
     }
 
   } catch (error) {

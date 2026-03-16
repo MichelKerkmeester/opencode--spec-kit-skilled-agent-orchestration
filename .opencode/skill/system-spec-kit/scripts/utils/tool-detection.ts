@@ -7,6 +7,9 @@
 // ───────────────────────────────────────────────────────────────
 // Detects tool calls, classifies conversation phases, and identifies prose context
 
+import type { ConversationPhaseLabel } from '../types/session-types';
+import { classifyConversationPhase as classifyPhaseViaSignals } from './phase-classifier';
+
 // ───────────────────────────────────────────────────────────────
 // 2. TYPES
 // ───────────────────────────────────────────────────────────────
@@ -26,7 +29,7 @@ export interface ToolCallRecord {
 }
 
 /** Conversation phase classification labels */
-export type ConversationPhase = 'Research' | 'Planning' | 'Implementation' | 'Debugging' | 'Verification' | 'Discussion';
+export type ConversationPhase = ConversationPhaseLabel;
 
 // ───────────────────────────────────────────────────────────────
 // 3. TOOL CALL DETECTION
@@ -95,30 +98,7 @@ function isProseContext(text: string, matchStartIndex: number): boolean {
 // 5. CONVERSATION PHASE CLASSIFICATION
 // ───────────────────────────────────────────────────────────────
 function classifyConversationPhase(toolCalls: ToolCallRecord[], messageContent: string): ConversationPhase {
-  const tools: string[] = toolCalls.map((t: ToolCallRecord) => t.tool?.toLowerCase() || '');
-  const content: string = messageContent.toLowerCase();
-
-  if (tools.some((t: string) => ['read', 'grep', 'glob', 'webfetch', 'websearch'].includes(t))) {
-    return 'Research';
-  }
-
-  if (content.includes('plan') || content.includes('approach') || content.includes('should we')) {
-    return 'Planning';
-  }
-
-  if (tools.some((t: string) => ['edit', 'write', 'bash'].includes(t))) {
-    return 'Implementation';
-  }
-
-  if (content.includes('error') || content.includes('fix') || content.includes('debug')) {
-    return 'Debugging';
-  }
-
-  if (content.includes('test') || content.includes('verify') || content.includes('check')) {
-    return 'Verification';
-  }
-
-  return 'Discussion';
+  return classifyPhaseViaSignals(toolCalls, messageContent);
 }
 
 // ───────────────────────────────────────────────────────────────

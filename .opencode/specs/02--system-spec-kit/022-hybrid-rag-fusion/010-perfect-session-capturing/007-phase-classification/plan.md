@@ -22,7 +22,7 @@ title: "Implementation Plan: Phase Classification"
 
 ### Overview
 
-This plan implements a cluster classification pattern: build per-exchange document vectors from trigger-extractor preprocessing, group exchanges into topic clusters by term-frequency similarity, label each cluster from combined evidence rather than keyword precedence, track non-contiguous phase returns as separate timeline entries, expand observation types with test/documentation/performance, and derive `FLOW_PATTERN` from cluster transition structure.
+This plan ships `007` on top of the completed `008` signal contract. The conversation extractor builds one exchange per user prompt, the new phase classifier turns those exchanges into weighted semantic vectors, clusters them contiguously in timeline order, scores the resulting clusters across the 6 canonical phases, preserves repeated returns as separate phase segments, expands observation taxonomy, and derives `FLOW_PATTERN` from topic-link structure.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -38,9 +38,9 @@ This plan implements a cluster classification pattern: build per-exchange docume
 
 ### Definition of Done
 
-- [ ] All acceptance criteria met (REQ-001 through REQ-005)
-- [ ] Tests passing -- context-aware classification correct; non-contiguous phases tracked
-- [ ] Docs updated (spec/plan in this folder)
+- [x] All acceptance criteria met (REQ-001 through REQ-005)
+- [x] Targeted tests passing -- context-aware classification correct; non-contiguous phases tracked
+- [x] Docs updated (spec/plan/tasks/checklist/implementation-summary in this folder)
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -50,25 +50,25 @@ This plan implements a cluster classification pattern: build per-exchange docume
 
 ### Pattern
 
-Cluster classification -- replace a precedence-based keyword classifier with a scoring system that groups exchanges by topic similarity, assigns phases from aggregate evidence, and preserves temporal structure.
+Cluster classification rooted in the unified `SemanticSignalExtractor` contract from `008`.
 
 ### Key Components
 
-- **`TopicCluster` interface**: Groups related message exchanges with phase scores, dominant terms, and confidence
-- **Document vector builder**: Converts each exchange into a term-frequency vector using trigger-extractor preprocessing
-- **Cluster phase scorer**: Assigns phase labels from aggregate term evidence across cluster members instead of single-keyword precedence
-- **Non-contiguous phase tracker**: Maintains separate timeline entries when phase identity recurs after interruption
-- **Flow pattern deriver**: Analyzes cluster transition graph to classify session flow as linear / branching / iterative / exploratory
+- **`scripts/utils/phase-classifier.ts`**: Single owner for exchange signal building, contiguous clustering, phase scoring, cluster confidence, and flow-pattern derivation
+- **`conversation-extractor.ts`**: Builds exchanges from prompts + matched observations, then emits `PHASES`, `TOPIC_CLUSTERS`, `UNIQUE_PHASE_COUNT`, and `FLOW_PATTERN`
+- **`tool-detection.ts`**: Retains tool/prose helpers and exposes a compatibility shim for `classifyConversationPhase()`
+- **`session-types.ts`**: Defines `TopicCluster`, `PhaseScoreMap`, `ConversationPhaseLabel`, and the expanded conversation contract
+- **`file-extractor.ts`**: Expands observation-type detection for `test`, `documentation`, and `performance`
 
 ### Data Flow
 
-1. Trigger-extractor preprocesses each conversation exchange into normalized terms
-2. Document vector builder constructs term-frequency vectors for each exchange
-3. Exchanges are grouped into topic clusters by cosine similarity on term vectors
-4. Each cluster receives phase scores across all 6 labels based on aggregate term evidence
-5. Primary phase is assigned as the highest-scoring label with confidence
-6. Non-contiguous returns to the same phase produce separate timeline entries
-7. `FLOW_PATTERN` is derived from the cluster transition graph (linear chain vs. branching vs. cycles)
+1. `conversation-extractor.ts` builds one exchange per user prompt plus the observations in its time window.
+2. `phase-classifier.ts` composes exchange text from prompt, observation narrative, coerced facts, tool names, and observation types.
+3. `SemanticSignalExtractor.extract({ mode: 'all', stopwordProfile: 'aggressive', ngramDepth: 2 })` produces topics, phrases, and filtered tokens.
+4. The classifier builds a deterministic weighted vector: topics `3`, phrases `2`, filtered tokens `1`, tools `2`, observation types `2`.
+5. Exchanges are clustered contiguously by `0.7 * cosine + 0.3 * Jaccard >= 0.55`; repeated later returns remain separate clusters.
+6. Each cluster is scored across Research / Planning / Implementation / Debugging / Verification / Discussion, with an explicit debugging override for search-plus-error sessions.
+7. The classifier emits ordered phase segments plus topic clusters and derives `FLOW_PATTERN` from iterative recurrence, exploratory breadth, and topic-link branching.
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -76,43 +76,32 @@ Cluster classification -- replace a precedence-based keyword classifier with a s
 <!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
-### Phase 1: TopicCluster Interface & Observation Types
+### Phase 1: Type and extractor ownership
 
-- [ ] Define `TopicCluster` interface in session types: `{ id, label, messageIndexes, observationIndexes, dominantTerms, phaseScores, primaryPhase, confidence }`
-- [ ] Add observation types: `test`, `documentation`, `performance` to existing enum/union
-- [ ] Update observation classification logic in `file-extractor.ts` to recognize new types
+- [x] Add `ConversationPhaseLabel`, `PhaseScoreMap`, and `TopicCluster` to `session-types.ts`
+- [x] Expand `ConversationPhase` and `ConversationData` with cluster metadata, `TOPIC_CLUSTERS`, and `UNIQUE_PHASE_COUNT`
+- [x] Expand observation-type detection for `test`, `documentation`, and `performance`
 
-### Phase 2: Document Vector Construction
+### Phase 2: Exchange classification and compatibility
 
-- [ ] Add `buildExchangeVector(exchange: Exchange): TermVector` function using trigger-extractor preprocessing
-- [ ] Normalize terms: lowercase, stemming via existing trigger-extractor pipeline, stopword removal
-- [ ] Produce term-frequency map per exchange for downstream clustering
+- [x] Add `scripts/utils/phase-classifier.ts`
+- [x] Build exchange text from prompt, narratives, coerced fact text, tool names, and observation types
+- [x] Use `SemanticSignalExtractor.extract({ mode: 'all', stopwordProfile: 'aggressive', ngramDepth: 2 })`
+- [x] Build deterministic weighted vectors and contiguous-first topic clusters
+- [x] Keep `tool-detection.ts` as a compatibility shim for legacy phase-classification callers
 
-### Phase 3: Cluster-Based Phase Scoring
+### Phase 3: Timeline output and flow pattern
 
-- [ ] Replace keyword-precedence ladder in `session-extractor.ts` with cluster scoring
-- [ ] Group exchanges by cosine similarity on term vectors (threshold-based agglomerative clustering)
-- [ ] For each cluster, compute phase scores: sum term weights for each of the 6 phase categories
-- [ ] Assign `primaryPhase` as the highest-scoring category; `confidence` as ratio of top score to total
-- [ ] Handle "grep in debug" case: debug-context terms outweigh the grep/search research terms
+- [x] Rework `conversation-extractor.ts` to classify ordered exchanges rather than using a direct precedence ladder
+- [x] Preserve repeated phase returns as separate phase segments with cluster metadata
+- [x] Derive `FLOW_PATTERN` as `Linear Sequential`, `Iterative Loop`, `Branching Investigation`, or `Exploratory Sweep`
+- [x] Align simulation fallback and context-template wording with the richer conversation contract
 
-### Phase 4: Non-Contiguous Phase Tracking & Flow Pattern
+### Phase 4: Verification
 
-- [ ] Modify phase timeline builder to emit separate entries when a phase recurs after interruption
-- [ ] Each timeline entry records: phase label, start index, end index, cluster ID, confidence
-- [ ] Derive `FLOW_PATTERN` from cluster transition graph:
-  - `linear`: strictly sequential phase progression (A -> B -> C)
-  - `branching`: multiple parallel topic threads
-  - `iterative`: same phase returns after interruption (A -> B -> A)
-  - `exploratory`: frequent short clusters with low confidence
-
-### Phase 5: Verification
-
-- [ ] Add test for "grep in debug output" -> Debugging classification
-- [ ] Add test for Research -> Implementation -> Research producing 3 timeline entries
-- [ ] Add test for new observation types (test, documentation, performance)
-- [ ] Add test for `FLOW_PATTERN` derivation from known cluster structures
-- [ ] Verify existing phase classification tests still pass with updated scoring
+- [x] Add `phase-classification.vitest.ts` for debugging override, iterative returns, observation types, flow patterns, and low-signal fallback
+- [x] Update extractor and module regression suites for new flow-pattern values and conversation metadata
+- [x] Rebuild `scripts/dist` and rerun targeted verification suites
 <!-- /ANCHOR:phases -->
 
 ---
@@ -122,11 +111,10 @@ Cluster classification -- replace a precedence-based keyword classifier with a s
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Unit | Document vector construction from trigger-extractor preprocessing | Vitest |
-| Unit | Cluster phase scoring vs. keyword precedence for ambiguous inputs | Vitest |
-| Unit | Non-contiguous phase tracking produces separate timeline entries | Vitest |
-| Unit | Flow pattern derivation from cluster transition graphs | Vitest |
-| Integration | End-to-end session extraction with cluster classification | Vitest |
+| Unit | Exchange scoring, debugging override, low-signal fallback | Vitest |
+| Unit | Observation typing and flow-pattern derivation | Vitest |
+| Integration | End-to-end conversation extraction with topic clusters and repeated phase returns | Vitest |
+| Regression | Extractor/loaders and module compatibility suites against `scripts/dist` | Node.js scripts |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -136,7 +124,7 @@ Cluster classification -- replace a precedence-based keyword classifier with a s
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| R-08 signal extraction (008-signal-extraction) | Internal | Yellow | Unified signal extractor provides topic preprocessing infrastructure; blocked until B1 completes |
+| R-08 signal extraction (008-signal-extraction) | Internal | Green | The unified signal extractor is now the active upstream contract for `007` classification |
 <!-- /ANCHOR:dependencies -->
 
 ---
@@ -144,6 +132,6 @@ Cluster classification -- replace a precedence-based keyword classifier with a s
 <!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: Cluster-based classification produces materially worse phase distributions than the precedence ladder
-- **Procedure**: Restore keyword-precedence ladder in `session-extractor.ts`; remove `TopicCluster` interface usage; non-contiguous tracking and observation type additions can remain as they are independent of the classification method
+- **Trigger**: Topic clusters or phase scoring introduce incorrect timeline output in targeted regression coverage
+- **Procedure**: Revert `conversation-extractor.ts`, `tool-detection.ts`, `session-types.ts`, and `phase-classifier.ts` together so the compatibility seam returns to the legacy ladder without leaving the conversation contract half-migrated
 <!-- /ANCHOR:rollback -->

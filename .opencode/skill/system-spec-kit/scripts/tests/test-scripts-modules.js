@@ -582,7 +582,7 @@ async function testUtilsToolDetection() {
     }
 
     // Test 7: classifyConversationPhase detects Debugging
-    const debugPhase = classifyConversationPhase([], 'fixing the error');
+    const debugPhase = classifyConversationPhase([{ tool: 'Grep' }], 'fixing the error in debug output');
     if (debugPhase === 'Debugging') {
       pass('T-008g: classifyConversationPhase detects Debugging', 'Debugging phase');
     } else {
@@ -591,6 +591,77 @@ async function testUtilsToolDetection() {
 
   } catch (error) {
     fail('T-008: Tool detection module', error.message);
+  }
+}
+
+async function testUtilsPhaseClassifier() {
+  log('\n🔬 UTILS: phase-classifier.ts');
+
+  try {
+    const {
+      classifyConversationExchanges,
+      classifyConversationPhase,
+    } = require(path.join(SCRIPTS_DIR, 'utils', 'phase-classifier'));
+
+    const compatibilityPhase = classifyConversationPhase([{ tool: 'Grep' }], 'fixing the error in debug output');
+    if (compatibilityPhase === 'Debugging') {
+      pass('T-008h: phase-classifier compatibility wrapper prefers Debugging for grep+error', compatibilityPhase);
+    } else {
+      fail('T-008h: phase-classifier compatibility wrapper prefers Debugging for grep+error', compatibilityPhase);
+    }
+
+    const classified = classifyConversationExchanges([
+      {
+        id: 'exchange-1',
+        messageIndexes: [0],
+        observationIndexes: [0],
+        prompt: 'Research adapter patterns',
+        narratives: ['Investigated the current classifier flow'],
+        factTexts: ['Tool: Read scripts/extractors/conversation-extractor.ts'],
+        toolNames: ['Read', 'Grep'],
+        observationTypes: ['research'],
+        startTimestamp: '2026-03-16T10:00:00.000Z',
+        endTimestamp: '2026-03-16T10:00:30.000Z',
+      },
+      {
+        id: 'exchange-2',
+        messageIndexes: [1],
+        observationIndexes: [1],
+        prompt: 'Implement the phase classifier',
+        narratives: ['Implemented the classifier module'],
+        factTexts: ['Tool: Edit scripts/utils/phase-classifier.ts'],
+        toolNames: ['Edit', 'Write'],
+        observationTypes: ['feature'],
+        startTimestamp: '2026-03-16T10:06:00.000Z',
+        endTimestamp: '2026-03-16T10:06:30.000Z',
+      },
+      {
+        id: 'exchange-3',
+        messageIndexes: [2],
+        observationIndexes: [2],
+        prompt: 'Research tie-break behavior again',
+        narratives: ['Investigated the final phase scoring'],
+        factTexts: ['Tool: Read docs/tie-breaks.md'],
+        toolNames: ['Read'],
+        observationTypes: ['research'],
+        startTimestamp: '2026-03-16T10:12:00.000Z',
+        endTimestamp: '2026-03-16T10:12:30.000Z',
+      },
+    ]);
+
+    if (classified.phases.length === 3 && classified.uniquePhaseCount === 2) {
+      pass('T-008i: phase-classifier preserves non-contiguous phase returns', classified.phases.map((phase) => phase.PHASE_NAME).join(' -> '));
+    } else {
+      fail('T-008i: phase-classifier preserves non-contiguous phase returns', JSON.stringify(classified.phases));
+    }
+
+    if (classified.flowPattern === 'Iterative Loop') {
+      pass('T-008j: phase-classifier derives Iterative Loop flow pattern', classified.flowPattern);
+    } else {
+      fail('T-008j: phase-classifier derives Iterative Loop flow pattern', classified.flowPattern);
+    }
+  } catch (error) {
+    fail('T-008 phase-classifier module', error.message);
   }
 }
 
@@ -3477,6 +3548,7 @@ async function main() {
   await testUtilsPromptUtils();
   await testUtilsFileHelpers();
   await testUtilsValidationUtils();
+  await testUtilsPhaseClassifier();
   await testLibAsciiBoxes();
   await testLibTriggerExtractor();
   await testLibEmbeddings();

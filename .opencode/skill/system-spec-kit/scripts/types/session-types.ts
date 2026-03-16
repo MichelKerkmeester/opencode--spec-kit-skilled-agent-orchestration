@@ -286,10 +286,43 @@ export interface ConversationMessage {
   TOOL_CALLS: ToolCallEntry[];
 }
 
+export type ConversationPhaseLabel =
+  | 'Research'
+  | 'Planning'
+  | 'Implementation'
+  | 'Debugging'
+  | 'Verification'
+  | 'Discussion';
+
+export interface PhaseScoreMap {
+  Research: number;
+  Planning: number;
+  Implementation: number;
+  Debugging: number;
+  Verification: number;
+  Discussion: number;
+}
+
+export interface TopicCluster {
+  id: string;
+  label: string;
+  messageIndexes: number[];
+  observationIndexes: number[];
+  dominantTerms: string[];
+  phaseScores: PhaseScoreMap;
+  primaryPhase: ConversationPhaseLabel;
+  confidence: number;
+}
+
 /** Conversation phase — canonical type */
 export interface ConversationPhase {
   PHASE_NAME: string;
   DURATION: string;
+  CLUSTER_ID?: string;
+  CONFIDENCE?: number;
+  START_MESSAGE_INDEX?: number;
+  END_MESSAGE_INDEX?: number;
+  DOMINANT_TERMS?: string[];
   [key: string]: unknown;
 }
 
@@ -300,7 +333,9 @@ export interface ConversationData {
   DURATION: string;
   FLOW_PATTERN: string;
   PHASE_COUNT: number;
+  UNIQUE_PHASE_COUNT: number;
   PHASES: ConversationPhase[];
+  TOPIC_CLUSTERS: TopicCluster[];
   AUTO_GENERATED_FLOW: string;
   TOOL_COUNT: number;
   DATE: string;

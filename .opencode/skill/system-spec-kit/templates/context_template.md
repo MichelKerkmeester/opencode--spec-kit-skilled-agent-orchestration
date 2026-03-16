@@ -559,7 +559,7 @@ decision_count: 0
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
 
-This session followed a **{{FLOW_PATTERN}}** conversation pattern with **{{PHASE_COUNT}}** distinct phases.
+This session followed a **{{FLOW_PATTERN}}** conversation pattern with **{{PHASE_COUNT}}** phase segments{{#UNIQUE_PHASE_COUNT}} across **{{UNIQUE_PHASE_COUNT}}** unique phases{{/UNIQUE_PHASE_COUNT}}.
 
 ##### Conversation Phases
 {{#PHASES}}- **{{PHASE_NAME}}** - {{DURATION}}

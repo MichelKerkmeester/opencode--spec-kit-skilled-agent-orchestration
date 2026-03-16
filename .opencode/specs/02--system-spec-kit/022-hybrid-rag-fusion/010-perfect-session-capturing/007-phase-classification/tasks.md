@@ -26,10 +26,10 @@ title: "Tasks: Phase Classification [template:level_1/tasks.md]"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup — TopicCluster Interface & Observation Types
 
-- [ ] T001 Define `TopicCluster` interface: `{ id, label, messageIndexes, observationIndexes, dominantTerms, phaseScores, primaryPhase, confidence }` (REQ-001) (`scripts/types/session-types.ts` or `scripts/extractors/session-extractor.ts`)
-- [ ] T002 [P] Add observation types `test`, `documentation`, `performance` to existing enum/union (REQ-003) (`scripts/types/session-types.ts`)
-- [ ] T003 [P] Update observation classification logic to recognize new types (REQ-003) (`scripts/extractors/file-extractor.ts`)
-- [ ] T004 [P] Add expanded observation type placeholders to template (REQ-003) (`templates/core/context_template.md`)
+- [x] T001 Define `TopicCluster`, `ConversationPhaseLabel`, and `PhaseScoreMap` in `session-types.ts` (REQ-001) (`scripts/types/session-types.ts`)
+- [x] T002 [P] Expand `ConversationPhase` / `ConversationData` with cluster metadata, `TOPIC_CLUSTERS`, and `UNIQUE_PHASE_COUNT` (REQ-001) (`scripts/types/session-types.ts`)
+- [x] T003 [P] Update observation classification logic to recognize `test`, `documentation`, and `performance` (REQ-003) (`scripts/extractors/file-extractor.ts`)
+- [x] T004 [P] Update conversation summary wording for phase segments and unique phase count (REQ-005) (`templates/context_template`)
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -38,22 +38,22 @@ title: "Tasks: Phase Classification [template:level_1/tasks.md]"
 ## Phase 2: Implementation — Document Vectors, Cluster Scoring & Flow Pattern
 
 ### Document Vector Construction
-- [ ] T005 [B] Add `buildExchangeVector(exchange: Exchange): TermVector` function using trigger-extractor preprocessing (REQ-002) (`scripts/extractors/session-extractor.ts` or `scripts/lib/trigger-extractor.ts`)
-- [ ] T006 Normalize terms: lowercase, stemming via existing trigger-extractor pipeline, stopword removal (REQ-002)
-- [ ] T007 Produce term-frequency map per exchange for downstream clustering (REQ-002)
+- [x] T005 Add `scripts/utils/phase-classifier.ts` as the exchange classification owner (REQ-002)
+- [x] T006 Normalize exchange text through `SemanticSignalExtractor.extract({ mode: 'all', stopwordProfile: 'aggressive', ngramDepth: 2 })` (REQ-002)
+- [x] T007 Produce deterministic weighted vectors for topics, phrases, filtered tokens, tools, and observation types (REQ-002)
 
 ### Cluster-Based Phase Scoring
-- [ ] T008 Replace keyword-precedence ladder with cluster scoring in session extractor (REQ-001) (`scripts/extractors/session-extractor.ts`)
-- [ ] T009 Group exchanges by cosine similarity on term vectors (threshold-based agglomerative clustering) (REQ-001)
-- [ ] T010 For each cluster, compute phase scores: sum term weights for each of the 6 phase categories (REQ-001)
-- [ ] T011 Assign `primaryPhase` as highest-scoring category; `confidence` as ratio of top score to total (REQ-001)
-- [ ] T012 Handle "grep in debug" case: debug-context terms outweigh grep/search research terms (REQ-001)
+- [x] T008 Rework `conversation-extractor.ts` to build exchanges per prompt and delegate classification to `phase-classifier.ts` (REQ-001)
+- [x] T009 Group exchanges by contiguous-first cosine/Jaccard similarity (REQ-001)
+- [x] T010 Compute cluster phase scores across the 6 canonical conversation phases (REQ-001)
+- [x] T011 Assign `primaryPhase` and confidence deterministically, including Discussion fallback (REQ-001)
+- [x] T012 Handle the "grep in debug output" failure mode with the explicit debugging override (REQ-001)
 
 ### Non-Contiguous Phase Tracking & Flow Pattern
-- [ ] T013 Modify phase timeline builder to emit separate entries when a phase recurs after interruption (REQ-004) (`scripts/extractors/session-extractor.ts`)
-- [ ] T014 Each timeline entry records: phase label, start index, end index, cluster ID, confidence (REQ-004)
-- [ ] T015 Derive `FLOW_PATTERN` from cluster transition graph: linear / branching / iterative / exploratory (REQ-005) (`scripts/extractors/conversation-extractor.ts`)
-- [ ] T016 [P] Update `collect-session-data.ts` to support `TopicCluster` output alongside existing structures (`scripts/extractors/collect-session-data.ts`)
+- [x] T013 Emit separate phase segments when a phase recurs after interruption (REQ-004) (`scripts/extractors/conversation-extractor.ts`)
+- [x] T014 Record phase label, start index, end index, cluster ID, confidence, and dominant terms per segment (REQ-004)
+- [x] T015 Derive `FLOW_PATTERN` from iterative recurrence plus topic-link graph structure (REQ-005) (`scripts/utils/phase-classifier.ts`)
+- [x] T016 [P] Align simulation conversation output with the expanded contract (`scripts/lib/simulation-factory.ts`)
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -61,11 +61,11 @@ title: "Tasks: Phase Classification [template:level_1/tasks.md]"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [ ] T017 Add test for "grep in debug output" -> Debugging classification (SC-001)
-- [ ] T018 Add test for Research -> Implementation -> Research producing 3 timeline entries (SC-002, REQ-004)
-- [ ] T019 Add test for new observation types: test, documentation, performance (REQ-003)
-- [ ] T020 Add test for `FLOW_PATTERN` derivation from known cluster structures (REQ-005)
-- [ ] T021 Verify existing phase classification tests still pass with updated scoring
+- [x] T017 Add test for "grep in debug output" -> Debugging classification (SC-001)
+- [x] T018 Add test for Research -> Implementation -> Research producing 3 timeline segments and `UNIQUE_PHASE_COUNT = 2` (SC-002, REQ-004)
+- [x] T019 Add test for new observation types: test, documentation, performance (REQ-003)
+- [x] T020 Add test for `FLOW_PATTERN` derivation from known cluster structures and low-signal fallback (REQ-005)
+- [x] T021 Verify targeted phase classification suites pass with updated scoring
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -73,9 +73,9 @@ title: "Tasks: Phase Classification [template:level_1/tasks.md]"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [ ] All tasks marked `[x]`
-- [ ] No `[B]` blocked tasks remaining
-- [ ] Manual verification passed
+- [x] All tasks marked `[x]`
+- [x] No `[B]` blocked tasks remaining
+- [x] Manual verification passed
 <!-- /ANCHOR:completion -->
 
 ---

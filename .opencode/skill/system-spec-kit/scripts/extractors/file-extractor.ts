@@ -83,6 +83,9 @@ function detectObservationType(obs: ObservationInput): string {
   if (/\b(refactor(?:ed|s|ing)?|clean(?:ed|s|ing)?|restructur(?:ed|es|ing)?|reorganiz(?:ed|es|ing)?)\b/.test(combined)) return 'refactor';
   if (/\b(decid(?:ed|es|ing)?|chose|select(?:ed|s|ing)?|option|alternative)\b/.test(combined)) return 'decision';
   if (/\b(research(?:ed|ing)?|investigat(?:ed|es|ing)?|explor(?:ed|es|ing)?|analyz(?:ed|es|ing)?)\b/.test(combined)) return 'research';
+  if (/\b(test(?:ed|ing|s)?|spec(?:s)?|vitest|jest|assert(?:ed|ion|ions)?|coverage|pass(?:ed|es|ing)?|fail(?:ed|ing|s)?)\b/.test(combined)) return 'test';
+  if (/\b(docs?|readme|guide|markdown|template|commentary|document(?:ed|ing|ation)?)\b/.test(combined)) return 'documentation';
+  if (/\b(perf|performance|benchmark|latency|throughput|optimi[sz](?:e|ed|ing|ation))\b/.test(combined)) return 'performance';
   if (/\b(discover(?:ed|s|ing)?|found|learn(?:ed|s|ing)?|realiz(?:ed|es|ing)?)\b/.test(combined)) return 'discovery';
 
   return 'observation';
