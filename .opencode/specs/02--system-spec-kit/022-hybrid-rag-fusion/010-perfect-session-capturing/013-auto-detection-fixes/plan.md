@@ -3,7 +3,7 @@ title: "Implementation Plan: Auto-Detection Fixes"
 ---
 # Implementation Plan: Auto-Detection Fixes
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---

@@ -92,8 +92,8 @@ title: "Verification Checklist: Data Fidelity [template:level_2/checklist.md]"
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 8 | [ ]/8 |
-| P1 Items | 10 | [ ]/10 |
+| P0 Items | 9 | [ ]/9 |
+| P1 Items | 11 | [ ]/11 |
 | P2 Items | 5 | [ ]/5 |
 
 **Verification Date**: [YYYY-MM-DD]

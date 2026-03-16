@@ -93,7 +93,7 @@ title: "Verification Checklist: Contamination Detection [template:level_2/checkl
 | Category | Total | Verified |
 |----------|-------|----------|
 | P0 Items | 7 | [ ]/7 |
-| P1 Items | 12 | [ ]/12 |
+| P1 Items | 14 | [ ]/14 |
 | P2 Items | 4 | [ ]/4 |
 
 **Verification Date**: [YYYY-MM-DD]

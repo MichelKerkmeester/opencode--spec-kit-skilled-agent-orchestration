@@ -99,8 +99,8 @@ title: "Verification Checklist: Auto-Detection Fixes [template:level_2/checklist
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 9 | [ ]/9 |
-| P1 Items | 16 | [ ]/16 |
+| P0 Items | 11 | [ ]/11 |
+| P1 Items | 17 | [ ]/17 |
 | P2 Items | 4 | [ ]/4 |
 
 **Verification Date**: [YYYY-MM-DD]

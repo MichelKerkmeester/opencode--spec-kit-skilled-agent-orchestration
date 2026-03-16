@@ -62,10 +62,10 @@ title: "Tasks: Quality Scorer Unification [template:level_1/tasks.md]"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification — Test Baseline Rework
 
-- [ ] T015 Update all quality scorer test expectations from 0-100 to 0.0-1.0 scale (`scripts/tests/quality-scorer.vitest.ts`) — REQ-001
-- [ ] T016 [P] Add test cases for V2 contamination penalty application (`scripts/tests/quality-scorer.vitest.ts`) — REQ-002
-- [ ] T017 [P] Add test cases for V1 contamination penalty application (`scripts/tests/quality-scorer.vitest.ts`) — REQ-003
-- [ ] T018 [P] Add test cases for backward-compat integer threshold conversion (`scripts/tests/workflow.vitest.ts`) — REQ-004
+- [ ] T015 Update all quality scorer test expectations from 0-100 to 0.0-1.0 scale (`scripts/tests/quality-scorer-calibration.vitest.ts`) — REQ-001
+- [ ] T016 [P] Add test cases for V2 contamination penalty application (`scripts/tests/quality-scorer-calibration.vitest.ts`) — REQ-002
+- [ ] T017 [P] Add test cases for V1 contamination penalty application (`scripts/tests/quality-scorer-calibration.vitest.ts`) — REQ-003
+- [ ] T018 [P] Add test cases for backward-compat integer threshold conversion (`scripts/tests/runtime-memory-inputs.vitest.ts`) — REQ-004
 - [ ] T019 Verify no silent scale mismatch in any test fixture (`scripts/tests/`) — SC-001
 - [ ] T020 Run full Vitest suite and confirm all tests pass — SC-001, SC-002
 <!-- /ANCHOR:phase-3 -->

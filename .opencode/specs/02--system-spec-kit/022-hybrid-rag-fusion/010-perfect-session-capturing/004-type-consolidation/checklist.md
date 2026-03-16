@@ -93,8 +93,8 @@ title: "Verification Checklist: Type Consolidation [template:level_2/checklist.m
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 10 | [ ]/10 |
-| P1 Items | 8 | [ ]/8 |
+| P0 Items | 12 | [ ]/12 |
+| P1 Items | 9 | [ ]/9 |
 | P2 Items | 5 | [ ]/5 |
 
 **Verification Date**: [YYYY-MM-DD]

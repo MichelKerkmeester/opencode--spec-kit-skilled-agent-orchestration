@@ -88,8 +88,8 @@ title: "Verification Checklist: Integration Testing [template:level_2/checklist.
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 6 | [ ]/6 |
-| P1 Items | 8 | [ ]/8 |
+| P0 Items | 7 | [ ]/7 |
+| P1 Items | 9 | [ ]/9 |
 | P2 Items | 5 | [ ]/5 |
 
 **Verification Date**: [YYYY-MM-DD]

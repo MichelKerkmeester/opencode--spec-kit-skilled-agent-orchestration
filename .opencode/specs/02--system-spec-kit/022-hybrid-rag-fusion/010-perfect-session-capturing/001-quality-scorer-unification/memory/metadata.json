@@ -1,0 +1,42 @@
+{
+  "timestamp": "16-03-26 18-04",
+  "messageCount": 2,
+  "decisionCount": 1,
+  "diagramCount": 3,
+  "skillVersion": "1.7.2",
+  "autoTriggered": false,
+  "filtering": {
+    "totalProcessed": 2,
+    "noiseFiltered": 0,
+    "duplicatesRemoved": 0,
+    "qualityScore": 85,
+    "filtered": {
+      "noise": 0,
+      "empty": 0,
+      "duplicate": 0,
+      "lowQuality": 0
+    },
+    "_note": "qualityScore is 0-100 scale (legacy scorer); frontmatter quality_score is 0.0-1.0 (v2 scorer)"
+  },
+  "semanticSummary": {
+    "task": "Development session",
+    "filesCreated": 41,
+    "filesModified": 10,
+    "decisions": 0,
+    "messageStats": {
+      "intent": 0,
+      "plan": 0,
+      "implementation": 2,
+      "result": 0,
+      "decision": 0,
+      "total": 2
+    }
+  },
+  "embedding": {
+    "status": "indexed",
+    "model": "nomic-ai/nomic-embed-text-v1.5",
+    "dimensions": 768,
+    "memoryId": 4360,
+    "generatedAt": "2026-03-16T17:04:22.454Z"
+  }
+}

@@ -96,8 +96,8 @@ title: "Verification Checklist: Template Compliance [template:level_2/checklist.
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 7 | [ ]/7 |
-| P1 Items | 15 | [ ]/15 |
+| P0 Items | 8 | [ ]/8 |
+| P1 Items | 17 | [ ]/17 |
 | P2 Items | 4 | [ ]/4 |
 
 **Verification Date**: [YYYY-MM-DD]

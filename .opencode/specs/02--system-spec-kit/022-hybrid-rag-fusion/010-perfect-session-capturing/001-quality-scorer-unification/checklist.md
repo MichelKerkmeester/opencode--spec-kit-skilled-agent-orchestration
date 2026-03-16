@@ -93,9 +93,9 @@ title: "Verification Checklist: Quality Scorer Unification [template:level_2/che
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 9 | [ ]/9 |
-| P1 Items | 9 | [ ]/9 |
-| P2 Items | 4 | [ ]/4 |
+| P0 Items | 11 | [ ]/11 |
+| P1 Items | 10 | [ ]/10 |
+| P2 Items | 5 | [ ]/5 |
 
 **Verification Date**: [YYYY-MM-DD]
 <!-- /ANCHOR:summary -->

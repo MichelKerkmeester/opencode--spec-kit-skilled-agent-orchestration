@@ -91,8 +91,8 @@ title: "Verification Checklist: Description Enrichment [template:level_2/checkli
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 6 | [ ]/6 |
-| P1 Items | 10 | [ ]/10 |
+| P0 Items | 8 | [ ]/8 |
+| P1 Items | 11 | [ ]/11 |
 | P2 Items | 5 | [ ]/5 |
 
 **Verification Date**: [YYYY-MM-DD]

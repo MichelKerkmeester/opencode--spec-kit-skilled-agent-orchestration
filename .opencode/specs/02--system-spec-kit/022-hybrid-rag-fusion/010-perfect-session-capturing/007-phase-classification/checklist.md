@@ -92,8 +92,8 @@ title: "Verification Checklist: Phase Classification [template:level_2/checklist
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 6 | [ ]/6 |
-| P1 Items | 10 | [ ]/10 |
+| P0 Items | 7 | [ ]/7 |
+| P1 Items | 11 | [ ]/11 |
 | P2 Items | 7 | [ ]/7 |
 
 **Verification Date**: [YYYY-MM-DD]

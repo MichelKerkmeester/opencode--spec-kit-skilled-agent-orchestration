@@ -3,7 +3,7 @@ title: "Implementation Plan: Signal Extraction"
 ---
 # Implementation Plan: Signal Extraction
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---

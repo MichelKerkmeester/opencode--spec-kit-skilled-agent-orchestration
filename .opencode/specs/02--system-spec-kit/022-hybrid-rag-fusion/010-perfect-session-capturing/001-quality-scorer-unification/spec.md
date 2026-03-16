@@ -15,7 +15,7 @@ title: "Feature Specification: Quality Scorer Unification"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | Draft |
+| **Status** | Ready |
 | **Created** | 2026-03-16 |
 | **Branch** | `main` |
 | **Parent** | [010-perfect-session-capturing](../spec.md) |
@@ -63,8 +63,8 @@ Make `score01` (0.0-1.0) the canonical quality scale across the entire pipeline,
 | `scripts/extractors/quality-scorer.ts` | Modify | V2 scorer -- add contamination penalty at `hadContamination` |
 | `scripts/core/workflow.ts` | Modify | Migrate `qualityAbortThreshold` comparison to 0.0-1.0 scale |
 | `scripts/core/config.ts` | Modify | Update threshold validation range from 1-100 to 0.0-1.0 |
-| `scripts/tests/quality-scorer.vitest.ts` | Modify | Update test baselines from 0-100 to 0.0-1.0 scale expectations |
-| `scripts/tests/workflow.vitest.ts` | Modify | Update threshold comparison tests for new 0.0-1.0 scale |
+| `scripts/tests/quality-scorer-calibration.vitest.ts` | Modify | Update test baselines from 0-100 to 0.0-1.0 scale expectations |
+| `scripts/tests/runtime-memory-inputs.vitest.ts` | Modify | Update threshold comparison and workflow integration tests for new 0.0-1.0 scale |
 <!-- /ANCHOR:scope -->
 
 ---

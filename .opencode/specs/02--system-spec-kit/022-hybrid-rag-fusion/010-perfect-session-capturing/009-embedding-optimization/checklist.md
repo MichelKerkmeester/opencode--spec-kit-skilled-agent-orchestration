@@ -88,8 +88,8 @@ title: "Verification Checklist: Embedding Optimization [template:level_2/checkli
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 5 | [ ]/5 |
-| P1 Items | 9 | [ ]/9 |
+| P0 Items | 6 | [ ]/6 |
+| P1 Items | 10 | [ ]/10 |
 | P2 Items | 5 | [ ]/5 |
 
 **Verification Date**: [YYYY-MM-DD]

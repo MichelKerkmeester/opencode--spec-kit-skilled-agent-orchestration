@@ -95,9 +95,9 @@ title: "Verification Checklist: Signal Extraction [template:level_2/checklist.md
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 6 | [ ]/6 |
-| P1 Items | 11 | [ ]/11 |
-| P2 Items | 6 | [ ]/6 |
+| P0 Items | 7 | [ ]/7 |
+| P1 Items | 14 | [ ]/14 |
+| P2 Items | 7 | [ ]/7 |
 
 **Verification Date**: [YYYY-MM-DD]
 <!-- /ANCHOR:summary -->

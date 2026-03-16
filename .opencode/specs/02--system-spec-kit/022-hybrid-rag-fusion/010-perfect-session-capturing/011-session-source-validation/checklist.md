@@ -94,7 +94,7 @@ title: "Verification Checklist: Session Source Validation [template:level_2/chec
 | Category | Total | Verified |
 |----------|-------|----------|
 | P0 Items | 9 | [ ]/9 |
-| P1 Items | 11 | [ ]/11 |
+| P1 Items | 13 | [ ]/13 |
 | P2 Items | 4 | [ ]/4 |
 
 **Verification Date**: [YYYY-MM-DD]
