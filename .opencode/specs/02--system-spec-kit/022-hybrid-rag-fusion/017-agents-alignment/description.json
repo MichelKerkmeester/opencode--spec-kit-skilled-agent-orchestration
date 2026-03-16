@@ -1,0 +1,23 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/017-agents-alignment",
+  "description": "017 — Agent Alignment: Sync Runtime Agent Definitions",
+  "keywords": [
+    "017",
+    "agent",
+    "alignment",
+    "sync",
+    "runtime",
+    "definitions"
+  ],
+  "lastUpdated": "2026-03-16T10:32:05.706Z",
+  "specId": "017",
+  "folderSlug": "agents-alignment",
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "16-03-26_11-32__verified-and-refined-spec-017-agents-alignment.md"
+  ]
+}

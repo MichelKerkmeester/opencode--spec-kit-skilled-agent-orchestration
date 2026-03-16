@@ -391,6 +391,30 @@ DUAL-THRESHOLD CHECK:
 ---
 
 <!-- /ANCHOR:integration-with-gates -->
+<!-- ANCHOR:learning-index-workflow -->
+## 7b. LEARNING INDEX WORKFLOW
+
+Three MCP tools measure knowledge gains across implementation tasks:
+
+1. **`task_preflight()`** — Captures epistemic baseline before work begins. Records uncertainty score (0-100), knowledge gaps, and context coverage.
+2. **`task_postflight()`** — Measures post-task state. Computes Learning Index: `LI = (KnowledgeDelta × 0.4) + (UncertaintyReduction × 0.35) + (ContextImprovement × 0.25)`.
+3. **`memory_get_learning_history()`** — Returns historical learning measurements with trend analysis.
+
+**Score Interpretation (0-100):**
+
+| Range | Interpretation |
+|-------|---------------|
+| 80-100 | Significant learning — major knowledge gains |
+| 60-79 | Moderate learning — meaningful progress |
+| 40-59 | Incremental learning — steady improvement |
+| 20-39 | Execution-focused — task completed, limited new knowledge |
+| 0-19 | Knowledge regression — review needed |
+
+**Mapping to Uncertainty Factors:** The `uncertaintyScore` (0-100) returned by these tools is derived from the four-factor weighted model (§2) scaled to integer range: `uncertaintyScore = round(weightedAverage × 100)`.
+
+---
+
+<!-- /ANCHOR:learning-index-workflow -->
 <!-- ANCHOR:related-resources -->
 ## 8. RELATED RESOURCES
 

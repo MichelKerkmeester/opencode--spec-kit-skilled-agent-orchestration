@@ -12,6 +12,7 @@ version: 2.2.26.0
 Orchestrates mandatory spec folder creation for all conversations involving file modifications. Ensures proper documentation level selection (1-3+), template usage, and context preservation through AGENTS.md-enforced workflows.
 
 
+<!-- ANCHOR:when-to-use -->
 ## 1. WHEN TO USE
 
 ### What is a Spec Folder?
@@ -140,6 +141,11 @@ INTENT_SIGNALS = {
     "MEMORY": {"weight": 4, "keywords": ["memory", "save context", "resume", "checkpoint", "context"]},
     "HANDOVER": {"weight": 4, "keywords": ["handover", "continue later", "next session", "pause"]},
     "PHASE": {"weight": 4, "keywords": ["phase", "decompose", "split", "workstream", "multi-phase", "phased approach", "phased", "multi-session"]},
+    "RETRIEVAL_TUNING": {"weight": 3, "keywords": ["retrieval", "search tuning", "fusion", "scoring", "pipeline"]},
+    "EVALUATION": {"weight": 3, "keywords": ["evaluate", "ablation", "benchmark", "baseline", "metrics"]},
+    "SCORING_CALIBRATION": {"weight": 3, "keywords": ["calibration", "scoring", "normalization", "decay", "interference"]},
+    "ROLLOUT_FLAGS": {"weight": 3, "keywords": ["feature flag", "rollout", "toggle", "enable", "disable"]},
+    "GOVERNANCE": {"weight": 3, "keywords": ["governance", "shared memory", "tenant", "retention", "audit"]},
 }
 
 RESOURCE_MAP = {
@@ -150,6 +156,7 @@ RESOURCE_MAP = {
     "RESEARCH": [
         "references/workflows/quick_reference.md",
         "references/workflows/worked_examples.md",
+        "references/memory/epistemic_vectors.md",
     ],
     "IMPLEMENT": [
         "references/validation/validation_rules.md",
@@ -165,6 +172,7 @@ RESOURCE_MAP = {
     "MEMORY": [
         "references/memory/memory_system.md",
         "references/memory/save_workflow.md",
+        "references/memory/trigger_config.md",
     ],
     "HANDOVER": [
         "references/workflows/quick_reference.md",
@@ -173,6 +181,23 @@ RESOURCE_MAP = {
         "references/structure/phase_definitions.md",
         "references/structure/sub_folder_versioning.md",
         "references/validation/phase_checklists.md",
+    ],
+    "RETRIEVAL_TUNING": [
+        "references/memory/embedding_resilience.md",
+        "references/memory/trigger_config.md",
+    ],
+    "EVALUATION": [
+        "references/memory/epistemic_vectors.md",
+        "references/config/environment_variables.md",
+    ],
+    "SCORING_CALIBRATION": [
+        "references/config/environment_variables.md",
+    ],
+    "ROLLOUT_FLAGS": [
+        "references/config/environment_variables.md",
+    ],
+    "GOVERNANCE": [
+        "references/config/environment_variables.md",
     ],
 }
 
@@ -184,6 +209,13 @@ COMMAND_BOOSTS = {
     "/spec_kit:complete": "COMPLETE",
     "/spec_kit:handover": "HANDOVER",
     "/spec_kit:phase": "PHASE",
+    "/memory:context": "MEMORY",
+    "/memory:save": "MEMORY",
+    "/memory:manage": "MEMORY",
+    "/memory:learn": "MEMORY",
+    "/memory:continue": "MEMORY",
+    "/memory:analyze": "EVALUATION",
+    "/memory:shared": "GOVERNANCE",
 }
 
 LOADING_LEVELS = {
@@ -509,9 +541,9 @@ Memory files are always saved to the child folder's `memory/` directory (e.g., `
 
 Context preservation across sessions via hybrid search (vector similarity + BM25 + FTS with Reciprocal Rank Fusion).
 
-**Server:** `@spec-kit/mcp-server` v1.7.2 — `context-server.ts` (~682 lines) with 12 handler files, 20 lib subdirectories, and 25 MCP tools across 7 layers.
+**Server:** `@spec-kit/mcp-server` v1.7.2 — `context-server.ts` (~682 lines) with ~30 handler files, 26 lib subdirectories, and 32 MCP tools across 7 layers.
 
-**MCP Tools (8 most-used of 25 total — see [memory_system.md](./references/memory/memory_system.md) for full reference):**
+**MCP Tools (13 most-used of 32 total — see [memory_system.md](./references/memory/memory_system.md) for full reference):**
 
 | Tool                            | Layer | Purpose                                           |
 | ------------------------------- | ----- | ------------------------------------------------- |
@@ -523,6 +555,11 @@ Context preservation across sessions via hybrid search (vector similarity + BM25
 | `memory_delete()`               | L4    | Delete memories by ID or spec folder              |
 | `checkpoint_create()`           | L5    | Create gzip-compressed checkpoint snapshot        |
 | `checkpoint_restore()`          | L5    | Transaction-wrapped restore with rollback         |
+| `memory_stats()`                | L3    | System statistics and memory counts                |
+| `memory_health()`              | L3    | Diagnostics: orphan detection, index consistency   |
+| `memory_index_scan()`          | L4    | Workspace scanning and re-indexing                 |
+| `checkpoint_list()`            | L5    | List available checkpoint snapshots                |
+| `checkpoint_delete()`          | L5    | Delete checkpoint by name (with confirmName safety)|
 
 > **Search architecture:** The search pipeline uses a 4-stage architecture (candidate generation → fusion → reranking → filtering). See [search/README.md](./mcp_server/lib/search/README.md) for pipeline details, scoring algorithms, and graph signal features.
 
@@ -544,7 +581,7 @@ Context preservation across sessions via hybrid search (vector similarity + BM25
 **memory_save() — Save-Time Processing:**
 - Runs a pre-storage quality gate (threshold 0.4 signal density). Low-quality saves receive warnings or rejection when strict. See `SPECKIT_SAVE_QUALITY_GATE` flag.
 - Similar existing memories are auto-merged via reconsolidation (≥0.88 similarity). The save may update an existing memory instead of creating a new one. See `SPECKIT_RECONSOLIDATION` flag.
-- A verify-fix-verify loop auto-corrects trigger phrases, anchors, and token budget (up to 3 retries).
+- A verify-fix-verify loop auto-corrects trigger phrases, anchors, and token budget (up to 2 retries).
 - Entities are extracted and linked cross-document at save time. See `SPECKIT_AUTO_ENTITIES` and `SPECKIT_ENTITY_LINKING` flags.
 
 **Epistemic Learning:** Use `task_preflight()` before and `task_postflight()` after implementation to measure knowledge gains. Learning Index: `LI = (KnowledgeDelta × 0.4) + (UncertaintyReduction × 0.35) + (ContextImprovement × 0.25)`. Review trends via `memory_get_learning_history()`. See [epistemic_vectors.md](./references/memory/epistemic_vectors.md).
@@ -582,8 +619,23 @@ Context preservation across sessions via hybrid search (vector similarity + BM25
 | `SPECKIT_EMBEDDING_EXPANSION` | on     | Expands queries with semantic neighbors before vector search |
 | `SPECKIT_AUTO_ENTITIES`      | on      | Extracts entities at save time for cross-document linking |
 | `SPECKIT_ENTITY_LINKING`     | on      | Links memories sharing extracted entities during search |
+| `SPECKIT_PIPELINE_V2`        | on (inert) | Legacy flag — always true; v1 pipeline removed. Retained for backward compatibility only |
+| `SPECKIT_QUALITY_LOOP`       | off     | Enables verify-fix-verify quality loop on save with up to 2 autofix retries |
+| `SPECKIT_RELATIONS`          | off     | Enables correction tracking with undo semantics (superseded/deprecated/refined/merged) |
+| `SPECKIT_STRICT_SCHEMAS`     | on      | Strict Zod validation for all 32 MCP tools; rejects hallucinated parameters |
+| `SPECKIT_DEGREE_BOOST`       | on      | Typed weighted-degree channel in graph signal scoring |
+| `SPECKIT_GRAPH_SIGNALS`      | on      | Graph momentum and causal depth scoring signals |
+| `SPECKIT_COMMUNITY_DETECTION` | on     | Community detection clustering for graph-aware retrieval |
+| `SPECKIT_CAUSAL_BOOST`       | on      | Causal neighbor boost and injection in scoring |
+| `SPECKIT_GRAPH_UNIFIED`      | on      | Unified graph retrieval with deterministic ranking and explainability |
+| `SPECKIT_SCORE_NORMALIZATION` | on     | Min-max score normalization across channels |
+| `SPECKIT_CLASSIFICATION_DECAY` | on    | Classification-based decay rates by memory type |
+| `SPECKIT_INTERFERENCE_SCORE` | on      | Interference detection scoring between similar memories |
+| `SPECKIT_FOLDER_SCORING`     | on      | Folder-level relevance scoring boost |
+| `SPECKIT_SHADOW_SCORING`     | off     | Shadow A/B scoring comparison (attribution-only mode) |
+| `SPECKIT_DASHBOARD_LIMIT`    | 100     | Row cap for reporting dashboard queries |
 
-Set via environment variable before starting the MCP server (e.g., `SPECKIT_ADAPTIVE_FUSION=1`).
+> **25 flags total.** Set via environment variable before starting the MCP server (e.g., `SPECKIT_ADAPTIVE_FUSION=1`).
 
 > **Token budgets per layer:** L1:2000, L2:1500, L3:800, L4:500, L5:600, L6:1200, L7:1000 (enforced via `chars/3.5` approximation).
 

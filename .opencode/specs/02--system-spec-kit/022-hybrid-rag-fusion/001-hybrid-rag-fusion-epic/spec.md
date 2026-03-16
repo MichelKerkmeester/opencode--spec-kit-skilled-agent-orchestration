@@ -88,7 +88,10 @@ The spec-kit memory MCP server's graph channel produces a 0% hit rate due to an 
 | 012 | `012-code-audit-per-feature-catalog` | In Progress (structural umbrella with 21 child phases) | 2026-03-14 |
 | 013 | `013-outsourced-agent-memory` | Complete | 2026-03-14 |
 | 014 | `014-hydra-db-based-features` | Complete (absorbed 017-markovian-architectures) | 2026-03-14 |
-| 015 | `015-finalization` | Pending | 2026-03-14 |
+| 015 | `015-skill-alignment` | Complete | 2026-03-16 |
+| 016 | `016-command-alignment` | Complete | 2026-03-16 |
+| 017 | `017-agents-alignment` | Complete | 2026-03-16 |
+| 018 | `018-agents-md-alignment` | Complete | 2026-03-16 |
 
 ---
 

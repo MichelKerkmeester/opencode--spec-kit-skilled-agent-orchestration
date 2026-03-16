@@ -353,16 +353,15 @@ For the complete memory API (32 tools), pipeline architecture and retrieval conf
 | `/spec_kit:resume` | Continue a previous session (auto-loads memory) |
 | `/spec_kit:handover` | Create session handover (`:quick` or `:full` variants) |
 
-### memory/ — 7 Commands
+### memory/ — 6 Commands
 
 | Command | Purpose |
 |---------|---------|
 | `/memory:save` | Save context via `generate-context.js` |
 | `/memory:continue` | Session recovery from crash or compaction |
-| `/memory:context` | Unified retrieval with intent-aware routing |
+| `/memory:analyze` | Unified retrieval + analysis: intent-aware search, epistemic baselines, causal graph, ablation, dashboard |
 | `/memory:learn` | Constitutional memory manager (list, edit, remove, budget) |
 | `/memory:manage` | Database operations: stats, health, cleanup, checkpoints |
-| `/memory:analyze` | Preflight, postflight, causal graph, ablation, dashboard, history |
 | `/memory:shared` | Shared memory: create, member, status (deny-by-default governance) |
 
 ### create/ — 5 Commands

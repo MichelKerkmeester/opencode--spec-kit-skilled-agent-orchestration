@@ -332,11 +332,11 @@ For full API reference including parameters, return types and configuration, see
 | Command | Purpose |
 |---------|---------|
 | `/memory:save [folder]` | Save conversation context to spec folder `memory/` with semantic indexing |
-| `/memory:context <query>` | Unified intent-aware context retrieval. Auto-detects task intent from 7 types and applies task-specific weights |
+| `/memory:analyze <query>` | Unified knowledge retrieval and analysis. Auto-detects task intent from 7 types, applies task-specific weights, plus epistemic baselines, causal graph, and evaluation |
 | `/memory:continue` | Session recovery from crash, compaction or timeout via resume-mode memory retrieval |
 | `/memory:manage` | Database management: stats, scan, cleanup, bulk-delete, tier, validate, health, checkpoint, ingest |
 | `/memory:learn` | Constitutional memory manager: create, list, edit, remove, budget. Manages always-surface rules |
-| `/memory:analyze` | Analysis and evaluation: preflight, postflight, causal graph, ablation, dashboard, learning history |
+| | (Analysis mode: preflight, postflight, causal, link, unlink, causal-stats, ablation, dashboard, history) |
 | `/memory:shared` | Shared-memory space lifecycle: create spaces, manage memberships, inspect rollout status |
 
 ### Validation Scripts
@@ -453,7 +453,7 @@ Start a new session on a spec folder you worked on before:
 Or retrieve context directly:
 
 ```text
-/memory:context "user profile update implementation state"
+/memory:analyze "user profile update implementation state"
 ```
 
 **Result**: The AI assistant receives your prior decisions, file changes and next steps before starting work.
@@ -483,7 +483,7 @@ bash .opencode/skill/system-spec-kit/scripts/spec/check-placeholders.sh \
 | Architecture change | `create.sh NNN-name` + Level 3 templates | 500+ LOC, multiple systems |
 | Save session progress | `generate-context.js [folder]` | Before ending any session |
 | Recover after crash | `/memory:continue` | Session interrupted unexpectedly |
-| Check prior decisions | `/memory:context "query"` | Starting a related task |
+| Check prior decisions | `/memory:analyze "query"` | Starting a related task |
 
 <!-- /ANCHOR:usage-examples -->
 

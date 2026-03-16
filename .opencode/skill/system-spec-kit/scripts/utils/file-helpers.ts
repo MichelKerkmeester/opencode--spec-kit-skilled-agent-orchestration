@@ -79,7 +79,9 @@ function cleanDescription(desc: string): string {
   cleaned = cleaned.replace(/[.,;:]+$/, '');
 
   if (cleaned.length > 60) {
-    cleaned = cleaned.substring(0, 57) + '...';
+    const truncated = cleaned.substring(0, 57);
+    const lastSpace = truncated.lastIndexOf(' ');
+    cleaned = (lastSpace > 20 ? truncated.substring(0, lastSpace) : truncated) + '...';
   }
 
   if (cleaned.length > 0) {

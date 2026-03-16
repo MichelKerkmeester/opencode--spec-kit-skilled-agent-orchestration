@@ -38,7 +38,7 @@ Commands are organized into three groups:
 | Group | Path | Commands | Purpose |
 |-------|------|----------|---------|
 | **create** | `command/create/` | 7 | Scaffold OpenCode components and create unified visual HTML artifacts |
-| **memory** | `command/memory/` | 5 | Memory system operations (save, search, continue, learn, manage) |
+| **memory** | `command/memory/` | 6 | Memory system operations (save, knowledge, continue, learn, manage, shared) |
 | **spec_kit** | `command/spec_kit/` | 7 | Spec folder workflows (plan, implement, research, debug, handover, resume, complete) |
 
 One standalone command (`agent_router.md`) lives at the root level for routing requests to AI systems.
@@ -62,11 +62,12 @@ command/
 │   ├── visual_html.md        # Create or verify visual HTML output
 │   └── assets/               # YAML workflow definitions (14 files)
 ├── memory/                   # Memory system commands
-│   ├── context.md            # Intent-aware context retrieval
+│   ├── analyze.md          # Unified retrieval + analysis (intent-aware search, epistemic, causal, eval)
 │   ├── continue.md           # Session recovery
 │   ├── learn.md              # Constitutional memory manager
 │   ├── manage.md             # Database management operations
-│   └── save.md               # Save conversation context
+│   ├── save.md               # Save conversation context
+│   └── shared.md             # Shared-memory space lifecycle
 └── spec_kit/                 # Spec folder workflow commands
     ├── complete.md           # Full end-to-end workflow
     ├── debug.md              # Debug delegation
@@ -104,11 +105,12 @@ Manage the Spec Kit Memory system for context preservation across sessions.
 
 | Command | Invocation | Purpose |
 |---------|------------|---------|
-| Context | `/memory:context <query>` | Intent-aware context retrieval with weight optimization |
+| Analyze | `/memory:analyze <query>` or `/memory:analyze <subcommand>` | Unified retrieval + analysis (intent-aware search, epistemic, causal, eval) |
 | Continue | `/memory:continue` | Recover session from crash, compaction, or timeout |
 | Learn | `/memory:learn [rule] \| list \| edit \| remove \| budget` | Create and manage constitutional memories |
 | Manage | `/memory:manage <subcommand>` | Database operations (scan, cleanup, tier, health, checkpoint) |
 | Save | `/memory:save <spec-folder>` | Save conversation context with semantic indexing |
+| Shared | `/memory:shared <subcommand>` | Shared-memory space lifecycle (create, membership, status) |
 
 ### Spec Kit Commands
 

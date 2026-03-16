@@ -2,8 +2,6 @@
 name: speckit
 description: Spec folder documentation specialist for creating and maintaining Level 1-3+ documentation with template enforcement
 mode: subagent
-model: openai/gpt-5.3-codex
-reasoningEffort: high
 temperature: 0.1
 permission:
   read: allow
@@ -507,7 +505,7 @@ Use this template for completion reports:
 | `/spec_kit:phase`     | Phase decomposition         | `.opencode/command/spec_kit/phase.md`     |
 | `/spec_kit:debug`     | Debug delegation            | `.opencode/command/spec_kit/debug.md`     |
 | `/spec_kit:handover`  | Session handover            | `.opencode/command/spec_kit/handover.md`  |
-| `/memory:context`     | Unified entry point         | `.opencode/command/memory/context.md`     |
+| `/memory:analyze`     | Retrieval & analysis (unified) | `.opencode/command/memory/analyze.md`   |
 | `/memory:continue`    | Crash recovery              | `.opencode/command/memory/continue.md`    |
 | `/memory:learn`       | Constitutional memory manager | `.opencode/command/memory/learn.md`       |
 | `/memory:save`        | Save session context        | `.opencode/command/memory/save.md`        |

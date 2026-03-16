@@ -196,7 +196,7 @@ Make `.opencode` the canonical workspace identity, require a second target-spec 
 | REQ-017 | Diagnostic quality scores reflect insufficiency | Legacy and v2 quality metadata score thin memories materially lower and add insufficiency flags |
 | REQ-018 | Discovery precedence is distinct from final save success | Docs and `M-007` describe backend selection separately from later alignment, insufficiency, and contamination aborts |
 | REQ-019 | Canonical docs reflect the final workspace-identity and sufficiency contract | Spec `010`, `NEW-139`, memory-quality feature docs, `M-007`, and `NEW-133` all describe the shared insufficiency gate |
-| REQ-020 | Verification evidence is current | Final automated reruns on 2026-03-15 are recorded in canonical docs |
+| REQ-020 | Verification evidence is current | Final automated reruns on 2026-03-16 are recorded in canonical docs |
 <!-- /ANCHOR:requirements -->
 
 ---

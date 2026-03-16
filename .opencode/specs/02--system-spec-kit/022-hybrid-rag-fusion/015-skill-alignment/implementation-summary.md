@@ -11,20 +11,22 @@ description: "Summary of skill alignment backlog curation — verified open gaps
 
 ## 1. OVERVIEW
 
-Curated the system-spec-kit documentation alignment backlog by verifying every retained task against live repo state, excluding work already delivered by 016-command-alignment (32/32 tools, 7 commands), and documenting canonical verification methods. This phase is a backlog curation phase -- it identifies what documentation work remains open without directly editing SKILL.md or reference files.
+Phase 1-4 curated the system-spec-kit documentation alignment backlog by verifying every retained task against live repo state, excluding work already delivered by 016-command-alignment (32/32 tools, 7 commands), and documenting canonical verification methods.
+
+Phase 5 (2026-03-16) executed the fixes identified by the 10-agent audit (149 findings), applying ~83 fixes across SKILL.md, environment_variables.md, 3 reference files, and 7 stale catalog entries.
 
 **Key Metrics:**
-- 19/19 tasks completed across 4 phases (Phase 1 was pre-completed)
+- 26/26 tasks completed across 5 phases
 - 4 completion criteria satisfied
 - 8/8 P0 checklist items verified
-- 0 alignment drift findings (776 files scanned)
-- 0 runtime TypeScript changes
+- Phase 5: 15 SKILL.md flags added, 5 routing intents added, 7 command boosts added, 7 env vars added, 3 reference sections added, 7 catalog entries fixed
+- 0 runtime TypeScript changes (NFR-C01 maintained)
 
 ---
 
 ## 2. FILES MODIFIED
 
-### Modified (4 spec folder files)
+### Phase 1-4: Modified (4 spec folder files)
 
 | File | Changes |
 |------|---------|
@@ -33,7 +35,23 @@ Curated the system-spec-kit documentation alignment backlog by verifying every r
 | `plan.md` | Added 016-command-alignment as completed dependency. Marked all Phase 2-5 items as complete. Marked all Definition of Done items as complete |
 | `checklist.md` | Updated CHK-020 with validate.sh results (exit 2: FILE_EXISTS resolved by implementation-summary.md creation, SPEC_DOC_INTEGRITY false positives from cross-folder references). Updated CHK-021, CHK-022, CHK-023 with fresh verification evidence. Summary updated to 8/8 P0 |
 
-### Created (1 file)
+### Phase 5: Applied Fixes (documentation-only, 0 runtime changes)
+
+| File | Agent | Changes |
+|------|-------|---------|
+| `SKILL.md` | C1 | Metadata: ~30 handlers, 26 lib dirs, 32 tools. Tool table: 13 entries (+5). Retry count: 2 |
+| `SKILL.md` | C2 | Feature flags: 25 entries (+15 flags covering graph, scoring, governance, shadow) |
+| `SKILL.md` | C3 | Smart routing: 13 INTENT_SIGNALS (+5), 13 RESOURCE_MAP (+5), 14 COMMAND_BOOSTS (+7 /memory:*) |
+| `environment_variables.md` | C4 | +7 env vars, SPECKIT_PIPELINE_V2 marked inert, SPEC_KIT_ENABLE_CAUSAL marked mature |
+| `epistemic_vectors.md` | C5 | +Learning Index Workflow section (3 MCP tools, score interpretation table) |
+| `trigger_config.md` | C5 | +Signal Vocabulary Expansion section (4 signal types: CORRECTION, PREFERENCE, REINFORCEMENT, DEPRECATION) |
+| `troubleshooting.md` | C5 | +Known Resolved Issues section (7 bug-fix entries with catalog references) |
+| 7 catalog entries | N1 | Namespace mgmt tools documented, validation prerequisites, co-activation divisor scope, cold-start disabled, anchor-tags deferred, Hydra flag defaults fixed (2 files) |
+| `tasks.md` | N2 | +Phase 5 with T020-T026 |
+| `checklist.md` | N2 | +CHK-060 through CHK-068 implementation verification items |
+| `implementation-summary.md` | N2 | Updated with Phase 5 results |
+
+### Created (Phase 1-4: 1 file)
 
 | File | LOC | Description |
 |------|-----|-------------|
@@ -45,7 +63,7 @@ Curated the system-spec-kit documentation alignment backlog by verifying every r
 
 | Check | Result | Evidence |
 |-------|--------|----------|
-| validate.sh | Exit 2 (known issues) | FILE_EXISTS resolved by this file. SPEC_DOC_INTEGRITY: 8 false positives from cross-folder `../../../../skill/...` references that resolve correctly in live repo |
+| validate.sh | Exit 2 (known limitation) | FILE_EXISTS resolved by this file. SPEC_DOC_INTEGRITY: 8 false positives from cross-folder `../../../../skill/...` relative paths — this is a known validator limitation where the checker cannot resolve relative paths that traverse outside the spec folder tree. These paths resolve correctly because the spec folder lives under `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/015-skill-alignment/`, so `../../../../skill/` maps to `.opencode/skill/` which exists. All 8 references verified via `ls`. Not a documentation integrity issue |
 | check-completion.sh | 18/20 (90%) | Standard mode, P0 8/8, P1 10/10, P2 1/2 (CHK-052 deferred) |
 | verify_alignment_drift.py | PASS | 776 files scanned, 0 findings |
 | Live repo spot-checks | PASS | SKILL.md claims verified against tool-schemas.ts, handler dir, lib dir, env vars, COMMAND_BOOSTS, RESOURCE_MAP |
@@ -61,40 +79,40 @@ Curated the system-spec-kit documentation alignment backlog by verifying every r
 
 ---
 
-## 5. VERIFIED OPEN GAPS (Retained for Future Implementation)
+## 5. GAPS STATUS (Phase 5 Closures)
 
-### SKILL.md Metadata (T005)
-- Handler count: claims 12, actual ~30 handler .ts files
-- Lib directory count: claims 20, actual 26 subdirectories
-- Tool count: claims 25, actual 32 (canonical source: `tool-schemas.ts` TOOL_DEFINITIONS array)
+### CLOSED by Phase 5
 
-### SKILL.md Routing (T006)
-- Missing RAG intents: RETRIEVAL_TUNING, SCORING_CALIBRATION, EVALUATION, ROLLOUT_FLAGS, GOVERNANCE
-- Missing COMMAND_BOOSTS for all 7 `/memory:*` commands
-- Missing RESOURCE_MAP entries for trigger_config.md, embedding_resilience.md, epistemic_vectors.md
+| Gap | Task | Resolution |
+|-----|------|------------|
+| SKILL.md metadata counts (handlers, lib dirs, tools) | T020 | Updated to ~30/26/32 |
+| SKILL.md tool table only 8 entries | T020 | Expanded to 13 (added stats, health, index_scan, checkpoint_list, checkpoint_delete) |
+| SKILL.md missing RAG intents | T022 | Added 5: RETRIEVAL_TUNING, SCORING_CALIBRATION, EVALUATION, ROLLOUT_FLAGS, GOVERNANCE |
+| SKILL.md missing `/memory:*` COMMAND_BOOSTS | T022 | Added 7 entries (context, save, manage, learn, continue, analyze, shared) |
+| SKILL.md missing RESOURCE_MAP entries | T022 | Added trigger_config.md, epistemic_vectors.md, embedding_resilience.md, environment_variables.md |
+| SKILL.md feature flags only 10 entries | T021 | Expanded to 25 (+15 flags) |
+| SPECKIT_GRAPH_UNIFIED no env-var entry | T023 | Dedicated entry added in §8.2 Search & Ranking |
+| SPEC_KIT_ENABLE_CAUSAL stale description | T023 | Updated from "experimental" to "Mature — used by `/memory:analyze`" |
+| epistemic_vectors.md missing learning tools | T024 | Added Learning Index Workflow section |
+| trigger_config.md missing signal types | T024 | Added Signal Vocabulary Expansion section |
+| troubleshooting.md missing resolved issues | T024 | Added Known Resolved Issues with 7 entries |
+| 7 stale catalog entries | T025 | Updated current-reality sections |
 
-### SKILL.md Rules/Governance (T007)
-- No phase integrity rules section
-- No consolidated feature-flag governance section
-- No campaign execution guidance
-- No shared-space/shared-memory tool positioning (tools have command homes via 016 but no SKILL.md routing)
+### REMAINING OPEN (P2, deferred)
 
-### Reference Gaps (T009-T011)
-- All 5 memory references lack epic-scale patterns, campaign coordination, shared-space concepts
-- SPECKIT_GRAPH_UNIFIED: no dedicated env-var entry (only mentioned in passing on Hydra line)
-- SPEC_KIT_ENABLE_CAUSAL: stale "experimental" description
-
-### Asset Gaps (T012)
-- All 4 assets lack epic-scale dispatch, campaign complexity, and shared-space template patterns
+- SKILL.md: no consolidated phase integrity rules section
+- SKILL.md: no campaign execution guidance
+- Memory references: epic-scale patterns, campaign coordination, shared-space concepts not yet added to all 5 files
+- Asset files: epic-scale dispatch, campaign complexity, shared-space template patterns not yet added
+- 66 of 149 audit findings are P2/deferred or require new catalog file creation
 
 ---
 
 ## 6. RECOMMENDED NEXT STEPS
 
-- Implement the retained open gaps as a separate implementation phase (not this spec's scope)
-- Update SKILL.md metadata counts using the canonical `tool-schemas.ts` TOOL_DEFINITIONS method
-- Add `/memory:*` COMMAND_BOOSTS and missing RESOURCE_MAP entries to SKILL.md routing
-- Add SPECKIT_GRAPH_UNIFIED entry and update SPEC_KIT_ENABLE_CAUSAL description in environment_variables.md
+- Run `validate.sh` and `verify_alignment_drift.py` to confirm Phase 5 passes verification
+- Address remaining P2 gaps in a future sprint if demand warrants
+- Consider a SKILL.md depth expansion for pipeline architecture (Agent 09's 30 gaps)
 
 ---
 

@@ -67,7 +67,7 @@ The shipped session-capture pipeline enforces the following behavior:
 25. Historical active-memory remediation now uses that same template contract and moves non-repairable files out of active `memory/` use.
 26. The H1 body heading (`# title`) is derived from the content slug via `slugToTitle(contentSlug)` — the same slug used for the filename — instead of `pickBestContentName()`. A blank line separates the frontmatter close `---` from the H1 to satisfy the `missing_blank_line_after_frontmatter` contract rule.
 
-Status: Implemented, verified, and documentation-clean as of 2026-03-15.
+Status: Implemented, verified, and documentation-clean as of 2026-03-16.
 
 ---
 
@@ -265,12 +265,12 @@ The closure feature consists of these distinct shipped capabilities:
 
 ### Latest verification snapshot
 
-- Scripts targeted suite rerun on 2026-03-15 passed with `14` files and `125` tests.
-- `test-bug-fixes.js` rerun on 2026-03-15 passed with `27` passed, `0` failed, `0` skipped.
-- `test-integration.js` rerun on 2026-03-15 passed with `36` passed, `0` failed, `0` skipped.
-- Targeted MCP save-quality rerun on 2026-03-15 passed with `6` files and `298` tests.
-- Package-clean MCP verification rerun on 2026-03-15 passed for `npm run lint`, `npm run build`, and `npm run test`.
-- Alignment drift rerun on 2026-03-15 passed with `226` scanned files and `0` findings.
+- Scripts targeted suite rerun on 2026-03-16 passed with `14` files and `127` tests.
+- `test-bug-fixes.js` rerun on 2026-03-16 passed with `27` passed, `0` failed, `0` skipped.
+- `test-integration.js` rerun on 2026-03-16 passed with `36` passed, `0` failed, `0` skipped.
+- Targeted MCP save-quality rerun on 2026-03-16 passed with `6` files and `298` tests.
+- Package-clean MCP verification rerun on 2026-03-16 passed for `npm run lint`, `npm run build`, and `npm run test`, with the full MCP package suite reporting `282` files, `7787` passed, `11` skipped, and `28` todo.
+- Alignment drift rerun on 2026-03-16 passed with `229` scanned files and `0` findings.
 
 ---
 

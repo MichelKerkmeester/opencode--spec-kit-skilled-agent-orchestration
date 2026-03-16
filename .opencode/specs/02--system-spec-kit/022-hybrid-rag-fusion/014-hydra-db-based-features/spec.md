@@ -24,7 +24,7 @@ contextType: "decision"
 
 ## EXECUTIVE SUMMARY
 
-This document records the delivered Level 3 HydraDB-inspired memory-state implementation for `system-spec-kit` and the Spec Kit Memory MCP server. The six planned phases are shipped in the live runtime and were re-verified locally on 2026-03-15.
+This document records the delivered Level 3 HydraDB-inspired memory-state implementation for `system-spec-kit` and the Spec Kit Memory MCP server. The six planned phases are shipped in the live runtime and were re-verified locally on 2026-03-16.
 
 **Delivered runtime**: versioned lineage state, unified graph-aware retrieval, adaptive shadow ranking, hierarchical scope governance, governed ingest and retention controls, shared-memory rollout controls, and supporting telemetry/checkpoint behavior.
 
@@ -47,7 +47,7 @@ This document records the delivered Level 3 HydraDB-inspired memory-state implem
 | **Priority** | P0 |
 | **Status** | Complete |
 | **Created** | 2026-03-13 |
-| **Updated** | 2026-03-15 |
+| **Updated** | 2026-03-16 |
 | **Branch** | `022-hybrid-rag-fusion` |
 
 ---
@@ -128,7 +128,7 @@ Record the shipped six-phase implementation, its verification evidence, and the 
 - **SC-002**: Parent planning artifacts describe delivered behavior and no longer contradict the shipped implementation state.
 - **SC-003**: `tasks.md` references only existing runtime files, truthful globs, or explicitly internal API surfaces.
 - **SC-004**: The three ADR decisions remain documented and reflected in the delivered phase ordering.
-- **SC-005**: Checklist and implementation summary record the exact local verification commands rerun on 2026-03-15.
+- **SC-005**: Checklist and implementation summary record the exact local verification commands rerun on 2026-03-16.
 - **SC-006**: Feature catalog and manual testing links referenced by the Hydra work resolve to live files.
 - **SC-007**: No template placeholders or stale future-implementation claims remain in the parent Hydra pack.
 <!-- /ANCHOR:success-criteria -->

@@ -1,6 +1,6 @@
 ---
 title: "Verification Checklist: 014-hydra-db-based-features [template:level_3/checklist.md]"
-description: "Verification Date: 2026-03-15"
+description: "Verification Date: 2026-03-16"
 SPECKIT_TEMPLATE_SOURCE: "checklist | v2.2"
 trigger_phrases:
   - "verification"
@@ -77,7 +77,7 @@ The sections below track work that blocks truthful completion claims for the Hyd
 <!-- ANCHOR:testing -->
 ## Testing and Validation (Implementation Phase)
 
-- [x] CHK-020 [P0] Acceptance criteria in `spec.md` validated by implementation tests [E:2026-03-15 rerun of `npx tsc --noEmit`, `npm run build`, `npm run test:hydra:phase1`, targeted Hydra/doc Vitest suites, and full `npm test`] (verified)
+- [x] CHK-020 [P0] Acceptance criteria in `spec.md` validated by implementation tests [E:2026-03-16 rerun of `npx tsc --noEmit`, `npm run build`, `npm run test:hydra:phase1`, targeted Hydra/doc Vitest suites, and full `npm test`] (verified)
 - [x] CHK-021 [P0] Isolation leak matrix passes tenant/user/agent/session scenarios [E:entity-scope.vitest.ts (19 tests) + dual-scope-hooks.vitest.ts (66 tests)] (verified)
 - [x] CHK-022 [P1] Temporal query behavior (`asOf`, supersede) validated with fixtures [E:memory-lineage-state.vitest.ts covers asOf + supersede (5 tests)] (verified)
 - [x] CHK-023 [P1] Retention/deletion cascade behavior validated end to end [E:memory-governance.vitest.ts (8 tests including cascade)] (verified)
@@ -135,7 +135,7 @@ The sections below track required but phase-dependent work that must either comp
 - [x] CHK-101 [P1] All ADRs include status/date/alternatives [E:decision-record.md] (verified)
 - [x] CHK-102 [P1] Rejected alternatives include rationale [E:decision-record.md] (verified)
 - [x] CHK-103 [P1] Migration and rollback path documented in plan [E:plan.md] (verified)
-- [x] CHK-104 [P2] Independent architecture verification review completed (AI-led, evidence-backed) [E:2026-03-15 truth-sync pass: full `npm test`, targeted Hydra/doc suites, `verify_alignment_drift.py`, and Hydra spec-pack consistency test] (verified)
+- [x] CHK-104 [P2] Independent architecture verification review completed (AI-led, evidence-backed) [E:2026-03-16 truth-sync pass: full `npm test`, targeted Hydra/doc suites, `verify_alignment_drift.py`, and Hydra spec-pack consistency test] (verified)
 <!-- /ANCHOR:arch-verify -->
 
 ---
@@ -194,6 +194,8 @@ The sections below track required but phase-dependent work that must either comp
 | AI Agent (Codex GPT-5) | Independent Verification Lead (architecture + local launch dry run) | [x] Verified | 2026-03-14 |
 | Unassigned | Product Owner | [ ] Pending | |
 | Unassigned | Security/Compliance | [ ] Pending | |
+
+> **Note:** Product Owner and Security/Compliance sign-off rows remain external governance tracking, not unfinished technical work in this spec folder.
 <!-- /ANCHOR:sign-off -->
 
 ---
@@ -208,12 +210,12 @@ The sections below track required but phase-dependent work that must either comp
 | Phase 3 unified graph retrieval | Verified (26 fusion tests) |
 | Phase 4 adaptive retrieval loops | Verified (5 ranking + 33 fusion/fallback tests) |
 | Phase 5 hierarchical scope governance | Verified (85 scope tests + 8 governance tests) |
-| Phase 6 shared memory rollout | Verified (8 shared-space tests + 2 checkpoint tests) |
+| Phase 6 shared memory rollout | Verified (12 shared-space tests + 2 checkpoint tests) |
 | Feature catalog/playbook/runtime README sync | Verified |
 | Code standards (module headers + TSDoc) | Verified (13 files aligned) |
 
-**Verification Date**: 2026-03-15
-**Status**: All 6 Hydra phases verified with a truth-synced independent pass: `npm run test:hydra:phase1`, targeted Hydra/doc suites, and full `npm test` passed in `mcp_server` (`test:core` 279 test files passed; 7667 tests passed; 11 skipped; 28 todo, plus `tests/file-watcher.vitest.ts` 20/20 passed); `python3 ../sk-code--opencode/scripts/verify_alignment_drift.py --root .` passed with 0 findings; manual roadmap snapshots validated default-on vs explicit opt-out behavior (`shared-rollout` + `graphUnified:true` under `SPECKIT_GRAPH_UNIFIED=false`, and `graph` + `graphUnified:false` under `SPECKIT_HYDRA_PHASE=graph SPECKIT_HYDRA_GRAPH_UNIFIED=false`); Hydra spec-pack documentation consistency is now covered by a dedicated regression test. No checklist items remain deferred.
+**Verification Date**: 2026-03-16
+**Status**: All 6 Hydra phases verified with a truth-synced independent pass: `npm run test:hydra:phase1`, targeted Hydra/doc suites, and full `npm test` passed in `mcp_server` (`test:core` 281 test files passed; 7767 tests passed; 11 skipped; 28 todo, plus `tests/file-watcher.vitest.ts` 20/20 passed); `python3 ../sk-code--opencode/scripts/verify_alignment_drift.py --root .` passed with 0 findings; manual roadmap snapshots validated default-on vs explicit opt-out behavior (`shared-rollout` + `graphUnified:true` under `SPECKIT_GRAPH_UNIFIED=false`, and `graph` + `graphUnified:false` under `SPECKIT_HYDRA_PHASE=graph SPECKIT_HYDRA_GRAPH_UNIFIED=false`); Hydra spec-pack documentation consistency is now covered by a dedicated regression test. All checklist items (P0/P1/P2) are verified; no technical follow-up work remains deferred in this spec pack.
 <!-- /ANCHOR:summary -->
 
 ---

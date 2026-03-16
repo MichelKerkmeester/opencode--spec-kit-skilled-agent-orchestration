@@ -4,11 +4,12 @@ description: "Slash commands for managing the Spec Kit Memory system including c
 trigger_phrases:
   - "memory command"
   - "memory save"
-  - "memory context"
+  - "memory knowledge"
   - "memory continue"
   - "memory learn"
   - "memory manage"
   - "memory analyze"
+  - "memory knowledge"
   - "memory shared"
 ---
 
@@ -36,13 +37,13 @@ trigger_phrases:
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-The `memory` command group provides operations for the Spec Kit Memory MCP system. These 7 commands cover context preservation, intent-aware retrieval, session recovery, constitutional memory management, database maintenance (including async ingest), analysis/evaluation, and shared-memory spaces.
+The `memory` command group provides operations for the Spec Kit Memory MCP system. These 6 commands cover context preservation, unified knowledge retrieval and analysis, session recovery, constitutional memory management, database maintenance (including async ingest), and shared-memory spaces.
 
 All commands interact with the memory MCP server tools (`spec_kit_memory_*`). They follow a gate-based argument validation pattern: if required arguments are missing, the command prompts the user before proceeding.
 
 ### Canonical Section Order
 
-All 7 commands follow a consistent user-first section order:
+All 6 commands follow a consistent user-first section order:
 
 ```text
 GATE → TITLE → §1 PURPOSE → §2 CONTRACT → §3 QUICK REFERENCE
@@ -60,15 +61,14 @@ Everything above the `---` divider is for users. Appendices below are AI agent r
 
 | Command | Invocation | Description |
 |---------|------------|-------------|
-| **context** | `/memory:context <query> [--intent:<type>]` | Intent-aware context retrieval with task-specific weight optimization |
+| **knowledge** | `/memory:analyze <query> [--intent:<type>]` or `/memory:analyze <subcommand>` | Unified retrieval + analysis: intent-aware search, epistemic baselines, causal graph, ablation, dashboard |
 | **continue** | `/memory:continue [recovery-mode:auto\|manual]` | Recover session from crash, compaction, or timeout |
 | **learn** | `/memory:learn [rule] \| list \| edit \| remove \| budget` | Create and manage constitutional memories (always-surface rules) |
 | **manage** | `/memory:manage <subcommand>` | Database operations (scan, cleanup, tier, health, checkpoint, ingest) |
 | **save** | `/memory:save <spec-folder>` | Save conversation context with semantic indexing |
-| **analyze** | `/memory:analyze <subcommand>` | Epistemic baselines, causal graph, ablation, and reporting dashboards |
 | **shared** | `/memory:shared <subcommand>` | Shared-memory space lifecycle (create, membership, status) |
 
-### Intent Types for Context Command
+### Intent Types for Analyze Command (Retrieval Mode)
 
 | Intent | Trigger Keywords | Weight Focus |
 |--------|-----------------|--------------|
@@ -123,9 +123,8 @@ Everything above the `---` divider is for users. Appendices below are AI agent r
 
 ```text
 memory/
-├── README.txt      # This file — 7-command index and coverage matrix
-├── analyze.md      # /memory:analyze - Epistemic baselines, causal graph, eval
-├── context.md      # /memory:context - Intent-aware retrieval
+├── README.txt      # This file — 6-command index and coverage matrix
+├── analyze.md    # /memory:analyze - Unified retrieval + analysis (intent-aware search, epistemic, causal, eval)
 ├── continue.md     # /memory:continue - Session recovery
 ├── learn.md        # /memory:learn - Constitutional memory manager
 ├── manage.md       # /memory:manage - Database management, ingest
@@ -146,10 +145,10 @@ No `assets/` folder exists for memory commands. Workflows are defined inline wit
 /memory:save specs/007-feature-name
 
 # Retrieve context with auto-detected intent
-/memory:context "how does the auth system work"
+/memory:analyze "how does the auth system work"
 
 # Retrieve context with explicit intent
-/memory:context "auth flow" --intent:fix_bug
+/memory:analyze "auth flow" --intent:fix_bug
 
 # Recover from a crashed session
 /memory:continue
@@ -253,9 +252,9 @@ All 32 MCP tools mapped to their primary command home:
 
 | # | Tool | Layer | Primary Command |
 |---|------|-------|-----------------|
-| 1 | `memory_context` | L1 | `/memory:context` |
-| 2 | `memory_search` | L2 | `/memory:context` |
-| 3 | `memory_match_triggers` | L2 | `/memory:context` |
+| 1 | `memory_context` | L1 | `/memory:analyze` |
+| 2 | `memory_search` | L2 | `/memory:analyze` |
+| 3 | `memory_match_triggers` | L2 | `/memory:analyze` |
 | 4 | `memory_save` | L2 | `/memory:save` |
 | 5 | `memory_list` | L3 | `/memory:manage` |
 | 6 | `memory_stats` | L3 | `/memory:manage` |
@@ -290,12 +289,11 @@ All 32 MCP tools mapped to their primary command home:
 
 | Command | Tools Owned | Layers |
 |---------|-------------|--------|
-| `/memory:context` | 3 | L1, L2 |
+| `/memory:analyze` | 12 | L1, L2, L6, L7 |
 | `/memory:save` | 1 | L2 |
 | `/memory:manage` | 15 | L3, L4, L5, L7 |
 | `/memory:learn` | 0 (uses manage/save tools) | — |
 | `/memory:continue` | 0 (uses context/manage tools) | — |
-| `/memory:analyze` | 9 | L6, L7 |
 | `/memory:shared` | 4 | L5 |
 | **Total** | **32** | **L1-L7** |
 
@@ -307,9 +305,9 @@ All 32 MCP tools mapped to their primary command home:
 
 | Problem | Cause | Fix |
 |---------|-------|-----|
-| "No results" from context | Query too narrow or no matching memories | Broaden query or try different intent |
+| "No results" from knowledge | Query too narrow or no matching memories | Broaden query or try different intent |
 | Save fails | Spec folder path invalid or missing | Verify path exists under `specs/` |
-| Continue finds no session | No saved context from prior session | Use `/memory:context` with manual query instead |
+| Continue finds no session | No saved context from prior session | Use `/memory:analyze` with manual query instead |
 | Manage scan finds 0 files | No memory files in expected directories | Check `specs/**/memory/`, `.opencode/skill/*/constitutional/`, and `.opencode/specs/` |
 | Learn file not found | Wrong filename for edit/remove | Run `/memory:learn list` to see available files |
 | Analyze ablation fails | `SPECKIT_ABLATION=true` not set | Set environment variable and retry |

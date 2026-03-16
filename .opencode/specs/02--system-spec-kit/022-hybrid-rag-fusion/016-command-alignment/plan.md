@@ -14,7 +14,7 @@ description: "Implementation plan for aligning the memory command docs with the 
 
 Align the memory command documentation set with the current Spec Kit Memory MCP surface. The implementation stays scoped to command docs and the memory README, but it must start with a schema-sync pass so the work is grounded in the live 32-tool surface rather than the older 29-tool draft.
 
-**Effort Estimate:** ~900 LOC across 9 command-doc deliverables plus verification artifacts
+**Effort Estimate:** ~900 LOC across 8 command-doc deliverables plus verification artifacts
 <!-- /ANCHOR:overview -->
 
 ---
@@ -34,7 +34,7 @@ Align the memory command documentation set with the current Spec Kit Memory MCP 
 - `TOOL_DEFINITIONS` contains **32** tools.
 - 16 tools currently have no command home in the memory command suite.
 - Existing command docs still use stale counts, stale naming, and incomplete parameter coverage.
-- `memory_get_learning_history` is currently undocumented and must be owned by `/memory:manage history <specFolder>`.
+- `memory_get_learning_history` is currently undocumented and must be owned by `/memory:analyze history <specFolder>`.
 
 ### Documentation Constraints
 
@@ -50,10 +50,10 @@ Align the memory command documentation set with the current Spec Kit Memory MCP 
 
 These decisions are fixed for the implementation pass:
 
-1. `/memory:manage history <specFolder>` is the command home for `memory_get_learning_history`.
+1. `/memory:analyze history <specFolder>` is the command home for `memory_get_learning_history`.
 2. `/memory:analyze` owns both analysis and eval tools.
 3. `/memory:shared` owns all shared-memory lifecycle tools.
-4. `/memory:ingest` owns async ingest start/status/cancel workflows.
+4. `/memory:manage ingest` owns async ingest start/status/cancel workflows (folded into manage).
 5. `context.md` must document `minQualityScore` as a deprecated alias of `min_quality_score`.
 6. `context.md` must document `memory_match_triggers` cognitive parameters if they remain missing.
 7. Feature-flag notes should appear only when they materially change command behavior in the current repo.
@@ -82,26 +82,26 @@ Update the 5 existing command files to match the current surface and fixed owner
 | Step | File | Changes | Priority |
 |------|------|---------|----------|
 | 1.1 | `context.md` | Add `memory_context` trace/budget params, advanced `memory_search` controls, `minQualityScore`, and `memory_match_triggers` cognitive parameters | P1 |
-| 1.2 | `save.md` | Add governance/provenance/retention docs and route async bulk ingestion to `/memory:ingest` | P1 |
-| 1.3 | `manage.md` | Fix section numbering, add `confirmName`, document current stats/health/mutation params, and add `/memory:manage history <specFolder>` | P0 |
+| 1.2 | `save.md` | Add governance/provenance/retention docs and route async bulk ingestion to `/memory:manage ingest` | P1 |
+| 1.3 | `manage.md` | Fix section numbering, add `confirmName`, document current stats/health/mutation params, and add `/memory:manage ingest` subcommand | P0 |
 | 1.4 | `learn.md` | Refresh tool signatures and checkpoint-delete references against current schemas | P2 |
-| 1.5 | `continue.md` | Refresh retrieval signatures and reference `/memory:manage history <specFolder>` for session enrichment | P2 |
+| 1.5 | `continue.md` | Refresh retrieval signatures and reference `/memory:analyze history <specFolder>` for session enrichment | P2 |
 
 ### Phase 2: Create New Commands
 
-Create 3 new command files using the established command pattern and the ownership decisions above.
+Create 2 new command files (analyze.md, shared.md) using the established command pattern and the ownership decisions above (ingest folded into manage).
 
 | Step | File | Scope | Priority |
 |------|------|-------|----------|
 | 2.1 | `analyze.md` | `task_preflight`, `task_postflight`, causal graph tools, and eval/reporting tools | P1 |
 | 2.2 | `shared.md` | `shared_space_upsert`, `shared_space_membership_set`, `shared_memory_status`, `shared_memory_enable` | P1 |
-| 2.3 | `ingest.md` | `memory_ingest_start`, `memory_ingest_status`, `memory_ingest_cancel` | P1 |
+| 2.3 | ~~`ingest.md`~~ | Ingest folded into `/memory:manage ingest` (see Step 1.3) | — |
 
 ### Phase 3: Update the README
 
 | Step | File | Changes | Priority |
 |------|------|---------|----------|
-| 3.1 | `README.txt` | Expand from 5 to 8 commands, update usage examples, and normalize all history references to the final `history` name | P1 |
+| 3.1 | `README.txt` | Expand from 5 to 7 commands, update usage examples, and normalize all history references to the final `history` name | P1 |
 | 3.2 | `README.txt` | Add a full tool-coverage table mapping each of the 32 tools to its primary command home | P1 |
 
 ### Phase 4: Verification
@@ -150,10 +150,9 @@ Related Commands
 
 - `context.md`: L1-L2 retrieval entry points and advanced retrieval controls
 - `save.md`: synchronous save/index flows and save-related advanced parameters
-- `manage.md`: maintenance, mutations, checkpoints, and learning history
-- `analyze.md`: analysis, causal graph, eval, and reporting
+- `manage.md`: maintenance, mutations, checkpoints, and async ingest (via `/memory:manage ingest`)
+- `analyze.md`: analysis, causal graph, eval, reporting, and learning history (via `/memory:analyze history`)
 - `shared.md`: shared-space lifecycle and rollout status
-- `ingest.md`: async ingest lifecycle
 <!-- /ANCHOR:implementation-details -->
 
 ---
@@ -165,7 +164,7 @@ Verification must prove:
 
 - every tool in `TOOL_DEFINITIONS` (32 total) has a command home
 - every current property and alias in the command-facing schemas is documented
-- `README.txt` describes the final 8-command surface
+- `README.txt` describes the final 7-command surface
 - the command suite consistently uses the final `history` subcommand name
 - all open questions from the earlier draft have been resolved in the docs
 
@@ -203,7 +202,7 @@ bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh \
 ## 8. ASSUMPTIONS
 
 - The implementation pass will edit the actual command docs and README after this refinement lands.
-- The command set after implementation is fixed at 8 commands.
+- The command set after implementation is fixed at 7 commands.
 - The planning docs should reflect current repo truth even if earlier research drafts used older counts.
 - This pass should remove ambiguity, not perform any MCP or command implementation changes.
 <!-- /ANCHOR:assumptions -->

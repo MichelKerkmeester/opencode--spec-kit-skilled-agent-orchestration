@@ -1230,7 +1230,7 @@ You have completed the installation. Here is your roadmap for getting started.
 | Category | Commands                                                                                                |
 | -------- | ------------------------------------------------------------------------------------------------------- |
 | Create   | `/create:agent`, `/create:folder_readme`, `/create:sk-skill` |
-| Memory   | `/memory:context`, `/memory:continue`, `/memory:learn`, `/memory:manage`, `/memory:save`                |
+| Memory   | `/memory:analyze`, `/memory:continue`, `/memory:learn`, `/memory:manage`, `/memory:save`              |
 | SpecKit  | `/spec_kit:complete`, `/spec_kit:debug`, `/spec_kit:handover`, `/spec_kit:implement`, `/spec_kit:plan`, `/spec_kit:research`, `/spec_kit:resume` |
 
 ### 16.4 Learning Resources

@@ -19,7 +19,7 @@ contextType: "implementation"
 
 ## EXECUTIVE SUMMARY
 
-The Spec Kit Memory MCP server now exposes **32 tools** across 7 architectural layers (L1-L7). The memory command suite still documents only the original 5 commands and does not cover 16 tools at all, leaving the command surface incomplete and several existing docs stale against the live schema. This spec aligns the command docs with the current repo truth by updating the 5 existing command files, adding 3 new command files, and refreshing the memory command README.
+The Spec Kit Memory MCP server now exposes **32 tools** across 7 architectural layers (L1-L7). The memory command suite still documents only the original 5 commands and does not cover 16 tools at all, leaving the command surface incomplete and several existing docs stale against the live schema. This spec aligns the command docs with the current repo truth by updating the 5 existing command files, adding 2 new command files (ingest folded into manage), and refreshing the memory command README.
 
 **Key Metrics**
 - 32 MCP tools in `TOOL_DEFINITIONS`
@@ -68,8 +68,8 @@ The 5 command docs in `.opencode/command/memory/` were written against an earlie
 3. **Structural drift:** the docs still contain stale command naming and incomplete workflow ownership.
    - `manage.md` still has the `## 189. RELATED COMMANDS` numbering error.
    - `checkpoint_delete` still lacks required `confirmName` documentation.
-   - The README still describes a 5-command suite instead of the planned 8-command surface.
-   - The history workflow is not yet locked to `/memory:manage history <specFolder>`.
+   - The README still describes a 5-command suite instead of the 7-command surface.
+   - The history workflow is not yet locked to `/memory:analyze history <specFolder>`.
 
 ### Purpose
 
@@ -77,7 +77,7 @@ Bring the memory command docs into full alignment with the current MCP tool sche
 - every live tool has a documented command home
 - every live command-facing property and compatibility alias is documented
 - shared memory, analysis, and ingest workflows are discoverable from commands
-- the README is an accurate index of the final 8-command memory suite
+- the README is an accurate index of the final 7-command memory suite
 <!-- /ANCHOR:problem -->
 
 ---
@@ -90,9 +90,9 @@ Bring the memory command docs into full alignment with the current MCP tool sche
 | Category | Items |
 |----------|-------|
 | **Update existing commands** | `context.md`, `save.md`, `manage.md`, `learn.md`, `continue.md` |
-| **Create new commands** | `/memory:analyze`, `/memory:shared`, `/memory:ingest` |
-| **Update README.txt** | Reflect final 8-command structure, examples, and tool coverage |
-| **History ownership** | Reserve `memory_get_learning_history` under `/memory:manage history <specFolder>` |
+| **Create new commands** | `/memory:analyze`, `/memory:shared` (ingest folded into `/memory:manage ingest`) |
+| **Update README.txt** | Reflect final 7-command structure, examples, and tool coverage |
+| **History ownership** | Reserve `memory_get_learning_history` under `/memory:analyze history <specFolder>` |
 | **Parameter alignment** | Document the live command-facing surface defined by `tool-schemas.ts` plus `ALLOWED_PARAMETERS` in `schemas/tool-input-schemas.ts` |
 
 ### Out of Scope
@@ -108,7 +108,7 @@ Bring the memory command docs into full alignment with the current MCP tool sche
 | # | Deliverable | Description |
 |---|-------------|-------------|
 | D1 | Updated `context.md` | Add missing `memory_context`, `memory_search`, and `memory_match_triggers` docs, including the `minQualityScore` compatibility alias |
-| D2 | Updated `save.md` | Add governance/provenance/retention coverage and `/memory:ingest` cross-reference |
+| D2 | Updated `save.md` | Add governance/provenance/retention coverage and `/memory:manage ingest` cross-reference |
 | D3 | Updated `manage.md` | Add missing mutation/health/history docs, fix numbering, and document `confirmName` |
 | D4 | Updated `learn.md` | Verify current schema references and checkpoint-delete behavior notes |
 | D5 | Updated `continue.md` | Add history reference and refresh recovery tool signatures |
@@ -137,12 +137,12 @@ Bring the memory command docs into full alignment with the current MCP tool sche
 |----|-------------|-------------------|
 | CA-005 | New `/memory:analyze` command covers all L6 analysis tools | `task_preflight`, `task_postflight`, `memory_drift_why`, `memory_causal_link`, `memory_causal_stats`, `memory_causal_unlink`, `eval_run_ablation`, and `eval_reporting_dashboard` are documented there |
 | CA-006 | New `/memory:shared` command covers all L5 shared-memory tools | `shared_space_upsert`, `shared_space_membership_set`, `shared_memory_status`, and `shared_memory_enable` are documented there |
-| CA-007 | New `/memory:ingest` command covers all L7 async ingest tools | `memory_ingest_start`, `memory_ingest_status`, and `memory_ingest_cancel` are documented there |
+| CA-007 | Ingest tools covered under `/memory:manage ingest` | `memory_ingest_start`, `memory_ingest_status`, and `memory_ingest_cancel` are documented in `manage.md` |
 | CA-008 | `context.md` documents the current retrieval surface | Includes `includeTrace`, `tokenUsage`, advanced `memory_search` parameters, deprecated `minQualityScore`, and `memory_match_triggers` cognitive parameters (`session_id`, `turnNumber`, `include_cognitive`) |
-| CA-009 | `save.md` documents the current save surface | Includes governance/provenance/retention details and explicit routing to `/memory:ingest` for async bulk ingestion |
-| CA-010 | `manage.md` owns learning history | `/memory:manage history <specFolder>` is documented as the command home for `memory_get_learning_history` |
+| CA-009 | `save.md` documents the current save surface | Includes governance/provenance/retention details and explicit routing to `/memory:manage ingest` for async bulk ingestion |
+| CA-010 | `analyze.md` owns learning history | `/memory:analyze history <specFolder>` is documented as the command home for `memory_get_learning_history` |
 | CA-011 | `manage.md` documents all missing mutation/discovery parameters | Includes `includeChunks`, `allowPartialUpdate`, current stats/health parameters, validation telemetry fields, and `skipCheckpoint` |
-| CA-012 | README reflects the final 8-command suite | Commands, examples, and coverage table are internally consistent and use the final `history` subcommand name everywhere |
+| CA-012 | README reflects the final 7-command suite | Commands, examples, and coverage table are internally consistent and use the final `history` subcommand name everywhere |
 
 ### P2 - Desired
 
@@ -170,17 +170,17 @@ Given `context.md`,
 when a reviewer compares it against the current retrieval schemas,
 then advanced `memory_search`, `memory_match_triggers`, and `minQualityScore` compatibility behavior are all documented.
 
-### Scenario C: Manage History Audit
+### Scenario C: History & Checkpoint Audit
 
-Given `manage.md`,
+Given `analyze.md` and `manage.md`,
 when a reviewer looks up learning history and checkpoint deletion workflows,
-then the doc uses `/memory:manage history <specFolder>` and documents `confirmName` as required.
+then `analyze.md` uses `/memory:analyze history <specFolder>` for learning history and `manage.md` documents `confirmName` as required for checkpoint deletion.
 
 ### Scenario D: README Index Audit
 
 Given `README.txt`,
 when a reviewer compares it against the final command suite,
-then it shows 8 commands, current examples, and a complete tool coverage table.
+then it shows 7 commands, current examples, and a complete tool coverage table.
 <!-- /ANCHOR:acceptance-scenarios -->
 
 ---
@@ -220,10 +220,10 @@ then it shows 8 commands, current examples, and a complete tool coverage table.
 | L6 | `eval_run_ablation` | NONE | UNCOVERED | New `/memory:analyze` command needed |
 | L6 | `eval_reporting_dashboard` | NONE | UNCOVERED | New `/memory:analyze` command needed |
 | L7 | `memory_index_scan` | `manage.md`, `save.md`, `learn.md` | COVERED | Keep aligned |
-| L7 | `memory_get_learning_history` | NONE | UNCOVERED | Add to `/memory:manage history <specFolder>` |
-| L7 | `memory_ingest_start` | NONE | UNCOVERED | New `/memory:ingest` command needed |
-| L7 | `memory_ingest_status` | NONE | UNCOVERED | New `/memory:ingest` command needed |
-| L7 | `memory_ingest_cancel` | NONE | UNCOVERED | New `/memory:ingest` command needed |
+| L7 | `memory_get_learning_history` | NONE | UNCOVERED | Add to `/memory:analyze history <specFolder>` |
+| L7 | `memory_ingest_start` | NONE | UNCOVERED | Add to `/memory:manage ingest` |
+| L7 | `memory_ingest_status` | NONE | UNCOVERED | Add to `/memory:manage ingest` |
+| L7 | `memory_ingest_cancel` | NONE | UNCOVERED | Add to `/memory:manage ingest` |
 
 **Summary:** 32 tools total, 16 uncovered, 16 already documented somewhere but still requiring partial-alignment work.
 
@@ -281,15 +281,15 @@ Start implementation by comparing `TOOL_DEFINITIONS` in `tool-schemas.ts` with `
 
 ### Phase 1: Update Existing Commands
 
-Update `context.md`, `save.md`, `manage.md`, `learn.md`, and `continue.md` to match the current surface, reserve `/memory:manage history`, and remove stale legacy history naming.
+Update `context.md`, `save.md`, `manage.md`, `learn.md`, and `continue.md` to match the current surface, reserve `/memory:analyze history`, and remove stale legacy history naming.
 
 ### Phase 2: Create New Commands
 
-Create `/memory:analyze`, `/memory:shared`, and `/memory:ingest` using the established command pattern and the implementation decisions above.
+Create `/memory:analyze` and `/memory:shared` using the established command pattern and the implementation decisions above (ingest folded into `/memory:manage ingest`).
 
 ### Phase 3: Update the README
 
-Refresh the memory README to reflect the final 8-command structure, current examples, and a complete tool coverage matrix.
+Refresh the memory README to reflect the final 7-command structure, current examples, and a complete tool coverage matrix.
 
 ### Phase 4: Verify Coverage and Consistency
 

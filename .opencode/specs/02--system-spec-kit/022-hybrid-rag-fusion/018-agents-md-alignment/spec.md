@@ -1,6 +1,6 @@
 ---
 title: "AGENTS.md Alignment: Quick Reference Tables"
-description: "Update Quick Reference workflow tables in all 3 AGENTS.md governance files to reflect the 7-command memory suite from Phase 016."
+description: "Align Quick Reference tables, fix cross-file drift, overhaul skill sections in all 3 AGENTS.md governance files + CLAUDE.md."
 trigger_phrases:
   - "agents md alignment"
   - "018 agents alignment"

@@ -53,11 +53,11 @@ This plan records the delivered HydraDB-inspired implementation as an evolutiona
 - [x] Research grounding docs are referenced and available in this folder.
 
 ### Definition of Done
-- [x] P0 requirements in `spec.md` are implemented and locally revalidated. [E:2026-03-15 `npx tsc --noEmit`, `npm run build`, targeted Hydra/doc suites, `npm test`]
+- [x] P0 requirements in `spec.md` are implemented and locally revalidated. [E:2026-03-16 `npx tsc --noEmit`, `npm run build`, targeted Hydra/doc suites, `npm test`]
 - [x] P1 requirements are implemented with no remaining spec-level deferrals in this parent pack. [E:tasks.md + implementation-summary.md]
 - [x] Isolation/governance checks pass in targeted and full-suite verification. [E:entity-scope.vitest.ts + dual-scope-hooks.vitest.ts + memory-governance.vitest.ts + shared-spaces.vitest.ts]
 - [x] Rollback drills pass through roadmap flag opt-outs, adaptive-state reset, and migration checkpoint tests. [E:memory-roadmap-flags.vitest.ts + adaptive-ranking.vitest.ts + migration-checkpoint-scripts.vitest.ts]
-- [x] Planning docs are updated to match runtime reality. [E:2026-03-15 truth-sync audit]
+- [x] Planning docs are updated to match runtime reality. [E:2026-03-16 truth-sync audit]
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -147,8 +147,8 @@ Retention/Delete <- Governance/Audit <- Feedback Outcomes
 | Manual/Operator | Rollback drills, roadmap flag snapshots, and governance audit walkthroughs | Local runbooks + playbooks |
 
 Notes:
-- Local re-verification was rerun on 2026-03-15 with typecheck, build, targeted Hydra/doc suites, full `npm test`, and alignment-drift validation.
-- Evidence in this plan is limited to commands rerun during implementation delivery and the 2026-03-15 truth-sync audit.
+- Local re-verification was rerun on 2026-03-16 with typecheck, build, targeted Hydra/doc suites, full `npm test`, and alignment-drift validation.
+- Evidence in this plan is limited to commands rerun during implementation delivery and the 2026-03-16 truth-sync audit.
 <!-- /ANCHOR:testing -->
 
 ---

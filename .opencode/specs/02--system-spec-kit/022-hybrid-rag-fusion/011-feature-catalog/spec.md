@@ -3,7 +3,7 @@ title: "Feature Catalog Comprehensive Audit & Remediation"
 status: "in-progress"
 level: 3
 created: "2025-12-01"
-updated: "2026-03-08"
+updated: "2026-03-16"
 ---
 # Feature Catalog Comprehensive Audit & Remediation
 
@@ -14,11 +14,22 @@ updated: "2026-03-08"
 
 ## EXECUTIVE SUMMARY
 
-The Spec Kit Memory MCP server's feature catalog (~180 snippet files across 20 categories) has accumulated documentation drift: inaccurate descriptions, invalid code paths, and 55 undocumented capabilities discovered by a prior 10-agent scan. This spec covers the full audit and remediation: verifying every existing feature against source code, investigating all gaps, and producing corrected documentation.
+The Spec Kit Memory MCP server's feature catalog had a verified **2026-03-08 historical snapshot** of 180 snippet files across 20 categories. That snapshot captured documentation drift: inaccurate descriptions, invalid code paths, and 55 undocumented capabilities discovered by a prior 10-agent scan. A **2026-03-16 current-state addendum** now tracks live-tree drift to 189 snippet files and explicitly classifies 14 omitted current snippets.
 
 **Key Decisions**: 30-agent partitioned research (20 verification + 10 gap investigation), 3-tier significance classification
 
 **Critical Dependencies**: MCP server source code (`mcp_server/`), existing feature catalog snippets
+
+---
+
+## CURRENT-STATE ADDENDUM (2026-03-16)
+
+- Historical snapshot remains unchanged: 2026-03-08 audit verified 180 snippets and produced the 202-item remediation base.
+- Current tree now contains 189 snippets (net +9 versus snapshot baseline after taxonomy/category drift and post-snapshot additions).
+- 14 current snippets were outside executed March 8 verification ranges and are now classified in the addendum:
+  - 12 appear structurally current with no immediate remediation.
+  - 2 require follow-up (`16--tooling-and-scripts/11-feature-catalog-code-references.md`, `16--tooling-and-scripts/13-constitutional-memory-manager-command.md`) for source-path normalization/correction.
+- Tooling narrative is clarified as planned-vs-executed: some plan text says Copilot for Stream 1, but execution artifacts are Codex-based.
 
 ---
 
@@ -37,21 +48,22 @@ The Spec Kit Memory MCP server's feature catalog (~180 snippet files across 20 c
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-The feature catalog documents ~180 features but a 10-agent scan found 55 genuine undocumented gaps (17 high, 25 medium, 13 low significance). Existing entries may have stale descriptions or invalid file paths due to ongoing MCP server development. There is no systematic verification that catalog descriptions match actual source code behavior.
+As-of 2026-03-08, the historical audit baseline covered 180 features and found 55 genuine undocumented gaps (17 high, 25 medium, 13 low significance). As-of 2026-03-16, the live tree has 189 snippets and includes 14 current entries that were outside the executed March 8 ranges. Without explicit addendum accounting, completeness claims become ambiguous.
 
 ### Purpose
-Achieve a fully verified, accurate feature catalog where every feature has correct descriptions matching source code behavior, valid file paths resolving to existing files, and complete coverage of all MCP server capabilities.
+Preserve the March 8 snapshot as historical record while extending documentation with an explicit March 16 current-state addendum that tracks live-tree drift, omitted-snippet classification, and follow-up remediation priorities.
 
 ---
 
 ## 3. SCOPE
 
 ### In Scope
-- Verify all ~180 existing feature snippet files against source code
+- Preserve and reference the 2026-03-08 180-feature historical snapshot
+- Audit and classify the 14 omitted current snippets discovered on 2026-03-16
 - Validate all `## Source Files` paths exist on disk
 - Investigate and document all 55 known undocumented gaps
 - Discover any new gaps not found in the prior scan
-- Produce remediation manifest with prioritized action items
+- Produce remediation manifest with prioritized action items, including addendum follow-up items
 
 ### Out of Scope
 - Actual remediation edits to snippet files (separate follow-up phase)
@@ -94,15 +106,17 @@ Achieve a fully verified, accurate feature catalog where every feature has corre
 | REQ-005 | Description accuracy >95% | <10 features with materially inaccurate descriptions |
 | REQ-006 | Cross-validation between verification and gap streams | Overlapping findings reconciled |
 | REQ-007 | Analysis summary with aggregate statistics | Category-level pass/fail counts |
+| REQ-008 | 2026-03-16 omitted-snippet addendum | All 14 omitted snippets explicitly listed and classified with evidence |
 
 ---
 
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All 180 feature snippets have been read and verified against source code
+- **SC-001**: All 180 historical-snapshot snippets (2026-03-08) have been read and verified against source code
 - **SC-002**: All 55 gaps have a confirmed status (gap/false-positive) with evidence
 - **SC-003**: Remediation manifest exists with zero unclassified findings
 - **SC-004**: All file paths in existing snippets resolve to real files on disk
+- **SC-005**: All 14 omitted current snippets (2026-03-16 addendum) are explicitly classified with remediation status
 
 ---
 
@@ -124,8 +138,9 @@ Achieve a fully verified, accurate feature catalog where every feature has corre
 - **NFR-A02**: 100% of file paths must resolve to existing files
 
 ### Coverage
-- **NFR-C01**: All 20 categories verified by at least one agent
+- **NFR-C01**: All 20 historical-snapshot categories verified by at least one agent
 - **NFR-C02**: All 55 known gaps addressed (no gap left uninvestigated)
+- **NFR-C03**: Current-tree drift documented with explicit omitted-snippet accounting
 
 ### Completeness
 - **NFR-X01**: Each verification report follows the structured output format
@@ -153,7 +168,7 @@ Achieve a fully verified, accurate feature catalog where every feature has corre
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Scope | 20/25 | 180 snippet files, ~216 source files, 20 categories |
+| Scope | 20/25 | Historical snapshot: 180 snippet files, ~216 source files, 20 categories |
 | Risk | 10/25 | No code changes, documentation-only, reversible |
 | Research | 18/20 | Deep source code verification across entire codebase |
 | Multi-Agent | 15/15 | 30 concurrent agents in 2 streams |
@@ -200,7 +215,7 @@ Achieve a fully verified, accurate feature catalog where every feature has corre
 
 ## 12. OPEN QUESTIONS
 
-- None currently — the 10-agent scan provided sufficient baseline data
+- None currently. Historical (2026-03-08) and addendum (2026-03-16) boundaries are now explicit.
 
 ---
 
@@ -216,7 +231,7 @@ Achieve a fully verified, accurate feature catalog where every feature has corre
 
 ## Merged Section: 016-feature-catalog-code-references
 
-> **Merge note (2026-03-14)**: The content below was originally in `016-feature-catalog-code-references/spec.md` (Level 2, Complete). It documents the code-to-catalog traceability work that is a direct downstream remediation action from 012's audit findings. The 016 spec folder has been absorbed into 012 to reduce folder count.
+> **Merge note (2026-03-14)**: The content below was originally in `016-feature-catalog-code-references/spec.md` (Level 2, Complete). It documents the code-to-catalog traceability work that is a direct downstream remediation action from 011's audit findings. The 016 spec folder has been absorbed into 011 to reduce folder count.
 
 # Feature Specification: 016-Feature Catalog Code References
 <!-- SPECKIT_LEVEL: 2 -->

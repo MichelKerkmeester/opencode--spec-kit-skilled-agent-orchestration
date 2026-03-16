@@ -50,7 +50,7 @@ title: "Tasks: 017 — Agent Alignment"
 
 - [x] T029: Create checklist.md
 - [x] T030: Create implementation-summary.md
-- [ ] T031: Update parent epic status
+- [x] T031: Update parent epic status — added 015-018 rows to 001-hybrid-rag-fusion-epic/spec.md dashboard (2026-03-16)
 
 ---
 

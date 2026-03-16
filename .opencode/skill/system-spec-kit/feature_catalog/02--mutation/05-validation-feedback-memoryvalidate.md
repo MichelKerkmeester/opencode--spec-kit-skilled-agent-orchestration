@@ -20,6 +20,8 @@ Negative feedback persistence fires unconditionally on every negative validation
 
 When a `queryId` is provided alongside positive feedback, two additional systems activate. Learned feedback persistence records the user's selection and extracts query terms into a separate `learned_triggers` column (isolated from the FTS5 index to prevent contamination). These learned triggers boost future searches for the same terms. Ground truth selection logging records the event in the evaluation database for the ground truth corpus, returning a `groundTruthSelectionId` in the response.
 
+**Prerequisites for learned-feedback activation:** The validation call must include `queryTerms` AND `resultRank` in addition to `queryId`. Without all three fields, learned-feedback persistence is skipped and only the base confidence adjustment and auto-promotion/demotion paths fire.
+
 The confidence read-compute-write segment (`recordValidation`) runs within a single SQLite transaction to prevent concurrent validation updates from racing and dropping writes. Downstream side effects (auto-promotion, negative-feedback persistence, learned feedback and ground-truth logging) execute after that transactional segment.
 
 ---

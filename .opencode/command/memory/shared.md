@@ -277,12 +277,11 @@ STATUS=OK ACTION=status
 
 ## 10. RELATED COMMANDS
 
-- `/memory:context`: Intent-aware context retrieval
+- `/memory:analyze`: Intent-aware context retrieval and analysis tools
 - `/memory:save`: Save conversation context
 - `/memory:manage`: Database management, checkpoints, ingest
 - `/memory:learn`: Constitutional memories
 - `/memory:continue`: Session recovery
-- `/memory:analyze`: Analysis, causal graph, evaluation, learning history
 
 ---
 <!-- APPENDIX: Reference material for AI agent implementation -->

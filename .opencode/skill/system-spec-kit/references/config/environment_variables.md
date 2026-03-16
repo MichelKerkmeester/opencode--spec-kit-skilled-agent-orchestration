@@ -27,8 +27,11 @@ These variables control memory system behavior, token budgets, script execution,
 | `MEMORY_ALLOWED_PATHS` | `specs/,.opencode/` | Additional allowed paths (colon-separated) |
 | `DEBUG_TRIGGER_MATCHER` | `false` | Enable verbose trigger matching logs |
 | `ENABLE_RERANKER` | `false` | Enable experimental ML reranking (requires Python) |
-| `SPECKIT_STRICT_SCHEMAS` | `true` | Enforce strict Zod MCP tool input validation (`false` allows unknown passthrough keys) |
+| `SPECKIT_STRICT_SCHEMAS` | `true` | Enforce strict Zod MCP tool input validation for all 32 tools (`false` allows unknown passthrough keys) |
 | `SPECKIT_RESPONSE_TRACE` | `false` | Include provenance-rich `scores`/`source`/`trace` fields by default in search responses |
+| `SPEC_KIT_DB_DIR` / `SPECKIT_DB_DIR` | Auto-detected | Fallback chain for database directory path. `SPEC_KIT_DB_DIR` checked first, then `SPECKIT_DB_DIR` |
+| `DISABLE_SESSION_DEDUP` | `false` | Disables session-level deduplication when set to `true` |
+| `ENABLE_TOOL_CACHE` | `true` | Enables tool-level TTL cache for repeated MCP tool lookups |
 | `SPECKIT_DYNAMIC_INIT` | `true` | Inject dynamic startup instructions with memory/index summary at MCP initialization |
 | `SPECKIT_CONTEXT_HEADERS` | `true` | Prepend contextual tree headers to markdown search content chunks |
 | `SPECKIT_FILE_WATCHER` | `false` | Enable chokidar-based real-time markdown re-indexing |
@@ -165,7 +168,7 @@ Feature flags control experimental and optional functionality. All flags default
 | `SPEC_KIT_ENABLE_DECAY` | `true` | Attention decay system (time-weighted memory retrieval) |
 | `SPEC_KIT_ENABLE_EMBEDDING` | `true` | Vector embeddings for semantic search |
 | `SPEC_KIT_ENABLE_CHECKPOINT` | `true` | Incremental checkpointing (save context at intervals) |
-| `SPEC_KIT_ENABLE_CAUSAL` | `false` | Causal memory graph (experimental - maps decision dependencies) |
+| `SPEC_KIT_ENABLE_CAUSAL` | `false` | Enables causal graph system (link/unlink/stats/drift-why tools) for decision dependency tracking. Mature — used by `/memory:analyze` |
 | `SPEC_KIT_ENABLE_VALIDATION` | `true` | Auto-validation on memory save |
 | `SPEC_KIT_ENABLE_INDEXING` | `true` | Automatic re-indexing after memory updates |
 | `SPEC_KIT_ENABLE_TRIGGERS` | `true` | Proactive memory surfacing via trigger matching |
@@ -183,7 +186,7 @@ These flags are managed via `isFeatureEnabled()` in `rollout-policy.ts` with 100
 
 | Flag | Default | Sprint | Purpose |
 |------|---------|--------|---------|
-| `SPECKIT_PIPELINE_V2` | ON | S3 | 4-stage pipeline architecture (Stage 1-4 with Stage 4 invariant). When OFF, legacy postSearchPipeline path is used |
+| `SPECKIT_PIPELINE_V2` | ON | S3 | Legacy flag — always `true`; v1 pipeline has been removed. Retained for backward compatibility; setting to `false` has no effect |
 | `SPECKIT_RRF` | ON | S0 | Reciprocal Rank Fusion for multi-channel result merging |
 | `SPECKIT_SCORE_NORMALIZATION` | ON | S1 | Min-max normalization of scores to [0,1] range (both RRF and composite) |
 | `SPECKIT_MMR` | ON | S1 | Graph-guided MMR diversity reranking |
@@ -202,6 +205,10 @@ These flags are managed via `isFeatureEnabled()` in `rollout-policy.ts` with 100
 | `SPECKIT_FILE_WATCHER` | OFF | S9 | Enable chokidar watcher for auto re-index on markdown changes |
 | `SPECKIT_ADAPTIVE_FUSION` | ON | S5 | Intent-aware weighted RRF with 7 task-type profiles |
 | `SPECKIT_TRM` | ON | S5 | Transparent Reasoning Module (evidence-gap detection) |
+| `ENABLE_BM25` | ON | S3 | Enables in-memory BM25 scoring channel. Set `false` to disable |
+| `SPECKIT_SHADOW_SCORING` | OFF | S7 | Shadow A/B scoring (attribution-only mode; scoring comparison permanently disabled) |
+| `SPECKIT_DASHBOARD_LIMIT` | `100` | S7 | Row cap for `eval_reporting_dashboard` queries |
+| `SPECKIT_GRAPH_UNIFIED` | ON | S7 | Unified graph retrieval with deterministic ranking, explainability trace, and rollback support |
 
 #### Scoring & Feedback
 
@@ -306,7 +313,7 @@ SPEC_KIT_OFFLINE_MODE=true EMBEDDINGS_PROVIDER=hf-local node mcp_server/context-
 - `SPECKIT_DEBUG_INDEX_SCAN=true` — Index scan diagnostics
 
 **Disable Only If:**
-- `SPECKIT_PIPELINE_V2=false` — Revert to legacy search pipeline
+- `SPECKIT_PIPELINE_V2=false` — No effect (v1 pipeline removed; flag is inert)
 - `SPEC_KIT_OFFLINE_MODE=true` — No network access
 - `SPEC_KIT_LAZY_EMBEDDING=false` — Faster first query (slower startup)
 

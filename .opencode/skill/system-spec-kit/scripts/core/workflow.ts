@@ -1330,7 +1330,21 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     if (folderNameForTriggers.length >= 5 && !existingLower.has(folderNameForTriggers.toLowerCase())) {
       preExtractedTriggers.unshift(folderNameForTriggers.toLowerCase());
     }
+    // CG-04: Domain-specific stopwords for single-word trigger phrases from folder names
+    const FOLDER_STOPWORDS = new Set([
+      'system', 'spec', 'kit', 'hybrid', 'rag', 'fusion', 'agents', 'alignment',
+      'opencode', 'config', 'setup', 'init', 'core', 'main', 'base', 'common',
+      'shared', 'utils', 'helpers', 'tools', 'scripts', 'tests', 'docs', 'build',
+      'deploy', 'release', 'version', 'update', 'fix', 'feature', 'enhancement',
+      'refactor', 'cleanup', 'migration', 'integration', 'implementation',
+      'based', 'features', 'perfect', 'session', 'capturing', 'pipeline',
+      'quality', 'command', 'skill', 'memory', 'context', 'search', 'index',
+    ]);
     for (const token of folderTokens) {
+      // CG-04: Skip single words that are domain stopwords
+      if (FOLDER_STOPWORDS.has(token.toLowerCase())) {
+        continue;
+      }
       if (!existingLower.has(token.toLowerCase())) {
         preExtractedTriggers.push(token.toLowerCase());
         existingLower.add(token.toLowerCase());
@@ -1561,6 +1575,13 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       `To force save, pass data via JSON file instead of stateless mode.`;
     warn(abortMsg);
     throw new Error(abortMsg);
+  }
+
+  // CG-07: Add warning banner for medium-quality scores (30-60)
+  if (qualityResult.score < 60 && qualityResult.score >= QUALITY_ABORT_THRESHOLD) {
+    const mediumQualityWarning = `> **Warning:** Memory quality score is ${qualityResult.score}/100, which is below the recommended threshold of 60. Content may have issues with: ${qualityResult.warnings.slice(0, 3).join('; ')}.\n\n`;
+    files[ctxFilename] = mediumQualityWarning + files[ctxFilename];
+    log(`   Medium quality warning added (score: ${qualityResult.score}/100)`);
   }
 
   const templateContract = validateMemoryTemplateContract(files[ctxFilename]);

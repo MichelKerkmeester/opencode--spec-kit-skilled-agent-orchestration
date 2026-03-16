@@ -336,7 +336,7 @@ not as a full replacement for resume-mode memory retrieval.
 
 ## 8. RELATED COMMANDS
 
-- `/memory:context`: General intent-aware context retrieval
+- `/memory:analyze`: Intent-aware context retrieval and analysis tools
 - `/memory:save`: Save current session context for future recovery
 - `/memory:manage`: Inspect database state, checkpoints, and ingest operations
 - `/memory:analyze history <spec-folder>`: Review epistemic history for a resumed spec folder

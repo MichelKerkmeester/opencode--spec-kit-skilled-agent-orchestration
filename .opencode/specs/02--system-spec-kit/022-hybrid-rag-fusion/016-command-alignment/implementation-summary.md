@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: 016-command-alignment"
-description: "Summary of command alignment implementation — 5 command updates + 3 new commands + README refresh."
+description: "Summary of command alignment implementation — 5 command updates + 2 new commands + README refresh."
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 # Implementation Summary: 016-command-alignment
@@ -11,7 +11,7 @@ description: "Summary of command alignment implementation — 5 command updates 
 
 ## 1. OVERVIEW
 
-Aligned the memory command documentation suite with the current 32-tool Spec Kit Memory MCP surface. The implementation expanded the command suite from 5 to 8 commands, documented all previously uncovered tools, and added a complete coverage matrix to the README.
+Aligned the memory command documentation suite with the current 32-tool Spec Kit Memory MCP surface. The implementation expanded the command suite from 5 to 7 commands, documented all previously uncovered tools, and added a complete coverage matrix to the README.
 
 **Key Metrics:**
 - 32/32 MCP tools now have documented command homes (was 16/32)
@@ -29,11 +29,11 @@ Aligned the memory command documentation suite with the current 32-tool Spec Kit
 | File | Changes |
 |------|---------|
 | `context.md` | Added Section 12: Advanced Parameter Reference with full `memory_context`, `memory_search`, and `memory_match_triggers` parameter tables including `includeTrace`, `tokenUsage`, `minQualityScore` deprecated alias, cognitive params (`session_id`, `turnNumber`, `include_cognitive`), governance scoping note. Updated related commands |
-| `save.md` | Added Section 15: Governance, Provenance & Retention (advanced) with tenantId/userId/agentId/sessionId/sharedSpaceId, provenanceSource/provenanceActor/governedAt, retentionPolicy/deleteAfter. Added async ingest routing to `/memory:ingest`. Updated related commands |
-| `manage.md` | Fixed `## 189. RELATED COMMANDS` → `## 19. RELATED COMMANDS`. Added `confirmName` safety contract to checkpoint delete (both MCP signatures and docs). Added Section 19: History Mode for `memory_get_learning_history`. Added Section 20: Advanced Parameter Reference for stats, health, list, update, validate, bulk-delete params. Added `history` to argument routing, subcommand table, quick reference, and frontmatter. Updated related commands |
+| `save.md` | Added Section 15: Governance, Provenance & Retention (advanced) with tenantId/userId/agentId/sessionId/sharedSpaceId, provenanceSource/provenanceActor/governedAt, retentionPolicy/deleteAfter. Added async ingest routing to `/memory:manage ingest`. Updated related commands |
+| `manage.md` | Fixed `## 189. RELATED COMMANDS` → `## 19. RELATED COMMANDS`. Added `confirmName` safety contract to checkpoint delete (both MCP signatures and docs). Added `/memory:manage ingest` subcommand (Section 15). Added Advanced Parameter Reference for stats, health, list, update, validate, bulk-delete params. Updated related commands |
 | `learn.md` | Updated related commands section to include analyze, shared, ingest |
-| `continue.md` | Updated related commands to include `/memory:manage history <specFolder>`, analyze, shared, ingest |
-| `README.txt` | Expanded from 5 to 8 commands. Added analyze/shared/ingest subcommand tables. Added Section 6: Tool Coverage Matrix (32-tool table). Updated directory tree, usage examples, manage subcommands (added `history`), troubleshooting. Updated related documents |
+| `continue.md` | Updated related commands to include `/memory:analyze history <specFolder>`, analyze, shared, ingest |
+| `README.txt` | Expanded from 5 to 7 commands. Added analyze/shared/ingest subcommand tables. Added Section 6: Tool Coverage Matrix (32-tool table). Updated directory tree, usage examples, manage subcommands (added `history`), troubleshooting. Updated related documents |
 
 ### Created (2 new commands)
 
@@ -67,7 +67,7 @@ Aligned the memory command documentation suite with the current 32-tool Spec Kit
 | Learning history under `/memory:analyze history` instead of `/memory:manage history` | Co-locates with other epistemic measurement tools (preflight, postflight). The analyze command owns the full learning lifecycle |
 | Governance params (`tenantId`, `userId`, etc.) for `memory_save` documented as "advertised in tool schema" rather than validated | These params appear in ToolDefinition JSON Schema but are not in ALLOWED_PARAMETERS or Zod validation. Documented with rollout-dependent note |
 | `memory_search` governance scoping params documented as note rather than parameter table entries | Same pattern: present in ToolDefinition but absent from ALLOWED_PARAMETERS/Zod. Documented as governance rollout note |
-| sk-doc DQI alignment pass added as follow-up | ~90 bare code blocks tagged and ~92 prose em dashes replaced across all 8 command files for HVR compliance |
+| sk-doc DQI alignment pass added as follow-up | ~90 bare code blocks tagged and ~92 prose em dashes replaced across all 7 command files for HVR compliance |
 
 ---
 
@@ -75,7 +75,7 @@ Aligned the memory command documentation suite with the current 32-tool Spec Kit
 
 | Command | Tools Owned | Layers |
 |---------|-------------|--------|
-| `/memory:context` | `memory_context`, `memory_search`, `memory_match_triggers` | L1, L2 |
+| `/memory:analyze` | `memory_context`, `memory_search`, `memory_match_triggers` | L1, L2 |
 | `/memory:save` | `memory_save` | L2 |
 | `/memory:manage` | `memory_list`, `memory_stats`, `memory_health`, `memory_delete`, `memory_update`, `memory_validate`, `memory_bulk_delete`, `checkpoint_create`, `checkpoint_list`, `checkpoint_restore`, `checkpoint_delete`, `memory_index_scan`, `memory_ingest_start`, `memory_ingest_status`, `memory_ingest_cancel` | L3, L4, L5, L7 |
 | `/memory:learn` | (uses manage/save tools) | — |
@@ -92,9 +92,50 @@ Aligned the memory command documentation suite with the current 32-tool Spec Kit
 
 ---
 
+## ADDENDUM: v2.4.0.0 -- Context/Analyze Merge (2026-03-16)
+
+### Change
+
+Merged `/memory:context` (L1/L2 retrieval, 438 lines, 3 tools) into `/memory:analyze` (now 926 lines, 12 tools). The command count dropped from 7 to 6. Retrieval became the default mode of `/memory:analyze`; analysis subcommands route via keyword detection on the first argument.
+
+### Rationale
+
+- Reduces cognitive load: one fewer command to remember
+- Natural fit: retrieval and analysis are both "read" operations on the memory system
+- Flat subcommand routing avoids nesting complexity
+
+### Impact
+
+| Metric | Before | After |
+|--------|--------|-------|
+| Command count | 7 | 6 |
+| `/memory:analyze` tools | 9 (L6, L7) | 12 (L1, L2, L6, L7) |
+| `/memory:context` | Standalone | Deleted (merged) |
+| `context.md` file | Existed | Deleted |
+
+### Files Modified
+
+- **Rewritten:** `analyze.md` (926 lines, unified retrieval + analysis)
+- **Deleted:** `context.md`, `context.toml` (`.agents/`, `.gemini/`)
+- **Updated:** `README.txt`, 5 sibling commands, 4 agent definitions, 9 framework docs, 8 active spec files, `.codex/agents/speckit.toml`, `.agents/commands/` TOMLs, `.gemini/commands/` TOMLs
+- **Changelog:** `.opencode/changelog/04--commands/v2.4.0.0.md`
+
+### Updated Ownership Model (Final)
+
+| Command | Tools Owned | Layers |
+|---------|-------------|--------|
+| `/memory:analyze` | `memory_context`, `memory_search`, `memory_match_triggers`, `task_preflight`, `task_postflight`, `memory_drift_why`, `memory_causal_link`, `memory_causal_stats`, `memory_causal_unlink`, `eval_run_ablation`, `eval_reporting_dashboard`, `memory_get_learning_history` | L1, L2, L6, L7 |
+| `/memory:save` | `memory_save` | L2 |
+| `/memory:manage` | 15 tools | L3, L4, L5, L7 |
+| `/memory:learn` | (uses manage/save tools) | -- |
+| `/memory:continue` | (uses analyze/manage tools) | -- |
+| `/memory:shared` | 4 tools | L5 |
+
+---
+
 <!--
 IMPLEMENTATION-SUMMARY: 016-command-alignment
-24/24 tasks complete
-5 commands updated + 2 new commands created + README refreshed + sk-doc DQI aligned
-32/32 MCP tools documented
+24/24 tasks complete + v2.4.0.0 addendum (context/analyze merge)
+5 commands updated + 2 new commands created + 1 command merged + README refreshed + sk-doc DQI aligned
+32/32 MCP tools documented across 6 commands
 -->

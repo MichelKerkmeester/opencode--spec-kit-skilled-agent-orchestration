@@ -159,6 +159,20 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:phase-5 -->
+## Phase 5: Implementation (Applied Fixes)
+
+- [x] T020 Apply SKILL.md metadata + tool table fixes: handler count ~30, lib dirs 26, tool count 32, tool table expanded to 13 entries (`../../../../skill/system-spec-kit/SKILL.md`)
+- [x] T021 Apply SKILL.md feature flags expansion: added 15 flags (PIPELINE_V2, QUALITY_LOOP, RELATIONS, STRICT_SCHEMAS, DEGREE_BOOST, GRAPH_SIGNALS, COMMUNITY_DETECTION, CAUSAL_BOOST, GRAPH_UNIFIED, SCORE_NORMALIZATION, CLASSIFICATION_DECAY, INTERFERENCE_SCORE, FOLDER_SCORING, SHADOW_SCORING, DASHBOARD_LIMIT) for 25 total (`../../../../skill/system-spec-kit/SKILL.md`)
+- [x] T022 Apply SKILL.md smart routing additions: 5 new INTENT_SIGNALS (13 total), 5 new RESOURCE_MAP entries (13 total), 7 new `/memory:*` COMMAND_BOOSTS (14 total) (`../../../../skill/system-spec-kit/SKILL.md`)
+- [x] T023 Apply environment_variables.md fixes: +7 env vars (SPEC_KIT_DB_DIR, DISABLE_SESSION_DEDUP, ENABLE_TOOL_CACHE, ENABLE_BM25, SPECKIT_SHADOW_SCORING, SPECKIT_DASHBOARD_LIMIT, SPECKIT_GRAPH_UNIFIED), fixed SPECKIT_PIPELINE_V2 and SPEC_KIT_ENABLE_CAUSAL descriptions (`../../../../skill/system-spec-kit/references/config/environment_variables.md`)
+- [x] T024 Apply reference file updates: Learning Index Workflow section in epistemic_vectors.md, Signal Vocabulary Expansion in trigger_config.md, Known Resolved Issues (7 entries) in troubleshooting.md (`../../../../skill/system-spec-kit/references/memory/epistemic_vectors.md`, `../../../../skill/system-spec-kit/references/memory/trigger_config.md`, `../../../../skill/system-spec-kit/references/debugging/troubleshooting.md`)
+- [x] T025 Fix 7 stale catalog entries: namespace management, validation feedback, co-activation divisor, cold-start novelty, anchor-tags-as-graph-nodes, feature flag defaults (2 files) (`../../../../skill/system-spec-kit/feature_catalog/`)
+- [x] T026 Run validate.sh and verify_alignment_drift.py (`./checklist.md`)
+<!-- /ANCHOR:phase-5 -->
+
+---
+
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 

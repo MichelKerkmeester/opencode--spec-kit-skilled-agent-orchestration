@@ -134,7 +134,7 @@ The memory system supports **2 independent execution paths**. Any method can be 
 
 ```
 /memory:save       # Save current conversation context
-/memory:context    # Dashboard, search, manage index, view recent, cleanup, triggers
+/memory:analyze  # Unified retrieval + analysis: search, epistemic baselines, causal graph, evaluation
 ```
 
 ### Execution Flow

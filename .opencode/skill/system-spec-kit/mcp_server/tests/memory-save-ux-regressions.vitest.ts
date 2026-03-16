@@ -1,7 +1,7 @@
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
-import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from 'vitest';
 
 import * as handler from '../handlers/memory-save';
 import { buildSaveResponse } from '../handlers/save/response-builder';
@@ -10,6 +10,13 @@ import * as vectorIndex from '../lib/search/vector-index';
 const TEST_DB_DIR = path.join(os.tmpdir(), `speckit-memory-save-ux-${process.pid}`);
 const TEST_DB_PATH = path.join(TEST_DB_DIR, 'speckit-memory.db');
 const FIXTURE_ROOT = path.join(process.cwd(), 'tmp-test-fixtures', 'specs', '999-memory-save-ux-fixtures');
+const ORIGINAL_ENV = {
+  SPECKIT_AUTO_ENTITIES: process.env.SPECKIT_AUTO_ENTITIES,
+  SPECKIT_MEMORY_SUMMARIES: process.env.SPECKIT_MEMORY_SUMMARIES,
+  SPECKIT_ENTITY_LINKING: process.env.SPECKIT_ENTITY_LINKING,
+  SPECKIT_QUALITY_LOOP: process.env.SPECKIT_QUALITY_LOOP,
+  SPECKIT_SAVE_QUALITY_GATE: process.env.SPECKIT_SAVE_QUALITY_GATE,
+};
 
 function buildMemoryContent(title: string, body: string): string {
   const titleSlug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
@@ -152,9 +159,30 @@ beforeAll(() => {
   resetFixtureDir();
 });
 
+beforeEach(() => {
+  // Keep the UX contract tests focused on save-path response shaping.
+  // Optional enrichment and quality-gate suites are covered elsewhere and can
+  // introduce non-deterministic provider/env interactions in the full run.
+  process.env.SPECKIT_AUTO_ENTITIES = 'false';
+  process.env.SPECKIT_MEMORY_SUMMARIES = 'false';
+  process.env.SPECKIT_ENTITY_LINKING = 'false';
+  delete process.env.SPECKIT_QUALITY_LOOP;
+  delete process.env.SPECKIT_SAVE_QUALITY_GATE;
+});
+
 afterEach(() => {
   cleanupFixtureRows();
   resetFixtureDir();
+  if (ORIGINAL_ENV.SPECKIT_AUTO_ENTITIES === undefined) delete process.env.SPECKIT_AUTO_ENTITIES;
+  else process.env.SPECKIT_AUTO_ENTITIES = ORIGINAL_ENV.SPECKIT_AUTO_ENTITIES;
+  if (ORIGINAL_ENV.SPECKIT_MEMORY_SUMMARIES === undefined) delete process.env.SPECKIT_MEMORY_SUMMARIES;
+  else process.env.SPECKIT_MEMORY_SUMMARIES = ORIGINAL_ENV.SPECKIT_MEMORY_SUMMARIES;
+  if (ORIGINAL_ENV.SPECKIT_ENTITY_LINKING === undefined) delete process.env.SPECKIT_ENTITY_LINKING;
+  else process.env.SPECKIT_ENTITY_LINKING = ORIGINAL_ENV.SPECKIT_ENTITY_LINKING;
+  if (ORIGINAL_ENV.SPECKIT_QUALITY_LOOP === undefined) delete process.env.SPECKIT_QUALITY_LOOP;
+  else process.env.SPECKIT_QUALITY_LOOP = ORIGINAL_ENV.SPECKIT_QUALITY_LOOP;
+  if (ORIGINAL_ENV.SPECKIT_SAVE_QUALITY_GATE === undefined) delete process.env.SPECKIT_SAVE_QUALITY_GATE;
+  else process.env.SPECKIT_SAVE_QUALITY_GATE = ORIGINAL_ENV.SPECKIT_SAVE_QUALITY_GATE;
 });
 
 afterAll(() => {
@@ -164,7 +192,7 @@ afterAll(() => {
     // Ignore cleanup errors in tests
   }
   fs.rmSync(TEST_DB_DIR, { recursive: true, force: true });
-  fs.rmSync(path.join(process.cwd(), 'tmp-test-fixtures'), { recursive: true, force: true });
+  fs.rmSync(FIXTURE_ROOT, { recursive: true, force: true });
 });
 
 describe('Memory save UX regressions', () => {

@@ -146,6 +146,21 @@ const matches = await memory_match_triggers({
 
 ---
 
+### Signal Vocabulary Expansion
+
+Beyond the default trigger phrases, the system recognizes expanded signal types for contextual trigger matching:
+
+| Signal | Purpose | Example Phrases |
+|--------|---------|----------------|
+| `CORRECTION` | Tracks when a memory is corrected or superseded | "actually", "correction", "that was wrong", "update previous" |
+| `PREFERENCE` | Captures user preference signals | "I prefer", "use this instead", "default to", "always do" |
+| `REINFORCEMENT` | Positive validation of existing memories | "that's right", "confirmed", "keep this" |
+| `DEPRECATION` | Marks memories as outdated | "no longer valid", "deprecated", "removed", "obsolete" |
+
+These signals are detected during `memory_match_triggers()` processing and influence save-time arbitration (prediction-error scoring) and correction tracking.
+
+---
+
 <!-- /ANCHOR:trigger-phrases -->
 <!-- ANCHOR:manual-save-methods -->
 ## 3. MANUAL SAVE METHODS

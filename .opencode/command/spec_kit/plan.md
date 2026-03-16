@@ -258,7 +258,7 @@ After agents return, verify hypotheses by reading identified files.
 
 ### Unified Memory Retrieval
 
-Use `/memory:context` with intent-aware retrieval:
+Use `/memory:analyze` with intent-aware retrieval:
 
 | Intent        | Retrieval Focus                            | Typical Anchors                     |
 | ------------- | ------------------------------------------ | ----------------------------------- |
@@ -271,7 +271,7 @@ Use `/memory:context` with intent-aware retrieval:
 
 | Phase         | Query                                                   | Purpose                     |
 | ------------- | ------------------------------------------------------- | --------------------------- |
-| Before Step 1 | `/memory:context --intent={intent} --query="topic"`     | Find prior related work     |
+| Before Step 1 | `/memory:analyze --intent:{intent} "topic"`            | Find prior related work     |
 | During Step 3 | `memory_search({ anchors: ['architecture'] })`          | Existing patterns/decisions |
 | During Step 5 | `memory_search({ anchors: ['decisions', 'rationale']})` | Prior planning decisions    |
 | After Step 6  | `generate-context.js [spec-folder]`                     | Preserve current planning   |

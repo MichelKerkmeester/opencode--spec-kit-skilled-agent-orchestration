@@ -34,27 +34,31 @@
 **MANDATORY TOOLS:**
 - **Spec Kit Memory MCP** for research tasks, context recovery, and finding prior work.  **Memory saves MUST use `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js [spec-folder-path]`** - NEVER manually create memory files.
 
+**GIT WORKFLOW:** 
+Full details: `.opencode/skill/sk-git/`
+- Worktree setup, conventional commits, PR creation, branch management
+- Trigger keywords: worktree, branch, commit, merge, pr, pull request, git workflow, finish work, integrate changes
+
 ### Quick Reference: Common Workflows
 
 | Task                      | Flow                                                                                                                               |
 | ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| **File modification**     | Gate 1 → Gate 2 → Gate 3 (ask spec folder) → Load memory context → Execute                                                         |
+| **File modification**     | Gate 3 (ask spec folder) → Gate 1 → Gate 2 → Load memory context → Execute                                                         |
 | **Research/exploration**  | `memory_match_triggers()` → `memory_context()` (unified) OR `memory_search()` (targeted) → Document findings                       |
 | **Code search**           | `Grep()` for text patterns, `Glob()` for file discovery, `Read()` for file contents                                                |
 | **Resume prior work**     | `/memory:continue` OR `memory_search({ query, specFolder, anchors: ['state', 'next-steps'] })` → Review checklist → Continue       |
 | **Save context**          | `/memory:save` OR `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js [spec-folder-path]` → Auto-indexed |
-| **Claim completion**      | Validation runs automatically → Load `checklist.md` → Verify ALL items → Mark with evidence                                        |  |
+| **Claim completion**      | Validation runs automatically → Load `checklist.md` → Verify ALL items → Mark with evidence                                        |
 | **End session**           | `/spec_kit:handover` → Save context → Provide continuation prompt                                                                  |
 | **New spec folder**       | Option B (Gate 3) → Research via Task tool → Evidence-based plan → Approval → Implement                                            |
 | **Complex multi-step**    | Task tool → Decompose → Delegate → Synthesize                                                                                      |
 | **Documentation**         | sk-doc skill → Classify → Load template → Fill → Validate (`validate_document.py`) → DQI score → Verify                            |
-| **CDN deployment**        | Minify → Verify → Update HTML versions → Upload to R2 → Browser test                                                               |
-| **JavaScript minify**     | `minify-webflow.mjs` → `verify-minification.mjs` → `test-minified-runtime.mjs` → Browser test                                      |
-| **Constitutional memory** | `/memory:learn [rule]` \| `list` \| `edit` \| `remove` \| `budget` → Qualify → Structure with triggers → Budget check → Write to `constitutional/` → Index |
+| **Web code**              | sk-code--web skill → Webflow/CDN standards, minification, browser testing                                                           |
+| **OpenCode system code**  | sk-code--opencode skill → JS/TS/Python/Shell standards, language detection, quality checklists                                       |
+| **Git workflow**          | sk-git skill → Worktree setup / Commit / Finish (PR)                                                                                |
 | **Phase workflow**        | `/spec_kit:phase` → Decompose → `create.sh --phase` → Populate parent/children → `validate.sh --recursive`                         |
 | **Database maintenance**  | `/memory:manage` → stats, health, cleanup, checkpoint, ingest operations                                                           |
-| **Analysis/evaluation**   | `/memory:analyze` → preflight, postflight, causal graph, ablation, dashboard, history                                              |
-| **Shared memory**         | `/memory:shared` → create, member, status (deny-by-default governance)                                                             |
+| **Analysis/evaluation**   | `/memory:analyze` → preflight, postflight, causal graph, ablation, dashboard, history                                            |
 
 ### Coding Analysis Lenses 
 
@@ -286,3 +290,36 @@ Task Received → Gate 2: Run skill_advisor.py
 3. Read bundled resources from `references/`, `scripts/`, `assets/` paths
 4. Follow skill instructions to completion
 5. Do NOT re-invoke a skill already in context
+
+### Primary Skill: sk-code--opencode
+
+For ALL OpenCode system code (`.opencode/`, MCP servers, scripts), `sk-code--opencode` provides multi-language standards. Includes the `system-spec-kit` skill for spec folder workflows and the Spec Kit Memory system for context preservation across sessions.
+
+**Supported Languages:**
+
+| Language   | Target                        | Key Patterns                                |
+| ---------- | ----------------------------- | ------------------------------------------- |
+| JavaScript | MCP servers, CommonJS modules | `require`/`module.exports`, strict mode     |
+| TypeScript | Type-safe modules, configs    | Interfaces, strict tsconfig, type guards    |
+| Python     | Validators, advisors, tests   | snake_case, argparse, pytest, docstrings    |
+| Shell      | Automation, deployment        | `set -euo pipefail`, shebang, quoting       |
+| JSON/JSONC | Manifests, schemas, configs   | Schema validation, commented config         |
+
+**Key Systems:**
+- **system-spec-kit**: Spec folder lifecycle (Levels 1-3+), validation, template architecture
+- **Spec Kit Memory**: Context preservation, semantic search, session continuity (`/memory:save`, `/memory:continue`)
+
+**Invocation:** Automatic via Gate 2 routing when OpenCode system code tasks detected.
+
+### Git Workflow Skill: sk-git
+
+For ALL git workflows, `sk-git` orchestrates workspace setup, commit hygiene, and work completion.
+
+**Sub-workflows:**
+- **Worktree**: Branch creation via `git worktree`, workspace isolation, parallel development
+- **Commit**: Conventional commit format, staged change analysis, clean commit messages
+- **Finish**: PR creation, branch cleanup, integration workflows
+
+**Trigger Keywords:** worktree, branch, commit, merge, pr, pull request, git workflow, conventional commits, finish work, integrate changes
+
+**Invocation:** Automatic via Gate 2 routing when git tasks detected, or manually via `Read(".opencode/skill/sk-git/SKILL.md")`.

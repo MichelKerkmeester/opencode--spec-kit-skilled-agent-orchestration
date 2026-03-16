@@ -2,6 +2,8 @@
 
 ## 1. OVERVIEW
 
+**STATUS: PLANNED/DEFERRED -- NOT IMPLEMENTED.** This feature has not been implemented yet.
+
 Records the deferred plan to promote parsed ANCHOR markers into typed graph nodes, pending a dedicated 2-day feasibility spike.
 
 Anchor markers are labels placed inside memories to highlight important sections. This planned feature would turn those labels into connection points in the knowledge graph, letting the system link specific parts of different memories together instead of just linking whole memories. It has been put on hold pending further investigation into whether the added complexity is worthwhile.
@@ -10,7 +12,7 @@ Anchor markers are labels placed inside memories to highlight important sections
 
 ## 2. CURRENT REALITY
 
-**PLANNED (Sprint 019): DEFERRED.** Promoting parsed ANCHOR markers into typed graph nodes (most creative insight from cross-AI research, Gemini-2) is deferred behind a dedicated 2-day feasibility spike. Estimated effort: S-M (3-5 days).
+**PLANNED/DEFERRED -- NOT ACTIVE.** This feature has not been implemented. Promoting parsed ANCHOR markers into typed graph nodes (most creative insight from cross-AI research, Gemini-2) is deferred behind a dedicated 2-day feasibility spike. Estimated effort: S-M (3-5 days). No code exists for graph-node promotion; the source files listed below handle anchor parsing and metadata extraction only, not graph-node creation.
 
 ---
 

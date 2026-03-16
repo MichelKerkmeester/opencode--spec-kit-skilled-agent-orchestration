@@ -73,7 +73,7 @@ describe('Hydra spec-pack truth sync', () => {
     expect(specContent).not.toContain('implementation-pending');
 
     expect(planContent).toContain('records the delivered HydraDB-inspired implementation');
-    expect(planContent).toContain('Local re-verification was rerun on 2026-03-15');
+    expect(planContent).toContain('Local re-verification was rerun on 2026-03-16');
     expect(planContent).not.toContain('future implementation phases');
     expect(planContent).not.toContain('This planning phase does not claim these tests have been executed.');
   });
@@ -93,7 +93,7 @@ describe('Hydra spec-pack truth sync', () => {
     }
 
     expect(tasksContent).toContain('no public `memory_query` MCP tool claim');
-    expect(checklistContent).toContain('Verification Date: 2026-03-15');
+    expect(checklistContent).toContain('Verification Date: 2026-03-16');
     expect(checklistContent).toContain('Hydra spec-pack documentation consistency is now covered by a dedicated regression test');
     expect(checklistContent).toContain('tests/file-watcher.vitest.ts` 20/20 passed');
   });
@@ -125,5 +125,8 @@ describe('Hydra spec-pack truth sync', () => {
     expect(summaryContent).toContain('npm run test:hydra:phase1');
     expect(summaryContent).toContain('npx vitest run tests/feature-flag-reference-docs.vitest.ts tests/hydra-spec-pack-consistency.vitest.ts');
     expect(summaryContent).toContain('tests/file-watcher.vitest.ts` 20/20 passed');
+    expect(summaryContent).toContain('roadmap metadata defaults all six capabilities on');
+    expect(summaryContent).toContain('shared memory remains default-off until explicitly enabled');
+    expect(summaryContent).not.toContain('shared memory remain default-on with explicit opt-out semantics');
   });
 });

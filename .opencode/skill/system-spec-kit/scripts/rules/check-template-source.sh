@@ -41,9 +41,10 @@ run_check() {
         
         checked_files+=("$doc_name")
         
-        # Check for SPECKIT_TEMPLATE_SOURCE header in first 10 lines
+        # Check for SPECKIT_TEMPLATE_SOURCE header in first 20 lines
+        # (frontmatter with trigger_phrases arrays can exceed 10 lines)
         local has_header=false
-        if head -n 10 "$doc_path" 2>/dev/null | grep -q "SPECKIT_TEMPLATE_SOURCE:"; then
+        if head -n 20 "$doc_path" 2>/dev/null | grep -q "SPECKIT_TEMPLATE_SOURCE:"; then
             has_header=true
         fi
         

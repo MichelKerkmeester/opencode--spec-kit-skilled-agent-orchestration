@@ -39,12 +39,21 @@ load_enforcement_config() {
     val=$(grep -E '^\s+created_after:\s*' "$ENFORCE_CONFIG" 2>/dev/null | head -1 | sed 's/.*created_after:\s*//' | tr -d '[:space:]"'"'" || true)
     [[ -n "$val" ]] && CREATED_AFTER="$val"
 
+    # SE-04: Validate YYYY-MM-DD date format
+    if [[ -n "$CREATED_AFTER" ]] && ! [[ "$CREATED_AFTER" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]]; then
+        echo "Warning: Invalid created_after date format '$CREATED_AFTER' (expected YYYY-MM-DD), ignoring" >&2
+        CREATED_AFTER=""
+    fi
+
     # Parse pre_commit_rules list from config
     local in_rules=false rules_str=""
     while IFS= read -r line; do
         if [[ "$line" =~ ^pre_commit_rules: ]]; then
             in_rules=true; continue
         elif $in_rules; then
+            # SE-02: Skip comment lines and blank lines within the list
+            [[ "$line" =~ ^[[:space:]]*# ]] && continue
+            [[ "$line" =~ ^[[:space:]]*$ ]] && continue
             if [[ "$line" =~ ^[[:space:]]*-[[:space:]]+([A-Za-z0-9_]+) ]]; then
                 [[ -n "$rules_str" ]] && rules_str+=","
                 rules_str+="${BASH_REMATCH[1]}"
@@ -54,6 +63,16 @@ load_enforcement_config() {
         fi
     done < "$ENFORCE_CONFIG"
     [[ -n "$rules_str" ]] && FAST_RULES="$rules_str"
+
+    # SE-03: Validate parsed mode values
+    case "$MODE" in
+        warn|block|strict) ;;
+        *) echo "Warning: Invalid mode '$MODE' in $ENFORCE_CONFIG, defaulting to 'warn'" >&2; MODE="warn" ;;
+    esac
+    case "$NEW_FOLDER_MODE" in
+        warn|block|strict) ;;
+        *) echo "Warning: Invalid new_folder_mode '$NEW_FOLDER_MODE' in $ENFORCE_CONFIG, defaulting to 'block'" >&2; NEW_FOLDER_MODE="block" ;;
+    esac
 }
 
 # ───────────────────────────────────────────────────────────────

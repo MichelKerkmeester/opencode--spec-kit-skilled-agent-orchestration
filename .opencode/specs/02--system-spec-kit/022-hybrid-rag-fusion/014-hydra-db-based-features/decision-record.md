@@ -25,7 +25,7 @@ contextType: "decision"
 
 | Field | Value |
 |-------|-------|
-| **Status** | Proposed |
+| **Status** | Accepted |
 | **Date** | 2026-03-13 |
 | **Deciders** | System-spec-kit maintainers |
 
@@ -126,7 +126,7 @@ HydraDB public guidance emphasizes versioned, append-style memory evolution, whi
 
 | Field | Value |
 |-------|-------|
-| **Status** | Proposed |
+| **Status** | Accepted |
 | **Date** | 2026-03-13 |
 | **Deciders** | System-spec-kit maintainers |
 
@@ -202,7 +202,7 @@ HydraDB public material stresses integrated hybrid retrieval and adaptive behavi
 
 | Field | Value |
 |-------|-------|
-| **Status** | Proposed |
+| **Status** | Accepted |
 | **Date** | 2026-03-13 |
 | **Deciders** | System-spec-kit maintainers |
 
@@ -277,4 +277,4 @@ HydraDB public positioning consistently pairs shared memory with strict boundari
 - HydraDB and Cortex are treated as one branding family for planning.
 - No public HydraDB source repository was available during this planning session.
 - docs.useHydraDB.ai links referenced by blog pages were not resolvable during this session.
-- ADR statuses are `Proposed` because this is planning-stage architecture, not execution complete.
+- ADR statuses updated to `Accepted` following successful implementation and verification of all 6 phases (7,767 tests passing).

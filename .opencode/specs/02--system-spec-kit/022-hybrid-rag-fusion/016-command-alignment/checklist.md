@@ -43,7 +43,7 @@ contextType: "general"
 
 - [x] CHK-010 [P0] All command files pass markdown lint — no bare code blocks, no prose em dashes (sk-doc DQI aligned)
 - [x] CHK-011 [P0] No structural errors in command docs — all routing tables, parameter tables, and tool signatures are well-formed
-- [x] CHK-012 [P1] Error handling documented — all 8 command files include error handling sections
+- [x] CHK-012 [P1] Error handling documented — all 7 command files include error handling sections
 - [x] CHK-013 [P1] Code follows project patterns — all commands use the established memory-command structure (frontmatter, mandatory gate, contract, routing, workflows, errors, related commands, appendix)
 <!-- /ANCHOR:code-quality -->
 
@@ -90,16 +90,30 @@ contextType: "general"
 
 ---
 
+<!-- ANCHOR:addendum -->
+## Addendum: v2.4.0.0 Context/Analyze Merge (2026-03-16)
+
+- [x] CHK-060 [P0] Old command files deleted -- `context.md` removed, `context.toml` removed from `.agents/` and `.gemini/`
+- [x] CHK-061 [P0] New unified `analyze.md` exists -- 926 lines, 12 tools (L1/L2/L6/L7)
+- [x] CHK-062 [P0] Zero dangling `/memory:context` refs in active docs -- Grep across `.opencode/command/`, `.opencode/agent/`, `.claude/agents/`, `.agents/agents/`, root `*.md` returns 0 results (excluded: `z_archive/`, `changelog/`, `memory/`, `scratch/`)
+- [x] CHK-063 [P0] Zero dangling `/memory:knowledge` refs -- Intermediate name fully replaced with `/memory:analyze`
+- [x] CHK-064 [P1] Tool coverage matrix updated -- README.txt maps all 12 tools to `/memory:analyze`, total 32/32 unchanged
+- [x] CHK-065 [P1] Cross-runtime aligned -- `.codex/agents/speckit.toml`, `.agents/commands/memory/*.toml`, `.gemini/commands/memory/*.toml` all updated
+- [x] CHK-066 [P1] Changelog created -- `.opencode/changelog/04--commands/v2.4.0.0.md`
+<!-- /ANCHOR:addendum -->
+
+---
+
 <!-- ANCHOR:summary -->
 ## Verification Summary
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 7 | 7/7 |
-| P1 Items | 10 | 10/10 |
+| P0 Items | 7 + 4 | 11/11 |
+| P1 Items | 10 + 3 | 13/13 |
 | P2 Items | 0 | 0/0 |
 
-**Verification Date**: 2026-03-15
+**Verification Date**: 2026-03-15 (initial), 2026-03-16 (addendum)
 <!-- /ANCHOR:summary -->
 
 ---

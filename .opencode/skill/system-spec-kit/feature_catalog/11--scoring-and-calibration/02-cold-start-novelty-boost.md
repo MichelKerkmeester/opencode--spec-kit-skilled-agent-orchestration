@@ -10,13 +10,15 @@ Brand-new memories start with a disadvantage because the scoring system has not 
 
 ## 2. CURRENT REALITY
 
+**STATUS: EFFECTIVELY DISABLED.** The hot-path call has been removed and telemetry is hardcoded to `noveltyBoostApplied: false`. This feature has no runtime effect.
+
 FSRS temporal decay biases against recent items. A memory indexed 2 hours ago has barely any retrievability score, even when it is exactly what you need.
 
-The novelty boost applies an exponential decay (`0.15 * exp(-elapsed_hours / 12)`) to memories under 48 hours old, counteracting that bias. At indexing time, the boost is 0.15. After 12 hours, it drops to about 0.055. By 48 hours, it is effectively zero.
+The novelty boost was designed to apply an exponential decay (`0.15 * exp(-elapsed_hours / 12)`) to memories under 48 hours old, counteracting that bias. At indexing time, the boost would be 0.15. After 12 hours, it drops to about 0.055. By 48 hours, it is effectively zero.
 
-The boost applies before FSRS decay and caps the composite score at 0.95 to prevent runaway inflation. One side effect: memories with high base scores (above 0.80) see diminished effective boost because the cap clips them. That is intentional. High-scoring memories do not need extra help.
+The boost applied before FSRS decay and capped the composite score at 0.95 to prevent runaway inflation. One side effect: memories with high base scores (above 0.80) saw diminished effective boost because the cap clipped them. That was intentional. High-scoring memories do not need extra help.
 
-**Sprint 8 update:** The `calculateNoveltyBoost()` call was removed from the hot scoring path in `composite-scoring.ts` because evaluation showed it always returned 0. The function definition remains but is no longer invoked during search. Telemetry fields are hardcoded to `noveltyBoostApplied: false, noveltyBoostValue: 0` for log schema compatibility.
+**Sprint 8 update:** The `calculateNoveltyBoost()` call was removed from the hot scoring path in `composite-scoring.ts` because evaluation showed it always returned 0. The function definition remains but is no longer invoked during search. Telemetry fields are hardcoded to `noveltyBoostApplied: false, noveltyBoostValue: 0` for log schema compatibility. The corresponding feature flag `SPECKIT_NOVELTY_BOOST` is marked as inert.
 
 ---
 

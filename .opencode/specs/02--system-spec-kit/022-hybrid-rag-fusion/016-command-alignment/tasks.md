@@ -14,12 +14,13 @@ description: "Executable task breakdown for aligning the memory command docs wit
 
 | Metric | Value |
 |--------|-------|
-| Total Tasks | 24 |
+| Total Tasks | 28 |
 | Phase 0 (Schema Sync) | 3 tasks (T00-T02) |
 | Phase 1 (Update Existing) | 8 tasks (T03-T10) |
 | Phase 2 (New Commands) | 6 tasks (T11-T16) |
 | Phase 3 (README Update) | 2 tasks (T17-T18) |
 | Phase 4 (Verification) | 5 tasks (T19-T23) |
+| Phase 5 (Context/Analyze Merge) | 4 tasks (T24-T27) |
 | Estimated LOC | ~900 |
 | Parallelizable | Phase 1 and Phase 2 are mostly parallel after Phase 0 |
 <!-- /ANCHOR:task-summary -->
@@ -102,8 +103,8 @@ description: "Executable task breakdown for aligning the memory command docs wit
 ### T06: Update `save.md` routing and behavioral notes
 - **Priority:** P1
 - **File:** `.opencode/command/memory/save.md`
-- **Action:** Add explicit `/memory:ingest` routing for async bulk ingestion and retain only behavior notes that still change the command contract in the current repo.
-- **Acceptance:** `save.md` clearly distinguishes synchronous save/indexing from async ingest workflows and references `/memory:ingest` in the correct sections.
+- **Action:** Add explicit `/memory:manage ingest` routing for async bulk ingestion and retain only behavior notes that still change the command contract in the current repo.
+- **Acceptance:** `save.md` clearly distinguishes synchronous save/indexing from async ingest workflows and references `/memory:manage ingest` in the correct sections.
 - **Covers:** CA-009, CA-015
 - [x] Done
 
@@ -130,13 +131,13 @@ description: "Executable task breakdown for aligning the memory command docs wit
 - **Covers:** CA-002, CA-011
 - [x] Done
 
-### T09: Add `/memory:manage history <specFolder>`
+### T09: Add `/memory:analyze history <specFolder>`
 - **Priority:** P1
-- **File:** `.opencode/command/memory/manage.md`
-- **Action:** Add a dedicated history section and lock the subcommand name to `history`.
+- **File:** `.opencode/command/memory/analyze.md`
+- **Action:** Add a dedicated history section to analyze.md and lock the subcommand name to `history` (co-located with other epistemic measurement tools).
 - **Tool to document:** `spec_kit_memory_memory_get_learning_history`
 - **Parameters to document:** `specFolder`, `sessionId`, `limit`, `onlyComplete`, `includeSummary`
-- **Acceptance:** `manage.md` uses `/memory:manage history <specFolder>` consistently and does not use any legacy hyphenated history name.
+- **Acceptance:** `analyze.md` uses `/memory:analyze history <specFolder>` consistently and does not use any legacy hyphenated history name.
 - **Covers:** CA-010
 - [x] Done
 
@@ -144,7 +145,7 @@ description: "Executable task breakdown for aligning the memory command docs wit
 - **Priority:** P2
 - **Files:** `.opencode/command/memory/learn.md`, `.opencode/command/memory/continue.md`
 - **Action:** Verify current schema references in both files and add the history workflow reference where needed.
-- **Acceptance:** Both files remain aligned with current tool signatures, and `continue.md` references `/memory:manage history <specFolder>` for richer recovery context.
+- **Acceptance:** Both files remain aligned with current tool signatures, and `continue.md` references `/memory:analyze history <specFolder>` for richer recovery context.
 - **Covers:** CA-002
 - [x] Done
 <!-- /ANCHOR:phase-1 -->
@@ -201,15 +202,15 @@ description: "Executable task breakdown for aligning the memory command docs wit
 - **Covers:** CA-006, CA-013, CA-015
 - [x] Done
 
-### T14: Create `ingest.md`
+### T14: Add ingest to `manage.md`
 - **Priority:** P1
-- **File:** `.opencode/command/memory/ingest.md`
-- **Action:** Create the async ingest command with start/status/cancel flows.
+- **File:** `.opencode/command/memory/manage.md`
+- **Action:** Add async ingest subcommand to manage.md (folded from planned standalone `ingest.md`).
 - **Tools to document:**
   - `memory_ingest_start`
   - `memory_ingest_status`
   - `memory_ingest_cancel`
-- **Acceptance:** `ingest.md` exists and clearly differentiates async ingest from `/memory:save` and `/memory:manage scan`.
+- **Acceptance:** `manage.md` includes `/memory:manage ingest` section and clearly differentiates async ingest from `/memory:save` and `/memory:manage scan`.
 - **Covers:** CA-007, CA-013
 - [x] Done
 
@@ -223,7 +224,7 @@ description: "Executable task breakdown for aligning the memory command docs wit
 
 ### T16: Add related-command cross-links
 - **Priority:** P2
-- **Files:** All 8 command files
+- **Files:** All 7 command files
 - **Action:** Update related-command sections so the final suite cross-links correctly.
 - **Acceptance:** Every command references the correct adjacent commands and uses the final `history` name consistently.
 - **Covers:** CA-012, CA-013
@@ -238,14 +239,14 @@ description: "Executable task breakdown for aligning the memory command docs wit
 ### T17: Refresh README structure and examples
 - **Priority:** P1
 - **File:** `.opencode/command/memory/README.txt`
-- **Action:** Expand the README from 5 commands to 8 and refresh the usage examples.
+- **Action:** Expand the README from 5 commands to 7 and refresh the usage examples.
 - **Required updates:**
   - command table
   - directory tree
   - usage examples
   - manage subcommand list using `history`
   - troubleshooting notes for the new commands
-- **Acceptance:** README describes the final 8-command suite and uses only final subcommand names.
+- **Acceptance:** README describes the final 7-command suite and uses only final subcommand names.
 - **Covers:** CA-012
 - [x] Done
 
@@ -344,8 +345,42 @@ Phase 4:
 
 ---
 
+<!-- ANCHOR:phase-5 -->
+## PHASE 5: CONTEXT/ANALYZE MERGE (v2.4.0.0)
+
+### T24: Merge context.md into analyze.md
+- **Priority:** P0
+- **Files:** `.opencode/command/memory/analyze.md`, `.opencode/command/memory/context.md`
+- **Action:** Rewrite analyze.md as unified command with retrieval (default) + analysis (subcommand) modes. Delete context.md.
+- **Acceptance:** analyze.md contains all retrieval content (intent types, weights, anchors, token budget, deduplication) plus all analysis content (epistemic, causal, eval). 926 lines, 12 tools.
+- [x] Done
+
+### T25: Update all cross-references (7-to-6 command suite)
+- **Priority:** P0
+- **Files:** 5 sibling commands, README.txt, 4 agent definitions, 9 framework docs, 8 active spec files
+- **Action:** Replace `/memory:context` with `/memory:analyze` in all non-archived documentation.
+- **Acceptance:** Zero dangling `/memory:context` or `/memory:knowledge` references in active docs.
+- [x] Done
+
+### T26: Align cross-runtime TOML files
+- **Priority:** P1
+- **Files:** `.agents/commands/memory/`, `.gemini/commands/memory/`, `.codex/agents/speckit.toml`
+- **Action:** Delete context.toml, regenerate analyze.toml, update sibling TOML cross-references.
+- **Acceptance:** Zero `/memory:context` references across `.codex/`, `.agents/`, `.claude/`, `.gemini/`.
+- [x] Done
+
+### T27: Create changelog and update spec docs
+- **Priority:** P1
+- **Files:** `.opencode/changelog/04--commands/v2.4.0.0.md`, spec folder docs
+- **Action:** Create changelog entry, add addendum to implementation-summary, update checklist.
+- **Acceptance:** Changelog exists, spec folder reflects the merge.
+- [x] Done
+<!-- /ANCHOR:phase-5 -->
+
+---
+
 <!--
 TASKS: 016-command-alignment
-24/24 tasks complete — finalized 2026-03-15
-7-command suite (ingest in manage, history in analyze) + sk-doc DQI pass
+28/28 tasks complete -- finalized 2026-03-15, addendum 2026-03-16
+6-command suite (context merged into analyze, ingest in manage, history in analyze) + sk-doc DQI pass
 -->

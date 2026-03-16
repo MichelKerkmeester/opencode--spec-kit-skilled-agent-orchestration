@@ -198,7 +198,7 @@ The finished save behavior is now:
 |---------|--------|
 | `cd .opencode/skill/system-spec-kit/scripts && npm run check` | PASS |
 | `cd .opencode/skill/system-spec-kit/scripts && npm run build` | PASS |
-| `cd .opencode/skill/system-spec-kit/scripts && npm test -- --run tests/spec-affinity.vitest.ts tests/claude-code-capture.vitest.ts tests/codex-cli-capture.vitest.ts tests/copilot-cli-capture.vitest.ts tests/gemini-cli-capture.vitest.ts tests/quality-scorer-calibration.vitest.ts tests/runtime-memory-inputs.vitest.ts tests/stateless-enrichment.vitest.ts tests/task-enrichment.vitest.ts tests/memory-render-fixture.vitest.ts tests/generate-context-cli-authority.vitest.ts tests/memory-sufficiency.vitest.ts tests/memory-template-contract.vitest.ts tests/historical-memory-remediation.vitest.ts` | PASS, `14` files and `125` tests passed |
+| `cd .opencode/skill/system-spec-kit/scripts && npm test -- --run tests/spec-affinity.vitest.ts tests/claude-code-capture.vitest.ts tests/codex-cli-capture.vitest.ts tests/copilot-cli-capture.vitest.ts tests/gemini-cli-capture.vitest.ts tests/quality-scorer-calibration.vitest.ts tests/runtime-memory-inputs.vitest.ts tests/stateless-enrichment.vitest.ts tests/task-enrichment.vitest.ts tests/memory-render-fixture.vitest.ts tests/generate-context-cli-authority.vitest.ts tests/memory-sufficiency.vitest.ts tests/memory-template-contract.vitest.ts tests/historical-memory-remediation.vitest.ts` | PASS, `14` files and `127` tests passed |
 | `cd .opencode/skill/system-spec-kit/scripts/tests && node test-extractors-loaders.js` | PASS, `288` passed, `0` failed, `0` skipped |
 | `cd .opencode/skill/system-spec-kit/scripts/tests && node test-bug-fixes.js` | PASS, `27` passed, `0` failed, `0` skipped |
 | `cd .opencode/skill/system-spec-kit/scripts/tests && node test-integration.js` | PASS, `36` passed, `0` failed, `0` skipped |
@@ -206,8 +206,8 @@ The finished save behavior is now:
 | `cd .opencode/skill/system-spec-kit/mcp_server && npm run lint` | PASS |
 | `cd .opencode/skill/system-spec-kit/mcp_server && npm run build` | PASS |
 | `cd .opencode/skill/system-spec-kit/mcp_server && npm run test:core -- tests/handler-memory-save.vitest.ts tests/recovery-hints.vitest.ts tests/quality-loop.vitest.ts tests/save-quality-gate.vitest.ts tests/preflight.vitest.ts tests/integration-save-pipeline.vitest.ts` | PASS, `6` files and `298` tests passed |
-| `cd .opencode/skill/system-spec-kit/mcp_server && npm run test` | PASS |
-| `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit/scripts` | PASS, `226` scanned, `0` findings |
+| `cd .opencode/skill/system-spec-kit/mcp_server && npm run test` | PASS, `282` files, `7787` passed, `11` skipped, `28` todo |
+| `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit/scripts` | PASS, `229` scanned, `0` findings |
 | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing` | PASS, `0` errors and `0` warnings |
 <!-- /ANCHOR:verification -->
 

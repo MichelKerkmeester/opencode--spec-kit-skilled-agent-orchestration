@@ -308,7 +308,14 @@ async function extractDecisions(
 
     // Ensure at least one option for template rendering
     if (OPTIONS.length === 0 && narrative.trim()) {
-      const impliedDescription = narrative.substring(0, 100) + (narrative.length > 100 ? '...' : '');
+      let impliedDescription: string;
+      if (narrative.length > 100) {
+        const truncated = narrative.substring(0, 100);
+        const lastSpace = truncated.lastIndexOf(' ');
+        impliedDescription = (lastSpace > 40 ? truncated.substring(0, lastSpace) : truncated) + '...';
+      } else {
+        impliedDescription = narrative;
+      }
       OPTIONS.push({
         OPTION_NUMBER: 1,
         LABEL: 'Chosen Approach',

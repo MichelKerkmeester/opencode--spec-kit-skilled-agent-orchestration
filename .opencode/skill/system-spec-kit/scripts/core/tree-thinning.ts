@@ -115,11 +115,44 @@ function groupByParent(files: FileEntry[]): Map<string, FileEntry[]> {
 }
 
 /**
+ * Generate a brief description from merged child file entries.
+ * CG-06: Replace "description pending" with actual file-based descriptions.
+ */
+export function generateMergedDescription(children: FileEntry[]): string {
+  const count = children.length;
+  const fileNames = children
+    .map((child) => {
+      const parts = child.path.split('/');
+      return parts[parts.length - 1] || child.path;
+    })
+    .filter(Boolean);
+
+  if (fileNames.length === 0) {
+    return `Modified ${count} file${count !== 1 ? 's' : ''}`;
+  }
+
+  const joined = fileNames.slice(0, 3).join(', ');
+  const suffix = fileNames.length > 3 ? `, +${fileNames.length - 3} more` : '';
+  const description = `Modified ${count} file${count !== 1 ? 's' : ''}: ${joined}${suffix}`;
+
+  // Word-boundary truncation if too long
+  if (description.length > 80) {
+    const truncated = description.substring(0, 77);
+    const lastSpace = truncated.lastIndexOf(' ');
+    return (lastSpace > 30 ? truncated.substring(0, lastSpace) : truncated) + '...';
+  }
+
+  return description;
+}
+
+/**
  * Build a merged summary string from a set of child file entries.
  * Preserves all content with path headers to prevent content loss.
  */
 function buildMergedSummary(children: FileEntry[]): string {
-  return children
+  const description = generateMergedDescription(children);
+  const descHeader = `<!-- description: ${description} -->\n`;
+  return descHeader + children
     .map((child) => {
       const header = `<!-- merged from: ${child.path} -->\n`;
       return `${header}${child.content}`;

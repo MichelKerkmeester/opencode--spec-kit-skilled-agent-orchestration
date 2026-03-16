@@ -27,10 +27,8 @@
     "02--system-spec-kit",
     "022-hybrid-rag-fusion"
   ],
-  "memorySequence": 33,
+  "memorySequence": 35,
   "memoryNameHistory": [
-    "15-03-26_10-58__routing-to-media-editor-let-me-locate-and-load.md",
-    "15-03-26_10-58__i-ve-read-all-8-files-this-is-a-large-batch-of.md",
     "15-03-26_10-58__i-found-a-large-dirty-worktree-with-many.md",
     "15-03-26_12-01__verified-anchor-preserving-cleanup-path.md",
     "15-03-26_12-02__verified-anchor-preserving-cleanup-path.md",
@@ -48,6 +46,8 @@
     "15-03-26_16-05__remapped-stale-regression-checks-to-live-compiled.md",
     "15-03-26_16-08__validated-010-perfect-session-capturing-package.md",
     "15-03-26_16-08__i-reviewed-the-thin-capture-path-for-010-perfect.md",
-    "15-03-26_16-08__i-checked-the-save-path-for-010-perfect-session.md"
+    "15-03-26_16-08__i-checked-the-save-path-for-010-perfect-session.md",
+    "16-03-26_11-34__shared-sufficiency-gate-blocks-thin-saves.md",
+    "16-03-26_11-34__shared-sufficiency-gate-blocks-thin-saves-1.md"
   ]
 }

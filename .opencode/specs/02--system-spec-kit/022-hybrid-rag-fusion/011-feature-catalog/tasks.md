@@ -35,6 +35,8 @@ title: "Tasks: Feature Catalog Audit & Remediation"
 
 ## Phase B: Research Delegation (30 Agents) — COMPLETE
 
+> **Historical snapshot boundary (2026-03-08):** Phase B reflects the executed 180-feature audit baseline, not the later 189-snippet live tree.
+
 ### Stream 1: Feature Verification (20 Codex Agents, GPT-5.4)
 
 - [x] T010 [P] C01: Verify 01-retrieval — 9 files (scratch/verification-C01.md)
@@ -81,7 +83,7 @@ title: "Tasks: Feature Catalog Audit & Remediation"
 - [x] T043 Create analysis-summary.md (scratch/analysis-summary.md)
 
 **Key findings:**
-- 180 features verified, 7 pass (3.9%), 173 need remediation
+- 180 historical-snapshot features verified, 7 pass (3.9%), 173 need remediation
 - 48/55 original gaps confirmed, 7 false positives, 29 new gaps discovered
 - 3 invalid file paths affecting 55 snippet files (batch-fixable)
 - 18 features need complete rewrite
@@ -97,7 +99,19 @@ title: "Tasks: Feature Catalog Audit & Remediation"
 
 ---
 
-## Phase E: Remediation Execution (FUTURE — from manifest)
+## Phase E: Current-State Addendum (2026-03-16) — COMPLETE
+
+- [x] T172 Reconcile snapshot vs live-tree counts (180 historical vs 189 current)
+- [x] T173 Audit 14 omitted current snippets and classify remediation status
+- [x] T174 Mark 12/14 omitted snippets as structurally current, no immediate remediation
+- [x] T175 Add source-path normalization follow-up for `16--tooling-and-scripts/11-feature-catalog-code-references.md`
+- [x] T176 Add source-path correction/removal follow-up for invalid `command/memory/context.md` reference in `16--tooling-and-scripts/13-constitutional-memory-manager-command.md`
+- [x] T177 Clarify tooling narrative drift (plan said Copilot; execution artifacts are Codex)
+- [x] T178 Clarify taxonomy drift (`19-decisions`/`20-flags` historical labels vs current monolith sections 20/21/22)
+
+---
+
+## Phase F: Remediation Execution (FUTURE — from manifest)
 
 ### E1: Batch Fixes (P0 — Scriptable)
 - [ ] T100 Global replace `retry.vitest.ts` → `retry-manager.vitest.ts` (52 snippets)
@@ -124,6 +138,8 @@ title: "Tasks: Feature Catalog Audit & Remediation"
 - [ ] T125 [P] Rewrite 17-governance/02-feature-flag-sunset-audit
 - [ ] T126 [P] Rewrite 20-flags/01-1-search-pipeline-features-speckit
 - [ ] T127 [P] Rewrite 20-flags/05-5-embedding-and-api
+- [ ] T128 [P] Normalize SOURCE FILES path style in `16--tooling-and-scripts/11-feature-catalog-code-references.md` (replace broad globs/external verifier alias with canonical repo-resolved references)
+- [ ] T129 [P] Correct/remove invalid `command/memory/context.md` SOURCE FILES entry in `16--tooling-and-scripts/13-constitutional-memory-manager-command.md`
 
 ### E3: Description + Path Updates (P1 — 63 features)
 - [ ] T130 [P] Update BOTH features across all 20 categories (per manifest)
@@ -138,7 +154,7 @@ title: "Tasks: Feature Catalog Audit & Remediation"
 - [ ] T160 [P] Create snippet files for 48 confirmed original gaps
 - [ ] T161 [P] Create snippet files for 29 newly discovered gaps
 
-### E7: Final Sync
+### F7: Final Sync
 - [ ] T170 Run `replace-monolith-source-files.mjs` to sync monolith
 - [ ] T171 Run file path validation: all paths must resolve
 
@@ -149,8 +165,9 @@ title: "Tasks: Feature Catalog Audit & Remediation"
 - [x] All Phase A tasks `[x]`
 - [x] All 30 agent reports exist and are non-empty
 - [x] Remediation manifest produced
+- [x] Phase E addendum completed for 14 omitted current snippets
 - [x] No `[B]` blocked tasks remaining
-- [ ] Phase E remediation executed (separate workflow)
+- [ ] Phase F remediation executed (separate workflow)
 
 ---
 

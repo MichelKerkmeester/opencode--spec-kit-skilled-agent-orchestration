@@ -331,7 +331,7 @@ afterAll(() => {
     // Ignore cleanup errors
   }
   fs.rmSync(TEST_DB_DIR, { recursive: true, force: true });
-  fs.rmSync(path.join(process.cwd(), 'tmp-test-fixtures'), { recursive: true, force: true });
+  fs.rmSync(FIXTURE_ROOT, { recursive: true, force: true });
 });
 
 // ───────────────────────────────────────────────────────────────

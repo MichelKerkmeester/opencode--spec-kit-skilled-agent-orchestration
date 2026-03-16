@@ -612,6 +612,8 @@ These 29 catalog entries are explicitly documented here even when validation is 
   - `M-007j` Final `NO_DATA_AVAILABLE` hard-fail
   - `NEW-133` cross-reference for MCP `memory_save` dry-run and insufficiency preview
   - `NEW-149` cross-reference for rendered-memory contract enforcement and historical remediation
+- Latest automated baseline refresh:
+  - On 2026-03-16, the targeted scripts closure suite reran cleanly with `14` files and `127` tests, package-clean MCP verification reran cleanly, and alignment drift passed with `229` scanned files and `0` findings.
 - Commands:
   - Part I hardening spot checks:
     - `grep -n 'crypto.randomBytes' .opencode/skill/system-spec-kit/scripts/extractors/session-extractor.ts`

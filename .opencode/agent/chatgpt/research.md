@@ -2,8 +2,6 @@
 name: research
 description: Technical investigation specialist with evidence gathering, pattern analysis, and research documentation capabilities
 mode: subagent
-model: openai/gpt-5.4
-reasoningEffort: xhigh
 temperature: 0.1
 permission:
   read: allow

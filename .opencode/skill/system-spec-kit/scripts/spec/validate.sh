@@ -149,7 +149,11 @@ apply_env_overrides() {
         for _r in "${_rules[@]}"; do
             local _canonical
             _canonical=$(canonicalize_rule_name "$_r")
-            [[ -n "$_canonical" ]] && RULE_ORDER+=("$_canonical")
+            if [[ -n "$_canonical" ]]; then
+                RULE_ORDER+=("$_canonical")
+            else
+                echo "Warning: Unrecognized SPECKIT_RULES entry: '$_r'" >&2
+            fi
         done
         unset _rules _r _canonical
     fi
@@ -251,6 +255,12 @@ detect_level() {
             level=$(grep -E '\|\s*Level\s*\|\s*[123]\+?\s*\|' "$spec_file" 2>/dev/null | grep -oE '[123]\+?' | head -1 || true)
         fi
         
+        # Pattern 2b: Bullet metadata format (SE-05)
+        # - **Level**: 2 or - **Level**: 3+
+        if [[ -z "$level" ]]; then
+            level=$(grep -E '^[[:space:]]*-[[:space:]]+\*\*Level\*\*:?\s*[123]\+?' "$spec_file" 2>/dev/null | grep -oE '[123]\+?' | head -1 || true)
+        fi
+
         # Pattern 3: YAML frontmatter
         # Level: 2 or level: 3+
         if [[ -z "$level" ]]; then
@@ -374,7 +384,11 @@ get_rule_scripts() {
             local script_name; script_name=$(rule_name_to_script "$rule_name")
             [[ -z "$script_name" ]] && continue
             local script="$RULES_DIR/check-${script_name}.sh"
-            [[ -f "$script" ]] && echo "$script"
+            if [[ -f "$script" ]]; then
+                echo "$script"
+            else
+                echo "Warning: Rule script not found: check-${script_name}.sh (from rule '$rule_name')" >&2
+            fi
         done
     else
         for script in "$RULES_DIR"/check-*.sh; do

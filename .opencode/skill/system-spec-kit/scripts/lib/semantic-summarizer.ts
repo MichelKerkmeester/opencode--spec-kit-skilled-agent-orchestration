@@ -220,7 +220,7 @@ function extractFileChanges(messages: SemanticMessage[], observations: SemanticO
     const content: string = msg.prompt || msg.content || msg.CONTENT || '';
     const type: MessageType = classifyMessage(content);
 
-    if (type === MESSAGE_TYPES.IMPLEMENTATION || type === MESSAGE_TYPES.RESULT) {
+    if (type === MESSAGE_TYPES.IMPLEMENTATION || type === MESSAGE_TYPES.RESULT || extractFilePaths(content).length > 0) {
       const paths: string[] = extractFilePaths(content);
       let lastSearchPosition: number = 0;
 

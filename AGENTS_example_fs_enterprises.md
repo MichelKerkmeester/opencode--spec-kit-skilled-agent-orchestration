@@ -6,7 +6,7 @@
 
 ### Multi-Stack Architecture
 
-**Universal Framework:** This AGENTS.md variant extends the base template with stack-aware development workflows. Stack-specific behavior is handled automatically by the `sk--code` skill.
+**Universal Framework:** This AGENTS.md variant extends the base template with stack-aware development workflows. Stack-specific behavior is handled automatically by the `sk--code--full-stack` skill.
 
 **Stack Detection:** Automatic via marker files (first match wins):
 
@@ -19,28 +19,33 @@
 | Node.js       | `package.json` (fallback)          | Service layering, async flow, middleware        |
 
 **How It Works:**
-1. `sk--code` detects stack via marker files at session start
-2. Stack-specific patterns load from `.opencode/skill/sk--code/references/{category}/{stack}/`
+1. `sk--code--full-stack` detects stack via marker files at session start
+2. Stack-specific patterns load from `.opencode/skill/sk--code--full-stack/references/{category}/{stack}/`
 3. Verification commands auto-adjust per stack (see Quick Reference below)
 
 **The Iron Law:** NO completion claims without running stack-appropriate verification.
 
 ---
 
-## 1. 🚨 CRITICAL RULES (MANDATORY)
+## 1. 🚨 CRITICAL RULES
 
-**HARD BLOCKERS (must do or stop):**
-- **All file modifications require a spec folder** — code, documentation, configuration, templates, etc. (Gate 3)
-- **Never lie or fabricate** — use "UNKNOWN" when uncertain, verify before claiming completion
-- **Clarify** if confidence < 80% or ambiguity exists; **propose options** (see §4 Confidence Framework)
-- **Use explicit uncertainty:** prefix claims with "I'M UNCERTAIN ABOUT THIS:"
-- **Lock the Mission Frame**: Scope defined in `spec.md`/`plan.md` is FROZEN. New requests → ask to update Spec or create new one.
+**HARD BLOCKERS (The "Four Laws" of Agent Safety):**
+1. **READ FIRST:** Never edit a file without reading it first. Understand context before modifying.
+2. **SCOPE LOCK:** Only modify files explicitly in scope. **NO** "cleaning up" or "improving" adjacent code. Scope in `spec.md` is FROZEN.
+3. **VERIFY:** Syntax checks and tests **MUST** pass before claiming completion. **NO** blind commits.
+4. **HALT:** Stop immediately if uncertain, if line numbers don't match, or if tests fail. (See "Halt Conditions" below).
+
+**OPERATIONAL MANDATES:**
+- **All file modifications require a spec folder** (Gate 3).
+- **Never lie or fabricate** - use "UNKNOWN" when uncertain.
+- **Clarify** if confidence < 80% (see §5 Confidence Framework).
+- **Use explicit uncertainty:** Prefix claims with "I'M UNCERTAIN ABOUT THIS:".
 
 **QUALITY PRINCIPLES:**
 - **Prefer simplicity**, reuse existing patterns, and cite evidence with sources
 - Solve only the stated problem; **avoid over-engineering** and premature optimization
 - **Verify with checks** (simplicity, performance, maintainability, scope) before making changes
-- **Truth over agreement** — correct user misconceptions with evidence; do not agree for conversational flow
+- **Truth over agreement** - correct user misconceptions with evidence; do not agree for conversational flow
 
 **HALT CONDITIONS (Stop and Report):**
 - [ ] Target file does not exist or line numbers don't match.
@@ -50,7 +55,7 @@
 - [ ] Test/Production boundary is unclear.
 
 **MANDATORY TOOLS:**
-- **Spec Kit Memory MCP** for research tasks, context recovery, and finding prior work. **Memory saves MUST use `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js [spec-folder-path]`** — NEVER manually create memory files.
+- **Spec Kit Memory MCP** for research tasks, context recovery, and finding prior work.  **Memory saves MUST use `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js [spec-folder-path]`** - NEVER manually create memory files.
 
 **GIT WORKFLOW:** Full details: `.opencode/skill/sk-git/`
 - Worktree setup, conventional commits, PR creation, branch management
@@ -60,16 +65,16 @@
 
 | Task                      | Flow                                                                                                                     |
 | ------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| **File modification**     | Gate 1 → Gate 2 → Gate 3 (ask spec folder) → Load memory context → Execute                                               |
+| **File modification**     | Gate 3 (ask spec folder) → Gate 1 → Gate 2 → Load memory context → Execute                                               |
 | **Research/exploration**  | `memory_match_triggers()` → `memory_context()` (unified) OR `memory_search()` (targeted) → Document findings              |
 | **Code search**           | `Grep()` for text patterns, `Glob()` for file discovery, `Read()` for file contents                                      |
-| **Resume prior work**     | Load memory files from spec folder → Review checklist → Continue                                                         |
-| **Save context**          | Execute `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js [spec-folder-path]` → Auto-indexed |
+| **Resume prior work**     | `/memory:continue` OR `memory_search({ query, specFolder, anchors: ['state', 'next-steps'] })` → Review checklist → Continue       |
+| **Save context**          | `/memory:save` OR `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js [spec-folder-path]` → Auto-indexed |
 | **Claim completion**      | Validation runs automatically → Load `checklist.md` → Verify ALL items → Mark with evidence                              |
 | **End session**           | `/spec_kit:handover` → Save context → Provide continuation prompt                                                        |
 | **New spec folder**       | Option B (Gate 3) → Research via Task tool → Evidence-based plan → Approval → Implement                                  |
 | **Complex multi-step**    | Task tool → Decompose → Delegate → Synthesize                                                                            |
-| **Documentation**         | sk-doc skill → Classify → Load template → Fill → Validate → DQI score → Verify                                           |
+| **Documentation**         | sk-doc skill → Classify → Load template → Fill → Validate (`validate_document.py`) → DQI score → Verify                  |
 | **Code implementation**   | sk--code skill → Detect stack → Phase 1-3 (Implement → Test → Verify)                                                    |
 | **Git workflow**          | sk-git skill → Worktree setup / Commit / Finish (PR)                                                                     |
 | **Go verification**       | `go test ./...` → `golangci-lint run` → `go build ./...`                                                                 |
@@ -77,10 +82,9 @@
 | **React verification**    | `npm test` → `npx eslint .` → `npm run build`                                                                            |
 | **React Native verify**   | `npm test` → `npx eslint .` → `npx expo export`                                                                          |
 | **Swift verification**    | `swift test` → `swiftlint` → `swift build`                                                                               |
-| **Constitutional memory** | `/memory:learn [rule]` \| `list` \| `edit` \| `remove` \| `budget` → Qualify → Structure with triggers → Budget check → Write to `constitutional/` → Index |
 | **Phase workflow**        | `/spec_kit:phase` → Decompose → `create.sh --phase` → Populate parent/children → `validate.sh --recursive`               |
 | **Database maintenance**  | `/memory:manage` → stats, health, cleanup, checkpoint, ingest operations                                                           |
-| **Analysis/evaluation**   | `/memory:analyze` → preflight, postflight, causal graph, ablation, dashboard, history                                              |
+| **Analysis/evaluation**   | `/memory:analyze` → preflight, postflight, causal graph, ablation, dashboard, history                                            |
 | **Shared memory**         | `/memory:shared` → create, member, status (deny-by-default governance)                                                             |
 
 ### Coding Analysis Lenses
@@ -113,7 +117,7 @@
 
 ### 🔒 PRE-EXECUTION GATES (Pass before ANY tool use)
 
-#### GATE 1: UNDERSTANDING + CONTEXT SURFACING [SOFT BLOCK]
+#### GATE 1: UNDERSTANDING + CONTEXT SURFACING [SOFT] BLOCK
 Trigger: EACH new user message (re-evaluate even in ongoing conversations)
 1. Call `memory_match_triggers(prompt)` → Surface relevant context
 2. Classify intent: Research or Implementation
@@ -122,14 +126,14 @@ Trigger: EACH new user message (re-evaluate even in ongoing conversations)
 
 > Gate 1 is SOFT — if file modification detected, Gate 3 (HARD) takes precedence. Ask spec folder question BEFORE analysis.
 
-#### GATE 2: SKILL ROUTING [REQUIRED for non-trivial tasks]
+####  GATE 2: SKILL ROUTING [REQUIRED for non-trivial tasks]
 1. A) Run: `python3 .opencode/skill/scripts/skill_advisor.py "[request]" --threshold 0.8`
 2. B) Cite user's explicit direction: "User specified: [exact quote]"
 - Confidence ≥ 0.8 → MUST invoke skill | < 0.8 → general approach | User names skill → cite and proceed
 - Output: `SKILL ROUTING: [result]` or `SKILL ROUTING: User directed → [name]`
 - Skip: trivial queries only (greetings, single-line questions)
 
-#### GATE 3: SPEC FOLDER QUESTION [HARD BLOCK] — PRIORITY GATE
+#### GATE 3: SPEC FOLDER QUESTION [HARD] BLOCK — PRIORITY GATE
 - **Overrides Gates 1-2:** If file modification detected → ask Gate 3 BEFORE any analysis/tool calls
 - **Triggers:** rename, move, delete, create, add, remove, update, change, modify, edit, fix, refactor, implement, build, write, generate, configure, analyze, decompose, phase — or any task resulting in file changes
 - **Options:** A) Existing | B) New | C) Update related | D) Skip | E) Phase folder (e.g., `specs/NNN-name/001-phase/`)
@@ -147,7 +151,7 @@ When multiple inputs are needed, consolidate into a SINGLE prompt — never spli
 
 ### 🔒 POST-EXECUTION RULES
 
-#### MEMORY SAVE RULE [HARD]
+#### MEMORY SAVE RULE [HARD] BLOCK
 Trigger: "save context", "save memory", `/memory:save`, memory file creation
 - If spec folder established at Gate 3 → USE IT (don't re-ask). Carry-over applies ONLY to memory saves
 - If NO folder and Gate 3 never answered → HARD BLOCK → Ask user
@@ -158,7 +162,7 @@ Trigger: "save context", "save memory", `/memory:save`, memory file creation
 - **Indexing:** For immediate MCP visibility after save: `memory_index_scan({ specFolder })` or `memory_save()`
 - **Violation:** Write tool on `memory/` path → DELETE and re-run via script
 
-#### COMPLETION VERIFICATION RULE [HARD]
+#### COMPLETION VERIFICATION RULE [HARD] BLOCK
 Trigger: Claiming "done", "complete", "finished", "works"
 1. Validation runs automatically on spec folder (if exists)
 2. Load `checklist.md` → Verify ALL items → Mark `[x]` with evidence
@@ -285,7 +289,7 @@ Use the agent directory that matches the active runtime/provider profile:
    - Figma, Github, ClickUp, Chrome DevTools, etc.
    - Naming: `{manual_name}.{manual_name}_{tool_name}` (e.g., `clickup.clickup_get_teams({})`)
    - Discovery: `search_tools()`, `list_tools()`, or read `.utcp_config.json`
-
+  
 ---
 
 ## 8. 🧩 SKILLS SYSTEM
@@ -314,9 +318,9 @@ Task Received → Gate 2: Run skill_advisor.py
 4. Follow skill instructions to completion
 5. Do NOT re-invoke a skill already in context
 
-### Primary Skill: sk--code
+### Primary Skill: sk-code--full-stack
 
-For ALL code implementation, `sk--code` is the primary orchestrator skill.
+For ALL code implementation, `sk-code--full-stack` is the stack-agnostic development orchestrator.
 
 **3-Phase Lifecycle (MANDATORY):**
 1. **Phase 1 - Implementation**: Write code following stack-specific patterns from `references/{category}/{stack}/`

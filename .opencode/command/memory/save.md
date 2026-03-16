@@ -343,7 +343,7 @@ Display the completion report (see Section 6).
     "timestamp": "2026-02-01T14:30:00Z"
   },
   "hints": [
-    "Use /memory:context to find this memory later",
+    "Use /memory:analyze to find this memory later",
     "Anchors enable 93% token savings when loading specific sections"
   ],
   "meta": {
@@ -441,7 +441,7 @@ STATUS=OK ID=<id> TRIGGERS=<count>
 | ---------------------------- | ------------------------------------------ | ----------------------------- |
 | Context saved, continue work | Return to previous task                    | Memory preserved, continue    |
 | Ending session               | `/spec_kit:handover [spec-folder-path]`    | Create full handover document |
-| Search saved memories        | `/memory:context [query]`                  | Find related context          |
+| Search saved memories        | `/memory:analyze [query]`                | Find related context          |
 | Start new work               | `/spec_kit:complete [feature-description]` | Begin new feature             |
 
 **ALWAYS** end with: "Context saved. What would you like to do next?"
@@ -450,11 +450,10 @@ STATUS=OK ID=<id> TRIGGERS=<count>
 
 ## 9. RELATED COMMANDS
 
-- `/memory:context`: Intent-aware context retrieval
+- `/memory:analyze`: Intent-aware context retrieval and analysis tools
 - `/memory:manage`: Database management, checkpoints, ingest
 - `/memory:learn`: Constitutional memories
 - `/memory:continue`: Session recovery
-- `/memory:analyze`: Analysis, causal graph, evaluation, learning history
 - `/memory:shared`: Shared-memory spaces
 - `/spec_kit:handover`: Full session handover document
 

@@ -380,11 +380,26 @@ function generateLearningSummary(
 function determineSessionStatus(
   blockers: string,
   observations: Observation[],
-  messageCount: number
+  messageCount: number,
+  collectedData?: CollectedDataFull | null
 ): string {
   const completionKeywords = /\b(?:done|complete[d]?|finish(?:ed)?|success(?:ful(?:ly)?)?)\b/i;
   const resolutionKeywords = /\b(?:resolved|fixed|unblocked|works?\s+now|workaround)\b/i;
   const lastObs = observations[observations.length - 1];
+
+  // CG-03: Detect completion from explicit JSON-mode data
+  if (collectedData) {
+    const hasSessionSummary = !!(collectedData as Record<string, unknown>).sessionSummary;
+    const hasKeyDecisions = Array.isArray((collectedData as Record<string, unknown>).keyDecisions) &&
+      ((collectedData as Record<string, unknown>).keyDecisions as unknown[]).length > 0;
+    const hasNextSteps = !!(collectedData as Record<string, unknown>).nextSteps;
+    const isFileSource = (collectedData as Record<string, unknown>)._source === 'file';
+
+    // If explicit JSON data has summary + decisions + next steps, session is complete
+    if (isFileSource && hasSessionSummary && (hasKeyDecisions || hasNextSteps)) {
+      return 'COMPLETED';
+    }
+  }
 
   if (blockers && blockers !== 'None') {
     // F-25: Reconciliation pass — check if later observations show resolution after blocker
@@ -416,10 +431,20 @@ function estimateCompletionPercent(
   observations: Observation[],
   messageCount: number,
   toolCounts: ToolCounts,
-  sessionStatus: string
+  sessionStatus: string,
+  collectedData?: CollectedDataFull | null
 ): number {
   if (sessionStatus === 'COMPLETED') return 100;
   if (sessionStatus === 'BLOCKED') return Math.min(90, messageCount * 5);
+
+  // CG-03: JSON-mode explicit data with sessionSummary → high completion
+  if (collectedData) {
+    const hasSessionSummary = !!(collectedData as Record<string, unknown>).sessionSummary;
+    const isFileSource = (collectedData as Record<string, unknown>)._source === 'file';
+    if (isFileSource && hasSessionSummary) {
+      return 95;
+    }
+  }
 
   const totalTools = Object.values(toolCounts).reduce((a, b) => a + b, 0);
   const writeTools = (toolCounts.Write || 0) + (toolCounts.Edit || 0);
@@ -582,18 +607,19 @@ interface ContinueSessionParams {
   blockers: string;
   duration: string;
   decisionCount: number;
+  collectedData?: CollectedDataFull | null;
 }
 
 function buildContinueSessionData(params: ContinueSessionParams): ContinueSessionData {
   const {
     observations, userPrompts, toolCounts, recentContext,
     FILES, SPEC_FILES, summary, projectPhase, nextAction,
-    blockers, duration, decisionCount
+    blockers, duration, decisionCount, collectedData
   } = params;
 
-  const sessionStatus = determineSessionStatus(blockers, observations, userPrompts.length);
+  const sessionStatus = determineSessionStatus(blockers, observations, userPrompts.length, collectedData);
   const completionPercent = estimateCompletionPercent(
-    observations, userPrompts.length, toolCounts, sessionStatus
+    observations, userPrompts.length, toolCounts, sessionStatus, collectedData
   );
   const pendingTasks = extractPendingTasks(observations, recentContext, nextAction);
   const contextSummary = generateContextSummary(summary, observations, projectPhase, decisionCount);
@@ -816,7 +842,8 @@ async function collectSessionData(
     nextAction,
     blockers,
     duration,
-    decisionCount
+    decisionCount,
+    collectedData: data
   });
 
   return {

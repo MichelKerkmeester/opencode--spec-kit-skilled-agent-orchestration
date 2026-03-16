@@ -12,7 +12,7 @@ title: "017 — Agent Alignment: Sync Runtime Agent Definitions"
 | **Priority**| P1                                                       |
 | **Parent**  | 022-hybrid-rag-fusion                                    |
 | **Created** | 2026-03-15                                               |
-| **Updated** | 2026-03-15                                               |
+| **Updated** | 2026-03-16                                               |
 
 ---
 

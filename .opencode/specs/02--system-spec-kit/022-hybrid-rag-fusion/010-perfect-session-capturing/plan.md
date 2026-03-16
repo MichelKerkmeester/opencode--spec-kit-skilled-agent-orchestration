@@ -143,7 +143,7 @@ JSON authority with additive stateless native fallbacks, fronted by canonical `.
 |---------|--------|--------|
 | `cd .opencode/skill/system-spec-kit/scripts && npm run check` | Complete | Passed |
 | `cd .opencode/skill/system-spec-kit/scripts && npm run build` | Complete | Passed |
-| `cd .opencode/skill/system-spec-kit/scripts && npm test -- --run tests/spec-affinity.vitest.ts tests/claude-code-capture.vitest.ts tests/codex-cli-capture.vitest.ts tests/copilot-cli-capture.vitest.ts tests/gemini-cli-capture.vitest.ts tests/quality-scorer-calibration.vitest.ts tests/runtime-memory-inputs.vitest.ts tests/stateless-enrichment.vitest.ts tests/task-enrichment.vitest.ts tests/memory-render-fixture.vitest.ts tests/generate-context-cli-authority.vitest.ts tests/memory-sufficiency.vitest.ts tests/memory-template-contract.vitest.ts tests/historical-memory-remediation.vitest.ts` | Complete | `14` files, `125` tests passed |
+| `cd .opencode/skill/system-spec-kit/scripts && npm test -- --run tests/spec-affinity.vitest.ts tests/claude-code-capture.vitest.ts tests/codex-cli-capture.vitest.ts tests/copilot-cli-capture.vitest.ts tests/gemini-cli-capture.vitest.ts tests/quality-scorer-calibration.vitest.ts tests/runtime-memory-inputs.vitest.ts tests/stateless-enrichment.vitest.ts tests/task-enrichment.vitest.ts tests/memory-render-fixture.vitest.ts tests/generate-context-cli-authority.vitest.ts tests/memory-sufficiency.vitest.ts tests/memory-template-contract.vitest.ts tests/historical-memory-remediation.vitest.ts` | Complete | `14` files, `127` tests passed |
 | `cd .opencode/skill/system-spec-kit/scripts/tests && node test-extractors-loaders.js` | Complete | `288` passed, `0` failed, `0` skipped |
 | `cd .opencode/skill/system-spec-kit/scripts/tests && node test-bug-fixes.js` | Complete | `27` passed, `0` failed, `0` skipped |
 | `cd .opencode/skill/system-spec-kit/scripts/tests && node test-integration.js` | Complete | `36` passed, `0` failed, `0` skipped |
@@ -152,7 +152,7 @@ JSON authority with additive stateless native fallbacks, fronted by canonical `.
 | `cd .opencode/skill/system-spec-kit/mcp_server && npm run build` | Complete | Passed |
 | `cd .opencode/skill/system-spec-kit/mcp_server && npm run test:core -- tests/handler-memory-save.vitest.ts tests/recovery-hints.vitest.ts tests/quality-loop.vitest.ts tests/save-quality-gate.vitest.ts tests/preflight.vitest.ts tests/integration-save-pipeline.vitest.ts` | Complete | `6` files, `298` tests passed |
 | `cd .opencode/skill/system-spec-kit/mcp_server && npm run test` | Complete | Passed |
-| `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit/scripts` | Complete | PASS, `226` files scanned, `0` findings |
+| `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit/scripts` | Complete | PASS, `229` files scanned, `0` findings |
 | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing` | Complete | Passed cleanly with `0` errors and `0` warnings |
 <!-- /ANCHOR:verification -->
 

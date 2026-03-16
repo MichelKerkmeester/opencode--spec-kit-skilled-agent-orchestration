@@ -2,15 +2,22 @@
 
 ## 1. OVERVIEW
 
-Tracks the deferred namespace CRUD tools pending demonstrated multi-tenant demand.
+Tracks the namespace and shared-memory lifecycle tools that provide workspace-level scoping beyond `specFolder`.
 
-This planned feature would let you organize memories into completely separate workspaces, like having different notebooks for different projects. Right now the system uses folder-based filtering to keep things separated, which works well enough. Full workspace management is on hold until there is a real need for it.
+Shared-memory lifecycle tools now exist, providing workspace-level scoping beyond the per-spec-folder filtering that was previously the only option. These tools let you create and manage shared memory spaces, control membership, and check status, enabling multi-tenant and cross-project memory organization.
 
 ---
 
 ## 2. CURRENT REALITY
 
-**PLANNED (Sprint 019): DEFERRED.** Namespace CRUD (`list/create/switch/delete`) remains deferred pending demonstrated multi-tenant demand. Current scoping relies on logical `specFolder` filtering. Estimated effort: S-M (3-5 days).
+**PARTIALLY IMPLEMENTED.** Shared-memory lifecycle tools now provide workspace-level scoping beyond `specFolder`:
+
+- **`shared_space_upsert`** -- Creates or updates a shared memory space (workspace-level namespace).
+- **`shared_space_membership_set`** -- Controls which spec folders participate in a shared space.
+- **`shared_memory_status`** -- Returns the current state and membership of shared spaces.
+- **`shared_memory_enable`** -- Enables or disables shared-memory features for a workspace.
+
+The original full namespace CRUD (`list/create/switch/delete`) for complete multi-tenant isolation remains deferred pending demonstrated demand. Current scoping relies on logical `specFolder` filtering augmented by the shared-memory tools above.
 
 ---
 

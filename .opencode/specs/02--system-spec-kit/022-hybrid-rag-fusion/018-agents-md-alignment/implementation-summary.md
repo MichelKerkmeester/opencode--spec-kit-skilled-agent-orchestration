@@ -52,3 +52,52 @@ Updated Quick Reference workflow tables in all 3 AGENTS.md governance framework 
 - **Commands visible**: 7 (was 5) — `continue`, `save`, `learn`, `manage`, `analyze`, `shared`, `context`
 - **No code changes**: Documentation-only updates to markdown tables
 - **No breaking changes**: Additive content only; existing rows preserved
+
+## Refinement Pass (2026-03-16)
+
+Four consistency gaps discovered during post-implementation verification:
+
+| ID | Severity | File | Fix |
+|----|----------|------|-----|
+| G-01 | P1 | `AGENTS_example_fs_enterprises.md` | **Resume prior work** row: added `/memory:continue` command and `memory_search()` alternative (was missing, present in Universal + Barter) |
+| G-02 | P1 | `AGENTS_example_fs_enterprises.md` | **Save context** row: added `/memory:save` command alternative (was missing, present in Universal + Barter) |
+| G-03 | P2 | `AGENTS.md` | **Claim completion** row: removed trailing `  \|` (extra pipe) |
+| G-04 | P2 | `Barter/coder/AGENTS.md` | **Claim completion** row: removed trailing `  \|` (extra pipe) |
+
+All 3 AGENTS.md files now have identical command references for Resume prior work and Save context rows. Trailing pipe artifacts removed.
+
+Two additional gaps found via GPT-5.4 ultra-think cross-AI review:
+
+| ID | Severity | File | Fix |
+|----|----------|------|-----|
+| G-05 | P2 | `AGENTS_example_fs_enterprises.md` | **Documentation** row: added `validate_document.py` reference (was missing, present in Universal + Barter + CLAUDE.md) |
+| G-06 | P2 | All 4 files | **File modification** row: reordered `Gate 1 → Gate 2 → Gate 3` to `Gate 3 → Gate 1 → Gate 2` to match Gate 3's "Overrides Gates 1-2" priority rule |
+
+Gate ordering fix applied to: `AGENTS.md`, `AGENTS_example_fs_enterprises.md`, `Barter/coder/AGENTS.md`, `CLAUDE.md`.
+
+### Quick Reference New Rows (Universal)
+
+Added 3 skill workflow rows to Universal AGENTS.md Quick Reference table:
+- **Web code** → `sk-code--web` skill
+- **OpenCode system code** → `sk-code--opencode` skill
+- **Git workflow** → `sk-git` skill
+
+### Skill Section Overhaul
+
+Replaced Barter-specific skill sections in both Universal and FS templates:
+
+**Universal AGENTS.md:**
+- `sk-code` (Barter multi-repo) → `sk-code--opencode` (OpenCode system code) with language table (JS, TS, Python, Shell, JSON/JSONC) and system-spec-kit + Spec Kit Memory references
+- `sk-git` (read-only analysis) → `sk-git` (full workflow: Worktree / Commit / Finish)
+
+**FS-Enterprises AGENTS.md:**
+- `sk-code` (Barter multi-repo) → `sk-code--full-stack` (stack-agnostic orchestrator) with 3-phase lifecycle and stack verification table
+- `sk-git` (read-only analysis) → `sk-git` (full workflow: Worktree / Commit / Finish)
+
+### Changelog
+
+Created `v2.2.0.0.md` in `.opencode/changelog/02--agents-md/` covering all refinement work.
+
+## Status
+
+**CLOSED** — All tasks complete (14/14), all checklist items verified, changelog created.

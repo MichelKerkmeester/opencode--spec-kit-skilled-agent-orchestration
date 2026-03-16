@@ -169,7 +169,7 @@ Commands are invoked with `/command_name` syntax in the chat interface.
 - `/memory:continue`: Crash recovery and context restoration
 - `/memory:manage`: Memory database maintenance (stats, health, cleanup, checkpoints)
 - `/memory:learn`: Constitutional memory manager for durable always-surface rules
-- `/memory:context`: Unified context retrieval with intent-aware routing
+- `/memory:analyze`: Unified retrieval + analysis: intent-aware search, epistemic baselines, causal graph, evaluation
 
 ### Create Commands (`/create:*`)
 

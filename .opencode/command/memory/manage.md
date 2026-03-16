@@ -55,8 +55,8 @@ Provide a unified interface for memory database **management** operations:
 - Health checks and diagnostics
 - Checkpoint creation, restoration, listing, and deletion
 
-**Separation from `/memory:context`:**
-- `/memory:context` = RETRIEVAL (intent-aware search and load)
+**Separation from `/memory:analyze`:**
+- `/memory:analyze` = RETRIEVAL + ANALYSIS (intent-aware search, epistemic baselines, causal graph, evaluation)
 - `/memory:manage` = MANAGEMENT (modify, delete, maintain, checkpoint)
 
 ---
@@ -826,11 +826,10 @@ STATUS=OK ACTION=ingest JOB=<jobId>
 
 ## 17. RELATED COMMANDS
 
-- `/memory:context`: Intent-aware context retrieval
+- `/memory:analyze`: Intent-aware context retrieval and analysis tools
 - `/memory:save`: Save conversation context
 - `/memory:learn`: Constitutional memories
 - `/memory:continue`: Session recovery
-- `/memory:analyze`: Analysis, causal graph, evaluation, learning history
 - `/memory:shared`: Shared-memory spaces
 
 ---

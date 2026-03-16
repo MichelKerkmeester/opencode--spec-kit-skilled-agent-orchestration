@@ -1,6 +1,6 @@
 ---
 title: "Implementation Plan: Feature Catalog Audit & Remediation"
-description: "30-agent parallel research to verify all feature catalog entries and investigate 55 undocumented gaps, followed by synthesis into a prioritized remediation manifest."
+description: "Historical 30-agent audit snapshot (2026-03-08) plus 2026-03-16 current-state addendum for omitted-snippet classification and remediation updates."
 trigger_phrases:
   - "feature catalog"
   - "audit"
@@ -23,11 +23,11 @@ contextType: "general"
 |--------|-------|
 | **Language/Stack** | TypeScript (MCP server source), Markdown (catalog) |
 | **Framework** | Spec Kit Memory MCP server |
-| **Storage** | File-based (180 markdown snippets + monolithic catalog) |
+| **Storage** | Historical snapshot: 180 snippets (2026-03-08); current tree: 189 snippets (2026-03-16) |
 | **Testing** | Agent-based verification, file-path validation |
 
 ### Overview
-Verify all ~180 feature snippet files against MCP server source code using 20 Copilot agents, investigate 55 known undocumented gaps using 10 Codex agents, then synthesize findings into a prioritized remediation manifest.
+Historical plan: verify ~180 feature snippets and investigate 55 known gaps, then synthesize a remediation manifest. Current-state addendum: classify 14 omitted current snippets and fold follow-up actions into the remediation plan.
 
 ---
 
@@ -52,7 +52,7 @@ Verify all ~180 feature snippet files against MCP server source code using 20 Co
 Multi-agent parallel research with file-based collection (CWB Pattern C)
 
 ### Key Components
-- **Stream 1 (Verification)**: 20 Copilot agents reading snippet files + source files, producing accuracy reports
+- **Stream 1 (Verification)**: 20 Codex agents reading snippet files + source files, producing accuracy reports
 - **Stream 2 (Investigation)**: 10 Codex agents deep-diving source files to verify gaps
 - **Synthesis**: Cross-stream validation and manifest generation
 
@@ -94,6 +94,12 @@ MCP Source Files ──► Stream 2 Agents ──► investigation-X[NN].md ─�
 - [x] Update checklist.md with verification results (9/9 P0 verified)
 - [x] Update plan.md with Phase C findings (this update)
 
+### Phase E: Current-State Addendum (2026-03-16) — COMPLETE
+- [x] Reconcile historical snapshot claims vs live-tree reality (180 -> 189 snippets)
+- [x] Audit and classify 14 omitted current snippets
+- [x] Add two follow-up remediation items for source-path normalization/correction
+- [x] Clarify tooling and taxonomy drift without rewriting March 8 historical metrics
+
 ---
 
 ## 5. TESTING STRATEGY
@@ -113,8 +119,7 @@ MCP Source Files ──► Stream 2 Agents ──► investigation-X[NN].md ─�
 |------------|------|--------|-------------------|
 | MCP server source (`mcp_server/`) | Internal | Green | Cannot verify features |
 | Feature catalog snippets | Internal | Green | Cannot audit |
-| Copilot CLI (`copilot` binary) | External | Green | Cannot run Stream 1 |
-| Codex CLI (`codex` binary) | External | Green | Cannot run Stream 2 |
+| Codex CLI (`codex` binary) | External | Green | Cannot run Stream 1/2 historical audit flows |
 
 ---
 
@@ -163,7 +168,7 @@ Phase A (Spec Upgrade) ──► Phase B (30 Agents) ──► Phase C (Synthesi
 │   Phase A    │────►│        Phase B               │────►│   Phase C    │────►│   Phase D    │
 │ Spec Upgrade │     │  ┌────────────────────────┐  │     │  Synthesis   │     │  Doc Update  │
 │   (done)     │     │  │ Stream 1: C01-C20      │  │     │              │     │              │
-└──────────────┘     │  │ (20 Copilot agents)    │  │     └──────────────┘     └──────────────┘
+└──────────────┘     │  │ (20 Codex agents)      │  │     └──────────────┘     └──────────────┘
                      │  └────────────────────────┘  │
                      │  ┌────────────────────────┐  │
                      │  │ Stream 2: X01-X10      │  │
@@ -193,7 +198,7 @@ Phase A (Spec Upgrade) ──► Phase B (30 Agents) ──► Phase C (Synthesi
 
 **Parallel Opportunities**:
 - Stream 1 (C01-C20) and Stream 2 (X01-X10) run simultaneously
-- All 20 Copilot agents run in parallel
+- All 20 Codex agents run in parallel
 - All 10 Codex agents run in parallel
 
 ---
@@ -235,6 +240,26 @@ Phase A (Spec Upgrade) ──► Phase B (30 Agents) ──► Phase C (Synthesi
 | C18 | 15-retrieval-enhancements | 11 |
 | C19 | 16-tooling + 17-governance | 11 |
 | C20 | 18-ux-hooks + 19-decisions + 20-flags | 31 |
+
+> **Historical scope note**: The C-table above is the March 8 planning snapshot. Executed ranges in `tasks.md` narrowed C08/C12/C15/C17/C19/C20, and the 2026-03-16 addendum now accounts for 14 omitted current snippets in the live tree.
+
+---
+
+## 2026-03-16 Addendum: Reality Alignment
+
+### Snapshot vs Current Tree
+
+| Dimension | Historical Snapshot (2026-03-08) | Current Tree (2026-03-16) |
+|-----------|----------------------------------|-----------------------------|
+| Snippet count | 180 | 189 |
+| Audit coverage claim | 180 verified | 14 current snippets were outside executed ranges |
+| Remediation base | 202 items | 202 base + 2 addendum follow-ups |
+
+### Taxonomy Drift Clarification
+
+- Historical docs used the working labels `19-decisions` and `20-feature-flags`.
+- Current monolith headings now include `20. UX HOOKS`, `21. PHASE SYSTEM`, and `22. FEATURE FLAG REFERENCE`.
+- Addendum reporting preserves March 8 labels for historical traceability and adds mapping notes to current taxonomy.
 
 ### Stream 2: Gap Investigation Agents (X01-X10)
 

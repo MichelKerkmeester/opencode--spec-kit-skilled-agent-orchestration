@@ -13,14 +13,14 @@ contextType: "implementation"
 | Field | Value |
 |-------|-------|
 | Spec Folder | `014-hydra-db-based-features` |
-| Date | 2026-03-15 |
+| Date | 2026-03-16 |
 | Level | 3 |
 | Execution Scope | Parent spec-pack truth-sync plus re-verification of delivered Phase 1-6 runtime behavior |
-| Overall Workflow Status | Code rollout remains complete with default-on semantics across all six capabilities; parent Hydra docs now match the live runtime and local re-verification evidence |
+| Overall Workflow Status | Code rollout remains complete; roadmap metadata defaults all six capabilities on, while live shared-memory access stays default-off until explicitly enabled. Parent Hydra docs now match the live runtime and local re-verification evidence. |
 
 ## What Was Built
 
-This run truth-syncs the parent Hydra documentation to the delivered six-phase runtime. `getMemoryRoadmapPhase()` still defaults to `shared-rollout`, `getMemoryRoadmapCapabilityFlags()` still defaults all six capabilities to enabled (unless explicitly disabled), and runtime gates for adaptive ranking, scope enforcement, governance guardrails, and shared memory remain default-on with explicit opt-out semantics. The parent spec pack now records those shipped behaviors truthfully and no longer claims a standalone public lineage query tool that the runtime does not expose.
+This run truth-syncs the parent Hydra documentation to the delivered six-phase runtime. `getMemoryRoadmapPhase()` still defaults to `shared-rollout`, `getMemoryRoadmapCapabilityFlags()` still defaults all six capabilities to enabled (unless explicitly disabled), and the live runtime keeps adaptive ranking, scope enforcement, and governance guardrails default-on while shared memory remains default-off until explicitly enabled through env or persisted setup. The parent spec pack now records those shipped behaviors truthfully and no longer claims a standalone public lineage query tool that the runtime does not expose.
 
 ## Files Modified/Created
 
@@ -31,7 +31,8 @@ This table lists the truth-sync surfaces updated in this pass alongside the scop
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/spec.md` | Modified | Replaced future-roadmap language with delivered-runtime wording and clarified the internal lineage/`asOf` surface |
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/plan.md` | Modified | Removed planning-only disclaimers and aligned quality gates, testing notes, and rollback language to the shipped runtime |
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/tasks.md` | Modified | Replaced stale task paths with actual runtime modules, tests, and rollback verification surfaces |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/checklist.md` | Modified | Updated evidence, dates, and rollout language to match the local 2026-03-15 re-verification pass |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/checklist.md` | Modified | Updated evidence, dates, and rollout language to match the local 2026-03-16 re-verification pass |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/decision-record.md` | Modified | Promoted the three Hydra architecture ADRs from proposed to accepted and synced the verification evidence summary |
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/014-hydra-db-based-features/implementation-summary.md` | Modified | Recorded the truth-sync scope and exact local verification evidence from this pass |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/hydra-spec-pack-consistency.vitest.ts` | Created | Added a scoped regression guard for Hydra-pack runtime references, feature-catalog links, and manual-playbook coverage |
 
@@ -43,14 +44,14 @@ This table lists the truth-sync surfaces updated in this pass alongside the scop
 | `cd .opencode/skill/system-spec-kit/mcp_server && npm run build` | PASS |
 | `cd .opencode/skill/system-spec-kit/mcp_server && npm run test:hydra:phase1` | PASS |
 | `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/feature-flag-reference-docs.vitest.ts tests/hydra-spec-pack-consistency.vitest.ts tests/shared-spaces.vitest.ts tests/memory-governance.vitest.ts tests/memory-lineage-state.vitest.ts tests/memory-lineage-backfill.vitest.ts tests/adaptive-ranking.vitest.ts tests/graph-roadmap-finalization.vitest.ts` | PASS |
-| `cd .opencode/skill/system-spec-kit/mcp_server && npm test` | PASS (`test:core` 279 test files passed; 7667 tests passed; 11 skipped; 28 todo, plus `tests/file-watcher.vitest.ts` 20/20 passed) |
+| `cd .opencode/skill/system-spec-kit/mcp_server && npm test` | PASS (`test:core` 281 test files passed; 7767 tests passed; 11 skipped; 28 todo, plus `tests/file-watcher.vitest.ts` 20/20 passed) |
 | `cd .opencode/skill/system-spec-kit && python3 ../sk-code--opencode/scripts/verify_alignment_drift.py --root .` | PASS (`Findings: 0`, `Warnings: 0`, `Violations: 0`) |
 | `cd .opencode/skill/system-spec-kit/mcp_server && SPECKIT_GRAPH_UNIFIED=false node -e "const { getMemoryRoadmapDefaults } = require('./dist/lib/config/capability-flags.js'); console.log(JSON.stringify(getMemoryRoadmapDefaults('manual-125-a')))"` | PASS (returned `phase:"shared-rollout"` with `capabilities.graphUnified:true`) |
 | `cd .opencode/skill/system-spec-kit/mcp_server && SPECKIT_HYDRA_PHASE=graph SPECKIT_HYDRA_GRAPH_UNIFIED=false node -e "const { getMemoryRoadmapDefaults } = require('./dist/lib/config/capability-flags.js'); console.log(JSON.stringify(getMemoryRoadmapDefaults('manual-125-b')))"` | PASS (returned `phase:"graph"` with `capabilities.graphUnified:false`) |
 
 ## Deviations From Plan
 
-1. The rollout posture remains default-on across roadmap phase and capability gates; this pass synchronized the parent docs to that shipped behavior.
+1. The rollout posture remains default-on across roadmap phase and capability gates, while live shared-memory access still requires explicit enablement; this pass synchronized the parent docs to that shipped behavior.
 2. The parent pack now treats lineage/`asOf` as an internal storage-layer API surface rather than claiming a public `memory_query` MCP tool.
 3. Verification evidence was normalized to the exact commands rerun in this truth-sync pass instead of mixed historical counts and stale file references.
 4. Launch dry run remains local for backend/runtime scope; no staging deployment dry run was added in this pass.
@@ -63,7 +64,7 @@ No skill files were modified in this implementation slice.
 
 1. If organizational governance requires it, complete Product Owner and Security/Compliance sign-off rows as a separate human process artifact.
 2. Keep the new Hydra spec-pack consistency test green whenever the parent pack, feature catalog, or playbook references change.
-3. Continue operational monitoring on retrieval/governance telemetry under the shared-rollout default baseline.
+3. Continue operational monitoring on retrieval/governance telemetry under the shared-rollout default baseline; no technical follow-up work remains deferred in this spec pack.
 
 ## Browser Testing Results
 
