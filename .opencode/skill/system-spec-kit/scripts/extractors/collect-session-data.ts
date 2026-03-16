@@ -15,6 +15,8 @@ import * as fsSync from 'fs';
 import { CONFIG, findActiveSpecsDir, getSpecsDirectories } from '../core';
 import { formatTimestamp } from '../utils/message-utils';
 import { pickBestContentName } from '../utils/slug-utils';
+import { structuredLog } from '../utils/logger';
+import { coerceFactsToText } from '../utils/fact-coercion';
 import { detectSpecFolder } from '../spec-folder';
 
 import {
@@ -25,15 +27,6 @@ import {
   calculateSessionDuration,
   calculateExpiryEpoch,
   detectRelatedDocs,
-  extractBlockers,
-} from './session-extractor';
-import type {
-  ToolCounts,
-  Observation,
-  UserPrompt,
-  FileEntry,
-  SpecFileEntry,
-  RecentContextEntry,
 } from './session-extractor';
 
 import {
@@ -41,45 +34,43 @@ import {
   extractFilesFromData,
   buildObservationsWithAnchors,
 } from './file-extractor';
-import type { FileChange, ObservationDetailed } from './file-extractor';
 
 import { buildImplementationGuideData } from './implementation-guide-extractor';
 import type { ImplementationGuideData } from './implementation-guide-extractor';
 
-import type { SessionData, OutcomeEntry } from '../types/session-types';
+import type {
+  CollectedDataBase,
+  ContextItem,
+  FileChange,
+  FileEntry,
+  GapDescription,
+  Observation,
+  ObservationDetailed,
+  OutcomeEntry,
+  PendingTask,
+  PostflightData,
+  PreflightData,
+  RecentContextEntry,
+  SessionData,
+  SpecFileEntry,
+  ToolCounts,
+  UserPrompt,
+} from '../types/session-types';
 
 // Re-export canonical types for backward compatibility
-export type { SessionData, OutcomeEntry };
+export type {
+  ContextItem,
+  GapDescription,
+  OutcomeEntry,
+  PendingTask,
+  PostflightData,
+  PreflightData,
+  SessionData,
+};
 
 /* ───────────────────────────────────────────────────────────────
    1. INTERFACES
 ------------------------------------------------------------------*/
-
-/** Preflight learning metrics captured before task execution. */
-export interface PreflightData {
-  knowledgeScore?: number;
-  uncertaintyScore?: number;
-  contextScore?: number;
-  timestamp?: string;
-  gaps?: string[];
-  confidence?: number;
-  uncertaintyRaw?: number;
-  readiness?: string;
-}
-
-/** Postflight learning metrics captured after task execution. */
-export interface PostflightData {
-  knowledgeScore?: number;
-  uncertaintyScore?: number;
-  contextScore?: number;
-  gapsClosed?: string[];
-  newGaps?: string[];
-}
-
-/** Describes an identified gap between preflight and postflight state. */
-export interface GapDescription {
-  GAP_DESCRIPTION: string;
-}
 
 /** Aggregates preflight and postflight comparison results. */
 export interface PreflightPostflightResult {
@@ -111,18 +102,6 @@ export interface PreflightPostflightResult {
   NEW_GAPS: GapDescription[];
 }
 
-/** Represents a pending task extracted from session context. */
-export interface PendingTask {
-  TASK_ID: string;
-  TASK_DESCRIPTION: string;
-  TASK_PRIORITY: string;
-}
-
-/** Represents a context item included in continue-session payloads. */
-export interface ContextItem {
-  CONTEXT_ITEM: string;
-}
-
 /** Captures the synthesized data needed to continue a session. */
 export interface ContinueSessionData {
   SESSION_STATUS: string;
@@ -137,27 +116,7 @@ export interface ContinueSessionData {
 }
 
 /** Full collected session payload used by downstream extractors. */
-export interface CollectedDataFull {
-  recentContext?: RecentContextEntry[];
-  observations?: Observation[];
-  userPrompts?: UserPrompt[];
-  SPEC_FOLDER?: string;
-  FILES?: Array<{
-    FILE_PATH?: string;
-    path?: string;
-    DESCRIPTION?: string;
-    description?: string;
-    _provenance?: 'git' | 'spec-folder';
-    _synthetic?: boolean;
-  }>;
-  filesModified?: Array<{ path: string; changes_summary?: string }>;
-  _manualDecisions?: unknown[];
-  _manualTriggerPhrases?: string[];
-  _isSimulation?: boolean;
-  preflight?: PreflightData;
-  postflight?: PostflightData;
-  [key: string]: unknown;
-}
+export interface CollectedDataFull extends CollectedDataBase {}
 
 /* ───────────────────────────────────────────────────────────────
    1.5. PREFLIGHT/POSTFLIGHT UTILITIES
@@ -495,10 +454,11 @@ function extractPendingTasks(
     }
 
     if (obs.facts) {
-      for (const fact of obs.facts) {
-        const factText = typeof fact === 'string'
-          ? fact
-          : (fact && typeof fact === 'object' ? (fact as { text?: string }).text || '' : '');
+      const factTexts = coerceFactsToText(obs.facts, {
+        component: 'collect-session-data',
+        fieldPath: 'observations[].facts',
+      });
+      for (const factText of factTexts) {
         for (const pattern of taskPatterns) {
           let match: RegExpExecArray | null;
           pattern.lastIndex = 0;
@@ -726,8 +686,19 @@ async function collectSessionData(
   }
 
   const data: CollectedDataFull = { ...collectedData };
+  const sessionId: string = generateSessionId();
+  const channel: string = getChannel();
   const sessionInfo = data.recentContext?.[0] || {};
   let observations: Observation[] = data.observations || [];
+  if (observations.length > CONFIG.MAX_OBSERVATIONS) {
+    structuredLog('warn', 'observation_truncation_applied', {
+      specFolder: data.SPEC_FOLDER || folderName,
+      sessionId,
+      channel,
+      originalCount: observations.length,
+      retainedCount: CONFIG.MAX_OBSERVATIONS,
+    });
+  }
   observations = observations.slice(0, CONFIG.MAX_OBSERVATIONS);
   const userPrompts: UserPrompt[] = data.userPrompts || [];
   const messageCount: number = userPrompts.length || 0;
@@ -775,8 +746,6 @@ async function collectSessionData(
     data.SPEC_FOLDER || folderName
   );
 
-  const sessionId: string = generateSessionId();
-  const channel: string = getChannel();
   const createdAtEpoch: number = Math.floor(Date.now() / 1000);
 
   let SPEC_FILES: SpecFileEntry[] = [];
@@ -860,7 +829,7 @@ async function collectSessionData(
     FILES: FILES.length > 0 ? FILES : [],
     HAS_FILES: FILES.length > 0,
     FILE_COUNT: FILES.length,
-    OUTCOMES: OUTCOMES.length > 0 ? OUTCOMES : [{ OUTCOME: 'Session in progress' }],
+    OUTCOMES: OUTCOMES.length > 0 ? OUTCOMES : [{ OUTCOME: 'Session in progress', TYPE: 'status' }],
     TOOL_COUNT,
     MESSAGE_COUNT: messageCount,
     QUICK_SUMMARY: quickSummary,

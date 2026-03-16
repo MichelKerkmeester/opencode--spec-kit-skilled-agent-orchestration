@@ -9,11 +9,17 @@
 
 import { formatTimestamp } from '../utils/message-utils';
 import { validateDataStructure } from '../utils/data-validator';
+import { coerceFactsToText } from '../utils/fact-coercion';
 import { generateAnchorId, validateAnchorUniqueness, extractSpecNumber } from '../lib/anchor-generator';
 import { generateDecisionTree } from '../lib/decision-tree-generator';
 import type { DecisionNode } from '../lib/decision-tree-generator';
 import * as simFactory from '../lib/simulation-factory';
-import type { DecisionOption, DecisionRecord, DecisionData } from '../types/session-types';
+import type {
+  CollectedDataBase,
+  DecisionOption,
+  DecisionRecord,
+  DecisionData,
+} from '../types/session-types';
 
 // Re-export canonical types for backward compatibility
 export type { DecisionOption, DecisionRecord, DecisionData };
@@ -23,19 +29,7 @@ export type { DecisionOption, DecisionRecord, DecisionData };
 ------------------------------------------------------------------*/
 
 /** Decision-focused subset of collected session data. */
-export interface CollectedDataForDecisions {
-  _manualDecisions?: Array<string | Record<string, unknown>>;
-  SPEC_FOLDER?: string;
-  userPrompts?: Array<{ prompt?: string }>;
-  observations?: Array<{
-    type?: string;
-    narrative?: string;
-    facts?: Array<string | { text?: string }>;
-    title?: string;
-    timestamp?: string;
-    files?: string[];
-  }>;
-}
+export type CollectedDataForDecisions = Pick<CollectedDataBase, '_manualDecisions' | 'SPEC_FOLDER' | 'userPrompts' | 'observations'>;
 
 // F-32: Word boundaries prevent partial matches (e.g., "undecided" matching "decided")
 const DECISION_CUE_REGEX = /\b(decided|chose|will use|approach is|going with|rejected|we'll|selected|prefer|adopt)\b/i;
@@ -258,7 +252,8 @@ async function extractDecisions(
 
   // Process MCP data - extract decision observations
   const decisionObservations = (collectedData.observations || [])
-    .filter((obs) => obs.type === 'decision');
+    .filter((obs) => obs.type === 'decision')
+    .filter((obs) => !(processedManualDecisions.length > 0 && obs._manualDecision));
 
   // P0-3: Also suppress lexical extraction when manual decisions exist,
   // since those observations were already built from the same manual decisions
@@ -272,12 +267,13 @@ async function extractDecisions(
     : lexicalDecisionObservations;
 
   const decisions: DecisionRecord[] = allDecisionObservations.map((obs, index) => {
-    const narrative: string = obs.narrative || '';
-    // Coerce facts: runtime data may contain nulls or objects with { text?: string } instead of plain strings
-    const facts: string[] = (obs.facts || [])
-      .filter((f): f is NonNullable<typeof f> => f != null)
-      .map(f => typeof f === 'string' ? f : (f as { text?: string }).text || '')
-      .filter(f => f.length > 0);
+    const manualDecision = '_manualDecision' in obs ? obs._manualDecision : undefined;
+    const narrative: string = manualDecision?.fullText?.trim() || obs.narrative || '';
+    const facts: string[] = coerceFactsToText(obs.facts, {
+      component: 'decision-extractor',
+      fieldPath: 'observations[].facts',
+      specFolder: collectedData.SPEC_FOLDER,
+    });
 
     const optionMatches = facts.filter((f) => f.includes('Option') || f.includes('Alternative'));
     const OPTIONS: DecisionOption[] = optionMatches.map((opt, i) => {
@@ -330,7 +326,9 @@ async function extractDecisions(
     }
 
     const chosenMatch = narrative.match(/(?:chose|selected|decided on|went with):?\s+([^\.\n]+)/i);
-    const CHOSEN: string = chosenMatch?.[1]?.trim() || (OPTIONS.length > 0 ? OPTIONS[0].LABEL : 'N/A');
+    const CHOSEN: string = manualDecision?.chosenApproach?.trim()
+      || chosenMatch?.[1]?.trim()
+      || (OPTIONS.length > 0 ? OPTIONS[0].LABEL : 'N/A');
 
     const rationaleMatch = narrative.match(/(?:because|rationale|reason):?\s+([^\.\n]+)/i);
     const RATIONALE: string = rationaleMatch?.[1]?.trim() || narrative.substring(0, 200);
@@ -340,7 +338,10 @@ async function extractDecisions(
     // Default confidence based on evidence strength: options + rationale = higher confidence
     const baseConfidence = OPTIONS.length > 1 ? 70 : RATIONALE !== narrative.substring(0, 200) ? 65 : 50;
     const parsedConfidence = confidenceMatch ? parseFloat(confidenceMatch[1]) : NaN;
-    const CONFIDENCE: number = Number.isFinite(parsedConfidence)
+    const manualConfidence = manualDecision?.confidence;
+    const CONFIDENCE: number = typeof manualConfidence === 'number' && Number.isFinite(manualConfidence)
+      ? normalizeConfidence(manualConfidence)
+      : Number.isFinite(parsedConfidence)
       ? normalizeConfidence(parsedConfidence)
       : normalizeConfidence(baseConfidence);
 

@@ -492,7 +492,58 @@ describe('qualityAbortThreshold normalization', () => {
 });
 
 describe('FILES field transformation', () => {
-  it('transforms path/description fields to FILE_PATH/DESCRIPTION in structured payloads', () => {
+  it('preserves FILES metadata in structured payloads when present', () => {
+    const normalized = normalizeInputData({
+      specFolder: '022-hybrid-rag-fusion/013-outsourced-agent-memory',
+      observations: [{
+        type: 'feature',
+        title: 'Test payload',
+        narrative: 'Testing FILES transformation',
+        facts: [],
+      }],
+      userPrompts: [{
+        prompt: 'Test structured save',
+        timestamp: '2026-03-14T10:00:00.000Z',
+      }],
+      recentContext: [{
+        request: 'Test FILES field',
+        learning: 'Verifying field mapping.',
+      }],
+      FILES: [
+        {
+          path: 'src/index.ts',
+          description: 'Entry point',
+          action: 'modify',
+          _provenance: 'git',
+          _synthetic: false,
+        } as unknown as import('../utils/input-normalizer').FileEntry,
+        {
+          FILE_PATH: 'src/utils.ts',
+          DESCRIPTION: 'Utility functions',
+          ACTION: 'Read',
+          _synthetic: true,
+        },
+      ],
+    });
+
+    expect(normalized.FILES).toEqual([
+      {
+        FILE_PATH: 'src/index.ts',
+        DESCRIPTION: 'Entry point',
+        ACTION: 'modify',
+        _provenance: 'git',
+        _synthetic: false,
+      },
+      {
+        FILE_PATH: 'src/utils.ts',
+        DESCRIPTION: 'Utility functions',
+        ACTION: 'Read',
+        _synthetic: true,
+      },
+    ]);
+  });
+
+  it('keeps FILES backward-compatible when metadata is absent', () => {
     const normalized = normalizeInputData({
       specFolder: '022-hybrid-rag-fusion/013-outsourced-agent-memory',
       observations: [{

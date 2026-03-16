@@ -68,6 +68,16 @@ export type {
 } from './input-normalizer';
 
 export {
+  coerceFactToText,
+  coerceFactsToText,
+} from './fact-coercion';
+export type {
+  CoercedFact,
+  FactDropReason,
+  FactDropLogContext,
+} from './fact-coercion';
+
+export {
   requireInteractiveMode,
   promptUser,
   promptUserChoice,

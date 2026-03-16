@@ -20,25 +20,29 @@ import {
   shouldIncludeTopicWord,
   tokenizeTopicWords,
 } from '../lib/topic-keywords';
+import type {
+  FileEntry,
+  FileProgressEntry,
+  Observation,
+  RecentContextEntry,
+  SpecFileEntry,
+  ToolCounts,
+  UserPrompt,
+} from '../types/session-types';
+
+export type {
+  FileEntry,
+  FileProgressEntry,
+  Observation,
+  RecentContextEntry,
+  SpecFileEntry,
+  ToolCounts,
+  UserPrompt,
+};
 
 /* ───────────────────────────────────────────────────────────────
    1. INTERFACES
 ------------------------------------------------------------------*/
-
-/** Counts tool usage by category within a session. */
-export interface ToolCounts {
-  Read: number;
-  Edit: number;
-  Write: number;
-  Bash: number;
-  Grep: number;
-  Glob: number;
-  Task: number;
-  WebFetch: number;
-  WebSearch: number;
-  Skill: number;
-  [key: string]: number;
-}
 
 /** High-level characteristics inferred from the session. */
 export interface SessionCharacteristics {
@@ -46,12 +50,6 @@ export interface SessionCharacteristics {
   importanceTier: string;
   decisionCount: number;
   toolCounts: ToolCounts;
-}
-
-/** Progress summary for an individual tracked file. */
-export interface FileProgressEntry {
-  FILE_NAME: string;
-  FILE_STATUS: string;
 }
 
 /** Snapshot of the project state captured for session output. */
@@ -69,46 +67,6 @@ export interface RelatedDoc {
   FILE_NAME: string;
   FILE_PATH: string;
   DESCRIPTION: string;
-}
-
-/** Observation item consumed by the session extractor. */
-export interface Observation {
-  type?: string;
-  narrative?: string;
-  facts?: Array<string | { text?: string }>;
-  title?: string;
-  timestamp?: string;
-  files?: string[];
-  _provenance?: 'git' | 'spec-folder';
-  _synthetic?: boolean;
-}
-
-/** User prompt metadata consumed by the session extractor. */
-export interface UserPrompt {
-  prompt: string;
-  timestamp?: string;
-}
-
-/** File entry metadata consumed by the session extractor. */
-export interface FileEntry {
-  FILE_PATH: string;
-  FILE_NAME?: string;
-  DESCRIPTION?: string;
-}
-
-/** Spec file entry metadata consumed by the session extractor. */
-export interface SpecFileEntry {
-  FILE_NAME: string;
-  FILE_PATH?: string;
-  DESCRIPTION?: string;
-}
-
-/** Recent context entry used for session summarization. */
-export interface RecentContextEntry {
-  learning?: string;
-  request?: string;
-  continuationCount?: number;
-  files?: string[];
 }
 
 /** Input parameters required to build a project state snapshot. */

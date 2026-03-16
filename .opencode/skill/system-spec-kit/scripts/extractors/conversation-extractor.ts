@@ -10,9 +10,11 @@
 import { CONFIG } from '../core';
 import { formatTimestamp, truncateToolOutput, summarizeExchange } from '../utils/message-utils';
 import { detectToolCall, isProseContext, classifyConversationPhase } from '../utils/tool-detection';
+import { coerceFactsToText } from '../utils/fact-coercion';
 import * as simFactory from '../lib/simulation-factory';
 import * as flowchartGen from '../lib/flowchart-generator';
 import type {
+  CollectedDataBase,
   ToolCallEntry,
   ConversationMessage,
   ConversationPhase,
@@ -32,17 +34,7 @@ export type {
 ------------------------------------------------------------------*/
 
 /** Conversation-focused subset of collected session data. */
-export interface CollectedDataForConversation {
-  userPrompts?: Array<{ prompt: string; timestamp?: string }>;
-  observations?: Array<{
-    timestamp?: string;
-    narrative?: string;
-    facts?: Array<string | null>;
-    title?: string;
-    files?: string[];
-    type?: string;
-  }>;
-}
+export type CollectedDataForConversation = Pick<CollectedDataBase, 'userPrompts' | 'observations'>;
 
 /* ───────────────────────────────────────────────────────────────
    2. CONVERSATION EXTRACTION
@@ -113,10 +105,13 @@ async function extractConversations(
       }
 
       const TOOL_CALLS: ToolCallEntry[] = relatedObs.flatMap(({ obs }) => {
-        if (!obs.facts) return [];
+        const factTexts = coerceFactsToText(obs.facts, {
+          component: 'conversation-extractor',
+          fieldPath: 'observations[].facts',
+        });
+        if (factTexts.length === 0) return [];
 
-        return obs.facts.map((fact) => {
-          if (!fact || typeof fact !== 'string') return null;
+        return factTexts.map((fact) => {
 
           const detection = detectToolCall(fact);
           if (!detection) return null;

@@ -8,6 +8,7 @@
 // Extracts and generates ASCII flowcharts and diagrams from conversation data
 
 import { validateDataStructure } from '../utils/data-validator';
+import { coerceFactsToText } from '../utils/fact-coercion';
 import {
   detectToolCall,
   isProseContext,
@@ -17,6 +18,7 @@ import * as flowchartGen from '../lib/flowchart-generator';
 import * as simFactory from '../lib/simulation-factory';
 import { generateDecisionTree } from '../lib/decision-tree-generator';
 import type {
+  CollectedDataBase,
   DiagramOutput,
   AutoDecisionTree,
   DiagramTypeCount,
@@ -40,17 +42,7 @@ export type {
 ------------------------------------------------------------------*/
 
 /** Diagram-focused subset of collected session data. */
-export interface CollectedDataForDiagrams {
-  observations?: Array<{
-    type?: string;
-    narrative?: string;
-    facts?: string[];
-    title?: string;
-    timestamp?: string;
-    files?: string[];
-  }>;
-  userPrompts?: Array<{ prompt: string; timestamp?: string }>;
-}
+export type CollectedDataForDiagrams = Pick<CollectedDataBase, 'observations' | 'userPrompts'>;
 
 /* ───────────────────────────────────────────────────────────────
    2. PHASE EXTRACTION
@@ -147,7 +139,10 @@ async function extractDiagrams(
 
   for (const obs of observations) {
     const narrative: string = obs.narrative || '';
-    const facts: string[] = obs.facts || [];
+    const facts = coerceFactsToText(obs.facts, {
+      component: 'diagram-extractor',
+      fieldPath: 'observations[].facts',
+    });
 
     if (boxChars.test(narrative) || facts.some((f) => boxChars.test(f))) {
       const asciiArt: string = boxChars.test(narrative)

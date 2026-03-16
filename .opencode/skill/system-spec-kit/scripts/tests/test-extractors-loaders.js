@@ -247,6 +247,15 @@ const MOCK_MANUAL_DECISIONS = {
   SPEC_FOLDER: '007-test-spec'
 };
 
+const OBJECT_FACT_TEXT = {
+  text: 'Tool: Read File: src/object-facts.ts Result: Preserved object facts'
+};
+
+const OBJECT_FACT_METADATA = {
+  files: ['src/object-facts.ts'],
+  detail: 'Object-shaped fact without a text field'
+};
+
 /* ─────────────────────────────────────────────────────────────
    4. COLLECT-SESSION-DATA TESTS (P0)
 ────────────────────────────────────────────────────────────────
@@ -348,6 +357,60 @@ async function testCollectSessionData() {
     // Test shouldAutoSave
     const { shouldAutoSave } = collectSessionData;
     assertEqual(shouldAutoSave(0), false, 'EXT-CSData-041: Zero messages no auto-save');
+
+    const objectFactSession = await collectSessionData.collectSessionData({
+      observations: [{
+        type: 'followup',
+        title: 'Pending follow-up',
+        narrative: 'Track the remaining implementation work.',
+        facts: [{ text: 'Next: Preserve object-based facts in pending task extraction.' }]
+      }],
+      userPrompts: [{ prompt: 'Capture remaining work', timestamp: new Date().toISOString() }],
+      recentContext: [{ learning: 'No additional summary.' }],
+      SPEC_FOLDER: '007-test-spec'
+    }, '007-test-spec');
+    const pendingTaskHit = (objectFactSession.PENDING_TASKS || []).some((task) =>
+      task.TASK_DESCRIPTION.includes('Preserve object-based facts in pending task extraction')
+    );
+    if (pendingTaskHit) {
+      pass('EXT-CSData-042: Object facts contribute to pending task extraction', 'Pending task preserved from object fact');
+    } else {
+      fail('EXT-CSData-042: Object facts contribute to pending task extraction', JSON.stringify(objectFactSession.PENDING_TASKS || []));
+    }
+
+    const originalWarn = console.warn;
+    const capturedWarns = [];
+    try {
+      console.warn = (...args) => capturedWarns.push(args.join(' '));
+      const manyObservations = Array.from({ length: 200 }, (_, index) => ({
+        type: 'feature',
+        title: `Observation ${index + 1}`,
+        narrative: `Observation ${index + 1} documents a fidelity-preservation step.`,
+        facts: []
+      }));
+
+      await collectSessionData.collectSessionData({
+        observations: manyObservations,
+        userPrompts: [{ prompt: 'Capture the oversized observation list', timestamp: new Date().toISOString() }],
+        recentContext: [{ learning: 'Oversized observation list should log truncation.' }],
+        SPEC_FOLDER: '007-test-spec'
+      }, '007-test-spec');
+    } finally {
+      console.warn = originalWarn;
+    }
+
+    const truncationLog = capturedWarns.find((entry) => entry.includes('"message":"observation_truncation_applied"'));
+    if (truncationLog) {
+      const parsedLog = JSON.parse(truncationLog);
+      const noObservationContent = !truncationLog.includes('Observation 1');
+      if (parsedLog.originalCount > parsedLog.retainedCount && noObservationContent) {
+        pass('EXT-CSData-043: Observation truncation logs counts without content', `${parsedLog.originalCount} -> ${parsedLog.retainedCount}`);
+      } else {
+        fail('EXT-CSData-043: Observation truncation logs counts without content', truncationLog);
+      }
+    } else {
+      fail('EXT-CSData-043: Observation truncation logs counts without content', 'No truncation warning captured');
+    }
 
   } catch (error) {
     fail('EXT-CSData: Module load/test', error.message);
@@ -618,6 +681,55 @@ async function testDecisionExtractor() {
     const emptyResult = await extractDecisions({ observations: [], SPEC_FOLDER: '000-test' });
     assertEqual(emptyResult.DECISION_COUNT, 0, 'EXT-Decision-026: Empty observations = 0 decisions');
 
+    const enrichedObservationResult = await extractDecisions({
+      observations: [{
+        type: 'decision',
+        title: 'Preserve enriched manual decision',
+        narrative: 'Fallback narrative should not win.',
+        timestamp: new Date().toISOString(),
+        facts: [OBJECT_FACT_TEXT],
+        _manualDecision: {
+          fullText: 'Selected the batched repair path because it preserves fidelity across the live pipeline.',
+          chosenApproach: 'Batched repair path',
+          confidence: 82
+        }
+      }],
+      SPEC_FOLDER: '007-test-spec'
+    });
+
+    if (
+      enrichedObservationResult.DECISIONS[0]?.CHOSEN === 'Batched repair path'
+      && enrichedObservationResult.DECISIONS[0]?.CONTEXT.includes('preserves fidelity across the live pipeline')
+      && Math.abs(enrichedObservationResult.DECISIONS[0]?.CONFIDENCE - 0.82) < 0.001
+    ) {
+      pass('EXT-Decision-027: _manualDecision enriches chosen approach and confidence', `${enrichedObservationResult.DECISIONS[0].CHOSEN} @ ${enrichedObservationResult.DECISIONS[0].CONFIDENCE}`);
+    } else {
+      fail('EXT-Decision-027: _manualDecision enriches chosen approach and confidence', JSON.stringify(enrichedObservationResult.DECISIONS[0] || {}));
+    }
+
+    const dedupedManualResult = await extractDecisions({
+      _manualDecisions: [{
+        decision: 'Use batched repair path',
+        chosen: 'Batched repair path',
+        rationale: 'Authoritative manual decision should win'
+      }],
+      observations: [{
+        type: 'decision',
+        title: 'Use batched repair path',
+        narrative: 'Observation duplicate of the authoritative manual decision.',
+        timestamp: new Date().toISOString(),
+        facts: [OBJECT_FACT_TEXT],
+        _manualDecision: {
+          fullText: 'Use batched repair path because it keeps fidelity intact.',
+          chosenApproach: 'Batched repair path',
+          confidence: 82
+        }
+      }],
+      SPEC_FOLDER: '007-test-spec'
+    });
+
+    assertEqual(dedupedManualResult.DECISION_COUNT, 1, 'EXT-Decision-028: _manualDecision observation is suppressed when authoritative manual decision exists');
+
   } catch (error) {
     fail('EXT-Decision: Module load/test', error.message);
   }
@@ -728,6 +840,18 @@ async function testFileExtractor() {
       fail('EXT-File-027: Semantic description applied', enhanced[0].DESCRIPTION);
     }
 
+    const objectFactObservations = buildObservationsWithAnchors([{
+      title: 'Object fact rendering',
+      narrative: 'Ensure object facts survive rendering.',
+      facts: [OBJECT_FACT_TEXT, OBJECT_FACT_METADATA]
+    }], '007-test-spec');
+    const renderedFacts = objectFactObservations[0]?.FACTS_LIST || '';
+    if (renderedFacts.includes('Tool: Read') && renderedFacts.includes('[object] {"files":["src/object-facts.ts"],"detail":"Object-shaped fact without a text field"}')) {
+      pass('EXT-File-028: Object facts are rendered instead of dropped', renderedFacts);
+    } else {
+      fail('EXT-File-028: Object facts are rendered instead of dropped', renderedFacts);
+    }
+
   } catch (error) {
     fail('EXT-File: Module load/test', error.message);
   }
@@ -792,6 +916,24 @@ async function testConversationExtractor() {
 
     // Test DATE format
     assertMatch(result.DATE, /^\d{4}-\d{2}-\d{2}$/, 'EXT-Conv-019: DATE in ISO format');
+
+    const objectFactConversation = await extractConversations({
+      userPrompts: [{ prompt: 'Read the preserved object facts', timestamp: new Date().toISOString() }],
+      observations: [{
+        timestamp: new Date().toISOString(),
+        narrative: 'Tool activity came through object-based facts.',
+        facts: [OBJECT_FACT_TEXT],
+        title: 'Object fact tool activity',
+        files: ['src/object-facts.ts'],
+        type: 'observation'
+      }]
+    });
+    const toolNames = objectFactConversation.MESSAGES.flatMap((message) => message.TOOL_CALLS.map((tool) => tool.TOOL_NAME));
+    if (toolNames.includes('Read')) {
+      pass('EXT-Conv-020: Object facts still drive conversation tool-call detection', toolNames.join(', '));
+    } else {
+      fail('EXT-Conv-020: Object facts still drive conversation tool-call detection', JSON.stringify(objectFactConversation.MESSAGES));
+    }
 
   } catch (error) {
     fail('EXT-Conv: Module load/test', error.message);

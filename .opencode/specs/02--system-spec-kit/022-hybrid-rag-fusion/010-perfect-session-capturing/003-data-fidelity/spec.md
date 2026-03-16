@@ -15,7 +15,7 @@ title: "Feature Specification: Data Fidelity"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | Draft |
+| **Status** | Complete |
 | **Created** | 2026-03-16 |
 | **Branch** | `main` |
 | **Parent** | [010-perfect-session-capturing](../spec.md) |
@@ -64,6 +64,7 @@ Preserve richer data through the normalization pipeline by retaining file metada
 | `scripts/extractors/decision-extractor.ts` | Modify | Read `_manualDecision.fullText`, `chosenApproach`, `confidence` enrichment fields |
 | `scripts/extractors/file-extractor.ts` | Modify | Coerce object-based facts to strings instead of silently dropping them |
 | `scripts/extractors/conversation-extractor.ts` | Modify | Coerce object-based facts to strings (same issue as file-extractor; R-03 applies here too) |
+| `scripts/utils/fact-coercion.ts` | Create | Shared fact-coercion helper for displayable fact text with structured drop logging (REQ-005, REQ-006) |
 <!-- /ANCHOR:scope -->
 
 ---

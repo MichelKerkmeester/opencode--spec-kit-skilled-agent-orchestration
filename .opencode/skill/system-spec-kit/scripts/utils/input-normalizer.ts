@@ -61,6 +61,10 @@ export interface RecentContext {
 export interface FileEntry {
   FILE_PATH: string;
   DESCRIPTION: string;
+  ACTION?: string;
+  action?: string;
+  _provenance?: 'git' | 'spec-folder';
+  _synthetic?: boolean;
 }
 
 /** Raw input data that may be in manual or MCP-compatible format */
@@ -299,6 +303,26 @@ function cloneInputData<T>(data: T): T {
   return JSON.parse(JSON.stringify(data)) as T;
 }
 
+function normalizeFileEntryLike(file: Record<string, unknown>): FileEntry {
+  const action = typeof file.ACTION === 'string'
+    ? file.ACTION
+    : (typeof file.action === 'string' ? file.action : undefined);
+  const provenance = file._provenance === 'git' || file._provenance === 'spec-folder'
+    ? file._provenance
+    : undefined;
+  const synthetic = typeof file._synthetic === 'boolean'
+    ? file._synthetic
+    : undefined;
+
+  return {
+    FILE_PATH: (file.FILE_PATH || file.path || '') as string,
+    DESCRIPTION: (file.DESCRIPTION || file.description || 'Modified during session') as string,
+    ...(action ? { ACTION: action } : {}),
+    ...(provenance ? { _provenance: provenance } : {}),
+    ...(synthetic !== undefined ? { _synthetic: synthetic } : {}),
+  };
+}
+
 function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
   const nextSteps = Array.isArray(data.nextSteps)
     ? data.nextSteps
@@ -329,13 +353,7 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
     if (!Array.isArray(cloned.observations)) cloned.observations = [];
     // F-16: Ensure FILES uses FileEntry format
     if (cloned.FILES && Array.isArray(cloned.FILES)) {
-      cloned.FILES = cloned.FILES.map((f) => {
-        const entry = f as unknown as Record<string, unknown>;
-        return {
-          FILE_PATH: (entry.FILE_PATH || entry.path || '') as string,
-          DESCRIPTION: (entry.DESCRIPTION || entry.description || 'Modified during session') as string,
-        };
-      });
+      cloned.FILES = cloned.FILES.map((f) => normalizeFileEntryLike(f as unknown as Record<string, unknown>));
     }
 
     if (nextSteps.length > 0 && !hasPersistedNextStepsObservation(cloned.observations)) {
@@ -367,7 +385,9 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
     : Array.isArray(data.files_modified)
       ? data.files_modified
       : [];
-  if (filesModified.length > 0) {
+  if (Array.isArray(data.FILES) && data.FILES.length > 0) {
+    normalized.FILES = data.FILES.map((entry) => normalizeFileEntryLike(entry as unknown as Record<string, unknown>));
+  } else if (filesModified.length > 0) {
     normalized.FILES = filesModified.map((entry: string | { path?: string; changes_summary?: string }) => {
       let filePath: string;
       let changesSummary: string;
@@ -393,7 +413,7 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
           ? `Modified ${basename.replace(/[-_]/g, ' ')}`
           : 'File modified';
       }
-      return { FILE_PATH: filePath, DESCRIPTION: description };
+      return { FILE_PATH: filePath, DESCRIPTION: description, ACTION: 'Modified' };
     });
   }
 

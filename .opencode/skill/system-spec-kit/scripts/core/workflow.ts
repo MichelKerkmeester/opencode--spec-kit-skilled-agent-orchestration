@@ -33,8 +33,8 @@ import {
 } from '../utils/spec-affinity';
 import { deriveMemoryDescription } from '../utils/memory-frontmatter';
 import { shouldAutoSave, collectSessionData } from '../extractors/collect-session-data';
-import type { SessionData, CollectedDataFull } from '../extractors/collect-session-data';
-import type { FileChange, SemanticFileInfo } from '../extractors/file-extractor';
+import type { CollectedDataFull } from '../extractors/collect-session-data';
+import type { SemanticFileInfo } from '../extractors/file-extractor';
 import { filterContamination, getContaminationPatternLabels } from '../extractors/contamination-filter';
 import {
   scoreMemoryQuality as scoreMemoryQualityV2,
@@ -69,10 +69,8 @@ import * as simFactory from '../lib/simulation-factory';
 import { loadCollectedData as loadCollectedDataFromLoader } from '../loaders/data-loader';
 import { applyTreeThinning } from './tree-thinning';
 import { structuredLog } from '../utils/logger';
-import type {
-  FileEntry as ThinningFileEntry,
-  ThinningResult,
-} from './tree-thinning';
+import type { FileChange, SessionData } from '../types/session-types';
+import type { FileEntry as ThinningFileEntry, ThinningResult } from './tree-thinning';
 
 /* ───────────────────────────────────────────────────────────────
    1. INTERFACES

@@ -38,9 +38,9 @@ This plan implements a data preservation pattern: extend normalized types to inc
 
 ### Definition of Done
 
-- [ ] All acceptance criteria met (REQ-001 through REQ-004)
-- [ ] Tests passing -- no silent data loss at any boundary
-- [ ] Docs updated (spec/plan in this folder)
+- [x] All acceptance criteria met (REQ-001 through REQ-006)
+- [x] Tests passing -- no silent data loss at any boundary
+- [x] Docs updated (spec/plan in this folder)
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -76,32 +76,42 @@ Data preservation -- extend normalized types, fix coercion at each boundary, wir
 
 ### Phase 1: Extend Normalized Types
 
-- [ ] Add `ACTION?: string`, `_provenance?: string`, `_synthetic?: boolean` to the `FileChange` interface (coordinate with R-04 if type is canonical there)
-- [ ] Ensure normalizer passthrough does not strip unknown fields
+- [x] Add `ACTION?: string`, `_provenance?: string`, `_synthetic?: boolean` to the `FileChange` interface (coordinate with R-04 if type is canonical there)
+- [x] Ensure normalizer passthrough does not strip unknown fields
 
 ### Phase 2: Fix FILES Metadata Preservation
 
-- [ ] Update `input-normalizer.ts` to copy `ACTION`, `_provenance`, `_synthetic` from raw input to normalized entries
-- [ ] Add test: normalized output retains metadata when present in raw input
-- [ ] Add test: normalized output works correctly when metadata is absent (no breakage)
+- [x] Update `input-normalizer.ts` to copy `ACTION`, `_provenance`, `_synthetic` from raw input to normalized entries
+- [x] Add test: normalized output retains metadata when present in raw input
+- [x] Add test: normalized output works correctly when metadata is absent (no breakage)
 
 ### Phase 3: Fix Object-Based Fact Coercion
 
-- [ ] Update `file-extractor.ts` to detect object-type facts
-- [ ] Coerce objects to `JSON.stringify(value, null, 2)` with a type prefix (e.g., `[object] ...`)
-- [ ] Add test: object facts appear as stringified entries, not missing entries
+- [x] Update `file-extractor.ts` to detect object-type facts
+- [x] Coerce objects to `JSON.stringify(value, null, 2)` with a type prefix (e.g., `[object] ...`)
+- [x] Add test: object facts appear as stringified entries, not missing entries
 
 ### Phase 4: Wire Manual Decision Enrichment
 
-- [ ] Update `extractDecisions()` in `decision-extractor.ts` to check for `_manualDecision`
-- [ ] When present, populate decision `fullText`, `chosenApproach`, `confidence` from enrichment
-- [ ] Add test: decisions include enrichment fields when `_manualDecision` is provided by `transformKeyDecision()`
+- [x] Update `extractDecisions()` in `decision-extractor.ts` to check for `_manualDecision`
+- [x] When present, populate decision `fullText`, `chosenApproach`, `confidence` from enrichment
+- [x] Add test: decisions include enrichment fields when `_manualDecision` is provided by `transformKeyDecision()`
 
 ### Phase 5: Add Truncation Logging
 
-- [ ] Add `console.warn` or structured logger call when observation count exceeds `MAX_OBSERVATIONS`
-- [ ] Log original count and retained count
-- [ ] Add test: warning is emitted when observations are truncated
+- [x] Add `console.warn` or structured logger call when observation count exceeds `MAX_OBSERVATIONS`
+- [x] Log original count and retained count
+- [x] Add test: warning is emitted when observations are truncated
+
+### Phase 6: Centralize Shared Extraction Helpers
+
+- [x] Extract shared fact-coercion helper into `scripts/utils/fact-coercion.ts` (REQ-005)
+- [x] Update file, conversation, decision, and collect-session-data extractors to import the shared helper (REQ-005)
+
+### Phase 7: Instrument Silent Data Drops
+
+- [x] Add structured log entries for fact-coercion drop points with field path, drop reason, and count (REQ-006)
+- [x] Ensure drop logs emit spec/session identifiers without content leakage (REQ-006)
 <!-- /ANCHOR:phases -->
 
 ---

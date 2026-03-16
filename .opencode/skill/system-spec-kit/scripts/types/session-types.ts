@@ -8,8 +8,186 @@
 // Canonical type definitions shared between simulation-factory and extractors.
 // Eliminates parallel type hierarchies (TECH-DEBT P6-05).
 
-import type { FileChange, ObservationDetailed } from '../extractors/file-extractor';
-import type { ToolCounts, SpecFileEntry } from '../extractors/session-extractor';
+/** Captures a file change discovered in session data. */
+export interface FileChange {
+  FILE_PATH: string;
+  DESCRIPTION: string;
+  ACTION?: string;
+  _provenance?: 'git' | 'spec-folder';
+  _synthetic?: boolean;
+}
+
+/** File entry accepted from normalized collected data. */
+export interface CollectedFileEntry {
+  FILE_PATH?: string;
+  FILE_NAME?: string;
+  DESCRIPTION?: string;
+  ACTION?: string;
+  path?: string;
+  description?: string;
+  action?: string;
+  _provenance?: 'git' | 'spec-folder';
+  _synthetic?: boolean;
+}
+
+/** Manual decision enrichment captured on an observation. */
+export interface ManualDecisionInfo {
+  fullText?: string;
+  chosenApproach?: string;
+  confidence?: number;
+}
+
+/** Observation item consumed by the extractor pipeline. */
+export interface Observation {
+  type?: string;
+  title?: string;
+  narrative?: string;
+  facts?: unknown[];
+  files?: string[];
+  timestamp?: string;
+  _manualDecision?: ManualDecisionInfo;
+  _provenance?: 'git' | 'spec-folder';
+  _synthetic?: boolean;
+}
+
+/** Raw user prompt metadata consumed by the session pipeline. */
+export interface UserPrompt {
+  prompt: string;
+  timestamp?: string;
+}
+
+/** Recent context entry used for session summarization. */
+export interface RecentContextEntry {
+  learning?: string;
+  request?: string;
+  continuationCount?: number;
+  files?: string[];
+}
+
+/** Preflight learning metrics captured before task execution. */
+export interface PreflightData {
+  knowledgeScore?: number;
+  uncertaintyScore?: number;
+  contextScore?: number;
+  timestamp?: string;
+  gaps?: string[];
+  confidence?: number;
+  uncertaintyRaw?: number;
+  readiness?: string;
+}
+
+/** Postflight learning metrics captured after task execution. */
+export interface PostflightData {
+  knowledgeScore?: number;
+  uncertaintyScore?: number;
+  contextScore?: number;
+  gapsClosed?: string[];
+  newGaps?: string[];
+}
+
+/** Shared collected-data contract reused by extractor entrypoints. */
+export interface CollectedDataBase {
+  recentContext?: RecentContextEntry[];
+  observations?: Observation[];
+  userPrompts?: UserPrompt[];
+  SPEC_FOLDER?: string;
+  FILES?: CollectedFileEntry[];
+  filesModified?: Array<{ path: string; changes_summary?: string }>;
+  _manualDecisions?: unknown[];
+  _manualTriggerPhrases?: string[];
+  _isSimulation?: boolean;
+  preflight?: PreflightData;
+  postflight?: PostflightData;
+  [key: string]: unknown;
+}
+
+/** Normalized observation details enriched with anchors and metadata. */
+export interface ObservationDetailed {
+  TYPE: string;
+  TITLE: string;
+  NARRATIVE: string;
+  HAS_FILES: boolean;
+  FILES_LIST: string;
+  HAS_FACTS: boolean;
+  FACTS_LIST: string;
+  ANCHOR_ID: string;
+  IS_DECISION: boolean;
+}
+
+/** Counts tool usage by category within a session. */
+export interface ToolCounts {
+  Read: number;
+  Edit: number;
+  Write: number;
+  Bash: number;
+  Grep: number;
+  Glob: number;
+  Task: number;
+  WebFetch: number;
+  WebSearch: number;
+  Skill: number;
+  [key: string]: number;
+}
+
+/** File entry metadata consumed by session state helpers. */
+export interface FileEntry {
+  FILE_PATH: string;
+  FILE_NAME?: string;
+  DESCRIPTION?: string;
+}
+
+/** Spec file entry metadata consumed by the session pipeline. */
+export interface SpecFileEntry {
+  FILE_NAME: string;
+  FILE_PATH?: string;
+  DESCRIPTION?: string;
+}
+
+/** Progress summary for an individual tracked file. */
+export interface FileProgressEntry {
+  FILE_NAME: string;
+  FILE_STATUS: string;
+}
+
+/** Describes an identified gap between preflight and postflight state. */
+export interface GapDescription {
+  GAP_DESCRIPTION: string;
+}
+
+/** Represents a pending task extracted from session context. */
+export interface PendingTask {
+  TASK_ID: string;
+  TASK_DESCRIPTION: string;
+  TASK_PRIORITY: string;
+}
+
+/** Represents a context item included in continue-session payloads. */
+export interface ContextItem {
+  CONTEXT_ITEM: string;
+}
+
+/** Describes a concrete implementation step for the guide output. */
+export interface ImplementationStep {
+  FEATURE_NAME: string;
+  DESCRIPTION: string;
+}
+
+/** Associates an important file with its role in the implementation. */
+export interface KeyFileWithRole {
+  FILE_PATH: string;
+  ROLE: string;
+}
+
+/** Describes how the implementation can be extended safely. */
+export interface ExtensionGuide {
+  GUIDE_TEXT: string;
+}
+
+/** Summarizes a reusable code pattern identified in the implementation. */
+export interface CodePattern {
+  PATTERN_NAME: string;
+  USAGE: string;
+}
 
 // ───────────────────────────────────────────────────────────────
 // 2. DECISION TYPES
@@ -69,7 +247,7 @@ export interface DecisionData {
 export interface PhaseEntry {
   PHASE_NAME: string;
   DURATION: string;
-  ACTIVITIES?: string[];
+  ACTIVITIES: string[];
   [key: string]: unknown;
 }
 
@@ -170,7 +348,7 @@ export interface DiagramData {
 /** Outcome entry — canonical type */
 export interface OutcomeEntry {
   OUTCOME: string;
-  TYPE?: string;
+  TYPE: string;
 }
 
 /** Session data structure — canonical type */
@@ -210,30 +388,47 @@ export interface SessionData {
   LAST_ACTION: string;
   NEXT_ACTION: string;
   BLOCKERS: string;
-  FILE_PROGRESS: Array<{ FILE_NAME: string; FILE_STATUS: string }>;
+  FILE_PROGRESS: FileProgressEntry[];
   HAS_FILE_PROGRESS: boolean;
-  PREFLIGHT_KNOW_SCORE?: number | null;
-  PREFLIGHT_CONTEXT_SCORE?: number | null;
-  PREFLIGHT_UNCERTAINTY_SCORE?: number | null;
-  HAS_POSTFLIGHT_DELTA?: boolean;
-  POSTFLIGHT_KNOW_SCORE?: number | null;
-  POSTFLIGHT_CONTEXT_SCORE?: number | null;
-  POSTFLIGHT_UNCERTAINTY_SCORE?: number | null;
-  DELTA_KNOW_SCORE?: string | null;
-  DELTA_CONTEXT_SCORE?: string | null;
-  DELTA_UNCERTAINTY_SCORE?: string | null;
-  DELTA_KNOW_TREND?: string;
-  DELTA_CONTEXT_TREND?: string;
-  DELTA_UNCERTAINTY_TREND?: string;
-  LEARNING_INDEX?: number | null;
-  CONTINUATION_COUNT?: number;
-  NEXT_CONTINUATION_COUNT?: number;
-  LAST_ACTIVITY_TIMESTAMP?: string;
-  SESSION_DURATION?: string;
-  SESSION_STATUS?: string;
-  COMPLETION_PERCENT?: number;
-  PENDING_TASKS?: Array<{ TASK_ID: string; TASK_DESCRIPTION: string; TASK_PRIORITY: string }>;
-  RESUME_CONTEXT?: Array<{ CONTEXT_ITEM: string }>;
-  CONTEXT_SUMMARY?: string;
-  [key: string]: unknown;
+  HAS_IMPLEMENTATION_GUIDE: boolean;
+  TOPIC: string;
+  IMPLEMENTATIONS: ImplementationStep[];
+  IMPL_KEY_FILES: KeyFileWithRole[];
+  EXTENSION_GUIDES: ExtensionGuide[];
+  PATTERNS: CodePattern[];
+  HAS_PREFLIGHT_BASELINE: boolean;
+  PREFLIGHT_KNOW_SCORE: number | null;
+  PREFLIGHT_CONTEXT_SCORE: number | null;
+  PREFLIGHT_UNCERTAINTY_SCORE: number | null;
+  PREFLIGHT_KNOW_ASSESSMENT: string;
+  PREFLIGHT_UNCERTAINTY_ASSESSMENT: string;
+  PREFLIGHT_CONTEXT_ASSESSMENT: string;
+  PREFLIGHT_TIMESTAMP: string | null;
+  PREFLIGHT_GAPS: GapDescription[];
+  PREFLIGHT_CONFIDENCE: number | null;
+  PREFLIGHT_UNCERTAINTY_RAW: number | null;
+  PREFLIGHT_READINESS: string | null;
+  HAS_POSTFLIGHT_DELTA: boolean;
+  POSTFLIGHT_KNOW_SCORE: number | null;
+  POSTFLIGHT_CONTEXT_SCORE: number | null;
+  POSTFLIGHT_UNCERTAINTY_SCORE: number | null;
+  DELTA_KNOW_SCORE: string | null;
+  DELTA_CONTEXT_SCORE: string | null;
+  DELTA_UNCERTAINTY_SCORE: string | null;
+  DELTA_KNOW_TREND: string;
+  DELTA_CONTEXT_TREND: string;
+  DELTA_UNCERTAINTY_TREND: string;
+  LEARNING_INDEX: number | null;
+  LEARNING_SUMMARY: string;
+  GAPS_CLOSED: GapDescription[];
+  NEW_GAPS: GapDescription[];
+  CONTINUATION_COUNT: number;
+  NEXT_CONTINUATION_COUNT: number;
+  LAST_ACTIVITY_TIMESTAMP: string;
+  SESSION_DURATION: string;
+  SESSION_STATUS: string;
+  COMPLETION_PERCENT: number;
+  PENDING_TASKS: PendingTask[];
+  RESUME_CONTEXT: ContextItem[];
+  CONTEXT_SUMMARY: string;
 }

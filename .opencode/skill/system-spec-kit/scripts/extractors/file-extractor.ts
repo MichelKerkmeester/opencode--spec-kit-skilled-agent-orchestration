@@ -8,11 +8,8 @@
 // Extracts file references, descriptions, and observation types from session data
 
 import { CONFIG } from '../core';
-import {
-  toRelativePath,
-  cleanDescription,
-  isDescriptionValid
-} from '../utils/file-helpers';
+import { coerceFactToText, coerceFactsToText } from '../utils/fact-coercion';
+import { toRelativePath, cleanDescription, isDescriptionValid } from '../utils/file-helpers';
 import { getPathBasename } from '../utils/path-utils';
 import {
   extractSpecNumber,
@@ -20,58 +17,24 @@ import {
   generateAnchorId,
   validateAnchorUniqueness
 } from '../lib/anchor-generator';
+import type {
+  CollectedDataBase,
+  FileChange,
+  Observation,
+  ObservationDetailed,
+} from '../types/session-types';
+
+export type { FileChange, ObservationDetailed };
 
 /* ───────────────────────────────────────────────────────────────
    1. INTERFACES
 ------------------------------------------------------------------*/
 
-/** Captures a file change discovered in session data. */
-export interface FileChange {
-  FILE_PATH: string;
-  DESCRIPTION: string;
-  ACTION?: string;
-  _provenance?: 'git' | 'spec-folder';
-  _synthetic?: boolean;
-}
-
 /** Raw observation input used during file extraction. */
-export interface ObservationInput {
-  type?: string;
-  title?: string;
-  narrative?: string;
-  facts?: Array<string | { text?: string; files?: string[] }>;
-  files?: string[];
-  timestamp?: string;
-}
-
-/** Normalized observation details enriched with anchors and metadata. */
-export interface ObservationDetailed {
-  TYPE: string;
-  TITLE: string;
-  NARRATIVE: string;
-  HAS_FILES: boolean;
-  FILES_LIST: string;
-  HAS_FACTS: boolean;
-  FACTS_LIST: string;
-  ANCHOR_ID: string;
-  IS_DECISION: boolean;
-}
+export type ObservationInput = Observation;
 
 /** File-focused subset of collected session data. */
-export interface CollectedDataForFiles {
-  FILES?: Array<{
-    FILE_PATH?: string;
-    path?: string;
-    DESCRIPTION?: string;
-    description?: string;
-    ACTION?: string;
-    action?: string;
-    _provenance?: 'git' | 'spec-folder';
-    _synthetic?: boolean;
-  }>;
-  filesModified?: Array<{ path: string; changes_summary?: string }>;
-  [key: string]: unknown;
-}
+export type CollectedDataForFiles = Pick<CollectedDataBase, 'FILES' | 'filesModified'>;
 
 /** Semantic summary for a file referenced by the session. */
 export interface SemanticFileInfo {
@@ -104,7 +67,7 @@ function detectObservationType(obs: ObservationInput): string {
   if (obs.type && obs.type !== 'observation') return obs.type;
 
   const text = ((obs.title || '') + ' ' + (obs.narrative || '')).toLowerCase();
-  const facts = (obs.facts || []).map((f) => (typeof f === 'string' ? f : '')).join(' ').toLowerCase();
+  const facts = coerceFactsToText(obs.facts).join(' ').toLowerCase();
   const combined = text + ' ' + facts;
 
   if (/\b(fix(?:ed|es|ing)?|bug|error|issue|broken|patch)\b/.test(combined)) return 'bugfix';
@@ -195,7 +158,8 @@ function extractFilesFromData(
         filesMap.set(mapKey, {
           description: cleaned,
           action: mergedAction,
-          ...(mergedProvenance ? { _provenance: mergedProvenance, _synthetic: mergedSynthetic } : {}),
+          ...(mergedProvenance ? { _provenance: mergedProvenance } : {}),
+          ...(mergedSynthetic !== undefined ? { _synthetic: mergedSynthetic } : {}),
         });
       } else {
         // Keep existing description, but still merge action and provenance if newer
@@ -206,7 +170,8 @@ function extractFilesFromData(
           filesMap.set(mapKey, {
             ...existing,
             action: mergedAction,
-            ...(mergedProvenance ? { _provenance: mergedProvenance, _synthetic: mergedSynthetic } : {}),
+            ...(mergedProvenance ? { _provenance: mergedProvenance } : {}),
+            ...(mergedSynthetic !== undefined ? { _synthetic: mergedSynthetic } : {}),
           });
         }
       }
@@ -214,7 +179,8 @@ function extractFilesFromData(
       filesMap.set(mapKey, {
         description: cleaned || 'Modified during session',
         action,
-        ...(nextProvenance ? { _provenance: nextProvenance, _synthetic: nextSynthetic } : {}),
+        ...(nextProvenance ? { _provenance: nextProvenance } : {}),
+        ...(nextSynthetic !== undefined ? { _synthetic: nextSynthetic } : {}),
       });
     }
   };
@@ -274,7 +240,8 @@ function extractFilesFromData(
       FILE_PATH: filePath,
       DESCRIPTION: data.description,
       ...(data.action ? { ACTION: data.action } : {}),
-      ...(data._provenance ? { _provenance: data._provenance, _synthetic: data._synthetic } : {}),
+      ...(data._provenance ? { _provenance: data._provenance } : {}),
+      ...(data._synthetic !== undefined ? { _synthetic: data._synthetic } : {}),
     }));
 }
 
@@ -350,6 +317,10 @@ function buildObservationsWithAnchors(
   return deduped
     .filter((obs) => obs != null)
     .map((obs) => {
+      const coercedFacts = coerceFactsToText(obs.facts, {
+        component: 'file-extractor',
+        fieldPath: 'observations[].facts',
+      });
       const category: string = categorizeSection(
         obs.title || 'Observation',
         obs.narrative || ''
@@ -371,8 +342,8 @@ function buildObservationsWithAnchors(
         NARRATIVE: obs.narrative || '',
         HAS_FILES: !!(obs.files && obs.files.length > 0),
         FILES_LIST: obs.files ? obs.files.join(', ') : '',
-        HAS_FACTS: !!(obs.facts && obs.facts.length > 0),
-        FACTS_LIST: obs.facts ? obs.facts.map((f) => (typeof f === 'string' ? f : '')).join(' | ') : '',
+        HAS_FACTS: coercedFacts.length > 0,
+        FACTS_LIST: coercedFacts.join(' | '),
         ANCHOR_ID: anchorId,
         IS_DECISION: obsType === 'decision'
       };
@@ -409,10 +380,10 @@ function deduplicateObservations(observations: ObservationInput[]): ObservationI
       if (obs.facts) {
         const existingFacts = existing.obs.facts || [];
         const existingFactStrings = new Set(
-          existingFacts.map(f => typeof f === 'string' ? f : (f as { text?: string }).text || '')
+          existingFacts.map((fact) => coerceFactToText(fact).text)
         );
         for (const fact of obs.facts) {
-          const factStr = typeof fact === 'string' ? fact : (fact as { text?: string }).text || '';
+          const factStr = coerceFactToText(fact).text;
           if (factStr && !existingFactStrings.has(factStr)) {
             existingFacts.push(fact);
             existingFactStrings.add(factStr);
