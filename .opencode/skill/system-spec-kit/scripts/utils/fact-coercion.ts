@@ -80,7 +80,8 @@ function coerceFactsToText(facts: unknown[] | null | undefined, logContext?: Fac
   const coerced = facts.map((fact) => coerceFactToText(fact));
   const dropped = coerced.filter((fact) => fact.dropReason);
 
-  if (logContext && dropped.length > 0) {
+  if (dropped.length > 0) {
+    const ctx = logContext || { component: 'unknown', fieldPath: 'unknown' };
     const dropReasonCounts = dropped.reduce<Record<string, number>>((counts, fact) => {
       const reason = fact.dropReason || 'unknown';
       counts[reason] = (counts[reason] || 0) + 1;
@@ -88,10 +89,10 @@ function coerceFactsToText(facts: unknown[] | null | undefined, logContext?: Fac
     }, {});
 
     structuredLog('warn', 'fact_coercion_drop', {
-      component: logContext.component,
-      fieldPath: logContext.fieldPath,
-      specFolder: logContext.specFolder,
-      sessionId: logContext.sessionId,
+      component: ctx.component,
+      fieldPath: ctx.fieldPath,
+      specFolder: ctx.specFolder,
+      sessionId: ctx.sessionId,
       droppedCount: dropped.length,
       dropReasonCounts,
     });

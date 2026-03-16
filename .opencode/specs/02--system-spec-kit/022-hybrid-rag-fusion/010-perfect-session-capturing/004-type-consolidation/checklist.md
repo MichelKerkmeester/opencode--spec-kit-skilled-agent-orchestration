@@ -33,14 +33,14 @@ title: "Verification Checklist: Type Consolidation [template:level_2/checklist.m
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [ ] CHK-010 [P0] `FileChange`, `ObservationDetailed`, `ToolCounts`, `SpecFileEntry` canonical in `session-types.ts` (REQ-001)
-- [ ] CHK-011 [P0] All extractor files import these types from `session-types.ts`, not define locally (REQ-001)
-- [ ] CHK-012 [P0] Re-exports in original files for backward compatibility (REQ-001)
+- [x] CHK-010 [P0] `FileChange`, `ObservationDetailed`, `ToolCounts`, `SpecFileEntry` canonical in `session-types.ts` (REQ-001) — *completed by 003-data-fidelity (commit 37a75c17); types at session-types.ts:16-159*
+- [x] CHK-011 [P0] All extractor files import these types from `session-types.ts`, not define locally (REQ-001) — *verified: file-extractor.ts, session-extractor.ts import from session-types*
+- [x] CHK-012 [P0] Re-exports in original files for backward compatibility (REQ-001) — *verified: file-extractor.ts:35, session-extractor.ts:29-37*
 - [ ] CHK-013 [P0] `SessionData` explicitly models `implementation-guide`, `preflight`, `postflight`, `continue-session` fields (REQ-002)
-- [ ] CHK-014 [P0] `PhaseEntry.ACTIVITIES` is required, not optional (REQ-003)
+- [x] CHK-014 [P0] `PhaseEntry.ACTIVITIES` is required, not optional (REQ-003) — *verified: session-types.ts:267 `ACTIVITIES: string[]` (no `?`)*
 - [ ] CHK-015 [P0] `CollectedDataFor*` subsets consolidated using `Pick`/`Omit` — no more than 2 subset interfaces remain (REQ-004)
 - [ ] CHK-016 [P0] `[key: string]: unknown` removed from `SessionData` (REQ-005)
-- [ ] CHK-017 [P0] `OutcomeEntry.TYPE` handling normalized — required or has explicit default (REQ-006)
+- [x] CHK-017 [P0] `OutcomeEntry.TYPE` handling normalized — required or has explicit default (REQ-006) — *verified: session-types.ts:368 `TYPE: string` (no `?`)*
 - [ ] CHK-018 [P1] All `PhaseEntry` construction sites populate ACTIVITIES (REQ-003)
 - [ ] CHK-019 [P1] No subset interface redeclares fields with different types than canonical (REQ-004)
 - [ ] CHK-020 [P2] Minimal `as any` or `as unknown` casts introduced during migration
@@ -93,9 +93,9 @@ title: "Verification Checklist: Type Consolidation [template:level_2/checklist.m
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 12 | [ ]/12 |
+| P0 Items | 12 | 5/12 |
 | P1 Items | 9 | [ ]/9 |
 | P2 Items | 5 | [ ]/5 |
 
-**Verification Date**: [YYYY-MM-DD]
+**Verification Date**: 2026-03-16 (partial — items completed by 003-data-fidelity acknowledged)
 <!-- /ANCHOR:summary -->

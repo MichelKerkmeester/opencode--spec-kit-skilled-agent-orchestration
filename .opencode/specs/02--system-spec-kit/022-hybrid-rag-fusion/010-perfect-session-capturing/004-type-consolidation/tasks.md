@@ -26,11 +26,11 @@ title: "Tasks: Type Consolidation [template:level_1/tasks.md]"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup — Canonicalize Leaked Types
 
-- [ ] T001 Move `FileChange` from `file-extractor.ts` to `session-types.ts` (`scripts/types/session-types.ts`) — REQ-001
-- [ ] T002 [P] Move `ObservationDetailed` from `session-extractor.ts` to `session-types.ts` (`scripts/types/session-types.ts`) — REQ-001
-- [ ] T003 [P] Move `ToolCounts` from its current owner to `session-types.ts` (`scripts/types/session-types.ts`) — REQ-001
-- [ ] T004 [P] Move `SpecFileEntry` from its current owner to `session-types.ts` (`scripts/types/session-types.ts`) — REQ-001
-- [ ] T005 Add re-exports in original files for backward compatibility (`scripts/extractors/file-extractor.ts`, `scripts/extractors/session-extractor.ts`) — REQ-001
+- [x] T001 Move `FileChange` from `file-extractor.ts` to `session-types.ts` (`scripts/types/session-types.ts`) — REQ-001 *(completed by 003-data-fidelity, commit 37a75c17)*
+- [x] T002 [P] Move `ObservationDetailed` from `session-extractor.ts` to `session-types.ts` (`scripts/types/session-types.ts`) — REQ-001 *(completed by 003-data-fidelity, commit 37a75c17)*
+- [x] T003 [P] Move `ToolCounts` from its current owner to `session-types.ts` (`scripts/types/session-types.ts`) — REQ-001 *(completed by 003-data-fidelity, commit 37a75c17)*
+- [x] T004 [P] Move `SpecFileEntry` from its current owner to `session-types.ts` (`scripts/types/session-types.ts`) — REQ-001 *(completed by 003-data-fidelity, commit 37a75c17)*
+- [x] T005 Add re-exports in original files for backward compatibility (`scripts/extractors/file-extractor.ts`, `scripts/extractors/session-extractor.ts`) — REQ-001 *(completed by 003-data-fidelity, commit 37a75c17)*
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -46,13 +46,13 @@ title: "Tasks: Type Consolidation [template:level_1/tasks.md]"
 
 ### Make ACTIVITIES Required
 
-- [ ] T009 Change `PhaseEntry.ACTIVITIES` from optional (`?`) to required (`scripts/types/session-types.ts`) — REQ-003
+- [x] T009 Change `PhaseEntry.ACTIVITIES` from optional (`?`) to required (`scripts/types/session-types.ts`) — REQ-003 *(already required in current codebase)*
 - [ ] T010 Audit all `PhaseEntry` construction sites to ensure ACTIVITIES is always populated — REQ-003
 - [ ] T011 Fix any construction sites that omit ACTIVITIES (add default empty array if needed) — REQ-003
 
 ### Normalize OutcomeEntry.TYPE
 
-- [ ] T012 Make `OutcomeEntry.TYPE` required or provide explicit default; align simulation path (`scripts/types/session-types.ts`) — REQ-006
+- [x] T012 Make `OutcomeEntry.TYPE` required or provide explicit default; align simulation path (`scripts/types/session-types.ts`) — REQ-006 *(already required in current codebase)*
 
 ### Consolidate CollectedDataFor* Subsets
 

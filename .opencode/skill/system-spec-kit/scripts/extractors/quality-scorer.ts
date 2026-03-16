@@ -127,7 +127,8 @@ function scoreMemoryQuality(inputs: QualityInputs): QualityScoreResult {
     ? clamp01(sufficiencyScore)
     : null;
   if (normalizedSufficiencyScore !== null) {
-    sufficiencyCap = normalizedSufficiencyScore;
+    // Preserve any existing cap (e.g. contamination 0.6) as a ceiling
+    sufficiencyCap = Math.min(sufficiencyCap ?? 1, normalizedSufficiencyScore);
     qualityScore = Math.min(qualityScore, sufficiencyCap);
   }
 

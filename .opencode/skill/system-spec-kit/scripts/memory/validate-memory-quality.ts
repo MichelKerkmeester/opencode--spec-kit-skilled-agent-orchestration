@@ -10,6 +10,7 @@
 import fs from 'fs';
 import path from 'path';
 import { structuredLog } from '../utils/logger';
+import type { ContaminationAuditRecord } from '../lib/content-filter';
 
 type QualityRuleId = 'V1' | 'V2' | 'V3' | 'V4' | 'V5' | 'V6' | 'V7' | 'V8' | 'V9';
 
@@ -24,15 +25,6 @@ interface ValidationResult {
   failedRules: QualityRuleId[];
   ruleResults: RuleResult[];
   contaminationAudit: ContaminationAuditRecord;
-}
-
-interface ContaminationAuditRecord extends Record<string, unknown> {
-  stage: 'post-render';
-  timestamp: string;
-  patternsChecked: string[];
-  matchesFound: string[];
-  actionsTaken: string[];
-  passedThrough: string[];
 }
 
 const FALLBACK_DECISION_REGEX = /No (specific )?decisions were made/i;

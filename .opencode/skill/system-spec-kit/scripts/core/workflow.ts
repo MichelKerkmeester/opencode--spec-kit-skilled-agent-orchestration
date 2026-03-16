@@ -47,7 +47,7 @@ import { extractGitContext } from '../extractors/git-context-extractor';
 // Static imports replacing lazy require()
 import * as flowchartGen from '../lib/flowchart-generator';
 import { createFilterPipeline } from '../lib/content-filter';
-import type { FilterStats } from '../lib/content-filter';
+import type { FilterStats, ContaminationAuditRecord } from '../lib/content-filter';
 import {
   generateImplementationSummary,
   formatSummaryAsMarkdown,
@@ -981,7 +981,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
 
     // F-23: Define contamination cleaning functions before enrichment
     let hadContamination = false;
-    const contaminationAuditTrail: Array<Record<string, unknown>> = [];
+    const contaminationAuditTrail: ContaminationAuditRecord[] = [];
     const extractorPatternCounts = new Map<string, number>();
     let extractorProcessedFieldCount = 0;
     let extractorCleanedFieldCount = 0;
@@ -1032,7 +1032,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       const preCleanedSummary = (typeof collectedData.SUMMARY === 'string' && collectedData.SUMMARY.length > 0)
         ? cleanContaminationText(collectedData.SUMMARY) : collectedData.SUMMARY;
       collectedData = { ...collectedData, observations: preCleanedObservations, SUMMARY: preCleanedSummary };
-      const extractorAudit = {
+      const extractorAudit: ContaminationAuditRecord = {
         stage: 'extractor-scrub',
         timestamp: new Date().toISOString(),
         patternsChecked: getContaminationPatternLabels(),
@@ -1595,8 +1595,10 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       warn(`   Quality warning: ${warning}`);
     }
   }
-  const qualityBreakdown = qualityResult.breakdown!;
-  log(`   Breakdown: triggers=${qualityBreakdown.triggerPhrases}/20, topics=${qualityBreakdown.keyTopics}/15, fileDesc=${qualityBreakdown.fileDescriptions}/20, length=${qualityBreakdown.contentLength}/15, html=${qualityBreakdown.noLeakedTags}/15, dedup=${qualityBreakdown.observationDedup}/15`);
+  if (qualityResult.breakdown) {
+    const qualityBreakdown = qualityResult.breakdown;
+    log(`   Breakdown: triggers=${qualityBreakdown.triggerPhrases}/20, topics=${qualityBreakdown.keyTopics}/15, fileDesc=${qualityBreakdown.fileDescriptions}/20, length=${qualityBreakdown.contentLength}/15, html=${qualityBreakdown.noLeakedTags}/15, dedup=${qualityBreakdown.observationDedup}/15`);
+  }
 
   // Step 8.7: Hard blocks before write/index
   // RC-5: V8/V9 contamination hard-block — prevent writing files when

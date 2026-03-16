@@ -40,7 +40,7 @@ This phase closed the live data-fidelity gaps that were still dropping context a
 
 The implementation stayed narrow and phase-correct:
 
-1. Kept `004-type-consolidation` deferred, so this phase did not move canonical types and instead extended the current local FILES shape in a forward-compatible way.
+1. While `004-type-consolidation` was nominally deferred, this phase's commit (`37a75c17`) did canonicalize `FileChange`, `ObservationDetailed`, `ToolCounts`, and `SpecFileEntry` into `session-types.ts` with re-exports in the original extractor files. The remaining 004 scope (CollectedDataFor* consolidation, index signature removal) is still deferred.
 2. Added only one new shared helper module and reused it across the four approved seams instead of broadening the work into an extractor-architecture refactor.
 3. Treated `_manualDecisions` as the authoritative manual-decision source and `_manualDecision` as observation-level enrichment or fallback, which fixes the duplication bug without weakening the existing manual path.
 4. Limited new structured logging to object-fact coercion failures and observation truncation, avoiding duplicate logging for prompt filtering and avoiding content leakage in truncation warnings.
@@ -53,7 +53,7 @@ The implementation stayed narrow and phase-correct:
 
 | Decision | Why |
 |----------|-----|
-| Keep `004-type-consolidation` out of scope | The phase only needed local FILES metadata preservation and did not need to block on canonical type ownership moving |
+| Type canonicalization completed as side effect | The commit moved `FileChange`, `ObservationDetailed`, `ToolCounts`, `SpecFileEntry` to `session-types.ts` with re-exports. Remaining 004 scope (CollectedDataFor* consolidation, index signature removal) is deferred. |
 | Use one shared fact-coercion helper instead of broader extractor refactoring | The real live gap was repeated object-fact loss at a few boundaries, not missing centralization for every extractor concern |
 | Prefer authoritative `_manualDecisions` over duplicate `_manualDecision` observations | The normalized manual payload can contain both surfaces for the same decision, and the authoritative manual record should win |
 <!-- /ANCHOR:decisions -->
@@ -76,7 +76,7 @@ The implementation stayed narrow and phase-correct:
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. Canonical type ownership remains deferred to `004-type-consolidation`; this phase intentionally preserved the current local `FileChange` ownership.
+1. Type canonicalization (REQ-001 of 004) was completed in this phase's commit. The remaining 004 scope — `CollectedDataFor*` consolidation (REQ-004) and index signature removal (REQ-005) — is still deferred.
 2. The shared fact-coercion helper only covers the fidelity seams in scope for this phase; other existing extractor utilities were intentionally left unchanged.
 3. Phase-local memory capture was not created as part of this implementation pass.
 <!-- /ANCHOR:limitations -->

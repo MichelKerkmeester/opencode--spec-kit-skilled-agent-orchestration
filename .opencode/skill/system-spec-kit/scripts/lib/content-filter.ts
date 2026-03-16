@@ -23,7 +23,7 @@ export interface NoisePatternConfig {
 }
 
 export interface ContaminationAuditRecord extends Record<string, unknown> {
-  stage: 'content-filter';
+  stage: 'extractor-scrub' | 'content-filter' | 'post-render';
   timestamp: string;
   patternsChecked: string[];
   matchesFound: string[];

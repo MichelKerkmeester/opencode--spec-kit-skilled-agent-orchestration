@@ -25,8 +25,6 @@ const DESCRIPTION_TIER_ORDER: Record<DescriptionTier, number> = {
 
 const PLACEHOLDER_PATTERNS: readonly RegExp[] = [
   /^$/,
-  /^#+\s/,
-  /^[-*]\s/,
   /\s(?:and|or|to|the)\s*$/i,
   /^(?:description\s+pending|\(description pending\))$/i,
   /^(?:modified during session|tracked file history snapshot)$/i,

@@ -380,9 +380,10 @@ export async function extractGitContext(projectRoot: string, specFolderHint?: st
     const seenFiles = new Set<string>();
     const addFile = (filePath: string, action: ChangeAction, description: string): void => {
       if (!filePath || seenFiles.has(filePath) || FILES.length >= MAX_FILES) return;
-      changeScores.set(filePath, (changeScores.get(filePath) || 0) + 1);
+      const scoreBeforeBump = changeScores.get(filePath) || 0;
+      changeScores.set(filePath, scoreBeforeBump + 1);
       const modificationMagnitude = deriveModificationMagnitude({
-        changeScore: changeScores.get(filePath),
+        changeScore: scoreBeforeBump,
         action,
         commitTouches: commitTouches.get(filePath) || 0,
       });
