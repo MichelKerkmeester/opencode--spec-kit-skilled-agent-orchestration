@@ -37,12 +37,21 @@ export interface ManualDecisionInfo {
   confidence?: number;
 }
 
+/** Fact item captured on an observation. */
+export type FactValue =
+  | string
+  | {
+    text?: string;
+    files?: string[];
+    [key: string]: unknown;
+  };
+
 /** Observation item consumed by the extractor pipeline. */
 export interface Observation {
   type?: string;
   title?: string;
   narrative?: string;
-  facts?: unknown[];
+  facts?: FactValue[];
   files?: string[];
   timestamp?: string;
   _manualDecision?: ManualDecisionInfo;
@@ -93,7 +102,7 @@ export interface CollectedDataBase {
   SPEC_FOLDER?: string;
   FILES?: CollectedFileEntry[];
   filesModified?: Array<{ path: string; changes_summary?: string }>;
-  _manualDecisions?: unknown[];
+  _manualDecisions?: Array<string | Record<string, unknown>>;
   _manualTriggerPhrases?: string[];
   _isSimulation?: boolean;
   preflight?: PreflightData;
@@ -216,6 +225,8 @@ export interface DecisionRecord {
   PROS: Array<{ PRO: string }>;
   HAS_CONS: boolean;
   CONS: Array<{ CON: string }>;
+  CHOICE_CONFIDENCE: number;
+  RATIONALE_CONFIDENCE: number;
   CONFIDENCE: number;
   HAS_EVIDENCE: boolean;
   EVIDENCE: Array<{ EVIDENCE_ITEM: string }>;

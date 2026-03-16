@@ -2754,8 +2754,8 @@ async function testLibAsciiBoxes() {
     }
 
     // Test 5: format_decision_header creates header with box characters
-    const header = formatDecisionHeader('Test Decision', 'Context', 85, new Date().toISOString());
-    if (header.includes('╭') && header.includes('╯') && header.includes('DECISION')) {
+    const header = formatDecisionHeader('Test Decision', 'Context', 85, new Date().toISOString(), 85, 50);
+    if (header.includes('╭') && header.includes('╯') && header.includes('DECISION') && header.includes('Choice: 85% / Rationale: 50%')) {
       pass('T-036e: format_decision_header creates header', 'Has box characters and DECISION');
     } else {
       fail('T-036e: format_decision_header creates header', 'Missing expected content');
@@ -3132,6 +3132,8 @@ async function testExtractorsDecisionTree() {
       TITLE: 'Architecture Decision',
       CONTEXT: 'Selecting database',
       CONFIDENCE: 90,
+      CHOICE_CONFIDENCE: 90,
+      RATIONALE_CONFIDENCE: 70,
       TIMESTAMP: new Date().toISOString(),
       OPTIONS: [
         { LABEL: 'PostgreSQL', PROS: [{ PRO: 'Reliable' }], CONS: [{ CON: 'Complex' }] },
@@ -3140,7 +3142,7 @@ async function testExtractorsDecisionTree() {
       CHOSEN: 'PostgreSQL',
       RATIONALE: 'Better for production'
     });
-    if (objTree.includes('Architecture Decision') && objTree.includes('DECISION')) {
+    if (objTree.includes('Architecture Decision') && objTree.includes('DECISION') && objTree.includes('Choice: 90% / Rationale: 70%')) {
       pass('T-041c: generateDecisionTree handles object format', 'Has title and DECISION');
     } else {
       fail('T-041c: generateDecisionTree handles object format', 'Missing expected content');

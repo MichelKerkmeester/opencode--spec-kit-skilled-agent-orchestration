@@ -38,9 +38,9 @@ This plan implements a type extension pattern: add `CHOICE_CONFIDENCE` and `RATI
 
 ### Definition of Done
 
-- [ ] All acceptance criteria met (REQ-001 through REQ-004)
-- [ ] Tests passing -- dual confidence computed correctly and legacy field derived
-- [ ] Docs updated (spec/plan in this folder)
+- [x] All acceptance criteria met (REQ-001 through REQ-004)
+- [x] Targeted tests passing -- dual confidence computed correctly and legacy field derived
+- [x] Docs updated (spec/plan in this folder)
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -57,7 +57,7 @@ Type extension -- add fields to a core data type, update the producer (extractor
 - **`DecisionRecord` type (`scripts/types/session-types.ts`)**: Extended with `CHOICE_CONFIDENCE` and `RATIONALE_CONFIDENCE` alongside derived `CONFIDENCE`
 - **Decision extractor (`scripts/extractors/decision-extractor.ts`)**: Produces dual confidence from conversation evidence signals
 - **Decision tree generator (`scripts/lib/decision-tree-generator.ts`)**: Consumes dual confidence for richer node labeling
-- **Template renderers (`scripts/renderers/`)**: Display split confidence in decision sections
+- **Template renderers (`.opencode/skill/system-spec-kit/templates/context_template.md`)**: Display split confidence in decision sections
 - **Workflow (`scripts/core/workflow.ts`)**: Percent conversion updated for dual model
 
 ### Data Flow
@@ -77,31 +77,31 @@ Type extension -- add fields to a core data type, update the producer (extractor
 
 ### Phase 1: Type Extension
 
-- [ ] Add `CHOICE_CONFIDENCE: number` (0.0-1.0) to `DecisionRecord`
-- [ ] Add `RATIONALE_CONFIDENCE: number` (0.0-1.0) to `DecisionRecord`
-- [ ] Add derived `CONFIDENCE` computation as `Math.min(CHOICE_CONFIDENCE, RATIONALE_CONFIDENCE)`
-- [ ] Ensure all existing references to `CONFIDENCE` compile without changes
+- [x] Add `CHOICE_CONFIDENCE: number` (0.0-1.0) to `DecisionRecord`
+- [x] Add `RATIONALE_CONFIDENCE: number` (0.0-1.0) to `DecisionRecord`
+- [x] Keep derived `CONFIDENCE` as `Math.min(CHOICE_CONFIDENCE, RATIONALE_CONFIDENCE)` across decision creation paths
+- [x] Ensure all existing references to `CONFIDENCE` compile without changes
 
 ### Phase 2: Extractor Update
 
-- [ ] Refactor confidence computation in `decision-extractor.ts` to produce dual values
-- [ ] `CHOICE_CONFIDENCE` signals: alternatives count > 0 (+0.15), explicit preference language (+0.10), option specificity (+0.10)
-- [ ] `RATIONALE_CONFIDENCE` signals: rationale text present (+0.15), trade-off articulation (+0.10), evidence citations (+0.10)
-- [ ] Base confidence starts at 0.50 for both, caps at 1.0
-- [ ] Verify existing heuristic ladder outcomes are preserved through the derived field
+- [x] Refactor confidence computation in `decision-extractor.ts` to produce dual values through a shared helper
+- [x] `CHOICE_CONFIDENCE` signals: alternatives count >= 2 (+0.15), explicit preference language (+0.10), option specificity (+0.10)
+- [x] `RATIONALE_CONFIDENCE` signals: rationale text present (+0.15), trade-off articulation (+0.10), evidence citations (+0.10)
+- [x] Base confidence starts at 0.50 for both, caps at 1.0
+- [x] Preserve legacy compatibility through derived `CONFIDENCE = Math.min(choice, rationale)` and explicit single-value overrides
 
 ### Phase 3: Consumer Updates
 
-- [ ] Update `decision-tree-generator.ts` to show split confidence on tree nodes when values diverge by > 0.1
-- [ ] Update renderer templates to include `Choice: X% / Rationale: Y%` labels when dual values are present
-- [ ] Update `workflow.ts` percent conversion to use legacy `CONFIDENCE` (no behavioral change, but code path must handle the new type shape)
+- [x] Update `decision-tree-generator.ts` to show split confidence on tree nodes when values diverge by > 0.1
+- [x] Update renderer surfaces (`ascii-boxes.ts`, `.opencode/skill/system-spec-kit/templates/context_template.md`) to include split labels when dual values are present
+- [x] Update `workflow.ts` percent conversion to use legacy `CONFIDENCE` while carrying dual fields for rendering
 
 ### Phase 4: Verification
 
-- [ ] Add unit tests for dual confidence computation with various input combinations
-- [ ] Add regression tests verifying legacy `CONFIDENCE` matches `Math.min` of the two new fields
-- [ ] Verify decision tree output includes split labels for divergent confidence cases
-- [ ] Verify existing test baselines still pass with the derived field
+- [x] Add unit tests for dual confidence computation with various input combinations
+- [x] Add regression tests verifying legacy `CONFIDENCE` matches `Math.min` of the two new fields
+- [x] Verify decision tree output includes split labels for divergent confidence cases
+- [ ] Verify existing test baselines still pass with the derived field. `test-scripts-modules.js` still reports four unrelated baseline failures outside this phase (`T-019d`, `T-024e`, `T-024f`, `T-032`).
 <!-- /ANCHOR:phases -->
 
 ---
@@ -124,7 +124,7 @@ Type extension -- add fields to a core data type, update the producer (extractor
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| R-04 type consolidation (004-type-consolidation) | Internal | Yellow | `DecisionRecord` type must be canonical before extending; blocked until A1 completes |
+| R-04 type consolidation (004-type-consolidation) | Internal | Green | `DecisionRecord` was extended directly in canonical `session-types.ts`; 004 not yet complete but dual fields were added without conflict |
 <!-- /ANCHOR:dependencies -->
 
 ---

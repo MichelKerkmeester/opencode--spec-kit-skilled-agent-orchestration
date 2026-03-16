@@ -642,9 +642,13 @@ async function testDecisionExtractor() {
       assertArray(decision.OPTIONS, 'EXT-Decision-008: Decision has OPTIONS array');
       assertExists(decision.CHOSEN, 'EXT-Decision-009: Decision has CHOSEN');
       assertExists(decision.RATIONALE, 'EXT-Decision-010: Decision has RATIONALE');
+      assertType(decision.CHOICE_CONFIDENCE, 'number', 'EXT-Decision-010a: CHOICE_CONFIDENCE is number');
+      assertType(decision.RATIONALE_CONFIDENCE, 'number', 'EXT-Decision-010b: RATIONALE_CONFIDENCE is number');
       assertType(decision.CONFIDENCE, 'number', 'EXT-Decision-011: CONFIDENCE is number');
       assertExists(decision.DECISION_ANCHOR_ID, 'EXT-Decision-012: Decision has ANCHOR_ID');
       assertExists(decision.DECISION_IMPORTANCE, 'EXT-Decision-013: Decision has IMPORTANCE');
+      assertRange(decision.CHOICE_CONFIDENCE, 0, 1, 'EXT-Decision-013a: CHOICE_CONFIDENCE normalized');
+      assertRange(decision.RATIONALE_CONFIDENCE, 0, 1, 'EXT-Decision-013b: RATIONALE_CONFIDENCE normalized');
 
       // Test pros/cons extraction
       assertType(decision.HAS_PROS, 'boolean', 'EXT-Decision-014: HAS_PROS is boolean');
@@ -700,11 +704,37 @@ async function testDecisionExtractor() {
     if (
       enrichedObservationResult.DECISIONS[0]?.CHOSEN === 'Batched repair path'
       && enrichedObservationResult.DECISIONS[0]?.CONTEXT.includes('preserves fidelity across the live pipeline')
+      && Math.abs(enrichedObservationResult.DECISIONS[0]?.CHOICE_CONFIDENCE - 0.82) < 0.001
+      && Math.abs(enrichedObservationResult.DECISIONS[0]?.RATIONALE_CONFIDENCE - 0.82) < 0.001
       && Math.abs(enrichedObservationResult.DECISIONS[0]?.CONFIDENCE - 0.82) < 0.001
     ) {
       pass('EXT-Decision-027: _manualDecision enriches chosen approach and confidence', `${enrichedObservationResult.DECISIONS[0].CHOSEN} @ ${enrichedObservationResult.DECISIONS[0].CONFIDENCE}`);
     } else {
       fail('EXT-Decision-027: _manualDecision enriches chosen approach and confidence', JSON.stringify(enrichedObservationResult.DECISIONS[0] || {}));
+    }
+
+    const splitConfidenceResult = await extractDecisions({
+      observations: [{
+        type: 'decision',
+        title: 'Choose database',
+        narrative: 'Selected PostgreSQL.',
+        timestamp: new Date().toISOString(),
+        facts: [
+          'Option A: PostgreSQL - Relational database',
+          'Option B: SQLite - Embedded database'
+        ]
+      }],
+      SPEC_FOLDER: '007-test-spec'
+    });
+
+    if (
+      Math.abs(splitConfidenceResult.DECISIONS[0]?.CHOICE_CONFIDENCE - 0.85) < 0.001
+      && Math.abs(splitConfidenceResult.DECISIONS[0]?.RATIONALE_CONFIDENCE - 0.5) < 0.001
+      && Math.abs(splitConfidenceResult.DECISIONS[0]?.CONFIDENCE - 0.5) < 0.001
+    ) {
+      pass('EXT-Decision-028: split confidence derives legacy confidence conservatively', `${splitConfidenceResult.DECISIONS[0].CHOICE_CONFIDENCE}/${splitConfidenceResult.DECISIONS[0].RATIONALE_CONFIDENCE}`);
+    } else {
+      fail('EXT-Decision-028: split confidence derives legacy confidence conservatively', JSON.stringify(splitConfidenceResult.DECISIONS[0] || {}));
     }
 
     const dedupedManualResult = await extractDecisions({
@@ -728,7 +758,7 @@ async function testDecisionExtractor() {
       SPEC_FOLDER: '007-test-spec'
     });
 
-    assertEqual(dedupedManualResult.DECISION_COUNT, 1, 'EXT-Decision-028: _manualDecision observation is suppressed when authoritative manual decision exists');
+    assertEqual(dedupedManualResult.DECISION_COUNT, 1, 'EXT-Decision-029: _manualDecision observation is suppressed when authoritative manual decision exists');
 
   } catch (error) {
     fail('EXT-Decision: Module load/test', error.message);

@@ -15,7 +15,7 @@ title: "Feature Specification: Confidence Calibration"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P1 |
-| **Status** | Draft |
+| **Status** | Complete |
 | **Created** | 2026-03-16 |
 | **Branch** | `main` |
 | **Parent** | [010-perfect-session-capturing](../spec.md) |
@@ -30,7 +30,7 @@ title: "Feature Specification: Confidence Calibration"
 
 ### Problem Statement
 
-The single `CONFIDENCE` field on `DecisionRecord` conflates two independent dimensions: certainty about the chosen option and certainty about the captured rationale. The current algorithm normalizes to 0-1 using a heuristic ladder (0.70 if alternatives present, 0.65 if rationale present, else 0.50). This blended value loses diagnostic power -- a decision with a strong choice but a weak rationale looks the same as one with a moderate choice and moderate rationale. Downstream consumers (`DecisionRecord`, `decision-tree-generator`, ascii-boxes renderer, `workflow.ts` percent conversion, `context_template.md`, and `validate-memory-quality.ts`) all treat this single number as ground truth.
+The single `CONFIDENCE` field on `DecisionRecord` conflates two independent dimensions: certainty about the chosen option and certainty about the captured rationale. The current algorithm normalizes to 0-1 using a heuristic ladder (0.70 if alternatives present, 0.65 if rationale present, else 0.50). This blended value loses diagnostic power -- a decision with a strong choice but a weak rationale looks the same as one with a moderate choice and moderate rationale. Downstream consumers (`DecisionRecord`, `decision-tree-generator`, ascii-boxes renderer, `workflow.ts` percent conversion, the live context template, and `validate-memory-quality.ts`) all treat this single number as ground truth.
 
 ### Purpose
 
@@ -64,11 +64,10 @@ Replace the single blended confidence with dual fields (`CHOICE_CONFIDENCE` and 
 | `scripts/types/session-types.ts` | Modify | Add `CHOICE_CONFIDENCE` and `RATIONALE_CONFIDENCE` to `DecisionRecord`; keep legacy `CONFIDENCE` as derived |
 | `scripts/extractors/decision-extractor.ts` | Modify | Compute dual confidence values from alternatives presence, rationale depth, and evidence quality |
 | `scripts/lib/decision-tree-generator.ts` | Modify | Consume dual confidence for richer node labeling and branch weight visualization |
-| `scripts/renderers/` | Modify | Display dual confidence values in decision-related template sections |
+| `.opencode/skill/system-spec-kit/templates/context_template.md` | Modify | Display dual confidence values in decision-related template sections |
 | `scripts/core/workflow.ts` | Modify | Update percent conversion logic to handle dual confidence model |
-| `scripts/validators/validate-memory-quality.ts` | Modify | Update confidence validation to understand dual fields |
-| `templates/core/context_template.md` | Modify | Add dual confidence display placeholders for decision sections |
-| `scripts/lib/ascii-box-renderer.ts` | Modify | Render split confidence in decision box labels when values diverge |
+| `scripts/lib/ascii-boxes.ts` | Modify | Render split confidence in decision box labels when values diverge |
+| `scripts/lib/simulation-factory.ts` | Modify | Add `CHOICE_CONFIDENCE` and `RATIONALE_CONFIDENCE` fields to simulation fixture data |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -117,5 +116,5 @@ Replace the single blended confidence with dual fields (`CHOICE_CONFIDENCE` and 
 <!-- ANCHOR:questions -->
 ## 7. OPEN QUESTIONS
 
-- **OQ-001**: Phase 1 only (add dual fields, keep derived CONFIDENCE) or Phase 2 (split analytics for counts/importance)?
+- **OQ-001 Resolved**: This implementation stops at Phase 1 only. Counts and importance continue to use derived legacy `CONFIDENCE`.
 <!-- /ANCHOR:questions -->

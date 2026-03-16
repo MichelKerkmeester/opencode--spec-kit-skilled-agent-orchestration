@@ -19,7 +19,14 @@ import { structuredLog } from '../utils/logger';
 // CommonJS does not support top-level await, so eager async initialization is not viable either.
 
 let padText: (text: string, width: number, align?: string) => string;
-let formatDecisionHeader: (title: string, context: string, confidence: number, timestamp: string) => string;
+let formatDecisionHeader: (
+  title: string,
+  context: string,
+  confidence: number,
+  timestamp: string,
+  choiceConfidence?: number,
+  rationaleConfidence?: number
+) => string;
 let formatOptionBox: (option: OptionRecord, isChosen: boolean, maxWidth?: number) => string;
 let formatChosenBox: (chosen: string, rationale: string, evidence: Array<EvidenceRecord | string>) => string;
 let formatCaveatsBox: (caveats: Array<CaveatRecord | string>) => string;
@@ -57,6 +64,8 @@ export interface DecisionNode {
   TITLE?: string;
   CONTEXT?: string;
   CONFIDENCE?: number;
+  CHOICE_CONFIDENCE?: number;
+  RATIONALE_CONFIDENCE?: number;
   TIMESTAMP?: string;
   OPTIONS?: OptionRecord[];
   CHOSEN?: string;
@@ -94,6 +103,8 @@ function generateDecisionTree(decisionData: DecisionNode | string, ...args: unkn
     TITLE = 'Decision',
     CONTEXT = '',
     CONFIDENCE = 75,
+    CHOICE_CONFIDENCE,
+    RATIONALE_CONFIDENCE,
     TIMESTAMP = new Date().toISOString(),
     OPTIONS = [],
     CHOSEN = '',
@@ -104,13 +115,13 @@ function generateDecisionTree(decisionData: DecisionNode | string, ...args: unkn
   } = decisionData;
 
   if (OPTIONS.length === 0) {
-    return formatDecisionHeader(TITLE, CONTEXT, CONFIDENCE, TIMESTAMP) + '\n' +
+    return formatDecisionHeader(TITLE, CONTEXT, CONFIDENCE, TIMESTAMP, CHOICE_CONFIDENCE, RATIONALE_CONFIDENCE) + '\n' +
            '         \u2502\n' +
            '         \u25BC\n' +
            '   (No options provided)';
   }
 
-  let tree: string = formatDecisionHeader(TITLE, CONTEXT, CONFIDENCE, TIMESTAMP);
+  let tree: string = formatDecisionHeader(TITLE, CONTEXT, CONFIDENCE, TIMESTAMP, CHOICE_CONFIDENCE, RATIONALE_CONFIDENCE);
   tree += '\n                      \u2502\n                      \u25BC\n';
 
   const questionText: string = OPTIONS.length > 2 ? `Select from ${OPTIONS.length} options?` : 'Choose option?';

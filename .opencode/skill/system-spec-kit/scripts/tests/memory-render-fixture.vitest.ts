@@ -572,4 +572,86 @@ describe('rendered memory fixture regression', () => {
       fs.rmSync(tempRoot, { recursive: true, force: true });
     }
   });
+
+  it('renders split decision confidence when choice and rationale diverge', async () => {
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-render-fixture-'));
+    const { CONFIG } = await import('../core');
+    const previousTemplateDir = CONFIG.TEMPLATE_DIR;
+    const templatesDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..', 'templates');
+
+    try {
+      const specFolderPath = path.join(tempRoot, '016-decision-confidence-render');
+      const contextDir = path.join(specFolderPath, 'memory');
+      fs.mkdirSync(contextDir, { recursive: true });
+      fs.writeFileSync(
+        path.join(specFolderPath, 'spec.md'),
+        [
+          '---',
+          'title: "Spec: Decision Confidence Render"',
+          '---',
+          '# Spec',
+        ].join('\n'),
+        'utf-8'
+      );
+
+      workflowHarness.specFolderPath = specFolderPath;
+      workflowHarness.contextDir = contextDir;
+      CONFIG.TEMPLATE_DIR = templatesDir;
+
+      const collectedData = {
+        _source: 'opencode-capture',
+        _toolCallCount: 2,
+        FILES: [],
+        userPrompts: [
+          {
+            prompt: 'Choose the database strategy for the render-confidence fixture.',
+            timestamp: '2026-03-06T09:25:00Z',
+          },
+        ],
+        observations: [
+          {
+            type: 'decision',
+            title: 'Choose database',
+            narrative: 'We reviewed the database options.',
+            timestamp: '2026-03-06T09:25:30Z',
+            facts: [
+              'Option A: PostgreSQL - Relational database',
+              'Option B: SQLite - Embedded database',
+            ],
+            _manualDecision: {
+              fullText: 'Selected PostgreSQL.',
+              chosenApproach: 'PostgreSQL',
+            },
+          },
+        ],
+      };
+
+      const { runWorkflow } = await import('../core/workflow');
+      const result = await runWorkflow({
+        collectedData,
+        collectSessionDataFn: async (_input, specFolderName) => createSessionData(
+          specFolderName || '016-decision-confidence-render',
+          {
+            TOOL_COUNT: 0,
+            TOOL_COUNTS: { Read: 0, Edit: 0, Write: 0, Bash: 0, Grep: 0, Glob: 0, Task: 0, WebFetch: 0, WebSearch: 0, Skill: 0 },
+            FILES: [],
+            HAS_FILES: false,
+            FILE_COUNT: 0,
+            FILE_PROGRESS: [],
+            HAS_FILE_PROGRESS: false,
+          }
+        ),
+        silent: true,
+      });
+
+      const renderedPath = path.join(result.contextDir, result.contextFilename);
+      const rendered = fs.readFileSync(renderedPath, 'utf-8');
+
+      expect(rendered).toContain('Choice: 85% / Rationale: 50%');
+      expect(rendered).toContain('**Confidence**: 50%');
+    } finally {
+      CONFIG.TEMPLATE_DIR = previousTemplateDir;
+      fs.rmSync(tempRoot, { recursive: true, force: true });
+    }
+  });
 });

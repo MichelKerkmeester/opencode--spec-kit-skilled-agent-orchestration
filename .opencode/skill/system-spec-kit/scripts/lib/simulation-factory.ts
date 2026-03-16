@@ -329,7 +329,9 @@ function createDecisionData(config: SessionConfig = {}): DecisionData {
       CONS: [
         { CON: 'Higher initial complexity' },
       ],
-      CONFIDENCE: 85,
+      CHOICE_CONFIDENCE: 0.85,
+      RATIONALE_CONFIDENCE: 0.75,
+      CONFIDENCE: 0.75,
       HAS_EVIDENCE: true,
       EVIDENCE: [
         { EVIDENCE_ITEM: 'example.js:123' },

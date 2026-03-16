@@ -1017,7 +1017,10 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
           facts: observation.facts?.map((fact) => (
             typeof fact === 'string'
               ? cleanContaminationText(fact)
-              : { ...fact, text: fact.text ? cleanContaminationText(fact.text) : fact.text }
+              : {
+                ...fact,
+                text: typeof fact.text === 'string' ? cleanContaminationText(fact.text) : fact.text
+              }
           )),
         };
       });
@@ -1413,7 +1416,17 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       // P1-4: Convert 0-1 confidence to 0-100 for template percentage rendering
       DECISIONS: decisions.DECISIONS.map((d) => ({
         ...d,
-        CONFIDENCE: d.CONFIDENCE <= 1 ? Math.round(d.CONFIDENCE * 100) : d.CONFIDENCE,
+        ...(() => {
+          const overallConfidence = d.CONFIDENCE <= 1 ? Math.round(d.CONFIDENCE * 100) : Math.round(d.CONFIDENCE);
+          const choiceConfidence = d.CHOICE_CONFIDENCE <= 1 ? Math.round(d.CHOICE_CONFIDENCE * 100) : Math.round(d.CHOICE_CONFIDENCE);
+          const rationaleConfidence = d.RATIONALE_CONFIDENCE <= 1 ? Math.round(d.RATIONALE_CONFIDENCE * 100) : Math.round(d.RATIONALE_CONFIDENCE);
+          return {
+            CHOICE_CONFIDENCE: choiceConfidence,
+            RATIONALE_CONFIDENCE: rationaleConfidence,
+            CONFIDENCE: overallConfidence,
+            HAS_SPLIT_CONFIDENCE: Math.abs(choiceConfidence - rationaleConfidence) > 10,
+          };
+        })(),
       })),
       HIGH_CONFIDENCE_COUNT: decisions.HIGH_CONFIDENCE_COUNT,
       MEDIUM_CONFIDENCE_COUNT: decisions.MEDIUM_CONFIDENCE_COUNT,

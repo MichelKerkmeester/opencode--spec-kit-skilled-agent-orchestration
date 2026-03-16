@@ -35,10 +35,78 @@ export type CollectedDataForDecisions = Pick<CollectedDataBase, '_manualDecision
 const DECISION_CUE_REGEX = /\b(decided|chose|will use|approach is|going with|rejected|we'll|selected|prefer|adopt)\b/i;
 const HIGH_CONFIDENCE_THRESHOLD = 0.8;
 const MEDIUM_CONFIDENCE_THRESHOLD = 0.5;
+const PLACEHOLDER_CHOICE_REGEX = /^(?:chosen approach|n\/a|option [a-z0-9]+|alternative [a-z0-9]+)$/i;
+const TRADEOFF_SIGNAL_REGEX = /\b(?:pro|con|advantage|disadvantage|trade-?off|caveat|warning|limitation)\b/i;
 
 function normalizeConfidence(value: number): number {
   const normalized = value > 1 ? value / 100 : value;
   return Math.min(1, Math.max(0, normalized));
+}
+
+function isSpecificChoice(choice: string): boolean {
+  const normalized = choice.trim();
+  return normalized.length > 0 && !PLACEHOLDER_CHOICE_REGEX.test(normalized);
+}
+
+function hasTradeoffSignals(values: string[]): boolean {
+  return values.some((value) => TRADEOFF_SIGNAL_REGEX.test(value));
+}
+
+function buildDecisionConfidence(params: {
+  hasAlternatives: boolean;
+  hasExplicitChoice: boolean;
+  chosen: string;
+  hasExplicitRationale: boolean;
+  hasTradeoffs: boolean;
+  hasEvidence: boolean;
+  explicitConfidence?: number;
+}): {
+  choiceConfidence: number;
+  rationaleConfidence: number;
+  confidence: number;
+} {
+  const explicitConfidence = typeof params.explicitConfidence === 'number' && Number.isFinite(params.explicitConfidence)
+    ? normalizeConfidence(params.explicitConfidence)
+    : null;
+
+  if (explicitConfidence !== null) {
+    return {
+      choiceConfidence: explicitConfidence,
+      rationaleConfidence: explicitConfidence,
+      confidence: explicitConfidence,
+    };
+  }
+
+  let choiceConfidence = 0.5;
+  if (params.hasAlternatives) {
+    choiceConfidence += 0.15;
+  }
+  if (params.hasExplicitChoice) {
+    choiceConfidence += 0.10;
+  }
+  if (isSpecificChoice(params.chosen)) {
+    choiceConfidence += 0.10;
+  }
+
+  let rationaleConfidence = 0.5;
+  if (params.hasExplicitRationale) {
+    rationaleConfidence += 0.15;
+  }
+  if (params.hasTradeoffs) {
+    rationaleConfidence += 0.10;
+  }
+  if (params.hasEvidence) {
+    rationaleConfidence += 0.10;
+  }
+
+  const normalizedChoice = normalizeConfidence(choiceConfidence);
+  const normalizedRationale = normalizeConfidence(rationaleConfidence);
+
+  return {
+    choiceConfidence: normalizedChoice,
+    rationaleConfidence: normalizedRationale,
+    confidence: Math.min(normalizedChoice, normalizedRationale),
+  };
 }
 
 function extractSentenceAroundCue(text: string): string | null {
@@ -210,11 +278,39 @@ async function extractDecisions(
 
         const rationaleFromInput = toText(manualObj?.rationale) || toText(manualObj?.reasoning);
         const rationale: string = rationaleFromInput || fallbackRationale;
-        const hasEvidence = rationaleFromInput.length > 0;
         const hasAlternatives = rawAlternatives.length >= 2;
-        const confidence = normalizeConfidence(hasAlternatives ? 70 : (hasEvidence ? 65 : 50));
         const chosenLabel = toText(manualObj?.chosen) || toText(manualObj?.choice) || toText(manualObj?.selected)
           || OPTIONS[0]?.DESCRIPTION || OPTIONS[0]?.LABEL || 'Chosen Approach';
+        const explicitConfidence = typeof manualObj?.confidence === 'number' && Number.isFinite(manualObj.confidence)
+          ? manualObj.confidence
+          : undefined;
+        const choiceSignals = [
+          toText(manualObj?.chosen),
+          toText(manualObj?.choice),
+          toText(manualObj?.selected),
+        ];
+        const hasExplicitChoice = choiceSignals.some((signal) => signal.length > 0);
+        const tradeoffSignals: string[] = [
+          decisionText,
+          rationale,
+          ...(Array.isArray(manualObj?.pros) ? manualObj.pros.map((value) => String(value)) : []),
+          ...(Array.isArray(manualObj?.cons) ? manualObj.cons.map((value) => String(value)) : []),
+        ];
+        const hasOptionTradeoffs = OPTIONS.some((option) => option.PROS.length > 0 || option.CONS.length > 0);
+        const hasEvidence = rationaleFromInput.length > 0;
+        const {
+          choiceConfidence,
+          rationaleConfidence,
+          confidence,
+        } = buildDecisionConfidence({
+          hasAlternatives,
+          hasExplicitChoice,
+          chosen: chosenLabel,
+          hasExplicitRationale: rationaleFromInput.length > 0,
+          hasTradeoffs: hasOptionTradeoffs || hasTradeoffSignals(tradeoffSignals),
+          hasEvidence,
+          explicitConfidence,
+        });
 
         let anchorId: string = generateAnchorId(title, 'decision', specNumber);
         anchorId = validateAnchorUniqueness(anchorId, usedAnchorIds);
@@ -232,6 +328,8 @@ async function extractDecisions(
           PROS: [],
           HAS_CONS: false,
           CONS: [],
+          CHOICE_CONFIDENCE: choiceConfidence,
+          RATIONALE_CONFIDENCE: rationaleConfidence,
           CONFIDENCE: confidence,
           HAS_EVIDENCE: hasEvidence,
           EVIDENCE: hasEvidence ? [{ EVIDENCE_ITEM: rationaleFromInput }] : [],
@@ -332,18 +430,9 @@ async function extractDecisions(
 
     const rationaleMatch = narrative.match(/(?:because|rationale|reason):?\s+([^\.\n]+)/i);
     const RATIONALE: string = rationaleMatch?.[1]?.trim() || narrative.substring(0, 200);
-
-    // F-13: Capture decimal confidence values and use parseFloat (not parseInt)
     const confidenceMatch = narrative.match(/confidence:?\s*(\d+(?:\.\d+)?)(?:%|\b)/i);
-    // Default confidence based on evidence strength: options + rationale = higher confidence
-    const baseConfidence = OPTIONS.length > 1 ? 70 : RATIONALE !== narrative.substring(0, 200) ? 65 : 50;
     const parsedConfidence = confidenceMatch ? parseFloat(confidenceMatch[1]) : NaN;
     const manualConfidence = manualDecision?.confidence;
-    const CONFIDENCE: number = typeof manualConfidence === 'number' && Number.isFinite(manualConfidence)
-      ? normalizeConfidence(manualConfidence)
-      : Number.isFinite(parsedConfidence)
-      ? normalizeConfidence(parsedConfidence)
-      : normalizeConfidence(baseConfidence);
 
     const PROS = facts
       .filter((f) => {
@@ -405,6 +494,24 @@ async function extractDecisions(
         return { EVIDENCE_ITEM: text };
       });
     const EVIDENCE = [...fileEvidence, ...factEvidence];
+    const explicitConfidence = typeof manualConfidence === 'number' && Number.isFinite(manualConfidence)
+      ? manualConfidence
+      : Number.isFinite(parsedConfidence)
+      ? parsedConfidence
+      : undefined;
+    const {
+      choiceConfidence,
+      rationaleConfidence,
+      confidence,
+    } = buildDecisionConfidence({
+      hasAlternatives: OPTIONS.length >= 2,
+      hasExplicitChoice: Boolean(manualDecision?.chosenApproach?.trim() || chosenMatch?.[1]?.trim()),
+      chosen: CHOSEN,
+      hasExplicitRationale: Boolean(rationaleMatch?.[1]?.trim()),
+      hasTradeoffs: PROS.length > 0 || CONS.length > 0 || CAVEATS.length > 0,
+      hasEvidence: EVIDENCE.length > 0,
+      explicitConfidence,
+    });
 
     const decision: DecisionRecord = {
       INDEX: index + 1,
@@ -418,7 +525,9 @@ async function extractDecisions(
       PROS,
       HAS_CONS: CONS.length > 0,
       CONS,
-      CONFIDENCE,
+      CHOICE_CONFIDENCE: choiceConfidence,
+      RATIONALE_CONFIDENCE: rationaleConfidence,
+      CONFIDENCE: confidence,
       HAS_EVIDENCE: EVIDENCE.length > 0,
       EVIDENCE,
       HAS_CAVEATS: CAVEATS.length > 0,

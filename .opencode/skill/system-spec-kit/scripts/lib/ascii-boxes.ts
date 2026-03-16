@@ -90,8 +90,19 @@ function padText(text: string, width: number, align: TextAlign = 'left'): string
 // ───────────────────────────────────────────────────────────────
 // 5. DECISION TREE VISUALIZATION HELPERS
 // ───────────────────────────────────────────────────────────────
-function formatDecisionHeader(title: string, context: string, confidence: number, timestamp: string): string {
-  const width: number = 48;
+function normalizeConfidencePercent(confidence: number): number {
+  return confidence <= 1 ? Math.round(confidence * 100) : Math.round(confidence);
+}
+
+function formatDecisionHeader(
+  title: string,
+  context: string,
+  confidence: number,
+  timestamp: string,
+  choiceConfidence?: number,
+  rationaleConfidence?: number
+): string {
+  const width: number = 64;
   const innerWidth: number = width - 4;
   const date: Date = new Date(timestamp);
   const isoStr: string = Number.isFinite(date.getTime()) ? date.toISOString() : '1970-01-01T00:00:00.000Z';
@@ -101,13 +112,22 @@ function formatDecisionHeader(title: string, context: string, confidence: number
   const maxContextWidth: number = innerWidth - 9;
   const contextSnippet: string = context ? context.substring(0, maxContextWidth - 3) + (context.length > maxContextWidth - 3 ? '...' : '') : '';
 
-  // F-13: When confidence is normalized (0-1), convert to percentage for display
-  const displayConfidence: number = confidence <= 1 ? Math.round(confidence * 100) : Math.round(confidence);
+  const displayConfidence: number = normalizeConfidencePercent(confidence);
+  const displayChoiceConfidence = typeof choiceConfidence === 'number' ? normalizeConfidencePercent(choiceConfidence) : null;
+  const displayRationaleConfidence = typeof rationaleConfidence === 'number' ? normalizeConfidencePercent(rationaleConfidence) : null;
+  const shouldShowSplitConfidence =
+    displayChoiceConfidence !== null
+    && displayRationaleConfidence !== null
+    && Math.abs(displayChoiceConfidence - displayRationaleConfidence) > 10;
+  const confidenceLine = shouldShowSplitConfidence
+    ? `Confidence: ${displayConfidence}% | Choice: ${displayChoiceConfidence}% / Rationale: ${displayRationaleConfidence}%`
+    : `Confidence: ${displayConfidence}%`;
 
   return `\u256D${'\u2500'.repeat(width)}\u256E
 \u2502  DECISION: ${padText(title, innerWidth - 10)}  \u2502
 \u2502  Context: ${padText(contextSnippet, innerWidth - 9)}  \u2502
-\u2502  Confidence: ${displayConfidence}% | ${dateStr} @ ${timeStr}${' '.repeat(Math.max(0, innerWidth - 37 - displayConfidence.toString().length))}  \u2502
+\u2502  ${padText(confidenceLine, innerWidth)}  \u2502
+\u2502  ${padText(`${dateStr} @ ${timeStr}`, innerWidth)}  \u2502
 \u2570${'\u2500'.repeat(width)}\u256F`;
 }
 
