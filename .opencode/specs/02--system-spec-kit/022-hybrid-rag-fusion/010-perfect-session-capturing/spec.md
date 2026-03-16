@@ -234,9 +234,18 @@ Make `.opencode` the canonical workspace identity, require a second target-spec 
 | Risk | Broader path equivalence could weaken contamination safety if over-broad | High | Matching still requires one shared `.opencode` anchor and file hints remain workspace-scoped |
 | Risk | Aligned but thin saves can still look plausible if metadata is over-counted | High | Shared insufficiency gate counts only durable evidence and hard-blocks under-evidenced saves |
 | Risk | Stateless captures with sparse file edits can still look low-signal | Medium | Keep numeric scorer active, preserve tool evidence, and preserve quality/alignment/insufficiency aborts after discovery succeeds |
+| Risk | Same-spec transcript selection can resolve to the wrong session, still pass current spec-affinity checks, receive a high quality score, and be indexed as valid output | High | Deferred follow-up is documented in `research/research-pipeline-improvements.md` (R-11); until that work lands, treat transcript/file-count/provenance mismatches as source-integrity incidents rather than successful captures |
 | Dependency | Existing stateless enrichment pipeline | High | Native backends still feed the same downstream transform and render path |
 | Dependency | MCP memory-save handler flow | High | Dry-run, quality-loop, and persistence now rely on the same sufficiency contract |
 | Dependency | Local CLI storage layouts | Medium | Each backend remains bounded, fixture-tested, and empty-state safe |
+
+### Deferred Known Limitations
+
+The research synthesis identified additional pipeline limitations that are acknowledged here for traceability only. They are deferred follow-up items, not new requirements for spec `010`.
+
+- **Auto-detection fragility**: R-13 found that parent/child folder depth bias and the absence of stronger activity signals can cause the auto-detection cascade to prefer the wrong spec folder in large trees. This is documented as deferred routing hardening, not a change to the committed save contract.
+- **Decision deduplication bug**: R-13 found that JSON-assisted saves can emit the same decision through both observation-derived and manual-decision paths, producing duplicate decisions in rendered output. This is a known limitation of current output fidelity until the deferred follow-up lands.
+- **`key_files` pipeline weakness**: R-13 found that tree-thinning can over-merge short-description inputs and leave `key_files` empty even when relevant spec files exist. This remains deferred future work rather than an in-scope change for this spec.
 <!-- /ANCHOR:risks -->
 
 ---
@@ -358,5 +367,41 @@ As a future operator, I want `M-007`, `NEW-133`, and the feature catalog to dist
 - `checklist`
 - `decision record`
 - `implementation summary`
+- `research/research-pipeline-improvements.md`
+- `research/`
 
 Scratch audit artifacts under `scratch/` are historical research only. Canonical completion evidence for spec `010` lives in this markdown set plus fresh verification command output.
+
+### Identified Future Work
+
+The research synthesis in `research/research-pipeline-improvements.md` identified 25 deferred improvement items across seven cross-cutting themes plus a recommended implementation sequence (Phase A0 through Phase D). They are recorded here for traceability only and do not expand the committed scope, requirements, success criteria, or acceptance scenarios for spec `010`.
+
+- **Contract consolidation debt** -- deferred unification of scorer, type, validator, and semantic-signal contracts across the pipeline (R-01, R-04, R-06, R-08).
+- **Information loss at boundaries** -- deferred work to preserve richer metadata through normalization and stage hand-offs, with better visibility into dropped data (R-02, R-03, R-06).
+- **Scoring model maturity** -- deferred evolution of quality, confidence, phase, and embedding signals toward more explicit multi-dimensional scoring (R-01, R-05, R-07, R-09).
+- **Verification maturity** -- deferred orchestration-level testing and observability improvements to catch regressions before indexing (R-02, R-03, R-10).
+- **Template compliance at generation time** -- deferred hardening of delegation and validation so generated outputs stay structurally aligned with templates (R-12).
+- **Source-of-truth integrity** -- deferred session-boundary and provenance work to prevent same-spec wrong-session capture from being processed as valid input (R-11).
+- **Detection & routing fragility** -- deferred improvements to spec-folder auto-detection, parent/child ranking, and session-activity routing signals (R-13).
+
+See `research/research-pipeline-improvements.md` for the Priority Matrix (P0/P1/P2) and the recommended implementation sequence (Phase A0 through Phase D).
+
+### Phase Documentation Map
+
+Each research item (R-01 through R-13) has a corresponding implementation phase folder with spec.md and plan.md:
+
+| Phase | Folder | R-Item | Title | Priority | Sequence |
+|-------|--------|--------|-------|----------|----------|
+| 001 | `001-quality-scorer-unification/` | R-01 | Unify dual quality scorer contracts (0-1 vs 0-100) | P0 | A3 |
+| 002 | `002-contamination-detection/` | R-02 | Strengthen contamination detection & audit trail | P1 | B2 |
+| 003 | `003-data-fidelity/` | R-03 | Preserve metadata through normalization pipeline | P0 | A2 |
+| 004 | `004-type-consolidation/` | R-04 | Canonicalize type ownership in session-types.ts | P0 | A1 |
+| 005 | `005-confidence-calibration/` | R-05 | Dual-confidence model for decisions | P1 | C1 |
+| 006 | `006-description-enrichment/` | R-06 | Unify description validators & add MODIFICATION_MAGNITUDE | P0 | A1 |
+| 007 | `007-phase-classification/` | R-07 | Topic-cluster phase classification & observation types | P2 | C2-C3 |
+| 008 | `008-signal-extraction/` | R-08 | Unified SemanticSignalExtractor replacing 4 systems | P1 | B1 |
+| 009 | `009-embedding-optimization/` | R-09 | Weighted embedding input for retrieval quality | P1 | B3 |
+| 010 | `010-integration-testing/` | R-10 | Workflow E2E test + legacy migration | P0 | A4 |
+| 011 | `011-session-source-validation/` | R-11 | Session-ID-first transcript resolution & V10 validator | P0 | A0.1-A0.5 |
+| 012 | `012-template-compliance/` | R-12 | Template structural fingerprint & delegation hardening | P2 | B5 |
+| 013 | `013-auto-detection-fixes/` | R-13 | Git-status signal, decision dedup, key_files fallback, blocker fix | P0 | A0.6-A0.8, B9 |

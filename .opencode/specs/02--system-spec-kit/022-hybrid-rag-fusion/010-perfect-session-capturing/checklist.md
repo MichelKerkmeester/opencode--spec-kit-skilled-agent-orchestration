@@ -94,3 +94,44 @@ Scratch audit artifacts in `scratch/` are historical research only. Canonical cl
 - [x] [P2] All canonicalization tests pass including 7 new tests. [Evidence: `npx vitest run tests/spec-folder-canonicalization.vitest.ts` — 20 tests, 0 failures.]
 - [x] [P2] Full MCP suite passes with zero regressions. [Evidence: `npx vitest run` — 282 files, 7,787 tests passed, 0 failures.]
 <!-- /ANCHOR:remediation -->
+
+---
+
+<!-- ANCHOR:research-completeness -->
+## 6. Research Documentation Completeness
+
+- [x] CHK-601 [P2] `research/research-pipeline-improvements.md` exists and remains the authoritative research synthesis for spec `010`.
+  - [x] The file exists at `research/research-pipeline-improvements.md`
+  - [x] The Executive Summary states that 13 research items are covered across 7 cross-cutting themes
+  - [x] The document contains `### R-01` through `### R-13`
+  - [x] The document includes `## Priority Matrix`, `## Detailed Findings`, `## Cross-Cutting Observations`, `## Recommended Implementation Sequence`, and `## Decision Points for User`
+
+- [x] CHK-602 [P2] `spec.md` acknowledges the research backlog in canonical spec sections.
+  - [x] `## 6. Risks And Dependencies` includes a risk row for R-11 session-source integrity
+  - [x] `spec.md` includes a `Deferred Known Limitations` subsection covering R-13 auto-detection, decision dedup, and key_files
+  - [x] `spec.md` includes an `Identified Future Work` subsection summarizing the 7 research themes
+  - [x] `## 12. Related Documents` links `research/research-pipeline-improvements.md` and `research/`
+
+- [x] CHK-603 [P2] `decision-record.md` records explicit deferral decisions for the highest-priority research backlog.
+  - [x] Separate deferral DRs exist for R-11 (DR-015), R-01 (DR-016), R-03 (DR-017), R-12 (DR-018), and R-13 (DR-019)
+  - [x] Each deferral DR states why the work is deferred from spec `010`
+  - [x] Each deferral DR points to `research/research-pipeline-improvements.md`
+  - [x] Each deferral DR distinguishes shipped `010` behavior from deferred follow-up work
+
+- [x] CHK-604 [P2] `implementation-summary.md` documents the research-driven code changes that are already shipped.
+  - [x] The summary explicitly names R-12 as implemented template-compliance enforcement work
+  - [x] The summary documents Phase 6 content-generation fixes (CG-01 through CG-08, SE-01 through SE-05)
+  - [x] The summary includes a `Research Phase Findings` section with the 7 themes and reference to the research document
+  - [x] The summary separates implemented R-12 fixes from future R-12 and R-13 follow-up
+
+- [x] CHK-605 [P2] The `research/` directory is organized as a navigable index for the spec folder.
+  - [x] `research/README.md` exists
+  - [x] `research/README.md` identifies `research-pipeline-improvements.md` as the authoritative synthesis
+  - [x] `research/README.md` inventories the major research artifact groups (`analysis/`, `audits/`, `qa/`, `fixes/`, and `agent-outputs/`)
+  - [x] Canonical docs link to the research index instead of relying on `scratch/` artifacts
+
+- [x] CHK-606 [P2] Closure evidence reflects R-12 template-compliance hardening.
+  - [x] Implementation summary documents the `TEMPLATE_HEADERS` rule addition
+  - [x] Implementation summary documents required-anchor enforcement for checklist files
+  - [x] Checklist item format expectations are documented in the implementation summary
+<!-- /ANCHOR:research-completeness -->

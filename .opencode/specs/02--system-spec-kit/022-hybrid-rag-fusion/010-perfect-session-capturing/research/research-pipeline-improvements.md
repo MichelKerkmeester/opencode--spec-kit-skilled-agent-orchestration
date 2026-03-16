@@ -1,9 +1,9 @@
 # Research: Session Capturing Pipeline Improvements
 
 > **Spec**: `010-perfect-session-capturing` | **Date**: 2026-03-16
-> **Method**: 10 GPT-5.4 research agents (high reasoning) via cli-copilot in 3 waves + 1 GPT-5.4 agent (xhigh reasoning) via cli-codex + 1 Claude Opus 4.6 analysis
+> **Method**: 10 GPT-5.4 research agents (high reasoning) via cli-copilot in 3 waves + 1 GPT-5.4 agent (xhigh reasoning) via cli-codex + 1 Claude Opus 4.6 analysis + 1 Claude Opus 4.6 verification pass
 > **Scope**: Retrospective review + prospective improvement analysis of the session capturing pipeline
-> **Status**: Complete — 13 research items documented, R-12 fixes implemented, R-13 adds auto-detection + quality regression analysis
+> **Status**: Complete — 13 research items documented, R-12 fixes implemented, R-13 adds auto-detection + quality regression analysis + candidate competition trace + per-issue R-series mapping + blocker extraction bug (NEW)
 
 ---
 
@@ -55,6 +55,7 @@ The session capturing pipeline is architecturally sound after 35+ files modified
 | 11 | **Session activity signal** — New Priority 3.5 in cascade: `SessionActivitySignal` interface aggregating tool call paths, git changes, transcript mentions with confidence boosts | R-13 | Medium | No session-aware signal between CWD (never fires) and mtime (unreliable) |
 | 12 | **Parent-folder affinity boost** — When parent has >3 active children, boost parent's effective depth to prevent child-folder theft | R-13 | Low | Parent spec folders always lose to their children in depth-biased ranking |
 | 13 | **Template-to-workflow field contract** — Wire `memory_classification`, `session_dedup`, `causal_links` from extractors to template | R-13 | Medium | Three YAML metadata sections empty in every memory save (construction gap) |
+| 14 | **Blocker extraction content validation** — Reject strings that look like markdown headers, code fragments, or section numbering patterns in `extractBlockers()` | R-13 | Low | Truncated observation text parsed as blocker content (e.g., `PROBLEM' to '## 2.`) |
 
 ### P2 — Moderate Impact, Lower Risk (address when capacity allows)
 
@@ -360,6 +361,16 @@ The session capturing pipeline is architecturally sound after 35+ files modified
 - `input-normalizer.ts:720-744`: Tool call file paths are already captured and spec-affinity-filtered, but never aggregated into a folder-detection signal
 - `claude-code-capture.ts:396-424`: CaptureToolCall includes full `input` with `filePath`/`file_path`/`path` fields — data exists but is unused for detection
 
+**Key evidence — Candidate competition trace for `019-manual-testing-per-playbook` (Problem A, supplementary)**:
+- Parent folder relative path: `02--system-spec-kit/022-hybrid-rag-fusion/019-manual-testing-per-playbook` → depth=3, idVector=[19]
+- Child folder (e.g., `001-retrieval`) relative path: `02--system-spec-kit/022-hybrid-rag-fusion/019-manual-testing-per-playbook/001-retrieval` → depth=4, idVector=[19, 1]
+- `compareAutoDetectCandidates` (`folder-detector.ts:355-356`): `b.depth - a.depth` — ALL 19 children at depth 4 outrank parent at depth 3. Parent eliminated before idVector/mtime tiebreakers
+- Among children, `compareIdVectorsDesc` sorts descending → `019-feature-flag-reference` (idVector [19, 19]) beats `018-ux-hooks` ([19, 18]) beats `001-retrieval` ([19, 1])
+- Winner: `019-feature-flag-reference` — the **last** child folder alphabetically/numerically, NOT the parent
+- `assessAutoDetectConfidence` (`folder-detector.ts:387-395`): Top two children have same quality, same depth (4), but DIFFERENT idVectors ([19,19] vs [19,18]) → returns `lowConfidence: false, reason: 'clear ranked winner'`
+- **The system is confidently wrong, not uncertain** — no user prompt is triggered because confidence assessment treats idVector differences as disambiguating evidence
+- `workflow.ts:1322-1324`: Even if the correct parent folder WERE selected, trigger extraction feeds raw `FILE_PATH` values and synthetic tree-thinning `DESCRIPTION` strings into `extractTriggerPhrases()`, producing noise like `"merged-small-files tree-thinning merged small"` and full spec paths as trigger phrases
+
 **Key evidence — Decision deduplication bug (Problem B, sub-finding)**:
 - `input-normalizer.ts:415-449`: Same 4 decisions written to BOTH `observations[]` (as `type: 'decision'`, lines 415-422) AND `_manualDecisions[]` (line 448-449) — **dual-write is the root cause**
 - `decision-extractor.ts:260-261`: `decisionObservations` filtered independently from `processedManualDecisions` — the guard at lines 265-266 suppresses lexical extraction but NOT observation-type extraction
@@ -379,6 +390,25 @@ The session capturing pipeline is architecturally sound after 35+ files modified
 - 15:31 file is a net regression over 14:30: `message_count` 12→1, `tool_count` 95→0, decisions 0→8 (duplicated)
 - Only improvement: 15:31 has accurate overview text (14:30 captured user's conversational remark)
 - Three template fields never wired to workflow: `memory_classification`, `session_dedup`, `causal_links` — empty in ALL memory saves (construction gap independent of R-11)
+
+**Key evidence — Per-issue R-series fix mapping for 15:31 bad memory file (Problem B, supplementary)**:
+
+| Issue in 15:31 file | Root Cause | R-series Fix |
+|---|---|---|
+| `file_count: 10` (actual: 38+) | JSON-mode input provides limited file list; `FILES.length` at `collect-session-data.ts:862` | R-13 P0-8: filesystem_file_count fallback |
+| `key_files:` empty | Tree-thinning uses `f.DESCRIPTION` (1-3 tokens) as content → 100% merge rate → synthetic entries filtered | R-13 P0-8: key_files filesystem fallback + fix thinning input |
+| `decision_count: 8` (actual: 4) | Dual-write at `input-normalizer.ts:415-449` + unguarded merge at `decision-extractor.ts:440` | R-13 P0-7: decision dedup fix |
+| `message_count: 1` | JSON-mode data has single aggregated prompt, not transcript exchanges | R-11 P0-0: session-ID-first transcript resolution |
+| `tool_count: 0` | JSON-mode data lacks tool call records | R-11 P0-0: session-ID-first transcript resolution |
+| `quality_score: 0.90` (should be lower) | V2 scorer flags contamination but doesn't deduct; V1 has no contamination input | R-11 + R-01: contamination score penalty |
+| Trigger noise (`"merged-small-files"`, `"tree-thinning"`) | `workflow.ts:1322-1324` feeds raw FILE_PATH + synthetic descriptions into trigger extraction | R-11: trigger input sanitization |
+| `Phase: RESEARCH` (was IMPLEMENTATION) | Phase classification from wrong/limited data; keyword ladder misclassifies | R-07: topic-cluster phase classification |
+| `Blockers: PROBLEM' to '## 2.` | **NEW**: `buildProjectStateSnapshot` parses truncated observation text as blocker content; not covered by R-01–R-12 | **NEW P1**: blocker extraction should validate content is a meaningful blocker, not a code fragment or section header |
+| `memory_classification`, `session_dedup`, `causal_links` all empty | Template expects fields but workflow never supplies them | R-13 B8: template-to-workflow field contract |
+| `Completion: 14%` (was 100% complete) | `estimateCompletionPercent` at `collect-session-data.ts:436-461` underestimates from 1 message + 0 tools | R-11 P0-0: correct transcript → correct message/tool counts |
+| Conversation section: 0 phases, 1 message | JSON-mode provides summary text not transcript exchanges | R-11 P0-0: session-ID-first transcript resolution |
+
+- **NEW finding**: `Blockers: PROBLEM' to '## 2.` is a previously-unidentified extraction bug in `session-extractor.ts:buildProjectStateSnapshot()` where a truncated observation title/narrative containing markdown section headers is parsed as a blocker string. This is NOT covered by R-01–R-12 or the existing R-13 proposed fixes. **Proposed fix**: add content validation in `extractBlockers()` to reject strings that look like markdown headers, code fragments, or section numbering patterns (e.g., `/^##\s|^['"\`]|'\s+to\s+'/`)
 
 **Proposed fixes**:
 
@@ -425,7 +455,7 @@ R-12 showed that external agent delegation creates a validation blind spot: agen
 R-11 revealed a category of failure not covered by Themes 1-4: the pipeline can select the wrong input entirely. Spec-affinity validators (R-02, R-06, R-08) only verify content-to-spec alignment, not content-to-session alignment. When two sessions target the same spec folder, the wrong one can be captured with no downstream detection. This is the highest-priority fix because it invalidates all downstream processing — scoring, extraction, embedding, and indexing are all high-quality operations on garbage input. R-11's session boundary protocol and V10 validator address this at the root, while R-01's contamination penalty fix addresses the secondary failure (scoring doesn't penalize even when contamination is detected).
 
 ### Theme 7: Detection & Routing Fragility
-R-13 revealed that the spec folder auto-detection cascade — the very first step that determines WHERE memory is saved — has structural weaknesses that compound with R-11's transcript selection failures. Depth-bias in ranking (children outrank parents), absence of git-status signals, and 445+ candidates competing on stale mtime create a system that fails precisely when it matters most: new spec folders with many children, first-time saves, and bulk file creation workflows. The cascade was designed for simple cases (few spec folders, clear mtime winner) but breaks in production-scale repos. Combined with R-03's dual-write decision bug and tree-thinning's over-aggressive merging of description-length "content," R-13 demonstrates that R-01–R-12 issues are not isolated — they combine multiplicatively. Two consecutive bad saves for the same folder produced files where 83% of all known R-series issues manifest simultaneously.
+R-13 revealed that the spec folder auto-detection cascade — the very first step that determines WHERE memory is saved — has structural weaknesses that compound with R-11's transcript selection failures. Depth-bias in ranking (children outrank parents), absence of git-status signals, and 445+ candidates competing on stale mtime create a system that fails precisely when it matters most: new spec folders with many children, first-time saves, and bulk file creation workflows. The cascade was designed for simple cases (few spec folders, clear mtime winner) but breaks in production-scale repos. Combined with R-03's dual-write decision bug and tree-thinning's over-aggressive merging of description-length "content," R-13 demonstrates that R-01–R-12 issues are not isolated — they combine multiplicatively. Two consecutive bad saves for the same folder produced files where 83% of all known R-series issues manifest simultaneously. R-13f verification additionally revealed a blocker extraction bug where truncated observation text containing markdown section headers is parsed as a blocker string — the `Blockers: PROBLEM' to '## 2.` artifact in the 15:31 file is a content validation gap in `extractBlockers()` that is independent of transcript selection.
 
 ---
 
@@ -456,7 +486,8 @@ Phase B: Signal Quality (P1 items, 3 spec folders)
 ├── B5: Template structural fingerprint + delegation prompt hardening (R-12)
 ├── B6: Session activity signal Priority 3.5 (R-13) — SessionActivitySignal interface + buildSessionActivitySignal()
 ├── B7: Parent-folder affinity boost (R-13) — effective depth boost for parents with many active children
-└── B8: Template-to-workflow field contract (R-13) — wire memory_classification, session_dedup, causal_links
+├── B8: Template-to-workflow field contract (R-13) — wire memory_classification, session_dedup, causal_links
+└── B9: Blocker extraction content validation (R-13) — reject markdown headers/code fragments in extractBlockers()
 
 Phase C: Semantic Richness (P1-P2 items, 2 spec folders)
 ├── C1: Dual-confidence model (R-05) — type change + rendering + template
@@ -518,6 +549,7 @@ Phase D: Observability & Cleanup (P2 items, 1 spec folder)
 | R-13d | Decision Deduplication Bug | claude-opus-4-6 | — | ~1m 42s | ~81k | — | — |
 | R-13e | File Count & Key Files Pipeline | claude-opus-4-6 | — | ~1m 38s | ~96k | — | — |
 | **R-13 Total** | 5 parallel agents | claude-opus-4-6 | — | **~2m 21s** (wall) | **~398k** | — | — |
-| **Grand Total** | 18 agents across R-01–R-13 | | | **~49m** | **~10.1m** | — | — |
+| R-13f | Verification + Supplement | claude-opus-4-6[1m] | — | ~5m | ~350k | — | — |
+| **Grand Total** | 19 agents across R-01–R-13 | | | **~54m** | **~10.5m** | — | — |
 
-R-01 through R-10 ran as read-only leaf agents via cli-copilot with `--allow-all-tools`. R-11 ran via cli-codex with `--sandbox read-only` and `xhigh` reasoning (user-approved override of standing `high` preference). R-12 was analyzed directly by Claude Opus 4.6 with 3 parallel Explore agents + 1 Plan agent, then implemented (new validation rules + file fixes). R-13 ran as 5 parallel Claude Opus 4.6 research agents (read-only), synthesized by the orchestrating Opus session. No source pipeline files were modified by R-01–R-11 or R-13. R-12 created 1 new validation rule and extended 2 existing files.
+R-01 through R-10 ran as read-only leaf agents via cli-copilot with `--allow-all-tools`. R-11 ran via cli-codex with `--sandbox read-only` and `xhigh` reasoning (user-approved override of standing `high` preference). R-12 was analyzed directly by Claude Opus 4.6 with 3 parallel Explore agents + 1 Plan agent, then implemented (new validation rules + file fixes). R-13 ran as 5 parallel Claude Opus 4.6 research agents (read-only), synthesized by the orchestrating Opus session. R-13f was a verification pass by Claude Opus 4.6 (1M context) that read all 7 critical source files, verified every R-13 claim against actual code, and added 2 supplementary findings: (1) candidate competition trace showing `019-feature-flag-reference` wins with `lowConfidence: false` despite being the wrong folder, (2) per-issue R-series fix mapping for the 15:31 bad memory file revealing a NEW blocker extraction bug not covered by R-01–R-12. No source pipeline files were modified by R-01–R-11 or R-13. R-12 created 1 new validation rule and extended 2 existing files.
