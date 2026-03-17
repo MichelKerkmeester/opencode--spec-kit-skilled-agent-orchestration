@@ -11,7 +11,7 @@ const HYDRA_SPEC_ROOT = path.join(
   'specs',
   '02--system-spec-kit',
   '022-hybrid-rag-fusion',
-  '014-hydra-db-based-features',
+  '008-hydra-db-based-features',
 );
 
 const parentDocs = {

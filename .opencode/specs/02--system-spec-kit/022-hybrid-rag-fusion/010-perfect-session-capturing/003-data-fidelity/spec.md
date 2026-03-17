@@ -1,5 +1,6 @@
 ---
 title: "Feature Specification: Data Fidelity"
+description: "Preserve normalized data fidelity with visible drop reporting through the pipeline."
 ---
 # Feature Specification: Data Fidelity
 
@@ -18,7 +19,12 @@ title: "Feature Specification: Data Fidelity"
 | **Status** | Complete |
 | **Created** | 2026-03-16 |
 | **Branch** | `main` |
-| **Parent** | [010-perfect-session-capturing](../spec.md) |
+| **Parent Spec** | ../spec.md |
+| **Parent Plan** | ../plan.md |
+| **Phase** | 3 of 16 |
+| **Predecessor** | 002-contamination-detection |
+| **Successor** | 004-type-consolidation |
+| **Handoff Criteria** | validate.sh + test suite passing |
 | **R-Item** | R-03 |
 | **Sequence** | A2, D1, D2 |
 <!-- /ANCHOR:metadata -->
@@ -96,6 +102,13 @@ Preserve richer data through the normalization pipeline by retaining file metada
 
 - **SC-001**: No silent data loss at pipeline boundaries -- every drop or truncation is either preserved or logged
 - **SC-002**: Manual decision enrichment flows through from `transformKeyDecision()` to rendered output
+
+### Acceptance Scenarios
+
+1. **Given** normalized FILES entries with metadata fields, **when** normalization completes, **then** `ACTION`, `_provenance`, and `_synthetic` remain present when provided.
+2. **Given** object-shaped fact payloads, **when** extraction runs, **then** facts are coerced into readable string output instead of being dropped.
+3. **Given** enriched `_manualDecision` input, **when** decision extraction runs, **then** enriched values flow through into decision output.
+4. **Given** more observations than `MAX_OBSERVATIONS`, **when** truncation occurs, **then** a structured warning records original and retained counts.
 <!-- /ANCHOR:success-criteria -->
 
 ---

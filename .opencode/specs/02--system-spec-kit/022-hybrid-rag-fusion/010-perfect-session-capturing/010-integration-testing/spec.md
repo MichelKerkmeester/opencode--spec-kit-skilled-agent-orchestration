@@ -1,5 +1,6 @@
 ---
 title: "Feature Specification: Integration Testing"
+description: "Verify end-to-end integration behavior across the full pipeline."
 ---
 # Feature Specification: Integration Testing
 
@@ -18,7 +19,12 @@ title: "Feature Specification: Integration Testing"
 | **Status** | Draft |
 | **Created** | 2026-03-16 |
 | **Branch** | `main` |
-| **Parent** | [010-perfect-session-capturing](../spec.md) |
+| **Parent Spec** | ../spec.md |
+| **Parent Plan** | ../plan.md |
+| **Phase** | 10 of 16 |
+| **Predecessor** | 009-embedding-optimization |
+| **Successor** | 011-session-source-validation |
+| **Handoff Criteria** | validate.sh + test suite passing |
 | **R-Item** | R-10 |
 | **Sequence** | A4, D3 |
 <!-- /ANCHOR:metadata -->
@@ -94,8 +100,10 @@ Add `workflow-e2e.vitest.ts` targeting the real gate chain with real write and d
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: `workflow-e2e.vitest.ts` passes in CI with `npm test` -- all 6 test cases green
-- **SC-002**: Real gate chain exercised without mocks for the critical path (write + index boundary) -- no mock on file writer, quality scorer, or sufficiency evaluator in the E2E tests
+- **SC-001**: **Given** the `workflow-e2e.vitest.ts` suite in CI, **Then** all 6 target test cases pass.
+- **SC-002**: **Given** the critical save path (write plus index boundary), **Then** the E2E suite exercises the chain without mocks on file writer, quality scorer, or sufficiency evaluator.
+- **SC-003**: **Given** post-write bookkeeping requirements, **Then** happy-path saves mutate `description.json`, increment sequence state, and persist the memory file on disk.
+- **SC-004**: **Given** failure-path scenarios (alignment block, insufficiency, dedup), **Then** no unintended write or sequence mutation occurs.
 <!-- /ANCHOR:success-criteria -->
 
 ---

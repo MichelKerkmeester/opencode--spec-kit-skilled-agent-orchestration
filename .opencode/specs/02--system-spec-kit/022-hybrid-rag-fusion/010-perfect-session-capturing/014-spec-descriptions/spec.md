@@ -28,7 +28,12 @@ contextType: "general"
 | **Status** | Complete |
 | **Created** | 2026-03-08 |
 | **Completed** | 2026-03-13 |
-| **Parent** | 010-perfect-session-capturing |
+| **Parent Spec** | ../spec.md |
+| **Parent Plan** | ../plan.md |
+| **Phase** | 14 of 16 |
+| **Predecessor** | 013-auto-detection-fixes |
+| **Successor** | 015-outsourced-agent-handback |
+| **Handoff Criteria** | validate.sh + test suite passing |
 | **R-Item** | R-14 |
 | **Sequence** | B4 (after 006, 008, 009) |
 | **Origin** | Evolved from `022-hybrid-rag-fusion/009-spec-descriptions/` |

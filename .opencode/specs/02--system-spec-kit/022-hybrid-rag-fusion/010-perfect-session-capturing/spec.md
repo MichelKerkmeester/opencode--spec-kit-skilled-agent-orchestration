@@ -1,410 +1,293 @@
 ---
-title: "Feature Specification: Perfect Session Capturing"
+title: "Feature Specification: Perfect Session Capturing [template:level_3/spec.md]"
+description: "Root documentation remediation for spec 010 to strict Level 3 template compliance with current verification evidence and cross-CLI proof status."
+trigger_phrases:
+  - "perfect session capturing"
+  - "spec 010"
+  - "template compliance"
+  - "cross cli proof"
+  - "remediation evidence"
+importance_tier: "normal"
+contextType: "general"
 ---
 # Feature Specification: Perfect Session Capturing
 
 <!-- SPECKIT_LEVEL: 3 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->
 
 ---
 
-## Executive Summary
+## EXECUTIVE SUMMARY
 
-Spec `010-perfect-session-capturing` now defines the shipped session-capture and save-readiness behavior around two canonical rules:
+This pass remediates only the root markdown set for `010-perfect-session-capturing` to strict Level 3 template structure and current evidence truth. The technical behavior contract remains unchanged, while verification claims, command results, dates, and cross-CLI proof language are now aligned with the latest reruns from March 17, 2026.
 
-1. The repo-local `.opencode` folder is the workspace identity anchor for stateless native capture.
-2. A memory must contain enough durable, spec-relevant evidence to stand on its own later, or the save aborts with `INSUFFICIENT_CONTEXT_ABORT`.
+**Key Decisions**: Keep JSON authority and save integrity gates unchanged, separate fixture-backed parity from live CLI proof in canonical docs.
 
-`generate-context.js` still treats explicit JSON as authoritative, but every save surface now uses the same semantic sufficiency contract after normalization:
+**Critical Dependencies**: Current script/mcp test lanes and root spec validation/check-completion outputs.
 
-- native stateless capture
-- explicit JSON input
-- MCP `memory_save`
-
-This closure now covers the full end-to-end behavior discovered during manual verification:
-
-1. Same-workspace generic infrastructure sessions no longer pass just because backend discovery matched the active workspace.
-2. `V7` no longer fires just because a stateless capture has tool evidence but sparse `FILES`.
-3. `V8` no longer reintroduces foreign-spec prompt text when relevance filtering finds no safe keyword hit.
-4. Thin, metadata-only, or single-prompt saves no longer slip through with healthy-looking quality metadata.
-5. `memory_save({ dryRun:true })` now surfaces insufficiency reasons before any write or index side effect occurs.
-6. ANCHOR tags (`&lt;!-- ANCHOR:id --&gt;` / `&lt;!-- /ANCHOR:id --&gt;`) are no longer destroyed by the post-render HTML comment stripper.
-7. Frontmatter `trigger_phrases` now use one shared session-specific YAML block instead of hardcoded generic strings or leaky nested Mustache sections.
-8. Direct-path native capture can prefer the calling CLI via `SYSTEM_SPEC_KIT_CAPTURE_SOURCE` before resuming the normal fallback chain.
-9. Explicit JSON mode now accepts the documented snake_case save contract as well as the existing camelCase fields.
-
-The final native support matrix remains:
-
-1. `OpenCode`
-2. `Claude Code`
-3. `Codex CLI`
-4. `Copilot CLI`
-5. `Gemini CLI`
-6. `NO_DATA_AVAILABLE`
+---
 
 <!-- ANCHOR:metadata -->
-## 1. Metadata
+## 1. METADATA
 
 | Field | Value |
 |-------|-------|
-| Level | 3 |
-| Priority | P1 |
-| Status | Complete |
-| Created | 2026-03-08 |
-| Completed | 2026-03-15 |
-| Parent | 022-hybrid-rag-fusion |
-| Scope | Canonical workspace identity, target-spec affinity, cross-platform semantic sufficiency, and canonical docs |
+| **Level** | 3 |
+| **Priority** | P0 |
+| **Status** | Review |
+| **Created** | 2026-03-08 |
+| **Branch** | `022-hybrid-rag-fusion/010-perfect-session-capturing` |
 <!-- /ANCHOR:metadata -->
 
 ---
 
 <!-- ANCHOR:problem -->
-## 2. Problem And Purpose
+## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
 
-The earlier native-capture expansion proved the five-backend matrix in fixture coverage, but live verification exposed eight remaining closure gaps:
-
-1. Native backends were still comparing raw absolute paths, even though different CLIs persist equivalent workspace paths in different forms.
-2. Same-workspace generic infrastructure sessions could still proceed warning-only even when they lacked any target-spec anchor.
-3. Stateless validation could falsely abort on `V7` when real tool activity survived normalization but `FILES` stayed sparse.
-4. Relevance fallback could still re-include foreign-spec prompt text and trip `V8`, while the manual playbook overstated what precedence alone guarantees about save success.
-5. Aligned but under-evidenced memories could still look healthy enough to save because the pipeline had no shared semantic sufficiency gate across `generate-context.js` and `memory_save`.
-6. The post-render HTML comment stripper (`stripWorkflowHtmlOutsideCodeFences`) used a regex that matched all HTML comments including `&lt;!-- ANCHOR:id --&gt;` tags, destroying all 26 anchor pairs from the rendered output.
-7. The template frontmatter hardcoded `trigger_phrases` as `["memory dashboard", "session summary", "context template"]`, and a first-pass nested Mustache fix still leaked raw template tags and repeated YAML headers in live output.
-8. Direct-path mode still used raw fallback precedence, so an active OpenCode session could be selected even when the caller was another CLI unless the caller fell back to JSON mode.
-9. The documented snake_case JSON save contract did not fully normalize into the live pipeline, so prompts and recent context could be dropped unless callers switched to camelCase.
+Root spec markdown drifted from active v2.2 templates: missing required sections/anchors, checklist priority-evidence formatting issues, missing `implementation-summary.md`, and stale or over-claimed verification statements. This caused root validation and completion checks to block even though major code lanes were healthy.
 
 ### Purpose
 
-Make `.opencode` the canonical workspace identity, require a second target-spec affinity gate before stateless save-path success, add one shared semantic sufficiency gate across all save surfaces, preserve strict contamination safety, and refresh the operator docs so `M-007` and `NEW-133` reflect actual shipped behavior instead of stale assumptions.
+Restore root docs to exact Level 3 template compliance and publish only current, rerunnable evidence with explicit distinction between fixture-backed and live CLI proof.
 <!-- /ANCHOR:problem -->
 
 ---
 
 <!-- ANCHOR:scope -->
-## 3. Scope
+## 3. SCOPE
 
 ### In Scope
+- Rewrite root `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `decision-record.md` to Level 3 template structure.
+- Create root `implementation-summary.md`.
+- Correct reference integrity including `research/research-pipeline-improvements.md`.
+- Refresh command/status/count/date claims to the March 17, 2026 remediation pass.
+- Distinguish fixture-backed CLI parity from live CLI proof in canonical language.
 
-- Keep JSON-mode input as the only authoritative stateful input path.
-- Normalize native backend matching through the nearest repo-local `.opencode` directory.
-- Accept repo root, `.opencode`, and git-root backend paths only when they resolve to the same workspace identity.
-- Require at least one target-spec anchor beyond workspace identity before a stateless native save may proceed.
-- Preserve fallback order: `OpenCode -> Claude -> Codex -> Copilot -> Gemini -> NO_DATA_AVAILABLE`.
-- Allow direct-path mode to prefer the caller's native backend first through `SYSTEM_SPEC_KIT_CAPTURE_SOURCE`, then resume the documented fallback order if that preferred source is empty.
-- Keep all native backends stateless-only and normalized through the shared capture contract.
-- Preserve aligned tool evidence when commands, tool inputs, or tool output reference the target spec even if direct `filePath` fields are absent.
-- Fix false stateless aborts caused by incomplete tool-count recovery.
-- Prevent foreign-spec prompt fallback from contaminating generated memory content.
-- Add one shared semantic sufficiency evaluator for normalized memories.
-- Hard-block under-evidenced saves with `INSUFFICIENT_CONTEXT_ABORT`.
-- Apply the sufficiency gate to native stateless capture, explicit JSON input, and MCP `memory_save`.
-- Ensure `memory_save({ dryRun:true })` reports insufficiency reasons and evidence counts without any write or indexing side effects.
-- Ensure `force:true` cannot bypass insufficiency, alignment, or contamination blocks.
-- Update spec `010`, feature-catalog entry `NEW-139`, the memory-quality feature docs, manual scenario `M-007`, and manual scenario `NEW-133` to the final contract.
+### Out of Scope
+- Child phase markdown remediation.
+- Runtime contract changes for loader precedence, JSON authority, or `memory_save` `dryRun`/`force`.
+- Reverting or editing other agents' non-root work.
 
-### Out Of Scope
+### Files to Change
 
-- Changing the `generate-context.js` CLI signature.
-- Breaking the documented JSON-mode input contract.
-- Relaxing contamination, alignment, or quality gates.
-- Adding new native backends beyond the shipped five-source matrix.
-
-### Files Changed
-
-| Path | Change Type | Purpose |
-|------|-------------|---------|
-| `scripts/utils/workspace-identity.ts` | Create | Canonical `.opencode` workspace identity and equivalence helpers |
-| `scripts/utils/spec-affinity.ts` | Create | Shared target-spec affinity evaluation for stateless saves |
-| `shared/parsing/memory-sufficiency.ts` | Create | Shared semantic sufficiency evaluator used across save surfaces |
-| `scripts/utils/index.ts` | Modify | Export workspace identity helpers |
-| `scripts/extractors/opencode-capture.ts` | Modify | Match OpenCode sessions via canonical workspace identity |
-| `scripts/extractors/claude-code-capture.ts` | Modify | Match Claude history/transcripts via canonical workspace identity |
-| `scripts/extractors/codex-cli-capture.ts` | Modify | Match Codex `cwd` via canonical workspace identity |
-| `scripts/extractors/copilot-cli-capture.ts` | Modify | Match Copilot `cwd` / `git_root` via canonical workspace identity |
-| `scripts/extractors/gemini-cli-capture.ts` | Modify | Match Gemini `.project_root` via canonical workspace identity |
-| `scripts/utils/input-normalizer.ts` | Modify | Tighten safe prompt/context fallback, preserve aligned native tool-call evidence, and accept documented snake_case JSON save keys |
-| `scripts/core/workflow.ts` | Modify | Enforce target-spec affinity and insufficiency hard-blocks before write/index; fix ANCHOR-preserving HTML comment regex; share rendered trigger-phrase YAML; escape literal anchor examples before render |
-| `scripts/loaders/data-loader.ts` | Modify | Add caller-aware native source preference while keeping JSON authority and normal fallback order intact |
-| `scripts/memory/generate-context.ts` | Modify | Document the direct-mode `SYSTEM_SPEC_KIT_CAPTURE_SOURCE` override in CLI help text |
-| `templates/context_template` | Modify | Replace hardcoded frontmatter `trigger_phrases` with a shared `TRIGGER_PHRASES_YAML` render block |
-| `scripts/utils/validation-utils.ts` | Modify | Ignore literal Mustache placeholders inside code spans when checking for leaked template syntax |
-| `scripts/memory/validate-memory-quality.ts` | Modify | Tighten `V5` and `V6` placeholder-leak checks so real rendered output passes while malformed output still fails |
-| `scripts/utils/slug-utils.ts` | Modify | Strip literal Mustache tokens from title/slug candidates before file naming |
-| `scripts/core/quality-scorer.ts` | Modify | Cap legacy score when sufficiency fails |
-| `scripts/extractors/quality-scorer.ts` | Modify | Lower v2 score and add insufficiency flag for thin memories |
-| `mcp_server/handlers/memory-save.ts` | Modify | Run sufficiency after quality-loop and surface explicit rejection payloads |
-| `mcp_server/handlers/save/types.ts` | Modify | Carry sufficiency metadata through rejected save results |
-| `mcp_server/handlers/save/response-builder.ts` | Modify | Return insufficiency rejection details in MCP responses |
-| `mcp_server/lib/errors/recovery-hints.ts` | Modify | Add insufficiency-specific recovery guidance |
-| `mcp_server/lib/collab/shared-spaces.ts` | Modify | Remove the stale unused helper so package-wide MCP lint returns cleanly |
-| `scripts/tests/spec-affinity.vitest.ts` | Create | Target-spec affinity anchor coverage and same-workspace rejection |
-| `scripts/tests/workspace-identity.vitest.ts` | Create | `.opencode` equivalence coverage |
-| `scripts/tests/memory-sufficiency.vitest.ts` | Create | Shared sufficiency contract coverage |
-| `scripts/tests/claude-code-capture.vitest.ts` | Modify | Claude repo-root vs `.opencode` matching coverage |
-| `scripts/tests/codex-cli-capture.vitest.ts` | Modify | Codex repo-root vs `.opencode` matching coverage |
-| `scripts/tests/copilot-cli-capture.vitest.ts` | Modify | Copilot repo-root vs `.opencode` matching coverage |
-| `scripts/tests/gemini-cli-capture.vitest.ts` | Modify | Gemini repo-root vs `.opencode` matching coverage |
-| `scripts/tests/stateless-enrichment.vitest.ts` | Modify | Foreign-spec prompt fallback guardrail coverage |
-| `scripts/tests/memory-render-fixture.vitest.ts` | Modify | `V7` stateless tool-evidence regression coverage |
-| `scripts/tests/task-enrichment.vitest.ts` | Modify | Thin explicit JSON insufficiency rejection coverage |
-| `scripts/tests/test-bug-fixes.js` | Modify | Remap bug-fix assertions to current compiled modules and remove stale deferred skips |
-| `scripts/tests/test-integration.js` | Modify | Remap integration assertions to current entrypoints and replace obsolete module-not-found skips |
-| `mcp_server/tests/handler-memory-save.vitest.ts` | Modify | Dry-run and force-path insufficiency coverage |
-| `mcp_server/tests/recovery-hints.vitest.ts` | Modify | Insufficiency recovery-hint coverage |
-| Canonical spec markdown set | Modify | Final workspace-identity contract and current evidence |
-| Feature catalog entry `NEW-139` | Modify | Final source-of-truth operator guidance for generate-context save paths |
-| Memory-quality feature docs | Modify | Clarify insufficiency versus quality-loop and save-quality-gate roles |
-| Manual playbook scenarios `M-007` and `NEW-133` | Modify | Final scenario packs and expectation wording |
+| File Path | Change Type | Description |
+|-----------|-------------|-------------|
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/spec.md` | Modify | Level 3 template-compliant root specification with current evidence truth |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/plan.md` | Modify | Template-compliant implementation plan with verified gates and dependencies |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/tasks.md` | Modify | Template-compliant task tracking and closure criteria |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/checklist.md` | Modify | Template-compliant verification checklist with valid priority/evidence context |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/decision-record.md` | Modify | Template-compliant ADR with rationale and rollback |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/implementation-summary.md` | Create | Post-implementation closure summary and verified results |
 <!-- /ANCHOR:scope -->
 
 ---
 
+<!-- ANCHOR:phase-map -->
+## PHASE DOCUMENTATION MAP
+
+> This spec uses phased decomposition. Each phase is an independently executable child spec folder.
+
+| Phase | Folder | Scope | Dependencies | Status |
+|-------|--------|-------|--------------|--------|
+| 001 | `001-quality-scorer-unification/` | Unify canonical quality scoring and threshold behavior | None | Complete |
+| 002 | `002-contamination-detection/` | Strengthen contamination detection and audit trail coverage | 001 | Complete |
+| 003 | `003-data-fidelity/` | Preserve normalized data fidelity and visible drop reporting | 002 | Complete |
+| 004 | `004-type-consolidation/` | Consolidate canonical shared types across the pipeline | 003 | Draft |
+| 005 | `005-confidence-calibration/` | Calibrate confidence signals and gating behavior | 004 | Review |
+| 006 | `006-description-enrichment/` | Improve description fidelity and enrichment quality | 005 | Complete |
+| 007 | `007-phase-classification/` | Stabilize phase classification and routing semantics | 006 | Complete |
+| 008 | `008-signal-extraction/` | Tighten signal extraction behavior and evidence quality | 007 | Complete |
+| 009 | `009-embedding-optimization/` | Optimize embedding workload and retrieval prep | 008 | Complete |
+| 010 | `010-integration-testing/` | Verify end-to-end integration behavior | 009 | Draft |
+| 011 | `011-session-source-validation/` | Validate native session-source capture behavior | 010 | In Progress |
+| 012 | `012-template-compliance/` | Bring docs and templates back to validator truth | 011 | Complete |
+| 013 | `013-auto-detection-fixes/` | Fix native-source auto-detection behavior | 012 | Complete |
+| 014 | `014-spec-descriptions/` | Align phase descriptions and documentation narratives | 013 | Complete |
+| 015 | `015-outsourced-agent-handback/` | Normalize handback expectations for delegated work | 014 | Complete |
+| 016 | `016-multi-cli-parity/` | Record fixture-backed and live CLI parity evidence | 015 | Complete |
+
+### Phase Transition Rules
+
+- Each phase MUST pass `validate.sh` independently before the next phase begins
+- Parent spec tracks aggregate progress via this map
+- Use `/spec_kit:resume [parent-folder]/[NNN-phase]/` to resume a specific phase
+- Run `validate.sh --recursive` on parent to validate all phases as integrated unit
+
+### Phase Handoff Criteria
+
+| From | To | Criteria | Verification |
+|------|-----|----------|--------------|
+| 001 | 002 | Quality scoring unified on 0.0-1.0 scale | validate.sh + test suite |
+| 002 | 003 | Contamination detection produces score penalties | validate.sh + test suite |
+| 003 | 004 | Data fidelity preserved through normalization | validate.sh + test suite |
+| 004 | 005 | Shared types consolidated and exported | validate.sh + typecheck |
+| 005 | 006 | Confidence signals calibrated with thresholds | validate.sh + test suite |
+| 006 | 007 | Description enrichment pipeline functional | validate.sh + test suite |
+| 007 | 008 | Phase classification routing stable | validate.sh + test suite |
+| 008 | 009 | Signal extraction evidence quality verified | validate.sh + test suite |
+| 009 | 010 | Embedding optimization complete | validate.sh + test suite |
+| 010 | 011 | Integration tests passing | validate.sh + test suite |
+| 011 | 012 | Session source validation complete | validate.sh + test suite |
+| 012 | 013 | Template compliance verified | validate.sh --recursive |
+| 013 | 014 | Auto-detection fixes applied | validate.sh + test suite |
+| 014 | 015 | Spec descriptions aligned | validate.sh + test suite |
+| 015 | 016 | Outsourced agent handback normalized | validate.sh + test suite |
+<!-- /ANCHOR:phase-map -->
+
+---
+
 <!-- ANCHOR:requirements -->
-## 4. Requirements
+## 4. REQUIREMENTS
 
-### P0
+### P0 - Blockers (MUST complete)
 
-| ID | Requirement | Acceptance |
-|----|-------------|------------|
-| REQ-001 | JSON-mode remains authoritative | Loader still returns explicit JSON immediately when a data file is provided |
-| REQ-002 | Native fallback order stays fixed | Loader still tries `OpenCode`, `Claude`, `Codex`, `Copilot`, `Gemini`, then `NO_DATA_AVAILABLE` |
-| REQ-003 | Native matching uses canonical workspace identity | Repo root, `.opencode`, and git-root forms only match when they normalize to the same repo-local `.opencode` anchor |
-| REQ-004 | Native thought/reasoning-only content is excluded | Claude `thinking`, Codex reasoning items, and Gemini `thoughts` do not appear in normalized output |
-| REQ-005 | Out-of-workspace file hints are stripped | Foreign absolute paths are removed from normalized tool-call inputs and derived file hints |
-| REQ-006 | Same-workspace off-spec sessions hard-fail before indexing | Stateless saves abort with `ALIGNMENT_BLOCK` when no target-spec anchor exists beyond workspace identity |
-| REQ-007 | Aligned but under-evidenced saves hard-fail explicitly | Native and JSON save paths abort with `INSUFFICIENT_CONTEXT_ABORT` when durable evidence is missing |
-| REQ-008 | Stateless tool evidence does not false-fail `V7` | Tool-rich captures without edited files can still produce non-zero rendered `tool_count` |
-| REQ-009 | Relevance fallback does not reintroduce foreign-spec contamination | Generic fallback is only retained when the capture already proves target-spec affinity; otherwise prompts/context are dropped |
-| REQ-010 | The spec folder validates cleanly | `spec/validate.sh` returns zero errors and zero warnings |
-| REQ-021 | ANCHOR tags survive post-render cleanup | `grep -c 'ANCHOR' <output>.md` returns >0 after `generate-context.js` |
-| REQ-022 | Frontmatter trigger_phrases are session-specific and YAML-valid | Output frontmatter contains one valid extracted trigger list or `[]`, with no raw Mustache tags or repeated headers |
-| REQ-023 | Direct-path mode can prefer the calling CLI without weakening fallback safety | With `SYSTEM_SPEC_KIT_CAPTURE_SOURCE` set, the hinted backend is tried first and the remaining backends still run in the documented order if needed |
-| REQ-024 | Explicit JSON mode accepts the documented snake_case contract | Snake_case save payloads preserve prompts, recent context, and trigger phrases without invoking native capture |
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-001 | Root markdown files match Level 3 template headers/order/anchors | Root validator no longer reports missing required root template headers/anchors |
+| REQ-002 | `implementation-summary.md` exists at root | Root validator no longer reports missing required file |
+| REQ-003 | Checklist completed items include valid priority and evidence | `check-completion.sh` no longer blocks on untagged completed items |
+| REQ-004 | Command counts/dates reflect current pass | Root docs reference March 17, 2026 rerun results and current counts |
+| REQ-005 | Cross-CLI parity claims separate fixture proof from live proof | Root docs explicitly label both evidence types and blocked live CLI cases if any |
 
-### P1
+### P1 - Required (complete OR user-approved deferral)
 
-| ID | Requirement | Acceptance |
-|----|-------------|------------|
-| REQ-011 | A shared workspace-identity helper exists | Extractors reuse one internal `.opencode` equivalence layer |
-| REQ-012 | A shared target-spec affinity helper exists | Workflow and stateless normalization reuse one internal spec-affinity evaluator |
-| REQ-013 | A shared sufficiency helper exists | Workflow and MCP save handlers reuse one semantic sufficiency evaluator |
-| REQ-014 | `memory_save` dry-run surfaces insufficiency without writes | Dry-run responses include `rejectionCode`, sufficiency reasons, and no indexing side effects |
-| REQ-015 | `force:true` cannot bypass insufficiency | Forced saves still reject before embedding or persistence when insufficiency fails |
-| REQ-016 | Quality-loop fixes do not invent semantic evidence | Formatting auto-fixes may help structure, but insufficiency still rejects thin memories |
-| REQ-017 | Diagnostic quality scores reflect insufficiency | Legacy and v2 quality metadata score thin memories materially lower and add insufficiency flags |
-| REQ-018 | Discovery precedence is distinct from final save success | Docs and `M-007` describe backend selection separately from later alignment, insufficiency, and contamination aborts |
-| REQ-019 | Canonical docs reflect the final workspace-identity and sufficiency contract | Spec `010`, `NEW-139`, memory-quality feature docs, `M-007`, and `NEW-133` all describe the shared insufficiency gate |
-| REQ-020 | Verification evidence is current | Final automated reruns on 2026-03-16 are recorded in canonical docs |
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-006 | Broken research link prefix is corrected | Root docs use `research/research-pipeline-improvements.md` |
+| REQ-007 | Root status language matches verified state | Root status/completion wording reflects validated root state and test evidence |
+| REQ-008 | Root write scope remains isolated | Only the six assigned root markdown files are changed in this remediation task |
 <!-- /ANCHOR:requirements -->
 
 ---
 
-<!-- ANCHOR:success -->
-## 5. Success Criteria
+<!-- ANCHOR:success-criteria -->
+## 5. SUCCESS CRITERIA
 
-- Native capture works across all five supported local backends without relying on raw path equality.
-- Equivalent repo-root and `.opencode` transcript/workspace records are accepted only when they resolve to the same workspace.
-- Same-workspace captures without a target-spec anchor fail `ALIGNMENT_BLOCK` instead of indexing.
-- Aligned but thin or metadata-only captures fail `INSUFFICIENT_CONTEXT_ABORT` instead of indexing.
-- `memory_save({ dryRun:true })` returns insufficiency reasons and evidence counts without file, database, or embedding side effects.
-- `memory_save({ force:true })` does not bypass insufficiency, alignment, or contamination blocks.
-- Tool-rich stateless captures no longer false-abort on `V7`.
-- Foreign-spec prompt fallback no longer contaminates generated memory content when relevance matching fails.
-- The targeted scripts Vitest suite passes with `14` files and `125` tests.
-- `test-bug-fixes.js` passes from `scripts/tests` with `27` passed, `0` failed, `0` skipped.
-- `test-integration.js` passes from `scripts/tests` with `36` passed, `0` failed, `0` skipped.
-- The targeted MCP save-quality suite passes with `6` files and `298` tests.
-- Package-clean MCP verification passes for `npm run lint`, `npm run build`, and `npm run test`.
-- `test-extractors-loaders.js` passes with `288` passed, `0` failed, `0` skipped.
-- Alignment drift passes with `226` scanned files and `0` findings.
-- Final spec validation returns zero errors and zero warnings.
-- Rich snake_case JSON saves index successfully, while thin snake_case JSON inputs fail `INSUFFICIENT_CONTEXT_ABORT` before file write.
-<!-- /ANCHOR:success -->
+- **SC-001**: **Given** the root Level 3 file set is present, **Then** the validator finds no missing root markdown files.
+- **SC-002**: **Given** the root spec pack is validated, **Then** anchor and phase-link errors no longer block recursive compliance.
+- **SC-003**: **Given** completion checks parse the root checklist, **Then** all completed P0 and P1 items include valid priority and evidence context.
+- **SC-004**: **Given** the targeted rerun commands are reviewed, **Then** the published counts match the March 17, 2026 evidence set.
+- **SC-005**: **Given** live CLI proof is recorded, **Then** fixture-backed, live-proven, and blocked cases remain explicitly separated.
+- **SC-006**: **Given** a reviewer audits the root docs, **Then** stale references like `test-integration.js` are no longer presented as current proof.
+<!-- /ANCHOR:success-criteria -->
 
 ---
 
 <!-- ANCHOR:risks -->
-## 6. Risks And Dependencies
+## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Risk | Native CLIs persist different filesystem spellings for the same workspace | High | Canonical `.opencode` identity layer accepts only equivalent paths, not nearby guesses |
-| Risk | Broader path equivalence could weaken contamination safety if over-broad | High | Matching still requires one shared `.opencode` anchor and file hints remain workspace-scoped |
-| Risk | Aligned but thin saves can still look plausible if metadata is over-counted | High | Shared insufficiency gate counts only durable evidence and hard-blocks under-evidenced saves |
-| Risk | Stateless captures with sparse file edits can still look low-signal | Medium | Keep numeric scorer active, preserve tool evidence, and preserve quality/alignment/insufficiency aborts after discovery succeeds |
-| Risk | Same-spec transcript selection can resolve to the wrong session, still pass current spec-affinity checks, receive a high quality score, and be indexed as valid output | High | Deferred follow-up is documented in `research/research-pipeline-improvements.md` (R-11); until that work lands, treat transcript/file-count/provenance mismatches as source-integrity incidents rather than successful captures |
-| Dependency | Existing stateless enrichment pipeline | High | Native backends still feed the same downstream transform and render path |
-| Dependency | MCP memory-save handler flow | High | Dry-run, quality-loop, and persistence now rely on the same sufficiency contract |
-| Dependency | Local CLI storage layouts | Medium | Each backend remains bounded, fixture-tested, and empty-state safe |
-
-### Deferred Known Limitations
-
-The research synthesis identified additional pipeline limitations that are acknowledged here for traceability only. They are deferred follow-up items, not new requirements for spec `010`.
-
-- **Auto-detection fragility**: R-13 found that parent/child folder depth bias and the absence of stronger activity signals can cause the auto-detection cascade to prefer the wrong spec folder in large trees. This is documented as deferred routing hardening, not a change to the committed save contract.
-- **Decision deduplication bug**: R-13 found that JSON-assisted saves can emit the same decision through both observation-derived and manual-decision paths, producing duplicate decisions in rendered output. This is a known limitation of current output fidelity until the deferred follow-up lands.
-- **`key_files` pipeline weakness**: R-13 found that tree-thinning can over-merge short-description inputs and leave `key_files` empty even when relevant spec files exist. This remains deferred future work rather than an in-scope change for this spec.
+| Dependency | Current script/mcp test lanes remain stable during doc rewrite | Medium | Freeze claims to rerun outputs captured on 2026-03-17 |
+| Dependency | Root validator/check-completion behavior | Medium | Keep exact Level 3 template structure and required anchor names |
+| Risk | Over-claiming CLI parity from fixtures alone | High | Record fixture and live evidence separately with explicit blocked notes |
+| Risk | Concurrent edits by other agents in child folders | Medium | Keep strict root-only write scope and avoid unrelated file reverts |
 <!-- /ANCHOR:risks -->
 
 ---
 
-<!-- ANCHOR:nfr -->
-## 7. Non-Functional Requirements
+<!-- ANCHOR:questions -->
 
-- Reliability: no crash when backend storage is absent, malformed, or mismatched.
-- Security: workspace matching must stay exact via canonical `.opencode` identity and must not accept cross-workspace opportunistic matches.
-- Maintainability: one shared path-equivalence layer replaces duplicated raw-path logic.
-- Maintainability: one shared sufficiency evaluator replaces backend-specific “thin memory” heuristics.
-- Documentation integrity: manual scenarios describe discovery precedence, alignment, insufficiency, contamination, and dry-run behavior separately.
-<!-- /ANCHOR:nfr -->
+## 7. NON-FUNCTIONAL REQUIREMENTS
 
----
+### Performance
+- **NFR-P01**: Root validation and completion checks should execute without additional remediation loops caused by root format drift.
 
-## 8. Edge Cases
+### Security
+- **NFR-S01**: Documentation must not change runtime security behavior or weaken existing save-path integrity gates.
 
-- A backend stores repo root while the runtime is anchored at `.opencode`: the transcript is accepted only if both resolve to the same workspace identity.
-- A backend stores `.opencode` directly: the transcript is accepted as the canonical identity form.
-- A same-workspace session touches only shared infrastructure paths and never references the target spec: the stateless save aborts with `ALIGNMENT_BLOCK`.
-- A same-workspace session references the target spec but only preserves one thin prompt and generic metadata: the save aborts with `INSUFFICIENT_CONTEXT_ABORT`.
-- A stateless capture contains real read/search/bash telemetry but no edited files: rendered memory still reports non-zero `tool_count`.
-- Relevance filtering finds no keyword hit and no other spec anchor exists: generic prompt/context fallback is dropped instead of rescued.
-- Relevance filtering finds only foreign-spec prompt text: the prompt/context is dropped instead of reintroduced wholesale.
-- `memory_save({ dryRun:true, skipPreflight:true })` still runs quality-loop and sufficiency evaluation, but produces no side effects.
-- `memory_save({ force:true })` bypasses neither insufficiency nor contamination rejection.
-- Discovery succeeds but later quality or alignment gates fail: docs and manual testing treat that as a save-path result, not a discovery-order regression.
+### Reliability
+- **NFR-R01**: Root evidence statements must be directly rerunnable from documented commands.
 
 ---
 
-## 9. Complexity Assessment
+## 8. EDGE CASES
 
-| Dimension | Notes |
-|-----------|-------|
-| Scope | Crosses five extractors, one shared utility, stateless validation behavior, tests, and canonical docs |
-| Risk | Medium because discovery correctness directly affects memory integrity |
-| Coordination | Requires code, tests, docs, and validation evidence to land together |
-| Level | Remains Level 3 because the change spans architecture, verification, and operator documentation |
+### Data Boundaries
+- Empty checklist evidence text: completed items must still include explicit `[P0/P1/P2]` and evidence markers.
+- Mixed proof sources: fixture-backed and live CLI proofs must remain distinguishable.
 
----
-
-## 10. User Stories
-
-### US-001: Portable Stateless Discovery
-
-As a maintainer, I want repo-root and `.opencode` transcript metadata to resolve to the same workspace when they are genuinely equivalent, so native fallback works across different local CLI storage formats.
-
-### US-002: Safe Stateless Saves
-
-As a maintainer, I want valid tool-rich stateless captures to survive quality validation without weakening contamination protection, while same-workspace off-spec sessions fail early, so discovery does not fail for the wrong reason and unrelated work does not index.
-
-### US-003: Durable Memory Protection
-
-As a maintainer, I want thin or metadata-only memories to fail explicitly even when they are aligned, so future agents do not index low-value context that looks healthy only because of scaffolding.
-
-### US-004: Accurate Operator Guidance
-
-As a future operator, I want `M-007`, `NEW-133`, and the feature catalog to distinguish discovery precedence from later save-path aborts, so manual verification reflects the shipped system truth.
+### Error Scenarios
+- Missing research link prefix: fixed to `research/research-pipeline-improvements.md`.
+- Partial lane pass states: docs must report exactly what passed and what remains blocked.
 
 ---
 
-## 11. Acceptance Scenarios
+## 9. COMPLEXITY ASSESSMENT
 
-### Scenario 1: Canonical workspace equivalence
-
-**Given** the runtime is anchored at repo-local `.opencode`, **when** a backend persists the enclosing repo root or a nested `.opencode` path for the same workspace, **then** the transcript is accepted.
-
-### Scenario 2: Foreign workspace rejection
-
-**Given** a backend artifact points at another repo with a different `.opencode` anchor, **when** the loader evaluates it, **then** the artifact is rejected even if the basename is similar.
-
-### Scenario 3: Stateless tool evidence
-
-**Given** a stateless capture contains tool telemetry but no edited files, **when** the workflow renders memory output, **then** `tool_count` is non-zero and `V7` does not fail spuriously.
-
-### Scenario 4: Same-workspace off-spec rejection
-
-**Given** a native stateless capture belongs to the same `.opencode` workspace but contains no target-spec file, phrase, or spec-id anchor, **when** the workflow runs, **then** the save aborts with `ALIGNMENT_BLOCK`.
-
-### Scenario 5: Safe prompt fallback
-
-**Given** relevance filtering finds no keyword hit and the capture also lacks any other target-spec anchor, **when** the transform runs, **then** generic or foreign-spec prompts do not return as fallback content.
-
-### Scenario 6: Backend precedence
-
-**Given** multiple native sources are available for the same workspace, **when** the loader runs, **then** it still picks the first usable backend in the documented order.
-
-### Scenario 6a: Caller-aware direct-mode preference
-
-**Given** direct-path mode is running under an external CLI and `SYSTEM_SPEC_KIT_CAPTURE_SOURCE` is set to that CLI, **when** multiple native sources are available, **then** the hinted source is tried first and the remaining backends continue in the documented order if the hinted source is empty.
-
-### Scenario 7: Shared insufficiency hard-fail
-
-**Given** a save path is aligned but preserves only generic or under-evidenced context, **when** the workflow or `memory_save` handler evaluates the normalized evidence snapshot, **then** the save aborts with `INSUFFICIENT_CONTEXT_ABORT`.
-
-### Scenario 8: JSON snake_case compatibility
-
-**Given** explicit JSON input uses documented snake_case save keys, **when** the loader normalizes the file, **then** prompts, recent context, and trigger phrases survive intact and native fallback is not consulted.
-
-### Scenario 9: Dry-run insufficiency visibility
-
-**Given** `memory_save({ dryRun:true })` receives an insufficient memory, **when** the handler completes validation, **then** the response includes the insufficiency rejection code, reasons, and evidence counts without indexing side effects.
-
-### Scenario 10: Final hard fail
-
-**Given** explicit JSON is absent and every backend is empty or mismatched, **when** the loader runs, **then** it returns `NO_DATA_AVAILABLE`.
-
-### Scenario 11: Canonical docs validate
-
-**Given** the rewritten `010` markdown set, **when** `spec/validate.sh` runs, **then** it returns zero errors and zero warnings.
+| Dimension | Score | Triggers |
+|-----------|-------|----------|
+| Scope | 17/25 | Six root docs, strict template conformance, evidence refresh |
+| Risk | 20/25 | High risk of false completion claims if counts/status are stale |
+| Research | 12/20 | Cross-checking latest command outputs and claim integrity |
+| Multi-Agent | 8/15 | Concurrent edits in sibling phase folders |
+| Coordination | 12/15 | Root-only ownership with no cross-scope regression |
+| **Total** | **69/100** | **Level 3** |
 
 ---
 
-## 12. Related Documents
+## 10. RISK MATRIX
 
-- `plan`
-- `tasks`
-- `checklist`
-- `decision record`
-- `implementation summary`
-- `research/research-pipeline-improvements.md`
-- `research/`
+| Risk ID | Description | Impact | Likelihood | Mitigation |
+|---------|-------------|--------|------------|------------|
+| R-001 | Root checklist formatting drifts again and blocks completion | H | M | Keep exact template headings and valid completed-item evidence tags |
+| R-002 | Test count/date claims become stale | H | M | Use only March 17, 2026 rerun outputs in root docs |
+| R-003 | Live CLI parity is over-claimed | H | M | Keep explicit fixture-proof vs live-proof sections and blocked rationale |
 
-Scratch audit artifacts under `scratch/` are historical research only. Canonical completion evidence for spec `010` lives in this markdown set plus fresh verification command output.
+---
 
-### Identified Future Work
+## 11. USER STORIES
 
-The research synthesis in `research/research-pipeline-improvements.md` identified 25 deferred improvement items across seven cross-cutting themes plus a recommended implementation sequence (Phase A0 through Phase D). They are recorded here for traceability only and do not expand the committed scope, requirements, success criteria, or acceptance scenarios for spec `010`.
+### US-001: Root Validation Integrity (Priority: P0)
 
-- **Contract consolidation debt** -- deferred unification of scorer, type, validator, and semantic-signal contracts across the pipeline (R-01, R-04, R-06, R-08).
-- **Information loss at boundaries** -- deferred work to preserve richer metadata through normalization and stage hand-offs, with better visibility into dropped data (R-02, R-03, R-06).
-- **Scoring model maturity** -- deferred evolution of quality, confidence, phase, and embedding signals toward more explicit multi-dimensional scoring (R-01, R-05, R-07, R-09).
-- **Verification maturity** -- deferred orchestration-level testing and observability improvements to catch regressions before indexing (R-02, R-03, R-10).
-- **Template compliance at generation time** -- deferred hardening of delegation and validation so generated outputs stay structurally aligned with templates (R-12).
-- **Source-of-truth integrity** -- deferred session-boundary and provenance work to prevent same-spec wrong-session capture from being processed as valid input (R-11).
-- **Detection & routing fragility** -- deferred improvements to spec-folder auto-detection, parent/child ranking, and session-activity routing signals (R-13).
+**As a** maintainer, **I want** root spec docs to match active Level 3 templates exactly, **so that** validation and completion tooling can trust document structure.
 
-See `research/research-pipeline-improvements.md` for the Priority Matrix (P0/P1/P2) and the recommended implementation sequence (Phase A0 through Phase D).
+**Acceptance Criteria**:
+1. Given root docs, When validator runs, Then root template/header/anchor/file checks pass.
 
-### Phase Documentation Map
+---
 
-Each research item (R-01 through R-13) has a corresponding implementation phase folder with spec.md and plan.md:
+### US-002: Evidence Truthfulness (Priority: P0)
 
-| Phase | Folder | R-Item | Title | Priority | Sequence |
-|-------|--------|--------|-------|----------|----------|
-| 001 | `001-quality-scorer-unification/` | R-01 | Unify dual quality scorer contracts (0-1 vs 0-100) | P0 | A3 |
-| 002 | `002-contamination-detection/` | R-02 | Strengthen contamination detection & audit trail | P1 | B2 |
-| 003 | `003-data-fidelity/` | R-03 | Preserve metadata through normalization pipeline | P0 | A2 |
-| 004 | `004-type-consolidation/` | R-04 | Canonicalize type ownership in session-types.ts | P0 | A1 |
-| 005 | `005-confidence-calibration/` | R-05 | Dual-confidence model for decisions | P1 | C1 |
-| 006 | `006-description-enrichment/` | R-06 | Unify description validators & add MODIFICATION_MAGNITUDE | P0 | A1 |
-| 007 | `007-phase-classification/` | R-07 | Topic-cluster phase classification & observation types | P2 | C2-C3 |
-| 008 | `008-signal-extraction/` | R-08 | Unified SemanticSignalExtractor replacing 4 systems | P1 | B1 |
-| 009 | `009-embedding-optimization/` | R-09 | Weighted embedding input for retrieval quality | P1 | B3 |
-| 010 | `010-integration-testing/` | R-10 | Workflow E2E test + legacy migration | P0 | A4 |
-| 011 | `011-session-source-validation/` | R-11 | Session-ID-first transcript resolution & V10 validator | P0 | A0.1-A0.5 |
-| 012 | `012-template-compliance/` | R-12 | Template structural fingerprint & delegation hardening | P2 | B5 |
-| 013 | `013-auto-detection-fixes/` | R-13 | Git-status signal, decision dedup, key_files fallback, blocker fix | P0 | A0.6-A0.8, B9 |
-| 014 | `014-spec-descriptions/` | R-14 | Per-folder description.json infrastructure & unique memory filenames | P1 | B4 |
-| 015 | `015-outsourced-agent-handback/` | R-15 | External CLI handback protocol, hard-fail JSON input, redact-and-scrub | P1 | B5 |
-| 016 | `016-multi-cli-parity/` | R-16 | Cross-CLI tool name aliases, noise patterns, provenance, view tool | P1 | B6 |
+**As a** maintainer, **I want** canonical root docs to include current rerunnable evidence only, **so that** closure claims are defensible.
+
+**Acceptance Criteria**:
+1. Given root verification sections, When commands are rerun, Then counts and statuses match documented outputs.
+
+---
+
+### US-003: Cross-CLI Proof Clarity (Priority: P1)
+
+**As a** reviewer, **I want** fixture-backed and live CLI proof separated, **so that** parity claims are accurate and auditable.
+
+**Acceptance Criteria**:
+1. Given cross-CLI text, When reviewed, Then fixture proof and live proof are clearly labeled and blocked live cases are explicit.
+
+---
+
+## 12. OPEN QUESTIONS
+
+- None. Root doc scope is complete for this remediation pass.
+<!-- /ANCHOR:questions -->
+
+---
+
+## RELATED DOCUMENTS
+
+- **Implementation Plan**: See `plan.md`
+- **Task Breakdown**: See `tasks.md`
+- **Verification Checklist**: See `checklist.md`
+- **Decision Records**: See `decision-record.md`
+- **Implementation Summary**: See `implementation-summary.md`
+- **Research Synthesis**: See `research/research-pipeline-improvements.md`
+
+---
+
+<!--
+LEVEL 3 SPEC (~165 lines)
+- Core + L2 + L3 addendums
+- Executive Summary, Risk Matrix, User Stories
+- Full Complexity Assessment
+-->

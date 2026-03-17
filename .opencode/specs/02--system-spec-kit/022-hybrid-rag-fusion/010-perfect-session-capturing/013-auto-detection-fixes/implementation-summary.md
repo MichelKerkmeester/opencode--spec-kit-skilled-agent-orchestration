@@ -88,7 +88,7 @@ All three fixes are additive or narrowing (no behavioral change for high-confide
 ---
 
 <!-- ANCHOR:limitations -->
-## Implementation Completeness
+## Known Limitations
 
 All originally-planned features were implemented. The five items previously listed as limitations are confirmed complete:
 

@@ -24,7 +24,7 @@ title: "Tasks: Data Fidelity [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Setup — Preserve Normalized FILES Metadata
+## Phase 1: Setup
 
 - [x] T001 Preserve `ACTION`, `_provenance`, and `_synthetic` in the local FILES normalization contract without waiting for `004-type-consolidation` (`scripts/utils/input-normalizer.ts`) — REQ-001
 - [x] T002 Keep structured FILES passthrough backward-compatible when metadata is absent and preserve legacy `filesModified` as `ACTION: "Modified"` only (`scripts/utils/input-normalizer.ts`) — REQ-001
@@ -33,7 +33,7 @@ title: "Tasks: Data Fidelity [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Implementation — Metadata Preservation, Coercion, Enrichment, and Logging
+## Phase 2: Implementation
 
 ### Fix FILES Metadata Preservation
 

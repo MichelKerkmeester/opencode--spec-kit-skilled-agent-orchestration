@@ -1,0 +1,21 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/011-session-source-validation",
+  "description": "Feature Specification: Session Source Validation",
+  "keywords": [
+    "feature",
+    "specification",
+    "session",
+    "source",
+    "validation"
+  ],
+  "lastUpdated": "2026-03-17T11:48:02.885Z",
+  "specId": "011",
+  "folderSlug": "session-source-validation",
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion",
+    "010-perfect-session-capturing"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

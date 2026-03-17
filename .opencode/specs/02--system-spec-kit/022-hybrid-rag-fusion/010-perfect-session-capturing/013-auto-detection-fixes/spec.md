@@ -1,5 +1,6 @@
 ---
 title: "Feature Specification: Auto-Detection Fixes"
+description: "Fix native-source auto-detection behavior with review-driven corrections."
 ---
 # Feature Specification: Auto-Detection Fixes
 
@@ -15,10 +16,15 @@ title: "Feature Specification: Auto-Detection Fixes"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | Completed |
+| **Status** | Complete |
 | **Created** | 2026-03-16 |
 | **Branch** | `main` |
-| **Parent** | [010-perfect-session-capturing](../spec.md) |
+| **Parent Spec** | ../spec.md |
+| **Parent Plan** | ../plan.md |
+| **Phase** | 13 of 16 |
+| **Predecessor** | 012-template-compliance |
+| **Successor** | 014-spec-descriptions |
+| **Handoff Criteria** | validate.sh + test suite passing |
 | **R-Item** | R-13 |
 | **Sequence** | A0.6-A0.8, B9 |
 <!-- /ANCHOR:metadata -->
@@ -102,10 +108,10 @@ Fix the detection cascade with git-status signals and parent-affinity boosts, el
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: Parent folder with 24 untracked files is auto-detected correctly over child folders that happen to have matching idVector components
-- **SC-002**: 4 manual decisions produce exactly 4 decision records in rendered output, not 8
-- **SC-003**: `key_files` is populated for spec folders that contain actual markdown and JSON files
-- **SC-004**: Blocker field contains meaningful blocker text, not markdown fragment artifacts like section headers or quote delimiters
+- **SC-001**: **Given** a parent folder with 24 untracked files and child folders with overlapping id vectors, **Then** auto-detection ranks the correct parent folder over children.
+- **SC-002**: **Given** four manual decisions in the input payload, **Then** rendered output contains exactly four decision records instead of duplicated entries.
+- **SC-003**: **Given** a spec folder that contains markdown and JSON files, **Then** `key_files` is populated from real file content or fallback filesystem listing.
+- **SC-004**: **Given** blocker extraction from noisy transcripts, **Then** markdown fragment artifacts are rejected and blocker text remains meaningful.
 <!-- /ANCHOR:success-criteria -->
 
 ---

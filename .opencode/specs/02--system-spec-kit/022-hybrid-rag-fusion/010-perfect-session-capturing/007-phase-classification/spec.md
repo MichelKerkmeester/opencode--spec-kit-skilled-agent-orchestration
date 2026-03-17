@@ -1,5 +1,6 @@
 ---
 title: "Feature Specification: Phase Classification"
+description: "Stabilize phase classification and routing semantics for the memory pipeline."
 ---
 # Feature Specification: Phase Classification
 
@@ -15,10 +16,15 @@ title: "Feature Specification: Phase Classification"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P2 |
-| **Status** | Implemented |
+| **Status** | Complete |
 | **Created** | 2026-03-16 |
 | **Branch** | `main` |
-| **Parent** | [010-perfect-session-capturing](../spec.md) |
+| **Parent Spec** | ../spec.md |
+| **Parent Plan** | ../plan.md |
+| **Phase** | 7 of 16 |
+| **Predecessor** | 006-description-enrichment |
+| **Successor** | 008-signal-extraction |
+| **Handoff Criteria** | validate.sh + test suite passing |
 | **R-Item** | R-07 |
 | **Sequence** | C2-C3 |
 <!-- /ANCHOR:metadata -->
@@ -127,8 +133,7 @@ Ship a conversation-phase classifier that builds exchange-level semantic signals
 
 ---
 
-<!-- ANCHOR:acceptance-scenarios -->
-## 8. ACCEPTANCE SCENARIOS
+### Acceptance Scenarios
 
 ### Scenario 1: Search plus error resolves to Debugging
 
@@ -145,4 +150,3 @@ Ship a conversation-phase classifier that builds exchange-level semantic signals
 ### Scenario 4: Observation taxonomy expands without template branching
 
 **Given** observations that describe tests, documentation work, or performance tuning, **when** file observations are typed, **then** the new categories are emitted without introducing template-specific special casing.
-<!-- /ANCHOR:acceptance-scenarios -->

@@ -8,9 +8,9 @@
 // Detects, lists, and resolves spec folders with interactive selection and alignment scoring
 
 // Node stdlib
-import * as fs from 'fs/promises';
-import * as path from 'path';
-import { execFileSync } from 'child_process';
+import * as fs from 'node:fs/promises';
+import * as path from 'node:path';
+import { execFileSync } from 'node:child_process';
 
 // External packages
 import Database from 'better-sqlite3';

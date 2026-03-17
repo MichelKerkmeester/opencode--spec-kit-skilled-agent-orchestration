@@ -24,7 +24,7 @@ title: "Tasks: Phase Classification [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Setup — TopicCluster Interface & Observation Types
+## Phase 1: Setup
 
 - [x] T001 Define `TopicCluster`, `ConversationPhaseLabel`, and `PhaseScoreMap` in `session-types.ts` (REQ-001) (`scripts/types/session-types.ts`)
 - [x] T002 [P] Expand `ConversationPhase` / `ConversationData` with cluster metadata, `TOPIC_CLUSTERS`, and `UNIQUE_PHASE_COUNT` (REQ-001) (`scripts/types/session-types.ts`)
@@ -35,7 +35,7 @@ title: "Tasks: Phase Classification [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Implementation — Document Vectors, Cluster Scoring & Flow Pattern
+## Phase 2: Implementation
 
 ### Document Vector Construction
 - [x] T005 Add `scripts/utils/phase-classifier.ts` as the exchange classification owner (REQ-002)

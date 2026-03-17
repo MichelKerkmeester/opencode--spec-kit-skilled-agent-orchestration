@@ -1,5 +1,6 @@
 ---
 title: "Feature Specification: Confidence Calibration"
+description: "Calibrate confidence signals and gating behavior with proper threshold validation."
 ---
 # Feature Specification: Confidence Calibration
 
@@ -15,10 +16,15 @@ title: "Feature Specification: Confidence Calibration"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P1 |
-| **Status** | Complete |
+| **Status** | Review |
 | **Created** | 2026-03-16 |
 | **Branch** | `main` |
-| **Parent** | [010-perfect-session-capturing](../spec.md) |
+| **Parent Spec** | ../spec.md |
+| **Parent Plan** | ../plan.md |
+| **Phase** | 5 of 16 |
+| **Predecessor** | 004-type-consolidation |
+| **Successor** | 006-description-enrichment |
+| **Handoff Criteria** | validate.sh + test suite passing |
 | **R-Item** | R-05 |
 | **Sequence** | C1 |
 <!-- /ANCHOR:metadata -->
@@ -88,6 +94,7 @@ Replace the single blended confidence with dual fields (`CHOICE_CONFIDENCE` and 
 |----|-------------|---------------------|
 | REQ-003 | Decision tree generator uses dual confidence for richer visualization | Tree nodes show split confidence when both values differ by more than 0.1 |
 | REQ-004 | Template renderers display both confidence values when available | Rendered output includes choice and rationale confidence labels for decisions that have them |
+| REQ-005 | Phase status remains synchronized with open checklist and task-state outcomes | Spec metadata status and checklist/task completion state do not conflict |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -97,6 +104,13 @@ Replace the single blended confidence with dual fields (`CHOICE_CONFIDENCE` and 
 
 - **SC-001**: Decisions with strong choice but weak rationale show appropriately split confidence -- e.g., CHOICE_CONFIDENCE=0.85 / RATIONALE_CONFIDENCE=0.45 produces legacy CONFIDENCE=0.45
 - **SC-002**: All existing consumers continue to work via the derived `CONFIDENCE` field with no behavioral regression
+
+### Acceptance Scenarios
+
+1. **Given** a decision with divergent confidence dimensions, **when** rendered output is generated, **then** both choice and rationale confidence values are displayed.
+2. **Given** legacy consumers that read `CONFIDENCE`, **when** dual fields are present, **then** legacy value remains conservative via `Math.min(...)`.
+3. **Given** simulation and fixture decision data, **when** type and render paths execute, **then** dual fields remain within `0.0-1.0` and compile cleanly.
+4. **Given** open checklist or task-state items, **when** spec status is reviewed, **then** metadata status reflects the current review/incomplete state.
 <!-- /ANCHOR:success-criteria -->
 
 ---

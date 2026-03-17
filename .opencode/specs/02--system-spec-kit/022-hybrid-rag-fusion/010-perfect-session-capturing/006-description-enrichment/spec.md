@@ -1,5 +1,6 @@
 ---
 title: "Feature Specification: Description Enrichment"
+description: "Improve description fidelity and enrichment quality for spec folder descriptions."
 ---
 # Feature Specification: Description Enrichment
 
@@ -18,7 +19,12 @@ title: "Feature Specification: Description Enrichment"
 | **Status** | Complete |
 | **Created** | 2026-03-16 |
 | **Branch** | `main` |
-| **Parent** | [010-perfect-session-capturing](../spec.md) |
+| **Parent Spec** | ../spec.md |
+| **Parent Plan** | ../plan.md |
+| **Phase** | 6 of 16 |
+| **Predecessor** | 005-confidence-calibration |
+| **Successor** | 007-phase-classification |
+| **Handoff Criteria** | validate.sh + test suite passing |
 | **R-Item** | R-06 |
 | **Sequence** | A1 |
 <!-- /ANCHOR:metadata -->
@@ -86,6 +92,7 @@ Unify the two description validators into a single shared gate with tiered outco
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
 | REQ-003 | `MODIFICATION_MAGNITUDE` field derived from `changeScores` + action + commit-touch counts: trivial / small / medium / large / unknown | Field is populated for all git-derived file entries; non-git entries default to `unknown` |
+| REQ-005 | Checklist evidence formatting remains parser-compatible for completed verification items | Completed checklist entries include explicit parsable evidence markers recognized by validation |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -95,6 +102,13 @@ Unify the two description validators into a single shared gate with tiered outco
 
 - **SC-001**: No description passes quality check in one validator but fails in the other -- a single code path handles all description validation
 - **SC-002**: `MODIFICATION_MAGNITUDE` is populated for git-derived file entries with values derived from existing `changeScores` data
+
+### Acceptance Scenarios
+
+1. **Given** the same description string at extraction and scoring stages, **when** validation runs, **then** both stages resolve the same tier from one shared validator.
+2. **Given** placeholder or stub description text (for example TODO/TBD/Recent commit), **when** validation runs, **then** it is classified as placeholder-tier and handled consistently.
+3. **Given** git-derived file metadata with change scores, **when** magnitude is derived, **then** `MODIFICATION_MAGNITUDE` is set using the configured thresholds.
+4. **Given** completed checklist entries in this phase, **when** validation scans evidence formatting, **then** entries provide parser-compatible evidence markers.
 <!-- /ANCHOR:success-criteria -->
 
 ---

@@ -25,7 +25,7 @@ describe('/memory:learn command docs', () => {
     const docPaths = [
       '.opencode/command/README.txt',
       '.opencode/command/memory/README.txt',
-      '.opencode/command/memory/context.md',
+      '.opencode/command/memory/analyze.md',
       '.opencode/command/spec_kit/debug.md',
       '.opencode/command/spec_kit/complete.md',
       'README.md',

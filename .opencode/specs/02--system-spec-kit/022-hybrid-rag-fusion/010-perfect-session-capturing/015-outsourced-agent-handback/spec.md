@@ -22,7 +22,12 @@ contextType: "general"
 | **Status** | Complete |
 | **Created** | 2026-03-11 |
 | **Completed** | 2026-03-16 |
-| **Parent** | 010-perfect-session-capturing |
+| **Parent Spec** | ../spec.md |
+| **Parent Plan** | ../plan.md |
+| **Phase** | 15 of 16 |
+| **Predecessor** | 014-spec-descriptions |
+| **Successor** | 016-multi-cli-parity |
+| **Handoff Criteria** | validate.sh + test suite passing |
 | **R-Item** | R-15 |
 | **Sequence** | B5 (after 011) |
 | **Origin** | Evolved from `022-hybrid-rag-fusion/013-outsourced-agent-memory/` |

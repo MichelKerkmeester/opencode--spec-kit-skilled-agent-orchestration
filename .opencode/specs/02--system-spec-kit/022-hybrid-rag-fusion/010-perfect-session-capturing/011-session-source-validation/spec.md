@@ -1,5 +1,6 @@
 ---
 title: "Feature Specification: Session Source Validation"
+description: "Validate native session-source capture behavior across all 5 CLIs."
 ---
 # Feature Specification: Session Source Validation
 
@@ -15,10 +16,15 @@ title: "Feature Specification: Session Source Validation"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | Implemented |
+| **Status** | In Progress |
 | **Created** | 2026-03-16 |
 | **Branch** | `main` |
-| **Parent** | [010-perfect-session-capturing](../spec.md) |
+| **Parent Spec** | ../spec.md |
+| **Parent Plan** | ../plan.md |
+| **Phase** | 11 of 16 |
+| **Predecessor** | 010-integration-testing |
+| **Successor** | 012-template-compliance |
+| **Handoff Criteria** | validate.sh + test suite passing |
 | **R-Item** | R-11 |
 | **Sequence** | A0.1-A0.5 |
 <!-- /ANCHOR:metadata -->
@@ -100,9 +106,10 @@ Fix transcript resolution to use session-ID-first selection instead of mtime-bas
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: Wrong-session transcript rejected before downstream processing -- mtime-based selection no longer outranks session-ID-based selection
-- **SC-002**: Contamination produces measurable quality score reduction -- contaminated memories score at least 0.25 lower
-- **SC-003**: File count reflects filesystem truth, not transcript-derived approximation -- `filesystem_file_count` is independently computed and used for V10 validation
+- **SC-001**: **Given** session hints or active-session metadata, **Then** wrong-session transcripts are rejected before downstream processing and mtime does not outrank session identity.
+- **SC-002**: **Given** contamination on a candidate memory, **Then** quality scoring applies a measurable penalty and enforces the configured cap.
+- **SC-003**: **Given** captured and filesystem-derived file counts, **Then** `filesystem_file_count` serves as truth input for V10 divergence validation.
+- **SC-004**: **Given** trigger phrase extraction inputs, **Then** synthetic descriptions and raw file-path artifacts are excluded from trigger generation.
 <!-- /ANCHOR:success-criteria -->
 
 ---

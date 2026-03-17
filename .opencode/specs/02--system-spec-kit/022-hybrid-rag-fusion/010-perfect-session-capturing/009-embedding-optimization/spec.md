@@ -1,5 +1,6 @@
 ---
 title: "Feature Specification: Embedding Optimization"
+description: "Optimize embedding workload and retrieval preparation for memory indexing."
 ---
 # Feature Specification: Embedding Optimization
 
@@ -19,7 +20,12 @@ title: "Feature Specification: Embedding Optimization"
 | **Created** | 2026-03-16 |
 | **Completed** | 2026-03-16 |
 | **Branch** | `main` |
-| **Parent** | [010-perfect-session-capturing](../spec.md) |
+| **Parent Spec** | ../spec.md |
+| **Parent Plan** | ../plan.md |
+| **Phase** | 9 of 16 |
+| **Predecessor** | 008-signal-extraction |
+| **Successor** | 010-integration-testing |
+| **Handoff Criteria** | validate.sh + test suite passing |
 | **R-Item** | R-09 |
 | **Sequence** | B3 |
 <!-- /ANCHOR:metadata -->
@@ -97,9 +103,10 @@ Add one shared weighted document-text builder and use it on the scripts indexer 
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: Weighted helper coverage proves correct multipliers, section order, empty-section handling, and truncation priority.
-- **SC-002**: Scripts indexing and MCP `memory_save` both call `generateDocumentEmbedding()` with weighted document text rather than raw markdown.
-- **SC-003**: A deterministic ranking fixture shows a decision-focused query scores the decision-rich memory above a general memory when weighting is applied.
+- **SC-001**: **Given** a weighted payload with title, decisions, outcomes, and general content, **Then** helper coverage proves correct multipliers, ordering, empty-section handling, and truncation priority.
+- **SC-002**: **Given** scripts indexing and MCP `memory_save` flows, **Then** both call `generateDocumentEmbedding()` with weighted document text instead of raw markdown.
+- **SC-003**: **Given** a decision-focused query fixture, **Then** the decision-rich memory ranks above a general memory when weighting is applied.
+- **SC-004**: **Given** retrieval-time decay behavior in the searcher, **Then** this phase leaves decay ownership unchanged while improving embedding input quality.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -124,31 +131,3 @@ Add one shared weighted document-text builder and use it on the scripts indexer 
 <!-- /ANCHOR:questions -->
 
 ---
-
-<!-- ANCHOR:acceptance-scenarios -->
-## 8. ACCEPTANCE SCENARIOS
-
-### Scenario 1: Scripts indexer prefers weighted document input
-
-- **Given** an implementation summary with explicit decisions and outcomes plus the source markdown body
-- **When** the scripts workflow prepares a memory for indexing
-- **Then** it builds weighted sections and calls `generateDocumentEmbedding()` with weighted document text instead of raw markdown
-
-### Scenario 2: Weighted helper preserves high-value content under truncation
-
-- **Given** weighted sections whose repeated content exceeds `MAX_TEXT_LENGTH`
-- **When** `buildWeightedDocumentText()` caps the payload
-- **Then** it trims on word boundaries and removes content in the order general, then outcomes, then decisions
-
-### Scenario 3: MCP save path uses the shared weighting contract
-
-- **Given** a parsed memory containing title, decision, outcome, and general sections
-- **When** `memory_save` generates the document embedding
-- **Then** the save pipeline builds the same weighted payload contract and passes it to `generateDocumentEmbedding()`
-
-### Scenario 4: Decision-focused queries benefit from weighting
-
-- **Given** two comparable memories where one contains stronger decision coverage than the other
-- **When** a deterministic ranking fixture evaluates a decision-focused query
-- **Then** the decision-rich memory ranks above the general memory after weighting is applied
-<!-- /ANCHOR:acceptance-scenarios -->

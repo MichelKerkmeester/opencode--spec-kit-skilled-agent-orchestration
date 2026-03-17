@@ -1,5 +1,14 @@
 ---
-title: "Implementation Plan: Perfect Session Capturing"
+title: "Implementation Plan: Perfect Session Capturing [template:level_3/plan.md]"
+description: "Root-only documentation remediation to strict Level 3 template compliance with refreshed March 17, 2026 verification evidence."
+trigger_phrases:
+  - "implementation plan"
+  - "spec 010 root docs"
+  - "template compliance"
+  - "verification refresh"
+  - "cross cli proof"
+importance_tier: "normal"
+contextType: "general"
 ---
 # Implementation Plan: Perfect Session Capturing
 
@@ -9,215 +18,278 @@ title: "Implementation Plan: Perfect Session Capturing"
 ---
 
 <!-- ANCHOR:summary -->
-## 1. Summary
+## 1. SUMMARY
 
 ### Technical Context
 
 | Aspect | Value |
 |--------|-------|
-| Language/Stack | TypeScript, Node.js |
-| Framework | Custom `generate-context.js` pipeline plus MCP `memory_save` |
-| Storage | Filesystem spec folders plus memory indexing pipeline |
-| Testing | Vitest plus direct Node.js verification suites |
+| **Language/Stack** | Markdown documentation, shell validation commands |
+| **Framework** | system-spec-kit Level 3 template validation |
+| **Storage** | Spec folder markdown under `.opencode/specs/.../010-perfect-session-capturing` |
+| **Testing** | `validate.sh`, `check-completion.sh`, scripts and MCP verification lanes |
 
 ### Overview
-
-This pass closes the remaining durability gap in spec `010` by adding one cross-platform semantic sufficiency contract after normalization and before storage, and fixes two rendering bugs that degraded output quality:
-
-1. Keep `.opencode` as the canonical workspace identity for native capture.
-2. Keep target-spec affinity as a separate gate after workspace discovery.
-3. Add one shared semantic sufficiency evaluator for all save surfaces.
-4. Reject thin, metadata-only, or single-prompt memories with `INSUFFICIENT_CONTEXT_ABORT`.
-5. Apply the same rule to native capture, explicit JSON input, and MCP `memory_save`.
-6. Refresh the feature catalog and manual playbook so operators can verify both `generate-context.js` and `memory_save` accurately.
-7. Fix the post-render HTML comment stripper so ANCHOR tags survive template rendering.
-8. Replace hardcoded frontmatter trigger_phrases with a shared rendered YAML block so frontmatter and trailing metadata stay in sync without leaking raw Mustache tags.
+This work rewrites the six root markdown files onto exact v2.2 Level 3 templates and aligns every root claim to fresh March 17, 2026 evidence. It preserves runtime behavior contracts while repairing root compliance blockers, checklist evidence formatting, and cross-CLI proof language.
 <!-- /ANCHOR:summary -->
 
 ---
 
 <!-- ANCHOR:quality-gates -->
-## 2. Quality Gates
+## 2. QUALITY GATES
 
-### Definition Of Ready
+### Definition of Ready
+- [x] Root file ownership limited to six assigned markdown files.
+- [x] Level 3 template source files reviewed before rewriting.
+- [x] Fresh authoritative verification outputs available for root evidence refresh.
 
-- [x] The governing spec folder stayed `010-perfect-session-capturing`.
-- [x] The user confirmed `.opencode` is the canonical workspace identity contract.
-- [x] Existing matcher, validation, and manual-doc drift were inspected before editing.
-
-### Definition Of Done
-
-- [x] Native capture still matches through canonical workspace identity.
-- [x] Stateless validation no longer false-fails on tool-rich sparse-file captures.
-- [x] Under-evidenced saves now hard-fail with `INSUFFICIENT_CONTEXT_ABORT`.
-- [x] `memory_save` dry-run surfaces insufficiency explicitly without writes.
-- [x] `force:true` does not bypass insufficiency.
-- [x] Scripts `check`/build, the expanded targeted scripts suite, JS verification from `scripts/tests`, package-wide MCP lint/build/test, targeted MCP tests, alignment drift, and spec validation all pass.
-- [x] Canonical docs and manual scenarios reflect the final shipped contract.
+### Definition of Done
+- [x] Root docs match required template headers, anchors, and ordering.
+- [x] `implementation-summary.md` exists and is populated.
+- [x] Root checklist completed items include valid priority and evidence context.
+- [x] Broken research link prefix fixed to `research/research-pipeline-improvements.md`.
+- [x] Root validation and completion checks no longer block on root markdown drift.
 <!-- /ANCHOR:quality-gates -->
 
 ---
 
+**AI EXECUTION PROTOCOL**
+
+### Pre-Task Checklist
+- [x] Root scope confirmed before edits.
+- [x] Active Level 3 templates read before rewriting.
+- [x] Fresh verification evidence captured before publishing completion language.
+
+### Execution Rules
+
+| Rule | Requirement |
+|------|-------------|
+| Scope Lock | Edit only the root markdown set and the minimal child phase-link metadata needed for recursive validation |
+| Evidence First | Refresh command counts and live-proof language from current local reruns only |
+| Boundary Safety | Do not change runtime loader order, JSON authority, or `memory_save` `dryRun` and `force` behavior |
+| Completion | Do not claim closure until validation, completion, and targeted test lanes are rerun |
+
+### Status Reporting Format
+
+`STEP [N]: [status] -> [artifact/result]`
+
+### Blocked Task Protocol
+1. Stop at the first validator or test blocker that changes completion truth.
+2. Record the exact file or lane that failed and the evidence gathered.
+3. Patch only the minimum scope needed to restore truthful completion.
+
+---
+
 <!-- ANCHOR:architecture -->
-## 3. Architecture
+## 3. ARCHITECTURE
 
 ### Pattern
-
-JSON authority with additive stateless native fallbacks, fronted by canonical `.opencode` workspace identity normalization and followed by one shared semantic sufficiency gate before storage.
+Template-first documentation remediation with evidence-first claim updates.
 
 ### Key Components
-
-- `scripts/utils/workspace-identity.ts`: shared canonical workspace identity helper.
-- `scripts/utils/spec-affinity.ts`: shared target-spec alignment helper.
-- `shared/parsing/memory-sufficiency.ts`: shared semantic sufficiency evaluator.
-- Native extractors:
-  - `opencode-capture.ts`
-  - `claude-code-capture.ts`
-  - `codex-cli-capture.ts`
-  - `copilot-cli-capture.ts`
-  - `gemini-cli-capture.ts`
-- `input-normalizer.ts`: safe prompt/context fallback and native tool-evidence shaping.
-- `workflow.ts`: stateless alignment, sufficiency, and quality enforcement before write/index.
-- `mcp_server/handlers/memory-save.ts`: dry-run, quality-loop, sufficiency, and persistence orchestration.
+- **Level 3 templates**: Structural source of truth for required headers and anchors.
+- **Root markdown set**: `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`.
+- **Validation stack**: `validate.sh` and `check-completion.sh`.
+- **Evidence stack**: scripts and MCP lanes rerun on 2026-03-17.
 
 ### Data Flow
-
-`JSON input -> OpenCode -> Claude -> Codex -> Copilot -> Gemini -> NO_DATA_AVAILABLE -> normalization -> stateless enrichment -> alignment and contamination checks -> sufficiency gate -> quality threshold -> memory write/index flow`
-
-`memory_save -> parse/validate -> quality loop -> sufficiency gate -> dedup / embedding / persistence`
+Template review -> root markdown rewrite -> evidence refresh -> root validation -> root completion check -> publish closure language.
 <!-- /ANCHOR:architecture -->
 
 ---
 
 <!-- ANCHOR:phases -->
-## 4. Execution Phases
+## 4. IMPLEMENTATION PHASES
 
-### Phase 1: Shared Sufficiency Contract
+### Phase 1: Setup
+- [x] Read active Level 3 templates.
+- [x] Collect current verification evidence.
+- [x] Confirm root-only scope boundaries.
 
-- Add a shared evaluator that can judge whether a normalized memory has enough durable evidence to stand alone later.
-- Keep the evaluator backend-agnostic so every save surface uses the same rule.
+### Phase 2: Core Implementation
+- [x] Rewrite `spec.md` to exact template structure and anchors.
+- [x] Rewrite `plan.md`, `tasks.md`, `checklist.md`, and `decision-record.md` to exact template structure.
+- [x] Create `implementation-summary.md`.
 
-### Phase 2: Save-Path Integration
-
-- Apply the shared sufficiency evaluator in `workflow.ts` for native and JSON save paths.
-- Apply the same evaluator in `memory-save.ts` after the quality loop and before persistence.
-- Keep `ALIGNMENT_BLOCK`, contamination blocking, and the existing quality-gate semantics distinct.
-
-### Phase 3: Regression Coverage
-
-- Add focused unit coverage for the evaluator contract.
-- Expand workflow save-path coverage for thin explicit JSON rejection.
-- Expand MCP save tests for dry-run and forced-save insufficiency handling.
-
-### Phase 4: Rendering Quality Fixes
-
-- Fix `WORKFLOW_HTML_COMMENT_RE` in `workflow.ts` to use a negative lookahead that preserves ANCHOR comment tags while still stripping all other HTML comments.
-- Replace hardcoded frontmatter `trigger_phrases` in the `context_template` with a workflow-rendered `TRIGGER_PHRASES_YAML` block shared by both frontmatter and trailing metadata.
-
-### Phase 5: Canonical Docs And Verification
-
-- Rewrite spec `010` docs to the workspace-identity plus insufficiency contract.
-- Update `NEW-139`, the memory-quality catalog entries, `M-007`, and `NEW-133`.
-- Rerun the requested verification stack and record exact results, including package-clean MCP lint/build/test evidence.
-
-### Phase 6: Content Generation Quality
-
-Improve the template population pipeline to produce higher-quality memory files:
-
-- Eliminate decision duplication (compact + ASCII tree rendered twice) in `diagram-extractor.ts`.
-- Word-boundary-aware string truncation in `file-helpers.ts` and `decision-extractor.ts`.
-- Accurate session state detection for JSON-mode saves in `collect-session-data.ts`.
-- Trigger phrase quality filtering (domain stopwords for single-word folder tokens) in `workflow.ts`.
-- Semantic summary extraction from messages containing file paths regardless of classification in `semantic-summarizer.ts`.
-- Quality gate medium-quality warning banner (30-60 score range) in `workflow.ts`.
-- Tree thinning description generation (replace "description pending" with file-based descriptions) in `tree-thinning.ts`.
-- File classification improvements (agent file detection, narrower React context pattern) in `implementation-guide-extractor.ts`.
-- Speckit-enforce backend refinements: unrecognized rule warnings, YAML comment handling, mode validation, date format checks, and bullet-metadata level detection.
+### Phase 3: Verification
+- [x] Rerun key evidence lanes and refresh counts/dates.
+- [x] Run root validator and root completion checks.
+- [x] Confirm cross-CLI proof text clearly separates fixture and live evidence.
 <!-- /ANCHOR:phases -->
 
 ---
 
 <!-- ANCHOR:testing -->
-## 5. Testing Strategy
+## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Unit | Workspace identity, spec affinity, and semantic sufficiency | Vitest |
-| Integration | Loader precedence, stateless transform, render-path validation, and MCP save handling | Vitest plus `node` suites |
-| Standards | Build, lint, alignment drift, and spec validation | `tsc`, alignment script, `spec/validate.sh` |
-| Manual | `M-007` for `generate-context.js` and `NEW-133` for `memory_save` sufficiency/dry-run behavior | `generate-context.js`, `memory_save`, and playbook scenarios |
+| Unit/Targeted | Session-capture scripts lanes | Vitest, Node test suites |
+| Integration | MCP save-path targeted lanes | Vitest |
+| Specialized | Hydra/docs and file watcher lanes | Vitest |
+| Manual/Documentation | Root template and completion compliance | `validate.sh`, `check-completion.sh` |
 <!-- /ANCHOR:testing -->
 
 ---
 
-<!-- ANCHOR:verification -->
-## 6. Verification Plan
-
-| Command | Status | Result |
-|---------|--------|--------|
-| `cd .opencode/skill/system-spec-kit/scripts && npm run check` | Complete | Passed |
-| `cd .opencode/skill/system-spec-kit/scripts && npm run build` | Complete | Passed |
-| `cd .opencode/skill/system-spec-kit/scripts && npm test -- --run tests/spec-affinity.vitest.ts tests/claude-code-capture.vitest.ts tests/codex-cli-capture.vitest.ts tests/copilot-cli-capture.vitest.ts tests/gemini-cli-capture.vitest.ts tests/quality-scorer-calibration.vitest.ts tests/runtime-memory-inputs.vitest.ts tests/stateless-enrichment.vitest.ts tests/task-enrichment.vitest.ts tests/memory-render-fixture.vitest.ts tests/generate-context-cli-authority.vitest.ts tests/memory-sufficiency.vitest.ts tests/memory-template-contract.vitest.ts tests/historical-memory-remediation.vitest.ts` | Complete | `14` files, `127` tests passed |
-| `cd .opencode/skill/system-spec-kit/scripts/tests && node test-extractors-loaders.js` | Complete | `288` passed, `0` failed, `0` skipped |
-| `cd .opencode/skill/system-spec-kit/scripts/tests && node test-bug-fixes.js` | Complete | `27` passed, `0` failed, `0` skipped |
-| `cd .opencode/skill/system-spec-kit/scripts/tests && node test-integration.js` | Complete | `36` passed, `0` failed, `0` skipped |
-| `cd .opencode/skill/system-spec-kit/scripts/tests && node test-memory-quality-lane.js` | Complete | PASS |
-| `cd .opencode/skill/system-spec-kit/mcp_server && npm run lint` | Complete | Passed |
-| `cd .opencode/skill/system-spec-kit/mcp_server && npm run build` | Complete | Passed |
-| `cd .opencode/skill/system-spec-kit/mcp_server && npm run test:core -- tests/handler-memory-save.vitest.ts tests/recovery-hints.vitest.ts tests/quality-loop.vitest.ts tests/save-quality-gate.vitest.ts tests/preflight.vitest.ts tests/integration-save-pipeline.vitest.ts` | Complete | `6` files, `298` tests passed |
-| `cd .opencode/skill/system-spec-kit/mcp_server && npm run test` | Complete | Passed |
-| `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit/scripts` | Complete | PASS, `229` files scanned, `0` findings |
-| `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing` | Complete | Passed cleanly with `0` errors and `0` warnings |
-<!-- /ANCHOR:verification -->
-
-Scratch audit artifacts in `scratch/` remain useful historical research, but they are not authoritative closure evidence. Canonical completion evidence for this spec lives in this markdown set plus the recorded rerun commands above.
-
----
-
 <!-- ANCHOR:dependencies -->
-## 7. Dependencies
+## 6. DEPENDENCIES
 
-| Dependency | Type | Status | Impact If Blocked |
+| Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| Local CLI artifact layouts | Internal runtime dependency | Green | Identity matching could not be proved across backends |
-| Existing stateless enrichment pipeline | Internal code dependency | Green | Validation and render behavior depend on the shared downstream path |
-| MCP save handler flow | Internal code dependency | Green | Dry-run and persistence behavior depend on shared insufficiency evaluation |
-| `sk-code--opencode` alignment rules | Tooling dependency | Green | New utility/test files must conform to repo standards |
-| Spec validator expectations | Tooling dependency | Green | Final doc rewrite must remain Level 3 and validation-clean |
+| `.opencode/skill/system-spec-kit/templates/level_3` | Internal | Green | Root docs cannot be rewritten to canonical structure |
+| scripts verification lanes | Internal | Green | Evidence claims would be stale or unverifiable |
+| MCP targeted lanes (`core`, Hydra/docs, file-watcher) | Internal | Green | Cross-surface proof would be incomplete |
+| Root validator/completion scripts | Internal | Green | Cannot certify root compliance closure |
 <!-- /ANCHOR:dependencies -->
 
 ---
 
 <!-- ANCHOR:rollback -->
-## 8. Rollback Plan
+## 7. ROLLBACK PLAN
 
-- Trigger: workspace-equivalence logic matches the wrong backend artifact, or the sufficiency gate rejects clearly good memories.
-- Procedure: isolate the failing gate, revert the affected matcher or sufficiency integration path, rerun the focused parser/save regressions, and keep JSON authority unchanged throughout.
+- **Trigger**: Root validation/check-completion regression after markdown rewrite.
+- **Procedure**: Restore prior root markdown revisions, re-apply template-first rewrite, rerun root checks, and republish evidence from passing outputs only.
 <!-- /ANCHOR:rollback -->
 
 ---
 
-## 9. Dependency Graph
-
-`workspace identity helper` -> `spec-affinity gate` -> `shared sufficiency evaluator` -> `workflow integration` -> `memory_save integration` -> `targeted regressions` -> `canonical docs` -> `spec validation`
 
 ---
 
-## 10. Critical Path
+<!-- ANCHOR:phase-deps -->
+## L2: PHASE DEPENDENCIES
 
-1. Keep canonical `.opencode` workspace identity normalization intact.
-2. Add shared semantic sufficiency evaluation.
-3. Apply the new gate in both `generate-context.js` and `memory_save`.
-4. Prove the fixes with focused regressions and the full verification stack.
-5. Refresh canonical docs and pass final validation.
+```
+Phase 1 (Setup) ──────┐
+                      ├──► Phase 2 (Core) ──► Phase 3 (Verify)
+Phase 1.5 (Evidence) ─┘
+```
+
+| Phase | Depends On | Blocks |
+|-------|------------|--------|
+| Setup | None | Core, Evidence |
+| Evidence | Setup | Core, Verify |
+| Core | Setup, Evidence | Verify |
+| Verify | Core | None |
+<!-- /ANCHOR:phase-deps -->
 
 ---
 
-## 11. Milestones
+<!-- ANCHOR:effort -->
+## L2: EFFORT ESTIMATION
 
-| Milestone | Success Criteria |
-|-----------|------------------|
-| M1 | Shared sufficiency evaluator compiles and exposes the explicit rejection contract |
-| M2 | Workflow and MCP save paths both hard-block insufficient memories |
-| M3 | Targeted scripts and MCP verification stacks pass |
-| M4 | Canonical docs validate cleanly and reflect the final cross-platform contract |
+| Phase | Complexity | Estimated Effort |
+|-------|------------|------------------|
+| Setup | Low | 30-60 minutes |
+| Core Implementation | Medium | 2-3 hours |
+| Verification | Medium | 1-2 hours |
+| **Total** | | **3.5-6 hours** |
+<!-- /ANCHOR:effort -->
+
+---
+
+<!-- ANCHOR:enhanced-rollback -->
+## L2: ENHANCED ROLLBACK
+
+### Pre-deployment Checklist
+- [x] Root-only file scope confirmed.
+- [x] Current evidence captured from rerun outputs.
+- [x] Template source reviewed before edits.
+
+### Rollback Procedure
+1. Revert only the six root markdown files.
+2. Re-run root validation and completion checks.
+3. Re-apply template-compliant rewrite with corrected sections.
+4. Re-verify and republish.
+
+### Data Reversal
+- **Has data migrations?** No
+- **Reversal procedure**: N/A
+<!-- /ANCHOR:enhanced-rollback -->
+
+---
+
+
+---
+
+<!-- ANCHOR:dependency-graph -->
+## L3: DEPENDENCY GRAPH
+
+```
+┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+│   Phase 1   │────►│   Phase 2   │────►│   Phase 3   │
+│   Setup     │     │    Core     │     │   Verify    │
+└─────────────┘     └──────┬──────┘     └─────────────┘
+                          │
+                    ┌─────▼─────┐
+                    │ Evidence  │
+                    │  Refresh  │
+                    └───────────┘
+```
+
+### Dependency Matrix
+
+| Component | Depends On | Produces | Blocks |
+|-----------|------------|----------|--------|
+| Template mapping | None | Required header/anchor map | Rewrite |
+| Root rewrite | Template mapping, evidence capture | Template-compliant root docs | Validation |
+| Validation/completion checks | Root rewrite | Compliance confirmation | Final closure |
+| Evidence publication | Validation/completion checks | Accurate completion language | None |
+<!-- /ANCHOR:dependency-graph -->
+
+---
+
+<!-- ANCHOR:critical-path -->
+## L3: CRITICAL PATH
+
+1. **Refresh evidence commands and counts** - 60-90 min - CRITICAL
+2. **Rewrite all six root markdown files to template** - 90-150 min - CRITICAL
+3. **Run root validation and completion checks** - 20-45 min - CRITICAL
+
+**Total Critical Path**: 2.8-4.8 hours
+
+**Parallel Opportunities**:
+- scripts and MCP evidence lanes can run in parallel.
+- root file drafting can proceed while non-root suites execute.
+<!-- /ANCHOR:critical-path -->
+
+---
+
+<!-- ANCHOR:milestones -->
+## L3: MILESTONES
+
+| Milestone | Description | Success Criteria | Target |
+|-----------|-------------|------------------|--------|
+| M1 | Evidence refresh complete | Current counts/dates captured (2026-03-17) | Phase 1 |
+| M2 | Root rewrite complete | All six root docs on Level 3 template structure | Phase 2 |
+| M3 | Root compliance closure | Root validation and completion checks pass | Phase 3 |
+<!-- /ANCHOR:milestones -->
+
+---
+
+## L3: ARCHITECTURE DECISION RECORD
+
+### ADR-001: Root Docs Must Track Verifiable Evidence Only
+
+**Status**: Accepted
+
+**Context**: Prior root docs failed template checks and included stale or over-broad claims.
+
+**Decision**: Publish only rerunnable, dated evidence and keep fixture/live CLI proof explicitly separated.
+
+**Consequences**:
+- Improved trust in closure claims.
+- Slightly higher maintenance burden to rerun and refresh evidence.
+
+**Alternatives Rejected**:
+- Continue with historic counts and inferred parity claims: rejected due verification risk.
+
+---
+
+<!--
+LEVEL 3 PLAN (~200 lines)
+- Core + L2 + L3 addendums
+- Dependency graphs, milestones
+- Architecture decision records
+-->

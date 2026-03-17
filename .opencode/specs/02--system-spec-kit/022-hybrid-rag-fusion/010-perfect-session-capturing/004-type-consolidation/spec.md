@@ -1,5 +1,6 @@
 ---
 title: "Feature Specification: Type Consolidation"
+description: "Consolidate canonical shared types (FileChange, DecisionRecord, etc.) across the pipeline."
 ---
 # Feature Specification: Type Consolidation
 
@@ -18,7 +19,12 @@ title: "Feature Specification: Type Consolidation"
 | **Status** | Draft |
 | **Created** | 2026-03-16 |
 | **Branch** | `main` |
-| **Parent** | [010-perfect-session-capturing](../spec.md) |
+| **Parent Spec** | ../spec.md |
+| **Parent Plan** | ../plan.md |
+| **Phase** | 4 of 16 |
+| **Predecessor** | 003-data-fidelity |
+| **Successor** | 005-confidence-calibration |
+| **Handoff Criteria** | validate.sh + test suite passing |
 | **R-Item** | R-04 |
 | **Sequence** | A1 |
 <!-- /ANCHOR:metadata -->
@@ -102,6 +108,13 @@ Move `FileChange`, `ObservationDetailed`, `ToolCounts`, and `SpecFileEntry` into
 
 - **SC-001**: TypeScript compilation catches field access errors that were previously masked by the `[key: string]: unknown` index signature
 - **SC-002**: No extractor file owns types that should be canonical -- all 4 leaked types live in `session-types.ts`
+
+### Acceptance Scenarios
+
+1. **Given** canonical type definitions are centralized, **when** extractor files import core shapes, **then** they import from `session-types.ts` instead of local type ownership.
+2. **Given** `PhaseEntry` construction paths, **when** type checking runs, **then** `ACTIVITIES` is required and missing values are surfaced.
+3. **Given** `SessionData` field usage outside declared keys, **when** index-signature removal is complete, **then** undeclared accesses fail type checking until modeled explicitly.
+4. **Given** subset data interfaces in extractor modules, **when** consolidation is applied, **then** subsets derive from canonical types via `Pick`/`Omit` without redeclaration drift.
 <!-- /ANCHOR:success-criteria -->
 
 ---

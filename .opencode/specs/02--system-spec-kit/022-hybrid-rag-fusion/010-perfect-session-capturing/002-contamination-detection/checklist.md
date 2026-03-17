@@ -30,8 +30,6 @@ title: "Verification Checklist: Contamination Detection [template:level_2/checkl
 
 ---
 
-## P0
-
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
@@ -60,8 +58,6 @@ title: "Verification Checklist: Contamination Detection [template:level_2/checkl
 <!-- /ANCHOR:testing -->
 
 ---
-
-## P1
 
 <!-- ANCHOR:security -->
 ## Security

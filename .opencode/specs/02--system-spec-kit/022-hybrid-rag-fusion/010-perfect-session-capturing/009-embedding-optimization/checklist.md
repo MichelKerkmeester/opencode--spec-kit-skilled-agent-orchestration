@@ -30,22 +30,6 @@ title: "Verification Checklist: Embedding Optimization [template:level_2/checkli
 
 ---
 
-<!-- ANCHOR:p0 -->
-## P0
-
-- [x] Required P0 verification items are complete [Evidence: CHK-001, CHK-002, CHK-010, CHK-011, CHK-020, and CHK-021 are all verified below.]
-<!-- /ANCHOR:p0 -->
-
----
-
-<!-- ANCHOR:p1 -->
-## P1
-
-- [x] Required P1 verification items are complete [Evidence: CHK-003, CHK-012, CHK-013, CHK-014, CHK-022, CHK-023, CHK-024, CHK-040, CHK-050, and CHK-051 are all verified below.]
-<!-- /ANCHOR:p1 -->
-
----
-
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 

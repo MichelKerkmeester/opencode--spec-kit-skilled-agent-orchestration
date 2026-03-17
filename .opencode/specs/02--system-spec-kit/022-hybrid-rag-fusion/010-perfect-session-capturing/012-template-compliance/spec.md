@@ -24,7 +24,12 @@ contextType: "general"
 | **Status** | Complete |
 | **Created** | 2026-03-16 |
 | **Branch** | `main` |
-| **Parent** | [010-perfect-session-capturing](../spec.md) |
+| **Parent Spec** | ../spec.md |
+| **Parent Plan** | ../plan.md |
+| **Phase** | 12 of 16 |
+| **Predecessor** | 011-session-source-validation |
+| **Successor** | 013-auto-detection-fixes |
+| **Handoff Criteria** | validate.sh + test suite passing |
 | **R-Item** | R-12 follow-up |
 | **Sequence** | 012 |
 <!-- /ANCHOR:metadata -->

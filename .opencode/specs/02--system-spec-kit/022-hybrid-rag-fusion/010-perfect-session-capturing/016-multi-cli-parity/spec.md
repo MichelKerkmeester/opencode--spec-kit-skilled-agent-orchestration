@@ -26,7 +26,12 @@ contextType: "general"
 | **Status** | Complete |
 | **Created** | 2026-03-16 |
 | **Branch** | `016-multi-cli-parity` |
-| **Parent** | `010-perfect-session-capturing` |
+| **Parent Spec** | ../spec.md |
+| **Parent Plan** | ../plan.md |
+| **Phase** | 16 of 16 |
+| **Predecessor** | 015-outsourced-agent-handback |
+| **Successor** | None (final phase) |
+| **Handoff Criteria** | validate.sh + test suite passing |
 | **R-Item** | R-16 |
 <!-- /ANCHOR:metadata -->
 
@@ -109,7 +114,7 @@ Prove the shipped multi-CLI parity behavior with direct regression tests and rec
 ---
 
 <!-- ANCHOR:nfr -->
-## Non-Functional Requirements
+## L2: NON-FUNCTIONAL REQUIREMENTS
 
 N/A — This phase adds regression tests and documentation only. No new runtime performance, scalability, or availability requirements apply.
 <!-- /ANCHOR:nfr -->
@@ -117,7 +122,7 @@ N/A — This phase adds regression tests and documentation only. No new runtime 
 ---
 
 <!-- ANCHOR:edge-cases -->
-## Edge Cases
+## L2: EDGE CASES
 
 N/A — Edge case handling is covered by the test assertions themselves (empty XML wrappers, low-signal exchanges, empty next-steps arrays).
 <!-- /ANCHOR:edge-cases -->
@@ -125,7 +130,7 @@ N/A — Edge case handling is covered by the test assertions themselves (empty X
 ---
 
 <!-- ANCHOR:complexity -->
-## Complexity Assessment
+## L2: COMPLEXITY ASSESSMENT
 
 | Dimension | Rating | Rationale |
 |-----------|--------|-----------|

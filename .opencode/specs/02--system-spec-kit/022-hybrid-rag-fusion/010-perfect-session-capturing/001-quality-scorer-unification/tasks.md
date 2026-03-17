@@ -24,7 +24,7 @@ title: "Tasks: Quality Scorer Unification [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Setup — Shared Interface
+## Phase 1: Setup
 
 - [x] T001 Define `QualityScoreResult` interface with `score01`, `score100`, `hadContamination`, `insufficiency`, `dimensions[]`, and typed flags (`scripts/core/quality-scorer.ts`) — REQ-001
 - [x] T002 [P] Ensure V2 scorer can import `QualityScoreResult` from shared location (`scripts/extractors/quality-scorer.ts`) — REQ-001
@@ -34,7 +34,7 @@ title: "Tasks: Quality Scorer Unification [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Implementation — Scorer Updates and Threshold Migration
+## Phase 2: Implementation
 
 ### V2 Scorer Update
 
@@ -60,7 +60,7 @@ title: "Tasks: Quality Scorer Unification [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: Verification — Test Baseline Rework
+## Phase 3: Verification
 
 - [x] T015 Update all quality scorer test expectations from 0-100 to 0.0-1.0 scale (`scripts/tests/quality-scorer-calibration.vitest.ts`) — REQ-001
 - [x] T016 [P] Add test cases for V2 contamination penalty application (`scripts/tests/quality-scorer-calibration.vitest.ts`) — REQ-002

@@ -24,7 +24,7 @@ title: "Tasks: Type Consolidation [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Setup — Canonicalize Leaked Types
+## Phase 1: Setup
 
 - [x] T001 Move `FileChange` from `file-extractor.ts` to `session-types.ts` (`scripts/types/session-types.ts`) — REQ-001 *(completed by 003-data-fidelity, commit 37a75c17)*
 - [x] T002 [P] Move `ObservationDetailed` from `session-extractor.ts` to `session-types.ts` (`scripts/types/session-types.ts`) — REQ-001 *(completed by 003-data-fidelity, commit 37a75c17)*
@@ -36,7 +36,7 @@ title: "Tasks: Type Consolidation [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Implementation — Expand, Tighten, and Consolidate Types
+## Phase 2: Implementation
 
 ### Expand SessionData
 
@@ -75,7 +75,7 @@ title: "Tasks: Type Consolidation [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: Verification — Full Recompile and Retest
+## Phase 3: Verification
 
 - [ ] T021 Run `tsc --noEmit` on the entire project — zero type errors — SC-001
 - [ ] T022 Review any `as any` or `as unknown` casts introduced during fixes — minimize them — SC-001

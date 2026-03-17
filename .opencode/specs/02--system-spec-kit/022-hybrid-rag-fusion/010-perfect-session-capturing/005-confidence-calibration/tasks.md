@@ -24,7 +24,7 @@ title: "Tasks: Confidence Calibration [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Setup — Type Extension
+## Phase 1: Setup
 
 - [x] T001 Add `CHOICE_CONFIDENCE: number` (0.0-1.0) to `DecisionRecord` type (REQ-001) (`scripts/types/session-types.ts`) — Evidence: added canonical field to `DecisionRecord`.
 - [x] T002 Add `RATIONALE_CONFIDENCE: number` (0.0-1.0) to `DecisionRecord` type (REQ-001) (`scripts/types/session-types.ts`) — Evidence: added canonical field to `DecisionRecord`.
@@ -35,7 +35,7 @@ title: "Tasks: Confidence Calibration [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Implementation — Extractor & Consumer Updates
+## Phase 2: Implementation
 
 ### Extractor Update
 - [x] T005 Refactor confidence computation in decision extractor to produce dual values (REQ-001) (`scripts/extractors/decision-extractor.ts`) — Evidence: added shared `buildDecisionConfidence()` helper for manual and observation-derived decisions.

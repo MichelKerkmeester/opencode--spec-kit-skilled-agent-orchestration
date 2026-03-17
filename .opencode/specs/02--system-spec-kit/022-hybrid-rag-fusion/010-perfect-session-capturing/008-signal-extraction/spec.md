@@ -1,5 +1,6 @@
 ---
 title: "Feature Specification: Signal Extraction"
+description: "Tighten signal extraction behavior and evidence quality for session activity signals."
 ---
 # Feature Specification: Signal Extraction
 
@@ -18,7 +19,12 @@ title: "Feature Specification: Signal Extraction"
 | **Status** | Complete |
 | **Created** | 2026-03-16 |
 | **Branch** | `main` |
-| **Parent** | [010-perfect-session-capturing](../spec.md) |
+| **Parent Spec** | ../spec.md |
+| **Parent Plan** | ../plan.md |
+| **Phase** | 8 of 16 |
+| **Predecessor** | 007-phase-classification |
+| **Successor** | 009-embedding-optimization |
+| **Handoff Criteria** | validate.sh + test suite passing |
 | **R-Item** | R-08 |
 | **Sequence** | B1 |
 <!-- /ANCHOR:metadata -->
@@ -129,7 +135,7 @@ Build a unified script-side `SemanticSignalExtractor` with mode-aware extraction
 
 ---
 
-## 8. ACCEPTANCE SCENARIOS
+### Acceptance Scenarios
 
 ### Scenario 1: Trigger baseline parity
 

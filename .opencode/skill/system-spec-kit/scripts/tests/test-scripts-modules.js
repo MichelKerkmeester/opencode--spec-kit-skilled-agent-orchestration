@@ -1630,10 +1630,17 @@ async function testCoreWorkflowAdditional() {
     // Test 4: updateMetadataWithEmbedding is exported from memory-indexer module
     assertType(memoryIndexer.updateMetadataWithEmbedding, 'function', 'T-024d: updateMetadataWithEmbedding exported via memory-indexer');
 
-    // Test 5: notifyDatabaseUpdated is exported and callable
-    assertType(memoryIndexer.notifyDatabaseUpdated, 'function', 'T-024e: notifyDatabaseUpdated exported via memory-indexer');
-    assertDoesNotThrow(() => memoryIndexer.notifyDatabaseUpdated(),
-      'T-024f: notifyDatabaseUpdated executes without error');
+    // Test 5: notifyDatabaseUpdated remains private to preserve module boundaries
+    if (memoryIndexer.notifyDatabaseUpdated === undefined) {
+      pass('T-024e: notifyDatabaseUpdated remains private', 'Not exported from memory-indexer');
+    } else {
+      fail('T-024e: notifyDatabaseUpdated remains private', `Type: ${typeof memoryIndexer.notifyDatabaseUpdated}`);
+    }
+    if (!Object.prototype.hasOwnProperty.call(memoryIndexer, 'notifyDatabaseUpdated')) {
+      pass('T-024f: memory-indexer public exports exclude notifyDatabaseUpdated', 'Private helper not exposed');
+    } else {
+      fail('T-024f: memory-indexer public exports exclude notifyDatabaseUpdated', 'notifyDatabaseUpdated unexpectedly exported');
+    }
 
     // Test 6: writeFilesAtomically rejects leaked placeholders
     const tempDir = path.join(__dirname, '../scratch/test-atomic');
@@ -2480,37 +2487,47 @@ async function testLibSemanticSummarizerAdditional() {
 }
 
 async function testLibRetryManagerReexport() {
-  log('\n🔬 LIB: retry-manager.js (re-export verification)');
+  log('\n🔬 LIB: retry-manager.js (boundary verification)');
 
   try {
-    const retryManager = require(path.join(SCRIPTS_DIR, 'lib', 'retry-manager'));
+    const scriptsRetryManagerPath = path.join(SCRIPTS_DIR, 'lib', 'retry-manager.js');
+    const mcpRetryManagerPath = path.join(
+      ROOT,
+      'mcp_server',
+      'dist',
+      'lib',
+      'providers',
+      'retry-manager.js'
+    );
 
-    // Test 1: getRetryStats is exported (camelCase alias)
+    // Test 1: scripts/dist/lib/retry-manager.js no longer exists
+    if (!fs.existsSync(scriptsRetryManagerPath)) {
+      pass('T-032a: scripts retry-manager module removed', 'No stale scripts/lib retry-manager output');
+    } else {
+      fail('T-032a: scripts retry-manager module removed', `Unexpected file: ${scriptsRetryManagerPath}`);
+    }
+
+    // Test 2: canonical retry-manager implementation exists in MCP provider layer
+    if (fs.existsSync(mcpRetryManagerPath)) {
+      pass('T-032b: retry-manager lives under MCP provider layer', 'Canonical module present');
+    } else {
+      fail('T-032b: retry-manager lives under MCP provider layer', `Missing file: ${mcpRetryManagerPath}`);
+    }
+
+    const retryManager = require(mcpRetryManagerPath);
+
+    // Test 3: getRetryStats is exported from canonical module
     if (typeof retryManager.getRetryStats === 'function') {
-      pass('T-032a: getRetryStats is exported', 'Function available');
+      pass('T-032c: canonical retry-manager exports getRetryStats', 'Function available');
     } else {
-      fail('T-032a: getRetryStats is exported', `Type: ${typeof retryManager.getRetryStats}`);
+      fail('T-032c: canonical retry-manager exports getRetryStats', `Type: ${typeof retryManager.getRetryStats}`);
     }
 
-    // Test 2: get_retry_stats is exported (snake_case)
-    if (typeof retryManager.getRetryStats === 'function') {
-      pass('T-032b: get_retry_stats is exported', 'Function available');
-    } else {
-      fail('T-032b: get_retry_stats is exported', `Type: ${typeof retryManager.getRetryStats}`);
-    }
-
-    // Test 3: processRetryQueue is exported (camelCase alias)
+    // Test 4: processRetryQueue is exported from canonical module
     if (typeof retryManager.processRetryQueue === 'function') {
-      pass('T-032c: processRetryQueue is exported', 'Function available');
+      pass('T-032d: canonical retry-manager exports processRetryQueue', 'Function available');
     } else {
-      fail('T-032c: processRetryQueue is exported', `Type: ${typeof retryManager.processRetryQueue}`);
-    }
-
-    // Test 4: process_retry_queue is exported (snake_case)
-    if (typeof retryManager.processRetryQueue === 'function') {
-      pass('T-032d: process_retry_queue is exported', 'Function available');
-    } else {
-      fail('T-032d: process_retry_queue is exported', `Type: ${typeof retryManager.processRetryQueue}`);
+      fail('T-032d: canonical retry-manager exports processRetryQueue', `Type: ${typeof retryManager.processRetryQueue}`);
     }
 
     // Test 5: getRetryStats returns default stats when DB not available

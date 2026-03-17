@@ -24,7 +24,7 @@ title: "Tasks: Description Enrichment [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Setup — Unified Validator
+## Phase 1: Setup
 
 - [x] T001 Create shared `validateDescription(description: string): DescriptionTier` function (REQ-001) (`scripts/utils/file-helpers.ts`) — Evidence: tiered validator at lines 112-138 with `DescriptionValidationResult` return type.
 - [x] T002 Implement `placeholder` tier: empty, whitespace-only, TBD, todo, pending, n/a, "Recent commit:", bare changed/modified (REQ-004) (`scripts/utils/file-helpers.ts`) — Evidence: `PLACEHOLDER_PATTERNS` array (lines 26-37) covers all listed patterns.
@@ -38,7 +38,7 @@ title: "Tasks: Description Enrichment [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Implementation — Provenance Trust & Modification Magnitude
+## Phase 2: Implementation
 
 ### Provenance Trust Weighting
 - [x] T008 Add trust multiplier lookup: git=1.0, tool/spec-folder=0.8, synthetic=0.5, unknown=0.3 (REQ-002) (`scripts/core/quality-scorer.ts`) — Evidence: `getDescriptionTrustMultiplier()` at lines 102-116.

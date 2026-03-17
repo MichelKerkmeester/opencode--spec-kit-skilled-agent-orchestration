@@ -493,7 +493,7 @@ if [[ "$SUBFOLDER_MODE" = true ]]; then
 
     # Post-creation validation: catch template regressions early
     if [[ "${SPECKIT_SKIP_POST_VALIDATE:-}" != "1" ]]; then
-        bash "$SCRIPT_DIR/validate.sh" "$FEATURE_DIR" --quiet 2>/dev/null || true
+        bash "$SCRIPT_DIR/validate.sh" "$SUBFOLDER_PATH" --quiet 2>/dev/null || true
     fi
 
     exit 0

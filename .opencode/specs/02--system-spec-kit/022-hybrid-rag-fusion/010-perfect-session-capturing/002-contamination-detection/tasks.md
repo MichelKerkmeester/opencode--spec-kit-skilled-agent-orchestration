@@ -24,7 +24,7 @@ title: "Tasks: Contamination Detection [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Setup — Extend V8 Rules
+## Phase 1: Setup
 
 - [x] T001 Add frontmatter parsing to V8 — extract `trigger_phrases` and `key_topics` arrays (`scripts/memory/validate-memory-quality.ts`) — REQ-001
 - [x] T002 Check extracted frontmatter values against the foreign-spec identifier set (`scripts/memory/validate-memory-quality.ts`) — REQ-001
@@ -35,7 +35,7 @@ title: "Tasks: Contamination Detection [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Implementation — V9 Patterns, Noise Config, and Audit Logging
+## Phase 2: Implementation
 
 ### Broaden V9 Patterns
 

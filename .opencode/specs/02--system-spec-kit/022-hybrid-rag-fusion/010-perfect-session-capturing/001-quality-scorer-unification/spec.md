@@ -1,5 +1,6 @@
 ---
 title: "Feature Specification: Quality Scorer Unification"
+description: "Unify the dual quality scoring systems (V1 0-100, V2 0.0-1.0) onto a single canonical 0.0-1.0 scale with contamination score penalty."
 ---
 # Feature Specification: Quality Scorer Unification
 
@@ -15,10 +16,15 @@ title: "Feature Specification: Quality Scorer Unification"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | Ready |
+| **Status** | Complete |
 | **Created** | 2026-03-16 |
 | **Branch** | `main` |
-| **Parent** | [010-perfect-session-capturing](../spec.md) |
+| **Parent Spec** | ../spec.md |
+| **Parent Plan** | ../plan.md |
+| **Phase** | 1 of 16 |
+| **Predecessor** | None |
+| **Successor** | 002-contamination-detection |
+| **Handoff Criteria** | validate.sh + test suite passing |
 | **R-Item** | R-01 |
 | **Sequence** | A3 |
 <!-- /ANCHOR:metadata -->
@@ -85,7 +91,7 @@ Make `score01` (0.0-1.0) the canonical quality scale across the entire pipeline,
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| — | None — all requirements are P0 for this foundational change | — |
+| REQ-005 | Canonical docs and checklists use explicit evidence for completed verification items | Completed checklist entries include parsable evidence markers that map to this phase's verification commands and outputs |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -95,6 +101,13 @@ Make `score01` (0.0-1.0) the canonical quality scale across the entire pipeline,
 
 - **SC-001**: All quality scores stored as 0.0-1.0 with no silent scale mismatch anywhere in the pipeline
 - **SC-002**: Contamination detection produces a score penalty (not just a flag) -- contaminated memories score at least 0.25 lower and are capped at 0.6
+
+### Acceptance Scenarios
+
+1. **Given** a quality result returned by either scorer, **when** the pipeline consumes it, **then** `score01` is available and is used for threshold comparisons.
+2. **Given** `hadContamination = true`, **when** scoring runs, **then** the score is penalized and capped as defined by the contamination rule.
+3. **Given** an integer `qualityAbortThreshold` in legacy config, **when** config normalization runs, **then** the threshold is converted to `0.0-1.0` and used safely.
+4. **Given** completed checklist items for this phase, **when** validation parses evidence markers, **then** each completed item has explicit evidence text.
 <!-- /ANCHOR:success-criteria -->
 
 ---

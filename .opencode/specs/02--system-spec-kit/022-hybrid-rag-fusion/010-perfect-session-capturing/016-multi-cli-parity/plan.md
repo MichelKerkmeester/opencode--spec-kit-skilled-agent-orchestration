@@ -122,7 +122,7 @@ Additive regression-hardening on existing seams
 ---
 
 <!-- ANCHOR:phase-deps -->
-## 8. PHASE DEPENDENCIES
+## L2: PHASE DEPENDENCIES
 
 N/A — Phase 016 does not decompose into sub-phases. The implementation phases in section 4 are sequential steps within a single pass.
 <!-- /ANCHOR:phase-deps -->
@@ -130,7 +130,7 @@ N/A — Phase 016 does not decompose into sub-phases. The implementation phases 
 ---
 
 <!-- ANCHOR:effort -->
-## 9. EFFORT ESTIMATION
+## L2: EFFORT ESTIMATION
 
 | Phase | Estimated | Actual |
 |-------|-----------|--------|
@@ -143,7 +143,7 @@ N/A — Phase 016 does not decompose into sub-phases. The implementation phases 
 ---
 
 <!-- ANCHOR:enhanced-rollback -->
-## 10. ENHANCED ROLLBACK
+## L2: ENHANCED ROLLBACK
 
 N/A — The basic rollback plan in section 7 is sufficient for test-and-documentation-only changes. No staged rollback or feature flags apply.
 <!-- /ANCHOR:enhanced-rollback -->

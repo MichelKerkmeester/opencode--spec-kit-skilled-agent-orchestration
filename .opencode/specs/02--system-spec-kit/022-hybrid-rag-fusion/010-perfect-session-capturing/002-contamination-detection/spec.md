@@ -1,5 +1,6 @@
 ---
 title: "Feature Specification: Contamination Detection"
+description: "Strengthen contamination detection to produce measurable score penalties and audit trail coverage."
 ---
 # Feature Specification: Contamination Detection
 
@@ -18,7 +19,12 @@ title: "Feature Specification: Contamination Detection"
 | **Status** | Complete |
 | **Created** | 2026-03-16 |
 | **Branch** | `main` |
-| **Parent** | [010-perfect-session-capturing](../spec.md) |
+| **Parent Spec** | ../spec.md |
+| **Parent Plan** | ../plan.md |
+| **Phase** | 2 of 16 |
+| **Predecessor** | 001-quality-scorer-unification |
+| **Successor** | 003-data-fidelity |
+| **Handoff Criteria** | validate.sh + test suite passing |
 | **R-Item** | R-02 |
 | **Sequence** | B2 |
 <!-- /ANCHOR:metadata -->
@@ -99,17 +105,12 @@ Strengthen V8 to inspect frontmatter and detect non-dominant foreign-spec signal
 
 ---
 
-<!-- ANCHOR:acceptance-scenarios -->
-## ACCEPTANCE SCENARIOS
+### Acceptance Scenarios
 
 1. **Given** a rendered memory whose `trigger_phrases` include `031-memory-search-state-filter-fix`, **when** post-render validation runs, **then** V8 fails even if the body is otherwise short and clean.
 2. **Given** a rendered memory that mentions two different foreign specs once each in the body, **when** post-render validation runs, **then** V8 fails for scattered low-volume contamination instead of passing as “non-dominant.”
 3. **Given** a rendered memory titled `Draft`, `[TITLE]`, or a bare spec id, **when** V9 evaluates the rendered title, **then** the memory fails before write/index.
 4. **Given** a workflow run that reaches the save path, **when** `metadata.json` is written, **then** it includes `extractor-scrub`, `content-filter`, and `post-render` contamination audit entries with pattern labels/counts but without raw prompt content.
-<!-- /ANCHOR:acceptance-scenarios -->
-
----
-
 <!-- ANCHOR:risks -->
 ## 6. RISKS & DEPENDENCIES
 
