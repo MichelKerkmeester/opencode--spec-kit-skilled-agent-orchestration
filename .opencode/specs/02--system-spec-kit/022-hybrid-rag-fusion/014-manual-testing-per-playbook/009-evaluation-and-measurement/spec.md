@@ -27,6 +27,8 @@ contextType: "general"
 | **Created** | 2026-03-16 |
 | **Branch** | `main` |
 | **Parent** | [`../spec.md`](../spec.md) |
+| **Predecessor Phase** | `008-bug-fixes-and-data-integrity` |
+| **Successor Phase** | `010-graph-signal-activation` |
 <!-- /ANCHOR:metadata -->
 
 ---

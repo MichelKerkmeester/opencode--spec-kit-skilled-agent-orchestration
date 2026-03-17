@@ -243,6 +243,10 @@ function createSessionData(config: SessionConfig = {}): SessionData {
     SOURCE_SESSION_ID: '',
     SOURCE_SESSION_CREATED: 0,
     SOURCE_SESSION_UPDATED: 0,
+    HEAD_REF: null,
+    COMMIT_REF: null,
+    REPOSITORY_STATE: 'unavailable',
+    IS_DETACHED_HEAD: false,
   };
 }
 

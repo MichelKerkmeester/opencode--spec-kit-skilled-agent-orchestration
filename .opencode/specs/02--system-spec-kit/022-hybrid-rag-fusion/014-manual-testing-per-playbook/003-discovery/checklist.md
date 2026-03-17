@@ -33,7 +33,7 @@ contextType: "general"
 
 - [x] CHK-001 [P0] Scope is locked to three discovery tests (EX-011, EX-012, EX-013) with no non-discovery scenarios included [EVIDENCE: scope table in `spec.md` lists exactly three rows]
 - [x] CHK-002 [P0] Exact prompts, command sequences, and pass criteria were extracted verbatim from `../../manual_testing_playbook/manual_testing_playbook.md` [EVIDENCE: scope table in `spec.md` matches playbook rows for EX-011, EX-012, EX-013]
-- [x] CHK-003 [P0] Feature catalog links for all three tests point to the correct `03--discovery/` files [EVIDENCE: spec.md links `01-memory-browser-memorylist.md`, `02-system-statistics-memorystats.md`, `03-health-diagnostics-memoryhealth.md`]
+- [x] CHK-003 [P0] Feature catalog links for all three tests point to the correct `03--discovery/` files [EVIDENCE: spec.md scope table references the expected discovery catalog entries for EX-011, EX-012, and EX-013]
 - [ ] CHK-004 [P1] Level 1 template anchors and metadata blocks are intact across all four phase documents [EVIDENCE: `SPECKIT_LEVEL` and anchor sections verified in spec.md, plan.md, tasks.md, checklist.md]
 <!-- /ANCHOR:pre-impl -->
 

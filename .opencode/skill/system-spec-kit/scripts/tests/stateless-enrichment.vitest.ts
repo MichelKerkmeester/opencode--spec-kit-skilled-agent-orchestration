@@ -6,6 +6,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 
+import { CONFIG } from '../core';
 import * as extractors from '../extractors';
 import { extractGitContext } from '../extractors/git-context-extractor';
 import { buildProjectStateSnapshot } from '../extractors/session-extractor';
@@ -286,6 +287,61 @@ describe('stateless enrichment guardrails', () => {
     expect(sparseExtracted.summary).toContain('Sparse Spec Folder');
     expect(sparseExtracted.observations).toEqual(expect.arrayContaining([
       expect.objectContaining({ title: 'Spec folder metadata' }),
+    ]));
+  });
+
+  it('keeps only project-confined file targets when spec docs list absolute paths', async () => {
+    const specRoot = makeTempRoot('speckit-spec-folder-absolute-paths-');
+    const projectAbsolutePath = path.join(
+      CONFIG.PROJECT_ROOT,
+      '.opencode',
+      'skill',
+      'system-spec-kit',
+      'scripts',
+      'core',
+      'workflow.ts',
+    );
+    const externalAbsolutePath = path.join(path.sep, 'tmp', 'foreign-spec-folder.md');
+
+    fs.writeFileSync(path.join(specRoot, 'description.json'), JSON.stringify({
+      title: 'Absolute Path Guardrails',
+      status: 'in-progress',
+    }), 'utf-8');
+    fs.writeFileSync(
+      path.join(specRoot, 'spec.md'),
+      [
+        '# Spec',
+        '',
+        '## 3. SCOPE',
+        '',
+        '### Files to Change',
+        '',
+        '| File Path | Change Type | Description |',
+        '|-----------|-------------|-------------|',
+        `| \`${projectAbsolutePath}\` | Modify | Keep project-confined absolute paths |`,
+        `| \`${externalAbsolutePath}\` | Modify | Drop out-of-project absolute paths |`,
+      ].join('\n'),
+      'utf-8'
+    );
+    fs.writeFileSync(path.join(specRoot, 'plan.md'), '# Plan\n\n## 1. SUMMARY\n\nAbsolute path normalization.\n', 'utf-8');
+    fs.writeFileSync(path.join(specRoot, 'tasks.md'), '- [x] added regression\n', 'utf-8');
+    fs.writeFileSync(path.join(specRoot, 'checklist.md'), '## P0\n- [x] added guardrail\n', 'utf-8');
+    fs.writeFileSync(path.join(specRoot, 'decision-record.md'), '## DR-001\n\n**Decision:** Reject out-of-project paths.\n', 'utf-8');
+
+    const extracted = await extractSpecFolderContext(specRoot);
+
+    expect(extracted.FILES).toEqual(expect.arrayContaining([
+      expect.objectContaining({
+        FILE_PATH: '.opencode/skill/system-spec-kit/scripts/core/workflow.ts',
+      }),
+    ]));
+    expect(extracted.FILES).toEqual(expect.not.arrayContaining([
+      expect.objectContaining({
+        FILE_PATH: expect.stringContaining('foreign-spec-folder.md'),
+      }),
+      expect.objectContaining({
+        FILE_PATH: expect.stringMatching(/^\.\./),
+      }),
     ]));
   });
 

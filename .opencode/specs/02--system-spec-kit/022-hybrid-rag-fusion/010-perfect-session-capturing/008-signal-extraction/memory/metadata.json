@@ -1,19 +1,19 @@
 {
-  "timestamp": "16-03-26 19-54",
-  "messageCount": 3,
+  "timestamp": "17-03-26 19-50",
+  "messageCount": 1,
   "decisionCount": 1,
-  "diagramCount": 5,
+  "diagramCount": 0,
   "skillVersion": "1.7.2",
   "autoTriggered": false,
   "filtering": {
-    "totalProcessed": 3,
+    "totalProcessed": 1,
     "noiseFiltered": 0,
     "duplicatesRemoved": 0,
-    "qualityScore": 83,
+    "qualityScore": 30,
     "contaminationAudit": [
       {
         "stage": "content-filter",
-        "timestamp": "2026-03-16T18:54:14.768Z",
+        "timestamp": "2026-03-17T18:50:18.342Z",
         "patternsChecked": [
           "/^User message$/i",
           "/^User prompt$/i",
@@ -36,7 +36,12 @@
           "/^[\\s\\u00A0]*$/",
           "/^<system-reminder>/",
           "/^UserPromptSubmit hook/i",
-          "/^Hook \\w+ (success|failed|running)/i"
+          "/^Hook \\w+ (success|failed|running)/i",
+          "/^<[a-z_-]+>\\s*<\\/[a-z_-]+>$/",
+          "/^tool\\.execution_start/i",
+          "/^tool\\.execution_complete/i",
+          "/^reasoning$/i",
+          "/^<reasoning>.*<\\/reasoning>$/s"
         ],
         "matchesFound": [],
         "actionsTaken": [
@@ -45,8 +50,8 @@
           "stripped_wrappers:0"
         ],
         "passedThrough": [
-          "input_items:3",
-          "kept_items:3"
+          "input_items:1",
+          "kept_items:1"
         ]
       }
     ],
@@ -61,7 +66,7 @@
   "contaminationAudit": [
     {
       "stage": "extractor-scrub",
-      "timestamp": "2026-03-16T18:54:14.382Z",
+      "timestamp": "2026-03-17T18:50:18.309Z",
       "patternsChecked": [
         "step-by-step orchestration",
         "analysis preamble",
@@ -100,12 +105,12 @@
         "removed_phrases:0"
       ],
       "passedThrough": [
-        "processed_fields:468"
+        "processed_fields:11"
       ]
     },
     {
       "stage": "content-filter",
-      "timestamp": "2026-03-16T18:54:14.768Z",
+      "timestamp": "2026-03-17T18:50:18.342Z",
       "patternsChecked": [
         "/^User message$/i",
         "/^User prompt$/i",
@@ -128,7 +133,12 @@
         "/^[\\s\\u00A0]*$/",
         "/^<system-reminder>/",
         "/^UserPromptSubmit hook/i",
-        "/^Hook \\w+ (success|failed|running)/i"
+        "/^Hook \\w+ (success|failed|running)/i",
+        "/^<[a-z_-]+>\\s*<\\/[a-z_-]+>$/",
+        "/^tool\\.execution_start/i",
+        "/^tool\\.execution_complete/i",
+        "/^reasoning$/i",
+        "/^<reasoning>.*<\\/reasoning>$/s"
       ],
       "matchesFound": [],
       "actionsTaken": [
@@ -137,13 +147,13 @@
         "stripped_wrappers:0"
       ],
       "passedThrough": [
-        "input_items:3",
-        "kept_items:3"
+        "input_items:1",
+        "kept_items:1"
       ]
     },
     {
       "stage": "post-render",
-      "timestamp": "2026-03-16T18:54:15.006Z",
+      "timestamp": "2026-03-17T18:50:18.351Z",
       "patternsChecked": [
         "frontmatter:trigger_phrases",
         "frontmatter:key_topics",
@@ -161,29 +171,44 @@
       "passedThrough": [
         "current_spec:008-signal-extraction",
         "trigger_phrases:31",
-        "key_topics:12"
+        "key_topics:12",
+        "captured_file_count:2",
+        "filesystem_file_count:2"
       ]
     }
   ],
   "semanticSummary": {
     "task": "Development session",
-    "filesCreated": 41,
-    "filesModified": 17,
+    "filesCreated": 0,
+    "filesModified": 0,
     "decisions": 0,
     "messageStats": {
       "intent": 0,
       "plan": 0,
-      "implementation": 3,
+      "implementation": 0,
       "result": 0,
       "decision": 0,
-      "total": 3
+      "total": 1
     }
+  },
+  "fileCounts": {
+    "fileCount": 2,
+    "capturedFileCount": 2,
+    "filesystemFileCount": 2,
+    "gitChangedFileCount": 0
+  },
+  "sourceProvenance": {
+    "transcriptPath": "",
+    "sessionId": "",
+    "sessionCreated": 0,
+    "sessionUpdated": 0
   },
   "embedding": {
     "status": "indexed",
     "model": "nomic-ai/nomic-embed-text-v1.5",
     "dimensions": 768,
-    "memoryId": 4364,
-    "generatedAt": "2026-03-16T18:54:16.308Z"
+    "memoryId": 4383,
+    "updatedAt": "2026-03-17T18:50:30.363Z",
+    "generatedAt": "2026-03-17T18:50:30.363Z"
   }
 }

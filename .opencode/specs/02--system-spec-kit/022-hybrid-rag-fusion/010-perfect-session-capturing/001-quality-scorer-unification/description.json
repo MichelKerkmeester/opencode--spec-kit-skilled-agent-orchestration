@@ -16,9 +16,10 @@
     "022-hybrid-rag-fusion",
     "010-perfect-session-capturing"
   ],
-  "memorySequence": 2,
+  "memorySequence": 3,
   "memoryNameHistory": [
     "16-03-26_18-04__quality-scorer-unification.md",
-    "17-03-26_15-40__next-steps.md"
+    "17-03-26_15-40__next-steps.md",
+    "17-03-26_19-49__bimodal-quality-distribution-in-historical-memory.md"
   ]
 }

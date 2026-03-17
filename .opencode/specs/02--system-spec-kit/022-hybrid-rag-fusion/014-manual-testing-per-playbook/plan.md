@@ -1,11 +1,11 @@
 ---
 title: "Implementation Plan: manual-testing-per-playbook [template:level_1/plan.md]"
-description: "Phased agent-delegated generation of 19 manual testing phase folders, each containing spec.md and plan.md derived from the 229KB playbook cross-reference index."
+description: "Alignment pass for the 014 parent packet: reconcile 19 phase folders to the current 211-ID exact scenario inventory, expand Phase 013 dedicated-memory coverage, and record the March 17, 2026 validator truth."
 trigger_phrases:
   - "manual testing plan"
   - "testing phases"
-  - "agent delegation"
-  - "playbook phases"
+  - "exact id audit"
+  - "playbook alignment"
 importance_tier: "high"
 contextType: "general"
 ---
@@ -25,11 +25,11 @@ contextType: "general"
 |--------|-------|
 | **Language/Stack** | Markdown documentation |
 | **Framework** | system-spec-kit Level 1 templates |
-| **Storage** | Filesystem (spec folders) |
-| **Testing** | validate.sh --recursive, coverage audit |
+| **Storage** | Filesystem (spec folders + playbook docs) |
+| **Testing** | Exact-ID audit + `validate.sh --recursive` |
 
 ### Overview
-Generate 19 phase sub-folders inside `014-manual-testing-per-playbook/`, each containing `spec.md` and `plan.md` documenting manual test scenarios for one feature catalog category. Work is delegated to Copilot CLI (GPT-5.4) and Gemini CLI agents in two waves: Wave 1 (12 agents for categories with 7+ tests) and Wave 2 (7 agents for remaining categories).
+This pass does not generate the packet from scratch. It reconciles the existing 19 phase folders to the current playbook truth by switching the parent packet from a top-level-ID model (`195`) to an exact-ID model (`211`), expanding Phase `013-memory-quality-and-indexing` for the dedicated memory sub-scenarios, refreshing the `M-007` playbook verification wording, and recording the real validator outcome for the packet.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -38,17 +38,16 @@ Generate 19 phase sub-folders inside `014-manual-testing-per-playbook/`, each co
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [x] Problem statement clear and scope documented
-- [x] Success criteria measurable
-- [x] Dependencies identified
-- [x] All 19 phase directories created
-- [x] Parent spec.md and plan.md written
+- [x] Current playbook inventory reviewed, including the dedicated memory-section suffixed IDs.
+- [x] Existing phase ownership model reviewed across all 19 child folders.
+- [x] Current recursive validator output captured for the parent packet.
+- [x] Scope limited to the `014` parent docs, Phase `013` docs, the `M-007` playbook block, and the narrow `010` truth-cleanup.
 
 ### Definition of Done
-- [ ] All 19 phase folders contain spec.md and plan.md (38 files total)
-- [ ] Coverage audit: every test ID from cross-reference index appears in exactly one phase
-- [ ] validate.sh --recursive passes on entire tree
-- [ ] Context saved via generate-context.js
+- [ ] Parent packet uses the `211` exact-ID model as its authoritative coverage measure.
+- [ ] Phase `013` explicitly documents `M-005a..c`, `M-006a..c`, and `M-007a..j`.
+- [ ] Exact-ID audit reports `0` missing IDs and `0` duplicate owners.
+- [ ] Recursive validation is rerun and its current `0`-error, `19`-warning state is recorded truthfully in the packet.
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -57,21 +56,16 @@ Generate 19 phase sub-folders inside `014-manual-testing-per-playbook/`, each co
 ## 3. ARCHITECTURE
 
 ### Pattern
-Phased agent delegation with coordinator validation
+Documentation reconciliation with exact-ID audit and validator-truth refresh.
 
 ### Key Components
-- **Coordinator (Claude Code)**: Directory setup, parent docs, agent dispatch, validation
-- **Copilot CLI agents (GPT-5.4)**: Generate spec.md + plan.md for assigned categories
-- **Gemini CLI agents**: Generate spec.md + plan.md for assigned categories
-- **Validator**: validate.sh --recursive + custom coverage audit
+- **Playbook source of truth**: `manual_testing_playbook.md`, including the dedicated memory section.
+- **Packet surface**: parent `014` docs plus child `013-memory-quality-and-indexing/`.
+- **Supporting truth sources**: recursive validation output for `014`, validation output for `013`, and the `010` closure docs used to refresh `M-007` proof-lane wording.
+- **Audit layer**: exact-ID ownership scan across all 19 child specs.
 
 ### Data Flow
-```
-Playbook (229KB) → Cross-Reference Index → Category Assignment
-  → Agent Prompt (with test IDs + feature catalog paths)
-    → Agent generates spec.md + plan.md in target folder
-      → Coordinator validates coverage + structure
-```
+`playbook exact IDs -> phase ownership docs -> exact-ID audit -> validator rerun -> parent packet truth update`
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -79,55 +73,21 @@ Playbook (229KB) → Cross-Reference Index → Category Assignment
 <!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
-### Phase 0: Setup (Coordinator)
-- [x] Verify CLI binaries (copilot, gemini)
-- [x] Create 19 empty phase directories
-- [x] Write parent spec.md with Phase Documentation Map
-- [x] Write parent plan.md
+### Phase 1: Audit the Current Packet
+- [x] Re-read the parent `014` docs and capture every stale `195`-only or validation-pending claim.
+- [x] Re-read `013-memory-quality-and-indexing/` and identify the missing exact IDs in the dedicated memory section.
+- [x] Re-run parent recursive validation to capture the current `0`-error, `19`-warning result.
 
-### Phase 1: Wave 1 — 12 Agents (9 Copilot + 3 Gemini)
-Categories with 7+ test scenarios:
-- [ ] 014-pipeline-architecture (18 tests) — Copilot
-- [ ] 013-memory-quality-and-indexing (17+8 tests) — Copilot
-- [ ] 011-scoring-and-calibration (16 tests) — Copilot
-- [ ] 009-evaluation-and-measurement (16 tests) — Copilot
-- [ ] 016-tooling-and-scripts (15+5 tests) — Copilot
-- [ ] 008-bug-fixes-and-data-integrity (11 tests) — Copilot
-- [ ] 001-retrieval (9 tests) — Copilot
-- [ ] 005-lifecycle (9 tests) — Copilot
-- [ ] 010-graph-signal-activation (9 tests) — Copilot
-- [ ] 015-retrieval-enhancements (9 tests) — Gemini
-- [ ] 019-feature-flag-reference (8 tests) — Gemini
-- [ ] 006-analysis (7 tests) — Gemini
+### Phase 2: Align Parent and Phase 013 Docs
+- [ ] Update the parent `014` spec, plan, tasks, checklist, and implementation summary to the exact-ID model.
+- [ ] Expand `013-memory-quality-and-indexing` docs from `26` top-level scenarios to `42` exact IDs.
+- [ ] Replace `M-007` shorthand wording with literal `M-007a` through `M-007j` coverage.
+- [ ] Refresh the `M-007` playbook block so its verification suite list and proof-lane wording match the `010` closure docs.
 
-### Phase 2: Validate Wave 1
-- [ ] Verify 12 × 2 = 24 files exist
-- [ ] Verify all assigned test IDs present in each spec.md
-- [ ] Extract MEMORY_HANDBACK sections
-
-### Phase 3: Wave 2 — 7 Copilot Agents
-Categories with <7 test scenarios:
-- [ ] 002-mutation (7 tests)
-- [ ] 012-query-intelligence (6 tests)
-- [ ] 018-ux-hooks (5 tests)
-- [ ] 017-governance (5 tests)
-- [ ] 003-discovery (3 tests)
-- [ ] 007-evaluation (2 tests)
-- [ ] 004-maintenance (2 tests)
-
-### Phase 4: Validate Wave 2
-- [ ] Verify 7 × 2 = 14 files exist
-- [ ] Verify all assigned test IDs present in each spec.md
-
-### Phase 5: Coverage Audit
-- [ ] Parse all 19 spec.md files for test IDs
-- [ ] Compare against canonical cross-reference index
-- [ ] No orphaned IDs, no missing IDs
-- [ ] validate.sh --recursive passes
-
-### Phase 6: Context Save
-- [ ] Run generate-context.js for 014-manual-testing-per-playbook
-- [ ] Write utilization-ledger.md to scratch/
+### Phase 3: Verify and Close Out
+- [ ] Run an exact-ID ownership audit across all 19 child specs.
+- [ ] Re-run validation on the touched `013-memory-quality-and-indexing/` child packet.
+- [ ] Spot-check the dedicated memory IDs and the `010` parent narrative for internal consistency.
 <!-- /ANCHOR:phases -->
 
 ---
@@ -137,10 +97,10 @@ Categories with <7 test scenarios:
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Structural | All 38 child files exist | ls, find |
-| Template | SPECKIT_LEVEL + ANCHOR comments present | grep |
-| Coverage | All test IDs mapped to exactly one phase | Custom audit script |
-| Validation | Recursive spec validation | validate.sh --recursive |
+| Exact-ID ownership audit | All 19 child `spec.md` files | Python exact-ID scan |
+| Parent validation truth | `014-manual-testing-per-playbook/` | `validate.sh --recursive` |
+| Child validation truth | `013-memory-quality-and-indexing/` | `validate.sh` |
+| Spot checks | `M-005a..c`, `M-006a..c`, `M-007a..j`, `010` validator wording | `rg`, `sed` |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -150,11 +110,10 @@ Categories with <7 test scenarios:
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| Manual testing playbook | Internal | Green | Cannot generate — source of all test data |
-| Feature catalog (19 categories) | Internal | Green | Cannot link tests to features |
-| Copilot CLI (copilot binary) | External | Green | Cannot delegate to GPT-5.4 |
-| Gemini CLI (gemini binary) | External | Green | Cannot delegate to Gemini 3.1 Pro |
-| validate.sh | Internal | Green | Cannot run structural validation |
+| Manual testing playbook | Internal | Green | Exact-ID inventory and `M-007` wording cannot be aligned |
+| Feature catalog | Internal | Green | Test-to-feature mappings cannot be verified |
+| `validate.sh` | Internal | Green | Current packet truth cannot be recorded honestly |
+| `010-perfect-session-capturing` closure docs | Internal | Green | `M-007` proof-lane wording cannot be aligned to the latest closure evidence |
 <!-- /ANCHOR:dependencies -->
 
 ---
@@ -162,8 +121,8 @@ Categories with <7 test scenarios:
 <!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: Agent generates invalid or empty files, or coverage audit shows critical gaps
-- **Procedure**: Delete affected phase folder contents, re-run agent with corrected prompt. Parent docs and directory structure remain intact.
+- **Trigger**: An alignment edit introduces broken counts, broken links, or contradictory validation claims.
+- **Procedure**: Revert only the touched parent/Phase-013/playbook docs, rerun the exact-ID audit and validator commands, and reapply the alignment using the last verified counts and outputs.
 <!-- /ANCHOR:rollback -->
 
 ---

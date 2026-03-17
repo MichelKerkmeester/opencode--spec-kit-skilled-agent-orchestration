@@ -1,6 +1,6 @@
 ---
 title: "Verification Checklist: manual-testing-per-playbook tooling-and-scripts phase [template:level_2/checklist.md]"
-description: "Verification checklist for Phase 016 tooling-and-scripts manual tests covering NEW-061, NEW-062, NEW-070, NEW-089, NEW-099, NEW-113, NEW-127, NEW-128, NEW-135, NEW-136, NEW-137, NEW-138, NEW-139, NEW-147, NEW-149, PHASE-001, PHASE-002, PHASE-003, PHASE-004, and PHASE-005."
+description: "Verification checklist for Phase 016 tooling-and-scripts manual tests covering NEW-061, NEW-062, NEW-070, NEW-089, NEW-099, NEW-108, NEW-113, NEW-127, NEW-128, NEW-135, NEW-136, NEW-137, NEW-138, NEW-139, NEW-147, NEW-149, PHASE-001, PHASE-002, PHASE-003, PHASE-004, and PHASE-005."
 trigger_phrases:
   - "tooling and scripts checklist"
   - "phase 016 verification"
@@ -31,11 +31,11 @@ contextType: "general"
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] Scope is locked to the 20 phase-016 scenarios (NEW-061, NEW-062, NEW-070, NEW-089, NEW-099, NEW-113, NEW-127, NEW-128, NEW-135, NEW-136, NEW-137, NEW-138, NEW-139, NEW-147, NEW-149, PHASE-001 through PHASE-005) with no out-of-scope scenarios included [EVIDENCE: scope table in `spec.md` lists exactly 20 rows]
-- [x] CHK-002 [P0] Exact prompts, command sequences, and pass criteria were extracted from `../../manual_testing_playbook/manual_testing_playbook.md` for all 15 NEW-series scenarios [EVIDENCE: testing strategy table in `plan.md` matches playbook source rows]
-- [x] CHK-003 [P0] NEW-139 is explicitly sourced from the canonical `M-007 Session Capturing Pipeline Quality` section, not from a missing main-table row, and the sourcing choice is documented in `spec.md` open questions [EVIDENCE: spec.md risk register and open questions reference M-007]
-- [x] CHK-004 [P0] PHASE-001 through PHASE-005 are linked to the correct `feature_catalog.md` phase-system anchors and PHASE-005 is documented as cross-cutting command coverage [EVIDENCE: spec.md scope table links to `feature_catalog.md#21-phase-system` and adjacent anchors]
-- [x] CHK-005 [P0] Feature catalog links for all 15 NEW-series scenarios point to the correct `16--tooling-and-scripts/` files [EVIDENCE: spec.md scope table links verified against `feature_catalog/16--tooling-and-scripts/`]
+- [x] CHK-001 [P0] Scope is locked to the 21 phase-016 scenarios (NEW-061, NEW-062, NEW-070, NEW-089, NEW-099, NEW-108, NEW-113, NEW-127, NEW-128, NEW-135, NEW-136, NEW-137, NEW-138, NEW-139, NEW-147, NEW-149, PHASE-001 through PHASE-005) with no out-of-scope scenarios included [EVIDENCE: scope table in `spec.md` lists exactly 21 rows]
+- [x] CHK-002 [P0] Exact prompts, command sequences, and pass criteria were extracted from `../../manual_testing_playbook/manual_testing_playbook.md` for all 16 NEW-series scenarios [EVIDENCE: testing strategy table in `plan.md` matches playbook source rows]
+- [x] CHK-003 [P0] NEW-139 is explicitly sourced from the canonical session-capturing quality section in the playbook, not from a missing standalone main-table row [EVIDENCE: spec.md risk register and open questions document the source choice]
+- [x] CHK-004 [P0] PHASE-001 through PHASE-005 are linked to the correct `../../feature_catalog/feature_catalog.md` phase-system anchors and PHASE-005 is documented as cross-cutting command coverage [EVIDENCE: spec.md scope table links to the phase-system anchors]
+- [x] CHK-005 [P0] Feature catalog links for all 16 NEW-series scenarios point to the correct tooling/script feature sources [EVIDENCE: spec.md scope table links verified against `../../feature_catalog/16--tooling-and-scripts/` and `../../feature_catalog/feature_catalog.md`]
 - [ ] CHK-006 [P1] Level 1 template anchors and metadata blocks are intact across all four phase documents [EVIDENCE: `SPECKIT_LEVEL`, frontmatter, and anchor sections verified in spec.md, plan.md, tasks.md, checklist.md]
 <!-- /ANCHOR:pre-impl -->
 
@@ -71,8 +71,8 @@ contextType: "general"
 - [ ] CHK-032 [P0] NEW-127 Vitest transcript confirms `migration-checkpoint-scripts.vitest.ts` with all tests passing [EVIDENCE: Vitest output log attached]
 - [ ] CHK-033 [P0] NEW-128 Vitest transcript confirms `vector-index-schema-compatibility.vitest.ts` with all tests passing [EVIDENCE: Vitest output log attached]
 - [ ] CHK-034 [P0] NEW-139 M-007 closure evidence covers all 10 sub-steps (M-007a through M-007j) with expected behavior confirmed for each [EVIDENCE: session transcript or structured log attached]
-- [ ] CHK-035 [P0] Each of the 20 scenarios has a verdict (PASS, PARTIAL, or FAIL) with explicit rationale referencing the review protocol acceptance rules [EVIDENCE: verdict table or inline verdict notes present]
-- [ ] CHK-036 [P1] Coverage summary reports 20/20 scenarios executed with no skipped test IDs [EVIDENCE: phase closeout note or implementation-summary.md]
+- [ ] CHK-035 [P0] Each of the 21 scenarios has a verdict (PASS, PARTIAL, or FAIL) with explicit rationale referencing the review protocol acceptance rules [EVIDENCE: verdict table or inline verdict notes present]
+- [ ] CHK-036 [P1] Coverage summary reports 21/21 scenarios executed with no skipped test IDs [EVIDENCE: phase closeout note or implementation-summary.md]
 - [ ] CHK-037 [P2] PHASE-002 through PHASE-005 sandbox folders are confirmed removed or quarantined after evidence capture [EVIDENCE: directory listing or cleanup log]
 <!-- /ANCHOR:testing -->
 
@@ -92,7 +92,7 @@ contextType: "general"
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-050 [P0] `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` contain no template placeholder text [EVIDENCE: all content is derived from playbook prompts and feature catalog entries for the 20 phase-016 scenarios]
+- [x] CHK-050 [P0] `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` contain no template placeholder text [EVIDENCE: all content is derived from playbook prompts and feature catalog entries for the 21 phase-016 scenarios]
 - [ ] CHK-051 [P0] All four phase documents are synchronized: scenario names, prompts, and acceptance criteria are consistent across spec, plan, and checklist [EVIDENCE: cross-file consistency pass completed]
 - [ ] CHK-052 [P1] Open question about promoting NEW-139 to the main scenario table is acknowledged and tracked [EVIDENCE: open question entry present in spec.md]
 - [ ] CHK-053 [P1] Open question about adding a dedicated PHASE-005 catalog leaf is acknowledged and tracked [EVIDENCE: open question entry present in spec.md]

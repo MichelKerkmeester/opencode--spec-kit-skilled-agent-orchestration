@@ -1,6 +1,6 @@
 ---
 title: "Implementation Plan: 016-tooling-and-scripts manual testing"
-description: "This plan structures execution for the 20 tooling-and-scripts manual scenarios assigned to phase 016. It organizes exact prompts, destructive-vs-safe sequencing, evidence collection, and verdict handling under the review protocol."
+description: "This plan structures execution for the 21 tooling-and-scripts manual scenarios assigned to phase 016. It organizes exact prompts, destructive-vs-safe sequencing, evidence collection, and verdict handling under the review protocol."
 trigger_phrases:
   - "implementation plan"
   - "manual testing"
@@ -39,16 +39,16 @@ This plan sequences the phase-016 tooling-and-scripts scenarios so low-risk insp
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [ ] All 20 test IDs are resolved to a source prompt, command path, and evidence expectation.
+- [ ] All 21 test IDs are resolved to a source prompt, command path, and evidence expectation.
 - [ ] The playbook, review protocol, and feature catalog links are available from this phase folder.
 - [ ] Sandbox targets exist for destructive checks (`bulk-delete`, malformed memories, generated phase folders, watcher temp files).
 - [ ] MCP/runtime prerequisites are known for tests that require slash commands or `memory_save`.
 - [ ] The `NEW-139` session-capturing scenario is sourced from the canonical `M-007` section, not reconstructed from memory.
 
 ### Definition of Done
-- [ ] `spec.md` and `plan.md` both cover all 20 phase-016 scenarios.
+- [ ] `spec.md` and `plan.md` both cover all 21 phase-016 scenarios.
 - [ ] Every scenario has an exact prompt in Section 5 and a matching acceptance rule in `spec.md`.
-- [ ] Evidence collection expectations align with `review_protocol.md` verdict rules.
+- [ ] Evidence collection expectations align with `../../manual_testing_playbook/review_protocol.md` verdict rules.
 - [ ] Destructive scenarios are constrained to disposable folders, sandbox files, or checkpoint-backed targets.
 - [ ] A quick structural audit confirms required anchors, frontmatter fields, and test IDs are present.
 <!-- /ANCHOR:quality-gates -->
@@ -138,10 +138,10 @@ The phase packet should be used as an operator checklist: establish safe prerequ
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| `manual_testing_playbook/manual_testing_playbook.md` | Internal source | Green | No canonical prompts, commands, or acceptance rules |
-| `manual_testing_playbook/review_protocol.md` | Internal source | Green | Verdict rules and release-readiness logic become ambiguous |
+| `../../manual_testing_playbook/manual_testing_playbook.md` | Internal source | Green | No canonical prompts, commands, or acceptance rules |
+| `../../manual_testing_playbook/review_protocol.md` | Internal source | Green | Verdict rules and release-readiness logic become ambiguous |
 | `feature_catalog/16--tooling-and-scripts/` | Internal source | Green | Scenario-to-feature traceability is incomplete |
-| `feature_catalog/feature_catalog.md` phase-system anchors | Internal source | Green | `PHASE-001` through `PHASE-005` cannot be linked to the catalog section |
+| `../../feature_catalog/feature_catalog.md` phase-system anchors | Internal source | Green | `PHASE-001` through `PHASE-005` cannot be linked to the catalog section |
 | MCP runtime (`memory_save`, slash commands) | Runtime dependency | Yellow | `NEW-147` and `NEW-149` cannot be executed end-to-end |
 | Sandbox file/folder workspace | Test infrastructure | Yellow | Destructive scenarios risk touching non-disposable content |
 <!-- /ANCHOR:dependencies -->

@@ -22,17 +22,16 @@ contextType: "general"
 This pass closes the parent spec pack and the remaining child-phase documentation against the March 17, 2026 verified baseline. The executable surface passes end to end: package typecheck, scripts check/build, contamination and parity-focused lanes, extractor and module suites, the focused phase-016 parity lane, the phase-010 and phase-011 proof lanes, the full MCP suite, strict recursive spec validation, and strict parent completion.
 
 **Completion highlights**:
-- Strict recursive validation now passes with `0` errors and `0` warnings after phased-template addenda were formalized in `template-structure.js`.
+- Strict recursive validation now passes with `0` errors and `0` warnings with the current phased-parent addenda support validating cleanly.
 - A current same-day retained live-proof artifact exists for all five supported CLIs in `research/live-cli-proof-2026-03-17.json`.
 - Parent and child checklists are strict-complete, including the required memory-save closeout artifacts.
 
-**Key Decisions**: formalize phased-parent and child addenda in the validator instead of stripping sanctioned sections, reconcile child docs to shipped code and tests, treat `research/` as canonical evidence and `scratch/` as non-canonical operator tooling, and keep fixture-backed proof and live proof explicitly distinguished even now that both are satisfied.
+**Key Decisions**: rely on the current phased-parent and child addenda validator support instead of stripping sanctioned sections, reconcile child docs to shipped code and tests, treat `research/` as canonical evidence and `scratch/` as non-canonical operator tooling, and keep fixture-backed proof and live proof explicitly distinguished even now that both are satisfied.
 
 **Critical Dependencies**: system-spec-kit validator and completion scripts, current script and MCP test lanes, phase-local specs, supporting docs validated by `sk-doc`, and the retained live CLI proof artifact.
 
 ---
 
-<!-- ANCHOR:metadata -->
 ## 2. METADATA
 
 | Field | Value |
@@ -42,7 +41,6 @@ This pass closes the parent spec pack and the remaining child-phase documentatio
 | **Status** | Complete |
 | **Created** | 2026-03-08 |
 | **Branch** | `022-hybrid-rag-fusion/010-perfect-session-capturing` |
-<!-- /ANCHOR:metadata -->
 
 ---
 

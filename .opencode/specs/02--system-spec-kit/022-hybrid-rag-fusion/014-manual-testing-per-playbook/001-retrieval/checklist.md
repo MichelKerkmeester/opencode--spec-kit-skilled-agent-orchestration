@@ -33,7 +33,7 @@ contextType: "general"
 
 - [x] CHK-001 [P0] Scope is locked to nine retrieval tests (EX-001, EX-002, EX-003, EX-004, EX-005, NEW-086, NEW-109, NEW-142, NEW-143) with no non-retrieval scenarios included [EVIDENCE: scope table in `spec.md` lists exactly nine rows]
 - [x] CHK-002 [P0] Exact prompts, command sequences, and pass criteria were extracted verbatim from `../../manual_testing_playbook/manual_testing_playbook.md` [EVIDENCE: scope table in `spec.md` matches playbook rows for all nine retrieval test IDs]
-- [x] CHK-003 [P0] Feature catalog links for all nine tests point to the correct `01--retrieval/` files [EVIDENCE: spec.md links `01-unified-context-retrieval-memorycontext.md`, `02-semantic-and-lexical-search-memorysearch.md`, `03-trigger-phrase-matching-memorymatchtriggers.md`, `04-hybrid-search-pipeline.md`, `05-4-stage-pipeline-architecture.md`, `06-bm25-trigger-phrase-re-index-gate.md`, `08-quality-aware-3-tier-search-fallback.md` (for NEW-109 and NEW-143)]
+- [x] CHK-003 [P0] Feature catalog links for all nine tests point to the correct `01--retrieval/` files [EVIDENCE: spec.md scope table references the expected retrieval catalog entries for EX-001 through EX-005, NEW-086, NEW-109, NEW-142, and NEW-143]
 - [ ] CHK-004 [P1] Level 1 template anchors and metadata blocks are intact across all four phase documents [EVIDENCE: `SPECKIT_LEVEL` and anchor sections verified in spec.md, plan.md, tasks.md, checklist.md]
 <!-- /ANCHOR:pre-impl -->
 

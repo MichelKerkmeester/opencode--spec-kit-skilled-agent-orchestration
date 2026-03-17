@@ -27,6 +27,8 @@ contextType: "general"
 | **Created** | 2026-03-16 |
 | **Branch** | `main` |
 | **Parent** | [`../spec.md`](../spec.md) |
+| **Predecessor Phase** | `016-tooling-and-scripts` |
+| **Successor Phase** | `018-ux-hooks` |
 <!-- /ANCHOR:metadata -->
 
 ---

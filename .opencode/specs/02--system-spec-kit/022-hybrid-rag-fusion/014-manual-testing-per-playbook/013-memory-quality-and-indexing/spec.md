@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: manual-testing-per-playbook memory quality and indexing phase [template:level_1/spec.md]"
-description: "Phase 013 documents the memory-quality-and-indexing manual test packet for the Spec Kit Memory system. It breaks 25 playbook scenarios into a bounded phase document so testers can execute prompts, commands, evidence capture, and verdict criteria from one canonical folder."
+description: "Phase 013 documents the memory-quality-and-indexing manual test packet for the Spec Kit Memory system. It breaks 26 playbook scenarios into a bounded phase document so testers can execute prompts, commands, evidence capture, and verdict criteria from one canonical folder."
 trigger_phrases:
   - "memory quality manual testing"
   - "phase 013 indexing tests"
@@ -27,6 +27,8 @@ contextType: "general"
 | **Created** | 2026-03-16 |
 | **Branch** | `main` |
 | **Parent** | [`../spec.md`](../spec.md) |
+| **Predecessor Phase** | `012-query-intelligence` |
+| **Successor Phase** | `014-pipeline-architecture` |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -38,7 +40,7 @@ contextType: "general"
 Manual test scenarios for memory-quality-and-indexing currently live in the central playbook and need structured per-phase documentation that preserves exact prompts, command sequences, evidence expectations, and review-protocol verdict rules. Without a dedicated Phase 013 packet, testers must reconstruct memory save, indexing, and review coverage from multiple source documents before they can execute or assess the category consistently.
 
 ### Purpose
-Provide a single memory-quality-and-indexing specification that maps all 25 Phase 013 test IDs to canonical feature context and playbook-derived acceptance criteria so execution and review remain consistent with the manual testing playbook.
+Provide a single memory-quality-and-indexing specification that maps all 26 Phase 013 test IDs to canonical feature context and playbook-derived acceptance criteria so execution and review remain consistent with the manual testing playbook.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -62,6 +64,7 @@ Provide a single memory-quality-and-indexing specification that maps all 25 Phas
 | NEW-048 | Auto entity extraction (R10) | [`../../feature_catalog/13--memory-quality-and-indexing/10-auto-entity-extraction.md`](../../feature_catalog/13--memory-quality-and-indexing/10-auto-entity-extraction.md) | Direct category match for entity extraction, normalization, and denylist behavior. |
 | NEW-069 | Entity normalization consolidation | [`../../feature_catalog/13--memory-quality-and-indexing/13-entity-normalization-consolidation.md`](../../feature_catalog/13--memory-quality-and-indexing/13-entity-normalization-consolidation.md) | Direct category match for shared unicode-aware normalization parity. |
 | NEW-073 | Quality gate timer persistence | [`../../feature_catalog/13--memory-quality-and-indexing/14-quality-gate-timer-persistence.md`](../../feature_catalog/13--memory-quality-and-indexing/14-quality-gate-timer-persistence.md) | Direct category match for persisted warn-only activation timing. |
+| NEW-092 | Implemented: auto entity extraction (R10) | [`../../feature_catalog/13--memory-quality-and-indexing/10-auto-entity-extraction.md`](../../feature_catalog/13--memory-quality-and-indexing/10-auto-entity-extraction.md) | Implemented-status validation for the same entity extraction pipeline covered by NEW-048. |
 | NEW-111 | Deferred lexical-only indexing | [`../../feature_catalog/13--memory-quality-and-indexing/15-deferred-lexical-only-indexing.md`](../../feature_catalog/13--memory-quality-and-indexing/15-deferred-lexical-only-indexing.md) | Direct category match for embedding failure fallback and reindex recovery. |
 | NEW-119 | Memory filename uniqueness (ensureUniqueMemoryFilename) | [`../../feature_catalog/13--memory-quality-and-indexing/04-spec-folder-description-discovery.md`](../../feature_catalog/13--memory-quality-and-indexing/04-spec-folder-description-discovery.md) | Playbook cross-reference aligns this scenario to spec-folder description discovery; execution also touches filename collision and memorySequence history behavior. |
 | NEW-131 | Description.json batch backfill validation (PI-B3) | [`../../feature_catalog/13--memory-quality-and-indexing/04-spec-folder-description-discovery.md`](../../feature_catalog/13--memory-quality-and-indexing/04-spec-folder-description-discovery.md) | Direct playbook cross-reference to PI-B3 batch backfill coverage. |
@@ -110,6 +113,7 @@ Provide a single memory-quality-and-indexing specification that maps all 25 Phas
 | REQ-010 | Document NEW-048 with its exact playbook prompt, command sequence, evidence target, and mapped feature link. | PASS: Entities extracted, normalized, persisted; denylist items absent; FAIL: Missing entities, denormalized values, or denylist items present |
 | REQ-011 | Document NEW-069 with its exact playbook prompt, command sequence, evidence target, and mapped feature link. | PASS if extractor and linker produce identical normalized entities for all test inputs including unicode |
 | REQ-012 | Document NEW-073 with its exact playbook prompt, command sequence, evidence target, and mapped feature link. | PASS if activation timestamp persists across restart and quality gate honors the original timer |
+| REQ-012A | Document NEW-092 with its exact playbook prompt, command sequence, evidence target, and mapped feature link. | PASS if entity extraction runs automatically on save and produces correctly typed entities with default settings |
 | REQ-013 | Document NEW-111 with its exact playbook prompt, command sequence, evidence target, and mapped feature link. | PASS if embedding failure falls back to lexical-only indexing, BM25 search works, and reindex recovers full embedding |
 | REQ-014 | Document NEW-119 with its exact playbook prompt, command sequence, evidence target, and mapped feature link. | PASS if collision produces -1 suffix first, exhausting -1..-100 produces a 12-hex random fallback suffix instead of SHA1, repeated fallback saves still produce distinct names, memorySequence increments through the hardened coercion path, and memoryNameHistory tracks all names |
 | REQ-015 | Document NEW-131 with its exact playbook prompt, command sequence, evidence target, and mapped feature link. | PASS if description.json coverage matches the active spec inventory, every description.json is valid JSON, C1 field-type checks pass, and per-folder generation is preferred over spec.md fallback |
@@ -124,7 +128,7 @@ Provide a single memory-quality-and-indexing specification that maps all 25 Phas
 | REQ-024 | Document M-007 with its exact playbook prompt, command sequence, evidence target, and mapped feature link. | Pass: All automated commands pass; package-clean MCP verification passes alongside the scripts-side closure suite; M-007a validates and indexes successfully; M-007b proves thin aligned JSON now fails INSUFFICIENT_CONTEXT_ABORT with lower diagnostic quality than M-007a and with no new memory file written; M-007c proves the mis-scoped same-workspace stateless run hard-fails ALIGNMENT_BLOCK; M-007d shows provenance-tagged enrichment, ANCHOR preservation, rendered-memory contract compliance, and frontmatter trigger-phrase quality; M-007e proves OpenCode precedence does not override save-path alignment blocking; M-007f through M-007i prove per-backend fallback behavior under canonical .opencode workspace identity, the direct-mode caller hint, and the tightened alignment plus insufficiency gates without malformed trigger rendering or V5 corruption; M-007j proves final NO_DATA_AVAILABLE behavior. |
 | REQ-025 | Document M-008 with its exact playbook prompt, command sequence, evidence target, and mapped feature link. | Pass: direct operator run confirms per-memory history behavior without relying only on automated suites. |
 
-No P1 items are defined for this phase; all 25 scenarios are required for Phase 013 coverage.
+No P1 items are defined for this phase; all 26 scenarios are required for Phase 013 coverage.
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -132,10 +136,10 @@ No P1 items are defined for this phase; all 25 scenarios are required for Phase 
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All 25 Phase 013 tests are documented with exact prompts, command sequences, evidence expectations, and review-protocol verdict language.
+- **SC-001**: All 26 Phase 013 tests are documented with exact prompts, command sequences, evidence expectations, and review-protocol verdict language.
 - **SC-002**: Every test ID in this phase links to a feature-catalog file, including explicit source-backed mappings for M-001 through M-008.
 - **SC-003**: `plan.md` defines a preconditions -> execute -> evidence -> verdict pipeline for both non-destructive and sandboxed destructive scenarios.
-- **SC-004**: Reviewers can assess the phase as 25/25 documented scenarios with no omitted test IDs, placeholder text, or ambiguous coverage gaps.
+- **SC-004**: Reviewers can assess the phase as 26/26 documented scenarios with no omitted test IDs, placeholder text, or ambiguous coverage gaps.
 <!-- /ANCHOR:success-criteria -->
 
 ---

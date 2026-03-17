@@ -27,6 +27,8 @@ contextType: "general"
 | **Created** | 2026-03-16 |
 | **Branch** | `main` |
 | **Parent** | [`../spec.md`](../spec.md) |
+| **Predecessor Phase** | `004-maintenance` |
+| **Successor Phase** | `006-analysis` |
 <!-- /ANCHOR:metadata -->
 
 ---

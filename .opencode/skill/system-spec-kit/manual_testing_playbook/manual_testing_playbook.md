@@ -396,6 +396,10 @@ Note: NEW-042, NEW-119, NEW-131, and NEW-132 all map to the same catalog entry f
 | NEW-088 | [09--evaluation-and-measurement/14-cross-ai-validation-fixes.md](../feature_catalog/09--evaluation-and-measurement/14-cross-ai-validation-fixes.md) |
 | NEW-089 | [16--tooling-and-scripts/05-code-standards-alignment.md](../feature_catalog/16--tooling-and-scripts/05-code-standards-alignment.md) |
 | NEW-090 | [09--evaluation-and-measurement/16-int8-quantization-evaluation.md](../feature_catalog/09--evaluation-and-measurement/16-int8-quantization-evaluation.md) |
+| NEW-091 | [10--graph-signal-activation/07-community-detection.md](../feature_catalog/10--graph-signal-activation/07-community-detection.md) |
+| NEW-092 | [13--memory-quality-and-indexing/10-auto-entity-extraction.md](../feature_catalog/13--memory-quality-and-indexing/10-auto-entity-extraction.md) |
+| NEW-093 | [15--retrieval-enhancements/05-memory-summary-search-channel.md](../feature_catalog/15--retrieval-enhancements/05-memory-summary-search-channel.md) |
+| NEW-094 | [15--retrieval-enhancements/06-cross-document-entity-linking.md](../feature_catalog/15--retrieval-enhancements/06-cross-document-entity-linking.md) |
 | NEW-095 | [14--pipeline-architecture/13-strict-zod-schema-validation.md](../feature_catalog/14--pipeline-architecture/13-strict-zod-schema-validation.md) |
 | NEW-096 | [15--retrieval-enhancements/08-provenance-rich-response-envelopes.md](../feature_catalog/15--retrieval-enhancements/08-provenance-rich-response-envelopes.md) |
 | NEW-097 | [05--lifecycle/05-async-ingestion-job-lifecycle.md](../feature_catalog/05--lifecycle/05-async-ingestion-job-lifecycle.md) |
@@ -616,7 +620,9 @@ These 30 catalog entries are explicitly documented here even when validation is 
   - `NEW-133` cross-reference for MCP `memory_save` dry-run and insufficiency preview
   - `NEW-149` cross-reference for rendered-memory contract enforcement and historical remediation
 - Latest automated baseline refresh:
-  - On 2026-03-17, root `typecheck`, scripts `check` and `build`, `test-scripts-modules.js` (`384` passed, `5` skipped, `389` total), `test-extractors-loaders.js` (`307` passing), the targeted scripts closure suite (`14` files and `150` tests), the phase-016 parity lane (`45` tests), the focused save-path lane (`6` files and `298` tests), and package-clean MCP `lint`/`build`/full `test` reran cleanly with the MCP package suite at `7822` total tests.
+  - On 2026-03-17, root `typecheck`, scripts `check` and `build`, `test-scripts-modules.js` (`384` passed, `5` skipped, `389` total), and `test-extractors-loaders.js` (`307` passing) reran cleanly.
+  - On 2026-03-17, the focused proof lanes reran cleanly as separate canonical checks: `task-enrichment.vitest.ts` (`47` tests), `runtime-memory-inputs.vitest.ts` (`29` tests), the phase-016 parity lane (`45` tests), the phase-010 integration lane (`70` tests across `test-integration.vitest.ts` and `workflow-e2e.vitest.ts`), and the phase-011 session-source lane (`66` tests).
+  - On 2026-03-17, package-clean MCP `lint`/`build`/full `test` reran cleanly with the MCP package suite at `7822` total tests, and the focused MCP save-quality lane remained part of that refreshed package-clean verification stack.
   - The latest alignment-drift support run remains the 2026-03-16 snapshot with `229` scanned files and `0` findings; it was not part of the March 17 rerun set.
   - This automated baseline is not sufficient evidence by itself for "all five CLIs proven live"; verify the retained artifact at `research/live-cli-proof-2026-03-17.json` and its March 17, 2026 per-CLI records before making that claim, and refresh equivalent primary evidence for any future live-proof assertion.
 - Commands:
@@ -634,7 +640,7 @@ These 30 catalog entries are explicitly documented here even when validation is 
   - JS verification suites:
     - `cd .opencode/skill/system-spec-kit/scripts/tests && node test-extractors-loaders.js`
     - `cd .opencode/skill/system-spec-kit/scripts/tests && node test-bug-fixes.js`
-    - `cd .opencode/skill/system-spec-kit/scripts && npx vitest run tests/test-integration.vitest.ts`
+    - `cd .opencode/skill/system-spec-kit/scripts && npx vitest run tests/test-integration.vitest.ts tests/workflow-e2e.vitest.ts`
     - `cd .opencode/skill/system-spec-kit/scripts/tests && node test-memory-quality-lane.js`
   - Standards checks:
     - `cd .opencode/skill/system-spec-kit/mcp_server && npm run lint`

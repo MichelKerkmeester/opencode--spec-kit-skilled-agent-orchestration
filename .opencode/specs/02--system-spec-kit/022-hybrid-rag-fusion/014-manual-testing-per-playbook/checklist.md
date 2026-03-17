@@ -1,6 +1,6 @@
 ---
 title: "Verification Checklist: manual-testing-per-playbook [template:level_2/checklist.md]"
-description: "Verification Date: 2026-03-16"
+description: "Verification Date: 2026-03-17"
 trigger_phrases:
   - "manual testing checklist"
   - "playbook verification"
@@ -30,12 +30,12 @@ contextType: "general"
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] Parent spec.md exists with Phase Documentation Map listing all 19 phases
-- [x] CHK-002 [P0] Parent plan.md exists with agent delegation strategy and wave structure
-- [x] CHK-003 [P0] All 19 phase directories created (`001-retrieval/` through `019-feature-flag-reference/`)
-- [x] CHK-004 [P1] Manual testing playbook available at `../../manual_testing_playbook/manual_testing_playbook.md`
-- [x] CHK-005 [P1] Review protocol available at `../../manual_testing_playbook/review_protocol.md`
-- [x] CHK-006 [P1] Feature catalog directories exist for all 19 categories
+- [x] CHK-001 [P0] Parent spec.md exists and now uses the current exact-ID coverage model [EVIDENCE: parent `spec.md` reviewed after alignment]
+- [x] CHK-002 [P0] Parent plan.md exists and now describes the alignment pass rather than the original generation wave [EVIDENCE: parent `plan.md` summary and phases reviewed]
+- [x] CHK-003 [P0] All 19 phase directories still exist (`001-retrieval/` through `019-feature-flag-reference/`) [EVIDENCE: directory inventory confirmed for all `001-*` to `019-*` folders]
+- [x] CHK-004 [P1] Manual testing playbook resolves at `../manual_testing_playbook/manual_testing_playbook.md` [EVIDENCE: relative path resolves and file exists]
+- [x] CHK-005 [P1] Review protocol resolves at `../manual_testing_playbook/review_protocol.md` [EVIDENCE: relative path resolves and file exists]
+- [x] CHK-006 [P0] Exact-ID inventory established from the current playbook at `211` scenario IDs, while retaining `195` as the top-level-ID count only [EVIDENCE: exact-ID audit input reviewed against the current playbook text]
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -43,17 +43,11 @@ contextType: "general"
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [x] CHK-010 [P0] All 19 spec.md files use `## 2. PROBLEM & PURPOSE` header (template standard)
-- [x] CHK-011 [P0] All 19 spec.md files have Parent link format `[\`../spec.md\`](../spec.md)`
-- [x] CHK-012 [P0] All 19 spec.md files include `<!-- SPECKIT_LEVEL: 1 -->` and `<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->`
-- [x] CHK-013 [P0] All 19 spec.md files have 7 anchor blocks (metadata, problem, scope, requirements, success-criteria, risks, questions)
-- [x] CHK-014 [P0] All 19 plan.md files follow Level 1 plan template with 7 anchor blocks
-- [x] CHK-015 [P0] All 19 tasks.md files follow Level 1 tasks template
-- [x] CHK-016 [P0] All 19 checklist.md files have exactly 8 anchor blocks (protocol, pre-impl, code-quality, testing, security, docs, file-org, summary)
-- [x] CHK-017 [P1] No YAML frontmatter contains `# SPECKIT_TEMPLATE_SOURCE` (belongs in HTML comments only)
-- [x] CHK-018 [P1] All section headers in checklist.md are unnumbered and match template exactly
-- [x] CHK-019 [P1] No checklist.md contains `ANCHOR:overview` section
-- [x] CHK-020 [P1] No checklist.md contains standalone `## P0` or `## P1` section headers
+- [x] CHK-010 [P0] Parent spec.md no longer presents `195` top-level IDs as the authoritative coverage model [EVIDENCE: parent `spec.md` problem statement and success criteria]
+- [x] CHK-011 [P0] Parent phase map uses truthful exact-ID counts, including `42` exact IDs for Phase `013` and `18` exact IDs for Phase `014` [EVIDENCE: parent `spec.md` Phase Documentation Map]
+- [x] CHK-012 [P0] Parent docs record the current validator truth instead of claiming an unrun or unresolved recursive-validation step [EVIDENCE: parent `tasks.md`, `checklist.md`, and `implementation-summary.md`]
+- [x] CHK-013 [P1] The parent packet still follows the Level 1 template structure after the rewrite [EVIDENCE: `validate.sh --recursive` reports required sections present]
+- [x] CHK-014 [P1] Parent `description.json` exists and is valid JSON [EVIDENCE: JSON parse succeeded for `description.json` on 2026-03-17]
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -61,13 +55,10 @@ contextType: "general"
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-030 [P0] All 76 child files exist (19 folders x 4 files: spec.md, plan.md, tasks.md, checklist.md)
-- [x] CHK-031 [P0] Parent root contains spec.md, plan.md, tasks.md, checklist.md (4 files)
-- [ ] CHK-032 [P0] Coverage audit: every test ID from playbook cross-reference index appears in exactly one phase spec.md
-- [ ] CHK-033 [P0] No orphaned test IDs (IDs in phase specs that are not in the playbook)
-- [ ] CHK-034 [P1] `validate.sh --recursive` passes on entire `014-manual-testing-per-playbook/` tree
-- [x] CHK-035 [P1] Phase Documentation Map in parent spec.md matches actual folder contents and test counts
-- [x] CHK-036 [P1] Cross-cutting test assignments verified: PHASE-001..005 in `016-tooling-and-scripts/`, M-001..008 in `013-memory-quality-and-indexing/`
+- [x] CHK-020 [P0] Exact-ID ownership audit across all 19 phase specs reports `211` exact scenario IDs with `0` missing IDs and `0` duplicate owners [EVIDENCE: audit rerun on 2026-03-17]
+- [x] CHK-021 [P0] Recursive `validate.sh --recursive` was rerun on `014-manual-testing-per-playbook/` and completed with `0` errors and `19` warnings [EVIDENCE: validator rerun on 2026-03-17]
+- [x] CHK-022 [P0] `013-memory-quality-and-indexing/` validation was rerun after the exact-ID expansion [EVIDENCE: child validator rerun on 2026-03-17]
+- [x] CHK-023 [P1] Cross-cutting ownership remains stable: `PHASE-001..005` in Phase `016`; `M-001..008` plus dedicated-memory sub-scenarios in Phase `013` [EVIDENCE: parent `spec.md` and child `013/spec.md` reviewed together]
 <!-- /ANCHOR:testing -->
 
 ---
@@ -75,9 +66,8 @@ contextType: "general"
 <!-- ANCHOR:security -->
 ## Security
 
-- [x] CHK-040 [P0] No hardcoded secrets or credentials in any generated file
-- [x] CHK-041 [P1] Destructive test phases (002, 005, 006) include sandbox/checkpoint requirements in spec.md and plan.md
-- [x] CHK-042 [P1] All destructive scenarios explicitly flagged with isolation requirements
+- [x] CHK-030 [P0] No secrets or credentials were introduced while aligning the documentation packet [EVIDENCE: doc-only changes reviewed]
+- [x] CHK-031 [P1] Scope remained limited to the parent packet, Phase `013`, the `M-007` playbook block, and the narrow `010` truth-cleanup [EVIDENCE: edited-file list reviewed against approved scope]
 <!-- /ANCHOR:security -->
 
 ---
@@ -85,11 +75,10 @@ contextType: "general"
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-050 [P0] Every phase spec.md links test IDs to feature catalog files via relative paths
-- [x] CHK-051 [P0] Every phase spec.md includes exact playbook prompts and command sequences for its test scenarios
-- [x] CHK-052 [P1] Every phase plan.md defines a preconditions -> execute -> evidence -> verdict pipeline
-- [x] CHK-053 [P1] Parent spec.md Phase Documentation Map includes test counts per phase
-- [x] CHK-054 [P2] Each phase spec.md references the playbook and review protocol as dependencies
+- [x] CHK-040 [P0] Phase `013` explicitly documents `M-005a..c`, `M-006a..c`, and `M-007a..j` as literal scenario IDs [EVIDENCE: `013-memory-quality-and-indexing/spec.md` exact-ID scope and requirements]
+- [x] CHK-041 [P0] The `M-007` playbook block now includes `tests/workflow-e2e.vitest.ts` in the JS verification suite list [EVIDENCE: `manual_testing_playbook.md` command block]
+- [x] CHK-042 [P1] The `M-007` playbook baseline wording now uses the focused proof-lane framing from the `010` closure docs instead of the old compressed aggregate buckets [EVIDENCE: `manual_testing_playbook.md` latest automated baseline refresh]
+- [x] CHK-043 [P1] The parent `010` packet no longer contradicts itself about whether validator support was implemented in this closure pass [EVIDENCE: `010-perfect-session-capturing/spec.md` and `implementation-summary.md` reviewed after cleanup]
 <!-- /ANCHOR:docs -->
 
 ---
@@ -97,9 +86,8 @@ contextType: "general"
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [x] CHK-060 [P0] All phase folders follow `NNN-name/` naming convention
-- [x] CHK-061 [P1] No stale or orphaned files in phase directories (only spec.md, plan.md, tasks.md, checklist.md, plus optional description.json and memory/)
-- [x] CHK-062 [P2] Parent description.json exists and is valid JSON
+- [x] CHK-050 [P1] Parent root contains the expected root docs plus valid `description.json` with no stray packet files added during alignment [EVIDENCE: root file inventory reviewed]
+- [x] CHK-051 [P2] Existing Level 1 section-count warnings remain documented as out of scope for this pass rather than silently ignored [EVIDENCE: parent `spec.md` and `implementation-summary.md` record the warning truth]
 <!-- /ANCHOR:file-org -->
 
 ---
@@ -109,16 +97,14 @@ contextType: "general"
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 15 | 13/15 |
-| P1 Items | 12 | 11/12 |
-| P2 Items | 2 | 1/2 |
+| P0 Items | 10 | 10/10 |
+| P1 Items | 8 | 8/8 |
+| P2 Items | 1 | 1/1 |
 
-**Verification Date**: 2026-03-16
+**Verification Date**: 2026-03-17
 
 **Outstanding items**:
-- CHK-032, CHK-033: Coverage audit not yet run
-- CHK-034: Recursive validation not yet run
-- CHK-062: description.json validation deferred
+- Level 1 section-count warnings remain in the packet, but they are now documented truthfully as non-goals of this alignment pass.
 <!-- /ANCHOR:summary -->
 
 ---

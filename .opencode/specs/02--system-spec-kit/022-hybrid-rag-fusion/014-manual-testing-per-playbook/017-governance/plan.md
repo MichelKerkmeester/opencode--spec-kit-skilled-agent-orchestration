@@ -86,7 +86,7 @@ Manual governance test execution pipeline with review-gated evidence collection.
 ### Phase 3: Stateful Tests
 - [ ] Run NEW-122 only against disposable sandbox scope identifiers; attempt a save missing provenance fields and capture the rejection, then complete a valid governed save and verify `governance_audit` rows for both allow and deny outcomes before inspecting cross-scope retrieval filtering.
 - [ ] Run NEW-123 in sequence: create a shared space with `rolloutEnabled:true`, verify non-member denial, grant membership, verify access, then flip `killSwitch:true` and verify denial again. Capture DB state for `shared_space_members` and `shared_spaces` tables at each step.
-- [ ] Run NEW-148 from a clean shared-memory state: verify default-off, enable and confirm idempotency, check `shared-spaces/README.md` on disk, restart MCP and confirm DB persistence, then verify env-var override. Finally, run `/memory:shared` with the feature disabled and capture the first-run setup prompt. Restore DB to pre-test state after all seven steps are complete.
+- [ ] Run NEW-148 from a clean shared-memory state: verify default-off, enable and confirm idempotency, check the generated shared-spaces README artifact on disk, restart MCP and confirm DB persistence, then verify env-var override. Finally, run `/memory:shared` with the feature disabled and capture the first-run setup prompt. Restore DB to pre-test state after all seven steps are complete.
 - [ ] If sandbox isolation fails or DB state from a prior scenario would contaminate the next, stop execution and mark the scenario blocked instead of proceeding.
 
 ### Phase 4: Evidence Collection and Verdict

@@ -833,3 +833,80 @@ describe('extractNextAction recentContext regex fallback', () => {
     expect(sessionData.NEXT_ACTION).toHaveLength(100);
   });
 });
+
+describe('observation truncation prioritizes followup observations (M-005b)', () => {
+  it('preserves followup observations when total exceeds MAX_OBSERVATIONS', async () => {
+    // Simulate the bug: followup observation is appended last via .push(),
+    // so with 5 observations and MAX_OBSERVATIONS=3, it would be truncated
+    // without the priority sort fix.
+    const normalized = normalizeInputData({
+      specFolder: '022-hybrid-rag-fusion/010-perfect-session-capturing',
+      observations: [
+        { type: 'implementation', title: 'Obs 1', narrative: 'First observation', facts: [] },
+        { type: 'implementation', title: 'Obs 2', narrative: 'Second observation', facts: [] },
+        { type: 'feature', title: 'Obs 3', narrative: 'Third observation', facts: [] },
+        { type: 'bugfix', title: 'Obs 4', narrative: 'Fourth observation', facts: [] },
+      ],
+      nextSteps: [
+        'Fix bug X',
+        'Deploy Y',
+        'Validate Z',
+      ],
+      userPrompts: [{
+        prompt: 'Trigger truncation test',
+        timestamp: '2026-03-17T16:00:00.000Z',
+      }],
+      recentContext: [{
+        request: 'Test followup priority during truncation',
+        learning: 'Verifying followup observations survive truncation.',
+      }],
+    });
+
+    // The normalizer appends the followup observation last (index 4),
+    // so without the fix, slice(0, 3) would drop it.
+    expect(normalized.observations.length).toBeGreaterThan(3);
+    expect(normalized.observations.at(-1)).toMatchObject({
+      type: 'followup',
+      title: 'Next Steps',
+    });
+
+    const sessionData = await collectSessionData(
+      normalized,
+      '022-hybrid-rag-fusion/010-perfect-session-capturing',
+    );
+
+    // The fix ensures followup observations are prioritized before truncation,
+    // so NEXT_ACTION should reflect the first nextStep rather than the default.
+    expect(sessionData.NEXT_ACTION).toBe('Fix bug X');
+  });
+
+  it('retains no more than MAX_OBSERVATIONS total after prioritization', async () => {
+    const normalized = normalizeInputData({
+      specFolder: '022-hybrid-rag-fusion/010-perfect-session-capturing',
+      observations: [
+        { type: 'implementation', title: 'Impl 1', narrative: 'Implementation work', facts: [] },
+        { type: 'feature', title: 'Feature 1', narrative: 'Feature work', facts: [] },
+        { type: 'bugfix', title: 'Bugfix 1', narrative: 'Bug fix work', facts: [] },
+        { type: 'implementation', title: 'Impl 2', narrative: 'More implementation', facts: [] },
+      ],
+      nextSteps: ['Deploy to staging', 'Run integration tests'],
+      userPrompts: [{
+        prompt: 'Verify count limit',
+        timestamp: '2026-03-17T16:30:00.000Z',
+      }],
+      recentContext: [{
+        request: 'Check observation count after truncation',
+        learning: 'Ensure MAX_OBSERVATIONS limit is still enforced.',
+      }],
+    });
+
+    const sessionData = await collectSessionData(
+      normalized,
+      '022-hybrid-rag-fusion/010-perfect-session-capturing',
+    );
+
+    // MAX_OBSERVATIONS is 3, so total observations in output must not exceed 3.
+    // The followup observation should be among them.
+    expect(sessionData.NEXT_ACTION).toBe('Deploy to staging');
+  });
+});

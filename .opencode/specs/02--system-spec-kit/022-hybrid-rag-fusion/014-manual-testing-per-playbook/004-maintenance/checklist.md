@@ -32,7 +32,7 @@ contextType: "general"
 ## Pre-Implementation
 
 - [ ] CHK-001 [P0] EX-014 and EX-035 scenarios documented in `spec.md` with exact playbook prompts, command sequences, feature links, and pass criteria — REQ-001 (EX-014 incremental scan) and REQ-002 (EX-035 startup guard) derived from playbook rows [EVIDENCE: spec.md scope table + requirements section]
-- [ ] CHK-002 [P0] Feature catalog links for both scenarios verified against the cross-reference index in `manual_testing_playbook.md` — EX-014 → `04--maintenance/01-workspace-scanning-and-indexing-memoryindexscan.md`; EX-035 → `04--maintenance/02-startup-runtime-compatibility-guards.md` [EVIDENCE: cross-reference index rows in playbook]
+- [ ] CHK-002 [P0] Feature catalog links for the documented scenarios are verified against the cross-reference index in `../../manual_testing_playbook/manual_testing_playbook.md` [EVIDENCE: EX-014 links to `../../feature_catalog/04--maintenance/01-workspace-scanning-and-indexing-memoryindexscan.md`; EX-035 and NEW-100 link to `../../feature_catalog/04--maintenance/02-startup-runtime-compatibility-guards.md`; NEW-101 links to `../../feature_catalog/02--mutation/03-single-and-folder-delete-memorydelete.md`]
 - [ ] CHK-003 [P1] Sandbox spec folder for EX-014 identified with at least one recently modified file available for deterministic scan results [EVIDENCE: sandbox folder path confirmed in plan.md or reviewer notes]
 <!-- /ANCHOR:pre-impl -->
 

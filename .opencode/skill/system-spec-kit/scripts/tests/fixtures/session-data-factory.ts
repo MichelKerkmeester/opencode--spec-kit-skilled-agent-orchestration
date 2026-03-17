@@ -118,6 +118,14 @@ const DEFAULT_SESSION_DATA: SessionData = {
   RESUME_CONTEXT: [
     { CONTEXT_ITEM: 'Re-run the workflow save suite when memory tracking or indexing behavior changes.' },
   ],
+  SOURCE_TRANSCRIPT_PATH: '',
+  SOURCE_SESSION_ID: '',
+  SOURCE_SESSION_CREATED: 0,
+  SOURCE_SESSION_UPDATED: 0,
+  HEAD_REF: null,
+  COMMIT_REF: null,
+  REPOSITORY_STATE: 'unavailable',
+  IS_DETACHED_HEAD: false,
 };
 
 /* ───────────────────────────────────────────────────────────────

@@ -126,7 +126,8 @@ git_changed_file_count: {{GIT_CHANGED_FILE_COUNT}}
 | Session ID | {{SESSION_ID}} |
 | Spec Folder | {{SPEC_FOLDER}} |
 | Channel | {{CHANNEL}} |
-| Importance Tier | {{IMPORTANCE_TIER}} |
+{{#HEAD_REF}}| Git Ref | {{HEAD_REF}}{{#COMMIT_REF}} (`{{COMMIT_REF}}`){{/COMMIT_REF}} |
+{{/HEAD_REF}}| Importance Tier | {{IMPORTANCE_TIER}} |
 | Context Type | {{CONTEXT_TYPE}} |
 | Total Messages | {{MESSAGE_COUNT}} |
 | Tool Executions | {{TOOL_COUNT}} |
@@ -735,6 +736,12 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js {{S
 session_id: "{{SESSION_ID}}"
 spec_folder: "{{SPEC_FOLDER}}"
 channel: "{{CHANNEL}}"
+
+# Git Provenance (M-007d)
+head_ref: "{{HEAD_REF}}"
+commit_ref: "{{COMMIT_REF}}"
+repository_state: "{{REPOSITORY_STATE}}"
+is_detached_head: {{IS_DETACHED_HEAD}}
 
 # Classification
 importance_tier: "{{IMPORTANCE_TIER}}"  # constitutional|critical|important|normal|temporary|deprecated

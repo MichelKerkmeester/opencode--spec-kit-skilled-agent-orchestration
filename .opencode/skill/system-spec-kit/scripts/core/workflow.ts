@@ -1188,6 +1188,12 @@ async function enrichStatelessData(
           ? `${existing}. Git: ${gitContext.summary}`
           : gitContext.summary;
       }
+
+      // Propagate git provenance metadata for template rendering (M-007d)
+      enriched.headRef = gitContext.headRef;
+      enriched.commitRef = gitContext.commitRef;
+      enriched.repositoryState = gitContext.repositoryState;
+      enriched.isDetachedHead = gitContext.isDetachedHead;
     }
 
     const narrativeObservations = (enriched.observations || []).filter(

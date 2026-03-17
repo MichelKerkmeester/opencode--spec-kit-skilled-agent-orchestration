@@ -711,6 +711,10 @@ async function collectSessionData(
   const sessionInfo = data.recentContext?.[0] || {};
   let observations: Observation[] = data.observations || [];
   if (observations.length > CONFIG.MAX_OBSERVATIONS) {
+    // Prioritize followup observations (nextSteps) before truncation
+    const followups = observations.filter(o => o.type === 'followup');
+    const others = observations.filter(o => o.type !== 'followup');
+    observations = [...followups, ...others];
     structuredLog('warn', 'observation_truncation_applied', {
       specFolder: data.SPEC_FOLDER || folderName,
       sessionId,
@@ -910,6 +914,11 @@ async function collectSessionData(
     SOURCE_SESSION_ID: sourceSessionId,
     SOURCE_SESSION_CREATED: sourceSessionCreated,
     SOURCE_SESSION_UPDATED: sourceSessionUpdated,
+    // Git provenance metadata (M-007d) — surfaced from stateless enrichment
+    HEAD_REF: typeof data.headRef === 'string' ? data.headRef : null,
+    COMMIT_REF: typeof data.commitRef === 'string' ? data.commitRef : null,
+    REPOSITORY_STATE: typeof data.repositoryState === 'string' ? data.repositoryState : 'unavailable',
+    IS_DETACHED_HEAD: data.isDetachedHead === true,
     ...preflightPostflightData,
     ...continueSessionData
   };

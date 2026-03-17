@@ -11,6 +11,7 @@ import fs from 'fs';
 import path from 'path';
 
 import { CONFIG } from '../core';
+import { toCanonicalRelativePath } from '../utils/file-helpers';
 
 const SYNTHETIC_TIMESTAMP = new Date(0).toISOString();
 const MAX_SPEC_OBSERVATIONS = 15;
@@ -155,7 +156,7 @@ function getSubsection(content: string, headingPattern: RegExp): string {
 function normalizeFilePath(rawPath: string): string {
   const cleaned = rawPath.replace(/`/g, '').trim();
   if (!cleaned) return '';
-  return path.isAbsolute(cleaned) ? path.relative(CONFIG.PROJECT_ROOT, cleaned) : cleaned;
+  return toCanonicalRelativePath(cleaned, CONFIG.PROJECT_ROOT);
 }
 
 function dedupe<T>(items: T[]): T[] {

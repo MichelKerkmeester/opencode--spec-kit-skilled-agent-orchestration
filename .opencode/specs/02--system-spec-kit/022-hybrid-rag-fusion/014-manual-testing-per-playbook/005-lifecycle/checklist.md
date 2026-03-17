@@ -34,7 +34,7 @@ contextType: "general"
 
 - [x] CHK-001 [P0] Scope is locked to nine lifecycle tests (EX-015, EX-016, EX-017, EX-018, NEW-097, NEW-114, NEW-124, NEW-134, NEW-144) with no non-lifecycle scenarios included [EVIDENCE: scope table in `spec.md` lists exactly nine rows]
 - [x] CHK-002 [P0] Exact prompts, command sequences, and pass criteria were extracted verbatim from `../../manual_testing_playbook/manual_testing_playbook.md` [EVIDENCE: scope table in `spec.md` matches playbook rows for all nine test IDs]
-- [x] CHK-003 [P0] Feature catalog links for all nine tests point to correct `05--lifecycle/` files [EVIDENCE: spec.md links `01-checkpoint-creation-checkpointcreate.md`, `02-checkpoint-listing-checkpointlist.md`, `03-checkpoint-restore-checkpointrestore.md`, `04-checkpoint-deletion-checkpointdelete.md`, `05-async-ingestion-job-lifecycle.md`, `06-startup-pending-file-recovery.md`, `07-automatic-archival-subsystem.md`]
+- [x] CHK-003 [P0] Feature catalog links for all nine tests point to correct `05--lifecycle/` files [EVIDENCE: spec.md scope table references the expected lifecycle catalog entries for EX-015 through EX-018 and NEW-097, NEW-114, NEW-124, NEW-134, NEW-144]
 - [ ] CHK-004 [P1] Level 1 template anchors and metadata blocks are intact across all four phase documents [EVIDENCE: `SPECKIT_LEVEL` and anchor sections verified in spec.md, plan.md, tasks.md, checklist.md]
 <!-- /ANCHOR:pre-impl -->
 

@@ -1,6 +1,6 @@
 ---
 title: "Verification Checklist: manual-testing-per-playbook memory quality and indexing phase [template:level_2/checklist.md]"
-description: "Verification checklist for Phase 013 memory-quality-and-indexing manual tests covering NEW-039 through NEW-048, NEW-069, NEW-073, NEW-111, NEW-119, NEW-131, NEW-132, NEW-133, and M-001 through M-008."
+description: "Verification checklist for Phase 013 memory-quality-and-indexing manual tests covering NEW-039 through NEW-048, NEW-069, NEW-073, NEW-092, NEW-111, NEW-119, NEW-131, NEW-132, NEW-133, and M-001 through M-008."
 trigger_phrases:
   - "memory quality checklist"
   - "phase 013 verification"
@@ -31,14 +31,14 @@ contextType: "general"
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] Scope is locked to 25 memory-quality-and-indexing scenarios (NEW-039 through NEW-048, NEW-069, NEW-073, NEW-111, NEW-119, NEW-131, NEW-132, NEW-133, M-001 through M-008) with no out-of-category scenarios included [EVIDENCE: scope table in `spec.md` lists exactly 25 rows]
-- [x] CHK-002 [P0] Exact prompts, command sequences, and pass criteria were extracted from `../../manual_testing_playbook/manual_testing_playbook.md` for all 25 scenarios [EVIDENCE: testing strategy table in `plan.md` matches playbook rows]
+- [x] CHK-001 [P0] Scope is locked to 26 memory-quality-and-indexing scenarios (NEW-039 through NEW-048, NEW-069, NEW-073, NEW-092, NEW-111, NEW-119, NEW-131, NEW-132, NEW-133, M-001 through M-008) with no out-of-category scenarios included [EVIDENCE: scope table in `spec.md` lists exactly 26 rows]
+- [x] CHK-002 [P0] Exact prompts, command sequences, and pass criteria were extracted from `../../manual_testing_playbook/manual_testing_playbook.md` for all 26 scenarios [EVIDENCE: testing strategy table in `plan.md` matches playbook rows]
 - [x] CHK-003 [P0] Feature catalog links for NEW-039 through NEW-048 point to files under `../../feature_catalog/13--memory-quality-and-indexing/` numbered 01 through 10 [EVIDENCE: spec.md scope table feature catalog column]
-- [x] CHK-004 [P0] Feature catalog links for NEW-069, NEW-073, NEW-111, and NEW-133 point to `13-entity-normalization-consolidation.md`, `14-quality-gate-timer-persistence.md`, `15-deferred-lexical-only-indexing.md`, and `16-dry-run-preflight-for-memory-save.md` respectively [EVIDENCE: spec.md scope table]
-- [x] CHK-005 [P0] NEW-119, NEW-131, and NEW-132 are all mapped to `04-spec-folder-description-discovery.md` with explicit rationale for the cross-reference alignment [EVIDENCE: spec.md scope table mapping-note column]
+- [x] CHK-004 [P0] Feature catalog links for NEW-069, NEW-073, NEW-092, NEW-111, and NEW-133 point to the expected `13--memory-quality-and-indexing/` files with explicit scope alignment [EVIDENCE: spec.md scope table]
+- [x] CHK-005 [P0] NEW-119, NEW-131, and NEW-132 are all mapped to the spec-folder-description-discovery feature with explicit rationale for the cross-reference alignment [EVIDENCE: spec.md scope table mapping-note column]
 - [x] CHK-006 [P0] M-001 through M-004 are mapped to nearest-category feature files with an explicit source-backed judgment note explaining why no dedicated catalog row exists [EVIDENCE: spec.md scope table mapping-note column for each M-series row]
-- [x] CHK-007 [P0] M-005 maps to `17-outsourced-agent-memory-capture.md` and M-006 maps to `18-stateless-enrichment-and-alignment-guards.md` as direct user-provided mappings [EVIDENCE: spec.md scope table]
-- [x] CHK-008 [P0] M-007 maps to `18-stateless-enrichment-and-alignment-guards.md` with rationale covering stateless enrichment, alignment, capture quality, and indexing readiness; M-007 open-question cross-reference to NEW-133 is noted [EVIDENCE: spec.md scope table mapping-note]
+- [x] CHK-007 [P0] M-005 and M-006 map to the dedicated outsourced-agent and stateless-enrichment feature entries as direct user-provided mappings [EVIDENCE: spec.md scope table]
+- [x] CHK-008 [P0] M-007 maps to the stateless-enrichment-and-alignment-guards feature with rationale covering stateless enrichment, alignment, capture quality, and indexing readiness; M-007 open-question cross-reference to NEW-133 is noted [EVIDENCE: spec.md scope table mapping-note]
 - [x] CHK-009 [P0] M-008 maps to `../../feature_catalog/02--mutation/10-per-memory-history-log.md` as a cross-category mapping with explicit rationale [EVIDENCE: spec.md scope table]
 - [ ] CHK-010 [P1] Level 1 template anchors and metadata blocks are intact across all four phase documents (spec.md, plan.md, tasks.md, checklist.md) [EVIDENCE: `SPECKIT_LEVEL` and anchor sections verified in each file]
 <!-- /ANCHOR:pre-impl -->
@@ -80,10 +80,10 @@ contextType: "general"
 
 - [ ] CHK-050 [P0] All 14 non-destructive scenarios have been executed and raw evidence is captured: NEW-039, NEW-040, NEW-041, NEW-045, NEW-046, NEW-047, NEW-048, NEW-069, NEW-073, NEW-131, NEW-133, M-001, M-002, M-004 [EVIDENCE: execution logs attached]
 - [ ] CHK-051 [P0] All 11 destructive/sandboxed scenarios have been executed in isolated environments and raw evidence is captured: NEW-042, NEW-043, NEW-044, NEW-111, NEW-119, NEW-132, M-003, M-005, M-006, M-007, M-008 [EVIDENCE: execution logs and sandbox teardown confirmation attached]
-- [ ] CHK-052 [P0] Each of the 25 scenarios has a verdict (PASS, PARTIAL, or FAIL) with explicit rationale referencing the review protocol acceptance rules [EVIDENCE: verdict table or inline verdict notes]
+- [ ] CHK-052 [P0] Each of the 26 scenarios has a verdict (PASS, PARTIAL, or FAIL) with explicit rationale referencing the review protocol acceptance rules [EVIDENCE: verdict table or inline verdict notes]
 - [ ] CHK-053 [P0] NEW-042 sandbox was fully cleaned up after execution: no stale description.json, temp files, or corrupted metadata remain in shared spec folders [EVIDENCE: directory listing or git status after sandbox teardown]
 - [ ] CHK-054 [P0] M-007 ten sub-scenarios (a through j) each have distinct evidence traces and no sub-scenario's partial evidence is counted as a full PASS for the parent scenario [EVIDENCE: sub-scenario verdict table]
-- [ ] CHK-055 [P1] Coverage summary reports 25/25 scenarios executed with no skipped test IDs [EVIDENCE: phase closeout note or implementation-summary.md]
+- [ ] CHK-055 [P1] Coverage summary reports 26/26 scenarios executed with no skipped test IDs [EVIDENCE: phase closeout note or implementation-summary.md]
 - [ ] CHK-056 [P1] NEW-073 timer persistence evidence includes a service-restart comparison showing the activation timestamp survives the restart [EVIDENCE: before/after restart artifact]
 - [ ] CHK-057 [P1] NEW-111 evidence captures both the lexical-only fallback state (BM25 searchable) and the recovery state after reindexing restores full embedding [EVIDENCE: two-phase evidence artifact]
 - [ ] CHK-058 [P2] M-007j NO_DATA_AVAILABLE verdict evidence is captured separately from earlier M-007 sub-scenarios to prevent cross-contamination of evidence [EVIDENCE: isolated sub-scenario log]
@@ -106,9 +106,9 @@ contextType: "general"
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-070 [P0] spec.md, plan.md, tasks.md, and checklist.md contain no template placeholder text [EVIDENCE: all content is derived from playbook rows and feature catalog for all 25 Phase 013 scenarios]
+- [x] CHK-070 [P0] spec.md, plan.md, tasks.md, and checklist.md contain no template placeholder text [EVIDENCE: all content is derived from playbook rows and feature catalog for all 26 Phase 013 scenarios]
 - [ ] CHK-071 [P0] All four phase documents are synchronized: scenario names, prompts, and command sequences are consistent across spec, plan, tasks, and checklist [EVIDENCE: cross-file consistency pass completed]
-- [ ] CHK-072 [P0] The 25 REQ IDs in spec.md, the 25 testing strategy rows in plan.md, and the 25 execution tasks in tasks.md reference the same set of test IDs with no gaps or duplicates [EVIDENCE: cross-document ID reconciliation]
+- [ ] CHK-072 [P0] The REQ IDs in spec.md, testing strategy rows in plan.md, and execution tasks in tasks.md reference the same set of 26 test IDs with no gaps or duplicates [EVIDENCE: cross-document ID reconciliation]
 - [ ] CHK-073 [P1] Open questions in spec.md (sandbox selection, M-001 through M-004 catalog backfill decision) are resolved or have an explicit deferral note before phase execution begins [EVIDENCE: spec.md open questions section updated or tasks T013/T014 completed]
 - [ ] CHK-074 [P1] `implementation-summary.md` is created when all 25 scenarios are executed and verified [EVIDENCE: file present in `013-memory-quality-and-indexing/`]
 <!-- /ANCHOR:docs -->

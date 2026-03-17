@@ -27,6 +27,8 @@ contextType: "general"
 | **Created** | 2026-03-16 |
 | **Branch** | `main` |
 | **Parent** | [`../spec.md`](../spec.md) |
+| **Predecessor Phase** | `007-evaluation` |
+| **Successor Phase** | `009-evaluation-and-measurement` |
 <!-- /ANCHOR:metadata -->
 
 ---

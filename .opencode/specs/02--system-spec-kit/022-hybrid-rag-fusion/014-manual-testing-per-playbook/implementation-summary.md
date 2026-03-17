@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary [template:level_1/implementation-summary.md]"
-description: "Umbrella parent for 014-manual-testing-per-playbook — 19 phase folders with 95 template-aligned documentation files covering ~199 playbook test scenarios."
+description: "Umbrella parent for 014-manual-testing-per-playbook — 19 phase folders with 95 child documentation files (100 total including root docs) now aligned to 211 exact playbook scenario IDs while retaining 195 as the top-level-ID inventory."
 trigger_phrases:
   - "manual testing implementation summary"
   - "019 playbook umbrella summary"
@@ -21,7 +21,7 @@ contextType: "general"
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 014-manual-testing-per-playbook |
-| **Completed** | 2026-03-16 |
+| **Completed** | 2026-03-17 |
 | **Level** | 1 |
 <!-- /ANCHOR:metadata -->
 
@@ -30,29 +30,19 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-The 229KB monolithic manual testing playbook is now decomposed into 19 structured phase folders, each containing a complete Level 1 documentation packet (spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md). Every test ID from the playbook cross-reference index (~199 scenarios) maps to exactly one phase, with direct links to the corresponding feature catalog entry.
+This alignment pass kept the existing 19 phase folders intact and corrected the packet's coverage model to match the current playbook truth. The packet now distinguishes between the retained `195` top-level IDs and the authoritative `211` exact scenario IDs that include the dedicated memory-section sub-scenarios.
 
-### Phase Documentation Structure
+### Parent Packet Alignment
 
-Each of the 19 phase folders isolates one feature catalog category so testers can execute scenarios, capture evidence, and apply review protocol verdicts without re-reading the monolithic playbook. The parent folder provides the Phase Documentation Map and umbrella tracking.
+The parent `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` were rewritten around the exact-ID model. Phase counts were corrected, the recursive-validation state was updated from a pending claim to the current March 17, 2026 validator result, and the packet now calls out Phase `013` as the home for the dedicated memory sub-scenarios.
 
-### Template Alignment
+### Phase 013 Expansion
 
-All 38 document files (19 spec.md + 19 checklist.md) were structurally aligned to system-spec-kit templates: section 2 headers standardized to "PROBLEM & PURPOSE", Parent links wrapped in backtick-linked format, and all checklists restructured to the canonical 8-anchor pattern with unnumbered headers.
+`013-memory-quality-and-indexing/` now expands from `26` top-level scenarios to `42` exact IDs by explicitly documenting `M-005a..c`, `M-006a..c`, and `M-007a..j`.
 
-### Files Changed
+### Supporting-Doc Refresh
 
-| File | Action | Purpose |
-|------|--------|---------|
-| spec.md | Created | Parent requirements with Phase Documentation Map |
-| plan.md | Created | Agent delegation strategy with wave-based generation |
-| tasks.md | Created | Umbrella task tracking across 4 phases |
-| checklist.md | Created | Umbrella verification checklist (29 items) |
-| 001-019/spec.md | Created (19) | Phase-specific test specifications |
-| 001-019/plan.md | Created (19) | Phase-specific execution plans |
-| 001-019/tasks.md | Created (19) | Phase-specific task trackers |
-| 001-019/checklist.md | Created (19) | Phase-specific QA checklists |
-| 001-019/implementation-summary.md | Created (19) | Phase-specific completion summaries |
+The `M-007` manual testing playbook block now reflects the `010` closure evidence more closely by including `tests/workflow-e2e.vitest.ts` in the JS verification suite list and by using the focused proof-lane framing (`47`, `29`, `45`, `70`, `66`) instead of only the older compressed aggregate buckets.
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -60,7 +50,10 @@ All 38 document files (19 spec.md + 19 checklist.md) were structurally aligned t
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-Phase folders generated via parallel agent delegation (19 sonnet agents simultaneously), then batch-aligned to template standards using Edit tool for spec.md fixes and agent-based rewrites for checklist.md structural changes. All 19 child phases pass `validate.sh` with zero errors.
+1. Re-audited the packet against the current playbook to establish the exact-ID inventory.
+2. Re-ran recursive validation on the parent packet to capture the current `0`-error, `19`-warning truth.
+3. Expanded Phase `013` and refreshed the parent docs to the exact-ID model.
+4. Applied the narrow `010` truth-cleanup and the `M-007` playbook wording refresh.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -70,9 +63,10 @@ Phase folders generated via parallel agent delegation (19 sonnet agents simultan
 
 | Decision | Why |
 |----------|-----|
-| 19 parallel sonnet agents for checklist restructuring | Each file needed full structural rewrite preserving all CHK items; parallelization completed in ~2 minutes |
-| Level 1 across all phases | Documentation-only packets do not need Level 2 architecture sections |
-| Cross-cutting test assignments (PHASE-series to 016, M-series to 013) | Matches the playbook's own category assignment for these edge-case test groups |
+| Treat `211` exact IDs as the authoritative coverage model | The dedicated memory section now contains suffixed sub-scenarios that are active playbook requirements |
+| Retain `195` only as the top-level-ID inventory | Historical counts remain useful, but they no longer prove complete packet coverage |
+| Record recursive validation as `0` errors / `19` warnings instead of pretending it is fully clean | Truthful validator reporting is more important than preserving the earlier completion narrative |
+| Leave Level 1 section-count warnings unresolved in this pass | The user asked for alignment accuracy, not a template-expansion cleanup across all 19 phases |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -82,12 +76,12 @@ Phase folders generated via parallel agent delegation (19 sonnet agents simultan
 
 | Check | Result |
 |-------|--------|
-| 19/19 spec.md have `## 2. PROBLEM & PURPOSE` | PASS |
-| 19/19 spec.md have correct Parent link format | PASS |
-| 19/19 checklist.md have exactly 8 anchors | PASS |
-| 0/19 checklist.md have ANCHOR:overview | PASS |
-| 0/19 checklist.md have standalone P0/P1 headers | PASS |
-| 19/19 child phases pass validate.sh | PASS |
+| Exact-ID ownership audit across all 19 child specs | PASS: `211` exact IDs, `0` missing, `0` duplicate owners |
+| Parent `description.json` JSON parse | PASS |
+| `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook --recursive` | PASS WITH WARNINGS: `0` errors, `19` warnings |
+| `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/013-memory-quality-and-indexing` | PASS / current child validation rerun captured |
+| `M-007` playbook command block includes `workflow-e2e.vitest.ts` | PASS |
+| `010` parent validator-support wording is internally consistent after cleanup | PASS |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -95,9 +89,9 @@ Phase folders generated via parallel agent delegation (19 sonnet agents simultan
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Draft status** — All 19 phase specs are documented but test execution has not started. Final verdicts require manual or MCP-backed runs.
-2. **Coverage audit pending** — Full cross-reference validation (all ~199 test IDs mapped exactly once) has not been run as an automated check.
-3. **SPEC_DOC_INTEGRITY warnings** — The validator flags relative links in spec.md files that reference feature catalog paths; these are valid cross-folder references, not broken links.
+1. **Draft execution state** - All 19 phase specs remain documentation packets; scenario execution has not started.
+2. **Level 1 warning backlog remains** - Recursive validation still reports non-blocking section-count warnings across the packet.
+3. **Feature catalog unchanged by design** - This pass found no content drift in the catalog that required edits.
 <!-- /ANCHOR:limitations -->
 
 ---

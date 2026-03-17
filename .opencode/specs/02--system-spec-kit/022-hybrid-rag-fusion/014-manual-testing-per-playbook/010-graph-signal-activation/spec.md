@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: Phase 010 Graph Signal Activation Manual Testing"
-description: "Structured manual test documentation for the graph-signal-activation phase of the Spec Kit Memory playbook. This packet maps nine assigned NEW scenarios to their feature catalog entries and records the acceptance criteria reviewers will apply during execution."
+description: "Structured manual test documentation for the graph-signal-activation phase of the Spec Kit Memory playbook. This packet maps ten assigned NEW scenarios to their feature catalog entries and records the acceptance criteria reviewers will apply during execution."
 trigger_phrases:
   - "phase 010 manual testing"
   - "graph signal activation tests"
@@ -28,6 +28,8 @@ contextType: "general"
 | **Created** | 2026-03-16 |
 | **Branch** | `main` |
 | **Parent** | [`../spec.md`](../spec.md) |
+| **Predecessor Phase** | `009-evaluation-and-measurement` |
+| **Successor Phase** | `011-scoring-and-calibration` |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -36,10 +38,10 @@ contextType: "general"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-Manual test scenarios for graph-signal-activation need structured per-phase documentation. The canonical playbook defines the prompts, commands, evidence, and pass or fail rules, but operators still need a focused phase packet that isolates the nine graph-signal scenarios assigned to Phase 010.
+Manual test scenarios for graph-signal-activation need structured per-phase documentation. The canonical playbook defines the prompts, commands, evidence, and pass or fail rules, but operators still need a focused phase packet that isolates the ten graph-signal scenarios assigned to Phase 010.
 
 ### Purpose
-Create a phase-local specification that links each assigned test to its feature catalog entry and preserves the review-ready acceptance criteria for NEW-016, NEW-017, NEW-018, NEW-019, NEW-020, NEW-021, NEW-022, NEW-081, and NEW-120.
+Create a phase-local specification that links each assigned test to its feature catalog entry and preserves the review-ready acceptance criteria for NEW-016, NEW-017, NEW-018, NEW-019, NEW-020, NEW-021, NEW-022, NEW-081, NEW-091, and NEW-120.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -48,7 +50,7 @@ Create a phase-local specification that links each assigned test to its feature 
 ## 3. SCOPE
 
 ### In Scope
-- Document the nine Phase 010 scenarios from the manual testing playbook.
+- Document the ten Phase 010 scenarios from the manual testing playbook.
 - Link each scenario to the matching graph-signal-activation feature catalog entry.
 - Preserve the acceptance criteria reviewers will use when issuing PASS, PARTIAL, or FAIL verdicts.
 
@@ -69,6 +71,7 @@ Create a phase-local specification that links each assigned test to its feature 
 | `NEW-021` | Causal depth signal (N2b) | [`../../feature_catalog/10--graph-signal-activation/06-causal-depth-signal.md`](../../feature_catalog/10--graph-signal-activation/06-causal-depth-signal.md) |
 | `NEW-022` | Community detection (N2c) | [`../../feature_catalog/10--graph-signal-activation/07-community-detection.md`](../../feature_catalog/10--graph-signal-activation/07-community-detection.md) |
 | `NEW-081` | Graph and cognitive memory fixes | [`../../feature_catalog/10--graph-signal-activation/08-graph-and-cognitive-memory-fixes.md`](../../feature_catalog/10--graph-signal-activation/08-graph-and-cognitive-memory-fixes.md) |
+| `NEW-091` | Implemented: graph centrality and community detection (N2) | [`../../feature_catalog/10--graph-signal-activation/07-community-detection.md`](../../feature_catalog/10--graph-signal-activation/07-community-detection.md) |
 | `NEW-120` | Unified graph rollback and explainability (Phase 3) | [`../../feature_catalog/10--graph-signal-activation/12-unified-graph-retrieval-deterministic-ranking-explainability-and-rollback.md`](../../feature_catalog/10--graph-signal-activation/12-unified-graph-retrieval-deterministic-ranking-explainability-and-rollback.md) |
 <!-- /ANCHOR:scope -->
 
@@ -89,6 +92,7 @@ Create a phase-local specification that links each assigned test to its feature 
 | `REQ-NEW-021` | Document the causal depth signal scenario and its normalized depth expectations. | PASS when all depth scores stay in `[0,1]` and deeper nodes score greater than or equal to shallower nodes on the same chain. FAIL when scores leave range or depth ordering is wrong. |
 | `REQ-NEW-022` | Document the community detection scenario and its cluster-boost expectations. | PASS when cluster IDs are assigned, co-members receive a boost within the configured cap, and non-members receive zero boost. FAIL when cluster IDs are missing or the boost exceeds the cap. |
 | `REQ-NEW-081` | Document the graph and cognitive memory fixes bundle and its guardrail expectations. | PASS when self-loops are blocked, depth remains inside the clamped bounds, and cache invalidation occurs correctly after mutation. FAIL when any guard or invalidation path is missing. |
+| `REQ-NEW-091` | Document the implemented graph centrality and community detection status scenario and its activation expectations. | PASS when N2 tables are populated, feature flags are active, and graph queries include centrality or community score contributions. FAIL when any implementation signal is missing. |
 | `REQ-NEW-120` | Document the unified graph rollback and explainability scenario and its kill-switch expectations. | PASS when enabled runs show graph contribution trace data, disabled runs remove graph-side effects while keeping deterministic baseline order, and repeated runs preserve exact ordering. FAIL when graph effects remain after disable or identical runs reorder ties. |
 <!-- /ANCHOR:requirements -->
 
@@ -97,7 +101,7 @@ Create a phase-local specification that links each assigned test to its feature 
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All nine assigned test IDs are documented with their exact prompt source, feature link, evidence target, and verdict expectations.
+- **SC-001**: All ten assigned test IDs are documented with their exact prompt source, feature link, evidence target, and verdict expectations.
 - **SC-002**: The paired plan documents the exact playbook command sequences by reference and tells operators to execute them verbatim.
 - **SC-003**: Stateful scenarios identify sandbox, checkpoint, or rollback handling before execution begins.
 - **SC-004**: Reviewers can apply the review protocol verdict rules without consulting any other phase packet.

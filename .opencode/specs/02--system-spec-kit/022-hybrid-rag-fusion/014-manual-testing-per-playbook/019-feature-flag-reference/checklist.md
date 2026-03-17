@@ -73,7 +73,7 @@ contextType: "general"
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-040 [P1] `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` synchronized to current playbook truth for all 8 test IDs [EVIDENCE: All four docs derived from `manual_testing_playbook.md` rows EX-028 through EX-034 and NEW-125 with cross-reference index confirmed.]
+- [x] CHK-040 [P1] `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` synchronized to current playbook truth for all 8 test IDs [EVIDENCE: All four docs derived from `../../manual_testing_playbook/manual_testing_playbook.md` rows EX-028 through EX-034 and NEW-125 with cross-reference index confirmed.]
 - [x] CHK-041 [P1] Relative links to all 7 feature-flag-reference catalog files are present in the scope table [EVIDENCE: `spec.md` scope table includes relative links to all files under `../../feature_catalog/19--feature-flag-reference/`.]
 - [ ] CHK-042 [P2] README updates not required for this phase-local closeout
 <!-- /ANCHOR:docs -->

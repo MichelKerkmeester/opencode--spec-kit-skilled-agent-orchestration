@@ -31,9 +31,9 @@ contextType: "general"
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] Requirements documented in spec.md — all 5 scenarios with exact prompts, commands, and pass criteria
-- [x] CHK-002 [P0] Technical approach defined in plan.md — preconditions, phased execution, and rollback
-- [x] CHK-003 [P1] Dependencies identified and available — playbook, review protocol, feature catalog links, vitest suite, and ripgrep
+- [x] CHK-001 [P0] Requirements documented in spec.md — all 5 scenarios with exact prompts, commands, and pass criteria [EVIDENCE: `spec.md` scope and requirements sections]
+- [x] CHK-002 [P0] Technical approach defined in plan.md — preconditions, phased execution, and rollback [EVIDENCE: `plan.md` phases and rollback sections]
+- [x] CHK-003 [P1] Dependencies identified and available — playbook, review protocol, feature catalog links, vitest suite, and ripgrep [EVIDENCE: `plan.md` dependencies table]
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -44,7 +44,7 @@ contextType: "general"
 - [ ] CHK-010 [P0] NEW-103 vitest suite (`hooks-ux-feedback.vitest.ts`) passes with no failing assertions covering latency/cache-clear booleans and finalized hint payload
 - [ ] CHK-011 [P0] NEW-104 vitest suite (`memory-save-ux-regressions.vitest.ts`) passes and assertions confirm no false `postMutationHooks` on no-op saves and atomic-save parity
 - [ ] CHK-012 [P0] NEW-105 vitest suite (`context-server.vitest.ts`) passes and assertions cover appended hints, preserved `autoSurfacedContext`, and finalized token metadata
-- [ ] CHK-013 [P1] NEW-106 ripgrep outputs confirm `mutation-feedback`, `response-hints`, `MutationHookResult`, and `postMutationHooks` appear in both `hooks/index.ts` and `hooks/README.md`
+- [ ] CHK-013 [P1] NEW-106 ripgrep outputs confirm `mutation-feedback`, `response-hints`, `MutationHookResult`, and `postMutationHooks` appear in both the hooks barrel and hooks README file
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -63,7 +63,7 @@ contextType: "general"
 <!-- ANCHOR:security -->
 ## Security
 
-- [x] CHK-030 [P0] No hardcoded secrets in spec, plan, tasks, or checklist files
+- [x] CHK-030 [P0] No hardcoded secrets in spec, plan, tasks, or checklist files [EVIDENCE: manual scan of phase docs]
 - [ ] CHK-031 [P0] NEW-107 confirms `confirmName` safety parameter enforcement is validated at handler, schema, and tool-type layers — no bypass path possible
 - [ ] CHK-032 [P1] Checkpoint delete rejection evidence shows Zod-level error, not silent failure
 <!-- /ANCHOR:security -->
@@ -73,10 +73,10 @@ contextType: "general"
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-040 [P1] Spec, plan, tasks, and checklist are synchronized and cross-referenced
-- [x] CHK-041 [P1] All feature catalog links in scope table are verified against actual files in `../../feature_catalog/18--ux-hooks/`
+- [x] CHK-040 [P1] Spec, plan, tasks, and checklist are synchronized and cross-referenced [EVIDENCE: cross-file section and ID audit]
+- [x] CHK-041 [P1] All feature catalog links in scope table are verified against actual files in `../../feature_catalog/18--ux-hooks/` [EVIDENCE: link check against feature catalog files]
 - [ ] CHK-042 [P2] Evidence artifacts saved to `scratch/` before completion (if applicable)
-- [x] CHK-043 [P1] Playbook scenario rows for NEW-103 through NEW-107 confirmed as source of truth for all prompt and command content in this packet
+- [x] CHK-043 [P1] Playbook scenario rows for NEW-103 through NEW-107 confirmed as source of truth for all prompt and command content in this packet [EVIDENCE: prompt/command copy check against playbook rows]
 <!-- /ANCHOR:docs -->
 
 ---
@@ -84,7 +84,7 @@ contextType: "general"
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [x] CHK-050 [P1] All four phase files (spec.md, plan.md, tasks.md, checklist.md) created in `014-manual-testing-per-playbook/018-ux-hooks/`
+- [x] CHK-050 [P1] All four phase files (spec.md, plan.md, tasks.md, checklist.md) created in `014-manual-testing-per-playbook/018-ux-hooks/` [EVIDENCE: phase folder file listing]
 - [ ] CHK-051 [P1] Temp or scratch evidence files placed in `scratch/` only
 - [ ] CHK-052 [P2] Phase 018 evidence artifacts retained for coverage report
 <!-- /ANCHOR:file-org -->

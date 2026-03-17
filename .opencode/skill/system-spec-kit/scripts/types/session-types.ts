@@ -494,4 +494,8 @@ export interface SessionData {
   SOURCE_SESSION_ID: string;
   SOURCE_SESSION_CREATED: number;
   SOURCE_SESSION_UPDATED: number;
+  HEAD_REF: string | null;
+  COMMIT_REF: string | null;
+  REPOSITORY_STATE: string;
+  IS_DETACHED_HEAD: boolean;
 }

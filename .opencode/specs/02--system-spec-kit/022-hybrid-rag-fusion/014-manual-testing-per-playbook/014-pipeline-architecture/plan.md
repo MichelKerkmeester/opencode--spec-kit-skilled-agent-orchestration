@@ -30,7 +30,7 @@ contextType: "implementation"
 | **Testing** | manual + MCP |
 
 ### Overview
-This plan covers the 18 pipeline-architecture scenarios assigned to phase 014 of the manual testing playbook effort. It turns the playbook rows, review protocol, and feature-catalog context into an execution pipeline that keeps non-destructive checks separate from restart, mutation, and rollback drills.
+This plan covers the 19 pipeline-architecture scenarios assigned to phase 014 of the manual testing playbook effort. It turns the playbook rows, review protocol, and feature-catalog context into an execution pipeline that keeps non-destructive checks separate from restart, mutation, and rollback drills.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -46,7 +46,7 @@ This plan covers the 18 pipeline-architecture scenarios assigned to phase 014 of
 
 ### Definition of Done
 - [ ] `spec.md` and `plan.md` exist in the phase 014 folder with all required sections and anchors.
-- [ ] All 18 scenarios have exact prompts captured in the testing-strategy table.
+- [ ] All 19 scenarios have exact prompts captured in the testing-strategy table.
 - [ ] Destructive or state-changing scenarios are isolated with explicit sandbox, checkpoint, or rollback rules.
 - [ ] The generated documents pass the targeted structural validation used for this documentation task.
 <!-- /ANCHOR:quality-gates -->
@@ -63,7 +63,7 @@ Documentation pipeline for manual test execution and review handoff.
 - **Preconditions gate**: Confirms runtime access, sandbox availability, env-flag control, and checkpoint expectations before any scenario runs.
 - **Scenario executor**: Runs the exact prompt and command sequence defined by the playbook for MCP calls, shell test suites, restarts, or mutation drills.
 - **Evidence collector**: Captures transcripts, output snippets, DB/log references, and any restart or rollback artifacts required by the scenario.
-- **Verdict reviewer**: Applies scenario acceptance checks from the playbook and feature/release verdict rules from `review_protocol.md`.
+- **Verdict reviewer**: Applies scenario acceptance checks from the playbook and feature/release verdict rules from `../../manual_testing_playbook/review_protocol.md`.
 
 ### Data Flow
 Preconditions -> execute the exact scenario prompt and command sequence -> collect evidence artifacts -> compare observed behavior against PASS criteria -> assign scenario verdict -> roll up to feature verdict using the review protocol.
@@ -92,7 +92,7 @@ Preconditions -> execute the exact scenario prompt and command sequence -> colle
 ### Phase 4: Evidence Collection and Verdict
 - [ ] Attach the exact prompt, command transcript, key output snippets, and artifact references for every scenario.
 - [ ] Apply PASS/PARTIAL/FAIL at the scenario level using the playbook, then roll up feature verdicts with the review protocol.
-- [ ] Confirm coverage remains 18/18 for the resolved phase scope, including the recovered `NEW-146` mapping.
+- [ ] Confirm coverage remains 19/19 for the resolved phase scope, including the recovered `NEW-146` mapping.
 <!-- /ANCHOR:phases -->
 
 ---
@@ -129,8 +129,8 @@ Preconditions -> execute the exact scenario prompt and command sequence -> colle
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| `manual_testing_playbook/manual_testing_playbook.md` | Internal source | Green | Exact prompts, commands, evidence, and PASS criteria cannot be reconstructed reliably. |
-| `manual_testing_playbook/review_protocol.md` | Internal source | Green | Scenario execution could complete without a usable verdict rubric. |
+| `../../manual_testing_playbook/manual_testing_playbook.md` | Internal source | Green | Exact prompts, commands, evidence, and PASS criteria cannot be reconstructed reliably. |
+| `../../manual_testing_playbook/review_protocol.md` | Internal source | Green | Scenario execution could complete without a usable verdict rubric. |
 | `../../feature_catalog/14--pipeline-architecture/` | Internal source | Green | Operators lose the feature intent and implementation context behind each scenario. |
 | MCP runtime with Spec Kit Memory tools | Runtime | Yellow | MCP-tagged scenarios cannot be exercised or evidence cannot be captured. |
 | Shell access for restarts, env toggles, and targeted Vitest suites | Runtime | Yellow | Restart and lineage/backfill scenarios cannot be executed as written. |

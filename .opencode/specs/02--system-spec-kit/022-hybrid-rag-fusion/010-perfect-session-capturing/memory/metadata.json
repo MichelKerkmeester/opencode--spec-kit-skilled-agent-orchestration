@@ -1,19 +1,19 @@
 {
-  "timestamp": "17-03-26 16-44",
-  "messageCount": 1,
+  "timestamp": "17-03-26 19-49",
+  "messageCount": 0,
   "decisionCount": 0,
   "diagramCount": 0,
   "skillVersion": "1.7.2",
   "autoTriggered": false,
   "filtering": {
-    "totalProcessed": 1,
+    "totalProcessed": 0,
     "noiseFiltered": 0,
     "duplicatesRemoved": 0,
-    "qualityScore": 30,
+    "qualityScore": 0,
     "contaminationAudit": [
       {
         "stage": "content-filter",
-        "timestamp": "2026-03-17T15:44:12.840Z",
+        "timestamp": "2026-03-17T18:49:33.308Z",
         "patternsChecked": [
           "/^User message$/i",
           "/^User prompt$/i",
@@ -50,8 +50,8 @@
           "stripped_wrappers:0"
         ],
         "passedThrough": [
-          "input_items:1",
-          "kept_items:1"
+          "input_items:0",
+          "kept_items:0"
         ]
       }
     ],
@@ -66,7 +66,7 @@
   "contaminationAudit": [
     {
       "stage": "extractor-scrub",
-      "timestamp": "2026-03-17T15:44:12.808Z",
+      "timestamp": "2026-03-17T18:49:33.276Z",
       "patternsChecked": [
         "step-by-step orchestration",
         "analysis preamble",
@@ -105,12 +105,12 @@
         "removed_phrases:0"
       ],
       "passedThrough": [
-        "processed_fields:5"
+        "processed_fields:21"
       ]
     },
     {
       "stage": "content-filter",
-      "timestamp": "2026-03-17T15:44:12.840Z",
+      "timestamp": "2026-03-17T18:49:33.308Z",
       "patternsChecked": [
         "/^User message$/i",
         "/^User prompt$/i",
@@ -147,13 +147,13 @@
         "stripped_wrappers:0"
       ],
       "passedThrough": [
-        "input_items:1",
-        "kept_items:1"
+        "input_items:0",
+        "kept_items:0"
       ]
     },
     {
       "stage": "post-render",
-      "timestamp": "2026-03-17T15:44:12.851Z",
+      "timestamp": "2026-03-17T18:49:33.318Z",
       "patternsChecked": [
         "frontmatter:trigger_phrases",
         "frontmatter:key_topics",
@@ -170,7 +170,7 @@
       ],
       "passedThrough": [
         "current_spec:010-perfect-session-capturing",
-        "trigger_phrases:17",
+        "trigger_phrases:28",
         "key_topics:12",
         "captured_file_count:0",
         "filesystem_file_count:0"
@@ -188,7 +188,7 @@
       "implementation": 0,
       "result": 0,
       "decision": 0,
-      "total": 1
+      "total": 0
     }
   },
   "fileCounts": {
@@ -207,7 +207,8 @@
     "status": "indexed",
     "model": "nomic-ai/nomic-embed-text-v1.5",
     "dimensions": 768,
-    "memoryId": 4370,
-    "generatedAt": "2026-03-17T15:44:13.397Z"
+    "memoryId": 4382,
+    "updatedAt": "2026-03-17T18:49:39.065Z",
+    "generatedAt": "2026-03-17T18:49:39.065Z"
   }
 }

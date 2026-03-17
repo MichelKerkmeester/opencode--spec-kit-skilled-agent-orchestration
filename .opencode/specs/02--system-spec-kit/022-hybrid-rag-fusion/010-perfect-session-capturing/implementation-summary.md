@@ -67,7 +67,7 @@ The work landed in four passes:
 
 | Decision | Why |
 |----------|-----|
-| Formalize phased-parent template support in the validator | The phase map is sanctioned by the addendum workflow, so validator support was the correct fix instead of deleting sanctioned sections |
+| Rely on the current phased-parent template support in the validator | The phase map is sanctioned by the addendum workflow, so closure should cite the existing validator support instead of deleting sanctioned sections |
 | Treat `research/` as canonical and `scratch/` as non-canonical | Historical notes and operator helpers should not be mistaken for retained closure evidence |
 | Distinguish shipped code/test proof from retained live proof | Green fixture-backed or suite-backed coverage is not the same as fresh retained live artifacts for every CLI |
 | Finish only the real remaining code gap in phase `004` | The rest of the targeted phases were documentation and status drift, not missing runtime implementation |

@@ -28,6 +28,8 @@ contextType: "specification"
 | **Created** | 2026-03-16 |
 | **Branch** | `main` |
 | **Parent** | [`../spec.md`](../spec.md) |
+| **Predecessor Phase** | `013-memory-quality-and-indexing` |
+| **Successor Phase** | `015-retrieval-enhancements` |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -118,7 +120,7 @@ No additional P1 requirements. Phase completeness depends on documenting every a
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All 18 phase-014 pipeline-architecture scenarios are listed with feature-catalog links in scope.
+- **SC-001**: All 19 phase-014 pipeline-architecture scenarios are listed with feature-catalog links in scope.
 - **SC-002**: Every documented scenario carries the exact playbook prompt in `plan.md` and the pass/fail-derived acceptance criteria in this spec.
 - **SC-003**: The plan describes the full execution lifecycle as preconditions -> execute -> evidence -> verdict, including sandbox guidance for state-changing scenarios.
 - **SC-004**: Reviewers can determine scenario and feature verdicts using only the generated phase docs plus the canonical playbook and review protocol.
@@ -131,12 +133,12 @@ No additional P1 requirements. Phase completeness depends on documenting every a
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | `manual_testing_playbook/manual_testing_playbook.md` | If prompts or PASS text drift, the phase docs become stale. | Treat the playbook as source of truth and refresh this phase whenever those rows change. |
-| Dependency | `manual_testing_playbook/review_protocol.md` | Verdict language can diverge from the reviewer's expected rubric. | Keep feature and release verdict wording aligned to the review protocol's PASS/PARTIAL/FAIL rules. |
+| Dependency | `../../manual_testing_playbook/manual_testing_playbook.md` | If prompts or PASS text drift, the phase docs become stale. | Treat the playbook as source of truth and refresh this phase whenever those rows change. |
+| Dependency | `../../manual_testing_playbook/review_protocol.md` | Verdict language can diverge from the reviewer's expected rubric. | Keep feature and release verdict wording aligned to the review protocol's PASS/PARTIAL/FAIL rules. |
 | Dependency | `feature_catalog/14--pipeline-architecture/` | Missing feature context would make scenario intent harder to understand. | Link every scenario to its phase-14 feature file and note shared files such as lineage coverage. |
 | Dependency | MCP runtime, CLI scripts, and test harnesses | Operators need the proper runtime to execute MCP calls, server restarts, and targeted Vitest suites. | Call out execution type, restart expectations, and shell-based suites in the plan. |
 | Risk | State-changing scenarios (`NEW-080`, `NEW-112`, `NEW-115`, `NEW-130`) can affect shared environments. | Evidence can be invalidated and working state can drift. | Require disposable sandboxes, checkpoints, and isolated worktrees before those scenarios run. |
-| Risk | Phase assignment drift between prompt text and cross-reference tables | Operators could miss a category-mapped test. | Document the resolved 18-scenario set and record the source mismatch in open questions. |
+| Risk | Phase assignment drift between prompt text and cross-reference tables | Operators could miss a category-mapped test. | Document the resolved 19-scenario set and record the source mismatch in open questions. |
 <!-- /ANCHOR:risks -->
 
 ---
@@ -145,7 +147,7 @@ No additional P1 requirements. Phase completeness depends on documenting every a
 ## 7. OPEN QUESTIONS
 
 - The request lists 17 explicit IDs but states `TEST COUNT: 18`; this phase resolves the mismatch by including `NEW-146`, which is mapped to `14--pipeline-architecture` in the playbook cross-reference. Should future assignments list all category-mapped IDs explicitly?
-- Should any future phase refresh split shared feature files such as `22-lineage-state-active-projection-and-asof-resolution.md` into separate scenario-specific references, or is shared linkage the preferred pattern?
+- Should any future phase refresh split shared lineage feature references into separate scenario-specific links, or is shared linkage the preferred pattern?
 <!-- /ANCHOR:questions -->
 
 ---

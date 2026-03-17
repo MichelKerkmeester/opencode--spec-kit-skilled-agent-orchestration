@@ -445,4 +445,46 @@ describe.sequential('phase 013 auto-detection fixes', () => {
     expect(confidence.lowConfidence).toBe(false);
     expect(confidence.reason).toContain('clear');
   });
+
+  it('resolves a full .opencode/specs/category/parent/child path via CLI argument', async () => {
+    const { root, childPaths } = createDetectorRepo();
+    process.chdir(root);
+    await configureProjectRoot(root);
+
+    const targetChild = childPaths[2]; // 003-data-fidelity
+    const fullRelativePath = '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/003-data-fidelity';
+
+    const { detectSpecFolder } = await import('../spec-folder/folder-detector');
+    const detected = await detectSpecFolder(null, { specFolderArg: fullRelativePath });
+
+    expect(detected).toBe(targetChild);
+  });
+
+  it('resolves a multi-segment child path without prefix via basename fallback', async () => {
+    const { root, childPaths } = createDetectorRepo();
+    process.chdir(root);
+    await configureProjectRoot(root);
+
+    const targetChild = childPaths[2]; // 003-data-fidelity
+    // Multi-segment path without .opencode/specs/ prefix -- skips category prefix
+    const multiSegmentPath = '022-hybrid-rag-fusion/010-perfect-session-capturing/003-data-fidelity';
+
+    const { detectSpecFolder } = await import('../spec-folder/folder-detector');
+    const detected = await detectSpecFolder(null, { specFolderArg: multiSegmentPath });
+
+    expect(detected).toBe(targetChild);
+  });
+
+  it('resolves a bare child folder name via CLI argument child search', async () => {
+    const { root, childPaths } = createDetectorRepo();
+    process.chdir(root);
+    await configureProjectRoot(root);
+
+    const targetChild = childPaths[0]; // 001-quality-scorer-unification
+
+    const { detectSpecFolder } = await import('../spec-folder/folder-detector');
+    const detected = await detectSpecFolder(null, { specFolderArg: '001-quality-scorer-unification' });
+
+    expect(detected).toBe(targetChild);
+  });
 });

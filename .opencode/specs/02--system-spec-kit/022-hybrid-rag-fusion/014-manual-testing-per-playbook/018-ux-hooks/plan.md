@@ -86,7 +86,7 @@ Manual UX-hooks test execution pipeline with review-gated evidence collection.
 - [ ] Run NEW-107 (`npx vitest run tests/handler-checkpoints.vitest.ts tests/tool-input-schema.vitest.ts tests/mcp-input-validation.vitest.ts`) and inspect missing-`confirmName` rejection and `safetyConfirmationUsed=true` success assertions.
 
 ### Phase 3: Static Inspection Test
-- [ ] Run NEW-106 ripgrep checks against `mcp_server/hooks/index.ts` and `mcp_server/hooks/README.md` and capture output confirming both files reference `mutation-feedback`, `response-hints`, `MutationHookResult`, and `postMutationHooks`.
+- [ ] Run NEW-106 ripgrep checks against `../../../../../skill/system-spec-kit/mcp_server/hooks/index.ts` and `../../../../../skill/system-spec-kit/mcp_server/hooks/README.md` and capture output confirming both files reference `mutation-feedback`, `response-hints`, `MutationHookResult`, and `postMutationHooks`.
 
 ### Phase 4: Evidence Collection and Verdict
 - [ ] For each scenario, capture prompt, exact command sequence, raw output, expected signals, and reviewer notes.

@@ -1157,6 +1157,19 @@ async function detectSpecFolder(
       return specFolderPath;
     } catch (error: unknown) {
       if (!isNotFoundFsError(error)) {
+        // Before re-throwing non-ENOENT errors (e.g., isUnderApprovedSpecsRoots rejection),
+        // try resolving via basename extraction when the arg contains a specs prefix path.
+        // This handles full paths like ".opencode/specs/02--cat/022-parent/003-child" where
+        // the prefix resolution produces a valid absolute path that fails root validation
+        // due to category-prefixed intermediate segments.
+        const baseName = path.basename(specArg);
+        if (SPEC_FOLDER_PATTERN.test(baseName)) {
+          const childResult = await findChildFolderAsync(baseName);
+          if (childResult) {
+            console.log(`   Resolved from full path "${specArg}" via child search: ${path.basename(childResult)}`);
+            return childResult;
+          }
+        }
         throw error;
       }
 
@@ -1181,6 +1194,20 @@ async function detectSpecFolder(
       const childResult = await findChildFolderAsync(specArg);
       if (childResult) {
         return childResult;
+      }
+
+      // When specArg is a multi-segment path (e.g., "022-parent/010-child/003-sub") and
+      // findChildFolderAsync failed (it only matches single-segment names), try extracting
+      // the basename for child resolution.
+      if (argParts.length >= 2) {
+        const baseName = path.basename(specArg);
+        if (SPEC_FOLDER_PATTERN.test(baseName)) {
+          const baseChildResult = await findChildFolderAsync(baseName);
+          if (baseChildResult) {
+            console.log(`   Resolved from multi-segment path "${specArg}" via child search: ${path.basename(baseChildResult)}`);
+            return baseChildResult;
+          }
+        }
       }
 
       console.error(`\n Specified spec folder not found: ${explicitSpecFolderArg}\n`);

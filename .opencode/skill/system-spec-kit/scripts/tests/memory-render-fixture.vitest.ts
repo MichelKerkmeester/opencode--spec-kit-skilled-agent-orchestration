@@ -126,6 +126,10 @@ function createSessionData(specFolderName: string, overrides: Partial<SessionDat
     SOURCE_SESSION_ID: '',
     SOURCE_SESSION_CREATED: 0,
     SOURCE_SESSION_UPDATED: 0,
+    HEAD_REF: null,
+    COMMIT_REF: null,
+    REPOSITORY_STATE: 'unavailable',
+    IS_DETACHED_HEAD: false,
     ...overrides,
   };
 }
@@ -641,6 +645,140 @@ describe('rendered memory fixture regression', () => {
       expect(rendered).not.toMatch(/\|\s*Tool Executions\s*\|\s*0\s*\|/);
       expect(validation.failedRules).not.toContain('V7');
       expect(validation.valid).toBe(true);
+    } finally {
+      CONFIG.TEMPLATE_DIR = previousTemplateDir;
+      fs.rmSync(tempRoot, { recursive: true, force: true });
+    }
+  });
+
+  it('renders git provenance metadata into the session summary table and YAML block (M-007d)', async () => {
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-render-fixture-'));
+    const { CONFIG } = await import('../core');
+    const previousTemplateDir = CONFIG.TEMPLATE_DIR;
+    const templatesDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..', 'templates');
+
+    try {
+      const specFolderPath = path.join(tempRoot, '017-git-provenance-render');
+      const contextDir = path.join(specFolderPath, 'memory');
+      fs.mkdirSync(contextDir, { recursive: true });
+      fs.writeFileSync(
+        path.join(specFolderPath, 'spec.md'),
+        ['---', 'title: "Spec: Git Provenance Render"', '---', '# Spec'].join('\n'),
+        'utf-8'
+      );
+
+      workflowHarness.specFolderPath = specFolderPath;
+      workflowHarness.contextDir = contextDir;
+      CONFIG.TEMPLATE_DIR = templatesDir;
+
+      const { runWorkflow } = await import('../core/workflow');
+      const result = await runWorkflow({
+        collectedData: {
+          _source: 'opencode-capture',
+          userPrompts: [
+            {
+              prompt: 'Validate git provenance metadata render.',
+              timestamp: '2026-03-17T10:00:00Z',
+            },
+          ],
+          observations: [
+            {
+              title: 'Git provenance render validation',
+              narrative: 'Verified git metadata flows through to rendered memory.',
+              facts: ['Tool: Read File: scripts/core/workflow.ts Result: inspected enrichment pipeline'],
+              files: ['scripts/core/workflow.ts'],
+              timestamp: '2026-03-17T10:00:30Z',
+            },
+          ],
+        },
+        collectSessionDataFn: async (_input, specFolderName) => createSessionData(
+          specFolderName || '017-git-provenance-render',
+          {
+            HEAD_REF: 'feat/m-007d-git-metadata',
+            COMMIT_REF: 'a1b2c3d4e5f6',
+            REPOSITORY_STATE: 'dirty',
+            IS_DETACHED_HEAD: false,
+          },
+        ),
+        silent: true,
+      });
+
+      const rendered = fs.readFileSync(path.join(result.contextDir, result.contextFilename), 'utf-8');
+
+      // Session summary table should include Git Ref row
+      expect(rendered).toMatch(/\|\s*Git Ref\s*\|\s*feat\/m-007d-git-metadata\s*\(`a1b2c3d4e5f6`\)\s*\|/);
+
+      // YAML metadata block should include git provenance fields
+      expect(rendered).toContain('head_ref: "feat/m-007d-git-metadata"');
+      expect(rendered).toContain('commit_ref: "a1b2c3d4e5f6"');
+      expect(rendered).toContain('repository_state: "dirty"');
+      expect(rendered).toContain('is_detached_head: No');
+    } finally {
+      CONFIG.TEMPLATE_DIR = previousTemplateDir;
+      fs.rmSync(tempRoot, { recursive: true, force: true });
+    }
+  });
+
+  it('omits the Git Ref row when HEAD_REF is null (M-007d)', async () => {
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-render-fixture-'));
+    const { CONFIG } = await import('../core');
+    const previousTemplateDir = CONFIG.TEMPLATE_DIR;
+    const templatesDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..', 'templates');
+
+    try {
+      const specFolderPath = path.join(tempRoot, '018-no-git-context');
+      const contextDir = path.join(specFolderPath, 'memory');
+      fs.mkdirSync(contextDir, { recursive: true });
+      fs.writeFileSync(
+        path.join(specFolderPath, 'spec.md'),
+        ['---', 'title: "Spec: No Git Context"', '---', '# Spec'].join('\n'),
+        'utf-8'
+      );
+
+      workflowHarness.specFolderPath = specFolderPath;
+      workflowHarness.contextDir = contextDir;
+      CONFIG.TEMPLATE_DIR = templatesDir;
+
+      const { runWorkflow } = await import('../core/workflow');
+      const result = await runWorkflow({
+        collectedData: {
+          _source: 'opencode-capture',
+          userPrompts: [
+            {
+              prompt: 'Validate git ref row is omitted when not available.',
+              timestamp: '2026-03-17T10:05:00Z',
+            },
+          ],
+          observations: [
+            {
+              title: 'No git context render validation',
+              narrative: 'Verified git ref row is hidden when HEAD_REF is null.',
+              facts: ['Tool: Read'],
+              files: [],
+              timestamp: '2026-03-17T10:05:30Z',
+            },
+          ],
+        },
+        collectSessionDataFn: async (_input, specFolderName) => createSessionData(
+          specFolderName || '018-no-git-context',
+          {
+            HEAD_REF: null,
+            COMMIT_REF: null,
+            REPOSITORY_STATE: 'unavailable',
+            IS_DETACHED_HEAD: false,
+          },
+        ),
+        silent: true,
+      });
+
+      const rendered = fs.readFileSync(path.join(result.contextDir, result.contextFilename), 'utf-8');
+
+      // Git Ref row should NOT appear when HEAD_REF is null
+      expect(rendered).not.toMatch(/\|\s*Git Ref\s*\|/);
+
+      // YAML metadata block should still include the fields (empty values)
+      expect(rendered).toContain('head_ref: ""');
+      expect(rendered).toContain('repository_state: "unavailable"');
     } finally {
       CONFIG.TEMPLATE_DIR = previousTemplateDir;
       fs.rmSync(tempRoot, { recursive: true, force: true });

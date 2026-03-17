@@ -27,6 +27,8 @@ contextType: "general"
 | **Created** | 2026-03-16 |
 | **Branch** | `main` |
 | **Parent** | [`../spec.md`](../spec.md) |
+| **Predecessor Phase** | `011-scoring-and-calibration` |
+| **Successor Phase** | `013-memory-quality-and-indexing` |
 <!-- /ANCHOR:metadata -->
 
 ---

@@ -34,7 +34,7 @@ contextType: "general"
 
 - [x] CHK-001 [P0] Scope is locked to 11 bug-fix and data-integrity tests (NEW-001 through NEW-004, NEW-065, NEW-068, NEW-075, NEW-083, NEW-084, NEW-116, NEW-117) with no out-of-phase scenarios included [EVIDENCE: scope table in `spec.md` lists exactly 11 rows]
 - [x] CHK-002 [P0] Exact prompts, command sequences, and pass criteria were extracted verbatim from `../../manual_testing_playbook/manual_testing_playbook.md` [EVIDENCE: testing strategy table in `plan.md` matches playbook rows for all 11 test IDs]
-- [x] CHK-003 [P0] Feature catalog links for all 11 tests point to the correct `08--bug-fixes-and-data-integrity/` files (`01-graph-channel-id-fix.md` through `11-working-memory-timestamp-fix.md`) [EVIDENCE: spec.md scope table links verified against feature catalog directory]
+- [x] CHK-003 [P0] Feature catalog links for all 11 tests point to the correct `08--bug-fixes-and-data-integrity/` files [EVIDENCE: spec.md scope table links verified against the corresponding feature catalog directory]
 - [ ] CHK-004 [P1] Sandbox or checkpoint strategy is confirmed for destructive scenarios NEW-065, NEW-084, NEW-116, and NEW-117 before execution begins [EVIDENCE: sandbox/checkpoint target documented in execution notes or open questions]
 <!-- /ANCHOR:pre-impl -->
 
