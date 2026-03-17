@@ -52,7 +52,7 @@ title: "Tasks: Signal Extraction [template:level_1/tasks.md]"
 - [x] T014 Run golden tests after trigger-adapter migration
 - [x] T015 Convert `topic-extractor.ts` to a thin adapter over `SemanticSignalExtractor.extract({ mode: 'topics' })` (REQ-005) (`scripts/core/topic-extractor.ts`)
 - [x] T016 Run golden tests after topic-adapter migration
-- [x] T017 Remove the inline topic extraction from `session-extractor.ts`; replace it with unified engine calls (REQ-005) (`scripts/extractors/session-extractor.ts`)
+- [x] T017 Remove the inline topic extraction from `session-extractor.ts` and replace it with unified engine calls (REQ-005) (`scripts/extractors/session-extractor.ts`)
 - [x] T018 Run golden tests after session-adapter migration
 - [x] T019 Convert `semantic-summarizer.ts` to a thin adapter: delegate semantic trigger generation to `SemanticSignalExtractor.extract({ mode: 'summary' })` (REQ-005) (`scripts/lib/semantic-summarizer.ts`)
 - [x] T020 Run golden tests after semantic-summarizer migration

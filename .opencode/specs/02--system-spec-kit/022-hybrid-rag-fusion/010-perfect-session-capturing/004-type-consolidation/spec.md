@@ -16,8 +16,9 @@ description: "Consolidate canonical shared types (FileChange, DecisionRecord, et
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | Draft |
+| **Status** | Complete |
 | **Created** | 2026-03-16 |
+| **Completed** | 2026-03-17 |
 | **Branch** | `main` |
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
@@ -31,7 +32,6 @@ description: "Consolidate canonical shared types (FileChange, DecisionRecord, et
 
 ---
 
-<!-- ANCHOR:phase-context -->
 ### Phase Context
 
 This is **Phase 4** of the Perfect Session Capturing specification.
@@ -39,7 +39,6 @@ This is **Phase 4** of the Perfect Session Capturing specification.
 **Scope Boundary**: Canonical typing is partial and inverted.
 **Dependencies**: 003-data-fidelity
 **Deliverables**: Canonicalized FileChange/ObservationDetailed/ToolCounts/SpecFileEntry in session-types.ts; explicitly modeled SessionData fields
-<!-- /ANCHOR:phase-context -->
 
 <!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE

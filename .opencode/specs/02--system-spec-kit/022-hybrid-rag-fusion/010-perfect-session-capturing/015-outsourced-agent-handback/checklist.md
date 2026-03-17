@@ -53,7 +53,7 @@ contextType: "general"
 - [x] CHK-023 [P1] Targeted runtime-plus-doc verification passes - `npx vitest run --config ../mcp_server/vitest.config.ts --root . tests/runtime-memory-inputs.vitest.ts tests/outsourced-agent-handback-docs.vitest.ts` returned `2` files and `32` tests [Evidence: current rerun output in this task]
 - [x] CHK-024 [P1] Alignment drift passes for the scripts root - `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit/scripts` returned `244` scanned files, `0` findings, and `0` warnings [Evidence: current rerun output in this task]
 - [x] CHK-025 [P1] TypeScript verification is presented as current acceptance proof only with a reproducible rerun artifact - `npm run lint` in `.opencode/skill/system-spec-kit/scripts` passed (`tsc --noEmit`) [Evidence: current rerun output in this task]
-- [x] CHK-026 [P2] Fresh rich JSON-mode handback write succeeded — `generate-context.js` wrote `memory/16-03-26_22-23__updated-the-outsourced-agent-handback-docs-so.md` (556 lines) for this phase folder [Evidence: current rerun output in this task]
+- [x] CHK-026 [P2] Fresh rich JSON-mode handback write succeeded. `generate-context.js` wrote `memory/16-03-26_22-23__updated-the-outsourced-agent-handback-docs-so.md` (556 lines) for this phase folder [Evidence: current rerun output in this task]
 - [x] CHK-027 [P2] Fresh thin JSON-mode handback payload rejected with `INSUFFICIENT_CONTEXT_ABORT` before file write [Evidence: current rerun output in this task]
 <!-- /ANCHOR:testing -->
 

@@ -27,10 +27,10 @@ title: "Tasks: Auto-Detection Fixes [template:level_1/tasks.md]"
 ## Phase 1: Setup
 
 - [x] T001 Review `folder-detector.ts` detection cascade and identify insertion points for Priority 2.7 and Priority 3.5 signals (`scripts/spec-folder/folder-detector.ts`) [Evidence: reviewed cascade, identified ~L1387 and ~L1437 as guard insertion points]
-- [x] T002 Review `decision-extractor.ts` lines 260-261 and the observation/manual-decision concatenation boundary (`scripts/extractors/decision-extractor.ts`) [Evidence: reviewed file; dedup fix scoped to separate follow-on]
-- [x] T003 Review `workflow.ts` tree-thinning logic and `f.DESCRIPTION` usage for `key_files` generation (`scripts/core/workflow.ts`) [Evidence: reviewed workflow.ts; identified `isWithinDirectory` and `isSymbolicLink` gaps]
-- [x] T004 Review `session-extractor.ts` `extractBlockers()` function for blocker validation insertion point (`scripts/extractors/session-extractor.ts`) [Evidence: reviewed; blocker validation scoped to follow-on]
-- [x] T005 Confirm R-11 (session source validation) status and assess impact on proceeding independently [Evidence: R-11 complete (spec 011); proceeding independently confirmed]
+- [x] T002 Review `decision-extractor.ts` lines 260-261 and the observation/manual-decision concatenation boundary (`scripts/extractors/decision-extractor.ts`) [Evidence: reviewed file, dedup fix scoped to separate follow-on]
+- [x] T003 Review `workflow.ts` tree-thinning logic and `f.DESCRIPTION` usage for `key_files` generation (`scripts/core/workflow.ts`) [Evidence: reviewed workflow.ts, identified `isWithinDirectory` and `isSymbolicLink` gaps]
+- [x] T004 Review `session-extractor.ts` `extractBlockers()` function for blocker validation insertion point (`scripts/extractors/session-extractor.ts`) [Evidence: reviewed, blocker validation scoped to follow-on]
+- [x] T005 Confirm R-11 (session source validation) status and assess impact on proceeding independently [Evidence: R-11 complete (spec 011), proceeding independently confirmed]
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -38,33 +38,33 @@ title: "Tasks: Auto-Detection Fixes [template:level_1/tasks.md]"
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-### Low-Confidence Fall-Through Guards — Priority 2.7 and 3.5 (REQ-001 / REQ-004 partial)
+### Low-Confidence Fall-Through Guards: Priority 2.7 and 3.5 (REQ-001 / REQ-004 partial)
 
-- [x] T006 Add `lowConfidence` fall-through guard at Priority 2.7 (git-status) in `folder-detector.ts` (~L1387): change `const selected` to `let selected: AutoDetectCandidate | null`, add `lowConfidence` check, fall through to Priority 4 on low confidence (`scripts/spec-folder/folder-detector.ts`) [Evidence: implemented; 7/7 auto-detection-fixes tests pass]
-- [x] T007 Add `lowConfidence` fall-through guard at Priority 3.5 (session-activity) in `folder-detector.ts` (~L1437): same pattern -- warn and fall through to Priority 4 on low confidence (`scripts/spec-folder/folder-detector.ts`) [Evidence: implemented; 7/7 auto-detection-fixes tests pass]
+- [x] T006 Add `lowConfidence` fall-through guard at Priority 2.7 (git-status) in `folder-detector.ts` (~L1387): change `const selected` to `let selected: AutoDetectCandidate | null`, add `lowConfidence` check, fall through to Priority 4 on low confidence (`scripts/spec-folder/folder-detector.ts`) [Evidence: implemented, 7/7 auto-detection-fixes tests pass]
+- [x] T007 Add `lowConfidence` fall-through guard at Priority 3.5 (session-activity) in `folder-detector.ts` (~L1437): same pattern -- warn and fall through to Priority 4 on low confidence (`scripts/spec-folder/folder-detector.ts`) [Evidence: implemented, 7/7 auto-detection-fixes tests pass]
 - [x] T008 Add `getGitStatusForSpecs()` function running `git status --porcelain` filtered to spec paths (full REQ-001 signal) [Evidence: `collectGitStatusPaths` at folder-detector.ts:412 runs `git status --porcelain` filtered to spec paths]
 - [x] T009 Cache git-status output per detection run [Evidence: `loadAutoDetectCandidates` caches at folder-detector.ts:1368 via `cachedAutoDetectCandidates`]
 - [x] T010 Rank candidates by file count from git-status [Evidence: `compareGitStatusCandidates` at folder-detector.ts:478 sorts by `gitStatusCount`]
 
 ### Decision Dedup Fix (REQ-002)
 
-- [x] T011 Add guard at `decision-extractor.ts` lines 260-261: `if (processedManualDecisions.length > 0) { decisionObservations = []; }` [Evidence: decision-extractor.ts:353-354; test SC-002 proves 4+4→4]
+- [x] T011 Add guard at `decision-extractor.ts` lines 260-261: `if (processedManualDecisions.length > 0) { decisionObservations = []; }` [Evidence: decision-extractor.ts:353-354, test SC-002 proves 4+4→4]
 
 ### Path Security and Symlink Fixes (REQ-003)
 
-- [x] T012 Replace `isWithinDirectory` body in `workflow.ts` with `validateFilePath` from `@spec-kit/shared/utils/path-security`, using `realpathSync` + containment check to properly handle symlinks (`scripts/core/workflow.ts`) [Evidence: implemented; Fix 2a]
-- [x] T013 Add `entry.isSymbolicLink()` skip guard in `listSpecFolderKeyFiles` in `workflow.ts`, matching pattern from `subfolder-utils.ts:84` (`scripts/core/workflow.ts`) [Evidence: implemented; Fix 2b]
+- [x] T012 Replace `isWithinDirectory` body in `workflow.ts` with `validateFilePath` from `@spec-kit/shared/utils/path-security`, using `realpathSync` + containment check to properly handle symlinks (`scripts/core/workflow.ts`) [Evidence: implemented, Fix 2a]
+- [x] T013 Add `entry.isSymbolicLink()` skip guard in `listSpecFolderKeyFiles` in `workflow.ts`, matching pattern from `subfolder-utils.ts:84` (`scripts/core/workflow.ts`) [Evidence: implemented, Fix 2b]
 - [x] T014 Change tree-thinning input from `f.DESCRIPTION` to actual file content (full REQ-003 tree-thinning fix) [Evidence: `resolveTreeThinningContent` at workflow.ts:567 reads actual file content via `fsSync.readFileSync`]
 
 ### Session Activity Signal (REQ-004)
 
-- [x] T015 `SessionActivitySignal` interface exists in `session-activity-signal.ts` [Evidence: file present; 7/7 tests pass]
-- [x] T016 `buildSessionActivitySignal()` implemented in `session-activity-signal.ts` [Evidence: file present; 7/7 tests pass]
+- [x] T015 `SessionActivitySignal` interface exists in `session-activity-signal.ts` [Evidence: file present, 7/7 tests pass]
+- [x] T016 `buildSessionActivitySignal()` implemented in `session-activity-signal.ts` [Evidence: file present, 7/7 tests pass]
 - [x] T017 Priority 3.5 signal wired in `folder-detector.ts` with `lowConfidence` fall-through guard added [Evidence: implemented]
 
 ### Parent-Affinity Boost (REQ-005)
 
-- [x] T018 Parent candidate check for >3 children with recent mtime [Evidence: `applyParentAffinityBoost` at folder-detector.ts:390: `if (childCandidates.length > 3)`; test "promotes the parent folder" confirms]
+- [x] T018 Parent candidate check for >3 children with recent mtime [Evidence: `applyParentAffinityBoost` at folder-detector.ts:390: `if (childCandidates.length > 3)`, test "promotes the parent folder" confirms]
 - [x] T019 Boost qualifying parent's effective depth to match deepest child [Evidence: folder-detector.ts:391-394 sets `effectiveDepth = Math.max(candidate.depth, ...childCandidates.map(...))`]
 
 ### Blocker Validation (REQ-006)
@@ -76,9 +76,9 @@ title: "Tasks: Auto-Detection Fixes [template:level_1/tasks.md]"
 
 ### Template Contract Wiring (REQ-007)
 
-- [x] T024 Wire `memory_classification` into template context [Evidence: `buildMemoryClassificationContext` at workflow.ts:758; test verifies `memory_type: "semantic"`]
-- [x] T025 Wire `session_dedup` into template context [Evidence: `buildSessionDedupContext` at workflow.ts:808; test verifies `dedup_savings_tokens: 144`]
-- [x] T026 Wire `causal_links` into template context [Evidence: `buildCausalLinksContext` at workflow.ts:860+; test verifies `caused_by:` present]
+- [x] T024 Wire `memory_classification` into template context [Evidence: `buildMemoryClassificationContext` at workflow.ts:758, test verifies `memory_type: "semantic"`]
+- [x] T025 Wire `session_dedup` into template context [Evidence: `buildSessionDedupContext` at workflow.ts:808, test verifies `dedup_savings_tokens: 144`]
+- [x] T026 Wire `causal_links` into template context [Evidence: `buildCausalLinksContext` at workflow.ts:860+, test verifies `caused_by:` present]
 - [x] T027 Verify all three fields appear in rendered output [Evidence: test "renders filesystem-backed key_files" at auto-detection-fixes.vitest.ts:364 verifies all three]
 <!-- /ANCHOR:phase-2 -->
 
@@ -104,7 +104,7 @@ title: "Tasks: Auto-Detection Fixes [template:level_1/tasks.md]"
 
 - [x] All tasks marked `[x]` (Fix 1, Fix 2a, Fix 2b, REQ-002, REQ-005, REQ-006, REQ-007 all confirmed implemented)
 - [x] No `[B]` blocked tasks remaining
-- [x] Manual verification passed [Evidence: validate.sh PASSED; 11 auto-detection-fixes tests + 5 template-structure + 79 phase-command-workflows all green]
+- [x] Manual verification passed [Evidence: validate.sh PASSED, 11 auto-detection-fixes tests + 5 template-structure + 79 phase-command-workflows all green]
 <!-- /ANCHOR:completion -->
 
 ---

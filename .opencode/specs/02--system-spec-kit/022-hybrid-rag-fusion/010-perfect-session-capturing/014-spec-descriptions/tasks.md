@@ -44,10 +44,10 @@ contextType: "general"
   - [x] Create `savePerFolderDescription(desc, folderPath)` targeting `description.json` at the folder root.
 - [x] TASK-004: Add safe write and freshness checks for per-folder description files
   - [x] Use atomic temp-then-rename writes for `description.json`.
-  - [x] Compare `description.json` and `spec.md` mtimes to detect stale metadata. [EVIDENCE: isPerFolderDescriptionStale() at folder-discovery.ts:690-700; T046-25b verifies stale detection → regeneration → freshness cycle]
+  - [x] Compare `description.json` and `spec.md` mtimes to detect stale metadata. [EVIDENCE: isPerFolderDescriptionStale() at folder-discovery.ts:690-700, T046-25b verifies stale detection → regeneration → freshness cycle]
 - [x] TASK-005: Add unit coverage for the new per-folder description helpers
   - [x] Test generation output shape and extracted field values.
-  - [x] Test load/save behavior and stale detection paths. [EVIDENCE: T009 loadPerFolderDescription/savePerFolderDescription suite (5 tests); T046-25/25b stale detection tests]
+  - [x] Test load/save behavior and stale detection paths. [EVIDENCE: T009 loadPerFolderDescription/savePerFolderDescription suite (5 tests), T046-25/25b stale detection tests]
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -154,5 +154,5 @@ contextType: "general"
 - **Checklist**: See `checklist.md`
 - **Feature Catalog**: See `.opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/04-spec-folder-description-discovery.md`
 
-<!-- AUDIT-2026-03-16: All 25 tasks remain complete. Phase 1-2 shipped the per-folder description lifecycle and create.sh integration. Phase 2 shipped uniqueness and aggregation hardening, including reserved random fallback after 100 collisions, discovery-time repair for stale/corrupt existing description.json files, and blank-spec per-folder metadata generation. Latest targeted verification used the current workspace commands: scripts `npm run lint`; scripts `npx vitest run --config ../mcp_server/vitest.config.ts --root . tests/slug-uniqueness.vitest.ts`; mcp_server `npx vitest run tests/folder-discovery.vitest.ts tests/folder-discovery-integration.vitest.ts tests/workflow-memory-tracking.vitest.ts tests/slug-utils-boundary.vitest.ts`. -->
+<!-- AUDIT-2026-03-16: All 25 tasks remain complete. Phase 1-2 shipped the per-folder description lifecycle and create.sh integration. Phase 2 shipped uniqueness and aggregation hardening, including reserved random fallback after 100 collisions, discovery-time repair for stale/corrupt existing description.json files, and blank-spec per-folder metadata generation. Latest targeted verification used the current workspace commands: scripts `npm run lint`, scripts `npx vitest run --config ../mcp_server/vitest.config.ts --root . tests/slug-uniqueness.vitest.ts`, mcp_server `npx vitest run tests/folder-discovery.vitest.ts tests/folder-discovery-integration.vitest.ts tests/workflow-memory-tracking.vitest.ts tests/slug-utils-boundary.vitest.ts`. -->
 <!-- /ANCHOR:cross-refs -->

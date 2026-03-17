@@ -25,7 +25,7 @@ title: "Verification Checklist: Signal Extraction [template:level_2/checklist.md
 
 - [x] CHK-001 [P0] Requirements documented in spec.md [Evidence: spec `008` now records the shipped script-side unification design, parity baseline, and acceptance criteria.]
 - [x] CHK-002 [P0] Technical approach defined in plan.md [Evidence: plan `008` now describes the shared-baseline-plus-script-adapter architecture and final verification bar.]
-- [x] CHK-003 [P1] Dependencies identified (none -- foundational change) [Evidence: `008` remains the prerequisite for `007-phase-classification`; no upstream code dependency blocks this phase.]
+- [x] CHK-003 [P1] Dependencies identified (none -- foundational change) [Evidence: `008` remains the prerequisite for `007-phase-classification`. No upstream code dependency blocks this phase.]
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -36,10 +36,10 @@ title: "Verification Checklist: Signal Extraction [template:level_2/checklist.md
 - [x] CHK-010 [P0] `SemanticSignalExtractor` created with `mode: 'topics' | 'triggers' | 'summary' | 'all'` (REQ-001) [Evidence: `scripts/lib/semantic-signal-extractor.ts` exports the mode union, engine class, and shared extract contract.]
 - [x] CHK-011 [P0] Single canonical stopword profile with `balanced` and `aggressive` modes replaces 3 divergent script-side lists (REQ-002) [Evidence: `semantic-signal-extractor.ts` centralizes `getStopwordSet()` and routes topic/session/summary callers through one profile contract.]
 - [x] CHK-012 [P0] Golden tests with 3+ frozen input -> expected output for regression detection (REQ-004) [Evidence: `scripts/tests/semantic-signal-golden.vitest.ts` locks technical, debugging, and research/planning trigger output.]
-- [x] CHK-013 [P1] Configurable n-gram depth (1-4 grams) with default 2 (REQ-003) [Evidence: engine supports `1 | 2 | 3 | 4`; the golden suite verifies depth behavior, and topic/session helpers use default depth 2.]
+- [x] CHK-013 [P1] Configurable n-gram depth (1-4 grams) with default 2 (REQ-003) [Evidence: engine supports `1 | 2 | 3 | 4`. The golden suite verifies depth behavior, and topic/session helpers use default depth 2.]
 - [x] CHK-014 [P1] Script-side `trigger-extractor.ts` converted to thin adapter with stable public API (REQ-005) [Evidence: `scripts/lib/trigger-extractor.ts` preserves exports while delegating trigger extraction to `SemanticSignalExtractor`.]
 - [x] CHK-015 [P1] `topic-extractor.ts` converted to thin adapter with stable public API (REQ-005) [Evidence: `scripts/core/topic-extractor.ts` now delegates topic extraction to `SemanticSignalExtractor.extractTopicTerms(...)`.]
-- [x] CHK-016 [P1] `session-extractor.ts` inline extraction removed; delegates to unified engine (REQ-005) [Evidence: `scripts/extractors/session-extractor.ts` now routes topic extraction through `SemanticSignalExtractor` instead of its local stopword list.]
+- [x] CHK-016 [P1] `session-extractor.ts` inline extraction removed, delegates to unified engine (REQ-005) [Evidence: `scripts/extractors/session-extractor.ts` now routes topic extraction through `SemanticSignalExtractor` instead of its local stopword list.]
 - [x] CHK-017 [P1] `semantic-summarizer.ts` converted to thin adapter (REQ-005) [Evidence: `scripts/lib/semantic-summarizer.ts` now sources trigger phrases from `SemanticSignalExtractor.extract({ mode: 'summary' })`.]
 - [x] CHK-018 [P2] Script-side duplicate stopword/topic owners removed from migrated extractors [Evidence: topic/session/summary callers now share the unified engine instead of carrying their own stopword lists.]
 - [x] CHK-019 [P2] Trigger weighting consistent with existing trigger-extractor logic [Evidence: the engine reuses shared trigger scoring primitives and the frozen parity suite matches shared-baseline output.]
@@ -64,7 +64,7 @@ title: "Verification Checklist: Signal Extraction [template:level_2/checklist.md
 <!-- ANCHOR:security -->
 ## Security
 
-- [x] CHK-030 [P2] No sensitive data exposed through extraction output [Evidence: outputs remain ranked terms/phrases plus counts; no raw session payloads are emitted by the new tests or adapters.]
+- [x] CHK-030 [P2] No sensitive data exposed through extraction output [Evidence: outputs remain ranked terms/phrases plus counts. No raw session payloads are emitted by the new tests or adapters.]
 - [x] CHK-031 [P2] Extraction computation handles adversarial/empty input gracefully [Evidence: trigger wrappers still return empty arrays for null/short input, and the golden/profile tests cover empty-safe behavior through the unified contract.]
 <!-- /ANCHOR:security -->
 

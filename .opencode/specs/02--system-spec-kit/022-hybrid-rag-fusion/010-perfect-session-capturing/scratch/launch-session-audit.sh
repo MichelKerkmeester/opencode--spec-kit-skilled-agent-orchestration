@@ -6,6 +6,7 @@
 # Stream 2: C01-C20 (GPT-5.3-Codex via codex, file-level verification)
 #
 # Usage: bash launch-session-audit.sh [--stream1-only] [--stream2-only] [--dry-run]
+# Scratch operator helper only. Do not treat launcher output as canonical closure proof.
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -36,10 +37,15 @@ launch_codex() {
   local output_file="$3"
   local prompt="$4"
   local extra_flags="${5:-}"
+  local -a extra_args=()
 
   if $DRY_RUN; then
     log "DRY-RUN: Would launch $id → $output_file (model=$model)"
     return
+  fi
+
+  if [[ -n "$extra_flags" ]]; then
+    read -r -a extra_args <<< "$extra_flags"
   fi
 
   log "Launching $id → $(basename "$output_file")"
@@ -48,7 +54,7 @@ launch_codex() {
     codex exec "$prompt" \
       --model "$model" \
       --sandbox read-only \
-      $extra_flags \
+      "${extra_args[@]}" \
       > "$output_file" 2>&1 || echo "AGENT_ERROR: $id failed with exit code $?" >> "$output_file"
   ) &
   PIDS+=($!)

@@ -25,7 +25,7 @@ title: "Verification Checklist: Embedding Optimization [template:level_2/checkli
 
 - [x] CHK-001 [P0] Requirements documented in spec.md [Evidence: `spec.md` requirements and scope sections define REQ-001 through REQ-005 and the real implementation seams.]
 - [x] CHK-002 [P0] Technical approach defined in plan.md [Evidence: `plan.md` architecture, phases, and testing strategy sections describe the scripts-plus-save rollout.]
-- [x] CHK-003 [P1] Dependencies identified and available (R-08 status confirmed; fallback section header parsing ready) [Evidence: `plan.md` dependency section records R-08 as green and the summary/heading fallback approach.]
+- [x] CHK-003 [P1] Dependencies identified and available (R-08 status confirmed, fallback section header parsing ready) [Evidence: `plan.md` dependency section records R-08 as green and the summary/heading fallback approach.]
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -35,10 +35,10 @@ title: "Verification Checklist: Embedding Optimization [template:level_2/checkli
 
 - [x] CHK-010 [P0] `buildWeightedDocumentText()` produces correct multiplier concatenation (title 1x, decisions 3x, outcomes 2x, general 1x) [Evidence: `mcp_server/tests/embedding-weighting.vitest.ts` covers multiplier behavior, ordering, empty sections, and truncation.]
 - [x] CHK-011 [P0] Memory indexer calls `generateDocumentEmbedding()` instead of raw `generateEmbedding()` [Evidence: `scripts/core/memory-indexer.ts` now calls `generateDocumentEmbedding(weightedInput)` and `scripts/tests/memory-indexer-weighting.vitest.ts` asserts `generateEmbedding` is not used.]
-- [x] CHK-012 [P1] Total payload length is capped; truncation priority is general > outcomes > decisions [Evidence: `shared/embeddings.ts` enforces capped weighted text and `mcp_server/tests/embedding-weighting.vitest.ts` verifies truncation order.]
+- [x] CHK-012 [P1] Total payload length is capped. Truncation priority is general > outcomes > decisions [Evidence: `shared/embeddings.ts` enforces capped weighted text and `mcp_server/tests/embedding-weighting.vitest.ts` verifies truncation order.]
 - [x] CHK-013 [P1] Structured section extraction correctly identifies title, decisions, outcomes, and general content [Evidence: `scripts/lib/semantic-summarizer.ts` and `mcp_server/handlers/save/embedding-pipeline.ts` extract weighted sections from summary/markdown inputs.]
-- [x] CHK-014 [P1] Static decay metadata fields persisted for searcher consumption [Evidence: decay metadata (`capturedAt`, `lastAccessedAt`, `accessCount`, `decayConstant`, `halfLifeDays`) is managed by the MCP vector index layer (`vector-index-mutations`, `tier-classifier`), not by `scripts/core/memory-indexer.ts`; the scripts indexer passes embedding and quality data while the MCP side handles decay fields at write time.]
-- [ ] CHK-015 [P2] Weight multipliers are configurable (not hardcoded magic numbers) — deferred; this phase keeps the fixed `1/3/2/1` contract from R-09
+- [x] CHK-014 [P1] Static decay metadata fields persisted for searcher consumption [Evidence: decay metadata (`capturedAt`, `lastAccessedAt`, `accessCount`, `decayConstant`, `halfLifeDays`) is managed by the MCP vector index layer (`vector-index-mutations`, `tier-classifier`), not by `scripts/core/memory-indexer.ts`). The scripts indexer passes embedding and quality data while the MCP side handles decay fields at write time.]
+- [ ] CHK-015 [P2] Weight multipliers are configurable (not hardcoded magic numbers), deferred. This phase keeps the fixed `1/3/2/1` contract from R-09
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -50,7 +50,7 @@ title: "Verification Checklist: Embedding Optimization [template:level_2/checkli
 - [x] CHK-021 [P0] Unit tests pass for indexer routing through `generateDocumentEmbedding` [Evidence: `node mcp_server/node_modules/vitest/vitest.mjs run tests/memory-indexer-weighting.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts` passed.]
 - [x] CHK-022 [P1] Integration test: decision-heavy memory produces improved top-k retrieval ranking [Evidence: `mcp_server/tests/embedding-weighting.vitest.ts` includes a deterministic ranking-oriented fixture that prefers the decision-rich memory.]
 - [x] CHK-023 [P1] Existing embedding and indexer test suites pass with no regressions [Evidence: scripts targeted run passed 3 files / 49 tests, and MCP targeted run passed 4 files / 49 tests as recorded in `implementation-summary.md`.]
-- [x] CHK-024 [P1] Temporal decay behavior unchanged at query time (searcher not modified) [Evidence: this phase made no edits under the retrieval/searcher path; only scripts indexing and `mcp_server/handlers/save/embedding-pipeline.ts` changed.]
+- [x] CHK-024 [P1] Temporal decay behavior unchanged at query time (searcher not modified) [Evidence: this phase made no edits under the retrieval/searcher path. Only scripts indexing and `mcp_server/handlers/save/embedding-pipeline.ts` changed.]
 <!-- /ANCHOR:testing -->
 
 ---

@@ -72,7 +72,7 @@ title: "Verification Checklist: Phase Classification [template:level_2/checklist
 <!-- ANCHOR:security -->
 ## Security
 
-- [x] CHK-030 [P2] No sensitive data exposed through cluster metadata [Evidence: topic clusters emit ranked terms, indexes, phase scores, and confidence only; raw observation payloads are not surfaced in the new contract.]
+- [x] CHK-030 [P2] No sensitive data exposed through cluster metadata [Evidence: topic clusters emit ranked terms, indexes, phase scores, and confidence only. Raw observation payloads are not surfaced in the new contract.]
 - [x] CHK-031 [P2] Cosine similarity computation handles edge cases (zero vectors, single-term vectors) [Evidence: `phase-classifier.ts` guards zero-size and zero-norm vectors, and `phase-classification.vitest.ts` covers low-signal fallback without crashes.]
 <!-- /ANCHOR:security -->
 

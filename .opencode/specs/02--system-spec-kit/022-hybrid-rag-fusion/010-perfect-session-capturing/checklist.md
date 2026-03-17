@@ -54,8 +54,8 @@ contextType: "general"
 - [x] CHK-020 [P0] Targeted scripts session-capture lane passes [Evidence: `npm test -- --run ...` targeted 14-file lane -> 150 tests passed.]
 - [x] CHK-021 [P0] Extractor and loader regression lane passes [Evidence: `node test-extractors-loaders.js` -> 305 passed, 0 failed.]
 - [x] CHK-022 [P0] Targeted MCP save-path lane passes [Evidence: `npm run test:core -- tests/handler-memory-save.vitest.ts tests/recovery-hints.vitest.ts tests/quality-loop.vitest.ts tests/save-quality-gate.vitest.ts tests/preflight.vitest.ts tests/integration-save-pipeline.vitest.ts` -> 298 tests passed.]
-- [x] CHK-023 [P1] Workspace typecheck/build prerequisites pass [Evidence: `.opencode/skill/system-spec-kit`: `npm run typecheck` PASS; `scripts`: `npm run check` PASS, `npm run build` PASS; `mcp_server`: `npm run lint` PASS, `npm run build` PASS.]
-- [x] CHK-024 [P1] Root and recursive validation pass cleanly [Evidence: `validate.sh` rerun on 2026-03-17 reports no blocking file, level, or phase-link errors; remaining output is warning-only.]
+- [x] CHK-023 [P1] Workspace typecheck/build prerequisites pass [Evidence: `.opencode/skill/system-spec-kit`: `npm run typecheck` PASS. `scripts`: `npm run check` PASS, `npm run build` PASS. `mcp_server`: `npm run lint` PASS. `npm run build` PASS.]
+- [x] CHK-024 [P1] Root and recursive validation pass cleanly [Evidence: `validate.sh` rerun on 2026-03-17 reports no blocking file, level, or phase-link errors. Remaining output is warning-only.]
 - [x] CHK-025 [P1] Completion check passes cleanly for the root spec pack [Evidence: All checklist items reviewed against spec.md requirements and implementation-summary.md evidence on 2026-03-17.]
 <!-- /ANCHOR:testing -->
 
@@ -65,7 +65,7 @@ contextType: "general"
 ## Security
 
 - [x] CHK-030 [P0] No runtime security contracts changed by this remediation [Evidence: Loader order, JSON authority, and `memory_save` `dryRun` and `force` behavior remained documentation-only constraints.]
-- [x] CHK-031 [P0] No hardcoded secrets introduced during verification or documentation work [Evidence: Only spec markdown and one test-lane file changed; no credentials added.]
+- [x] CHK-031 [P0] No hardcoded secrets introduced during verification or documentation work [Evidence: Only spec markdown and one test-lane file changed. No credentials added.]
 - [x] CHK-032 [P1] Live CLI proof distinguishes blocked cases instead of overstating capability [Evidence: OpenCode and Codex standalone limitations recorded as blocked or partial rather than marked proven.]
 <!-- /ANCHOR:security -->
 
@@ -85,7 +85,7 @@ contextType: "general"
 ## File Organization
 
 - [x] CHK-050 [P1] Root canonical markdown files exist for Level 3 [Evidence: `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, and `implementation-summary.md` present at the root spec folder.]
-- [x] CHK-051 [P1] Support artifacts remain in `scratch/` and `memory/` only [Evidence: No closure evidence depends on scratch-only notes; canonical claims live in root docs.]
+- [x] CHK-051 [P1] Support artifacts remain in `scratch/` and `memory/` only [Evidence: No closure evidence depends on scratch-only notes. Canonical claims live in root docs.]
 - [ ] CHK-052 [P2] Findings saved to memory/ [Evidence: Deferred until implementation closure is complete.]
 <!-- /ANCHOR:file-org -->
 
@@ -111,7 +111,7 @@ contextType: "general"
 - [x] CHK-100 [P0] Architecture decisions documented in `decision-record.md` [Evidence: Root ADR created on 2026-03-17.]
 - [x] CHK-101 [P1] ADR status and alternatives documented [Evidence: ADR-001 records accepted status, rejected alternatives, and rollback posture.]
 - [x] CHK-102 [P1] Alternatives documented with rejection rationale [Evidence: ADR-001 compares runtime-contract preservation against boundary-widening or fixture-only alternatives.]
-- [x] CHK-103 [P2] Migration path documented where applicable [Evidence: Documentation-only remediation has no runtime migration; `decision-record.md` states rollback path explicitly.]
+- [x] CHK-103 [P2] Migration path documented where applicable [Evidence: Documentation-only remediation has no runtime migration. `decision-record.md` states rollback path explicitly.]
 <!-- /ANCHOR:arch-verify -->
 
 ---
@@ -131,9 +131,9 @@ contextType: "general"
 ## L3+: DEPLOYMENT READINESS
 
 - [x] CHK-120 [P0] Rollback procedure documented [Evidence: Root `plan.md` and `decision-record.md` both define rollback procedures.]
-- [x] CHK-121 [P0] Feature flag configured (if applicable) [Evidence: Not applicable for this documentation-and-test remediation; no runtime flag behavior changed.]
-- [x] CHK-122 [P1] Monitoring or alerting configured [Evidence: Not applicable for this documentation-and-test remediation; no deployment surface changed.]
-- [x] CHK-123 [P1] Runbook created [Evidence: Not applicable for this documentation-and-test remediation; operator workflow remains the validator and rerun command set.]
+- [x] CHK-121 [P0] Feature flag configured (if applicable) [Evidence: Not applicable for this documentation-and-test remediation. No runtime flag behavior changed.]
+- [x] CHK-122 [P1] Monitoring or alerting configured [Evidence: Not applicable for this documentation-and-test remediation. No deployment surface changed.]
+- [x] CHK-123 [P1] Runbook created [Evidence: Not applicable for this documentation-and-test remediation. Operator workflow remains the validator and rerun command set.]
 - [ ] CHK-124 [P2] Deployment runbook reviewed [Evidence: Not applicable.]
 <!-- /ANCHOR:deploy-ready -->
 
@@ -142,7 +142,7 @@ contextType: "general"
 <!-- ANCHOR:compliance-verify -->
 ## L3+: COMPLIANCE VERIFICATION
 
-- [x] CHK-130 [P1] Security review completed for scope boundaries [Evidence: No public interface widening; private `notifyDatabaseUpdated` boundary preserved.]
+- [x] CHK-130 [P1] Security review completed for scope boundaries [Evidence: No public interface widening. Private `notifyDatabaseUpdated` boundary preserved.]
 - [x] CHK-131 [P1] Dependency licenses compatible [Evidence: No new dependencies added.]
 - [ ] CHK-132 [P2] OWASP Top 10 checklist completed [Evidence: Not applicable to this documentation-focused remediation.]
 - [x] CHK-133 [P2] Data handling remains compliant with documented requirements [Evidence: Live CLI proof records blocked cases rather than overstating stored-session coverage.]

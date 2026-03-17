@@ -75,7 +75,7 @@ contextType: "general"
 
 - [x] CHK-040 [P1] The specification doc reflects the repo-aligned design, not the sidecar draft [Evidence: `.fingerprint` and stale prompt-builder references removed]
 - [x] CHK-041 [P1] The implementation plan matches the shipped helper/validator/prompt architecture [Evidence: architecture and testing sections updated]
-- [x] CHK-042 [P1] The task list and implementation summary reflect completed work and actual verification [Evidence: all tasks marked complete; summary authored after verification]
+- [x] CHK-042 [P1] The task list and implementation summary reflect completed work and actual verification [Evidence: all tasks marked complete, summary authored after verification]
 <!-- /ANCHOR:docs -->
 
 ---

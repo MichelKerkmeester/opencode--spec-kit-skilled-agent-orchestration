@@ -9,13 +9,14 @@
 # Wave 5: QA-19..QA-23 (GPT-5.3-Codex via copilot, final synthesis)
 #
 # Usage: bash launch-qa-validation.sh [--wave N] [--dry-run]
+# Scratch operator helper only. Do not treat launcher output as canonical closure proof.
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../../../.." && pwd)"
 SCRATCH_DIR="$SCRIPT_DIR"
 SCRIPTS_DIR="$PROJECT_ROOT/.opencode/skill/system-spec-kit/scripts"
-SPEC_DIR="$PROJECT_ROOT/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-perfect-session-capturing"
+SPEC_DIR="$PROJECT_ROOT/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing"
 SK_CODE_DIR="$PROJECT_ROOT/.opencode/skill/sk-code--opencode"
 
 DRY_RUN=false
@@ -84,10 +85,15 @@ launch_codex() {
   local output_file="$3"
   local prompt="$4"
   local extra_flags="${5:-}"
+  local -a extra_args=()
 
   if $DRY_RUN; then
     log "DRY-RUN: Would launch $id → $(basename "$output_file") (codex model=$model)"
     return
+  fi
+
+  if [[ -n "$extra_flags" ]]; then
+    read -r -a extra_args <<< "$extra_flags"
   fi
 
   log "Launching $id → $(basename "$output_file") [codex $model]"
@@ -96,7 +102,7 @@ launch_codex() {
     codex exec "$prompt" \
       --model "$model" \
       --sandbox read-only \
-      $extra_flags \
+      "${extra_args[@]}" \
       > "$output_file" 2>&1 || echo "AGENT_ERROR: $id failed with exit code $?" >> "$output_file"
   ) &
   PIDS+=($!)

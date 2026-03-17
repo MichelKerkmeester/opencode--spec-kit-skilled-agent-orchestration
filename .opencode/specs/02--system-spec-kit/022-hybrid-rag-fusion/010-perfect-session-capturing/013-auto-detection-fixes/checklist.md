@@ -26,8 +26,8 @@ title: "Verification Checklist: Auto-Detection Fixes [template:level_2/checklist
 - [x] CHK-001 [P0] Requirements documented in spec.md [Evidence: spec.md created with full REQ-001–007 scope]
 - [x] CHK-002 [P0] Technical approach defined in plan.md [Evidence: plan.md created with 7-phase approach]
 - [x] CHK-003 [P1] Dependencies identified and available [Evidence: R-11 complete, TypeScript toolchain confirmed]
-- [x] CHK-004 [P1] R-11 (session source validation) status assessed; proceed independently if not yet landed [Evidence: R-11 confirmed complete (spec 011); proceeded independently]
-- [x] CHK-005 [P1] Existing detection cascade priority levels reviewed (Priority 1 through 3) in `folder-detector.ts` [Evidence: cascade reviewed; Priority 2.7 (~L1387) and 3.5 (~L1437) identified]
+- [x] CHK-004 [P1] R-11 (session source validation) status assessed, proceed independently if not yet landed [Evidence: R-11 confirmed complete (spec 011), proceeded independently]
+- [x] CHK-005 [P1] Existing detection cascade priority levels reviewed (Priority 1 through 3) in `folder-detector.ts` [Evidence: cascade reviewed, Priority 2.7 (~L1387) and 3.5 (~L1437) identified]
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -35,17 +35,17 @@ title: "Verification Checklist: Auto-Detection Fixes [template:level_2/checklist
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [x] CHK-010 [P0] Priority 2.7 (git-status) `lowConfidence` fall-through guard added: `let selected: AutoDetectCandidate | null`, warns and falls through to Priority 4 on low confidence (`folder-detector.ts` ~L1387) [Evidence: Fix 1 implemented; 7/7 tests pass]
-- [x] CHK-011 [P0] Priority 3.5 (session-activity) `lowConfidence` fall-through guard added: same pattern, warns and falls through to Priority 4 on low confidence (`folder-detector.ts` ~L1437) [Evidence: Fix 1 implemented; 7/7 tests pass]
-- [x] CHK-012 [P0] Decision dedup guard at `decision-extractor.ts:260-261` [Evidence: decision-extractor.ts:353-354; test SC-002 proves 4+4→4]
+- [x] CHK-010 [P0] Priority 2.7 (git-status) `lowConfidence` fall-through guard added: `let selected: AutoDetectCandidate | null`, warns and falls through to Priority 4 on low confidence (`folder-detector.ts` ~L1387) [Evidence: Fix 1 implemented, 7/7 tests pass]
+- [x] CHK-011 [P0] Priority 3.5 (session-activity) `lowConfidence` fall-through guard added: same pattern, warns and falls through to Priority 4 on low confidence (`folder-detector.ts` ~L1437) [Evidence: Fix 1 implemented, 7/7 tests pass]
+- [x] CHK-012 [P0] Decision dedup guard at `decision-extractor.ts:260-261` [Evidence: decision-extractor.ts:353-354, test SC-002 proves 4+4→4]
 - [x] CHK-013 [P0] 4 manual decisions produce exactly 4 records in rendered output [Evidence: test at line 290 asserts `DECISION_COUNT === 4`]
 - [x] CHK-014 [P0] `validateFilePath` from `@spec-kit/shared/utils/path-security` replaces naive `isWithinDirectory` in `workflow.ts`, using `realpathSync` + containment check for symlink safety [Evidence: Fix 2a implemented]
 - [x] CHK-015 [P0] `entry.isSymbolicLink()` skip guard added in `listSpecFolderKeyFiles` in `workflow.ts`, matching pattern from `subfolder-utils.ts:84` [Evidence: Fix 2b implemented]
-- [x] CHK-016 [P1] `SessionActivitySignal` interface exists in `session-activity-signal.ts` with correct fields [Evidence: file present; tests pass]
-- [x] CHK-017 [P1] `buildSessionActivitySignal()` implemented in `session-activity-signal.ts` [Evidence: file present; tests pass]
-- [x] CHK-018 [P1] Parent-affinity boost activates only when parent has >3 children with recent mtime [Evidence: folder-detector.ts:390 `if (childCandidates.length > 3)`; test "promotes the parent folder" confirms]
-- [x] CHK-019 [P1] Blocker validation rejects markdown headers, code fragments, and quote transition artifacts [Evidence: session-extractor.ts:222-231 `INVALID_BLOCKER_PATTERNS`; test "rejects structural blocker artifacts"]
-- [x] CHK-020 [P1] `memory_classification`, `session_dedup`, `causal_links` wired from extractors into template output [Evidence: workflow.ts:758+; test at line 364 verifies all three fields]
+- [x] CHK-016 [P1] `SessionActivitySignal` interface exists in `session-activity-signal.ts` with correct fields [Evidence: file present, tests pass]
+- [x] CHK-017 [P1] `buildSessionActivitySignal()` implemented in `session-activity-signal.ts` [Evidence: file present, tests pass]
+- [x] CHK-018 [P1] Parent-affinity boost activates only when parent has >3 children with recent mtime [Evidence: folder-detector.ts:390 `if (childCandidates.length > 3)`, test "promotes the parent folder" confirms]
+- [x] CHK-019 [P1] Blocker validation rejects markdown headers, code fragments, and quote transition artifacts [Evidence: session-extractor.ts:222-231 `INVALID_BLOCKER_PATTERNS`, test "rejects structural blocker artifacts"]
+- [x] CHK-020 [P1] `memory_classification`, `session_dedup`, `causal_links` wired from extractors into template output [Evidence: workflow.ts:758+, test at line 364 verifies all three fields]
 - [x] CHK-021 [P1] Git-status output cached per detection run [Evidence: `loadAutoDetectCandidates` caches at folder-detector.ts:1368 via `cachedAutoDetectCandidates`]
 <!-- /ANCHOR:code-quality -->
 
@@ -77,8 +77,8 @@ title: "Verification Checklist: Auto-Detection Fixes [template:level_2/checklist
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-040 [P1] spec.md reflects final implementation scope [Evidence: status updated to Completed; scope notes deferred items]
-- [x] CHK-041 [P1] plan.md updated with deviations from original approach [Evidence: DoD checkboxes marked; all phases confirmed completed]
+- [x] CHK-040 [P1] spec.md reflects final implementation scope [Evidence: status updated to Completed. Scope notes deferred items]
+- [x] CHK-041 [P1] plan.md updated with deviations from original approach [Evidence: DoD checkboxes marked, all phases confirmed completed]
 - [x] CHK-042 [P2] implementation-summary.md created after implementation completes [Evidence: populated with Fix 1, Fix 2a, Fix 2b details and test results]
 <!-- /ANCHOR:docs -->
 

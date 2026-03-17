@@ -69,7 +69,7 @@ title: "Tasks: Embedding Optimization [template:level_2/tasks.md]"
 - [x] T016 Unit test: verify length capping and truncation order (general > outcomes > decisions) (`mcp_server/tests/embedding-weighting.vitest.ts`)
 - [x] T017 Unit test: indexer routing calls `generateDocumentEmbedding` with weighted payload (`scripts/tests/memory-indexer-weighting.vitest.ts`)
 - [x] T018 Integration-oriented test: deterministic ranking fixture proves decision-heavy memory outranks general memory for a decision-focused query (`mcp_server/tests/embedding-weighting.vitest.ts`)
-- [x] T019 Confirm temporal decay behavior is unchanged at query time (searcher files unchanged; targeted compile/test reruns passed)
+- [x] T019 Confirm temporal decay behavior is unchanged at query time (searcher files unchanged, targeted compile/test reruns passed)
 - [x] T020 Run existing embedding and indexer suites with focused regressions (`task-enrichment.vitest.ts`, `embeddings.vitest.ts`, `handler-memory-save.vitest.ts`)
 <!-- /ANCHOR:phase-3 -->
 

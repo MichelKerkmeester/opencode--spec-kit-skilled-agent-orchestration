@@ -5,6 +5,7 @@
 # All agents: GPT-5.4 via copilot with --allow-all-tools
 #
 # Usage: bash launch-qa-fixes.sh [--dry-run]
+# Scratch operator helper only. Do not treat launcher output as canonical closure proof.
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

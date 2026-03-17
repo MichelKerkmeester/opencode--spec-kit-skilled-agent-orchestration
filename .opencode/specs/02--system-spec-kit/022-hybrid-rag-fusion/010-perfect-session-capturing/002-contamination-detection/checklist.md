@@ -51,10 +51,10 @@ title: "Verification Checklist: Contamination Detection [template:level_2/checkl
 
 - [x] CHK-020 [P0] Unit test: V8 frontmatter foreign-spec detection passes (REQ-001) [Evidence: `npm run test:task-enrichment` passed with the new frontmatter V8 regression case.]
 - [x] CHK-021 [P0] Unit test: V8 non-dominant signal detection passes (REQ-002) [Evidence: `npm run test:task-enrichment` passed with the new scattered foreign-spec V8 regression case.]
-- [x] CHK-022 [P1] Unit test: V9 expanded patterns — zero false positives on golden memories (REQ-003) [Evidence: `npm run test:task-enrichment` passed with the new generic-stub V9 case while the “practical generated memory” case still passed.]
+- [x] CHK-022 [P1] Unit test: V9 expanded patterns with zero false positives on golden memories (REQ-003) [Evidence: `npm run test:task-enrichment` passed with the new generic-stub V9 case while the “practical generated memory” case still passed.]
 - [x] CHK-023 [P1] Unit test: `noise.patterns` config wiring passes (REQ-005) [Evidence: `npm run test:task-enrichment` passed with the config-driven content-filter regression case.]
 - [x] CHK-024 [P1] Integration test: end-to-end audit trail across 3 stages passes (REQ-004) [Evidence: `npm run test:task-enrichment` passed with the workflow `metadata.json` audit aggregation case.]
-- [x] CHK-025 [P1] Full Vitest suite passes with zero failures [Evidence: `npm run test:task-enrichment` passed — 1 file, 43 tests, 0 failures.]
+- [x] CHK-025 [P1] Full Vitest suite passes with zero failures [Evidence: `npm run test:task-enrichment` passed: 1 file, 43 tests, 0 failures.]
 <!-- /ANCHOR:testing -->
 
 ---
@@ -62,7 +62,7 @@ title: "Verification Checklist: Contamination Detection [template:level_2/checkl
 <!-- ANCHOR:security -->
 ## Security
 
-- [x] CHK-030 [P2] Audit logging does not expose sensitive content from memories [Evidence: audit records only store stage names, pattern labels, counts, and pass-through counts; they do not store raw prompt or memory bodies.]
+- [x] CHK-030 [P2] Audit logging does not expose sensitive content from memories [Evidence: audit records only store stage names, pattern labels, counts, and pass-through counts. They do not store raw prompt or memory bodies.]
 - [x] CHK-031 [P2] Broadened V9 patterns do not create denial-of-service risk via regex complexity [Evidence: the added V9 regexes are anchored, short, and title-scoped rather than unbounded whole-document expressions.]
 <!-- /ANCHOR:security -->
 

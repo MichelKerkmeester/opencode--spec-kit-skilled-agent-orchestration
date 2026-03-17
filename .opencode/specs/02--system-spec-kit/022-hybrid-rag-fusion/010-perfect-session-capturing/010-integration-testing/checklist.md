@@ -25,7 +25,7 @@ title: "Verification Checklist: Integration Testing [template:level_2/checklist.
 
 - [ ] CHK-001 [P0] Requirements documented in spec.md
 - [ ] CHK-002 [P0] Technical approach defined in plan.md
-- [ ] CHK-003 [P1] Dependencies identified and available (R-01, R-04 status confirmed; current interfaces usable)
+- [ ] CHK-003 [P1] Dependencies identified and available (R-01, R-04 status confirmed, current interfaces usable)
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -45,9 +45,9 @@ title: "Verification Checklist: Integration Testing [template:level_2/checklist.
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [ ] CHK-020 [P0] Test case 1: happy-path save completes; memory file exists; `description.json` updated; sequence incremented
-- [ ] CHK-021 [P0] Test case 2: alignment block aborts with `ALIGNMENT_BLOCK`; no memory file; no description entry
-- [ ] CHK-022 [P0] Test case 3: duplicate save skipped; only one memory file; sequence not double-incremented
+- [ ] CHK-020 [P0] Test case 1: happy-path save completes, memory file exists, `description.json` updated, sequence incremented
+- [ ] CHK-021 [P0] Test case 2: alignment block aborts with `ALIGNMENT_BLOCK`, no memory file, no description entry
+- [ ] CHK-022 [P0] Test case 3: duplicate save skipped, only one memory file, sequence not double-incremented
 - [ ] CHK-023 [P1] Post-write bookkeeping verified in each test case (description.json, filesystem, sequence numbers)
 - [ ] CHK-024 [P1] `workflow-e2e.vitest.ts` discovered and runs green in `npm test`
 - [ ] CHK-025 [P1] Existing unit and integration tests unaffected by new E2E suite

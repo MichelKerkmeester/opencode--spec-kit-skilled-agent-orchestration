@@ -25,7 +25,7 @@ title: "Verification Checklist: Type Consolidation [template:level_2/checklist.m
 
 - [ ] CHK-001 [P0] Requirements documented in spec.md
 - [ ] CHK-002 [P0] Technical approach defined in plan.md
-- [ ] CHK-003 [P1] Dependencies identified and available (none — foundational A1 phase)
+- [ ] CHK-003 [P1] Dependencies identified and available (none, foundational A1 phase)
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -33,14 +33,14 @@ title: "Verification Checklist: Type Consolidation [template:level_2/checklist.m
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [x] CHK-010 [P0] `FileChange`, `ObservationDetailed`, `ToolCounts`, `SpecFileEntry` canonical in `session-types.ts` (REQ-001) — *completed by 003-data-fidelity (commit 37a75c17); types at session-types.ts:16-159* [Evidence: Verified in this phase's documented implementation and validation outputs.]
-- [x] CHK-011 [P0] All extractor files import these types from `session-types.ts`, not define locally (REQ-001) — *verified: file-extractor.ts, session-extractor.ts import from session-types* [Evidence: Verified in this phase's documented implementation and validation outputs.]
-- [x] CHK-012 [P0] Re-exports in original files for backward compatibility (REQ-001) — *verified: file-extractor.ts:35, session-extractor.ts:29-37* [Evidence: Verified in this phase's documented implementation and validation outputs.]
+- [x] CHK-010 [P0] `FileChange`, `ObservationDetailed`, `ToolCounts`, `SpecFileEntry` canonical in `session-types.ts` (REQ-001), see *completed by 003-data-fidelity (commit 37a75c17), types at session-types.ts:16-159* [Evidence: Verified in this phase's documented implementation and validation outputs.]
+- [x] CHK-011 [P0] All extractor files import these types from `session-types.ts`, not define locally (REQ-001), see *verified: file-extractor.ts, session-extractor.ts import from session-types* [Evidence: Verified in this phase's documented implementation and validation outputs.]
+- [x] CHK-012 [P0] Re-exports in original files for backward compatibility (REQ-001), see *verified: file-extractor.ts:35, session-extractor.ts:29-37* [Evidence: Verified in this phase's documented implementation and validation outputs.]
 - [ ] CHK-013 [P0] `SessionData` explicitly models `implementation-guide`, `preflight`, `postflight`, `continue-session` fields (REQ-002)
-- [x] CHK-014 [P0] `PhaseEntry.ACTIVITIES` is required, not optional (REQ-003) — *verified: session-types.ts:267 `ACTIVITIES: string[]` (no `?`)* [Evidence: Verified in this phase's documented implementation and validation outputs.]
-- [ ] CHK-015 [P0] `CollectedDataFor*` subsets consolidated using `Pick`/`Omit` — no more than 2 subset interfaces remain (REQ-004)
+- [x] CHK-014 [P0] `PhaseEntry.ACTIVITIES` is required, not optional (REQ-003), see *verified: session-types.ts:267 `ACTIVITIES: string[]` (no `?`)* [Evidence: Verified in this phase's documented implementation and validation outputs.]
+- [ ] CHK-015 [P0] `CollectedDataFor*` subsets consolidated using `Pick`/`Omit` with no more than 2 subset interfaces remain (REQ-004)
 - [ ] CHK-016 [P0] `[key: string]: unknown` removed from `SessionData` (REQ-005)
-- [x] CHK-017 [P0] `OutcomeEntry.TYPE` handling normalized — required or has explicit default (REQ-006) — *verified: session-types.ts:368 `TYPE: string` (no `?`)* [Evidence: Verified in this phase's documented implementation and validation outputs.]
+- [x] CHK-017 [P0] `OutcomeEntry.TYPE` handling normalized, required or has explicit default (REQ-006), see *verified: session-types.ts:368 `TYPE: string` (no `?`)* [Evidence: Verified in this phase's documented implementation and validation outputs.]
 - [ ] CHK-018 [P1] All `PhaseEntry` construction sites populate ACTIVITIES (REQ-003)
 - [ ] CHK-019 [P1] No subset interface redeclares fields with different types than canonical (REQ-004)
 - [ ] CHK-020 [P2] Minimal `as any` or `as unknown` casts introduced during migration
@@ -97,5 +97,5 @@ title: "Verification Checklist: Type Consolidation [template:level_2/checklist.m
 | P1 Items | 9 | [ ]/9 |
 | P2 Items | 5 | [ ]/5 |
 
-**Verification Date**: 2026-03-16 (partial — items completed by 003-data-fidelity acknowledged)
+**Verification Date**: 2026-03-16 (partial, items completed by 003-data-fidelity acknowledged)
 <!-- /ANCHOR:summary -->
