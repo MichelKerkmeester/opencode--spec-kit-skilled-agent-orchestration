@@ -1,3 +1,6 @@
+// ───────────────────────────────────────────────────────────────────
+// MODULE: Phase Classification Tests
+// ───────────────────────────────────────────────────────────────────
 import { describe, expect, it } from 'vitest';
 
 import { extractConversations } from '../extractors/conversation-extractor';

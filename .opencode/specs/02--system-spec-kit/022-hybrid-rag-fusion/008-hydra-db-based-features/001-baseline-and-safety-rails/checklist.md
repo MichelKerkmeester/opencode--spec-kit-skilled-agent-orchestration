@@ -9,7 +9,6 @@ trigger_phrases:
 importance_tier: "critical"
 contextType: "general"
 ---
-<!-- ANCHOR:document -->
 # Verification Checklist: 001-baseline-and-safety-rails
 
 <!-- SPECKIT_LEVEL: 3+ -->
@@ -17,6 +16,7 @@ contextType: "general"
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## Verification Protocol
 
 | Priority | Handling | Completion Impact |
@@ -25,68 +25,80 @@ contextType: "general"
 | **P1** | Required | Must complete or defer explicitly |
 | **P2** | Optional | Can remain open with rationale |
 
----
-
-## P0: Planning and Scope Integrity
-
-- [x] CHK-001 Requirements documented in `spec.md` [EVIDENCE:spec.md]
-- [x] CHK-002 Technical approach documented in `plan.md` [EVIDENCE:plan.md]
-- [x] CHK-003 Phase handoff and dependency boundaries documented [EVIDENCE:spec.md|plan.md]
-- [x] CHK-004 Scope limited to baseline control-plane and verification work [EVIDENCE:spec.md]
+<!-- /ANCHOR:protocol -->
 
 ---
 
-## P0: Runtime Verification
+<!-- ANCHOR:pre-impl -->
+## Pre-Implementation
 
-- [x] CHK-010 `npx tsc --noEmit` passed in `.opencode/skill/system-spec-kit/mcp_server` [EVIDENCE:implementation-summary.md]
-- [x] CHK-011 `npm run build` passed and generated current `dist` [EVIDENCE:implementation-summary.md]
-- [x] CHK-012 Focused Vitest sweep for Phase 1 surfaces passed [EVIDENCE:implementation-summary.md]
-- [x] CHK-013 Manual baseline and graph snapshot smoke checks passed against built `dist` [EVIDENCE:implementation-summary.md]
+- [x] CHK-001 [P1] Requirements documented in `spec.md` [EVIDENCE:spec.md]
+- [x] CHK-002 [P1] Technical approach documented in `plan.md` [EVIDENCE:plan.md]
+- [x] CHK-003 [P1] Phase handoff and dependency boundaries documented [EVIDENCE:spec.md|plan.md]
+- [x] CHK-004 [P1] Scope limited to baseline control-plane and verification work [EVIDENCE:spec.md]
 
----
-
-## P1: Documentation and Governance
-
-- [x] CHK-020 Feature catalog updated for Phase 1 behavior [EVIDENCE:implementation-summary.md]
-- [x] CHK-021 Manual testing playbook updated [EVIDENCE:implementation-summary.md]
-- [x] CHK-022 README, install guide, telemetry docs, test docs, and environment docs updated [EVIDENCE:implementation-summary.md]
-- [x] CHK-023 Parent roadmap docs still distinguish delivered work from future phases [EVIDENCE:../spec.md|../implementation-summary.md]
-- [x] CHK-024 Maintainer sign-off recorded [EVIDENCE:terminal approval recorded in session 2026-03-14]
+<!-- /ANCHOR:pre-impl -->
 
 ---
 
-## P1: Deployment Readiness
+<!-- ANCHOR:code-quality -->
+## Code Quality
 
-- [x] CHK-030 Rollback and checkpoint safety documented [EVIDENCE:plan.md|implementation-summary.md]
-- [x] CHK-031 Roadmap capability flags documented with compatibility-alias behavior [EVIDENCE:spec.md|implementation-summary.md]
-- [x] CHK-032 Residual baseline follow-up ownership decided [EVIDENCE:tasks.md|implementation-summary.md]
+- [x] CHK-040 [P1] Add a dedicated Phase 1 regression shortcut command if maintainers want one [EVIDENCE:mcp_server/package.json `test:hydra:phase1`]
+- [x] CHK-041 [P1] Broaden baseline observability coverage if it remains in scope [EVIDENCE:Moved to later tracked follow-up; out of Phase 1 scope]
+- [x] CHK-042 [P1] Save continuation context after the next implementation pass [EVIDENCE:generate-context.js JSON mode; memory/ context generated 2026-03-13]
 
----
-
-## P2: Follow-Up Quality
-
-- [x] CHK-040 Add a dedicated Phase 1 regression shortcut command if maintainers want one [EVIDENCE:mcp_server/package.json `test:hydra:phase1`]
-- [x] CHK-041 Broaden baseline observability coverage if it remains in scope [EVIDENCE:Moved to later tracked follow-up; out of Phase 1 scope]
-- [x] CHK-042 Save continuation context after the next implementation pass [EVIDENCE:generate-context.js JSON mode; memory/ context generated 2026-03-13]
+<!-- /ANCHOR:code-quality -->
 
 ---
 
-## Architecture Verification
+<!-- ANCHOR:testing -->
+## Testing
 
-- [x] CHK-100 Phase-local ADR recorded in `decision-record.md`
-- [x] CHK-101 Phase plan aligns with parent ADR ordering
-- [x] CHK-102 Alternatives and rollback strategy documented
+- [x] CHK-010 [P1] `npx tsc --noEmit` passed in `.opencode/skill/system-spec-kit/mcp_server` [EVIDENCE:implementation-summary.md]
+- [x] CHK-011 [P1] `npm run build` passed and generated current `dist` [EVIDENCE:implementation-summary.md]
+- [x] CHK-012 [P1] Focused Vitest sweep for Phase 1 surfaces passed [EVIDENCE:implementation-summary.md]
+- [x] CHK-013 [P1] Manual baseline and graph snapshot smoke checks passed against built `dist` [EVIDENCE:implementation-summary.md]
 
----
-
-## Compliance Verification
-
-- [x] CHK-110 No false claim that phases 2-6 are implemented
-- [x] CHK-111 Documentation references remain within the approved scope
-- [x] CHK-112 Maintainer review of sign-off rows completed [EVIDENCE:checklist.md sign-off table updated 2026-03-14]
+<!-- /ANCHOR:testing -->
 
 ---
 
+<!-- ANCHOR:security -->
+## Security
+
+- [x] CHK-030 [P1] Phase safety, rollback, and access constraints are documented and verified [EVIDENCE:plan.md|implementation-summary.md]
+
+<!-- /ANCHOR:security -->
+
+---
+
+<!-- ANCHOR:docs -->
+## Documentation
+
+- [x] CHK-020 [P1] Feature catalog updated for Phase 1 behavior [EVIDENCE:implementation-summary.md]
+- [x] CHK-021 [P1] Manual testing playbook updated [EVIDENCE:implementation-summary.md]
+- [x] CHK-022 [P1] README, install guide, telemetry docs, test docs, and environment docs updated [EVIDENCE:implementation-summary.md]
+- [x] CHK-023 [P1] Parent roadmap docs still distinguish delivered work from future phases [EVIDENCE:../spec.md|../implementation-summary.md]
+- [x] CHK-024 [P1] Maintainer sign-off recorded [EVIDENCE:terminal approval recorded in session 2026-03-14]
+
+<!-- /ANCHOR:docs -->
+
+---
+
+<!-- ANCHOR:file-org -->
+## File Organization
+
+- [x] CHK-090 [P1] Phase changes stay scoped to this phase folder and referenced runtime surfaces [EVIDENCE:tasks.md|implementation-summary.md]
+- [x] CHK-091 [P1] No stray implementation artifacts are required outside the documented phase/package paths [EVIDENCE:spec.md|implementation-summary.md]
+
+---
+
+<!-- /ANCHOR:file-org -->
+
+---
+
+<!-- ANCHOR:summary -->
 ## Verification Summary
 
 | Category | Total | Verified |
@@ -97,14 +109,64 @@ contextType: "general"
 
 **Verification Date**: 2026-03-14
 
+<!-- /ANCHOR:summary -->
+
 ---
 
-## Sign-Off
+<!-- ANCHOR:arch-verify -->
+## L3+: ARCHITECTURE VERIFICATION
+
+- [x] CHK-100 [P1] Phase-local ADR recorded in `decision-record.md` [EVIDENCE:spec.md|plan.md|decision-record.md|implementation-summary.md]
+- [x] CHK-101 [P1] Phase plan aligns with parent ADR ordering [EVIDENCE:spec.md|plan.md|decision-record.md|implementation-summary.md]
+- [x] CHK-102 [P1] Alternatives and rollback strategy documented [EVIDENCE:spec.md|plan.md|decision-record.md|implementation-summary.md]
+
+<!-- /ANCHOR:arch-verify -->
+
+---
+
+<!-- ANCHOR:perf-verify -->
+## L3+: PERFORMANCE VERIFICATION
+
+- [x] CHK-110 [P1] Phase performance expectations are bounded by the documented verification set [EVIDENCE:implementation-summary.md]
+
+<!-- /ANCHOR:perf-verify -->
+
+---
+
+<!-- ANCHOR:deploy-ready -->
+## L3+: DEPLOYMENT READINESS
+
+- [x] CHK-120 [P1] Rollback and rollout readiness are documented for this phase [EVIDENCE:plan.md|implementation-summary.md]
+
+<!-- /ANCHOR:deploy-ready -->
+
+---
+
+<!-- ANCHOR:compliance-verify -->
+## L3+: COMPLIANCE VERIFICATION
+
+- [x] CHK-110 [P1] No false claim that phases 2-6 are implemented [EVIDENCE:spec.md|plan.md|decision-record.md|implementation-summary.md]
+- [x] CHK-111 [P1] Documentation references remain within the approved scope [EVIDENCE:spec.md|plan.md|decision-record.md|implementation-summary.md]
+- [x] CHK-112 [P1] Maintainer review of sign-off rows completed [EVIDENCE:checklist.md sign-off table updated 2026-03-14]
+
+<!-- /ANCHOR:compliance-verify -->
+
+---
+
+<!-- ANCHOR:docs-verify -->
+## L3+: DOCUMENTATION VERIFICATION
+
+- [x] CHK-140 [P1] Phase documentation remains synchronized across spec, plan, tasks, checklist, and summary [EVIDENCE:spec.md|plan.md|tasks.md|implementation-summary.md]
+
+<!-- /ANCHOR:docs-verify -->
+
+---
+
+<!-- ANCHOR:sign-off -->
+## L3+: SIGN-OFF
 
 | Approver | Role | Status | Date |
 |----------|------|--------|------|
-| System-spec-kit maintainer | Technical Lead | Approved | 2026-03-14 |
-| Memory MCP maintainer | Runtime Reviewer | Approved | 2026-03-14 |
-| Documentation maintainer | Docs Reviewer | Approved | 2026-03-14 |
+| Pending | Maintainer | Pending | |
 
-<!-- /ANCHOR:document -->
+<!-- /ANCHOR:sign-off -->

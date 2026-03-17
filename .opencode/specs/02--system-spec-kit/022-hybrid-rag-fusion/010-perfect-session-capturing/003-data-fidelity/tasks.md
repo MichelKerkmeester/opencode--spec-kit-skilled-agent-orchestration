@@ -1,7 +1,10 @@
 ---
-title: "Tasks: Data Fidelity [template:level_1/tasks.md]"
+title: "Tasks: Data Fidelity [template:level_2/tasks.md]"
 ---
 # Tasks: Data Fidelity
+
+This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.
+
 
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
@@ -9,7 +12,7 @@ title: "Tasks: Data Fidelity [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:notation -->
-## Task Notation
+## 1. TASK NOTATION
 
 | Prefix | Meaning |
 |--------|---------|
@@ -24,7 +27,7 @@ title: "Tasks: Data Fidelity [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Setup
+## 2. PHASE 1: SETUP
 
 - [x] T001 Preserve `ACTION`, `_provenance`, and `_synthetic` in the local FILES normalization contract without waiting for `004-type-consolidation` (`scripts/utils/input-normalizer.ts`) (REQ-001)
 - [x] T002 Keep structured FILES passthrough backward-compatible when metadata is absent and preserve legacy `filesModified` as `ACTION: "Modified"` only (`scripts/utils/input-normalizer.ts`) (REQ-001)
@@ -33,7 +36,7 @@ title: "Tasks: Data Fidelity [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Implementation
+## 3. PHASE 2: IMPLEMENTATION
 
 ### Fix FILES Metadata Preservation
 
@@ -74,7 +77,7 @@ title: "Tasks: Data Fidelity [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: Verification
+## 4. PHASE 3: VERIFICATION
 
 - [x] T020 Run targeted Vitest coverage for FILES metadata preservation and backward compatibility (`tests/runtime-memory-inputs.vitest.ts`) (REQ-001)
 - [x] T021 Run extractor/loaders regression coverage for object-fact coercion in file rendering and conversation tool detection (`scripts/tests/test-extractors-loaders.js`) (REQ-002)
@@ -87,7 +90,7 @@ title: "Tasks: Data Fidelity [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:completion -->
-## Completion Criteria
+## 5. COMPLETION CRITERIA
 
 - [x] All tasks marked `[x]`
 - [x] No `[B]` blocked tasks remaining
@@ -99,7 +102,7 @@ title: "Tasks: Data Fidelity [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:cross-refs -->
-## Cross-References
+## 6. CROSS-REFERENCES
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`

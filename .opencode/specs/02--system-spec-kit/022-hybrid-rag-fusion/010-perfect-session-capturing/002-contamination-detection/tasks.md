@@ -1,7 +1,10 @@
 ---
-title: "Tasks: Contamination Detection [template:level_1/tasks.md]"
+title: "Tasks: Contamination Detection [template:level_2/tasks.md]"
 ---
 # Tasks: Contamination Detection
+
+This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.
+
 
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
@@ -9,7 +12,7 @@ title: "Tasks: Contamination Detection [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:notation -->
-## Task Notation
+## 1. TASK NOTATION
 
 | Prefix | Meaning |
 |--------|---------|
@@ -24,7 +27,7 @@ title: "Tasks: Contamination Detection [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Setup
+## 2. PHASE 1: SETUP
 
 - [x] T001 Add frontmatter parsing to V8 to extract `trigger_phrases` and `key_topics` arrays (`scripts/memory/validate-memory-quality.ts`) (REQ-001)
 - [x] T002 Check extracted frontmatter values against the foreign-spec identifier set (`scripts/memory/validate-memory-quality.ts`) (REQ-001)
@@ -35,7 +38,7 @@ title: "Tasks: Contamination Detection [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Implementation
+## 3. PHASE 2: IMPLEMENTATION
 
 ### Broaden V9 Patterns
 
@@ -61,7 +64,7 @@ title: "Tasks: Contamination Detection [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: Verification
+## 4. PHASE 3: VERIFICATION
 
 - [x] T016 Unit test: V8 frontmatter foreign-spec detection (`scripts/tests/task-enrichment.vitest.ts`) (REQ-001)
 - [x] T017 [P] Unit test: V8 non-dominant signal detection (1-2 mentions across 2+ specs) (`scripts/tests/task-enrichment.vitest.ts`) (REQ-002)
@@ -74,7 +77,7 @@ title: "Tasks: Contamination Detection [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:completion -->
-## Completion Criteria
+## 5. COMPLETION CRITERIA
 
 - [x] All tasks marked `[x]`
 - [x] No `[B]` blocked tasks remaining
@@ -86,7 +89,7 @@ title: "Tasks: Contamination Detection [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:cross-refs -->
-## Cross-References
+## 6. CROSS-REFERENCES
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`

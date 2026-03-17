@@ -3,6 +3,9 @@ title: "Implementation Plan: Type Consolidation"
 ---
 # Implementation Plan: Type Consolidation
 
+This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.
+
+
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
@@ -22,7 +25,7 @@ title: "Implementation Plan: Type Consolidation"
 
 ### Overview
 
-This plan implements a 7-step type migration: canonicalize leaked types in `session-types.ts`, expand `SessionData` with explicit fields, make `ACTIVITIES` required, consolidate `CollectedDataFor*` subsets using `Pick`/`Omit`, remove the `[key: string]: unknown` index signature, recompile to catch masked errors, and retest. The migration follows a safe ordering where types are canonical before consumers are updated, and the index signature is removed only after all fields are explicitly modeled.
+This phase closed the remaining live type-consolidation work after `003-data-fidelity` had already moved the four leaked canonical types and tightened `SessionData`. The final pass standardized the remaining collected-data subset seams on a shared `CollectedDataSubset` helper, added the missing explicit `SUMMARY` field on `CollectedDataBase`, re-verified `ACTIVITIES` as required everywhere it is constructed, and reran targeted compilation plus extractor/spec-affinity regression coverage.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -34,14 +37,14 @@ This plan implements a 7-step type migration: canonicalize leaked types in `sess
 
 - [x] Problem statement clear and scope documented
 - [x] Success criteria measurable
-- [x] Dependencies identified (none -- foundational)
+- [x] Dependencies identified (`003-data-fidelity` already complete)
 
 ### Definition of Done
 
-- [ ] All acceptance criteria met (REQ-001 through REQ-006)
-- [ ] `tsc --noEmit` passes with zero errors
-- [ ] Full test suite passes
-- [ ] Docs updated (spec/plan in this folder)
+- [x] All acceptance criteria met (REQ-001 through REQ-006)
+- [x] `tsc --noEmit` passes with zero errors
+- [x] Approved targeted regression stack passes for this phase scope
+- [x] Docs updated (spec/plan/checklist/tasks/implementation summary in this folder)
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -76,47 +79,44 @@ This plan implements a 7-step type migration: canonicalize leaked types in `sess
 
 ### Phase 1: Canonicalize Leaked Types
 
-- [ ] Move `FileChange` from `file-extractor.ts` to `session-types.ts`
-- [ ] Move `ObservationDetailed` from `session-extractor.ts` to `session-types.ts`
-- [ ] Move `ToolCounts` from its current owner to `session-types.ts`
-- [ ] Move `SpecFileEntry` from its current owner to `session-types.ts`
-- [ ] Add re-exports in original files for backward compatibility
+- [x] Confirm `FileChange`, `ObservationDetailed`, `ToolCounts`, and `SpecFileEntry` already live canonically in `session-types.ts`
+- [x] Confirm extractor/session re-export paths remain backward-compatible
 
 ### Phase 2: Expand SessionData
 
-- [ ] Audit all `SessionData` field accesses across the codebase (grep for `sessionData.` and `sessionData[`)
-- [ ] Add explicit typed fields for: `implementation-guide`, `preflight`, `postflight`, `continue-session`, and other discovered real fields
-- [ ] Keep `[key: string]: unknown` temporarily for safety during transition
+- [x] Re-audit `SessionData` field accesses across the codebase
+- [x] Confirm explicit typed fields for implementation-guide, pre/postflight, continue-session, and related live fields are already present
+- [x] Confirm `[key: string]: unknown` is no longer present on `SessionData`
 
 ### Phase 3: Make ACTIVITIES Required
 
-- [ ] Change `PhaseEntry.ACTIVITIES` from optional (`?`) to required
-- [ ] Audit all `PhaseEntry` construction sites to ensure they always populate ACTIVITIES
-- [ ] Fix any construction sites that omit ACTIVITIES (add default empty array if needed)
+- [x] Confirm `PhaseEntry.ACTIVITIES` is required
+- [x] Audit all `PhaseEntry` construction sites to ensure they populate `ACTIVITIES`
+- [x] Confirm no additional construction-site fixes are required
 
 ### Phase 4: Consolidate CollectedDataFor* Subsets
 
-- [ ] Inventory all `CollectedDataFor*` interfaces across extractor files
-- [ ] Replace each with `Pick<SessionData, 'field1' | 'field2' | ...>` or `Omit<SessionData, ...>`
-- [ ] Verify no subset redeclares fields with different types than canonical
+- [x] Inventory the remaining collected-data subset aliases across extractors, spec-folder utilities, and spec-affinity helpers
+- [x] Replace the remaining ad hoc subset declarations with `CollectedDataSubset<...>` derived from canonical `CollectedDataBase`
+- [x] Reduce named subset aliases to the two justified seams (`AlignmentCollectedData`, `SpecAffinityCollectedData`) with no field redeclaration drift
 
 ### Phase 5: Remove Index Signature
 
-- [ ] Remove `[key: string]: unknown` from `SessionData`
-- [ ] Run `tsc --noEmit` to surface all masked field access errors
-- [ ] Fix each compilation error by adding the missing field to `SessionData` or fixing the access
+- [x] Confirm `[key: string]: unknown` is already absent from `SessionData`
+- [x] Add the remaining explicit `CollectedDataBase.SUMMARY` field needed by spec-affinity consumers
+- [x] Re-run compilation to confirm no masked field access errors remain in scope
 
 ### Phase 6: Full Recompile
 
-- [ ] Run `tsc --noEmit` on the entire project
-- [ ] Ensure zero type errors
-- [ ] Review any `as any` or `as unknown` casts introduced during fixes -- minimize them
+- [x] Run `npm run typecheck`
+- [x] Ensure zero type errors
+- [x] Keep the pass free of new `as any`/`as unknown` escape hatches
 
 ### Phase 7: Full Retest
 
-- [ ] Run complete Vitest suite
-- [ ] Run `test-bug-fixes.js` and `test-integration.js`
-- [ ] Verify test count matches expected baseline
+- [x] Run `node scripts/tests/test-extractors-loaders.js`
+- [x] Run `vitest tests/spec-affinity.vitest.ts`
+- [x] Run strict phase validation/completion checks after documentation alignment
 <!-- /ANCHOR:phases -->
 
 ---
@@ -126,9 +126,9 @@ This plan implements a 7-step type migration: canonicalize leaked types in `sess
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Static | Full TypeScript compilation with `tsc --noEmit` | TypeScript compiler |
-| Unit | All existing extractor and workflow tests pass with canonical imports | Vitest |
-| Integration | `test-bug-fixes.js` and `test-integration.js` pass with zero failures | Node.js test runner |
+| Static | Full package typecheck plus scripts build after canonical type cleanup | TypeScript compiler |
+| Regression | Extractor/loaders runtime coverage across shared canonical type consumers | Node.js test runner |
+| Focused unit | Spec-affinity coverage for the new canonical subset helper path | Vitest |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -138,7 +138,7 @@ This plan implements a 7-step type migration: canonicalize leaked types in `sess
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| None | N/A | Green | This is the first phase in the A-sequence (A1) and has no upstream dependencies |
+| `003-data-fidelity` completion state | Internal | Green | This closeout assumes the earlier canonical type ownership and explicit `SessionData` work from phase `003` is already in place |
 <!-- /ANCHOR:dependencies -->
 
 ---
@@ -147,5 +147,5 @@ This plan implements a 7-step type migration: canonicalize leaked types in `sess
 ## 7. ROLLBACK PLAN
 
 - **Trigger**: Compilation errors cascade beyond manageable scope, or runtime behavior changes due to type narrowing
-- **Procedure**: Restore `[key: string]: unknown` to `SessionData` and revert type moves; re-exports ensure backward compatibility is preserved even during partial rollback
+- **Procedure**: Revert the `CollectedDataSubset` consumer cleanup and explicit `CollectedDataBase.SUMMARY` field while preserving the already-shipped canonical type ownership and re-export compatibility
 <!-- /ANCHOR:rollback -->

@@ -23,15 +23,12 @@ const parentDocs = {
 };
 
 const runtimeReferences = [
-  'mcp_server/lib/storage/lineage-state.ts',
-  'mcp_server/lib/cognitive/adaptive-ranking.ts',
-  'mcp_server/lib/governance/scope-governance.ts',
   'mcp_server/lib/collab/shared-spaces.ts',
-  'mcp_server/handlers/shared-memory.ts',
-  'mcp_server/tests/memory-lineage-state.vitest.ts',
-  'mcp_server/tests/memory-lineage-backfill.vitest.ts',
+  'mcp_server/lib/governance/retention.ts',
+  'mcp_server/lib/search/vector-index-mutations.ts',
   'mcp_server/tests/shared-spaces.vitest.ts',
   'mcp_server/tests/memory-governance.vitest.ts',
+  'mcp_server/tests/hydra-spec-pack-consistency.vitest.ts',
 ];
 
 const staleReferences = [
@@ -61,21 +58,28 @@ function readDoc(docPath: string): string {
   return fs.readFileSync(docPath, 'utf8');
 }
 
+function globPatternToRegex(pattern: string): RegExp {
+  const escaped = pattern.replace(/[|\\{}()[\]^$+?.]/g, '\\$&');
+  return new RegExp(escaped.replace(/\*/g, '.*'));
+}
+
 describe('Hydra spec-pack truth sync', () => {
-  it('parent spec and plan describe delivered runtime behavior without stale roadmap disclaimers', () => {
+  it('parent spec and plan describe the closure pass with current scope, evidence, and support boundaries', () => {
     const specContent = readDoc(parentDocs.spec);
     const planContent = readDoc(parentDocs.plan);
 
-    expect(specContent).toContain('records the delivered Level 3 HydraDB-inspired memory-state implementation');
-    expect(specContent).toContain('The six planned phases are shipped in the live runtime');
-    expect(specContent).toContain('does not claim a standalone public `memory_query` MCP tool is shipped');
-    expect(specContent).not.toContain('planning artifact for future implementation');
-    expect(specContent).not.toContain('implementation-pending');
+    expect(specContent).toContain('acts as the Level 3 coordination record for the delivered Hydra roadmap');
+    expect(specContent).toContain('Claiming fresh live proof for all five CLIs without new primary artifacts');
+    expect(specContent).toContain('describe shared memory as opt-in live access');
+    expect(specContent).toContain('283` files, `7783` tests, `11` skipped, and `28` todo');
+    expect(specContent).not.toContain('root-only normalization pass');
+    expect(specContent).not.toContain('Editing any phase subfolder under `001-` through `006-`');
 
-    expect(planContent).toContain('records the delivered HydraDB-inspired implementation');
-    expect(planContent).toContain('Local re-verification was rerun on 2026-03-16');
-    expect(planContent).not.toContain('future implementation phases');
-    expect(planContent).not.toContain('This planning phase does not claim these tests have been executed.');
+    expect(planContent).toContain('all six child phase packs as one coherent documentation set');
+    expect(planContent).toContain('shared-space owner enforcement and retention-sweep database routing');
+    expect(planContent).toContain('The scripts-side targeted multi-CLI closure suite passed `7` files and `51` tests.');
+    expect(planContent).not.toContain('without touching phase subfolders');
+    expect(planContent).not.toContain('root-only scope was confirmed');
   });
 
   it('parent task and checklist references point to the shipped runtime surface', () => {
@@ -89,13 +93,16 @@ describe('Hydra spec-pack truth sync', () => {
     }
 
     for (const reference of staleReferences) {
-      expect(tasksContent).not.toContain(reference);
+      expect(globPatternToRegex(reference).test(tasksContent)).toBe(false);
     }
 
-    expect(tasksContent).toContain('no public `memory_query` MCP tool claim');
-    expect(checklistContent).toContain('Verification Date: 2026-03-16');
-    expect(checklistContent).toContain('Hydra spec-pack documentation consistency is now covered by a dedicated regression test');
-    expect(checklistContent).toContain('tests/file-watcher.vitest.ts` 20/20 passed');
+    expect(tasksContent).toContain('.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md');
+    expect(tasksContent).toContain('.opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md');
+    expect(tasksContent).toContain('Fix retention sweeps so deletion uses the passed database handle');
+    expect(checklistContent).toContain('**Verification Date**: 2026-03-17');
+    expect(checklistContent).toContain('Hydra closure verification passed across parent and phase validation');
+    expect(checklistContent).toContain('`283` passed files, `7783` passed tests, `11` skipped, and `28` todo');
+    expect(checklistContent).toContain('repo no longer overclaims “all five CLIs proven live” without primary artifacts');
   });
 
   it('feature catalog and manual playbook links used by the Hydra phases resolve', () => {
@@ -117,16 +124,18 @@ describe('Hydra spec-pack truth sync', () => {
     expect(playbookContent).toContain('NEW-144');
   });
 
-  it('implementation summary records the truth-sync verification set', () => {
+  it('implementation summary records the closure verification set and corrected runtime boundaries', () => {
     const summaryContent = readDoc(parentDocs.implementationSummary);
 
-    expect(summaryContent).toContain('Parent spec-pack truth-sync plus re-verification');
-    expect(summaryContent).toContain('tests/hydra-spec-pack-consistency.vitest.ts');
+    expect(summaryContent).toContain('Hydra closure pass now leaves the parent pack and all six phase packs');
+    expect(summaryContent).toContain('Owner-only shared-space operations now enforce the `owner` role correctly');
+    expect(summaryContent).toContain('retention sweeps now delete through the database handle');
     expect(summaryContent).toContain('npm run test:hydra:phase1');
     expect(summaryContent).toContain('npx vitest run tests/feature-flag-reference-docs.vitest.ts tests/hydra-spec-pack-consistency.vitest.ts');
-    expect(summaryContent).toContain('tests/file-watcher.vitest.ts` 20/20 passed');
-    expect(summaryContent).toContain('roadmap metadata defaults all six capabilities on');
-    expect(summaryContent).toContain('shared memory remains default-off until explicitly enabled');
-    expect(summaryContent).not.toContain('shared memory remain default-on with explicit opt-out semantics');
+    expect(summaryContent).toContain('PASS (`52` tests)');
+    expect(summaryContent).toContain('PASS (`283` passed files, `7783` passed tests, `11` skipped, `28` todo)');
+    expect(summaryContent).toContain('PASS (`7` files, `51` tests)');
+    expect(summaryContent).toContain('Live proof for all five CLIs is still bounded by available primary artifacts.');
+    expect(summaryContent).not.toContain('root-only normalization pass');
   });
 });

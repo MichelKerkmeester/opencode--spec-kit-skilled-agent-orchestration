@@ -4,6 +4,9 @@ description: "Consolidate canonical shared types (FileChange, DecisionRecord, et
 ---
 # Feature Specification: Type Consolidation
 
+This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.
+
+
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
@@ -32,6 +35,7 @@ description: "Consolidate canonical shared types (FileChange, DecisionRecord, et
 
 ---
 
+<!-- ANCHOR:phase-context -->
 ### Phase Context
 
 This is **Phase 4** of the Perfect Session Capturing specification.
@@ -39,6 +43,7 @@ This is **Phase 4** of the Perfect Session Capturing specification.
 **Scope Boundary**: Canonical typing is partial and inverted.
 **Dependencies**: 003-data-fidelity
 **Deliverables**: Canonicalized FileChange/ObservationDetailed/ToolCounts/SpecFileEntry in session-types.ts; explicitly modeled SessionData fields
+<!-- /ANCHOR:phase-context -->
 
 <!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
@@ -101,13 +106,13 @@ Move `FileChange`, `ObservationDetailed`, `ToolCounts`, and `SpecFileEntry` into
 | REQ-003 | `PhaseEntry.ACTIVITIES` made required (not optional) | TypeScript enforces presence of ACTIVITIES on all PhaseEntry values |
 | REQ-004 | `CollectedDataFor*` subsets consolidated using `Pick`/`Omit` from canonical types | No more than 2 subset interfaces remain, derived from canonical types |
 | REQ-005 | `[key: string]: unknown` removed from `SessionData` after explicit modeling | TypeScript compilation catches field access errors that were previously masked |
-| REQ-006 | `OutcomeEntry.TYPE` handling normalized — make required or provide default | `OutcomeEntry.TYPE` is either required in the interface (always set on real path) or has an explicit default; simulation path aligned |
+| REQ-006 | `OutcomeEntry.TYPE` handling normalized: make required or provide default | `OutcomeEntry.TYPE` is either required in the interface (always set on real path) or has an explicit default; simulation path aligned |
 
 ### P1 - Required (complete OR user-approved deferral)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| — | None — all requirements are P0 for this foundational change | — |
+| N/A | None. All requirements are P0 for this foundational change. | N/A |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -133,7 +138,7 @@ Move `FileChange`, `ObservationDetailed`, `ToolCounts`, and `SpecFileEntry` into
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | None -- foundational type change | N/A | This is the first phase in the A-sequence and has no upstream dependencies |
+| Dependency | `003-data-fidelity` closure state | Medium | This closeout builds on the canonical shared-type ownership and explicit `SessionData` fields that were already landed in phase `003` |
 | Risk | Removing index signature exposes undiscovered field accesses | High | Run full TypeScript compilation after removal; fix all errors before merging |
 | Risk | Extractor re-export changes break import paths in test files | Medium | Update test imports in the same changeset; run full test suite |
 | Risk | `ACTIVITIES` made required may break code paths that construct `PhaseEntry` without it | Medium | Audit all `PhaseEntry` construction sites before making the field required |

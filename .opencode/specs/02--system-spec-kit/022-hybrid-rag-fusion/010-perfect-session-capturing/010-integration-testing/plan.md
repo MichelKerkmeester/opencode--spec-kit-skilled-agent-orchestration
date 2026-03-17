@@ -3,6 +3,9 @@ title: "Implementation Plan: Integration Testing"
 ---
 # Implementation Plan: Integration Testing
 
+This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.
+
+
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
@@ -16,13 +19,13 @@ title: "Implementation Plan: Integration Testing"
 | Aspect | Value |
 |--------|-------|
 | **Language/Stack** | TypeScript (Node.js) |
-| **Framework** | generate-context.js pipeline |
-| **Storage** | Filesystem (temp repo with spec folders, JSON input, description.json) |
-| **Testing** | Vitest |
+| **Framework** | scripts workflow and Vitest |
+| **Storage** | Temp repo fixtures, spec folders, `description.json`, rendered memory files |
+| **Testing** | Vitest plus phase-local spec validation |
 
 ### Overview
 
-This plan implements an E2E test factory pattern: create a temp repo factory that produces isolated spec folder structures with JSON input fixtures, then exercise three test cases through the real gate chain (happy-path save, alignment block abort, duplicate dedup) with real file I/O and real gate evaluation. The goal is to close the gap between heavily-mocked unit tests and the live orchestration pipeline, catching regressions in the write + index + description tracking boundary.
+This phase is already shipped. The remaining work was documentation reconciliation: record the real end-to-end integration surface that now lives in the active scripts test suite, keep the factory-backed save-pipeline coverage explicit, and close the phase against current reruns rather than placeholder implementation intent.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -32,15 +35,15 @@ This plan implements an E2E test factory pattern: create a temp repo factory tha
 
 ### Definition of Ready
 
-- [x] Problem statement clear and scope documented
-- [x] Success criteria measurable
-- [x] Dependencies identified (R-01, R-04 -- can proceed with current interfaces)
+- [x] Existing integration tests and fixture helpers reviewed.
+- [x] Current E2E coverage and Vitest migration confirmed in repo.
+- [x] Fresh verification output available for the focused integration lane.
 
 ### Definition of Done
 
-- [ ] All acceptance criteria met (REQ-001 through REQ-005)
-- [ ] Tests passing -- `workflow-e2e.vitest.ts` runs green in `npm test`
-- [ ] Docs updated (spec/plan in this folder)
+- [x] Plan, tasks, checklist, and summary match the shipped integration surface.
+- [x] The focused four-file integration lane passes with current evidence.
+- [x] Phase-local memory save and final strict gate reruns are recorded.
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -50,23 +53,18 @@ This plan implements an E2E test factory pattern: create a temp repo factory tha
 
 ### Pattern
 
-E2E test factory -- temp repo factory creates isolated filesystem environments, test cases exercise the real pipeline, teardown removes all artifacts.
+Temp-repo-backed end-to-end verification with supporting fixture and integration regressions.
 
 ### Key Components
 
-- **Temp repo factory (`tests/workflow-e2e.vitest.ts`)**: Creates isolated temp directories with realistic spec folder structures, `description.json` seed files, and JSON input data
-- **Fixture data (`tests/fixtures/`)**: Minimal spec folder templates and JSON input payloads for each test scenario
-- **Real gate chain**: The test imports and calls the actual workflow orchestrator, not mocked versions of individual gates
+- **`workflow-e2e.vitest.ts`**: exercises the real save path with temp repo isolation.
+- **`tests/fixtures/session-data-factory.ts`**: shared realistic `SessionData` fixture factory.
+- **`test-integration.vitest.ts`**: Vitest migration of the earlier integration runner.
+- **`task-enrichment.vitest.ts` and `memory-render-fixture.vitest.ts`**: adjacent regressions that prove the broader integration surface.
 
 ### Data Flow
 
-1. `beforeEach`: Factory creates temp directory, copies fixture spec folder structure, seeds `description.json` with initial state
-2. Test case prepares JSON input (happy-path, wrong-affinity, or duplicate content)
-3. Test invokes the real workflow orchestrator pointing at the temp spec folder
-4. Orchestrator runs the real gate chain: quality scoring, sufficiency evaluation, alignment check, dedup detection
-5. On success: file writer creates memory file, description tracker updates `description.json`, sequence increments
-6. On abort: no file written, no description mutation, appropriate rejection code returned
-7. `afterEach`: Recursive cleanup of temp directory
+Temp repo factory -> workflow execution -> real write and metadata update -> render and enrichment assertions -> focused integration rerun -> phase doc backfill.
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -74,34 +72,23 @@ E2E test factory -- temp repo factory creates isolated filesystem environments, 
 <!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
-### Phase 1: Temp Repo Factory
+### Phase 1: Shipped Surface Audit
 
-- [ ] Create `tests/workflow-e2e.vitest.ts` with `createTempRepo()` factory function
-- [ ] Factory creates: temp dir, `.opencode/` marker, spec folder with `spec.md`, seed `description.json`
-- [ ] Factory returns: `{ tempDir, specFolder, descriptionPath, cleanup() }`
-- [ ] Wire `beforeEach`/`afterEach` for automatic setup and teardown
+- [x] Review `workflow-e2e.vitest.ts`, `test-integration.vitest.ts`, and the shared fixture factory.
+- [x] Confirm the legacy integration behavior now lives inside the active Vitest lane.
+- [x] Confirm the broader enrichment and render regressions still cover the adjacent seams.
 
-### Phase 2: Fixture Data
+### Phase 2: Documentation Reconciliation
 
-- [ ] Create `tests/fixtures/` directory
-- [ ] Add minimal spec folder template (spec.md with required frontmatter and ANCHOR blocks)
-- [ ] Add JSON input fixture for happy-path scenario (rich content, correct spec affinity)
-- [ ] Add JSON input fixture for wrong-affinity scenario (valid content, wrong spec target)
-- [ ] Add JSON input fixture for duplicate scenario (identical to happy-path)
+- [x] Rewrite the phase docs to describe the shipped E2E and integration coverage.
+- [x] Replace placeholder tasks and checklist items with current proof-backed completion language.
+- [x] Keep the scope tight: no runtime changes beyond the already-shipped integration surface.
 
-### Phase 3: Test Case Implementation
+### Phase 3: Verification
 
-- [ ] Test case 1 (happy-path): Invoke workflow with happy-path JSON input; assert memory file exists, `description.json` has new entry, sequence incremented
-- [ ] Test case 2 (alignment block): Invoke workflow with wrong-affinity input; assert `ALIGNMENT_BLOCK` rejection, no memory file, `description.json` unchanged
-- [ ] Test case 3 (duplicate dedup): Run happy-path first, then invoke again with identical content; assert no second memory file, sequence not double-incremented
-- [ ] Verify post-write bookkeeping in each test case: read `description.json`, check file system, compare sequence numbers
-
-### Phase 4: CI Integration
-
-- [ ] Ensure `workflow-e2e.vitest.ts` is discovered by existing Vitest config
-- [ ] Set appropriate timeout for real I/O operations (e.g., 30s per test)
-- [ ] Run full test suite (`npm test`) and confirm no interference with existing tests
-- [ ] Verify cleanup: no temp artifacts left after test run
+- [x] Rerun the focused four-file integration stack.
+- [x] Reconfirm the broader targeted scripts lane remains green.
+- [x] Record memory-save closeout and final strict phase gates.
 <!-- /ANCHOR:phases -->
 
 ---
@@ -111,10 +98,10 @@ E2E test factory -- temp repo factory creates isolated filesystem environments, 
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| E2E | Happy-path save: real write, real gates, real description tracking | Vitest |
-| E2E | Alignment block: wrong spec affinity produces `ALIGNMENT_BLOCK` abort | Vitest |
-| E2E | Duplicate dedup: second identical save is skipped | Vitest |
-| Regression | Existing unit and integration tests unaffected by new E2E suite | Vitest, legacy JS test runners |
+| E2E | Real save path and metadata mutation | `workflow-e2e.vitest.ts` |
+| Integration | Structured diagnostics and integration-path behavior | `test-integration.vitest.ts` |
+| Adjacent regressions | Enrichment and render seams that depend on the integration surface | `task-enrichment.vitest.ts`, `memory-render-fixture.vitest.ts` |
+| Phase-local truth | Spec validation and completion | `validate.sh`, `check-completion.sh` |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -124,9 +111,9 @@ E2E test factory -- temp repo factory creates isolated filesystem environments, 
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| R-01 (quality scorer unification) | Internal | Yellow | Tests use scorer output; can adapt to current scale if R-01 not yet landed |
-| R-04 (type consolidation) | Internal | Yellow | Fixture types may need update; core test logic is type-agnostic |
-| Workflow orchestrator API | Internal | Green | Existing entry point; tests import and call it directly |
+| `workflow-e2e.vitest.ts` and temp-repo helpers | Internal | Green | Core phase evidence would be incomplete |
+| `test-integration.vitest.ts` Vitest migration | Internal | Green | Legacy integration coverage would stay outside the active lane |
+| `task-enrichment.vitest.ts` and `memory-render-fixture.vitest.ts` | Internal | Green | Adjacent integration seams would lack focused regression confirmation |
 <!-- /ANCHOR:dependencies -->
 
 ---
@@ -134,6 +121,6 @@ E2E test factory -- temp repo factory creates isolated filesystem environments, 
 <!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: E2E tests cause CI flakiness, excessive runtime, or conflict with existing test infrastructure
-- **Procedure**: Remove `tests/workflow-e2e.vitest.ts` and `tests/fixtures/`; no production code is modified by this phase, so rollback has zero impact on runtime behavior
+- **Trigger**: Documentation diverges from the shipped test surface or new phase-local checks fail.
+- **Procedure**: Revert only the phase docs, rerun the four-file integration lane, and rewrite the minimum evidence-backed updates.
 <!-- /ANCHOR:rollback -->

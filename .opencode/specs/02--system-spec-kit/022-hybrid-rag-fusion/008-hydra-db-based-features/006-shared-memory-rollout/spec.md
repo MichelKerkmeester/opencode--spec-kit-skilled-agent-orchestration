@@ -10,7 +10,6 @@ trigger_phrases:
 importance_tier: "critical"
 contextType: "decision"
 ---
-<!-- ANCHOR:document -->
 # Feature Specification: 006-shared-memory-rollout
 
 <!-- SPECKIT_LEVEL: 3+ -->
@@ -64,6 +63,7 @@ This phase turns the roadmap into a collaboration product, but only after the pl
 
 ---
 
+<!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -71,9 +71,11 @@ The roadmap aims to support cross-agent and collaborative memory, but sharing me
 
 ### Purpose
 Launch shared memory through an opt-in, policy-guarded rollout that operators can control, observe, and reverse safely.
+<!-- /ANCHOR:problem -->
 
 ---
 
+<!-- ANCHOR:scope -->
 ## 3. SCOPE
 
 ### In Scope
@@ -98,9 +100,11 @@ Launch shared memory through an opt-in, policy-guarded rollout that operators ca
 | `.opencode/skill/system-spec-kit/mcp_server/tests/` | Create/Modify | Add shared-space, conflict, and rollout coverage |
 | `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` | Modify | Add collaboration rollout and rollback procedures |
 | `.opencode/skill/system-spec-kit/feature_catalog/` | Modify | Document shared-memory capabilities once shipped |
+<!-- /ANCHOR:scope -->
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 
 ### P0 - Blockers (MUST complete)
@@ -120,9 +124,11 @@ Launch shared memory through an opt-in, policy-guarded rollout that operators ca
 | REQ-606 | Capture collaboration telemetry | Adoption, conflict, and rollback signals are observable |
 | REQ-607 | Document operator runbooks | Playbook and runbooks cover rollout, validation, and incident response |
 | REQ-608 | Keep docs synchronized | Spec, plan, tasks, and user-facing docs reflect actual rollout behavior |
+<!-- /ANCHOR:requirements -->
 
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
 - **SC-601**: Shared-memory spaces can be enabled for a controlled cohort without cross-scope leakage.
@@ -130,9 +136,11 @@ Launch shared memory through an opt-in, policy-guarded rollout that operators ca
 - **SC-603**: Kill switches and rollback drills succeed in staging or equivalent validation.
 - **SC-604**: Collaboration remains opt-in and governance-protected throughout rollout.
 - **SC-605**: Operators can explain and reverse collaboration behavior without guesswork.
+<!-- /ANCHOR:success-criteria -->
 
 ---
 
+<!-- ANCHOR:risks -->
 ## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
@@ -142,6 +150,7 @@ Launch shared memory through an opt-in, policy-guarded rollout that operators ca
 | Risk | Cross-space leak or policy bypass | High | Deny-by-default membership and governance reuse |
 | Risk | Conflict handling confuses operators | Medium | Keep the initial strategy simple and well documented |
 | Risk | Rollout pressure skips staging evidence | High | Require kill-switch and rollback drills before production |
+<!-- /ANCHOR:risks -->
 
 ---
 
@@ -271,7 +280,7 @@ Launch shared memory through an opt-in, policy-guarded rollout that operators ca
 
 ---
 
-## 16. ACCEPTANCE SCENARIOS
+### Acceptance Scenarios
 
 1. **Opt-in space access**
    **Given** a shared space with explicit members, when a member accesses it, then reads and writes succeed according to role policy; non-members are denied.
@@ -282,7 +291,7 @@ Launch shared memory through an opt-in, policy-guarded rollout that operators ca
 
 ---
 
-## 17. OPEN QUESTIONS
+## 16. OPEN QUESTIONS
 
 - What is the simplest initial conflict strategy that still remains auditable and safe?
 - Which rollout metrics should gate cohort expansion or contraction?
@@ -297,5 +306,3 @@ Launch shared memory through an opt-in, policy-guarded rollout that operators ca
 - **Task Breakdown**: `tasks.md`
 - **Verification Checklist**: `checklist.md`
 - **Decision Records**: `decision-record.md`
-
-<!-- /ANCHOR:document -->

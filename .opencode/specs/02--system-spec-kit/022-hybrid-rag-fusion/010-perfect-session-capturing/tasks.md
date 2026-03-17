@@ -4,12 +4,14 @@ description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"
   - "perfect session capturing"
-  - "root remediation"
-  - "template compliance"
+  - "truth reconciliation"
 importance_tier: "normal"
 contextType: "general"
 ---
 # Tasks: Perfect Session Capturing
+
+This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.
+
 
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
@@ -17,7 +19,7 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:notation -->
-## Task Notation
+## 1. TASK NOTATION
 
 | Prefix | Meaning |
 |--------|---------|
@@ -32,39 +34,39 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Setup
+## 2. PHASE 1: SETUP
 
-- [x] T001 Read active Level 3 templates and validator expectations (`.opencode/skill/system-spec-kit/templates/level_3/`)
-- [x] T002 Capture current verification evidence for scripts, MCP, and CLI proof lanes (`.opencode/skill/system-spec-kit/`)
-- [x] T003 Inventory root and child spec gaps from recursive validation (`010-perfect-session-capturing/`)
+- [x] T001 Re-read the parent spec pack and the targeted child phases (`010-perfect-session-capturing/`)
+- [x] T002 Reconfirm the approved blocker model from the March 17, 2026 re-analysis (`research/`, parent docs)
+- [x] T003 Refresh the executable and documentation evidence baseline (`.opencode/skill/system-spec-kit/`)
 <!-- /ANCHOR:phase-1 -->
 
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Implementation
+## 3. PHASE 2: IMPLEMENTATION
 
-- [x] T004 Repair stale module-contract expectations without widening public boundaries (`.opencode/skill/system-spec-kit/scripts/tests/test-scripts-modules.js`)
-- [x] T005 Rewrite root `spec.md` and `plan.md` onto current Level 3 structure (`spec.md`, `plan.md`)
-- [x] T006 Create missing root `tasks.md`, `checklist.md`, `decision-record.md`, and `implementation-summary.md` (root spec folder)
-- [x] T007 Add parent phase-map coverage and child predecessor or successor links needed by recursive validation (`spec.md` plus child phase metadata already remediated)
-- [x] T008 Refresh root documentation to separate fixture-backed proof from live CLI proof (root spec folder)
+- [x] T004 Reconcile phase `004` to the narrow shipped type-consolidation closure (`004-type-consolidation/`)
+- [x] T005 Reconcile phase `005` to the shipped confidence-calibration state (`005-confidence-calibration/`)
+- [x] T006 Backfill phases `010` and `011` from current shipped tests and runtime behavior (`010-integration-testing/`, `011-session-source-validation/`)
+- [x] T007 Refresh phase `016`, supporting docs, and metadata to current verification counts (`016-multi-cli-parity/`, supporting docs, JSON metadata)
+- [x] T008 Rewrite the parent spec pack around truthful blocker reporting instead of closure overclaim (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`)
 <!-- /ANCHOR:phase-2 -->
 
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: Verification
+## 4. PHASE 3: VERIFICATION
 
-- [x] T009 Rerun root and recursive spec validation until the folder is clean (`.opencode/skill/system-spec-kit/scripts/spec/validate.sh`)
-- [x] T010 Rerun completion checks and targeted root claims (`.opencode/skill/system-spec-kit/scripts/spec/check-completion.sh`)
-- [x] T011 Reconfirm targeted scripts, extractor, and MCP verification lanes after doc and test-lane remediation (`.opencode/skill/system-spec-kit/`)
+- [x] T009 Rerun package, scripts, MCP, supporting-doc, and shell-tooling verification lanes (`.opencode/skill/system-spec-kit/`, supporting docs, scratch launchers)
+- [x] T010 Run memory-save closeout for the touched spec folders and update their completion evidence (`memory/` via `generate-context.js`)
+- [x] T011 Rerun strict child and parent truth gates, then refresh final metadata timestamps (`validate.sh`, `check-completion.sh`, `description.json`, `descriptions.json`)
 <!-- /ANCHOR:phase-3 -->
 
 ---
 
 <!-- ANCHOR:completion -->
-## Completion Criteria
+## 5. COMPLETION CRITERIA
 
 - [x] All tasks marked `[x]`
 - [x] No `[B]` blocked tasks remaining
@@ -74,7 +76,7 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:cross-refs -->
-## Cross-References
+## 6. CROSS-REFERENCES
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
@@ -85,28 +87,28 @@ contextType: "general"
 **AI EXECUTION PROTOCOL**
 
 ### Pre-Task Checklist
-- Re-read the root spec and plan before touching canonical status language.
-- Confirm whether a task changes docs only or also changes code or tests.
-- Keep child-folder edits limited to phase-link metadata unless validation shows deeper drift.
+- Re-read the affected spec before changing its status language.
+- Match every changed count to a current rerun.
+- Keep scratch and research authority separate.
 
 ### Execution Rules
 
 | Rule | Expectation |
 |------|-------------|
-| TASK-SCOPE | Stay inside the root spec pack and the minimum child-link metadata needed for recursive compliance |
-| TASK-EVIDENCE | Do not mark a task done without fresh command or file evidence |
-| TASK-TRUTH | Distinguish live CLI proof, fixture-backed proof, and blocked cases explicitly |
-| TASK-VERIFY | Re-run the authoritative validators before closing the task |
+| TASK-SCOPE | Stay inside the approved parent, child, support-doc, metadata, and retained scratch scope |
+| TASK-EVIDENCE | Do not mark a task done without command or file evidence |
+| TASK-TRUTH | Keep parent blockers explicit even while tests pass |
+| TASK-VERIFY | Finish with parent and child truth gates plus memory-save closeout |
 
 ### Status Reporting Format
 
 - `STARTED:` task id, scope, and target files
-- `IN PROGRESS:` current checkpoint and remaining work
-- `BLOCKED:` exact blocker and the evidence gathered
-- `DONE:` command or file evidence plus resulting status
+- `IN PROGRESS:` checkpoint and remaining work
+- `BLOCKED:` exact blocker and evidence
+- `DONE:` command or file evidence and resulting status
 
 ### Blocked Task Protocol
 
-1. Stop when a validator or test failure changes completion truth.
+1. Stop when a validation or test result changes the truth model.
 2. Record the blocker against the affected task with evidence.
 3. Resume only after the blocker is patched or explicitly documented as unresolved.

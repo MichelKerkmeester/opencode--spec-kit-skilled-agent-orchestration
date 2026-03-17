@@ -28,7 +28,7 @@ import {
   validateContentAlignment,
   validateFolderAlignment,
 } from './alignment-validator';
-import type { CollectedDataForAlignment } from './alignment-validator';
+import type { AlignmentCollectedData } from './alignment-validator';
 import { buildSessionActivitySignal } from '../extractors/session-activity-signal';
 
 /* ───────────────────────────────────────────────────────────────
@@ -98,12 +98,12 @@ interface AutoCandidateTestInput {
   recentlyActiveChildCount?: number;
 }
 
-function getSpecFolderFromCollectedData(collectedData: CollectedDataForAlignment | null): string | null {
+function getSpecFolderFromCollectedData(collectedData: AlignmentCollectedData | null): string | null {
   if (!collectedData || typeof collectedData !== 'object') {
     return null;
   }
 
-  const specFolder = (collectedData as { SPEC_FOLDER?: unknown }).SPEC_FOLDER;
+  const specFolder = collectedData.SPEC_FOLDER;
   return typeof specFolder === 'string' && specFolder.trim().length > 0
     ? specFolder
     : null;
@@ -454,7 +454,7 @@ function collectGitStatusPaths(specsDirs: string[]): string[] {
 function annotateAutoDetectCandidates(
   candidates: AutoDetectCandidate[],
   specsDirs: string[],
-  collectedData: CollectedDataForAlignment | null,
+  collectedData: AlignmentCollectedData | null,
 ): AutoDetectCandidate[] {
   const gitStatusPaths = collectGitStatusPaths(specsDirs);
   const boostedCandidates = applyParentAffinityBoost(candidates);
@@ -1105,7 +1105,7 @@ function printNoSpecFolderError(commandName: string = 'memory'): void {
 ------------------------------------------------------------------*/
 
 async function detectSpecFolder(
-  collectedData: CollectedDataForAlignment | null = null,
+  collectedData: AlignmentCollectedData | null = null,
   options: { specFolderArg?: string | null } = {},
 ): Promise<string> {
   const cwd = process.cwd();

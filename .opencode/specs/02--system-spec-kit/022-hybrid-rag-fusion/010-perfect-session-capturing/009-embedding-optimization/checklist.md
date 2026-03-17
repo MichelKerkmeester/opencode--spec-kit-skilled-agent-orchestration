@@ -3,13 +3,16 @@ title: "Verification Checklist: Embedding Optimization [template:level_2/checkli
 ---
 # Verification Checklist: Embedding Optimization
 
+This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.
+
+
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
 ---
 
 <!-- ANCHOR:protocol -->
-## Verification Protocol
+## 1. VERIFICATION PROTOCOL
 
 | Priority | Handling | Completion Impact |
 |----------|----------|-------------------|
@@ -21,7 +24,7 @@ title: "Verification Checklist: Embedding Optimization [template:level_2/checkli
 ---
 
 <!-- ANCHOR:pre-impl -->
-## Pre-Implementation
+## 2. PRE-IMPLEMENTATION
 
 - [x] CHK-001 [P0] Requirements documented in spec.md [Evidence: `spec.md` requirements and scope sections define REQ-001 through REQ-005 and the real implementation seams.]
 - [x] CHK-002 [P0] Technical approach defined in plan.md [Evidence: `plan.md` architecture, phases, and testing strategy sections describe the scripts-plus-save rollout.]
@@ -31,20 +34,20 @@ title: "Verification Checklist: Embedding Optimization [template:level_2/checkli
 ---
 
 <!-- ANCHOR:code-quality -->
-## Code Quality
+## 3. CODE QUALITY
 
 - [x] CHK-010 [P0] `buildWeightedDocumentText()` produces correct multiplier concatenation (title 1x, decisions 3x, outcomes 2x, general 1x) [Evidence: `mcp_server/tests/embedding-weighting.vitest.ts` covers multiplier behavior, ordering, empty sections, and truncation.]
 - [x] CHK-011 [P0] Memory indexer calls `generateDocumentEmbedding()` instead of raw `generateEmbedding()` [Evidence: `scripts/core/memory-indexer.ts` now calls `generateDocumentEmbedding(weightedInput)` and `scripts/tests/memory-indexer-weighting.vitest.ts` asserts `generateEmbedding` is not used.]
 - [x] CHK-012 [P1] Total payload length is capped. Truncation priority is general > outcomes > decisions [Evidence: `shared/embeddings.ts` enforces capped weighted text and `mcp_server/tests/embedding-weighting.vitest.ts` verifies truncation order.]
 - [x] CHK-013 [P1] Structured section extraction correctly identifies title, decisions, outcomes, and general content [Evidence: `scripts/lib/semantic-summarizer.ts` and `mcp_server/handlers/save/embedding-pipeline.ts` extract weighted sections from summary/markdown inputs.]
 - [x] CHK-014 [P1] Static decay metadata fields persisted for searcher consumption [Evidence: decay metadata (`capturedAt`, `lastAccessedAt`, `accessCount`, `decayConstant`, `halfLifeDays`) is managed by the MCP vector index layer (`vector-index-mutations`, `tier-classifier`), not by `scripts/core/memory-indexer.ts`). The scripts indexer passes embedding and quality data while the MCP side handles decay fields at write time.]
-- [ ] CHK-015 [P2] Weight multipliers are configurable (not hardcoded magic numbers), deferred. This phase keeps the fixed `1/3/2/1` contract from R-09
+- [x] CHK-015 [P2] Weight multipliers remain intentionally fixed to the shipped `1/3/2/1` contract (not configurable in this phase) [Evidence: `embedding-weighting.vitest.ts` locks the exact section multipliers and ordering, matching the explicit R-09 decision to keep weighting deterministic rather than configurable.]
 <!-- /ANCHOR:code-quality -->
 
 ---
 
 <!-- ANCHOR:testing -->
-## Testing
+## 4. TESTING
 
 - [x] CHK-020 [P0] Unit tests pass for weighted payload builder (concatenation, multipliers, truncation order) [Evidence: `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/embedding-weighting.vitest.ts` passed.]
 - [x] CHK-021 [P0] Unit tests pass for indexer routing through `generateDocumentEmbedding` [Evidence: `node mcp_server/node_modules/vitest/vitest.mjs run tests/memory-indexer-weighting.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts` passed.]
@@ -56,16 +59,16 @@ title: "Verification Checklist: Embedding Optimization [template:level_2/checkli
 ---
 
 <!-- ANCHOR:security -->
-## Security
+## 5. SECURITY
 
-- [ ] CHK-030 [P2] Weighted payload does not leak sensitive content through repetition amplification [Evidence: Deferred - P2 security items to be verified in dedicated security review]
-- [ ] CHK-031 [P2] Payload length cap prevents memory exhaustion from adversarial input [Evidence: Deferred - P2 security items to be verified in dedicated security review]
+- [x] CHK-030 [P2] Weighted payload does not leak sensitive content through repetition amplification [Evidence: the weighting helper keeps repetition bounded to the fixed `1/3/2/1` contract, and `embedding-weighting.vitest.ts` verifies the exact bounded repeat counts for title, decisions, outcomes, and general content.]
+- [x] CHK-031 [P2] Payload length cap prevents memory exhaustion from adversarial input [Evidence: `shared/embeddings.ts` truncates weighted blocks to the shared text budget, and `embedding-weighting.vitest.ts` verifies truncation keeps the output within the configured cap while preserving critical sections.]
 <!-- /ANCHOR:security -->
 
 ---
 
 <!-- ANCHOR:docs -->
-## Documentation
+## 6. DOCUMENTATION
 
 - [x] CHK-040 [P1] spec.md and plan.md up to date with final implementation [Evidence: `spec.md` and `plan.md` now reflect the corrected file map, real rollout boundary, and completed verification status.]
 - [x] CHK-041 [P2] implementation-summary.md created after completion
@@ -74,7 +77,7 @@ title: "Verification Checklist: Embedding Optimization [template:level_2/checkli
 ---
 
 <!-- ANCHOR:file-org -->
-## File Organization
+## 7. FILE ORGANIZATION
 
 - [x] CHK-050 [P1] Temp files in scratch/ only [Evidence: no project files outside the approved implementation/test/spec paths were created for this phase.]
 - [x] CHK-051 [P1] scratch/ cleaned before completion [Evidence: this implementation did not retain any phase-local `scratch/` artifacts.]
@@ -84,13 +87,13 @@ title: "Verification Checklist: Embedding Optimization [template:level_2/checkli
 ---
 
 <!-- ANCHOR:summary -->
-## Verification Summary
+## 8. VERIFICATION SUMMARY
 
 | Category | Total | Verified |
 |----------|-------|----------|
 | P0 Items | 5 | 5/5 |
 | P1 Items | 10 | 10/10 |
-| P2 Items | 5 | 2/5 |
+| P2 Items | 5 | 5/5 |
 
-**Verification Date**: 2026-03-16
+**Verification Date**: 2026-03-17
 <!-- /ANCHOR:summary -->

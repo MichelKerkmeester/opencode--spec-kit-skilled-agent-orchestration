@@ -9,13 +9,16 @@ contextType: "general"
 ---
 # Tasks: Multi-CLI Parity Hardening
 
+This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.
+
+
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
 ---
 
 <!-- ANCHOR:notation -->
-## Task Notation
+## 1. TASK NOTATION
 
 | Prefix | Meaning |
 |--------|---------|
@@ -30,7 +33,7 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Setup
+## 2. PHASE 1: SETUP
 
 - [x] T001 Confirm the shipped parity behavior in `phase-classifier.ts`, `content-filter.ts`, and `input-normalizer.ts` without widening runtime scope.
 - [x] T002 Audit the phase-016 validator failures in `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md`.
@@ -40,7 +43,7 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Implementation
+## 3. PHASE 2: IMPLEMENTATION
 
 - [x] T004 Add a direct `View -> Research` regression in `.opencode/skill/system-spec-kit/scripts/tests/phase-classification.vitest.ts`.
 - [x] T005 Create `.opencode/skill/system-spec-kit/scripts/tests/content-filter-parity.vitest.ts` for Copilot lifecycle noise, Codex reasoning markers, and empty XML wrappers.
@@ -51,7 +54,7 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: Verification
+## 4. PHASE 3: VERIFICATION
 
 - [x] T008 Run focused Vitest coverage for `phase-classification.vitest.ts`, `content-filter-parity.vitest.ts`, `runtime-memory-inputs.vitest.ts`, and `description-enrichment.vitest.ts`.
 - [x] T009 Run `.opencode/skill/system-spec-kit/scripts/tests/test-extractors-loaders.js` and record the final totals.
@@ -62,7 +65,7 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:completion -->
-## Completion Criteria
+## 5. COMPLETION CRITERIA
 
 - [x] All parity requirements have direct regression coverage.
 - [x] Phase-016 docs describe the reopened proof pass rather than the earlier assumed-complete state.
@@ -72,7 +75,7 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:cross-refs -->
-## Cross-References
+## 6. CROSS-REFERENCES
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`

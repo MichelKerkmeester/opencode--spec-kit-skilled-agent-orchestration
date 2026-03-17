@@ -7,7 +7,7 @@
     "data",
     "fidelity"
   ],
-  "lastUpdated": "2026-03-17T11:48:02.624Z",
+  "lastUpdated": "2026-03-17T13:52:20.559Z",
   "specId": "003",
   "folderSlug": "data-fidelity",
   "parentChain": [
@@ -15,6 +15,8 @@
     "022-hybrid-rag-fusion",
     "010-perfect-session-capturing"
   ],
-  "memorySequence": 0,
-  "memoryNameHistory": []
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "17-03-26_16-44__strict-closeout-evidence-refreshed.md"
+  ]
 }

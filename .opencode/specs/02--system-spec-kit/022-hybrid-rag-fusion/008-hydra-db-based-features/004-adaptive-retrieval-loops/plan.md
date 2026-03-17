@@ -8,7 +8,6 @@ trigger_phrases:
 importance_tier: "critical"
 contextType: "implementation"
 ---
-<!-- ANCHOR:document -->
 # Implementation Plan: 004-adaptive-retrieval-loops
 
 <!-- SPECKIT_LEVEL: 3+ -->
@@ -16,6 +15,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:summary -->
 ## 1. SUMMARY
 
 ### Technical Context
@@ -30,8 +30,11 @@ contextType: "implementation"
 ### Overview
 Phase 4 adds learning loops cautiously. The plan captures feedback signals, evaluates adaptive policies in shadow mode, applies explicit bounds, and requires hard evidence before any promotion beyond shadow evaluation.
 
+<!-- /ANCHOR:summary -->
+
 ---
 
+<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready
@@ -47,8 +50,11 @@ Phase 4 adds learning loops cautiously. The plan captures feedback signals, eval
 - [x] Rollback path validated
 - [x] Docs and playbook reflect shipped behavior
 
+<!-- /ANCHOR:quality-gates -->
+
 ---
 
+<!-- ANCHOR:architecture -->
 ## 3. ARCHITECTURE
 
 ### Pattern
@@ -68,8 +74,11 @@ Bounded adaptive-learning layer on top of a deterministic retrieval baseline. Sh
 4. Promotion gates decide whether the update can advance.
 5. Rollback disables adaptive effects if quality drops.
 
+<!-- /ANCHOR:architecture -->
+
 ---
 
+<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase A: Signal and Policy Design
@@ -87,8 +96,11 @@ Bounded adaptive-learning layer on top of a deterministic retrieval baseline. Sh
 - [x] Validate rollback and cache reset behavior
 - [x] Add playbook coverage for shadow and rollback checks
 
+<!-- /ANCHOR:phases -->
+
 ---
 
+<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
@@ -99,8 +111,11 @@ Bounded adaptive-learning layer on top of a deterministic retrieval baseline. Sh
 | Rollback | Kill switches, cache reset, policy disablement | Vitest and manual drills |
 | Manual | Promotion review and rollback walkthroughs | Playbook scenarios |
 
+<!-- /ANCHOR:testing -->
+
 ---
 
+<!-- ANCHOR:dependencies -->
 ## 6. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
@@ -110,8 +125,11 @@ Bounded adaptive-learning layer on top of a deterministic retrieval baseline. Sh
 | Existing queue/job system | Internal | Green | Background evaluation is harder to isolate |
 | Parent governance direction | Architecture | Yellow | Promotion policy could conflict with Phase 5 rules |
 
+<!-- /ANCHOR:dependencies -->
+
 ---
 
+<!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
 - **Trigger**: Quality regression, unexplained adaptive behavior, or unsafe promotion pressure.
@@ -120,6 +138,8 @@ Bounded adaptive-learning layer on top of a deterministic retrieval baseline. Sh
 2. Reset or ignore adaptive caches/state if needed.
 3. Re-run stable Phase 3 regression checks.
 4. Record the failed adaptive proposal and root cause.
+
+<!-- /ANCHOR:rollback -->
 
 ---
 
@@ -232,7 +252,7 @@ Phase 3 traces -> Signal capture -> Shadow evaluation -> Promotion rules -> Phas
 
 ### ADR-401: Start Adaptive Learning in Shadow Mode Only
 
-**Status**: Proposed for Phase 4 implementation
+**Status**: Accepted
 
 **Context**: Retrieval learning is too risky to activate live without first understanding its impact.
 
@@ -269,9 +289,9 @@ Phase 3 traces -> Signal capture -> Shadow evaluation -> Promotion rules -> Phas
 
 | ID | Name | Owner | Files | Status |
 |----|------|-------|-------|--------|
-| W-A | Signal capture | Primary | telemetry and tracking modules | Planned |
-| W-B | Policy and shadow evaluation | Primary | adaptive policy and tests | Planned |
-| W-C | Rollback and docs | Primary | playbook, checklist, docs | Planned |
+| W-A | Signal capture | Primary | telemetry and tracking modules | Complete |
+| W-B | Policy and shadow evaluation | Primary | adaptive policy and tests | Complete |
+| W-C | Rollback and docs | Primary | playbook, checklist, docs | Complete |
 
 ### Sync Points
 
@@ -298,5 +318,3 @@ Phase 3 traces -> Signal capture -> Shadow evaluation -> Promotion rules -> Phas
 1. Quality drift -> Phase 4 ADR review
 2. Signal ambiguity -> retrieval review
 3. Governance conflict -> parent roadmap decision
-
-<!-- /ANCHOR:document -->

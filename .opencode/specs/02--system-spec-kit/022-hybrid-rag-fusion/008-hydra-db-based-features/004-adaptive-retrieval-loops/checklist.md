@@ -8,7 +8,6 @@ trigger_phrases:
 importance_tier: "critical"
 contextType: "general"
 ---
-<!-- ANCHOR:document -->
 # Verification Checklist: 004-adaptive-retrieval-loops
 
 <!-- SPECKIT_LEVEL: 3+ -->
@@ -16,6 +15,7 @@ contextType: "general"
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## Verification Protocol
 
 | Priority | Handling | Completion Impact |
@@ -24,52 +24,83 @@ contextType: "general"
 | **P1** | Required | Must complete or defer explicitly |
 | **P2** | Optional | Track as follow-up |
 
----
-
-## P0: Planning and Scope Integrity
-
-- [x] CHK-401 Scope, shadow-mode rules, and promotion gates documented [EVIDENCE:spec.md]
-- [x] CHK-402 Dependencies on Phase 3 documented [EVIDENCE:plan.md]
-- [x] CHK-403 Phase-local ADR captured [EVIDENCE:decision-record.md]
-- [x] CHK-404 Phase 3 technical gate verified [EVIDENCE:../003-unified-graph-retrieval/checklist.md P0 9/9; validate.sh pass]
+<!-- /ANCHOR:protocol -->
 
 ---
 
-## P0: Adaptive Verification
+<!-- ANCHOR:pre-impl -->
+## Pre-Implementation
 
-- [x] CHK-410 Signal capture implemented [EVIDENCE:implementation-summary.md]
-- [x] CHK-411 Shadow mode leaves live ranking untouched [EVIDENCE:implementation-summary.md]
-- [x] CHK-412 Bounded-update tests pass [EVIDENCE:implementation-summary.md]
-- [x] CHK-413 Rollback path validated [EVIDENCE:implementation-summary.md]
-- [x] CHK-414 Promotion review criteria verified [EVIDENCE:implementation-summary.md]
+- [x] CHK-401 [P1] Scope, shadow-mode rules, and promotion gates documented [EVIDENCE:spec.md]
+- [x] CHK-402 [P1] Dependencies on Phase 3 documented [EVIDENCE:plan.md]
+- [x] CHK-403 [P1] Phase-local ADR captured [EVIDENCE:decision-record.md]
+- [x] CHK-404 [P1] Phase 3 technical gate verified [EVIDENCE:../003-unified-graph-retrieval/checklist.md P0 9/9; validate.sh pass]
 
----
-
-## P1: Documentation and Governance
-
-- [x] CHK-420 Level 3+ documentation package created [EVIDENCE:README.md|spec.md|plan.md|tasks.md|checklist.md|decision-record.md|implementation-summary.md]
-- [x] CHK-421 Playbook updated for adaptive validation [EVIDENCE:manual_testing_playbook.md NEW-121]
-- [x] CHK-422 Catalog and README surfaces updated after implementation [EVIDENCE:feature_catalog/11--scoring-and-calibration/18-adaptive-shadow-ranking-bounded-proposals-and-rollback.md]
-- [x] CHK-423 Maintainer sign-off recorded [EVIDENCE:terminal approval recorded in session 2026-03-14]
+<!-- /ANCHOR:pre-impl -->
 
 ---
 
-## P2: Follow-Up Quality
+<!-- ANCHOR:code-quality -->
+## Code Quality
 
-- [x] CHK-430 Expand signal-quality dashboards if needed [EVIDENCE:mcp_server/lib/cognitive/adaptive-ranking.ts `summarizeAdaptiveSignalQuality`|`getAdaptiveThresholdSnapshot`|tests/adaptive-ranking.vitest.ts]
-- [x] CHK-431 Tune sample thresholds after initial evaluation [EVIDENCE:mcp_server/lib/cognitive/adaptive-ranking.ts `setAdaptiveThresholdOverrides`|`resetAdaptiveThresholdOverrides`|`tuneAdaptiveThresholdsAfterEvaluation`|tests/adaptive-ranking.vitest.ts]
-- [x] CHK-432 Save continuation context after execution [EVIDENCE:generate-context.js JSON mode; memory/ context generated 2026-03-13]
+- [x] CHK-430 [P1] Expand signal-quality dashboards if needed [EVIDENCE:mcp_server/lib/cognitive/adaptive-ranking.ts `summarizeAdaptiveSignalQuality`|`getAdaptiveThresholdSnapshot`|tests/adaptive-ranking.vitest.ts]
+- [x] CHK-431 [P1] Tune sample thresholds after initial evaluation [EVIDENCE:mcp_server/lib/cognitive/adaptive-ranking.ts `setAdaptiveThresholdOverrides`|`resetAdaptiveThresholdOverrides`|`tuneAdaptiveThresholdsAfterEvaluation`|tests/adaptive-ranking.vitest.ts]
+- [x] CHK-432 [P1] Save continuation context after execution [EVIDENCE:generate-context.js JSON mode; memory/ context generated 2026-03-13]
 
----
-
-## Architecture Verification
-
-- [x] CHK-440 Shadow-first ADR documented
-- [x] CHK-441 Promotion and rollback rules documented
-- [x] CHK-442 Adaptive policy reviewed by retrieval maintainer [EVIDENCE:terminal approval recorded in session 2026-03-14]
+<!-- /ANCHOR:code-quality -->
 
 ---
 
+<!-- ANCHOR:testing -->
+## Testing
+
+- [x] CHK-410 [P1] Signal capture implemented [EVIDENCE:implementation-summary.md]
+- [x] CHK-411 [P1] Shadow mode leaves live ranking untouched [EVIDENCE:implementation-summary.md]
+- [x] CHK-412 [P1] Bounded-update tests pass [EVIDENCE:implementation-summary.md]
+- [x] CHK-413 [P1] Rollback path validated [EVIDENCE:implementation-summary.md]
+- [x] CHK-414 [P1] Promotion review criteria verified [EVIDENCE:implementation-summary.md]
+
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:security -->
+## Security
+
+- [x] CHK-080 [P1] Phase safety and rollback constraints are documented and reflected in verification evidence [EVIDENCE:plan.md|implementation-summary.md]
+- [x] CHK-081 [P1] Phase-specific access, data, or rollout controls are covered by the documented verification set [EVIDENCE:implementation-summary.md]
+
+---
+
+<!-- /ANCHOR:security -->
+
+---
+
+<!-- ANCHOR:docs -->
+## Documentation
+
+- [x] CHK-420 [P1] Level 3+ documentation package created [EVIDENCE:README.md|spec.md|plan.md|tasks.md|checklist.md|decision-record.md|implementation-summary.md]
+- [x] CHK-421 [P1] Playbook updated for adaptive validation [EVIDENCE:manual_testing_playbook.md NEW-121]
+- [x] CHK-422 [P1] Catalog and README surfaces updated after implementation [EVIDENCE:feature_catalog/11--scoring-and-calibration/18-adaptive-shadow-ranking-bounded-proposals-and-rollback.md]
+- [x] CHK-423 [P1] Maintainer sign-off recorded [EVIDENCE:terminal approval recorded in session 2026-03-14]
+
+<!-- /ANCHOR:docs -->
+
+---
+
+<!-- ANCHOR:file-org -->
+## File Organization
+
+- [x] CHK-090 [P1] Phase changes stay scoped to this phase folder and referenced runtime surfaces [EVIDENCE:tasks.md|implementation-summary.md]
+- [x] CHK-091 [P1] No stray implementation artifacts are required outside the documented phase/package paths [EVIDENCE:spec.md|implementation-summary.md]
+
+---
+
+<!-- /ANCHOR:file-org -->
+
+---
+
+<!-- ANCHOR:summary -->
 ## Verification Summary
 
 | Category | Total | Verified |
@@ -80,9 +111,57 @@ contextType: "general"
 
 **Verification Date**: 2026-03-14
 
+<!-- /ANCHOR:summary -->
+
 ---
 
-## Sign-Off
+<!-- ANCHOR:arch-verify -->
+## L3+: ARCHITECTURE VERIFICATION
+
+- [x] CHK-100 [P0] Architecture decisions remain documented for this phase [EVIDENCE:decision-record.md]
+
+<!-- /ANCHOR:arch-verify -->
+
+---
+
+<!-- ANCHOR:perf-verify -->
+## L3+: PERFORMANCE VERIFICATION
+
+- [x] CHK-110 [P1] Phase performance expectations are bounded by the documented verification set [EVIDENCE:implementation-summary.md]
+
+<!-- /ANCHOR:perf-verify -->
+
+---
+
+<!-- ANCHOR:deploy-ready -->
+## L3+: DEPLOYMENT READINESS
+
+- [x] CHK-120 [P1] Rollback and rollout readiness are documented for this phase [EVIDENCE:plan.md|implementation-summary.md]
+
+<!-- /ANCHOR:deploy-ready -->
+
+---
+
+<!-- ANCHOR:compliance-verify -->
+## L3+: COMPLIANCE VERIFICATION
+
+- [x] CHK-130 [P1] Compliance and governance assumptions remain documented for this phase [EVIDENCE:spec.md|implementation-summary.md]
+
+<!-- /ANCHOR:compliance-verify -->
+
+---
+
+<!-- ANCHOR:docs-verify -->
+## L3+: DOCUMENTATION VERIFICATION
+
+- [x] CHK-140 [P1] Phase documentation remains synchronized across spec, plan, tasks, checklist, and summary [EVIDENCE:spec.md|plan.md|tasks.md|implementation-summary.md]
+
+<!-- /ANCHOR:docs-verify -->
+
+---
+
+<!-- ANCHOR:sign-off -->
+## L3+: SIGN-OFF
 
 | Approver | Role | Status | Date |
 |----------|------|--------|------|
@@ -90,4 +169,4 @@ contextType: "general"
 | Retrieval maintainer | Policy Reviewer | Approved | 2026-03-14 |
 | Release reviewer | QA/Release | Approved | 2026-03-14 |
 
-<!-- /ANCHOR:document -->
+<!-- /ANCHOR:sign-off -->

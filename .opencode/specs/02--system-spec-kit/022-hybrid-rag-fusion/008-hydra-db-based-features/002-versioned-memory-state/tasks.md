@@ -8,7 +8,6 @@ trigger_phrases:
 importance_tier: "critical"
 contextType: "general"
 ---
-<!-- ANCHOR:document -->
 # Tasks: 002-versioned-memory-state
 
 <!-- SPECKIT_LEVEL: 3+ -->
@@ -16,6 +15,7 @@ contextType: "general"
 
 ---
 
+<!-- ANCHOR:notation -->
 ## Task Notation
 
 | Prefix | Meaning |
@@ -27,51 +27,71 @@ contextType: "general"
 
 **Task Format**: `T### [P?] Description (file path)`
 
+<!-- /ANCHOR:notation -->
+
 ---
 
-## Track A: Contract and Design
+<!-- ANCHOR:phase-1 -->
+## Phase 1: Setup
+
+### Track A: Contract and Design
 
 - [x] T201 Create the Phase 2 Level 3+ documentation package
 - [x] T202 Finalize lineage entity model and predecessor rules
 - [x] T203 Finalize active-projection strategy
 - [x] T204 Finalize `asOf` query contract and edge behavior
 
+<!-- /ANCHOR:phase-1 -->
+
 ---
 
-## Track B: Schema and Write Path
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
+
+### Track B: Schema and Write Path
 
 - [x] T210 Extend schema for lineage and active projection
 - [x] T211 Implement append-first version transitions in save/update flows
 - [x] T212 Add lineage integrity validators
 - [x] T213 Add operator-facing lineage inspection helpers
 
+
 ---
 
-## Track C: Migration and Rollback
+### Track C: Migration and Rollback
 
 - [x] T220 Build backfill path for existing data
 - [x] T221 Add dry-run mode for migration rehearsal
 - [x] T222 Add rollback and checkpoint restore drill coverage
 
+
 ---
 
-## Track D: Query Resolution and Verification
+### Track D: Query Resolution and Verification
 
 - [x] T230 Implement current-state projection reads
 - [x] T231 Implement `asOf` temporal reads
 - [x] T232 Add lineage integrity and temporal correctness tests
 - [x] T233 Add manual lineage and rollback procedures to the playbook
 
+<!-- /ANCHOR:phase-2 -->
+
 ---
 
-## Coordination Checkpoints
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
+
+### Coordination Checkpoints
 
 - [x] T240 Confirm Phase 1 technical gate is verified
 - [x] T241 Confirm Phase 3 can consume lineage identifiers and query semantics without redefining them
 - [x] T242 Update `implementation-summary.md` with shipped evidence when execution begins
 
+<!-- /ANCHOR:phase-3 -->
+
 ---
 
+<!-- ANCHOR:completion -->
 ## Completion Criteria
 
 - [x] All P0 lineage acceptance criteria are met
@@ -79,8 +99,11 @@ contextType: "general"
 - [x] `asOf` behavior is deterministic and documented
 - [x] No `[B]` blocked tasks remain
 
+<!-- /ANCHOR:completion -->
+
 ---
 
+<!-- ANCHOR:cross-refs -->
 ## Cross-References
 
 - **Specification**: `spec.md`
@@ -98,12 +121,11 @@ CORE TEMPLATE (~60 lines)
 - Add L2/L3 addendums for complexity
 -->
 
-<!-- /ANCHOR:document -->
+<!-- /ANCHOR:cross-refs -->
 
 ---
 
-<!-- ANCHOR:ai-protocol -->
-## AI EXECUTION PROTOCOL
+### AI Execution Protocol
 
 ### Pre-Task Checklist
 
@@ -133,4 +155,3 @@ CORE TEMPLATE (~60 lines)
 1. Stop work as soon as a predecessor gate, safety rule, or rollout assumption is violated.
 2. Record the blocker in `tasks.md` with `[B]` and explain the impacted downstream work.
 3. Update `implementation-summary.md` before handing the phase back for review.
-<!-- /ANCHOR:ai-protocol -->

@@ -11,8 +11,6 @@ import {
   validateGovernedIngest,
 } from '../lib/governance/scope-governance';
 import { runRetentionSweep } from '../lib/governance/retention';
-import * as vectorIndex from '../lib/search/vector-index';
-
 describe('Phase 5 memory governance', () => {
   afterEach(() => {
     delete process.env.SPECKIT_MEMORY_SCOPE_ENFORCEMENT;
@@ -202,6 +200,7 @@ describe('Phase 5 memory governance', () => {
 
   it('runs retention sweeps and records delete audit evidence for expired rows', () => {
     const db = new Database(':memory:');
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
     db.exec(`
       CREATE TABLE memory_index (
         id INTEGER PRIMARY KEY,
@@ -224,17 +223,12 @@ describe('Phase 5 memory governance', () => {
         (2, 'specs/015-hydra', '/tmp/future.md', 'tenant-a', 'user-1', 'session-1', datetime('now', '+1 day'))
     `);
 
-    const deleteSpy = vi.spyOn(vectorIndex, 'deleteMemory')
-      .mockImplementation((memoryId: number) => memoryId === 1);
-
     const result = runRetentionSweep(db, {
       tenantId: 'tenant-a',
       userId: 'user-1',
       sessionId: 'session-1',
     });
 
-    expect(deleteSpy).toHaveBeenCalledTimes(1);
-    expect(deleteSpy).toHaveBeenCalledWith(1);
     expect(result).toEqual({
       scanned: 1,
       deleted: 1,
@@ -264,6 +258,14 @@ describe('Phase 5 memory governance', () => {
       user_id: 'user-1',
       reason: 'delete_after_expired',
     });
+
+    expect(warnSpy).not.toHaveBeenCalledWith(expect.stringContaining('[vector-index] Vector deletion failed for memory'));
+
+    expect(db.prepare(`
+      SELECT id
+      FROM memory_index
+      ORDER BY id ASC
+    `).all()).toEqual([{ id: 2 }]);
   });
 
   it('limits retention sweeps to the requested scope boundary', () => {
@@ -290,9 +292,6 @@ describe('Phase 5 memory governance', () => {
         (2, 'specs/015-hydra', '/tmp/tenant-b.md', 'tenant-b', 'user-9', 'session-9', datetime('now', '-1 day'))
     `);
 
-    const deleteSpy = vi.spyOn(vectorIndex, 'deleteMemory')
-      .mockImplementation((memoryId: number) => memoryId === 1);
-
     const result = runRetentionSweep(db, {
       tenantId: 'tenant-a',
       userId: 'user-1',
@@ -305,7 +304,10 @@ describe('Phase 5 memory governance', () => {
       skipped: 0,
       deletedIds: [1],
     });
-    expect(deleteSpy).toHaveBeenCalledTimes(1);
-    expect(deleteSpy).toHaveBeenCalledWith(1);
+    expect(db.prepare(`
+      SELECT id
+      FROM memory_index
+      ORDER BY id ASC
+    `).all()).toEqual([{ id: 2 }]);
   });
 });

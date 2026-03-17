@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # ───────────────────────────────────────────────────────────────
-# Perfect Session Capturing — 25-Agent Audit Launcher
+# COMPONENT: PERFECT SESSION CAPTURING AUDIT LAUNCHER
 # ───────────────────────────────────────────────────────────────
+# Scratch operator helper for the parallel audit sweep.
 # Stream 1: X01-X05 (GPT-5.4 via codex, cross-cutting analysis)
 # Stream 2: C01-C20 (GPT-5.3-Codex via codex, file-level verification)
 #

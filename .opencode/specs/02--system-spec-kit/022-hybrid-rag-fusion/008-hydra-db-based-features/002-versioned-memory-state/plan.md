@@ -9,7 +9,6 @@ trigger_phrases:
 importance_tier: "critical"
 contextType: "implementation"
 ---
-<!-- ANCHOR:document -->
 # Implementation Plan: 002-versioned-memory-state
 
 <!-- SPECKIT_LEVEL: 3+ -->
@@ -17,6 +16,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:summary -->
 ## 1. SUMMARY
 
 ### Technical Context
@@ -31,8 +31,11 @@ contextType: "implementation"
 ### Overview
 Phase 2 extends the current server with first-class lineage state. The plan adds append-first transitions, active projection for current reads, temporal `asOf` resolution, and rollback-safe backfill so later phases can reason over versioned truth rather than implicit mutation.
 
+<!-- /ANCHOR:summary -->
+
 ---
 
+<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready
@@ -48,8 +51,11 @@ Phase 2 extends the current server with first-class lineage state. The plan adds
 - [x] Lineage integrity test suite passes
 - [x] Docs and playbook reflect the shipped behavior
 
+<!-- /ANCHOR:quality-gates -->
+
 ---
 
+<!-- ANCHOR:architecture -->
 ## 3. ARCHITECTURE
 
 ### Pattern
@@ -69,8 +75,11 @@ Incremental schema extension over the current MCP storage model. Immutable linea
 4. Historical reads use `asOf` and lineage boundaries to resolve the right version.
 5. Backfill and rollback paths use checkpoints and integrity validators.
 
+<!-- /ANCHOR:architecture -->
+
 ---
 
+<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase A: Contract and Schema Design
@@ -88,8 +97,11 @@ Incremental schema extension over the current MCP storage model. Immutable linea
 - [x] Add integrity and temporal correctness tests
 - [x] Update playbook and docs for lineage operations
 
+<!-- /ANCHOR:phases -->
+
 ---
 
+<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
@@ -100,8 +112,11 @@ Incremental schema extension over the current MCP storage model. Immutable linea
 | Integrity | Orphan chains, duplicate active versions, invalid predecessors | Vitest |
 | Manual | Historical query walkthroughs and rollback drills | CLI or Node smoke scripts |
 
+<!-- /ANCHOR:testing -->
+
 ---
 
+<!-- ANCHOR:dependencies -->
 ## 6. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
@@ -111,8 +126,11 @@ Incremental schema extension over the current MCP storage model. Immutable linea
 | Current schema/migration framework | Internal | Green | Lineage rollout cannot proceed incrementally |
 | Parent ADR-001 | Architecture | Green | Scope and storage direction become ambiguous |
 
+<!-- /ANCHOR:dependencies -->
+
 ---
 
+<!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
 - **Trigger**: Corrupted lineage chain, bad `asOf` resolution, failed backfill, or unacceptable write/read regressions.
@@ -122,6 +140,8 @@ Incremental schema extension over the current MCP storage model. Immutable linea
 3. Revert active-projection changes.
 4. Re-run integrity and current-read smoke checks.
 5. Log root cause before another migration attempt.
+
+<!-- /ANCHOR:rollback -->
 
 ---
 
@@ -301,4 +321,3 @@ Phase 1 baseline -> Lineage schema and contract -> Backfill/write path -> Tempor
 2. Migration risk or rollback weakness -> Phase 1/Phase 2 joint review
 3. Query semantics disagreement -> parent roadmap decision
 
-<!-- /ANCHOR:document -->

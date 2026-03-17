@@ -4,30 +4,47 @@ argument-hint: "<spec-folder>"
 allowed-tools: Read, Bash, Task, spec_kit_memory_memory_save, spec_kit_memory_memory_index_scan, spec_kit_memory_memory_stats, spec_kit_memory_memory_update
 ---
 
-# 🚨 MANDATORY FIRST ACTION - DO NOT SKIP
+# MANDATORY FIRST ACTION - SPEC FOLDER RESOLUTION
 
-**BEFORE READING ANYTHING ELSE IN THIS FILE, CHECK `$ARGUMENTS`:**
+**BEFORE READING ANYTHING ELSE IN THIS FILE, resolve `target_folder`:**
 
 ```text
-IF $ARGUMENTS is empty, undefined, or contains only whitespace:
-    → STOP IMMEDIATELY
-    → List recent/related spec folders
-    → ASK: "Which spec folder should this context be saved to?"
-    → WAIT for user response
-    → Use their response as target_folder
-    → Only THEN continue with this workflow
-
 IF $ARGUMENTS contains a spec folder path:
     → Validate folder exists
     → Store as target_folder
     → Continue reading this file
+
+IF $ARGUMENTS is empty, undefined, or contains only whitespace:
+    → Run AUTO-DETECTION (Tier 1 → Tier 2 → Tier 3):
+
+    TIER 1: Gate 3 Carry-Over (highest confidence — no confirmation needed)
+    - Check if a spec folder was established via Gate 3 earlier in this conversation
+    - If yes → use it directly as target_folder (per CLAUDE.md Memory Save Rule)
+    - Announce: "Using active spec folder from this session: [folder]"
+
+    TIER 2: Conversation Signal Analysis (high confidence — confirm)
+    - Scan files modified/read during this conversation
+    - Map file paths to spec folders:
+      * Files under specs/NNN-name/ or its children
+      * Files referenced in a spec folder's description.json
+      * Supporting docs (feature_catalog, manual_testing_playbook) linked via symlinks to a spec tree
+    - If ALL modified files map to a single spec folder (or one parent and its children):
+      → Propose: "Based on this session's work, the target folder is [folder]. Saving there. [Y/n]"
+      → If user confirms or does not object → store as target_folder
+    - If modified files span multiple unrelated spec folders → proceed to Tier 3
+
+    TIER 3: Guided Selection (fallback — must ask)
+    - List the spec folders touched in this conversation, ranked by file-edit count
+    - ASK: "Multiple spec folders were touched. Which one should this context be saved to?"
+    - If no spec folders detected at all → list recent/related spec folders and ask
+    - WAIT for user response → store as target_folder
 ```
 
 **CRITICAL RULES:**
-- **DO NOT** infer spec folder from conversation context or open files
-- **DO NOT** assume which folder the user wants based on recent work
-- **DO NOT** proceed past this point without an explicit spec folder from the user
-- The spec folder MUST come from `$ARGUMENTS` or user's answer above
+- Tier 1 (Gate 3 carry-over) proceeds without confirmation per CLAUDE.md Memory Save Rule
+- Tier 2 proposals MUST show the detected folder and ask for brief confirmation
+- Tier 3 MUST wait for explicit user response before proceeding
+- When ambiguous (files in multiple unrelated spec folders), ALWAYS ask — do not guess
 
 ---
 
@@ -62,7 +79,7 @@ Save the current conversation context, including session summary, key decisions,
 
 | Usage                                                  | Behavior                                                |
 | ------------------------------------------------------ | ------------------------------------------------------- |
-| `/memory:save`                                         | Ask for folder (or use active Gate 3 folder), then save |
+| `/memory:save`                                         | Auto-detect from session context, confirm if needed, then save |
 | `/memory:save 011-memory`                              | Save to specific spec folder                            |
 | `/memory:save specs/006-semantic-memory/003-debugging` | Save to nested spec folder                              |
 
@@ -124,15 +141,15 @@ filename_conflict:  PASSED | RENAMED_TO=[new_name]
 ### Spec Folder Validation (Phase 1)
 
 ```text
-IF $ARGUMENTS contains spec folder:
-  → Validate folder exists → Store as target_folder
-IF $ARGUMENTS is empty:
-  → HARD BLOCK → List recent/related spec folders → ASK user → WAIT
+IF target_folder already set (from $ARGUMENTS or Tier 1/2 auto-detection):
+  → Validate folder exists → Proceed to Content Alignment Check
+IF target_folder not yet set (Tier 3 pending):
+  → WAIT for user response → Validate → Proceed
 IF folder invalid:
   → Show available folders → ASK user → WAIT
 ```
 
-**HARD STOP:** Do NOT proceed to save workflow until `target_folder` is set.
+**HARD STOP:** Do NOT proceed to save workflow until `target_folder` is set and validated.
 
 #### Content Alignment Check
 

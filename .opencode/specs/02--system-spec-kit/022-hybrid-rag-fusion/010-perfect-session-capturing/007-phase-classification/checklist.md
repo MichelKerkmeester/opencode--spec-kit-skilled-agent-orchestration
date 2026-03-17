@@ -3,13 +3,16 @@ title: "Verification Checklist: Phase Classification [template:level_2/checklist
 ---
 # Verification Checklist: Phase Classification
 
+This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.
+
+
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
 ---
 
 <!-- ANCHOR:protocol -->
-## Verification Protocol
+## 1. VERIFICATION PROTOCOL
 
 | Priority | Handling | Completion Impact |
 |----------|----------|-------------------|
@@ -21,7 +24,7 @@ title: "Verification Checklist: Phase Classification [template:level_2/checklist
 ---
 
 <!-- ANCHOR:pre-impl -->
-## Pre-Implementation
+## 2. PRE-IMPLEMENTATION
 
 - [x] CHK-001 [P0] Requirements documented in spec.md [Evidence: `007` spec now reflects the shipped ownership boundaries, public metadata fields, and `008` signal dependency.]
 - [x] CHK-002 [P0] Technical approach defined in plan.md [Evidence: `007` plan now records the new classifier module, exchange-building flow, and targeted rollback boundary.]
@@ -31,7 +34,7 @@ title: "Verification Checklist: Phase Classification [template:level_2/checklist
 ---
 
 <!-- ANCHOR:code-quality -->
-## Code Quality
+## 3. CODE QUALITY
 
 ### P0
 
@@ -52,7 +55,7 @@ title: "Verification Checklist: Phase Classification [template:level_2/checklist
 ---
 
 <!-- ANCHOR:testing -->
-## Testing
+## 4. TESTING
 
 ### P0
 
@@ -63,14 +66,14 @@ title: "Verification Checklist: Phase Classification [template:level_2/checklist
 
 - [x] CHK-022 [P1] New observation types (test, documentation, performance) correctly recognized and classified [Evidence: `phase-classification.vitest.ts` and `test-extractors-loaders.js` both pass the new observation-type fixtures.]
 - [x] CHK-023 [P1] `FLOW_PATTERN` correctly derived from known cluster structures [Evidence: `phase-classification.vitest.ts` covers all 4 flow-pattern outcomes.]
-- [x] CHK-024 [P1] Existing phase classification tests still pass with updated scoring [Evidence: `test-extractors-loaders.js` passed (305 passed, 0 failed) after rebuilding `scripts/dist`.]
+- [x] CHK-024 [P1] Existing phase classification tests still pass with updated scoring [Evidence: `cd .opencode/skill/system-spec-kit/scripts && node tests/test-extractors-loaders.js` passed (307 passed, 0 failed) after rebuilding `scripts/dist`.]
 - [x] CHK-025 [P2] Document vector construction produces consistent weighted maps [Evidence: `phase-classification.vitest.ts` exercises weighted signal construction indirectly across compatibility, clustering, and low-signal fallback cases.]
 <!-- /ANCHOR:testing -->
 
 ---
 
 <!-- ANCHOR:security -->
-## Security
+## 5. SECURITY
 
 - [x] CHK-030 [P2] No sensitive data exposed through cluster metadata [Evidence: topic clusters emit ranked terms, indexes, phase scores, and confidence only. Raw observation payloads are not surfaced in the new contract.]
 - [x] CHK-031 [P2] Cosine similarity computation handles edge cases (zero vectors, single-term vectors) [Evidence: `phase-classifier.ts` guards zero-size and zero-norm vectors, and `phase-classification.vitest.ts` covers low-signal fallback without crashes.]
@@ -79,7 +82,7 @@ title: "Verification Checklist: Phase Classification [template:level_2/checklist
 ---
 
 <!-- ANCHOR:docs -->
-## Documentation
+## 6. DOCUMENTATION
 
 - [x] CHK-040 [P1] spec.md and plan.md updated with final implementation details [Evidence: `007` spec and plan now describe the shipped classifier ownership boundaries and actual verification bar.]
 - [x] CHK-041 [P2] implementation-summary.md written after completion [Evidence: `implementation-summary.md` now records delivered code changes, decisions, verification, and residual baseline failures.]
@@ -88,17 +91,17 @@ title: "Verification Checklist: Phase Classification [template:level_2/checklist
 ---
 
 <!-- ANCHOR:file-org -->
-## File Organization
+## 7. FILE ORGANIZATION
 
 - [x] CHK-050 [P1] Temp files in scratch/ only [Evidence: this phase did not add scratch artifacts outside the normal build/test outputs.]
 - [x] CHK-051 [P1] scratch/ cleaned before completion [Evidence: no `scratch/` artifacts were required for this implementation.]
-- [x] CHK-052 [P2] Findings saved to memory/ [Evidence: `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js '<phase-folder>'` created `memory/16-03-26_20-18__phase-classification.md` and refreshed `memory/metadata.json`.]
+- [x] CHK-052 [P2] Findings saved to memory/ [Evidence: `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/007-phase-classification` created `memory/16-03-26_20-16__phase-classification.md` and refreshed `memory/metadata.json`.]
 <!-- /ANCHOR:file-org -->
 
 ---
 
 <!-- ANCHOR:summary -->
-## Verification Summary
+## 8. VERIFICATION SUMMARY
 
 | Category | Total | Verified |
 |----------|-------|----------|

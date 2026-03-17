@@ -7,7 +7,7 @@
     "confidence",
     "calibration"
   ],
-  "lastUpdated": "2026-03-16T18:21:34.296Z",
+  "lastUpdated": "2026-03-17T13:52:17.143Z",
   "specId": "005",
   "folderSlug": "confidence-calibration",
   "parentChain": [
@@ -15,8 +15,10 @@
     "022-hybrid-rag-fusion",
     "010-perfect-session-capturing"
   ],
-  "memorySequence": 1,
+  "memorySequence": 3,
   "memoryNameHistory": [
-    "16-03-26_19-21__confidence-calibration.md"
+    "16-03-26_19-21__confidence-calibration.md",
+    "17-03-26_14-47__phase-005-completion-reconfirmed.md",
+    "17-03-26_16-44__strict-closeout-evidence-refreshed.md"
   ]
 }

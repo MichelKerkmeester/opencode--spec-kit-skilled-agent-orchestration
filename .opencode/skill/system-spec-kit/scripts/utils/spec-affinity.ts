@@ -11,6 +11,7 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
+import type { CollectedDataSubset } from '../types/session-types';
 
 const SPEC_ID_REGEX = /\b\d{3}-[a-z0-9][a-z0-9-]*\b/g;
 const KEYWORD_STOPWORDS = new Set([
@@ -79,18 +80,7 @@ export interface SpecAffinityEvaluation {
   foreignSpecIds: string[];
 }
 
-type CollectedDataForSpecAffinity = {
-  userPrompts?: Array<{ prompt?: string }>;
-  recentContext?: Array<{ request?: string; learning?: string }>;
-  observations?: Array<{
-    title?: string;
-    narrative?: string;
-    facts?: Array<string | { text?: string }>;
-    files?: string[];
-  }>;
-  FILES?: Array<{ FILE_PATH?: string; path?: string; DESCRIPTION?: string; description?: string }>;
-  SUMMARY?: string;
-};
+type SpecAffinityCollectedData = CollectedDataSubset<'userPrompts' | 'recentContext' | 'observations' | 'FILES' | 'SUMMARY'>;
 
 function normalizeText(value: string): string {
   return value
@@ -401,7 +391,7 @@ export function matchesSpecAffinityText(text: string, targets: SpecAffinityTarge
   );
 }
 
-function gatherCollectedDataText(data: CollectedDataForSpecAffinity): string[] {
+function gatherCollectedDataText(data: SpecAffinityCollectedData): string[] {
   const texts: string[] = [];
 
   for (const prompt of data.userPrompts || []) {
@@ -451,7 +441,7 @@ function gatherCollectedDataText(data: CollectedDataForSpecAffinity): string[] {
   return texts;
 }
 
-function gatherCollectedDataPaths(data: CollectedDataForSpecAffinity): string[] {
+function gatherCollectedDataPaths(data: SpecAffinityCollectedData): string[] {
   const paths: string[] = [];
 
   for (const observation of data.observations || []) {
@@ -475,7 +465,7 @@ function gatherCollectedDataPaths(data: CollectedDataForSpecAffinity): string[] 
 }
 
 export function evaluateCollectedDataSpecAffinity(
-  data: CollectedDataForSpecAffinity,
+  data: SpecAffinityCollectedData,
   targetsOrHint: SpecAffinityTargets | string,
 ): SpecAffinityEvaluation {
   const targets = typeof targetsOrHint === 'string'

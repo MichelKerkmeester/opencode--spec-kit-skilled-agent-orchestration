@@ -12,17 +12,32 @@ contextType: "general"
 
 This folder defines the Level 3+ execution package for turning the current Memory MCP stack into a first-class append-first state model. It is the lineage and temporal-query phase of the Hydra roadmap.
 
-## Current Status
+## TABLE OF CONTENTS
+<!-- ANCHOR:table-of-contents -->
+
+- [1. OVERVIEW](#1--overview)
+- [2. DOCUMENTS](#2--documents)
+- [3. SCOPE BOUNDARY](#3--scope-boundary)
+- [4. RELATED](#4--related)
+
+<!-- /ANCHOR:table-of-contents -->
+
+
+## 1. OVERVIEW
+<!-- ANCHOR:overview -->
 
 | Field | Value |
 |-------|-------|
 | **Parent Spec** | `../spec.md` |
-| **Status** | Draft |
-| **Current Truth** | Documentation package complete; implementation has not started in this phase |
+| **Status** | Complete |
+| **Current Truth** | Phase documentation and implementation summary align to shipped work; verification evidence is recorded in this folder. |
 | **Depends On** | `../001-baseline-and-safety-rails/` |
 | **Next Phase** | `../003-unified-graph-retrieval/` |
 
-## Documents
+<!-- /ANCHOR:overview -->
+
+## 2. DOCUMENTS
+<!-- ANCHOR:documents -->
 
 - `spec.md` defines lineage, temporal state, migration, and governance requirements.
 - `plan.md` lays out schema, write-path, query, and rollback execution tracks.
@@ -31,7 +46,10 @@ This folder defines the Level 3+ execution package for turning the current Memor
 - `decision-record.md` captures the phase-local lineage design decision.
 - `implementation-summary.md` records the current truth: docs complete, implementation pending.
 
-## Scope Boundary
+<!-- /ANCHOR:documents -->
+
+## 3. SCOPE BOUNDARY
+<!-- ANCHOR:scope-boundary -->
 
 Included here:
 - Append-first version state transitions.
@@ -43,8 +61,13 @@ Explicitly not included here:
 - Adaptive ranking loops.
 - Shared-memory collaboration rollout.
 
-## Related
+<!-- /ANCHOR:scope-boundary -->
+
+## 4. RELATED
+<!-- ANCHOR:related -->
 
 - Parent roadmap: `../spec.md`
 - Phase 1 baseline controls: `../001-baseline-and-safety-rails/spec.md`
 - Parent decisions: `../decision-record.md`
+
+<!-- /ANCHOR:related -->

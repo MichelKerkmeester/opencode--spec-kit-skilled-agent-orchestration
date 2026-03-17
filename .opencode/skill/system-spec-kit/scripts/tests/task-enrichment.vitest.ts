@@ -256,6 +256,7 @@ vi.mock('../core/tree-thinning', () => ({
 
 vi.mock('../core/memory-indexer', () => ({
   indexMemory: vi.fn(async () => null),
+  updateMetadataEmbeddingStatus: vi.fn(async () => undefined),
   updateMetadataWithEmbedding: vi.fn(async () => undefined),
 }));
 

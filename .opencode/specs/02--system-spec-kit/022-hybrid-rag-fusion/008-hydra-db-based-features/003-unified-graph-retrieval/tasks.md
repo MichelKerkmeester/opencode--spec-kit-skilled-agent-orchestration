@@ -8,7 +8,6 @@ trigger_phrases:
 importance_tier: "critical"
 contextType: "general"
 ---
-<!-- ANCHOR:document -->
 # Tasks: 003-unified-graph-retrieval
 
 <!-- SPECKIT_LEVEL: 3+ -->
@@ -16,6 +15,7 @@ contextType: "general"
 
 ---
 
+<!-- ANCHOR:notation -->
 ## Task Notation
 
 | Prefix | Meaning |
@@ -27,43 +27,62 @@ contextType: "general"
 
 **Task Format**: `T### [P?] Description (file path)`
 
+<!-- /ANCHOR:notation -->
+
 ---
 
-## Track A: Contract and Design
+<!-- ANCHOR:phase-1 -->
+## Phase 1: Setup
+
+### Track A: Contract and Design
 
 - [x] T301 Create the Phase 3 Level 3+ documentation package
 - [x] T302 Define unified graph-scoring contract
 - [x] T303 Define deterministic tie-break policy
 - [x] T304 Define explainability trace format
 
+<!-- /ANCHOR:phase-1 -->
+
 ---
 
-## Track B: Pipeline Integration
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
+
+### Track B: Pipeline Integration
 
 - [x] T310 Integrate graph enrichment into candidate generation
 - [x] T311 Refactor graph weighting into a unified scoring layer
 - [x] T312 Add graph-health and trace telemetry
 - [x] T313 Add kill-switch or rollback activation path
 
+
 ---
 
-## Track C: Regression and Benchmarks
+### Track C: Regression and Benchmarks
 
 - [x] T320 Add determinism coverage
 - [x] T321 Add retrieval regression corpus
 - [x] T322 Add latency benchmark checks
 - [x] T323 Add manual explainability validation to the playbook
 
+<!-- /ANCHOR:phase-2 -->
+
 ---
 
-## Coordination Checkpoints
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
+
+### Coordination Checkpoints
 
 - [x] T330 Confirm Phase 2 technical gate is verified
 - [x] T331 Confirm Phase 4 can consume stable traces and ranking behavior
 - [x] T332 Update `implementation-summary.md` with execution evidence when work begins
 
+<!-- /ANCHOR:phase-3 -->
+
 ---
 
+<!-- ANCHOR:completion -->
 ## Completion Criteria
 
 - [x] Unified graph-scoring path is active and deterministic
@@ -71,8 +90,11 @@ contextType: "general"
 - [x] Benchmarks remain within agreed limits
 - [x] No `[B]` blocked tasks remain
 
+<!-- /ANCHOR:completion -->
+
 ---
 
+<!-- ANCHOR:cross-refs -->
 ## Cross-References
 
 - **Specification**: `spec.md`
@@ -90,12 +112,11 @@ CORE TEMPLATE (~60 lines)
 - Add L2/L3 addendums for complexity
 -->
 
-<!-- /ANCHOR:document -->
+<!-- /ANCHOR:cross-refs -->
 
 ---
 
-<!-- ANCHOR:ai-protocol -->
-## AI EXECUTION PROTOCOL
+### AI Execution Protocol
 
 ### Pre-Task Checklist
 
@@ -125,4 +146,3 @@ CORE TEMPLATE (~60 lines)
 1. Stop work as soon as a predecessor gate, safety rule, or rollout assumption is violated.
 2. Record the blocker in `tasks.md` with `[B]` and explain the impacted downstream work.
 3. Update `implementation-summary.md` before handing the phase back for review.
-<!-- /ANCHOR:ai-protocol -->

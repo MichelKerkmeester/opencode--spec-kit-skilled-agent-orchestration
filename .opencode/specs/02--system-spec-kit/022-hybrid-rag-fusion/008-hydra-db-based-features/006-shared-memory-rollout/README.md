@@ -10,28 +10,46 @@ contextType: "general"
 ---
 # Phase 6: Shared-Memory Rollout
 
+## TABLE OF CONTENTS
+<!-- ANCHOR:table-of-contents -->
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT STATUS](#2--current-status)
+- [3. DOCUMENTS](#3--documents)
+- [4. SCOPE BOUNDARY](#4--scope-boundary)
+- [5. RELATED](#5--related)
+
+<!-- /ANCHOR:table-of-contents -->
+
+## 1. OVERVIEW
+<!-- ANCHOR:overview -->
+
 This folder defines the Level 3+ execution package for shared-memory spaces, membership policy, conflict handling, and staged rollout. It is the final release phase of the Hydra roadmap and is intentionally blocked on successful completion of the earlier safety and governance phases.
 
-## Current Status
+Phase 6 is shipped in the live runtime with opt-in shared-memory controls, deny-by-default membership, conflict handling, and rollout safeguards documented in this phase pack.
+
+<!-- /ANCHOR:overview -->
+
+## 2. CURRENT STATUS
 
 | Field | Value |
 |-------|-------|
 | **Parent Spec** | `../spec.md` |
-| **Status** | Draft |
-| **Current Truth** | Documentation package complete; implementation has not started in this phase |
+| **Status** | Complete |
+| **Current Truth** | Runtime shipped and phase pack synchronized to the delivered shared-memory rollout behavior |
 | **Depends On** | `../005-hierarchical-scope-governance/` plus graph and adaptive readiness from Phases 3 and 4 |
 | **Next Phase** | None |
 
-## Documents
+## 3. DOCUMENTS
 
 - `spec.md` defines shared-space, membership, conflict, and rollout requirements.
 - `plan.md` breaks the phase into space model, conflict handling, and staged rollout work.
 - `tasks.md` tracks collaboration implementation and release work.
-- `checklist.md` records what is ready now versus what remains unverified.
+- `checklist.md` records the completion evidence and rollout-readiness checks for the shipped phase.
 - `decision-record.md` captures the opt-in rollout decision for this phase.
-- `implementation-summary.md` records the truth that this phase is still planning-only.
+- `implementation-summary.md` records the shipped implementation, verification set, and any remaining limitations.
 
-## Scope Boundary
+## 4. SCOPE BOUNDARY
 
 Included here:
 - Shared-memory spaces and membership rules.
@@ -42,8 +60,11 @@ Explicitly not included here:
 - Pre-governance experiments that bypass Phase 5 controls.
 - Unbounded collaboration access.
 
-## Related
+## 5. RELATED
+<!-- ANCHOR:related -->
 
 - Parent roadmap: `../spec.md`
 - Phase 5 gate: `../005-hierarchical-scope-governance/spec.md`
 - Parent decisions: `../decision-record.md`
+
+<!-- /ANCHOR:related -->

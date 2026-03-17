@@ -3,6 +3,9 @@ title: "Implementation Plan: Confidence Calibration"
 ---
 # Implementation Plan: Confidence Calibration
 
+This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.
+
+
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
@@ -101,7 +104,7 @@ Type extension -- add fields to a core data type, update the producer (extractor
 - [x] Add unit tests for dual confidence computation with various input combinations
 - [x] Add regression tests verifying legacy `CONFIDENCE` matches `Math.min` of the two new fields
 - [x] Verify decision tree output includes split labels for divergent confidence cases
-- [ ] Verify existing test baselines still pass with the derived field. `test-scripts-modules.js` still reports four unrelated baseline failures outside this phase (`T-019d`, `T-024e`, `T-024f`, `T-032`).
+- [x] Verify existing test baselines still pass with the derived field. `node scripts/tests/test-scripts-modules.js` now passes with `384` passed, `0` failed, and `5` skipped on 2026-03-17.
 <!-- /ANCHOR:phases -->
 
 ---
@@ -124,7 +127,7 @@ Type extension -- add fields to a core data type, update the producer (extractor
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| R-04 type consolidation (004-type-consolidation) | Internal | Green | `DecisionRecord` was extended directly in canonical `session-types.ts`; 004 not yet complete but dual fields were added without conflict |
+| R-04 type consolidation (004-type-consolidation) | Internal | Green | `DecisionRecord` was extended directly in canonical `session-types.ts`, and phase `004` is now fully complete with no remaining conflict risk |
 <!-- /ANCHOR:dependencies -->
 
 ---

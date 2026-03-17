@@ -7,11 +7,12 @@ trigger_phrases: ["implementation", "summary", "phase", "classification"]
 
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
 <!-- ANCHOR:metadata -->
-## Metadata
+## 1. METADATA
 
 | Field | Value |
 |-------|-------|
@@ -23,7 +24,7 @@ trigger_phrases: ["implementation", "summary", "phase", "classification"]
 ---
 
 <!-- ANCHOR:what-built -->
-## What Was Built
+## 2. WHAT WAS BUILT
 
 This phase shipped the conversation-phase classifier on top of the completed `008` semantic signal contract.
 
@@ -38,7 +39,7 @@ This phase shipped the conversation-phase classifier on top of the completed `00
 ---
 
 <!-- ANCHOR:how-delivered -->
-## How It Was Delivered
+## 3. HOW IT WAS DELIVERED
 
 The implementation stayed centered on the actual runtime ownership boundaries rather than forcing the old plan onto the wrong modules.
 
@@ -51,7 +52,7 @@ The implementation stayed centered on the actual runtime ownership boundaries ra
 ---
 
 <!-- ANCHOR:decisions -->
-## Key Decisions
+## 4. KEY DECISIONS
 
 | Decision | Why |
 |----------|-----|
@@ -64,23 +65,26 @@ The implementation stayed centered on the actual runtime ownership boundaries ra
 ---
 
 <!-- ANCHOR:verification -->
-## Verification
+## 5. VERIFICATION
 
 | Check | Result |
 |-------|--------|
-| `npm run typecheck` | Passed |
-| `npm run build` | Passed |
-| `node mcp_server/node_modules/vitest/vitest.mjs run tests/phase-classification.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts` | Passed — 1 file, 6 tests |
-| `node mcp_server/node_modules/vitest/vitest.mjs run tests/phase-classification.vitest.ts tests/semantic-signal-golden.vitest.ts tests/decision-confidence.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts` | Passed — 3 files, 17 tests |
-| `node scripts/tests/test-extractors-loaders.js` | Passed — 305 passed, 0 failed |
-| `node scripts/tests/test-scripts-modules.js` | Still reports the known unrelated baseline failures `T-024e`, `T-024f`, and `T-032`; the new `T-008g`, `T-008h`, `T-008i`, and `T-008j` phase-classification expectations passed |
+| `cd .opencode/skill/system-spec-kit && npm run typecheck` | Passed |
+| `cd .opencode/skill/system-spec-kit/scripts && npm run build` | Passed |
+| `cd .opencode/skill/system-spec-kit/scripts && node ../mcp_server/node_modules/vitest/vitest.mjs run tests/phase-classification.vitest.ts --config ../mcp_server/vitest.config.ts` | Passed: 1 file, 7 tests |
+| `cd .opencode/skill/system-spec-kit/scripts && node ../mcp_server/node_modules/vitest/vitest.mjs run tests/phase-classification.vitest.ts tests/semantic-signal-golden.vitest.ts tests/decision-confidence.vitest.ts --config ../mcp_server/vitest.config.ts` | Passed: 3 files, 18 tests |
+| `cd .opencode/skill/system-spec-kit/scripts && node tests/test-extractors-loaders.js` | Passed: 307 passed, 0 failed |
+| `cd .opencode/skill/system-spec-kit/scripts && node tests/test-scripts-modules.js` | Passed: 384 passed, 0 failed, 5 skipped |
 <!-- /ANCHOR:verification -->
 
 ---
 
 <!-- ANCHOR:limitations -->
-## Known Limitations
+## 6. KNOWN LIMITATIONS
 
 1. `scripts/tests/test-scripts-modules.js` still has unrelated baseline failures outside this phase (`notifyDatabaseUpdated` exports and `retry-manager` re-export coverage), so the clean verification bar for `007` relies on the targeted phase/extractor suites above rather than that broader legacy suite.
 2. `FLOW_PATTERN` is still metadata-only in this phase; `AUTO_GENERATED_FLOW` and `scripts/lib/flowchart-generator.ts` were intentionally left unchanged.
 <!-- /ANCHOR:limitations -->
+
+
+Reference links: [spec.md](spec.md) and [plan.md](plan.md).

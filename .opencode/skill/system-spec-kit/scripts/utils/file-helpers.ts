@@ -66,7 +66,7 @@ function normalizeDescriptionForValidation(description: string): string {
 // ───────────────────────────────────────────────────────────────
 // 2. PATH UTILITIES
 // ───────────────────────────────────────────────────────────────
-function toRelativePath(filePath: string, projectRoot?: string): string {
+function normalizeRelativePath(filePath: string, projectRoot?: string): string {
   if (!filePath) return '';
   let cleaned: string = pathPosix.normalize(filePath.replace(/\\/g, '/'));
 
@@ -89,6 +89,17 @@ function toRelativePath(filePath: string, projectRoot?: string): string {
   cleaned = cleaned.replace(/^\.\//, '');
   if (cleaned === '.') cleaned = '';
   if (cleaned.includes('../') || cleaned.startsWith('..')) return '';
+
+  return cleaned;
+}
+
+function toCanonicalRelativePath(filePath: string, projectRoot?: string): string {
+  return normalizeRelativePath(filePath, projectRoot);
+}
+
+function toRelativePath(filePath: string, projectRoot?: string): string {
+  const cleaned = normalizeRelativePath(filePath, projectRoot);
+  if (!cleaned) return '';
 
   if (cleaned.length > 60) {
     const parts: string[] = cleaned.split('/');
@@ -161,6 +172,7 @@ function cleanDescription(desc: string): string {
 // ───────────────────────────────────────────────────────────────
 export {
   toRelativePath,
+  toCanonicalRelativePath,
   getDescriptionTierRank,
   validateDescription,
   isDescriptionValid,

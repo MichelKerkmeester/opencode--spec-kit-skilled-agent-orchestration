@@ -9,7 +9,6 @@ trigger_phrases:
 importance_tier: "critical"
 contextType: "general"
 ---
-<!-- ANCHOR:document -->
 # Tasks: 001-baseline-and-safety-rails
 
 <!-- SPECKIT_LEVEL: 3+ -->
@@ -17,6 +16,7 @@ contextType: "general"
 
 ---
 
+<!-- ANCHOR:notation -->
 ## Task Notation
 
 | Prefix | Meaning |
@@ -28,17 +28,27 @@ contextType: "general"
 
 **Task Format**: `T### [P?] Description (file path)`
 
+<!-- /ANCHOR:notation -->
+
 ---
 
-## Track A: Baseline Inventory and Scope Control
+<!-- ANCHOR:phase-1 -->
+## Phase 1: Setup
+
+### Track A: Baseline Inventory and Scope Control
 
 - [x] T001 Audit Phase 1 runtime, test, and documentation drift against the parent roadmap
 - [x] T002 Define the Phase 1 scope boundary and handoff to Phase 2
 - [x] T003 Create the Phase 1 Level 3+ documentation package
 
+<!-- /ANCHOR:phase-1 -->
+
 ---
 
-## Track B: Runtime and Tooling Hardening
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
+
+### Track B: Runtime and Tooling Hardening
 
 - [x] T010 Add a working build script in `.opencode/skill/system-spec-kit/mcp_server/package.json`
 - [x] T011 Isolate Hydra roadmap capability flags in `.opencode/skill/system-spec-kit/mcp_server/lib/config/capability-flags.ts`
@@ -47,9 +57,10 @@ contextType: "general"
 - [x] T014 Export reusable helpers in `.opencode/skill/system-spec-kit/mcp_server/scripts/migrations/restore-checkpoint.ts`
 - [x] T015 Add schema compatibility validation in `.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts`
 
+
 ---
 
-## Track C: Verification
+### Track C: Verification
 
 - [x] T020 Add focused capability-flag coverage in `tests/memory-roadmap-flags.vitest.ts`
 - [x] T021 Add baseline helper coverage in `tests/memory-state-baseline.vitest.ts`
@@ -58,9 +69,10 @@ contextType: "general"
 - [x] T024 Run Phase 1 TypeScript and Vitest verification sweep
 - [x] T025 Run manual baseline and graph phase smoke checks against built `dist`
 
+
 ---
 
-## Track D: Documentation and Release Readiness
+### Track D: Documentation and Release Readiness
 
 - [x] T030 Update feature catalog for Phase 1 baseline capabilities
 - [x] T031 Update manual testing playbook with baseline procedures
@@ -68,16 +80,24 @@ contextType: "general"
 - [x] T033 Update the parent `015` planning docs to reflect the delivered hardening slice honestly
 - [x] T034 Decide whether residual baseline observability work remains inside Phase 1 or moves to a later tracked follow-up
 
+<!-- /ANCHOR:phase-2 -->
+
 ---
 
-## Coordination Checkpoints
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
+
+### Coordination Checkpoints
 
 - [x] T040 Confirm parent roadmap still treats phases 2-6 as planned work
 - [x] T041 Record actual verification evidence in `implementation-summary.md`
 - [x] T042 Obtain maintainer sign-off on final Phase 1 handoff criteria
 
+<!-- /ANCHOR:phase-3 -->
+
 ---
 
+<!-- ANCHOR:completion -->
 ## Completion Criteria
 
 - [x] All required Phase 1 acceptance criteria are met
@@ -85,8 +105,11 @@ contextType: "general"
 - [x] Delivered hardening slice is backed by automated verification
 - [x] Documentation tells the truth about current status
 
+<!-- /ANCHOR:completion -->
+
 ---
 
+<!-- ANCHOR:cross-refs -->
 ## Cross-References
 
 - **Specification**: `spec.md`
@@ -95,12 +118,11 @@ contextType: "general"
 - **Decision Record**: `decision-record.md`
 - **Implementation Summary**: `implementation-summary.md`
 
-<!-- /ANCHOR:document -->
+<!-- /ANCHOR:cross-refs -->
 
 ---
 
-<!-- ANCHOR:ai-protocol -->
-## AI EXECUTION PROTOCOL
+### AI Execution Protocol
 
 ### Pre-Task Checklist
 
@@ -130,4 +152,3 @@ contextType: "general"
 1. Stop work as soon as a predecessor gate, safety rule, or rollout assumption is violated.
 2. Record the blocker in `tasks.md` with `[B]` and explain the impacted downstream work.
 3. Update `implementation-summary.md` before handing the phase back for review.
-<!-- /ANCHOR:ai-protocol -->

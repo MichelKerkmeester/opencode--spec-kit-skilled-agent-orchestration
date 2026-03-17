@@ -15,6 +15,7 @@ contextType: "general"
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## Metadata
 
 | Field | Value |
@@ -22,9 +23,11 @@ contextType: "general"
 | **Spec Folder** | 006-shared-memory-rollout |
 | **Completed** | 2026-03-13 |
 | **Level** | 3+ |
+<!-- /ANCHOR:metadata -->
 
 ---
 
+<!-- ANCHOR:what-built -->
 ## What Was Built
 
 Phase 6 is implemented and validated. Shared-memory rollout controls are active:
@@ -37,9 +40,30 @@ Phase 6 is implemented and validated. Shared-memory rollout controls are active:
 - Rollout summaries plus refined conflict handling (`getSharedRolloutMetrics`, `getSharedRolloutCohortSummary`, `getSharedConflictStrategySummary`, `resolveSharedConflictStrategy`) in `mcp_server/lib/collab/shared-spaces.ts` with coverage in `tests/shared-spaces.vitest.ts`
 
 Conflict handling is auditable through shared conflict records and governance-audit rows, and repeat or high-risk conflicts now escalate to `manual_merge`.
+<!-- /ANCHOR:what-built -->
 
 ---
 
+<!-- ANCHOR:how-delivered -->
+## How It Was Delivered
+
+The phase shipped as an opt-in rollout on top of the already-verified governance layer from Phase 5. Confidence comes from phase-folder validation, TypeScript and build verification in `mcp_server`, focused Vitest coverage for shared spaces and conflict handling, and matching playbook plus feature-catalog updates for operator rollout guidance.
+<!-- /ANCHOR:how-delivered -->
+
+---
+
+<!-- ANCHOR:decisions -->
+## Key Decisions
+
+| Decision | Why |
+|----------|-----|
+| Keep shared memory opt-in and deny-by-default | Collaboration needed a reversible rollout shape that preserved governance guarantees from Phase 5 instead of broadening access by default. |
+| Escalate repeat or high-risk conflicts to `manual_merge` | Operators need a conflict path they can inspect and trust when automatic append-only behavior stops being safe enough. |
+<!-- /ANCHOR:decisions -->
+
+---
+
+<!-- ANCHOR:verification -->
 ## Verification
 
 | Check | Result |
@@ -51,9 +75,12 @@ Conflict handling is auditable through shared conflict records and governance-au
 | Playbook procedure `NEW-123` present | PASS |
 | Consolidated roadmap suite (`15` files, `159` tests) | PASS |
 | Six-phase validation sweep (`001`-`006` `validate.sh`) | PASS |
+<!-- /ANCHOR:verification -->
 
 ---
 
+<!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Human sign-off is pending.** Collaboration/product reviewer and release sign-off rows remain open.
+1. **No additional phase-local limitation is recorded.** Sign-off rows in `checklist.md` are already approved, so this summary stays aligned with the shipped state unless new rollout constraints are discovered later.
+<!-- /ANCHOR:limitations -->

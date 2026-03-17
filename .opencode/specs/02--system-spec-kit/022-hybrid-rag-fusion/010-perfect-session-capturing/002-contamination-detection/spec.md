@@ -4,6 +4,9 @@ description: "Strengthen contamination detection to produce measurable score pen
 ---
 # Feature Specification: Contamination Detection
 
+This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.
+
+
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 

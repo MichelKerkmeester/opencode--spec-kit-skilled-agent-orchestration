@@ -3,6 +3,9 @@ title: "Implementation Plan: Quality Scorer Unification"
 ---
 # Implementation Plan: Quality Scorer Unification
 
+This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.
+
+
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
@@ -38,9 +41,9 @@ This plan implements a pipeline modification pattern: define a shared `QualitySc
 
 ### Definition of Done
 
-- [ ] All acceptance criteria met (REQ-001 through REQ-004)
-- [ ] Tests passing -- all quality scorer tests use 0.0-1.0 scale
-- [ ] Docs updated (spec/plan in this folder)
+- [x] All acceptance criteria met (REQ-001 through REQ-004)
+- [x] Tests passing -- all quality scorer tests use 0.0-1.0 scale
+- [x] Docs updated (spec/plan in this folder)
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -76,36 +79,36 @@ Pipeline modification -- shared interface definition propagated through scorer i
 
 ### Phase 1: Shared Interface
 
-- [ ] Define `QualityScoreResult` interface in a shared location (or within `scripts/core/quality-scorer.ts`)
-- [ ] Include fields: `score01`, `score100`, `hadContamination`, `insufficiency`, `dimensions`, typed flags
-- [ ] Ensure both V1 and V2 can import/implement the interface
+- [x] Define `QualityScoreResult` interface in a shared location (or within `scripts/core/quality-scorer.ts`)
+- [x] Include fields: `score01`, `score100`, `hadContamination`, `insufficiency`, `dimensions`, typed flags
+- [x] Ensure both V1 and V2 can import/implement the interface
 
 ### Phase 2: V2 Scorer Update
 
-- [ ] Add `hadContamination` parameter to V2 scoring function
-- [ ] Apply contamination penalty: `qualityScore -= 0.25`
-- [ ] Apply sufficiency cap: `sufficiencyCap = Math.min(sufficiencyCap ?? 1, 0.6)`
-- [ ] Return `QualityScoreResult` with both `score01` and `score100`
+- [x] Add `hadContamination` parameter to V2 scoring function
+- [x] Apply contamination penalty: `qualityScore -= 0.25`
+- [x] Apply sufficiency cap: `sufficiencyCap = Math.min(sufficiencyCap ?? 1, 0.6)`
+- [x] Return `QualityScoreResult` with both `score01` and `score100`
 
 ### Phase 3: V1 Scorer Update
 
-- [ ] Extend V1 scorer signature to accept `hadContamination`
-- [ ] Apply matching contamination penalty and cap
-- [ ] Expose `score01` as primary output, compute `score100` from it
+- [x] Extend V1 scorer signature to accept `hadContamination`
+- [x] Apply matching contamination penalty and cap
+- [x] Expose `score01` as primary output, compute `score100` from it
 
 ### Phase 4: Threshold Migration
 
-- [ ] Update `config.ts` validation to accept 0.0-1.0 range
-- [ ] Add backward-compat: detect integer thresholds (>1) and auto-convert by dividing by 100
-- [ ] Update `workflow.ts` to compare `score01` against the migrated threshold
-- [ ] Log a deprecation warning when integer threshold is auto-converted
+- [x] Update `config.ts` validation to accept 0.0-1.0 range
+- [x] Add backward-compat: detect integer thresholds (>1) and auto-convert by dividing by 100
+- [x] Update `workflow.ts` to compare `score01` against the migrated threshold
+- [x] Log a deprecation warning when integer threshold is auto-converted
 
 ### Phase 5: Test Baseline Rework
 
-- [ ] Update all quality scorer test expectations to use 0.0-1.0 scale
-- [ ] Add test cases for contamination penalty application
-- [ ] Add test cases for backward-compat integer threshold conversion
-- [ ] Verify no silent scale mismatch in any test fixture
+- [x] Update all quality scorer test expectations to use 0.0-1.0 scale
+- [x] Add test cases for contamination penalty application
+- [x] Add test cases for backward-compat integer threshold conversion
+- [x] Verify no silent scale mismatch in any test fixture
 <!-- /ANCHOR:phases -->
 
 ---

@@ -4,6 +4,9 @@ description: "Unify the dual quality scoring systems (V1 0-100, V2 0.0-1.0) onto
 ---
 # Feature Specification: Quality Scorer Unification
 
+This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.
+
+
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 

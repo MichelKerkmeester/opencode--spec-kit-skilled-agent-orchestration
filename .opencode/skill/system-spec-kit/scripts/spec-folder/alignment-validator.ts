@@ -13,6 +13,7 @@ import * as path from 'path';
 
 // Internal modules
 import { promptUserChoice } from '../utils/prompt-utils';
+import type { CollectedDataSubset } from '../types/session-types';
 
 /* ───────────────────────────────────────────────────────────────
    1. INTERFACES
@@ -45,16 +46,7 @@ export interface WorkDomainResult {
 }
 
 /** Alignment-focused subset of collected session data. */
-export interface CollectedDataForAlignment {
-  recentContext?: Array<{ request?: string; files?: string[] }>;
-  observations?: Array<{
-    title?: string;
-    narrative?: string;
-    files?: string[];
-    type?: string;
-  }>;
-  [key: string]: unknown;
-}
+export type AlignmentCollectedData = CollectedDataSubset<'recentContext' | 'observations' | 'SPEC_FOLDER'>;
 
 /** Describes a field-level diff between telemetry schema sources. */
 export interface TelemetrySchemaFieldDiff {
@@ -319,7 +311,7 @@ async function validateTelemetrySchemaDocsDrift(
    3. TOPIC EXTRACTION
 ------------------------------------------------------------------*/
 
-function extractConversationTopics(collectedData: CollectedDataForAlignment | null): string[] {
+function extractConversationTopics(collectedData: AlignmentCollectedData | null): string[] {
   const topics = new Set<string>();
 
   if (collectedData?.recentContext?.[0]?.request) {
@@ -342,7 +334,7 @@ function extractConversationTopics(collectedData: CollectedDataForAlignment | nu
   );
 }
 
-function extractObservationKeywords(collectedData: CollectedDataForAlignment | null): string[] {
+function extractObservationKeywords(collectedData: AlignmentCollectedData | null): string[] {
   const keywords = new Set<string>();
 
   if (!collectedData?.observations) return [];
@@ -377,7 +369,7 @@ function extractObservationKeywords(collectedData: CollectedDataForAlignment | n
    3.5 WORK DOMAIN DETECTION
 ------------------------------------------------------------------*/
 
-function detectWorkDomain(collectedData: CollectedDataForAlignment | null): WorkDomainResult {
+function detectWorkDomain(collectedData: AlignmentCollectedData | null): WorkDomainResult {
   const files: string[] = [];
 
   if (collectedData?.observations) {
@@ -488,7 +480,7 @@ function calculateAlignmentScore(conversationTopics: string[], specFolderName: s
 ------------------------------------------------------------------*/
 
 async function validateContentAlignment(
-  collectedData: CollectedDataForAlignment,
+  collectedData: AlignmentCollectedData,
   specFolderName: string,
   specsDir: string
 ): Promise<AlignmentResult> {
@@ -595,7 +587,7 @@ async function validateContentAlignment(
 }
 
 async function validateFolderAlignment(
-  collectedData: CollectedDataForAlignment,
+  collectedData: AlignmentCollectedData,
   specFolderName: string,
   specsDir: string
 ): Promise<AlignmentResult> {

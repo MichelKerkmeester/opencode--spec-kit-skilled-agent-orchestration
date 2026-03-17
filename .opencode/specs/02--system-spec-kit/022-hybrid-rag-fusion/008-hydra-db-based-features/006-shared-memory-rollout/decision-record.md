@@ -8,7 +8,6 @@ trigger_phrases:
 importance_tier: "critical"
 contextType: "decision"
 ---
-<!-- ANCHOR:document -->
 # Decision Record: 006-shared-memory-rollout
 
 <!-- SPECKIT_LEVEL: 3+ -->
@@ -16,6 +15,7 @@ contextType: "decision"
 
 ---
 
+<!-- ANCHOR:adr-001 -->
 ## ADR-601: Ship Shared Memory as Opt-In Cohorts with Deny-by-Default Membership
 
 ### Metadata
@@ -99,4 +99,4 @@ Shared memory is the most visible and risky part of the roadmap. It can unlock s
 
 **How to roll back**: disable collaboration cohorts, confirm baseline governed behavior, and rerun rollback smoke tests before any re-enable decision.
 
-<!-- /ANCHOR:document -->
+<!-- /ANCHOR:adr-001 -->

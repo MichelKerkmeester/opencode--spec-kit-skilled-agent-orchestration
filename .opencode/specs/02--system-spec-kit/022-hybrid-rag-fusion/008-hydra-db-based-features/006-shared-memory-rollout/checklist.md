@@ -8,7 +8,6 @@ trigger_phrases:
 importance_tier: "critical"
 contextType: "general"
 ---
-<!-- ANCHOR:document -->
 # Verification Checklist: 006-shared-memory-rollout
 
 <!-- SPECKIT_LEVEL: 3+ -->
@@ -16,6 +15,7 @@ contextType: "general"
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## Verification Protocol
 
 | Priority | Handling | Completion Impact |
@@ -23,53 +23,82 @@ contextType: "general"
 | **P0** | Hard blocker | Cannot claim Phase 6 implementation complete |
 | **P1** | Required | Must complete or defer explicitly |
 | **P2** | Optional | Track as follow-up |
+<!-- /ANCHOR:protocol -->
 
 ---
 
-## P0: Planning and Scope Integrity
+<!-- ANCHOR:pre-impl -->
+## Pre-Implementation
 
-- [x] CHK-601 Collaboration scope, rollout gates, and kill-switch rules documented [EVIDENCE:spec.md]
-- [x] CHK-602 Dependencies on Phases 3, 4, and 5 documented [EVIDENCE:plan.md]
-- [x] CHK-603 Phase-local ADR captured [EVIDENCE:decision-record.md]
-- [x] CHK-604 Phase 5 governance technical gate verified [EVIDENCE:../005-hierarchical-scope-governance/checklist.md P0 9/9; validate.sh pass]
-
----
-
-## P0: Collaboration Verification
-
-- [x] CHK-610 Shared-memory spaces implemented [EVIDENCE:implementation-summary.md]
-- [x] CHK-611 Membership and conflict rules validated [EVIDENCE:implementation-summary.md]
-- [x] CHK-612 Governance reuse verified [EVIDENCE:implementation-summary.md]
-- [x] CHK-613 Kill-switch and rollback drills pass [EVIDENCE:implementation-summary.md]
-- [x] CHK-614 Staged rollout procedure validated [EVIDENCE:implementation-summary.md]
+- [x] CHK-601 [P0] Collaboration scope, rollout gates, and kill-switch rules documented [EVIDENCE:spec.md]
+- [x] CHK-602 [P0] Dependencies on Phases 3, 4, and 5 documented [EVIDENCE:plan.md]
+- [x] CHK-603 [P1] Phase-local ADR captured [EVIDENCE:decision-record.md]
+- [x] CHK-604 [P0] Phase 5 governance technical gate verified [EVIDENCE:../005-hierarchical-scope-governance/checklist.md P0 9/9; validate.sh pass]
+<!-- /ANCHOR:pre-impl -->
 
 ---
 
-## P1: Documentation and Governance
+<!-- ANCHOR:code-quality -->
+## Code Quality
 
-- [x] CHK-620 Level 3+ documentation package created [EVIDENCE:README.md|spec.md|plan.md|tasks.md|checklist.md|decision-record.md|implementation-summary.md]
-- [x] CHK-621 Playbook updated for collaboration rollout [EVIDENCE:manual_testing_playbook.md NEW-123]
-- [x] CHK-622 Feature catalog and README surfaces updated after implementation [EVIDENCE:feature_catalog/17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md]
-- [x] CHK-623 Maintainer sign-off recorded [EVIDENCE:terminal approval recorded in session 2026-03-14]
-
----
-
-## P2: Follow-Up Quality
-
-- [x] CHK-630 Expand rollout metrics and cohort controls if needed [EVIDENCE:mcp_server/lib/collab/shared-spaces.ts `getSharedRolloutMetrics`|`getSharedRolloutCohortSummary`|tests/shared-spaces.vitest.ts]
-- [x] CHK-631 Refine conflict strategy after initial validation if needed [EVIDENCE:mcp_server/lib/collab/shared-spaces.ts `resolveSharedConflictStrategy`|tests/shared-spaces.vitest.ts]
-- [x] CHK-632 Save continuation context after execution [EVIDENCE:generate-context.js JSON mode; memory/ context generated 2026-03-13]
+- [x] CHK-610 [P0] Shared-memory spaces implemented [EVIDENCE:implementation-summary.md]
+- [x] CHK-611 [P0] Membership and conflict rules validated [EVIDENCE:implementation-summary.md]
+- [x] CHK-612 [P0] Governance reuse verified [EVIDENCE:implementation-summary.md]
+- [x] CHK-613 [P0] Kill-switch and rollback drills pass [EVIDENCE:implementation-summary.md]
+- [x] CHK-614 [P0] Staged rollout procedure validated [EVIDENCE:implementation-summary.md]
+<!-- /ANCHOR:code-quality -->
 
 ---
 
-## Architecture Verification
+<!-- ANCHOR:testing -->
+## Testing
 
-- [x] CHK-640 Opt-in rollout ADR documented
-- [x] CHK-641 Kill-switch and rollback strategy documented
-- [x] CHK-642 Collaboration design reviewed by platform or product reviewer [EVIDENCE:terminal approval recorded in session 2026-03-14]
+- [x] CHK-630 [P2] Rollout metrics and cohort controls reviewed after implementation [EVIDENCE:mcp_server/lib/collab/shared-spaces.ts `getSharedRolloutMetrics`|`getSharedRolloutCohortSummary`|tests/shared-spaces.vitest.ts]
+- [x] CHK-631 [P2] Conflict strategy summaries confirmed for follow-up diagnostics [EVIDENCE:mcp_server/lib/collab/shared-spaces.ts `resolveSharedConflictStrategy`|tests/shared-spaces.vitest.ts]
+<!-- /ANCHOR:testing -->
 
 ---
 
+<!-- ANCHOR:security -->
+## Security
+
+- Deny-by-default membership, governance reuse, and rollback protections remain covered by `CHK-611`, `CHK-612`, and `CHK-613` above.
+<!-- /ANCHOR:security -->
+
+---
+
+<!-- ANCHOR:docs -->
+## Documentation
+
+- [x] CHK-620 [P1] Level 3+ documentation package created [EVIDENCE:README.md|spec.md|plan.md|tasks.md|checklist.md|decision-record.md|implementation-summary.md]
+- [x] CHK-621 [P1] Playbook updated for collaboration rollout [EVIDENCE:manual_testing_playbook.md NEW-123]
+- [x] CHK-622 [P1] Feature catalog and README surfaces updated after implementation [EVIDENCE:feature_catalog/17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md]
+- [x] CHK-623 [P1] Maintainer sign-off recorded [EVIDENCE:terminal approval recorded in session 2026-03-14]
+<!-- /ANCHOR:docs -->
+
+---
+
+<!-- ANCHOR:file-org -->
+## File Organization
+
+- [x] CHK-090 [P1] Phase changes stay scoped to this phase folder and referenced runtime surfaces [EVIDENCE:tasks.md|implementation-summary.md]
+- [x] CHK-091 [P1] No stray implementation artifacts are required outside the documented phase/package paths [EVIDENCE:spec.md|implementation-summary.md]
+- [x] CHK-632 [P2] Save continuation context after execution [EVIDENCE:generate-context.js JSON mode; memory/ context generated 2026-03-13]
+<!-- /ANCHOR:file-org -->
+
+---
+
+<!-- ANCHOR:arch-verify -->
+## L3+: ARCHITECTURE VERIFICATION
+
+- [x] CHK-640 [P1] Opt-in rollout ADR documented [EVIDENCE:decision-record.md]
+- [x] CHK-641 [P1] Kill-switch and rollback strategy documented [EVIDENCE:plan.md]
+- [x] CHK-642 [P1] Collaboration design reviewed by platform or product reviewer [EVIDENCE:terminal approval recorded in session 2026-03-14]
+<!-- /ANCHOR:arch-verify -->
+
+---
+
+<!-- ANCHOR:summary -->
 ## Verification Summary
 
 | Category | Total | Verified |
@@ -79,15 +108,16 @@ contextType: "general"
 | P2 Items | 3 | 3/3 |
 
 **Verification Date**: 2026-03-14
+<!-- /ANCHOR:summary -->
 
 ---
 
-## Sign-Off
+<!-- ANCHOR:sign-off -->
+## L3+: SIGN-OFF
 
 | Approver | Role | Status | Date |
 |----------|------|--------|------|
 | System-spec-kit maintainer | Technical Lead | Approved | 2026-03-14 |
 | Collaboration reviewer | Platform/Product Reviewer | Approved | 2026-03-14 |
 | Release reviewer | QA/Release | Approved | 2026-03-14 |
-
-<!-- /ANCHOR:document -->
+<!-- /ANCHOR:sign-off -->

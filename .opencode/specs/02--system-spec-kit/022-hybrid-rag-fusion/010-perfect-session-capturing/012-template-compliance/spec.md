@@ -9,6 +9,9 @@ contextType: "general"
 ---
 # Feature Specification: Template Compliance
 
+This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.
+
+
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
@@ -23,7 +26,7 @@ contextType: "general"
 | **Priority** | P1 |
 | **Status** | Complete |
 | **Created** | 2026-03-16 |
-| **Completed** | 2026-03-16 |
+| **Completed** | 2026-03-17 |
 | **Branch** | `main` |
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
@@ -143,7 +146,7 @@ Use the live template files as the single source of truth for required header an
 ---
 
 <!-- ANCHOR:nfr -->
-## L2: NON-FUNCTIONAL REQUIREMENTS
+## 7. L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
 - **NFR-P01**: Shared template parsing must stay lightweight enough for validator invocations across single folders and test fixtures without introducing noticeable CLI latency.
@@ -161,7 +164,7 @@ Use the live template files as the single source of truth for required header an
 ---
 
 <!-- ANCHOR:edge-cases -->
-## L2: EDGE CASES
+## 8. L2: EDGE CASES
 
 ### Data Boundaries
 - Empty optional template blocks: optional Level 2 headers can be absent without becoming structural failures.
@@ -181,7 +184,7 @@ Use the live template files as the single source of truth for required header an
 ---
 
 <!-- ANCHOR:complexity -->
-## L2: COMPLEXITY ASSESSMENT
+## 9. L2: COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
@@ -194,7 +197,7 @@ Use the live template files as the single source of truth for required header an
 ---
 
 <!-- ANCHOR:questions -->
-## 7. OPEN QUESTIONS
+## 10. OPEN QUESTIONS
 
 - None. The draft references to `.fingerprint` storage and `delegation-prompt-builder.ts` were removed in favor of the runtime surfaces that actually exist.
 <!-- /ANCHOR:questions -->

@@ -7,11 +7,12 @@ trigger_phrases: ["implementation", "summary", "contamination", "detection"]
 
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
 <!-- ANCHOR:metadata -->
-## Metadata
+## 1. METADATA
 
 | Field | Value |
 |-------|-------|
@@ -23,7 +24,7 @@ trigger_phrases: ["implementation", "summary", "contamination", "detection"]
 ---
 
 <!-- ANCHOR:what-built -->
-## What Was Built
+## 2. WHAT WAS BUILT
 
 This phase shipped contamination-detection hardening across the live save pipeline rather than the earlier draft file map.
 
@@ -37,7 +38,7 @@ This phase shipped contamination-detection hardening across the live save pipeli
 ---
 
 <!-- ANCHOR:how-delivered -->
-## How It Was Delivered
+## 3. HOW IT WAS DELIVERED
 
 The implementation stayed intentionally narrow:
 
@@ -50,7 +51,7 @@ The implementation stayed intentionally narrow:
 ---
 
 <!-- ANCHOR:decisions -->
-## Key Decisions
+## 4. KEY DECISIONS
 
 | Decision | Why |
 |----------|-----|
@@ -62,23 +63,26 @@ The implementation stayed intentionally narrow:
 ---
 
 <!-- ANCHOR:verification -->
-## Verification
+## 5. VERIFICATION
 
 | Check | Result |
 |-------|--------|
-| `npm run test:task-enrichment` | Passed — 1 file, 43 tests, 0 failures |
+| `cd .opencode/skill/system-spec-kit/scripts && node ../mcp_server/node_modules/vitest/vitest.mjs run tests/task-enrichment.vitest.ts --config ../mcp_server/vitest.config.ts` | Passed: 1 file, 47 tests, 0 failures |
 | `node scripts/tests/test-memory-quality-lane.js` | Passed |
-| `npm run typecheck` | Passed |
-| `npm run build` | Passed |
-| `scripts/spec/validate.sh <phase-folder>` | Passed — 0 errors, 0 warnings |
-| `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js <phase-folder>` | Passed — saved `memory/16-03-26_18-23__contamination-detection.md` and refreshed `metadata.json` |
+| `cd .opencode/skill/system-spec-kit && npm run typecheck` | Passed |
+| `cd .opencode/skill/system-spec-kit && npm run build` | Passed |
+| `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/002-contamination-detection` | Passed: 0 errors, 0 warnings |
+| `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/002-contamination-detection` | Passed: wrote `memory/17-03-26_16-44__strict-closeout-evidence-refreshed.md`, refreshed `metadata.json`, and indexed memory #4371 |
 <!-- /ANCHOR:verification -->
 
 ---
 
 <!-- ANCHOR:limitations -->
-## Known Limitations
+## 6. KNOWN LIMITATIONS
 
 1. The extractor scrubber still relies on the existing lexical denylist; this phase adds auditability around that behavior but does not redesign the scrubber itself.
 2. Post-render contamination detection remains spec-id driven, so future work could still make the semantic cross-spec heuristics more context-aware if false-positive data ever appears.
 <!-- /ANCHOR:limitations -->
+
+
+Reference links: [spec.md](spec.md) and [plan.md](plan.md).

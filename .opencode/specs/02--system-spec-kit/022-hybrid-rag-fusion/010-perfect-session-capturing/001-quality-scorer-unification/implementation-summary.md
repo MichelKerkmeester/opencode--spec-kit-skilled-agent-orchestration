@@ -7,11 +7,12 @@ trigger_phrases: ["implementation", "summary", "quality", "scorer"]
 
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
 <!-- ANCHOR:metadata -->
-## Metadata
+## 1. METADATA
 
 | Field | Value |
 |-------|-------|
@@ -23,7 +24,7 @@ trigger_phrases: ["implementation", "summary", "quality", "scorer"]
 ---
 
 <!-- ANCHOR:what-built -->
-## What Was Built
+## 2. WHAT WAS BUILT
 
 Unified quality scorer interface and contamination penalty across V1/V2 scorers.
 
@@ -37,7 +38,7 @@ Unified quality scorer interface and contamination penalty across V1/V2 scorers.
 ---
 
 <!-- ANCHOR:how-delivered -->
-## How It Was Delivered
+## 3. HOW IT WAS DELIVERED
 
 1. Defined the unified `QualityScoreResult` interface in `core/quality-scorer.ts` with both scales, then had `extractors/quality-scorer.ts` import and re-export the types instead of duplicating them.
 2. Added the contamination penalty in the V2 scorer matching the spec: `qualityScore -= 0.25` and `sufficiencyCap = Math.min(sufficiencyCap ?? 1, 0.6)`.
@@ -48,7 +49,7 @@ Unified quality scorer interface and contamination penalty across V1/V2 scorers.
 ---
 
 <!-- ANCHOR:decisions -->
-## Key Decisions
+## 4. KEY DECISIONS
 
 | Decision | Why |
 |----------|-----|
@@ -60,7 +61,7 @@ Unified quality scorer interface and contamination penalty across V1/V2 scorers.
 ---
 
 <!-- ANCHOR:verification -->
-## Verification
+## 5. VERIFICATION
 
 | Check | Result |
 |-------|--------|
@@ -73,8 +74,11 @@ Unified quality scorer interface and contamination penalty across V1/V2 scorers.
 ---
 
 <!-- ANCHOR:limitations -->
-## Known Limitations
+## 6. KNOWN LIMITATIONS
 
 1. Four legacy score fields on `QualityScoreResult` (`score`, `qualityScore` alongside `score01`, `score100`) create redundancy. These should be deprecated with TSDoc in a future pass.
 2. `clamp01` helper is duplicated in both scorer files; could be extracted to a shared utility.
 <!-- /ANCHOR:limitations -->
+
+
+Reference links: [spec.md](spec.md) and [plan.md](plan.md).

@@ -446,7 +446,7 @@ export async function extractGitContext(projectRoot: string, specFolderHint?: st
       uncommittedCount: statusEntries.length,
       ...gitSnapshot,
     };
-  } catch (err) {
+  } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : String(err);
     console.warn(`[git-context-extractor] degraded: ${msg}`);
     return emptyResult();

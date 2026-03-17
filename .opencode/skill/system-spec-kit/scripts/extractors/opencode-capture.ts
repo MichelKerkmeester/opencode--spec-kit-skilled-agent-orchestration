@@ -11,11 +11,12 @@ import * as fs from 'fs/promises';
 import * as fsSync from 'fs';
 import * as path from 'path';
 import * as readline from 'readline';
+import { execFileSync } from 'node:child_process';
 import { CONFIG } from '../core';
-import { isSameWorkspacePath } from '../utils';
+import { buildWorkspaceIdentity, normalizeAbsolutePath } from '../utils';
 
 /* ───────────────────────────────────────────────────────────────
-   1. INTERFACES
+   INTERFACES
 ------------------------------------------------------------------*/
 
 /** A prompt entry captured from a session transcript. */
@@ -102,6 +103,25 @@ export interface ConversationCapture {
   };
 }
 
+interface NativeSessionListEntry {
+  id: string;
+  title?: string;
+  updated?: number;
+  created?: number;
+  projectId?: string;
+  directory?: string;
+}
+
+interface NativeExportMessage {
+  info?: Record<string, unknown>;
+  parts?: Record<string, unknown>[];
+}
+
+interface NativeExportPayload {
+  info?: Record<string, unknown>;
+  messages?: NativeExportMessage[];
+}
+
 /* ───────────────────────────────────────────────────────────────
    2. STORAGE PATHS
 ------------------------------------------------------------------*/
@@ -115,6 +135,9 @@ const PROMPT_HISTORY: string = path.join(
   process.env.HOME || process.env.USERPROFILE || '',
   '.local/state/opencode/prompt-history.jsonl',
 );
+
+const nativeSessionMessageCache = new Map<string, MessageInfo[]>();
+const nativeMessagePartCache = new Map<string, Record<string, unknown>[]>();
 
 /* ───────────────────────────────────────────────────────────────
    3. UTILITY FUNCTIONS
@@ -186,6 +209,141 @@ async function readJsonlTail<T = unknown>(filePath: string, limit: number): Prom
   }
 }
 
+function toFiniteNumber(value: unknown): number {
+  return typeof value === 'number' && Number.isFinite(value) ? value : 0;
+}
+
+function extractJsonPayload(output: string): string | null {
+  const trimmed = output.trim();
+  if (trimmed.length === 0) {
+    return null;
+  }
+
+  const candidateStarts = [trimmed.indexOf('{'), trimmed.indexOf('[')]
+    .filter((index) => index >= 0)
+    .sort((a, b) => a - b);
+
+  for (const start of candidateStarts) {
+    const payload = trimmed.slice(start).trim();
+    try {
+      JSON.parse(payload);
+      return payload;
+    } catch {
+      continue;
+    }
+  }
+
+  return null;
+}
+
+function runOpencodeJsonCommand(args: string[]): unknown | null {
+  try {
+    const output = execFileSync('opencode', args, {
+      encoding: 'utf8',
+      maxBuffer: 10 * 1024 * 1024,
+    });
+    const payload = extractJsonPayload(output);
+    return payload ? JSON.parse(payload) : null;
+  } catch {
+    return null;
+  }
+}
+
+function mapNativeSessionListEntry(entry: NativeSessionListEntry): SessionInfo | null {
+  if (typeof entry.id !== 'string') {
+    return null;
+  }
+
+  return {
+    id: entry.id,
+    title: typeof entry.title === 'string' && entry.title.trim().length > 0 ? entry.title : 'Untitled',
+    created: toFiniteNumber(entry.created),
+    updated: toFiniteNumber(entry.updated),
+    summary: {},
+    parent_id: null,
+  };
+}
+
+function cacheNativeSessionMessages(sessionId: string, messages: NativeExportMessage[]): void {
+  const mappedMessages: MessageInfo[] = [];
+
+  for (const message of messages) {
+    const info = message.info;
+    if (!info || typeof info.id !== 'string' || typeof info.role !== 'string') {
+      continue;
+    }
+
+    const time = (info.time as Record<string, unknown>) || {};
+    const model = info.model as Record<string, unknown> | undefined;
+    mappedMessages.push({
+      id: info.id,
+      session_id: typeof info.sessionID === 'string' ? info.sessionID : sessionId,
+      role: info.role,
+      created: toFiniteNumber(time.created),
+      completed: typeof time.completed === 'number' && Number.isFinite(time.completed) ? time.completed : null,
+      parent_id: typeof info.parentID === 'string' ? info.parentID : null,
+      model: typeof info.modelID === 'string'
+        ? info.modelID
+        : typeof model?.modelID === 'string'
+          ? model.modelID
+          : null,
+      agent: typeof info.agent === 'string' ? info.agent : 'general',
+      summary: (info.summary as Record<string, unknown>) || {},
+    });
+
+    nativeMessagePartCache.set(info.id, Array.isArray(message.parts) ? message.parts : []);
+  }
+
+  mappedMessages.sort((a, b) => a.created - b.created);
+  nativeSessionMessageCache.set(sessionId, mappedMessages);
+}
+
+function readNativeRecentSessions(limit: number): NativeSessionListEntry[] {
+  const payload = runOpencodeJsonCommand([
+    'session',
+    'list',
+    '--format',
+    'json',
+    '--max-count',
+    String(Math.max(limit, 1)),
+  ]);
+
+  return Array.isArray(payload) ? payload as NativeSessionListEntry[] : [];
+}
+
+function populateNativeSessionCache(sessionId: string): boolean {
+  if (nativeSessionMessageCache.has(sessionId)) {
+    return true;
+  }
+
+  const payload = runOpencodeJsonCommand(['export', sessionId]);
+  if (!payload || Array.isArray(payload) || typeof payload !== 'object') {
+    return false;
+  }
+
+  const exported = payload as NativeExportPayload;
+  if (!Array.isArray(exported.messages)) {
+    return false;
+  }
+
+  cacheNativeSessionMessages(sessionId, exported.messages);
+  return nativeSessionMessageCache.has(sessionId);
+}
+
+function getCachedMessageText(messageId: string): string | null {
+  const parts = nativeMessagePartCache.get(messageId);
+  if (!parts) {
+    return null;
+  }
+
+  const texts = parts
+    .filter((part) => part.type === 'text')
+    .map((part) => typeof part.text === 'string' ? part.text.trim() : '')
+    .filter((text) => text.length > 0);
+
+  return texts.length > 0 ? texts.join('\n') : null;
+}
+
 /* ───────────────────────────────────────────────────────────────
    4. PROMPT HISTORY
 ------------------------------------------------------------------*/
@@ -234,9 +392,61 @@ async function getRecentPrompts(
 
 function getProjectId(directory: string): string | null {
   const sessionDir = path.join(OPENCODE_STORAGE, 'session');
+  const workspaceIdentity = buildWorkspaceIdentity(directory);
+  let bestMatch: { projectId: string; score: number; updated: number } | null = null;
+
+  const isWithinPath = (candidate: string, base: string): boolean => (
+    candidate === base || candidate.startsWith(`${base}/`)
+  );
+
+  const scoreSessionDirectoryMatch = (sessionDirectory: string): number => {
+    const normalizedRequested = normalizeAbsolutePath(directory);
+    const normalizedSession = normalizeAbsolutePath(sessionDirectory);
+
+    if (normalizedRequested === normalizedSession) {
+      return 3;
+    }
+
+    if (
+      isWithinPath(normalizedRequested, normalizedSession)
+      || isWithinPath(normalizedSession, normalizedRequested)
+    ) {
+      return 2;
+    }
+
+    if (
+      isWithinPath(normalizedRequested, workspaceIdentity.workspaceRoot)
+      && isWithinPath(normalizedSession, workspaceIdentity.workspaceRoot)
+    ) {
+      return 1;
+    }
+
+    return 0;
+  };
+
+  const nativeSessions = readNativeRecentSessions(200);
+  for (const session of nativeSessions) {
+    if (typeof session.projectId !== 'string' || typeof session.directory !== 'string') {
+      continue;
+    }
+
+    const score = scoreSessionDirectoryMatch(session.directory);
+    if (score === 0) {
+      continue;
+    }
+
+    const updated = toFiniteNumber(session.updated);
+    if (
+      bestMatch === null
+      || score > bestMatch.score
+      || (score === bestMatch.score && updated > bestMatch.updated)
+    ) {
+      bestMatch = { projectId: session.projectId, score, updated };
+    }
+  }
 
   if (!fsSync.existsSync(sessionDir)) {
-    return null;
+    return bestMatch?.projectId ?? null;
   }
 
   try {
@@ -256,8 +466,25 @@ function getProjectId(directory: string): string | null {
           const content = fsSync.readFileSync(sessionFile, 'utf-8');
           const session = JSON.parse(content) as Record<string, unknown>;
 
-          if (typeof session.directory === 'string' && isSameWorkspacePath(directory, session.directory)) {
-            return projectId;
+          if (typeof session.directory !== 'string') {
+            continue;
+          }
+
+          const score = scoreSessionDirectoryMatch(session.directory);
+          if (score === 0) {
+            continue;
+          }
+
+          const sessionTime = session.time as Record<string, unknown> | undefined;
+          const updatedRaw = typeof sessionTime?.updated === 'number' ? sessionTime.updated : 0;
+          const updated = Number.isFinite(updatedRaw) ? updatedRaw : 0;
+
+          if (
+            bestMatch === null
+            || score > bestMatch.score
+            || (score === bestMatch.score && updated > bestMatch.updated)
+          ) {
+            bestMatch = { projectId, score, updated };
           }
         } catch {
           // Skip unreadable session files
@@ -268,10 +495,20 @@ function getProjectId(directory: string): string | null {
     return null;
   }
 
-  return null;
+  return bestMatch?.projectId ?? null;
 }
 
 async function getRecentSessions(projectId: string, limit: number = 10): Promise<SessionInfo[]> {
+  const nativeSessions = readNativeRecentSessions(Math.max(limit * 10, 100))
+    .filter((entry) => entry.projectId === projectId)
+    .map(mapNativeSessionListEntry)
+    .filter((entry): entry is SessionInfo => entry !== null)
+    .sort((a, b) => b.updated - a.updated);
+
+  if (nativeSessions.length > 0) {
+    return nativeSessions.slice(0, limit);
+  }
+
   const sessionDir = path.join(OPENCODE_STORAGE, 'session', projectId);
 
   if (!await pathExists(sessionDir)) {
@@ -316,6 +553,15 @@ async function getCurrentSession(projectId: string): Promise<SessionInfo | null>
 ------------------------------------------------------------------*/
 
 async function getSessionMessages(sessionId: string): Promise<MessageInfo[]> {
+  const cachedMessages = nativeSessionMessageCache.get(sessionId);
+  if (cachedMessages) {
+    return cachedMessages;
+  }
+
+  if (populateNativeSessionCache(sessionId)) {
+    return nativeSessionMessageCache.get(sessionId) || [];
+  }
+
   const messageDir = path.join(OPENCODE_STORAGE, 'message', sessionId);
 
   if (!await pathExists(messageDir)) {
@@ -358,6 +604,11 @@ async function getSessionMessages(sessionId: string): Promise<MessageInfo[]> {
 ------------------------------------------------------------------*/
 
 async function getMessageParts(messageId: string): Promise<Record<string, unknown>[]> {
+  const cachedParts = nativeMessagePartCache.get(messageId);
+  if (cachedParts) {
+    return cachedParts;
+  }
+
   const partDir = path.join(OPENCODE_STORAGE, 'part', messageId);
 
   if (!await pathExists(partDir)) {
@@ -475,10 +726,6 @@ async function captureConversation(
   maxMessages: number = 10,
   directory: string = process.cwd()
 ): Promise<ConversationCapture> {
-  if (!await pathExists(OPENCODE_STORAGE)) {
-    throw new Error('OpenCode storage not found');
-  }
-
   const projectId = getProjectId(directory);
   if (!projectId) {
     throw new Error(`No OpenCode sessions found for: ${directory}`);
@@ -564,7 +811,10 @@ function buildExchanges(
     });
     const response = matchingResponses[0];
 
-    const userInput: string | null = prompt?.input || (userMsg.summary as Record<string, string>)?.title || null;
+    const userInput: string | null = prompt?.input
+      || getCachedMessageText(userMsg.id)
+      || (userMsg.summary as Record<string, string>)?.title
+      || null;
     const assistantResponseContent = matchingResponses.map((r) => r.content).join('\n');
     const assistantResponse: string | null = assistantResponseContent
       ? Array.from(assistantResponseContent).slice(0, CONFIG.TOOL_OUTPUT_MAX_LENGTH).join('')

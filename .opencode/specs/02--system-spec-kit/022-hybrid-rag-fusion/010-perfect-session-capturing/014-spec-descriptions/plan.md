@@ -12,6 +12,9 @@ contextType: "general"
 ---
 # Implementation Plan: Spec Folder Description System Refactor
 
+This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.
+
+
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
@@ -123,71 +126,71 @@ interface PerFolderDescription {
 ### Phase 1: Per-Folder Description Infrastructure
 **Goal**: Core read/write for per-folder `description.json`
 
-- [ ] Define `PerFolderDescription` interface in `folder-discovery.ts`
-- [ ] Implement `generatePerFolderDescription(specMdPath, folderPath, basePath): PerFolderDescription | null`
-- [ ] Implement `loadPerFolderDescription(folderPath): PerFolderDescription | null`
+- [x] Define `PerFolderDescription` interface in `folder-discovery.ts`
+- [x] Implement `generatePerFolderDescription(specMdPath, folderPath, basePath): PerFolderDescription | null`
+- [x] Implement `loadPerFolderDescription(folderPath): PerFolderDescription | null`
   - Schema validation on load: validate `specId` is `string`, `parentChain` is `string[]`, and `memorySequence` is `number`
   - If any field has the wrong type, treat the file as corrupted and regenerate from `spec.md`
-- [ ] Implement `savePerFolderDescription(desc, folderPath): void`
-- [ ] Add atomic write (temp-then-rename) for per-folder files
+- [x] Implement `savePerFolderDescription(desc, folderPath): void`
+- [x] Add atomic write (temp-then-rename) for per-folder files
   - Temp file MUST be created in the same directory as the target file
   - Temp filename MUST use a random/unique suffix (not a predictable `.tmp` name)
   - Writer MUST `fsync` the temp file before rename
   - Writer MUST use try/finally cleanup to remove the temp file on failure
-- [ ] Add stale detection: compare `description.json` mtime vs `spec.md` mtime
-- [ ] Unit tests for new functions
+- [x] Add stale detection: compare `description.json` mtime vs `spec.md` mtime
+- [x] Unit tests for new functions
 
 ### Phase 2: create.sh Integration
 **Goal**: Auto-generate `description.json` on folder creation
 
-- [ ] New TypeScript files must include the standard module header: `// --- MODULE: [Name] ---`
-- [ ] Add `generate_description_json()` function in `create.sh`
-- [ ] Call Node.js helper script: `node .opencode/skill/system-spec-kit/scripts/dist/spec-folder/generate-description.js <folder-path>`
-- [ ] Create `scripts/spec-folder/generate-description.ts` - thin CLI wrapper calling `generatePerFolderDescription()`
-- [ ] MUST validate `folderPath` is within allowed specs base paths before any I/O operations
-- [ ] Integrate into `create.sh` post-template-copy step
-- [ ] Handle `--phase` flag: generate `description.json` in each child phase folder
-- [ ] Test: `create.sh` produces description.json for L1/L2/L3 folders at any depth
+- [x] New TypeScript files must include the standard module header: `// --- MODULE: [Name] ---`
+- [x] Add `generate_description_json()` function in `create.sh`
+- [x] Call Node.js helper script: `node .opencode/skill/system-spec-kit/scripts/dist/spec-folder/generate-description.js <folder-path>`
+- [x] Create `scripts/spec-folder/generate-description.ts` - thin CLI wrapper calling `generatePerFolderDescription()`
+- [x] MUST validate `folderPath` is within allowed specs base paths before any I/O operations
+- [x] Integrate into `create.sh` post-template-copy step
+- [x] Handle `--phase` flag: generate `description.json` in each child phase folder
+- [x] Test: `create.sh` produces description.json for L1/L2/L3 folders at any depth
 
 ### Phase 3: Memory Best-Effort Uniqueness
 **Goal**: Best-effort unique memory filenames even with 10+ rapid saves
 
-- [ ] Add `ensureUniqueMemoryFilename(contextDir, filename): string` to `slug-utils.ts`
+- [x] Add `ensureUniqueMemoryFilename(contextDir, filename): string` to `slug-utils.ts`
   - Scan existing `*.md` files in `contextDir`
   - If `${dateTime}__${baseSlug}.md` exists → try `${dateTime}__${baseSlug}-1.md`, `-2`, etc.
   - Returns: the unique filename string (including `.md` extension). Caller uses it directly as the output filename.
   - Max 100 iterations (fail-safe)
   - On iteration 101 (exhaustion): reserve a random 12-character hex fallback candidate (from `crypto.randomBytes(6).toString('hex')`) using the same `O_CREAT|O_EXCL` guard before returning.
-- [ ] Integrate `ensureUniqueMemoryFilename()` in `workflow.ts` before `ctxFilename` construction (line ~644)
-- [ ] Update per-folder `description.json` `memorySequence` counter on each save
+- [x] Integrate `ensureUniqueMemoryFilename()` in `workflow.ts` before `ctxFilename` construction (line ~644)
+- [x] Update per-folder `description.json` `memorySequence` counter on each save
   - Concurrency: `memorySequence` uses read-modify-write without locking. Concurrent saves may read the same value. This is acceptable for the single-user CLI use case.
-- [ ] Update `memoryNameHistory` ring buffer (last 20 slugs)
-- [ ] Add defense-in-depth: `writeFilesAtomically()` checks filename existence before write
+- [x] Update `memoryNameHistory` ring buffer (last 20 slugs)
+- [x] Add defense-in-depth: `writeFilesAtomically()` checks filename existence before write
   - Note: check-then-write is subject to TOCTOU race. For production safety, use `O_EXCL` (exclusive create) semantics on the target file.
-- [ ] Unit tests: 10 rapid saves → 10 unique files
-- [ ] Unit tests: same slug + same timestamp → sequential suffix
+- [x] Unit tests: 10 rapid saves → 10 unique files
+- [x] Unit tests: same slug + same timestamp → sequential suffix
 
 ### Phase 4: Aggregation & Backward Compatibility
 **Goal**: Centralized `descriptions.json` rebuilt from per-folder files
 
-- [ ] Refactor `generateFolderDescriptions()` to prefer per-folder `description.json` over spec.md extraction
+- [x] Refactor `generateFolderDescriptions()` to prefer per-folder `description.json` over spec.md extraction
   - If per-folder file exists and not stale → use it
   - If stale/corrupt and file exists → repair from `spec.md`; if missing → fall back to `spec.md` extraction without implicit writes
-- [ ] `ensureDescriptionCache()` continues to work identically for consumers
-- [ ] `isCacheStale()` extended: also checks per-folder files' mtimes
-- [ ] Backward compat: if NO per-folder files exist, behavior identical to current
-- [ ] Integration tests: mixed scenario (some folders have description.json, some don't)
+- [x] `ensureDescriptionCache()` continues to work identically for consumers
+- [x] `isCacheStale()` extended: also checks per-folder files' mtimes
+- [x] Backward compat: if NO per-folder files exist, behavior identical to current
+- [x] Integration tests: mixed scenario (some folders have description.json, some don't)
 
 ### Phase 5: Documentation & Testing Playbook
 **Goal**: Update all documentation
 
-- [ ] Update feature catalog `.opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/04-spec-folder-description-discovery.md`
+- [x] Update feature catalog `.opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/04-spec-folder-description-discovery.md`
   - Add per-folder architecture section
   - Update source files table
   - Add uniqueness guarantee documentation
-- [ ] Update testing playbook with description system test scenarios
-- [ ] Update `folder-discovery-integration.vitest.ts` with per-folder tests
-- [ ] Ensure all existing tests pass (no regressions)
+- [x] Update testing playbook with description system test scenarios
+- [x] Update `folder-discovery-integration.vitest.ts` with per-folder tests
+- [x] Ensure all existing tests pass (no regressions)
 <!-- /ANCHOR:phases -->
 
 ---
@@ -257,7 +260,7 @@ interface PerFolderDescription {
 ---
 
 <!-- ANCHOR:phase-deps -->
-## L2: PHASE DEPENDENCIES
+## 8. L2: PHASE DEPENDENCIES
 
 ```
 Phase 1 (Infrastructure) ──────┐
@@ -281,7 +284,7 @@ Phase 4 (Aggregation) ───────────────────�
 ---
 
 <!-- ANCHOR:effort -->
-## L2: EFFORT ESTIMATION
+## 9. L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
 |-------|------------|------------------|
@@ -289,7 +292,7 @@ Phase 4 (Aggregation) ───────────────────�
 | 2. create.sh | Low-Medium | Bash integration + Node CLI wrapper |
 | 3. Uniqueness | Medium | Slug collision detection + ring buffer + tests |
 | 4. Aggregation | Low | Refactor existing function + compat tests |
-| Architecture note | — | Module boundary recommendation: per-folder CRUD operations (load, save, generate, stale-check) could be extracted to a separate `description-store.ts` module. Consciously deferred — current cohesion in `folder-discovery.ts` is acceptable for the module's scope. |
+| Architecture note | N/A | Module boundary recommendation: per-folder CRUD operations (load, save, generate, stale-check) could be extracted to a separate `description-store.ts` module. Consciously deferred. Current cohesion in `folder-discovery.ts` is acceptable for the module's scope. |
 | 5. Documentation | Low | Feature catalog + testing playbook updates |
 
 **Revised assessment**: dual-store transition logic, backward compatibility layer, bash/TypeScript integration boundary, and best-effort concurrency handling increase effective complexity to mid-range Level 2 (estimated 45-50/70).
@@ -298,12 +301,12 @@ Phase 4 (Aggregation) ───────────────────�
 ---
 
 <!-- ANCHOR:enhanced-rollback -->
-## L2: ENHANCED ROLLBACK
+## 10. L2: ENHANCED ROLLBACK
 
 ### Pre-deployment Checklist
-- [ ] All existing `folder-discovery.vitest.ts` tests pass
-- [ ] All existing `folder-discovery-integration.vitest.ts` tests pass
-- [ ] `ensureDescriptionCache()` returns same results as before for existing folders
+- [x] All existing `folder-discovery.vitest.ts` tests pass
+- [x] All existing `folder-discovery-integration.vitest.ts` tests pass
+- [x] `ensureDescriptionCache()` returns same results as before for existing folders
 
 ### Rollback Procedure
 1. Revert TypeScript changes (folder-discovery.ts, workflow.ts, slug-utils.ts)

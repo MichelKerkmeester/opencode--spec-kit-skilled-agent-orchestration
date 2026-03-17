@@ -15,6 +15,7 @@ contextType: "general"
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## Metadata
 
 | Field | Value |
@@ -22,9 +23,11 @@ contextType: "general"
 | **Spec Folder** | 005-hierarchical-scope-governance |
 | **Completed** | 2026-03-13 |
 | **Level** | 3+ |
+<!-- /ANCHOR:metadata -->
 
 ---
 
+<!-- ANCHOR:what-built -->
 ## What Was Built
 
 Phase 5 is implemented and validated. Governance behavior is active across ingest, retrieval, lifecycle, and audit:
@@ -36,9 +39,30 @@ Phase 5 is implemented and validated. Governance behavior is active across inges
 - Reusable governance helpers `createScopeFilterPredicate`, `benchmarkScopeFilter`, and `reviewGovernanceAudit` in `mcp_server/lib/governance/scope-governance.ts` with coverage in `tests/memory-governance.vitest.ts`
 
 During this audit, a real cascade-delete issue was fixed: `mcp_server/lib/search/vector-index-mutations.ts` now removes `causal_edges` reliably for both numeric and string ID forms.
+<!-- /ANCHOR:what-built -->
 
 ---
 
+<!-- ANCHOR:how-delivered -->
+## How It Was Delivered
+
+The phase shipped as a governance-first hardening pass across ingest, retrieval, lifecycle, and audit paths. Confidence comes from phase-folder validation, TypeScript and build verification in `mcp_server`, focused Vitest coverage for governance and cascade-delete behavior, and playbook synchronization for operator procedures.
+<!-- /ANCHOR:how-delivered -->
+
+---
+
+<!-- ANCHOR:decisions -->
+## Key Decisions
+
+| Decision | Why |
+|----------|-----|
+| Centralize scope and provenance checks in governance helpers | One policy surface is easier to reason about, audit, and reuse across handlers than path-specific enforcement. |
+| Keep retention and deletion evidence in the same phase pack as the runtime controls | Operators need the lifecycle rules, verification, and rollback context together before shared-memory rollout can trust this phase. |
+<!-- /ANCHOR:decisions -->
+
+---
+
+<!-- ANCHOR:verification -->
 ## Verification
 
 | Check | Result |
@@ -50,9 +74,12 @@ During this audit, a real cascade-delete issue was fixed: `mcp_server/lib/search
 | Playbook procedure `NEW-122` present | PASS |
 | Consolidated roadmap suite (`15` files, `159` tests) | PASS |
 | Six-phase validation sweep (`001`-`006` `validate.sh`) | PASS |
+<!-- /ANCHOR:verification -->
 
 ---
 
+<!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Human sign-off is pending.** Governance reviewer and release sign-off rows remain open.
+1. **No additional phase-local limitation is recorded.** Sign-off rows in `checklist.md` are already approved, so this summary stays aligned with the shipped state unless new runtime constraints are discovered later.
+<!-- /ANCHOR:limitations -->

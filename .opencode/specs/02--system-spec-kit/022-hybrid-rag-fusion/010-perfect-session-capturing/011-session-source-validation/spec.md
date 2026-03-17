@@ -4,6 +4,9 @@ description: "Validate native session-source capture behavior across all 5 CLIs.
 ---
 # Feature Specification: Session Source Validation
 
+This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.
+
+
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
@@ -16,7 +19,7 @@ description: "Validate native session-source capture behavior across all 5 CLIs.
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | In Progress |
+| **Status** | Complete |
 | **Created** | 2026-03-16 |
 | **Branch** | `main` |
 | **Parent Spec** | ../spec.md |
@@ -31,15 +34,13 @@ description: "Validate native session-source capture behavior across all 5 CLIs.
 
 ---
 
-<!-- ANCHOR:phase-context -->
 ### Phase Context
 
 This is **Phase 11** of the Perfect Session Capturing specification.
 
 **Scope Boundary**: Transcript selection uses filesystem mtime as a proxy for "current session."
 **Dependencies**: 010-integration-testing
-**Deliverables**: Added expectedSessionId parameter and session hint object to captureClaudeConversation; implemented four-step fallback resolution
-<!-- /ANCHOR:phase-context -->
+**Deliverables**: Added `ClaudeSessionHints`, implemented the session-id/active-lock/history-time fallback chain, persisted source provenance fields, split file-count metrics, and wired contamination/session-source validation into the quality surface
 
 <!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
@@ -129,7 +130,7 @@ Fix transcript resolution to use session-ID-first selection instead of mtime-bas
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | None -- this is the highest-priority fix (A0.1-A0.5) and has no upstream dependencies | N/A | Can begin immediately |
+| Dependency | `010-integration-testing` proof lane | Medium | This phase depends on the phase `010` integration coverage remaining green because the session-source fixes are validated through that downstream save path |
 | Risk | Session ID is not always available in Claude history files | High | Fallback chain provides three alternative resolution methods before rejecting |
 | Risk | History timestamp parsing varies across Claude Code versions | Medium | Use best-effort parsing with explicit rejection when no candidate matches the time window |
 | Risk | V10 divergence threshold produces false positives on small spec folders | Medium | Calibrate threshold against real spec folder sizes; use ratio-based detection, not absolute counts |

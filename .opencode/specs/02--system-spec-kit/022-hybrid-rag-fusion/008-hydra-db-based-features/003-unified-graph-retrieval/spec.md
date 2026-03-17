@@ -10,7 +10,6 @@ trigger_phrases:
 importance_tier: "critical"
 contextType: "decision"
 ---
-<!-- ANCHOR:document -->
 # Feature Specification: 003-unified-graph-retrieval
 
 <!-- SPECKIT_LEVEL: 3+ -->
@@ -63,6 +62,7 @@ This phase pulls graph context into the main retrieval contract rather than leav
 
 ---
 
+<!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -71,8 +71,11 @@ The current server contains useful graph-related signals, but they are distribut
 ### Purpose
 Build a single deterministic graph-aware retrieval contract that uses causal, entity, and summary context consistently and measurably.
 
+<!-- /ANCHOR:problem -->
+
 ---
 
+<!-- ANCHOR:scope -->
 ## 3. SCOPE
 
 ### In Scope
@@ -97,8 +100,11 @@ Build a single deterministic graph-aware retrieval contract that uses causal, en
 | `.opencode/skill/system-spec-kit/mcp_server/tests/` | Create/Modify | Add regression, explainability, and determinism coverage |
 | `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` | Modify | Add graph retrieval validation procedures |
 
+<!-- /ANCHOR:scope -->
+
 ---
 
+<!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 
 ### P0 - Blockers (MUST complete)
@@ -119,8 +125,11 @@ Build a single deterministic graph-aware retrieval contract that uses causal, en
 | REQ-307 | Document manual graph validation | Playbook includes explainability and regression checks |
 | REQ-308 | Keep docs in sync with retrieval behavior | Spec, plan, tasks, and user-facing docs reflect shipped graph behavior |
 
+<!-- /ANCHOR:requirements -->
+
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
 - **SC-301**: Unified graph scoring runs through one predictable path.
@@ -129,8 +138,11 @@ Build a single deterministic graph-aware retrieval contract that uses causal, en
 - **SC-304**: Recall or ranking quality improves without unacceptable latency growth.
 - **SC-305**: Phase 4 can consume stable retrieval traces without redefining the graph contract.
 
+<!-- /ANCHOR:success-criteria -->
+
 ---
 
+<!-- ANCHOR:risks -->
 ## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
@@ -140,6 +152,8 @@ Build a single deterministic graph-aware retrieval contract that uses causal, en
 | Risk | Graph scoring becomes non-deterministic | High | Explicit tie-break rules and regression tests |
 | Risk | Weak graph signals overpower stronger lexical/semantic matches | High | Bound score contributions and benchmark changes |
 | Risk | Cycles or sparse graphs degrade quality | Medium | Add cycle handling and sparse-graph fallbacks |
+
+<!-- /ANCHOR:risks -->
 
 ---
 
@@ -269,7 +283,7 @@ Build a single deterministic graph-aware retrieval contract that uses causal, en
 
 ---
 
-## 16. ACCEPTANCE SCENARIOS
+### Acceptance Scenarios
 
 1. **Unified graph contribution**
    **Given** related causal, entity, and summary context, when retrieval runs, then the signals contribute through one bounded scoring contract.
@@ -280,7 +294,7 @@ Build a single deterministic graph-aware retrieval contract that uses causal, en
 
 ---
 
-## 17. OPEN QUESTIONS
+## 16. OPEN QUESTIONS
 
 - Should score traces be emitted inline, sampled, or written to a separate debug surface?
 - Which graph-health metrics are essential for Phase 3 versus nice-to-have for later phases?
@@ -296,4 +310,3 @@ Build a single deterministic graph-aware retrieval contract that uses causal, en
 - **Verification Checklist**: `checklist.md`
 - **Decision Records**: `decision-record.md`
 
-<!-- /ANCHOR:document -->

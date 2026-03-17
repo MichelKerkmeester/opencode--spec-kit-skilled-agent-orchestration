@@ -1,7 +1,10 @@
 ---
-title: "Tasks: Signal Extraction [template:level_1/tasks.md]"
+title: "Tasks: Signal Extraction [template:level_2/tasks.md]"
 ---
 # Tasks: Signal Extraction
+
+This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.
+
 
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
@@ -9,7 +12,7 @@ title: "Tasks: Signal Extraction [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:notation -->
-## Task Notation
+## 1. TASK NOTATION
 
 | Prefix | Meaning |
 |--------|---------|
@@ -24,7 +27,7 @@ title: "Tasks: Signal Extraction [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Setup
+## 2. PHASE 1: SETUP
 
 - [x] T001 Create golden test file (REQ-004) (`scripts/tests/semantic-signal-golden.vitest.ts`)
 - [x] T002 Define 3 frozen input texts: technical implementation, debugging session, research/planning (REQ-004)
@@ -35,7 +38,7 @@ title: "Tasks: Signal Extraction [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Implementation
+## 3. PHASE 2: IMPLEMENTATION
 
 ### Unified Engine Construction
 - [x] T005 Keep `SemanticSignalExtractor` as the script-side semantic owner (REQ-001) (`scripts/lib/semantic-signal-extractor.ts`)
@@ -61,7 +64,7 @@ title: "Tasks: Signal Extraction [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: Verification
+## 4. PHASE 3: VERIFICATION
 
 - [x] T021 Run all golden tests: unified engine produces deterministic trigger output matching locked expectations (SC-001)
 - [x] T022 Run targeted extractor test suites through the adapter layer
@@ -74,7 +77,7 @@ title: "Tasks: Signal Extraction [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:completion -->
-## Completion Criteria
+## 5. COMPLETION CRITERIA
 
 - [x] All tasks marked `[x]`
 - [x] No `[B]` blocked tasks remaining
@@ -84,7 +87,7 @@ title: "Tasks: Signal Extraction [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:cross-refs -->
-## Cross-References
+## 6. CROSS-REFERENCES
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`

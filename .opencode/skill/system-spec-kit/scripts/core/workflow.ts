@@ -67,7 +67,13 @@ import { validateFilePath } from '@spec-kit/shared/utils/path-security';
 import { validateMemoryTemplateContract } from '@spec-kit/shared/parsing/memory-template-contract';
 import { evaluateSpecDocHealth, type SpecDocHealthResult } from '@spec-kit/shared/parsing/spec-doc-health';
 import { extractTriggerPhrases } from '../lib/trigger-extractor';
-import { indexMemory, updateMetadataWithEmbedding } from './memory-indexer';
+import {
+  indexMemory,
+  updateMetadataEmbeddingStatus,
+  updateMetadataWithEmbedding,
+  type IndexingStatusValue,
+  type WorkflowIndexingStatus,
+} from './memory-indexer';
 import * as simFactory from '../lib/simulation-factory';
 import { loadCollectedData as loadCollectedDataFromLoader } from '../loaders/data-loader';
 import { applyTreeThinning } from './tree-thinning';
@@ -112,6 +118,8 @@ export interface WorkflowResult {
   writtenFiles: string[];
   /** Numeric memory ID from indexing, or null if indexing was skipped. */
   memoryId: number | null;
+  /** Explicit indexing outcome for this workflow run. */
+  indexingStatus: WorkflowIndexingStatus;
   /** Summary statistics for the generated memory. */
   stats: {
     /** Number of conversation messages processed. */
@@ -2133,9 +2141,28 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   log('Step 11: Indexing semantic memory...');
 
   let memoryId: number | null = null;
+  let indexingStatus: WorkflowIndexingStatus | null = null;
+  const persistIndexingStatus = async (
+    status: IndexingStatusValue,
+    reason?: string,
+    errorMessage?: string
+  ): Promise<void> => {
+    indexingStatus = {
+      status,
+      memoryId,
+      ...(reason ? { reason } : {}),
+      ...(errorMessage ? { errorMessage } : {}),
+    };
+    await updateMetadataEmbeddingStatus(contextDir, indexingStatus);
+  };
+
   // RC-6 fix: Only index if the context file was actually written (not a duplicate skip)
   if (!ctxFileWritten) {
     log('   Skipping indexing — context file was a duplicate');
+    await persistIndexingStatus(
+      'skipped_duplicate',
+      'Context file content matched an existing memory file, so semantic indexing was skipped.'
+    );
   } else {
     try {
       if (qualityValidation.valid) {
@@ -2152,13 +2179,32 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
         if (memoryId !== null) {
           log(`   Indexed as memory #${memoryId} (${EMBEDDING_DIM} dimensions)`);
           await updateMetadataWithEmbedding(contextDir, memoryId);
+          indexingStatus = {
+            status: 'indexed',
+            memoryId,
+          };
           log('   Updated metadata.json with embedding info');
+        } else {
+          log('   Embedding unavailable — semantic indexing skipped');
+          await persistIndexingStatus(
+            'skipped_embedding_unavailable',
+            'Embedding generation returned null, so semantic indexing was skipped for this saved memory.'
+          );
         }
       } else {
         log('   QUALITY_GATE_FAIL: skipping production indexing for this file');
+        await persistIndexingStatus(
+          'skipped_quality_gate',
+          'Rendered memory failed validation, so semantic indexing was skipped.'
+        );
       }
     } catch (e: unknown) {
       const errMsg = e instanceof Error ? e.message : String(e);
+      await persistIndexingStatus(
+        'failed_embedding',
+        'Embedding generation or semantic indexing failed after the memory file was written.',
+        errMsg
+      );
       warn(`   Warning: Embedding failed: ${errMsg}`);
       warn('   Context saved successfully without semantic indexing');
       warn('   Run "npm run rebuild" to retry indexing later');
@@ -2190,6 +2236,11 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
         contextFilename: ctxFilename,
         writtenFiles,
         memoryId,
+        indexingStatus: indexingStatus ?? {
+          status: 'failed_embedding',
+          memoryId,
+          reason: 'Indexing status was not finalized before workflow completion.',
+        },
         stats: {
           messageCount: conversations.MESSAGES.length,
           decisionCount: decisions.DECISIONS.length,

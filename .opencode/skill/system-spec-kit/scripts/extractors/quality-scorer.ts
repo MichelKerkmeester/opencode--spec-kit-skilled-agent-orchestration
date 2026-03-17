@@ -66,18 +66,22 @@ function scoreMemoryQuality(inputs: QualityInputs): QualityScoreResult {
   } = inputs;
 
   if (!content || typeof content !== 'string' || content.trim().length === 0) {
+    const emptyContentFlags: QualityFlag[] = [
+      'has_placeholders',
+      'has_fallback_decision',
+      'sparse_semantic_fields',
+    ];
+    if (hadContamination) {
+      emptyContentFlags.push('has_contamination');
+    }
+
     return {
       score: 0,
       score01: 0,
       score100: 0,
       qualityScore: 0,
       warnings: ['No rendered content was available for quality scoring.'],
-      qualityFlags: [
-        'has_placeholders',
-        'has_fallback_decision',
-        'has_contamination',
-        'sparse_semantic_fields',
-      ],
+      qualityFlags: emptyContentFlags,
       hadContamination,
       dimensions: buildRuleDimensions(validatorSignals),
       insufficiency: null,

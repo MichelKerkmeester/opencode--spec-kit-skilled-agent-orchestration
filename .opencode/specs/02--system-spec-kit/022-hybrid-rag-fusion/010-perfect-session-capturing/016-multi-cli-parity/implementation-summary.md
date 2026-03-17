@@ -11,11 +11,12 @@ contextType: "general"
 
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
 <!-- ANCHOR:metadata -->
-## Metadata
+## 1. METADATA
 
 | Field | Value |
 |-------|-------|
@@ -28,9 +29,9 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:what-built -->
-## What Was Built
+## 2. WHAT WAS BUILT
 
-Phase 016 now proves the parity behavior that was already present in the runtime. You can point at a direct regression for each reopened question: Copilot `view` aliases score as canonical `read`, shared noise filtering catches Copilot and Codex artifacts without a side path, and CLI-derived `FILES` keep the `_provenance: 'tool'` metadata that earlier scoring work now depends on. The phase folder itself also moved from a validator-failing "assumed complete" state to a real Level 2 completion record.
+Phase 016 now proves the parity behavior that was already present in the runtime. You can point at a direct regression for each reopened question: Copilot `view` aliases score as canonical `read`, shared noise filtering catches Copilot and Codex artifacts without a side path, and CLI-derived `FILES` keep the `_provenance: 'tool'` metadata that earlier scoring work now depends on. The phase folder itself also moved from a validator-failing "assumed complete" state to a real Level 2 completion record with a focused parity stack of `45` tests, and the retained live proof remains cited at `../research/live-cli-proof-2026-03-17.json`.
 
 ### Focused parity regressions
 
@@ -57,7 +58,7 @@ The phase-016 spec, plan, tasks, checklist, and implementation summary were rewr
 ---
 
 <!-- ANCHOR:how-delivered -->
-## How It Was Delivered
+## 3. HOW IT WAS DELIVERED
 
 This pass stayed deliberately narrow. First, the live parity seams were re-read to confirm the runtime behavior was already shipped. Next, focused tests were added only where proof was missing, and one expectation was corrected to the actual path-shortening contract (`Read loaders/data-loader.ts`). Finally, the phase-016 docs were rewritten against the real verification results, then the phase folder was revalidated with the same `validate.sh` workflow that originally flagged the drift.
 <!-- /ANCHOR:how-delivered -->
@@ -65,7 +66,7 @@ This pass stayed deliberately narrow. First, the live parity seams were re-read 
 ---
 
 <!-- ANCHOR:decisions -->
-## Key Decisions
+## 4. KEY DECISIONS
 
 | Decision | Why |
 |----------|-----|
@@ -78,23 +79,26 @@ This pass stayed deliberately narrow. First, the live parity seams were re-read 
 ---
 
 <!-- ANCHOR:verification -->
-## Verification
+## 5. VERIFICATION
 
 | Check | Result |
 |-------|--------|
-| Focused Vitest parity stack | PASS (`4` files, `44` tests) |
-| `node scripts/tests/test-extractors-loaders.js` | PASS (`305` passed, `0` failed, `0` skipped) |
+| Focused Vitest parity stack | PASS (`4` files, `45` tests) |
+| `cd .opencode/skill/system-spec-kit/scripts && node tests/test-extractors-loaders.js` | PASS (`307` passed, `0` failed, `0` skipped) |
 | `npm run typecheck` | PASS |
 | `npm run build` | PASS |
-| `spec/validate.sh` for `016-multi-cli-parity` | PASS (`0` errors, `0` warnings) |
+| `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/016-multi-cli-parity` | PASS (`0` errors, `0` warnings) |
 <!-- /ANCHOR:verification -->
 
 ---
 
 <!-- ANCHOR:limitations -->
-## Known Limitations
+## 6. KNOWN LIMITATIONS
 
 1. **Phase-local only** This pass did not reconcile stale documentation in sibling phases like `010` or `011`; it only used them as read-only references.
 2. **Runtime unchanged by design** The reopened work adds proof and doc alignment, not new CLI capture behavior.
 3. **Adjacent dirty worktree preserved** Ongoing changes in phases `013` and `015` were left untouched, even where their docs are still evolving.
 <!-- /ANCHOR:limitations -->
+
+
+Reference links: [spec.md](spec.md) and [plan.md](plan.md).

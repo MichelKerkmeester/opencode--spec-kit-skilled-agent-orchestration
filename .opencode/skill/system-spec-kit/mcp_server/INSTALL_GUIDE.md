@@ -8,7 +8,7 @@ Complete installation and configuration guide for the Spec Kit Memory MCP server
 
 ---
 
-## 0. AI-First Install Guide
+## 1. AI-FIRST INSTALL GUIDE
 
 Copy and paste this prompt to your AI assistant to get installation help:
 
@@ -18,7 +18,7 @@ I want to install Spec Kit Memory MCP server from .opencode/skill/system-spec-ki
 Please help me:
 1. Verify I have Node.js >=18 and npm installed
 2. Install dependencies and build the MCP server
-3. Configure for my environment (I'm using: [Claude Code / Claude Desktop / OpenCode])
+3. Configure for my environment (I'm using: [OpenCode / Claude Code / Codex / Gemini / Copilot / Claude Desktop])
 4. Verify the installation with a test search query
 5. Handle any native module rebuild issues if they occur
 
@@ -41,21 +41,21 @@ Your AI assistant will:
 
 ## TABLE OF CONTENTS
 
-0. [AI-First Install Guide](#0-ai-first-install-guide)
-1. [Overview](#1-overview)
-2. [Prerequisites](#2-prerequisites)
-3. [Installation](#3-installation)
-4. [Configuration](#4-configuration)
-5. [Verification](#5-verification)
-6. [Usage](#6-usage)
-7. [Features](#7-features)
-8. [Examples](#8-examples)
-9. [Troubleshooting](#9-troubleshooting)
-10. [Resources](#10-resources)
+1. [AI-FIRST INSTALL GUIDE](#1-ai-first-install-guide)
+2. [OVERVIEW](#2-overview)
+3. [PREREQUISITES](#3-prerequisites)
+4. [INSTALLATION](#4-installation)
+5. [CONFIGURATION](#5-configuration)
+6. [VERIFICATION](#6-verification)
+7. [USAGE](#7-usage)
+8. [FEATURES](#8-features)
+9. [EXAMPLES](#9-examples)
+10. [TROUBLESHOOTING](#10-troubleshooting)
+11. [RESOURCES](#11-resources)
 
 ---
 
-## 1. Overview
+## 2. OVERVIEW
 
 Spec Kit Memory is an MCP (Model Context Protocol) server that gives AI assistants semantic memory and context retrieval. It indexes markdown documentation and conversation memories to surface relevant information during AI interactions.
 
@@ -67,7 +67,7 @@ Spec Kit Memory is an MCP (Model Context Protocol) server that gives AI assistan
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│              AI Clients (OpenCode, Claude Code, Claude Desktop)  │
+│        AI Clients (OpenCode, Claude Code, Codex, Gemini, Copilot) │
 └─────────────────────────────────┬───────────────────────────────┘
                                   │ MCP stdio
                                   ▼
@@ -111,9 +111,24 @@ This guide addresses the full installation lifecycle and common failures after m
 
 If documentation references `mcp_server/database/...`, treat that as a compatibility view. The canonical runtime storage is `mcp_server/dist/database/`.
 
+### Runtime Coverage Note (2026-03-17)
+
+The repo currently contains checked-in `spec_kit_memory` wiring for five CLI runtimes:
+
+| Runtime | Repo-backed setup evidence | Current proof boundary |
+|---|---|---|
+| OpenCode | `opencode.json` | Shared MCP backend wiring plus operator-facing setup and verification steps in this guide |
+| Claude Code | `.claude/mcp.json` | Shared MCP backend wiring plus operator-facing setup and verification steps in this guide |
+| Codex | `.codex/config.toml` | Shared MCP backend wiring plus native capture/save-path coverage in scripts/playbook docs; not a full Hydra end-to-end CLI proof set |
+| Gemini | `.gemini/settings.json` | Shared MCP backend wiring plus native capture/save-path coverage in scripts/playbook docs; not a full Hydra end-to-end CLI proof set |
+| Copilot | `.vscode/mcp.json` | Shared MCP backend wiring plus native capture/save-path coverage in scripts/playbook docs; not a full Hydra end-to-end CLI proof set |
+
+`Claude Desktop` remains documented here as a generic MCP configuration example, but it is outside the current five-CLI repo-proof set above.
+Treat this table as configuration and automation coverage evidence from the repository, not as fresh live-authenticated end-to-end proof for every listed CLI.
+
 ---
 
-## 2. Prerequisites
+## 3. PREREQUISITES
 
 Phase 1 verifies the required software on your machine.
 
@@ -131,7 +146,9 @@ Phase 1 verifies the required software on your machine.
    # Must show a version number
    ```
 
-3. **MCP client**: OpenCode, Claude Code or Claude Desktop
+3. **MCP client**: OpenCode, Claude Code, Codex CLI, Gemini CLI, or Copilot MCP/VS Code integration
+
+`Claude Desktop` is also shown below as a generic MCP configuration example.
 
 No additional system dependencies are required beyond Node.js and npm.
 
@@ -150,7 +167,7 @@ Checklist:
 
 ---
 
-## 3. Installation
+## 4. INSTALLATION
 
 This section covers Phase 2 (install) and Phase 3 (initialize).
 
@@ -235,9 +252,17 @@ Checklist:
 
 ---
 
-## 4. Configuration
+## 5. CONFIGURATION
 
 Phase 4 connects Spec Kit Memory to your AI assistant.
+
+The repo ships checked-in configuration examples for OpenCode, Claude Code, Codex, Gemini, and Copilot. This guide keeps full copy-paste walkthroughs for OpenCode and Claude surfaces, while the checked-in project configs are the canonical setup references for the other repo-backed CLIs:
+
+- `opencode.json`
+- `.claude/mcp.json`
+- `.codex/config.toml`
+- `.gemini/settings.json`
+- `.vscode/mcp.json`
 
 ### Option A: OpenCode
 
@@ -377,7 +402,7 @@ Checklist:
 
 ---
 
-## 5. Verification
+## 6. VERIFICATION
 
 Phase 5 verifies the end-to-end connection inside your AI assistant.
 
@@ -429,7 +454,7 @@ Checklist:
 
 ---
 
-## 6. Usage
+## 7. USAGE
 
 ### Daily Workflow
 
@@ -484,7 +509,7 @@ The server supports phase folders for multi-phase spec work. Phase folders follo
 
 ---
 
-## 7. Features
+## 8. FEATURES
 
 ### memory_context: Unified Context Retrieval
 
@@ -591,7 +616,7 @@ Enforces schema contracts on retrieval inputs and outputs. Three contract types 
 
 ---
 
-## 8. Examples
+## 9. EXAMPLES
 
 ### Example 1: Fresh Install and First Search
 
@@ -718,7 +743,7 @@ bash .opencode/skill/system-spec-kit/scripts/validate.sh \
 
 ---
 
-## 9. Troubleshooting
+## 10. TROUBLESHOOTING
 
 ### Error Reference Table
 
@@ -910,7 +935,7 @@ This calls `memory_index_scan({ force: true })` to repopulate the search index f
 
 ---
 
-## 10. Resources
+## 11. RESOURCES
 
 ### File Locations
 
@@ -995,7 +1020,7 @@ MCP TOOLS: memory_context, memory_search, memory_match_triggers,
 
 ---
 
-## Version History
+## VERSION HISTORY
 
 | Version | Date | Summary |
 |---|---|---|

@@ -91,6 +91,22 @@ TEST_CASES: List[Dict[str, Any]] = [
         "expected_errors": [],
         "expected_document_type": "command",
         "description": "Command doc auto-detects from /command/ path"
+    },
+    {
+        "file": "valid_spec.md",
+        "doc_type": "spec",
+        "expected_exit": 0,
+        "expected_errors": [],
+        "expected_document_type": "spec",
+        "description": "Valid spec doc using explicit --type spec"
+    },
+    {
+        "file": "specs/auto_detect_spec.md",
+        "doc_type": None,
+        "expected_exit": 0,
+        "expected_errors": [],
+        "expected_document_type": "spec",
+        "description": "Spec doc auto-detects from /specs/ path"
     }
 ]
 

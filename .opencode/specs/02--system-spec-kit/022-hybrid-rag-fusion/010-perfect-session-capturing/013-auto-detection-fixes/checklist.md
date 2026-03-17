@@ -3,13 +3,16 @@ title: "Verification Checklist: Auto-Detection Fixes [template:level_2/checklist
 ---
 # Verification Checklist: Auto-Detection Fixes
 
+This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.
+
+
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
 ---
 
 <!-- ANCHOR:protocol -->
-## Verification Protocol
+## 1. VERIFICATION PROTOCOL
 
 | Priority | Handling | Completion Impact |
 |----------|----------|-------------------|
@@ -21,7 +24,7 @@ title: "Verification Checklist: Auto-Detection Fixes [template:level_2/checklist
 ---
 
 <!-- ANCHOR:pre-impl -->
-## Pre-Implementation
+## 2. PRE-IMPLEMENTATION
 
 - [x] CHK-001 [P0] Requirements documented in spec.md [Evidence: spec.md created with full REQ-001–007 scope]
 - [x] CHK-002 [P0] Technical approach defined in plan.md [Evidence: plan.md created with 7-phase approach]
@@ -33,7 +36,7 @@ title: "Verification Checklist: Auto-Detection Fixes [template:level_2/checklist
 ---
 
 <!-- ANCHOR:code-quality -->
-## Code Quality
+## 3. CODE QUALITY
 
 - [x] CHK-010 [P0] Priority 2.7 (git-status) `lowConfidence` fall-through guard added: `let selected: AutoDetectCandidate | null`, warns and falls through to Priority 4 on low confidence (`folder-detector.ts` ~L1387) [Evidence: Fix 1 implemented, 7/7 tests pass]
 - [x] CHK-011 [P0] Priority 3.5 (session-activity) `lowConfidence` fall-through guard added: same pattern, warns and falls through to Priority 4 on low confidence (`folder-detector.ts` ~L1437) [Evidence: Fix 1 implemented, 7/7 tests pass]
@@ -52,7 +55,7 @@ title: "Verification Checklist: Auto-Detection Fixes [template:level_2/checklist
 ---
 
 <!-- ANCHOR:testing -->
-## Testing
+## 4. TESTING
 
 - [x] CHK-025 [P0] auto-detection-fixes test suite (Vitest) [Evidence: 7/7 passing]
 - [x] CHK-026 [P0] template-structure test suite (Vitest) [Evidence: 5/5 passing]
@@ -66,7 +69,7 @@ title: "Verification Checklist: Auto-Detection Fixes [template:level_2/checklist
 ---
 
 <!-- ANCHOR:security -->
-## Security
+## 5. SECURITY
 
 - [x] CHK-035 [P2] `validateFilePath` uses `realpathSync` + containment check, preventing path traversal and symlink escapes in `workflow.ts` [Evidence: Fix 2a -- replaces naive string-based `isWithinDirectory`]
 - [x] CHK-036 [P2] `isSymbolicLink()` skip guard in `listSpecFolderKeyFiles` prevents following symlinks during directory traversal [Evidence: Fix 2b]
@@ -75,7 +78,7 @@ title: "Verification Checklist: Auto-Detection Fixes [template:level_2/checklist
 ---
 
 <!-- ANCHOR:docs -->
-## Documentation
+## 6. DOCUMENTATION
 
 - [x] CHK-040 [P1] spec.md reflects final implementation scope [Evidence: status updated to Completed. Scope notes deferred items]
 - [x] CHK-041 [P1] plan.md updated with deviations from original approach [Evidence: DoD checkboxes marked, all phases confirmed completed]
@@ -85,7 +88,7 @@ title: "Verification Checklist: Auto-Detection Fixes [template:level_2/checklist
 ---
 
 <!-- ANCHOR:file-org -->
-## File Organization
+## 7. FILE ORGANIZATION
 
 - [x] CHK-050 [P1] No temp files created outside scratch/ [Evidence: no scratch files present]
 - [x] CHK-051 [P1] scratch/ clean [Evidence: no scratch files present]
@@ -95,7 +98,7 @@ title: "Verification Checklist: Auto-Detection Fixes [template:level_2/checklist
 ---
 
 <!-- ANCHOR:summary -->
-## Verification Summary
+## 8. VERIFICATION SUMMARY
 
 | Category | Total | Verified | Deferred |
 |----------|-------|----------|----------|

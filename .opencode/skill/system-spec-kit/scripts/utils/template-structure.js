@@ -1,3 +1,7 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: Template Structure Utilities
+// ───────────────────────────────────────────────────────────────
+
 'use strict';
 
 const fs = require('fs');
@@ -68,6 +72,62 @@ function isOptionalTemplateHeader(rawHeader) {
 
 function getTemplatesRoot() {
   return path.resolve(__dirname, '..', '..', 'templates');
+}
+
+function getPhaseAddendumPath(kind, templatesRoot = getTemplatesRoot()) {
+  if (kind === 'parent') {
+    return path.join(templatesRoot, 'addendum', 'phase', 'phase-parent-section.md');
+  }
+  if (kind === 'child') {
+    return path.join(templatesRoot, 'addendum', 'phase', 'phase-child-header.md');
+  }
+  return null;
+}
+
+function hasPhaseChildDirectories(folderPath) {
+  if (!folderPath || !fs.existsSync(folderPath)) {
+    return false;
+  }
+
+  try {
+    const entries = fs.readdirSync(folderPath, { withFileTypes: true });
+    return entries.some((entry) => entry.isDirectory() && /^[0-9]{3}-/.test(entry.name));
+  } catch (_error) {
+    return false;
+  }
+}
+
+function fileContainsAnchor(filePath, anchorId) {
+  if (!filePath || !fs.existsSync(filePath)) {
+    return false;
+  }
+
+  try {
+    const content = fs.readFileSync(filePath, 'utf8');
+    return content.includes(`<!-- ANCHOR:${anchorId} -->`);
+  } catch (_error) {
+    return false;
+  }
+}
+
+function inferPhaseSpecAddenda(documentPath) {
+  if (!documentPath || path.basename(documentPath) !== 'spec.md') {
+    return [];
+  }
+
+  const folderPath = path.dirname(documentPath);
+  const addenda = [];
+
+  if (hasPhaseChildDirectories(folderPath)) {
+    addenda.push('parent');
+  }
+
+  const parentSpecPath = path.join(folderPath, '..', 'spec.md');
+  if (fileContainsAnchor(parentSpecPath, 'phase-map')) {
+    addenda.push('child');
+  }
+
+  return addenda;
 }
 
 function resolveTemplatePath(level, basename, templatesRoot = getTemplatesRoot()) {
@@ -228,6 +288,212 @@ function loadTemplateContract(level, basename, templatesRoot = getTemplatesRoot(
   };
 }
 
+function mergeTemplateContracts(baseContract, addendumContracts) {
+  if (!baseContract.supported) {
+    return baseContract;
+  }
+
+  const merged = {
+    ...baseContract,
+    headerRules: [...baseContract.headerRules],
+    optionalHeaderRules: [...(baseContract.optionalHeaderRules || [])],
+    requiredAnchors: [...baseContract.requiredAnchors],
+    optionalAnchors: [...(baseContract.optionalAnchors || [])],
+    allowedAnchors: [...(baseContract.allowedAnchors || [])],
+    addendumTemplatePaths: [],
+  };
+
+  const seenRequiredHeaders = new Set(merged.headerRules.map((rule) => `${rule.raw}|${rule.normalized}|${rule.dynamic ? 'dynamic' : 'static'}`));
+  const seenOptionalHeaders = new Set(merged.optionalHeaderRules.map((rule) => `${rule.raw}|${rule.normalized}|${rule.dynamic ? 'dynamic' : 'static'}`));
+  const seenRequiredAnchors = new Set(merged.requiredAnchors);
+  const seenOptionalAnchors = new Set(merged.optionalAnchors);
+  const seenAllowedAnchors = new Set(merged.allowedAnchors);
+  const seenTemplatePaths = new Set([merged.templatePath].filter(Boolean));
+
+  for (const addendumContract of addendumContracts) {
+    if (!addendumContract.supported) {
+      continue;
+    }
+
+    if (addendumContract.templatePath && !seenTemplatePaths.has(addendumContract.templatePath)) {
+      seenTemplatePaths.add(addendumContract.templatePath);
+      merged.addendumTemplatePaths.push(addendumContract.templatePath);
+    }
+
+    for (const headerRule of addendumContract.headerRules || []) {
+      const key = `${headerRule.raw}|${headerRule.normalized}|${headerRule.dynamic ? 'dynamic' : 'static'}`;
+      if (!seenRequiredHeaders.has(key)) {
+        seenRequiredHeaders.add(key);
+        merged.headerRules.push(headerRule);
+      }
+    }
+
+    for (const headerRule of addendumContract.optionalHeaderRules || []) {
+      const key = `${headerRule.raw}|${headerRule.normalized}|${headerRule.dynamic ? 'dynamic' : 'static'}`;
+      if (!seenOptionalHeaders.has(key)) {
+        seenOptionalHeaders.add(key);
+        merged.optionalHeaderRules.push(headerRule);
+      }
+    }
+
+    for (const anchorId of addendumContract.requiredAnchors || []) {
+      if (!seenRequiredAnchors.has(anchorId)) {
+        seenRequiredAnchors.add(anchorId);
+        merged.requiredAnchors.push(anchorId);
+      }
+      if (!seenAllowedAnchors.has(anchorId)) {
+        seenAllowedAnchors.add(anchorId);
+        merged.allowedAnchors.push(anchorId);
+      }
+    }
+
+    for (const anchorId of addendumContract.optionalAnchors || []) {
+      if (!seenOptionalAnchors.has(anchorId)) {
+        seenOptionalAnchors.add(anchorId);
+        merged.optionalAnchors.push(anchorId);
+      }
+      if (!seenAllowedAnchors.has(anchorId)) {
+        seenAllowedAnchors.add(anchorId);
+        merged.allowedAnchors.push(anchorId);
+      }
+    }
+
+    for (const anchorId of addendumContract.allowedAnchors || []) {
+      if (!seenAllowedAnchors.has(anchorId)) {
+        seenAllowedAnchors.add(anchorId);
+        merged.allowedAnchors.push(anchorId);
+      }
+    }
+  }
+
+  return merged;
+}
+
+function insertUniqueRulesAfter(rules, additions, afterNormalizedHeader) {
+  const keysToMove = new Set(additions.map((rule) => `${rule.raw}|${rule.normalized}|${rule.dynamic ? 'dynamic' : 'static'}`));
+  const filteredRules = rules.filter((rule) => !keysToMove.has(`${rule.raw}|${rule.normalized}|${rule.dynamic ? 'dynamic' : 'static'}`));
+
+  const dedupedAdditions = [];
+  const seenAdditionKeys = new Set();
+  for (const rule of additions) {
+    const key = `${rule.raw}|${rule.normalized}|${rule.dynamic ? 'dynamic' : 'static'}`;
+    if (seenAdditionKeys.has(key)) {
+      continue;
+    }
+    seenAdditionKeys.add(key);
+    dedupedAdditions.push(rule);
+  }
+
+  if (dedupedAdditions.length === 0) {
+    return rules;
+  }
+
+  const insertionIndex = filteredRules.findIndex((rule) => rule.normalized === afterNormalizedHeader);
+  if (insertionIndex === -1) {
+    return [...filteredRules, ...dedupedAdditions];
+  }
+
+  return [
+    ...filteredRules.slice(0, insertionIndex + 1),
+    ...dedupedAdditions,
+    ...filteredRules.slice(insertionIndex + 1),
+  ];
+}
+
+function insertUniqueAnchorsAfter(anchorIds, additions, afterAnchorId) {
+  const additionsSet = new Set(additions);
+  const filteredAnchors = anchorIds.filter((anchorId) => !additionsSet.has(anchorId));
+  const dedupedAdditions = [];
+  const seenAdditions = new Set();
+  for (const anchorId of additions) {
+    if (seenAdditions.has(anchorId)) {
+      continue;
+    }
+    seenAdditions.add(anchorId);
+    dedupedAdditions.push(anchorId);
+  }
+
+  if (dedupedAdditions.length === 0) {
+    return anchorIds;
+  }
+
+  const insertionIndex = filteredAnchors.indexOf(afterAnchorId);
+  if (insertionIndex === -1) {
+    return [...filteredAnchors, ...dedupedAdditions];
+  }
+
+  return [
+    ...filteredAnchors.slice(0, insertionIndex + 1),
+    ...dedupedAdditions,
+    ...filteredAnchors.slice(insertionIndex + 1),
+  ];
+}
+
+function loadTemplateContractForDocument(level, basename, documentPath, templatesRoot = getTemplatesRoot()) {
+  const baseContract = loadTemplateContract(level, basename, templatesRoot);
+  if (!baseContract.supported || !documentPath || basename !== 'spec.md') {
+    return baseContract;
+  }
+
+  const addendumKinds = inferPhaseSpecAddenda(documentPath);
+  if (addendumKinds.length === 0) {
+    return baseContract;
+  }
+
+  const addendumContracts = addendumKinds
+    .map((kind) => getPhaseAddendumPath(kind, templatesRoot))
+    .filter(Boolean)
+    .map((addendumPath) => {
+      if (!fs.existsSync(addendumPath)) {
+        return {
+          supported: false,
+          templatePath: addendumPath,
+          reason: 'template_not_found',
+          headerRules: [],
+          optionalHeaderRules: [],
+          requiredAnchors: [],
+          optionalAnchors: [],
+          allowedAnchors: [],
+        };
+      }
+
+      const addendumContent = fs.readFileSync(addendumPath, 'utf8');
+      const headerRules = extractH2Headers(addendumContent).map((header) => ({
+        raw: header.raw,
+        normalized: normalizeHeaderText(header.raw),
+        dynamic: false,
+      }));
+      const optionalAnchors = [];
+      const allowedAnchors = [];
+      const seenAnchors = new Set();
+
+      ANCHOR_OPEN_RE.lastIndex = 0;
+      let match;
+      while ((match = ANCHOR_OPEN_RE.exec(addendumContent)) !== null) {
+        const anchorId = match[1];
+        if (!seenAnchors.has(anchorId)) {
+          seenAnchors.add(anchorId);
+          optionalAnchors.push(anchorId);
+          allowedAnchors.push(anchorId);
+        }
+      }
+      ANCHOR_OPEN_RE.lastIndex = 0;
+
+      return {
+        supported: true,
+        basename,
+        templatePath: addendumPath,
+        headerRules: [],
+        optionalHeaderRules: headerRules,
+        requiredAnchors: [],
+        optionalAnchors,
+        allowedAnchors,
+      };
+    });
+
+  return mergeTemplateContracts(baseContract, addendumContracts);
+}
+
 function loadDocumentStructure(content) {
   ANCHOR_OPEN_RE.lastIndex = 0;
   const headers = extractH2Headers(content);
@@ -293,7 +559,7 @@ function compareRequiredSequence(requiredRules, actualEntries, matcher) {
 }
 
 function compareDocumentToTemplate(level, basename, documentPath, templatesRoot = getTemplatesRoot()) {
-  const contract = loadTemplateContract(level, basename, templatesRoot);
+  const contract = loadTemplateContractForDocument(level, basename, documentPath, templatesRoot);
   if (!contract.supported) {
     return {
       supported: false,
@@ -406,8 +672,11 @@ if (require.main === module) {
 module.exports = {
   compareDocumentToTemplate,
   extractH2Headers,
+  inferPhaseSpecAddenda,
   loadDocumentStructure,
   loadTemplateContract,
+  loadTemplateContractForDocument,
+  mergeTemplateContracts,
   normalizeHeaderText,
   normalizeLevel,
   parseAnchoredSections,

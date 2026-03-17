@@ -10,7 +10,6 @@ trigger_phrases:
 importance_tier: "critical"
 contextType: "decision"
 ---
-<!-- ANCHOR:document -->
 # Feature Specification: 002-versioned-memory-state
 
 <!-- SPECKIT_LEVEL: 3+ -->
@@ -64,6 +63,7 @@ This phase turns the roadmap from capability metadata into actual memory-state b
 
 ---
 
+<!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -72,8 +72,11 @@ The current Memory MCP server stores valuable history and conflict information, 
 ### Purpose
 Introduce a durable lineage contract that makes temporal state resolution explicit, testable, and reversible.
 
+<!-- /ANCHOR:problem -->
+
 ---
 
+<!-- ANCHOR:scope -->
 ## 3. SCOPE
 
 ### In Scope
@@ -99,8 +102,11 @@ Introduce a durable lineage contract that makes temporal state resolution explic
 | `.opencode/skill/system-spec-kit/mcp_server/tests/` | Create/Modify | Add lineage, temporal-query, migration, and rollback coverage |
 | `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` | Modify | Add lineage and temporal-query validation procedures |
 
+<!-- /ANCHOR:scope -->
+
 ---
 
+<!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 
 ### P0 - Blockers (MUST complete)
@@ -121,8 +127,11 @@ Introduce a durable lineage contract that makes temporal state resolution explic
 | REQ-207 | Capture lineage metrics | Telemetry reports lineage write counts, backfill progress, and temporal-read usage |
 | REQ-208 | Update docs and playbooks | Catalog, playbook, and phase docs reflect actual lineage rollout behavior |
 
+<!-- /ANCHOR:requirements -->
+
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
 - **SC-201**: A write that supersedes prior state leaves both the old and new versions queryable.
@@ -131,8 +140,11 @@ Introduce a durable lineage contract that makes temporal state resolution explic
 - **SC-204**: Integrity tests fail on malformed lineage chains and pass on valid ones.
 - **SC-205**: Later phases can depend on lineage identifiers without reworking the storage model.
 
+<!-- /ANCHOR:success-criteria -->
+
 ---
 
+<!-- ANCHOR:risks -->
 ## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
@@ -142,6 +154,8 @@ Introduce a durable lineage contract that makes temporal state resolution explic
 | Risk | Backfill corrupts active state | High | Dry-run mode, checkpoints, and integrity validation |
 | Risk | `asOf` semantics are underspecified | High | Define contract before implementation and test edge cases |
 | Risk | Write-path overhead becomes too high | Medium | Benchmark transitions and optimize projection reads |
+
+<!-- /ANCHOR:risks -->
 
 ---
 
@@ -271,7 +285,7 @@ Introduce a durable lineage contract that makes temporal state resolution explic
 
 ---
 
-## 16. ACCEPTANCE SCENARIOS
+### Acceptance Scenarios
 
 1. **Supersede without mutation**
    **Given** an existing fact, when a newer fact replaces it, then the old version remains intact and the new version becomes active through projection logic.
@@ -282,7 +296,7 @@ Introduce a durable lineage contract that makes temporal state resolution explic
 
 ---
 
-## 17. OPEN QUESTIONS
+## 16. OPEN QUESTIONS
 
 - Should active projection live in dedicated tables, materialized views, or cached query helpers?
 - How much lineage inspection tooling needs to ship in Phase 2 versus later admin/debug surfaces?
@@ -298,4 +312,3 @@ Introduce a durable lineage contract that makes temporal state resolution explic
 - **Verification Checklist**: `checklist.md`
 - **Decision Records**: `decision-record.md`
 
-<!-- /ANCHOR:document -->

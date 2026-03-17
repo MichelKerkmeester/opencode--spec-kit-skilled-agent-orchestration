@@ -1,11 +1,14 @@
 ---
 title: "Outsourced Agent Handback Protocol"
-description: "External CLI handback protocol for session memory saves — hard-fail JSON input, next-step persistence, redact-and-scrub security, and post-010 awareness of sufficiency/contamination gates."
+description: "External CLI handback protocol for session memory saves: hard-fail JSON input, next-step persistence, redact-and-scrub security, and post-010 awareness of sufficiency/contamination gates."
 trigger_phrases: ["outsourced agent memory", "cli agent context", "memory handback", "external agent save", "generate-context json"]
 importance_tier: "normal"
 contextType: "general"
 ---
 # Feature Specification: Outsourced Agent Handback Protocol
+
+This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.
+
 
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
@@ -52,15 +55,15 @@ This is **Phase 15** of the Perfect Session Capturing specification.
 
 When an external CLI (Codex, Copilot, Gemini, Claude Code) completes delegated work and returns session context, the data must flow through 010's `generate-context.js` pipeline to produce a memory file. This pipeline has three layers that must agree:
 
-1. **Runtime behavior** — How `data-loader.ts`, `input-normalizer.ts`, and `session-extractor.ts` handle explicit JSON-mode input
-2. **CLI handback documentation** — What the 4 CLI skill docs and prompt templates tell the calling AI to produce
-3. **Post-010 pipeline gates** — How the sufficiency, contamination, and quality gates affect file-backed saves *after* normalization succeeds
+1. **Runtime behavior**: How `data-loader.ts`, `input-normalizer.ts`, and `session-extractor.ts` handle explicit JSON-mode input
+2. **CLI handback documentation**: What the 4 CLI skill docs and prompt templates tell the calling AI to produce
+3. **Post-010 pipeline gates**: How the sufficiency, contamination, and quality gates affect file-backed saves *after* normalization succeeds
 
 The original 013 spec addressed layers 1 and 2. This rewrite adds layer 3 awareness: since 010's phases shipped, the pipeline now has post-normalization gates that can reject outsourced saves even when the JSON input is valid and normalizes successfully.
 
 ### Purpose
 
-Ensure the outsourced agent handback protocol produces saves that survive the full 010 pipeline as far as caller-provided evidence allows — not just input validation, but also sufficiency evaluation, contamination detection, and post-render quality scoring. Callers must know what minimum payload richness is required, what rejection codes they may encounter, and that file-backed saves bypass `QUALITY_GATE_ABORT` without bypassing all quality-related warnings.
+Ensure the outsourced agent handback protocol produces saves that survive the full 010 pipeline as far as caller-provided evidence allows, covering not just input validation, but also sufficiency evaluation, contamination detection, and post-render quality scoring. Callers must know what minimum payload richness is required, what rejection codes they may encounter, and that file-backed saves bypass `QUALITY_GATE_ABORT` without bypassing all quality-related warnings.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -108,7 +111,7 @@ Ensure the outsourced agent handback protocol produces saves that survive the fu
 
 | ID | Requirement | Acceptance |
 |----|-------------|------------|
-| REQ-001 | Explicit JSON-mode input failures hard-fail | Missing file → `EXPLICIT_DATA_FILE_LOAD_FAILED: Data file not found`; bad JSON → `...Invalid JSON`; validation failure → `...Failed to load` — no fallback to native capture |
+| REQ-001 | Explicit JSON-mode input failures hard-fail | Missing file → `EXPLICIT_DATA_FILE_LOAD_FAILED: Data file not found`; bad JSON → `...Invalid JSON`; validation failure → `...Failed to load`. No fallback to native capture. |
 | REQ-002 | `nextSteps` and `next_steps` both accepted and persisted | First → `Next: ...` fact, rest → `Follow-up: ...` facts; both drive `NEXT_ACTION` via `extractNextAction()` |
 | REQ-003 | All 8 CLI docs describe the handback protocol with redact-and-scrub | 4 SKILL.md + 4 prompt templates contain identical 7-step flow with `MEMORY_HANDBACK_START`/`END` delimiters |
 | REQ-004 | Verification evidence is repo-verifiable | No overstatement of live round-trip completion; cites reproducible commands |
@@ -134,8 +137,8 @@ Ensure the outsourced agent handback protocol produces saves that survive the fu
 - All 8 CLI docs and the feature catalog document `INSUFFICIENT_CONTEXT_ABORT`, `CONTAMINATION_GATE_ABORT`, and richer `FILES` metadata guidance
 - A representative manual-format JSON handback writes successfully and produces a fresh memory file for phase `015`
 - Thin snake_case JSON payloads fail with `INSUFFICIENT_CONTEXT_ABORT` before file write
-- The targeted verification lane passes with `2` files and `28` tests
-- Alignment drift passes with `244` scanned files (as of 2026-03-16) and `0` findings
+- The targeted verification lane passes with `2` files and `32` tests
+- Alignment drift passes with `246` scanned files (as of 2026-03-17) and `0` findings
 - Spec validation returns zero errors and zero warnings after the phase artifacts are reconciled
 
 ### Acceptance Scenarios
@@ -160,15 +163,13 @@ Ensure the outsourced agent handback protocol produces saves that survive the fu
 | Dependency | 010 Parent (contamination gate) | Shipped | `CONTAMINATION_GATE_ABORT` in `workflow.ts` runs on ALL saves |
 | Dependency | 010 Parent (snake_case acceptance) | Shipped | `input-normalizer.ts` accepts all documented snake_case variants |
 | Dependency | Phase 003 (Data Fidelity) | Shipped | `normalizeFileEntryLike()` preserves `ACTION`, `_provenance`, `_synthetic`, `MODIFICATION_MAGNITUDE` |
-| Dependency | Phase 011 (Session Source Validation) | Shipped | `data-loader.ts` entry point — 015's hard-fail executes before any capture attempt |
+| Dependency | Phase 011 (Session Source Validation) | Shipped | `data-loader.ts` entry point. 015's hard-fail executes before any capture attempt. |
 <!-- /ANCHOR:risks -->
 
 ---
 
----
-
 <!-- ANCHOR:nfr -->
-## L2: NON-FUNCTIONAL REQUIREMENTS
+## 7. L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
 - **NFR-P01**: The targeted handback verification lane should stay lightweight enough to run in under a second on local reruns.
@@ -186,7 +187,7 @@ Ensure the outsourced agent handback protocol produces saves that survive the fu
 ---
 
 <!-- ANCHOR:edge-cases -->
-## L2: EDGE CASES
+## 8. L2: EDGE CASES
 
 ### Data Boundaries
 - Empty or missing explicit JSON file: hard-fail with `EXPLICIT_DATA_FILE_LOAD_FAILED`.
@@ -210,7 +211,7 @@ Ensure the outsourced agent handback protocol produces saves that survive the fu
 ---
 
 <!-- ANCHOR:complexity -->
-## L2: COMPLEXITY ASSESSMENT
+## 9. L2: COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
@@ -227,9 +228,9 @@ Ensure the outsourced agent handback protocol produces saves that survive the fu
 
 ### Resolved
 
-- **Q1**: Should explicit JSON errors fall back to native capture? **NO** — hard-fail only.
+- **Q1**: Should explicit JSON errors fall back to native capture? **NO**. Hard-fail only.
 - **Q2**: Should `nextSteps` or `next_steps` take priority? **`nextSteps` (camelCase) takes priority** when both present.
-- **Q3**: Should `QUALITY_GATE_ABORT` apply to file-backed saves? **NO** — `workflow.ts` line 1656 exempts `_source === 'file'`.
+- **Q3**: Should `QUALITY_GATE_ABORT` apply to file-backed saves? **NO**. `workflow.ts` line 1656 exempts `_source === 'file'`.
 
 ### Known Limitations
 

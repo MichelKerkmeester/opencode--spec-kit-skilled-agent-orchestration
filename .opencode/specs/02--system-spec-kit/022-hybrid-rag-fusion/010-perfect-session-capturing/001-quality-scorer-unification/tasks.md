@@ -1,7 +1,10 @@
 ---
-title: "Tasks: Quality Scorer Unification [template:level_1/tasks.md]"
+title: "Tasks: Quality Scorer Unification [template:level_2/tasks.md]"
 ---
 # Tasks: Quality Scorer Unification
+
+This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.
+
 
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
@@ -9,7 +12,7 @@ title: "Tasks: Quality Scorer Unification [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:notation -->
-## Task Notation
+## 1. TASK NOTATION
 
 | Prefix | Meaning |
 |--------|---------|
@@ -24,7 +27,7 @@ title: "Tasks: Quality Scorer Unification [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Setup
+## 2. PHASE 1: SETUP
 
 - [x] T001 Define `QualityScoreResult` interface with `score01`, `score100`, `hadContamination`, `insufficiency`, `dimensions[]`, and typed flags (`scripts/core/quality-scorer.ts`) (REQ-001)
 - [x] T002 [P] Ensure V2 scorer can import `QualityScoreResult` from shared location (`scripts/extractors/quality-scorer.ts`) (REQ-001)
@@ -34,7 +37,7 @@ title: "Tasks: Quality Scorer Unification [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Implementation
+## 3. PHASE 2: IMPLEMENTATION
 
 ### V2 Scorer Update
 
@@ -60,7 +63,7 @@ title: "Tasks: Quality Scorer Unification [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: Verification
+## 4. PHASE 3: VERIFICATION
 
 - [x] T015 Update all quality scorer test expectations from 0-100 to 0.0-1.0 scale (`scripts/tests/quality-scorer-calibration.vitest.ts`) (REQ-001)
 - [x] T016 [P] Add test cases for V2 contamination penalty application (`scripts/tests/quality-scorer-calibration.vitest.ts`) (REQ-002)
@@ -73,7 +76,7 @@ title: "Tasks: Quality Scorer Unification [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:completion -->
-## Completion Criteria
+## 5. COMPLETION CRITERIA
 
 - [x] All tasks marked `[x]`
 - [x] No `[B]` blocked tasks remaining
@@ -85,7 +88,7 @@ title: "Tasks: Quality Scorer Unification [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:cross-refs -->
-## Cross-References
+## 6. CROSS-REFERENCES
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`

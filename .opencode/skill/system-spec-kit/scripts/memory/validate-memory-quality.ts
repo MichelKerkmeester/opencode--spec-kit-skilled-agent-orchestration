@@ -40,12 +40,9 @@ const PLACEHOLDER_PATTERNS: Array<{ pattern: RegExp; label: string }> = [
   { pattern: /^<!--\s*SESSION CONTEXT DOCUMENTATION v/im, label: 'template footer leakage' },
 ];
 const EXECUTION_SIGNAL_PATTERNS = [
-  /\*\*Tool:\s+/i,
-  /\|\s*Tool Executions\s*\|\s*[1-9]/i,
-  /\btool_calls?\b/i,
-  /\*\*Key Files:\*\*/i,
-  /### Files (Modified|Created)/i,
-  /`[^`]+\.(ts|tsx|js|jsx|py|sh|md|json|jsonc|yml|yaml|toml|css|html)`/i,
+  /\*\*Tool:\s+/i,                         // actual tool invocation
+  /\|\s*Tool Executions\s*\|\s*[1-9]/i,    // table says non-zero tools
+  /\btool_calls?\b/i,                      // explicit tool_call reference
 ];
 const SPEC_ID_REGEX = /\b\d{3}-[a-z0-9][a-z0-9-]*\b/g;
 const TITLE_CONTAMINATION_PATTERNS: Array<{ pattern: RegExp; label: string }> = [

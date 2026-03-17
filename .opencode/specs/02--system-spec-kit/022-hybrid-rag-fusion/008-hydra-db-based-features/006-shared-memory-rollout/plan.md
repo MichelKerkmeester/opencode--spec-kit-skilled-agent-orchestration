@@ -8,7 +8,6 @@ trigger_phrases:
 importance_tier: "critical"
 contextType: "implementation"
 ---
-<!-- ANCHOR:document -->
 # Implementation Plan: 006-shared-memory-rollout
 
 <!-- SPECKIT_LEVEL: 3+ -->
@@ -16,6 +15,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:summary -->
 ## 1. SUMMARY
 
 ### Technical Context
@@ -28,10 +28,12 @@ contextType: "implementation"
 | **Testing** | Vitest, staging-style rollout checks, conflict drills, manual runbooks |
 
 ### Overview
-Phase 6 packages the roadmap into a controllable collaboration rollout. The plan adds shared-memory spaces, deny-by-default membership rules, conflict handling, and staged release controls while preserving all prior governance and rollback protections.
+Phase 6 packages the roadmap into a controllable collaboration rollout. The plan captures the shipped shared-memory spaces, deny-by-default membership rules, conflict handling, and staged release controls while preserving all prior governance and rollback protections.
+<!-- /ANCHOR:summary -->
 
 ---
 
+<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready
@@ -46,9 +48,11 @@ Phase 6 packages the roadmap into a controllable collaboration rollout. The plan
 - [x] Kill-switch and rollback drills pass
 - [x] Staged rollout procedures documented and tested
 - [x] Docs and feature catalog reflect shipped behavior
+<!-- /ANCHOR:quality-gates -->
 
 ---
 
+<!-- ANCHOR:architecture -->
 ## 3. ARCHITECTURE
 
 ### Pattern
@@ -67,9 +71,11 @@ Opt-in collaboration layer on top of governed memory state. Phase 6 introduces s
 3. Governance checks validate membership and scope.
 4. Collaboration logic applies read/write or conflict behavior.
 5. Telemetry and runbooks support expansion, contraction, or rollback.
+<!-- /ANCHOR:architecture -->
 
 ---
 
+<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase A: Space and Membership Model
@@ -86,9 +92,11 @@ Opt-in collaboration layer on top of governed memory state. Phase 6 introduces s
 - [x] Add kill switches and rollback drills
 - [x] Add playbook runbooks for rollout and incidents
 - [x] Validate cohort expansion and contraction procedures
+<!-- /ANCHOR:phases -->
 
 ---
 
+<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
@@ -98,9 +106,11 @@ Opt-in collaboration layer on top of governed memory state. Phase 6 introduces s
 | Rollout | Cohort enablement, kill switches, rollback drills | Staging-style validation |
 | Conflict | Concurrent update scenarios and audit traces | Scenario tests |
 | Manual | Operator runbooks for rollout and incident response | Playbook scenarios |
+<!-- /ANCHOR:testing -->
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## 6. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
@@ -109,9 +119,11 @@ Opt-in collaboration layer on top of governed memory state. Phase 6 introduces s
 | Phase 3 stable retrieval | Internal | Yellow | Shared memory could amplify unstable retrieval |
 | Phase 4 adaptive safety or explicit deferral | Internal | Yellow | Rollout decisions may be incomplete |
 | Existing telemetry/runbook surfaces | Internal | Green | Operators lack safe rollout guidance |
+<!-- /ANCHOR:dependencies -->
 
 ---
 
+<!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
 - **Trigger**: Shared-space leak, bad conflict behavior, rollout instability, or operator confusion severe enough to risk safety.
@@ -120,6 +132,8 @@ Opt-in collaboration layer on top of governed memory state. Phase 6 introduces s
 2. Confirm baseline governed behavior resumes.
 3. Run collaboration rollback smoke tests.
 4. Record the failure mode before any re-enable decision.
+
+<!-- /ANCHOR:rollback -->
 
 ---
 
@@ -298,5 +312,3 @@ Phase 5 governance -> Shared-space model -> Conflict handling -> Staged rollout 
 1. Leak or governance bypass -> immediate rollback review
 2. Conflict instability -> collaboration design review
 3. Rollout uncertainty -> final roadmap approval pause
-
-<!-- /ANCHOR:document -->

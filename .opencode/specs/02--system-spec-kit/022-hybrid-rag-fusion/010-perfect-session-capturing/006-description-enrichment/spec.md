@@ -4,6 +4,9 @@ description: "Improve description fidelity and enrichment quality for spec folde
 ---
 # Feature Specification: Description Enrichment
 
+This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.
+
+
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
@@ -39,7 +42,7 @@ This is **Phase 6** of the Perfect Session Capturing specification.
 
 **Scope Boundary**: Two different quality gates validate file descriptions at different pipeline stages with partial overlap and divergent coverage.
 **Dependencies**: 005-confidence-calibration
-**Deliverables**: Merged isDescriptionValid() and hasMeaningfulDescription() into a single shared description validator; implemented tiered validation outcomes
+**Deliverables**: Established `validateDescription()` as the canonical shared validator, removed `hasMeaningfulDescription()`, and retained `isDescriptionValid()` as a compatibility/local helper path; implemented tiered validation outcomes
 <!-- /ANCHOR:phase-context -->
 
 <!-- ANCHOR:problem -->
@@ -61,7 +64,7 @@ Unify the two description validators into a single shared gate with tiered outco
 
 ### In Scope
 
-- Merge `isDescriptionValid()` and `hasMeaningfulDescription()` into a single shared description validator
+- Make `validateDescription()` the canonical shared validator for extraction/scoring while keeping `isDescriptionValid()` as a compatibility/local helper where needed
 - Implement tiered validation outcomes: placeholder / activity-only / semantic / high-confidence
 - Use `_provenance` for description trust weighting (git > tool > synthetic)
 - Add `MODIFICATION_MAGNITUDE` field to `FileChange` type: trivial / small / medium / large / unknown
@@ -78,7 +81,7 @@ Unify the two description validators into a single shared gate with tiered outco
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `scripts/extractors/file-extractor.ts` | Modify | Replace `isDescriptionValid()` with unified validator; add stub pattern matching for TBD/todo/pending/n/a/bare-changed/"Recent commit:" |
+| `scripts/extractors/file-extractor.ts` | Modify | Route extraction validation through shared `file-helpers` validator path (`validateDescription()` canonical with `isDescriptionValid()` compatibility wrapper); add stub pattern matching for TBD/todo/pending/n/a/bare-changed/"Recent commit:" |
 | `scripts/core/quality-scorer.ts` | Modify | Replace `hasMeaningfulDescription()` calls with unified validator; add provenance-based trust weighting to description quality dimension |
 | `scripts/extractors/git-context-extractor.ts` | Modify | Expose `MODIFICATION_MAGNITUDE` derived from existing `changeScores`, action type, and commit-touch counts |
 | `scripts/utils/file-helpers.ts` | Modify | Home of unified `validateDescription()` with tiered outcomes, `isDescriptionValid()` wrapper, and stub pattern detection |
@@ -111,7 +114,7 @@ Unify the two description validators into a single shared gate with tiered outco
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: No description passes quality check in one validator but fails in the other -- a single code path handles all description validation
+- **SC-001**: No description passes quality check in one gate but fails in the other for the canonical extraction/scoring path -- `validateDescription()` is authoritative and compatibility/local helper usage stays behaviorally aligned
 - **SC-002**: `MODIFICATION_MAGNITUDE` is populated for git-derived file entries with values derived from existing `changeScores` data
 
 ### Acceptance Scenarios

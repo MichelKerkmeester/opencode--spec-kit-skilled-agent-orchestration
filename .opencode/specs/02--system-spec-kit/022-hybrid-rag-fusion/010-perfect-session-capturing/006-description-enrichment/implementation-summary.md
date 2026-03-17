@@ -7,11 +7,12 @@ trigger_phrases: ["implementation", "summary", "description", "enrichment"]
 
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
 <!-- ANCHOR:metadata -->
-## Metadata
+## 1. METADATA
 
 | Field | Value |
 |-------|-------|
@@ -23,11 +24,11 @@ trigger_phrases: ["implementation", "summary", "description", "enrichment"]
 ---
 
 <!-- ANCHOR:what-built -->
-## What Was Built
+## 2. WHAT WAS BUILT
 
 Unified description validation and enrichment for the `system-spec-kit` pipeline.
 
-- Merged `isDescriptionValid()` and `hasMeaningfulDescription()` into a single shared `validateDescription()` in `utils/file-helpers.ts` with tiered outcomes: placeholder / activity-only / semantic / high-confidence.
+- Established `validateDescription()` in `utils/file-helpers.ts` as the canonical shared validator for extraction/scoring with tiered outcomes: placeholder / activity-only / semantic / high-confidence; `hasMeaningfulDescription()` was removed and `isDescriptionValid()` remains as a compatibility/local helper path.
 - Added provenance-based trust weighting in `quality-scorer.ts` via `getDescriptionTrustMultiplier()`: git=1.0, tool/spec-folder=0.8, synthetic=0.5, unknown=0.3.
 - Added `MODIFICATION_MAGNITUDE` enum (`trivial | small | medium | large | unknown`) to `FileChange` type and derived it from existing `changeScores`, action type, and commit-touch counts in `git-context-extractor.ts`.
 - Expanded stub pattern detection to catch TBD, todo, pending, n/a, bare changed/modified, "Recent commit:", and `[PLACEHOLDER]` prefixes.
@@ -36,7 +37,7 @@ Unified description validation and enrichment for the `system-spec-kit` pipeline
 ---
 
 <!-- ANCHOR:how-delivered -->
-## How It Was Delivered
+## 3. HOW IT WAS DELIVERED
 
 Delivered through a 4-phase approach following pipeline data flow.
 
@@ -49,7 +50,7 @@ Delivered through a 4-phase approach following pipeline data flow.
 ---
 
 <!-- ANCHOR:decisions -->
-## Key Decisions
+## 4. KEY DECISIONS
 
 | Decision | Why |
 |----------|-----|
@@ -61,7 +62,7 @@ Delivered through a 4-phase approach following pipeline data flow.
 ---
 
 <!-- ANCHOR:verification -->
-## Verification
+## 5. VERIFICATION
 
 | Check | Result |
 |-------|--------|
@@ -74,8 +75,11 @@ Delivered through a 4-phase approach following pipeline data flow.
 ---
 
 <!-- ANCHOR:limitations -->
-## Known Limitations
+## 6. KNOWN LIMITATIONS
 
-1. `semantic-summarizer.ts` retains a local `isDescriptionValid()` with 3 additional garbage patterns. This is acknowledged with a NOTE comment and is outside the spec scope — the semantic summarizer's version handles edge cases specific to semantic extraction context.
+1. `semantic-summarizer.ts` retains a local `isDescriptionValid()` with 3 additional garbage patterns. This is acknowledged with a NOTE comment and is outside the spec scope. The semantic summarizer's version handles edge cases specific to semantic extraction context.
 2. No `memory/` context was generated for this phase.
 <!-- /ANCHOR:limitations -->
+
+
+Reference links: [spec.md](spec.md) and [plan.md](plan.md).

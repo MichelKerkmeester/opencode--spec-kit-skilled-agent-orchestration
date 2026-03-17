@@ -10,7 +10,7 @@ Validates markdown documentation against template rules to ensure
 consistent formatting with proper TOC, H2 emojis, and section structure.
 
 Usage:
-    python validate_document.py <document.md> [--type readme|skill|reference|asset|agent|command|install_guide]
+    python validate_document.py <document.md> [--type readme|skill|reference|asset|agent|command|install_guide|spec]
     python validate_document.py <document.md> --json
     python validate_document.py <document.md> --fix [--dry-run]
     python validate_document.py <document.md> --blocking-only
@@ -125,6 +125,8 @@ def detect_document_type(file_path: str, content: str, rules: Dict[str, Any]) ->
         return 'readme'
     if path_lower.endswith('skill.md'):
         return 'skill'
+    if '/specs/' in path_lower or '\\specs\\' in path_lower:
+        return 'spec'
     if '/agent/' in path_lower or '\\agent\\' in path_lower:
         return 'agent'
     if '/references/' in path_lower or '\\references\\' in path_lower:
@@ -610,7 +612,7 @@ def main() -> None:
         epilog=__doc__
     )
     parser.add_argument('file', help='Markdown file to validate')
-    parser.add_argument('--type', choices=['readme', 'skill', 'reference', 'asset', 'agent', 'command', 'install_guide'],
+    parser.add_argument('--type', choices=['readme', 'skill', 'reference', 'asset', 'agent', 'command', 'install_guide', 'spec'],
                         help='Document type (auto-detected if not specified)')
     parser.add_argument('--json', action='store_true', help='Output results as JSON')
     parser.add_argument('--blocking-only', action='store_true', help='Show only blocking errors')

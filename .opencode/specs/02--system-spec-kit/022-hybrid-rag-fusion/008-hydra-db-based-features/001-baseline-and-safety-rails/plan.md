@@ -9,7 +9,6 @@ trigger_phrases:
 importance_tier: "critical"
 contextType: "implementation"
 ---
-<!-- ANCHOR:document -->
 # Implementation Plan: 001-baseline-and-safety-rails
 
 <!-- SPECKIT_LEVEL: 3+ -->
@@ -17,6 +16,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:summary -->
 ## 1. SUMMARY
 
 ### Technical Context
@@ -31,8 +31,11 @@ contextType: "implementation"
 ### Overview
 Phase 1 delivers the control-plane work that lets the Hydra roadmap proceed safely. The plan focuses on runtime build integrity, roadmap capability metadata, checkpoint and schema validation tooling, and synchronized documentation so later phases do not inherit drift or rollback gaps.
 
+<!-- /ANCHOR:summary -->
+
 ---
 
+<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready
@@ -48,8 +51,11 @@ Phase 1 delivers the control-plane work that lets the Hydra roadmap proceed safe
 - [x] Docs and playbook match delivered behavior
 - [x] Remaining baseline gaps are explicitly tracked
 
+<!-- /ANCHOR:quality-gates -->
+
 ---
 
+<!-- ANCHOR:architecture -->
 ## 3. ARCHITECTURE
 
 ### Pattern
@@ -69,8 +75,11 @@ Operational safety layer over the existing MCP server. Phase 1 does not introduc
 4. Baseline evaluation and schema compatibility tests verify the phase boundary.
 5. Docs and manual procedures are updated to reflect the delivered slice and open gaps.
 
+<!-- /ANCHOR:architecture -->
+
 ---
 
+<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase A: Baseline Inventory and Drift Removal
@@ -90,8 +99,11 @@ Operational safety layer over the existing MCP server. Phase 1 does not introduc
 - [x] Run manual baseline and graph snapshot smoke commands
 - [x] Decide whether broader Phase 1 observability follow-ups stay here or move forward as tracked residual work
 
+<!-- /ANCHOR:phases -->
+
 ---
 
+<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
@@ -102,8 +114,11 @@ Operational safety layer over the existing MCP server. Phase 1 does not introduc
 | Manual | Built `dist` phase snapshot checks | `node -e` smoke commands |
 | Documentation | Catalog/playbook/README/install guide sync | Manual review against runtime behavior |
 
+<!-- /ANCHOR:testing -->
+
 ---
 
+<!-- ANCHOR:dependencies -->
 ## 6. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
@@ -114,8 +129,11 @@ Operational safety layer over the existing MCP server. Phase 1 does not introduc
 | Existing feature catalog/playbook docs | Internal | Green | Baseline narrative remains inaccurate |
 | Parent research docs | Internal | Green | Phase rationale loses traceability |
 
+<!-- /ANCHOR:dependencies -->
+
 ---
 
+<!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
 - **Trigger**: Build regression, misleading capability metadata, failing checkpoint helpers, or documentation that overstates delivery.
@@ -124,6 +142,8 @@ Operational safety layer over the existing MCP server. Phase 1 does not introduc
 2. Rebuild the MCP package and re-run the focused verification suite.
 3. Restore the last known-good checkpoint state if migration helpers were exercised.
 4. Revert documentation to the last truthful state and log the reason Phase 1 did not pass.
+
+<!-- /ANCHOR:rollback -->
 
 ---
 
@@ -305,4 +325,3 @@ Inventory -> Build/Flags/Checkpoint Hardening -> Verification -> Handoff to Phas
 2. Docs drift or status confusion -> system-spec-kit maintainer review
 3. Phase-boundary disagreements -> parent roadmap decision in `../decision-record.md`
 
-<!-- /ANCHOR:document -->

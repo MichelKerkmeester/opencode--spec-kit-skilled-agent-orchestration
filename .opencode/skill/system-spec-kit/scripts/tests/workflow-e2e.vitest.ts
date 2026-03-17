@@ -273,7 +273,7 @@ async function importWorkflowForHarness(
 ): Promise<typeof import('../core/workflow')> {
   vi.restoreAllMocks();
   vi.resetModules();
-  vi.doUnmock('../lib/embeddings');
+  vi.doUnmock('../core/memory-indexer');
 
   captureConversation.mockReset();
   captureClaudeConversation.mockReset();
@@ -287,11 +287,11 @@ async function importWorkflowForHarness(
   captureGeminiConversation.mockResolvedValue(null);
 
   if (options.failEmbedding) {
-    vi.doMock('../lib/embeddings', async (importOriginal) => {
-      const actual = await importOriginal<typeof import('../lib/embeddings')>();
+    vi.doMock('../core/memory-indexer', async (importOriginal) => {
+      const actual = await importOriginal<typeof import('../core/memory-indexer')>();
       return {
         ...actual,
-        generateDocumentEmbedding: vi.fn(async () => {
+        indexMemory: vi.fn(async () => {
           throw new Error('forced embedding failure for workflow E2E');
         }),
       };
@@ -315,7 +315,7 @@ afterEach(() => {
   vi.restoreAllMocks();
   vi.resetModules();
   vi.unstubAllEnvs();
-  vi.doUnmock('../lib/embeddings');
+  vi.doUnmock('../core/memory-indexer');
   captureConversation.mockReset();
   captureClaudeConversation.mockReset();
   captureCodexConversation.mockReset();
@@ -503,8 +503,13 @@ describe('workflow E2E save pipeline', { timeout: 30_000 }, () => {
     const metadata = readMetadata(harness) as { embedding?: { status?: string } };
 
     expect(result.memoryId).toBeNull();
+    expect(result.indexingStatus).toMatchObject({
+      status: 'failed_embedding',
+      memoryId: null,
+    });
     expect(fs.existsSync(path.join(result.contextDir, result.contextFilename))).toBe(true);
-    expect(metadata.embedding?.status).toBe('pending');
+    expect(metadata.embedding?.status).toBe('failed_embedding');
+    expect((metadata.embedding as { errorMessage?: string } | undefined)?.errorMessage).toBe('forced embedding failure for workflow E2E');
     expect(description.memorySequence).toBe(1);
     expect(description.memoryNameHistory).toEqual([result.contextFilename]);
   });

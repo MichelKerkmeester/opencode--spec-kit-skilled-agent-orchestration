@@ -8,7 +8,6 @@ trigger_phrases:
 importance_tier: "critical"
 contextType: "implementation"
 ---
-<!-- ANCHOR:document -->
 # Implementation Plan: 005-hierarchical-scope-governance
 
 <!-- SPECKIT_LEVEL: 3+ -->
@@ -16,6 +15,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:summary -->
 ## 1. SUMMARY
 
 ### Technical Context
@@ -28,10 +28,12 @@ contextType: "implementation"
 | **Testing** | Vitest, isolation matrices, deletion drills, manual audit walkthroughs |
 
 ### Overview
-Phase 5 makes the roadmap safe enough for wider rollout by enforcing boundaries and lifecycle controls across the system. The plan centralizes policy checks, governed ingest, retention and deletion flows, and audit evidence before any shared-memory collaboration starts.
+Phase 5 makes the roadmap safe enough for wider rollout by enforcing boundaries and lifecycle controls across the system. The plan captures the shipped policy checks, governed ingest, retention and deletion flows, and audit evidence that now gate shared-memory collaboration.
+<!-- /ANCHOR:summary -->
 
 ---
 
+<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready
@@ -46,9 +48,11 @@ Phase 5 makes the roadmap safe enough for wider rollout by enforcing boundaries 
 - [x] Retention and cascade deletion workflows validated
 - [x] Audit evidence is inspectable
 - [x] Docs and playbook reflect shipped behavior
+<!-- /ANCHOR:quality-gates -->
 
 ---
 
+<!-- ANCHOR:architecture -->
 ## 3. ARCHITECTURE
 
 ### Pattern
@@ -67,9 +71,11 @@ Central governance layer with shared policy checks, lifecycle jobs, and audit ou
 3. Governed ingest checks provenance and temporal markers.
 4. Lifecycle jobs apply retention or deletion when required.
 5. Audit records capture what was allowed, denied, retained, or deleted.
+<!-- /ANCHOR:architecture -->
 
 ---
 
+<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase A: Policy Model and Shared Middleware
@@ -86,9 +92,11 @@ Central governance layer with shared policy checks, lifecycle jobs, and audit ou
 - [x] Implement retention and cascade deletion jobs
 - [x] Add leak-test and deletion-drill coverage
 - [x] Add operator playbook for governance procedures
+<!-- /ANCHOR:phases -->
 
 ---
 
+<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
@@ -98,9 +106,11 @@ Central governance layer with shared policy checks, lifecycle jobs, and audit ou
 | Isolation | Tenant/user/agent/session leak matrix | Scenario tests |
 | Lifecycle | Retention and deletion drills with audit output | Job harness and manual validation |
 | Manual | Audit walkthroughs and rollback procedures | Playbook scenarios |
+<!-- /ANCHOR:testing -->
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## 6. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
@@ -109,9 +119,11 @@ Central governance layer with shared policy checks, lifecycle jobs, and audit ou
 | Phase 1 rollback/checkpoints | Internal | Green | Recovery procedures weaken |
 | Existing handlers and retrieval pipeline | Internal | Green | Policy coverage cannot be consistent |
 | Parent ADR-003 | Architecture | Green | Shared-memory sequencing becomes unsafe |
+<!-- /ANCHOR:dependencies -->
 
 ---
 
+<!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
 - **Trigger**: Scope leak, failed deletion audit, policy latency regression, or incorrect ingest denial/allow behavior.
@@ -120,6 +132,8 @@ Central governance layer with shared policy checks, lifecycle jobs, and audit ou
 2. Restore any affected data from checkpoint if deletion or migration changes caused damage.
 3. Re-run isolation and lifecycle smoke tests.
 4. Record the policy or lifecycle defect before retrying.
+
+<!-- /ANCHOR:rollback -->
 
 ---
 
@@ -298,5 +312,3 @@ Phase 2 lineage -> Policy model -> Governed ingest/retrieval -> Lifecycle jobs -
 1. Scope leak or audit gap -> immediate governance review
 2. Lifecycle uncertainty -> deletion design review
 3. Conflict with shared-memory plan -> parent roadmap decision
-
-<!-- /ANCHOR:document -->

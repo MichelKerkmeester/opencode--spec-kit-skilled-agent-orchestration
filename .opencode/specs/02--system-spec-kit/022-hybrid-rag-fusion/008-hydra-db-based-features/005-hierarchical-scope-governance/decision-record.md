@@ -8,7 +8,6 @@ trigger_phrases:
 importance_tier: "critical"
 contextType: "decision"
 ---
-<!-- ANCHOR:document -->
 # Decision Record: 005-hierarchical-scope-governance
 
 <!-- SPECKIT_LEVEL: 3+ -->
@@ -16,6 +15,7 @@ contextType: "decision"
 
 ---
 
+<!-- ANCHOR:adr-001 -->
 ## ADR-501: Centralize Governance and Finish It Before Shared Memory
 
 ### Metadata
@@ -99,4 +99,4 @@ Shared-memory collaboration raises the risk of cross-scope leakage sharply. If p
 
 **How to roll back**: disable governance rollout, restore affected data if needed, and rerun isolation smoke tests before resuming any rollout.
 
-<!-- /ANCHOR:document -->
+<!-- /ANCHOR:adr-001 -->

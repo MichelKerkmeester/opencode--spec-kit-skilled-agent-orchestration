@@ -3,6 +3,9 @@ title: "Implementation Plan: Session Source Validation"
 ---
 # Implementation Plan: Session Source Validation
 
+This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.
+
+
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
@@ -16,13 +19,13 @@ title: "Implementation Plan: Session Source Validation"
 | Aspect | Value |
 |--------|-------|
 | **Language/Stack** | TypeScript (Node.js) |
-| **Framework** | generate-context.js pipeline, Claude Code history API |
-| **Storage** | Filesystem (Claude history/transcripts, spec folder memory files) |
-| **Testing** | Vitest |
+| **Framework** | Native capture pipeline, quality validation, render path |
+| **Storage** | CLI session artifacts, frontmatter provenance fields, file-count metrics |
+| **Testing** | Vitest plus memory-quality lane and phase-local spec validation |
 
 ### Overview
 
-This plan implements a session boundary protocol: add session hints to the Claude capture API, implement a four-step fallback resolution order that prioritizes session ID over filesystem mtime, add a V10 validator for file count divergence detection, add a contamination score penalty, add filesystem truth for file counts, and sanitize trigger phrase input. This is the highest-priority pipeline fix because wrong-session transcript selection corrupts all downstream data at the source-of-truth level.
+This phase is also already shipped. The remaining work was to document the real session-source validation surface: Claude session hints and fallback behavior, provenance fields, split file-count metrics, V10 divergence validation, contamination scoring, trigger sanitization, and the current focused proof lanes that keep those seams green.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -32,15 +35,15 @@ This plan implements a session boundary protocol: add session hints to the Claud
 
 ### Definition of Ready
 
-- [x] Problem statement clear and scope documented
-- [x] Success criteria measurable
-- [x] Dependencies identified (none -- highest priority, can begin immediately)
+- [x] The shipped session-source runtime seams were re-read.
+- [x] The focused session-source regression lanes were rerun locally.
+- [x] The phase was classified as shipped code plus documentation drift, not as missing runtime work.
 
 ### Definition of Done
 
-- [ ] All acceptance criteria met (REQ-001 through REQ-008)
-- [ ] Tests passing -- session resolution, V10 validator, contamination penalty, trigger sanitization
-- [ ] Docs updated (spec/plan in this folder)
+- [x] Plan, tasks, checklist, and summary match the shipped session-source behavior.
+- [x] The focused four-file session-source lane and memory-quality lane pass with current evidence.
+- [x] Phase-local memory save and final strict gate reruns are recorded.
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -50,28 +53,18 @@ This plan implements a session boundary protocol: add session hints to the Claud
 
 ### Pattern
 
-Session boundary protocol -- session identity hints propagated from invocation through capture, validation, and output persistence, with fallback degradation when hints are unavailable.
+Native-source validation and provenance hardening at the capture, quality, and rendering seams.
 
 ### Key Components
 
-- **Session hints API (`scripts/extractors/claude-code-capture.ts`)**: Extended `captureClaudeConversation` accepting `{ expectedSessionId, sessionStartTs, invocationTs }`
-- **Data loader (`scripts/loaders/data-loader.ts`)**: Passes session hints from invocation context to the capture function
-- **Fallback resolution chain**: Four-step degradation: exact sessionId match, active lock/session file, newest by history timestamp (not mtime), reject if no time-window match
-- **V10 validator (`scripts/memory/validate-memory-quality.ts`)**: Detects `filesystem_file_count` vs `captured_file_count` divergence as a wrong-session signal
-- **Contamination penalty (`scripts/extractors/quality-scorer.ts`, `scripts/core/quality-scorer.ts`)**: Both scorers penalize contaminated memories
-- **File count splitter (`scripts/extractors/collect-session-data.ts`)**: Produces three independent file count metrics
-- **Trigger sanitizer (`scripts/core/workflow.ts`)**: Filters out raw FILE_PATH and synthetic descriptions before trigger extraction
+- **`claude-code-capture.ts`**: session hints and capture provenance behavior.
+- **`collect-session-data.ts`**: split file-count metrics.
+- **`quality-scorer-calibration.vitest.ts`**: score and contamination calibration proof.
+- **`task-enrichment.vitest.ts` and `memory-render-fixture.vitest.ts`**: downstream validation that uses the new provenance and file-count truth.
 
 ### Data Flow
 
-1. Invocation context provides session hints: `expectedSessionId`, `sessionStartTs`, `invocationTs`
-2. Data loader passes hints to `captureClaudeConversation()`
-3. Capture function resolves transcript using four-step fallback: sessionId > lock file > history timestamp > reject
-4. Selected transcript's provenance is persisted: `_sourceTranscriptPath`, `_sourceSessionId`, `_sourceSessionCreated`, `_sourceSessionUpdated`
-5. `collect-session-data` computes three file counts independently: `captured_file_count` (from transcript), `filesystem_file_count` (from disk), `git_changed_file_count` (from git)
-6. V10 validator compares `filesystem_file_count` vs `captured_file_count`; significant divergence flags wrong-session data
-7. Quality scorers apply contamination penalty (-0.25, cap 0.6) when `hadContamination` is set
-8. Workflow sanitizes trigger input: excludes raw FILE_PATH and synthetic descriptions from `extractTriggerPhrases()`
+Native capture selection -> provenance fields and split file counts -> quality validation and contamination handling -> rendered output and regression proof -> phase documentation closeout.
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -79,42 +72,23 @@ Session boundary protocol -- session identity hints propagated from invocation t
 <!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
-### Phase 1: Session Hints API (A0.1)
+### Phase 1: Shipped Surface Audit
 
-- [ ] Extend `captureClaudeConversation` signature with `{ expectedSessionId, sessionStartTs, invocationTs }`
-- [ ] Update `data-loader.ts` to construct and pass session hints from available invocation context
-- [ ] Add type definitions for the session hint object
+- [x] Review native capture, quality, and rendering seams that this phase owns.
+- [x] Confirm the phase deliverables are already in the live codebase.
+- [x] Confirm the current focused proof lanes still cover the same surface.
 
-### Phase 2: Fallback Resolution Chain (A0.2)
+### Phase 2: Documentation Reconciliation
 
-- [ ] Implement step 1: exact `sessionId` match against Claude history entries
-- [ ] Implement step 2: check active lock/session file for current session marker
-- [ ] Implement step 3: sort candidates by history timestamp (not filesystem mtime)
-- [ ] Implement step 4: reject if no candidate's last event falls within the time window of `invocationTs`
-  - Time window constants: lower bound = `sessionStartTs - 5min` or `invocationTs - 12hr`, upper bound = `invocationTs + 10min`
-- [ ] Unit test each fallback step in isolation and the full chain with various scenarios
+- [x] Rewrite the phase docs to describe the shipped session-source behavior.
+- [x] Replace placeholder checklist language with current evidence-backed assertions.
+- [x] Keep live CLI freshness caveats separate from the shipped phase-runtime claims.
 
-### Phase 3: Source Provenance and V10 Validator (A0.3)
+### Phase 3: Verification
 
-- [ ] Persist `_sourceTranscriptPath`, `_sourceSessionId`, `_sourceSessionCreated`, `_sourceSessionUpdated` in memory frontmatter
-- [ ] Split file counts in `collect-session-data.ts`: `captured_file_count`, `filesystem_file_count`, `git_changed_file_count`
-- [ ] Add V10 validator to `validate-memory-quality.ts`: compare `filesystem_file_count` vs `captured_file_count`
-- [ ] Define divergence threshold (ratio-based, calibrated against real spec folder sizes)
-- [ ] Unit test V10 with matching counts (pass), divergent counts (fail), and edge cases (zero counts)
-
-### Phase 4: Contamination Score Penalty (A0.4)
-
-- [ ] Add contamination penalty to V2 scorer (`quality-scorer.ts`): `score -= 0.25; cap = Math.min(cap, 0.6)`
-- [ ] Extend V1 scorer (`core/quality-scorer.ts`) signature with `hadContamination` parameter
-- [ ] Apply matching penalty in V1 scorer
-- [ ] Unit test both scorers with and without contamination flag
-
-### Phase 5: Trigger Sanitization and Filesystem Truth (A0.5)
-
-- [ ] Update `workflow.ts` to filter raw `FILE_PATH` entries from trigger input
-- [ ] Stop passing tree-thinning synthetic descriptions to `extractTriggerPhrases()`
-- [ ] Wire `filesystem_file_count` into workflow output as the truth metric
-- [ ] Verify trigger phrases reflect actual session content in test scenarios
+- [x] Rerun the focused four-file session-source proof lane.
+- [x] Rerun the memory-quality lane that exercises the same validation surface.
+- [x] Record memory-save closeout and final strict phase gates.
 <!-- /ANCHOR:phases -->
 
 ---
@@ -124,11 +98,10 @@ Session boundary protocol -- session identity hints propagated from invocation t
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Unit | Session fallback resolution: each step in isolation and full chain | Vitest |
-| Unit | V10 validator: matching counts, divergent counts, zero-count edge cases | Vitest |
-| Unit | Contamination penalty: V1 and V2 scorers with/without `hadContamination` | Vitest |
-| Unit | Trigger sanitization: synthetic descriptions excluded, real content preserved | Vitest |
-| Integration | End-to-end: wrong-session transcript rejected before downstream processing | Vitest |
+| Native capture | Claude capture behavior and session-source hints | `claude-code-capture.vitest.ts` |
+| Quality and contamination | Scorer calibration and divergence logic | `quality-scorer-calibration.vitest.ts`, `test-memory-quality-lane.js` |
+| Downstream integration | Render and enrichment behavior that depends on provenance and file counts | `task-enrichment.vitest.ts`, `memory-render-fixture.vitest.ts` |
+| Phase-local truth | Spec validation and completion | `validate.sh`, `check-completion.sh` |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -138,7 +111,9 @@ Session boundary protocol -- session identity hints propagated from invocation t
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| None | N/A | Green | Highest-priority fix (A0.1-A0.5) with no upstream dependencies; can begin immediately |
+| Native capture and provenance runtime | Internal | Green | Phase claims would not be anchored to shipped behavior |
+| Focused four-file session-source lane | Internal | Green | Phase proof would be incomplete |
+| Memory-quality lane | Internal | Green | Quality and divergence behavior would lack direct confirmation |
 <!-- /ANCHOR:dependencies -->
 
 ---
@@ -146,6 +121,6 @@ Session boundary protocol -- session identity hints propagated from invocation t
 <!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: Session ID resolution breaks Claude capture for environments where session IDs are unavailable, or V10 produces excessive false positives
-- **Procedure**: Revert `captureClaudeConversation` to mtime-based selection (remove session hint parameters); disable V10 validator; revert contamination penalty changes. Provenance frontmatter fields become no-ops (ignored by downstream). File count split remains safe as it only adds new metrics alongside existing ones.
+- **Trigger**: Phase docs drift from the shipped runtime or the focused proof lanes stop matching the documented surface.
+- **Procedure**: Revert only the phase docs, rerun the focused session-source commands, and reapply the minimum evidence-backed documentation updates.
 <!-- /ANCHOR:rollback -->

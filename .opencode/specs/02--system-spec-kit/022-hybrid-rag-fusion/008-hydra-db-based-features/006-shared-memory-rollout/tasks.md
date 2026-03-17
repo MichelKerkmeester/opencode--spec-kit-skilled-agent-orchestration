@@ -8,7 +8,6 @@ trigger_phrases:
 importance_tier: "critical"
 contextType: "general"
 ---
-<!-- ANCHOR:document -->
 # Tasks: 006-shared-memory-rollout
 
 <!-- SPECKIT_LEVEL: 3+ -->
@@ -16,6 +15,7 @@ contextType: "general"
 
 ---
 
+<!-- ANCHOR:notation -->
 ## Task Notation
 
 | Prefix | Meaning |
@@ -26,53 +26,67 @@ contextType: "general"
 | `[B]` | Blocked |
 
 **Task Format**: `T### [P?] Description (file path)`
+<!-- /ANCHOR:notation -->
 
 ---
 
-## Track A: Space and Membership Model
+<!-- ANCHOR:phase-1 -->
+## Phase 1: Setup
+
+Context: space and membership model.
 
 - [x] T601 Create the Phase 6 Level 3+ documentation package
 - [x] T602 Define shared-space schema and role model
 - [x] T603 Reuse Phase 5 governance checks for collaboration
 - [x] T604 Define rollout cohorts and gating rules
+<!-- /ANCHOR:phase-1 -->
 
 ---
 
-## Track B: Collaboration Logic
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
+
+Context: collaboration logic.
 
 - [x] T610 Implement shared-space handlers
 - [x] T611 Implement deny-by-default membership checks
 - [x] T612 Implement conflict strategy and audit traces
 - [x] T613 Add collaboration telemetry
+<!-- /ANCHOR:phase-2 -->
 
 ---
 
-## Track C: Staged Rollout and Validation
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
+
+Context: staged rollout and validation.
 
 - [x] T620 Add shared-memory test coverage
 - [x] T621 Add kill-switch and rollback drills
 - [x] T622 Add operator runbooks to the playbook
 - [x] T623 Update feature catalog and README surfaces after implementation
 
----
-
-## Coordination Checkpoints
+### Coordination Checkpoints
 
 - [x] T630 Confirm Phase 5 governance technical gate is verified
 - [x] T631 Confirm earlier retrieval phases are stable enough for rollout
 - [x] T632 Update `implementation-summary.md` with execution evidence when work begins
+<!-- /ANCHOR:phase-3 -->
 
 ---
 
+<!-- ANCHOR:completion -->
 ## Completion Criteria
 
 - [x] Shared-memory spaces are opt-in and deny-by-default
 - [x] Conflict handling is auditable and understandable
 - [x] Kill switches and rollback drills pass
 - [x] No `[B]` blocked tasks remain
+<!-- /ANCHOR:completion -->
 
 ---
 
+<!-- ANCHOR:cross-refs -->
 ## Cross-References
 
 - **Specification**: `spec.md`
@@ -80,6 +94,7 @@ contextType: "general"
 - **Checklist**: `checklist.md`
 - **Decision Record**: `decision-record.md`
 - **Implementation Summary**: `implementation-summary.md`
+<!-- /ANCHOR:cross-refs -->
 
 ---
 
@@ -90,12 +105,9 @@ CORE TEMPLATE (~60 lines)
 - Add L2/L3 addendums for complexity
 -->
 
-<!-- /ANCHOR:document -->
-
 ---
 
-<!-- ANCHOR:ai-protocol -->
-## AI EXECUTION PROTOCOL
+### AI Execution Protocol
 
 ### Pre-Task Checklist
 
@@ -125,4 +137,3 @@ CORE TEMPLATE (~60 lines)
 1. Stop work as soon as a predecessor gate, safety rule, or rollout assumption is violated.
 2. Record the blocker in `tasks.md` with `[B]` and explain the impacted downstream work.
 3. Update `implementation-summary.md` before handing the phase back for review.
-<!-- /ANCHOR:ai-protocol -->

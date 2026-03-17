@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # ───────────────────────────────────────────────────────────────
-# Session Capturing QA Validation — 23-Agent Launcher
+# COMPONENT: SESSION CAPTURING QA VALIDATION LAUNCHER
 # ───────────────────────────────────────────────────────────────
+# Scratch operator helper for staged QA validation waves.
 # Wave 1: QA-01..QA-05 (GPT-5.3-Codex via copilot, code standards alignment)
 # Wave 2: QA-06..QA-10 (GPT-5.4 via copilot, deep re-review of fixes)
 # Wave 3: QA-11..QA-13 (GPT-5.4 via codex xhigh, automated testing)
@@ -24,11 +25,29 @@ WAVE_FILTER=0
 PIDS=()
 FAILED=0
 
-for arg in "$@"; do
-  case $arg in
-    --wave) shift; WAVE_FILTER="${1:-0}" ;;
-    --dry-run) DRY_RUN=true ;;
-    [1-5]) WAVE_FILTER="$arg" ;;
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --wave)
+      if [[ $# -lt 2 || ! "$2" =~ ^[1-5]$ ]]; then
+        echo "ERROR: --wave requires a value from 1 to 5" >&2
+        exit 1
+      fi
+      WAVE_FILTER="$2"
+      shift 2
+      ;;
+    --dry-run)
+      DRY_RUN=true
+      shift
+      ;;
+    [1-5])
+      WAVE_FILTER="$1"
+      shift
+      ;;
+    *)
+      echo "ERROR: Unknown argument: $1" >&2
+      echo "Usage: bash launch-qa-validation.sh [--wave N] [--dry-run]" >&2
+      exit 1
+      ;;
   esac
 done
 

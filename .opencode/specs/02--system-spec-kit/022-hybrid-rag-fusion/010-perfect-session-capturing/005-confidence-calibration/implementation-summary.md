@@ -7,23 +7,25 @@ trigger_phrases: ["implementation", "summary", "confidence", "calibration"]
 
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
 <!-- ANCHOR:metadata -->
-## Metadata
+## 1. METADATA
 
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 005-confidence-calibration |
 | **Completed** | 2026-03-16 |
 | **Level** | 2 |
+| **Status** | Complete |
 <!-- /ANCHOR:metadata -->
 
 ---
 
 <!-- ANCHOR:what-built -->
-## What Was Built
+## 2. WHAT WAS BUILT
 
 Implemented Phase 1 dual-confidence calibration for live `system-spec-kit` decision records.
 
@@ -36,7 +38,7 @@ Implemented Phase 1 dual-confidence calibration for live `system-spec-kit` decis
 ---
 
 <!-- ANCHOR:how-delivered -->
-## How It Was Delivered
+## 3. HOW IT WAS DELIVERED
 
 Delivered through a focused compatibility-first pass that kept existing thresholds and importance logic on legacy `CONFIDENCE`.
 
@@ -51,7 +53,7 @@ Delivered through a focused compatibility-first pass that kept existing threshol
 ---
 
 <!-- ANCHOR:decisions -->
-## Key Decisions
+## 4. KEY DECISIONS
 
 | Decision | Why |
 |----------|-----|
@@ -63,22 +65,25 @@ Delivered through a focused compatibility-first pass that kept existing threshol
 ---
 
 <!-- ANCHOR:verification -->
-## Verification
+## 5. VERIFICATION
 
 | Check | Result |
 |-------|--------|
 | `npm run typecheck` | Passed |
 | `node mcp_server/node_modules/vitest/vitest.mjs run tests/decision-confidence.vitest.ts tests/memory-render-fixture.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts` | Passed |
 | `node scripts/tests/test-extractors-loaders.js` | Passed |
-| `node scripts/tests/test-scripts-modules.js` | Fails with four unrelated baseline issues outside this phase (`T-019d`, `T-024e`, `T-024f`, `T-032`) |
-| `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js <phase-folder>` | Passed and indexed memory #4362 |
+| `node scripts/tests/test-scripts-modules.js` | Passed (`384` passed, `0` failed, `5` skipped) |
+| `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/005-confidence-calibration` | Passed: wrote `memory/17-03-26_16-44__strict-closeout-evidence-refreshed.md`, refreshed `metadata.json`, and indexed memory #4373 |
 <!-- /ANCHOR:verification -->
 
 ---
 
 <!-- ANCHOR:limitations -->
-## Known Limitations
+## 6. KNOWN LIMITATIONS
 
-1. `scripts/tests/test-scripts-modules.js` is not fully green due four unrelated pre-existing baseline failures outside this phase.
+1. This phase still depends on the broader canonical-type cleanup tracked in `004-type-consolidation`; the dual-confidence behavior is complete, but the surrounding type cleanup is not part of this phase.
 2. Vitest still logs the existing `ascii-boxes library not available` warning when TS source imports `decision-tree-generator.ts`; the fallback rendering path keeps the targeted tests green.
 <!-- /ANCHOR:limitations -->
+
+
+Reference links: [spec.md](spec.md) and [plan.md](plan.md).

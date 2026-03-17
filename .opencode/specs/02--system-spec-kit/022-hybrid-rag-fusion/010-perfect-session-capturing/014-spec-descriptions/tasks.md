@@ -9,13 +9,16 @@ contextType: "general"
 ---
 # Tasks: Spec Folder Description System Refactor
 
+This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.
+
+
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
 ---
 
 <!-- ANCHOR:notation -->
-## Task Notation
+## 1. TASK NOTATION
 
 | Prefix | Meaning |
 |--------|---------|
@@ -29,7 +32,7 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Setup
+## 2. PHASE 1: SETUP
 
 ### Per-Folder Description Infrastructure
 
@@ -53,7 +56,7 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Implementation
+## 3. PHASE 2: IMPLEMENTATION
 
 ### create.sh Integration
 
@@ -116,7 +119,7 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: Verification
+## 4. PHASE 3: VERIFICATION
 
 ### Documentation & Testing Playbook
 
@@ -137,7 +140,7 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:completion -->
-## Completion Criteria
+## 5. COMPLETION CRITERIA
 
 - [x] All 25 implementation tasks remain complete under the current Level 2 template structure.
 - [x] Targeted regression coverage passes for `folder-discovery`, `folder-discovery-integration`, `workflow-memory-tracking`, `slug-utils-boundary`, and `slug-uniqueness`.
@@ -147,7 +150,7 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:cross-refs -->
-## Cross-References
+## 6. CROSS-REFERENCES
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`

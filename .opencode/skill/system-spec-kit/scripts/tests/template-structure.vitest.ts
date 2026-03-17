@@ -7,7 +7,9 @@ import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 const {
   compareDocumentToTemplate,
+  inferPhaseSpecAddenda,
   loadTemplateContract,
+  loadTemplateContractForDocument,
   normalizeLevel,
   resolveTemplatePath,
 } = require('../utils/template-structure.js');
@@ -127,5 +129,33 @@ describe('template structure helper', () => {
     const re = new RegExp(contract.headerRules[0].pattern, 'i');
     expect(re.test('DR-001: Some Decision')).toBe(true);
     expect(re.test('ADR-001: Some Decision')).toBe(true);
+  });
+
+  it('merges the phase-parent addendum into spec contracts for phase parent folders', () => {
+    const docPath = path.resolve(__dirname, 'fixtures/phase-validation/valid-phase/spec.md');
+
+    expect(inferPhaseSpecAddenda(docPath)).toEqual(['parent']);
+
+    const contract = loadTemplateContractForDocument('1', 'spec.md', docPath);
+    expect(contract.optionalHeaderRules.map((rule: { raw: string }) => rule.raw)).toContain('PHASE DOCUMENTATION MAP');
+    expect(contract.optionalAnchors).toContain('phase-map');
+    expect(contract.allowedAnchors).toContain('phase-map');
+
+    const result = compareDocumentToTemplate('1', 'spec.md', docPath);
+    expect(result.headers.extras).not.toContain('PHASE DOCUMENTATION MAP');
+    expect(result.anchors.extras).not.toContain('phase-map');
+  });
+
+  it('merges the phase-child addendum into spec contracts for child phase folders', () => {
+    const docPath = path.resolve(__dirname, 'fixtures/phase-validation/valid-phase/001-design/spec.md');
+
+    expect(inferPhaseSpecAddenda(docPath)).toEqual(['child']);
+
+    const contract = loadTemplateContractForDocument('1', 'spec.md', docPath);
+    expect(contract.optionalAnchors).toContain('phase-context');
+    expect(contract.allowedAnchors).toContain('phase-context');
+
+    const result = compareDocumentToTemplate('1', 'spec.md', docPath);
+    expect(result.anchors.extras).not.toContain('phase-context');
   });
 });

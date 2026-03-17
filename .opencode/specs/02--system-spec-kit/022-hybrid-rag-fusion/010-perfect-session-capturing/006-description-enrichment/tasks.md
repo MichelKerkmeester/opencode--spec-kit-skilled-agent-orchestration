@@ -1,7 +1,10 @@
 ---
-title: "Tasks: Description Enrichment [template:level_1/tasks.md]"
+title: "Tasks: Description Enrichment [template:level_2/tasks.md]"
 ---
 # Tasks: Description Enrichment
+
+This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.
+
 
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
@@ -9,7 +12,7 @@ title: "Tasks: Description Enrichment [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:notation -->
-## Task Notation
+## 1. TASK NOTATION
 
 | Prefix | Meaning |
 |--------|---------|
@@ -24,21 +27,21 @@ title: "Tasks: Description Enrichment [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Setup
+## 2. PHASE 1: SETUP
 
 - [x] T001 Create shared `validateDescription(description: string): DescriptionTier` function (REQ-001) (`scripts/utils/file-helpers.ts`). Evidence: tiered validator at lines 112-138 with `DescriptionValidationResult` return type.
 - [x] T002 Implement `placeholder` tier: empty, whitespace-only, TBD, todo, pending, n/a, "Recent commit:", bare changed/modified (REQ-004) (`scripts/utils/file-helpers.ts`). Evidence: `PLACEHOLDER_PATTERNS` array (lines 26-37) covers all listed patterns.
 - [x] T003 Implement `activity-only` tier: describes action without semantic content (REQ-001) (`scripts/utils/file-helpers.ts`). Evidence: `ACTIVITY_ONLY_PATTERNS` array (lines 39-44) matches action-only descriptions.
 - [x] T004 Implement `semantic` tier: contains meaningful description of what changed and why (REQ-001) (`scripts/utils/file-helpers.ts`). Evidence: default tier for descriptions >= 16 chars that pass placeholder and activity-only filters.
 - [x] T005 Implement `high-confidence` tier: semantic content with specific technical details (REQ-001) (`scripts/utils/file-helpers.ts`). Evidence: `HIGH_CONFIDENCE_HINTS` (lines 46-50), requires >= 48 chars and >= 2 signal matches.
-- [x] T006 Replace `isDescriptionValid()` calls in file-extractor with unified validator (REQ-001) (`scripts/extractors/file-extractor.ts`). Evidence: imports `isDescriptionValid` from `utils/file-helpers.ts` (line 15).
+- [x] T006 Align file-extractor to shared file-helpers validator path (REQ-001) (`scripts/extractors/file-extractor.ts`). Evidence: imports `isDescriptionValid` compatibility wrapper from `utils/file-helpers.ts`, which delegates to canonical tier logic used by `validateDescription()`.
 - [x] T007 Replace `hasMeaningfulDescription()` calls in quality-scorer with unified validator (REQ-001) (`scripts/core/quality-scorer.ts`). Evidence: `hasMeaningfulDescription()` fully removed, replaced with `validateDescription()` + `DESCRIPTION_TIER_SCORES` (lines 95-120).
 <!-- /ANCHOR:phase-1 -->
 
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Implementation
+## 3. PHASE 2: IMPLEMENTATION
 
 ### Provenance Trust Weighting
 - [x] T008 Add trust multiplier lookup: git=1.0, tool/spec-folder=0.8, synthetic=0.5, unknown=0.3 (REQ-002) (`scripts/core/quality-scorer.ts`). Evidence: `getDescriptionTrustMultiplier()` at lines 102-116.
@@ -55,19 +58,19 @@ title: "Tasks: Description Enrichment [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: Verification
+## 4. PHASE 3: VERIFICATION
 
 - [x] T015 Add unit tests for unified validator with all stub patterns. Evidence: `description-enrichment.vitest.ts` (5 tests, all passing).
 - [x] T016 Add unit tests for provenance trust multiplier application in quality scoring. Evidence: `quality-scorer-calibration.vitest.ts` covers trust multiplier paths.
 - [x] T017 Add unit tests for magnitude derivation from changeScores ranges. Evidence: `description-enrichment.vitest.ts` covers magnitude derivation.
-- [x] T018 Verify no description passes one former gate but fails the other (SC-001). Evidence: `hasMeaningfulDescription()` fully removed. Single code path via `validateDescription()`.
+- [x] T018 Verify no description passes one former gate but fails the other on the canonical extraction/scoring path (SC-001). Evidence: `hasMeaningfulDescription()` is removed from scorer usage and canonical shared tier logic is provided via `validateDescription()` (with compatibility wrapper support for `isDescriptionValid()`).
 - [x] T019 Verify existing test baselines still pass. Evidence: `tsc --noEmit` clean, `test-extractors-loaders.js` exit 0.
 <!-- /ANCHOR:phase-3 -->
 
 ---
 
 <!-- ANCHOR:completion -->
-## Completion Criteria
+## 5. COMPLETION CRITERIA
 
 - [x] All tasks marked `[x]`
 - [x] No `[B]` blocked tasks remaining
@@ -77,7 +80,7 @@ title: "Tasks: Description Enrichment [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:cross-refs -->
-## Cross-References
+## 6. CROSS-REFERENCES
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`

@@ -3,6 +3,9 @@ title: "Implementation Plan: Auto-Detection Fixes"
 ---
 # Implementation Plan: Auto-Detection Fixes
 
+This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.
+
+
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
@@ -85,13 +88,13 @@ Multi-fix phase -- three independent sub-problems addressed in sequence with sha
 <!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
-### Phase 1: Low-Confidence Fall-Through Guards — Priority 2.7 and 3.5 (COMPLETED)
+### Phase 1: Low-Confidence Fall-Through Guards, Priority 2.7 and 3.5 (COMPLETED)
 
 - [x] Added `lowConfidence` fall-through guard at Priority 2.7 (git-status) in `folder-detector.ts` (~L1387): `const selected` changed to `let selected: AutoDetectCandidate | null`, `lowConfidence` check added, falls through to Priority 4 on low confidence with warning log
 - [x] Added `lowConfidence` fall-through guard at Priority 3.5 (session-activity) in `folder-detector.ts` (~L1437): same pattern applied
 - [x] Previously these always auto-selected the first candidate even when `lowConfidence: true`; now they fall through to Priority 4 for additional disambiguation
 
-### Phase 2: Decision Dedup Fix (REQ-002) — COMPLETED
+### Phase 2: Decision Dedup Fix (REQ-002) (COMPLETED)
 
 - [x] Guard at `decision-extractor.ts` lines 353-354: `if (processedManualDecisions.length > 0) { decisionObservations = []; }` [Evidence: decision-extractor.ts:353-354; test SC-002 proves 4+4→4]
 
@@ -101,21 +104,21 @@ Multi-fix phase -- three independent sub-problems addressed in sequence with sha
 - [x] Fix 2b: Added `entry.isSymbolicLink()` skip guard in `listSpecFolderKeyFiles` in `workflow.ts`, matching existing pattern from `subfolder-utils.ts:84`
 - [x] Tree-thinning content fix: `resolveTreeThinningContent` at workflow.ts:567 reads actual file content via `fsSync.readFileSync` [Evidence: workflow.ts:567]
 
-### Phase 4: Session Activity Signal (REQ-004) — COMPLETED
+### Phase 4: Session Activity Signal (REQ-004) (COMPLETED)
 
 - [x] `session-activity-signal.ts` created with `SessionActivitySignal` interface and `buildSessionActivitySignal()` function
 - [x] Priority 3.5 signal wired in `folder-detector.ts` with `lowConfidence` fall-through guard
 - [x] Full confidence boost wiring: Read=0.2, Edit/Write=0.3, git-changed=0.25, transcript=0.1; test confirms total of 0.95
 
-### Phase 5: Parent-Affinity Boost (REQ-005) — COMPLETED
+### Phase 5: Parent-Affinity Boost (REQ-005) (COMPLETED)
 
 - [x] `applyParentAffinityBoost` at folder-detector.ts:380-396 activates when `childCandidates.length > 3`, sets `effectiveDepth = Math.max(candidate.depth, ...childCandidates.map(...))` [Evidence: folder-detector.ts:390-394; test "promotes the parent folder" confirms]
 
-### Phase 6: Blocker Validation (REQ-006) — COMPLETED
+### Phase 6: Blocker Validation (REQ-006) (COMPLETED)
 
 - [x] `INVALID_BLOCKER_PATTERNS` at session-extractor.ts:222-231 rejects markdown headers (`/^##\s/`), leading quotes/backticks, and quote transition artifacts; `isInvalidBlockerText` at line 233 applies all patterns [Evidence: session-extractor.ts:222-231; test "rejects structural blocker artifacts"]
 
-### Phase 7: Template Contract Wiring (REQ-007) — COMPLETED
+### Phase 7: Template Contract Wiring (REQ-007) (COMPLETED)
 
 - [x] `buildMemoryClassificationContext` at workflow.ts:758, `buildSessionDedupContext` at workflow.ts:808, `buildCausalLinksContext` at workflow.ts:860+ all wired into template rendering context [Evidence: workflow.ts:758+; test at auto-detection-fixes.vitest.ts:364 verifies all three fields]
 <!-- /ANCHOR:phases -->

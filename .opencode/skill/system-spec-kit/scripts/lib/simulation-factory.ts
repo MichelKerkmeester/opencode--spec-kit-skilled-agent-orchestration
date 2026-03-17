@@ -132,7 +132,7 @@ function formatTimestamp(date: Date | string | number = new Date(), format: SimT
 }
 
 // NOTE: Similar to extractors/session-extractor.ts:generateSessionId but differs in randomness source.
-// This version uses crypto.randomBytes (CSPRNG); session-extractor uses Math.random() (pseudorandom).
+// Both this file and session-extractor use crypto.randomBytes (CSPRNG).
 // Same output format: session-{timestamp}-{9-char-random}
 function generateSessionId(): string {
   return `session-${Date.now()}-${secureRandomString(9)}`;

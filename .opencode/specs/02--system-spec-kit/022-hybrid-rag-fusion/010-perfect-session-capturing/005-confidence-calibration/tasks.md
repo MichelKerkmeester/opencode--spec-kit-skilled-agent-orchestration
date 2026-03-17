@@ -1,7 +1,10 @@
 ---
-title: "Tasks: Confidence Calibration [template:level_1/tasks.md]"
+title: "Tasks: Confidence Calibration [template:level_2/tasks.md]"
 ---
 # Tasks: Confidence Calibration
+
+This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.
+
 
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
@@ -9,7 +12,7 @@ title: "Tasks: Confidence Calibration [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:notation -->
-## Task Notation
+## 1. TASK NOTATION
 
 | Prefix | Meaning |
 |--------|---------|
@@ -24,7 +27,7 @@ title: "Tasks: Confidence Calibration [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Setup
+## 2. PHASE 1: SETUP
 
 - [x] T001 Add `CHOICE_CONFIDENCE: number` (0.0-1.0) to `DecisionRecord` type (REQ-001) (`scripts/types/session-types.ts`). Evidence: added canonical field to `DecisionRecord`.
 - [x] T002 Add `RATIONALE_CONFIDENCE: number` (0.0-1.0) to `DecisionRecord` type (REQ-001) (`scripts/types/session-types.ts`). Evidence: added canonical field to `DecisionRecord`.
@@ -35,7 +38,7 @@ title: "Tasks: Confidence Calibration [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Implementation
+## 3. PHASE 2: IMPLEMENTATION
 
 ### Extractor Update
 - [x] T005 Refactor confidence computation in decision extractor to produce dual values (REQ-001) (`scripts/extractors/decision-extractor.ts`). Evidence: added shared `buildDecisionConfidence()` helper for manual and observation-derived decisions.
@@ -56,28 +59,28 @@ title: "Tasks: Confidence Calibration [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: Verification
+## 4. PHASE 3: VERIFICATION
 
 - [x] T016 Add unit tests for dual confidence computation with various input combinations. Evidence: added `scripts/tests/decision-confidence.vitest.ts` covering alternatives-only, rationale-heavy, split, override, and clamping cases.
 - [x] T017 Add regression tests verifying legacy `CONFIDENCE` matches `Math.min` of the two new fields. Evidence: extractor/loaders regression and Vitest assertions validate `CONFIDENCE === Math.min(choice, rationale)`.
 - [x] T018 Verify decision tree output includes split labels for divergent confidence cases. Evidence: `memory-render-fixture.vitest.ts` and `test-scripts-modules.js` both exercise split rendering.
-- [ ] T019 Verify existing test baselines still pass with the derived field. Evidence: targeted suites passed on 2026-03-16, but `test-scripts-modules.js` still has four unrelated pre-existing failures (`T-019d`, `T-024e`, `T-024f`, `T-032`).
+- [x] T019 Verify existing test baselines still pass with the derived field. Evidence: `node scripts/tests/test-scripts-modules.js` passed with `384` passed / `0` failed / `5` skipped on 2026-03-17.
 <!-- /ANCHOR:phase-3 -->
 
 ---
 
 <!-- ANCHOR:completion -->
-## Completion Criteria
+## 5. COMPLETION CRITERIA
 
-- [ ] All tasks marked `[x]`
-- [x] No `[B]` blocked tasks remaining. Evidence: remaining unchecked item is an unrelated pre-existing baseline suite failure, not a phase blocker.
-- [x] Manual verification passed. Evidence: `npm run typecheck`, targeted Vitest suites, and `node scripts/tests/test-extractors-loaders.js` all passed on 2026-03-16.
+- [x] All tasks marked `[x]`. Evidence: T001-T019 are complete after the 2026-03-17 baseline rerun.
+- [x] No `[B]` blocked tasks remaining. Evidence: T001-T019 are complete and no blocked or deferred task remains in this phase.
+- [x] Manual verification passed. Evidence: `npm run typecheck`, targeted Vitest suites, and `node scripts/tests/test-extractors-loaders.js` all passed, with the baseline rerun refreshed on 2026-03-17.
 <!-- /ANCHOR:completion -->
 
 ---
 
 <!-- ANCHOR:cross-refs -->
-## Cross-References
+## 6. CROSS-REFERENCES
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`

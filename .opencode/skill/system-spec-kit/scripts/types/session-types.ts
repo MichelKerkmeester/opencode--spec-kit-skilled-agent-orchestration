@@ -107,6 +107,7 @@ export interface CollectedDataBase {
   userPrompts?: UserPrompt[];
   SPEC_FOLDER?: string;
   FILES?: CollectedFileEntry[];
+  SUMMARY?: string;
   filesModified?: Array<{ path: string; changes_summary?: string }>;
   _manualDecisions?: Array<string | Record<string, unknown>>;
   _manualTriggerPhrases?: string[];
@@ -115,6 +116,9 @@ export interface CollectedDataBase {
   postflight?: PostflightData;
   [key: string]: unknown;
 }
+
+/** Reusable collected-data subset helper derived from the canonical base contract. */
+export type CollectedDataSubset<Keys extends keyof CollectedDataBase> = Pick<CollectedDataBase, Keys>;
 
 /** Normalized observation details enriched with anchors and metadata. */
 export interface ObservationDetailed {

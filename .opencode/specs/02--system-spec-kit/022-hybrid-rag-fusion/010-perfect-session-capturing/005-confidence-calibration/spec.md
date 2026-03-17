@@ -4,6 +4,9 @@ description: "Calibrate confidence signals and gating behavior with proper thres
 ---
 # Feature Specification: Confidence Calibration
 
+This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.
+
+
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
@@ -16,7 +19,7 @@ description: "Calibrate confidence signals and gating behavior with proper thres
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P1 |
-| **Status** | Review |
+| **Status** | Complete |
 | **Created** | 2026-03-16 |
 | **Branch** | `main` |
 | **Parent Spec** | ../spec.md |

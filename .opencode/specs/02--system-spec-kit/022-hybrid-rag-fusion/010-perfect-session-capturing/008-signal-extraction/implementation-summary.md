@@ -7,11 +7,12 @@ trigger_phrases: ["implementation", "summary", "signal", "extraction"]
 
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
 <!-- ANCHOR:metadata -->
-## Metadata
+## 1. METADATA
 
 | Field | Value |
 |-------|-------|
@@ -23,7 +24,7 @@ trigger_phrases: ["implementation", "summary", "signal", "extraction"]
 ---
 
 <!-- ANCHOR:what-built -->
-## What Was Built
+## 2. WHAT WAS BUILT
 
 This phase shipped the script-side semantic signal unification needed before `007-phase-classification`.
 
@@ -37,7 +38,7 @@ This phase shipped the script-side semantic signal unification needed before `00
 ---
 
 <!-- ANCHOR:how-delivered -->
-## How It Was Delivered
+## 3. HOW IT WAS DELIVERED
 
 The delivery stayed intentionally narrow so `008` could unblock `007` without destabilizing shared consumers.
 
@@ -50,7 +51,7 @@ The delivery stayed intentionally narrow so `008` could unblock `007` without de
 ---
 
 <!-- ANCHOR:decisions -->
-## Key Decisions
+## 4. KEY DECISIONS
 
 | Decision | Why |
 |----------|-----|
@@ -62,22 +63,25 @@ The delivery stayed intentionally narrow so `008` could unblock `007` without de
 ---
 
 <!-- ANCHOR:verification -->
-## Verification
+## 5. VERIFICATION
 
 | Check | Result |
 |-------|--------|
-| `npm run typecheck` | Passed |
-| `npm run build` | Passed |
-| `node mcp_server/node_modules/vitest/vitest.mjs run tests/semantic-signal-golden.vitest.ts tests/description-enrichment.vitest.ts tests/decision-confidence.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts` | Passed — 3 files, 16 tests |
-| `node scripts/tests/test-extractors-loaders.js` | Passed — 299 passed, 0 failed (after MIN_CONTENT_LENGTH fix for topic mode) |
-| `node scripts/tests/test-scripts-modules.js` | Still reports the known unrelated baseline failures `T-024e`, `T-024f`, and `T-032`; no new failures appeared in the changed extraction seams |
+| `cd .opencode/skill/system-spec-kit && npm run typecheck` | Passed |
+| `cd .opencode/skill/system-spec-kit/scripts && npm run build` | Passed |
+| `cd .opencode/skill/system-spec-kit/scripts && node ../mcp_server/node_modules/vitest/vitest.mjs run tests/semantic-signal-golden.vitest.ts tests/description-enrichment.vitest.ts tests/decision-confidence.vitest.ts --config ../mcp_server/vitest.config.ts` | Passed: 3 files, 16 tests |
+| `cd .opencode/skill/system-spec-kit/scripts && node tests/test-extractors-loaders.js` | Passed: 307 passed, 0 failed |
+| `cd .opencode/skill/system-spec-kit/scripts && node tests/test-scripts-modules.js` | Passed: 384 passed, 0 failed, 5 skipped |
 <!-- /ANCHOR:verification -->
 
 ---
 
 <!-- ANCHOR:limitations -->
-## Known Limitations
+## 6. KNOWN LIMITATIONS
 
 1. The shared trigger extractor remains the canonical low-level ranking implementation; this phase unifies the script-side callers around it rather than replacing the shared package internals.
 2. `scripts/tests/test-scripts-modules.js` still has unrelated baseline failures outside this phase (`notifyDatabaseUpdated` exports and `retry-manager` re-export coverage), so the clean completion bar for `008` relies on the targeted suites above rather than that broader legacy suite.
 <!-- /ANCHOR:limitations -->
+
+
+Reference links: [spec.md](spec.md) and [plan.md](plan.md).

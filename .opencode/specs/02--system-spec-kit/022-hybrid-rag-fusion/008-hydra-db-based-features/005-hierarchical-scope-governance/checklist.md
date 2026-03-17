@@ -8,7 +8,6 @@ trigger_phrases:
 importance_tier: "critical"
 contextType: "general"
 ---
-<!-- ANCHOR:document -->
 # Verification Checklist: 005-hierarchical-scope-governance
 
 <!-- SPECKIT_LEVEL: 3+ -->
@@ -16,6 +15,7 @@ contextType: "general"
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## Verification Protocol
 
 | Priority | Handling | Completion Impact |
@@ -23,53 +23,82 @@ contextType: "general"
 | **P0** | Hard blocker | Cannot claim Phase 5 implementation complete |
 | **P1** | Required | Must complete or defer explicitly |
 | **P2** | Optional | Track as follow-up |
+<!-- /ANCHOR:protocol -->
 
 ---
 
-## P0: Planning and Scope Integrity
+<!-- ANCHOR:pre-impl -->
+## Pre-Implementation
 
-- [x] CHK-501 Scope, governance, and lifecycle requirements documented [EVIDENCE:spec.md]
-- [x] CHK-502 Dependencies on Phase 2 and Phase 6 documented [EVIDENCE:plan.md]
-- [x] CHK-503 Phase-local ADR captured [EVIDENCE:decision-record.md]
-- [x] CHK-504 Phase 2 lineage technical gate verified [EVIDENCE:../002-versioned-memory-state/checklist.md P0 9/9; validate.sh pass]
-
----
-
-## P0: Governance Verification
-
-- [x] CHK-510 Scope enforcement applied consistently [EVIDENCE:implementation-summary.md]
-- [x] CHK-511 Governed ingest rejects malformed provenance [EVIDENCE:implementation-summary.md]
-- [x] CHK-512 Retention and cascade deletion workflows validated [EVIDENCE:implementation-summary.md]
-- [x] CHK-513 Audit evidence is inspectable [EVIDENCE:implementation-summary.md]
-- [x] CHK-514 Rollback and isolation drills pass [EVIDENCE:implementation-summary.md]
+- [x] CHK-501 [P0] Scope, governance, and lifecycle requirements documented [EVIDENCE:spec.md]
+- [x] CHK-502 [P0] Dependencies on Phase 2 and Phase 6 documented [EVIDENCE:plan.md]
+- [x] CHK-503 [P1] Phase-local ADR captured [EVIDENCE:decision-record.md]
+- [x] CHK-504 [P0] Phase 2 lineage technical gate verified [EVIDENCE:../002-versioned-memory-state/checklist.md P0 9/9; validate.sh pass]
+<!-- /ANCHOR:pre-impl -->
 
 ---
 
-## P1: Documentation and Governance
+<!-- ANCHOR:code-quality -->
+## Code Quality
 
-- [x] CHK-520 Level 3+ documentation package created [EVIDENCE:README.md|spec.md|plan.md|tasks.md|checklist.md|decision-record.md|implementation-summary.md]
-- [x] CHK-521 Manual governance procedures added to the playbook [EVIDENCE:manual_testing_playbook.md NEW-122]
-- [x] CHK-522 Catalog and README surfaces updated after implementation [EVIDENCE:feature_catalog/17--governance/03-hierarchical-scope-governance-governed-ingest-retention-and-audit.md]
-- [x] CHK-523 Maintainer sign-off recorded [EVIDENCE:terminal approval recorded in session 2026-03-14]
-
----
-
-## P2: Follow-Up Quality
-
-- [x] CHK-530 Expand policy caching and latency benchmarks if needed [EVIDENCE:mcp_server/lib/governance/scope-governance.ts `createScopeFilterPredicate`|`benchmarkScopeFilter`|tests/memory-governance.vitest.ts]
-- [x] CHK-531 Add richer audit review helpers if needed [EVIDENCE:mcp_server/lib/governance/scope-governance.ts `reviewGovernanceAudit`|tests/memory-governance.vitest.ts]
-- [x] CHK-532 Save continuation context after execution [EVIDENCE:generate-context.js JSON mode; memory/ context generated 2026-03-13]
+- [x] CHK-510 [P0] Scope enforcement applied consistently [EVIDENCE:implementation-summary.md]
+- [x] CHK-511 [P0] Governed ingest rejects malformed provenance [EVIDENCE:implementation-summary.md]
+- [x] CHK-512 [P0] Retention and cascade deletion workflows validated [EVIDENCE:implementation-summary.md]
+- [x] CHK-513 [P0] Audit evidence is inspectable [EVIDENCE:implementation-summary.md]
+- [x] CHK-514 [P0] Rollback and isolation drills pass [EVIDENCE:implementation-summary.md]
+<!-- /ANCHOR:code-quality -->
 
 ---
 
-## Architecture Verification
+<!-- ANCHOR:testing -->
+## Testing
 
-- [x] CHK-540 Governance-first ADR documented
-- [x] CHK-541 Isolation and lifecycle rollback strategy documented
-- [x] CHK-542 Governance design reviewed by policy reviewer [EVIDENCE:terminal approval recorded in session 2026-03-14]
+- [x] CHK-530 [P2] Policy caching and latency benchmark helpers reviewed after implementation [EVIDENCE:mcp_server/lib/governance/scope-governance.ts `createScopeFilterPredicate`|`benchmarkScopeFilter`|tests/memory-governance.vitest.ts]
+- [x] CHK-531 [P2] Audit review helpers confirmed for follow-up diagnostics [EVIDENCE:mcp_server/lib/governance/scope-governance.ts `reviewGovernanceAudit`|tests/memory-governance.vitest.ts]
+<!-- /ANCHOR:testing -->
 
 ---
 
+<!-- ANCHOR:security -->
+## Security
+
+- Scope enforcement, provenance validation, and audit evidence remain covered by `CHK-510`, `CHK-511`, and `CHK-513` above.
+<!-- /ANCHOR:security -->
+
+---
+
+<!-- ANCHOR:docs -->
+## Documentation
+
+- [x] CHK-520 [P1] Level 3+ documentation package created [EVIDENCE:README.md|spec.md|plan.md|tasks.md|checklist.md|decision-record.md|implementation-summary.md]
+- [x] CHK-521 [P1] Manual governance procedures added to the playbook [EVIDENCE:manual_testing_playbook.md NEW-122]
+- [x] CHK-522 [P1] Catalog and README surfaces updated after implementation [EVIDENCE:feature_catalog/17--governance/03-hierarchical-scope-governance-governed-ingest-retention-and-audit.md]
+- [x] CHK-523 [P1] Maintainer sign-off recorded [EVIDENCE:terminal approval recorded in session 2026-03-14]
+<!-- /ANCHOR:docs -->
+
+---
+
+<!-- ANCHOR:file-org -->
+## File Organization
+
+- [x] CHK-090 [P1] Phase changes stay scoped to this phase folder and referenced runtime surfaces [EVIDENCE:tasks.md|implementation-summary.md]
+- [x] CHK-091 [P1] No stray implementation artifacts are required outside the documented phase/package paths [EVIDENCE:spec.md|implementation-summary.md]
+- [x] CHK-532 [P2] Save continuation context after execution [EVIDENCE:generate-context.js JSON mode; memory/ context generated 2026-03-13]
+<!-- /ANCHOR:file-org -->
+
+---
+
+<!-- ANCHOR:arch-verify -->
+## L3+: ARCHITECTURE VERIFICATION
+
+- [x] CHK-540 [P1] Governance-first ADR documented [EVIDENCE:decision-record.md]
+- [x] CHK-541 [P1] Isolation and lifecycle rollback strategy documented [EVIDENCE:plan.md]
+- [x] CHK-542 [P1] Governance design reviewed by policy reviewer [EVIDENCE:terminal approval recorded in session 2026-03-14]
+<!-- /ANCHOR:arch-verify -->
+
+---
+
+<!-- ANCHOR:summary -->
 ## Verification Summary
 
 | Category | Total | Verified |
@@ -79,15 +108,16 @@ contextType: "general"
 | P2 Items | 3 | 3/3 |
 
 **Verification Date**: 2026-03-14
+<!-- /ANCHOR:summary -->
 
 ---
 
-## Sign-Off
+<!-- ANCHOR:sign-off -->
+## L3+: SIGN-OFF
 
 | Approver | Role | Status | Date |
 |----------|------|--------|------|
 | System-spec-kit maintainer | Technical Lead | Approved | 2026-03-14 |
 | Governance reviewer | Policy Reviewer | Approved | 2026-03-14 |
 | Release reviewer | QA/Release | Approved | 2026-03-14 |
-
-<!-- /ANCHOR:document -->
+<!-- /ANCHOR:sign-off -->

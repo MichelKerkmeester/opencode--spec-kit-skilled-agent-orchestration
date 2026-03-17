@@ -1,7 +1,10 @@
 ---
-title: "Tasks: Auto-Detection Fixes [template:level_1/tasks.md]"
+title: "Tasks: Auto-Detection Fixes [template:level_2/tasks.md]"
 ---
 # Tasks: Auto-Detection Fixes
+
+This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.
+
 
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
@@ -9,7 +12,7 @@ title: "Tasks: Auto-Detection Fixes [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:notation -->
-## Task Notation
+## 1. TASK NOTATION
 
 | Prefix | Meaning |
 |--------|---------|
@@ -24,7 +27,7 @@ title: "Tasks: Auto-Detection Fixes [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Setup
+## 2. PHASE 1: SETUP
 
 - [x] T001 Review `folder-detector.ts` detection cascade and identify insertion points for Priority 2.7 and Priority 3.5 signals (`scripts/spec-folder/folder-detector.ts`) [Evidence: reviewed cascade, identified ~L1387 and ~L1437 as guard insertion points]
 - [x] T002 Review `decision-extractor.ts` lines 260-261 and the observation/manual-decision concatenation boundary (`scripts/extractors/decision-extractor.ts`) [Evidence: reviewed file, dedup fix scoped to separate follow-on]
@@ -36,7 +39,7 @@ title: "Tasks: Auto-Detection Fixes [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Implementation
+## 3. PHASE 2: IMPLEMENTATION
 
 ### Low-Confidence Fall-Through Guards: Priority 2.7 and 3.5 (REQ-001 / REQ-004 partial)
 
@@ -85,7 +88,7 @@ title: "Tasks: Auto-Detection Fixes [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: Verification
+## 4. PHASE 3: VERIFICATION
 
 - [x] T028 Unit tests: auto-detection-fixes suite (Vitest) [Evidence: 7/7 passing]
 - [x] T029 Unit tests: template-structure suite (Vitest) [Evidence: 5/5 passing]
@@ -100,7 +103,7 @@ title: "Tasks: Auto-Detection Fixes [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:completion -->
-## Completion Criteria
+## 5. COMPLETION CRITERIA
 
 - [x] All tasks marked `[x]` (Fix 1, Fix 2a, Fix 2b, REQ-002, REQ-005, REQ-006, REQ-007 all confirmed implemented)
 - [x] No `[B]` blocked tasks remaining
@@ -110,7 +113,7 @@ title: "Tasks: Auto-Detection Fixes [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:cross-refs -->
-## Cross-References
+## 6. CROSS-REFERENCES
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`

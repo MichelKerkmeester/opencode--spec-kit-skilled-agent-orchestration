@@ -1,3 +1,6 @@
+// ───────────────────────────────────────────────────────────────────
+// MODULE: Runtime Memory Input Tests
+// ───────────────────────────────────────────────────────────────────
 // TEST: Runtime Memory Inputs
 // Covers explicit data-file failures and next-steps normalization
 import fs from 'node:fs/promises';

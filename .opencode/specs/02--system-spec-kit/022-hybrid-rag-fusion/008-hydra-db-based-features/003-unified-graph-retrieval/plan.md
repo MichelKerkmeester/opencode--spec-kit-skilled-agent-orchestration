@@ -8,7 +8,6 @@ trigger_phrases:
 importance_tier: "critical"
 contextType: "implementation"
 ---
-<!-- ANCHOR:document -->
 # Implementation Plan: 003-unified-graph-retrieval
 
 <!-- SPECKIT_LEVEL: 3+ -->
@@ -16,6 +15,7 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:summary -->
 ## 1. SUMMARY
 
 ### Technical Context
@@ -30,8 +30,11 @@ contextType: "implementation"
 ### Overview
 Phase 3 integrates graph context into the main retrieval flow. The plan focuses on bounded graph contributions, deterministic ordering, explainability traces, and rollback-safe activation so the retrieval system becomes more coherent without becoming opaque or unstable.
 
+<!-- /ANCHOR:summary -->
+
 ---
 
+<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready
@@ -47,8 +50,11 @@ Phase 3 integrates graph context into the main retrieval flow. The plan focuses 
 - [x] Kill-switch rollback path validated
 - [x] Docs and playbook reflect shipped behavior
 
+<!-- /ANCHOR:quality-gates -->
+
 ---
 
+<!-- ANCHOR:architecture -->
 ## 3. ARCHITECTURE
 
 ### Pattern
@@ -68,8 +74,11 @@ In-process graph-fusion layer inside the current retrieval pipeline, with bounde
 4. Determinism rules finalize stable ordering.
 5. Explainability and telemetry record how graph signals affected results.
 
+<!-- /ANCHOR:architecture -->
+
 ---
 
+<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase A: Scoring Contract
@@ -87,8 +96,11 @@ In-process graph-fusion layer inside the current retrieval pipeline, with bounde
 - [x] Add retrieval regression suites
 - [x] Add manual playbook scenarios for graph explainability
 
+<!-- /ANCHOR:phases -->
+
 ---
 
+<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
@@ -99,8 +111,11 @@ In-process graph-fusion layer inside the current retrieval pipeline, with bounde
 | Performance | Latency and graph-expansion overhead | Benchmark scripts |
 | Manual | Explainability and rollback walkthroughs | Playbook scenarios |
 
+<!-- /ANCHOR:testing -->
+
 ---
 
+<!-- ANCHOR:dependencies -->
 ## 6. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
@@ -110,8 +125,11 @@ In-process graph-fusion layer inside the current retrieval pipeline, with bounde
 | Parent ADR-002 | Architecture | Green | Service-boundary choice becomes ambiguous |
 | Phase 1 build/test controls | Internal | Green | Regression evidence is harder to trust |
 
+<!-- /ANCHOR:dependencies -->
+
 ---
 
+<!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
 - **Trigger**: Latency regression, unstable ranking, opaque explainability, or degraded quality.
@@ -120,6 +138,8 @@ In-process graph-fusion layer inside the current retrieval pipeline, with bounde
 2. Re-run baseline retrieval smoke tests.
 3. Compare trace and ranking deltas.
 4. Revert graph-fusion changes if the issue cannot be isolated quickly.
+
+<!-- /ANCHOR:rollback -->
 
 ---
 
@@ -232,7 +252,7 @@ Phase 2 lineage -> Graph scoring contract -> Pipeline integration -> Regression 
 
 ### ADR-301: Keep Graph Fusion In-Process and Deterministic
 
-**Status**: Proposed for Phase 3 implementation
+**Status**: Accepted
 
 **Context**: Retrieval quality needs improvement without adding an external service or opaque ranking path.
 
@@ -269,9 +289,9 @@ Phase 2 lineage -> Graph scoring contract -> Pipeline integration -> Regression 
 
 | ID | Name | Owner | Files | Status |
 |----|------|-------|-------|--------|
-| W-A | Scoring contract | Primary | search scoring modules | Planned |
-| W-B | Integration and traces | Primary | retrieval and telemetry modules | Planned |
-| W-C | Regression and docs | Primary | tests, benchmarks, playbook | Planned |
+| W-A | Scoring contract | Primary | search scoring modules | Complete |
+| W-B | Integration and traces | Primary | retrieval and telemetry modules | Complete |
+| W-C | Regression and docs | Primary | tests, benchmarks, playbook | Complete |
 
 ### Sync Points
 
@@ -298,5 +318,3 @@ Phase 2 lineage -> Graph scoring contract -> Pipeline integration -> Regression 
 1. Ranking instability -> Phase 3 ADR review
 2. Latency regression -> benchmark and rollback review
 3. Contract conflict with Phase 4 -> parent roadmap decision
-
-<!-- /ANCHOR:document -->

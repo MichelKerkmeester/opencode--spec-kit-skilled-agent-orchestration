@@ -524,6 +524,9 @@ export function assertSharedSpaceAccess(
   if (!role) {
     return { allowed: false, reason: 'shared_space_membership_required' };
   }
+  if (requiredRole === 'owner' && role !== 'owner') {
+    return { allowed: false, reason: 'shared_space_owner_required' };
+  }
   if (requiredRole === 'editor' && role === 'viewer') {
     return { allowed: false, reason: 'shared_space_editor_required' };
   }

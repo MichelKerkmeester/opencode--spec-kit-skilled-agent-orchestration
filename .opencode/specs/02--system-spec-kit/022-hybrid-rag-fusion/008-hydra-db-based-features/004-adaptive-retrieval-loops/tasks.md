@@ -8,7 +8,6 @@ trigger_phrases:
 importance_tier: "critical"
 contextType: "general"
 ---
-<!-- ANCHOR:document -->
 # Tasks: 004-adaptive-retrieval-loops
 
 <!-- SPECKIT_LEVEL: 3+ -->
@@ -16,6 +15,7 @@ contextType: "general"
 
 ---
 
+<!-- ANCHOR:notation -->
 ## Task Notation
 
 | Prefix | Meaning |
@@ -27,43 +27,62 @@ contextType: "general"
 
 **Task Format**: `T### [P?] Description (file path)`
 
+<!-- /ANCHOR:notation -->
+
 ---
 
-## Track A: Contract and Policy Design
+<!-- ANCHOR:phase-1 -->
+## Phase 1: Setup
+
+### Track A: Contract and Policy Design
 
 - [x] T401 Create the Phase 4 Level 3+ documentation package
 - [x] T402 Define signal contract and thresholds
 - [x] T403 Define bounded-update rules
 - [x] T404 Define promotion and rollback criteria
 
+<!-- /ANCHOR:phase-1 -->
+
 ---
 
-## Track B: Shadow Evaluation Implementation
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
+
+### Track B: Shadow Evaluation Implementation
 
 - [x] T410 Capture access, outcome, and correction signals
 - [x] T411 Implement shadow-mode adaptive scoring
 - [x] T412 Record adaptive decision traces
 - [x] T413 Add kill switches and cache reset path
 
+
 ---
 
-## Track C: Validation and Rollout Readiness
+### Track C: Validation and Rollout Readiness
 
 - [x] T420 Add regression comparisons against the Phase 3 baseline
 - [x] T421 Add bounded-update tests
 - [x] T422 Add rollback drills
 - [x] T423 Add manual adaptive-validation procedures to the playbook
 
+<!-- /ANCHOR:phase-2 -->
+
 ---
 
-## Coordination Checkpoints
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
+
+### Coordination Checkpoints
 
 - [x] T430 Confirm Phase 3 technical gate is verified
 - [x] T431 Confirm Phase 5 governance rules do not conflict with promotion policy
 - [x] T432 Update `implementation-summary.md` with execution evidence when work begins
 
+<!-- /ANCHOR:phase-3 -->
+
 ---
 
+<!-- ANCHOR:completion -->
 ## Completion Criteria
 
 - [x] Adaptive evaluation runs in shadow mode only
@@ -71,8 +90,11 @@ contextType: "general"
 - [x] Rollback disables adaptive effects safely
 - [x] No `[B]` blocked tasks remain
 
+<!-- /ANCHOR:completion -->
+
 ---
 
+<!-- ANCHOR:cross-refs -->
 ## Cross-References
 
 - **Specification**: `spec.md`
@@ -90,12 +112,11 @@ CORE TEMPLATE (~60 lines)
 - Add L2/L3 addendums for complexity
 -->
 
-<!-- /ANCHOR:document -->
+<!-- /ANCHOR:cross-refs -->
 
 ---
 
-<!-- ANCHOR:ai-protocol -->
-## AI EXECUTION PROTOCOL
+### AI Execution Protocol
 
 ### Pre-Task Checklist
 
@@ -125,4 +146,3 @@ CORE TEMPLATE (~60 lines)
 1. Stop work as soon as a predecessor gate, safety rule, or rollout assumption is violated.
 2. Record the blocker in `tasks.md` with `[B]` and explain the impacted downstream work.
 3. Update `implementation-summary.md` before handing the phase back for review.
-<!-- /ANCHOR:ai-protocol -->

@@ -13,6 +13,9 @@ contextType: "general"
 ---
 # Feature Specification: Per-Folder Description Infrastructure
 
+This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.
+
+
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
@@ -27,7 +30,7 @@ contextType: "general"
 | **Priority** | P1 |
 | **Status** | Complete |
 | **Created** | 2026-03-08 |
-| **Completed** | 2026-03-13 |
+| **Completed** | 2026-03-17 |
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
 | **Phase** | 14 of 16 |
@@ -141,7 +144,7 @@ Give each spec folder its own `description.json` containing identity metadata (`
 - All existing tests pass; new tests cover per-folder generation, aggregation, and uniqueness
 - Centralized `descriptions.json` is buildable from per-folder files
 - `memorySequence` does not increment on aborted saves (sufficiency/quality/contamination rejections)
-- 150/150 Vitest tests pass across 5 suites (folder-discovery 92, folder-discovery-integration 39, workflow-memory-tracking 5, slug-utils-boundary 6, slug-uniqueness 8)
+- 161/161 Vitest tests pass across 5 suites (folder-discovery 93, folder-discovery-integration 44, workflow-memory-tracking 5, slug-utils-boundary 10, slug-uniqueness 9)
 
 ### Acceptance Scenarios
 
@@ -176,16 +179,16 @@ Give each spec folder its own `description.json` containing identity metadata (`
 | Risk | Breaking existing cache consumers | High | Maintain backward-compatible `ensureDescriptionCache()` API |
 | Risk | Race conditions on concurrent writes | Medium | Atomic write pattern (temp file + fsync + rename) |
 | Risk | `workflow.ts` contention with phases 001, 002, 005, 009, 011 | Medium | Description tracking section (lines ~1674-1729) is structurally isolated from other phases' changes |
-| Dependency | Phase 006 (Description Enrichment) | Shipped | Unified `validateDescription()` in `file-helpers.ts` — description quality tiers could inform description.json generation |
+| Dependency | Phase 006 (Description Enrichment) | Shipped | Unified `validateDescription()` in `file-helpers.ts`. Description quality tiers could inform description.json generation. |
 | Dependency | Phase 008 (Signal Extraction) | Shipped | `SemanticSignalExtractor` could be used for keyword extraction in description.json |
 | Dependency | Phase 009 (Embedding Optimization) | Shipped | Weighted embedding builder in `workflow.ts` could consume description.json metadata |
-| Dependency | 010 Parent (slug-utils) | Shipped | Mustache token stripping in `slug-utils.ts` — uniqueness code builds on top of this |
+| Dependency | 010 Parent (slug-utils) | Shipped | Mustache token stripping in `slug-utils.ts`. Uniqueness code builds on top of this. |
 <!-- /ANCHOR:risks -->
 
 ---
 
 <!-- ANCHOR:nfr -->
-## L2: NON-FUNCTIONAL REQUIREMENTS
+## 7. L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
 - **NFR-P01**: Per-folder description.json read: <5ms per file
@@ -203,7 +206,7 @@ Give each spec folder its own `description.json` containing identity metadata (`
 ---
 
 <!-- ANCHOR:edge-cases -->
-## L2: EDGE CASES
+## 8. L2: EDGE CASES
 
 - Blank/whitespace-only spec.md: description.json is valid with empty `description`, empty `keywords`, intact identity metadata
 - Very long spec titles (>150 chars): Truncated per `extractDescription()` logic
@@ -216,18 +219,31 @@ Give each spec folder its own `description.json` containing identity metadata (`
 
 ---
 
+<!-- ANCHOR:complexity -->
+## 9. L2: COMPLEXITY ASSESSMENT
+
+| Dimension | Score | Notes |
+|-----------|-------|-------|
+| Scope | 14/25 | Touches folder-discovery lifecycle, create.sh integration, slug-utils uniqueness, workflow tracking, and aggregation -- contained within a clear boundary |
+| Risk | 12/25 | Concurrent write semantics and backward compatibility with existing cache consumers carry moderate risk; atomic write pattern and graceful fallback mitigate |
+| Research | 9/20 | Required review of existing description pipeline, workflow.ts save path, and downstream affinity/embedding consumers |
+| **Total** | **35/70** | **Level 2** |
+<!-- /ANCHOR:complexity -->
+
+---
+
 <!-- ANCHOR:questions -->
 ## 10. OPEN QUESTIONS
 
 ### Resolved Decisions
 
-- **Q1**: Should per-folder files include memory name history? **YES** — `memoryNameHistory` ring buffer (max 20) + `memorySequence` counter.
-- **Q2**: Should centralized file be deprecated? **NO** — Retained as build-time aggregation artifact.
+- **Q1**: Should per-folder files include memory name history? **YES**. `memoryNameHistory` ring buffer (max 20) + `memorySequence` counter.
+- **Q2**: Should centralized file be deprecated? **NO**. Retained as build-time aggregation artifact.
 
 ### Known Limitations
 
 - **L1: spec-affinity schema gap**: `spec-affinity.ts` (`buildSpecAffinityTargets()` line 244) reads `description.json` looking for `triggerPhrases` and `title` fields. The `PerFolderDescription` schema defines `keywords` and `description` but not `triggerPhrases` or `title`. The affinity system falls back to spec.md frontmatter trigger_phrases, so this is functional but suboptimal. Adding `triggerPhrases` to the schema is a potential future enhancement.
-- **L2: CHK-027 concurrent writes**: Deferred as P2. OS-level safety provided by atomic temp-then-rename pattern.
+- **L2: concurrent-write scope**: Two-writer parallel-save integrity is now proven directly by `folder-discovery-integration.vitest.ts`. Broader multi-process stress beyond the checklist contract remains out of scope for this phase.
 
 ### 010 Pipeline Integration
 
@@ -238,8 +254,8 @@ This phase provides prerequisite infrastructure consumed by the 010 session-capt
 | `spec-affinity.ts` | Reads `description`/`keywords` for target-spec affinity matching | `buildSpecAffinityTargets()` line 244 |
 | `spec-folder-extractor.ts` | Reads `description.json` during spec-folder context extraction | Line 281 |
 | `workflow.ts` | Reads `memoryNameHistory` for slug alternatives; writes `memorySequence` + history | Lines 1314-1327 (read), 1674-1729 (write) |
-| `quality-scorer.ts` | Indirect — `_provenance` on files uses description tiers from `file-helpers.ts` (Phase 006) | Trust multiplier scoring |
-| Embedding pipeline | Indirect — description metadata could feed `buildWeightedDocumentText()` (Phase 009) | Potential future integration |
+| `quality-scorer.ts` | Indirect: `_provenance` on files uses description tiers from `file-helpers.ts` (Phase 006) | Trust multiplier scoring |
+| Embedding pipeline | Indirect: description metadata could feed `buildWeightedDocumentText()` (Phase 009) | Potential future integration |
 
 The `memorySequence` counter correctly does NOT increment on saves aborted by 010's sufficiency gate (`INSUFFICIENT_CONTEXT_ABORT`), contamination gate, or quality gate, because the tracking code at line 1674 is gated on `ctxFileWritten`.
 <!-- /ANCHOR:questions -->

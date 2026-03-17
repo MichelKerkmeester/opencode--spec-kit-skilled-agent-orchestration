@@ -8,7 +8,7 @@ trigger_phrases:
 importance_tier: "critical"
 contextType: "decision"
 ---
-<!-- ANCHOR:document -->
+<!-- ANCHOR:adr-001 -->
 # Decision Record: 003-unified-graph-retrieval
 
 <!-- SPECKIT_LEVEL: 3+ -->
@@ -99,4 +99,4 @@ The server already has hybrid candidate generation and graph-adjacent signals. S
 
 **How to roll back**: disable graph fusion, confirm baseline retrieval behavior, and revert the in-process scoring changes if needed.
 
-<!-- /ANCHOR:document -->
+<!-- /ANCHOR:adr-001 -->

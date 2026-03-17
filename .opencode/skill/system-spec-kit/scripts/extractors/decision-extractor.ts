@@ -15,7 +15,7 @@ import { generateDecisionTree } from '../lib/decision-tree-generator';
 import type { DecisionNode } from '../lib/decision-tree-generator';
 import * as simFactory from '../lib/simulation-factory';
 import type {
-  CollectedDataBase,
+  CollectedDataSubset,
   DecisionOption,
   DecisionRecord,
   DecisionData,
@@ -25,11 +25,8 @@ import type {
 export type { DecisionOption, DecisionRecord, DecisionData };
 
 /* ───────────────────────────────────────────────────────────────
-   1. INTERFACES
+   INTERFACES
 ------------------------------------------------------------------*/
-
-/** Decision-focused subset of collected session data. */
-export type CollectedDataForDecisions = Pick<CollectedDataBase, '_manualDecisions' | 'SPEC_FOLDER' | 'userPrompts' | 'observations'>;
 
 // F-32: Word boundaries prevent partial matches (e.g., "undecided" matching "decided")
 const DECISION_CUE_REGEX = /\b(decided|chose|will use|approach is|going with|rejected|we'll|selected|prefer|adopt)\b/i;
@@ -137,7 +134,7 @@ function extractSentenceAroundCue(text: string): string | null {
   return sentence.slice(0, 200);
 }
 
-function buildLexicalDecisionObservations(collectedData: CollectedDataForDecisions): Array<{
+function buildLexicalDecisionObservations(collectedData: CollectedDataSubset<'_manualDecisions' | 'SPEC_FOLDER' | 'userPrompts' | 'observations'>): Array<{
   type: string;
   title: string;
   narrative: string;
@@ -183,7 +180,7 @@ function buildLexicalDecisionObservations(collectedData: CollectedDataForDecisio
 ------------------------------------------------------------------*/
 
 async function extractDecisions(
-  collectedData: CollectedDataForDecisions | null
+  collectedData: CollectedDataSubset<'_manualDecisions' | 'SPEC_FOLDER' | 'userPrompts' | 'observations'> | null
 ): Promise<DecisionData> {
   const manualDecisions = collectedData?._manualDecisions || [];
 
@@ -598,6 +595,6 @@ async function extractDecisions(
 
 export {
   extractDecisions,
-  // Backward-compatible alias
+  // Legacy alias — retained for backward compatibility with external callers
   extractDecisions as extractDecisions_alias
 };

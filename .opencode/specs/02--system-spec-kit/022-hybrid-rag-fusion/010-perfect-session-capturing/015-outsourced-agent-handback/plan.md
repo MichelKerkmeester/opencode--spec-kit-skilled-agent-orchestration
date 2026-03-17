@@ -6,6 +6,9 @@ importance_tier: "normal"
 contextType: "general"
 ---
 # Implementation Plan: Outsourced Agent Memory Capture
+
+This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.
+
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
@@ -24,7 +27,7 @@ contextType: "general"
 | **Testing** | Targeted Vitest, `npm run lint` (`tsc --noEmit`), alignment-drift verification, `validate.sh` |
 
 ### Overview
-This work now lands in four layers: runtime safeguards for explicit JSON-mode input handling, CLI handback documentation updates across all 8 relevant `cli-*` docs, a dedicated doc-regression test plus feature-catalog alignment, and spec-folder reconciliation so the written evidence matches the current repository state. The plan uses fresh 2026-03-16 verification instead of inherited 013-era claims.
+This work now lands in four layers: runtime safeguards for explicit JSON-mode input handling, CLI handback documentation updates across all 8 relevant `cli-*` docs, a dedicated doc-regression test plus feature-catalog alignment, and spec-folder reconciliation so the written evidence matches the current repository state. The plan uses fresh 2026-03-17 verification instead of inherited 013-era claims.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -42,7 +45,7 @@ This work now lands in four layers: runtime safeguards for explicit JSON-mode in
 - [x] Next-step normalization and `NEXT_ACTION` persistence are documented correctly
 - [x] All 8 relevant `cli-*` docs reflect redact-and-scrub, snake_case acceptance, rejection-code guidance, and minimum-payload guidance
 - [x] Feature-catalog and regression-test coverage protect the handback contract from drifting
-- [x] Spec docs use fresh 2026-03-16 verification and no longer rely on stale 013-era evidence
+- [x] Spec docs use fresh 2026-03-17 verification and no longer rely on stale 013-era evidence
 - [x] Spec-folder validation run recorded
 <!-- /ANCHOR:quality-gates -->
 
@@ -97,7 +100,7 @@ Caller prepares /tmp/save-context-data.json
 
 ### Phase 3: Verification and Reconciliation (tasks.md: "Phase 3: Verification" per template)
 - [x] Rerun the targeted runtime-plus-doc Vitest lane and record the actual `2 files / 32 tests` result
-- [x] Verify alignment drift currently reports `244` scanned files, `0 findings`, and `0 warnings`
+- [x] Verify alignment drift currently reports `246` scanned files, `0 findings`, and `0 warnings`
 - [x] Record current `npm run lint` (`tsc --noEmit`) rerun status as passing evidence
 - [x] Verify fresh JSON-mode handback behavior with one successful write and one thin-payload `INSUFFICIENT_CONTEXT_ABORT`
 - [x] Run `validate.sh` on this spec folder
@@ -142,7 +145,7 @@ Caller prepares /tmp/save-context-data.json
 ---
 
 <!-- ANCHOR:phase-deps -->
-## L2: PHASE DEPENDENCIES
+## 8. L2: PHASE DEPENDENCIES
 
 ```text
 Phase 1 (Runtime Safeguards) -> Phase 2 (CLI Docs) -> Phase 3 (Verify and Reconcile)
@@ -158,7 +161,7 @@ Phase 1 (Runtime Safeguards) -> Phase 2 (CLI Docs) -> Phase 3 (Verify and Reconc
 ---
 
 <!-- ANCHOR:effort -->
-## L2: EFFORT ESTIMATION
+## 9. L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
 |-------|------------|------------------|
@@ -171,7 +174,7 @@ Phase 1 (Runtime Safeguards) -> Phase 2 (CLI Docs) -> Phase 3 (Verify and Reconc
 ---
 
 <!-- ANCHOR:enhanced-rollback -->
-## L2: ENHANCED ROLLBACK
+## 10. L2: ENHANCED ROLLBACK
 
 ### Pre-deployment Checklist
 - [x] Source runtime files reviewed before updating docs

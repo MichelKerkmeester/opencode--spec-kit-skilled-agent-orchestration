@@ -10,7 +10,6 @@ trigger_phrases:
 importance_tier: "critical"
 contextType: "decision"
 ---
-<!-- ANCHOR:document -->
 # Feature Specification: 004-adaptive-retrieval-loops
 
 <!-- SPECKIT_LEVEL: 3+ -->
@@ -63,6 +62,7 @@ This phase turns retrieval from a static scoring pipeline into a system that can
 
 ---
 
+<!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -71,8 +71,11 @@ The current retrieval system can collect useful signals, but it does not turn th
 ### Purpose
 Create a safe adaptive-retrieval layer that can learn from feedback in shadow mode before any production promotion is considered.
 
+<!-- /ANCHOR:problem -->
+
 ---
 
+<!-- ANCHOR:scope -->
 ## 3. SCOPE
 
 ### In Scope
@@ -97,8 +100,11 @@ Create a safe adaptive-retrieval layer that can learn from feedback in shadow mo
 | `.opencode/skill/system-spec-kit/mcp_server/tests/` | Create/Modify | Add shadow-mode, rollback, and regression coverage |
 | `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` | Modify | Add adaptive-learning validation procedures |
 
+<!-- /ANCHOR:scope -->
+
 ---
 
+<!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 
 ### P0 - Blockers (MUST complete)
@@ -119,8 +125,11 @@ Create a safe adaptive-retrieval layer that can learn from feedback in shadow mo
 | REQ-407 | Document promotion criteria | Docs and playbook define what must be true before activation |
 | REQ-408 | Keep docs synchronized | Spec, plan, tasks, and user-facing docs reflect actual adaptive behavior |
 
+<!-- /ANCHOR:requirements -->
+
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
 - **SC-401**: Adaptive ranking can run in shadow mode without affecting live users.
@@ -129,8 +138,11 @@ Create a safe adaptive-retrieval layer that can learn from feedback in shadow mo
 - **SC-404**: Promotion requires explicit evidence rather than intuition.
 - **SC-405**: Phase 6 rollout can rely on stable adaptive guardrails if the feature is promoted.
 
+<!-- /ANCHOR:success-criteria -->
+
 ---
 
+<!-- ANCHOR:risks -->
 ## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
@@ -140,6 +152,8 @@ Create a safe adaptive-retrieval layer that can learn from feedback in shadow mo
 | Risk | Noisy feedback degrades quality | High | Shadow mode, bounded updates, and regression gates |
 | Risk | Sparse signals produce false confidence | Medium | Require minimum signal thresholds and manual review |
 | Risk | Adaptive logic becomes hard to audit | High | Log decision traces and promotion rationale |
+
+<!-- /ANCHOR:risks -->
 
 ---
 
@@ -269,7 +283,7 @@ Create a safe adaptive-retrieval layer that can learn from feedback in shadow mo
 
 ---
 
-## 16. ACCEPTANCE SCENARIOS
+### Acceptance Scenarios
 
 1. **Shadow-only evaluation**
    **Given** adaptive learning is enabled in shadow mode, when retrieval runs, then live results stay unchanged and shadow outcomes are recorded separately.
@@ -280,7 +294,7 @@ Create a safe adaptive-retrieval layer that can learn from feedback in shadow mo
 
 ---
 
-## 17. OPEN QUESTIONS
+## 16. OPEN QUESTIONS
 
 - What is the minimum signal volume that should allow promotion consideration?
 - Should adaptive evaluation live in the request path, a queue-driven batch job, or a hybrid model?
@@ -296,4 +310,3 @@ Create a safe adaptive-retrieval layer that can learn from feedback in shadow mo
 - **Verification Checklist**: `checklist.md`
 - **Decision Records**: `decision-record.md`
 
-<!-- /ANCHOR:document -->

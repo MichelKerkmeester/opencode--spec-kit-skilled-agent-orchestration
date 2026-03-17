@@ -7,11 +7,12 @@ trigger_phrases: ["implementation", "summary", "auto-detection", "fixes"]
 
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
 <!-- ANCHOR:metadata -->
-## Metadata
+## 1. METADATA
 
 | Field | Value |
 |-------|-------|
@@ -23,19 +24,19 @@ trigger_phrases: ["implementation", "summary", "auto-detection", "fixes"]
 ---
 
 <!-- ANCHOR:what-built -->
-## What Was Built
+## 2. WHAT WAS BUILT
 
 Three targeted fixes to the auto-detection and path-safety pipeline in the `generate-context.js` system:
 
-**Fix 1 (P1) — Low-confidence fall-through guards in `folder-detector.ts`**
+**Fix 1 (P1): Low-confidence fall-through guards in `folder-detector.ts`**
 
 Priority 2.7 (git-status signal, ~L1387) and Priority 3.5 (session-activity signal, ~L1437) previously always auto-selected the first candidate regardless of the `lowConfidence` flag on the `AutoDetectCandidate`. Changed `const selected` to `let selected: AutoDetectCandidate | null` at both priority levels. Added a `lowConfidence` guard: when the top candidate has `lowConfidence: true`, the priority logs a warning and falls through to Priority 4 (broader disambiguation) rather than committing to a low-confidence pick. This prevents the cascade from short-circuiting on uncertain signals.
 
-**Fix 2a (P2) — `validateFilePath` replaces `isWithinDirectory` in `workflow.ts`**
+**Fix 2a (P2): `validateFilePath` replaces `isWithinDirectory` in `workflow.ts`**
 
 The naive `isWithinDirectory` function performed a plain string containment check (`childPath.startsWith(parentPath)`), which does not handle symlinks or path normalization. Replaced its body with a call to `validateFilePath` from `@spec-kit/shared/utils/path-security`, which performs `realpathSync` on both paths before the containment check. This closes a class of path traversal and symlink escape issues in spec folder key-file listing.
 
-**Fix 2b (P2) — Symlink skip guard in `listSpecFolderKeyFiles` in `workflow.ts`**
+**Fix 2b (P2): Symlink skip guard in `listSpecFolderKeyFiles` in `workflow.ts`**
 
 Added `if (entry.isSymbolicLink()) continue;` at the top of the directory entry loop in `listSpecFolderKeyFiles`. This matches the existing pattern already used in `subfolder-utils.ts:84` and prevents the function from following symlinks into directories outside the spec folder tree.
 <!-- /ANCHOR:what-built -->
@@ -43,7 +44,7 @@ Added `if (entry.isSymbolicLink()) continue;` at the top of the directory entry 
 ---
 
 <!-- ANCHOR:how-delivered -->
-## How It Was Delivered
+## 3. HOW IT WAS DELIVERED
 
 Changes landed directly on the `main` branch. The three fixes are independent of each other and were applied to two files:
 
@@ -63,20 +64,20 @@ All three fixes are additive or narrowing (no behavioral change for high-confide
 ---
 
 <!-- ANCHOR:decisions -->
-## Key Decisions
+## 4. KEY DECISIONS
 
 | Decision | Why |
 |----------|-----|
 | Implement fall-through guard rather than removing low-confidence selection | Preserves the Priority 2.7/3.5 signals for high-confidence cases; only removes the forced commit on uncertain signals. Less disruptive than restructuring the cascade. |
 | Use `validateFilePath` from shared utilities rather than inline `realpathSync` | Keeps path-security logic centralized; avoids duplicating `realpathSync` error handling across workflow.ts. |
-| Mirror `subfolder-utils.ts:84` symlink skip pattern exactly | Consistency — same pattern already reviewed and approved in the subfolder utilities. Reduces cognitive load for future readers. |
+| Mirror `subfolder-utils.ts:84` symlink skip pattern exactly | Consistency: same pattern already reviewed and approved in the subfolder utilities. Reduces cognitive load for future readers. |
 | Implement all REQ-002 through REQ-007 alongside Fix 1 and Fix 2 | Consolidated implementation ensures all signals and guards are consistent and testable together. Full test coverage confirms no regressions across 95 total tests. |
 <!-- /ANCHOR:decisions -->
 
 ---
 
 <!-- ANCHOR:verification -->
-## Verification
+## 5. VERIFICATION
 
 | Check | Result |
 |-------|--------|
@@ -90,7 +91,7 @@ All three fixes are additive or narrowing (no behavioral change for high-confide
 ---
 
 <!-- ANCHOR:limitations -->
-## Known Limitations
+## 6. KNOWN LIMITATIONS
 
 All originally-planned features were implemented. The five items previously listed as limitations are confirmed complete:
 
@@ -100,5 +101,8 @@ All originally-planned features were implemented. The five items previously list
 4. **Blocker validation**: `INVALID_BLOCKER_PATTERNS` at `session-extractor.ts:222-231` rejects markdown headers, leading quotes/backticks, and quote transition artifacts via `isInvalidBlockerText`.
 5. **Template field wiring**: `buildMemoryClassificationContext` (workflow.ts:758), `buildSessionDedupContext` (workflow.ts:808), and `buildCausalLinksContext` (workflow.ts:860+) are all wired into the template rendering context.
 
-**Test count**: 11 tests in auto-detection-fixes suite (7 original + 4 new low-confidence fall-through tests), 5 template-structure, 79 phase-command-workflows — 95 total, all passing.
+**Test count**: 11 tests in auto-detection-fixes suite (7 original + 4 new low-confidence fall-through tests), 5 template-structure, 79 phase-command-workflows. 95 total, all passing.
 <!-- /ANCHOR:limitations -->
+
+
+Reference links: [spec.md](spec.md) and [plan.md](plan.md).

@@ -52,6 +52,45 @@ describe('Phase 6 shared spaces', () => {
     expect(Array.from(getAllowedSharedSpaceIds(db, { userId: 'user-1' }))).toEqual(['space-1']);
   });
 
+  it('requires owner role for owner-gated shared-space actions', () => {
+    process.env.SPECKIT_MEMORY_SHARED_MEMORY = 'true';
+    const db = new Database(':memory:');
+
+    upsertSharedSpace(db, {
+      spaceId: 'space-owner',
+      tenantId: 'tenant-a',
+      name: 'Owner Space',
+      rolloutEnabled: true,
+    });
+    upsertSharedMembership(db, {
+      spaceId: 'space-owner',
+      subjectType: 'user',
+      subjectId: 'user-editor',
+      role: 'editor',
+    });
+    upsertSharedMembership(db, {
+      spaceId: 'space-owner',
+      subjectType: 'user',
+      subjectId: 'user-owner',
+      role: 'owner',
+    });
+
+    expect(assertSharedSpaceAccess(db, {
+      tenantId: 'tenant-a',
+      userId: 'user-editor',
+    }, 'space-owner', 'owner')).toEqual({
+      allowed: false,
+      reason: 'shared_space_owner_required',
+    });
+
+    expect(assertSharedSpaceAccess(db, {
+      tenantId: 'tenant-a',
+      userId: 'user-owner',
+    }, 'space-owner', 'owner')).toEqual({
+      allowed: true,
+    });
+  });
+
   it('blocks existing members immediately when a shared-space kill switch is enabled', () => {
     process.env.SPECKIT_MEMORY_SHARED_MEMORY = 'true';
     const db = new Database(':memory:');

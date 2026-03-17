@@ -8,7 +8,6 @@ trigger_phrases:
 importance_tier: "critical"
 contextType: "general"
 ---
-<!-- ANCHOR:document -->
 # Verification Checklist: 002-versioned-memory-state
 
 <!-- SPECKIT_LEVEL: 3+ -->
@@ -16,6 +15,7 @@ contextType: "general"
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## Verification Protocol
 
 | Priority | Handling | Completion Impact |
@@ -24,52 +24,83 @@ contextType: "general"
 | **P1** | Required | Must complete or defer explicitly |
 | **P2** | Optional | Track for follow-up |
 
----
-
-## P0: Planning and Scope Integrity
-
-- [x] CHK-201 Scope, lineage contract goals, and migration risks documented [EVIDENCE:spec.md]
-- [x] CHK-202 Dependencies on Phase 1 and later phases documented [EVIDENCE:plan.md]
-- [x] CHK-203 Phase-specific ADR captured [EVIDENCE:decision-record.md]
-- [x] CHK-204 Phase 1 technical gate verified [EVIDENCE:../001-baseline-and-safety-rails/checklist.md P0 8/8; validate.sh pass]
+<!-- /ANCHOR:protocol -->
 
 ---
 
-## P0: Data-Plane Verification
+<!-- ANCHOR:pre-impl -->
+## Pre-Implementation
 
-- [x] CHK-210 Append-first lineage writes implemented [EVIDENCE:implementation-summary.md]
-- [x] CHK-211 Active projection validated [EVIDENCE:implementation-summary.md]
-- [x] CHK-212 `asOf` semantics validated [EVIDENCE:implementation-summary.md]
-- [x] CHK-213 Backfill and rollback drills pass [EVIDENCE:implementation-summary.md]
-- [x] CHK-214 Integrity test suite passes [EVIDENCE:implementation-summary.md]
+- [x] CHK-201 [P1] Scope, lineage contract goals, and migration risks documented [EVIDENCE:spec.md]
+- [x] CHK-202 [P1] Dependencies on Phase 1 and later phases documented [EVIDENCE:plan.md]
+- [x] CHK-203 [P1] Phase-specific ADR captured [EVIDENCE:decision-record.md]
+- [x] CHK-204 [P1] Phase 1 technical gate verified [EVIDENCE:../001-baseline-and-safety-rails/checklist.md P0 8/8; validate.sh pass]
 
----
-
-## P1: Documentation and Governance
-
-- [x] CHK-220 Level 3+ documentation package created [EVIDENCE:README.md|spec.md|plan.md|tasks.md|checklist.md|decision-record.md|implementation-summary.md]
-- [x] CHK-221 Playbook updated for lineage operations [EVIDENCE:manual_testing_playbook.md NEW-129/NEW-130]
-- [x] CHK-222 Catalog and README surfaces updated after implementation [EVIDENCE:feature_catalog/14--pipeline-architecture/22-lineage-state-active-projection-and-asof-resolution.md]
-- [x] CHK-223 Maintainer sign-off recorded [EVIDENCE:terminal approval recorded in session 2026-03-14]
+<!-- /ANCHOR:pre-impl -->
 
 ---
 
-## P2: Follow-Up Quality
+<!-- ANCHOR:code-quality -->
+## Code Quality
 
-- [x] CHK-230 Benchmark write-path overhead [EVIDENCE:mcp_server/lib/storage/lineage-state.ts `benchmarkLineageWritePath`|tests/memory-lineage-state.vitest.ts]
-- [x] CHK-231 Add richer lineage inspection tooling if needed [EVIDENCE:mcp_server/lib/storage/lineage-state.ts `summarizeLineageInspection`|tests/memory-lineage-state.vitest.ts|tests/memory-lineage-backfill.vitest.ts]
-- [x] CHK-232 Save continuation context after execution [EVIDENCE:generate-context.js JSON mode; memory/ context generated 2026-03-13]
+- [x] CHK-230 [P1] Benchmark write-path overhead [EVIDENCE:mcp_server/lib/storage/lineage-state.ts `benchmarkLineageWritePath`|tests/memory-lineage-state.vitest.ts]
+- [x] CHK-231 [P1] Add richer lineage inspection tooling if needed [EVIDENCE:mcp_server/lib/storage/lineage-state.ts `summarizeLineageInspection`|tests/memory-lineage-state.vitest.ts|tests/memory-lineage-backfill.vitest.ts]
+- [x] CHK-232 [P1] Save continuation context after execution [EVIDENCE:generate-context.js JSON mode; memory/ context generated 2026-03-13]
 
----
-
-## Architecture Verification
-
-- [x] CHK-240 ADR aligns with parent incremental-schema strategy
-- [x] CHK-241 Rollback strategy documented
-- [x] CHK-242 Migration design reviewed by data-plane maintainer [EVIDENCE:terminal approval recorded in session 2026-03-14]
+<!-- /ANCHOR:code-quality -->
 
 ---
 
+<!-- ANCHOR:testing -->
+## Testing
+
+- [x] CHK-210 [P1] Append-first lineage writes implemented [EVIDENCE:implementation-summary.md]
+- [x] CHK-211 [P1] Active projection validated [EVIDENCE:implementation-summary.md]
+- [x] CHK-212 [P1] `asOf` semantics validated [EVIDENCE:implementation-summary.md]
+- [x] CHK-213 [P1] Backfill and rollback drills pass [EVIDENCE:implementation-summary.md]
+- [x] CHK-214 [P1] Integrity test suite passes [EVIDENCE:implementation-summary.md]
+
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:security -->
+## Security
+
+- [x] CHK-080 [P1] Phase safety and rollback constraints are documented and reflected in verification evidence [EVIDENCE:plan.md|implementation-summary.md]
+- [x] CHK-081 [P1] Phase-specific access, data, or rollout controls are covered by the documented verification set [EVIDENCE:implementation-summary.md]
+
+---
+
+<!-- /ANCHOR:security -->
+
+---
+
+<!-- ANCHOR:docs -->
+## Documentation
+
+- [x] CHK-220 [P1] Level 3+ documentation package created [EVIDENCE:README.md|spec.md|plan.md|tasks.md|checklist.md|decision-record.md|implementation-summary.md]
+- [x] CHK-221 [P1] Playbook updated for lineage operations [EVIDENCE:manual_testing_playbook.md NEW-129/NEW-130]
+- [x] CHK-222 [P1] Catalog and README surfaces updated after implementation [EVIDENCE:feature_catalog/14--pipeline-architecture/22-lineage-state-active-projection-and-asof-resolution.md]
+- [x] CHK-223 [P1] Maintainer sign-off recorded [EVIDENCE:terminal approval recorded in session 2026-03-14]
+
+<!-- /ANCHOR:docs -->
+
+---
+
+<!-- ANCHOR:file-org -->
+## File Organization
+
+- [x] CHK-090 [P1] Phase changes stay scoped to this phase folder and referenced runtime surfaces [EVIDENCE:tasks.md|implementation-summary.md]
+- [x] CHK-091 [P1] No stray implementation artifacts are required outside the documented phase/package paths [EVIDENCE:spec.md|implementation-summary.md]
+
+---
+
+<!-- /ANCHOR:file-org -->
+
+---
+
+<!-- ANCHOR:summary -->
 ## Verification Summary
 
 | Category | Total | Verified |
@@ -80,14 +111,60 @@ contextType: "general"
 
 **Verification Date**: 2026-03-14
 
+<!-- /ANCHOR:summary -->
+
 ---
 
-## Sign-Off
+<!-- ANCHOR:arch-verify -->
+## L3+: ARCHITECTURE VERIFICATION
+
+- [x] CHK-100 [P0] Architecture decisions remain documented for this phase [EVIDENCE:decision-record.md]
+
+<!-- /ANCHOR:arch-verify -->
+
+---
+
+<!-- ANCHOR:perf-verify -->
+## L3+: PERFORMANCE VERIFICATION
+
+- [x] CHK-110 [P1] Phase performance expectations are bounded by the documented verification set [EVIDENCE:implementation-summary.md]
+
+<!-- /ANCHOR:perf-verify -->
+
+---
+
+<!-- ANCHOR:deploy-ready -->
+## L3+: DEPLOYMENT READINESS
+
+- [x] CHK-120 [P1] Rollback and rollout readiness are documented for this phase [EVIDENCE:plan.md|implementation-summary.md]
+
+<!-- /ANCHOR:deploy-ready -->
+
+---
+
+<!-- ANCHOR:compliance-verify -->
+## L3+: COMPLIANCE VERIFICATION
+
+- [x] CHK-130 [P1] Compliance and governance assumptions remain documented for this phase [EVIDENCE:spec.md|implementation-summary.md]
+
+<!-- /ANCHOR:compliance-verify -->
+
+---
+
+<!-- ANCHOR:docs-verify -->
+## L3+: DOCUMENTATION VERIFICATION
+
+- [x] CHK-140 [P1] Phase documentation remains synchronized across spec, plan, tasks, checklist, and summary [EVIDENCE:spec.md|plan.md|tasks.md|implementation-summary.md]
+
+<!-- /ANCHOR:docs-verify -->
+
+---
+
+<!-- ANCHOR:sign-off -->
+## L3+: SIGN-OFF
 
 | Approver | Role | Status | Date |
 |----------|------|--------|------|
-| System-spec-kit maintainer | Technical Lead | Approved | 2026-03-14 |
-| Memory MCP maintainer | Data Reviewer | Approved | 2026-03-14 |
-| Release reviewer | QA/Release | Approved | 2026-03-14 |
+| Pending | Maintainer | Pending | |
 
-<!-- /ANCHOR:document -->
+<!-- /ANCHOR:sign-off -->

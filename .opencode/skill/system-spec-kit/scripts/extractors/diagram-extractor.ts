@@ -18,7 +18,7 @@ import * as flowchartGen from '../lib/flowchart-generator';
 import * as simFactory from '../lib/simulation-factory';
 import { generateDecisionTree } from '../lib/decision-tree-generator';
 import type {
-  CollectedDataBase,
+  CollectedDataSubset,
   DiagramOutput,
   AutoDecisionTree,
   DiagramTypeCount,
@@ -38,17 +38,10 @@ export type {
 };
 
 /* ───────────────────────────────────────────────────────────────
-   1. INTERFACES
-------------------------------------------------------------------*/
-
-/** Diagram-focused subset of collected session data. */
-export type CollectedDataForDiagrams = Pick<CollectedDataBase, 'observations' | 'userPrompts'>;
-
-/* ───────────────────────────────────────────────────────────────
    2. PHASE EXTRACTION
 ------------------------------------------------------------------*/
 
-function extractPhasesFromData(collectedData: CollectedDataForDiagrams | null): PhaseEntry[] {
+function extractPhasesFromData(collectedData: CollectedDataSubset<'observations' | 'userPrompts'> | null): PhaseEntry[] {
   if (!collectedData || !collectedData.observations || collectedData.observations.length === 0) {
     return simFactory.createSimulationPhases();
   }
@@ -122,7 +115,7 @@ function extractPhasesFromData(collectedData: CollectedDataForDiagrams | null): 
 ------------------------------------------------------------------*/
 
 async function extractDiagrams(
-  collectedData: CollectedDataForDiagrams | null
+  collectedData: CollectedDataSubset<'observations' | 'userPrompts'> | null
 ): Promise<DiagramData> {
   if (!collectedData) {
     console.log('   Warning: Using simulation data for diagrams');
@@ -220,7 +213,7 @@ async function extractDiagrams(
 export {
   extractPhasesFromData,
   extractDiagrams,
-  // Backward-compatible aliases
+  // Legacy aliases — retained for backward compatibility with external callers
   extractPhasesFromData as extractPhasesFromData_alias,
   extractDiagrams as extractDiagrams_alias
 };

@@ -11,6 +11,9 @@ contextType: "general"
 ---
 # Feature Specification: Multi-CLI Parity Hardening
 
+This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.
+
+
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
@@ -25,7 +28,7 @@ contextType: "general"
 | **Priority** | P1 |
 | **Status** | Complete |
 | **Created** | 2026-03-16 |
-| **Completed** | 2026-03-16 |
+| **Completed** | 2026-03-17 |
 | **Branch** | `016-multi-cli-parity` |
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
@@ -45,7 +48,7 @@ This is **Phase 16** of the Perfect Session Capturing specification.
 
 **Scope Boundary**: Phase 016 had already landed its runtime behavior in the live code, but the phase folder still claimed completion without direct parity-specific proof.
 **Dependencies**: 015-outsourced-agent-handback
-**Deliverables**: Re-verified existing parity seams in phase-classifier.ts, content-filter.ts, and input-normalizer.ts; added direct regression coverage
+**Deliverables**: Re-verified existing parity seams in phase-classifier.ts, content-filter.ts, and input-normalizer.ts; added direct regression coverage; retained live proof cited at `../research/live-cli-proof-2026-03-17.json`
 <!-- /ANCHOR:phase-context -->
 
 <!-- ANCHOR:problem -->
@@ -101,7 +104,7 @@ Prove the shipped multi-CLI parity behavior with direct regression tests and rec
 | REQ-001 | Copilot `view` aliases must drive canonical research scoring. | `phase-classification.vitest.ts` proves `View` classifies as `Research` through the public classifier APIs. |
 | REQ-002 | Built-in multi-CLI noise markers must be filtered through the shared noise path. | `content-filter-parity.vitest.ts` proves `tool.execution_start`, `tool.execution_complete`, `reasoning`, `<reasoning>...</reasoning>`, and empty XML wrapper tags all register as noise through `isNoiseContent()` / `NOISE_PATTERNS`. |
 | REQ-003 | CLI-derived file entries must retain tool provenance and `view` titles. | `runtime-memory-inputs.vitest.ts` proves `transformOpencodeCapture()` emits `Read loaders/data-loader.ts` for `view` and applies `_provenance: 'tool'` to CLI-derived `FILES`. |
-| REQ-004 | Phase-016 spec artifacts must validate cleanly as Level 2 docs. | `spec/validate.sh` passes this phase folder with zero errors and zero warnings. |
+| REQ-004 | Phase-016 spec artifacts must validate cleanly as Level 2 docs. | `./scripts/spec/validate.sh` passes this phase folder with zero errors and zero warnings. |
 
 ### P1 - Required (complete OR user-approved deferral)
 
@@ -119,36 +122,8 @@ Prove the shipped multi-CLI parity behavior with direct regression tests and rec
 - **SC-001**: **Given** a low-signal exchange that only uses Copilot `View`, **Then** the classifier resolves the phase as `Research` instead of `Discussion`.
 - **SC-002**: **Given** Copilot lifecycle markers, Codex reasoning markers, and empty XML wrappers, **Then** the shared content filter treats them as built-in noise without a parallel parity filter.
 - **SC-003**: **Given** a CLI capture with `view` and `edit` tool calls, **Then** `transformOpencodeCapture()` renders `Read ...` titles and stores CLI-derived `FILES` with `_provenance: 'tool'`.
-- **SC-004**: **Given** the rewritten phase-016 spec folder and updated test evidence, **Then** `validate.sh`, focused Vitest, `test-extractors-loaders.js`, `npm run typecheck`, and `npm run build` all pass on 2026-03-17.
+- **SC-004**: **Given** the rewritten phase-016 spec folder and updated test evidence, **Then** focused Vitest, `test-extractors-loaders.js`, `npm run typecheck`, `npm run build`, and the retained proof artifact at `../research/live-cli-proof-2026-03-17.json` all support the published March 17, 2026 parity claim.
 <!-- /ANCHOR:success-criteria -->
-
----
-
-<!-- ANCHOR:nfr -->
-## L2: NON-FUNCTIONAL REQUIREMENTS
-
-N/A — This phase adds regression tests and documentation only. No new runtime performance, scalability, or availability requirements apply.
-<!-- /ANCHOR:nfr -->
-
----
-
-<!-- ANCHOR:edge-cases -->
-## L2: EDGE CASES
-
-N/A — Edge case handling is covered by the test assertions themselves (empty XML wrappers, low-signal exchanges, empty next-steps arrays).
-<!-- /ANCHOR:edge-cases -->
-
----
-
-<!-- ANCHOR:complexity -->
-## L2: COMPLEXITY ASSESSMENT
-
-| Dimension | Rating | Rationale |
-|-----------|--------|-----------|
-| **Code** | Low | Test-only additions; no runtime code changes |
-| **Integration** | Low | Tests exercise existing public APIs |
-| **Risk** | Low | Additive-only; no behavior changes |
-<!-- /ANCHOR:complexity -->
 
 ---
 
@@ -166,8 +141,36 @@ N/A — Edge case handling is covered by the test assertions themselves (empty X
 
 ---
 
+<!-- ANCHOR:nfr -->
+## 7. L2: NON-FUNCTIONAL REQUIREMENTS
+
+N/A. This phase adds regression tests and documentation only. No new runtime performance, scalability, or availability requirements apply.
+<!-- /ANCHOR:nfr -->
+
+---
+
+<!-- ANCHOR:edge-cases -->
+## 8. L2: EDGE CASES
+
+N/A. Edge case handling is covered by the test assertions themselves (empty XML wrappers, low-signal exchanges, empty next-steps arrays).
+<!-- /ANCHOR:edge-cases -->
+
+---
+
+<!-- ANCHOR:complexity -->
+## 9. L2: COMPLEXITY ASSESSMENT
+
+| Dimension | Rating | Rationale |
+|-----------|--------|-----------|
+| **Code** | Low | Test-only additions; no runtime code changes |
+| **Integration** | Low | Tests exercise existing public APIs |
+| **Risk** | Low | Additive-only; no behavior changes |
+<!-- /ANCHOR:complexity -->
+
+---
+
 <!-- ANCHOR:questions -->
-## 7. OPEN QUESTIONS
+## 10. OPEN QUESTIONS
 
 No open questions remain for phase 016. The reopened scope was limited to proof and documentation hardening, and the focused verification stack closed the remaining uncertainty.
 <!-- /ANCHOR:questions -->

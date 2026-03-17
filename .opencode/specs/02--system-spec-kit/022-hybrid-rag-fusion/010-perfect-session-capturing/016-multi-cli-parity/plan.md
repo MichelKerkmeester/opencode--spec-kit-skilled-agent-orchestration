@@ -10,6 +10,9 @@ contextType: "general"
 ---
 # Implementation Plan: Multi-CLI Parity Hardening
 
+This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.
+
+
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
@@ -83,7 +86,7 @@ Additive regression-hardening on existing seams
 ### Phase 3: Verification
 - [x] Run focused Vitest coverage for the parity seams plus provenance scoring safety nets.
 - [x] Run `test-extractors-loaders.js`, `npm run typecheck`, and `npm run build`.
-- [x] Run `spec/validate.sh` on the phase-016 folder and reconcile any remaining validator findings.
+- [x] Run `./scripts/spec/validate.sh` on the phase-016 folder and reconcile any remaining validator findings.
 <!-- /ANCHOR:phases -->
 
 ---
@@ -122,15 +125,15 @@ Additive regression-hardening on existing seams
 ---
 
 <!-- ANCHOR:phase-deps -->
-## L2: PHASE DEPENDENCIES
+## 8. L2: PHASE DEPENDENCIES
 
-N/A — Phase 016 does not decompose into sub-phases. The implementation phases in section 4 are sequential steps within a single pass.
+N/A. Phase 016 does not decompose into sub-phases. The implementation phases in section 4 are sequential steps within a single pass.
 <!-- /ANCHOR:phase-deps -->
 
 ---
 
 <!-- ANCHOR:effort -->
-## L2: EFFORT ESTIMATION
+## 9. L2: EFFORT ESTIMATION
 
 | Phase | Estimated | Actual |
 |-------|-----------|--------|
@@ -143,7 +146,7 @@ N/A — Phase 016 does not decompose into sub-phases. The implementation phases 
 ---
 
 <!-- ANCHOR:enhanced-rollback -->
-## L2: ENHANCED ROLLBACK
+## 10. L2: ENHANCED ROLLBACK
 
-N/A — The basic rollback plan in section 7 is sufficient for test-and-documentation-only changes. No staged rollback or feature flags apply.
+N/A. The basic rollback plan in section 7 is sufficient for test-and-documentation-only changes. No staged rollback or feature flags apply.
 <!-- /ANCHOR:enhanced-rollback -->

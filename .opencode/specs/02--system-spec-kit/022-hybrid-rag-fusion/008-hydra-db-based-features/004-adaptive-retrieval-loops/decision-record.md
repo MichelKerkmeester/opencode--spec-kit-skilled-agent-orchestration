@@ -8,7 +8,7 @@ trigger_phrases:
 importance_tier: "critical"
 contextType: "decision"
 ---
-<!-- ANCHOR:document -->
+<!-- ANCHOR:adr-001 -->
 # Decision Record: 004-adaptive-retrieval-loops
 
 <!-- SPECKIT_LEVEL: 3+ -->
@@ -99,4 +99,4 @@ Adaptive ranking can create silent regressions if it is allowed to change produc
 
 **How to roll back**: disable adaptive mode, clear or ignore adaptive state, and rerun baseline regression checks.
 
-<!-- /ANCHOR:document -->
+<!-- /ANCHOR:adr-001 -->

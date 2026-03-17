@@ -16,7 +16,7 @@ import { detectObservationType } from './file-extractor';
 import * as simFactory from '../lib/simulation-factory';
 import * as flowchartGen from '../lib/flowchart-generator';
 import type {
-  CollectedDataBase,
+  CollectedDataSubset,
   ConversationData,
   ConversationMessage,
   ConversationPhase,
@@ -32,11 +32,8 @@ export type {
 };
 
 /* ───────────────────────────────────────────────────────────────
-   1. INTERFACES
+   INTERFACES
 ------------------------------------------------------------------*/
-
-/** Conversation-focused subset of collected session data. */
-export type CollectedDataForConversation = Pick<CollectedDataBase, 'userPrompts' | 'observations'>;
 
 interface TempConversationMessage {
   tempId: string;
@@ -53,7 +50,7 @@ type PendingExchangeInput = Parameters<typeof classifyConversationExchanges>[0][
 ------------------------------------------------------------------*/
 
 async function extractConversations(
-  collectedData: CollectedDataForConversation | null
+  collectedData: CollectedDataSubset<'userPrompts' | 'observations'> | null
 ): Promise<ConversationData> {
   if (!collectedData) {
     console.log('   Warning: Using simulation data for conversations');
@@ -273,5 +270,6 @@ async function extractConversations(
 
 export {
   extractConversations,
+  // Legacy alias — retained for backward compatibility with external callers
   extractConversations as extractConversations_alias,
 };

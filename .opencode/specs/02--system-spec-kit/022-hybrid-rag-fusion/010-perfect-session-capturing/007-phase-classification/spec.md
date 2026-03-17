@@ -4,6 +4,9 @@ description: "Stabilize phase classification and routing semantics for the memor
 ---
 # Feature Specification: Phase Classification
 
+This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.
+
+
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
@@ -131,7 +134,7 @@ Ship a conversation-phase classifier that builds exchange-level semantic signals
 |------|------|--------|------------|
 | Dependency | R-08 unified signal extractor (008-signal-extraction) | High -- phase signals are intentionally built on its stable extraction contract | Completed first; `007` only consumes the new contract |
 | Risk | Cluster-level scoring can shift phase assignments versus the legacy ladder | Medium | Lock targeted fixtures for debugging, iterative returns, low-signal fallback, and flow-pattern derivation |
-| Risk | Broader legacy module suites contain unrelated baseline failures | Low | Treat `T-024e`, `T-024f`, and `T-032` as pre-existing baseline issues unless this phase introduces new failures |
+| Risk | Broader shared module suites can evolve independently of phase-classification logic | Low | Use current reruns as closure evidence and treat unrelated suite movement separately from this phase's contract |
 <!-- /ANCHOR:risks -->
 
 ---

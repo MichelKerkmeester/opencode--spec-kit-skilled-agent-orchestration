@@ -9,7 +9,6 @@ trigger_phrases:
 importance_tier: "critical"
 contextType: "decision"
 ---
-<!-- ANCHOR:document -->
 # Decision Record: 001-baseline-and-safety-rails
 
 <!-- SPECKIT_LEVEL: 3+ -->
@@ -17,6 +16,7 @@ contextType: "decision"
 
 ---
 
+<!-- ANCHOR:adr-001 -->
 ## ADR-001: Finish Control-Plane Hardening Before Phase 2 Lineage Work
 
 ### Metadata
@@ -100,4 +100,4 @@ Phase 2 depends on trustworthy runtime packaging, roadmap metadata, rollback too
 
 **How to roll back**: Revert the baseline hardening slice, rebuild `dist`, rerun the focused verification suite, and revert docs that depended on the change set.
 
-<!-- /ANCHOR:document -->
+<!-- /ANCHOR:adr-001 -->

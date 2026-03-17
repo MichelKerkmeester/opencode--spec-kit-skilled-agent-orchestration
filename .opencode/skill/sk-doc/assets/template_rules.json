@@ -277,6 +277,17 @@
       "toc_required": false,
       "h2_emoji_required": false
     },
+    "spec": {
+      "description": "Spec-kit specification documents under specs/ folders",
+      "required_sections": [],
+      "recommended_sections": [],
+      "optional_sections": [],
+      "section_emojis": {},
+      "section_aliases": {},
+      "toc_required": false,
+      "h2_emoji_required": false,
+      "h2_uppercase_required": false
+    },
     "agent": {
       "description": "Agent definition files in .opencode/agent/",
       "required_sections": ["core_workflow", "capability_scan", "output_verification", "anti_patterns", "related_resources"],

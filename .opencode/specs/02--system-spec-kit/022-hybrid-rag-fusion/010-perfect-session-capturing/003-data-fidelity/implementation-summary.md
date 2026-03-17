@@ -7,23 +7,24 @@ trigger_phrases: ["implementation", "summary", "data", "fidelity"]
 
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
 <!-- ANCHOR:metadata -->
-## Metadata
+## 1. METADATA
 
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 003-data-fidelity |
-| **Completed** | 2026-03-16 |
+| **Completed** | 2026-03-17 |
 | **Level** | 2 |
 <!-- /ANCHOR:metadata -->
 
 ---
 
 <!-- ANCHOR:what-built -->
-## What Was Built
+## 2. WHAT WAS BUILT
 
 This phase closed the live data-fidelity gaps that were still dropping context after normalization.
 
@@ -38,7 +39,7 @@ This phase closed the live data-fidelity gaps that were still dropping context a
 ---
 
 <!-- ANCHOR:how-delivered -->
-## How It Was Delivered
+## 3. HOW IT WAS DELIVERED
 
 The implementation stayed narrow and phase-correct:
 
@@ -51,7 +52,7 @@ The implementation stayed narrow and phase-correct:
 ---
 
 <!-- ANCHOR:decisions -->
-## Key Decisions
+## 4. KEY DECISIONS
 
 | Decision | Why |
 |----------|-----|
@@ -63,22 +64,24 @@ The implementation stayed narrow and phase-correct:
 ---
 
 <!-- ANCHOR:verification -->
-## Verification
+## 5. VERIFICATION
 
 | Check | Result |
 |-------|--------|
 | `npm run typecheck` | Passed |
-| `node mcp_server/node_modules/vitest/vitest.mjs run tests/runtime-memory-inputs.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts` | Passed — 1 file, 25 tests, 0 failures |
-| `node scripts/tests/test-extractors-loaders.js` | Passed — 294 passed, 0 failed, 0 skipped |
+| `cd .opencode/skill/system-spec-kit/scripts && node ../mcp_server/node_modules/vitest/vitest.mjs run tests/runtime-memory-inputs.vitest.ts --config ../mcp_server/vitest.config.ts` | Passed: 1 file, 29 tests, 0 failures |
+| `cd .opencode/skill/system-spec-kit/scripts && node tests/test-extractors-loaders.js` | Passed: 307 passed, 0 failed, 0 skipped |
 | `npm run build` | Passed |
 <!-- /ANCHOR:verification -->
 
 ---
 
 <!-- ANCHOR:limitations -->
-## Known Limitations
+## 6. KNOWN LIMITATIONS
 
-1. Type canonicalization (REQ-001 of 004) was completed in this phase's commit. The remaining 004 scope — `CollectedDataFor*` consolidation (REQ-004) and index signature removal (REQ-005) — is still deferred.
+1. Type canonicalization (REQ-001 of 004) was completed in this phase's commit. The remaining 004 scope, `CollectedDataFor*` consolidation (REQ-004) and index signature removal (REQ-005), is still deferred.
 2. The shared fact-coercion helper only covers the fidelity seams in scope for this phase; other existing extractor utilities were intentionally left unchanged.
-3. Phase-local memory capture was not created as part of this implementation pass.
 <!-- /ANCHOR:limitations -->
+
+
+Reference links: [spec.md](spec.md) and [plan.md](plan.md).

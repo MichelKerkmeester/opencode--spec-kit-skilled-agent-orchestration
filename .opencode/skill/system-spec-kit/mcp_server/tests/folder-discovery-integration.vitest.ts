@@ -8,6 +8,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import * as os from 'node:os';
+import { spawn } from 'node:child_process';
 import {
   getSpecsBasePaths,
   isCacheStale,
@@ -63,6 +64,51 @@ function cleanup(tmpDir: string): void {
   try {
     fs.rmSync(tmpDir, { recursive: true, force: true });
   } catch (_error: unknown) { /* best effort */ }
+}
+
+function runConcurrentDescriptionSave(
+  modulePath: string,
+  desc: PerFolderDescription,
+  folderPath: string,
+  startAtEpochMs: number,
+): Promise<void> {
+  const workerScript = `
+    const { savePerFolderDescription } = require(process.argv[1]);
+    const desc = JSON.parse(process.argv[2]);
+    const folderPath = process.argv[3];
+    const startAt = Number(process.argv[4]);
+    const delay = Math.max(0, startAt - Date.now());
+
+    setTimeout(() => {
+      try {
+        savePerFolderDescription(desc, folderPath);
+      } catch (error) {
+        console.error(error instanceof Error ? error.stack : String(error));
+        process.exitCode = 1;
+      }
+    }, delay);
+  `;
+
+  return new Promise((resolve, reject) => {
+    const child = spawn(
+      process.execPath,
+      ['-e', workerScript, modulePath, JSON.stringify(desc), folderPath, String(startAtEpochMs)],
+      { stdio: ['ignore', 'ignore', 'pipe'] },
+    );
+
+    let stderr = '';
+    child.stderr.on('data', (chunk) => {
+      stderr += chunk.toString();
+    });
+    child.on('error', reject);
+    child.on('close', (code) => {
+      if (code === 0) {
+        resolve();
+        return;
+      }
+      reject(new Error(stderr.trim() || `Concurrent description save exited with code ${code}`));
+    });
+  });
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -852,6 +898,55 @@ describe('CHK-028: Per-folder description.json read performance', () => {
 
     expect(result).not.toBeNull();
     expect(elapsed).toBeLessThan(5);
+  });
+});
+
+describe('CHK-027: concurrent description writes', () => {
+  let td: string;
+
+  beforeEach(() => {
+    td = createTempWorkspace();
+  });
+
+  afterEach(() => {
+    cleanup(td);
+  });
+
+  it('T046-25c: two parallel saves leave description.json readable and temp-free', async () => {
+    const specsDir = path.join(td, 'specs');
+    const folderDir = createSpecFolder(td, '001-concurrent-save', '# Concurrent Save');
+    const baseDesc = generatePerFolderDescription(folderDir, specsDir);
+
+    expect(baseDesc).not.toBeNull();
+
+    const modulePath = path.join(__dirname, '../dist/lib/search/folder-discovery.js');
+    const startAt = Date.now() + 150;
+    const alphaDesc: PerFolderDescription = {
+      ...baseDesc!,
+      description: 'Concurrent alpha payload',
+      lastUpdated: '2026-03-17T12:00:00.000Z',
+      memorySequence: 1,
+      memoryNameHistory: ['alpha-entry'],
+    };
+    const betaDesc: PerFolderDescription = {
+      ...baseDesc!,
+      description: 'Concurrent beta payload',
+      lastUpdated: '2026-03-17T12:00:01.000Z',
+      memorySequence: 2,
+      memoryNameHistory: ['beta-entry'],
+    };
+
+    await Promise.all([
+      runConcurrentDescriptionSave(modulePath, alphaDesc, folderDir, startAt),
+      runConcurrentDescriptionSave(modulePath, betaDesc, folderDir, startAt),
+    ]);
+
+    const finalDescription = loadPerFolderDescription(folderDir);
+    expect(finalDescription).not.toBeNull();
+    expect(finalDescription?.description === alphaDesc.description || finalDescription?.description === betaDesc.description).toBe(true);
+    expect(finalDescription?.memorySequence === alphaDesc.memorySequence || finalDescription?.memorySequence === betaDesc.memorySequence).toBe(true);
+    expect(() => JSON.parse(fs.readFileSync(path.join(folderDir, 'description.json'), 'utf-8'))).not.toThrow();
+    expect(fs.readdirSync(folderDir).filter((entry) => entry.includes('description.json.tmp.'))).toEqual([]);
   });
 });
 

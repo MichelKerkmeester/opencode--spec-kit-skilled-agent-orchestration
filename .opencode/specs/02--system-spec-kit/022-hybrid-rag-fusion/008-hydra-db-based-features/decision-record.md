@@ -120,7 +120,7 @@ HydraDB public guidance emphasizes versioned, append-style memory evolution, whi
 
 ---
 
-## ADR-002: Unify Graph and Feedback Inside Current MCP Server First
+### ADR-002: Unify Graph and Feedback Inside Current MCP Server First
 
 ### Metadata
 
@@ -196,7 +196,7 @@ HydraDB public material stresses integrated hybrid retrieval and adaptive behavi
 
 ---
 
-## ADR-003: Enforce Hierarchical Scopes and Governance Before Shared Memory Rollout
+### ADR-003: Enforce Hierarchical Scopes and Governance Before Shared Memory Rollout
 
 ### Metadata
 
@@ -272,9 +272,9 @@ HydraDB public positioning consistently pairs shared memory with strict boundari
 
 ---
 
-## Assumptions and Notes
+### Assumptions and Notes
 
 - HydraDB and Cortex are treated as one branding family for planning.
 - No public HydraDB source repository was available during this planning session.
 - docs.useHydraDB.ai links referenced by blog pages were not resolvable during this session.
-- ADR statuses updated to `Accepted` following successful implementation and verification of all 6 phases (7,767 tests passing).
+- ADR statuses updated to `Accepted` following successful implementation and verification of all 6 phases (`7783` tests passing).

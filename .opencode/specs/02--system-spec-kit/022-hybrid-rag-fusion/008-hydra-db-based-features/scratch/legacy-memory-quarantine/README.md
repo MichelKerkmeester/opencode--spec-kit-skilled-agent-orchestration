@@ -1,7 +1,16 @@
 # Legacy Memory Quarantine
 
+## TABLE OF CONTENTS
+
+- [OVERVIEW](#1--overview)
+- [WHY QUARANTINED](#why-quarantined)
+- [STATUS](#status)
+- [REMEDIATION DATE](#remediation-date)
+
+## 1. OVERVIEW
+
 This directory contains memory files that were quarantined during the
-022-hybrid-rag-fusion corpus remediation (2026-03-15).
+`022-hybrid-rag-fusion` corpus remediation on 2026-03-15.
 
 ## Why quarantined
 

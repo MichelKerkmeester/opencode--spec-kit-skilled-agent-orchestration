@@ -3,6 +3,9 @@ title: "Implementation Plan: Description Enrichment"
 ---
 # Implementation Plan: Description Enrichment
 
+This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.
+
+
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
@@ -22,7 +25,7 @@ title: "Implementation Plan: Description Enrichment"
 
 ### Overview
 
-This plan implements a validator unification pattern: merge `isDescriptionValid()` from `file-extractor.ts` and `hasMeaningfulDescription()` from `quality-scorer.ts` into a single shared validator with tiered outcomes (placeholder / activity-only / semantic / high-confidence), add provenance-based trust weighting to description quality scoring, and derive `MODIFICATION_MAGNITUDE` from existing `changeScores` and action type data already computed by `git-context-extractor.ts`.
+This plan implements a validator unification pattern: make `validateDescription()` the canonical shared validator for extraction/scoring with tiered outcomes (placeholder / activity-only / semantic / high-confidence), remove `hasMeaningfulDescription()` from scoring, retain `isDescriptionValid()` as a compatibility/local helper where needed, add provenance-based trust weighting to description quality scoring, and derive `MODIFICATION_MAGNITUDE` from existing `changeScores` and action type data already computed by `git-context-extractor.ts`.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -54,7 +57,7 @@ Validator unification -- merge two overlapping validation functions into one sha
 
 ### Key Components
 
-- **Unified description validator**: Single function replacing both `isDescriptionValid()` and `hasMeaningfulDescription()`, returning a tiered outcome enum
+- **Unified description validator**: `validateDescription()` is the canonical shared validator for extraction/scoring; `hasMeaningfulDescription()` is removed and `isDescriptionValid()` remains as a compatibility/local helper wrapper where needed
 - **Provenance trust weighting**: Quality scorer multiplier based on `_provenance` source (git=1.0, tool=0.8, synthetic=0.5)
 - **`MODIFICATION_MAGNITUDE` derivation**: Maps `changeScores` ranges + action type + commit-touch counts to an enum: trivial / small / medium / large / unknown
 - **Expanded stub pattern set**: Regex additions for TBD, todo, pending, n/a, bare changed/modified, "Recent commit:"
@@ -82,7 +85,7 @@ Validator unification -- merge two overlapping validation functions into one sha
   - `activity-only`: describes action without semantic content (e.g., "modified file", "updated code")
   - `semantic`: contains meaningful description of what changed and why
   - `high-confidence`: semantic content with specific technical details
-- [x] Replace `isDescriptionValid()` calls in `file-extractor.ts` with unified validator (now imports from `file-helpers.ts`)
+- [x] Align `file-extractor.ts` to the shared `file-helpers.ts` validator path, where `validateDescription()` is canonical and `isDescriptionValid()` is a compatibility wrapper
 - [x] Replace `hasMeaningfulDescription()` calls in `quality-scorer.ts` with unified validator
 
 ### Phase 2: Provenance Trust Weighting

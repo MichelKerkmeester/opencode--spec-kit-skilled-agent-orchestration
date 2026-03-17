@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # ───────────────────────────────────────────────────────────────
-# Session Capturing QA Fixes — 7-Agent Implementation Launcher
+# COMPONENT: SESSION CAPTURING QA FIXES LAUNCHER
 # ───────────────────────────────────────────────────────────────
+# Scratch operator helper for parallel QA fix implementation.
 # All agents: GPT-5.4 via copilot with --allow-all-tools
 #
 # Usage: bash launch-qa-fixes.sh [--dry-run]

@@ -1,16 +1,18 @@
 ---
 title: "Implementation Plan: Perfect Session Capturing [template:level_3/plan.md]"
-description: "Root-only documentation remediation to strict Level 3 template compliance with refreshed March 17, 2026 verification evidence."
+description: "Closure remediation plan for the parent spec pack and the remaining child-phase documentation."
 trigger_phrases:
   - "implementation plan"
-  - "spec 010 root docs"
-  - "template compliance"
-  - "verification refresh"
-  - "cross cli proof"
+  - "spec 010"
+  - "truth reconciliation"
+  - "blocker reporting"
 importance_tier: "normal"
 contextType: "general"
 ---
 # Implementation Plan: Perfect Session Capturing
+
+This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.
+
 
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
@@ -24,13 +26,14 @@ contextType: "general"
 
 | Aspect | Value |
 |--------|-------|
-| **Language/Stack** | Markdown documentation, shell validation commands |
-| **Framework** | system-spec-kit Level 3 template validation |
-| **Storage** | Spec folder markdown under `.opencode/specs/.../010-perfect-session-capturing` |
-| **Testing** | `validate.sh`, `check-completion.sh`, scripts and MCP verification lanes |
+| **Language/Stack** | Markdown, JSON, TypeScript, shell validation commands |
+| **Framework** | system-spec-kit Level 3/Level 2 spec workflow plus sk-doc validation |
+| **Storage** | Parent and child spec folders under `.opencode/specs/.../010-perfect-session-capturing` |
+| **Testing** | `validate.sh`, `check-completion.sh`, `npm` test lanes, `validate_document.py`, `bash -n`, `shellcheck` |
 
 ### Overview
-This work rewrites the six root markdown files onto exact v2.2 Level 3 templates and aligns every root claim to fresh March 17, 2026 evidence. It preserves runtime behavior contracts while repairing root compliance blockers, checklist evidence formatting, and cross-CLI proof language.
+
+This pass closes the parent spec pack and the remaining child docs to the shipped, verified state; refreshes supporting docs and metadata to current counts; formalizes phased-parent validation support; retains fresh live proof for all five supported CLIs; and re-verifies the executable, documentation, and shell-tooling surfaces so the parent folder can publish a final all-green closure state.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -39,16 +42,15 @@ This work rewrites the six root markdown files onto exact v2.2 Level 3 templates
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [x] Root file ownership limited to six assigned markdown files.
-- [x] Level 3 template source files reviewed before rewriting.
-- [x] Fresh authoritative verification outputs available for root evidence refresh.
+- [x] Current worker changes reviewed before further edits.
+- [x] March 17, 2026 rerun evidence available for scripts, MCP, docs, and phase-targeted lanes.
+- [x] Root closure target agreed: publish only the final state once validator, proof, and completion gates all pass.
 
 ### Definition of Done
-- [x] Root docs match required template headers, anchors, and ordering.
-- [x] `implementation-summary.md` exists and is populated.
-- [x] Root checklist completed items include valid priority and evidence context.
-- [x] Broken research link prefix fixed to `research/research-pipeline-improvements.md`.
-- [x] Root validation and completion checks no longer block on root markdown drift.
+- [x] Parent docs report strict-clean validation and retained five-CLI live proof accurately.
+- [x] Phases `004`, `005`, `010`, `011`, and `016` align with shipped evidence and pass their required closeout checks.
+- [x] Supporting docs and metadata reflect current counts and validation timestamps.
+- [x] Root strict completion passes and root strict recursive validation passes cleanly.
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -56,27 +58,28 @@ This work rewrites the six root markdown files onto exact v2.2 Level 3 templates
 **AI EXECUTION PROTOCOL**
 
 ### Pre-Task Checklist
-- [x] Root scope confirmed before edits.
-- [x] Active Level 3 templates read before rewriting.
-- [x] Fresh verification evidence captured before publishing completion language.
+- [x] Read the current parent and child docs before editing them.
+- [x] Separate parent-only blockers from child-phase completion issues.
+- [x] Reconfirm executable evidence before publishing updated counts.
 
 ### Execution Rules
 
 | Rule | Requirement |
 |------|-------------|
-| Scope Lock | Edit only the root markdown set and the minimal child phase-link metadata needed for recursive validation |
-| Evidence First | Refresh command counts and live-proof language from current local reruns only |
-| Boundary Safety | Do not change runtime loader order, JSON authority, or `memory_save` `dryRun` and `force` behavior |
-| Completion | Do not claim closure until validation, completion, and targeted test lanes are rerun |
+| Scope Lock | Limit file edits to the parent pack, the targeted child phases, supporting docs, metadata, and retained scratch helpers only |
+| Evidence First | Do not publish a count, status, or claim without a matching rerun or inspected file |
+| Truth Alignment | Keep parent claims tied to the latest validator, completion, and retained-proof outputs |
+| Proof Discipline | Distinguish green fixture-backed or test-backed coverage from live CLI proof freshness |
+| Completion | Run phase-local and parent truth gates before final sign-off |
 
 ### Status Reporting Format
 
 `STEP [N]: [status] -> [artifact/result]`
 
 ### Blocked Task Protocol
-1. Stop at the first validator or test blocker that changes completion truth.
-2. Record the exact file or lane that failed and the evidence gathered.
-3. Patch only the minimum scope needed to restore truthful completion.
+1. Stop when a validation or test result changes the truth model.
+2. Record the exact blocker and its command or file evidence.
+3. Patch only the minimum scope needed to restore truthful documentation and passing executable lanes.
 
 ---
 
@@ -84,16 +87,17 @@ This work rewrites the six root markdown files onto exact v2.2 Level 3 templates
 ## 3. ARCHITECTURE
 
 ### Pattern
-Template-first documentation remediation with evidence-first claim updates.
+Evidence-first closure remediation with validator-backed parent and phase alignment.
 
 ### Key Components
-- **Level 3 templates**: Structural source of truth for required headers and anchors.
-- **Root markdown set**: `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`.
-- **Validation stack**: `validate.sh` and `check-completion.sh`.
-- **Evidence stack**: scripts and MCP lanes rerun on 2026-03-17.
+- **Parent spec pack**: the six canonical root markdown files.
+- **Target child phases**: `004`, `005`, `010`, `011`, and `016`.
+- **Supporting docs**: feature catalog and manual testing playbook.
+- **Metadata**: `description.json` and aggregated `descriptions.json`.
+- **Verification stack**: scripts, MCP, phase-local spec gates, sk-doc validation, and shell hygiene checks.
 
 ### Data Flow
-Template review -> root markdown rewrite -> evidence refresh -> root validation -> root completion check -> publish closure language.
+Current repo state -> rerun evidence collection -> child doc reconciliation -> parent pack rewrite -> metadata refresh -> memory save closeout -> phase/local truth gates -> final parent summary.
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -101,20 +105,23 @@ Template review -> root markdown rewrite -> evidence refresh -> root validation 
 <!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
-### Phase 1: Setup
-- [x] Read active Level 3 templates.
-- [x] Collect current verification evidence.
-- [x] Confirm root-only scope boundaries.
+### Phase 1: Re-baseline
+- [x] Re-read the parent pack and the targeted child phases.
+- [x] Reconfirm the approved closure target from the re-analysis disposition.
+- [x] Rerun the executable and support-doc evidence lanes needed for fresh counts.
 
-### Phase 2: Core Implementation
-- [x] Rewrite `spec.md` to exact template structure and anchors.
-- [x] Rewrite `plan.md`, `tasks.md`, `checklist.md`, and `decision-record.md` to exact template structure.
-- [x] Create `implementation-summary.md`.
+### Phase 2: Documentation Reconciliation
+- [x] Backfill phase `004` to the real narrow type-consolidation closure.
+- [x] Confirm phase `005` is docs/status drift only and reconcile it.
+- [x] Backfill phases `010` and `011` from shipped tests and runtime behavior.
+- [x] Refresh phase `016` count language and retained live-proof evidence.
+- [x] Rewrite the parent pack around the final verified closure state.
 
-### Phase 3: Verification
-- [x] Rerun key evidence lanes and refresh counts/dates.
-- [x] Run root validator and root completion checks.
-- [x] Confirm cross-CLI proof text clearly separates fixture and live evidence.
+### Phase 3: Verification and Closeout
+- [x] Run required memory saves for the touched spec folders.
+- [x] Rerun strict phase validation and strict completion checks for the touched child phases.
+- [x] Rerun parent strict completion and parent strict validation.
+- [x] Refresh metadata timestamps after the final markdown state is settled.
 <!-- /ANCHOR:phases -->
 
 ---
@@ -124,10 +131,12 @@ Template review -> root markdown rewrite -> evidence refresh -> root validation 
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Unit/Targeted | Session-capture scripts lanes | Vitest, Node test suites |
-| Integration | MCP save-path targeted lanes | Vitest |
-| Specialized | Hydra/docs and file watcher lanes | Vitest |
-| Manual/Documentation | Root template and completion compliance | `validate.sh`, `check-completion.sh` |
+| Package gates | Shared, scripts, and MCP type/build/lint surfaces | `npm run typecheck`, `npm run check`, `npm run build`, `npm run lint` |
+| Scripts regressions | Extractors, module contracts, phase-016 parity lane, phase-010 integration lane, and phase-011 session-source lane | Node suites, Vitest |
+| MCP regressions | Focused save-path lane plus full suite | Vitest |
+| Spec truth gates | Parent and child validation/completion | `validate.sh`, `check-completion.sh` |
+| Supporting docs | Feature catalog and playbook | `validate_document.py` |
+| Shell tooling | Retained scratch launchers | `bash -n`, `shellcheck` |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -137,10 +146,10 @@ Template review -> root markdown rewrite -> evidence refresh -> root validation 
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| `.opencode/skill/system-spec-kit/templates/level_3` | Internal | Green | Root docs cannot be rewritten to canonical structure |
-| scripts verification lanes | Internal | Green | Evidence claims would be stale or unverifiable |
-| MCP targeted lanes (`core`, Hydra/docs, file-watcher) | Internal | Green | Cross-surface proof would be incomplete |
-| Root validator/completion scripts | Internal | Green | Cannot certify root compliance closure |
+| `template-structure.js` phased-parent behavior | Internal | Green | Parent strict validation depends on this support remaining intact |
+| Child phase code and tests already in repo | Internal | Green | Docs can be reconciled against shipped evidence |
+| Supporting docs under `sk-doc` validation | Internal | Green | Counts and manual guidance remain auditable |
+| Memory save script | Internal | Green | Phase and parent closeout items cannot be completed without it |
 <!-- /ANCHOR:dependencies -->
 
 ---
@@ -148,148 +157,132 @@ Template review -> root markdown rewrite -> evidence refresh -> root validation 
 <!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: Root validation/check-completion regression after markdown rewrite.
-- **Procedure**: Restore prior root markdown revisions, re-apply template-first rewrite, rerun root checks, and republish evidence from passing outputs only.
+- **Trigger**: Documentation changes create new truth drift, break spec gates, or misstate current evidence.
+- **Procedure**: Revert only the affected parent or child docs, rerun the same evidence commands, and reapply the minimum truthful reconciliation.
 <!-- /ANCHOR:rollback -->
 
 ---
 
-
----
-
 <!-- ANCHOR:phase-deps -->
-## L2: PHASE DEPENDENCIES
+## 8. L2: PHASE DEPENDENCIES
 
 ```
-Phase 1 (Setup) ──────┐
-                      ├──► Phase 2 (Core) ──► Phase 3 (Verify)
-Phase 1.5 (Evidence) ─┘
+Evidence Refresh ──► Child Backfill ──► Parent Rewrite ──► Final Gates
+         │                                   │
+         └────────────► Support Docs ────────┘
 ```
 
 | Phase | Depends On | Blocks |
 |-------|------------|--------|
-| Setup | None | Core, Evidence |
-| Evidence | Setup | Core, Verify |
-| Core | Setup, Evidence | Verify |
-| Verify | Core | None |
+| Re-baseline | None | Child backfill, parent rewrite |
+| Child backfill | Re-baseline | Parent rewrite, final gates |
+| Parent rewrite | Re-baseline, child backfill | Final gates |
+| Final gates | Parent rewrite, child backfill | Completion |
 <!-- /ANCHOR:phase-deps -->
 
 ---
 
 <!-- ANCHOR:effort -->
-## L2: EFFORT ESTIMATION
+## 9. L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
 |-------|------------|------------------|
-| Setup | Low | 30-60 minutes |
-| Core Implementation | Medium | 2-3 hours |
-| Verification | Medium | 1-2 hours |
-| **Total** | | **3.5-6 hours** |
+| Re-baseline | Medium | 1-2 hours |
+| Documentation reconciliation | High | 3-5 hours |
+| Final gates and metadata | Medium | 1-2 hours |
+| **Total** | | **5-9 hours** |
 <!-- /ANCHOR:effort -->
 
 ---
 
 <!-- ANCHOR:enhanced-rollback -->
-## L2: ENHANCED ROLLBACK
+## 10. L2: ENHANCED ROLLBACK
 
 ### Pre-deployment Checklist
-- [x] Root-only file scope confirmed.
-- [x] Current evidence captured from rerun outputs.
-- [x] Template source reviewed before edits.
+- [x] Parent and child docs were read before modification.
+- [x] Fresh verification evidence was rerun locally.
+- [x] The phased-parent validator support is verified in both tests and strict recursive validation.
 
 ### Rollback Procedure
-1. Revert only the six root markdown files.
-2. Re-run root validation and completion checks.
-3. Re-apply template-compliant rewrite with corrected sections.
-4. Re-verify and republish.
+1. Revert only the changed documentation or metadata files.
+2. Re-run the same validation and test commands that backed the published claims.
+3. Reapply only the edits needed to restore truthful state alignment.
 
 ### Data Reversal
 - **Has data migrations?** No
-- **Reversal procedure**: N/A
+- **Reversal procedure**: Metadata timestamp refresh can be safely regenerated after docs are restored.
 <!-- /ANCHOR:enhanced-rollback -->
 
 ---
 
-
----
-
 <!-- ANCHOR:dependency-graph -->
-## L3: DEPENDENCY GRAPH
+## 11. L3: DEPENDENCY GRAPH
 
 ```
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│   Phase 1   │────►│   Phase 2   │────►│   Phase 3   │
-│   Setup     │     │    Core     │     │   Verify    │
-└─────────────┘     └──────┬──────┘     └─────────────┘
-                          │
-                    ┌─────▼─────┐
-                    │ Evidence  │
-                    │  Refresh  │
-                    └───────────┘
+┌────────────────┐     ┌─────────────────┐     ┌────────────────┐
+│  Rerun Evidence │────►│ Child Reconcile │────►│ Parent Rewrite  │
+└────────────────┘     └────────┬────────┘     └────────┬───────┘
+                                 │                         │
+                        ┌────────▼────────┐       ┌───────▼────────┐
+                        │ Support + JSON  │──────►│ Final Truth Gates│
+                        └─────────────────┘       └─────────────────┘
 ```
 
 ### Dependency Matrix
 
 | Component | Depends On | Produces | Blocks |
 |-----------|------------|----------|--------|
-| Template mapping | None | Required header/anchor map | Rewrite |
-| Root rewrite | Template mapping, evidence capture | Template-compliant root docs | Validation |
-| Validation/completion checks | Root rewrite | Compliance confirmation | Final closure |
-| Evidence publication | Validation/completion checks | Accurate completion language | None |
+| Evidence reruns | Existing code/tests | Current counts and proof | All downstream docs |
+| Child reconciliation | Evidence reruns | Accurate phase docs | Parent rewrite |
+| Parent rewrite | Evidence reruns, child docs | Truthful parent narrative | Final gates |
+| Final gates | Child docs, parent rewrite, memory save | Completion evidence | Final summary |
 <!-- /ANCHOR:dependency-graph -->
 
 ---
 
 <!-- ANCHOR:critical-path -->
-## L3: CRITICAL PATH
+## 12. L3: CRITICAL PATH
 
-1. **Refresh evidence commands and counts** - 60-90 min - CRITICAL
-2. **Rewrite all six root markdown files to template** - 90-150 min - CRITICAL
-3. **Run root validation and completion checks** - 20-45 min - CRITICAL
+1. **Reconfirm the executable baseline** - complete - CRITICAL
+2. **Backfill child phases `004`, `005`, `010`, and `011`** - complete - CRITICAL
+3. **Rewrite the parent pack around the blocker model** - complete - CRITICAL
+4. **Run memory saves and final truth gates** - complete - CRITICAL
 
-**Total Critical Path**: 2.8-4.8 hours
+**Total Critical Path**: dominated by final spec validation and memory-closeout work.
 
 **Parallel Opportunities**:
-- scripts and MCP evidence lanes can run in parallel.
-- root file drafting can proceed while non-root suites execute.
+- Support-doc validation and shell hygiene can run alongside test lanes.
+- Metadata refresh can happen after the final markdown content stabilizes.
 <!-- /ANCHOR:critical-path -->
 
 ---
 
 <!-- ANCHOR:milestones -->
-## L3: MILESTONES
+## 13. L3: MILESTONES
 
 | Milestone | Description | Success Criteria | Target |
 |-----------|-------------|------------------|--------|
-| M1 | Evidence refresh complete | Current counts/dates captured (2026-03-17) | Phase 1 |
-| M2 | Root rewrite complete | All six root docs on Level 3 template structure | Phase 2 |
-| M3 | Root compliance closure | Root validation and completion checks pass | Phase 3 |
+| M1 | Evidence refresh complete | Current counts verified locally | Phase 1 |
+| M2 | Child docs reconciled | Targeted child phases match shipped state | Phase 2 |
+| M3 | Parent rewrite complete | Parent docs describe real blockers and green lanes | Phase 2 |
+| M4 | Final truth gates complete | Parent strict completion passes and validation blocker is documented with fresh output | Phase 3 |
 <!-- /ANCHOR:milestones -->
 
 ---
 
-## L3: ARCHITECTURE DECISION RECORD
+## 14. L3: ARCHITECTURE DECISION RECORD
 
-### ADR-001: Root Docs Must Track Verifiable Evidence Only
+### ADR-001: Formalize phased-parent validation support instead of hiding the structure
 
 **Status**: Accepted
 
-**Context**: Prior root docs failed template checks and included stale or over-broad claims.
+**Context**: The phased-parent `PHASE DOCUMENTATION MAP` is sanctioned by `create.sh` and the addendum templates, so the correct fix was validator support rather than removing sanctioned structure.
 
-**Decision**: Publish only rerunnable, dated evidence and keep fixture/live CLI proof explicitly separated.
+**Decision**: Keep the phase map in place and formalize phased-parent and child addendum support in `template-structure.js`, then close the parent only after strict validation and retained five-CLI proof both pass.
 
 **Consequences**:
-- Improved trust in closure claims.
-- Slightly higher maintenance burden to rerun and refresh evidence.
+- Parent docs can report clean strict validation without deleting sanctioned phase content.
+- The parent can claim closure only after both validator and live-proof obligations are satisfied.
 
 **Alternatives Rejected**:
-- Continue with historic counts and inferred parity claims: rejected due verification risk.
-
----
-
-<!--
-LEVEL 3 PLAN (~200 lines)
-- Core + L2 + L3 addendums
-- Dependency graphs, milestones
-- Architecture decision records
--->
+- Delete or flatten the phase-map content just to quiet validation: rejected because it would misrepresent the sanctioned phased-parent structure.

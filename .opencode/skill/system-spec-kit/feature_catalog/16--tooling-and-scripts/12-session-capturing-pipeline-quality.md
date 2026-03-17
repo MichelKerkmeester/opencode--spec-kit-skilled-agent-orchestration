@@ -1,6 +1,16 @@
 # Session Capturing Pipeline Quality
 
-## 1. Overview
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. FEATURE BREAKDOWN](#3--feature-breakdown)
+- [4. SOURCE FILES](#4--source-files)
+- [5. VERIFICATION SOURCES](#5--verification-sources)
+- [6. MANUAL COVERAGE MAP](#6--manual-coverage-map)
+- [7. SOURCE METADATA](#7--source-metadata)
+
+## 1. OVERVIEW
 
 Session capturing pipeline quality is the closure feature for spec `010-perfect-session-capturing`. It now covers the full shipped session-capture path for `generate-context.js`:
 
@@ -19,7 +29,7 @@ Session capturing pipeline quality is the closure feature for spec `010-perfect-
 
 ---
 
-## 2. Current Reality
+## 2. CURRENT REALITY
 
 The shipped session-capture pipeline enforces the following behavior:
 
@@ -67,11 +77,11 @@ The shipped session-capture pipeline enforces the following behavior:
 25. Historical active-memory remediation now uses that same template contract and moves non-repairable files out of active `memory/` use.
 26. The H1 body heading (`# title`) is derived from the content slug via `slugToTitle(contentSlug)` — the same slug used for the filename — instead of `pickBestContentName()`. A blank line separates the frontmatter close `---` from the H1 to satisfy the `missing_blank_line_after_frontmatter` contract rule.
 
-Status: Implemented, verified, and documentation-clean as of 2026-03-16.
+Status: Implemented, strongly verified, and fully closed as of 2026-03-17. The parent spec pack is strict-clean, and retained same-day live proof for all five supported CLIs is captured at `research/live-cli-proof-2026-03-17.json`; future live-verification claims should refresh that primary evidence rather than rely on the automated baseline alone.
 
 ---
 
-## 3. Feature Breakdown
+## 3. FEATURE BREAKDOWN
 
 The closure feature consists of these distinct shipped capabilities:
 
@@ -191,7 +201,7 @@ The closure feature consists of these distinct shipped capabilities:
 
 ---
 
-## 4. Source Files
+## 4. SOURCE FILES
 
 ### Implementation
 
@@ -248,7 +258,7 @@ The closure feature consists of these distinct shipped capabilities:
 
 ---
 
-## 5. Verification Sources
+## 5. VERIFICATION SOURCES
 
 - `cd .opencode/skill/system-spec-kit/scripts && npm run check`
 - `cd .opencode/skill/system-spec-kit/scripts && npm run build`
@@ -266,16 +276,19 @@ The closure feature consists of these distinct shipped capabilities:
 
 ### Latest verification snapshot
 
-- Scripts targeted suite rerun on 2026-03-16 passed with `14` files and `127` tests.
-- `test-bug-fixes.js` rerun on 2026-03-16 passed with `27` passed, `0` failed, `0` skipped.
-- `test-integration.vitest.ts` + `workflow-e2e.vitest.ts` rerun on 2026-03-16 passed with `17` tests across `2` files.
-- Targeted MCP save-quality rerun on 2026-03-16 passed with `6` files and `298` tests.
-- Package-clean MCP verification rerun on 2026-03-16 passed for `npm run lint`, `npm run build`, and `npm run test`, with the full MCP package suite reporting `282` files, `7787` passed, `11` skipped, and `28` todo.
-- Alignment drift rerun on 2026-03-16 passed with `229` scanned files and `0` findings.
+- On 2026-03-17, the root `system-spec-kit` `typecheck` plus scripts `check` and `build` reran cleanly.
+- On 2026-03-17, the targeted scripts closure suite reran cleanly with `14` files and `150` tests.
+- On 2026-03-17, `test-scripts-modules.js` reran cleanly with `384` passed, `5` skipped, and `389` total.
+- On 2026-03-17, `test-extractors-loaders.js` reran cleanly with `307` passing tests.
+- On 2026-03-17, the phase-016 parity lane reran cleanly with `45` tests.
+- On 2026-03-17, the targeted MCP save-quality lane reran cleanly with `6` files and `298` tests.
+- On 2026-03-17, package-clean MCP verification reran cleanly for `npm run lint`, `npm run build`, and `npm run test`, with the full MCP package suite reporting `283` files and `7822` total tests including skips and todo coverage.
+- Alignment drift remains supported by the 2026-03-16 rerun, which reported `229` scanned files and `0` findings; it was not part of the March 17 rerun set.
+- The March 17 automated reruns are not, by themselves, the live-proof evidence for every CLI; that proof comes from the retained artifact at `research/live-cli-proof-2026-03-17.json`, and any future universal live-verification claim should refresh equivalent primary evidence.
 
 ---
 
-## 6. Manual Coverage Map
+## 6. MANUAL COVERAGE MAP
 
 Manual coverage lives in `M-007` and is expected to explicitly cover:
 
@@ -297,7 +310,7 @@ Manual coverage lives in `M-007` and is expected to explicitly cover:
 
 ---
 
-## 7. Source Metadata
+## 7. SOURCE METADATA
 
 - Group: Tooling and scripts
 - Source feature title: Session capturing pipeline quality

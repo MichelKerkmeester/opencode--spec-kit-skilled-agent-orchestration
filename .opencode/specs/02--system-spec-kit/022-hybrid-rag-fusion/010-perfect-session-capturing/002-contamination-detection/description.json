@@ -7,7 +7,7 @@
     "contamination",
     "detection"
   ],
-  "lastUpdated": "2026-03-16T17:23:59.052Z",
+  "lastUpdated": "2026-03-17T13:52:20.553Z",
   "specId": "002",
   "folderSlug": "contamination-detection",
   "parentChain": [
@@ -15,8 +15,9 @@
     "022-hybrid-rag-fusion",
     "010-perfect-session-capturing"
   ],
-  "memorySequence": 1,
+  "memorySequence": 2,
   "memoryNameHistory": [
-    "16-03-26_18-23__contamination-detection.md"
+    "16-03-26_18-23__contamination-detection.md",
+    "17-03-26_16-44__strict-closeout-evidence-refreshed.md"
   ]
 }

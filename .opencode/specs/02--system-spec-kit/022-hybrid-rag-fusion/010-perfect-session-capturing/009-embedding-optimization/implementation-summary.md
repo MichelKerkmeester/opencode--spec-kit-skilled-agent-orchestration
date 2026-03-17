@@ -7,23 +7,24 @@ trigger_phrases: ["implementation", "summary", "embedding", "optimization"]
 
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
 <!-- ANCHOR:metadata -->
-## Metadata
+## 1. METADATA
 
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 009-embedding-optimization |
-| **Completed** | 2026-03-16 |
+| **Completed** | 2026-03-17 |
 | **Level** | 2 |
 <!-- /ANCHOR:metadata -->
 
 ---
 
 <!-- ANCHOR:what-built -->
-## What Was Built
+## 2. WHAT WAS BUILT
 
 This phase implemented weighted document input for the two intended indexing paths: the scripts memory indexer and the MCP `memory_save` embedding pipeline.
 
@@ -37,7 +38,7 @@ This phase implemented weighted document input for the two intended indexing pat
 ---
 
 <!-- ANCHOR:how-delivered -->
-## How It Was Delivered
+## 3. HOW IT WAS DELIVERED
 
 Delivered as a narrow parity pass rather than a broad embedding refactor.
 
@@ -50,7 +51,7 @@ Delivered as a narrow parity pass rather than a broad embedding refactor.
 ---
 
 <!-- ANCHOR:decisions -->
-## Key Decisions
+## 4. KEY DECISIONS
 
 | Decision | Why |
 |----------|-----|
@@ -62,25 +63,28 @@ Delivered as a narrow parity pass rather than a broad embedding refactor.
 ---
 
 <!-- ANCHOR:verification -->
-## Verification
+## 5. VERIFICATION
 
 | Check | Result |
 |-------|--------|
 | `cd .opencode/skill/system-spec-kit/scripts && npm run check` | Passed |
 | `cd .opencode/skill/system-spec-kit/scripts && npm run build` | Passed |
-| `node mcp_server/node_modules/vitest/vitest.mjs run tests/task-enrichment.vitest.ts tests/memory-indexer-weighting.vitest.ts tests/semantic-signal-golden.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts` | Passed — 3 files, 49 tests |
+| `node mcp_server/node_modules/vitest/vitest.mjs run tests/task-enrichment.vitest.ts tests/memory-indexer-weighting.vitest.ts tests/semantic-signal-golden.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts` | Passed: 3 files, 49 tests |
 | `cd .opencode/skill/system-spec-kit/mcp_server && npm run lint` | Passed |
 | `cd .opencode/skill/system-spec-kit/mcp_server && npm run build` | Passed |
-| `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/embedding-weighting.vitest.ts tests/embedding-pipeline-weighting.vitest.ts tests/embeddings.vitest.ts tests/handler-memory-save.vitest.ts` | Passed — 4 files, 49 tests |
-| `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/009-embedding-optimization` | Passed — wrote `memory/16-03-26_20-38__implemented-weighted-document-embedding-input-for.md` and `memory/metadata.json`; production indexing remained pending after a memory quality gate warning |
+| `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/embedding-weighting.vitest.ts tests/embedding-pipeline-weighting.vitest.ts tests/embeddings.vitest.ts tests/handler-memory-save.vitest.ts` | Passed: 4 files, 49 tests |
+| `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/009-embedding-optimization` | Passed: wrote `memory/17-03-26_16-44__strict-closeout-evidence-refreshed.md`, refreshed `metadata.json`, and indexed memory #4374 |
 <!-- /ANCHOR:verification -->
 
 ---
 
 <!-- ANCHOR:limitations -->
-## Known Limitations
+## 6. KNOWN LIMITATIONS
 
 1. This phase does not roll weighting out to every other `generateDocumentEmbedding()` caller; broader parity remains out of scope for `009`.
 2. `scripts/tests/test-embeddings-behavioral.js` still reports pre-existing baseline expectation drift around lazy-warmup/model metadata defaults, so it is not used as closure evidence for this phase.
-3. The saved phase memory artifact was written successfully, but the memory pipeline left `embedding.status` pending because the generated artifact hit a file-description quality warning during production indexing.
+3. Broader document-embedding parity and ranking behavior outside the approved scripts-plus-save rollout remain out of scope for this phase.
 <!-- /ANCHOR:limitations -->
+
+
+Reference links: [spec.md](spec.md) and [plan.md](plan.md).

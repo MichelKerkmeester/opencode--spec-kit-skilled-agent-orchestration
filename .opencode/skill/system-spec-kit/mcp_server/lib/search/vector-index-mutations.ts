@@ -1,3 +1,5 @@
+import type Database from 'better-sqlite3';
+
 // ───────────────────────────────────────────────────────────────
 // MODULE: Vector Index Mutations
 // ───────────────────────────────────────────────────────────────
@@ -27,6 +29,11 @@ import * as bm25Index from './bm25-index';
 import { recordHistory } from '../storage/history';
 
 const logger = createLogger('VectorIndex');
+
+function isExpectedMissingVecMemoriesTable(error: unknown): boolean {
+  const message = get_error_message(error).toLowerCase();
+  return message.includes('no such table') && message.includes('vec_memories');
+}
 
 function upsert_active_projection(
   database: ReturnType<typeof initialize_db>,
@@ -401,6 +408,16 @@ export function update_memory(params: UpdateMemoryParams): number {
  */
 export function delete_memory(id: number): boolean {
   const database = initialize_db();
+  return delete_memory_from_database(database, id);
+}
+
+/**
+ * Deletes a memory and related index records using the provided database handle.
+ * @param database - The database containing the target memory.
+ * @param id - The memory identifier.
+ * @returns True when a memory was deleted.
+ */
+export function delete_memory_from_database(database: Database.Database, id: number): boolean {
   const sqlite_vec = get_sqlite_vec_available();
 
   const delete_memory_tx = database.transaction(() => {
@@ -411,7 +428,9 @@ export function delete_memory(id: number): boolean {
       try {
         database.prepare('DELETE FROM vec_memories WHERE rowid = ?').run(BigInt(id));
       } catch (e: unknown) {
-        console.warn(`[vector-index] Vector deletion failed for memory ${id}: ${get_error_message(e)}`);
+        if (!isExpectedMissingVecMemoriesTable(e)) {
+          console.warn(`[vector-index] Vector deletion failed for memory ${id}: ${get_error_message(e)}`);
+        }
       }
     }
 

@@ -8,13 +8,16 @@ contextType: "general"
 ---
 # Tasks: Template Compliance
 
+This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.
+
+
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
 ---
 
 <!-- ANCHOR:notation -->
-## Task Notation
+## 1. TASK NOTATION
 
 | Prefix | Meaning |
 |--------|---------|
@@ -29,7 +32,7 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Setup
+## 2. PHASE 1: SETUP
 
 - [x] T001 Review parent `010` docs and prior child phases for repo-aligned context (`.opencode/specs/.../010-perfect-session-capturing/`)
 - [x] T002 Locate the actual runtime prompt surfaces that replace the stale draft references (`.opencode/agent/`, `.claude/agents/`, `.gemini/agents/`, `.opencode/command/spec_kit/assets/`)
@@ -39,7 +42,7 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Implementation
+## 3. PHASE 2: IMPLEMENTATION
 
 - [x] T004 Create the shared live template contract helper at `.opencode/skill/system-spec-kit/scripts/utils/template-structure.js`
 - [x] T005 Update `check-template-headers.sh` for live required-header order, checklist H1, and `CHK-NNN` enforcement
@@ -53,7 +56,7 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: Verification
+## 4. PHASE 3: VERIFICATION
 
 - [x] T011 Add compliant and mutation fixtures for pass/warn/fail template-compliance paths under `scripts/test-fixtures/053-060-*`
 - [x] T012 Add Vitest coverage for template contract resolution and optional-section handling in `scripts/tests/template-structure.vitest.ts`
@@ -65,7 +68,7 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:completion -->
-## Completion Criteria
+## 5. COMPLETION CRITERIA
 
 - [x] All tasks marked `[x]`
 - [x] No `[B]` blocked tasks remaining
@@ -75,7 +78,7 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:cross-refs -->
-## Cross-References
+## 6. CROSS-REFERENCES
 
 - **Specification**: See the specification document in this phase folder
 - **Plan**: See the implementation plan document in this phase folder

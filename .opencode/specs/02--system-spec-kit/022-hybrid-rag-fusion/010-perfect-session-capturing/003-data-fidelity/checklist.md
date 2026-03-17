@@ -3,13 +3,16 @@ title: "Verification Checklist: Data Fidelity [template:level_2/checklist.md]"
 ---
 # Verification Checklist: Data Fidelity
 
+This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.
+
+
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
 ---
 
 <!-- ANCHOR:protocol -->
-## Verification Protocol
+## 1. VERIFICATION PROTOCOL
 
 | Priority | Handling | Completion Impact |
 |----------|----------|-------------------|
@@ -21,7 +24,7 @@ title: "Verification Checklist: Data Fidelity [template:level_2/checklist.md]"
 ---
 
 <!-- ANCHOR:pre-impl -->
-## Pre-Implementation
+## 2. PRE-IMPLEMENTATION
 
 - [x] CHK-001 [P0] Requirements documented in spec.md [Evidence: spec.md Section 4 defines REQ-001 through REQ-006 with acceptance criteria in a structured table; Section 5 defines SC-001 and SC-002 with four acceptance scenarios.]
 - [x] CHK-002 [P0] Technical approach defined in plan.md [Evidence: plan.md Section 3 (Architecture) describes the data-preservation pattern across input-normalizer.ts, file-extractor.ts, decision-extractor.ts, and collect-session-data.ts; Section 4 details seven implementation phases.]
@@ -31,7 +34,7 @@ title: "Verification Checklist: Data Fidelity [template:level_2/checklist.md]"
 ---
 
 <!-- ANCHOR:code-quality -->
-## Code Quality
+## 3. CODE QUALITY
 
 - [x] CHK-010 [P0] `ACTION`, `_provenance`, `_synthetic` metadata preserved through FILES normalization (REQ-001) [Evidence: input-normalizer.ts normalizeFileEntryLike():337-363 validates and propagates ACTION, _provenance, and _synthetic onto FileEntry; file-extractor.ts extractFilesFromData():123-208 carries _provenance and _synthetic through addFile() merge logic.]
 - [x] CHK-011 [P0] Object-based facts coerced to strings via `JSON.stringify` instead of silently dropped (REQ-002) [Evidence: fact-coercion.ts coerceFactToText():46-66 detects typeof value === 'object', returns `[object] ${JSON.stringify(value)}` for serializable objects and `[object] [unserializable]` with dropReason for circular references.]
@@ -47,20 +50,20 @@ title: "Verification Checklist: Data Fidelity [template:level_2/checklist.md]"
 ---
 
 <!-- ANCHOR:testing -->
-## Testing
+## 4. TESTING
 
 - [x] CHK-020 [P0] Unit test: normalized output retains metadata when present (REQ-001) [Evidence: runtime-memory-inputs.vitest.ts test 'preserves FILES metadata in structured payloads when present' (line 574) asserts _provenance:'git', _synthetic:false, and ACTION fields survive normalizeInputData(); test 'keeps FILES backward-compatible when metadata is absent' (line 625) confirms no breakage without metadata.]
 - [x] CHK-021 [P0] Unit test: object facts appear as stringified entries (REQ-002) [Evidence: test-extractors-loaders.js EXT-File-028 (line 876-886) passes OBJECT_FACT_METADATA (object without .text) through buildObservationsWithAnchors and asserts FACTS_LIST contains '[object] {"files":...}' instead of empty string.]
 - [x] CHK-022 [P0] Unit test: decisions include enrichment fields from `_manualDecision` (REQ-003) [Evidence: test-extractors-loaders.js EXT-Decision-027 (line 688-714) passes _manualDecision with fullText/chosenApproach/confidence:82, asserts CHOSEN === 'Batched repair path', CONTEXT includes 'preserves fidelity', and CONFIDENCE === 0.82.]
 - [x] CHK-023 [P1] Unit test: warning emitted on observation truncation (REQ-004) [Evidence: test-extractors-loaders.js EXT-CSData-043 (line 381-413) creates 200 observations, captures console.warn output, and verifies 'observation_truncation_applied' log with originalCount > retainedCount and no observation content leaked.]
 - [x] CHK-024 [P1] Targeted integration coverage proves metadata and object facts survive through extractor rendering, pending-task extraction, and conversation tool detection (SC-001) [Evidence: test-extractors-loaders.js covers three integration paths: EXT-File-028 (object facts through rendering), EXT-CSData-042 (line 361-378, object facts drive pending task extraction), and EXT-Conv-020 (line 953-968, object facts drive conversation tool-call detection via coerceFactsToText).]
-- [x] CHK-025 [P1] Approved verification stack passes: `npm run typecheck`, `runtime-memory-inputs.vitest.ts`, `node scripts/tests/test-extractors-loaders.js`, `npm run build` [Evidence: implementation-summary.md Section 5 (Verification) reports all four commands passed: typecheck passed, vitest 25 tests 0 failures, test-extractors-loaders 294 passed 0 failed 0 skipped, build passed.]
+- [x] CHK-025 [P1] Approved verification stack passes: `npm run typecheck`, `runtime-memory-inputs.vitest.ts`, `node scripts/tests/test-extractors-loaders.js`, `npm run build` [Evidence: implementation-summary.md Section 5 now reports all four commands passed on 2026-03-17: typecheck passed, `runtime-memory-inputs.vitest.ts` passed with 29 tests, `test-extractors-loaders.js` passed with 307 tests, and build passed.]
 <!-- /ANCHOR:testing -->
 
 ---
 
 <!-- ANCHOR:security -->
-## Security
+## 5. SECURITY
 
 - [x] CHK-030 [P2] Stringified object facts use plain JSON stringification only and do not add new external I/O or secret lookup paths [Evidence: fact-coercion.ts:55-57 uses only JSON.stringify(value) with no fs/net/http imports; the module imports only structuredLog from ./logger and exports pure functions with no side effects beyond logging.]
 - [x] CHK-031 [P2] Truncation logging records counts plus spec/session identifiers only, not memory content [Evidence: collect-session-data.ts:714-720 logs { specFolder, sessionId, channel, originalCount, retainedCount } only; test EXT-CSData-043 (line 405) asserts `!truncationLog.includes('Observation 1')` confirming no observation content leaks into the warning.]
@@ -69,32 +72,32 @@ title: "Verification Checklist: Data Fidelity [template:level_2/checklist.md]"
 ---
 
 <!-- ANCHOR:docs -->
-## Documentation
+## 6. DOCUMENTATION
 
 - [x] CHK-040 [P1] spec.md and plan.md remain consistent with the shipped implementation [Evidence: spec.md Section 3 (Scope/Files to Change) lists the six files modified; implementation-summary.md Section 2 (What Was Built) confirms all six were implemented as specified. plan.md Section 4 phases 1-7 are all checked complete, matching the delivered code.]
-- [x] CHK-041 [P2] implementation-summary.md created after completion [Evidence: implementation-summary.md exists with Metadata.Completed = 2026-03-16, contains What Was Built (6 items), How It Was Delivered (4 items), Key Decisions (3 rows), Verification (4 passing checks), and Known Limitations (3 items).]
+- [x] CHK-041 [P2] implementation-summary.md created after completion [Evidence: implementation-summary.md exists with current verification results, the required anchored sections, and refreshed March 17, 2026 command output.]
 <!-- /ANCHOR:docs -->
 
 ---
 
 <!-- ANCHOR:file-org -->
-## File Organization
+## 7. FILE ORGANIZATION
 
 - [x] CHK-050 [P1] No temp implementation artifacts were written outside normal code/test files [Evidence: implementation-summary.md Section 2 lists only scripts/utils/fact-coercion.ts (new) and modifications to input-normalizer.ts, file-extractor.ts, conversation-extractor.ts, decision-extractor.ts, collect-session-data.ts, and session-types.ts; no temp or scratch files were created.]
 - [x] CHK-051 [P1] No scratch artifacts remained after completion [Evidence: implementation-summary.md Section 6 (Known Limitations) item 3 notes 'Phase-local memory capture was not created as part of this implementation pass'; the 003-data-fidelity folder contains only spec docs (spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md, description.json) with no scratch/ directory.]
-- [ ] CHK-052 [P2] Findings saved to memory/
+- [x] CHK-052 [P2] Findings saved to memory/ [Evidence: `generate-context.js` closeout save was rerun for phase `003`, and the phase `memory/` folder now contains a retained artifact plus refreshed `metadata.json`.]
 <!-- /ANCHOR:file-org -->
 
 ---
 
 <!-- ANCHOR:summary -->
-## Verification Summary
+## 8. VERIFICATION SUMMARY
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 9 | [x]/9 |
-| P1 Items | 11 | [x]/11 |
-| P2 Items | 5 | [x]/4 |
+| P0 Items | 9 | 9/9 |
+| P1 Items | 11 | 11/11 |
+| P2 Items | 5 | 5/5 |
 
-**Verification Date**: 2026-03-16
+**Verification Date**: 2026-03-17
 <!-- /ANCHOR:summary -->

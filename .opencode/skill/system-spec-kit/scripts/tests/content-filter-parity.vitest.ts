@@ -1,3 +1,6 @@
+// ───────────────────────────────────────────────────────────────────
+// MODULE: Content Filter Parity Tests
+// ───────────────────────────────────────────────────────────────────
 // TEST: Content Filter Multi-CLI Parity
 import { describe, expect, it } from 'vitest';
 

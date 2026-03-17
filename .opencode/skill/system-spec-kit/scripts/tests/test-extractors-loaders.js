@@ -816,6 +816,20 @@ async function testFileExtractor() {
     const dedupedFiles = extractFilesFromData(dupData, []);
     assertEqual(dedupedFiles.length, 1, 'EXT-File-016: Duplicate files deduplicated');
 
+    const normalizedDupData = {
+      FILES: [
+        { FILE_PATH: 'scripts/utils/input-normalizer.ts', DESCRIPTION: 'Canonical path' },
+        { FILE_PATH: 'scripts/utils/../utils/input-normalizer.ts', DESCRIPTION: 'Equivalent normalized path' }
+      ]
+    };
+    const normalizedDedupedFiles = extractFilesFromData(normalizedDupData, []);
+    assertEqual(normalizedDedupedFiles.length, 1, 'EXT-File-016b: Normalized path-equivalent files deduplicated');
+    assertEqual(
+      normalizedDedupedFiles[0]?.FILE_PATH,
+      'scripts/utils/input-normalizer.ts',
+      'EXT-File-016c: Normalized path-equivalent files preserve canonical FILE_PATH'
+    );
+
     const legacyData = {
       filesModified: [
         { path: 'src/legacy.js', changes_summary: 'Legacy changes' }

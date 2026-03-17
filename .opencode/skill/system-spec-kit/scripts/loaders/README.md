@@ -1,6 +1,6 @@
 ---
 title: "Data Loaders"
-description: "Data loader modules that normalize input from JSON files or OpenCode capture, then hard-stop when no usable session data exists."
+description: "Data loader modules that normalize input from JSON files or native CLI capture, then hard-stop when no usable session data exists."
 trigger_phrases:
   - "data loaders"
   - "load collected data"
@@ -40,9 +40,15 @@ The `loaders/` directory provides the ingestion layer for memory generation.
 
 
 `data-loader.ts` loads in this order:
-1. Explicit JSON data file
-2. OpenCode capture input
-3. Hard-stop with `NO_DATA_AVAILABLE` when neither source produces usable data
+1. Explicit JSON data file when `dataFile` is provided
+2. Preferred native capture source when `preferredCaptureSource` or `SYSTEM_SPEC_KIT_CAPTURE_SOURCE` is set
+3. Native capture fallback order:
+   - OpenCode
+   - Claude Code
+   - Codex CLI
+   - Copilot CLI
+   - Gemini CLI
+4. Hard-stop with `NO_DATA_AVAILABLE` when neither explicit data nor any native capture source produces usable session data
 
 
 <!-- /ANCHOR:source-priority -->

@@ -8,7 +8,6 @@ trigger_phrases:
 importance_tier: "critical"
 contextType: "decision"
 ---
-<!-- ANCHOR:document -->
 # Decision Record: 002-versioned-memory-state
 
 <!-- SPECKIT_LEVEL: 3+ -->
@@ -16,6 +15,7 @@ contextType: "decision"
 
 ---
 
+<!-- ANCHOR:adr-001 -->
 ## ADR-201: Keep Immutable Lineage History Separate from Active Projection
 
 ### Metadata
@@ -101,4 +101,4 @@ Historical correctness and current-read performance pull the storage model in di
 
 **How to roll back**: restore the pre-lineage checkpoint, disable lineage rollout flags, and rerun current-read smoke checks.
 
-<!-- /ANCHOR:document -->
+<!-- /ANCHOR:adr-001 -->

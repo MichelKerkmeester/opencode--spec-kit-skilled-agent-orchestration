@@ -9,13 +9,16 @@ contextType: "general"
 ---
 # Verification Checklist: Multi-CLI Parity Hardening
 
+This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.
+
+
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
 ---
 
 <!-- ANCHOR:protocol -->
-## Verification Protocol
+## 1. VERIFICATION PROTOCOL
 
 | Priority | Handling | Completion Impact |
 |----------|----------|-------------------|
@@ -27,7 +30,7 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:pre-impl -->
-## Pre-Implementation
+## 2. PRE-IMPLEMENTATION
 
 - [x] CHK-001 [P0] Requirements documented in `spec.md` [Evidence: Phase-016 spec rewritten on 2026-03-17 with REQ-001 through REQ-006 and SC-001 through SC-004.]
 - [x] CHK-002 [P0] Technical approach defined in `plan.md` [Evidence: `plan.md` now includes Technical Context, phase breakdown, testing strategy, dependencies, and rollback plan.]
@@ -37,7 +40,7 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:code-quality -->
-## Code Quality
+## 3. CODE QUALITY
 
 - [x] CHK-010 [P0] Parity regression coverage added for the intended public/runtime behavior [Evidence: `phase-classification.vitest.ts`, `content-filter-parity.vitest.ts`, and `runtime-memory-inputs.vitest.ts` now assert aliasing, noise filtering, provenance, and `view` title behavior.]
 - [x] CHK-011 [P0] No runtime code drift required beyond the shipped parity behavior [Evidence: The three phase-016 runtime seams already contained the target behavior. Only focused tests were added.]
@@ -48,10 +51,10 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:testing -->
-## Testing
+## 4. TESTING
 
 - [x] CHK-020 [P0] All acceptance criteria met [Evidence: SC-001 through SC-004 are covered by focused Vitest, baseline extractor-loader verification, workspace typecheck/build, and `validate.sh`.]
-- [x] CHK-021 [P0] Manual or direct verification complete [Evidence: `node mcp_server/node_modules/vitest/vitest.mjs run tests/phase-classification.vitest.ts tests/content-filter-parity.vitest.ts tests/runtime-memory-inputs.vitest.ts tests/description-enrichment.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts` passed with 4 files and 44 tests on 2026-03-17.]
+- [x] CHK-021 [P0] Manual or direct verification complete [Evidence: `node mcp_server/node_modules/vitest/vitest.mjs run tests/phase-classification.vitest.ts tests/content-filter-parity.vitest.ts tests/runtime-memory-inputs.vitest.ts tests/description-enrichment.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts` passed with 4 files and 45 tests on 2026-03-17.]
 - [x] CHK-022 [P1] Edge cases tested [Evidence: Content-filter parity tests cover Copilot lifecycle markers, Codex reasoning markers, and empty XML wrappers. Runtime-memory inputs cover `view` title shortening and CLI-derived provenance.]
 - [x] CHK-023 [P1] Error scenarios validated [Evidence: `runtime-memory-inputs.vitest.ts` still passed its explicit data-file failure and native fallback scenarios (28/28).]
 <!-- /ANCHOR:testing -->
@@ -59,7 +62,7 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:security -->
-## Security
+## 5. SECURITY
 
 - [x] CHK-030 [P0] No hardcoded secrets [Evidence: Changes are limited to tests and phase-016 documentation. No credentials or secret-bearing config was added.]
 - [x] CHK-031 [P0] Input validation behavior preserved [Evidence: `runtime-memory-inputs.vitest.ts` continued to pass path-traversal and explicit data-file validation failures after the parity additions.]
@@ -69,17 +72,17 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:docs -->
-## Documentation
+## 6. DOCUMENTATION
 
-- [x] CHK-040 [P1] Spec/plan/tasks synchronized [Evidence: All five phase-016 markdown artifacts were rewritten on 2026-03-17 to describe the reopened parity-proof pass and final verified state.]
+- [x] CHK-040 [P1] Spec/plan/tasks synchronized [Evidence: All five phase-016 markdown artifacts were rewritten on 2026-03-17 to describe the reopened parity-proof pass, cite `../research/live-cli-proof-2026-03-17.json`, and record the final verified state.]
 - [x] CHK-041 [P1] Code comments adequate [Evidence: No new production code paths were added. Existing inline comments on the parity seams remain unchanged and sufficient.]
-- [x] CHK-042 [P2] Phase completion evidence recorded in `implementation-summary.md` [Evidence: `implementation-summary.md` now includes anchored metadata, delivery story, decisions, verification table, and limitations.]
+- [x] CHK-042 [P2] Phase completion evidence recorded in `implementation-summary.md` [Evidence: `implementation-summary.md` now includes anchored metadata, delivery story, decisions, verification table, limitations, and the retained live-proof citation `../research/live-cli-proof-2026-03-17.json`.]
 <!-- /ANCHOR:docs -->
 
 ---
 
 <!-- ANCHOR:file-org -->
-## File Organization
+## 7. FILE ORGANIZATION
 
 - [x] CHK-050 [P1] Temp files in `scratch/` only [Evidence: No new temp artifacts were created in the phase folder during this pass.]
 - [x] CHK-051 [P1] `scratch/` cleaned before completion [Evidence: The phase folder remains limited to canonical docs plus the existing `memory/` and `scratch/` directories.]
@@ -89,7 +92,7 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:summary -->
-## Verification Summary
+## 8. VERIFICATION SUMMARY
 
 | Category | Total | Verified |
 |----------|-------|----------|

@@ -1,3 +1,4 @@
+// Test: Memory Quality Lane
 'use strict';
 
 const path = require('path');
@@ -169,6 +170,10 @@ function runQualityScorerTests() {
 
   const empty = qualityScorer.scoreMemoryQuality({ content: '' });
   assert(empty.qualityScore === 0, 'empty file should score 0');
+  assert(!inadequateFlagPresent(empty.qualityFlags, 'has_contamination'), 'empty file should not report contamination when none was detected');
+
+  const emptyContaminated = qualityScorer.scoreMemoryQuality({ content: '', hadContamination: true });
+  assert(inadequateFlagPresent(emptyContaminated.qualityFlags, 'has_contamination'), 'empty file should preserve explicit contamination flags when contamination was detected');
 
   const bonusClamp = qualityScorer.scoreMemoryQuality({
     content: '# bonus',

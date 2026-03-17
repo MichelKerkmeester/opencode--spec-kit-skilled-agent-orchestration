@@ -1,0 +1,72 @@
+{
+  "capturedOn": "2026-03-17",
+  "capturedFromWorkspace": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public",
+  "captureMethod": "system-spec-kit native capture extractors via `npx tsx` from `.opencode/skill/system-spec-kit/scripts`",
+  "proofCriteria": {
+    "sameDayDate": "2026-03-17",
+    "minimumExchanges": 2,
+    "attemptedActionRequired": true
+  },
+  "clients": [
+    {
+      "source": "opencode",
+      "sessionId": "ses_30365cc39ffeJh9xHITb9Naig4",
+      "title": "OpenCode Proof 2026-03-17",
+      "exchanges": 2,
+      "toolCalls": 9,
+      "proofDepth": "deep",
+      "attemptedAction": "Read `scripts/loaders/README.md` and `scripts/core/workflow.ts`, then report the first fallback source and the `skipped_duplicate` indexing status.",
+      "toolTelemetryAvailable": true,
+      "capturedAt": "2026-03-17T16:35:17.168Z"
+    },
+    {
+      "source": "claude",
+      "sessionId": "ff1192bc-4045-42fd-bce5-fe63ec455c52",
+      "title": "Analyze the work done in /Users/michelkerkmeester/MEGA/Development/Opencode Env/",
+      "exchanges": 13,
+      "toolCalls": 213,
+      "proofDepth": "deep",
+      "attemptedAction": "Captured the active same-day audit session for the target spec pack, including repository reads and validation-oriented tool use.",
+      "toolTelemetryAvailable": true,
+      "capturedAt": "2026-03-17T16:35:25.943Z"
+    },
+    {
+      "source": "codex",
+      "sessionId": "019cfc84-6ad1-7142-8dc6-52f2d24f928a",
+      "title": "# AGENTS.md instructions for /Users/michelkerkmeester/MEGA/Development/Opencode ",
+      "exchanges": 11,
+      "toolCalls": 186,
+      "proofDepth": "deep",
+      "attemptedAction": "Captured the active same-day implementation and verification session, including code edits, focused tests, and live extractor checks.",
+      "toolTelemetryAvailable": true,
+      "capturedAt": "2026-03-17T16:35:17.507Z"
+    },
+    {
+      "source": "copilot",
+      "sessionId": "90ef3116-39bb-4959-8bca-e0a085003254",
+      "title": "COPILOT-PROOF-2026-03-17-A: Read `.opencode/skill/system-spec-kit/scripts/loader",
+      "exchanges": 2,
+      "toolCalls": 5,
+      "proofDepth": "deep",
+      "attemptedAction": "Read `scripts/loaders/README.md` and `scripts/core/workflow.ts`, then answer the fallback-source and `skipped_duplicate` prompts in a resumed session.",
+      "toolTelemetryAvailable": true,
+      "capturedAt": "2026-03-17T16:35:21.722Z"
+    },
+    {
+      "source": "gemini",
+      "sessionId": "bed88843-89c0-4aef-a4c6-eb8f3a395bb7",
+      "title": "GEMINI-PROOF-2026-03-17-A: Read `.opencode/skill/system-spec-kit/scripts/loaders",
+      "exchanges": 2,
+      "toolCalls": 4,
+      "proofDepth": "deep",
+      "attemptedAction": "Read `scripts/loaders/README.md` and `scripts/core/workflow.ts`, then answer the fallback-source and `skipped_duplicate` prompts in the same resumed session.",
+      "toolTelemetryAvailable": true,
+      "capturedAt": "2026-03-17T16:35:20.127Z"
+    }
+  ],
+  "notes": [
+    "All retained sessions are same-day captures from 2026-03-17.",
+    "Each client retained at least two exchanges and at least one captureable read-style action.",
+    "Fixture-backed parity tests remain the behavioral backstop for normalized transformation guarantees across CLIs."
+  ]
+}

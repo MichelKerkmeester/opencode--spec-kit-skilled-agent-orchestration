@@ -23,6 +23,8 @@ Canonical source artifacts:
 
 This playbook is the operator-facing manual validation matrix for canonical Spec Kit features. It combines existing features (`EX-*`) and new rollout features (`NEW-*`) with deterministic prompts, exact execution sequences, expected signals, and pass/fail triage guidance.
 
+Coverage note (2026-03-17): runtime-labeled scenarios in this playbook primarily prove shared-backend behavior plus multi-runtime capture/save-path handling. Unless a scenario explicitly drives a Hydra feature through a given CLI, treat runtime labels as repo-backed coverage only and not as full end-to-end Hydra parity proof for that CLI.
+
 ## Global Preconditions
 1. Working directory is project root.
 2. Feature summary files are accessible.
@@ -450,7 +452,7 @@ Note: NEW-042, NEW-119, NEW-131, and NEW-132 all map to the same catalog entry f
 
 ### Catalog Coverage Notes for Phases 001-018
 
-These 29 catalog entries are explicitly documented here even when validation is automated-only or routed through a shared operator scenario.
+These 30 catalog entries are explicitly documented here even when validation is automated-only or routed through a shared operator scenario.
 
 | Catalog Entry | Coverage Status | Coverage Path / Notes |
 |---|---|---|
@@ -483,6 +485,7 @@ These 29 catalog entries are explicitly documented here even when validation is 
 | `18--ux-hooks/10-atomic-save-parity-and-partial-indexing-hints.md` | Indirect scenario coverage | Covered by NEW-104 |
 | `18--ux-hooks/11-final-token-metadata-recomputation.md` | Indirect scenario coverage | Covered by NEW-105 |
 | `18--ux-hooks/13-end-to-end-success-envelope-verification.md` | Indirect scenario coverage | Covered by NEW-105 |
+| `16--tooling-and-scripts/12-session-capturing-pipeline-quality.md` | Manual + automated | Absorbs phases 002 (contamination-detection), 004 (type-consolidation), 005 (confidence-calibration), 007 (phase-classification), 008 (signal-extraction), and 014 (spec-descriptions). Covered by M-007 compound scenario, build/typecheck, and automated extractor/loader suites |
 
 ## Dedicated Memory/Spec-Kit Scenarios (Required)
 
@@ -613,7 +616,9 @@ These 29 catalog entries are explicitly documented here even when validation is 
   - `NEW-133` cross-reference for MCP `memory_save` dry-run and insufficiency preview
   - `NEW-149` cross-reference for rendered-memory contract enforcement and historical remediation
 - Latest automated baseline refresh:
-  - On 2026-03-16, the targeted scripts closure suite reran cleanly with `14` files and `127` tests, package-clean MCP verification reran cleanly, and alignment drift passed with `229` scanned files and `0` findings.
+  - On 2026-03-17, root `typecheck`, scripts `check` and `build`, `test-scripts-modules.js` (`384` passed, `5` skipped, `389` total), `test-extractors-loaders.js` (`307` passing), the targeted scripts closure suite (`14` files and `150` tests), the phase-016 parity lane (`45` tests), the focused save-path lane (`6` files and `298` tests), and package-clean MCP `lint`/`build`/full `test` reran cleanly with the MCP package suite at `7822` total tests.
+  - The latest alignment-drift support run remains the 2026-03-16 snapshot with `229` scanned files and `0` findings; it was not part of the March 17 rerun set.
+  - This automated baseline is not sufficient evidence by itself for "all five CLIs proven live"; verify the retained artifact at `research/live-cli-proof-2026-03-17.json` and its March 17, 2026 per-CLI records before making that claim, and refresh equivalent primary evidence for any future live-proof assertion.
 - Commands:
   - Part I hardening spot checks:
     - `grep -n 'crypto.randomBytes' .opencode/skill/system-spec-kit/scripts/extractors/session-extractor.ts`
@@ -653,7 +658,7 @@ These 29 catalog entries are explicitly documented here even when validation is 
 - Expected:
   - Part I hardening remains active.
   - Stateless enrichment remains active.
-  - Native fallback ordering behaves deterministically across all five supported backends.
+  - Native fallback ordering behaves deterministically across all five configured capture backends.
   - Direct-mode caller preference can reorder the first attempt without changing JSON authority or the rest of the fallback chain.
   - Native discovery uses canonical `.opencode` workspace identity rather than raw path equality.
   - Same-workspace generic infrastructure activity is not sufficient evidence for saving into a specific spec folder.
@@ -668,6 +673,7 @@ These 29 catalog entries are explicitly documented here even when validation is 
   - Passing `mcp_server` lint/build/targeted/full-test output for the package-clean closure bar.
   - Passing alignment drift output.
   - Passing `spec/validate.sh` output.
+  - Inspection of `research/live-cli-proof-2026-03-17.json`, confirming the retained artifact path and same-day entries for OpenCode, Claude Code, Codex CLI, Copilot CLI, and Gemini CLI.
   - `generate-context.js` output or capture logs showing results for `M-007a` through `M-007j`.
 - Pass:
   - All automated commands pass.
@@ -678,7 +684,7 @@ These 29 catalog entries are explicitly documented here even when validation is 
   - `M-007d` shows provenance-tagged enrichment.
   - `M-007d` also proves ANCHOR preservation, rendered-memory contract compliance, and frontmatter trigger-phrase quality.
   - `M-007e` proves OpenCode precedence does not override save-path alignment blocking.
-  - `M-007f` through `M-007i` prove per-backend fallback behavior under canonical `.opencode` workspace identity, the direct-mode caller hint, and the tightened alignment plus insufficiency gates without malformed trigger rendering or `V5` corruption.
+  - `M-007f` through `M-007i` prove per-backend native capture selection and save-gate behavior under canonical `.opencode` workspace identity, the direct-mode caller hint, and the tightened alignment plus insufficiency gates without malformed trigger rendering or `V5` corruption. They are not, by themselves, full Hydra end-to-end proof for those CLIs.
   - `M-007j` proves final `NO_DATA_AVAILABLE` behavior.
 - Fail triage:
   - Check `data-loader.ts` fallback ordering.

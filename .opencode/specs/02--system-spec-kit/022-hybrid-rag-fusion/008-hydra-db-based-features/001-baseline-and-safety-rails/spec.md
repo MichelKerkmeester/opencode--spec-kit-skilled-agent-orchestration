@@ -10,7 +10,6 @@ trigger_phrases:
 importance_tier: "critical"
 contextType: "decision"
 ---
-<!-- ANCHOR:document -->
 # Feature Specification: 001-baseline-and-safety-rails
 
 <!-- SPECKIT_LEVEL: 3+ -->
@@ -34,7 +33,7 @@ Phase 1 establishes the safe operating baseline for the Hydra roadmap. It harden
 |-------|-------|
 | **Level** | 3+ |
 | **Priority** | P0 |
-| **Status** | Active |
+| **Status** | Complete |
 | **Created** | 2026-03-13 |
 | **Updated** | 2026-03-14 |
 | **Branch** | `022-hybrid-rag-fusion` |
@@ -65,6 +64,7 @@ This phase turns the roadmap from a loose planning artifact into a controlled ex
 
 ---
 
+<!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -73,8 +73,11 @@ The Hydra roadmap cannot safely progress while the baseline runtime and document
 ### Purpose
 Create a trustworthy Phase 1 foundation so later Hydra phases can build on reproducible runtime behavior, rollback-safe data tooling, and verifiable documentation.
 
+<!-- /ANCHOR:problem -->
+
 ---
 
+<!-- ANCHOR:scope -->
 ## 3. SCOPE
 
 ### In Scope
@@ -104,8 +107,11 @@ Create a trustworthy Phase 1 foundation so later Hydra phases can build on repro
 | `.opencode/skill/system-spec-kit/feature_catalog/**` | Modify/Create | Document delivered baseline features and flags |
 | `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` | Modify | Add baseline validation playbook entries |
 
+<!-- /ANCHOR:scope -->
+
 ---
 
+<!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 
 ### P0 - Blockers (MUST complete)
@@ -126,8 +132,11 @@ Create a trustworthy Phase 1 foundation so later Hydra phases can build on repro
 | REQ-007 | Add focused manual smoke checks | Manual commands validate baseline and graph phase snapshots in built `dist` output |
 | REQ-008 | Preserve truth-in-status across the rollout | Phase docs clearly distinguish this baseline slice from later phases while reflecting delivered default-on Phase 015 behavior |
 
+<!-- /ANCHOR:requirements -->
+
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
 - **SC-001**: The MCP package builds cleanly with `npm run build`.
@@ -137,8 +146,11 @@ Create a trustworthy Phase 1 foundation so later Hydra phases can build on repro
 - **SC-005**: Phase 1 docs distinguish delivered hardening work from later phase capabilities without claiming a deferred rollout posture.
 - **SC-006**: Later phases can proceed and/or run under shared-rollout defaults without reopening build, checkpoint, or documentation drift blockers.
 
+<!-- /ANCHOR:success-criteria -->
+
 ---
 
+<!-- ANCHOR:risks -->
 ## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
@@ -148,6 +160,8 @@ Create a trustworthy Phase 1 foundation so later Hydra phases can build on repro
 | Risk | Flag metadata diverges from runtime behavior | Medium | Keep roadmap flags prefixed, default-on by policy, and verified with explicit opt-out tests |
 | Risk | Docs imply an outdated opt-in or deferred posture | High | Use explicit phase status language that reflects delivered default-on behavior |
 | Risk | Checkpoint restore is assumed rather than verified | High | Exercise create/restore helpers in focused tests |
+
+<!-- /ANCHOR:risks -->
 
 ---
 
@@ -280,7 +294,7 @@ Create a trustworthy Phase 1 foundation so later Hydra phases can build on repro
 
 ---
 
-## 16. ACCEPTANCE SCENARIOS
+### Acceptance Scenarios
 
 1. **Build path recovery**
    **Given** the MCP server package lacks a valid build script, when Phase 1 is executed, then maintainers can run `npm run build` successfully and inspect a current `dist` output.
@@ -291,7 +305,7 @@ Create a trustworthy Phase 1 foundation so later Hydra phases can build on repro
 
 ---
 
-## 17. OPEN QUESTIONS
+## 16. OPEN QUESTIONS
 
 - Should the remaining Phase 1 baseline work absorb broader observability fields now, or stay narrowly focused on current hardening and documentation?
 - Do we want a dedicated Phase 1 regression command alias in `package.json`, or is the focused verification command in documentation sufficient?
@@ -306,4 +320,3 @@ Create a trustworthy Phase 1 foundation so later Hydra phases can build on repro
 - **Verification Checklist**: `checklist.md`
 - **Decision Records**: `decision-record.md`
 
-<!-- /ANCHOR:document -->

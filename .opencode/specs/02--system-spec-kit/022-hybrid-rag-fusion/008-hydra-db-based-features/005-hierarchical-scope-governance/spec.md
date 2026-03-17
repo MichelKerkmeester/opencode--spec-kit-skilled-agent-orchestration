@@ -10,7 +10,6 @@ trigger_phrases:
 importance_tier: "critical"
 contextType: "decision"
 ---
-<!-- ANCHOR:document -->
 # Feature Specification: 005-hierarchical-scope-governance
 
 <!-- SPECKIT_LEVEL: 3+ -->
@@ -64,6 +63,7 @@ This phase establishes the policy and lifecycle controls that keep memory state 
 
 ---
 
+<!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -71,9 +71,11 @@ Without explicit hierarchical boundaries and lifecycle controls, the roadmap can
 
 ### Purpose
 Make memory operations policy-aware, auditable, and safe across all relevant scope boundaries before collaboration features are introduced.
+<!-- /ANCHOR:problem -->
 
 ---
 
+<!-- ANCHOR:scope -->
 ## 3. SCOPE
 
 ### In Scope
@@ -98,9 +100,11 @@ Make memory operations policy-aware, auditable, and safe across all relevant sco
 | `.opencode/skill/system-spec-kit/mcp_server/lib/ops/job-queue.ts` | Modify | Execute retention and deletion jobs safely |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/` | Create/Modify | Add isolation, deletion, and audit verification coverage |
 | `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` | Modify | Add governance and deletion validation procedures |
+<!-- /ANCHOR:scope -->
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 
 ### P0 - Blockers (MUST complete)
@@ -120,9 +124,11 @@ Make memory operations policy-aware, auditable, and safe across all relevant sco
 | REQ-506 | Keep policy checks centralized | New governance behavior routes through shared policy modules |
 | REQ-507 | Document operator procedures | Playbook covers ingest rejection, retention, deletion, and audit review |
 | REQ-508 | Keep docs synchronized | Spec, plan, tasks, and user-facing docs reflect actual governance behavior |
+<!-- /ANCHOR:requirements -->
 
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
 - **SC-501**: No cross-scope retrieval leakage occurs in the verification matrix.
@@ -130,9 +136,11 @@ Make memory operations policy-aware, auditable, and safe across all relevant sco
 - **SC-503**: Retention and deletion workflows are auditable and repeatable.
 - **SC-504**: Shared-memory rollout remains blocked until governance gates pass.
 - **SC-505**: Operators can inspect why a policy action was allowed or denied.
+<!-- /ANCHOR:success-criteria -->
 
 ---
 
+<!-- ANCHOR:risks -->
 ## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
@@ -142,6 +150,7 @@ Make memory operations policy-aware, auditable, and safe across all relevant sco
 | Risk | Cross-scope leak persists in one path | High | Leak matrix tests and shared policy middleware |
 | Risk | Cascade deletion misses derived artifacts | High | Explicit deletion graph and auditable completion checks |
 | Risk | Policy checks add too much latency | Medium | Cache safe predicates and benchmark critical paths |
+<!-- /ANCHOR:risks -->
 
 ---
 
@@ -271,7 +280,7 @@ Make memory operations policy-aware, auditable, and safe across all relevant sco
 
 ---
 
-## 16. ACCEPTANCE SCENARIOS
+### Acceptance Scenarios
 
 1. **Scope rejection**
    **Given** a request from the wrong tenant or agent scope, when retrieval or write is attempted, then access is denied or filtered correctly.
@@ -282,7 +291,7 @@ Make memory operations policy-aware, auditable, and safe across all relevant sco
 
 ---
 
-## 17. OPEN QUESTIONS
+## 16. OPEN QUESTIONS
 
 - Which policy decisions should be cached locally versus resolved dynamically?
 - How much of the audit surface should be exposed directly to operators versus internal logs only?
@@ -297,5 +306,3 @@ Make memory operations policy-aware, auditable, and safe across all relevant sco
 - **Task Breakdown**: `tasks.md`
 - **Verification Checklist**: `checklist.md`
 - **Decision Records**: `decision-record.md`
-
-<!-- /ANCHOR:document -->

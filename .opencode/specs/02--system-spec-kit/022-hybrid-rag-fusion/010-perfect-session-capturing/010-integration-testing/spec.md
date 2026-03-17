@@ -4,6 +4,9 @@ description: "Verify end-to-end integration behavior across the full pipeline."
 ---
 # Feature Specification: Integration Testing
 
+This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.
+
+
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
@@ -16,7 +19,7 @@ description: "Verify end-to-end integration behavior across the full pipeline."
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | Draft |
+| **Status** | Complete |
 | **Created** | 2026-03-16 |
 | **Branch** | `main` |
 | **Parent Spec** | ../spec.md |
@@ -31,26 +34,24 @@ description: "Verify end-to-end integration behavior across the full pipeline."
 
 ---
 
-<!-- ANCHOR:phase-context -->
 ### Phase Context
 
 This is **Phase 10** of the Perfect Session Capturing specification.
 
-**Scope Boundary**: 22 Vitest + 25 legacy JS + 4 shell + 1 Python tests exist, but the real gate chain runs under heavy mocks.
+**Scope Boundary**: The save pipeline needed direct filesystem-backed proof beyond the heavily mocked unit lanes.
 **Dependencies**: 009-embedding-optimization
-**Deliverables**: Created workflow-e2e.vitest.ts with a temp repo factory producing realistic spec folder + JSON input fixtures; six test cases covering happy-path through failure scenarios
-<!-- /ANCHOR:phase-context -->
+**Deliverables**: Added `workflow-e2e.vitest.ts`, `test-integration.vitest.ts`, and `tests/fixtures/session-data-factory.ts`; the save pipeline now has direct temp-repo E2E coverage plus Vitest parity for the legacy integration runner.
 
 <!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
 
-22 Vitest + 25 legacy JS + 4 shell + 1 Python tests exist, but the real gate chain runs under heavy mocks. Post-write orchestration (description tracking, indexing, retry) has no end-to-end coverage. `task-enrichment.vitest.ts` mocks the file writer, both scorers, sufficiency, the indexer, and the retry manager. `test-integration.js` checks cleanup helpers and export presence, not live orchestration. There is no test that exercises the full save pipeline with real file I/O and real gate evaluation.
+The runtime gap is now closed: `workflow-e2e.vitest.ts` exercises the real save path with temp-repo isolation, real markdown writes, real `description.json` mutation, and real post-write indexing handoff behavior. `test-integration.vitest.ts` also migrated the legacy integration runner into the active Vitest lane so the coverage lives inside the regular scripts suite instead of a sidecar JS-only test.
 
 ### Purpose
 
-Add `workflow-e2e.vitest.ts` targeting the real gate chain with real write and description tracking, using a temp repo factory pattern to create isolated, realistic test environments that exercise the pipeline without mocks on the critical path.
+Record the shipped E2E integration coverage truthfully, using the live test files and current verification results as evidence.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -68,7 +69,7 @@ Add `workflow-e2e.vitest.ts` targeting the real gate chain with real write and d
 
 ### Out of Scope
 
-- Migrating `test-integration.js` to Vitest (P1 — tracked as REQ-006)
+- Further widening the integration lane beyond the shipped six-case E2E coverage
 - Modifying existing unit tests or their mock strategies
 - Adding performance benchmarks to the E2E suite
 
@@ -134,5 +135,5 @@ Add `workflow-e2e.vitest.ts` targeting the real gate chain with real write and d
 <!-- ANCHOR:questions -->
 ## 7. OPEN QUESTIONS
 
-- **OQ-001**: ~~Minimal 3-case fixture (current) or extended coverage?~~ Resolved — extended to 6 cases including insufficiency, indexing resilience, and tree-thinning.
+- **OQ-001**: ~~Minimal 3-case fixture (current) or extended coverage?~~ Resolved: extended to 6 cases including insufficiency, indexing resilience, and tree-thinning.
 <!-- /ANCHOR:questions -->

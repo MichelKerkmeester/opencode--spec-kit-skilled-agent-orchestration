@@ -470,9 +470,10 @@ export function generateFolderDescriptions(specsBasePaths: string[]): Descriptio
       }
 
       const descPath = path.join(discoveredFolder.folderPath, 'description.json');
+      const descExists = fs.existsSync(descPath);
       // Prefer per-folder description.json if fresh and non-empty. Blank-description edge
       // Cases still aggregate through spec.md fallback so discovery retains a useful label.
-      const perFolder = loadPerFolderDescription(discoveredFolder.folderPath);
+      const perFolder = descExists ? loadPerFolderDescription(discoveredFolder.folderPath) : null;
       const perFolderFresh = perFolder && !isPerFolderDescriptionStale(discoveredFolder.folderPath);
       if (perFolderFresh && perFolder.description.trim().length > 0) {
         const relativePath = path.relative(discoveredFolder.basePath, discoveredFolder.folderPath).replace(/\\/g, '/');
@@ -489,7 +490,7 @@ export function generateFolderDescriptions(specsBasePaths: string[]): Descriptio
 
       // Repair stale/corrupt on-disk descriptions during discovery when a file exists.
       // Missing files still use pure spec.md fallback to avoid surprising backfill writes.
-      if (fs.existsSync(descPath) && (!perFolderFresh || (perFolder && perFolder.description.trim().length === 0))) {
+      if (descExists && (!perFolderFresh || (perFolder && perFolder.description.trim().length === 0))) {
         try {
           const repaired = generatePerFolderDescription(discoveredFolder.folderPath, discoveredFolder.basePath);
           if (repaired) {
@@ -696,6 +697,10 @@ export function generatePerFolderDescription(
  */
 export function loadPerFolderDescription(folderPath: string): PerFolderDescription | null {
   const descPath = path.join(folderPath, 'description.json');
+  if (!fs.existsSync(descPath)) {
+    return null;
+  }
+
   try {
     const raw = fs.readFileSync(descPath, 'utf-8');
     const parsed = JSON.parse(raw);

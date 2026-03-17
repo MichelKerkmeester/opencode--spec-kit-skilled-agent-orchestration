@@ -8,6 +8,9 @@ contextType: "general"
 ---
 # Implementation Plan: Template Compliance
 
+This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.
+
+
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
@@ -105,7 +108,7 @@ Single-source template contract derivation with shared validator and prompt enfo
 |-----------|-------|-------|
 | Unit | Template path resolution, required header/anchor extraction, optional-template allowance, dynamic decision-record handling | `cd .opencode/skill/system-spec-kit/scripts && npx vitest run --config ../mcp_server/vitest.config.ts --root . tests/template-structure.vitest.ts` |
 | Integration | Runtime agent and workflow prompt assertions | `node .opencode/skill/system-spec-kit/scripts/tests/test-phase-command-workflows.js` |
-| Integration | Compliant fixture strict validation | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .../053-template-compliant-level2 --strict` |
+| Integration | Compliant fixture strict validation | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/skill/system-spec-kit/scripts/test-fixtures/053-template-compliant-level2 --strict` |
 | Integration | Warning/failure fixtures and targeted shell suite categories | `test-validation.sh`, `test-validation-extended.sh` targeted categories |
 <!-- /ANCHOR:testing -->
 

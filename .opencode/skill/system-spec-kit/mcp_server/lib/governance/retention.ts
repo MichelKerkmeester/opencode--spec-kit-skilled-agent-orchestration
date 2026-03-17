@@ -5,7 +5,7 @@
 // record governance audit entries for each deletion event.
 import type Database from 'better-sqlite3';
 
-import * as vectorIndex from '../search/vector-index';
+import { delete_memory_from_database } from '../search/vector-index-mutations';
 import { filterRowsByScope, ensureGovernanceRuntime, recordGovernanceAudit, type ScopeContext } from './scope-governance';
 import { getAllowedSharedSpaceIds } from '../collab/shared-spaces';
 
@@ -52,7 +52,7 @@ export function runRetentionSweep(database: Database.Database, scope: ScopeConte
   };
 
   for (const row of rows) {
-    const deleted = vectorIndex.deleteMemory(row.id);
+    const deleted = delete_memory_from_database(database, row.id);
     if (deleted) {
       result.deleted += 1;
       result.deletedIds.push(row.id);

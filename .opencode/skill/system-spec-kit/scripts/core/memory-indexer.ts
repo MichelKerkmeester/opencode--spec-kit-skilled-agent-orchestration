@@ -21,6 +21,20 @@ import type { CollectedDataFull } from '../extractors/collect-session-data';
 import { extractQualityScore, extractQualityFlags } from '@spec-kit/shared/parsing/quality-extractors';
 import { buildWeightedDocumentText, type WeightedDocumentSections } from '@spec-kit/shared/index';
 
+type IndexingStatusValue =
+  | 'indexed'
+  | 'skipped_duplicate'
+  | 'skipped_quality_gate'
+  | 'skipped_embedding_unavailable'
+  | 'failed_embedding';
+
+interface WorkflowIndexingStatus {
+  status: IndexingStatusValue;
+  memoryId: number | null;
+  reason?: string;
+  errorMessage?: string;
+}
+
 function notifyDatabaseUpdated(): void {
   try {
     const dbDir = path.dirname(DB_UPDATED_FILE);
@@ -132,17 +146,33 @@ async function indexMemory(
 }
 
 async function updateMetadataWithEmbedding(contextDir: string, memoryId: number): Promise<void> {
+  await updateMetadataEmbeddingStatus(contextDir, {
+    status: 'indexed',
+    memoryId,
+  });
+}
+
+async function updateMetadataEmbeddingStatus(
+  contextDir: string,
+  indexingStatus: WorkflowIndexingStatus
+): Promise<void> {
   try {
     const metadataPath = path.join(contextDir, 'metadata.json');
     const metadataContent = await fs.readFile(metadataPath, 'utf-8');
     const metadata = JSON.parse(metadataContent) as Record<string, unknown>;
+    const timestamp = new Date().toISOString();
 
     metadata.embedding = {
-      status: 'indexed',
+      status: indexingStatus.status,
       model: MODEL_NAME,
       dimensions: EMBEDDING_DIM,
-      memoryId: memoryId,
-      generatedAt: new Date().toISOString()
+      memoryId: indexingStatus.memoryId,
+      updatedAt: timestamp,
+      ...(indexingStatus.status === 'indexed'
+        ? { generatedAt: timestamp }
+        : { lastAttemptedAt: timestamp }),
+      ...(indexingStatus.reason ? { reason: indexingStatus.reason } : {}),
+      ...(indexingStatus.errorMessage ? { errorMessage: indexingStatus.errorMessage } : {}),
     };
 
     await fs.writeFile(metadataPath, JSON.stringify(metadata, null, 2));
@@ -150,7 +180,7 @@ async function updateMetadataWithEmbedding(contextDir: string, memoryId: number)
     const errMsg = metaError instanceof Error ? metaError.message : String(metaError);
     structuredLog('warn', 'Failed to update metadata.json', {
       metadataPath: path.join(contextDir, 'metadata.json'),
-      memoryId,
+      indexingStatus,
       error: errMsg
     });
     console.warn(`   Warning: Could not update metadata.json: ${errMsg}`);
@@ -163,5 +193,11 @@ async function updateMetadataWithEmbedding(contextDir: string, memoryId: number)
 
 export {
   indexMemory,
+  updateMetadataEmbeddingStatus,
   updateMetadataWithEmbedding,
+};
+
+export type {
+  IndexingStatusValue,
+  WorkflowIndexingStatus,
 };

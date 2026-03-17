@@ -1,19 +1,23 @@
 ---
 title: "Implementation Summary: Outsourced Agent Handback Protocol"
-description: "External CLI handback protocol — hard-fail JSON input, next-step persistence, richer caller guidance, and post-010 save-gate awareness."
+description: "External CLI handback protocol: hard-fail JSON input, next-step persistence, richer caller guidance, and post-010 save-gate awareness."
 trigger_phrases: ["outsourced agent summary", "memory handback summary", "runtime memory inputs"]
 importance_tier: "normal"
 contextType: "general"
 ---
 # Implementation Summary: Outsourced Agent Handback Protocol
 
+This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.
+
+
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: implementation-summary | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
 <!-- ANCHOR:metadata -->
-## Metadata
+## 1. METADATA
 
 | Field | Value |
 |-------|-------|
@@ -27,7 +31,7 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:what-built -->
-## What Was Built
+## 2. WHAT WAS BUILT
 
 ### 1. Runtime Input Hardening (`data-loader.ts`)
 
@@ -53,18 +57,18 @@ File-backed saves bypass stateless alignment and `QUALITY_GATE_ABORT`, but they 
 ---
 
 <!-- ANCHOR:how-delivered -->
-## How It Was Delivered
+## 3. HOW IT WAS DELIVERED
 
 3 implementation phases:
 1. **Runtime safeguards**: Re-verify the explicit JSON hard-fail and next-step persistence behavior already shipped in the system-spec-kit runtime.
 2. **CLI handback documentation**: Update the 4 SKILL files and 4 prompt templates with post-010 rejection codes, snake_case guidance, and richer `FILES` examples. Align the feature catalog and add a dedicated Vitest lane so the caller-facing contract does not drift silently.
-3. **Verification and reconciliation**: Record fresh 2026-03-16 lint, Vitest, alignment-drift, JSON-mode write/reject behavior, and spec validation.
+3. **Verification and reconciliation**: Record fresh 2026-03-17 lint, Vitest, alignment-drift, retained JSON-mode handback evidence, and spec validation.
 <!-- /ANCHOR:how-delivered -->
 
 ---
 
 <!-- ANCHOR:decisions -->
-## Key Decisions
+## 4. KEY DECISIONS
 
 1. **Hard-fail over silent fallback**: Explicit JSON errors throw immediately, with no native capture fallback. That keeps outsourced failures visible instead of silently mutating into a different capture mode.
 2. **camelCase priority**: When both `nextSteps` and `next_steps` are present, camelCase wins. This stays consistent with the broader normalizer convention.
@@ -87,24 +91,24 @@ File-backed saves bypass stateless alignment and `QUALITY_GATE_ABORT`, but they 
 ---
 
 <!-- ANCHOR:verification -->
-## Verification
+## 5. VERIFICATION
 
 | Check | Result |
 |-------|--------|
 | `npx vitest run --config ../mcp_server/vitest.config.ts --root . tests/runtime-memory-inputs.vitest.ts tests/outsourced-agent-handback-docs.vitest.ts` | PASS (`2` files, `32` tests) |
-| Alignment drift | PASS (`244` scanned, `0` findings, `0` warnings) |
+| Alignment drift | PASS (`246` scanned, `0` findings, `0` warnings) |
 | `npm run lint` | PASS |
 | Rich JSON-mode handback | Wrote `memory/16-03-26_22-23__updated-the-outsourced-agent-handback-docs-so.md` (`556` lines) |
 | Thin JSON-mode handback | Rejected with `INSUFFICIENT_CONTEXT_ABORT` before file write |
 | Spec validation | 0 errors, 0 warnings |
 
-**Verification Date**: 2026-03-16
+**Verification Date**: 2026-03-17
 <!-- /ANCHOR:verification -->
 
 ---
 
 <!-- ANCHOR:limitations -->
-## Known Limitations
+## 6. KNOWN LIMITATIONS
 
 1. **L1**: File-backed saves can still write successfully while logging `QUALITY_GATE_FAIL` and skipping production indexing if rendered validation rules fail.
 2. **L2**: Native capture mode for external CLIs (same workspace) is still outside this protocol’s scope.

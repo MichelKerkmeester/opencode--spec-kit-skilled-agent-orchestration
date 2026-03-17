@@ -1,9 +1,11 @@
 # Sub-Agent Utilization Ledger (Merged)
 
+This ledger records coordinator/worker utilization observed while assembling or reviewing playbook bundles. It is not a runtime support matrix and does not, by itself, prove Hydra feature parity for Codex, Gemini, or any other CLI.
+
 ## Run A: Codex 5.3 xhigh (Observed)
 Source:
-- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/manual-testing-playbook/memory/05-03-26_13-48__generic-memory-filename-fix.md`
-- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/manual-testing-playbook/memory/05-03-26_13-48__spec-generic-memory-filename-fix-in-stateless-mode.md`
+- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/manual-testing-playbook/memory/05-03-26_13-48__generic-memory-filename-fix.md` [historical -- directory renamed to `manual_testing_playbook`; original files no longer exist]
+- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/manual-testing-playbook/memory/05-03-26_13-48__spec-generic-memory-filename-fix-in-stateless-mode.md` [historical -- directory renamed to `manual_testing_playbook`; original files no longer exist]
 
 Observed orchestration:
 - Hard cap detected: 6 total sub-agent threads
@@ -16,8 +18,8 @@ Observed orchestration:
 
 ## Run B: Gemini 3.1 Pro Preview (Reported)
 Source:
-- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/manual-testing-playbook/memory/05-03-26_14-56__spec-memory-search-state-filter-fix.md`
-- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/manual-testing-playbook/memory/05-03-26_15-17__spec-memory-search-state-filter-fix.md`
+- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/manual-testing-playbook/memory/05-03-26_14-56__spec-memory-search-state-filter-fix.md` [historical -- directory renamed to `manual_testing_playbook`; original files no longer exist]
+- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/manual-testing-playbook/memory/05-03-26_15-17__spec-memory-search-state-filter-fix.md` [historical -- directory renamed to `manual_testing_playbook`; original files no longer exist]
 
 Reported orchestration in output:
 - 1 coordinator + 14 workers

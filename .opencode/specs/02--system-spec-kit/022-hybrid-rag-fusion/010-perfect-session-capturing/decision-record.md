@@ -1,10 +1,10 @@
 ---
 title: "Decision Record: Perfect Session Capturing [template:level_3/decision-record.md]"
-description: "Keep the remediation honest: preserve runtime boundaries, separate live proof from fixture proof, and let the validator define completion."
+description: "Close spec 010 truthfully: formalize phased-parent validation support, retain a current same-day five-CLI proof artifact, and avoid fake closure."
 trigger_phrases:
   - "decision"
   - "perfect session capturing"
-  - "root remediation"
+  - "truth reconciliation"
 importance_tier: "normal"
 contextType: "general"
 ---
@@ -17,7 +17,7 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:adr-001 -->
-## ADR-001: Preserve runtime boundaries and publish only verifiable proof
+## ADR-001: CLOSE VALIDATION AND PROOF GAPS WITHOUT WIDENING RUNTIME SCOPE
 
 ### Metadata
 
@@ -32,12 +32,18 @@ contextType: "general"
 <!-- ANCHOR:adr-001-context -->
 ### Context
 
-The remediation started from a mixed state. Most code and test surfaces were healthy, but the canonical root spec pack was incomplete and still made a few stale or overstated claims. At the same time, one legacy module-contract lane still expected private or moved internals to be public.
+By the time this pass started, the executable surface was already strong, but the parent folder still read like a closure pass. Two different issues were being blurred together:
+
+- the parent strict validator still warned because phased-parent addenda were not yet understood by the current base-template comparator; and
+- live CLI proof had not yet been retained in one same-day artifact covering every supported CLI.
+
+At the same time, the remaining child phases were not uniform: phase `004` still had a narrow real implementation gap, while phases `005`, `010`, and `011` were largely documentation and status drift.
 
 ### Constraints
 
-- Keep `notifyDatabaseUpdated` private in `scripts/core/memory-indexer.ts`.
-- Do not restore deprecated `scripts/dist/lib/retry-manager` exports when the canonical module now lives under `mcp_server/lib/providers/`.
+- Keep sanctioned phased-parent structure in place.
+- Do not widen runtime contracts or invent live-proof claims beyond retained evidence.
+- Treat child completion evidence and parent closure readiness as separate questions until the final parent gates pass.
 <!-- /ANCHOR:adr-001-context -->
 
 ---
@@ -45,9 +51,9 @@ The remediation started from a mixed state. Most code and test surfaces were hea
 <!-- ANCHOR:adr-001-decision -->
 ### Decision
 
-**We chose**: repair the stale test lane and root spec pack without widening any public runtime boundaries, and record CLI parity as live proof, fixture-backed proof, or blocked with exact reasons.
+**We chose**: formalize phased-parent and child addenda support in `template-structure.js`, reconcile child docs only to shipped evidence we can prove locally, retain one current same-day proof artifact for each supported CLI, and only then publish parent closure.
 
-**How it works**: the module-contract tests now assert the intended architecture instead of demanding deprecated exports. The spec documents now treat the validator, rerun commands, and live session artifacts as the authority for what we can claim complete.
+**How it works**: the parent pack now cites the clean validator result instead of a preserved blocker, targeted child phases are backfilled from current tests and code, a current same-day five-CLI artifact is retained in `research/live-cli-proof-2026-03-17.json`, and the supporting-doc plus scratch-tooling surfaces are verified separately from canonical closure claims.
 <!-- /ANCHOR:adr-001-decision -->
 
 ---
@@ -57,10 +63,11 @@ The remediation started from a mixed state. Most code and test surfaces were hea
 
 | Option | Pros | Cons | Score |
 |--------|------|------|-------|
-| **Preserve boundaries and fix tests/docs** | Keeps the runtime honest, matches current architecture, and makes completion claims defensible | Requires more documentation repair and CLI-proof nuance | 9/10 |
-| Re-export private or moved internals for compatibility | Would make the old test lane pass quickly | Widens the public surface and conflicts with current architecture | 3/10 |
+| **Formalize phased addenda support and retain a current same-day five-CLI proof artifact before closing** | Preserves trust, keeps sanctioned phased structure intact, and makes the final parent state fully auditable | Requires touching validator logic plus proof storage | 10/10 |
+| Delete or flatten the phase-map content to quiet validation | Would reduce current warning noise | Hides the real comparator limitation and misrepresents sanctioned phased-parent structure | 2/10 |
+| Mark the parent complete because tests are green without fresh live proof | Feels simpler in the short term | Conflates executable coverage with unresolved proof obligations | 1/10 |
 
-**Why this one**: the point of this remediation is trust. A passing test lane is not worth reopening private contracts or pretending fixture coverage proves live parity everywhere.
+**Why this one**: the purpose of this pass is auditable closure, not cosmetic closure.
 <!-- /ANCHOR:adr-001-alternatives -->
 
 ---
@@ -69,18 +76,21 @@ The remediation started from a mixed state. Most code and test surfaces were hea
 ### Consequences
 
 **What improves**:
-- The module-contract lane reflects the real architecture instead of forcing deprecated exports.
-- Root documentation can distinguish what was rerun live from what is only fixture-backed.
+- Parent and child docs now align with current shipped behavior and rerun-backed evidence.
+- Support docs and retained shell launchers no longer drift from the documented verification baseline.
+- Reviewers can see exactly why the parent is complete and which retained artifact backs the live CLI proof claim.
 
 **What it costs**:
-- Completion language becomes more conservative. Mitigation: keep explicit evidence for each CLI and lane.
+- The parent pack must be revisited if future edits invalidate the phased-addenda support or the retained live-proof artifact goes stale.
+- Future closure claims still need fresh reruns and retained proof instead of narrative carry-over.
 
 **Risks**:
 
 | Risk | Impact | Mitigation |
 |------|--------|------------|
-| Live proof differs from fixture proof for a given CLI | H | Record both evidence types separately and mark blocked cases explicitly |
-| Recursive validation still finds phase-link drift | M | Add minimal predecessor and successor metadata without rewriting child content |
+| Reviewers mistake green suites for closure without retained proof | H | Keep the parent summary and checklist explicit about the retained five-CLI artifact |
+| Future edits quietly reintroduce stale counts | M | Tie every published count to a rerun-backed command |
+| Scratch helpers are mistaken for canonical evidence | M | Keep authority rules explicit and validate retained launchers separately |
 <!-- /ANCHOR:adr-001-consequences -->
 
 ---
@@ -90,11 +100,11 @@ The remediation started from a mixed state. Most code and test surfaces were hea
 
 | # | Check | Result | Evidence |
 |---|-------|--------|----------|
-| 1 | **Necessary?** | PASS | The root spec pack and one canonical lane were still blocking truthful completion |
-| 2 | **Beyond Local Maxima?** | PASS | We compared test-only compatibility fixes against boundary-preserving repairs |
-| 3 | **Sufficient?** | PASS | Minimal test and documentation patches resolve the known blockers without widening scope |
-| 4 | **Fits Goal?** | PASS | The goal is accurate closure, not cosmetic parity |
-| 5 | **Open Horizons?** | PASS | Keeping proof categories explicit scales to future CLI additions and validator changes |
+| 1 | **Necessary?** | PASS | The parent pack still overstated closure and several child phases were under-documented |
+| 2 | **Beyond Local Maxima?** | PASS | We compared formalized addenda support against deleting sanctioned phase-map content or overclaiming proof |
+| 3 | **Sufficient?** | PASS | Targeted doc reconciliation, validator support, fresh reruns, and retained proof resolve the drift without widening scope |
+| 4 | **Fits Goal?** | PASS | The goal is truthful final closure, not cosmetic greenwashing |
+| 5 | **Open Horizons?** | PASS | The retained proof path and comparator tests leave a clear maintenance trail for future edits |
 
 **Checks Summary**: 5/5 PASS
 <!-- /ANCHOR:adr-001-five-checks -->
@@ -105,9 +115,22 @@ The remediation started from a mixed state. Most code and test surfaces were hea
 ### Implementation
 
 **What changes**:
-- Update `test-scripts-modules.js` to assert privacy and canonical provider boundaries.
-- Restore the root Level 3 spec pack and phase-link metadata so recursive validation can certify the folder truthfully.
+- Rewrite the parent pack around the final closure model.
+- Backfill the drifting child phases from shipped code and current reruns.
+- Refresh support docs, metadata, retained proof, and scratch-tooling verification to the same March 17, 2026 baseline.
 
-**How to roll back**: revert the root markdown pack and the module-lane test changes, rerun the legacy lane, and re-evaluate whether boundary widening is genuinely intended.
+**How to roll back**: revert only the affected docs and metadata, rerun the same command set, and reapply the minimum truthful reconciliation.
+
+```bash
+./.opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing --strict --recursive
+```
+
+```bash
+./.opencode/skill/system-spec-kit/scripts/spec/check-completion.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing --strict
+```
+
+```bash
+python3 ./.opencode/skill/sk-doc/scripts/extract_structure.py .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/decision-record.md
+```
 <!-- /ANCHOR:adr-001-impl -->
 <!-- /ANCHOR:adr-001 -->

@@ -10,23 +10,24 @@ contextType: "general"
 
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
 <!-- ANCHOR:metadata -->
-## Metadata
+## 1. METADATA
 
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 012-template-compliance |
-| **Completed** | 2026-03-16 |
+| **Completed** | 2026-03-17 |
 | **Level** | 2 |
 <!-- /ANCHOR:metadata -->
 
 ---
 
 <!-- ANCHOR:what-built -->
-## What Was Built
+## 2. WHAT WAS BUILT
 
 Template compliance is now enforced from the live level templates that already exist in the repo. The validator no longer depends on draft `.fingerprint` sidecars or stale prompt-builder assumptions. Instead, one shared helper resolves required headers, optional headers, required anchor order, and allowed anchor IDs from the active template file at runtime, and both structural rules consume that same contract.
 
@@ -52,7 +53,7 @@ The runtime prompt side now matches the validator. The shared `.agents` runtime 
 ---
 
 <!-- ANCHOR:how-delivered -->
-## How It Was Delivered
+## 3. HOW IT WAS DELIVERED
 
 The work landed in three passes. First, the shared template helper and validator wiring were added so normal validation could fail on genuine structural drift while still warning on appended custom sections. Second, the runtime speckit surfaces were updated so agent-authored docs receive inline scaffold guidance and strict post-write validation instead of path-only template references. Third, new compliant and mutation fixtures were added so the coverage lane could prove pass, warn, and fail behavior against the live template contract.
 <!-- /ANCHOR:how-delivered -->
@@ -60,7 +61,7 @@ The work landed in three passes. First, the shared template helper and validator
 ---
 
 <!-- ANCHOR:decisions -->
-## Key Decisions
+## 4. KEY DECISIONS
 
 | Decision | Why |
 |----------|-----|
@@ -72,7 +73,7 @@ The work landed in three passes. First, the shared template helper and validator
 ---
 
 <!-- ANCHOR:verification -->
-## Verification
+## 5. VERIFICATION
 
 | Check | Result |
 |-------|--------|
@@ -87,8 +88,11 @@ The work landed in three passes. First, the shared template helper and validator
 ---
 
 <!-- ANCHOR:limitations -->
-## Known Limitations
+## 6. KNOWN LIMITATIONS
 
 1. No separate Codex runtime speckit agent document exists under the workspace or `/Users/michelkerkmeester/.codex`, so Codex parity is documented as an absence rather than patched as a file.
 2. The broader historical shell suites still contain many legacy minimalist fixtures. This phase updated the targeted template-compliance categories to the new compliant/mutation lane rather than rewriting every older fixture family in one pass.
 <!-- /ANCHOR:limitations -->
+
+
+Reference links: [spec.md](spec.md) and [plan.md](plan.md).

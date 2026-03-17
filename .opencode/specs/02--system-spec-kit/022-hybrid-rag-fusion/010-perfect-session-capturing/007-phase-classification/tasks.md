@@ -1,7 +1,10 @@
 ---
-title: "Tasks: Phase Classification [template:level_1/tasks.md]"
+title: "Tasks: Phase Classification [template:level_2/tasks.md]"
 ---
 # Tasks: Phase Classification
+
+This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.
+
 
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
@@ -9,7 +12,7 @@ title: "Tasks: Phase Classification [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:notation -->
-## Task Notation
+## 1. TASK NOTATION
 
 | Prefix | Meaning |
 |--------|---------|
@@ -24,7 +27,7 @@ title: "Tasks: Phase Classification [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Setup
+## 2. PHASE 1: SETUP
 
 - [x] T001 Define `TopicCluster`, `ConversationPhaseLabel`, and `PhaseScoreMap` in `session-types.ts` (REQ-001) (`scripts/types/session-types.ts`)
 - [x] T002 [P] Expand `ConversationPhase` / `ConversationData` with cluster metadata, `TOPIC_CLUSTERS`, and `UNIQUE_PHASE_COUNT` (REQ-001) (`scripts/types/session-types.ts`)
@@ -35,7 +38,7 @@ title: "Tasks: Phase Classification [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Implementation
+## 3. PHASE 2: IMPLEMENTATION
 
 ### Document Vector Construction
 - [x] T005 Add `scripts/utils/phase-classifier.ts` as the exchange classification owner (REQ-002)
@@ -59,7 +62,7 @@ title: "Tasks: Phase Classification [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: Verification
+## 4. PHASE 3: VERIFICATION
 
 - [x] T017 Add test for "grep in debug output" -> Debugging classification (SC-001)
 - [x] T018 Add test for Research -> Implementation -> Research producing 3 timeline segments and `UNIQUE_PHASE_COUNT = 2` (SC-002, REQ-004)
@@ -71,7 +74,7 @@ title: "Tasks: Phase Classification [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:completion -->
-## Completion Criteria
+## 5. COMPLETION CRITERIA
 
 - [x] All tasks marked `[x]`
 - [x] No `[B]` blocked tasks remaining
@@ -81,7 +84,7 @@ title: "Tasks: Phase Classification [template:level_1/tasks.md]"
 ---
 
 <!-- ANCHOR:cross-refs -->
-## Cross-References
+## 6. CROSS-REFERENCES
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`

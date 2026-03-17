@@ -10,6 +10,7 @@
 import { CONFIG } from '../core';
 import { coerceFactToText, coerceFactsToText } from '../utils/fact-coercion';
 import {
+  toCanonicalRelativePath,
   toRelativePath,
   cleanDescription,
   isDescriptionValid,
@@ -24,7 +25,7 @@ import {
   validateAnchorUniqueness
 } from '../lib/anchor-generator';
 import type {
-  CollectedDataBase,
+  CollectedDataSubset,
   DescriptionProvenance,
   FileChange,
   ModificationMagnitude,
@@ -35,14 +36,11 @@ import type {
 export type { FileChange, ObservationDetailed };
 
 /* ───────────────────────────────────────────────────────────────
-   1. INTERFACES
+   INTERFACES
 ------------------------------------------------------------------*/
 
 /** Raw observation input used during file extraction. */
 export type ObservationInput = Observation;
-
-/** File-focused subset of collected session data. */
-export type CollectedDataForFiles = Pick<CollectedDataBase, 'FILES' | 'filesModified'>;
 
 /** Semantic summary for a file referenced by the session. */
 export interface SemanticFileInfo {
@@ -96,7 +94,7 @@ function detectObservationType(obs: ObservationInput): string {
 ------------------------------------------------------------------*/
 
 function extractFilesFromData(
-  collectedData: CollectedDataForFiles | null,
+  collectedData: CollectedDataSubset<'FILES' | 'filesModified'> | null,
   observations: ObservationInput[] | null
 ): FileChange[] {
   const ACTION_NORMALIZE: Record<string, string> = {
@@ -120,7 +118,7 @@ function extractFilesFromData(
   }>();
   const sourcePathToKey = new Map<string, string>();
 
-  if (!collectedData) collectedData = {} as CollectedDataForFiles;
+  if (!collectedData) collectedData = {} as CollectedDataSubset<'FILES' | 'filesModified'>;
   if (!observations) observations = [];
 
   const addFile = (
@@ -134,13 +132,9 @@ function extractFilesFromData(
     const normalized = toRelativePath(rawPath, CONFIG.PROJECT_ROOT);
     if (!normalized) return;
 
-    const normalizedProjectRoot = CONFIG.PROJECT_ROOT.replace(/\\/g, '/');
-    const normalizedRawPath = rawPath.replace(/\\/g, '/');
-    const canonicalSourcePath = (normalizedRawPath.startsWith(normalizedProjectRoot)
-      ? normalizedRawPath.slice(normalizedProjectRoot.length)
-      : normalizedRawPath)
-      .replace(/^\/+/, '')
-      .replace(/^\.\//, '');
+    const canonicalSourcePath = toCanonicalRelativePath(rawPath, CONFIG.PROJECT_ROOT);
+    if (!canonicalSourcePath) return;
+
     // F-20: Use full canonical source path as map key to prevent truncation-based collisions
     let mapKey = sourcePathToKey.get(canonicalSourcePath) ?? canonicalSourcePath;
 
