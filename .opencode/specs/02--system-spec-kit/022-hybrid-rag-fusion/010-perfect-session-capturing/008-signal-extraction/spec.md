@@ -18,6 +18,7 @@ description: "Tighten signal extraction behavior and evidence quality for sessio
 | **Priority** | P1 |
 | **Status** | Complete |
 | **Created** | 2026-03-16 |
+| **Completed** | 2026-03-16 |
 | **Branch** | `main` |
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
@@ -30,6 +31,16 @@ description: "Tighten signal extraction behavior and evidence quality for sessio
 <!-- /ANCHOR:metadata -->
 
 ---
+
+<!-- ANCHOR:phase-context -->
+### Phase Context
+
+This is **Phase 8** of the Perfect Session Capturing specification.
+
+**Scope Boundary**: The pipeline uses 3 real extraction engines plus 1 wrapper, each with different stopwords, weighting, and placeholder rules.
+**Dependencies**: 007-phase-classification
+**Deliverables**: Created SemanticSignalExtractor with mode-aware extraction (topics/triggers/summary/all); consolidated 3 divergent stopword lists into a single profile
+<!-- /ANCHOR:phase-context -->
 
 <!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE

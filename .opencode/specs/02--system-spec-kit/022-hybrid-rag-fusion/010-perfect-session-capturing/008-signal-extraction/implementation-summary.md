@@ -1,7 +1,9 @@
 ---
-title: "Implementation Summary [template:level_2/implementation-summary.md]"
+title: "Implementation Summary: Signal Extraction"
+description: "Implementation summary for signal extraction phase of perfect session capturing"
+trigger_phrases: ["implementation", "summary", "signal", "extraction"]
 ---
-# Implementation Summary
+# Implementation Summary: Signal Extraction
 
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->

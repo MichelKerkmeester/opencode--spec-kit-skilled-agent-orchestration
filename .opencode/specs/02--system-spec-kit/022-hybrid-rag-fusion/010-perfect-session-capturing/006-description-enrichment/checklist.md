@@ -81,7 +81,7 @@ title: "Verification Checklist: Description Enrichment [template:level_2/checkli
 
 - [x] CHK-050 [P1] Temp files in scratch/ only — Evidence: no repo temp files were added for this phase. [Evidence: Verified in this phase's documented implementation and validation outputs.]
 - [x] CHK-051 [P1] scratch/ cleaned before completion — Evidence: no scratch artifacts left behind. [Evidence: Verified in this phase's documented implementation and validation outputs.]
-- [x] CHK-052 [P2] Findings saved to memory/ — Evidence: no memory/ folder present; deferred. [Evidence: Verified in this phase's documented implementation and validation outputs.]
+- [ ] CHK-052 [P2] Findings saved to memory/ — Evidence: no memory/ folder present; deferred. [Evidence: Verified in this phase's documented implementation and validation outputs.]
 <!-- /ANCHOR:file-org -->
 
 ---
@@ -93,7 +93,7 @@ title: "Verification Checklist: Description Enrichment [template:level_2/checkli
 |----------|-------|----------|
 | P0 Items | 8 | 8/8 |
 | P1 Items | 11 | 11/11 |
-| P2 Items | 5 | 5/5 |
+| P2 Items | 5 | 4/5 |
 
 **Verification Date**: 2026-03-16
 <!-- /ANCHOR:summary -->

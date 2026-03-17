@@ -25,6 +25,7 @@ contextType: "general"
 | **Priority** | P1 |
 | **Status** | Complete |
 | **Created** | 2026-03-16 |
+| **Completed** | 2026-03-16 |
 | **Branch** | `016-multi-cli-parity` |
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
@@ -36,6 +37,16 @@ contextType: "general"
 <!-- /ANCHOR:metadata -->
 
 ---
+
+<!-- ANCHOR:phase-context -->
+### Phase Context
+
+This is **Phase 16** of the Perfect Session Capturing specification.
+
+**Scope Boundary**: Phase 016 had already landed its runtime behavior in the live code, but the phase folder still claimed completion without direct parity-specific proof.
+**Dependencies**: 015-outsourced-agent-handback
+**Deliverables**: Re-verified existing parity seams in phase-classifier.ts, content-filter.ts, and input-normalizer.ts; added direct regression coverage
+<!-- /ANCHOR:phase-context -->
 
 <!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
@@ -68,7 +79,7 @@ Prove the shipped multi-CLI parity behavior with direct regression tests and rec
 - Refactoring adjacent phases `013` or `015`, which are currently in flight elsewhere.
 - Changing the native capture contract beyond the parity proofs already shipped in code.
 
-### Files Changed
+### Files to Change
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|

@@ -18,6 +18,7 @@ description: "Improve description fidelity and enrichment quality for spec folde
 | **Priority** | P0 |
 | **Status** | Complete |
 | **Created** | 2026-03-16 |
+| **Completed** | 2026-03-16 |
 | **Branch** | `main` |
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
@@ -31,6 +32,16 @@ description: "Improve description fidelity and enrichment quality for spec folde
 
 ---
 
+<!-- ANCHOR:phase-context -->
+### Phase Context
+
+This is **Phase 6** of the Perfect Session Capturing specification.
+
+**Scope Boundary**: Two different quality gates validate file descriptions at different pipeline stages with partial overlap and divergent coverage.
+**Dependencies**: 005-confidence-calibration
+**Deliverables**: Merged isDescriptionValid() and hasMeaningfulDescription() into a single shared description validator; implemented tiered validation outcomes
+<!-- /ANCHOR:phase-context -->
+
 <!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
@@ -40,7 +51,7 @@ Two different quality gates validate file descriptions at different pipeline sta
 
 ### Purpose
 
-Unify the two description validators into a single shared gate with tiered outcomes, leverage `_provenance` for description trust weighting, and derive a `MODIFICATION_MAGNITUDE` field from existing `changeScores` data so downstream consumers can distinguish trivial changes from substantial modifications.
+Unify the two description validators into a single shared gate with tiered outcomes, use `_provenance` for description trust weighting, and derive a `MODIFICATION_MAGNITUDE` field from existing `changeScores` data so downstream consumers can distinguish trivial changes from substantial modifications.
 <!-- /ANCHOR:problem -->
 
 ---

@@ -18,6 +18,7 @@ description: "Stabilize phase classification and routing semantics for the memor
 | **Priority** | P2 |
 | **Status** | Complete |
 | **Created** | 2026-03-16 |
+| **Completed** | 2026-03-16 |
 | **Branch** | `main` |
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
@@ -30,6 +31,16 @@ description: "Stabilize phase classification and routing semantics for the memor
 <!-- /ANCHOR:metadata -->
 
 ---
+
+<!-- ANCHOR:phase-context -->
+### Phase Context
+
+This is **Phase 7** of the Perfect Session Capturing specification.
+
+**Scope Boundary**: Conversation phase handling previously lived in a keyword-precedence ladder that favored early matches over richer context.
+**Dependencies**: 006-description-enrichment
+**Deliverables**: Added scripts/utils/phase-classifier.ts as the single owner of exchange signal building and clustering; expanded ConversationPhase/ConversationData with cluster metadata
+<!-- /ANCHOR:phase-context -->
 
 <!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE

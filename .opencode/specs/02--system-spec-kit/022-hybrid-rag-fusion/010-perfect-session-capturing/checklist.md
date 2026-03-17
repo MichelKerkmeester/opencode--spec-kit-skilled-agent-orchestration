@@ -56,7 +56,7 @@ contextType: "general"
 - [x] CHK-022 [P0] Targeted MCP save-path lane passes [Evidence: `npm run test:core -- tests/handler-memory-save.vitest.ts tests/recovery-hints.vitest.ts tests/quality-loop.vitest.ts tests/save-quality-gate.vitest.ts tests/preflight.vitest.ts tests/integration-save-pipeline.vitest.ts` -> 298 tests passed.]
 - [x] CHK-023 [P1] Workspace typecheck/build prerequisites pass [Evidence: `.opencode/skill/system-spec-kit`: `npm run typecheck` PASS; `scripts`: `npm run check` PASS, `npm run build` PASS; `mcp_server`: `npm run lint` PASS, `npm run build` PASS.]
 - [x] CHK-024 [P1] Root and recursive validation pass cleanly [Evidence: `validate.sh` rerun on 2026-03-17 reports no blocking file, level, or phase-link errors; remaining output is warning-only.]
-- [x] CHK-025 [P1] Completion check passes cleanly for the root spec pack [Evidence: Checklist updated to final completion truth and rechecked on 2026-03-17.]
+- [x] CHK-025 [P1] Completion check passes cleanly for the root spec pack [Evidence: All checklist items reviewed against spec.md requirements and implementation-summary.md evidence on 2026-03-17.]
 <!-- /ANCHOR:testing -->
 
 ---
@@ -96,9 +96,9 @@ contextType: "general"
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 9 | 9/9 |
-| P1 Items | 11 | 11/11 |
-| P2 Items | 2 | 1/2 |
+| P0 Items | 12 | 12/12 |
+| P1 Items | 21 | 21/21 |
+| P2 Items | 10 | 3/10 |
 
 **Verification Date**: 2026-03-17
 <!-- /ANCHOR:summary -->

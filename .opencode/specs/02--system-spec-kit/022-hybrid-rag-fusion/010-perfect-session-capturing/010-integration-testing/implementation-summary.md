@@ -1,7 +1,9 @@
 ---
-title: "Implementation Summary [template:level_2/implementation-summary.md]"
+title: "Implementation Summary: Integration Testing"
+description: "Implementation summary for integration testing phase of perfect session capturing"
+trigger_phrases: ["implementation", "summary", "integration", "testing"]
 ---
-# Implementation Summary
+# Implementation Summary: Integration Testing
 
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->

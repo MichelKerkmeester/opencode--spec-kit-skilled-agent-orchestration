@@ -9,15 +9,15 @@
 | `001-quality-scorer-unification/spec.md` | 0 | 0 | 0 | 4 | 92 | A |
 | `001-quality-scorer-unification/tasks.md` | 0 | 0 | 0 | 21 | 58 | F |
 | `002-contamination-detection/checklist.md` | 0 | 0 | 0 | 3 | 94 | A |
-| `002-contamination-detection/implementation-summary.md` | 0 | 0 | 0 | 4 | 92 | A |
+| `002-contamination-detection/implementation-summary.md` | 1 | 0 | 0 | 4 | 87 | B |
 | `002-contamination-detection/plan.md` | 0 | 0 | 0 | 4 | 92 | A |
-| `002-contamination-detection/spec.md` | 0 | 0 | 0 | 4 | 92 | A |
+| `002-contamination-detection/spec.md` | 0 | 0 | 1 | 4 | 91 | A |
 | `002-contamination-detection/tasks.md` | 0 | 0 | 0 | 23 | 54 | F |
 | `003-data-fidelity/checklist.md` | 0 | 0 | 0 | 0 | 100 | A |
 | `003-data-fidelity/implementation-summary.md` | 0 | 0 | 0 | 5 | 90 | A |
 | `003-data-fidelity/plan.md` | 0 | 0 | 0 | 2 | 96 | A |
 | `003-data-fidelity/spec.md` | 0 | 0 | 0 | 5 | 90 | A |
-| `003-data-fidelity/tasks.md` | 0 | 0 | 0 | 26 | 48 | F |
+| `003-data-fidelity/tasks.md` | 0 | 0 | 1 | 26 | 47 | F |
 | `004-type-consolidation/checklist.md` | 0 | 0 | 0 | 10 | 80 | B |
 | `004-type-consolidation/implementation-summary.md` | 0 | 0 | 0 | 6 | 88 | B |
 | `004-type-consolidation/plan.md` | 0 | 0 | 0 | 1 | 98 | A |
@@ -31,7 +31,7 @@
 | `006-description-enrichment/checklist.md` | 0 | 0 | 0 | 31 | 38 | F |
 | `006-description-enrichment/implementation-summary.md` | 0 | 0 | 0 | 4 | 92 | A |
 | `006-description-enrichment/plan.md` | 0 | 0 | 0 | 3 | 94 | A |
-| `006-description-enrichment/spec.md` | 0 | 0 | 0 | 5 | 90 | A |
+| `006-description-enrichment/spec.md` | 1 | 0 | 0 | 5 | 85 | B |
 | `006-description-enrichment/tasks.md` | 0 | 0 | 0 | 23 | 54 | F |
 | `007-phase-classification/checklist.md` | 0 | 0 | 0 | 1 | 98 | A |
 | `007-phase-classification/implementation-summary.md` | 0 | 0 | 0 | 5 | 90 | A |
@@ -59,12 +59,12 @@
 | `011-session-source-validation/spec.md` | 0 | 0 | 0 | 6 | 88 | B |
 | `011-session-source-validation/tasks.md` | 0 | 0 | 0 | 1 | 98 | A |
 | `012-template-compliance/checklist.md` | 0 | 0 | 0 | 1 | 98 | A |
-| `012-template-compliance/implementation-summary.md` | 0 | 0 | 0 | 0 | 100 | A |
+| `012-template-compliance/implementation-summary.md` | 0 | 0 | 1 | 0 | 99 | A |
 | `012-template-compliance/plan.md` | 0 | 0 | 0 | 1 | 98 | A |
-| `012-template-compliance/spec.md` | 0 | 0 | 0 | 1 | 98 | A |
+| `012-template-compliance/spec.md` | 0 | 0 | 1 | 1 | 97 | A |
 | `012-template-compliance/tasks.md` | 0 | 0 | 0 | 0 | 100 | A |
 | `013-auto-detection-fixes/checklist.md` | 0 | 0 | 0 | 13 | 74 | C |
-| `013-auto-detection-fixes/implementation-summary.md` | 0 | 0 | 0 | 10 | 80 | B |
+| `013-auto-detection-fixes/implementation-summary.md` | 0 | 1 | 0 | 10 | 78 | C |
 | `013-auto-detection-fixes/plan.md` | 0 | 0 | 0 | 22 | 56 | F |
 | `013-auto-detection-fixes/spec.md` | 0 | 0 | 0 | 8 | 84 | B |
 | `013-auto-detection-fixes/tasks.md` | 0 | 0 | 0 | 18 | 64 | D |
@@ -80,24 +80,31 @@
 | `015-outsourced-agent-handback/tasks.md` | 0 | 0 | 0 | 0 | 100 | A |
 | `016-multi-cli-parity/checklist.md` | 0 | 0 | 0 | 4 | 92 | A |
 | `016-multi-cli-parity/implementation-summary.md` | 0 | 0 | 0 | 1 | 98 | A |
-| `016-multi-cli-parity/plan.md` | 0 | 0 | 0 | 3 | 94 | A |
+| `016-multi-cli-parity/plan.md` | 1 | 0 | 0 | 3 | 89 | B |
 | `016-multi-cli-parity/spec.md` | 0 | 0 | 0 | 4 | 92 | A |
 | `016-multi-cli-parity/tasks.md` | 0 | 0 | 0 | 0 | 100 | A |
 | `checklist.md` | 0 | 0 | 0 | 10 | 80 | B |
 | `decision-record.md` | 0 | 0 | 0 | 0 | 100 | A |
-| `implementation-summary.md` | 0 | 0 | 0 | 2 | 96 | A |
+| `implementation-summary.md` | 0 | 0 | 2 | 2 | 94 | A |
 | `plan.md` | 0 | 0 | 0 | 0 | 100 | A |
 | `spec.md` | 0 | 0 | 0 | 0 | 100 | A |
 | `tasks.md` | 0 | 0 | 0 | 0 | 100 | A |
 
 ## Aggregate Statistics
 - Total files scanned: 86
-- Average HVR score: 86.26
-- Files below 80: 16
-- Most common violation: em dash (311 occurrences)
+- Average HVR score: 85.99
+- Files below 80: 17
+- Most common violation: three-item enumeration (574 occurrences)
 
 ## Hard Blocker Instances
-- None found.
+### `002-contamination-detection/implementation-summary.md`
+- `harness` at line 45: 4. Updated the phase tests in-place instead of adding a new suite, which kept the regression coverage close to the current workflow seam harness.
+
+### `006-description-enrichment/spec.md`
+- `leverage` at line 43: Unify the two description validators into a single shared gate with tiered outcomes, leverage `_provenance` for description trust weighting, and derive a `MODIFICATION_MAGNITUDE` field from existing `changeScores` data so downstream consumers can distinguish trivial changes from substantial modifications.
+
+### `016-multi-cli-parity/plan.md`
+- `harness` at line 28: | **Testing** | Vitest, Node.js smoke harness, `tsc --build` |
 
 ## Punctuation Violations
 ### `001-quality-scorer-unification/checklist.md`
@@ -840,7 +847,1100 @@
 - `semicolon` at line 79: | Live CLI probes | MIXED: Claude, Gemini, and Copilot capturable; Codex partial due usage limit; OpenCode live reply present but fresh capture artifact blocked |
 
 ## Structural Pattern Violations
-- None found.
+### `001-quality-scorer-unification/checklist.md`
+- `three-item enumeration` at line 26: Bullet list of exactly three items spans lines 26-28
+- `Oxford comma` at line 36: `score100` (compat), typed flags, and dimensional breakdown (REQ-001) — *core/quality-scorer.ts:76-87* [Evidence: Verified in this phase's documented implementation and validation outputs.]
+- `three-item enumeration` at line 36: `score100` (compat), typed flags, and dimensional breakdown (REQ-001) — *core/quality-scorer.ts:76-87* [Evidence: Verified in this phase's documented implementation and validation outputs.]
+- `three-item enumeration` at line 84: Bullet list of exactly three items spans lines 84-86
+
+### `001-quality-scorer-unification/implementation-summary.md`
+- `Oxford comma` at line 28: `score100` (compatibility), typed `QualityFlag` union, and dimensional `QualityBreakdown`. V1 scorer accepts `hadContamination` and applies equivalent penalty.
+- `three-item enumeration` at line 28: `score100` (compatibility), typed `QualityFlag` union, and dimensional `QualityBreakdown`. V1 scorer accepts `hadContamination` and applies equivalent penalty.
+- `Oxford comma` at line 29: 2. `scripts/extractors/quality-scorer.ts` (V2 scorer) imports types from core, applies contamination penalty (`-0.25` and `sufficiencyCap = 0.6`), and returns the unified interface.
+- `three-item enumeration` at line 29: 2. `scripts/extractors/quality-scorer.ts` (V2 scorer) imports types from core, applies contamination penalty (`-0.25` and `sufficiencyCap = 0.6`), and returns the unified interface.
+
+### `001-quality-scorer-unification/plan.md`
+- `Oxford comma` at line 25: extend the V1 scorer with matching contamination support, migrate the workflow abort threshold from 0-100 to 0.0-1.0, and rework test baselines to use the canonical scale. The goal is to eliminate the silent scale mismatch between stored quality (0.0-1.0) and workflow gating (0-100).
+- `three-item enumeration` at line 25: extend the V1 scorer with matching contamination support, migrate the workflow abort threshold from 0-100 to 0.0-1.0, and rework test baselines to use the canonical scale. The goal is to eliminate the silent scale mismatch between stored quality (0.0-1.0) and workflow gating (0-100).
+- `three-item enumeration` at line 35: Bullet list of exactly three items spans lines 35-37
+- `three-item enumeration` at line 41: Bullet list of exactly three items spans lines 41-43
+- `Oxford comma` at line 57: `hadContamination`, `insufficiency`, and `dimensions[]`
+- `three-item enumeration` at line 57: `hadContamination`, `insufficiency`, and `dimensions[]`
+- `three-item enumeration` at line 79: Bullet list of exactly three items spans lines 79-81
+- `three-item enumeration` at line 92: Bullet list of exactly three items spans lines 92-94
+
+### `001-quality-scorer-unification/spec.md`
+- `Oxford comma` at line 43: keep `score100` as a backward-compatible alias, migrate the abort threshold to the canonical scale, and ensure contamination detection produces a measurable score penalty rather than just a boolean flag.
+- `three-item enumeration` at line 43: keep `score100` as a backward-compatible alias, migrate the abort threshold to the canonical scale, and ensure contamination detection produces a measurable score penalty rather than just a boolean flag.
+- `Oxford comma` at line 53: `score100` (compatibility), typed flags, and dimensional breakdown
+- `three-item enumeration` at line 53: `score100` (compatibility), typed flags, and dimensional breakdown
+- `three-item enumeration` at line 60: Bullet list of exactly three items spans lines 60-62
+
+### `001-quality-scorer-unification/tasks.md`
+- `Oxford comma` at line 29: `insufficiency`, `dimensions[]`, and typed flags (`scripts/core/quality-scorer.ts`) — REQ-001
+- `three-item enumeration` at line 29: `insufficiency`, `dimensions[]`, and typed flags (`scripts/core/quality-scorer.ts`) — REQ-001
+- `three-item enumeration` at line 29: Bullet list of exactly three items spans lines 29-31
+- `three-item enumeration` at line 48: Bullet list of exactly three items spans lines 48-50
+- `three-item enumeration` at line 90: Bullet list of exactly three items spans lines 90-92
+
+### `002-contamination-detection/checklist.md`
+- `Oxford comma` at line 26: - [x] CHK-001 [P0] Requirements documented in spec.md [Evidence: `spec.md` now records the live file map, acceptance scenarios, and final status for this phase.]
+- `three-item enumeration` at line 26: - [x] CHK-001 [P0] Requirements documented in spec.md [Evidence: `spec.md` now records the live file map, acceptance scenarios, and final status for this phase.]
+- `Oxford comma` at line 27: - [x] CHK-002 [P0] Technical approach defined in plan.md [Evidence: `plan.md` now describes the live workflow scrub seam, the three-stage audit aggregation, and the completed implementation phases.]
+- `three-item enumeration` at line 27: - [x] CHK-002 [P0] Technical approach defined in plan.md [Evidence: `plan.md` now describes the live workflow scrub seam, the three-stage audit aggregation, and the completed implementation phases.]
+- `three-item enumeration` at line 26: Bullet list of exactly three items spans lines 26-28
+- `Oxford comma` at line 38: - [x] CHK-012 [P0] V9 pattern set broadened beyond 3 generic titles to cover template residue, placeholders, and stubs (REQ-003) [Evidence: `scripts/memory/validate-memory-quality.ts` now covers placeholder-bracket
+- `three-item enumeration` at line 38: - [x] CHK-012 [P0] V9 pattern set broadened beyond 3 generic titles to cover template residue, placeholders, and stubs (REQ-003) [Evidence: `scripts/memory/validate-memory-quality.ts` now covers placeholder-bracket
+- `Oxford comma` at line 65: pattern labels, counts, and pass-through counts; they do not store raw prompt or memory bodies.]
+- `three-item enumeration` at line 65: pattern labels, counts, and pass-through counts; they do not store raw prompt or memory bodies.]
+- `Oxford comma` at line 66: - [x] CHK-031 [P2] Broadened V9 patterns do not create denial-of-service risk via regex complexity [Evidence: the added V9 regexes are anchored, short, and title-scoped rather than unbounded whole-document expressions.]
+- `three-item enumeration` at line 66: - [x] CHK-031 [P2] Broadened V9 patterns do not create denial-of-service risk via regex complexity [Evidence: the added V9 regexes are anchored, short, and title-scoped rather than unbounded whole-document expressions.]
+- `Oxford comma` at line 74: `validate-memory-quality.ts`, `content-filter.ts`, and the updated test coverage.]
+- `three-item enumeration` at line 74: `validate-memory-quality.ts`, `content-filter.ts`, and the updated test coverage.]
+- `Oxford comma` at line 75: decisions, verification commands, and limitations.]
+- `three-item enumeration` at line 75: decisions, verification commands, and limitations.]
+- `three-item enumeration` at line 83: Bullet list of exactly three items spans lines 83-85
+
+### `002-contamination-detection/implementation-summary.md`
+- `Oxford comma` at line 28: detects scattered low-volume foreign-spec mentions across multiple specs, broadens V9 to catch placeholder/stub/spec-id-only titles, and emits a structured post-render contamination audit record.
+- `three-item enumeration` at line 28: detects scattered low-volume foreign-spec mentions across multiple specs, broadens V9 to catch placeholder/stub/spec-id-only titles, and emits a structured post-render contamination audit record.
+- `Oxford comma` at line 29: 2. `scripts/lib/content-filter.ts` now compiles config-driven `noise.patterns`, applies them alongside the hardcoded rules, and emits a structured content-filter audit record without exposing raw prompt bodies.
+- `three-item enumeration` at line 29: 2. `scripts/lib/content-filter.ts` now compiles config-driven `noise.patterns`, applies them alongside the hardcoded rules, and emits a structured content-filter audit record without exposing raw prompt bodies.
+- `Oxford comma` at line 31: 4. `scripts/core/workflow.ts` now records extractor-scrub contamination audit data and aggregates extractor, content-filter, and post-render audit records into `metadata.json`.
+- `three-item enumeration` at line 31: 4. `scripts/core/workflow.ts` now records extractor-scrub contamination audit data and aggregates extractor, content-filter, and post-render audit records into `metadata.json`.
+- `Oxford comma` at line 32: expanded V9 patterns, config-driven noise-pattern filtering, and end-to-end audit aggregation.
+- `three-item enumeration` at line 32: expanded V9 patterns, config-driven noise-pattern filtering, and end-to-end audit aggregation.
+- `Oxford comma` at line 43: 2. Kept the three-layer architecture intact: extractor scrub, content filter, and post-render validation still run in the same order.
+- `three-item enumeration` at line 43: 2. Kept the three-layer architecture intact: extractor scrub, content filter, and post-render validation still run in the same order.
+- `Oxford comma` at line 44: 3. Used structured JSON logs plus `metadata.json` aggregation so downstream inspection can see each stage’s matches, actions, and pass-through counts without storing sensitive raw content.
+- `three-item enumeration` at line 44: 3. Used structured JSON logs plus `metadata.json` aggregation so downstream inspection can see each stage’s matches, actions, and pass-through counts without storing sensitive raw content.
+
+### `002-contamination-detection/plan.md`
+- `Oxford comma` at line 25: This plan implements a guard layer extension pattern in the live pipeline: extend V8 and V9 validation rules in `scripts/memory/validate-memory-quality.ts`, wire the dormant `noise.patterns` config in `scripts/lib/content-filter.ts`, and add structured JSON audit logging at three pipeline points (extractor scrub in `scripts/core/workflow.ts`
+- `three-item enumeration` at line 25: This plan implements a guard layer extension pattern in the live pipeline: extend V8 and V9 validation rules in `scripts/memory/validate-memory-quality.ts`, wire the dormant `noise.patterns` config in `scripts/lib/content-filter.ts`, and add structured JSON audit logging at three pipeline points (extractor scrub in `scripts/core/workflow.ts`
+- `three-item enumeration` at line 35: Bullet list of exactly three items spans lines 35-37
+- `three-item enumeration` at line 41: Bullet list of exactly three items spans lines 41-43
+- `Oxford comma` at line 58: placeholder titles, generic stub formats, and spec-id-only titles
+- `three-item enumeration` at line 58: placeholder titles, generic stub formats, and spec-id-only titles
+- `Oxford comma` at line 61: - **Audit logging**: JSON audit records at extractor scrub, content-filter, and post-render stages are aggregated into `metadata.json`
+- `three-item enumeration` at line 61: - **Audit logging**: JSON audit records at extractor scrub, content-filter, and post-render stages are aggregated into `metadata.json`
+- `Oxford comma` at line 65: 1. Extractor scrub runs the existing lexical scrubber inside `workflow.ts`, captures denylist labels/counts, and emits an audit record
+- `three-item enumeration` at line 65: 1. Extractor scrub runs the existing lexical scrubber inside `workflow.ts`, captures denylist labels/counts, and emits an audit record
+- `Oxford comma` at line 87: `Draft`, `TODO`), and spec-number-only titles
+- `three-item enumeration` at line 87: `Draft`, `TODO`), and spec-number-only titles
+- `three-item enumeration` at line 86: Bullet list of exactly three items spans lines 86-88
+- `three-item enumeration` at line 92: Bullet list of exactly three items spans lines 92-94
+
+### `002-contamination-detection/spec.md`
+- `three-item enumeration` at line 61: Bullet list of exactly three items spans lines 61-63
+- `Oxford comma` at line 73: expanded V9, config-driven noise patterns, and workflow audit aggregation |
+- `three-item enumeration` at line 73: expanded V9, config-driven noise patterns, and workflow audit aggregation |
+- `Oxford comma` at line 87: | REQ-003 | V9 broadened beyond 3 generic title patterns to cover more stub patterns | V9 pattern list covers template residue, placeholder titles, and generic stub formats |
+- `three-item enumeration` at line 87: | REQ-003 | V9 broadened beyond 3 generic title patterns to cover more stub patterns | V9 pattern list covers template residue, placeholder titles, and generic stub formats |
+- `Oxford comma` at line 93: post-render | Each pipeline point emits a JSON audit record showing what was detected, flagged, and passed through |
+- `three-item enumeration` at line 93: post-render | Each pipeline point emits a JSON audit record showing what was detected, flagged, and passed through |
+- `three-item enumeration` at line 112: 3. **Given** a rendered memory titled `Draft`, `[TITLE]`, or a bare spec id
+- `Oxford comma` at line 113: **then** it includes `extractor-scrub`, `content-filter`, and `post-render` contamination audit entries with pattern labels/counts but without raw prompt content.
+- `three-item enumeration` at line 113: **then** it includes `extractor-scrub`, `content-filter`, and `post-render` contamination audit entries with pattern labels/counts but without raw prompt content.
+
+### `002-contamination-detection/tasks.md`
+- `Oxford comma` at line 43: `Draft`, `TODO`), and spec-number-only titles (`scripts/memory/validate-memory-quality.ts`) — REQ-003
+- `three-item enumeration` at line 43: `Draft`, `TODO`), and spec-number-only titles (`scripts/memory/validate-memory-quality.ts`) — REQ-003
+- `three-item enumeration` at line 42: Bullet list of exactly three items spans lines 42-44
+- `three-item enumeration` at line 48: Bullet list of exactly three items spans lines 48-50
+- `three-item enumeration` at line 91: Bullet list of exactly three items spans lines 91-93
+
+### `003-data-fidelity/checklist.md`
+- `three-item enumeration` at line 26: Bullet list of exactly three items spans lines 26-28
+- `Oxford comma` at line 56: - [x] CHK-024 [P1] Targeted integration coverage proves metadata and object facts survive through extractor rendering, pending-task extraction, and conversation tool detection (SC-001) [Evidence: Verified in this phase's documented implementation and validation outputs.]
+- `three-item enumeration` at line 56: - [x] CHK-024 [P1] Targeted integration coverage proves metadata and object facts survive through extractor rendering, pending-task extraction, and conversation tool detection (SC-001) [Evidence: Verified in this phase's documented implementation and validation outputs.]
+- `three-item enumeration` at line 83: Bullet list of exactly three items spans lines 83-85
+
+### `003-data-fidelity/implementation-summary.md`
+- `Oxford comma` at line 29: 2. `scripts/utils/fact-coercion.ts` was added as one narrow shared helper for coercing fact values into displayable strings, returning machine-readable drop reasons for nullish or unserializable values, and emitting structured warnings only for real remaining drop points.
+- `three-item enumeration` at line 29: 2. `scripts/utils/fact-coercion.ts` was added as one narrow shared helper for coercing fact values into displayable strings, returning machine-readable drop reasons for nullish or unserializable values, and emitting structured warnings only for real remaining drop points.
+- `Oxford comma` at line 30: `scripts/extractors/conversation-extractor.ts`, `scripts/extractors/decision-extractor.ts`, and `scripts/extractors/collect-session-data.ts` now use the shared helper where object facts were previously flattened to empty strings.
+- `three-item enumeration` at line 30: `scripts/extractors/conversation-extractor.ts`, `scripts/extractors/decision-extractor.ts`, and `scripts/extractors/collect-session-data.ts` now use the shared helper where object facts were previously flattened to empty strings.
+- `Oxford comma` at line 31: 4. `scripts/extractors/decision-extractor.ts` now consumes `_manualDecision.fullText`, `chosenApproach`, and `confidence` from decision observations and suppresses duplicate observation-derived records when authoritative `_manualDecisions` already exist.
+- `three-item enumeration` at line 31: 4. `scripts/extractors/decision-extractor.ts` now consumes `_manualDecision.fullText`, `chosenApproach`, and `confidence` from decision observations and suppresses duplicate observation-derived records when authoritative `_manualDecisions` already exist.
+- `Oxford comma` at line 33: manual-decision enrichment, duplicate suppression, and truncation logging.
+- `three-item enumeration` at line 33: manual-decision enrichment, duplicate suppression, and truncation logging.
+- `Oxford comma` at line 43: `ObservationDetailed`, `ToolCounts`, and `SpecFileEntry` into `session-types.ts` with re-exports in the original extractor files. The remaining 004 scope (CollectedDataFor* consolidation
+- `three-item enumeration` at line 43: `ObservationDetailed`, `ToolCounts`, and `SpecFileEntry` into `session-types.ts` with re-exports in the original extractor files. The remaining 004 scope (CollectedDataFor* consolidation
+- `three-item enumeration` at line 79: Bullet list of exactly three items spans lines 79-81
+
+### `003-data-fidelity/plan.md`
+- `Oxford comma` at line 25: fix coercion at each boundary where data is currently dropped, wire manual decision enrichment fields into the extraction path, and add truncation logging. The implementation order follows pipeline flow -- types first
+- `three-item enumeration` at line 25: fix coercion at each boundary where data is currently dropped, wire manual decision enrichment fields into the extraction path, and add truncation logging. The implementation order follows pipeline flow -- types first
+- `three-item enumeration` at line 35: Bullet list of exactly three items spans lines 35-37
+- `three-item enumeration` at line 41: Bullet list of exactly three items spans lines 41-43
+- `three-item enumeration` at line 84: Bullet list of exactly three items spans lines 84-86
+- `three-item enumeration` at line 90: Bullet list of exactly three items spans lines 90-92
+- `three-item enumeration` at line 96: Bullet list of exactly three items spans lines 96-98
+- `three-item enumeration` at line 102: Bullet list of exactly three items spans lines 102-104
+- `Oxford comma` at line 109: conversation, decision, and collect-session-data extractors to import the shared helper (REQ-005)
+- `three-item enumeration` at line 109: conversation, decision, and collect-session-data extractors to import the shared helper (REQ-005)
+- `Oxford comma` at line 113: - [x] Add structured log entries for fact-coercion drop points with field path, drop reason, and count (REQ-006)
+- `three-item enumeration` at line 113: - [x] Add structured log entries for fact-coercion drop points with field path, drop reason, and count (REQ-006)
+
+### `003-data-fidelity/spec.md`
+- `Oxford comma` at line 39: `confidence`) are created by `transformKeyDecision()` but never consumed by `extractDecisions()`. Observation truncation to `MAX_OBSERVATIONS` happens silently with no logging. Tool-call detection, phase classification, and other shared logic is reimplemented across 2-3 extractors.
+- `three-item enumeration` at line 39: `confidence`) are created by `transformKeyDecision()` but never consumed by `extractDecisions()`. Observation truncation to `MAX_OBSERVATIONS` happens silently with no logging. Tool-call detection, phase classification, and other shared logic is reimplemented across 2-3 extractors.
+- `Oxford comma` at line 43: coercing object-based facts, wiring manual decision enrichment into the extraction path, and adding truncation logging so data loss is visible rather than silent.
+- `three-item enumeration` at line 43: coercing object-based facts, wiring manual decision enrichment into the extraction path, and adding truncation logging so data loss is visible rather than silent.
+- `three-item enumeration` at line 60: Bullet list of exactly three items spans lines 60-62
+- `Oxford comma` at line 87: | REQ-003 | `_manualDecision` enrichment fields consumed by `extractDecisions()` | Decisions include `fullText`, `chosenApproach`, and `confidence` when `_manualDecision` is present |
+- `three-item enumeration` at line 87: | REQ-003 | `_manualDecision` enrichment fields consumed by `extractDecisions()` | Decisions include `fullText`, `chosenApproach`, and `confidence` when `_manualDecision` is present |
+- `Oxford comma` at line 95: discarded metadata | Each drop point emits a structured log entry with field path, drop reason, and count |
+- `three-item enumeration` at line 95: discarded metadata | Each drop point emits a structured log entry with field path, drop reason, and count |
+- `Oxford comma` at line 108: **then** `ACTION`, `_provenance`, and `_synthetic` remain present when provided.
+- `three-item enumeration` at line 108: **then** `ACTION`, `_provenance`, and `_synthetic` remain present when provided.
+
+### `003-data-fidelity/tasks.md`
+- `Oxford comma` at line 29: - [x] T001 Preserve `ACTION`, `_provenance`, and `_synthetic` in the local FILES normalization contract without waiting for `004-type-consolidation` (`scripts/utils/input-normalizer.ts`) — REQ-001
+- `three-item enumeration` at line 29: - [x] T001 Preserve `ACTION`, `_provenance`, and `_synthetic` in the local FILES normalization contract without waiting for `004-type-consolidation` (`scripts/utils/input-normalizer.ts`) — REQ-001
+- `Oxford comma` at line 40: - [x] T003 Update `input-normalizer.ts` to copy `ACTION`, `_provenance`, and `_synthetic` from raw FILES input to normalized entries (`scripts/utils/input-normalizer.ts`) — REQ-001
+- `three-item enumeration` at line 40: - [x] T003 Update `input-normalizer.ts` to copy `ACTION`, `_provenance`, and `_synthetic` from raw FILES input to normalized entries (`scripts/utils/input-normalizer.ts`) — REQ-001
+- `three-item enumeration` at line 40: Bullet list of exactly three items spans lines 40-42
+- `Oxford comma` at line 54: - [x] T011 Prefer `_manualDecision.fullText`, `chosenApproach`, and `confidence` while suppressing duplicate observation-derived decisions when authoritative `_manualDecisions` exist (`scripts/extractors/decision-extractor.ts`) — REQ-003
+- `three-item enumeration` at line 54: - [x] T011 Prefer `_manualDecision.fullText`, `chosenApproach`, and `confidence` while suppressing duplicate observation-derived decisions when authoritative `_manualDecisions` exist (`scripts/extractors/decision-extractor.ts`) — REQ-003
+- `three-item enumeration` at line 53: Bullet list of exactly three items spans lines 53-55
+- `three-item enumeration` at line 59: Bullet list of exactly three items spans lines 59-61
+- `Oxford comma` at line 66: conversation, decision, and pending-task extraction seams to import the shared helper (`scripts/extractors/*.ts`) — REQ-005
+- `three-item enumeration` at line 66: conversation, decision, and pending-task extraction seams to import the shared helper (`scripts/extractors/*.ts`) — REQ-005
+- `Oxford comma` at line 71: - [x] T019 Ensure drop logs emit field path, drop reason counts, and optional spec/session identifiers (`scripts/utils/fact-coercion.ts`
+- `three-item enumeration` at line 71: - [x] T019 Ensure drop logs emit field path, drop reason counts, and optional spec/session identifiers (`scripts/utils/fact-coercion.ts`
+- `Oxford comma` at line 83: targeted Vitest, extractor/loaders JS regression suite, and `npm run build` — SC-001
+- `three-item enumeration` at line 83: targeted Vitest, extractor/loaders JS regression suite, and `npm run build` — SC-001
+- `three-item enumeration` at line 104: Bullet list of exactly three items spans lines 104-106
+
+### `004-type-consolidation/checklist.md`
+- `three-item enumeration` at line 26: Bullet list of exactly three items spans lines 26-28
+- `three-item enumeration` at line 84: Bullet list of exactly three items spans lines 84-86
+
+### `004-type-consolidation/plan.md`
+- `Oxford comma` at line 25: remove the `[key: string]: unknown` index signature, recompile to catch masked errors, and retest. The migration follows a safe ordering where types are canonical before consumers are updated
+- `three-item enumeration` at line 25: remove the `[key: string]: unknown` index signature, recompile to catch masked errors, and retest. The migration follows a safe ordering where types are canonical before consumers are updated
+- `three-item enumeration` at line 35: Bullet list of exactly three items spans lines 35-37
+- `Oxford comma` at line 58: `ToolCounts`, `SpecFileEntry`, and the expanded `SessionData` interface
+- `three-item enumeration` at line 58: `ToolCounts`, `SpecFileEntry`, and the expanded `SessionData` interface
+- `Oxford comma` at line 88: `postflight`, `continue-session`, and other discovered real fields
+- `three-item enumeration` at line 88: `postflight`, `continue-session`, and other discovered real fields
+- `three-item enumeration` at line 87: Bullet list of exactly three items spans lines 87-89
+- `three-item enumeration` at line 93: Bullet list of exactly three items spans lines 93-95
+- `three-item enumeration` at line 99: Bullet list of exactly three items spans lines 99-101
+- `three-item enumeration` at line 105: Bullet list of exactly three items spans lines 105-107
+- `three-item enumeration` at line 111: Bullet list of exactly three items spans lines 111-113
+- `three-item enumeration` at line 117: Bullet list of exactly three items spans lines 117-119
+
+### `004-type-consolidation/spec.md`
+- `Oxford comma` at line 43: `ObservationDetailed`, `ToolCounts`, and `SpecFileEntry` into `types/session-types.ts` as canonical definitions. Tighten `SessionData` by explicitly modeling its real fields and removing the `[key: string]: unknown` escape hatch. Consolidate the scattered `CollectedDataFor*` subsets using `Pick`/`Omit` from canonical types.
+- `three-item enumeration` at line 43: `ObservationDetailed`, `ToolCounts`, and `SpecFileEntry` into `types/session-types.ts` as canonical definitions. Tighten `SessionData` by explicitly modeling its real fields and removing the `[key: string]: unknown` escape hatch. Consolidate the scattered `CollectedDataFor*` subsets using `Pick`/`Omit` from canonical types.
+- `Oxford comma` at line 54: `pre/postflight`, `continue-session`, and other known real fields
+- `three-item enumeration` at line 54: `pre/postflight`, `continue-session`, and other known real fields
+- `three-item enumeration` at line 61: Bullet list of exactly three items spans lines 61-63
+
+### `004-type-consolidation/tasks.md`
+- `Oxford comma` at line 44: `postflight`, `continue-session`, and other discovered real fields (`scripts/types/session-types.ts`) — REQ-002
+- `three-item enumeration` at line 44: `postflight`, `continue-session`, and other discovered real fields (`scripts/types/session-types.ts`) — REQ-002
+- `three-item enumeration` at line 43: Bullet list of exactly three items spans lines 43-45
+- `three-item enumeration` at line 49: Bullet list of exactly three items spans lines 49-51
+- `three-item enumeration` at line 59: Bullet list of exactly three items spans lines 59-61
+- `three-item enumeration` at line 65: Bullet list of exactly three items spans lines 65-67
+- `three-item enumeration` at line 104: Bullet list of exactly three items spans lines 104-106
+
+### `005-confidence-calibration/checklist.md`
+- `Oxford comma` at line 27: - [x] CHK-002 [P0] Technical approach defined in plan.md — Evidence: plan now reflects completed extractor, rendering, and verification work. [Evidence: Verified in this phase's documented implementation and validation outputs.]
+- `three-item enumeration` at line 27: - [x] CHK-002 [P0] Technical approach defined in plan.md — Evidence: plan now reflects completed extractor, rendering, and verification work. [Evidence: Verified in this phase's documented implementation and validation outputs.]
+- `three-item enumeration` at line 26: Bullet list of exactly three items spans lines 26-28
+- `Oxford comma` at line 42: - [x] CHK-016 [P2] Base confidence 0.50 with cap at 1.0 validated for edge cases — Evidence: `decision-confidence.vitest.ts` covers alternatives-only, implicit choice, and clamped override cases. [Evidence: Verified in this phase's documented implementation and validation outputs.]
+- `three-item enumeration` at line 42: - [x] CHK-016 [P2] Base confidence 0.50 with cap at 1.0 validated for edge cases — Evidence: `decision-confidence.vitest.ts` covers alternatives-only, implicit choice, and clamped override cases. [Evidence: Verified in this phase's documented implementation and validation outputs.]
+- `three-item enumeration` at line 80: Bullet list of exactly three items spans lines 80-82
+
+### `005-confidence-calibration/implementation-summary.md`
+- `Oxford comma` at line 30: `ascii-boxes.ts`, `workflow.ts`, and `.opencode/skill/system-spec-kit/templates/context_template.md` so divergent confidence values surface as split choice/rationale labels.
+- `three-item enumeration` at line 30: `ascii-boxes.ts`, `workflow.ts`, and `.opencode/skill/system-spec-kit/templates/context_template.md` so divergent confidence values surface as split choice/rationale labels.
+- `Oxford comma` at line 41: tree generation, workflow percentage mapping, and rendered templates.
+- `three-item enumeration` at line 41: tree generation, workflow percentage mapping, and rendered templates.
+- `Oxford comma` at line 42: additive choice/rationale signals, normalization/clamping, and explicit single-value overrides.
+- `three-item enumeration` at line 42: additive choice/rationale signals, normalization/clamping, and explicit single-value overrides.
+
+### `005-confidence-calibration/plan.md`
+- `Oxford comma` at line 25: derive legacy `CONFIDENCE` as `Math.min(choice, rationale)` for backward compatibility, and propagate the dual model through the decision tree generator
+- `three-item enumeration` at line 25: derive legacy `CONFIDENCE` as `Math.min(choice, rationale)` for backward compatibility, and propagate the dual model through the decision tree generator
+- `three-item enumeration` at line 35: Bullet list of exactly three items spans lines 35-37
+- `three-item enumeration` at line 41: Bullet list of exactly three items spans lines 41-43
+- `Oxford comma` at line 53: renderers, workflow), and verify backward compatibility through a derived legacy field.
+- `three-item enumeration` at line 53: renderers, workflow), and verify backward compatibility through a derived legacy field.
+- `Oxford comma` at line 66: 2. For each decision: compute `CHOICE_CONFIDENCE` from alternatives count, option specificity, and explicit preference signals
+- `three-item enumeration` at line 66: 2. For each decision: compute `CHOICE_CONFIDENCE` from alternatives count, option specificity, and explicit preference signals
+- `Oxford comma` at line 67: 3. Compute `RATIONALE_CONFIDENCE` from rationale depth, evidence citations, and trade-off articulation
+- `three-item enumeration` at line 67: 3. Compute `RATIONALE_CONFIDENCE` from rationale depth, evidence citations, and trade-off articulation
+- `three-item enumeration` at line 95: Bullet list of exactly three items spans lines 95-97
+
+### `005-confidence-calibration/spec.md`
+- `Oxford comma` at line 39: `workflow.ts` percent conversion, the live context template, and `validate-memory-quality.ts`) all treat this single number as ground truth.
+- `three-item enumeration` at line 39: `workflow.ts` percent conversion, the live context template, and `validate-memory-quality.ts`) all treat this single number as ground truth.
+- `Oxford comma` at line 43: derive the legacy `CONFIDENCE` as `Math.min(choice, rationale)` for conservative backward compatibility, and update all downstream consumers to use or display the richer signal where applicable.
+- `three-item enumeration` at line 43: derive the legacy `CONFIDENCE` as `Math.min(choice, rationale)` for conservative backward compatibility, and update all downstream consumers to use or display the richer signal where applicable.
+- `three-item enumeration` at line 62: Bullet list of exactly three items spans lines 62-64
+- `Oxford comma` at line 71: | `scripts/extractors/decision-extractor.ts` | Modify | Compute dual confidence values from alternatives presence, rationale depth, and evidence quality |
+- `three-item enumeration` at line 71: | `scripts/extractors/decision-extractor.ts` | Modify | Compute dual confidence values from alternatives presence, rationale depth, and evidence quality |
+
+### `005-confidence-calibration/tasks.md`
+- `Oxford comma` at line 42: option specificity (+0.10) (`scripts/extractors/decision-extractor.ts`) — Evidence: scoring now uses alternatives, explicit choice, and specific choice checks with placeholder filtering.
+- `three-item enumeration` at line 42: option specificity (+0.10) (`scripts/extractors/decision-extractor.ts`) — Evidence: scoring now uses alternatives, explicit choice, and specific choice checks with placeholder filtering.
+- `Oxford comma` at line 43: evidence citations (+0.10) (`scripts/extractors/decision-extractor.ts`) — Evidence: scoring now uses explicit rationale, tradeoff language, and evidence presence.
+- `three-item enumeration` at line 43: evidence citations (+0.10) (`scripts/extractors/decision-extractor.ts`) — Evidence: scoring now uses explicit rationale, tradeoff language, and evidence presence.
+- `Oxford comma` at line 50: - [x] T012 [P] Update `workflow.ts` percent conversion to use legacy `CONFIDENCE` with new type shape (`scripts/core/workflow.ts`) — Evidence: workflow now converts overall, choice, and rationale confidence to percentages and tags divergent cases.
+- `three-item enumeration` at line 50: - [x] T012 [P] Update `workflow.ts` percent conversion to use legacy `CONFIDENCE` with new type shape (`scripts/core/workflow.ts`) — Evidence: workflow now converts overall, choice, and rationale confidence to percentages and tags divergent cases.
+- `Oxford comma` at line 61: split, override, and clamping cases.
+- `three-item enumeration` at line 61: split, override, and clamping cases.
+- `Oxford comma` at line 74: - [x] Manual verification passed — Evidence: `npm run typecheck`, targeted Vitest suites, and `node scripts/tests/test-extractors-loaders.js` all passed on 2026-03-16.
+- `three-item enumeration` at line 74: - [x] Manual verification passed — Evidence: `npm run typecheck`, targeted Vitest suites, and `node scripts/tests/test-extractors-loaders.js` all passed on 2026-03-16.
+- `three-item enumeration` at line 72: Bullet list of exactly three items spans lines 72-74
+
+### `006-description-enrichment/checklist.md`
+- `Oxford comma` at line 26: - [x] CHK-001 [P0] Requirements documented in spec.md — Evidence: spec metadata, requirement tables, and Files to Change updated for completed implementation. [Evidence: Verified in this phase's documented implementation and validation outputs.]
+- `three-item enumeration` at line 26: - [x] CHK-001 [P0] Requirements documented in spec.md — Evidence: spec metadata, requirement tables, and Files to Change updated for completed implementation. [Evidence: Verified in this phase's documented implementation and validation outputs.]
+- `three-item enumeration` at line 26: Bullet list of exactly three items spans lines 26-28
+- `Oxford comma` at line 73: phases, DoD, and Files to Change updated on 2026-03-16. [Evidence: Verified in this phase's documented implementation and validation outputs.]
+- `three-item enumeration` at line 73: phases, DoD, and Files to Change updated on 2026-03-16. [Evidence: Verified in this phase's documented implementation and validation outputs.]
+- `three-item enumeration` at line 82: Bullet list of exactly three items spans lines 82-84
+
+### `006-description-enrichment/implementation-summary.md`
+- `Oxford comma` at line 30: - Added `MODIFICATION_MAGNITUDE` enum (`trivial | small | medium | large | unknown`) to `FileChange` type and derived it from existing `changeScores`, action type, and commit-touch counts in `git-context-extractor.ts`.
+- `three-item enumeration` at line 30: - Added `MODIFICATION_MAGNITUDE` enum (`trivial | small | medium | large | unknown`) to `FileChange` type and derived it from existing `changeScores`, action type, and commit-touch counts in `git-context-extractor.ts`.
+- `Oxford comma` at line 31: bare changed/modified, "Recent commit:", and `[PLACEHOLDER]` prefixes.
+- `three-item enumeration` at line 31: bare changed/modified, "Recent commit:", and `[PLACEHOLDER]` prefixes.
+
+### `006-description-enrichment/plan.md`
+- `Oxford comma` at line 25: This plan implements a validator unification pattern: merge `isDescriptionValid()` from `file-extractor.ts` and `hasMeaningfulDescription()` from `quality-scorer.ts` into a single shared validator with tiered outcomes (placeholder / activity-only / semantic / high-confidence), add provenance-based trust weighting to description quality scoring, and derive `MODIFICATION_MAGNITUDE` from existing `changeScores` and action type data already computed by `git-context-extractor.ts`.
+- `three-item enumeration` at line 25: This plan implements a validator unification pattern: merge `isDescriptionValid()` from `file-extractor.ts` and `hasMeaningfulDescription()` from `quality-scorer.ts` into a single shared validator with tiered outcomes (placeholder / activity-only / semantic / high-confidence), add provenance-based trust weighting to description quality scoring, and derive `MODIFICATION_MAGNITUDE` from existing `changeScores` and action type data already computed by `git-context-extractor.ts`.
+- `three-item enumeration` at line 35: Bullet list of exactly three items spans lines 35-37
+- `three-item enumeration` at line 41: Bullet list of exactly three items spans lines 41-43
+- `Oxford comma` at line 53: Validator unification -- merge two overlapping validation functions into one shared gate, add provenance as a quality signal, and surface existing computed data as a structured field.
+- `three-item enumeration` at line 53: Validator unification -- merge two overlapping validation functions into one shared gate, add provenance as a quality signal, and surface existing computed data as a structured field.
+- `three-item enumeration` at line 90: Bullet list of exactly three items spans lines 90-92
+
+### `006-description-enrichment/spec.md`
+- `three-item enumeration` at line 39: Two different quality gates validate file descriptions at different pipeline stages with partial overlap and divergent coverage. Extraction-time `isDescriptionValid()` (in `file-extractor.ts`) checks basic non-empty criteria. Scoring-time `hasMeaningfulDescription()` (in `quality-scorer.ts`) applies a separate regex-based check for placeholder patterns. Neither catches several real-world stub patterns: "Recent commit: modify in repository history", TBD/todo/pending/n/a, or bare "changed"/"modified" without context. The `_provenance` field is attached to file entries but never used for quality ranking -- git-derived descriptions are treated identically to synthetic ones. Additionally
+- `Oxford comma` at line 43: Unify the two description validators into a single shared gate with tiered outcomes, leverage `_provenance` for description trust weighting, and derive a `MODIFICATION_MAGNITUDE` field from existing `changeScores` data so downstream consumers can distinguish trivial changes from substantial modifications.
+- `three-item enumeration` at line 43: Unify the two description validators into a single shared gate with tiered outcomes, leverage `_provenance` for description trust weighting, and derive a `MODIFICATION_MAGNITUDE` field from existing `changeScores` data so downstream consumers can distinguish trivial changes from substantial modifications.
+- `Oxford comma` at line 57: - Derive magnitude from `changeScores`, action type, and commit-touch counts
+- `three-item enumeration` at line 57: - Derive magnitude from `changeScores`, action type, and commit-touch counts
+- `three-item enumeration` at line 62: Bullet list of exactly three items spans lines 62-64
+- `Oxford comma` at line 72: | `scripts/extractors/git-context-extractor.ts` | Modify | Expose `MODIFICATION_MAGNITUDE` derived from existing `changeScores`, action type, and commit-touch counts |
+- `three-item enumeration` at line 72: | `scripts/extractors/git-context-extractor.ts` | Modify | Expose `MODIFICATION_MAGNITUDE` derived from existing `changeScores`, action type, and commit-touch counts |
+- `Oxford comma` at line 73: | `scripts/utils/file-helpers.ts` | Modify | Home of unified `validateDescription()` with tiered outcomes, `isDescriptionValid()` wrapper, and stub pattern detection |
+- `three-item enumeration` at line 73: | `scripts/utils/file-helpers.ts` | Modify | Home of unified `validateDescription()` with tiered outcomes, `isDescriptionValid()` wrapper, and stub pattern detection |
+
+### `006-description-enrichment/tasks.md`
+- `three-item enumeration` at line 44: Bullet list of exactly three items spans lines 44-46
+- `Oxford comma` at line 52: - [x] T014 Populate `MODIFICATION_MAGNITUDE` during git-context extraction; default to `unknown` for non-git entries (REQ-003) (`scripts/extractors/git-context-extractor.ts`) — Evidence: `addFile()` calls `deriveModificationMagnitude()` with changeScore, action, and commitTouches.
+- `three-item enumeration` at line 52: - [x] T014 Populate `MODIFICATION_MAGNITUDE` during git-context extraction; default to `unknown` for non-git entries (REQ-003) (`scripts/extractors/git-context-extractor.ts`) — Evidence: `addFile()` calls `deriveModificationMagnitude()` with changeScore, action, and commitTouches.
+- `three-item enumeration` at line 72: Bullet list of exactly three items spans lines 72-74
+
+### `007-phase-classification/checklist.md`
+- `Oxford comma` at line 26: - [x] CHK-001 [P0] Requirements documented in spec.md [Evidence: `007` spec now reflects the shipped ownership boundaries, public metadata fields, and `008` signal dependency.]
+- `three-item enumeration` at line 26: - [x] CHK-001 [P0] Requirements documented in spec.md [Evidence: `007` spec now reflects the shipped ownership boundaries, public metadata fields, and `008` signal dependency.]
+- `Oxford comma` at line 27: - [x] CHK-002 [P0] Technical approach defined in plan.md [Evidence: `007` plan now records the new classifier module, exchange-building flow, and targeted rollback boundary.]
+- `three-item enumeration` at line 27: - [x] CHK-002 [P0] Technical approach defined in plan.md [Evidence: `007` plan now records the new classifier module, exchange-building flow, and targeted rollback boundary.]
+- `three-item enumeration` at line 26: Bullet list of exactly three items spans lines 26-28
+- `three-item enumeration` at line 38: Bullet list of exactly three items spans lines 38-40
+- `Oxford comma` at line 46: `Iterative Loop`, `Branching Investigation`, and `Exploratory Sweep` from recurrence
+- `three-item enumeration` at line 46: `Iterative Loop`, `Branching Investigation`, and `Exploratory Sweep` from recurrence
+- `Oxford comma` at line 67: - [x] CHK-025 [P2] Document vector construction produces consistent weighted maps [Evidence: `phase-classification.vitest.ts` exercises weighted signal construction indirectly across compatibility, clustering, and low-signal fallback cases.]
+- `three-item enumeration` at line 67: - [x] CHK-025 [P2] Document vector construction produces consistent weighted maps [Evidence: `phase-classification.vitest.ts` exercises weighted signal construction indirectly across compatibility, clustering, and low-signal fallback cases.]
+- `Oxford comma` at line 75: indexes, phase scores, and confidence only; raw observation payloads are not surfaced in the new contract.]
+- `three-item enumeration` at line 75: indexes, phase scores, and confidence only; raw observation payloads are not surfaced in the new contract.]
+- `Oxford comma` at line 76: - [x] CHK-031 [P2] Cosine similarity computation handles edge cases (zero vectors, single-term vectors) [Evidence: `phase-classifier.ts` guards zero-size and zero-norm vectors, and `phase-classification.vitest.ts` covers low-signal fallback without crashes.]
+- `three-item enumeration` at line 76: - [x] CHK-031 [P2] Cosine similarity computation handles edge cases (zero vectors, single-term vectors) [Evidence: `phase-classifier.ts` guards zero-size and zero-norm vectors, and `phase-classification.vitest.ts` covers low-signal fallback without crashes.]
+- `Oxford comma` at line 85: decisions, verification, and residual baseline failures.]
+- `three-item enumeration` at line 85: decisions, verification, and residual baseline failures.]
+- `three-item enumeration` at line 93: Bullet list of exactly three items spans lines 93-95
+
+### `007-phase-classification/implementation-summary.md`
+- `Oxford comma` at line 28: phase scoring, cluster confidence, and flow-pattern derivation.
+- `three-item enumeration` at line 28: phase scoring, cluster confidence, and flow-pattern derivation.
+- `Oxford comma` at line 29: `TOPIC_CLUSTERS`, `UNIQUE_PHASE_COUNT`, and the upgraded `FLOW_PATTERN`.
+- `three-item enumeration` at line 29: `TOPIC_CLUSTERS`, `UNIQUE_PHASE_COUNT`, and the upgraded `FLOW_PATTERN`.
+- `Oxford comma` at line 31: `PhaseScoreMap`, `TopicCluster`, and richer `ConversationPhase` / `ConversationData` metadata.
+- `three-item enumeration` at line 31: `PhaseScoreMap`, `TopicCluster`, and richer `ConversationPhase` / `ConversationData` metadata.
+- `Oxford comma` at line 32: 5. `scripts/extractors/file-extractor.ts` now classifies `test`, `documentation`, and `performance` observations
+- `three-item enumeration` at line 32: 5. `scripts/extractors/file-extractor.ts` now classifies `test`, `documentation`, and `performance` observations
+- `Oxford comma` at line 46: expanded observation taxonomy, all 4 flow-pattern outputs, and low-signal fallback behavior.
+- `three-item enumeration` at line 46: expanded observation taxonomy, all 4 flow-pattern outputs, and low-signal fallback behavior.
+- `Oxford comma` at line 59: | Treat the remaining module-suite failures as unrelated baseline issues | `T-024e`, `T-024f`, and `T-032` were already outside the changed phase-classification seams and remained the only failures after the new classifier tests were fixed |
+- `three-item enumeration` at line 59: | Treat the remaining module-suite failures as unrelated baseline issues | `T-024e`, `T-024f`, and `T-032` were already outside the changed phase-classification seams and remained the only failures after the new classifier tests were fixed |
+- `Oxford comma` at line 74: | `node scripts/tests/test-scripts-modules.js` | Still reports the known unrelated baseline failures `T-024e`, `T-024f`, and `T-032`; the new `T-008g`
+- `three-item enumeration` at line 74: | `node scripts/tests/test-scripts-modules.js` | Still reports the known unrelated baseline failures `T-024e`, `T-024f`, and `T-032`; the new `T-008g`
+
+### `007-phase-classification/plan.md`
+- `Oxford comma` at line 25: preserves repeated returns as separate phase segments, expands observation taxonomy, and derives `FLOW_PATTERN` from topic-link structure.
+- `three-item enumeration` at line 25: preserves repeated returns as separate phase segments, expands observation taxonomy, and derives `FLOW_PATTERN` from topic-link structure.
+- `three-item enumeration` at line 35: Bullet list of exactly three items spans lines 35-37
+- `three-item enumeration` at line 41: Bullet list of exactly three items spans lines 41-43
+- `Oxford comma` at line 57: phase scoring, cluster confidence, and flow-pattern derivation
+- `three-item enumeration` at line 57: phase scoring, cluster confidence, and flow-pattern derivation
+- `Oxford comma` at line 58: `TOPIC_CLUSTERS`, `UNIQUE_PHASE_COUNT`, and `FLOW_PATTERN`
+- `three-item enumeration` at line 58: `TOPIC_CLUSTERS`, `UNIQUE_PHASE_COUNT`, and `FLOW_PATTERN`
+- `Oxford comma` at line 60: `PhaseScoreMap`, `ConversationPhaseLabel`, and the expanded conversation contract
+- `three-item enumeration` at line 60: `PhaseScoreMap`, `ConversationPhaseLabel`, and the expanded conversation contract
+- `Oxford comma` at line 61: - **`file-extractor.ts`**: Expands observation-type detection for `test`, `documentation`, and `performance`
+- `three-item enumeration` at line 61: - **`file-extractor.ts`**: Expands observation-type detection for `test`, `documentation`, and `performance`
+- `Oxford comma` at line 66: coerced facts, tool names, and observation types.
+- `three-item enumeration` at line 66: coerced facts, tool names, and observation types.
+- `Oxford comma` at line 67: ngramDepth: 2 })` produces topics, phrases, and filtered tokens.
+- `three-item enumeration` at line 67: ngramDepth: 2 })` produces topics, phrases, and filtered tokens.
+- `Oxford comma` at line 71: 7. The classifier emits ordered phase segments plus topic clusters and derives `FLOW_PATTERN` from iterative recurrence, exploratory breadth, and topic-link branching.
+- `three-item enumeration` at line 71: 7. The classifier emits ordered phase segments plus topic clusters and derives `FLOW_PATTERN` from iterative recurrence, exploratory breadth, and topic-link branching.
+- `Oxford comma` at line 81: - [x] Add `ConversationPhaseLabel`, `PhaseScoreMap`, and `TopicCluster` to `session-types.ts`
+- `three-item enumeration` at line 81: - [x] Add `ConversationPhaseLabel`, `PhaseScoreMap`, and `TopicCluster` to `session-types.ts`
+- `Oxford comma` at line 82: - [x] Expand `ConversationPhase` and `ConversationData` with cluster metadata, `TOPIC_CLUSTERS`, and `UNIQUE_PHASE_COUNT`
+- `three-item enumeration` at line 82: - [x] Expand `ConversationPhase` and `ConversationData` with cluster metadata, `TOPIC_CLUSTERS`, and `UNIQUE_PHASE_COUNT`
+- `Oxford comma` at line 83: - [x] Expand observation-type detection for `test`, `documentation`, and `performance`
+- `three-item enumeration` at line 83: - [x] Expand observation-type detection for `test`, `documentation`, and `performance`
+- `three-item enumeration` at line 81: Bullet list of exactly three items spans lines 81-83
+- `Oxford comma` at line 88: coerced fact text, tool names, and observation types
+- `three-item enumeration` at line 88: coerced fact text, tool names, and observation types
+- `three-item enumeration` at line 97: `Iterative Loop`, `Branching Investigation`, or `Exploratory Sweep`
+- `Oxford comma` at line 102: observation types, flow patterns, and low-signal fallback
+- `three-item enumeration` at line 102: observation types, flow patterns, and low-signal fallback
+- `three-item enumeration` at line 102: Bullet list of exactly three items spans lines 102-104
+- `Oxford comma` at line 136: `tool-detection.ts`, `session-types.ts`, and `phase-classifier.ts` together so the compatibility seam returns to the legacy ladder without leaving the conversation contract half-migrated
+- `three-item enumeration` at line 136: `tool-detection.ts`, `session-types.ts`, and `phase-classifier.ts` together so the compatibility seam returns to the legacy ladder without leaving the conversation contract half-migrated
+
+### `007-phase-classification/spec.md`
+- `Oxford comma` at line 39: so ambiguous exchanges like "grep in debug output" could resolve to Research instead of Debugging. Timeline output also merged repeated returns to the same phase into one duration bucket, which erased non-contiguous structures such as Research -> Implementation -> Research. `FLOW_PATTERN` used coarse boolean heuristics instead of structural analysis, and observation typing did not distinguish test
+- `three-item enumeration` at line 39: so ambiguous exchanges like "grep in debug output" could resolve to Research instead of Debugging. Timeline output also merged repeated returns to the same phase into one duration bucket, which erased non-contiguous structures such as Research -> Implementation -> Research. `FLOW_PATTERN` used coarse boolean heuristics instead of structural analysis, and observation typing did not distinguish test
+- `Oxford comma` at line 43: preserves repeated phase returns as separate segments, expands observation taxonomy, and derives `FLOW_PATTERN` from topic-link structure instead of a simple precedence ladder.
+- `three-item enumeration` at line 43: preserves repeated phase returns as separate segments, expands observation taxonomy, and derives `FLOW_PATTERN` from topic-link structure instead of a simple precedence ladder.
+- `Oxford comma` at line 53: phase scoring, confidence, and flow-pattern derivation
+- `three-item enumeration` at line 53: phase scoring, confidence, and flow-pattern derivation
+- `Oxford comma` at line 54: coerced fact text, tool names, and observation types
+- `three-item enumeration` at line 54: coerced fact text, tool names, and observation types
+- `Oxford comma` at line 56: ordered phase segments, `TOPIC_CLUSTERS`, and `UNIQUE_PHASE_COUNT`
+- `three-item enumeration` at line 56: ordered phase segments, `TOPIC_CLUSTERS`, and `UNIQUE_PHASE_COUNT`
+- `Oxford comma` at line 57: - Expand observation types with `test`, `documentation`, and `performance`
+- `three-item enumeration` at line 57: - Expand observation types with `test`, `documentation`, and `performance`
+- `Oxford comma` at line 71: scoring, confidence, and `FLOW_PATTERN` derivation |
+- `three-item enumeration` at line 71: scoring, confidence, and `FLOW_PATTERN` derivation |
+- `Oxford comma` at line 73: `TOPIC_CLUSTERS`, `UNIQUE_PHASE_COUNT`, and upgraded `FLOW_PATTERN` |
+- `three-item enumeration` at line 73: `TOPIC_CLUSTERS`, `UNIQUE_PHASE_COUNT`, and upgraded `FLOW_PATTERN` |
+- `Oxford comma` at line 75: | `scripts/types/session-types.ts` | Modify | Add `TopicCluster`, phase-score types, and richer conversation metadata |
+- `three-item enumeration` at line 75: | `scripts/types/session-types.ts` | Modify | Add `TopicCluster`, phase-score types, and richer conversation metadata |
+- `Oxford comma` at line 78: clustering, observation types, and flow patterns |
+- `three-item enumeration` at line 78: clustering, observation types, and flow patterns |
+- `Oxford comma` at line 79: | `scripts/tests/test-extractors-loaders.js` | Modify | Verify repeated phase returns, new flow-pattern values, and new conversation fields |
+- `three-item enumeration` at line 79: | `scripts/tests/test-extractors-loaders.js` | Modify | Verify repeated phase returns, new flow-pattern values, and new conversation fields |
+- `Oxford comma` at line 93: filtered tokens, tools, and observation types |
+- `three-item enumeration` at line 93: filtered tokens, tools, and observation types |
+- `Oxford comma` at line 100: confidence, start/end indexes, and dominant terms |
+- `three-item enumeration` at line 100: confidence, start/end indexes, and dominant terms |
+- `three-item enumeration` at line 101: `Iterative Loop`, `Branching Investigation`, or `Exploratory Sweep` from cluster structure |
+- `three-item enumeration` at line 109: Bullet list of exactly three items spans lines 109-111
+- `Oxford comma` at line 122: iterative returns, low-signal fallback, and flow-pattern derivation |
+- `three-item enumeration` at line 122: iterative returns, low-signal fallback, and flow-pattern derivation |
+- `Oxford comma` at line 123: | Risk | Broader legacy module suites contain unrelated baseline failures | Low | Treat `T-024e`, `T-024f`, and `T-032` as pre-existing baseline issues unless this phase introduces new failures |
+- `three-item enumeration` at line 123: | Risk | Broader legacy module suites contain unrelated baseline failures | Low | Treat `T-024e`, `T-024f`, and `T-032` as pre-existing baseline issues unless this phase introduces new failures |
+- `three-item enumeration` at line 148: a branch, a low-confidence exploratory sweep, or a simple line
+- `three-item enumeration` at line 152: **Given** observations that describe tests, documentation work, or performance tuning
+
+### `007-phase-classification/tasks.md`
+- `Oxford comma` at line 29: - [x] T001 Define `TopicCluster`, `ConversationPhaseLabel`, and `PhaseScoreMap` in `session-types.ts` (REQ-001) (`scripts/types/session-types.ts`)
+- `three-item enumeration` at line 29: - [x] T001 Define `TopicCluster`, `ConversationPhaseLabel`, and `PhaseScoreMap` in `session-types.ts` (REQ-001) (`scripts/types/session-types.ts`)
+- `Oxford comma` at line 30: - [x] T002 [P] Expand `ConversationPhase` / `ConversationData` with cluster metadata, `TOPIC_CLUSTERS`, and `UNIQUE_PHASE_COUNT` (REQ-001) (`scripts/types/session-types.ts`)
+- `three-item enumeration` at line 30: - [x] T002 [P] Expand `ConversationPhase` / `ConversationData` with cluster metadata, `TOPIC_CLUSTERS`, and `UNIQUE_PHASE_COUNT` (REQ-001) (`scripts/types/session-types.ts`)
+- `Oxford comma` at line 31: - [x] T003 [P] Update observation classification logic to recognize `test`, `documentation`, and `performance` (REQ-003) (`scripts/extractors/file-extractor.ts`)
+- `three-item enumeration` at line 31: - [x] T003 [P] Update observation classification logic to recognize `test`, `documentation`, and `performance` (REQ-003) (`scripts/extractors/file-extractor.ts`)
+- `Oxford comma` at line 43: filtered tokens, tools, and observation types (REQ-002)
+- `three-item enumeration` at line 43: filtered tokens, tools, and observation types (REQ-002)
+- `three-item enumeration` at line 41: Bullet list of exactly three items spans lines 41-43
+- `Oxford comma` at line 54: cluster ID, confidence, and dominant terms per segment (REQ-004)
+- `three-item enumeration` at line 54: cluster ID, confidence, and dominant terms per segment (REQ-004)
+- `three-item enumeration` at line 76: Bullet list of exactly three items spans lines 76-78
+
+### `008-signal-extraction/checklist.md`
+- `Oxford comma` at line 26: - [x] CHK-001 [P0] Requirements documented in spec.md [Evidence: spec `008` now records the shipped script-side unification design, parity baseline, and acceptance criteria.]
+- `three-item enumeration` at line 26: - [x] CHK-001 [P0] Requirements documented in spec.md [Evidence: spec `008` now records the shipped script-side unification design, parity baseline, and acceptance criteria.]
+- `three-item enumeration` at line 26: Bullet list of exactly three items spans lines 26-28
+- `Oxford comma` at line 36: - [x] CHK-010 [P0] `SemanticSignalExtractor` created with `mode: 'topics' | 'triggers' | 'summary' | 'all'` (REQ-001) [Evidence: `scripts/lib/semantic-signal-extractor.ts` exports the mode union, engine class, and shared extract contract.]
+- `three-item enumeration` at line 36: - [x] CHK-010 [P0] `SemanticSignalExtractor` created with `mode: 'topics' | 'triggers' | 'summary' | 'all'` (REQ-001) [Evidence: `scripts/lib/semantic-signal-extractor.ts` exports the mode union, engine class, and shared extract contract.]
+- `Oxford comma` at line 38: - [x] CHK-012 [P0] Golden tests with 3+ frozen input -> expected output for regression detection (REQ-004) [Evidence: `scripts/tests/semantic-signal-golden.vitest.ts` locks technical, debugging, and research/planning trigger output.]
+- `three-item enumeration` at line 38: - [x] CHK-012 [P0] Golden tests with 3+ frozen input -> expected output for regression detection (REQ-004) [Evidence: `scripts/tests/semantic-signal-golden.vitest.ts` locks technical, debugging, and research/planning trigger output.]
+- `Oxford comma` at line 53: - [x] CHK-020 [P0] SC-001 validated: trigger extraction stays deterministic and baseline-compatible across the shared baseline, script adapter, and unified engine [Evidence: `semantic-signal-golden.vitest.ts` passes with frozen outputs for 3 inputs.]
+- `three-item enumeration` at line 53: - [x] CHK-020 [P0] SC-001 validated: trigger extraction stays deterministic and baseline-compatible across the shared baseline, script adapter, and unified engine [Evidence: `semantic-signal-golden.vitest.ts` passes with frozen outputs for 3 inputs.]
+- `Oxford comma` at line 57: - [x] CHK-024 [P1] Topic/session/summary call paths align on the same dominant concepts [Evidence: `semantic-signal-golden.vitest.ts` verifies shared concepts across workflow topics, session topics, and summary trigger phrases.]
+- `three-item enumeration` at line 57: - [x] CHK-024 [P1] Topic/session/summary call paths align on the same dominant concepts [Evidence: `semantic-signal-golden.vitest.ts` verifies shared concepts across workflow topics, session topics, and summary trigger phrases.]
+- `three-item enumeration` at line 76: Bullet list of exactly three items spans lines 76-78
+- `three-item enumeration` at line 86: Bullet list of exactly three items spans lines 86-88
+
+### `008-signal-extraction/implementation-summary.md`
+- `Oxford comma` at line 28: 1. `scripts/lib/semantic-signal-extractor.ts` now provides the canonical script-side contract for semantic extraction: `mode: 'topics' | 'triggers' | 'summary' | 'all'`, `stopwordProfile: 'balanced' | 'aggressive'`, and `ngramDepth: 1 | 2 | 3 | 4`.
+- `three-item enumeration` at line 28: 1. `scripts/lib/semantic-signal-extractor.ts` now provides the canonical script-side contract for semantic extraction: `mode: 'topics' | 'triggers' | 'summary' | 'all'`, `stopwordProfile: 'balanced' | 'aggressive'`, and `ngramDepth: 1 | 2 | 3 | 4`.
+- `Oxford comma` at line 29: n-gram scoring, placeholder rejection, and topic/phrase ranking while reusing the shared trigger primitives to preserve historical trigger behavior.
+- `three-item enumeration` at line 29: n-gram scoring, placeholder rejection, and topic/phrase ranking while reusing the shared trigger primitives to preserve historical trigger behavior.
+- `Oxford comma` at line 31: 4. `scripts/core/topic-extractor.ts`, `scripts/extractors/session-extractor.ts`, and `scripts/lib/semantic-summarizer.ts` now delegate semantic extraction to the unified engine instead of maintaining their own stopword/topic logic.
+- `three-item enumeration` at line 31: 4. `scripts/core/topic-extractor.ts`, `scripts/extractors/session-extractor.ts`, and `scripts/lib/semantic-summarizer.ts` now delegate semantic extraction to the unified engine instead of maintaining their own stopword/topic logic.
+- `Oxford comma` at line 32: 5. `scripts/tests/semantic-signal-golden.vitest.ts` now locks 3 frozen trigger baselines and verifies stopword-profile behavior, n-gram depth support, and cross-caller concept alignment.
+- `three-item enumeration` at line 32: 5. `scripts/tests/semantic-signal-golden.vitest.ts` now locks 3 frozen trigger baselines and verifies stopword-profile behavior, n-gram depth support, and cross-caller concept alignment.
+- `Oxford comma` at line 71: | `node scripts/tests/test-scripts-modules.js` | Still reports the known unrelated baseline failures `T-024e`, `T-024f`, and `T-032`; no new failures appeared in the changed extraction seams |
+- `three-item enumeration` at line 71: | `node scripts/tests/test-scripts-modules.js` | Still reports the known unrelated baseline failures `T-024e`, `T-024f`, and `T-032`; no new failures appeared in the changed extraction seams |
+
+### `008-signal-extraction/plan.md`
+- `Oxford comma` at line 25: This plan implemented a script-side adapter migration pattern: keep the shared trigger extractor as the parity baseline, route script-side trigger/topic/session/summary callers through a unified `SemanticSignalExtractor`, and lock the behavior with frozen golden tests plus targeted regression suites.
+- `three-item enumeration` at line 25: This plan implemented a script-side adapter migration pattern: keep the shared trigger extractor as the parity baseline, route script-side trigger/topic/session/summary callers through a unified `SemanticSignalExtractor`, and lock the behavior with frozen golden tests plus targeted regression suites.
+- `three-item enumeration` at line 35: Bullet list of exactly three items spans lines 35-37
+- `Oxford comma` at line 42: - [x] Tests passing -- golden tests lock trigger output, targeted extractor suites stay green, and script-side callers share one stopword-profile contract
+- `three-item enumeration` at line 42: - [x] Tests passing -- golden tests lock trigger output, targeted extractor suites stay green, and script-side callers share one stopword-profile contract
+- `three-item enumeration` at line 41: Bullet list of exactly three items spans lines 41-43
+- `Oxford comma` at line 57: canonical stopword profiles, n-gram depth control, and stats
+- `three-item enumeration` at line 57: canonical stopword profiles, n-gram depth control, and stats
+- `Oxford comma` at line 60: `topic-extractor.ts`, `session-extractor.ts`, and `semantic-summarizer.ts` preserve their public API signatures while delegating semantic preprocessing to the unified engine
+- `three-item enumeration` at line 60: `topic-extractor.ts`, `session-extractor.ts`, and `semantic-summarizer.ts` preserve their public API signatures while delegating semantic preprocessing to the unified engine
+- `Oxford comma` at line 79: - [x] Define 3 frozen input texts covering technical implementation, debugging, and research/planning
+- `three-item enumeration` at line 79: - [x] Define 3 frozen input texts covering technical implementation, debugging, and research/planning
+
+### `008-signal-extraction/spec.md`
+- `Oxford comma` at line 39: each with different stopwords, weighting, and placeholder rules:
+- `three-item enumeration` at line 39: each with different stopwords, weighting, and placeholder rules:
+- `Oxford comma` at line 41: TF-IDF weighting, n-gram extraction, and placeholder detection
+- `three-item enumeration` at line 41: TF-IDF weighting, n-gram extraction, and placeholder detection
+- `Oxford comma` at line 46: with 83 overlap but 53 unique to session-extractor. The same input text produces materially different ranked term lists depending on which extractor processes it. This divergence means topic classification, trigger phrase generation, and semantic summaries can disagree on the same session data.
+- `three-item enumeration` at line 46: with 83 overlap but 53 unique to session-extractor. The same input text produces materially different ranked term lists depending on which extractor processes it. This divergence means topic classification, trigger phrase generation, and semantic summaries can disagree on the same session data.
+- `Oxford comma` at line 50: a single canonical stopword-profile contract, configurable n-gram depth, and golden tests for regression detection. Script-side extractors become thin adapters over the new engine while the shared trigger extractor remains the frozen baseline for trigger-ranking parity.
+- `three-item enumeration` at line 50: a single canonical stopword-profile contract, configurable n-gram depth, and golden tests for regression detection. Script-side extractors become thin adapters over the new engine while the shared trigger extractor remains the frozen baseline for trigger-ranking parity.
+- `Oxford comma` at line 64: - Convert `trigger-extractor.ts`, `topic-extractor.ts`, and `semantic-summarizer.ts` into thin adapters
+- `three-item enumeration` at line 64: - Convert `trigger-extractor.ts`, `topic-extractor.ts`, and `semantic-summarizer.ts` into thin adapters
+- `three-item enumeration` at line 69: Bullet list of exactly three items spans lines 69-71
+- `Oxford comma` at line 77: | `scripts/lib/semantic-signal-extractor.ts` | Modify | Unified script-side engine with mode-aware extraction, canonical stopword profiles, and configurable n-grams |
+- `three-item enumeration` at line 77: | `scripts/lib/semantic-signal-extractor.ts` | Modify | Unified script-side engine with mode-aware extraction, canonical stopword profiles, and configurable n-grams |
+- `Oxford comma` at line 103: `topic-extractor.ts`, `session-extractor.ts`, and `semantic-summarizer.ts` delegate script-side semantic preprocessing to the unified engine; public APIs unchanged |
+- `three-item enumeration` at line 103: `topic-extractor.ts`, `session-extractor.ts`, and `semantic-summarizer.ts` delegate script-side semantic preprocessing to the unified engine; public APIs unchanged |
+- `Oxford comma` at line 111: - **SC-001**: Trigger extraction stays deterministic and baseline-compatible -- the shared trigger baseline, the script-side trigger adapter, and `SemanticSignalExtractor` trigger mode all return the same frozen ranked phrases for the same text
+- `three-item enumeration` at line 111: - **SC-001**: Trigger extraction stays deterministic and baseline-compatible -- the shared trigger baseline, the script-side trigger adapter, and `SemanticSignalExtractor` trigger mode all return the same frozen ranked phrases for the same text
+- `Oxford comma` at line 112: - **SC-002**: Stopword divergence eliminated for script-side consumers -- one canonical `balanced` / `aggressive` profile now feeds topic, session, and summary extraction
+- `three-item enumeration` at line 112: - **SC-002**: Stopword divergence eliminated for script-side consumers -- one canonical `balanced` / `aggressive` profile now feeds topic, session, and summary extraction
+- `Oxford comma` at line 142: **when** the shared trigger extractor, the script-side trigger adapter, and `SemanticSignalExtractor` trigger mode run on the same text
+- `three-item enumeration` at line 142: **when** the shared trigger extractor, the script-side trigger adapter, and `SemanticSignalExtractor` trigger mode run on the same text
+- `Oxford comma` at line 146: **Given** script-heavy topic text that includes `session`, `tool`, and `message`
+- `three-item enumeration` at line 146: **Given** script-heavy topic text that includes `session`, `tool`, and `message`
+
+### `008-signal-extraction/tasks.md`
+- `three-item enumeration` at line 79: Bullet list of exactly three items spans lines 79-81
+
+### `009-embedding-optimization/checklist.md`
+- `Oxford comma` at line 27: - [x] CHK-002 [P0] Technical approach defined in plan.md [Evidence: `plan.md` architecture, phases, and testing strategy sections describe the scripts-plus-save rollout.]
+- `three-item enumeration` at line 27: - [x] CHK-002 [P0] Technical approach defined in plan.md [Evidence: `plan.md` architecture, phases, and testing strategy sections describe the scripts-plus-save rollout.]
+- `three-item enumeration` at line 26: Bullet list of exactly three items spans lines 26-28
+- `Oxford comma` at line 36: ordering, empty sections, and truncation.]
+- `three-item enumeration` at line 36: ordering, empty sections, and truncation.]
+- `Oxford comma` at line 39: decisions, outcomes, and general content [Evidence: `scripts/lib/semantic-summarizer.ts` and `mcp_server/handlers/save/embedding-pipeline.ts` extract weighted sections from summary/markdown inputs.]
+- `three-item enumeration` at line 39: decisions, outcomes, and general content [Evidence: `scripts/lib/semantic-summarizer.ts` and `mcp_server/handlers/save/embedding-pipeline.ts` extract weighted sections from summary/markdown inputs.]
+- `Oxford comma` at line 70: - [x] CHK-040 [P1] spec.md and plan.md up to date with final implementation [Evidence: `spec.md` and `plan.md` now reflect the corrected file map, real rollout boundary, and completed verification status.]
+- `three-item enumeration` at line 70: - [x] CHK-040 [P1] spec.md and plan.md up to date with final implementation [Evidence: `spec.md` and `plan.md` now reflect the corrected file map, real rollout boundary, and completed verification status.]
+- `three-item enumeration` at line 79: Bullet list of exactly three items spans lines 79-81
+
+### `009-embedding-optimization/implementation-summary.md`
+- `Oxford comma` at line 31: 4. `mcp_server/handlers/save/embedding-pipeline.ts` now extracts decisions, outcomes, and general content from parsed memory markdown and routes the weighted document text through `generateDocumentEmbedding()` on the `memory_save` path.
+- `three-item enumeration` at line 31: 4. `mcp_server/handlers/save/embedding-pipeline.ts` now extracts decisions, outcomes, and general content from parsed memory markdown and routes the weighted document text through `generateDocumentEmbedding()` on the `memory_save` path.
+- `Oxford comma` at line 32: 5. Focused verification was added in `scripts/tests/memory-indexer-weighting.vitest.ts`, `mcp_server/tests/embedding-weighting.vitest.ts`, and `mcp_server/tests/embedding-pipeline-weighting.vitest.ts`.
+- `three-item enumeration` at line 32: 5. Focused verification was added in `scripts/tests/memory-indexer-weighting.vitest.ts`, `mcp_server/tests/embedding-weighting.vitest.ts`, and `mcp_server/tests/embedding-pipeline-weighting.vitest.ts`.
+- `three-item enumeration` at line 81: Bullet list of exactly three items spans lines 81-83
+
+### `009-embedding-optimization/plan.md`
+- `three-item enumeration` at line 35: Bullet list of exactly three items spans lines 35-37
+- `Oxford comma` at line 42: scripts routing, save-path weighting, and ranking-oriented coverage
+- `three-item enumeration` at line 42: scripts routing, save-path weighting, and ranking-oriented coverage
+- `three-item enumeration` at line 41: Bullet list of exactly three items spans lines 41-43
+- `three-item enumeration` at line 57: Bullet list of exactly three items spans lines 57-59
+- `three-item enumeration` at line 83: Bullet list of exactly three items spans lines 83-85
+- `three-item enumeration` at line 94: Bullet list of exactly three items spans lines 94-96
+
+### `009-embedding-optimization/spec.md`
+- `three-item enumeration` at line 62: Bullet list of exactly three items spans lines 62-64
+- `Oxford comma` at line 106: decisions, outcomes, and general content
+- `three-item enumeration` at line 106: decisions, outcomes, and general content
+
+### `009-embedding-optimization/tasks.md`
+- `Oxford comma` at line 30: decisions, outcomes, and general content on the scripts and save paths (`scripts/lib/semantic-summarizer.ts`
+- `three-item enumeration` at line 30: decisions, outcomes, and general content on the scripts and save paths (`scripts/lib/semantic-summarizer.ts`
+- `three-item enumeration` at line 29: Bullet list of exactly three items spans lines 29-31
+- `three-item enumeration` at line 48: Bullet list of exactly three items spans lines 48-50
+- `three-item enumeration` at line 81: Bullet list of exactly three items spans lines 81-83
+
+### `010-integration-testing/checklist.md`
+- `three-item enumeration` at line 26: Bullet list of exactly three items spans lines 26-28
+- `Oxford comma` at line 36: - [ ] CHK-010 [P0] `createTempRepo()` factory produces isolated temp directory with valid spec folder, `description.json`, and JSON input
+- `three-item enumeration` at line 36: - [ ] CHK-010 [P0] `createTempRepo()` factory produces isolated temp directory with valid spec folder, `description.json`, and JSON input
+- `three-item enumeration` at line 37: - [ ] CHK-011 [P0] Test imports and calls the real workflow orchestrator (no mocks on file writer, quality scorer, or sufficiency evaluator)
+- `three-item enumeration` at line 79: Bullet list of exactly three items spans lines 79-81
+
+### `010-integration-testing/plan.md`
+- `three-item enumeration` at line 35: Bullet list of exactly three items spans lines 35-37
+- `three-item enumeration` at line 41: Bullet list of exactly three items spans lines 41-43
+- `Oxford comma` at line 57: - **Temp repo factory (`tests/workflow-e2e.vitest.ts`)**: Creates isolated temp directories with realistic spec folder structures, `description.json` seed files, and JSON input data
+- `three-item enumeration` at line 57: - **Temp repo factory (`tests/workflow-e2e.vitest.ts`)**: Creates isolated temp directories with realistic spec folder structures, `description.json` seed files, and JSON input data
+- `three-item enumeration` at line 57: Bullet list of exactly three items spans lines 57-59
+- `three-item enumeration` at line 64: 2. Test case prepares JSON input (happy-path, wrong-affinity, or duplicate content)
+- `three-item enumeration` at line 137: - **Trigger**: E2E tests cause CI flakiness, excessive runtime, or conflict with existing test infrastructure
+
+### `010-integration-testing/spec.md`
+- `Oxford comma` at line 39: sufficiency, the indexer, and the retry manager. `test-integration.js` checks cleanup helpers and export presence
+- `three-item enumeration` at line 39: sufficiency, the indexer, and the retry manager. `test-integration.js` checks cleanup helpers and export presence
+- `three-item enumeration` at line 61: Bullet list of exactly three items spans lines 61-63
+- `Oxford comma` at line 85: | REQ-001 | Vitest E2E test with temp repo factory creating realistic spec folder + JSON input | Factory produces isolated temp directory with valid spec folder structure, `description.json`, and JSON input file |
+- `three-item enumeration` at line 85: | REQ-001 | Vitest E2E test with temp repo factory creating realistic spec folder + JSON input | Factory produces isolated temp directory with valid spec folder structure, `description.json`, and JSON input file |
+- `three-item enumeration` at line 104: **Then** the E2E suite exercises the chain without mocks on file writer, quality scorer, or sufficiency evaluator.
+- `Oxford comma` at line 105: **Then** happy-path saves mutate `description.json`, increment sequence state, and persist the memory file on disk.
+- `three-item enumeration` at line 105: **Then** happy-path saves mutate `description.json`, increment sequence state, and persist the memory file on disk.
+- `Oxford comma` at line 127: - **OQ-001**: ~~Minimal 3-case fixture (current) or extended coverage?~~ Resolved — extended to 6 cases including insufficiency, indexing resilience, and tree-thinning.
+- `three-item enumeration` at line 127: - **OQ-001**: ~~Minimal 3-case fixture (current) or extended coverage?~~ Resolved — extended to 6 cases including insufficiency, indexing resilience, and tree-thinning.
+
+### `010-integration-testing/tasks.md`
+- `three-item enumeration` at line 29: Bullet list of exactly three items spans lines 29-31
+- `three-item enumeration` at line 63: Bullet list of exactly three items spans lines 63-65
+- `three-item enumeration` at line 75: - [ ] T022 Verify real gate chain exercised without mocks on critical path (no mock on file writer, quality scorer, or sufficiency evaluator)
+- `three-item enumeration` at line 84: Bullet list of exactly three items spans lines 84-86
+
+### `011-session-source-validation/checklist.md`
+- `three-item enumeration` at line 26: Bullet list of exactly three items spans lines 26-28
+- `three-item enumeration` at line 84: Bullet list of exactly three items spans lines 84-86
+
+### `011-session-source-validation/plan.md`
+- `Oxford comma` at line 25: add a contamination score penalty, add filesystem truth for file counts, and sanitize trigger phrase input. This is the highest-priority pipeline fix because wrong-session transcript selection corrupts all downstream data at the source-of-truth level.
+- `three-item enumeration` at line 25: add a contamination score penalty, add filesystem truth for file counts, and sanitize trigger phrase input. This is the highest-priority pipeline fix because wrong-session transcript selection corrupts all downstream data at the source-of-truth level.
+- `three-item enumeration` at line 35: Bullet list of exactly three items spans lines 35-37
+- `three-item enumeration` at line 41: Bullet list of exactly three items spans lines 41-43
+- `Oxford comma` at line 53: Session boundary protocol -- session identity hints propagated from invocation through capture, validation, and output persistence
+- `three-item enumeration` at line 53: Session boundary protocol -- session identity hints propagated from invocation through capture, validation, and output persistence
+- `three-item enumeration` at line 84: Bullet list of exactly three items spans lines 84-86
+- `Oxford comma` at line 103: - [ ] Unit test V10 with matching counts (pass), divergent counts (fail), and edge cases (zero counts)
+- `three-item enumeration` at line 103: - [ ] Unit test V10 with matching counts (pass), divergent counts (fail), and edge cases (zero counts)
+
+### `011-session-source-validation/spec.md`
+- `Oxford comma` at line 39: synthetic descriptions from tree-thinning are fed into `extractTriggerPhrases()`, polluting trigger phrase quality, and file counts reflect transcript-derived approximations rather than filesystem truth.
+- `three-item enumeration` at line 39: synthetic descriptions from tree-thinning are fed into `extractTriggerPhrases()`, polluting trigger phrase quality, and file counts reflect transcript-derived approximations rather than filesystem truth.
+- `Oxford comma` at line 43: add a V10 same-spec-wrong-session validator, add a filesystem truth pass for file counts, and stop feeding synthetic descriptions into trigger phrase extraction. This is the highest-priority fix because it addresses source-of-truth corruption at the pipeline entry point.
+- `three-item enumeration` at line 43: add a V10 same-spec-wrong-session validator, add a filesystem truth pass for file counts, and stop feeding synthetic descriptions into trigger phrase extraction. This is the highest-priority fix because it addresses source-of-truth corruption at the pipeline entry point.
+- `three-item enumeration` at line 63: Bullet list of exactly three items spans lines 63-65
+
+### `011-session-source-validation/tasks.md`
+- `three-item enumeration` at line 43: Bullet list of exactly three items spans lines 43-45
+- `three-item enumeration` at line 63: Bullet list of exactly three items spans lines 63-65
+- `three-item enumeration` at line 69: Bullet list of exactly three items spans lines 69-71
+- `three-item enumeration` at line 92: Bullet list of exactly three items spans lines 92-94
+
+### `012-template-compliance/checklist.md`
+- `Oxford comma` at line 32: `.opencode`, `.claude`, and `.gemini` agent docs plus `/spec_kit` assets located]
+- `three-item enumeration` at line 32: `.opencode`, `.claude`, and `.gemini` agent docs plus `/spec_kit` assets located]
+- `three-item enumeration` at line 31: Bullet list of exactly three items spans lines 31-33
+- `Oxford comma` at line 45: OpenCode x2, Claude, and Gemini speckit docs updated]
+- `three-item enumeration` at line 45: OpenCode x2, Claude, and Gemini speckit docs updated]
+- `Oxford comma` at line 59: OpenCode x2, Claude, and Gemini speckit agent docs]
+- `three-item enumeration` at line 59: OpenCode x2, Claude, and Gemini speckit agent docs]
+- `three-item enumeration` at line 76: Bullet list of exactly three items spans lines 76-78
+- `three-item enumeration` at line 86: Bullet list of exactly three items spans lines 86-88
+
+### `012-template-compliance/implementation-summary.md`
+- `Oxford comma` at line 31: optional headers, required anchor order, and allowed anchor IDs from the active template file at runtime
+- `three-item enumeration` at line 31: optional headers, required anchor order, and allowed anchor IDs from the active template file at runtime
+- `Oxford comma` at line 33: The runtime prompt side now matches the validator. The shared `.agents` runtime plus the OpenCode x2, Claude, and Gemini speckit agents now instruct writers to include inline scaffolds for the exact doc being authored and to run `validate.sh [SPEC_FOLDER] --strict` immediately after spec-doc writes. The `/spec_kit` plan
+- `three-item enumeration` at line 33: The runtime prompt side now matches the validator. The shared `.agents` runtime plus the OpenCode x2, Claude, and Gemini speckit agents now instruct writers to include inline scaffolds for the exact doc being authored and to run `validate.sh [SPEC_FOLDER] --strict` immediately after spec-doc writes. The `/spec_kit` plan
+- `Oxford comma` at line 57: new compliant and mutation fixtures were added so the coverage lane could prove pass, warn, and fail behavior against the live template contract.
+- `three-item enumeration` at line 57: new compliant and mutation fixtures were added so the coverage lane could prove pass, warn, and fail behavior against the live template contract.
+- `Oxford comma` at line 69: OpenCode x2, Claude, and Gemini runtime docs
+- `three-item enumeration` at line 69: OpenCode x2, Claude, and Gemini runtime docs
+
+### `012-template-compliance/plan.md`
+- `Oxford comma` at line 3: validator hardening, runtime prompt updates, and targeted coverage."
+- `three-item enumeration` at line 3: validator hardening, runtime prompt updates, and targeted coverage."
+- `three-item enumeration` at line 38: Bullet list of exactly three items spans lines 38-40
+- `Oxford comma` at line 46: - [x] Targeted fixture, shell, and Vitest coverage added
+- `three-item enumeration` at line 46: - [x] Targeted fixture, shell, and Vitest coverage added
+- `Oxford comma` at line 59: parses required/optional headers, derives ordered required anchors, and compares docs against the live contract
+- `three-item enumeration` at line 59: parses required/optional headers, derives ordered required anchors, and compares docs against the live contract
+- `Oxford comma` at line 60: fails missing/out-of-order required headers, preserves warning-only behavior for extra custom headers, and enforces checklist H1 / `CHK-NNN` format
+- `three-item enumeration` at line 60: fails missing/out-of-order required headers, preserves warning-only behavior for extra custom headers, and enforces checklist H1 / `CHK-NNN` format
+- `three-item enumeration` at line 78: Bullet list of exactly three items spans lines 78-80
+- `three-item enumeration` at line 83: Bullet list of exactly three items spans lines 83-85
+- `Oxford comma` at line 90: - [x] Update `/spec_kit` plan, implement, and complete auto/confirm assets with inline scaffolds and strict post-write validation
+- `three-item enumeration` at line 90: - [x] Update `/spec_kit` plan, implement, and complete auto/confirm assets with inline scaffolds and strict post-write validation
+- `three-item enumeration` at line 88: Bullet list of exactly three items spans lines 88-90
+- `three-item enumeration` at line 129: Bullet list of exactly three items spans lines 129-131
+
+### `012-template-compliance/spec.md`
+- `Oxford comma` at line 3: description: "Repo-aligned hardening for live template comparison, stricter structural validation, and inline scaffold prompt enforcement."
+- `three-item enumeration` at line 3: description: "Repo-aligned hardening for live template comparison, stricter structural validation, and inline scaffold prompt enforcement."
+- `Oxford comma` at line 43: The deferred R-12 work still relied on draft assumptions that do not match the current repo: there are no checked-in `.fingerprint` sidecars, the validator only partially enforced template structure, and runtime speckit prompts mostly pointed at template paths instead of carrying inline structure for the exact document being written. That gap let structurally invalid spec docs drift through normal validation and made post-write strict validation unreliable for agent workflows.
+- `three-item enumeration` at line 43: The deferred R-12 work still relied on draft assumptions that do not match the current repo: there are no checked-in `.fingerprint` sidecars, the validator only partially enforced template structure, and runtime speckit prompts mostly pointed at template paths instead of carrying inline structure for the exact document being written. That gap let structurally invalid spec docs drift through normal validation and made post-write strict validation unreliable for agent workflows.
+- `Oxford comma` at line 46: Use the live template files as the single source of truth for required header and anchor order, promote real structural drift to validator errors, and harden every active speckit runtime/workflow surface so generated docs are written from inline scaffolds and checked with `validate.sh --strict` immediately after writing.
+- `three-item enumeration` at line 46: Use the live template files as the single source of truth for required header and anchor order, promote real structural drift to validator errors, and harden every active speckit runtime/workflow surface so generated docs are written from inline scaffolds and checked with `validate.sh --strict` immediately after writing.
+- `Oxford comma` at line 55: `level_2`, `level_3`, and `level_3+`
+- `three-item enumeration` at line 55: `level_2`, `level_3`, and `level_3+`
+- `Oxford comma` at line 58: - Update runtime speckit agents and `/spec_kit` plan, implement, and complete workflow assets to include inline scaffolds plus strict post-write validation
+- `three-item enumeration` at line 58: - Update runtime speckit agents and `/spec_kit` plan, implement, and complete workflow assets to include inline scaffolds plus strict post-write validation
+- `Oxford comma` at line 59: - Add template-compliant fixtures and targeted shell/Vitest coverage for compliant, warning, and failure cases
+- `three-item enumeration` at line 59: - Add template-compliant fixtures and targeted shell/Vitest coverage for compliant, warning, and failure cases
+- `Oxford comma` at line 98: OpenCode x2, Claude, and Gemini speckit docs plus plan/implement/complete YAML assets reference inline scaffolds and `validate.sh [SPEC_FOLDER] --strict` |
+- `three-item enumeration` at line 98: OpenCode x2, Claude, and Gemini speckit docs plus plan/implement/complete YAML assets reference inline scaffolds and `validate.sh [SPEC_FOLDER] --strict` |
+- `Oxford comma` at line 99: | REQ-005 | Template compliance coverage includes compliant, warning, and failure fixtures | Shell/Vitest coverage exists for compliant docs
+- `three-item enumeration` at line 99: | REQ-005 | Template compliance coverage includes compliant, warning, and failure fixtures | Shell/Vitest coverage exists for compliant docs
+- `Oxford comma` at line 110: OpenCode x2, Claude, and Gemini surfaces; no separate Codex speckit file is falsely claimed.
+- `three-item enumeration` at line 110: OpenCode x2, Claude, and Gemini surfaces; no separate Codex speckit file is falsely claimed.
+- `three-item enumeration` at line 156: Bullet list of exactly three items spans lines 156-158
+- `three-item enumeration` at line 161: Bullet list of exactly three items spans lines 161-163
+- `Oxford comma` at line 177: workflow assets, agent guidance, and fixture/test coverage |
+- `three-item enumeration` at line 177: workflow assets, agent guidance, and fixture/test coverage |
+- `Oxford comma` at line 179: | Research | 11/20 | Required review of parent/phase docs, existing templates, and all active runtime prompt surfaces |
+- `three-item enumeration` at line 179: | Research | 11/20 | Required review of parent/phase docs, existing templates, and all active runtime prompt surfaces |
+
+### `012-template-compliance/tasks.md`
+- `three-item enumeration` at line 34: Bullet list of exactly three items spans lines 34-36
+- `Oxford comma` at line 45: - [x] T005 Update `check-template-headers.sh` for live required-header order, checklist H1, and `CHK-NNN` enforcement
+- `three-item enumeration` at line 45: - [x] T005 Update `check-template-headers.sh` for live required-header order, checklist H1, and `CHK-NNN` enforcement
+- `Oxford comma` at line 60: OpenCode x2, Claude, and Gemini runtime agent docs in `scripts/tests/test-phase-command-workflows.js`
+- `three-item enumeration` at line 60: OpenCode x2, Claude, and Gemini runtime agent docs in `scripts/tests/test-phase-command-workflows.js`
+- `three-item enumeration` at line 70: Bullet list of exactly three items spans lines 70-72
+
+### `013-auto-detection-fixes/checklist.md`
+- `Oxford comma` at line 47: - [x] CHK-019 [P1] Blocker validation rejects markdown headers, code fragments, and quote transition artifacts [Evidence: session-extractor.ts:222-231 `INVALID_BLOCKER_PATTERNS`; test "rejects structural blocker artifacts"]
+- `three-item enumeration` at line 47: - [x] CHK-019 [P1] Blocker validation rejects markdown headers, code fragments, and quote transition artifacts [Evidence: session-extractor.ts:222-231 `INVALID_BLOCKER_PATTERNS`; test "rejects structural blocker artifacts"]
+- `Oxford comma` at line 60: - [x] CHK-028 [P1] Unit test: session activity signal confidence boost per signal type [Evidence: test "builds a session activity signal with tool, git, and transcript boosts" at line 229 passes]
+- `three-item enumeration` at line 60: - [x] CHK-028 [P1] Unit test: session activity signal confidence boost per signal type [Evidence: test "builds a session activity signal with tool, git, and transcript boosts" at line 229 passes]
+- `three-item enumeration` at line 80: Bullet list of exactly three items spans lines 80-82
+- `three-item enumeration` at line 90: Bullet list of exactly three items spans lines 90-92
+- `Oxford comma` at line 106: REQ-006 (blocker validation), REQ-007 (template wiring), and full REQ-001 git-status signal are all confirmed implemented with evidence.
+- `three-item enumeration` at line 106: REQ-006 (blocker validation), REQ-007 (template wiring), and full REQ-001 git-status signal are all confirmed implemented with evidence.
+
+### `013-auto-detection-fixes/implementation-summary.md`
+- `Oxford comma` at line 98: 4. **Blocker validation**: `INVALID_BLOCKER_PATTERNS` at `session-extractor.ts:222-231` rejects markdown headers, leading quotes/backticks, and quote transition artifacts via `isInvalidBlockerText`.
+- `three-item enumeration` at line 98: 4. **Blocker validation**: `INVALID_BLOCKER_PATTERNS` at `session-extractor.ts:222-231` rejects markdown headers, leading quotes/backticks, and quote transition artifacts via `isInvalidBlockerText`.
+- `Oxford comma` at line 99: 5. **Template field wiring**: `buildMemoryClassificationContext` (workflow.ts:758), `buildSessionDedupContext` (workflow.ts:808), and `buildCausalLinksContext` (workflow.ts:860+) are all wired into the template rendering context.
+- `three-item enumeration` at line 99: 5. **Template field wiring**: `buildMemoryClassificationContext` (workflow.ts:758), `buildSessionDedupContext` (workflow.ts:808), and `buildCausalLinksContext` (workflow.ts:860+) are all wired into the template rendering context.
+
+### `013-auto-detection-fixes/plan.md`
+- `Oxford comma` at line 25: This plan implements a multi-fix phase organized by sub-problem: (1) detection cascade expansion adding git-status Priority 2.7 signal, session activity Priority 3.5 signal, and parent-affinity boost to `folder-detector.ts`; (2) extraction pipeline fixes for decision deduplication in `decision-extractor.ts`
+- `three-item enumeration` at line 25: This plan implements a multi-fix phase organized by sub-problem: (1) detection cascade expansion adding git-status Priority 2.7 signal, session activity Priority 3.5 signal, and parent-affinity boost to `folder-detector.ts`; (2) extraction pipeline fixes for decision deduplication in `decision-extractor.ts`
+- `three-item enumeration` at line 35: Bullet list of exactly three items spans lines 35-37
+- `Oxford comma` at line 60: - **`workflow.ts`**: Tree-thinning input fix (file content instead of descriptions), `key_files` filesystem fallback, and template field wiring for `memory_classification`
+- `three-item enumeration` at line 60: - **`workflow.ts`**: Tree-thinning input fix (file content instead of descriptions), `key_files` filesystem fallback, and template field wiring for `memory_classification`
+- `three-item enumeration` at line 74: Bullet list of exactly three items spans lines 74-76
+- `three-item enumeration` at line 90: Bullet list of exactly three items spans lines 90-92
+- `three-item enumeration` at line 100: Bullet list of exactly three items spans lines 100-102
+- `three-item enumeration` at line 106: Bullet list of exactly three items spans lines 106-108
+- `Oxford comma` at line 116: - [x] `INVALID_BLOCKER_PATTERNS` at session-extractor.ts:222-231 rejects markdown headers (`/^##\s/`), leading quotes/backticks, and quote transition artifacts; `isInvalidBlockerText` at line 233 applies all patterns [Evidence: session-extractor.ts:222-231; test "rejects structural blocker artifacts"]
+- `three-item enumeration` at line 116: - [x] `INVALID_BLOCKER_PATTERNS` at session-extractor.ts:222-231 rejects markdown headers (`/^##\s/`), leading quotes/backticks, and quote transition artifacts; `isInvalidBlockerText` at line 233 applies all patterns [Evidence: session-extractor.ts:222-231; test "rejects structural blocker artifacts"]
+
+### `013-auto-detection-fixes/spec.md`
+- `Oxford comma` at line 48: provide a filesystem fallback for `key_files` when tree-thinning produces empty results, add blocker extraction validation, and wire remaining template fields (`memory_classification`
+- `three-item enumeration` at line 48: provide a filesystem fallback for `key_files` when tree-thinning produces empty results, add blocker extraction validation, and wire remaining template fields (`memory_classification`
+- `Oxford comma` at line 63: - Add blocker extraction validation: reject strings matching markdown headers, code fragments, and section numbering patterns
+- `three-item enumeration` at line 63: - Add blocker extraction validation: reject strings matching markdown headers, code fragments, and section numbering patterns
+- `three-item enumeration` at line 68: Bullet list of exactly three items spans lines 68-70
+
+### `013-auto-detection-fixes/tasks.md`
+- `three-item enumeration` at line 55: Bullet list of exactly three items spans lines 55-57
+- `three-item enumeration` at line 61: Bullet list of exactly three items spans lines 61-63
+- `Oxford comma` at line 94: - [x] T032 Unit test: session activity signal confidence boost calculation per signal type [Evidence: test "builds a session activity signal with tool, git, and transcript boosts" at auto-detection-fixes.vitest.ts:229 passes]
+- `three-item enumeration` at line 94: - [x] T032 Unit test: session activity signal confidence boost calculation per signal type [Evidence: test "builds a session activity signal with tool, git, and transcript boosts" at auto-detection-fixes.vitest.ts:229 passes]
+- `three-item enumeration` at line 105: Bullet list of exactly three items spans lines 105-107
+
+### `014-spec-descriptions/checklist.md`
+- `three-item enumeration` at line 9: Bullet list of exactly three items spans lines 9-11
+- `Oxford comma` at line 37: REQ-001 through REQ-009, success criteria, and four acceptance scenarios.]
+- `three-item enumeration` at line 37: REQ-001 through REQ-009, success criteria, and four acceptance scenarios.]
+- `Oxford comma` at line 38: - [x] CHK-002 [P0] Technical approach defined in plan.md — 5-phase plan with architecture [EVIDENCE: plan.md sections 1-5 define architecture, implementation phases, and the verification strategy.]
+- `three-item enumeration` at line 38: - [x] CHK-002 [P0] Technical approach defined in plan.md — 5-phase plan with architecture [EVIDENCE: plan.md sections 1-5 define architecture, implementation phases, and the verification strategy.]
+- `Oxford comma` at line 39: writeFilesAtomically(), Vitest, and Node fs as dependencies.]
+- `three-item enumeration` at line 39: writeFilesAtomically(), Vitest, and Node fs as dependencies.]
+- `three-item enumeration` at line 37: Bullet list of exactly three items spans lines 37-39
+- `Oxford comma` at line 47: - [x] CHK-010 [P0] Per-folder description.json generates correctly via `generatePerFolderDescription()` — coverage parity maintained between active `spec.md` folders and `description.json` files in the current inventory [EVIDENCE: `folder-discovery.vitest.ts` and `folder-discovery-integration.vitest.ts` passed generation, stale-repair, and mixed-mode cases on 2026-03-16.]
+- `three-item enumeration` at line 47: - [x] CHK-010 [P0] Per-folder description.json generates correctly via `generatePerFolderDescription()` — coverage parity maintained between active `spec.md` folders and `description.json` files in the current inventory [EVIDENCE: `folder-discovery.vitest.ts` and `folder-discovery-integration.vitest.ts` passed generation, stale-repair, and mixed-mode cases on 2026-03-16.]
+- `Oxford comma` at line 49: 1038-1041 [EVIDENCE: `scripts/spec/create.sh` invokes `generate-description.js` for parent, child-phase, and standard folder creation paths.]
+- `three-item enumeration` at line 49: 1038-1041 [EVIDENCE: `scripts/spec/create.sh` invokes `generate-description.js` for parent, child-phase, and standard folder creation paths.]
+- `Oxford comma` at line 50: `folders`) across empty, cached, and regenerated paths (`mcp_server/lib/search/folder-discovery.ts:747-781`) [EVIDENCE: mixed-mode and fallback cases passed in `folder-discovery-integration.vitest.ts` on 2026-03-16.]
+- `three-item enumeration` at line 50: `folders`) across empty, cached, and regenerated paths (`mcp_server/lib/search/folder-discovery.ts:747-781`) [EVIDENCE: mixed-mode and fallback cases passed in `folder-discovery-integration.vitest.ts` on 2026-03-16.]
+- `Oxford comma` at line 51: fsyncs, renames, and cleans up on failure.]
+- `three-item enumeration` at line 51: fsyncs, renames, and cleans up on failure.]
+- `Oxford comma` at line 80: `slug-utils.ts`, `create.sh`, and `generate-description.ts`; no secrets or tokens are embedded.]
+- `three-item enumeration` at line 80: `slug-utils.ts`, `create.sh`, and `generate-description.ts`; no secrets or tokens are embedded.]
+- `three-item enumeration` at line 80: Bullet list of exactly three items spans lines 80-82
+- `Oxford comma` at line 90: `generate-description.js` referenced [EVIDENCE: The feature catalog entry documents per-folder architecture, backfill behavior, and the generator CLI path.]
+- `three-item enumeration` at line 90: `generate-description.js` referenced [EVIDENCE: The feature catalog entry documents per-folder architecture, backfill behavior, and the generator CLI path.]
+- `Oxford comma` at line 92: plan.md, tasks.md, and checklist.md were aligned to the live Level 2 template contract on 2026-03-16.]
+- `three-item enumeration` at line 92: plan.md, tasks.md, and checklist.md were aligned to the live Level 2 template contract on 2026-03-16.]
+- `three-item enumeration` at line 101: Bullet list of exactly three items spans lines 101-103
+
+### `014-spec-descriptions/implementation-summary.md`
+- `Oxford comma` at line 3: description: "Per-folder description.json system providing spec identity metadata, collision-resistant memory filenames, and structured context for 010's spec-affinity and embedding pipelines."
+- `three-item enumeration` at line 3: description: "Per-folder description.json system providing spec identity metadata, collision-resistant memory filenames, and structured context for 010's spec-affinity and embedding pipelines."
+- `three-item enumeration` at line 6: Bullet list of exactly three items spans lines 6-8
+- `three-item enumeration` at line 54: Bullet list of exactly three items spans lines 54-56
+- `three-item enumeration` at line 108: Bullet list of exactly three items spans lines 108-110
+
+### `014-spec-descriptions/plan.md`
+- `three-item enumeration` at line 62: Bullet list of exactly three items spans lines 62-64
+- `three-item enumeration` at line 67: Bullet list of exactly three items spans lines 67-69
+- `Oxford comma` at line 80: **Authority contract:** Each spec folder's `description.json` is the source of truth for description metadata. The centralized `specs/descriptions.json` is strictly derived from per-folder files, read-only for consumers, and must never be treated as the authoritative mutation target.
+- `three-item enumeration` at line 80: **Authority contract:** Each spec folder's `description.json` is the source of truth for description metadata. The centralized `specs/descriptions.json` is strictly derived from per-folder files, read-only for consumers, and must never be treated as the authoritative mutation target.
+- `Oxford comma` at line 129: - Schema validation on load: validate `specId` is `string`, `parentChain` is `string[]`, and `memorySequence` is `number`
+- `three-item enumeration` at line 129: - Schema validation on load: validate `specId` is `string`, `parentChain` is `string[]`, and `memorySequence` is `number`
+- `Oxford comma` at line 226: 17. **Performance: Full 500-folder aggregation scan <500ms (NFR-P02)**: Build a temp folder structure with 500 spec folders containing `description.json` fixtures, run the aggregation sweep, and verify completion under 500ms
+- `three-item enumeration` at line 226: 17. **Performance: Full 500-folder aggregation scan <500ms (NFR-P02)**: Build a temp folder structure with 500 spec folders containing `description.json` fixtures, run the aggregation sweep, and verify completion under 500ms
+- `Oxford comma` at line 295: backward compatibility layer, bash/TypeScript integration boundary, and best-effort concurrency handling increase effective complexity to mid-range Level 2 (estimated 45-50/70).
+- `three-item enumeration` at line 295: backward compatibility layer, bash/TypeScript integration boundary, and best-effort concurrency handling increase effective complexity to mid-range Level 2 (estimated 45-50/70).
+- `three-item enumeration` at line 304: Bullet list of exactly three items spans lines 304-306
+- `three-item enumeration` at line 315: Bullet list of exactly three items spans lines 315-317
+- `three-item enumeration` at line 354: Bullet list of exactly three items spans lines 354-356
+
+### `014-spec-descriptions/spec.md`
+- `Oxford comma` at line 3: description: "Per-folder description.json system providing spec identity metadata, collision-resistant memory filenames, and structured context for 010's spec-affinity and embedding pipelines."
+- `three-item enumeration` at line 3: description: "Per-folder description.json system providing spec identity metadata, collision-resistant memory filenames, and structured context for 010's spec-affinity and embedding pipelines."
+- `three-item enumeration` at line 51: Bullet list of exactly three items spans lines 51-53
+- `Oxford comma` at line 57: `parentChain`), a `memorySequence` counter, and a `memoryNameHistory` ring buffer. This enables:
+- `three-item enumeration` at line 57: `parentChain`), a `memorySequence` counter, and a `memoryNameHistory` ring buffer. This enables:
+- `Oxford comma` at line 72: reading, staleness detection, and atomic write
+- `three-item enumeration` at line 72: reading, staleness detection, and atomic write
+- `Oxford comma` at line 74: - Collision-resistant slug generation via `ensureUniqueMemoryFilename()` with O_CREAT/O_EXCL probes, sequence suffixes, and random hex fallback
+- `three-item enumeration` at line 74: - Collision-resistant slug generation via `ensureUniqueMemoryFilename()` with O_CREAT/O_EXCL probes, sequence suffixes, and random hex fallback
+- `Oxford comma` at line 131: - All existing tests pass; new tests cover per-folder generation, aggregation, and uniqueness
+- `three-item enumeration` at line 131: - All existing tests pass; new tests cover per-folder generation, aggregation, and uniqueness
+- `three-item enumeration` at line 185: Bullet list of exactly three items spans lines 185-187
+- `three-item enumeration` at line 234: The `memorySequence` counter correctly does NOT increment on saves aborted by 010's sufficiency gate (`INSUFFICIENT_CONTEXT_ABORT`), contamination gate, or quality gate
+
+### `014-spec-descriptions/tasks.md`
+- `Oxford comma` at line 41: keywords, folder identity, and parent chain values.
+- `three-item enumeration` at line 41: keywords, folder identity, and parent chain values.
+- `Oxford comma` at line 73: - [x] Verify L1, L2, and L3 folder creation all produce `description.json`.
+- `three-item enumeration` at line 73: - [x] Verify L1, L2, and L3 folder creation all produce `description.json`.
+- `Oxford comma` at line 80: - [x] Scan existing memory files and append `-1`, `-2`, and higher suffixes when needed.
+- `three-item enumeration` at line 80: - [x] Scan existing memory files and append `-1`, `-2`, and higher suffixes when needed.
+- `Oxford comma` at line 127: - [x] Add scenarios for per-folder generation, stale detection, and aggregation behavior.
+- `three-item enumeration` at line 127: - [x] Add scenarios for per-folder generation, stale detection, and aggregation behavior.
+- `Oxford comma` at line 143: `workflow-memory-tracking`, `slug-utils-boundary`, and `slug-uniqueness`.
+- `three-item enumeration` at line 143: `workflow-memory-tracking`, `slug-utils-boundary`, and `slug-uniqueness`.
+- `three-item enumeration` at line 142: Bullet list of exactly three items spans lines 142-144
+- `Oxford comma` at line 157: including reserved random fallback after 100 collisions, discovery-time repair for stale/corrupt existing description.json files, and blank-spec per-folder metadata generation. Latest targeted verification used the current workspace commands: scripts `npm run lint`; scripts `npx vitest run --config ../mcp_server/vitest.config.ts --root . tests/slug-uniqueness.vitest.ts`; mcp_server `npx vitest run tests/folder-discovery.vitest.ts tests/folder-discovery-integration.vitest.ts tests/workflow-memory-tracking.vitest.ts tests/slug-utils-boundary.vitest.ts`. -->
+- `three-item enumeration` at line 157: including reserved random fallback after 100 collisions, discovery-time repair for stale/corrupt existing description.json files, and blank-spec per-folder metadata generation. Latest targeted verification used the current workspace commands: scripts `npm run lint`; scripts `npx vitest run --config ../mcp_server/vitest.config.ts --root . tests/slug-uniqueness.vitest.ts`; mcp_server `npx vitest run tests/folder-discovery.vitest.ts tests/folder-discovery-integration.vitest.ts tests/workflow-memory-tracking.vitest.ts tests/slug-utils-boundary.vitest.ts`. -->
+
+### `015-outsourced-agent-handback/checklist.md`
+- `Oxford comma` at line 29: next-step persistence, post-010 gate awareness, and evidence reconciliation captured [Evidence: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/015-outsourced-agent-handback/spec.md`]
+- `three-item enumeration` at line 29: next-step persistence, post-010 gate awareness, and evidence reconciliation captured [Evidence: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/015-outsourced-agent-handback/spec.md`]
+- `Oxford comma` at line 30: CLI-doc, catalog/test, and reconciliation phases documented [Evidence: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/015-outsourced-agent-handback/plan.md`]
+- `three-item enumeration` at line 30: CLI-doc, catalog/test, and reconciliation phases documented [Evidence: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/015-outsourced-agent-handback/plan.md`]
+- `Oxford comma` at line 31: the feature catalog, `scratch/`, and the phase `memory/` directory verified in repo [Evidence: runtime sources plus spec folder directories read during reconciliation]
+- `three-item enumeration` at line 31: the feature catalog, `scratch/`, and the phase `memory/` directory verified in repo [Evidence: runtime sources plus spec folder directories read during reconciliation]
+- `three-item enumeration` at line 29: Bullet list of exactly three items spans lines 29-31
+- `Oxford comma` at line 42: remaining steps persist as `Follow-up: ...`, `NEXT_ACTION` reads the first step, and mixed structured payloads preserve missing next-step facts without duplicate `Next:` / `Follow-up:` observations [Evidence: `.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts`
+- `three-item enumeration` at line 42: remaining steps persist as `Follow-up: ...`, `NEXT_ACTION` reads the first step, and mixed structured payloads preserve missing next-step facts without duplicate `Next:` / `Follow-up:` observations [Evidence: `.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts`
+- `Oxford comma` at line 50: - [x] CHK-020 [P0] All 4 `cli-*` SKILL files include handback guidance with redact-and-scrub, rejection-code, and minimum-payload wording [Evidence: `.opencode/skill/system-spec-kit/scripts/tests/outsourced-agent-handback-docs.vitest.ts` plus repo reads of `.opencode/skill/cli-*/SKILL.md`]
+- `three-item enumeration` at line 50: - [x] CHK-020 [P0] All 4 `cli-*` SKILL files include handback guidance with redact-and-scrub, rejection-code, and minimum-payload wording [Evidence: `.opencode/skill/system-spec-kit/scripts/tests/outsourced-agent-handback-docs.vitest.ts` plus repo reads of `.opencode/skill/cli-*/SKILL.md`]
+- `Oxford comma` at line 51: - [x] CHK-021 [P0] All 4 `cli-*` prompt templates include richer `FILES` examples, accepted snake_case field names, and explicit failure wording [Evidence: `.opencode/skill/system-spec-kit/scripts/tests/outsourced-agent-handback-docs.vitest.ts` plus repo reads of `.opencode/skill/cli-*/assets/prompt_templates.md`]
+- `three-item enumeration` at line 51: - [x] CHK-021 [P0] All 4 `cli-*` prompt templates include richer `FILES` examples, accepted snake_case field names, and explicit failure wording [Evidence: `.opencode/skill/system-spec-kit/scripts/tests/outsourced-agent-handback-docs.vitest.ts` plus repo reads of `.opencode/skill/cli-*/assets/prompt_templates.md`]
+- `Oxford comma` at line 54: - [x] CHK-024 [P1] Alignment drift passes for the scripts root - `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit/scripts` returned `244` scanned files, `0` findings, and `0` warnings [Evidence: current rerun output in this task]
+- `three-item enumeration` at line 54: - [x] CHK-024 [P1] Alignment drift passes for the scripts root - `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit/scripts` returned `244` scanned files, `0` findings, and `0` warnings [Evidence: current rerun output in this task]
+- `Oxford comma` at line 69: `ACTION`, `MODIFICATION_MAGNITUDE`, and `_provenance` for `FILES` entries [Evidence: `outsourced-agent-handback-docs.vitest.ts`]
+- `three-item enumeration` at line 69: `ACTION`, `MODIFICATION_MAGNITUDE`, and `_provenance` for `FILES` entries [Evidence: `outsourced-agent-handback-docs.vitest.ts`]
+- `Oxford comma` at line 77: `tasks.md`, `checklist.md`, and `implementation-summary.md` now agree on runtime behavior
+- `three-item enumeration` at line 77: `tasks.md`, `checklist.md`, and `implementation-summary.md` now agree on runtime behavior
+- `three-item enumeration` at line 77: Bullet list of exactly three items spans lines 77-79
+- `three-item enumeration` at line 87: Bullet list of exactly three items spans lines 87-89
+
+### `015-outsourced-agent-handback/implementation-summary.md`
+- `Oxford comma` at line 3: next-step persistence, richer caller guidance, and post-010 save-gate awareness."
+- `three-item enumeration` at line 3: next-step persistence, richer caller guidance, and post-010 save-gate awareness."
+- `Oxford comma` at line 42: write `/tmp/save-context-data.json`, accept the documented snake_case fields, and expect `INSUFFICIENT_CONTEXT_ABORT` or `CONTAMINATION_GATE_ABORT` when the payload is too thin or cross-spec.
+- `three-item enumeration` at line 42: write `/tmp/save-context-data.json`, accept the documented snake_case fields, and expect `INSUFFICIENT_CONTEXT_ABORT` or `CONTAMINATION_GATE_ABORT` when the payload is too thin or cross-spec.
+- `Oxford comma` at line 60: 2. **CLI handback documentation**: Update the 4 SKILL files and 4 prompt templates with post-010 rejection codes, snake_case guidance, and richer `FILES` examples. Align the feature catalog and add a dedicated Vitest lane so the caller-facing contract does not drift silently.
+- `three-item enumeration` at line 60: 2. **CLI handback documentation**: Update the 4 SKILL files and 4 prompt templates with post-010 rejection codes, snake_case guidance, and richer `FILES` examples. Align the feature catalog and add a dedicated Vitest lane so the caller-facing contract does not drift silently.
+- `Oxford comma` at line 61: alignment-drift, JSON-mode write/reject behavior, and spec validation.
+- `three-item enumeration` at line 61: alignment-drift, JSON-mode write/reject behavior, and spec validation.
+- `three-item enumeration` at line 59: Bullet list of exactly three items spans lines 59-61
+- `Oxford comma` at line 73: 5. **Identical protocol across all 4 CLIs**: Same delimiter, same rejection-code guidance, and same minimum payload expectations. This prevents drift.
+- `three-item enumeration` at line 73: 5. **Identical protocol across all 4 CLIs**: Same delimiter, same rejection-code guidance, and same minimum payload expectations. This prevents drift.
+- `three-item enumeration` at line 111: 3. **L3**: Structured payloads that arrive pre-populated with `user_prompts`, `recent_context`, or `observations` need equivalent durable evidence because they bypass part of the manual-format synthesis path.
+- `three-item enumeration` at line 109: Bullet list of exactly three items spans lines 109-111
+
+### `015-outsourced-agent-handback/plan.md`
+- `Oxford comma` at line 3: description: "Align runtime memory-input handling, CLI handback docs, and spec evidence so explicit JSON-mode failures
+- `three-item enumeration` at line 3: description: "Align runtime memory-input handling, CLI handback docs, and spec evidence so explicit JSON-mode failures
+- `Oxford comma` at line 27: CLI handback documentation updates across all 8 relevant `cli-*` docs, a dedicated doc-regression test plus feature-catalog alignment, and spec-folder reconciliation so the written evidence matches the current repository state. The plan uses fresh 2026-03-16 verification instead of inherited 013-era claims.
+- `three-item enumeration` at line 27: CLI handback documentation updates across all 8 relevant `cli-*` docs, a dedicated doc-regression test plus feature-catalog alignment, and spec-folder reconciliation so the written evidence matches the current repository state. The plan uses fresh 2026-03-16 verification instead of inherited 013-era claims.
+- `three-item enumeration` at line 36: Bullet list of exactly three items spans lines 36-38
+- `Oxford comma` at line 43: snake_case acceptance, rejection-code guidance, and minimum-payload guidance
+- `three-item enumeration` at line 43: snake_case acceptance, rejection-code guidance, and minimum-payload guidance
+- `three-item enumeration` at line 58: - **`data-loader.ts`**: Loads explicit JSON-mode input and now throws `EXPLICIT_DATA_FILE_LOAD_FAILED: ...` for missing, invalid, or invalid-shape input instead of falling back.
+- `Oxford comma` at line 59: - **`input-normalizer.ts`**: Accepts `nextSteps` or `next_steps`, persists `Next: ...` / `Follow-up: ...`, and preserves mixed structured payload next steps when those facts are missing.
+- `three-item enumeration` at line 59: - **`input-normalizer.ts`**: Accepts `nextSteps` or `next_steps`, persists `Next: ...` / `Follow-up: ...`, and preserves mixed structured payload next steps when those facts are missing.
+- `Oxford comma` at line 63: redact and scrub it, include richer `FILES` metadata, and stop on explicit JSON-mode failures.
+- `three-item enumeration` at line 63: redact and scrub it, include richer `FILES` metadata, and stop on explicit JSON-mode failures.
+- `Oxford comma` at line 87: - [x] Hard-fail explicit `dataFile` load, parse, and validation failures in `data-loader.ts`
+- `three-item enumeration` at line 87: - [x] Hard-fail explicit `dataFile` load, parse, and validation failures in `data-loader.ts`
+- `Oxford comma` at line 93: - [x] Update all 4 `cli-*` SKILL files with redact-and-scrub, rejection-code, and minimum-payload guidance
+- `three-item enumeration` at line 93: - [x] Update all 4 `cli-*` SKILL files with redact-and-scrub, rejection-code, and minimum-payload guidance
+- `Oxford comma` at line 94: - [x] Update all 4 `cli-*` prompt templates with accepted snake_case fields, richer `FILES` examples, and explicit hard-fail behavior
+- `three-item enumeration` at line 94: - [x] Update all 4 `cli-*` prompt templates with accepted snake_case fields, richer `FILES` examples, and explicit hard-fail behavior
+- `Oxford comma` at line 100: - [x] Verify alignment drift currently reports `244` scanned files, `0 findings`, and `0 warnings`
+- `three-item enumeration` at line 100: - [x] Verify alignment drift currently reports `244` scanned files, `0 findings`, and `0 warnings`
+- `Oxford comma` at line 113: | Targeted regression | Explicit `dataFile` failure handling, next-step persistence, and doc-contract drift | `runtime-memory-inputs.vitest.ts`
+- `three-item enumeration` at line 113: | Targeted regression | Explicit `dataFile` failure handling, next-step persistence, and doc-contract drift | `runtime-memory-inputs.vitest.ts`
+- `three-item enumeration` at line 138: - **Trigger**: Reconciliation introduces contradictions, validation failures, or inaccurate proof claims.
+- `Oxford comma` at line 167: | Verification and Reconciliation | Med | Targeted test reruns, manual JSON-mode verification, and spec validation |
+- `three-item enumeration` at line 167: | Verification and Reconciliation | Med | Targeted test reruns, manual JSON-mode verification, and spec validation |
+- `three-item enumeration` at line 177: Bullet list of exactly three items spans lines 177-179
+
+### `015-outsourced-agent-handback/spec.md`
+- `Oxford comma` at line 3: next-step persistence, redact-and-scrub security, and post-010 awareness of sufficiency/contamination gates."
+- `three-item enumeration` at line 3: next-step persistence, redact-and-scrub security, and post-010 awareness of sufficiency/contamination gates."
+- `Oxford comma` at line 45: 1. **Runtime behavior** — How `data-loader.ts`, `input-normalizer.ts`, and `session-extractor.ts` handle explicit JSON-mode input
+- `three-item enumeration` at line 45: 1. **Runtime behavior** — How `data-loader.ts`, `input-normalizer.ts`, and `session-extractor.ts` handle explicit JSON-mode input
+- `Oxford comma` at line 47: 3. **Post-010 pipeline gates** — How the sufficiency, contamination, and quality gates affect file-backed saves *after* normalization succeeds
+- `three-item enumeration` at line 47: 3. **Post-010 pipeline gates** — How the sufficiency, contamination, and quality gates affect file-backed saves *after* normalization succeeds
+- `three-item enumeration` at line 45: Bullet list of exactly three items spans lines 45-47
+- `not just X, but also Y` at line 53: Ensure the outsourced agent handback protocol produces saves that survive the full 010 pipeline as far as caller-provided evidence allows — not just input validation, but also sufficiency evaluation, contamination detection, and post-render quality scoring. Callers must know what minimum payload richness is required, what rejection codes they may encounter, and that file-backed saves bypass `QUALITY_GATE_ABORT` without bypassing all quality-related warnings.
+- `Oxford comma` at line 53: but also sufficiency evaluation, contamination detection, and post-render quality scoring. Callers must know what minimum payload richness is required
+- `three-item enumeration` at line 53: but also sufficiency evaluation, contamination detection, and post-render quality scoring. Callers must know what minimum payload richness is required
+- `three-item enumeration` at line 71: Bullet list of exactly three items spans lines 71-73
+- `Oxford comma` at line 113: `MODIFICATION_MAGNITUDE`, descriptive `DESCRIPTION`, and `_provenance` fields on FILES entries |
+- `three-item enumeration` at line 113: `MODIFICATION_MAGNITUDE`, descriptive `DESCRIPTION`, and `_provenance` fields on FILES entries |
+- `Oxford comma` at line 122: - Both `nextSteps` and `next_steps` persist into `Next: ...`, `Follow-up: ...`, and `NEXT_ACTION`
+- `three-item enumeration` at line 122: - Both `nextSteps` and `next_steps` persist into `Next: ...`, `Follow-up: ...`, and `NEXT_ACTION`
+- `Oxford comma` at line 124: - All 8 CLI docs and the feature catalog document `INSUFFICIENT_CONTEXT_ABORT`, `CONTAMINATION_GATE_ABORT`, and richer `FILES` metadata guidance
+- `three-item enumeration` at line 124: - All 8 CLI docs and the feature catalog document `INSUFFICIENT_CONTEXT_ABORT`, `CONTAMINATION_GATE_ABORT`, and richer `FILES` metadata guidance
+- `Oxford comma` at line 134: **then** the first item becomes `Next: ...`, later items become `Follow-up: ...`, and `NEXT_ACTION` reflects the first item.
+- `three-item enumeration` at line 134: **then** the first item becomes `Next: ...`, later items become `Follow-up: ...`, and `NEXT_ACTION` reflects the first item.
+- `three-item enumeration` at line 182: Bullet list of exactly three items spans lines 182-184
+- `three-item enumeration` at line 188: - Payloads that already use `user_prompts`, `recent_context`, or `observations`: callers must provide equivalent durable evidence because the manual-format synthesis path is shorter.
+- `three-item enumeration` at line 187: Bullet list of exactly three items spans lines 187-189
+- `Oxford comma` at line 192: - `nextSteps` / `next_steps` normalization: first item becomes `Next: ...`, remaining items become `Follow-up: ...`, and `NEXT_ACTION` mirrors the first item.
+- `three-item enumeration` at line 192: - `nextSteps` / `next_steps` normalization: first item becomes `Next: ...`, remaining items become `Follow-up: ...`, and `NEXT_ACTION` mirrors the first item.
+- `Oxford comma` at line 197: then `workflow.ts` applies sufficiency, contamination, and render-quality checks before write/index behavior is finalized.
+- `three-item enumeration` at line 197: then `workflow.ts` applies sufficiency, contamination, and render-quality checks before write/index behavior is finalized.
+- `Oxford comma` at line 207: feature catalog, a new doc-regression test, and five canonical phase artifacts |
+- `three-item enumeration` at line 207: feature catalog, a new doc-regression test, and five canonical phase artifacts |
+- `Oxford comma` at line 209: | Research | 9/20 | Required review of parent `010`, prior phases `001`-`012`, and the existing caller-facing handback docs |
+- `three-item enumeration` at line 209: | Research | 9/20 | Required review of parent `010`, prior phases `001`-`012`, and the existing caller-facing handback docs |
+- `three-item enumeration` at line 220: Bullet list of exactly three items spans lines 220-222
+- `three-item enumeration` at line 228: - **L3**: Payloads that already use `user_prompts`, `recent_context`, or `observations` bypass parts of the manual-format synthesis path
+- `three-item enumeration` at line 226: Bullet list of exactly three items spans lines 226-228
+
+### `015-outsourced-agent-handback/tasks.md`
+- `Oxford comma` at line 44: - [x] T006 [P] Update all 4 `cli-*` SKILL files with redact-and-scrub, rejection-code, and minimum-payload guidance
+- `three-item enumeration` at line 44: - [x] T006 [P] Update all 4 `cli-*` SKILL files with redact-and-scrub, rejection-code, and minimum-payload guidance
+- `Oxford comma` at line 45: - [x] T007 [P] Update all 4 `cli-*` prompt template files with accepted snake_case fields, richer `FILES` examples, and explicit JSON-mode hard-fail behavior
+- `three-item enumeration` at line 45: - [x] T007 [P] Update all 4 `cli-*` prompt template files with accepted snake_case fields, richer `FILES` examples, and explicit JSON-mode hard-fail behavior
+- `Oxford comma` at line 56: - [x] T011 Record current alignment-drift evidence: `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit/scripts` passed with `244` scanned files, `0` findings, and `0` warnings
+- `three-item enumeration` at line 56: - [x] T011 Record current alignment-drift evidence: `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit/scripts` passed with `244` scanned files, `0` findings, and `0` warnings
+- `Oxford comma` at line 60: `tasks.md`, `checklist.md`, and `implementation-summary.md` so they agree on runtime behavior
+- `three-item enumeration` at line 60: `tasks.md`, `checklist.md`, and `implementation-summary.md` so they agree on runtime behavior
+- `Oxford comma` at line 71: - [x] All `cli-*` references use the real path layout and include redact-and-scrub, rejection-code, and minimum-payload guidance
+- `three-item enumeration` at line 71: - [x] All `cli-*` references use the real path layout and include redact-and-scrub, rejection-code, and minimum-payload guidance
+
+### `016-multi-cli-parity/checklist.md`
+- `Oxford comma` at line 33: testing strategy, dependencies, and rollback plan.]
+- `three-item enumeration` at line 33: testing strategy, dependencies, and rollback plan.]
+- `Oxford comma` at line 34: - [x] CHK-003 [P1] Dependencies identified and available [EVIDENCE: Phase 002, 006, and 007 seams were reverified in the live code before edits.]
+- `three-item enumeration` at line 34: - [x] CHK-003 [P1] Dependencies identified and available [EVIDENCE: Phase 002, 006, and 007 seams were reverified in the live code before edits.]
+- `three-item enumeration` at line 32: Bullet list of exactly three items spans lines 32-34
+- `Oxford comma` at line 42: - [x] CHK-010 [P0] Parity regression coverage added for the intended public/runtime behavior [EVIDENCE: `phase-classification.vitest.ts`, `content-filter-parity.vitest.ts`, and `runtime-memory-inputs.vitest.ts` now assert aliasing
+- `three-item enumeration` at line 42: - [x] CHK-010 [P0] Parity regression coverage added for the intended public/runtime behavior [EVIDENCE: `phase-classification.vitest.ts`, `content-filter-parity.vitest.ts`, and `runtime-memory-inputs.vitest.ts` now assert aliasing
+- `Oxford comma` at line 53: baseline extractor-loader verification, workspace typecheck/build, and `validate.sh`.]
+- `three-item enumeration` at line 53: baseline extractor-loader verification, workspace typecheck/build, and `validate.sh`.]
+- `Oxford comma` at line 55: - [x] CHK-022 [P1] Edge cases tested [EVIDENCE: Content-filter parity tests cover Copilot lifecycle markers, Codex reasoning markers, and empty XML wrappers; runtime-memory inputs cover `view` title shortening and CLI-derived provenance.]
+- `three-item enumeration` at line 55: - [x] CHK-022 [P1] Edge cases tested [EVIDENCE: Content-filter parity tests cover Copilot lifecycle markers, Codex reasoning markers, and empty XML wrappers; runtime-memory inputs cover `view` title shortening and CLI-derived provenance.]
+- `three-item enumeration` at line 64: Bullet list of exactly three items spans lines 64-66
+- `Oxford comma` at line 76: decisions, verification table, and limitations.]
+- `three-item enumeration` at line 76: decisions, verification table, and limitations.]
+- `three-item enumeration` at line 74: Bullet list of exactly three items spans lines 74-76
+- `three-item enumeration` at line 84: Bullet list of exactly three items spans lines 84-86
+
+### `016-multi-cli-parity/implementation-summary.md`
+- `Oxford comma` at line 3: description: "Phase 016 now has direct parity proofs for aliasing, noise filtering, and CLI file provenance
+- `three-item enumeration` at line 3: description: "Phase 016 now has direct parity proofs for aliasing, noise filtering, and CLI file provenance
+- `Oxford comma` at line 33: Phase 016 now proves the parity behavior that was already present in the runtime. You can point at a direct regression for each reopened question: Copilot `view` aliases score as canonical `read`, shared noise filtering catches Copilot and Codex artifacts without a side path, and CLI-derived `FILES` keep the `_provenance: 'tool'` metadata that earlier scoring work now depends on. The phase folder itself also moved from a validator-failing "assumed complete" state to a real Level 2 completion record.
+- `three-item enumeration` at line 33: Phase 016 now proves the parity behavior that was already present in the runtime. You can point at a direct regression for each reopened question: Copilot `view` aliases score as canonical `read`, shared noise filtering catches Copilot and Codex artifacts without a side path, and CLI-derived `FILES` keep the `_provenance: 'tool'` metadata that earlier scoring work now depends on. The phase folder itself also moved from a validator-failing "assumed complete" state to a real Level 2 completion record.
+- `Oxford comma` at line 37: You now have a direct classifier regression in `phase-classification.vitest.ts`, a new `content-filter-parity.vitest.ts` lane for built-in multi-CLI noise markers, and a runtime-memory input regression that proves `Read ...` title rendering plus CLI-derived file provenance.
+- `three-item enumeration` at line 37: You now have a direct classifier regression in `phase-classification.vitest.ts`, a new `content-filter-parity.vitest.ts` lane for built-in multi-CLI noise markers, and a runtime-memory input regression that proves `Read ...` title rendering plus CLI-derived file provenance.
+- `Oxford comma` at line 41: tasks, checklist, and implementation summary were rewritten to the active Level 2 structure. That removed the custom task headers
+- `three-item enumeration` at line 41: tasks, checklist, and implementation summary were rewritten to the active Level 2 structure. That removed the custom task headers
+- `Oxford comma` at line 48: | `.opencode/skill/system-spec-kit/scripts/tests/content-filter-parity.vitest.ts` | Created | Lock Copilot lifecycle, Codex reasoning, and XML wrapper markers to the shared noise filter. |
+- `three-item enumeration` at line 48: | `.opencode/skill/system-spec-kit/scripts/tests/content-filter-parity.vitest.ts` | Created | Lock Copilot lifecycle, Codex reasoning, and XML wrapper markers to the shared noise filter. |
+- `Oxford comma` at line 50: requirements, success criteria, and final status. |
+- `three-item enumeration` at line 50: requirements, success criteria, and final status. |
+- `Oxford comma` at line 62: the live parity seams were re-read to confirm the runtime behavior was already shipped. Next, focused tests were added only where proof was missing, and one expectation was corrected to the actual path-shortening contract (`Read loaders/data-loader.ts`). Finally
+- `three-item enumeration` at line 62: the live parity seams were re-read to confirm the runtime behavior was already shipped. Next, focused tests were added only where proof was missing, and one expectation was corrected to the actual path-shortening contract (`Read loaders/data-loader.ts`). Finally
+- `three-item enumeration` at line 97: Bullet list of exactly three items spans lines 97-99
+
+### `016-multi-cli-parity/plan.md`
+- `Oxford comma` at line 3: description: "Re-open phase 016 to add direct parity regression coverage, reconcile the phase docs, and validate the already-shipped runtime behavior."
+- `three-item enumeration` at line 3: description: "Re-open phase 016 to add direct parity regression coverage, reconcile the phase docs, and validate the already-shipped runtime behavior."
+- `three-item enumeration` at line 5: Bullet list of exactly three items spans lines 5-7
+- `Oxford comma` at line 31: but the proof and documentation were incomplete. This pass keeps the runtime scope narrow, adds direct parity regression tests around the shipped behavior, and rewrites the phase folder so Level 2 validation reflects the real completed state.
+- `three-item enumeration` at line 31: but the proof and documentation were incomplete. This pass keeps the runtime scope narrow, adds direct parity regression tests around the shipped behavior, and rewrites the phase folder so Level 2 validation reflects the real completed state.
+- `three-item enumeration` at line 40: Bullet list of exactly three items spans lines 40-42
+- `three-item enumeration` at line 45: Bullet list of exactly three items spans lines 45-47
+- `Oxford comma` at line 60: - **`content-filter.ts` parity seam**: Shared built-in noise filtering for Copilot, Codex, and generic XML artifacts.
+- `three-item enumeration` at line 60: - **`content-filter.ts` parity seam**: Shared built-in noise filtering for Copilot, Codex, and generic XML artifacts.
+- `three-item enumeration` at line 59: Bullet list of exactly three items spans lines 59-61
+- `three-item enumeration` at line 73: Bullet list of exactly three items spans lines 73-75
+- `Oxford comma` at line 79: - [x] Add a focused content-filter parity test file covering Copilot lifecycle noise, Codex reasoning markers, and generic empty XML wrappers.
+- `three-item enumeration` at line 79: - [x] Add a focused content-filter parity test file covering Copilot lifecycle noise, Codex reasoning markers, and generic empty XML wrappers.
+- `Oxford comma` at line 85: - [x] Run `test-extractors-loaders.js`, `npm run typecheck`, and `npm run build`.
+- `three-item enumeration` at line 85: - [x] Run `test-extractors-loaders.js`, `npm run typecheck`, and `npm run build`.
+- `three-item enumeration` at line 84: Bullet list of exactly three items spans lines 84-86
+- `Oxford comma` at line 96: | Unit | Parity regressions in classifier, content filter, and input normalizer | Vitest |
+- `three-item enumeration` at line 96: | Unit | Parity regressions in classifier, content filter, and input normalizer | Vitest |
+
+### `016-multi-cli-parity/spec.md`
+- `Oxford comma` at line 45: but the phase folder still claimed completion without direct parity-specific proof. The missing coverage left three real questions open: whether Copilot `view` aliases drive research scoring, whether Codex/Copilot/XML noise markers are filtered through the shared `NOISE_PATTERNS` path, and whether CLI-derived `FILES` keep the `_provenance: 'tool'` metadata that earlier scoring phases now consume.
+- `three-item enumeration` at line 45: but the phase folder still claimed completion without direct parity-specific proof. The missing coverage left three real questions open: whether Copilot `view` aliases drive research scoring, whether Codex/Copilot/XML noise markers are filtered through the shared `NOISE_PATTERNS` path, and whether CLI-derived `FILES` keep the `_provenance: 'tool'` metadata that earlier scoring phases now consume.
+- `Oxford comma` at line 47: The phase documentation was also out of template compliance. `tasks.md` used non-standard phase headers, `implementation-summary.md` was missing required anchored sections, and the checklist marked completion without evidence tags
+- `three-item enumeration` at line 47: The phase documentation was also out of template compliance. `tasks.md` used non-standard phase headers, `implementation-summary.md` was missing required anchored sections, and the checklist marked completion without evidence tags
+- `Oxford comma` at line 61: - Re-verify the existing parity seams in `phase-classifier.ts`, `content-filter.ts`, and `input-normalizer.ts` without widening their runtime contract.
+- `three-item enumeration` at line 61: - Re-verify the existing parity seams in `phase-classifier.ts`, `content-filter.ts`, and `input-normalizer.ts` without widening their runtime contract.
+- `Oxford comma` at line 62: built-in multi-CLI noise filtering, CLI-derived file provenance, and `view` observation titles.
+- `three-item enumeration` at line 62: built-in multi-CLI noise filtering, CLI-derived file provenance, and `view` observation titles.
+- `Oxford comma` at line 63: `tasks.md`, `checklist.md`, and `implementation-summary.md` to the active Level 2 structure with evidence-backed completion.
+- `three-item enumeration` at line 63: `tasks.md`, `checklist.md`, and `implementation-summary.md` to the active Level 2 structure with evidence-backed completion.
+- `three-item enumeration` at line 61: Bullet list of exactly three items spans lines 61-63
+- `three-item enumeration` at line 67: Bullet list of exactly three items spans lines 67-69
+- `Oxford comma` at line 76: | `.opencode/skill/system-spec-kit/scripts/tests/content-filter-parity.vitest.ts` | Create | Lock Copilot lifecycle, Codex reasoning, and XML wrapper markers to the shared noise filter. |
+- `three-item enumeration` at line 76: | `.opencode/skill/system-spec-kit/scripts/tests/content-filter-parity.vitest.ts` | Create | Lock Copilot lifecycle, Codex reasoning, and XML wrapper markers to the shared noise filter. |
+- `Oxford comma` at line 91: `reasoning`, `<reasoning>...</reasoning>`, and empty XML wrapper tags all register as noise through `isNoiseContent()` / `NOISE_PATTERNS`. |
+- `three-item enumeration` at line 91: `reasoning`, `<reasoning>...</reasoning>`, and empty XML wrapper tags all register as noise through `isNoiseContent()` / `NOISE_PATTERNS`. |
+- `Oxford comma` at line 99: extractor-loader baseline, `typecheck`, and `build` all pass. |
+- `three-item enumeration` at line 99: extractor-loader baseline, `typecheck`, and `build` all pass. |
+- `Oxford comma` at line 109: - **SC-002**: **Given** Copilot lifecycle markers, Codex reasoning markers, and empty XML wrappers
+- `three-item enumeration` at line 109: - **SC-002**: **Given** Copilot lifecycle markers, Codex reasoning markers, and empty XML wrappers
+- `Oxford comma` at line 111: `test-extractors-loaders.js`, `npm run typecheck`, and `npm run build` all pass on 2026-03-17.
+- `three-item enumeration` at line 111: `test-extractors-loaders.js`, `npm run typecheck`, and `npm run build` all pass on 2026-03-17.
+- `three-item enumeration` at line 119: N/A — This phase adds regression tests and documentation only. No new runtime performance, scalability, or availability requirements apply.
+
+### `016-multi-cli-parity/tasks.md`
+- `Oxford comma` at line 35: - [x] T001 Confirm the shipped parity behavior in `phase-classifier.ts`, `content-filter.ts`, and `input-normalizer.ts` without widening runtime scope.
+- `three-item enumeration` at line 35: - [x] T001 Confirm the shipped parity behavior in `phase-classifier.ts`, `content-filter.ts`, and `input-normalizer.ts` without widening runtime scope.
+- `Oxford comma` at line 36: `tasks.md`, `checklist.md`, and `implementation-summary.md`.
+- `three-item enumeration` at line 36: `tasks.md`, `checklist.md`, and `implementation-summary.md`.
+- `Oxford comma` at line 37: - [x] T003 Identify the missing parity-specific regression seams in `phase-classification.vitest.ts`, `runtime-memory-inputs.vitest.ts`, and the content-filter test surface.
+- `three-item enumeration` at line 37: - [x] T003 Identify the missing parity-specific regression seams in `phase-classification.vitest.ts`, `runtime-memory-inputs.vitest.ts`, and the content-filter test surface.
+- `three-item enumeration` at line 35: Bullet list of exactly three items spans lines 35-37
+- `Oxford comma` at line 46: - [x] T005 Create `.opencode/skill/system-spec-kit/scripts/tests/content-filter-parity.vitest.ts` for Copilot lifecycle noise, Codex reasoning markers, and empty XML wrappers.
+- `three-item enumeration` at line 46: - [x] T005 Create `.opencode/skill/system-spec-kit/scripts/tests/content-filter-parity.vitest.ts` for Copilot lifecycle noise, Codex reasoning markers, and empty XML wrappers.
+- `Oxford comma` at line 48: `tasks.md`, `checklist.md`, and `implementation-summary.md` to the current Level 2 structure with evidence-backed completion.
+- `three-item enumeration` at line 48: `tasks.md`, `checklist.md`, and `implementation-summary.md` to the current Level 2 structure with evidence-backed completion.
+- `Oxford comma` at line 56: `content-filter-parity.vitest.ts`, `runtime-memory-inputs.vitest.ts`, and `description-enrichment.vitest.ts`.
+- `three-item enumeration` at line 56: `content-filter-parity.vitest.ts`, `runtime-memory-inputs.vitest.ts`, and `description-enrichment.vitest.ts`.
+- `Oxford comma` at line 69: typecheck, build, and phase-folder validation all pass.
+- `three-item enumeration` at line 69: typecheck, build, and phase-folder validation all pass.
+- `three-item enumeration` at line 67: Bullet list of exactly three items spans lines 67-69
+
+### `checklist.md`
+- `three-item enumeration` at line 5: Bullet list of exactly three items spans lines 5-7
+- `Oxford comma` at line 34: architecture, dependency graph, and AI execution protocol on 2026-03-17.]
+- `three-item enumeration` at line 34: architecture, dependency graph, and AI execution protocol on 2026-03-17.]
+- `Oxford comma` at line 35: scripts, MCP, and CLI-proof dependencies in `spec.md` and `plan.md`.]
+- `three-item enumeration` at line 35: scripts, MCP, and CLI-proof dependencies in `spec.md` and `plan.md`.]
+- `three-item enumeration` at line 33: Bullet list of exactly three items spans lines 33-35
+- `Oxford comma` at line 44: - [x] CHK-011 [P0] No new boundary regressions introduced in module-lane remediation [Evidence: `T-024e`, `T-024f`, and `T-032` updated to respect private `notifyDatabaseUpdated` and canonical retry-manager location.]
+- `three-item enumeration` at line 44: - [x] CHK-011 [P0] No new boundary regressions introduced in module-lane remediation [Evidence: `T-024e`, `T-024f`, and `T-032` updated to respect private `notifyDatabaseUpdated` and canonical retry-manager location.]
+- `three-item enumeration` at line 58: - [x] CHK-024 [P1] Root and recursive validation pass cleanly [Evidence: `validate.sh` rerun on 2026-03-17 reports no blocking file, level, or phase-link errors; remaining output is warning-only.]
+- `Oxford comma` at line 67: - [x] CHK-030 [P0] No runtime security contracts changed by this remediation [Evidence: Loader order, JSON authority, and `memory_save` `dryRun` and `force` behavior remained documentation-only constraints.]
+- `three-item enumeration` at line 67: - [x] CHK-030 [P0] No runtime security contracts changed by this remediation [Evidence: Loader order, JSON authority, and `memory_save` `dryRun` and `force` behavior remained documentation-only constraints.]
+- `three-item enumeration` at line 67: Bullet list of exactly three items spans lines 67-69
+- `Oxford comma` at line 77: tasks, checklist, and decision record are synchronized [Evidence: Root file set created or rewritten together on 2026-03-17.]
+- `three-item enumeration` at line 77: tasks, checklist, and decision record are synchronized [Evidence: Root file set created or rewritten together on 2026-03-17.]
+- `Oxford comma` at line 78: Codex, Gemini, and Copilot probe results captured on 2026-03-17.]
+- `three-item enumeration` at line 78: Codex, Gemini, and Copilot probe results captured on 2026-03-17.]
+- `three-item enumeration` at line 77: Bullet list of exactly three items spans lines 77-79
+- `Oxford comma` at line 87: `checklist.md`, `decision-record.md`, and `implementation-summary.md` present at the root spec folder.]
+- `three-item enumeration` at line 87: `checklist.md`, `decision-record.md`, and `implementation-summary.md` present at the root spec folder.]
+- `three-item enumeration` at line 87: Bullet list of exactly three items spans lines 87-89
+- `Oxford comma` at line 112: - [x] CHK-101 [P1] ADR status and alternatives documented [Evidence: ADR-001 records accepted status, rejected alternatives, and rollback posture.]
+- `three-item enumeration` at line 112: - [x] CHK-101 [P1] ADR status and alternatives documented [Evidence: ADR-001 records accepted status, rejected alternatives, and rollback posture.]
+- `Oxford comma` at line 157: section, template, and integrity checks.]
+- `three-item enumeration` at line 157: section, template, and integrity checks.]
+
+### `decision-record.md`
+- `Oxford comma` at line 3: description: "Keep the remediation honest: preserve runtime boundaries, separate live proof from fixture proof, and let the validator define completion."
+- `three-item enumeration` at line 3: description: "Keep the remediation honest: preserve runtime boundaries, separate live proof from fixture proof, and let the validator define completion."
+- `three-item enumeration` at line 5: Bullet list of exactly three items spans lines 5-7
+- `three-item enumeration` at line 48: and record CLI parity as live proof, fixture-backed proof, or blocked with exact reasons.
+- `Oxford comma` at line 50: **How it works**: the module-contract tests now assert the intended architecture instead of demanding deprecated exports. The spec documents now treat the validator, rerun commands, and live session artifacts as the authority for what we can claim complete.
+- `three-item enumeration` at line 50: **How it works**: the module-contract tests now assert the intended architecture instead of demanding deprecated exports. The spec documents now treat the validator, rerun commands, and live session artifacts as the authority for what we can claim complete.
+- `Oxford comma` at line 60: | **Preserve boundaries and fix tests/docs** | Keeps the runtime honest, matches current architecture, and makes completion claims defensible | Requires more documentation repair and CLI-proof nuance | 9/10 |
+- `three-item enumeration` at line 60: | **Preserve boundaries and fix tests/docs** | Keeps the runtime honest, matches current architecture, and makes completion claims defensible | Requires more documentation repair and CLI-proof nuance | 9/10 |
+- `Oxford comma` at line 111: **How to roll back**: revert the root markdown pack and the module-lane test changes, rerun the legacy lane, and re-evaluate whether boundary widening is genuinely intended.
+- `three-item enumeration` at line 111: **How to roll back**: revert the root markdown pack and the module-lane test changes, rerun the legacy lane, and re-evaluate whether boundary widening is genuinely intended.
+
+### `implementation-summary.md`
+- `three-item enumeration` at line 5: Bullet list of exactly three items spans lines 5-7
+- `Oxford comma` at line 34: This pass closes the gap between “mostly working” and “provably complete.” The module-contract test lane now matches the intended architecture, the missing root Level 3 documents exist again, and the canonical root spec pack is being brought back under the validator instead of relying on hand-waved closure claims.
+- `three-item enumeration` at line 34: This pass closes the gap between “mostly working” and “provably complete.” The module-contract test lane now matches the intended architecture, the missing root Level 3 documents exist again, and the canonical root spec pack is being brought back under the validator instead of relying on hand-waved closure claims.
+- `Oxford comma` at line 38: checklist, decision record, and implementation summary all exist in Level 3 form
+- `three-item enumeration` at line 38: checklist, decision record, and implementation summary all exist in Level 3 form
+- `Oxford comma` at line 42: You can now separate live CLI proof from fixture-backed proof instead of treating them as the same thing. Claude, Gemini, and Copilot all produced fresh live same-workspace artifacts that the capture extractors can read. Codex produced fresh same-workspace artifacts too
+- `three-item enumeration` at line 42: You can now separate live CLI proof from fixture-backed proof instead of treating them as the same thing. Claude, Gemini, and Copilot all produced fresh live same-workspace artifacts that the capture extractors can read. Codex produced fresh same-workspace artifacts too
+- `Oxford comma` at line 79: | Live CLI probes | MIXED: Claude, Gemini, and Copilot capturable; Codex partial due usage limit; OpenCode live reply present but fresh capture artifact blocked |
+- `three-item enumeration` at line 79: | Live CLI probes | MIXED: Claude, Gemini, and Copilot capturable; Codex partial due usage limit; OpenCode live reply present but fresh capture artifact blocked |
+- `three-item enumeration` at line 87: Bullet list of exactly three items spans lines 87-89
+
+### `plan.md`
+- `Oxford comma` at line 33: 2026 evidence. It preserves runtime behavior contracts while repairing root compliance blockers, checklist evidence formatting, and cross-CLI proof language.
+- `three-item enumeration` at line 33: 2026 evidence. It preserves runtime behavior contracts while repairing root compliance blockers, checklist evidence formatting, and cross-CLI proof language.
+- `three-item enumeration` at line 42: Bullet list of exactly three items spans lines 42-44
+- `Oxford comma` at line 47: - [x] Root docs match required template headers, anchors, and ordering.
+- `three-item enumeration` at line 47: - [x] Root docs match required template headers, anchors, and ordering.
+- `three-item enumeration` at line 59: Bullet list of exactly three items spans lines 59-61
+- `three-item enumeration` at line 69: | Boundary Safety | Do not change runtime loader order, JSON authority, or `memory_save` `dryRun` and `force` behavior |
+- `Oxford comma` at line 70: | Completion | Do not claim closure until validation, completion, and targeted test lanes are rerun |
+- `three-item enumeration` at line 70: | Completion | Do not claim closure until validation, completion, and targeted test lanes are rerun |
+- `three-item enumeration` at line 77: Bullet list of exactly three items spans lines 77-79
+- `three-item enumeration` at line 105: Bullet list of exactly three items spans lines 105-107
+- `Oxford comma` at line 111: `tasks.md`, `checklist.md`, and `decision-record.md` to exact template structure.
+- `three-item enumeration` at line 111: `tasks.md`, `checklist.md`, and `decision-record.md` to exact template structure.
+- `three-item enumeration` at line 110: Bullet list of exactly three items spans lines 110-112
+- `three-item enumeration` at line 115: Bullet list of exactly three items spans lines 115-117
+- `Oxford comma` at line 152: re-apply template-first rewrite, rerun root checks, and republish evidence from passing outputs only.
+- `three-item enumeration` at line 152: re-apply template-first rewrite, rerun root checks, and republish evidence from passing outputs only.
+- `three-item enumeration` at line 196: Bullet list of exactly three items spans lines 196-198
+- `three-item enumeration` at line 246: Bullet list of exactly three items spans lines 246-248
+- `three-item enumeration` at line 292: Bullet list of exactly three items spans lines 292-294
+
+### `spec.md`
+- `Oxford comma` at line 22: command results, dates, and cross-CLI proof language are now aligned with the latest reruns from March 17
+- `three-item enumeration` at line 22: command results, dates, and cross-CLI proof language are now aligned with the latest reruns from March 17
+- `Oxford comma` at line 49: checklist priority-evidence formatting issues, missing `implementation-summary.md`, and stale or over-claimed verification statements. This caused root validation and completion checks to block even though major code lanes were healthy.
+- `three-item enumeration` at line 49: checklist priority-evidence formatting issues, missing `implementation-summary.md`, and stale or over-claimed verification statements. This caused root validation and completion checks to block even though major code lanes were healthy.
+- `Oxford comma` at line 62: `tasks.md`, `checklist.md`, and `decision-record.md` to Level 3 template structure.
+- `three-item enumeration` at line 62: `tasks.md`, `checklist.md`, and `decision-record.md` to Level 3 template structure.
+- `three-item enumeration` at line 70: - Runtime contract changes for loader precedence, JSON authority, or `memory_save` `dryRun`/`force`.
+- `three-item enumeration` at line 69: Bullet list of exactly three items spans lines 69-71
+- `Oxford comma` at line 172: **Then** fixture-backed, live-proven, and blocked cases remain explicitly separated.
+- `three-item enumeration` at line 172: **Then** fixture-backed, live-proven, and blocked cases remain explicitly separated.
+- `three-item enumeration` at line 290: Bullet list of exactly three items spans lines 290-292
+
+### `tasks.md`
+- `Oxford comma` at line 38: - [x] T002 Capture current verification evidence for scripts, MCP, and CLI proof lanes (`.opencode/skill/system-spec-kit/`)
+- `three-item enumeration` at line 38: - [x] T002 Capture current verification evidence for scripts, MCP, and CLI proof lanes (`.opencode/skill/system-spec-kit/`)
+- `three-item enumeration` at line 37: Bullet list of exactly three items spans lines 37-39
+- `Oxford comma` at line 49: `checklist.md`, `decision-record.md`, and `implementation-summary.md` (root spec folder)
+- `three-item enumeration` at line 49: `checklist.md`, `decision-record.md`, and `implementation-summary.md` (root spec folder)
+- `Oxford comma` at line 61: - [x] T011 Reconfirm targeted scripts, extractor, and MCP verification lanes after doc and test-lane remediation (`.opencode/skill/system-spec-kit/`)
+- `three-item enumeration` at line 61: - [x] T011 Reconfirm targeted scripts, extractor, and MCP verification lanes after doc and test-lane remediation (`.opencode/skill/system-spec-kit/`)
+- `three-item enumeration` at line 59: Bullet list of exactly three items spans lines 59-61
+- `three-item enumeration` at line 69: Bullet list of exactly three items spans lines 69-71
+- `three-item enumeration` at line 88: Bullet list of exactly three items spans lines 88-90
+- `Oxford comma` at line 98: | TASK-TRUTH | Distinguish live CLI proof, fixture-backed proof, and blocked cases explicitly |
+- `three-item enumeration` at line 98: | TASK-TRUTH | Distinguish live CLI proof, fixture-backed proof, and blocked cases explicitly |
+- `Oxford comma` at line 103: - `STARTED:` task id, scope, and target files
+- `three-item enumeration` at line 103: - `STARTED:` task id, scope, and target files
+- `three-item enumeration` at line 110: Bullet list of exactly three items spans lines 110-112
 
 ## Remediation Priority
-- Punctuation bans next: replace 591 banned punctuation marks, prioritizing files that also have low scores.
+- Hard blockers first: remove or rewrite 3 hard-blocker occurrences across the files listed above.
+- Punctuation bans next: replace 591 banned punctuation marks, prioritizing files that also have hard blockers or scores below 80.
+- Then remove high-noise soft -2 terms: 1 occurrences of buzzword or inflated language.
+- Clean minor soft -1 language after that: 6 hedging, filler or overused transition hits.
+- Refactor structural patterns last: 925 setup-language, Oxford comma, three-item enumeration or not-just/but-also hits.

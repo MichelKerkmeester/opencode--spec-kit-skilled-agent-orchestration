@@ -18,6 +18,7 @@ description: "Unify the dual quality scoring systems (V1 0-100, V2 0.0-1.0) onto
 | **Priority** | P0 |
 | **Status** | Complete |
 | **Created** | 2026-03-16 |
+| **Completed** | 2026-03-16 |
 | **Branch** | `main` |
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
@@ -30,6 +31,16 @@ description: "Unify the dual quality scoring systems (V1 0-100, V2 0.0-1.0) onto
 <!-- /ANCHOR:metadata -->
 
 ---
+
+<!-- ANCHOR:phase-context -->
+### Phase Context
+
+This is **Phase 1** of the Perfect Session Capturing specification.
+
+**Scope Boundary**: The pipeline runs three quality checks with a split contract: stored/indexed quality uses the 0.0-1.0 scale, but workflow gating uses 0-100.
+**Dependencies**: None
+**Deliverables**: Unified QualityScoreResult interface with score01 (canonical) and score100 (compatibility); contamination penalty added to V2 scorer
+<!-- /ANCHOR:phase-context -->
 
 <!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE

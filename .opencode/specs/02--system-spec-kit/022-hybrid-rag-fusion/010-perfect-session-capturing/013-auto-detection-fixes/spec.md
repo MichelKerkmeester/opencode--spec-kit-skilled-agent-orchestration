@@ -18,6 +18,7 @@ description: "Fix native-source auto-detection behavior with review-driven corre
 | **Priority** | P0 |
 | **Status** | Complete |
 | **Created** | 2026-03-16 |
+| **Completed** | 2026-03-16 |
 | **Branch** | `main` |
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
@@ -30,6 +31,16 @@ description: "Fix native-source auto-detection behavior with review-driven corre
 <!-- /ANCHOR:metadata -->
 
 ---
+
+<!-- ANCHOR:phase-context -->
+### Phase Context
+
+This is **Phase 13** of the Perfect Session Capturing specification.
+
+**Scope Boundary**: Multiple compound failures in auto-detection and memory quality.
+**Dependencies**: 012-template-compliance
+**Deliverables**: Added git-status Priority 2.7 signal to folder detection; fixed decision deduplication bug
+<!-- /ANCHOR:phase-context -->
 
 <!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE

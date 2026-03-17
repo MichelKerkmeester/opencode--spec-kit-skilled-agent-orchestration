@@ -58,8 +58,8 @@ title: "Verification Checklist: Embedding Optimization [template:level_2/checkli
 <!-- ANCHOR:security -->
 ## Security
 
-- [x] CHK-030 [P2] Weighted payload does not leak sensitive content through repetition amplification
-- [x] CHK-031 [P2] Payload length cap prevents memory exhaustion from adversarial input
+- [ ] CHK-030 [P2] Weighted payload does not leak sensitive content through repetition amplification [Evidence: Deferred - P2 security items to be verified in dedicated security review]
+- [ ] CHK-031 [P2] Payload length cap prevents memory exhaustion from adversarial input [Evidence: Deferred - P2 security items to be verified in dedicated security review]
 <!-- /ANCHOR:security -->
 
 ---
@@ -90,7 +90,7 @@ title: "Verification Checklist: Embedding Optimization [template:level_2/checkli
 |----------|-------|----------|
 | P0 Items | 5 | 5/5 |
 | P1 Items | 10 | 10/10 |
-| P2 Items | 5 | 4/5 |
+| P2 Items | 5 | 2/5 |
 
 **Verification Date**: 2026-03-16
 <!-- /ANCHOR:summary -->

@@ -31,6 +31,16 @@ description: "Verify end-to-end integration behavior across the full pipeline."
 
 ---
 
+<!-- ANCHOR:phase-context -->
+### Phase Context
+
+This is **Phase 10** of the Perfect Session Capturing specification.
+
+**Scope Boundary**: 22 Vitest + 25 legacy JS + 4 shell + 1 Python tests exist, but the real gate chain runs under heavy mocks.
+**Dependencies**: 009-embedding-optimization
+**Deliverables**: Created workflow-e2e.vitest.ts with a temp repo factory producing realistic spec folder + JSON input fixtures; six test cases covering happy-path through failure scenarios
+<!-- /ANCHOR:phase-context -->
+
 <!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 

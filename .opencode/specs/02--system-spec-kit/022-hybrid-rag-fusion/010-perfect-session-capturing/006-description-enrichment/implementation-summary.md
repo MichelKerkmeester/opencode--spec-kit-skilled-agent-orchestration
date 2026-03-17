@@ -1,7 +1,9 @@
 ---
-title: "Implementation Summary [template:level_2/implementation-summary.md]"
+title: "Implementation Summary: Description Enrichment"
+description: "Implementation summary for description enrichment phase of perfect session capturing"
+trigger_phrases: ["implementation", "summary", "description", "enrichment"]
 ---
-# Implementation Summary
+# Implementation Summary: Description Enrichment
 
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->

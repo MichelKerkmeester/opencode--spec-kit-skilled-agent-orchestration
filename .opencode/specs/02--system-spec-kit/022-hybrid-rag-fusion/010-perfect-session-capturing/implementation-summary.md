@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [template:level_3/implementation-summary.md]"
+title: "Implementation Summary: Perfect Session Capturing"
 description: "This remediation turns an almost-done spec pack into one the validator and the test stack can actually trust."
 trigger_phrases:
   - "implementation"
@@ -8,7 +8,7 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "general"
 ---
-# Implementation Summary
+# Implementation Summary: Perfect Session Capturing
 
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->

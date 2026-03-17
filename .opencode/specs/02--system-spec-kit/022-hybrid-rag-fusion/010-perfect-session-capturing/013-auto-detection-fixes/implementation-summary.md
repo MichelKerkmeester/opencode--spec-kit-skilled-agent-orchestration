@@ -1,7 +1,9 @@
 ---
-title: "Implementation Summary [template:level_2/implementation-summary.md]"
+title: "Implementation Summary: Auto-Detection Fixes"
+description: "Implementation summary for auto-detection fixes phase of perfect session capturing"
+trigger_phrases: ["implementation", "summary", "auto-detection", "fixes"]
 ---
-# Implementation Summary
+# Implementation Summary: Auto-Detection Fixes
 
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->

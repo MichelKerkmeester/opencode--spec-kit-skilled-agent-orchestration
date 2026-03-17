@@ -32,6 +32,16 @@ description: "Optimize embedding workload and retrieval preparation for memory i
 
 ---
 
+<!-- ANCHOR:phase-context -->
+### Phase Context
+
+This is **Phase 9** of the Perfect Session Capturing specification.
+
+**Scope Boundary**: Before this phase, the scripts-side indexer embedded raw markdown via generateEmbedding(content), while the MCP save path normalized content but still treated the document as a flat body.
+**Dependencies**: 008-signal-extraction
+**Deliverables**: Built a weighted payload concatenation function (title + decisions x3 + outcomes x2 + general x1); routed scripts indexer through generateDocumentEmbedding()
+<!-- /ANCHOR:phase-context -->
+
 <!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 

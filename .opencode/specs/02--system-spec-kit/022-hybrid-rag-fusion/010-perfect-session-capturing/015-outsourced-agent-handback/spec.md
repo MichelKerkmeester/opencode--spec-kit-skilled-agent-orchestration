@@ -35,6 +35,16 @@ contextType: "general"
 
 ---
 
+<!-- ANCHOR:phase-context -->
+### Phase Context
+
+This is **Phase 15** of the Perfect Session Capturing specification.
+
+**Scope Boundary**: When an external CLI (Codex, Copilot, Gemini, Claude Code) completes delegated work and returns session context, the data must flow through 010's generate-context.js pipeline to produce a memory file.
+**Dependencies**: 014-spec-descriptions
+**Deliverables**: Runtime hard-fail for explicit JSON-mode input errors; nextSteps/next_steps normalization through to NEXT_ACTION
+<!-- /ANCHOR:phase-context -->
+
 <!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
@@ -66,13 +76,13 @@ Ensure the outsourced agent handback protocol produces saves that survive the fu
 - Documentation of post-010 pipeline gates affecting outsourced saves
 - Snake_case field acceptance in the handback protocol
 
-### Out Of Scope
+### Out of Scope
 
 - Changing 010's sufficiency or contamination gate logic (those are parent-spec concerns)
 - Adding new CLI backends
 - Modifying native capture extractors (outsourced saves use JSON-mode, not native capture)
 
-### Files Changed
+### Files to Change
 
 | Path | Change Type | Purpose |
 |------|-------------|---------|

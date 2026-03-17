@@ -1,7 +1,9 @@
 ---
-title: "Implementation Summary [template:level_2/implementation-summary.md]"
+title: "Implementation Summary: Session Source Validation"
+description: "Implementation summary for session source validation phase of perfect session capturing"
+trigger_phrases: ["implementation", "summary", "session", "validation"]
 ---
-# Implementation Summary
+# Implementation Summary: Session Source Validation
 
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->

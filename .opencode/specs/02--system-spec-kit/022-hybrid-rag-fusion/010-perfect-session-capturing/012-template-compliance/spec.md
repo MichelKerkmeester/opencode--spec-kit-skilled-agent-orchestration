@@ -23,6 +23,7 @@ contextType: "general"
 | **Priority** | P1 |
 | **Status** | Complete |
 | **Created** | 2026-03-16 |
+| **Completed** | 2026-03-16 |
 | **Branch** | `main` |
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
@@ -35,6 +36,16 @@ contextType: "general"
 <!-- /ANCHOR:metadata -->
 
 ---
+
+<!-- ANCHOR:phase-context -->
+### Phase Context
+
+This is **Phase 12** of the Perfect Session Capturing specification.
+
+**Scope Boundary**: The deferred R-12 work still relied on draft assumptions that do not match the current repo.
+**Dependencies**: 011-session-source-validation
+**Deliverables**: Added one shared runtime helper that derives required headers and anchors from templates; promoted TEMPLATE_HEADERS structural failures to normal validator errors
+<!-- /ANCHOR:phase-context -->
 
 <!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE

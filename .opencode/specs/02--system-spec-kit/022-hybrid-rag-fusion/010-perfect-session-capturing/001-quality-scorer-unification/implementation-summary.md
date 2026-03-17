@@ -1,7 +1,9 @@
 ---
-title: "Implementation Summary [template:level_2/implementation-summary.md]"
+title: "Implementation Summary: Quality Scorer Unification"
+description: "Implementation summary for quality scorer unification phase of perfect session capturing"
+trigger_phrases: ["implementation", "summary", "quality", "scorer"]
 ---
-# Implementation Summary
+# Implementation Summary: Quality Scorer Unification
 
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->

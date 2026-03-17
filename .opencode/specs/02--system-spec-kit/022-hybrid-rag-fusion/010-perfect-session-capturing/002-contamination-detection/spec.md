@@ -18,6 +18,7 @@ description: "Strengthen contamination detection to produce measurable score pen
 | **Priority** | P1 |
 | **Status** | Complete |
 | **Created** | 2026-03-16 |
+| **Completed** | 2026-03-16 |
 | **Branch** | `main` |
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
@@ -30,6 +31,16 @@ description: "Strengthen contamination detection to produce measurable score pen
 <!-- /ANCHOR:metadata -->
 
 ---
+
+<!-- ANCHOR:phase-context -->
+### Phase Context
+
+This is **Phase 2** of the Perfect Session Capturing specification.
+
+**Scope Boundary**: Three guard layers exist for contamination detection (lexical scrubber, prompt-quality pipeline, post-render V8/V9), but they run on different payloads and have significant blind spots.
+**Dependencies**: 001-quality-scorer-unification
+**Deliverables**: Extended V8 to inspect frontmatter and detect non-dominant foreign-spec signals; broadened V9 pattern set beyond current 3 generic title patterns
+<!-- /ANCHOR:phase-context -->
 
 <!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE

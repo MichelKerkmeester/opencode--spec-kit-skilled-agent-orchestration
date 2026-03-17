@@ -31,6 +31,16 @@ description: "Validate native session-source capture behavior across all 5 CLIs.
 
 ---
 
+<!-- ANCHOR:phase-context -->
+### Phase Context
+
+This is **Phase 11** of the Perfect Session Capturing specification.
+
+**Scope Boundary**: Transcript selection uses filesystem mtime as a proxy for "current session."
+**Dependencies**: 010-integration-testing
+**Deliverables**: Added expectedSessionId parameter and session hint object to captureClaudeConversation; implemented four-step fallback resolution
+<!-- /ANCHOR:phase-context -->
+
 <!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 

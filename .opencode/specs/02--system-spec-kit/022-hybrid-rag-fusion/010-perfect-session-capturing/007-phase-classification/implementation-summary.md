@@ -1,7 +1,9 @@
 ---
-title: "Implementation Summary [template:level_2/implementation-summary.md]"
+title: "Implementation Summary: Phase Classification"
+description: "Implementation summary for phase classification phase of perfect session capturing"
+trigger_phrases: ["implementation", "summary", "phase", "classification"]
 ---
-# Implementation Summary
+# Implementation Summary: Phase Classification
 
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->

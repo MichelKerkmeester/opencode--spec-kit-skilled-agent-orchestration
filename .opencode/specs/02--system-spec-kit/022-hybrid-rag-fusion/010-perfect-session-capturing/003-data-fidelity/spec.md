@@ -18,6 +18,7 @@ description: "Preserve normalized data fidelity with visible drop reporting thro
 | **Priority** | P0 |
 | **Status** | Complete |
 | **Created** | 2026-03-16 |
+| **Completed** | 2026-03-16 |
 | **Branch** | `main` |
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
@@ -30,6 +31,16 @@ description: "Preserve normalized data fidelity with visible drop reporting thro
 <!-- /ANCHOR:metadata -->
 
 ---
+
+<!-- ANCHOR:phase-context -->
+### Phase Context
+
+This is **Phase 3** of the Perfect Session Capturing specification.
+
+**Scope Boundary**: Normalization is lossy at multiple pipeline boundaries.
+**Dependencies**: 002-contamination-detection
+**Deliverables**: Preserved ACTION/_provenance/_synthetic metadata fields through FILES normalization; coerced object-based facts to strings instead of dropping them
+<!-- /ANCHOR:phase-context -->
 
 <!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE

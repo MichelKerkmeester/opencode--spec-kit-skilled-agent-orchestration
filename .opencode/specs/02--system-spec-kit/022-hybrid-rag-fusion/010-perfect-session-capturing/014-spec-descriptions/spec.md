@@ -41,6 +41,16 @@ contextType: "general"
 
 ---
 
+<!-- ANCHOR:phase-context -->
+### Phase Context
+
+This is **Phase 14** of the Perfect Session Capturing specification.
+
+**Scope Boundary**: The centralized specs/descriptions.json stores all spec folder descriptions in a single file, creating three problems.
+**Dependencies**: 013-auto-detection-fixes
+**Deliverables**: Per-folder description.json generation, reading, staleness detection, and atomic write; collision-resistant slug generation via ensureUniqueMemoryFilename()
+<!-- /ANCHOR:phase-context -->
+
 <!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
@@ -76,14 +86,14 @@ Give each spec folder its own `description.json` containing identity metadata (`
 - Aggregate cache rebuilt from per-folder files with preference over spec.md extraction
 - Backward compatibility with existing `descriptions.json` consumers
 
-### Out Of Scope
+### Out of Scope
 
 - Changing the memory MCP server's search/indexing pipeline beyond the description discovery layer
 - Migrating existing centralized data (backward compat maintained during transition)
 - Changing the memory anchor format or template system
 - Adding `triggerPhrases` to the `PerFolderDescription` schema (see open questions and known limitations below)
 
-### Files Changed
+### Files to Change
 
 | Path | Change Type | Purpose |
 |------|-------------|---------|

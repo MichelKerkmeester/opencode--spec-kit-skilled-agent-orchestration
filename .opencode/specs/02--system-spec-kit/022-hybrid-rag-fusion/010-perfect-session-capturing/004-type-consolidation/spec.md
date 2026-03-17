@@ -31,6 +31,16 @@ description: "Consolidate canonical shared types (FileChange, DecisionRecord, et
 
 ---
 
+<!-- ANCHOR:phase-context -->
+### Phase Context
+
+This is **Phase 4** of the Perfect Session Capturing specification.
+
+**Scope Boundary**: Canonical typing is partial and inverted.
+**Dependencies**: 003-data-fidelity
+**Deliverables**: Canonicalized FileChange/ObservationDetailed/ToolCounts/SpecFileEntry in session-types.ts; explicitly modeled SessionData fields
+<!-- /ANCHOR:phase-context -->
+
 <!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 

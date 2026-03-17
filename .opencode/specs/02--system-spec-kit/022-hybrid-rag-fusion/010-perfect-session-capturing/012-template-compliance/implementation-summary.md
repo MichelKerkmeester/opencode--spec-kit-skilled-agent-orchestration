@@ -1,12 +1,12 @@
 ---
-title: "Implementation Summary [template:level_2/implementation-summary.md]"
+title: "Implementation Summary: Template Compliance"
 description: "Live template compliance now comes from the current templates, not draft sidecar files."
 trigger_phrases:
   - "template compliance"
 importance_tier: "high"
 contextType: "general"
 ---
-# Implementation Summary
+# Implementation Summary: Template Compliance
 
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->

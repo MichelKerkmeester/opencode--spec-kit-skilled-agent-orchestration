@@ -29,9 +29,9 @@ contextType: "general"
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] Requirements documented in `spec.md` [EVIDENCE: Phase-016 spec rewritten on 2026-03-17 with REQ-001 through REQ-006 and SC-001 through SC-004.]
-- [x] CHK-002 [P0] Technical approach defined in `plan.md` [EVIDENCE: `plan.md` now includes Technical Context, phase breakdown, testing strategy, dependencies, and rollback plan.]
-- [x] CHK-003 [P1] Dependencies identified and available [EVIDENCE: Phase 002, 006, and 007 seams were reverified in the live code before edits.]
+- [x] CHK-001 [P0] Requirements documented in `spec.md` [Evidence: Phase-016 spec rewritten on 2026-03-17 with REQ-001 through REQ-006 and SC-001 through SC-004.]
+- [x] CHK-002 [P0] Technical approach defined in `plan.md` [Evidence: `plan.md` now includes Technical Context, phase breakdown, testing strategy, dependencies, and rollback plan.]
+- [x] CHK-003 [P1] Dependencies identified and available [Evidence: Phase 002, 006, and 007 seams were reverified in the live code before edits.]
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -39,10 +39,10 @@ contextType: "general"
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [x] CHK-010 [P0] Parity regression coverage added for the intended public/runtime behavior [EVIDENCE: `phase-classification.vitest.ts`, `content-filter-parity.vitest.ts`, and `runtime-memory-inputs.vitest.ts` now assert aliasing, noise filtering, provenance, and `view` title behavior.]
-- [x] CHK-011 [P0] No runtime code drift required beyond the shipped parity behavior [EVIDENCE: The three phase-016 runtime seams already contained the target behavior; only focused tests were added.]
-- [x] CHK-012 [P1] Existing provenance-aware scoring contract remains intact [EVIDENCE: `description-enrichment.vitest.ts` passed with 5/5 tests on 2026-03-17.]
-- [x] CHK-013 [P1] Code follows project patterns [EVIDENCE: New parity test file uses the same Vitest style and shared helper imports as the surrounding scripts test suite.]
+- [x] CHK-010 [P0] Parity regression coverage added for the intended public/runtime behavior [Evidence: `phase-classification.vitest.ts`, `content-filter-parity.vitest.ts`, and `runtime-memory-inputs.vitest.ts` now assert aliasing, noise filtering, provenance, and `view` title behavior.]
+- [x] CHK-011 [P0] No runtime code drift required beyond the shipped parity behavior [Evidence: The three phase-016 runtime seams already contained the target behavior; only focused tests were added.]
+- [x] CHK-012 [P1] Existing provenance-aware scoring contract remains intact [Evidence: `description-enrichment.vitest.ts` passed with 5/5 tests on 2026-03-17.]
+- [x] CHK-013 [P1] Code follows project patterns [Evidence: New parity test file uses the same Vitest style and shared helper imports as the surrounding scripts test suite.]
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -50,10 +50,10 @@ contextType: "general"
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-020 [P0] All acceptance criteria met [EVIDENCE: SC-001 through SC-004 are covered by focused Vitest, baseline extractor-loader verification, workspace typecheck/build, and `validate.sh`.]
-- [x] CHK-021 [P0] Manual or direct verification complete [EVIDENCE: `node mcp_server/node_modules/vitest/vitest.mjs run tests/phase-classification.vitest.ts tests/content-filter-parity.vitest.ts tests/runtime-memory-inputs.vitest.ts tests/description-enrichment.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts` passed with 4 files and 44 tests on 2026-03-17.]
-- [x] CHK-022 [P1] Edge cases tested [EVIDENCE: Content-filter parity tests cover Copilot lifecycle markers, Codex reasoning markers, and empty XML wrappers; runtime-memory inputs cover `view` title shortening and CLI-derived provenance.]
-- [x] CHK-023 [P1] Error scenarios validated [EVIDENCE: `runtime-memory-inputs.vitest.ts` still passed its explicit data-file failure and native fallback scenarios (28/28).]
+- [x] CHK-020 [P0] All acceptance criteria met [Evidence: SC-001 through SC-004 are covered by focused Vitest, baseline extractor-loader verification, workspace typecheck/build, and `validate.sh`.]
+- [x] CHK-021 [P0] Manual or direct verification complete [Evidence: `node mcp_server/node_modules/vitest/vitest.mjs run tests/phase-classification.vitest.ts tests/content-filter-parity.vitest.ts tests/runtime-memory-inputs.vitest.ts tests/description-enrichment.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts` passed with 4 files and 44 tests on 2026-03-17.]
+- [x] CHK-022 [P1] Edge cases tested [Evidence: Content-filter parity tests cover Copilot lifecycle markers, Codex reasoning markers, and empty XML wrappers; runtime-memory inputs cover `view` title shortening and CLI-derived provenance.]
+- [x] CHK-023 [P1] Error scenarios validated [Evidence: `runtime-memory-inputs.vitest.ts` still passed its explicit data-file failure and native fallback scenarios (28/28).]
 <!-- /ANCHOR:testing -->
 
 ---
@@ -61,9 +61,9 @@ contextType: "general"
 <!-- ANCHOR:security -->
 ## Security
 
-- [x] CHK-030 [P0] No hardcoded secrets [EVIDENCE: Changes are limited to tests and phase-016 documentation; no credentials or secret-bearing config was added.]
-- [x] CHK-031 [P0] Input validation behavior preserved [EVIDENCE: `runtime-memory-inputs.vitest.ts` continued to pass path-traversal and explicit data-file validation failures after the parity additions.]
-- [x] CHK-032 [P1] No new auth/authz surface introduced [EVIDENCE: Phase 016 remained inside scripts/test/documentation seams with no API or backend contract changes.]
+- [x] CHK-030 [P0] No hardcoded secrets [Evidence: Changes are limited to tests and phase-016 documentation; no credentials or secret-bearing config was added.]
+- [x] CHK-031 [P0] Input validation behavior preserved [Evidence: `runtime-memory-inputs.vitest.ts` continued to pass path-traversal and explicit data-file validation failures after the parity additions.]
+- [x] CHK-032 [P1] No new auth/authz surface introduced [Evidence: Phase 016 remained inside scripts/test/documentation seams with no API or backend contract changes.]
 <!-- /ANCHOR:security -->
 
 ---
@@ -71,9 +71,9 @@ contextType: "general"
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-040 [P1] Spec/plan/tasks synchronized [EVIDENCE: All five phase-016 markdown artifacts were rewritten on 2026-03-17 to describe the reopened parity-proof pass and final verified state.]
-- [x] CHK-041 [P1] Code comments adequate [EVIDENCE: No new production code paths were added; existing inline comments on the parity seams remain unchanged and sufficient.]
-- [x] CHK-042 [P2] Phase completion evidence recorded in `implementation-summary.md` [EVIDENCE: `implementation-summary.md` now includes anchored metadata, delivery story, decisions, verification table, and limitations.]
+- [x] CHK-040 [P1] Spec/plan/tasks synchronized [Evidence: All five phase-016 markdown artifacts were rewritten on 2026-03-17 to describe the reopened parity-proof pass and final verified state.]
+- [x] CHK-041 [P1] Code comments adequate [Evidence: No new production code paths were added; existing inline comments on the parity seams remain unchanged and sufficient.]
+- [x] CHK-042 [P2] Phase completion evidence recorded in `implementation-summary.md` [Evidence: `implementation-summary.md` now includes anchored metadata, delivery story, decisions, verification table, and limitations.]
 <!-- /ANCHOR:docs -->
 
 ---
@@ -81,9 +81,9 @@ contextType: "general"
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [x] CHK-050 [P1] Temp files in `scratch/` only [EVIDENCE: No new temp artifacts were created in the phase folder during this pass.]
-- [x] CHK-051 [P1] `scratch/` cleaned before completion [EVIDENCE: The phase folder remains limited to canonical docs plus the existing `memory/` and `scratch/` directories.]
-- [x] CHK-052 [P2] Findings saved to `memory/` when applicable [EVIDENCE: No new memory save was required for this doc-and-test hardening pass.]
+- [x] CHK-050 [P1] Temp files in `scratch/` only [Evidence: No new temp artifacts were created in the phase folder during this pass.]
+- [x] CHK-051 [P1] `scratch/` cleaned before completion [Evidence: The phase folder remains limited to canonical docs plus the existing `memory/` and `scratch/` directories.]
+- [x] CHK-052 [P2] Findings saved to `memory/` when applicable [Evidence: No new memory save was required for this doc-and-test hardening pass.]
 <!-- /ANCHOR:file-org -->
 
 ---

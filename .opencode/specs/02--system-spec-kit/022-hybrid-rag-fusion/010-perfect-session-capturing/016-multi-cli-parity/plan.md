@@ -25,7 +25,7 @@ contextType: "general"
 | **Language/Stack** | TypeScript, Node.js |
 | **Framework** | system-spec-kit scripts workspace |
 | **Storage** | None for this phase; test and documentation updates only |
-| **Testing** | Vitest, Node.js smoke harness, `tsc --build` |
+| **Testing** | Vitest, Node.js smoke runner, `tsc --build` |
 
 ### Overview
 Phase 016 was reopened because its runtime behavior was already present in code, but the proof and documentation were incomplete. This pass keeps the runtime scope narrow, adds direct parity regression tests around the shipped behavior, and rewrites the phase folder so Level 2 validation reflects the real completed state.
