@@ -15,7 +15,7 @@ title: "Feature Specification: Auto-Detection Fixes"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | Draft |
+| **Status** | Completed |
 | **Created** | 2026-03-16 |
 | **Branch** | `main` |
 | **Parent** | [010-perfect-session-capturing](../spec.md) |

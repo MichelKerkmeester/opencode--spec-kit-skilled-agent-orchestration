@@ -12,6 +12,27 @@ describe('phase classification', () => {
     expect(classifyConversationPhase([{ tool: 'Grep' }], 'grep in debug output while fixing the error')).toBe('Debugging');
   });
 
+  it('normalizes Copilot view tool names to canonical read scoring', () => {
+    expect(classifyConversationPhase([{ tool: 'View' }], 'Okay')).toBe('Research');
+
+    const result = classifyConversationExchanges([
+      {
+        id: 'exchange-1',
+        messageIndexes: [0],
+        observationIndexes: [],
+        prompt: 'Okay',
+        narratives: [],
+        factTexts: [],
+        toolNames: ['View'],
+        observationTypes: [],
+        startTimestamp: '2026-03-16T10:00:00.000Z',
+        endTimestamp: '2026-03-16T10:00:01.000Z',
+      },
+    ]);
+
+    expect(result.phases[0]?.PHASE_NAME).toBe('Research');
+  });
+
   it('keeps non-contiguous phase returns as separate timeline segments', () => {
     const result = classifyConversationExchanges([
       {
@@ -63,6 +84,9 @@ describe('phase classification', () => {
     expect(detectObservationType({ type: 'observation', narrative: 'Optimized performance benchmark latency' })).toBe('performance');
   });
 
+  // Branching Investigation requires non-adjacent clusters with semantic overlap
+  // (cosine >= 0.45 or overlap >= 0.5). Repeated "adapter cache" terms across
+  // exchanges 1 and 3 produce the adjacency-graph edge that triggers this pattern.
   it('derives each supported flow pattern', () => {
     const branching = classifyConversationExchanges([
       {

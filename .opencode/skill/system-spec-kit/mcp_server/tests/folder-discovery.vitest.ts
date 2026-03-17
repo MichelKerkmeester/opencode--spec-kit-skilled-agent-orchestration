@@ -1034,6 +1034,51 @@ describe('T009 extractDescription CRLF frontmatter (C7)', () => {
   });
 });
 
+/* ───────────────────────────────────────────────────────────────
+   P1-4: loadPerFolderDescription with specId=""
+----------------------------------------------------------------*/
+
+describe('P1-4: loadPerFolderDescription with empty specId', () => {
+  let tmpDirP14: string;
+
+  beforeEach(() => {
+    tmpDirP14 = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-p14-'));
+  });
+
+  afterEach(() => {
+    try {
+      fs.rmSync(tmpDirP14, { recursive: true, force: true });
+    } catch { /* best effort */ }
+  });
+
+  it('derives folderSlug from folder name when specId is empty', () => {
+    // Create a folder without numeric prefix
+    const folderDir = path.join(tmpDirP14, 'my-auth-spec');
+    fs.mkdirSync(folderDir, { recursive: true });
+
+    // Write a description.json with specId="" (empty string)
+    const descContent = {
+      specFolder: 'my-auth-spec',
+      description: 'Auth spec description',
+      keywords: ['auth', 'spec'],
+      lastUpdated: new Date().toISOString(),
+      specId: '',
+      folderSlug: '',
+      parentChain: [],
+      memorySequence: 0,
+      memoryNameHistory: [],
+    };
+    fs.writeFileSync(path.join(folderDir, 'description.json'), JSON.stringify(descContent));
+
+    const result = loadPerFolderDescription(folderDir);
+    expect(result).not.toBeNull();
+    // F-36 upgrade-on-read: empty specId should stay empty (no numeric prefix on folder name)
+    expect(result!.specId).toBe('');
+    // F-36 upgrade-on-read: empty folderSlug should be derived from folder name
+    expect(result!.folderSlug).toBe('my-auth-spec');
+  });
+});
+
 describe('T009 isPerFolderDescriptionStale', () => {
   let tmpDir4: string;
 

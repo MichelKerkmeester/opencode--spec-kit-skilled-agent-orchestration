@@ -19,7 +19,10 @@ export interface SessionActivitySignal {
 
 const TOOL_FACT_RE = /\btool:\s*([a-z_ -]+)/i;
 const TOOL_PATH_RE = /\b(?:file|path):\s*([^\s,;]+)/ig;
-const TOOL_READ_SET = new Set(['read', 'grep', 'glob', 'bash', 'view', 'task']);
+// REQ-004: 0.2 boost for read-like tools only (grep, glob are read-equivalent)
+const TOOL_READ_SET = new Set(['read', 'grep', 'glob']);
+// Inspect-like tools get a lower boost (0.1) to avoid inflating affinity signals
+const TOOL_INSPECT_SET = new Set(['bash', 'view', 'task']);
 const TOOL_WRITE_SET = new Set(['edit', 'write']);
 const ACTIVITY_STOPWORDS = new Set([
   'system',
@@ -208,6 +211,10 @@ function scoreToolPath(toolType: string | null): number {
 
   if (TOOL_READ_SET.has(toolType)) {
     return 0.2;
+  }
+
+  if (TOOL_INSPECT_SET.has(toolType)) {
+    return 0.1;
   }
 
   return 0;

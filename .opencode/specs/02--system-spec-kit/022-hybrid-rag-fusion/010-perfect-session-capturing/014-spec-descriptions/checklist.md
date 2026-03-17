@@ -2,7 +2,7 @@
 title: "Spec Descriptions Checklist"
 status: "complete"
 level: 2
-created: "2025-12-01"
+created: "2026-03-08"
 updated: "2026-03-16"
 description: "Verification Date: 2026-03-16"
 trigger_phrases:
@@ -61,7 +61,7 @@ contextType: "general"
 ## TESTING
 
 - [x] CHK-020 [P0] All existing `folder-discovery.vitest.ts` tests pass (no regressions) — latest targeted run passed `folder-discovery.vitest.ts` 92/92, 0 failures [EVIDENCE: `npx vitest run tests/folder-discovery.vitest.ts` passed on 2026-03-16.]
-- [x] CHK-021 [P0] New per-folder description generation tests pass — latest targeted verification passed `npm run lint` plus 150/150 Vitest tests across 5 suites (`folder-discovery`, `folder-discovery-integration`, `workflow-memory-tracking`, `slug-utils-boundary`, `slug-uniqueness`) [EVIDENCE: 2026-03-16 verification passed 142 MCP tests plus 8 scripts tests with `npm run lint` green.]
+- [x] CHK-021 [P0] New per-folder description generation tests pass — latest targeted verification passed `npm run lint` plus 155/155 Vitest tests across 5 suites (`folder-discovery`, `folder-discovery-integration`, `workflow-memory-tracking`, `slug-utils-boundary`, `slug-uniqueness`) [EVIDENCE: 2026-03-16 verification passed 142 MCP tests plus 8 scripts tests with `npm run lint` green.]
 - [x] CHK-022 [P0] Uniqueness test: 10 saves to same folder → 10 unique filenames — targeted run passed `slug-uniqueness.vitest.ts` 8/8, including the 10-identical-input uniqueness test (HELPER-LEVEL — tests the uniqueness function in isolation; does not exercise the full workflow.ts memory-save path. See implementation-summary.md Known Gaps) [EVIDENCE: `slug-uniqueness.vitest.ts` includes the 10-identical-input case and passed on 2026-03-16.]
 - [x] CHK-023 [P1] Per-folder at depth 5+: nested folder gets description.json — verified depth-6 folder (test-fixtures/valid-anchors) has correct description.json [EVIDENCE: nested-folder coverage remains in `folder-discovery-integration.vitest.ts`; recursive discovery still caps at depth 8.]
 - [x] CHK-024 [P1] Stale detection test: edit spec.md → description.json regenerated [EVIDENCE: folder-discovery.ts:219-234 now incorporates description.json mtime; test T046-25 verifies aggregate cache staleness; test T046-25b verifies per-folder stale detection → regeneration → freshness cycle]

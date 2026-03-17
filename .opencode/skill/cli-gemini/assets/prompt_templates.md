@@ -321,7 +321,7 @@ All placeholders used across templates in this file:
 | `[framework]` | Framework name | `React`, `Vue`, `Express`, `FastAPI`, `Jest`, `Vitest` |
 | `[language]` | Programming language | `TypeScript`, `Python`, `Go`, `Rust` |
 | `[format]` | Code format or structure type | `module`, `class`, `component`, `middleware` |
-| `[date]` | Date for time-sensitive queries | `February 2026`, `2026-02-28` |
+| `[date]` | Date for time-sensitive queries | `March 2026`, `2026-03-17` |
 | `[topic]` | Research subject or technology name | `Next.js 15`, `Bun vs Deno`, `React Server Components` |
 
 ### Placeholder Conventions
@@ -380,7 +380,7 @@ When you finish, include a session memory section in your output using EXACTLY t
 - Remaining work
 
 ### Spec Folder
-[spec-folder-name, e.g. 013-outsourced-agent-memory]
+[spec-folder-name, e.g. 015-outsourced-agent-handback]
 <!-- MEMORY_HANDBACK_END -->
 ```
 

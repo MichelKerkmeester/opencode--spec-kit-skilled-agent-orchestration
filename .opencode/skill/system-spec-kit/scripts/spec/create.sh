@@ -161,7 +161,7 @@ while [[ $i -le $# ]]; do
             fi
             i=$((i + 1))
             next_arg="${!i}"
-            # Check if the next argument is another option (starts with --)
+            # Peek ahead: if next arg starts with --, current option has no value — use default
             if [[ "$next_arg" == --* ]]; then
                 echo 'Error: --short-name requires a value' >&2
                 exit 1
@@ -852,7 +852,7 @@ if [[ "$PHASE_MODE" = true ]]; then
         # Generate description.json for child phase
         if [[ -f "$_DESC_SCRIPT" ]]; then
           _phase_name="${_child_folder#*-}"  # strip numeric prefix
-          # Use specs root as base so parentChain includes full ancestry (F6 fix)
+          # Use parent of FEATURE_DIR as base so parentChain includes the parent folder
           if node "$_DESC_SCRIPT" "$_child_path" "$(dirname "$FEATURE_DIR")" \
             --description "Phase ${_i}: ${_phase_name}"; then
             _child_created_files+=("description.json")

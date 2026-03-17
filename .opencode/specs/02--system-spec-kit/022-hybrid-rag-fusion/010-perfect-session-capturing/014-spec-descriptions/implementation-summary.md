@@ -93,9 +93,9 @@ Code hardening: 8 fixes (C1-C8), 3 test fix groups, 13 findings from GPT 5.4 tri
 | folder-discovery | 92 | PASS |
 | folder-discovery-integration | 39 | PASS |
 | workflow-memory-tracking | 5 | PASS |
-| slug-utils-boundary | 6 | PASS |
-| slug-uniqueness | 8 | PASS |
-| **Total** | **150** | **PASS** |
+| slug-utils-boundary | 10 | PASS |
+| slug-uniqueness | 9 | PASS |
+| **Total** | **155** | **PASS** |
 
 **Verification Date**: 2026-03-13
 <!-- /ANCHOR:verification -->

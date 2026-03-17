@@ -514,6 +514,12 @@ async function loadCollectedData(options?: LoadOptions): Promise<LoadedData> {
           error: error.message
         });
         throw new Error(`EXPLICIT_DATA_FILE_LOAD_FAILED: Data file not found: ${dataFile}`);
+      } else if (error instanceof Error && 'code' in error && (error as NodeJS.ErrnoException).code === 'EACCES') {
+        structuredLog('error', 'Permission denied reading data file', {
+          filePath: dataFile,
+          error: error.message
+        });
+        throw new Error(`EXPLICIT_DATA_FILE_LOAD_FAILED: Permission denied: ${dataFile}`);
       } else if (error instanceof SyntaxError) {
         structuredLog('error', 'Invalid JSON in data file', {
           filePath: dataFile,

@@ -61,7 +61,7 @@ Repository-side runtime hardening plus documentation alignment.
 - **`runtime-memory-inputs.vitest.ts`**: Guards the explicit-failure path and next-step persistence behavior.
 - **`outsourced-agent-handback-docs.vitest.ts`**: Keeps the 8 CLI handback docs and the feature catalog aligned on post-010 save-gate guidance.
 - **4 `cli-*` skills + 4 prompt templates**: Tell the caller to extract handback data, redact and scrub it, include richer `FILES` metadata, and stop on explicit JSON-mode failures.
-- **Feature catalog entry `17-outsourced-agent-memory-capture.md`**: Tracks the handback protocol as a current phase `015` concern rather than a stale `013` snapshot.
+- **Feature catalog entry `.opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/17-outsourced-agent-memory-capture.md`**: Tracks the handback protocol as a current phase `015` concern rather than a stale `013` snapshot.
 
 ### Data Flow
 ```text
@@ -95,8 +95,8 @@ Caller prepares /tmp/save-context-data.json
 - [x] Align the feature catalog entry to phase `015` and the post-010 gate contract
 - [x] Add doc-regression coverage for the 8 handback docs plus the catalog entry
 
-### Phase 3: Verification and Reconciliation
-- [x] Rerun the targeted runtime-plus-doc Vitest lane and record the actual `2 files / 28 tests` result
+### Phase 3: Verification and Reconciliation (tasks.md: "Phase 3: Verification" per template)
+- [x] Rerun the targeted runtime-plus-doc Vitest lane and record the actual `2 files / 32 tests` result
 - [x] Verify alignment drift currently reports `244` scanned files, `0 findings`, and `0 warnings`
 - [x] Record current `npm run lint` (`tsc --noEmit`) rerun status as passing evidence
 - [x] Verify fresh JSON-mode handback behavior with one successful write and one thin-payload `INSUFFICIENT_CONTEXT_ABORT`

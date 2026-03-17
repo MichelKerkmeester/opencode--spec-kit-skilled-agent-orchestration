@@ -398,9 +398,54 @@ claude -p "Create a handover document capturing: current state, completed work, 
 ```
 
 <!-- /ANCHOR:specialized_tasks -->
+<!-- ANCHOR:template_variables -->
+
+## 11. TEMPLATE VARIABLES
+
+All placeholders used across templates in this file:
+
+| Variable | Description | Example Values |
+|----------|-------------|----------------|
+| `[file]` | Relative file path | `src/utils/validator.ts`, `lib/api.py` |
+| `[directory]` | Project or module directory | `./src/`, `./packages/core/` |
+| `[description]` | Free-text description of intent or behavior | `"rate-limiting middleware"`, `"Cannot read property of null"` |
+| `[reference-file]` | Reference file for pattern matching | `src/middleware/auth.ts` |
+| `[reference-dir]` | Reference directory for project patterns | `src/services/` |
+| `[requirements]` | Specific requirements or constraints | `"must handle 1000 req/s"`, `"readability and testability"` |
+| `[language]` | Programming language | `TypeScript`, `Python`, `Go`, `Rust` |
+| `[testing framework]` | Test framework name | `Jest`, `Vitest`, `Supertest` |
+| `[categories]` | Classification categories | `syntax/runtime/logic/config/network` |
+| `[items]` | Items to classify | List of error messages, code snippets |
+
+### Placeholder Conventions
+
+- **Single value**: `[file]` - replace with one value
+- **List value**: `[categories]` - replace with comma-separated list
+- **Free text**: `[description]` - replace with natural language
+- **Compound**: Some templates use the same placeholder multiple times for different values (e.g., `[language]` for source and target in translation). Replace each occurrence independently.
+
+---
+
+<!-- /ANCHOR:template_variables -->
+<!-- ANCHOR:related_resources -->
+
+## 12. RELATED RESOURCES
+
+### Parent
+
+- [SKILL.md](../SKILL.md) - Main skill instructions and invocation patterns
+
+### References
+
+- [cli_reference.md](../references/cli_reference.md) - Complete CLI flag and command reference
+- [integration_patterns.md](../references/integration_patterns.md) - Cross-AI orchestration patterns
+- [claude_code_features.md](../references/claude_code_features.md) - Built-in tools, agents, and permission modes
+
+<!-- /ANCHOR:related_resources -->
+
 <!-- ANCHOR:memory_epilogue -->
 
-## 11. MEMORY EPILOGUE
+## 13. MEMORY EPILOGUE
 
 ### Purpose
 
@@ -429,7 +474,7 @@ When you finish, include a session memory section in your output using EXACTLY t
 - Remaining work
 
 ### Spec Folder
-[spec-folder-name, e.g. 013-outsourced-agent-memory]
+[spec-folder-name, e.g. 015-outsourced-agent-handback]
 <!-- MEMORY_HANDBACK_END -->
 ```
 

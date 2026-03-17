@@ -7,7 +7,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { normalizeQualityAbortThreshold } from '../core/config';
 import { collectSessionData } from '../extractors/collect-session-data';
-import { normalizeInputData } from '../utils/input-normalizer';
+import { normalizeInputData, transformOpencodeCapture } from '../utils/input-normalizer';
 
 const captureConversation = vi.fn(async () => null);
 const captureClaudeConversation = vi.fn(async () => null);
@@ -36,17 +36,10 @@ vi.mock('../extractors/gemini-cli-capture', () => ({
 }));
 
 function resetCaptureMocks(): void {
-  captureConversation.mockReset();
-  captureClaudeConversation.mockReset();
-  captureCodexConversation.mockReset();
-  captureCopilotConversation.mockReset();
-  captureGeminiConversation.mockReset();
-
-  captureConversation.mockResolvedValue(null);
-  captureClaudeConversation.mockResolvedValue(null);
-  captureCodexConversation.mockResolvedValue(null);
-  captureCopilotConversation.mockResolvedValue(null);
-  captureGeminiConversation.mockResolvedValue(null);
+  for (const mock of [captureConversation, captureClaudeConversation, captureCodexConversation, captureCopilotConversation, captureGeminiConversation]) {
+    mock.mockReset();
+    mock.mockResolvedValue(null);
+  }
 }
 
 function clearNativeCaptureHintEnv(): void {
@@ -80,7 +73,7 @@ describe('loadCollectedData explicit data-file handling', () => {
 
     await expect(loadCollectedData({
       dataFile: missingFile,
-      specFolderArg: '022-hybrid-rag-fusion/013-outsourced-agent-memory',
+      specFolderArg: '022-hybrid-rag-fusion/015-outsourced-agent-handback',
       })).rejects.toThrow(/EXPLICIT_DATA_FILE_LOAD_FAILED: Data file not found/);
 
       expect(captureConversation).not.toHaveBeenCalled();
@@ -99,7 +92,7 @@ describe('loadCollectedData explicit data-file handling', () => {
 
       await expect(loadCollectedData({
         dataFile: invalidFile,
-        specFolderArg: '022-hybrid-rag-fusion/013-outsourced-agent-memory',
+        specFolderArg: '022-hybrid-rag-fusion/015-outsourced-agent-handback',
       })).rejects.toThrow(/EXPLICIT_DATA_FILE_LOAD_FAILED: Invalid JSON in data file/);
 
       expect(captureConversation).not.toHaveBeenCalled();
@@ -115,7 +108,7 @@ describe('loadCollectedData explicit data-file handling', () => {
   it('rejects validation failures from an explicit dataFile instead of falling back to OpenCode capture', async () => {
     const invalidShapeFile = path.join(os.tmpdir(), `invalid-shape-${Date.now()}.json`);
     await fs.writeFile(invalidShapeFile, JSON.stringify({
-      specFolder: '022-hybrid-rag-fusion/013-outsourced-agent-memory',
+      specFolder: '022-hybrid-rag-fusion/015-outsourced-agent-handback',
       nextSteps: 'not-an-array',
     }), 'utf-8');
 
@@ -124,7 +117,7 @@ describe('loadCollectedData explicit data-file handling', () => {
 
       await expect(loadCollectedData({
         dataFile: invalidShapeFile,
-        specFolderArg: '022-hybrid-rag-fusion/013-outsourced-agent-memory',
+        specFolderArg: '022-hybrid-rag-fusion/015-outsourced-agent-handback',
       })).rejects.toThrow(/EXPLICIT_DATA_FILE_LOAD_FAILED: Failed to load data file/);
 
       expect(captureConversation).not.toHaveBeenCalled();
@@ -134,6 +127,30 @@ describe('loadCollectedData explicit data-file handling', () => {
       expect(captureGeminiConversation).not.toHaveBeenCalled();
     } finally {
       await fs.rm(invalidShapeFile, { force: true });
+    }
+  });
+
+  (process.getuid?.() === 0 ? it.skip : it)('rejects an EACCES permission error from an explicit dataFile instead of falling back to capture', async () => {
+    const permFile = path.join(os.tmpdir(), `perm-denied-${Date.now()}.json`);
+    await fs.writeFile(permFile, JSON.stringify({ specFolder: 'test' }), 'utf-8');
+    await fs.chmod(permFile, 0o000);
+
+    try {
+      const { loadCollectedData } = await import('../loaders/data-loader');
+
+      await expect(loadCollectedData({
+        dataFile: permFile,
+        specFolderArg: '022-hybrid-rag-fusion/015-outsourced-agent-handback',
+      })).rejects.toThrow(/EXPLICIT_DATA_FILE_LOAD_FAILED: Permission denied/);
+
+      expect(captureConversation).not.toHaveBeenCalled();
+      expect(captureClaudeConversation).not.toHaveBeenCalled();
+      expect(captureCodexConversation).not.toHaveBeenCalled();
+      expect(captureCopilotConversation).not.toHaveBeenCalled();
+      expect(captureGeminiConversation).not.toHaveBeenCalled();
+    } finally {
+      await fs.chmod(permFile, 0o644);
+      await fs.rm(permFile, { force: true });
     }
   });
 });
@@ -147,7 +164,7 @@ describe('valid explicit dataFile happy path', () => {
   it('loads and normalizes a valid explicit dataFile successfully', async () => {
     const validFile = path.join(os.tmpdir(), `valid-${Date.now()}.json`);
     await fs.writeFile(validFile, JSON.stringify({
-      specFolder: '022-hybrid-rag-fusion/013-outsourced-agent-memory',
+      specFolder: '022-hybrid-rag-fusion/015-outsourced-agent-handback',
       sessionSummary: 'Completed runtime hardening.',
       nextSteps: ['Update documentation.'],
     }), 'utf-8');
@@ -156,7 +173,7 @@ describe('valid explicit dataFile happy path', () => {
       const { loadCollectedData } = await import('../loaders/data-loader');
       const result = await loadCollectedData({
         dataFile: validFile,
-        specFolderArg: '022-hybrid-rag-fusion/013-outsourced-agent-memory',
+        specFolderArg: '022-hybrid-rag-fusion/015-outsourced-agent-handback',
       });
 
       expect(result._source).toBe('file');
@@ -229,7 +246,7 @@ describe('path traversal security', () => {
 
     await expect(loadCollectedData({
       dataFile: '../../etc/passwd',
-      specFolderArg: '022-hybrid-rag-fusion/013-outsourced-agent-memory',
+      specFolderArg: '022-hybrid-rag-fusion/015-outsourced-agent-handback',
     })).rejects.toThrow(/Security|Path outside allowed directories/);
 
     expect(captureConversation).not.toHaveBeenCalled();
@@ -502,9 +519,61 @@ describe('qualityAbortThreshold normalization', () => {
 });
 
 describe('FILES field transformation', () => {
+  it('marks CLI-derived FILES with tool provenance and titles Copilot view as Read', () => {
+    const transformed = transformOpencodeCapture({
+      exchanges: [
+        {
+          userInput: 'Inspect the Copilot capture parity.',
+          assistantResponse: 'Reviewed the file and prepared an edit.',
+          timestamp: '2026-03-16T10:00:00.000Z',
+        },
+      ],
+      toolCalls: [
+        {
+          tool: 'view',
+          status: 'completed',
+          timestamp: '2026-03-16T10:00:01.000Z',
+          input: {
+            path: '/tmp/spec-kit-project/scripts/loaders/data-loader.ts',
+          },
+          output: 'Inspection complete.',
+        },
+        {
+          tool: 'edit',
+          status: 'completed',
+          timestamp: '2026-03-16T10:00:02.000Z',
+          title: 'Apply parity hardening to the input normalizer.',
+          input: {
+            filePath: '/tmp/spec-kit-project/scripts/utils/input-normalizer.ts',
+          },
+          output: 'Edit applied.',
+        },
+      ],
+      metadata: {},
+      sessionTitle: 'Copilot parity capture',
+      sessionId: 'copilot-parity',
+      capturedAt: '2026-03-16T10:00:00.000Z',
+    }, null, 'copilot-cli-capture');
+
+    expect(transformed.observations).toEqual(expect.arrayContaining([
+      expect.objectContaining({
+        title: 'Read loaders/data-loader.ts',
+        facts: expect.arrayContaining(['Tool: view']),
+      }),
+    ]));
+
+    expect(transformed.FILES).toEqual([
+      {
+        FILE_PATH: '/tmp/spec-kit-project/scripts/utils/input-normalizer.ts',
+        DESCRIPTION: 'Apply parity hardening to the input normalizer.',
+        _provenance: 'tool',
+      },
+    ]);
+  });
+
   it('preserves FILES metadata in structured payloads when present', () => {
     const normalized = normalizeInputData({
-      specFolder: '022-hybrid-rag-fusion/013-outsourced-agent-memory',
+      specFolder: '022-hybrid-rag-fusion/015-outsourced-agent-handback',
       observations: [{
         type: 'feature',
         title: 'Test payload',
@@ -555,7 +624,7 @@ describe('FILES field transformation', () => {
 
   it('keeps FILES backward-compatible when metadata is absent', () => {
     const normalized = normalizeInputData({
-      specFolder: '022-hybrid-rag-fusion/013-outsourced-agent-memory',
+      specFolder: '022-hybrid-rag-fusion/015-outsourced-agent-handback',
       observations: [{
         type: 'feature',
         title: 'Test payload',
@@ -617,7 +686,7 @@ describe('manual next-steps normalization', () => {
 
   it('preserves next_steps for already-structured payloads without duplicating existing next-action facts', async () => {
     const normalized = normalizeInputData({
-      specFolder: '022-hybrid-rag-fusion/013-outsourced-agent-memory',
+      specFolder: '022-hybrid-rag-fusion/015-outsourced-agent-handback',
       observations: [{
         type: 'feature',
         title: 'Structured payload',
@@ -648,7 +717,7 @@ describe('manual next-steps normalization', () => {
 
     const sessionData = await collectSessionData(
       normalized,
-      '022-hybrid-rag-fusion/013-outsourced-agent-memory'
+      '022-hybrid-rag-fusion/015-outsourced-agent-handback'
     );
 
     expect(sessionData.NEXT_ACTION).toBe('Promote the preserved structured next action.');
@@ -666,7 +735,7 @@ describe('manual next-steps normalization', () => {
 
   it('produces no Next Steps observation when nextSteps is an empty array', () => {
     const normalized = normalizeInputData({
-      specFolder: '022-hybrid-rag-fusion/013-outsourced-agent-memory',
+      specFolder: '022-hybrid-rag-fusion/015-outsourced-agent-handback',
       sessionSummary: 'Session with no next steps.',
       nextSteps: [],
     });
@@ -677,7 +746,7 @@ describe('manual next-steps normalization', () => {
 
   it('prefers camelCase nextSteps when both nextSteps and next_steps are present', () => {
     const normalized = normalizeInputData({
-      specFolder: '022-hybrid-rag-fusion/013-outsourced-agent-memory',
+      specFolder: '022-hybrid-rag-fusion/015-outsourced-agent-handback',
       sessionSummary: 'Both fields present.',
       nextSteps: ['camelCase wins.'],
       next_steps: ['snake_case loses.'],
@@ -692,7 +761,7 @@ describe('manual next-steps normalization', () => {
 
   it('documents behavior when the first next step is an empty string', () => {
     const normalized = normalizeInputData({
-      specFolder: '022-hybrid-rag-fusion/013-outsourced-agent-memory',
+      specFolder: '022-hybrid-rag-fusion/015-outsourced-agent-handback',
       sessionSummary: 'Edge case: empty first step.',
       nextSteps: ['', 'Second step is real.'],
     });
@@ -702,5 +771,62 @@ describe('manual next-steps normalization', () => {
       title: 'Next Steps',
       facts: ['Next: ', 'Follow-up: Second step is real.'],
     });
+  });
+});
+
+describe('extractNextAction recentContext regex fallback', () => {
+  it('extracts next action from recentContext learning when observations have no matching next/todo facts', async () => {
+    const normalized = normalizeInputData({
+      specFolder: '022-hybrid-rag-fusion/010-perfect-session-capturing',
+      observations: [{
+        type: 'feature',
+        title: 'Deployment completed',
+        narrative: 'All services deployed to production successfully.',
+        facts: ['Deployed 3 microservices.', 'All health checks passing.'],
+      }],
+      userPrompts: [{
+        prompt: 'Deploy the services to production.',
+        timestamp: '2026-03-17T14:00:00.000Z',
+      }],
+      recentContext: [{
+        request: 'Deploy services',
+        learning: 'After deployment, next: run smoke tests on staging',
+      }],
+    });
+
+    const sessionData = await collectSessionData(
+      normalized,
+      '022-hybrid-rag-fusion/010-perfect-session-capturing',
+    );
+
+    expect(sessionData.NEXT_ACTION).toBe('run smoke tests on staging');
+  });
+
+  it('truncates extractFromRecentContext result to 100 characters', async () => {
+    const longAction = 'A'.repeat(150);
+    const normalized = normalizeInputData({
+      specFolder: '022-hybrid-rag-fusion/010-perfect-session-capturing',
+      observations: [{
+        type: 'feature',
+        title: 'Long action test',
+        narrative: 'Testing truncation boundary.',
+        facts: ['No next/todo facts here.'],
+      }],
+      userPrompts: [{
+        prompt: 'Trigger the truncation path.',
+        timestamp: '2026-03-17T15:00:00.000Z',
+      }],
+      recentContext: [{
+        request: 'Test truncation',
+        learning: `Completed all phases, next: ${longAction}`,
+      }],
+    });
+
+    const sessionData = await collectSessionData(
+      normalized,
+      '022-hybrid-rag-fusion/010-perfect-session-capturing',
+    );
+
+    expect(sessionData.NEXT_ACTION).toHaveLength(100);
   });
 });

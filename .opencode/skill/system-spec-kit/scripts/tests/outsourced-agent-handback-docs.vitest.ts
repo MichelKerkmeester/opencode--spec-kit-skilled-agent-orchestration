@@ -38,6 +38,9 @@ describe('outsourced agent handback docs', () => {
       expect(content, `${docPath} should recommend ACTION metadata`).toContain('ACTION');
       expect(content, `${docPath} should recommend MODIFICATION_MAGNITUDE metadata`).toContain('MODIFICATION_MAGNITUDE');
       expect(content, `${docPath} should recommend provenance metadata`).toContain('_provenance');
+      expect(content, `${docPath} should document redact-and-scrub guidance`).toMatch(/[Rr]edact/);
+      expect(content, `${docPath} should document scrub guidance`).toMatch(/[Ss]crub/);
+      expect(content, `${docPath} should document nextSteps field`).toContain('nextSteps');
     }
   });
 
@@ -55,6 +58,7 @@ describe('outsourced agent handback docs', () => {
       expect(content, `${docPath} should recommend ACTION metadata`).toContain('ACTION');
       expect(content, `${docPath} should recommend MODIFICATION_MAGNITUDE metadata`).toContain('MODIFICATION_MAGNITUDE');
       expect(content, `${docPath} should recommend provenance metadata`).toContain('_provenance');
+      expect(content, `${docPath} should include nextSteps in payload example`).toContain('"nextSteps"');
     }
   });
 

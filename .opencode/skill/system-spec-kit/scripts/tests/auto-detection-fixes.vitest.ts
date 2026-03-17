@@ -9,6 +9,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { buildSessionActivitySignal } from '../extractors/session-activity-signal';
 import { extractDecisions } from '../extractors/decision-extractor';
 import { extractBlockers } from '../extractors/session-extractor';
+import { TEST_HELPERS } from '../spec-folder/folder-detector';
 import { buildRichSessionData } from './fixtures/session-data-factory';
 
 const TEMPLATE_DIR = path.resolve(
@@ -263,28 +264,58 @@ describe.sequential('phase 013 auto-detection fixes', () => {
     expect(signal.toolCallPaths).toHaveLength(2);
     expect(signal.gitChangedFiles).toHaveLength(1);
     expect(signal.transcriptMentions).toHaveLength(2);
-    expect(signal.confidenceBoost).toBeCloseTo(0.85, 3);
+    // Derivation: Read(0.2) + Edit(0.3) + gitChanged(0.25) + transcriptMentions(2 × 0.1) = 0.95
+    expect(signal.confidenceBoost).toBeCloseTo(0.95, 3);
   });
 
-  it('suppresses observation-derived decision duplicates when manual decisions exist', async () => {
+  it('suppresses observation-derived decision duplicates when manual decisions exist (SC-002: 4+4 → 4)', async () => {
+    const manualTitles = [
+      'Use git-status as a ranking signal for auto-detection.',
+      'Narrow TOOL_READ_SET to exclude bash/task.',
+      'Add parent-affinity boost for >3 active children.',
+      'Use filesystem fallback when tree-thinning is empty.',
+    ];
     const result = await extractDecisions({
       SPEC_FOLDER: '013-auto-detection-fixes',
-      _manualDecisions: [
-        'Use git-status as a ranking signal for auto-detection.',
-      ],
+      _manualDecisions: manualTitles,
+      observations: manualTitles.map((title) => ({
+        type: 'decision' as const,
+        title,
+        narrative: `Observation duplicate of: ${title}`,
+        facts: ['Option A: chosen', 'Rationale: auto-extracted duplicate'],
+      })),
+      userPrompts: [],
+    });
+
+    // SC-002: 4 manual decisions produce exactly 4 records, not 8
+    expect(result.DECISION_COUNT).toBe(4);
+    expect(result.DECISIONS).toHaveLength(4);
+  });
+
+  it('preserves observation decisions when no manual decisions exist', async () => {
+    const result = await extractDecisions({
+      SPEC_FOLDER: '013-auto-detection-fixes',
+      _manualDecisions: [],
       observations: [
         {
-          type: 'decision',
-          title: 'Use git-status as a ranking signal for auto-detection.',
-          narrative: 'Selected git-status because changed spec files are the strongest signal.',
-          facts: ['Option A: git-status', 'Rationale: Changed spec files directly reflect current work'],
+          type: 'decision' as const,
+          title: 'Use in-memory cache for git status.',
+          narrative: 'Chose caching to avoid repeated shell calls.',
+          facts: ['Option A: in-memory cache', 'Rationale: avoids repeated shell calls'],
+        },
+        {
+          type: 'decision' as const,
+          title: 'Narrow TOOL_READ_SET scope.',
+          narrative: 'Decided to remove bash/task from read-equivalent set.',
+          facts: ['Option A: narrow set', 'Rationale: spec says 0.2 for Read only'],
         },
       ],
       userPrompts: [],
     });
 
-    expect(result.DECISION_COUNT).toBe(1);
-    expect(result.DECISIONS).toHaveLength(1);
+    // No manual decisions → observation decisions are preserved
+    expect(result.DECISION_COUNT).toBe(2);
+    expect(result.DECISIONS).toHaveLength(2);
   });
 
   it('rejects structural blocker artifacts and keeps real blocker text', () => {
@@ -370,4 +401,48 @@ describe.sequential('phase 013 auto-detection fixes', () => {
     expect(content).toContain('  caused_by:');
     expect(content).toContain('    - "memory-001"');
   }, 30_000);
+
+  it('marks tied git-status candidates as low confidence (Priority 2.7 fall-through guard)', () => {
+    const now = Date.now();
+    const confidence = TEST_HELPERS.assessGitStatusConfidence([
+      { path: '/specs/02--system/022-rag/010-capturing/001-child-a', mtimeMs: now, gitStatusCount: 5 },
+      { path: '/specs/02--system/022-rag/010-capturing/002-child-b', mtimeMs: now, gitStatusCount: 5 },
+    ]);
+
+    expect(confidence.lowConfidence).toBe(true);
+    expect(confidence.reason).toContain('tie');
+  });
+
+  it('allows clear git-status winner through Priority 2.7 without falling through', () => {
+    const now = Date.now();
+    const confidence = TEST_HELPERS.assessGitStatusConfidence([
+      { path: '/specs/02--system/022-rag/010-capturing/001-winner', mtimeMs: now, gitStatusCount: 10 },
+      { path: '/specs/02--system/022-rag/010-capturing/002-loser', mtimeMs: now, gitStatusCount: 2 },
+    ]);
+
+    expect(confidence.lowConfidence).toBe(false);
+    expect(confidence.reason).toContain('clear');
+  });
+
+  it('marks tied session-activity candidates as low confidence (Priority 3.5 fall-through guard)', () => {
+    const now = Date.now();
+    const confidence = TEST_HELPERS.assessSessionActivityConfidence([
+      { path: '/specs/02--system/022-rag/010-capturing/001-child-a', mtimeMs: now, sessionActivityBoost: 0.8, sessionActivitySignalCount: 4 },
+      { path: '/specs/02--system/022-rag/010-capturing/002-child-b', mtimeMs: now, sessionActivityBoost: 0.8, sessionActivitySignalCount: 4 },
+    ]);
+
+    expect(confidence.lowConfidence).toBe(true);
+    expect(confidence.reason).toContain('tie');
+  });
+
+  it('allows clear session-activity winner through Priority 3.5 without falling through', () => {
+    const now = Date.now();
+    const confidence = TEST_HELPERS.assessSessionActivityConfidence([
+      { path: '/specs/02--system/022-rag/010-capturing/001-winner', mtimeMs: now, sessionActivityBoost: 0.9, sessionActivitySignalCount: 6 },
+      { path: '/specs/02--system/022-rag/010-capturing/002-loser', mtimeMs: now, sessionActivityBoost: 0.3, sessionActivitySignalCount: 2 },
+    ]);
+
+    expect(confidence.lowConfidence).toBe(false);
+    expect(confidence.reason).toContain('clear');
+  });
 });

@@ -1,6 +1,6 @@
-// ---------------------------------------------------------------
+// ───────────────────────────────────────────────────────────────
 // MODULE: Slug Utils
-// ---------------------------------------------------------------
+// ───────────────────────────────────────────────────────────────
 
 // ───────────────────────────────────────────────────────────────
 // 1. SLUG UTILS
@@ -21,6 +21,9 @@ const GENERIC_TASK_SLUGS = new Set([
   'work-session',
   'implementation-and-updates',
 ]);
+
+const MIN_CANDIDATE_LENGTH = 8;
+const DEFAULT_SLUG_MAX_LENGTH = 50;
 
 const CONTAMINATED_NAME_PATTERNS = [
   /^to promote a memory\b/i,
@@ -62,13 +65,19 @@ function hashFallbackSlug(seed: string): string {
   return `session-${digest}`;
 }
 
-/** Normalizes a candidate memory name before slug generation. */
+/**
+ * Normalizes a raw memory name candidate by stripping filename artifacts
+ * (timestamp prefixes, `.md` extensions) and normalizing formatting.
+ *
+ * @param raw - The raw candidate string to normalize.
+ * @returns The cleaned candidate string, or empty string for non-string input.
+ */
 export function normalizeMemoryNameCandidate(raw: string): string {
   if (typeof raw !== 'string') {
     return '';
   }
 
-  return raw
+  let normalized = raw
     .replace(/^#+\s*/, '')
     .replace(/^[-*]\s+/, '')
     .replace(/^(feature\s+)?spec(ification)?:\s*/i, '')
@@ -78,15 +87,32 @@ export function normalizeMemoryNameCandidate(raw: string): string {
     .replace(/\s+/g, ' ')
     .trim()
     .replace(/[\s\-:;,]+$/, '');
+
+  // Strip memory filename artifacts: "DD-MM-YY_HH-MM__content.md" → "content"
+  normalized = normalized.replace(/^\d{2}-\d{2}-\d{2}_\d{2}-\d{2}__/, '');
+  normalized = normalized.replace(/\.md$/i, '');
+
+  return normalized;
 }
 
-/** Converts arbitrary text into a filesystem-safe slug. */
+/**
+ * Converts text to a URL-safe, filesystem-safe slug using Unicode normalization.
+ *
+ * @param text - The input text to slugify (truncated to 200 chars before processing).
+ * @returns A lowercase hyphen-separated slug, or empty string for falsy input.
+ */
 export function slugify(text: string): string {
   if (!text || typeof text !== 'string') return '';
   return toUnicodeSafeSlug(text.slice(0, 200));
 }
 
-/** Returns whether a candidate memory name contains contaminated prompt text. */
+/**
+ * Checks if a memory name candidate contains timestamp or filename artifacts,
+ * tool invocation patterns, or other contaminated prompt text.
+ *
+ * @param candidate - The candidate memory name to check.
+ * @returns `true` if the candidate matches any contamination pattern.
+ */
 export function isContaminatedMemoryName(candidate: string): boolean {
   const normalized = normalizeMemoryNameCandidate(candidate);
   if (normalized.length === 0) {
@@ -96,7 +122,13 @@ export function isContaminatedMemoryName(candidate: string): boolean {
   return CONTAMINATED_NAME_PATTERNS.some((pattern) => pattern.test(normalized));
 }
 
-/** Returns whether a task label is too generic for memory naming. */
+/**
+ * Determines if a task description is too generic to derive a meaningful slug
+ * (e.g., "session-summary", "implementation").
+ *
+ * @param task - The task description string to evaluate.
+ * @returns `true` if the slugified task matches a known generic label.
+ */
 export function isGenericContentTask(task: string): boolean {
   const taskSlug = slugify(normalizeMemoryNameCandidate(task));
   if (taskSlug.length === 0) {
@@ -105,13 +137,19 @@ export function isGenericContentTask(task: string): boolean {
   return GENERIC_TASK_SLUGS.has(taskSlug);
 }
 
-/** Picks the strongest content-derived name from available candidates. */
+/**
+ * Selects the best content name from a list of candidates based on length
+ * and quality heuristics, skipping generic or contaminated entries.
+ *
+ * @param candidates - Ordered list of candidate names (first valid wins).
+ * @returns The best normalized candidate, or empty string if none qualify.
+ */
 export function pickBestContentName(candidates: readonly string[]): string {
   const seen = new Set<string>();
 
   for (const candidate of candidates) {
     const normalized = normalizeMemoryNameCandidate(candidate);
-    if (normalized.length < 8) {
+    if (normalized.length < MIN_CANDIDATE_LENGTH) {
       continue;
     }
 
@@ -131,8 +169,15 @@ export function pickBestContentName(candidates: readonly string[]): string {
   return '';
 }
 
-/** Truncates a slug without cutting through the middle of a word when possible. */
-export function truncateSlugAtWordBoundary(slug: string, max: number = 50): string {
+/**
+ * Truncates a slug at a word boundary (hyphen) to fit within max length,
+ * avoiding mid-word cuts when possible.
+ *
+ * @param slug - The slug string to truncate.
+ * @param max - Maximum allowed length (defaults to DEFAULT_SLUG_MAX_LENGTH).
+ * @returns The truncated slug, or the original if already within bounds.
+ */
+export function truncateSlugAtWordBoundary(slug: string, max: number = DEFAULT_SLUG_MAX_LENGTH): string {
   if (slug.length <= max) return slug;
   const truncated = slug.slice(0, max);
   const lastHyphen = truncated.lastIndexOf('-');
@@ -205,7 +250,15 @@ export function ensureUniqueMemoryFilename(contextDir: string, filename: string)
   throw new Error(`Failed to reserve unique filename for "${filename}" after random fallback attempts`);
 }
 
-/** Generates the final content slug used for memory filenames. */
+/**
+ * Generates a content-appropriate slug from a task description, with fallback
+ * and alternative candidates. Uses hash-based fallback when no candidate qualifies.
+ *
+ * @param task - Primary task description to derive the slug from.
+ * @param fallback - Fallback text used when task and alternatives are insufficient.
+ * @param alternatives - Optional additional candidate strings to consider.
+ * @returns A truncated, word-boundary-aware slug for use in memory filenames.
+ */
 export function generateContentSlug(task: string, fallback: string, alternatives: readonly string[] = []): string {
   const bestCandidate = pickBestContentName([task, ...alternatives]);
   if (bestCandidate.length > 0) {

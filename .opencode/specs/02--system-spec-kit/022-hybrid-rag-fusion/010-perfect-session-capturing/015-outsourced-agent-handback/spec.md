@@ -76,12 +76,12 @@ Ensure the outsourced agent handback protocol produces saves that survive the fu
 | `scripts/extractors/session-extractor.ts` | Modify | `extractNextAction()` reads `Next:` facts into `NEXT_ACTION` |
 | `scripts/tests/runtime-memory-inputs.vitest.ts` | Modify | Regression coverage for explicit failures and next-step persistence |
 | `scripts/tests/outsourced-agent-handback-docs.vitest.ts` | Create | Guard the 8 handback docs and feature catalog against post-010 drift |
-| `skill/cli-codex/SKILL.md` | Modify | Memory Handback Protocol with redact-and-scrub guidance |
-| `skill/cli-copilot/SKILL.md` | Modify | Same |
-| `skill/cli-gemini/SKILL.md` | Modify | Same |
-| `skill/cli-claude-code/SKILL.md` | Modify | Same |
+| `.opencode/skill/cli-codex/SKILL.md` | Modify | Memory Handback Protocol with redact-and-scrub guidance |
+| `.opencode/skill/cli-copilot/SKILL.md` | Modify | Same |
+| `.opencode/skill/cli-gemini/SKILL.md` | Modify | Same |
+| `.opencode/skill/cli-claude-code/SKILL.md` | Modify | Same |
 | 4 prompt_templates.md files | Modify | `MEMORY_HANDBACK_START`/`END` delimiters and extraction guidance |
-| `feature_catalog/13--memory-quality-and-indexing/17-outsourced-agent-memory-capture.md` | Modify | Align the catalog entry to phase `015` and the post-010 gate contract |
+| `.opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/17-outsourced-agent-memory-capture.md` | Modify | Align the catalog entry to phase `015` and the post-010 gate contract |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -120,8 +120,15 @@ Ensure the outsourced agent handback protocol produces saves that survive the fu
 - A representative manual-format JSON handback writes successfully and produces a fresh memory file for phase `015`
 - Thin snake_case JSON payloads fail with `INSUFFICIENT_CONTEXT_ABORT` before file write
 - The targeted verification lane passes with `2` files and `28` tests
-- Alignment drift passes with `244` scanned files and `0` findings
+- Alignment drift passes with `244` scanned files (as of 2026-03-16) and `0` findings
 - Spec validation returns zero errors and zero warnings after the phase artifacts are reconciled
+
+### Acceptance Scenarios
+
+1. **Given** an explicit JSON path that does not exist, **when** `generate-context.js` loads the handback payload, **then** it stops with `EXPLICIT_DATA_FILE_LOAD_FAILED` and does not fall back to native capture.
+2. **Given** a handback payload that uses `next_steps`, **when** normalization runs, **then** the first item becomes `Next: ...`, later items become `Follow-up: ...`, and `NEXT_ACTION` reflects the first item.
+3. **Given** a valid-but-thin handback payload, **when** post-normalization sufficiency runs, **then** the save aborts with `INSUFFICIENT_CONTEXT_ABORT` before any new memory file is written.
+4. **Given** a handback payload that includes content from another spec, **when** post-render contamination checks run, **then** the save aborts with `CONTAMINATION_GATE_ABORT`.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -143,14 +150,71 @@ Ensure the outsourced agent handback protocol produces saves that survive the fu
 
 ---
 
+---
+
+<!-- ANCHOR:nfr -->
+## L2: NON-FUNCTIONAL REQUIREMENTS
+
+### Performance
+- **NFR-P01**: The targeted handback verification lane should stay lightweight enough to run in under a second on local reruns.
+- **NFR-P02**: Handback docs should describe richer payloads without requiring callers to serialize the entire session transcript.
+
+### Security
+- **NFR-S01**: Caller-facing docs must keep redact-and-scrub guidance explicit before `/tmp/save-context-data.json` is written.
+- **NFR-S02**: The handback protocol must not imply fallback to native capture when the explicit JSON path fails to load.
+
+### Reliability
+- **NFR-R01**: All 8 CLI handback docs and the feature catalog must stay aligned on rejection codes and minimum payload guidance.
+- **NFR-R02**: File-backed handbacks must continue to document the distinction between `QUALITY_GATE_ABORT` and non-blocking `QUALITY_GATE_FAIL`.
+<!-- /ANCHOR:nfr -->
+
+---
+
+<!-- ANCHOR:edge-cases -->
+## L2: EDGE CASES
+
+### Data Boundaries
+- Empty or missing explicit JSON file: hard-fail with `EXPLICIT_DATA_FILE_LOAD_FAILED`.
+- Thin handback payload: abort with `INSUFFICIENT_CONTEXT_ABORT` before file write.
+- Cross-spec payload: abort with `CONTAMINATION_GATE_ABORT` before persistence.
+
+### Error Scenarios
+- Valid JSON with low rendered quality: the save can still write successfully while logging `QUALITY_GATE_FAIL` and skipping production indexing.
+- Payloads that already use `user_prompts`, `recent_context`, or `observations`: callers must provide equivalent durable evidence because the manual-format synthesis path is shorter.
+- Legacy caller docs drifting away from the runtime: the dedicated doc Vitest lane blocks silent wording regressions.
+
+### State Transitions
+- `nextSteps` / `next_steps` normalization: first item becomes `Next: ...`, remaining items become `Follow-up: ...`, and `NEXT_ACTION` mirrors the first item.
+- File-backed handback save flow:
+  1. Extract `MEMORY_HANDBACK`, redact and scrub, then write `/tmp/save-context-data.json`.
+  2. `data-loader.ts` validates the explicit JSON and hard-fails on missing or malformed input.
+  3. `input-normalizer.ts` normalizes snake_case fields and persists next-step facts.
+  4. `session-extractor.ts` derives `NEXT_ACTION`, then `workflow.ts` applies sufficiency, contamination, and render-quality checks before write/index behavior is finalized.
+<!-- /ANCHOR:edge-cases -->
+
+---
+
+<!-- ANCHOR:complexity -->
+## L2: COMPLEXITY ASSESSMENT
+
+| Dimension | Score | Notes |
+|-----------|-------|-------|
+| Scope | 16/25 | Touches runtime docs, feature catalog, a new doc-regression test, and five canonical phase artifacts |
+| Risk | 14/25 | Incorrect wording here would mislead every outsourced handback caller about save behavior and rejection handling |
+| Research | 9/20 | Required review of parent `010`, prior phases `001`-`012`, and the existing caller-facing handback docs |
+| **Total** | **39/70** | **Level 2** |
+<!-- /ANCHOR:complexity -->
+
+---
+
 <!-- ANCHOR:questions -->
-## 7. OPEN QUESTIONS & KNOWN LIMITATIONS
+## 10. OPEN QUESTIONS
 
 ### Resolved
 
 - **Q1**: Should explicit JSON errors fall back to native capture? **NO** — hard-fail only.
 - **Q2**: Should `nextSteps` or `next_steps` take priority? **`nextSteps` (camelCase) takes priority** when both present.
-- **Q3**: Should `QUALITY_GATE_ABORT` apply to file-backed saves? **NO** — `workflow.ts` line 1633 exempts `_source === 'file'`.
+- **Q3**: Should `QUALITY_GATE_ABORT` apply to file-backed saves? **NO** — `workflow.ts` line 1656 exempts `_source === 'file'`.
 
 ### Known Limitations
 
@@ -158,68 +222,3 @@ Ensure the outsourced agent handback protocol produces saves that survive the fu
 - **L2**: Native capture mode for external CLIs (when CLI runs in the same workspace) is an alternative path not covered by this protocol. The handback protocol only covers the JSON-mode path.
 - **L3**: Payloads that already use `user_prompts`, `recent_context`, or `observations` bypass parts of the manual-format synthesis path, so callers should provide equivalent durable evidence rather than relying on a single summary string.
 <!-- /ANCHOR:questions -->
-
----
-
-## 8. POST-010 PIPELINE GATES
-
-Understanding which gates apply to outsourced (file-backed) saves vs stateless saves:
-
-| Gate | Applies to File-Backed? | Applies to Stateless? | Rejection Code |
-|------|------------------------|-----------------------|----------------|
-| Input validation | Yes | N/A (no JSON input) | `EXPLICIT_DATA_FILE_LOAD_FAILED` |
-| Alignment check | **No** | Yes | `ALIGNMENT_BLOCK` |
-| Sufficiency evaluation | **Yes** | Yes | `INSUFFICIENT_CONTEXT_ABORT` |
-| Contamination detection | **Yes** | Yes | `CONTAMINATION_GATE_ABORT` |
-| Quality abort | **No** | Yes | `QUALITY_GATE_ABORT` |
-| Non-blocking quality validation | **Yes** | Yes | Warning-only (`QUALITY_GATE_FAIL`) |
-| Stateless enrichment | **No** (early return) | Yes | N/A |
-
-**Key insight**: Outsourced saves bypass stateless alignment and `QUALITY_GATE_ABORT`, but they still hit sufficiency and contamination gates and can still log non-blocking `QUALITY_GATE_FAIL` warnings that skip production indexing. Callers need to provide enough durable evidence for the sufficiency evaluator to pass and enough structured detail for the rendered memory to stay healthy.
-
-### Minimum Viable Payload
-
-For a file-backed save to pass the sufficiency gate, it should include:
-- A specific, non-generic `sessionSummary` (not "Development session" or similar)
-- At least one `FILES` entry with a descriptive `DESCRIPTION` (not "description pending")
-- At least one meaningful observation or recent-context entry
-- Substantive content that would produce non-empty rendered sections
-- `ACTION`, `MODIFICATION_MAGNITUDE`, and `_provenance` when known so quality scoring and later recovery have more durable evidence
-
----
-
-## 9. DATA FLOW
-
-```
-External CLI completes work
-    │
-    ▼
-Extract MEMORY_HANDBACK from response
-    │
-    ▼
-Parse to JSON, redact secrets, scrub PII
-    │
-    ▼
-Write /tmp/save-context-data.json
-    │
-    ▼
-generate-context.js /tmp/save-context-data.json [spec-folder]
-    │
-    ├── data-loader.ts: Load + validate JSON → hard-fail on errors
-    │       │
-    │       ▼
-    ├── input-normalizer.ts: Normalize fields (snake_case → camelCase)
-    │       │                 Persist nextSteps as Next:/Follow-up: facts
-    │       │
-    │       ▼
-    ├── session-extractor.ts: Extract NEXT_ACTION from Next: facts
-    │       │
-    │       ▼
-    ├── workflow.ts: Render memory template
-    │       │
-    │       ├── ✗ CONTAMINATION_GATE_ABORT (cross-spec content)
-    │       ├── ✗ INSUFFICIENT_CONTEXT_ABORT (thin payload)
-    │       │
-    │       ▼
-    └── Write memory file + update description.json sequence
-```

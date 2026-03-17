@@ -1,4 +1,13 @@
-# Verification Checklist: Multi-CLI Parity Fixes
+---
+title: "Verification Checklist: Multi-CLI Parity Hardening"
+description: "Verification Date: 2026-03-17"
+trigger_phrases:
+  - "phase 016 checklist"
+  - "multi-cli parity verification"
+importance_tier: "normal"
+contextType: "general"
+---
+# Verification Checklist: Multi-CLI Parity Hardening
 
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
@@ -8,7 +17,11 @@
 <!-- ANCHOR:protocol -->
 ## Verification Protocol
 
-All items verified via automated test runs and manual code inspection on 2026-03-16.
+| Priority | Handling | Completion Impact |
+|----------|----------|-------------------|
+| **[P0]** | HARD BLOCKER | Cannot claim done until complete |
+| **[P1]** | Required | Must complete OR get user approval |
+| **[P2]** | Optional | Can defer with documented reason |
 <!-- /ANCHOR:protocol -->
 
 ---
@@ -16,9 +29,9 @@ All items verified via automated test runs and manual code inspection on 2026-03
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0]: Requirements reviewed and understood — 4 gaps identified from cross-phase review
-- [x] CHK-002 [P0]: Plan approved — plan.md created with 4 phases
-- [x] CHK-003 [P1]: Dependencies identified — phases 002, 003, 007 all complete
+- [x] CHK-001 [P0] Requirements documented in `spec.md` [EVIDENCE: Phase-016 spec rewritten on 2026-03-17 with REQ-001 through REQ-006 and SC-001 through SC-004.]
+- [x] CHK-002 [P0] Technical approach defined in `plan.md` [EVIDENCE: `plan.md` now includes Technical Context, phase breakdown, testing strategy, dependencies, and rollback plan.]
+- [x] CHK-003 [P1] Dependencies identified and available [EVIDENCE: Phase 002, 006, and 007 seams were reverified in the live code before edits.]
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -26,12 +39,10 @@ All items verified via automated test runs and manual code inspection on 2026-03
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [x] CHK-010 [P0]: `TOOL_NAME_ALIASES` map added to `phase-classifier.ts` — 5 alias entries
-- [x] CHK-011 [P0]: Aliases applied in `buildExchangeSignals()` before vector population — normalizedToolNames loop
-- [x] CHK-012 [P0]: Normalized tool names flow to `scoreCluster()` via returned toolNames array
-- [x] CHK-013 [P0]: CLI-agnostic noise patterns added to `content-filter.ts` — 5 new patterns
-- [x] CHK-014 [P0]: `_provenance: 'tool'` set on FILES in `transformOpencodeCapture()` — line 973
-- [x] CHK-015 [P0]: `case 'view':` added to `buildToolObservationTitle()` — falls through to 'read'
+- [x] CHK-010 [P0] Parity regression coverage added for the intended public/runtime behavior [EVIDENCE: `phase-classification.vitest.ts`, `content-filter-parity.vitest.ts`, and `runtime-memory-inputs.vitest.ts` now assert aliasing, noise filtering, provenance, and `view` title behavior.]
+- [x] CHK-011 [P0] No runtime code drift required beyond the shipped parity behavior [EVIDENCE: The three phase-016 runtime seams already contained the target behavior; only focused tests were added.]
+- [x] CHK-012 [P1] Existing provenance-aware scoring contract remains intact [EVIDENCE: `description-enrichment.vitest.ts` passed with 5/5 tests on 2026-03-17.]
+- [x] CHK-013 [P1] Code follows project patterns [EVIDENCE: New parity test file uses the same Vitest style and shared helper imports as the surrounding scripts test suite.]
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -39,13 +50,10 @@ All items verified via automated test runs and manual code inspection on 2026-03
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-020 [P0]: `tsc --noEmit` passes with zero errors — verified 2026-03-16
-- [x] CHK-021 [P0]: `npm run build` passes — verified 2026-03-16
-- [x] CHK-022 [P1]: `phase-classification.vitest.ts` passes — 6/6 tests
-- [x] CHK-023 [P1]: `task-enrichment.vitest.ts` passes — 43/43 tests
-- [x] CHK-024 [P1]: `runtime-memory-inputs.vitest.ts` passes — 25/25 tests
-- [x] CHK-025 [P1]: `description-enrichment.vitest.ts` passes — 5/5 tests
-- [x] CHK-026 [P1]: `test-extractors-loaders.js` passes — 305/305 tests
+- [x] CHK-020 [P0] All acceptance criteria met [EVIDENCE: SC-001 through SC-004 are covered by focused Vitest, baseline extractor-loader verification, workspace typecheck/build, and `validate.sh`.]
+- [x] CHK-021 [P0] Manual or direct verification complete [EVIDENCE: `node mcp_server/node_modules/vitest/vitest.mjs run tests/phase-classification.vitest.ts tests/content-filter-parity.vitest.ts tests/runtime-memory-inputs.vitest.ts tests/description-enrichment.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts` passed with 4 files and 44 tests on 2026-03-17.]
+- [x] CHK-022 [P1] Edge cases tested [EVIDENCE: Content-filter parity tests cover Copilot lifecycle markers, Codex reasoning markers, and empty XML wrappers; runtime-memory inputs cover `view` title shortening and CLI-derived provenance.]
+- [x] CHK-023 [P1] Error scenarios validated [EVIDENCE: `runtime-memory-inputs.vitest.ts` still passed its explicit data-file failure and native fallback scenarios (28/28).]
 <!-- /ANCHOR:testing -->
 
 ---
@@ -53,8 +61,9 @@ All items verified via automated test runs and manual code inspection on 2026-03
 <!-- ANCHOR:security -->
 ## Security
 
-- [x] CHK-030 [P1]: No secrets or credentials in changed files
-- [x] CHK-031 [P1]: Alias map is read-only constant — no injection risk
+- [x] CHK-030 [P0] No hardcoded secrets [EVIDENCE: Changes are limited to tests and phase-016 documentation; no credentials or secret-bearing config was added.]
+- [x] CHK-031 [P0] Input validation behavior preserved [EVIDENCE: `runtime-memory-inputs.vitest.ts` continued to pass path-traversal and explicit data-file validation failures after the parity additions.]
+- [x] CHK-032 [P1] No new auth/authz surface introduced [EVIDENCE: Phase 016 remained inside scripts/test/documentation seams with no API or backend contract changes.]
 <!-- /ANCHOR:security -->
 
 ---
@@ -62,9 +71,9 @@ All items verified via automated test runs and manual code inspection on 2026-03
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-040 [P1]: `implementation-summary.md` filled with verification results
-- [x] CHK-041 [P1]: Parent spec.md Phase Documentation Map updated with phases 014-016
-- [x] CHK-042 [P2]: `description.json` created with correct parentChain
+- [x] CHK-040 [P1] Spec/plan/tasks synchronized [EVIDENCE: All five phase-016 markdown artifacts were rewritten on 2026-03-17 to describe the reopened parity-proof pass and final verified state.]
+- [x] CHK-041 [P1] Code comments adequate [EVIDENCE: No new production code paths were added; existing inline comments on the parity seams remain unchanged and sufficient.]
+- [x] CHK-042 [P2] Phase completion evidence recorded in `implementation-summary.md` [EVIDENCE: `implementation-summary.md` now includes anchored metadata, delivery story, decisions, verification table, and limitations.]
 <!-- /ANCHOR:docs -->
 
 ---
@@ -72,8 +81,9 @@ All items verified via automated test runs and manual code inspection on 2026-03
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [x] CHK-050 [P1]: All spec artifacts in correct folder
-- [x] CHK-051 [P2]: `memory/.gitkeep` present
+- [x] CHK-050 [P1] Temp files in `scratch/` only [EVIDENCE: No new temp artifacts were created in the phase folder during this pass.]
+- [x] CHK-051 [P1] `scratch/` cleaned before completion [EVIDENCE: The phase folder remains limited to canonical docs plus the existing `memory/` and `scratch/` directories.]
+- [x] CHK-052 [P2] Findings saved to `memory/` when applicable [EVIDENCE: No new memory save was required for this doc-and-test hardening pass.]
 <!-- /ANCHOR:file-org -->
 
 ---
@@ -81,8 +91,11 @@ All items verified via automated test runs and manual code inspection on 2026-03
 <!-- ANCHOR:summary -->
 ## Verification Summary
 
-- **P0**: 9/9 verified
-- **P1**: 11/11 verified
-- **P2**: 2/2 verified
-- **Verification Date**: 2026-03-16
+| Category | Total | Verified |
+|----------|-------|----------|
+| P0 Items | 8 | 8/8 |
+| P1 Items | 10 | 10/10 |
+| P2 Items | 2 | 2/2 |
+
+**Verification Date**: 2026-03-17
 <!-- /ANCHOR:summary -->

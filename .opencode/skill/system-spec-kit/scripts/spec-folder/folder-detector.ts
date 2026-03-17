@@ -1069,6 +1069,8 @@ const TEST_HELPERS = {
   rankSessionActivityCandidates: (inputs: AutoCandidateTestInput[]) => rankSessionActivityCandidates(buildAutoCandidatesForTesting(inputs)),
   assessSessionConfidence: (inputs: SessionCandidateTestInput[]) => assessSessionConfidence(rankSessionCandidates(buildSessionCandidatesForTesting(inputs))),
   assessAutoDetectConfidence: (inputs: AutoCandidateTestInput[]) => assessAutoDetectConfidence(rankAutoDetectCandidates(buildAutoCandidatesForTesting(inputs))),
+  assessGitStatusConfidence: (inputs: AutoCandidateTestInput[]) => assessGitStatusConfidence(rankGitStatusCandidates(buildAutoCandidatesForTesting(inputs))),
+  assessSessionActivityConfidence: (inputs: AutoCandidateTestInput[]) => assessSessionActivityConfidence(rankSessionActivityCandidates(buildAutoCandidatesForTesting(inputs))),
   decideSessionAction: (inputs: SessionCandidateTestInput[], interactive: boolean) => {
     const ranked = rankSessionCandidates(buildSessionCandidatesForTesting(inputs));
     const confidence = assessSessionConfidence(ranked);
@@ -1384,15 +1386,21 @@ async function detectSpecFolder(
     const gitStatusCandidates = rankGitStatusCandidates(await loadAutoDetectCandidates());
     if (gitStatusCandidates.length > 0) {
       const confidence = assessGitStatusConfidence(gitStatusCandidates);
-      const selected = gitStatusCandidates[0];
-      logSelectionRationale(
-        'Priority 2.7',
-        selected.path,
-        autoDetectSpecsDirs,
-        selected.quality,
-        `git_status=${selected.gitStatusCount}, reason=${confidence.reason}`,
-      );
-      return selected.path;
+      let selected: AutoDetectCandidate | null = gitStatusCandidates[0];
+      if (confidence.lowConfidence) {
+        console.warn(`   [Priority 2.7] Low-confidence git-status match (${confidence.reason}); falling through.`);
+        selected = null;
+      }
+      if (selected) {
+        logSelectionRationale(
+          'Priority 2.7',
+          selected.path,
+          autoDetectSpecsDirs,
+          selected.quality,
+          `git_status=${selected.gitStatusCount}, reason=${confidence.reason}`,
+        );
+        return selected.path;
+      }
     }
   }
 
@@ -1432,15 +1440,21 @@ async function detectSpecFolder(
     const sessionActivityCandidates = rankSessionActivityCandidates(await loadAutoDetectCandidates());
     if (sessionActivityCandidates.length > 0) {
       const confidence = assessSessionActivityConfidence(sessionActivityCandidates);
-      const selected = sessionActivityCandidates[0];
-      logSelectionRationale(
-        'Priority 3.5',
-        selected.path,
-        autoDetectSpecsDirs,
-        selected.quality,
-        `activity_boost=${selected.sessionActivityBoost.toFixed(2)}, signals=${selected.sessionActivitySignalCount}, reason=${confidence.reason}`,
-      );
-      return selected.path;
+      let selected: AutoDetectCandidate | null = sessionActivityCandidates[0];
+      if (confidence.lowConfidence) {
+        console.warn(`   [Priority 3.5] Low-confidence session-activity match (${confidence.reason}); falling through.`);
+        selected = null;
+      }
+      if (selected) {
+        logSelectionRationale(
+          'Priority 3.5',
+          selected.path,
+          autoDetectSpecsDirs,
+          selected.quality,
+          `activity_boost=${selected.sessionActivityBoost.toFixed(2)}, signals=${selected.sessionActivitySignalCount}, reason=${confidence.reason}`,
+        );
+        return selected.path;
+      }
     }
   }
 

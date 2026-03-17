@@ -2733,7 +2733,7 @@ Current behavior is enforced in three slices:
 2. `nextSteps` / `next_steps` persistence in normalization and extraction flow, producing `Next: ...`, `Follow-up: ...` and `NEXT_ACTION`.
 3. 8 CLI handback docs (`cli-codex`, `cli-copilot`, `cli-claude-code`, `cli-gemini` `SKILL.md` + `prompt_templates.md`) documenting redact/scrub guidance before writing `/tmp/save-context-data.json`.
 
-Status: Implemented. Spec folder `013-outsourced-agent-memory` is complete.
+Status: Implemented. Spec folder `015-outsourced-agent-handback` is complete and supersedes the earlier `013-outsourced-agent-memory` pass.
 
 #### Source Files
 

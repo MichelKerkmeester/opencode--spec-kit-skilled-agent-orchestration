@@ -4,7 +4,7 @@
 // Tests: ensureDescriptionCache, isCacheStale, discoverSpecFolder,
 // GetSpecsBasePaths, graceful degradation
 
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import * as os from 'node:os';
@@ -20,6 +20,7 @@ import {
   savePerFolderDescription,
   loadPerFolderDescription,
   isPerFolderDescriptionStale,
+  repairStaleDescriptions,
 } from '../lib/search/folder-discovery';
 import type { DescriptionCache, PerFolderDescription } from '../lib/search/folder-discovery';
 import { isFolderDiscoveryEnabled } from '../lib/search/search-flags';
@@ -876,5 +877,138 @@ describe('CHK-029: generateFolderDescriptions scan performance', () => {
 
     expect(cache.folders.length).toBeGreaterThanOrEqual(500);
     expect(elapsed).toBeLessThan(2000);
+  });
+});
+
+/* ═══════════════════════════════════════════════════════════════
+   P1-2: repairStaleDescriptions — zero coverage
+   ═══════════════════════════════════════════════════════════════ */
+
+describe('P1-2: repairStaleDescriptions', () => {
+  let tmpDir: string;
+
+  beforeEach(() => {
+    tmpDir = createTempWorkspace();
+  });
+
+  afterEach(() => {
+    cleanup(tmpDir);
+  });
+
+  it('healthy workspace — no repairs needed, no writes', () => {
+    const specsDir = path.join(tmpDir, 'specs');
+    const specDir = createSpecFolder(tmpDir, '001-healthy', '# Healthy Spec');
+
+    // Generate and save a fresh description.json
+    const desc = generatePerFolderDescription(specDir, specsDir);
+    expect(desc).not.toBeNull();
+    savePerFolderDescription(desc!, specDir);
+
+    // Ensure description.json is newer than spec.md
+    const futureTime = new Date(Date.now() + 5000);
+    const descPath = path.join(specDir, 'description.json');
+    fs.utimesSync(descPath, futureTime, futureTime);
+
+    // Record mtime before repair
+    const mtimeBefore = fs.statSync(descPath).mtimeMs;
+
+    repairStaleDescriptions([specsDir]);
+
+    // Verify no write occurred (mtime unchanged)
+    const mtimeAfter = fs.statSync(descPath).mtimeMs;
+    expect(mtimeAfter).toBe(mtimeBefore);
+  });
+
+  it('stale folder — repairs written', () => {
+    const specsDir = path.join(tmpDir, 'specs');
+    const specDir = createSpecFolder(tmpDir, '001-stale', '# Stale Repair Target');
+
+    // Generate and save initial description.json
+    const desc = generatePerFolderDescription(specDir, specsDir);
+    expect(desc).not.toBeNull();
+    savePerFolderDescription(desc!, specDir);
+
+    // Make spec.md newer than description.json to create staleness
+    const futureTime = new Date(Date.now() + 5000);
+    fs.utimesSync(path.join(specDir, 'spec.md'), futureTime, futureTime);
+
+    // Verify it is stale before repair
+    expect(isPerFolderDescriptionStale(specDir)).toBe(true);
+
+    repairStaleDescriptions([specsDir]);
+
+    // After repair, description.json should be fresh
+    const repaired = loadPerFolderDescription(specDir);
+    expect(repaired).not.toBeNull();
+    expect(repaired!.description).toBe('Stale Repair Target');
+  });
+
+  it('failure on generate — catch-and-continue', () => {
+    const specsDir = path.join(tmpDir, 'specs');
+    const specDir1 = createSpecFolder(tmpDir, '001-ok', '# OK Spec');
+    const specDir2 = createSpecFolder(tmpDir, '002-problem', '# Problem Spec');
+
+    // Generate initial descriptions for both
+    for (const dir of [specDir1, specDir2]) {
+      const d = generatePerFolderDescription(dir, specsDir);
+      if (d) savePerFolderDescription(d, dir);
+    }
+
+    // Make both stale
+    const futureTime = new Date(Date.now() + 5000);
+    fs.utimesSync(path.join(specDir1, 'spec.md'), futureTime, futureTime);
+    fs.utimesSync(path.join(specDir2, 'spec.md'), futureTime, futureTime);
+
+    // Remove spec.md from specDir2 to force generatePerFolderDescription to return null
+    fs.unlinkSync(path.join(specDir2, 'spec.md'));
+
+    // repairStaleDescriptions should not throw despite the missing spec.md
+    expect(() => repairStaleDescriptions([specsDir])).not.toThrow();
+
+    // specDir1 should still have been repaired
+    const repaired1 = loadPerFolderDescription(specDir1);
+    expect(repaired1).not.toBeNull();
+    expect(repaired1!.description).toBe('OK Spec');
+  });
+});
+
+/* ═══════════════════════════════════════════════════════════════
+   P1-3: ensureDescriptionCache write-failure catch
+   ═══════════════════════════════════════════════════════════════ */
+
+describe('P1-3: ensureDescriptionCache write-failure resilience', () => {
+  let tmpDir: string;
+
+  beforeEach(() => {
+    tmpDir = createTempWorkspace();
+  });
+
+  afterEach(() => {
+    // Restore write permissions before cleanup
+    const specsDir = path.join(tmpDir, 'specs');
+    try {
+      fs.chmodSync(specsDir, 0o755);
+    } catch { /* may not exist */ }
+    cleanup(tmpDir);
+  });
+
+  it('returns fresh cache even when cache file cannot be written (EACCES)', () => {
+    const specsDir = path.join(tmpDir, 'specs');
+    createSpecFolder(tmpDir, '001-resilient', '# Resilient Spec');
+
+    // Remove write permission on the specs directory so descriptions.json
+    // temp file creation fails with EACCES
+    fs.chmodSync(specsDir, 0o555);
+
+    const result = ensureDescriptionCache([specsDir]);
+
+    // Should still return a valid cache despite write failure
+    expect(result).not.toBeNull();
+    expect(result!.version).toBe(1);
+    expect(result!.folders.length).toBeGreaterThan(0);
+    expect(result!.folders[0].description).toBe('Resilient Spec');
+
+    // Verify no descriptions.json was written
+    expect(fs.existsSync(path.join(specsDir, 'descriptions.json'))).toBe(false);
   });
 });

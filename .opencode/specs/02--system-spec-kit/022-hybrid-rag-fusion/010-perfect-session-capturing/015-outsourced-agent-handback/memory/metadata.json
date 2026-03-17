@@ -1,7 +1,7 @@
 {
-  "timestamp": "16-03-26 22-23",
+  "timestamp": "16-03-26 22-31",
   "messageCount": 1,
-  "decisionCount": 2,
+  "decisionCount": 3,
   "diagramCount": 0,
   "skillVersion": "1.7.2",
   "autoTriggered": false,
@@ -13,7 +13,7 @@
     "contaminationAudit": [
       {
         "stage": "content-filter",
-        "timestamp": "2026-03-16T21:23:47.763Z",
+        "timestamp": "2026-03-16T21:31:51.836Z",
         "patternsChecked": [
           "/^User message$/i",
           "/^User prompt$/i",
@@ -66,7 +66,7 @@
   "contaminationAudit": [
     {
       "stage": "extractor-scrub",
-      "timestamp": "2026-03-16T21:23:47.730Z",
+      "timestamp": "2026-03-16T21:31:51.805Z",
       "patternsChecked": [
         "step-by-step orchestration",
         "analysis preamble",
@@ -105,12 +105,12 @@
         "removed_phrases:0"
       ],
       "passedThrough": [
-        "processed_fields:21"
+        "processed_fields:26"
       ]
     },
     {
       "stage": "content-filter",
-      "timestamp": "2026-03-16T21:23:47.763Z",
+      "timestamp": "2026-03-16T21:31:51.836Z",
       "patternsChecked": [
         "/^User message$/i",
         "/^User prompt$/i",
@@ -153,7 +153,7 @@
     },
     {
       "stage": "post-render",
-      "timestamp": "2026-03-16T21:23:47.775Z",
+      "timestamp": "2026-03-16T21:31:51.846Z",
       "patternsChecked": [
         "frontmatter:trigger_phrases",
         "frontmatter:key_topics",
@@ -184,7 +184,7 @@
       "intent": 0,
       "plan": 0,
       "implementation": 0,
-      "result": 0,
+      "result": 1,
       "decision": 0,
       "total": 1
     }

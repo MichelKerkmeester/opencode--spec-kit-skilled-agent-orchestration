@@ -7,7 +7,9 @@ import * as path from 'node:path';
 import * as crypto from 'node:crypto';
 import { stripYamlFrontmatter } from '../parsing/content-normalizer';
 
-/* --- 1. TYPES --- */
+// ───────────────────────────────────────────────────────────────
+// 1. TYPES
+// ───────────────────────────────────────────────────────────────
 
 /**
  * Describes a single spec folder with its cached description
@@ -42,7 +44,9 @@ export interface PerFolderDescription extends FolderDescription {
   memoryNameHistory: string[];  // Last 20 slugs (ring buffer)
 }
 
-/* --- 2. STOP WORDS --- */
+// ───────────────────────────────────────────────────────────────
+// 2. STOP WORDS
+// ───────────────────────────────────────────────────────────────
 
 const STOP_WORDS = new Set([
   'a', 'an', 'the', 'and', 'or', 'but', 'in', 'on', 'at', 'to',
@@ -59,6 +63,7 @@ const STOP_WORDS = new Set([
   'your', 'their', 'his', 'her', 'which', 'who', 'what',
 ]);
 
+const MAX_DESCRIPTION_LENGTH = 150;
 const MAX_SPEC_DISCOVERY_DEPTH = 8;
 const SCAN_SKIP_DIRECTORIES = new Set([
   '.git',
@@ -244,7 +249,9 @@ function collectDiscoveredSpecState(basePaths: string[]): DiscoveredSpecState {
   return { latestMtime, specFolders };
 }
 
-/* --- 3. DESCRIPTION EXTRACTION --- */
+// ───────────────────────────────────────────────────────────────
+// 3. DESCRIPTION EXTRACTION
+// ───────────────────────────────────────────────────────────────
 
 /**
  * Extract a short 1-sentence description from spec.md content.
@@ -255,7 +262,7 @@ function collectDiscoveredSpecState(basePaths: string[]): DiscoveredSpecState {
  *    and take the first non-empty line after the heading
  * 3. Fall back to the first non-empty non-heading line
  *
- * The result is trimmed to 150 characters maximum.
+ * The result is trimmed to MAX_DESCRIPTION_LENGTH characters maximum.
  *
  * @param specContent - Raw string content of a spec.md file.
  * @returns A 1-sentence description string, or empty string for empty input.
@@ -284,7 +291,7 @@ export function extractDescription(specContent: string): string {
     if (line.startsWith('# ')) {
       const title = line.replace(/^#+\s+/, '').trim();
       if (title.length > 0) {
-        return title.slice(0, 150);
+        return title.slice(0, MAX_DESCRIPTION_LENGTH);
       }
     }
   }
@@ -304,7 +311,7 @@ export function extractDescription(specContent: string): string {
         if (clean.length > 0) {
           // Take first sentence (split on '. ') and strip trailing period
           const sentence = clean.split(/\.\s/)[0].trim().replace(/\.$/, '');
-          return sentence.slice(0, 150);
+          return sentence.slice(0, MAX_DESCRIPTION_LENGTH);
         }
       }
     }
@@ -317,14 +324,16 @@ export function extractDescription(specContent: string): string {
     const clean = line.replace(/\*+/g, '').replace(/_+/g, '').replace(/^[-*>]\s+/, '').trim();
     if (clean.length > 0) {
       const sentence = clean.split(/\.\s/)[0].trim().replace(/\.$/, '');
-      return sentence.slice(0, 150);
+      return sentence.slice(0, MAX_DESCRIPTION_LENGTH);
     }
   }
 
   return '';
 }
 
-/* --- 4. KEYWORD EXTRACTION --- */
+// ───────────────────────────────────────────────────────────────
+// 4. KEYWORD EXTRACTION
+// ───────────────────────────────────────────────────────────────
 
 /**
  * Extract significant keywords from a description string.
@@ -360,7 +369,9 @@ export function extractKeywords(description: string): string[] {
   return keywords;
 }
 
-/* --- 5. RELEVANCE SCORING / LOOKUP --- */
+// ───────────────────────────────────────────────────────────────
+// 5. RELEVANCE SCORING / LOOKUP
+// ───────────────────────────────────────────────────────────────
 
 /**
  * Find the most relevant spec folders for a given query using
@@ -425,7 +436,9 @@ export function findRelevantFolders(
   return results.slice(0, limit);
 }
 
-/* --- 6. CACHE GENERATION --- */
+// ───────────────────────────────────────────────────────────────
+// 6. CACHE GENERATION
+// ───────────────────────────────────────────────────────────────
 
 /**
  * Scan spec base paths for spec.md files and generate a
@@ -476,7 +489,7 @@ export function generateFolderDescriptions(specsBasePaths: string[]): Descriptio
 
       // Repair stale/corrupt on-disk descriptions during discovery when a file exists.
       // Missing files still use pure spec.md fallback to avoid surprising backfill writes.
-      if (fs.existsSync(descPath) && (!perFolderFresh || perFolder.description.trim().length === 0)) {
+      if (fs.existsSync(descPath) && (!perFolderFresh || (perFolder && perFolder.description.trim().length === 0))) {
         try {
           const repaired = generatePerFolderDescription(discoveredFolder.folderPath, discoveredFolder.basePath);
           if (repaired) {
@@ -590,7 +603,9 @@ function _processSpecFolder(
   };
 }
 
-/* --- 6a. SLUG HELPER --- */
+// ───────────────────────────────────────────────────────────────
+// 6a. SLUG HELPER
+// ───────────────────────────────────────────────────────────────
 
 /**
  * Slugify a spec folder name: strip numeric prefix, replace non-alphanumeric
@@ -605,7 +620,9 @@ export function slugifyFolderName(folderName: string): string {
     .replace(/^-|-$/g, '');
 }
 
-/* --- 6b. PER-FOLDER DESCRIPTION OPERATIONS --- */
+// ───────────────────────────────────────────────────────────────
+// 6b. PER-FOLDER DESCRIPTION OPERATIONS
+// ───────────────────────────────────────────────────────────────
 
 /**
  * Generate a PerFolderDescription by reading the spec.md in a folder.
@@ -777,7 +794,9 @@ export function isPerFolderDescriptionStale(folderPath: string): boolean {
   }
 }
 
-/* --- 7. CACHE I/O --- */
+// ───────────────────────────────────────────────────────────────
+// 7. CACHE I/O
+// ───────────────────────────────────────────────────────────────
 
 /**
  * Load a DescriptionCache from a JSON file on disk.
@@ -830,7 +849,9 @@ export function saveDescriptionCache(cache: DescriptionCache, cachePath: string)
   }
 }
 
-/* --- 8. INTEGRATION HELPERS (PI-B3) --- */
+// ───────────────────────────────────────────────────────────────
+// 8. INTEGRATION HELPERS (PI-B3)
+// ───────────────────────────────────────────────────────────────
 
 /**
  * Resolve the standard specs base paths for a workspace.

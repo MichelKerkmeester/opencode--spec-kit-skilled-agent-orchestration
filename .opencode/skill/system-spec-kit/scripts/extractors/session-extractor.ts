@@ -80,13 +80,19 @@ export interface ProjectStateParams {
    2. SESSION ID & CHANNEL
 ------------------------------------------------------------------*/
 
-// Uses crypto.randomBytes (CSPRNG) for session ID generation.
-// Output format: session-{timestamp}-{12-char-hex}  (48 bits entropy, [a-f0-9] only)
+/**
+ * Generate a unique session identifier using CSPRNG.
+ * @returns Session ID in the format `session-{timestamp}-{12-char-hex}` with 48 bits of entropy.
+ */
 function generateSessionId(): string {
   const randomPart = crypto.randomBytes(6).toString('hex'); // 6 bytes = 12 hex chars = 48 bits
   return `session-${Date.now()}-${randomPart}`;
 }
 
+/**
+ * Detect the current git branch to use as the session channel.
+ * @returns Branch name, a `detached:{short-sha}` string, or `'default'` on failure.
+ */
 function getChannel(): string {
   try {
     const branch = execSync('git rev-parse --abbrev-ref HEAD', {
@@ -95,7 +101,7 @@ function getChannel(): string {
     return branch === 'HEAD'
       ? `detached:${execSync('git rev-parse --short HEAD', { encoding: 'utf8', cwd: CONFIG.PROJECT_ROOT, stdio: ['pipe', 'pipe', 'pipe'], timeout: 5000 }).trim()}`
       : branch;
-  } catch {
+  } catch (_error: unknown) {
     return 'default';
   }
 }
@@ -104,6 +110,12 @@ function getChannel(): string {
    3. CONTEXT TYPE & IMPORTANCE
 ------------------------------------------------------------------*/
 
+/**
+ * Classify the session context type based on tool usage ratios and decision count.
+ * @param toolCounts - Aggregated counts of each tool type used in the session.
+ * @param decisionCount - Number of decision observations recorded.
+ * @returns One of `'decision'`, `'discovery'`, `'research'`, `'implementation'`, or `'general'`.
+ */
 function detectContextType(toolCounts: ToolCounts, decisionCount: number): string {
   const total = Object.values(toolCounts).reduce((a, b) => a + b, 0);
   if (total === 0) return 'general';
@@ -119,6 +131,12 @@ function detectContextType(toolCounts: ToolCounts, decisionCount: number): strin
   return 'general';
 }
 
+/**
+ * Determine the importance tier of a session based on modified file paths and context type.
+ * @param filesModified - Array of file paths modified during the session.
+ * @param contextType - The detected context type (e.g. `'decision'`).
+ * @returns One of `'critical'`, `'important'`, or `'normal'`.
+ */
 function detectImportanceTier(filesModified: string[], contextType: string): string {
   const criticalSegments = ['architecture', 'core', 'schema', 'security', 'config'];
   if (filesModified.some((filePath) => {
@@ -134,6 +152,13 @@ function detectImportanceTier(filesModified: string[], contextType: string): str
    4. PROJECT PHASE & STATE
 ------------------------------------------------------------------*/
 
+/**
+ * Infer the current project phase from tool ratios and observation types.
+ * @param toolCounts - Aggregated counts of each tool type used in the session.
+ * @param observations - Session observations containing type and fact data.
+ * @param messageCount - Total number of messages in the conversation.
+ * @returns One of `'RESEARCH'`, `'PLANNING'`, `'IMPLEMENTATION'`, or `'REVIEW'`.
+ */
 function detectProjectPhase(
   toolCounts: ToolCounts,
   observations: Observation[],
@@ -155,6 +180,12 @@ function detectProjectPhase(
   return 'IMPLEMENTATION';
 }
 
+/**
+ * Identify the most recently active file from observations, preferring non-synthetic entries.
+ * @param observations - Session observations that may reference files.
+ * @param files - Fallback file entries if no observation references a file.
+ * @returns The file path of the most recently active file, or `'N/A'`.
+ */
 function extractActiveFile(observations: Observation[], files: FileEntry[] | undefined): string {
   const prioritizedObservations = observations.some((observation) => !observation._synthetic)
     ? observations.filter((observation) => !observation._synthetic)
@@ -180,7 +211,7 @@ function findFactByPattern(observations: Observation[], pattern: RegExp): string
         const fact = obs.facts[j];
         if (typeof fact === 'string') {
           const match = fact.match(pattern);
-          if (match) return match[1].trim();
+          if (match && match[1] != null) return match[1].trim();
         }
       }
     }
@@ -189,11 +220,13 @@ function findFactByPattern(observations: Observation[], pattern: RegExp): string
 }
 
 const INVALID_BLOCKER_PATTERNS: RegExp[] = [
+  // Spec-defined (REQ-006): markdown headers, leading quotes/backtick/space, transition quotes
   /^##\s+/,
   /^['"` ]/,
   /'\s+to\s+'/i,
+  // Additional guards: numbered section headings, ALLCAPS status lines, code fragments
   /^\d+(?:\.\d+)*\s+[A-Z][A-Z0-9 _-]*$/,
-  /^[A-Z][A-Z0-9 _-]{2,}\s+blocked\b/i,
+  /^[A-Z][A-Z0-9 _-]{2,}\s+blocked\b/,
   /(?:=>|{|\(|\)|;)\s*$/,
 ];
 
@@ -214,16 +247,34 @@ function splitBlockerCandidates(narrative: string): string[] {
     .filter(Boolean);
 }
 
+function extractFromRecentContext(recentContext?: RecentContextEntry[]): string | null {
+  const learning = recentContext?.[0]?.learning;
+  if (!learning) return null;
+  const match = learning.match(/\b(?:next|then|afterwards?):\s*(.+)/i);
+  return match?.[1]?.trim().substring(0, 100) ?? null;
+}
+
+/**
+ * Extract the next planned action from observation facts or recent context learning entries.
+ * @param observations - Session observations containing fact strings to search.
+ * @param recentContext - Optional recent context entries with learning text.
+ * @returns The next action string, or `'Continue implementation'` as default.
+ */
 function extractNextAction(
   observations: Observation[],
   recentContext?: RecentContextEntry[]
 ): string {
   return findFactByPattern(observations, /\bnext:\s*(.+)/i)
     ?? findFactByPattern(observations, /\b(?:todo|follow-?up):\s*(.+)/i)
-    ?? (recentContext?.[0]?.learning?.match(/\b(?:next|then|afterwards?):\s*(.+)/i)?.[1]?.trim().substring(0, 100))
+    ?? extractFromRecentContext(recentContext)
     ?? 'Continue implementation';
 }
 
+/**
+ * Scan observation narratives for blocker keywords and return the first valid blocker sentence.
+ * @param observations - Session observations whose narratives are searched for blockers.
+ * @returns A trimmed blocker sentence (max 100 chars), or `'None'` if no blockers found.
+ */
 function extractBlockers(observations: Observation[]): string {
   const blockerKeywords = /\b(?:block(?:ed|er|ing)?|stuck|issue|problem|error|fail(?:ed|ing)?|cannot|can't)\b/i;
   for (const obs of observations) {
@@ -249,6 +300,11 @@ function extractBlockers(observations: Observation[]): string {
   return 'None';
 }
 
+/**
+ * Build a file progress list from spec files, marking each as `'EXISTS'`.
+ * @param specFiles - Optional array of spec file entries to convert.
+ * @returns Array of file progress entries, or empty array if no spec files provided.
+ */
 function buildFileProgress(specFiles: SpecFileEntry[] | undefined): FileProgressEntry[] {
   if (!specFiles?.length) return [];
   return specFiles.map((file) => ({ FILE_NAME: file.FILE_NAME, FILE_STATUS: 'EXISTS' }));
@@ -258,6 +314,12 @@ function buildFileProgress(specFiles: SpecFileEntry[] | undefined): FileProgress
    5. TOOL COUNTING & DURATION
 ------------------------------------------------------------------*/
 
+/**
+ * Count tool invocations by type from observation facts.
+ * @param observations - Session observations containing tool-usage facts.
+ * @param userPrompts - User prompts (reserved for future use; not counted to avoid false positives).
+ * @returns An object mapping each known tool name to its invocation count.
+ */
 function countToolsByType(observations: Observation[], userPrompts: UserPrompt[]): ToolCounts {
   const toolNames = ['Read', 'Edit', 'Write', 'Bash', 'Grep', 'Glob', 'Task', 'WebFetch', 'WebSearch', 'Skill', 'View', 'Agent', 'NotebookEdit', 'ToolSearch'];
   const counts: ToolCounts = Object.fromEntries(toolNames.map((t) => [t, 0])) as ToolCounts;
@@ -285,6 +347,12 @@ function countToolsByType(observations: Observation[], userPrompts: UserPrompt[]
   return counts;
 }
 
+/**
+ * Calculate the elapsed duration between the first and last user prompts.
+ * @param userPrompts - Array of user prompts with optional timestamp strings.
+ * @param now - Current date used as fallback when timestamps are missing or invalid.
+ * @returns Human-readable duration string (e.g. `'2h 15m'` or `'45m'`), or `'N/A'` if empty.
+ */
 function calculateSessionDuration(userPrompts: UserPrompt[], now: Date): string {
   if (userPrompts.length === 0) return 'N/A';
   const safeParseDate = (dateStr: string | undefined, fallback: Date): Date => {
@@ -299,6 +367,12 @@ function calculateSessionDuration(userPrompts: UserPrompt[], now: Date): string 
   return hours > 0 ? `${hours}h ${minutes % 60}m` : `${minutes}m`;
 }
 
+/**
+ * Compute the expiry epoch (in seconds) for a memory entry based on its importance tier.
+ * @param importanceTier - The importance tier (e.g. `'critical'`, `'temporary'`, `'normal'`).
+ * @param createdAtEpoch - Creation timestamp as a Unix epoch in seconds.
+ * @returns Expiry epoch in seconds, or `0` for non-expiring tiers.
+ */
 function calculateExpiryEpoch(importanceTier: string, createdAtEpoch: number): number {
   if (['constitutional', 'critical', 'important'].includes(importanceTier)) return 0;
   if (importanceTier === 'temporary') return createdAtEpoch + (7 * 24 * 60 * 60);
@@ -310,6 +384,11 @@ function calculateExpiryEpoch(importanceTier: string, createdAtEpoch: number): n
    6. RELATED DOCS & KEY TOPICS
 ------------------------------------------------------------------*/
 
+/**
+ * Discover related documentation files in the spec folder and its parent.
+ * @param specFolderPath - Absolute path to the spec folder to scan.
+ * @returns Array of related doc entries with name, relative path, and description.
+ */
 async function detectRelatedDocs(specFolderPath: string): Promise<RelatedDoc[]> {
   const docFiles = [
     { name: 'spec.md', role: 'Requirements specification' },
@@ -328,7 +407,7 @@ async function detectRelatedDocs(specFolderPath: string): Promise<RelatedDoc[]> 
     try {
       await fs.access(filePath);
       return true;
-    } catch {
+    } catch (_error: unknown) {
       return false;
     }
   };
@@ -369,11 +448,19 @@ interface DecisionForTopics {
   CHOSEN?: string;
 }
 
-// NOTE: Similar to core/topic-extractor.ts:extractKeyTopics but differs in:
-// - Accepts `string | undefined` (topic-extractor requires `string`)
-// - Broader placeholder detection (checks SIMULATION MODE, [response], placeholder, <20 chars)
-// - Processes TITLE, RATIONALE, and CHOSEN from decisions (topic-extractor only uses TITLE/RATIONALE)
-// - Both delegate to SemanticSignalExtractor with aggressive stopword profile
+/**
+ * Extract up to 10 key topic terms from a session summary and decision records using semantic signal extraction.
+ *
+ * NOTE: Similar to core/topic-extractor.ts:extractKeyTopics but differs in:
+ * - Accepts `string | undefined` (topic-extractor requires `string`)
+ * - Broader placeholder detection (checks SIMULATION MODE, [response], placeholder, <20 chars)
+ * - Processes TITLE, RATIONALE, and CHOSEN from decisions (topic-extractor only uses TITLE/RATIONALE)
+ * - Both delegate to SemanticSignalExtractor with aggressive stopword profile
+ *
+ * @param summary - Optional session summary text; placeholders are filtered out.
+ * @param decisions - Array of decision objects whose titles, rationales, and choices are weighted.
+ * @returns Array of up to 10 extracted topic term strings.
+ */
 function extractKeyTopics(summary: string | undefined, decisions: DecisionForTopics[] = []): string[] {
   const isPlaceholderSummary: boolean = !summary ||
     summary.includes('SIMULATION MODE') ||
@@ -406,6 +493,13 @@ function extractKeyTopics(summary: string | undefined, decisions: DecisionForTop
    7. COMPOSITE HELPERS
 ------------------------------------------------------------------*/
 
+/**
+ * Derive high-level session characteristics by combining tool counts, context type, and importance tier.
+ * @param observations - Session observations used for tool counting and decision detection.
+ * @param userPrompts - User prompts passed through to tool counting.
+ * @param FILES - File entries whose paths determine the importance tier.
+ * @returns Composite characteristics including context type, importance tier, decision count, and tool counts.
+ */
 function detectSessionCharacteristics(
   observations: Observation[],
   userPrompts: UserPrompt[],
@@ -420,6 +514,11 @@ function detectSessionCharacteristics(
   return { contextType, importanceTier, decisionCount, toolCounts };
 }
 
+/**
+ * Assemble a complete project state snapshot from session parameters.
+ * @param params - Composite input containing tool counts, observations, files, and recent context.
+ * @returns Snapshot with project phase, active file, last/next actions, blockers, and file progress.
+ */
 function buildProjectStateSnapshot(params: ProjectStateParams): ProjectStateSnapshot {
   const { toolCounts, observations, messageCount, FILES, SPEC_FILES, recentContext } = params;
   const behavioralObservations = getBehavioralObservations(observations);

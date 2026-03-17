@@ -30,7 +30,6 @@ This asset provides structured, copy-paste ready prompt templates for invoking C
 | `-p "prompt"` | Non-interactive mode (required for cross-AI delegation) |
 | `--allow-all-tools` | Grant permission for all tool executions (required for autonomy) |
 | `--model [name]` | Select specific model (Claude, GPT, or Gemini) |
-| `--mode plan` | Read-only planning mode for architecture and analysis |
 | `--agent [name]` | Route request to a specialized sub-agent |
 | `--output-format text/json` | Set the response format |
 | `@./path` | Include file or directory context |
@@ -48,14 +47,14 @@ Generate a complete single-file component or backend module.
 
 ```bash
 copilot -p "Create a [language] [type] for [description]. Requirements: [requirements]. Follow patterns in @./[reference-file]. Output complete code with imports, types, and error handling." \
-  --model claude-sonnet --allow-all-tools 2>&1
+  --model claude-sonnet-4.6 --allow-all-tools 2>&1
 ```
 
 **Example:**
 
 ```bash
 copilot -p "Create a TypeScript utility for advanced date formatting. Requirements: support for multiple timezones, relative time calculation, and ISO validation. Follow patterns in @./src/utils/math.ts. Output complete code with imports, types, and error handling." \
-  --model claude-sonnet --allow-all-tools 2>&1
+  --model claude-sonnet-4.6 --allow-all-tools 2>&1
 ```
 
 ### Feature Implementation
@@ -83,47 +82,47 @@ copilot -p "Implement a file upload service in Node.js. Create necessary files: 
 
 ```bash
 copilot -p "Security review of @./[file]. Scan for: OWASP Top 10, hardcoded secrets, and insecure dependencies. Rate findings by severity." \
-  --mode plan --model gemini-3.1-pro-preview --allow-all-tools 2>&1
+ --model gemini-3.1-pro-preview --allow-all-tools 2>&1
 ```
 
 **Example:**
 
 ```bash
 copilot -p "Security review of @./src/api/auth.ts. Scan for: OWASP Top 10, hardcoded secrets, and insecure dependencies. Rate findings by severity." \
-  --mode plan --model gemini-3.1-pro-preview --allow-all-tools 2>&1
+ --model gemini-3.1-pro-preview --allow-all-tools 2>&1
 ```
 
 ### Performance Review
 
 ```bash
 copilot -p "Analyze performance of @./[file]. Identify bottlenecks, O(n) complexity issues, and memory leaks. Suggest optimizations." \
-  --agent review --mode plan --model claude-opus --allow-all-tools 2>&1
+  --agent review--model claude-opus-4.6 --allow-all-tools 2>&1
 ```
 
 <!-- /ANCHOR:code_review -->
 <!-- ANCHOR:planning -->
 
-## 4. PLANNING (PLAN MODE)
+## 4. ARCHITECTURE & PLANNING
 
 ### Architecture Proposal
 
 ```bash
 copilot -p "Propose an architecture for [system]. Consider: [constraints]. Compare 3 different approaches and recommend the best one." \
-  --mode plan --model claude-opus --allow-all-tools 2>&1
+ --model claude-opus-4.6 --allow-all-tools 2>&1
 ```
 
 **Example:**
 
 ```bash
 copilot -p "Propose an architecture for a real-time collaborative editor. Consider: websocket latency, conflict resolution, and horizontal scaling. Compare 3 different approaches and recommend the best one." \
-  --mode plan --model claude-opus --allow-all-tools 2>&1
+ --model claude-opus-4.6 --allow-all-tools 2>&1
 ```
 
 ### Migration Plan
 
 ```bash
 copilot -p "Create a step-by-step plan to migrate @./[dir] from [old-stack] to [new-stack]. Identify risks and rollback strategies." \
-  --mode plan --model gpt-5.4 --allow-all-tools 2>&1
+ --model gpt-5.4 --allow-all-tools 2>&1
 ```
 
 <!-- /ANCHOR:planning -->
@@ -149,7 +148,7 @@ copilot -p "Fix memory leak in @./src/workers/processor.ts. Error: Heap out of m
 
 ```bash
 copilot -p "Investigate why [feature] stopped working after recent changes in @./[dir]. Check git history and identify the breaking commit." \
-  --agent debug --model claude-sonnet --allow-all-tools 2>&1
+  --agent debug --model claude-sonnet-4.6 --allow-all-tools 2>&1
 ```
 
 <!-- /ANCHOR:bug_fixing -->
@@ -168,7 +167,7 @@ copilot -p "Generate Vitest unit tests for @./[file]. Aim for 90%+ coverage. Moc
 
 ```bash
 copilot -p "Create a Playwright E2E test for the [user flow]. Test files: @./[relevant-files]. Include setup and teardown steps." \
-  --model claude-sonnet --allow-all-tools 2>&1
+  --model claude-sonnet-4.6 --allow-all-tools 2>&1
 ```
 
 <!-- /ANCHOR:test_generation -->
@@ -180,7 +179,7 @@ copilot -p "Create a Playwright E2E test for the [user flow]. Test files: @./[re
 
 ```bash
 copilot -p "Write a technical specification for @./[dir]. Include: data models, API signatures, and sequence diagrams in Mermaid format." \
-  --agent write --model claude-opus --allow-all-tools 2>&1
+  --agent write --model claude-opus-4.6 --allow-all-tools 2>&1
 ```
 
 ### Documentation Sync
@@ -225,14 +224,14 @@ copilot -p "Transform styles in @./[component] from CSS Modules to Tailwind clas
 
 ```bash
 copilot -p "Map all internal dependencies for @./[dir]. Output as a JSON object showing import relationships." \
-  --output-format json --mode plan --model gemini-3.1-pro-preview --allow-all-tools 2>&1
+  --output-format json--model gemini-3.1-pro-preview --allow-all-tools 2>&1
 ```
 
 ### API Surface Analysis
 
 ```bash
 copilot -p "Extract all public API methods from @./[dir]. Include types, descriptions, and deprecation status." \
-  --output-format json --mode plan --model claude-sonnet --allow-all-tools 2>&1
+  --output-format json--model claude-sonnet-4.6 --allow-all-tools 2>&1
 ```
 
 <!-- /ANCHOR:structured_analysis -->
@@ -244,14 +243,14 @@ copilot -p "Extract all public API methods from @./[dir]. Include types, descrip
 
 ```bash
 copilot -p "Generate Terraform modules for [cloud-resource]. Requirements: [specs]. Follow security best practices for [provider]." \
-  --model claude-opus --allow-all-tools 2>&1
+  --model claude-opus-4.6 --allow-all-tools 2>&1
 ```
 
 **Example:**
 
 ```bash
 copilot -p "Generate Terraform modules for an AWS EKS cluster. Requirements: private subnets, OIDC enabled, and managed node groups. Follow security best practices for AWS." \
-  --model claude-opus --allow-all-tools 2>&1
+  --model claude-opus-4.6 --allow-all-tools 2>&1
 ```
 
 ### CI/CD Pipeline
@@ -270,7 +269,7 @@ copilot -p "Create a GitHub Action workflow for [project-type]. Include: linting
 
 ```bash
 copilot -p "Execute a complex refactor of @./[dir]. Use @context to map dependencies, @debug to fix errors, and @review to verify quality." \
-  --agent orchestrate --model claude-opus --allow-all-tools 2>&1
+  --agent orchestrate --model claude-opus-4.6 --allow-all-tools 2>&1
 ```
 
 ### Session Handover
@@ -281,9 +280,60 @@ copilot -p "Summarize progress for the current task. List: completed files, rema
 ```
 
 <!-- /ANCHOR:specialized_tasks -->
+<!-- ANCHOR:template_variables -->
+
+## 12. TEMPLATE VARIABLES
+
+All placeholders used across templates in this file:
+
+| Variable | Description | Example Values |
+|----------|-------------|----------------|
+| `[file]` | Relative file path | `src/utils/validator.ts`, `lib/api.py` |
+| `[dir]` | Project or module directory | `./src/`, `./packages/core/` |
+| `[description]` | Free-text description of intent or behavior | `"rate-limiting middleware"`, `"memory leak in processor"` |
+| `[reference-file]` | Reference file for pattern matching | `src/middleware/auth.ts` |
+| `[reference-dir]` | Reference directory for project patterns | `src/services/` |
+| `[requirements]` | Specific requirements or constraints | `"must handle 1000 req/s"`, `"readability and testability"` |
+| `[language]` | Programming language | `TypeScript`, `Python`, `Go`, `Rust` |
+| `[feature]` | Feature name or description | `"user authentication"`, `"file upload"` |
+| `[issue]` | Bug or issue description | `"memory leak in processor"` |
+| `[error message]` | Verbatim error text | `"Heap out of memory after 2 hours"` |
+| `[system]` | System being designed | `"real-time collaborative editor"` |
+| `[constraints]` | Design constraints | `"websocket latency, conflict resolution"` |
+| `[old-stack]` / `[new-stack]` | Migration source/target stack | `Webpack 4` / `Vite` |
+| `[cloud-resource]` | Cloud infrastructure resource | `"AWS EKS cluster"`, `"GCP Cloud Run"` |
+| `[provider]` | Cloud provider | `AWS`, `GCP`, `Azure` |
+| `[environment]` | Deployment environment | `staging`, `production` |
+| `[user flow]` | User interaction flow | `"login -> dashboard -> settings"` |
+
+### Placeholder Conventions
+
+- **Single value**: `[file]` - replace with one value
+- **List value**: `[requirements]` - replace with comma-separated list
+- **Free text**: `[description]` - replace with natural language
+- **Compound**: Some templates use the same placeholder multiple times for different values. Replace each occurrence independently.
+
+---
+
+<!-- /ANCHOR:template_variables -->
+<!-- ANCHOR:related_resources -->
+
+## 13. RELATED RESOURCES
+
+### Parent
+
+- [SKILL.md](../SKILL.md) - Main skill instructions and invocation patterns
+
+### References
+
+- [cli_reference.md](../references/cli_reference.md) - Complete CLI flag and command reference
+- [integration_patterns.md](../references/integration_patterns.md) - Cross-AI orchestration patterns
+- [copilot_features.md](../references/copilot_features.md) - Built-in tools, multi-model routing, and plan mode
+
+<!-- /ANCHOR:related_resources -->
 <!-- ANCHOR:memory_epilogue -->
 
-## 12. MEMORY EPILOGUE
+## 14. MEMORY EPILOGUE
 
 ### Purpose
 
@@ -312,7 +362,7 @@ When you finish, include a session memory section in your output using EXACTLY t
 - Remaining work
 
 ### Spec Folder
-[spec-folder-name, e.g. 013-outsourced-agent-memory]
+[spec-folder-name, e.g. 015-outsourced-agent-handback]
 <!-- MEMORY_HANDBACK_END -->
 ```
 

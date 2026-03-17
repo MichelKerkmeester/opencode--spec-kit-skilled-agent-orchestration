@@ -30,7 +30,7 @@ This asset provides structured, copy-paste ready prompt templates for invoking C
 | ------------------------------ | ----------------------------------------------------------------------------------- |
 | `--model gpt-5.4`              | GPT-5.4: frontier reasoning, complex analysis, architecture, security              |
 | `--model gpt-5.3-codex`        | GPT-5.3-Codex: code generation, standard review, implementation, docs              |
-| `-c model_reasoning_effort="<level>"` | Reasoning effort: `none`, `minimal`, `low`, `medium`, `high`, `xhigh` (GPT-5.4 only) |
+| `-c model_reasoning_effort="<level>"` | Reasoning effort: `none`, `minimal`, `low`, `medium`, `high`, `xhigh` (GPT-5.4 only; prefer `high` over `xhigh`) |
 | `--sandbox read-only`          | Safe mode: read files, no writes or shell commands                                  |
 | `--sandbox workspace-write`    | Allow file writes and build commands within workspace                               |
 | `--sandbox danger-full-access` | Full shell access — **requires explicit user approval**                             |
@@ -549,7 +549,7 @@ When you finish, include a session memory section in your output using EXACTLY t
 - Remaining work
 
 ### Spec Folder
-[spec-folder-name, e.g. 013-outsourced-agent-memory]
+[spec-folder-name, e.g. 015-outsourced-agent-handback]
 <!-- MEMORY_HANDBACK_END -->
 ```
 

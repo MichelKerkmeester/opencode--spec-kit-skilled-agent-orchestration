@@ -169,6 +169,22 @@ export interface TransformedCapture {
 // ───────────────────────────────────────────────────────────────
 // 3. DECISION TRANSFORMATION
 // ───────────────────────────────────────────────────────────────
+function extractAlternativeLabel(alt: unknown): string {
+  if (typeof alt === 'string') return alt;
+  if (typeof alt === 'object' && alt !== null) {
+    const obj = alt as Record<string, unknown>;
+    if (typeof obj.label === 'string') return obj.label;
+    if (typeof obj.title === 'string') return obj.title;
+    if (typeof obj.name === 'string') return obj.name;
+  }
+  return JSON.stringify(alt);
+}
+
+/**
+ * Transforms a key decision item (string or object) into a structured decision observation.
+ * @param decisionItem - The decision as a plain string, a DecisionItemObject, or null.
+ * @returns An Observation of type 'decision' with extracted facts and confidence, or null if the input is invalid.
+ */
 function transformKeyDecision(decisionItem: string | DecisionItemObject | null): Observation | null {
   let decisionText: string;
   let chosenApproach: string | null;
@@ -185,9 +201,7 @@ function transformKeyDecision(decisionItem: string | DecisionItemObject | null):
     decisionText = decisionItem.decision || decisionItem.title || 'Unknown decision';
     chosenApproach = decisionItem.chosenOption || decisionItem.chosen || decisionItem.decision || null;
     rationale = decisionItem.rationale || decisionItem.reason || decisionText;
-    alternatives = (decisionItem.alternatives || []).map(alt =>
-      typeof alt === 'string' ? alt : (alt as Record<string, unknown>).label as string || (alt as Record<string, unknown>).title as string || (alt as Record<string, unknown>).name as string || JSON.stringify(alt)
-    );
+    alternatives = (decisionItem.alternatives || []).map(extractAlternativeLabel);
 
     if (decisionItem.rationale) {
       decisionText = `${decisionText} - ${decisionItem.rationale}`;
@@ -237,6 +251,12 @@ function transformKeyDecision(decisionItem: string | DecisionItemObject | null):
 // ───────────────────────────────────────────────────────────────
 // 4. OBSERVATION BUILDERS
 // ───────────────────────────────────────────────────────────────
+/**
+ * Builds a feature observation from a session summary string and optional trigger phrases.
+ * @param summary - The session summary text to use as title and narrative.
+ * @param triggerPhrases - Optional array of trigger phrases stored as observation facts.
+ * @returns An Observation of type 'feature' representing the session summary.
+ */
 function buildSessionSummaryObservation(summary: string, triggerPhrases: string[] = []): Observation {
   const summaryTitle: string = summary.length > 100
     ? summary.substring(0, 100).replace(/\s+\S*$/, '') + '...'
@@ -250,6 +270,11 @@ function buildSessionSummaryObservation(summary: string, triggerPhrases: string[
   };
 }
 
+/**
+ * Builds an implementation observation from a technical context key-value map.
+ * @param techContext - A record of technical details (e.g., stack, config, dependencies).
+ * @returns An Observation of type 'implementation' with a semicolon-delimited narrative of the context entries.
+ */
 function buildTechnicalContextObservation(techContext: Record<string, unknown>): Observation {
   const techDetails: string = Object.entries(techContext)
     .map(([key, value]) => `${key}: ${typeof value === 'object' ? JSON.stringify(value) : value}`)
@@ -338,6 +363,11 @@ function normalizeFileEntryLike(file: Record<string, unknown>): FileEntry {
   };
 }
 
+/**
+ * Normalizes raw input data from manual or mixed formats into the MCP-compatible NormalizedData structure.
+ * @param data - The raw input data with camelCase or snake_case fields.
+ * @returns A NormalizedData object with unified observations, userPrompts, recentContext, and FILES, or the backfilled input if already in MCP format.
+ */
 function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
   const nextSteps = Array.isArray(data.nextSteps)
     ? data.nextSteps
@@ -491,6 +521,12 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
 // ───────────────────────────────────────────────────────────────
 // 6. INPUT VALIDATION
 // ───────────────────────────────────────────────────────────────
+/**
+ * Validates raw input data, throwing an error if required fields are missing or fields have incorrect types.
+ * @param data - The raw input data object to validate.
+ * @param specFolderArg - Optional spec folder path from CLI argument; when provided, the specFolder field in data is not required.
+ * @returns Nothing on success; throws an Error with concatenated validation messages on failure.
+ */
 function validateInputData(data: RawInputData, specFolderArg: string | null = null): void {
   const errors: string[] = [];
 
@@ -575,7 +611,7 @@ function validateInputData(data: RawInputData, specFolderArg: string | null = nu
   // Validation passed - function returns void on success, throws on failure
 }
 
-// 5.5. TOOL OBSERVATION TITLE BUILDER
+// 7. TOOL OBSERVATION TITLE BUILDER
 /**
  * Build a descriptive observation title from a tool call.
  * Uses the tool's file path, pattern, or command to create a meaningful title
@@ -685,8 +721,15 @@ function isSafeSpecFallback(currentSpecId: string | null, ...parts: Array<string
 }
 
 // ───────────────────────────────────────────────────────────────
-// 7. OPENCODE CAPTURE TRANSFORMATION
+// 8. OPENCODE CAPTURE TRANSFORMATION
 // ───────────────────────────────────────────────────────────────
+/**
+ * Transforms a raw OpenCode session capture into a structured TransformedCapture with observations, prompts, and file entries.
+ * @param capture - The raw OpenCode capture containing exchanges, tool calls, and metadata.
+ * @param specFolderHint - Optional spec folder path used to filter content by spec-folder relevance.
+ * @param source - The data source identifier, defaults to 'opencode-capture'.
+ * @returns A TransformedCapture with userPrompts, observations, recentContext, FILES, and source metadata.
+ */
 function transformOpencodeCapture(
   capture: OpencodeCapture,
   specFolderHint?: string | null,
@@ -1011,7 +1054,7 @@ function transformOpencodeCapture(
 }
 
 // ───────────────────────────────────────────────────────────────
-// 8. EXPORTS
+// 9. EXPORTS
 // ───────────────────────────────────────────────────────────────
 export {
   // Primary exports

@@ -197,9 +197,6 @@ async function extractDecisions(
   if (manualDecisions.length > 0) {
     console.log(`   Processing ${manualDecisions.length} manual decision(s)`);
 
-    const specNumber: string = extractSpecNumber(collectedData.SPEC_FOLDER || '000-unknown');
-    const usedAnchorIds: string[] = [];
-
     processedManualDecisions = manualDecisions.map(
       (manualDec: string | Record<string, unknown>, index: number): DecisionRecord => {
         const manualObj = typeof manualDec === 'object' && manualDec !== null && !Array.isArray(manualDec)
@@ -312,10 +309,7 @@ async function extractDecisions(
           explicitConfidence,
         });
 
-        let anchorId: string = generateAnchorId(title, 'decision', specNumber);
-        anchorId = validateAnchorUniqueness(anchorId, usedAnchorIds);
-        usedAnchorIds.push(anchorId);
-
+        // Anchor ID assigned in the unified pass at line ~562 (avoids double-assignment)
         return {
           INDEX: index + 1,
           TITLE: title,
@@ -339,7 +333,7 @@ async function extractDecisions(
           FOLLOWUP: [],
           DECISION_TREE: '',
           HAS_DECISION_TREE: false,
-          DECISION_ANCHOR_ID: anchorId,
+          DECISION_ANCHOR_ID: '',
           DECISION_IMPORTANCE: 'medium'
         };
       }
@@ -353,6 +347,9 @@ async function extractDecisions(
     .filter((obs) => obs.type === 'decision')
     .filter((obs) => !(processedManualDecisions.length > 0 && obs._manualDecision));
 
+  // REQ-002: suppress ALL observation-type decisions when manual decisions exist,
+  // since observation decisions are auto-extracted from the same session and manual
+  // decisions should take full precedence
   if (processedManualDecisions.length > 0) {
     decisionObservations = [];
   }

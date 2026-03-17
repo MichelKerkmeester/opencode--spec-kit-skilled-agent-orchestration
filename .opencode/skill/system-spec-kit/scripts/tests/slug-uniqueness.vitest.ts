@@ -93,4 +93,22 @@ describe('ensureUniqueMemoryFilename', () => {
     expect(second).toMatch(/^test-[0-9a-f]{12}\.md$/);
     expect(second).not.toBe(first);
   });
+
+  it('P1-5: re-throws EACCES error from fs.openSync', () => {
+    // Make the directory read-only so O_CREAT | O_EXCL fails with EACCES
+    fs.chmodSync(tmpDir, 0o555);
+
+    try {
+      expect(() => ensureUniqueMemoryFilename(tmpDir, 'test.md')).toThrow();
+
+      try {
+        ensureUniqueMemoryFilename(tmpDir, 'test.md');
+      } catch (err: unknown) {
+        expect((err as NodeJS.ErrnoException).code).toBe('EACCES');
+      }
+    } finally {
+      // Restore write permissions for cleanup
+      fs.chmodSync(tmpDir, 0o755);
+    }
+  });
 });

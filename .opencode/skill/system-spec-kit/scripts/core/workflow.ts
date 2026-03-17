@@ -1,15 +1,15 @@
-// ---------------------------------------------------------------
+// ───────────────────────────────────────────────────────────────
 // MODULE: Workflow
-// ---------------------------------------------------------------
+// ───────────────────────────────────────────────────────────────
 
 // ───────────────────────────────────────────────────────────────
 // 1. WORKFLOW
 // ───────────────────────────────────────────────────────────────
 // Main workflow orchestrator -- coordinates data loading, extraction, rendering, and file output
 // Node stdlib
-import * as path from 'path';
-import * as fsSync from 'fs';
-import * as crypto from 'crypto';
+import * as path from 'node:path';
+import * as fsSync from 'node:fs';
+import * as crypto from 'node:crypto';
 
 // Internal modules
 import { CONFIG, findActiveSpecsDir, getSpecsDirectories } from './config';
@@ -63,6 +63,7 @@ import {
   type MemoryEvidenceSnapshot,
   type MemorySufficiencyResult,
 } from '@spec-kit/shared/parsing/memory-sufficiency';
+import { validateFilePath } from '@spec-kit/shared/utils/path-security';
 import { validateMemoryTemplateContract } from '@spec-kit/shared/parsing/memory-template-contract';
 import { evaluateSpecDocHealth, type SpecDocHealthResult } from '@spec-kit/shared/parsing/spec-doc-health';
 import { extractTriggerPhrases } from '../lib/trigger-extractor';
@@ -74,36 +75,54 @@ import { structuredLog } from '../utils/logger';
 import type { FileChange, SessionData } from '../types/session-types';
 import type { FileEntry as ThinningFileEntry, ThinningResult } from './tree-thinning';
 
-/* ───────────────────────────────────────────────────────────────
-   1. INTERFACES
-------------------------------------------------------------------*/
+// ───────────────────────────────────────────────────────────────
+// 1. INTERFACES
+// ───────────────────────────────────────────────────────────────
 
-/** Represents workflow options. */
+/** Configuration options for the memory generation workflow. */
 export interface WorkflowOptions {
+  /** Path to a JSON file containing pre-collected session data. */
   dataFile?: string;
+  /** Explicit spec folder path or name to target (bypasses auto-detection). */
   specFolderArg?: string;
+  /** Pre-loaded collected data object (skips file-based loading). */
   collectedData?: CollectedDataFull;
+  /** Custom async loader function for collected data (alternative to dataFile). */
   loadDataFn?: () => Promise<CollectedDataFull>;
+  /** Custom async function to collect live session data from the environment. */
   collectSessionDataFn?: (
     collectedData: CollectedDataFull | null,
     specFolderName?: string | null
   ) => Promise<SessionData>;
+  /** When true, suppresses non-error console output during execution. */
   silent?: boolean;
 }
 
-/** Represents workflow result. */
+/** Result object returned after a successful workflow execution. */
 export interface WorkflowResult {
+  /** Absolute path to the memory output directory. */
   contextDir: string;
+  /** Relative path of the resolved spec folder. */
   specFolder: string;
+  /** Basename of the spec folder (e.g., "015-outsourced-agent-handback"). */
   specFolderName: string;
+  /** Filename of the primary context markdown file written. */
   contextFilename: string;
+  /** List of absolute paths for all files written during this run. */
   writtenFiles: string[];
+  /** Numeric memory ID from indexing, or null if indexing was skipped. */
   memoryId: number | null;
+  /** Summary statistics for the generated memory. */
   stats: {
+    /** Number of conversation messages processed. */
     messageCount: number;
+    /** Number of decisions extracted. */
     decisionCount: number;
+    /** Number of diagrams extracted. */
     diagramCount: number;
+    /** Quality score (0-100) from the quality scorer. */
     qualityScore: number;
+    /** Whether the data originated from a simulation rather than a live session. */
     isSimulation: boolean;
   };
 }
@@ -304,7 +323,7 @@ async function resolveAlignmentTargets(specFolderPath: string): Promise<Alignmen
         fileTargets.add(normalized);
       }
     }
-  } catch {
+  } catch (_error: unknown) {
     // Fall back to keyword-only alignment when spec docs are unavailable.
   }
 
@@ -542,8 +561,7 @@ type CausalLinksContext = {
 };
 
 function isWithinDirectory(parentDir: string, candidatePath: string): boolean {
-  const relative = path.relative(parentDir, candidatePath);
-  return relative === '' || (!relative.startsWith('..') && !path.isAbsolute(relative));
+  return validateFilePath(candidatePath, [parentDir]) !== null;
 }
 
 function resolveTreeThinningContent(file: FileChange, specFolderPath: string): string {
@@ -567,7 +585,7 @@ function resolveTreeThinningContent(file: FileChange, specFolderPath: string): s
     }
 
     return fsSync.readFileSync(candidatePath, 'utf8').slice(0, 500) || file.DESCRIPTION || '';
-  } catch {
+  } catch (_error: unknown) {
     return file.DESCRIPTION || '';
   }
 }
@@ -579,6 +597,9 @@ function listSpecFolderKeyFiles(specFolderPath: string): Array<{ FILE_PATH: stri
   const visit = (currentDir: string, relativeDir: string): void => {
     const entries = fsSync.readdirSync(currentDir, { withFileTypes: true });
     for (const entry of entries) {
+      if (entry.isSymbolicLink()) {
+        continue;
+      }
       if (entry.isDirectory()) {
         if (ignoredDirs.has(entry.name)) {
           continue;
@@ -598,7 +619,7 @@ function listSpecFolderKeyFiles(specFolderPath: string): Array<{ FILE_PATH: stri
 
   try {
     visit(specFolderPath, '');
-  } catch {
+  } catch (_error: unknown) {
     return [];
   }
 
@@ -1175,12 +1196,17 @@ async function enrichStatelessData(
   return enriched;
 }
 
-/* ───────────────────────────────────────────────────────────────
-   2. MAIN WORKFLOW
-   Orchestrates the full generate-context pipeline: data loading,
-   extraction, template rendering, file writing, and memory indexing.
-------------------------------------------------------------------*/
+// ───────────────────────────────────────────────────────────────
+// 2. MAIN WORKFLOW
+// ───────────────────────────────────────────────────────────────
 
+/**
+ * Main workflow orchestrator: coordinates data loading, extraction, rendering,
+ * quality scoring, and atomic file output to produce a memory context file.
+ *
+ * @param options - Configuration controlling data source, spec folder, and output behavior.
+ * @returns A WorkflowResult describing the output files, resolved spec folder, and stats.
+ */
 async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResult> {
   return withWorkflowRunLock(async () => {
     const {
@@ -1652,7 +1678,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     if (pfDesc?.memoryNameHistory) {
       memoryNameHistoryForSlug = pfDesc.memoryNameHistory;
     }
-  } catch { /* Non-fatal — slug generation proceeds without history */ }
+  } catch (_error: unknown) { /* Expected: description.json may not exist yet, or mcp_server module unavailable */ }
   const contentSlug: string = generateContentSlug(preferredMemoryTask, folderBase, memoryNameHistoryForSlug);
   const rawCtxFilename: string = `${sessionData.DATE}_${sessionData.TIME}__${contentSlug}.md`;
   const ctxFilename: string = ensureUniqueMemoryFilename(contextDir, rawCtxFilename);
@@ -1909,7 +1935,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       log(`   Spec doc health: ${specDocHealth.errors} errors, ${specDocHealth.warnings} warnings (score: ${specDocHealth.score})`);
     }
     files[ctxFilename] = injectSpecDocHealthMetadata(files[ctxFilename], specDocHealth);
-  } catch (e) {
+  } catch (e: unknown) {
     // Non-blocking — health annotation failure must not prevent memory save
     log(`   Spec doc health check skipped: ${e instanceof Error ? e.message : String(e)}`);
   }
@@ -2175,9 +2201,9 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   });
 }
 
-/* ───────────────────────────────────────────────────────────────
-   3. EXPORTS
-------------------------------------------------------------------*/
+// ───────────────────────────────────────────────────────────────
+// 3. EXPORTS
+// ───────────────────────────────────────────────────────────────
 
 export {
   runWorkflow,

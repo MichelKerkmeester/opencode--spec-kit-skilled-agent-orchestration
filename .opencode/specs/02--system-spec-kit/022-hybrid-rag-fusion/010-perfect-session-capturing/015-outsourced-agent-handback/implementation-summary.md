@@ -55,11 +55,10 @@ File-backed saves bypass stateless alignment and `QUALITY_GATE_ABORT`, but they 
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-4 implementation phases:
+3 implementation phases:
 1. **Runtime safeguards**: Re-verify the explicit JSON hard-fail and next-step persistence behavior already shipped in the system-spec-kit runtime.
-2. **CLI handback documentation**: Update the 4 SKILL files and 4 prompt templates with post-010 rejection codes, snake_case guidance, and richer `FILES` examples.
-3. **Doc guardrails**: Align the feature catalog and add a dedicated Vitest lane so the caller-facing contract does not drift silently.
-4. **Verification and reconciliation**: Record fresh 2026-03-16 lint, Vitest, alignment-drift, JSON-mode write/reject behavior, and spec validation.
+2. **CLI handback documentation**: Update the 4 SKILL files and 4 prompt templates with post-010 rejection codes, snake_case guidance, and richer `FILES` examples. Align the feature catalog and add a dedicated Vitest lane so the caller-facing contract does not drift silently.
+3. **Verification and reconciliation**: Record fresh 2026-03-16 lint, Vitest, alignment-drift, JSON-mode write/reject behavior, and spec validation.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -74,9 +73,7 @@ File-backed saves bypass stateless alignment and `QUALITY_GATE_ABORT`, but they 
 5. **Identical protocol across all 4 CLIs**: Same delimiter, same rejection-code guidance, and same minimum payload expectations. This prevents drift.
 <!-- /ANCHOR:decisions -->
 
----
-
-## Post-010 Pipeline Gate Matrix
+### Post-010 Pipeline Gate Matrix
 
 | Gate | File-Backed? | Stateless? | Code |
 |------|-------------|-----------|------|
@@ -94,10 +91,10 @@ File-backed saves bypass stateless alignment and `QUALITY_GATE_ABORT`, but they 
 
 | Check | Result |
 |-------|--------|
-| `npx vitest run --config ../mcp_server/vitest.config.ts --root . tests/runtime-memory-inputs.vitest.ts tests/outsourced-agent-handback-docs.vitest.ts` | PASS (`2` files, `28` tests) |
+| `npx vitest run --config ../mcp_server/vitest.config.ts --root . tests/runtime-memory-inputs.vitest.ts tests/outsourced-agent-handback-docs.vitest.ts` | PASS (`2` files, `32` tests) |
 | Alignment drift | PASS (`244` scanned, `0` findings, `0` warnings) |
 | `npm run lint` | PASS |
-| Rich JSON-mode handback | Wrote `memory/16-03-26_22-23__updated-the-outsourced-agent-handback-docs-so.md` (`557` lines) |
+| Rich JSON-mode handback | Wrote `memory/16-03-26_22-23__updated-the-outsourced-agent-handback-docs-so.md` (`556` lines) |
 | Thin JSON-mode handback | Rejected with `INSUFFICIENT_CONTEXT_ABORT` before file write |
 | Spec validation | 0 errors, 0 warnings |
 
