@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated": "2026-03-17T13:52:20.303Z",
+  "generated": "2026-03-18T07:23:49.116Z",
   "folders": [
     {
       "specFolder": "00--ai-systems-non-dev/001-global-shared/001-hvr-refinement-repo-analysis",
@@ -583,7 +583,7 @@
         "specification",
         "022-hybrid-rag-fusion"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-18T07:23:49.116Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic",
@@ -592,7 +592,7 @@
         "consolidated",
         "spec"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-17T13:52:20.399Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/001-sprint-0-measurement-foundation",
@@ -703,7 +703,7 @@
         "deferred",
         "features"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-17T13:52:20.410Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/010-sprint-9-extra-features",
@@ -718,7 +718,7 @@
         "operational",
         "tooling"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-18T07:23:49.116Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization",
@@ -752,7 +752,7 @@
         "hooks",
         "automation"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-17T13:52:20.418Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/005-architecture-audit",
@@ -767,7 +767,7 @@
         "boundary",
         "remediation"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-17T13:52:20.424Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/006-feature-catalog",
@@ -779,7 +779,7 @@
         "audit",
         "remediation"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-17T13:52:20.431Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog",
@@ -789,7 +789,7 @@
         "specification",
         "code-audit-per-feature-catalog"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-17T13:52:20.437Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/001-retrieval",
@@ -823,7 +823,7 @@
         "specification",
         "discovery"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-17T13:52:20.445Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/004-maintenance",
@@ -833,7 +833,7 @@
         "specification",
         "maintenance"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-17T13:52:20.458Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/005-lifecycle",
@@ -843,7 +843,7 @@
         "specification",
         "lifecycle"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-17T13:52:20.464Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/006-analysis",
@@ -863,7 +863,7 @@
         "specification",
         "evaluation"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-17T13:52:20.469Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/008-bug-fixes-and-data-integrity",
@@ -873,7 +873,7 @@
         "specification",
         "bug-fixes-and-data-integrity"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-17T13:52:20.474Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/009-evaluation-and-measurement",
@@ -893,7 +893,7 @@
         "specification",
         "graph-signal-activation"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-17T13:52:20.479Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/011-scoring-and-calibration",
@@ -903,7 +903,7 @@
         "specification",
         "scoring-and-calibration"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-17T13:52:20.486Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/012-query-intelligence",
@@ -913,7 +913,7 @@
         "specification",
         "query-intelligence"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-17T13:52:20.491Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/013-memory-quality-and-indexing",
@@ -923,7 +923,7 @@
         "specification",
         "memory-quality-and-indexing"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-17T13:52:20.497Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/014-pipeline-architecture",
@@ -933,7 +933,7 @@
         "specification",
         "pipeline-architecture"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-17T13:52:20.502Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/015-retrieval-enhancements",
@@ -943,7 +943,7 @@
         "specification",
         "retrieval-enhancements"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-17T13:52:20.507Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/016-tooling-and-scripts",
@@ -953,7 +953,7 @@
         "specification",
         "tooling-and-scripts"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-17T13:52:20.512Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/017-governance",
@@ -963,7 +963,7 @@
         "specification",
         "governance"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-17T13:52:20.518Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/018-ux-hooks",
@@ -983,7 +983,7 @@
         "specification",
         "decisions-and-deferrals"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-17T13:52:20.524Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/020-feature-flag-reference",
@@ -993,7 +993,7 @@
         "specification",
         "feature-flag-reference"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-17T13:52:20.529Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/021-remediation-revalidation",
@@ -1003,7 +1003,7 @@
         "specification",
         "remediation-revalidation"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-18T07:23:49.116Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features",
@@ -1013,7 +1013,7 @@
         "specification",
         "008-hydra-db-based-features"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-18T07:20:18.333Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/001-baseline-and-safety-rails",
@@ -1023,7 +1023,7 @@
         "specification",
         "001-baseline-and-safety-rails"
       ],
-      "lastUpdated": "2026-03-16T13:20:01.891Z"
+      "lastUpdated": "2026-03-17T19:37:31.637Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/002-versioned-memory-state",
@@ -1033,7 +1033,7 @@
         "specification",
         "002-versioned-memory-state"
       ],
-      "lastUpdated": "2026-03-16T13:20:01.898Z"
+      "lastUpdated": "2026-03-17T19:37:31.644Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/003-unified-graph-retrieval",
@@ -1043,7 +1043,7 @@
         "specification",
         "003-unified-graph-retrieval"
       ],
-      "lastUpdated": "2026-03-16T13:20:01.905Z"
+      "lastUpdated": "2026-03-17T19:37:31.649Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/004-adaptive-retrieval-loops",
@@ -1053,7 +1053,7 @@
         "specification",
         "004-adaptive-retrieval-loops"
       ],
-      "lastUpdated": "2026-03-16T13:20:01.912Z"
+      "lastUpdated": "2026-03-17T19:37:31.656Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/005-hierarchical-scope-governance",
@@ -1063,7 +1063,7 @@
         "specification",
         "005-hierarchical-scope-governance"
       ],
-      "lastUpdated": "2026-03-16T13:20:01.919Z"
+      "lastUpdated": "2026-03-17T19:37:31.662Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/006-shared-memory-rollout",
@@ -1073,7 +1073,7 @@
         "specification",
         "006-shared-memory-rollout"
       ],
-      "lastUpdated": "2026-03-16T13:20:01.926Z"
+      "lastUpdated": "2026-03-17T19:37:31.668Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/009-skill-alignment",
@@ -1085,7 +1085,7 @@
         "alignment",
         "system-spec-kit"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-17T13:52:20.542Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing",
@@ -1097,7 +1097,7 @@
         "session",
         "capturing"
       ],
-      "lastUpdated": "2026-03-17T13:52:17.143Z"
+      "lastUpdated": "2026-03-17T19:37:31.673Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/001-quality-scorer-unification",
@@ -1109,7 +1109,7 @@
         "scorer",
         "unification"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-17T13:52:20.548Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/002-contamination-detection",
@@ -1120,7 +1120,7 @@
         "contamination",
         "detection"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-17T19:37:31.682Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/003-data-fidelity",
@@ -1131,7 +1131,7 @@
         "data",
         "fidelity"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-17T19:37:31.687Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/004-type-consolidation",
@@ -1142,7 +1142,7 @@
         "type",
         "consolidation"
       ],
-      "lastUpdated": "2026-03-17T13:52:17.143Z"
+      "lastUpdated": "2026-03-17T19:37:31.693Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/005-confidence-calibration",
@@ -1153,7 +1153,7 @@
         "confidence",
         "calibration"
       ],
-      "lastUpdated": "2026-03-17T13:52:17.143Z"
+      "lastUpdated": "2026-03-17T19:37:31.698Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/006-description-enrichment",
@@ -1164,7 +1164,7 @@
         "description",
         "enrichment"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-17T19:37:31.704Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/007-phase-classification",
@@ -1175,7 +1175,7 @@
         "phase",
         "classification"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-17T19:37:31.709Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/008-signal-extraction",
@@ -1186,7 +1186,7 @@
         "signal",
         "extraction"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-17T13:52:20.577Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/009-embedding-optimization",
@@ -1197,7 +1197,7 @@
         "embedding",
         "optimization"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-17T19:37:31.715Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/010-integration-testing",
@@ -1208,7 +1208,7 @@
         "integration",
         "testing"
       ],
-      "lastUpdated": "2026-03-17T13:52:17.143Z"
+      "lastUpdated": "2026-03-17T19:37:31.720Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/011-session-source-validation",
@@ -1220,7 +1220,7 @@
         "source",
         "validation"
       ],
-      "lastUpdated": "2026-03-17T13:52:17.143Z"
+      "lastUpdated": "2026-03-17T19:37:31.726Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/012-template-compliance",
@@ -1231,7 +1231,7 @@
         "template",
         "compliance"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-17T19:37:31.731Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/013-auto-detection-fixes",
@@ -1242,7 +1242,7 @@
         "auto-detection",
         "fixes"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-17T19:37:31.736Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/014-spec-descriptions",
@@ -1254,7 +1254,7 @@
         "description",
         "infrastructure"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-17T19:37:31.742Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/015-outsourced-agent-handback",
@@ -1267,7 +1267,7 @@
         "handback",
         "protocol"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-17T13:52:20.608Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/016-multi-cli-parity",
@@ -1279,7 +1279,7 @@
         "parity",
         "hardening"
       ],
-      "lastUpdated": "2026-03-17T13:52:17.143Z"
+      "lastUpdated": "2026-03-17T19:37:31.748Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/011-command-alignment",
@@ -1288,7 +1288,7 @@
         "specification",
         "011-command-alignment"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-17T13:52:20.614Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/012-agents-alignment",
@@ -1301,7 +1301,7 @@
         "runtime",
         "definitions"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-17T13:52:20.620Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/013-agents-md-alignment",
@@ -1310,7 +1310,7 @@
         "specification",
         "013-agents-md-alignment"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-18T07:23:49.116Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook",
@@ -1320,7 +1320,7 @@
         "specification",
         "manual-testing-per-playbook"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-17T19:37:31.754Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/001-retrieval",
@@ -1332,7 +1332,7 @@
         "retrieval",
         "phase"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-18T07:23:49.116Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/002-mutation",
@@ -1344,7 +1344,7 @@
         "mutation",
         "phase"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-18T07:23:49.116Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/003-discovery",
@@ -1356,7 +1356,7 @@
         "discovery",
         "phase"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-18T07:23:49.116Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/004-maintenance",
@@ -1368,7 +1368,7 @@
         "maintenance",
         "phase"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-18T07:23:49.116Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/005-lifecycle",
@@ -1381,7 +1381,7 @@
         "manual",
         "testing"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-18T07:23:49.116Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/006-analysis",
@@ -1393,7 +1393,7 @@
         "analysis",
         "phase"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-18T07:23:49.116Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/007-evaluation",
@@ -1405,7 +1405,7 @@
         "evaluation",
         "phase"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-18T07:23:49.116Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/008-bug-fixes-and-data-integrity",
@@ -1417,7 +1417,7 @@
         "manual",
         "testing"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-18T07:23:49.116Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/009-evaluation-and-measurement",
@@ -1427,7 +1427,7 @@
         "specification",
         "evaluation-and-measurement"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-18T07:23:49.116Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/010-graph-signal-activation",
@@ -1443,7 +1443,7 @@
         "manual",
         "testing"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-18T07:23:49.116Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/011-scoring-and-calibration",
@@ -1455,7 +1455,7 @@
         "manual",
         "testing"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-18T07:23:49.116Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/012-query-intelligence",
@@ -1467,7 +1467,7 @@
         "query-intelligence",
         "phase"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-18T07:23:49.116Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/013-memory-quality-and-indexing",
@@ -1481,7 +1481,7 @@
         "indexing",
         "phase"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-18T07:23:49.116Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/014-pipeline-architecture",
@@ -1497,7 +1497,7 @@
         "pipeline",
         "architecture"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-18T07:23:49.116Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/015-retrieval-enhancements",
@@ -1509,7 +1509,7 @@
         "retrieval-enhancements",
         "phase"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-18T07:23:49.116Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/016-tooling-and-scripts",
@@ -1521,7 +1521,7 @@
         "manual",
         "testing"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-18T07:23:49.116Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/017-governance",
@@ -1533,7 +1533,7 @@
         "governance",
         "phase"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-18T07:23:49.116Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/018-ux-hooks",
@@ -1545,7 +1545,7 @@
         "ux-hooks",
         "phase"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-18T07:23:49.116Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/019-feature-flag-reference",
@@ -1557,7 +1557,7 @@
         "feature-flag-reference",
         "phase"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-18T07:23:49.116Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/015-rewrite-memory-mcp-readme",
@@ -1566,7 +1566,7 @@
         "specification",
         "015-rewrite-memory-mcp-readme"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-17T13:52:20.637Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/016-update-install-guide",
@@ -1575,7 +1575,7 @@
         "specification",
         "016-update-install-guide"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-17T13:52:20.643Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/017-rewrite-system-speckit-readme",
@@ -1584,7 +1584,7 @@
         "specification",
         "017-rewrite-system-speckit-readme"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-17T13:52:20.649Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/018-rewrite-repo-readme",
@@ -1593,7 +1593,7 @@
         "specification",
         "018-rewrite-repo-readme"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-17T13:52:20.655Z"
     },
     {
       "specFolder": "02--system-spec-kit/024-sqlite-to-turso",
@@ -3414,7 +3414,7 @@
         "self-invocation",
         "guards"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.303Z"
+      "lastUpdated": "2026-03-18T07:23:49.116Z"
     },
     {
       "specFolder": "03--commands-and-skills/sk-code/014-code-review-skill",
@@ -4248,6 +4248,68 @@
         "path"
       ],
       "lastUpdated": "2026-03-16T13:20:03.354Z"
+    },
+    {
+      "specFolder": "999-test-sandbox",
+      "description": "Test Sandbox",
+      "keywords": [
+        "test",
+        "sandbox"
+      ],
+      "lastUpdated": "2026-03-17T19:35:39.291Z"
+    },
+    {
+      "specFolder": "999-test-sandbox/001-codex-test",
+      "description": "Feature Specification: automated-greeting",
+      "keywords": [
+        "feature",
+        "specification",
+        "automated-greeting"
+      ],
+      "lastUpdated": "2026-03-18T07:23:49.116Z"
+    },
+    {
+      "specFolder": "999-test-sandbox/002-copilot-test",
+      "description": "Feature Specification: Automated Greeting",
+      "keywords": [
+        "feature",
+        "specification",
+        "automated",
+        "greeting"
+      ],
+      "lastUpdated": "2026-03-18T07:23:49.116Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/023-coco-index-integration",
+      "description": "CocoIndex Code MCP Integration: Phase 1 installation and registration of semantic code search across all 6 CLI config files, providing vector-indexed code search via natural language queries",
+      "keywords": [
+        "cocoindex",
+        "semantic code search",
+        "coco-index integration",
+        "code search mcp",
+        "cocoindex_code",
+        "vector index",
+        "mcp server"
+      ],
+      "lastUpdated": "2026-03-18T09:55:00.000Z"
+    },
+    {
+      "specFolder": "05--agent-orchestration/028-auto-deep-research",
+      "description": "Autonomous Deep Research Loop: 3-layer integration (@deep-research agent + /spec_kit:deep-research command + sk-deep-research skill) enabling iterative deep research with externalized state and fresh context per iteration",
+      "keywords": [
+        "autoresearch",
+        "deep-research",
+        "sk-deep-research",
+        "deep research",
+        "autonomous loop",
+        "iterative research",
+        "research agent",
+        "externalized state",
+        "convergence detection",
+        "fresh context",
+        "JSONL state"
+      ],
+      "lastUpdated": "2026-03-18T09:00:00.000Z"
     }
   ]
 }

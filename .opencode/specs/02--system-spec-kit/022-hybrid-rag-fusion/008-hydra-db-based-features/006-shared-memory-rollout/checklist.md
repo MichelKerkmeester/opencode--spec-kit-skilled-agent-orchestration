@@ -71,9 +71,9 @@ contextType: "general"
 ## Documentation
 
 - [x] CHK-620 [P1] Level 3+ documentation package created [EVIDENCE:README.md|spec.md|plan.md|tasks.md|checklist.md|decision-record.md|implementation-summary.md]
-- [x] CHK-621 [P1] Playbook updated for collaboration rollout [EVIDENCE:manual_testing_playbook.md NEW-123]
+- [x] CHK-621 [P1] Playbook updated for collaboration rollout [EVIDENCE:.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md]
 - [x] CHK-622 [P1] Feature catalog and README surfaces updated after implementation [EVIDENCE:feature_catalog/17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md]
-- [x] CHK-623 [P1] Maintainer sign-off recorded [EVIDENCE:terminal approval recorded in session 2026-03-14]
+- [x] CHK-623 [P1] Maintainer sign-off recorded in phase docs [EVIDENCE:.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/006-shared-memory-rollout/checklist.md (L3+: SIGN-OFF)]
 <!-- /ANCHOR:docs -->
 
 ---
@@ -88,27 +88,59 @@ contextType: "general"
 
 ---
 
-<!-- ANCHOR:arch-verify -->
-## L3+: ARCHITECTURE VERIFICATION
-
-- [x] CHK-640 [P1] Opt-in rollout ADR documented [EVIDENCE:decision-record.md]
-- [x] CHK-641 [P1] Kill-switch and rollback strategy documented [EVIDENCE:plan.md]
-- [x] CHK-642 [P1] Collaboration design reviewed by platform or product reviewer [EVIDENCE:terminal approval recorded in session 2026-03-14]
-<!-- /ANCHOR:arch-verify -->
-
----
-
 <!-- ANCHOR:summary -->
 ## Verification Summary
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 9 | 9/9 |
-| P1 Items | 4 | 4/4 |
+| P0 Items | 8 | 8/8 |
+| P1 Items | 14 | 14/14 |
 | P2 Items | 3 | 3/3 |
 
 **Verification Date**: 2026-03-14
 <!-- /ANCHOR:summary -->
+
+---
+
+<!-- ANCHOR:arch-verify -->
+## L3+: ARCHITECTURE VERIFICATION
+
+- [x] CHK-640 [P1] Opt-in rollout ADR documented [EVIDENCE:decision-record.md]
+- [x] CHK-641 [P1] Kill-switch and rollback strategy documented [EVIDENCE:plan.md]
+- [x] CHK-642 [P1] Collaboration design reviewed by platform or product reviewer [EVIDENCE:.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/006-shared-memory-rollout/checklist.md (L3+: SIGN-OFF)]
+<!-- /ANCHOR:arch-verify -->
+
+---
+
+<!-- ANCHOR:perf-verify -->
+## L3+: PERFORMANCE VERIFICATION
+
+- [x] CHK-650 [P1] Shared-space rollout metrics and conflict summaries stay bounded to the verified suite and telemetry helpers [EVIDENCE:implementation-summary.md|mcp_server/lib/collab/shared-spaces.ts `getSharedRolloutMetrics`|`getSharedConflictStrategySummary`]
+<!-- /ANCHOR:perf-verify -->
+
+---
+
+<!-- ANCHOR:deploy-ready -->
+## L3+: DEPLOYMENT READINESS
+
+- [x] CHK-660 [P1] Kill-switch rollback and staged rollout readiness are documented for shared-memory enablement [EVIDENCE:plan.md|implementation-summary.md]
+<!-- /ANCHOR:deploy-ready -->
+
+---
+
+<!-- ANCHOR:compliance-verify -->
+## L3+: COMPLIANCE VERIFICATION
+
+- [x] CHK-670 [P1] Deny-by-default membership and governance guardrails remain documented and verified for shared spaces [EVIDENCE:spec.md|implementation-summary.md]
+<!-- /ANCHOR:compliance-verify -->
+
+---
+
+<!-- ANCHOR:docs-verify -->
+## L3+: DOCUMENTATION VERIFICATION
+
+- [x] CHK-680 [P1] Phase shared-memory docs remain synchronized across spec, plan, tasks, checklist, and implementation summary [EVIDENCE:spec.md|plan.md|tasks.md|implementation-summary.md]
+<!-- /ANCHOR:docs-verify -->
 
 ---
 

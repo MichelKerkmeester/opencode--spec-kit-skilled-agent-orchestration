@@ -10,6 +10,8 @@ contextType: "general"
 ---
 # Phase 5: Hierarchical Scope and Governance
 
+> This folder defines the Level 3+ governance package for hierarchical boundaries, governed ingestion, retention/deletion controls, and auditability before shared collaboration rollout.
+
 ## TABLE OF CONTENTS
 <!-- ANCHOR:table-of-contents -->
 
@@ -31,6 +33,7 @@ Phase 5 is shipped in the live runtime and remains the governance gate that Phas
 <!-- /ANCHOR:overview -->
 
 ## 2. CURRENT STATUS
+<!-- ANCHOR:current-status -->
 
 | Field | Value |
 |-------|-------|
@@ -40,7 +43,10 @@ Phase 5 is shipped in the live runtime and remains the governance gate that Phas
 | **Depends On** | `../004-adaptive-retrieval-loops/` plus Phase 2 lineage contracts |
 | **Next Phase** | `../006-shared-memory-rollout/` |
 
+<!-- /ANCHOR:current-status -->
+
 ## 3. DOCUMENTS
+<!-- ANCHOR:documents -->
 
 - `spec.md` defines scope isolation, provenance, retention, deletion, and audit requirements.
 - `plan.md` breaks the phase into scope model, governed ingest, and lifecycle enforcement work.
@@ -49,7 +55,10 @@ Phase 5 is shipped in the live runtime and remains the governance gate that Phas
 - `decision-record.md` captures the governance-first decision for this phase.
 - `implementation-summary.md` records the shipped implementation, verification set, and any remaining limitations.
 
+<!-- /ANCHOR:documents -->
+
 ## 4. SCOPE BOUNDARY
+<!-- ANCHOR:scope-boundary -->
 
 Included here:
 - Tenant, user, agent, and session scope enforcement.
@@ -59,6 +68,8 @@ Included here:
 Explicitly not included here:
 - Shared-memory spaces themselves.
 - Collaboration conflict resolution and rollout.
+
+<!-- /ANCHOR:scope-boundary -->
 
 ## 5. RELATED
 <!-- ANCHOR:related -->

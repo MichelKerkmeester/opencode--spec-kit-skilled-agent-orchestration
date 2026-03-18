@@ -10,7 +10,7 @@ contextType: "general"
 ---
 # Phase 2: Versioned Memory State
 
-This folder defines the Level 3+ execution package for turning the current Memory MCP stack into a first-class append-first state model. It is the lineage and temporal-query phase of the Hydra roadmap.
+> This folder defines the Level 3+ execution package for turning the current Memory MCP stack into an append-first state model with lineage and temporal-query behavior.
 
 ## TABLE OF CONTENTS
 <!-- ANCHOR:table-of-contents -->
@@ -42,9 +42,9 @@ This folder defines the Level 3+ execution package for turning the current Memor
 - `spec.md` defines lineage, temporal state, migration, and governance requirements.
 - `plan.md` lays out schema, write-path, query, and rollback execution tracks.
 - `tasks.md` breaks the phase into discovery, implementation, migration, and verification work.
-- `checklist.md` records what is already prepared versus what remains unverified.
+- `checklist.md` records completed verification gates and linked implementation evidence.
 - `decision-record.md` captures the phase-local lineage design decision.
-- `implementation-summary.md` records the current truth: docs complete, implementation pending.
+- `implementation-summary.md` records the current truth: implementation completed and validated.
 
 <!-- /ANCHOR:documents -->
 

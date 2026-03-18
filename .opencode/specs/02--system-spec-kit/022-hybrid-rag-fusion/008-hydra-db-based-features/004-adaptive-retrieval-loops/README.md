@@ -10,7 +10,7 @@ contextType: "general"
 ---
 # Phase 4: Adaptive Retrieval Loops
 
-This folder defines the Level 3+ execution package for turning retrieval outcomes, access signals, and correction events into bounded adaptive learning loops. It is the shadow-mode and policy-governed learning phase of the roadmap.
+> This folder defines the Level 3+ execution package for turning retrieval outcomes, access signals, and correction events into bounded adaptive learning loops under shadow-mode controls.
 
 ## TABLE OF CONTENTS
 <!-- ANCHOR:table-of-contents -->

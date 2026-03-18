@@ -12,7 +12,7 @@ import path from 'path';
 import { structuredLog } from '../utils/logger';
 import type { ContaminationAuditRecord } from '../lib/content-filter';
 
-type QualityRuleId = 'V1' | 'V2' | 'V3' | 'V4' | 'V5' | 'V6' | 'V7' | 'V8' | 'V9' | 'V10';
+type QualityRuleId = 'V1' | 'V2' | 'V3' | 'V4' | 'V5' | 'V6' | 'V7' | 'V8' | 'V9' | 'V10' | 'V11';
 
 interface RuleResult {
   ruleId: QualityRuleId;
@@ -220,7 +220,7 @@ function hasSignificantFileCountDivergence(
 
   const ratio = maxCount / minCount;
   const absoluteDifference = maxCount - minCount;
-  return ratio >= 2 && absoluteDifference >= 3;
+  return ratio >= 2 && absoluteDifference >= 5;
 }
 
 function countDistinctSpecIds(content: string): Map<string, number> {
@@ -394,6 +394,28 @@ function validateMemoryQualityContent(content: string): ValidationResult {
     passed: !divergentSessionSource,
     message: divergentSessionSource
       ? `session source mismatch: filesystem_file_count=${filesystemFileCount}, captured_file_count=${capturedFileCount}`
+      : 'ok',
+  });
+
+  // V11: API error content leakage — detect error-dominated memory content
+  const ERROR_VOCAB = /\b(?:error|api_error|request_id|req_\w+|500|503|429|overloaded|internal.server)\b/i;
+  const API_ERROR_PATTERN = /\bAPI\s+Error:\s*\d{3}\b/i;
+  const JSON_ERROR_PATTERN = /\{"?\s*(?:type|error)"?\s*:\s*"?(?:error|api_error|overloaded_error|rate_limit_error|server_error)/i;
+  const descriptionValue = extractYamlValueFromContent(content, 'description') || '';
+  const hasErrorDescription = API_ERROR_PATTERN.test(descriptionValue) || JSON_ERROR_PATTERN.test(descriptionValue);
+  const hasErrorTitle = API_ERROR_PATTERN.test(titleValue) || JSON_ERROR_PATTERN.test(titleValue);
+  const errorTriggerCount = triggerPhrases.filter((tp) => ERROR_VOCAB.test(tp)).length;
+  const errorDominatedTriggers = triggerPhrases.length > 0 && (errorTriggerCount / triggerPhrases.length) > 0.5;
+  const v11Failed = hasErrorDescription || hasErrorTitle || errorDominatedTriggers;
+  ruleResults.push({
+    ruleId: 'V11',
+    passed: !v11Failed,
+    message: v11Failed
+      ? `error content leakage: ${[
+          hasErrorDescription ? 'description' : '',
+          hasErrorTitle ? 'title' : '',
+          errorDominatedTriggers ? `trigger_phrases(${errorTriggerCount}/${triggerPhrases.length})` : '',
+        ].filter(Boolean).join(', ')}`
       : 'ok',
   });
 

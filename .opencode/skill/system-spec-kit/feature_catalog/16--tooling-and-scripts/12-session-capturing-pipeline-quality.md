@@ -76,8 +76,14 @@ The shipped session-capture pipeline enforces the following behavior:
    - duplicate top-of-body separators are rejected
 25. Historical active-memory remediation now uses that same template contract and moves non-repairable files out of active `memory/` use.
 26. The H1 body heading (`# title`) is derived from the content slug via `slugToTitle(contentSlug)` — the same slug used for the filename — instead of `pickBestContentName()`. A blank line separates the frontmatter close `---` from the H1 to satisfy the `missing_blank_line_after_frontmatter` contract rule.
+27. API error content is blocked at 5 pipeline layers:
+   - `claude-code-capture.ts` skips events with `isApiErrorMessage: true`
+   - `input-normalizer.ts` treats API error strings as placeholder responses
+   - `contamination-filter.ts` detects error prefixes, JSON error payloads, and request ID leaks (high severity)
+   - `collect-session-data.ts` guards SUMMARY derivation against error text in the `learning` field
+   - `validate-memory-quality.ts` V11 rule rejects memories with error-dominated descriptions, titles, or trigger phrases
 
-Status: Implemented, strongly verified, and fully closed as of 2026-03-17. The parent spec pack is strict-clean, and retained same-day live proof for all five supported CLIs is captured at `research/live-cli-proof-2026-03-17.json`; future live-verification claims should refresh that primary evidence rather than rely on the automated baseline alone.
+Status: Implemented, strongly verified, and fully closed as of 2026-03-18. The parent spec pack is strict-clean, and retained same-day live proof for all five supported CLIs is captured at `research/live-cli-proof-2026-03-17.json`; future live-verification claims should refresh that primary evidence rather than rely on the automated baseline alone.
 
 ---
 
@@ -224,7 +230,7 @@ The closure feature consists of these distinct shipped capabilities:
 | `scripts/core/workflow.ts` | Alignment blocking, insufficiency blocking, template-contract blocking, enrichment insertion, quality abort, and stateless tool-count recovery |
 | `scripts/memory/historical-memory-remediation.ts` | Historical corpus audit/repair/quarantine against the current rendered-memory contract |
 | `scripts/utils/validation-utils.ts` | Render validation helpers that ignore literal template syntax inside code spans |
-| `scripts/memory/validate-memory-quality.ts` | V5 and V6 quality checks for rendered memory output |
+| `scripts/memory/validate-memory-quality.ts` | V1-V11 post-render quality gate for rendered memory output |
 | `scripts/utils/slug-utils.ts` | Memory title and filename normalization after captured operator/debug text |
 | `scripts/core/quality-scorer.ts` | Legacy quality-score calibration and insufficiency caps |
 | `scripts/extractors/quality-scorer.ts` | V2 quality-score calibration and insufficiency flags |
@@ -236,6 +242,7 @@ The closure feature consists of these distinct shipped capabilities:
 | File | Focus |
 |------|-------|
 | `scripts/tests/claude-code-capture.vitest.ts` | Claude parser and contamination-safe matching |
+| `scripts/tests/contamination-filter.vitest.ts` | Contamination denylist severity tracking and API error pattern detection |
 | `scripts/tests/codex-cli-capture.vitest.ts` | Codex parser and reasoning exclusion |
 | `scripts/tests/copilot-cli-capture.vitest.ts` | Copilot workspace/event parsing |
 | `scripts/tests/gemini-cli-capture.vitest.ts` | Gemini project mapping and thought exclusion |
@@ -285,6 +292,7 @@ The closure feature consists of these distinct shipped capabilities:
 - On 2026-03-17, package-clean MCP verification reran cleanly for `npm run lint`, `npm run build`, and `npm run test`, with the full MCP package suite reporting `283` files and `7822` total tests including skips and todo coverage.
 - Alignment drift remains supported by the 2026-03-16 rerun, which reported `229` scanned files and `0` findings; it was not part of the March 17 rerun set.
 - The March 17 automated reruns are not, by themselves, the live-proof evidence for every CLI; that proof comes from the retained artifact at `research/live-cli-proof-2026-03-17.json`, and any future universal live-verification claim should refresh equivalent primary evidence.
+- On 2026-03-18, API error content defense was added: V11 validation rule in `validate-memory-quality.ts`, 3 contamination denylist patterns in `contamination-filter.ts`, 6 placeholder patterns in `input-normalizer.ts`, SUMMARY error guard in `collect-session-data.ts`, and `isApiErrorMessage` skip in `claude-code-capture.ts`. Test coverage expanded with `contamination-filter.vitest.ts`.
 
 ---
 

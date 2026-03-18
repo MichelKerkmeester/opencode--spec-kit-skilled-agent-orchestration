@@ -90,3 +90,11 @@ tmp/
 # Local symlinked repos
 # ───────────────────────────────────────────
 /anobel.com
+
+# CocoIndex Code semantic index
+# ───────────────────────────────────────────
+.cocoindex_code/
+
+# CocoIndex Code MCP skill venv
+# ───────────────────────────────────────────
+.opencode/skill/mcp-cocoindex-code/mcp_server/.venv/

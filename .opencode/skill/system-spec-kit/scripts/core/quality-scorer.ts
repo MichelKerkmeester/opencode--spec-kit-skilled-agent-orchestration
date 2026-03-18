@@ -20,6 +20,7 @@ import {
 } from '../utils/file-helpers';
 import type { MemorySufficiencyResult } from '@spec-kit/shared/parsing/memory-sufficiency';
 import type { DescriptionProvenance } from '../types/session-types';
+import type { ContaminationSeverity } from '../extractors/contamination-filter';
 
 interface FileWithDescription {
   DESCRIPTION?: string;
@@ -57,7 +58,8 @@ export type QualityFlag =
   | 'has_tool_state_mismatch'
   | 'has_session_source_mismatch'
   | 'has_spec_relevance_mismatch'
-  | 'has_contaminated_title';
+  | 'has_contaminated_title'
+  | 'has_error_content';
 
 export interface QualityDimensionScore {
   id: string;
@@ -166,6 +168,7 @@ export function scoreMemoryQuality(
   observations: ObservationWithNarrative[],
   sufficiencyResult?: MemorySufficiencyResult,
   hadContamination = false,
+  contaminationSeverity: ContaminationSeverity | null = null,
 ): QualityScoreResult {
   const warnings: string[] = [];
   const qualityFlags = new Set<QualityFlag>();
@@ -290,12 +293,23 @@ export function scoreMemoryQuality(
 
   let score01 = clamp01(Object.values(breakdown).reduce((sum, v) => sum + v, 0) / 100);
   let scoreCap: number | null = null;
+  const effectiveSeverity: ContaminationSeverity = contaminationSeverity || 'high';
 
   if (hadContamination) {
     qualityFlags.add('has_contamination');
-    score01 -= 0.25;
-    scoreCap = Math.min(scoreCap ?? 1, 0.6);
-    warnings.push('Contamination detected — quality score penalized and capped at 0.60');
+    const severity = effectiveSeverity;
+    if (severity === 'low') {
+      score01 -= 0.05;
+      warnings.push('Low-severity contamination detected (preamble only) — minor penalty applied');
+    } else if (severity === 'medium') {
+      score01 -= 0.10;
+      scoreCap = Math.min(scoreCap ?? 1, 0.85);
+      warnings.push('Medium-severity contamination detected (orchestration chatter) — capped at 0.85');
+    } else {
+      score01 -= 0.25;
+      scoreCap = Math.min(scoreCap ?? 1, 0.6);
+      warnings.push('High-severity contamination detected (AI self-reference/tool leaks) — capped at 0.60');
+    }
   }
 
   if (sufficiencyResult && !sufficiencyResult.pass) {
@@ -319,7 +333,7 @@ export function scoreMemoryQuality(
     { id: 'content_length', score01: breakdown.contentLength / 15, score100: breakdown.contentLength, maxScore100: 15, passed: contentLines >= 20 },
     { id: 'html_safety', score01: breakdown.noLeakedTags / 15, score100: breakdown.noLeakedTags, maxScore100: 15, passed: realLeakedTags <= 0 },
     { id: 'observation_dedup', score01: breakdown.observationDedup / 15, score100: breakdown.observationDedup, maxScore100: 15, passed: observations.length > 0 },
-    { id: 'contamination', score01: hadContamination ? 0.75 : 1, score100: hadContamination ? 75 : 100, maxScore100: 100, passed: !hadContamination },
+    { id: 'contamination', score01: hadContamination ? (effectiveSeverity === 'low' ? 0.95 : effectiveSeverity === 'medium' ? 0.85 : 0.60) : 1, score100: hadContamination ? (effectiveSeverity === 'low' ? 95 : effectiveSeverity === 'medium' ? 85 : 60) : 100, maxScore100: 100, passed: !hadContamination },
   ];
 
   return {

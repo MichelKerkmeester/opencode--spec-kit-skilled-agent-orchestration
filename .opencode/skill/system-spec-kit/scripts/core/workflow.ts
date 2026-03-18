@@ -36,7 +36,7 @@ import { deriveMemoryDescription } from '../utils/memory-frontmatter';
 import { shouldAutoSave, collectSessionData } from '../extractors/collect-session-data';
 import type { CollectedDataFull } from '../extractors/collect-session-data';
 import type { SemanticFileInfo } from '../extractors/file-extractor';
-import { filterContamination, getContaminationPatternLabels } from '../extractors/contamination-filter';
+import { filterContamination, getContaminationPatternLabels, SEVERITY_RANK, type ContaminationSeverity } from '../extractors/contamination-filter';
 import {
   scoreMemoryQuality as scoreMemoryQualityV2,
   type ValidationSignal,
@@ -1353,6 +1353,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
 
     // F-23: Define contamination cleaning functions before enrichment
     let hadContamination = false;
+    let contaminationMaxSeverity: ContaminationSeverity | null = null;
     const contaminationAuditTrail: ContaminationAuditRecord[] = [];
     const extractorPatternCounts = new Map<string, number>();
     let extractorProcessedFieldCount = 0;
@@ -1365,6 +1366,11 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
         hadContamination = true;
         extractorCleanedFieldCount++;
         extractorRemovedPhraseCount += filtered.removedPhrases.length;
+        if (filtered.maxSeverity !== null) {
+          if (contaminationMaxSeverity === null || SEVERITY_RANK[filtered.maxSeverity] > SEVERITY_RANK[contaminationMaxSeverity]) {
+            contaminationMaxSeverity = filtered.maxSeverity;
+          }
+        }
         for (const label of filtered.matchedPatterns) {
           extractorPatternCounts.set(label, (extractorPatternCounts.get(label) ?? 0) + 1);
         }
@@ -1419,6 +1425,12 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       };
       contaminationAuditTrail.push(extractorAudit);
       structuredLog('info', 'contamination_audit', extractorAudit);
+
+      // Count-based severity escalation: mass low-severity matches indicate
+      // pervasive contamination that warrants a higher penalty
+      if (hadContamination && contaminationMaxSeverity === 'low' && extractorRemovedPhraseCount >= 10) {
+        contaminationMaxSeverity = 'medium';
+      }
     }
 
     // Step 3.5: Enrich stateless data with spec folder and git context
@@ -1454,6 +1466,39 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
         }
       }
       log();
+    }
+
+    // Clean FILE descriptions that may contain contamination from git commit subjects
+    if (collectedData.FILES && Array.isArray(collectedData.FILES)) {
+      const preFileCleanedCount = extractorCleanedFieldCount;
+      const preFileRemovedCount = extractorRemovedPhraseCount;
+      const filesList = collectedData.FILES;
+      collectedData = {
+        ...collectedData,
+        FILES: filesList.map((file) => ({
+          ...file,
+          DESCRIPTION: file.DESCRIPTION ? cleanContaminationText(file.DESCRIPTION) : file.DESCRIPTION,
+        })),
+      };
+      const fileDescCleanedCount = extractorCleanedFieldCount - preFileCleanedCount;
+      const fileDescRemovedCount = extractorRemovedPhraseCount - preFileRemovedCount;
+      if (fileDescCleanedCount > 0) {
+        const fileDescAudit: ContaminationAuditRecord = {
+          stage: 'extractor-scrub',
+          timestamp: new Date().toISOString(),
+          patternsChecked: getContaminationPatternLabels(),
+          matchesFound: summarizeAuditCounts(extractorPatternCounts),
+          actionsTaken: [
+            `file_desc_cleaned:${fileDescCleanedCount}`,
+            `file_desc_removed_phrases:${fileDescRemovedCount}`,
+          ],
+          passedThrough: [
+            `total_files:${filesList.length}`,
+          ],
+        };
+        contaminationAuditTrail.push(fileDescAudit);
+        structuredLog('info', 'contamination_audit', fileDescAudit);
+      }
     }
 
     // Steps 4-7: Parallel data extraction
@@ -1932,6 +1977,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     content: files[ctxFilename],
     validatorSignals: qualitySignals,
     hadContamination,
+    contaminationSeverity: contaminationMaxSeverity,
     messageCount: conversations.MESSAGES.length,
     toolCount: sessionData.TOOL_COUNT,
     decisionCount: decisions.DECISIONS.length,
@@ -1991,6 +2037,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     sessionData.OBSERVATIONS || [],
     sufficiencyResult,
     hadContamination,
+    contaminationMaxSeverity,
   );
   log(
     `   Memory quality score: ${qualityResult.score100}/100 (${qualityResult.score01.toFixed(2)}) ` +

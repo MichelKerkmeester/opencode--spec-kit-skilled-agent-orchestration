@@ -10,7 +10,7 @@ contextType: "general"
 ---
 # Phase 3: Unified Graph Retrieval
 
-This folder defines the Level 3+ execution package for moving from fragmented retrieval signals to one deterministic graph-aware retrieval path. It covers causal, entity, and summary relationships, plus scoring explainability and regression control.
+> This folder defines the Level 3+ execution package for moving from fragmented retrieval signals to one deterministic graph-aware retrieval path with explainable scoring and regression control.
 
 ## TABLE OF CONTENTS
 <!-- ANCHOR:table-of-contents -->

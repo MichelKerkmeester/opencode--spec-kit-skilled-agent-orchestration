@@ -1,0 +1,22 @@
+{
+  "specFolder": "02--system-spec-kit/023-coco-index-integration",
+  "description": "CocoIndex Code MCP Integration: Phase 1 installation and registration of semantic code search across all 6 CLI config files, providing vector-indexed code search via natural language queries",
+  "keywords": [
+    "cocoindex",
+    "semantic code search",
+    "coco-index integration",
+    "code search mcp",
+    "cocoindex_code",
+    "vector index",
+    "mcp server"
+  ],
+  "lastUpdated": "2026-03-18T09:55:00.000Z",
+  "specId": "023",
+  "folderSlug": "coco-index-integration",
+  "parentChain": [],
+  "memorySequence": 2,
+  "memoryNameHistory": [
+    "18-03-26_08-32__next-steps.md",
+    "18-03-26_08-51__next-steps.md"
+  ]
+}

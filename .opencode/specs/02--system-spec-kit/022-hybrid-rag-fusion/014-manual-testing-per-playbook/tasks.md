@@ -34,7 +34,7 @@ contextType: "general"
 ## Phase 1: Setup
 
 - [x] T001 Re-read the parent `014` packet and all current phase folders to identify stale `195`-only and validation-pending claims.
-- [x] T002 Re-read the dedicated memory section of `../../manual_testing_playbook/manual_testing_playbook.md` and establish the exact-ID inventory model.
+- [x] T002 Re-read the dedicated memory section of `../../../../skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` and establish the exact-ID inventory model.
 - [x] T003 Capture the current parent recursive-validation result for `014-manual-testing-per-playbook/`.
 - [x] T004 Confirm parent `description.json` exists and is valid JSON.
 <!-- /ANCHOR:phase-1 -->
@@ -85,9 +85,9 @@ contextType: "general"
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
 - **Checklist**: See `checklist.md`
-- **Playbook**: See `../manual_testing_playbook/manual_testing_playbook.md`
-- **Review Protocol**: See `../manual_testing_playbook/review_protocol.md`
-- **Feature Catalog**: See `../feature_catalog/`
+- **Playbook**: See `../../../../skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md`
+- **Review Protocol**: See `../../../../skill/system-spec-kit/manual_testing_playbook/review_protocol.md`
+- **Feature Catalog**: See `../../../../skill/system-spec-kit/feature_catalog/`
 <!-- /ANCHOR:cross-refs -->
 
 ---

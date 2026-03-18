@@ -498,29 +498,26 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
     || config.sessionId
     || sharedSpaceId
   );
+  const scopeFilter = {
+    tenantId,
+    userId,
+    agentId,
+    sessionId: config.sessionId,
+    sharedSpaceId,
+  };
+  let allowedSharedSpaceIds: Set<string> | undefined;
 
   if (hasGovernanceScope) {
     try {
       const db = requireDb();
+      allowedSharedSpaceIds = getAllowedSharedSpaceIds(db, scopeFilter);
       candidates = filterRowsByScope(
         candidates,
-        {
-          tenantId,
-          userId,
-          agentId,
-          sessionId: config.sessionId,
-          sharedSpaceId,
-        },
-        getAllowedSharedSpaceIds(db, { tenantId, userId, agentId }),
+        scopeFilter,
+        allowedSharedSpaceIds,
       );
     } catch (_error: unknown) {
-      candidates = filterRowsByScope(candidates, {
-        tenantId,
-        userId,
-        agentId,
-        sessionId: config.sessionId,
-        sharedSpaceId,
-      });
+      candidates = filterRowsByScope(candidates, scopeFilter);
     }
   }
 
@@ -607,7 +604,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
               if (!existingIds.has(String(sr.memoryId))) {
                 // Fetch full memory row for the summary match
                 const memRow = db.prepare(
-                  'SELECT id, title, spec_folder, file_path, importance_tier, importance_weight, quality_score, created_at, is_archived FROM memory_index WHERE id = ?'
+                  'SELECT id, title, spec_folder, file_path, importance_tier, importance_weight, quality_score, created_at, is_archived, context_type, tenant_id, user_id, agent_id, session_id, shared_space_id FROM memory_index WHERE id = ?'
                 ).get(sr.memoryId) as PipelineRow | undefined;
 
                 if (memRow) {
@@ -624,9 +621,15 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
             const archiveFilteredSummaryHits = applyArchiveFilter(newSummaryHits, includeArchived);
             const folderFilteredSummaryHits = applyFolderFilter(archiveFilteredSummaryHits, specFolder);
             const tierFilteredSummaryHits = applyTierFilter(folderFilteredSummaryHits, tier);
+            const contextFilteredSummaryHits = contextType
+              ? tierFilteredSummaryHits.filter((r) => resolveRowContextType(r) === contextType)
+              : tierFilteredSummaryHits;
+            const scopeFilteredSummaryHits = hasGovernanceScope
+              ? filterRowsByScope(contextFilteredSummaryHits, scopeFilter, allowedSharedSpaceIds)
+              : contextFilteredSummaryHits;
 
             // Apply the same quality threshold that other candidates go through
-            const filteredSummaryHits = filterByMinQualityScore(tierFilteredSummaryHits, qualityThreshold);
+            const filteredSummaryHits = filterByMinQualityScore(scopeFilteredSummaryHits, qualityThreshold);
 
             if (filteredSummaryHits.length > 0) {
               candidates = [...candidates, ...filteredSummaryHits];

@@ -1,0 +1,1 @@
+../../skill/mcp-cocoindex-code/scripts/install.sh

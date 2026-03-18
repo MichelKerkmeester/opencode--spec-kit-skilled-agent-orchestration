@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: 008-hydra-db-based-features"
-description: "Hydra closure summary covering parent-pack normalization, phase-pack normalization, runtime fixes, and March 17 2026 re-verification."
+description: "Hydra closure summary covering parent and phase template normalization, runtime hardening fixes, and March 17 2026 full re-verification with live 5-CLI proof."
 importance_tier: "critical"
 contextType: "implementation"
 ---
@@ -58,7 +58,7 @@ This pass combined documentation normalization and code correction instead of tr
 |----------|-----|
 | Keep the root pack as a coordination layer and the phase folders as the detailed delivery record. | That prevents the parent pack from drifting back into a second implementation log. |
 | Fix the two runtime defects as part of closure rather than documenting them as future work. | The review findings were correctness issues, so “truth-sync only” would have left the pack claiming clean behavior while known bugs remained. |
-| Narrow CLI-proof wording instead of claiming fresh live proof for all five CLIs. | The repository proves strong automated coverage and repo-local configuration support, but not a new set of fresh per-client primary artifacts for every live CLI. |
+| Require live prompt proof for all five CLIs before closure sign-off. | A strict live matrix removes ambiguity between automated suite coverage and real CLI execution readiness. |
 | Use the March 17 2026 rerun set as the authoritative evidence baseline. | That gives one dated source for counts, pass/fail status, and doc wording across the Hydra closure pack. |
 <!-- /ANCHOR:decisions -->
 
@@ -70,16 +70,25 @@ This pass combined documentation normalization and code correction instead of tr
 | Check | Result |
 |-------|--------|
 | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features` | PASS after parent/phase normalization and decision-record anchor cleanup |
-| `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/shared-spaces.vitest.ts tests/memory-governance.vitest.ts` | PASS (`21` tests) |
+| `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features --recursive --json` | PASS (`errors: 0`, `warnings: 0`, parent + six phases validated) |
+| `bash .opencode/skill/system-spec-kit/scripts/spec/quality-audit.sh --json --root .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features` | PASS (`7/7` folders pass) |
+| `bash .opencode/skill/system-spec-kit/scripts/spec/check-completion.sh <parent+phase-folders> --json` | PASS (`7/7` folders complete, `0` quality-gate misses) |
+| `cd . && /usr/bin/python3 .opencode/skill/sk-doc/scripts/validate_document.py <README/spec/plan/tasks/checklist/decision-record/implementation-summary across parent+phases> --json` | PASS (`49` documents validated) |
+| `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/shared-spaces.vitest.ts tests/memory-governance.vitest.ts` | PASS (`22` tests) |
 | `cd .opencode/skill/system-spec-kit/mcp_server && npx tsc --noEmit` | PASS |
 | `cd .opencode/skill/system-spec-kit/mcp_server && npm run build` | PASS |
 | `cd .opencode/skill/system-spec-kit/mcp_server && npm run test:hydra:phase1` | PASS |
-| `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/feature-flag-reference-docs.vitest.ts tests/hydra-spec-pack-consistency.vitest.ts tests/shared-spaces.vitest.ts tests/memory-governance.vitest.ts tests/memory-lineage-state.vitest.ts tests/memory-lineage-backfill.vitest.ts tests/adaptive-ranking.vitest.ts tests/graph-roadmap-finalization.vitest.ts` | PASS (`52` tests) |
-| `cd .opencode/skill/system-spec-kit/mcp_server && npm test` | PASS (`283` passed files, `7783` passed tests, `11` skipped, `28` todo) |
+| `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/feature-flag-reference-docs.vitest.ts tests/hydra-spec-pack-consistency.vitest.ts tests/shared-spaces.vitest.ts tests/memory-governance.vitest.ts tests/memory-lineage-state.vitest.ts tests/memory-lineage-backfill.vitest.ts tests/adaptive-ranking.vitest.ts tests/graph-roadmap-finalization.vitest.ts` | PASS (`53` tests) |
+| `cd .opencode/skill/system-spec-kit/mcp_server && npm test` | PASS (`283` passed files, `7790` passed tests, `11` skipped, `28` todo) |
 | `cd .opencode/skill/system-spec-kit/scripts && npm run check` | PASS |
 | `cd .opencode/skill/system-spec-kit/scripts && npm run build` | PASS |
-| `cd .opencode/skill/system-spec-kit/scripts && npm test -- --run tests/spec-affinity.vitest.ts tests/claude-code-capture.vitest.ts tests/codex-cli-capture.vitest.ts tests/copilot-cli-capture.vitest.ts tests/gemini-cli-capture.vitest.ts tests/runtime-memory-inputs.vitest.ts tests/generate-context-cli-authority.vitest.ts` | PASS (`7` files, `51` tests) |
+| `cd .opencode/skill/system-spec-kit/scripts && npx vitest run --config ../mcp_server/vitest.config.ts --root . tests/runtime-memory-inputs.vitest.ts tests/generate-context-cli-authority.vitest.ts tests/codex-cli-capture.vitest.ts tests/copilot-cli-capture.vitest.ts tests/gemini-cli-capture.vitest.ts tests/claude-code-capture.vitest.ts tests/opencode-capture.vitest.ts` | PASS (`7` files, `54` tests) |
 | `cd .opencode/skill/system-spec-kit && python3 ../sk-code--opencode/scripts/verify_alignment_drift.py --root .` | PASS (`0` findings, `0` warnings, `0` violations) |
+| `2026-03-17T20:22:39Z timeout 35 claude -p "Reply with exactly OK."` | PASS (exit `0`, payload `OK`, exact `true`) |
+| `2026-03-17T20:23:25Z timeout 35 opencode run "Reply with exactly OK." --format json` | PASS (exit `0`, payload includes `"text":"OK"`, exact assistant text `true`) |
+| `2026-03-17T20:24:08Z timeout 35 codex exec "Reply with exactly OK." --model gpt-5.3-codex --sandbox read-only` | PASS (exit `0`, assistant payload `OK`, exact assistant text `true`) |
+| `2026-03-17T20:24:18Z timeout 35 gemini -p "Reply with exactly OK."` | PASS (exit `0`, payload ends with `OK`, exact assistant text `true`) |
+| `2026-03-17T20:24:43Z timeout 35 copilot -p "Reply with exactly OK."` then retry `2026-03-17T20:25:28Z timeout 35 copilot -p "Reply with exactly OK."` | PASS on attempt 2 (attempt 1 exit `124` timeout, attempt 2 exit `0`, payload starts with `OK`, exact assistant text `true`) |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -87,6 +96,5 @@ This pass combined documentation normalization and code correction instead of tr
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Live proof for all five CLIs is still bounded by available primary artifacts.** The docs now state the support boundary honestly, but this pass does not fabricate new live-client evidence that the repo does not hold.
-2. **Human Product Owner and Security/Compliance sign-off remain external governance steps.** Those rows stay pending in the checklist on purpose and are not hidden as technical completion.
+1. **Human Product Owner and Security/Compliance sign-off remain external governance steps.** Those rows stay pending in the checklist on purpose and are not hidden as technical completion.
 <!-- /ANCHOR:limitations -->

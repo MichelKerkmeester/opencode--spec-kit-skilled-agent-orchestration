@@ -59,4 +59,37 @@ describe('Phase 5 cascade delete cleanup', () => {
     expect(db.prepare('SELECT COUNT(*) AS count FROM memory_entities WHERE memory_id = ?').get(rootId)).toEqual({ count: 0 });
     expect(db.prepare('SELECT COUNT(*) AS count FROM causal_edges WHERE source_id = ? OR target_id = ?').get(String(rootId), String(rootId))).toEqual({ count: 0 });
   });
+
+  it('bulk delete cleans the same ancillary rows as single delete', () => {
+    const rootId = mod.indexMemoryDeferred({
+      specFolder: 'specs/test-cascade-bulk-delete',
+      filePath: path.join(tmpDir, 'memory-cascade-bulk-root.md'),
+      title: 'Cascade Bulk Root',
+    });
+    const neighborId = mod.indexMemoryDeferred({
+      specFolder: 'specs/test-cascade-bulk-delete',
+      filePath: path.join(tmpDir, 'memory-cascade-bulk-neighbor.md'),
+      title: 'Cascade Bulk Neighbor',
+    });
+    const db = mod.getDb();
+
+    db.prepare(`INSERT INTO degree_snapshots (memory_id, degree_count, snapshot_date) VALUES (?, ?, datetime('now'))`)
+      .run(rootId, 7);
+    db.prepare(`INSERT INTO community_assignments (memory_id, community_id, algorithm) VALUES (?, ?, ?)`)
+      .run(rootId, 3, 'bulk');
+    db.prepare(`INSERT INTO memory_summaries (memory_id, summary_text, summary_embedding, key_sentences) VALUES (?, ?, ?, ?)`)
+      .run(rootId, 'bulk-summary', null, '[]');
+    db.prepare(`INSERT INTO memory_entities (memory_id, entity_text, entity_type, frequency) VALUES (?, ?, ?, ?)`)
+      .run(rootId, 'bulk-entity', 'concept', 1);
+    db.prepare(`INSERT INTO causal_edges (source_id, target_id, relation) VALUES (?, ?, ?)`)
+      .run(String(rootId), String(neighborId), 'supports');
+
+    expect(mod.deleteMemories([rootId])).toEqual({ deleted: 1, failed: 0 });
+
+    expect(db.prepare('SELECT COUNT(*) AS count FROM degree_snapshots WHERE memory_id = ?').get(rootId)).toEqual({ count: 0 });
+    expect(db.prepare('SELECT COUNT(*) AS count FROM community_assignments WHERE memory_id = ?').get(rootId)).toEqual({ count: 0 });
+    expect(db.prepare('SELECT COUNT(*) AS count FROM memory_summaries WHERE memory_id = ?').get(rootId)).toEqual({ count: 0 });
+    expect(db.prepare('SELECT COUNT(*) AS count FROM memory_entities WHERE memory_id = ?').get(rootId)).toEqual({ count: 0 });
+    expect(db.prepare('SELECT COUNT(*) AS count FROM causal_edges WHERE source_id = ? OR target_id = ?').get(String(rootId), String(rootId))).toEqual({ count: 0 });
+  });
 });

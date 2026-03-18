@@ -74,8 +74,8 @@ contextType: "decision"
 ## Documentation
 
 - [x] CHK-040 [P1] Parent docs, phase docs, and closure summary now tell one consistent story about the shipped Hydra roadmap [EVIDENCE:spec.md|plan.md|tasks.md|implementation-summary.md]
-- [x] CHK-041 [P1] March 17 2026 evidence totals are synchronized in authoritative closure docs as `283` files, `7783` tests, `11` skipped, and `28` todo [EVIDENCE:implementation-summary.md]
-- [x] CHK-042 [P2] CLI proof wording was narrowed so the repo no longer overclaims “all five CLIs proven live” without primary artifacts [EVIDENCE:implementation-summary.md]
+- [x] CHK-041 [P1] March 17 2026 evidence totals are synchronized in authoritative closure docs as `283` files, `7790` tests, `11` skipped, and `28` todo [EVIDENCE:implementation-summary.md]
+- [x] CHK-042 [P2] Live prompt proof was captured for all five CLIs with timestamps, exit codes, and payload evidence [EVIDENCE:implementation-summary.md]
 <!-- /ANCHOR:docs -->
 
 ---
@@ -95,12 +95,12 @@ contextType: "decision"
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 8 | 8/8 |
-| P1 Items | 11 | 11/11 |
-| P2 Items | 3 | 3/3 |
+| P0 Items | 11 | 11/11 |
+| P1 Items | 20 | 20/20 |
+| P2 Items | 10 | 10/10 |
 
 **Verification Date**: 2026-03-17
-**Status**: Hydra closure verification passed across parent and phase validation, targeted runtime regressions, full `mcp_server` verification, scripts multi-CLI capture suites, and alignment-drift checks. The authoritative `mcp_server` rerun set recorded `283` passed files, `7783` passed tests, `11` skipped, and `28` todo.
+**Status**: Hydra closure verification passed across parent and phase validation, targeted runtime regressions, full `mcp_server` verification, scripts multi-CLI capture suites, live five-CLI prompt proof, and alignment-drift checks. The authoritative `mcp_server` rerun set recorded `283` passed files, `7790` passed tests, `11` skipped, and `28` todo.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -121,7 +121,7 @@ contextType: "decision"
 
 - [x] CHK-110 [P1] Root docs use the latest recorded March 17 2026 totals consistently [EVIDENCE:implementation-summary.md]
 - [x] CHK-111 [P1] Performance-related wording stays bounded to the rerun evidence and no longer overstates benchmark proof [EVIDENCE:implementation-summary.md]
-- [x] CHK-112 [P2] Scripts-side targeted multi-CLI lane results are recorded as automated suite evidence rather than live-client proof [EVIDENCE:implementation-summary.md]
+- [x] CHK-112 [P2] Scripts-side targeted multi-CLI lane results are recorded alongside live five-CLI prompt proof evidence [EVIDENCE:implementation-summary.md]
 - [x] CHK-113 [P2] The closure pack avoids inventing new standalone load or benchmark artifacts that were not rerun [EVIDENCE:implementation-summary.md]
 <!-- /ANCHOR:perf-verify -->
 
@@ -133,7 +133,7 @@ contextType: "decision"
 - [x] CHK-120 [P0] Rollback posture is documented without overstating current runtime exposure [EVIDENCE:plan.md]
 - [x] CHK-121 [P0] Shared-memory enablement remains documented as opt-in live access [EVIDENCE:spec.md|implementation-summary.md]
 - [x] CHK-122 [P1] Validation outcomes for the full Hydra closure pass are captured explicitly [EVIDENCE:implementation-summary.md]
-- [x] CHK-123 [P1] CLI support wording now distinguishes automated coverage from live-proof claims [EVIDENCE:implementation-summary.md]
+- [x] CHK-123 [P1] CLI support wording now records both automated coverage and successful live prompt proof for all five CLIs [EVIDENCE:implementation-summary.md]
 - [x] CHK-124 [P2] No unsupported deployment or launch claims were introduced during this closure pass [EVIDENCE:implementation-summary.md]
 <!-- /ANCHOR:deploy-ready -->
 

@@ -21,6 +21,7 @@ import {
   isSameWorkspacePath,
   toWorkspaceRelativePath,
 } from '../utils';
+import { sanitizeToolDescription } from '../utils/tool-sanitizer';
 
 const CODEX_HOME = path.join(
   process.env.HOME || process.env.USERPROFILE || '',
@@ -405,7 +406,7 @@ export async function captureCodexConversation(
       const input = sanitizeToolInputPaths(projectRoot, rawInput);
       const toolName = normalizeToolName(functionCall.name);
       const title = typeof input.description === 'string'
-        ? input.description
+        ? sanitizeToolDescription(input.description)
         : toolName;
 
       toolCallIndexById.set(functionCall.call_id || `${toolName}-${toolCalls.length}`, toolCalls.length);

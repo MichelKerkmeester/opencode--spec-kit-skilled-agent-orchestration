@@ -29,7 +29,7 @@ contextType: "implementation"
 | **Testing** | Recursive spec validation, targeted Vitest regressions, full `mcp_server` and scripts verification, alignment-drift checks |
 
 ### Overview
-This closure plan finishes the Hydra parent pack and all six child phase packs as one coherent documentation set, fixes the remaining runtime truth-sync defects found in review, refreshes March 17 2026 verification evidence, and narrows multi-CLI proof wording to what the repository actually demonstrates. The work is intentionally corrective rather than expansive: no new Hydra capability is introduced beyond the already shipped roadmap slices.
+This closure plan finishes the Hydra parent pack and all six child phase packs as one coherent documentation set, fixes the remaining runtime truth-sync defects found in review, refreshes March 17 2026 verification evidence, and records live prompt proof for all five required CLIs. The work is intentionally corrective rather than expansive: no new Hydra capability is introduced beyond the already shipped roadmap slices.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -47,7 +47,7 @@ This closure plan finishes the Hydra parent pack and all six child phase packs a
 - [x] Absorbed `017-markovian-architectures` content and dead references are removed from the Hydra pack.
 - [x] Recorded March 17 2026 evidence totals are consistent in authoritative Hydra closure docs.
 - [x] Shared-space owner enforcement and retention deletion routing are covered by passing regression tests.
-- [x] CLI documentation no longer overstates “all five CLIs proven live” beyond the repo evidence.
+- [x] CLI documentation now includes live five-CLI prompt proof evidence with timestamps and command outcomes.
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -69,7 +69,7 @@ Documentation-first closure over an already shipped modular runtime. The parent 
 1. Reproduce validation and review failures.
 2. Normalize parent and phase pack structure to the active templates.
 3. Fix runtime defects uncovered by the review.
-4. Refresh evidence wording, counts, and CLI-proof boundaries.
+4. Refresh evidence wording and counts, then capture live five-CLI proof.
 5. Re-run spec validation, runtime suites, scripts suites, and alignment drift checks.
 <!-- /ANCHOR:architecture -->
 
@@ -79,7 +79,7 @@ Documentation-first closure over an already shipped modular runtime. The parent 
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Setup
-- [x] Audit parent-pack drift, phase-pack drift, and CLI-proof wording.
+- [x] Audit parent-pack drift, phase-pack drift, and CLI-proof requirements.
 - [x] Reproduce runtime review defects with targeted source and test inspection.
 - [x] Lock the March 17 2026 evidence set to the commands rerun in this closure pass.
 
@@ -88,12 +88,13 @@ Documentation-first closure over an already shipped modular runtime. The parent 
 - [x] Normalize all six child phase packs to active Level 3+ template structure.
 - [x] Remove stale merged `017` content and dead doc references.
 - [x] Fix shared-space owner enforcement and retention sweep deletion routing.
-- [x] Align install and manual-testing docs with actual CLI proof boundaries.
+- [x] Align install and manual-testing docs with live five-CLI proof evidence requirements.
 
 ### Phase 3: Verification
 - [x] Re-run root and recursive phase validation.
 - [x] Re-run targeted Hydra runtime regressions and the full `mcp_server` suite.
 - [x] Re-run scripts-side multi-CLI closure checks and alignment-drift validation.
+- [x] Run and capture live prompt proof for Claude Code, OpenCode, Codex, Gemini, and Copilot.
 - [x] Tighten the Hydra truth-sync regression test to pin authoritative dates and totals.
 <!-- /ANCHOR:phases -->
 
@@ -111,9 +112,9 @@ Documentation-first closure over an already shipped modular runtime. The parent 
 | Standards Drift | Documentation/code alignment checks | `verify_alignment_drift.py` |
 
 Notes:
-- The March 17 2026 rerun set recorded `283` passed files, `7783` passed tests, `11` skipped, and `28` todo in `mcp_server`.
-- The scripts-side targeted multi-CLI closure suite passed `7` files and `51` tests.
-- CLI proof wording is limited to what these automated suites and repo-local configs support.
+- The March 17 2026 rerun set recorded `283` passed files, `7790` passed tests, `11` skipped, and `28` todo in `mcp_server`.
+- The scripts-side targeted multi-CLI closure suite passed `7` files and `54` tests.
+- Live prompt proof was captured for all five required CLIs with timestamped command results.
 <!-- /ANCHOR:testing -->
 
 ---
@@ -126,7 +127,7 @@ Notes:
 | Active `system-spec-kit` Level 3 and 3+ templates | Internal documentation | Green | Parent and phase packs cannot be normalized reliably |
 | Hydra phase folders `001-` through `006-` | Internal documentation | Green | Parent coordination narrative loses detailed backing |
 | `mcp_server` runtime and tests | Internal code | Green | Behavior claims cannot be proven or corrected |
-| Scripts multi-CLI capture suites | Internal tooling | Green | CLI-proof wording cannot be bounded accurately |
+| Scripts multi-CLI capture suites and live CLI binaries | Internal tooling | Green | CLI-proof validation and evidence capture cannot complete |
 | March 17 2026 rerun set | Internal evidence | Green | Counts and claims drift again |
 <!-- /ANCHOR:dependencies -->
 
@@ -239,7 +240,7 @@ Templates + Existing Hydra Docs + Runtime Review
 
 **Parallel Opportunities**:
 - Parent-pack docs and phase-pack docs can be normalized in parallel.
-- Runtime regression fixes can run in parallel with CLI-proof doc alignment.
+- Runtime regression fixes can run in parallel with CLI-proof capture preparation.
 <!-- /ANCHOR:critical-path -->
 
 ---
@@ -250,8 +251,8 @@ Templates + Existing Hydra Docs + Runtime Review
 | Milestone | Description | Success Criteria | Target |
 |-----------|-------------|------------------|--------|
 | M1 | Root template parity restored | Root `spec.md`, `plan.md`, and `decision-record.md` follow Level 3 structure and anchors | Documentation normalization complete |
-| M2 | Evidence truth-sync complete | Root closure docs consistently report `283` files, `7783` tests, `11` skipped, and `28` todo; targeted Hydra suite recorded as `52` tests | Verification evidence updated |
-| M3 | Closure boundary locked | CLI-proof language stays within repo-backed and automated-evidence boundaries without claiming fresh live proof for all five CLIs | Final review pass complete |
+| M2 | Evidence truth-sync complete | Root closure docs consistently report `283` files, `7790` tests, `11` skipped, and `28` todo; targeted Hydra suite recorded as `53` tests | Verification evidence updated |
+| M3 | Live proof gate complete | Live prompt proof recorded for Claude Code, OpenCode, Codex, Gemini, and Copilot with command-level evidence | Final review pass complete |
 <!-- /ANCHOR:milestones -->
 
 ---

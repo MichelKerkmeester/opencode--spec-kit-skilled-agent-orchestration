@@ -782,6 +782,16 @@ describe('memory quality lint gate', () => {
     expect(result.failedRules).not.toContain('V10');
   });
 
+  it('passes V10 when file count difference is below the relaxed threshold', () => {
+    const result = validateMemoryQualityContent(buildMemoryContent({
+      capturedFileCount: 8,
+      filesystemFileCount: 4,
+      gitChangedFileCount: 2,
+    }));
+    // diff=4, ratio=2.0 — was FAIL under old threshold of 3, now PASS under 5
+    expect(result.failedRules).not.toContain('V10');
+  });
+
   it('passes practical generated memory content', () => {
     const result = validateMemoryQualityContent(buildMemoryContent());
 
@@ -1534,6 +1544,65 @@ describe('workflow seam guardrail', () => {
     } finally {
       fs.rmSync(tempRoot, { recursive: true, force: true });
     }
+  });
+
+  it('V11 fails when description contains API error text', () => {
+    const errorContent = `\
+\`\`\`yaml
+spec_folder: "05--agent-orchestration/028-auto-deep-research"
+tool_count: 5
+description: "API Error: 500 {\\"type\\":\\"error\\",\\"error\\":{\\"type\\":\\"api_error\\"}}"
+trigger_phrases:
+  - "research"
+  - "investigation"
+\`\`\`
+
+# Test Memory
+
+Decision: adopt error handling.
+`;
+    const result = validateMemoryQualityContent(errorContent);
+    expect(result.failedRules).toContain('V11');
+  });
+
+  it('V11 fails when trigger phrases are error-dominated', () => {
+    const errorContent = `\
+\`\`\`yaml
+spec_folder: "05--agent-orchestration/028-auto-deep-research"
+tool_count: 5
+trigger_phrases:
+  - "api error type error"
+  - "error request req_011cz9"
+  - "api api overloaded"
+  - "500 internal server"
+  - "clean phrase"
+\`\`\`
+
+# Test Memory
+
+Decision: adopt error handling.
+`;
+    const result = validateMemoryQualityContent(errorContent);
+    expect(result.failedRules).toContain('V11');
+  });
+
+  it('V11 passes on clean memory content', () => {
+    const cleanContent = `\
+\`\`\`yaml
+spec_folder: "02--system-spec-kit/020-mcp-working-memory-hybrid-rag"
+tool_count: 9
+trigger_phrases:
+  - "memory"
+  - "quality"
+  - "validation"
+\`\`\`
+
+# Clean Memory Title
+
+Decision: adopt deterministic scoring.
+`;
+    const result = validateMemoryQualityContent(cleanContent);
+    expect(result.failedRules).not.toContain('V11');
   });
 
   it('strips broader leaked HTML outside fenced code blocks while preserving fenced HTML', async () => {

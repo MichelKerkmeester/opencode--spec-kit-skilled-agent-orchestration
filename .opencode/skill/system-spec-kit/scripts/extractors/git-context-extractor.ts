@@ -397,8 +397,30 @@ export async function extractGitContext(projectRoot: string, specFolderHint?: st
       seenFiles.add(filePath);
     };
 
-    statusEntries.forEach((entry) => addFile(entry.filePath, entry.action, `Uncommitted: ${entry.action} during session`));
-    diffEntries.forEach((entry) => addFile(entry.filePath, entry.action, `Recent commit: ${entry.action} in repository history`));
+    // Build a map of file paths to the most recent commit subject that touched them
+    const fileToCommitSubject = new Map<string, string>();
+    for (const commit of commits) {
+      for (const filePath of commit.files) {
+        if (!fileToCommitSubject.has(filePath)) {
+          fileToCommitSubject.set(filePath, commit.subject);
+        }
+      }
+    }
+
+    statusEntries.forEach((entry) => {
+      const commitSubject = fileToCommitSubject.get(entry.filePath);
+      const description = commitSubject
+        ? `Modified via: ${commitSubject}`
+        : `Uncommitted: ${entry.action} during session`;
+      addFile(entry.filePath, entry.action, description);
+    });
+    diffEntries.forEach((entry) => {
+      const commitSubject = fileToCommitSubject.get(entry.filePath);
+      const description = commitSubject
+        ? `Changed via: ${commitSubject}`
+        : `Recent commit: ${entry.action} in repository history`;
+      addFile(entry.filePath, entry.action, description);
+    });
 
     const observations: GitContextExtraction['observations'] = statusEntries.map((entry) => ({
       type: 'uncommitted-change',

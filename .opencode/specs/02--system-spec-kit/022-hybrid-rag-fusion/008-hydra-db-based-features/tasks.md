@@ -40,7 +40,7 @@ contextType: "implementation"
 - [x] T001 [W:FOUNDATION] Review active Level 3 and 3+ templates before normalizing the Hydra pack (`.opencode/skill/system-spec-kit/templates/level_3/`, `.opencode/skill/system-spec-kit/templates/level_3+/`)
 - [x] T002 [W:FOUNDATION] Reproduce parent-pack and phase-pack validation failures plus the runtime review findings (`spec.md`, `plan.md`, `checklist.md`, `implementation-summary.md`)
 - [x] T003 [W:FOUNDATION] Lock the March 17 2026 rerun set as the authoritative evidence baseline for this closure pass (`implementation-summary.md`)
-- [x] T004 [W:FOUNDATION] Confirm the closure scope covers parent docs, all six phase packs, targeted runtime fixes, and CLI-proof doc alignment (`spec.md`, `plan.md`, `tasks.md`)
+- [x] T004 [W:FOUNDATION] Confirm the closure scope covers parent docs, all six phase packs, targeted runtime fixes, and live five-CLI proof capture (`spec.md`, `plan.md`, `tasks.md`)
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -59,7 +59,7 @@ contextType: "implementation"
 
 - [x] T020 [W:RUNTIME] Fix owner-only shared-space access enforcement (`mcp_server/lib/collab/shared-spaces.ts`, `mcp_server/tests/shared-spaces.vitest.ts`)
 - [x] T021 [W:RUNTIME] Fix retention sweeps so deletion uses the passed database handle (`mcp_server/lib/governance/retention.ts`, `mcp_server/lib/search/vector-index-mutations.ts`, `mcp_server/tests/memory-governance.vitest.ts`)
-- [x] T022 [W:PROOF] Align operator docs with the actual multi-CLI proof boundary instead of overstating fresh live proof for all five CLIs (`.opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md`, `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md`)
+- [x] T022 [W:PROOF] Execute and capture live prompt proof for all five CLIs, then align operator docs with the recorded outcomes (`.opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md`, `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md`, `implementation-summary.md`)
 - [x] T023 [W:PROOF] Tighten Hydra truth-sync regression coverage for dates, totals, and CLI-proof wording (`mcp_server/tests/hydra-spec-pack-consistency.vitest.ts`)
 <!-- /ANCHOR:phase-2 -->
 
@@ -117,7 +117,7 @@ contextType: "implementation"
 - [x] No absorbed `017` merged sections or dead Hydra closure references remain.
 - [x] Runtime review findings are fixed and covered by passing regression tests.
 - [x] March 17 2026 evidence totals are consistent in authoritative closure docs.
-- [x] CLI-proof wording is aligned to the evidence actually held in the repo.
+- [x] Live five-CLI prompt proof and CLI wording are aligned to the evidence actually captured in this pass.
 <!-- /ANCHOR:completion -->
 
 ---

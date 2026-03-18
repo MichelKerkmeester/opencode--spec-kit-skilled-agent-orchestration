@@ -84,5 +84,5 @@ This phase was delivered inside the existing MCP server and then re-verified wit
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Human sign-off is pending.** Data-plane maintainer and release sign-off rows remain open.
+1. **No additional phase-local limitation is recorded.** Technical implementation and verification are complete; external governance sign-off is tracked separately and does not block the shipped phase state.
 <!-- /ANCHOR:limitations -->

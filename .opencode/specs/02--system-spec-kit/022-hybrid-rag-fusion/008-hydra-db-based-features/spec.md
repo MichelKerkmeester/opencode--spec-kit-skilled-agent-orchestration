@@ -59,14 +59,14 @@ Keep the root Hydra pack truthful, template-aligned, and easy to audit while pre
 - Parent-pack documentation for the delivered Hydra roadmap across six child phases.
 - Phase-pack normalization for `001-` through `006-` so child folders match the active Level 3+ templates.
 - Targeted runtime truth-sync fixes discovered during closure review.
-- CLI-proof wording alignment for operator docs and regression tests.
+- Live five-CLI proof capture plus CLI-proof wording alignment for operator docs and regression tests.
 - Root-level alignment to the active `system-spec-kit` v2.2 Level 3 templates.
 - Recorded March 17 2026 verification totals and root-pack evidence wording.
 - Precise wording for internal lineage and `asOf` behavior plus shared-memory rollout defaults.
 
 ### Out of Scope
 - Recreating or preserving absorbed `017-markovian-architectures` merged sections at the root.
-- Claiming fresh live proof for all five CLIs without new primary artifacts.
+- Adding new Hydra runtime capabilities beyond the closure hardening and verification pass.
 - Claiming a standalone public lineage or `asOf` MCP query tool.
 - Re-stating every low-level implementation detail already documented in the child phase folders.
 
@@ -113,7 +113,7 @@ Keep the root Hydra pack truthful, template-aligned, and easy to audit while pre
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-005 | March 17 2026 recorded evidence totals are consistent | Root docs use `283` files, `7783` tests, `11` skipped, and `28` todo when citing the latest recorded totals |
+| REQ-005 | March 17 2026 recorded evidence totals are consistent | Root docs use `283` files, `7790` tests, `11` skipped, and `28` todo when citing the latest recorded totals |
 | REQ-006 | Six Hydra phases stay visible at the root | Parent docs preserve phase-level traceability without copying full phase-pack content into the root files |
 | REQ-007 | Root validation is rerun after normalization | Root pack validation is executed and its outcome is reported with any remaining out-of-scope issues |
 | REQ-008 | Closure docs and tests guard against drift returning | The truth-sync regression test and operator docs reflect the same dated evidence boundary |
@@ -241,8 +241,8 @@ Keep the root Hydra pack truthful, template-aligned, and easy to audit while pre
 **As an** operator, **I want** the root pack to use the latest recorded verification totals, **so that** audit notes and handoff summaries do not lag behind known evidence.
 
 **Acceptance Criteria**:
-1. Given the root pack, when I review verification references, then March 17 2026 totals appear consistently as `283` files, `7783` tests, `11` skipped, and `28` todo.
-2. Given this doc-only pass, when I read the evidence wording, then it does not imply a fresh full test rerun if one was not performed in this pass.
+1. Given the root pack, when I review verification references, then March 17 2026 totals appear consistently as `283` files, `7790` tests, `11` skipped, and `28` todo.
+2. Given this closure pass, when I read the evidence wording, then the documented claims match the rerun command outputs and live CLI matrix results.
 
 ---
 
@@ -266,9 +266,9 @@ Keep the root Hydra pack truthful, template-aligned, and easy to audit while pre
 
 **Given** a question about one Hydra phase, **when** a reader starts at the root pack, **then** the relevant child phase folder is easy to find.
 
-### Acceptance Scenario 6: CLI-Proof Wording
+### Acceptance Scenario 6: CLI-Proof Validation
 
-**Given** operator documentation, **when** a reader looks for multi-CLI support language, **then** automated coverage is distinguished from fresh live-proof claims.
+**Given** operator documentation and closure evidence, **when** a reader looks for multi-CLI support language, **then** automated coverage and live five-CLI prompt proof are both explicitly documented.
 
 ---
 

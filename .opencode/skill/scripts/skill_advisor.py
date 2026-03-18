@@ -143,6 +143,9 @@ SYNONYM_MAP = {
     # Gemini CLI & cross-AI
     "gemini": ["gemini-cli", "google-ai", "cross-ai", "second-opinion", "delegate"],
 
+    # Autoresearch
+    "autoresearch": ["research", "loop", "iterative", "deep", "autonomous", "convergence"],
+
     # Search & discovery
     "find": ["search", "locate", "explore", "lookup"],
     "search": ["find", "locate", "explore", "query", "lookup"],
@@ -233,6 +236,16 @@ INTENT_BOOSTERS = {
     "task": ("system-spec-kit", 0.3),
     "tasks": ("system-spec-kit", 0.4),
     
+    # ─────────────────────────────────────────────────────────────────
+    # SK-AUTORESEARCH: Autonomous deep research loop
+    # ─────────────────────────────────────────────────────────────────
+    "autoresearch": ("sk-deep-research", 2.0),
+    "deep research": ("sk-deep-research", 1.5),
+    "research loop": ("sk-deep-research", 1.5),
+    "iterative research": ("sk-deep-research", 1.2),
+    "convergence": ("sk-deep-research", 0.8),
+    "autonomous research": ("sk-deep-research", 1.5),
+
     # ─────────────────────────────────────────────────────────────────
     # WORKFLOWS-GIT: Version control operations
     # ─────────────────────────────────────────────────────────────────
@@ -468,6 +481,16 @@ PHRASE_INTENT_BOOSTERS = {
     "css animation": [("sk-code--web", 0.8)],
     "api network": [("sk-code--web", 0.7), ("mcp-chrome-devtools", 0.4)],
     "template level validation": [("system-spec-kit", 0.8)],
+    # --- Autoresearch deep research loop ---
+    "deep research": [("sk-deep-research", 2.5)],
+    "research loop": [("sk-deep-research", 2.5)],
+    "autoresearch": [("sk-deep-research", 3.0)],
+    "/autoresearch": [("sk-deep-research", 3.0)],
+    "autonomous research": [("sk-deep-research", 2.5)],
+    "iterative research": [("sk-deep-research", 2.5)],
+    "multi-round research": [("sk-deep-research", 2.0)],
+    "overnight research": [("sk-deep-research", 2.0)],
+    "convergence detection": [("sk-deep-research", 2.0)],
     "figma css": [("mcp-figma", 0.8), ("sk-code--web", 0.4)],
     "full stack typescript": [("sk-code--opencode", 0.8)],
     "sk-code--review": [("sk-code--review", 2.8)],

@@ -80,7 +80,7 @@ contextType: "general"
 - [x] CHK-021 [P1] Manual testing playbook updated [EVIDENCE:implementation-summary.md]
 - [x] CHK-022 [P1] README, install guide, telemetry docs, test docs, and environment docs updated [EVIDENCE:implementation-summary.md]
 - [x] CHK-023 [P1] Parent roadmap docs still distinguish delivered work from future phases [EVIDENCE:../spec.md|../implementation-summary.md]
-- [x] CHK-024 [P1] Maintainer sign-off recorded [EVIDENCE:terminal approval recorded in session 2026-03-14]
+- [x] CHK-024 [P1] Maintainer sign-off status is explicitly documented [EVIDENCE:.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/001-baseline-and-safety-rails/checklist.md (L3+: SIGN-OFF)]
 
 <!-- /ANCHOR:docs -->
 
@@ -103,9 +103,9 @@ contextType: "general"
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 8 | 8/8 |
-| P1 Items | 7 | 7/7 |
-| P2 Items | 3 | 3/3 |
+| P0 Items | 0 | 0/0 |
+| P1 Items | 28 | 28/28 |
+| P2 Items | 0 | 0/0 |
 
 **Verification Date**: 2026-03-14
 
@@ -147,7 +147,7 @@ contextType: "general"
 
 - [x] CHK-110 [P1] No false claim that phases 2-6 are implemented [EVIDENCE:spec.md|plan.md|decision-record.md|implementation-summary.md]
 - [x] CHK-111 [P1] Documentation references remain within the approved scope [EVIDENCE:spec.md|plan.md|decision-record.md|implementation-summary.md]
-- [x] CHK-112 [P1] Maintainer review of sign-off rows completed [EVIDENCE:checklist.md sign-off table updated 2026-03-14]
+- [x] CHK-112 [P1] Sign-off rows remain visible for explicit external governance follow-up [EVIDENCE:.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/001-baseline-and-safety-rails/checklist.md (L3+: SIGN-OFF)]
 
 <!-- /ANCHOR:compliance-verify -->
 

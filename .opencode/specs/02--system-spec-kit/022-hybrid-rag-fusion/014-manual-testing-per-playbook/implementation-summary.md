@@ -79,7 +79,7 @@ The `M-007` manual testing playbook block now reflects the `010` closure evidenc
 | Exact-ID ownership audit across all 19 child specs | PASS: `211` exact IDs, `0` missing, `0` duplicate owners |
 | Parent `description.json` JSON parse | PASS |
 | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook --recursive` | PASS WITH WARNINGS: `0` errors, `19` warnings |
-| `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/013-memory-quality-and-indexing` | PASS / current child validation rerun captured |
+| `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/013-memory-quality-and-indexing` | PASS WITH WARNINGS: `0` errors, `1` warning |
 | `M-007` playbook command block includes `workflow-e2e.vitest.ts` | PASS |
 | `010` parent validator-support wording is internally consistent after cleanup | PASS |
 <!-- /ANCHOR:verification -->

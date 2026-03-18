@@ -1,0 +1,41 @@
+{
+  "mcpServers": {
+    "sequential_thinking": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ],
+      "disabled": false
+    },
+    "spec_kit_memory": {
+      "command": "node",
+      "args": [
+        "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/dist/context-server.js"
+      ],
+      "env": {
+        "EMBEDDINGS_PROVIDER": "auto",
+        "MEMORY_DB_PATH": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/dist/database/context-index.sqlite"
+      },
+      "disabled": false
+    },
+    "code_mode": {
+      "command": "node",
+      "args": [
+        "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/mcp-code-mode/mcp_server/dist/index.js"
+      ],
+      "env": {
+        "UTCP_CONFIG_FILE": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.utcp_config.json"
+      },
+      "disabled": false
+    },
+    "cocoindex_code": {
+      "command": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/mcp-cocoindex-code/mcp_server/.venv/bin/ccc",
+      "args": ["mcp"],
+      "env": {
+        "COCOINDEX_CODE_ROOT_PATH": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public"
+      },
+      "disabled": true
+    }
+  }
+}

@@ -3,7 +3,7 @@ model_auto_compact_token_limit = 500000
 [mcp_servers.sequential_thinking]
 command = "npx"
 args = ["-y", "@modelcontextprotocol/server-sequential-thinking"]
-
+ 
 [mcp_servers.spec_kit_memory]
 command = "node"
 args = [".opencode/skill/system-spec-kit/mcp_server/dist/context-server.js"]
@@ -24,6 +24,16 @@ args = [".opencode/skill/mcp-code-mode/mcp_server/dist/index.js"]
 
 [mcp_servers.code_mode.env]
 UTCP_CONFIG_FILE = ".utcp_config.toml"
+
+[mcp_servers.cocoindex_code]
+command = "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/mcp-cocoindex-code/mcp_server/.venv/bin/ccc"
+args = ["mcp"]
+
+[mcp_servers.cocoindex_code.env]
+COCOINDEX_CODE_ROOT_PATH = "."
+_NOTE_1 = "Install: bash .opencode/skill/mcp-cocoindex-code/scripts/install.sh"
+_NOTE_2 = "Default embedding: all-MiniLM-L6-v2 (local, no API key needed)"
+_NOTE_3 = "Index stored in .cocoindex_code/ (gitignored)"
 
 [features]
 multi_agent = true

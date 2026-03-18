@@ -12,6 +12,7 @@ import * as os from 'os';
 import * as fs from 'fs';
 import * as crypto from 'crypto';
 import * as hybridSearch from '../lib/search/hybrid-search';
+import { findSamePathExistingMemory } from '../handlers/save/create-record';
 import { checkContentHashDedup, checkExistingRow } from '../handlers/save/dedup';
 
 /* ───────────────────────────────────────────────────────────────
@@ -43,6 +44,11 @@ function createMinimalDb(): Database.Database {
       updated_at TEXT DEFAULT (datetime('now')),
       embedding_status TEXT DEFAULT 'success',
       importance_tier TEXT DEFAULT 'normal',
+      tenant_id TEXT,
+      user_id TEXT,
+      agent_id TEXT,
+      session_id TEXT,
+      shared_space_id TEXT,
       content_hash TEXT,
       content_text TEXT,
       quality_score REAL DEFAULT 0,
@@ -59,17 +65,48 @@ function createMinimalDb(): Database.Database {
  */
 function insertIndexedMemory(
   db: Database.Database,
-      specFolder: string,
-      filePath: string,
-      content: string,
-      title?: string,
-      embeddingStatus?: 'success' | 'pending' | 'partial' | 'failed' | 'retry' | 'complete'
+  specFolder: string,
+  filePath: string,
+  content: string,
+  title?: string,
+  embeddingStatus?: 'success' | 'pending' | 'partial' | 'failed' | 'retry' | 'complete',
+  scope: {
+    tenantId?: string | null;
+    userId?: string | null;
+    agentId?: string | null;
+    sessionId?: string | null;
+    sharedSpaceId?: string | null;
+  } = {},
 ): number {
   const hash = sha256(content);
   const result = db.prepare(`
-    INSERT INTO memory_index (spec_folder, file_path, title, content_hash, embedding_status)
-    VALUES (?, ?, ?, ?, ?)
-  `).run(specFolder, filePath, title ?? null, hash, embeddingStatus ?? 'success');
+    INSERT INTO memory_index (
+      spec_folder,
+      file_path,
+      canonical_file_path,
+      title,
+      content_hash,
+      embedding_status,
+      tenant_id,
+      user_id,
+      agent_id,
+      session_id,
+      shared_space_id
+    )
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `).run(
+    specFolder,
+    filePath,
+    filePath,
+    title ?? null,
+    hash,
+    embeddingStatus ?? 'success',
+    scope.tenantId ?? null,
+    scope.userId ?? null,
+    scope.agentId ?? null,
+    scope.sessionId ?? null,
+    scope.sharedSpaceId ?? null,
+  );
   return result.lastInsertRowid as number;
 }
 
@@ -194,6 +231,57 @@ describe('T054: SHA256 Content-Hash Dedup (TM-02)', () => {
       // Should return the most recently inserted (highest id)
       expect(result!.id).toBe(id2);
       expect(result!.id).toBeGreaterThan(id1);
+    });
+
+    it('T054-6aa: Cross-tenant duplicates do not dedup when governance scope differs', () => {
+      const content = 'Same content in another tenant must not short-circuit save.';
+      const folder = 'specs/governed-dedup';
+      insertIndexedMemory(
+        db,
+        folder,
+        '/specs/governed-dedup/memory/tenant-a.md',
+        content,
+        'Tenant A',
+        'success',
+        { tenantId: 'tenant-a' },
+      );
+
+      const result = checkContentHashDedup(
+        db,
+        buildParsedMemory(folder, content, 'Tenant B'),
+        false,
+        [],
+        undefined,
+        { tenantId: 'tenant-b' },
+      );
+
+      expect(result).toBeNull();
+    });
+
+    it('T054-6ab: Matching governance scope still dedups identical content', () => {
+      const content = 'Same-tenant duplicates should still be caught.';
+      const folder = 'specs/governed-dedup-match';
+      const insertedId = insertIndexedMemory(
+        db,
+        folder,
+        '/specs/governed-dedup-match/memory/tenant-a.md',
+        content,
+        'Tenant A',
+        'success',
+        { tenantId: 'tenant-a', sharedSpaceId: 'shared-1' },
+      );
+
+      const result = checkContentHashDedup(
+        db,
+        buildParsedMemory(folder, content, 'Tenant A duplicate'),
+        false,
+        [],
+        undefined,
+        { tenantId: 'tenant-a', sharedSpaceId: 'shared-1' },
+      );
+
+      expect(result?.status).toBe('duplicate');
+      expect(result?.id).toBe(insertedId);
     });
 
     it('T054-6b: Partial parent rows remain dedup-eligible', () => {
@@ -389,6 +477,70 @@ describe('T054: SHA256 Content-Hash Dedup (TM-02)', () => {
       );
 
       expect(result).toBeNull();
+    });
+
+    it('T054-6j: Same-path unchanged ignores matching content in another tenant scope', () => {
+      const content = 'Same-path unchanged must remain tenant-scoped.';
+      const filePath = '/specs/governed-same-path/memory/doc.md';
+      db.prepare(`
+        INSERT INTO memory_index (
+          spec_folder, file_path, canonical_file_path, title, content_hash, embedding_status, tenant_id, parent_id
+        ) VALUES (?, ?, ?, ?, ?, 'success', ?, NULL)
+      `).run(
+        'specs/governed-same-path',
+        filePath,
+        filePath,
+        'Tenant Scoped',
+        sha256(content),
+        'tenant-a',
+      );
+
+      const result = checkExistingRow(
+        db,
+        buildParsedMemory('specs/governed-same-path', content, 'Tenant Scoped'),
+        filePath,
+        filePath,
+        false,
+        [],
+        { tenantId: 'tenant-b' },
+      );
+
+      expect(result).toBeNull();
+    });
+
+    it('T054-6k: Same-path predecessor lookup stays inside the current governance scope', () => {
+      const content = 'Append-first predecessor lookup must not cross tenants.';
+      const filePath = '/specs/governed-predecessor/memory/doc.md';
+      const tenantAId = db.prepare(`
+        INSERT INTO memory_index (
+          spec_folder, file_path, canonical_file_path, title, content_hash, embedding_status, tenant_id, parent_id
+        ) VALUES (?, ?, ?, ?, ?, 'success', ?, NULL)
+      `).run(
+        'specs/governed-predecessor',
+        filePath,
+        filePath,
+        'Tenant A predecessor',
+        sha256(content),
+        'tenant-a',
+      ).lastInsertRowid as number;
+
+      const tenantBMatch = findSamePathExistingMemory(
+        db,
+        'specs/governed-predecessor',
+        filePath,
+        filePath,
+        { tenantId: 'tenant-b' },
+      );
+      const tenantAMatch = findSamePathExistingMemory(
+        db,
+        'specs/governed-predecessor',
+        filePath,
+        filePath,
+        { tenantId: 'tenant-a' },
+      );
+
+      expect(tenantBMatch).toBeUndefined();
+      expect(tenantAMatch?.id).toBe(tenantAId);
     });
   });
 

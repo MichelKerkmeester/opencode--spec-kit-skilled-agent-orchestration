@@ -33,8 +33,8 @@ contextType: "general"
 - [x] CHK-001 [P0] Parent spec.md exists and now uses the current exact-ID coverage model [EVIDENCE: parent `spec.md` reviewed after alignment]
 - [x] CHK-002 [P0] Parent plan.md exists and now describes the alignment pass rather than the original generation wave [EVIDENCE: parent `plan.md` summary and phases reviewed]
 - [x] CHK-003 [P0] All 19 phase directories still exist (`001-retrieval/` through `019-feature-flag-reference/`) [EVIDENCE: directory inventory confirmed for all `001-*` to `019-*` folders]
-- [x] CHK-004 [P1] Manual testing playbook resolves at `../manual_testing_playbook/manual_testing_playbook.md` [EVIDENCE: relative path resolves and file exists]
-- [x] CHK-005 [P1] Review protocol resolves at `../manual_testing_playbook/review_protocol.md` [EVIDENCE: relative path resolves and file exists]
+- [x] CHK-004 [P1] Manual testing playbook resolves at `../../../../skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` [EVIDENCE: relative path resolves and file exists]
+- [x] CHK-005 [P1] Review protocol resolves at `../../../../skill/system-spec-kit/manual_testing_playbook/review_protocol.md` [EVIDENCE: relative path resolves and file exists]
 - [x] CHK-006 [P0] Exact-ID inventory established from the current playbook at `211` scenario IDs, while retaining `195` as the top-level-ID count only [EVIDENCE: exact-ID audit input reviewed against the current playbook text]
 <!-- /ANCHOR:pre-impl -->
 
@@ -58,7 +58,7 @@ contextType: "general"
 - [x] CHK-020 [P0] Exact-ID ownership audit across all 19 phase specs reports `211` exact scenario IDs with `0` missing IDs and `0` duplicate owners [EVIDENCE: audit rerun on 2026-03-17]
 - [x] CHK-021 [P0] Recursive `validate.sh --recursive` was rerun on `014-manual-testing-per-playbook/` and completed with `0` errors and `19` warnings [EVIDENCE: validator rerun on 2026-03-17]
 - [x] CHK-022 [P0] `013-memory-quality-and-indexing/` validation was rerun after the exact-ID expansion [EVIDENCE: child validator rerun on 2026-03-17]
-- [x] CHK-023 [P1] Cross-cutting ownership remains stable: `PHASE-001..005` in Phase `016`; `M-001..008` plus dedicated-memory sub-scenarios in Phase `013` [EVIDENCE: parent `spec.md` and child `013/spec.md` reviewed together]
+- [x] CHK-023 [P1] Cross-cutting ownership remains stable: `PHASE-001..005` in Phase `016`; `M-001..008` plus dedicated-memory sub-scenarios in Phase `013` [EVIDENCE: parent `spec.md` and child `013-memory-quality-and-indexing/spec.md` reviewed together]
 <!-- /ANCHOR:testing -->
 
 ---
@@ -76,9 +76,9 @@ contextType: "general"
 ## Documentation
 
 - [x] CHK-040 [P0] Phase `013` explicitly documents `M-005a..c`, `M-006a..c`, and `M-007a..j` as literal scenario IDs [EVIDENCE: `013-memory-quality-and-indexing/spec.md` exact-ID scope and requirements]
-- [x] CHK-041 [P0] The `M-007` playbook block now includes `tests/workflow-e2e.vitest.ts` in the JS verification suite list [EVIDENCE: `manual_testing_playbook.md` command block]
-- [x] CHK-042 [P1] The `M-007` playbook baseline wording now uses the focused proof-lane framing from the `010` closure docs instead of the old compressed aggregate buckets [EVIDENCE: `manual_testing_playbook.md` latest automated baseline refresh]
-- [x] CHK-043 [P1] The parent `010` packet no longer contradicts itself about whether validator support was implemented in this closure pass [EVIDENCE: `010-perfect-session-capturing/spec.md` and `implementation-summary.md` reviewed after cleanup]
+- [x] CHK-041 [P0] The `M-007` playbook block now includes `tests/workflow-e2e.vitest.ts` in the JS verification suite list [EVIDENCE: `../../../../skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` command block]
+- [x] CHK-042 [P1] The `M-007` playbook baseline wording now uses the focused proof-lane framing from the `010` closure docs instead of the old compressed aggregate buckets [EVIDENCE: `../../../../skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` latest automated baseline refresh]
+- [x] CHK-043 [P1] The parent `010` packet no longer contradicts itself about whether validator support was implemented in this closure pass [EVIDENCE: sibling `010-perfect-session-capturing/` packet reviewed after cleanup]
 <!-- /ANCHOR:docs -->
 
 ---
@@ -97,8 +97,8 @@ contextType: "general"
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 10 | 10/10 |
-| P1 Items | 8 | 8/8 |
+| P0 Items | 13 | 13/13 |
+| P1 Items | 9 | 9/9 |
 | P2 Items | 1 | 1/1 |
 
 **Verification Date**: 2026-03-17

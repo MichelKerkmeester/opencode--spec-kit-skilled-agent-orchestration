@@ -256,7 +256,14 @@ function normalizePreferredCaptureSource(rawValue: string | null | undefined): C
     return null;
   }
 
-  return NATIVE_CAPTURE_ENV_ALIASES[normalized] || null;
+  const resolved = NATIVE_CAPTURE_ENV_ALIASES[normalized] || null;
+  if (!resolved) {
+    console.warn(
+      `   Warning: SYSTEM_SPEC_KIT_CAPTURE_SOURCE="${rawValue}" is not a recognized capture source. ` +
+      `Valid values: ${Object.keys(NATIVE_CAPTURE_ENV_ALIASES).join(', ')}. Ignoring override.`
+    );
+  }
+  return resolved;
 }
 
 function hasTruthyEnvKey(env: NodeJS.ProcessEnv, keys: readonly string[]): boolean {

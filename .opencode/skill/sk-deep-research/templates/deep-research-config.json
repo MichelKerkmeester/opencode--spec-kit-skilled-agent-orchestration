@@ -1,0 +1,11 @@
+{
+  "topic": "",
+  "maxIterations": 10,
+  "convergenceThreshold": 0.05,
+  "stuckThreshold": 3,
+  "maxDurationMinutes": 120,
+  "specFolder": "",
+  "createdAt": "",
+  "status": "initialized",
+  "executionMode": "auto"
+}

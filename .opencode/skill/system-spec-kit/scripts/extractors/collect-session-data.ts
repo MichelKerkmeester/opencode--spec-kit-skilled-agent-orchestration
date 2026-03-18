@@ -766,8 +766,13 @@ async function collectSessionData(
       TYPE: detectObservationType(obs)
     }));
 
-  const SUMMARY: string = (sessionInfo as RecentContextEntry).learning
-    || observations.slice(0, 3).map((o) => o.narrative).filter(Boolean).join(' ')
+  const rawLearning = (sessionInfo as RecentContextEntry).learning || '';
+  const isErrorContent = /\bAPI\s+Error:\s*\d{3}\b/i.test(rawLearning)
+    || /\{"?\s*(?:type|error)"?\s*:\s*"?(?:error|api_error|overloaded_error)/i.test(rawLearning)
+    || /internal server error/i.test(rawLearning);
+  const SUMMARY: string = (!isErrorContent && rawLearning.length > 0)
+    ? rawLearning
+    : observations.slice(0, 3).map((o) => o.narrative).filter(Boolean).join(' ')
     || 'Session focused on implementing and testing features.';
 
   const { contextType, importanceTier, decisionCount, toolCounts } =

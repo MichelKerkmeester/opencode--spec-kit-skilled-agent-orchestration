@@ -34,11 +34,11 @@ trigger_phrases:
 
 The Skills Library contains the current skill set under `.opencode/skill/`. Skills load on demand through Gate 2 routing or explicit invocation.
 
-This folder now has 16 skill folders and one shared scripts folder:
+This folder now has 17 skill folders and one shared scripts folder:
 
 | Item                         | Count        | Notes                                            |
 | ---------------------------- | ------------ | ------------------------------------------------ |
-| Skill folders                | 16           | Each skill has a `SKILL.md` entry point          |
+| Skill folders                | 17           | Each skill has a `SKILL.md` entry point          |
 | Skills with local `scripts/` | 5            | Automation lives close to the skill that owns it |
 | Shared routing scripts       | 4 Python files | `skill_advisor.py` plus benchmark, regression and runtime helpers |
 
@@ -98,6 +98,7 @@ Request -> Route skill -> Load SKILL.md -> Load only needed references/assets/sc
 ├── sk-code--web/
 ├── sk-doc/
 ├── sk-git/
+├── sk-deep-research/
 ├── sk-prompt-improver/
 ├── system-spec-kit/
 └── README.md
@@ -198,6 +199,12 @@ Claude Code CLI orchestration enabling external AIs to invoke Anthropic's Claude
 
 Copilot CLI orchestration enabling any AI to invoke GitHub's Copilot CLI for multi-model tasks, cloud delegation, collaborative planning, autopilot execution, and repository memory.
 
+### Research
+
+#### `sk-deep-research` (v1.0.0)
+
+Autonomous deep research loop with iterative investigation, externalized JSONL + strategy.md state, convergence detection, and fresh context per iteration. Dispatches `@deep-research` LEAF agent per iteration.
+
 <!-- /ANCHOR:skills-catalog -->
 
 <!-- ANCHOR:skill-structure -->
@@ -220,6 +227,7 @@ Copilot CLI orchestration enabling any AI to invoke GitHub's Copilot CLI for mul
 | `mcp-clickup`             | Yes           | Yes       | No         |
 | `mcp-code-mode`           | Yes           | Yes       | Yes        |
 | `mcp-figma`               | Yes           | Yes       | No         |
+| `sk-deep-research`         | Yes           | No        | No         |
 | `sk-code--*`              | Varies        | Varies    | Varies     |
 | `sk-git`                  | Yes           | Yes       | No         |
 | `sk-doc`                  | Yes           | Yes       | Yes        |

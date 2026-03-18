@@ -550,6 +550,10 @@ async function validateContentAlignment(
       console.log(`   ${alternatives.length + 1}. Continue with "${specFolderName}" anyway\n`);
 
       if (!process.stdout.isTTY || !process.stdin.isTTY) {
+        if (finalScore === 0 && isInfrastructureMismatch) {
+          console.log(`   ALIGNMENT_HARD_BLOCK: Non-interactive mode with 0% alignment and infrastructure mismatch — refusing to proceed with "${specFolderName}".`);
+          return { proceed: false, useAlternative: false };
+        }
         console.log('   Warning: Non-interactive mode - proceeding with specified folder');
         return { proceed: true, useAlternative: false };
       }
@@ -582,6 +586,10 @@ async function validateContentAlignment(
     }
   }
 
+  if (finalScore === 0 && isInfrastructureMismatch && (!process.stdout.isTTY || !process.stdin.isTTY)) {
+    console.log(`   ALIGNMENT_HARD_BLOCK: 0% alignment with infrastructure mismatch and no alternatives — refusing to proceed with "${specFolderName}".`);
+    return { proceed: false, useAlternative: false };
+  }
   console.log(`   Warning: No better alternatives found - proceeding with "${specFolderName}"`);
   return { proceed: true, useAlternative: false };
 }

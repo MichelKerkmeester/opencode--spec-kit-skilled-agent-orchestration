@@ -59,7 +59,7 @@ This pass does not generate the packet from scratch. It reconciles the existing 
 Documentation reconciliation with exact-ID audit and validator-truth refresh.
 
 ### Key Components
-- **Playbook source of truth**: `manual_testing_playbook.md`, including the dedicated memory section.
+- **Playbook source of truth**: `../../../../skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md`, including the dedicated memory section.
 - **Packet surface**: parent `014` docs plus child `013-memory-quality-and-indexing/`.
 - **Supporting truth sources**: recursive validation output for `014`, validation output for `013`, and the `010` closure docs used to refresh `M-007` proof-lane wording.
 - **Audit layer**: exact-ID ownership scan across all 19 child specs.

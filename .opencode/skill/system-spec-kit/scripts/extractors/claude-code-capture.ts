@@ -22,6 +22,7 @@ import {
   isSameWorkspacePath,
   toWorkspaceRelativePath,
 } from '../utils';
+import { sanitizeToolDescription } from '../utils/tool-sanitizer';
 
 const CLAUDE_HOME = path.join(
   process.env.HOME || process.env.USERPROFILE || '',
@@ -501,11 +502,14 @@ export async function captureClaudeConversation(
       const tracked = event.snapshot?.trackedFileBackups || {};
 
       for (const absolutePath of Object.keys(tracked)) {
-        if (snapshotPaths.has(absolutePath)) {
+        // Use relative path for dedup to avoid absolute/relative mismatches
+        const relativePath = relativeProjectPath(projectRoot, absolutePath);
+        const dedupKey = relativePath || absolutePath;
+        if (snapshotPaths.has(dedupKey)) {
           continue;
         }
 
-        snapshotPaths.add(absolutePath);
+        snapshotPaths.add(dedupKey);
         const snapshotTool = createSnapshotToolCall(projectRoot, absolutePath, timestamp);
         if (snapshotTool) {
           toolCalls.push(snapshotTool);
@@ -561,6 +565,11 @@ export async function captureClaudeConversation(
       continue;
     }
 
+    // Skip API error messages — they carry no useful session content
+    if (event.type === 'assistant' && (event as Record<string, unknown>).isApiErrorMessage === true) {
+      continue;
+    }
+
     if (event.type !== 'assistant') {
       continue;
     }
@@ -582,7 +591,7 @@ export async function captureClaudeConversation(
           ? block.input as Record<string, unknown>
           : {};
         const title = typeof input.description === 'string'
-          ? input.description
+          ? sanitizeToolDescription(input.description)
           : toolName;
 
         toolCallIndexById.set(block.id, toolCalls.length);
@@ -603,13 +612,11 @@ export async function captureClaudeConversation(
     }
 
     const pendingPrompt = pendingPrompts.shift();
-    if (pendingPrompt) {
-      exchanges.push({
-        userInput: pendingPrompt.prompt,
-        assistantResponse: assistantText,
-        timestamp: pendingPrompt.timestamp || event.timestamp || new Date().toISOString(),
-      });
-    }
+    exchanges.push({
+      userInput: pendingPrompt?.prompt || '',
+      assistantResponse: assistantText,
+      timestamp: pendingPrompt?.timestamp || event.timestamp || new Date().toISOString(),
+    });
   }
 
   while (pendingPrompts.length > 0) {

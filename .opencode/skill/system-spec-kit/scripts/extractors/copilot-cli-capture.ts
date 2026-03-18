@@ -21,6 +21,7 @@ import {
   isSameWorkspacePath,
   toWorkspaceRelativePath,
 } from '../utils';
+import { sanitizeToolDescription } from '../utils/tool-sanitizer';
 
 const COPILOT_HOME = path.join(
   process.env.HOME || process.env.USERPROFILE || '',
@@ -283,7 +284,7 @@ export async function captureCopilotConversation(
         toolCallIndexById.set(callId, toolCalls.length);
         toolCalls.push({
           tool: toolName,
-          title: typeof input.description === 'string' ? input.description : toolName,
+          title: typeof input.description === 'string' ? sanitizeToolDescription(input.description) : toolName,
           status: 'pending',
           timestamp: event.timestamp || new Date().toISOString(),
           input,
@@ -323,7 +324,7 @@ export async function captureCopilotConversation(
         toolCallIndexById.set(callId, toolCalls.length);
         toolCalls.push({
           tool: toolName,
-          title: typeof input.description === 'string' ? input.description : toolName,
+          title: typeof input.description === 'string' ? sanitizeToolDescription(input.description) : toolName,
           status: 'pending',
           timestamp: event.timestamp || new Date().toISOString(),
           input,

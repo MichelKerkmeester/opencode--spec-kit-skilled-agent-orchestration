@@ -129,7 +129,7 @@ export interface CaptureExchange {
 export interface CaptureToolCall {
   tool: string;
   title?: string;
-  status?: string;
+  status?: 'pending' | 'completed' | 'error' | 'snapshot' | 'unknown';
   timestamp?: number | string;
   output?: string;
   input?: {
@@ -897,7 +897,14 @@ function transformOpencodeCapture(
     '[response]',
     'Assistant processed request',
     'placeholder',
-    'simulation mode'
+    'simulation mode',
+    // API/service error patterns — prevent error messages becoming observations
+    'api error:',
+    '"type":"error"',
+    '"api_error"',
+    '"overloaded_error"',
+    '"rate_limit_error"',
+    'internal server error',
   ];
 
   for (const ex of exchanges) {
@@ -1012,6 +1019,11 @@ function transformOpencodeCapture(
   const seenPaths: Set<string> = new Set();
 
   for (const tool of filteredToolCalls) {
+    // Exclude snapshot tool calls from FILES — they inflate capturedFileCount
+    // without matching filesystem changes, causing false V10 failures
+    if (tool.status === 'snapshot') {
+      continue;
+    }
     if ((tool.tool === 'edit' || tool.tool === 'write') && tool.input) {
       const filePath: string | undefined = tool.input.filePath || tool.input.file_path || tool.input.path;
       if (filePath && !seenPaths.has(filePath)) {

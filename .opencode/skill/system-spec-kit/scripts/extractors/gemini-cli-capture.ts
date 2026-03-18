@@ -301,7 +301,7 @@ export async function captureGeminiConversation(
         toolCalls.push({
           tool: normalizeToolName(call.name),
           title,
-          status: call.status || 'completed',
+          status: (call.status === 'pending' || call.status === 'completed' || call.status === 'error' || call.status === 'snapshot') ? call.status : 'unknown',
           timestamp: call.timestamp || message.timestamp || new Date().toISOString(),
           input,
           output,

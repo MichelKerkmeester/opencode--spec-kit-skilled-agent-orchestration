@@ -102,7 +102,7 @@ Provide a canonical parent packet with phase linkage across 19 child folders, us
 ### Cross-Cutting Test Assignments
 - **PHASE-001..005** -> appended to `016-tooling-and-scripts/` as pipeline-tooling validation.
 - **M-001..008** -> appended to `013-memory-quality-and-indexing/` as the top-level memory-maintenance scenarios.
-- **M-005a..c`, `M-006a..c`, and `M-007a..j`** -> explicitly documented in `013-memory-quality-and-indexing/` as exact-ID sub-scenarios under the dedicated memory section.
+- **`M-005a..c`, `M-006a..c`, and `M-007a..j`** -> explicitly documented in `013-memory-quality-and-indexing/` as exact-ID sub-scenarios under the dedicated memory section.
 
 ---
 

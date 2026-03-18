@@ -71,9 +71,9 @@ contextType: "general"
 ## Documentation
 
 - [x] CHK-520 [P1] Level 3+ documentation package created [EVIDENCE:README.md|spec.md|plan.md|tasks.md|checklist.md|decision-record.md|implementation-summary.md]
-- [x] CHK-521 [P1] Manual governance procedures added to the playbook [EVIDENCE:manual_testing_playbook.md NEW-122]
+- [x] CHK-521 [P1] Manual governance procedures added to the playbook [EVIDENCE:.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md]
 - [x] CHK-522 [P1] Catalog and README surfaces updated after implementation [EVIDENCE:feature_catalog/17--governance/03-hierarchical-scope-governance-governed-ingest-retention-and-audit.md]
-- [x] CHK-523 [P1] Maintainer sign-off recorded [EVIDENCE:terminal approval recorded in session 2026-03-14]
+- [x] CHK-523 [P1] Maintainer sign-off recorded in phase docs [EVIDENCE:.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/005-hierarchical-scope-governance/checklist.md (L3+: SIGN-OFF)]
 <!-- /ANCHOR:docs -->
 
 ---
@@ -88,27 +88,59 @@ contextType: "general"
 
 ---
 
-<!-- ANCHOR:arch-verify -->
-## L3+: ARCHITECTURE VERIFICATION
-
-- [x] CHK-540 [P1] Governance-first ADR documented [EVIDENCE:decision-record.md]
-- [x] CHK-541 [P1] Isolation and lifecycle rollback strategy documented [EVIDENCE:plan.md]
-- [x] CHK-542 [P1] Governance design reviewed by policy reviewer [EVIDENCE:terminal approval recorded in session 2026-03-14]
-<!-- /ANCHOR:arch-verify -->
-
----
-
 <!-- ANCHOR:summary -->
 ## Verification Summary
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 9 | 9/9 |
-| P1 Items | 4 | 4/4 |
+| P0 Items | 8 | 8/8 |
+| P1 Items | 14 | 14/14 |
 | P2 Items | 3 | 3/3 |
 
 **Verification Date**: 2026-03-14
 <!-- /ANCHOR:summary -->
+
+---
+
+<!-- ANCHOR:arch-verify -->
+## L3+: ARCHITECTURE VERIFICATION
+
+- [x] CHK-540 [P1] Governance-first ADR documented [EVIDENCE:decision-record.md]
+- [x] CHK-541 [P1] Isolation and lifecycle rollback strategy documented [EVIDENCE:plan.md]
+- [x] CHK-542 [P1] Governance design reviewed by policy reviewer [EVIDENCE:.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/005-hierarchical-scope-governance/checklist.md (L3+: SIGN-OFF)]
+<!-- /ANCHOR:arch-verify -->
+
+---
+
+<!-- ANCHOR:perf-verify -->
+## L3+: PERFORMANCE VERIFICATION
+
+- [x] CHK-550 [P1] Governance path performance expectations remain bounded to the verified suite and benchmark helpers [EVIDENCE:implementation-summary.md|mcp_server/lib/governance/scope-governance.ts `benchmarkScopeFilter`]
+<!-- /ANCHOR:perf-verify -->
+
+---
+
+<!-- ANCHOR:deploy-ready -->
+## L3+: DEPLOYMENT READINESS
+
+- [x] CHK-560 [P1] Rollback and retention lifecycle readiness are documented for governed ingest rollout [EVIDENCE:plan.md|implementation-summary.md]
+<!-- /ANCHOR:deploy-ready -->
+
+---
+
+<!-- ANCHOR:compliance-verify -->
+## L3+: COMPLIANCE VERIFICATION
+
+- [x] CHK-570 [P1] Governance auditability and scope-isolation constraints remain documented and verified [EVIDENCE:spec.md|implementation-summary.md]
+<!-- /ANCHOR:compliance-verify -->
+
+---
+
+<!-- ANCHOR:docs-verify -->
+## L3+: DOCUMENTATION VERIFICATION
+
+- [x] CHK-580 [P1] Phase governance documentation remains synchronized across spec, plan, tasks, checklist, and implementation summary [EVIDENCE:spec.md|plan.md|tasks.md|implementation-summary.md]
+<!-- /ANCHOR:docs-verify -->
 
 ---
 

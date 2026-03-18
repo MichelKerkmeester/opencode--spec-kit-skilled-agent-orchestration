@@ -35,6 +35,34 @@ function isExpectedMissingVecMemoriesTable(error: unknown): boolean {
   return message.includes('no such table') && message.includes('vec_memories');
 }
 
+function deleteAncillaryMemoryRows(database: Database.Database, id: number): void {
+  const ancillaryTables = [
+    'DELETE FROM degree_snapshots WHERE memory_id = ?',
+    'DELETE FROM community_assignments WHERE memory_id = ?',
+    'DELETE FROM memory_summaries WHERE memory_id = ?',
+    'DELETE FROM memory_entities WHERE memory_id = ?',
+  ];
+
+  for (const sql of ancillaryTables) {
+    try {
+      database.prepare(sql).run(id);
+    } catch (_error: unknown) {
+      // Best-effort for legacy databases that may not have these tables yet.
+    }
+  }
+
+  try {
+    const memoryIdText = String(id);
+    database.prepare(`
+      DELETE FROM causal_edges
+      WHERE source_id IN (?, ?)
+         OR target_id IN (?, ?)
+    `).run(id, memoryIdText, id, memoryIdText);
+  } catch (_error: unknown) {
+    // Best-effort for legacy databases that may not have causal edges yet.
+  }
+}
+
 function upsert_active_projection(
   database: ReturnType<typeof initialize_db>,
   specFolder: string,
@@ -435,23 +463,7 @@ export function delete_memory_from_database(database: Database.Database, id: num
     }
 
     // BUG-020: Clean ancillary records so deletes do not leave graph residue behind.
-    const ancillaryTables = [
-      'DELETE FROM degree_snapshots WHERE memory_id = ?',
-      'DELETE FROM community_assignments WHERE memory_id = ?',
-      'DELETE FROM memory_summaries WHERE memory_id = ?',
-      'DELETE FROM memory_entities WHERE memory_id = ?',
-    ];
-    for (const sql of ancillaryTables) {
-      try { database.prepare(sql).run(id); } catch (_error: unknown) { /* table may not exist */ }
-    }
-    try {
-      const memoryIdText = String(id);
-      database.prepare(`
-        DELETE FROM causal_edges
-        WHERE source_id IN (?, ?)
-           OR target_id IN (?, ?)
-      `).run(id, memoryIdText, id, memoryIdText);
-    } catch (_error: unknown) { /* table may not exist */ }
+    deleteAncillaryMemoryRows(database, id);
 
     const result = database.prepare('DELETE FROM memory_index WHERE id = ?').run(id);
 
@@ -520,6 +532,7 @@ export function delete_memories(memory_ids: number[]): { deleted: number; failed
   const sqlite_vec = get_sqlite_vec_available();
   let deleted = 0;
   let failed = 0;
+  const deletedIds: number[] = [];
 
   const specFolderById = new Map<number, string | null>();
   for (const id of memory_ids) {
@@ -551,12 +564,14 @@ export function delete_memories(memory_ids: number[]): { deleted: number; failed
 
         const result = database.prepare('DELETE FROM memory_index WHERE id = ?').run(id);
         if (result.changes > 0) {
+          deleteAncillaryMemoryRows(database, id);
           // Memory_history rows are intentionally preserved after deletion
           // So DELETE audit events recorded here persist as audit trail.
           try {
             recordHistory(id, 'DELETE', null, null, 'mcp:delete_memories', specFolderById.get(id) ?? null);
           } catch (_histErr: unknown) { /* best-effort */ }
           transactionDeleted++;
+          deletedIds.push(id);
         } else {
           transactionFailed++;
           failed_ids.push(id);
@@ -585,6 +600,16 @@ export function delete_memories(memory_ids: number[]): { deleted: number; failed
     if (deleted > 0) {
       clear_constitutional_cache();
       clear_search_cache();
+      try {
+        if (bm25Index.isBm25Enabled()) {
+          const bm25 = bm25Index.getIndex();
+          for (const id of deletedIds) {
+            bm25.removeDocument(String(id));
+          }
+        }
+      } catch (_error: unknown) {
+        // BM25 cleanup is best-effort for bulk deletes as well.
+      }
     }
   } catch (e: unknown) {
     console.warn(`[vector-index] delete_memories transaction error: ${get_error_message(e)}`);

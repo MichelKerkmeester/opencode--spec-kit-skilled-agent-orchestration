@@ -11,7 +11,7 @@ contextType: "general"
 ---
 # Phase 1: Baseline and Safety Rails
 
-This folder contains the Level 3+ execution package for the Hydra roadmap baseline phase. It exists to lock down buildability, rollout controls, checkpoint safety, baseline evaluation hooks, and documentation before deeper lineage and graph work begins.
+> This folder contains the Level 3+ execution package for the Hydra roadmap baseline phase, including buildability, rollout controls, checkpoint safety, baseline evaluation hooks, and documentation hardening.
 
 ## TABLE OF CONTENTS
 <!-- ANCHOR:table-of-contents -->

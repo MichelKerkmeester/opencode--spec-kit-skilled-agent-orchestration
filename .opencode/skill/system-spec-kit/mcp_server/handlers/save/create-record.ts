@@ -34,6 +34,63 @@ interface PeDecision {
   contradiction?: { detected: boolean; type: string | null; description: string | null; confidence: number } | null;
 }
 
+export interface MemoryScopeMatch {
+  tenantId?: string | null;
+  userId?: string | null;
+  agentId?: string | null;
+  sessionId?: string | null;
+  sharedSpaceId?: string | null;
+}
+
+function normalizeScopeMatchValue(value?: string | null): string | null {
+  if (typeof value !== 'string') return null;
+  const normalized = value.trim();
+  return normalized.length > 0 ? normalized : null;
+}
+
+export function findSamePathExistingMemory(
+  database: BetterSqlite3.Database,
+  specFolder: string,
+  canonicalFilePath: string,
+  filePath: string,
+  scope: MemoryScopeMatch = {},
+): { id: number; title: string | null; content_hash?: string | null } | undefined {
+  const tenantId = normalizeScopeMatchValue(scope.tenantId);
+  const userId = normalizeScopeMatchValue(scope.userId);
+  const agentId = normalizeScopeMatchValue(scope.agentId);
+  const sessionId = normalizeScopeMatchValue(scope.sessionId);
+  const sharedSpaceId = normalizeScopeMatchValue(scope.sharedSpaceId);
+
+  return database.prepare(`
+    SELECT id, title, content_hash
+    FROM memory_index
+    WHERE spec_folder = ?
+      AND parent_id IS NULL
+      AND (canonical_file_path = ? OR file_path = ?)
+      AND ((? IS NULL AND tenant_id IS NULL) OR tenant_id = ?)
+      AND ((? IS NULL AND user_id IS NULL) OR user_id = ?)
+      AND ((? IS NULL AND agent_id IS NULL) OR agent_id = ?)
+      AND ((? IS NULL AND session_id IS NULL) OR session_id = ?)
+      AND ((? IS NULL AND shared_space_id IS NULL) OR shared_space_id = ?)
+    ORDER BY id DESC
+    LIMIT 1
+  `).get(
+    specFolder,
+    canonicalFilePath,
+    filePath,
+    tenantId,
+    tenantId,
+    userId,
+    userId,
+    agentId,
+    agentId,
+    sessionId,
+    sessionId,
+    sharedSpaceId,
+    sharedSpaceId,
+  ) as { id: number; title: string | null; content_hash?: string | null } | undefined;
+}
+
 /**
  * Creates a memory row with metadata, optional BM25 entry, and save history.
  * Returns the persisted memory id for downstream save handlers.
@@ -45,6 +102,7 @@ export function createMemoryRecord(
   embedding: Float32Array | null,
   embeddingFailureReason: string | null,
   peDecision: PeDecision,
+  scope: MemoryScopeMatch = {},
 ): number {
   if (!embedding) {
     console.error(`[memory-save] Using deferred indexing for ${path.basename(filePath)}`);
@@ -62,15 +120,13 @@ export function createMemoryRecord(
   const indexWithMetadata = database.transaction(() => {
     // Determine importance weight based on document type.
     const importanceWeight = calculateDocumentWeight(filePath, parsed.documentType);
-    const samePathExisting = database.prepare(`
-      SELECT id, title
-      FROM memory_index
-      WHERE spec_folder = ?
-        AND parent_id IS NULL
-        AND (canonical_file_path = ? OR file_path = ?)
-      ORDER BY id DESC
-      LIMIT 1
-    `).get(parsed.specFolder, canonicalFilePath, filePath) as { id: number; title: string | null } | undefined;
+    const samePathExisting = findSamePathExistingMemory(
+      database,
+      parsed.specFolder,
+      canonicalFilePath,
+      filePath,
+      scope,
+    );
     const predecessorMemoryId = peDecision.action === predictionErrorGate.ACTION.SUPERSEDE && peDecision.existingMemoryId != null
       ? peDecision.existingMemoryId
       : samePathExisting?.id ?? null;

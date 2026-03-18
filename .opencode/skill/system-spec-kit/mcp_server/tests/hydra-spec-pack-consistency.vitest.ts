@@ -69,15 +69,16 @@ describe('Hydra spec-pack truth sync', () => {
     const planContent = readDoc(parentDocs.plan);
 
     expect(specContent).toContain('acts as the Level 3 coordination record for the delivered Hydra roadmap');
-    expect(specContent).toContain('Claiming fresh live proof for all five CLIs without new primary artifacts');
+    expect(specContent).toContain('Live five-CLI proof capture plus CLI-proof wording alignment');
     expect(specContent).toContain('describe shared memory as opt-in live access');
-    expect(specContent).toContain('283` files, `7783` tests, `11` skipped, and `28` todo');
+    expect(specContent).toContain('283` files, `7790` tests, `11` skipped, and `28` todo');
     expect(specContent).not.toContain('root-only normalization pass');
     expect(specContent).not.toContain('Editing any phase subfolder under `001-` through `006-`');
 
     expect(planContent).toContain('all six child phase packs as one coherent documentation set');
     expect(planContent).toContain('shared-space owner enforcement and retention-sweep database routing');
-    expect(planContent).toContain('The scripts-side targeted multi-CLI closure suite passed `7` files and `51` tests.');
+    expect(planContent).toContain('The scripts-side targeted multi-CLI closure suite passed `7` files and `54` tests.');
+    expect(planContent).toContain('Live prompt proof was captured for all five required CLIs');
     expect(planContent).not.toContain('without touching phase subfolders');
     expect(planContent).not.toContain('root-only scope was confirmed');
   });
@@ -101,8 +102,8 @@ describe('Hydra spec-pack truth sync', () => {
     expect(tasksContent).toContain('Fix retention sweeps so deletion uses the passed database handle');
     expect(checklistContent).toContain('**Verification Date**: 2026-03-17');
     expect(checklistContent).toContain('Hydra closure verification passed across parent and phase validation');
-    expect(checklistContent).toContain('`283` passed files, `7783` passed tests, `11` skipped, and `28` todo');
-    expect(checklistContent).toContain('repo no longer overclaims “all five CLIs proven live” without primary artifacts');
+    expect(checklistContent).toContain('`283` passed files, `7790` passed tests, `11` skipped, and `28` todo');
+    expect(checklistContent).toContain('Live prompt proof was captured for all five CLIs with timestamps');
   });
 
   it('feature catalog and manual playbook links used by the Hydra phases resolve', () => {
@@ -132,10 +133,10 @@ describe('Hydra spec-pack truth sync', () => {
     expect(summaryContent).toContain('retention sweeps now delete through the database handle');
     expect(summaryContent).toContain('npm run test:hydra:phase1');
     expect(summaryContent).toContain('npx vitest run tests/feature-flag-reference-docs.vitest.ts tests/hydra-spec-pack-consistency.vitest.ts');
-    expect(summaryContent).toContain('PASS (`52` tests)');
-    expect(summaryContent).toContain('PASS (`283` passed files, `7783` passed tests, `11` skipped, `28` todo)');
-    expect(summaryContent).toContain('PASS (`7` files, `51` tests)');
-    expect(summaryContent).toContain('Live proof for all five CLIs is still bounded by available primary artifacts.');
+    expect(summaryContent).toContain('PASS (`53` tests)');
+    expect(summaryContent).toContain('PASS (`283` passed files, `7790` passed tests, `11` skipped, `28` todo)');
+    expect(summaryContent).toContain('PASS (`7` files, `54` tests)');
+    expect(summaryContent).toContain('Require live prompt proof for all five CLIs before closure sign-off.');
     expect(summaryContent).not.toContain('root-only normalization pass');
   });
 });

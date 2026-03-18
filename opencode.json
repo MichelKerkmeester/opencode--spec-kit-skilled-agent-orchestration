@@ -43,6 +43,16 @@
       "environment": {
         "UTCP_CONFIG_FILE": ".utcp_config.json"
       }
+    },
+    "cocoindex_code": {
+      "type": "local",
+      "command": [".opencode/skill/mcp-cocoindex-code/mcp_server/.venv/bin/ccc", "mcp"],
+      "environment": {
+        "COCOINDEX_CODE_ROOT_PATH": ".",
+        "_NOTE_1": "Install: bash .opencode/skill/mcp-cocoindex-code/scripts/install.sh",
+        "_NOTE_2": "Default embedding: all-MiniLM-L6-v2 (local, no API key needed)",
+        "_NOTE_3": "Index stored in .cocoindex_code/ (gitignored)"
+      }
     }
   },
   "experimental": {

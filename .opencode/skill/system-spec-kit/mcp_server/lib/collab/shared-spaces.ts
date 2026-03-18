@@ -178,7 +178,11 @@ export function isSharedMemoryEnabled(database?: Database.Database): boolean {
       const row = database.prepare('SELECT value FROM config WHERE key = ?')
         .get('shared_memory_enabled') as { value: string } | undefined;
       return row?.value === 'true';
-    } catch { return false; }
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      console.warn(`[shared-spaces] Failed to resolve shared_memory_enabled config: ${message}`);
+      return false;
+    }
   }
   return false;
 }

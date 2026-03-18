@@ -44,6 +44,7 @@ import { runPostMutationHooks } from './mutation-hooks';
 import { buildMutationHookFeedback } from '../hooks/mutation-feedback';
 import { needsChunking, indexChunkedMemoryFile } from './chunking-orchestrator';
 import { applyPostInsertMetadata } from './save/db-helpers';
+import { createMemoryRecord, findSamePathExistingMemory, type MemoryScopeMatch } from './save/create-record';
 import {
   buildGovernancePostInsertFields,
   ensureGovernanceRuntime,
@@ -88,7 +89,6 @@ import { checkExistingRow, checkContentHashDedup } from './save/dedup';
 import { generateOrCacheEmbedding, persistPendingEmbeddingCacheWrite } from './save/embedding-pipeline';
 import { evaluateAndApplyPeDecision } from './save/pe-orchestration';
 import { runReconsolidationIfEnabled } from './save/reconsolidation-bridge';
-import { createMemoryRecord } from './save/create-record';
 import { runPostInsertEnrichment } from './save/post-insert';
 import { buildIndexResult, buildSaveResponse } from './save/response-builder';
 
@@ -450,9 +450,19 @@ function prepareParsedMemoryForIndexing(
 async function processPreparedMemory(
   prepared: PreparedParsedMemory,
   filePath: string,
-  options: { force?: boolean; asyncEmbedding?: boolean; persistQualityLoopContent?: boolean } = {},
+  options: {
+    force?: boolean;
+    asyncEmbedding?: boolean;
+    persistQualityLoopContent?: boolean;
+    scope?: MemoryScopeMatch;
+  } = {},
 ): Promise<IndexResult> {
-  const { force = false, asyncEmbedding = false, persistQualityLoopContent = true } = options;
+  const {
+    force = false,
+    asyncEmbedding = false,
+    persistQualityLoopContent = true,
+    scope = {},
+  } = options;
   const { parsed, validation, qualityLoopResult, sufficiencyResult, templateContract } = prepared;
 
   if (!qualityLoopResult.passed && qualityLoopResult.rejected) {
@@ -485,14 +495,22 @@ async function processPreparedMemory(
     const canonicalFilePath = getCanonicalPathKey(filePath);
 
     // DEDUP: Check existing row by file path
-    const existingResult = checkExistingRow(database, parsed, canonicalFilePath, filePath, force, validation.warnings);
+    const existingResult = checkExistingRow(
+      database,
+      parsed,
+      canonicalFilePath,
+      filePath,
+      force,
+      validation.warnings,
+      scope,
+    );
     if (existingResult) return existingResult;
 
     // DEDUP: Check content hash across spec folder (T054)
     const dupResult = checkContentHashDedup(database, parsed, force, validation.warnings, {
       canonicalFilePath,
       filePath,
-    });
+    }, scope);
     if (dupResult) return dupResult;
 
     // CHUNKING BRANCH: Large files get split into parent + child records
@@ -590,14 +608,13 @@ async function processPreparedMemory(
     }
 
     // CREATE NEW MEMORY
-    const existing = database.prepare(`
-      SELECT id, content_hash FROM memory_index
-      WHERE spec_folder = ?
-        AND parent_id IS NULL
-        AND (canonical_file_path = ? OR file_path = ?)
-      ORDER BY id DESC
-      LIMIT 1
-    `).get(parsed.specFolder, canonicalFilePath, filePath) as { id: number; content_hash: string } | undefined;
+    const existing = findSamePathExistingMemory(
+      database,
+      parsed.specFolder,
+      canonicalFilePath,
+      filePath,
+      scope,
+    ) as { id: number; content_hash: string } | undefined;
 
     const id = existing && existing.content_hash !== parsed.contentHash
       ? createAppendOnlyMemoryRecord({
@@ -610,7 +627,13 @@ async function processPreparedMemory(
           actor: 'mcp:memory_save',
         })
       : createMemoryRecord(
-          database, parsed, filePath, embedding, embeddingFailureReason, peResult.decision,
+          database,
+          parsed,
+          filePath,
+          embedding,
+          embeddingFailureReason,
+          peResult.decision,
+          scope,
         );
 
     recordLineageVersion(database, {
@@ -648,7 +671,15 @@ async function processPreparedMemory(
 /* --- 8. INDEX MEMORY FILE --- */
 
 /** Parse, validate, and index a memory file with PE gating, FSRS scheduling, and causal links */
-async function indexMemoryFile(filePath: string, { force = false, parsedOverride = null as ReturnType<typeof memoryParser.parseMemoryFile> | null, asyncEmbedding = false } = {}): Promise<IndexResult> {
+async function indexMemoryFile(
+  filePath: string,
+  {
+    force = false,
+    parsedOverride = null as ReturnType<typeof memoryParser.parseMemoryFile> | null,
+    asyncEmbedding = false,
+    scope = {} as MemoryScopeMatch,
+  } = {},
+): Promise<IndexResult> {
   // Reuse parsed content when provided by caller to avoid a second parse.
   const parsed = parsedOverride || memoryParser.parseMemoryFile(filePath);
   const database = requireDb();
@@ -665,6 +696,7 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
     force,
     asyncEmbedding,
     persistQualityLoopContent: true,
+    scope,
   });
 }
 
@@ -815,6 +847,14 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
     throw new Error('File must be a .md or .txt file in: specs/**/memory/, specs/**/ (spec docs), or .opencode/skill/*/constitutional/');
   }
 
+  const saveScope: MemoryScopeMatch = {
+    tenantId: governanceDecision.normalized.tenantId,
+    userId: governanceDecision.normalized.userId ?? null,
+    agentId: governanceDecision.normalized.agentId ?? null,
+    sessionId: governanceDecision.normalized.sessionId,
+    sharedSpaceId: governanceDecision.normalized.sharedSpaceId ?? null,
+  };
+
   // PRE-FLIGHT VALIDATION
   let parsedForPreflight: ReturnType<typeof memoryParser.parseMemoryFile> | null = null;
   if (!skipPreflight) {
@@ -927,7 +967,12 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
     }
   }
 
-  const result = await indexMemoryFile(validatedPath, { force, parsedOverride: parsedForPreflight, asyncEmbedding });
+  const result = await indexMemoryFile(validatedPath, {
+    force,
+    parsedOverride: parsedForPreflight,
+    asyncEmbedding,
+    scope: saveScope,
+  });
 
   if (typeof result.id === 'number' && result.id > 0) {
     applyPostInsertMetadata(database, result.id, buildGovernancePostInsertFields(governanceDecision));

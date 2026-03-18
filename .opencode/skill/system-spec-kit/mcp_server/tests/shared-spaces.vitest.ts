@@ -91,6 +91,43 @@ describe('Phase 6 shared spaces', () => {
     });
   });
 
+  it('uses the highest role when both user and agent memberships exist', () => {
+    process.env.SPECKIT_MEMORY_SHARED_MEMORY = 'true';
+    const db = new Database(':memory:');
+
+    upsertSharedSpace(db, {
+      spaceId: 'space-mixed-role',
+      tenantId: 'tenant-a',
+      name: 'Mixed Role Space',
+      rolloutEnabled: true,
+    });
+    upsertSharedMembership(db, {
+      spaceId: 'space-mixed-role',
+      subjectType: 'user',
+      subjectId: 'user-mixed',
+      role: 'viewer',
+    });
+    upsertSharedMembership(db, {
+      spaceId: 'space-mixed-role',
+      subjectType: 'agent',
+      subjectId: 'agent-mixed',
+      role: 'owner',
+    });
+
+    expect(assertSharedSpaceAccess(db, {
+      tenantId: 'tenant-a',
+      userId: 'user-mixed',
+      agentId: 'agent-mixed',
+    }, 'space-mixed-role', 'owner')).toEqual({
+      allowed: true,
+    });
+    expect(Array.from(getAllowedSharedSpaceIds(db, {
+      tenantId: 'tenant-a',
+      userId: 'user-mixed',
+      agentId: 'agent-mixed',
+    }))).toEqual(['space-mixed-role']);
+  });
+
   it('blocks existing members immediately when a shared-space kill switch is enabled', () => {
     process.env.SPECKIT_MEMORY_SHARED_MEMORY = 'true';
     const db = new Database(':memory:');

@@ -152,7 +152,7 @@ HydraDB public material stresses integrated hybrid retrieval and adaptive behavi
 
 | Option | Pros | Cons | Score |
 |--------|------|------|-------|
-| **In-process unification (Chosen)** | Fastest to value, lower ops burden, reuses modules | Adds complexity to current server |
+| **In-process unification (Chosen)** | Fastest to value, lower ops burden, reuses modules | Adds complexity to current server | 8/10 |
 | External graph service first | Potential long-term scaling isolation | Immediate infra overhead and integration complexity | 6/10 |
 | Keep current fragmented signals | No major refactor | Misses core roadmap outcomes | 3/10 |
 
@@ -277,4 +277,4 @@ HydraDB public positioning consistently pairs shared memory with strict boundari
 - HydraDB and Cortex are treated as one branding family for planning.
 - No public HydraDB source repository was available during this planning session.
 - docs.useHydraDB.ai links referenced by blog pages were not resolvable during this session.
-- ADR statuses updated to `Accepted` following successful implementation and verification of all 6 phases (`7783` tests passing).
+- ADR statuses updated to `Accepted` following successful implementation and verification of all 6 phases (`7790` tests passing).

@@ -165,8 +165,43 @@ function runQualityScorerTests() {
     toolCount: 7,
     decisionCount: 2,
   });
-  assert(contaminated.qualityScore <= 0.6, 'contamination should cap the v2 score at 0.6');
+  assert(contaminated.qualityScore <= 0.6, 'contamination with default high severity should cap at 0.6');
   assert(inadequateFlagPresent(contaminated.qualityFlags, 'has_contamination'), 'contamination should add explicit flag');
+
+  const lowSev = qualityScorer.scoreMemoryQuality({
+    content: '# low severity',
+    validatorSignals: [
+      { ruleId: 'V1', passed: true },
+      { ruleId: 'V2', passed: true },
+      { ruleId: 'V3', passed: true },
+      { ruleId: 'V4', passed: true },
+      { ruleId: 'V5', passed: true },
+    ],
+    hadContamination: true,
+    contaminationSeverity: 'low',
+    messageCount: 10,
+    toolCount: 7,
+    decisionCount: 2,
+  });
+  assert(lowSev.qualityScore > 0.6, 'low severity contamination should NOT cap at 0.6');
+
+  const medSev = qualityScorer.scoreMemoryQuality({
+    content: '# medium severity',
+    validatorSignals: [
+      { ruleId: 'V1', passed: true },
+      { ruleId: 'V2', passed: true },
+      { ruleId: 'V3', passed: true },
+      { ruleId: 'V4', passed: true },
+      { ruleId: 'V5', passed: true },
+    ],
+    hadContamination: true,
+    contaminationSeverity: 'medium',
+    messageCount: 10,
+    toolCount: 7,
+    decisionCount: 2,
+  });
+  assert(medSev.qualityScore <= 0.85, 'medium severity should cap at 0.85');
+  assert(medSev.qualityScore > 0.6, 'medium severity should NOT cap at 0.6');
 
   const empty = qualityScorer.scoreMemoryQuality({ content: '' });
   assert(empty.qualityScore === 0, 'empty file should score 0');
@@ -211,6 +246,76 @@ function runQualityScorerTests() {
 
 function inadequateFlagPresent(flags, flag = 'has_insufficient_context') {
   return Array.isArray(flags) && flags.includes(flag);
+}
+
+function runErrorContentTests() {
+  // V11 should fail on error-dominated description
+  const errorDesc = `\
+\`\`\`yaml
+spec_folder: "05--agent-orchestration/028-auto-deep-research"
+tool_count: 5
+description: "API Error: 500 bad response"
+trigger_phrases:
+  - "research"
+  - "investigation"
+\`\`\`
+
+# Error Test
+
+Decision: proceed with implementation.
+`;
+  const v11Desc = validator.validateMemoryQualityContent(errorDesc);
+  assert(v11Desc.failedRules.includes('V11'), 'V11 should fail when description contains API error text');
+
+  // V11 should fail on error-dominated trigger phrases
+  const errorTriggers = `\
+\`\`\`yaml
+spec_folder: "05--agent-orchestration/028-auto-deep-research"
+tool_count: 5
+trigger_phrases:
+  - "api error type error"
+  - "error request req_011cz9"
+  - "500 internal server"
+  - "api api overloaded"
+  - "clean phrase"
+\`\`\`
+
+# Error Triggers Test
+
+Decision: proceed with implementation.
+`;
+  const v11Triggers = validator.validateMemoryQualityContent(errorTriggers);
+  assert(v11Triggers.failedRules.includes('V11'), 'V11 should fail when >50% trigger phrases contain error vocabulary');
+
+  // V11 should pass on clean content
+  const cleanContent = `\
+\`\`\`yaml
+spec_folder: "02--system-spec-kit/020-mcp-working-memory-hybrid-rag"
+tool_count: 9
+trigger_phrases:
+  - "memory"
+  - "quality"
+\`\`\`
+
+# Clean Title
+
+Decision: adopt deterministic scoring.
+`;
+  const v11Clean = validator.validateMemoryQualityContent(cleanContent);
+  assert(!v11Clean.failedRules.includes('V11'), 'V11 should pass on clean memory content');
+
+  // Scorer should add has_error_content flag for V11 failure
+  const errorScored = qualityScorer.scoreMemoryQuality({
+    content: '# error content',
+    validatorSignals: [
+      { ruleId: 'V11', passed: false },
+    ],
+    hadContamination: true,
+    messageCount: 10,
+    toolCount: 7,
+    decisionCount: 2,
+  });
+  assert(inadequateFlagPresent(errorScored.qualityFlags, 'has_error_content'), 'V11 failure should add has_error_content flag');
 }
 
 function runBenchmarkFixtureTest() {
@@ -309,6 +414,7 @@ async function main() {
   runContaminationTests();
   await runDecisionCueTests();
   runQualityScorerTests();
+  runErrorContentTests();
   runBenchmarkFixtureTest();
   console.log('test-memory-quality-lane: PASS');
 }

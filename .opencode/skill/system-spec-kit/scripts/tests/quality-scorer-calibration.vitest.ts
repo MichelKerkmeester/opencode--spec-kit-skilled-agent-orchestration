@@ -93,7 +93,7 @@ describe('scoreMemoryQuality calibration', () => {
     ]));
   });
 
-  it('applies a canonical contamination penalty while preserving the score100 compatibility alias', () => {
+  it('applies high-severity contamination penalty by default (null severity)', () => {
     const clean = scoreMemoryQuality(
       buildContent(
         'Quality scorer unification seam',
@@ -132,5 +132,72 @@ describe('scoreMemoryQuality calibration', () => {
     expect(contaminated.score01).toBeLessThan(clean.score01);
     expect(contaminated.score100).toBe(Math.round(contaminated.score01 * 100));
     expect(contaminated.qualityFlags).toContain('has_contamination');
+  });
+
+  describe('contamination severity tiers', () => {
+    function buildRichContent(): string {
+      return buildContent(
+        'Contamination severity tier calibration',
+        Array.from({ length: 80 }, (_, index) => (
+          `Line ${index + 1}: Detailed evidence for severity tier testing with provenance checks.`
+        )),
+      );
+    }
+
+    const richTriggers = ['claude capture', 'stateless fallback', 'quality scoring', 'transcript parser', 'history matching', 'memory save', 'alignment blocking', 'provenance'];
+    const richTopics = ['claude', 'capture', 'fallback', 'quality', 'alignment'];
+    const richFiles = [{ DESCRIPTION: 'Integrates Claude transcript fallback into the stateless data loader.', _provenance: 'git' as const }];
+    const richObservations = [
+      { TITLE: 'Inspect scripts/core/workflow.ts', NARRATIVE: 'Mapped the contamination flow.' },
+      { TITLE: 'Calibrate severity tiers', NARRATIVE: 'Validated tiered penalty behavior.' },
+      { TITLE: 'Verify score boundaries', NARRATIVE: 'Checked cap enforcement per severity level.' },
+    ];
+
+    it('applies a small penalty for low severity contamination', () => {
+      const result = scoreMemoryQuality(
+        buildRichContent(), richTriggers, richTopics, richFiles, richObservations,
+        undefined, true, 'low',
+      );
+
+      expect(result.score01).toBeGreaterThan(0.60);
+      const contaminationDim = result.dimensions.find((d) => d.id === 'contamination');
+      expect(contaminationDim?.score01).toBe(0.95);
+    });
+
+    it('caps medium severity contamination at 0.85', () => {
+      const result = scoreMemoryQuality(
+        buildRichContent(), richTriggers, richTopics, richFiles, richObservations,
+        undefined, true, 'medium',
+      );
+
+      expect(result.score01).toBeLessThanOrEqual(0.85);
+      const contaminationDim = result.dimensions.find((d) => d.id === 'contamination');
+      expect(contaminationDim?.score01).toBe(0.85);
+    });
+
+    it('caps high severity contamination at 0.60', () => {
+      const result = scoreMemoryQuality(
+        buildRichContent(), richTriggers, richTopics, richFiles, richObservations,
+        undefined, true, 'high',
+      );
+
+      expect(result.score01).toBeLessThanOrEqual(0.60);
+      const contaminationDim = result.dimensions.find((d) => d.id === 'contamination');
+      expect(contaminationDim?.score01).toBe(0.60);
+    });
+
+    it('treats null severity as high (default behavior)', () => {
+      const withNull = scoreMemoryQuality(
+        buildRichContent(), richTriggers, richTopics, richFiles, richObservations,
+        undefined, true, null,
+      );
+      const withHigh = scoreMemoryQuality(
+        buildRichContent(), richTriggers, richTopics, richFiles, richObservations,
+        undefined, true, 'high',
+      );
+
+      expect(withNull.score01).toBe(withHigh.score01);
+      expect(withNull.dimensions).toEqual(withHigh.dimensions);
+    });
   });
 });

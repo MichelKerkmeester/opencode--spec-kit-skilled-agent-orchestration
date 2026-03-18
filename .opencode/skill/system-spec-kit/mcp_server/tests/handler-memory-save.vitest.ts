@@ -629,6 +629,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         }),
         createRecordModuleFactory: () => ({
           createMemoryRecord: createMemoryRecordMock,
+          findSamePathExistingMemory: vi.fn(() => undefined),
         }),
         postInsertModuleFactory: () => ({
           runPostInsertEnrichment: runPostInsertEnrichmentMock,

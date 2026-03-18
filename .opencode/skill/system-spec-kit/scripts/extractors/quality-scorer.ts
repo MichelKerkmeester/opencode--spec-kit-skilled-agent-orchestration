@@ -12,8 +12,9 @@ import type {
   QualityFlag,
   QualityScoreResult,
 } from '../core/quality-scorer';
+import type { ContaminationSeverity } from './contamination-filter';
 
-type QualityRuleId = 'V1' | 'V2' | 'V3' | 'V4' | 'V5' | 'V6' | 'V7' | 'V8' | 'V9' | 'V10';
+type QualityRuleId = 'V1' | 'V2' | 'V3' | 'V4' | 'V5' | 'V6' | 'V7' | 'V8' | 'V9' | 'V10' | 'V11';
 
 interface ValidationSignal {
   ruleId: QualityRuleId;
@@ -24,6 +25,7 @@ interface QualityInputs {
   content: string;
   validatorSignals?: ValidationSignal[];
   hadContamination?: boolean;
+  contaminationSeverity?: ContaminationSeverity | null;
   messageCount?: number;
   toolCount?: number;
   decisionCount?: number;
@@ -31,7 +33,7 @@ interface QualityInputs {
   insufficientContext?: boolean;
 }
 
-const QUALITY_RULE_IDS: QualityRuleId[] = ['V1', 'V2', 'V3', 'V4', 'V5', 'V6', 'V7', 'V8', 'V9', 'V10'];
+const QUALITY_RULE_IDS: QualityRuleId[] = ['V1', 'V2', 'V3', 'V4', 'V5', 'V6', 'V7', 'V8', 'V9', 'V10', 'V11'];
 
 const PENALTY_PER_FAILED_RULE = 0.25;
 
@@ -58,6 +60,7 @@ function scoreMemoryQuality(inputs: QualityInputs): QualityScoreResult {
     content,
     validatorSignals = [],
     hadContamination = false,
+    contaminationSeverity = null,
     messageCount = 0,
     toolCount = 0,
     decisionCount = 0,
@@ -121,13 +124,26 @@ function scoreMemoryQuality(inputs: QualityInputs): QualityScoreResult {
     if (failed.ruleId === 'V10') {
       qualityFlags.add('has_session_source_mismatch');
     }
+    if (failed.ruleId === 'V11') {
+      qualityFlags.add('has_error_content');
+    }
   }
 
   if (hadContamination) {
     qualityFlags.add('has_contamination');
-    qualityScore -= PENALTY_PER_FAILED_RULE;
-    sufficiencyCap = Math.min(sufficiencyCap ?? 1, 0.6);
-    warnings.push('Contamination detected — quality score penalized and capped at 0.60');
+    const severity = contaminationSeverity || 'high';
+    if (severity === 'low') {
+      qualityScore -= 0.05;
+      warnings.push('Low-severity contamination detected (preamble only) — minor penalty applied');
+    } else if (severity === 'medium') {
+      qualityScore -= 0.10;
+      sufficiencyCap = Math.min(sufficiencyCap ?? 1, 0.85);
+      warnings.push('Medium-severity contamination detected (orchestration chatter) — capped at 0.85');
+    } else {
+      qualityScore -= PENALTY_PER_FAILED_RULE;
+      sufficiencyCap = Math.min(sufficiencyCap ?? 1, 0.6);
+      warnings.push('High-severity contamination detected (AI self-reference/tool leaks) — capped at 0.60');
+    }
   }
 
   const normalizedSufficiencyScore = typeof sufficiencyScore === 'number' && Number.isFinite(sufficiencyScore)

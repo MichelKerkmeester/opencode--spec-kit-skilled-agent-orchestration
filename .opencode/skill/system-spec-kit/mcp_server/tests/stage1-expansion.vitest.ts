@@ -100,6 +100,30 @@ vi.mock('../utils/db-helpers', () => ({
   requireDb: () => mockRequireDb(),
 }));
 
+// Mock governance scope filter
+const mockFilterRowsByScope = vi.fn((rows: Array<Record<string, unknown>>, scope: Record<string, unknown>, allowedSharedSpaceIds?: Set<string>) => {
+  return rows.filter((row) => {
+    const tenantMatches = !scope.tenantId || row.tenant_id === scope.tenantId;
+    const userMatches = !scope.userId || row.user_id === scope.userId;
+    const agentMatches = !scope.agentId || row.agent_id === scope.agentId;
+    const sessionMatches = !scope.sessionId || row.session_id === scope.sessionId;
+    const sharedMatches = !scope.sharedSpaceId || (
+      row.shared_space_id === scope.sharedSpaceId
+      && (!allowedSharedSpaceIds || allowedSharedSpaceIds.has(String(row.shared_space_id)))
+    );
+    return tenantMatches && userMatches && agentMatches && sessionMatches && sharedMatches;
+  });
+});
+vi.mock('../lib/governance/scope-governance', () => ({
+  filterRowsByScope: (rows: Array<Record<string, unknown>>, scope: Record<string, unknown>, allowedSharedSpaceIds?: Set<string>) =>
+    mockFilterRowsByScope(rows, scope, allowedSharedSpaceIds),
+}));
+
+const mockGetAllowedSharedSpaceIds = vi.fn((_db: unknown, _scope: Record<string, unknown>) => undefined as Set<string> | undefined);
+vi.mock('../lib/collab/shared-spaces', () => ({
+  getAllowedSharedSpaceIds: (db: unknown, scope: Record<string, unknown>) => mockGetAllowedSharedSpaceIds(db, scope),
+}));
+
 // -- Import SUT after mocks ---------------------------------------------------
 
 import { executeStage1 } from '../lib/search/pipeline/stage1-candidate-gen';
@@ -148,6 +172,8 @@ describe('Stage-1: Expansion & Dedup', () => {
     mockCheckScaleGate.mockReset().mockReturnValue(false);
     mockQuerySummaryEmbeddings.mockReset().mockReturnValue([]);
     mockRequireDb.mockReset().mockReturnValue({});
+    mockFilterRowsByScope.mockClear();
+    mockGetAllowedSharedSpaceIds.mockReset().mockReturnValue(undefined);
   });
 
   afterEach(() => {
@@ -353,5 +379,64 @@ describe('Stage-1: Expansion & Dedup', () => {
     expect(result.candidates).toHaveLength(1);
     expect(result.candidates[0]?.id).toBe(3);
     expect(result.candidates[0]?.title).toBe('high-quality-summary');
+  });
+
+  it('T8: summary-channel hits are filtered by governance scope before merge', async () => {
+    mockIsEmbeddingExpansionEnabled.mockReturnValue(false);
+    mockIsMemorySummariesEnabled.mockReturnValue(true);
+    mockCheckScaleGate.mockReturnValue(true);
+    mockGetAllowedSharedSpaceIds.mockReturnValue(new Set(['shared-allowed']));
+    mockQuerySummaryEmbeddings.mockReturnValue([
+      { memoryId: 8, similarity: 0.84 },
+      { memoryId: 9, similarity: 0.81 },
+    ]);
+    mockRequireDb.mockReturnValue(
+      makeSummaryDb({
+        8: {
+          id: 8,
+          title: 'allowed-summary',
+          spec_folder: 'specs/governed',
+          file_path: 'specs/governed/memory/allowed.md',
+          importance_tier: 'normal',
+          importance_weight: 1,
+          quality_score: 0.92,
+          created_at: '2026-01-01T00:00:00.000Z',
+          is_archived: 0,
+          context_type: 'general',
+          tenant_id: 'tenant-a',
+          shared_space_id: 'shared-allowed',
+        },
+        9: {
+          id: 9,
+          title: 'blocked-summary',
+          spec_folder: 'specs/governed',
+          file_path: 'specs/governed/memory/blocked.md',
+          importance_tier: 'normal',
+          importance_weight: 1,
+          quality_score: 0.9,
+          created_at: '2026-01-01T00:00:00.000Z',
+          is_archived: 0,
+          context_type: 'general',
+          tenant_id: 'tenant-b',
+          shared_space_id: 'shared-blocked',
+        },
+      })
+    );
+
+    const mockSearch = searchWithFallback as ReturnType<typeof vi.fn>;
+    mockSearch.mockResolvedValue([]);
+
+    const result = await executeStage1({
+      config: makeConfig({
+        tenantId: 'tenant-a',
+        sharedSpaceId: 'shared-allowed',
+      }),
+    });
+
+    expect(mockFilterRowsByScope).toHaveBeenCalled();
+    expect(result.metadata.channelCount).toBe(2);
+    expect(result.candidates).toHaveLength(1);
+    expect(result.candidates[0]?.id).toBe(8);
+    expect(result.candidates[0]?.title).toBe('allowed-summary');
   });
 });

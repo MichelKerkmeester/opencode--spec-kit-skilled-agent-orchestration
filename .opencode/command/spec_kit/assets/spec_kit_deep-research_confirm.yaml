@@ -1,0 +1,471 @@
+# ─────────────────────────────────────────────────────────────────
+# DEEP RESEARCH: AUTONOMOUS DEEP RESEARCH LOOP (CONFIRM MODE)
+# ─────────────────────────────────────────────────────────────────
+role: Deep Research Loop Manager
+purpose: Iterative deep research with convergence detection and user approval gates
+action: Run deep-research loop with user confirmation at each phase transition
+operating_mode:
+  workflow: iterative_loop
+  workflow_compliance: MANDATORY
+  workflow_execution: interactive
+  approvals: per_iteration
+  tracking: progressive_research_state
+  validation: convergence_detection
+
+# ─────────────────────────────────────────────────────────────────
+# OPERATING PRINCIPLES
+# ─────────────────────────────────────────────────────────────────
+operating_principles:
+  core: "Fresh context per iteration + externalized state = no context degradation"
+  approach: "Dispatch focused agent, show results, get approval, repeat or stop"
+  mandate: "Never hold findings in memory; write everything to files. Pause for user at each gate."
+
+# ─────────────────────────────────────────────────────────────────
+# USER INPUTS (from setup phase)
+# ─────────────────────────────────────────────────────────────────
+user_inputs:
+  research_topic: "[RESEARCH_TOPIC] - Topic to investigate deeply. REQUIRED."
+  spec_folder: "[SPEC_FOLDER] - Spec folder path. REQUIRED."
+  max_iterations: "[MAX_ITERATIONS] - Maximum loop iterations. Default: 10."
+  convergence_threshold: "[CONVERGENCE_THRESHOLD] - Stop threshold. Default: 0.05."
+
+# ─────────────────────────────────────────────────────────────────
+# CONTEXT LOADING
+# ─────────────────────────────────────────────────────────────────
+context_loading:
+  trigger: "At workflow START, before phase_init"
+  purpose: "Load prior research context for the topic"
+  mcp_integration:
+    tool: memory_context
+    note: "Call MCP tools directly - NEVER through Code Mode"
+    parameters: { input: "{research_topic}", mode: "focused", intent: "understand", includeContent: true }
+  when_to_skip: ["User says 'skip context' or 'fresh start'"]
+  behavior: { if_context_found: "Inject into strategy.md Known Context section", if_no_context: "Proceed with empty Known Context" }
+
+# ─────────────────────────────────────────────────────────────────
+# SKILL REFERENCE
+# ─────────────────────────────────────────────────────────────────
+skill_reference:
+  skill: sk-deep-research
+  skill_md: .opencode/skill/sk-deep-research/SKILL.md
+  references:
+    loop_protocol: .opencode/skill/sk-deep-research/references/loop-protocol.md
+    state_format: .opencode/skill/sk-deep-research/references/state-format.md
+    convergence: .opencode/skill/sk-deep-research/references/convergence.md
+  templates:
+    config: .opencode/skill/sk-deep-research/templates/deep-research-config.json
+    strategy: .opencode/skill/sk-deep-research/templates/deep-research-strategy.md
+
+# ─────────────────────────────────────────────────────────────────
+# AGENT CONFIGURATION
+# ─────────────────────────────────────────────────────────────────
+agent_config:
+  agent: deep-research
+  agent_file: ".claude/agents/deep-research.md"
+  model: opus
+  leaf_only: true
+  tools: [Read, Write, Edit, Bash, Grep, Glob, WebFetch]
+  mcp_servers: [spec_kit_memory]
+  tool_call_budget: { target: 8, max: 12 }
+
+# ─────────────────────────────────────────────────────────────────
+# STATE FILE PATHS
+# ─────────────────────────────────────────────────────────────────
+state_paths:
+  config: "{spec_folder}/scratch/deep-research-config.json"
+  state_log: "{spec_folder}/scratch/deep-research-state.jsonl"
+  strategy: "{spec_folder}/scratch/deep-research-strategy.md"
+  iteration_pattern: "{spec_folder}/scratch/iteration-{NNN}.md"
+  research_output: "{spec_folder}/research.md"
+
+# ─────────────────────────────────────────────────────────────────
+# WORKFLOW
+# ─────────────────────────────────────────────────────────────────
+workflow:
+
+  # ═══════════════════════════════════════════════════════════════
+  # PHASE 1: INITIALIZATION
+  # ═══════════════════════════════════════════════════════════════
+  phase_init:
+    purpose: Create all state files for the research session
+    steps:
+
+      step_create_directories:
+        action: "Create spec folder and scratch directory if they don't exist"
+        command: "mkdir -p {spec_folder}/scratch"
+
+      step_check_existing_state:
+        action: "Check if state files already exist (auto-resume)"
+        check: "Does {spec_folder}/scratch/deep-research-state.jsonl exist?"
+        if_exists:
+          action: "AUTO-RESUME: Count existing iterations, set start_iteration accordingly"
+          log: "Resuming from iteration {N+1} (found {N} completed iterations)"
+          skip_to: gate_init_approval
+        if_not_exists:
+          action: "Fresh start: create all state files"
+
+      step_create_config:
+        action: "Create deep-research-config.json from template"
+        template: .opencode/skill/sk-deep-research/templates/deep-research-config.json
+        populate:
+          topic: "{research_topic}"
+          maxIterations: "{max_iterations}"
+          convergenceThreshold: "{convergence_threshold}"
+          stuckThreshold: 3
+          maxDurationMinutes: 120
+          specFolder: "{spec_folder}"
+          createdAt: "{ISO_8601_NOW}"
+          status: "initialized"
+          executionMode: "confirm"
+        output: "{spec_folder}/scratch/deep-research-config.json"
+
+      step_create_state_log:
+        action: "Initialize JSONL state log with config record"
+        content: '{"type":"config","topic":"{research_topic}","maxIterations":{max_iterations},"convergenceThreshold":{convergence_threshold},"createdAt":"{ISO_8601_NOW}","specFolder":"{spec_folder}"}'
+        output: "{spec_folder}/scratch/deep-research-state.jsonl"
+
+      step_create_strategy:
+        action: "Create strategy file from template with initial questions"
+        template: .opencode/skill/sk-deep-research/templates/deep-research-strategy.md
+        populate:
+          topic: "{research_topic}"
+          key_questions: "Derive 3-5 key questions from the research topic"
+          known_context: "Inject memory_context results if available, otherwise 'None'"
+          max_iterations: "{max_iterations}"
+          convergence_threshold: "{convergence_threshold}"
+        output: "{spec_folder}/scratch/deep-research-strategy.md"
+
+      # ─── APPROVAL GATE: Post-Init ───
+      gate_init_approval:
+        type: approval_gate
+        purpose: "Show initialization results and get approval to start loop"
+        present: |
+          ## Initialization Complete
+
+          **Topic**: {research_topic}
+          **Max Iterations**: {max_iterations}
+          **Convergence Threshold**: {convergence_threshold}
+
+          **Initial Key Questions**:
+          {key_questions_list}
+
+          **Known Context**: {context_summary_or_none}
+
+          **State files created in**: {spec_folder}/scratch/
+
+          Options:
+          A) Start research loop
+          B) Adjust questions or parameters
+          C) Cancel
+        wait_for: "User response"
+        on_A: { set: { current_iteration: 1, stuck_count: 0 }, proceed_to: phase_loop }
+        on_B: { action: "Apply user adjustments to strategy.md and/or config", return_to: gate_init_approval }
+        on_C: { action: "Cancel workflow", status: "CANCELLED" }
+
+  # ═══════════════════════════════════════════════════════════════
+  # PHASE 2: ITERATION LOOP
+  # ═══════════════════════════════════════════════════════════════
+  phase_loop:
+    purpose: Dispatch agent iterations with approval at each step
+    repeat: true
+    max_repeats: "{max_iterations}"
+    steps:
+
+      step_read_state:
+        action: "Read current state from JSONL and strategy"
+        read:
+          - "{spec_folder}/scratch/deep-research-state.jsonl"
+          - "{spec_folder}/scratch/deep-research-strategy.md"
+        extract:
+          - iteration_count: "Count lines where type === 'iteration'"
+          - last_newInfoRatio: "Extract newInfoRatio from last iteration record"
+          - next_focus: "Extract 'Next Focus' section from strategy.md"
+          - remaining_questions: "Count unchecked items in 'Key Questions'"
+
+      step_check_convergence:
+        action: "Evaluate stop conditions"
+        algorithm: |
+          1. if iteration_count >= max_iterations: STOP (max_iterations_reached)
+          2. if stuck_count >= 3: STUCK_RECOVERY
+          3. if iteration_count >= 3:
+               recent_3 = last 3 iteration newInfoRatios
+               avg = mean(recent_3)
+               if avg < convergence_threshold: STOP (converged)
+          4. if remaining_questions == 0: STOP (all_questions_answered)
+          5. else: CONTINUE
+        outputs:
+          - decision: "STOP | STUCK_RECOVERY | CONTINUE"
+          - reason: "Human-readable stop reason"
+
+      step_handle_convergence:
+        action: "Act on convergence decision"
+        if_stop:
+          log: "Loop stopping. Reason: {reason}"
+          skip_to: gate_pre_synthesis
+        if_stuck_recovery:
+          log: "Stuck detected ({stuck_count} consecutive no-progress). Entering recovery."
+          set_recovery_focus: "RECOVERY: Widen scope. Try fundamentally different approach. Least-explored question: {least_explored}"
+          reset: { stuck_count: 0 }
+        if_continue:
+          log: "Iteration {current_iteration}: Continuing."
+
+      # ─── APPROVAL GATE: Pre-Iteration ───
+      gate_pre_iteration:
+        type: approval_gate
+        purpose: "Show planned focus and get approval before dispatching agent"
+        present: |
+          ## Iteration {current_iteration} of {max_iterations}
+
+          **Focus**: {next_focus_or_recovery_focus}
+          **Remaining Questions**: {remaining_questions}
+          **Last newInfoRatio**: {last_newInfoRatio_or_N/A}
+          **Stuck Count**: {stuck_count}
+
+          Options:
+          A) Proceed with this focus
+          B) Change focus to: [user provides new focus]
+          C) Stop loop and synthesize now
+          D) Cancel entirely
+        wait_for: "User response"
+        on_A: { proceed_to: step_dispatch_iteration }
+        on_B: { action: "Update next_focus to user's choice", proceed_to: step_dispatch_iteration }
+        on_C: { proceed_to: gate_pre_synthesis }
+        on_D: { action: "Cancel workflow", status: "CANCELLED" }
+
+      step_dispatch_iteration:
+        action: "Dispatch @deep-research agent for one iteration"
+        dispatch:
+          agent: deep-research
+          model: opus
+          context: |
+            Research Topic: {research_topic}
+            Iteration: {current_iteration} of {max_iterations}
+            Focus Area: {next_focus_or_recovery_focus}
+            Remaining Key Questions: {remaining_questions_list}
+            Last 3 Iterations Summary: {last_3_summaries}
+
+            State Files (ALL paths relative to repo root):
+              Config: {spec_folder}/scratch/deep-research-config.json
+              State Log: {spec_folder}/scratch/deep-research-state.jsonl
+              Strategy: {spec_folder}/scratch/deep-research-strategy.md
+              Write findings to: {spec_folder}/scratch/iteration-{NNN}.md
+
+            CONSTRAINT: You are a LEAF agent. Do NOT dispatch sub-agents.
+            CONSTRAINT: Target 3-5 research actions. Max 12 tool calls total.
+            CONSTRAINT: Write ALL findings to files. Do not hold in context.
+        wait_for_completion: true
+
+      step_evaluate_results:
+        action: "Verify iteration outputs and extract metrics"
+        verify:
+          - file_exists: "{spec_folder}/scratch/iteration-{NNN}.md"
+          - jsonl_appended: "New iteration record in state.jsonl"
+          - strategy_updated: "Strategy.md has been modified"
+        extract:
+          - newInfoRatio: "From latest JSONL iteration record"
+          - findings_count: "From latest JSONL iteration record"
+          - status: "From latest JSONL iteration record"
+        on_missing_outputs:
+          action: "Mark iteration as 'error', continue to next"
+
+      # ─── APPROVAL GATE: Post-Iteration ───
+      gate_post_iteration:
+        type: approval_gate
+        purpose: "Show iteration results and get approval for next step"
+        present: |
+          ## Iteration {current_iteration} Results
+
+          **Focus**: {focus_area}
+          **Findings**: {findings_count} ({new_count} new, {redundant_count} redundant)
+          **newInfoRatio**: {newInfoRatio}
+          **Questions Answered**: {answered_this_iteration}
+          **Remaining Questions**: {remaining_count}
+          **Stuck Count**: {stuck_count}
+
+          **Key Findings**:
+          {top_3_findings_summary}
+
+          Options:
+          A) Continue to next iteration
+          B) Continue with adjusted focus: [user provides]
+          C) Stop loop and synthesize
+          D) Cancel entirely
+        wait_for: "User response"
+        on_A: { proceed_to: step_update_tracking }
+        on_B: { action: "Set next_focus to user's choice in strategy.md", proceed_to: step_update_tracking }
+        on_C: { proceed_to: gate_pre_synthesis }
+        on_D: { action: "Cancel workflow", status: "CANCELLED" }
+
+      step_update_tracking:
+        action: "Update loop tracking variables"
+        set:
+          current_iteration: "{current_iteration + 1}"
+          stuck_count: "if newInfoRatio < 0.05: stuck_count + 1, else: 0"
+
+      step_loop_decision:
+        action: "Return to step_read_state for next iteration"
+        goto: step_read_state
+
+  # ═══════════════════════════════════════════════════════════════
+  # PHASE 3: SYNTHESIS
+  # ═══════════════════════════════════════════════════════════════
+  phase_synthesis:
+    purpose: Compile all iteration findings into final research.md
+    steps:
+
+      # ─── APPROVAL GATE: Pre-Synthesis ───
+      gate_pre_synthesis:
+        type: approval_gate
+        purpose: "Show loop summary and get approval to synthesize"
+        present: |
+          ## Research Loop Complete
+
+          **Total Iterations**: {total_iterations}
+          **Stop Reason**: {stop_reason}
+          **Questions Answered**: {answered}/{total} ({percentage}%)
+          **Average newInfoRatio (last 3)**: {avg_newInfoRatio}
+
+          **Iteration Summary**:
+          {iteration_summaries_table}
+
+          Options:
+          A) Proceed to synthesis
+          B) Run more iterations (increase max)
+          C) Cancel (keep iteration files)
+        wait_for: "User response"
+        on_A: { proceed_to: step_read_all_iterations }
+        on_B: { action: "Increase max_iterations, return to loop", proceed_to: phase_loop }
+        on_C: { action: "Cancel synthesis, keep artifacts", status: "PARTIAL" }
+
+      step_read_all_iterations:
+        action: "Read all iteration files and strategy"
+        read_pattern: "{spec_folder}/scratch/iteration-*.md"
+        read_also: "{spec_folder}/scratch/deep-research-strategy.md"
+
+      step_compile_research:
+        action: "Compile or finalize research.md"
+        instructions: |
+          If research.md exists (progressive synthesis was active):
+            1. Read current research.md
+            2. Consolidate and deduplicate findings across all iterations
+            3. Fill any empty sections with findings from iteration files
+            4. Remove redundancy while preserving all unique findings
+            5. Add convergence report as appendix
+
+          If research.md does not exist:
+            1. Create research.md following 17-section template
+            2. Populate sections from iteration files
+            3. Add citations from original sources
+            4. Note unanswered questions in Open Questions section
+        output: "{spec_folder}/research.md"
+
+      step_convergence_report:
+        action: "Generate and append convergence report"
+        report: |
+          ## Convergence Report
+          - Stop reason: {stop_reason}
+          - Total iterations: {total_iterations}
+          - Questions answered: {answered} / {total} ({percentage}%)
+          - Average newInfoRatio (last 3): {avg_newInfoRatio}
+          - Stuck recovery attempts: {recovery_count}
+        append_to_jsonl: '{"type":"event","event":"synthesis_complete","totalIterations":{N},"answeredRatio":{ratio},"stopReason":"{reason}"}'
+
+      step_update_config_status:
+        action: "Mark config as complete"
+        edit: "{spec_folder}/scratch/deep-research-config.json"
+        set_field: { status: "complete" }
+
+      # ─── APPROVAL GATE: Post-Synthesis ───
+      gate_post_synthesis:
+        type: approval_gate
+        purpose: "Show synthesis results and get approval"
+        present: |
+          ## Synthesis Complete
+
+          **research.md** has been compiled with findings from {total_iterations} iterations.
+
+          **Sections populated**: {populated_count}/17
+          **Unanswered questions**: {unanswered_list_or_none}
+
+          Options:
+          A) Approve and save to memory
+          B) Request revisions to research.md
+          C) Skip memory save
+        wait_for: "User response"
+        on_A: { proceed_to: phase_save }
+        on_B: { action: "Apply user revisions", return_to: gate_post_synthesis }
+        on_C: { proceed_to: completion }
+
+  # ═══════════════════════════════════════════════════════════════
+  # PHASE 4: SAVE
+  # ═══════════════════════════════════════════════════════════════
+  phase_save:
+    purpose: Preserve research context to memory system
+    steps:
+
+      step_generate_context:
+        action: "Save memory context via generate-context.js"
+        command: "node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js {spec_folder}"
+        critical_rule: "NEVER use Write tool directly for memory/ paths"
+
+      step_index_memory:
+        action: "Index for MCP visibility"
+        mcp_tool: memory_index_scan
+        parameters: { specFolder: "{spec_folder_name}" }
+
+      step_verify_save:
+        action: "Verify memory file was created"
+        check: "Does {spec_folder}/memory/*.md exist?"
+        on_fail: "Log warning but do not block completion"
+
+  # ═══════════════════════════════════════════════════════════════
+  # COMPLETION
+  # ═══════════════════════════════════════════════════════════════
+  completion:
+    message: |
+      Deep research complete.
+      Iterations: {total_iterations} | Stop reason: {stop_reason}
+      Questions answered: {answered}/{total} ({percentage}%)
+
+      Artifacts:
+        - research.md (compiled from {total_iterations} iterations)
+        - {total_iterations} iteration files in scratch/
+        - State files: config.json, state.jsonl, strategy.md
+        - Memory context saved
+
+      STATUS=OK PATH={spec_folder}
+    next_steps:
+      - "/spec_kit:plan [feature-description]"
+      - "/spec_kit:deep-research [new-topic] (for related deep research)"
+      - "/memory:save {spec_folder} (manual memory save)"
+
+# ─────────────────────────────────────────────────────────────────
+# ERROR RECOVERY
+# ─────────────────────────────────────────────────────────────────
+error_recovery:
+  agent_dispatch_timeout: "Retry once with reduced scope. If second timeout, mark as 'timeout' and show to user for decision."
+  state_file_missing: "If JSONL missing, reconstruct from iteration files. If strategy missing, create minimal version."
+  consecutive_failures: "After 3 consecutive errors, halt and present to user with options: Retry / Skip / Cancel."
+  memory_save_failure: "Save to scratch/ as backup. Inform user."
+
+# ─────────────────────────────────────────────────────────────────
+# RULES
+# ─────────────────────────────────────────────────────────────────
+rules:
+  ALWAYS:
+    - follow_workflow_phases_in_order
+    - dispatch_deep_research_agent_per_iteration
+    - check_convergence_before_each_iteration
+    - write_all_state_to_files
+    - save_memory_context_after_synthesis
+    - respect_max_iterations_cap
+    - pause_at_approval_gates
+    - present_clear_options_at_each_gate
+  NEVER:
+    - skip_convergence_check
+    - dispatch_non_leaf_agents
+    - hold_iteration_findings_in_memory_only
+    - modify_config_after_initialization
+    - overwrite_jsonl_state_log
+    - proceed_past_approval_gate_without_user_response
+    - auto_approve_on_behalf_of_user

@@ -10,6 +10,8 @@ contextType: "general"
 ---
 # Phase 6: Shared-Memory Rollout
 
+> This folder defines the Level 3+ collaboration rollout package for shared-memory spaces, deny-by-default membership, conflict handling, and staged release controls.
+
 ## TABLE OF CONTENTS
 <!-- ANCHOR:table-of-contents -->
 
@@ -31,6 +33,7 @@ Phase 6 is shipped in the live runtime with opt-in shared-memory controls, deny-
 <!-- /ANCHOR:overview -->
 
 ## 2. CURRENT STATUS
+<!-- ANCHOR:current-status -->
 
 | Field | Value |
 |-------|-------|
@@ -40,7 +43,10 @@ Phase 6 is shipped in the live runtime with opt-in shared-memory controls, deny-
 | **Depends On** | `../005-hierarchical-scope-governance/` plus graph and adaptive readiness from Phases 3 and 4 |
 | **Next Phase** | None |
 
+<!-- /ANCHOR:current-status -->
+
 ## 3. DOCUMENTS
+<!-- ANCHOR:documents -->
 
 - `spec.md` defines shared-space, membership, conflict, and rollout requirements.
 - `plan.md` breaks the phase into space model, conflict handling, and staged rollout work.
@@ -49,7 +55,10 @@ Phase 6 is shipped in the live runtime with opt-in shared-memory controls, deny-
 - `decision-record.md` captures the opt-in rollout decision for this phase.
 - `implementation-summary.md` records the shipped implementation, verification set, and any remaining limitations.
 
+<!-- /ANCHOR:documents -->
+
 ## 4. SCOPE BOUNDARY
+<!-- ANCHOR:scope-boundary -->
 
 Included here:
 - Shared-memory spaces and membership rules.
@@ -59,6 +68,8 @@ Included here:
 Explicitly not included here:
 - Pre-governance experiments that bypass Phase 5 controls.
 - Unbounded collaboration access.
+
+<!-- /ANCHOR:scope-boundary -->
 
 ## 5. RELATED
 <!-- ANCHOR:related -->

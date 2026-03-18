@@ -31,23 +31,34 @@
     "spec_kit_memory": {
       "command": "node",
       "args": [
-        ".opencode/skill/system-spec-kit/mcp_server/dist/context-server.js"
+        "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/dist/context-server.js"
       ],
       "cwd": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public",
       "env": {
         "EMBEDDINGS_PROVIDER": "auto",
-        "MEMORY_DB_PATH": ".opencode/skill/system-spec-kit/mcp_server/dist/database/context-index.sqlite"
+        "MEMORY_DB_PATH": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/dist/database/context-index.sqlite"
       },
       "trust": true
     },
     "code_mode": {
       "command": "node",
       "args": [
-        ".opencode/skill/mcp-code-mode/mcp_server/dist/index.js"
+        "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/mcp-code-mode/mcp_server/dist/index.js"
       ],
       "cwd": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public",
       "env": {
-        "UTCP_CONFIG_FILE": ".utcp_config.json"
+        "UTCP_CONFIG_FILE": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.utcp_config.json"
+      },
+      "trust": true
+    },
+    "cocoindex_code": {
+      "command": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/mcp-cocoindex-code/mcp_server/.venv/bin/ccc",
+      "args": [
+        "mcp"
+      ],
+      "cwd": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public",
+      "env": {
+        "COCOINDEX_CODE_ROOT_PATH": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public"
       },
       "trust": true
     }
