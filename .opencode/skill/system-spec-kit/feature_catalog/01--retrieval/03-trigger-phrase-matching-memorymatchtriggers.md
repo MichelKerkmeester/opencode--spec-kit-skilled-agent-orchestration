@@ -1,3 +1,8 @@
+---
+title: "Trigger phrase matching (memory_match_triggers)"
+description: "Covers the fast-path trigger matching tool that performs direct string matching for sub-100ms retrieval."
+---
+
 # Trigger phrase matching (memory_match_triggers)
 
 ## 1. OVERVIEW

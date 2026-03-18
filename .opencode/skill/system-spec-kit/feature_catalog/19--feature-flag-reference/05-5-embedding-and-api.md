@@ -1,3 +1,8 @@
+---
+title: "5. Embedding and API"
+description: "This document captures the implemented behavior, source references, and validation scope for 5. Embedding and API."
+---
+
 # 5. Embedding and API
 
 ## 1. OVERVIEW

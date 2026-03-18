@@ -1,3 +1,8 @@
+---
+title: "Confidence-based result truncation"
+description: "Confidence-based result truncation detects where relevant results end by analyzing consecutive score gaps and trims the irrelevant tail."
+---
+
 # Confidence-based result truncation
 
 ## 1. OVERVIEW

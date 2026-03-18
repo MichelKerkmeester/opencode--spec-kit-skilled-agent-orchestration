@@ -1,3 +1,8 @@
+---
+title: "Code standards alignment"
+description: "Code standards alignment fixed 45 violations across AI-intent comments, MODULE/COMPONENT headers, import ordering and constant naming to match sk-code--opencode standards."
+---
+
 # Code standards alignment
 
 ## 1. OVERVIEW

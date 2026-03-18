@@ -1,0 +1,45 @@
+---
+title: "NEW-058 -- Lightweight consolidation (N3-lite)"
+description: "This scenario validates Lightweight consolidation (N3-lite) for `NEW-058`. It focuses on Confirm maintenance cycle behavior."
+---
+
+# NEW-058 -- Lightweight consolidation (N3-lite)
+
+## 1. OVERVIEW
+
+This scenario validates Lightweight consolidation (N3-lite) for `NEW-058`. It focuses on Confirm maintenance cycle behavior.
+
+---
+
+## 2. CURRENT REALITY
+
+Operators run the exact prompt and command sequence for `NEW-058` and confirm the expected signals without contradicting evidence.
+
+- Objective: Confirm maintenance cycle behavior
+- Prompt: `Run lightweight consolidation cycle (N3-lite).`
+- Expected signals: Consolidation cycle completes; contradiction detection, hebbian strengthening, and staleness decay all produce output; no runtime errors in logs
+- Pass/fail: PASS if all three consolidation sub-processes execute and produce expected outputs without errors
+
+---
+
+## 3. TEST EXECUTION
+
+| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
+|---|---|---|---|---|---|---|---|---|
+| NEW-058 | Lightweight consolidation (N3-lite) | Confirm maintenance cycle behavior | `Run lightweight consolidation cycle (N3-lite).` | 1) trigger cycle 2) inspect contradiction/hebbian/staleness outputs 3) verify logs | Consolidation cycle completes; contradiction detection, hebbian strengthening, and staleness decay all produce output; no runtime errors in logs | Consolidation cycle output + log entries for each sub-step (contradiction/hebbian/staleness) | PASS if all three consolidation sub-processes execute and produce expected outputs without errors | Check consolidation trigger mechanism; inspect individual sub-process logs; verify database state before and after cycle |
+
+---
+
+## 4. REFERENCES
+
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Feature catalog: [15--retrieval-enhancements/04-lightweight-consolidation.md](../../feature_catalog/15--retrieval-enhancements/04-lightweight-consolidation.md)
+
+---
+
+## 5. SOURCE METADATA
+
+- Group: New Features
+- Playbook ID: NEW-058
+- Canonical root source: `manual_testing_playbook.md`
+- Feature file path: `02--new-features/058-lightweight-consolidation-n3-lite.md`

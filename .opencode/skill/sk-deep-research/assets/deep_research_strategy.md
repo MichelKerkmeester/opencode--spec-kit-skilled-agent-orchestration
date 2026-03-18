@@ -45,5 +45,8 @@ description: Strategy file template copied to scratch/ during initialization to 
 ## Research Boundaries
 - Max iterations: [from config]
 - Convergence threshold: [from config]
+- Progressive synthesis: true (default)
+- research.md ownership: workflow-owned canonical synthesis output
+- Reference-only modes: `:restart`, segment partitioning, wave pruning, checkpoint commits, alternate `claude -p` dispatch
 - Current segment: 1
 - Started: [timestamp]

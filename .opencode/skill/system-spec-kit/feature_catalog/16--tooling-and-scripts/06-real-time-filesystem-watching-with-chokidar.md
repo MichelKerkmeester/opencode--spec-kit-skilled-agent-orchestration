@@ -1,3 +1,8 @@
+---
+title: "Real-time filesystem watching with chokidar"
+description: "Real-time filesystem watching uses chokidar to push-index changed memory files with debounce, content-hash deduplication and retry logic."
+---
+
 # Real-time filesystem watching with chokidar
 
 ## 1. OVERVIEW

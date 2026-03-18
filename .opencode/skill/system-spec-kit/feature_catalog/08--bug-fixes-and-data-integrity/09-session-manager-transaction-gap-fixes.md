@@ -1,3 +1,8 @@
+---
+title: "Session-manager transaction gap fixes"
+description: "Tracks the fix that moved `enforceEntryLimit()` calls inside database transactions to prevent concurrent limit violations."
+---
+
 # Session-manager transaction gap fixes
 
 ## 1. OVERVIEW

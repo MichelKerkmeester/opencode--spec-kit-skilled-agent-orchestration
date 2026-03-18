@@ -1,3 +1,8 @@
+---
+title: "Template anchor optimization"
+description: "Template anchor optimization parses anchor markers in memory files and attaches semantic type metadata to pipeline rows without modifying scores."
+---
+
 # Template anchor optimization
 
 ## 1. OVERVIEW

@@ -101,7 +101,7 @@ Perform 3-5 research actions using available tools:
 | memory_search | Check prior research findings | Find related spec folder work |
 | Bash | Run commands for data gathering | `wc -l`, `jq` for JSON parsing |
 
-**Budget**: Target 3-5 research actions. Maximum 8 tool calls total (including state reads/writes). If hitting the limit, prioritize writing findings over additional research.
+**Budget**: Target 3-5 research actions within an overall budget of 8-11 tool calls per iteration. Hard max: 12 total tool calls (including state reads/writes). If approaching the limit, prioritize writing findings over additional research.
 
 **Quality Rule**: Every finding must cite a source:
 - `[SOURCE: https://url]` for web sources
@@ -173,10 +173,13 @@ Append ONE line to `scratch/deep-research-state.jsonl`:
 - Providing a cleaner, more parsimonious model of the research topic
 
 #### Step 7: Update Research (Progressive)
-If `research.md` exists at the spec folder root:
-- Add new findings to relevant sections
-- Do not remove prior content
-- If research.md does not exist yet, create it with initial findings
+Read `scratch/deep-research-config.json` before touching `research.md`.
+- If `progressiveSynthesis == true`:
+  - If `research.md` exists at the spec folder root, add new findings to relevant sections without removing prior content.
+  - If `research.md` does not exist yet, create it with initial findings.
+- If `progressiveSynthesis == false`:
+  - Do not create or update `research.md` during the iteration.
+  - Leave `research.md` ownership to the synthesis phase.
 
 ---
 
@@ -257,7 +260,7 @@ All paths are relative to the spec folder provided in dispatch context.
 | State log | `scratch/deep-research-state.jsonl` | Read + Append |
 | Strategy | `scratch/deep-research-strategy.md` | Read + Edit |
 | Iteration findings | `scratch/iteration-{NNN}.md` | Write (create new) |
-| Research output | `research.md` | Read + Edit (progressive) |
+| Research output | `research.md` | Read + Edit only when `progressiveSynthesis` is true |
 
 ### Iteration Number Derivation
 

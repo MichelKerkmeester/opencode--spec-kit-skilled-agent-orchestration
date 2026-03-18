@@ -1,3 +1,8 @@
+---
+title: "3. MCP Configuration"
+description: "This document captures the implemented behavior, source references, and validation scope for 3. MCP Configuration."
+---
+
 # 3. MCP Configuration
 
 ## 1. OVERVIEW

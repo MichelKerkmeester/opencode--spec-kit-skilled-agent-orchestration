@@ -1,3 +1,8 @@
+---
+title: "Semantic and lexical search (memory_search)"
+description: "Covers the primary search tool that runs the full hybrid retrieval pipeline across multiple channels."
+---
+
 # Semantic and lexical search (memory_search)
 
 ## 1. OVERVIEW

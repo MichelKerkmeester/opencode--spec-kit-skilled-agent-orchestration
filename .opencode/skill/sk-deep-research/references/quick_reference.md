@@ -25,6 +25,7 @@ One-page cheat sheet for the autonomous deep research loop.
 | `--max-iterations` | 10 | Maximum loop iterations |
 | `--convergence` | 0.05 | Stop when avg newInfoRatio below this |
 | `--spec-folder` | auto | Target spec folder path |
+| `progressiveSynthesis` | true | Allow incremental `research.md` updates before final synthesis |
 
 ---
 
@@ -71,7 +72,14 @@ One-page cheat sheet for the autonomous deep research loop.
 | State | `scratch/deep-research-state.jsonl` | JSONL | Iteration log (append-only) |
 | Strategy | `scratch/deep-research-strategy.md` | Markdown | What worked/failed, next focus |
 | Iterations | `scratch/iteration-NNN.md` | Markdown | Per-iteration findings |
-| Output | `research.md` | Markdown | Progressive synthesis |
+| Output | `research.md` | Markdown | Workflow-owned progressive synthesis output |
+
+---
+
+## Reference-Only Notes
+
+- `:restart`, segment partitioning, wave pruning, checkpoint commits, and alternate `claude -p` dispatch are documented for reference, not assumed available at runtime.
+- `progressiveSynthesis` defaults to `true`, so `research.md` is updated during the loop and finalized at synthesis.
 
 ---
 
@@ -186,6 +194,6 @@ Signals: RollingAvg=STOP MAD=CONTINUE Entropy=CONTINUE
 | `@context` | Single-pass codebase search (not iterative) |
 | `@orchestrate` | Multi-agent coordination |
 | `memory_context()` | Prior work retrieval |
-| `generate-context.js` | Memory save script |
+| `generate-context.js` | Supported memory save script |
 
 <!-- /ANCHOR:related -->

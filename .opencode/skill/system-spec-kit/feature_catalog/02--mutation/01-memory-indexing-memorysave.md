@@ -1,3 +1,8 @@
+---
+title: "Memory indexing (memory_save)"
+description: "Covers the save entry point that reads files, generates embeddings, applies quality gating and indexes content into the memory database."
+---
+
 # Memory indexing (memory_save)
 
 ## 1. OVERVIEW

@@ -1,3 +1,8 @@
+---
+title: "BM25-only baseline"
+description: "Describes the FTS5-only baseline measurement (MRR@5 of 0.2083) that confirmed hybrid retrieval adds real value over keyword search alone."
+---
+
 # BM25-only baseline
 
 ## 1. OVERVIEW

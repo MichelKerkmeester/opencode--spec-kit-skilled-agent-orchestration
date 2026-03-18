@@ -1,3 +1,8 @@
+---
+title: "Hierarchical scope governance, governed ingest, retention, and audit"
+description: "Hierarchical scope governance enforces multi-scope controls across ingest and retrieval with provenance requirements, retention policies and an audit trail."
+---
+
 # Hierarchical scope governance, governed ingest, retention, and audit
 
 ## 1. OVERVIEW

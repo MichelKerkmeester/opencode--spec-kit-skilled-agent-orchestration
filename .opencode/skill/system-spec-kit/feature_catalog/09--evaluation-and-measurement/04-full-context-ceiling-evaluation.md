@@ -1,3 +1,8 @@
+---
+title: "Full-context ceiling evaluation"
+description: "Describes the LLM-based ceiling evaluation that ranks all memory titles and summaries to compute a theoretical upper-bound MRR@5, framing how much room for improvement exists between the BM25 floor and the LLM ceiling."
+---
+
 # Full-context ceiling evaluation
 
 ## 1. OVERVIEW

@@ -1,3 +1,8 @@
+---
+title: "Workspace scanning and indexing (memory_index_scan)"
+description: "Covers the filesystem scanner that keeps the memory database synchronized with spec folder files via incremental indexing."
+---
+
 # Workspace scanning and indexing (memory_index_scan)
 
 ## 1. OVERVIEW

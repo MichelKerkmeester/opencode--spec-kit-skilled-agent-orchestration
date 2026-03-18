@@ -1,3 +1,8 @@
+---
+title: "Feature flag governance"
+description: "Feature flag governance defines operational targets for keeping the active flag surface small with explicit sunset windows and periodic audits."
+---
+
 # Feature flag governance
 
 ## 1. OVERVIEW

@@ -1,3 +1,8 @@
+---
+title: "Cold-start novelty boost"
+description: "Describes the exponential decay novelty boost for memories under 48 hours old that counteracts FSRS temporal bias against recently indexed items."
+---
+
 # Cold-start novelty boost
 
 ## 1. OVERVIEW

@@ -1,11 +1,11 @@
 ---
 title: Sub-Agent Utilization Ledger
-description: Coordinator/worker wave planning and capacity guidance for executing the CocoIndex Code 20-scenario manual testing playbook.
+description: Coordinator/worker wave planning and capacity guidance for executing the CocoIndex Code 20-scenario manual testing playbook package.
 ---
 
 # Sub-Agent Utilization Ledger
 
-Coordinator/worker utilization guidance for executing the CocoIndex Code manual testing playbook across parallel waves.
+Coordinator/worker utilization guidance for executing the CocoIndex Code manual testing playbook package across parallel waves.
 
 ---
 
@@ -14,12 +14,13 @@ Coordinator/worker utilization guidance for executing the CocoIndex Code manual 
 
 ### Purpose
 
-Records wave planning and capacity guidance for the 20-scenario CocoIndex Code playbook. This is not a runtime support matrix -- it is pre-execution planning for agent orchestration.
+Records wave planning and capacity guidance for the 20-scenario CocoIndex Code playbook package. This is not a runtime support matrix -- it is pre-execution planning for agent orchestration.
 
 ### Scope
 
 - **Playbook size**: 20 scenarios across 6 categories (CCC, MCP, CFG, DMN, ADV, ERR)
-- **Surface area**: Small (compared to the 189+ scenario system-spec-kit playbook)
+- **Package shape**: 1 root directory page plus 20 per-feature snippet files grouped into 6 category directories
+- **Surface area**: Small (compared to the 195-scenario system-spec-kit playbook)
 - **Recommendation**: Single-wave execution with one destructive isolation wave
 
 <!-- /ANCHOR:overview -->
@@ -51,9 +52,9 @@ Records wave planning and capacity guidance for the 20-scenario CocoIndex Code p
 1. Probe runtime capacity at start
 2. Reserve one coordinator
 3. Saturate remaining worker slots
-4. Pre-assign explicit scenario IDs and ranges to each wave before execution
+4. Pre-assign explicit scenario IDs and the matching snippet files to each wave before execution
 5. Run destructive scenario (`CCC-005`) in a dedicated sandbox-only wave
 6. After each wave, save context and evidence, then begin the next wave
-7. Record utilization table and evidence paths in final report
+7. Record utilization table, snippet references, and evidence paths in the final report
 
 <!-- /ANCHOR:operational-rules -->

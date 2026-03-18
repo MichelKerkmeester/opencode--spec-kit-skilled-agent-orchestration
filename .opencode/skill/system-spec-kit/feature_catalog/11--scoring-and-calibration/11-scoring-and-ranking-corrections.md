@@ -1,3 +1,8 @@
+---
+title: "Scoring and ranking corrections"
+description: "Covers four scoring-layer bug fixes: composite score overflow clamping, citation fallback chain removal, causal-boost cycle deduplication and ablation binomial overflow prevention."
+---
+
 # Scoring and ranking corrections
 
 ## 1. OVERVIEW

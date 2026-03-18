@@ -20,6 +20,7 @@ const captureClaudeConversation = vi.hoisted(() => vi.fn(async () => null));
 const captureCodexConversation = vi.hoisted(() => vi.fn(async () => null));
 const captureCopilotConversation = vi.hoisted(() => vi.fn(async () => null));
 const captureGeminiConversation = vi.hoisted(() => vi.fn(async () => null));
+const mockedIndexMemory = vi.hoisted(() => vi.fn());
 
 vi.mock('../extractors/opencode-capture', () => ({
   captureConversation,
@@ -60,6 +61,12 @@ const originalEnv = {
   MEMORY_ALLOWED_PATHS: process.env.MEMORY_ALLOWED_PATHS,
   SYSTEM_SPEC_KIT_CAPTURE_SOURCE: process.env.SYSTEM_SPEC_KIT_CAPTURE_SOURCE,
 };
+
+interface ValidationOverride {
+  valid: boolean;
+  failedRules: string[];
+  ruleResults: Array<{ ruleId: string; passed: boolean; message: string }>;
+}
 
 /* ───────────────────────────────────────────────────────────────
    3. HARNESS SETUP
@@ -224,6 +231,28 @@ function writeInputFile(harness: WorkflowHarness, name: string, payload: Record<
   return dataFile;
 }
 
+function createValidationOverride(
+  failedRules: string[] = [],
+): ValidationOverride {
+  return {
+    valid: failedRules.length === 0,
+    failedRules,
+    ruleResults: [
+      { ruleId: 'V1', passed: !failedRules.includes('V1'), message: failedRules.includes('V1') ? 'mocked failure' : 'ok' },
+      { ruleId: 'V2', passed: !failedRules.includes('V2'), message: failedRules.includes('V2') ? 'mocked failure' : 'ok' },
+      { ruleId: 'V3', passed: !failedRules.includes('V3'), message: failedRules.includes('V3') ? 'mocked failure' : 'ok' },
+      { ruleId: 'V4', passed: !failedRules.includes('V4'), message: failedRules.includes('V4') ? 'mocked failure' : 'ok' },
+      { ruleId: 'V5', passed: !failedRules.includes('V5'), message: failedRules.includes('V5') ? 'mocked failure' : 'ok' },
+      { ruleId: 'V6', passed: !failedRules.includes('V6'), message: failedRules.includes('V6') ? 'mocked failure' : 'ok' },
+      { ruleId: 'V7', passed: !failedRules.includes('V7'), message: failedRules.includes('V7') ? 'mocked failure' : 'ok' },
+      { ruleId: 'V8', passed: !failedRules.includes('V8'), message: failedRules.includes('V8') ? 'mocked failure' : 'ok' },
+      { ruleId: 'V9', passed: !failedRules.includes('V9'), message: failedRules.includes('V9') ? 'mocked failure' : 'ok' },
+      { ruleId: 'V10', passed: !failedRules.includes('V10'), message: failedRules.includes('V10') ? 'mocked failure' : 'ok' },
+      { ruleId: 'V11', passed: !failedRules.includes('V11'), message: failedRules.includes('V11') ? 'mocked failure' : 'ok' },
+    ],
+  };
+}
+
 /* ───────────────────────────────────────────────────────────────
    4. ASSERTION HELPERS
 ──────────────────────────────────────────────────────────────── */
@@ -269,11 +298,13 @@ async function importWorkflowForHarness(
   options: {
     statelessCapture?: Record<string, unknown> | null;
     failEmbedding?: boolean;
+    validationOverride?: ValidationOverride | null;
   } = {},
 ): Promise<typeof import('../core/workflow')> {
   vi.restoreAllMocks();
   vi.resetModules();
   vi.doUnmock('../core/memory-indexer');
+  vi.doUnmock('../memory/validate-memory-quality');
 
   captureConversation.mockReset();
   captureClaudeConversation.mockReset();
@@ -285,15 +316,17 @@ async function importWorkflowForHarness(
   captureCodexConversation.mockResolvedValue(null);
   captureCopilotConversation.mockResolvedValue(null);
   captureGeminiConversation.mockResolvedValue(null);
+  mockedIndexMemory.mockReset();
 
   if (options.failEmbedding) {
+    mockedIndexMemory.mockImplementation(async () => {
+      throw new Error('forced embedding failure for workflow E2E');
+    });
     vi.doMock('../core/memory-indexer', async (importOriginal) => {
       const actual = await importOriginal<typeof import('../core/memory-indexer')>();
       return {
         ...actual,
-        indexMemory: vi.fn(async () => {
-          throw new Error('forced embedding failure for workflow E2E');
-        }),
+        indexMemory: mockedIndexMemory,
       };
     });
   }
@@ -303,6 +336,21 @@ async function importWorkflowForHarness(
   coreModule.CONFIG.TEMPLATE_DIR = TEST_TEMPLATES_DIR;
   coreModule.CONFIG.DATA_FILE = null;
   coreModule.CONFIG.SPEC_FOLDER_ARG = null;
+
+  if (options.validationOverride) {
+    const validationModule = await import('../memory/validate-memory-quality');
+    vi.spyOn(validationModule, 'validateMemoryQualityContent').mockReturnValue({
+      ...options.validationOverride,
+      contaminationAudit: {
+        stage: 'post-render',
+        timestamp: '2026-03-18T00:00:00.000Z',
+        patternsChecked: [],
+        matchesFound: [],
+        actionsTaken: [],
+        passedThrough: [],
+      },
+    });
+  }
 
   return import('../core/workflow');
 }
@@ -314,6 +362,7 @@ async function importWorkflowForHarness(
 afterEach(() => {
   vi.restoreAllMocks();
   vi.resetModules();
+  vi.useRealTimers();
   vi.unstubAllEnvs();
   vi.doUnmock('../core/memory-indexer');
   captureConversation.mockReset();
@@ -321,6 +370,7 @@ afterEach(() => {
   captureCodexConversation.mockReset();
   captureCopilotConversation.mockReset();
   captureGeminiConversation.mockReset();
+  mockedIndexMemory.mockReset();
 
   if (originalEnv.MEMORY_DB_PATH === undefined) {
     delete process.env.MEMORY_DB_PATH;
@@ -370,6 +420,7 @@ describe('workflow E2E save pipeline', { timeout: 30_000 }, () => {
     configureHarnessEnvironment(harness);
     const dataFile = writeInputFile(harness, 'happy-path.json', createExplicitJsonInput());
     const workflowModule = await importWorkflowForHarness(harness);
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
 
     const result = await workflowModule.runWorkflow({
       dataFile,
@@ -379,6 +430,7 @@ describe('workflow E2E save pipeline', { timeout: 30_000 }, () => {
     });
 
     const memoryPath = path.join(result.contextDir, result.contextFilename);
+    const rendered = fs.readFileSync(memoryPath, 'utf-8');
     const description = readDescription(harness);
 
     expect(fs.existsSync(memoryPath)).toBe(true);
@@ -386,6 +438,11 @@ describe('workflow E2E save pipeline', { timeout: 30_000 }, () => {
     expect(result.writtenFiles).toEqual(expect.arrayContaining([result.contextFilename, 'metadata.json']));
     expect(description.memorySequence).toBe(1);
     expect(description.memoryNameHistory).toEqual([result.contextFilename]);
+    expect(rendered).not.toContain('> **Note:** This session had limited actionable content');
+    expect(rendered).not.toContain('<!-- WARNING: This is simulated/placeholder content - NOT from a real session -->');
+    expect(
+      warnSpy.mock.calls.some(([message]) => String(message).includes('Missing template data for'))
+    ).toBe(false);
   });
 
   it('warns but proceeds for stateless saves with explicit CLI spec folder that do not align to the target', async () => {
@@ -427,6 +484,146 @@ describe('workflow E2E save pipeline', { timeout: 30_000 }, () => {
     expect(description.memorySequence).toBe(1);
   });
 
+  it('warns but proceeds for stateless saves when only V10 fails validation', async () => {
+    const harness = createHarness();
+    configureHarnessEnvironment(harness, {
+      SYSTEM_SPEC_KIT_CAPTURE_SOURCE: 'opencode-capture',
+    });
+    const workflowModule = await importWorkflowForHarness(harness, {
+      statelessCapture: {
+        exchanges: [],
+        toolCalls: [
+          {
+            tool: 'read',
+            status: 'completed',
+            timestamp: '2026-03-16T10:46:00.000Z',
+            input: {
+              filePath: '.opencode/skill/system-spec-kit/scripts/core/workflow.ts',
+            },
+            output: 'Inspected workflow gating behavior for validation testing.',
+          },
+        ],
+        metadata: {},
+        sessionTitle: 'Soft validation capture',
+        sessionId: 'soft-validation-session',
+        capturedAt: '2026-03-16T10:46:30.000Z',
+      },
+      validationOverride: createValidationOverride(['V10']),
+    });
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+
+    const result = await workflowModule.runWorkflow({
+      specFolderArg: harness.specRelativePath,
+    });
+    const metadata = readMetadata(harness) as { embedding?: { status?: string; reason?: string } };
+
+    expect(result.writtenFiles.length).toBeGreaterThan(0);
+    expect(result.memoryId).not.toBeNull();
+    expect(result.indexingStatus).toMatchObject({
+      status: 'indexed',
+      reason: expect.stringContaining('Indexed despite soft validation failures: V10'),
+    });
+    expect(metadata.embedding?.status).toBe('indexed');
+    expect(metadata.embedding?.reason).toContain('V10');
+    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('QUALITY_GATE_WARN: Stateless save continuing despite soft validation failures: V10'));
+    expect(warnSpy).not.toHaveBeenCalledWith(expect.stringContaining('QUALITY_GATE_ABORT'));
+  });
+
+  it('writes but skips indexing when validation metadata marks a failure as index-blocking only', async () => {
+    const harness = createHarness();
+    configureHarnessEnvironment(harness);
+    const dataFile = writeInputFile(harness, 'write-skip-index.json', createExplicitJsonInput({
+      session_summary: 'Exercise the write-only indexing disposition for an index-blocking rule.',
+    }));
+    const workflowModule = await importWorkflowForHarness(harness, {
+      validationOverride: createValidationOverride(['V2']),
+    });
+
+    const result = await workflowModule.runWorkflow({
+      dataFile,
+      specFolderArg: harness.specFolderPath,
+      collectSessionDataFn: async (_collectedData, specFolderName) => buildRichSessionData(specFolderName || harness.specRelativePath),
+      silent: true,
+    });
+
+    const metadata = readMetadata(harness) as { embedding?: { status?: string; reason?: string } };
+
+    expect(result.writtenFiles).toContain(result.contextFilename);
+    expect(result.memoryId).toBeNull();
+    expect(result.indexingStatus).toMatchObject({
+      status: 'skipped_quality_gate',
+      memoryId: null,
+    });
+    expect(metadata.embedding?.status).toBe('skipped_quality_gate');
+    expect(metadata.embedding?.reason).toContain('V2');
+  });
+
+  it('aborts stateless saves when V8 fails validation', async () => {
+    const harness = createHarness();
+    configureHarnessEnvironment(harness, {
+      SYSTEM_SPEC_KIT_CAPTURE_SOURCE: 'opencode-capture',
+    });
+    const workflowModule = await importWorkflowForHarness(harness, {
+      statelessCapture: {
+        exchanges: [],
+        toolCalls: [
+          {
+            tool: 'read',
+            status: 'completed',
+            timestamp: '2026-03-16T10:46:00.000Z',
+            input: {
+              filePath: '.opencode/skill/system-spec-kit/scripts/core/workflow.ts',
+            },
+            output: 'Inspected workflow gating behavior for validation testing.',
+          },
+        ],
+        metadata: {},
+        sessionTitle: 'V8 failure capture',
+        sessionId: 'v8-failure-session',
+        capturedAt: '2026-03-16T10:46:30.000Z',
+      },
+      validationOverride: createValidationOverride(['V8']),
+    });
+
+    await expect(workflowModule.runWorkflow({
+      specFolderArg: harness.specRelativePath,
+      silent: true,
+    })).rejects.toThrow(/CONTAMINATION_GATE_ABORT: Critical contamination rules failed: \[V8\]/);
+  });
+
+  it('aborts stateless saves when V8 and V10 both fail validation', async () => {
+    const harness = createHarness();
+    configureHarnessEnvironment(harness, {
+      SYSTEM_SPEC_KIT_CAPTURE_SOURCE: 'opencode-capture',
+    });
+    const workflowModule = await importWorkflowForHarness(harness, {
+      statelessCapture: {
+        exchanges: [],
+        toolCalls: [
+          {
+            tool: 'read',
+            status: 'completed',
+            timestamp: '2026-03-16T10:46:00.000Z',
+            input: {
+              filePath: '.opencode/skill/system-spec-kit/scripts/core/workflow.ts',
+            },
+            output: 'Inspected workflow gating behavior for validation testing.',
+          },
+        ],
+        metadata: {},
+        sessionTitle: 'Mixed validation capture',
+        sessionId: 'mixed-validation-session',
+        capturedAt: '2026-03-16T10:46:30.000Z',
+      },
+      validationOverride: createValidationOverride(['V8', 'V10']),
+    });
+
+    await expect(workflowModule.runWorkflow({
+      specFolderArg: harness.specRelativePath,
+      silent: true,
+    })).rejects.toThrow(/CONTAMINATION_GATE_ABORT: Critical contamination rules failed: \[V8\]/);
+  });
+
   it('skips duplicate markdown content on a second identical save without bumping description tracking', async () => {
     const harness = createHarness();
     configureHarnessEnvironment(harness);
@@ -457,6 +654,67 @@ describe('workflow E2E save pipeline', { timeout: 30_000 }, () => {
     expect(secondDescription.memorySequence).toBe(1);
     expect(secondDescription.memoryNameHistory).toEqual([first.contextFilename]);
     expect(second.writtenFiles).not.toContain(second.contextFilename);
+  });
+
+  it('creates unique filenames and independent indexing records for same-minute non-duplicate saves', async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2026-03-18T10:25:00.000Z'));
+
+    const harness = createHarness();
+    configureHarnessEnvironment(harness);
+    const workflowModule = await importWorkflowForHarness(harness);
+
+    const firstFile = writeInputFile(harness, 'same-minute-a.json', createExplicitJsonInput({
+      session_summary: 'First same-minute save to verify unique filename generation.',
+      observations: [
+        {
+          type: 'implementation',
+          title: 'First same-minute save',
+          narrative: 'Writes the first durable memory artifact in the minute.',
+          facts: ['Decision: retain indexed memory proof for first save.'],
+          files: ['scripts/core/workflow.ts'],
+          timestamp: '2026-03-18T10:25:00.000Z',
+        },
+      ],
+    }));
+    const secondFile = writeInputFile(harness, 'same-minute-b.json', createExplicitJsonInput({
+      session_summary: 'Second same-minute save to verify collision-safe filename generation.',
+      observations: [
+        {
+          type: 'implementation',
+          title: 'Second same-minute save',
+          narrative: 'Writes a distinct durable memory artifact within the same minute.',
+          facts: ['Decision: retain indexed memory proof for second save.'],
+          files: ['scripts/memory/validate-memory-quality.ts'],
+          timestamp: '2026-03-18T10:25:15.000Z',
+        },
+      ],
+      next_steps: ['Verify filename uniqueness and metadata tracking after the second save.'],
+    }));
+
+    const first = await workflowModule.runWorkflow({
+      dataFile: firstFile,
+      specFolderArg: harness.specFolderPath,
+      collectSessionDataFn: async (_collectedData, specFolderName) => buildRichSessionData(specFolderName || harness.specRelativePath),
+      silent: true,
+    });
+    const second = await workflowModule.runWorkflow({
+      dataFile: secondFile,
+      specFolderArg: harness.specFolderPath,
+      collectSessionDataFn: async (_collectedData, specFolderName) => buildRichSessionData(specFolderName || harness.specRelativePath),
+      silent: true,
+    });
+
+    const markdownFiles = listMarkdownFiles(harness.contextDir);
+    const description = readDescription(harness);
+
+    expect(first.contextFilename).not.toBe(second.contextFilename);
+    expect(markdownFiles).toEqual([first.contextFilename, second.contextFilename].sort());
+    expect(description.memorySequence).toBe(2);
+    expect(description.memoryNameHistory).toEqual([first.contextFilename, second.contextFilename]);
+    expect(first.memoryId).not.toBeNull();
+    expect(second.memoryId).not.toBeNull();
+    expect(first.memoryId).not.toBe(second.memoryId);
   });
 
   it('aborts on insufficient context before writing files or mutating description tracking', async () => {
@@ -501,7 +759,9 @@ describe('workflow E2E save pipeline', { timeout: 30_000 }, () => {
 
     const description = readDescription(harness);
     const metadata = readMetadata(harness) as { embedding?: { status?: string } };
+    const indexerModule = await import('../core/memory-indexer');
 
+    expect(vi.mocked(indexerModule.indexMemory)).toHaveBeenCalledTimes(1);
     expect(result.memoryId).toBeNull();
     expect(result.indexingStatus).toMatchObject({
       status: 'failed_embedding',

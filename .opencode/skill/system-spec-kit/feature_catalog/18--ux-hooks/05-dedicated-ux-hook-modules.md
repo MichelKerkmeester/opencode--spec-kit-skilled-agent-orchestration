@@ -1,3 +1,8 @@
+---
+title: "Dedicated UX hook modules"
+description: "Dedicated UX hook modules separate mutation feedback and response hint logic from individual mutation handlers into shared module boundaries."
+---
+
 # Dedicated UX hook modules
 
 ## 1. OVERVIEW

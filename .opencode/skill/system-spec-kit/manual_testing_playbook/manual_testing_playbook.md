@@ -1,31 +1,68 @@
-# Manual Test Playbooks (Merged)
+---
+title: "Spec Kit Memory: Manual Testing Playbook"
+description: "Operator-facing reference combining the manual testing directory, integrated review/orchestration guidance, execution expectations, and per-feature validation files for the Spec Kit Memory MCP server."
+---
 
-This merged playbook combines:
-- Codex 5.3 xhigh canonical per-feature matrix with expanded EX/NEW scenario coverage plus F-series, manual, and phase coverage
-- Gemini 3.1 Pro Preview scenario-pack overlays (operator execution bundles)
+# Spec Kit Memory: Manual Testing Playbook
+
+This document combines the full manual-validation contract for the Spec Kit Memory MCP server into a single reference. The root playbook acts as the operator directory, review protocol, and orchestration guide: it explains how realistic user-driven tests should be run, how evidence should be captured, how results should be graded, and where each per-feature validation file lives. The per-feature files provide the deeper execution contract for each scenario, including the user request, orchestrator prompt, execution process, source anchors, and validation criteria.
+
+---
+
+This playbook package adopts the Feature Catalog split-document pattern for canonical Spec Kit operator validation. The root document acts as the directory, review surface, and orchestration guide, while per-feature execution detail now lives in the numbered category folders at the playbook root.
 
 Canonical source artifacts:
 - `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md`
-- `.opencode/skill/system-spec-kit/manual_testing_playbook/review_protocol.md`
-- `.opencode/skill/system-spec-kit/manual_testing_playbook/subagent_utilization_ledger.md`
+- `.opencode/skill/system-spec-kit/manual_testing_playbook/01--existing-features/`
+- `.opencode/skill/system-spec-kit/manual_testing_playbook/02--new-features/`
+- `.opencode/skill/system-spec-kit/manual_testing_playbook/03--phase-system-features/`
+- `.opencode/skill/system-spec-kit/manual_testing_playbook/04--memory-and-spec-kit-scenarios/`
+
+---
 
 ## TABLE OF CONTENTS
 
-- [OVERVIEW](#1--overview)
-- [GLOBAL PRECONDITIONS](#global-preconditions)
-- [GLOBAL EVIDENCE REQUIREMENTS](#global-evidence-requirements)
-- [DETERMINISTIC COMMAND NOTATION](#deterministic-command-notation)
-- [EXISTING FEATURES (`EX-001..EX-035`)](#existing-features-ex-001ex-035)
-- [NEW FEATURES (`NEW-001..NEW-149`)](#new-features-new-001new-149)
-- [CATALOG COVERAGE NOTES FOR PHASES 001-018](#catalog-coverage-notes-for-phases-001-018)
+- [1. OVERVIEW](#1--overview)
+- [2. GLOBAL PRECONDITIONS](#2--global-preconditions)
+- [3. GLOBAL EVIDENCE REQUIREMENTS](#3--global-evidence-requirements)
+- [4. DETERMINISTIC COMMAND NOTATION](#4--deterministic-command-notation)
+- [5. REVIEW PROTOCOL AND RELEASE READINESS](#5--review-protocol-and-release-readiness)
+- [6. SUB-AGENT ORCHESTRATION AND WAVE PLANNING](#6--sub-agent-orchestration-and-wave-planning)
+- [7. EXISTING FEATURES](#7--existing-features)
+- [8. NEW FEATURES](#8--new-features)
+- [9. PHASE SYSTEM FEATURES](#9--phase-system-features)
+- [10. DEDICATED MEMORY/SPEC-KIT SCENARIOS](#10--dedicated-memoryspec-kit-scenarios-required)
+- [11. AUTOMATED TEST CROSS-REFERENCE](#11--automated-test-cross-reference)
+- [12. FEATURE CATALOG CROSS-REFERENCE INDEX](#12--feature-catalog-cross-reference-index)
+- [13. GEMINI OVERLAY SCENARIO PACKS](#13--gemini-overlay-scenario-packs)
+
+---
 
 ## 1. OVERVIEW
 
-This playbook is the operator-facing manual validation matrix for canonical Spec Kit features. It combines existing features (`EX-*`) and new rollout features (`NEW-*`) with deterministic prompts, exact execution sequences, expected signals, and pass/fail triage guidance.
+This playbook is the operator-facing manual validation directory for canonical Spec Kit features. It preserves the existing EX/NEW/PHASE/M scenario IDs, keeps root-level summaries readable, and links each scenario to a dedicated feature file with the full execution contract. Those per-feature files should mirror the feature-catalog snippet style: prose-first explanation, current reality, structured source references, and concise metadata.
 
-Coverage note (2026-03-17): runtime-labeled scenarios in this playbook primarily prove shared-backend behavior plus multi-runtime capture/save-path handling. Unless a scenario explicitly drives a Hydra feature through a given CLI, treat runtime labels as repo-backed coverage only and not as full end-to-end Hydra parity proof for that CLI.
+Coverage note (2026-03-18): runtime-labeled scenarios in this playbook primarily prove shared-backend behavior plus multi-runtime capture/save-path handling. Unless a scenario explicitly drives a Hydra feature through a given CLI, treat runtime labels as repo-backed coverage only and not as full end-to-end Hydra parity proof for that CLI.
 
-## Global Preconditions
+### Realistic Test Model
+
+These manual tests should mimic real user behavior, not just isolated command execution. The preferred execution shape is:
+
+1. A realistic user request is given to an orchestrator.
+2. The orchestrator decides whether to work locally, delegate to sub-agents, or invoke another CLI/runtime.
+3. The operator captures both the execution process and the user-visible outcome.
+4. The scenario passes only when the workflow is sound and the returned result would satisfy a real user.
+
+### What The Feature Files Should Explain
+
+- The realistic user request that should trigger the behavior
+- The orchestrator brief or agent-facing prompt that should drive the test
+- The expected execution process, including delegation or external CLI use when relevant
+- The desired user-visible outcome, not just the internal tool output
+
+---
+
+## 2. GLOBAL PRECONDITIONS
 1. Working directory is project root.
 2. Feature summary files are accessible.
 3. Spec/memory commands are available in the runtime.
@@ -33,426 +70,2788 @@ Coverage note (2026-03-17): runtime-labeled scenarios in this playbook primarily
 5. Destructive scenarios (`EX-008`, `EX-009`, `EX-018`, `EX-021`) MUST run only in a disposable sandbox spec folder (for example `specs/test-sandbox`), never in active project folders.
 6. Before each destructive scenario, create and record a named checkpoint for rollback evidence.
 
-## Global Evidence Requirements
+---
+
+## 3. GLOBAL EVIDENCE REQUIREMENTS
 - Command transcript
-- Prompt used
+- User request used
+- Orchestrator or agent-facing prompt used
+- Delegation or runtime-routing notes when applicable
 - Output snippets
+- Final user-facing response or outcome summary
 - Artifact path or output reference
 - Scenario verdict with rationale
 
-## Deterministic Command Notation
+---
+
+## 4. DETERMINISTIC COMMAND NOTATION
 - Replace placeholders before execution: `<target-spec>`, `<sandbox-spec>`, `<memory-id>`, `<checkpoint-name>`.
 - Do not execute literal ellipsis (`...`) or omitted-argument forms; transcripts must contain fully resolved commands.
 - For shorthand tool syntax, execute with explicit argument keys in runtime calls.
+- When a scenario is orchestrator-led, capture both the realistic user request and the explicit orchestrator prompt before executing the deterministic steps.
 
-## Existing Features (`EX-001..EX-035`)
+---
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| EX-001 | Unified context retrieval (memory_context) | Intent-aware context pull | `Use memory_context in auto mode for: fix flaky index scan retry logic` | `memory_match_triggers({ prompt:"fix flaky index scan retry logic", sessionId:"ex001" })` -> `memory_context({ mode:"auto", prompt:"fix flaky index scan retry logic", sessionId:"ex001" })` -> `memory_context({ mode:"focused", prompt:"fix flaky index scan retry logic", sessionId:"ex001" })` | Relevant bounded context returned; no empty response | Tool outputs + mode selection | PASS if relevant context returned in both calls | Check specFolder/intent mismatch, retry with explicit intent |
-| EX-002 | Semantic and lexical search (memory_search) | Hybrid precision check | `Search for checkpoint restore clearExisting transaction rollback` | `memory_search({ query:"checkpoint restore clearExisting transaction rollback", limit:20 })` -> `memory_search({ query:"checkpoint restore clearExisting transaction rollback", limit:20, bypassCache:true })` | Relevant ranked results with hybrid signals | Search output snapshot | PASS if top results match query intent | Lower minState; disable cache and retry |
-| EX-003 | Trigger phrase matching (memory_match_triggers) | Fast recall path | `Run trigger matching for resume previous session blockers with cognitive=true` | `memory_match_triggers(prompt,include_cognitive:true,sessionId:ex003)` | Fast trigger hits + cognitive enrichment | Trigger output | PASS if matched triggers returned with cognitive fields | Retry with higher-quality trigger phrase |
-| EX-004 | Hybrid search pipeline | Channel fusion sanity | `Validate graph search fallback tiers behavior` | `memory_search(query,limit:25)` -> `memory_search(bypassCache:true)` | Non-empty diverse results; fallback not empty | Both run outputs | PASS if channels contribute and no empty tail | Force fallback tier, inspect flags |
-| EX-005 | 4-stage pipeline architecture | Stage invariant verification | `Search Stage4Invariant score snapshot verifyScoreInvariant` | `memory_search(query,intent:understand)` | No invariant errors; stable final scoring | Output + logs | PASS if no score-mutation symptoms | Inspect stage metadata and flags |
-| EX-006 | Memory indexing (memory_save) | New memory ingestion | `Index memory file and report action` | `memory_save(filePath)` -> `memory_stats()` -> `memory_search(title)` | Save action reported; searchable result appears; no template-contract or insufficiency rejection | Save output + follow-up search | PASS if indexed and retrievable and the save does not report `INSUFFICIENT_CONTEXT_ABORT` or template-contract failure | Validate file path/type, rendered anchor/frontmatter shape, and content quality |
-| EX-007 | Memory metadata update (memory_update) | Metadata + re-embed update | `Update memory title and triggers` | `memory_update(id,title,triggers)` -> `memory_search(new title)` | Updated metadata reflected in retrieval | Update output + search | PASS if updated title retrievable | Retry with allowPartialUpdate if embedding fails |
-| EX-008 | Single and folder delete (memory_delete) | Atomic single delete | `Delete memory ID and verify removal` | `checkpoint_create(name:"pre-ex008-delete",specFolder:"<sandbox-spec>")` -> `memory_delete(id)` -> `memory_search(old title)` | Deleted item absent from retrieval | Delete output + search | PASS if deleted item not found and checkpoint exists | Restore `pre-ex008-delete`; verify sandbox folder |
-| EX-009 | Tier-based bulk deletion (memory_bulk_delete) | Tier cleanup with safety | `Delete deprecated tier in scoped folder` | `checkpoint_create(name:"pre-ex009-bulk-delete",specFolder:"<sandbox-spec>")` -> `memory_bulk_delete(tier,specFolder:"<sandbox-spec>")` -> `checkpoint_list(specFolder:"<sandbox-spec>")` | Deletion count + checkpoint created | Bulk delete output | PASS if scoped deletions in sandbox and checkpoint present | Re-run with explicit scope; restore `pre-ex009-bulk-delete` if needed |
-| EX-010 | Validation feedback (memory_validate) | Feedback learning loop | `Record positive validation with queryId` | `memory_validate(memoryId,helpful:true,queryId)` | Confidence/promotion metadata updates | Validation response | PASS if feedback persisted and metadata returned | Retry with valid memoryId/queryId |
-| EX-011 | Memory browser (memory_list) | Folder inventory audit | `List memories in target spec folder` | `memory_list(specFolder,limit,offset)` | Paginated list and totals | List output | PASS if browsable inventory returned | Reduce filters; verify specFolder path |
-| EX-012 | System statistics (memory_stats) | System baseline snapshot | `Return stats with composite ranking` | `memory_stats(folderRanking:composite,includeScores:true)` | Counts, tiers, folder ranking present | Stats output | PASS if dashboard fields populated | Retry with default ranking on scoring error |
-| EX-013 | Health diagnostics (memory_health) | Index/FTS integrity check | `Run full health and divergent_aliases` | `memory_health(reportMode:full)` -> `memory_health(reportMode:divergent_aliases)` | healthy/degraded status and diagnostics | Health outputs | PASS if report completes with actionable diagnostics | Run index_scan(force) if FTS mismatch |
-| EX-014 | Workspace scanning and indexing (memory_index_scan) | Incremental sync run | `Run index scan for changed docs` | `memory_index_scan(force:false)` -> `memory_stats()` | Scan summary and updated index state | Scan output | PASS if changed files reflected | Retry force:true if drift remains |
-| EX-015 | Checkpoint creation (checkpoint_create) | Pre-destructive backup | `Create checkpoint pre-bulk-delete` | `checkpoint_create(name,specFolder)` -> `checkpoint_list()` | New checkpoint listed | Create/list outputs | PASS if checkpoint discoverable | Validate folder and naming rules |
-| EX-016 | Checkpoint listing (checkpoint_list) | Recovery asset discovery | `List checkpoints newest first` | `checkpoint_list(specFolder,limit)` | Available restore points displayed | List output | PASS if checkpoints returned | Remove spec filter if empty |
-| EX-017 | Checkpoint restore (checkpoint_restore) | Rollback restore drill | `Restore checkpoint with merge mode` | `checkpoint_restore(name,clearExisting:false)` -> `memory_health()` | Restored data + healthy state | Restore output + search proof | PASS if known record restored | Retry with clearExisting based on conflict |
-| EX-018 | Checkpoint deletion (checkpoint_delete) | Old snapshot cleanup | `Delete stale checkpoint by name` | `checkpoint_list(specFolder:"<sandbox-spec>")` -> `checkpoint_delete(name:"<checkpoint-name>",confirmName:"<checkpoint-name>")` -> `checkpoint_list(specFolder:"<sandbox-spec>")` | Removed checkpoint absent from list | Before/after list outputs | PASS if checkpoint removed from sandbox list | Validate name, `confirmName`, and sandbox scope; retry |
-| EX-019 | Causal edge creation (memory_causal_link) | Causal provenance linking | `Link source->target supports strength 0.8` | `memory_causal_link({ sourceId:"<memory-id-a>", targetId:"<memory-id-b>", relation:"supports", strength:0.8 })` -> `memory_drift_why({ memoryId:"<memory-id-b>", direction:"both", maxDepth:4 })` | Edge appears in chain trace | Link + trace outputs | PASS if relation visible in trace | Validate IDs/relation type |
-| EX-020 | Causal graph statistics (memory_causal_stats) | Graph coverage review | `Return causal stats and coverage` | `memory_causal_stats()` | Coverage and edge metrics present | Stats output | PASS if metrics returned | Rebuild causal edges if empty |
-| EX-021 | Causal edge deletion (memory_causal_unlink) | Edge correction | `Delete edge and re-trace` | `checkpoint_create({ name:"pre-ex021-causal-unlink", specFolder:"<sandbox-spec>" })` -> `memory_causal_unlink({ edgeId:"<edge-id>" })` -> `memory_drift_why({ memoryId:"<memory-id>", direction:"both", maxDepth:4 })` | Removed edge absent in trace | Unlink + trace outputs | PASS if edge removed and checkpoint exists | Verify edgeId exists; restore `pre-ex021-causal-unlink` if wrong edge removed |
-| EX-022 | Causal chain tracing (memory_drift_why) | Decision why-trace | `Trace both directions to depth 4` | `memory_drift_why(memoryId,direction:both,maxDepth:4)` | Chain includes expected relations | Trace output | PASS if causal path returned | Lower depth/rel filters if empty |
-| EX-023 | Epistemic baseline capture (task_preflight) | Pre-task baseline logging | `Create preflight for pipeline-v2-audit` | `task_preflight(specFolder,taskId,knowledgeScore,uncertaintyScore,contextScore)` | Baseline record created | Preflight output | PASS if baseline persisted | Retry with complete fields |
-| EX-024 | Post-task learning measurement (task_postflight) | Learning closeout | `Complete postflight for pipeline-v2-audit` | `task_postflight(specFolder,taskId,knowledgeScore,uncertaintyScore,contextScore)` | Delta/learning record saved | Postflight output | PASS if completion recorded | Verify taskId matches preflight |
-| EX-025 | Learning history (memory_get_learning_history) | Trend review | `Show completed learning history` | `memory_get_learning_history(specFolder,onlyComplete:true)` | Historical entries returned | History output | PASS if completed cycles listed | Remove filter if no results |
-| EX-026 | Ablation studies (eval_run_ablation) | Channel impact experiment | `Run ablation on retrieval channels` | `eval_run_ablation({ dataset:"retrieval-channels-smoke", channels:["semantic","keyword","graph"], storeResults:true })` -> `eval_reporting_dashboard({ format:"json", limit:10 })` | Per-channel deltas reported | Ablation + dashboard outputs | PASS if run produces metrics/verdict | Validate eval dataset setup |
-| EX-027 | Reporting dashboard (eval_reporting_dashboard) | Eval reporting pass | `Generate the latest dashboard report` | `eval_reporting_dashboard(format:text)` and `eval_reporting_dashboard(format:json)` | Trend/channel/summary data present in supported runtime formats | Dashboard output in text or JSON | PASS if report generated without error in supported format | Retry with `format:json` or `format:text` and inspect dashboard aggregation inputs |
-| EX-028 | 1. Search Pipeline Features (SPECKIT_*) | Flag catalog verification | `List SPECKIT flags active/inert/deprecated` | `memory_search({ query:"SPECKIT flags active inert deprecated", limit:20 })` -> `memory_context({ mode:"deep", prompt:"Classify SPECKIT flags as active, inert, or deprecated", sessionId:"ex028" })` | Accurate flag classification | Search/context outputs | PASS if classifications are internally consistent | Validate against code/config docs |
-| EX-029 | 2. Session and Cache | Session policy audit | `Retrieve dedup/cache policy settings` | `memory_search({ query:"DISABLE_SESSION_DEDUP session cache policy settings", limit:20 })` | Session/cache controls found | Search output | PASS if all required keys surfaced | Expand query terms |
-| EX-030 | 3. MCP Configuration | MCP limits audit | `Find MCP validation settings defaults` | `memory_search({ query:"MCP_MAX_MEMORY_TOKENS validation settings defaults", limit:20 })` | MCP guardrails returned | Search output | PASS if defaults + keys identified | Verify in config files directly |
-| EX-031 | 4. Memory and Storage | Storage precedence check | `Explain DB path precedence env vars` | `memory_search({ query:"SPEC_KIT_DB_DIR SPECKIT_DB_DIR database path precedence", limit:20 })` -> `memory_context({ mode:"focused", prompt:"Explain DB path precedence env vars", sessionId:"ex031" })` | Precedence chain identified | Search/context output | PASS if precedence is unambiguous | Cross-check startup config loader |
-| EX-032 | 5. Embedding and API | Provider selection audit | `Retrieve embedding provider selection rules` | `memory_search({ query:"EMBEDDINGS_PROVIDER auto provider selection rules", limit:20 })` | Provider rules and key precedence shown | Search output | PASS if provider routing is clear | Verify env in runtime |
-| EX-033 | 6. Debug and Telemetry | Observability toggle check | `List telemetry/debug vars and separate opt-in flags from inert flags` | `memory_search({ query:"DEBUG_TRIGGER_MATCHER telemetry opt-in inert flags", limit:20 })` | Debug/telemetry controls identified | Search output | PASS if opt-in vs inert controls are clearly separated | Check feature flag governance section |
-| EX-034 | 7. CI and Build (informational) | Branch metadata source audit | `Find branch env vars used in checkpoint metadata` | `memory_search({ query:"GIT_BRANCH BRANCH_NAME checkpoint metadata", limit:20 })` | Branch source vars surfaced | Search output | PASS if all listed vars are found | Search CI scripts and runtime helpers |
-| EX-035 | Startup runtime compatibility guards | Startup diagnostics verification | `Run the dedicated startup guard validation suite` | `cd .opencode/skill/system-spec-kit/mcp_server` -> `npm test -- --run tests/startup-checks.vitest.ts` | Targeted suite passes; runtime mismatch, marker creation, and SQLite diagnostics coverage are visible in the transcript | Test transcript + suite summary | PASS if `startup-checks.vitest.ts` completes with all tests passing and no failures | Re-run `npm test -- --run tests/startup-checks.vitest.ts -t detectRuntimeMismatch`; inspect `startup-checks.ts` and test expectations if counts or assertions drift |
+## 5. REVIEW PROTOCOL AND RELEASE READINESS
 
-## New Features (`NEW-001..NEW-149`)
+### Inputs Required
 
-Note: Each NEW scenario uses this evidence+verdict baseline unless overridden:
-- Evidence: command transcript + key output snapshot + any DB/log artifact
-- PASS: expected feature behavior observed with no contradictory signal
-- FAIL: missing/contradictory behavior; triage with likely cause + retry + escalation owner
+1. `manual_testing_playbook.md`
+2. Referenced per-feature files under `manual_testing_playbook/NN--category-name/`
+3. Scenario execution evidence (logs, tool outputs, artifacts)
+4. Feature-to-scenario coverage map
+5. Triage notes for all non-pass outcomes
 
-| Feature ID | Feature Name | Scenario + Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| NEW-001 | Graph channel ID fix (G1) | Confirm graph hits are non-zero when edges exist | `Verify Graph channel ID fix (G1) manually with causal-edge data.` | 1) Create linked memories 2) Run graph-capable query 3) Verify graph hits | Graph channel returns >0 hits; channel attribution includes graph source | Command transcript + search output showing graph channel contribution count | PASS: Graph channel contributes >=1 hit when causal edges exist; FAIL: Graph hits = 0 despite valid edges | Verify causal edges exist via `memory_causal_stats()` → Check graph channel ID matches schema → Inspect channel activation flags |
-| NEW-002 | Chunk collapse deduplication (G3) | Confirm dedup in default mode | `Validate chunk collapse deduplication (G3) in default search mode.` | 1) Save multi-chunk overlap 2) `memory_search(includeContent:false)` 3) Verify no duplicates | No duplicate memory IDs in results; collapsed chunks yield unique parents only | Search output with result IDs + dedup count before/after collapse | PASS: Zero duplicate parent IDs in collapsed results; FAIL: Same parent ID appears >1 time in output | Check chunk parentId linkage → Verify dedup runs after collapse stage → Inspect includeContent flag behavior |
-| NEW-003 | Co-activation fan-effect divisor (R17) | Confirm hub dampening | `Verify co-activation fan-effect divisor (R17).` | 1) Create high-degree hub 2) Run repeated queries 3) Compare dominance | Hub node score dampened proportionally to fan-out degree; non-hub scores unaffected | Query output showing hub vs non-hub score comparison across repeated queries | PASS: Hub node contribution decreases as degree increases; no single hub dominates >50% of top-5; FAIL: Hub monopolizes results | Check fan-effect divisor formula → Verify degree count accuracy → Inspect co-activation weight cap |
-| NEW-004 | SHA-256 content-hash deduplication (TM-02) | Confirm identical re-save skips embedding | `Check SHA-256 dedup (TM-02) on re-save.` | 1) Save once 2) Save identical payload 3) Verify embedding skipped | Second save returns skip/no-op status; no new embedding row created; content hash matches | Save output for both calls + DB query showing single embedding row | PASS: Re-save skips embedding and reports duplicate; FAIL: Duplicate embedding created or hash mismatch | Verify SHA-256 hash computation → Check content normalization before hashing → Inspect dedup lookup query |
-| NEW-005 | Evaluation database and schema (R13-S1) | Confirm eval data isolation | `Verify evaluation DB/schema writes.` | 1) Trigger retrieval events 2) Query eval DB tables 3) Confirm isolation | Eval tables created in separate DB/schema; retrieval events logged without affecting main memory DB | Eval DB schema dump + retrieval event rows + main DB integrity check | PASS: Eval data isolated in dedicated tables; main DB unaffected; FAIL: Eval writes pollute main memory tables | Check eval DB path configuration → Verify schema migration ran → Inspect table isolation boundaries |
-| NEW-006 | Core metric computation (R13-S1) | Confirm metric battery outputs | `Validate core metric computation (R13-S1).` | 1) Seed ground truth 2) Run eval metrics 3) Verify metric set | Metric battery returns precision, recall, MRR, NDCG values; all within valid ranges | Eval metric output with ground truth comparison + per-metric values | PASS: All core metrics computed with values in [0,1] range; FAIL: Missing metrics or out-of-range values | Verify ground truth corpus is seeded → Check metric computation functions → Inspect edge cases (empty results, single result) |
-| NEW-007 | Observer effect mitigation (D4) | Confirm non-blocking logging failures | `Check observer effect mitigation (D4).` | 1) Induce eval logging failure 2) Run search 3) Confirm search unaffected | Search returns normal results even when eval logging throws; no latency spike from logging failure | Search output during induced logging failure + timing comparison with/without failure | PASS: Search completes successfully and returns expected results despite logging failure; FAIL: Search fails or blocks on logging error | Verify observer pattern is non-blocking → Check try/catch wrapping on eval logger → Inspect async error handling |
-| NEW-008 | Full-context ceiling evaluation (A2) | Confirm ceiling benchmark run | `Run full-context ceiling evaluation (A2).` | 1) Build title/summary corpus 2) Run ceiling ranking 3) Compare with hybrid/BM25 | Ceiling benchmark produces ranked output; ceiling score >= hybrid and BM25 baselines | Ceiling ranking output + comparison table against hybrid/BM25 scores | PASS: Ceiling evaluation completes with scores >= other baselines; FAIL: Ceiling score lower than hybrid or BM25 | Verify corpus includes title+summary fields → Check ceiling ranking algorithm → Inspect baseline measurement methodology |
-| NEW-009 | Quality proxy formula (B7) | Confirm proxy formula correctness | `Compute and verify quality proxy formula (B7).` | 1) Export logs 2) Compute formula manually 3) Compare stored value | Computed proxy value matches manual formula calculation within tolerance; formula components are all present | Exported log data + manual computation worksheet + stored proxy value comparison | PASS: Stored quality proxy matches manual computation within 0.01 tolerance; FAIL: Deviation > 0.01 or missing formula components | Check formula component extraction from logs → Verify coefficient weights → Inspect stored value write path |
-| NEW-010 | Synthetic ground truth corpus (G-NEW-1, G-NEW-3 phase A) | Confirm corpus coverage and hard negatives | `Audit synthetic ground-truth corpus coverage.` | 1) Open corpus 2) Count intents/tiers 3) Verify hard negatives/non-trigger prompts | Corpus covers all intent categories; hard negatives present; non-trigger prompts included; tier distribution balanced | Corpus audit report with intent counts, hard negative count, and tier histogram | PASS: >=3 intent categories covered, >=5 hard negatives, >=3 non-trigger prompts; FAIL: Missing category or zero hard negatives | Check corpus generation script → Verify intent taxonomy completeness → Inspect hard negative selection criteria |
-| NEW-011 | BM25-only baseline (G-NEW-1) | Confirm baseline reproducibility | `Run BM25-only baseline measurement.` | 1) Disable non-BM25 channels 2) Run corpus 3) Record MRR@5 | BM25-only run produces reproducible MRR@5; no non-BM25 channel contributions in trace | BM25 baseline output with MRR@5 value + channel trace showing BM25-only | PASS: MRR@5 is deterministic across 2 runs and only BM25 channel active; FAIL: Non-BM25 channels contribute or MRR varies | Verify all non-BM25 channels disabled → Check BM25 index health → Inspect channel activation flags |
-| NEW-012 | Agent consumption instrumentation (G-NEW-2) | Confirm wiring with inert runtime | `Validate G-NEW-2 instrumentation behavior.` | 1) Trigger retrieval handlers 2) Inspect logger gate 3) Confirm no-op telemetry | Logger gate is closed (inert); telemetry handlers are wired but produce no output; no runtime errors | Instrumentation trace showing handler wiring + logger gate state + empty telemetry output | PASS: Handlers execute without error and produce no telemetry output (inert mode); FAIL: Telemetry output produced or handler errors | Verify logger gate configuration → Check handler registration → Inspect inert/active mode toggle |
-| NEW-013 | Scoring observability (T010) | Confirm sample logging + fail-safe | `Verify scoring observability (T010).` | 1) Run many searches 2) Inspect sampled rows 3) Force write error and confirm safety | Sampled scoring rows appear in observability log; write error does not crash search; sample rate respected | Observability log rows + forced error output + sample rate verification across N queries | PASS: Sampled rows logged at expected rate and write error produces graceful fallback; FAIL: No sampled rows or search crashes on write error | Check sample rate configuration → Verify write error try/catch → Inspect observability table schema |
-| NEW-014 | Full reporting and ablation study framework (R13-S3) | Confirm ablation+report workflow | `Execute manual ablation run (R13-S3).` | 1) Run ablation channel-off 2) Check snapshots 3) Validate dashboard | Ablation run produces per-channel delta snapshots; dashboard renders with trend data in supported runtime output formats; no channel leaves empty report | Ablation snapshot files + dashboard text or JSON output + per-channel metrics | PASS: Ablation completes with per-channel deltas and dashboard generates valid text or JSON output; FAIL: Missing channel data or dashboard generation error | Verify eval dataset exists → Check ablation channel-off logic → Inspect snapshot storage path → Validate dashboard template |
-| NEW-015 | Shadow scoring and channel attribution (R13-S2) | Confirm shadow deactivation and attribution continuity | `Verify shadow scoring deactivation and attribution continuity.` | 1) Trigger shadow flags 2) Confirm inert behavior 3) Check attribution metadata | Shadow scoring flags are inert (no live ranking impact); attribution metadata still attached to results | Search output with attribution metadata present + shadow flag state confirmation | PASS: Shadow flags produce no ranking change and attribution metadata is intact; FAIL: Shadow mode affects live ranking or attribution missing | Check shadow flag deactivation → Verify attribution metadata pipeline → Inspect flag governance state |
-| NEW-016 | Typed-weighted degree channel (R4) | Confirm bounded typed-degree boost | `Test typed-weighted degree channel (R4).` | 1) Create varied edge types 2) Query 3) Verify caps/fallback | Typed-degree boost bounded within configured cap; fallback activates when edge types missing; varied types produce different scores | Query output with per-edge-type scores + cap verification + fallback behavior trace | PASS: Boost values within [0, cap] range; fallback returns default when no typed edges; FAIL: Boost exceeds cap or fallback fails | Verify edge type taxonomy → Check cap configuration → Inspect fallback default value → Validate degree computation |
-| NEW-017 | Co-activation boost strength increase (A7) | Confirm multiplier impact | `Compare co-activation strength values for A7.` | 1) Baseline run 2) Increase strength 3) Compare contribution | Increased co-activation strength produces measurably higher contribution delta vs baseline | Baseline vs increased strength output comparison + contribution delta calculation | PASS: Contribution delta >0 when strength increased; proportional to multiplier change; FAIL: No measurable difference or inverse effect | Verify strength parameter propagation → Check co-activation formula → Inspect baseline measurement accuracy |
-| NEW-018 | Edge density measurement | Confirm edges-per-node thresholding | `Verify edge density measurement and gate behavior.` | 1) Query edge+node counts 2) Compute ratio 3) Check threshold handling | Edge density ratio computed correctly (edges/nodes); threshold gate activates/deactivates at boundary | Edge+node counts + computed ratio + threshold gate activation state | PASS: Ratio = edges/nodes matches manual calculation; gate state correct at boundary; FAIL: Ratio miscalculated or gate ignores threshold | Verify edge/node count queries → Check threshold configuration → Inspect gate activation logic |
-| NEW-019 | Weight history audit tracking | Confirm edge change logging + rollback | `Validate weight history audit tracking.` | 1) Mutate edge strengths 2) Inspect audit rows 3) Run rollback | Audit rows logged for each edge strength mutation; rollback restores previous weights; audit history is append-only | Audit table rows showing before/after values + rollback verification + row count after rollback | PASS: Each mutation produces audit row with old/new values; rollback restores prior weights; FAIL: Missing audit rows or rollback data loss | Check audit table schema → Verify trigger/hook on edge mutation → Inspect rollback query logic |
-| NEW-020 | Graph momentum scoring (N2a) | Confirm 7-day delta bonus | `Verify graph momentum scoring (N2a).` | 1) Seed snapshots now/7d 2) Query 3) Verify capped bonus | 7-day momentum delta bonus applied and capped; nodes with no history get zero bonus; cap enforced | Momentum scoring output with delta values + cap verification + zero-history node check | PASS: Momentum bonus = capped(current - 7d_ago); zero for no-history nodes; cap enforced; FAIL: Uncapped bonus or non-zero for missing history | Verify snapshot comparison window → Check cap configuration → Inspect delta computation formula |
-| NEW-021 | Causal depth signal (N2b) | Confirm normalized depth scoring | `Test causal depth signal (N2b).` | 1) Build multi-level graph with a shortcut edge or rooted cycle 2) Score depth 3) Verify normalized output | Depth score normalized to [0,1]; deeper chains produce higher normalized values; shortcut edges do not reduce longest-path depth; cycle members share one bounded depth layer | Depth scoring output across multi-level graph + normalization range verification | PASS: All depth scores in [0,1]; deeper nodes score >= shallower nodes on the same chain; shortcut targets still reflect the deeper path; FAIL: Out-of-range values or incorrect depth ordering | Verify normalization formula → Check SCC condensation / longest-path traversal → Inspect graph depth counting |
-| NEW-022 | Community detection (N2c) | Confirm community boost injection | `Validate community detection (N2c).` | 1) Create communities 2) Recompute 3) Verify co-member injection/caps | Community detection assigns cluster IDs; co-member boost injected; boost capped at configured maximum | Community assignment output + co-member boost values + cap verification | PASS: Cluster IDs assigned; co-members receive boost within cap; non-members get zero boost; FAIL: Missing cluster IDs or boost exceeds cap | Verify community detection algorithm → Check boost injection point in pipeline → Inspect cap enforcement |
-| F-10 | Causal neighbor boost and injection | Confirm relation-weighted causal neighbor amplification | `Validate F-10 causal neighbor boost and injection behavior.` | 1) Seed causal graph with supersedes/contradicts/caused edges 2) Run Stage-2 query with causal boost enabled 3) Verify injected rows and relation-weighted boost ordering | Neighbor boosts respect relation multipliers and hop-depth cap; injected results appear without duplicate IDs; combined causal+session boost stays within configured ceiling | Query output showing injected IDs + causalBoost values + relation ordering trace | PASS: `supersedes` paths amplify more than `contradicts`, injections are deduplicated, and boost ceiling is respected; FAIL: multiplier ordering violated, duplicates injected, or ceiling exceeded | Verify relation multiplier table → Check CTE walk score and hop cap → Inspect injection dedup + combined boost clamp |
-| F-11 | Temporal contiguity layer | Confirm pairwise contiguity boost and timeline helpers | `Validate F-11 temporal contiguity behavior.` | 1) Run contiguity scoring on mixed timestamp results 2) Verify window clamping and cumulative cap 3) Validate `getTemporalNeighbors()` and `buildTimeline()` outputs | Pairwise temporal boosts are distance-weighted within clamped window; per-result cumulative boost cap is enforced; timeline/neighbor helpers return ordered rows | Boosted result snapshot + neighbor query output + timeline output | PASS: boosts apply only within window, cumulative cap is enforced, neighbors sorted by `time_delta_seconds`, and timeline sorted by `created_at DESC`; FAIL: out-of-window boosts, cap violations, or ordering regressions | Verify window clamp bounds → Check cumulative cap behavior → Inspect neighbor and timeline ORDER BY clauses |
-| NEW-023 | Score normalization | Confirm batch min-max behavior | `Verify score normalization output ranges.` | 1) Run varied-score query 2) Inspect normalized range 3) Check equal/single cases | Normalized scores in [0,1] range; min-max normalization correct; equal-score and single-result edge cases handled | Normalized output with range verification + edge case test results | PASS: All normalized scores in [0,1]; equal scores produce uniform output; single result = 1.0; FAIL: Out-of-range values or division-by-zero on equal scores | Verify min-max formula → Check edge case guards (single result, all-equal) → Inspect batch processing order |
-| NEW-024 | Cold-start novelty boost (N4) | Confirm novelty removed from hot path | `Confirm N4 novelty hot-path removal.` | 1) Inspect code path 2) Run search 3) Verify telemetry fixed to zero | Novelty boost contribution is zero in telemetry; code path shows novelty removed from hot scoring path | Search telemetry output showing novelty=0 + code path inspection confirming removal | PASS: Novelty contribution fixed to 0 in all search results; no hot-path novelty computation; FAIL: Non-zero novelty in telemetry or hot-path code still active | Verify novelty removal commit → Check telemetry field mapping → Inspect feature flag state for novelty |
-| NEW-025 | Interference scoring (TM-01) | Confirm cluster penalty | `Validate interference scoring (TM-01).` | 1) Save near-duplicates 2) Query 3) Verify penalty impact | Near-duplicate cluster receives penalty; penalty reduces effective score; non-duplicates unaffected | Query output showing penalized vs unpenalized scores + cluster membership verification | PASS: Duplicates penalized with lower effective score; non-duplicates retain original scores; FAIL: No penalty applied or false positive penalties | Verify similarity threshold for clustering → Check penalty formula → Inspect near-duplicate detection algorithm |
-| NEW-026 | Classification-based decay (TM-03) | Confirm class+tier decay matrix | `Verify TM-03 classification-based decay.` | 1) Save tier/class mix 2) Query scoring path 3) Validate multipliers | Decay multipliers differ by classification and tier; matrix values match documented configuration | Scoring path output with per-class/tier decay multipliers + configuration comparison | PASS: Each class+tier combination produces distinct documented multiplier; scores decay accordingly; FAIL: Multipliers missing or do not match configuration matrix | Verify decay matrix configuration → Check classification assignment → Inspect tier resolution logic |
-| NEW-027 | Folder-level relevance scoring (PI-A1) | Confirm folder-first retrieval | `Validate folder-level relevance scoring (PI-A1).` | 1) Create varied folders 2) Run global query 3) Verify folder pre-ranking | Folder pre-ranking scores computed; folder-level results appear before individual memory results in ranking | Query output showing folder-level ranking + individual result ordering within folders | PASS: Folders ranked first; individual results ordered within folder context; global query returns folder-prioritized results; FAIL: Folder ranking missing or individual results ignore folder context | Verify folder scoring algorithm → Check pre-ranking stage insertion point → Inspect folder metadata availability |
-| NEW-028 | Embedding cache (R18) | Confirm cache hit/miss behavior | `Verify embedding cache (R18).` | 1) Embed content/model pair 2) Repeat 3) Confirm hit and metadata update | Cache hit returns instantly without embedding API call; cache miss triggers embedding; metadata timestamps updated on hit | Cache hit/miss output + timing comparison + metadata timestamp verification | PASS: Cache hit skips embedding call with <10ms latency; miss triggers embedding; hit updates lastAccessed timestamp; FAIL: Cache hit still calls embedding API or timestamps not updated | Verify cache key computation (content+model) → Check cache storage backend → Inspect TTL/eviction policy |
-| NEW-029 | Double intent weighting investigation (G2) | Confirm no hybrid double-weight | `Validate G2 guard in active pipeline.` | 1) Run hybrid query 2) Inspect stage trace 3) Confirm stage-2 intent skip | Stage-2 intent weighting skipped for hybrid queries; no double-weight detected in trace; non-hybrid queries apply intent normally | Stage trace output for hybrid vs non-hybrid queries + intent weight comparison | PASS: Hybrid queries skip stage-2 intent weighting; non-hybrid queries apply it; no double-weight in any case; FAIL: Double intent weighting detected in hybrid path | Check hybrid detection logic → Verify stage-2 guard condition → Inspect intent weight application point |
-| NEW-030 | RRF K-value sensitivity analysis (FUT-5) | Confirm K sensitivity measurements | `Run RRF K sensitivity analysis.` | 1) Run K grid 2) Compare metrics 3) Select best K rationale | K-value grid produces per-K metric comparisons; optimal K identified with rationale; sensitivity curve shows diminishing returns | K-grid metric output + sensitivity comparison table + optimal K selection rationale | PASS: Multiple K values tested with per-K metrics; optimal K documented with evidence; FAIL: Single K tested or no comparative analysis | Verify K-grid configuration → Check metric computation per K → Inspect sensitivity analysis methodology |
-| NEW-031 | Negative feedback confidence signal (A4) | Confirm demotion floor+recovery | `Verify negative feedback confidence (A4).` | 1) Submit negatives 2) Query multiplier 3) Verify floor/half-life recovery | Negative feedback reduces confidence multiplier; floor enforced (never reaches 0); half-life recovery observed over time | Confidence multiplier values after negatives + floor verification + recovery curve data | PASS: Multiplier decreases with negatives, never below floor; recovery toward 1.0 over half-life; FAIL: Multiplier reaches 0 or no recovery observed | Verify demotion formula → Check floor configuration → Inspect half-life recovery timer |
-| NEW-032 | Auto-promotion on validation (T002a) | Confirm promotion thresholds/throttle | `Validate auto-promotion on validation (T002a).` | 1) Submit positive validations 2) Check tier changes 3) Verify throttle/audit | Positive validations promote tier at configured threshold; throttle prevents rapid re-promotion; audit trail logged | Tier change log + throttle enforcement evidence + promotion audit trail | PASS: Promotion occurs at threshold count; throttle blocks re-promotion within window; audit row created; FAIL: Promotion at wrong threshold or throttle bypassed | Verify promotion threshold configuration → Check throttle window duration → Inspect audit logging |
-| NEW-033 | Query complexity router (R15) | Confirm query-class routing | `Verify query complexity router (R15).` | 1) Run simple/moderate/complex 2) Inspect selected channels 3) Disable flag fallback | Simple queries route to fewer channels; complex queries activate all channels; disabled flag falls back to default routing | Channel selection trace for simple/moderate/complex queries + flag-disabled fallback behavior | PASS: Channel count increases with complexity class; disabled flag uses default routing; FAIL: All queries use same channels or flag-disabled produces error | Verify complexity classification logic → Check channel mapping per class → Inspect feature flag fallback behavior |
-| NEW-034 | Relative score fusion in shadow mode (R14/N1) | Confirm RSF stays off the live ranking path | `Check RSF shadow behavior post-cleanup.` | 1) Inspect branch conditions 2) Run queries 3) Confirm RRF live ranking | RRF remains the live fusion method; RSF does not affect returned rankings; any RSF comparison remains evaluation-only rather than a required runtime trace field | Code-path evidence plus query output confirming stable RRF-ranked results | PASS: Live ranking uses RRF and no runtime RSF branch affects returned results; FAIL: RSF changes live ranking or a live RSF branch is still wired into returned results | Check RSF branch conditions → Verify live fusion method selection → Inspect evaluation-only logging path |
-| NEW-035 | Channel min-representation (R2) | Confirm top-k channel diversity rule | `Validate channel min-representation (R2).` | 1) Run dominance query 2) Inspect pre/post representation 3) Verify quality floor | Each channel represented in top-k results even when one channel dominates; quality floor prevents low-relevance injection | Pre/post representation counts per channel + quality floor threshold verification | PASS: All active channels have >=1 representative in top-k; quality floor prevents sub-threshold entries; FAIL: Channel missing from top-k or sub-threshold results injected | Verify min-representation algorithm → Check quality floor threshold → Inspect channel priority ordering |
-| NEW-036 | Confidence-based result truncation (R15-ext) | Confirm relevance-cliff cutoff | `Verify confidence-based truncation (R15-ext).` | 1) Run long-tail query 2) Inspect cutoff math 3) Verify min-result guarantee | Results truncated at confidence cliff; minimum result count guaranteed; cutoff threshold documented in trace | Truncated output with cutoff point + min-result count verification + cliff threshold in trace | PASS: Results cut at confidence cliff; >=min-count results always returned; threshold visible in trace; FAIL: No truncation or fewer than min-count results | Verify cliff detection algorithm → Check min-result guarantee → Inspect confidence score distribution |
-| NEW-037 | Dynamic token budget allocation (FUT-7) | Confirm complexity-tier budgets | `Verify dynamic token budgets (FUT-7).` | 1) Run classed queries 2) Inspect budgets 3) Disable flag fallback | Token budget scales with query complexity tier; simple queries get smaller budgets; disabled flag falls back to default budget | Budget allocation per complexity tier + default fallback budget verification | PASS: Budget proportional to complexity tier; disabled flag uses default; total budget within system limits; FAIL: All tiers get same budget or flag-disabled produces error | Verify budget allocation formula → Check complexity tier detection → Inspect system budget limits |
-| NEW-038 | Query expansion (R12) | Confirm parallel expansion + dedup | `Validate query expansion (R12).` | 1) Complex query expansion 2) Parallel baseline+expanded 3) dedup + simple-query skip | Complex queries produce expanded variants; expanded results deduplicated against baseline; simple queries skip expansion | Expanded query variants + dedup count + simple-query skip confirmation | PASS: Complex query generates >=2 expansion variants; results deduplicated; simple queries bypass expansion; FAIL: No expansion or duplicate results in output | Verify expansion trigger threshold → Check dedup logic → Inspect simple-query detection |
-| NEW-039 | Verify-fix-verify memory quality loop (PI-A5) | Confirm retry then reject path | `Verify PI-A5 quality loop behavior.` | 1) Submit low-quality memory 2) Observe retries 3) Confirm final reject | Low-quality memory triggers retry cycle; final reject after max retries; rejection reason logged | Retry attempt log + final reject output + rejection reason message | PASS: Quality loop retries up to max attempts then rejects with reason; FAIL: No retry attempted or infinite retry loop | Verify quality check criteria → Check max retry configuration → Inspect rejection reason generation |
-| NEW-040 | Signal vocabulary expansion (TM-08) | Confirm signal category detection | `Validate signal vocabulary expansion (TM-08).` | 1) Use correction/preference prompts 2) Trigger matching 3) Verify categories | Signal categories (correction, preference, reinforcement) detected from prompt analysis; trigger matching reflects expanded vocabulary | Trigger match output showing detected signal categories + prompt-to-category mapping | PASS: >=3 signal categories correctly classified from varied prompts; FAIL: Categories missing or misclassified | Verify signal vocabulary dictionary → Check category detection regex/rules → Inspect trigger matching integration |
-| NEW-041 | Pre-flight token budget validation (PI-A3) | Confirm save-time preflight warn/fail behavior | `Verify pre-flight token budget validation (PI-A3).` | 1) Prepare memory files near and over the save-time token limit 2) Run `memory_save({filePath:"<sandbox-file>", dryRun:true})` or the equivalent save preflight path 3) Verify warning/failure payloads from `preflight.ts` | Token estimate is computed before embedding/database writes; near-limit input emits `PF021` warning; over-limit input emits `PF020` failure; behavior follows `MCP_CHARS_PER_TOKEN`, `MCP_MAX_MEMORY_TOKENS`, and `MCP_TOKEN_WARNING_THRESHOLD` | Preflight response payloads showing estimated tokens, warning/failure codes, and env-sensitive thresholds | PASS: Save-time preflight returns the expected warning/failure result without indexing side effects; FAIL: Retrieval-time truncation is required or preflight thresholds/codes drift from runtime behavior | Verify `preflight.ts` token counting math → Check `MCP_CHARS_PER_TOKEN`, `MCP_MAX_MEMORY_TOKENS`, and `MCP_TOKEN_WARNING_THRESHOLD` wiring → Inspect dry-run/save preflight behavior |
-| NEW-042 | Spec folder description discovery (PI-B3) | Confirm per-folder + aggregated routing | `Validate PI-B3 folder description discovery.` | 1) Create spec folder via create.sh → verify description.json exists 2) Edit spec.md → verify isPerFolderDescriptionStale detects change 3) Run generateFolderDescriptions → verify per-folder files preferred over spec.md 4) Mixed mode: some folders with/without description.json → verify aggregation 5) Corrupt description.json with invalid JSON and schema-invalid field types → run generateFolderDescriptions() and verify spec.md fallback plus repaired description.json 6) Verify missing description.json falls back to spec.md without forcing a write 7) Attempt generation against an out-of-base or prefix-bypass path → verify rejection and no file written 8) Use spec.md with large YAML frontmatter and CRLF-heavy line endings → verify extracted description comes from post-frontmatter content 9) Run memory_context query → verify short-circuit folder routing | description.json exists after create.sh; stale detection triggers on spec.md edit; per-folder files preferred over spec.md fallback; mixed-mode aggregation works; invalid JSON or schema-invalid description.json files are ignored, spec.md fallback is used, and existing files are repaired in place; missing description.json falls back cleanly without implicit backfill; out-of-base or prefix-bypass paths are rejected by realpath containment checks; YAML frontmatter is stripped before description extraction, including CRLF-heavy frontmatter cases; memory_context uses folder routing; regeneration leaves valid JSON on disk with no leftover temp files | description.json content + stale detection output + folder routing trace in memory_context + recovery evidence for corrupt/schema-invalid description.json files + missing-file fallback evidence + rejection evidence for traversal attempts + proof of valid regenerated JSON with no leftover temp files | PASS: description.json created, stale detection works, per-folder preferred, mixed aggregation correct, no crash on corrupt description.json, invalid metadata repaired on regeneration, missing files fall back without implicit writes, traversal attempts rejected, frontmatter stripping works for CRLF-heavy files, folder routing active, and regenerated files are valid JSON with no leftover temp files; FAIL: Any of the scenario checks fails | Verify create.sh generates description.json → Check stale detection mtime comparison → Inspect generateFolderDescriptions preference logic and repair path → Confirm missing-file fallback does not backfill unexpectedly → Verify realpath containment rejects traversal/prefix-bypass paths → Confirm frontmatter stripping happens before description extraction → Verify memory_context folder routing |
-| NEW-043 | Pre-storage quality gate (TM-04) | Confirm 3-layer gate behavior | `Verify pre-storage quality gate (TM-04).` | 1) Submit each failure class 2) observe warn/reject behavior 3) check decision logs | 3-layer gate: structural check, semantic check, duplication check; each layer can warn or reject; decision log captures all gate evaluations | Gate evaluation output per layer + decision log entries + warn vs reject behavior per failure class | PASS: Each failure class triggers correct gate layer with appropriate warn/reject; decision log complete; FAIL: Gate layer skipped or wrong severity for failure class | Verify gate layer ordering → Check per-layer threshold configuration → Inspect decision log write path |
-| NEW-044 | Reconsolidation-on-save (TM-06) | Confirm merge/deprecate thresholds | `Validate reconsolidation-on-save (TM-06).` | 1) Save near neighbors 2) verify >=0.88 merge 3) verify 0.75-0.88 supersede | Similarity >=0.88 triggers merge; 0.75-0.88 triggers supersede/deprecate; below 0.75 saves independently; thresholds documented in output | Save output with similarity scores + merge/supersede/independent action taken | PASS: Merge at >=0.88, supersede at 0.75-0.88, independent below 0.75; FAIL: Wrong action for similarity range or threshold miscalibrated | Verify similarity computation → Check threshold configuration → Inspect merge vs supersede logic |
-| NEW-045 | Smarter memory content generation (S1) | Confirm quality/structure output | `Assess smarter memory content generation (S1).` | 1) Generate from mixed content 2) inspect structure retention 3) verify concise coherence | Generated content retains structural elements (headings, lists, code blocks); output is concise; coherence maintained across sections | Generated memory content + structure analysis + coherence assessment | PASS: Structure preserved, output concise (<=2x input density), sections coherent; FAIL: Structure lost, verbose output, or incoherent sections | Verify content generation template → Check structure preservation rules → Inspect conciseness constraints |
-| NEW-046 | Anchor-aware chunk thinning (R7) | Confirm anchor-priority thinning | `Validate anchor-aware chunk thinning (R7).` | 1) Index long doc with anchors/filler 2) run thinning 3) verify non-empty retained set | Anchor chunks retained; filler chunks thinned; retained set is non-empty; anchor priority respected in thinning order | Thinning output showing retained vs removed chunks + anchor identification | PASS: All anchor chunks retained; filler removed; retained set non-empty; FAIL: Anchor chunks removed or empty retained set | Verify anchor detection logic → Check thinning priority ordering → Inspect minimum retained set size |
-| NEW-047 | Encoding-intent capture at index time (R16) | Confirm persisted intent labels | `Verify encoding-intent capture (R16).` | 1) Save doc/code/structured examples 2) inspect metadata 3) verify read-only intent field | Intent labels (doc/code/structured) persisted in metadata; labels read-only after indexing; varied content types produce correct labels | Metadata output showing intent labels per content type + read-only verification | PASS: Correct intent label assigned per content type; labels immutable after save; FAIL: Wrong label or label modified post-save | Verify intent classification rules → Check metadata persistence → Inspect read-only enforcement |
-| NEW-048 | Auto entity extraction (R10) | Confirm entity pipeline persistence | `Validate auto entity extraction (R10).` | 1) Save entity-rich content 2) inspect entity tables 3) verify normalization/denylist | Entities extracted and persisted in entity tables; normalization applied (case, aliases); denylist entities excluded | Entity table contents + normalization examples + denylist exclusion verification | PASS: Entities extracted, normalized, persisted; denylist items absent; FAIL: Missing entities, denormalized values, or denylist items present | Verify entity extraction pipeline → Check normalization rules → Inspect denylist configuration |
-| NEW-049 | 4-stage pipeline refactor (R6) | Confirm stage flow and invariant | `Trace one query through all 4 stages.` | 1) Run verbose stage metadata 2) inspect stage transitions 3) confirm stage-4 immutability | Query traverses all 4 stages in order; stage transitions visible in verbose metadata; stage-4 scores immutable after final stage | Verbose stage metadata trace showing 4-stage flow + stage-4 immutability verification | PASS: All 4 stages execute in sequence; stage-4 scores unchanged after completion; FAIL: Stage skipped or stage-4 scores mutated | Verify stage ordering enforcement → Check verbose metadata emission → Inspect stage-4 immutability guard |
-| NEW-050 | MPAB chunk-to-memory aggregation (R1) | Confirm MPAB formula | `Verify MPAB chunk aggregation (R1).` | 1) Create parent+chunks 2) run stage-3 aggregation 3) compare manual formula | MPAB aggregation formula produces correct parent score from child chunks; manual formula matches computed value | Stage-3 aggregation output + manual MPAB formula calculation + comparison | PASS: Computed MPAB score matches manual calculation within 0.001 tolerance; FAIL: Score deviation >0.001 or missing chunk contributions | Verify MPAB formula implementation → Check child chunk linkage → Inspect aggregation stage-3 entry point |
-| NEW-051 | Chunk ordering preservation (B2) | Confirm ordered reassembly | `Validate chunk ordering preservation (B2).` | 1) Save ordered marker chunks 2) collapse 3) verify original order preserved | Collapsed chunks reassembled in original document order; marker sequence preserved; no reordering artifacts | Collapsed output with marker sequence verification + original order comparison | PASS: Marker sequence in collapsed output matches original save order; FAIL: Markers out of order or missing | Verify chunk ordering index → Check collapse algorithm → Inspect ordering preservation across save/retrieve cycle |
-| NEW-052 | Template anchor optimization (S2) | Confirm anchor metadata enrichment | `Verify template anchor optimization (S2).` | 1) Save anchored memory 2) query pipeline metadata 3) verify no score mutation | Anchor metadata enriched in pipeline; anchor tags visible in query metadata; no score mutation from anchor presence | Pipeline metadata showing anchor enrichment + score comparison with/without anchors | PASS: Anchor metadata present; scores identical with/without anchor enrichment; FAIL: Anchor metadata missing or score mutation detected | Verify anchor metadata injection point → Check score isolation → Inspect metadata enrichment pipeline |
-| NEW-053 | Validation signals as retrieval metadata (S3) | Confirm bounded multiplier | `Validate S3 retrieval metadata weighting.` | 1) Prepare docs with varied validations 2) run stage-2 3) verify 0.8-1.2 bounds | Validation signal multiplier bounded to [0.8, 1.2]; highly validated docs score higher; zero-validation docs use 1.0 multiplier | Stage-2 output with multiplier values + bounds verification + zero-validation behavior | PASS: All multipliers in [0.8, 1.2]; positive validations increase multiplier; zero validations = 1.0; FAIL: Multiplier out of bounds or zero-validation not neutral | Verify multiplier formula → Check bounds clamping → Inspect validation count resolution |
-| NEW-054 | Learned relevance feedback (R11) | Confirm learned trigger safeguards | `Verify learned relevance feedback (R11).` | 1) submit helpful validation/queryId 2) inspect learned triggers 3) verify safeguards | Learned triggers added from helpful validations; safeguards prevent trigger flooding; queryId required for trigger learning | Learned trigger list + safeguard enforcement evidence + queryId validation | PASS: Triggers learned from helpful validations with queryId; safeguards cap total learned triggers; FAIL: Triggers learned without queryId or safeguard limits exceeded | Verify trigger learning pipeline → Check safeguard limits → Inspect queryId validation |
-| NEW-120 | Unified graph rollback and explainability (Phase 3) | Confirm graph kill switch removes graph-side effects while traces still explain enabled runs | `Validate Phase 3 graph rollback and explainability.` | 1) Run `memory_search({ query:"graph rollout check", includeTrace:true })` with graph rollout enabled 2) Verify trace contains `graphContribution` metadata and deterministic ordering across repeat runs 3) Set `SPECKIT_GRAPH_UNIFIED=false` 4) Repeat query 5) Verify graph contribution counters drop to zero and ordering stays stable | When enabled, trace includes graph contribution summary and repeated identical inputs return identical order; when disabled, graph-side effects are absent and baseline ordering remains deterministic | Search output + trace payloads for enabled/disabled runs + repeated query ordering comparison | PASS: Enabled trace shows graph contributions, disabled trace shows kill-switch baseline parity, repeated runs preserve exact ordering; FAIL: Graph effects remain after disable or repeated runs reorder ties | Verify `SPECKIT_GRAPH_UNIFIED` propagation into Stage 2 → Inspect `graphContribution` trace metadata → Re-run identical query to confirm tie-break stability |
-| NEW-121 | Adaptive shadow proposal and rollback (Phase 4) | Confirm adaptive scoring runs in shadow mode only, captures bounded proposals, and can be disabled cleanly | `Validate Phase 4 adaptive shadow proposal flow.` | 1) Set `SPECKIT_MEMORY_ADAPTIVE_RANKING=true` and leave `SPECKIT_MEMORY_ADAPTIVE_MODE` unset 2) Trigger access/validation events for one memory 3) Run `memory_search({ query:"adaptive shadow check", includeTrace:true })` 4) Verify response includes `adaptiveShadow` proposal data while production ordering remains the live result order 5) Disable the flag and repeat | Adaptive proposal is present in shadow mode, proposal deltas are bounded, production ordering is unchanged by the shadow run, and disabling the flag removes adaptive proposal output | Search output with `adaptiveShadow` payload + before/after flag comparison + signal capture evidence from validation/access paths | PASS: Shadow proposal emitted without mutating live order; disable flag removes proposal cleanly; FAIL: Live order changes under shadow mode or proposal persists after disable | Verify adaptive signals were recorded from access/validation → Inspect bounded delta cap → Confirm disable path clears proposal output without schema rollback |
-| NEW-122 | Governed ingest and scope isolation (Phase 5) | Confirm governed saves require provenance and scope markers and scoped retrieval blocks cross-actor leakage | `Validate Phase 5 governed ingest and retrieval isolation.` | 1) Attempt `memory_save()` with `tenantId/sessionId` but missing provenance fields and verify rejection 2) Save with full `{tenantId,userId|agentId,sessionId,provenanceSource,provenanceActor}` metadata 3) Query with matching scope and verify hit appears 4) Query with mismatched user/agent or tenant and verify hit is filtered out 5) Review `governance_audit` rows | Missing provenance rejects governed ingest; successful governed ingest persists scope metadata; mismatched scope cannot retrieve the memory; allow/deny decisions are written to `governance_audit` | Save/search outputs + DB query of scoped columns + audit rows showing allow/deny decisions | PASS: Missing provenance rejected, valid governed save succeeds, cross-scope retrieval returns no hit, and audit rows exist; FAIL: Ungoverned save slips through or cross-scope retrieval leaks data | Verify `tenant_id/user_id/agent_id/session_id` persistence → Inspect Stage 1 scope filter path → Confirm audit rows for both allow and deny cases |
-| NEW-123 | Shared-space deny-by-default rollout (Phase 6) | Confirm shared-memory spaces require explicit membership and respect rollout/kill-switch controls | `Validate Phase 6 shared-memory rollout controls.` | 1) Create space with `shared_space_upsert({ spaceId, tenantId, name, rolloutEnabled:true })` 2) Call `shared_memory_status()` for a non-member and verify no accessible spaces 3) Attempt shared-space save/search as a non-member and verify rejection/filtering 4) Grant membership with `shared_space_membership_set()` 5) Verify shared access succeeds 6) Flip `killSwitch:true` and verify access is blocked again | Non-members are denied by default; explicit membership grants access; kill switch blocks access immediately even for existing members | Tool outputs for space creation, membership update, status checks, and shared save/search attempts across all three states | PASS: Non-member denied, member allowed, kill switch blocks again; FAIL: Shared access works without membership or kill switch does not stop access | Verify membership rows in `shared_space_members` → Inspect rollout_enabled and kill_switch flags on `shared_spaces` → Confirm shared-space access path reuses governance checks |
-| NEW-148 | Shared-memory disabled-by-default and first-run setup | Confirm shared memory is off by default, enable flow works, persistence survives restart, env var overrides DB, and enable is idempotent | `Validate shared-memory default-off enablement and first-run setup.` | 1) Start MCP server without env var → call `shared_memory_status()` → verify `enabled: false` 2) Call `shared_memory_enable()` → verify `enabled: true, alreadyEnabled: false, readmeCreated: true` 3) Call `shared_memory_enable()` again → verify `alreadyEnabled: true` (idempotent) 4) Verify `shared-spaces/README.md` exists on disk 5) Restart MCP server (no env var) → call `shared_memory_status()` → verify `enabled: true` (DB persistence) 6) Set `SPECKIT_MEMORY_SHARED_MEMORY=true` env var → call `shared_memory_status()` without DB → verify `enabled: true` (env override) 7) Run `/memory:shared` with feature disabled → verify first-run setup prompt appears | Default-off: status returns disabled without env var or DB config; enable persists to DB config table; enable is idempotent; README created in shared-spaces/; DB persistence survives restart; env var override takes priority over DB state; /memory:shared command shows setup prompt when disabled | Tool outputs for status (disabled state), enable (first run + idempotent), status (enabled state after restart), env override verification, README existence check, command setup prompt | PASS: Default off, enable persists, idempotent, README created, restart persistence, env override works, command gate triggers; FAIL: Feature enabled without setup, enable not idempotent, README missing, persistence lost on restart, env override ignored, or command gate skipped | Verify `config` table has `shared_memory_enabled=true` row → Check `isSharedMemoryEnabled()` two-tier resolution → Inspect `handleSharedMemoryEnable()` idempotency check → Verify `createSharedSpacesReadme()` skip-if-exists logic → Confirm `/memory:shared` Section 0 enablement gate |
-| NEW-055 | Dual-scope memory auto-surface (TM-05) | Confirm auto-surface hooks | `Validate dual-scope auto-surface (TM-05).` | 1) invoke non-memory-aware tool path 2) trigger compaction 3) verify surfaced memories | Non-memory-aware tool path triggers auto-surface hook; compaction event surfaces relevant memories; surfaced memories match current context | Auto-surface hook trace + surfaced memory list + context relevance assessment | PASS: Hook triggers on non-memory tool path; compaction surfaces context-relevant memories; FAIL: Hook does not fire or surfaced memories irrelevant | Verify auto-surface hook registration → Check compaction trigger logic → Inspect context matching for surfaced memories |
-| NEW-056 | Constitutional memory as expert knowledge injection (PI-A4) | Confirm directive enrichment | `Verify constitutional memory directive injection (PI-A4).` | 1) save constitutional directive 2) run retrieval 3) inspect directive metadata | Directive metadata appears in retrieval results; constitutional tier classification applied; enrichment fields populated | Save output + retrieval output showing directive metadata + tier classification evidence | PASS if constitutional directives are injected into retrieval results with correct metadata and tier | Verify constitutional/ directory contains valid directives; check tier classification logic; inspect enrichment pipeline for directive handling |
-| NEW-057 | Spec folder hierarchy as retrieval structure (S4) | Confirm hierarchy-aware retrieval | `Validate spec-folder hierarchy retrieval (S4).` | 1) create nested hierarchy 2) query 3) verify self/parent/sibling scoring | Self-folder results ranked highest; parent and sibling folders contribute scored results; hierarchy depth reflected in ranking | Query output showing hierarchy-aware ranking + folder path evidence in results | PASS if retrieval respects folder hierarchy with self > parent > sibling ordering | Verify nested hierarchy exists; check hierarchy scoring weights; inspect folder-path resolution in retrieval pipeline |
-| NEW-058 | Lightweight consolidation (N3-lite) | Confirm maintenance cycle behavior | `Run lightweight consolidation cycle (N3-lite).` | 1) trigger cycle 2) inspect contradiction/hebbian/staleness outputs 3) verify logs | Consolidation cycle completes; contradiction detection, hebbian strengthening, and staleness decay all produce output; no runtime errors in logs | Consolidation cycle output + log entries for each sub-step (contradiction/hebbian/staleness) | PASS if all three consolidation sub-processes execute and produce expected outputs without errors | Check consolidation trigger mechanism; inspect individual sub-process logs; verify database state before and after cycle |
-| NEW-059 | Memory summary search channel (R8) | Confirm scale-gated summary channel | `Verify memory summary search channel (R8).` | 1) check corpus size threshold 2) run stage-1 3) verify channel activation rules | Summary channel activates only above corpus size threshold; channel contributes to fusion when active; channel is inert below threshold | Search output showing channel activation status + corpus size count + fusion contribution evidence | PASS if summary channel activates above threshold and remains inert below it | Verify corpus size counting logic; check threshold configuration; inspect channel activation gate in stage-1 pipeline |
-| NEW-060 | Cross-document entity linking (S5) | Confirm guarded supports-edge linking | `Validate cross-document entity linking (S5).` | 1) ensure shared entities across docs 2) run linker 3) verify density guards | Supports-edges created between documents sharing entities; density guard prevents excessive edges; entity normalization applied | Linker output showing created edges + density guard metrics + entity normalization evidence | PASS if supports-edges are created for shared entities and density guards cap edge count appropriately | Verify shared entities exist across documents; check density guard thresholds; inspect entity normalization pipeline |
-| NEW-061 | Tree thinning for spec folder consolidation (PI-B1) | Confirm small-file merge thinning | `Validate tree thinning behavior (PI-B1).` | 1) prepare mixed-size tree 2) run thinning path 3) verify merged output/tokens saved | Small files merged into consolidated output; token count reduced; large files left untouched; merge preserves content integrity | Thinning output showing merged files + before/after token counts + file list comparison | PASS if small files are merged, token savings are positive, and content integrity is preserved | Verify file size thresholds; check merge logic for content preservation; inspect token counting accuracy |
-| NEW-062 | Progressive validation for spec documents (PI-B2) | Confirm level 1-4 behavior | `Run progressive validation (PI-B2).` | 1) run level1..4 2) inspect fixes/diffs 3) verify exit/report behavior | Each validation level produces appropriate checks; level progression increases strictness; exit codes reflect severity; auto-fix diffs applied at permitted levels | Validation output per level + exit codes + applied fix diffs | PASS if levels 1-4 produce progressively stricter validation and exit codes match severity | Verify validation level definitions; check exit code mapping; inspect auto-fix application logic |
-| NEW-063 | Feature flag governance | Confirm governance policy conformance | `Audit feature flag governance conformance.` | 1) enumerate flags 2) verify age/limits/review cadence 3) record compliance gaps | All flags enumerated with age and review cadence; compliance gaps identified; no undocumented flags found | Flag inventory + compliance report + gap list | PASS if all flags have documented governance metadata and compliance gaps are identified | Verify flag enumeration covers all source files; check governance policy definitions; inspect review cadence tracking |
-| NEW-064 | Feature flag sunset audit | Confirm sunset dispositions | `Verify feature flag sunset audit outcomes.` | 1) compare documented disposition vs code 2) verify deprecated/no-op states 3) record deltas | Documented dispositions match code state; deprecated flags are no-ops; deltas between docs and code identified | Disposition comparison report + deprecated flag verification + delta list | PASS if all sunset dispositions match runtime behavior and deprecated flags have no side effects | Verify disposition documentation is current; check deprecated flag code paths; inspect no-op enforcement |
-| NEW-065 | Database and schema safety | Confirm Sprint 8 DB safety bundle | `Validate database and schema safety bundle.` | 1) run affected mutation paths 2) inspect SQL outcomes 3) confirm no partial corruption | Mutations complete atomically; no partial SQL corruption; schema constraints enforced; rollback on failure | Mutation output + SQL inspection results + schema constraint verification | PASS if all mutation paths complete atomically with no partial corruption and schema constraints hold | Inspect transaction wrappers; verify schema migration state; check for incomplete writes in DB |
-| NEW-066 | Scoring and ranking corrections | Confirm Sprint 8 scoring fixes | `Validate scoring and ranking corrections bundle.` | 1) run targeted queries 2) inspect score/rank outputs 3) verify corrected behavior | Score values fall within expected ranges; ranking order matches relevance; no score inversions or NaN values | Query output with score/rank values + before/after comparison where applicable | PASS if scoring corrections produce expected rank ordering and no anomalous score values | Inspect scoring formula changes; verify normalization bounds; check for edge-case inputs that produce NaN |
-| NEW-067 | Search pipeline safety | Confirm Sprint 8 pipeline safety fixes | `Validate search pipeline safety bundle.` | 1) run summary/lexical heavy queries 2) inspect filters/tokenization 3) verify safety outcomes | Pipeline handles heavy queries without crash; filters apply correctly; tokenization produces valid tokens; no unguarded exceptions | Query output for heavy/edge-case inputs + filter inspection + tokenization output | PASS if pipeline safely handles summary/lexical heavy queries with correct filtering and tokenization | Inspect error handling in pipeline stages; verify filter boundary conditions; check tokenizer for malformed input handling |
-| NEW-068 | Guards and edge cases | Confirm edge-case guard fixes | `Validate guards and edge-cases bundle.` | 1) trigger known edge cases 2) verify no double-count/wrong fallback 3) capture outcomes | No double-counting in aggregation; fallback paths trigger correctly; guard conditions prevent invalid state | Edge-case trigger output + aggregation verification + fallback path evidence | PASS if all known edge cases are handled without double-counting or incorrect fallback behavior | Identify specific edge cases from Sprint 8 changelog; verify guard condition logic; check aggregation dedup |
-| NEW-069 | Entity normalization consolidation | Confirm shared normalization path | `Validate entity normalization consolidation.` | 1) feed unicode entities 2) compare extractor/linker outputs 3) verify parity | Extractor and linker produce identical normalized forms for same input; unicode entities handled consistently; no normalization divergence | Extractor output + linker output + side-by-side comparison showing parity | PASS if extractor and linker produce identical normalized entities for all test inputs including unicode | Verify shared normalization function is used by both paths; check unicode handling; inspect normalization rules for edge cases |
-| NEW-070 | Dead code removal | Confirm dead path elimination | `Audit dead code removal outcomes.` | 1) search removed symbols 2) run representative flows 3) confirm no runtime references | Removed symbols not found in codebase; representative flows execute without missing-reference errors; no dead imports remain | Symbol search output (empty results) + flow execution transcripts + import audit | PASS if removed symbols have zero references and representative flows execute cleanly | Verify symbol removal was complete; check for dynamic references (string-based imports); run full test suite for regression |
-| NEW-071 | Performance improvements | Confirm key perf remediations active | `Verify performance improvements (Sprint 8).` | 1) inspect optimized code paths 2) run heavy queries 3) capture timing notes | Optimized code paths are active (not bypassed); heavy queries complete within acceptable time; no performance regressions | Code path inspection evidence + timing measurements for heavy queries | PASS if optimized paths are active and heavy query timing shows no regressions compared to baseline | Profile heavy query execution; check for bypassed optimizations; compare timing with pre-optimization baseline |
-| NEW-072 | Test quality improvements | Confirm test quality remediations | `Audit test quality improvements.` | 1) inspect changed tests 2) verify teardown/assertion patterns 3) record reliability signals | Tests use proper teardown; assertions are specific (not generic truthy checks); no flaky timing-dependent patterns; test isolation maintained | Test inspection evidence + teardown/assertion pattern samples + reliability signal notes | PASS if changed tests follow quality patterns (proper teardown, specific assertions, no flaky timing) | Inspect specific test changes; verify teardown completeness; check for residual flaky patterns |
-| NEW-073 | Quality gate timer persistence | Confirm restart persistence | `Verify quality gate timer persistence.` | 1) set activation timestamp 2) restart service 3) verify persisted timestamp | Activation timestamp survives service restart; quality gate respects persisted timer; no timer reset on restart | Pre-restart timestamp + post-restart timestamp comparison + quality gate status | PASS if activation timestamp persists across restart and quality gate honors the original timer | Check persistence storage mechanism; verify timer read-on-startup logic; inspect for race conditions during restart |
-| NEW-074 | Stage 3 effectiveScore fallback chain | Confirm fallback order correctness | `Validate Stage 3 effectiveScore fallback chain.` | 1) craft rows missing score fields 2) run stage 3 3) verify fallback order | Fallback chain follows defined priority order; missing score fields trigger next fallback; final fallback produces valid score | Stage 3 output with score field trace showing fallback path taken for each test row | PASS if fallback chain follows correct priority order and produces valid scores for all missing-field combinations | Inspect resolveEffectiveScore implementation; verify fallback priority constants; test all combinations of missing fields |
-| NEW-075 | Canonical ID dedup hardening | Confirm mixed-format ID dedup | `Verify canonical ID dedup hardening.` | 1) produce mixed IDs 2) run dedup 3) confirm single canonical output | Mixed-format IDs (numeric, string, prefixed) resolve to single canonical form; dedup produces exactly one result per logical entity | Dedup input (mixed IDs) + dedup output (canonical IDs) + entity count comparison | PASS if all mixed-format IDs for the same entity resolve to one canonical ID with no duplicates | Inspect canonical ID resolution logic; check format normalization rules; verify dedup handles all known ID formats |
-| NEW-076 | Activation window persistence | Confirm warn-only window persistence | `Verify activation window persistence.` | 1) initialize window timestamp 2) restart 3) confirm no reset | Activation window timestamp persists across restart; warn-only mode respects persisted window; no timestamp reset on service restart | Pre-restart window state + post-restart window state comparison + warn-only behavior evidence | PASS if activation window timestamp survives restart and warn-only behavior is maintained | Check persistence mechanism for activation window; verify read-on-startup logic; inspect for unintentional reset paths |
-| NEW-077 | Tier-2 fallback channel forcing | Confirm force-all-channels in tier-2 | `Validate tier-2 fallback channel forcing.` | 1) trigger tier-2 fallback 2) inspect options 3) confirm all channels forced | Tier-2 fallback activates all search channels; channel options show forceAllChannels=true; results include contributions from all channels | Tier-2 trigger evidence + channel options snapshot + per-channel contribution in results | PASS if tier-2 fallback forces all channels active and results show multi-channel contribution | Inspect tier-2 trigger conditions; verify forceAllChannels flag propagation; check channel activation logic |
-| NEW-078 | Legacy V1 pipeline removal | Confirm V2-only runtime | `Verify legacy V1 removal.` | 1) search removed symbols 2) run queries 3) confirm V2-only execution | V1 pipeline symbols absent from codebase; all queries route through V2 pipeline; no V1 fallback paths remain | Symbol search output (no V1 references) + query execution trace showing V2 pipeline | PASS if zero V1 pipeline references exist and all queries execute via V2 pipeline exclusively | Search for V1 symbols across all files; check for conditional V1/V2 routing; verify V2 pipeline handles all former V1 query types |
-| NEW-079 | Scoring and fusion corrections | Confirm phase-017 correction bundle | `Validate phase-017 scoring and fusion corrections.` | 1) run correction-specific queries 2) inspect math/normalization 3) verify expected outputs | Scoring math produces correct values; normalization stays within bounds; fusion formula applies corrected weights | Query output with scoring trace + normalization range verification + fusion weight evidence | PASS if scoring corrections produce mathematically correct results with proper normalization bounds | Inspect scoring formula changes from phase-017; verify normalization min/max; check fusion weight configuration |
-| NEW-080 | Pipeline and mutation hardening | Confirm mutation hardening bundle | `Validate phase-017 pipeline and mutation hardening.` | 1) execute CRUD/mutation paths 2) inspect cleanup/error handling 3) verify atomicity behavior | CRUD mutations are atomic (all-or-nothing); error handling cleans up partial state; no orphaned records on failure | Mutation output + error handling trace + DB state verification after induced failure | PASS if all mutation paths are atomic, error handling leaves no partial state, and cleanup is complete | Inspect transaction wrappers on CRUD handlers; verify cleanup logic on error paths; check for orphaned records after failures |
-| NEW-081 | Graph and cognitive memory fixes | Confirm graph/cognitive fix bundle | `Validate graph and cognitive memory fixes.` | 1) trigger self-loop/depth/cache scenarios 2) verify clamps/invalidations 3) capture results | Self-loops prevented; depth clamps enforced; cache invalidation triggers on mutation; no stale cognitive data returned | Self-loop attempt output + depth clamp evidence + cache invalidation trace | PASS if self-loops are blocked, depth stays within clamped bounds, and cache invalidates correctly on mutation | Inspect self-loop guard logic; verify depth clamp constants; check cache invalidation trigger points |
-| NEW-082 | Evaluation and housekeeping fixes | Confirm eval/housekeeping reliability | `Validate evaluation and housekeeping fixes.` | 1) restart+eval runs 2) verify run-id and upsert behavior 3) inspect boundary guards | Run-IDs are unique across restarts; upserts are idempotent; boundary guards prevent out-of-range values; housekeeping completes cleanly | Eval run output with run-ID + upsert verification + boundary guard test evidence | PASS if run-IDs are unique, upserts produce consistent state, and boundary guards reject invalid values | Inspect run-ID generation logic; verify upsert idempotency; check boundary guard threshold values |
-| NEW-083 | Math.max/min stack overflow elimination | Confirm large-array safety | `Validate Math.max/min stack overflow elimination.` | 1) run large-array paths 2) verify no RangeError 3) compare numeric outputs | Large arrays (10k+ elements) processed without RangeError; numeric outputs match expected min/max values; no stack overflow in any code path | Large-array test output + numeric comparison evidence + error-free execution proof | PASS if large arrays process without RangeError and produce correct min/max values | Verify all Math.max/min spread calls have been replaced; check array size at all call sites; test with progressively larger arrays |
-| NEW-084 | Session-manager transaction gap fixes | Confirm transactional limit enforcement | `Validate session-manager transaction gap fixes.` | 1) simulate concurrent writes 2) inspect transactions 3) confirm limits enforced | Concurrent writes are serialized via transactions; session limits enforced; no data corruption from concurrent access | Concurrent write simulation output + transaction inspection + limit enforcement evidence | PASS if concurrent writes are properly serialized, session limits hold, and no data corruption occurs | Inspect transaction isolation level; verify session limit enforcement logic; check for race conditions in concurrent write paths |
-| NEW-085 | Transaction wrappers on mutation handlers | Confirm atomic wrapper behavior | `Validate mutation transaction wrappers.` | 1) inject mid-step fault 2) verify rollback 3) confirm consistent state | Mid-step fault triggers automatic rollback; DB state remains consistent after rollback; no partial writes persist | Fault injection output + rollback trace + post-rollback DB state verification | PASS if injected faults trigger complete rollback and DB state is fully consistent after recovery | Inspect transaction wrapper implementation; verify rollback cleans up all partial writes; check for nested transaction handling |
-| NEW-086 | BM25 trigger phrase re-index gate | Confirm trigger edit causes re-index | `Validate BM25 trigger phrase re-index gate.` | 1) edit trigger phrases 2) verify re-index activity 3) query new trigger | Trigger phrase edit triggers BM25 re-index; new trigger is searchable after re-index; old trigger phrase still works if not removed | Re-index activity log + search output for new trigger phrase + search output for old trigger | PASS if editing trigger phrases causes automatic BM25 re-index and new triggers are immediately searchable | Verify re-index gate detects trigger mutations; check FTS5 rebuild logic; inspect trigger phrase storage format |
-| NEW-087 | DB_PATH extraction and import standardization | Confirm shared DB path resolution | `Validate DB_PATH extraction/import standardization.` | 1) vary DB env vars 2) run scripts/tools 3) confirm shared resolver output | All scripts/tools resolve to the same DB path for identical env vars; precedence chain is respected; no hardcoded fallbacks diverge | DB path resolver output from multiple scripts + env var configuration evidence | PASS if all entry points resolve the same DB path and env var precedence is consistent across scripts/tools | Verify shared resolver module is imported by all consumers; check env var precedence order; inspect for hardcoded path fallbacks |
-| NEW-088 | Cross-AI validation fixes (Tier 4) | Confirm tier-4 fix pack behavior | `Validate Phase 018 Tier-4 cross-AI fixes.` | 1) inspect each fix location 2) run representative flows 3) record behavior | Each tier-4 fix location shows corrected behavior; representative flows produce expected outputs; no regressions in adjacent functionality | Fix location inspection + representative flow outputs + regression check evidence | PASS if all tier-4 fix locations produce corrected behavior and no regressions are observed | Inspect each fix from Phase 018 tier-4 changelog; run targeted tests for each fix area; check for unintended side effects |
-| NEW-089 | Code standards alignment | Confirm standards conformance | `Validate code standards alignment outcomes.` | 1) inspect affected files 2) verify naming/comments/import order 3) record mismatches | Affected files follow naming conventions; comments are meaningful (not boilerplate); import order matches standard; no mismatches found | File inspection evidence showing naming/comments/import compliance + mismatch list (if any) | PASS if all affected files conform to naming, commenting, and import order standards with zero mismatches | Inspect code standards definition; verify linter rules cover the standards; check for files missed by alignment pass |
-| NEW-090 | INT8 quantization evaluation (R5) | Confirm no-go decision remains valid | `Re-evaluate INT8 quantization decision criteria.` | 1) gather thresholds metrics 2) compare go/no-go criteria 3) record decision | Quality degradation metrics exceed acceptable threshold; no-go criteria still met; decision rationale documented with current data | Threshold metrics summary + go/no-go criteria comparison + documented decision with evidence | PASS if no-go decision is reaffirmed with current metrics or criteria change warrants re-evaluation with documented rationale | Review original no-go rationale; gather updated benchmark data; compare quality degradation thresholds with current acceptable limits |
-| NEW-091 | Implemented: graph centrality and community detection (N2) | Confirm deferred->implemented status | `Verify N2 implemented and active.` | 1) inspect tables/flags 2) run graph queries 3) verify N2 contributions | N2 tables exist with data; feature flags show active status; graph queries include centrality/community contributions in scores | Table inspection + flag status + graph query output showing N2 score contributions | PASS if N2 tables are populated, flags are active, and graph queries include centrality/community scoring | Verify N2 migration completed; check feature flag state; inspect graph scoring pipeline for N2 channel integration |
-| NEW-092 | Implemented: auto entity extraction (R10) | Confirm deferred->implemented status | `Verify R10 implemented and active.` | 1) save entity-rich memory 2) inspect entity outputs 3) verify defaults | Entities automatically extracted on save; entity outputs contain expected entity types; default extraction settings are applied | Save output + entity extraction results + default configuration evidence | PASS if entity extraction runs automatically on save and produces correctly typed entities with default settings | Verify entity extraction pipeline is wired into save handler; check entity type classification; inspect default extraction configuration |
-| NEW-093 | Implemented: memory summary generation (R8) | Confirm deferred->implemented status | `Verify R8 implemented and gated.` | 1) save long memory 2) inspect summary persistence 3) verify scale-gated usage | Summary generated for long memories; summary persisted in DB; scale gate prevents summary generation below corpus threshold | Save output + summary field in DB record + scale gate threshold verification | PASS if summaries are generated and persisted for long memories and scale gate correctly controls activation | Verify summary generation triggers on save; check summary persistence field in schema; inspect scale gate threshold configuration |
-| NEW-094 | Implemented: cross-document entity linking (S5) | Confirm deferred->implemented status | `Verify S5 implemented and guarded.` | 1) run entity linker 2) inspect supports edges 3) verify density guards | Entity linker creates supports-edges between related documents; density guards cap edge creation; edge types are correctly classified | Entity linker output + supports-edge inspection + density guard metrics | PASS if entity linker produces correctly typed supports-edges and density guards enforce limits | Verify entity linker implementation is active; check supports-edge schema; inspect density guard threshold and enforcement |
-| NEW-095 | Strict Zod schema validation (P0-1) | Confirm schema enforcement rejects hallucinated params | `Validate SPECKIT_STRICT_SCHEMAS enforcement.` | 1) call any MCP tool with an extra unknown parameter (e.g., `memory_search({query:"test", bogus:1})`) 2) verify Zod strict error is returned 3) set `SPECKIT_STRICT_SCHEMAS=false` and confirm `.passthrough()` allows the extra param 4) verify validation runs per-tool in handler, not duplicated at server dispatch | Zod strict error returned for unknown params in strict mode; extra params pass through in permissive mode; validation occurs per-tool in handler layer | Tool outputs + Zod error messages | PASS if strict mode rejects unknown params and passthrough mode allows them | Inspect `tool-schemas.ts` for `.strict()` vs `.passthrough()` branching |
-| NEW-096 | Provenance-rich response envelopes (P0-2) | Confirm includeTrace opt-in exposes scores/source/trace | `Validate SPECKIT_RESPONSE_TRACE includeTrace behavior.` | **Precondition:** ensure `SPECKIT_RESPONSE_TRACE` is unset or `false` before running the "absent" assertion (env var forces trace inclusion regardless of arg). 1) `memory_search({query:"test", includeTrace:true})` → verify `scores`, `source`, `trace` objects in response 2) `memory_search({query:"test"})` (no includeTrace, env unset) → verify these objects are absent 3) set `SPECKIT_RESPONSE_TRACE=true` and repeat without arg → verify trace objects appear due to env override 4) inspect score fields: semantic, lexical, fusion, intentAdjusted, composite, rerank, attention | Trace objects (scores, source, trace) present when includeTrace=true or env override active; absent when neither is set; score fields include all 7 expected sub-fields | Search outputs with/without includeTrace + env override | PASS if trace objects present when opt-in or env-forced and absent otherwise | Check `handlers/memory-search.ts` for includeTrace and env branching |
-| NEW-097 | Async ingestion job lifecycle (P0-3) | Confirm job state machine and crash recovery | `Validate memory_ingest_start/status/cancel lifecycle.` | 1) `memory_ingest_start({paths:["specs/<target-spec>/memory/file1.md","specs/<target-spec>/memory/file2.md"]})` → capture jobId (must be explicit `.md` file paths, not directories) 2) `memory_ingest_status({jobId})` → verify state transitions (queued→parsing→embedding→indexing→complete) 3) start a new job, then `memory_ingest_cancel({jobId})` → verify cancelled state 4) verify job IDs are nanoid-style (`job_` prefix + 12 alphanumeric chars) 5) restart server → verify incomplete jobs re-enqueue via `resetIncompleteJobsToQueued` | Job state transitions through queued→parsing→embedding→indexing→complete in order; cancel sets state to cancelled; job IDs match nanoid format; incomplete jobs re-enqueue after restart | Ingest tool outputs + job state sequence | PASS if state machine transitions correctly through all 5 states and cancel works | Inspect `lib/ops/job-queue.ts` for state machine logic and `resetIncompleteJobsToQueued` |
-| NEW-098 | Local GGUF reranker via node-llama-cpp (P1-5) | Confirm reranker gating and graceful fallback | `Validate RERANKER_LOCAL strict check and memory thresholds.` | 1) set `RERANKER_LOCAL=1` (truthy but not `'true'`) → verify reranker is NOT activated (strict string equality) 2) set `RERANKER_LOCAL=true` without model file → verify silent fallback 3) set `SPECKIT_RERANKER_MODEL=/custom/path` → verify the custom-model threshold applies at 2GB instead of the default 8GB 4) with valid model, verify sequential scoring (not parallel) in logs | Reranker not activated for truthy-but-not-'true' values; silent fallback when model file missing; custom model path lowers the total-memory threshold to 2GB from the default 8GB; scoring runs sequentially in logs | Reranker log output + fallback behavior | PASS if strict `=== 'true'` check works, custom model lowers threshold, and scoring is sequential | Check `lib/search/local-reranker.ts` for `canUseLocalReranker()` and `rerankLocal()` |
-| NEW-099 | Real-time filesystem watching (P1-7) | Confirm file watcher debounce, hash seeding, and ENOENT grace | `Validate SPECKIT_FILE_WATCHER behavior.` | 1) set `SPECKIT_FILE_WATCHER=true` and start server 2) create a new `.md` file in a watched spec directory → verify `add` event seeds the hash cache 3) modify the file → verify reindex triggers after 2s debounce 4) modify with identical content → verify NO redundant reindex (hash dedup) 5) rapidly create then delete a file → verify no ENOENT crash (graceful handling) | File add seeds hash cache; modifications trigger reindex after 2s debounce; identical-content modifications produce no reindex; rapid create-delete produces no ENOENT crash | Server logs for `[file-watcher]` messages | PASS if debounce works, hash dedup prevents redundant reindex, and ENOENT is handled silently | Inspect `lib/ops/file-watcher.ts` for `seedHash`, `scheduleReindex`, and ENOENT catch |
-| NEW-100 | Async shutdown with deadline (server lifecycle) | Confirm graceful shutdown completes async cleanup | `Validate server shutdown deadline behavior.` | 1) start server with file watcher and local reranker enabled 2) send SIGTERM 3) verify file watcher closes, local reranker disposes, and vector index closes 4) verify shutdown completes within 5s deadline (no hang) 5) if async cleanup exceeds 5s, verify force exit fires | File watcher closes; local reranker disposes; vector index closes; shutdown completes within 5s; force exit fires if cleanup exceeds deadline | Process exit behavior + cleanup logs | PASS if all async resources are cleaned up within deadline | Check `context-server.ts` for `SHUTDOWN_DEADLINE_MS` and `gracefulShutdown()` |
-| NEW-101 | memory_delete confirm schema tightening | Confirm confirm field accepts only literal true | `Validate memory_delete confirm:z.literal(true) enforcement.` | 1) `memory_delete({id:1, confirm:true})` → verify accepted 2) `memory_delete({id:1, confirm:false})` → verify Zod rejection (literal true required) 3) `memory_delete({specFolder:"test", confirm:true})` → verify bulk delete path accepts 4) `memory_delete({specFolder:"test"})` (no confirm) → verify Zod rejection for bulk path | confirm:true accepted; confirm:false rejected with Zod literal error; bulk delete requires confirm:true; missing confirm field rejected for bulk path | Tool validation outputs | PASS if only `confirm:true` is accepted, `confirm:false` is rejected | Inspect `tool-schemas.ts` memory_delete union schema |
-| NEW-102 | node-llama-cpp optionalDependencies | Confirm install succeeds without native build tools | `Validate node-llama-cpp as optionalDependency.` | 1) inspect `mcp_server/package.json` → verify `node-llama-cpp` is in `optionalDependencies` not `dependencies` 2) run `npm install` on a clean environment without C++ build tools → verify install completes without error 3) verify `local-reranker.ts` uses dynamic `import()` and gracefully degrades when module is absent | node-llama-cpp listed in optionalDependencies (not dependencies); npm install completes without error on clean env; dynamic import with graceful fallback when module absent | package.json content + install output | PASS if install succeeds and reranker gracefully falls back when module missing | Check `package.json` optionalDependencies section |
-| NEW-103 | UX hook module coverage (`mutation-feedback`, `response-hints`) | Confirm new hook modules return the finalized metadata and hint shape | `Validate NEW-103 hook module behavior for mutation feedback and response hints.` | 1) `npx vitest run tests/hooks-ux-feedback.vitest.ts` | Test output shows suite pass, including latency/cache-clear booleans and finalized hint payload assertions | Test transcript + snippet for passing assertions | PASS if `tests/hooks-ux-feedback.vitest.ts` passes with no failing assertions | Inspect hook exports and fixture payloads if assertion fails |
-| NEW-104 | Mutation save-path UX parity and no-op hardening | Confirm duplicate-save no-op behavior and atomic-save parity/hints | `Run save-path UX scenarios and verify duplicate-save no-op behavior plus atomic-save parity.` | 1) `npx vitest run tests/memory-save-ux-regressions.vitest.ts` 2) inspect assertions covering duplicate-content save no-op responses 3) inspect assertions covering atomic-save `postMutationHooks`, hints, and partial-indexing guidance parity | Suite passes and assertions show no false `postMutationHooks` on no-op saves, cache-left-unchanged messaging, and parity between standard and atomic save responses | Test transcript + highlighted assertion names or output snippets | PASS if duplicate-save no-ops suppress false hook metadata and atomic-save responses match the primary save contract | Inspect `tests/memory-save-ux-regressions.vitest.ts` and handler save-path wiring |
-| NEW-105 | Context-server success-envelope finalization | Confirm `appendAutoSurfaceHints()` runs before budget enforcement and preserves the finalized envelope contract | `Validate the finalized context-server success-envelope path, including token metadata recomputation.` | 1) `npx vitest run tests/context-server.vitest.ts` 2) inspect assertions covering appended success hints 3) inspect assertions covering preserved `autoSurfacedContext` 4) inspect assertions covering final token metadata after hint append and before budget enforcement | Context-server suite passes with end-to-end assertions for appended hints, preserved `autoSurfacedContext`, and finalized token metadata | Test transcript + key assertion output | PASS if `tests/context-server.vitest.ts` passes and the assertions cover the final success-envelope path end to end | Inspect `context-server.ts` success-path assembly and expected envelope fields |
-| NEW-106 | Hooks barrel + README synchronization | Confirm hooks index exports and docs cover the finalized modules and contract fields | `Validate hook barrel and README coverage for the finalized UX-hook surface.` | 1) `rg "mutation-feedback|response-hints" .opencode/skill/system-spec-kit/mcp_server/hooks/index.ts` 2) `rg "mutation-feedback|response-hints|MutationHookResult|postMutationHooks" .opencode/skill/system-spec-kit/mcp_server/hooks/README.md` | Barrel includes both module exports and README includes usage plus contract references | `rg` output snippets from both files | PASS if both files reference the new modules and contract fields | Update hooks barrel/doc text and rerun `rg` checks |
-| NEW-107 | Checkpoint confirmName and schema enforcement | Confirm delete safety is required across handler and validation layers | `Validate checkpoint delete confirmName enforcement across handler and schema layers.` | 1) `npx vitest run tests/handler-checkpoints.vitest.ts tests/tool-input-schema.vitest.ts tests/mcp-input-validation.vitest.ts` 2) inspect rejection assertions for missing `confirmName` 3) inspect success assertions for `safetyConfirmationUsed=true` | Validation and handler suites pass with missing-`confirmName` rejection plus successful delete confirmation reporting | Test transcript + assertion snippets | PASS if the three suites pass and prove required `confirmName` enforcement end to end | Inspect checkpoint handler, schemas, and tool typing alignment |
-| NEW-108 | Spec 007 finalized verification command suite evidence | Confirm the recorded verification set matches the current Spec 007 evidence | `Run the finalized Spec 007 verification command suite and record evidence.` | 1) `npx tsc -b` 2) `npm run lint` 3) `npx vitest run tests/hooks-ux-feedback.vitest.ts tests/context-server.vitest.ts tests/handler-checkpoints.vitest.ts tests/tool-input-schema.vitest.ts tests/mcp-input-validation.vitest.ts tests/memory-crud-extended.vitest.ts tests/memory-save-ux-regressions.vitest.ts` 4) `npx vitest run tests/embeddings.vitest.ts tests/stdio-logging-safety.vitest.ts` 5) run MCP SDK stdio smoke test against `node .opencode/skill/system-spec-kit/mcp_server/dist/context-server.js` | `npx tsc -b` PASS, `npm run lint` PASS, UX suite PASS with 7 files / 510 tests, stdio plus embeddings suite PASS with 2 files / 15 tests, and MCP SDK stdio smoke PASS with 28 tools listed | Build/lint/test/smoke transcripts with totals and tool count | PASS if all five verification steps match the recorded Spec 007 evidence exactly | Re-run the failing verification step in isolation and inspect the corresponding Spec 007 handler or test coverage |
-| NEW-109 | Quality-aware 3-tier search fallback | Confirm 3-tier degradation chain triggers correctly | `Validate SPECKIT_SEARCH_FALLBACK tiered degradation.` | 1) `memory_search({query:"zzz_nonexistent_term_zzz", limit:20})` with default settings (Tier 1) 2) inspect `_degradation` property on result — if topScore < 0.02 AND relativeGap < 0.2, OR resultCount < 3, confirm Tier 2 triggered 3) verify Tier 2 uses minSimilarity=0.1 and forces all channels 4) if Tier 2 also fails quality check, confirm Tier 3 structural SQL fallback fires 5) verify Tier 3 scores capped at 50% of existing top score 6) set `SPECKIT_SEARCH_FALLBACK=false` and verify single-tier only | Tier 1 low-quality results trigger Tier 2; Tier 2 forces all channels with minSimilarity=0.1; Tier 3 SQL fallback fires when Tier 2 also fails; _degradation property reflects active tier; SPECKIT_SEARCH_FALLBACK=false disables tiered degradation | Search output with _degradation property + per-tier channel configuration evidence + fallback-disabled comparison | PASS if all 3 tiers trigger in correct order based on quality thresholds and disabling fallback produces single-tier behavior | Inspect quality threshold constants (topScore, relativeGap, resultCount); verify tier transition logic; check Tier 3 score capping at 50% |
-| NEW-110 | Prediction-error save arbitration | Confirm 5-action PE decision engine during save | `Validate prediction-error save arbitration actions.` | 1) save a memory with unique content → expect CREATE action 2) save identical content → expect REINFORCE (similarity >=0.95) 3) save slightly modified content (no contradiction) → expect UPDATE (0.85-0.94) 4) save modified content with contradiction → expect SUPERSEDE (0.85-0.94 + contradiction) 5) save loosely related content → expect CREATE_LINKED (0.70-0.84) 6) query `memory_conflicts` table entries for action/similarity/contradiction columns 7) save with `force:true` → verify PE arbitration bypassed | Each similarity band triggers the correct action (CREATE/REINFORCE/UPDATE/SUPERSEDE/CREATE_LINKED); memory_conflicts table records action/similarity/contradiction; force:true bypasses PE arbitration | Save output per action type + memory_conflicts table query + force:true bypass evidence | PASS if all 5 PE actions trigger at correct similarity thresholds and force:true bypasses the decision engine | Inspect similarity threshold constants; verify contradiction detection logic; check memory_conflicts table schema matches expected columns |
-| NEW-111 | Deferred lexical-only indexing | Confirm embedding-failure fallback and BM25 searchability | `Validate deferred lexical-only indexing fallback.` | 1) simulate embedding failure (e.g., set invalid `OPENAI_API_KEY`) 2) `memory_save(filePath)` → verify memory saved with `embedding_status='pending'` 3) `memory_search({query:"<title of saved memory>"})` → verify BM25/FTS5 retrieval works (lexical match) 4) restore valid API key 5) run `node cli.js reindex` → verify `embedding_status` transitions to `'success'` and `retry_count` increments 6) `memory_search({query:"<semantic query>"})` → verify vector search now works | Memory saved with embedding_status='pending' on embedding failure; BM25/FTS5 lexical search returns the memory; reindex transitions status to 'success'; vector search works after reindex | Save output showing pending status + lexical search result + reindex output + post-reindex semantic search result | PASS if embedding failure falls back to lexical-only indexing, BM25 search works, and reindex recovers full embedding | Verify embedding_status column exists in schema; check BM25/FTS5 index includes pending memories; inspect reindex retry logic and retry_count tracking |
-| NEW-112 | Cross-process DB hot rebinding | Confirm marker-file triggers DB reinitialization | `Validate cross-process DB hot rebinding via marker file.` | 1) start MCP server 2) create a test memory via MCP: `memory_save(filePath)` and note its title 3) from a separate terminal, run `node cli.js bulk-delete --tier scratch --folder specs/test-sandbox` (non-dry-run — this mutates the DB and writes the `DB_UPDATED_FILE` marker) 4) immediately call `memory_stats()` via MCP → verify server detects marker and reinitializes DB 5) verify no stale data from pre-rebind state 6) run `memory_health()` → verify healthy status post-rebind | Server detects DB_UPDATED_FILE marker; DB reinitializes without restart; stats reflect post-mutation state (no stale data); health reports healthy after rebind | memory_stats output post-rebind + memory_health output + marker file detection evidence | PASS if server detects marker file, reinitializes DB, returns current (non-stale) data, and health is healthy | Inspect DB_UPDATED_FILE marker path and detection logic; verify DB reinitialization clears caches; check for stale connection handles |
-| NEW-113 | Standalone admin CLI | Confirm 4 CLI commands execute correctly | `Validate standalone admin CLI commands.` | 1) `node cli.js stats` → verify tier distribution, top folders, schema version displayed 2) `node cli.js bulk-delete --tier scratch --folder specs/test-sandbox --dry-run` → verify dry-run shows deletion plan without executing 3) `node cli.js reindex --force` → verify full reindex completes 4) `node cli.js schema-downgrade --to 15` (without `--confirm`) → verify safety prompt 5) `node cli.js bulk-delete --tier scratch --folder specs/test-sandbox --older-than 365` → verify checkpoint creation is attempted when `--skip-checkpoint` is absent, and a checkpoint failure degrades to a warning instead of blocking deletion | stats shows tier distribution and schema version; dry-run shows plan without executing deletions; reindex completes with summary; schema-downgrade without `--confirm` shows safety prompt; destructive bulk-delete attempts a pre-delete checkpoint and warns rather than aborting if checkpoint persistence fails | CLI command outputs for all 4 commands + checkpoint attempt evidence | PASS if all 4 CLI commands execute correctly with expected output and safety features work (dry-run, safety prompt, best-effort checkpoint attempt) | Verify cli.js entry point and command routing; check each command handler for expected output format; inspect best-effort checkpoint logic in bulk-delete path |
-| NEW-114 | Path traversal validation (P0-4) | Verify memory_ingest_start rejects paths outside allowed base directories and paths containing traversal segments | "Ingest a file using a path with ../ segments and verify rejection" | **Precondition:** sandbox spec folder with test files. 1) Call `memory_ingest_start({ paths: ["../../etc/passwd"] })` 2) Expect E_VALIDATION error with clear rejection message 3) Call `memory_ingest_start({ paths: ["/tmp/outside-base/file.md"] })` 4) Expect E_VALIDATION error for path outside allowed base 5) Call `memory_ingest_start({ paths: ["specs/test-sandbox/valid.md"] })` 6) Expect success (job created) | Traversal paths (../) rejected with E_VALIDATION error; absolute paths outside allowed base rejected; valid paths within allowed directories accepted and job created | Rejection error messages for invalid paths + successful job creation for valid path | PASS if traversal and out-of-base paths are rejected with E_VALIDATION and valid paths create jobs successfully | Inspect path validation logic in ingest handler; verify allowed base directory configuration; check for bypass via URL-encoded or symlinked paths |
-| NEW-115 | Transaction atomicity on rename failure (P0-5) | Verify that pending file is preserved (not deleted) when rename fails after DB commit, enabling recovery on next startup | "Simulate rename failure after DB commit and verify pending file survives" | **Precondition:** Read transaction-manager.ts to understand pendingPath logic. 1) Trigger `executeAtomicSave()` with a path that will cause rename to fail (e.g., read-only target directory) 2) Verify the function returns `{ success: false, dbCommitted: true }` 3) Verify the pending file still exists on disk (not deleted) 4) Verify `recoverAllPendingFiles()` can find and recover the pending file | Rename failure returns {success:false, dbCommitted:true}; pending file preserved on disk after failure; recoverAllPendingFiles discovers and recovers the pending file | Function return value + pending file existence check + recovery function output | PASS if pending file survives rename failure and recovery function can find and process it | Inspect executeAtomicSave error handling for rename failures; verify pending file cleanup is skipped when dbCommitted=true; check recoverAllPendingFiles scan logic |
-| NEW-116 | Chunking safe swap atomicity (P0-6) | Verify re-chunking indexes new chunks before deleting old ones, and old chunks survive if new indexing fails | "Re-chunk a parent memory and verify old children survive indexing failure" | **Precondition:** Create a parent memory with child chunks via `memory_save()`. 1) Trigger re-chunk on the parent 2) Verify new chunks are indexed in staged state before old deletion 3) Verify old children are deleted only after new chunks succeed 4) Simulate embedding failure for all new chunks 5) Verify old children remain intact and handler returns error status | New chunks indexed in staged state before old deletion; old chunks deleted only after successful new indexing; embedding failure preserves old children; handler returns error status on failure | Re-chunk output + staged chunk evidence + old chunk survival verification after failure | PASS if new chunks are staged before old deletion and old children survive when new indexing fails | Inspect chunking orchestrator swap logic; verify staged indexing precedes deletion; check error handling preserves old children |
-| NEW-117 | SQLite datetime session cleanup (P0-7) | Verify cleanupOldSessions() correctly identifies expired sessions using SQLite-native datetime comparison regardless of timestamp format | "Create sessions with known timestamps and verify cleanup deletes only expired ones" | **Precondition:** Working memory database accessible. 1) Insert a session with `last_focused` = 45 minutes ago (expired) 2) Insert a session with `last_focused` = 5 minutes ago (active) 3) Run `cleanupOldSessions()` with 30-minute threshold 4) Verify expired session deleted, active session preserved 5) Verify comparison works with both `YYYY-MM-DD HH:MM:SS` and ISO format timestamps | Expired session (45min old) deleted; active session (5min old) preserved; cleanup works with both YYYY-MM-DD HH:MM:SS and ISO timestamp formats | Session table before/after cleanup + timestamp format verification | PASS if only expired sessions are deleted regardless of timestamp format and active sessions are preserved | Inspect cleanupOldSessions datetime comparison SQL; verify SQLite datetime function compatibility; test with edge-case timestamps (midnight, timezone boundaries) |
-| NEW-118 | Stage-2 score field synchronization (P0-8) | Verify intentAdjustedScore reflects all downstream signal modifications after non-hybrid intent weighting | `Run a non-hybrid search with intent weighting and verify score fields stay synchronized.` | **Precondition:** Memory database with varied content. 1) Call `memory_search({ query:"non hybrid intent weighting sync check", includeTrace:true })` targeting non-hybrid flow 2) Inspect trace: verify `intentAdjustedScore` is set at Step 4 3) Verify subsequent artifact routing and feedback signals modify `score` 4) Verify final `intentAdjustedScore >= score` (Math.max sync applied) 5) Verify `resolveEffectiveScore()` returns the synchronized value | intentAdjustedScore set at Step 4 in trace; downstream signals modify score field; final intentAdjustedScore >= score (Math.max sync); resolveEffectiveScore returns synchronized value | Search trace output showing score field progression through pipeline stages | PASS if intentAdjustedScore is synchronized with score via Math.max and resolveEffectiveScore returns the correct final value | Inspect stage-2 intent weighting logic; verify Math.max sync placement; check resolveEffectiveScore fallback chain for non-hybrid flow |
-| NEW-119 | Memory filename uniqueness (ensureUniqueMemoryFilename) | Confirm collision resolution | `Validate memory filename collision prevention.` | 1) Save memory to a folder 2) Save again with same slug within same minute 3) Verify two distinct filenames (second has -1 suffix) 4) Exhaust `-1` through `-100` collisions and save again 5) Persist the first random fallback filename, repeat the save, and verify a second distinct random fallback is reserved 6) Verify fallback filename uses `crypto.randomBytes(6).toString('hex')` suffix shape, not SHA1 7) Verify `description.json` increments `memorySequence` via `Number(existing.memorySequence) || 0` before incrementing 8) Verify `memoryNameHistory` updated | Second save produces filename with -1 suffix; both files exist with distinct names; exhausting `-1` through `-100` collisions triggers a random 12-hex fallback suffix from `crypto.randomBytes(6).toString('hex')`, not SHA1; repeated fallback saves still reserve distinct filenames; `memorySequence` increments through the hardened `Number(existing.memorySequence) || 0` coercion path; memoryNameHistory contains all filenames | Saved file paths + collision corpus showing `-1` through `-100` occupancy + two distinct fallback filename samples + description.json showing hardened memorySequence increment and memoryNameHistory updates | PASS if collision produces `-1` suffix first, exhausting `-1..-100` produces a 12-hex random fallback suffix instead of SHA1, repeated fallback saves still produce distinct names, memorySequence increments through the hardened coercion path, and memoryNameHistory tracks all names | Inspect ensureUniqueMemoryFilename collision detection → Verify random fallback still reserves unique names when called repeatedly after 100 collisions → Check `crypto.randomBytes(6).toString('hex')` fallback instead of SHA1 → Check `Number(existing.memorySequence) || 0` coercion before incrementing → Inspect description.json update mechanism |
-| NEW-131 | Description.json batch backfill validation (PI-B3) | Confirm batch-generated folder descriptions exist and conform to schema | `Validate PI-B3 batch backfill results.` | 1) Count spec folders with spec.md 2) Count description.json files — expect parity with the current active spec inventory 3) Validate JSON syntax of all files 4) Run explicit C1 conformance checks: `specId` is string, `parentChain` is array of strings, and `memorySequence` is number 5) Spot-check schema fields at depth 1, 3, 5+ 6) Run generateFolderDescriptions → verify per-folder files preferred over spec.md | Description.json coverage stays in parity with the current active spec inventory; all JSON files parse without syntax errors; C1 field-type checks pass with `specId` string, `parentChain` array of strings, and `memorySequence` number; schema fields are present at varying depths; per-folder files preferred over spec.md fallback | Folder count comparison showing `spec.md`/`description.json` parity + JSON syntax validation results + explicit C1 schema checklist evidence + schema field spot-check evidence | PASS if description.json coverage matches the active spec inventory, every description.json is valid JSON, C1 field-type checks pass, and per-folder generation is preferred over spec.md fallback | Verify generateFolderDescriptions covers the current spec inventory → Check JSON schema validation and C1 field-type rules → Inspect per-folder vs spec.md preference logic |
-| NEW-132 | description.json schema field validation | Confirm per-folder description metadata matches schema contract | `Validate description.json required fields and types.` | 1) Create sandbox spec folder via create.sh → verify description.json generated 2) Assert 9 required fields: specId, folderSlug, parentChain, memorySequence, memoryNameHistory, specFolder, description, keywords, lastUpdated 3) Verify the full 9-field type matrix: strings (`specId`, `folderSlug`, `specFolder`, `description`, `lastUpdated`), arrays of strings (`parentChain`, `memoryNameHistory`, `keywords`), number (`memorySequence`) 4) Save memory → verify `memorySequence` and `memoryNameHistory` update 5) Corrupt a field → verify regeneration repairs it | description.json generated on folder creation with all 9 required fields; field types match contract with strings for `specId`, `folderSlug`, `specFolder`, `description`, and `lastUpdated`, arrays of strings for `parentChain`, `memoryNameHistory`, and `keywords`, and number for `memorySequence`; `memorySequence` and `memoryNameHistory` update on save; corrupted fields repaired on regeneration | description.json content showing all required fields + full 9-field type-matrix verification + post-save update evidence + regeneration repair evidence | PASS if all 9 fields are present with the exact string / array-of-strings / number matrix, save updates sequence/history, and regeneration repairs corrupted fields | Verify create.sh generates description.json → Check 9-field schema validation, especially arrays-of-strings enforcement for `parentChain`, `memoryNameHistory`, and `keywords` → Inspect regeneration trigger and repair logic |
-| NEW-133 | Dry-run preflight for memory_save | Confirm dry-run previews preflight plus semantic insufficiency without indexing side effects | `Validate memory_save dryRun preview behavior, including insufficiency detection.` | 1) Create a rich sandbox memory file and a thin sandbox memory file 2) `memory_stats()` and capture baseline totals 3) `memory_save({filePath:"<thin-sandbox-file>", dryRun:true})` and verify preflight details, `qualityLoop`, `sufficiency`, and `rejectionCode:"INSUFFICIENT_CONTEXT_ABORT"` 4) `memory_stats()` and `memory_search({query:"<thin title>"})` to verify no new indexed record from dry-run 5) `memory_save({filePath:"<thin-sandbox-file>", force:true})` and verify it still rejects before indexing 6) `memory_save({filePath:"<rich-sandbox-file>", dryRun:true})` and verify `would_pass:true` with no side effects 7) `memory_save({filePath:"<rich-sandbox-file>", dryRun:false})` and verify the memory becomes searchable | Dry-run returns preflight plus quality-loop and sufficiency payloads; thin memories report `INSUFFICIENT_CONTEXT_ABORT` without indexing/database mutation; `force:true` does not bypass insufficiency; rich non-dry-run save indexes the same file | Dry-run responses for thin and rich files + before/after stats + search outputs + non-dry-run save output | PASS if dry-run surfaces sufficiency explicitly with no index mutation, forced thin save still rejects, and rich non-dry-run save makes the record searchable | Inspect `handlers/memory-save.ts` dryRun and insufficiency branches, `shared/parsing/memory-sufficiency.ts`, `handlers/quality-loop.ts`, and `lib/validation/preflight.ts` |
-| NEW-134 | Startup pending-file recovery lifecycle coverage | Verify startup recovery scans allowed roots and preserves stale pending files for manual review | `Validate startup pending-file recovery behavior across committed and stale files.` | 1) Create a pending file where DB row is committed, then run startup recovery (`recoverAllPendingFiles` path) 2) Verify committed pending file is renamed to original path 3) Create a stale pending file with no DB row 4) Verify stale pending file is not renamed and is reported for manual review 5) Verify scan roots include configured memory base roots plus `.opencode/specs` and constitutional locations | Committed pending file recovers to original path; stale pending file remains with explicit stale classification; startup scan covers configured/allowed roots without scanning unrelated workspace trees | Recovery output + filesystem checks + startup scan log evidence | PASS if committed/stale behavior diverges correctly and startup scan root set includes expected allowed locations | Inspect `context-server.ts` recovery root derivation and `transaction-manager.ts` stale pending detection |
-| NEW-135 | Grep traceability for feature catalog code references | Verify `grep -r "// Feature catalog: <feature>" mcp_server/` returns handler + lib hits | `Validate feature catalog grep traceability.` | 1) Pick 3 features with known multi-layer implementations (e.g., "Hybrid search pipeline", "Classification-based decay", "Prediction-error save arbitration") 2) For each: `grep -r "// Feature catalog: <feature>" .opencode/skill/system-spec-kit/mcp_server/` 3) Verify each grep returns hits in both `handlers/` and `lib/` directories 4) Verify all returned files exist and contain the annotation | Each feature grep returns at least 2 hits spanning handlers and lib layers; all referenced files exist | Grep output for 3 features showing file paths and line numbers | PASS if all 3 features return multi-layer hits with no orphaned file references | Check annotation placement after MODULE: header → Verify feature name spelling matches catalog H3 heading exactly |
-| NEW-136 | Feature catalog annotation name validity | Verify all annotation names cross-reference against catalog H3 headings with 0 invalid | `Validate all Feature catalog annotation names against catalog.` | 1) Extract all unique annotation names: `grep -rho "// Feature catalog: .*" .opencode/skill/system-spec-kit/mcp_server/ .opencode/skill/system-spec-kit/shared/ \| sort -u` 2) Extract all H3 headings from `feature_catalog/feature_catalog.md`: `grep "^### " feature_catalog.md` 3) Cross-reference: every annotation name must match an H3 heading exactly 4) Report any mismatches | 0 invalid annotation names; every `// Feature catalog:` value matches an H3 heading in the catalog | Sorted annotation list + H3 heading list + diff showing 0 invalid entries | PASS if cross-reference produces 0 mismatches | Check for trailing spaces, case mismatches, or outdated feature names → Update annotations to match current catalog headings |
-| NEW-137 | Multi-feature annotation coverage | Verify known multi-feature files have annotation count >= 2 | `Validate multi-feature files carry all applicable annotations.` | 1) Identify files known to implement 2+ features (e.g., `handlers/memory-save.ts`, `handlers/memory-search.ts`, `handlers/memory-crud-delete.ts`) 2) For each: count `// Feature catalog:` lines 3) Verify count >= 2 for each multi-feature file 4) Spot-check that listed features are semantically correct for the file's implementation | All known multi-feature files carry >= 2 annotations; annotations are semantically appropriate | File list with annotation counts + sample content verification | PASS if all checked multi-feature files have >= 2 annotations and no obviously-missing features | Review file implementation scope → Compare against catalog feature boundaries → Add missing annotations |
-| NEW-138 | MODULE: header compliance via verify_alignment_drift.py | Verify `verify_alignment_drift.py` returns 0 TS-MODULE-HEADER findings | `Validate MODULE: header compliance across all non-test .ts files.` | 1) `cd .opencode/skill/system-spec-kit` 2) `python3 ../sk-code--opencode/scripts/verify_alignment_drift.py --root .` 3) Grep output for `TS-MODULE-HEADER` findings 4) Verify 0 findings | verify_alignment_drift.py reports PASS with 0 TS-MODULE-HEADER findings | Script output showing PASS verdict + finding count | PASS if 0 TS-MODULE-HEADER findings reported | Check for new .ts files without MODULE: header → Add 3-line header block → Re-run verifier |
-| NEW-142 | Session transition trace contract | Verify `memory_context` emits trace-only session transitions with no non-trace leakage | `Validate Markovian session transition tracing for memory_context.` | 1) `memory_context({ mode:"resume", prompt:"resume previous work on rollout hardening", sessionId:"markovian-142", includeTrace:true })` 2) Verify each result exposes `trace.sessionTransition.previousState`, `currentState`, `confidence`, and ordered `signalSources` 3) Repeat without `includeTrace` and verify `sessionTransition` is absent 4) Confirm the non-trace response does not expose transition data in top-level metadata | Trace-enabled responses include spec-shaped `sessionTransition`; non-trace responses omit it entirely; no top-level metadata leak appears when trace is disabled | Two `memory_context` outputs with and without `includeTrace` + field-level comparison | PASS if trace-only gating holds and the contract fields are present only in the traced call | Inspect `handlers/memory-context.ts`, `handlers/memory-search.ts`, and `lib/search/session-transition.ts` if fields leak or ordering drifts |
-| NEW-143 | Bounded graph-walk rollout and diagnostics | Verify `SPECKIT_GRAPH_WALK_ROLLOUT` changes diagnostics and bounded bonus behavior without destabilizing ordering | `Validate bounded graph-walk rollout states and trace diagnostics.` | 1) Prepare a graph-connected sandbox corpus 2) Start runtime with `SPECKIT_GRAPH_WALK_ROLLOUT=trace_only` and run `memory_search({ query:"graph rollout trace check", includeTrace:true, limit:10 })` 3) Verify `trace.graphContribution.rolloutState` is `trace_only` and `appliedBonus` remains 0 while `raw`/`normalized` are still visible 4) Restart with `SPECKIT_GRAPH_WALK_ROLLOUT=bounded_runtime` and repeat 5) Verify `appliedBonus` is present, bounded at `<= 0.03`, and `capApplied` flips to `true` when the bounded runtime bonus saturates at the Stage 2 cap 6) Restart with `SPECKIT_GRAPH_WALK_ROLLOUT=off` and verify the graph-walk bonus disappears while the broader graph-signal path stays governed by `SPECKIT_GRAPH_SIGNALS` and repeated identical runs keep the same ordering | Rollout states switch cleanly between `trace_only`, `bounded_runtime`, and `off`; trace diagnostics expose raw/normalized metrics; bounded runtime never exceeds the Stage 2 cap; `off` disables only the graph-walk bonus ladder, not the broader graph-signal feature flag; repeated identical runs preserve deterministic ordering | Search outputs for all three rollout states + ordering comparison across repeated runs | PASS if rollout state, bounded bonus, cap saturation signaling, and ordering guarantees all match the documented ladder | Inspect `lib/search/search-flags.ts`, `lib/search/graph-flags.ts`, `lib/graph/graph-signals.ts`, and `lib/search/pipeline/ranking-contract.ts` if bonus or ordering contracts drift |
-| NEW-144 | Advisory ingest lifecycle forecast | Verify `memory_ingest_status` exposes advisory forecast fields and degrades safely on sparse progress | `Validate ingest forecast contract and early-progress caveats.` | 1) `memory_ingest_start({ paths:["specs/<target-spec>/memory/file1.md","specs/<target-spec>/memory/file2.md"] })` and capture `jobId` 2) Immediately call `memory_ingest_status({ jobId:"<job-id>" })` and verify `forecast` contains `etaSeconds`, `etaConfidence`, `failureRisk`, `riskSignals`, and `caveat` 3) Confirm early or queued states return a low-confidence caveat instead of throwing 4) Poll until indexing progresses and verify forecast values update while staying advisory 5) If extended telemetry is enabled, confirm lifecycle forecast diagnostics are attached without changing the status contract | Status payloads always include a `forecast` object; sparse progress yields null or low-confidence fields plus caveat text; progressing jobs update ETA/risk fields without breaking the handler contract; optional telemetry remains additive | Start/status transcript across early and progressing states + optional telemetry snapshot when enabled | PASS if forecast fields are always present, sparse states degrade safely, and progressing jobs update the advisory values without handler failure | Inspect `handlers/memory-ingest.ts`, `lib/ops/job-queue.ts`, and `lib/telemetry/retrieval-telemetry.ts` if forecast fields disappear or throw |
-| NEW-145 | Contextual tree injection (P1-4) | Verify hierarchical spec-folder headers are injected into search results when `SPECKIT_CONTEXT_HEADERS=true` and suppressed when disabled | `Validate contextual tree injection header format and flag toggle.` | 1) `memory_search({ query:"spec folder context headers", includeContent:true, includeTrace:true, limit:5 })` with `SPECKIT_CONTEXT_HEADERS=true` (default) 2) Verify results with spec-folder file paths have a `[parent > child — desc]` header prepended to content 3) Verify header is truncated at 100 characters 4) Restart with `SPECKIT_CONTEXT_HEADERS=false` and repeat search 5) Verify no contextual headers are prepended | Enabled: results with spec-folder paths have `[parent > child — description]` headers prepended, truncated at 100 chars; Disabled: no headers injected, content unchanged | Search outputs with and without flag + header format verification | PASS if enabled mode injects correctly formatted headers and disabled mode skips injection entirely | Inspect `lib/search/hybrid-search.ts` `injectContextualTree`, `lib/search/search-flags.ts` `isContextHeadersEnabled`, and description cache population |
-| NEW-146 | Dynamic server instructions (P1-6) | Verify `setInstructions()` is called at MCP startup with memory count, spec folder count, channel list, and stale warning | `Validate dynamic server instructions at MCP initialization.` | 1) Start the MCP server and capture startup logs 2) Verify `setInstructions()` was called with a non-empty instructions string 3) Verify instructions include: memory count, spec folder count, available channels, and active feature flags 4) If 11+ stale memories exist, verify a stale warning is included 5) Restart with `SPECKIT_DYNAMIC_INIT=false` and verify `setInstructions()` receives an empty string | Startup instructions include memory system overview with counts and channels; stale warning appears only above threshold; disabled flag yields empty instructions | Server startup log + instructions content snapshot + flag toggle comparison | PASS if enabled mode emits overview with counts/channels and disabled mode yields empty string | Inspect `context-server.ts` `buildServerInstructions`, `startup-checks.ts`, and `SPECKIT_DYNAMIC_INIT` flag handling |
-| NEW-147 | Constitutional memory manager command | Verify `/memory:learn` flows and active docs all reflect the constitutional-only workflow | `Validate /memory:learn constitutional manager flow and documentation consistency.` | 1) Invoke `/memory:learn` with no arguments and verify it shows the overview dashboard with action hints instead of prompting for missing input 2) Invoke `/memory:learn list` and verify constitutional files plus aggregate budget are shown 3) Invoke `/memory:learn budget` and verify per-file and total budget usage are shown against the shared `~2000` token limit 4) Invoke `/memory:learn edit` with no filename and verify available constitutional files are listed before the command waits for a selection 5) Invoke `/memory:learn remove` with no filename and verify the same guarded selection flow occurs before destructive confirmation 6) Run `rg -n "/memory:learn|Constitutional memory manager|constitutional memories|Explicit learning" .opencode/command/README.txt .opencode/command/memory/README.txt .opencode/command/memory/context.md .opencode/command/spec_kit/debug.md .opencode/command/spec_kit/complete.md README.md .opencode/README.md .opencode/agent/speckit.md .opencode/agent/chatgpt/speckit.md` and confirm no active doc describes `/memory:learn` as the retired learning/corrections command | Default flow shows overview instead of a missing-argument prompt; list and budget flows expose constitutional inventory and shared-budget data; edit/remove missing-arg flows guard with file discovery; active docs consistently describe constitutional memory management rather than legacy explicit-learning capture | Slash-command transcripts or screenshots for the five flows + `rg` output from the active documentation set | PASS if all command flows match the constitutional contract and no active docs advertise the legacy learning/corrections behavior | Inspect `.opencode/command/memory/learn.md`, `.opencode/command/memory/README.txt`, `.opencode/command/memory/context.md`, `.opencode/command/README.txt`, and workspace README/agent summaries if wording or flow drifts |
-| NEW-149 | Rendered memory template contract | Confirm malformed rendered memories fail before write/index and active corpus stays structurally clean | `Validate the rendered-memory template contract for memory_save, generate-context, and historical remediation.` | 1) Create a sandbox memory missing mandatory anchors or required frontmatter keys 2) `memory_save({ filePath:"<sandbox-file>", dryRun:true })` and verify contract-violation details 3) `memory_save({ filePath:"<sandbox-file>", force:true })` and verify rejection before indexing 4) Run the historical remediation audit on a sandbox root and verify repair/quarantine output is validator-clean 5) If using `historical-memory-remediation.js --apply`, verify the final canonical `manifest.json` / `summary.md` or rerun a dry audit after apply; treat `manifest.pre-apply.json` / `summary.pre-apply.md` as preserved pre-apply evidence only 6) Run the active corpus audit manifest and verify `0` active violations | Dry-run surfaces template-contract violations; non-dry-run rejects malformed files before index side effects; remediation leaves active files validator-clean; apply-mode reports distinguish pre-apply evidence from final post-apply state | Dry-run/save rejection output + remediation manifest + active corpus manifest | PASS if malformed files are rejected before write/index, apply-mode final reports are validator-clean for repairable sandbox cases, and the active audit reports no remaining structural violations | Inspect `shared/parsing/memory-template-contract.ts`, `scripts/memory/historical-memory-remediation.ts`, `scripts/core/workflow.ts`, and `mcp_server/handlers/memory-save.ts` |
-| NEW-124 | Automatic archival lifecycle coverage | Verify archive/unarchive keeps metadata rows while syncing BM25 and vec_memories behavior | `Validate automatic archival subsystem vector/BM25 parity and protected tier behavior.` | 1) Seed a normal-tier dormant memory and run archival scan 2) Verify `is_archived=1`, BM25 document removed, and vector row removed from `vec_memories` while `memory_index` row remains 3) Unarchive and verify BM25 is restored while vector re-embedding is deferred (no immediate vec row recreation) 4) Seed constitutional/critical memory and confirm archival scan skips protected tiers | Archived memory keeps metadata row with `is_archived=1`, BM25 artifacts are synchronized on archive/unarchive, vector rows are deleted on archive, and unarchive logs deferred vector re-embedding until next index scan; protected tiers are not auto-archived | Archival scan output + DB row checks (`memory_index`, `vec_memories`) + BM25 behavior evidence + unarchive deferred re-embedding log | PASS if archive/unarchive parity holds for metadata/BM25, vector deletion occurs on archive, deferred vector rebuild behavior is explicit on unarchive, and protected-tier safeguards hold | Inspect `archival-manager.ts` sync functions and protected-tier filtering logic |
-| NEW-125 | Hydra roadmap capability flags | Verify prefixed Hydra roadmap flags stay distinct from live runtime flags while remaining default-on unless explicitly opted out | `Validate memory roadmap flag snapshots without changing live graph-channel defaults.` | 1) `cd .opencode/skill/system-spec-kit/mcp_server` 2) `SPECKIT_GRAPH_UNIFIED=false node -e "const { getMemoryRoadmapDefaults } = require('./dist/lib/config/capability-flags.js'); console.log(JSON.stringify(getMemoryRoadmapDefaults('manual-125-a')))"` 3) `SPECKIT_HYDRA_PHASE=graph SPECKIT_HYDRA_GRAPH_UNIFIED=false node -e "const { getMemoryRoadmapDefaults } = require('./dist/lib/config/capability-flags.js'); console.log(JSON.stringify(getMemoryRoadmapDefaults('manual-125-b')))"` | First snapshot remains `phase:\"shared-rollout\"` with `capabilities.graphUnified:true`; second snapshot reports `phase:\"graph\"` with `capabilities.graphUnified:false` | Two JSON snapshots from the dist build | PASS if the runtime `SPECKIT_GRAPH_UNIFIED` flag does not flip roadmap metadata and the prefixed Hydra compatibility flag can explicitly opt out of the roadmap snapshot | Inspect `capability-flags.ts`; verify dist build is fresh; confirm only `SPECKIT_HYDRA_*` env vars are set in the second run |
-| NEW-126 | Memory roadmap baseline snapshot | Verify Phase 1 readiness baselines capture/persist metrics and handle missing context DBs without throwing | `Run the memory roadmap baseline snapshot verification suite.` | 1) `cd .opencode/skill/system-spec-kit/mcp_server` 2) `npm test -- --run tests/memory-state-baseline.vitest.ts` | Targeted suite passes; transcript shows persisted snapshot rows and missing-context DB zero fallback coverage | Test transcript + suite summary | PASS if `memory-state-baseline.vitest.ts` completes with all tests passing and no failures | Re-run `npm test -- --run tests/memory-state-baseline.vitest.ts -t persist`; inspect `lib/eval/memory-state-baseline.ts` and eval DB path resolution if assertions drift |
-| NEW-127 | Migration checkpoint scripts | Verify raw SQLite migration checkpoint create/restore helpers produce sidecar metadata and safe restore backups | `Run the migration checkpoint script verification suite.` | 1) `cd .opencode/skill/system-spec-kit/mcp_server` 2) `npm test -- --run tests/migration-checkpoint-scripts.vitest.ts` | Targeted suite passes; transcript shows checkpoint sidecar creation, restore success, and pre-restore backup coverage | Test transcript + suite summary | PASS if `migration-checkpoint-scripts.vitest.ts` completes with all tests passing and no failures | Re-run `npm test -- --run tests/migration-checkpoint-scripts.vitest.ts -t restore`; inspect `scripts/migrations/create-checkpoint.ts` and `scripts/migrations/restore-checkpoint.ts` if assertions drift |
-| NEW-128 | Schema compatibility validation | Verify backward-compatibility validation flags required schema gaps without throwing on partial databases | `Run the schema compatibility validation suite.` | 1) `cd .opencode/skill/system-spec-kit/mcp_server` 2) `npm test -- --run tests/vector-index-schema-compatibility.vitest.ts` | Targeted suite passes; transcript shows missing-table reporting and minimal-compatible schema success coverage | Test transcript + suite summary | PASS if `vector-index-schema-compatibility.vitest.ts` completes with all tests passing and no failures | Re-run `npm test -- --run tests/vector-index-schema-compatibility.vitest.ts -t compatible`; inspect `vector-index-schema.ts` required-table/column lists if assertions drift |
-| NEW-129 | Lineage state active projection and asOf resolution | Verify append-first lineage projection and deterministic `asOf` resolution | `Run the lineage state verification suite.` | 1) `cd .opencode/skill/system-spec-kit/mcp_server` 2) `npm test -- --run tests/memory-lineage-state.vitest.ts` 3) Inspect the output for active projection, `asOf`, and integrity failure coverage | Targeted suite passes; transcript shows active projection selection, deterministic `asOf` resolution, and malformed-chain detection | Test transcript + suite summary | PASS if `memory-lineage-state.vitest.ts` completes with all tests passing and the transcript shows both valid and malformed lineage cases | Re-run `npm test -- --run tests/memory-lineage-state.vitest.ts -t asOf`; inspect `lib/storage/lineage-state.ts` and `lib/search/vector-index-schema.ts` if projection or integrity assertions drift |
-| NEW-130 | Lineage backfill rollback drill | Verify dry-run planning, idempotent backfill, and checkpoint-backed rollback for Phase 2 lineage rollout | `Run the lineage backfill + rollback verification suite.` | 1) `cd .opencode/skill/system-spec-kit/mcp_server` 2) `npm test -- --run tests/memory-lineage-backfill.vitest.ts` 3) Inspect the output for dry-run counts, successful execution, zero-change rerun, and post-restore empty lineage tables | Targeted suite passes; transcript shows dry-run plan counts, successful backfill application, idempotent rerun, and checkpoint restore rollback | Test transcript + suite summary | PASS if `memory-lineage-backfill.vitest.ts` completes with all tests passing and shows both execution and rollback evidence | Re-run `npm test -- --run tests/memory-lineage-backfill.vitest.ts -t rollback`; inspect `lib/storage/lineage-state.ts` and `scripts/migrations/*checkpoint*.ts` if backfill or restore assertions drift |
+### Scenario Acceptance Rules
 
-## Phase System Features (PHASE-001..PHASE-005)
+For each executed scenario, check:
 
-| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
-|---|---|---|---|---|---|---|---|---|
-| PHASE-001 | Phase detection scoring | Run `recommend-level.sh --recommend-phases --json` on a high-complexity spec and verify scoring output | `Verify phase detection scoring produces valid 5-dimension output for a complex spec folder.` | 1) Create or identify a high-complexity spec folder (>500 LOC, multiple concerns) 2) `bash .opencode/skill/system-spec-kit/scripts/spec/recommend-level.sh --recommend-phases --json specs/<target-spec>` 3) Inspect JSON output for `phase_recommended`, `phase_score`, and `suggested_phase_count` fields 4) Verify all 5 scoring dimensions are present in output 5) Run on a simple spec folder and confirm `phase_recommended` is false | JSON output contains `phase_recommended` (boolean), `phase_score` (number), `suggested_phase_count` (number), and 5 dimension scores; simple specs score low | Command transcript + JSON output snapshot | PASS if all three top-level fields are present and correctly typed, 5 dimensions are scored, and simple vs complex specs produce differentiated results | Verify spec folder path exists and contains spec.md; check script has execute permission; inspect scoring dimension weights for miscalibration |
-| PHASE-002 | Phase folder creation | Run `create.sh "Test" --phase --level 3 --phases 3` and verify parent+children structure | `Create a phase-decomposed spec folder and verify parent and child structure.` | 1) `bash .opencode/skill/system-spec-kit/scripts/spec/create.sh "Phase Test" --phase --level 3 --phases 3 --phase-names "Design,Implement,Verify"` 2) Verify parent folder `specs/NNN-phase-test/` exists with spec.md containing Phase Documentation Map 3) Verify 3 child folders `001-design/`, `002-implement/`, `003-verify/` exist under parent 4) Verify each child has spec.md with parent back-reference 5) Verify `002-implement/spec.md` has predecessor link to `001-design` and successor link to `003-verify` 6) Verify Level 3 template files present in parent and each child | Parent folder with Phase Documentation Map in spec.md; 3 child folders with correct naming; back-references and predecessor/successor links in child spec.md files; Level 3 template files in all folders | Command transcript + `ls -R` of created structure + spec.md excerpts showing links | PASS if parent contains Phase Documentation Map listing all 3 children, each child has parent back-reference, middle child has both predecessor and successor links, and all folders contain Level 3 templates | Check create.sh supports --phase flag; verify --phase-names parsing; inspect template directory for Level 3 files; check folder naming collision with existing specs |
-| PHASE-003 | Recursive phase validation | Run `validate.sh --recursive` on a phase parent folder and verify per-phase results | `Run recursive validation on a phase parent and verify aggregated per-phase results.` | 1) Use the phase folder created in PHASE-002 (or create one via `create.sh "Validate Test" --phase --level 2 --phases 2`) 2) `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh --recursive specs/<phase-parent>` 3) Inspect output for per-phase validation results 4) Verify JSON output contains `phases` array with one entry per child folder 5) Verify combined exit code matches highest severity across children 6) Introduce a deliberate error in one child spec.md and re-run; verify aggregated exit code is 2 (error) | Per-phase pass/fail in output; JSON `phases` array; combined exit code reflects worst child; error propagation works | Command transcript + validation output + JSON phases array + exit code after deliberate error | PASS if `--recursive` discovers all `[0-9][0-9][0-9]-*/` child folders, validates each independently, produces aggregated JSON with per-phase status, and combined exit code escalates to highest severity | Verify parent folder contains child folders matching `[0-9][0-9][0-9]-*/` pattern; check validate.sh supports --recursive flag; inspect exit code handling logic |
-| PHASE-004 | Phase link validation | Run `check-phase-links.sh` on a phase folder and verify 4 link checks at warn severity | `Validate phase link integrity across parent and child folders.` | 1) Use the phase folder from PHASE-002 2) `bash .opencode/skill/system-spec-kit/scripts/rules/check-phase-links.sh specs/<phase-parent>` 3) Verify output checks 4 link types: Phase Documentation Map, parent back-references, predecessor links, successor links 4) Confirm all links pass on a well-formed phase folder (exit code 0) 5) Remove a child folder and re-run; verify Phase Documentation Map check warns about missing child (exit code 1) 6) Edit a child spec.md to corrupt the parent back-reference and re-run; verify back-reference check warns (exit code 1) 7) Confirm all issues are reported at warn severity, not error | 4 link check types reported; well-formed folder produces exit 0; missing child produces warn on Phase Documentation Map; corrupted back-reference produces warn; all issues at warn severity | Command transcript + output for valid and invalid cases + exit codes | PASS if all 4 link types are checked, valid folders exit 0, missing/broken links exit 1 with warn-level messages, and no link issue produces error severity | Verify check-phase-links.sh exists and has execute permission; check spec.md contains expected link markers; verify child folder naming matches expected pattern |
-| PHASE-005 | Phase command workflow | Execute `/spec_kit:phase` command in auto mode and verify 7-step workflow | `Run the spec_kit:phase command end-to-end and verify all 7 workflow steps complete.` | 1) Invoke `/spec_kit:phase` in auto mode for a target spec folder 2) Verify Step 1: Phase scoring runs (recommend-level.sh --recommend-phases) 3) Verify Step 2: Phase count determination (from scoring or user input) 4) Verify Step 3: Phase naming (auto-generated or user-provided) 5) Verify Step 4: Phase folder creation (create.sh --phase) 6) Verify Step 5: Template population in all phase folders 7) Verify Step 6: Phase link validation (check-phase-links.sh) 8) Verify Step 7: Recursive validation (validate.sh --recursive) passes 9) Verify final output reports success with folder paths | All 7 steps execute in sequence; scoring output visible; folders created with correct structure; link validation passes; recursive validation passes; success summary with paths | Command transcript covering all 7 steps + final output summary | PASS if all 7 workflow steps complete without error, created folders match expected structure, link validation reports no warnings, and recursive validation exits 0 | Run individual steps in isolation to identify failing step; verify script permissions; check for missing dependencies; inspect auto mode decision logic for phase count/naming |
+1. Preconditions were satisfied.
+2. Prompt and command sequence were executed as written.
+3. Expected signals are present.
+4. Evidence is complete and readable.
+5. Outcome rationale is explicit.
 
-## Feature Catalog Cross-Reference Index
+Scenario verdict:
+- `PASS`: all acceptance checks true
+- `PARTIAL`: core behavior works but non-critical evidence or metadata is incomplete
+- `FAIL`: expected behavior missing, contradictory output, or critical check failed
 
-Bidirectional mapping between playbook scenarios and feature catalog entries.
-Catalog base path: `feature_catalog/` (relative to `022-hybrid-rag-fusion/`)
+### Feature Verdict Rules
 
-### Existing Features (EX-001..035)
+- `PASS`: all mapped scenarios for feature are `PASS`
+- `PARTIAL`: at least one mapped scenario is `PARTIAL`, none are `FAIL`
+- `FAIL`: any mapped scenario is `FAIL`
 
-| Playbook ID | Catalog Entry |
-|---|---|
-| EX-001 | [01--retrieval/01-unified-context-retrieval-memorycontext.md](../feature_catalog/01--retrieval/01-unified-context-retrieval-memorycontext.md) |
-| EX-002 | [01--retrieval/02-semantic-and-lexical-search-memorysearch.md](../feature_catalog/01--retrieval/02-semantic-and-lexical-search-memorysearch.md) |
-| EX-003 | [01--retrieval/03-trigger-phrase-matching-memorymatchtriggers.md](../feature_catalog/01--retrieval/03-trigger-phrase-matching-memorymatchtriggers.md) |
-| EX-004 | [01--retrieval/04-hybrid-search-pipeline.md](../feature_catalog/01--retrieval/04-hybrid-search-pipeline.md) |
-| EX-005 | [01--retrieval/05-4-stage-pipeline-architecture.md](../feature_catalog/01--retrieval/05-4-stage-pipeline-architecture.md) |
-| EX-006 | [02--mutation/01-memory-indexing-memorysave.md](../feature_catalog/02--mutation/01-memory-indexing-memorysave.md) |
-| EX-007 | [02--mutation/02-memory-metadata-update-memoryupdate.md](../feature_catalog/02--mutation/02-memory-metadata-update-memoryupdate.md) |
-| EX-008 | [02--mutation/03-single-and-folder-delete-memorydelete.md](../feature_catalog/02--mutation/03-single-and-folder-delete-memorydelete.md) |
-| EX-009 | [02--mutation/04-tier-based-bulk-deletion-memorybulkdelete.md](../feature_catalog/02--mutation/04-tier-based-bulk-deletion-memorybulkdelete.md) |
-| EX-010 | [02--mutation/05-validation-feedback-memoryvalidate.md](../feature_catalog/02--mutation/05-validation-feedback-memoryvalidate.md) |
-| EX-011 | [03--discovery/01-memory-browser-memorylist.md](../feature_catalog/03--discovery/01-memory-browser-memorylist.md) |
-| EX-012 | [03--discovery/02-system-statistics-memorystats.md](../feature_catalog/03--discovery/02-system-statistics-memorystats.md) |
-| EX-013 | [03--discovery/03-health-diagnostics-memoryhealth.md](../feature_catalog/03--discovery/03-health-diagnostics-memoryhealth.md) |
-| EX-014 | [04--maintenance/01-workspace-scanning-and-indexing-memoryindexscan.md](../feature_catalog/04--maintenance/01-workspace-scanning-and-indexing-memoryindexscan.md) |
-| EX-015 | [05--lifecycle/01-checkpoint-creation-checkpointcreate.md](../feature_catalog/05--lifecycle/01-checkpoint-creation-checkpointcreate.md) |
-| EX-016 | [05--lifecycle/02-checkpoint-listing-checkpointlist.md](../feature_catalog/05--lifecycle/02-checkpoint-listing-checkpointlist.md) |
-| EX-017 | [05--lifecycle/03-checkpoint-restore-checkpointrestore.md](../feature_catalog/05--lifecycle/03-checkpoint-restore-checkpointrestore.md) |
-| EX-018 | [05--lifecycle/04-checkpoint-deletion-checkpointdelete.md](../feature_catalog/05--lifecycle/04-checkpoint-deletion-checkpointdelete.md) |
-| EX-019 | [06--analysis/01-causal-edge-creation-memorycausallink.md](../feature_catalog/06--analysis/01-causal-edge-creation-memorycausallink.md) |
-| EX-020 | [06--analysis/02-causal-graph-statistics-memorycausalstats.md](../feature_catalog/06--analysis/02-causal-graph-statistics-memorycausalstats.md) |
-| EX-021 | [06--analysis/03-causal-edge-deletion-memorycausalunlink.md](../feature_catalog/06--analysis/03-causal-edge-deletion-memorycausalunlink.md) |
-| EX-022 | [06--analysis/04-causal-chain-tracing-memorydriftwhy.md](../feature_catalog/06--analysis/04-causal-chain-tracing-memorydriftwhy.md) |
-| EX-023 | [06--analysis/05-epistemic-baseline-capture-taskpreflight.md](../feature_catalog/06--analysis/05-epistemic-baseline-capture-taskpreflight.md) |
-| EX-024 | [06--analysis/06-post-task-learning-measurement-taskpostflight.md](../feature_catalog/06--analysis/06-post-task-learning-measurement-taskpostflight.md) |
-| EX-025 | [06--analysis/07-learning-history-memorygetlearninghistory.md](../feature_catalog/06--analysis/07-learning-history-memorygetlearninghistory.md) |
-| EX-026 | [07--evaluation/01-ablation-studies-evalrunablation.md](../feature_catalog/07--evaluation/01-ablation-studies-evalrunablation.md) |
-| EX-027 | [07--evaluation/02-reporting-dashboard-evalreportingdashboard.md](../feature_catalog/07--evaluation/02-reporting-dashboard-evalreportingdashboard.md) |
-| EX-028 | [19--feature-flag-reference/01-1-search-pipeline-features-speckit.md](../feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md) |
-| EX-029 | [19--feature-flag-reference/02-2-session-and-cache.md](../feature_catalog/19--feature-flag-reference/02-2-session-and-cache.md) |
-| EX-030 | [19--feature-flag-reference/03-3-mcp-configuration.md](../feature_catalog/19--feature-flag-reference/03-3-mcp-configuration.md) |
-| EX-031 | [19--feature-flag-reference/04-4-memory-and-storage.md](../feature_catalog/19--feature-flag-reference/04-4-memory-and-storage.md) |
-| EX-032 | [19--feature-flag-reference/05-5-embedding-and-api.md](../feature_catalog/19--feature-flag-reference/05-5-embedding-and-api.md) |
-| EX-033 | [19--feature-flag-reference/06-6-debug-and-telemetry.md](../feature_catalog/19--feature-flag-reference/06-6-debug-and-telemetry.md) |
-| EX-034 | [19--feature-flag-reference/07-7-ci-and-build-informational.md](../feature_catalog/19--feature-flag-reference/07-7-ci-and-build-informational.md) |
-| EX-035 | [04--maintenance/02-startup-runtime-compatibility-guards.md](../feature_catalog/04--maintenance/02-startup-runtime-compatibility-guards.md) |
+Hard rule:
+- Any critical-path scenario `FAIL` forces feature verdict to `FAIL`.
 
-### New Features (NEW-001..NEW-149)
+### Release Readiness Rule
+
+Release is `READY` only when:
+
+1. No feature verdict is `FAIL`.
+2. All critical scenarios are `PASS`.
+3. Coverage is 100% of playbook scenarios defined by the root index and backed by per-feature files (`COVERED_FEATURES == TOTAL_FEATURES`).
+4. No unresolved blocking triage item remains.
+
+Otherwise release is `NOT READY`.
+
+Deterministic coverage check (run from repository root):
+
+```bash
+TOTAL_FEATURES=$(python3 - <<'PY'
+from pathlib import Path
+
+root = Path('.opencode/skill/system-spec-kit/manual_testing_playbook')
+count = sum(
+    1
+    for path in root.glob('[0-9][0-9]--*/*.md')
+    if path.is_file()
+)
+print(count)
+PY
+)
+```
+
+Final verdict report must include `COVERED_FEATURES/TOTAL_FEATURES`.
+
+### Destructive Scenario Rules
+
+- `EX-008`, `EX-009`, `EX-018`, and `EX-021` MUST run on non-production data only.
+- Before executing, verify the affected resource can be rebuilt from scratch.
+- Never run destructive scenarios in parallel with other scenarios that depend on the same resource.
+
+### Memory/Spec-Kit Mandatory Flows
+
+Treat the root playbook plus referenced per-feature files as the canonical source of truth:
+- `M-001 Context Recovery and Continuation`
+- `M-002 Targeted Memory Lookup`
+- `M-003 Context Save + Index Update`
+- `M-004 Main-Agent Review and Verdict Handoff`
+- `M-005 Outsourced Agent Memory Capture Round-Trip`
+- `M-006 Stateless Enrichment and Alignment Guardrails`
+
+Rule: keep global verdict logic in the root playbook. Put feature-specific acceptance caveats in the relevant per-feature file instead of in a separate sidecar document.
+
+---
+
+## 6. SUB-AGENT ORCHESTRATION AND WAVE PLANNING
+
+This section records coordinator/worker utilization guidance for assembling or reviewing playbook bundles. It is not a runtime support matrix and does not, by itself, prove Hydra feature parity for Codex, Gemini, or any other CLI.
+
+The wave plans here apply to the split playbook package: the root `manual_testing_playbook.md` acts as the directory, review surface, and orchestration guide, while the detailed scenario contracts live in the numbered category folders at the playbook root.
+
+### Run A: Codex 5.3 xhigh (Observed)
+
+Observed orchestration:
+- Hard cap detected: 6 total sub-agent threads
+- Effective model: 1 coordinator + 5 workers
+- Saturation strategy: full worker saturation in waves
+
+| Runtime | Reported/Observed Capacity | Workers Used | Coordinator | Wave Count | Saturation |
+|---|---:|---:|---:|---:|---:|
+| Codex 5.3 xhigh | 6 total | 5 | 1 | 2 | 100% while active |
+
+### Run B: Gemini 3.1 Pro Preview (Reported)
+
+Reported orchestration in output:
+- 1 coordinator + 14 workers
+- 2 waves, 100% stated saturation
+
+| Runtime | Reported/Observed Capacity | Workers Used | Coordinator | Wave Count | Saturation |
+|---|---:|---:|---:|---:|---:|
+| Gemini 3.1 Pro Preview | 15 total (reported) | 14 | 1 | 2 | 100% (reported) |
+
+### Merged Operational Rule
+
+1. Probe runtime capacity at start.
+2. Reserve one coordinator.
+3. Saturate remaining worker slots.
+4. Pre-assign explicit scenario IDs, per-feature files, and ranges to each wave before execution.
+5. Run destructive scenarios (`EX-008`, `EX-009`, `EX-018`, `EX-021`) in dedicated sandbox-only waves.
+6. After each wave, execute playbook `M-003` (save + index), then begin the next wave via `M-001` continuation.
+7. Record utilization table and evidence paths in the final report.
+
+### What Belongs In Per-Feature Files
+
+Use the per-feature files for feature-specific:
+- Real user requests
+- Orchestrator prompts
+- Expected delegation or alternate-CLI routing
+- Desired user-visible outcomes
+- Isolation constraints or acceptance caveats that do not apply globally
+
+---
+
+## 7. EXISTING FEATURES
+
+### EX-001 | Unified context retrieval (memory_context)
+
+#### Description
+Intent-aware context pull.
+
+#### Current Reality
+Prompt: `Use memory_context in auto mode for: fix flaky index scan retry logic`
+
+Relevant bounded context returned; no empty response
+
+#### Test Execution
+> **Feature File:** [EX-001](01--existing-features/001-unified-context-retrieval-memory-context.md)
+> **Catalog:** [01--retrieval/01-unified-context-retrieval-memorycontext.md](../feature_catalog/01--retrieval/01-unified-context-retrieval-memorycontext.md)
+
+### EX-002 | Semantic and lexical search (memory_search)
+
+#### Description
+Hybrid precision check.
+
+#### Current Reality
+Prompt: `Search for checkpoint restore clearExisting transaction rollback`
+
+Relevant ranked results with hybrid signals
+
+#### Test Execution
+> **Feature File:** [EX-002](01--existing-features/002-semantic-and-lexical-search-memory-search.md)
+> **Catalog:** [01--retrieval/02-semantic-and-lexical-search-memorysearch.md](../feature_catalog/01--retrieval/02-semantic-and-lexical-search-memorysearch.md)
+
+### EX-003 | Trigger phrase matching (memory_match_triggers)
+
+#### Description
+Fast recall path.
+
+#### Current Reality
+Prompt: `Run trigger matching for resume previous session blockers with cognitive=true`
+
+Fast trigger hits + cognitive enrichment
+
+#### Test Execution
+> **Feature File:** [EX-003](01--existing-features/003-trigger-phrase-matching-memory-match-triggers.md)
+> **Catalog:** [01--retrieval/03-trigger-phrase-matching-memorymatchtriggers.md](../feature_catalog/01--retrieval/03-trigger-phrase-matching-memorymatchtriggers.md)
+
+### EX-004 | Hybrid search pipeline
+
+#### Description
+Channel fusion sanity.
+
+#### Current Reality
+Prompt: `Validate graph search fallback tiers behavior`
+
+Non-empty diverse results; fallback not empty
+
+#### Test Execution
+> **Feature File:** [EX-004](01--existing-features/004-hybrid-search-pipeline.md)
+> **Catalog:** [01--retrieval/04-hybrid-search-pipeline.md](../feature_catalog/01--retrieval/04-hybrid-search-pipeline.md)
+
+### EX-005 | 4-stage pipeline architecture
+
+#### Description
+Stage invariant verification.
+
+#### Current Reality
+Prompt: `Search Stage4Invariant score snapshot verifyScoreInvariant`
+
+No invariant errors; stable final scoring
+
+#### Test Execution
+> **Feature File:** [EX-005](01--existing-features/005-4-stage-pipeline-architecture.md)
+> **Catalog:** [01--retrieval/05-4-stage-pipeline-architecture.md](../feature_catalog/01--retrieval/05-4-stage-pipeline-architecture.md)
+
+### EX-006 | Memory indexing (memory_save)
+
+#### Description
+New memory ingestion.
+
+#### Current Reality
+Prompt: `Index memory file and report action`
+
+Save action reported; searchable result appears; no template-contract or insufficiency rejection
+
+#### Test Execution
+> **Feature File:** [EX-006](01--existing-features/006-memory-indexing-memory-save.md)
+> **Catalog:** [02--mutation/01-memory-indexing-memorysave.md](../feature_catalog/02--mutation/01-memory-indexing-memorysave.md)
+
+### EX-007 | Memory metadata update (memory_update)
+
+#### Description
+Metadata + re-embed update.
+
+#### Current Reality
+Prompt: `Update memory title and triggers`
+
+Updated metadata reflected in retrieval
+
+#### Test Execution
+> **Feature File:** [EX-007](01--existing-features/007-memory-metadata-update-memory-update.md)
+> **Catalog:** [02--mutation/02-memory-metadata-update-memoryupdate.md](../feature_catalog/02--mutation/02-memory-metadata-update-memoryupdate.md)
+
+### EX-008 | Single and folder delete (memory_delete)
+
+#### Description
+Atomic single delete.
+
+#### Current Reality
+Prompt: `Delete memory ID and verify removal`
+
+Deleted item absent from retrieval
+
+#### Test Execution
+> **Feature File:** [EX-008](01--existing-features/008-single-and-folder-delete-memory-delete.md)
+> **Catalog:** [02--mutation/03-single-and-folder-delete-memorydelete.md](../feature_catalog/02--mutation/03-single-and-folder-delete-memorydelete.md)
+
+### EX-009 | Tier-based bulk deletion (memory_bulk_delete)
+
+#### Description
+Tier cleanup with safety.
+
+#### Current Reality
+Prompt: `Delete deprecated tier in scoped folder`
+
+Deletion count + checkpoint created
+
+#### Test Execution
+> **Feature File:** [EX-009](01--existing-features/009-tier-based-bulk-deletion-memory-bulk-delete.md)
+> **Catalog:** [02--mutation/04-tier-based-bulk-deletion-memorybulkdelete.md](../feature_catalog/02--mutation/04-tier-based-bulk-deletion-memorybulkdelete.md)
+
+### EX-010 | Validation feedback (memory_validate)
+
+#### Description
+Feedback learning loop.
+
+#### Current Reality
+Prompt: `Record positive validation with queryId`
+
+Confidence/promotion metadata updates
+
+#### Test Execution
+> **Feature File:** [EX-010](01--existing-features/010-validation-feedback-memory-validate.md)
+> **Catalog:** [02--mutation/05-validation-feedback-memoryvalidate.md](../feature_catalog/02--mutation/05-validation-feedback-memoryvalidate.md)
+
+### EX-011 | Memory browser (memory_list)
+
+#### Description
+Folder inventory audit.
+
+#### Current Reality
+Prompt: `List memories in target spec folder`
+
+Paginated list and totals
+
+#### Test Execution
+> **Feature File:** [EX-011](01--existing-features/011-memory-browser-memory-list.md)
+> **Catalog:** [03--discovery/01-memory-browser-memorylist.md](../feature_catalog/03--discovery/01-memory-browser-memorylist.md)
+
+### EX-012 | System statistics (memory_stats)
+
+#### Description
+System baseline snapshot.
+
+#### Current Reality
+Prompt: `Return stats with composite ranking`
+
+Counts, tiers, folder ranking present
+
+#### Test Execution
+> **Feature File:** [EX-012](01--existing-features/012-system-statistics-memory-stats.md)
+> **Catalog:** [03--discovery/02-system-statistics-memorystats.md](../feature_catalog/03--discovery/02-system-statistics-memorystats.md)
+
+### EX-013 | Health diagnostics (memory_health)
+
+#### Description
+Index/FTS integrity check.
+
+#### Current Reality
+Prompt: `Run full health and divergent_aliases`
+
+healthy/degraded status and diagnostics
+
+#### Test Execution
+> **Feature File:** [EX-013](01--existing-features/013-health-diagnostics-memory-health.md)
+> **Catalog:** [03--discovery/03-health-diagnostics-memoryhealth.md](../feature_catalog/03--discovery/03-health-diagnostics-memoryhealth.md)
+
+### EX-014 | Workspace scanning and indexing (memory_index_scan)
+
+#### Description
+Incremental sync run.
+
+#### Current Reality
+Prompt: `Run index scan for changed docs`
+
+Scan summary and updated index state
+
+#### Test Execution
+> **Feature File:** [EX-014](01--existing-features/014-workspace-scanning-and-indexing-memory-index-scan.md)
+> **Catalog:** [04--maintenance/01-workspace-scanning-and-indexing-memoryindexscan.md](../feature_catalog/04--maintenance/01-workspace-scanning-and-indexing-memoryindexscan.md)
+
+### EX-015 | Checkpoint creation (checkpoint_create)
+
+#### Description
+Pre-destructive backup.
+
+#### Current Reality
+Prompt: `Create checkpoint pre-bulk-delete`
+
+New checkpoint listed
+
+#### Test Execution
+> **Feature File:** [EX-015](01--existing-features/015-checkpoint-creation-checkpoint-create.md)
+> **Catalog:** [05--lifecycle/01-checkpoint-creation-checkpointcreate.md](../feature_catalog/05--lifecycle/01-checkpoint-creation-checkpointcreate.md)
+
+### EX-016 | Checkpoint listing (checkpoint_list)
+
+#### Description
+Recovery asset discovery.
+
+#### Current Reality
+Prompt: `List checkpoints newest first`
+
+Available restore points displayed
+
+#### Test Execution
+> **Feature File:** [EX-016](01--existing-features/016-checkpoint-listing-checkpoint-list.md)
+> **Catalog:** [05--lifecycle/02-checkpoint-listing-checkpointlist.md](../feature_catalog/05--lifecycle/02-checkpoint-listing-checkpointlist.md)
+
+### EX-017 | Checkpoint restore (checkpoint_restore)
+
+#### Description
+Rollback restore drill.
+
+#### Current Reality
+Prompt: `Restore checkpoint with merge mode`
+
+Restored data + healthy state
+
+#### Test Execution
+> **Feature File:** [EX-017](01--existing-features/017-checkpoint-restore-checkpoint-restore.md)
+> **Catalog:** [05--lifecycle/03-checkpoint-restore-checkpointrestore.md](../feature_catalog/05--lifecycle/03-checkpoint-restore-checkpointrestore.md)
+
+### EX-018 | Checkpoint deletion (checkpoint_delete)
+
+#### Description
+Old snapshot cleanup.
+
+#### Current Reality
+Prompt: `Delete stale checkpoint by name`
+
+Removed checkpoint absent from list
+
+#### Test Execution
+> **Feature File:** [EX-018](01--existing-features/018-checkpoint-deletion-checkpoint-delete.md)
+> **Catalog:** [05--lifecycle/04-checkpoint-deletion-checkpointdelete.md](../feature_catalog/05--lifecycle/04-checkpoint-deletion-checkpointdelete.md)
+
+### EX-019 | Causal edge creation (memory_causal_link)
+
+#### Description
+Causal provenance linking.
+
+#### Current Reality
+Prompt: `Link source->target supports strength 0.8`
+
+Edge appears in chain trace
+
+#### Test Execution
+> **Feature File:** [EX-019](01--existing-features/019-causal-edge-creation-memory-causal-link.md)
+> **Catalog:** [06--analysis/01-causal-edge-creation-memorycausallink.md](../feature_catalog/06--analysis/01-causal-edge-creation-memorycausallink.md)
+
+### EX-020 | Causal graph statistics (memory_causal_stats)
+
+#### Description
+Graph coverage review.
+
+#### Current Reality
+Prompt: `Return causal stats and coverage`
+
+Coverage and edge metrics present
+
+#### Test Execution
+> **Feature File:** [EX-020](01--existing-features/020-causal-graph-statistics-memory-causal-stats.md)
+> **Catalog:** [06--analysis/02-causal-graph-statistics-memorycausalstats.md](../feature_catalog/06--analysis/02-causal-graph-statistics-memorycausalstats.md)
+
+### EX-021 | Causal edge deletion (memory_causal_unlink)
+
+#### Description
+Edge correction.
+
+#### Current Reality
+Prompt: `Delete edge and re-trace`
+
+Removed edge absent in trace
+
+#### Test Execution
+> **Feature File:** [EX-021](01--existing-features/021-causal-edge-deletion-memory-causal-unlink.md)
+> **Catalog:** [06--analysis/03-causal-edge-deletion-memorycausalunlink.md](../feature_catalog/06--analysis/03-causal-edge-deletion-memorycausalunlink.md)
+
+### EX-022 | Causal chain tracing (memory_drift_why)
+
+#### Description
+Decision why-trace.
+
+#### Current Reality
+Prompt: `Trace both directions to depth 4`
+
+Chain includes expected relations
+
+#### Test Execution
+> **Feature File:** [EX-022](01--existing-features/022-causal-chain-tracing-memory-drift-why.md)
+> **Catalog:** [06--analysis/04-causal-chain-tracing-memorydriftwhy.md](../feature_catalog/06--analysis/04-causal-chain-tracing-memorydriftwhy.md)
+
+### EX-023 | Epistemic baseline capture (task_preflight)
+
+#### Description
+Pre-task baseline logging.
+
+#### Current Reality
+Prompt: `Create preflight for pipeline-v2-audit`
+
+Baseline record created
+
+#### Test Execution
+> **Feature File:** [EX-023](01--existing-features/023-epistemic-baseline-capture-task-preflight.md)
+> **Catalog:** [06--analysis/05-epistemic-baseline-capture-taskpreflight.md](../feature_catalog/06--analysis/05-epistemic-baseline-capture-taskpreflight.md)
+
+### EX-024 | Post-task learning measurement (task_postflight)
+
+#### Description
+Learning closeout.
+
+#### Current Reality
+Prompt: `Complete postflight for pipeline-v2-audit`
+
+Delta/learning record saved
+
+#### Test Execution
+> **Feature File:** [EX-024](01--existing-features/024-post-task-learning-measurement-task-postflight.md)
+> **Catalog:** [06--analysis/06-post-task-learning-measurement-taskpostflight.md](../feature_catalog/06--analysis/06-post-task-learning-measurement-taskpostflight.md)
+
+### EX-025 | Learning history (memory_get_learning_history)
+
+#### Description
+Trend review.
+
+#### Current Reality
+Prompt: `Show completed learning history`
+
+Historical entries returned
+
+#### Test Execution
+> **Feature File:** [EX-025](01--existing-features/025-learning-history-memory-get-learning-history.md)
+> **Catalog:** [06--analysis/07-learning-history-memorygetlearninghistory.md](../feature_catalog/06--analysis/07-learning-history-memorygetlearninghistory.md)
+
+### EX-026 | Ablation studies (eval_run_ablation)
+
+#### Description
+Channel impact experiment.
+
+#### Current Reality
+Prompt: `Run ablation on retrieval channels`
+
+Per-channel deltas reported
+
+#### Test Execution
+> **Feature File:** [EX-026](01--existing-features/026-ablation-studies-eval-run-ablation.md)
+> **Catalog:** [07--evaluation/01-ablation-studies-evalrunablation.md](../feature_catalog/07--evaluation/01-ablation-studies-evalrunablation.md)
+
+### EX-027 | Reporting dashboard (eval_reporting_dashboard)
+
+#### Description
+Eval reporting pass.
+
+#### Current Reality
+Prompt: `Generate the latest dashboard report`
+
+Trend/channel/summary data present in supported runtime formats
+
+#### Test Execution
+> **Feature File:** [EX-027](01--existing-features/027-reporting-dashboard-eval-reporting-dashboard.md)
+> **Catalog:** [07--evaluation/02-reporting-dashboard-evalreportingdashboard.md](../feature_catalog/07--evaluation/02-reporting-dashboard-evalreportingdashboard.md)
+
+### EX-028 | 1. Search Pipeline Features (SPECKIT_*)
+
+#### Description
+Flag catalog verification.
+
+#### Current Reality
+Prompt: `List SPECKIT flags active/inert/deprecated`
+
+Accurate flag classification
+
+#### Test Execution
+> **Feature File:** [EX-028](01--existing-features/028-1-search-pipeline-features-speckit.md)
+> **Catalog:** [19--feature-flag-reference/01-1-search-pipeline-features-speckit.md](../feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md)
+
+### EX-029 | 2. Session and Cache
+
+#### Description
+Session policy audit.
+
+#### Current Reality
+Prompt: `Retrieve dedup/cache policy settings`
+
+Session/cache controls found
+
+#### Test Execution
+> **Feature File:** [EX-029](01--existing-features/029-2-session-and-cache.md)
+> **Catalog:** [19--feature-flag-reference/02-2-session-and-cache.md](../feature_catalog/19--feature-flag-reference/02-2-session-and-cache.md)
+
+### EX-030 | 3. MCP Configuration
+
+#### Description
+MCP limits audit.
+
+#### Current Reality
+Prompt: `Find MCP validation settings defaults`
+
+MCP guardrails returned
+
+#### Test Execution
+> **Feature File:** [EX-030](01--existing-features/030-3-mcp-configuration.md)
+> **Catalog:** [19--feature-flag-reference/03-3-mcp-configuration.md](../feature_catalog/19--feature-flag-reference/03-3-mcp-configuration.md)
+
+### EX-031 | 4. Memory and Storage
+
+#### Description
+Storage precedence check.
+
+#### Current Reality
+Prompt: `Explain DB path precedence env vars`
+
+Precedence chain identified
+
+#### Test Execution
+> **Feature File:** [EX-031](01--existing-features/031-4-memory-and-storage.md)
+> **Catalog:** [19--feature-flag-reference/04-4-memory-and-storage.md](../feature_catalog/19--feature-flag-reference/04-4-memory-and-storage.md)
+
+### EX-032 | 5. Embedding and API
+
+#### Description
+Provider selection audit.
+
+#### Current Reality
+Prompt: `Retrieve embedding provider selection rules`
+
+Provider rules and key precedence shown
+
+#### Test Execution
+> **Feature File:** [EX-032](01--existing-features/032-5-embedding-and-api.md)
+> **Catalog:** [19--feature-flag-reference/05-5-embedding-and-api.md](../feature_catalog/19--feature-flag-reference/05-5-embedding-and-api.md)
+
+### EX-033 | 6. Debug and Telemetry
+
+#### Description
+Observability toggle check.
+
+#### Current Reality
+Prompt: `List telemetry/debug vars and separate opt-in flags from inert flags`
+
+Debug/telemetry controls identified
+
+#### Test Execution
+> **Feature File:** [EX-033](01--existing-features/033-6-debug-and-telemetry.md)
+> **Catalog:** [19--feature-flag-reference/06-6-debug-and-telemetry.md](../feature_catalog/19--feature-flag-reference/06-6-debug-and-telemetry.md)
+
+### EX-034 | 7. CI and Build (informational)
+
+#### Description
+Branch metadata source audit.
+
+#### Current Reality
+Prompt: `Find branch env vars used in checkpoint metadata`
+
+Branch source vars surfaced
+
+#### Test Execution
+> **Feature File:** [EX-034](01--existing-features/034-7-ci-and-build-informational.md)
+> **Catalog:** [19--feature-flag-reference/07-7-ci-and-build-informational.md](../feature_catalog/19--feature-flag-reference/07-7-ci-and-build-informational.md)
+
+### EX-035 | Startup runtime compatibility guards
+
+#### Description
+Startup diagnostics verification.
+
+#### Current Reality
+Prompt: `Run the dedicated startup guard validation suite`
+
+Targeted suite passes; runtime mismatch, marker creation, and SQLite diagnostics coverage are visible in the transcript
+
+#### Test Execution
+> **Feature File:** [EX-035](01--existing-features/035-startup-runtime-compatibility-guards.md)
+> **Catalog:** [04--maintenance/02-startup-runtime-compatibility-guards.md](../feature_catalog/04--maintenance/02-startup-runtime-compatibility-guards.md)
+
+---
+
+## 8. NEW FEATURES
 
 Note: NEW-042, NEW-119, NEW-131, and NEW-132 all map to the same catalog entry for spec folder description discovery.
 
-| Playbook ID | Catalog Entry |
-|---|---|
-| NEW-001 | [08--bug-fixes-and-data-integrity/01-graph-channel-id-fix.md](../feature_catalog/08--bug-fixes-and-data-integrity/01-graph-channel-id-fix.md) | Graph channel returns >0 hits; channel attribution includes graph source | Command transcript + search output showing graph channel contribution count | PASS: Graph channel contributes >=1 hit when causal edges exist; FAIL: Graph hits = 0 despite valid edges | Verify causal edges exist via `memory_causal_stats()` → Check graph channel ID matches schema → Inspect channel activation flags |
-| NEW-002 | [08--bug-fixes-and-data-integrity/02-chunk-collapse-deduplication.md](../feature_catalog/08--bug-fixes-and-data-integrity/02-chunk-collapse-deduplication.md) | No duplicate memory IDs in results; collapsed chunks yield unique parents only | Search output with result IDs + dedup count before/after collapse | PASS: Zero duplicate parent IDs in collapsed results; FAIL: Same parent ID appears >1 time in output | Check chunk parentId linkage → Verify dedup runs after collapse stage → Inspect includeContent flag behavior |
-| NEW-003 | [08--bug-fixes-and-data-integrity/03-co-activation-fan-effect-divisor.md](../feature_catalog/08--bug-fixes-and-data-integrity/03-co-activation-fan-effect-divisor.md) | Hub node score dampened proportionally to fan-out degree; non-hub scores unaffected | Query output showing hub vs non-hub score comparison across repeated queries | PASS: Hub node contribution decreases as degree increases; no single hub dominates >50% of top-5; FAIL: Hub monopolizes results | Check fan-effect divisor formula → Verify degree count accuracy → Inspect co-activation weight cap |
-| NEW-004 | [08--bug-fixes-and-data-integrity/04-sha-256-content-hash-deduplication.md](../feature_catalog/08--bug-fixes-and-data-integrity/04-sha-256-content-hash-deduplication.md) | Second save returns skip/no-op status; no new embedding row created; content hash matches | Save output for both calls + DB query showing single embedding row | PASS: Re-save skips embedding and reports duplicate; FAIL: Duplicate embedding created or hash mismatch | Verify SHA-256 hash computation → Check content normalization before hashing → Inspect dedup lookup query |
-| NEW-005 | [09--evaluation-and-measurement/01-evaluation-database-and-schema.md](../feature_catalog/09--evaluation-and-measurement/01-evaluation-database-and-schema.md) | Eval tables created in separate DB/schema; retrieval events logged without affecting main memory DB | Eval DB schema dump + retrieval event rows + main DB integrity check | PASS: Eval data isolated in dedicated tables; main DB unaffected; FAIL: Eval writes pollute main memory tables | Check eval DB path configuration → Verify schema migration ran → Inspect table isolation boundaries |
-| NEW-006 | [09--evaluation-and-measurement/02-core-metric-computation.md](../feature_catalog/09--evaluation-and-measurement/02-core-metric-computation.md) | Metric battery returns precision, recall, MRR, NDCG values; all within valid ranges | Eval metric output with ground truth comparison + per-metric values | PASS: All core metrics computed with values in [0,1] range; FAIL: Missing metrics or out-of-range values | Verify ground truth corpus is seeded → Check metric computation functions → Inspect edge cases (empty results, single result) |
-| NEW-007 | [09--evaluation-and-measurement/03-observer-effect-mitigation.md](../feature_catalog/09--evaluation-and-measurement/03-observer-effect-mitigation.md) | Search returns normal results even when eval logging throws; no latency spike from logging failure | Search output during induced logging failure + timing comparison with/without failure | PASS: Search completes successfully and returns expected results despite logging failure; FAIL: Search fails or blocks on logging error | Verify observer pattern is non-blocking → Check try/catch wrapping on eval logger → Inspect async error handling |
-| NEW-008 | [09--evaluation-and-measurement/04-full-context-ceiling-evaluation.md](../feature_catalog/09--evaluation-and-measurement/04-full-context-ceiling-evaluation.md) | Ceiling benchmark produces ranked output; ceiling score >= hybrid and BM25 baselines | Ceiling ranking output + comparison table against hybrid/BM25 scores | PASS: Ceiling evaluation completes with scores >= other baselines; FAIL: Ceiling score lower than hybrid or BM25 | Verify corpus includes title+summary fields → Check ceiling ranking algorithm → Inspect baseline measurement methodology |
-| NEW-009 | [09--evaluation-and-measurement/05-quality-proxy-formula.md](../feature_catalog/09--evaluation-and-measurement/05-quality-proxy-formula.md) | Computed proxy value matches manual formula calculation within tolerance; formula components are all present | Exported log data + manual computation worksheet + stored proxy value comparison | PASS: Stored quality proxy matches manual computation within 0.01 tolerance; FAIL: Deviation > 0.01 or missing formula components | Check formula component extraction from logs → Verify coefficient weights → Inspect stored value write path |
-| NEW-010 | [09--evaluation-and-measurement/06-synthetic-ground-truth-corpus.md](../feature_catalog/09--evaluation-and-measurement/06-synthetic-ground-truth-corpus.md) | Corpus covers all intent categories; hard negatives present; non-trigger prompts included; tier distribution balanced | Corpus audit report with intent counts, hard negative count, and tier histogram | PASS: >=3 intent categories covered, >=5 hard negatives, >=3 non-trigger prompts; FAIL: Missing category or zero hard negatives | Check corpus generation script → Verify intent taxonomy completeness → Inspect hard negative selection criteria |
-| NEW-011 | [09--evaluation-and-measurement/07-bm25-only-baseline.md](../feature_catalog/09--evaluation-and-measurement/07-bm25-only-baseline.md) | BM25-only run produces reproducible MRR@5; no non-BM25 channel contributions in trace | BM25 baseline output with MRR@5 value + channel trace showing BM25-only | PASS: MRR@5 is deterministic across 2 runs and only BM25 channel active; FAIL: Non-BM25 channels contribute or MRR varies | Verify all non-BM25 channels disabled → Check BM25 index health → Inspect channel activation flags |
-| NEW-012 | [09--evaluation-and-measurement/08-agent-consumption-instrumentation.md](../feature_catalog/09--evaluation-and-measurement/08-agent-consumption-instrumentation.md) | Logger gate is closed (inert); telemetry handlers are wired but produce no output; no runtime errors | Instrumentation trace showing handler wiring + logger gate state + empty telemetry output | PASS: Handlers execute without error and produce no telemetry output (inert mode); FAIL: Telemetry output produced or handler errors | Verify logger gate configuration → Check handler registration → Inspect inert/active mode toggle |
-| NEW-013 | [09--evaluation-and-measurement/09-scoring-observability.md](../feature_catalog/09--evaluation-and-measurement/09-scoring-observability.md) | Sampled scoring rows appear in observability log; write error does not crash search; sample rate respected | Observability log rows + forced error output + sample rate verification across N queries | PASS: Sampled rows logged at expected rate and write error produces graceful fallback; FAIL: No sampled rows or search crashes on write error | Check sample rate configuration → Verify write error try/catch → Inspect observability table schema |
-| NEW-014 | [09--evaluation-and-measurement/10-full-reporting-and-ablation-study-framework.md](../feature_catalog/09--evaluation-and-measurement/10-full-reporting-and-ablation-study-framework.md) | Ablation run produces per-channel delta snapshots; dashboard renders with trend data in supported runtime output formats; no channel leaves empty report | Ablation snapshot files + dashboard text or JSON output + per-channel metrics | PASS: Ablation completes with per-channel deltas and dashboard generates valid text or JSON output; FAIL: Missing channel data or dashboard generation error | Verify eval dataset exists → Check ablation channel-off logic → Inspect snapshot storage path → Validate dashboard template |
-| NEW-015 | [09--evaluation-and-measurement/11-shadow-scoring-and-channel-attribution.md](../feature_catalog/09--evaluation-and-measurement/11-shadow-scoring-and-channel-attribution.md) | Shadow scoring flags are inert (no live ranking impact); attribution metadata still attached to results | Search output with attribution metadata present + shadow flag state confirmation | PASS: Shadow flags produce no ranking change and attribution metadata is intact; FAIL: Shadow mode affects live ranking or attribution missing | Check shadow flag deactivation → Verify attribution metadata pipeline → Inspect flag governance state |
-| NEW-016 | [10--graph-signal-activation/01-typed-weighted-degree-channel.md](../feature_catalog/10--graph-signal-activation/01-typed-weighted-degree-channel.md) | Typed-degree boost bounded within configured cap; fallback activates when edge types missing; varied types produce different scores | Query output with per-edge-type scores + cap verification + fallback behavior trace | PASS: Boost values within [0, cap] range; fallback returns default when no typed edges; FAIL: Boost exceeds cap or fallback fails | Verify edge type taxonomy → Check cap configuration → Inspect fallback default value → Validate degree computation |
-| NEW-017 | [10--graph-signal-activation/02-co-activation-boost-strength-increase.md](../feature_catalog/10--graph-signal-activation/02-co-activation-boost-strength-increase.md) | Increased co-activation strength produces measurably higher contribution delta vs baseline | Baseline vs increased strength output comparison + contribution delta calculation | PASS: Contribution delta >0 when strength increased; proportional to multiplier change; FAIL: No measurable difference or inverse effect | Verify strength parameter propagation → Check co-activation formula → Inspect baseline measurement accuracy |
-| NEW-018 | [10--graph-signal-activation/03-edge-density-measurement.md](../feature_catalog/10--graph-signal-activation/03-edge-density-measurement.md) | Edge density ratio computed correctly (edges/nodes); threshold gate activates/deactivates at boundary | Edge+node counts + computed ratio + threshold gate activation state | PASS: Ratio = edges/nodes matches manual calculation; gate state correct at boundary; FAIL: Ratio miscalculated or gate ignores threshold | Verify edge/node count queries → Check threshold configuration → Inspect gate activation logic |
-| NEW-019 | [10--graph-signal-activation/04-weight-history-audit-tracking.md](../feature_catalog/10--graph-signal-activation/04-weight-history-audit-tracking.md) | Audit rows logged for each edge strength mutation; rollback restores previous weights; audit history is append-only | Audit table rows showing before/after values + rollback verification + row count after rollback | PASS: Each mutation produces audit row with old/new values; rollback restores prior weights; FAIL: Missing audit rows or rollback data loss | Check audit table schema → Verify trigger/hook on edge mutation → Inspect rollback query logic |
-| NEW-020 | [10--graph-signal-activation/05-graph-momentum-scoring.md](../feature_catalog/10--graph-signal-activation/05-graph-momentum-scoring.md) | 7-day momentum delta bonus applied and capped; nodes with no history get zero bonus; cap enforced | Momentum scoring output with delta values + cap verification + zero-history node check | PASS: Momentum bonus = capped(current - 7d_ago); zero for no-history nodes; cap enforced; FAIL: Uncapped bonus or non-zero for missing history | Verify snapshot comparison window → Check cap configuration → Inspect delta computation formula |
-| NEW-021 | [10--graph-signal-activation/06-causal-depth-signal.md](../feature_catalog/10--graph-signal-activation/06-causal-depth-signal.md) | Depth score normalized to [0,1]; deeper chains produce higher normalized values; root-level nodes remain near 0 while deepest nodes approach 1.0 | Depth scoring output across multi-level graph + normalization range verification | PASS: All depth scores in [0,1]; deeper nodes score >= shallower nodes on the same chain; FAIL: Out-of-range values or incorrect depth ordering | Verify normalization formula → Check max-depth configuration → Inspect graph traversal depth counting |
-| NEW-022 | [10--graph-signal-activation/07-community-detection.md](../feature_catalog/10--graph-signal-activation/07-community-detection.md) | Community detection assigns cluster IDs; co-member boost injected; boost capped at configured maximum | Community assignment output + co-member boost values + cap verification | PASS: Cluster IDs assigned; co-members receive boost within cap; non-members get zero boost; FAIL: Missing cluster IDs or boost exceeds cap | Verify community detection algorithm → Check boost injection point in pipeline → Inspect cap enforcement |
-| F-10 | [10--graph-signal-activation/10-causal-neighbor-boost-and-injection.md](../feature_catalog/10--graph-signal-activation/10-causal-neighbor-boost-and-injection.md) | Neighbor boosts respect relation multipliers and hop-depth cap; injected results are deduplicated; combined causal+session boost remains bounded | Query output showing injected IDs + causalBoost values + relation ordering trace | PASS: `supersedes` paths amplify more than `contradicts`, injections are deduplicated, and boost ceiling is respected; FAIL: multiplier ordering violated, duplicates injected, or ceiling exceeded | Verify relation multiplier table → Check CTE walk score and hop cap → Inspect injection dedup + combined boost clamp |
-| F-11 | [10--graph-signal-activation/11-temporal-contiguity-layer.md](../feature_catalog/10--graph-signal-activation/11-temporal-contiguity-layer.md) | Pairwise temporal boosts apply inside clamped window; cumulative cap is enforced; neighbors and timeline outputs are ordered | Boosted result snapshot + neighbor query output + timeline output | PASS: in-window boosts only, cap respected, neighbors sorted by `time_delta_seconds`, timeline sorted by `created_at DESC`; FAIL: out-of-window boosts, cap violations, or ordering regressions | Verify window clamp bounds → Check cumulative cap behavior → Inspect neighbor and timeline ORDER BY clauses |
-| NEW-023 | [11--scoring-and-calibration/01-score-normalization.md](../feature_catalog/11--scoring-and-calibration/01-score-normalization.md) | Normalized scores in [0,1] range; min-max normalization correct; equal-score and single-result edge cases handled | Normalized output with range verification + edge case test results | PASS: All normalized scores in [0,1]; equal scores produce uniform output; single result = 1.0; FAIL: Out-of-range values or division-by-zero on equal scores | Verify min-max formula → Check edge case guards (single result, all-equal) → Inspect batch processing order |
-| NEW-024 | [11--scoring-and-calibration/02-cold-start-novelty-boost.md](../feature_catalog/11--scoring-and-calibration/02-cold-start-novelty-boost.md) | Novelty boost contribution is zero in telemetry; code path shows novelty removed from hot scoring path | Search telemetry output showing novelty=0 + code path inspection confirming removal | PASS: Novelty contribution fixed to 0 in all search results; no hot-path novelty computation; FAIL: Non-zero novelty in telemetry or hot-path code still active | Verify novelty removal commit → Check telemetry field mapping → Inspect feature flag state for novelty |
-| NEW-025 | [11--scoring-and-calibration/03-interference-scoring.md](../feature_catalog/11--scoring-and-calibration/03-interference-scoring.md) | Near-duplicate cluster receives penalty; penalty reduces effective score; non-duplicates unaffected | Query output showing penalized vs unpenalized scores + cluster membership verification | PASS: Duplicates penalized with lower effective score; non-duplicates retain original scores; FAIL: No penalty applied or false positive penalties | Verify similarity threshold for clustering → Check penalty formula → Inspect near-duplicate detection algorithm |
-| NEW-026 | [11--scoring-and-calibration/04-classification-based-decay.md](../feature_catalog/11--scoring-and-calibration/04-classification-based-decay.md) | Decay multipliers differ by classification and tier; matrix values match documented configuration | Scoring path output with per-class/tier decay multipliers + configuration comparison | PASS: Each class+tier combination produces distinct documented multiplier; scores decay accordingly; FAIL: Multipliers missing or do not match configuration matrix | Verify decay matrix configuration → Check classification assignment → Inspect tier resolution logic |
-| NEW-027 | [11--scoring-and-calibration/05-folder-level-relevance-scoring.md](../feature_catalog/11--scoring-and-calibration/05-folder-level-relevance-scoring.md) | Folder pre-ranking scores computed; folder-level results appear before individual memory results in ranking | Query output showing folder-level ranking + individual result ordering within folders | PASS: Folders ranked first; individual results ordered within folder context; global query returns folder-prioritized results; FAIL: Folder ranking missing or individual results ignore folder context | Verify folder scoring algorithm → Check pre-ranking stage insertion point → Inspect folder metadata availability |
-| NEW-028 | [11--scoring-and-calibration/06-embedding-cache.md](../feature_catalog/11--scoring-and-calibration/06-embedding-cache.md) | Cache hit returns instantly without embedding API call; cache miss triggers embedding; metadata timestamps updated on hit | Cache hit/miss output + timing comparison + metadata timestamp verification | PASS: Cache hit skips embedding call with <10ms latency; miss triggers embedding; hit updates lastAccessed timestamp; FAIL: Cache hit still calls embedding API or timestamps not updated | Verify cache key computation (content+model) → Check cache storage backend → Inspect TTL/eviction policy |
-| NEW-029 | [11--scoring-and-calibration/07-double-intent-weighting-investigation.md](../feature_catalog/11--scoring-and-calibration/07-double-intent-weighting-investigation.md) | Stage-2 intent weighting skipped for hybrid queries; no double-weight detected in trace; non-hybrid queries apply intent normally | Stage trace output for hybrid vs non-hybrid queries + intent weight comparison | PASS: Hybrid queries skip stage-2 intent weighting; non-hybrid queries apply it; no double-weight in any case; FAIL: Double intent weighting detected in hybrid path | Check hybrid detection logic → Verify stage-2 guard condition → Inspect intent weight application point |
-| NEW-030 | [11--scoring-and-calibration/08-rrf-k-value-sensitivity-analysis.md](../feature_catalog/11--scoring-and-calibration/08-rrf-k-value-sensitivity-analysis.md) | K-value grid produces per-K metric comparisons; optimal K identified with rationale; sensitivity curve shows diminishing returns | K-grid metric output + sensitivity comparison table + optimal K selection rationale | PASS: Multiple K values tested with per-K metrics; optimal K documented with evidence; FAIL: Single K tested or no comparative analysis | Verify K-grid configuration → Check metric computation per K → Inspect sensitivity analysis methodology |
-| NEW-031 | [11--scoring-and-calibration/09-negative-feedback-confidence-signal.md](../feature_catalog/11--scoring-and-calibration/09-negative-feedback-confidence-signal.md) | Negative feedback reduces confidence multiplier; floor enforced (never reaches 0); half-life recovery observed over time | Confidence multiplier values after negatives + floor verification + recovery curve data | PASS: Multiplier decreases with negatives, never below floor; recovery toward 1.0 over half-life; FAIL: Multiplier reaches 0 or no recovery observed | Verify demotion formula → Check floor configuration → Inspect half-life recovery timer |
-| NEW-032 | [11--scoring-and-calibration/10-auto-promotion-on-validation.md](../feature_catalog/11--scoring-and-calibration/10-auto-promotion-on-validation.md) | Positive validations promote tier at configured threshold; throttle prevents rapid re-promotion; audit trail logged | Tier change log + throttle enforcement evidence + promotion audit trail | PASS: Promotion occurs at threshold count; throttle blocks re-promotion within window; audit row created; FAIL: Promotion at wrong threshold or throttle bypassed | Verify promotion threshold configuration → Check throttle window duration → Inspect audit logging |
-| NEW-033 | [12--query-intelligence/01-query-complexity-router.md](../feature_catalog/12--query-intelligence/01-query-complexity-router.md) | Simple queries route to fewer channels; complex queries activate all channels; disabled flag falls back to default routing | Channel selection trace for simple/moderate/complex queries + flag-disabled fallback behavior | PASS: Channel count increases with complexity class; disabled flag uses default routing; FAIL: All queries use same channels or flag-disabled produces error | Verify complexity classification logic → Check channel mapping per class → Inspect feature flag fallback behavior |
-| NEW-034 | [12--query-intelligence/02-relative-score-fusion-in-shadow-mode.md](../feature_catalog/12--query-intelligence/02-relative-score-fusion-in-shadow-mode.md) | RRF remains the live fusion method; RSF does not affect returned rankings; any RSF comparison remains evaluation-only rather than a required runtime trace field | Code-path evidence plus query output confirming stable RRF-ranked results | PASS: Live ranking uses RRF and no runtime RSF branch affects returned results; FAIL: RSF changes live ranking or a live RSF branch is still wired into returned results | Check RSF branch conditions → Verify live fusion method selection → Inspect evaluation-only logging path |
-| NEW-035 | [12--query-intelligence/03-channel-min-representation.md](../feature_catalog/12--query-intelligence/03-channel-min-representation.md) | Each channel represented in top-k results even when one channel dominates; quality floor prevents low-relevance injection | Pre/post representation counts per channel + quality floor threshold verification | PASS: All active channels have >=1 representative in top-k; quality floor prevents sub-threshold entries; FAIL: Channel missing from top-k or sub-threshold results injected | Verify min-representation algorithm → Check quality floor threshold → Inspect channel priority ordering |
-| NEW-036 | [12--query-intelligence/04-confidence-based-result-truncation.md](../feature_catalog/12--query-intelligence/04-confidence-based-result-truncation.md) | Results truncated at confidence cliff; minimum result count guaranteed; cutoff threshold documented in trace | Truncated output with cutoff point + min-result count verification + cliff threshold in trace | PASS: Results cut at confidence cliff; >=min-count results always returned; threshold visible in trace; FAIL: No truncation or fewer than min-count results | Verify cliff detection algorithm → Check min-result guarantee → Inspect confidence score distribution |
-| NEW-037 | [12--query-intelligence/05-dynamic-token-budget-allocation.md](../feature_catalog/12--query-intelligence/05-dynamic-token-budget-allocation.md) | Token budget scales with query complexity tier; simple queries get smaller budgets; disabled flag falls back to default budget | Budget allocation per complexity tier + default fallback budget verification | PASS: Budget proportional to complexity tier; disabled flag uses default; total budget within system limits; FAIL: All tiers get same budget or flag-disabled produces error | Verify budget allocation formula → Check complexity tier detection → Inspect system budget limits |
-| NEW-038 | [12--query-intelligence/06-query-expansion.md](../feature_catalog/12--query-intelligence/06-query-expansion.md) | Complex queries produce expanded variants; expanded results deduplicated against baseline; simple queries skip expansion | Expanded query variants + dedup count + simple-query skip confirmation | PASS: Complex query generates >=2 expansion variants; results deduplicated; simple queries bypass expansion; FAIL: No expansion or duplicate results in output | Verify expansion trigger threshold → Check dedup logic → Inspect simple-query detection |
-| NEW-039 | [13--memory-quality-and-indexing/01-verify-fix-verify-memory-quality-loop.md](../feature_catalog/13--memory-quality-and-indexing/01-verify-fix-verify-memory-quality-loop.md) | Low-quality memory triggers retry cycle; final reject after max retries; rejection reason logged | Retry attempt log + final reject output + rejection reason message | PASS: Quality loop retries up to max attempts then rejects with reason; FAIL: No retry attempted or infinite retry loop | Verify quality check criteria → Check max retry configuration → Inspect rejection reason generation |
-| NEW-040 | [13--memory-quality-and-indexing/02-signal-vocabulary-expansion.md](../feature_catalog/13--memory-quality-and-indexing/02-signal-vocabulary-expansion.md) | Signal categories (correction, preference, reinforcement) detected from prompt analysis; trigger matching reflects expanded vocabulary | Trigger match output showing detected signal categories + prompt-to-category mapping | PASS: >=3 signal categories correctly classified from varied prompts; FAIL: Categories missing or misclassified | Verify signal vocabulary dictionary → Check category detection regex/rules → Inspect trigger matching integration |
-| NEW-041 | [13--memory-quality-and-indexing/03-pre-flight-token-budget-validation.md](../feature_catalog/13--memory-quality-and-indexing/03-pre-flight-token-budget-validation.md) | Token estimate is computed before embedding/database writes; near-limit input emits `PF021` warning; over-limit input emits `PF020` failure; behavior follows `MCP_CHARS_PER_TOKEN`, `MCP_MAX_MEMORY_TOKENS`, and `MCP_TOKEN_WARNING_THRESHOLD` | Preflight response payloads showing estimated tokens, warning/failure codes, and env-sensitive thresholds | PASS: Save-time preflight returns the expected warning/failure result without indexing side effects; FAIL: Retrieval-time truncation is required or preflight thresholds/codes drift from runtime behavior | Verify `preflight.ts` token counting math → Check `MCP_CHARS_PER_TOKEN`, `MCP_MAX_MEMORY_TOKENS`, and `MCP_TOKEN_WARNING_THRESHOLD` wiring → Inspect dry-run/save preflight behavior |
-| NEW-042 | [13--memory-quality-and-indexing/04-spec-folder-description-discovery.md](../feature_catalog/13--memory-quality-and-indexing/04-spec-folder-description-discovery.md) | description.json exists after create.sh; stale detection triggers on spec.md edit; per-folder files preferred over spec.md fallback; mixed-mode aggregation works; memory_context uses folder routing | description.json content + stale detection output + folder routing trace in memory_context | PASS: description.json created, stale detection works, per-folder preferred, mixed aggregation correct, folder routing active; FAIL: Any of the 5 steps fails | Verify create.sh generates description.json → Check stale detection mtime comparison → Inspect generateFolderDescriptions preference logic → Verify memory_context folder routing |
-| NEW-043 | [13--memory-quality-and-indexing/05-pre-storage-quality-gate.md](../feature_catalog/13--memory-quality-and-indexing/05-pre-storage-quality-gate.md) | 3-layer gate: structural check, semantic check, duplication check; each layer can warn or reject; decision log captures all gate evaluations | Gate evaluation output per layer + decision log entries + warn vs reject behavior per failure class | PASS: Each failure class triggers correct gate layer with appropriate warn/reject; decision log complete; FAIL: Gate layer skipped or wrong severity for failure class | Verify gate layer ordering → Check per-layer threshold configuration → Inspect decision log write path |
-| NEW-044 | [13--memory-quality-and-indexing/06-reconsolidation-on-save.md](../feature_catalog/13--memory-quality-and-indexing/06-reconsolidation-on-save.md) | Similarity >=0.88 triggers merge; 0.75-0.88 triggers supersede/deprecate; below 0.75 saves independently; thresholds documented in output | Save output with similarity scores + merge/supersede/independent action taken | PASS: Merge at >=0.88, supersede at 0.75-0.88, independent below 0.75; FAIL: Wrong action for similarity range or threshold miscalibrated | Verify similarity computation → Check threshold configuration → Inspect merge vs supersede logic |
-| NEW-045 | [13--memory-quality-and-indexing/07-smarter-memory-content-generation.md](../feature_catalog/13--memory-quality-and-indexing/07-smarter-memory-content-generation.md) | Generated content retains structural elements (headings, lists, code blocks); output is concise; coherence maintained across sections | Generated memory content + structure analysis + coherence assessment | PASS: Structure preserved, output concise (<=2x input density), sections coherent; FAIL: Structure lost, verbose output, or incoherent sections | Verify content generation template → Check structure preservation rules → Inspect conciseness constraints |
-| NEW-046 | [13--memory-quality-and-indexing/08-anchor-aware-chunk-thinning.md](../feature_catalog/13--memory-quality-and-indexing/08-anchor-aware-chunk-thinning.md) | Anchor chunks retained; filler chunks thinned; retained set is non-empty; anchor priority respected in thinning order | Thinning output showing retained vs removed chunks + anchor identification | PASS: All anchor chunks retained; filler removed; retained set non-empty; FAIL: Anchor chunks removed or empty retained set | Verify anchor detection logic → Check thinning priority ordering → Inspect minimum retained set size |
-| NEW-047 | [13--memory-quality-and-indexing/09-encoding-intent-capture-at-index-time.md](../feature_catalog/13--memory-quality-and-indexing/09-encoding-intent-capture-at-index-time.md) | Intent labels (doc/code/structured) persisted in metadata; labels read-only after indexing; varied content types produce correct labels | Metadata output showing intent labels per content type + read-only verification | PASS: Correct intent label assigned per content type; labels immutable after save; FAIL: Wrong label or label modified post-save | Verify intent classification rules → Check metadata persistence → Inspect read-only enforcement |
-| NEW-048 | [13--memory-quality-and-indexing/10-auto-entity-extraction.md](../feature_catalog/13--memory-quality-and-indexing/10-auto-entity-extraction.md) | Entities extracted and persisted in entity tables; normalization applied (case, aliases); denylist entities excluded | Entity table contents + normalization examples + denylist exclusion verification | PASS: Entities extracted, normalized, persisted; denylist items absent; FAIL: Missing entities, denormalized values, or denylist items present | Verify entity extraction pipeline → Check normalization rules → Inspect denylist configuration |
-| NEW-049 | [14--pipeline-architecture/01-4-stage-pipeline-refactor.md](../feature_catalog/14--pipeline-architecture/01-4-stage-pipeline-refactor.md) | Query traverses all 4 stages in order; stage transitions visible in verbose metadata; stage-4 scores immutable after final stage | Verbose stage metadata trace showing 4-stage flow + stage-4 immutability verification | PASS: All 4 stages execute in sequence; stage-4 scores unchanged after completion; FAIL: Stage skipped or stage-4 scores mutated | Verify stage ordering enforcement → Check verbose metadata emission → Inspect stage-4 immutability guard |
-| NEW-050 | [14--pipeline-architecture/02-mpab-chunk-to-memory-aggregation.md](../feature_catalog/14--pipeline-architecture/02-mpab-chunk-to-memory-aggregation.md) | MPAB aggregation formula produces correct parent score from child chunks; manual formula matches computed value | Stage-3 aggregation output + manual MPAB formula calculation + comparison | PASS: Computed MPAB score matches manual calculation within 0.001 tolerance; FAIL: Score deviation >0.001 or missing chunk contributions | Verify MPAB formula implementation → Check child chunk linkage → Inspect aggregation stage-3 entry point |
-| NEW-051 | [14--pipeline-architecture/03-chunk-ordering-preservation.md](../feature_catalog/14--pipeline-architecture/03-chunk-ordering-preservation.md) | Collapsed chunks reassembled in original document order; marker sequence preserved; no reordering artifacts | Collapsed output with marker sequence verification + original order comparison | PASS: Marker sequence in collapsed output matches original save order; FAIL: Markers out of order or missing | Verify chunk ordering index → Check collapse algorithm → Inspect ordering preservation across save/retrieve cycle |
-| NEW-052 | [14--pipeline-architecture/04-template-anchor-optimization.md](../feature_catalog/14--pipeline-architecture/04-template-anchor-optimization.md) | Anchor metadata enriched in pipeline; anchor tags visible in query metadata; no score mutation from anchor presence | Pipeline metadata showing anchor enrichment + score comparison with/without anchors | PASS: Anchor metadata present; scores identical with/without anchor enrichment; FAIL: Anchor metadata missing or score mutation detected | Verify anchor metadata injection point → Check score isolation → Inspect metadata enrichment pipeline |
-| NEW-053 | [14--pipeline-architecture/05-validation-signals-as-retrieval-metadata.md](../feature_catalog/14--pipeline-architecture/05-validation-signals-as-retrieval-metadata.md) | Validation signal multiplier bounded to [0.8, 1.2]; highly validated docs score higher; zero-validation docs use 1.0 multiplier | Stage-2 output with multiplier values + bounds verification + zero-validation behavior | PASS: All multipliers in [0.8, 1.2]; positive validations increase multiplier; zero validations = 1.0; FAIL: Multiplier out of bounds or zero-validation not neutral | Verify multiplier formula → Check bounds clamping → Inspect validation count resolution |
-| NEW-054 | [14--pipeline-architecture/06-learned-relevance-feedback.md](../feature_catalog/14--pipeline-architecture/06-learned-relevance-feedback.md) | Learned triggers added from helpful validations; safeguards prevent trigger flooding; queryId required for trigger learning | Learned trigger list + safeguard enforcement evidence + queryId validation | PASS: Triggers learned from helpful validations with queryId; safeguards cap total learned triggers; FAIL: Triggers learned without queryId or safeguard limits exceeded | Verify trigger learning pipeline → Check safeguard limits → Inspect queryId validation |
-| NEW-055 | [15--retrieval-enhancements/01-dual-scope-memory-auto-surface.md](../feature_catalog/15--retrieval-enhancements/01-dual-scope-memory-auto-surface.md) | Non-memory-aware tool path triggers auto-surface hook; compaction event surfaces relevant memories; surfaced memories match current context | Auto-surface hook trace + surfaced memory list + context relevance assessment | PASS: Hook triggers on non-memory tool path; compaction surfaces context-relevant memories; FAIL: Hook does not fire or surfaced memories irrelevant | Verify auto-surface hook registration → Check compaction trigger logic → Inspect context matching for surfaced memories |
-| NEW-056 | [15--retrieval-enhancements/02-constitutional-memory-as-expert-knowledge-injection.md](../feature_catalog/15--retrieval-enhancements/02-constitutional-memory-as-expert-knowledge-injection.md) |
-| NEW-057 | [15--retrieval-enhancements/03-spec-folder-hierarchy-as-retrieval-structure.md](../feature_catalog/15--retrieval-enhancements/03-spec-folder-hierarchy-as-retrieval-structure.md) |
-| NEW-058 | [15--retrieval-enhancements/04-lightweight-consolidation.md](../feature_catalog/15--retrieval-enhancements/04-lightweight-consolidation.md) |
-| NEW-059 | [15--retrieval-enhancements/05-memory-summary-search-channel.md](../feature_catalog/15--retrieval-enhancements/05-memory-summary-search-channel.md) |
-| NEW-060 | [15--retrieval-enhancements/06-cross-document-entity-linking.md](../feature_catalog/15--retrieval-enhancements/06-cross-document-entity-linking.md) |
-| NEW-061 | [16--tooling-and-scripts/01-tree-thinning-for-spec-folder-consolidation.md](../feature_catalog/16--tooling-and-scripts/01-tree-thinning-for-spec-folder-consolidation.md) |
-| NEW-062 | [16--tooling-and-scripts/03-progressive-validation-for-spec-documents.md](../feature_catalog/16--tooling-and-scripts/03-progressive-validation-for-spec-documents.md) |
-| NEW-063 | [17--governance/01-feature-flag-governance.md](../feature_catalog/17--governance/01-feature-flag-governance.md) |
-| NEW-064 | [17--governance/02-feature-flag-sunset-audit.md](../feature_catalog/17--governance/02-feature-flag-sunset-audit.md) |
-| NEW-065 | [08--bug-fixes-and-data-integrity/05-database-and-schema-safety.md](../feature_catalog/08--bug-fixes-and-data-integrity/05-database-and-schema-safety.md) |
-| NEW-066 | [11--scoring-and-calibration/11-scoring-and-ranking-corrections.md](../feature_catalog/11--scoring-and-calibration/11-scoring-and-ranking-corrections.md) |
-| NEW-067 | [14--pipeline-architecture/07-search-pipeline-safety.md](../feature_catalog/14--pipeline-architecture/07-search-pipeline-safety.md) |
-| NEW-068 | [08--bug-fixes-and-data-integrity/06-guards-and-edge-cases.md](../feature_catalog/08--bug-fixes-and-data-integrity/06-guards-and-edge-cases.md) |
-| NEW-069 | [13--memory-quality-and-indexing/13-entity-normalization-consolidation.md](../feature_catalog/13--memory-quality-and-indexing/13-entity-normalization-consolidation.md) |
-| NEW-070 | [16--tooling-and-scripts/04-dead-code-removal.md](../feature_catalog/16--tooling-and-scripts/04-dead-code-removal.md) |
-| NEW-071 | [14--pipeline-architecture/08-performance-improvements.md](../feature_catalog/14--pipeline-architecture/08-performance-improvements.md) |
-| NEW-072 | [09--evaluation-and-measurement/12-test-quality-improvements.md](../feature_catalog/09--evaluation-and-measurement/12-test-quality-improvements.md) |
-| NEW-073 | [13--memory-quality-and-indexing/14-quality-gate-timer-persistence.md](../feature_catalog/13--memory-quality-and-indexing/14-quality-gate-timer-persistence.md) |
-| NEW-074 | [11--scoring-and-calibration/12-stage-3-effectivescore-fallback-chain.md](../feature_catalog/11--scoring-and-calibration/12-stage-3-effectivescore-fallback-chain.md) |
-| NEW-075 | [08--bug-fixes-and-data-integrity/07-canonical-id-dedup-hardening.md](../feature_catalog/08--bug-fixes-and-data-integrity/07-canonical-id-dedup-hardening.md) |
-| NEW-076 | [14--pipeline-architecture/09-activation-window-persistence.md](../feature_catalog/14--pipeline-architecture/09-activation-window-persistence.md) |
-| NEW-077 | [15--retrieval-enhancements/07-tier-2-fallback-channel-forcing.md](../feature_catalog/15--retrieval-enhancements/07-tier-2-fallback-channel-forcing.md) |
-| NEW-078 | [14--pipeline-architecture/10-legacy-v1-pipeline-removal.md](../feature_catalog/14--pipeline-architecture/10-legacy-v1-pipeline-removal.md) |
-| NEW-079 | [11--scoring-and-calibration/13-scoring-and-fusion-corrections.md](../feature_catalog/11--scoring-and-calibration/13-scoring-and-fusion-corrections.md) |
-| NEW-080 | [14--pipeline-architecture/11-pipeline-and-mutation-hardening.md](../feature_catalog/14--pipeline-architecture/11-pipeline-and-mutation-hardening.md) |
-| NEW-081 | [10--graph-signal-activation/08-graph-and-cognitive-memory-fixes.md](../feature_catalog/10--graph-signal-activation/08-graph-and-cognitive-memory-fixes.md) |
-| NEW-082 | [09--evaluation-and-measurement/13-evaluation-and-housekeeping-fixes.md](../feature_catalog/09--evaluation-and-measurement/13-evaluation-and-housekeeping-fixes.md) |
-| NEW-083 | [08--bug-fixes-and-data-integrity/08-mathmax-min-stack-overflow-elimination.md](../feature_catalog/08--bug-fixes-and-data-integrity/08-mathmax-min-stack-overflow-elimination.md) |
-| NEW-084 | [08--bug-fixes-and-data-integrity/09-session-manager-transaction-gap-fixes.md](../feature_catalog/08--bug-fixes-and-data-integrity/09-session-manager-transaction-gap-fixes.md) |
-| NEW-085 | [02--mutation/06-transaction-wrappers-on-mutation-handlers.md](../feature_catalog/02--mutation/06-transaction-wrappers-on-mutation-handlers.md) |
-| NEW-086 | [01--retrieval/06-bm25-trigger-phrase-re-index-gate.md](../feature_catalog/01--retrieval/06-bm25-trigger-phrase-re-index-gate.md) |
-| NEW-087 | [14--pipeline-architecture/12-dbpath-extraction-and-import-standardization.md](../feature_catalog/14--pipeline-architecture/12-dbpath-extraction-and-import-standardization.md) |
-| NEW-088 | [09--evaluation-and-measurement/14-cross-ai-validation-fixes.md](../feature_catalog/09--evaluation-and-measurement/14-cross-ai-validation-fixes.md) |
-| NEW-089 | [16--tooling-and-scripts/05-code-standards-alignment.md](../feature_catalog/16--tooling-and-scripts/05-code-standards-alignment.md) |
-| NEW-090 | [09--evaluation-and-measurement/16-int8-quantization-evaluation.md](../feature_catalog/09--evaluation-and-measurement/16-int8-quantization-evaluation.md) |
-| NEW-091 | [10--graph-signal-activation/07-community-detection.md](../feature_catalog/10--graph-signal-activation/07-community-detection.md) |
-| NEW-092 | [13--memory-quality-and-indexing/10-auto-entity-extraction.md](../feature_catalog/13--memory-quality-and-indexing/10-auto-entity-extraction.md) |
-| NEW-093 | [15--retrieval-enhancements/05-memory-summary-search-channel.md](../feature_catalog/15--retrieval-enhancements/05-memory-summary-search-channel.md) |
-| NEW-094 | [15--retrieval-enhancements/06-cross-document-entity-linking.md](../feature_catalog/15--retrieval-enhancements/06-cross-document-entity-linking.md) |
-| NEW-095 | [14--pipeline-architecture/13-strict-zod-schema-validation.md](../feature_catalog/14--pipeline-architecture/13-strict-zod-schema-validation.md) |
-| NEW-096 | [15--retrieval-enhancements/08-provenance-rich-response-envelopes.md](../feature_catalog/15--retrieval-enhancements/08-provenance-rich-response-envelopes.md) |
-| NEW-097 | [05--lifecycle/05-async-ingestion-job-lifecycle.md](../feature_catalog/05--lifecycle/05-async-ingestion-job-lifecycle.md) |
-| NEW-098 | [11--scoring-and-calibration/14-local-gguf-reranker-via-node-llama-cpp.md](../feature_catalog/11--scoring-and-calibration/14-local-gguf-reranker-via-node-llama-cpp.md) |
-| NEW-099 | [16--tooling-and-scripts/06-real-time-filesystem-watching-with-chokidar.md](../feature_catalog/16--tooling-and-scripts/06-real-time-filesystem-watching-with-chokidar.md) |
-| NEW-100 | *(server lifecycle — no dedicated catalog entry)* |
-| NEW-101 | *(memory_delete confirm schema — covered by `02--mutation/03`)* |
-| NEW-102 | *(node-llama-cpp optionalDependencies — covered by `11--scoring-and-calibration/14`)* |
-| NEW-103 | [18--ux-hooks/05-dedicated-ux-hook-modules.md](../feature_catalog/18--ux-hooks/05-dedicated-ux-hook-modules.md) |
-| NEW-104 | [18--ux-hooks/09-duplicate-save-no-op-feedback-hardening.md](../feature_catalog/18--ux-hooks/09-duplicate-save-no-op-feedback-hardening.md) |
-| NEW-105 | [18--ux-hooks/08-context-server-success-hint-append.md](../feature_catalog/18--ux-hooks/08-context-server-success-hint-append.md) |
-| NEW-106 | [18--ux-hooks/12-hooks-readme-and-export-alignment.md](../feature_catalog/18--ux-hooks/12-hooks-readme-and-export-alignment.md) |
-| NEW-107 | [18--ux-hooks/03-checkpoint-delete-confirmname-safety.md](../feature_catalog/18--ux-hooks/03-checkpoint-delete-confirmname-safety.md) |
-| NEW-108 | *(Spec 007 verification suite — no dedicated catalog entry)* |
-| NEW-109 | [01--retrieval/08-quality-aware-3-tier-search-fallback.md](../feature_catalog/01--retrieval/08-quality-aware-3-tier-search-fallback.md) |
-| NEW-110 | [02--mutation/08-prediction-error-save-arbitration.md](../feature_catalog/02--mutation/08-prediction-error-save-arbitration.md) |
-| NEW-111 | [13--memory-quality-and-indexing/15-deferred-lexical-only-indexing.md](../feature_catalog/13--memory-quality-and-indexing/15-deferred-lexical-only-indexing.md) |
-| NEW-112 | [14--pipeline-architecture/17-cross-process-db-hot-rebinding.md](../feature_catalog/14--pipeline-architecture/17-cross-process-db-hot-rebinding.md) |
-| NEW-113 | [16--tooling-and-scripts/07-standalone-admin-cli.md](../feature_catalog/16--tooling-and-scripts/07-standalone-admin-cli.md) |
-| NEW-114 | [05--lifecycle/05-async-ingestion-job-lifecycle.md](../feature_catalog/05--lifecycle/05-async-ingestion-job-lifecycle.md) |
-| NEW-115 | [14--pipeline-architecture/21-atomic-pending-file-recovery.md](../feature_catalog/14--pipeline-architecture/21-atomic-pending-file-recovery.md) |
-| NEW-116 | [08--bug-fixes-and-data-integrity/10-chunking-orchestrator-safe-swap.md](../feature_catalog/08--bug-fixes-and-data-integrity/10-chunking-orchestrator-safe-swap.md) |
-| NEW-117 | [08--bug-fixes-and-data-integrity/11-working-memory-timestamp-fix.md](../feature_catalog/08--bug-fixes-and-data-integrity/11-working-memory-timestamp-fix.md) |
-| NEW-118 | [11--scoring-and-calibration/13-scoring-and-fusion-corrections.md](../feature_catalog/11--scoring-and-calibration/13-scoring-and-fusion-corrections.md) |
-| NEW-119 | [13--memory-quality-and-indexing/04-spec-folder-description-discovery.md](../feature_catalog/13--memory-quality-and-indexing/04-spec-folder-description-discovery.md) |
-| NEW-120 | [10--graph-signal-activation/12-unified-graph-retrieval-deterministic-ranking-explainability-and-rollback.md](../feature_catalog/10--graph-signal-activation/12-unified-graph-retrieval-deterministic-ranking-explainability-and-rollback.md) |
-| NEW-121 | [11--scoring-and-calibration/18-adaptive-shadow-ranking-bounded-proposals-and-rollback.md](../feature_catalog/11--scoring-and-calibration/18-adaptive-shadow-ranking-bounded-proposals-and-rollback.md) |
-| NEW-122 | [17--governance/03-hierarchical-scope-governance-governed-ingest-retention-and-audit.md](../feature_catalog/17--governance/03-hierarchical-scope-governance-governed-ingest-retention-and-audit.md) |
-| NEW-123 | [17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md](../feature_catalog/17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md) |
-| NEW-124 | [05--lifecycle/07-automatic-archival-subsystem.md](../feature_catalog/05--lifecycle/07-automatic-archival-subsystem.md) |
-| NEW-125 | [19--feature-flag-reference/01-1-search-pipeline-features-speckit.md](../feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md) |
-| NEW-126 | [09--evaluation-and-measurement/15-memory-roadmap-baseline-snapshot.md](../feature_catalog/09--evaluation-and-measurement/15-memory-roadmap-baseline-snapshot.md) |
-| NEW-127 | [16--tooling-and-scripts/09-migration-checkpoint-scripts.md](../feature_catalog/16--tooling-and-scripts/09-migration-checkpoint-scripts.md) |
-| NEW-128 | [16--tooling-and-scripts/10-schema-compatibility-validation.md](../feature_catalog/16--tooling-and-scripts/10-schema-compatibility-validation.md) |
-| NEW-129 | [14--pipeline-architecture/22-lineage-state-active-projection-and-asof-resolution.md](../feature_catalog/14--pipeline-architecture/22-lineage-state-active-projection-and-asof-resolution.md) |
-| NEW-130 | [14--pipeline-architecture/22-lineage-state-active-projection-and-asof-resolution.md](../feature_catalog/14--pipeline-architecture/22-lineage-state-active-projection-and-asof-resolution.md) |
-| NEW-131 | [13--memory-quality-and-indexing/04-spec-folder-description-discovery.md](../feature_catalog/13--memory-quality-and-indexing/04-spec-folder-description-discovery.md) |
-| NEW-132 | [13--memory-quality-and-indexing/04-spec-folder-description-discovery.md](../feature_catalog/13--memory-quality-and-indexing/04-spec-folder-description-discovery.md) |
-| NEW-133 | [13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md](../feature_catalog/13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md) |
-| NEW-134 | [05--lifecycle/06-startup-pending-file-recovery.md](../feature_catalog/05--lifecycle/06-startup-pending-file-recovery.md) |
-| NEW-135 | [16--tooling-and-scripts/11-feature-catalog-code-references.md](../feature_catalog/16--tooling-and-scripts/11-feature-catalog-code-references.md) |
-| NEW-136 | [16--tooling-and-scripts/11-feature-catalog-code-references.md](../feature_catalog/16--tooling-and-scripts/11-feature-catalog-code-references.md) |
-| NEW-137 | [16--tooling-and-scripts/11-feature-catalog-code-references.md](../feature_catalog/16--tooling-and-scripts/11-feature-catalog-code-references.md) |
-| NEW-138 | [16--tooling-and-scripts/11-feature-catalog-code-references.md](../feature_catalog/16--tooling-and-scripts/11-feature-catalog-code-references.md) |
-| NEW-142 | [01--retrieval/01-unified-context-retrieval-memorycontext.md](../feature_catalog/01--retrieval/01-unified-context-retrieval-memorycontext.md) |
-| NEW-143 | [01--retrieval/02-semantic-and-lexical-search-memorysearch.md](../feature_catalog/01--retrieval/02-semantic-and-lexical-search-memorysearch.md) |
-| NEW-144 | [05--lifecycle/05-async-ingestion-job-lifecycle.md](../feature_catalog/05--lifecycle/05-async-ingestion-job-lifecycle.md) |
-| NEW-145 | [15--retrieval-enhancements/09-contextual-tree-injection.md](../feature_catalog/15--retrieval-enhancements/09-contextual-tree-injection.md) |
-| NEW-146 | [14--pipeline-architecture/14-dynamic-server-instructions-at-mcp-initialization.md](../feature_catalog/14--pipeline-architecture/14-dynamic-server-instructions-at-mcp-initialization.md) |
-| NEW-147 | [16--tooling-and-scripts/13-constitutional-memory-manager-command.md](../feature_catalog/16--tooling-and-scripts/13-constitutional-memory-manager-command.md) |
-| NEW-139 | [16--tooling-and-scripts/12-session-capturing-pipeline-quality.md](../feature_catalog/16--tooling-and-scripts/12-session-capturing-pipeline-quality.md) |
-| NEW-148 | [17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md](../feature_catalog/17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md) |
-| NEW-149 | [16--tooling-and-scripts/12-session-capturing-pipeline-quality.md](../feature_catalog/16--tooling-and-scripts/12-session-capturing-pipeline-quality.md) |
+### NEW-001 | Graph channel ID fix (G1)
+
+#### Description
+Confirm graph hits are non-zero when edges exist.
+
+#### Current Reality
+Prompt: `Verify Graph channel ID fix (G1) manually with causal-edge data.`
+
+Graph channel returns >0 hits; channel attribution includes graph source
+
+#### Test Execution
+> **Feature File:** [NEW-001](02--new-features/001-graph-channel-id-fix-g1.md)
+> **Catalog:** [08--bug-fixes-and-data-integrity/01-graph-channel-id-fix.md](../feature_catalog/08--bug-fixes-and-data-integrity/01-graph-channel-id-fix.md)
+
+### NEW-002 | Chunk collapse deduplication (G3)
+
+#### Description
+Confirm dedup in default mode.
+
+#### Current Reality
+Prompt: `Validate chunk collapse deduplication (G3) in default search mode.`
+
+No duplicate memory IDs in results; collapsed chunks yield unique parents only
+
+#### Test Execution
+> **Feature File:** [NEW-002](02--new-features/002-chunk-collapse-deduplication-g3.md)
+> **Catalog:** [08--bug-fixes-and-data-integrity/02-chunk-collapse-deduplication.md](../feature_catalog/08--bug-fixes-and-data-integrity/02-chunk-collapse-deduplication.md)
+
+### NEW-003 | Co-activation fan-effect divisor (R17)
+
+#### Description
+Confirm hub dampening.
+
+#### Current Reality
+Prompt: `Verify co-activation fan-effect divisor (R17).`
+
+Hub node score dampened proportionally to fan-out degree; non-hub scores unaffected
+
+#### Test Execution
+> **Feature File:** [NEW-003](02--new-features/003-co-activation-fan-effect-divisor-r17.md)
+> **Catalog:** [08--bug-fixes-and-data-integrity/03-co-activation-fan-effect-divisor.md](../feature_catalog/08--bug-fixes-and-data-integrity/03-co-activation-fan-effect-divisor.md)
+
+### NEW-004 | SHA-256 content-hash deduplication (TM-02)
+
+#### Description
+Confirm identical re-save skips embedding.
+
+#### Current Reality
+Prompt: `Check SHA-256 dedup (TM-02) on re-save.`
+
+Second save returns skip/no-op status; no new embedding row created; content hash matches
+
+#### Test Execution
+> **Feature File:** [NEW-004](02--new-features/004-sha-256-content-hash-deduplication-tm-02.md)
+> **Catalog:** [08--bug-fixes-and-data-integrity/04-sha-256-content-hash-deduplication.md](../feature_catalog/08--bug-fixes-and-data-integrity/04-sha-256-content-hash-deduplication.md)
+
+### NEW-005 | Evaluation database and schema (R13-S1)
+
+#### Description
+Confirm eval data isolation.
+
+#### Current Reality
+Prompt: `Verify evaluation DB/schema writes.`
+
+Eval tables created in separate DB/schema; retrieval events logged without affecting main memory DB
+
+#### Test Execution
+> **Feature File:** [NEW-005](02--new-features/005-evaluation-database-and-schema-r13-s1.md)
+> **Catalog:** [09--evaluation-and-measurement/01-evaluation-database-and-schema.md](../feature_catalog/09--evaluation-and-measurement/01-evaluation-database-and-schema.md)
+
+### NEW-006 | Core metric computation (R13-S1)
+
+#### Description
+Confirm metric battery outputs.
+
+#### Current Reality
+Prompt: `Validate core metric computation (R13-S1).`
+
+Metric battery returns precision, recall, MRR, NDCG values; all within valid ranges
+
+#### Test Execution
+> **Feature File:** [NEW-006](02--new-features/006-core-metric-computation-r13-s1.md)
+> **Catalog:** [09--evaluation-and-measurement/02-core-metric-computation.md](../feature_catalog/09--evaluation-and-measurement/02-core-metric-computation.md)
+
+### NEW-007 | Observer effect mitigation (D4)
+
+#### Description
+Confirm non-blocking logging failures.
+
+#### Current Reality
+Prompt: `Check observer effect mitigation (D4).`
+
+Search returns normal results even when eval logging throws; no latency spike from logging failure
+
+#### Test Execution
+> **Feature File:** [NEW-007](02--new-features/007-observer-effect-mitigation-d4.md)
+> **Catalog:** [09--evaluation-and-measurement/03-observer-effect-mitigation.md](../feature_catalog/09--evaluation-and-measurement/03-observer-effect-mitigation.md)
+
+### NEW-008 | Full-context ceiling evaluation (A2)
+
+#### Description
+Confirm ceiling benchmark run.
+
+#### Current Reality
+Prompt: `Run full-context ceiling evaluation (A2).`
+
+Ceiling benchmark produces ranked output; ceiling score >= hybrid and BM25 baselines
+
+#### Test Execution
+> **Feature File:** [NEW-008](02--new-features/008-full-context-ceiling-evaluation-a2.md)
+> **Catalog:** [09--evaluation-and-measurement/04-full-context-ceiling-evaluation.md](../feature_catalog/09--evaluation-and-measurement/04-full-context-ceiling-evaluation.md)
+
+### NEW-009 | Quality proxy formula (B7)
+
+#### Description
+Confirm proxy formula correctness.
+
+#### Current Reality
+Prompt: `Compute and verify quality proxy formula (B7).`
+
+Computed proxy value matches manual formula calculation within tolerance; formula components are all present
+
+#### Test Execution
+> **Feature File:** [NEW-009](02--new-features/009-quality-proxy-formula-b7.md)
+> **Catalog:** [09--evaluation-and-measurement/05-quality-proxy-formula.md](../feature_catalog/09--evaluation-and-measurement/05-quality-proxy-formula.md)
+
+### NEW-010 | Synthetic ground truth corpus (G-NEW-1, G-NEW-3 phase A)
+
+#### Description
+Confirm corpus coverage and hard negatives.
+
+#### Current Reality
+Prompt: `Audit synthetic ground-truth corpus coverage.`
+
+Corpus covers all intent categories; hard negatives present; non-trigger prompts included; tier distribution balanced
+
+#### Test Execution
+> **Feature File:** [NEW-010](02--new-features/010-synthetic-ground-truth-corpus-g-new-1-g-new-3-phase-a.md)
+> **Catalog:** [09--evaluation-and-measurement/06-synthetic-ground-truth-corpus.md](../feature_catalog/09--evaluation-and-measurement/06-synthetic-ground-truth-corpus.md)
+
+### NEW-011 | BM25-only baseline (G-NEW-1)
+
+#### Description
+Confirm baseline reproducibility.
+
+#### Current Reality
+Prompt: `Run BM25-only baseline measurement.`
+
+BM25-only run produces reproducible MRR@5; no non-BM25 channel contributions in trace
+
+#### Test Execution
+> **Feature File:** [NEW-011](02--new-features/011-bm25-only-baseline-g-new-1.md)
+> **Catalog:** [09--evaluation-and-measurement/07-bm25-only-baseline.md](../feature_catalog/09--evaluation-and-measurement/07-bm25-only-baseline.md)
+
+### NEW-012 | Agent consumption instrumentation (G-NEW-2)
+
+#### Description
+Confirm wiring with inert runtime.
+
+#### Current Reality
+Prompt: `Validate G-NEW-2 instrumentation behavior.`
+
+Logger gate is closed (inert); telemetry handlers are wired but produce no output; no runtime errors
+
+#### Test Execution
+> **Feature File:** [NEW-012](02--new-features/012-agent-consumption-instrumentation-g-new-2.md)
+> **Catalog:** [09--evaluation-and-measurement/08-agent-consumption-instrumentation.md](../feature_catalog/09--evaluation-and-measurement/08-agent-consumption-instrumentation.md)
+
+### NEW-013 | Scoring observability (T010)
+
+#### Description
+Confirm sample logging + fail-safe.
+
+#### Current Reality
+Prompt: `Verify scoring observability (T010).`
+
+Sampled scoring rows appear in observability log; write error does not crash search; sample rate respected
+
+#### Test Execution
+> **Feature File:** [NEW-013](02--new-features/013-scoring-observability-t010.md)
+> **Catalog:** [09--evaluation-and-measurement/09-scoring-observability.md](../feature_catalog/09--evaluation-and-measurement/09-scoring-observability.md)
+
+### NEW-014 | Full reporting and ablation study framework (R13-S3)
+
+#### Description
+Confirm ablation+report workflow.
+
+#### Current Reality
+Prompt: `Execute manual ablation run (R13-S3).`
+
+Ablation run produces per-channel delta snapshots; dashboard renders with trend data in supported runtime output formats; no channel leaves empty report
+
+#### Test Execution
+> **Feature File:** [NEW-014](02--new-features/014-full-reporting-and-ablation-study-framework-r13-s3.md)
+> **Catalog:** [09--evaluation-and-measurement/10-full-reporting-and-ablation-study-framework.md](../feature_catalog/09--evaluation-and-measurement/10-full-reporting-and-ablation-study-framework.md)
+
+### NEW-015 | Shadow scoring and channel attribution (R13-S2)
+
+#### Description
+Confirm shadow deactivation and attribution continuity.
+
+#### Current Reality
+Prompt: `Verify shadow scoring deactivation and attribution continuity.`
+
+Shadow scoring flags are inert (no live ranking impact); attribution metadata still attached to results
+
+#### Test Execution
+> **Feature File:** [NEW-015](02--new-features/015-shadow-scoring-and-channel-attribution-r13-s2.md)
+> **Catalog:** [09--evaluation-and-measurement/11-shadow-scoring-and-channel-attribution.md](../feature_catalog/09--evaluation-and-measurement/11-shadow-scoring-and-channel-attribution.md)
+
+### NEW-016 | Typed-weighted degree channel (R4)
+
+#### Description
+Confirm bounded typed-degree boost.
+
+#### Current Reality
+Prompt: `Test typed-weighted degree channel (R4).`
+
+Typed-degree boost bounded within configured cap; fallback activates when edge types missing; varied types produce different scores
+
+#### Test Execution
+> **Feature File:** [NEW-016](02--new-features/016-typed-weighted-degree-channel-r4.md)
+> **Catalog:** [10--graph-signal-activation/01-typed-weighted-degree-channel.md](../feature_catalog/10--graph-signal-activation/01-typed-weighted-degree-channel.md)
+
+### NEW-017 | Co-activation boost strength increase (A7)
+
+#### Description
+Confirm multiplier impact.
+
+#### Current Reality
+Prompt: `Compare co-activation strength values for A7.`
+
+Increased co-activation strength produces measurably higher contribution delta vs baseline
+
+#### Test Execution
+> **Feature File:** [NEW-017](02--new-features/017-co-activation-boost-strength-increase-a7.md)
+> **Catalog:** [10--graph-signal-activation/02-co-activation-boost-strength-increase.md](../feature_catalog/10--graph-signal-activation/02-co-activation-boost-strength-increase.md)
+
+### NEW-018 | Edge density measurement
+
+#### Description
+Confirm edges-per-node thresholding.
+
+#### Current Reality
+Prompt: `Verify edge density measurement and gate behavior.`
+
+Edge density ratio computed correctly (edges/nodes); threshold gate activates/deactivates at boundary
+
+#### Test Execution
+> **Feature File:** [NEW-018](02--new-features/018-edge-density-measurement.md)
+> **Catalog:** [10--graph-signal-activation/03-edge-density-measurement.md](../feature_catalog/10--graph-signal-activation/03-edge-density-measurement.md)
+
+### NEW-019 | Weight history audit tracking
+
+#### Description
+Confirm edge change logging + rollback.
+
+#### Current Reality
+Prompt: `Validate weight history audit tracking.`
+
+Audit rows logged for each edge strength mutation; rollback restores previous weights; audit history is append-only
+
+#### Test Execution
+> **Feature File:** [NEW-019](02--new-features/019-weight-history-audit-tracking.md)
+> **Catalog:** [10--graph-signal-activation/04-weight-history-audit-tracking.md](../feature_catalog/10--graph-signal-activation/04-weight-history-audit-tracking.md)
+
+### NEW-020 | Graph momentum scoring (N2a)
+
+#### Description
+Confirm 7-day delta bonus.
+
+#### Current Reality
+Prompt: `Verify graph momentum scoring (N2a).`
+
+7-day momentum delta bonus applied and capped; nodes with no history get zero bonus; cap enforced
+
+#### Test Execution
+> **Feature File:** [NEW-020](02--new-features/020-graph-momentum-scoring-n2a.md)
+> **Catalog:** [10--graph-signal-activation/05-graph-momentum-scoring.md](../feature_catalog/10--graph-signal-activation/05-graph-momentum-scoring.md)
+
+### NEW-021 | Causal depth signal (N2b)
+
+#### Description
+Confirm normalized depth scoring.
+
+#### Current Reality
+Prompt: `Test causal depth signal (N2b).`
+
+Depth score normalized to [0,1]; deeper chains produce higher normalized values; shortcut edges do not reduce longest-path depth; cycle members share one bounded depth layer
+
+#### Test Execution
+> **Feature File:** [NEW-021](02--new-features/021-causal-depth-signal-n2b.md)
+> **Catalog:** [10--graph-signal-activation/06-causal-depth-signal.md](../feature_catalog/10--graph-signal-activation/06-causal-depth-signal.md)
+
+### NEW-022 | Community detection (N2c)
+
+#### Description
+Confirm community boost injection.
+
+#### Current Reality
+Prompt: `Validate community detection (N2c).`
+
+Community detection assigns cluster IDs; co-member boost injected; boost capped at configured maximum
+
+#### Test Execution
+> **Feature File:** [NEW-022](02--new-features/022-community-detection-n2c.md)
+> **Catalog:** [10--graph-signal-activation/07-community-detection.md](../feature_catalog/10--graph-signal-activation/07-community-detection.md)
+
+### NEW-023 | Score normalization
+
+#### Description
+Confirm batch min-max behavior.
+
+#### Current Reality
+Prompt: `Verify score normalization output ranges.`
+
+Normalized scores in [0,1] range; min-max normalization correct; equal-score and single-result edge cases handled
+
+#### Test Execution
+> **Feature File:** [NEW-023](02--new-features/023-score-normalization.md)
+> **Catalog:** [11--scoring-and-calibration/01-score-normalization.md](../feature_catalog/11--scoring-and-calibration/01-score-normalization.md)
+
+### NEW-024 | Cold-start novelty boost (N4)
+
+#### Description
+Confirm novelty removed from hot path.
+
+#### Current Reality
+Prompt: `Confirm N4 novelty hot-path removal.`
+
+Novelty boost contribution is zero in telemetry; code path shows novelty removed from hot scoring path
+
+#### Test Execution
+> **Feature File:** [NEW-024](02--new-features/024-cold-start-novelty-boost-n4.md)
+> **Catalog:** [11--scoring-and-calibration/02-cold-start-novelty-boost.md](../feature_catalog/11--scoring-and-calibration/02-cold-start-novelty-boost.md)
+
+### NEW-025 | Interference scoring (TM-01)
+
+#### Description
+Confirm cluster penalty.
+
+#### Current Reality
+Prompt: `Validate interference scoring (TM-01).`
+
+Near-duplicate cluster receives penalty; penalty reduces effective score; non-duplicates unaffected
+
+#### Test Execution
+> **Feature File:** [NEW-025](02--new-features/025-interference-scoring-tm-01.md)
+> **Catalog:** [11--scoring-and-calibration/03-interference-scoring.md](../feature_catalog/11--scoring-and-calibration/03-interference-scoring.md)
+
+### NEW-026 | Classification-based decay (TM-03)
+
+#### Description
+Confirm class+tier decay matrix.
+
+#### Current Reality
+Prompt: `Verify TM-03 classification-based decay.`
+
+Decay multipliers differ by classification and tier; matrix values match documented configuration
+
+#### Test Execution
+> **Feature File:** [NEW-026](02--new-features/026-classification-based-decay-tm-03.md)
+> **Catalog:** [11--scoring-and-calibration/04-classification-based-decay.md](../feature_catalog/11--scoring-and-calibration/04-classification-based-decay.md)
+
+### NEW-027 | Folder-level relevance scoring (PI-A1)
+
+#### Description
+Confirm folder-first retrieval.
+
+#### Current Reality
+Prompt: `Validate folder-level relevance scoring (PI-A1).`
+
+Folder pre-ranking scores computed; folder-level results appear before individual memory results in ranking
+
+#### Test Execution
+> **Feature File:** [NEW-027](02--new-features/027-folder-level-relevance-scoring-pi-a1.md)
+> **Catalog:** [11--scoring-and-calibration/05-folder-level-relevance-scoring.md](../feature_catalog/11--scoring-and-calibration/05-folder-level-relevance-scoring.md)
+
+### NEW-028 | Embedding cache (R18)
+
+#### Description
+Confirm cache hit/miss behavior.
+
+#### Current Reality
+Prompt: `Verify embedding cache (R18).`
+
+Cache hit returns instantly without embedding API call; cache miss triggers embedding; metadata timestamps updated on hit
+
+#### Test Execution
+> **Feature File:** [NEW-028](02--new-features/028-embedding-cache-r18.md)
+> **Catalog:** [11--scoring-and-calibration/06-embedding-cache.md](../feature_catalog/11--scoring-and-calibration/06-embedding-cache.md)
+
+### NEW-029 | Double intent weighting investigation (G2)
+
+#### Description
+Confirm no hybrid double-weight.
+
+#### Current Reality
+Prompt: `Validate G2 guard in active pipeline.`
+
+Stage-2 intent weighting skipped for hybrid queries; no double-weight detected in trace; non-hybrid queries apply intent normally
+
+#### Test Execution
+> **Feature File:** [NEW-029](02--new-features/029-double-intent-weighting-investigation-g2.md)
+> **Catalog:** [11--scoring-and-calibration/07-double-intent-weighting-investigation.md](../feature_catalog/11--scoring-and-calibration/07-double-intent-weighting-investigation.md)
+
+### NEW-030 | RRF K-value sensitivity analysis (FUT-5)
+
+#### Description
+Confirm K sensitivity measurements.
+
+#### Current Reality
+Prompt: `Run RRF K sensitivity analysis.`
+
+K-value grid produces per-K metric comparisons; optimal K identified with rationale; sensitivity curve shows diminishing returns
+
+#### Test Execution
+> **Feature File:** [NEW-030](02--new-features/030-rrf-k-value-sensitivity-analysis-fut-5.md)
+> **Catalog:** [11--scoring-and-calibration/08-rrf-k-value-sensitivity-analysis.md](../feature_catalog/11--scoring-and-calibration/08-rrf-k-value-sensitivity-analysis.md)
+
+### NEW-031 | Negative feedback confidence signal (A4)
+
+#### Description
+Confirm demotion floor+recovery.
+
+#### Current Reality
+Prompt: `Verify negative feedback confidence (A4).`
+
+Negative feedback reduces confidence multiplier; floor enforced (never reaches 0); half-life recovery observed over time
+
+#### Test Execution
+> **Feature File:** [NEW-031](02--new-features/031-negative-feedback-confidence-signal-a4.md)
+> **Catalog:** [11--scoring-and-calibration/09-negative-feedback-confidence-signal.md](../feature_catalog/11--scoring-and-calibration/09-negative-feedback-confidence-signal.md)
+
+### NEW-032 | Auto-promotion on validation (T002a)
+
+#### Description
+Confirm promotion thresholds/throttle.
+
+#### Current Reality
+Prompt: `Validate auto-promotion on validation (T002a).`
+
+Positive validations promote tier at configured threshold; throttle prevents rapid re-promotion; audit trail logged
+
+#### Test Execution
+> **Feature File:** [NEW-032](02--new-features/032-auto-promotion-on-validation-t002a.md)
+> **Catalog:** [11--scoring-and-calibration/10-auto-promotion-on-validation.md](../feature_catalog/11--scoring-and-calibration/10-auto-promotion-on-validation.md)
+
+### NEW-033 | Query complexity router (R15)
+
+#### Description
+Confirm query-class routing.
+
+#### Current Reality
+Prompt: `Verify query complexity router (R15).`
+
+Simple queries route to fewer channels; complex queries activate all channels; disabled flag falls back to default routing
+
+#### Test Execution
+> **Feature File:** [NEW-033](02--new-features/033-query-complexity-router-r15.md)
+> **Catalog:** [12--query-intelligence/01-query-complexity-router.md](../feature_catalog/12--query-intelligence/01-query-complexity-router.md)
+
+### NEW-034 | Relative score fusion in shadow mode (R14/N1)
+
+#### Description
+Confirm RSF stays off the live ranking path.
+
+#### Current Reality
+Prompt: `Check RSF shadow behavior post-cleanup.`
+
+RRF remains the live fusion method; RSF does not affect returned rankings; any RSF comparison remains evaluation-only rather than a required runtime trace field
+
+#### Test Execution
+> **Feature File:** [NEW-034](02--new-features/034-relative-score-fusion-in-shadow-mode-r14-n1.md)
+> **Catalog:** [12--query-intelligence/02-relative-score-fusion-in-shadow-mode.md](../feature_catalog/12--query-intelligence/02-relative-score-fusion-in-shadow-mode.md)
+
+### NEW-035 | Channel min-representation (R2)
+
+#### Description
+Confirm top-k channel diversity rule.
+
+#### Current Reality
+Prompt: `Validate channel min-representation (R2).`
+
+Each channel represented in top-k results even when one channel dominates; quality floor prevents low-relevance injection
+
+#### Test Execution
+> **Feature File:** [NEW-035](02--new-features/035-channel-min-representation-r2.md)
+> **Catalog:** [12--query-intelligence/03-channel-min-representation.md](../feature_catalog/12--query-intelligence/03-channel-min-representation.md)
+
+### NEW-036 | Confidence-based result truncation (R15-ext)
+
+#### Description
+Confirm relevance-cliff cutoff.
+
+#### Current Reality
+Prompt: `Verify confidence-based truncation (R15-ext).`
+
+Results truncated at confidence cliff; minimum result count guaranteed; cutoff threshold documented in trace
+
+#### Test Execution
+> **Feature File:** [NEW-036](02--new-features/036-confidence-based-result-truncation-r15-ext.md)
+> **Catalog:** [12--query-intelligence/04-confidence-based-result-truncation.md](../feature_catalog/12--query-intelligence/04-confidence-based-result-truncation.md)
+
+### NEW-037 | Dynamic token budget allocation (FUT-7)
+
+#### Description
+Confirm complexity-tier budgets.
+
+#### Current Reality
+Prompt: `Verify dynamic token budgets (FUT-7).`
+
+Token budget scales with query complexity tier; simple queries get smaller budgets; disabled flag falls back to default budget
+
+#### Test Execution
+> **Feature File:** [NEW-037](02--new-features/037-dynamic-token-budget-allocation-fut-7.md)
+> **Catalog:** [12--query-intelligence/05-dynamic-token-budget-allocation.md](../feature_catalog/12--query-intelligence/05-dynamic-token-budget-allocation.md)
+
+### NEW-038 | Query expansion (R12)
+
+#### Description
+Confirm parallel expansion + dedup.
+
+#### Current Reality
+Prompt: `Validate query expansion (R12).`
+
+Complex queries produce expanded variants; expanded results deduplicated against baseline; simple queries skip expansion
+
+#### Test Execution
+> **Feature File:** [NEW-038](02--new-features/038-query-expansion-r12.md)
+> **Catalog:** [12--query-intelligence/06-query-expansion.md](../feature_catalog/12--query-intelligence/06-query-expansion.md)
+
+### NEW-039 | Verify-fix-verify memory quality loop (PI-A5)
+
+#### Description
+Confirm retry then reject path.
+
+#### Current Reality
+Prompt: `Verify PI-A5 quality loop behavior.`
+
+Low-quality memory triggers retry cycle; final reject after max retries; rejection reason logged
+
+#### Test Execution
+> **Feature File:** [NEW-039](02--new-features/039-verify-fix-verify-memory-quality-loop-pi-a5.md)
+> **Catalog:** [13--memory-quality-and-indexing/01-verify-fix-verify-memory-quality-loop.md](../feature_catalog/13--memory-quality-and-indexing/01-verify-fix-verify-memory-quality-loop.md)
+
+### NEW-040 | Signal vocabulary expansion (TM-08)
+
+#### Description
+Confirm signal category detection.
+
+#### Current Reality
+Prompt: `Validate signal vocabulary expansion (TM-08).`
+
+Signal categories (correction, preference, reinforcement) detected from prompt analysis; trigger matching reflects expanded vocabulary
+
+#### Test Execution
+> **Feature File:** [NEW-040](02--new-features/040-signal-vocabulary-expansion-tm-08.md)
+> **Catalog:** [13--memory-quality-and-indexing/02-signal-vocabulary-expansion.md](../feature_catalog/13--memory-quality-and-indexing/02-signal-vocabulary-expansion.md)
+
+### NEW-041 | Pre-flight token budget validation (PI-A3)
+
+#### Description
+Confirm save-time preflight warn/fail behavior.
+
+#### Current Reality
+Prompt: `Verify pre-flight token budget validation (PI-A3).`
+
+Token estimate is computed before embedding/database writes; near-limit input emits `PF021` warning; over-limit input emits `PF020` failure; behavior follows `MCP_CHARS_PER_TOKEN`, `MCP_MAX_MEMORY_TOKENS`, and `MCP_TOKEN_WARNING_THRESHOLD`
+
+#### Test Execution
+> **Feature File:** [NEW-041](02--new-features/041-pre-flight-token-budget-validation-pi-a3.md)
+> **Catalog:** [13--memory-quality-and-indexing/03-pre-flight-token-budget-validation.md](../feature_catalog/13--memory-quality-and-indexing/03-pre-flight-token-budget-validation.md)
+
+### NEW-042 | Spec folder description discovery (PI-B3)
+
+#### Description
+Confirm per-folder + aggregated routing.
+
+#### Current Reality
+Prompt: `Validate PI-B3 folder description discovery.`
+
+description.json exists after create.sh; stale detection triggers on spec.md edit; per-folder files preferred over spec.md fallback; mixed-mode aggregation works; invalid JSON or schema-invalid description.json files are ignored, spec.md fallback is used, and existing files are repaired in place; missing description.json falls back cleanly without implicit backfill; out-of-base or prefix-bypass paths are rejected by realpath containment checks; YAML frontmatter is stripped before description extraction, including CRLF-heavy frontmatter cases; memory_context uses folder routing; regeneration leaves valid JSON on disk with no leftover temp files
+
+#### Test Execution
+> **Feature File:** [NEW-042](02--new-features/042-spec-folder-description-discovery-pi-b3.md)
+> **Catalog:** [13--memory-quality-and-indexing/04-spec-folder-description-discovery.md](../feature_catalog/13--memory-quality-and-indexing/04-spec-folder-description-discovery.md)
+
+### NEW-043 | Pre-storage quality gate (TM-04)
+
+#### Description
+Confirm 3-layer gate behavior.
+
+#### Current Reality
+Prompt: `Verify pre-storage quality gate (TM-04).`
+
+3-layer gate: structural check, semantic check, duplication check; each layer can warn or reject; decision log captures all gate evaluations
+
+#### Test Execution
+> **Feature File:** [NEW-043](02--new-features/043-pre-storage-quality-gate-tm-04.md)
+> **Catalog:** [13--memory-quality-and-indexing/05-pre-storage-quality-gate.md](../feature_catalog/13--memory-quality-and-indexing/05-pre-storage-quality-gate.md)
+
+### NEW-044 | Reconsolidation-on-save (TM-06)
+
+#### Description
+Confirm merge/deprecate thresholds.
+
+#### Current Reality
+Prompt: `Validate reconsolidation-on-save (TM-06).`
+
+Similarity >=0.88 triggers merge; 0.75-0.88 triggers supersede/deprecate; below 0.75 saves independently; thresholds documented in output
+
+#### Test Execution
+> **Feature File:** [NEW-044](02--new-features/044-reconsolidation-on-save-tm-06.md)
+> **Catalog:** [13--memory-quality-and-indexing/06-reconsolidation-on-save.md](../feature_catalog/13--memory-quality-and-indexing/06-reconsolidation-on-save.md)
+
+### NEW-045 | Smarter memory content generation (S1)
+
+#### Description
+Confirm quality/structure output.
+
+#### Current Reality
+Prompt: `Assess smarter memory content generation (S1).`
+
+Generated content retains structural elements (headings, lists, code blocks); output is concise; coherence maintained across sections
+
+#### Test Execution
+> **Feature File:** [NEW-045](02--new-features/045-smarter-memory-content-generation-s1.md)
+> **Catalog:** [13--memory-quality-and-indexing/07-smarter-memory-content-generation.md](../feature_catalog/13--memory-quality-and-indexing/07-smarter-memory-content-generation.md)
+
+### NEW-046 | Anchor-aware chunk thinning (R7)
+
+#### Description
+Confirm anchor-priority thinning.
+
+#### Current Reality
+Prompt: `Validate anchor-aware chunk thinning (R7).`
+
+Anchor chunks retained; filler chunks thinned; retained set is non-empty; anchor priority respected in thinning order
+
+#### Test Execution
+> **Feature File:** [NEW-046](02--new-features/046-anchor-aware-chunk-thinning-r7.md)
+> **Catalog:** [13--memory-quality-and-indexing/08-anchor-aware-chunk-thinning.md](../feature_catalog/13--memory-quality-and-indexing/08-anchor-aware-chunk-thinning.md)
+
+### NEW-047 | Encoding-intent capture at index time (R16)
+
+#### Description
+Confirm persisted intent labels.
+
+#### Current Reality
+Prompt: `Verify encoding-intent capture (R16).`
+
+Intent labels (doc/code/structured) persisted in metadata; labels read-only after indexing; varied content types produce correct labels
+
+#### Test Execution
+> **Feature File:** [NEW-047](02--new-features/047-encoding-intent-capture-at-index-time-r16.md)
+> **Catalog:** [13--memory-quality-and-indexing/09-encoding-intent-capture-at-index-time.md](../feature_catalog/13--memory-quality-and-indexing/09-encoding-intent-capture-at-index-time.md)
+
+### NEW-048 | Auto entity extraction (R10)
+
+#### Description
+Confirm entity pipeline persistence.
+
+#### Current Reality
+Prompt: `Validate auto entity extraction (R10).`
+
+Entities extracted and persisted in entity tables; normalization applied (case, aliases); denylist entities excluded
+
+#### Test Execution
+> **Feature File:** [NEW-048](02--new-features/048-auto-entity-extraction-r10.md)
+> **Catalog:** [13--memory-quality-and-indexing/10-auto-entity-extraction.md](../feature_catalog/13--memory-quality-and-indexing/10-auto-entity-extraction.md)
+
+### NEW-049 | 4-stage pipeline refactor (R6)
+
+#### Description
+Confirm stage flow and invariant.
+
+#### Current Reality
+Prompt: `Trace one query through all 4 stages.`
+
+Query traverses all 4 stages in order; stage transitions visible in verbose metadata; stage-4 scores immutable after final stage
+
+#### Test Execution
+> **Feature File:** [NEW-049](02--new-features/049-4-stage-pipeline-refactor-r6.md)
+> **Catalog:** [14--pipeline-architecture/01-4-stage-pipeline-refactor.md](../feature_catalog/14--pipeline-architecture/01-4-stage-pipeline-refactor.md)
+
+### NEW-050 | MPAB chunk-to-memory aggregation (R1)
+
+#### Description
+Confirm MPAB formula.
+
+#### Current Reality
+Prompt: `Verify MPAB chunk aggregation (R1).`
+
+MPAB aggregation formula produces correct parent score from child chunks; manual formula matches computed value
+
+#### Test Execution
+> **Feature File:** [NEW-050](02--new-features/050-mpab-chunk-to-memory-aggregation-r1.md)
+> **Catalog:** [14--pipeline-architecture/02-mpab-chunk-to-memory-aggregation.md](../feature_catalog/14--pipeline-architecture/02-mpab-chunk-to-memory-aggregation.md)
+
+### NEW-051 | Chunk ordering preservation (B2)
+
+#### Description
+Confirm ordered reassembly.
+
+#### Current Reality
+Prompt: `Validate chunk ordering preservation (B2).`
+
+Collapsed chunks reassembled in original document order; marker sequence preserved; no reordering artifacts
+
+#### Test Execution
+> **Feature File:** [NEW-051](02--new-features/051-chunk-ordering-preservation-b2.md)
+> **Catalog:** [14--pipeline-architecture/03-chunk-ordering-preservation.md](../feature_catalog/14--pipeline-architecture/03-chunk-ordering-preservation.md)
+
+### NEW-052 | Template anchor optimization (S2)
+
+#### Description
+Confirm anchor metadata enrichment.
+
+#### Current Reality
+Prompt: `Verify template anchor optimization (S2).`
+
+Anchor metadata enriched in pipeline; anchor tags visible in query metadata; no score mutation from anchor presence
+
+#### Test Execution
+> **Feature File:** [NEW-052](02--new-features/052-template-anchor-optimization-s2.md)
+> **Catalog:** [14--pipeline-architecture/04-template-anchor-optimization.md](../feature_catalog/14--pipeline-architecture/04-template-anchor-optimization.md)
+
+### NEW-053 | Validation signals as retrieval metadata (S3)
+
+#### Description
+Confirm bounded multiplier.
+
+#### Current Reality
+Prompt: `Validate S3 retrieval metadata weighting.`
+
+Validation signal multiplier bounded to [0.8, 1.2]; highly validated docs score higher; zero-validation docs use 1.0 multiplier
+
+#### Test Execution
+> **Feature File:** [NEW-053](02--new-features/053-validation-signals-as-retrieval-metadata-s3.md)
+> **Catalog:** [14--pipeline-architecture/05-validation-signals-as-retrieval-metadata.md](../feature_catalog/14--pipeline-architecture/05-validation-signals-as-retrieval-metadata.md)
+
+### NEW-054 | Learned relevance feedback (R11)
+
+#### Description
+Confirm learned trigger safeguards.
+
+#### Current Reality
+Prompt: `Verify learned relevance feedback (R11).`
+
+Learned triggers added from helpful validations; safeguards prevent trigger flooding; queryId required for trigger learning
+
+#### Test Execution
+> **Feature File:** [NEW-054](02--new-features/054-learned-relevance-feedback-r11.md)
+> **Catalog:** [14--pipeline-architecture/06-learned-relevance-feedback.md](../feature_catalog/14--pipeline-architecture/06-learned-relevance-feedback.md)
+
+### NEW-055 | Dual-scope memory auto-surface (TM-05)
+
+#### Description
+Confirm auto-surface hooks.
+
+#### Current Reality
+Prompt: `Validate dual-scope auto-surface (TM-05).`
+
+Non-memory-aware tool path triggers auto-surface hook; compaction event surfaces relevant memories; surfaced memories match current context
+
+#### Test Execution
+> **Feature File:** [NEW-055](02--new-features/055-dual-scope-memory-auto-surface-tm-05.md)
+> **Catalog:** [15--retrieval-enhancements/01-dual-scope-memory-auto-surface.md](../feature_catalog/15--retrieval-enhancements/01-dual-scope-memory-auto-surface.md)
+
+### NEW-056 | Constitutional memory as expert knowledge injection (PI-A4)
+
+#### Description
+Confirm directive enrichment.
+
+#### Current Reality
+Prompt: `Verify constitutional memory directive injection (PI-A4).`
+
+Directive metadata appears in retrieval results; constitutional tier classification applied; enrichment fields populated
+
+#### Test Execution
+> **Feature File:** [NEW-056](02--new-features/056-constitutional-memory-as-expert-knowledge-injection-pi-a4.md)
+> **Catalog:** [15--retrieval-enhancements/02-constitutional-memory-as-expert-knowledge-injection.md](../feature_catalog/15--retrieval-enhancements/02-constitutional-memory-as-expert-knowledge-injection.md)
+
+### NEW-057 | Spec folder hierarchy as retrieval structure (S4)
+
+#### Description
+Confirm hierarchy-aware retrieval.
+
+#### Current Reality
+Prompt: `Validate spec-folder hierarchy retrieval (S4).`
+
+Self-folder results ranked highest; parent and sibling folders contribute scored results; hierarchy depth reflected in ranking
+
+#### Test Execution
+> **Feature File:** [NEW-057](02--new-features/057-spec-folder-hierarchy-as-retrieval-structure-s4.md)
+> **Catalog:** [15--retrieval-enhancements/03-spec-folder-hierarchy-as-retrieval-structure.md](../feature_catalog/15--retrieval-enhancements/03-spec-folder-hierarchy-as-retrieval-structure.md)
+
+### NEW-058 | Lightweight consolidation (N3-lite)
+
+#### Description
+Confirm maintenance cycle behavior.
+
+#### Current Reality
+Prompt: `Run lightweight consolidation cycle (N3-lite).`
+
+Consolidation cycle completes; contradiction detection, hebbian strengthening, and staleness decay all produce output; no runtime errors in logs
+
+#### Test Execution
+> **Feature File:** [NEW-058](02--new-features/058-lightweight-consolidation-n3-lite.md)
+> **Catalog:** [15--retrieval-enhancements/04-lightweight-consolidation.md](../feature_catalog/15--retrieval-enhancements/04-lightweight-consolidation.md)
+
+### NEW-059 | Memory summary search channel (R8)
+
+#### Description
+Confirm scale-gated summary channel.
+
+#### Current Reality
+Prompt: `Verify memory summary search channel (R8).`
+
+Summary channel activates only above corpus size threshold; channel contributes to fusion when active; channel is inert below threshold
+
+#### Test Execution
+> **Feature File:** [NEW-059](02--new-features/059-memory-summary-search-channel-r8.md)
+> **Catalog:** [15--retrieval-enhancements/05-memory-summary-search-channel.md](../feature_catalog/15--retrieval-enhancements/05-memory-summary-search-channel.md)
+
+### NEW-060 | Cross-document entity linking (S5)
+
+#### Description
+Confirm guarded supports-edge linking.
+
+#### Current Reality
+Prompt: `Validate cross-document entity linking (S5).`
+
+Supports-edges created between documents sharing entities; density guard prevents excessive edges; entity normalization applied
+
+#### Test Execution
+> **Feature File:** [NEW-060](02--new-features/060-cross-document-entity-linking-s5.md)
+> **Catalog:** [15--retrieval-enhancements/06-cross-document-entity-linking.md](../feature_catalog/15--retrieval-enhancements/06-cross-document-entity-linking.md)
+
+### NEW-061 | Tree thinning for spec folder consolidation (PI-B1)
+
+#### Description
+Confirm small-file merge thinning.
+
+#### Current Reality
+Prompt: `Validate tree thinning behavior (PI-B1).`
+
+Small files merged into consolidated output; token count reduced; large files left untouched; merge preserves content integrity
+
+#### Test Execution
+> **Feature File:** [NEW-061](02--new-features/061-tree-thinning-for-spec-folder-consolidation-pi-b1.md)
+> **Catalog:** [16--tooling-and-scripts/01-tree-thinning-for-spec-folder-consolidation.md](../feature_catalog/16--tooling-and-scripts/01-tree-thinning-for-spec-folder-consolidation.md)
+
+### NEW-062 | Progressive validation for spec documents (PI-B2)
+
+#### Description
+Confirm level 1-4 behavior.
+
+#### Current Reality
+Prompt: `Run progressive validation (PI-B2).`
+
+Each validation level produces appropriate checks; level progression increases strictness; exit codes reflect severity; auto-fix diffs applied at permitted levels
+
+#### Test Execution
+> **Feature File:** [NEW-062](02--new-features/062-progressive-validation-for-spec-documents-pi-b2.md)
+> **Catalog:** [16--tooling-and-scripts/03-progressive-validation-for-spec-documents.md](../feature_catalog/16--tooling-and-scripts/03-progressive-validation-for-spec-documents.md)
+
+### NEW-063 | Feature flag governance
+
+#### Description
+Confirm governance policy conformance.
+
+#### Current Reality
+Prompt: `Audit feature flag governance conformance.`
+
+All flags enumerated with age and review cadence; compliance gaps identified; no undocumented flags found
+
+#### Test Execution
+> **Feature File:** [NEW-063](02--new-features/063-feature-flag-governance.md)
+> **Catalog:** [17--governance/01-feature-flag-governance.md](../feature_catalog/17--governance/01-feature-flag-governance.md)
+
+### NEW-064 | Feature flag sunset audit
+
+#### Description
+Confirm sunset dispositions.
+
+#### Current Reality
+Prompt: `Verify feature flag sunset audit outcomes.`
+
+Documented dispositions match code state; deprecated flags are no-ops; deltas between docs and code identified
+
+#### Test Execution
+> **Feature File:** [NEW-064](02--new-features/064-feature-flag-sunset-audit.md)
+> **Catalog:** [17--governance/02-feature-flag-sunset-audit.md](../feature_catalog/17--governance/02-feature-flag-sunset-audit.md)
+
+### NEW-065 | Database and schema safety
+
+#### Description
+Confirm Sprint 8 DB safety bundle.
+
+#### Current Reality
+Prompt: `Validate database and schema safety bundle.`
+
+Mutations complete atomically; no partial SQL corruption; schema constraints enforced; rollback on failure
+
+#### Test Execution
+> **Feature File:** [NEW-065](02--new-features/065-database-and-schema-safety.md)
+> **Catalog:** [08--bug-fixes-and-data-integrity/05-database-and-schema-safety.md](../feature_catalog/08--bug-fixes-and-data-integrity/05-database-and-schema-safety.md)
+
+### NEW-066 | Scoring and ranking corrections
+
+#### Description
+Confirm Sprint 8 scoring fixes.
+
+#### Current Reality
+Prompt: `Validate scoring and ranking corrections bundle.`
+
+Score values fall within expected ranges; ranking order matches relevance; no score inversions or NaN values
+
+#### Test Execution
+> **Feature File:** [NEW-066](02--new-features/066-scoring-and-ranking-corrections.md)
+> **Catalog:** [11--scoring-and-calibration/11-scoring-and-ranking-corrections.md](../feature_catalog/11--scoring-and-calibration/11-scoring-and-ranking-corrections.md)
+
+### NEW-067 | Search pipeline safety
+
+#### Description
+Confirm Sprint 8 pipeline safety fixes.
+
+#### Current Reality
+Prompt: `Validate search pipeline safety bundle.`
+
+Pipeline handles heavy queries without crash; filters apply correctly; tokenization produces valid tokens; no unguarded exceptions
+
+#### Test Execution
+> **Feature File:** [NEW-067](02--new-features/067-search-pipeline-safety.md)
+> **Catalog:** [14--pipeline-architecture/07-search-pipeline-safety.md](../feature_catalog/14--pipeline-architecture/07-search-pipeline-safety.md)
+
+### NEW-068 | Guards and edge cases
+
+#### Description
+Confirm edge-case guard fixes.
+
+#### Current Reality
+Prompt: `Validate guards and edge-cases bundle.`
+
+No double-counting in aggregation; fallback paths trigger correctly; guard conditions prevent invalid state
+
+#### Test Execution
+> **Feature File:** [NEW-068](02--new-features/068-guards-and-edge-cases.md)
+> **Catalog:** [08--bug-fixes-and-data-integrity/06-guards-and-edge-cases.md](../feature_catalog/08--bug-fixes-and-data-integrity/06-guards-and-edge-cases.md)
+
+### NEW-069 | Entity normalization consolidation
+
+#### Description
+Confirm shared normalization path.
+
+#### Current Reality
+Prompt: `Validate entity normalization consolidation.`
+
+Extractor and linker produce identical normalized forms for same input; unicode entities handled consistently; no normalization divergence
+
+#### Test Execution
+> **Feature File:** [NEW-069](02--new-features/069-entity-normalization-consolidation.md)
+> **Catalog:** [13--memory-quality-and-indexing/13-entity-normalization-consolidation.md](../feature_catalog/13--memory-quality-and-indexing/13-entity-normalization-consolidation.md)
+
+### NEW-070 | Dead code removal
+
+#### Description
+Confirm dead path elimination.
+
+#### Current Reality
+Prompt: `Audit dead code removal outcomes.`
+
+Removed symbols not found in codebase; representative flows execute without missing-reference errors; no dead imports remain
+
+#### Test Execution
+> **Feature File:** [NEW-070](02--new-features/070-dead-code-removal.md)
+> **Catalog:** [16--tooling-and-scripts/04-dead-code-removal.md](../feature_catalog/16--tooling-and-scripts/04-dead-code-removal.md)
+
+### NEW-071 | Performance improvements
+
+#### Description
+Confirm key perf remediations active.
+
+#### Current Reality
+Prompt: `Verify performance improvements (Sprint 8).`
+
+Optimized code paths are active (not bypassed); heavy queries complete within acceptable time; no performance regressions
+
+#### Test Execution
+> **Feature File:** [NEW-071](02--new-features/071-performance-improvements.md)
+> **Catalog:** [14--pipeline-architecture/08-performance-improvements.md](../feature_catalog/14--pipeline-architecture/08-performance-improvements.md)
+
+### NEW-072 | Test quality improvements
+
+#### Description
+Confirm test quality remediations.
+
+#### Current Reality
+Prompt: `Audit test quality improvements.`
+
+Tests use proper teardown; assertions are specific (not generic truthy checks); no flaky timing-dependent patterns; test isolation maintained
+
+#### Test Execution
+> **Feature File:** [NEW-072](02--new-features/072-test-quality-improvements.md)
+> **Catalog:** [09--evaluation-and-measurement/12-test-quality-improvements.md](../feature_catalog/09--evaluation-and-measurement/12-test-quality-improvements.md)
+
+### NEW-073 | Quality gate timer persistence
+
+#### Description
+Confirm restart persistence.
+
+#### Current Reality
+Prompt: `Verify quality gate timer persistence.`
+
+Activation timestamp survives service restart; quality gate respects persisted timer; no timer reset on restart
+
+#### Test Execution
+> **Feature File:** [NEW-073](02--new-features/073-quality-gate-timer-persistence.md)
+> **Catalog:** [13--memory-quality-and-indexing/14-quality-gate-timer-persistence.md](../feature_catalog/13--memory-quality-and-indexing/14-quality-gate-timer-persistence.md)
+
+### NEW-074 | Stage 3 effectiveScore fallback chain
+
+#### Description
+Confirm fallback order correctness.
+
+#### Current Reality
+Prompt: `Validate Stage 3 effectiveScore fallback chain.`
+
+Fallback chain follows defined priority order; missing score fields trigger next fallback; final fallback produces valid score
+
+#### Test Execution
+> **Feature File:** [NEW-074](02--new-features/074-stage-3-effectivescore-fallback-chain.md)
+> **Catalog:** [11--scoring-and-calibration/12-stage-3-effectivescore-fallback-chain.md](../feature_catalog/11--scoring-and-calibration/12-stage-3-effectivescore-fallback-chain.md)
+
+### NEW-075 | Canonical ID dedup hardening
+
+#### Description
+Confirm mixed-format ID dedup.
+
+#### Current Reality
+Prompt: `Verify canonical ID dedup hardening.`
+
+Mixed-format IDs (numeric, string, prefixed) resolve to single canonical form; dedup produces exactly one result per logical entity
+
+#### Test Execution
+> **Feature File:** [NEW-075](02--new-features/075-canonical-id-dedup-hardening.md)
+> **Catalog:** [08--bug-fixes-and-data-integrity/07-canonical-id-dedup-hardening.md](../feature_catalog/08--bug-fixes-and-data-integrity/07-canonical-id-dedup-hardening.md)
+
+### NEW-076 | Activation window persistence
+
+#### Description
+Confirm warn-only window persistence.
+
+#### Current Reality
+Prompt: `Verify activation window persistence.`
+
+Activation window timestamp persists across restart; warn-only mode respects persisted window; no timestamp reset on service restart
+
+#### Test Execution
+> **Feature File:** [NEW-076](02--new-features/076-activation-window-persistence.md)
+> **Catalog:** [14--pipeline-architecture/09-activation-window-persistence.md](../feature_catalog/14--pipeline-architecture/09-activation-window-persistence.md)
+
+### NEW-077 | Tier-2 fallback channel forcing
+
+#### Description
+Confirm force-all-channels in tier-2.
+
+#### Current Reality
+Prompt: `Validate tier-2 fallback channel forcing.`
+
+Tier-2 fallback activates all search channels; channel options show forceAllChannels=true; results include contributions from all channels
+
+#### Test Execution
+> **Feature File:** [NEW-077](02--new-features/077-tier-2-fallback-channel-forcing.md)
+> **Catalog:** [15--retrieval-enhancements/07-tier-2-fallback-channel-forcing.md](../feature_catalog/15--retrieval-enhancements/07-tier-2-fallback-channel-forcing.md)
+
+### NEW-078 | Legacy V1 pipeline removal
+
+#### Description
+Confirm V2-only runtime.
+
+#### Current Reality
+Prompt: `Verify legacy V1 removal.`
+
+V1 pipeline symbols absent from codebase; all queries route through V2 pipeline; no V1 fallback paths remain
+
+#### Test Execution
+> **Feature File:** [NEW-078](02--new-features/078-legacy-v1-pipeline-removal.md)
+> **Catalog:** [14--pipeline-architecture/10-legacy-v1-pipeline-removal.md](../feature_catalog/14--pipeline-architecture/10-legacy-v1-pipeline-removal.md)
+
+### NEW-079 | Scoring and fusion corrections
+
+#### Description
+Confirm phase-017 correction bundle.
+
+#### Current Reality
+Prompt: `Validate phase-017 scoring and fusion corrections.`
+
+Scoring math produces correct values; normalization stays within bounds; fusion formula applies corrected weights
+
+#### Test Execution
+> **Feature File:** [NEW-079](02--new-features/079-scoring-and-fusion-corrections.md)
+> **Catalog:** [11--scoring-and-calibration/13-scoring-and-fusion-corrections.md](../feature_catalog/11--scoring-and-calibration/13-scoring-and-fusion-corrections.md)
+
+### NEW-080 | Pipeline and mutation hardening
+
+#### Description
+Confirm mutation hardening bundle.
+
+#### Current Reality
+Prompt: `Validate phase-017 pipeline and mutation hardening.`
+
+CRUD mutations are atomic (all-or-nothing); error handling cleans up partial state; no orphaned records on failure
+
+#### Test Execution
+> **Feature File:** [NEW-080](02--new-features/080-pipeline-and-mutation-hardening.md)
+> **Catalog:** [14--pipeline-architecture/11-pipeline-and-mutation-hardening.md](../feature_catalog/14--pipeline-architecture/11-pipeline-and-mutation-hardening.md)
+
+### NEW-081 | Graph and cognitive memory fixes
+
+#### Description
+Confirm graph/cognitive fix bundle.
+
+#### Current Reality
+Prompt: `Validate graph and cognitive memory fixes.`
+
+Self-loops prevented; depth clamps enforced; cache invalidation triggers on mutation; no stale cognitive data returned
+
+#### Test Execution
+> **Feature File:** [NEW-081](02--new-features/081-graph-and-cognitive-memory-fixes.md)
+> **Catalog:** [10--graph-signal-activation/08-graph-and-cognitive-memory-fixes.md](../feature_catalog/10--graph-signal-activation/08-graph-and-cognitive-memory-fixes.md)
+
+### NEW-082 | Evaluation and housekeeping fixes
+
+#### Description
+Confirm eval/housekeeping reliability.
+
+#### Current Reality
+Prompt: `Validate evaluation and housekeeping fixes.`
+
+Run-IDs are unique across restarts; upserts are idempotent; boundary guards prevent out-of-range values; housekeeping completes cleanly
+
+#### Test Execution
+> **Feature File:** [NEW-082](02--new-features/082-evaluation-and-housekeeping-fixes.md)
+> **Catalog:** [09--evaluation-and-measurement/13-evaluation-and-housekeeping-fixes.md](../feature_catalog/09--evaluation-and-measurement/13-evaluation-and-housekeeping-fixes.md)
+
+### NEW-083 | Math.max/min stack overflow elimination
+
+#### Description
+Confirm large-array safety.
+
+#### Current Reality
+Prompt: `Validate Math.max/min stack overflow elimination.`
+
+Large arrays (10k+ elements) processed without RangeError; numeric outputs match expected min/max values; no stack overflow in any code path
+
+#### Test Execution
+> **Feature File:** [NEW-083](02--new-features/083-math-max-min-stack-overflow-elimination.md)
+> **Catalog:** [08--bug-fixes-and-data-integrity/08-mathmax-min-stack-overflow-elimination.md](../feature_catalog/08--bug-fixes-and-data-integrity/08-mathmax-min-stack-overflow-elimination.md)
+
+### NEW-084 | Session-manager transaction gap fixes
+
+#### Description
+Confirm transactional limit enforcement.
+
+#### Current Reality
+Prompt: `Validate session-manager transaction gap fixes.`
+
+Concurrent writes are serialized via transactions; session limits enforced; no data corruption from concurrent access
+
+#### Test Execution
+> **Feature File:** [NEW-084](02--new-features/084-session-manager-transaction-gap-fixes.md)
+> **Catalog:** [08--bug-fixes-and-data-integrity/09-session-manager-transaction-gap-fixes.md](../feature_catalog/08--bug-fixes-and-data-integrity/09-session-manager-transaction-gap-fixes.md)
+
+### NEW-085 | Transaction wrappers on mutation handlers
+
+#### Description
+Confirm atomic wrapper behavior.
+
+#### Current Reality
+Prompt: `Validate mutation transaction wrappers.`
+
+Mid-step fault triggers automatic rollback; DB state remains consistent after rollback; no partial writes persist
+
+#### Test Execution
+> **Feature File:** [NEW-085](02--new-features/085-transaction-wrappers-on-mutation-handlers.md)
+> **Catalog:** [02--mutation/06-transaction-wrappers-on-mutation-handlers.md](../feature_catalog/02--mutation/06-transaction-wrappers-on-mutation-handlers.md)
+
+### NEW-086 | BM25 trigger phrase re-index gate
+
+#### Description
+Confirm trigger edit causes re-index.
+
+#### Current Reality
+Prompt: `Validate BM25 trigger phrase re-index gate.`
+
+Trigger phrase edit triggers BM25 re-index; new trigger is searchable after re-index; old trigger phrase still works if not removed
+
+#### Test Execution
+> **Feature File:** [NEW-086](02--new-features/086-bm25-trigger-phrase-re-index-gate.md)
+> **Catalog:** [01--retrieval/06-bm25-trigger-phrase-re-index-gate.md](../feature_catalog/01--retrieval/06-bm25-trigger-phrase-re-index-gate.md)
+
+### NEW-087 | DB_PATH extraction and import standardization
+
+#### Description
+Confirm shared DB path resolution.
+
+#### Current Reality
+Prompt: `Validate DB_PATH extraction/import standardization.`
+
+All scripts/tools resolve to the same DB path for identical env vars; precedence chain is respected; no hardcoded fallbacks diverge
+
+#### Test Execution
+> **Feature File:** [NEW-087](02--new-features/087-db-path-extraction-and-import-standardization.md)
+> **Catalog:** [14--pipeline-architecture/12-dbpath-extraction-and-import-standardization.md](../feature_catalog/14--pipeline-architecture/12-dbpath-extraction-and-import-standardization.md)
+
+### NEW-088 | Cross-AI validation fixes (Tier 4)
+
+#### Description
+Confirm tier-4 fix pack behavior.
+
+#### Current Reality
+Prompt: `Validate Phase 018 Tier-4 cross-AI fixes.`
+
+Each tier-4 fix location shows corrected behavior; representative flows produce expected outputs; no regressions in adjacent functionality
+
+#### Test Execution
+> **Feature File:** [NEW-088](02--new-features/088-cross-ai-validation-fixes-tier-4.md)
+> **Catalog:** [09--evaluation-and-measurement/14-cross-ai-validation-fixes.md](../feature_catalog/09--evaluation-and-measurement/14-cross-ai-validation-fixes.md)
+
+### NEW-089 | Code standards alignment
+
+#### Description
+Confirm standards conformance.
+
+#### Current Reality
+Prompt: `Validate code standards alignment outcomes.`
+
+Affected files follow naming conventions; comments are meaningful (not boilerplate); import order matches standard; no mismatches found
+
+#### Test Execution
+> **Feature File:** [NEW-089](02--new-features/089-code-standards-alignment.md)
+> **Catalog:** [16--tooling-and-scripts/05-code-standards-alignment.md](../feature_catalog/16--tooling-and-scripts/05-code-standards-alignment.md)
+
+### NEW-090 | INT8 quantization evaluation (R5)
+
+#### Description
+Confirm no-go decision remains valid.
+
+#### Current Reality
+Prompt: `Re-evaluate INT8 quantization decision criteria.`
+
+Quality degradation metrics exceed acceptable threshold; no-go criteria still met; decision rationale documented with current data
+
+#### Test Execution
+> **Feature File:** [NEW-090](02--new-features/090-int8-quantization-evaluation-r5.md)
+> **Catalog:** [09--evaluation-and-measurement/16-int8-quantization-evaluation.md](../feature_catalog/09--evaluation-and-measurement/16-int8-quantization-evaluation.md)
+
+### NEW-091 | Implemented: graph centrality and community detection (N2)
+
+#### Description
+Confirm deferred->implemented status.
+
+#### Current Reality
+Prompt: `Verify N2 implemented and active.`
+
+N2 tables exist with data; feature flags show active status; graph queries include centrality/community contributions in scores
+
+#### Test Execution
+> **Feature File:** [NEW-091](02--new-features/091-implemented-graph-centrality-and-community-detection-n2.md)
+> **Catalog:** [10--graph-signal-activation/07-community-detection.md](../feature_catalog/10--graph-signal-activation/07-community-detection.md)
+
+### NEW-092 | Implemented: auto entity extraction (R10)
+
+#### Description
+Confirm deferred->implemented status.
+
+#### Current Reality
+Prompt: `Verify R10 implemented and active.`
+
+Entities automatically extracted on save; entity outputs contain expected entity types; default extraction settings are applied
+
+#### Test Execution
+> **Feature File:** [NEW-092](02--new-features/092-implemented-auto-entity-extraction-r10.md)
+> **Catalog:** [13--memory-quality-and-indexing/10-auto-entity-extraction.md](../feature_catalog/13--memory-quality-and-indexing/10-auto-entity-extraction.md)
+
+### NEW-093 | Implemented: memory summary generation (R8)
+
+#### Description
+Confirm deferred->implemented status.
+
+#### Current Reality
+Prompt: `Verify R8 implemented and gated.`
+
+Summary generated for long memories; summary persisted in DB; scale gate prevents summary generation below corpus threshold
+
+#### Test Execution
+> **Feature File:** [NEW-093](02--new-features/093-implemented-memory-summary-generation-r8.md)
+> **Catalog:** [15--retrieval-enhancements/05-memory-summary-search-channel.md](../feature_catalog/15--retrieval-enhancements/05-memory-summary-search-channel.md)
+
+### NEW-094 | Implemented: cross-document entity linking (S5)
+
+#### Description
+Confirm deferred->implemented status.
+
+#### Current Reality
+Prompt: `Verify S5 implemented and guarded.`
+
+Entity linker creates supports-edges between related documents; density guards cap edge creation; edge types are correctly classified
+
+#### Test Execution
+> **Feature File:** [NEW-094](02--new-features/094-implemented-cross-document-entity-linking-s5.md)
+> **Catalog:** [15--retrieval-enhancements/06-cross-document-entity-linking.md](../feature_catalog/15--retrieval-enhancements/06-cross-document-entity-linking.md)
+
+### NEW-095 | Strict Zod schema validation (P0-1)
+
+#### Description
+Confirm schema enforcement rejects hallucinated params.
+
+#### Current Reality
+Prompt: `Validate SPECKIT_STRICT_SCHEMAS enforcement.`
+
+Zod strict error returned for unknown params in strict mode; extra params pass through in permissive mode; validation occurs per-tool in handler layer
+
+#### Test Execution
+> **Feature File:** [NEW-095](02--new-features/095-strict-zod-schema-validation-p0-1.md)
+> **Catalog:** [14--pipeline-architecture/13-strict-zod-schema-validation.md](../feature_catalog/14--pipeline-architecture/13-strict-zod-schema-validation.md)
+
+### NEW-096 | Provenance-rich response envelopes (P0-2)
+
+#### Description
+Confirm includeTrace opt-in exposes scores/source/trace.
+
+#### Current Reality
+Prompt: `Validate SPECKIT_RESPONSE_TRACE includeTrace behavior.`
+
+Trace objects (scores, source, trace) present when includeTrace=true or env override active; absent when neither is set; score fields include all 7 expected sub-fields
+
+#### Test Execution
+> **Feature File:** [NEW-096](02--new-features/096-provenance-rich-response-envelopes-p0-2.md)
+> **Catalog:** [15--retrieval-enhancements/08-provenance-rich-response-envelopes.md](../feature_catalog/15--retrieval-enhancements/08-provenance-rich-response-envelopes.md)
+
+### NEW-097 | Async ingestion job lifecycle (P0-3)
+
+#### Description
+Confirm job state machine and crash recovery.
+
+#### Current Reality
+Prompt: `Validate memory_ingest_start/status/cancel lifecycle.`
+
+Job state transitions through queued→parsing→embedding→indexing→complete in order; cancel sets state to cancelled; job IDs match nanoid format; incomplete jobs re-enqueue after restart
+
+#### Test Execution
+> **Feature File:** [NEW-097](02--new-features/097-async-ingestion-job-lifecycle-p0-3.md)
+> **Catalog:** [05--lifecycle/05-async-ingestion-job-lifecycle.md](../feature_catalog/05--lifecycle/05-async-ingestion-job-lifecycle.md)
+
+### NEW-098 | Local GGUF reranker via node-llama-cpp (P1-5)
+
+#### Description
+Confirm reranker gating and graceful fallback.
+
+#### Current Reality
+Prompt: `Validate RERANKER_LOCAL strict check and memory thresholds.`
+
+Reranker not activated for truthy-but-not-'true' values; silent fallback when model file missing; custom model path lowers the total-memory threshold to 2GB from the default 8GB; scoring runs sequentially in logs
+
+#### Test Execution
+> **Feature File:** [NEW-098](02--new-features/098-local-gguf-reranker-via-node-llama-cpp-p1-5.md)
+> **Catalog:** [11--scoring-and-calibration/14-local-gguf-reranker-via-node-llama-cpp.md](../feature_catalog/11--scoring-and-calibration/14-local-gguf-reranker-via-node-llama-cpp.md)
+
+### NEW-099 | Real-time filesystem watching (P1-7)
+
+#### Description
+Confirm file watcher debounce, hash seeding, and ENOENT grace.
+
+#### Current Reality
+Prompt: `Validate SPECKIT_FILE_WATCHER behavior.`
+
+File add seeds hash cache; modifications trigger reindex after 2s debounce; identical-content modifications produce no reindex; rapid create-delete produces no ENOENT crash
+
+#### Test Execution
+> **Feature File:** [NEW-099](02--new-features/099-real-time-filesystem-watching-p1-7.md)
+> **Catalog:** [16--tooling-and-scripts/06-real-time-filesystem-watching-with-chokidar.md](../feature_catalog/16--tooling-and-scripts/06-real-time-filesystem-watching-with-chokidar.md)
+
+### NEW-100 | Async shutdown with deadline (server lifecycle)
+
+#### Description
+Confirm graceful shutdown completes async cleanup.
+
+#### Current Reality
+Prompt: `Validate server shutdown deadline behavior.`
+
+File watcher closes; local reranker disposes; vector index closes; shutdown completes within 5s; force exit fires if cleanup exceeds deadline
+
+#### Test Execution
+> **Feature File:** [NEW-100](02--new-features/100-async-shutdown-with-deadline-server-lifecycle.md)
+> **Catalog:** *(server lifecycle — no dedicated catalog entry)*
+
+### NEW-101 | memory_delete confirm schema tightening
+
+#### Description
+Confirm confirm field accepts only literal true.
+
+#### Current Reality
+Prompt: `Validate memory_delete confirm:z.literal(true) enforcement.`
+
+confirm:true accepted; confirm:false rejected with Zod literal error; bulk delete requires confirm:true; missing confirm field rejected for bulk path
+
+#### Test Execution
+> **Feature File:** [NEW-101](02--new-features/101-memory-delete-confirm-schema-tightening.md)
+> **Catalog:** *(memory_delete confirm schema — covered by `02--mutation/03`)*
+
+### NEW-102 | node-llama-cpp optionalDependencies
+
+#### Description
+Confirm install succeeds without native build tools.
+
+#### Current Reality
+Prompt: `Validate node-llama-cpp as optionalDependency.`
+
+node-llama-cpp listed in optionalDependencies (not dependencies); npm install completes without error on clean env; dynamic import with graceful fallback when module absent
+
+#### Test Execution
+> **Feature File:** [NEW-102](02--new-features/102-node-llama-cpp-optionaldependencies.md)
+> **Catalog:** *(node-llama-cpp optionalDependencies — covered by `11--scoring-and-calibration/14`)*
+
+### NEW-103 | UX hook module coverage (`mutation-feedback`, `response-hints`)
+
+#### Description
+Confirm new hook modules return the finalized metadata and hint shape.
+
+#### Current Reality
+Prompt: `Validate NEW-103 hook module behavior for mutation feedback and response hints.`
+
+Test output shows suite pass, including latency/cache-clear booleans and finalized hint payload assertions
+
+#### Test Execution
+> **Feature File:** [NEW-103](02--new-features/103-ux-hook-module-coverage-mutation-feedback-response-hints.md)
+> **Catalog:** [18--ux-hooks/05-dedicated-ux-hook-modules.md](../feature_catalog/18--ux-hooks/05-dedicated-ux-hook-modules.md)
+
+### NEW-104 | Mutation save-path UX parity and no-op hardening
+
+#### Description
+Confirm duplicate-save no-op behavior and atomic-save parity/hints.
+
+#### Current Reality
+Prompt: `Run save-path UX scenarios and verify duplicate-save no-op behavior plus atomic-save parity.`
+
+Suite passes and assertions show no false `postMutationHooks` on no-op saves, cache-left-unchanged messaging, and parity between standard and atomic save responses
+
+#### Test Execution
+> **Feature File:** [NEW-104](02--new-features/104-mutation-save-path-ux-parity-and-no-op-hardening.md)
+> **Catalog:** [18--ux-hooks/09-duplicate-save-no-op-feedback-hardening.md](../feature_catalog/18--ux-hooks/09-duplicate-save-no-op-feedback-hardening.md)
+
+### NEW-105 | Context-server success-envelope finalization
+
+#### Description
+Confirm `appendAutoSurfaceHints()` runs before budget enforcement and preserves the finalized envelope contract.
+
+#### Current Reality
+Prompt: `Validate the finalized context-server success-envelope path, including token metadata recomputation.`
+
+Context-server suite passes with end-to-end assertions for appended hints, preserved `autoSurfacedContext`, and finalized token metadata
+
+#### Test Execution
+> **Feature File:** [NEW-105](02--new-features/105-context-server-success-envelope-finalization.md)
+> **Catalog:** [18--ux-hooks/08-context-server-success-hint-append.md](../feature_catalog/18--ux-hooks/08-context-server-success-hint-append.md)
+
+### NEW-106 | Hooks barrel + README synchronization
+
+#### Description
+Confirm hooks index exports and docs cover the finalized modules and contract fields.
+
+#### Current Reality
+Prompt: `Validate hook barrel and README coverage for the finalized UX-hook surface.`
+
+response-hints" .opencode/skill/system-spec-kit/mcp_server/hooks/index.ts` 2) `rg "mutation-feedback
+
+#### Test Execution
+> **Feature File:** [NEW-106](02--new-features/106-hooks-barrel-readme-synchronization.md)
+> **Catalog:** [18--ux-hooks/12-hooks-readme-and-export-alignment.md](../feature_catalog/18--ux-hooks/12-hooks-readme-and-export-alignment.md)
+
+### NEW-107 | Checkpoint confirmName and schema enforcement
+
+#### Description
+Confirm delete safety is required across handler and validation layers.
+
+#### Current Reality
+Prompt: `Validate checkpoint delete confirmName enforcement across handler and schema layers.`
+
+Validation and handler suites pass with missing-`confirmName` rejection plus successful delete confirmation reporting
+
+#### Test Execution
+> **Feature File:** [NEW-107](02--new-features/107-checkpoint-confirmname-and-schema-enforcement.md)
+> **Catalog:** [18--ux-hooks/03-checkpoint-delete-confirmname-safety.md](../feature_catalog/18--ux-hooks/03-checkpoint-delete-confirmname-safety.md)
+
+### NEW-108 | Spec 007 finalized verification command suite evidence
+
+#### Description
+Confirm the recorded verification set matches the current Spec 007 evidence.
+
+#### Current Reality
+Prompt: `Run the finalized Spec 007 verification command suite and record evidence.`
+
+`npx tsc -b` PASS, `npm run lint` PASS, UX suite PASS with 7 files / 510 tests, stdio plus embeddings suite PASS with 2 files / 15 tests, and MCP SDK stdio smoke PASS with 28 tools listed
+
+#### Test Execution
+> **Feature File:** [NEW-108](02--new-features/108-spec-007-finalized-verification-command-suite-evidence.md)
+> **Catalog:** *(Spec 007 verification suite — no dedicated catalog entry)*
+
+### NEW-109 | Quality-aware 3-tier search fallback
+
+#### Description
+Confirm 3-tier degradation chain triggers correctly.
+
+#### Current Reality
+Prompt: `Validate SPECKIT_SEARCH_FALLBACK tiered degradation.`
+
+Tier 1 low-quality results trigger Tier 2; Tier 2 forces all channels with minSimilarity=0.1; Tier 3 SQL fallback fires when Tier 2 also fails; _degradation property reflects active tier; SPECKIT_SEARCH_FALLBACK=false disables tiered degradation
+
+#### Test Execution
+> **Feature File:** [NEW-109](02--new-features/109-quality-aware-3-tier-search-fallback.md)
+> **Catalog:** [01--retrieval/08-quality-aware-3-tier-search-fallback.md](../feature_catalog/01--retrieval/08-quality-aware-3-tier-search-fallback.md)
+
+### NEW-110 | Prediction-error save arbitration
+
+#### Description
+Confirm 5-action PE decision engine during save.
+
+#### Current Reality
+Prompt: `Validate prediction-error save arbitration actions.`
+
+Each similarity band triggers the correct action (CREATE/REINFORCE/UPDATE/SUPERSEDE/CREATE_LINKED); memory_conflicts table records action/similarity/contradiction; force:true bypasses PE arbitration
+
+#### Test Execution
+> **Feature File:** [NEW-110](02--new-features/110-prediction-error-save-arbitration.md)
+> **Catalog:** [02--mutation/08-prediction-error-save-arbitration.md](../feature_catalog/02--mutation/08-prediction-error-save-arbitration.md)
+
+### NEW-111 | Deferred lexical-only indexing
+
+#### Description
+Confirm embedding-failure fallback and BM25 searchability.
+
+#### Current Reality
+Prompt: `Validate deferred lexical-only indexing fallback.`
+
+Memory saved with embedding_status='pending' on embedding failure; BM25/FTS5 lexical search returns the memory; reindex transitions status to 'success'; vector search works after reindex
+
+#### Test Execution
+> **Feature File:** [NEW-111](02--new-features/111-deferred-lexical-only-indexing.md)
+> **Catalog:** [13--memory-quality-and-indexing/15-deferred-lexical-only-indexing.md](../feature_catalog/13--memory-quality-and-indexing/15-deferred-lexical-only-indexing.md)
+
+### NEW-112 | Cross-process DB hot rebinding
+
+#### Description
+Confirm marker-file triggers DB reinitialization.
+
+#### Current Reality
+Prompt: `Validate cross-process DB hot rebinding via marker file.`
+
+Server detects DB_UPDATED_FILE marker; DB reinitializes without restart; stats reflect post-mutation state (no stale data); health reports healthy after rebind
+
+#### Test Execution
+> **Feature File:** [NEW-112](02--new-features/112-cross-process-db-hot-rebinding.md)
+> **Catalog:** [14--pipeline-architecture/17-cross-process-db-hot-rebinding.md](../feature_catalog/14--pipeline-architecture/17-cross-process-db-hot-rebinding.md)
+
+### NEW-113 | Standalone admin CLI
+
+#### Description
+Confirm 4 CLI commands execute correctly.
+
+#### Current Reality
+Prompt: `Validate standalone admin CLI commands.`
+
+stats shows tier distribution and schema version; dry-run shows plan without executing deletions; reindex completes with summary; schema-downgrade without `--confirm` shows safety prompt; destructive bulk-delete attempts a pre-delete checkpoint and warns rather than aborting if checkpoint persistence fails
+
+#### Test Execution
+> **Feature File:** [NEW-113](02--new-features/113-standalone-admin-cli.md)
+> **Catalog:** [16--tooling-and-scripts/07-standalone-admin-cli.md](../feature_catalog/16--tooling-and-scripts/07-standalone-admin-cli.md)
+
+### NEW-114 | Path traversal validation (P0-4)
+
+#### Description
+Verify memory_ingest_start rejects paths outside allowed base directories and paths containing traversal segments.
+
+#### Current Reality
+Prompt: `"Ingest a file using a path with ../ segments and verify rejection"`
+
+Traversal paths (../) rejected with E_VALIDATION error; absolute paths outside allowed base rejected; valid paths within allowed directories accepted and job created
+
+#### Test Execution
+> **Feature File:** [NEW-114](02--new-features/114-path-traversal-validation-p0-4.md)
+> **Catalog:** [05--lifecycle/05-async-ingestion-job-lifecycle.md](../feature_catalog/05--lifecycle/05-async-ingestion-job-lifecycle.md)
+
+### NEW-115 | Transaction atomicity on rename failure (P0-5)
+
+#### Description
+Verify that pending file is preserved (not deleted) when rename fails after DB commit, enabling recovery on next startup.
+
+#### Current Reality
+Prompt: `"Simulate rename failure after DB commit and verify pending file survives"`
+
+Rename failure returns {success:false, dbCommitted:true}; pending file preserved on disk after failure; recoverAllPendingFiles discovers and recovers the pending file
+
+#### Test Execution
+> **Feature File:** [NEW-115](02--new-features/115-transaction-atomicity-on-rename-failure-p0-5.md)
+> **Catalog:** [14--pipeline-architecture/21-atomic-pending-file-recovery.md](../feature_catalog/14--pipeline-architecture/21-atomic-pending-file-recovery.md)
+
+### NEW-116 | Chunking safe swap atomicity (P0-6)
+
+#### Description
+Verify re-chunking indexes new chunks before deleting old ones, and old chunks survive if new indexing fails.
+
+#### Current Reality
+Prompt: `"Re-chunk a parent memory and verify old children survive indexing failure"`
+
+New chunks indexed in staged state before old deletion; old chunks deleted only after successful new indexing; embedding failure preserves old children; handler returns error status on failure
+
+#### Test Execution
+> **Feature File:** [NEW-116](02--new-features/116-chunking-safe-swap-atomicity-p0-6.md)
+> **Catalog:** [08--bug-fixes-and-data-integrity/10-chunking-orchestrator-safe-swap.md](../feature_catalog/08--bug-fixes-and-data-integrity/10-chunking-orchestrator-safe-swap.md)
+
+### NEW-117 | SQLite datetime session cleanup (P0-7)
+
+#### Description
+Verify cleanupOldSessions() correctly identifies expired sessions using SQLite-native datetime comparison regardless of timestamp format.
+
+#### Current Reality
+Prompt: `"Create sessions with known timestamps and verify cleanup deletes only expired ones"`
+
+Expired session (45min old) deleted; active session (5min old) preserved; cleanup works with both YYYY-MM-DD HH:MM:SS and ISO timestamp formats
+
+#### Test Execution
+> **Feature File:** [NEW-117](02--new-features/117-sqlite-datetime-session-cleanup-p0-7.md)
+> **Catalog:** [08--bug-fixes-and-data-integrity/11-working-memory-timestamp-fix.md](../feature_catalog/08--bug-fixes-and-data-integrity/11-working-memory-timestamp-fix.md)
+
+### NEW-118 | Stage-2 score field synchronization (P0-8)
+
+#### Description
+Verify intentAdjustedScore reflects all downstream signal modifications after non-hybrid intent weighting.
+
+#### Current Reality
+Prompt: `Run a non-hybrid search with intent weighting and verify score fields stay synchronized.`
+
+intentAdjustedScore set at Step 4 in trace; downstream signals modify score field; final intentAdjustedScore >= score (Math.max sync); resolveEffectiveScore returns synchronized value
+
+#### Test Execution
+> **Feature File:** [NEW-118](02--new-features/118-stage-2-score-field-synchronization-p0-8.md)
+> **Catalog:** [11--scoring-and-calibration/13-scoring-and-fusion-corrections.md](../feature_catalog/11--scoring-and-calibration/13-scoring-and-fusion-corrections.md)
+
+### NEW-119 | Memory filename uniqueness (ensureUniqueMemoryFilename)
+
+#### Description
+Confirm collision resolution.
+
+#### Current Reality
+Prompt: `Validate memory filename collision prevention.`
+
+
+
+#### Test Execution
+> **Feature File:** [NEW-119](02--new-features/119-memory-filename-uniqueness-ensureuniquememoryfilename.md)
+> **Catalog:** [13--memory-quality-and-indexing/04-spec-folder-description-discovery.md](../feature_catalog/13--memory-quality-and-indexing/04-spec-folder-description-discovery.md)
+
+### NEW-120 | Unified graph rollback and explainability (Phase 3)
+
+#### Description
+Confirm graph kill switch removes graph-side effects while traces still explain enabled runs.
+
+#### Current Reality
+Prompt: `Validate Phase 3 graph rollback and explainability.`
+
+When enabled, trace includes graph contribution summary and repeated identical inputs return identical order; when disabled, graph-side effects are absent and baseline ordering remains deterministic
+
+#### Test Execution
+> **Feature File:** [NEW-120](02--new-features/120-unified-graph-rollback-and-explainability-phase-3.md)
+> **Catalog:** [10--graph-signal-activation/12-unified-graph-retrieval-deterministic-ranking-explainability-and-rollback.md](../feature_catalog/10--graph-signal-activation/12-unified-graph-retrieval-deterministic-ranking-explainability-and-rollback.md)
+
+### NEW-121 | Adaptive shadow proposal and rollback (Phase 4)
+
+#### Description
+Confirm adaptive scoring runs in shadow mode only, captures bounded proposals, and can be disabled cleanly.
+
+#### Current Reality
+Prompt: `Validate Phase 4 adaptive shadow proposal flow.`
+
+Adaptive proposal is present in shadow mode, proposal deltas are bounded, production ordering is unchanged by the shadow run, and disabling the flag removes adaptive proposal output
+
+#### Test Execution
+> **Feature File:** [NEW-121](02--new-features/121-adaptive-shadow-proposal-and-rollback-phase-4.md)
+> **Catalog:** [11--scoring-and-calibration/18-adaptive-shadow-ranking-bounded-proposals-and-rollback.md](../feature_catalog/11--scoring-and-calibration/18-adaptive-shadow-ranking-bounded-proposals-and-rollback.md)
+
+### NEW-122 | Governed ingest and scope isolation (Phase 5)
+
+#### Description
+Confirm governed saves require provenance and scope markers and scoped retrieval blocks cross-actor leakage.
+
+#### Current Reality
+Prompt: `Validate Phase 5 governed ingest and retrieval isolation.`
+
+agentId,sessionId,provenanceSource,provenanceActor}` metadata 3) Query with matching scope and verify hit appears 4) Query with mismatched user/agent or tenant and verify hit is filtered out 5) Review `governance_audit` rows
+
+#### Test Execution
+> **Feature File:** [NEW-122](02--new-features/122-governed-ingest-and-scope-isolation-phase-5.md)
+> **Catalog:** [17--governance/03-hierarchical-scope-governance-governed-ingest-retention-and-audit.md](../feature_catalog/17--governance/03-hierarchical-scope-governance-governed-ingest-retention-and-audit.md)
+
+### NEW-123 | Shared-space deny-by-default rollout (Phase 6)
+
+#### Description
+Confirm shared-memory spaces require explicit membership and respect rollout/kill-switch controls.
+
+#### Current Reality
+Prompt: `Validate Phase 6 shared-memory rollout controls.`
+
+Non-members are denied by default; explicit membership grants access; kill switch blocks access immediately even for existing members
+
+#### Test Execution
+> **Feature File:** [NEW-123](02--new-features/123-shared-space-deny-by-default-rollout-phase-6.md)
+> **Catalog:** [17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md](../feature_catalog/17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md)
+
+### NEW-124 | Automatic archival lifecycle coverage
+
+#### Description
+Verify archive/unarchive keeps metadata rows while syncing BM25 and vec_memories behavior.
+
+#### Current Reality
+Prompt: `Validate automatic archival subsystem vector/BM25 parity and protected tier behavior.`
+
+Archived memory keeps metadata row with `is_archived=1`, BM25 artifacts are synchronized on archive/unarchive, vector rows are deleted on archive, and unarchive logs deferred vector re-embedding until next index scan; protected tiers are not auto-archived
+
+#### Test Execution
+> **Feature File:** [NEW-124](02--new-features/124-automatic-archival-lifecycle-coverage.md)
+> **Catalog:** [05--lifecycle/07-automatic-archival-subsystem.md](../feature_catalog/05--lifecycle/07-automatic-archival-subsystem.md)
+
+### NEW-125 | Hydra roadmap capability flags
+
+#### Description
+Verify prefixed Hydra roadmap flags stay distinct from live runtime flags while remaining default-on unless explicitly opted out.
+
+#### Current Reality
+Prompt: `Validate memory roadmap flag snapshots without changing live graph-channel defaults.`
+
+First snapshot remains `phase:\"shared-rollout\"` with `capabilities.graphUnified:true`; second snapshot reports `phase:\"graph\"` with `capabilities.graphUnified:false`
+
+#### Test Execution
+> **Feature File:** [NEW-125](02--new-features/125-hydra-roadmap-capability-flags.md)
+> **Catalog:** [19--feature-flag-reference/01-1-search-pipeline-features-speckit.md](../feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md)
+
+### NEW-126 | Memory roadmap baseline snapshot
+
+#### Description
+Verify Phase 1 readiness baselines capture/persist metrics and handle missing context DBs without throwing.
+
+#### Current Reality
+Prompt: `Run the memory roadmap baseline snapshot verification suite.`
+
+Targeted suite passes; transcript shows persisted snapshot rows and missing-context DB zero fallback coverage
+
+#### Test Execution
+> **Feature File:** [NEW-126](02--new-features/126-memory-roadmap-baseline-snapshot.md)
+> **Catalog:** [09--evaluation-and-measurement/15-memory-roadmap-baseline-snapshot.md](../feature_catalog/09--evaluation-and-measurement/15-memory-roadmap-baseline-snapshot.md)
+
+### NEW-127 | Migration checkpoint scripts
+
+#### Description
+Verify raw SQLite migration checkpoint create/restore helpers produce sidecar metadata and safe restore backups.
+
+#### Current Reality
+Prompt: `Run the migration checkpoint script verification suite.`
+
+Targeted suite passes; transcript shows checkpoint sidecar creation, restore success, and pre-restore backup coverage
+
+#### Test Execution
+> **Feature File:** [NEW-127](02--new-features/127-migration-checkpoint-scripts.md)
+> **Catalog:** [16--tooling-and-scripts/09-migration-checkpoint-scripts.md](../feature_catalog/16--tooling-and-scripts/09-migration-checkpoint-scripts.md)
+
+### NEW-128 | Schema compatibility validation
+
+#### Description
+Verify backward-compatibility validation flags required schema gaps without throwing on partial databases.
+
+#### Current Reality
+Prompt: `Run the schema compatibility validation suite.`
+
+Targeted suite passes; transcript shows missing-table reporting and minimal-compatible schema success coverage
+
+#### Test Execution
+> **Feature File:** [NEW-128](02--new-features/128-schema-compatibility-validation.md)
+> **Catalog:** [16--tooling-and-scripts/10-schema-compatibility-validation.md](../feature_catalog/16--tooling-and-scripts/10-schema-compatibility-validation.md)
+
+### NEW-129 | Lineage state active projection and asOf resolution
+
+#### Description
+Verify append-first lineage projection and deterministic `asOf` resolution.
+
+#### Current Reality
+Prompt: `Run the lineage state verification suite.`
+
+Targeted suite passes; transcript shows active projection selection, deterministic `asOf` resolution, and malformed-chain detection
+
+#### Test Execution
+> **Feature File:** [NEW-129](02--new-features/129-lineage-state-active-projection-and-asof-resolution.md)
+> **Catalog:** [14--pipeline-architecture/22-lineage-state-active-projection-and-asof-resolution.md](../feature_catalog/14--pipeline-architecture/22-lineage-state-active-projection-and-asof-resolution.md)
+
+### NEW-130 | Lineage backfill rollback drill
+
+#### Description
+Verify dry-run planning, idempotent backfill, and checkpoint-backed rollback for Phase 2 lineage rollout.
+
+#### Current Reality
+Prompt: `Run the lineage backfill + rollback verification suite.`
+
+Targeted suite passes; transcript shows dry-run plan counts, successful backfill application, idempotent rerun, and checkpoint restore rollback
+
+#### Test Execution
+> **Feature File:** [NEW-130](02--new-features/130-lineage-backfill-rollback-drill.md)
+> **Catalog:** [14--pipeline-architecture/22-lineage-state-active-projection-and-asof-resolution.md](../feature_catalog/14--pipeline-architecture/22-lineage-state-active-projection-and-asof-resolution.md)
+
+### NEW-131 | Description.json batch backfill validation (PI-B3)
+
+#### Description
+Confirm batch-generated folder descriptions exist and conform to schema.
+
+#### Current Reality
+Prompt: `Validate PI-B3 batch backfill results.`
+
+Description.json coverage stays in parity with the current active spec inventory; all JSON files parse without syntax errors; C1 field-type checks pass with `specId` string, `parentChain` array of strings, and `memorySequence` number; schema fields are present at varying depths; per-folder files preferred over spec.md fallback
+
+#### Test Execution
+> **Feature File:** [NEW-131](02--new-features/131-description-json-batch-backfill-validation-pi-b3.md)
+> **Catalog:** [13--memory-quality-and-indexing/04-spec-folder-description-discovery.md](../feature_catalog/13--memory-quality-and-indexing/04-spec-folder-description-discovery.md)
+
+### NEW-132 | description.json schema field validation
+
+#### Description
+Confirm per-folder description metadata matches schema contract.
+
+#### Current Reality
+Prompt: `Validate description.json required fields and types.`
+
+description.json generated on folder creation with all 9 required fields; field types match contract with strings for `specId`, `folderSlug`, `specFolder`, `description`, and `lastUpdated`, arrays of strings for `parentChain`, `memoryNameHistory`, and `keywords`, and number for `memorySequence`; `memorySequence` and `memoryNameHistory` update on save; corrupted fields repaired on regeneration
+
+#### Test Execution
+> **Feature File:** [NEW-132](02--new-features/132-description-json-schema-field-validation.md)
+> **Catalog:** [13--memory-quality-and-indexing/04-spec-folder-description-discovery.md](../feature_catalog/13--memory-quality-and-indexing/04-spec-folder-description-discovery.md)
+
+### NEW-133 | Dry-run preflight for memory_save
+
+#### Description
+Confirm dry-run previews preflight plus semantic insufficiency without indexing side effects.
+
+#### Current Reality
+Prompt: `Validate memory_save dryRun preview behavior, including insufficiency detection.`
+
+Dry-run returns preflight plus quality-loop and sufficiency payloads; thin memories report `INSUFFICIENT_CONTEXT_ABORT` without indexing/database mutation; `force:true` does not bypass insufficiency; rich non-dry-run save indexes the same file
+
+#### Test Execution
+> **Feature File:** [NEW-133](02--new-features/133-dry-run-preflight-for-memory-save.md)
+> **Catalog:** [13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md](../feature_catalog/13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md)
+
+### NEW-134 | Startup pending-file recovery lifecycle coverage
+
+#### Description
+Verify startup recovery scans allowed roots and preserves stale pending files for manual review.
+
+#### Current Reality
+Prompt: `Validate startup pending-file recovery behavior across committed and stale files.`
+
+Committed pending file recovers to original path; stale pending file remains with explicit stale classification; startup scan covers configured/allowed roots without scanning unrelated workspace trees
+
+#### Test Execution
+> **Feature File:** [NEW-134](02--new-features/134-startup-pending-file-recovery-lifecycle-coverage.md)
+> **Catalog:** [05--lifecycle/06-startup-pending-file-recovery.md](../feature_catalog/05--lifecycle/06-startup-pending-file-recovery.md)
+
+### NEW-135 | Grep traceability for feature catalog code references
+
+#### Description
+Verify `grep -r "// Feature catalog: <feature>" mcp_server/` returns handler + lib hits.
+
+#### Current Reality
+Prompt: `Validate feature catalog grep traceability.`
+
+Each feature grep returns at least 2 hits spanning handlers and lib layers; all referenced files exist
+
+#### Test Execution
+> **Feature File:** [NEW-135](02--new-features/135-grep-traceability-for-feature-catalog-code-references.md)
+> **Catalog:** [16--tooling-and-scripts/11-feature-catalog-code-references.md](../feature_catalog/16--tooling-and-scripts/11-feature-catalog-code-references.md)
+
+### NEW-136 | Feature catalog annotation name validity
+
+#### Description
+Verify all annotation names cross-reference against catalog H3 headings with 0 invalid.
+
+#### Current Reality
+Prompt: `Validate all Feature catalog annotation names against catalog.`
+
+sort -u` 2) Extract all H3 headings from `feature_catalog/feature_catalog.md`: `grep "^### " feature_catalog.md` 3) Cross-reference: every annotation name must match an H3 heading exactly 4) Report any mismatches
+
+#### Test Execution
+> **Feature File:** [NEW-136](02--new-features/136-feature-catalog-annotation-name-validity.md)
+> **Catalog:** [16--tooling-and-scripts/11-feature-catalog-code-references.md](../feature_catalog/16--tooling-and-scripts/11-feature-catalog-code-references.md)
+
+### NEW-137 | Multi-feature annotation coverage
+
+#### Description
+Verify known multi-feature files have annotation count >= 2.
+
+#### Current Reality
+Prompt: `Validate multi-feature files carry all applicable annotations.`
+
+All known multi-feature files carry >= 2 annotations; annotations are semantically appropriate
+
+#### Test Execution
+> **Feature File:** [NEW-137](02--new-features/137-multi-feature-annotation-coverage.md)
+> **Catalog:** [16--tooling-and-scripts/11-feature-catalog-code-references.md](../feature_catalog/16--tooling-and-scripts/11-feature-catalog-code-references.md)
+
+### NEW-138 | MODULE: header compliance via verify_alignment_drift.py
+
+#### Description
+Verify `verify_alignment_drift.py` returns 0 TS-MODULE-HEADER findings.
+
+#### Current Reality
+Prompt: `Validate MODULE: header compliance across all non-test .ts files.`
+
+verify_alignment_drift.py reports PASS with 0 TS-MODULE-HEADER findings
+
+#### Test Execution
+> **Feature File:** [NEW-138](02--new-features/138-module-header-compliance-via-verify-alignment-drift-py.md)
+> **Catalog:** [16--tooling-and-scripts/11-feature-catalog-code-references.md](../feature_catalog/16--tooling-and-scripts/11-feature-catalog-code-references.md)
+
+### NEW-139 | Session capturing pipeline quality
+
+#### Description
+Canonical coverage sourced from M-007 session-capturing closure verification.
+
+#### Current Reality
+Prompt: `Run the canonical M-007 session-capturing closure verification scenario.`
+
+Coverage is sourced from the M-007 closure suite, including structured `--stdin` / `--json` authority, direct stateless fallback, runtime fallback ordering, insufficiency rejection, write-vs-index disposition checks, and indexing readiness.
+
+Current claim boundary:
+- Automated parity proves the shared runtime contract.
+- Retained live artifacts are still required before claiming flawless current coverage across every supported CLI and save mode.
+
+#### Test Execution
+> **Feature File:** [NEW-139](02--new-features/139-session-capturing-pipeline-quality.md)
+> **Catalog:** [16--tooling-and-scripts/12-session-capturing-pipeline-quality.md](../feature_catalog/16--tooling-and-scripts/12-session-capturing-pipeline-quality.md)
+
+### NEW-142 | Session transition trace contract
+
+#### Description
+Verify `memory_context` emits trace-only session transitions with no non-trace leakage.
+
+#### Current Reality
+Prompt: `Validate Markovian session transition tracing for memory_context.`
+
+Trace-enabled responses include spec-shaped `sessionTransition`; non-trace responses omit it entirely; no top-level metadata leak appears when trace is disabled
+
+#### Test Execution
+> **Feature File:** [NEW-142](02--new-features/142-session-transition-trace-contract.md)
+> **Catalog:** [01--retrieval/01-unified-context-retrieval-memorycontext.md](../feature_catalog/01--retrieval/01-unified-context-retrieval-memorycontext.md)
+
+### NEW-143 | Bounded graph-walk rollout and diagnostics
+
+#### Description
+Verify `SPECKIT_GRAPH_WALK_ROLLOUT` changes diagnostics and bounded bonus behavior without destabilizing ordering.
+
+#### Current Reality
+Prompt: `Validate bounded graph-walk rollout states and trace diagnostics.`
+
+Rollout states switch cleanly between `trace_only`, `bounded_runtime`, and `off`; trace diagnostics expose raw/normalized metrics; bounded runtime never exceeds the Stage 2 cap; `off` disables only the graph-walk bonus ladder, not the broader graph-signal feature flag; repeated identical runs preserve deterministic ordering
+
+#### Test Execution
+> **Feature File:** [NEW-143](02--new-features/143-bounded-graph-walk-rollout-and-diagnostics.md)
+> **Catalog:** [01--retrieval/02-semantic-and-lexical-search-memorysearch.md](../feature_catalog/01--retrieval/02-semantic-and-lexical-search-memorysearch.md)
+
+### NEW-144 | Advisory ingest lifecycle forecast
+
+#### Description
+Verify `memory_ingest_status` exposes advisory forecast fields and degrades safely on sparse progress.
+
+#### Current Reality
+Prompt: `Validate ingest forecast contract and early-progress caveats.`
+
+Status payloads always include a `forecast` object; sparse progress yields null or low-confidence fields plus caveat text; progressing jobs update ETA/risk fields without breaking the handler contract; optional telemetry remains additive
+
+#### Test Execution
+> **Feature File:** [NEW-144](02--new-features/144-advisory-ingest-lifecycle-forecast.md)
+> **Catalog:** [05--lifecycle/05-async-ingestion-job-lifecycle.md](../feature_catalog/05--lifecycle/05-async-ingestion-job-lifecycle.md)
+
+### NEW-145 | Contextual tree injection (P1-4)
+
+#### Description
+Verify hierarchical spec-folder headers are injected into search results when `SPECKIT_CONTEXT_HEADERS=true` and suppressed when disabled.
+
+#### Current Reality
+Prompt: `Validate contextual tree injection header format and flag toggle.`
+
+Enabled: results with spec-folder paths have `[parent > child — description]` headers prepended, truncated at 100 chars; Disabled: no headers injected, content unchanged
+
+#### Test Execution
+> **Feature File:** [NEW-145](02--new-features/145-contextual-tree-injection-p1-4.md)
+> **Catalog:** [15--retrieval-enhancements/09-contextual-tree-injection.md](../feature_catalog/15--retrieval-enhancements/09-contextual-tree-injection.md)
+
+### NEW-146 | Dynamic server instructions (P1-6)
+
+#### Description
+Verify `setInstructions()` is called at MCP startup with memory count, spec folder count, channel list, and stale warning.
+
+#### Current Reality
+Prompt: `Validate dynamic server instructions at MCP initialization.`
+
+Startup instructions include memory system overview with counts and channels; stale warning appears only above threshold; disabled flag yields empty instructions
+
+#### Test Execution
+> **Feature File:** [NEW-146](02--new-features/146-dynamic-server-instructions-p1-6.md)
+> **Catalog:** [14--pipeline-architecture/14-dynamic-server-instructions-at-mcp-initialization.md](../feature_catalog/14--pipeline-architecture/14-dynamic-server-instructions-at-mcp-initialization.md)
+
+### NEW-147 | Constitutional memory manager command
+
+#### Description
+Verify `/memory:learn` flows and active docs all reflect the constitutional-only workflow.
+
+#### Current Reality
+Prompt: `Validate /memory:learn constitutional manager flow and documentation consistency.`
+
+Constitutional memory manager
+
+#### Test Execution
+> **Feature File:** [NEW-147](02--new-features/147-constitutional-memory-manager-command.md)
+> **Catalog:** [16--tooling-and-scripts/13-constitutional-memory-manager-command.md](../feature_catalog/16--tooling-and-scripts/13-constitutional-memory-manager-command.md)
+
+### NEW-148 | Shared-memory disabled-by-default and first-run setup
+
+#### Description
+Confirm shared memory is off by default, enable flow works, persistence survives restart, env var overrides DB, and enable is idempotent.
+
+#### Current Reality
+Prompt: `Validate shared-memory default-off enablement and first-run setup.`
+
+Default-off: status returns disabled without env var or DB config; enable persists to DB config table; enable is idempotent; README created in shared-spaces/; DB persistence survives restart; env var override takes priority over DB state; /memory:shared command shows setup prompt when disabled
+
+#### Test Execution
+> **Feature File:** [NEW-148](02--new-features/148-shared-memory-disabled-by-default-and-first-run-setup.md)
+> **Catalog:** [17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md](../feature_catalog/17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md)
+
+### NEW-149 | Rendered memory template contract
+
+#### Description
+Confirm malformed rendered memories fail before write/index and active corpus stays structurally clean.
+
+#### Current Reality
+Prompt: `Validate the rendered-memory template contract for memory_save, generate-context, and historical remediation.`
+
+Dry-run surfaces template-contract violations; non-dry-run rejects malformed files before index side effects; remediation leaves active files validator-clean; apply-mode reports distinguish pre-apply evidence from final post-apply state
+
+#### Test Execution
+> **Feature File:** [NEW-149](02--new-features/149-rendered-memory-template-contract.md)
+> **Catalog:** [16--tooling-and-scripts/12-session-capturing-pipeline-quality.md](../feature_catalog/16--tooling-and-scripts/12-session-capturing-pipeline-quality.md)
+
+---
+
+## 9. PHASE SYSTEM FEATURES
+
+### PHASE-001 | Phase detection scoring
+
+#### Description
+Run `recommend-level.sh --recommend-phases --json` on a high-complexity spec and verify scoring output.
+
+#### Current Reality
+Prompt: `Verify phase detection scoring produces valid 5-dimension output for a complex spec folder.`
+
+JSON output contains `phase_recommended` (boolean), `phase_score` (number), `suggested_phase_count` (number), and 5 dimension scores; simple specs score low
+
+#### Test Execution
+> **Feature File:** [PHASE-001](03--phase-system-features/001-phase-detection-scoring.md)
+
+### PHASE-002 | Phase folder creation
+
+#### Description
+Run `create.sh "Test" --phase --level 3 --phases 3` and verify parent+children structure.
+
+#### Current Reality
+Prompt: `Create a phase-decomposed spec folder and verify parent and child structure.`
+
+Parent folder with Phase Documentation Map in spec.md; 3 child folders with correct naming; back-references and predecessor/successor links in child spec.md files; Level 3 template files in all folders
+
+#### Test Execution
+> **Feature File:** [PHASE-002](03--phase-system-features/002-phase-folder-creation.md)
+
+### PHASE-003 | Recursive phase validation
+
+#### Description
+Run `validate.sh --recursive` on a phase parent folder and verify per-phase results.
+
+#### Current Reality
+Prompt: `Run recursive validation on a phase parent and verify aggregated per-phase results.`
+
+Per-phase pass/fail in output; JSON `phases` array; combined exit code reflects worst child; error propagation works
+
+#### Test Execution
+> **Feature File:** [PHASE-003](03--phase-system-features/003-recursive-phase-validation.md)
+
+### PHASE-004 | Phase link validation
+
+#### Description
+Run `check-phase-links.sh` on a phase folder and verify 4 link checks at warn severity.
+
+#### Current Reality
+Prompt: `Validate phase link integrity across parent and child folders.`
+
+4 link check types reported; well-formed folder produces exit 0; missing child produces warn on Phase Documentation Map; corrupted back-reference produces warn; all issues at warn severity
+
+#### Test Execution
+> **Feature File:** [PHASE-004](03--phase-system-features/004-phase-link-validation.md)
+
+### PHASE-005 | Phase command workflow
+
+#### Description
+Execute `/spec_kit:phase` command in auto mode and verify 7-step workflow.
+
+#### Current Reality
+Prompt: `Run the spec_kit:phase command end-to-end and verify all 7 workflow steps complete.`
+
+All 7 steps execute in sequence; scoring output visible; folders created with correct structure; link validation passes; recursive validation passes; success summary with paths
+
+#### Test Execution
+> **Feature File:** [PHASE-005](03--phase-system-features/005-phase-command-workflow.md)
 
 ### Catalog Coverage Notes for Phases 001-018
 
@@ -491,227 +2890,324 @@ These 30 catalog entries are explicitly documented here even when validation is 
 | `18--ux-hooks/13-end-to-end-success-envelope-verification.md` | Indirect scenario coverage | Covered by NEW-105 |
 | `16--tooling-and-scripts/12-session-capturing-pipeline-quality.md` | Manual + automated | Absorbs phases 002 (contamination-detection), 004 (type-consolidation), 005 (confidence-calibration), 007 (phase-classification), 008 (signal-extraction), and 014 (spec-descriptions). Covered by M-007 compound scenario, build/typecheck, and automated extractor/loader suites |
 
-## Dedicated Memory/Spec-Kit Scenarios (Required)
+---
 
-### M-001 Context Recovery and Continuation
-- Prompt: `/memory:continue specs/<target-spec>`
-- Commands:
-  - `memory_search({query:"state next-steps blockers decisions", specFolder:"specs/<target-spec>", anchors:["state","next-steps","blockers","decisions"]})`
-- Expected: Resume-ready state summary and next steps.
-- Evidence: returned context + extracted next actions.
-- Pass: Continuation context is actionable and specific.
-- Fail triage: broaden anchors; verify spec folder path.
+## 10. DEDICATED MEMORY/SPEC-KIT SCENARIOS (REQUIRED)
 
-### M-002 Targeted Memory Lookup
-- Prompt: `Find rationale for <specific decision>`
-- Commands:
-  - `memory_search({query:"<decision rationale>", specFolder:"specs/<target-spec>", anchors:["decision-record","rationale"]})`
-- Expected: precise fact-level retrieval.
-- Evidence: fact + source snippet.
-- Pass: question answered with traceable result.
-- Fail triage: refine query terms; use focused mode.
+### M-001 | Context Recovery and Continuation
 
-### M-003 Context Save + Index Update
-- Commands:
-  - `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js specs/<target-spec>`
-  - `memory_index_scan({ specFolder: "specs/<target-spec>" })`
-- Expected: saved context artifacts are discoverable.
-- Evidence: save output + index output.
-- Pass: context appears in retrieval post-index.
-- Fail triage: rerun save; inspect path/permissions.
+#### Description
+Canonical memory/spec-kit workflow.
 
-### M-004 Main-Agent Review and Verdict Handoff
-- Prompt:
-  - `@review findings-first review with severity + verdict APPROVE/CHANGES_REQUESTED`
-- Expected: severity-ranked findings and final verdict.
-- Evidence: review output with file:line findings.
-- Pass: deterministic verdict issued with rationale.
-- Fail triage: collect missing evidence and rerun review.
+#### Current Reality
+Canonical prose workflow retained in the snippet because the scenario includes multi-step operator logic, supplemental checks, or shared closure rules.
 
-### M-005 Outsourced Agent Memory Capture Round-Trip
-- Prompt: `Dispatch task to external CLI agent and capture memory back to Spec Kit`
-- Commands:
-  - Dispatch task via `cli-codex` (or any cli-* skill) with memory epilogue in prompt
-  - Extract structured memory section from agent stdout
-  - Write JSON to `/tmp/save-context-data.json`
-  - `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/<target-spec>`
-  - `memory_index_scan({ specFolder: "specs/<target-spec>" })`
-  - `memory_search({ query: "<key term from agent session>", specFolder: "specs/<target-spec>" })`
-- Expected: Agent output contains structured memory section; saved context is discoverable via search.
-- Evidence: agent stdout with memory section + generate-context output + search result showing saved memory.
-- Pass: Saved memory from outsourced agent session is searchable and contains session summary, files modified, decisions.
-- Fail triage: Check memory epilogue in prompt template → Verify generate-context.js JSON mode input → Inspect agent stdout for structured section → Verify index scan ran post-save.
+#### Test Execution
+> **Feature File:** [M-001](04--memory-and-spec-kit-scenarios/001-context-recovery-and-continuation.md)
 
+### M-002 | Targeted Memory Lookup
+
+#### Description
+Canonical memory/spec-kit workflow.
+
+#### Current Reality
+Canonical prose workflow retained in the snippet because the scenario includes multi-step operator logic, supplemental checks, or shared closure rules.
+
+#### Test Execution
+> **Feature File:** [M-002](04--memory-and-spec-kit-scenarios/002-targeted-memory-lookup.md)
+
+### M-003 | Context Save + Index Update
+
+#### Description
+Canonical memory/spec-kit workflow.
+
+#### Current Reality
+Canonical prose workflow retained in the snippet because the scenario includes multi-step operator logic, supplemental checks, or shared closure rules.
+
+#### Test Execution
+> **Feature File:** [M-003](04--memory-and-spec-kit-scenarios/003-context-save-index-update.md)
+
+### M-004 | Main-Agent Review and Verdict Handoff
+
+#### Description
+Canonical memory/spec-kit workflow.
+
+#### Current Reality
+Canonical prose workflow retained in the snippet because the scenario includes multi-step operator logic, supplemental checks, or shared closure rules.
+
+#### Test Execution
+> **Feature File:** [M-004](04--memory-and-spec-kit-scenarios/004-main-agent-review-and-verdict-handoff.md)
+
+### M-005 | Outsourced Agent Memory Capture Round-Trip
+
+#### Description
 #### M-005a: JSON-mode hard-fail (REQ-001)
-1. Create an invalid JSON file: `echo "not json" > /tmp/save-context-data.json`
-2. Run: `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/<target-spec>`
-3. Verify: Command exits with error containing `EXPLICIT_DATA_FILE_LOAD_FAILED`
 
-#### M-005b: nextSteps persistence (REQ-002)
-1. Create valid JSON with nextSteps: `echo '{"nextSteps":["Fix bug X","Deploy Y"]}' > /tmp/save-context-data.json`
-2. Run generate-context.js with the JSON file
-3. Verify: Output memory contains `Next:` or `NEXT_ACTION` observations derived from the nextSteps array
+#### Current Reality
+Canonical prose workflow retained in the snippet because the scenario includes multi-step operator logic, supplemental checks, or shared closure rules.
 
-#### M-005c: Verification freshness (REQ-004/REQ-005)
-1. Do not claim outsourced CLI live round-trip passed unless freshly rerun with evidence
-2. Check that checklist.md verification claims are backed by current evidence (e.g., CHK-025 should cite a dated round-trip artifact)
+#### Test Execution
+> **Feature File:** [M-005](04--memory-and-spec-kit-scenarios/005-outsourced-agent-memory-capture-round-trip.md)
 
-### M-006 Stateless Enrichment and Alignment Guardrails
-- Prompt: `Run a stateless memory save for a spec that edits generic code paths and verify enrichment/guard behavior`
-- Commands:
-  - `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js specs/<target-spec>`
-  - `memory_search({ query: "stateless enrichment alignment", specFolder: "specs/<target-spec>" })`
-- Expected: the save uses spec-folder and git enrichment, keeps natural-language prompt variants of the spec slug, records git snapshot metadata (`headRef`, `commitRef`, `repositoryState`, `isDetachedHead`), and does not raise `ALIGNMENT_BLOCK` when captured files match the spec's files-to-change table.
-- Evidence: save stdout showing Step 3.5 enrichment, absence of false alignment aborts for matching code files, and saved memory content/search hits reflecting spec/git-derived context.
-- Pass: stateless save succeeds for matching files, emits provenance-backed context, and still blocks unrelated captures when overlap is genuinely low.
-- Fail triage: inspect `input-normalizer.ts` relevance filtering, compare captured file paths to the spec's files-to-change table, verify git scope includes the declared code paths, then rerun.
+### M-006 | Stateless Enrichment and Alignment Guardrails
 
+#### Description
 #### M-006a: Unborn-HEAD and dirty snapshot fallback
-1. Initialize a sandbox repo without creating a commit yet, then create one in-scope file.
-2. Run:
-   `node - <<'NODE'
-   const { extractGitContext } = require('./.opencode/skill/system-spec-kit/scripts/dist/extractors/git-context-extractor.js');
-   (async () => {
-     const result = await extractGitContext(process.cwd());
-     console.log(JSON.stringify(result, null, 2));
-   })().catch((error) => {
-     console.error(error);
-     process.exit(1);
-   });
-   NODE`
-3. Verify: `headRef` shows the current branch, `commitRef` is `null`, `repositoryState` is `dirty`, and uncommitted files are listed.
 
-#### M-006b: Detached-HEAD snapshot preservation
-1. Checkout a detached `HEAD` in a sandbox repo that already has at least one commit affecting the target scope.
-2. Run the same extractor command as M-006a.
-3. Verify: `headRef` is `HEAD`, `commitRef` is populated, `isDetachedHead` is `true`, and the extractor still returns recent in-scope commit observations.
+#### Current Reality
+Canonical prose workflow retained in the snippet because the scenario includes multi-step operator logic, supplemental checks, or shared closure rules.
 
-#### M-006c: Similar-folder boundary protection
-1. Create two spec folders where one slug is a prefix of the other, but only the target spec contains in-scope files.
-2. Commit a change only under the similarly named foreign folder.
-3. Run the extractor command from M-006a with the target spec folder hint.
-4. Verify: recent commit observations do not include the foreign folder path, and the target result remains empty or limited to genuinely in-scope history.
+#### Test Execution
+> **Feature File:** [M-006](04--memory-and-spec-kit-scenarios/006-stateless-enrichment-and-alignment-guardrails.md)
 
-### M-007 Session Capturing Pipeline Quality
-- Prompt: `Run full closure verification for spec 010-perfect-session-capturing, including JSON authority, stateless enrichment, the full native fallback chain (OpenCode, Claude, Codex, Copilot, Gemini), numeric quality calibration, and indexing readiness.`
-- Canonical workspace rule:
-  - Native capture targets the repo-local `.opencode` workspace identity.
-  - Backend-native repo-root, `.opencode`, and git-root path forms count as equivalent only when they normalize to the same workspace.
-- Shared durability rule:
-  - Save success now requires more than discovery and alignment.
-  - The generated memory must preserve enough durable evidence to pass the shared semantic sufficiency contract.
-  - Thin aligned saves are expected to fail with `INSUFFICIENT_CONTEXT_ABORT`.
-- Render quality rule:
-  - Successful saves must also satisfy the shared rendered-memory template contract.
-  - Generated memory files must preserve ANCHOR comments through cleanup.
-  - Missing mandatory anchors or HTML ids, raw Mustache leakage, and duplicate top-of-body separators must hard-fail before indexing.
-  - Frontmatter `trigger_phrases` must come from session-specific extraction and never fall back to generic placeholders.
-- Scenario set:
-  - `M-007a` JSON authority and successful indexing
-  - `M-007b` Thin JSON insufficiency rejection and lower-score behavior
-  - `M-007c` Mis-scoped stateless save rejection path
-  - `M-007d` Spec-folder and git-context enrichment presence
-  - `M-007e` OpenCode precedence
-  - `M-007f` Claude fallback
-  - `M-007g` Codex fallback
-  - `M-007h` Copilot fallback
-  - `M-007i` Gemini fallback
-  - `M-007j` Final `NO_DATA_AVAILABLE` hard-fail
-  - `NEW-133` cross-reference for MCP `memory_save` dry-run and insufficiency preview
-  - `NEW-149` cross-reference for rendered-memory contract enforcement and historical remediation
-- Latest automated baseline refresh:
-  - On 2026-03-17, root `typecheck`, scripts `check` and `build`, `test-scripts-modules.js` (`384` passed, `5` skipped, `389` total), and `test-extractors-loaders.js` (`307` passing) reran cleanly.
-  - On 2026-03-17, the focused proof lanes reran cleanly as separate canonical checks: `task-enrichment.vitest.ts` (`47` tests), `runtime-memory-inputs.vitest.ts` (`29` tests), the phase-016 parity lane (`45` tests), the phase-010 integration lane (`70` tests across `test-integration.vitest.ts` and `workflow-e2e.vitest.ts`), and the phase-011 session-source lane (`66` tests).
-  - On 2026-03-17, package-clean MCP `lint`/`build`/full `test` reran cleanly with the MCP package suite at `7822` total tests, and the focused MCP save-quality lane remained part of that refreshed package-clean verification stack.
-  - The latest alignment-drift support run remains the 2026-03-16 snapshot with `229` scanned files and `0` findings; it was not part of the March 17 rerun set.
-  - This automated baseline is not sufficient evidence by itself for "all five CLIs proven live"; verify the retained artifact at `research/live-cli-proof-2026-03-17.json` and its March 17, 2026 per-CLI records before making that claim, and refresh equivalent primary evidence for any future live-proof assertion.
-- Commands:
-  - Part I hardening spot checks:
-    - `grep -n 'crypto.randomBytes' .opencode/skill/system-spec-kit/scripts/extractors/session-extractor.ts`
-    - `grep -n 'qualityAbortThreshold' .opencode/skill/system-spec-kit/scripts/core/workflow.ts .opencode/skill/system-spec-kit/scripts/core/config.ts`
-    - `grep -n 'claude-code-capture\|codex-cli-capture\|copilot-cli-capture\|gemini-cli-capture' .opencode/skill/system-spec-kit/scripts/loaders/data-loader.ts .opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts`
-    - `grep -n 'INSUFFICIENT_CONTEXT_ABORT\|evaluateMemorySufficiency' .opencode/skill/system-spec-kit/scripts/core/workflow.ts .opencode/skill/system-spec-kit/shared/parsing/memory-sufficiency.ts`
-    - `grep -n 'WORKFLOW_HTML_COMMENT_RE\|stripWorkflowHtmlOutsideCodeFences' .opencode/skill/system-spec-kit/scripts/core/workflow.ts`
-    - `grep -n 'SYSTEM_SPEC_KIT_CAPTURE_SOURCE\|trigger_phrases' .opencode/skill/system-spec-kit/scripts/loaders/data-loader.ts .opencode/skill/system-spec-kit/scripts/memory/generate-context.ts .opencode/skill/system-spec-kit/templates/context_template.md`
-  - Targeted automated closure suite:
-    - `cd .opencode/skill/system-spec-kit/scripts && npm run check`
-    - `cd .opencode/skill/system-spec-kit/scripts && npm run build`
-    - `cd .opencode/skill/system-spec-kit/scripts && npm test -- --run tests/spec-affinity.vitest.ts tests/claude-code-capture.vitest.ts tests/codex-cli-capture.vitest.ts tests/copilot-cli-capture.vitest.ts tests/gemini-cli-capture.vitest.ts tests/quality-scorer-calibration.vitest.ts tests/runtime-memory-inputs.vitest.ts tests/stateless-enrichment.vitest.ts tests/task-enrichment.vitest.ts tests/memory-render-fixture.vitest.ts tests/generate-context-cli-authority.vitest.ts tests/memory-sufficiency.vitest.ts tests/memory-template-contract.vitest.ts tests/historical-memory-remediation.vitest.ts`
-  - JS verification suites:
-    - `cd .opencode/skill/system-spec-kit/scripts/tests && node test-extractors-loaders.js`
-    - `cd .opencode/skill/system-spec-kit/scripts/tests && node test-bug-fixes.js`
-    - `cd .opencode/skill/system-spec-kit/scripts && npx vitest run tests/test-integration.vitest.ts tests/workflow-e2e.vitest.ts`
-    - `cd .opencode/skill/system-spec-kit/scripts/tests && node test-memory-quality-lane.js`
-  - Standards checks:
-    - `cd .opencode/skill/system-spec-kit/mcp_server && npm run lint`
-    - `cd .opencode/skill/system-spec-kit/mcp_server && npm run build`
-    - `cd .opencode/skill/system-spec-kit/mcp_server && npm run test:core -- tests/handler-memory-save.vitest.ts tests/recovery-hints.vitest.ts tests/quality-loop.vitest.ts tests/save-quality-gate.vitest.ts tests/preflight.vitest.ts tests/integration-save-pipeline.vitest.ts`
-    - `cd .opencode/skill/system-spec-kit/mcp_server && npm run test`
-    - `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit/scripts`
-    - `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing`
-  - Manual/e2e scenarios:
-    - `M-007a` Rich JSON-mode save: run `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js <json-data-file> 010-perfect-session-capturing` with a populated synthetic or sandbox JSON file and verify `qualityValidation.valid === true`, indexing succeeds, and a memory ID is returned.
-    - `M-007a` Rich JSON-mode save: use the documented snake_case JSON contract or camelCase equivalent, then verify `qualityValidation.valid === true`, indexing succeeds, and a memory ID is returned.
-    - `M-007b` Thin JSON insufficiency: rerun `generate-context.js` with intentionally thin JSON input using the documented snake_case contract and verify it now fails `INSUFFICIENT_CONTEXT_ABORT` before file write, with a materially lower diagnostic score than `M-007a`.
-    - `M-007c` Mis-scoped stateless rejection: run a same-workspace stateless save whose prompts, tool metadata, and file hints do not contain any target-spec anchor and verify it fails `ALIGNMENT_BLOCK` before enrichment or indexing.
-    - `M-007d` Git/spec-folder enrichment and render quality: inspect generated output and confirm provenance-tagged observations/files from both git and spec-folder enrichment are present, ANCHOR comments remain in the rendered file, frontmatter `trigger_phrases` no longer contain `memory dashboard`, `session summary`, or `context template`, and the rendered-memory contract remains valid.
-    - `M-007e` OpenCode precedence: when a usable OpenCode session exists, verify the loader selects OpenCode first. If the session is same-workspace but off-spec, discovery may still succeed, but the run must hard-fail `ALIGNMENT_BLOCK` instead of indexing.
-    - `M-007f` Claude fallback: temporarily force the OpenCode path empty and run direct mode with `SYSTEM_SPEC_KIT_CAPTURE_SOURCE=claude`, then verify a matching Claude transcript is selected when its stored repo-root or `.opencode` path resolves to the same workspace identity. After selection, the save outcome must be driven by the later gates: aligned and sufficient sessions may index; off-spec sessions must `ALIGNMENT_BLOCK`; foreign-spec-dominated output may still `QUALITY_GATE_ABORT` via `V8`.
-    - `M-007g` Codex fallback: temporarily force OpenCode and Claude empty and run direct mode with `SYSTEM_SPEC_KIT_CAPTURE_SOURCE=codex`, then verify a matching Codex transcript is selected when `session_meta.payload.cwd` resolves to the same workspace identity. For an aligned tool-rich transcript, verify the run no longer false-fails `V7` and may validate/index if it is otherwise sufficient.
-    - `M-007h` Copilot fallback: temporarily force OpenCode, Claude, and Codex empty and run direct mode with `SYSTEM_SPEC_KIT_CAPTURE_SOURCE=copilot`, then verify a matching Copilot workspace/session is selected when `cwd` or `git_root` resolves to the same workspace identity. The save must then follow the normal later gates: thin sessions fail `INSUFFICIENT_CONTEXT_ABORT`, while sufficiently rich aligned sessions may validate/index.
-    - `M-007i` Gemini fallback: temporarily force all earlier native backends empty and run direct mode with `SYSTEM_SPEC_KIT_CAPTURE_SOURCE=gemini`, then verify a matching Gemini session is selected when `.project_root` resolves to the same workspace identity. The save must then follow the normal later gates: thin sessions fail `INSUFFICIENT_CONTEXT_ABORT`, while sufficiently rich aligned sessions may validate/index.
-    - `M-007j` Full hard-fail: ensure no usable JSON input or native backend is available and verify the loader returns explicit `NO_DATA_AVAILABLE` rather than partial or contaminated output.
-- Expected:
-  - Part I hardening remains active.
-  - Stateless enrichment remains active.
-  - Native fallback ordering behaves deterministically across all five configured capture backends.
-  - Direct-mode caller preference can reorder the first attempt without changing JSON authority or the rest of the fallback chain.
-  - Native discovery uses canonical `.opencode` workspace identity rather than raw path equality.
-  - Same-workspace generic infrastructure activity is not sufficient evidence for saving into a specific spec folder.
-  - Rich saves score materially above thin saves.
-  - Thin aligned saves fail explicitly with `INSUFFICIENT_CONTEXT_ABORT`.
-  - Rendered files preserve ANCHOR tags and frontmatter trigger phrases are session-specific.
-  - Indexing succeeds when validation passes.
-- Evidence:
-  - Grep output for crypto IDs, quality abort threshold, five-backend loader wiring, caller-aware source preference wiring, ANCHOR cleanup regex, trigger-phrase template wiring, and sufficiency-gate wiring.
-  - Passing `npm test` targeted Vitest output.
-  - Passing JS suite summaries from `scripts/tests/`.
-  - Passing `mcp_server` lint/build/targeted/full-test output for the package-clean closure bar.
-  - Passing alignment drift output.
-  - Passing `spec/validate.sh` output.
-  - Inspection of `research/live-cli-proof-2026-03-17.json`, confirming the retained artifact path and same-day entries for OpenCode, Claude Code, Codex CLI, Copilot CLI, and Gemini CLI.
-  - `generate-context.js` output or capture logs showing results for `M-007a` through `M-007j`.
-- Pass:
-  - All automated commands pass.
-  - Package-clean MCP verification passes alongside the scripts-side closure suite.
-  - `M-007a` validates and indexes successfully.
-  - `M-007b` proves thin aligned JSON now fails `INSUFFICIENT_CONTEXT_ABORT` with lower diagnostic quality than `M-007a` and with no new memory file written.
-  - `M-007c` proves the mis-scoped same-workspace stateless run hard-fails `ALIGNMENT_BLOCK`.
-  - `M-007d` shows provenance-tagged enrichment.
-  - `M-007d` also proves ANCHOR preservation, rendered-memory contract compliance, and frontmatter trigger-phrase quality.
-  - `M-007e` proves OpenCode precedence does not override save-path alignment blocking.
-  - `M-007f` through `M-007i` prove per-backend native capture selection and save-gate behavior under canonical `.opencode` workspace identity, the direct-mode caller hint, and the tightened alignment plus insufficiency gates without malformed trigger rendering or `V5` corruption. They are not, by themselves, full Hydra end-to-end proof for those CLIs.
-  - `M-007j` proves final `NO_DATA_AVAILABLE` behavior.
-- Fail triage:
-  - Check `data-loader.ts` fallback ordering.
-  - Check project-matching logic inside the relevant native extractor.
-  - Check `shared/parsing/memory-sufficiency.ts` evidence counting rules.
-  - Check `quality-scorer.ts` scoring heuristics versus sufficiency and boolean validation.
-  - Check `workflow.ts` abort/alignment/insufficiency thresholds.
-  - Check test fixtures for backend-specific transcript assumptions and stateless-input coverage.
+### M-007 | Session Capturing Pipeline Quality
 
-### M-008 Feature 09 Direct Manual Scenario (Per-memory History Log)
-- Prompt: `Run direct manual verification for per-memory history log behavior (feature 09 gap closure).`
-- Commands:
-  - `memory_save({ filePath:"<sandbox-memory-file>", force:true })`
-  - `memory_save({ filePath:"<sandbox-memory-file>", force:true })`
-  - `memory_search({ query:"<unique phrase from sandbox memory>", specFolder:"<sandbox-spec>", includeContent:true, limit:5 })`
-- Expected: repeated save/update activity is observable via retrieval output and memory metadata remains coherent for the same memory lineage.
-- Evidence: both save outputs + follow-up search output showing the persisted memory content and metadata continuity.
-- Pass: direct operator run confirms per-memory history behavior without relying only on automated suites.
-- Fail triage: verify sandbox file path and spec scope -> rerun with `force:true` -> inspect memory metadata fields returned from save/search outputs.
+#### Description
+Canonical memory/spec-kit workflow.
 
-## Gemini Overlay Scenario Packs
+#### Current Reality
+Canonical prose workflow retained in the snippet because the scenario includes multi-step operator logic, supplemental checks, or shared closure rules.
+
+Minimum scenario family now required for M-007:
+- direct positional save against a target spec folder
+- structured `--stdin` save with explicit CLI target precedence
+- structured `--json` save with payload-target fallback when no explicit CLI override exists
+- stateless V10-only soft-fail that still writes and indexes
+- stateless hard-block contamination failure that aborts before write
+- same-minute repeated saves that prove unique filenames and stable `description.json` tracking
+
+Proof rule:
+- Treat automated M-007 parity as the runtime contract baseline.
+- Only claim “flawless across every CLI” when retained live artifacts exist for each supported CLI and each supported save mode covered by the current contract.
+
+#### Test Execution
+> **Feature File:** [M-007](04--memory-and-spec-kit-scenarios/007-session-capturing-pipeline-quality.md)
+
+### M-008 | Feature 09 Direct Manual Scenario (Per-memory History Log)
+
+#### Description
+Canonical memory/spec-kit workflow.
+
+#### Current Reality
+Canonical prose workflow retained in the snippet because the scenario includes multi-step operator logic, supplemental checks, or shared closure rules.
+
+#### Test Execution
+> **Feature File:** [M-008](04--memory-and-spec-kit-scenarios/008-feature-09-direct-manual-scenario-per-memory-history-log.md)
+
+---
+
+## 11. AUTOMATED TEST CROSS-REFERENCE
+
+This split playbook keeps automated coverage references in three places:
+- Per-feature catalog links in the root directory and snippet references.
+- The catalog coverage notes section for automated-only, indirect, or deferred coverage.
+- Dedicated memory/spec-kit snippets where shared manual scenarios absorb multiple catalog entries.
+
+---
+
+## 12. FEATURE CATALOG CROSS-REFERENCE INDEX
+
+| Playbook ID | Category | Feature Name | Snippet | Catalog Entry |
+|---|---|---|---|---|
+| EX-001 | Existing Features | Unified context retrieval (memory_context) | [EX-001](01--existing-features/001-unified-context-retrieval-memory-context.md) | [01--retrieval/01-unified-context-retrieval-memorycontext.md](../feature_catalog/01--retrieval/01-unified-context-retrieval-memorycontext.md) |
+| EX-002 | Existing Features | Semantic and lexical search (memory_search) | [EX-002](01--existing-features/002-semantic-and-lexical-search-memory-search.md) | [01--retrieval/02-semantic-and-lexical-search-memorysearch.md](../feature_catalog/01--retrieval/02-semantic-and-lexical-search-memorysearch.md) |
+| EX-003 | Existing Features | Trigger phrase matching (memory_match_triggers) | [EX-003](01--existing-features/003-trigger-phrase-matching-memory-match-triggers.md) | [01--retrieval/03-trigger-phrase-matching-memorymatchtriggers.md](../feature_catalog/01--retrieval/03-trigger-phrase-matching-memorymatchtriggers.md) |
+| EX-004 | Existing Features | Hybrid search pipeline | [EX-004](01--existing-features/004-hybrid-search-pipeline.md) | [01--retrieval/04-hybrid-search-pipeline.md](../feature_catalog/01--retrieval/04-hybrid-search-pipeline.md) |
+| EX-005 | Existing Features | 4-stage pipeline architecture | [EX-005](01--existing-features/005-4-stage-pipeline-architecture.md) | [01--retrieval/05-4-stage-pipeline-architecture.md](../feature_catalog/01--retrieval/05-4-stage-pipeline-architecture.md) |
+| EX-006 | Existing Features | Memory indexing (memory_save) | [EX-006](01--existing-features/006-memory-indexing-memory-save.md) | [02--mutation/01-memory-indexing-memorysave.md](../feature_catalog/02--mutation/01-memory-indexing-memorysave.md) |
+| EX-007 | Existing Features | Memory metadata update (memory_update) | [EX-007](01--existing-features/007-memory-metadata-update-memory-update.md) | [02--mutation/02-memory-metadata-update-memoryupdate.md](../feature_catalog/02--mutation/02-memory-metadata-update-memoryupdate.md) |
+| EX-008 | Existing Features | Single and folder delete (memory_delete) | [EX-008](01--existing-features/008-single-and-folder-delete-memory-delete.md) | [02--mutation/03-single-and-folder-delete-memorydelete.md](../feature_catalog/02--mutation/03-single-and-folder-delete-memorydelete.md) |
+| EX-009 | Existing Features | Tier-based bulk deletion (memory_bulk_delete) | [EX-009](01--existing-features/009-tier-based-bulk-deletion-memory-bulk-delete.md) | [02--mutation/04-tier-based-bulk-deletion-memorybulkdelete.md](../feature_catalog/02--mutation/04-tier-based-bulk-deletion-memorybulkdelete.md) |
+| EX-010 | Existing Features | Validation feedback (memory_validate) | [EX-010](01--existing-features/010-validation-feedback-memory-validate.md) | [02--mutation/05-validation-feedback-memoryvalidate.md](../feature_catalog/02--mutation/05-validation-feedback-memoryvalidate.md) |
+| EX-011 | Existing Features | Memory browser (memory_list) | [EX-011](01--existing-features/011-memory-browser-memory-list.md) | [03--discovery/01-memory-browser-memorylist.md](../feature_catalog/03--discovery/01-memory-browser-memorylist.md) |
+| EX-012 | Existing Features | System statistics (memory_stats) | [EX-012](01--existing-features/012-system-statistics-memory-stats.md) | [03--discovery/02-system-statistics-memorystats.md](../feature_catalog/03--discovery/02-system-statistics-memorystats.md) |
+| EX-013 | Existing Features | Health diagnostics (memory_health) | [EX-013](01--existing-features/013-health-diagnostics-memory-health.md) | [03--discovery/03-health-diagnostics-memoryhealth.md](../feature_catalog/03--discovery/03-health-diagnostics-memoryhealth.md) |
+| EX-014 | Existing Features | Workspace scanning and indexing (memory_index_scan) | [EX-014](01--existing-features/014-workspace-scanning-and-indexing-memory-index-scan.md) | [04--maintenance/01-workspace-scanning-and-indexing-memoryindexscan.md](../feature_catalog/04--maintenance/01-workspace-scanning-and-indexing-memoryindexscan.md) |
+| EX-015 | Existing Features | Checkpoint creation (checkpoint_create) | [EX-015](01--existing-features/015-checkpoint-creation-checkpoint-create.md) | [05--lifecycle/01-checkpoint-creation-checkpointcreate.md](../feature_catalog/05--lifecycle/01-checkpoint-creation-checkpointcreate.md) |
+| EX-016 | Existing Features | Checkpoint listing (checkpoint_list) | [EX-016](01--existing-features/016-checkpoint-listing-checkpoint-list.md) | [05--lifecycle/02-checkpoint-listing-checkpointlist.md](../feature_catalog/05--lifecycle/02-checkpoint-listing-checkpointlist.md) |
+| EX-017 | Existing Features | Checkpoint restore (checkpoint_restore) | [EX-017](01--existing-features/017-checkpoint-restore-checkpoint-restore.md) | [05--lifecycle/03-checkpoint-restore-checkpointrestore.md](../feature_catalog/05--lifecycle/03-checkpoint-restore-checkpointrestore.md) |
+| EX-018 | Existing Features | Checkpoint deletion (checkpoint_delete) | [EX-018](01--existing-features/018-checkpoint-deletion-checkpoint-delete.md) | [05--lifecycle/04-checkpoint-deletion-checkpointdelete.md](../feature_catalog/05--lifecycle/04-checkpoint-deletion-checkpointdelete.md) |
+| EX-019 | Existing Features | Causal edge creation (memory_causal_link) | [EX-019](01--existing-features/019-causal-edge-creation-memory-causal-link.md) | [06--analysis/01-causal-edge-creation-memorycausallink.md](../feature_catalog/06--analysis/01-causal-edge-creation-memorycausallink.md) |
+| EX-020 | Existing Features | Causal graph statistics (memory_causal_stats) | [EX-020](01--existing-features/020-causal-graph-statistics-memory-causal-stats.md) | [06--analysis/02-causal-graph-statistics-memorycausalstats.md](../feature_catalog/06--analysis/02-causal-graph-statistics-memorycausalstats.md) |
+| EX-021 | Existing Features | Causal edge deletion (memory_causal_unlink) | [EX-021](01--existing-features/021-causal-edge-deletion-memory-causal-unlink.md) | [06--analysis/03-causal-edge-deletion-memorycausalunlink.md](../feature_catalog/06--analysis/03-causal-edge-deletion-memorycausalunlink.md) |
+| EX-022 | Existing Features | Causal chain tracing (memory_drift_why) | [EX-022](01--existing-features/022-causal-chain-tracing-memory-drift-why.md) | [06--analysis/04-causal-chain-tracing-memorydriftwhy.md](../feature_catalog/06--analysis/04-causal-chain-tracing-memorydriftwhy.md) |
+| EX-023 | Existing Features | Epistemic baseline capture (task_preflight) | [EX-023](01--existing-features/023-epistemic-baseline-capture-task-preflight.md) | [06--analysis/05-epistemic-baseline-capture-taskpreflight.md](../feature_catalog/06--analysis/05-epistemic-baseline-capture-taskpreflight.md) |
+| EX-024 | Existing Features | Post-task learning measurement (task_postflight) | [EX-024](01--existing-features/024-post-task-learning-measurement-task-postflight.md) | [06--analysis/06-post-task-learning-measurement-taskpostflight.md](../feature_catalog/06--analysis/06-post-task-learning-measurement-taskpostflight.md) |
+| EX-025 | Existing Features | Learning history (memory_get_learning_history) | [EX-025](01--existing-features/025-learning-history-memory-get-learning-history.md) | [06--analysis/07-learning-history-memorygetlearninghistory.md](../feature_catalog/06--analysis/07-learning-history-memorygetlearninghistory.md) |
+| EX-026 | Existing Features | Ablation studies (eval_run_ablation) | [EX-026](01--existing-features/026-ablation-studies-eval-run-ablation.md) | [07--evaluation/01-ablation-studies-evalrunablation.md](../feature_catalog/07--evaluation/01-ablation-studies-evalrunablation.md) |
+| EX-027 | Existing Features | Reporting dashboard (eval_reporting_dashboard) | [EX-027](01--existing-features/027-reporting-dashboard-eval-reporting-dashboard.md) | [07--evaluation/02-reporting-dashboard-evalreportingdashboard.md](../feature_catalog/07--evaluation/02-reporting-dashboard-evalreportingdashboard.md) |
+| EX-028 | Existing Features | 1. Search Pipeline Features (SPECKIT_*) | [EX-028](01--existing-features/028-1-search-pipeline-features-speckit.md) | [19--feature-flag-reference/01-1-search-pipeline-features-speckit.md](../feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md) |
+| EX-029 | Existing Features | 2. Session and Cache | [EX-029](01--existing-features/029-2-session-and-cache.md) | [19--feature-flag-reference/02-2-session-and-cache.md](../feature_catalog/19--feature-flag-reference/02-2-session-and-cache.md) |
+| EX-030 | Existing Features | 3. MCP Configuration | [EX-030](01--existing-features/030-3-mcp-configuration.md) | [19--feature-flag-reference/03-3-mcp-configuration.md](../feature_catalog/19--feature-flag-reference/03-3-mcp-configuration.md) |
+| EX-031 | Existing Features | 4. Memory and Storage | [EX-031](01--existing-features/031-4-memory-and-storage.md) | [19--feature-flag-reference/04-4-memory-and-storage.md](../feature_catalog/19--feature-flag-reference/04-4-memory-and-storage.md) |
+| EX-032 | Existing Features | 5. Embedding and API | [EX-032](01--existing-features/032-5-embedding-and-api.md) | [19--feature-flag-reference/05-5-embedding-and-api.md](../feature_catalog/19--feature-flag-reference/05-5-embedding-and-api.md) |
+| EX-033 | Existing Features | 6. Debug and Telemetry | [EX-033](01--existing-features/033-6-debug-and-telemetry.md) | [19--feature-flag-reference/06-6-debug-and-telemetry.md](../feature_catalog/19--feature-flag-reference/06-6-debug-and-telemetry.md) |
+| EX-034 | Existing Features | 7. CI and Build (informational) | [EX-034](01--existing-features/034-7-ci-and-build-informational.md) | [19--feature-flag-reference/07-7-ci-and-build-informational.md](../feature_catalog/19--feature-flag-reference/07-7-ci-and-build-informational.md) |
+| EX-035 | Existing Features | Startup runtime compatibility guards | [EX-035](01--existing-features/035-startup-runtime-compatibility-guards.md) | [04--maintenance/02-startup-runtime-compatibility-guards.md](../feature_catalog/04--maintenance/02-startup-runtime-compatibility-guards.md) |
+| NEW-001 | New Features | Graph channel ID fix (G1) | [NEW-001](02--new-features/001-graph-channel-id-fix-g1.md) | [08--bug-fixes-and-data-integrity/01-graph-channel-id-fix.md](../feature_catalog/08--bug-fixes-and-data-integrity/01-graph-channel-id-fix.md) |
+| NEW-002 | New Features | Chunk collapse deduplication (G3) | [NEW-002](02--new-features/002-chunk-collapse-deduplication-g3.md) | [08--bug-fixes-and-data-integrity/02-chunk-collapse-deduplication.md](../feature_catalog/08--bug-fixes-and-data-integrity/02-chunk-collapse-deduplication.md) |
+| NEW-003 | New Features | Co-activation fan-effect divisor (R17) | [NEW-003](02--new-features/003-co-activation-fan-effect-divisor-r17.md) | [08--bug-fixes-and-data-integrity/03-co-activation-fan-effect-divisor.md](../feature_catalog/08--bug-fixes-and-data-integrity/03-co-activation-fan-effect-divisor.md) |
+| NEW-004 | New Features | SHA-256 content-hash deduplication (TM-02) | [NEW-004](02--new-features/004-sha-256-content-hash-deduplication-tm-02.md) | [08--bug-fixes-and-data-integrity/04-sha-256-content-hash-deduplication.md](../feature_catalog/08--bug-fixes-and-data-integrity/04-sha-256-content-hash-deduplication.md) |
+| NEW-005 | New Features | Evaluation database and schema (R13-S1) | [NEW-005](02--new-features/005-evaluation-database-and-schema-r13-s1.md) | [09--evaluation-and-measurement/01-evaluation-database-and-schema.md](../feature_catalog/09--evaluation-and-measurement/01-evaluation-database-and-schema.md) |
+| NEW-006 | New Features | Core metric computation (R13-S1) | [NEW-006](02--new-features/006-core-metric-computation-r13-s1.md) | [09--evaluation-and-measurement/02-core-metric-computation.md](../feature_catalog/09--evaluation-and-measurement/02-core-metric-computation.md) |
+| NEW-007 | New Features | Observer effect mitigation (D4) | [NEW-007](02--new-features/007-observer-effect-mitigation-d4.md) | [09--evaluation-and-measurement/03-observer-effect-mitigation.md](../feature_catalog/09--evaluation-and-measurement/03-observer-effect-mitigation.md) |
+| NEW-008 | New Features | Full-context ceiling evaluation (A2) | [NEW-008](02--new-features/008-full-context-ceiling-evaluation-a2.md) | [09--evaluation-and-measurement/04-full-context-ceiling-evaluation.md](../feature_catalog/09--evaluation-and-measurement/04-full-context-ceiling-evaluation.md) |
+| NEW-009 | New Features | Quality proxy formula (B7) | [NEW-009](02--new-features/009-quality-proxy-formula-b7.md) | [09--evaluation-and-measurement/05-quality-proxy-formula.md](../feature_catalog/09--evaluation-and-measurement/05-quality-proxy-formula.md) |
+| NEW-010 | New Features | Synthetic ground truth corpus (G-NEW-1, G-NEW-3 phase A) | [NEW-010](02--new-features/010-synthetic-ground-truth-corpus-g-new-1-g-new-3-phase-a.md) | [09--evaluation-and-measurement/06-synthetic-ground-truth-corpus.md](../feature_catalog/09--evaluation-and-measurement/06-synthetic-ground-truth-corpus.md) |
+| NEW-011 | New Features | BM25-only baseline (G-NEW-1) | [NEW-011](02--new-features/011-bm25-only-baseline-g-new-1.md) | [09--evaluation-and-measurement/07-bm25-only-baseline.md](../feature_catalog/09--evaluation-and-measurement/07-bm25-only-baseline.md) |
+| NEW-012 | New Features | Agent consumption instrumentation (G-NEW-2) | [NEW-012](02--new-features/012-agent-consumption-instrumentation-g-new-2.md) | [09--evaluation-and-measurement/08-agent-consumption-instrumentation.md](../feature_catalog/09--evaluation-and-measurement/08-agent-consumption-instrumentation.md) |
+| NEW-013 | New Features | Scoring observability (T010) | [NEW-013](02--new-features/013-scoring-observability-t010.md) | [09--evaluation-and-measurement/09-scoring-observability.md](../feature_catalog/09--evaluation-and-measurement/09-scoring-observability.md) |
+| NEW-014 | New Features | Full reporting and ablation study framework (R13-S3) | [NEW-014](02--new-features/014-full-reporting-and-ablation-study-framework-r13-s3.md) | [09--evaluation-and-measurement/10-full-reporting-and-ablation-study-framework.md](../feature_catalog/09--evaluation-and-measurement/10-full-reporting-and-ablation-study-framework.md) |
+| NEW-015 | New Features | Shadow scoring and channel attribution (R13-S2) | [NEW-015](02--new-features/015-shadow-scoring-and-channel-attribution-r13-s2.md) | [09--evaluation-and-measurement/11-shadow-scoring-and-channel-attribution.md](../feature_catalog/09--evaluation-and-measurement/11-shadow-scoring-and-channel-attribution.md) |
+| NEW-016 | New Features | Typed-weighted degree channel (R4) | [NEW-016](02--new-features/016-typed-weighted-degree-channel-r4.md) | [10--graph-signal-activation/01-typed-weighted-degree-channel.md](../feature_catalog/10--graph-signal-activation/01-typed-weighted-degree-channel.md) |
+| NEW-017 | New Features | Co-activation boost strength increase (A7) | [NEW-017](02--new-features/017-co-activation-boost-strength-increase-a7.md) | [10--graph-signal-activation/02-co-activation-boost-strength-increase.md](../feature_catalog/10--graph-signal-activation/02-co-activation-boost-strength-increase.md) |
+| NEW-018 | New Features | Edge density measurement | [NEW-018](02--new-features/018-edge-density-measurement.md) | [10--graph-signal-activation/03-edge-density-measurement.md](../feature_catalog/10--graph-signal-activation/03-edge-density-measurement.md) |
+| NEW-019 | New Features | Weight history audit tracking | [NEW-019](02--new-features/019-weight-history-audit-tracking.md) | [10--graph-signal-activation/04-weight-history-audit-tracking.md](../feature_catalog/10--graph-signal-activation/04-weight-history-audit-tracking.md) |
+| NEW-020 | New Features | Graph momentum scoring (N2a) | [NEW-020](02--new-features/020-graph-momentum-scoring-n2a.md) | [10--graph-signal-activation/05-graph-momentum-scoring.md](../feature_catalog/10--graph-signal-activation/05-graph-momentum-scoring.md) |
+| NEW-021 | New Features | Causal depth signal (N2b) | [NEW-021](02--new-features/021-causal-depth-signal-n2b.md) | [10--graph-signal-activation/06-causal-depth-signal.md](../feature_catalog/10--graph-signal-activation/06-causal-depth-signal.md) |
+| NEW-022 | New Features | Community detection (N2c) | [NEW-022](02--new-features/022-community-detection-n2c.md) | [10--graph-signal-activation/07-community-detection.md](../feature_catalog/10--graph-signal-activation/07-community-detection.md) |
+| NEW-023 | New Features | Score normalization | [NEW-023](02--new-features/023-score-normalization.md) | [11--scoring-and-calibration/01-score-normalization.md](../feature_catalog/11--scoring-and-calibration/01-score-normalization.md) |
+| NEW-024 | New Features | Cold-start novelty boost (N4) | [NEW-024](02--new-features/024-cold-start-novelty-boost-n4.md) | [11--scoring-and-calibration/02-cold-start-novelty-boost.md](../feature_catalog/11--scoring-and-calibration/02-cold-start-novelty-boost.md) |
+| NEW-025 | New Features | Interference scoring (TM-01) | [NEW-025](02--new-features/025-interference-scoring-tm-01.md) | [11--scoring-and-calibration/03-interference-scoring.md](../feature_catalog/11--scoring-and-calibration/03-interference-scoring.md) |
+| NEW-026 | New Features | Classification-based decay (TM-03) | [NEW-026](02--new-features/026-classification-based-decay-tm-03.md) | [11--scoring-and-calibration/04-classification-based-decay.md](../feature_catalog/11--scoring-and-calibration/04-classification-based-decay.md) |
+| NEW-027 | New Features | Folder-level relevance scoring (PI-A1) | [NEW-027](02--new-features/027-folder-level-relevance-scoring-pi-a1.md) | [11--scoring-and-calibration/05-folder-level-relevance-scoring.md](../feature_catalog/11--scoring-and-calibration/05-folder-level-relevance-scoring.md) |
+| NEW-028 | New Features | Embedding cache (R18) | [NEW-028](02--new-features/028-embedding-cache-r18.md) | [11--scoring-and-calibration/06-embedding-cache.md](../feature_catalog/11--scoring-and-calibration/06-embedding-cache.md) |
+| NEW-029 | New Features | Double intent weighting investigation (G2) | [NEW-029](02--new-features/029-double-intent-weighting-investigation-g2.md) | [11--scoring-and-calibration/07-double-intent-weighting-investigation.md](../feature_catalog/11--scoring-and-calibration/07-double-intent-weighting-investigation.md) |
+| NEW-030 | New Features | RRF K-value sensitivity analysis (FUT-5) | [NEW-030](02--new-features/030-rrf-k-value-sensitivity-analysis-fut-5.md) | [11--scoring-and-calibration/08-rrf-k-value-sensitivity-analysis.md](../feature_catalog/11--scoring-and-calibration/08-rrf-k-value-sensitivity-analysis.md) |
+| NEW-031 | New Features | Negative feedback confidence signal (A4) | [NEW-031](02--new-features/031-negative-feedback-confidence-signal-a4.md) | [11--scoring-and-calibration/09-negative-feedback-confidence-signal.md](../feature_catalog/11--scoring-and-calibration/09-negative-feedback-confidence-signal.md) |
+| NEW-032 | New Features | Auto-promotion on validation (T002a) | [NEW-032](02--new-features/032-auto-promotion-on-validation-t002a.md) | [11--scoring-and-calibration/10-auto-promotion-on-validation.md](../feature_catalog/11--scoring-and-calibration/10-auto-promotion-on-validation.md) |
+| NEW-033 | New Features | Query complexity router (R15) | [NEW-033](02--new-features/033-query-complexity-router-r15.md) | [12--query-intelligence/01-query-complexity-router.md](../feature_catalog/12--query-intelligence/01-query-complexity-router.md) |
+| NEW-034 | New Features | Relative score fusion in shadow mode (R14/N1) | [NEW-034](02--new-features/034-relative-score-fusion-in-shadow-mode-r14-n1.md) | [12--query-intelligence/02-relative-score-fusion-in-shadow-mode.md](../feature_catalog/12--query-intelligence/02-relative-score-fusion-in-shadow-mode.md) |
+| NEW-035 | New Features | Channel min-representation (R2) | [NEW-035](02--new-features/035-channel-min-representation-r2.md) | [12--query-intelligence/03-channel-min-representation.md](../feature_catalog/12--query-intelligence/03-channel-min-representation.md) |
+| NEW-036 | New Features | Confidence-based result truncation (R15-ext) | [NEW-036](02--new-features/036-confidence-based-result-truncation-r15-ext.md) | [12--query-intelligence/04-confidence-based-result-truncation.md](../feature_catalog/12--query-intelligence/04-confidence-based-result-truncation.md) |
+| NEW-037 | New Features | Dynamic token budget allocation (FUT-7) | [NEW-037](02--new-features/037-dynamic-token-budget-allocation-fut-7.md) | [12--query-intelligence/05-dynamic-token-budget-allocation.md](../feature_catalog/12--query-intelligence/05-dynamic-token-budget-allocation.md) |
+| NEW-038 | New Features | Query expansion (R12) | [NEW-038](02--new-features/038-query-expansion-r12.md) | [12--query-intelligence/06-query-expansion.md](../feature_catalog/12--query-intelligence/06-query-expansion.md) |
+| NEW-039 | New Features | Verify-fix-verify memory quality loop (PI-A5) | [NEW-039](02--new-features/039-verify-fix-verify-memory-quality-loop-pi-a5.md) | [13--memory-quality-and-indexing/01-verify-fix-verify-memory-quality-loop.md](../feature_catalog/13--memory-quality-and-indexing/01-verify-fix-verify-memory-quality-loop.md) |
+| NEW-040 | New Features | Signal vocabulary expansion (TM-08) | [NEW-040](02--new-features/040-signal-vocabulary-expansion-tm-08.md) | [13--memory-quality-and-indexing/02-signal-vocabulary-expansion.md](../feature_catalog/13--memory-quality-and-indexing/02-signal-vocabulary-expansion.md) |
+| NEW-041 | New Features | Pre-flight token budget validation (PI-A3) | [NEW-041](02--new-features/041-pre-flight-token-budget-validation-pi-a3.md) | [13--memory-quality-and-indexing/03-pre-flight-token-budget-validation.md](../feature_catalog/13--memory-quality-and-indexing/03-pre-flight-token-budget-validation.md) |
+| NEW-042 | New Features | Spec folder description discovery (PI-B3) | [NEW-042](02--new-features/042-spec-folder-description-discovery-pi-b3.md) | [13--memory-quality-and-indexing/04-spec-folder-description-discovery.md](../feature_catalog/13--memory-quality-and-indexing/04-spec-folder-description-discovery.md) |
+| NEW-043 | New Features | Pre-storage quality gate (TM-04) | [NEW-043](02--new-features/043-pre-storage-quality-gate-tm-04.md) | [13--memory-quality-and-indexing/05-pre-storage-quality-gate.md](../feature_catalog/13--memory-quality-and-indexing/05-pre-storage-quality-gate.md) |
+| NEW-044 | New Features | Reconsolidation-on-save (TM-06) | [NEW-044](02--new-features/044-reconsolidation-on-save-tm-06.md) | [13--memory-quality-and-indexing/06-reconsolidation-on-save.md](../feature_catalog/13--memory-quality-and-indexing/06-reconsolidation-on-save.md) |
+| NEW-045 | New Features | Smarter memory content generation (S1) | [NEW-045](02--new-features/045-smarter-memory-content-generation-s1.md) | [13--memory-quality-and-indexing/07-smarter-memory-content-generation.md](../feature_catalog/13--memory-quality-and-indexing/07-smarter-memory-content-generation.md) |
+| NEW-046 | New Features | Anchor-aware chunk thinning (R7) | [NEW-046](02--new-features/046-anchor-aware-chunk-thinning-r7.md) | [13--memory-quality-and-indexing/08-anchor-aware-chunk-thinning.md](../feature_catalog/13--memory-quality-and-indexing/08-anchor-aware-chunk-thinning.md) |
+| NEW-047 | New Features | Encoding-intent capture at index time (R16) | [NEW-047](02--new-features/047-encoding-intent-capture-at-index-time-r16.md) | [13--memory-quality-and-indexing/09-encoding-intent-capture-at-index-time.md](../feature_catalog/13--memory-quality-and-indexing/09-encoding-intent-capture-at-index-time.md) |
+| NEW-048 | New Features | Auto entity extraction (R10) | [NEW-048](02--new-features/048-auto-entity-extraction-r10.md) | [13--memory-quality-and-indexing/10-auto-entity-extraction.md](../feature_catalog/13--memory-quality-and-indexing/10-auto-entity-extraction.md) |
+| NEW-049 | New Features | 4-stage pipeline refactor (R6) | [NEW-049](02--new-features/049-4-stage-pipeline-refactor-r6.md) | [14--pipeline-architecture/01-4-stage-pipeline-refactor.md](../feature_catalog/14--pipeline-architecture/01-4-stage-pipeline-refactor.md) |
+| NEW-050 | New Features | MPAB chunk-to-memory aggregation (R1) | [NEW-050](02--new-features/050-mpab-chunk-to-memory-aggregation-r1.md) | [14--pipeline-architecture/02-mpab-chunk-to-memory-aggregation.md](../feature_catalog/14--pipeline-architecture/02-mpab-chunk-to-memory-aggregation.md) |
+| NEW-051 | New Features | Chunk ordering preservation (B2) | [NEW-051](02--new-features/051-chunk-ordering-preservation-b2.md) | [14--pipeline-architecture/03-chunk-ordering-preservation.md](../feature_catalog/14--pipeline-architecture/03-chunk-ordering-preservation.md) |
+| NEW-052 | New Features | Template anchor optimization (S2) | [NEW-052](02--new-features/052-template-anchor-optimization-s2.md) | [14--pipeline-architecture/04-template-anchor-optimization.md](../feature_catalog/14--pipeline-architecture/04-template-anchor-optimization.md) |
+| NEW-053 | New Features | Validation signals as retrieval metadata (S3) | [NEW-053](02--new-features/053-validation-signals-as-retrieval-metadata-s3.md) | [14--pipeline-architecture/05-validation-signals-as-retrieval-metadata.md](../feature_catalog/14--pipeline-architecture/05-validation-signals-as-retrieval-metadata.md) |
+| NEW-054 | New Features | Learned relevance feedback (R11) | [NEW-054](02--new-features/054-learned-relevance-feedback-r11.md) | [14--pipeline-architecture/06-learned-relevance-feedback.md](../feature_catalog/14--pipeline-architecture/06-learned-relevance-feedback.md) |
+| NEW-055 | New Features | Dual-scope memory auto-surface (TM-05) | [NEW-055](02--new-features/055-dual-scope-memory-auto-surface-tm-05.md) | [15--retrieval-enhancements/01-dual-scope-memory-auto-surface.md](../feature_catalog/15--retrieval-enhancements/01-dual-scope-memory-auto-surface.md) |
+| NEW-056 | New Features | Constitutional memory as expert knowledge injection (PI-A4) | [NEW-056](02--new-features/056-constitutional-memory-as-expert-knowledge-injection-pi-a4.md) | [15--retrieval-enhancements/02-constitutional-memory-as-expert-knowledge-injection.md](../feature_catalog/15--retrieval-enhancements/02-constitutional-memory-as-expert-knowledge-injection.md) |
+| NEW-057 | New Features | Spec folder hierarchy as retrieval structure (S4) | [NEW-057](02--new-features/057-spec-folder-hierarchy-as-retrieval-structure-s4.md) | [15--retrieval-enhancements/03-spec-folder-hierarchy-as-retrieval-structure.md](../feature_catalog/15--retrieval-enhancements/03-spec-folder-hierarchy-as-retrieval-structure.md) |
+| NEW-058 | New Features | Lightweight consolidation (N3-lite) | [NEW-058](02--new-features/058-lightweight-consolidation-n3-lite.md) | [15--retrieval-enhancements/04-lightweight-consolidation.md](../feature_catalog/15--retrieval-enhancements/04-lightweight-consolidation.md) |
+| NEW-059 | New Features | Memory summary search channel (R8) | [NEW-059](02--new-features/059-memory-summary-search-channel-r8.md) | [15--retrieval-enhancements/05-memory-summary-search-channel.md](../feature_catalog/15--retrieval-enhancements/05-memory-summary-search-channel.md) |
+| NEW-060 | New Features | Cross-document entity linking (S5) | [NEW-060](02--new-features/060-cross-document-entity-linking-s5.md) | [15--retrieval-enhancements/06-cross-document-entity-linking.md](../feature_catalog/15--retrieval-enhancements/06-cross-document-entity-linking.md) |
+| NEW-061 | New Features | Tree thinning for spec folder consolidation (PI-B1) | [NEW-061](02--new-features/061-tree-thinning-for-spec-folder-consolidation-pi-b1.md) | [16--tooling-and-scripts/01-tree-thinning-for-spec-folder-consolidation.md](../feature_catalog/16--tooling-and-scripts/01-tree-thinning-for-spec-folder-consolidation.md) |
+| NEW-062 | New Features | Progressive validation for spec documents (PI-B2) | [NEW-062](02--new-features/062-progressive-validation-for-spec-documents-pi-b2.md) | [16--tooling-and-scripts/03-progressive-validation-for-spec-documents.md](../feature_catalog/16--tooling-and-scripts/03-progressive-validation-for-spec-documents.md) |
+| NEW-063 | New Features | Feature flag governance | [NEW-063](02--new-features/063-feature-flag-governance.md) | [17--governance/01-feature-flag-governance.md](../feature_catalog/17--governance/01-feature-flag-governance.md) |
+| NEW-064 | New Features | Feature flag sunset audit | [NEW-064](02--new-features/064-feature-flag-sunset-audit.md) | [17--governance/02-feature-flag-sunset-audit.md](../feature_catalog/17--governance/02-feature-flag-sunset-audit.md) |
+| NEW-065 | New Features | Database and schema safety | [NEW-065](02--new-features/065-database-and-schema-safety.md) | [08--bug-fixes-and-data-integrity/05-database-and-schema-safety.md](../feature_catalog/08--bug-fixes-and-data-integrity/05-database-and-schema-safety.md) |
+| NEW-066 | New Features | Scoring and ranking corrections | [NEW-066](02--new-features/066-scoring-and-ranking-corrections.md) | [11--scoring-and-calibration/11-scoring-and-ranking-corrections.md](../feature_catalog/11--scoring-and-calibration/11-scoring-and-ranking-corrections.md) |
+| NEW-067 | New Features | Search pipeline safety | [NEW-067](02--new-features/067-search-pipeline-safety.md) | [14--pipeline-architecture/07-search-pipeline-safety.md](../feature_catalog/14--pipeline-architecture/07-search-pipeline-safety.md) |
+| NEW-068 | New Features | Guards and edge cases | [NEW-068](02--new-features/068-guards-and-edge-cases.md) | [08--bug-fixes-and-data-integrity/06-guards-and-edge-cases.md](../feature_catalog/08--bug-fixes-and-data-integrity/06-guards-and-edge-cases.md) |
+| NEW-069 | New Features | Entity normalization consolidation | [NEW-069](02--new-features/069-entity-normalization-consolidation.md) | [13--memory-quality-and-indexing/13-entity-normalization-consolidation.md](../feature_catalog/13--memory-quality-and-indexing/13-entity-normalization-consolidation.md) |
+| NEW-070 | New Features | Dead code removal | [NEW-070](02--new-features/070-dead-code-removal.md) | [16--tooling-and-scripts/04-dead-code-removal.md](../feature_catalog/16--tooling-and-scripts/04-dead-code-removal.md) |
+| NEW-071 | New Features | Performance improvements | [NEW-071](02--new-features/071-performance-improvements.md) | [14--pipeline-architecture/08-performance-improvements.md](../feature_catalog/14--pipeline-architecture/08-performance-improvements.md) |
+| NEW-072 | New Features | Test quality improvements | [NEW-072](02--new-features/072-test-quality-improvements.md) | [09--evaluation-and-measurement/12-test-quality-improvements.md](../feature_catalog/09--evaluation-and-measurement/12-test-quality-improvements.md) |
+| NEW-073 | New Features | Quality gate timer persistence | [NEW-073](02--new-features/073-quality-gate-timer-persistence.md) | [13--memory-quality-and-indexing/14-quality-gate-timer-persistence.md](../feature_catalog/13--memory-quality-and-indexing/14-quality-gate-timer-persistence.md) |
+| NEW-074 | New Features | Stage 3 effectiveScore fallback chain | [NEW-074](02--new-features/074-stage-3-effectivescore-fallback-chain.md) | [11--scoring-and-calibration/12-stage-3-effectivescore-fallback-chain.md](../feature_catalog/11--scoring-and-calibration/12-stage-3-effectivescore-fallback-chain.md) |
+| NEW-075 | New Features | Canonical ID dedup hardening | [NEW-075](02--new-features/075-canonical-id-dedup-hardening.md) | [08--bug-fixes-and-data-integrity/07-canonical-id-dedup-hardening.md](../feature_catalog/08--bug-fixes-and-data-integrity/07-canonical-id-dedup-hardening.md) |
+| NEW-076 | New Features | Activation window persistence | [NEW-076](02--new-features/076-activation-window-persistence.md) | [14--pipeline-architecture/09-activation-window-persistence.md](../feature_catalog/14--pipeline-architecture/09-activation-window-persistence.md) |
+| NEW-077 | New Features | Tier-2 fallback channel forcing | [NEW-077](02--new-features/077-tier-2-fallback-channel-forcing.md) | [15--retrieval-enhancements/07-tier-2-fallback-channel-forcing.md](../feature_catalog/15--retrieval-enhancements/07-tier-2-fallback-channel-forcing.md) |
+| NEW-078 | New Features | Legacy V1 pipeline removal | [NEW-078](02--new-features/078-legacy-v1-pipeline-removal.md) | [14--pipeline-architecture/10-legacy-v1-pipeline-removal.md](../feature_catalog/14--pipeline-architecture/10-legacy-v1-pipeline-removal.md) |
+| NEW-079 | New Features | Scoring and fusion corrections | [NEW-079](02--new-features/079-scoring-and-fusion-corrections.md) | [11--scoring-and-calibration/13-scoring-and-fusion-corrections.md](../feature_catalog/11--scoring-and-calibration/13-scoring-and-fusion-corrections.md) |
+| NEW-080 | New Features | Pipeline and mutation hardening | [NEW-080](02--new-features/080-pipeline-and-mutation-hardening.md) | [14--pipeline-architecture/11-pipeline-and-mutation-hardening.md](../feature_catalog/14--pipeline-architecture/11-pipeline-and-mutation-hardening.md) |
+| NEW-081 | New Features | Graph and cognitive memory fixes | [NEW-081](02--new-features/081-graph-and-cognitive-memory-fixes.md) | [10--graph-signal-activation/08-graph-and-cognitive-memory-fixes.md](../feature_catalog/10--graph-signal-activation/08-graph-and-cognitive-memory-fixes.md) |
+| NEW-082 | New Features | Evaluation and housekeeping fixes | [NEW-082](02--new-features/082-evaluation-and-housekeeping-fixes.md) | [09--evaluation-and-measurement/13-evaluation-and-housekeeping-fixes.md](../feature_catalog/09--evaluation-and-measurement/13-evaluation-and-housekeeping-fixes.md) |
+| NEW-083 | New Features | Math.max/min stack overflow elimination | [NEW-083](02--new-features/083-math-max-min-stack-overflow-elimination.md) | [08--bug-fixes-and-data-integrity/08-mathmax-min-stack-overflow-elimination.md](../feature_catalog/08--bug-fixes-and-data-integrity/08-mathmax-min-stack-overflow-elimination.md) |
+| NEW-084 | New Features | Session-manager transaction gap fixes | [NEW-084](02--new-features/084-session-manager-transaction-gap-fixes.md) | [08--bug-fixes-and-data-integrity/09-session-manager-transaction-gap-fixes.md](../feature_catalog/08--bug-fixes-and-data-integrity/09-session-manager-transaction-gap-fixes.md) |
+| NEW-085 | New Features | Transaction wrappers on mutation handlers | [NEW-085](02--new-features/085-transaction-wrappers-on-mutation-handlers.md) | [02--mutation/06-transaction-wrappers-on-mutation-handlers.md](../feature_catalog/02--mutation/06-transaction-wrappers-on-mutation-handlers.md) |
+| NEW-086 | New Features | BM25 trigger phrase re-index gate | [NEW-086](02--new-features/086-bm25-trigger-phrase-re-index-gate.md) | [01--retrieval/06-bm25-trigger-phrase-re-index-gate.md](../feature_catalog/01--retrieval/06-bm25-trigger-phrase-re-index-gate.md) |
+| NEW-087 | New Features | DB_PATH extraction and import standardization | [NEW-087](02--new-features/087-db-path-extraction-and-import-standardization.md) | [14--pipeline-architecture/12-dbpath-extraction-and-import-standardization.md](../feature_catalog/14--pipeline-architecture/12-dbpath-extraction-and-import-standardization.md) |
+| NEW-088 | New Features | Cross-AI validation fixes (Tier 4) | [NEW-088](02--new-features/088-cross-ai-validation-fixes-tier-4.md) | [09--evaluation-and-measurement/14-cross-ai-validation-fixes.md](../feature_catalog/09--evaluation-and-measurement/14-cross-ai-validation-fixes.md) |
+| NEW-089 | New Features | Code standards alignment | [NEW-089](02--new-features/089-code-standards-alignment.md) | [16--tooling-and-scripts/05-code-standards-alignment.md](../feature_catalog/16--tooling-and-scripts/05-code-standards-alignment.md) |
+| NEW-090 | New Features | INT8 quantization evaluation (R5) | [NEW-090](02--new-features/090-int8-quantization-evaluation-r5.md) | [09--evaluation-and-measurement/16-int8-quantization-evaluation.md](../feature_catalog/09--evaluation-and-measurement/16-int8-quantization-evaluation.md) |
+| NEW-091 | New Features | Implemented: graph centrality and community detection (N2) | [NEW-091](02--new-features/091-implemented-graph-centrality-and-community-detection-n2.md) | [10--graph-signal-activation/07-community-detection.md](../feature_catalog/10--graph-signal-activation/07-community-detection.md) |
+| NEW-092 | New Features | Implemented: auto entity extraction (R10) | [NEW-092](02--new-features/092-implemented-auto-entity-extraction-r10.md) | [13--memory-quality-and-indexing/10-auto-entity-extraction.md](../feature_catalog/13--memory-quality-and-indexing/10-auto-entity-extraction.md) |
+| NEW-093 | New Features | Implemented: memory summary generation (R8) | [NEW-093](02--new-features/093-implemented-memory-summary-generation-r8.md) | [15--retrieval-enhancements/05-memory-summary-search-channel.md](../feature_catalog/15--retrieval-enhancements/05-memory-summary-search-channel.md) |
+| NEW-094 | New Features | Implemented: cross-document entity linking (S5) | [NEW-094](02--new-features/094-implemented-cross-document-entity-linking-s5.md) | [15--retrieval-enhancements/06-cross-document-entity-linking.md](../feature_catalog/15--retrieval-enhancements/06-cross-document-entity-linking.md) |
+| NEW-095 | New Features | Strict Zod schema validation (P0-1) | [NEW-095](02--new-features/095-strict-zod-schema-validation-p0-1.md) | [14--pipeline-architecture/13-strict-zod-schema-validation.md](../feature_catalog/14--pipeline-architecture/13-strict-zod-schema-validation.md) |
+| NEW-096 | New Features | Provenance-rich response envelopes (P0-2) | [NEW-096](02--new-features/096-provenance-rich-response-envelopes-p0-2.md) | [15--retrieval-enhancements/08-provenance-rich-response-envelopes.md](../feature_catalog/15--retrieval-enhancements/08-provenance-rich-response-envelopes.md) |
+| NEW-097 | New Features | Async ingestion job lifecycle (P0-3) | [NEW-097](02--new-features/097-async-ingestion-job-lifecycle-p0-3.md) | [05--lifecycle/05-async-ingestion-job-lifecycle.md](../feature_catalog/05--lifecycle/05-async-ingestion-job-lifecycle.md) |
+| NEW-098 | New Features | Local GGUF reranker via node-llama-cpp (P1-5) | [NEW-098](02--new-features/098-local-gguf-reranker-via-node-llama-cpp-p1-5.md) | [11--scoring-and-calibration/14-local-gguf-reranker-via-node-llama-cpp.md](../feature_catalog/11--scoring-and-calibration/14-local-gguf-reranker-via-node-llama-cpp.md) |
+| NEW-099 | New Features | Real-time filesystem watching (P1-7) | [NEW-099](02--new-features/099-real-time-filesystem-watching-p1-7.md) | [16--tooling-and-scripts/06-real-time-filesystem-watching-with-chokidar.md](../feature_catalog/16--tooling-and-scripts/06-real-time-filesystem-watching-with-chokidar.md) |
+| NEW-100 | New Features | Async shutdown with deadline (server lifecycle) | [NEW-100](02--new-features/100-async-shutdown-with-deadline-server-lifecycle.md) | *(server lifecycle — no dedicated catalog entry)* |
+| NEW-101 | New Features | memory_delete confirm schema tightening | [NEW-101](02--new-features/101-memory-delete-confirm-schema-tightening.md) | *(memory_delete confirm schema — covered by `02--mutation/03`)* |
+| NEW-102 | New Features | node-llama-cpp optionalDependencies | [NEW-102](02--new-features/102-node-llama-cpp-optionaldependencies.md) | *(node-llama-cpp optionalDependencies — covered by `11--scoring-and-calibration/14`)* |
+| NEW-103 | New Features | UX hook module coverage (`mutation-feedback`, `response-hints`) | [NEW-103](02--new-features/103-ux-hook-module-coverage-mutation-feedback-response-hints.md) | [18--ux-hooks/05-dedicated-ux-hook-modules.md](../feature_catalog/18--ux-hooks/05-dedicated-ux-hook-modules.md) |
+| NEW-104 | New Features | Mutation save-path UX parity and no-op hardening | [NEW-104](02--new-features/104-mutation-save-path-ux-parity-and-no-op-hardening.md) | [18--ux-hooks/09-duplicate-save-no-op-feedback-hardening.md](../feature_catalog/18--ux-hooks/09-duplicate-save-no-op-feedback-hardening.md) |
+| NEW-105 | New Features | Context-server success-envelope finalization | [NEW-105](02--new-features/105-context-server-success-envelope-finalization.md) | [18--ux-hooks/08-context-server-success-hint-append.md](../feature_catalog/18--ux-hooks/08-context-server-success-hint-append.md) |
+| NEW-106 | New Features | Hooks barrel + README synchronization | [NEW-106](02--new-features/106-hooks-barrel-readme-synchronization.md) | [18--ux-hooks/12-hooks-readme-and-export-alignment.md](../feature_catalog/18--ux-hooks/12-hooks-readme-and-export-alignment.md) |
+| NEW-107 | New Features | Checkpoint confirmName and schema enforcement | [NEW-107](02--new-features/107-checkpoint-confirmname-and-schema-enforcement.md) | [18--ux-hooks/03-checkpoint-delete-confirmname-safety.md](../feature_catalog/18--ux-hooks/03-checkpoint-delete-confirmname-safety.md) |
+| NEW-108 | New Features | Spec 007 finalized verification command suite evidence | [NEW-108](02--new-features/108-spec-007-finalized-verification-command-suite-evidence.md) | *(Spec 007 verification suite — no dedicated catalog entry)* |
+| NEW-109 | New Features | Quality-aware 3-tier search fallback | [NEW-109](02--new-features/109-quality-aware-3-tier-search-fallback.md) | [01--retrieval/08-quality-aware-3-tier-search-fallback.md](../feature_catalog/01--retrieval/08-quality-aware-3-tier-search-fallback.md) |
+| NEW-110 | New Features | Prediction-error save arbitration | [NEW-110](02--new-features/110-prediction-error-save-arbitration.md) | [02--mutation/08-prediction-error-save-arbitration.md](../feature_catalog/02--mutation/08-prediction-error-save-arbitration.md) |
+| NEW-111 | New Features | Deferred lexical-only indexing | [NEW-111](02--new-features/111-deferred-lexical-only-indexing.md) | [13--memory-quality-and-indexing/15-deferred-lexical-only-indexing.md](../feature_catalog/13--memory-quality-and-indexing/15-deferred-lexical-only-indexing.md) |
+| NEW-112 | New Features | Cross-process DB hot rebinding | [NEW-112](02--new-features/112-cross-process-db-hot-rebinding.md) | [14--pipeline-architecture/17-cross-process-db-hot-rebinding.md](../feature_catalog/14--pipeline-architecture/17-cross-process-db-hot-rebinding.md) |
+| NEW-113 | New Features | Standalone admin CLI | [NEW-113](02--new-features/113-standalone-admin-cli.md) | [16--tooling-and-scripts/07-standalone-admin-cli.md](../feature_catalog/16--tooling-and-scripts/07-standalone-admin-cli.md) |
+| NEW-114 | New Features | Path traversal validation (P0-4) | [NEW-114](02--new-features/114-path-traversal-validation-p0-4.md) | [05--lifecycle/05-async-ingestion-job-lifecycle.md](../feature_catalog/05--lifecycle/05-async-ingestion-job-lifecycle.md) |
+| NEW-115 | New Features | Transaction atomicity on rename failure (P0-5) | [NEW-115](02--new-features/115-transaction-atomicity-on-rename-failure-p0-5.md) | [14--pipeline-architecture/21-atomic-pending-file-recovery.md](../feature_catalog/14--pipeline-architecture/21-atomic-pending-file-recovery.md) |
+| NEW-116 | New Features | Chunking safe swap atomicity (P0-6) | [NEW-116](02--new-features/116-chunking-safe-swap-atomicity-p0-6.md) | [08--bug-fixes-and-data-integrity/10-chunking-orchestrator-safe-swap.md](../feature_catalog/08--bug-fixes-and-data-integrity/10-chunking-orchestrator-safe-swap.md) |
+| NEW-117 | New Features | SQLite datetime session cleanup (P0-7) | [NEW-117](02--new-features/117-sqlite-datetime-session-cleanup-p0-7.md) | [08--bug-fixes-and-data-integrity/11-working-memory-timestamp-fix.md](../feature_catalog/08--bug-fixes-and-data-integrity/11-working-memory-timestamp-fix.md) |
+| NEW-118 | New Features | Stage-2 score field synchronization (P0-8) | [NEW-118](02--new-features/118-stage-2-score-field-synchronization-p0-8.md) | [11--scoring-and-calibration/13-scoring-and-fusion-corrections.md](../feature_catalog/11--scoring-and-calibration/13-scoring-and-fusion-corrections.md) |
+| NEW-119 | New Features | Memory filename uniqueness (ensureUniqueMemoryFilename) | [NEW-119](02--new-features/119-memory-filename-uniqueness-ensureuniquememoryfilename.md) | [13--memory-quality-and-indexing/04-spec-folder-description-discovery.md](../feature_catalog/13--memory-quality-and-indexing/04-spec-folder-description-discovery.md) |
+| NEW-120 | New Features | Unified graph rollback and explainability (Phase 3) | [NEW-120](02--new-features/120-unified-graph-rollback-and-explainability-phase-3.md) | [10--graph-signal-activation/12-unified-graph-retrieval-deterministic-ranking-explainability-and-rollback.md](../feature_catalog/10--graph-signal-activation/12-unified-graph-retrieval-deterministic-ranking-explainability-and-rollback.md) |
+| NEW-121 | New Features | Adaptive shadow proposal and rollback (Phase 4) | [NEW-121](02--new-features/121-adaptive-shadow-proposal-and-rollback-phase-4.md) | [11--scoring-and-calibration/18-adaptive-shadow-ranking-bounded-proposals-and-rollback.md](../feature_catalog/11--scoring-and-calibration/18-adaptive-shadow-ranking-bounded-proposals-and-rollback.md) |
+| NEW-122 | New Features | Governed ingest and scope isolation (Phase 5) | [NEW-122](02--new-features/122-governed-ingest-and-scope-isolation-phase-5.md) | [17--governance/03-hierarchical-scope-governance-governed-ingest-retention-and-audit.md](../feature_catalog/17--governance/03-hierarchical-scope-governance-governed-ingest-retention-and-audit.md) |
+| NEW-123 | New Features | Shared-space deny-by-default rollout (Phase 6) | [NEW-123](02--new-features/123-shared-space-deny-by-default-rollout-phase-6.md) | [17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md](../feature_catalog/17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md) |
+| NEW-124 | New Features | Automatic archival lifecycle coverage | [NEW-124](02--new-features/124-automatic-archival-lifecycle-coverage.md) | [05--lifecycle/07-automatic-archival-subsystem.md](../feature_catalog/05--lifecycle/07-automatic-archival-subsystem.md) |
+| NEW-125 | New Features | Hydra roadmap capability flags | [NEW-125](02--new-features/125-hydra-roadmap-capability-flags.md) | [19--feature-flag-reference/01-1-search-pipeline-features-speckit.md](../feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md) |
+| NEW-126 | New Features | Memory roadmap baseline snapshot | [NEW-126](02--new-features/126-memory-roadmap-baseline-snapshot.md) | [09--evaluation-and-measurement/15-memory-roadmap-baseline-snapshot.md](../feature_catalog/09--evaluation-and-measurement/15-memory-roadmap-baseline-snapshot.md) |
+| NEW-127 | New Features | Migration checkpoint scripts | [NEW-127](02--new-features/127-migration-checkpoint-scripts.md) | [16--tooling-and-scripts/09-migration-checkpoint-scripts.md](../feature_catalog/16--tooling-and-scripts/09-migration-checkpoint-scripts.md) |
+| NEW-128 | New Features | Schema compatibility validation | [NEW-128](02--new-features/128-schema-compatibility-validation.md) | [16--tooling-and-scripts/10-schema-compatibility-validation.md](../feature_catalog/16--tooling-and-scripts/10-schema-compatibility-validation.md) |
+| NEW-129 | New Features | Lineage state active projection and asOf resolution | [NEW-129](02--new-features/129-lineage-state-active-projection-and-asof-resolution.md) | [14--pipeline-architecture/22-lineage-state-active-projection-and-asof-resolution.md](../feature_catalog/14--pipeline-architecture/22-lineage-state-active-projection-and-asof-resolution.md) |
+| NEW-130 | New Features | Lineage backfill rollback drill | [NEW-130](02--new-features/130-lineage-backfill-rollback-drill.md) | [14--pipeline-architecture/22-lineage-state-active-projection-and-asof-resolution.md](../feature_catalog/14--pipeline-architecture/22-lineage-state-active-projection-and-asof-resolution.md) |
+| NEW-131 | New Features | Description.json batch backfill validation (PI-B3) | [NEW-131](02--new-features/131-description-json-batch-backfill-validation-pi-b3.md) | [13--memory-quality-and-indexing/04-spec-folder-description-discovery.md](../feature_catalog/13--memory-quality-and-indexing/04-spec-folder-description-discovery.md) |
+| NEW-132 | New Features | description.json schema field validation | [NEW-132](02--new-features/132-description-json-schema-field-validation.md) | [13--memory-quality-and-indexing/04-spec-folder-description-discovery.md](../feature_catalog/13--memory-quality-and-indexing/04-spec-folder-description-discovery.md) |
+| NEW-133 | New Features | Dry-run preflight for memory_save | [NEW-133](02--new-features/133-dry-run-preflight-for-memory-save.md) | [13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md](../feature_catalog/13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md) |
+| NEW-134 | New Features | Startup pending-file recovery lifecycle coverage | [NEW-134](02--new-features/134-startup-pending-file-recovery-lifecycle-coverage.md) | [05--lifecycle/06-startup-pending-file-recovery.md](../feature_catalog/05--lifecycle/06-startup-pending-file-recovery.md) |
+| NEW-135 | New Features | Grep traceability for feature catalog code references | [NEW-135](02--new-features/135-grep-traceability-for-feature-catalog-code-references.md) | [16--tooling-and-scripts/11-feature-catalog-code-references.md](../feature_catalog/16--tooling-and-scripts/11-feature-catalog-code-references.md) |
+| NEW-136 | New Features | Feature catalog annotation name validity | [NEW-136](02--new-features/136-feature-catalog-annotation-name-validity.md) | [16--tooling-and-scripts/11-feature-catalog-code-references.md](../feature_catalog/16--tooling-and-scripts/11-feature-catalog-code-references.md) |
+| NEW-137 | New Features | Multi-feature annotation coverage | [NEW-137](02--new-features/137-multi-feature-annotation-coverage.md) | [16--tooling-and-scripts/11-feature-catalog-code-references.md](../feature_catalog/16--tooling-and-scripts/11-feature-catalog-code-references.md) |
+| NEW-138 | New Features | MODULE: header compliance via verify_alignment_drift.py | [NEW-138](02--new-features/138-module-header-compliance-via-verify-alignment-drift-py.md) | [16--tooling-and-scripts/11-feature-catalog-code-references.md](../feature_catalog/16--tooling-and-scripts/11-feature-catalog-code-references.md) |
+| NEW-139 | New Features | Session capturing pipeline quality | [NEW-139](02--new-features/139-session-capturing-pipeline-quality.md) | [16--tooling-and-scripts/12-session-capturing-pipeline-quality.md](../feature_catalog/16--tooling-and-scripts/12-session-capturing-pipeline-quality.md) |
+| NEW-142 | New Features | Session transition trace contract | [NEW-142](02--new-features/142-session-transition-trace-contract.md) | [01--retrieval/01-unified-context-retrieval-memorycontext.md](../feature_catalog/01--retrieval/01-unified-context-retrieval-memorycontext.md) |
+| NEW-143 | New Features | Bounded graph-walk rollout and diagnostics | [NEW-143](02--new-features/143-bounded-graph-walk-rollout-and-diagnostics.md) | [01--retrieval/02-semantic-and-lexical-search-memorysearch.md](../feature_catalog/01--retrieval/02-semantic-and-lexical-search-memorysearch.md) |
+| NEW-144 | New Features | Advisory ingest lifecycle forecast | [NEW-144](02--new-features/144-advisory-ingest-lifecycle-forecast.md) | [05--lifecycle/05-async-ingestion-job-lifecycle.md](../feature_catalog/05--lifecycle/05-async-ingestion-job-lifecycle.md) |
+| NEW-145 | New Features | Contextual tree injection (P1-4) | [NEW-145](02--new-features/145-contextual-tree-injection-p1-4.md) | [15--retrieval-enhancements/09-contextual-tree-injection.md](../feature_catalog/15--retrieval-enhancements/09-contextual-tree-injection.md) |
+| NEW-146 | New Features | Dynamic server instructions (P1-6) | [NEW-146](02--new-features/146-dynamic-server-instructions-p1-6.md) | [14--pipeline-architecture/14-dynamic-server-instructions-at-mcp-initialization.md](../feature_catalog/14--pipeline-architecture/14-dynamic-server-instructions-at-mcp-initialization.md) |
+| NEW-147 | New Features | Constitutional memory manager command | [NEW-147](02--new-features/147-constitutional-memory-manager-command.md) | [16--tooling-and-scripts/13-constitutional-memory-manager-command.md](../feature_catalog/16--tooling-and-scripts/13-constitutional-memory-manager-command.md) |
+| NEW-148 | New Features | Shared-memory disabled-by-default and first-run setup | [NEW-148](02--new-features/148-shared-memory-disabled-by-default-and-first-run-setup.md) | [17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md](../feature_catalog/17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md) |
+| NEW-149 | New Features | Rendered memory template contract | [NEW-149](02--new-features/149-rendered-memory-template-contract.md) | [16--tooling-and-scripts/12-session-capturing-pipeline-quality.md](../feature_catalog/16--tooling-and-scripts/12-session-capturing-pipeline-quality.md) |
+| PHASE-001 | Phase System Features | Phase detection scoring | [PHASE-001](03--phase-system-features/001-phase-detection-scoring.md) |  |
+| PHASE-002 | Phase System Features | Phase folder creation | [PHASE-002](03--phase-system-features/002-phase-folder-creation.md) |  |
+| PHASE-003 | Phase System Features | Recursive phase validation | [PHASE-003](03--phase-system-features/003-recursive-phase-validation.md) |  |
+| PHASE-004 | Phase System Features | Phase link validation | [PHASE-004](03--phase-system-features/004-phase-link-validation.md) |  |
+| PHASE-005 | Phase System Features | Phase command workflow | [PHASE-005](03--phase-system-features/005-phase-command-workflow.md) |  |
+| M-001 | Dedicated Memory/Spec-Kit Scenarios | Context Recovery and Continuation | [M-001](04--memory-and-spec-kit-scenarios/001-context-recovery-and-continuation.md) |  |
+| M-002 | Dedicated Memory/Spec-Kit Scenarios | Targeted Memory Lookup | [M-002](04--memory-and-spec-kit-scenarios/002-targeted-memory-lookup.md) |  |
+| M-003 | Dedicated Memory/Spec-Kit Scenarios | Context Save + Index Update | [M-003](04--memory-and-spec-kit-scenarios/003-context-save-index-update.md) |  |
+| M-004 | Dedicated Memory/Spec-Kit Scenarios | Main-Agent Review and Verdict Handoff | [M-004](04--memory-and-spec-kit-scenarios/004-main-agent-review-and-verdict-handoff.md) |  |
+| M-005 | Dedicated Memory/Spec-Kit Scenarios | Outsourced Agent Memory Capture Round-Trip | [M-005](04--memory-and-spec-kit-scenarios/005-outsourced-agent-memory-capture-round-trip.md) |  |
+| M-006 | Dedicated Memory/Spec-Kit Scenarios | Stateless Enrichment and Alignment Guardrails | [M-006](04--memory-and-spec-kit-scenarios/006-stateless-enrichment-and-alignment-guardrails.md) |  |
+| M-007 | Dedicated Memory/Spec-Kit Scenarios | Session Capturing Pipeline Quality | [M-007](04--memory-and-spec-kit-scenarios/007-session-capturing-pipeline-quality.md) |  |
+| M-008 | Dedicated Memory/Spec-Kit Scenarios | Feature 09 Direct Manual Scenario (Per-memory History Log) | [M-008](04--memory-and-spec-kit-scenarios/008-feature-09-direct-manual-scenario-per-memory-history-log.md) |  |
+
+---
+
+## 13. GEMINI OVERLAY SCENARIO PACKS
 
 Use these as execution bundles over the canonical per-feature matrix:
 
@@ -724,6 +3220,6 @@ Use these as execution bundles over the canonical per-feature matrix:
 7. Lifecycle, Folders and Administration
 8. Evaluation and Telemetry
 
-Overlay source section:
-- `.opencode/skill/system-spec-kit/manual_testing_playbook/review_protocol.md`
-- `.opencode/skill/system-spec-kit/manual_testing_playbook/subagent_utilization_ledger.md`
+Integrated source sections:
+- [5. REVIEW PROTOCOL AND RELEASE READINESS](#5--review-protocol-and-release-readiness)
+- [6. SUB-AGENT ORCHESTRATION AND WAVE PLANNING](#6--sub-agent-orchestration-and-wave-planning)

@@ -1,3 +1,8 @@
+---
+title: "Tree thinning for spec folder consolidation"
+description: "Tree thinning reduces token counts before spec-folder consolidation by classifying files and merging small ones into parent-level summaries."
+---
+
 # Tree thinning for spec folder consolidation
 
 ## 1. OVERVIEW

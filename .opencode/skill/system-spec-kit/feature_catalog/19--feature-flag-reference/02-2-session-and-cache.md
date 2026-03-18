@@ -1,3 +1,8 @@
+---
+title: "2. Session and Cache"
+description: "This document captures the implemented behavior, source references, and validation scope for 2. Session and Cache."
+---
+
 # 2. Session and Cache
 
 ## 1. OVERVIEW

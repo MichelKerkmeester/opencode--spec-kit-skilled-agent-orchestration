@@ -1,3 +1,8 @@
+---
+title: "Causal edge creation (memory_causal_link)"
+description: "Covers the causal edge creation tool that builds directed relationship edges between memories in the causal graph."
+---
+
 # Causal edge creation (memory_causal_link)
 
 ## 1. OVERVIEW

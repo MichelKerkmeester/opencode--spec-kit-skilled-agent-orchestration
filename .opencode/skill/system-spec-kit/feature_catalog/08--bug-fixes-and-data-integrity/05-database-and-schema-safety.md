@@ -1,3 +1,8 @@
+---
+title: "Database and schema safety"
+description: "Tracks four database-layer bug fixes covering column references, DDL placement, edge deletion filters and update validation."
+---
+
 # Database and schema safety
 
 ## 1. OVERVIEW

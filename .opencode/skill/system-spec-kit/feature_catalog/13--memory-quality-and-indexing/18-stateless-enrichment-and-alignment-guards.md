@@ -1,3 +1,8 @@
+---
+title: "Stateless enrichment and alignment guards"
+description: "Stateless enrichment and alignment guards enrich thin OpenCode session data with spec-folder and git context while blocking saves that belong to a different task."
+---
+
 # Stateless enrichment and alignment guards
 
 ## 1. OVERVIEW

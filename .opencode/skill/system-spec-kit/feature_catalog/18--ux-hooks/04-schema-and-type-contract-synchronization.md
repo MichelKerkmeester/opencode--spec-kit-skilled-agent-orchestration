@@ -1,3 +1,8 @@
+---
+title: "Schema and type contract synchronization"
+description: "Schema and type contract synchronization aligns runtime validation with TypeScript contracts for mutation-safety behavior across handler, schema and tool boundaries."
+---
+
 # Schema and type contract synchronization
 
 ## 1. OVERVIEW

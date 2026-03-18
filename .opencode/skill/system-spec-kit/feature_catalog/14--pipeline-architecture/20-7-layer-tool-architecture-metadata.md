@@ -1,3 +1,8 @@
+---
+title: "7-layer tool architecture metadata"
+description: "The 7-layer tool architecture defines token budgets, priorities and use-case guidance for each MCP tool layer (L1-L7) as governance metadata."
+---
+
 # 7-layer tool architecture metadata
 
 ## 1. OVERVIEW

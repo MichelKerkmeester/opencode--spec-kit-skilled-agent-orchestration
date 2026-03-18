@@ -1,3 +1,8 @@
+---
+title: "Tier-based bulk deletion (memory_bulk_delete)"
+description: "Covers the bulk delete tool that targets entire importance tiers with safety checkpoints and constitutional protection."
+---
+
 # Tier-based bulk deletion (memory_bulk_delete)
 
 ## 1. OVERVIEW

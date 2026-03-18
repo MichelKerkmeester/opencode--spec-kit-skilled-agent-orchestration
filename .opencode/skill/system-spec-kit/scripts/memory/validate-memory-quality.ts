@@ -11,8 +11,124 @@ import fs from 'fs';
 import path from 'path';
 import { structuredLog } from '../utils/logger';
 import type { ContaminationAuditRecord } from '../lib/content-filter';
+import type { DataSource } from '../utils/input-normalizer';
+import { getSourceCapabilities, type KnownDataSource } from '../utils/source-capabilities';
 
 type QualityRuleId = 'V1' | 'V2' | 'V3' | 'V4' | 'V5' | 'V6' | 'V7' | 'V8' | 'V9' | 'V10' | 'V11';
+
+type ValidationRuleSeverity = 'low' | 'medium' | 'high';
+type ValidationDisposition = 'abort_write' | 'write_skip_index' | 'write_and_index';
+
+interface ValidationRuleMetadata {
+  ruleId: QualityRuleId;
+  severity: ValidationRuleSeverity;
+  blockOnWrite: boolean;
+  blockOnIndex: boolean;
+  appliesToSources: 'all' | readonly KnownDataSource[];
+  reason: string;
+}
+
+interface ValidationDispositionResult {
+  disposition: ValidationDisposition;
+  blockingRuleIds: QualityRuleId[];
+  indexBlockingRuleIds: QualityRuleId[];
+  softRuleIds: QualityRuleId[];
+}
+
+const VALIDATION_RULE_METADATA: Record<QualityRuleId, ValidationRuleMetadata> = {
+  V1: {
+    ruleId: 'V1',
+    severity: 'high',
+    blockOnWrite: true,
+    blockOnIndex: true,
+    appliesToSources: 'all',
+    reason: 'Placeholder leakage in required durable-memory fields corrupts the saved output contract.',
+  },
+  V2: {
+    ruleId: 'V2',
+    severity: 'medium',
+    blockOnWrite: false,
+    blockOnIndex: true,
+    appliesToSources: 'all',
+    reason: 'Structured content can be saved for inspection, but placeholder leakage with real tool evidence should not reach the semantic index.',
+  },
+  V3: {
+    ruleId: 'V3',
+    severity: 'high',
+    blockOnWrite: true,
+    blockOnIndex: true,
+    appliesToSources: 'all',
+    reason: 'Malformed spec_folder routing metadata invalidates the saved memory target.',
+  },
+  V4: {
+    ruleId: 'V4',
+    severity: 'low',
+    blockOnWrite: false,
+    blockOnIndex: false,
+    appliesToSources: 'all',
+    reason: 'Fallback-decision phrasing is a soft signal and should not block durable indexing on otherwise strong memories.',
+  },
+  V5: {
+    ruleId: 'V5',
+    severity: 'low',
+    blockOnWrite: false,
+    blockOnIndex: false,
+    appliesToSources: 'all',
+    reason: 'Sparse trigger phrases are diagnostic, but not enough to reject an otherwise valid rendered memory.',
+  },
+  V6: {
+    ruleId: 'V6',
+    severity: 'low',
+    blockOnWrite: false,
+    blockOnIndex: false,
+    appliesToSources: 'all',
+    reason: 'Template placeholder remnants are tracked as soft diagnostics when upstream template-contract validation already passed.',
+  },
+  V7: {
+    ruleId: 'V7',
+    severity: 'low',
+    blockOnWrite: false,
+    blockOnIndex: false,
+    appliesToSources: 'all',
+    reason: 'Tool-count contradictions are useful diagnostics, but not durable-index blockers on their own.',
+  },
+  V8: {
+    ruleId: 'V8',
+    severity: 'high',
+    blockOnWrite: true,
+    blockOnIndex: true,
+    appliesToSources: 'all',
+    reason: 'Foreign-spec contamination would corrupt both the saved memory and the semantic index.',
+  },
+  V9: {
+    ruleId: 'V9',
+    severity: 'high',
+    blockOnWrite: true,
+    blockOnIndex: true,
+    appliesToSources: 'all',
+    reason: 'A contaminated title undermines retrieval quality and saved-memory truthfulness.',
+  },
+  V10: {
+    ruleId: 'V10',
+    severity: 'low',
+    blockOnWrite: false,
+    blockOnIndex: false,
+    appliesToSources: 'all',
+    reason: 'Session-source mismatch is diagnostic and should remain visible without forcing write-only saves.',
+  },
+  V11: {
+    ruleId: 'V11',
+    severity: 'high',
+    blockOnWrite: true,
+    blockOnIndex: true,
+    appliesToSources: 'all',
+    reason: 'API-error-dominated content is not a trustworthy memory surface.',
+  },
+};
+
+const HARD_BLOCK_RULES: readonly QualityRuleId[] = Object.values(VALIDATION_RULE_METADATA)
+  .filter((metadata) => metadata.blockOnWrite)
+  .map((metadata) => metadata.ruleId);
 
 interface RuleResult {
   ruleId: QualityRuleId;
@@ -261,6 +377,64 @@ function extractAllowedSpecIds(specFolder: string): Set<string> {
 function extractFirstHeading(content: string): string {
   const headingMatch = content.match(/^#\s+(.+)$/m);
   return headingMatch ? headingMatch[1].trim() : '';
+}
+
+function ruleAppliesToSource(
+  metadata: ValidationRuleMetadata,
+  source?: DataSource | string | null,
+): boolean {
+  if (metadata.appliesToSources === 'all') {
+    return true;
+  }
+
+  const capabilities = getSourceCapabilities(source);
+  return metadata.appliesToSources.includes(capabilities.source);
+}
+
+function getRuleMetadata(ruleId: QualityRuleId): ValidationRuleMetadata {
+  return VALIDATION_RULE_METADATA[ruleId];
+}
+
+function shouldBlockWrite(ruleId: QualityRuleId, source?: DataSource | string | null): boolean {
+  const metadata = getRuleMetadata(ruleId);
+  return metadata.blockOnWrite && ruleAppliesToSource(metadata, source);
+}
+
+function shouldBlockIndex(ruleId: QualityRuleId, source?: DataSource | string | null): boolean {
+  const metadata = getRuleMetadata(ruleId);
+  return metadata.blockOnIndex && ruleAppliesToSource(metadata, source);
+}
+
+function determineValidationDisposition(
+  failedRules: readonly QualityRuleId[],
+  source?: DataSource | string | null,
+): ValidationDispositionResult {
+  const blockingRuleIds = failedRules.filter((ruleId) => shouldBlockWrite(ruleId, source));
+  if (blockingRuleIds.length > 0) {
+    return {
+      disposition: 'abort_write',
+      blockingRuleIds,
+      indexBlockingRuleIds: blockingRuleIds,
+      softRuleIds: failedRules.filter((ruleId) => !blockingRuleIds.includes(ruleId)),
+    };
+  }
+
+  const indexBlockingRuleIds = failedRules.filter((ruleId) => shouldBlockIndex(ruleId, source));
+  if (indexBlockingRuleIds.length > 0) {
+    return {
+      disposition: 'write_skip_index',
+      blockingRuleIds: [],
+      indexBlockingRuleIds,
+      softRuleIds: failedRules.filter((ruleId) => !indexBlockingRuleIds.includes(ruleId)),
+    };
+  }
+
+  return {
+    disposition: 'write_and_index',
+    blockingRuleIds: [],
+    indexBlockingRuleIds: [],
+    softRuleIds: [...failedRules],
+  };
 }
 
 function hasExecutionSignals(content: string): boolean {
@@ -512,11 +686,21 @@ if (require.main === module) {
 }
 
 export {
+  HARD_BLOCK_RULES,
+  VALIDATION_RULE_METADATA,
+  determineValidationDisposition,
+  getRuleMetadata,
+  shouldBlockIndex,
+  shouldBlockWrite,
   validateMemoryQualityContent,
   validateMemoryQualityFile,
 };
 
 export type {
+  ValidationDisposition,
+  ValidationDispositionResult,
+  ValidationRuleMetadata,
+  ValidationRuleSeverity,
   QualityRuleId,
   ValidationResult,
   RuleResult,

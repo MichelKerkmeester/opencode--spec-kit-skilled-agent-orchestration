@@ -1,3 +1,8 @@
+---
+title: "Evaluation database and schema"
+description: "Describes the dedicated SQLite evaluation database, its five-table schema and the fail-safe logging hooks that capture retrieval quality data without affecting production query flow."
+---
+
 # Evaluation database and schema
 
 ## 1. OVERVIEW

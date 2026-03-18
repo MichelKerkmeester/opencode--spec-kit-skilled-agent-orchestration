@@ -1,3 +1,8 @@
+---
+title: "Agent consumption instrumentation"
+description: "Describes the retrieval handler instrumentation wiring for agent consumption logging, currently inert but structurally preserved for reactivation."
+---
+
 # Agent consumption instrumentation
 
 ## 1. OVERVIEW

@@ -1,3 +1,8 @@
+---
+title: "Math.max/min stack overflow elimination"
+description: "Tracks the replacement of `Math.max(...array)` spread patterns with `reduce()` to prevent stack overflows on large arrays."
+---
+
 # Math.max/min stack overflow elimination
 
 ## 1. OVERVIEW

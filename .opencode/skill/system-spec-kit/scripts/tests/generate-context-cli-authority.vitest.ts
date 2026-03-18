@@ -31,6 +31,12 @@ async function resetGenerateContextConfig(): Promise<void> {
   CONFIG.SPEC_FOLDER_ARG = null;
 }
 
+function mockProcessExit(): ReturnType<typeof vi.spyOn> {
+  return vi.spyOn(process, 'exit').mockImplementation(((code?: string | number | null) => {
+    throw new Error(`EXIT:${code ?? 0}`);
+  }) as never);
+}
+
 describe('generate-context CLI authority', () => {
   beforeEach(async () => {
     vi.resetModules();
@@ -95,5 +101,157 @@ describe('generate-context CLI authority', () => {
       loadDataFn: harness.loadCollectedData,
       collectSessionDataFn: harness.collectSessionData,
     }));
+  });
+
+  it('passes stdin JSON as preloaded collectedData and preserves an explicit CLI spec-folder override', async () => {
+    const explicitSpecFolder = '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion';
+    const resolvedSpecFolder = path.resolve(REPO_ROOT, explicitSpecFolder);
+    const payload = JSON.stringify({
+      specFolder: '.opencode/specs/01--anobel.com/036-hero-contact-success',
+      sessionSummary: 'Structured stdin payload should not override an explicit CLI target.',
+    });
+
+    const { main } = await import('../memory/generate-context');
+    await main(['--stdin', explicitSpecFolder], async () => payload);
+
+    expect(harness.runWorkflow).toHaveBeenCalledTimes(1);
+    expect(harness.runWorkflow).toHaveBeenCalledWith(expect.objectContaining({
+      dataFile: undefined,
+      specFolderArg: resolvedSpecFolder,
+      collectedData: expect.objectContaining({
+        specFolder: '.opencode/specs/01--anobel.com/036-hero-contact-success',
+        sessionSummary: 'Structured stdin payload should not override an explicit CLI target.',
+        _source: 'file',
+      }),
+      loadDataFn: undefined,
+      collectSessionDataFn: harness.collectSessionData,
+    }));
+    expect(harness.loadCollectedData).not.toHaveBeenCalled();
+  });
+
+  it('passes inline JSON as preloaded collectedData using the payload spec folder when no explicit override is present', async () => {
+    const payloadSpecFolder = '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion';
+    const resolvedSpecFolder = path.resolve(REPO_ROOT, payloadSpecFolder);
+    const payload = JSON.stringify({
+      specFolder: payloadSpecFolder,
+      sessionSummary: 'Inline JSON should resolve its own spec folder when no override exists.',
+    });
+
+    const { main } = await import('../memory/generate-context');
+    await main(['--json', payload]);
+
+    expect(harness.runWorkflow).toHaveBeenCalledTimes(1);
+    expect(harness.runWorkflow).toHaveBeenCalledWith(expect.objectContaining({
+      dataFile: undefined,
+      specFolderArg: resolvedSpecFolder,
+      collectedData: expect.objectContaining({
+        specFolder: payloadSpecFolder,
+        sessionSummary: 'Inline JSON should resolve its own spec folder when no override exists.',
+        _source: 'file',
+      }),
+      loadDataFn: undefined,
+      collectSessionDataFn: harness.collectSessionData,
+    }));
+    expect(harness.loadCollectedData).not.toHaveBeenCalled();
+  });
+
+  it('keeps target resolution and collectedData shape identical between --stdin and --json for the same payload', async () => {
+    const payloadSpecFolder = '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion';
+    const resolvedSpecFolder = path.resolve(REPO_ROOT, payloadSpecFolder);
+    const payload = JSON.stringify({
+      specFolder: payloadSpecFolder,
+      sessionSummary: 'Equivalent structured payloads should resolve identically across stdin and inline JSON modes.',
+      triggerPhrases: ['structured parity', 'stdin json parity'],
+    });
+
+    const { main } = await import('../memory/generate-context');
+
+    await main(['--stdin'], async () => payload);
+    const stdinCall = harness.runWorkflow.mock.calls.at(-1)?.[0];
+
+    harness.runWorkflow.mockClear();
+
+    await main(['--json', payload]);
+    const jsonCall = harness.runWorkflow.mock.calls.at(-1)?.[0];
+
+    expect(stdinCall).toMatchObject({
+      dataFile: undefined,
+      specFolderArg: resolvedSpecFolder,
+      collectedData: expect.objectContaining({
+        specFolder: payloadSpecFolder,
+        sessionSummary: 'Equivalent structured payloads should resolve identically across stdin and inline JSON modes.',
+        _source: 'file',
+      }),
+    });
+    expect(jsonCall).toMatchObject({
+      dataFile: undefined,
+      specFolderArg: resolvedSpecFolder,
+      collectedData: expect.objectContaining({
+        specFolder: payloadSpecFolder,
+        sessionSummary: 'Equivalent structured payloads should resolve identically across stdin and inline JSON modes.',
+        _source: 'file',
+      }),
+    });
+    expect(stdinCall?.specFolderArg).toBe(jsonCall?.specFolderArg);
+    expect(stdinCall?.collectedData).toEqual(jsonCall?.collectedData);
+  });
+
+  it('allows an empty JSON object through to workflow when an explicit CLI target is present', async () => {
+    const explicitSpecFolder = '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion';
+    const resolvedSpecFolder = path.resolve(REPO_ROOT, explicitSpecFolder);
+
+    const { main } = await import('../memory/generate-context');
+    await main(['--json', '{}', explicitSpecFolder]);
+
+    expect(harness.runWorkflow).toHaveBeenCalledTimes(1);
+    expect(harness.runWorkflow).toHaveBeenCalledWith(expect.objectContaining({
+      dataFile: undefined,
+      specFolderArg: resolvedSpecFolder,
+      collectedData: { _source: 'file' },
+      loadDataFn: undefined,
+      collectSessionDataFn: harness.collectSessionData,
+    }));
+  });
+
+  it('exits non-zero on malformed inline JSON before calling runWorkflow', async () => {
+    const exitSpy = mockProcessExit();
+
+    const { main } = await import('../memory/generate-context');
+
+    await expect(main(['--json', '{'])).rejects.toThrow('EXIT:1');
+    expect(harness.runWorkflow).not.toHaveBeenCalled();
+    expect(harness.loadCollectedData).not.toHaveBeenCalled();
+
+    exitSpy.mockRestore();
+  });
+
+  it('exits non-zero when stdin/json mode has no explicit or payload target spec folder', async () => {
+    const exitSpy = mockProcessExit();
+    const payload = JSON.stringify({
+      sessionSummary: 'Missing target should fail before workflow execution.',
+    });
+
+    const { main } = await import('../memory/generate-context');
+
+    await expect(main(['--stdin'], async () => payload)).rejects.toThrow('EXIT:1');
+    expect(harness.runWorkflow).not.toHaveBeenCalled();
+    expect(harness.loadCollectedData).not.toHaveBeenCalled();
+
+    exitSpy.mockRestore();
+  });
+
+  it('exits non-zero when stdin/json mode resolves an invalid explicit target spec folder', async () => {
+    const exitSpy = mockProcessExit();
+    const payload = JSON.stringify({
+      sessionSummary: 'Invalid target should fail validation before workflow execution.',
+    });
+
+    const { main } = await import('../memory/generate-context');
+
+    await expect(main(['--json', payload, 'not-a-spec-folder'])).rejects.toThrow('EXIT:1');
+    expect(harness.runWorkflow).not.toHaveBeenCalled();
+    expect(harness.loadCollectedData).not.toHaveBeenCalled();
+
+    exitSpy.mockRestore();
   });
 });

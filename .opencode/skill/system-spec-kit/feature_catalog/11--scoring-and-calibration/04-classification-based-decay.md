@@ -1,3 +1,8 @@
+---
+title: "Classification-based decay"
+description: "Describes how FSRS decay rates vary by a two-dimensional multiplier matrix across context type and importance tier, so decisions never decay while scratch notes decay at 0.5x rate."
+---
+
 # Classification-based decay
 
 ## 1. OVERVIEW

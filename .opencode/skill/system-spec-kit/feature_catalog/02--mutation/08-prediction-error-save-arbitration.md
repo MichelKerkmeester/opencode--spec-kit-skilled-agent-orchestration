@@ -1,3 +1,8 @@
+---
+title: "Prediction-error save arbitration"
+description: "Covers the 5-action decision engine that classifies new saves as REINFORCE, UPDATE, SUPERSEDE, CREATE_LINKED or CREATE based on semantic similarity."
+---
+
 # Prediction-error save arbitration
 
 ## 1. OVERVIEW

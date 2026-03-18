@@ -1,3 +1,8 @@
+---
+title: "Verify-fix-verify memory quality loop"
+description: "The verify-fix-verify loop evaluates memory quality at save time and auto-retries fixes before accepting or rejecting the save."
+---
+
 # Verify-fix-verify memory quality loop
 
 ## 1. OVERVIEW

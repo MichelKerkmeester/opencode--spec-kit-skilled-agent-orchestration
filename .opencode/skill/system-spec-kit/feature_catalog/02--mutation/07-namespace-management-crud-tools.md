@@ -1,3 +1,8 @@
+---
+title: "Namespace management CRUD tools"
+description: "Tracks the namespace and shared-memory lifecycle tools that provide workspace-level scoping beyond `specFolder`."
+---
+
 # Namespace management CRUD tools
 
 ## 1. OVERVIEW

@@ -21,9 +21,10 @@
   "parentChain": [
     "03--commands-and-skills"
   ],
-  "memorySequence": 2,
+  "memorySequence": 3,
   "memoryNameHistory": [
     "18-03-26_14-35__next-steps.md",
-    "18-03-26_14-51__cross-cli-auto-usage-test.md"
+    "18-03-26_14-51__cross-cli-auto-usage-test.md",
+    "18-03-26_19-06__portable-cocoindex-mcp-paths-applied.md"
   ]
 }

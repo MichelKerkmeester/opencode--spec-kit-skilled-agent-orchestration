@@ -1,3 +1,8 @@
+---
+title: "Constitutional memory manager command"
+description: "The `/memory:learn` slash command is the operator-facing workflow for constitutional memories: durable, always-surface rules stored under `.opencode/skill/system-spec-kit/constitutional/`."
+---
+
 # Constitutional memory manager command
 
 ## 1. OVERVIEW

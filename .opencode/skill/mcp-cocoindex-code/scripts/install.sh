@@ -7,27 +7,27 @@
 
 set -euo pipefail
 
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/common.sh"
+
 # ─────────────────────────────────────────────────────────────────────────────
 # 1. CONFIGURATION
 # ─────────────────────────────────────────────────────────────────────────────
 
-readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-readonly SKILL_DIR="$(dirname "$SCRIPT_DIR")"
-readonly VENV_DIR="$SKILL_DIR/mcp_server/.venv"
-readonly PROJECT_ROOT="$(cd "$SKILL_DIR/../../.." && pwd)"
-readonly PACKAGE_NAME="cocoindex-code"
-readonly PYTHON_BIN="python3.11"
+PROJECT_ROOT_INPUT=""
+PYTHON_BIN=""
 
 # ─────────────────────────────────────────────────────────────────────────────
 # 2. FUNCTIONS
 # ─────────────────────────────────────────────────────────────────────────────
 
-check_python() {
-    if ! command -v "$PYTHON_BIN" &> /dev/null; then
-        echo "Error: $PYTHON_BIN is not installed" >&2
-        echo "Install Python 3.11 from https://www.python.org or via: brew install python@3.11" >&2
-        exit 1
-    fi
+show_help() {
+    cat <<'EOF'
+Usage: bash .opencode/skill/mcp-cocoindex-code/scripts/install.sh [--root <path>]
+
+Options:
+  --root <path>  Override the project root to initialize
+  -h, --help     Show this help message
+EOF
 }
 
 create_venv() {
@@ -59,28 +59,30 @@ verify_binary() {
 }
 
 init_index() {
-    if [[ -d "$PROJECT_ROOT/.cocoindex_code" ]]; then
-        echo "  Index exists at: $PROJECT_ROOT/.cocoindex_code/"
+    local project_root="$1"
+    if [[ -d "$project_root/.cocoindex_code" ]]; then
+        echo "  Index exists at: $project_root/.cocoindex_code/"
         return 0
     fi
 
     echo "  Initializing CocoIndex Code project..."
-    cd "$PROJECT_ROOT"
+    cd "$project_root"
     "$VENV_DIR/bin/ccc" init
     echo "  Run 'ccc index' to build the semantic index."
 }
 
 print_summary() {
+    local project_root="$1"
     echo ""
     echo "=== Installation complete ==="
     echo ""
     echo "Binary:  $VENV_DIR/bin/ccc"
-    echo "Project: $PROJECT_ROOT"
+    echo "Project: $project_root"
     echo ""
     echo "Next steps:"
-    echo "  1. Build index:  $VENV_DIR/bin/ccc index"
-    echo "  2. Test search:  $VENV_DIR/bin/ccc search 'error handling'"
-    echo "  3. Enable MCP:   Set disabled: false in .mcp.json"
+    echo "  1. Ensure ready: bash $COMMON_SCRIPT_DIR/ensure_ready.sh --root \"$project_root\""
+    echo "  2. Doctor:       bash $COMMON_SCRIPT_DIR/doctor.sh --root \"$project_root\""
+    echo "  3. Enable MCP:   Set disabled: false in .mcp.json when needed"
 }
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -90,14 +92,38 @@ print_summary() {
 echo "=== CocoIndex Code MCP Install Script ==="
 echo ""
 
-check_python
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --root)
+            if [[ $# -lt 2 ]]; then
+                log_error "Missing value for --root"
+                exit 1
+            fi
+            PROJECT_ROOT_INPUT="$2"
+            shift 2
+            ;;
+        -h|--help)
+            show_help
+            exit 0
+            ;;
+        *)
+            log_error "Unknown argument: $1"
+            show_help
+            exit 1
+            ;;
+    esac
+done
+
+PROJECT_ROOT="$(resolve_project_root "$PROJECT_ROOT_INPUT")"
+PYTHON_BIN="$(require_python_bin)"
 echo "Installing CocoIndex Code MCP server..."
 echo "  Skill folder:  $SKILL_DIR"
 echo "  Project root:  $PROJECT_ROOT"
+echo "  Python:       $PYTHON_BIN"
 echo ""
 
 create_venv
 install_package
 verify_binary
-init_index
-print_summary
+init_index "$PROJECT_ROOT"
+print_summary "$PROJECT_ROOT"

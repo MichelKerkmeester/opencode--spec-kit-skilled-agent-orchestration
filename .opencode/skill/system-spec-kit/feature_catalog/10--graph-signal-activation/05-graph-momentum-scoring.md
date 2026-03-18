@@ -1,3 +1,8 @@
+---
+title: "Graph momentum scoring"
+description: "Describes the temporal degree delta signal that scores memories higher when they gain new graph edges recently, applied as a capped +0.05 additive bonus in Stage 2."
+---
+
 # Graph momentum scoring
 
 ## 1. OVERVIEW

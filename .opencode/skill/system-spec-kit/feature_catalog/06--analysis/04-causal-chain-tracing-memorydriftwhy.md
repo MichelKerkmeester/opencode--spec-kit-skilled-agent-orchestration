@@ -1,3 +1,8 @@
+---
+title: "Causal chain tracing (memory_drift_why)"
+description: "Covers the graph traversal tool that traces causal relationship chains to explain why decisions were made."
+---
+
 # Causal chain tracing (memory_drift_why)
 
 ## 1. OVERVIEW

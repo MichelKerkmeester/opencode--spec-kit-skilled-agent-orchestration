@@ -81,6 +81,14 @@ All current code tools are **stateless and ephemeral** — no persistent index, 
 - **Docker container**: REJECTED — massive overhead for a local development tool
 - **Build custom semantic search into Spec Kit Memory**: Higher effort but would avoid external dependency; consider for long-term if CocoIndex proves unstable
 
+### Addendum: Phase 2 Follow-Up Hardening
+
+Follow-up deep-research iterations after Phase 2 showed that the highest-value next step is not new runtime routing logic, but a sibling-repo adoption bundle plus stricter readiness semantics.
+
+- `doctor.sh` should remain the read-only inspection boundary and grow explicit strict failure states for binary, skill, index, daemon, and config readiness.
+- `ensure_ready.sh` should remain the mutating bootstrap boundary for install/init/index and may optionally fail on missing config requirements, but should not silently author downstream config.
+- A sibling repo like Barter needs both the local `mcp-cocoindex-code` skill payload and repo-specific `cocoindex_code` MCP wiring in the config files it actually uses; advisor-side CocoIndex heuristics alone are not enough.
+
 ---
 
 ## 3. EXECUTIVE OVERVIEW

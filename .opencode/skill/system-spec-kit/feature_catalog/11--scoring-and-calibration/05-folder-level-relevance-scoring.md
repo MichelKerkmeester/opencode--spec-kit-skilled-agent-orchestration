@@ -1,3 +1,8 @@
+---
+title: "Folder-level relevance scoring"
+description: "Describes the four-factor weighted formula (recency, importance, activity and validation) that scores spec folders for two-phase retrieval, with archive folder multipliers and damped aggregation via DocScore."
+---
+
 # Folder-level relevance scoring
 
 ## 1. OVERVIEW

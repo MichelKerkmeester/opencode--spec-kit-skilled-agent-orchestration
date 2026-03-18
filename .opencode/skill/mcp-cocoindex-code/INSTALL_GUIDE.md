@@ -9,7 +9,7 @@ trigger_phrases:
 
 # CocoIndex Code Installation Guide
 
-Complete installation and configuration guide for CocoIndex Code, a semantic code search engine for AI-assisted development. Provides natural language code search across your entire codebase with configurable embedding models (local or API-based). Runs as an MCP server exposing search, index, status, and reset tools to any AI assistant. Covers CLI usage, MCP configuration for all 6 CLI environments, embedding model selection, and index management.
+Complete installation and configuration guide for CocoIndex Code, a semantic code search engine for AI-assisted development. Provides natural language code search across your entire codebase with configurable embedding models (local or API-based). Runs as an MCP server exposing a single `search` tool to AI assistants, while `status`, `index`, `reset`, and `daemon` remain CLI commands.
 
 > **Part of OpenCode Installation.** See the [Master Installation Guide](../README.md) for complete setup.
 > **Package:** `cocoindex-code` (PyPI) | **Dependencies:** Python 3.11+
@@ -142,7 +142,7 @@ Search task received --> Do you know the exact text?
 |              CocoIndex Code MCP Server                       |
 |              (ccc mcp)                                       |
 |                                                              |
-|  Tools: search, index, status, reset                         |
+|  MCP Tool: search only                                      |
 |  Embedding: configurable (local or API-based)                |
 +------------------------------+------------------------------+
                                |
@@ -228,7 +228,13 @@ This section covers **Phase 2 (Install)** and **Phase 3 (Initialize)**.
 
 ### Recommended: Venv in Skill Folder
 
-Run the install script to create a venv inside the skill folder and install cocoindex-code:
+Recommended AI-safe setup:
+
+```bash
+bash .opencode/skill/mcp-cocoindex-code/scripts/ensure_ready.sh
+```
+
+Lower-level installer:
 
 ```bash
 bash .opencode/skill/mcp-cocoindex-code/scripts/install.sh
@@ -309,7 +315,7 @@ Connect CocoIndex Code to your AI assistant (Phase 4). The MCP server runs via `
 
 See [Config Templates](assets/config_templates.md) for ready-to-copy snippets for each CLI.
 
-Below are the core patterns. Replace `/abs/path/to` with your actual project path.
+Below are repo-portable patterns that match the checked-in integration.
 
 ### Option A: Claude Code (`.mcp.json`)
 
@@ -317,10 +323,10 @@ Below are the core patterns. Replace `/abs/path/to` with your actual project pat
 {
   "mcpServers": {
     "cocoindex_code": {
-      "command": "/abs/path/to/.opencode/skill/mcp-cocoindex-code/mcp_server/.venv/bin/ccc",
+      "command": ".opencode/skill/mcp-cocoindex-code/mcp_server/.venv/bin/ccc",
       "args": ["mcp"],
       "env": {
-        "COCOINDEX_CODE_ROOT_PATH": "/abs/path/to/project"
+        "COCOINDEX_CODE_ROOT_PATH": "."
       },
       "disabled": true
     }
@@ -338,11 +344,11 @@ Below are the core patterns. Replace `/abs/path/to` with your actual project pat
     "cocoindex_code": {
       "type": "local",
       "command": [
-        "/abs/path/to/.opencode/skill/mcp-cocoindex-code/mcp_server/.venv/bin/ccc",
+        ".opencode/skill/mcp-cocoindex-code/mcp_server/.venv/bin/ccc",
         "mcp"
       ],
       "environment": {
-        "COCOINDEX_CODE_ROOT_PATH": "/abs/path/to/project",
+        "COCOINDEX_CODE_ROOT_PATH": ".",
         "_NOTE_1_PACKAGE": "PyPI: cocoindex-code, installed via scripts/install.sh",
         "_NOTE_2_EMBEDDING": "Default: all-MiniLM-L6-v2 (local, no API key needed)",
         "_NOTE_3_INDEX": "Index stored in .cocoindex_code/ (gitignored)"
@@ -358,11 +364,11 @@ Below are the core patterns. Replace `/abs/path/to` with your actual project pat
 {
   "mcpServers": {
     "cocoindex_code": {
-      "command": "/abs/path/to/.opencode/skill/mcp-cocoindex-code/mcp_server/.venv/bin/ccc",
+      "command": ".opencode/skill/mcp-cocoindex-code/mcp_server/.venv/bin/ccc",
       "args": ["mcp"],
-      "cwd": "/abs/path/to/project",
+      "cwd": ".",
       "env": {
-        "COCOINDEX_CODE_ROOT_PATH": "/abs/path/to/project"
+        "COCOINDEX_CODE_ROOT_PATH": "."
       },
       "trust": true
     }
@@ -376,11 +382,11 @@ Below are the core patterns. Replace `/abs/path/to` with your actual project pat
 {
   "mcpServers": {
     "cocoindex_code": {
-      "command": "/abs/path/to/.opencode/skill/mcp-cocoindex-code/mcp_server/.venv/bin/ccc",
+      "command": ".opencode/skill/mcp-cocoindex-code/mcp_server/.venv/bin/ccc",
       "args": ["mcp"],
-      "cwd": "/abs/path/to/project",
+      "cwd": ".",
       "env": {
-        "COCOINDEX_CODE_ROOT_PATH": "/abs/path/to/project"
+        "COCOINDEX_CODE_ROOT_PATH": "."
       },
       "trust": true
     }
@@ -413,7 +419,7 @@ Below are the core patterns. Replace `/abs/path/to` with your actual project pat
 
 ```toml
 [mcp_servers.cocoindex_code]
-command = "/abs/path/to/.opencode/skill/mcp-cocoindex-code/mcp_server/.venv/bin/ccc"
+command = ".opencode/skill/mcp-cocoindex-code/mcp_server/.venv/bin/ccc"
 args = ["mcp"]
 
 [mcp_servers.cocoindex_code.env]
@@ -456,7 +462,7 @@ embedding:
 | Check             | Method                                 | Expected                       |
 | ----------------- | -------------------------------------- | ------------------------------ |
 | Config exists     | Open your CLI's config file            | cocoindex_code entry present   |
-| Binary path valid | `ls /abs/path/to/.../bin/ccc`          | File exists                    |
+| Binary path valid | `ls .opencode/skill/mcp-cocoindex-code/mcp_server/.venv/bin/ccc` | File exists |
 | JSON syntax valid | `python3 -m json.tool < config.json`   | No syntax errors               |
 
 **STOP if validation fails.** Fix configuration syntax or paths before continuing.
@@ -823,7 +829,7 @@ ccc search "query" --refresh             # Force index refresh
 
 ```bash
 ccc mcp                       # Run as MCP server (stdio)
-ccc daemon start              # Start background daemon
+ccc daemon restart            # Restart background daemon
 ccc daemon stop               # Stop daemon
 ccc daemon status             # Check daemon status
 ```

@@ -32,11 +32,11 @@ contextType: "implementation"
 ## Pre-Implementation
 
 - [x] CHK-001 [P0] Requirements documented in spec.md
-  - **Evidence**: `spec.md` created with 9 sections including requirements (REQ-001 to REQ-008), success criteria (SC-001 to SC-004), NFRs, and edge cases
+  - **Evidence**: `spec.md` documents the multi-phase scope, requirements (REQ-001 to REQ-012), success criteria (SC-001 to SC-007), NFRs, and edge cases
 - [x] CHK-002 [P0] Technical approach defined in plan.md
-  - **Evidence**: `plan.md` created with 4-phase implementation plan, architecture, data flow diagram, dependencies, and rollback procedures
+  - **Evidence**: `plan.md` documents the delivered installation, validation, and hardening phases, plus testing strategy, dependencies, and rollback procedures
 - [x] CHK-003 [P1] Dependencies identified and available
-  - **Evidence**: `pipx` available, `python3.11` available at Homebrew path, `cocoindex-code v0.2.3` installed to `~/.local/bin/ccc`
+  - **Evidence**: Install script available at `.opencode/skill/mcp-cocoindex-code/scripts/install.sh`, `python3.11` available at Homebrew path, `cocoindex-code v0.2.3` installed to `.opencode/skill/mcp-cocoindex-code/mcp_server/.venv/bin/ccc`
 
 <!-- /ANCHOR:pre-impl -->
 
@@ -46,11 +46,11 @@ contextType: "implementation"
 ## Code Quality
 
 - [x] CHK-010 [P0] Code passes lint/format checks
-  - **Evidence**: No custom code written in Phase 1 - config-only changes; all 5 JSON files and 1 TOML file pass syntax validation via `python3 json.load` and `python3.11 tomllib.load`
+  - **Evidence**: All 5 JSON files and 1 TOML file pass syntax validation via `python3 json.load` and `python3.11 tomllib.load`; touched shell scripts pass `bash -n`; `.opencode/skill/scripts/skill_advisor.py` passes `python3 -m py_compile`
 - [x] CHK-011 [P0] No console errors or warnings
-  - **Evidence**: `ccc index` completed without errors; `ccc search "MCP server initialization"` returns results
+  - **Evidence**: `ccc index` completed without errors; `doctor.sh`, `doctor.sh --json`, `ensure_ready.sh --json`, and advisor verification commands all exited 0
 - [x] CHK-012 [P1] Error handling implemented
-  - **Evidence**: N/A for Phase 1 config-only - no custom code; `.mcp.json` has `disabled: true` as the primary error-prevention mechanism
+  - **Evidence**: `doctor.sh` reports readiness and recommended next steps; `ensure_ready.sh` performs idempotent install/init/index actions and returns structured status; `.mcp.json` remains `disabled: true` by default
 - [x] CHK-013 [P1] Code follows project patterns
   - **Evidence**: `cocoindex_code` naming follows existing snake_case convention (`spec_kit_memory`, `code_mode`); `_NOTE_*` env var documentation follows existing `opencode.json` and `.claude/mcp.json` pattern
 
@@ -64,9 +64,9 @@ contextType: "implementation"
 - [x] CHK-020 [P0] All acceptance criteria met
   - **Evidence**: SC-001 - all 6 configs have `cocoindex_code` entry; SC-002 - `.cocoindex_code/` gitignored; SC-003 - 6,792 files indexed, 105,965 chunks; SC-004 - all syntax validations pass
 - [x] CHK-021 [P0] Manual testing complete
-  - **Evidence**: `ccc --version` returns v0.2.3; `ccc index` completed; `ccc search "MCP server initialization"` returns relevant TypeScript results with file paths and line numbers
+  - **Evidence**: `.opencode/skill/mcp-cocoindex-code/mcp_server/.venv/bin/python -c "import importlib.metadata as m; print(m.version('cocoindex-code'))"` prints `0.2.3`; `ccc index` completed; `ccc search "MCP server initialization"` returns relevant TypeScript results with file paths and line numbers
 - [x] CHK-022 [P1] Edge cases tested
-  - **Evidence**: PATH collision with existing `/opt/homebrew/bin/ccc` identified and mitigated by using full path `/Users/michelkerkmeester/.local/bin/ccc` in configs; absolute vs relative env var format verified per config type
+  - **Evidence**: PATH collision with existing `/opt/homebrew/bin/ccc` identified and mitigated by using repo-relative `.opencode/.../ccc` in configs; repo-relative `COCOINDEX_CODE_ROOT_PATH="."` verified across the 6 config formats
 - [x] CHK-023 [P1] Error scenarios validated
   - **Evidence**: Peer review score 88/100 (PASS) with 0 blockers, 0 P1 issues identified; config format differences across JSON vs TOML confirmed correct
 
@@ -92,11 +92,11 @@ contextType: "implementation"
 ## Documentation
 
 - [x] CHK-040 [P1] Spec/plan/tasks synchronized
-  - **Evidence**: `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md` all created on 2026-03-18 and reflect the Phase 1 implementation accurately
+  - **Evidence**: `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` now reflect both the Phase 1 integration and the Phase 2 hardening pass
 - [x] CHK-041 [P1] Code comments adequate
   - **Evidence**: `_NOTE_1`, `_NOTE_2`, `_NOTE_3` env vars in `opencode.json` and `.claude/mcp.json` document install requirements, embedding model, and gitignore need; inline TOML comments added in `.codex/config.toml`
 - [x] CHK-042 [P2] README updated (if applicable)
-  - **Evidence**: N/A - Phase 1 is internal infrastructure; no user-facing README change needed; Phase 2 skill folder will include README
+  - **Evidence**: Phase 2 updated the skill README, install guide, tool reference, search patterns, and config templates to match the installed runtime contract
 
 <!-- /ANCHOR:docs -->
 
@@ -106,11 +106,11 @@ contextType: "implementation"
 ## File Organization
 
 - [x] CHK-050 [P1] Temp files in scratch/ only
-  - **Evidence**: No temp files created during Phase 1 implementation; all work was direct config file edits
+  - **Evidence**: The only retained scratch artifact is `scratch/cross-cli-auto-usage-test-results.md`, which is intentional validation evidence rather than a stray temp file
 - [x] CHK-051 [P1] scratch/ cleaned before completion
-  - **Evidence**: `scratch/` directory contains no implementation artifacts from this phase
+  - **Evidence**: `scratch/` contains only the retained cross-CLI validation report; no extra transient work files remain
 - [x] CHK-052 [P2] Findings saved to memory/
-  - **Evidence**: `memory/` contains 2 session context files from 2026-03-18 capturing Phase 1 state and Phase 2 next steps
+  - **Evidence**: `memory/18-03-26_19-06__portable-cocoindex-mcp-paths-applied.md` was generated for this spec folder, alongside `memory/metadata.json`
 
 <!-- /ANCHOR:file-org -->
 
@@ -132,9 +132,27 @@ contextType: "implementation"
 - [x] CHK-065 [P2] Codex retry attempted
   - **Evidence**: `codex exec "echo hello"` returned `ERROR: You've hit your usage limit`; documented as deferred
 - [x] CHK-066 [P1] Memory saved for session continuity
-  - **Evidence**: Memory #4404 saved to `022-mcp-coco-integration/memory/18-03-26_14-35__next-steps.md` (85/100 quality)
+  - **Evidence**: `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/022-cocoindex-fixes-memory.json '.opencode/specs/03--commands-and-skills/022-mcp-coco-integration'` created `memory/18-03-26_19-06__portable-cocoindex-mcp-paths-applied.md`
 
 <!-- /ANCHOR:cross-cli-validation -->
+
+---
+
+<!-- ANCHOR:phase-2-hardening -->
+## Phase 2 Hardening Verification
+
+- [x] CHK-070 [P0] Touched CocoIndex docs match the installed runtime contract
+  - **Evidence**: Verified touched docs no longer claim MCP exposes `index`, `status`, or `reset`; no touched docs document `ccc daemon start` or `ccc index --refresh`
+- [x] CHK-071 [P0] Helper scripts pass syntax and JSON output checks
+  - **Evidence**: `bash -n` passed for `common.sh`, `doctor.sh`, `ensure_ready.sh`, `install.sh`, and `update.sh`; `doctor.sh --json` and `ensure_ready.sh --json` returned clean JSON
+- [x] CHK-072 [P1] Helper scripts are operational in both the main repo and a fresh temp project
+  - **Evidence**: `doctor.sh` reported healthy binary/index/daemon/config status in the repo root; `ensure_ready.sh --json --root <tmpdir>` performed `init` and `index` and returned clean JSON with `actionsPerformed` showing both steps
+- [x] CHK-073 [P1] Advisor prefers the repo-local CocoIndex binary
+  - **Evidence**: `python3 .opencode/skill/scripts/skill_advisor.py --health` reports `.opencode/skill/mcp-cocoindex-code/mcp_server/.venv/bin/ccc` in `cocoindex_binary`
+- [x] CHK-074 [P1] Semantic exploration prompts route to CocoIndex without strongly routing exact-text prompts
+  - **Evidence**: `python3 .opencode/skill/scripts/skill_advisor.py "find code that handles auth" --threshold 0.8` returns `mcp-cocoindex-code` at 0.95 confidence; `python3 .opencode/skill/scripts/skill_advisor.py "find exact string TODO comments" --threshold 0.8 --show-rejections` keeps CocoIndex below threshold
+
+<!-- /ANCHOR:phase-2-hardening -->
 
 ---
 
@@ -143,8 +161,8 @@ contextType: "implementation"
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 8 | 8/8 |
-| P1 Items | 13 | 13/13 |
+| P0 Items | 10 | 10/10 |
+| P1 Items | 17 | 17/17 |
 | P2 Items | 3 | 3/3 |
 
 **Verification Date**: 2026-03-18

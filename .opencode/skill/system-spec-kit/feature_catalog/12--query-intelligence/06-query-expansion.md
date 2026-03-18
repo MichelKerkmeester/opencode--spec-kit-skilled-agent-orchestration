@@ -1,3 +1,8 @@
+---
+title: "Query expansion"
+description: "Query expansion broadens retrieval for complex queries by mining related terms from the vector index and appending them to the original query."
+---
+
 # Query expansion
 
 ## 1. OVERVIEW

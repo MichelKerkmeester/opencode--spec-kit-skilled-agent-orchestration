@@ -1,3 +1,8 @@
+---
+title: "Chunking Orchestrator Safe Swap"
+description: "Tracks the staged swap pattern that prevents data loss during re-chunking by indexing new chunks before deleting old ones."
+---
+
 # Chunking Orchestrator Safe Swap
 
 ## 1. OVERVIEW

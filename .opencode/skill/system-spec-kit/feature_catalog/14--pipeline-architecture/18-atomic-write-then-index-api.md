@@ -1,3 +1,8 @@
+---
+title: "Atomic write-then-index API"
+description: "The atomic write-then-index API provides crash-safe file persistence via pending-file rename with decoupled asynchronous indexing."
+---
+
 # Atomic write-then-index API
 
 ## 1. OVERVIEW

@@ -1,3 +1,8 @@
+---
+title: "Search pipeline safety"
+description: "Search pipeline safety fixed three bugs: summary quality bypass, FTS5 double-tokenization and quality floor vs RRF range mismatch."
+---
+
 # Search pipeline safety
 
 ## 1. OVERVIEW

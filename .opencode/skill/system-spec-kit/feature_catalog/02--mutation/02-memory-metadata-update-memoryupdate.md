@@ -1,3 +1,8 @@
+---
+title: "Memory metadata update (memory_update)"
+description: "Covers the update tool that modifies memory metadata and auto-regenerates embeddings when titles change."
+---
+
 # Memory metadata update (memory_update)
 
 ## 1. OVERVIEW

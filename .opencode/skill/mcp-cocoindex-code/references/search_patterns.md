@@ -28,6 +28,14 @@ Strategies and patterns for effective semantic code search using CocoIndex Code.
 
 Semantic search understands meaning, not just keywords. Write queries as you would describe what you are looking for to a colleague.
 
+### Recommended Query Ladder
+
+1. Start with a short concept phrase (3-5 words)
+2. Add a language filter when you know the language
+3. Add a path filter when you know the module
+4. Rephrase the concept only after filters are exhausted
+5. Switch to `Grep` for exact-text tasks
+
 ### Use Natural Language
 
 | Good Query (semantic)                        | Bad Query (keyword-style)    |
@@ -146,6 +154,7 @@ ccc search "error handling" --path src/services/ --lang typescript --lang python
 - You know the feature lives in a specific directory
 - You want to avoid matches from unrelated parts of the codebase
 - You are investigating a specific module or package
+- For cross-CLI consistency: prefer explicit path filters over relying on the current working directory
 
 ---
 
@@ -225,6 +234,12 @@ Do you know the exact text?
            YES --> Use CocoIndex Code (semantic)
            NO  --> Use both: CocoIndex Code first to explore, then Grep to verify
 ```
+
+### Multi-Query Sessions
+
+- First MCP query may keep the default `refresh_index=true`
+- Follow-up MCP queries should prefer `refresh_index=false` when the codebase has not changed
+- CLI follow-up queries should omit `--refresh` unless you actually need to update the index
 
 ---
 

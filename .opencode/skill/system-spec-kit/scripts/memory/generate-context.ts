@@ -26,6 +26,14 @@ import { runWorkflow } from '../core/workflow';
 import { loadCollectedData } from '../loaders';
 import { collectSessionData } from '../extractors/collect-session-data';
 
+type StructuredCollectedData = Record<string, unknown> & { _source: 'file' };
+
+interface ParsedCliArguments {
+  dataFile: string | null;
+  specFolderArg: string | null;
+  collectedData: StructuredCollectedData | null;
+}
+
 // ───────────────────────────────────────────────────────────────
 // 2. INTERFACES
 // ───────────────────────────────────────────────────────────────
@@ -50,6 +58,8 @@ Arguments:
 
 Options:
   --help, -h        Show this help message
+  --stdin           Read structured JSON from stdin (preferred when a caller already has curated session data)
+  --json <string>   Read structured JSON from an inline string (preferred over stateless capture when structured data is available)
 
 Examples:
   node generate-context.js /tmp/context-data.json
@@ -57,6 +67,8 @@ Examples:
   node generate-context.js /tmp/context-data.json .opencode/specs/001-feature/
   node generate-context.js specs/001-feature/
   node generate-context.js .opencode/specs/001-feature/
+  echo '{"specFolder":"specs/001-feature/"}' | node generate-context.js --stdin
+  node generate-context.js --json '{"specFolder":"specs/001-feature/"}'
 
 Subfolder examples:
   node generate-context.js 003-parent/121-child
@@ -73,6 +85,11 @@ Preferred native capture override:
   - That preferred backend is tried first, then the remaining native backends
     continue in the documented fallback order.
   - Explicit JSON mode remains authoritative and ignores native capture preference.
+
+Preferred save path:
+  - Use --stdin or --json whenever the calling CLI can provide curated structured session data.
+  - Direct positional spec-folder mode remains supported as the stateless fallback path.
+  - Explicit CLI targets still outrank payload specFolder values in every structured-input mode.
 
 Direct CLI target rule:
   - When a spec folder is passed on the CLI, that explicit target is authoritative.
@@ -196,29 +213,19 @@ function isValidSpecFolder(folderPath: string): SpecFolderValidation {
   return { valid: true };
 }
 
-// ───────────────────────────────────────────────────────────────
-// 5. CLI ARGUMENT PARSING
-// ───────────────────────────────────────────────────────────────
-function parseArguments(): void {
-  const primaryArg: string | undefined = process.argv[2];
-  const secondaryArg: string | undefined = process.argv[3];
-  if (!primaryArg) return;
-
-  const folderName = path.basename(primaryArg);
-  const explicitProjectScopedPath = !primaryArg.endsWith('.json') && (
-    primaryArg.startsWith('specs/') ||
-    primaryArg.startsWith('.opencode/specs/')
+function resolveCliSpecFolderReference(rawArg: string): string | null {
+  const folderName = path.basename(rawArg);
+  const explicitProjectScopedPath = !rawArg.endsWith('.json') && (
+    rawArg.startsWith('specs/') ||
+    rawArg.startsWith('.opencode/specs/')
   )
-    ? path.join(CONFIG.PROJECT_ROOT, primaryArg)
+    ? path.join(CONFIG.PROJECT_ROOT, rawArg)
     : null;
 
-  // --- Subfolder support: detect nested parent/child spec paths ---
-  // Check if arg1 is a nested spec path (e.g., "003-parent/121-child",
-  // "specs/003-parent/121-child", ".opencode/specs/003-parent/121-child")
   let resolvedNestedPath: string | null = null;
-  if (!primaryArg.endsWith('.json')) {
-    if (path.isAbsolute(primaryArg)) {
-      const absoluteSegments = primaryArg.replace(/\/+$/, '').split(/[\\/]/).filter(Boolean);
+  if (!rawArg.endsWith('.json')) {
+    if (path.isAbsolute(rawArg)) {
+      const absoluteSegments = rawArg.replace(/\/+$/, '').split(/[\\/]/).filter(Boolean);
       const lastSegment = absoluteSegments.at(-1);
       const parentSegment = absoluteSegments.at(-2);
 
@@ -226,28 +233,24 @@ function parseArguments(): void {
         (lastSegment && SPEC_FOLDER_PATTERN.test(lastSegment)) ||
         (parentSegment && lastSegment && SPEC_FOLDER_PATTERN.test(parentSegment) && SPEC_FOLDER_PATTERN.test(lastSegment))
       ) {
-        resolvedNestedPath = primaryArg;
+        resolvedNestedPath = rawArg;
       }
     }
 
-    let cleaned = primaryArg;
-    // Strip known prefixes to get the relative portion
+    let cleaned = rawArg;
     if (cleaned.startsWith('.opencode/specs/')) {
       cleaned = cleaned.slice('.opencode/specs/'.length);
     } else if (cleaned.startsWith('specs/')) {
       cleaned = cleaned.slice('specs/'.length);
     }
-    // Remove trailing slashes
     cleaned = cleaned.replace(/\/+$/, '');
 
     if (!resolvedNestedPath && explicitProjectScopedPath && fsSync.existsSync(explicitProjectScopedPath)) {
       resolvedNestedPath = explicitProjectScopedPath;
     }
 
-    // Check if cleaned is a multi-segment path (e.g., "parent/child" or "category/parent/child")
     const segments = cleaned.split('/');
     if (!resolvedNestedPath && segments.length >= 2) {
-      // Try to resolve the full segment path under known specs directories
       for (const specsDir of getSpecsDirectories()) {
         const candidate = path.join(specsDir, ...segments);
         if (fsSync.existsSync(candidate)) {
@@ -255,8 +258,6 @@ function parseArguments(): void {
           break;
         }
       }
-      // Even if path doesn't exist on disk yet, treat it as a spec folder reference
-      // If the last segment looks like a spec folder
       if (!resolvedNestedPath && SPEC_FOLDER_PATTERN.test(segments[segments.length - 1])) {
         const activeDir = findActiveSpecsDir();
         if (activeDir) {
@@ -267,26 +268,130 @@ function parseArguments(): void {
   }
 
   if (resolvedNestedPath) {
-    CONFIG.SPEC_FOLDER_ARG = resolvedNestedPath;
-    CONFIG.DATA_FILE = null;
-    console.log('   Stateless mode: Nested spec folder provided directly');
-    return;
+    return resolvedNestedPath;
   }
 
-  const isSpecFolderPath: boolean = (
-    primaryArg.startsWith('specs/') ||
-    primaryArg.startsWith('.opencode/specs/') ||
+  const isSpecFolderPath = (
+    rawArg.startsWith('specs/') ||
+    rawArg.startsWith('.opencode/specs/') ||
     SPEC_FOLDER_BASIC_PATTERN.test(folderName)
-  ) && !primaryArg.endsWith('.json');
+  ) && !rawArg.endsWith('.json');
 
-  if (isSpecFolderPath) {
-    CONFIG.SPEC_FOLDER_ARG = primaryArg;
-    CONFIG.DATA_FILE = null;
-    console.log('   Stateless mode: Spec folder provided directly');
-  } else {
-    CONFIG.DATA_FILE = primaryArg;
-    CONFIG.SPEC_FOLDER_ARG = secondaryArg || null;
+  return isSpecFolderPath ? rawArg : null;
+}
+
+function extractPayloadSpecFolder(data: Record<string, unknown>): string | null {
+  for (const key of ['specFolder', 'spec_folder', 'SPEC_FOLDER']) {
+    const value = data[key];
+    if (typeof value === 'string' && value.trim().length > 0) {
+      return value.trim();
+    }
   }
+
+  return null;
+}
+
+async function readAllStdin(stdin: NodeJS.ReadStream = process.stdin): Promise<string> {
+  return await new Promise<string>((resolve, reject) => {
+    let buffer = '';
+    stdin.setEncoding('utf8');
+    stdin.on('data', (chunk: string) => {
+      buffer += chunk;
+    });
+    stdin.on('end', () => resolve(buffer));
+    stdin.on('error', reject);
+  });
+}
+
+function parseStructuredJson(rawJson: string, sourceLabel: '--stdin' | '--json'): Record<string, unknown> {
+  if (rawJson.trim().length === 0) {
+    throw new Error(`${sourceLabel} requires a non-empty JSON object`);
+  }
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(rawJson);
+  } catch (error: unknown) {
+    const errMsg = error instanceof Error ? error.message : String(error);
+    throw new Error(`Invalid JSON provided via ${sourceLabel}: ${errMsg}`);
+  }
+
+  if (typeof parsed !== 'object' || parsed === null || Array.isArray(parsed)) {
+    throw new Error(`${sourceLabel} requires a JSON object payload`);
+  }
+
+  return parsed as Record<string, unknown>;
+}
+
+async function parseStructuredModeArguments(
+  mode: '--stdin' | '--json',
+  args: string[],
+  stdinReader: (stdin?: NodeJS.ReadStream) => Promise<string>,
+): Promise<ParsedCliArguments> {
+  const rawJson = mode === '--stdin'
+    ? await stdinReader()
+    : args[1];
+
+  if (mode === '--json' && rawJson === undefined) {
+    throw new Error('--json requires an inline JSON string argument');
+  }
+
+  const payload = parseStructuredJson(rawJson ?? '', mode);
+  const explicitSpecFolderArg = args[mode === '--stdin' ? 1 : 2];
+  const explicitTarget = explicitSpecFolderArg ? resolveCliSpecFolderReference(explicitSpecFolderArg) || explicitSpecFolderArg : null;
+  const payloadTargetRaw = extractPayloadSpecFolder(payload);
+  const payloadTarget = payloadTargetRaw ? (resolveCliSpecFolderReference(payloadTargetRaw) || payloadTargetRaw) : null;
+  const specFolderArg = explicitTarget || payloadTarget;
+
+  if (!specFolderArg) {
+    throw new Error(`${mode} requires a target spec folder via an explicit CLI override or payload specFolder`);
+  }
+
+  return {
+    dataFile: null,
+    specFolderArg,
+    collectedData: {
+      ...payload,
+      _source: 'file',
+    },
+  };
+}
+
+// ───────────────────────────────────────────────────────────────
+// 5. CLI ARGUMENT PARSING
+// ───────────────────────────────────────────────────────────────
+async function parseArguments(
+  argv: string[] = process.argv.slice(2),
+  stdinReader: (stdin?: NodeJS.ReadStream) => Promise<string> = readAllStdin,
+): Promise<ParsedCliArguments> {
+  const [primaryArg, secondaryArg] = argv;
+  if (!primaryArg) {
+    return { dataFile: null, specFolderArg: null, collectedData: null };
+  }
+
+  if (primaryArg === '--stdin' || primaryArg === '--json') {
+    return await parseStructuredModeArguments(primaryArg, argv, stdinReader);
+  }
+
+  const resolvedSpecFolder = resolveCliSpecFolderReference(primaryArg);
+  if (resolvedSpecFolder) {
+    console.log(
+      resolvedSpecFolder !== primaryArg
+        ? '   Stateless mode: Nested spec folder provided directly'
+        : '   Stateless mode: Spec folder provided directly'
+    );
+    return {
+      dataFile: null,
+      specFolderArg: resolvedSpecFolder,
+      collectedData: null,
+    };
+  }
+
+  return {
+    dataFile: primaryArg,
+    specFolderArg: secondaryArg || null,
+    collectedData: null,
+  };
 }
 
 function validateArguments(): void {
@@ -392,29 +497,35 @@ function validateArguments(): void {
       console.error('[generate-context] Failed to list spec folders:', errMsg);
     }
   }
-  console.error('\nUsage: node generate-context.js <data-file> [spec-folder-name]\n');
+  console.error('\nUsage: node generate-context.js [--stdin [spec-folder-name] | --json <json> [spec-folder-name] | <data-file> [spec-folder-name]]\n');
   process.exit(1);
 }
 
 // ───────────────────────────────────────────────────────────────
 // 6. MAIN ENTRY POINT
 // ───────────────────────────────────────────────────────────────
-async function main(): Promise<void> {
+async function main(
+  argv: string[] = process.argv.slice(2),
+  stdinReader: (stdin?: NodeJS.ReadStream) => Promise<string> = readAllStdin,
+): Promise<void> {
   console.log('Starting memory skill...\n');
 
   try {
-    parseArguments();
+    const parsed = await parseArguments(argv, stdinReader);
+    CONFIG.DATA_FILE = parsed.dataFile;
+    CONFIG.SPEC_FOLDER_ARG = parsed.specFolderArg;
     validateArguments();
 
     await runWorkflow({
-      dataFile: CONFIG.DATA_FILE ?? undefined,
+      dataFile: parsed.collectedData ? undefined : CONFIG.DATA_FILE ?? undefined,
       specFolderArg: CONFIG.SPEC_FOLDER_ARG ?? undefined,
-      loadDataFn: loadCollectedData,
+      collectedData: parsed.collectedData ?? undefined,
+      loadDataFn: parsed.collectedData ? undefined : loadCollectedData,
       collectSessionDataFn: collectSessionData,
     });
   } catch (error: unknown) {
     const errMsg = error instanceof Error ? error.message : String(error);
-    const isExpected = /Spec folder not found|No spec folders|specs\/ directory|retry attempts|Expected/.test(errMsg);
+    const isExpected = /Spec folder not found|No spec folders|specs\/ directory|retry attempts|Expected|Invalid JSON provided|requires a target spec folder|requires an inline JSON string|required a non-empty JSON object|JSON object payload/.test(errMsg);
 
     if (isExpected) {
       console.error(`\nError: ${errMsg}`);
@@ -444,7 +555,9 @@ if (require.main === module) {
 
 export {
   main,
+  readAllStdin,
   parseArguments,
   validateArguments,
   isValidSpecFolder,
+  extractPayloadSpecFolder,
 };

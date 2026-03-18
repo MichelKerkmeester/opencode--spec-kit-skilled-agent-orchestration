@@ -1,3 +1,8 @@
+---
+title: "End-to-end success-envelope verification"
+description: "End-to-end success-envelope verification asserts that the finalized response envelope preserves hint append, auto-surface context and token metadata correctness."
+---
+
 # End-to-end success-envelope verification
 
 ## 1. OVERVIEW

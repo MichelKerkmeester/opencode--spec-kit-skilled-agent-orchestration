@@ -1,3 +1,8 @@
+---
+title: "INT8 quantization evaluation"
+description: "Records the NO-GO decision on INT8 quantization after all three activation criteria (corpus size, p95 latency, embedding dimensions) were unmet."
+---
+
 # INT8 quantization evaluation
 
 ## 1. OVERVIEW

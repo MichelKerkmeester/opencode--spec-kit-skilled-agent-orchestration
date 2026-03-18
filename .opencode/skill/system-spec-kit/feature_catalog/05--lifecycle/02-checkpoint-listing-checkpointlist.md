@@ -1,3 +1,8 @@
+---
+title: "Checkpoint listing (checkpoint_list)"
+description: "Covers the checkpoint listing tool that returns paginated metadata for available snapshots."
+---
+
 # Checkpoint listing (checkpoint_list)
 
 ## 1. OVERVIEW

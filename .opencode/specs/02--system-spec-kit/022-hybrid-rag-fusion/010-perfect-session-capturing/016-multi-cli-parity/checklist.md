@@ -46,6 +46,10 @@ This document records the current verified state for this scope. Use [spec.md](s
 - [x] CHK-011 [P0] No runtime code drift required beyond the shipped parity behavior [Evidence: The three phase-016 runtime seams already contained the target behavior. Only focused tests were added.]
 - [x] CHK-012 [P1] Existing provenance-aware scoring contract remains intact [Evidence: `description-enrichment.vitest.ts` passed with 5/5 tests on 2026-03-17.]
 - [x] CHK-013 [P1] Code follows project patterns [Evidence: New parity test file uses the same Vitest style and shared helper imports as the surrounding scripts test suite.]
+- [x] CHK-014 [P0] ALIGNMENT_BLOCK Block A now soft-warns when the CLI explicitly provides the spec folder [Evidence: `workflow.ts` now warns instead of throwing for explicit CLI spec folder alignment, while the file-path overlap block remains hard.]
+- [x] CHK-015 [P0] `TECHNICAL_CONTEXT` now survives normalization and template rendering without flattening its key-value structure [Evidence: `input-normalizer.ts`, `collect-session-data.ts`, `session-types.ts`, `simulation-factory.ts`, and `.opencode/skill/system-spec-kit/templates/context_template.md` now carry the structured field end-to-end.]
+- [x] CHK-016 [P0] String-form decision confidence no longer defaults blindly to `50` when explicit signals exist [Evidence: `decision-extractor.ts` now parses confidence numbers, choice verbs, and rationale indicators from string-form decision text.]
+- [x] CHK-017 [P1] Review follow-ups were incorporated without widening scope [Evidence: the duplicated technical-context mapping helper was extracted and the unnecessary cast in `collect-session-data.ts` was removed.]
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -57,6 +61,8 @@ This document records the current verified state for this scope. Use [spec.md](s
 - [x] CHK-021 [P0] Manual or direct verification complete [Evidence: `node mcp_server/node_modules/vitest/vitest.mjs run tests/phase-classification.vitest.ts tests/content-filter-parity.vitest.ts tests/runtime-memory-inputs.vitest.ts tests/description-enrichment.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts` passed with 4 files and 45 tests on 2026-03-17.]
 - [x] CHK-022 [P1] Edge cases tested [Evidence: Content-filter parity tests cover Copilot lifecycle markers, Codex reasoning markers, and empty XML wrappers. Runtime-memory inputs cover `view` title shortening and CLI-derived provenance.]
 - [x] CHK-023 [P1] Error scenarios validated [Evidence: `runtime-memory-inputs.vitest.ts` still passed its explicit data-file failure and native fallback scenarios (28/28).]
+- [x] CHK-024 [P1] The alignment-block regression expectations now match the explicit-CLI warning contract [Evidence: `workflow-e2e.vitest.ts` and `task-enrichment.vitest.ts` were updated and passed after the Block A relaxation.]
+- [x] CHK-025 [P1] Full script and MCP baselines stayed green after the 2026-03-18 continuation fixes [Evidence: the scripts workspace reran cleanly and the MCP regression baseline remained green after the continuation pass.]
 <!-- /ANCHOR:testing -->
 
 ---
@@ -77,6 +83,7 @@ This document records the current verified state for this scope. Use [spec.md](s
 - [x] CHK-040 [P1] Spec/plan/tasks synchronized [Evidence: All five phase-016 markdown artifacts were rewritten on 2026-03-17 to describe the reopened parity-proof pass, cite `../research/live-cli-proof-2026-03-17.json`, and record the final verified state.]
 - [x] CHK-041 [P1] Code comments adequate [Evidence: No new production code paths were added. Existing inline comments on the parity seams remain unchanged and sufficient.]
 - [x] CHK-042 [P2] Phase completion evidence recorded in `implementation-summary.md` [Evidence: `implementation-summary.md` now includes anchored metadata, delivery story, decisions, verification table, limitations, and the retained live-proof citation `../research/live-cli-proof-2026-03-17.json`.]
+- [x] CHK-043 [P1] The continuation fixes are folded into the canonical Level 2 sections instead of custom addendum headings [Evidence: continuation tasks and checks now live under the standard implementation, testing, and documentation sections.]
 <!-- /ANCHOR:docs -->
 
 ---
@@ -91,20 +98,8 @@ This document records the current verified state for this scope. Use [spec.md](s
 
 ---
 
-<!-- ANCHOR:continuation -->
-## 8. CONTINUATION (2026-03-18)
-
-- [x] CHK-060 [P0] ALIGNMENT_BLOCK Block A downgraded to warning for explicit CLI args [Evidence: `workflow.ts:1278-1287` changed from `throw` to `warn`. Block B file-path overlap still hard-blocks. Tests updated in `workflow-e2e.vitest.ts` and `task-enrichment.vitest.ts`.]
-- [x] CHK-061 [P0] TECHNICAL_CONTEXT flows from JSON input through to template rendering [Evidence: `NormalizedData.TECHNICAL_CONTEXT` populated in both fast-path and full normalization in `input-normalizer.ts`. `SessionData` type extended. `context_template.md` renders key-value table via `{{#HAS_TECHNICAL_CONTEXT}}`.]
-- [x] CHK-062 [P0] String-form decision confidence no longer hardcoded at 50% [Evidence: `decision-extractor.ts` now parses `/confidence:?\s*(\d+)/i`, choice verbs (`chose|selected|decided`), and rationale indicators (`because|due to`) from string-form decisions when `manualObj` is null.]
-- [x] CHK-063 [P1] Full test suite passes after all three fixes [Evidence: 36 files, 385 tests passed; MCP 1 file, 20 tests passed on 2026-03-18.]
-- [x] CHK-064 [P1] Parallel review agent approved [Evidence: Opus review scored 82/100 with 0 P0, 0 P1 findings. Two P2 suggestions (helper extraction, unnecessary cast) fixed.]
-<!-- /ANCHOR:continuation -->
-
----
-
 <!-- ANCHOR:summary -->
-## 9. VERIFICATION SUMMARY
+## 8. VERIFICATION SUMMARY
 
 | Category | Total | Verified |
 |----------|-------|----------|

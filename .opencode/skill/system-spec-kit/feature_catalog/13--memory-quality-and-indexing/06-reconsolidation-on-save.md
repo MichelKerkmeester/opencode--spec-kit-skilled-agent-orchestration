@@ -1,3 +1,8 @@
+---
+title: "Reconsolidation-on-save"
+description: "Reconsolidation-on-save merges, supersedes or complements new memories with existing similar memories based on cosine similarity thresholds."
+---
+
 # Reconsolidation-on-save
 
 ## 1. OVERVIEW

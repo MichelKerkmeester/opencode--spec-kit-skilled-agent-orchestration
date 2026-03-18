@@ -96,7 +96,7 @@ This variant is optimized for Codex CLI context capacity and stronger single-age
 
 | Priority | Task Type                                                                 | Agent                  | Tier | Skills                                                               | subagent_type |
 | -------- | ------------------------------------------------------------------------- | ---------------------- | ---- | -------------------------------------------------------------------- | ------------- |
-| 1        | ALL codebase exploration, file search, pattern discovery, context loading | `@context`             | LEAF | Memory tools, Glob, Grep, Read                                       | `"general"`   |
+| 1        | LEAF-only retrieval agent for all codebase exploration, file search, pattern discovery, and context loading | `@context`             | LEAF | Memory tools, Glob, Grep, Read                                       | `"general"`   |
 | 2        | Evidence / iterative investigation                                        | `@deep-research`       | LEAF | `system-spec-kit`, `sk-deep-research`                                | `"general"`   |
 | 3        | Multi-strategy planning and architecture synthesis                        | `@ultra-think`         | LEAF | Multi-lens planning rubric (planning-only)                           | `"general"`   |
 | 4        | Spec folder docs                                                          | `@speckit` ⛔ EXCLUSIVE | LEAF | `system-spec-kit`                                                    | `"general"`   |
@@ -171,7 +171,7 @@ When dispatching ANY non-orchestrator agent, append this to the Task prompt:
 
 | Agent        | File                             | Notes                                                                                  |
 | ------------ | -------------------------------- | -------------------------------------------------------------------------------------- |
-| @context     | `.codex/agents/context.toml`     | Sub-agent with direct retrieval only. Routes ALL exploration tasks                     |
+| @context     | `.codex/agents/context.toml`     | LEAF-only retrieval agent for all codebase exploration, file search, pattern discovery, and context loading |
 | @deep-research | `.codex/agents/deep-research.toml` | LEAF agent; iterative autonomous research loop with externalized state              |
 | @ultra-think | `.codex/agents/ultra-think.toml` | Planning-only multi-strategy architect (max 3 strategies)                              |
 | @speckit     | `.codex/agents/speckit.toml`     | ⛔ ALL spec folder docs (*.md). Exceptions: memory/, scratch/, handover.md, research.md |
@@ -198,7 +198,7 @@ TASK #N: [Descriptive Title]
 ├─ Boundary: [What this agent MUST NOT do]
 ├─ Agent: @general | @context | @deep-research | @ultra-think | @write | @review | @speckit | @debug | @handover
 ├─ Subagent Type: "general" (ALL dispatches use "general" — exploration routes through @context)
-├─ Agent Definition: [.opencode/agent/<name>.md — MUST be read and included in prompt | "built-in" for @general]
+├─ Agent Definition: [.codex/agents/<name>.toml — MUST be read and included in prompt | "built-in" for @general]
 ├─ Skills: [Specific skills the agent should use]
 ├─ Output Format: [Structured format with example]
 ├─ Output Size: [full | summary-only (30 lines) | minimal (3 lines)] ← CWB §8
@@ -220,7 +220,7 @@ PRE-DELEGATION REASONING [Task #N]:
 ├─ Intent: [What does this task accomplish?]
 ├─ Complexity: [low/medium/high] → Because: [cite criteria below]
 ├─ Agent: @[agent] → Because: [cite §2 (Agent Routing)]
-├─ Agent Def: [loaded | built-in | prior-session] → [.opencode/agent/<name>.md]
+├─ Agent Def: [loaded | built-in | prior-session] → [.codex/agents/<name>.toml]
 ├─ Depth: [N] → Tier: [ORCHESTRATOR|LEAF] (§2 NDP)
 ├─ Parallel: [Yes/No] → Because: [data dependency]
 ├─ Risk: [Low/Medium/High] → [If High: fallback agent]
@@ -761,7 +761,7 @@ The orchestrator's own behavior can cause context overload. Follow these rules:
 - Single agents with too many sequential operations exceed system execution limits, returning "Tool execution aborted" and losing all progress. Always estimate tool calls before dispatch and split at 18+. See §8.
 
 ❌ **Never improvise custom agent instructions instead of loading their definition file**
-- Every custom agent has a definition file in `.opencode/agent/`. These files contain specialized templates, enforcement rules, and quality standards. Dispatching a generic agent with "you are @speckit" in the prompt produces documentation without template enforcement, validation, or Level 1-3+ compliance. ALWAYS read and include the actual agent definition file. See §2.
+- Every custom agent has a definition file in `.codex/agents/`. These files contain specialized templates, enforcement rules, and quality standards. Dispatching a generic agent with "you are @speckit" in the prompt produces documentation without template enforcement, validation, or Level 1-3+ compliance. ALWAYS read and include the actual agent definition file. See §2.
 
 ❌ **Never dispatch beyond maximum depth 2 (depth counter 0-1)**
 - Nested chains are illegal in this profile. Every dispatch must include `Depth: N` and respect single-hop NDP rules: only depth-0 orchestrator dispatches; depth-1 agents MUST NOT dispatch. If a task cannot be completed at depth 1, return partial results and escalate to the parent. See §2.

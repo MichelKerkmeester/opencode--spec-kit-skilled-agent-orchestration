@@ -1,3 +1,8 @@
+---
+title: "Feature catalog code references"
+description: "Feature catalog code references embed inline traceability comments in every source file, linking implementation code back to the feature catalog by name. Each file declares which catalog features it implements via `// Feature catalog: <feature-name>` comments near the top of the file."
+---
+
 # Feature catalog code references
 
 ## 1. OVERVIEW

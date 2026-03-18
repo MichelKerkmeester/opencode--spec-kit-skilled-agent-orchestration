@@ -1,3 +1,8 @@
+---
+title: "Temporal contiguity layer"
+description: "Describes the pairwise temporal proximity boost that amplifies scores for memories created close together in time, using a clamped window with a cumulative cap of 0.50 per result."
+---
+
 # Temporal contiguity layer
 
 ## 1. OVERVIEW

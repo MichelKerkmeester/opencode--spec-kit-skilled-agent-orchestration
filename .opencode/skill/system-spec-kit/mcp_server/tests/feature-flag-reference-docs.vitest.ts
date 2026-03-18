@@ -109,13 +109,22 @@ describe('Hydra roadmap flag documentation', () => {
 
   it('manual playbook NEW-125 matches the runtime default-on plus explicit opt-out contract', () => {
     const playbookPath = path.join(SKILL_ROOT, 'manual_testing_playbook', 'manual_testing_playbook.md');
+    const featureFilePath = path.join(
+      SKILL_ROOT,
+      'manual_testing_playbook',
+      '02--new-features',
+      '125-hydra-roadmap-capability-flags.md',
+    );
     const playbookContent = fs.readFileSync(playbookPath, 'utf8');
+    const featureFileContent = fs.readFileSync(featureFilePath, 'utf8');
 
     expect(playbookContent).toContain('NEW-125');
     expect(playbookContent).toContain('default-on unless explicitly opted out');
-    expect(playbookContent).toContain('phase:\\"shared-rollout\\"');
     expect(playbookContent).toContain('capabilities.graphUnified:true');
-    expect(playbookContent).toContain('SPECKIT_HYDRA_GRAPH_UNIFIED=false');
-    expect(playbookContent).toContain('capabilities.graphUnified:false');
+
+    expect(featureFileContent).toContain('phase:\\"shared-rollout\\"');
+    expect(featureFileContent).toContain('capabilities.graphUnified:true');
+    expect(featureFileContent).toContain('SPECKIT_HYDRA_GRAPH_UNIFIED=false');
+    expect(featureFileContent).toContain('capabilities.graphUnified:false');
   });
 });

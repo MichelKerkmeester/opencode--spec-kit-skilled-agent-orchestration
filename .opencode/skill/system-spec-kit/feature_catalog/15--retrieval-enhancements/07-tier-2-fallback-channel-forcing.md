@@ -1,3 +1,8 @@
+---
+title: "Tier-2 fallback channel forcing"
+description: "Tier-2 fallback channel forcing sets `forceAllChannels: true` during quality fallback so all retrieval channels execute regardless of simple-route reduction."
+---
+
 # Tier-2 fallback channel forcing
 
 ## 1. OVERVIEW

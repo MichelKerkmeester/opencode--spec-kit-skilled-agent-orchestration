@@ -1,3 +1,8 @@
+---
+title: "Canonical ID dedup hardening"
+description: "Tracks the fix for mixed ID format deduplication failures in hybrid search caused by string/number mismatches."
+---
+
 # Canonical ID dedup hardening
 
 ## 1. OVERVIEW

@@ -41,7 +41,11 @@ import {
   scoreMemoryQuality as scoreMemoryQualityV2,
   type ValidationSignal,
 } from '../extractors/quality-scorer';
-import { validateMemoryQualityContent } from '../memory/validate-memory-quality';
+import {
+  determineValidationDisposition,
+  validateMemoryQualityContent,
+  type ValidationDispositionResult,
+} from '../memory/validate-memory-quality';
 import { extractSpecFolderContext } from '../extractors/spec-folder-extractor';
 import { extractGitContext } from '../extractors/git-context-extractor';
 
@@ -70,7 +74,6 @@ import { extractTriggerPhrases } from '../lib/trigger-extractor';
 import {
   indexMemory,
   updateMetadataEmbeddingStatus,
-  updateMetadataWithEmbedding,
   type IndexingStatusValue,
   type WorkflowIndexingStatus,
 } from './memory-indexer';
@@ -80,6 +83,7 @@ import { applyTreeThinning } from './tree-thinning';
 import { structuredLog } from '../utils/logger';
 import type { FileChange, SessionData } from '../types/session-types';
 import type { FileEntry as ThinningFileEntry, ThinningResult } from './tree-thinning';
+import { getSourceCapabilities } from '../utils/source-capabilities';
 
 // ───────────────────────────────────────────────────────────────
 // 1. INTERFACES
@@ -142,6 +146,59 @@ const WORKFLOW_BLOCK_HTML_TAG_RE = /<\/?(?:article|aside|blockquote|body|br|dd|d
 const WORKFLOW_INLINE_HTML_TAG_RE = /<\/?(?:code|em|i|kbd|small|span|strong|sub|sup|u)\b[^>]*\/?>/gi;
 const WORKFLOW_PRESERVED_ANCHOR_ID_RE = /<a id="[^"]+"><\/a>/gi;
 const WORKFLOW_ANY_HTML_TAG_RE = /<\/?\s*[A-Za-z][\w:-]*(?:\s[^<>]*?)?\s*\/?>/g;
+
+function shouldIndexMemory(options: {
+  ctxFileWritten: boolean;
+  validationDisposition: ValidationDispositionResult;
+  templateContractValid: boolean;
+  sufficiencyPass: boolean;
+  qualityScore01: number;
+  qualityAbortThreshold: number;
+}): { shouldIndex: boolean; reason?: string } {
+  if (!options.ctxFileWritten) {
+    return {
+      shouldIndex: false,
+      reason: 'Context file content matched an existing memory file, so semantic indexing was skipped.',
+    };
+  }
+
+  if (!options.templateContractValid) {
+    return {
+      shouldIndex: false,
+      reason: 'Rendered memory failed the template contract, so semantic indexing was skipped.',
+    };
+  }
+
+  if (!options.sufficiencyPass) {
+    return {
+      shouldIndex: false,
+      reason: 'Rendered memory failed semantic sufficiency, so semantic indexing was skipped.',
+    };
+  }
+
+  if (options.qualityScore01 < options.qualityAbortThreshold) {
+    return {
+      shouldIndex: false,
+      reason: 'Rendered memory fell below the minimum quality threshold, so semantic indexing was skipped.',
+    };
+  }
+
+  if (options.validationDisposition.disposition === 'write_skip_index') {
+    return {
+      shouldIndex: false,
+      reason: `Validation rules require write-only persistence without semantic indexing: ${options.validationDisposition.indexBlockingRuleIds.join(', ')}`,
+    };
+  }
+
+  if (options.validationDisposition.disposition === 'abort_write') {
+    return {
+      shouldIndex: false,
+      reason: `Validation rules block writing and indexing: ${options.validationDisposition.blockingRuleIds.join(', ')}`,
+    };
+  }
+
+  return { shouldIndex: true };
+}
 
 function ensureMinSemanticTopics(existing: string[], enhancedFiles: FileChange[], specFolderName: string): string[] {
   if (existing.length >= 1) {
@@ -1361,9 +1418,15 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     let extractorProcessedFieldCount = 0;
     let extractorCleanedFieldCount = 0;
     let extractorRemovedPhraseCount = 0;
+    const captureSource = typeof collectedData?._source === 'string' ? collectedData._source : undefined;
+    const captureCapabilities = getSourceCapabilities(captureSource);
     const cleanContaminationText = (input: string): string => {
       extractorProcessedFieldCount++;
-      const filtered = filterContamination(input);
+      const filtered = filterContamination(
+        input,
+        undefined,
+        captureSource ? { captureSource: captureCapabilities.source, sourceCapabilities: captureCapabilities } : undefined,
+      );
       if (filtered.hadContamination) {
         hadContamination = true;
         extractorCleanedFieldCount++;
@@ -2055,37 +2118,10 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     log(`   Breakdown: triggers=${qualityBreakdown.triggerPhrases}/20, topics=${qualityBreakdown.keyTopics}/15, fileDesc=${qualityBreakdown.fileDescriptions}/20, length=${qualityBreakdown.contentLength}/15, html=${qualityBreakdown.noLeakedTags}/15, dedup=${qualityBreakdown.observationDedup}/15`);
   }
 
-  // Step 8.7: Hard blocks before write/index
-  // RC-5: V8/V9 contamination hard-block — prevent writing files when
-  // Critical contamination rules fail. Previously these produced warnings
-  // But files were still written and sometimes indexed.
-  if (qualityValidation.ruleResults) {
-    const contaminationRuleIds = ['V8', 'V9'];
-    // RC-5 fix: Case-insensitive ruleId comparison + null-safe filter
-    const failedContaminationRules = qualityValidation.ruleResults
-      .filter((r: { ruleId: string; passed: boolean }) =>
-        r && typeof r.ruleId === 'string' &&
-        contaminationRuleIds.includes(r.ruleId.toUpperCase()) && !r.passed
-      );
-    if (failedContaminationRules.length > 0) {
-      const failedIds = failedContaminationRules.map((r: { ruleId: string }) => r.ruleId).join(', ');
-      const contaminationAbortMsg = `CONTAMINATION_GATE_ABORT: Critical contamination rules failed: [${failedIds}]. ` +
-        `Content contains cross-spec contamination that would corrupt the memory index. Aborting write.`;
-      warn(contaminationAbortMsg);
-      throw new Error(contaminationAbortMsg);
-    }
-  }
-
   if (!sufficiencyResult.pass) {
     const insufficiencyAbortMsg = formatSufficiencyAbort(sufficiencyResult);
     warn(insufficiencyAbortMsg);
     throw new Error(insufficiencyAbortMsg);
-  }
-
-  if (collectedData?._source !== 'file' && !qualityValidation.valid) {
-    const statelessValidationAbortMsg = `QUALITY_GATE_ABORT: Stateless save blocked due to failed validation rules: ${qualityValidation.failedRules.join(', ')}`;
-    warn(statelessValidationAbortMsg);
-    throw new Error(statelessValidationAbortMsg);
   }
 
   const QUALITY_ABORT_THRESHOLD = CONFIG.QUALITY_ABORT_THRESHOLD;
@@ -2096,6 +2132,34 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       `To force save, pass data via JSON file instead of stateless mode.`;
     warn(abortMsg);
     throw new Error(abortMsg);
+  }
+
+  const validationDisposition = determineValidationDisposition(qualityValidation.failedRules, captureSource);
+  if (validationDisposition.disposition === 'abort_write') {
+    const failedContaminationRules = validationDisposition.blockingRuleIds.filter((ruleId) => ruleId === 'V8' || ruleId === 'V9');
+    if (failedContaminationRules.length > 0) {
+      const contaminationAbortMsg = `CONTAMINATION_GATE_ABORT: Critical contamination rules failed: [${failedContaminationRules.join(', ')}]. ` +
+        `Content contains cross-spec contamination that would corrupt the memory index. Aborting write.`;
+      warn(contaminationAbortMsg);
+      throw new Error(contaminationAbortMsg);
+    }
+
+    const validationAbortMsg = `QUALITY_GATE_ABORT: Save blocked due to failed validation rules: ${validationDisposition.blockingRuleIds.join(', ')}`;
+    warn(validationAbortMsg);
+    throw new Error(validationAbortMsg);
+  }
+
+  if (qualityValidation.failedRules.length > 0) {
+    if (validationDisposition.disposition === 'write_skip_index') {
+      warn(
+        `QUALITY_GATE_WARN: Save continuing, but semantic indexing will be skipped due to validation rules: ` +
+        `${validationDisposition.indexBlockingRuleIds.join(', ')}`
+      );
+    } else if (captureCapabilities.inputMode === 'stateless') {
+      warn(`QUALITY_GATE_WARN: Stateless save continuing despite soft validation failures: ${qualityValidation.failedRules.join(', ')}`);
+    } else {
+      warn(`QUALITY_GATE_WARN: Structured save continuing despite soft validation failures: ${qualityValidation.failedRules.join(', ')}`);
+    }
   }
 
   // CG-07: Add warning banner for medium-quality scores (0.30-0.60 legacy 30-60)
@@ -2220,7 +2284,16 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     );
   } else {
     try {
-      if (qualityValidation.valid) {
+      const indexDecision = shouldIndexMemory({
+        ctxFileWritten,
+        validationDisposition,
+        templateContractValid: templateContractEarly.valid,
+        sufficiencyPass: sufficiencyResult.pass,
+        qualityScore01: qualityResult.score01,
+        qualityAbortThreshold: QUALITY_ABORT_THRESHOLD,
+      });
+
+      if (indexDecision.shouldIndex) {
         const embeddingSections = buildWeightedEmbeddingSections(implSummary, files[ctxFilename]);
         memoryId = await indexMemory(
           contextDir,
@@ -2233,11 +2306,12 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
         );
         if (memoryId !== null) {
           log(`   Indexed as memory #${memoryId} (${EMBEDDING_DIM} dimensions)`);
-          await updateMetadataWithEmbedding(contextDir, memoryId);
-          indexingStatus = {
-            status: 'indexed',
-            memoryId,
-          };
+          await persistIndexingStatus(
+            'indexed',
+            qualityValidation.failedRules.length > 0
+              ? `Indexed despite soft validation failures: ${qualityValidation.failedRules.join(', ')}.`
+              : 'Indexed after all write and semantic-index gates passed.'
+          );
           log('   Updated metadata.json with embedding info');
         } else {
           log('   Embedding unavailable — semantic indexing skipped');
@@ -2247,10 +2321,10 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
           );
         }
       } else {
-        log('   QUALITY_GATE_FAIL: skipping production indexing for this file');
+        log('   Index policy: skipping semantic indexing for this file');
         await persistIndexingStatus(
-          'skipped_quality_gate',
-          'Rendered memory failed validation, so semantic indexing was skipped.'
+          validationDisposition.disposition === 'write_skip_index' ? 'skipped_index_policy' : 'skipped_quality_gate',
+          indexDecision.reason ?? 'Rendered memory failed validation, so semantic indexing was skipped.'
         );
       }
     } catch (e: unknown) {

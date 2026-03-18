@@ -1,3 +1,8 @@
+---
+title: "Architecture boundary enforcement"
+description: "Architecture boundary enforcement automates two rules: `shared/` must not import from `mcp_server/` or `scripts/`, and `mcp_server/scripts/` must contain only thin wrappers."
+---
+
 # Architecture boundary enforcement
 
 ## 1. OVERVIEW

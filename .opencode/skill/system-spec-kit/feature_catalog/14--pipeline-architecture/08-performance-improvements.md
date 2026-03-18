@@ -1,3 +1,8 @@
+---
+title: "Performance improvements"
+description: "Thirteen performance improvements reduce runtime cost across TF-IDF scoring, summary queries, mutation ledger scanning, entity linking and hierarchy caching."
+---
+
 # Performance improvements
 
 ## 1. OVERVIEW

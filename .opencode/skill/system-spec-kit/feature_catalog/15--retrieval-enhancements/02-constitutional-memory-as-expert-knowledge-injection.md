@@ -1,3 +1,8 @@
+---
+title: "Constitutional memory as expert knowledge injection"
+description: "Constitutional-tier memories receive retrieval directive metadata that instructs the LLM when to surface them."
+---
+
 # Constitutional memory as expert knowledge injection
 
 ## 1. OVERVIEW

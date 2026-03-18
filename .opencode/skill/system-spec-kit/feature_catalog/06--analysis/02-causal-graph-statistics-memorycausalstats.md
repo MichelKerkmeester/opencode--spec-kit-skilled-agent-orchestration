@@ -1,3 +1,8 @@
+---
+title: "Causal graph statistics (memory_causal_stats)"
+description: "Covers the causal graph health metrics tool reporting edge counts, relationship breakdowns and link coverage percentage."
+---
+
 # Causal graph statistics (memory_causal_stats)
 
 ## 1. OVERVIEW

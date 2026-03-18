@@ -1,3 +1,8 @@
+---
+title: "Final token metadata recomputation"
+description: "Final token metadata recomputation recalculates `meta.tokenCount` after hint append and before token-budget enforcement to keep the count aligned with the serialized envelope."
+---
+
 # Final token metadata recomputation
 
 ## 1. OVERVIEW

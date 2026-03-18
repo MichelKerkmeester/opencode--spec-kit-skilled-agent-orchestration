@@ -1,3 +1,8 @@
+---
+title: "Validation feedback (memory_validate)"
+description: "Covers the validation feedback tool that adjusts confidence scores, triggers auto-promotion and records learned feedback."
+---
+
 # Validation feedback (memory_validate)
 
 ## 1. OVERVIEW

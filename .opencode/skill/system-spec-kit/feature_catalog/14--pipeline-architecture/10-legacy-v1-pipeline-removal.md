@@ -1,3 +1,8 @@
+---
+title: "Legacy V1 pipeline removal"
+description: "Legacy V1 pipeline removal deleted the old monolithic handler path, making the 4-stage orchestrator the only runtime code path."
+---
+
 # Legacy V1 pipeline removal
 
 ## 1. OVERVIEW

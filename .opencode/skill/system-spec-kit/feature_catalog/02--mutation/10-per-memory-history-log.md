@@ -1,3 +1,8 @@
+---
+title: "Per-memory history log"
+description: "Covers the per-memory audit trail that records ADD, UPDATE and DELETE mutation events in the `memory_history` table."
+---
+
 # Per-memory history log
 
 ## 1. OVERVIEW

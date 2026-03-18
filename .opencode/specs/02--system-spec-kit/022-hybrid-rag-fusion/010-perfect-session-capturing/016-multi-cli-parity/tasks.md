@@ -49,6 +49,11 @@ This document records the current verified state for this scope. Use [spec.md](s
 - [x] T005 Create `.opencode/skill/system-spec-kit/scripts/tests/content-filter-parity.vitest.ts` for Copilot lifecycle noise, Codex reasoning markers, and empty XML wrappers.
 - [x] T006 Extend `.opencode/skill/system-spec-kit/scripts/tests/runtime-memory-inputs.vitest.ts` to prove `Read ...` titles and `_provenance: 'tool'` on CLI-derived `FILES`.
 - [x] T007 Rewrite phase-016 `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` to the current Level 2 structure with evidence-backed completion.
+- [x] T012 Relax ALIGNMENT_BLOCK Block A from hard abort to warning when the spec folder is explicitly provided via CLI argument (`scripts/core/workflow.ts`).
+- [x] T013 Add a dedicated `TECHNICAL_CONTEXT` template section that preserves key-value structure from JSON input (`scripts/utils/input-normalizer.ts`, `scripts/extractors/collect-session-data.ts`, `scripts/types/session-types.ts`, `.opencode/skill/system-spec-kit/templates/context_template.md`, `scripts/lib/simulation-factory.ts`).
+- [x] T014 Parse confidence from string-form decisions using explicit confidence regex, choice verb detection, and rationale indicators (`scripts/extractors/decision-extractor.ts`).
+- [x] T015 Extract duplicated `mapTechnicalContext` helper in `input-normalizer.ts` (review follow-up).
+- [x] T016 Remove the unnecessary `as unknown[]` cast in `collect-session-data.ts` (review follow-up).
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -60,28 +65,14 @@ This document records the current verified state for this scope. Use [spec.md](s
 - [x] T009 Run `.opencode/skill/system-spec-kit/scripts/tests/test-extractors-loaders.js` and record the final totals.
 - [x] T010 Run `npm run typecheck` and `npm run build` from `.opencode/skill/system-spec-kit`.
 - [x] T011 Run `.opencode/skill/system-spec-kit/scripts/spec/validate.sh` on the phase-016 folder and reconcile the remaining template/evidence findings.
+- [x] T017 Update the alignment-block tests to match the new Block A warning behavior (`tests/workflow-e2e.vitest.ts`, `tests/task-enrichment.vitest.ts`).
+- [x] T018 Rebuild and rerun the full script and MCP baselines after the 2026-03-18 continuation fixes.
 <!-- /ANCHOR:phase-3 -->
 
 ---
 
-<!-- ANCHOR:phase-4 -->
-## 5. PHASE 4: CONTINUATION (2026-03-18)
-
-Three deferred fixes from deep research (Q1, Q3, Q5) plus ALIGNMENT_BLOCK relaxation for explicit CLI spec folder arguments.
-
-- [x] T012 Fix 1: Relax ALIGNMENT_BLOCK Block A from hard abort to warning when spec folder is explicitly provided via CLI argument (`scripts/core/workflow.ts`)
-- [x] T013 Fix 2: Add dedicated TECHNICAL_CONTEXT template section preserving key-value structure from JSON input (`scripts/utils/input-normalizer.ts`, `scripts/extractors/collect-session-data.ts`, `scripts/types/session-types.ts`, `templates/context_template.md`, `scripts/lib/simulation-factory.ts`)
-- [x] T014 Fix 3: Parse confidence from string-form decisions — explicit confidence regex, choice verb detection, rationale indicator detection (`scripts/extractors/decision-extractor.ts`)
-- [x] T015 Extract duplicated `mapTechnicalContext` helper in `input-normalizer.ts` (P2 review suggestion)
-- [x] T016 Remove unnecessary `as unknown[]` cast in `collect-session-data.ts` (P2 review suggestion)
-- [x] T017 Update 2 alignment-block tests to match new Block A warning behavior (`tests/workflow-e2e.vitest.ts`, `tests/task-enrichment.vitest.ts`)
-- [x] T018 Build, run full script tests (385/385), MCP tests (20/20)
-<!-- /ANCHOR:phase-4 -->
-
----
-
 <!-- ANCHOR:completion -->
-## 6. COMPLETION CRITERIA
+## 5. COMPLETION CRITERIA
 
 - [x] All parity requirements have direct regression coverage.
 - [x] Phase-016 docs describe the reopened proof pass rather than the earlier assumed-complete state.
@@ -92,7 +83,7 @@ Three deferred fixes from deep research (Q1, Q3, Q5) plus ALIGNMENT_BLOCK relaxa
 ---
 
 <!-- ANCHOR:cross-refs -->
-## 7. CROSS-REFERENCES
+## 6. CROSS-REFERENCES
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`

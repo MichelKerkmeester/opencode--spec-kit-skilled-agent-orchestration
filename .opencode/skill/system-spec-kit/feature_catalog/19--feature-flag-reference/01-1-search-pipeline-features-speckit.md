@@ -1,10 +1,28 @@
-# 1. Search Pipeline Features (SPECKIT_*)
+---
+title: "Search Pipeline Features (SPECKIT_*)"
+description: "Feature flag reference for the Spec Kit Memory search pipeline controls, rollout gates, and retrieval-shaping toggles."
+---
+
+# Search Pipeline Features (SPECKIT_*)
+
+This document captures the implemented behavior, source references, and validation scope for the search-pipeline flag surface. These flags are the main control panel for how search works, letting operators tune fallback logic, reranking, telemetry, and rollout gates without changing code.
+
+---
+
+## TABLE OF CONTENTS
+
+- [OVERVIEW](#1--overview)
+- [CURRENT REALITY](#2--current-reality)
+- [SOURCE FILES](#3--source-files)
+- [SOURCE METADATA](#4--source-metadata)
+
+---
 
 ## 1. OVERVIEW
 
-This document captures the implemented behavior, source references, and validation scope for 1. Search Pipeline Features (SPECKIT_*).
+This feature-reference file mirrors the feature-catalog snippet pattern: a short explanation of the flag family, the full current-reality table, and the source metadata needed to keep docs, implementation, and validation aligned.
 
-These flags are the main control panel for how search works. They turn major retrieval behaviors on or off, like fallback logic, reranking, telemetry, and rollout gates, so you can tune quality, speed, and safety without changing code.
+These flags turn major retrieval behaviors on or off, including fallback logic, reranking, telemetry, and rollout gates, so operators can reason about quality, speed, and safety from one place.
 
 ---
 
@@ -99,5 +117,5 @@ Source file references are included in the flag table above.
 ## 4. SOURCE METADATA
 
 - Group: Feature Flag Reference
-- Source feature title: 1. Search Pipeline Features (SPECKIT_*)
+- Source feature title: Search Pipeline Features (SPECKIT_*)
 - Current reality source: feature_catalog.md

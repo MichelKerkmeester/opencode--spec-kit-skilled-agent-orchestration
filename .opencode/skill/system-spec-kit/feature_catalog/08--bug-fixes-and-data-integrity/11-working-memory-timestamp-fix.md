@@ -1,3 +1,8 @@
+---
+title: "Working Memory Session Cleanup Timestamp Fix"
+description: "Tracks the fix for incorrect session cleanup caused by mismatched timestamp formats between SQLite and JavaScript."
+---
+
 # Working Memory Session Cleanup Timestamp Fix
 
 ## 1. OVERVIEW

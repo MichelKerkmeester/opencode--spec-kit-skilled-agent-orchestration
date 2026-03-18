@@ -1,3 +1,8 @@
+---
+title: "Duplicate-save no-op feedback hardening"
+description: "Duplicate-save no-op feedback hardening prevents false mutation hook data and cache-clearing hints from appearing in no-op save responses."
+---
+
 # Duplicate-save no-op feedback hardening
 
 ## 1. OVERVIEW

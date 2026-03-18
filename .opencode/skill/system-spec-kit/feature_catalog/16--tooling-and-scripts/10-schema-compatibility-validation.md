@@ -1,3 +1,8 @@
+---
+title: "Schema compatibility validation"
+description: "Schema compatibility validation performs a non-throwing readiness check against an open database to verify required tables and columns are present."
+---
+
 # Schema compatibility validation
 
 ## 1. OVERVIEW

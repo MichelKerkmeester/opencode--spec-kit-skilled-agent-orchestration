@@ -1,3 +1,8 @@
+---
+title: "Checkpoint delete confirmName safety"
+description: "Checkpoint delete confirmName safety requires a matching `confirmName` parameter before destructive checkpoint deletion proceeds."
+---
+
 # Checkpoint delete confirmName safety
 
 ## 1. OVERVIEW

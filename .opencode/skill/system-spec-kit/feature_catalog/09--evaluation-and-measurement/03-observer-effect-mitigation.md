@@ -1,3 +1,8 @@
+---
+title: "Observer effect mitigation"
+description: "Describes how the evaluation infrastructure avoids perturbing production query performance through fail-safe degradation and non-fatal handling in evaluation and observability paths."
+---
+
 # Observer effect mitigation
 
 ## 1. OVERVIEW

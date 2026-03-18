@@ -1,3 +1,8 @@
+---
+title: "Cross-AI validation fixes"
+description: "Covers 14 issues found by independent Gemini and Codex reviews, including test suite false-pass patterns, deletion exception propagation and re-sort after feedback mutations."
+---
+
 # Cross-AI validation fixes
 
 ## 1. OVERVIEW

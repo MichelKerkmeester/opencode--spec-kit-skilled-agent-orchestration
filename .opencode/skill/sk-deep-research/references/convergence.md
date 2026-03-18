@@ -20,13 +20,13 @@ Convergence detection prevents infinite loops and stops research when additional
 <!-- ANCHOR:shouldcontinue-algorithm -->
 ## 2. THE shouldContinue() ALGORITHM
 
-> **Segment Awareness**: When segments are active (see Section 3.5), `state.iterations` is pre-filtered to the current segment. Hard stops (max iterations) apply globally; convergence signals apply per-segment.
+> **Segment Awareness (REFERENCE-ONLY)**: When segments are explicitly enabled, `state.iterations` may be pre-filtered to the current segment. The live workflow uses a single segment by default.
 
 ### 2.1 Hard Stops (checked first, always apply)
 
 ```
 function shouldContinue(state, config):
-  iterations = state.iterations  // filtered by current segment (see Section 3.5)
+  iterations = state.iterations  // single live segment; optional segment filtering is reference-only
 
   // Hard stop: max iterations
   if len(iterations) >= config.maxIterations:
@@ -154,7 +154,7 @@ Computed by the orchestrator from JSONL records.
 function countConsecutiveStuck(iterations):
   count = 0
   for i in reversed(iterations):
-    if i.newInfoRatio < 0.05 or i.status == "stuck":
+    if i.newInfoRatio < config.convergenceThreshold or i.status == "stuck":
       count += 1
     else:
       break
@@ -162,7 +162,7 @@ function countConsecutiveStuck(iterations):
 ```
 
 A stuck iteration is one where:
-- `newInfoRatio < 0.05` (less than 5% new information)
+- `newInfoRatio < config.convergenceThreshold` (below the configured no-progress threshold)
 - OR `status == "stuck"` (agent self-reported as stuck)
 
 ### MAD Noise Score
@@ -213,7 +213,7 @@ When reading `deep-research-state.jsonl`, parse defensively:
 3. On parse failure: skip the line, increment `skippedCount`
 4. For successfully parsed lines, apply defaults for missing fields:
    - `status ?? "complete"`
-   - `newInfoRatio ?? 0`
+   - `newInfoRatio ?? 0.0`
    - `findingsCount ?? 0`
    - `focus ?? "unknown"`
    - `keyQuestions ?? []`
@@ -223,9 +223,9 @@ When reading `deep-research-state.jsonl`, parse defensively:
 
 This ensures convergence checks continue even after partial state corruption. See state_format.md Section 3 for the full fault tolerance specification.
 
-### Segment Model
+### Segment Model (REFERENCE-ONLY)
 
-Segments partition a research session into logical phases without losing history.
+Segments partition a research session into logical phases without losing history when an implementation explicitly enables them.
 
 | Field | Type | Default | Description |
 |-------|------|---------|-------------|
@@ -237,8 +237,8 @@ When computing convergence signals:
 - Hard stops (max iterations) count ALL iterations regardless of segment
 - Cross-segment analysis: read full JSONL without segment filtering
 
-Segment transitions are triggered by:
-- `:restart` mode in the command
+Segment transitions are triggered only when a runtime explicitly enables them:
+- `:restart` mode in an implementation that supports it
 - Explicit user request for a new research angle
 - Orchestrator judgment when research direction fundamentally shifts
 
@@ -287,7 +287,7 @@ Choose a targeted recovery strategy based on the nature of the stuck condition:
 - Example: If stuck on implementation details, zoom out to architecture or history
 
 #### Strategy 2: Combine Prior Findings
-**Trigger**: Mid-range plateau (newInfoRatio 0.05-0.20 for 3+ iterations, not fully stuck).
+**Trigger**: Mid-range plateau (`newInfoRatio` between the configured threshold and 0.20 for 3+ iterations, not fully stuck).
 **Action**: Synthesize the two highest-newInfoRatio iterations into a new composite question.
 - Read the top-2 iterations by newInfoRatio
 - Identify intersection or tension between their findings
@@ -313,7 +313,7 @@ function selectRecoveryStrategy(stuckIterations, allIterations):
 
   // Mid-range plateau? Combine
   recentRatios = [i.newInfoRatio for i in stuckIterations[-3:]]
-  if all(0.05 <= r <= 0.20 for r in recentRatios):
+  if all(config.convergenceThreshold <= r <= 0.20 for r in recentRatios):
     return "combine_prior_findings"
 
   // General plateau
@@ -322,8 +322,8 @@ function selectRecoveryStrategy(stuckIterations, allIterations):
 
 ### Step 3: Evaluate Recovery
 After the recovery iteration:
-- If `newInfoRatio > 0.05`: Recovery successful. Reset stuck count. Continue.
-- If `newInfoRatio <= 0.05`: Recovery failed. Exit to synthesis with gaps documented.
+- If `newInfoRatio > config.convergenceThreshold`: Recovery successful. Reset stuck count. Continue.
+- If `newInfoRatio <= config.convergenceThreshold`: Recovery failed. Exit to synthesis with gaps documented.
 
 ### Step 4: Document
 Add to JSONL: `{"type":"event","event":"stuck_recovery","fromIteration":N,"outcome":"recovered|failed"}`
@@ -334,15 +334,15 @@ Add to JSONL: `{"type":"event","event":"stuck_recovery","fromIteration":N,"outco
 <!-- ANCHOR:tiered-error-recovery-protocol -->
 ## 5. TIERED ERROR RECOVERY PROTOCOL
 
-Five escalating tiers for handling errors during the research loop. Each tier has a max-attempt count before escalating to the next.
+Five escalating tiers for handling errors during the research loop. Each tier has a max-attempt count before escalating to the next, and the order never reverses.
 
 | Tier | Trigger | Action | Max Attempts |
 |------|---------|--------|-------------|
 | 1 | Tool/source failure | Retry with alternative source | 2 per source |
 | 2 | Focus exhaustion (2+ low-value iterations on same focus) | Pivot to different focus area | 2 pivots |
 | 3 | State corruption | Reconstruct JSONL from iteration files | 1 attempt |
-| 4 | Repeated systemic failure | Escalate to user with diagnostic | 1 attempt |
-| 5 | Agent dispatch failure (e.g., 529 API overload) | Direct mode fallback | 1 attempt |
+| 4 | Agent dispatch failure (e.g., 529 API overload) | Direct mode fallback (reference-only unless alternate dispatch is implemented) | 1 attempt |
+| 5 | Repeated systemic failure after lower tiers are exhausted | Escalate to user with diagnostic | 1 attempt |
 
 ### Tier 1: Retry Source
 
@@ -367,22 +367,22 @@ When JSONL is missing or corrupted beyond fault-tolerant parsing:
 - Write reconstructed JSONL with `status: "reconstructed"`
 - See state_format.md "State Recovery from Iteration Files" for details
 
-### Tier 4: User Escalation
+### Tier 4: Direct Mode Fallback
 
-When recovery tiers 1-3 have failed:
+When agent dispatch itself fails (API overload, Task tool error, timeout) and the runtime explicitly supports direct-mode execution:
+- Orchestrator absorbs the iteration work directly
+- Read state files, perform research actions, write iteration file
+- Log: `{"type":"event","event":"direct_mode","iteration":N,"reason":"dispatch_failure"}`
+- Continue loop normally after direct-mode iteration completes
+
+### Tier 5: User Escalation
+
+When recovery tiers 1-4 have failed:
 - Present diagnostic summary to user:
   - What was attempted and why it failed
   - Current state of research (iterations completed, questions answered)
   - Recommended action (restart, adjust parameters, manual intervention)
 - Wait for user guidance before continuing
-
-### Tier 5: Direct Mode Fallback
-
-When agent dispatch itself fails (API overload, Task tool error, timeout):
-- Orchestrator absorbs the iteration work directly
-- Read state files, perform research actions, write iteration file
-- Log: `{"type":"event","event":"direct_mode","iteration":N,"reason":"dispatch_failure"}`
-- Continue loop normally after direct-mode iteration completes
 
 ---
 
@@ -486,7 +486,7 @@ Possible for very narrow topics. The loop stops cleanly after 1 iteration. This 
 
 ### newInfoRatio Reporting Error
 If the agent fails to report `newInfoRatio` in its JSONL entry:
-- Default to 0.5 (assume moderate new information)
+- Default to 0.0 (treat the missing value as no new information)
 - Log a warning in the JSONL: `{"type":"event","event":"missing_newInfoRatio","iteration":N}`
 
 ### Conflicting Signals

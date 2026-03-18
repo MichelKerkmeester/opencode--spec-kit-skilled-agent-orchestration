@@ -1,3 +1,8 @@
+---
+title: "Correction tracking with undo"
+description: "Covers the corrections module that records inter-memory relationship signals and adjusts stability scores during learning."
+---
+
 # Correction tracking with undo
 
 ## 1. OVERVIEW

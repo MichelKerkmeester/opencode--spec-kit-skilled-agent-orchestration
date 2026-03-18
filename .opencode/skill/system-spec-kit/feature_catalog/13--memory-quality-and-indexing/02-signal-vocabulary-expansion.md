@@ -1,3 +1,8 @@
+---
+title: "Signal vocabulary expansion"
+description: "Signal vocabulary expansion adds CORRECTION and PREFERENCE categories to the trigger matcher for better intent detection."
+---
+
 # Signal vocabulary expansion
 
 ## 1. OVERVIEW

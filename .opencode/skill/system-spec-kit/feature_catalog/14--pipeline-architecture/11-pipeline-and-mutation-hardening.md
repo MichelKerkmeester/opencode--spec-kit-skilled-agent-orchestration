@@ -1,3 +1,8 @@
+---
+title: "Pipeline and mutation hardening"
+description: "Pipeline and mutation hardening applies ten fixes for schema completeness, pipeline metadata, embedding efficiency, stemmer quality and data cleanup."
+---
+
 # Pipeline and mutation hardening
 
 ## 1. OVERVIEW

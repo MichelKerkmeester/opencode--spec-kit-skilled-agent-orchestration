@@ -30,7 +30,9 @@ This reference provides deep-dive technical guidance on execution modes, validat
 - Mode 2 (Skill Creation): [skill_creation.md](./skill_creation.md)
 - Mode 3 (Flowcharts): [assets/flowcharts/](../assets/flowcharts/)
 - Mode 4 (Install Guides): [install_guide_standards.md](./install_guide_standards.md)
-- Mode 5 (Playbooks): [manual_testing_playbook_template.md](../assets/documentation/manual_testing_playbook_template.md)
+- Mode 5 (Playbooks): [manual_testing_playbook_template.md](../assets/documentation/manual_testing_playbook_template.md) and [manual_testing_playbook_snippet_template.md](../assets/documentation/manual_testing_playbook_snippet_template.md)
+
+The playbook workflow assumes a root directory playbook plus a required per-feature `snippets/` tree. Current validation remains root-doc focused and does not recurse into the `snippets/` subtree.
 
 ### Core Principle
 

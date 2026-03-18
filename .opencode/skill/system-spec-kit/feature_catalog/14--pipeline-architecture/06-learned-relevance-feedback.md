@@ -1,3 +1,8 @@
+---
+title: "Learned relevance feedback"
+description: "Learned relevance feedback captures query terms from user result selections and boosts future searches with a 0.7x weight via isolated `learned_triggers`."
+---
+
 # Learned relevance feedback
 
 ## 1. OVERVIEW

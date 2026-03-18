@@ -1,3 +1,8 @@
+---
+title: "RRF K-value sensitivity analysis"
+description: "Documents the grid search over K values {20, 40, 60, 80, 100} that empirically grounded the RRF K parameter choice using MRR@5 delta and Kendall tau correlation."
+---
+
 # RRF K-value sensitivity analysis
 
 ## 1. OVERVIEW

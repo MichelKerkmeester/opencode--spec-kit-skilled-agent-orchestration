@@ -7,254 +7,41 @@ description: "Unified reference combining the complete system feature inventory 
 
 This document combines two complementary views of the Spec Kit Memory MCP server into a single reference. The **System Reference** section describes what the system is today: every tool, pipeline stage and capability organized by MCP layer. The **Refinement Program** section describes what was changed and why: every improvement delivered across the refinement program, with ticket IDs and implementation details.
 
+---
+
 ## TABLE OF CONTENTS
 
 - [1. OVERVIEW](#1--overview)
-- [2. CONTENTS](#2--contents)
-- [3. RETRIEVAL](#3--retrieval)
-- [4. MUTATION](#4--mutation)
-- [5. DISCOVERY](#5--discovery)
-- [6. MAINTENANCE](#6--maintenance)
-- [7. LIFECYCLE](#7--lifecycle)
-- [8. ANALYSIS](#8--analysis)
-- [9. EVALUATION](#9--evaluation)
-- [10. BUG FIXES AND DATA INTEGRITY](#10--bug-fixes-and-data-integrity)
-- [11. EVALUATION AND MEASUREMENT](#11--evaluation-and-measurement)
-- [12. GRAPH SIGNAL ACTIVATION](#12--graph-signal-activation)
-- [13. SCORING AND CALIBRATION](#13--scoring-and-calibration)
-- [14. QUERY INTELLIGENCE](#14--query-intelligence)
-- [15. MEMORY QUALITY AND INDEXING](#15--memory-quality-and-indexing)
-- [16. PIPELINE ARCHITECTURE](#16--pipeline-architecture)
-- [17. RETRIEVAL ENHANCEMENTS](#17--retrieval-enhancements)
-- [18. TOOLING AND SCRIPTS](#18--tooling-and-scripts)
-- [19. GOVERNANCE](#19--governance)
-- [20. UX HOOKS](#20--ux-hooks)
-- [21. PHASE SYSTEM](#21--phase-system)
-- [22. FEATURE FLAG REFERENCE](#22--feature-flag-reference)
-
-## 1. OVERVIEW
-
-This document indexes Spec Kit Memory feature documentation and links each feature to its detailed reference file.
-
-## 2. CONTENTS
-
-- [Retrieval](#retrieval)
-  - [Unified context retrieval (memory_context)](#unified-context-retrieval-memory_context)
-  - [Semantic and lexical search (memory_search)](#semantic-and-lexical-search-memory_search)
-  - [Trigger phrase matching (memory_match_triggers)](#trigger-phrase-matching-memory_match_triggers)
-  - [Hybrid search pipeline](#hybrid-search-pipeline)
-  - [4-stage pipeline architecture](#4-stage-pipeline-architecture)
-  - [BM25 trigger phrase re-index gate](#bm25-trigger-phrase-re-index-gate)
-  - [AST-level section retrieval tool](#ast-level-section-retrieval-tool)
-  - [Quality-aware 3-tier search fallback](#quality-aware-3-tier-search-fallback)
-  - [Tool-result extraction to working memory](#tool-result-extraction-to-working-memory)
-- [Mutation](#mutation)
-  - [Memory indexing (memory_save)](#memory-indexing-memory_save)
-  - [Memory metadata update (memory_update)](#memory-metadata-update-memory_update)
-  - [Single and folder delete (memory_delete)](#single-and-folder-delete-memory_delete)
-  - [Tier-based bulk deletion (memory_bulk_delete)](#tier-based-bulk-deletion-memory_bulk_delete)
-  - [Validation feedback (memory_validate)](#validation-feedback-memory_validate)
-  - [Transaction wrappers on mutation handlers](#transaction-wrappers-on-mutation-handlers)
-  - [Namespace management CRUD tools](#namespace-management-crud-tools)
-  - [Prediction-error save arbitration](#prediction-error-save-arbitration)
-  - [Correction tracking with undo](#correction-tracking-with-undo)
-  - [Per-memory history log](#per-memory-history-log)
-- [Discovery](#discovery)
-  - [Memory browser (memory_list)](#memory-browser-memory_list)
-  - [System statistics (memory_stats)](#system-statistics-memory_stats)
-  - [Health diagnostics (memory_health)](#health-diagnostics-memory_health)
-- [Maintenance](#maintenance)
-  - [Workspace scanning and indexing (memory_index_scan)](#workspace-scanning-and-indexing-memory_index_scan)
-  - [Startup runtime compatibility guards](#startup-runtime-compatibility-guards)
-- [Lifecycle](#lifecycle)
-  - [Checkpoint creation (checkpoint_create)](#checkpoint-creation-checkpoint_create)
-  - [Checkpoint listing (checkpoint_list)](#checkpoint-listing-checkpoint_list)
-  - [Checkpoint restore (checkpoint_restore)](#checkpoint-restore-checkpoint_restore)
-  - [Checkpoint deletion (checkpoint_delete)](#checkpoint-deletion-checkpoint_delete)
-  - [Async ingestion job lifecycle](#async-ingestion-job-lifecycle)
-  - [Startup pending-file recovery](#startup-pending-file-recovery)
-  - [Automatic archival subsystem](#automatic-archival-subsystem)
-- [Analysis](#analysis)
-  - [Causal edge creation (memory_causal_link)](#causal-edge-creation-memory_causal_link)
-  - [Causal graph statistics (memory_causal_stats)](#causal-graph-statistics-memory_causal_stats)
-  - [Causal edge deletion (memory_causal_unlink)](#causal-edge-deletion-memory_causal_unlink)
-  - [Causal chain tracing (memory_drift_why)](#causal-chain-tracing-memory_drift_why)
-  - [Epistemic baseline capture (task_preflight)](#epistemic-baseline-capture-task_preflight)
-  - [Post-task learning measurement (task_postflight)](#post-task-learning-measurement-task_postflight)
-  - [Learning history (memory_get_learning_history)](#learning-history-memory_get_learning_history)
-- [Evaluation](#evaluation)
-  - [Ablation studies (eval_run_ablation)](#ablation-studies-eval_run_ablation)
-  - [Reporting dashboard (eval_reporting_dashboard)](#reporting-dashboard-eval_reporting_dashboard)
-- [Bug fixes and data integrity](#bug-fixes-and-data-integrity)
-  - [Graph channel ID fix](#graph-channel-id-fix)
-  - [Chunk collapse deduplication](#chunk-collapse-deduplication)
-  - [Co-activation fan-effect divisor](#co-activation-fan-effect-divisor)
-  - [SHA-256 content-hash deduplication](#sha-256-content-hash-deduplication)
-  - [Database and schema safety](#database-and-schema-safety)
-  - [Guards and edge cases](#guards-and-edge-cases)
-  - [Canonical ID dedup hardening](#canonical-id-dedup-hardening)
-  - [Math.max/min stack overflow elimination](#mathmaxmin-stack-overflow-elimination)
-  - [Session-manager transaction gap fixes](#session-manager-transaction-gap-fixes)
-  - [Chunking orchestrator safe swap](#chunking-orchestrator-safe-swap)
-  - [Working memory session cleanup timestamp fix](#working-memory-session-cleanup-timestamp-fix)
-- [Evaluation and measurement](#evaluation-and-measurement)
-  - [Evaluation database and schema](#evaluation-database-and-schema)
-  - [Core metric computation](#core-metric-computation)
-  - [Observer effect mitigation](#observer-effect-mitigation)
-  - [Full-context ceiling evaluation](#full-context-ceiling-evaluation)
-  - [Quality proxy formula](#quality-proxy-formula)
-  - [Synthetic ground truth corpus](#synthetic-ground-truth-corpus)
-  - [BM25-only baseline](#bm25-only-baseline)
-  - [Agent consumption instrumentation](#agent-consumption-instrumentation)
-  - [Scoring observability](#scoring-observability)
-  - [Full reporting and ablation study framework](#full-reporting-and-ablation-study-framework)
-  - [Shadow scoring and channel attribution](#shadow-scoring-and-channel-attribution)
-  - [Test quality improvements](#test-quality-improvements)
-  - [Evaluation and housekeeping fixes](#evaluation-and-housekeeping-fixes)
-  - [Cross-AI validation fixes](#cross-ai-validation-fixes)
-  - [Memory roadmap baseline snapshot](#memory-roadmap-baseline-snapshot)
-  - [INT8 quantization evaluation](#int8-quantization-evaluation)
-- [Graph signal activation](#graph-signal-activation)
-  - [Typed-weighted degree channel](#typed-weighted-degree-channel)
-  - [Co-activation boost strength increase](#co-activation-boost-strength-increase)
-  - [Edge density measurement](#edge-density-measurement)
-  - [Weight history audit tracking](#weight-history-audit-tracking)
-  - [Graph momentum scoring](#graph-momentum-scoring)
-  - [Causal depth signal](#causal-depth-signal)
-  - [Community detection](#community-detection)
-  - [Graph and cognitive memory fixes](#graph-and-cognitive-memory-fixes)
-  - [ANCHOR tags as graph nodes](#anchor-tags-as-graph-nodes)
-  - [Causal neighbor boost and injection](#causal-neighbor-boost-and-injection)
-  - [Temporal contiguity layer](#temporal-contiguity-layer)
-  - [Unified graph retrieval, deterministic ranking, explainability, and rollback](#unified-graph-retrieval-deterministic-ranking-explainability-and-rollback)
-- [Scoring and calibration](#scoring-and-calibration)
-  - [Score normalization](#score-normalization)
-  - [Cold-start novelty boost](#cold-start-novelty-boost)
-  - [Interference scoring](#interference-scoring)
-  - [Classification-based decay](#classification-based-decay)
-  - [Folder-level relevance scoring](#folder-level-relevance-scoring)
-  - [Embedding cache](#embedding-cache)
-  - [Double intent weighting investigation](#double-intent-weighting-investigation)
-  - [RRF K-value sensitivity analysis](#rrf-k-value-sensitivity-analysis)
-  - [Negative feedback confidence signal](#negative-feedback-confidence-signal)
-  - [Auto-promotion on validation](#auto-promotion-on-validation)
-  - [Scoring and ranking corrections](#scoring-and-ranking-corrections)
-  - [Stage 3 effectiveScore fallback chain](#stage-3-effectivescore-fallback-chain)
-  - [Scoring and fusion corrections](#scoring-and-fusion-corrections)
-  - [Local GGUF reranker via node-llama-cpp](#local-gguf-reranker-via-node-llama-cpp)
-  - [Tool-level TTL cache](#tool-level-ttl-cache)
-  - [Access-driven popularity scoring](#access-driven-popularity-scoring)
-  - [Temporal-structural coherence scoring](#temporal-structural-coherence-scoring)
-  - [Adaptive shadow ranking, bounded proposals, and rollback](#adaptive-shadow-ranking-bounded-proposals-and-rollback)
-- [Query intelligence](#query-intelligence)
-  - [Query complexity router](#query-complexity-router)
-  - [Relative score fusion in shadow mode](#relative-score-fusion-in-shadow-mode)
-  - [Channel min-representation](#channel-min-representation)
-  - [Confidence-based result truncation](#confidence-based-result-truncation)
-  - [Dynamic token budget allocation](#dynamic-token-budget-allocation)
-  - [Query expansion](#query-expansion)
-- [Memory quality and indexing](#memory-quality-and-indexing)
-  - [Verify-fix-verify memory quality loop](#verify-fix-verify-memory-quality-loop)
-  - [Signal vocabulary expansion](#signal-vocabulary-expansion)
-  - [Pre-flight token budget validation](#pre-flight-token-budget-validation)
-  - [Spec folder description discovery](#spec-folder-description-discovery)
-  - [Pre-storage quality gate](#pre-storage-quality-gate)
-  - [Reconsolidation-on-save](#reconsolidation-on-save)
-  - [Smarter memory content generation](#smarter-memory-content-generation)
-  - [Anchor-aware chunk thinning](#anchor-aware-chunk-thinning)
-  - [Encoding-intent capture at index time](#encoding-intent-capture-at-index-time)
-  - [Auto entity extraction](#auto-entity-extraction)
-  - [Content-aware memory filename generation](#content-aware-memory-filename-generation)
-  - [Generation-time duplicate and empty content prevention](#generation-time-duplicate-and-empty-content-prevention)
-  - [Entity normalization consolidation](#entity-normalization-consolidation)
-  - [Quality gate timer persistence](#quality-gate-timer-persistence)
-  - [Deferred lexical-only indexing](#deferred-lexical-only-indexing)
-  - [Dry-run preflight for memory_save](#dry-run-preflight-for-memory_save)
-  - [Outsourced agent memory capture](#outsourced-agent-memory-capture)
-  - [Stateless enrichment and alignment guards](#stateless-enrichment-and-alignment-guards)
-- [Pipeline architecture](#pipeline-architecture)
-  - [4-stage pipeline refactor](#4-stage-pipeline-refactor)
-  - [MPAB chunk-to-memory aggregation](#mpab-chunk-to-memory-aggregation)
-  - [Chunk ordering preservation](#chunk-ordering-preservation)
-  - [Template anchor optimization](#template-anchor-optimization)
-  - [Validation signals as retrieval metadata](#validation-signals-as-retrieval-metadata)
-  - [Learned relevance feedback](#learned-relevance-feedback)
-  - [Search pipeline safety](#search-pipeline-safety)
-  - [Performance improvements](#performance-improvements)
-  - [Activation window persistence](#activation-window-persistence)
-  - [Legacy V1 pipeline removal](#legacy-v1-pipeline-removal)
-  - [Pipeline and mutation hardening](#pipeline-and-mutation-hardening)
-  - [DB_PATH extraction and import standardization](#db_path-extraction-and-import-standardization)
-  - [Strict Zod schema validation](#strict-zod-schema-validation)
-  - [Dynamic server instructions at MCP initialization](#dynamic-server-instructions-at-mcp-initialization)
-  - [Warm server / daemon mode](#warm-server--daemon-mode)
-  - [Backend storage adapter abstraction](#backend-storage-adapter-abstraction)
-  - [Cross-process DB hot rebinding](#cross-process-db-hot-rebinding)
-  - [Atomic write-then-index API](#atomic-write-then-index-api)
-  - [Embedding retry orchestrator](#embedding-retry-orchestrator)
-  - [7-layer tool architecture metadata](#7-layer-tool-architecture-metadata)
-  - [Atomic pending-file recovery](#atomic-pending-file-recovery)
-  - [Lineage state active projection and asOf resolution](#lineage-state-active-projection-and-asof-resolution)
-- [Retrieval enhancements](#retrieval-enhancements)
-  - [Dual-scope memory auto-surface](#dual-scope-memory-auto-surface)
-  - [Constitutional memory as expert knowledge injection](#constitutional-memory-as-expert-knowledge-injection)
-  - [Spec folder hierarchy as retrieval structure](#spec-folder-hierarchy-as-retrieval-structure)
-  - [Lightweight consolidation](#lightweight-consolidation)
-  - [Memory summary search channel](#memory-summary-search-channel)
-  - [Cross-document entity linking](#cross-document-entity-linking)
-  - [Tier-2 fallback channel forcing](#tier-2-fallback-channel-forcing)
-  - [Provenance-rich response envelopes](#provenance-rich-response-envelopes)
-  - [Contextual tree injection](#contextual-tree-injection)
-- [Tooling and scripts](#tooling-and-scripts)
-  - [Tree thinning for spec folder consolidation](#tree-thinning-for-spec-folder-consolidation)
-  - [Architecture boundary enforcement](#architecture-boundary-enforcement)
-  - [Progressive validation for spec documents](#progressive-validation-for-spec-documents)
-  - [Dead code removal](#dead-code-removal)
-  - [Code standards alignment](#code-standards-alignment)
-  - [Real-time filesystem watching with chokidar](#real-time-filesystem-watching-with-chokidar)
-  - [Standalone admin CLI](#standalone-admin-cli)
-  - [Constitutional memory manager command](#constitutional-memory-manager-command)
-  - [Migration checkpoint scripts](#migration-checkpoint-scripts)
-  - [Schema compatibility validation](#schema-compatibility-validation)
-  - [Watcher delete/rename cleanup](#watcher-deleterename-cleanup)
-  - [Feature catalog code references](#feature-catalog-code-references)
-  - [Session capturing pipeline quality](#session-capturing-pipeline-quality)
-- [Governance](#governance)
-  - [Feature flag governance](#feature-flag-governance)
-  - [Feature flag sunset audit](#feature-flag-sunset-audit)
-  - [Hierarchical scope governance, governed ingest, retention, and audit](#hierarchical-scope-governance-governed-ingest-retention-and-audit)
-  - [Shared-memory rollout, deny-by-default membership, and kill switch](#shared-memory-rollout-deny-by-default-membership-and-kill-switch)
-- [UX hooks](#ux-hooks)
-  - [Shared post-mutation hook wiring](#shared-post-mutation-hook-wiring)
-  - [Memory health autoRepair metadata](#memory-health-autorepair-metadata)
-  - [Checkpoint delete confirmName safety](#checkpoint-delete-confirmname-safety)
-  - [Schema and type contract synchronization](#schema-and-type-contract-synchronization)
-  - [Dedicated UX hook modules](#dedicated-ux-hook-modules)
-  - [Mutation hook result contract expansion](#mutation-hook-result-contract-expansion)
-  - [Mutation response UX payload exposure](#mutation-response-ux-payload-exposure)
-  - [Context-server success-path hint append](#context-server-success-path-hint-append)
-  - [Duplicate-save no-op feedback hardening](#duplicate-save-no-op-feedback-hardening)
-  - [Atomic-save parity and partial-indexing hints](#atomic-save-parity-and-partial-indexing-hints)
-  - [Final token metadata recomputation](#final-token-metadata-recomputation)
-  - [Hooks README and export alignment](#hooks-readme-and-export-alignment)
-  - [End-to-end success-envelope verification](#end-to-end-success-envelope-verification)
-- [Phase System](#phase-system)
-  - [Phase detection and scoring (recommend-level.sh --recommend-phases)](#phase-detection-and-scoring-recommend-levelsh---recommend-phases)
-  - [Phase folder creation (create.sh --phase)](#phase-folder-creation-createsh---phase)
-  - [Recursive phase validation (validate.sh --recursive)](#recursive-phase-validation-validatesh---recursive)
-  - [Phase link validation (check-phase-links.sh)](#phase-link-validation-check-phase-linkssh)
-- [Feature Flag Reference](#feature-flag-reference)
-  - [1. Search Pipeline Features (SPECKIT_*)](#1-search-pipeline-features-speckit_)
-  - [2. Session and Cache](#2-session-and-cache)
-  - [3. MCP Configuration](#3-mcp-configuration)
-  - [4. Memory and Storage](#4-memory-and-storage)
-  - [5. Embedding and API](#5-embedding-and-api)
-  - [6. Debug and Telemetry](#6-debug-and-telemetry)
-  - [7. CI and Build (informational)](#7-ci-and-build-informational)
+- [2. RETRIEVAL](#2--retrieval)
+- [3. MUTATION](#3--mutation)
+- [4. DISCOVERY](#4--discovery)
+- [5. MAINTENANCE](#5--maintenance)
+- [6. LIFECYCLE](#6--lifecycle)
+- [7. ANALYSIS](#7--analysis)
+- [8. EVALUATION](#8--evaluation)
+- [9. BUG FIXES AND DATA INTEGRITY](#9--bug-fixes-and-data-integrity)
+- [10. EVALUATION AND MEASUREMENT](#10--evaluation-and-measurement)
+- [11. GRAPH SIGNAL ACTIVATION](#11--graph-signal-activation)
+- [12. SCORING AND CALIBRATION](#12--scoring-and-calibration)
+- [13. QUERY INTELLIGENCE](#13--query-intelligence)
+- [14. MEMORY QUALITY AND INDEXING](#14--memory-quality-and-indexing)
+- [15. PIPELINE ARCHITECTURE](#15--pipeline-architecture)
+- [16. RETRIEVAL ENHANCEMENTS](#16--retrieval-enhancements)
+- [17. TOOLING AND SCRIPTS](#17--tooling-and-scripts)
+- [18. GOVERNANCE](#18--governance)
+- [19. UX HOOKS](#19--ux-hooks)
+- [20. PHASE SYSTEM](#20--phase-system)
+- [21. FEATURE FLAG REFERENCE](#21--feature-flag-reference)
 
 ---
 
-## 3. RETRIEVAL
+## 1. OVERVIEW
+
+Use this catalog as the canonical inventory for both current behavior and delivered refinements. The numbered sections below group the live system by capability area so operators can move from the top-level reference into the per-feature files without losing implementation, validation, or rollout context.
+
+---
+
+## 2. RETRIEVAL
 
 ### Unified context retrieval (memory_context)
 
@@ -446,7 +233,7 @@ See [`01--retrieval/09-tool-result-extraction-to-working-memory.md`](01--retriev
 
 ---
 
-## 4. MUTATION
+## 3. MUTATION
 
 This section documents 10 mutation features.
 
@@ -666,7 +453,7 @@ See [`02--mutation/10-per-memory-history-log.md`](02--mutation/10-per-memory-his
 
 ---
 
-## 5. DISCOVERY
+## 4. DISCOVERY
 
 ### Memory browser (memory_list)
 
@@ -732,7 +519,7 @@ See [`03--discovery/03-health-diagnostics-memoryhealth.md`](03--discovery/03-hea
 
 ---
 
-## 6. MAINTENANCE
+## 5. MAINTENANCE
 
 ### Workspace scanning and indexing (memory_index_scan)
 
@@ -782,7 +569,7 @@ See [`04--maintenance/02-startup-runtime-compatibility-guards.md`](04--maintenan
 
 ---
 
-## 7. LIFECYCLE
+## 6. LIFECYCLE
 
 ### Checkpoint creation (checkpoint_create)
 
@@ -912,7 +699,7 @@ See [`05--lifecycle/07-automatic-archival-subsystem.md`](05--lifecycle/07-automa
 
 ---
 
-## 8. ANALYSIS
+## 7. ANALYSIS
 
 ### Causal edge creation (memory_causal_link)
 
@@ -1060,7 +847,7 @@ See [`06--analysis/07-learning-history-memorygetlearninghistory.md`](06--analysi
 
 ---
 
-## 9. EVALUATION
+## 8. EVALUATION
 
 ### Ablation studies (eval_run_ablation)
 
@@ -1102,7 +889,7 @@ See [`07--evaluation/02-reporting-dashboard-evalreportingdashboard.md`](07--eval
 
 ---
 
-## 10. BUG FIXES AND DATA INTEGRITY
+## 9. BUG FIXES AND DATA INTEGRITY
 
 ### Graph channel ID fix
 
@@ -1307,7 +1094,7 @@ See [`08--bug-fixes-and-data-integrity/11-working-memory-timestamp-fix.md`](08--
 
 ---
 
-## 11. EVALUATION AND MEASUREMENT
+## 10. EVALUATION AND MEASUREMENT
 
 ### Evaluation database and schema
 
@@ -1639,7 +1426,7 @@ See [`09--evaluation-and-measurement/16-int8-quantization-evaluation.md`](09--ev
 
 ---
 
-## 12. GRAPH SIGNAL ACTIVATION
+## 11. GRAPH SIGNAL ACTIVATION
 
 ### Typed-weighted degree channel
 
@@ -1881,7 +1668,7 @@ See [`10--graph-signal-activation/12-unified-graph-retrieval-deterministic-ranki
 
 ---
 
-## 13. SCORING AND CALIBRATION
+## 12. SCORING AND CALIBRATION
 
 ### Score normalization
 
@@ -2238,7 +2025,7 @@ See [`11--scoring-and-calibration/18-adaptive-shadow-ranking-bounded-proposals-a
 
 ---
 
-## 14. QUERY INTELLIGENCE
+## 13. QUERY INTELLIGENCE
 
 ### Query complexity router
 
@@ -2360,7 +2147,7 @@ See [`12--query-intelligence/06-query-expansion.md`](12--query-intelligence/06-q
 
 ---
 
-## 15. MEMORY QUALITY AND INDEXING
+## 14. MEMORY QUALITY AND INDEXING
 
 ### Verify-fix-verify memory quality loop
 
@@ -2774,7 +2561,7 @@ See [`13--memory-quality-and-indexing/18-stateless-enrichment-and-alignment-guar
 
 ---
 
-## 16. PIPELINE ARCHITECTURE
+## 15. PIPELINE ARCHITECTURE
 
 ### 4-stage pipeline refactor
 
@@ -3195,7 +2982,7 @@ See [`14--pipeline-architecture/22-lineage-state-active-projection-and-asof-reso
 
 ---
 
-## 17. RETRIEVAL ENHANCEMENTS
+## 16. RETRIEVAL ENHANCEMENTS
 
 ### Dual-scope memory auto-surface
 
@@ -3373,7 +3160,7 @@ See [`15--retrieval-enhancements/09-contextual-tree-injection.md`](15--retrieval
 
 ---
 
-## 18. TOOLING AND SCRIPTS
+## 17. TOOLING AND SCRIPTS
 
 ### Tree thinning for spec folder consolidation
 
@@ -3638,7 +3425,7 @@ See [`16--tooling-and-scripts/12-session-capturing-pipeline-quality.md`](16--too
 
 ---
 
-## 19. GOVERNANCE
+## 18. GOVERNANCE
 
 ### Feature flag governance
 
@@ -3726,7 +3513,7 @@ See [`17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kil
 
 ---
 
-## 20. UX HOOKS
+## 19. UX HOOKS
 
 Current mapping: this content is tracked under spec `006-ux-hooks-automation`.
 
@@ -3947,7 +3734,7 @@ See [`18--ux-hooks/13-end-to-end-success-envelope-verification.md`](18--ux-hooks
 
 ---
 
-## 21. PHASE SYSTEM
+## 20. PHASE SYSTEM
 
 ### Phase detection and scoring (recommend-level.sh --recommend-phases)
 
@@ -4013,7 +3800,7 @@ Shell script: `.opencode/skill/system-spec-kit/scripts/rules/check-phase-links.s
 
 ---
 
-## 22. FEATURE FLAG REFERENCE
+## 21. FEATURE FLAG REFERENCE
 
 Every runtime behavior in the MCP server is controlled by environment variables. The tables below catalogue all known flags grouped by category. The "Default" column reflects the value in effect when the variable is absent from the environment.
 

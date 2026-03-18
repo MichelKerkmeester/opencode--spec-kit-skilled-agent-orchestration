@@ -40,6 +40,17 @@
       },
       "trust": true
     },
+    "cocoindex_code": {
+      "command": ".opencode/skill/mcp-cocoindex-code/mcp_server/.venv/bin/ccc",
+      "args": [
+        "mcp"
+      ],
+      "cwd": ".",
+      "env": {
+        "COCOINDEX_CODE_ROOT_PATH": "."
+      },
+      "trust": true
+    },
     "code_mode": {
       "command": "node",
       "args": [
@@ -48,17 +59,6 @@
       "cwd": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public",
       "env": {
         "UTCP_CONFIG_FILE": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.utcp_config.json"
-      },
-      "trust": true
-    },
-    "cocoindex_code": {
-      "command": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/mcp-cocoindex-code/mcp_server/.venv/bin/ccc",
-      "args": [
-        "mcp"
-      ],
-      "cwd": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public",
-      "env": {
-        "COCOINDEX_CODE_ROOT_PATH": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public"
       },
       "trust": true
     }

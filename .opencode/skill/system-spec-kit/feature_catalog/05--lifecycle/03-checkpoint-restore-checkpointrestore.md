@@ -1,3 +1,8 @@
+---
+title: "Checkpoint restore (checkpoint_restore)"
+description: "Covers the checkpoint restore tool that decompresses snapshots and merges or replaces memory state atomically."
+---
+
 # Checkpoint restore (checkpoint_restore)
 
 ## 1. OVERVIEW

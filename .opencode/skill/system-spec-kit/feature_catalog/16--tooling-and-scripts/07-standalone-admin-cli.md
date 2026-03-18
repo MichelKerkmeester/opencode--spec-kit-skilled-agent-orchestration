@@ -1,3 +1,8 @@
+---
+title: "Standalone admin CLI"
+description: "The standalone admin CLI provides non-MCP database maintenance commands for stats, bulk-delete, reindex and schema-downgrade operations."
+---
+
 # Standalone admin CLI
 
 ## 1. OVERVIEW

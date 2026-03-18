@@ -1,3 +1,8 @@
+---
+title: "Unified graph retrieval, deterministic ranking, explainability, and rollback"
+description: "Describes the Phase 3 unified graph retrieval path with deterministic ranking contracts, trace-based explainability and runtime rollback via the `SPECKIT_GRAPH_UNIFIED` gate."
+---
+
 # Unified graph retrieval, deterministic ranking, explainability, and rollback
 
 ## 1. OVERVIEW

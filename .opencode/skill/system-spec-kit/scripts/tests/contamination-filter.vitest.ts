@@ -2,6 +2,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { filterContamination, SEVERITY_RANK } from '../extractors/contamination-filter';
+import { getSourceCapabilities } from '../utils/source-capabilities';
 
 describe('filterContamination severity tracking', () => {
   it('reports low severity for preamble-only input', () => {
@@ -77,5 +78,49 @@ describe('filterContamination severity tracking', () => {
     expect(result.hadContamination).toBe(true);
     expect(result.maxSeverity).toBe('high');
     expect(result.matchedPatterns).toContain('request id leak');
+  });
+
+  it('downgrades tool title with path severity for sources whose capabilities expect transcript-style tool titles', () => {
+    const result = filterContamination(
+      'Read tool on /src/file.ts',
+      undefined,
+      { sourceCapabilities: getSourceCapabilities('claude-code-capture') },
+    );
+
+    expect(result.hadContamination).toBe(true);
+    expect(result.maxSeverity).toBe('low');
+    expect(result.matchedPatterns).toContain('tool title with path');
+  });
+
+  it('preserves high severity for sources whose capabilities do not expect transcript-style tool titles', () => {
+    const result = filterContamination(
+      'Read tool on /src/file.ts',
+      undefined,
+      { sourceCapabilities: getSourceCapabilities('codex-cli-capture') },
+    );
+
+    expect(result.hadContamination).toBe(true);
+    expect(result.maxSeverity).toBe('high');
+    expect(result.matchedPatterns).toContain('tool title with path');
+  });
+
+  it('keeps the same downgrade behavior when only captureSource is provided', () => {
+    const result = filterContamination(
+      'Read tool on /src/file.ts',
+      undefined,
+      { captureSource: 'claude-code-capture' },
+    );
+
+    expect(result.hadContamination).toBe(true);
+    expect(result.maxSeverity).toBe('low');
+    expect(result.matchedPatterns).toContain('tool title with path');
+  });
+
+  it('falls back to original severity when no source metadata is provided', () => {
+    const result = filterContamination('Read tool on /src/file.ts');
+
+    expect(result.hadContamination).toBe(true);
+    expect(result.maxSeverity).toBe('high');
+    expect(result.matchedPatterns).toContain('tool title with path');
   });
 });

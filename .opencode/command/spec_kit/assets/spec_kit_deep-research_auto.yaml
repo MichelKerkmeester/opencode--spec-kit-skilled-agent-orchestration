@@ -34,13 +34,15 @@ user_inputs:
 # ─────────────────────────────────────────────────────────────────
 context_loading:
   trigger: "At workflow START, before phase_init"
-  purpose: "Load prior research context for the topic"
+  purpose: "Load prior research context for the topic and buffer it until strategy.md exists"
   mcp_integration:
     tool: memory_context
     note: "Call MCP tools directly - NEVER through Code Mode"
     parameters: { input: "{research_topic}", mode: "focused", intent: "understand", includeContent: true }
   when_to_skip: ["User says 'skip context' or 'fresh start'"]
-  behavior: { if_context_found: "Inject into strategy.md Known Context section", if_no_context: "Proceed with empty Known Context" }
+  behavior:
+    if_context_found: "Store full results as prior_context plus a concise prior_context_summary; inject after strategy.md is created."
+    if_no_context: "Set prior_context and prior_context_summary to 'None' and continue."
 
 # ─────────────────────────────────────────────────────────────────
 # SKILL REFERENCE
@@ -91,19 +93,43 @@ workflow:
     purpose: Create all state files for the research session
     steps:
 
+      step_preflight_contract:
+        action: "Validate required setup bindings and executable workflow contract before any file writes"
+        verify:
+          - required_values_present: [research_topic, spec_folder, max_iterations, convergence_threshold]
+          - spec_folder_is_within: ".opencode/specs/"
+          - unresolved_placeholders: "FAIL if any user-facing template references placeholders not produced by earlier steps"
+          - tool_contract: "FAIL if executable steps reference tools outside the command allowlist"
+        on_fail: "Halt with STATUS=FAIL and report the missing binding or unsupported contract reference"
+
       step_create_directories:
         action: "Create spec folder and scratch directory if they don't exist"
         command: "mkdir -p {spec_folder}/scratch"
 
-      step_check_existing_state:
-        action: "Check if state files already exist (auto-resume)"
-        check: "Does {spec_folder}/scratch/deep-research-state.jsonl exist?"
-        if_exists:
-          action: "AUTO-RESUME: Count existing iterations, set start_iteration accordingly"
-          log: "Resuming from iteration {N+1} (found {N} completed iterations)"
+      step_classify_session:
+        action: "Classify the session before writing files"
+        inspect:
+          - "{spec_folder}/scratch/deep-research-config.json"
+          - "{spec_folder}/scratch/deep-research-state.jsonl"
+          - "{spec_folder}/scratch/deep-research-strategy.md"
+        classify:
+          fresh: "None of the three state artifacts exist"
+          resume: "Config, JSONL, and strategy all exist and agree on topic/spec folder"
+          completed-session: "Resume artifacts exist and config.status == 'complete'"
+          invalid-state: "Any partial, missing, or contradictory combination"
+        outputs:
+          - session_state: "fresh | resume | completed-session | invalid-state"
+        on_resume:
+          log: "Auto-resume: state artifacts are complete and consistent. Skip initialization writes and continue from phase_loop."
           skip_to: phase_loop
-        if_not_exists:
-          action: "Fresh start: create all state files"
+        on_completed_session:
+          log: "Prior session already completed. Reuse existing artifacts unless the user starts a new session explicitly."
+          skip_to: phase_synthesis
+        on_invalid_state:
+          halt: true
+          message: "Existing deep-research state is incomplete or contradictory. Repair or archive the invalid scratch state before continuing."
+        on_fresh:
+          action: "Proceed with a new session"
 
       step_create_config:
         action: "Create deep-research-config.json from template"
@@ -131,14 +157,21 @@ workflow:
         populate:
           topic: "{research_topic}"
           key_questions: "Derive 3-5 key questions from the research topic"
-          known_context: "Inject memory_context results if available, otherwise 'None'"
+          known_context: "None"
+          known_context_summary: "None"
           max_iterations: "{max_iterations}"
           convergence_threshold: "{convergence_threshold}"
         output: "{spec_folder}/scratch/deep-research-strategy.md"
 
+      step_enrich_strategy_context:
+        action: "Ensure Known Context is written only after strategy.md exists"
+        condition: "prior_context_found"
+        edit: "{spec_folder}/scratch/deep-research-strategy.md"
+        note: "Append or replace the Known Context section with prior_context_summary and retained detail from prior_context"
+
       step_init_complete:
         log: "Initialization complete. Config, state, and strategy files created."
-        set: { current_iteration: 1, stuck_count: 0 }
+        set: { current_iteration: 1, current_segment: 1, stuck_count: 0 }
 
   # ═══════════════════════════════════════════════════════════════
   # PHASE 2: ITERATION LOOP
@@ -156,9 +189,20 @@ workflow:
           - "{spec_folder}/scratch/deep-research-strategy.md"
         extract:
           - iteration_count: "Count lines where type === 'iteration'"
+          - current_iteration: "iteration_count + 1"
+          - current_segment: "Latest segment_start event segment, else 1"
           - last_newInfoRatio: "Extract newInfoRatio from last iteration record"
+          - last_focus: "Extract focus from latest iteration record, else 'none yet'"
+          - ratio_prev: "Extract newInfoRatio from second-latest iteration record, else 'N/A'"
+          - ratio_latest: "Extract newInfoRatio from latest iteration record, else 'N/A'"
           - next_focus: "Extract 'Next Focus' section from strategy.md"
           - remaining_questions: "Count unchecked items in 'Key Questions'"
+          - remaining_questions_list: "List unchecked key questions from strategy.md"
+          - answered_count: "Count answered questions from strategy.md"
+          - total_questions: "Count total questions tracked in strategy.md"
+          - least_explored: "First unanswered question not covered by the most recent iteration focus, else first unanswered question"
+          - last_3_summaries: "Summarize the latest 3 iteration records as 'run N: focus (ratio)'"
+          - latest_status: "Extract status from latest iteration record, else 'none yet'"
 
       step_check_pause_sentinel:
         action: "Check for pause sentinel file"
@@ -175,7 +219,7 @@ workflow:
         algorithm: |
           1. if iteration_count >= max_iterations: STOP (max_iterations_reached)
           2. if remaining_questions == 0: STOP (all_questions_answered)
-          3. if stuck_count >= 3: STUCK_RECOVERY
+          3. if stuck_count >= config.stuckThreshold: STUCK_RECOVERY
           4. COMPOSITE CONVERGENCE (3-signal weighted vote):
                signals = []
                a) Rolling average (w=0.30, needs 3+ iterations):
@@ -191,7 +235,7 @@ workflow:
                if weighted_stop_score > 0.60: STOP (composite_converged)
           5. else: CONTINUE
           See convergence.md for full pseudocode and signal definitions.
-          When segments active, signals filter per-segment. See convergence.md.
+          Segment-aware convergence is experimental/reference-only; live workflow uses the current session as a single segment.
         outputs:
           - decision: "STOP | STUCK_RECOVERY | CONTINUE"
           - reason: "Human-readable stop reason"
@@ -203,7 +247,7 @@ workflow:
           skip_to: phase_synthesis
         if_stuck_recovery:
           log: "Stuck detected ({stuck_count} consecutive no-progress). Entering recovery."
-          set_recovery_focus: "RECOVERY: Widen scope. Try fundamentally different approach. Least-explored question: {least_explored}"
+          set: { next_focus: "RECOVERY: Widen scope. Try fundamentally different approach. Least-explored question: {least_explored}" }
           reset: { stuck_count: 0 }
         if_continue:
           log: "Iteration {current_iteration}: Continuing. Focus: {next_focus}"
@@ -219,14 +263,13 @@ workflow:
               Segment: {current_segment} | Iteration: {current_iteration} of {max_iterations}
               Questions: {answered_count}/{total_questions} answered | Last focus: {last_focus}
               Last 2 ratios: {ratio_prev} -> {ratio_latest} | Stuck count: {stuck_count}
-              Recovery: {active_recovery or "none"}
               Next focus: {next_focus}
           context: |
             {state_summary}
 
             Research Topic: {research_topic}
             Iteration: {current_iteration} of {max_iterations}
-            Focus Area: {next_focus_or_recovery_focus}
+            Focus Area: {next_focus}
             Remaining Key Questions: {remaining_questions_list}
             Last 3 Iterations Summary: {last_3_summaries}
 
@@ -251,58 +294,21 @@ workflow:
           - newInfoRatio: "From latest JSONL iteration record"
           - findings_count: "From latest JSONL iteration record"
           - status: "From latest JSONL iteration record"
+          - latest_focus: "From latest JSONL iteration record"
         on_missing_outputs:
           action: "Mark iteration as 'error', continue to next"
           append_jsonl: '{"type":"iteration","run":{N},"status":"error","focus":"{focus}","findingsCount":0,"newInfoRatio":0.0,"timestamp":"{ISO_8601_NOW}"}'
-
-      step_checkpoint_commit:
-        action: "Git checkpoint after verified iteration"
-        commands:
-          - "git add {spec_folder}/scratch/iteration-{NNN}.md {spec_folder}/scratch/deep-research-state.jsonl {spec_folder}/scratch/deep-research-strategy.md {spec_folder}/research.md"
-          - 'git commit -m "chore(deep-research): iteration {NNN} complete"'
-        on_failure: "Log warning, continue (checkpoint is non-blocking)"
 
       step_update_tracking:
         action: "Update loop tracking variables"
         set:
           current_iteration: "{current_iteration + 1}"
-          stuck_count: "if newInfoRatio < 0.05: stuck_count + 1, else: 0"
+          stuck_count: "if newInfoRatio < convergence_threshold: stuck_count + 1, else: 0"
         log: "Iteration {N} complete. newInfoRatio: {newInfoRatio}. Findings: {findings_count}. Stuck count: {stuck_count}."
 
       step_loop_decision:
         action: "Return to step_read_state for next iteration"
         goto: step_read_state
-
-      # ─── WAVE ORCHESTRATION (alternative to sequential) ───
-      step_wave_check:
-        action: "Check if wave mode is appropriate"
-        condition: "3+ independent unanswered questions AND wave_mode enabled"
-        if_true:
-          proceed_to: step_wave_dispatch
-        if_false:
-          note: "Continue with sequential iteration (default path)"
-
-      step_wave_dispatch:
-        action: "Dispatch N agents in parallel on independent questions"
-        dispatch_parallel:
-          agent: deep-research
-          instances: "{min(independent_questions, 3)}"
-          per_instance_context: "Each gets a unique question focus"
-        wait_for_all: true
-
-      step_wave_scoring:
-        action: "Score wave results and prune"
-        algorithm: |
-          1. Collect newInfoRatio from each wave iteration
-          2. Compute wave median
-          3. Prune: questions below median -> move to ideas backlog
-          4. Promote: top-K questions (K = ceil(N/2)) get follow-up
-          5. Breakthrough: if any ratio > 2x average, generate adjacent questions
-        log_event: '{"type":"event","event":"wave_complete","wave":{wave_number},"medianRatio":{median}}'
-        if_breakthrough:
-          log_event: '{"type":"event","event":"breakthrough","wave":{wave_number},"iteration":{N},"ratio":{ratio}}'
-          action: "Generate 2-3 adjacent questions, prioritize in next wave"
-        next: step_read_state
 
   # ═══════════════════════════════════════════════════════════════
   # PHASE 3: SYNTHESIS
@@ -310,6 +316,26 @@ workflow:
   phase_synthesis:
     purpose: Compile all iteration findings into final research.md
     steps:
+
+      step_hydrate_summary_metrics:
+        action: "Hydrate summary metrics before synthesis, including completed-session resume paths"
+        read:
+          - "{spec_folder}/scratch/deep-research-config.json"
+          - "{spec_folder}/scratch/deep-research-state.jsonl"
+          - "{spec_folder}/scratch/deep-research-strategy.md"
+        extract:
+          - iteration_count: "Count lines where type === 'iteration'"
+          - current_iteration: "iteration_count + 1"
+          - current_segment: "Latest segment_start event segment, else 1"
+          - last_focus: "Extract focus from latest iteration record, else 'none yet'"
+          - ratio_prev: "Extract newInfoRatio from second-latest iteration record, else 'N/A'"
+          - ratio_latest: "Extract newInfoRatio from latest iteration record, else 'N/A'"
+          - remaining_questions: "Count unchecked items in 'Key Questions'"
+          - remaining_questions_list: "List unchecked key questions from strategy.md"
+          - answered_count: "Count answered questions from strategy.md"
+          - total_questions: "Count total questions tracked in strategy.md"
+          - last_3_summaries: "Summarize the latest 3 iteration records as 'run N: focus (ratio)'"
+          - reason: "Use the latest synthesis/recovery stop reason if present, else 'completed_session_resume'"
 
       step_read_all_iterations:
         action: "Read all iteration files and strategy"
@@ -337,16 +363,14 @@ workflow:
         action: "Generate and append convergence report"
         report: |
           ## Convergence Report
-          - Stop reason: {stop_reason}
-          - Total iterations: {total_iterations} (segment: {current_segment})
-          - Questions answered: {answered} / {total} ({percentage}%)
-          - Composite convergence score: {composite_score} / 0.60
-            - Rolling Avg (w=0.30): {rolling_avg} [{rolling_vote}]
-            - MAD Noise (w=0.35): {mad_score} [{mad_vote}] (floor: {noise_floor})
-            - Entropy (w=0.35): {entropy_coverage} [{entropy_vote}]
-          - Stuck recovery attempts: {recovery_count}
-          - Error recovery tiers used: {tier_list}
-        append_to_jsonl: '{"type":"event","event":"synthesis_complete","totalIterations":{N},"answeredRatio":{ratio},"stopReason":"{reason}"}'
+          - Stop reason: {reason}
+          - Total iterations: {iteration_count}
+          - Questions answered: {answered_count} / {total_questions}
+          - Remaining questions: {remaining_questions}
+          - Last 3 iteration summaries: {last_3_summaries}
+          - Convergence threshold: {convergence_threshold}
+          - Segment transitions, wave scores, and checkpoint metrics are experimental and omitted from the live report.
+        append_to_jsonl: '{"type":"event","event":"synthesis_complete","totalIterations":{iteration_count},"answeredCount":{answered_count},"totalQuestions":{total_questions},"stopReason":"{reason}","timestamp":"{ISO_8601_NOW}"}'
 
       step_update_config_status:
         action: "Mark config as complete"
@@ -366,9 +390,8 @@ workflow:
         critical_rule: "NEVER use Write tool directly for memory/ paths"
 
       step_index_memory:
-        action: "Index for MCP visibility"
-        mcp_tool: memory_index_scan
-        parameters: { specFolder: "{spec_folder_name}" }
+        action: "No additional indexing step in the live contract"
+        note: "generate-context.js is the supported save boundary for this workflow"
 
       step_verify_save:
         action: "Verify memory file was created"
@@ -381,12 +404,12 @@ workflow:
   completion:
     message: |
       Deep research complete.
-      Iterations: {total_iterations} | Stop reason: {stop_reason}
-      Questions answered: {answered}/{total} ({percentage}%)
+      Iterations: {iteration_count} | Stop reason: {reason}
+      Questions answered: {answered_count}/{total_questions}
 
       Artifacts:
-        - research.md (compiled from {total_iterations} iterations)
-        - {total_iterations} iteration files in scratch/
+        - research.md (compiled from {iteration_count} iterations)
+        - {iteration_count} iteration files in scratch/
         - State files: config.json, state.jsonl, strategy.md
         - Memory context saved
 
@@ -423,3 +446,19 @@ rules:
     - modify_config_after_initialization
     - overwrite_jsonl_state_log
     - proceed_without_state_file_verification
+
+# ─────────────────────────────────────────────────────────────────
+# REFERENCE-ONLY APPENDIX
+# ─────────────────────────────────────────────────────────────────
+reference_only_appendix:
+  checkpoint_commit:
+    note: "Checkpoint commits are intentionally excluded from workflow.steps."
+    commands:
+      - "git add {spec_folder}/scratch/iteration-{NNN}.md {spec_folder}/scratch/deep-research-state.jsonl {spec_folder}/scratch/deep-research-strategy.md {spec_folder}/research.md"
+      - 'git commit -m "chore(deep-research): iteration {NNN} complete"'
+  wave_orchestration:
+    note: "Wave execution is intentionally excluded from workflow.steps."
+    summary:
+      - "Check whether 3+ independent unanswered questions justify a wave."
+      - "Dispatch up to 3 parallel agents on distinct questions."
+      - "Score wave results by median newInfoRatio and promote top branches."

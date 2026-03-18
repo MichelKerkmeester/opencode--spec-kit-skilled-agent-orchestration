@@ -1,3 +1,8 @@
+---
+title: "BM25 trigger phrase re-index gate"
+description: "Tracks the fix that expands the BM25 re-index condition to include trigger phrase changes alongside title changes."
+---
+
 # BM25 trigger phrase re-index gate
 
 ## 1. OVERVIEW

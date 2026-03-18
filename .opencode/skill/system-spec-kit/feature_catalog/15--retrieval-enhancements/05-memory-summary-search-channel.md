@@ -1,3 +1,8 @@
+---
+title: "Memory summary search channel"
+description: "The memory summary search channel generates TF-IDF extractive summaries at save time and searches against summary embeddings to improve retrieval precision on large memories."
+---
+
 # Memory summary search channel
 
 ## 1. OVERVIEW

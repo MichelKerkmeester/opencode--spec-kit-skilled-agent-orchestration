@@ -1,10 +1,11 @@
 ---
 title: "Decision Record: Perfect Session Capturing [template:level_3/decision-record.md]"
-description: "Close spec 010 truthfully: formalize phased-parent validation support, retain a current same-day five-CLI proof artifact, and avoid fake closure."
+description: "Record the decision to formalize the post-audit roadmap as phases 018-020 while keeping the live-proof boundary conservative."
 trigger_phrases:
   - "decision"
-  - "perfect session capturing"
-  - "truth reconciliation"
+  - "phase 018"
+  - "phase 019"
+  - "phase 020"
 importance_tier: "normal"
 contextType: "general"
 ---
@@ -16,121 +17,97 @@ contextType: "general"
 
 ---
 
-<!-- ANCHOR:adr-001 -->
-## ADR-001: CLOSE VALIDATION AND PROOF GAPS WITHOUT WIDENING RUNTIME SCOPE
+<!-- ANCHOR:adr-002 -->
+## ADR-002: Formalize The Follow-Up Roadmap As Phases 018-020
 
 ### Metadata
 
 | Field | Value |
 |-------|-------|
 | **Status** | Accepted |
-| **Date** | 2026-03-17 |
+| **Date** | 2026-03-18 |
 | **Deciders** | Michel Kerkmeester, Codex |
 
 ---
 
-<!-- ANCHOR:adr-001-context -->
 ### Context
 
-By the time this pass started, the executable surface was already strong, but the parent folder still read like a closure pass. Two different issues were being blurred together:
-
-- the parent strict validator still warned because phased-parent addenda were not yet understood by the current base-template comparator; and
-- live CLI proof had not yet been retained in one same-day artifact covering every supported CLI.
-
-At the same time, the remaining child phases were not uniform: phase `004` still had a narrow real implementation gap, while phases `005`, `010`, and `011` were largely documentation and status drift.
+The audit pass already identified the remaining work clearly, but that truth only lived in the parent narrative and `research.md`. Without child phases for runtime contract/indexability, source capabilities, and live proof, the follow-up work would remain discoverable only by reading long synthesis docs instead of the actual phase tree.
 
 ### Constraints
 
-- Keep sanctioned phased-parent structure in place.
-- Do not widen runtime contracts or invent live-proof claims beyond retained evidence.
-- Treat child completion evidence and parent closure readiness as separate questions until the final parent gates pass.
-<!-- /ANCHOR:adr-001-context -->
+- Do not overstate current live CLI proof.
+- Do not rewrite older child phases in this pass.
+- Use the exact requested phase numbers: `018`, `019`, and `020`.
 
 ---
 
-<!-- ANCHOR:adr-001-decision -->
 ### Decision
 
-**We chose**: formalize phased-parent and child addenda support in `template-structure.js`, reconcile child docs only to shipped evidence we can prove locally, retain one current same-day proof artifact for each supported CLI, and only then publish parent closure.
+**We chose**: add three sequential child phases under the parent pack:
 
-**How it works**: the parent pack now cites the clean validator result instead of a preserved blocker, targeted child phases are backfilled from current tests and code, a current same-day five-CLI artifact is retained in `research/live-cli-proof-2026-03-17.json`, and the supporting-doc plus scratch-tooling surfaces are verified separately from canonical closure claims.
-<!-- /ANCHOR:adr-001-decision -->
+1. `018-runtime-contract-and-indexability`
+2. `019-source-capabilities-and-structured-preference`
+3. `020-live-proof-and-parity-hardening`
+
+**How it works**:
+- Phase `018` documents the shipped validation-rule metadata and explicit write/index dispositions.
+- Phase `019` documents the shipped typed source-capability model and structured-input preference.
+- Phase `020` documents the still-open retained live-proof work and keeps the parent proof boundary honest.
 
 ---
 
-<!-- ANCHOR:adr-001-alternatives -->
 ### Alternatives Considered
 
 | Option | Pros | Cons | Score |
 |--------|------|------|-------|
-| **Formalize phased addenda support and retain a current same-day five-CLI proof artifact before closing** | Preserves trust, keeps sanctioned phased structure intact, and makes the final parent state fully auditable | Requires touching validator logic plus proof storage | 10/10 |
-| Delete or flatten the phase-map content to quiet validation | Would reduce current warning noise | Hides the real comparator limitation and misrepresents sanctioned phased-parent structure | 2/10 |
-| Mark the parent complete because tests are green without fresh live proof | Feels simpler in the short term | Conflates executable coverage with unresolved proof obligations | 1/10 |
+| **Create phases 018-020 explicitly (chosen)** | Makes the roadmap visible in the phase tree and keeps the parent pack truthful | Requires parent and child doc synchronization | 10/10 |
+| Leave the follow-up work only in `research.md` | Lowest doc effort | Future operators must rediscover the roadmap from long-form audit text | 3/10 |
+| Mark the whole parent pack complete and skip new phases | Simplest status story | False closure; hides the retained live-proof gap | 1/10 |
 
-**Why this one**: the purpose of this pass is auditable closure, not cosmetic closure.
-<!-- /ANCHOR:adr-001-alternatives -->
+**Why this one**: the remaining work is phase-shaped. The documentation should reflect that directly.
 
 ---
 
-<!-- ANCHOR:adr-001-consequences -->
 ### Consequences
 
 **What improves**:
-- Parent and child docs now align with current shipped behavior and rerun-backed evidence.
-- Support docs and retained shell launchers no longer drift from the documented verification baseline.
-- Reviewers can see exactly why the parent is complete and which retained artifact backs the live CLI proof claim.
+- The parent pack now has an explicit post-audit roadmap.
+- Implemented runtime work and open live-proof work are separated cleanly.
+- Future operators can resume from phase `020` without rereading the full audit.
 
 **What it costs**:
-- The parent pack must be revisited if future edits invalidate the phased-addenda support or the retained live-proof artifact goes stale.
-- Future closure claims still need fresh reruns and retained proof instead of narrative carry-over.
+- The parent pack stays in-progress until retained live proof is refreshed.
 
 **Risks**:
 
 | Risk | Impact | Mitigation |
 |------|--------|------------|
-| Reviewers mistake green suites for closure without retained proof | H | Keep the parent summary and checklist explicit about the retained five-CLI artifact |
-| Future edits quietly reintroduce stale counts | M | Tie every published count to a rerun-backed command |
-| Scratch helpers are mistaken for canonical evidence | M | Keep authority rules explicit and validate retained launchers separately |
-<!-- /ANCHOR:adr-001-consequences -->
+| Phase numbering drifts again after tooling append operations | Medium | Treat `018`-`020` as canonical and validate recursively |
+| Automated parity is mistaken for full CLI closure | High | Keep phase `020` open until retained artifacts exist |
 
 ---
 
-<!-- ANCHOR:adr-001-five-checks -->
 ### Five Checks Evaluation
 
 | # | Check | Result | Evidence |
 |---|-------|--------|----------|
-| 1 | **Necessary?** | PASS | The parent pack still overstated closure and several child phases were under-documented |
-| 2 | **Beyond Local Maxima?** | PASS | We compared formalized addenda support against deleting sanctioned phase-map content or overclaiming proof |
-| 3 | **Sufficient?** | PASS | Targeted doc reconciliation, validator support, fresh reruns, and retained proof resolve the drift without widening scope |
-| 4 | **Fits Goal?** | PASS | The goal is truthful final closure, not cosmetic greenwashing |
-| 5 | **Open Horizons?** | PASS | The retained proof path and comparator tests leave a clear maintenance trail for future edits |
+| 1 | **Necessary?** | PASS | The roadmap needs a first-class place in the phase tree |
+| 2 | **Beyond Local Maxima?** | PASS | We compared research-only notes versus phase docs |
+| 3 | **Sufficient?** | PASS | Parent sync plus child phases captures the remaining work clearly |
+| 4 | **Fits Goal?** | PASS | The user asked for these exact phase folders |
+| 5 | **Open Horizons?** | PASS | Phase `020` keeps the final live-proof work resumable |
 
 **Checks Summary**: 5/5 PASS
-<!-- /ANCHOR:adr-001-five-checks -->
 
 ---
 
-<!-- ANCHOR:adr-001-impl -->
 ### Implementation
 
 **What changes**:
-- Rewrite the parent pack around the final closure model.
-- Backfill the drifting child phases from shipped code and current reruns.
-- Refresh support docs, metadata, retained proof, and scratch-tooling verification to the same March 17, 2026 baseline.
+- Add new child folders `018`, `019`, `020`.
+- Update the parent Level 3 docs to reference the new roadmap.
+- Keep live-proof claims conservative until phase `020` is actually closed.
 
-**How to roll back**: revert only the affected docs and metadata, rerun the same command set, and reapply the minimum truthful reconciliation.
-
-```bash
-./.opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing --strict --recursive
-```
-
-```bash
-./.opencode/skill/system-spec-kit/scripts/spec/check-completion.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing --strict
-```
-
-```bash
-python3 ./.opencode/skill/sk-doc/scripts/extract_structure.py .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/decision-record.md
-```
-<!-- /ANCHOR:adr-001-impl -->
-<!-- /ANCHOR:adr-001 -->
+**How to roll back**: revert only the new child phase markdown and the parent roadmap edits, then rerun recursive validation.
+<!-- /ANCHOR:adr-002 -->

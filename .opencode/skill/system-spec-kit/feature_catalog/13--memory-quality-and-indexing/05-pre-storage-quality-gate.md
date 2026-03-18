@@ -1,3 +1,8 @@
+---
+title: "Pre-storage quality gate"
+description: "The pre-storage quality gate validates structural integrity, content quality and semantic deduplication before a memory enters the index."
+---
+
 # Pre-storage quality gate
 
 ## 1. OVERVIEW

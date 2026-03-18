@@ -178,7 +178,8 @@ python scripts/package_skill.py skill-path        # Package skill
 │   │   ├── frontmatter_templates.md (YAML frontmatter examples)
 │   │   ├── readme_template.md (README structure and patterns)
 │   │   ├── install_guide_template.md (install guide template)
-│   │   ├── manual_testing_playbook_template.md (playbook template)
+│   │   ├── manual_testing_playbook_template.md (root directory playbook template)
+│   │   ├── manual_testing_playbook_snippet_template.md (per-feature snippet template)
 │   │   └── llmstxt_templates.md (llms.txt generation examples)
 │   ├── skill/
 │   │   ├── skill_md_template.md (SKILL.md file template)
@@ -305,21 +306,23 @@ python scripts/package_skill.py skill-path        # Package skill
 ### Template
 `assets/documentation/manual_testing_playbook_template.md`
 
-### 3-File Package
+### Playbook Layout
 | File | Content |
 |------|---------|
-| `manual_testing_playbook.md` | 9-column scenario tables with deterministic prompts |
-| `review_protocol.md` | Scenario/feature verdict rules, release readiness |
-| `subagent_utilization_ledger.md` | Wave planning for parallel agent execution |
+| `manual_testing_playbook.md` | Root directory playbook, integrated review/orchestration guidance, summary blocks, and cross-references |
+| `NN--category-name/*.md` | Required per-feature scenario files referenced from the root playbook |
 
 ### Quick Steps
 1. **Plan categories** → Define ID prefixes (e.g., CCC, MCP, CFG)
 2. **Create directory** → `{SKILL_PATH}/manual_testing_playbook/`
-3. **Copy scaffolds** → Fill main playbook, review protocol, ledger from template
-4. **Fill scenarios** → Use 9-column table format per category
-5. **Build cross-reference** → Feature Catalog Index at end of main playbook
-6. **Plan waves** → Group non-destructive vs destructive scenarios
-7. **Validate** → Run playbook checklist (template Section 9)
+3. **Copy scaffolds** → Fill the main playbook and per-feature file scaffolds from the template
+4. **Create per-feature snippets** → Use the snippet template for one file per feature ID
+5. **Fill root summaries** → Add Description, Current Reality, and Test Execution blocks per feature
+6. **Build cross-reference** → Feature Catalog Index with snippet links at end of main playbook
+7. **Plan waves** → Add integrated orchestration guidance and group non-destructive vs destructive scenarios
+8. **Validate** → Run playbook checklist (template Section 10)
+
+Validation note: the current validator checks the root playbook, but it does not recurse into the category folders or verify cross-file snippet links.
 
 ---
 
@@ -340,6 +343,7 @@ python scripts/package_skill.py skill-path        # Package skill
 - [frontmatter_templates.md](../assets/documentation/frontmatter_templates.md) - Frontmatter by document type
 - [command_template.md](../assets/agents/command_template.md) - Command file templates
 - [manual_testing_playbook_template.md](../assets/documentation/manual_testing_playbook_template.md) - Playbook creation template
+- [manual_testing_playbook_snippet_template.md](../assets/documentation/manual_testing_playbook_snippet_template.md) - Per-feature snippet template
 
 ### Related Skills
 - `git-commit` - Git commit workflows

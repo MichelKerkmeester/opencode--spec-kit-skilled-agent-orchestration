@@ -1,3 +1,8 @@
+---
+title: "Query complexity router"
+description: "The query complexity router classifies incoming queries by term count and trigger match to select how many search channels run."
+---
+
 # Query complexity router
 
 ## 1. OVERVIEW

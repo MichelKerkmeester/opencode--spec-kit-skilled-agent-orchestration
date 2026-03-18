@@ -1,3 +1,8 @@
+---
+title: "Mutation response UX payload exposure"
+description: "Mutation response UX payload exposure makes post-mutation hook data available directly in tool responses on successful mutation paths."
+---
+
 # Mutation response UX payload exposure
 
 ## 1. OVERVIEW

@@ -1,3 +1,8 @@
+---
+title: "Dual-scope memory auto-surface"
+description: "Dual-scope memory auto-surface fires at tool dispatch and session compaction to re-inject critical memories outside explicit search."
+---
+
 # Dual-scope memory auto-surface
 
 ## 1. OVERVIEW

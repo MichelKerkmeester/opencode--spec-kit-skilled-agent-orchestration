@@ -1,3 +1,8 @@
+---
+title: "Typed-weighted degree channel"
+description: "Describes the fifth RRF channel that scores memories by graph connectivity using typed edge weights, logarithmic normalization and hub caps to prevent connection-count dominance."
+---
+
 # Typed-weighted degree channel
 
 ## 1. OVERVIEW

@@ -1,3 +1,8 @@
+---
+title: "Reporting dashboard (eval_reporting_dashboard)"
+description: "Covers the read-only reporting dashboard that aggregates sprint-level and channel-level evaluation metrics."
+---
+
 # Reporting dashboard (eval_reporting_dashboard)
 
 ## 1. OVERVIEW

@@ -1,3 +1,8 @@
+---
+title: "Transaction wrappers on mutation handlers"
+description: "Covers the database transaction wrappers that ensure atomicity across update, delete and reconsolidation mutation paths."
+---
+
 # Transaction wrappers on mutation handlers
 
 ## 1. OVERVIEW

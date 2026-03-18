@@ -1,3 +1,8 @@
+---
+title: "Scoring observability"
+description: "Describes the 5%-sampled scoring observation logger that persists before/after score deltas and novelty/interference fields to `scoring_observations` without blocking scoring execution."
+---
+
 # Scoring observability
 
 ## 1. OVERVIEW

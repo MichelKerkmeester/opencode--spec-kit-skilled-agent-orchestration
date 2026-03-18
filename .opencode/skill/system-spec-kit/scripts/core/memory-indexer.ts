@@ -24,6 +24,7 @@ import { buildWeightedDocumentText, type WeightedDocumentSections } from '@spec-
 type IndexingStatusValue =
   | 'indexed'
   | 'skipped_duplicate'
+  | 'skipped_index_policy'
   | 'skipped_quality_gate'
   | 'skipped_embedding_unavailable'
   | 'failed_embedding';

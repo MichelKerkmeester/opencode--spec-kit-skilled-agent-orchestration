@@ -1,3 +1,8 @@
+---
+title: "Interference scoring"
+description: "Describes the interference penalty that demotes memories in dense similarity clusters, preventing near-identical results from crowding out unique content."
+---
+
 # Interference scoring
 
 ## 1. OVERVIEW

@@ -1,3 +1,8 @@
+---
+title: "Contextual tree injection"
+description: "Contextual tree injection prefixes returned chunks with hierarchical context headers using cached spec folder descriptions."
+---
+
 # Contextual tree injection
 
 ## 1. OVERVIEW

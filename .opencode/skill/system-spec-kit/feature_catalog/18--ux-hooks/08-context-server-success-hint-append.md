@@ -1,3 +1,8 @@
+---
+title: "Context-server success-path hint append"
+description: "Context-server success-path hint append injects UX hints through `appendAutoSurfaceHints` while preserving the existing auto-surface contract."
+---
+
 # Context-server success-path hint append
 
 ## 1. OVERVIEW

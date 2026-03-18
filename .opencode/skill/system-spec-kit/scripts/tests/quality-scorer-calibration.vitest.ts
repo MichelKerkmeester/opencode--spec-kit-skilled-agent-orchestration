@@ -186,6 +186,25 @@ describe('scoreMemoryQuality calibration', () => {
       expect(contaminationDim?.score01).toBe(0.60);
     });
 
+    it('keeps capability-downgraded contamination above the 0.60 cap while non-downgraded sources stay capped', () => {
+      const downgradedSource = scoreMemoryQuality(
+        buildRichContent(), richTriggers, richTopics, richFiles, richObservations,
+        undefined, true, 'low',
+      );
+      const nonDowngradedSource = scoreMemoryQuality(
+        buildRichContent(), richTriggers, richTopics, richFiles, richObservations,
+        undefined, true, 'high',
+      );
+
+      expect(downgradedSource.score01).toBeGreaterThan(0.60);
+      expect(nonDowngradedSource.score01).toBeLessThanOrEqual(0.60);
+      expect(downgradedSource.score01).toBeGreaterThan(nonDowngradedSource.score01);
+      const downgradedDim = downgradedSource.dimensions.find((d) => d.id === 'contamination');
+      const highDim = nonDowngradedSource.dimensions.find((d) => d.id === 'contamination');
+      expect(downgradedDim?.score01).toBe(0.95);
+      expect(highDim?.score01).toBe(0.60);
+    });
+
     it('treats null severity as medium (default behavior)', () => {
       const withNull = scoreMemoryQuality(
         buildRichContent(), richTriggers, richTopics, richFiles, richObservations,

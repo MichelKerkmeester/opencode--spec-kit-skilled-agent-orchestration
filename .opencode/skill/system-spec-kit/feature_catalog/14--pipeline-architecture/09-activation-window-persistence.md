@@ -1,3 +1,8 @@
+---
+title: "Activation window persistence"
+description: "Activation window persistence preserves the quality gate warn-only countdown timestamp across process restarts via SQLite storage."
+---
+
 # Activation window persistence
 
 ## 1. OVERVIEW

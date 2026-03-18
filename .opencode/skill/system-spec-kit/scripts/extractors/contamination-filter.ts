@@ -7,6 +7,9 @@
 // ───────────────────────────────────────────────────────────────
 // Removes orchestration chatter before semantic extraction
 
+import type { DataSource } from '../utils/input-normalizer';
+import { getSourceCapabilities, type SourceCapabilities } from '../utils/source-capabilities';
+
 type ContaminationSeverity = 'low' | 'medium' | 'high';
 
 interface DenylistEntry {
@@ -70,6 +73,11 @@ interface FilterResult {
   maxSeverity: ContaminationSeverity | null;
 }
 
+interface FilterOptions {
+  captureSource?: DataSource;
+  sourceCapabilities?: SourceCapabilities;
+}
+
 function clonePattern(pattern: RegExp): RegExp {
   return new RegExp(pattern.source, pattern.flags);
 }
@@ -82,8 +90,17 @@ function getDenylistPattern(entry: DenylistPattern): RegExp {
   return entry instanceof RegExp ? entry : entry.pattern;
 }
 
-function getDenylistSeverity(entry: DenylistPattern): ContaminationSeverity {
-  return entry instanceof RegExp ? 'high' : entry.severity;
+function getDenylistSeverity(entry: DenylistPattern, options?: FilterOptions): ContaminationSeverity {
+  if (entry instanceof RegExp) {
+    return 'high';
+  }
+
+  const sourceCapabilities = options?.sourceCapabilities ?? getSourceCapabilities(options?.captureSource);
+  if (entry.label === 'tool title with path' && sourceCapabilities.toolTitleWithPathExpected) {
+    return 'low';
+  }
+
+  return entry.severity;
 }
 
 const SEVERITY_RANK: Record<ContaminationSeverity, number> = { low: 0, medium: 1, high: 2 };
@@ -106,7 +123,8 @@ function normalizeWhitespace(input: string): string {
 
 function filterContamination(
   input: string,
-  denylist: readonly DenylistPattern[] = DEFAULT_DENYLIST
+  denylist: readonly DenylistPattern[] = DEFAULT_DENYLIST,
+  options?: FilterOptions,
 ): FilterResult {
   if (!input || typeof input !== 'string') {
     return { cleanedText: '', removedPhrases: [], hadContamination: false, matchedPatterns: [], maxSeverity: null };
@@ -128,7 +146,7 @@ function filterContamination(
     if (matches && matches.length > 0) {
       removedPhrases.push(...matches.map((match) => match.trim()));
       matchedPatterns.add(getDenylistLabel(entry));
-      severity = maxSeverityOf(severity, getDenylistSeverity(entry));
+      severity = maxSeverityOf(severity, getDenylistSeverity(entry, options));
       cleaned = cleaned.replace(pattern, ' ');
     }
   }
@@ -160,5 +178,6 @@ export type {
   ContaminationSeverity,
   DenylistEntry,
   DenylistPattern,
+  FilterOptions,
   FilterResult,
 };

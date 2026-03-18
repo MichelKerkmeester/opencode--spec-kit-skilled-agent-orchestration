@@ -1,3 +1,8 @@
+---
+title: "4. Memory and Storage"
+description: "This document captures the implemented behavior, source references, and validation scope for 4. Memory and Storage."
+---
+
 # 4. Memory and Storage
 
 ## 1. OVERVIEW

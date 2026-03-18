@@ -33,6 +33,15 @@ from typing import Any, Dict, List, Optional, Set
 # This script lives in .opencode/skill/scripts/, so skills are in the parent dir.
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
 SKILLS_DIR = os.path.dirname(SCRIPT_DIR)
+REPO_ROOT = os.path.dirname(os.path.dirname(SKILLS_DIR))
+LOCAL_CCC_BIN = os.path.join(
+    SKILLS_DIR,
+    "mcp-cocoindex-code",
+    "mcp_server",
+    ".venv",
+    "bin",
+    "ccc",
+)
 
 RUNTIME_PATH = os.path.join(SCRIPT_DIR, "skill_advisor_runtime.py")
 _RUNTIME_SPEC = None
@@ -592,6 +601,59 @@ COCOINDEX_TIMEOUT = 5
 # Max results from CocoIndex when using built-in search.
 COCOINDEX_LIMIT = 5
 
+AUTO_SEMANTIC_PHRASES = (
+    "find code that",
+    "search the codebase",
+    "search the code base",
+    "search semantically",
+    "how does",
+    "how is",
+    "where is the logic",
+    "where is",
+    "implementation of",
+    "implemented across",
+    "patterns for",
+    "graceful error",
+)
+
+AUTO_SEMANTIC_DISCOVERY_TOKENS = {
+    "auth",
+    "authentication",
+    "authorization",
+    "code",
+    "codebase",
+    "feature",
+    "graceful",
+    "implementation",
+    "implemented",
+    "logic",
+    "middleware",
+    "pattern",
+    "patterns",
+    "recovery",
+    "retry",
+}
+
+AUTO_SEMANTIC_TRIGGER_TOKENS = {
+    "find",
+    "how",
+    "search",
+    "semantic",
+    "where",
+}
+
+EXACT_MATCH_PHRASES = (
+    "exact string",
+    "exact text",
+    "literal string",
+    "regular expression",
+    "regex pattern",
+    "todo comments",
+    "import statements",
+    "find usages of",
+    "find references to",
+)
+
 # Pattern to extract skill folder name from file paths within the skill directory.
 _SKILL_PATH_RE = re.compile(r'\.opencode/skill/([^/]+)/')
 
@@ -744,13 +806,20 @@ def _cocoindex_search_builtin(
     Searches the entire codebase (no path filter) because skill SKILL.md
     files may not be indexed, but other files reference them.
     """
+    ccc_bin = resolve_cocoindex_binary()
+    if not ccc_bin:
+        return []
+
     try:
+        env = os.environ.copy()
+        env["COCOINDEX_CODE_ROOT_PATH"] = project_root
         result = subprocess.run(
-            ["ccc", "search", query, "--limit", str(limit * 2)],
+            [ccc_bin, "search", query, "--limit", str(limit * 2)],
             capture_output=True,
             text=True,
             timeout=COCOINDEX_TIMEOUT,
             cwd=project_root,
+            env=env,
         )
         if result.returncode != 0:
             return []
@@ -840,6 +909,42 @@ def _apply_semantic_boosts(
         boost_reasons.setdefault(skill_name, []).append(
             f"!semantic(rank={rank + 1},score={score:.2f})"
         )
+
+
+def resolve_cocoindex_binary() -> Optional[str]:
+    """Return the preferred CocoIndex binary path, favoring the repo-local install."""
+    if os.path.isfile(LOCAL_CCC_BIN) and os.access(LOCAL_CCC_BIN, os.X_OK):
+        return LOCAL_CCC_BIN
+    return shutil.which("ccc")
+
+
+def is_exact_match_prompt(prompt_lower: str, tokens: List[str]) -> bool:
+    """Return True when the prompt is explicitly asking for exact-text search."""
+    if any(phrase in prompt_lower for phrase in EXACT_MATCH_PHRASES):
+        return True
+    exact_tokens = {"exact", "identifier", "identifiers", "literal", "regex", "regexp", "symbol", "symbols"}
+    return bool(exact_tokens.intersection(tokens))
+
+
+def should_auto_use_semantic_search(prompt: str) -> bool:
+    """Decide whether semantic search should run automatically for this prompt."""
+    prompt_lower = prompt.lower()
+    tokens = re.findall(r'\b\w+\b', prompt_lower)
+
+    if not prompt.strip():
+        return False
+    if is_exact_match_prompt(prompt_lower, tokens):
+        return False
+    if not resolve_cocoindex_binary():
+        return False
+
+    if any(phrase in prompt_lower for phrase in AUTO_SEMANTIC_PHRASES):
+        return True
+
+    token_set = set(tokens)
+    return bool(AUTO_SEMANTIC_TRIGGER_TOKENS.intersection(token_set)) and bool(
+        AUTO_SEMANTIC_DISCOVERY_TOKENS.intersection(token_set)
+    )
 
 
 def expand_query(prompt_tokens: List[str]) -> List[str]:
@@ -1108,6 +1213,10 @@ def analyze_request(
         boost_reasons=boost_reasons,
     )
 
+    if should_auto_use_semantic_search(prompt):
+        skill_boosts["mcp-cocoindex-code"] = skill_boosts.get("mcp-cocoindex-code", 0.0) + 1.2
+        boost_reasons.setdefault("mcp-cocoindex-code", []).append("!intent:semantic-code-search")
+
     # Blend CocoIndex semantic search results when available
     if semantic_hits:
         _apply_semantic_boosts(semantic_hits, skills, skill_boosts, boost_reasons)
@@ -1316,7 +1425,6 @@ def analyze_batch(
     semantic_mode: bool = False,
 ) -> List[Dict[str, Any]]:
     """Analyze multiple prompts in a single process for lower overhead."""
-    project_root = os.path.dirname(SKILLS_DIR) if semantic_mode else None
     results = []
     for prompt in prompts:
         trimmed = prompt.strip()
@@ -1324,8 +1432,10 @@ def analyze_batch(
             continue
 
         hits = None
-        if semantic_mode and project_root:
-            hits = _cocoindex_search_builtin(trimmed, project_root)
+        if semantic_mode:
+            hits = _cocoindex_search_builtin(trimmed, REPO_ROOT)
+        elif should_auto_use_semantic_search(trimmed):
+            hits = _cocoindex_search_builtin(trimmed, REPO_ROOT)
 
         results.append({
             "prompt": trimmed,
@@ -1394,9 +1504,10 @@ Examples:
         get_skills(force_refresh=True)
 
     if args.health:
-        cocoindex_available = shutil.which("ccc") is not None
+        cocoindex_binary = resolve_cocoindex_binary()
         health = health_check()
-        health["cocoindex_available"] = cocoindex_available
+        health["cocoindex_available"] = cocoindex_binary is not None
+        health["cocoindex_binary"] = cocoindex_binary or ""
         print(json.dumps(health, indent=2))
         sys.exit(0)
 
@@ -1452,8 +1563,9 @@ Examples:
     # Resolve semantic hits: pre-computed > built-in search > none
     semantic_hits = pre_computed_hits
     if semantic_hits is None and args.semantic:
-        project_root = os.path.dirname(SKILLS_DIR)
-        semantic_hits = _cocoindex_search_builtin(args.prompt, project_root)
+        semantic_hits = _cocoindex_search_builtin(args.prompt, REPO_ROOT)
+    elif semantic_hits is None and should_auto_use_semantic_search(args.prompt):
+        semantic_hits = _cocoindex_search_builtin(args.prompt, REPO_ROOT)
 
     results = analyze_prompt(
         prompt=args.prompt,

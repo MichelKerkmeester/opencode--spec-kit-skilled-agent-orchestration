@@ -1,3 +1,8 @@
+---
+title: "Learning history (memory_get_learning_history)"
+description: "Covers the learning history retrieval tool that aggregates Learning Index trends across completed tasks in a spec folder."
+---
+
 # Learning history (memory_get_learning_history)
 
 ## 1. OVERVIEW

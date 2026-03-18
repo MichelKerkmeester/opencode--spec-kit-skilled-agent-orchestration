@@ -1,3 +1,8 @@
+---
+title: "Post-task learning measurement (task_postflight)"
+description: "Covers the postflight tool that computes a Learning Index by comparing post-task epistemic state against the preflight baseline."
+---
+
 # Post-task learning measurement (task_postflight)
 
 ## 1. OVERVIEW

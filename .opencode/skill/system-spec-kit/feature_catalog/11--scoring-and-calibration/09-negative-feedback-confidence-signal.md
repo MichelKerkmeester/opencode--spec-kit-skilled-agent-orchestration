@@ -1,3 +1,8 @@
+---
+title: "Negative feedback confidence signal"
+description: "Describes the negative validation demotion multiplier that decreases by 0.1 per negative feedback event (floor 0.3) with a 30-day half-life recovery, applied during Stage 2 feedback signals."
+---
+
 # Negative feedback confidence signal
 
 ## 1. OVERVIEW

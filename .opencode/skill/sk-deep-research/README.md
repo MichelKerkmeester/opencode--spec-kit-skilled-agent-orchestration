@@ -23,10 +23,10 @@ Autonomous deep research loop that runs multi-iteration investigations with fres
 - Fresh context per iteration prevents context degradation
 - Externalized state via JSONL + strategy.md for cross-iteration continuity
 - 3-signal composite convergence detection with configurable thresholds
-- Progressive synthesis updates research.md each iteration
+- Progressive synthesis is enabled by default via `progressiveSynthesis: true`; the agent may update `research.md` incrementally and the orchestrator always finalizes it
 - Auto-resume from interrupted sessions
-- Wave orchestration for parallel independent questions (auto mode)
-- 5-tier error recovery with direct-mode fallback
+- Reference-only notes cover `:restart`, segment partitioning, wave pruning, checkpoint commits, and alternate `claude -p` dispatch
+- Recovery tiers are documented in strict escalation order; direct-mode fallback remains reference-only unless the runtime explicitly supports it
 
 <!-- ANCHOR:quick-start -->
 ## 2. QUICK START
@@ -63,12 +63,22 @@ sk-deep-research/
     deep_research_strategy.md           # Strategy file template
 ```
 
+### Runtime Path Resolution
+
+Resource paths are resolved relative to the installed `sk-deep-research` directory, so `references/` and `assets/` links work regardless of the current working directory.
+
+Agent definitions follow the active runtime:
+- OpenCode / Copilot: `.opencode/agent/`
+- ChatGPT: `.opencode/agent/chatgpt/`
+- Claude: `.claude/agents/`
+- Codex: `.codex/agents/`
+
 ### Key Files
 
 | File | Purpose | When to Read |
 |------|---------|-------------|
 | `SKILL.md` | Full protocol with smart routing | Always (entry point) |
-| `references/loop_protocol.md` | 4-phase loop lifecycle, wave mode, dispatch | Setting up or debugging loops |
+| `references/loop_protocol.md` | 4-phase loop lifecycle and dispatch contract | Setting up or debugging loops |
 | `references/convergence.md` | Stop algorithms, stuck recovery, signal math | Tuning convergence behavior |
 | `references/state_format.md` | JSONL schema, strategy format, file protection | Understanding state files |
 | `references/quick_reference.md` | Commands, tuning, troubleshooting cheat sheet | Quick lookup during use |
@@ -113,6 +123,7 @@ Loop stops when weighted stop-score exceeds 0.60.
 | `--max-iterations` | 10 | Maximum loop iterations (hard cap) |
 | `--convergence` | 0.05 | Stop when avg newInfoRatio below this |
 | `--spec-folder` | auto | Target spec folder path |
+| `progressiveSynthesis` | true | Allow incremental `research.md` updates before final synthesis |
 
 ### State Files (Runtime)
 
@@ -124,7 +135,7 @@ All state files are created in `{spec_folder}/scratch/` during initialization.
 | `deep-research-state.jsonl` | JSONL | Append-only | Structured iteration log |
 | `deep-research-strategy.md` | Markdown | Mutable | What worked/failed, next focus |
 | `iteration-NNN.md` | Markdown | Write-once | Per-iteration detailed findings |
-| `research.md` | Markdown | Mutable | Progressive synthesis output |
+| `research.md` | Markdown | Mutable | Workflow-owned canonical synthesis output; agent may update it incrementally when `progressiveSynthesis` is true |
 
 ### Tuning Guide
 
@@ -144,7 +155,7 @@ All state files are created in `{spec_folder}/scratch/` during initialization.
 2. Init creates config, strategy with 5 key questions
 3. Iterations 1-3: Broad survey, official docs, codebase patterns
 4. Iterations 4-6: Deep dive into specific strategies, edge cases
-5. Iteration 7: Convergence detected (avg newInfoRatio < 0.05)
+5. Iteration 7: Convergence detected after recent newInfoRatio values stay below the configured threshold
 6. Synthesis produces research.md
 7. Memory saved via generate-context.js
 
@@ -158,7 +169,7 @@ All state files are created in `{spec_folder}/scratch/` during initialization.
 
 ### Stuck Recovery
 
-1. Iterations 4-6 all have newInfoRatio < 0.05
+1. Iterations 4-6 all have newInfoRatio below the configured threshold
 2. Stuck recovery triggers at iteration 7
 3. Recovery widens focus to least-explored question
 4. Iteration 7 finds new angle, newInfoRatio jumps to 0.4
@@ -183,13 +194,13 @@ All state files are created in `{spec_folder}/scratch/` during initialization.
 A: Yes. Create a file at `scratch/.deep-research-pause` and the loop will halt between iterations. Delete the file to resume.
 
 **Q: What happens if the agent crashes mid-iteration?**
-A: The 5-tier error recovery protocol handles this. Tier 5 (direct mode fallback) lets the orchestrator absorb the iteration work directly. Partial state is recoverable from iteration files.
+A: The orchestrator first tries documented recovery tiers in order. If live recovery cannot continue safely, it halts for repair or user direction. Partial state is recoverable from iteration files.
 
 **Q: How do I extend research after convergence?**
 A: Increase `--max-iterations` and re-run. Auto-resume detects existing state and continues from the last completed iteration.
 
 **Q: What is wave mode?**
-A: Wave mode dispatches multiple agents in parallel on independent questions (auto mode only). It scores results by newInfoRatio, prunes low-performers, and promotes breakthroughs.
+A: Wave mode is currently reference-only. The live executable workflow stays sequential, but the design notes remain documented for future expansion.
 
 **Q: How accurate is newInfoRatio?**
 A: It is self-assessed by the agent. A simplicity bonus (+0.10) rewards iterations that consolidate findings. The MAD noise floor signal helps detect when ratios are indistinguishable from noise.
@@ -203,7 +214,7 @@ A: It is self-assessed by the agent. A simplicity bonus (+0.10) rewards iteratio
 |----------|------|---------|
 | Agent definition (Claude) | `.claude/agents/deep-research.md` | Claude runtime agent |
 | Agent definition (OpenCode) | `.opencode/agent/deep-research.md` | Default agent definition |
-| Command definition | `.opencode/command/deep-research/deep-research.md` | Command entry point |
+| Command definition | `.opencode/command/spec_kit/deep-research.md` | Command entry point |
 | YAML workflow (auto) | `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml` | Autonomous loop workflow |
 | YAML workflow (confirm) | `.opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml` | Interactive loop workflow |
 | Spec folder | `.opencode/specs/04--agent-orchestration/028-auto-deep-research/` | Design docs |

@@ -1,3 +1,8 @@
+---
+title: "Adaptive shadow ranking, bounded proposals, and rollback"
+description: "Describes the Phase 4 adaptive ranking module that computes bounded proposal deltas from access and validation signals in shadow mode, preserving live ordering as the production source of truth."
+---
+
 # Adaptive shadow ranking, bounded proposals, and rollback
 
 ## 1. OVERVIEW

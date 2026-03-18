@@ -1,3 +1,8 @@
+---
+title: "Single and folder delete (memory_delete)"
+description: "Covers the delete tool that supports both single-memory and bulk folder deletion with atomic transactions."
+---
+
 # Single and folder delete (memory_delete)
 
 ## 1. OVERVIEW

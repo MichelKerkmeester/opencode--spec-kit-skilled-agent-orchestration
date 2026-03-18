@@ -1,3 +1,8 @@
+---
+title: "6. Debug and Telemetry"
+description: "This document captures the implemented behavior, source references, and validation scope for 6. Debug and Telemetry."
+---
+
 # 6. Debug and Telemetry
 
 ## 1. OVERVIEW

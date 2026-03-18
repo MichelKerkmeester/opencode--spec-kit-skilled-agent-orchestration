@@ -13,6 +13,12 @@ version: 1.0.0
 
 Iterative research protocol with fresh context per iteration, externalized state, and convergence detection for deep technical investigation.
 
+Runtime path resolution:
+- OpenCode/Copilot runtime: `.opencode/agent/*.md`
+- ChatGPT runtime: `.opencode/agent/chatgpt/*.md`
+- Claude runtime: `.claude/agents/*.md`
+- Codex runtime: `.codex/agents/*.toml`
+
 <!-- ANCHOR:when-to-use -->
 ## 1. WHEN TO USE
 
@@ -155,7 +161,8 @@ User invokes: /spec_kit:deep-research "topic"
     │  deep-research-state.jsonl       │
     │  deep-research-strategy.md       │
     │  scratch/iteration-NNN.md       │
-    │  research.md (progressive)      │
+    │  research.md (workflow-owned    │
+    │  progressive synthesis)         │
     └─────────────────────────────────┘
 ```
 
@@ -188,7 +195,7 @@ Loop --> Read state --> Check convergence --> Dispatch @deep-research
   v
 Synthesize --> Compile final research.md
   |
-Save --> generate-context.js --> memory_index_scan
+Save --> generate-context.js --> verify memory artifact
 ```
 
 ### Key Concepts
@@ -200,7 +207,7 @@ Save --> generate-context.js --> memory_index_scan
 | **Convergence** | Multi-signal detection: newInfoRatio, stuck count, questions answered |
 | **Strategy file** | "Persistent brain" recording what worked, failed, and where to look next |
 | **JSONL log** | Append-only structured log for machine-parseable iteration data |
-| **Progressive synthesis** | research.md updated each iteration, not just at the end |
+| **Progressive synthesis** | `progressiveSynthesis` defaults to `true`; the agent may update `research.md` incrementally, and the orchestrator always performs the final consolidation pass |
 
 ---
 
@@ -218,6 +225,7 @@ Save --> generate-context.js --> memory_index_scan
 6. **Respect exhausted approaches** -- Never retry approaches in the "Exhausted" list
 7. **Cite sources** -- Every finding must cite `[SOURCE: url]` or `[SOURCE: file:line]`
 8. **Use generate-context.js for memory saves** -- Never manually create memory files
+9. **Treat research.md as workflow-owned** -- Iteration findings feed synthesis; the workflow owns the canonical `research.md`
 
 ### NEVER
 
@@ -229,15 +237,13 @@ Save --> generate-context.js --> memory_index_scan
 6. **Modify config after init** -- Config is read-only after initialization
 7. **Overwrite prior findings** -- Append to research.md, never replace
 
-### WAVE ORCHESTRATION RULES
+### EXPERIMENTAL / REFERENCE-ONLY FEATURES
 
-When using parallel wave execution (see loop_protocol.md Section 3a):
-1. **Score every wave iteration** -- Rank by newInfoRatio before dispatching follow-ups
-2. **Prune below median** -- Questions scoring below wave median are deprioritized to ideas backlog
-3. **Never prune breakthroughs** -- Any iteration with newInfoRatio > 2x wave average is protected
-4. **Generate adjacent questions** -- Breakthrough iterations spawn 2-3 follow-up questions
-5. **Transition to sequential** -- When questions narrow to 1-2, switch from wave to sequential mode
-6. **Wave convergence** -- Standard composite convergence applies across all wave iterations
+These concepts remain documented for future design work, but they are not part of the live executable contract for `/spec_kit:deep-research`:
+1. **Wave orchestration** -- parallel question fan-out, pruning, and breakthrough logic
+2. **Checkpoint commits** -- per-iteration git commits
+3. **Segment transitions / `:restart`** -- multi-segment session partitioning
+4. **Alternate CLI dispatch** -- process-isolated `claude -p` or similar dispatch modes
 
 ### ESCALATE IF
 
@@ -245,7 +251,7 @@ When using parallel wave execution (see loop_protocol.md Section 3a):
 2. **State file corruption unrecoverable** -- Cannot reconstruct from JSONL or iteration files
 3. **All approaches exhausted with questions remaining** -- Research may need human guidance
 4. **Security concern in findings** -- Proprietary code or credentials discovered
-5. **All 5 error recovery tiers exhausted** -- No automatic recovery path remaining
+5. **All recovery tiers exhausted** -- No automatic recovery path remaining
 
 ---
 
@@ -328,7 +334,7 @@ During research (each iteration):
 
 After research:
   node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js [spec-folder]
-  memory_index_scan({ specFolder: "028-auto-deep-research" })
+  # No additional indexing step is part of the live workflow contract.
 ```
 
 ### Command Integration
@@ -352,7 +358,7 @@ After research:
 2. Init creates config, strategy with 5 key questions
 3. Iterations 1-3: Broad survey, official docs, codebase patterns
 4. Iterations 4-6: Deep dive into specific strategies, edge cases
-5. Iteration 7: Convergence detected (avg newInfoRatio < 0.05)
+5. Iteration 7: Convergence detected after recent newInfoRatio values stay below the configured threshold
 6. Synthesis produces 17-section research.md
 7. Memory saved via generate-context.js
 
@@ -364,7 +370,7 @@ After research:
 5. Loop stops cleanly, research.md produced
 
 **Stuck Recovery Example**:
-1. Iterations 4-6 all have newInfoRatio < 0.05
+1. Iterations 4-6 all have newInfoRatio below the configured threshold
 2. Stuck recovery triggers at iteration 7
 3. Recovery widens focus to least-explored question
 4. Iteration 7 finds new angle, newInfoRatio jumps to 0.4

@@ -1,3 +1,8 @@
+---
+title: "Health diagnostics (memory_health)"
+description: "Covers the health diagnostics tool that reports system readiness, alias conflicts and optional auto-repair actions."
+---
+
 # Health diagnostics (memory_health)
 
 ## 1. OVERVIEW

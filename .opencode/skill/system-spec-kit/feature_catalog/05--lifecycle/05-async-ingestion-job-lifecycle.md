@@ -1,3 +1,8 @@
+---
+title: "Async ingestion job lifecycle"
+description: "Covers the SQLite-persisted async job queue for batch ingestion with start, status and cancel tools."
+---
+
 # Async ingestion job lifecycle
 
 ## 1. OVERVIEW

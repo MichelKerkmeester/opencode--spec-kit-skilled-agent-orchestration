@@ -1,3 +1,8 @@
+---
+title: "Scoring and fusion corrections"
+description: "Covers eight scoring fixes including intent weight recency, five-factor weight normalization, stack overflow prevention, BM25 specFolder filter and shared `resolveEffectiveScore` consolidation."
+---
+
 # Scoring and fusion corrections
 
 ## 1. OVERVIEW

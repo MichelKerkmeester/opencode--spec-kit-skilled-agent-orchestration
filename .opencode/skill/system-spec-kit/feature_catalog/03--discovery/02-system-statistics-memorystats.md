@@ -1,3 +1,8 @@
+---
+title: "System statistics (memory_stats)"
+description: "Covers the discovery dashboard that reports memory counts, embedding status, tier breakdown and ranked folder summaries."
+---
+
 # System statistics (memory_stats)
 
 ## 1. OVERVIEW

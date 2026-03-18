@@ -3,15 +3,15 @@ title: "Tasks: Perfect Session Capturing [template:level_3/tasks.md]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "tasks"
-  - "perfect session capturing"
-  - "truth reconciliation"
+  - "phase 018"
+  - "phase 019"
+  - "phase 020"
 importance_tier: "normal"
 contextType: "general"
 ---
 # Tasks: Perfect Session Capturing
 
-This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace requirements and implementation evidence.
-
+This document records the current verified state for this roadmap follow-up. Use [spec.md](spec.md) and [plan.md](plan.md) together.
 
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
@@ -19,7 +19,7 @@ This document records the current verified state for this scope. Use [spec.md](s
 ---
 
 <!-- ANCHOR:notation -->
-## 1. TASK NOTATION
+## Task Notation
 
 | Prefix | Meaning |
 |--------|---------|
@@ -34,81 +34,51 @@ This document records the current verified state for this scope. Use [spec.md](s
 ---
 
 <!-- ANCHOR:phase-1 -->
-## 2. PHASE 1: SETUP
+## Phase 1: Setup
 
-- [x] T001 Re-read the parent spec pack and the targeted child phases (`010-perfect-session-capturing/`)
-- [x] T002 Reconfirm the approved blocker model from the March 17, 2026 re-analysis (`research/`, parent docs)
-- [x] T003 Refresh the executable and documentation evidence baseline (`.opencode/skill/system-spec-kit/`)
+- [x] T001 Read the current parent roadmap docs and confirm the required child phase names.
+- [x] T002 Create child folders for `018`, `019`, and `020`.
+- [x] T003 Remove scaffold pollution that introduced wrong phase numbering and placeholder rows.
 <!-- /ANCHOR:phase-1 -->
 
 ---
 
 <!-- ANCHOR:phase-2 -->
-## 3. PHASE 2: IMPLEMENTATION
+## Phase 2: Implementation
 
-- [x] T004 Reconcile phase `004` to the narrow shipped type-consolidation closure (`004-type-consolidation/`)
-- [x] T005 Reconcile phase `005` to the shipped confidence-calibration state (`005-confidence-calibration/`)
-- [x] T006 Backfill phases `010` and `011` from current shipped tests and runtime behavior (`010-integration-testing/`, `011-session-source-validation/`)
-- [x] T007 Refresh phase `016`, supporting docs, and metadata to current verification counts (`016-multi-cli-parity/`, supporting docs, JSON metadata)
-- [x] T008 Rewrite the parent spec pack around truthful blocker reporting instead of closure overclaim (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`)
+- [x] T004 Write truthful `spec.md`, `plan.md`, `tasks.md`, and `implementation-summary.md` for phase `018`.
+- [x] T005 Write truthful `spec.md`, `plan.md`, `tasks.md`, and `implementation-summary.md` for phase `019`.
+- [x] T006 Write truthful `spec.md`, `plan.md`, `tasks.md`, and `implementation-summary.md` for phase `020`.
+- [x] T007 Update the parent `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, and `implementation-summary.md` to reference phases `018`-`020`.
 <!-- /ANCHOR:phase-2 -->
 
 ---
 
 <!-- ANCHOR:phase-3 -->
-## 4. PHASE 3: VERIFICATION
+## Phase 3: Verification
 
-- [x] T009 Rerun package, scripts, MCP, supporting-doc, and shell-tooling verification lanes (`.opencode/skill/system-spec-kit/`, supporting docs, scratch launchers)
-- [x] T010 Run memory-save closeout for the touched spec folders and update their completion evidence (`memory/` via `generate-context.js`)
-- [x] T011 Rerun strict child and parent truth gates, then refresh final metadata timestamps (`validate.sh`, `check-completion.sh`, `description.json`, `descriptions.json`)
+- [ ] T008 Run recursive strict validation for the parent pack after the new child docs settle.
+- [ ] T009 Run strict completion for the parent pack if the checklist remains fully satisfied.
+- [ ] T010 Confirm no placeholder phase rows or wrong successor chains remain.
 <!-- /ANCHOR:phase-3 -->
 
 ---
 
 <!-- ANCHOR:completion -->
-## 5. COMPLETION CRITERIA
+## Completion Criteria
 
-- [x] All tasks marked `[x]`
-- [x] No `[B]` blocked tasks remaining
-- [x] Manual verification passed
+- [ ] All tasks marked `[x]`
+- [ ] No `[B]` blocked tasks remaining
+- [ ] Recursive validation passed
 <!-- /ANCHOR:completion -->
 
 ---
 
 <!-- ANCHOR:cross-refs -->
-## 6. CROSS-REFERENCES
+## Cross-References
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
+- **Checklist**: See `checklist.md`
+- **Research**: See `research.md`
 <!-- /ANCHOR:cross-refs -->
-
----
-
-**AI EXECUTION PROTOCOL**
-
-### Pre-Task Checklist
-- Re-read the affected spec before changing its status language.
-- Match every changed count to a current rerun.
-- Keep scratch and research authority separate.
-
-### Execution Rules
-
-| Rule | Expectation |
-|------|-------------|
-| TASK-SCOPE | Stay inside the approved parent, child, support-doc, metadata, and retained scratch scope |
-| TASK-EVIDENCE | Do not mark a task done without command or file evidence |
-| TASK-TRUTH | Keep parent blockers explicit even while tests pass |
-| TASK-VERIFY | Finish with parent and child truth gates plus memory-save closeout |
-
-### Status Reporting Format
-
-- `STARTED:` task id, scope, and target files
-- `IN PROGRESS:` checkpoint and remaining work
-- `BLOCKED:` exact blocker and evidence
-- `DONE:` command or file evidence and resulting status
-
-### Blocked Task Protocol
-
-1. Stop when a validation or test result changes the truth model.
-2. Record the blocker against the affected task with evidence.
-3. Resume only after the blocker is patched or explicitly documented as unresolved.

@@ -1,3 +1,8 @@
+---
+title: "Graph channel ID fix"
+description: "Tracks the fix for the graph search channel that had a 0% hit rate due to string-vs-numeric ID comparison mismatches."
+---
+
 # Graph channel ID fix
 
 ## 1. OVERVIEW

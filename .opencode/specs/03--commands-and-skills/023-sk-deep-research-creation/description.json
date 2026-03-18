@@ -1,0 +1,20 @@
+{
+  "specFolder": "03--commands-and-skills/023-sk-deep-research-creation",
+  "description": "Feature Specification: Autonomous Deep Research Loop",
+  "keywords": [
+    "feature",
+    "specification",
+    "autonomous",
+    "deep",
+    "research",
+    "loop"
+  ],
+  "lastUpdated": "2026-03-18T15:57:15.566Z",
+  "specId": "023",
+  "folderSlug": "sk-deep-research-creation",
+  "parentChain": [
+    "03--commands-and-skills"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

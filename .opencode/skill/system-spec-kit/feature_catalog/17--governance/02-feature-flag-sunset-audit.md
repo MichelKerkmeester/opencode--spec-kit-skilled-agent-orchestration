@@ -1,3 +1,8 @@
+---
+title: "Feature flag sunset audit"
+description: "The feature flag sunset audit inventoried 79 `SPECKIT_` flags and classified them for graduation, removal or retention."
+---
+
 # Feature flag sunset audit
 
 ## 1. OVERVIEW

@@ -82,8 +82,11 @@ sk-doc/
 ├── assets/
 │   ├── documentation/                # Document templates
 │   │   ├── frontmatter_templates.md  # Frontmatter validation (11 types)
+│   │   ├── feature_catalog_template.md # root feature catalog template
+│   │   ├── feature_catalog_snippet_template.md # per-feature catalog snippet template
 │   │   ├── install_guide_template.md # 5-phase install guide template
-│   │   ├── manual_testing_playbook_template.md # 3-file playbook template
+│   │   ├── manual_testing_playbook_template.md # root directory playbook template
+│   │   ├── manual_testing_playbook_snippet_template.md # per-feature snippet template
 │   │   ├── llmstxt_templates.md      # llms.txt generation templates
 │   │   └── readme_template.md        # README structure (15 sections + HVR)
 │   ├── flowcharts/                   # ASCII flowchart patterns (6 types)
@@ -150,9 +153,9 @@ sk-doc/
 - Phase validation checkpoints
 
 **Mode 5 - Playbook Creation:**
-- 3-file package: main playbook, review protocol, sub-agent utilization ledger
+- Integrated root playbook plus per-feature file tree
 - 9-column scenario table format with deterministic prompts and pass/fail criteria
-- Category/ID design, wave planning for parallel agent execution
+- Category/ID design, integrated wave planning guidance, and root-to-feature mapping guidance
 
 <!-- /ANCHOR:features -->
 

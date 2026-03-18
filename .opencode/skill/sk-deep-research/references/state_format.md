@@ -20,9 +20,9 @@ The deep research loop uses 5 state files to maintain continuity across fresh-co
 | `deep-research-state.jsonl` | JSON Lines | Structured iteration log | Append-only |
 | `deep-research-strategy.md` | Markdown | Agent context ("persistent brain") | Updated each iteration |
 | `scratch/iteration-NNN.md` | Markdown | Detailed findings per iteration | Write-once |
-| `research.md` | Markdown | Progressive synthesis | Updated each iteration |
+| `research.md` | Markdown | Workflow-owned canonical synthesis output | Updated incrementally only when `progressiveSynthesis` is enabled |
 
-All state files live in `{spec_folder}/scratch/` except `research.md` which lives at `{spec_folder}/research.md`.
+All state files live in `{spec_folder}/scratch/` except `research.md` which lives at `{spec_folder}/research.md`. `research.md` is workflow-owned canonical synthesis output.
 
 ---
 
@@ -39,6 +39,7 @@ Created during initialization. Not modified after creation.
   "convergenceThreshold": 0.05,
   "stuckThreshold": 3,
   "maxDurationMinutes": 120,
+  "progressiveSynthesis": true,
   "specFolder": "04--agent-orchestration/028-auto-deep-research",
   "createdAt": "2026-03-18T10:00:00Z",
   "status": "initialized",
@@ -53,6 +54,7 @@ Created during initialization. Not modified after creation.
 | convergenceThreshold | number | No | 0.05 | Stop when avg newInfoRatio below this |
 | stuckThreshold | number | No | 3 | Consecutive no-progress iterations before recovery |
 | maxDurationMinutes | number | No | 120 | Hard timeout for entire loop |
+| progressiveSynthesis | boolean | No | true | Update research.md after each iteration; synthesis still performs a cleanup pass |
 | specFolder | string | Yes | -- | Spec folder path (relative to specs/) |
 | createdAt | ISO 8601 | Yes | -- | Session start timestamp |
 | status | string | Yes | "initialized" | initialized, running, converged, stuck, complete, error |
@@ -140,28 +142,24 @@ All fields are optional. Omitted when fewer than 3 iterations exist (insufficien
 
 ### Event Records
 
-Events are written by the YAML workflow (not the agent) for lifecycle tracking:
+Events are written by the YAML workflow or diagnostics layer for lifecycle tracking. Canonical coverage includes:
 
-```json
-{"type":"event","event":"resumed","fromIteration":5,"timestamp":"2026-03-18T10:30:00Z"}
-{"type":"event","event":"synthesis_complete","totalIterations":7,"answeredRatio":0.85,"stopReason":"converged","timestamp":"2026-03-18T11:00:00Z"}
-{"type":"event","event":"stuck_recovery","fromIteration":6,"outcome":"recovered","timestamp":"2026-03-18T10:45:00Z"}
-{"type":"event","event":"missing_newInfoRatio","iteration":4,"timestamp":"2026-03-18T10:20:00Z"}
-{"type":"event","event":"segment_start","segment":2,"reason":"User requested new research angle","timestamp":"2026-03-18T12:00:00Z"}
-```
+| Event | Emitted By | Status | Purpose | Key Fields |
+|-------|------------|--------|---------|------------|
+| resumed | workflow | active | Resume after a prior session | fromIteration, timestamp |
+| paused | workflow | active | Pause sentinel detected | reason, timestamp |
+| direct_mode | workflow | reference-only | Orchestrator absorbed iteration work | iteration, reason, timestamp |
+| state_reconstructed | recovery | active | JSONL rebuilt from iteration files | iterationsRecovered, timestamp |
+| wave_complete | wave coordinator | reference-only | Parallel wave finished | wave, iterations, medianRatio, timestamp |
+| wave_pruned | wave coordinator | reference-only | Low-value wave branch deprioritized | wave, prunedIterations, medianRatio, timestamp |
+| breakthrough | wave coordinator | reference-only | Wave branch exceeded 2x average | wave, iteration, ratio, timestamp |
+| stuck_recovery | workflow | active | Stuck recovery outcome | fromIteration, outcome, timestamp |
+| missing_newInfoRatio | parser | active | Missing ratio defaulted to 0.0 | iteration, timestamp |
+| ratio_within_noise | diagnostics | active | Latest ratio fell within MAD floor | iteration, ratio, noiseFloor, timestamp |
+| segment_start | workflow | reference-only | Start of a new segment | segment, reason, timestamp |
+| synthesis_complete | workflow | active | Final synthesis finished | totalIterations, answeredCount, totalQuestions, stopReason, timestamp |
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| type | "event" | Yes | Record type discriminator |
-| event | string | Yes | Event name (resumed, synthesis_complete, stuck_recovery, missing_newInfoRatio, segment_start) |
-| fromIteration | number | Some events | Iteration that triggered the event |
-| outcome | string | stuck_recovery | recovered or failed |
-| totalIterations | number | synthesis_complete | Total completed iterations |
-| answeredRatio | number | synthesis_complete | Fraction of questions answered (0.0-1.0) |
-| stopReason | string | synthesis_complete | converged, max_iterations, all_questions_answered, stuck_unrecoverable |
-| segment | number | segment_start | Segment number being started |
-| reason | string | segment_start | Why the new segment was created |
-| timestamp | ISO 8601 | Yes | Event timestamp |
+Additional event-specific fields may appear on the JSON line, but the table above is the canonical coverage for emitted events.
 
 ### Validation Rules
 
@@ -171,7 +169,7 @@ Events are written by the YAML workflow (not the agent) for lifecycle tracking:
 - `newInfoRatio` must be between 0.0 and 1.0
 - Count lines where `type === "iteration"` to get current iteration number
 - `segment` values must be >= 1
-- `segment_start` events must have sequential segment numbers
+- `segment_start` events must have sequential segment numbers when segmenting is explicitly enabled
 
 ### Fault Tolerance
 
@@ -181,7 +179,7 @@ When parsing `deep-research-state.jsonl`, apply defensive reading:
 2. **Skip malformed lines**: On parse failure, skip the line and increment `skippedCount`
 3. **Apply defaults** for missing fields on successfully parsed lines:
    - `status ?? "complete"`
-   - `newInfoRatio ?? 0`
+   - `newInfoRatio ?? 0.0`
    - `findingsCount ?? 0`
    - `focus ?? "unknown"`
    - `keyQuestions ?? []`
@@ -212,12 +210,12 @@ When the JSONL is missing or entirely unparseable, reconstruct state from iterat
 
 **Limitations**: Reconstructed state lacks `durationMs`, exact `timestamp`, and `findingsCount`. The `status: "reconstructed"` flag distinguishes recovered records from originals. The convergence algorithm treats reconstructed records identically to complete records for signal computation.
 
-### Segment Model
+### Segment Model (REFERENCE-ONLY)
 
-Segments partition a research session into logical phases without losing history.
+Segments partition a research session into logical phases without losing history when the runtime supports them.
 
 - **Default**: All iterations belong to segment 1
-- **New segment**: Triggered by `:restart` mode or explicit user request. Creates a `segment_start` event
+- **New segment**: Triggered only when an implementation explicitly enables segmenting. Current live workflow keeps a single segment.
 - **Convergence filtering**: The convergence algorithm filters by current segment when computing signals
 - **Cross-segment**: Full JSONL read (no segment filter) provides complete history for synthesis
 - **Validation**: `segment` values must be >= 1 and sequential within a session
@@ -313,7 +311,7 @@ scratch/iteration-003.md
 <!-- ANCHOR:research-output -->
 ## 6. RESEARCH OUTPUT (research.md)
 
-Progressive synthesis updated after each iteration. Follows the standard 17-section research template. Lives at `{spec_folder}/research.md` (not in scratch/).
+Progressive synthesis updated after each iteration when `progressiveSynthesis` is enabled. Follows the standard 17-section research template. Lives at `{spec_folder}/research.md` (not in scratch/). `research.md` is workflow-owned canonical synthesis output.
 
 ### Progressive Update Rules
 
@@ -330,7 +328,7 @@ Progressive synthesis updated after each iteration. Follows the standard 17-sect
 
 ```
 {spec_folder}/
-  research.md                          # Progressive synthesis (top-level)
+  research.md                          # Workflow-owned progressive synthesis (top-level)
   scratch/
     deep-research-config.json           # Loop configuration
     deep-research-state.jsonl           # Structured iteration log

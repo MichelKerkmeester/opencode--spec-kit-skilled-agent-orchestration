@@ -1,3 +1,8 @@
+---
+title: "Ablation studies (eval_run_ablation)"
+description: "Covers the ablation study framework that measures Recall@20 deltas when individual search channels are disabled."
+---
+
 # Ablation studies (eval_run_ablation)
 
 ## 1. OVERVIEW

@@ -1,6 +1,6 @@
 ---
 title: "Implementation Plan: CocoIndex Code MCP Integration"
-description: "Phase 1 plan: install cocoindex-code via pipx, build the code index, and register the MCP server entry in all 6 CLI config files with syntax validation."
+description: "Phased plan for CocoIndex integration: Phase 1 installation/config registration plus Phase 2 hardening for docs, helper scripts, and advisor utilization."
 trigger_phrases:
   - "cocoindex"
   - "coco-index plan"
@@ -24,13 +24,13 @@ contextType: "implementation"
 | Aspect | Value |
 |--------|-------|
 | **Language/Stack** | Python (cocoindex-code package), JSON config, TOML config |
-| **Framework** | FastMCP (Python MCP server), pipx (isolated Python install) |
+| **Framework** | FastMCP (Python MCP server), workspace-local Python 3.11 venv |
 | **Storage** | SQLite + sqlite-vec in `.cocoindex_code/` (gitignored) |
 | **Testing** | Manual config syntax validation (`python3 json.load`, `python3.11 tomllib.load`) |
 
 ### Overview
 
-This plan covers Phase 1 of the CocoIndex integration: install the `cocoindex-code` Python package via pipx with Python 3.11, initialize and build the code index, then add the `cocoindex_code` MCP server entry to all 6 CLI config files. All changes are additive config modifications - no custom code is written. The index is stored locally and gitignored.
+This plan covers two delivered phases of the CocoIndex integration: Phase 1 installed the `cocoindex-code` Python package via the skill install script into `.opencode/skill/mcp-cocoindex-code/mcp_server/.venv`, initialized and built the code index, and registered the `cocoindex_code` MCP server entry across all 6 CLI config files. Phase 2 hardened the surrounding skill with runtime-truth docs, agent-facing helper scripts, a cross-CLI playbook, and advisor logic that prefers the repo-local binary and semantic exploration prompts.
 
 <!-- /ANCHOR:summary -->
 
@@ -43,14 +43,14 @@ This plan covers Phase 1 of the CocoIndex integration: install the `cocoindex-co
 
 - [x] Problem statement clear and scope documented
 - [x] Success criteria measurable (SC-001 through SC-004)
-- [x] Dependencies identified (pipx, Python 3.11, cocoindex-code v0.2.3)
+- [x] Dependencies identified (install script, Python 3.11, cocoindex-code v0.2.3)
 - [x] NFRs defined with targets
 
 ### Definition of Done
 
 - [x] All acceptance criteria met
 - [x] Config syntax validation passes for all 6 files
-- [x] Docs updated (spec/plan/tasks/checklist)
+- [x] Docs updated (spec/plan/tasks/checklist plus touched CocoIndex skill docs)
 - [x] Checklist items verified with evidence
 
 <!-- /ANCHOR:quality-gates -->
@@ -96,8 +96,8 @@ CLI Agent Query ("find authentication middleware")
 
 ### Phase 1: Installation
 
-- [x] Install cocoindex-code via `pipx install --python python3.11 cocoindex-code`
-- [x] Verify binary available at `~/.local/bin/ccc`
+- [x] Install cocoindex-code via `bash .opencode/skill/mcp-cocoindex-code/scripts/install.sh`
+- [x] Verify binary available at `.opencode/skill/mcp-cocoindex-code/mcp_server/.venv/bin/ccc`
 - [x] Run `ccc init` in project root
 
 ### Phase 2: Index Build
@@ -111,8 +111,8 @@ CLI Agent Query ("find authentication middleware")
 - [x] Add `.cocoindex_code/` to `.gitignore`
 - [x] Add `cocoindex_code` entry to `.mcp.json` (disabled by default)
 - [x] Add `cocoindex_code` entry to `opencode.json` (relative env, `_NOTE_*` docs)
-- [x] Add `cocoindex_code` entry to `.agents/settings.json` (absolute path, `cwd`, `trust: true`)
-- [x] Add `cocoindex_code` entry to `.gemini/settings.json` (absolute path, `cwd`, `trust: true`)
+- [x] Add `cocoindex_code` entry to `.agents/settings.json` (repo-relative path, `cwd`, `trust: true`)
+- [x] Add `cocoindex_code` entry to `.gemini/settings.json` (repo-relative path, `cwd`, `trust: true`)
 - [x] Add `cocoindex_code` entry to `.claude/mcp.json` (relative env, `_NOTE_*` docs)
 - [x] Add `cocoindex_code` entry to `.codex/config.toml` (`[mcp_servers.cocoindex_code]` section)
 
@@ -142,6 +142,15 @@ CLI Agent Query ("find authentication middleware")
 - [x] Update `implementation-summary.md` with findings F1-F4 and recommendations R1-R6
 - [x] Update `SKILL.md` with query optimization tips and `refresh_index=false` guidance
 
+### Phase 7: Phase 2 Hardening (2026-03-18)
+
+- [x] Align `SKILL.md`, `README.md`, `INSTALL_GUIDE.md`, `references/tool_reference.md`, `references/search_patterns.md`, and `assets/config_templates.md` with the installed CLI/MCP contract
+- [x] Add `references/cross_cli_playbook.md` for safe repeated-query, troubleshooting, and cross-CLI usage guidance
+- [x] Add `scripts/common.sh`, `scripts/doctor.sh`, and `scripts/ensure_ready.sh` per `sk-code--opencode`
+- [x] Update `scripts/install.sh` and `scripts/update.sh` to reuse shared helpers and support `--root`
+- [x] Update `.opencode/skill/scripts/skill_advisor.py` to prefer the repo-local `ccc` binary and auto-route semantic exploration prompts
+- [x] Validate helper scripts, JSON output cleanliness, and advisor routing behavior
+
 <!-- /ANCHOR:phases -->
 
 ---
@@ -157,6 +166,8 @@ CLI Agent Query ("find authentication middleware")
 | Manual | End-to-end: install, init, index, search | CLI (`ccc search "test query"`) |
 | Cross-CLI | Auto-discovery across 4 CLIs (3 prompts each) | Claude Code, Codex, Gemini, Copilot |
 | Reproduction | Daemon concurrency bug under concurrent queries | `mcp__cocoindex_code__search` with `refresh_index` true/false |
+| Script smoke | Helper syntax and JSON stability | `bash -n`, `doctor.sh --json`, `ensure_ready.sh --json` |
+| Advisor behavior | Repo-local binary preference and semantic routing | `skill_advisor.py --health`, semantic vs exact-match prompt checks |
 
 <!-- /ANCHOR:testing -->
 
@@ -167,12 +178,13 @@ CLI Agent Query ("find authentication middleware")
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| pipx | External tool | Green - already installed | Cannot install cocoindex-code in isolation |
-| Python 3.11 | Runtime | Green - Homebrew python3.11 available | `pipx install --python python3.11` fails; sqlite-vec extension blocked on system Python |
+| Install script | Project tool | Green - checked into repo | Cannot create the skill-local CocoIndex venv |
+| Python 3.11 | Runtime | Green - Homebrew python3.11 available | Installer fails; sqlite-vec extension blocked on system Python |
 | cocoindex-code v0.2.3 | PyPI package | Green - installed | MCP server unavailable |
 | cocoindex==1.0.0a33 | Transitive dep | Green - alpha, pin version | Core Rust indexing engine unavailable |
 | sqlite-vec | Transitive dep | Green | Vector search unavailable |
 | all-MiniLM-L6-v2 | Model (auto-downloaded) | Green | Embedding generation unavailable |
+| `sk-code--opencode` | Project skill | Green - available in repo | Shell/Python helper quality expectations would be undefined |
 
 <!-- /ANCHOR:dependencies -->
 
@@ -182,7 +194,7 @@ CLI Agent Query ("find authentication middleware")
 ## 7. ROLLBACK PLAN
 
 - **Trigger**: MCP server causes CLI startup failures, or config changes break existing MCP servers
-- **Procedure**: All changes are additive. Remove `cocoindex_code` entries from all 6 configs, remove `.cocoindex_code/` from `.gitignore`, run `rm -rf .cocoindex_code/`, run `pipx uninstall cocoindex-code`
+- **Procedure**: All changes are additive. Remove `cocoindex_code` entries from all 6 configs, remove `.cocoindex_code/` from `.gitignore`, run `rm -rf .cocoindex_code/`, run `rm -rf .opencode/skill/mcp-cocoindex-code/mcp_server/.venv`
 
 <!-- /ANCHOR:rollback -->
 
@@ -213,11 +225,12 @@ Phase 2 (Index) ─────────┘
 
 | Phase | Complexity | Estimated Effort |
 |-------|------------|------------------|
-| Installation (pipx, init) | Low | 10-15 minutes |
+| Installation (install script, init) | Low | 10-15 minutes |
 | Index build | Low | 5-10 minutes (CPU-bound) |
 | Config registration (6 files) | Medium | 30-45 minutes |
 | Syntax validation + peer review | Low | 15-20 minutes |
-| **Total** | | **60-90 minutes** |
+| Phase 2 hardening (docs, scripts, advisor) | Medium | 60-90 minutes |
+| **Total** | | **120-180 minutes across both phases** |
 
 <!-- /ANCHOR:effort -->
 
@@ -238,7 +251,7 @@ Phase 2 (Index) ─────────┘
 2. Remove `[mcp_servers.cocoindex_code]` section from `.codex/config.toml`
 3. Remove `.cocoindex_code/` line from `.gitignore`
 4. Run `rm -rf .cocoindex_code/` to delete local index
-5. Run `pipx uninstall cocoindex-code` to remove binary
+5. Run `rm -rf .opencode/skill/mcp-cocoindex-code/mcp_server/.venv` to remove the local binary
 6. Verify: re-open each CLI to confirm no startup errors
 
 ### Data Reversal

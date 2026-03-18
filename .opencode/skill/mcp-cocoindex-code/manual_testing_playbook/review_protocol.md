@@ -1,6 +1,6 @@
 ---
 title: Main-Agent Review Protocol
-description: Scenario acceptance rules, feature verdict logic, and release readiness criteria for the CocoIndex Code manual testing playbook.
+description: Scenario acceptance rules, feature verdict logic, and release readiness criteria for the CocoIndex Code manual testing playbook package.
 ---
 
 # Main-Agent Review Protocol
@@ -15,9 +15,10 @@ Acceptance rules and release readiness criteria for reviewing CocoIndex Code pla
 ### Inputs Required
 
 1. `manual_testing_playbook.md`
-2. Scenario execution evidence (logs, tool outputs, artifacts)
-3. Feature-to-scenario coverage map
-4. Triage notes for all non-pass outcomes
+2. Snippet modules under `snippets/`
+3. Scenario execution evidence (logs, tool outputs, artifacts)
+4. Coverage ledger and feature-to-snippet map from `manual_testing_playbook.md`
+5. Triage notes for all non-pass outcomes
 
 <!-- /ANCHOR:overview -->
 
@@ -68,12 +69,12 @@ Release is `READY` only when:
 
 1. No feature verdict is `FAIL`
 2. All critical scenarios are `PASS`
-3. Coverage is 100% of features defined in `manual_testing_playbook.md` (`COVERED_FEATURES == TOTAL_FEATURES`)
+3. Coverage is 100% of features defined in the root index and backed by snippet files (`COVERED_FEATURES == TOTAL_FEATURES`)
 4. No unresolved blocking triage item remains
 
 Otherwise release is `NOT READY`.
 
-### Deterministic Coverage Check
+### Deterministic Coverage Check for the Root Index Package
 
 Run from repository root:
 
@@ -83,14 +84,32 @@ from pathlib import Path
 import re
 path = Path('.opencode/skill/mcp-cocoindex-code/manual_testing_playbook/manual_testing_playbook.md')
 count = 0
-in_catalog = False
+in_ledger = False
 pattern = re.compile(r'^\| (CCC-\d{3}|MCP-\d{3}|CFG-\d{3}|DMN-\d{3}|ADV-\d{3}|ERR-\d{3}) \|')
 for line in path.read_text().splitlines():
     if line.startswith('## Feature Catalog Cross-Reference Index'):
-        in_catalog = True
-    if not in_catalog and pattern.match(line):
+        in_ledger = True
+        continue
+    if in_ledger and line.startswith('## '):
+        break
+    if in_ledger and pattern.match(line):
         count += 1
 print(count)
+PY
+)
+
+COVERED_FEATURES=$(python3 - <<'PY'
+from pathlib import Path
+import re
+root = Path('.opencode/skill/mcp-cocoindex-code/manual_testing_playbook/snippets')
+pattern = re.compile(r'^\| (CCC-\d{3}|MCP-\d{3}|CFG-\d{3}|DMN-\d{3}|ADV-\d{3}|ERR-\d{3}) \|')
+ids = set()
+for path in root.rglob('*.md'):
+    for line in path.read_text().splitlines():
+        match = pattern.match(line)
+        if match:
+            ids.add(match.group(1))
+print(len(ids))
 PY
 )
 ```
@@ -115,8 +134,8 @@ Final verdict report must include `COVERED_FEATURES/TOTAL_FEATURES`.
 <!-- ANCHOR:mandatory-flows -->
 ## 6. COCOINDEX-SPECIFIC MANDATORY FLOWS
 
-Use `manual_testing_playbook.md` as the single source of truth for all scenario definitions.
+Treat the root playbook plus referenced snippets as the canonical source of truth: use `manual_testing_playbook.md` for the scenario inventory and coverage ledger, and use the snippet modules for per-scenario execution semantics.
 
-**Rule**: Do not duplicate or restate command text in this protocol; update playbook scenarios when commands change.
+**Rule**: Do not duplicate or restate command text in this protocol; update the matching snippet when commands change and keep the root coverage ledger in sync.
 
 <!-- /ANCHOR:mandatory-flows -->

@@ -1,0 +1,19 @@
+{
+  "topic": "Investigate improvements to sk-deep-research: validate 18 v2 proposals, analyze 3 reference repos (AGR, pi-autoresearch, autoresearch-opencode) at code level, discover new improvements, produce v3 proposals with file-level change lists",
+  "maxIterations": 15,
+  "convergenceThreshold": 0.02,
+  "stuckThreshold": 3,
+  "maxDurationMinutes": 120,
+  "progressiveSynthesis": true,
+  "specFolder": ".opencode/specs/03--commands-and-skills/024-sk-deep-research-refinement",
+  "createdAt": "2026-03-18T20:35:00.000Z",
+  "status": "complete",
+  "executionMode": "auto",
+  "fileProtection": {
+    "deep-research-config.json": "immutable",
+    "deep-research-state.jsonl": "append-only",
+    "deep-research-strategy.md": "mutable",
+    "iteration-*.md": "write-once",
+    "research.md": "mutable"
+  }
+}

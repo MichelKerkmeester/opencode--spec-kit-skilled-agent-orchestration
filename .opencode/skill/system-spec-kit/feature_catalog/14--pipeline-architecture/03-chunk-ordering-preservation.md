@@ -1,3 +1,8 @@
+---
+title: "Chunk ordering preservation"
+description: "Chunk ordering preservation sorts collapsed multi-chunk results by `chunk_index` so the consuming agent reads content in document order."
+---
+
 # Chunk ordering preservation
 
 ## 1. OVERVIEW

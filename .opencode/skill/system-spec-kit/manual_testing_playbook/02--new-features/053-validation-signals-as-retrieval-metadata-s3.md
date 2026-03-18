@@ -1,0 +1,45 @@
+---
+title: "NEW-053 -- Validation signals as retrieval metadata (S3)"
+description: "This scenario validates Validation signals as retrieval metadata (S3) for `NEW-053`. It focuses on Confirm bounded multiplier."
+---
+
+# NEW-053 -- Validation signals as retrieval metadata (S3)
+
+## 1. OVERVIEW
+
+This scenario validates Validation signals as retrieval metadata (S3) for `NEW-053`. It focuses on Confirm bounded multiplier.
+
+---
+
+## 2. CURRENT REALITY
+
+Operators run the exact prompt and command sequence for `NEW-053` and confirm the expected signals without contradicting evidence.
+
+- Objective: Confirm bounded multiplier
+- Prompt: `Validate S3 retrieval metadata weighting.`
+- Expected signals: Validation signal multiplier bounded to [0.8, 1.2]; highly validated docs score higher; zero-validation docs use 1.0 multiplier
+- Pass/fail: PASS: All multipliers in [0.8, 1.2]; positive validations increase multiplier; zero validations = 1.0; FAIL: Multiplier out of bounds or zero-validation not neutral
+
+---
+
+## 3. TEST EXECUTION
+
+| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
+|---|---|---|---|---|---|---|---|---|
+| NEW-053 | Validation signals as retrieval metadata (S3) | Confirm bounded multiplier | `Validate S3 retrieval metadata weighting.` | 1) Prepare docs with varied validations 2) run stage-2 3) verify 0.8-1.2 bounds | Validation signal multiplier bounded to [0.8, 1.2]; highly validated docs score higher; zero-validation docs use 1.0 multiplier | Stage-2 output with multiplier values + bounds verification + zero-validation behavior | PASS: All multipliers in [0.8, 1.2]; positive validations increase multiplier; zero validations = 1.0; FAIL: Multiplier out of bounds or zero-validation not neutral | Verify multiplier formula → Check bounds clamping → Inspect validation count resolution |
+
+---
+
+## 4. REFERENCES
+
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Feature catalog: [14--pipeline-architecture/05-validation-signals-as-retrieval-metadata.md](../../feature_catalog/14--pipeline-architecture/05-validation-signals-as-retrieval-metadata.md)
+
+---
+
+## 5. SOURCE METADATA
+
+- Group: New Features
+- Playbook ID: NEW-053
+- Canonical root source: `manual_testing_playbook.md`
+- Feature file path: `02--new-features/053-validation-signals-as-retrieval-metadata-s3.md`

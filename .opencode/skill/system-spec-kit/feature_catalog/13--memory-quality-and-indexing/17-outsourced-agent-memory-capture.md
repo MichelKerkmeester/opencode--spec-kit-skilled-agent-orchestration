@@ -1,3 +1,8 @@
+---
+title: "Outsourced agent handback protocol"
+description: "Outsourced agent handback keeps external CLI save payloads aligned with the current `generate-context.js` contract. It enforces hard-fail validation for explicit JSON data files, persists `nextSteps` fields into memory observations, and now documents the post-010 save gates that can still reject a valid handback after normalization."
+---
+
 # Outsourced agent handback protocol
 
 ## 1. OVERVIEW

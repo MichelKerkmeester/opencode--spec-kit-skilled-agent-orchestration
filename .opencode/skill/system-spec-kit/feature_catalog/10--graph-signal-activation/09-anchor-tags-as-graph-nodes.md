@@ -1,3 +1,8 @@
+---
+title: "ANCHOR tags as graph nodes"
+description: "**STATUS: PLANNED/DEFERRED -- NOT IMPLEMENTED.** This feature has not been implemented yet."
+---
+
 # ANCHOR tags as graph nodes
 
 ## 1. OVERVIEW

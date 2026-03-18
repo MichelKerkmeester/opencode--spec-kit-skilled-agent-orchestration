@@ -1,3 +1,8 @@
+---
+title: "Hybrid search pipeline"
+description: "Covers the multi-channel retrieval engine with five search channels, adaptive fusion and tiered fallback."
+---
+
 # Hybrid search pipeline
 
 ## 1. OVERVIEW

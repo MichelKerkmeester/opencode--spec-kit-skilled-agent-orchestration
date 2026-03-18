@@ -278,7 +278,7 @@
       "h2EmojiRequired": false
     },
     "playbook": {
-      "description": "Manual testing playbook files for skill validation",
+      "description": "Manual testing playbook files for skill validation, including a root directory page and required per-feature snippet tree",
       "requiredSections": ["overview", "global_preconditions", "global_evidence_requirements", "deterministic_command_notation"],
       "recommendedSections": ["automated_test_cross_reference", "feature_catalog_cross_reference"],
       "optionalSections": ["coverage_notes"],

@@ -1,3 +1,8 @@
+---
+title: "Quality proxy formula"
+description: "Describes the automated 0-1 quality proxy score that detects retrieval regressions from four weighted components without requiring manual review."
+---
+
 # Quality proxy formula
 
 ## 1. OVERVIEW

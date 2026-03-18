@@ -1,3 +1,8 @@
+---
+title: "Atomic-save parity and partial-indexing hints"
+description: "Atomic-save parity ensures `atomicSaveMemory()` returns the same `postMutationHooks` envelope and UX hint payloads as the primary save path."
+---
+
 # Atomic-save parity and partial-indexing hints
 
 ## 1. OVERVIEW

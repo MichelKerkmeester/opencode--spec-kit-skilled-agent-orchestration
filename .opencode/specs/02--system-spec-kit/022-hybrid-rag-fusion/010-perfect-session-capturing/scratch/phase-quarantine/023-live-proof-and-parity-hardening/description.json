@@ -1,0 +1,16 @@
+{
+  "specFolder": "010-perfect-session-capturing/023-live-proof-and-parity-hardening",
+  "description": "Phase 3: live-proof-and-parity-hardening",
+  "keywords": [
+    "phase",
+    "live-proof-and-parity-hardening"
+  ],
+  "lastUpdated": "2026-03-18T20:11:56.496Z",
+  "specId": "023",
+  "folderSlug": "live-proof-and-parity-hardening",
+  "parentChain": [
+    "010-perfect-session-capturing"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

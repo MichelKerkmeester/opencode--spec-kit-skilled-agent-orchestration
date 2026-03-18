@@ -100,6 +100,7 @@ ccc index
 - First run indexes all supported files
 - Subsequent runs perform incremental updates (only changed files)
 - Duration depends on codebase size (typically 1-5 minutes for first build)
+- For forced refresh during search, use `ccc search ... --refresh`; the installed `ccc index` command does not expose a `--refresh` flag
 
 ---
 
@@ -204,22 +205,22 @@ ccc mcp
 Manage the background indexing daemon.
 
 ```bash
-ccc daemon start|stop|status
+ccc daemon status|restart|stop
 ```
 
 | Subcommand | Description                          |
 | ---------- | ------------------------------------ |
-| `start`    | Start the background daemon          |
-| `stop`     | Stop the running daemon              |
 | `status`   | Check if the daemon is running       |
+| `restart`  | Restart the running daemon           |
+| `stop`     | Stop the running daemon              |
 
 **Examples:**
 ```bash
-# Start daemon for automatic re-indexing
-ccc daemon start
-
 # Check daemon status
 ccc daemon status
+
+# Restart daemon
+ccc daemon restart
 
 # Stop daemon
 ccc daemon stop
@@ -249,7 +250,7 @@ Perform semantic search across the indexed codebase.
 - `languages` accepts a list (e.g., `["python", "typescript"]`), not a single string
 - `paths` accepts a list (e.g., `["src/api/", "lib/"]`), not a single string
 - `num_results` defaults to **5** for MCP (CLI `--limit` defaults to 10)
-- `refresh_index` defaults to `true` -- set to `false` to skip refresh for faster results
+- `refresh_index` defaults to `true` -- set to `false` after the first query in a multi-query session when the codebase has not changed
 
 **MCP request example:**
 ```json
@@ -282,7 +283,7 @@ Perform semantic search across the indexed codebase.
 | Path filter      | `--path` (string)   | `paths` (list)   | CLI: single path. MCP: list of paths        |
 | Result limit     | `--limit` (default: 10) | `num_results` (default: 5) | Different defaults        |
 | Pagination       | `--offset`          | (not available)  | CLI only                                    |
-| Index refresh    | `--refresh`         | `refresh_index`  | CLI: default false. MCP: default true       |
+| Index refresh before search | `--refresh` on `ccc search` | `refresh_index` | CLI search: default false. MCP: default true |
 
 ---
 
@@ -379,6 +380,7 @@ For detailed schema and configuration examples, see the upstream test files in `
 | ---------------- | ------------------------------------------------------------------- |
 | INSTALL_GUIDE    | `.opencode/skill/mcp-cocoindex-code/INSTALL_GUIDE.md`              |
 | Search Patterns  | `.opencode/skill/mcp-cocoindex-code/references/search_patterns.md` |
+| Cross-CLI Playbook | `.opencode/skill/mcp-cocoindex-code/references/cross_cli_playbook.md` |
 | Config Templates | `.opencode/skill/mcp-cocoindex-code/assets/config_templates.md`    |
 | Upstream Tests   | `.opencode/skill/mcp-cocoindex-code/tests/`                        |
 

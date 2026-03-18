@@ -43,6 +43,11 @@ const OPTIONAL_PLACEHOLDERS: Set<string> = new Set([
   'PREFLIGHT_UNCERTAINTY_SCORE', 'POSTFLIGHT_UNCERTAINTY_SCORE', 'DELTA_UNCERTAINTY_SCORE', 'DELTA_UNCERTAINTY_TREND',
   'PREFLIGHT_CONTEXT_SCORE', 'POSTFLIGHT_CONTEXT_SCORE', 'DELTA_CONTEXT_SCORE', 'DELTA_CONTEXT_TREND',
   'LEARNING_INDEX', 'LEARNING_SUMMARY',
+  // Session-capturing runtime contract: these fields are intentionally sparse or section-scoped
+  // in successful flows and should not emit false-positive template-data warnings.
+  'ANCHOR_ID', 'TYPE', 'NARRATIVE', 'FILES_LIST',
+  'CAPTURED_FILE_COUNT', 'FILESYSTEM_FILE_COUNT', 'GIT_CHANGED_FILE_COUNT',
+  'HEAD_REF', 'COMMIT_REF',
 ]);
 
 // ───────────────────────────────────────────────────────────────

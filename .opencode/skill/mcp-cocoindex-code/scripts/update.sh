@@ -7,14 +7,13 @@
 
 set -euo pipefail
 
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/common.sh"
+
 # ─────────────────────────────────────────────────────────────────────────────
 # 1. CONFIGURATION
 # ─────────────────────────────────────────────────────────────────────────────
 
-readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-readonly SKILL_DIR="$(dirname "$SCRIPT_DIR")"
-readonly VENV_DIR="$SKILL_DIR/mcp_server/.venv"
-readonly PACKAGE_NAME="cocoindex-code"
+PROJECT_ROOT_INPUT=""
 
 # ─────────────────────────────────────────────────────────────────────────────
 # 2. FUNCTIONS
@@ -23,7 +22,7 @@ readonly PACKAGE_NAME="cocoindex-code"
 check_venv() {
     if [[ ! -d "$VENV_DIR" ]]; then
         echo "Error: Venv not found at $VENV_DIR" >&2
-        echo "Run install.sh first: bash $SKILL_DIR/scripts/install.sh" >&2
+        echo "Run install.sh first: bash $COMMON_SCRIPT_DIR/install.sh" >&2
         exit 1
     fi
 }
@@ -57,6 +56,16 @@ verify_binary() {
     echo "  Binary verified: $VENV_DIR/bin/ccc"
 }
 
+show_help() {
+    cat <<'EOF'
+Usage: bash .opencode/skill/mcp-cocoindex-code/scripts/update.sh [--root <path>]
+
+Options:
+  --root <path>  Override the project root used for post-update health checks
+  -h, --help     Show this help message
+EOF
+}
+
 # ─────────────────────────────────────────────────────────────────────────────
 # 3. MAIN
 # ─────────────────────────────────────────────────────────────────────────────
@@ -64,9 +73,40 @@ verify_binary() {
 echo "=== CocoIndex Code MCP Update Script ==="
 echo ""
 
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --root)
+            if [[ $# -lt 2 ]]; then
+                log_error "Missing value for --root"
+                exit 1
+            fi
+            PROJECT_ROOT_INPUT="$2"
+            shift 2
+            ;;
+        -h|--help)
+            show_help
+            exit 0
+            ;;
+        *)
+            log_error "Unknown argument: $1"
+            show_help
+            exit 1
+            ;;
+    esac
+done
+
+PROJECT_ROOT="$(resolve_project_root "$PROJECT_ROOT_INPUT")"
 check_venv
 update_package
 verify_binary
 
 echo ""
 echo "=== Update complete ==="
+STATUS_OUTPUT="$(get_index_status_output "$PROJECT_ROOT" || true)"
+FILES_COUNT="$(parse_status_files "$STATUS_OUTPUT" || printf '0')"
+CHUNKS_COUNT="$(parse_status_chunks "$STATUS_OUTPUT" || printf '0')"
+if [[ "${FILES_COUNT:-0}" -gt 0 && "${CHUNKS_COUNT:-0}" -gt 0 ]]; then
+    echo "  Index health: ${FILES_COUNT} files, ${CHUNKS_COUNT} chunks"
+else
+    log_warn "Index is missing or empty after update. Run: bash $COMMON_SCRIPT_DIR/ensure_ready.sh --root \"$PROJECT_ROOT\""
+fi

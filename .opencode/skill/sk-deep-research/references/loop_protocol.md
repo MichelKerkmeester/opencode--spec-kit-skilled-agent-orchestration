@@ -1,6 +1,6 @@
 ---
 title: Loop Protocol Reference
-description: Canonical specification for the deep research loop lifecycle with 4 phases, wave orchestration, and error handling.
+description: Canonical specification for the deep research loop lifecycle with 4 phases, reference-only wave orchestration, and error handling.
 ---
 
 # Loop Protocol Reference
@@ -39,15 +39,20 @@ Set up all state files for a new research session.
 
 ### Steps
 
-1. **Create spec folder** (if needed): `mkdir -p {spec_folder}/scratch`
-2. **Write config**: `scratch/deep-research-config.json` from template + user parameters
-3. **Initialize state log**: First line of `scratch/deep-research-state.jsonl` with config record
-4. **Initialize strategy**: `scratch/deep-research-strategy.md` from template with:
+1. **Classify session state before writing**:
+   - `fresh`: no config/state/strategy files exist
+   - `resume`: config + state + strategy all exist and agree
+   - `completed-session`: consistent prior state with `config.status == "complete"`
+   - `invalid-state`: partial or contradictory artifacts
+2. **Create spec folder** (if needed): `mkdir -p {spec_folder}/scratch`
+3. **Write config**: `scratch/deep-research-config.json` from template + user parameters
+4. **Initialize state log**: First line of `scratch/deep-research-state.jsonl` with config record
+5. **Initialize strategy**: `scratch/deep-research-strategy.md` from template with:
    - Topic from user input
    - Initial key questions (3-5, from topic analysis)
-   - Known context from `memory_context()` results (if any)
+   - Known context from `memory_context()` results (if any), injected only after the strategy file exists
    - Research boundaries from config
-5. **Check for existing state** (auto-resume): If JSONL already exists, count iterations and resume from last
+6. **Resume only if config, JSONL, and strategy agree**; otherwise halt for repair instead of guessing
 
 ### Outputs
 - `scratch/deep-research-config.json`
@@ -56,11 +61,12 @@ Set up all state files for a new research session.
 
 ### Auto-Resume Protocol
 If state files already exist from a prior session:
-1. Read JSONL, count iteration records
-2. Read strategy.md for current state
-3. Set iteration counter to last completed + 1
-4. Log resume event to JSONL: `{"type":"event","event":"resumed","fromIteration":N}`
-5. Continue loop from step_read_state
+1. Verify config, JSONL, and strategy all exist and agree on topic/spec folder
+2. Read JSONL, count iteration records
+3. Read strategy.md for current state
+4. Set iteration counter to last completed + 1
+5. Log resume event to JSONL: `{"type":"event","event":"resumed","fromIteration":N}`
+6. Continue loop from step_read_state
 
 ---
 
@@ -140,9 +146,11 @@ After agent completes:
 2. Verify JSONL was appended with iteration record
 3. Verify strategy.md was updated
 4. Extract `newInfoRatio` from JSONL record
-5. Track stuck count (increment if newInfoRatio < 0.05, reset otherwise)
+5. Track stuck count (increment if `newInfoRatio < config.convergenceThreshold`, reset otherwise)
 
-#### Step 4a: Checkpoint Commit
+#### Step 4a: Checkpoint Commit (REFERENCE-ONLY)
+
+This checkpointing pattern is documented for reference, but current runtimes should not assume it is available.
 
 After each iteration is verified (JSONL appended, iteration file written, strategy updated):
 
@@ -199,9 +207,9 @@ When stuckThreshold consecutive iterations show no progress (default: 3, configu
 4. Reset stuck counter
 5. If recovery iteration also shows no progress: exit to synthesis with gaps documented
 
-### Step 3b: Direct Mode Fallback
+### Step 3b: Direct Mode Fallback (REFERENCE-ONLY)
 
-When agent dispatch fails (Tier 5 error recovery):
+When agent dispatch fails after the earlier recovery tiers are exhausted:
 
 1. Detect dispatch failure: Task tool timeout, API overload (529), or agent crash
 2. Log event: `{"type":"event","event":"direct_mode","iteration":N,"reason":"dispatch_failure"}`
@@ -213,7 +221,7 @@ When agent dispatch fails (Tier 5 error recovery):
    - Update strategy.md
    - Append iteration record to JSONL
 4. Continue loop normally after direct-mode iteration completes
-5. If direct mode also fails, escalate to Tier 4 (user escalation)
+5. If direct mode also fails, escalate to the final user-escalation tier
 
 **Note**: Direct mode iterations are logged with `"directMode": true` in their JSONL record for diagnostic tracking.
 
@@ -221,9 +229,9 @@ When agent dispatch fails (Tier 5 error recovery):
 
 <!-- /ANCHOR:phase-iteration-loop -->
 <!-- ANCHOR:wave-orchestration-protocol -->
-## 3a. WAVE ORCHESTRATION PROTOCOL
+## 3a. WAVE ORCHESTRATION PROTOCOL (REFERENCE-ONLY)
 
-An optional parallel execution mode for research topics with multiple independent questions.
+An optional parallel execution mode for research topics with multiple independent questions. Treat this as reference guidance unless the runtime explicitly supports it; the live workflow remains sequential.
 
 ### When to Use Waves
 
@@ -240,7 +248,7 @@ Wave 1: Dispatch N agents on independent questions
   +-- Agent B: Question 2 --> iteration-002.md (newInfoRatio: 0.3)
   +-- Agent C: Question 3 --> iteration-003.md (newInfoRatio: 0.7)
   |
-Scoring: Rank by newInfoRatio, prune below median
+Scoring: Rank by newInfoRatio, prune below median when wave support is enabled
   |
 Wave 2: Follow-up on top-K questions (K = ceil(N/2))
   +-- Agent A: Question 1 follow-up --> iteration-004.md
@@ -254,7 +262,7 @@ Repeat until convergence
 After each wave completes:
 1. Rank all wave iterations by `newInfoRatio`
 2. Compute wave median: `median([i.newInfoRatio for i in wave_iterations])`
-3. **Prune**: Questions with newInfoRatio below median are deprioritized
+3. **Prune**: Questions with newInfoRatio below median are deprioritized when wave support is enabled
 4. **Promote**: Top-K questions (K = ceil(N/2)) get follow-up iterations
 5. Pruned questions are moved to the ideas backlog, not discarded
 
@@ -291,9 +299,9 @@ Wave events:
 
 <!-- /ANCHOR:wave-orchestration-protocol -->
 <!-- ANCHOR:context-isolation-dispatch -->
-## 3b. CONTEXT ISOLATION DISPATCH (EXPERIMENTAL)
+## 3b. CONTEXT ISOLATION DISPATCH (EXPERIMENTAL, REFERENCE-ONLY)
 
-An alternative dispatch mechanism that guarantees fresh context per iteration by launching a new OS process.
+An alternative dispatch mechanism that guarantees fresh context per iteration by launching a new OS process. Treat this as reference-only unless the runtime explicitly implements alternate CLI dispatch.
 
 ### Motivation
 
@@ -331,7 +339,7 @@ Replace Task tool dispatch with shell-level `claude -p` invocation:
 - Research past iteration 8+ where context degradation is measurable
 - Critical research where reasoning quality must not degrade
 
-**Status**: Experimental. Track adoption based on need for fully autonomous overnight research sessions.
+**Status**: Reference-only. Track adoption based on need for fully autonomous overnight research sessions.
 
 ---
 
@@ -340,7 +348,7 @@ Replace Task tool dispatch with shell-level `claude -p` invocation:
 ## 4. PHASE: SYNTHESIS
 
 ### Purpose
-Compile all iteration findings into final research.md.
+Compile all iteration findings into final research.md. The synthesis workflow owns the canonical `research.md` output.
 
 ### Steps
 
@@ -352,11 +360,11 @@ Compile all iteration findings into final research.md.
    - Add citations from iteration files
    - Note unanswered questions in Section 12 (Open Questions)
 4. **Update config status**: Set `status: "complete"` in config.json
-5. **Final JSONL entry**: `{"type":"event","event":"synthesis_complete","totalIterations":N,"answeredRatio":0.85}`
+5. **Final JSONL entry**: `{"type":"event","event":"synthesis_complete","totalIterations":N,"answeredCount":A,"totalQuestions":Q,"stopReason":"converged"}`
 
 ### Progressive vs Final Synthesis
-- If `progressive_synthesis: true` (default): research.md was updated each iteration. Final synthesis is a cleanup pass.
-- If `progressive_synthesis: false`: research.md is created from scratch during synthesis.
+- If `progressiveSynthesis: true` (default): research.md was updated each iteration. Final synthesis is a cleanup pass.
+- If `progressiveSynthesis: false`: research.md is created from scratch during synthesis.
 
 ---
 
@@ -370,7 +378,7 @@ Preserve research context to memory system.
 ### Steps
 
 1. **Generate context**: `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js {spec_folder}`
-2. **Index for MCP visibility**: `memory_index_scan({ specFolder: "{spec_folder_name}" })` or `memory_save()`
+2. **No extra indexing step in the live contract**: `generate-context.js` is the supported save boundary for this workflow
 3. **Verify**: Confirm memory/*.md file created with proper anchors
 
 ---
@@ -415,7 +423,7 @@ Preserve research context to memory system.
 | State file missing | Init/Loop | If JSONL missing: re-initialize. If strategy missing: reconstruct from JSONL |
 | JSONL malformed | Loop | Skip malformed lines, reconstruct from valid entries |
 | 3+ consecutive failures | Loop | Halt loop, enter synthesis with partial findings |
-| Agent dispatch failure (API overload, timeout) | Loop | Direct mode fallback (Tier 5): orchestrator absorbs iteration work. Log event and continue. |
+| Agent dispatch failure (API overload, timeout) | Loop | Escalate through the documented recovery ladder in order. Direct mode fallback is reference-only unless the runtime explicitly supports it. |
 | Memory save fails | Save | Save to scratch/ as backup, log error |
 
 ### State Recovery Protocol

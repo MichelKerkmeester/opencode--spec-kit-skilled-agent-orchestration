@@ -1,3 +1,8 @@
+---
+title: "Dead code removal"
+description: "Dead code removal eliminated approximately 360 lines of unused branches, feature flags, module-level state and function exports across the codebase."
+---
+
 # Dead code removal
 
 ## 1. OVERVIEW

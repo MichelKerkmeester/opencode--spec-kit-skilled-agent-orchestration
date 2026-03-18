@@ -1,3 +1,8 @@
+---
+title: "Synthetic ground truth corpus"
+description: "Describes the 110-query ground truth corpus covering all seven intent types with hand-written natural language queries, hard negatives and agent consumption findings for realistic retrieval evaluation."
+---
+
 # Synthetic ground truth corpus
 
 ## 1. OVERVIEW

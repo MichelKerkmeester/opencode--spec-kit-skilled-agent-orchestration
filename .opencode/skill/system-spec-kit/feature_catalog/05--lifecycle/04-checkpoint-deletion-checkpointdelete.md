@@ -1,3 +1,8 @@
+---
+title: "Checkpoint deletion (checkpoint_delete)"
+description: "Covers the checkpoint deletion tool that permanently removes named snapshots with a name-confirmation safety gate."
+---
+
 # Checkpoint deletion (checkpoint_delete)
 
 ## 1. OVERVIEW

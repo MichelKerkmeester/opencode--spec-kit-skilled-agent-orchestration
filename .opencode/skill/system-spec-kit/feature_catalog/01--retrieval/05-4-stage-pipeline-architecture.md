@@ -1,3 +1,8 @@
+---
+title: "4-stage pipeline architecture"
+description: "Covers the four bounded pipeline stages (candidate generation, fusion, rerank, filter) with score-immutability enforcement."
+---
+
 # 4-stage pipeline architecture
 
 ## 1. OVERVIEW

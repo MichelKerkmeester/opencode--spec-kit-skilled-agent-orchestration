@@ -1,3 +1,8 @@
+---
+title: "Causal neighbor boost and injection"
+description: "Describes the post-fusion causal boost that walks `causal_edges` up to 2 hops from top-ranked seed results, applying relation-type weighted amplification with a combined causal + session boost ceiling of 0.20."
+---
+
 # Causal neighbor boost and injection
 
 ## 1. OVERVIEW

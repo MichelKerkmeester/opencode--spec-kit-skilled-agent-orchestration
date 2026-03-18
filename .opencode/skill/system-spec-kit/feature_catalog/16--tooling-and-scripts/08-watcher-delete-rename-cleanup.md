@@ -1,3 +1,8 @@
+---
+title: "Watcher delete/rename cleanup"
+description: "Watcher delete/rename cleanup purges stale index entries when memory files are deleted or renamed on disk."
+---
+
 # Watcher delete/rename cleanup
 
 ## 1. OVERVIEW

@@ -1,0 +1,45 @@
+---
+title: "NEW-081 -- Graph and cognitive memory fixes"
+description: "This scenario validates Graph and cognitive memory fixes for `NEW-081`. It focuses on Confirm graph/cognitive fix bundle."
+---
+
+# NEW-081 -- Graph and cognitive memory fixes
+
+## 1. OVERVIEW
+
+This scenario validates Graph and cognitive memory fixes for `NEW-081`. It focuses on Confirm graph/cognitive fix bundle.
+
+---
+
+## 2. CURRENT REALITY
+
+Operators run the exact prompt and command sequence for `NEW-081` and confirm the expected signals without contradicting evidence.
+
+- Objective: Confirm graph/cognitive fix bundle
+- Prompt: `Validate graph and cognitive memory fixes.`
+- Expected signals: Self-loops prevented; depth clamps enforced; cache invalidation triggers on mutation; no stale cognitive data returned
+- Pass/fail: PASS if self-loops are blocked, depth stays within clamped bounds, and cache invalidates correctly on mutation
+
+---
+
+## 3. TEST EXECUTION
+
+| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
+|---|---|---|---|---|---|---|---|---|
+| NEW-081 | Graph and cognitive memory fixes | Confirm graph/cognitive fix bundle | `Validate graph and cognitive memory fixes.` | 1) trigger self-loop/depth/cache scenarios 2) verify clamps/invalidations 3) capture results | Self-loops prevented; depth clamps enforced; cache invalidation triggers on mutation; no stale cognitive data returned | Self-loop attempt output + depth clamp evidence + cache invalidation trace | PASS if self-loops are blocked, depth stays within clamped bounds, and cache invalidates correctly on mutation | Inspect self-loop guard logic; verify depth clamp constants; check cache invalidation trigger points |
+
+---
+
+## 4. REFERENCES
+
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Feature catalog: [10--graph-signal-activation/08-graph-and-cognitive-memory-fixes.md](../../feature_catalog/10--graph-signal-activation/08-graph-and-cognitive-memory-fixes.md)
+
+---
+
+## 5. SOURCE METADATA
+
+- Group: New Features
+- Playbook ID: NEW-081
+- Canonical root source: `manual_testing_playbook.md`
+- Feature file path: `02--new-features/081-graph-and-cognitive-memory-fixes.md`

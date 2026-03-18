@@ -1,3 +1,8 @@
+---
+title: "Mutation hook result contract expansion"
+description: "Mutation hook result contract expansion adds `latencyMs` and cache-clear booleans to post-mutation hook results."
+---
+
 # Mutation hook result contract expansion
 
 ## 1. OVERVIEW

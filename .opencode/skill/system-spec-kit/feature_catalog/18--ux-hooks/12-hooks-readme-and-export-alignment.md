@@ -1,3 +1,8 @@
+---
+title: "Hooks README and export alignment"
+description: "Hooks README and export alignment synchronizes the hooks barrel and README with the implemented UX-hook modules."
+---
+
 # Hooks README and export alignment
 
 ## 1. OVERVIEW

@@ -382,11 +382,12 @@ Standard Flow:      Branch:           Parallel:         Merge:
 2. Plan categories and Feature ID prefixes (Section 3 of template)
 3. Create `manual_testing_playbook/` directory in the skill folder
 4. Copy and fill the main playbook scaffold (Section 5 of template)
-5. Copy and fill the review protocol scaffold (Section 6 of template)
-6. Copy and fill the sub-agent utilization ledger scaffold (Section 7 of template)
-7. Validate using the playbook checklist (Section 9 of template)
+5. Create one per-feature file per feature under the numbered category directories at the playbook root
+6. Fold the integrated review/release block into the main playbook (Section 7 of template)
+7. Fold the integrated orchestration block into the main playbook (Section 8 of template)
+8. Validate using the playbook checklist (Section 10 of template)
 
-**Key Deliverables**: 3-file package with 9-column scenario tables, review protocol, and wave planning ledger.
+**Key Deliverables**: Root directory playbook with integrated review/orchestration sections and a per-feature file tree.
 
 **See**: [manual_testing_playbook_template.md](./assets/documentation/manual_testing_playbook_template.md)
 
@@ -558,12 +559,14 @@ Standard Flow:      Branch:           Parallel:         Merge:
 
 #### ✅ ALWAYS
 
-1. **ALWAYS use the 3-file package** (main playbook, review protocol, sub-agent ledger)
-2. **ALWAYS use the 9-column table format** for scenario definitions
+1. **ALWAYS use the root playbook as the canonical package surface** for directory, review, and orchestration guidance
+2. **ALWAYS use the 9-column table format** for snippet scenario definitions
 3. **ALWAYS assign unique Feature IDs** across the entire playbook (PREFIX-NNN format)
 4. **ALWAYS include Global Preconditions, Evidence Requirements, and Command Notation**
 5. **ALWAYS include a Feature Catalog Cross-Reference Index** at the end
-6. **ALWAYS mark destructive scenarios** in preconditions and review protocol
+6. **ALWAYS mark destructive scenarios** in preconditions and the integrated root review section
+7. **ALWAYS create one per-feature file per feature** under numbered category directories at the playbook root
+8. **ALWAYS treat the root playbook plus per-feature files as the canonical package**, with root summaries in `manual_testing_playbook.md` and full execution detail in the per-feature files
 
 #### ❌ NEVER
 
@@ -571,6 +574,8 @@ Standard Flow:      Branch:           Parallel:         Merge:
 2. **NEVER omit step references** in Expected Signals (must reference step numbers)
 3. **NEVER leave Failure Triage empty** (every scenario needs 2+ debugging steps)
 4. **NEVER reuse Feature IDs** across categories
+5. **NEVER claim the current validator traverses snippet files** or verifies cross-file snippet links
+6. **NEVER describe separate review or ledger files as canonical** when documenting the current playbook contract
 
 #### ⚠️ ESCALATE IF
 
@@ -597,6 +602,7 @@ Standard Flow:      Branch:           Parallel:         Merge:
 - [readme_template.md](./assets/documentation/readme_template.md) - README structure and quality rules
 - [install_guide_template.md](./assets/documentation/install_guide_template.md) - install guide template
 - [manual_testing_playbook_template.md](./assets/documentation/manual_testing_playbook_template.md) - manual testing playbook template
+- [manual_testing_playbook_snippet_template.md](./assets/documentation/manual_testing_playbook_snippet_template.md) - manual testing playbook snippet template
 
 ### Validation Scripts
 
@@ -691,12 +697,13 @@ The `extract_structure.py` script computes a **DQI** (0-100) based on measurable
 - ✅ Commands tested and working
 
 **Playbook Creation Complete**:
-- ✅ All 3 files exist (main playbook, review protocol, sub-agent ledger)
+- ✅ Core playbook files exist (main playbook, review protocol, sub-agent ledger)
 - ✅ All scenario tables use 9-column format
 - ✅ Every Feature ID is unique across the playbook
 - ✅ Feature Catalog Cross-Reference Index matches all scenario rows
 - ✅ Review protocol coverage check regex matches all Feature ID prefixes
 - ✅ Destructive scenarios identified and isolated in wave planning
+- ✅ Snippets subtree is only used for reusable prose and remains manually reviewed
 
 ### Document-Type Gates
 

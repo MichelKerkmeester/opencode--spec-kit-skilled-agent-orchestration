@@ -1,3 +1,8 @@
+---
+title: "Memory roadmap baseline snapshot"
+description: "Describes the Phase 1 readiness baseline snapshot that captures retrieval-volume and isolation/schema metrics from eval and context databases for memory-roadmap rollout gating."
+---
+
 # Memory roadmap baseline snapshot
 
 ## 1. OVERVIEW

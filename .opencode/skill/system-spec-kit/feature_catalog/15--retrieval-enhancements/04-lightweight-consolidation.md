@@ -1,3 +1,8 @@
+---
+title: "Lightweight consolidation"
+description: "Lightweight consolidation runs contradiction scanning, Hebbian edge strengthening, staleness detection and edge bounds enforcement as a post-save batch cycle."
+---
+
 # Lightweight consolidation
 
 ## 1. OVERVIEW

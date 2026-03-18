@@ -1,3 +1,8 @@
+---
+title: "Evaluation and housekeeping fixes"
+description: "Covers six fixes addressing evaluation framework reliability and protocol-boundary safety, including ablation recallK, evalRunId persistence and exit handler cleanup."
+---
+
 # Evaluation and housekeeping fixes
 
 ## 1. OVERVIEW

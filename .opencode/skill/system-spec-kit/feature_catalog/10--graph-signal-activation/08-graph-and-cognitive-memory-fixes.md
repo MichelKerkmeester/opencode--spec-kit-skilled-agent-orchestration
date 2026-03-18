@@ -1,3 +1,8 @@
+---
+title: "Graph and cognitive memory fixes"
+description: "Covers seven fixes (of 9 planned) for graph integrity and cognitive scoring, including self-loop prevention, community debounce, WM score clamping and double-decay removal."
+---
+
 # Graph and cognitive memory fixes
 
 ## 1. OVERVIEW

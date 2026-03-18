@@ -1,5 +1,5 @@
 ---
-description: Autonomous deep research loop - iterative investigation with convergence detection. Supports :auto and :confirm modes
+description: Autonomous deep research loop - iterative investigation with convergence detection. Supports :auto and :confirm multi-gate mode
 argument-hint: "<research-topic> [:auto|:confirm] [--max-iterations=N] [--convergence=N]"
 allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Task, WebFetch, memory_context, memory_search
 ---
@@ -9,11 +9,16 @@ allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Task, WebFetch, memory_conte
 > This command runs a structured YAML workflow. Do NOT dispatch agents from this document.
 >
 > **YOUR FIRST ACTION:**
-> 1. Determine execution mode from user input (`:auto` or `:confirm`)
-> 2. Load the corresponding YAML file from `assets/`:
+> 1. Run the unified setup phase in this Markdown entrypoint and resolve:
+>    - `research_topic`
+>    - `spec_folder`
+>    - `execution_mode`
+>    - `maxIterations`
+>    - `convergenceThreshold`
+> 2. Load the corresponding YAML file from `assets/` only after all setup values are resolved:
 >    - Auto mode: `spec_kit_deep-research_auto.yaml`
 >    - Confirm mode: `spec_kit_deep-research_confirm.yaml`
-> 3. Execute the YAML workflow step by step
+> 3. Execute the YAML workflow step by step using those resolved values
 >
 > All content below is reference context for the YAML workflow. Do not treat reference sections as direct instructions to execute.
 
@@ -21,17 +26,18 @@ allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Task, WebFetch, memory_conte
 
 - **DO NOT** dispatch any agent from this document
 - **ALL** agent dispatching is handled by the YAML workflow steps
-- **FIRST ACTION** is always: load the YAML file, then execute it step by step
+- **MARKDOWN OWNS SETUP**: resolve setup inputs here first, then hand off to YAML
+- **YAML START CONDITION**: do not load YAML until `research_topic`, `spec_folder`, `execution_mode`, `maxIterations`, and `convergenceThreshold` are all bound
 
-# SINGLE CONSOLIDATED PROMPT - ONE USER INTERACTION
+# SINGLE CONSOLIDATED SETUP PROMPT
 
-This workflow gathers ALL inputs in ONE prompt. Round-trip: 1 user interaction.
+This workflow gathers all setup inputs in one prompt. Confirm mode still includes multiple approval gates after setup; only the setup round-trip is consolidated here.
 
 ---
 
 ## 0. UNIFIED SETUP PHASE
 
-**FIRST MESSAGE PROTOCOL**: This prompt MUST be your FIRST response. No analysis, no tool calls -- ask ALL questions immediately, then wait.
+**FIRST MESSAGE PROTOCOL**: This prompt MUST be your FIRST response. No implementation or file-modifying tool calls before asking. Lightweight read-only discovery to suggest a spec folder or load prior context is allowed, then ask ALL questions immediately and wait.
 
 **STATUS: BLOCKED**
 
@@ -53,8 +59,8 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
    |-- --spec-folder=PATH -> spec_path = PATH, omit Q1
    +-- Defaults: maxIterations=10, convergenceThreshold=0.05
 
-4. Search for related spec folders:
-   $ ls -d .opencode/specs/*/ 2>/dev/null | tail -10
+4. Search for related spec folders under the real specs root:
+   $ find .opencode/specs -mindepth 2 -maxdepth 2 -type d 2>/dev/null | sort | tail -10
 
 5. Search for prior work (background):
    - memory_context({ input: research_topic OR "deep-research", mode: "focused", includeContent: true })
@@ -66,10 +72,9 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
 
    Q1. Spec Folder (required):
      A) Use existing [suggest if found]
-     B) Create new: specs/[###]-[slug]/
+     B) Create new under `.opencode/specs/[track]/[###]-[slug]/`
      C) Update related [if match found]
-     D) Skip documentation
-     E) Phase folder (e.g., specs/NNN-name/001-phase/)
+     D) Phase folder (e.g., `.opencode/specs/NN-track/NNN-name/001-phase/`)
 
    Q2. Execution Mode (if no suffix):
      A) Autonomous -- all iterations without approval
@@ -78,7 +83,7 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
    Q3. Max Iterations (if not set via flag):
      Default is 10. Change? [Enter number or press enter for default]
 
-   Reply format: "B, A" or "WebSocket research, B, A, 15"
+   Reply format: "A, A" or "WebSocket research, A, B, 15"
 
 7. WAIT for user response (DO NOT PROCEED)
 
@@ -149,7 +154,7 @@ Run an iterative research loop: initialize state, dispatch `@deep-research` agen
 | Mode | Invocation | Behavior |
 |------|-----------|----------|
 | `:auto` | `/spec_kit:deep-research:auto "topic"` | All iterations without approval |
-| `:confirm` | `/spec_kit:deep-research:confirm "topic"` | Pause at each iteration for review |
+| `:confirm` | `/spec_kit:deep-research:confirm "topic"` | Multi-gate review at setup, iteration, and synthesis |
 | (default) | `/spec_kit:deep-research "topic"` | Ask user to choose mode during setup |
 
 ---
@@ -191,7 +196,7 @@ STATUS=FAIL ERROR="[message]"
 
 ### After Completing
 - `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js [spec-folder]`
-- `memory_index_scan({ specFolder: "spec-folder-name" })`
+- Verify that `{spec_folder}/memory/` contains the generated memory artifact
 
 ### Anchor Tags (Automatic)
 `ANCHOR:deep-research-[topic]`, `ANCHOR:findings`, `ANCHOR:convergence-report`

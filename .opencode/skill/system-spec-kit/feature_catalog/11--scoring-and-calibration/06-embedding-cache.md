@@ -1,3 +1,8 @@
+---
+title: "Embedding cache"
+description: "Describes the SQLite-backed embedding cache keyed by SHA-256 content hash and model ID that avoids redundant embedding API calls on re-index."
+---
+
 # Embedding cache
 
 ## 1. OVERVIEW

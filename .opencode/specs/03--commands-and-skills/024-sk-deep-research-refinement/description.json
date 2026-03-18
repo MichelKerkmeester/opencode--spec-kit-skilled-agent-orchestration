@@ -1,0 +1,22 @@
+{
+  "specFolder": "03--commands-and-skills/024-sk-deep-research-refinement",
+  "description": "Feature Specification: sk-deep-research Refinement via Self-Research",
+  "keywords": [
+    "feature",
+    "specification",
+    "sk-deep-research",
+    "refinement",
+    "via",
+    "self-research"
+  ],
+  "lastUpdated": "2026-03-18T19:18:33.525Z",
+  "specId": "024",
+  "folderSlug": "sk-deep-research-refinement",
+  "parentChain": [
+    "03--commands-and-skills"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "18-03-26_20-18__speckit-plan-setup-no-feature-description-or-mode.md"
+  ]
+}

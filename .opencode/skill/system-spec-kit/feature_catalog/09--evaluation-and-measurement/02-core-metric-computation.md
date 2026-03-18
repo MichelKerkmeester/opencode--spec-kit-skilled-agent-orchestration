@@ -1,3 +1,8 @@
+---
+title: "Core metric computation"
+description: "Covers the eleven retrieval quality metrics (MRR@5, NDCG@10, Recall@20, Hit Rate@1 and seven diagnostic metrics) that measure where the pipeline fails, not just whether it fails."
+---
+
 # Core metric computation
 
 ## 1. OVERVIEW

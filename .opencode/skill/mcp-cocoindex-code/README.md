@@ -1,6 +1,6 @@
 ---
 title: "CocoIndex Code - Semantic Code Search"
-description: "Vector-based semantic code search via MCP. Indexes the codebase into embeddings for natural language code discovery across 28+ languages."
+description: "Vector-based semantic code search via MCP. CocoIndex Code enables natural-language code discovery across 28+ languages with a single MCP `search` tool."
 trigger_phrases:
   - "semantic search"
   - "cocoindex"
@@ -11,7 +11,7 @@ trigger_phrases:
 
 # CocoIndex Code - Semantic Code Search
 
-> Vector-based semantic code search via MCP server (1 tool: `search`). Indexes the codebase into **105K+ chunks** across **28+ languages**. Primary embedding model: `voyage/voyage-code-3` via LiteLLM; local alternative: `all-MiniLM-L6-v2`.
+> Vector-based semantic code search via MCP server (1 tool: `search`). Supports 28+ languages, repo-local setup, and a local default embedding model (`all-MiniLM-L6-v2`) with optional cloud embeddings.
 
 [![MCP](https://img.shields.io/badge/MCP-Native-brightgreen.svg)](https://modelcontextprotocol.io)
 
@@ -49,9 +49,9 @@ Type `ccc search "error handling middleware"` and get results ranked by semantic
 
 | Feature | Description |
 |---------|-------------|
-| **Embedding Models** | Primary: `voyage/voyage-code-3` via LiteLLM (requires `VOYAGE_API_KEY`); Alternative: `all-MiniLM-L6-v2` (local, no API key) |
+| **Embedding Models** | Default: `all-MiniLM-L6-v2` (local, no API key); optional cloud models via `global_settings.yml` |
 | **28+ Languages** | TypeScript, Python, Go, Rust, Java, C/C++, C#, Ruby, PHP, Swift, Kotlin, Shell, CSS, HTML, JSON, YAML, TOML, XML, and more |
-| **105K+ Chunks** | 6,792 files indexed into 105,965 searchable chunks |
+| **Indexing** | Incremental updates via `ccc index`; use `ccc status` to inspect current repo stats |
 | **SQLite Storage** | sqlite-vec for vector similarity search |
 | **Language Filtering** | `--lang` flag (repeatable) narrows results by programming language |
 | **Path Filtering** | `--path` flag narrows results by file path glob |
@@ -82,21 +82,26 @@ Type `ccc search "error handling middleware"` and get results ranked by semantic
 
 ### Installation
 
-Run the bundled install script:
+For AI-safe setup, use the idempotent bootstrap helper:
+
+```bash
+bash .opencode/skill/mcp-cocoindex-code/scripts/ensure_ready.sh
+bash .opencode/skill/mcp-cocoindex-code/scripts/doctor.sh --strict --require-config
+```
+
+Lower-level helpers remain available:
 
 ```bash
 bash .opencode/skill/mcp-cocoindex-code/scripts/install.sh
+bash .opencode/skill/mcp-cocoindex-code/scripts/doctor.sh
 ```
 
-This creates a Python venv, installs `cocoindex-code` from PyPI, and initializes the project.
-
-### Build the Index
+Use strict readiness mode when an agent or CI job needs a machine-checkable gate:
 
 ```bash
-ccc index
+bash .opencode/skill/mcp-cocoindex-code/scripts/doctor.sh --json --strict --require-config
+bash .opencode/skill/mcp-cocoindex-code/scripts/ensure_ready.sh --json --strict --require-config
 ```
-
-First-time indexing takes several minutes depending on codebase size. Subsequent runs are incremental.
 
 ### Search
 
@@ -200,15 +205,14 @@ ccc search "error handling middleware" --lang typescript --limit 5
 
 | Parameter | Type | Required | Default | Description |
 |-----------|------|----------|---------|-------------|
-| `--refresh` | flag | No | false | Force full rebuild from scratch |
+| (none) | - | - | - | `ccc index` does not expose extra flags in the installed CLI |
 
 **Example**:
 ```bash
-ccc index              # Incremental update
-ccc index --refresh    # Force full rebuild
+ccc index
 ```
 
-Scans all files, chunks them, generates embeddings using the configured model (default: `voyage/voyage-code-3`), and stores vectors in SQLite. Incremental by default - only re-indexes changed files.
+Scans all files, chunks them, generates embeddings using the configured model, and stores vectors in SQLite. Re-run `ccc index` after major refactors or branch switches.
 
 ---
 
@@ -280,7 +284,7 @@ Used by MCP clients (Claude Code, OpenCode) to integrate semantic search as a to
 
 ### 4.7 ccc daemon
 
-**Purpose**: Manage the background daemon process for continuous indexing.
+**Purpose**: Inspect or control the background daemon used by CocoIndex.
 
 **Subcommands**:
 
@@ -323,10 +327,10 @@ CocoIndex Code runs as an MCP server using stdio transport via `ccc mcp`. The MC
 {
   "mcpServers": {
     "cocoindex_code": {
-      "command": "/absolute/path/to/.opencode/skill/mcp-cocoindex-code/mcp_server/.venv/bin/ccc",
+      "command": ".opencode/skill/mcp-cocoindex-code/mcp_server/.venv/bin/ccc",
       "args": ["mcp"],
       "env": {
-        "COCOINDEX_CODE_ROOT_PATH": "/absolute/path/to/project"
+        "COCOINDEX_CODE_ROOT_PATH": "."
       },
       "disabled": true
     }
@@ -372,7 +376,7 @@ Configured via `~/.cocoindex_code/global_settings.yml`. **CRITICAL**: Changing t
 | Variable | Purpose | Default |
 |----------|---------|---------|
 | `COCOINDEX_CODE_ROOT_PATH` | Project root for indexing | Current directory |
-| `VOYAGE_API_KEY` | API key for Voyage Code 3 embeddings | (none, required for primary model) |
+| `VOYAGE_API_KEY` | Optional API key for cloud embeddings | (none) |
 
 ### Settings File (.cocoindex_code/settings.yml)
 
@@ -391,15 +395,7 @@ The `.cocoindex_code/` directory is automatically added to `.gitignore` during `
 
 ### Index Statistics
 
-| Metric | Value |
-|--------|-------|
-| **Total Files** | 6,792 |
-| **Total Chunks** | 105,965 |
-| **Languages** | 28+ |
-| **Primary Embedding Model** | voyage/voyage-code-3 via LiteLLM |
-| **Alternative Embedding Model** | all-MiniLM-L6-v2 (local) |
-| **CLI Default Limit** | 10 |
-| **MCP Default Limit** | 5 |
+Use `ccc status` or `doctor.sh --json` to inspect the current repo state. Avoid relying on fixed counts in docs because the indexed file and chunk totals change with the workspace.
 
 ### Chunk Distribution by Language
 
@@ -422,7 +418,7 @@ The `.cocoindex_code/` directory is automatically added to `.gitignore` during `
 
 ### Search Performance
 
-- Sub-second for most queries against the full 105K chunk index
+- Sub-second for many warm-daemon queries
 - Language and path filters reduce search space and improve speed
 - SQLite-vec provides efficient approximate nearest neighbor search
 
@@ -501,13 +497,20 @@ ccc search "new feature implementation" --refresh
 | Error | Cause | Solution |
 |-------|-------|----------|
 | `command not found: ccc` | Binary not in PATH | Use venv path: `.opencode/skill/mcp-cocoindex-code/mcp_server/.venv/bin/ccc` |
-| Empty search results | Query too specific or index stale | Broaden the query; run `ccc index` to refresh |
+| Empty search results | Query too specific or index stale | Run `doctor.sh`, then `ensure_ready.sh` or `ccc index` as needed |
 | `No index found` | Index not built yet | Run `ccc init` then `ccc index` |
 | `No settings found` | Project not initialized | Run `ccc init` in the project root |
 | Slow first search | Model loading into memory | Subsequent searches are faster; this is one-time |
 | Stale results | Recent files not indexed | Run `ccc index` or use `--refresh` flag |
 | MCP connection failed | Server not started or wrong path | Check `.mcp.json` command path and `disabled` flag |
 | Python version error | Requires Python 3.11+ | Install Python 3.11 or later |
+
+### First Troubleshooting Step
+
+```bash
+bash .opencode/skill/mcp-cocoindex-code/scripts/doctor.sh
+bash .opencode/skill/mcp-cocoindex-code/scripts/doctor.sh --strict --require-config
+```
 
 ### Diagnostic Commands
 
@@ -536,6 +539,9 @@ ccc index
 |------|---------|
 | [scripts/install.sh](scripts/install.sh) | Install CocoIndex Code into skill venv |
 | [scripts/update.sh](scripts/update.sh) | Update to latest version |
+| [scripts/doctor.sh](scripts/doctor.sh) | Read-only health check |
+| [scripts/ensure_ready.sh](scripts/ensure_ready.sh) | Idempotent bootstrap wrapper |
+| [references/downstream_adoption_checklist.md](references/downstream_adoption_checklist.md) | Minimum sibling-repo rollout bundle |
 
 ### External Resources
 
@@ -590,7 +596,7 @@ ccc mcp                    # Start as MCP server (stdio)
 | Filter by language for precision | `--lang typescript` |
 | Filter by path for scope | `--path "src/api/**"` |
 | Combine filters | `--lang python --path "tests/**"` |
-| Use `--refresh` for latest changes | `ccc search "new feature" --refresh` |
+| Use `--refresh` only when you need a fresh scan | `ccc search "new feature" --refresh` |
 
 **Remember**: CocoIndex is for **semantic search** (meaning-based). For exact text matching, use Grep. For file discovery by name, use Glob.
 

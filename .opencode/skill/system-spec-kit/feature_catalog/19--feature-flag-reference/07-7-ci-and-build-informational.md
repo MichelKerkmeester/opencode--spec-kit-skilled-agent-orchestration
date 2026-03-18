@@ -1,3 +1,8 @@
+---
+title: "7. CI and Build (informational)"
+description: "This document captures the implemented behavior, source references, and validation scope for 7. CI and Build (informational)."
+---
+
 # 7. CI and Build (informational)
 
 ## 1. OVERVIEW

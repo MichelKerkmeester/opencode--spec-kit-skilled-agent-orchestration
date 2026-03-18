@@ -64,7 +64,7 @@ Three fixes from deferred deep research findings (Q1, Q3, Q5) plus an ALIGNMENT_
 | `scripts/types/session-types.ts` | Modified | Add `TECHNICAL_CONTEXT` and `HAS_TECHNICAL_CONTEXT` to `SessionData` interface (Q3). |
 | `scripts/extractors/collect-session-data.ts` | Modified | Pass through `TECHNICAL_CONTEXT` from collected data to SessionData (Q3). |
 | `scripts/lib/simulation-factory.ts` | Modified | Add simulation defaults for `TECHNICAL_CONTEXT` fields (Q3). |
-| `templates/context_template.md` | Modified | Add mustache section rendering Technical Context as a key-value table (Q3). |
+| `.opencode/skill/system-spec-kit/templates/context_template.md` | Modified | Add mustache section rendering Technical Context as a key-value table (Q3). |
 | `scripts/extractors/decision-extractor.ts` | Modified | Parse confidence regex, choice verbs, and rationale indicators from string-form decisions (Q5). |
 | `scripts/tests/workflow-e2e.vitest.ts` | Modified | Updated test to expect success when Block A downgrades to warning. |
 | `scripts/tests/task-enrichment.vitest.ts` | Modified | Updated test to expect Block B throw (file-path overlap) instead of Block A. |

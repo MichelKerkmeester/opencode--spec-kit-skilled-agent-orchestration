@@ -1,6 +1,6 @@
 ---
 name: mcp-cocoindex-code
-description: "Semantic code search via vector embeddings. CocoIndex Code indexes the codebase into 105K+ chunks across 28+ languages, enabling natural language queries to find relevant code, patterns, and implementations. CLI for direct use; MCP (1 tool: search) for AI agent integration."
+description: "Semantic code search via vector embeddings. CocoIndex Code enables natural-language discovery of relevant code, patterns, and implementations. CLI for direct use; MCP exposes a single `search` tool for AI agent integration."
 allowed-tools: [Bash, Read, Grep, Glob]
 version: 1.0.0
 ---
@@ -53,7 +53,7 @@ Natural language code search through two complementary approaches: CLI (ccc) for
 | Level       | When to Load             | Resources                                   |
 | ----------- | ------------------------ | ------------------------------------------- |
 | ALWAYS      | Every skill invocation   | references/tool_reference.md                |
-| CONDITIONAL | If intent signals match  | references/search_patterns.md               |
+| CONDITIONAL | If intent signals match  | references/search_patterns.md, references/cross_cli_playbook.md |
 | ON_DEMAND   | Only on explicit request | Full troubleshooting and configuration docs |
 
 ### Smart Router Pseudocode
@@ -73,20 +73,24 @@ INTENT_SIGNALS = {
     "INSTALL": {"weight": 4, "keywords": ["install", "setup", "configure", "ccc not found"]},
     "STATUS": {"weight": 3, "keywords": ["status", "stats", "how many files", "indexed"]},
     "TROUBLESHOOT": {"weight": 3, "keywords": ["error", "failed", "not working", "empty results"]},
+    "CROSS_CLI": {"weight": 3, "keywords": ["copilot", "gemini", "claude", "codex", "cross cli", "multi query"]},
+    "CONCURRENCY": {"weight": 3, "keywords": ["refresh_index", "concurrency", "concurrent", "follow-up query"]},
 }
 
 RESOURCE_MAP = {
-    "SEARCH": ["references/search_patterns.md", "references/tool_reference.md"],
+    "SEARCH": ["references/search_patterns.md", "references/cross_cli_playbook.md", "references/tool_reference.md"],
     "INDEX": ["references/tool_reference.md"],
     "INSTALL": ["references/tool_reference.md"],
     "STATUS": ["references/tool_reference.md"],
-    "TROUBLESHOOT": ["references/tool_reference.md", "references/search_patterns.md"],
+    "TROUBLESHOOT": ["references/tool_reference.md", "references/cross_cli_playbook.md", "references/search_patterns.md"],
+    "CROSS_CLI": ["references/cross_cli_playbook.md", "references/tool_reference.md"],
+    "CONCURRENCY": ["references/cross_cli_playbook.md", "references/tool_reference.md"],
 }
 
 LOADING_LEVELS = {
     "ALWAYS": [DEFAULT_RESOURCE],
-    "ON_DEMAND_KEYWORDS": ["full troubleshooting", "all commands", "configuration guide"],
-    "ON_DEMAND": ["references/tool_reference.md", "references/search_patterns.md"],
+    "ON_DEMAND_KEYWORDS": ["full troubleshooting", "all commands", "configuration guide", "cross cli playbook"],
+    "ON_DEMAND": ["references/tool_reference.md", "references/search_patterns.md", "references/cross_cli_playbook.md"],
 }
 
 def _task_text(task) -> str:
@@ -204,9 +208,6 @@ ccc status
 # Build or update the index
 ccc index
 
-# Force rebuild from scratch
-ccc index --refresh
-
 # Reset project databases (destructive)
 ccc reset
 ```
@@ -278,7 +279,7 @@ STEP 2: Chunk Splitting
        +-- RecursiveSplitter with language-aware boundaries
        +-- 1000 char chunks, 250 char minimum, 150 char overlap
        +-- Preserves function/class boundaries where possible
-       +-- Produces 105K+ chunks for a typical large codebase
+       +-- Produces many chunks for a typical large codebase
        |
 STEP 3: Embedding Generation
        +-- Primary: voyage/voyage-code-3 via LiteLLM (1024-dim vectors)
@@ -335,10 +336,14 @@ Scores above 0.5 typically indicate strong semantic relevance. Always verify res
 
 5. **ALWAYS suggest reindexing if the codebase has changed significantly**
    - After major refactors, branch switches, or large merges
-   - Run `ccc index --refresh` to rebuild from scratch
+   - Run `ccc index` from the project root to refresh the index
 
 6. **ALWAYS use the full binary path if ccc is not on PATH**
    - `.opencode/skill/mcp-cocoindex-code/mcp_server/.venv/bin/ccc`
+
+7. **ALWAYS use the helper scripts when readiness is unclear**
+   - `bash .opencode/skill/mcp-cocoindex-code/scripts/doctor.sh --strict --require-config`
+   - `bash .opencode/skill/mcp-cocoindex-code/scripts/ensure_ready.sh --strict --require-config`
 
 ### Query Optimization
 
@@ -396,7 +401,7 @@ When sending multiple searches in sequence (e.g., exploring a codebase):
    - Check if the binary is installed with `command -v ccc`
 
 2. **ESCALATE IF search returns no results for reasonable queries**
-   - Index may be stale - suggest `ccc index --refresh`
+   - Index may be stale - suggest `ccc index`
    - Query may need rephrasing with different terminology
 
 3. **ESCALATE IF binary not found**
@@ -430,8 +435,11 @@ ccc search "query" --path "src/**"        # Filter by path
 # Index management
 ccc status                                 # Check index status
 ccc index                                  # Build/update index
-ccc index --refresh                        # Force full rebuild
 ccc reset                                  # Reset databases (destructive)
+
+# Helper scripts
+bash .opencode/skill/mcp-cocoindex-code/scripts/doctor.sh [--json] [--strict] [--require-config] [--require-daemon] [--expect-config <path>]
+bash .opencode/skill/mcp-cocoindex-code/scripts/ensure_ready.sh [--json] [--refresh-index] [--strict] [--require-config] [--expect-config <path>]
 ```
 
 ### MCP Tool Summary
@@ -574,6 +582,8 @@ grep -rn "rateLimit" src/middleware/
 | -------------- | ------------------ | ----------------------------------------------------------------------------- |
 | **install.sh** | Install CocoIndex  | `bash .opencode/skill/mcp-cocoindex-code/scripts/install.sh`                  |
 | **update.sh**  | Update to latest   | `bash .opencode/skill/mcp-cocoindex-code/scripts/update.sh`                   |
+| **doctor.sh**  | Read-only health check | `bash .opencode/skill/mcp-cocoindex-code/scripts/doctor.sh [--json] [--strict] [--require-config] [--require-daemon] [--expect-config <path>]` |
+| **ensure_ready.sh** | Idempotent bootstrap | `bash .opencode/skill/mcp-cocoindex-code/scripts/ensure_ready.sh [--json] [--refresh-index] [--strict] [--require-config] [--expect-config <path>]` |
 
 ### references/
 
@@ -581,6 +591,8 @@ grep -rn "rateLimit" src/middleware/
 | --------------------------- | ------------------------ | -------------------------------------------- |
 | **tool_reference.md**       | Complete CLI/MCP docs    | All commands, parameters, and options        |
 | **search_patterns.md**      | Search query patterns    | Effective query formulation and filter usage |
+| **cross_cli_playbook.md**   | Cross-CLI usage recipe   | Safe defaults for repeated searches and troubleshooting |
+| **downstream_adoption_checklist.md** | Downstream rollout checklist | Minimum bundle for sibling-repo adoption |
 | **settings_reference.md**   | Global settings config   | Embedding model switching, daemon settings   |
 
 ### assets/

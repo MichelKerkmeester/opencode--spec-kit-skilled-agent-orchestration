@@ -1,3 +1,8 @@
+---
+title: "Shadow scoring and channel attribution"
+description: "Describes the shadow A/B scoring infrastructure for alternative ranking comparison and channel attribution that tags each result with its source channels and computes per-channel exclusive contribution rates."
+---
+
 # Shadow scoring and channel attribution
 
 ## 1. OVERVIEW

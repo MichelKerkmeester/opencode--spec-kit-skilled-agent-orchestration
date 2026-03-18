@@ -1,3 +1,8 @@
+---
+title: "Automatic archival subsystem"
+description: "Covers the background archival job that transitions dormant memories to archived status and reclaims storage."
+---
+
 # Automatic archival subsystem
 
 ## 1. OVERVIEW

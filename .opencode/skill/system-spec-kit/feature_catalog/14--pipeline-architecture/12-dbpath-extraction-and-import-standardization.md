@@ -1,3 +1,8 @@
+---
+title: "DB_PATH extraction and import standardization"
+description: "`DB_PATH` extraction and import standardization centralizes database path resolution into `shared/config.ts` and converts cross-boundary imports to workspace aliases."
+---
+
 # DB_PATH extraction and import standardization
 
 ## 1. OVERVIEW

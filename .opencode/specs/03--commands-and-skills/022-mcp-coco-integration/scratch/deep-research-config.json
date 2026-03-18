@@ -1,0 +1,10 @@
+{
+  "topic": "Refine CocoIndex Phase 2 hardening for maximum automation and cross-CLI AI utilization without adding new runtime agent-routing rules",
+  "specFolder": ".opencode/specs/03--commands-and-skills/022-mcp-coco-integration",
+  "mode": "auto",
+  "maxIterations": 3,
+  "convergenceThreshold": 0.08,
+  "progressiveSynthesis": true,
+  "status": "active",
+  "createdAt": "2026-03-18"
+}

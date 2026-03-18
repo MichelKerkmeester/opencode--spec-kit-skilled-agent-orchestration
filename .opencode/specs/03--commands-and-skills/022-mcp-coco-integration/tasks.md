@@ -1,6 +1,6 @@
 ---
 title: "Tasks: CocoIndex Code MCP Integration"
-description: "Phase 1 task breakdown: install, index build, config registration across 6 CLI files, and syntax validation."
+description: "Phase-based task breakdown for CocoIndex installation, config registration, cross-CLI validation, and Phase 2 hardening."
 trigger_phrases:
   - "cocoindex tasks"
   - "coco-index tasks"
@@ -35,8 +35,8 @@ contextType: "implementation"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 Install cocoindex-code v0.2.3 via `pipx install --python python3.11 cocoindex-code` (`~/.local/bin/ccc`) [10m]
-- [x] T002 Verify `ccc --version` returns v0.2.3 and binary is at `~/.local/bin/ccc` [2m]
+- [x] T001 Install cocoindex-code v0.2.3 via `bash .opencode/skill/mcp-cocoindex-code/scripts/install.sh` (`.opencode/skill/mcp-cocoindex-code/mcp_server/.venv/bin/ccc`) [10m]
+- [x] T002 Verify the installed package version prints `0.2.3` via `.opencode/skill/mcp-cocoindex-code/mcp_server/.venv/bin/python -c "import importlib.metadata as m; print(m.version('cocoindex-code'))"` and confirm the binary exists at `.opencode/skill/mcp-cocoindex-code/mcp_server/.venv/bin/ccc` [2m]
 - [x] T003 Run `ccc init` in project root to initialize `.cocoindex_code/` directory [3m]
 - [x] T004 Add `.cocoindex_code/` entry to `.gitignore` [2m]
 
@@ -55,10 +55,10 @@ contextType: "implementation"
 
 ### CLI Config Registration
 
-- [x] T008 Add `cocoindex_code` entry to `.mcp.json` - absolute path, `disabled: true` (`.mcp.json`) [5m]
+- [x] T008 Add `cocoindex_code` entry to `.mcp.json` - repo-relative path, `disabled: true` (`.mcp.json`) [5m]
 - [x] T009 Add `cocoindex_code` entry to `opencode.json` - `type: "local"`, command array, `_NOTE_*` env docs, relative `COCOINDEX_CODE_ROOT_PATH: "."` (`opencode.json`) [8m]
-- [x] T010 Add `cocoindex_code` entry to `.agents/settings.json` - absolute path, `cwd`, `trust: true` (`.agents/settings.json`) [5m]
-- [x] T011 [P] Add `cocoindex_code` entry to `.gemini/settings.json` - absolute path, `cwd`, `trust: true` (`.gemini/settings.json`) [5m]
+- [x] T010 Add `cocoindex_code` entry to `.agents/settings.json` - repo-relative path, `cwd`, `trust: true` (`.agents/settings.json`) [5m]
+- [x] T011 [P] Add `cocoindex_code` entry to `.gemini/settings.json` - repo-relative path, `cwd`, `trust: true` (`.gemini/settings.json`) [5m]
 - [x] T012 [P] Add `cocoindex_code` entry to `.claude/mcp.json` - relative env, `_NOTE_*` docs (`.claude/mcp.json`) [5m]
 - [x] T013 Add `[mcp_servers.cocoindex_code]` section to `.codex/config.toml` (`.codex/config.toml`) [5m]
 
@@ -131,10 +131,44 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:phase-5 -->
+## Phase 5: Hardening
+
+### Runtime-Truth Documentation
+
+- [x] T047 Update `SKILL.md` to reflect the current runtime contract and new helper scripts [10m]
+- [x] T048 Update `README.md`, `INSTALL_GUIDE.md`, and `references/tool_reference.md` to match actual CLI/MCP behavior [15m]
+- [x] T049 Update `references/search_patterns.md` and add `references/cross_cli_playbook.md` for repeated-query and cross-CLI guidance [10m]
+- [x] T050 Replace environment-specific `assets/config_templates.md` examples with repo-portable templates [10m]
+
+### Agent-Facing Automation
+
+- [x] T051 Add shared shell helpers in `scripts/common.sh` [10m]
+- [x] T052 Add `scripts/doctor.sh` with text and JSON health output [15m]
+- [x] T053 Add `scripts/ensure_ready.sh` with idempotent setup and indexing behavior [15m]
+- [x] T054 Update `scripts/install.sh` and `scripts/update.sh` to use shared helpers and root overrides [10m]
+
+### Advisor Utilization
+
+- [x] T055 Update `.opencode/skill/scripts/skill_advisor.py` to prefer the repo-local `ccc` binary [10m]
+- [x] T056 Add semantic exploration auto-routing without overriding exact-text prompts [10m]
+
+### Verification
+
+- [x] T057 Run `bash -n` on all touched CocoIndex shell scripts [5m]
+- [x] T058 Run `doctor.sh` and `doctor.sh --json` in the repo root [5m]
+- [x] T059 Run `ensure_ready.sh --json` in the repo root and a temp project [10m]
+- [x] T060 Run advisor health and semantic/exact-match routing checks [5m]
+- [x] T061 Verify touched docs no longer claim nonexistent CLI/MCP behavior [5m]
+
+<!-- /ANCHOR:phase-5 -->
+
+---
+
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [x] All tasks marked `[x]` (T001-T046)
+- [x] All tasks marked `[x]` (T001-T061)
 - [x] No `[B]` blocked tasks remaining
 - [x] All 6 config files pass syntax validation
 - [x] Naming consistent (`cocoindex_code`) across all configs
@@ -143,6 +177,7 @@ contextType: "implementation"
 - [x] Cross-CLI auto-usage validated (3/4 CLIs confirmed, 1 billing-blocked)
 - [x] Copilot MCP failure root cause identified and documented
 - [x] SKILL.md updated with query optimization and `refresh_index` guidance
+- [x] Helper scripts and advisor hardening validated for Phase 2
 
 <!-- /ANCHOR:completion -->
 
@@ -167,5 +202,5 @@ LEVEL 2 TASKS
 - Explicit verification tasks
 - Phase 1-3 (config installation) complete 2026-03-18
 - Phase 4 (cross-CLI validation + root cause + docs) complete 2026-03-18
-- 46 total tasks (T001-T046)
+- 61 total tasks (T001-T061)
 -->

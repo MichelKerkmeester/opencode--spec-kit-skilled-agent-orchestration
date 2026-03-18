@@ -1,0 +1,16 @@
+{
+  "specFolder": "010-perfect-session-capturing/024-runtime-contract-and-indexability",
+  "description": "Phase 1: runtime-contract-and-indexability",
+  "keywords": [
+    "phase",
+    "runtime-contract-and-indexability"
+  ],
+  "lastUpdated": "2026-03-18T20:12:03.134Z",
+  "specId": "024",
+  "folderSlug": "runtime-contract-and-indexability",
+  "parentChain": [
+    "010-perfect-session-capturing"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

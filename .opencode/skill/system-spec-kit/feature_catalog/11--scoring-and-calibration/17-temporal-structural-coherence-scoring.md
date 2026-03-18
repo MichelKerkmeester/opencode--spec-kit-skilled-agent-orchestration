@@ -1,3 +1,8 @@
+---
+title: "Temporal-structural coherence scoring"
+description: "Describes the coherence dimension in the quality loop that measures whether a memory's content structure aligns with its temporal context, penalizing references to future events or non-existent predecessors."
+---
+
 # Temporal-structural coherence scoring
 
 ## 1. OVERVIEW

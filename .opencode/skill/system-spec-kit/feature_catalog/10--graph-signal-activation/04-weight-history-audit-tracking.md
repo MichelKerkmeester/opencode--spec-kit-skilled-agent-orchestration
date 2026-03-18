@@ -1,3 +1,8 @@
+---
+title: "Weight history audit tracking"
+description: "Describes the `created_by`/`last_accessed` metadata on causal edges, the `weight_history` audit table and the edge bounds enforcement that caps auto-generated edges at 20 per node and 0.5 max strength."
+---
+
 # Weight history audit tracking
 
 ## 1. OVERVIEW

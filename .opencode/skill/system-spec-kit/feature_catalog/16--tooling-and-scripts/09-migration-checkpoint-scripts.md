@@ -1,3 +1,8 @@
+---
+title: "Migration checkpoint scripts"
+description: "Migration checkpoint scripts create and restore raw SQLite file-level backups for pre-migration safety outside the MCP checkpoint tables."
+---
+
 # Migration checkpoint scripts
 
 ## 1. OVERVIEW

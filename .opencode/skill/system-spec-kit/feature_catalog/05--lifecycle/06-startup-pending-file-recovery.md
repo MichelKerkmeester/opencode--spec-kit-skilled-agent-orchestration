@@ -1,3 +1,8 @@
+---
+title: "Startup pending-file recovery"
+description: "Covers the startup recovery routine that renames orphaned pending files left by interrupted atomic-write operations."
+---
+
 # Startup pending-file recovery
 
 ## 1. OVERVIEW

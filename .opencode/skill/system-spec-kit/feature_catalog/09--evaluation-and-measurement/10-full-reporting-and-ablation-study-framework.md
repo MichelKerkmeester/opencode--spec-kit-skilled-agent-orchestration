@@ -1,3 +1,8 @@
+---
+title: "Full reporting and ablation study framework"
+description: "Describes the ablation study framework that disables one retrieval channel at a time to measure Recall@20 impact, and the reporting dashboard that aggregates per-sprint metric summaries with trend analysis."
+---
+
 # Full reporting and ablation study framework
 
 ## 1. OVERVIEW

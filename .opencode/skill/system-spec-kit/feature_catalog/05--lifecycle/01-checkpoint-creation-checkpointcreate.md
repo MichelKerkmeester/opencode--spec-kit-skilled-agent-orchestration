@@ -1,3 +1,8 @@
+---
+title: "Checkpoint creation (checkpoint_create)"
+description: "Covers the checkpoint creation tool that captures gzip-compressed memory state snapshots for rollback safety."
+---
+
 # Checkpoint creation (checkpoint_create)
 
 ## 1. OVERVIEW

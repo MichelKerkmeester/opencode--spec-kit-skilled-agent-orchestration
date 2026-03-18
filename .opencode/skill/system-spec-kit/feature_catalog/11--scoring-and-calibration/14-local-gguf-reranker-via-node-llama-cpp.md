@@ -1,3 +1,8 @@
+---
+title: "Local GGUF reranker via node-llama-cpp"
+description: "Describes the `RERANKER_LOCAL` flag-gated local GGUF reranker using `node-llama-cpp` with `bge-reranker-v2-m3.Q4_K_M.gguf` in Stage 3, with strict activation criteria including model path readability and host memory thresholds."
+---
+
 # Local GGUF reranker via node-llama-cpp
 
 ## 1. OVERVIEW

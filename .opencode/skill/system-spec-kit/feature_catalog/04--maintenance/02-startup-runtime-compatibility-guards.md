@@ -1,3 +1,8 @@
+---
+title: "Startup runtime compatibility guards"
+description: "Covers the non-blocking startup checks that detect Node.js runtime mismatches and SQLite version compatibility."
+---
+
 # Startup runtime compatibility guards
 
 ## 1. OVERVIEW

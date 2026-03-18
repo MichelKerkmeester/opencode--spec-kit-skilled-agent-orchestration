@@ -1,3 +1,8 @@
+---
+title: "Guards and edge cases"
+description: "Tracks two guard/edge-case fixes for temporal contiguity double-counting and wrong-memory entity resolution fallback."
+---
+
 # Guards and edge cases
 
 ## 1. OVERVIEW

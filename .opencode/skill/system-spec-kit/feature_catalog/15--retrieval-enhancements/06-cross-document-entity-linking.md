@@ -1,3 +1,8 @@
+---
+title: "Cross-document entity linking"
+description: "Cross-document entity linking creates causal edges between memories in different spec folders that reference the same entity."
+---
+
 # Cross-document entity linking
 
 ## 1. OVERVIEW

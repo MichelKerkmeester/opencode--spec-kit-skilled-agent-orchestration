@@ -1,3 +1,8 @@
+---
+title: "Warm server / daemon mode"
+description: "Warm server / daemon mode is a deferred HTTP transport for persistent server execution, currently using stdio transport."
+---
+
 # Warm server / daemon mode
 
 ## 1. OVERVIEW

@@ -1,3 +1,8 @@
+---
+title: "Provenance-rich response envelopes"
+description: "Provenance-rich response envelopes expose internal pipeline scoring and retrieval trace data in search results when `includeTrace` is enabled."
+---
+
 # Provenance-rich response envelopes
 
 ## 1. OVERVIEW

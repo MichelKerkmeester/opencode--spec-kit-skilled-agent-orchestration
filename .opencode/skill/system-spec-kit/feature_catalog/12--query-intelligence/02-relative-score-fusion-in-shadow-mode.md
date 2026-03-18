@@ -1,3 +1,8 @@
+---
+title: "Relative score fusion in shadow mode"
+description: "Relative score fusion (RSF) is a standalone fusion module retained for future use but no longer wired into live ranking."
+---
+
 # Relative score fusion in shadow mode
 
 ## 1. OVERVIEW

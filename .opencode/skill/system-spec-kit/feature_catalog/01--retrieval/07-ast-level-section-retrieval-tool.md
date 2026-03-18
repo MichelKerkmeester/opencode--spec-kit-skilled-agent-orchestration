@@ -1,3 +1,8 @@
+---
+title: "AST-level section retrieval tool"
+description: "Tracks the deferred AST-based section retrieval tool for precise heading-level document access."
+---
+
 # AST-level section retrieval tool
 
 ## 1. OVERVIEW

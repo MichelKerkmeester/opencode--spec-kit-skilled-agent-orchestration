@@ -1,3 +1,8 @@
+---
+title: "Shared post-mutation hook wiring"
+description: "Shared post-mutation hook wiring runs the same hook automation after save, update, delete and bulk-delete flows so cache invalidation stays consistent across handlers."
+---
+
 # Shared post-mutation hook wiring
 
 ## 1. OVERVIEW

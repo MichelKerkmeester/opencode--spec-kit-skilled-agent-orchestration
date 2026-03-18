@@ -1,3 +1,8 @@
+---
+title: "Memory browser (memory_list)"
+description: "Covers the paginated browse endpoint that lists indexed memories with sorting and chunk inclusion options."
+---
+
 # Memory browser (memory_list)
 
 ## 1. OVERVIEW

@@ -1,3 +1,8 @@
+---
+title: "Memory health autoRepair metadata"
+description: "Memory health autoRepair returns structured repair metadata with partial-success tracking when `autoRepair:true` runs in `reportMode: \"full\"`."
+---
+
 # Memory health autoRepair metadata
 
 ## 1. OVERVIEW

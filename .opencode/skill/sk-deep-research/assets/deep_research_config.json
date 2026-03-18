@@ -4,6 +4,7 @@
   "convergenceThreshold": 0.05,
   "stuckThreshold": 3,
   "maxDurationMinutes": 120,
+  "progressiveSynthesis": true,
   "specFolder": "",
   "createdAt": "",
   "status": "initialized",

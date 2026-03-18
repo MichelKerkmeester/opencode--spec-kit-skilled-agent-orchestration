@@ -1,3 +1,8 @@
+---
+title: "Auto-promotion on validation"
+description: "Describes automatic tier promotion triggered by positive validations (normal at 5, important at 10) with a throttle safeguard limiting promotions to 3 per 8-hour rolling window."
+---
+
 # Auto-promotion on validation
 
 ## 1. OVERVIEW

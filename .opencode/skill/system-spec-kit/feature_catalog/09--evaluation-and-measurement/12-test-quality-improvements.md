@@ -1,3 +1,8 @@
+---
+title: "Test quality improvements"
+description: "Covers four targeted test quality fixes (timeout hardening, handle leak prevention, tautological test rewrites and duplicate removal) plus 18+ test file updates for changed source behavior."
+---
+
 # Test quality improvements
 
 ## 1. OVERVIEW

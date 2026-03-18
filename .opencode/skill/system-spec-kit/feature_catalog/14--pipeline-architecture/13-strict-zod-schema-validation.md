@@ -1,3 +1,8 @@
+---
+title: "Strict Zod schema validation"
+description: "Strict Zod schema validation adds runtime input validation to all 28 MCP tools, rejecting hallucinated parameters from calling LLMs."
+---
+
 # Strict Zod schema validation
 
 ## 1. OVERVIEW
