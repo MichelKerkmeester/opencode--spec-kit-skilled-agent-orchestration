@@ -9,9 +9,11 @@ contextType: "general"
 # Implementation Summary: Autonomous Deep Research Loop
 
 <!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## Status
 
 | Phase | Status | Date |
@@ -23,9 +25,11 @@ contextType: "general"
 | Phase 5: Registration Updates | Complete | 2026-03-18 |
 | Phase 5.5: Legacy @research Removal | Complete | 2026-03-18 |
 | Phase 6-9: v2 Improvements | Not started | -- |
+<!-- /ANCHOR:metadata -->
 
 ---
 
+<!-- ANCHOR:what-built -->
 ## What Was Built
 
 ### 3-Layer Architecture (v1)
@@ -43,6 +47,8 @@ Deleted the superseded `@research` agent and `/spec_kit:research` command across
 - **9 files deleted**: 6 agent definitions (research.md/toml across 5 runtimes), 1 command definition, 2 YAML workflows
 - **60+ files updated**: orchestrate/speckit/deep-research/context/debug/ultra-think agents across all runtimes, framework docs (CLAUDE.md, AGENTS.md, READMEs), skill docs, install guides, .codex/config.toml, spec_kit command README.txt
 - **Verification**: grep confirms zero stale `@research` / `/spec_kit:research` references outside changelog/specs
+<!-- /ANCHOR:what-built -->
+<!-- ANCHOR:how-delivered --><!-- /ANCHOR:how-delivered -->
 
 ---
 
@@ -66,6 +72,7 @@ Deleted the superseded `@research` agent and `/spec_kit:research` command across
 
 ---
 
+<!-- ANCHOR:decisions -->
 ## Key Design Decisions
 
 | Decision | Choice | Rationale |
@@ -76,9 +83,13 @@ Deleted the superseded `@research` agent and `/spec_kit:research` command across
 | MCP exclusion | No code_mode MCP | Keeps trusted computing base manageable |
 | Namespace | Separate from /spec_kit:research | Different architecture; avoids bloating existing workflow |
 | Iteration cap | Default 10 | Balances depth vs cost; diminishing returns at 15+ |
+<!-- /ANCHOR:decisions -->
+<!-- ANCHOR:verification --><!-- /ANCHOR:verification -->
 
 ---
 
+<!-- ANCHOR:limitations -->
 ## Remaining Work
 
 v2 improvements (18 proposals from 14-iteration deep research) are planned but not started. See `tasks.md` Phases 6-9 and `checklist.md` v2 section for details.
+<!-- /ANCHOR:limitations -->

@@ -9,9 +9,14 @@ contextType: "general"
 # Task Breakdown: Autonomous Deep Research Loop
 
 <!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
 ---
 
+<!-- ANCHOR:notation -->
+<!-- /ANCHOR:notation -->
+
+<!-- ANCHOR:phase-1 -->
 ## Phase 1: Spec Folder Completion
 
 - [x] T-001: Create description.json
@@ -20,7 +25,9 @@ contextType: "general"
 - [x] T-004: Create tasks.md (this file)
 - [x] T-005: Create checklist.md (Level 3 template)
 - [x] T-006: Create decision-record.md (Level 3 template)
+<!-- /ANCHOR:phase-1 -->
 
+<!-- ANCHOR:phase-2 -->
 ## Phase 2: Skill (sk-deep-research)
 
 - [x] T-010: Create templates/deep-research-config.json
@@ -31,10 +38,13 @@ contextType: "general"
 - [x] T-015: Create references/quick_reference.md
 - [x] T-016: Create SKILL.md (8 sections)
 - [x] T-017: Create README.md
+<!-- /ANCHOR:phase-2 -->
 
+<!-- ANCHOR:phase-3 -->
 ## Phase 3: Agent (@deep-research)
 
 - [x] T-020: Create .claude/agents/autoresearch.md
+<!-- /ANCHOR:phase-3 -->
 
 ## Phase 4: Command (/spec_kit:deep-research)
 
@@ -206,3 +216,9 @@ contextType: "general"
   - Consolidation/simplification iterations get newInfoRatio bonus even without new external data
   - Incentivizes synthesis alongside discovery
   - Files: `.claude/agents/autoresearch.md` (assessment section)
+
+<!-- ANCHOR:completion -->
+<!-- /ANCHOR:completion -->
+
+<!-- ANCHOR:cross-refs -->
+<!-- /ANCHOR:cross-refs -->

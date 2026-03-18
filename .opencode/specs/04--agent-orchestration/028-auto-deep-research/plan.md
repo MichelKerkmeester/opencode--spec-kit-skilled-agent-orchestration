@@ -10,9 +10,11 @@ contextType: "general"
 # Implementation Plan: Autonomous Deep Research Loop
 
 <!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---
 
+<!-- ANCHOR:summary -->
 ## 1. APPROACH
 
 Create 3 artifacts that enable autonomous iterative deep research:
@@ -21,9 +23,17 @@ Create 3 artifacts that enable autonomous iterative deep research:
 3. **`sk-deep-research` skill** -- Protocol documentation, templates, reference docs
 
 **Core insight**: Fresh context per iteration + externalized state solves context degradation. Our existing orchestrator dispatch model maps naturally -- each Task dispatch IS a fresh context.
+<!-- /ANCHOR:summary -->
+
+<!-- ANCHOR:quality-gates -->
+<!-- /ANCHOR:quality-gates -->
+
+<!-- ANCHOR:architecture -->
+<!-- /ANCHOR:architecture -->
 
 ---
 
+<!-- ANCHOR:phases -->
 ## 2. PHASE BREAKDOWN
 
 ### Phase 1: Spec Folder Completion
@@ -100,8 +110,14 @@ Ideas to monitor, not implement now.
 - 9.2: True Context Isolation (REQ-026) -- `claude -p` dispatch alternative
 - 9.3: Research Simplicity Criterion (REQ-027) -- Soft quality criterion in assessment
 
+<!-- /ANCHOR:phases -->
+
+<!-- ANCHOR:testing -->
+<!-- /ANCHOR:testing -->
+
 ---
 
+<!-- ANCHOR:dependencies -->
 ## 3. DEPENDENCY GRAPH
 
 ```
@@ -127,6 +143,10 @@ Phase 8 (P3 Polish) -- independent of Phase 7
     |
 Phase 9 (P4 Track) -- future, no immediate dependencies
 ```
+<!-- /ANCHOR:dependencies -->
+
+<!-- ANCHOR:rollback -->
+<!-- /ANCHOR:rollback -->
 
 ---
 

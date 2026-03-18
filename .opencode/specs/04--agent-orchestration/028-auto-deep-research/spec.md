@@ -39,6 +39,7 @@ Create a 3-layer autonomous deep research system: `@deep-research` agent (single
 
 ---
 
+<!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -46,9 +47,11 @@ The current `/spec_kit:research` workflow is single-pass only. It investigates a
 
 ### Purpose
 Enable autonomous multi-iteration deep research where each cycle builds on prior findings, with convergence detection to stop when diminishing returns are reached, producing comprehensive research documentation.
+<!-- /ANCHOR:problem -->
 
 ---
 
+<!-- ANCHOR:scope -->
 ## 3. SCOPE
 
 ### In Scope
@@ -117,9 +120,11 @@ Derived from 14-iteration deep research across 4 autoresearch repos (karpathy, A
 | `.opencode/skill/scripts/skill_advisor.py` | Modify | Add autoresearch keyword mappings |
 | `.opencode/specs/descriptions.json` | Modify | Add 028-auto-deep-research entry |
 | `.agents/commands/autoresearch.toml` | Create | TOML registration for command |
+<!-- /ANCHOR:scope -->
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 
 ### P0 - Blockers (MUST complete)
@@ -163,18 +168,22 @@ Derived from 14-iteration deep research across 4 autoresearch repos (karpathy, A
 | REQ-025 | File mutability declarations in config | P4 | S | AGR immutable file architecture |
 | REQ-026 | True context isolation via `claude -p` | P4 | L | AGR Ralph Loop |
 | REQ-027 | Simplicity criterion for newInfoRatio bonus | P4 | S | karpathy original philosophy |
+<!-- /ANCHOR:requirements -->
 
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
 - **SC-001**: `/spec_kit:deep-research:auto "What is markdown?"` with maxIterations=3 produces config.json, 3 JSONL entries, populated strategy.md, and research.md
 - **SC-002**: Convergence test on narrow topic stops before max iterations
 - **SC-003**: `skill_advisor.py "deep research"` routes to sk-deep-research with confidence >= 0.8
 - **SC-004**: All 13 new files pass syntax validation
+<!-- /ANCHOR:success-criteria -->
 
 ---
 
+<!-- ANCHOR:risks -->
 ## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
@@ -184,9 +193,11 @@ Derived from 14-iteration deep research across 4 autoresearch repos (karpathy, A
 | Risk | Context degradation in long loops | Med | Fresh context per iteration by design |
 | Risk | Runaway loop costs | Med | Max iterations cap (default 10), convergence detection |
 | Risk | Agent not reading state files | High | Explicit file paths in dispatch prompt |
+<!-- /ANCHOR:risks -->
 
 ---
 
+<!-- ANCHOR:questions -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -273,6 +284,7 @@ Derived from 14-iteration deep research across 4 autoresearch repos (karpathy, A
 - None for v1 (all design decisions documented)
 - v2 open: Should scored branching (P2.5) be orchestrator-managed or YAML-managed? Large effort either way.
 - v2 open: Should `claude -p` dispatch (P4.3) coexist with Task tool dispatch or replace it?
+<!-- /ANCHOR:questions -->
 
 ---
 

@@ -14,6 +14,7 @@ contextType: "general"
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## Verification Protocol
 
 | Priority | Handling | Completion Impact |
@@ -21,14 +22,42 @@ contextType: "general"
 | **[P0]** | HARD BLOCKER | Cannot claim done until complete |
 | **[P1]** | Required | Must complete OR get user approval |
 | **[P2]** | Optional | Can defer with documented reason |
+<!-- /ANCHOR:protocol -->
 
 ---
 
+<!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
 - [x] CHK-001 [P0] Requirements documented in spec.md -- Evidence: spec.md created with 9 requirements (REQ-001 through REQ-009)
 - [x] CHK-002 [P0] Technical approach defined in plan.md -- Evidence: plan.md created with 5-phase breakdown and dependency graph
 - [x] CHK-003 [P1] Dependencies identified and available -- Evidence: orchestrator dispatch, WebFetch, Spec Kit Memory MCP all exist
+<!-- /ANCHOR:pre-impl -->
+
+---
+
+<!-- ANCHOR:code-quality -->
+<!-- /ANCHOR:code-quality -->
+
+---
+
+<!-- ANCHOR:testing -->
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:security -->
+<!-- /ANCHOR:security -->
+
+---
+
+<!-- ANCHOR:docs -->
+<!-- /ANCHOR:docs -->
+
+---
+
+<!-- ANCHOR:file-org -->
+<!-- /ANCHOR:file-org -->
 
 ---
 
@@ -138,6 +167,7 @@ contextType: "general"
 
 ---
 
+<!-- ANCHOR:summary -->
 ## Verification Summary
 
 ### v1 + Legacy Removal (Complete)
@@ -161,3 +191,4 @@ contextType: "general"
 | P2 Items | 7 | 0/7 |
 
 **Status**: Not started -- awaiting implementation of Phase 6-9
+<!-- /ANCHOR:summary -->

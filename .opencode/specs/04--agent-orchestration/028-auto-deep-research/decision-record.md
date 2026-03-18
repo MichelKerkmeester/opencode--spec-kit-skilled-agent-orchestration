@@ -14,6 +14,7 @@ contextType: "general"
 
 ---
 
+<!-- ANCHOR:adr-001 -->
 ## ADR-001: YAML Manages the Loop
 
 ### Metadata
@@ -58,9 +59,11 @@ We needed a loop engine for iterative research. Two candidates: the orchestrator
 
 **What it costs**:
 - Two YAML files (~870 LOC total). Mitigation: Follow established spec_kit_research YAML pattern
+<!-- /ANCHOR:adr-001 -->
 
 ---
 
+<!-- ANCHOR:adr-002 -->
 ## ADR-002: @deep-research is LEAF-Only
 
 ### Metadata
@@ -104,9 +107,11 @@ We needed to decide whether the research agent can dispatch sub-agents for paral
 
 **What it costs**:
 - Cannot parallelize within a single iteration. Mitigation: Orchestrator can dispatch parallel iterations in v1.1
+<!-- /ANCHOR:adr-002 -->
 
 ---
 
+<!-- ANCHOR:adr-003 -->
 ## ADR-003: Dual State Format (JSONL + Strategy.md)
 
 ### Metadata
@@ -152,9 +157,11 @@ Research state must persist across fresh-context iterations. We needed a format 
 
 **What it costs**:
 - Two files must stay in sync. Mitigation: Agent updates both atomically at end of each iteration
+<!-- /ANCHOR:adr-003 -->
 
 ---
 
+<!-- ANCHOR:adr-004 -->
 ## ADR-004: No code_mode MCP on Agent
 
 ### Metadata
@@ -183,9 +190,11 @@ The existing @research agent includes code_mode MCP for external tool access. We
 | Include code_mode | Access to external services | Higher TCB, more failure modes, slower | 5/10 |
 
 **Why this one**: Deep research primarily needs WebFetch and codebase tools. External integrations add complexity without proportional value for research tasks.
+<!-- /ANCHOR:adr-004 -->
 
 ---
 
+<!-- ANCHOR:adr-005 -->
 ## ADR-005: Separate from /spec_kit:research
 
 ### Metadata
@@ -214,9 +223,11 @@ We could either add loop mode to the existing `/spec_kit:research` command or cr
 | Enhance /spec_kit:research | Single entry point | Conflates two distinct use cases, bloats existing YAML | 4/10 |
 
 **Why this one**: Single-pass and iterative research have fundamentally different state management, convergence detection, and loop lifecycle needs. Merging them would complicate both.
+<!-- /ANCHOR:adr-005 -->
 
 ---
 
+<!-- ANCHOR:adr-006 -->
 ## ADR-006: Default 10 Max Iterations
 
 ### Metadata
@@ -245,6 +256,7 @@ AGR case study data shows diminishing returns past 15 iterations. We needed a se
 | No limit | Maximum flexibility | Risk of runaway loops | 2/10 |
 
 **Why this one**: 10 iterations at ~$0.20-0.50 each gives $2-5 total cost. Users can adjust with `--max-iterations` flag.
+<!-- /ANCHOR:adr-006 -->
 
 ---
 
@@ -254,6 +266,7 @@ AGR case study data shows diminishing returns past 15 iterations. We needed a se
 
 ---
 
+<!-- ANCHOR:adr-007 -->
 ## ADR-007: 3-Signal Composite Convergence (Drop CUSUM)
 
 ### Metadata
@@ -289,9 +302,11 @@ v1 convergence uses a single signal (rolling 3-iteration average of newInfoRatio
 **What improves**: Convergence detection becomes noise-aware (MAD) and content-aware (question entropy). Degrades gracefully with < 4 iterations.
 
 **What it costs**: Implementation is Medium effort. Mitigation: Each signal is independent and can be tested separately.
+<!-- /ANCHOR:adr-007 -->
 
 ---
 
+<!-- ANCHOR:adr-008 -->
 ## ADR-008: Prompt-Only Error Recovery (No Code Enforcement)
 
 ### Metadata
@@ -327,9 +342,11 @@ Round 1 analysis described AGR as having "5-tier error handling in code." Round 
 **What improves**: Implementation effort reduced from Medium to Small. All 5 tiers achievable via documentation changes only.
 
 **What it costs**: No guaranteed compliance. Mitigation: Orchestrator provides fail-safe at Tier 5.
+<!-- /ANCHOR:adr-008 -->
 
 ---
 
+<!-- ANCHOR:adr-009 -->
 ## ADR-009: Segment Model for Multi-Session Research
 
 ### Metadata
@@ -359,3 +376,4 @@ pi-autoresearch implements a segment counter in JSONL that enables re-initializa
 | No multi-session support | Simplest | Cannot restart without losing history | 3/10 |
 
 **Why this one**: Directly validated by pi-autoresearch production code. Small schema change with high flexibility gain.
+<!-- /ANCHOR:adr-009 -->
