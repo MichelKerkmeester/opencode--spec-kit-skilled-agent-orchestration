@@ -16,7 +16,7 @@ Strategies for writing effective semantic queries and getting the best results f
 ---
 
 <!-- ANCHOR:overview -->
-## Overview
+## OVERVIEW
 
 Strategies and patterns for effective semantic code search using CocoIndex Code. Covers query writing, language and path filters, score interpretation, comparison with Grep, result verification workflows, and common query patterns by domain.
 
@@ -24,7 +24,7 @@ Strategies and patterns for effective semantic code search using CocoIndex Code.
 
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:writing-good-queries -->
-## 1. Writing Good Queries
+## 1. WRITING GOOD QUERIES
 
 Semantic search understands meaning, not just keywords. Write queries as you would describe what you are looking for to a colleague.
 
@@ -68,9 +68,9 @@ Write:      "error checking in Go functions"
 
 <!-- /ANCHOR:writing-good-queries -->
 <!-- ANCHOR:using-language-filters -->
-## 2. Using Language Filters
+## 2. USING LANGUAGE FILTERS
 
-Filter by language when you know which language you need results from.
+Filter by language when you know which language you need results from. CocoIndex Code supports **28+ languages** (see tool_reference.md for the full list).
 
 ### When to Filter
 
@@ -79,6 +79,8 @@ Filter by language when you know which language you need results from.
 - You want to avoid noise from documentation or config files
 
 ### Examples
+
+The `--lang` flag is **repeatable** -- specify it multiple times to filter by multiple languages.
 
 ```bash
 # Find Python database models
@@ -93,8 +95,19 @@ ccc search "error handling and recovery" --lang go
 # Find SQL migration scripts
 ccc search "table creation with foreign keys" --lang sql
 
-# Find Bash deployment scripts
-ccc search "deployment automation" --lang bash
+# Filter by multiple languages at once
+ccc search "authentication middleware" --lang python --lang typescript
+
+# Three languages
+ccc search "data serialization" --lang python --lang rust --lang go
+```
+
+**MCP equivalent:** The MCP `search` tool uses `languages` (a list of strings) instead of `--lang`:
+```json
+{
+  "query": "authentication middleware",
+  "languages": ["python", "typescript"]
+}
 ```
 
 ### When NOT to Filter
@@ -107,7 +120,7 @@ ccc search "deployment automation" --lang bash
 
 <!-- /ANCHOR:using-language-filters -->
 <!-- ANCHOR:using-path-filters -->
-## 3. Using Path Filters
+## 3. USING PATH FILTERS
 
 Scope searches to specific directories when you know where to look.
 
@@ -123,8 +136,9 @@ ccc search "mock database setup" --path tests/
 # Search in a specific module
 ccc search "user permissions" --path src/auth/
 
-# Combine with language filter
+# Combine with language filter (--lang is repeatable)
 ccc search "error handling" --path src/services/ --lang typescript
+ccc search "error handling" --path src/services/ --lang typescript --lang python
 ```
 
 ### When to Use Path Filters
@@ -137,7 +151,7 @@ ccc search "error handling" --path src/services/ --lang typescript
 
 <!-- /ANCHOR:using-path-filters -->
 <!-- ANCHOR:combining-filters-for-precision -->
-## 4. Combining Filters for Precision
+## 4. COMBINING FILTERS FOR PRECISION
 
 Combine query specificity, language filters, and path filters for the most targeted results.
 
@@ -150,13 +164,16 @@ ccc search "database integration test fixtures" --lang python --path tests/
 
 # Find Rust memory management in core library
 ccc search "memory allocation and deallocation" --lang rust --path src/core/
+
+# Multi-language search scoped to a directory
+ccc search "configuration loading" --lang python --lang typescript --path src/config/
 ```
 
 ---
 
 <!-- /ANCHOR:combining-filters-for-precision -->
 <!-- ANCHOR:interpreting-relevance-scores -->
-## 5. Interpreting Relevance Scores
+## 5. INTERPRETING RELEVANCE SCORES
 
 Each result includes a relevance score from 0.0 to 1.0.
 
@@ -176,7 +193,7 @@ Each result includes a relevance score from 0.0 to 1.0.
 
 <!-- /ANCHOR:interpreting-relevance-scores -->
 <!-- ANCHOR:semantic-search-vs-grep -->
-## 6. Semantic Search vs. Grep
+## 6. SEMANTIC SEARCH VS. GREP
 
 ### When Semantic Search Wins
 
@@ -213,7 +230,7 @@ Do you know the exact text?
 
 <!-- /ANCHOR:semantic-search-vs-grep -->
 <!-- ANCHOR:verifying-results-with-read -->
-## 7. Verifying Results with Read
+## 7. VERIFYING RESULTS WITH READ
 
 Semantic search returns snippets. Always verify with the Read tool before acting on results.
 
@@ -236,7 +253,7 @@ ccc search "database connection setup"
 
 <!-- /ANCHOR:verifying-results-with-read -->
 <!-- ANCHOR:common-query-patterns -->
-## 8. Common Query Patterns
+## 8. COMMON QUERY PATTERNS
 
 ### Architecture and Design
 
@@ -296,7 +313,7 @@ ccc search "configuration validation"
 
 <!-- /ANCHOR:common-query-patterns -->
 <!-- ANCHOR:related-resources -->
-## 9. Related Resources
+## 9. RELATED RESOURCES
 
 | Resource        | Location                                                           |
 | --------------- | ------------------------------------------------------------------ |

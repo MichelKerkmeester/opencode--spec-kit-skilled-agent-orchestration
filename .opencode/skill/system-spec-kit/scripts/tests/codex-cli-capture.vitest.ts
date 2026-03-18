@@ -235,4 +235,73 @@ describe('captureCodexConversation', () => {
       assistantResponse: 'Matched the repo-root transcript to the active .opencode workspace.',
     }));
   });
+
+  it('excludes API error content from assistant exchanges', async () => {
+    const tempHome = makeTempRoot('speckit-codex-home-');
+    process.env.HOME = tempHome;
+
+    const projectRoot = '/tmp/spec-kit-project';
+    const sessionsRoot = path.join(tempHome, '.codex', 'sessions', '2026', '03', '15');
+    const transcriptPath = path.join(sessionsRoot, 'rollout-2026-03-15T14-00-00-api-error.jsonl');
+
+    writeJsonl(transcriptPath, [
+      {
+        timestamp: '2026-03-15T14:00:00.000Z',
+        type: 'response_item',
+        payload: {
+          type: 'session_meta',
+          id: 'api-error-session',
+          cwd: projectRoot,
+          timestamp: '2026-03-15T14:00:00.000Z',
+        },
+      },
+      {
+        timestamp: '2026-03-15T14:00:01.000Z',
+        type: 'response_item',
+        payload: {
+          type: 'message',
+          role: 'user',
+          content: [{ type: 'input_text', text: 'First prompt' }],
+        },
+      },
+      {
+        timestamp: '2026-03-15T14:00:02.000Z',
+        type: 'response_item',
+        payload: {
+          type: 'message',
+          role: 'assistant',
+          content: [{ type: 'output_text', text: 'API Error: 529 Overloaded' }],
+        },
+      },
+      {
+        timestamp: '2026-03-15T14:00:03.000Z',
+        type: 'response_item',
+        payload: {
+          type: 'message',
+          role: 'user',
+          content: [{ type: 'input_text', text: 'Second prompt' }],
+        },
+      },
+      {
+        timestamp: '2026-03-15T14:00:04.000Z',
+        type: 'response_item',
+        payload: {
+          type: 'message',
+          role: 'assistant',
+          content: [{ type: 'output_text', text: 'Here is a valid response.' }],
+        },
+      },
+    ]);
+
+    const { captureCodexConversation } = await import('../extractors/codex-cli-capture');
+    const result = await captureCodexConversation(20, projectRoot);
+
+    expect(result).not.toBeNull();
+    // The API error message should be excluded, so only one valid exchange
+    const responses = result!.exchanges
+      .map((e) => e.assistantResponse)
+      .filter(Boolean);
+    expect(responses).not.toContain('API Error: 529 Overloaded');
+    expect(responses).toContain('Here is a valid response.');
+  });
 });

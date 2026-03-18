@@ -131,7 +131,7 @@ function scoreMemoryQuality(inputs: QualityInputs): QualityScoreResult {
 
   if (hadContamination) {
     qualityFlags.add('has_contamination');
-    const severity = contaminationSeverity || 'high';
+    const severity = contaminationSeverity || 'medium';
     if (severity === 'low') {
       qualityScore -= 0.05;
       warnings.push('Low-severity contamination detected (preamble only) — minor penalty applied');

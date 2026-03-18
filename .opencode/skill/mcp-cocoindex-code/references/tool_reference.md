@@ -1,6 +1,6 @@
 ---
 title: CocoIndex Code Tool Reference
-description: Complete reference for all CocoIndex Code CLI commands and MCP tools with parameters, examples, and expected output.
+description: Complete reference for the CocoIndex Code CLI commands and MCP tool with parameters, examples, and expected output.
 trigger_phrases:
   - ccc commands
   - cocoindex tools
@@ -11,45 +11,52 @@ trigger_phrases:
 
 # CocoIndex Code Tool Reference
 
-Complete reference for all CLI commands and MCP tools exposed by CocoIndex Code.
+Complete reference for all CLI commands and the MCP tool exposed by CocoIndex Code.
 
 ---
 
 <!-- ANCHOR:overview -->
-## Overview
+## OVERVIEW
 
-This document provides the complete reference for CocoIndex Code CLI commands and MCP tools. It covers all available commands (search, index, status, init, reset, mcp, daemon), their parameters, expected output, supported languages, environment variables, and related resources.
+This document provides the complete reference for CocoIndex Code CLI commands and MCP tool. It covers all available commands (search, index, status, init, reset, mcp, daemon), their parameters, expected output, supported languages, environment variables, settings schema, and related resources.
+
+**Important distinction:** The MCP server exposes exactly **1 tool** (`search`). The `status`, `index`, and `reset` operations are **CLI-only commands** and are not available through the MCP protocol.
 
 ---
 
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:cli-commands -->
-## 1. CLI Commands
+## 1. CLI COMMANDS
 
 ### ccc search
 
 Perform a semantic search across the indexed codebase.
 
 ```bash
-ccc search QUERY [--lang LANG] [--path PATH] [--limit N] [--offset N] [--refresh]
+ccc search QUERY [--lang LANG ...] [--path PATH] [--limit N] [--offset N] [--refresh]
 ```
 
-| Parameter   | Required | Default | Description                                    |
-| ----------- | -------- | ------- | ---------------------------------------------- |
-| `QUERY`     | Yes      | -       | Natural language search query                  |
-| `--lang`    | No       | all     | Filter by language (e.g., python, typescript)  |
-| `--path`    | No       | .       | Filter by directory path                       |
-| `--limit`   | No       | 10      | Maximum number of results                      |
-| `--offset`  | No       | 0       | Skip first N results (pagination)              |
-| `--refresh` | No       | false   | Force index refresh before searching           |
+| Parameter   | Required | Default | Description                                                        |
+| ----------- | -------- | ------- | ------------------------------------------------------------------ |
+| `QUERY`     | Yes      | -       | Natural language search query                                      |
+| `--lang`    | No       | all     | Filter by language (repeatable: `--lang python --lang typescript`) |
+| `--path`    | No       | .       | Filter by directory path                                           |
+| `--limit`   | No       | 10      | Maximum number of results                                          |
+| `--offset`  | No       | 0       | Skip first N results (pagination)                                  |
+| `--refresh` | No       | false   | Force index refresh before searching                               |
+
+**Note:** `--lang` is repeatable. Specify it multiple times to filter by multiple languages.
 
 **Examples:**
 ```bash
 # Basic search
 ccc search "error handling in API routes"
 
-# Filter by language
+# Filter by single language
 ccc search "database connection pooling" --lang python
+
+# Filter by multiple languages
+ccc search "authentication middleware" --lang python --lang typescript
 
 # Scope to directory
 ccc search "authentication middleware" --path src/api/
@@ -121,45 +128,49 @@ ccc status
 Initialize a new project for indexing. Creates the `.cocoindex_code/` directory.
 
 ```bash
-ccc init
+ccc init [-f | --force]
 ```
 
-| Parameter | Required | Description |
-| --------- | -------- | ----------- |
-| (none)    | -        | No parameters. Run from project root |
+| Parameter       | Required | Default | Description                                      |
+| --------------- | -------- | ------- | ------------------------------------------------ |
+| `-f`, `--force` | No       | false   | Force re-initialization even if already exists    |
 
-**Example:**
+**Examples:**
 ```bash
 cd /path/to/project
 ccc init
 # Creates .cocoindex_code/ directory
+
+# Force re-initialization
+ccc init --force
 ```
 
 **Notes:**
 - Run this once per project before building the index
 - The install script runs `ccc init` automatically if `.cocoindex_code/` does not exist
+- Use `-f` / `--force` to re-initialize an existing project
 
 ---
 
 ### ccc reset
 
-Reset the index databases. Optionally remove settings.
+Reset the index databases. Optionally remove all data.
 
 ```bash
-ccc reset [--settings]
+ccc reset [--all]
 ```
 
-| Parameter    | Required | Default | Description                                   |
-| ------------ | -------- | ------- | --------------------------------------------- |
-| `--settings` | No       | false   | Also remove settings (full clean reset)       |
+| Parameter | Required | Default | Description                                       |
+| --------- | -------- | ------- | ------------------------------------------------- |
+| `--all`   | No       | false   | Remove all data (full clean reset including settings) |
 
 **Examples:**
 ```bash
 # Reset databases only (keep settings)
 ccc reset
 
-# Full reset including settings
-ccc reset --settings
+# Full reset including all data and settings
+ccc reset --all
 
 # After reset, rebuild
 ccc init
@@ -183,7 +194,8 @@ ccc mcp
 **Notes:**
 - This command is used in MCP configuration files (not run manually)
 - Communicates via stdin/stdout using the MCP protocol
-- Exposes 4 tools: search, status, index, reset
+- Exposes 1 tool: `search`
+- The `status`, `index`, and `reset` operations are CLI-only and not exposed via MCP
 
 ---
 
@@ -217,21 +229,38 @@ ccc daemon stop
 
 <!-- /ANCHOR:cli-commands -->
 <!-- ANCHOR:mcp-tools -->
-## 2. MCP Tools
+## 2. MCP TOOL
 
-These tools are exposed when running `ccc mcp`. AI clients call them through the MCP protocol.
+The MCP server (`ccc mcp`) exposes exactly **1 tool**: `search`. All other operations (status, index, reset) are CLI-only commands.
 
 ### search
 
 Perform semantic search across the indexed codebase.
 
-| Parameter | Type   | Required | Default | Description                          |
-| --------- | ------ | -------- | ------- | ------------------------------------ |
-| `query`   | string | Yes      | -       | Natural language search query        |
-| `lang`    | string | No       | null    | Filter by programming language       |
-| `path`    | string | No       | null    | Filter by directory path             |
-| `limit`   | number | No       | 10      | Maximum results to return            |
-| `offset`  | number | No       | 0       | Skip first N results                 |
+| Parameter       | Type                    | Required | Default | Description                              |
+| --------------- | ----------------------- | -------- | ------- | ---------------------------------------- |
+| `query`         | string                  | Yes      | -       | Natural language search query            |
+| `languages`     | list of strings \| null | No       | null    | Filter by programming languages          |
+| `paths`         | list of strings \| null | No       | null    | Filter by file paths                     |
+| `num_results`   | integer                 | No       | 5       | Number of results to return              |
+| `refresh_index` | boolean                 | No       | true    | Trigger index refresh before searching   |
+
+**Parameter notes:**
+- `languages` accepts a list (e.g., `["python", "typescript"]`), not a single string
+- `paths` accepts a list (e.g., `["src/api/", "lib/"]`), not a single string
+- `num_results` defaults to **5** for MCP (CLI `--limit` defaults to 10)
+- `refresh_index` defaults to `true` -- set to `false` to skip refresh for faster results
+
+**MCP request example:**
+```json
+{
+  "query": "error handling in API routes",
+  "languages": ["python", "typescript"],
+  "paths": ["src/api/"],
+  "num_results": 10,
+  "refresh_index": false
+}
+```
 
 **Response:** Array of search results, each containing:
 - `file`: File path relative to project root
@@ -242,82 +271,115 @@ Perform semantic search across the indexed codebase.
 
 ---
 
-### status
-
-Return index statistics. No parameters.
-
-**Response:** Object containing:
-- `indexed_files`: Number of files in the index
-- `languages`: List of indexed languages
-- `index_size`: Size of the index on disk
-- `last_updated`: Timestamp of last index update
-
----
-
-### index
-
-Trigger an index build or update. No parameters.
-
-**Response:** Object containing:
-- `files_indexed`: Number of files processed
-- `files_updated`: Number of files updated
-- `duration`: Time taken
-
----
-
-### reset
-
-Reset the index. No parameters.
-
-**Response:** Confirmation message.
-
----
-
 <!-- /ANCHOR:mcp-tools -->
+<!-- ANCHOR:parameter-mapping -->
+## 3. CLI vs. MCP PARAMETER MAPPING
+
+| Concept          | CLI Parameter       | MCP Parameter    | Notes                                       |
+| ---------------- | ------------------- | ---------------- | ------------------------------------------- |
+| Search query     | `QUERY` (positional)| `query`          | Same behavior                               |
+| Language filter   | `--lang` (repeatable) | `languages` (list) | CLI: repeatable flag. MCP: list of strings |
+| Path filter      | `--path` (string)   | `paths` (list)   | CLI: single path. MCP: list of paths        |
+| Result limit     | `--limit` (default: 10) | `num_results` (default: 5) | Different defaults        |
+| Pagination       | `--offset`          | (not available)  | CLI only                                    |
+| Index refresh    | `--refresh`         | `refresh_index`  | CLI: default false. MCP: default true       |
+
+---
+
+<!-- /ANCHOR:parameter-mapping -->
 <!-- ANCHOR:supported-languages -->
-## 3. Supported Languages
+## 4. SUPPORTED LANGUAGES
 
-CocoIndex Code supports 14 programming languages:
+CocoIndex Code supports **28+ programming and markup languages**:
 
-| Language    | Code Value   | Common Extensions              |
-| ----------- | ------------ | ------------------------------ |
-| Python      | `python`     | `.py`                          |
-| TypeScript  | `typescript` | `.ts`                          |
-| JavaScript  | `javascript` | `.js`                          |
-| TSX         | `tsx`        | `.tsx`                         |
-| Rust        | `rust`       | `.rs`                          |
-| Go          | `go`         | `.go`                          |
-| Java        | `java`       | `.java`                        |
-| C           | `c`          | `.c`, `.h`                     |
-| C++         | `cpp`        | `.cpp`, `.cc`, `.cxx`, `.hpp`  |
-| C#          | `csharp`     | `.cs`                          |
-| SQL         | `sql`        | `.sql`                         |
-| Bash        | `bash`       | `.sh`, `.bash`                 |
-| Markdown    | `markdown`   | `.md`                          |
-| Text        | `text`       | `.txt`                         |
+| Language    | Code Value     | Common Extensions                |
+| ----------- | -------------- | -------------------------------- |
+| C           | `c`            | `.c`, `.h`                       |
+| C#          | `csharp`       | `.cs`                            |
+| C++         | `cpp`          | `.cpp`, `.cc`, `.cxx`, `.hpp`    |
+| CSS         | `css`          | `.css`                           |
+| DTD         | `dtd`          | `.dtd`                           |
+| Elixir      | `elixir`       | `.ex`, `.exs`                    |
+| Fortran     | `fortran`      | `.f`, `.f90`, `.f95`, `.for`     |
+| Go          | `go`           | `.go`                            |
+| Haskell     | `haskell`      | `.hs`                            |
+| HTML        | `html`         | `.html`, `.htm`                  |
+| Java        | `java`         | `.java`                          |
+| JavaScript  | `javascript`   | `.js`, `.mjs`, `.cjs`            |
+| JSON        | `json`         | `.json`                          |
+| Kotlin      | `kotlin`       | `.kt`, `.kts`                    |
+| Lua         | `lua`          | `.lua`                           |
+| OCaml       | `ocaml`        | `.ml`, `.mli`                    |
+| Pascal      | `pascal`       | `.pas`, `.pp`                    |
+| PHP         | `php`          | `.php`                           |
+| Python      | `python`       | `.py`                            |
+| R           | `r`            | `.r`, `.R`                       |
+| Ruby        | `ruby`         | `.rb`                            |
+| Rust        | `rust`         | `.rs`                            |
+| Scala       | `scala`        | `.scala`                         |
+| Solidity    | `solidity`     | `.sol`                           |
+| SQL         | `sql`          | `.sql`                           |
+| Swift       | `swift`        | `.swift`                         |
+| TOML        | `toml`         | `.toml`                          |
+| TypeScript  | `typescript`   | `.ts`                            |
+| XML         | `xml`          | `.xml`                           |
+| YAML        | `yaml`         | `.yml`, `.yaml`                  |
+| Zig         | `zig`          | `.zig`                           |
 
-Use these code values with the `--lang` flag or the `lang` MCP parameter.
+Use these code values with the CLI `--lang` flag or the MCP `languages` parameter.
 
 ---
 
 <!-- /ANCHOR:supported-languages -->
 <!-- ANCHOR:environment-variables -->
-## 4. Environment Variables
+## 5. ENVIRONMENT VARIABLES
 
-| Variable                    | Required | Default | Description                              |
-| --------------------------- | -------- | ------- | ---------------------------------------- |
-| `COCOINDEX_CODE_ROOT_PATH`  | Yes      | `.`     | Root directory of the project to search   |
+| Variable                      | Required | Default              | Description                                       |
+| ----------------------------- | -------- | -------------------- | ------------------------------------------------- |
+| `COCOINDEX_CODE_DIR`          | No       | `~/.cocoindex_code`  | Override config/data directory                     |
+| `COCOINDEX_CODE_ROOT_PATH`    | No       | auto-detected        | Override project root detection                    |
+
+**Legacy variables (mapped automatically):**
+
+| Legacy Variable           | Maps To                      |
+| ------------------------- | ---------------------------- |
+| `COCOSEARCH_DIR`          | `COCOINDEX_CODE_DIR`         |
+| `COCOSEARCH_ROOT_PATH`    | `COCOINDEX_CODE_ROOT_PATH`   |
+
+Legacy variables are recognized for backward compatibility and automatically mapped to their current equivalents. If both legacy and current variables are set, the current variable takes precedence.
 
 ---
 
 <!-- /ANCHOR:environment-variables -->
-<!-- ANCHOR:related-resources -->
-## 5. Related Resources
+<!-- ANCHOR:settings-schema -->
+## 6. SETTINGS SCHEMA
 
-| Resource        | Location                                                            |
-| --------------- | ------------------------------------------------------------------- |
-| INSTALL_GUIDE   | `.opencode/skill/mcp-cocoindex-code/INSTALL_GUIDE.md`              |
-| Search Patterns | `.opencode/skill/mcp-cocoindex-code/references/search_patterns.md` |
-| Config Templates| `.opencode/skill/mcp-cocoindex-code/assets/config_templates.md`    |
+CocoIndex Code uses YAML settings files stored in the project `.cocoindex_code/` directory and the user home `~/.cocoindex_code/` directory.
+
+**User settings** (`~/.cocoindex_code/global_settings.yml`):
+- `embedding.provider` -- embedding provider (e.g., `sentence-transformers`, `litellm`)
+- `embedding.model` -- embedding model name (e.g., `all-MiniLM-L6-v2`, `gemini/text-embedding-004`)
+- `embedding.device` -- compute device (e.g., `cpu`, `cuda`, `mps`; default: auto-detect)
+- `envs` -- environment variables map (e.g., API keys for LiteLLM providers)
+
+**Project settings** (`<project>/.cocoindex_code/settings.yml`):
+- `include_patterns` -- glob patterns for files to index (default: language-specific patterns)
+- `exclude_patterns` -- glob patterns for files to exclude (default: common build/vendor dirs)
+- `language_overrides` -- list of `{ext, lang}` mappings for custom file extensions
+
+For detailed schema and configuration examples, see the upstream test files in `tests/test_settings.py` and `tests/test_config.py`.
+
+---
+
+<!-- /ANCHOR:settings-schema -->
+<!-- ANCHOR:related-resources -->
+## 7. RELATED RESOURCES
+
+| Resource         | Location                                                            |
+| ---------------- | ------------------------------------------------------------------- |
+| INSTALL_GUIDE    | `.opencode/skill/mcp-cocoindex-code/INSTALL_GUIDE.md`              |
+| Search Patterns  | `.opencode/skill/mcp-cocoindex-code/references/search_patterns.md` |
+| Config Templates | `.opencode/skill/mcp-cocoindex-code/assets/config_templates.md`    |
+| Upstream Tests   | `.opencode/skill/mcp-cocoindex-code/tests/`                        |
 
 <!-- /ANCHOR:related-resources -->

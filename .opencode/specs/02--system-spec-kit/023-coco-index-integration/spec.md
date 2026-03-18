@@ -24,7 +24,7 @@ contextType: "implementation"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P1 |
-| **Status** | Complete |
+| **Status** | Complete (Phase 1 + Cross-CLI Validation) |
 | **Created** | 2026-03-18 |
 | **Branch** | `main` (additive config changes, no separate branch) |
 
@@ -60,11 +60,11 @@ Install CocoIndex Code (a Python MCP server providing vector-based semantic code
 
 ### Out of Scope
 
-- @context agent Layer 2b semantic search integration - planned Phase 2
+- @context agent Layer 2b semantic search integration - **deprioritized** (cross-CLI test proved auto-discovery works without agent routing)
 - @research agent semantic query integration - planned Phase 3
 - Spec Kit Memory enrichment synergy - planned Phase 4
-- Skill folder creation (`sk-mcp-cocoindex-code`) - Phase 2+
 - Auto-watch/daemon for incremental re-indexing - Phase 2+
+- Upstream CocoIndex daemon concurrency bug fix - reported, awaiting upstream
 
 ### Files Changed
 
@@ -77,6 +77,7 @@ Install CocoIndex Code (a Python MCP server providing vector-based semantic code
 | `.gemini/settings.json` | Modified | Added `cocoindex_code` server entry with absolute paths, `cwd`, `trust: true` |
 | `.claude/mcp.json` | Modified | Added `cocoindex_code` server entry with relative env, `_NOTE_*` docs |
 | `.codex/config.toml` | Modified | Added `[mcp_servers.cocoindex_code]` section |
+| `.opencode/skill/mcp-cocoindex-code/SKILL.md` | Modified | Added query optimization tips and `refresh_index=false` concurrent session guidance |
 
 <!-- /ANCHOR:scope -->
 
@@ -202,14 +203,16 @@ Install CocoIndex Code (a Python MCP server providing vector-based semantic code
 <!-- ANCHOR:questions -->
 ## 10. OPEN QUESTIONS
 
-- Should Phase 2 (@context agent Layer 2b) be a sub-spec of 023 or a new spec? **RESOLVED: New spec, 024-series**
+- Should Phase 2 (@context agent Layer 2b) be a sub-spec of 023 or a new spec? **RESOLVED: Deprioritized -- cross-CLI test proved auto-discovery works without agent routing changes**
 - Should `disabled: true` in `.mcp.json` be reversed once user has installed `cocoindex-code`? **RESOLVED: User-driven; document in research.md**
+- Is the Copilot MCP failure a Copilot issue or a CocoIndex issue? **RESOLVED: CocoIndex daemon concurrency bug -- `refresh_index=true` under concurrent requests crashes `ComponentContext`**
 
 **Related Documents**:
 - Research: `research.md` (v1.1, 17 sections, 6-agent investigation)
 - Implementation Plan: `plan.md`
 - Task Breakdown: `tasks.md`
 - Verification Checklist: `checklist.md`
+- Cross-CLI Test Results: `scratch/cross-cli-auto-usage-test-results.md`
 
 <!-- /ANCHOR:questions -->
 

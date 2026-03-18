@@ -19,8 +19,8 @@ import type {
 } from '../utils/input-normalizer';
 import {
   isSameWorkspacePath,
-  toWorkspaceRelativePath,
 } from '../utils';
+import { sanitizeToolInputPaths, normalizeToolStatus, isApiErrorContent } from '../utils/tool-sanitizer';
 
 const GEMINI_HOME = path.join(
   process.env.HOME || process.env.USERPROFILE || '',
@@ -108,29 +108,7 @@ function normalizeToolName(rawName: unknown): string {
   return typeof rawName === 'string' ? rawName.toLowerCase() : 'unknown';
 }
 
-function relativeProjectPath(projectRoot: string, maybeFilePath: string): string {
-  return toWorkspaceRelativePath(projectRoot, maybeFilePath);
-}
-
-function sanitizeToolInputPaths(projectRoot: string, input: Record<string, unknown>): Record<string, unknown> {
-  const sanitized: Record<string, unknown> = { ...input };
-
-  const pathKeys = ['filePath', 'file_path', 'path'];
-  for (const key of pathKeys) {
-    if (typeof sanitized[key] !== 'string') {
-      continue;
-    }
-
-    const relativePath = relativeProjectPath(projectRoot, sanitized[key] as string);
-    if (relativePath) {
-      sanitized[key] = relativePath;
-    } else {
-      delete sanitized[key];
-    }
-  }
-
-  return sanitized;
-}
+// sanitizeToolInputPaths imported from ../utils/tool-sanitizer
 
 function stringifyPreview(value: unknown): string {
   if (typeof value === 'string') {
@@ -301,7 +279,7 @@ export async function captureGeminiConversation(
         toolCalls.push({
           tool: normalizeToolName(call.name),
           title,
-          status: (call.status === 'pending' || call.status === 'completed' || call.status === 'error' || call.status === 'snapshot') ? call.status : 'unknown',
+          status: normalizeToolStatus(call.status),
           timestamp: call.timestamp || message.timestamp || new Date().toISOString(),
           input,
           output,
@@ -328,6 +306,11 @@ export async function captureGeminiConversation(
 
     const assistantText = contentText || displayText;
     if (!assistantText) {
+      continue;
+    }
+
+    // Skip API error messages — they carry no useful session content
+    if (isApiErrorContent(assistantText)) {
       continue;
     }
 

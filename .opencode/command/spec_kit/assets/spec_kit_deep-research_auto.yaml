@@ -159,17 +159,37 @@ workflow:
           - next_focus: "Extract 'Next Focus' section from strategy.md"
           - remaining_questions: "Count unchecked items in 'Key Questions'"
 
+      step_check_pause_sentinel:
+        action: "Check for pause sentinel file"
+        check: "Does {spec_folder}/scratch/.deep-research-pause exist?"
+        if_exists:
+          log_event: '{"type":"event","event":"paused","reason":"sentinel file detected"}'
+          message: "Research paused. Delete scratch/.deep-research-pause to resume."
+          halt: true
+        if_not_exists:
+          proceed: true
+
       step_check_convergence:
         action: "Evaluate stop conditions"
         algorithm: |
           1. if iteration_count >= max_iterations: STOP (max_iterations_reached)
-          2. if stuck_count >= 3: STUCK_RECOVERY
-          3. if iteration_count >= 3:
-               recent_3 = last 3 iteration newInfoRatios
-               avg = mean(recent_3)
-               if avg < convergence_threshold: STOP (converged)
-          4. if remaining_questions == 0: STOP (all_questions_answered)
+          2. if remaining_questions == 0: STOP (all_questions_answered)
+          3. if stuck_count >= 3: STUCK_RECOVERY
+          4. COMPOSITE CONVERGENCE (3-signal weighted vote):
+               signals = []
+               a) Rolling average (w=0.30, needs 3+ iterations):
+                  avg = mean(last 3 newInfoRatios)
+                  stop if avg < convergence_threshold
+               b) MAD noise floor (w=0.35, needs 4+ iterations):
+                  noiseFloor = MAD(all ratios) * 1.4826
+                  stop if latest ratio <= noiseFloor
+               c) Question entropy (w=0.35):
+                  coverage = answered / total questions
+                  stop if coverage >= 0.85
+               Redistribute weights for unavailable signals.
+               if weighted_stop_score > 0.60: STOP (composite_converged)
           5. else: CONTINUE
+          See convergence.md for full pseudocode and signal definitions.
         outputs:
           - decision: "STOP | STUCK_RECOVERY | CONTINUE"
           - reason: "Human-readable stop reason"
@@ -191,7 +211,17 @@ workflow:
         dispatch:
           agent: deep-research
           model: opus
+          pre_dispatch:
+            generate_summary: |
+              STATE SUMMARY (auto-generated):
+              Segment: {current_segment} | Iteration: {current_iteration} of {max_iterations}
+              Questions: {answered_count}/{total_questions} answered | Last focus: {last_focus}
+              Last 2 ratios: {ratio_prev} -> {ratio_latest} | Stuck count: {stuck_count}
+              Recovery: {active_recovery or "none"}
+              Next focus: {next_focus}
           context: |
+            {state_summary}
+
             Research Topic: {research_topic}
             Iteration: {current_iteration} of {max_iterations}
             Focus Area: {next_focus_or_recovery_focus}
@@ -223,6 +253,13 @@ workflow:
           action: "Mark iteration as 'error', continue to next"
           append_jsonl: '{"type":"iteration","run":{N},"status":"error","focus":"{focus}","findingsCount":0,"newInfoRatio":0.0,"timestamp":"{ISO_8601_NOW}"}'
 
+      step_checkpoint_commit:
+        action: "Git checkpoint after verified iteration"
+        commands:
+          - "git add {spec_folder}/scratch/iteration-{NNN}.md {spec_folder}/scratch/deep-research-state.jsonl {spec_folder}/scratch/deep-research-strategy.md {spec_folder}/research.md"
+          - 'git commit -m "chore(deep-research): iteration {NNN} complete"'
+        on_failure: "Log warning, continue (checkpoint is non-blocking)"
+
       step_update_tracking:
         action: "Update loop tracking variables"
         set:
@@ -233,6 +270,37 @@ workflow:
       step_loop_decision:
         action: "Return to step_read_state for next iteration"
         goto: step_read_state
+
+      # ─── WAVE ORCHESTRATION (alternative to sequential) ───
+      step_wave_check:
+        action: "Check if wave mode is appropriate"
+        condition: "3+ independent unanswered questions AND wave_mode enabled"
+        if_true:
+          proceed_to: step_wave_dispatch
+        if_false:
+          note: "Continue with sequential iteration (default path)"
+
+      step_wave_dispatch:
+        action: "Dispatch N agents in parallel on independent questions"
+        dispatch_parallel:
+          agent: deep-research
+          instances: "{min(independent_questions, 3)}"
+          per_instance_context: "Each gets a unique question focus"
+        wait_for_all: true
+
+      step_wave_scoring:
+        action: "Score wave results and prune"
+        algorithm: |
+          1. Collect newInfoRatio from each wave iteration
+          2. Compute wave median
+          3. Prune: questions below median -> move to ideas backlog
+          4. Promote: top-K questions (K = ceil(N/2)) get follow-up
+          5. Breakthrough: if any ratio > 2x average, generate adjacent questions
+        log_event: '{"type":"event","event":"wave_complete","wave":{wave_number},"medianRatio":{median}}'
+        if_breakthrough:
+          log_event: '{"type":"event","event":"breakthrough","wave":{wave_number},"iteration":{N},"ratio":{ratio}}'
+          action: "Generate 2-3 adjacent questions, prioritize in next wave"
+        next: step_read_state
 
   # ═══════════════════════════════════════════════════════════════
   # PHASE 3: SYNTHESIS
@@ -268,10 +336,14 @@ workflow:
         report: |
           ## Convergence Report
           - Stop reason: {stop_reason}
-          - Total iterations: {total_iterations}
+          - Total iterations: {total_iterations} (segment: {current_segment})
           - Questions answered: {answered} / {total} ({percentage}%)
-          - Average newInfoRatio (last 3): {avg_newInfoRatio}
+          - Composite convergence score: {composite_score} / 0.60
+            - Rolling Avg (w=0.30): {rolling_avg} [{rolling_vote}]
+            - MAD Noise (w=0.35): {mad_score} [{mad_vote}] (floor: {noise_floor})
+            - Entropy (w=0.35): {entropy_coverage} [{entropy_vote}]
           - Stuck recovery attempts: {recovery_count}
+          - Error recovery tiers used: {tier_list}
         append_to_jsonl: '{"type":"event","event":"synthesis_complete","totalIterations":{N},"answeredRatio":{ratio},"stopReason":"{reason}"}'
 
       step_update_config_status:

@@ -1,0 +1,23 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/025-capture-quality-parity",
+  "description": "025 -- Capture Quality Parity",
+  "keywords": [
+    "025",
+    "capture",
+    "quality",
+    "parity"
+  ],
+  "lastUpdated": "2026-03-18T12:49:50.369Z",
+  "specId": "025",
+  "folderSlug": "capture-quality-parity",
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion"
+  ],
+  "memorySequence": 3,
+  "memoryNameHistory": [
+    "18-03-26_13-49__claude-code-p1-result-captured-tool-used-mcp.md",
+    "18-03-26_14-14__claude-code-p1-result-captured-tool-used-mcp.md",
+    "18-03-26_15-17__fixed-two-runtime-issues-discovered-after-phase-a.md"
+  ]
+}

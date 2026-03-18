@@ -72,9 +72,45 @@ Run the convergence algorithm (see convergence.md):
 - All questions answered? STOP
 - Otherwise: CONTINUE
 
+#### Step 2a: Check Pause Sentinel
+
+Before dispatching, check for a pause sentinel file:
+
+1. Check if `scratch/.deep-research-pause` exists
+2. If present:
+   - Log event to JSONL: `{"type":"event","event":"paused","reason":"sentinel file detected"}`
+   - Halt the loop with message:
+     ```
+     Research paused. Delete scratch/.deep-research-pause to resume.
+     Current state: Iteration {N}, {remaining} questions remaining.
+     ```
+   - Do NOT exit to synthesis -- the loop is suspended, not stopped
+3. On resume (file deleted and loop restarted):
+   - Log event: `{"type":"event","event":"resumed","fromIteration":N}`
+   - Continue from step_read_state
+
+**Use case**: In autonomous mode, this provides the only graceful intervention mechanism short of killing the process. Users can create the sentinel file at any time to pause research between iterations.
+
+#### Step 2b: Generate State Summary
+
+Generate a compact state summary (~200 tokens) for injection into the dispatch prompt:
+
+```
+STATE SUMMARY (auto-generated):
+Segment: {current_segment} | Iteration: {N} of {max}
+Questions: {answered}/{total} answered | Last focus: {last_focus}
+Last 2 ratios: {ratio_N-1} -> {ratio_N} | Stuck count: {stuck_count}
+Recovery: {active_recovery_strategy or "none"}
+Next focus: {strategy.nextFocus}
+```
+
+This summary is prepended to the dispatch context (Step 3) to ensure the agent has baseline context even if detailed strategy.md reading fails or is incomplete. It serves as a redundant context channel.
+
 #### Step 3: Dispatch Agent
 Dispatch `@deep-research` with explicit context:
 ```
+{state_summary}  // Auto-generated (Step 2b)
+
 Research Topic: {config.topic}
 Iteration: {N} of {maxIterations}
 Focus Area: {strategy.nextFocus}
@@ -96,10 +132,54 @@ After agent completes:
 4. Extract `newInfoRatio` from JSONL record
 5. Track stuck count (increment if newInfoRatio < 0.05, reset otherwise)
 
+#### Step 4a: Checkpoint Commit
+
+After each iteration is verified (JSONL appended, iteration file written, strategy updated):
+
+1. **Stage targeted files only** (never `git add -A`):
+   ```bash
+   git add scratch/iteration-{NNN}.md
+   git add scratch/deep-research-state.jsonl
+   git add scratch/deep-research-strategy.md
+   git add research.md  # if it exists
+   ```
+2. **Sanitize**: Exclude `.env`, credentials, large binaries from staging
+3. **Commit**: `git commit -m "chore(deep-research): iteration {NNN} complete"`
+4. **On commit failure**: Log warning and continue (checkpoint is non-blocking)
+
+Checkpoint commits provide rollback points: `git log -- scratch/` shows the last good state for any file. If state corruption occurs, `git checkout HEAD~1 -- scratch/deep-research-state.jsonl` restores the previous version.
+
 #### Step 5: Loop Decision
 - If convergence check returns STOP: exit to synthesis
 - If STUCK_RECOVERY: modify focus directive, reset stuck count, continue
 - Otherwise: increment iteration counter, go to Step 1
+
+### Ideas Backlog Convention
+
+A persistent ideas file at `scratch/research-ideas.md` serves as a parking lot for promising directions not yet pursued.
+
+#### Check Points
+
+The orchestrator checks the ideas backlog at three points:
+
+1. **Init**: During strategy initialization, if `scratch/research-ideas.md` exists from a prior session, read it and incorporate relevant ideas into the initial key questions or "Next Focus"
+2. **Stuck**: During stuck recovery (Step 2a of the recovery protocol in convergence.md), check ideas backlog before defaulting to generic recovery strategies. Deferred ideas often provide the best escape from stuck states
+3. **Resume**: On auto-resume, read the ideas file alongside JSONL and strategy.md to restore full context
+
+#### Format
+
+```markdown
+# Research Ideas
+
+## Deferred (not yet explored)
+- [Idea description] (noted iteration N: [why deferred])
+- [Idea description] (noted iteration N: [why deferred])
+
+## Promoted (moved to Key Questions)
+- [Idea] -> promoted to Key Question in iteration N
+```
+
+Users can edit `research-ideas.md` between sessions to steer future iterations. Agents append new ideas during iterations when they encounter promising tangents that fall outside the current focus.
 
 ### Stuck Recovery Protocol
 When 3 consecutive iterations show no progress:
@@ -108,6 +188,136 @@ When 3 consecutive iterations show no progress:
 3. Set next focus to: "RECOVERY: Widen scope to {least-explored-area}. Try a fundamentally different approach."
 4. Reset stuck counter
 5. If recovery iteration also shows no progress: exit to synthesis with gaps documented
+
+### Step 3b: Direct Mode Fallback
+
+When agent dispatch fails (Tier 5 error recovery):
+
+1. Detect dispatch failure: Task tool timeout, API overload (529), or agent crash
+2. Log event: `{"type":"event","event":"direct_mode","iteration":N,"reason":"dispatch_failure"}`
+3. Orchestrator absorbs the iteration work:
+   - Read state files (JSONL + strategy.md)
+   - Determine focus from strategy "Next Focus"
+   - Execute 3-5 research actions directly
+   - Write `scratch/iteration-NNN.md`
+   - Update strategy.md
+   - Append iteration record to JSONL
+4. Continue loop normally after direct-mode iteration completes
+5. If direct mode also fails, escalate to Tier 4 (user escalation)
+
+**Note**: Direct mode iterations are logged with `"directMode": true` in their JSONL record for diagnostic tracking.
+
+---
+
+## 3a. WAVE ORCHESTRATION PROTOCOL
+
+An optional parallel execution mode for research topics with multiple independent questions.
+
+### When to Use Waves
+
+- 3+ independent key questions identified during initialization
+- Questions do not depend on each other's answers
+- Parallelism is beneficial (time-constrained research, broad survey)
+
+### Wave Execution Model
+
+```
+Wave 1: Dispatch N agents on independent questions
+  |
+  +-- Agent A: Question 1 --> iteration-001.md (newInfoRatio: 0.8)
+  +-- Agent B: Question 2 --> iteration-002.md (newInfoRatio: 0.3)
+  +-- Agent C: Question 3 --> iteration-003.md (newInfoRatio: 0.7)
+  |
+Scoring: Rank by newInfoRatio, prune below median
+  |
+Wave 2: Follow-up on top-K questions (K = ceil(N/2))
+  +-- Agent A: Question 1 follow-up --> iteration-004.md
+  +-- Agent C: Question 3 follow-up --> iteration-005.md
+  |
+Repeat until convergence
+```
+
+### Scoring and Pruning
+
+After each wave completes:
+1. Rank all wave iterations by `newInfoRatio`
+2. Compute wave median: `median([i.newInfoRatio for i in wave_iterations])`
+3. **Prune**: Questions with newInfoRatio below median are deprioritized
+4. **Promote**: Top-K questions (K = ceil(N/2)) get follow-up iterations
+5. Pruned questions are moved to the ideas backlog, not discarded
+
+### Breakthrough Detection
+
+When any single iteration in a wave achieves `newInfoRatio > 2x wave_average`:
+
+1. Flag as **breakthrough**: `{"type":"event","event":"breakthrough","iteration":N,"ratio":X.XX}`
+2. Generate 2-3 adjacent questions from the breakthrough findings
+3. Prioritize these adjacent questions in the next wave
+4. Breakthrough iterations are NEVER pruned
+
+### Wave JSONL Records
+
+Wave iterations use standard iteration records with an additional field:
+```json
+{"type":"iteration","run":N,"wave":1,"status":"complete",...}
+```
+
+Wave events:
+```json
+{"type":"event","event":"wave_complete","wave":1,"iterations":[1,2,3],"medianRatio":0.5}
+{"type":"event","event":"breakthrough","wave":1,"iteration":2,"ratio":0.95}
+```
+
+### Integration with Sequential Loop
+
+- Waves are an ALTERNATIVE to sequential iteration, not a replacement
+- The convergence algorithm applies identically (uses all iteration records)
+- Wave mode can transition to sequential mode when questions narrow to 1-2
+- Sequential mode can spawn a wave when new independent questions emerge
+
+---
+
+## 3b. CONTEXT ISOLATION DISPATCH (EXPERIMENTAL)
+
+An alternative dispatch mechanism that guarantees fresh context per iteration by launching a new OS process.
+
+### Motivation
+
+The standard dispatch (Task tool) shares the parent session's token budget. In long research sessions (10+ iterations), this may cause context compression that degrades reasoning quality. Process-level isolation eliminates this risk.
+
+### Dispatch Mechanism
+
+Replace Task tool dispatch with shell-level `claude -p` invocation:
+
+1. **Generate prompt**: Orchestrator builds a self-contained prompt from:
+   - Strategy.md (current state)
+   - Config.json (parameters)
+   - Last N iteration summaries (from JSONL)
+   - Compact state summary (Step 2b)
+   - Full agent protocol instructions
+2. **Write to temp file**: `scratch/.dispatch-prompt-{NNN}.md`
+3. **Execute**: `claude -p "$(cat scratch/.dispatch-prompt-{NNN}.md)" --max-turns 50 --output-format json`
+4. **Collect output**: Agent writes iteration file directly to disk
+5. **Verify**: Orchestrator checks iteration file and JSONL were created
+6. **Cleanup**: Remove temp prompt file
+
+### Trade-offs
+
+| Aspect | Task Tool Dispatch | `claude -p` Dispatch |
+|--------|-------------------|---------------------|
+| Context freshness | Shared budget, may degrade | Guaranteed fresh |
+| Token cost | Lower (cached context) | Higher (full context per call) |
+| Latency | Lower (in-process) | Higher (new process startup) |
+| Context size | Limited by parent budget | Full model context available |
+| Error handling | In-process exceptions | Process exit codes |
+
+### When to Use
+
+- Autonomous/unattended research sessions (overnight runs)
+- Research past iteration 8+ where context degradation is measurable
+- Critical research where reasoning quality must not degrade
+
+**Status**: Experimental. Track adoption based on need for fully autonomous overnight research sessions.
 
 ---
 
@@ -183,7 +393,22 @@ Preserve research context to memory system.
 | State file missing | Init/Loop | If JSONL missing: re-initialize. If strategy missing: reconstruct from JSONL |
 | JSONL malformed | Loop | Skip malformed lines, reconstruct from valid entries |
 | 3+ consecutive failures | Loop | Halt loop, enter synthesis with partial findings |
+| Agent dispatch failure (API overload, timeout) | Loop | Direct mode fallback (Tier 5): orchestrator absorbs iteration work. Log event and continue. |
 | Memory save fails | Save | Save to scratch/ as backup, log error |
+
+### State Recovery Protocol
+
+When state files are missing or corrupted, apply this 4-priority cascade:
+
+| Priority | Condition | Recovery Action |
+|----------|-----------|----------------|
+| 1 (Primary) | JSONL exists and parseable | Normal operation (with fault-tolerant parsing) |
+| 2 (Strategy rebuild) | JSONL exists, strategy.md missing | Reconstruct strategy from JSONL: extract questions, focus areas, newInfoRatio trend. Create minimal strategy.md |
+| 3 (JSONL reconstruction) | JSONL missing/corrupt, iteration files exist | Scan `scratch/iteration-*.md`, parse Assessment sections, reconstruct JSONL with `status: "reconstructed"` |
+| 4 (Config-only restart) | Only config.json remains | Restart from initialization phase using config parameters. Log: `{"type":"event","event":"fresh_restart","reason":"state_files_missing"}` |
+| 5 (Abort) | Config.json also missing | Cannot recover. Report error and halt. |
+
+Each priority level is attempted in order. If a level fails, fall through to the next. See state-format.md for JSONL reconstruction details.
 
 ---
 

@@ -1,19 +1,19 @@
 {
-  "timestamp": "18-03-26 08-51",
-  "messageCount": 1,
+  "timestamp": "18-03-26 14-35",
+  "messageCount": 0,
   "decisionCount": 0,
   "diagramCount": 0,
   "skillVersion": "1.7.2",
   "autoTriggered": false,
   "filtering": {
-    "totalProcessed": 1,
+    "totalProcessed": 0,
     "noiseFiltered": 0,
     "duplicatesRemoved": 0,
-    "qualityScore": 30,
+    "qualityScore": 0,
     "contaminationAudit": [
       {
         "stage": "content-filter",
-        "timestamp": "2026-03-18T07:51:21.842Z",
+        "timestamp": "2026-03-18T13:35:39.935Z",
         "patternsChecked": [
           "/^User message$/i",
           "/^User prompt$/i",
@@ -50,8 +50,8 @@
           "stripped_wrappers:0"
         ],
         "passedThrough": [
-          "input_items:1",
-          "kept_items:1"
+          "input_items:0",
+          "kept_items:0"
         ]
       }
     ],
@@ -66,7 +66,7 @@
   "contaminationAudit": [
     {
       "stage": "extractor-scrub",
-      "timestamp": "2026-03-18T07:51:21.818Z",
+      "timestamp": "2026-03-18T13:35:39.899Z",
       "patternsChecked": [
         "step-by-step orchestration",
         "analysis preamble",
@@ -97,7 +97,10 @@
         "tool usage narration",
         "tool usage narration active",
         "tool usage preamble",
-        "tool title with path"
+        "tool title with path",
+        "api error prefix",
+        "json error payload",
+        "request id leak"
       ],
       "matchesFound": [],
       "actionsTaken": [
@@ -105,12 +108,12 @@
         "removed_phrases:0"
       ],
       "passedThrough": [
-        "processed_fields:6"
+        "processed_fields:5"
       ]
     },
     {
       "stage": "content-filter",
-      "timestamp": "2026-03-18T07:51:21.842Z",
+      "timestamp": "2026-03-18T13:35:39.935Z",
       "patternsChecked": [
         "/^User message$/i",
         "/^User prompt$/i",
@@ -147,13 +150,13 @@
         "stripped_wrappers:0"
       ],
       "passedThrough": [
-        "input_items:1",
-        "kept_items:1"
+        "input_items:0",
+        "kept_items:0"
       ]
     },
     {
       "stage": "post-render",
-      "timestamp": "2026-03-18T07:51:21.854Z",
+      "timestamp": "2026-03-18T13:35:39.944Z",
       "patternsChecked": [
         "frontmatter:trigger_phrases",
         "frontmatter:key_topics",
@@ -188,7 +191,7 @@
       "implementation": 0,
       "result": 0,
       "decision": 0,
-      "total": 1
+      "total": 0
     }
   },
   "fileCounts": {
@@ -207,8 +210,8 @@
     "status": "indexed",
     "model": "nomic-ai/nomic-embed-text-v1.5",
     "dimensions": 768,
-    "memoryId": 4400,
-    "updatedAt": "2026-03-18T07:51:22.654Z",
-    "generatedAt": "2026-03-18T07:51:22.654Z"
+    "memoryId": 4404,
+    "updatedAt": "2026-03-18T13:35:40.830Z",
+    "generatedAt": "2026-03-18T13:35:40.830Z"
   }
 }

@@ -15,9 +15,8 @@
     "02--system-spec-kit",
     "022-hybrid-rag-fusion"
   ],
-  "memorySequence": 39,
+  "memorySequence": 40,
   "memoryNameHistory": [
-    "15-03-26_12-05__fixed-anchor-preserving-regex-in-workflow-ts.md",
     "15-03-26_12-05__perfect-session-capturing.md",
     "15-03-26_12-22__verified-trigger-phrase-yaml-rendering.md",
     "15-03-26_12-22__pass-automated-validation-is-strong-all-listed.md",
@@ -36,6 +35,7 @@
     "17-03-26_14-47__the-march-17-2026-re-analysis-disposition-for.md",
     "17-03-26_16-16__post-re-analysis-documentation-maintenance-for.md",
     "17-03-26_16-44__strict-closeout-evidence-refreshed.md",
-    "17-03-26_19-49__bimodal-quality-distribution-in-historical-memory.md"
+    "17-03-26_19-49__bimodal-quality-distribution-in-historical-memory.md",
+    "18-03-26_11-46__test-nextsteps-persistence.md"
   ]
 }

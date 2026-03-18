@@ -20,7 +20,7 @@ Executes ONE research iteration within an autonomous loop. Reads externalized st
 
 **Path Convention**: Use only `.claude/agents/*.md` as the canonical runtime path reference.
 
-**CRITICAL**: This agent executes a SINGLE iteration, not the full loop. The loop is managed by the /spec_kit:deep-research command's YAML workflow.
+**CRITICAL**: This agent executes a SINGLE iteration, not the full loop. The loop is managed by the `/spec_kit:deep-research` command's YAML workflow. This agent is dispatched once per iteration with explicit context about what to investigate.
 
 **IMPORTANT**: This agent is research-focused and codebase-agnostic. Adapts investigation approach based on the topic and available tools.
 
@@ -60,6 +60,7 @@ Every iteration follows this exact sequence:
 Read these files (paths provided in dispatch context):
 - `scratch/deep-research-state.jsonl` -- Understand iteration history
 - `scratch/deep-research-strategy.md` -- Understand what to investigate
+- `scratch/research-ideas.md` (if exists) -- Deferred ideas and promising tangents
 
 Extract from state:
 - Current iteration number (count JSONL iteration records + 1)
@@ -68,6 +69,12 @@ Extract from state:
 - Recommended next focus
 
 #### Step 2: Determine Focus
+
+**MANDATORY PRE-CHECK**: Before choosing a focus, read strategy.md "Exhausted Approaches" section:
+- Any category marked `BLOCKED` -- NEVER retry these approaches or any variation of them
+- Any category marked `PRODUCTIVE` -- PREFER these for related questions
+- If the chosen focus falls within a BLOCKED category, select an alternative
+
 Use strategy.md "Next Focus" section to determine what to investigate.
 
 If "Next Focus" is empty or vague:
@@ -77,6 +84,10 @@ If "Next Focus" is empty or vague:
 If this is a RECOVERY iteration (indicated in dispatch context):
 - Use a fundamentally different approach than prior iterations
 - Widen scope or try a different angle
+- Check `scratch/research-ideas.md` for deferred ideas that may provide escape from stuck state
+
+If promising tangents are discovered during research that fall outside current focus:
+- Append them to `scratch/research-ideas.md` for future iterations
 
 #### Step 3: Execute Research
 Perform 3-5 research actions using available tools:
@@ -121,6 +132,11 @@ Create `scratch/iteration-NNN.md` with this structure:
 - Questions addressed: [list]
 - Questions answered: [list]
 
+## Reflection
+- What worked and why: [approach that yielded results + causal explanation]
+- What did not work and why: [approach that failed + root cause]
+- What I would do differently: [specific adjustment for next iteration]
+
 ## Recommended Next Focus
 [What to investigate next, based on gaps discovered]
 ```
@@ -148,6 +164,11 @@ Append ONE line to `scratch/deep-research-state.jsonl`:
 - Count partially new findings (adds nuance to known info) as 0.5
 - `newInfoRatio = (fully_new + 0.5 * partially_new) / total_findings`
 - If no findings at all, set to 0.0
+
+**Simplicity bonus**: If this iteration consolidates, simplifies, or resolves contradictions in prior findings -- even without new external information -- apply a +0.10 bonus to newInfoRatio (capped at 1.0). Simplification counts as genuine value:
+- Reducing the number of open questions through synthesis
+- Resolving contradictions between prior iteration findings
+- Providing a cleaner, more parsimonious model of the research topic
 
 #### Step 7: Update Research (Progressive)
 If `research.md` exists at the spec folder root:
@@ -201,6 +222,13 @@ If dispatch context includes "RECOVERY MODE":
    - If prior iterations searched broadly, narrow to specific aspect
    - If prior iterations were domain-specific, try cross-domain analysis
 3. Document the recovery attempt explicitly in findings
+
+### Error-Aware Execution
+
+When executing research actions, apply Tier 1-2 error handling:
+- **Tier 1 (Source failure)**: If a tool call or source fails, retry with an alternative source (max 2 retries). Do NOT retry the exact same call.
+- **Tier 2 (Focus exhaustion)**: If 2 consecutive iterations on the same focus yield newInfoRatio < 0.10, add the focus to "Exhausted Approaches" and pivot to a different area.
+- **Tier 3+ escalation**: If Tier 1-2 recovery fails, report the error in your iteration file and set status to "error". The orchestrator handles Tier 3-5.
 
 ### Tool Call Budget
 
@@ -256,6 +284,7 @@ Pad to 3 digits for filename: iteration-001.md, iteration-002.md
 - Update strategy.md with what worked and what failed
 - Respect "Exhausted Approaches" -- never retry them
 - Stay within tool call budget (target 8-11, max 12)
+- Apply Tier 1-2 error recovery for tool/source failures before reporting errors
 
 ### NEVER
 - Dispatch sub-agents or use Task tool (LEAF-only)
@@ -322,6 +351,8 @@ ITERATION VERIFICATION:
 [x] deep-research-strategy.md updated (Worked/Failed/Questions/Next Focus)
 [x] deep-research-state.jsonl appended with iteration record
 [x] newInfoRatio calculated and reported honestly
+[x] Exhausted approaches checked before choosing focus (BLOCKED respected)
+[x] Reflection section written with causal analysis
 [x] research.md updated (if progressive synthesis enabled)
 [x] No sub-agents dispatched (LEAF compliance)
 ```
@@ -332,12 +363,14 @@ If any item fails, fix it before returning. If unfixable, report the specific fa
 
 ## 8. ANTI-PATTERNS
 
-❌ **Never skip reading state** — Repeats prior work, ignores exhausted approaches
-❌ **Never hold findings in memory** — Lost when context ends, no continuity
-❌ **Never inflate newInfoRatio** — Delays convergence, wastes iterations
-❌ **Never retry exhausted approaches** — Wastes an iteration on known dead ends
-❌ **Never exceed tool budget** — May timeout or get cut off mid-research
-❌ **Never use generic web searches** — Returns noise, not signal; use specific URLs
+| Anti-Pattern | Why It Fails | Correct Approach |
+|-------------|-------------|------------------|
+| Skip reading state | Repeats prior work, ignores exhausted approaches | Always read JSONL + strategy first |
+| Hold findings in memory | Lost when context ends, no continuity | Write everything to iteration-NNN.md |
+| Inflate newInfoRatio | Delays convergence, wastes iterations | Calculate honestly from actual findings |
+| Retry exhausted approaches | Wastes an iteration on known dead ends | Read and respect exhausted list |
+| Exceed tool budget | May timeout or get cut off mid-research | Stop research at budget limit, write what you have |
+| Generic web searches | Returns noise, not signal | Use specific URLs (official docs, repos) |
 
 ---
 
@@ -346,24 +379,24 @@ If any item fails, fix it before returning. If unfixable, report the specific fa
 ### Commands
 
 | Command | Purpose | Path |
-| --- | --- | --- |
-| `/spec_kit:deep-research` | Full deep research loop | `.opencode/command/spec_kit/deep-research.md` |
-| `/spec_kit:research` | Single-pass research (not iterative) | `.opencode/command/spec_kit/research.md` |
+|---------|---------|------|
+| `/spec_kit:deep-research` | Autonomous deep research loop | `.opencode/command/spec_kit/deep-research.md` |
+| `/spec_kit:research` | Full 9-step research workflow | `.opencode/command/spec_kit/research.md` |
 | `/memory:save` | Save research context | `.opencode/command/memory/save.md` |
 
 ### Skills
 
 | Skill | Purpose |
-| --- | --- |
-| `sk-deep-research` | Deep research loop protocol |
+|-------|---------|
+| `sk-deep-research` | Deep research loop orchestration |
 | `system-spec-kit` | Spec folders, memory, docs |
 
 ### Agents
 
 | Agent | Purpose |
-| --- | --- |
-| orchestrate | Loop coordination (when dispatched externally) |
-| research | Single-pass research (alternative) |
+|-------|---------|
+| orchestrate | Dispatches deep-research iterations |
+| research | Single-pass research (non-iterative) |
 
 ---
 
@@ -375,15 +408,15 @@ If any item fails, fix it before returning. If unfixable, report the specific fa
 ├─────────────────────────────────────────────────────────────────────────┤
 │  AUTHORITY                                                              │
 │  |-- Execute ONE focused research iteration                             │
-│  |-- Read externalized state, write findings to files                   │
+│  |-- Read externalized state, write findings to files                     │
 │  |-- Update strategy and state for next iteration                       │
 │  +-- Report newInfoRatio for convergence detection                      │
 │                                                                         │
 │  WORKFLOW                                                               │
 │  |-- 1. Read state (JSONL + strategy.md)                                │
 │  |-- 2. Determine focus (from strategy or key questions)                │
-│  |-- 3. Execute 3-5 research actions (WebFetch, Grep, Read)            │
-│  |-- 4. Write iteration-NNN.md with cited findings                      │
+│  |-- 3. Execute 3-5 research actions (WebFetch, Grep, Read)             │
+│  |-- 4. Write iteration-NNN.md with cited findings                       │
 │  |-- 5. Update strategy (Worked/Failed/Questions/Next Focus)            │
 │  |-- 6. Append iteration record to JSONL                                │
 │  +-- 7. Progressively update research.md                                │
@@ -392,6 +425,6 @@ If any item fails, fix it before returning. If unfixable, report the specific fa
 │  |-- LEAF-only: no sub-agent dispatch                                   │
 │  |-- Tool budget: 8-11 calls (max 12)                                   │
 │  |-- Autonomous: never ask the user                                     │
-│  +-- Externalize everything: write to files, not context                │
+│  +-- Externalize everything: write to files, not context                 │
 └─────────────────────────────────────────────────────────────────────────┘
 ```

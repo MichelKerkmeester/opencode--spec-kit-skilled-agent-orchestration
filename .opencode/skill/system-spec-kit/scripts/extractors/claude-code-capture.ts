@@ -22,7 +22,7 @@ import {
   isSameWorkspacePath,
   toWorkspaceRelativePath,
 } from '../utils';
-import { sanitizeToolDescription } from '../utils/tool-sanitizer';
+import { sanitizeToolDescription, sanitizeToolInputPaths } from '../utils/tool-sanitizer';
 
 const CLAUDE_HOME = path.join(
   process.env.HOME || process.env.USERPROFILE || '',
@@ -587,9 +587,10 @@ export async function captureClaudeConversation(
         }
 
         const toolName = normalizeToolName(block.name);
-        const input = typeof block.input === 'object' && block.input !== null
+        const rawInput = typeof block.input === 'object' && block.input !== null
           ? block.input as Record<string, unknown>
           : {};
+        const input = sanitizeToolInputPaths(projectRoot, rawInput);
         const title = typeof input.description === 'string'
           ? sanitizeToolDescription(input.description)
           : toolName;

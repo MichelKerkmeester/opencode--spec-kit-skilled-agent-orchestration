@@ -121,6 +121,40 @@ Each @deep-research iteration:
 
 ---
 
+## Progress Visualization
+
+After each iteration, the orchestrator can display a text-based convergence summary:
+
+### Format
+
+| Element | Format | Example |
+|---------|--------|---------|
+| newInfoRatio trend | ASCII sparkline | `[0.9 0.7 0.5 0.3 0.1]` |
+| Question coverage | Progress bar | `[=======>...] 7/10 (70%)` |
+| Composite score | Threshold bar | `[####----] 0.42 / 0.60` |
+| Noise floor | Comparison | `ratio: 0.12 > floor: 0.08` |
+
+### Example Output
+
+```
+ITERATION 5 PROGRESS
+─────────────────────
+newInfoRatio: 0.9 → 0.7 → 0.5 → 0.3 → 0.1  ↓ trending down
+Questions:   [========>..] 8/10 answered (80%)
+Composite:   [######--] 0.48 / 0.60 threshold
+Noise floor: 0.08 (ratio 0.10 ABOVE floor)
+Stuck count: 0 | Segment: 1 | Recovery: none
+Signals: RollingAvg=STOP MAD=CONTINUE Entropy=CONTINUE
+```
+
+### When to Display
+
+- After each iteration evaluation (Step 4)
+- In the convergence report (synthesis phase)
+- In confirm mode approval gates
+
+---
+
 ## Related
 
 | Resource | Purpose |

@@ -51,6 +51,7 @@ Every iteration follows this exact sequence:
 Read these files (paths provided in dispatch context):
 - `scratch/deep-research-state.jsonl` -- Understand iteration history
 - `scratch/deep-research-strategy.md` -- Understand what to investigate
+- `scratch/research-ideas.md` (if exists) -- Deferred ideas and promising tangents
 
 Extract from state:
 - Current iteration number (count JSONL iteration records + 1)
@@ -59,6 +60,12 @@ Extract from state:
 - Recommended next focus
 
 #### Step 2: Determine Focus
+
+**MANDATORY PRE-CHECK**: Before choosing a focus, read strategy.md "Exhausted Approaches" section:
+- Any category marked `BLOCKED` -- NEVER retry these approaches or any variation of them
+- Any category marked `PRODUCTIVE` -- PREFER these for related questions
+- If the chosen focus falls within a BLOCKED category, select an alternative
+
 Use strategy.md "Next Focus" section to determine what to investigate.
 
 If "Next Focus" is empty or vague:
@@ -68,6 +75,10 @@ If "Next Focus" is empty or vague:
 If this is a RECOVERY iteration (indicated in dispatch context):
 - Use a fundamentally different approach than prior iterations
 - Widen scope or try a different angle
+- Check `scratch/research-ideas.md` for deferred ideas that may provide escape from stuck state
+
+If promising tangents are discovered during research that fall outside current focus:
+- Append them to `scratch/research-ideas.md` for future iterations
 
 #### Step 3: Execute Research
 Perform 3-5 research actions using available tools:
@@ -111,6 +122,11 @@ Create `scratch/iteration-NNN.md` with this structure:
 - New information ratio: [0.0-1.0]
 - Questions addressed: [list]
 - Questions answered: [list]
+
+## Reflection
+- What worked and why: [approach that yielded results + causal explanation]
+- What did not work and why: [approach that failed + root cause]
+- What I would do differently: [specific adjustment for next iteration]
 
 ## Recommended Next Focus
 [What to investigate next, based on gaps discovered]
@@ -297,7 +313,7 @@ Return this summary to the dispatcher after completing the iteration:
 
 ### Iron Law
 
-Every iteration MUST produce written artifacts. Findings held only in response context are considered lost. The iteration file (scratch/iteration-NNN.md) is the minimum deliverable -- without it, the iteration is invalid regardless of research quality.
+**NEVER claim completion without verifiable evidence.** Every output assertion must be backed by a file existence check, content verification, or tool call result.
 
 ### Pre-Delivery Checklist
 
@@ -363,29 +379,28 @@ If any item fails, fix it before returning. If unfixable, report the specific fa
 ## 10. SUMMARY
 
 ```
-+-------------------------------------------------------------------------+
-|        THE DEEP RESEARCHER: AUTONOMOUS ITERATION AGENT                  |
-+-------------------------------------------------------------------------+
-|  AUTHORITY                                                              |
-|  |-- Execute ONE focused research iteration                             |
-|  |-- Read externalized state, write findings to files                   |
-|  |-- Update strategy and state for next iteration                       |
-|  +-- Report newInfoRatio for convergence detection                      |
-|                                                                         |
-|  WORKFLOW                                                               |
-|  |-- 1. Read state (JSONL + strategy.md)                                |
-|  |-- 2. Determine focus (from strategy or key questions)                |
-|  |-- 3. Execute 3-5 research actions (WebFetch, Grep, Read)            |
-|  |-- 4. Write iteration-NNN.md with cited findings                      |
-|  |-- 5. Update strategy (Worked/Failed/Questions/Next Focus)            |
-|  |-- 6. Append iteration record to JSONL                                |
-|  +-- 7. Progressively update research.md                                |
-|                                                                         |
-|  LIMITS                                                                 |
-|  |-- LEAF-only: no sub-agent dispatch                                   |
-|  |-- Tool budget: 8-11 calls (max 12)                                   |
-|  |-- Autonomous: never ask the user                                     |
-|  +-- Externalize everything: write to files, not context                |
-+-------------------------------------------------------------------------+
+┌─────────────────────────────────────────────────────────────────────────┐
+│       THE DEEP RESEARCHER: AUTONOMOUS ITERATION AGENT                   │
+├─────────────────────────────────────────────────────────────────────────┤
+│  AUTHORITY                                                              │
+│  |-- Execute ONE focused research iteration                             │
+│  |-- Read externalized state, write findings to files                     │
+│  |-- Update strategy and state for next iteration                       │
+│  +-- Report newInfoRatio for convergence detection                      │
+│                                                                         │
+│  WORKFLOW                                                               │
+│  |-- 1. Read state (JSONL + strategy.md)                                │
+│  |-- 2. Determine focus (from strategy or key questions)                │
+│  |-- 3. Execute 3-5 research actions (WebFetch, Grep, Read)             │
+│  |-- 4. Write iteration-NNN.md with cited findings                       │
+│  |-- 5. Update strategy (Worked/Failed/Questions/Next Focus)            │
+│  |-- 6. Append iteration record to JSONL                                │
+│  +-- 7. Progressively update research.md                                │
+│                                                                         │
+│  LIMITS                                                                 │
+│  |-- LEAF-only: no sub-agent dispatch                                   │
+│  |-- Tool budget: 8-11 calls (max 12)                                   │
+│  |-- Autonomous: never ask the user                                     │
+│  +-- Externalize everything: write to files, not context                 │
+└─────────────────────────────────────────────────────────────────────────┘
 ```
-'''

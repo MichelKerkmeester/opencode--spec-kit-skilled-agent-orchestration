@@ -214,8 +214,11 @@ function hasSignificantFileCountDivergence(
     return false;
   }
 
+  // When one count is 0, the session produced no file references
+  // (newly created specs, research sessions, non-file-tool CLIs).
+  // Not a divergence signal -- skip.
   if (minCount === 0) {
-    return maxCount >= 4;
+    return false;
   }
 
   const ratio = maxCount / minCount;

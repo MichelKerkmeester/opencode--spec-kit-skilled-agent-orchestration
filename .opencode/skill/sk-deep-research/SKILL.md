@@ -204,12 +204,23 @@ Save --> generate-context.js --> memory_index_scan
 6. **Modify config after init** -- Config is read-only after initialization
 7. **Overwrite prior findings** -- Append to research.md, never replace
 
+### WAVE ORCHESTRATION RULES
+
+When using parallel wave execution (see loop-protocol.md Section 3a):
+1. **Score every wave iteration** -- Rank by newInfoRatio before dispatching follow-ups
+2. **Prune below median** -- Questions scoring below wave median are deprioritized to ideas backlog
+3. **Never prune breakthroughs** -- Any iteration with newInfoRatio > 2x wave average is protected
+4. **Generate adjacent questions** -- Breakthrough iterations spawn 2-3 follow-up questions
+5. **Transition to sequential** -- When questions narrow to 1-2, switch from wave to sequential mode
+6. **Wave convergence** -- Standard composite convergence applies across all wave iterations
+
 ### ESCALATE IF
 
 1. **3+ consecutive timeouts** -- Infrastructure issue, not research problem
-2. **State file corruption unrecoverable** -- Cannot reconstruct from JSONL
+2. **State file corruption unrecoverable** -- Cannot reconstruct from JSONL or iteration files
 3. **All approaches exhausted with questions remaining** -- Research may need human guidance
 4. **Security concern in findings** -- Proprietary code or credentials discovered
+5. **All 5 error recovery tiers exhausted** -- No automatic recovery path remaining
 
 ---
 

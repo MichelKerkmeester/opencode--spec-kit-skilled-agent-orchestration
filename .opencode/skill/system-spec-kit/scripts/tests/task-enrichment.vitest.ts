@@ -792,6 +792,24 @@ describe('memory quality lint gate', () => {
     expect(result.failedRules).not.toContain('V10');
   });
 
+  it('passes V10 when capturedFileCount is 0 (no file references in session)', () => {
+    const result = validateMemoryQualityContent(buildMemoryContent({
+      capturedFileCount: 0,
+      filesystemFileCount: 6,
+      gitChangedFileCount: 4,
+    }));
+    expect(result.failedRules).not.toContain('V10');
+  });
+
+  it('passes V10 when filesystemFileCount is 0 (symmetric zero-count case)', () => {
+    const result = validateMemoryQualityContent(buildMemoryContent({
+      capturedFileCount: 5,
+      filesystemFileCount: 0,
+      gitChangedFileCount: 0,
+    }));
+    expect(result.failedRules).not.toContain('V10');
+  });
+
   it('passes practical generated memory content', () => {
     const result = validateMemoryQualityContent(buildMemoryContent());
 

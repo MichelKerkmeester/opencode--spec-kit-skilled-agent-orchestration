@@ -123,6 +123,25 @@ CLI Agent Query ("find authentication middleware")
 - [x] Peer review score: 88/100 (PASS), 0 blockers, 0 P1s
 - [x] Confirm consistent `cocoindex_code` naming across all 6 configs
 
+### Phase 5: Cross-CLI Auto-Usage Validation (2026-03-18)
+
+- [x] Run 3 test prompts (implicit semantic, explicit mention, SKILL.md trigger) across 4 CLIs
+- [x] Claude Code: All 3 prompts used CocoIndex exclusively (1 call each, 10 results)
+- [x] Gemini: All 3 prompts used CocoIndex (exclusive in P2/P3, hybrid in P1)
+- [x] Copilot: All 3 prompts attempted CocoIndex; P1/P3 MCP returned 0 results or `success:false`
+- [x] Codex: All 3 prompts failed (OpenAI billing limit, not a CocoIndex issue)
+- [x] Document results in `scratch/cross-cli-auto-usage-test-results.md`
+
+### Phase 6: Follow-Up -- Root Cause Analysis & Documentation (2026-03-18)
+
+- [x] Reproduce Copilot failure root cause: 5 concurrent `refresh_index=true` queries generate +165 daemon errors
+- [x] Confirm workaround: `refresh_index=false` generates 0 errors for same queries
+- [x] Confirm Copilot's exact failing queries return results with `refresh_index=false`
+- [x] Retry Codex (still billing-blocked, deferred)
+- [x] Update `scratch/cross-cli-auto-usage-test-results.md` with root cause analysis
+- [x] Update `implementation-summary.md` with findings F1-F4 and recommendations R1-R6
+- [x] Update `SKILL.md` with query optimization tips and `refresh_index=false` guidance
+
 <!-- /ANCHOR:phases -->
 
 ---
@@ -136,6 +155,8 @@ CLI Agent Query ("find authentication middleware")
 | Index verification | File count, chunk count, language coverage | `ccc index` output statistics |
 | Peer review | Naming consistency, config format correctness | Manual review, 88/100 score |
 | Manual | End-to-end: install, init, index, search | CLI (`ccc search "test query"`) |
+| Cross-CLI | Auto-discovery across 4 CLIs (3 prompts each) | Claude Code, Codex, Gemini, Copilot |
+| Reproduction | Daemon concurrency bug under concurrent queries | `mcp__cocoindex_code__search` with `refresh_index` true/false |
 
 <!-- /ANCHOR:testing -->
 
@@ -232,6 +253,6 @@ Phase 2 (Index) ─────────┘
 <!--
 LEVEL 2 PLAN
 - Core + Level 2 addendum (phase deps, effort, enhanced rollback)
-- Implementation complete 2026-03-18
-- All phases executed in sequence
+- Phase 1-4 complete 2026-03-18 (config installation)
+- Phase 5-6 complete 2026-03-18 (cross-CLI validation + root cause analysis)
 -->

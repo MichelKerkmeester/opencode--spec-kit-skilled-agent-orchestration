@@ -9,7 +9,7 @@ trigger_phrases:
 
 # CocoIndex Code Installation Guide
 
-Complete installation and configuration guide for CocoIndex Code, a semantic code search engine for AI-assisted development. Provides natural language code search across your entire codebase using the all-MiniLM-L6-v2 embedding model (local, no API key required). Runs as an MCP server exposing search, index, status, and reset tools to any AI assistant. Covers CLI usage, MCP configuration for all 6 CLI environments, and index management.
+Complete installation and configuration guide for CocoIndex Code, a semantic code search engine for AI-assisted development. Provides natural language code search across your entire codebase with configurable embedding models (local or API-based). Runs as an MCP server exposing search, index, status, and reset tools to any AI assistant. Covers CLI usage, MCP configuration for all 6 CLI environments, embedding model selection, and index management.
 
 > **Part of OpenCode Installation.** See the [Master Installation Guide](../README.md) for complete setup.
 > **Package:** `cocoindex-code` (PyPI) | **Dependencies:** Python 3.11+
@@ -19,7 +19,7 @@ Complete installation and configuration guide for CocoIndex Code, a semantic cod
 ---
 
 <!-- ANCHOR:ai-first-install-guide -->
-## 0. AI-First Install Guide
+## 0. AI-FIRST INSTALL GUIDE
 
 Copy and paste this prompt to your AI assistant to get installation help:
 
@@ -63,7 +63,7 @@ Not working? Go to [Troubleshooting](#9-troubleshooting).
 ---
 
 <!-- ANCHOR:table-of-contents -->
-## Table of Contents
+## TABLE OF CONTENTS
 
 0. [AI-First Install Guide](#0-ai-first-install-guide)
 1. [Overview](#1-overview)
@@ -82,7 +82,7 @@ Not working? Go to [Troubleshooting](#9-troubleshooting).
 ---
 
 <!-- ANCHOR:overview -->
-## 1. Overview
+## 1. OVERVIEW
 
 CocoIndex Code gives AI assistants the ability to search your codebase by meaning rather than exact text. Ask "how does authentication work" and it finds relevant code across files and languages, even when the word "authentication" never appears in the source.
 
@@ -97,7 +97,7 @@ CocoIndex Code gives AI assistants the ability to search your codebase by meanin
 | **PyPI**      | [cocoindex-code](https://pypi.org/project/cocoindex-code/)           |
 | **Binary**    | `ccc`                                                                 |
 | **License**   | Apache-2.0                                                            |
-| **Embedding** | all-MiniLM-L6-v2 (local, no API key)                                 |
+| **Embedding** | Configurable (default: all-MiniLM-L6-v2 local, recommended: Voyage Code 3) |
 
 ### When to Use Semantic Search
 
@@ -143,14 +143,14 @@ Search task received --> Do you know the exact text?
 |              (ccc mcp)                                       |
 |                                                              |
 |  Tools: search, index, status, reset                         |
-|  Embedding: all-MiniLM-L6-v2 (local)                        |
+|  Embedding: configurable (local or API-based)                |
 +------------------------------+------------------------------+
                                |
                                v
 +-------------------------------------------------------------+
 |              .cocoindex_code/ (project root)                 |
 |              Semantic vector index                            |
-|              14 supported languages                          |
+|              28+ supported languages                         |
 +-------------------------------------------------------------+
 ```
 
@@ -168,7 +168,7 @@ Search task received --> Do you know the exact text?
 ---
 
 <!-- ANCHOR:prerequisites -->
-## 2. Prerequisites
+## 2. PREREQUISITES
 
 ### Required Tools
 
@@ -222,7 +222,7 @@ Run these checks to confirm prerequisites are met:
 ---
 
 <!-- ANCHOR:installation -->
-## 3. Installation
+## 3. INSTALLATION
 
 This section covers **Phase 2 (Install)** and **Phase 3 (Initialize)**.
 
@@ -298,7 +298,7 @@ cd /path/to/your/project
 ---
 
 <!-- ANCHOR:configuration -->
-## 4. Configuration
+## 4. CONFIGURATION
 
 Connect CocoIndex Code to your AI assistant (Phase 4). The MCP server runs via `ccc mcp` in stdio mode.
 
@@ -423,6 +423,34 @@ _NOTE_2 = "Default embedding: all-MiniLM-L6-v2 (local, no API key needed)"
 _NOTE_3 = "Index stored in .cocoindex_code/ (gitignored)"
 ```
 
+### Embedding Model Configuration
+
+CocoIndex Code supports multiple embedding models. Configure via `~/.cocoindex_code/global_settings.yml`.
+
+**Primary (recommended):** `voyage/voyage-code-3` via LiteLLM provider -- best code search quality. Requires `VOYAGE_API_KEY`.
+
+```yaml
+# Voyage Code 3 (recommended - best code search quality)
+embedding:
+  provider: litellm
+  model: voyage/voyage-code-3
+envs:
+  VOYAGE_API_KEY: your-key-here
+```
+
+**Alternative (local):** `sentence-transformers/all-MiniLM-L6-v2` -- no API key, works offline. This is the current default.
+
+```yaml
+# Local model (no API key, works offline)
+embedding:
+  provider: sentence-transformers
+  model: sentence-transformers/all-MiniLM-L6-v2
+```
+
+**Other supported models:** OpenAI `text-embedding-3-small`, Gemini `gemini/gemini-embedding-001`, Cohere `cohere/embed-v4.0`, Ollama `ollama/nomic-embed-text`, Nomic `nomic-ai/CodeRankEmbed`. See [Settings Reference](references/settings_reference.md) for the full list.
+
+> **CRITICAL**: Changing embedding models requires `ccc reset && ccc index` because different models produce different vector dimensions.
+
 ### Validation: `phase_4_complete`
 
 | Check             | Method                                 | Expected                       |
@@ -438,7 +466,7 @@ _NOTE_3 = "Index stored in .cocoindex_code/ (gitignored)"
 ---
 
 <!-- ANCHOR:verification -->
-## 5. Verification
+## 5. VERIFICATION
 
 ### One-Command Health Check
 
@@ -482,7 +510,7 @@ All 6 checklist items above pass with no errors. Your AI client successfully run
 ---
 
 <!-- ANCHOR:usage -->
-## 6. Usage
+## 6. USAGE
 
 ### Pattern 1: Basic Semantic Search
 
@@ -545,36 +573,36 @@ ccc status
 ---
 
 <!-- ANCHOR:features -->
-## 7. Features
+## 7. FEATURES
 
-### Supported Languages (14)
+### Supported Languages (28+)
 
-| Language    | Extension(s)           |
-| ----------- | ---------------------- |
-| Python      | `.py`                  |
-| TypeScript  | `.ts`                  |
-| JavaScript  | `.js`                  |
-| TSX         | `.tsx`                 |
-| Rust        | `.rs`                  |
-| Go          | `.go`                  |
-| Java        | `.java`                |
-| C           | `.c`                   |
-| C++         | `.cpp`, `.cc`, `.cxx`  |
-| C#          | `.cs`                  |
-| SQL         | `.sql`                 |
-| Bash        | `.sh`, `.bash`         |
-| Markdown    | `.md`                  |
-| Text        | `.txt`                 |
+| Language    | Extension(s)                   | Language     | Extension(s)           |
+| ----------- | ------------------------------ | ------------ | ---------------------- |
+| Python      | `.py`                          | Kotlin       | `.kt`, `.kts`          |
+| TypeScript  | `.ts`                          | Scala        | `.scala`               |
+| JavaScript  | `.js`                          | Swift        | `.swift`               |
+| TSX         | `.tsx`                         | Dart         | `.dart`                |
+| JSX         | `.jsx`                         | Lua          | `.lua`                 |
+| Rust        | `.rs`                          | R            | `.r`, `.R`             |
+| Go          | `.go`                          | Julia        | `.jl`                  |
+| Java        | `.java`                        | Elixir       | `.ex`, `.exs`          |
+| C           | `.c`, `.h`                     | Haskell      | `.hs`                  |
+| C++         | `.cpp`, `.cc`, `.cxx`, `.hpp`  | OCaml        | `.ml`, `.mli`          |
+| C#          | `.cs`                          | Perl         | `.pl`, `.pm`           |
+| SQL         | `.sql`                         | PHP          | `.php`                 |
+| Bash        | `.sh`, `.bash`                 | Ruby         | `.rb`                  |
+| Markdown    | `.md`                          | YAML         | `.yml`, `.yaml`        |
+| Text        | `.txt`                         | TOML         | `.toml`                |
 
 ### Embedding Model
 
-| Property        | Value                                    |
-| --------------- | ---------------------------------------- |
-| **Model**       | all-MiniLM-L6-v2                         |
-| **Type**        | Local (no API key, no network required)  |
-| **Dimensions**  | 384                                      |
-| **Speed**       | Fast (runs on CPU)                       |
-| **Quality**     | Good for code search tasks               |
+| Property        | Value                                                                       |
+| --------------- | --------------------------------------------------------------------------- |
+| **Default**     | all-MiniLM-L6-v2 (local, no API key, 384 dimensions)                       |
+| **Recommended** | Voyage Code 3 via LiteLLM (API key required, best code search quality)      |
+| **Flexibility** | 7+ models supported including OpenAI, Gemini, Cohere, Ollama, Nomic         |
+| **Config**      | `~/.cocoindex_code/global_settings.yml` (see [Settings Reference](references/settings_reference.md)) |
 
 ### CLI Commands
 
@@ -602,7 +630,7 @@ ccc status
 ---
 
 <!-- ANCHOR:examples -->
-## 8. Examples
+## 8. EXAMPLES
 
 ### Example 1: Find Authentication Logic
 
@@ -659,7 +687,7 @@ ccc index
 ---
 
 <!-- ANCHOR:troubleshooting -->
-## 9. Troubleshooting
+## 9. TROUBLESHOOTING
 
 ### Error/Cause/Fix Reference
 
@@ -731,16 +759,17 @@ bash .opencode/skill/mcp-cocoindex-code/scripts/install.sh
 ---
 
 <!-- ANCHOR:resources -->
-## 10. Resources
+## 10. RESOURCES
 
 ### Related Documentation
 
-| Document          | Location                                                              | Purpose              |
-| ----------------- | --------------------------------------------------------------------- | -------------------- |
-| SKILL.md          | `.opencode/skill/mcp-cocoindex-code/SKILL.md`                        | Complete workflows   |
-| Tool Reference    | `.opencode/skill/mcp-cocoindex-code/references/tool_reference.md`     | CLI and MCP tools    |
-| Search Patterns   | `.opencode/skill/mcp-cocoindex-code/references/search_patterns.md`    | Query strategies     |
-| Config Templates  | `.opencode/skill/mcp-cocoindex-code/assets/config_templates.md`       | All 6 CLI configs    |
+| Document            | Location                                                                | Purpose                |
+| ------------------- | ----------------------------------------------------------------------- | ---------------------- |
+| SKILL.md            | `.opencode/skill/mcp-cocoindex-code/SKILL.md`                          | Complete workflows     |
+| Tool Reference      | `.opencode/skill/mcp-cocoindex-code/references/tool_reference.md`       | CLI and MCP tools      |
+| Search Patterns     | `.opencode/skill/mcp-cocoindex-code/references/search_patterns.md`      | Query strategies       |
+| Settings Reference  | `.opencode/skill/mcp-cocoindex-code/references/settings_reference.md`   | Settings and embedding |
+| Config Templates    | `.opencode/skill/mcp-cocoindex-code/assets/config_templates.md`         | All 6 CLI configs      |
 
 ### File Locations
 
@@ -754,14 +783,15 @@ bash .opencode/skill/mcp-cocoindex-code/scripts/install.sh
 ### External Resources
 
 - **PyPI**: [cocoindex-code](https://pypi.org/project/cocoindex-code/)
-- **Embedding Model**: [all-MiniLM-L6-v2](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2)
+- **Default Embedding**: [all-MiniLM-L6-v2](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2)
+- **Recommended Embedding**: [Voyage Code 3](https://docs.voyageai.com/docs/embeddings)
 
 <!-- /ANCHOR:resources -->
 
 ---
 
 <!-- ANCHOR:quick-reference-card -->
-## Quick Reference Card
+## QUICK REFERENCE CARD
 
 ### Installation
 
@@ -813,11 +843,12 @@ ccc daemon status             # Check daemon status
 ---
 
 <!-- ANCHOR:version-history -->
-## Version History
+## VERSION HISTORY
 
-| Version | Date       | Changes                      |
-| ------- | ---------- | ---------------------------- |
-| 1.0.0   | 2026-03-18 | Initial installation guide   |
+| Version | Date       | Changes                                                      |
+| ------- | ---------- | ------------------------------------------------------------ |
+| 1.1.0   | 2026-03-18 | Add embedding model config, 28+ languages, settings reference |
+| 1.0.0   | 2026-03-18 | Initial installation guide                                    |
 
 ---
 

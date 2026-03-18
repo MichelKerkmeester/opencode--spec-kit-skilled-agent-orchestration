@@ -7,5 +7,12 @@
   "specFolder": "",
   "createdAt": "",
   "status": "initialized",
-  "executionMode": "auto"
+  "executionMode": "auto",
+  "fileProtection": {
+    "deep-research-config.json": "immutable",
+    "deep-research-state.jsonl": "append-only",
+    "deep-research-strategy.md": "mutable",
+    "iteration-*.md": "write-once",
+    "research.md": "mutable"
+  }
 }

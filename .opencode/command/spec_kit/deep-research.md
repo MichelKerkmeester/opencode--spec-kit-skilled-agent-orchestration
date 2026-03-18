@@ -69,6 +69,7 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
      B) Create new: specs/[###]-[slug]/
      C) Update related [if match found]
      D) Skip documentation
+     E) Phase folder (e.g., specs/NNN-name/001-phase/)
 
    Q2. Execution Mode (if no suffix):
      A) Autonomous -- all iterations without approval
@@ -192,6 +193,9 @@ STATUS=FAIL ERROR="[message]"
 - `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js [spec-folder]`
 - `memory_index_scan({ specFolder: "spec-folder-name" })`
 
+### Anchor Tags (Automatic)
+`ANCHOR:deep-research-[topic]`, `ANCHOR:findings`, `ANCHOR:convergence-report`
+
 ---
 
 ## 7. SKILL REFERENCE
@@ -224,3 +228,30 @@ Key references:
 | Need more investigation | `/spec_kit:deep-research [new-topic]` | Another deep research session |
 | Want to save context | `/memory:save [spec-folder]` | Manual memory save |
 | Need to pause | `/spec_kit:handover [spec-folder]` | Save context for later |
+
+---
+
+## 10. ERROR HANDLING
+
+| Error | Action |
+|-------|--------|
+| Agent dispatch timeout | Retry once with reduced scope, then mark timeout |
+| State file missing | Reconstruct from iteration files |
+| 3+ consecutive failures | Halt loop, enter synthesis with partial findings |
+| Memory save failure | Save to scratch/ as backup |
+
+---
+
+## 11. KEY DIFFERENCES
+
+- Iterative (multi-pass) vs. single-pass research
+- Dispatches LEAF agent per iteration (fresh context each time)
+- Externalized state via JSONL + strategy files
+- Automatic convergence detection (stop when diminishing returns)
+- Does NOT proceed to implementation
+
+---
+
+## 12. COMMAND CHAIN
+
+`/spec_kit:deep-research` → `/spec_kit:plan` → `/spec_kit:implement`

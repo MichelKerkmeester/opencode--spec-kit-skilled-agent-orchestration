@@ -19,9 +19,8 @@ import type {
 } from '../utils/input-normalizer';
 import {
   isSameWorkspacePath,
-  toWorkspaceRelativePath,
 } from '../utils';
-import { sanitizeToolDescription } from '../utils/tool-sanitizer';
+import { sanitizeToolDescription, sanitizeToolInputPaths, isApiErrorContent } from '../utils/tool-sanitizer';
 
 const CODEX_HOME = path.join(
   process.env.HOME || process.env.USERPROFILE || '',
@@ -175,47 +174,7 @@ function normalizeToolName(rawName: unknown): string {
   return typeof rawName === 'string' ? rawName.toLowerCase() : 'unknown';
 }
 
-function relativeProjectPath(projectRoot: string, maybeFilePath: string): string {
-  return toWorkspaceRelativePath(projectRoot, maybeFilePath);
-}
-
-function sanitizeToolInputPaths(projectRoot: string, input: Record<string, unknown>): Record<string, unknown> {
-  const sanitized: Record<string, unknown> = { ...input };
-
-  const pathKeys = ['filePath', 'file_path', 'path'];
-  for (const key of pathKeys) {
-    if (typeof sanitized[key] !== 'string') {
-      continue;
-    }
-
-    const relativePath = relativeProjectPath(projectRoot, sanitized[key] as string);
-    if (relativePath) {
-      sanitized[key] = relativePath;
-    } else {
-      delete sanitized[key];
-    }
-  }
-
-  const listKeys = ['paths', 'filePaths', 'file_paths'];
-  for (const key of listKeys) {
-    if (!Array.isArray(sanitized[key])) {
-      continue;
-    }
-
-    const relativePaths = (sanitized[key] as unknown[])
-      .filter((value): value is string => typeof value === 'string')
-      .map((value) => relativeProjectPath(projectRoot, value))
-      .filter(Boolean);
-
-    if (relativePaths.length > 0) {
-      sanitized[key] = relativePaths;
-    } else {
-      delete sanitized[key];
-    }
-  }
-
-  return sanitized;
-}
+// sanitizeToolInputPaths imported from ../utils/tool-sanitizer
 
 function stringifyPreview(value: unknown): string {
   if (typeof value === 'string') {
@@ -383,6 +342,11 @@ export async function captureCodexConversation(
       }
 
       if (messageEntry.role !== 'assistant') {
+        continue;
+      }
+
+      // Skip API error messages — they carry no useful session content
+      if (isApiErrorContent(text)) {
         continue;
       }
 

@@ -1,15 +1,15 @@
 ---
 name: mcp-cocoindex-code
-description: "Semantic code search via vector embeddings. CocoIndex Code indexes the codebase into 105K+ chunks across 14 languages, enabling natural language queries to find relevant code, patterns, and implementations. CLI for direct use; MCP for AI agent integration."
+description: "Semantic code search via vector embeddings. CocoIndex Code indexes the codebase into 105K+ chunks across 28+ languages, enabling natural language queries to find relevant code, patterns, and implementations. CLI for direct use; MCP (1 tool: search) for AI agent integration."
 allowed-tools: [Bash, Read, Grep, Glob]
 version: 1.0.0
 ---
 
-<!-- Keywords: cocoindex-code, semantic-search, vector-embeddings, code-search, mcp-server, ccc, codebase-indexing, all-MiniLM-L6-v2 -->
+<!-- Keywords: cocoindex-code, semantic-search, vector-embeddings, code-search, mcp-server, ccc, codebase-indexing, voyage-code-3, all-MiniLM-L6-v2 -->
 
 # CocoIndex Code - Semantic Code Search via Vector Embeddings
 
-Natural language code search through two complementary approaches: CLI (ccc) for speed and one-off queries, MCP server for AI agent integration via stdio transport.
+Natural language code search through two complementary approaches: CLI (ccc) for speed and one-off queries, MCP server (1 tool: `search`) for AI agent integration via stdio transport.
 
 
 <!-- ANCHOR:when-to-use -->
@@ -223,14 +223,48 @@ Add to PATH or use the full path for invocation.
 
 The MCP server exposes tools via `ccc mcp` running in stdio mode.
 
-**MCP Tools:**
+**MCP Tool:**
 
-| Tool       | Purpose                           | Key Parameters                      |
-| ---------- | --------------------------------- | ----------------------------------- |
-| `search`   | Semantic search across codebase   | query, lang, path, limit, offset    |
-| `status`   | Show project indexing status      | (none)                              |
-| `index`    | Create or update the index        | (none)                              |
-| `reset`    | Reset project databases           | (none - destructive)                |
+The MCP server exposes **1 tool only**: `search`. The `status`, `index`, and `reset` operations are CLI-only commands and are NOT available as MCP tools.
+
+| Tool     | Purpose                         | Key Parameters                                                                  |
+| -------- | ------------------------------- | ------------------------------------------------------------------------------- |
+| `search` | Semantic search across codebase | `query` (str, required), `languages` (list\|null), `paths` (list\|null), `num_results` (int, default 5), `refresh_index` (bool, default True) |
+
+### Embedding Models
+
+CocoIndex Code supports two embedding models, configured via `~/.cocoindex_code/global_settings.yml`:
+
+| Model | Type | Dimensions | API Key | Best For |
+| ----- | ---- | ---------- | ------- | -------- |
+| `voyage/voyage-code-3` (primary) | Cloud via LiteLLM | 1024 | `VOYAGE_API_KEY` required | Higher quality code search |
+| `sentence-transformers/all-MiniLM-L6-v2` | Local | 384 | None | Offline use, no API dependency |
+
+**CRITICAL**: Changing the embedding model requires `ccc reset && ccc index` because different models produce vectors with different dimensions. Mixing dimensions corrupts the index.
+
+See `references/settings_reference.md` for full configuration details.
+
+### Root Path Discovery
+
+CocoIndex Code resolves the project root in this order:
+
+1. `COCOINDEX_CODE_ROOT_PATH` environment variable (explicit override)
+2. Nearest parent directory containing `.cocoindex_code/` directory
+3. Nearest parent directory with project markers (`.git`, `pyproject.toml`, `package.json`, `Cargo.toml`, `go.mod`)
+4. Current working directory (fallback)
+
+### Daemon Architecture
+
+The CocoIndex Code daemon manages background indexing and serves search requests:
+
+- **Auto-start**: Starts automatically on the first CLI or MCP command
+- **Auto-restart**: Restarts on version mismatch or settings change
+- **Multi-project**: ProjectRegistry supports multiple projects simultaneously
+- **Background indexing**: Continues after client disconnect
+- **Search during indexing**: Search waits for indexing to complete (streams `IndexWaitingNotice`)
+- **IPC**: Binary msgpack over Unix socket (`~/.cocoindex_code/daemon.sock`)
+- **Logs**: `~/.cocoindex_code/daemon.log`
+- **PID file**: `~/.cocoindex_code/daemon.pid`
 
 ### How Indexing Works
 
@@ -238,17 +272,18 @@ The MCP server exposes tools via `ccc mcp` running in stdio mode.
 STEP 1: File Scanning
        +-- Scans project files respecting .gitignore
        +-- Detects language from file extensions
-       +-- Supports 14 languages (TypeScript, Python, Go, Rust, etc.)
+       +-- Supports 28+ languages (TypeScript, Python, Go, Rust, etc.)
        |
 STEP 2: Chunk Splitting
-       +-- Splits code into semantic chunks using language-aware splitters
+       +-- RecursiveSplitter with language-aware boundaries
+       +-- 1000 char chunks, 250 char minimum, 150 char overlap
        +-- Preserves function/class boundaries where possible
        +-- Produces 105K+ chunks for a typical large codebase
        |
 STEP 3: Embedding Generation
-       +-- Generates embeddings using all-MiniLM-L6-v2 (local model)
-       +-- No API key required - runs entirely on-device
-       +-- Each chunk mapped to a 384-dimensional vector
+       +-- Primary: voyage/voyage-code-3 via LiteLLM (1024-dim vectors)
+       +-- Alternative: all-MiniLM-L6-v2 local model (384-dim vectors)
+       +-- Model configured in ~/.cocoindex_code/global_settings.yml
        |
 STEP 4: Vector Storage
        +-- Stores vectors in SQLite via sqlite-vec extension
@@ -278,7 +313,7 @@ Scores above 0.5 typically indicate strong semantic relevance. Always verify res
 <!-- ANCHOR:rules -->
 ## 4. RULES
 
-### ALWAYS
+### ✅ ALWAYS
 
 **ALWAYS do these without asking:**
 
@@ -305,7 +340,30 @@ Scores above 0.5 typically indicate strong semantic relevance. Always verify res
 6. **ALWAYS use the full binary path if ccc is not on PATH**
    - `.opencode/skill/mcp-cocoindex-code/mcp_server/.venv/bin/ccc`
 
-### NEVER
+### Query Optimization
+
+**Write short, focused queries** -- 2-5 words of natural language outperform long keyword lists:
+
+| Style | Example | Why it works |
+|-------|---------|--------------|
+| Good | "retry logic patterns" | Tight embedding vector, high similarity to relevant code |
+| Good | "authentication middleware" | Single concept, precise matches |
+| Avoid | "retry helper utilities, exponential backoff, max retries, failed operation retry wrappers" | Embedding dilution -- averages across too many concepts |
+
+**Tips**:
+- Describe the *concept*, not the implementation details
+- Use 2-5 words, not full sentences or keyword lists
+- If results are too broad, add a language or path filter instead of more keywords
+- Run multiple focused queries rather than one overloaded query
+
+### Concurrent Query Sessions
+
+When sending multiple searches in sequence (e.g., exploring a codebase):
+- Set `refresh_index=false` after the first query -- the index only needs refreshing once per session
+- The daemon has a known concurrency issue where simultaneous `refresh_index=true` requests can cause `ComponentContext` errors
+- CLI equivalent: queries are sequential by nature, so this only applies to MCP usage
+
+### ❌ NEVER
 
 **NEVER do these:**
 
@@ -329,7 +387,7 @@ Scores above 0.5 typically indicate strong semantic relevance. Always verify res
    - Results below 0.3 are likely noise
    - Focus on results above 0.5 for actionable matches
 
-### ESCALATE IF
+### ⚠️ ESCALATE IF
 
 **Ask user when:**
 
@@ -378,26 +436,32 @@ ccc reset                                  # Reset databases (destructive)
 
 ### MCP Tool Summary
 
-| Tool     | Description                    | Usage                              |
-| -------- | ------------------------------ | ---------------------------------- |
-| search   | Semantic search across code    | Primary tool for code discovery    |
-| status   | Show indexing status           | Check before first search          |
-| index    | Create or update index         | Run after major codebase changes   |
-| reset    | Reset project databases        | Use only when index is corrupted   |
+Only `search` is exposed as an MCP tool. Use CLI commands for `status`, `index`, and `reset`.
+
+| Tool     | Description                    | Key Parameters                                                                  |
+| -------- | ------------------------------ | ------------------------------------------------------------------------------- |
+| `search` | Semantic search across code    | `query` (str), `languages` (list\|null), `paths` (list\|null), `num_results` (int, default 5), `refresh_index` (bool, default True) |
 
 ### Supported Languages
 
-CocoIndex Code supports 14 languages with language-aware chunk splitting:
+CocoIndex Code supports 28+ languages with language-aware chunk splitting:
 
-| Language   | Extension     | Language    | Extension  |
-| ---------- | ------------- | ----------- | ---------- |
-| TypeScript | .ts, .tsx     | Python      | .py        |
-| JavaScript | .js, .jsx     | Go          | .go        |
-| Rust       | .rs           | Java        | .java      |
-| C          | .c, .h        | C++         | .cpp, .hpp |
-| C#         | .cs           | Ruby        | .rb        |
-| PHP        | .php          | Swift       | .swift     |
-| Kotlin     | .kt           | Shell       | .sh        |
+| Language   | Extension          | Language    | Extension       |
+| ---------- | ------------------ | ----------- | --------------- |
+| TypeScript | .ts, .tsx          | Python      | .py             |
+| JavaScript | .js, .jsx          | Go          | .go             |
+| Rust       | .rs                | Java        | .java           |
+| C          | .c, .h             | C++         | .cpp, .hpp      |
+| C#         | .cs                | Ruby        | .rb             |
+| PHP        | .php               | Swift       | .swift          |
+| Kotlin     | .kt                | Shell       | .sh             |
+| CSS        | .css               | DTD         | .dtd            |
+| Fortran    | .f, .f90           | HTML        | .html           |
+| JSON       | .json              | Lua         | .lua            |
+| Pascal     | .pas               | R           | .r, .R          |
+| Scala      | .scala             | Solidity    | .sol            |
+| TOML       | .toml              | XML         | .xml            |
+| YAML       | .yml, .yaml        | SQL         | .sql            |
 
 ### Decision Tree: Which Search Tool?
 
@@ -414,6 +478,9 @@ Need to find code?
         YES --> Use ccc search
 ```
 <!-- /ANCHOR:references -->
+
+---
+
 <!-- ANCHOR:success-criteria -->
 ## 6. SUCCESS CRITERIA
 
@@ -510,10 +577,11 @@ grep -rn "rateLimit" src/middleware/
 
 ### references/
 
-| Document                  | Purpose               | Key Insight                                  |
-| ------------------------- | --------------------- | -------------------------------------------- |
-| **tool_reference.md**     | Complete CLI/MCP docs | All commands, parameters, and options        |
-| **search_patterns.md**    | Search query patterns | Effective query formulation and filter usage |
+| Document                    | Purpose                  | Key Insight                                  |
+| --------------------------- | ------------------------ | -------------------------------------------- |
+| **tool_reference.md**       | Complete CLI/MCP docs    | All commands, parameters, and options        |
+| **search_patterns.md**      | Search query patterns    | Effective query formulation and filter usage |
+| **settings_reference.md**   | Global settings config   | Embedding model switching, daemon settings   |
 
 ### assets/
 

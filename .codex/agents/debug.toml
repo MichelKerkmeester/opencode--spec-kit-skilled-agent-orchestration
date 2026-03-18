@@ -1,7 +1,7 @@
 # Agent: debug
 # Converted from: .opencode/agent/chatgpt/debug.md
 sandbox_mode = "workspace-write"
-model = "gpt-5.3-codex"
+model = "gpt-5.4"
 model_reasoning_effort = "high"
 
 developer_instructions = '''

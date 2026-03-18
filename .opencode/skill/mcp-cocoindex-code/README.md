@@ -1,6 +1,6 @@
 ---
 title: "CocoIndex Code - Semantic Code Search"
-description: "Vector-based semantic code search via MCP. Indexes the codebase into embeddings for natural language code discovery across 14+ languages."
+description: "Vector-based semantic code search via MCP. Indexes the codebase into embeddings for natural language code discovery across 28+ languages."
 trigger_phrases:
   - "semantic search"
   - "cocoindex"
@@ -11,7 +11,7 @@ trigger_phrases:
 
 # CocoIndex Code - Semantic Code Search
 
-> Vector-based semantic code search via MCP server. Indexes the codebase into **105K+ chunks** across **14 languages** using local embeddings (all-MiniLM-L6-v2). No API keys required.
+> Vector-based semantic code search via MCP server (1 tool: `search`). Indexes the codebase into **105K+ chunks** across **28+ languages**. Primary embedding model: `voyage/voyage-code-3` via LiteLLM; local alternative: `all-MiniLM-L6-v2`.
 
 [![MCP](https://img.shields.io/badge/MCP-Native-brightgreen.svg)](https://modelcontextprotocol.io)
 
@@ -49,12 +49,13 @@ Type `ccc search "error handling middleware"` and get results ranked by semantic
 
 | Feature | Description |
 |---------|-------------|
-| **Local Embeddings** | all-MiniLM-L6-v2 model, no API key needed |
-| **14 Languages** | markdown, rust, typescript, javascript, cpp, bash, python, java, go, text, csharp, c, sql, tsx |
+| **Embedding Models** | Primary: `voyage/voyage-code-3` via LiteLLM (requires `VOYAGE_API_KEY`); Alternative: `all-MiniLM-L6-v2` (local, no API key) |
+| **28+ Languages** | TypeScript, Python, Go, Rust, Java, C/C++, C#, Ruby, PHP, Swift, Kotlin, Shell, CSS, HTML, JSON, YAML, TOML, XML, and more |
 | **105K+ Chunks** | 6,792 files indexed into 105,965 searchable chunks |
 | **SQLite Storage** | sqlite-vec for vector similarity search |
-| **Language Filtering** | `--lang` flag narrows results by programming language |
+| **Language Filtering** | `--lang` flag (repeatable) narrows results by programming language |
 | **Path Filtering** | `--path` flag narrows results by file path glob |
+| **MCP Integration** | 1 MCP tool (`search`) for AI agent integration via stdio transport |
 
 ### Source Repository
 
@@ -178,7 +179,7 @@ What are you looking for?
 | Parameter | Type | Required | Default | Description |
 |-----------|------|----------|---------|-------------|
 | `QUERY` | text | Yes | - | Natural language search query |
-| `--lang` | text | No | all | Filter by programming language |
+| `--lang` | text | No | all | Filter by programming language (repeatable: `--lang python --lang typescript`) |
 | `--path` | text | No | all | Filter by file path glob |
 | `--limit` | integer | No | 10 | Maximum results to return |
 | `--offset` | integer | No | 0 | Number of results to skip |
@@ -195,14 +196,19 @@ ccc search "error handling middleware" --lang typescript --limit 5
 
 **Purpose**: Create or update the semantic index for the codebase.
 
-**Parameters**: None (operates on current project root).
+**Parameters**:
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `--refresh` | flag | No | false | Force full rebuild from scratch |
 
 **Example**:
 ```bash
-ccc index
+ccc index              # Incremental update
+ccc index --refresh    # Force full rebuild
 ```
 
-Scans all files, chunks them, generates embeddings with all-MiniLM-L6-v2, and stores vectors in SQLite. Incremental - only re-indexes changed files.
+Scans all files, chunks them, generates embeddings using the configured model (default: `voyage/voyage-code-3`), and stores vectors in SQLite. Incremental by default - only re-indexes changed files.
 
 ---
 
@@ -223,9 +229,16 @@ ccc status
 
 **Purpose**: Initialize a project for CocoIndex Code.
 
+**Parameters**:
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `-f`, `--force` | flag | No | false | Force re-initialization even if already initialized |
+
 **Example**:
 ```bash
-ccc init
+ccc init            # Initialize project
+ccc init --force    # Re-initialize (overwrite existing settings)
 ```
 
 Creates `.cocoindex_code/` directory and `settings.yml`. Adds `.cocoindex_code/` to `.gitignore`.
@@ -238,15 +251,16 @@ Creates `.cocoindex_code/` directory and `settings.yml`. Adds `.cocoindex_code/`
 
 **Parameters**:
 
-| Parameter | Description |
-|-----------|-------------|
-| `--all` | Also remove settings and .gitignore entry |
-| `--force`, `-f` | Skip confirmation prompt |
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `--all` | flag | No | false | Also remove settings and .gitignore entry |
+| `-f`, `--force` | flag | No | false | Skip confirmation prompt |
 
 **Example**:
 ```bash
-ccc reset          # Reset databases only
-ccc reset --all    # Full reset including settings
+ccc reset                  # Reset databases only (with confirmation)
+ccc reset --all            # Full reset including settings
+ccc reset --all --force    # Full reset, skip confirmation
 ```
 
 ---
@@ -285,7 +299,23 @@ Used by MCP clients (Claude Code, OpenCode) to integrate semantic search as a to
 
 ### How It Works
 
-CocoIndex Code runs as an MCP server using stdio transport. When enabled, AI agents can call semantic search directly without going through the CLI.
+CocoIndex Code runs as an MCP server using stdio transport via `ccc mcp`. The MCP server exposes **1 tool only**: `search`. The `status`, `index`, and `reset` operations are CLI-only commands and are NOT available as MCP tools.
+
+### MCP Tool: `search`
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `query` | string | Yes | - | Natural language search query |
+| `languages` | list\|null | No | null | Filter by programming languages (e.g., `["python", "typescript"]`) |
+| `paths` | list\|null | No | null | Filter by file path globs (e.g., `["src/**"]`) |
+| `num_results` | integer | No | 5 | Maximum results to return (MCP default is 5, CLI default is 10) |
+| `refresh_index` | boolean | No | true | Refresh index before searching |
+
+**Key differences from CLI**:
+- MCP uses `languages` (list) instead of `--lang` (single string, repeatable)
+- MCP uses `paths` (list) instead of `--path` (single string)
+- MCP default limit is **5** (CLI default is **10**)
+- MCP has `refresh_index` (default true); CLI has `--refresh` (default false)
 
 ### Claude Code Configuration (.mcp.json)
 
@@ -326,11 +356,23 @@ CocoIndex Code MCP is **disabled by default** in `.mcp.json`. Enable it by setti
 | **Settings** | `.cocoindex_code/settings.yml` |
 | **MCP config** | `.mcp.json` (Claude Code) or `opencode.json` (OpenCode) |
 
+### Embedding Models
+
+CocoIndex Code supports two embedding models:
+
+| Model | Type | Dimensions | API Key | Best For |
+|-------|------|------------|---------|----------|
+| `voyage/voyage-code-3` (primary) | Cloud via LiteLLM | 1024 | `VOYAGE_API_KEY` required | Higher quality code search |
+| `sentence-transformers/all-MiniLM-L6-v2` | Local | 384 | None | Offline use, no API dependency |
+
+Configured via `~/.cocoindex_code/global_settings.yml`. **CRITICAL**: Changing the embedding model requires `ccc reset && ccc index` because different models produce vectors with different dimensions.
+
 ### Environment Variables
 
 | Variable | Purpose | Default |
 |----------|---------|---------|
 | `COCOINDEX_CODE_ROOT_PATH` | Project root for indexing | Current directory |
+| `VOYAGE_API_KEY` | API key for Voyage Code 3 embeddings | (none, required for primary model) |
 
 ### Settings File (.cocoindex_code/settings.yml)
 
@@ -353,8 +395,11 @@ The `.cocoindex_code/` directory is automatically added to `.gitignore` during `
 |--------|-------|
 | **Total Files** | 6,792 |
 | **Total Chunks** | 105,965 |
-| **Languages** | 14 |
-| **Embedding Model** | all-MiniLM-L6-v2 (local) |
+| **Languages** | 28+ |
+| **Primary Embedding Model** | voyage/voyage-code-3 via LiteLLM |
+| **Alternative Embedding Model** | all-MiniLM-L6-v2 (local) |
+| **CLI Default Limit** | 10 |
+| **MCP Default Limit** | 5 |
 
 ### Chunk Distribution by Language
 

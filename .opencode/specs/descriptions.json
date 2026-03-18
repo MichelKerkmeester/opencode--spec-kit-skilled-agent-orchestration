@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated": "2026-03-18T07:23:49.116Z",
+  "generated": "2026-03-18T12:21:31.536Z",
   "folders": [
     {
       "specFolder": "00--ai-systems-non-dev/001-global-shared/001-hvr-refinement-repo-analysis",
@@ -583,7 +583,7 @@
         "specification",
         "022-hybrid-rag-fusion"
       ],
-      "lastUpdated": "2026-03-18T07:23:49.116Z"
+      "lastUpdated": "2026-03-18T12:21:31.536Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic",
@@ -718,7 +718,7 @@
         "operational",
         "tooling"
       ],
-      "lastUpdated": "2026-03-18T07:23:49.116Z"
+      "lastUpdated": "2026-03-18T12:21:31.536Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization",
@@ -1003,7 +1003,7 @@
         "specification",
         "remediation-revalidation"
       ],
-      "lastUpdated": "2026-03-18T07:23:49.116Z"
+      "lastUpdated": "2026-03-18T12:21:31.536Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features",
@@ -1310,7 +1310,7 @@
         "specification",
         "013-agents-md-alignment"
       ],
-      "lastUpdated": "2026-03-18T07:23:49.116Z"
+      "lastUpdated": "2026-03-18T12:21:31.536Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook",
@@ -1332,7 +1332,7 @@
         "retrieval",
         "phase"
       ],
-      "lastUpdated": "2026-03-18T07:23:49.116Z"
+      "lastUpdated": "2026-03-18T12:21:31.536Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/002-mutation",
@@ -1344,7 +1344,7 @@
         "mutation",
         "phase"
       ],
-      "lastUpdated": "2026-03-18T07:23:49.116Z"
+      "lastUpdated": "2026-03-18T12:21:31.536Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/003-discovery",
@@ -1356,7 +1356,7 @@
         "discovery",
         "phase"
       ],
-      "lastUpdated": "2026-03-18T07:23:49.116Z"
+      "lastUpdated": "2026-03-18T12:21:31.536Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/004-maintenance",
@@ -1368,7 +1368,7 @@
         "maintenance",
         "phase"
       ],
-      "lastUpdated": "2026-03-18T07:23:49.116Z"
+      "lastUpdated": "2026-03-18T12:21:31.536Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/005-lifecycle",
@@ -1381,7 +1381,7 @@
         "manual",
         "testing"
       ],
-      "lastUpdated": "2026-03-18T07:23:49.116Z"
+      "lastUpdated": "2026-03-18T12:21:31.536Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/006-analysis",
@@ -1393,7 +1393,7 @@
         "analysis",
         "phase"
       ],
-      "lastUpdated": "2026-03-18T07:23:49.116Z"
+      "lastUpdated": "2026-03-18T12:21:31.536Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/007-evaluation",
@@ -1405,7 +1405,7 @@
         "evaluation",
         "phase"
       ],
-      "lastUpdated": "2026-03-18T07:23:49.116Z"
+      "lastUpdated": "2026-03-18T12:21:31.536Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/008-bug-fixes-and-data-integrity",
@@ -1417,7 +1417,7 @@
         "manual",
         "testing"
       ],
-      "lastUpdated": "2026-03-18T07:23:49.116Z"
+      "lastUpdated": "2026-03-18T12:21:31.536Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/009-evaluation-and-measurement",
@@ -1427,7 +1427,7 @@
         "specification",
         "evaluation-and-measurement"
       ],
-      "lastUpdated": "2026-03-18T07:23:49.116Z"
+      "lastUpdated": "2026-03-18T12:21:31.536Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/010-graph-signal-activation",
@@ -1443,7 +1443,7 @@
         "manual",
         "testing"
       ],
-      "lastUpdated": "2026-03-18T07:23:49.116Z"
+      "lastUpdated": "2026-03-18T12:21:31.536Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/011-scoring-and-calibration",
@@ -1455,7 +1455,7 @@
         "manual",
         "testing"
       ],
-      "lastUpdated": "2026-03-18T07:23:49.116Z"
+      "lastUpdated": "2026-03-18T12:21:31.536Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/012-query-intelligence",
@@ -1467,7 +1467,7 @@
         "query-intelligence",
         "phase"
       ],
-      "lastUpdated": "2026-03-18T07:23:49.116Z"
+      "lastUpdated": "2026-03-18T12:21:31.536Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/013-memory-quality-and-indexing",
@@ -1481,7 +1481,7 @@
         "indexing",
         "phase"
       ],
-      "lastUpdated": "2026-03-18T07:23:49.116Z"
+      "lastUpdated": "2026-03-18T12:21:31.536Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/014-pipeline-architecture",
@@ -1497,7 +1497,7 @@
         "pipeline",
         "architecture"
       ],
-      "lastUpdated": "2026-03-18T07:23:49.116Z"
+      "lastUpdated": "2026-03-18T12:21:31.536Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/015-retrieval-enhancements",
@@ -1509,7 +1509,7 @@
         "retrieval-enhancements",
         "phase"
       ],
-      "lastUpdated": "2026-03-18T07:23:49.116Z"
+      "lastUpdated": "2026-03-18T12:21:31.536Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/016-tooling-and-scripts",
@@ -1521,7 +1521,7 @@
         "manual",
         "testing"
       ],
-      "lastUpdated": "2026-03-18T07:23:49.116Z"
+      "lastUpdated": "2026-03-18T12:21:31.536Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/017-governance",
@@ -1533,7 +1533,7 @@
         "governance",
         "phase"
       ],
-      "lastUpdated": "2026-03-18T07:23:49.116Z"
+      "lastUpdated": "2026-03-18T12:21:31.536Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/018-ux-hooks",
@@ -1545,7 +1545,7 @@
         "ux-hooks",
         "phase"
       ],
-      "lastUpdated": "2026-03-18T07:23:49.116Z"
+      "lastUpdated": "2026-03-18T12:21:31.536Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/019-feature-flag-reference",
@@ -1557,7 +1557,7 @@
         "feature-flag-reference",
         "phase"
       ],
-      "lastUpdated": "2026-03-18T07:23:49.116Z"
+      "lastUpdated": "2026-03-18T12:21:31.536Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/015-rewrite-memory-mcp-readme",
@@ -1594,6 +1594,31 @@
         "018-rewrite-repo-readme"
       ],
       "lastUpdated": "2026-03-17T13:52:20.655Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/025-capture-quality-parity",
+      "description": "025 -- Capture Quality Parity",
+      "keywords": [
+        "025",
+        "capture",
+        "quality",
+        "parity"
+      ],
+      "lastUpdated": "2026-03-18T12:21:31.536Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/023-coco-index-integration",
+      "description": "CocoIndex Code MCP Integration: Phase 1 installation and registration of semantic code search across all 6 CLI config files, providing vector-indexed code search via natural language queries",
+      "keywords": [
+        "cocoindex",
+        "semantic code search",
+        "coco-index integration",
+        "code search mcp",
+        "cocoindex_code",
+        "vector index",
+        "mcp server"
+      ],
+      "lastUpdated": "2026-03-18T09:55:00.000Z"
     },
     {
       "specFolder": "02--system-spec-kit/024-sqlite-to-turso",
@@ -3414,7 +3439,7 @@
         "self-invocation",
         "guards"
       ],
-      "lastUpdated": "2026-03-18T07:23:49.116Z"
+      "lastUpdated": "2026-03-18T12:21:31.536Z"
     },
     {
       "specFolder": "03--commands-and-skills/sk-code/014-code-review-skill",
@@ -3882,6 +3907,23 @@
       "lastUpdated": "2026-03-16T13:20:03.185Z"
     },
     {
+      "specFolder": "05--agent-orchestration/028-auto-deep-research",
+      "description": "Autonomous Deep Research Loop: 3-layer integration (@deep-research agent + /spec_kit:deep-research command + sk-deep-research skill) enabling iterative deep research with externalized state and fresh context per iteration",
+      "keywords": [
+        "autoresearch",
+        "deep-research",
+        "deep research",
+        "autonomous loop",
+        "iterative research",
+        "research agent",
+        "externalized state",
+        "convergence detection",
+        "fresh context",
+        "JSONL state"
+      ],
+      "lastUpdated": "2026-03-18T09:55:00.000Z"
+    },
+    {
       "specFolder": "05--agent-orchestration/z_archive/001-agents-from-oh-my-opencode",
       "description": "Agent Architecture Analysis: oh-my-opencode",
       "keywords": [
@@ -4266,7 +4308,7 @@
         "specification",
         "automated-greeting"
       ],
-      "lastUpdated": "2026-03-18T07:23:49.116Z"
+      "lastUpdated": "2026-03-18T12:21:31.536Z"
     },
     {
       "specFolder": "999-test-sandbox/002-copilot-test",
@@ -4277,39 +4319,7 @@
         "automated",
         "greeting"
       ],
-      "lastUpdated": "2026-03-18T07:23:49.116Z"
-    },
-    {
-      "specFolder": "02--system-spec-kit/023-coco-index-integration",
-      "description": "CocoIndex Code MCP Integration: Phase 1 installation and registration of semantic code search across all 6 CLI config files, providing vector-indexed code search via natural language queries",
-      "keywords": [
-        "cocoindex",
-        "semantic code search",
-        "coco-index integration",
-        "code search mcp",
-        "cocoindex_code",
-        "vector index",
-        "mcp server"
-      ],
-      "lastUpdated": "2026-03-18T09:55:00.000Z"
-    },
-    {
-      "specFolder": "05--agent-orchestration/028-auto-deep-research",
-      "description": "Autonomous Deep Research Loop: 3-layer integration (@deep-research agent + /spec_kit:deep-research command + sk-deep-research skill) enabling iterative deep research with externalized state and fresh context per iteration",
-      "keywords": [
-        "autoresearch",
-        "deep-research",
-        "sk-deep-research",
-        "deep research",
-        "autonomous loop",
-        "iterative research",
-        "research agent",
-        "externalized state",
-        "convergence detection",
-        "fresh context",
-        "JSONL state"
-      ],
-      "lastUpdated": "2026-03-18T09:00:00.000Z"
+      "lastUpdated": "2026-03-18T12:21:31.536Z"
     }
   ]
 }

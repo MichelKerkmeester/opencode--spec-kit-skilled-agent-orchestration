@@ -186,18 +186,18 @@ describe('scoreMemoryQuality calibration', () => {
       expect(contaminationDim?.score01).toBe(0.60);
     });
 
-    it('treats null severity as high (default behavior)', () => {
+    it('treats null severity as medium (default behavior)', () => {
       const withNull = scoreMemoryQuality(
         buildRichContent(), richTriggers, richTopics, richFiles, richObservations,
         undefined, true, null,
       );
-      const withHigh = scoreMemoryQuality(
+      const withMedium = scoreMemoryQuality(
         buildRichContent(), richTriggers, richTopics, richFiles, richObservations,
-        undefined, true, 'high',
+        undefined, true, 'medium',
       );
 
-      expect(withNull.score01).toBe(withHigh.score01);
-      expect(withNull.dimensions).toEqual(withHigh.dimensions);
+      expect(withNull.score01).toBe(withMedium.score01);
+      expect(withNull.dimensions).toEqual(withMedium.dimensions);
     });
   });
 });

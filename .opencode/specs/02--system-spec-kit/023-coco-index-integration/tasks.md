@@ -96,15 +96,53 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:phase-4 -->
+## Phase 4: Cross-CLI Auto-Usage Validation
+
+### Test Execution
+
+- [x] T028 Design 3 test prompts: implicit semantic, explicit CocoIndex mention, SKILL.md trigger phrase [5m]
+- [x] T029 Run all 3 prompts on Claude Code (Claude Opus 4.6) and capture results [10m]
+- [x] T030 Run all 3 prompts on Codex (gpt-5.3-codex) -- all failed due to OpenAI billing limit [10m]
+- [x] T031 Run all 3 prompts on Gemini (gemini-3.1-pro-preview) and capture results [10m]
+- [x] T032 Run all 3 prompts on Copilot (GPT-5.4) and capture results [15m]
+- [x] T033 Document results in `scratch/cross-cli-auto-usage-test-results.md` [15m]
+
+### Root Cause Analysis (Follow-Up)
+
+- [x] T034 Reproduce Copilot MCP failure: 5 concurrent queries with `refresh_index=true` (+165 daemon errors) [5m]
+- [x] T035 Confirm workaround: 5 concurrent queries with `refresh_index=false` (0 daemon errors) [5m]
+- [x] T036 Verify Copilot's exact failing queries return results with `refresh_index=false` [5m]
+- [x] T037 Retry Codex billing check -- still blocked, documented as deferred [5m]
+- [x] T038 Update `scratch/cross-cli-auto-usage-test-results.md` with root cause analysis section [10m]
+
+### Documentation Updates
+
+- [x] T039 Add findings F1-F4 and recommendations R1-R6 to `implementation-summary.md` [15m]
+- [x] T040 Add query optimization tips to `SKILL.md` (short queries > keyword stuffing) [5m]
+- [x] T041 Add `refresh_index=false` concurrent session guidance to `SKILL.md` [5m]
+- [x] T042 Update `spec.md` with cross-CLI test scope, deprioritized Phase 2, resolved questions [5m]
+- [x] T043 Update `plan.md` with Phase 5-6 and testing strategy additions [5m]
+- [x] T044 Update `tasks.md` with Phase 4 tasks (this file) [5m]
+- [x] T045 Update `checklist.md` with cross-CLI validation items [5m]
+- [x] T046 Save context to memory via `generate-context.js` (JSON payload mode) [5m]
+
+<!-- /ANCHOR:phase-4 -->
+
+---
+
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [x] All tasks marked `[x]`
+- [x] All tasks marked `[x]` (T001-T046)
 - [x] No `[B]` blocked tasks remaining
 - [x] All 6 config files pass syntax validation
 - [x] Naming consistent (`cocoindex_code`) across all configs
 - [x] Index built successfully (6,792 files, 105,965 chunks)
 - [x] Checklist.md fully verified with evidence
+- [x] Cross-CLI auto-usage validated (3/4 CLIs confirmed, 1 billing-blocked)
+- [x] Copilot MCP failure root cause identified and documented
+- [x] SKILL.md updated with query optimization and `refresh_index` guidance
 
 <!-- /ANCHOR:completion -->
 
@@ -127,5 +165,7 @@ LEVEL 2 TASKS
 - Core + Level 2 detail
 - Effort estimates per task
 - Explicit verification tasks
-- Implementation complete 2026-03-18
+- Phase 1-3 (config installation) complete 2026-03-18
+- Phase 4 (cross-CLI validation + root cause + docs) complete 2026-03-18
+- 46 total tasks (T001-T046)
 -->

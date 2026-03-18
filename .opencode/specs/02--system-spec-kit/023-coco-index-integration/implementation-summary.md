@@ -143,9 +143,65 @@ Phase 1 was preceded by multi-agent research: 3 Claude Opus 4.6 sub-agents and 3
 
 ---
 
+<!-- ANCHOR:cross-cli-findings -->
+## Cross-CLI Auto-Usage Test Findings (2026-03-18)
+
+A cross-CLI test validated whether AI models spontaneously use CocoIndex MCP without agent routing changes. Three prompts (implicit semantic, explicit mention, SKILL.md trigger phrase) were sent to Claude Code, Codex, Gemini, and Copilot.
+
+### F1: Auto-discovery works -- Phase 2 agent routing is unnecessary
+
+All 3 working CLIs (Claude Code, Gemini, Copilot) chose CocoIndex from the MCP tool description alone. No SKILL.md trigger phrases, skill advisor routing, or agent definition changes were needed. The tool description "Semantic code search across the entire codebase" is sufficient for models to independently select it for concept-based queries.
+
+**Implication**: Phase 2's planned @context agent routing adds maintenance without clear benefit. Deprioritize.
+
+### F2: Copilot MCP failures caused by daemon concurrency bug (not a Copilot issue)
+
+Root cause: `cocoindex_core::engine::component` crashes when `refresh_index=true` (MCP default) and multiple requests overlap. The daemon lacks a mutex/lock on index refresh operations.
+
+- 850 `ComponentContext` errors in daemon.log (685 original + 165 reproduction)
+- Copilot sends more concurrent MCP queries than other CLIs (5+ vs 1-2), exposing the race condition
+- Workaround: `refresh_index=false` eliminates all errors
+- Fix: Upstream CocoIndex daemon bug report needed
+
+### F3: Query quality matters more than tool routing
+
+Short natural-language queries outperform long keyword-stuffed queries due to embedding dilution:
+
+| Query style | Example | Results | Scores |
+|-------------|---------|---------|--------|
+| Short, focused (3 words) | "retry logic patterns" | 10 | 0.56-0.60 |
+| Keyword-stuffed (12 words) | "retry helper utilities, exponential backoff, max retries, failed operation retry wrappers" | 5 | 0.64-0.67 |
+
+Both return results, but shorter queries produce tighter semantic matches across a broader range. Keyword stuffing averages the embedding vector across too many concepts.
+
+### F4: Token efficiency -- CocoIndex saves 10-50x tokens
+
+| CLI | Prompt | Token usage | Strategy |
+|-----|--------|-------------|----------|
+| Gemini P2 | Auth patterns | 75K | 2 CocoIndex calls (exclusive) |
+| Copilot P1 | Retry logic | 3.6M | MCP failed, Grep fallback, 15+ file reads |
+
+When CocoIndex works, it eliminates the Grep-Read-Filter cascade entirely.
+
+### Recommendations
+
+| # | Recommendation | Priority | Rationale |
+|---|----------------|----------|-----------|
+| R1 | Deprioritize Phase 2 @context agent routing | High | Auto-discovery works; routing adds maintenance without benefit |
+| R2 | Report upstream daemon concurrency bug | High | `refresh_index=true` + concurrent requests crashes `ComponentContext` |
+| R3 | Add `refresh_index: false` guidance to SKILL.md | Medium | Workaround for multi-query sessions |
+| R4 | Add query optimization tips to SKILL.md | Medium | Short natural language queries outperform keyword stuffing |
+| R5 | Retest Codex when billing resolved | Low | MCP wiring confirmed correct |
+| R6 | Redefine Phase 2 scope: reliability + query guidance | High | Replace agent routing with concrete fixes |
+
+<!-- /ANCHOR:cross-cli-findings -->
+
+---
+
 <!--
 LEVEL 2 IMPLEMENTATION SUMMARY
 - Phase 1 complete 2026-03-18
 - Config-only, no custom code
 - All NFRs verified, 0 deviations
+- Cross-CLI test findings added 2026-03-18
 -->

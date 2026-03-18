@@ -230,4 +230,61 @@ describe('captureCopilotConversation', () => {
       assistantResponse: 'Resolved the Copilot workspace through the canonical .opencode identity.',
     }));
   });
+
+  it('excludes API error content from assistant exchanges', async () => {
+    const tempHome = makeTempRoot('speckit-copilot-home-');
+    process.env.HOME = tempHome;
+
+    const projectRoot = '/tmp/spec-kit-project';
+    const root = path.join(tempHome, '.copilot', 'session-state');
+
+    const sessionDir = path.join(root, 'api-err-session');
+    writeWorkspace(path.join(sessionDir, 'workspace.yaml'), {
+      id: 'api-err-session',
+      cwd: projectRoot,
+      git_root: projectRoot,
+      updated_at: '2026-03-15T15:00:00.000Z',
+    });
+
+    writeJsonl(path.join(sessionDir, 'events.jsonl'), [
+      {
+        type: 'session.start',
+        timestamp: '2026-03-15T15:00:00.000Z',
+        data: {
+          sessionId: 'api-err-session',
+          context: { cwd: projectRoot, gitRoot: projectRoot },
+        },
+      },
+      {
+        type: 'user.message',
+        timestamp: '2026-03-15T15:00:01.000Z',
+        data: { content: 'First prompt' },
+      },
+      {
+        type: 'assistant.message',
+        timestamp: '2026-03-15T15:00:02.000Z',
+        data: { content: '{"type": "error", "error": {"type": "overloaded_error", "message": "Overloaded"}}' },
+      },
+      {
+        type: 'user.message',
+        timestamp: '2026-03-15T15:00:03.000Z',
+        data: { content: 'Second prompt' },
+      },
+      {
+        type: 'assistant.message',
+        timestamp: '2026-03-15T15:00:04.000Z',
+        data: { content: 'Here is a valid response.' },
+      },
+    ]);
+
+    const { captureCopilotConversation } = await import('../extractors/copilot-cli-capture');
+    const result = await captureCopilotConversation(20, projectRoot);
+
+    expect(result).not.toBeNull();
+    const responses = result!.exchanges
+      .map((e) => e.assistantResponse)
+      .filter(Boolean);
+    expect(responses).not.toContain(expect.stringContaining('overloaded_error'));
+    expect(responses).toContain('Here is a valid response.');
+  });
 });

@@ -293,7 +293,7 @@ export function scoreMemoryQuality(
 
   let score01 = clamp01(Object.values(breakdown).reduce((sum, v) => sum + v, 0) / 100);
   let scoreCap: number | null = null;
-  const effectiveSeverity: ContaminationSeverity = contaminationSeverity || 'high';
+  const effectiveSeverity: ContaminationSeverity = contaminationSeverity || 'medium';
 
   if (hadContamination) {
     qualityFlags.add('has_contamination');

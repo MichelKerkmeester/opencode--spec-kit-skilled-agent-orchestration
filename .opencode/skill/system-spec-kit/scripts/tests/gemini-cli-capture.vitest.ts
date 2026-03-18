@@ -97,7 +97,7 @@ describe('captureGeminiConversation', () => {
               args: {
                 path: '/tmp/spec-kit-project/scripts/loaders/data-loader.ts',
               },
-              status: 'success',
+              status: 'completed',
               timestamp: '2026-03-15T10:00:11.000Z',
               resultDisplay: 'Found 1 matching file',
               result: [
@@ -141,7 +141,7 @@ describe('captureGeminiConversation', () => {
     expect(result?.toolCalls).toEqual([
       expect.objectContaining({
         tool: 'glob',
-        status: 'success',
+        status: 'completed',
         input: expect.objectContaining({
           path: 'scripts/loaders/data-loader.ts',
         }),
@@ -189,5 +189,62 @@ describe('captureGeminiConversation', () => {
       userInput: 'Resolve repo-root Gemini history through the .opencode workspace.',
       assistantResponse: 'Matched the Gemini session to the canonical .opencode identity.',
     }));
+  });
+
+  it('excludes API error content from assistant exchanges', async () => {
+    const tempHome = makeTempRoot('speckit-gemini-home-');
+    process.env.HOME = tempHome;
+
+    const projectRoot = '/tmp/spec-kit-project';
+    const historyDir = path.join(tempHome, '.gemini', 'history', 'api-err-project');
+    fs.mkdirSync(historyDir, { recursive: true });
+    fs.writeFileSync(path.join(historyDir, '.project_root'), `${projectRoot}\n`, 'utf-8');
+
+    const chatsDir = path.join(tempHome, '.gemini', 'tmp', 'api-err-project', 'chats');
+    const sessionPath = path.join(chatsDir, 'session-2026-03-15T16-00-api-err.json');
+    writeJson(sessionPath, {
+      sessionId: 'api-err-session',
+      startTime: '2026-03-15T16:00:00.000Z',
+      lastUpdated: '2026-03-15T16:00:04.000Z',
+      messages: [
+        {
+          id: 'user-1',
+          timestamp: '2026-03-15T16:00:01.000Z',
+          type: 'user',
+          content: [{ text: 'First prompt' }],
+        },
+        {
+          id: 'gemini-err',
+          timestamp: '2026-03-15T16:00:02.000Z',
+          type: 'gemini',
+          content: [{ text: 'API Error: 503 Service Unavailable' }],
+        },
+        {
+          id: 'user-2',
+          timestamp: '2026-03-15T16:00:03.000Z',
+          type: 'user',
+          content: [{ text: 'Second prompt' }],
+        },
+        {
+          id: 'gemini-ok',
+          timestamp: '2026-03-15T16:00:04.000Z',
+          type: 'gemini',
+          content: [{ text: 'Here is a valid response.' }],
+        },
+      ],
+    });
+
+    const sessionTime = new Date('2026-03-15T16:00:04.000Z');
+    fs.utimesSync(sessionPath, sessionTime, sessionTime);
+
+    const { captureGeminiConversation } = await import('../extractors/gemini-cli-capture');
+    const result = await captureGeminiConversation(20, projectRoot);
+
+    expect(result).not.toBeNull();
+    const responses = result!.exchanges
+      .map((e) => e.assistantResponse)
+      .filter(Boolean);
+    expect(responses).not.toContain('API Error: 503 Service Unavailable');
+    expect(responses).toContain('Here is a valid response.');
   });
 });

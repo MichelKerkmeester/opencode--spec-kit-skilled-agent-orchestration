@@ -1,0 +1,22 @@
+{
+  "specFolder": "05--agent-orchestration/028-auto-deep-research",
+  "description": "Autonomous Deep Research Loop: 3-layer integration (@deep-research agent + /spec_kit:deep-research command + sk-deep-research skill) enabling iterative deep research with externalized state and fresh context per iteration",
+  "keywords": [
+    "autoresearch",
+    "deep-research",
+    "deep research",
+    "autonomous loop",
+    "iterative research",
+    "research agent",
+    "externalized state",
+    "convergence detection",
+    "fresh context",
+    "JSONL state"
+  ],
+  "lastUpdated": "2026-03-18T09:55:00.000Z",
+  "specId": "028",
+  "folderSlug": "auto-deep-research",
+  "parentChain": [],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

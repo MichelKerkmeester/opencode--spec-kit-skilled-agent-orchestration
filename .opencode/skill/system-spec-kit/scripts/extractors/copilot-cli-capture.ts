@@ -19,9 +19,8 @@ import type {
 } from '../utils/input-normalizer';
 import {
   isSameWorkspacePath,
-  toWorkspaceRelativePath,
 } from '../utils';
-import { sanitizeToolDescription } from '../utils/tool-sanitizer';
+import { sanitizeToolDescription, sanitizeToolInputPaths, isApiErrorContent } from '../utils/tool-sanitizer';
 
 const COPILOT_HOME = path.join(
   process.env.HOME || process.env.USERPROFILE || '',
@@ -108,29 +107,7 @@ function normalizeToolName(rawName: unknown): string {
   return typeof rawName === 'string' ? rawName.toLowerCase() : 'unknown';
 }
 
-function relativeProjectPath(projectRoot: string, maybeFilePath: string): string {
-  return toWorkspaceRelativePath(projectRoot, maybeFilePath);
-}
-
-function sanitizeToolInputPaths(projectRoot: string, input: Record<string, unknown>): Record<string, unknown> {
-  const sanitized: Record<string, unknown> = { ...input };
-
-  const pathKeys = ['filePath', 'file_path', 'path'];
-  for (const key of pathKeys) {
-    if (typeof sanitized[key] !== 'string') {
-      continue;
-    }
-
-    const relativePath = relativeProjectPath(projectRoot, sanitized[key] as string);
-    if (relativePath) {
-      sanitized[key] = relativePath;
-    } else {
-      delete sanitized[key];
-    }
-  }
-
-  return sanitized;
-}
+// sanitizeToolInputPaths imported from ../utils/tool-sanitizer
 
 function stringifyPreview(value: unknown): string {
   if (typeof value === 'string') {
@@ -294,6 +271,11 @@ export async function captureCopilotConversation(
 
       const content = typeof event.data?.content === 'string' ? event.data.content.trim() : '';
       if (!content) {
+        continue;
+      }
+
+      // Skip API error messages — they carry no useful session content
+      if (isApiErrorContent(content)) {
         continue;
       }
 

@@ -122,6 +122,14 @@ export {
 } from './validation-utils';
 
 export {
+  sanitizeToolDescription,
+  sanitizeToolInputPaths,
+  normalizeToolStatus,
+  isApiErrorContent,
+} from './tool-sanitizer';
+export type { ToolStatus } from './tool-sanitizer';
+
+export {
   GENERIC_MEMORY_DESCRIPTION,
   LEGACY_GENERIC_MEMORY_TRIGGER_PHRASES,
   hasLegacyGenericTriggerPhrases,
