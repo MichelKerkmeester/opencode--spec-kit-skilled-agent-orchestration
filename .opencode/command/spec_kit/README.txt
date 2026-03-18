@@ -1,6 +1,6 @@
 ---
 title: "Spec Kit Commands"
-description: "Slash commands for the spec folder development lifecycle including planning, implementation, research, debugging, handover, and session resumption."
+description: "Slash commands for the spec folder development lifecycle including planning, implementation, deep-research, debugging, handover, and session resumption."
 trigger_phrases:
   - "spec kit command"
   - "spec kit plan"
@@ -37,7 +37,7 @@ trigger_phrases:
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-The `spec_kit` command group manages the full development lifecycle around spec folders. Commands cover planning, implementation, research, debugging, session handover, resumption, and end-to-end workflows.
+The `spec_kit` command group manages the full development lifecycle around spec folders. Commands cover planning, implementation, deep-research, debugging, session handover, resumption, and end-to-end workflows.
 
 Each command loads a YAML workflow from `assets/` and executes it step by step. Most commands support `:auto` and `:confirm` execution modes.
 
@@ -186,8 +186,8 @@ Each mode maps to a YAML workflow file in `assets/`:
 # Implement from an existing plan
 /spec_kit:implement specs/012-rate-limiting :confirm
 
-# Research a topic before planning
-/spec_kit:research "OAuth 2.0 token refresh patterns" :auto
+# Deep research a topic before planning
+/spec_kit:deep-research "OAuth 2.0 token refresh patterns" :auto
 
 # Decompose a complex feature into phases
 /spec_kit:phase "Build hybrid RAG search system" --phases 3 :auto

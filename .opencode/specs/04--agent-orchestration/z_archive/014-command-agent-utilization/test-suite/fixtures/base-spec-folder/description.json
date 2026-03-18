@@ -1,0 +1,22 @@
+{
+  "specFolder": "04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/fixtures/base-spec-folder",
+  "description": "Feature Specification: JWT Authentication",
+  "keywords": [
+    "feature",
+    "specification",
+    "jwt",
+    "authentication"
+  ],
+  "lastUpdated": "2026-03-16T13:20:03.276Z",
+  "specId": "",
+  "folderSlug": "base-spec-folder",
+  "parentChain": [
+    "04--agent-orchestration",
+    "z_archive",
+    "014-command-agent-utilization",
+    "test-suite",
+    "fixtures"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

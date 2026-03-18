@@ -1,0 +1,20 @@
+{
+  "specFolder": "04--agent-orchestration/z_archive/013-agent-haiku-compatibility",
+  "description": "Feature Specification: Agent Haiku Compatibility",
+  "keywords": [
+    "feature",
+    "specification",
+    "agent",
+    "haiku",
+    "compatibility"
+  ],
+  "lastUpdated": "2026-03-16T13:20:03.266Z",
+  "specId": "013",
+  "folderSlug": "agent-haiku-compatibility",
+  "parentChain": [
+    "04--agent-orchestration",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

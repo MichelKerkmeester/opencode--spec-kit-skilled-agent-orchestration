@@ -257,16 +257,16 @@ exec
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/command/create/assets/create_folder_readme_confirm.yaml:561:      question: "Quality validation complete (score: [quality_score]/100). Continue?"
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/command/create/assets/create_folder_readme_confirm.yaml:1106:    - quality_score: number
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/command/create/assets/create_folder_readme_confirm.yaml:1110:      question: "Quality validation complete (score: [quality_score]/100). Continue?"
-/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/05--agent-orchestration/023-gemini-cli-compatibility/memory/20-02-26_11-43__gemini-cli-compatibility.md:1326:quality_score: 1.00
-/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/05--agent-orchestration/023-gemini-cli-compatibility/memory/20-02-26_12-13__gemini-cli-compatibility.md:2370:quality_score: 1.00
-/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/05--agent-orchestration/025-codex-cli-agents/memory/01-03-26_10-15__codex-cli-agents.md:906:quality_score: 1.00
+/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/04--agent-orchestration/023-gemini-cli-compatibility/memory/20-02-26_11-43__gemini-cli-compatibility.md:1326:quality_score: 1.00
+/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/04--agent-orchestration/023-gemini-cli-compatibility/memory/20-02-26_12-13__gemini-cli-compatibility.md:2370:quality_score: 1.00
+/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/04--agent-orchestration/025-codex-cli-agents/memory/01-03-26_10-15__codex-cli-agents.md:906:quality_score: 1.00
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/017-cmd-create-prompt/memory/01-03-26_14-44__create-prompt-command.md:689:quality_score: 1.00
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/017-cmd-create-prompt/memory/01-03-26_12-48__create-prompt-command.md:907:quality_score: 1.00
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/save/db-helpers.ts:14:  'spec_level', 'quality_score', 'quality_flags', 'parent_id',
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/save/create-record.ts:99:      quality_score: parsed.qualityScore ?? 0,
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/save/types.ts:114:  quality_score?: number;
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/save/reconsolidation-bridge.ts:123:                quality_score: parsed.qualityScore ?? 0,
-/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/05--agent-orchestration/026-review-debug-agent-improvement/memory/05-03-26_08-00__review-debug-agent-improvement.md:906:quality_score: 1.00
+/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/04--agent-orchestration/026-review-debug-agent-improvement/memory/05-03-26_08-00__review-debug-agent-improvement.md:906:quality_score: 1.00
 exec
 /bin/zsh -lc "rg -n \"extractQualityScore\\(|extractQualityFlags\\(\" '/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 52ms:
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/parsing/memory-parser.ts:178:  const qualityScore = extractQualityScore(content);
@@ -291,7 +291,7 @@ exec
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/shared/parsing/quality-extractors.test.ts:151:  assertEqual(extractQualityScore(content), 0.31, 'score with extra whitespace');
 exec
 /bin/zsh -lc "nl -ba '/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/shared/parsing/quality-extractors.ts' | sed -n '1,220p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
-/bin/zsh -lc "nl -ba '/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/05--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md' | sed -n '1,120p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 51ms:
+/bin/zsh -lc "nl -ba '/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/04--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md' | sed -n '1,120p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 51ms:
      1	// ---------------------------------------------------------------
      2	// MODULE: Quality Extractors
      3	// ---------------------------------------------------------------
@@ -334,7 +334,7 @@ exec
     19	     - Applies to ALL future conversations (not project-specific)
     20	     - Core constraints/rules that should NEVER be forgotten
 exec
-/bin/zsh -lc "nl -ba '/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/05--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md' | sed -n '880,930p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 52ms:
+/bin/zsh -lc "nl -ba '/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/04--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md' | sed -n '880,930p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 52ms:
    880	
    881	key_files:
    882	  - ".opencode/.../handlers/(merged-small-files)"
@@ -350,7 +350,7 @@ exec
    892	
    893	  []
    894	
-   895	parent_spec: "05--agent-orchestration/027-copilot-gpt-5-4-agents"
+   895	parent_spec: "04--agent-orchestration/027-copilot-gpt-5-4-agents"
    896	child_sessions:
    897	
    898	  []

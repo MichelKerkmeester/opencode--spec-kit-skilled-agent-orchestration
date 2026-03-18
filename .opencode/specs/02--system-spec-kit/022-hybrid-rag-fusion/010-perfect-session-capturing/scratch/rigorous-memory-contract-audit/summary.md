@@ -72,26 +72,26 @@ Root: /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/sp
 | 03--commands-and-skills/011-doc-template-folders | 1 | 1 | 0 | 0 |
 | 03--commands-and-skills/006-git-superset-worktrees | 1 | 1 | 0 | 0 |
 | 03--commands-and-skills/003-prompt-initial-creation | 2 | 2 | 0 | 0 |
-| 05--agent-orchestration/z_archive/003-agent-system-upgrade | 1 | 0 | 0 | 0 |
-| 05--agent-orchestration/z_archive/005-agent-system-improvements | 2 | 0 | 0 | 0 |
-| 05--agent-orchestration/z_archive/009-claude-code-subagents | 1 | 0 | 0 | 0 |
-| 05--agent-orchestration/z_archive/011-context-model-optimization | 2 | 2 | 0 | 0 |
-| 05--agent-orchestration/z_archive/012-context-model-comparison | 1 | 1 | 0 | 0 |
-| 05--agent-orchestration/z_archive/013-agent-haiku-compatibility | 2 | 2 | 0 | 0 |
-| 05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/fixtures/base-spec-folder | 1 | 1 | 0 | 0 |
-| 05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/complete-happy | 1 | 1 | 0 | 0 |
-| 05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/debug-escalation | 1 | 1 | 0 | 0 |
-| 05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/debug-happy | 1 | 1 | 0 | 0 |
-| 05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/handover-happy | 1 | 1 | 0 | 0 |
-| 05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/handover-increment | 1 | 1 | 0 | 0 |
-| 05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/implement-debug-threshold | 2 | 2 | 0 | 0 |
-| 05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/implement-happy | 2 | 2 | 0 | 0 |
-| 05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/plan-happy | 1 | 1 | 0 | 0 |
-| 05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/research-empty-codebase | 1 | 1 | 0 | 0 |
-| 05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/research-happy | 1 | 1 | 0 | 0 |
-| 05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/resume-happy | 1 | 1 | 0 | 0 |
-| 05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/resume-stale | 1 | 1 | 0 | 0 |
-| 05--agent-orchestration/z_archive/015-review-agent-model-agnostic | 1 | 1 | 0 | 0 |
+| 04--agent-orchestration/z_archive/003-agent-system-upgrade | 1 | 0 | 0 | 0 |
+| 04--agent-orchestration/z_archive/005-agent-system-improvements | 2 | 0 | 0 | 0 |
+| 04--agent-orchestration/z_archive/009-claude-code-subagents | 1 | 0 | 0 | 0 |
+| 04--agent-orchestration/z_archive/011-context-model-optimization | 2 | 2 | 0 | 0 |
+| 04--agent-orchestration/z_archive/012-context-model-comparison | 1 | 1 | 0 | 0 |
+| 04--agent-orchestration/z_archive/013-agent-haiku-compatibility | 2 | 2 | 0 | 0 |
+| 04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/fixtures/base-spec-folder | 1 | 1 | 0 | 0 |
+| 04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/complete-happy | 1 | 1 | 0 | 0 |
+| 04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/debug-escalation | 1 | 1 | 0 | 0 |
+| 04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/debug-happy | 1 | 1 | 0 | 0 |
+| 04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/handover-happy | 1 | 1 | 0 | 0 |
+| 04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/handover-increment | 1 | 1 | 0 | 0 |
+| 04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/implement-debug-threshold | 2 | 2 | 0 | 0 |
+| 04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/implement-happy | 2 | 2 | 0 | 0 |
+| 04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/plan-happy | 1 | 1 | 0 | 0 |
+| 04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/research-empty-codebase | 1 | 1 | 0 | 0 |
+| 04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/research-happy | 1 | 1 | 0 | 0 |
+| 04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/resume-happy | 1 | 1 | 0 | 0 |
+| 04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/resume-stale | 1 | 1 | 0 | 0 |
+| 04--agent-orchestration/z_archive/015-review-agent-model-agnostic | 1 | 1 | 0 | 0 |
 
 ## Non-Clean Files
 
@@ -189,24 +189,24 @@ Root: /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/sp
 - 03--commands-and-skills/006-git-superset-worktrees/memory/28-02-26_17-38__sk-git-superset.md :: repair_in_place :: missing_standard_anchor_scaffolding
 - 03--commands-and-skills/003-prompt-initial-creation/memory/01-03-26_11-09__initial-creation.md :: repair_in_place :: missing_standard_anchor_scaffolding
 - 03--commands-and-skills/003-prompt-initial-creation/memory/04-03-26_09-15__initial-creation.md :: repair_in_place :: missing_standard_anchor_scaffolding
-- 05--agent-orchestration/z_archive/011-context-model-optimization/memory/14-02-26_11-57__context-model-optimization.md :: repair_in_place :: missing_standard_anchor_scaffolding
-- 05--agent-orchestration/z_archive/011-context-model-optimization/memory/14-02-26_12-51__context-model-optimization.md :: repair_in_place :: missing_standard_anchor_scaffolding
-- 05--agent-orchestration/z_archive/012-context-model-comparison/memory/14-02-26_13-23__context-model-comparison.md :: repair_in_place :: missing_standard_anchor_scaffolding
-- 05--agent-orchestration/z_archive/013-agent-haiku-compatibility/memory/14-02-26_14-57__agent-haiku-compatibility.md :: repair_in_place :: missing_standard_anchor_scaffolding
-- 05--agent-orchestration/z_archive/013-agent-haiku-compatibility/memory/14-02-26_15-05__agent-haiku-compatibility.md :: repair_in_place :: missing_standard_anchor_scaffolding
-- 05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/fixtures/base-spec-folder/memory/14-02-26_10-00__session.md :: repair_in_place :: missing_section, missing_section, missing_section, missing_section, missing_section
-- 05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/complete-happy/memory/14-02-26_12-00__complete_session.md :: repair_in_place :: missing_section, missing_section, missing_section, missing_section, missing_section, missing_section
-- 05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/debug-escalation/memory/14-02-26_10-00__session.md :: repair_in_place :: missing_section, missing_section, missing_section, missing_section, missing_section
-- 05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/debug-happy/memory/14-02-26_10-00__session.md :: repair_in_place :: missing_section, missing_section, missing_section, missing_section, missing_section
-- 05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/handover-happy/memory/14-02-26_10-00__session.md :: repair_in_place :: missing_section, missing_section, missing_section, missing_section, missing_section
-- 05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/handover-increment/memory/14-02-26_10-00__session.md :: repair_in_place :: missing_section, missing_section, missing_section, missing_section, missing_section
-- 05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/implement-debug-threshold/memory/14-02-26_10-00__session.md :: repair_in_place :: missing_section, missing_section, missing_section, missing_section, missing_section
-- 05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/implement-debug-threshold/memory/14-02-26_11-30__implementation_session.md :: repair_in_place :: missing_section, missing_section, missing_section, missing_section, missing_section, missing_section
-- 05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/implement-happy/memory/14-02-26_10-00__session.md :: repair_in_place :: missing_section, missing_section, missing_section, missing_section, missing_section
-- 05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/implement-happy/memory/14-02-26_11-00__implementation_session.md :: repair_in_place :: missing_section, missing_section, missing_section, missing_section, missing_section, missing_section
-- 05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/plan-happy/memory/14-02-26_10-30__planning_session.md :: repair_in_place :: missing_section, missing_section, missing_section, missing_section, missing_section
-- 05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/research-empty-codebase/memory/14-02-26_13-30__research_session.md :: repair_in_place :: missing_section, missing_section, missing_section, missing_section, missing_section, missing_section
-- 05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/research-happy/memory/14-02-26_13-00__research_session.md :: repair_in_place :: missing_section, missing_section, missing_section, missing_section, missing_section, missing_section
-- 05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/resume-happy/memory/14-02-26_10-00__session.md :: repair_in_place :: missing_section, missing_section, missing_section, missing_section, missing_section
-- 05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/resume-stale/memory/14-02-26_10-00__session.md :: repair_in_place :: missing_section, missing_section, missing_section, missing_section, missing_section
-- 05--agent-orchestration/z_archive/015-review-agent-model-agnostic/memory/15-02-26_15-35__review-agent-model-agnostic.md :: repair_in_place :: missing_standard_anchor_scaffolding
+- 04--agent-orchestration/z_archive/011-context-model-optimization/memory/14-02-26_11-57__context-model-optimization.md :: repair_in_place :: missing_standard_anchor_scaffolding
+- 04--agent-orchestration/z_archive/011-context-model-optimization/memory/14-02-26_12-51__context-model-optimization.md :: repair_in_place :: missing_standard_anchor_scaffolding
+- 04--agent-orchestration/z_archive/012-context-model-comparison/memory/14-02-26_13-23__context-model-comparison.md :: repair_in_place :: missing_standard_anchor_scaffolding
+- 04--agent-orchestration/z_archive/013-agent-haiku-compatibility/memory/14-02-26_14-57__agent-haiku-compatibility.md :: repair_in_place :: missing_standard_anchor_scaffolding
+- 04--agent-orchestration/z_archive/013-agent-haiku-compatibility/memory/14-02-26_15-05__agent-haiku-compatibility.md :: repair_in_place :: missing_standard_anchor_scaffolding
+- 04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/fixtures/base-spec-folder/memory/14-02-26_10-00__session.md :: repair_in_place :: missing_section, missing_section, missing_section, missing_section, missing_section
+- 04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/complete-happy/memory/14-02-26_12-00__complete_session.md :: repair_in_place :: missing_section, missing_section, missing_section, missing_section, missing_section, missing_section
+- 04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/debug-escalation/memory/14-02-26_10-00__session.md :: repair_in_place :: missing_section, missing_section, missing_section, missing_section, missing_section
+- 04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/debug-happy/memory/14-02-26_10-00__session.md :: repair_in_place :: missing_section, missing_section, missing_section, missing_section, missing_section
+- 04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/handover-happy/memory/14-02-26_10-00__session.md :: repair_in_place :: missing_section, missing_section, missing_section, missing_section, missing_section
+- 04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/handover-increment/memory/14-02-26_10-00__session.md :: repair_in_place :: missing_section, missing_section, missing_section, missing_section, missing_section
+- 04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/implement-debug-threshold/memory/14-02-26_10-00__session.md :: repair_in_place :: missing_section, missing_section, missing_section, missing_section, missing_section
+- 04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/implement-debug-threshold/memory/14-02-26_11-30__implementation_session.md :: repair_in_place :: missing_section, missing_section, missing_section, missing_section, missing_section, missing_section
+- 04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/implement-happy/memory/14-02-26_10-00__session.md :: repair_in_place :: missing_section, missing_section, missing_section, missing_section, missing_section
+- 04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/implement-happy/memory/14-02-26_11-00__implementation_session.md :: repair_in_place :: missing_section, missing_section, missing_section, missing_section, missing_section, missing_section
+- 04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/plan-happy/memory/14-02-26_10-30__planning_session.md :: repair_in_place :: missing_section, missing_section, missing_section, missing_section, missing_section
+- 04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/research-empty-codebase/memory/14-02-26_13-30__research_session.md :: repair_in_place :: missing_section, missing_section, missing_section, missing_section, missing_section, missing_section
+- 04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/research-happy/memory/14-02-26_13-00__research_session.md :: repair_in_place :: missing_section, missing_section, missing_section, missing_section, missing_section, missing_section
+- 04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/resume-happy/memory/14-02-26_10-00__session.md :: repair_in_place :: missing_section, missing_section, missing_section, missing_section, missing_section
+- 04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/resume-stale/memory/14-02-26_10-00__session.md :: repair_in_place :: missing_section, missing_section, missing_section, missing_section, missing_section
+- 04--agent-orchestration/z_archive/015-review-agent-model-agnostic/memory/15-02-26_15-35__review-agent-model-agnostic.md :: repair_in_place :: missing_standard_anchor_scaffolding

@@ -124,7 +124,7 @@ contextType: general
 
 **Decisions:** 5 decisions recorded
 
-**Summary:** Continued Spec 129 anchor retrofit by adding anchor tags to all spec documents in the three z_archive directories (05--agent-orchestration, 005-anobel.com, 02--system-spec-kit). Dispatched 5 parallel agents that s...
+**Summary:** Continued Spec 129 anchor retrofit by adding anchor tags to all spec documents in the three z_archive directories (04--agent-orchestration, 005-anobel.com, 02--system-spec-kit). Dispatched 5 parallel agents that s...
 
 ### Pending Work
 
@@ -147,7 +147,7 @@ Next: Continue implementation
 
 **Key Context to Review:**
 
-- Files modified: .opencode/specs/05--agent-orchestration/z_archive/ (36 files anchored), .opencode/.../z_archive/ (123 files anchored), .opencode/.../z_archive/097-memory-save-auto-detect (DELETED)
+- Files modified: .opencode/specs/04--agent-orchestration/z_archive/ (36 files anchored), .opencode/.../z_archive/ (123 files anchored), .opencode/.../z_archive/097-memory-save-auto-detect (DELETED)
 
 - Check: plan.md, tasks.md, checklist.md
 
@@ -164,7 +164,7 @@ Next: Continue implementation
 | Field | Value |
 |-------|-------|
 | Phase | RESEARCH |
-| Active File | .opencode/specs/05--agent-orchestration/z_archive/ (36 files anchored) |
+| Active File | .opencode/specs/04--agent-orchestration/z_archive/ (36 files anchored) |
 | Last Action | Technical Implementation Details |
 | Next Action | Continue implementation |
 | Blockers | None |
@@ -195,13 +195,13 @@ Next: Continue implementation
 
 **What Was Built**:
 
-- **Continued Spec 129 anchor retrofit by adding anchor tags to all spec documents in the three...** - Continued Spec 129 anchor retrofit by adding anchor tags to all spec documents in the three z_archive directories (05--agent-orchestration, 005-anobel.
+- **Continued Spec 129 anchor retrofit by adding anchor tags to all spec documents in the three...** - Continued Spec 129 anchor retrofit by adding anchor tags to all spec documents in the three z_archive directories (04--agent-orchestration, 005-anobel.
 
 - **Technical Implementation Details** - rootCause: Spec 129 added anchor tags to templates but existing archived spec docs in z_archive directories had no anchors; solution: Multi-agent parallel dispatch (5 agents) to add anchors to all H2 sections in archived spec docs, with Python fallback for stragglers; patterns: Anchor ID derivation: strip leading numbers/prefixes, lowercase, hyphenate, remove special chars.
 
 **Key Files and Their Roles**:
 
-- `.opencode/specs/05--agent-orchestration/z_archive/ (36 files anchored)` - File modified (description pending)
+- `.opencode/specs/04--agent-orchestration/z_archive/ (36 files anchored)` - File modified (description pending)
 
 - `.opencode/.../z_archive/ (123 files anchored)` - File modified (description pending)
 
@@ -242,7 +242,7 @@ Next: Continue implementation
 
 ## 2. OVERVIEW
 
-Continued Spec 129 anchor retrofit by adding anchor tags to all spec documents in the three z_archive directories (05--agent-orchestration, 005-anobel.com, 02--system-spec-kit). Dispatched 5 parallel agents that successfully anchored 159 files with ~1,412 anchor pairs total. Also cleaned up 5 empty/abandoned z_archive folders and removed 1 non-anchorable prompt.md file. 4 files were correctly identified as non-anchorable (no H2 headings). The archive anchor retrofit is now complete.
+Continued Spec 129 anchor retrofit by adding anchor tags to all spec documents in the three z_archive directories (04--agent-orchestration, 005-anobel.com, 02--system-spec-kit). Dispatched 5 parallel agents that successfully anchored 159 files with ~1,412 anchor pairs total. Also cleaned up 5 empty/abandoned z_archive folders and removed 1 non-anchorable prompt.md file. 4 files were correctly identified as non-anchorable (no H2 headings). The archive anchor retrofit is now complete.
 
 **Key Outcomes**:
 - Continued Spec 129 anchor retrofit by adding anchor tags to all spec documents in the three...
@@ -257,7 +257,7 @@ Continued Spec 129 anchor retrofit by adding anchor tags to all spec documents i
 
 | **File** | **Description** |
 |:---------|:----------------|
-| `.opencode/specs/05--agent-orchestration/z_archive/ (36 files anchored)` | File modified (description pending) |
+| `.opencode/specs/04--agent-orchestration/z_archive/ (36 files anchored)` | File modified (description pending) |
 | `.opencode/.../z_archive/ (123 files anchored)` | File modified (description pending) |
 | `.opencode/.../z_archive/097-memory-save-auto-detect (DELETED)` | File modified (description pending) |
 | `.opencode/.../z_archive/104-spec-kit-test-and-type-cleanup (DELETED)` | File modified (description pending) |
@@ -278,7 +278,7 @@ Continued Spec 129 anchor retrofit by adding anchor tags to all spec documents i
 <!-- ANCHOR:implementation-continued-spec-129-anchor-b76f6f85 -->
 ### FEATURE: Continued Spec 129 anchor retrofit by adding anchor tags to all spec documents in the three...
 
-Continued Spec 129 anchor retrofit by adding anchor tags to all spec documents in the three z_archive directories (05--agent-orchestration, 005-anobel.com, 02--system-spec-kit). Dispatched 5 parallel agents that successfully anchored 159 files with ~1,412 anchor pairs total. Also cleaned up 5 empty/abandoned z_archive folders and removed 1 non-anchorable prompt.md file. 4 files were correctly identified as non-anchorable (no H2 headings). The archive anchor retrofit is now complete.
+Continued Spec 129 anchor retrofit by adding anchor tags to all spec documents in the three z_archive directories (04--agent-orchestration, 005-anobel.com, 02--system-spec-kit). Dispatched 5 parallel agents that successfully anchored 159 files with ~1,412 anchor pairs total. Also cleaned up 5 empty/abandoned z_archive folders and removed 1 non-anchorable prompt.md file. 4 files were correctly identified as non-anchorable (no H2 headings). The archive anchor retrofit is now complete.
 
 **Details:** anchor tags | anchor retrofit | z_archive | archive anchors | spec doc anchors | spec 129 | section-level retrieval | empty folder cleanup | archive cleanup | anchor-tags
 <!-- /ANCHOR:implementation-continued-spec-129-anchor-b76f6f85 -->
@@ -479,7 +479,7 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 
 > **User** | 2026-02-16 @ 14:12:12
 
-Continued Spec 129 anchor retrofit by adding anchor tags to all spec documents in the three z_archive directories (05--agent-orchestration, 005-anobel.com, 02--system-spec-kit). Dispatched 5 parallel agents that successfully anchored 159 files with ~1,412 anchor pairs total. Also cleaned up 5 empty/abandoned z_archive folders and removed 1 non-anchorable prompt.md file. 4 files were correctly identified as non-anchorable (no H2 headings). The archive anchor retrofit is now complete.
+Continued Spec 129 anchor retrofit by adding anchor tags to all spec documents in the three z_archive directories (04--agent-orchestration, 005-anobel.com, 02--system-spec-kit). Dispatched 5 parallel agents that successfully anchored 159 files with ~1,412 anchor pairs total. Also cleaned up 5 empty/abandoned z_archive folders and removed 1 non-anchorable prompt.md file. 4 files were correctly identified as non-anchorable (no H2 headings). The archive anchor retrofit is now complete.
 
 ---
 
@@ -711,7 +711,7 @@ trigger_phrases:
   - "tags"
 
 key_files:
-  - ".opencode/specs/05--agent-orchestration/z_archive/ (36 files anchored)"
+  - ".opencode/specs/04--agent-orchestration/z_archive/ (36 files anchored)"
   - ".opencode/.../z_archive/ (123 files anchored)"
   - ".opencode/.../z_archive/097-memory-save-auto-detect (DELETED)"
   - ".opencode/.../z_archive/104-spec-kit-test-and-type-cleanup (DELETED)"

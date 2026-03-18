@@ -137,7 +137,7 @@ specs/02--system-spec-kit/022-hybrid-rag-fusion/012-perfect-session-capturing
 specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/012-handover-triggers
 specs/02--system-spec-kit/z_archive/012-spec-doc-anchor-tags
 specs/01--anobel.com/z_archive/012-notification-time-scheduling
-specs/05--agent-orchestration/z_archive/012-context-model-comparison
+specs/04--agent-orchestration/z_archive/012-context-model-comparison
 specs/03--commands-and-skills/z_archive/012-code-opencode-codebase-alignment
 specs/03--commands-and-skills/013-cmd-create-codex-compatibility
  succeeded in 286ms:

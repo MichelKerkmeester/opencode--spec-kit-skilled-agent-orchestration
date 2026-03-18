@@ -62,12 +62,12 @@ Root: /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/sp
 | 03--commands-and-skills/011-doc-template-folders | 1 | 0 | 0 | 0 |
 | 03--commands-and-skills/006-git-superset-worktrees | 1 | 0 | 0 | 0 |
 | 03--commands-and-skills/003-prompt-initial-creation | 2 | 0 | 0 | 0 |
-| 05--agent-orchestration/z_archive/003-agent-system-upgrade | 1 | 0 | 0 | 0 |
-| 05--agent-orchestration/z_archive/005-agent-system-improvements | 2 | 0 | 0 | 0 |
-| 05--agent-orchestration/z_archive/011-context-model-optimization | 2 | 0 | 0 | 0 |
-| 05--agent-orchestration/z_archive/012-context-model-comparison | 1 | 0 | 0 | 0 |
-| 05--agent-orchestration/z_archive/013-agent-haiku-compatibility | 2 | 0 | 0 | 0 |
-| 05--agent-orchestration/z_archive/015-review-agent-model-agnostic | 1 | 0 | 0 | 0 |
+| 04--agent-orchestration/z_archive/003-agent-system-upgrade | 1 | 0 | 0 | 0 |
+| 04--agent-orchestration/z_archive/005-agent-system-improvements | 2 | 0 | 0 | 0 |
+| 04--agent-orchestration/z_archive/011-context-model-optimization | 2 | 0 | 0 | 0 |
+| 04--agent-orchestration/z_archive/012-context-model-comparison | 1 | 0 | 0 | 0 |
+| 04--agent-orchestration/z_archive/013-agent-haiku-compatibility | 2 | 0 | 0 | 0 |
+| 04--agent-orchestration/z_archive/015-review-agent-model-agnostic | 1 | 0 | 0 | 0 |
 
 ## Non-Clean Files
 

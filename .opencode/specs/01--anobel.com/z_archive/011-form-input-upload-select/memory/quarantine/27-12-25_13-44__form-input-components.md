@@ -121,7 +121,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 ---
 
-<!-- ANCHOR_EXAMPLE:task-guide-agents-05--agent-orchestration -->
+<!-- ANCHOR_EXAMPLE:task-guide-agents-04--agent-orchestration -->
 <!-- ANCHOR:task-guide -->
 <a id="implementation-guide"></a>
 
@@ -155,11 +155,11 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 - **Async/Await**: Handle asynchronous operations cleanly
 
-<!-- /ANCHOR_EXAMPLE:task-guide-agents-05--agent-orchestration -->
+<!-- /ANCHOR_EXAMPLE:task-guide-agents-04--agent-orchestration -->
 
 ---
 
-<!-- ANCHOR_EXAMPLE:summary-session-1766839461668-guzu8k16x-05--agent-orchestration -->
+<!-- ANCHOR_EXAMPLE:summary-session-1766839461668-guzu8k16x-04--agent-orchestration -->
 <!-- ANCHOR:summary -->
 <a id="overview"></a>
 
@@ -189,11 +189,11 @@ Created comprehensive Level 3 spec folder documentation for form input component
 | `specs/.../012-form-input-components/decision-record.md` | Detailed architecture diagrams |
 | `specs/005-anobel.com/012-form-input-components/tasks.md` | Detailed architecture diagrams |
 
-<!-- /ANCHOR_EXAMPLE:summary-session-1766839461668-guzu8k16x-05--agent-orchestration -->
+<!-- /ANCHOR_EXAMPLE:summary-session-1766839461668-guzu8k16x-04--agent-orchestration -->
 
 ---
 
-<!-- ANCHOR_EXAMPLE:detailed-changes-session-1766839461668-guzu8k16x-05--agent-orchestration -->
+<!-- ANCHOR_EXAMPLE:detailed-changes-session-1766839461668-guzu8k16x-04--agent-orchestration -->
 <!-- ANCHOR:detailed-changes -->
 <a id="detailed-changes"></a>
 
@@ -214,11 +214,11 @@ rootCause: Finsweet select has static options, cannot be updated from CMS. Forms
 
 <!-- /ANCHOR_EXAMPLE:implementation-technical-implementation-details-d831a480-session-1766839461668-guzu8k16x -->
 
-<!-- /ANCHOR_EXAMPLE:detailed-changes-session-1766839461668-guzu8k16x-05--agent-orchestration -->
+<!-- /ANCHOR_EXAMPLE:detailed-changes-session-1766839461668-guzu8k16x-04--agent-orchestration -->
 
 ---
 
-<!-- ANCHOR_EXAMPLE:decisions-session-1766839461668-guzu8k16x-05--agent-orchestration -->
+<!-- ANCHOR_EXAMPLE:decisions-session-1766839461668-guzu8k16x-04--agent-orchestration -->
 <a id="decisions"></a>
 
 <!-- DYNAMIC SECTION NUMBERING:
@@ -461,9 +461,9 @@ rootCause: Finsweet select has static options, cannot be updated from CMS. Forms
 
 ---
 
-<!-- /ANCHOR_EXAMPLE:decisions-session-1766839461668-guzu8k16x-05--agent-orchestration -->
+<!-- /ANCHOR_EXAMPLE:decisions-session-1766839461668-guzu8k16x-04--agent-orchestration -->
 
-<!-- ANCHOR_EXAMPLE:session-history-session-1766839461668-guzu8k16x-05--agent-orchestration -->
+<!-- ANCHOR_EXAMPLE:session-history-session-1766839461668-guzu8k16x-04--agent-orchestration -->
 <a id="conversation"></a>
 
 <!-- DYNAMIC SECTION NUMBERING:
@@ -494,7 +494,7 @@ Created comprehensive Level 3 spec folder documentation for form input component
 
 ---
 
-<!-- /ANCHOR_EXAMPLE:session-history-session-1766839461668-guzu8k16x-05--agent-orchestration -->
+<!-- /ANCHOR_EXAMPLE:session-history-session-1766839461668-guzu8k16x-04--agent-orchestration -->
 
 ---
 
@@ -556,14 +556,14 @@ This session was migrated from an older format. Learning metrics were not captur
 
 ## MEMORY METADATA
 
-<!-- ANCHOR_EXAMPLE:metadata-session-1766839461668-guzu8k16x-05--agent-orchestration -->
+<!-- ANCHOR_EXAMPLE:metadata-session-1766839461668-guzu8k16x-04--agent-orchestration -->
 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
 # Core Identifiers
 session_id: "session-1766839461668-guzu8k16x"
-spec_folder: "05--agent-orchestration"
+spec_folder: "04--agent-orchestration"
 channel: "main"
 
 # Classification
@@ -635,7 +635,7 @@ related_sessions:
 
   []
 
-parent_spec: "05--agent-orchestration"
+parent_spec: "04--agent-orchestration"
 child_sessions:
 
   []
@@ -646,7 +646,7 @@ embedding_version: "1.0"
 chunk_count: 1
 ```
 
-<!-- /ANCHOR:metadata-session-1766839461668-guzu8k16x-05--agent-orchestration -->
+<!-- /ANCHOR:metadata-session-1766839461668-guzu8k16x-04--agent-orchestration -->
 
 ---
 

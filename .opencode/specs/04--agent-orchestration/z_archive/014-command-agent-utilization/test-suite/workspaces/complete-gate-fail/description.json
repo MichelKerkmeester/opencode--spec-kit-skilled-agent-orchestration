@@ -1,0 +1,22 @@
+{
+  "specFolder": "04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/complete-gate-fail",
+  "description": "Feature Specification: Notification System",
+  "keywords": [
+    "feature",
+    "specification",
+    "notification",
+    "system"
+  ],
+  "lastUpdated": "2026-03-16T13:20:03.286Z",
+  "specId": "",
+  "folderSlug": "complete-gate-fail",
+  "parentChain": [
+    "04--agent-orchestration",
+    "z_archive",
+    "014-command-agent-utilization",
+    "test-suite",
+    "workspaces"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

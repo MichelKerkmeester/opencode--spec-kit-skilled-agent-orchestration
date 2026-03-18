@@ -1,0 +1,19 @@
+{
+  "specFolder": "04--agent-orchestration/z_archive/007-explore-sub-agent",
+  "description": "Spec: Context Loader Sub-Agent (@context_loader)",
+  "keywords": [
+    "spec",
+    "context",
+    "loader",
+    "sub-agent"
+  ],
+  "lastUpdated": "2026-03-16T13:20:03.232Z",
+  "specId": "007",
+  "folderSlug": "explore-sub-agent",
+  "parentChain": [
+    "04--agent-orchestration",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

@@ -58,7 +58,7 @@ CONTINUATION - Attempt 1 | Spec: `.opencode/specs/02--system-spec-kit/022-hybrid
 ## 3. Completed Work
 
 ### Tasks Completed
-- [x] Ran forced indexing passes for `02--system-spec-kit`, `00--ai-systems-non-dev`, `01--anobel.com`, `03--commands-and-skills`, and `05--agent-orchestration`.
+- [x] Ran forced indexing passes for `02--system-spec-kit`, `00--ai-systems-non-dev`, `01--anobel.com`, `03--commands-and-skills`, and `04--agent-orchestration`.
 - [x] Captured and handled repeated `E429` cooldown windows during indexing.
 - [x] Re-ran validation on this spec and cleared template-source hard errors.
 - [x] Preserved user constraint: no nested agent dispatch from this command workflow.

@@ -3807,7 +3807,7 @@
       "lastUpdated": "2026-03-16T13:20:03.123Z"
     },
     {
-      "specFolder": "05--agent-orchestration/018-opencode-agent-path-only",
+      "specFolder": "04--agent-orchestration/018-opencode-agent-path-only",
       "description": "Feature Specification: OpenCode Agent Path Only",
       "keywords": [
         "feature",
@@ -3820,7 +3820,7 @@
       "lastUpdated": "2026-03-16T13:20:03.131Z"
     },
     {
-      "specFolder": "05--agent-orchestration/019-incorrect-sub-agent-nesting",
+      "specFolder": "04--agent-orchestration/019-incorrect-sub-agent-nesting",
       "description": "Feature Specification: Sub-Agent Nesting Depth Control",
       "keywords": [
         "feature",
@@ -3833,7 +3833,7 @@
       "lastUpdated": "2026-03-16T13:20:03.137Z"
     },
     {
-      "specFolder": "05--agent-orchestration/020-agent-sonnet-upgrade",
+      "specFolder": "04--agent-orchestration/020-agent-sonnet-upgrade",
       "description": "Feature Specification: Agent Sonnet 4.6 Upgrade",
       "keywords": [
         "feature",
@@ -3845,7 +3845,7 @@
       "lastUpdated": "2026-03-16T13:20:03.144Z"
     },
     {
-      "specFolder": "05--agent-orchestration/021-codex-orchestrate",
+      "specFolder": "04--agent-orchestration/021-codex-orchestrate",
       "description": "Feature Specification: ChatGPT Agent Suite Codex Optimization",
       "keywords": [
         "feature",
@@ -3859,7 +3859,7 @@
       "lastUpdated": "2026-03-16T13:20:03.152Z"
     },
     {
-      "specFolder": "05--agent-orchestration/022-context-overload-prevention",
+      "specFolder": "04--agent-orchestration/022-context-overload-prevention",
       "description": "Feature Specification: Context Overload Prevention",
       "keywords": [
         "feature",
@@ -3871,7 +3871,7 @@
       "lastUpdated": "2026-03-16T13:20:03.159Z"
     },
     {
-      "specFolder": "05--agent-orchestration/023-gemini-cli-compatibility",
+      "specFolder": "04--agent-orchestration/023-gemini-cli-compatibility",
       "description": "Feature Specification: Gemini CLI Compatibility",
       "keywords": [
         "feature",
@@ -3883,7 +3883,7 @@
       "lastUpdated": "2026-03-16T13:20:03.165Z"
     },
     {
-      "specFolder": "05--agent-orchestration/025-codex-cli-agents",
+      "specFolder": "04--agent-orchestration/025-codex-cli-agents",
       "description": "Feature Specification: Codex CLI Agent Definitions",
       "keywords": [
         "feature",
@@ -3896,7 +3896,7 @@
       "lastUpdated": "2026-03-16T13:20:03.172Z"
     },
     {
-      "specFolder": "05--agent-orchestration/026-review-debug-agent-improvement",
+      "specFolder": "04--agent-orchestration/026-review-debug-agent-improvement",
       "description": "Spec: Adversarial Self-Check for Review, Debug, Ultra-Think Agents",
       "keywords": [
         "spec",
@@ -3910,7 +3910,7 @@
       "lastUpdated": "2026-03-16T13:20:03.178Z"
     },
     {
-      "specFolder": "05--agent-orchestration/027-copilot-gpt-5-4-agents",
+      "specFolder": "04--agent-orchestration/027-copilot-gpt-5-4-agents",
       "description": "Feature Specification: GPT-5.4 Agent Model Upgrade",
       "keywords": [
         "feature",
@@ -3923,7 +3923,7 @@
       "lastUpdated": "2026-03-16T13:20:03.185Z"
     },
     {
-      "specFolder": "05--agent-orchestration/028-auto-deep-research",
+      "specFolder": "04--agent-orchestration/028-auto-deep-research",
       "description": "Feature Specification: Autonomous Deep Research Loop",
       "keywords": [
         "feature",
@@ -3936,7 +3936,7 @@
       "lastUpdated": "2026-03-18T15:57:15.566Z"
     },
     {
-      "specFolder": "05--agent-orchestration/z_archive/001-agents-from-oh-my-opencode",
+      "specFolder": "04--agent-orchestration/z_archive/001-agents-from-oh-my-opencode",
       "description": "Agent Architecture Analysis: oh-my-opencode",
       "keywords": [
         "agent",
@@ -3947,7 +3947,7 @@
       "lastUpdated": "2026-03-16T13:20:03.192Z"
     },
     {
-      "specFolder": "05--agent-orchestration/z_archive/002-write-agent-enforcement",
+      "specFolder": "04--agent-orchestration/z_archive/002-write-agent-enforcement",
       "description": "Spec: @write Agent Enforcement for /create Commands",
       "keywords": [
         "spec",
@@ -3960,7 +3960,7 @@
       "lastUpdated": "2026-03-16T13:20:03.199Z"
     },
     {
-      "specFolder": "05--agent-orchestration/z_archive/003-agent-system-upgrade",
+      "specFolder": "04--agent-orchestration/z_archive/003-agent-system-upgrade",
       "description": "Specification: Agent System Upgrade",
       "keywords": [
         "specification",
@@ -3971,7 +3971,7 @@
       "lastUpdated": "2026-03-16T13:20:03.206Z"
     },
     {
-      "specFolder": "05--agent-orchestration/z_archive/004-multi-agent-dispatch",
+      "specFolder": "04--agent-orchestration/z_archive/004-multi-agent-dispatch",
       "description": "Spec: Multi-Agent Dispatch for Research and Debug Commands",
       "keywords": [
         "spec",
@@ -3984,7 +3984,7 @@
       "lastUpdated": "2026-03-16T13:20:03.213Z"
     },
     {
-      "specFolder": "05--agent-orchestration/z_archive/005-agent-system-improvements",
+      "specFolder": "04--agent-orchestration/z_archive/005-agent-system-improvements",
       "description": "Feature Specification: Agent System Improvements",
       "keywords": [
         "feature",
@@ -3996,7 +3996,7 @@
       "lastUpdated": "2026-03-16T13:20:03.220Z"
     },
     {
-      "specFolder": "05--agent-orchestration/z_archive/006-orchestrate-context-window",
+      "specFolder": "04--agent-orchestration/z_archive/006-orchestrate-context-window",
       "description": "Feature Specification: Orchestrate Agent Context Window Protection",
       "keywords": [
         "feature",
@@ -4010,7 +4010,7 @@
       "lastUpdated": "2026-03-16T13:20:03.227Z"
     },
     {
-      "specFolder": "05--agent-orchestration/z_archive/007-explore-sub-agent",
+      "specFolder": "04--agent-orchestration/z_archive/007-explore-sub-agent",
       "description": "Spec: Context Loader Sub-Agent (@context_loader)",
       "keywords": [
         "spec",
@@ -4021,7 +4021,7 @@
       "lastUpdated": "2026-03-16T13:20:03.232Z"
     },
     {
-      "specFolder": "05--agent-orchestration/z_archive/008-context-loader-enforcement",
+      "specFolder": "04--agent-orchestration/z_archive/008-context-loader-enforcement",
       "description": "Spec: Aggressive @context_loader Enforcement",
       "keywords": [
         "spec",
@@ -4031,7 +4031,7 @@
       "lastUpdated": "2026-03-16T13:20:03.238Z"
     },
     {
-      "specFolder": "05--agent-orchestration/z_archive/009-claude-code-subagents",
+      "specFolder": "04--agent-orchestration/z_archive/009-claude-code-subagents",
       "description": "Feature Specification: Convert OpenCode Agents to Claude Code Subagents",
       "keywords": [
         "feature",
@@ -4046,7 +4046,7 @@
       "lastUpdated": "2026-03-16T13:20:03.244Z"
     },
     {
-      "specFolder": "05--agent-orchestration/z_archive/010-explore-routing-fix",
+      "specFolder": "04--agent-orchestration/z_archive/010-explore-routing-fix",
       "description": "Spec: Fix @explore Direct Dispatch in Orchestrate Agent",
       "keywords": [
         "spec",
@@ -4060,7 +4060,7 @@
       "lastUpdated": "2026-03-16T13:20:03.250Z"
     },
     {
-      "specFolder": "05--agent-orchestration/z_archive/011-context-model-optimization",
+      "specFolder": "04--agent-orchestration/z_archive/011-context-model-optimization",
       "description": "Feature Specification: Context Agent Model Optimization",
       "keywords": [
         "feature",
@@ -4073,7 +4073,7 @@
       "lastUpdated": "2026-03-16T13:20:03.255Z"
     },
     {
-      "specFolder": "05--agent-orchestration/z_archive/012-context-model-comparison",
+      "specFolder": "04--agent-orchestration/z_archive/012-context-model-comparison",
       "description": "Spec 012: Context Agent Model Comparison (Haiku vs Sonnet)",
       "keywords": [
         "spec",
@@ -4088,7 +4088,7 @@
       "lastUpdated": "2026-03-16T13:20:03.261Z"
     },
     {
-      "specFolder": "05--agent-orchestration/z_archive/013-agent-haiku-compatibility",
+      "specFolder": "04--agent-orchestration/z_archive/013-agent-haiku-compatibility",
       "description": "Feature Specification: Agent Haiku Compatibility",
       "keywords": [
         "feature",
@@ -4100,7 +4100,7 @@
       "lastUpdated": "2026-03-16T13:20:03.266Z"
     },
     {
-      "specFolder": "05--agent-orchestration/z_archive/014-command-agent-utilization",
+      "specFolder": "04--agent-orchestration/z_archive/014-command-agent-utilization",
       "description": "Feature Specification: Command Agent Utilization Audit",
       "keywords": [
         "feature",
@@ -4113,7 +4113,7 @@
       "lastUpdated": "2026-03-16T13:20:03.271Z"
     },
     {
-      "specFolder": "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/fixtures/base-spec-folder",
+      "specFolder": "04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/fixtures/base-spec-folder",
       "description": "Feature Specification: JWT Authentication",
       "keywords": [
         "feature",
@@ -4124,7 +4124,7 @@
       "lastUpdated": "2026-03-16T13:20:03.276Z"
     },
     {
-      "specFolder": "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/fixtures/error-spec-folder",
+      "specFolder": "04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/fixtures/error-spec-folder",
       "description": "Feature Specification: Notification System",
       "keywords": [
         "feature",
@@ -4135,7 +4135,7 @@
       "lastUpdated": "2026-03-16T13:20:03.280Z"
     },
     {
-      "specFolder": "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/complete-gate-fail",
+      "specFolder": "04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/complete-gate-fail",
       "description": "Feature Specification: Notification System",
       "keywords": [
         "feature",
@@ -4146,7 +4146,7 @@
       "lastUpdated": "2026-03-16T13:20:03.286Z"
     },
     {
-      "specFolder": "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/complete-happy",
+      "specFolder": "04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/complete-happy",
       "description": "Feature Specification: Notification System with In-App Alerts and Email Delivery",
       "keywords": [
         "feature",
@@ -4161,7 +4161,7 @@
       "lastUpdated": "2026-03-16T13:20:03.291Z"
     },
     {
-      "specFolder": "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/debug-escalation",
+      "specFolder": "04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/debug-escalation",
       "description": "Feature Specification: JWT Authentication",
       "keywords": [
         "feature",
@@ -4172,7 +4172,7 @@
       "lastUpdated": "2026-03-16T13:20:03.297Z"
     },
     {
-      "specFolder": "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/debug-happy",
+      "specFolder": "04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/debug-happy",
       "description": "Feature Specification: JWT Authentication",
       "keywords": [
         "feature",
@@ -4183,7 +4183,7 @@
       "lastUpdated": "2026-03-16T13:20:03.302Z"
     },
     {
-      "specFolder": "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/handover-happy",
+      "specFolder": "04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/handover-happy",
       "description": "Feature Specification: JWT Authentication",
       "keywords": [
         "feature",
@@ -4194,7 +4194,7 @@
       "lastUpdated": "2026-03-16T13:20:03.307Z"
     },
     {
-      "specFolder": "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/handover-increment",
+      "specFolder": "04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/handover-increment",
       "description": "Feature Specification: JWT Authentication",
       "keywords": [
         "feature",
@@ -4205,7 +4205,7 @@
       "lastUpdated": "2026-03-16T13:20:03.312Z"
     },
     {
-      "specFolder": "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/implement-debug-threshold",
+      "specFolder": "04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/implement-debug-threshold",
       "description": "Feature Specification: JWT Authentication",
       "keywords": [
         "feature",
@@ -4216,7 +4216,7 @@
       "lastUpdated": "2026-03-16T13:20:03.316Z"
     },
     {
-      "specFolder": "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/implement-happy",
+      "specFolder": "04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/implement-happy",
       "description": "Feature Specification: JWT Authentication",
       "keywords": [
         "feature",
@@ -4227,7 +4227,7 @@
       "lastUpdated": "2026-03-16T13:20:03.322Z"
     },
     {
-      "specFolder": "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/plan-happy",
+      "specFolder": "04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/plan-happy",
       "description": "Feature Specification: JWT Authentication with RS256 Signing",
       "keywords": [
         "feature",
@@ -4240,7 +4240,7 @@
       "lastUpdated": "2026-03-16T13:20:03.327Z"
     },
     {
-      "specFolder": "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/resume-happy",
+      "specFolder": "04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/resume-happy",
       "description": "Feature Specification: JWT Authentication",
       "keywords": [
         "feature",
@@ -4251,7 +4251,7 @@
       "lastUpdated": "2026-03-16T13:20:03.332Z"
     },
     {
-      "specFolder": "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/resume-stale",
+      "specFolder": "04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/resume-stale",
       "description": "Feature Specification: JWT Authentication",
       "keywords": [
         "feature",
@@ -4262,7 +4262,7 @@
       "lastUpdated": "2026-03-16T13:20:03.337Z"
     },
     {
-      "specFolder": "05--agent-orchestration/z_archive/015-review-agent-model-agnostic",
+      "specFolder": "04--agent-orchestration/z_archive/015-review-agent-model-agnostic",
       "description": "Feature Specification: Review Agent Model-Agnostic",
       "keywords": [
         "feature",
@@ -4274,7 +4274,7 @@
       "lastUpdated": "2026-03-16T13:20:03.343Z"
     },
     {
-      "specFolder": "05--agent-orchestration/z_archive/016-handover-model-codex-compat",
+      "specFolder": "04--agent-orchestration/z_archive/016-handover-model-codex-compat",
       "description": "Spec 016: Handover Model Downgrade + Codex Agent Compatibility",
       "keywords": [
         "spec",
@@ -4289,7 +4289,7 @@
       "lastUpdated": "2026-03-16T13:20:03.349Z"
     },
     {
-      "specFolder": "05--agent-orchestration/z_archive/017-agent-provider-switch",
+      "specFolder": "04--agent-orchestration/z_archive/017-agent-provider-switch",
       "description": "Spec 017: Agent Provider Switching with Primary Runtime Path",
       "keywords": [
         "spec",

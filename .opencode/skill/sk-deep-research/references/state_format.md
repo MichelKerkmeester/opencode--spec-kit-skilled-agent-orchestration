@@ -39,7 +39,7 @@ Created during initialization. Not modified after creation.
   "convergenceThreshold": 0.05,
   "stuckThreshold": 3,
   "maxDurationMinutes": 120,
-  "specFolder": "05--agent-orchestration/028-auto-deep-research",
+  "specFolder": "04--agent-orchestration/028-auto-deep-research",
   "createdAt": "2026-03-18T10:00:00Z",
   "status": "initialized",
   "executionMode": "auto"

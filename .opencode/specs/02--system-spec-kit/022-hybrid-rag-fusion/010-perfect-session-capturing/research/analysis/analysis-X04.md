@@ -244,8 +244,8 @@ Total output lines: 395
 .opencode/specs/03--commands-and-skills/001-cli-gemini/memory/28-02-26_11-26__cli-gemini.md
 .opencode/specs/01--anobel.com/029-anobel-performance-analysis/memory/01-02-01_performance-analysis-session.md
 .opencode/specs/01--anobel.com/029-anobel-performance-analysis/memory/02-02-26_07-14__anobel-performance-analysis.md
-.opencode/specs/05--agent-orchestration/023-gemini-cli-compatibility/memory/20-02-26_11-43__gemini-cli-compatibility.md
-.opencode/specs/05--agent-orchestration/023-gemini-cli-compatibility/memory/20-02-26_12-13__gemini-cli-compatibility.md
+.opencode/specs/04--agent-orchestration/023-gemini-cli-compatibility/memory/20-02-26_11-43__gemini-cli-compatibility.md
+.opencode/specs/04--agent-orchestration/023-gemini-cli-compatibility/memory/20-02-26_12-13__gemini-cli-compatibility.md
 .opencode/specs/03--commands-and-skills/019-cmd-create-skill-merger/memory/03-03-26_07-49__create-skill-merger.md
 .opencode/specs/03--commands-and-skills/019-cmd-create-skill-merger/memory/03-03-26_08-53__create-skill-merger.md
 .opencode/specs/03--commands-and-skills/019-cmd-create-skill-merger/memory/03-03-26_08-49__create-skill-merger.md
@@ -409,17 +409,17 @@ exec
 .opencode/specs/03--commands-and-skills/006-git-superset-worktrees/memory/28-02-26_17-38__sk-git-superset.md
 .opencode/specs/02--system-spec-kit/z_archive/019-readme-and-summary-with-hvr/memory/20-02-26_07-05__readme-and-summary-with-hvr.md
 .opencode/specs/03--commands-and-skills/003-prompt-initial-creation/memory/04-03-26_09-15__initial-creation.md
-.opencode/specs/05--agent-orchestration/023-gemini-cli-compatibility/memory/20-02-26_11-43__gemini-cli-compatibility.md
+.opencode/specs/04--agent-orchestration/023-gemini-cli-compatibility/memory/20-02-26_11-43__gemini-cli-compatibility.md
 .opencode/specs/02--system-spec-kit/z_archive/019-readme-and-summary-with-hvr/memory/19-02-26_21-46__readme-and-summary-with-hvr.md
-.opencode/specs/05--agent-orchestration/023-gemini-cli-compatibility/memory/20-02-26_12-13__gemini-cli-compatibility.md
+.opencode/specs/04--agent-orchestration/023-gemini-cli-compatibility/memory/20-02-26_12-13__gemini-cli-compatibility.md
 .opencode/specs/03--commands-and-skills/008-cli-copilot/memory/02-03-26_21-14__cli-copilot.md
 .opencode/specs/03--commands-and-skills/003-prompt-initial-creation/memory/01-03-26_11-09__initial-creation.md
-.opencode/specs/05--agent-orchestration/025-codex-cli-agents/memory/01-03-26_10-15__codex-cli-agents.md
+.opencode/specs/04--agent-orchestration/025-codex-cli-agents/memory/01-03-26_10-15__codex-cli-agents.md
 .opencode/specs/02--system-spec-kit/021-spec-kit-phase-system/memory/20-02-26_17-45__spec-kit-phase-system.md
 .opencode/specs/03--commands-and-skills/017-cmd-create-prompt/memory/01-03-26_14-44__create-prompt-command.md
-.opencode/specs/05--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-11__gpt-5-4-agent-model-upgrade.md
+.opencode/specs/04--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-11__gpt-5-4-agent-model-upgrade.md
 .opencode/specs/03--commands-and-skills/017-cmd-create-prompt/memory/01-03-26_12-48__create-prompt-command.md
-.opencode/specs/05--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md
+.opencode/specs/04--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md
 .opencode/specs/03--commands-and-skills/007-cli-claude-code/memory/02-03-26_21-14__cli-claude-code.md
 .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/20-02-26_16-57__continuation-attempt-3-spec-138.md
 .opencode/specs/02--system-spec-kit/021-spec-kit-phase-system/memory/20-02-26_18-04__spec-kit-phase-system.md
@@ -428,13 +428,13 @@ exec
 .opencode/specs/03--commands-and-skills/006-git-superset-worktrees/memory/28-02-26_17-38__sk-git-superset.md
 .opencode/specs/03--commands-and-skills/017-cmd-create-prompt/memory/01-03-26_14-44__create-prompt-command.md
 .opencode/specs/03--commands-and-skills/017-cmd-create-prompt/memory/01-03-26_12-48__create-prompt-command.md
-.opencode/specs/05--agent-orchestration/023-gemini-cli-compatibility/memory/20-02-26_11-43__gemini-cli-compatibility.md
-.opencode/specs/05--agent-orchestration/025-codex-cli-agents/memory/01-03-26_10-15__codex-cli-agents.md
-.opencode/specs/05--agent-orchestration/023-gemini-cli-compatibility/memory/20-02-26_12-13__gemini-cli-compatibility.md
+.opencode/specs/04--agent-orchestration/023-gemini-cli-compatibility/memory/20-02-26_11-43__gemini-cli-compatibility.md
+.opencode/specs/04--agent-orchestration/025-codex-cli-agents/memory/01-03-26_10-15__codex-cli-agents.md
+.opencode/specs/04--agent-orchestration/023-gemini-cli-compatibility/memory/20-02-26_12-13__gemini-cli-compatibility.md
 .opencode/specs/02--system-spec-kit/z_archive/019-readme-and-summary-with-hvr/memory/20-02-26_07-05__readme-and-summary-with-hvr.md
 .opencode/specs/02--system-spec-kit/z_archive/019-readme-and-summary-with-hvr/memory/19-02-26_21-46__readme-and-summary-with-hvr.md
-.opencode/specs/05--agent-orchestration/026-review-debug-agent-improvement/memory/05-03-26_08-00__review-debug-agent-improvement.md
-.opencode/specs/05--agent-orchestration/020-agent-sonnet-upgrade/memory/18-02-26_08-53__agent-sonnet-upgrade.md
+.opencode/specs/04--agent-orchestration/026-review-debug-agent-improvement/memory/05-03-26_08-00__review-debug-agent-improvement.md
+.opencode/specs/04--agent-orchestration/020-agent-sonnet-upgrade/memory/18-02-26_08-53__agent-sonnet-upgrade.md
 .opencode/specs/03--commands-and-skills/019-cmd-create-skill-merger/memory/03-03-26_07-49__create-skill-merger.md
 .opencode/specs/03--commands-and-skills/015-cmd-create-changelog/memory/01-03-26_14-30__create-changelog-command.md
 .opencode/specs/03--commands-and-skills/019-cmd-create-skill-merger/memory/03-03-26_08-53__create-skill-merger.md
@@ -444,7 +444,7 @@ exec
 .opencode/specs/03--commands-and-skills/015-cmd-create-changelog/memory/01-03-26_12-53__create-changelog-command.md
 .opencode/specs/03--commands-and-skills/019-cmd-create-skill-merger/memory/03-03-26_08-49__create-skill-merger.md
 .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-ux-hooks-automation/memory/08-03-26_09-42__5-agent-codex-review-synthesis.md
-.opencode/specs/05--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-11__gpt-5-4-agent-model-upgrade.md
+.opencode/specs/04--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-11__gpt-5-4-agent-model-upgrade.md
  succeeded in 51ms:
 .opencode/specs/03--commands-and-skills/001-cli-gemini/memory/28-02-26_11-07__cli-gemini.md
 .opencode/specs/03--commands-and-skills/001-cli-gemini/memory/28-02-26_11-26__cli-gemini.md
@@ -452,16 +452,16 @@ exec
 .opencode/specs/01--anobel.com/z_archive/001-finsweet-performance/memory/13-12-25_11-10__finsweet-performance.md
 .opencode/specs/01--anobel.com/034-form-bot-problem/memory/07-03-26_11-31__contact-form-bot-submission-investigation.md
 .opencode/specs/01--anobel.com/034-form-bot-problem/memory/07-03-26_10-50__planning-package-remediated-after-ultra-think.md
-.opencode/specs/05--agent-orchestration/023-gemini-cli-compatibility/memory/20-02-26_11-43__gemini-cli-compatibility.md
+.opencode/specs/04--agent-orchestration/023-gemini-cli-compatibility/memory/20-02-26_11-43__gemini-cli-compatibility.md
 .opencode/specs/03--commands-and-skills/003-prompt-initial-creation/memory/04-03-26_09-15__initial-creation.md
 .opencode/specs/01--anobel.com/034-form-bot-problem/memory/07-03-26_10-37__doc-package-remediation-completed.md
 .opencode/specs/03--commands-and-skills/008-cli-copilot/memory/02-03-26_21-14__cli-copilot.md
 .opencode/specs/02--system-spec-kit/z_archive/019-readme-and-summary-with-hvr/memory/20-02-26_07-05__readme-and-summary-with-hvr.md
 .opencode/specs/02--system-spec-kit/z_archive/019-readme-and-summary-with-hvr/memory/19-02-26_21-46__readme-and-summary-with-hvr.md
-.opencode/specs/05--agent-orchestration/023-gemini-cli-compatibility/memory/20-02-26_12-13__gemini-cli-compatibility.md
+.opencode/specs/04--agent-orchestration/023-gemini-cli-compatibility/memory/20-02-26_12-13__gemini-cli-compatibility.md
 .opencode/specs/03--commands-and-skills/003-prompt-initial-creation/memory/01-03-26_11-09__initial-creation.md
 .opencode/specs/03--commands-and-skills/017-cmd-create-prompt/memory/01-03-26_14-44__create-prompt-command.md
-.opencode/specs/05--agent-orchestration/025-codex-cli-agents/memory/01-03-26_10-15__codex-cli-agents.md
+.opencode/specs/04--agent-orchestration/025-codex-cli-agents/memory/01-03-26_10-15__codex-cli-agents.md
 .opencode/specs/01--anobel.com/z_archive/004-table-of-content/001-toc-scrollspy/memory/2024-12-13__research-synthesis.md
 .opencode/specs/03--commands-and-skills/017-cmd-create-prompt/memory/01-03-26_12-48__create-prompt-command.md
 .opencode/specs/01--anobel.com/z_archive/009-security-remediation/memory/25-12-25_14-50__security-remediation.md
@@ -476,7 +476,7 @@ exec
   .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-ux-hooks-automation/memory/08-03-26_09-42__5-agent-codex-review-synthesis.md \\
   .opencode/specs/03--commands-and-skills/003-prompt-initial-creation/memory/04-03-26_09-15__initial-creation.md \\
   .opencode/specs/03--commands-and-skills/001-cli-gemini/memory/28-02-26_11-26__cli-gemini.md \\
-  .opencode/specs/05--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md \\
+  .opencode/specs/04--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md \\
   .opencode/specs/03--commands-and-skills/019-cmd-create-skill-merger/memory/03-03-26_08-53__create-skill-merger.md; do
     printf '\\nFILE %s\\n' \""'$f"
     rg -n '"'"'^(#|##|###|####|'"\\*\\*Key Topics:|title:|importance_tier:|topics:|trigger_phrases:|similar_memories:)' \""'$f"
@@ -486,7 +486,7 @@ exec
   .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-ux-hooks-automation/memory/08-03-26_09-42__5-agent-codex-review-synthesis.md \\
   .opencode/specs/03--commands-and-skills/003-prompt-initial-creation/memory/04-03-26_09-15__initial-creation.md \\
   .opencode/specs/03--commands-and-skills/001-cli-gemini/memory/28-02-26_11-26__cli-gemini.md \\
-  .opencode/specs/05--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md \\
+  .opencode/specs/04--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md \\
   .opencode/specs/03--commands-and-skills/019-cmd-create-skill-merger/memory/03-03-26_08-53__create-skill-merger.md; do
     printf '\\nFILE %s\\n' \""'$f"
     rg -n '"'\\| "'$|'"\\*\\*Key Topics:\\*\\*.*\\|\\s*"'$|''^## [0-9]*'"\\. |"'^## '"\\.|"'^### $|''^```'"' \""'$f"
@@ -534,7 +534,7 @@ FILE .opencode/specs/01--anobel.com/034-form-bot-problem/memory/07-03-26_11-31__
 220:### FEATURE: Here is a review of the work completed according to the `implementation-summary.
 exec
 /bin/zsh -lc "nl -ba .opencode/specs/03--commands-and-skills/003-prompt-initial-creation/memory/04-03-26_09-15__initial-creation.md | sed -n '120,215p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
-/bin/zsh -lc "nl -ba .opencode/specs/05--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md | sed -n '220,320p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
+/bin/zsh -lc "nl -ba .opencode/specs/04--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md | sed -n '220,320p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
 /bin/zsh -lc "nl -ba .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-ux-hooks-automation/memory/08-03-26_09-42__5-agent-codex-review-synthesis.md | sed -n '228,345p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
 /bin/zsh -lc "nl -ba .opencode/specs/01--anobel.com/034-form-bot-problem/memory/07-03-26_11-31__contact-form-bot-submission-investigation.md | sed -n '68,140p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 52ms:
    220	<!-- ANCHOR:summary -->
@@ -863,10 +863,10 @@ exec
 .opencode/specs/03--commands-and-skills/z_archive/004-cmd-logic-improvement/memory/01-01-26_13-25__command-logic-improvement.md
 .opencode/specs/03--commands-and-skills/z_archive/004-cmd-logic-improvement/memory/01-01-26_14-06__command-logic-improvement.md
 .opencode/specs/01--anobel.com/z_archive/018-blog-sort-fix/memory/18-01-26_14-45__blog-sort-fix.md
-.opencode/specs/05--agent-orchestration/z_archive/007-explore-sub-agent/memory/10-02-26_21-32__explore-sub-agent.md
+.opencode/specs/04--agent-orchestration/z_archive/007-explore-sub-agent/memory/10-02-26_21-32__explore-sub-agent.md
 .opencode/specs/03--commands-and-skills/z_archive/004-cmd-logic-improvement/memory/01-01-26_14-25__command-logic-improvement.md
 .opencode/specs/03--commands-and-skills/z_archive/007-code-performance-patterns-update/memory/26-01-26_13-22__performance-patterns-update.md
-.opencode/specs/05--agent-orchestration/z_archive/003-agent-system-upgrade/memory/23-01-26_11-08__agent-system-upgrade.md
+.opencode/specs/04--agent-orchestration/z_archive/003-agent-system-upgrade/memory/23-01-26_11-08__agent-system-upgrade.md
 .opencode/specs/01--anobel.com/z_archive/004-table-of-content/001-toc-scrollspy/memory/2024-12-13__research-synthesis.md
 .opencode/specs/01--anobel.com/029-anobel-performance-analysis/memory/01-02-01_performance-analysis-session.md
 .opencode/specs/01--anobel.com/z_archive/025-load-toggle/memory/01-02-25_12-00__implementation-complete.md
@@ -985,7 +985,7 @@ exec
 codex
 I’m also running a quick hygiene pass for plain formatting issues now: trailing whitespace, empty code fences, and any heading/list patterns that would make the rendered markdown or YAML brittle even when placeholders are technically resolved.
 exec
-/bin/zsh -lc "rg -n '[[:blank:]]+"'$'"' .opencode/specs/01--anobel.com/034-form-bot-problem/memory/07-03-26_11-31__contact-form-bot-submission-investigation.md .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-ux-hooks-automation/memory/08-03-26_09-42__5-agent-codex-review-synthesis.md .opencode/specs/03--commands-and-skills/003-prompt-initial-creation/memory/04-03-26_09-15__initial-creation.md .opencode/specs/03--commands-and-skills/001-cli-gemini/memory/28-02-26_11-26__cli-gemini.md .opencode/specs/05--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md .opencode/specs/03--commands-and-skills/019-cmd-create-skill-merger/memory/03-03-26_08-53__create-skill-merger.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
+/bin/zsh -lc "rg -n '[[:blank:]]+"'$'"' .opencode/specs/01--anobel.com/034-form-bot-problem/memory/07-03-26_11-31__contact-form-bot-submission-investigation.md .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-ux-hooks-automation/memory/08-03-26_09-42__5-agent-codex-review-synthesis.md .opencode/specs/03--commands-and-skills/003-prompt-initial-creation/memory/04-03-26_09-15__initial-creation.md .opencode/specs/03--commands-and-skills/001-cli-gemini/memory/28-02-26_11-26__cli-gemini.md .opencode/specs/04--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md .opencode/specs/03--commands-and-skills/019-cmd-create-skill-merger/memory/03-03-26_08-53__create-skill-merger.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
 /bin/zsh -lc "rg -n '"'^'"\\s*\\[\\]"'$|''^'"\\s*memory_type: \"\""'$|''^'"\\s*half_life_days:\\s*"'$|''^'"\\s*memories_surfaced:\\s*#|"'^'"\\s*dedup_savings_tokens:\\s*#|"'^'"\\s*fingerprint_hash: \"\"' .opencode/specs/01--anobel.com/034-form-bot-problem/memory/07-03-26_11-31__contact-form-bot-submission-investigation.md .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-ux-hooks-automation/memory/08-03-26_09-42__5-agent-codex-review-synthesis.md .opencode/specs/03--commands-and-skills/003-prompt-initial-creation/memory/04-03-26_09-15__initial-creation.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
 /bin/zsh -lc "for f in \\
   .opencode/specs/01--anobel.com/034-form-bot-problem/memory/07-03-26_11-31__contact-form-bot-submission-investigation.md \\
@@ -996,16 +996,16 @@ exec
   done' in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 52ms:
 .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-ux-hooks-automation/memory/08-03-26_09-42__5-agent-codex-review-synthesis.md:121:**Key Topics:** `review` | `decision` | `codex` | `scores` | `did` | `try catch` | `because` | `agent` | `dqi` | `ts` | `all` | `wrote codex` | 
 .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-ux-hooks-automation/memory/08-03-26_09-42__5-agent-codex-review-synthesis.md:218:  
-.opencode/specs/05--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md:14:  
-.opencode/specs/05--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md:17:  
-.opencode/specs/05--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md:22:     
-.opencode/specs/05--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md:24:     memory_update({ 
-.opencode/specs/05--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md:25:       id: <memory_id>, 
-.opencode/specs/05--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md:29:     
-.opencode/specs/05--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md:79:- Uncertainty: 
-.opencode/specs/05--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md:80:- Readiness: 
-.opencode/specs/05--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md:165:**Key Topics:** `memory` | `skill graph` | `agent orchestration/027 copilot gpt agents` | `skill` | `graph` | `agent` | `orchestration/027` | `copilot` | `gpt` | `agents` | `sgqs` | `analysis` | 
-.opencode/specs/05--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md:590:  
+.opencode/specs/04--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md:14:  
+.opencode/specs/04--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md:17:  
+.opencode/specs/04--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md:22:     
+.opencode/specs/04--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md:24:     memory_update({ 
+.opencode/specs/04--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md:25:       id: <memory_id>, 
+.opencode/specs/04--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md:29:     
+.opencode/specs/04--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md:79:- Uncertainty: 
+.opencode/specs/04--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md:80:- Readiness: 
+.opencode/specs/04--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md:165:**Key Topics:** `memory` | `skill graph` | `agent orchestration/027 copilot gpt agents` | `skill` | `graph` | `agent` | `orchestration/027` | `copilot` | `gpt` | `agents` | `sgqs` | `analysis` | 
+.opencode/specs/04--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md:590:  
 .opencode/specs/03--commands-and-skills/001-cli-gemini/memory/28-02-26_11-26__cli-gemini.md:14:  
 .opencode/specs/03--commands-and-skills/001-cli-gemini/memory/28-02-26_11-26__cli-gemini.md:17:  
 .opencode/specs/03--commands-and-skills/001-cli-gemini/memory/28-02-26_11-26__cli-gemini.md:22:     
@@ -1046,7 +1046,7 @@ FILE .opencode/specs/03--commands-and-skills/003-prompt-initial-creation/memory/
 .opencode/specs/03--commands-and-skills/003-prompt-initial-creation/memory/04-03-26_09-15__initial-creation.md:665:    []
 .opencode/specs/03--commands-and-skills/003-prompt-initial-creation/memory/04-03-26_09-15__initial-creation.md:669:    []
 exec
-/bin/zsh -lc "nl -ba .opencode/specs/05--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md | sed -n '1,32p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
+/bin/zsh -lc "nl -ba .opencode/specs/04--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md | sed -n '1,32p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
 /bin/zsh -lc "nl -ba .opencode/specs/03--commands-and-skills/001-cli-gemini/memory/28-02-26_11-26__cli-gemini.md | sed -n '1,32p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
 /bin/zsh -lc "nl -ba .opencode/skill/system-spec-kit/templates/context_template.md | sed -n '1,40p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 53ms:
      1	---
@@ -1155,7 +1155,7 @@ exec
 codex
 The sandbox blocks here-doc temp files, so I’m re-running those checks with inline `node -e` commands. That should still let me confirm whether comment stripping works in the compiled renderer without touching the filesystem.
 exec
-/bin/zsh -lc "node -e \"const fs=require('fs'); const {stripTemplateConfigComments}=require('./.opencode/skill/system-spec-kit/scripts/dist/renderers/template-renderer.js'); const sample=fs.readFileSync('./.opencode/specs/05--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md','utf8'); const stripped=stripTemplateConfigComments(sample); console.log('orig_has_comment',/Constitutional Tier Promotion:/.test(sample)); console.log('stripped_has_comment',/Constitutional Tier Promotion:/.test(stripped)); console.log(stripped.split('\\n').slice(0,20).join('\\n'));\"" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
+/bin/zsh -lc "node -e \"const fs=require('fs'); const {stripTemplateConfigComments}=require('./.opencode/skill/system-spec-kit/scripts/dist/renderers/template-renderer.js'); const sample=fs.readFileSync('./.opencode/specs/04--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md','utf8'); const stripped=stripTemplateConfigComments(sample); console.log('orig_has_comment',/Constitutional Tier Promotion:/.test(sample)); console.log('stripped_has_comment',/Constitutional Tier Promotion:/.test(stripped)); console.log(stripped.split('\\n').slice(0,20).join('\\n'));\"" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
 /bin/zsh -lc "node -e \"const fs=require('fs'); const {stripTemplateConfigComments}=require('./.opencode/skill/system-spec-kit/scripts/dist/renderers/template-renderer.js'); const template=fs.readFileSync('./.opencode/skill/system-spec-kit/templates/context_template.md','utf8'); const stripped=stripTemplateConfigComments(template); console.log(stripped.split('\\n').slice(0,25).join('\\n'));\"" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 52ms:
 ---
 title: "{{MEMORY_DASHBOARD_TITLE}}"
@@ -1255,7 +1255,7 @@ I’m drilling into tree-thinning now because the rendered files keep surfacing 
 exec
 /bin/zsh -lc "nl -ba .opencode/skill/system-spec-kit/scripts/core/workflow.ts | sed -n '580,650p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
 /bin/zsh -lc "nl -ba .opencode/specs/03--commands-and-skills/003-prompt-initial-creation/memory/04-03-26_09-15__initial-creation.md | sed -n '740,747p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
-/bin/zsh -lc "nl -ba .opencode/specs/05--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md | sed -n '244,252p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
+/bin/zsh -lc "nl -ba .opencode/specs/04--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md | sed -n '244,252p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
 /bin/zsh -lc "rg -n \"merged-small-files|thinFileInputs|effectiveFiles|mergedSummary|childPaths\" .opencode/skill/system-spec-kit/scripts/core/workflow.ts .opencode/skill/system-spec-kit/scripts -g '"'!**/dist/**'"'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 52ms:
    580	    (collectedData?.observations || []) as Parameters<typeof generateImplementationSummary>[1]
    581	  );
@@ -1340,7 +1340,7 @@ exec
    226	
    227	  for (const mergedGroup of thinningResult.merged) {
 exec
-/bin/zsh -lc "nl -ba .opencode/specs/05--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md | sed -n '62,82p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 52ms:
+/bin/zsh -lc "nl -ba .opencode/specs/04--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md | sed -n '62,82p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 52ms:
     62	## PREFLIGHT BASELINE
     63	
     64	**Epistemic state captured at session start for learning delta calculation.**
@@ -1391,7 +1391,7 @@ codex
 I don’t want to overstate the YAML issue, so I’m checking one representative metadata block with a real parser. If it still parses, I’ll treat it as a quality problem rather than a hard integrity break.
 exec
 /bin/zsh -lc "ruby -e 'require \"yaml\"; text=File.read(\".opencode/specs/03--commands-and-skills/003-prompt-initial-creation/memory/04-03-26_09-15__initial-creation.md\"); yaml=text[/"'```yaml'"\\n(.*?)\\n"'```/m,1]; obj=YAML.safe_load(yaml, permitted_classes: [], aliases: false); puts obj["memory_classification"].inspect; puts obj["session_dedup"].inspect; puts obj["causal_links"].inspect'"'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
-/bin/zsh -lc "ruby -e 'require \"yaml\"; text=File.read(\".opencode/specs/05--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md\"); yaml=text[/"'```yaml'"\\n(.*?)\\n"'```/m,1]; obj=YAML.safe_load(yaml, permitted_classes: [], aliases: false); puts obj["memory_classification"].inspect; puts obj["session_dedup"].inspect'"'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 1.99s:
+/bin/zsh -lc "ruby -e 'require \"yaml\"; text=File.read(\".opencode/specs/04--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md\"); yaml=text[/"'```yaml'"\\n(.*?)\\n"'```/m,1]; obj=YAML.safe_load(yaml, permitted_classes: [], aliases: false); puts obj["memory_classification"].inspect; puts obj["session_dedup"].inspect'"'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 1.99s:
 {"memory_type"=>"", "half_life_days"=>nil, "decay_factors"=>{"base_decay_rate"=>nil, "access_boost_factor"=>nil, "recency_weight"=>nil, "importance_multiplier"=>nil}}
 {"memories_surfaced"=>nil, "dedup_savings_tokens"=>nil, "fingerprint_hash"=>"", "similar_memories"=>[]}
  succeeded in 1.99s:
@@ -1400,7 +1400,7 @@ exec
 {"caused_by"=>[], "supersedes"=>[], "derived_from"=>[], "blocks"=>[], "related_to"=>[]}
 codex
 ### FINDING-01: Tree-Thinning Is Driven by Descriptions, Not Real File Content
-- **File:** [workflow.ts:603](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/core/workflow.ts#L603), [workflow.ts:607](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/core/workflow.ts#L607), [tree-thinning.ts:117](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/core/tree-thinning.ts#L117), [gpt-5-4-agent-model-upgrade.md:248](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/05--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md#L248)
+- **File:** [workflow.ts:603](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/core/workflow.ts#L603), [workflow.ts:607](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/core/workflow.ts#L607), [tree-thinning.ts:117](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/core/tree-thinning.ts#L117), [gpt-5-4-agent-model-upgrade.md:248](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/04--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md#L248)
 - **Severity:** HIGH
 - **Category:** BUG
 - **Current Behavior:** The workflow passes `DESCRIPTION` text into thinning, so many files look “tiny” and get collapsed into synthetic paths like `(merged-small-files)`. I found this artifact in 53 memory files, and it degrades both overview tables and `key_files`.
@@ -1420,7 +1420,7 @@ codex
 - **Effort:** TRIVIAL (<5 min)
 
 ### FINDING-03: Partial Prefight Data Produces Broken Metrics
-- **File:** [collect-session-data.ts:201](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts#L201), [collect-session-data.ts:226](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts#L226), [context_template.md:148](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/templates/context_template.md#L148), [gpt-5-4-agent-model-upgrade.md:68](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/05--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md#L68)
+- **File:** [collect-session-data.ts:201](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts#L201), [collect-session-data.ts:226](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts#L226), [context_template.md:148](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/templates/context_template.md#L148), [gpt-5-4-agent-model-upgrade.md:68](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/04--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md#L68)
 - **Severity:** MEDIUM
 - **Category:** BUG
 - **Current Behavior:** If any preflight field exists, the section renders even when numeric fields are null, producing lines like `| Knowledge Score | /100 |  |` and `Confidence: %`. I found this in 97 memory files.
@@ -1450,7 +1450,7 @@ codex
 - **Effort:** SMALL (<30 min)
 
 ### FINDING-06: Raw Embedded Markdown Breaks Heading Hierarchy
-- **File:** [context_template.md:363](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/templates/context_template.md#L363), [context_template.md:574](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/templates/context_template.md#L574), [gpt-5-4-agent-model-upgrade.md:266](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/05--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md#L266), [contact-form-bot-submission-investigation.md:598](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/01--anobel.com/034-form-bot-problem/memory/07-03-26_11-31__contact-form-bot-submission-investigation.md#L598)
+- **File:** [context_template.md:363](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/templates/context_template.md#L363), [context_template.md:574](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/templates/context_template.md#L574), [gpt-5-4-agent-model-upgrade.md:266](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/04--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md#L266), [contact-form-bot-submission-investigation.md:598](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/01--anobel.com/034-form-bot-problem/memory/07-03-26_11-31__contact-form-bot-submission-investigation.md#L598)
 - **Severity:** MEDIUM
 - **Category:** QUALITY
 - **Current Behavior:** Observation narratives and message bodies are injected verbatim. When source text contains headings, the rendered memory gets nested `###` headings inside existing `###` sections, which corrupts hierarchy and TOC semantics.
@@ -1460,7 +1460,7 @@ codex
 - **Effort:** MEDIUM (<2 hr)
 
 ### FINDING-07: Template Configuration Comments Still Leak Into Real Outputs
-- **File:** [template-renderer.ts:63](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/renderers/template-renderer.ts#L63), [file-writer.ts:65](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/core/file-writer.ts#L65), [validation-utils.ts:8](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/utils/validation-utils.ts#L8), [gpt-5-4-agent-model-upgrade.md:11](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/05--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md#L11)
+- **File:** [template-renderer.ts:63](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/renderers/template-renderer.ts#L63), [file-writer.ts:65](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/core/file-writer.ts#L65), [validation-utils.ts:8](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/utils/validation-utils.ts#L8), [gpt-5-4-agent-model-upgrade.md:11](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/04--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md#L11)
 - **Severity:** LOW
 - **Category:** DESIGN
 - **Current Behavior:** `264` memory files still contain template-config comments like `Constitutional Tier Promotion`, even though the current strip helper removes them when run. Writer validation does not flag this class of artifact.
@@ -1487,7 +1487,7 @@ codex
 tokens used
 407,489
 ### FINDING-01: Tree-Thinning Is Driven by Descriptions, Not Real File Content
-- **File:** [workflow.ts:603](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/core/workflow.ts#L603), [workflow.ts:607](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/core/workflow.ts#L607), [tree-thinning.ts:117](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/core/tree-thinning.ts#L117), [gpt-5-4-agent-model-upgrade.md:248](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/05--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md#L248)
+- **File:** [workflow.ts:603](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/core/workflow.ts#L603), [workflow.ts:607](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/core/workflow.ts#L607), [tree-thinning.ts:117](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/core/tree-thinning.ts#L117), [gpt-5-4-agent-model-upgrade.md:248](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/04--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md#L248)
 - **Severity:** HIGH
 - **Category:** BUG
 - **Current Behavior:** The workflow passes `DESCRIPTION` text into thinning, so many files look “tiny” and get collapsed into synthetic paths like `(merged-small-files)`. I found this artifact in 53 memory files, and it degrades both overview tables and `key_files`.
@@ -1507,7 +1507,7 @@ tokens used
 - **Effort:** TRIVIAL (<5 min)
 
 ### FINDING-03: Partial Prefight Data Produces Broken Metrics
-- **File:** [collect-session-data.ts:201](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts#L201), [collect-session-data.ts:226](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts#L226), [context_template.md:148](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/templates/context_template.md#L148), [gpt-5-4-agent-model-upgrade.md:68](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/05--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md#L68)
+- **File:** [collect-session-data.ts:201](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts#L201), [collect-session-data.ts:226](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts#L226), [context_template.md:148](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/templates/context_template.md#L148), [gpt-5-4-agent-model-upgrade.md:68](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/04--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md#L68)
 - **Severity:** MEDIUM
 - **Category:** BUG
 - **Current Behavior:** If any preflight field exists, the section renders even when numeric fields are null, producing lines like `| Knowledge Score | /100 |  |` and `Confidence: %`. I found this in 97 memory files.
@@ -1537,7 +1537,7 @@ tokens used
 - **Effort:** SMALL (<30 min)
 
 ### FINDING-06: Raw Embedded Markdown Breaks Heading Hierarchy
-- **File:** [context_template.md:363](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/templates/context_template.md#L363), [context_template.md:574](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/templates/context_template.md#L574), [gpt-5-4-agent-model-upgrade.md:266](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/05--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md#L266), [contact-form-bot-submission-investigation.md:598](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/01--anobel.com/034-form-bot-problem/memory/07-03-26_11-31__contact-form-bot-submission-investigation.md#L598)
+- **File:** [context_template.md:363](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/templates/context_template.md#L363), [context_template.md:574](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/templates/context_template.md#L574), [gpt-5-4-agent-model-upgrade.md:266](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/04--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md#L266), [contact-form-bot-submission-investigation.md:598](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/01--anobel.com/034-form-bot-problem/memory/07-03-26_11-31__contact-form-bot-submission-investigation.md#L598)
 - **Severity:** MEDIUM
 - **Category:** QUALITY
 - **Current Behavior:** Observation narratives and message bodies are injected verbatim. When source text contains headings, the rendered memory gets nested `###` headings inside existing `###` sections, which corrupts hierarchy and TOC semantics.
@@ -1547,7 +1547,7 @@ tokens used
 - **Effort:** MEDIUM (<2 hr)
 
 ### FINDING-07: Template Configuration Comments Still Leak Into Real Outputs
-- **File:** [template-renderer.ts:63](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/renderers/template-renderer.ts#L63), [file-writer.ts:65](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/core/file-writer.ts#L65), [validation-utils.ts:8](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/utils/validation-utils.ts#L8), [gpt-5-4-agent-model-upgrade.md:11](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/05--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md#L11)
+- **File:** [template-renderer.ts:63](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/renderers/template-renderer.ts#L63), [file-writer.ts:65](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/core/file-writer.ts#L65), [validation-utils.ts:8](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/utils/validation-utils.ts#L8), [gpt-5-4-agent-model-upgrade.md:11](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/04--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md#L11)
 - **Severity:** LOW
 - **Category:** DESIGN
 - **Current Behavior:** `264` memory files still contain template-config comments like `Constitutional Tier Promotion`, even though the current strip helper removes them when run. Writer validation does not flag this class of artifact.

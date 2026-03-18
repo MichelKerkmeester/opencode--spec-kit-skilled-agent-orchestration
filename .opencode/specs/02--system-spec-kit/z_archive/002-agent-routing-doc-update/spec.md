@@ -29,7 +29,7 @@ contextType: "decision"
 | **Status** | Complete |
 | **Created** | 2026-02-14 |
 | **Parent** | 02--system-spec-kit |
-| **Related** | `anobel.com.opencode/specs/05--agent-orchestration/z_archive/014-command-agent-utilization/` |
+| **Related** | `anobel.com.opencode/specs/04--agent-orchestration/z_archive/014-command-agent-utilization/` |
 
 <!-- /ANCHOR:metadata -->
 

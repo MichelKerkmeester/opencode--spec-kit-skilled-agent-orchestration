@@ -62,12 +62,12 @@ Root: /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/sp
 | 03--commands-and-skills/011-doc-template-folders | 1 | 1 | 0 | 0 |
 | 03--commands-and-skills/006-git-superset-worktrees | 1 | 1 | 0 | 0 |
 | 03--commands-and-skills/003-prompt-initial-creation | 2 | 2 | 0 | 0 |
-| 05--agent-orchestration/z_archive/003-agent-system-upgrade | 1 | 0 | 0 | 0 |
-| 05--agent-orchestration/z_archive/005-agent-system-improvements | 2 | 0 | 0 | 0 |
-| 05--agent-orchestration/z_archive/011-context-model-optimization | 2 | 2 | 0 | 0 |
-| 05--agent-orchestration/z_archive/012-context-model-comparison | 1 | 1 | 0 | 0 |
-| 05--agent-orchestration/z_archive/013-agent-haiku-compatibility | 2 | 2 | 0 | 0 |
-| 05--agent-orchestration/z_archive/015-review-agent-model-agnostic | 1 | 1 | 0 | 0 |
+| 04--agent-orchestration/z_archive/003-agent-system-upgrade | 1 | 0 | 0 | 0 |
+| 04--agent-orchestration/z_archive/005-agent-system-improvements | 2 | 0 | 0 | 0 |
+| 04--agent-orchestration/z_archive/011-context-model-optimization | 2 | 2 | 0 | 0 |
+| 04--agent-orchestration/z_archive/012-context-model-comparison | 1 | 1 | 0 | 0 |
+| 04--agent-orchestration/z_archive/013-agent-haiku-compatibility | 2 | 2 | 0 | 0 |
+| 04--agent-orchestration/z_archive/015-review-agent-model-agnostic | 1 | 1 | 0 | 0 |
 
 ## Non-Clean Files
 
@@ -165,9 +165,9 @@ Root: /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/sp
 - 03--commands-and-skills/006-git-superset-worktrees/memory/28-02-26_17-38__sk-git-superset.md :: repair_in_place :: missing_standard_anchor_scaffolding
 - 03--commands-and-skills/003-prompt-initial-creation/memory/01-03-26_11-09__initial-creation.md :: repair_in_place :: missing_standard_anchor_scaffolding
 - 03--commands-and-skills/003-prompt-initial-creation/memory/04-03-26_09-15__initial-creation.md :: repair_in_place :: missing_standard_anchor_scaffolding
-- 05--agent-orchestration/z_archive/011-context-model-optimization/memory/14-02-26_11-57__context-model-optimization.md :: repair_in_place :: missing_standard_anchor_scaffolding
-- 05--agent-orchestration/z_archive/011-context-model-optimization/memory/14-02-26_12-51__context-model-optimization.md :: repair_in_place :: missing_standard_anchor_scaffolding
-- 05--agent-orchestration/z_archive/012-context-model-comparison/memory/14-02-26_13-23__context-model-comparison.md :: repair_in_place :: missing_standard_anchor_scaffolding
-- 05--agent-orchestration/z_archive/013-agent-haiku-compatibility/memory/14-02-26_14-57__agent-haiku-compatibility.md :: repair_in_place :: missing_standard_anchor_scaffolding
-- 05--agent-orchestration/z_archive/013-agent-haiku-compatibility/memory/14-02-26_15-05__agent-haiku-compatibility.md :: repair_in_place :: missing_standard_anchor_scaffolding
-- 05--agent-orchestration/z_archive/015-review-agent-model-agnostic/memory/15-02-26_15-35__review-agent-model-agnostic.md :: repair_in_place :: missing_standard_anchor_scaffolding
+- 04--agent-orchestration/z_archive/011-context-model-optimization/memory/14-02-26_11-57__context-model-optimization.md :: repair_in_place :: missing_standard_anchor_scaffolding
+- 04--agent-orchestration/z_archive/011-context-model-optimization/memory/14-02-26_12-51__context-model-optimization.md :: repair_in_place :: missing_standard_anchor_scaffolding
+- 04--agent-orchestration/z_archive/012-context-model-comparison/memory/14-02-26_13-23__context-model-comparison.md :: repair_in_place :: missing_standard_anchor_scaffolding
+- 04--agent-orchestration/z_archive/013-agent-haiku-compatibility/memory/14-02-26_14-57__agent-haiku-compatibility.md :: repair_in_place :: missing_standard_anchor_scaffolding
+- 04--agent-orchestration/z_archive/013-agent-haiku-compatibility/memory/14-02-26_15-05__agent-haiku-compatibility.md :: repair_in_place :: missing_standard_anchor_scaffolding
+- 04--agent-orchestration/z_archive/015-review-agent-model-agnostic/memory/15-02-26_15-35__review-agent-model-agnostic.md :: repair_in_place :: missing_standard_anchor_scaffolding

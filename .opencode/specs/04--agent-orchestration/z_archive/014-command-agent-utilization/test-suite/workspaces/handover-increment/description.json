@@ -1,0 +1,22 @@
+{
+  "specFolder": "04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/handover-increment",
+  "description": "Feature Specification: JWT Authentication",
+  "keywords": [
+    "feature",
+    "specification",
+    "jwt",
+    "authentication"
+  ],
+  "lastUpdated": "2026-03-16T13:20:03.312Z",
+  "specId": "",
+  "folderSlug": "handover-increment",
+  "parentChain": [
+    "04--agent-orchestration",
+    "z_archive",
+    "014-command-agent-utilization",
+    "test-suite",
+    "workspaces"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

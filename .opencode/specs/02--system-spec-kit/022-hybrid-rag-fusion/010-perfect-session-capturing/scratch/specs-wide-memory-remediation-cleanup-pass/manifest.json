@@ -363,121 +363,121 @@
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "05--agent-orchestration/z_archive/003-agent-system-upgrade": {
+    "04--agent-orchestration/z_archive/003-agent-system-upgrade": {
       "total": 1,
       "repair_in_place": 1,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "05--agent-orchestration/z_archive/005-agent-system-improvements": {
+    "04--agent-orchestration/z_archive/005-agent-system-improvements": {
       "total": 2,
       "repair_in_place": 2,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "05--agent-orchestration/z_archive/009-claude-code-subagents": {
+    "04--agent-orchestration/z_archive/009-claude-code-subagents": {
       "total": 1,
       "repair_in_place": 1,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "05--agent-orchestration/z_archive/011-context-model-optimization": {
+    "04--agent-orchestration/z_archive/011-context-model-optimization": {
       "total": 2,
       "repair_in_place": 2,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "05--agent-orchestration/z_archive/012-context-model-comparison": {
+    "04--agent-orchestration/z_archive/012-context-model-comparison": {
       "total": 1,
       "repair_in_place": 1,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "05--agent-orchestration/z_archive/013-agent-haiku-compatibility": {
+    "04--agent-orchestration/z_archive/013-agent-haiku-compatibility": {
       "total": 2,
       "repair_in_place": 2,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/fixtures/base-spec-folder": {
+    "04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/fixtures/base-spec-folder": {
       "total": 1,
       "repair_in_place": 1,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/complete-happy": {
+    "04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/complete-happy": {
       "total": 1,
       "repair_in_place": 1,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/debug-escalation": {
+    "04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/debug-escalation": {
       "total": 1,
       "repair_in_place": 1,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/debug-happy": {
+    "04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/debug-happy": {
       "total": 1,
       "repair_in_place": 1,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/handover-happy": {
+    "04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/handover-happy": {
       "total": 1,
       "repair_in_place": 1,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/handover-increment": {
+    "04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/handover-increment": {
       "total": 1,
       "repair_in_place": 1,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/implement-debug-threshold": {
+    "04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/implement-debug-threshold": {
       "total": 2,
       "repair_in_place": 2,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/implement-happy": {
+    "04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/implement-happy": {
       "total": 2,
       "repair_in_place": 2,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/plan-happy": {
+    "04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/plan-happy": {
       "total": 1,
       "repair_in_place": 1,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/research-empty-codebase": {
+    "04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/research-empty-codebase": {
       "total": 1,
       "repair_in_place": 1,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/research-happy": {
+    "04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/research-happy": {
       "total": 1,
       "repair_in_place": 1,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/resume-happy": {
+    "04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/resume-happy": {
       "total": 1,
       "repair_in_place": 1,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/resume-stale": {
+    "04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/resume-stale": {
       "total": 1,
       "repair_in_place": 1,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "05--agent-orchestration/z_archive/015-review-agent-model-agnostic": {
+    "04--agent-orchestration/z_archive/015-review-agent-model-agnostic": {
       "total": 1,
       "repair_in_place": 1,
       "regenerate_from_authoritative_evidence": 0,
@@ -2005,8 +2005,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/05--agent-orchestration/z_archive/003-agent-system-upgrade/memory/23-01-26_10-52__research-debug-improvements.md",
-      "specFolder": "05--agent-orchestration/z_archive/003-agent-system-upgrade",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/04--agent-orchestration/z_archive/003-agent-system-upgrade/memory/23-01-26_10-52__research-debug-improvements.md",
+      "specFolder": "04--agent-orchestration/z_archive/003-agent-system-upgrade",
       "issues": [
         "legacy_template_banner",
         "duplicate_body_separator"
@@ -2017,8 +2017,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/05--agent-orchestration/z_archive/005-agent-system-improvements/memory/27-01-26_11-24__agent-system-improvements.md",
-      "specFolder": "05--agent-orchestration/z_archive/005-agent-system-improvements",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/04--agent-orchestration/z_archive/005-agent-system-improvements/memory/27-01-26_11-24__agent-system-improvements.md",
+      "specFolder": "04--agent-orchestration/z_archive/005-agent-system-improvements",
       "issues": [
         "legacy_template_banner",
         "duplicate_body_separator"
@@ -2029,8 +2029,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/05--agent-orchestration/z_archive/005-agent-system-improvements/memory/28-01-26_09-11__agent-system-improvements.md",
-      "specFolder": "05--agent-orchestration/z_archive/005-agent-system-improvements",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/04--agent-orchestration/z_archive/005-agent-system-improvements/memory/28-01-26_09-11__agent-system-improvements.md",
+      "specFolder": "04--agent-orchestration/z_archive/005-agent-system-improvements",
       "issues": [
         "legacy_template_banner",
         "duplicate_body_separator"
@@ -2041,8 +2041,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/05--agent-orchestration/z_archive/009-claude-code-subagents/memory/11-02-26_14-19__claude-code-subagents.md",
-      "specFolder": "05--agent-orchestration/z_archive/009-claude-code-subagents",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/04--agent-orchestration/z_archive/009-claude-code-subagents/memory/11-02-26_14-19__claude-code-subagents.md",
+      "specFolder": "04--agent-orchestration/z_archive/009-claude-code-subagents",
       "issues": [
         "legacy_template_banner",
         "duplicate_body_separator"
@@ -2053,8 +2053,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/05--agent-orchestration/z_archive/011-context-model-optimization/memory/14-02-26_11-57__context-model-optimization.md",
-      "specFolder": "05--agent-orchestration/z_archive/011-context-model-optimization",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/04--agent-orchestration/z_archive/011-context-model-optimization/memory/14-02-26_11-57__context-model-optimization.md",
+      "specFolder": "04--agent-orchestration/z_archive/011-context-model-optimization",
       "issues": [
         "legacy_template_banner",
         "duplicate_body_separator"
@@ -2065,8 +2065,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/05--agent-orchestration/z_archive/011-context-model-optimization/memory/14-02-26_12-51__context-model-optimization.md",
-      "specFolder": "05--agent-orchestration/z_archive/011-context-model-optimization",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/04--agent-orchestration/z_archive/011-context-model-optimization/memory/14-02-26_12-51__context-model-optimization.md",
+      "specFolder": "04--agent-orchestration/z_archive/011-context-model-optimization",
       "issues": [
         "legacy_template_banner",
         "duplicate_body_separator"
@@ -2077,8 +2077,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/05--agent-orchestration/z_archive/012-context-model-comparison/memory/14-02-26_13-23__context-model-comparison.md",
-      "specFolder": "05--agent-orchestration/z_archive/012-context-model-comparison",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/04--agent-orchestration/z_archive/012-context-model-comparison/memory/14-02-26_13-23__context-model-comparison.md",
+      "specFolder": "04--agent-orchestration/z_archive/012-context-model-comparison",
       "issues": [
         "legacy_template_banner",
         "duplicate_body_separator"
@@ -2089,8 +2089,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/05--agent-orchestration/z_archive/013-agent-haiku-compatibility/memory/14-02-26_14-57__agent-haiku-compatibility.md",
-      "specFolder": "05--agent-orchestration/z_archive/013-agent-haiku-compatibility",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/04--agent-orchestration/z_archive/013-agent-haiku-compatibility/memory/14-02-26_14-57__agent-haiku-compatibility.md",
+      "specFolder": "04--agent-orchestration/z_archive/013-agent-haiku-compatibility",
       "issues": [
         "legacy_template_banner",
         "duplicate_body_separator"
@@ -2101,8 +2101,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/05--agent-orchestration/z_archive/013-agent-haiku-compatibility/memory/14-02-26_15-05__agent-haiku-compatibility.md",
-      "specFolder": "05--agent-orchestration/z_archive/013-agent-haiku-compatibility",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/04--agent-orchestration/z_archive/013-agent-haiku-compatibility/memory/14-02-26_15-05__agent-haiku-compatibility.md",
+      "specFolder": "04--agent-orchestration/z_archive/013-agent-haiku-compatibility",
       "issues": [
         "legacy_template_banner",
         "duplicate_body_separator"
@@ -2113,8 +2113,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/fixtures/base-spec-folder/memory/14-02-26_10-00__session.md",
-      "specFolder": "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/fixtures/base-spec-folder",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/fixtures/base-spec-folder/memory/14-02-26_10-00__session.md",
+      "specFolder": "04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/fixtures/base-spec-folder",
       "issues": [
         "duplicate_body_separator"
       ],
@@ -2124,8 +2124,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/complete-happy/memory/14-02-26_12-00__complete_session.md",
-      "specFolder": "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/complete-happy",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/complete-happy/memory/14-02-26_12-00__complete_session.md",
+      "specFolder": "04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/complete-happy",
       "issues": [
         "duplicate_body_separator"
       ],
@@ -2135,8 +2135,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/debug-escalation/memory/14-02-26_10-00__session.md",
-      "specFolder": "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/debug-escalation",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/debug-escalation/memory/14-02-26_10-00__session.md",
+      "specFolder": "04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/debug-escalation",
       "issues": [
         "duplicate_body_separator"
       ],
@@ -2146,8 +2146,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/debug-happy/memory/14-02-26_10-00__session.md",
-      "specFolder": "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/debug-happy",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/debug-happy/memory/14-02-26_10-00__session.md",
+      "specFolder": "04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/debug-happy",
       "issues": [
         "duplicate_body_separator"
       ],
@@ -2157,8 +2157,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/handover-happy/memory/14-02-26_10-00__session.md",
-      "specFolder": "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/handover-happy",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/handover-happy/memory/14-02-26_10-00__session.md",
+      "specFolder": "04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/handover-happy",
       "issues": [
         "duplicate_body_separator"
       ],
@@ -2168,8 +2168,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/handover-increment/memory/14-02-26_10-00__session.md",
-      "specFolder": "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/handover-increment",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/handover-increment/memory/14-02-26_10-00__session.md",
+      "specFolder": "04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/handover-increment",
       "issues": [
         "duplicate_body_separator"
       ],
@@ -2179,8 +2179,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/implement-debug-threshold/memory/14-02-26_10-00__session.md",
-      "specFolder": "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/implement-debug-threshold",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/implement-debug-threshold/memory/14-02-26_10-00__session.md",
+      "specFolder": "04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/implement-debug-threshold",
       "issues": [
         "duplicate_body_separator"
       ],
@@ -2190,8 +2190,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/implement-debug-threshold/memory/14-02-26_11-30__implementation_session.md",
-      "specFolder": "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/implement-debug-threshold",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/implement-debug-threshold/memory/14-02-26_11-30__implementation_session.md",
+      "specFolder": "04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/implement-debug-threshold",
       "issues": [
         "duplicate_body_separator"
       ],
@@ -2201,8 +2201,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/implement-happy/memory/14-02-26_10-00__session.md",
-      "specFolder": "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/implement-happy",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/implement-happy/memory/14-02-26_10-00__session.md",
+      "specFolder": "04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/implement-happy",
       "issues": [
         "duplicate_body_separator"
       ],
@@ -2212,8 +2212,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/implement-happy/memory/14-02-26_11-00__implementation_session.md",
-      "specFolder": "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/implement-happy",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/implement-happy/memory/14-02-26_11-00__implementation_session.md",
+      "specFolder": "04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/implement-happy",
       "issues": [
         "duplicate_body_separator"
       ],
@@ -2223,8 +2223,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/plan-happy/memory/14-02-26_10-30__planning_session.md",
-      "specFolder": "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/plan-happy",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/plan-happy/memory/14-02-26_10-30__planning_session.md",
+      "specFolder": "04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/plan-happy",
       "issues": [
         "duplicate_body_separator"
       ],
@@ -2234,8 +2234,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/research-empty-codebase/memory/14-02-26_13-30__research_session.md",
-      "specFolder": "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/research-empty-codebase",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/research-empty-codebase/memory/14-02-26_13-30__research_session.md",
+      "specFolder": "04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/research-empty-codebase",
       "issues": [
         "duplicate_body_separator"
       ],
@@ -2245,8 +2245,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/research-happy/memory/14-02-26_13-00__research_session.md",
-      "specFolder": "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/research-happy",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/research-happy/memory/14-02-26_13-00__research_session.md",
+      "specFolder": "04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/research-happy",
       "issues": [
         "duplicate_body_separator"
       ],
@@ -2256,8 +2256,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/resume-happy/memory/14-02-26_10-00__session.md",
-      "specFolder": "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/resume-happy",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/resume-happy/memory/14-02-26_10-00__session.md",
+      "specFolder": "04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/resume-happy",
       "issues": [
         "duplicate_body_separator"
       ],
@@ -2267,8 +2267,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/resume-stale/memory/14-02-26_10-00__session.md",
-      "specFolder": "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/resume-stale",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/resume-stale/memory/14-02-26_10-00__session.md",
+      "specFolder": "04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/resume-stale",
       "issues": [
         "duplicate_body_separator"
       ],
@@ -2278,8 +2278,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/05--agent-orchestration/z_archive/015-review-agent-model-agnostic/memory/15-02-26_15-35__review-agent-model-agnostic.md",
-      "specFolder": "05--agent-orchestration/z_archive/015-review-agent-model-agnostic",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/04--agent-orchestration/z_archive/015-review-agent-model-agnostic/memory/15-02-26_15-35__review-agent-model-agnostic.md",
+      "specFolder": "04--agent-orchestration/z_archive/015-review-agent-model-agnostic",
       "issues": [
         "legacy_template_banner",
         "duplicate_body_separator"

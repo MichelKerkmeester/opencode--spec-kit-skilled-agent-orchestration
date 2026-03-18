@@ -72,26 +72,26 @@ Root: /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/sp
 | 03--commands-and-skills/011-doc-template-folders | 1 | 0 | 0 | 0 |
 | 03--commands-and-skills/006-git-superset-worktrees | 1 | 0 | 0 | 0 |
 | 03--commands-and-skills/003-prompt-initial-creation | 2 | 0 | 0 | 0 |
-| 05--agent-orchestration/z_archive/003-agent-system-upgrade | 1 | 0 | 0 | 0 |
-| 05--agent-orchestration/z_archive/005-agent-system-improvements | 2 | 0 | 0 | 0 |
-| 05--agent-orchestration/z_archive/009-claude-code-subagents | 1 | 0 | 0 | 0 |
-| 05--agent-orchestration/z_archive/011-context-model-optimization | 2 | 0 | 0 | 0 |
-| 05--agent-orchestration/z_archive/012-context-model-comparison | 1 | 0 | 0 | 0 |
-| 05--agent-orchestration/z_archive/013-agent-haiku-compatibility | 2 | 0 | 0 | 0 |
-| 05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/fixtures/base-spec-folder | 1 | 0 | 0 | 0 |
-| 05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/complete-happy | 1 | 0 | 0 | 0 |
-| 05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/debug-escalation | 1 | 0 | 0 | 0 |
-| 05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/debug-happy | 1 | 0 | 0 | 0 |
-| 05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/handover-happy | 1 | 0 | 0 | 0 |
-| 05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/handover-increment | 1 | 0 | 0 | 0 |
-| 05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/implement-debug-threshold | 2 | 0 | 0 | 0 |
-| 05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/implement-happy | 2 | 0 | 0 | 0 |
-| 05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/plan-happy | 1 | 0 | 0 | 0 |
-| 05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/research-empty-codebase | 1 | 0 | 0 | 0 |
-| 05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/research-happy | 1 | 0 | 0 | 0 |
-| 05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/resume-happy | 1 | 0 | 0 | 0 |
-| 05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/resume-stale | 1 | 0 | 0 | 0 |
-| 05--agent-orchestration/z_archive/015-review-agent-model-agnostic | 1 | 0 | 0 | 0 |
+| 04--agent-orchestration/z_archive/003-agent-system-upgrade | 1 | 0 | 0 | 0 |
+| 04--agent-orchestration/z_archive/005-agent-system-improvements | 2 | 0 | 0 | 0 |
+| 04--agent-orchestration/z_archive/009-claude-code-subagents | 1 | 0 | 0 | 0 |
+| 04--agent-orchestration/z_archive/011-context-model-optimization | 2 | 0 | 0 | 0 |
+| 04--agent-orchestration/z_archive/012-context-model-comparison | 1 | 0 | 0 | 0 |
+| 04--agent-orchestration/z_archive/013-agent-haiku-compatibility | 2 | 0 | 0 | 0 |
+| 04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/fixtures/base-spec-folder | 1 | 0 | 0 | 0 |
+| 04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/complete-happy | 1 | 0 | 0 | 0 |
+| 04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/debug-escalation | 1 | 0 | 0 | 0 |
+| 04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/debug-happy | 1 | 0 | 0 | 0 |
+| 04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/handover-happy | 1 | 0 | 0 | 0 |
+| 04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/handover-increment | 1 | 0 | 0 | 0 |
+| 04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/implement-debug-threshold | 2 | 0 | 0 | 0 |
+| 04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/implement-happy | 2 | 0 | 0 | 0 |
+| 04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/plan-happy | 1 | 0 | 0 | 0 |
+| 04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/research-empty-codebase | 1 | 0 | 0 | 0 |
+| 04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/research-happy | 1 | 0 | 0 | 0 |
+| 04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/resume-happy | 1 | 0 | 0 | 0 |
+| 04--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/resume-stale | 1 | 0 | 0 | 0 |
+| 04--agent-orchestration/z_archive/015-review-agent-model-agnostic | 1 | 0 | 0 | 0 |
 
 ## Non-Clean Files
 

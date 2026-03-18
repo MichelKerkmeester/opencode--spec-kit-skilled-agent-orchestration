@@ -206,7 +206,7 @@ A: It is self-assessed by the agent. A simplicity bonus (+0.10) rewards iteratio
 | Command definition | `.opencode/command/deep-research/deep-research.md` | Command entry point |
 | YAML workflow (auto) | `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml` | Autonomous loop workflow |
 | YAML workflow (confirm) | `.opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml` | Interactive loop workflow |
-| Spec folder | `.opencode/specs/05--agent-orchestration/028-auto-deep-research/` | Design docs |
+| Spec folder | `.opencode/specs/04--agent-orchestration/028-auto-deep-research/` | Design docs |
 
 ### Design Origins
 

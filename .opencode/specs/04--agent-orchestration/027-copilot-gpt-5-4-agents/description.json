@@ -1,0 +1,20 @@
+{
+  "specFolder": "04--agent-orchestration/027-copilot-gpt-5-4-agents",
+  "description": "Feature Specification: GPT-5.4 Agent Model Upgrade",
+  "keywords": [
+    "feature",
+    "specification",
+    "gpt-5",
+    "agent",
+    "model",
+    "upgrade"
+  ],
+  "lastUpdated": "2026-03-16T13:20:03.185Z",
+  "specId": "027",
+  "folderSlug": "copilot-gpt-5-4-agents",
+  "parentChain": [
+    "04--agent-orchestration"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}
