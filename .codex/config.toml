@@ -93,9 +93,9 @@ config_file = "agents/handover.toml"
 description = "Senior orchestrator for decomposition, delegation, and synthesis."
 config_file = "agents/orchestrate.toml"
 
-[agents.research]
-description = "Technical investigation specialist with evidence-first analysis."
-config_file = "agents/research.toml"
+[agents.deep-research]
+description = "Iterative investigation specialist with convergence detection."
+config_file = "agents/deep-research.toml"
 
 [agents.review]
 description = "Code review specialist focused on correctness, risk, and tests."

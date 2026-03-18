@@ -618,7 +618,7 @@ When ANY context pressure signal fires:
 | -------------------------------------- | -------------------- | -------------------------------------- |
 | Sub-agent stuck 3+ times on same error | `/spec_kit:debug`    | Fresh perspective with model selection |
 | Session ending or user says "stopping" | `/spec_kit:handover` | Preserve context for continuation      |
-| Need formal research before planning   | `/spec_kit:research` | 9-step structured investigation        |
+| Need formal research before planning   | `/spec_kit:deep-research` | Iterative investigation with convergence |
 | Claiming task completion               | `/spec_kit:complete` | Verification workflow with checklist   |
 | Need to save important context         | `/memory:save`       | Preserve decisions and findings        |
 | Resuming prior work                    | `/spec_kit:resume`   | Load context from spec folder          |
@@ -801,7 +801,7 @@ The orchestrator's own behavior can cause context overload. Follow these rules:
 | `/spec_kit:debug`     | Debug delegation with model selection          | `.opencode/command/spec_kit/debug.md`    |
 | `/spec_kit:handover`  | Session continuation                           | `.opencode/command/spec_kit/handover.md` |
 | `/spec_kit:complete`  | Verification workflow                          | `.opencode/command/spec_kit/complete.md` |
-| `/spec_kit:research`  | 9-step investigation                           | `.opencode/command/spec_kit/research.md` |
+| `/spec_kit:deep-research` | Iterative investigation                    | `.opencode/command/spec_kit/deep-research.md` |
 | `/memory:save`        | Context preservation                           | `.opencode/command/memory/save.md`       |
 | `system-spec-kit`     | Spec folders, memory, validation               | `.opencode/skill/system-spec-kit/`       |
 | `sk-code`             | Review baseline lifecycle                      | `.opencode/skill/sk-code/`               |

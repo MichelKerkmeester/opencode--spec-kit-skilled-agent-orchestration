@@ -407,7 +407,7 @@ Place an `instructions.md` in `.codex/` to inject persistent project context int
     ├── debug.toml
     ├── handover.toml
     ├── orchestrate.toml
-    ├── research.toml
+    ├── deep-research.toml
     ├── review.toml
     ├── speckit.toml
     ├── ultra-think.toml

@@ -1,1 +1,0 @@
-../../.opencode/command/create/sk-skill.md

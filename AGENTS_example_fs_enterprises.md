@@ -269,12 +269,12 @@ Use the agent directory that matches the active runtime/provider profile:
 - **`@general`** — Implementation, complex tasks
 - **`@context`** — ALL codebase exploration, file search, pattern discovery, context loading. Dispatches sub-agents for fast search and deep investigation
 - **`@orchestrate`** — Multi-agent coordination, complex workflows
-- **`@deep-research`** — Autonomous deep research iterations, iterative evidence gathering. May write `research.md` inside spec folders
 - **`@write`** — Creating READMEs, Skills, Guides
 - **`@review`** — Code review, PRs, quality gates (READ-ONLY)
 - **`@speckit`** — Spec folder creation Level 1-3+. **EXCLUSIVE:** Only agent permitted to write `*.md` inside spec folders. Exceptions: `memory/` (generate-context.js), `scratch/` (any agent), `handover.md` (@handover), `research.md` (@deep-research), `debug-delegation.md` (@debug)
 - **`@debug`** — Fresh perspective debugging, root cause analysis. May write `debug-delegation.md` inside spec folders
 - **`@handover`** — Session continuation, context preservation. May write `handover.md` inside spec folders
+- **`@deep-research`** — Autonomous deep research iterations. LEAF agent executing single research cycles with externalized JSONL + strategy.md state. Dispatched by `/spec_kit:deep-research` command
 - **`@ultra-think`** — Multi-strategy planning architect. Dispatches diverse thinking strategies, scores via 5-dimension rubric, synthesizes optimal plan. Planning-only: no file modifications
 
 ---

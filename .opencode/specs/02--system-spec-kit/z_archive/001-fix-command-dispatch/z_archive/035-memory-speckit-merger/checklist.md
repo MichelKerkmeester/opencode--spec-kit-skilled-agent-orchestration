@@ -194,7 +194,7 @@ _Implementation notes and deviations from original plan:_
    Database reduced from 324 to 109 valid entries.
 
 4. ANCHOR FORMAT FIX: Fixed old anchor format in 
-   .opencode/specs/03--commands-and-skills/z_archive/doc-002-skill-rename/memory
+   .opencode/specs/03--commands-and-skills/z_archive/002-doc-skill-rename/memory
    Updated from <!-- ANCHOR_EXAMPLE: name --> to <!-- ANCHOR_EXAMPLE:name --> with closing tags.
 
 5. P2.1 DEFERRED: Old system-memory skill was replaced rather than archived.

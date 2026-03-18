@@ -124,6 +124,6 @@ The `workflows-code` skill recently underwent a similar reorganization (spec 001
 
 ## References
 
-- `.opencode/specs/03--commands-and-skills/z_archive/code-001-workflows-codebase-alignment/` - Pattern reference
+- `.opencode/specs/03--commands-and-skills/z_archive/001-code-workflows-codebase-alignment/` - Pattern reference
 - `.opencode/skill/system-spec-kit/SKILL.md` - Target file for updates
 - `.opencode/skill/system-spec-kit/references/` - Target folder for reorganization

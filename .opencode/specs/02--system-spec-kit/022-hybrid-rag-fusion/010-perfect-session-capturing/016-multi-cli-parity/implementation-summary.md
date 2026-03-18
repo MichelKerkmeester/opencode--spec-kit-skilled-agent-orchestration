@@ -21,7 +21,7 @@ contextType: "general"
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 016-multi-cli-parity |
-| **Completed** | 2026-03-17 |
+| **Completed** | 2026-03-18 |
 | **Level** | 2 |
 | **Status** | Complete |
 <!-- /ANCHOR:metadata -->
@@ -53,6 +53,21 @@ The phase-016 spec, plan, tasks, checklist, and implementation summary were rewr
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/016-multi-cli-parity/tasks.md` | Modified | Return the phase to the standard Setup / Implementation / Verification structure. |
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/016-multi-cli-parity/checklist.md` | Modified | Record current evidence tags for completion. |
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/016-multi-cli-parity/implementation-summary.md` | Modified | Restore the required anchored summary sections and final verification report. |
+### Continuation: ALIGNMENT_BLOCK, technicalContext, and decision confidence (2026-03-18)
+
+Three fixes from deferred deep research findings (Q1, Q3, Q5) plus an ALIGNMENT_BLOCK relaxation that unblocked explicit CLI-arg saves.
+
+| File | Action | Purpose |
+|------|--------|---------|
+| `scripts/core/workflow.ts` | Modified | Downgrade ALIGNMENT_BLOCK Block A from hard abort to warning for explicit CLI spec folder args (Q1). Blocks B/C remain as hard blocks. |
+| `scripts/utils/input-normalizer.ts` | Modified | Add `TECHNICAL_CONTEXT` to `NormalizedData`, populate structured key-value array in both fast-path and full normalization. Extract `mapTechnicalContext` helper (Q3). |
+| `scripts/types/session-types.ts` | Modified | Add `TECHNICAL_CONTEXT` and `HAS_TECHNICAL_CONTEXT` to `SessionData` interface (Q3). |
+| `scripts/extractors/collect-session-data.ts` | Modified | Pass through `TECHNICAL_CONTEXT` from collected data to SessionData (Q3). |
+| `scripts/lib/simulation-factory.ts` | Modified | Add simulation defaults for `TECHNICAL_CONTEXT` fields (Q3). |
+| `templates/context_template.md` | Modified | Add mustache section rendering Technical Context as a key-value table (Q3). |
+| `scripts/extractors/decision-extractor.ts` | Modified | Parse confidence regex, choice verbs, and rationale indicators from string-form decisions (Q5). |
+| `scripts/tests/workflow-e2e.vitest.ts` | Modified | Updated test to expect success when Block A downgrades to warning. |
+| `scripts/tests/task-enrichment.vitest.ts` | Modified | Updated test to expect Block B throw (file-path overlap) instead of Block A. |
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -60,7 +75,9 @@ The phase-016 spec, plan, tasks, checklist, and implementation summary were rewr
 <!-- ANCHOR:how-delivered -->
 ## 3. HOW IT WAS DELIVERED
 
-This pass stayed deliberately narrow. First, the live parity seams were re-read to confirm the runtime behavior was already shipped. Next, focused tests were added only where proof was missing, and one expectation was corrected to the actual path-shortening contract (`Read loaders/data-loader.ts`). Finally, the phase-016 docs were rewritten against the real verification results, then the phase folder was revalidated with the same `validate.sh` workflow that originally flagged the drift.
+**Pass 1 (2026-03-17):** This pass stayed deliberately narrow. First, the live parity seams were re-read to confirm the runtime behavior was already shipped. Next, focused tests were added only where proof was missing, and one expectation was corrected to the actual path-shortening contract (`Read loaders/data-loader.ts`). Finally, the phase-016 docs were rewritten against the real verification results, then the phase folder was revalidated with the same `validate.sh` workflow that originally flagged the drift.
+
+**Pass 2 (2026-03-18):** The three deferred deep research findings were implemented. Fix 1 (Q1) relaxed Block A of the alignment check to a warning when the spec folder was explicitly provided via CLI, unblocking stateless saves. Fix 2 (Q3) added a dedicated `TECHNICAL_CONTEXT` template section preserving the key-value structure from JSON input alongside the existing observation fallback. Fix 3 (Q5) added inline text analysis for string-form decisions so confidence is no longer hardcoded at 50% when the decision text contains signals. A parallel review agent approved at 82/100 and two P2 suggestions were fixed (helper extraction, unnecessary cast removal).
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -88,6 +105,9 @@ This pass stayed deliberately narrow. First, the live parity seams were re-read 
 | `npm run typecheck` | PASS |
 | `npm run build` | PASS |
 | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/016-multi-cli-parity` | PASS (`0` errors, `0` warnings) |
+| Full script test suite (2026-03-18) | PASS (`36` files, `385` tests) |
+| MCP server tests (2026-03-18) | PASS (`1` file, `20` tests) |
+| Parallel review agent (2026-03-18) | APPROVE (82/100, 0 P0, 0 P1) |
 <!-- /ANCHOR:verification -->
 
 ---

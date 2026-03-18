@@ -64,18 +64,35 @@ This document records the current verified state for this scope. Use [spec.md](s
 
 ---
 
+<!-- ANCHOR:phase-4 -->
+## 5. PHASE 4: CONTINUATION (2026-03-18)
+
+Three deferred fixes from deep research (Q1, Q3, Q5) plus ALIGNMENT_BLOCK relaxation for explicit CLI spec folder arguments.
+
+- [x] T012 Fix 1: Relax ALIGNMENT_BLOCK Block A from hard abort to warning when spec folder is explicitly provided via CLI argument (`scripts/core/workflow.ts`)
+- [x] T013 Fix 2: Add dedicated TECHNICAL_CONTEXT template section preserving key-value structure from JSON input (`scripts/utils/input-normalizer.ts`, `scripts/extractors/collect-session-data.ts`, `scripts/types/session-types.ts`, `templates/context_template.md`, `scripts/lib/simulation-factory.ts`)
+- [x] T014 Fix 3: Parse confidence from string-form decisions — explicit confidence regex, choice verb detection, rationale indicator detection (`scripts/extractors/decision-extractor.ts`)
+- [x] T015 Extract duplicated `mapTechnicalContext` helper in `input-normalizer.ts` (P2 review suggestion)
+- [x] T016 Remove unnecessary `as unknown[]` cast in `collect-session-data.ts` (P2 review suggestion)
+- [x] T017 Update 2 alignment-block tests to match new Block A warning behavior (`tests/workflow-e2e.vitest.ts`, `tests/task-enrichment.vitest.ts`)
+- [x] T018 Build, run full script tests (385/385), MCP tests (20/20)
+<!-- /ANCHOR:phase-4 -->
+
+---
+
 <!-- ANCHOR:completion -->
-## 5. COMPLETION CRITERIA
+## 6. COMPLETION CRITERIA
 
 - [x] All parity requirements have direct regression coverage.
 - [x] Phase-016 docs describe the reopened proof pass rather than the earlier assumed-complete state.
 - [x] Focused Vitest, extractor-loader baseline, typecheck, build, and phase-folder validation all pass.
+- [x] ALIGNMENT_BLOCK relaxation, technicalContext rendering, and decision confidence parsing all implemented and tested (2026-03-18).
 <!-- /ANCHOR:completion -->
 
 ---
 
 <!-- ANCHOR:cross-refs -->
-## 6. CROSS-REFERENCES
+## 7. CROSS-REFERENCES
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`

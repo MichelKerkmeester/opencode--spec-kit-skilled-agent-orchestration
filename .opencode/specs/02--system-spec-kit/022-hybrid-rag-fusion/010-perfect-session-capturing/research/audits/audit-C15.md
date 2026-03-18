@@ -301,7 +301,7 @@ exec
     20	- [5. QUICK IMPORT CHECK](#5--quick-import-check)
 exec
 /bin/zsh -lc "rg -n \"function extractQualityScore|extractQualityScore\\(|quality_score\" '/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public' | head -n 80" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 51ms:
-/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/git-002-superset-worktrees/memory/28-02-26_17-38__sk-git-superset.md:906:quality_score: 1.00
+/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/006-git-superset-worktrees/memory/28-02-26_17-38__sk-git-superset.md:906:quality_score: 1.00
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/command/create/assets/create_folder_readme_auto.yaml:571:    - quality_score: number
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/command/create/assets/create_folder_readme_auto.yaml:1027:    - quality_score: number
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/command/create/assets/create_agent_confirm.yaml:563:    - quality_score: number
@@ -311,16 +311,16 @@ exec
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/command/create/assets/create_folder_readme_confirm.yaml:561:      question: "Quality validation complete (score: [quality_score]/100). Continue?"
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/command/create/assets/create_folder_readme_confirm.yaml:1106:    - quality_score: number
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/command/create/assets/create_folder_readme_confirm.yaml:1110:      question: "Quality validation complete (score: [quality_score]/100). Continue?"
-/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cmd-015-create-prompt/memory/01-03-26_14-44__create-prompt-command.md:689:quality_score: 1.00
-/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cmd-015-create-prompt/memory/01-03-26_12-48__create-prompt-command.md:907:quality_score: 1.00
+/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/017-cmd-create-prompt/memory/01-03-26_14-44__create-prompt-command.md:689:quality_score: 1.00
+/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/017-cmd-create-prompt/memory/01-03-26_12-48__create-prompt-command.md:907:quality_score: 1.00
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/save/db-helpers.ts:14:  'spec_level', 'quality_score', 'quality_flags', 'parent_id',
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/save/create-record.ts:99:      quality_score: parsed.qualityScore ?? 0,
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/save/types.ts:114:  quality_score?: number;
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/save/reconsolidation-bridge.ts:123:                quality_score: parsed.qualityScore ?? 0,
-/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cmd-016-create-skill-merger/memory/03-03-26_07-49__create-skill-merger.md:907:quality_score: 1.00
+/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/019-cmd-create-skill-merger/memory/03-03-26_07-49__create-skill-merger.md:907:quality_score: 1.00
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts:104:  min_quality_score: boundedNumber(0, 1).optional(),
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts:355:  memory_search: ['query', 'concepts', 'specFolder', 'limit', 'sessionId', 'enableDedup', 'tier', 'contextType', 'useDecay', 'includeContiguity', 'includeConstitutional', 'enableSessionBoost', 'enableCausalBoost', 'includeContent', 'anchors', 'min_quality_score', 'minQualityScore', 'bypassCache', 'rerank', 'applyLengthPenalty', 'applyStateLimits', 'minState', 'intent', 'autoDetectIntent', 'trackAccess', 'includeArchived', 'mode', 'includeTrace'],
-/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cmd-016-create-skill-merger/memory/03-03-26_08-53__create-skill-merger.md:907:quality_score: 1.00
+/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/019-cmd-create-skill-merger/memory/03-03-26_08-53__create-skill-merger.md:907:quality_score: 1.00
 codex
 I found downstream parser/tests that assume `quality_score` is normalized to `0..1`; I’m reading those now to verify whether v2 scorer semantics stay aligned.
 exec

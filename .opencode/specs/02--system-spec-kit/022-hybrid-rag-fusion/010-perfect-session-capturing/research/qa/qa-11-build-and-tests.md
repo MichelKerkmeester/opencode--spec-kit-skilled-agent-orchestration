@@ -138,8 +138,8 @@ specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/012-hando
 specs/02--system-spec-kit/z_archive/012-spec-doc-anchor-tags
 specs/01--anobel.com/z_archive/012-notification-time-scheduling
 specs/05--agent-orchestration/z_archive/012-context-model-comparison
-specs/03--commands-and-skills/z_archive/code-012-opencode-codebase-alignment
-specs/03--commands-and-skills/cmd-012-create-codex-compatibility
+specs/03--commands-and-skills/z_archive/012-code-opencode-codebase-alignment
+specs/03--commands-and-skills/013-cmd-create-codex-compatibility
  succeeded in 286ms:
 specs/02--system-spec-kit/022-hybrid-rag-fusion/system-spec-kit/node_modules/@spec-kit/mcp-server/dist/tests/session-lifecycle.vitest.d.ts.map
 specs/02--system-spec-kit/022-hybrid-rag-fusion/system-spec-kit/node_modules/@spec-kit/mcp-server/dist/tests/session-boost.vitest.d.ts

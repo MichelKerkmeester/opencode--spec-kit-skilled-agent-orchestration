@@ -56,22 +56,22 @@ Root: /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/sp
 | 02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/077-speckit-upgrade-from-research | 1 | 1 | 0 | 0 |
 | 02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/080-speckit-bug-remediation | 1 | 1 | 0 | 0 |
 | 02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/082-speckit-reimagined | 2 | 2 | 0 | 0 |
-| 03--commands-and-skills/cmd-013-memory-output | 2 | 2 | 0 | 0 |
-| 03--commands-and-skills/cmd-014-create-changelog | 2 | 2 | 0 | 0 |
-| 03--commands-and-skills/cmd-015-create-prompt | 2 | 2 | 0 | 0 |
-| 03--commands-and-skills/cmd-016-create-skill-merger | 4 | 4 | 0 | 0 |
-| 03--commands-and-skills/cmd-017-create-readme-install-merger | 1 | 1 | 0 | 0 |
-| 03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration | 4 | 4 | 0 | 0 |
-| 03--commands-and-skills/z_archive/cmd-004-logic-improvement | 1 | 1 | 0 | 0 |
-| 03--commands-and-skills/cli-001-gemini | 2 | 2 | 0 | 0 |
-| 03--commands-and-skills/cli-003-claude-code | 1 | 1 | 0 | 0 |
-| 03--commands-and-skills/cli-004-copilot | 1 | 1 | 0 | 0 |
-| 03--commands-and-skills/z_archive/doc-003-h2-emoji-enforcement | 1 | 1 | 0 | 0 |
-| 03--commands-and-skills/z_archive/doc-004-style-enforcement | 1 | 1 | 0 | 0 |
-| 03--commands-and-skills/z_archive/doc-005-remove-emojis-from-docs | 1 | 1 | 0 | 0 |
-| 03--commands-and-skills/doc-008-template-folders | 1 | 1 | 0 | 0 |
-| 03--commands-and-skills/git-002-superset-worktrees | 1 | 1 | 0 | 0 |
-| 03--commands-and-skills/prompt-001-initial-creation | 2 | 2 | 0 | 0 |
+| 03--commands-and-skills/014-cmd-memory-output | 2 | 2 | 0 | 0 |
+| 03--commands-and-skills/015-cmd-create-changelog | 2 | 2 | 0 | 0 |
+| 03--commands-and-skills/017-cmd-create-prompt | 2 | 2 | 0 | 0 |
+| 03--commands-and-skills/019-cmd-create-skill-merger | 4 | 4 | 0 | 0 |
+| 03--commands-and-skills/020-cmd-create-readme-install-merger | 1 | 1 | 0 | 0 |
+| 03--commands-and-skills/z_archive/002-cmd-speckit-leann-integration | 4 | 4 | 0 | 0 |
+| 03--commands-and-skills/z_archive/004-cmd-logic-improvement | 1 | 1 | 0 | 0 |
+| 03--commands-and-skills/001-cli-gemini | 2 | 2 | 0 | 0 |
+| 03--commands-and-skills/007-cli-claude-code | 1 | 1 | 0 | 0 |
+| 03--commands-and-skills/008-cli-copilot | 1 | 1 | 0 | 0 |
+| 03--commands-and-skills/z_archive/003-doc-h2-emoji-enforcement | 1 | 1 | 0 | 0 |
+| 03--commands-and-skills/z_archive/004-doc-style-enforcement | 1 | 1 | 0 | 0 |
+| 03--commands-and-skills/z_archive/005-doc-remove-emojis-from-docs | 1 | 1 | 0 | 0 |
+| 03--commands-and-skills/011-doc-template-folders | 1 | 1 | 0 | 0 |
+| 03--commands-and-skills/006-git-superset-worktrees | 1 | 1 | 0 | 0 |
+| 03--commands-and-skills/003-prompt-initial-creation | 2 | 2 | 0 | 0 |
 | 05--agent-orchestration/z_archive/003-agent-system-upgrade | 1 | 1 | 0 | 0 |
 | 05--agent-orchestration/z_archive/005-agent-system-improvements | 2 | 2 | 0 | 0 |
 | 05--agent-orchestration/z_archive/009-claude-code-subagents | 1 | 1 | 0 | 0 |
@@ -196,33 +196,33 @@ Root: /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/sp
 - 02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/080-speckit-bug-remediation/memory/28-01-26_22-04__speckit-bug-remediation.md :: repair_in_place :: missing_standard_anchor_scaffolding
 - 02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/082-speckit-reimagined/memory/01-02-26_10-17__speckit-reimagined.md :: repair_in_place :: missing_standard_anchor_scaffolding
 - 02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/082-speckit-reimagined/memory/01-02-26_10-59__speckit-reimagined.md :: repair_in_place :: missing_standard_anchor_scaffolding
-- 03--commands-and-skills/cmd-013-memory-output/memory/20-02-26_13-42__memory-command-output.md :: repair_in_place :: missing_standard_anchor_scaffolding
-- 03--commands-and-skills/cmd-013-memory-output/memory/20-02-26_14-44__memory-command-output.md :: repair_in_place :: missing_standard_anchor_scaffolding
-- 03--commands-and-skills/cmd-014-create-changelog/memory/01-03-26_12-53__create-changelog-command.md :: repair_in_place :: missing_standard_anchor_scaffolding
-- 03--commands-and-skills/cmd-014-create-changelog/memory/01-03-26_14-30__create-changelog-command.md :: repair_in_place :: missing_standard_anchor_scaffolding
-- 03--commands-and-skills/cmd-015-create-prompt/memory/01-03-26_12-48__create-prompt-command.md :: repair_in_place :: missing_standard_anchor_scaffolding
-- 03--commands-and-skills/cmd-015-create-prompt/memory/01-03-26_14-44__create-prompt-command.md :: repair_in_place :: missing_standard_anchor_scaffolding
-- 03--commands-and-skills/cmd-016-create-skill-merger/memory/03-03-26_07-49__create-skill-merger.md :: repair_in_place :: missing_standard_anchor_scaffolding
-- 03--commands-and-skills/cmd-016-create-skill-merger/memory/03-03-26_08-45__create-skill-merger.md :: repair_in_place :: missing_standard_anchor_scaffolding
-- 03--commands-and-skills/cmd-016-create-skill-merger/memory/03-03-26_08-49__create-skill-merger.md :: repair_in_place :: missing_standard_anchor_scaffolding
-- 03--commands-and-skills/cmd-016-create-skill-merger/memory/03-03-26_08-53__create-skill-merger.md :: repair_in_place :: missing_standard_anchor_scaffolding
-- 03--commands-and-skills/cmd-017-create-readme-install-merger/memory/03-03-26_13-29__create-readme-install-merger.md :: repair_in_place :: missing_standard_anchor_scaffolding
-- 03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration/memory/21-12-25_11-14__speckit-leann-integration.md :: repair_in_place :: missing_standard_anchor_scaffolding
-- 03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration/memory/21-12-25_11-24__speckit-leann-integration.md :: repair_in_place :: missing_standard_anchor_scaffolding
-- 03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration/memory/22-12-25_09-00__speckit-leann-integration.md :: repair_in_place :: missing_standard_anchor_scaffolding
-- 03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration/memory/22-12-25_09-01__speckit-leann-integration.md :: repair_in_place :: missing_standard_anchor_scaffolding
-- 03--commands-and-skills/z_archive/cmd-004-logic-improvement/memory/01-01-26_15-02__command-logic-improvement.md :: repair_in_place :: missing_standard_anchor_scaffolding
-- 03--commands-and-skills/cli-001-gemini/memory/28-02-26_11-07__cli-gemini.md :: repair_in_place :: missing_standard_anchor_scaffolding
-- 03--commands-and-skills/cli-001-gemini/memory/28-02-26_11-26__cli-gemini.md :: repair_in_place :: missing_standard_anchor_scaffolding
-- 03--commands-and-skills/cli-003-claude-code/memory/02-03-26_21-14__cli-claude-code.md :: repair_in_place :: missing_standard_anchor_scaffolding
-- 03--commands-and-skills/cli-004-copilot/memory/02-03-26_21-14__cli-copilot.md :: repair_in_place :: missing_standard_anchor_scaffolding
-- 03--commands-and-skills/z_archive/doc-003-h2-emoji-enforcement/memory/01-01-26_14-53__h2-emoji-enforcement.md :: repair_in_place :: missing_standard_anchor_scaffolding
-- 03--commands-and-skills/z_archive/doc-004-style-enforcement/memory/03-02-26_17-30__validate-document-rename.md :: repair_in_place :: missing_standard_anchor_scaffolding
-- 03--commands-and-skills/z_archive/doc-005-remove-emojis-from-docs/memory/17-02-26_00-15__remove-emojis-from-docs.md :: repair_in_place :: missing_standard_anchor_scaffolding
-- 03--commands-and-skills/doc-008-template-folders/memory/28-02-26_11-44__sk-doc-template-folders.md :: repair_in_place :: missing_standard_anchor_scaffolding
-- 03--commands-and-skills/git-002-superset-worktrees/memory/28-02-26_17-38__sk-git-superset.md :: repair_in_place :: missing_standard_anchor_scaffolding
-- 03--commands-and-skills/prompt-001-initial-creation/memory/01-03-26_11-09__initial-creation.md :: repair_in_place :: missing_standard_anchor_scaffolding
-- 03--commands-and-skills/prompt-001-initial-creation/memory/04-03-26_09-15__initial-creation.md :: repair_in_place :: missing_standard_anchor_scaffolding
+- 03--commands-and-skills/014-cmd-memory-output/memory/20-02-26_13-42__memory-command-output.md :: repair_in_place :: missing_standard_anchor_scaffolding
+- 03--commands-and-skills/014-cmd-memory-output/memory/20-02-26_14-44__memory-command-output.md :: repair_in_place :: missing_standard_anchor_scaffolding
+- 03--commands-and-skills/015-cmd-create-changelog/memory/01-03-26_12-53__create-changelog-command.md :: repair_in_place :: missing_standard_anchor_scaffolding
+- 03--commands-and-skills/015-cmd-create-changelog/memory/01-03-26_14-30__create-changelog-command.md :: repair_in_place :: missing_standard_anchor_scaffolding
+- 03--commands-and-skills/017-cmd-create-prompt/memory/01-03-26_12-48__create-prompt-command.md :: repair_in_place :: missing_standard_anchor_scaffolding
+- 03--commands-and-skills/017-cmd-create-prompt/memory/01-03-26_14-44__create-prompt-command.md :: repair_in_place :: missing_standard_anchor_scaffolding
+- 03--commands-and-skills/019-cmd-create-skill-merger/memory/03-03-26_07-49__create-skill-merger.md :: repair_in_place :: missing_standard_anchor_scaffolding
+- 03--commands-and-skills/019-cmd-create-skill-merger/memory/03-03-26_08-45__create-skill-merger.md :: repair_in_place :: missing_standard_anchor_scaffolding
+- 03--commands-and-skills/019-cmd-create-skill-merger/memory/03-03-26_08-49__create-skill-merger.md :: repair_in_place :: missing_standard_anchor_scaffolding
+- 03--commands-and-skills/019-cmd-create-skill-merger/memory/03-03-26_08-53__create-skill-merger.md :: repair_in_place :: missing_standard_anchor_scaffolding
+- 03--commands-and-skills/020-cmd-create-readme-install-merger/memory/03-03-26_13-29__create-readme-install-merger.md :: repair_in_place :: missing_standard_anchor_scaffolding
+- 03--commands-and-skills/z_archive/002-cmd-speckit-leann-integration/memory/21-12-25_11-14__speckit-leann-integration.md :: repair_in_place :: missing_standard_anchor_scaffolding
+- 03--commands-and-skills/z_archive/002-cmd-speckit-leann-integration/memory/21-12-25_11-24__speckit-leann-integration.md :: repair_in_place :: missing_standard_anchor_scaffolding
+- 03--commands-and-skills/z_archive/002-cmd-speckit-leann-integration/memory/22-12-25_09-00__speckit-leann-integration.md :: repair_in_place :: missing_standard_anchor_scaffolding
+- 03--commands-and-skills/z_archive/002-cmd-speckit-leann-integration/memory/22-12-25_09-01__speckit-leann-integration.md :: repair_in_place :: missing_standard_anchor_scaffolding
+- 03--commands-and-skills/z_archive/004-cmd-logic-improvement/memory/01-01-26_15-02__command-logic-improvement.md :: repair_in_place :: missing_standard_anchor_scaffolding
+- 03--commands-and-skills/001-cli-gemini/memory/28-02-26_11-07__cli-gemini.md :: repair_in_place :: missing_standard_anchor_scaffolding
+- 03--commands-and-skills/001-cli-gemini/memory/28-02-26_11-26__cli-gemini.md :: repair_in_place :: missing_standard_anchor_scaffolding
+- 03--commands-and-skills/007-cli-claude-code/memory/02-03-26_21-14__cli-claude-code.md :: repair_in_place :: missing_standard_anchor_scaffolding
+- 03--commands-and-skills/008-cli-copilot/memory/02-03-26_21-14__cli-copilot.md :: repair_in_place :: missing_standard_anchor_scaffolding
+- 03--commands-and-skills/z_archive/003-doc-h2-emoji-enforcement/memory/01-01-26_14-53__h2-emoji-enforcement.md :: repair_in_place :: missing_standard_anchor_scaffolding
+- 03--commands-and-skills/z_archive/004-doc-style-enforcement/memory/03-02-26_17-30__validate-document-rename.md :: repair_in_place :: missing_standard_anchor_scaffolding
+- 03--commands-and-skills/z_archive/005-doc-remove-emojis-from-docs/memory/17-02-26_00-15__remove-emojis-from-docs.md :: repair_in_place :: missing_standard_anchor_scaffolding
+- 03--commands-and-skills/011-doc-template-folders/memory/28-02-26_11-44__sk-doc-template-folders.md :: repair_in_place :: missing_standard_anchor_scaffolding
+- 03--commands-and-skills/006-git-superset-worktrees/memory/28-02-26_17-38__sk-git-superset.md :: repair_in_place :: missing_standard_anchor_scaffolding
+- 03--commands-and-skills/003-prompt-initial-creation/memory/01-03-26_11-09__initial-creation.md :: repair_in_place :: missing_standard_anchor_scaffolding
+- 03--commands-and-skills/003-prompt-initial-creation/memory/04-03-26_09-15__initial-creation.md :: repair_in_place :: missing_standard_anchor_scaffolding
 - 05--agent-orchestration/z_archive/003-agent-system-upgrade/memory/23-01-26_10-52__research-debug-improvements.md :: repair_in_place :: missing_standard_anchor_scaffolding
 - 05--agent-orchestration/z_archive/005-agent-system-improvements/memory/27-01-26_11-24__agent-system-improvements.md :: repair_in_place :: missing_standard_anchor_scaffolding
 - 05--agent-orchestration/z_archive/005-agent-system-improvements/memory/28-01-26_09-11__agent-system-improvements.md :: repair_in_place :: missing_standard_anchor_scaffolding

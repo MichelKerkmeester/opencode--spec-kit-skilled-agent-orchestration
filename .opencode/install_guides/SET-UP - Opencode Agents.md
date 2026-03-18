@@ -1132,7 +1132,7 @@ done
 | context     | `./context.md`         | Context retrieval and exploration        |
 | orchestrate | `./orchestrate.md`     | Task decomposition and delegation        |
 | write       | `./write.md`           | Documentation creation                   |
-| research    | `./research.md`        | Technical investigation                  |
+| deep-research | `./deep-research.md` | Iterative technical investigation        |
 | review      | `./review.md`          | Code quality and security assessment     |
 | speckit     | `./speckit.md`         | Spec folder documentation                |
 | handover    | `./handover.md`        | Session continuation                     |

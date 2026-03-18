@@ -336,7 +336,6 @@ After research:
 | Command | Relationship |
 |---------|-------------|
 | `/spec_kit:deep-research` | Primary invocation point |
-| `/spec_kit:research` | Single-pass alternative (not iterative) |
 | `/spec_kit:plan` | Next step after deep research completes |
 | `/memory:save` | Manual memory save (deep research auto-saves) |
 
@@ -394,7 +393,6 @@ After research:
 | Command | Purpose |
 |---------|---------|
 | `/spec_kit:deep-research` | Full loop workflow |
-| `/spec_kit:research` | Single-pass research |
 | `/memory:save` | Manual context preservation |
 
 **For one-page cheat sheet**: See [quick_reference.md](./references/quick_reference.md)

@@ -82,7 +82,7 @@ The work landed in four passes:
 |-------|--------|
 | `cd .opencode/skill/system-spec-kit && npm run typecheck` | PASS |
 | `cd .opencode/skill/system-spec-kit/scripts && npm run check && npm run build` | PASS |
-| `node .opencode/skill/system-spec-kit/scripts/tests/test-scripts-modules.js` | PASS: 384 passed, 0 failed, 5 skipped, 389 total |
+| `node .opencode/skill/system-spec-kit/scripts/tests/test-scripts-modules.js` | PASS: 385 passed, 0 failed, 5 skipped, 390 total (updated 2026-03-18) |
 | `node .opencode/skill/system-spec-kit/scripts/tests/test-extractors-loaders.js` | PASS: 307 passed, 0 failed, 0 skipped, 307 total |
 | `cd .opencode/skill/system-spec-kit/scripts && node ../mcp_server/node_modules/vitest/vitest.mjs run tests/task-enrichment.vitest.ts --config ../mcp_server/vitest.config.ts` | PASS: 1 file, 47 tests |
 | `cd .opencode/skill/system-spec-kit/scripts && node ../mcp_server/node_modules/vitest/vitest.mjs run tests/runtime-memory-inputs.vitest.ts --config ../mcp_server/vitest.config.ts` | PASS: 1 file, 29 tests |
@@ -109,4 +109,6 @@ The work landed in four passes:
 ## 6. KNOWN LIMITATIONS
 
 No material limitations remain for this closure pass. Future edits still need fresh reruns and updated retained proof before publishing new closure claims.
+
+**2026-03-18 continuation:** Phase 016 received three additional fixes (ALIGNMENT_BLOCK relaxation, technicalContext rendering, decision confidence parsing). Full test suite re-verified at 385/385 script tests and 20/20 MCP tests. See `016-multi-cli-parity/implementation-summary.md` for details.
 <!-- /ANCHOR:limitations -->

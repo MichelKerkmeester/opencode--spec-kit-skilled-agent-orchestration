@@ -219,85 +219,85 @@
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "03--commands-and-skills/cmd-013-memory-output": {
+    "03--commands-and-skills/014-cmd-memory-output": {
       "total": 2,
       "repair_in_place": 2,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "03--commands-and-skills/cmd-014-create-changelog": {
+    "03--commands-and-skills/015-cmd-create-changelog": {
       "total": 2,
       "repair_in_place": 2,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "03--commands-and-skills/cmd-015-create-prompt": {
+    "03--commands-and-skills/017-cmd-create-prompt": {
       "total": 2,
       "repair_in_place": 2,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "03--commands-and-skills/cmd-016-create-skill-merger": {
+    "03--commands-and-skills/019-cmd-create-skill-merger": {
       "total": 4,
       "repair_in_place": 4,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "03--commands-and-skills/cmd-017-create-readme-install-merger": {
+    "03--commands-and-skills/020-cmd-create-readme-install-merger": {
       "total": 1,
       "repair_in_place": 1,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "03--commands-and-skills/z_archive/cmd-004-logic-improvement": {
+    "03--commands-and-skills/z_archive/004-cmd-logic-improvement": {
       "total": 1,
       "repair_in_place": 0,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "03--commands-and-skills/cli-001-gemini": {
+    "03--commands-and-skills/001-cli-gemini": {
       "total": 2,
       "repair_in_place": 2,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "03--commands-and-skills/cli-003-claude-code": {
+    "03--commands-and-skills/007-cli-claude-code": {
       "total": 1,
       "repair_in_place": 1,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "03--commands-and-skills/cli-004-copilot": {
+    "03--commands-and-skills/008-cli-copilot": {
       "total": 1,
       "repair_in_place": 1,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "03--commands-and-skills/z_archive/doc-003-h2-emoji-enforcement": {
+    "03--commands-and-skills/z_archive/003-doc-h2-emoji-enforcement": {
       "total": 1,
       "repair_in_place": 0,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "03--commands-and-skills/z_archive/doc-005-remove-emojis-from-docs": {
+    "03--commands-and-skills/z_archive/005-doc-remove-emojis-from-docs": {
       "total": 1,
       "repair_in_place": 1,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "03--commands-and-skills/doc-008-template-folders": {
+    "03--commands-and-skills/011-doc-template-folders": {
       "total": 1,
       "repair_in_place": 1,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "03--commands-and-skills/git-002-superset-worktrees": {
+    "03--commands-and-skills/006-git-superset-worktrees": {
       "total": 1,
       "repair_in_place": 1,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "03--commands-and-skills/prompt-001-initial-creation": {
+    "03--commands-and-skills/003-prompt-initial-creation": {
       "total": 2,
       "repair_in_place": 2,
       "regenerate_from_authoritative_evidence": 0,
@@ -2357,8 +2357,8 @@
       }
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cmd-013-memory-output/memory/20-02-26_13-42__memory-command-output.md",
-      "specFolder": "03--commands-and-skills/cmd-013-memory-output",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/014-cmd-memory-output/memory/20-02-26_13-42__memory-command-output.md",
+      "specFolder": "03--commands-and-skills/014-cmd-memory-output",
       "issues": [
         "missing_standard_anchor_scaffolding"
       ],
@@ -2382,8 +2382,8 @@
       }
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cmd-013-memory-output/memory/20-02-26_14-44__memory-command-output.md",
-      "specFolder": "03--commands-and-skills/cmd-013-memory-output",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/014-cmd-memory-output/memory/20-02-26_14-44__memory-command-output.md",
+      "specFolder": "03--commands-and-skills/014-cmd-memory-output",
       "issues": [
         "missing_standard_anchor_scaffolding"
       ],
@@ -2407,8 +2407,8 @@
       }
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cmd-014-create-changelog/memory/01-03-26_12-53__create-changelog-command.md",
-      "specFolder": "03--commands-and-skills/cmd-014-create-changelog",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/015-cmd-create-changelog/memory/01-03-26_12-53__create-changelog-command.md",
+      "specFolder": "03--commands-and-skills/015-cmd-create-changelog",
       "issues": [
         "missing_standard_anchor_scaffolding"
       ],
@@ -2432,8 +2432,8 @@
       }
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cmd-014-create-changelog/memory/01-03-26_14-30__create-changelog-command.md",
-      "specFolder": "03--commands-and-skills/cmd-014-create-changelog",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/015-cmd-create-changelog/memory/01-03-26_14-30__create-changelog-command.md",
+      "specFolder": "03--commands-and-skills/015-cmd-create-changelog",
       "issues": [
         "missing_standard_anchor_scaffolding"
       ],
@@ -2457,8 +2457,8 @@
       }
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cmd-015-create-prompt/memory/01-03-26_12-48__create-prompt-command.md",
-      "specFolder": "03--commands-and-skills/cmd-015-create-prompt",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/017-cmd-create-prompt/memory/01-03-26_12-48__create-prompt-command.md",
+      "specFolder": "03--commands-and-skills/017-cmd-create-prompt",
       "issues": [
         "missing_standard_anchor_scaffolding"
       ],
@@ -2482,8 +2482,8 @@
       }
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cmd-015-create-prompt/memory/01-03-26_14-44__create-prompt-command.md",
-      "specFolder": "03--commands-and-skills/cmd-015-create-prompt",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/017-cmd-create-prompt/memory/01-03-26_14-44__create-prompt-command.md",
+      "specFolder": "03--commands-and-skills/017-cmd-create-prompt",
       "issues": [
         "missing_standard_anchor_scaffolding"
       ],
@@ -2507,8 +2507,8 @@
       }
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cmd-016-create-skill-merger/memory/03-03-26_07-49__create-skill-merger.md",
-      "specFolder": "03--commands-and-skills/cmd-016-create-skill-merger",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/019-cmd-create-skill-merger/memory/03-03-26_07-49__create-skill-merger.md",
+      "specFolder": "03--commands-and-skills/019-cmd-create-skill-merger",
       "issues": [
         "missing_standard_anchor_scaffolding"
       ],
@@ -2532,8 +2532,8 @@
       }
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cmd-016-create-skill-merger/memory/03-03-26_08-45__create-skill-merger.md",
-      "specFolder": "03--commands-and-skills/cmd-016-create-skill-merger",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/019-cmd-create-skill-merger/memory/03-03-26_08-45__create-skill-merger.md",
+      "specFolder": "03--commands-and-skills/019-cmd-create-skill-merger",
       "issues": [
         "missing_standard_anchor_scaffolding"
       ],
@@ -2557,8 +2557,8 @@
       }
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cmd-016-create-skill-merger/memory/03-03-26_08-49__create-skill-merger.md",
-      "specFolder": "03--commands-and-skills/cmd-016-create-skill-merger",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/019-cmd-create-skill-merger/memory/03-03-26_08-49__create-skill-merger.md",
+      "specFolder": "03--commands-and-skills/019-cmd-create-skill-merger",
       "issues": [
         "missing_standard_anchor_scaffolding"
       ],
@@ -2582,8 +2582,8 @@
       }
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cmd-016-create-skill-merger/memory/03-03-26_08-53__create-skill-merger.md",
-      "specFolder": "03--commands-and-skills/cmd-016-create-skill-merger",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/019-cmd-create-skill-merger/memory/03-03-26_08-53__create-skill-merger.md",
+      "specFolder": "03--commands-and-skills/019-cmd-create-skill-merger",
       "issues": [
         "missing_standard_anchor_scaffolding"
       ],
@@ -2607,8 +2607,8 @@
       }
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cmd-017-create-readme-install-merger/memory/03-03-26_13-29__create-readme-install-merger.md",
-      "specFolder": "03--commands-and-skills/cmd-017-create-readme-install-merger",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/020-cmd-create-readme-install-merger/memory/03-03-26_13-29__create-readme-install-merger.md",
+      "specFolder": "03--commands-and-skills/020-cmd-create-readme-install-merger",
       "issues": [
         "missing_standard_anchor_scaffolding"
       ],
@@ -2632,8 +2632,8 @@
       }
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/cmd-004-logic-improvement/memory/01-01-26_15-02__command-logic-improvement.md",
-      "specFolder": "03--commands-and-skills/z_archive/cmd-004-logic-improvement",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/004-cmd-logic-improvement/memory/01-01-26_15-02__command-logic-improvement.md",
+      "specFolder": "03--commands-and-skills/z_archive/004-cmd-logic-improvement",
       "issues": [],
       "classification": "clean",
       "repairStrategy": "none",
@@ -2647,8 +2647,8 @@
       }
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cli-001-gemini/memory/28-02-26_11-07__cli-gemini.md",
-      "specFolder": "03--commands-and-skills/cli-001-gemini",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/001-cli-gemini/memory/28-02-26_11-07__cli-gemini.md",
+      "specFolder": "03--commands-and-skills/001-cli-gemini",
       "issues": [
         "missing_standard_anchor_scaffolding"
       ],
@@ -2672,8 +2672,8 @@
       }
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cli-001-gemini/memory/28-02-26_11-26__cli-gemini.md",
-      "specFolder": "03--commands-and-skills/cli-001-gemini",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/001-cli-gemini/memory/28-02-26_11-26__cli-gemini.md",
+      "specFolder": "03--commands-and-skills/001-cli-gemini",
       "issues": [
         "missing_standard_anchor_scaffolding"
       ],
@@ -2697,8 +2697,8 @@
       }
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cli-003-claude-code/memory/02-03-26_21-14__cli-claude-code.md",
-      "specFolder": "03--commands-and-skills/cli-003-claude-code",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/007-cli-claude-code/memory/02-03-26_21-14__cli-claude-code.md",
+      "specFolder": "03--commands-and-skills/007-cli-claude-code",
       "issues": [
         "missing_standard_anchor_scaffolding"
       ],
@@ -2722,8 +2722,8 @@
       }
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cli-004-copilot/memory/02-03-26_21-14__cli-copilot.md",
-      "specFolder": "03--commands-and-skills/cli-004-copilot",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/008-cli-copilot/memory/02-03-26_21-14__cli-copilot.md",
+      "specFolder": "03--commands-and-skills/008-cli-copilot",
       "issues": [
         "missing_standard_anchor_scaffolding"
       ],
@@ -2747,8 +2747,8 @@
       }
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/doc-003-h2-emoji-enforcement/memory/01-01-26_14-53__h2-emoji-enforcement.md",
-      "specFolder": "03--commands-and-skills/z_archive/doc-003-h2-emoji-enforcement",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/003-doc-h2-emoji-enforcement/memory/01-01-26_14-53__h2-emoji-enforcement.md",
+      "specFolder": "03--commands-and-skills/z_archive/003-doc-h2-emoji-enforcement",
       "issues": [],
       "classification": "clean",
       "repairStrategy": "none",
@@ -2762,8 +2762,8 @@
       }
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/doc-005-remove-emojis-from-docs/memory/17-02-26_00-15__remove-emojis-from-docs.md",
-      "specFolder": "03--commands-and-skills/z_archive/doc-005-remove-emojis-from-docs",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/005-doc-remove-emojis-from-docs/memory/17-02-26_00-15__remove-emojis-from-docs.md",
+      "specFolder": "03--commands-and-skills/z_archive/005-doc-remove-emojis-from-docs",
       "issues": [
         "missing_standard_anchor_scaffolding"
       ],
@@ -2787,8 +2787,8 @@
       }
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/doc-008-template-folders/memory/28-02-26_11-44__sk-doc-template-folders.md",
-      "specFolder": "03--commands-and-skills/doc-008-template-folders",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/011-doc-template-folders/memory/28-02-26_11-44__sk-doc-template-folders.md",
+      "specFolder": "03--commands-and-skills/011-doc-template-folders",
       "issues": [
         "missing_standard_anchor_scaffolding"
       ],
@@ -2812,8 +2812,8 @@
       }
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/git-002-superset-worktrees/memory/28-02-26_17-38__sk-git-superset.md",
-      "specFolder": "03--commands-and-skills/git-002-superset-worktrees",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/006-git-superset-worktrees/memory/28-02-26_17-38__sk-git-superset.md",
+      "specFolder": "03--commands-and-skills/006-git-superset-worktrees",
       "issues": [
         "missing_standard_anchor_scaffolding"
       ],
@@ -2837,8 +2837,8 @@
       }
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/prompt-001-initial-creation/memory/01-03-26_11-09__initial-creation.md",
-      "specFolder": "03--commands-and-skills/prompt-001-initial-creation",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/003-prompt-initial-creation/memory/01-03-26_11-09__initial-creation.md",
+      "specFolder": "03--commands-and-skills/003-prompt-initial-creation",
       "issues": [
         "missing_standard_anchor_scaffolding"
       ],
@@ -2862,8 +2862,8 @@
       }
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/prompt-001-initial-creation/memory/04-03-26_09-15__initial-creation.md",
-      "specFolder": "03--commands-and-skills/prompt-001-initial-creation",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/003-prompt-initial-creation/memory/04-03-26_09-15__initial-creation.md",
+      "specFolder": "03--commands-and-skills/003-prompt-initial-creation",
       "issues": [
         "missing_standard_anchor_scaffolding"
       ],

@@ -91,14 +91,26 @@ This document records the current verified state for this scope. Use [spec.md](s
 
 ---
 
+<!-- ANCHOR:continuation -->
+## 8. CONTINUATION (2026-03-18)
+
+- [x] CHK-060 [P0] ALIGNMENT_BLOCK Block A downgraded to warning for explicit CLI args [Evidence: `workflow.ts:1278-1287` changed from `throw` to `warn`. Block B file-path overlap still hard-blocks. Tests updated in `workflow-e2e.vitest.ts` and `task-enrichment.vitest.ts`.]
+- [x] CHK-061 [P0] TECHNICAL_CONTEXT flows from JSON input through to template rendering [Evidence: `NormalizedData.TECHNICAL_CONTEXT` populated in both fast-path and full normalization in `input-normalizer.ts`. `SessionData` type extended. `context_template.md` renders key-value table via `{{#HAS_TECHNICAL_CONTEXT}}`.]
+- [x] CHK-062 [P0] String-form decision confidence no longer hardcoded at 50% [Evidence: `decision-extractor.ts` now parses `/confidence:?\s*(\d+)/i`, choice verbs (`chose|selected|decided`), and rationale indicators (`because|due to`) from string-form decisions when `manualObj` is null.]
+- [x] CHK-063 [P1] Full test suite passes after all three fixes [Evidence: 36 files, 385 tests passed; MCP 1 file, 20 tests passed on 2026-03-18.]
+- [x] CHK-064 [P1] Parallel review agent approved [Evidence: Opus review scored 82/100 with 0 P0, 0 P1 findings. Two P2 suggestions (helper extraction, unnecessary cast) fixed.]
+<!-- /ANCHOR:continuation -->
+
+---
+
 <!-- ANCHOR:summary -->
-## 8. VERIFICATION SUMMARY
+## 9. VERIFICATION SUMMARY
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 8 | 8/8 |
-| P1 Items | 10 | 10/10 |
+| P0 Items | 11 | 11/11 |
+| P1 Items | 12 | 12/12 |
 | P2 Items | 2 | 2/2 |
 
-**Verification Date**: 2026-03-17
+**Verification Date**: 2026-03-18
 <!-- /ANCHOR:summary -->

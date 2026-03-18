@@ -1,1 +1,0 @@
-../../.opencode/command/spec_kit/implement.md

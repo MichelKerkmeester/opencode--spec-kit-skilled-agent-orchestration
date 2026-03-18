@@ -179,9 +179,6 @@ All state files are created in `{spec_folder}/scratch/` during initialization.
 <!-- ANCHOR:faq -->
 ## 8. FAQ
 
-**Q: How does this differ from `/spec_kit:research`?**
-A: `/spec_kit:research` runs a single-pass 9-step workflow. Deep research runs multiple iterations with fresh context per cycle, convergence detection, and progressive synthesis.
-
 **Q: Can I pause a running autonomous research loop?**
 A: Yes. Create a file at `scratch/.deep-research-pause` and the loop will halt between iterations. Delete the file to resume.
 

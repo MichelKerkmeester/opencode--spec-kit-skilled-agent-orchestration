@@ -1,14 +1,17 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/016-multi-cli-parity",
-  "description": "Feature Specification: Multi-CLI Parity Hardening",
+  "description": "Feature Specification: Multi-CLI Parity Hardening + ALIGNMENT_BLOCK, technicalContext, Decision Confidence Fixes",
   "keywords": [
     "feature",
     "specification",
     "multi-cli",
     "parity",
-    "hardening"
+    "hardening",
+    "alignment-block",
+    "technical-context",
+    "decision-confidence"
   ],
-  "lastUpdated": "2026-03-17T19:37:31.748Z",
+  "lastUpdated": "2026-03-18T17:50:00.000Z",
   "specId": "016",
   "folderSlug": "multi-cli-parity",
   "parentChain": [
@@ -16,9 +19,10 @@
     "022-hybrid-rag-fusion",
     "010-perfect-session-capturing"
   ],
-  "memorySequence": 2,
+  "memorySequence": 3,
   "memoryNameHistory": [
     "17-03-26_14-47__focused-phase-016-parity-proof-rerun.md",
-    "17-03-26_16-44__strict-closeout-evidence-refreshed.md"
+    "17-03-26_16-44__strict-closeout-evidence-refreshed.md",
+    "18-03-26_18-24__next-steps.md"
   ]
 }

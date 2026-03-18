@@ -1,1 +1,0 @@
-../../.opencode/command/memory/manage.md

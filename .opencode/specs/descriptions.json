@@ -43,7 +43,7 @@
     },
     {
       "specFolder": "00--ai-systems-non-dev/001-global-shared/005-routing-review",
-      "description": "Routing Review — Specification",
+      "description": "Routing Review \u2014 Specification",
       "keywords": [
         "routing",
         "review",
@@ -53,7 +53,7 @@
     },
     {
       "specFolder": "00--ai-systems-non-dev/002-sales-communication-flows/001-initial-creation",
-      "description": "Sales Ops — Sales Automation Agent: Specification",
+      "description": "Sales Ops \u2014 Sales Automation Agent: Specification",
       "keywords": [
         "sales",
         "ops",
@@ -596,7 +596,7 @@
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/001-sprint-0-measurement-foundation",
-      "description": "Feature Specification: Sprint 0 — Measurement Foundation",
+      "description": "Feature Specification: Sprint 0 \u2014 Measurement Foundation",
       "keywords": [
         "sprint",
         "0",
@@ -611,7 +611,7 @@
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/002-sprint-1-graph-signal-activation",
-      "description": "Feature Specification: Sprint 1 — Graph Signal Activation",
+      "description": "Feature Specification: Sprint 1 \u2014 Graph Signal Activation",
       "keywords": [
         "sprint",
         "1",
@@ -626,7 +626,7 @@
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/003-sprint-2-scoring-calibration",
-      "description": "Feature Specification: Sprint 2 — Scoring Calibration",
+      "description": "Feature Specification: Sprint 2 \u2014 Scoring Calibration",
       "keywords": [
         "sprint",
         "2",
@@ -638,7 +638,7 @@
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/004-sprint-3-query-intelligence",
-      "description": "Feature Specification: Sprint 3 — Query Intelligence",
+      "description": "Feature Specification: Sprint 3 \u2014 Query Intelligence",
       "keywords": [
         "sprint",
         "3",
@@ -650,7 +650,7 @@
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/005-sprint-4-feedback-and-quality",
-      "description": "Feature Specification: Sprint 4 — Feedback and Quality",
+      "description": "Feature Specification: Sprint 4 \u2014 Feedback and Quality",
       "keywords": [
         "sprint",
         "4",
@@ -661,7 +661,7 @@
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/006-sprint-5-pipeline-refactor",
-      "description": "Feature Specification: Sprint 5 — Pipeline Refactor",
+      "description": "Feature Specification: Sprint 5 \u2014 Pipeline Refactor",
       "keywords": [
         "sprint",
         "5",
@@ -672,7 +672,7 @@
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/007-sprint-6-indexing-and-graph",
-      "description": "Feature Specification: Sprint 6 — Indexing and Graph",
+      "description": "Feature Specification: Sprint 6 \u2014 Indexing and Graph",
       "keywords": [
         "sprint",
         "6",
@@ -684,7 +684,7 @@
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/008-sprint-7-long-horizon",
-      "description": "Feature Specification: Sprint 7 — Long Horizon",
+      "description": "Feature Specification: Sprint 7 \u2014 Long Horizon",
       "keywords": [
         "sprint",
         "7",
@@ -707,7 +707,7 @@
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/010-sprint-9-extra-features",
-      "description": "Feature Specification: Sprint 9 — Extra Features (Productization & Operational Tooling)",
+      "description": "Feature Specification: Sprint 9 \u2014 Extra Features (Productization & Operational Tooling)",
       "keywords": [
         "feature",
         "specification",
@@ -731,7 +731,7 @@
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/003-constitutional-learn-refactor",
-      "description": "Feature Specification: Refactor /memory:learn → Constitutional Memory Manager",
+      "description": "Feature Specification: Refactor /memory:learn \u2192 Constitutional Memory Manager",
       "keywords": [
         "feature",
         "specification",
@@ -1077,7 +1077,7 @@
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/009-skill-alignment",
-      "description": "Feature Specification: Skill Alignment — system-spec-kit",
+      "description": "Feature Specification: Skill Alignment \u2014 system-spec-kit",
       "keywords": [
         "feature",
         "specification",
@@ -1292,7 +1292,7 @@
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/012-agents-alignment",
-      "description": "012 — Agent Alignment: Sync Runtime Agent Definitions",
+      "description": "012 \u2014 Agent Alignment: Sync Runtime Agent Definitions",
       "keywords": [
         "012",
         "agent",
@@ -1707,7 +1707,7 @@
     },
     {
       "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/007-system-spec-kit-rename",
-      "description": "Skill Rename: workflows-spec-kit → system-spec-kit",
+      "description": "Skill Rename: workflows-spec-kit \u2192 system-spec-kit",
       "keywords": [
         "skill",
         "rename",
@@ -1962,7 +1962,7 @@
     },
     {
       "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/025-system-memory-rename",
-      "description": "Spec: Rename workflows-memory → system-memory",
+      "description": "Spec: Rename workflows-memory \u2192 system-memory",
       "keywords": [
         "spec",
         "rename",
@@ -2150,7 +2150,7 @@
     },
     {
       "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/040-mcp-server-rename",
-      "description": "MCP Server Rename: semantic_memory → spec_kit_memory",
+      "description": "MCP Server Rename: semantic_memory \u2192 spec_kit_memory",
       "keywords": [
         "mcp",
         "server",
@@ -2915,7 +2915,7 @@
     },
     {
       "specFolder": "02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-01-readme-alignment",
-      "description": "Task 01 — README Audit & Alignment",
+      "description": "Task 01 \u2014 README Audit & Alignment",
       "keywords": [
         "task",
         "readme",
@@ -2926,7 +2926,7 @@
     },
     {
       "specFolder": "02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-02-skill-speckit-alignment",
-      "description": "Task 02 — SKILL.md & References Audit",
+      "description": "Task 02 \u2014 SKILL.md & References Audit",
       "keywords": [
         "task",
         "skill",
@@ -2937,7 +2937,7 @@
     },
     {
       "specFolder": "02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-03-command-alignment",
-      "description": "Task 03 — Command Configs Audit",
+      "description": "Task 03 \u2014 Command Configs Audit",
       "keywords": [
         "task",
         "command",
@@ -2948,7 +2948,7 @@
     },
     {
       "specFolder": "02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-04-agent-alignment",
-      "description": "Task 04 — Agent Configs Audit",
+      "description": "Task 04 \u2014 Agent Configs Audit",
       "keywords": [
         "task",
         "agent",
@@ -2959,7 +2959,7 @@
     },
     {
       "specFolder": "02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-05-changelog-updates",
-      "description": "Task 05 — Changelog Creation",
+      "description": "Task 05 \u2014 Changelog Creation",
       "keywords": [
         "task",
         "changelog",
@@ -2969,7 +2969,7 @@
     },
     {
       "specFolder": "02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-06-global-readme-update",
-      "description": "Task 06 — Root README Update",
+      "description": "Task 06 \u2014 Root README Update",
       "keywords": [
         "task",
         "root",
@@ -2980,7 +2980,7 @@
     },
     {
       "specFolder": "02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-07-github-release",
-      "description": "Task 07 — Tagged Release",
+      "description": "Task 07 \u2014 Tagged Release",
       "keywords": [
         "task",
         "tagged",
@@ -3055,7 +3055,7 @@
     },
     {
       "specFolder": "02--system-spec-kit/z_archive/019-readme-and-summary-with-hvr",
-      "description": "Feature Specification: Human Voice Rules — Template Integration",
+      "description": "Feature Specification: Human Voice Rules \u2014 Template Integration",
       "keywords": [
         "feature",
         "specification",
@@ -3173,7 +3173,7 @@
       "lastUpdated": "2026-03-16T13:20:02.808Z"
     },
     {
-      "specFolder": "03--commands-and-skills/cmd-011-create-emoji-enforcement",
+      "specFolder": "03--commands-and-skills/012-cmd-create-emoji-enforcement",
       "description": "Feature Specification: Remove Emoji Enforcement from /create Command",
       "keywords": [
         "feature",
@@ -3187,7 +3187,7 @@
       "lastUpdated": "2026-03-16T13:20:02.812Z"
     },
     {
-      "specFolder": "03--commands-and-skills/cmd-012-create-codex-compatibility",
+      "specFolder": "03--commands-and-skills/013-cmd-create-codex-compatibility",
       "description": "Feature Specification: Create Commands Codex Compatibility",
       "keywords": [
         "feature",
@@ -3200,7 +3200,7 @@
       "lastUpdated": "2026-03-16T13:20:02.817Z"
     },
     {
-      "specFolder": "03--commands-and-skills/cmd-013-memory-output",
+      "specFolder": "03--commands-and-skills/014-cmd-memory-output",
       "description": "Feature Specification: Memory Command Dashboard Visual Design System",
       "keywords": [
         "feature",
@@ -3215,7 +3215,7 @@
       "lastUpdated": "2026-03-16T13:20:02.823Z"
     },
     {
-      "specFolder": "03--commands-and-skills/cmd-014-create-changelog",
+      "specFolder": "03--commands-and-skills/015-cmd-create-changelog",
       "description": "Feature Specification: Create Changelog Command",
       "keywords": [
         "feature",
@@ -3227,7 +3227,7 @@
       "lastUpdated": "2026-03-16T13:20:02.828Z"
     },
     {
-      "specFolder": "03--commands-and-skills/cmd-015-create-prompt",
+      "specFolder": "03--commands-and-skills/017-cmd-create-prompt",
       "description": "Feature Specification: create:prompt Command",
       "keywords": [
         "feature",
@@ -3239,7 +3239,7 @@
       "lastUpdated": "2026-03-16T13:20:02.832Z"
     },
     {
-      "specFolder": "03--commands-and-skills/cmd-016-create-skill-merger",
+      "specFolder": "03--commands-and-skills/019-cmd-create-skill-merger",
       "description": "Feature Specification: Create Skill Merger",
       "keywords": [
         "feature",
@@ -3251,7 +3251,7 @@
       "lastUpdated": "2026-03-16T13:20:02.838Z"
     },
     {
-      "specFolder": "03--commands-and-skills/cmd-017-create-readme-install-merger",
+      "specFolder": "03--commands-and-skills/020-cmd-create-readme-install-merger",
       "description": "Feature Specification: Merge create README and install guide commands",
       "keywords": [
         "feature",
@@ -3266,7 +3266,7 @@
       "lastUpdated": "2026-03-16T13:20:02.843Z"
     },
     {
-      "specFolder": "03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration",
+      "specFolder": "03--commands-and-skills/z_archive/002-cmd-speckit-leann-integration",
       "description": "SpecKit LEANN Integration",
       "keywords": [
         "speckit",
@@ -3276,7 +3276,7 @@
       "lastUpdated": "2026-03-16T13:20:02.854Z"
     },
     {
-      "specFolder": "03--commands-and-skills/z_archive/cmd-003-document-refinment",
+      "specFolder": "03--commands-and-skills/z_archive/003-cmd-document-refinment",
       "description": "Command Document Refinement",
       "keywords": [
         "command",
@@ -3286,7 +3286,7 @@
       "lastUpdated": "2026-03-16T13:20:02.860Z"
     },
     {
-      "specFolder": "03--commands-and-skills/commands/z_archive/004-command-logic-improvement",
+      "specFolder": "03--commands-and-skills/z_archive/004-cmd-logic-improvement",
       "description": "Command Logic Improvement",
       "keywords": [
         "command",
@@ -3296,7 +3296,7 @@
       "lastUpdated": "2026-03-16T13:20:02.867Z"
     },
     {
-      "specFolder": "03--commands-and-skills/commands/z_archive/005-subagent-delegation",
+      "specFolder": "03--commands-and-skills/z_archive/005-cmd-subagent-delegation",
       "description": "Feature Specification: Sub-Agent Delegation for Memory/Handover Commands",
       "keywords": [
         "feature",
@@ -3310,7 +3310,7 @@
       "lastUpdated": "2026-03-16T13:20:02.873Z"
     },
     {
-      "specFolder": "03--commands-and-skills/commands/z_archive/006-debug-stack-agnostic",
+      "specFolder": "03--commands-and-skills/z_archive/006-cmd-debug-stack-agnostic",
       "description": "Spec: Make Debug Command Stack-Agnostic",
       "keywords": [
         "spec",
@@ -3322,7 +3322,7 @@
       "lastUpdated": "2026-03-16T13:20:02.879Z"
     },
     {
-      "specFolder": "03--commands-and-skills/commands/z_archive/007-remove-git-branch-logic",
+      "specFolder": "03--commands-and-skills/z_archive/007-cmd-remove-git-branch-logic",
       "description": "Spec 007: Remove Git Branch Logic from YAML Commands",
       "keywords": [
         "spec",
@@ -3337,7 +3337,7 @@
       "lastUpdated": "2026-03-16T13:20:02.885Z"
     },
     {
-      "specFolder": "03--commands-and-skills/commands/z_archive/008-fix-create-dispatch",
+      "specFolder": "03--commands-and-skills/z_archive/008-cmd-fix-create-dispatch",
       "description": "Feature Specification: Fix Create Command Dispatch Vulnerability + Defensive Hardening",
       "keywords": [
         "feature",
@@ -3353,7 +3353,7 @@
       "lastUpdated": "2026-03-16T13:20:02.891Z"
     },
     {
-      "specFolder": "03--commands-and-skills/commands/z_archive/009-create-yaml-architecture",
+      "specFolder": "03--commands-and-skills/z_archive/009-cmd-create-yaml-architecture",
       "description": "Feature Specification: Create Commands YAML-First Architecture Refactor",
       "keywords": [
         "feature",
@@ -3367,7 +3367,7 @@
       "lastUpdated": "2026-03-16T13:20:02.897Z"
     },
     {
-      "specFolder": "03--commands-and-skills/commands/z_archive/010-speckit-codex-compatibility",
+      "specFolder": "03--commands-and-skills/z_archive/010-cmd-speckit-codex-compatibility",
       "description": "Feature Specification: Make spec_kit Commands Codex-Compatible",
       "keywords": [
         "feature",
@@ -3379,7 +3379,7 @@
       "lastUpdated": "2026-03-16T13:20:02.903Z"
     },
     {
-      "specFolder": "03--commands-and-skills/sk-cli/001-cli-gemini",
+      "specFolder": "03--commands-and-skills/001-cli-gemini",
       "description": "Feature Specification: cli-gemini Skill",
       "keywords": [
         "feature",
@@ -3390,7 +3390,7 @@
       "lastUpdated": "2026-03-16T13:20:02.909Z"
     },
     {
-      "specFolder": "03--commands-and-skills/sk-cli/002-cli-codex",
+      "specFolder": "03--commands-and-skills/005-cli-codex",
       "description": "Specification: cli-gemini Model Consolidation + cli-codex Skill",
       "keywords": [
         "specification",
@@ -3403,7 +3403,7 @@
       "lastUpdated": "2026-03-16T13:20:02.915Z"
     },
     {
-      "specFolder": "03--commands-and-skills/sk-cli/003-cli-claude-code",
+      "specFolder": "03--commands-and-skills/007-cli-claude-code",
       "description": "Feature Specification: cli-claude-code Skill",
       "keywords": [
         "feature",
@@ -3414,7 +3414,7 @@
       "lastUpdated": "2026-03-16T13:20:02.922Z"
     },
     {
-      "specFolder": "03--commands-and-skills/sk-cli/004-cli-copilot",
+      "specFolder": "03--commands-and-skills/008-cli-copilot",
       "description": "Feature Specification: cli-copilot Skill",
       "keywords": [
         "feature",
@@ -3425,7 +3425,7 @@
       "lastUpdated": "2026-03-16T13:20:02.927Z"
     },
     {
-      "specFolder": "03--commands-and-skills/sk-cli/005-cli-self-invocation-guards",
+      "specFolder": "03--commands-and-skills/009-cli-self-invocation-guards",
       "description": "Spec: CLI Self-Invocation Guards",
       "keywords": [
         "spec",
@@ -3436,7 +3436,7 @@
       "lastUpdated": "2026-03-18T15:57:15.948Z"
     },
     {
-      "specFolder": "03--commands-and-skills/sk-code/014-code-review-skill",
+      "specFolder": "03--commands-and-skills/016-code-review-skill",
       "description": "Feature Specification: sk-code--review Promotion",
       "keywords": [
         "feature",
@@ -3447,7 +3447,7 @@
       "lastUpdated": "2026-03-16T13:20:02.934Z"
     },
     {
-      "specFolder": "03--commands-and-skills/sk-code/015-sk-code-opencode-refinement",
+      "specFolder": "03--commands-and-skills/018-code-opencode-refinement",
       "description": "Feature Specification: sk-code--opencode refinement",
       "keywords": [
         "feature",
@@ -3458,7 +3458,7 @@
       "lastUpdated": "2026-03-16T13:20:02.941Z"
     },
     {
-      "specFolder": "03--commands-and-skills/sk-code/z_archive/001-workflows-code-codebase-alignment",
+      "specFolder": "03--commands-and-skills/z_archive/001-code-workflows-codebase-alignment",
       "description": "Feature Specification: Workflows-Code Skill Alignment - Codebase Analysis & Updates",
       "keywords": [
         "feature",
@@ -3473,7 +3473,7 @@
       "lastUpdated": "2026-03-16T13:20:02.947Z"
     },
     {
-      "specFolder": "03--commands-and-skills/sk-code/z_archive/002-reference-structure-qa",
+      "specFolder": "03--commands-and-skills/z_archive/002-code-reference-structure-qa",
       "description": "Specification: Workflows-Code Reference QA",
       "keywords": [
         "specification",
@@ -3483,7 +3483,7 @@
       "lastUpdated": "2026-03-16T13:20:02.953Z"
     },
     {
-      "specFolder": "03--commands-and-skills/sk-code/z_archive/003-barter-alignment",
+      "specFolder": "03--commands-and-skills/z_archive/003-code-barter-alignment",
       "description": "workflows-code Skill Alignment with Barter Patterns",
       "keywords": [
         "workflows-code",
@@ -3495,7 +3495,7 @@
       "lastUpdated": "2026-03-16T13:20:02.960Z"
     },
     {
-      "specFolder": "03--commands-and-skills/sk-code/z_archive/004-code-quality-enforcement",
+      "specFolder": "03--commands-and-skills/z_archive/004-code-quality-enforcement",
       "description": "Feature Specification: Code Quality Enforcement - Requirements & User Stories",
       "keywords": [
         "feature",
@@ -3510,7 +3510,7 @@
       "lastUpdated": "2026-03-16T13:20:02.966Z"
     },
     {
-      "specFolder": "03--commands-and-skills/sk-code/z_archive/005-skill-bug-fixes",
+      "specFolder": "03--commands-and-skills/z_archive/005-code-skill-bug-fixes",
       "description": "Feature Specification: workflows-code Skill Bug Fixes",
       "keywords": [
         "feature",
@@ -3523,7 +3523,7 @@
       "lastUpdated": "2026-03-16T13:20:02.973Z"
     },
     {
-      "specFolder": "03--commands-and-skills/sk-code/z_archive/006-js-codebase-analysis",
+      "specFolder": "03--commands-and-skills/z_archive/006-code-js-codebase-analysis",
       "description": "Feature Specification: JavaScript Codebase Alignment with workflows-code Skill",
       "keywords": [
         "feature",
@@ -3537,7 +3537,7 @@
       "lastUpdated": "2026-03-16T13:20:02.978Z"
     },
     {
-      "specFolder": "03--commands-and-skills/sk-code/z_archive/006-js-codebase-analysis/002-remediation",
+      "specFolder": "03--commands-and-skills/z_archive/006-code-js-codebase-analysis/002-remediation",
       "description": "Feature Specification: JavaScript Codebase Remediation",
       "keywords": [
         "feature",
@@ -3549,7 +3549,7 @@
       "lastUpdated": "2026-03-16T13:20:02.985Z"
     },
     {
-      "specFolder": "03--commands-and-skills/sk-code/z_archive/007-performance-patterns-update",
+      "specFolder": "03--commands-and-skills/z_archive/007-code-performance-patterns-update",
       "description": "Performance Patterns Update - workflows-code Skill",
       "keywords": [
         "performance",
@@ -3561,7 +3561,7 @@
       "lastUpdated": "2026-03-16T13:20:02.993Z"
     },
     {
-      "specFolder": "03--commands-and-skills/sk-code/z_archive/008-workflows-code-multi-stack",
+      "specFolder": "03--commands-and-skills/z_archive/008-code-workflows-multi-stack",
       "description": "workflows-code-multi-stack Skill - Conversion Spec",
       "keywords": [
         "workflows-code-multi-stack",
@@ -3572,7 +3572,7 @@
       "lastUpdated": "2026-03-16T13:20:03.000Z"
     },
     {
-      "specFolder": "03--commands-and-skills/sk-code/z_archive/009-rename-to-web-dev",
+      "specFolder": "03--commands-and-skills/z_archive/009-code-rename-to-web-dev",
       "description": "Feature Specification: Rename workflows-code to workflows-code--web-dev",
       "keywords": [
         "feature",
@@ -3584,7 +3584,7 @@
       "lastUpdated": "2026-03-16T13:20:03.007Z"
     },
     {
-      "specFolder": "03--commands-and-skills/sk-code/z_archive/010-performance-teachings",
+      "specFolder": "03--commands-and-skills/z_archive/010-code-performance-teachings",
       "description": "Spec: Update workflows-code--web-dev with Spec 031 Performance Teachings",
       "keywords": [
         "spec",
@@ -3597,7 +3597,7 @@
       "lastUpdated": "2026-03-16T13:20:03.013Z"
     },
     {
-      "specFolder": "03--commands-and-skills/sk-code/z_archive/011-initial-set-up",
+      "specFolder": "03--commands-and-skills/z_archive/011-code-initial-set-up",
       "description": "Feature Specification: workflows-code-opencode Skill",
       "keywords": [
         "feature",
@@ -3608,7 +3608,7 @@
       "lastUpdated": "2026-03-16T13:20:03.020Z"
     },
     {
-      "specFolder": "03--commands-and-skills/sk-code/z_archive/012-opencode-codebase-alignment",
+      "specFolder": "03--commands-and-skills/z_archive/012-code-opencode-codebase-alignment",
       "description": "Feature Specification: OpenCode Codebase Alignment",
       "keywords": [
         "feature",
@@ -3620,7 +3620,7 @@
       "lastUpdated": "2026-03-16T13:20:03.026Z"
     },
     {
-      "specFolder": "03--commands-and-skills/sk-code/z_archive/013-sk-code-opencode-alignment-hardening",
+      "specFolder": "03--commands-and-skills/z_archive/013-code-opencode-alignment-hardening",
       "description": "Feature Specification: sk-code--opencode Alignment Hardening",
       "keywords": [
         "feature",
@@ -3632,7 +3632,7 @@
       "lastUpdated": "2026-03-16T13:20:03.033Z"
     },
     {
-      "specFolder": "03--commands-and-skills/sk-doc/001-doc-specialist-refactor",
+      "specFolder": "03--commands-and-skills/z_archive/001-doc-specialist-refactor",
       "description": "Spec: Document Specialist Refactor",
       "keywords": [
         "spec",
@@ -3643,7 +3643,7 @@
       "lastUpdated": "2026-03-16T13:20:03.040Z"
     },
     {
-      "specFolder": "03--commands-and-skills/sk-doc/002-skill-rename",
+      "specFolder": "03--commands-and-skills/z_archive/002-doc-skill-rename",
       "description": "Spec: sk-doc Skill Functional Testing",
       "keywords": [
         "spec",
@@ -3655,7 +3655,7 @@
       "lastUpdated": "2026-03-16T13:20:03.047Z"
     },
     {
-      "specFolder": "03--commands-and-skills/sk-doc/003-h2-emoji-enforcement",
+      "specFolder": "03--commands-and-skills/z_archive/003-doc-h2-emoji-enforcement",
       "description": "H2 Emoji Enforcement - Specification",
       "keywords": [
         "emoji",
@@ -3665,7 +3665,7 @@
       "lastUpdated": "2026-03-16T13:20:03.054Z"
     },
     {
-      "specFolder": "03--commands-and-skills/sk-doc/004-style-enforcement",
+      "specFolder": "03--commands-and-skills/z_archive/004-doc-style-enforcement",
       "description": "Spec: Zero-Tolerance Documentation Formatting",
       "keywords": [
         "spec",
@@ -3676,7 +3676,7 @@
       "lastUpdated": "2026-03-16T13:20:03.059Z"
     },
     {
-      "specFolder": "03--commands-and-skills/sk-doc/005-remove-emojis-from-docs",
+      "specFolder": "03--commands-and-skills/z_archive/005-doc-remove-emojis-from-docs",
       "description": "Feature Specification: Remove Emojis from All Documentation",
       "keywords": [
         "feature",
@@ -3688,7 +3688,7 @@
       "lastUpdated": "2026-03-16T13:20:03.066Z"
     },
     {
-      "specFolder": "03--commands-and-skills/sk-doc/006-anchor-implementation",
+      "specFolder": "03--commands-and-skills/z_archive/006-doc-anchor-implementation",
       "description": "Spec: Retrieval Anchors for Skill Documentation",
       "keywords": [
         "spec",
@@ -3700,7 +3700,7 @@
       "lastUpdated": "2026-03-16T13:20:03.073Z"
     },
     {
-      "specFolder": "03--commands-and-skills/sk-doc/007-sk-doc-rename",
+      "specFolder": "03--commands-and-skills/010-doc-rename",
       "description": "Feature Specification: sk-doc Repo-Wide Rename and Visual Skill Cleanup",
       "keywords": [
         "feature",
@@ -3715,7 +3715,7 @@
       "lastUpdated": "2026-03-16T13:20:03.079Z"
     },
     {
-      "specFolder": "03--commands-and-skills/sk-doc/008-sk-doc-template-folders",
+      "specFolder": "03--commands-and-skills/011-doc-template-folders",
       "description": "Feature Specification: sk-doc Template Folder Reorganization",
       "keywords": [
         "feature",
@@ -3728,7 +3728,7 @@
       "lastUpdated": "2026-03-16T13:20:03.085Z"
     },
     {
-      "specFolder": "03--commands-and-skills/sk-doc/009-manual-testing-playbook-template",
+      "specFolder": "03--commands-and-skills/021-doc-manual-testing-playbook",
       "description": "Spec: Manual Testing Playbook Template for sk-doc",
       "keywords": [
         "spec",
@@ -3738,10 +3738,10 @@
         "template",
         "sk-doc"
       ],
-      "lastUpdated": "2026-03-18T15:57:15.948Z"
+      "lastUpdated": "2026-03-18T16:38:56.034Z"
     },
     {
-      "specFolder": "03--commands-and-skills/sk-git/001-github-mcp-integration",
+      "specFolder": "03--commands-and-skills/002-git-github-mcp-integration",
       "description": "GitHub MCP Integration for sk-git Skill",
       "keywords": [
         "github",
@@ -3753,7 +3753,7 @@
       "lastUpdated": "2026-03-16T13:20:03.091Z"
     },
     {
-      "specFolder": "03--commands-and-skills/sk-git/002-superset-worktrees",
+      "specFolder": "03--commands-and-skills/006-git-superset-worktrees",
       "description": "Feature Specification: sk-git Superset Worktree Alignment",
       "keywords": [
         "feature",
@@ -3766,17 +3766,26 @@
       "lastUpdated": "2026-03-16T13:20:03.100Z"
     },
     {
-      "specFolder": "03--commands-and-skills/sk-mcp/001-mcp-clickup-creation",
-      "description": "Create mcp-clickup Skill",
+      "specFolder": "03--commands-and-skills/022-coco-integration",
+      "description": "CocoIndex Code MCP Integration: Phase 1 installation across 6 CLI configs + cross-CLI auto-usage validation proving auto-discovery works without agent routing. Includes daemon concurrency bug root cause analysis and SKILL.md query optimization guidance.",
       "keywords": [
-        "create",
-        "mcp-clickup",
-        "skill"
+        "cocoindex",
+        "semantic code search",
+        "coco-index integration",
+        "code search mcp",
+        "cocoindex_code",
+        "vector index",
+        "mcp server",
+        "cross-cli test",
+        "daemon concurrency",
+        "refresh_index",
+        "query optimization",
+        "auto-discovery"
       ],
-      "lastUpdated": "2026-03-16T13:20:03.108Z"
+      "lastUpdated": "2026-03-18T17:45:00.000Z"
     },
     {
-      "specFolder": "03--commands-and-skills/sk-prompt-improver/001-initial-creation",
+      "specFolder": "03--commands-and-skills/003-prompt-initial-creation",
       "description": "Feature Specification: sk-prompt-improver",
       "keywords": [
         "feature",
@@ -3786,7 +3795,7 @@
       "lastUpdated": "2026-03-16T13:20:03.116Z"
     },
     {
-      "specFolder": "03--commands-and-skills/skill-advisor/001-skill-advisor-refinement",
+      "specFolder": "03--commands-and-skills/004-advisor-refinement",
       "description": "Feature Specification: Skill Advisor Refinement",
       "keywords": [
         "feature",

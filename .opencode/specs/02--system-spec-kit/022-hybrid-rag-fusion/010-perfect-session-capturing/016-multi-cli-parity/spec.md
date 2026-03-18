@@ -28,7 +28,7 @@ This document records the current verified state for this scope. Use [spec.md](s
 | **Priority** | P1 |
 | **Status** | Complete |
 | **Created** | 2026-03-16 |
-| **Completed** | 2026-03-17 |
+| **Completed** | 2026-03-18 |
 | **Branch** | `016-multi-cli-parity` |
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
@@ -172,5 +172,5 @@ N/A. Edge case handling is covered by the test assertions themselves (empty XML 
 <!-- ANCHOR:questions -->
 ## 10. OPEN QUESTIONS
 
-No open questions remain for phase 016. The reopened scope was limited to proof and documentation hardening, and the focused verification stack closed the remaining uncertainty.
+No open questions remain for phase 016. The reopened scope was limited to proof and documentation hardening, and the focused verification stack closed the remaining uncertainty. The 2026-03-18 continuation resolved three deferred deep research findings (Q1: ALIGNMENT_BLOCK relaxation, Q3: technicalContext rendering, Q5: decision confidence parsing).
 <!-- /ANCHOR:questions -->

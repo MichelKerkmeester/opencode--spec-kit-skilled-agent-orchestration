@@ -1,1 +1,0 @@
-../../.opencode/command/spec_kit/resume.md

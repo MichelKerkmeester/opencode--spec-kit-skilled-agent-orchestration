@@ -16,7 +16,7 @@ The SpecKit system is a sophisticated, high-maturity "Constitution-as-Code" fram
 
 **Key Findings:**
 - **Robustness**: The system is highly resilient to context loss. The strict separation of "Memory" (Context) and "Specs" (Truth) allows tasks to be paused and resumed indefinitely.
-- **Self-Healing**: The system possesses the unique capability to audit itself (as seen in `.opencode/specs/03--commands-and-skills/z_archive/cmd-001-analysis/`), effectively treating its own configuration as a "product" to be specified and tested.
+- **Self-Healing**: The system possesses the unique capability to audit itself (as seen in `.opencode/specs/03--commands-and-skills/z_archive/001-cmd-analysis/`), effectively treating its own configuration as a "product" to be specified and tested.
 - **Maintenance Risk**: There is a critical **Parity Gap** between the passive instructions in `SKILL.md` (Human/Agent Logic) and the active workflows in `.opencode/command/spec_kit/*.yaml` (Machine Logic). These must be manually synchronized, creating a high risk of drift.
 
 ---
@@ -57,7 +57,7 @@ A structural tension exists between the **Skill** (Pillar 2) and the **Command**
 When a rule is added to `SKILL.md` (e.g., "Always check P0 items"), it is effectively "Case Law." However, the *Agent* executing a command is often constrained by the `*.yaml` workflow, which acts as "Code."
 
 *   **Risk**: If `SKILL.md` says "Check X" but `spec_kit_complete_auto.yaml` doesn't have a step for "Check X", the agent may skip it despite the rule.
-*   **Evidence**: The `001-command-analysis` report (`.opencode/specs/03--commands-and-skills/z_archive/cmd-001-analysis/`) explicitly identified this drift ("Auto/Confirm Parity").
+*   **Evidence**: The `001-command-analysis` report (`.opencode/specs/03--commands-and-skills/z_archive/001-cmd-analysis/`) explicitly identified this drift ("Auto/Confirm Parity").
 
 ### The Maintenance Tax
 Every change to the system requires updating three locations:
@@ -70,7 +70,7 @@ Every change to the system requires updating three locations:
 ## 4. The "Self-Healing" Mechanism
 
 The system demonstrates an advanced "Meta-Maintenance" capability.
-*   **Mechanism**: `.opencode/specs/03--commands-and-skills/z_archive/cmd-001-analysis` proves the system can spin up agents to audit its own YAML configurations against its Markdown documentation.
+*   **Mechanism**: `.opencode/specs/03--commands-and-skills/z_archive/001-cmd-analysis` proves the system can spin up agents to audit its own YAML configurations against its Markdown documentation.
 *   **Significance**: This reduces the "Maintenance Tax" by automating the detection of drift. It turns the system into a **Closed-Loop Control System**.
 
 ---

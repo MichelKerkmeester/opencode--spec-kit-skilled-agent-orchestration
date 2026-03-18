@@ -249,7 +249,7 @@ exec
 /bin/zsh -lc "rg -n \"function extractQualityScore|extractQualityFlags|quality_score\" '/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public' | head -n 40" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 52ms:
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/command/create/assets/create_folder_readme_auto.yaml:571:    - quality_score: number
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/command/create/assets/create_folder_readme_auto.yaml:1027:    - quality_score: number
-/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/git-002-superset-worktrees/memory/28-02-26_17-38__sk-git-superset.md:906:quality_score: 1.00
+/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/006-git-superset-worktrees/memory/28-02-26_17-38__sk-git-superset.md:906:quality_score: 1.00
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/command/create/assets/create_agent_confirm.yaml:563:    - quality_score: number
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/command/create/assets/create_agent_confirm.yaml:567:      question: "Quality validation complete (score: [quality_score]/100). Continue?"
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/command/create/assets/create_agent_auto.yaml:491:    - quality_score: number
@@ -260,8 +260,8 @@ exec
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/05--agent-orchestration/023-gemini-cli-compatibility/memory/20-02-26_11-43__gemini-cli-compatibility.md:1326:quality_score: 1.00
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/05--agent-orchestration/023-gemini-cli-compatibility/memory/20-02-26_12-13__gemini-cli-compatibility.md:2370:quality_score: 1.00
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/05--agent-orchestration/025-codex-cli-agents/memory/01-03-26_10-15__codex-cli-agents.md:906:quality_score: 1.00
-/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cmd-015-create-prompt/memory/01-03-26_14-44__create-prompt-command.md:689:quality_score: 1.00
-/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cmd-015-create-prompt/memory/01-03-26_12-48__create-prompt-command.md:907:quality_score: 1.00
+/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/017-cmd-create-prompt/memory/01-03-26_14-44__create-prompt-command.md:689:quality_score: 1.00
+/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/017-cmd-create-prompt/memory/01-03-26_12-48__create-prompt-command.md:907:quality_score: 1.00
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/save/db-helpers.ts:14:  'spec_level', 'quality_score', 'quality_flags', 'parent_id',
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/save/create-record.ts:99:      quality_score: parsed.qualityScore ?? 0,
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/save/types.ts:114:  quality_score?: number;

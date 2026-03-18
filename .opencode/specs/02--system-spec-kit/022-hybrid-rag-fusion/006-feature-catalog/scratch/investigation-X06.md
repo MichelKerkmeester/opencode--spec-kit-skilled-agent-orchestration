@@ -95,7 +95,7 @@ Total output lines: 571
 .opencode/skill/system-spec-kit/mcp_server/lib/telemetry/README.md:98:| `fallback` | `FallbackMetrics` | Fallback trigger record |
 exec
 /bin/zsh -lc "cd '/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public' && rg --files | rg 'undocumented-features-scan\\.md"'$|gap|undocumented'"'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 51ms:
-.opencode/specs/03--commands-and-skills/code-015-opencode-refinement/scratch/agent-4-review-skill-gaps.md
+.opencode/specs/03--commands-and-skills/018-code-opencode-refinement/scratch/agent-4-review-skill-gaps.md
 .opencode/skill/system-spec-kit/mcp_server/lib/search/evidence-gap-detector.ts
 .opencode/skill/system-spec-kit/mcp_server/tests/evidence-gap-detector.vitest.ts
 .opencode/skill/system-spec-kit/mcp_server/tests/cognitive-gaps.vitest.ts

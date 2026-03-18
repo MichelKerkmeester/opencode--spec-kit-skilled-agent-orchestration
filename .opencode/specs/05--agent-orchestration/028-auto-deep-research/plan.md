@@ -57,6 +57,15 @@ Wire everything into routing systems.
 - skill_advisor.py keyword mappings
 - descriptions.json entry
 
+### Phase 5.5: Legacy @research Removal (Complete)
+Remove the superseded `@research` agent and `/spec_kit:research` command from the entire codebase.
+- 5.5.1: Delete 9 files (6 agent defs, 1 command, 2 YAMLs)
+- 5.5.2: Update all orchestrate/speckit/deep-research/context/debug/ultra-think agents (all runtimes)
+- 5.5.3: Update spec_kit YAML workflows (plan/complete agent_availability)
+- 5.5.4: Update framework docs (CLAUDE.md, AGENTS.md, READMEs)
+- 5.5.5: Update skill docs, install guides, .codex/config.toml
+- 5.5.6: Verification — zero stale references outside changelog/specs
+
 ### Phase 6: v2 Priority 1 -- Robustness & Convergence (6 items, S-M effort)
 Research-validated improvements that address known gaps. All P1 items.
 
@@ -106,9 +115,11 @@ Phase 4 (Command) -- depends on Phase 2 + 3
     |
 Phase 5 (Registration) -- depends on all above
     |
+Phase 5.5 (Legacy Removal) -- depends on Phase 5 (removes superseded @research)
+    |
 === v1 COMPLETE === v2 BELOW ===
     |
-Phase 6 (P1 Improvements) -- depends on Phase 5 (modifies existing files)
+Phase 6 (P1 Improvements) -- depends on Phase 5.5 (modifies existing files)
     |
 Phase 7 (P2 Improvements) -- depends on Phase 6 (builds on P1 patterns)
     |
@@ -155,8 +166,8 @@ Phase 9 (P4 Track) -- future, no immediate dependencies
 
 | File | Purpose |
 |------|---------|
-| `.claude/agents/research.md` | Agent definition pattern (483 LOC) |
-| `.opencode/command/spec_kit/assets/spec_kit_research_auto.yaml` | YAML workflow pattern (453 LOC) |
+| `.claude/agents/research.md` | Agent definition pattern (483 LOC) — **DELETED in Phase 5.5** |
+| `.opencode/command/spec_kit/assets/spec_kit_research_auto.yaml` | YAML workflow pattern (453 LOC) — **DELETED in Phase 5.5** |
 | `.opencode/skill/sk-git/SKILL.md` | 8-section SKILL.md pattern (478 LOC) |
 | `028-auto-deep-research/research.md` | Source design with all state formats |
 | `.claude/agents/orchestrate.md` | NDP/CWB/TCB constraints |

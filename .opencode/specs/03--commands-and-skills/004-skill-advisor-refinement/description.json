@@ -1,0 +1,19 @@
+{
+  "specFolder": "03--commands-and-skills/004-advisor-refinement",
+  "description": "Feature Specification: Skill Advisor Refinement",
+  "keywords": [
+    "feature",
+    "specification",
+    "skill",
+    "advisor",
+    "refinement"
+  ],
+  "lastUpdated": "2026-03-16T13:20:03.123Z",
+  "specId": "004",
+  "folderSlug": "004-advisor-refinement",
+  "parentChain": [
+    "03--commands-and-skills"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

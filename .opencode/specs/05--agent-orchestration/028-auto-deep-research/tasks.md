@@ -51,6 +51,22 @@ contextType: "general"
 - [x] T-043: Update .opencode/skill/scripts/skill_advisor.py (keywords)
 - [x] T-044: Update .opencode/specs/descriptions.json (add entry)
 
+## Phase 5.5: Legacy @research Removal
+
+- [x] T-050: Delete 6 agent definitions (research.md/toml across all runtimes)
+- [x] T-051: Delete command definition (.opencode/command/spec_kit/research.md + .agents/commands/spec_kit/research.toml)
+- [x] T-052: Delete 2 YAML workflows (spec_kit_research_auto.yaml + spec_kit_research_confirm.yaml)
+- [x] T-053: Update spec_kit YAML workflows (plan/complete, auto/confirm) — agent_availability references
+- [x] T-054: Update orchestrate agents (all 5 runtimes) — routing tables, dispatch templates
+- [x] T-055: Update speckit agents (all 5 runtimes) — permission exceptions, cross-agent tables
+- [x] T-056: Update deep-research agents (all 5 runtimes) — remove legacy comparison rows
+- [x] T-057: Update other agents (context, debug, ultra-think across runtimes) — @research references
+- [x] T-058: Update framework docs (CLAUDE.md, AGENTS.md, README.md, .opencode/README.md, AGENTS_example)
+- [x] T-059: Update skill docs (system-spec-kit, sk-deep-research, sk-doc, cli-gemini, cli-codex, cli-claude-code)
+- [x] T-060: Update install guides (SET-UP Opencode Agents, SET-UP AGENTS, install_guides README)
+- [x] T-061: Update .codex/config.toml — remove research agent registration
+- [x] T-062: Verification — grep confirms zero stale @research / /spec_kit:research references outside changelog/specs
+
 ---
 
 ## v2: Research-Validated Improvements (18 Proposals from 14-Iteration Deep Research)

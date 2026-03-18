@@ -33,7 +33,7 @@ Create a 3-layer autonomous deep research system: `@deep-research` agent (single
 |-------|-------|
 | **Level** | 3 |
 | **Priority** | P1 |
-| **Status** | v1 Complete, v2 Planned |
+| **Status** | v1 Complete (incl. Phase 5.5 legacy removal), v2 Planned |
 | **Created** | 2026-03-18 |
 | **Branch** | `main` |
 
@@ -63,7 +63,7 @@ Enable autonomous multi-iteration deep research where each cycle builds on prior
 - Parallel sub-query waves within a single iteration (v1.1 enhancement)
 - Web search integration via MCP (v2.0)
 - Self-improving prompts (v3.0)
-- Modifications to existing `/spec_kit:research` workflow
+- Legacy `@research` agent and `/spec_kit:research` command — deleted in Phase 5.5
 
 ### v2 Scope: Research-Validated Improvements (18 Proposals)
 

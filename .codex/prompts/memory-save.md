@@ -1,1 +1,0 @@
-../../.opencode/command/memory/save.md

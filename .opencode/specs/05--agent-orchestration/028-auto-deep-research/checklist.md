@@ -79,6 +79,20 @@ contextType: "general"
 
 ---
 
+## Legacy Removal (Phase 5.5)
+
+- [x] CHK-050 [P0] All 9 legacy @research files deleted (6 agent defs, 1 command, 2 YAMLs) -- Evidence: `git rm` confirmed, `ls` returns "No such file" for all paths
+- [x] CHK-051 [P0] All orchestrate agents updated (5 runtimes) -- Evidence: routing tables, dispatch templates, agent files tables all reference @deep-research
+- [x] CHK-052 [P0] All speckit agents updated (5 runtimes) -- Evidence: permission exceptions reference @deep-research, cross-agent tables updated
+- [x] CHK-053 [P1] All deep-research agents updated (5 runtimes) -- Evidence: legacy /spec_kit:research command rows removed from command tables
+- [x] CHK-054 [P1] Framework docs updated (CLAUDE.md, AGENTS.md, README.md, .opencode/README.md) -- Evidence: @research entry replaced with @deep-research, /spec_kit:research removed from command lists
+- [x] CHK-055 [P1] Spec_kit YAML workflows updated (plan/complete, auto/confirm) -- Evidence: agent_availability references deep-research.md
+- [x] CHK-056 [P1] Install guides updated (3 files) -- Evidence: research agent removed from registration tables
+- [x] CHK-057 [P1] .codex/config.toml updated -- Evidence: [agents.research] replaced with [agents.deep-research]
+- [x] CHK-058 [P0] Zero stale references verified -- Evidence: `grep -r "@research[^-]\|spec_kit:research[^-]"` returns 0 matches (excluding changelog/specs)
+
+---
+
 ## v2: Research-Validated Improvements
 
 > 18 proposals from 14-iteration deep research. Source: `scratch/improvement-proposals.md` v2
@@ -125,13 +139,15 @@ contextType: "general"
 
 ## Verification Summary
 
-### v1 (Complete)
+### v1 + Legacy Removal (Complete)
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 11 | 11/11 |
-| P1 Items | 10 | 10/10 |
-| P2 Items | 1 | 1/1 |
+| P0 Items (v1) | 11 | 11/11 |
+| P1 Items (v1) | 10 | 10/10 |
+| P2 Items (v1) | 1 | 1/1 |
+| P0 Items (legacy removal) | 4 | 4/4 |
+| P1 Items (legacy removal) | 5 | 5/5 |
 
 **Verification Date**: 2026-03-18
 

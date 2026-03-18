@@ -5,7 +5,7 @@ trigger_phrases:
   - "spec kit command"
   - "spec kit plan"
   - "spec kit implement"
-  - "spec kit research"
+  - "spec kit deep-research"
   - "spec kit debug"
   - "spec kit handover"
   - "spec kit resume"
@@ -51,7 +51,7 @@ Each command loads a YAML workflow from `assets/` and executes it step by step. 
 |---------|------------|-------|-------------|
 | **plan** | `/spec_kit:plan <description> [:auto\|:confirm]` | 7 | Create spec folder and plan without implementation |
 | **implement** | `/spec_kit:implement <spec-folder> [:auto\|:confirm]` | 9 | Execute pre-planned work (requires existing plan.md) |
-| **research** | `/spec_kit:research <topic> [:auto\|:confirm]` | 9 | Technical investigation and documentation |
+| **deep-research** | `/spec_kit:deep-research <topic> [:auto\|:confirm]` | iterative | Autonomous deep research loop with convergence detection |
 | **debug** | `/spec_kit:debug [spec-folder]` | varies | Delegate debugging to a specialized sub-agent |
 | **handover** | `/spec_kit:handover [spec-folder]` | varies | Create session handover document for continuation |
 | **resume** | `/spec_kit:resume [spec-folder] [:auto\|:confirm]` | varies | Resume work on an existing spec folder |
@@ -64,7 +64,7 @@ Each command loads a YAML workflow from `assets/` and executes it step by step. 
 |---------|----------|
 | `plan` | Nothing (creates new spec folder) |
 | `implement` | Existing `plan.md` in spec folder |
-| `research` | Nothing (creates research.md) |
+| `deep-research` | Nothing (iterative research with convergence detection) |
 | `debug` | Existing spec folder with failing task |
 | `handover` | Existing spec folder with work history |
 | `resume` | Existing spec folder with saved state |
@@ -84,7 +84,7 @@ spec_kit/
 ├── handover.md       # /spec_kit:handover - Session handover
 ├── implement.md      # /spec_kit:implement - Execute planned work
 ├── plan.md           # /spec_kit:plan - Planning only
-├── research.md       # /spec_kit:research - Technical investigation
+├── deep-research.md  # /spec_kit:deep-research - Autonomous deep research loop
 ├── phase.md          # /spec_kit:phase - Phase decomposition
 ├── resume.md         # /spec_kit:resume - Resume existing work
 └── assets/           # YAML workflow definitions
@@ -99,8 +99,8 @@ spec_kit/
     ├── spec_kit_phase_confirm.yaml
     ├── spec_kit_plan_auto.yaml
     ├── spec_kit_plan_confirm.yaml
-    ├── spec_kit_research_auto.yaml
-    ├── spec_kit_research_confirm.yaml
+    ├── spec_kit_deep-research_auto.yaml
+    ├── spec_kit_deep-research_confirm.yaml
     ├── spec_kit_resume_auto.yaml
     └── spec_kit_resume_confirm.yaml
 ```
@@ -114,7 +114,7 @@ spec_kit/
 The typical development lifecycle follows this progression:
 
 ```
-research (optional)
+deep-research (optional)
     |
     v
 plan (create spec folder + plan.md)
@@ -135,20 +135,20 @@ handover (preserve context for next session)
 resume (continue in new session)
 ```
 
-The `complete` command combines research, plan, and implement into a single invocation.
+The `complete` command combines deep-research, plan, and implement into a single invocation.
 
 ### Agent Delegation
 
 | Command | Delegates To |
 |---------|-------------|
-| plan | @speckit (spec folder creation), @research (optional) |
+| plan | @speckit (spec folder creation), @deep-research (optional) |
 | implement | @general (code changes), @speckit (documentation) |
-| research | @research (investigation) |
+| deep-research | @deep-research (iterative investigation) |
 | debug | @debug (fresh perspective analysis) |
 | handover | @handover (context preservation) |
 | resume | Loads memory context, continues from last state |
 | phase | @speckit (folder creation), @general (script execution) |
-| complete | @research, @speckit, @general as needed |
+| complete | @deep-research, @speckit, @general as needed |
 
 ---
 

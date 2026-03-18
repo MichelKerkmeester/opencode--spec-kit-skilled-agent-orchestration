@@ -1,1 +1,0 @@
-../../.opencode/command/create/agent.md

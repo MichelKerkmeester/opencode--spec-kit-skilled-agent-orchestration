@@ -1,7 +1,7 @@
 {
-  "timestamp": "17-03-26 16-44",
+  "timestamp": "18-03-26 18-24",
   "messageCount": 1,
-  "decisionCount": 0,
+  "decisionCount": 3,
   "diagramCount": 0,
   "skillVersion": "1.7.2",
   "autoTriggered": false,
@@ -9,11 +9,11 @@
     "totalProcessed": 1,
     "noiseFiltered": 0,
     "duplicatesRemoved": 0,
-    "qualityScore": 30,
+    "qualityScore": 70,
     "contaminationAudit": [
       {
         "stage": "content-filter",
-        "timestamp": "2026-03-17T15:44:19.149Z",
+        "timestamp": "2026-03-18T17:24:20.693Z",
         "patternsChecked": [
           "/^User message$/i",
           "/^User prompt$/i",
@@ -66,7 +66,7 @@
   "contaminationAudit": [
     {
       "stage": "extractor-scrub",
-      "timestamp": "2026-03-17T15:44:19.110Z",
+      "timestamp": "2026-03-18T17:24:20.654Z",
       "patternsChecked": [
         "step-by-step orchestration",
         "analysis preamble",
@@ -97,7 +97,10 @@
         "tool usage narration",
         "tool usage narration active",
         "tool usage preamble",
-        "tool title with path"
+        "tool title with path",
+        "api error prefix",
+        "json error payload",
+        "request id leak"
       ],
       "matchesFound": [],
       "actionsTaken": [
@@ -105,12 +108,12 @@
         "removed_phrases:0"
       ],
       "passedThrough": [
-        "processed_fields:5"
+        "processed_fields:24"
       ]
     },
     {
       "stage": "content-filter",
-      "timestamp": "2026-03-17T15:44:19.149Z",
+      "timestamp": "2026-03-18T17:24:20.693Z",
       "patternsChecked": [
         "/^User message$/i",
         "/^User prompt$/i",
@@ -153,7 +156,7 @@
     },
     {
       "stage": "post-render",
-      "timestamp": "2026-03-17T15:44:19.157Z",
+      "timestamp": "2026-03-18T17:24:20.707Z",
       "patternsChecked": [
         "frontmatter:trigger_phrases",
         "frontmatter:key_topics",
@@ -170,10 +173,10 @@
       ],
       "passedThrough": [
         "current_spec:016-multi-cli-parity",
-        "trigger_phrases:24",
+        "trigger_phrases:32",
         "key_topics:12",
-        "captured_file_count:0",
-        "filesystem_file_count:0"
+        "captured_file_count:9",
+        "filesystem_file_count:9"
       ]
     }
   ],
@@ -186,15 +189,15 @@
       "intent": 0,
       "plan": 0,
       "implementation": 0,
-      "result": 0,
+      "result": 1,
       "decision": 0,
       "total": 1
     }
   },
   "fileCounts": {
-    "fileCount": 0,
-    "capturedFileCount": 0,
-    "filesystemFileCount": 0,
+    "fileCount": 9,
+    "capturedFileCount": 9,
+    "filesystemFileCount": 9,
     "gitChangedFileCount": 0
   },
   "sourceProvenance": {
@@ -207,7 +210,8 @@
     "status": "indexed",
     "model": "nomic-ai/nomic-embed-text-v1.5",
     "dimensions": 768,
-    "memoryId": 4379,
-    "generatedAt": "2026-03-17T15:44:19.704Z"
+    "memoryId": 4407,
+    "updatedAt": "2026-03-18T17:24:27.716Z",
+    "generatedAt": "2026-03-18T17:24:27.716Z"
   }
 }

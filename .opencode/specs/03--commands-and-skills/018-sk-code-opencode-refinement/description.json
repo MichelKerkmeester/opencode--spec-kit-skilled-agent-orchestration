@@ -1,0 +1,18 @@
+{
+  "specFolder": "03--commands-and-skills/018-code-opencode-refinement",
+  "description": "Feature Specification: sk-code--opencode refinement",
+  "keywords": [
+    "feature",
+    "specification",
+    "sk-code-opencode",
+    "refinement"
+  ],
+  "lastUpdated": "2026-03-16T13:20:02.941Z",
+  "specId": "018",
+  "folderSlug": "018-code-opencode-refinement",
+  "parentChain": [
+    "03--commands-and-skills"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

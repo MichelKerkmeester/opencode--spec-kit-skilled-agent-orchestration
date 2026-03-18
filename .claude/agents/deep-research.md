@@ -383,7 +383,6 @@ If any item fails, fix it before returning. If unfixable, report the specific fa
 | Command | Purpose | Path |
 |---------|---------|------|
 | `/spec_kit:deep-research` | Autonomous deep research loop | `.opencode/command/spec_kit/deep-research.md` |
-| `/spec_kit:research` | Full 9-step research workflow | `.opencode/command/spec_kit/research.md` |
 | `/memory:save` | Save research context | `.opencode/command/memory/save.md` |
 
 ### Skills
