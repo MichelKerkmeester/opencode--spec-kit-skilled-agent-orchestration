@@ -344,6 +344,16 @@ Next: {{NEXT_ACTION}}
 {{/HAS_FILES}}
 <!-- /ANCHOR:summary -->
 
+{{#HAS_TECHNICAL_CONTEXT}}
+
+### Technical Context
+
+| Aspect | Detail |
+|--------|--------|
+{{#TECHNICAL_CONTEXT}}| **{{KEY}}** | {{VALUE}} |
+{{/TECHNICAL_CONTEXT}}
+
+{{/HAS_TECHNICAL_CONTEXT}}
 {{#HAS_GRAPH_CONTEXT}}
 ---
 

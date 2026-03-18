@@ -338,7 +338,7 @@ When the orchestrator specifies `Output Size: summary-only` or `minimal`, use th
 
 | Agent     | File                          | Relationship                                                                            |
 | --------- | ----------------------------- | --------------------------------------------------------------------------------------- |
-| @research | `.codex/agents/research.toml` | Deeper alternative — when @context finds complexity requiring full 9-step investigation |
+| @deep-research | `.codex/agents/deep-research.toml` | Deeper alternative — when @context finds complexity requiring iterative deep research |
 | @general  | Built-in                      | Implementation agent — uses @context's findings to write code                           |
 | @speckit  | `.codex/agents/speckit.toml`  | Spec documentation — uses @context's findings for spec folder creation                  |
 

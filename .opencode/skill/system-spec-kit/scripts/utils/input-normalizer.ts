@@ -115,6 +115,7 @@ export interface NormalizedData {
   recentContext: RecentContext[];
   _manualTriggerPhrases?: string[];
   _manualDecisions?: Array<string | DecisionItemObject>;
+  TECHNICAL_CONTEXT?: Array<{ KEY: string; VALUE: string }>;
   [key: string]: unknown;
 }
 
@@ -288,6 +289,19 @@ function buildTechnicalContextObservation(techContext: Record<string, unknown>):
   };
 }
 
+/**
+ * Maps a technicalContext record to the structured TECHNICAL_CONTEXT array format.
+ * @param techContext - A record of technical details (e.g., stack, config, dependencies).
+ * @returns An array of {KEY, VALUE} objects for the dedicated template section.
+ */
+function mapTechnicalContext(techContext: Record<string, unknown>): Array<{ KEY: string; VALUE: string }> {
+  return Object.entries(techContext)
+    .map(([key, value]) => ({
+      KEY: key,
+      VALUE: typeof value === 'object' ? JSON.stringify(value) : String(value),
+    }));
+}
+
 function buildNextStepsObservation(nextSteps: string[]): Observation {
   if (nextSteps.length === 0) {
     return { type: 'followup', title: 'Next Steps', narrative: '', facts: [] };
@@ -410,6 +424,10 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
     if (data.specFolder || data.spec_folder || data.SPEC_FOLDER) {
       cloned.SPEC_FOLDER = (data.specFolder || data.spec_folder || data.SPEC_FOLDER) as string;
     }
+    // Q3: Backfill TECHNICAL_CONTEXT for fast-path data
+    if (data.technicalContext && typeof data.technicalContext === 'object' && !cloned.TECHNICAL_CONTEXT) {
+      cloned.TECHNICAL_CONTEXT = mapTechnicalContext(data.technicalContext);
+    }
 
     return cloned;
   }
@@ -488,6 +506,8 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
 
   if (data.technicalContext && typeof data.technicalContext === 'object') {
     observations.push(buildTechnicalContextObservation(data.technicalContext));
+    // Q3: Also store structured key-value pairs for dedicated template section
+    normalized.TECHNICAL_CONTEXT = mapTechnicalContext(data.technicalContext);
   }
 
   if (nextSteps.length > 0) {

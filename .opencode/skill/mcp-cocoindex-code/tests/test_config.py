@@ -1,3 +1,8 @@
+#!/usr/bin/env python3
+# ───────────────────────────────────────────────────────────────
+# COMPONENT: COCOINDEX CODE CONFIG TESTS
+# ───────────────────────────────────────────────────────────────
+
 """Unit tests for Config loading."""
 
 from __future__ import annotations

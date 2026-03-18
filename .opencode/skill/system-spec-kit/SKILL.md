@@ -65,7 +65,7 @@ Status: ✅ This requirement applies immediately once file edits are requested.
   - `memory/` → uses generate-context.js script
   - `scratch/` → temporary workspace, any agent
   - `handover.md` → @handover agent only
-  - `research.md` → @research agent only
+  - `research.md` → @deep-research agent only
   - `debug-delegation.md` → @debug agent only
 
 Routing to `@general`, `@write`, or other agents for spec documentation is a **hard violation**. See constitutional memory: `speckit-exclusivity.md`
@@ -206,7 +206,6 @@ RESOURCE_MAP = {
 
 COMMAND_BOOSTS = {
     "/spec_kit:plan": "PLAN",
-    "/spec_kit:research": "RESEARCH",
     "/spec_kit:implement": "IMPLEMENT",
     "/spec_kit:debug": "DEBUG",
     "/spec_kit:complete": "COMPLETE",

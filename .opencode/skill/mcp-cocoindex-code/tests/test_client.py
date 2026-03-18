@@ -1,3 +1,8 @@
+#!/usr/bin/env python3
+# ───────────────────────────────────────────────────────────────
+# COMPONENT: COCOINDEX CODE DAEMON CLIENT TESTS
+# ───────────────────────────────────────────────────────────────
+
 """Tests for DaemonClient and ensure_daemon()."""
 
 from __future__ import annotations

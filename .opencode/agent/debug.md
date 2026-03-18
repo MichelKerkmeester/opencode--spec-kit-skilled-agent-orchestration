@@ -468,7 +468,7 @@ PRE-DELIVERY VERIFICATION:
 | Agent       | Relationship                        |
 | ----------- | ----------------------------------- |
 | @general    | May call debug for stuck issues     |
-| @research   | Provides context that informs debug |
+| @deep-research | Provides context that informs debug |
 | orchestrate | Dispatches debug after 3 failures   |
 
 ---

@@ -388,7 +388,7 @@ describe('workflow E2E save pipeline', { timeout: 30_000 }, () => {
     expect(description.memoryNameHistory).toEqual([result.contextFilename]);
   });
 
-  it('blocks stateless saves that do not align to the target spec folder and leaves bookkeeping unchanged', async () => {
+  it('warns but proceeds for stateless saves with explicit CLI spec folder that do not align to the target', async () => {
     const harness = createHarness();
     configureHarnessEnvironment(harness, {
       SYSTEM_SPEC_KIT_CAPTURE_SOURCE: 'opencode-capture',
@@ -415,16 +415,16 @@ describe('workflow E2E save pipeline', { timeout: 30_000 }, () => {
       },
     });
 
-    await expect(workflowModule.runWorkflow({
+    // Q1: Block A now warns instead of throwing when spec folder is explicitly provided via CLI.
+    // The workflow should complete successfully.
+    const result = await workflowModule.runWorkflow({
       specFolderArg: harness.specRelativePath,
       silent: true,
-    })).rejects.toThrow(/ALIGNMENT_BLOCK.*(?:No spec-specific anchors|% of captured file paths)/);
+    });
 
+    expect(result.writtenFiles.length).toBeGreaterThan(0);
     const description = readDescription(harness);
-    expect(listMarkdownFiles(harness.contextDir)).toEqual([]);
-    expect(fs.existsSync(path.join(harness.contextDir, 'metadata.json'))).toBe(false);
-    expect(description.memorySequence).toBe(0);
-    expect(description.memoryNameHistory).toEqual([]);
+    expect(description.memorySequence).toBe(1);
   });
 
   it('skips duplicate markdown content on a second identical save without bumping description tracking', async () => {

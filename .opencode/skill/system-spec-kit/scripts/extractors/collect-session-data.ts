@@ -893,6 +893,9 @@ async function collectSessionData(
     SKILL_VERSION: CONFIG.SKILL_VERSION,
     OBSERVATIONS: OBSERVATIONS_DETAILED,
     HAS_OBSERVATIONS: OBSERVATIONS_DETAILED.length > 0,
+    // Q3: Pass through structured technicalContext for dedicated template section
+    TECHNICAL_CONTEXT: Array.isArray(data.TECHNICAL_CONTEXT) ? data.TECHNICAL_CONTEXT as Array<{ KEY: string; VALUE: string }> : [],
+    HAS_TECHNICAL_CONTEXT: Array.isArray(data.TECHNICAL_CONTEXT) && data.TECHNICAL_CONTEXT.length > 0,
     SPEC_FILES,
     HAS_SPEC_FILES: SPEC_FILES.length > 0,
     ...implementationGuide,

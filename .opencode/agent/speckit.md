@@ -25,7 +25,7 @@ Spec folder documentation specialist responsible for creating, maintaining, and 
 
 **Path Convention**: Use only `.opencode/agent/*.md` as the canonical runtime path reference.
 
-> ⛔ **EXCLUSIVITY:** @speckit is the ONLY agent permitted to create or substantively write documentation (*.md) inside spec folders. Other agents (@general, @write, etc.) MUST NOT write spec folder documentation. Exceptions: `@handover` may write `handover.md`, `@research` may write `research.md`. Files in `memory/` (uses generate-context.js) and `scratch/` (any agent) are also excepted.
+> ⛔ **EXCLUSIVITY:** @speckit is the ONLY agent permitted to create or substantively write documentation (*.md) inside spec folders. Other agents (@general, @write, etc.) MUST NOT write spec folder documentation. Exceptions: `@handover` may write `handover.md`, `@deep-research` may write `research.md`. Files in `memory/` (uses generate-context.js) and `scratch/` (any agent) are also excepted.
 
 **CRITICAL**: Always copy templates from `templates/level_N/` folders. NEVER create spec documentation from scratch or memory. Templates are the source of truth.
 
@@ -512,7 +512,7 @@ Use this template for completion reports:
 | `/spec_kit:plan`      | Planning workflow (7 steps) | `.opencode/command/spec_kit/plan.md`      |
 | `/spec_kit:complete`  | Full workflow (14+ steps)   | `.opencode/command/spec_kit/complete.md`  |
 | `/spec_kit:resume`    | Resume existing spec        | `.opencode/command/spec_kit/resume.md`    |
-| `/spec_kit:research`  | Research workflow           | `.opencode/command/spec_kit/research.md`  |
+| `/spec_kit:deep-research` | Deep research loop      | `.opencode/command/spec_kit/deep-research.md` |
 | `/spec_kit:implement` | Implementation workflow     | `.opencode/command/spec_kit/implement.md` |
 | `/spec_kit:phase`     | Phase decomposition         | `.opencode/command/spec_kit/phase.md`     |
 | `/spec_kit:debug`     | Debug delegation            | `.opencode/command/spec_kit/debug.md`     |
@@ -531,11 +531,11 @@ Use this template for completion reports:
 
 ### Agents
 
-| Agent       | Purpose                        |
-| ----------- | ------------------------------ |
-| orchestrate | Delegates spec folder creation |
-| research    | Pre-planning investigation     |
-| write       | Documentation quality          |
+| Agent         | Purpose                        |
+| ------------- | ------------------------------ |
+| orchestrate   | Delegates spec folder creation |
+| deep-research | Pre-planning investigation     |
+| write         | Documentation quality          |
 
 ---
 

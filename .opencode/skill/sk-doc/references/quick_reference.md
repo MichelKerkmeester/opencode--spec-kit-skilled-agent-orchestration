@@ -178,6 +178,7 @@ python scripts/package_skill.py skill-path        # Package skill
 │   │   ├── frontmatter_templates.md (YAML frontmatter examples)
 │   │   ├── readme_template.md (README structure and patterns)
 │   │   ├── install_guide_template.md (install guide template)
+│   │   ├── manual_testing_playbook_template.md (playbook template)
 │   │   └── llmstxt_templates.md (llms.txt generation examples)
 │   ├── skill/
 │   │   ├── skill_md_template.md (SKILL.md file template)
@@ -298,8 +299,33 @@ python scripts/package_skill.py skill-path        # Package skill
 ---
 
 <!-- /ANCHOR:skill-creation-quick-steps -->
+<!-- ANCHOR:playbook-creation-quick-steps -->
+## 12. PLAYBOOK CREATION QUICK STEPS
+
+### Template
+`assets/documentation/manual_testing_playbook_template.md`
+
+### 3-File Package
+| File | Content |
+|------|---------|
+| `manual_testing_playbook.md` | 9-column scenario tables with deterministic prompts |
+| `review_protocol.md` | Scenario/feature verdict rules, release readiness |
+| `subagent_utilization_ledger.md` | Wave planning for parallel agent execution |
+
+### Quick Steps
+1. **Plan categories** → Define ID prefixes (e.g., CCC, MCP, CFG)
+2. **Create directory** → `{SKILL_PATH}/manual_testing_playbook/`
+3. **Copy scaffolds** → Fill main playbook, review protocol, ledger from template
+4. **Fill scenarios** → Use 9-column table format per category
+5. **Build cross-reference** → Feature Catalog Index at end of main playbook
+6. **Plan waves** → Group non-destructive vs destructive scenarios
+7. **Validate** → Run playbook checklist (template Section 9)
+
+---
+
+<!-- /ANCHOR:playbook-creation-quick-steps -->
 <!-- ANCHOR:related-resources -->
-## 12. RELATED RESOURCES
+## 13. RELATED RESOURCES
 
 ### Reference Files
 - [core_standards.md](./core_standards.md) - Document type rules and structural requirements
@@ -313,6 +339,7 @@ python scripts/package_skill.py skill-path        # Package skill
 - [skill_md_template.md](../assets/skill/skill_md_template.md) - SKILL.md file templates
 - [frontmatter_templates.md](../assets/documentation/frontmatter_templates.md) - Frontmatter by document type
 - [command_template.md](../assets/agents/command_template.md) - Command file templates
+- [manual_testing_playbook_template.md](../assets/documentation/manual_testing_playbook_template.md) - Playbook creation template
 
 ### Related Skills
 - `git-commit` - Git commit workflows

@@ -376,3 +376,61 @@ To add a sixth CLI:
 | Date | Change |
 |------|--------|
 | 2026-03-17 | Initial cross-CLI parity research completed |
+| 2026-03-18 | Deep research: 5 memory save quality defects identified (see Appendix E) |
+
+---
+
+### E. DEEP RESEARCH: MEMORY SAVE QUALITY DEFECTS (2026-03-18)
+
+**Research ID**: DR-016-MEMSAVE-2026-03-18
+**Iterations**: 2 | **Stop reason**: All questions answered (5/5)
+
+#### Defect Summary
+
+| # | Defect | Root Cause | Severity | File:Line |
+|---|--------|-----------|----------|-----------|
+| Q1 | Decision title double-prefix `Decision: Decision:` | Regex `\d+` requires digits after "Decision", fails to strip `Decision:` without digit | High | `decision-extractor.ts:213` |
+| Q2 | Decision text truncation on `--` | Single-character `[-]` in regex matches any hyphen including CLI flags | High | `decision-extractor.ts:213` |
+| Q3 | technicalContext not surfaced | No dedicated template variable; routed through generic observation pipeline | Medium | `input-normalizer.ts:278-289` |
+| Q4 | key_files missing files | `buildKeyFiles` uses post-tree-thinning files instead of raw list | Medium | `workflow.ts:639-648` |
+| Q5 | Confidence hardcoded at 50% | String-form keyDecisions carry no signals for `buildDecisionConfidence` | Low | `decision-extractor.ts:77,88` |
+
+#### Q1+Q2: Decision Title Regex (single fix)
+
+Both bugs trace to one regex at `decision-extractor.ts:213`:
+```typescript
+/^(?:Decision\s*\d+:\s*)?(.+?)(?:\s*[-\u2013\u2014]\s*(.+))?$/i
+```
+
+**Q1**: `\d+` requires digits after "Decision". Input `"Decision: X"` (no digit) passes unstripped. Template prepends another `Decision {{INDEX}}:`.
+**Q2**: `[-\u2013\u2014]` matches any single hyphen, splitting `--build` as a separator.
+
+**Fix**: Make digits optional, require double-dash or em/en dash with whitespace:
+```typescript
+/^(?:Decision\s*(?:\d+\s*)?:\s*)?(.+?)(?:\s+(?:--|[\u2013\u2014])\s+(.+))?$/i
+```
+
+#### Q3: technicalContext Not Rendered
+
+`buildTechnicalContextObservation` (`input-normalizer.ts:278-289`) converts to a generic observation. Rendering depends on `HAS_OBSERVATIONS` gate (`context_template.md:356`). No dedicated section exists.
+
+**Fix**: Add dedicated `{{#TECHNICAL_CONTEXT}}` template section.
+
+#### Q4: key_files Missing Files
+
+`buildKeyFiles` (`workflow.ts:639-648`) uses post-tree-thinning `effectiveFiles`. Thinning merges small files into synthetic `(merged-small-files)` entries, which are filtered out.
+
+**Fix**: Use pre-thinning file list for metadata indexing.
+
+#### Q5: Confidence Defaults to 50%
+
+`buildDecisionConfidence` (`decision-extractor.ts:77,88`) starts at 0.5, boosted by signals. String-form keyDecisions produce `manualObj = null`, zeroing all signals.
+
+**Fix**: Accept object-form decisions with `confidence` field, or parse inline confidence from strings.
+
+#### Recommended Fix Priority
+
+1. **Q1+Q2** (single regex): Highest impact, simplest change, fixes 2 defects
+2. **Q4** (buildKeyFiles source): Medium impact, straightforward
+3. **Q3** (technicalContext section): Medium impact, template+workflow change
+4. **Q5** (confidence docs/parsing): Low impact, design clarification

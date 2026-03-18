@@ -1,6 +1,6 @@
 ---
 title: "Workflows Documentation"
-description: "Unified markdown and OpenCode component specialist providing document quality enforcement, content optimization, component creation workflows, ASCII flowcharts and install guides"
+description: "Unified markdown and OpenCode component specialist providing document quality enforcement, content optimization, component creation workflows, ASCII flowcharts, install guides and manual testing playbooks"
 trigger_phrases:
   - "documentation quality enforcement"
   - "opencode component creation workflow"
@@ -9,7 +9,7 @@ trigger_phrases:
 
 # Workflows Documentation
 
-> Unified markdown and OpenCode component specialist providing document quality enforcement, content optimization, component creation workflows, ASCII flowcharts and install guides.
+> Unified markdown and OpenCode component specialist providing document quality enforcement, content optimization, component creation workflows, ASCII flowcharts, install guides and manual testing playbooks.
 
 ---
 
@@ -31,7 +31,7 @@ trigger_phrases:
 ## 1. OVERVIEW
 <!-- ANCHOR:overview -->
 
-This skill is the central documentation engine for OpenCode projects. It operates in four modes: **Document Quality** (structure enforcement, DQI scoring, content optimization), **Component Creation** (skills, agents, commands with templates and validation), **Flowchart Creation** (ASCII diagrams for workflows and decision trees) and **Install Guide Creation** (phase-based setup documentation).
+This skill is the central documentation engine for OpenCode projects. It operates in five modes: **Document Quality** (structure enforcement, DQI scoring, content optimization), **Component Creation** (skills, agents, commands with templates and validation), **Flowchart Creation** (ASCII diagrams for workflows and decision trees), **Install Guide Creation** (phase-based setup documentation) and **Playbook Creation** (manual testing playbooks with 9-column scenario tables).
 
 The architecture follows a script-assisted AI analysis model: Python scripts handle deterministic parsing and metrics extraction, while the AI handles quality judgment and recommendations. The core principle is **structure first, then content, then quality**.
 
@@ -83,6 +83,7 @@ sk-doc/
 │   ├── documentation/                # Document templates
 │   │   ├── frontmatter_templates.md  # Frontmatter validation (11 types)
 │   │   ├── install_guide_template.md # 5-phase install guide template
+│   │   ├── manual_testing_playbook_template.md # 3-file playbook template
 │   │   ├── llmstxt_templates.md      # llms.txt generation templates
 │   │   └── readme_template.md        # README structure (15 sections + HVR)
 │   ├── flowcharts/                   # ASCII flowchart patterns (6 types)
@@ -147,6 +148,11 @@ sk-doc/
 - 5-phase template: Overview, Prerequisites, Installation, Configuration, Verification
 - Platform-specific configurations (OpenCode, Claude Code, Claude Desktop)
 - Phase validation checkpoints
+
+**Mode 5 - Playbook Creation:**
+- 3-file package: main playbook, review protocol, sub-agent utilization ledger
+- 9-column scenario table format with deterministic prompts and pass/fail criteria
+- Category/ID design, wave planning for parallel agent execution
 
 <!-- /ANCHOR:features -->
 

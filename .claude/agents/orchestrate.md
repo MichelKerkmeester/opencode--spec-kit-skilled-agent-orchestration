@@ -86,7 +86,7 @@ flowchart TD
 | Priority | Task Type                                                                 | Agent                  | Tier | Skills                                                                            | subagent_type |
 | -------- | ------------------------------------------------------------------------- | ---------------------- | ---- | --------------------------------------------------------------------------------- | ------------- |
 | 1        | ALL codebase exploration, file search, pattern discovery, context loading | `@context`             | LEAF | Memory tools, Glob, Grep, Read                                                    | `"general"`   |
-| 2        | Evidence / investigation                                                  | `@research`            | LEAF | `system-spec-kit`                                                                 | `"general"`   |
+| 2        | Evidence / iterative investigation                                        | `@deep-research`       | LEAF | `system-spec-kit`, `sk-deep-research`                                             | `"general"`   |
 | 3        | Multi-strategy planning and architecture synthesis                        | `@ultra-think`         | LEAF | Multi-lens planning rubric (planning-only)                                        | `"general"`   |
 | 4        | Spec folder docs                                                          | `@speckit` ⛔ EXCLUSIVE | LEAF | `system-spec-kit`                                                                 | `"general"`   |
 | 5        | Code review / security                                                    | `@review`              | LEAF | `sk-code` baseline + one `sk-code--*` overlay (auto-detected)      | `"general"`   |
@@ -104,7 +104,7 @@ This Copilot profile enforces **single-hop delegation**. Nested sub-agent dispat
 | Tier             | Dispatch Authority               | Who                                                                                   |
 | ---------------- | -------------------------------- | ------------------------------------------------------------------------------------- |
 | **ORCHESTRATOR** | Can dispatch LEAF agents         | Top-level orchestrator only                                                           |
-| **LEAF**         | MUST NOT dispatch any sub-agents | @context, @general, @ultra-think, @write, @review, @speckit, @debug, @handover, @explore, @research, @deep-research |
+| **LEAF**         | MUST NOT dispatch any sub-agents | @context, @general, @ultra-think, @write, @review, @speckit, @debug, @handover, @explore, @deep-research |
 
 #### Absolute Depth Rules
 
@@ -161,14 +161,13 @@ When dispatching ANY non-orchestrator agent, append this to the Task prompt:
 | Agent     | File                          | Notes                                                                                  |
 | --------- | ----------------------------- | -------------------------------------------------------------------------------------- |
 | @context  | `.claude/agents/context.md`  | Sub-agent with direct retrieval only. Routes ALL exploration tasks                     |
-| @research | `.claude/agents/research.md` | Sub-agent; outputs research.md                                                         |
+| @deep-research | `.claude/agents/deep-research.md` | LEAF agent; iterative autonomous research loop with externalized state              |
 | @ultra-think | `.claude/agents/ultra-think.md` | Planning-only multi-strategy architect (max 3 strategies)                              |
 | @speckit  | `.claude/agents/speckit.md`  | ⛔ ALL spec folder docs (*.md). Exceptions: memory/, scratch/, handover.md, research.md |
 | @review   | `.claude/agents/review.md`   | Codebase-agnostic quality scoring                                                      |
 | @write    | `.claude/agents/write.md`    | DQI standards enforcement                                                              |
 | @debug    | `.claude/agents/debug.md`    | Isolated by design (no conversation context)                                           |
 | @handover | `.claude/agents/handover.md` | Sub-agent; context preservation                                                        |
-| @deep-research | `.claude/agents/deep-research.md` | LEAF agent; single iteration of autonomous deep research loop with externalized state |
 
 > **Note**: ALL exploration tasks route through `@context` exclusively. @context executes retrieval directly (no nested sub-agent dispatch).
 
@@ -186,7 +185,7 @@ TASK #N: [Descriptive Title]
 ├─ Objective: [WHY this task exists]
 ├─ Scope: [Explicit inclusions AND exclusions]
 ├─ Boundary: [What this agent MUST NOT do]
-├─ Agent: @general | @context | @research | @ultra-think | @write | @review | @speckit | @debug | @handover | @deep-research
+├─ Agent: @general | @context | @deep-research | @ultra-think | @write | @review | @speckit | @debug | @handover
 ├─ Subagent Type: "general" (ALL dispatches use "general" — exploration routes through @context)
 ├─ Agent Definition: [.claude/agents/<name>.md — MUST be read and included in prompt | "built-in" for @general]
 ├─ Skills: [Specific skills the agent should use]
@@ -357,7 +356,7 @@ TASK #2: Implement Notification System
 - `memory/` subdirectory → generated via `generate-context.js` script (never manual Write)
 - `scratch/` subdirectory → temporary workspace, any agent may write
 - `handover.md` → `@handover` agent exclusively (session continuation documents)
-- `research.md` → `@research` agent exclusively (9-step investigation findings)
+- `research.md` → `@deep-research` agent exclusively (iterative investigation findings)
 - **Reading** spec docs is permitted by any agent
 - **Minor status updates** (e.g., checking task boxes) by implementing agents are acceptable
 **Logic:** `@speckit` enforces template structure, Level 1-3+ standards, and validation that other agents lack. Bypassing `@speckit` produces non-standard documentation that fails quality gates.
@@ -594,7 +593,7 @@ When ANY context pressure signal fires:
 | -------------------------------------- | -------------------- | -------------------------------------- |
 | Sub-agent stuck 3+ times on same error | `/spec_kit:debug`    | Fresh perspective with model selection |
 | Session ending or user says "stopping" | `/spec_kit:handover` | Preserve context for continuation      |
-| Need formal research before planning   | `/spec_kit:research` | 9-step structured investigation        |
+| Need formal research before planning   | `/spec_kit:deep-research` | Autonomous iterative research loop  |
 | Claiming task completion               | `/spec_kit:complete` | Verification workflow with checklist   |
 | Need to save important context         | `/memory:save`       | Preserve decisions and findings        |
 | Resuming prior work                    | `/spec_kit:resume`   | Load context from spec folder          |
@@ -740,7 +739,7 @@ The orchestrator's own behavior can cause context overload. Follow these rules:
 - Nested chains are illegal in this profile. Every dispatch must include `Depth: N` and respect single-hop NDP rules: only depth-0 orchestrator dispatches; depth-1 agents MUST NOT dispatch. If a task cannot be completed at depth 1, return partial results and escalate to the parent. See §2.
 
 ❌ **Never let LEAF agents dispatch sub-agents**
-- LEAF agents (@context, @general, @ultra-think, @write, @review, @speckit, @debug, @handover, @explore, @research, @deep-research) execute work directly. If a LEAF agent spawns a sub-agent, it violates NDP. When dispatching LEAF agents, ALWAYS include the LEAF Enforcement Instruction (§2).
+- LEAF agents (@context, @general, @ultra-think, @write, @review, @speckit, @debug, @handover, @explore, @deep-research) execute work directly. If a LEAF agent spawns a sub-agent, it violates NDP. When dispatching LEAF agents, ALWAYS include the LEAF Enforcement Instruction (§2).
 
 ❌ **Never read 3+ large files back-to-back in main context**
 - Loading multiple large files floods the orchestrator's context window. Delegate bulk file reads to `@context` and receive summarized Context Packages. See §8 Self-Protection Rules.

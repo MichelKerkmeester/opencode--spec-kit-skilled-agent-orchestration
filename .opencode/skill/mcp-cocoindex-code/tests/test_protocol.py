@@ -1,3 +1,8 @@
+#!/usr/bin/env python3
+# ───────────────────────────────────────────────────────────────
+# COMPONENT: COCOINDEX CODE PROTOCOL TESTS
+# ───────────────────────────────────────────────────────────────
+
 """Unit tests for the protocol module."""
 
 from __future__ import annotations

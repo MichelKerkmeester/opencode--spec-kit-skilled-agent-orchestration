@@ -1,15 +1,23 @@
+---
+title: Convergence Detection Reference
+description: Algorithms and protocols for determining when the deep research loop should stop.
+---
+
 # Convergence Detection Reference
 
 Algorithms and protocols for determining when the deep research loop should stop.
 
 ---
 
+<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 Convergence detection prevents infinite loops and stops research when additional iterations yield diminishing returns. The algorithm evaluates multiple signals to make a stop/continue/recovery decision.
 
 ---
 
+<!-- /ANCHOR:overview -->
+<!-- ANCHOR:shouldcontinue-algorithm -->
 ## 2. THE shouldContinue() ALGORITHM
 
 > **Segment Awareness**: When segments are active (see Section 3.5), `state.iterations` is pre-filtered to the current segment. Hard stops (max iterations) apply globally; convergence signals apply per-segment.
@@ -113,6 +121,8 @@ Checks are evaluated in this order (first match wins):
 
 ---
 
+<!-- /ANCHOR:shouldcontinue-algorithm -->
+<!-- ANCHOR:signal-definitions -->
 ## 3. SIGNAL DEFINITIONS
 
 ### newInfoRatio (0.0 to 1.0)
@@ -211,7 +221,7 @@ When reading `deep-research-state.jsonl`, parse defensively:
    `"Warning: {skippedCount} of {totalLines} JSONL lines were malformed and skipped."`
 6. Proceed with valid entries only
 
-This ensures convergence checks continue even after partial state corruption. See state-format.md Section 3 for the full fault tolerance specification.
+This ensures convergence checks continue even after partial state corruption. See state_format.md Section 3 for the full fault tolerance specification.
 
 ### Segment Model
 
@@ -232,10 +242,12 @@ Segment transitions are triggered by:
 - Explicit user request for a new research angle
 - Orchestrator judgment when research direction fundamentally shifts
 
-See state-format.md Section 3 for JSONL schema details.
+See state_format.md Section 3 for JSONL schema details.
 
 ---
 
+<!-- /ANCHOR:signal-definitions -->
+<!-- ANCHOR:stuck-recovery-protocol -->
 ## 4. STUCK RECOVERY PROTOCOL
 
 When `stuckCount >= stuckThreshold` (default 3):
@@ -318,7 +330,9 @@ Add to JSONL: `{"type":"event","event":"stuck_recovery","fromIteration":N,"outco
 
 ---
 
-## 4.5 TIERED ERROR RECOVERY PROTOCOL
+<!-- /ANCHOR:stuck-recovery-protocol -->
+<!-- ANCHOR:tiered-error-recovery-protocol -->
+## 5. TIERED ERROR RECOVERY PROTOCOL
 
 Five escalating tiers for handling errors during the research loop. Each tier has a max-attempt count before escalating to the next.
 
@@ -351,7 +365,7 @@ When JSONL is missing or corrupted beyond fault-tolerant parsing:
 - Scan `scratch/iteration-*.md` files
 - Parse `## Assessment` sections to reconstruct iteration records
 - Write reconstructed JSONL with `status: "reconstructed"`
-- See state-format.md "State Recovery from Iteration Files" for details
+- See state_format.md "State Recovery from Iteration Files" for details
 
 ### Tier 4: User Escalation
 
@@ -372,7 +386,9 @@ When agent dispatch itself fails (API overload, Task tool error, timeout):
 
 ---
 
-## 4a STATISTICAL VALIDATION
+<!-- /ANCHOR:tiered-error-recovery-protocol -->
+<!-- ANCHOR:statistical-validation -->
+## 6. STATISTICAL VALIDATION
 
 ### MAD-Based Noise Floor Detection
 
@@ -429,7 +445,9 @@ This provides diagnostic visibility without overriding the composite convergence
 
 ---
 
-## 5. CONVERGENCE THRESHOLD TUNING
+<!-- /ANCHOR:statistical-validation -->
+<!-- ANCHOR:convergence-threshold-tuning -->
+## 7. CONVERGENCE THRESHOLD TUNING
 
 | Threshold | Effect | Use When |
 |-----------|--------|----------|
@@ -456,7 +474,9 @@ Budget constraints:
 
 ---
 
-## 6. EDGE CASES
+<!-- /ANCHOR:convergence-threshold-tuning -->
+<!-- ANCHOR:edge-cases -->
+## 8. EDGE CASES
 
 ### Early Convergence (< 3 iterations)
 If fewer than 3 iterations have completed, the convergence threshold check is skipped (not enough data). Only max iterations and stuck detection apply.
@@ -476,7 +496,9 @@ If stuck detection triggers but questions remain unanswered:
 
 ---
 
-## 7. CONVERGENCE REPORTING
+<!-- /ANCHOR:edge-cases -->
+<!-- ANCHOR:convergence-reporting -->
+## 9. CONVERGENCE REPORTING
 
 When the loop stops, the YAML workflow generates a convergence report:
 
@@ -498,3 +520,5 @@ Error recovery tiers used: [list or "none"]
 ```
 
 This report is included in the final JSONL entry and displayed to the user.
+
+<!-- /ANCHOR:convergence-reporting -->

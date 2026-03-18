@@ -354,7 +354,7 @@ When the orchestrator specifies `Output Size: summary-only` or `minimal`, use th
 
 | Agent     | File                          | Relationship                                                                            |
 | --------- | ----------------------------- | --------------------------------------------------------------------------------------- |
-| @research | `.opencode/agent/research.md` | Deeper alternative — when @context finds complexity requiring full 9-step investigation |
+| @deep-research | `.opencode/agent/deep-research.md` | Deeper alternative — when @context finds complexity requiring iterative multi-round investigation |
 | @general  | Built-in                      | Implementation agent — uses @context's findings to write code                           |
 | @speckit  | `.opencode/agent/speckit.md`  | Spec documentation — uses @context's findings for spec folder creation                  |
 

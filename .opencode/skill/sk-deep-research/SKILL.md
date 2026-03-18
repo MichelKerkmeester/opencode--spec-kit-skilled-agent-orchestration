@@ -27,7 +27,7 @@ Use this skill when:
 
 ### When NOT to Use
 
-- Simple, single-question research (use `/spec_kit:research`)
+- Simple, single-question research (use direct codebase search or `/spec_kit:plan`)
 - Known-solution documentation (use `/spec_kit:plan`)
 - Implementation tasks (use `/spec_kit:implement`)
 - Quick codebase searches (use `@context` or direct Grep/Glob)
@@ -57,7 +57,7 @@ Use this skill when:
 from pathlib import Path
 
 SKILL_ROOT = Path(__file__).resolve().parent
-RESOURCE_BASES = (SKILL_ROOT / "references", SKILL_ROOT / "templates")
+RESOURCE_BASES = (SKILL_ROOT / "references", SKILL_ROOT / "assets")
 DEFAULT_RESOURCE = "references/quick_reference.md"
 
 INTENT_SIGNALS = {
@@ -75,18 +75,43 @@ NOISY_SYNONYMS = {
 }
 
 RESOURCE_MAP = {
-    "LOOP_SETUP": ["references/loop-protocol.md", "references/state-format.md", "templates/deep-research-config.json"],
-    "ITERATION": ["references/loop-protocol.md", "references/convergence.md"],
+    "LOOP_SETUP": ["references/loop_protocol.md", "references/state_format.md", "assets/deep_research_config.json"],
+    "ITERATION": ["references/loop_protocol.md", "references/convergence.md"],
     "CONVERGENCE": ["references/convergence.md"],
-    "STATE": ["references/state-format.md", "templates/deep-research-strategy.md"],
+    "STATE": ["references/state_format.md", "assets/deep_research_strategy.md"],
 }
 
 LOADING_LEVELS = {
     "ALWAYS": [DEFAULT_RESOURCE],
     "ON_DEMAND_KEYWORDS": ["full protocol", "all templates", "complete reference"],
-    "ON_DEMAND": ["references/loop-protocol.md", "references/state-format.md", "references/convergence.md"],
+    "ON_DEMAND": ["references/loop_protocol.md", "references/state_format.md", "references/convergence.md"],
 }
 ```
+
+### Scoped Guard
+
+```python
+def _guard_in_skill():
+    """Verify this skill is active before loading resources."""
+    if not hasattr(_guard_in_skill, '_active'):
+        _guard_in_skill._active = True
+    return _guard_in_skill._active
+
+def discover_markdown_resources(base_path: Path) -> list[str]:
+    """Discover all .md files in the assets directory."""
+    return sorted(str(p.relative_to(base_path)) for p in (base_path / "references").glob("*.md"))
+```
+
+### Phase Detection
+
+Detect the current research phase from dispatch context to load appropriate resources:
+
+| Phase | Signal | Resources to Load |
+|-------|--------|-------------------|
+| Init | No JSONL exists | Loop protocol, state format |
+| Iteration | Dispatch context includes iteration number | Loop protocol, convergence |
+| Stuck | Dispatch context includes "RECOVERY" | Convergence, loop protocol |
+| Synthesis | Convergence triggered STOP | Quick reference |
 
 ---
 
@@ -198,7 +223,7 @@ Save --> generate-context.js --> memory_index_scan
 
 1. **Dispatch sub-agents** -- @deep-research is LEAF-only (NDP compliance)
 2. **Hold findings in context** -- Write everything to files
-3. **Exceed TCB** -- Target 6-8 tool calls per iteration (max 12 with Self-Governance Footer)
+3. **Exceed TCB** -- Target 8-11 tool calls per iteration (max 12)
 4. **Ask the user** -- Autonomous execution; make best-judgment decisions
 5. **Skip convergence checks** -- Every iteration must be evaluated
 6. **Modify config after init** -- Config is read-only after initialization
@@ -206,7 +231,7 @@ Save --> generate-context.js --> memory_index_scan
 
 ### WAVE ORCHESTRATION RULES
 
-When using parallel wave execution (see loop-protocol.md Section 3a):
+When using parallel wave execution (see loop_protocol.md Section 3a):
 1. **Score every wave iteration** -- Rank by newInfoRatio before dispatching follow-ups
 2. **Prune below median** -- Questions scoring below wave median are deprioritized to ideas backlog
 3. **Never prune breakthroughs** -- Any iteration with newInfoRatio > 2x wave average is protected
@@ -232,8 +257,8 @@ When using parallel wave execution (see loop-protocol.md Section 3a):
 
 | Document | Purpose | Key Insight |
 |----------|---------|-------------|
-| [loop-protocol.md](references/loop-protocol.md) | Loop lifecycle (4 phases) | Init, iterate, synthesize, save |
-| [state-format.md](references/state-format.md) | State file schemas | JSONL + strategy.md + config.json |
+| [loop_protocol.md](references/loop_protocol.md) | Loop lifecycle (4 phases) | Init, iterate, synthesize, save |
+| [state_format.md](references/state_format.md) | State file schemas | JSONL + strategy.md + config.json |
 | [convergence.md](references/convergence.md) | Stop condition algorithms | shouldContinue(), stuck recovery |
 | [quick_reference.md](references/quick_reference.md) | One-page cheat sheet | Commands, tuning, troubleshooting |
 
@@ -241,8 +266,8 @@ When using parallel wave execution (see loop-protocol.md Section 3a):
 
 | Template | Purpose | Usage |
 |----------|---------|-------|
-| [deep-research-config.json](templates/deep-research-config.json) | Loop configuration | Copied to scratch/ during init |
-| [deep-research-strategy.md](templates/deep-research-strategy.md) | Strategy file | Copied to scratch/ during init |
+| [deep_research_config.json](assets/deep_research_config.json) | Loop configuration | Copied to scratch/ during init |
+| [deep_research_strategy.md](assets/deep_research_strategy.md) | Strategy file | Copied to scratch/ during init |
 
 ---
 

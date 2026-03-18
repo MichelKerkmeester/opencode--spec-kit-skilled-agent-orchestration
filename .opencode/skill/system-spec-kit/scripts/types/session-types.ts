@@ -450,6 +450,8 @@ export interface SessionData {
   FILE_PROGRESS: FileProgressEntry[];
   HAS_FILE_PROGRESS: boolean;
   HAS_IMPLEMENTATION_GUIDE: boolean;
+  TECHNICAL_CONTEXT: Array<{ KEY: string; VALUE: string }>;
+  HAS_TECHNICAL_CONTEXT: boolean;
   TOPIC: string;
   IMPLEMENTATIONS: ImplementationStep[];
   IMPL_KEY_FILES: KeyFileWithRole[];

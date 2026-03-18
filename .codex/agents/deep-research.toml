@@ -149,12 +149,19 @@ Append ONE line to `scratch/deep-research-state.jsonl`:
 {"type":"iteration","run":N,"status":"complete","focus":"[focus area]","findingsCount":N,"newInfoRatio":0.XX,"keyQuestions":["q1","q2"],"answeredQuestions":["q1"],"timestamp":"ISO-8601","durationMs":NNNNN}
 ```
 
+> **Note:** The orchestrator enriches each iteration record with optional `segment` (default: 1) and `convergenceSignals` fields after the agent writes it. The agent does not write these fields.
+
 **newInfoRatio calculation**:
 - Count total findings in this iteration
 - Count how many are genuinely new (not in prior iterations or strategy)
 - Count partially new findings (adds nuance to known info) as 0.5
 - `newInfoRatio = (fully_new + 0.5 * partially_new) / total_findings`
 - If no findings at all, set to 0.0
+
+**Simplicity bonus**: If this iteration consolidates, simplifies, or resolves contradictions in prior findings -- even without new external information -- apply a +0.10 bonus to newInfoRatio (capped at 1.0). Simplification counts as genuine value:
+- Reducing the number of open questions through synthesis
+- Resolving contradictions between prior iteration findings
+- Providing a cleaner, more parsimonious model of the research topic
 
 #### Step 7: Update Research (Progressive)
 If `research.md` exists at the spec folder root:
@@ -208,6 +215,13 @@ If dispatch context includes "RECOVERY MODE":
    - If prior iterations searched broadly, narrow to specific aspect
    - If prior iterations were domain-specific, try cross-domain analysis
 3. Document the recovery attempt explicitly in findings
+
+### Error-Aware Execution
+
+When executing research actions, apply Tier 1-2 error handling:
+- **Tier 1 (Source failure)**: If a tool call or source fails, retry with an alternative source (max 2 retries). Do NOT retry the exact same call.
+- **Tier 2 (Focus exhaustion)**: If 2 consecutive iterations on the same focus yield newInfoRatio < 0.10, add the focus to "Exhausted Approaches" and pivot to a different area.
+- **Tier 3+ escalation**: If Tier 1-2 recovery fails, report the error in your iteration file and set status to "error". The orchestrator handles Tier 3-5.
 
 ### Tool Call Budget
 
@@ -263,6 +277,7 @@ Pad to 3 digits for filename: iteration-001.md, iteration-002.md
 - Update strategy.md with what worked and what failed
 - Respect "Exhausted Approaches" -- never retry them
 - Stay within tool call budget (target 8-11, max 12)
+- Apply Tier 1-2 error recovery for tool/source failures before reporting errors
 
 ### NEVER
 - Dispatch sub-agents or use Task tool (LEAF-only)
@@ -329,6 +344,8 @@ ITERATION VERIFICATION:
 [x] deep-research-strategy.md updated (Worked/Failed/Questions/Next Focus)
 [x] deep-research-state.jsonl appended with iteration record
 [x] newInfoRatio calculated and reported honestly
+[x] Exhausted approaches checked before choosing focus (BLOCKED respected)
+[x] Reflection section written with causal analysis
 [x] research.md updated (if progressive synthesis enabled)
 [x] No sub-agents dispatched (LEAF compliance)
 ```
@@ -369,8 +386,8 @@ If any item fails, fix it before returning. If unfixable, report the specific fa
 
 ### Agents
 
-| Agent | Relationship |
-|-------|-------------|
+| Agent | Purpose |
+|-------|---------|
 | orchestrate | Dispatches deep-research iterations |
 | research | Standard 9-step research (non-iterative) |
 

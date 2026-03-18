@@ -216,7 +216,7 @@ def validate_toc(content: str, doc_type_rules: Dict[str, Any], rules: Dict[str, 
     """Validate TABLE OF CONTENTS section."""
     errors = []
 
-    if not doc_type_rules.get('toc_required', False):
+    if not doc_type_rules.get('tocRequired', False):
         return errors
 
     # Accept variations with emoji (📑) or without
@@ -261,7 +261,7 @@ def validate_toc(content: str, doc_type_rules: Dict[str, Any], rules: Dict[str, 
             entry_text = entry_match.group(1)
 
             # Check for ALL CAPS (only for readme type which requires it)
-            uppercase_required = doc_type_rules.get('toc_uppercase_required', False)
+            uppercase_required = doc_type_rules.get('tocUppercaseRequired', False)
             if uppercase_required and not is_uppercase_section(entry_text):
                 section_text = extract_section_name_text(entry_text)
                 # Build fixed entry: preserve number and emoji, uppercase the name
@@ -303,9 +303,9 @@ def validate_h2_headers(content: str, doc_type_rules: Dict[str, Any], rules: Dic
         return errors
 
     expected_num = 1
-    emoji_required = doc_type_rules.get('h2_emoji_required', True)
-    section_emojis = doc_type_rules.get('section_emojis', {})
-    section_aliases = doc_type_rules.get('section_aliases', {})
+    emoji_required = doc_type_rules.get('h2EmojiRequired', True)
+    section_emojis = doc_type_rules.get('sectionEmojis', {})
+    section_aliases = doc_type_rules.get('sectionAliases', {})
 
     for match in matches:
         num = int(match.group(1))
@@ -353,7 +353,7 @@ def validate_h2_headers(content: str, doc_type_rules: Dict[str, Any], rules: Dic
                 })
 
         # Check for ALL CAPS (only for document types that require it)
-        uppercase_required = doc_type_rules.get('h2_uppercase_required', False)
+        uppercase_required = doc_type_rules.get('h2UppercaseRequired', False)
         if uppercase_required and not is_uppercase_section(title):
             section_text = extract_section_name_text(title)
             # Extract emoji if present
@@ -388,8 +388,8 @@ def validate_required_sections(content: str, doc_type_rules: Dict[str, Any]) -> 
     """Check that required sections are present."""
     errors = []
 
-    required = doc_type_rules.get('required_sections', [])
-    section_aliases = doc_type_rules.get('section_aliases', {})
+    required = doc_type_rules.get('requiredSections', [])
+    section_aliases = doc_type_rules.get('sectionAliases', {})
 
     # Build reverse alias map
     reverse_aliases = {}
@@ -496,7 +496,7 @@ def apply_fixes(content: str, errors: List[Dict[str, Any]]) -> Tuple[str, List[D
                 break
 
         # Get fresh errors based on current fixed content
-        doc_type_rules = rules.get('document_types', {}).get(doc_type, {})
+        doc_type_rules = rules.get('documentTypes', {}).get(doc_type, {})
         errors = []
         errors.extend(validate_toc(fixed_content, doc_type_rules, rules))
         errors.extend(validate_h2_headers(fixed_content, doc_type_rules, rules))
@@ -567,7 +567,7 @@ def validate_document(
     if doc_type is None:
         doc_type = detect_document_type(file_path, content, rules)
 
-    doc_type_rules = rules.get('document_types', {}).get(doc_type, {})
+    doc_type_rules = rules.get('documentTypes', {}).get(doc_type, {})
 
     if not doc_type_rules:
         return {

@@ -1,3 +1,8 @@
+#!/usr/bin/env python3
+# ───────────────────────────────────────────────────────────────
+# COMPONENT: COCOINDEX CODE TEST FIXTURES
+# ───────────────────────────────────────────────────────────────
+
 """Pytest configuration and fixtures."""
 
 import os

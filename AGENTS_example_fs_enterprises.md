@@ -56,6 +56,7 @@
 
 **MANDATORY TOOLS:**
 - **Spec Kit Memory MCP** for research tasks, context recovery, and finding prior work.  **Memory saves MUST use `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js [spec-folder-path]`** - NEVER manually create memory files.
+- **CocoIndex Code MCP** for semantic code search. **MUST use** when exploring unfamiliar code, finding implementations by concept/intent, or when Grep/Glob exact matching is insufficient. Skill: `.opencode/skill/mcp-cocoindex-code/`
 
 **GIT WORKFLOW:** Full details: `.opencode/skill/sk-git/`
 - Worktree setup, conventional commits, PR creation, branch management
@@ -67,7 +68,7 @@
 | ------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
 | **File modification**     | Gate 3 (ask spec folder) → Gate 1 → Gate 2 → Load memory context → Execute                                               |
 | **Research/exploration**  | `memory_match_triggers()` → `memory_context()` (unified) OR `memory_search()` (targeted) → Document findings              |
-| **Code search**           | `Grep()` for text patterns, `Glob()` for file discovery, `Read()` for file contents                                      |
+| **Code search**           | `CocoIndex search` for semantic/intent queries → `Grep()` for exact text → `Glob()` for file paths → `Read()` for contents         |
 | **Resume prior work**     | `/memory:continue` OR `memory_search({ query, specFolder, anchors: ['state', 'next-steps'] })` → Review checklist → Continue       |
 | **Save context**          | `/memory:save` OR `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js [spec-folder-path]` → Auto-indexed |
 | **Claim completion**      | Validation runs automatically → Load `checklist.md` → Verify ALL items → Mark with evidence                              |
@@ -268,10 +269,10 @@ Use the agent directory that matches the active runtime/provider profile:
 - **`@general`** — Implementation, complex tasks
 - **`@context`** — ALL codebase exploration, file search, pattern discovery, context loading. Dispatches sub-agents for fast search and deep investigation
 - **`@orchestrate`** — Multi-agent coordination, complex workflows
-- **`@research`** — Evidence gathering, planning, Gate 3 Option B. May write `research.md` inside spec folders
+- **`@deep-research`** — Autonomous deep research iterations, iterative evidence gathering. May write `research.md` inside spec folders
 - **`@write`** — Creating READMEs, Skills, Guides
 - **`@review`** — Code review, PRs, quality gates (READ-ONLY)
-- **`@speckit`** — Spec folder creation Level 1-3+. **EXCLUSIVE:** Only agent permitted to write `*.md` inside spec folders. Exceptions: `memory/` (generate-context.js), `scratch/` (any agent), `handover.md` (@handover), `research.md` (@research), `debug-delegation.md` (@debug)
+- **`@speckit`** — Spec folder creation Level 1-3+. **EXCLUSIVE:** Only agent permitted to write `*.md` inside spec folders. Exceptions: `memory/` (generate-context.js), `scratch/` (any agent), `handover.md` (@handover), `research.md` (@deep-research), `debug-delegation.md` (@debug)
 - **`@debug`** — Fresh perspective debugging, root cause analysis. May write `debug-delegation.md` inside spec folders
 - **`@handover`** — Session continuation, context preservation. May write `handover.md` inside spec folders
 - **`@ultra-think`** — Multi-strategy planning architect. Dispatches diverse thinking strategies, scores via 5-dimension rubric, synthesizes optimal plan. Planning-only: no file modifications
@@ -283,7 +284,7 @@ Use the agent directory that matches the active runtime/provider profile:
 **Two systems:**
 
 1. **Native MCP** (`opencode.json`) - Direct tools, called natively
-   - Sequential Thinking, Spec Kit Memory, Code Mode server
+   - Sequential Thinking, Spec Kit Memory, Code Mode, CocoIndex Code
 
 2. **Code Mode MCP** (`.utcp_config.json`) - External tools via `call_tool_chain()`
    - Figma, Github, ClickUp, Chrome DevTools, etc.

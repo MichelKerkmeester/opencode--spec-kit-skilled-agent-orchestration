@@ -191,6 +191,8 @@ function createSessionData(config: SessionConfig = {}): SessionData {
     HAS_SPEC_FILES: false,
     OBSERVATIONS: [],
     HAS_OBSERVATIONS: false,
+    TECHNICAL_CONTEXT: [],
+    HAS_TECHNICAL_CONTEXT: false,
     PROJECT_PHASE: 'simulation',
     ACTIVE_FILE: '',
     LAST_ACTION: '',

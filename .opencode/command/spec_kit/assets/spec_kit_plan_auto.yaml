@@ -193,10 +193,10 @@ agent_availability:
     model: opus
     fallback: "general"
     not_for: "reviewing this workflow prompt or any pre-step activity"
-  research:
+  deep-research:
     available_at_step: 5
     condition: "ONLY dispatch when confidence < 60% during Step 5 planning OR user explicitly requests research"
-    agent_file: "[runtime_agent_path]/research.md"
+    agent_file: "[runtime_agent_path]/deep-research.md"
     fallback: "general"
     conditional: true
     not_for: "proactive research, pre-step investigation, or reviewing this workflow"

@@ -312,7 +312,6 @@ For full API reference including parameters, return types and configuration, see
 | `/spec_kit:complete` | 14 | Full end-to-end workflow. Supports `:auto`, `:confirm`, `:with-research`, `:auto-debug` |
 | `/spec_kit:plan` | 7 | Planning only, no implementation. Supports `:auto`, `:confirm` |
 | `/spec_kit:implement` | 9 | Execute pre-planned work with PREFLIGHT/POSTFLIGHT gates. Requires existing `plan.md` |
-| `/spec_kit:research` | 9 | Technical investigation and documentation |
 | `/spec_kit:resume` | 4 | Resume a previous session on an existing spec folder |
 | `/spec_kit:handover` | 4 | Create a session handover document |
 | `/spec_kit:debug` | 5 | Delegate debugging to a specialized sub-agent |
@@ -324,7 +323,7 @@ For full API reference including parameters, return types and configuration, see
 |--------|---------|
 | `:auto` | Execute without approval gates |
 | `:confirm` | Pause at each step for approval |
-| `:with-research` | Dispatch `@research` before verification (`/spec_kit:complete` only) |
+| `:with-research` | Dispatch `@deep-research` before verification (`/spec_kit:complete` only) |
 | `:auto-debug` | Auto-dispatch `@debug` on 3+ failures (`/spec_kit:complete` only) |
 
 **Memory Commands (7):**

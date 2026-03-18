@@ -32,7 +32,7 @@ These scripts automate installation and configuration of OpenCode components (MC
 
 | Category | Count | Details |
 |----------|-------|---------|
-| Install Scripts | 6 | 5 component installers + 1 master installer |
+| Install Scripts | 8 | 3 real + 5 symlinks (component installers + 1 master installer) |
 | Shared Utilities | 36 | Functions in `_utils.sh` |
 | Platforms | 3 | macOS, Linux, Windows (WSL) |
 | Install Time | 2-10 min | Per component, depending on complexity |
@@ -111,11 +111,9 @@ install_scripts/
 ├── install-code-mode.sh           # Code Mode MCP
 ├── install-chrome-devtools.sh     # Chrome DevTools MCP (bdg CLI)
 ├── install-clickup.sh             # ClickUp CLI + ClickUp MCP for Code Mode
+├── install-cocoindex-code.sh      # CocoIndex Code MCP (symlink)
 ├── install-all.sh                 # Master installer with --skip/--only flags
 ├── logs/                          # Installation logs
-├── test/                          # Docker test environment
-│   ├── Dockerfile                 # Clean environment for testing
-│   └── run-tests.sh               # Test runner
 └── README.md                      # This file
 ```
 
@@ -125,7 +123,6 @@ install_scripts/
 |------|---------|
 | `_utils.sh` | 36 shared functions for logging, JSON, prerequisites |
 | `install-all.sh` | Master installer with `--skip` and `--only` flags |
-| `test/Dockerfile` | Docker image for clean environment testing |
 
 <!-- /ANCHOR:structure -->
 
@@ -143,6 +140,7 @@ install_scripts/
 | `install-code-mode.sh` | Code Mode MCP | MCP orchestration via TypeScript execution | Node.js 18+ |
 | `install-chrome-devtools.sh` | Chrome DevTools CLI | Browser debugging via CDP (bdg CLI) | Node.js 18+, Chrome |
 | `install-clickup.sh` | ClickUp MCP | ClickUp CLI + MCP server installation for Code Mode | Node.js 18+ (22+ for CLI), npm |
+| `install-cocoindex-code.sh` | CocoIndex Code MCP | Semantic code search via vector embeddings | Node.js 18+, Python 3.10+ |
 
 ### Shared Utilities (_utils.sh)
 
@@ -403,11 +401,9 @@ See the Contributing section in the source for the full template.
 
 **Q: Can I run these in Docker/CI?**
 
-A: Yes. Use `--dry-run` to preview or the test Docker environment:
+A: Yes. Use `--dry-run` to preview changes without installing:
 ```bash
-cd test/
-docker build -t mcp-install-test .
-docker run -it mcp-install-test
+./install-all.sh --dry-run
 ```
 
 <!-- /ANCHOR:faq -->

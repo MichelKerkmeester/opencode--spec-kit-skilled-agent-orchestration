@@ -30,6 +30,7 @@ This reference provides deep-dive technical guidance on execution modes, validat
 - Mode 2 (Skill Creation): [skill_creation.md](./skill_creation.md)
 - Mode 3 (Flowcharts): [assets/flowcharts/](../assets/flowcharts/)
 - Mode 4 (Install Guides): [install_guide_standards.md](./install_guide_standards.md)
+- Mode 5 (Playbooks): [manual_testing_playbook_template.md](../assets/documentation/manual_testing_playbook_template.md)
 
 ### Core Principle
 

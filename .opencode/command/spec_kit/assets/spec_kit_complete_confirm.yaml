@@ -271,10 +271,10 @@ multi_agent_config:
 # Do NOT dispatch agents based on reading this section.
 # Agents are activated ONLY when their designated step is executing.
 agent_availability:
-  research:
+  deep-research:
     available_at_step: "Phase 3 (if :with-research OR confidence < 60%)"
     condition: "ONLY dispatch when :with-research flag is set OR confidence < 60% during planning"
-    agent_file: "[runtime_agent_path]/research.md"
+    agent_file: "[runtime_agent_path]/deep-research.md"
     fallback: "general"
     not_for: "proactive research or pre-step investigation"
   speckit:

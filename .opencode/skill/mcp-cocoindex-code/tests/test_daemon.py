@@ -1,3 +1,8 @@
+#!/usr/bin/env python3
+# ───────────────────────────────────────────────────────────────
+# COMPONENT: COCOINDEX CODE DAEMON INTEGRATION TESTS
+# ───────────────────────────────────────────────────────────────
+
 """Integration tests for the daemon process.
 
 Runs the daemon in a background thread with a shared embedder.

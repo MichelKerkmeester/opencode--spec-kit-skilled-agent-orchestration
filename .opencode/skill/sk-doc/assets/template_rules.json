@@ -1,32 +1,32 @@
 {
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Machine-readable template specifications for automated documentation validation - aligned with all 9 templates",
-  "document_types": {
+  "documentTypes": {
     "readme": {
       "description": "README.md files for projects, components, and features",
-      "required_sections": ["overview"],
-      "recommended_sections": ["quick_start", "troubleshooting", "related"],
-      "optional_sections": ["structure", "features", "configuration", "usage_examples", "faq"],
-      "section_emojis": {
-        "overview": "📖",
-        "quick_start": "🚀",
-        "structure": "📁",
-        "features": "⚡",
-        "configuration": "⚙️",
-        "usage_examples": "💡",
-        "usage": "💡",
-        "troubleshooting": "🛠️",
-        "faq": "❓",
-        "related_documents": "📚",
-        "related_resources": "🔗",
-        "related": "📚",
-        "patterns": "💡",
-        "maintenance": "🔄",
-        "best_practices": "🎓",
-        "complete_template": "📋",
-        "checklist": "✅"
+      "requiredSections": ["overview"],
+      "recommendedSections": ["quick_start", "troubleshooting", "related"],
+      "optionalSections": ["structure", "features", "configuration", "usage_examples", "faq"],
+      "sectionEmojis": {
+        "overview": "\ud83d\udcd6",
+        "quick_start": "\ud83d\ude80",
+        "structure": "\ud83d\udcc1",
+        "features": "\u26a1",
+        "configuration": "\u2699\ufe0f",
+        "usage_examples": "\ud83d\udca1",
+        "usage": "\ud83d\udca1",
+        "troubleshooting": "\ud83d\udee0\ufe0f",
+        "faq": "\u2753",
+        "related_documents": "\ud83d\udcda",
+        "related_resources": "\ud83d\udd17",
+        "related": "\ud83d\udcda",
+        "patterns": "\ud83d\udca1",
+        "maintenance": "\ud83d\udd04",
+        "best_practices": "\ud83c\udf93",
+        "complete_template": "\ud83d\udccb",
+        "checklist": "\u2705"
       },
-      "section_aliases": {
+      "sectionAliases": {
         "related documents": "related",
         "related resources": "related",
         "related_documents": "related",
@@ -39,32 +39,32 @@
         "readme checklist": "checklist",
         "readme maintenance": "maintenance"
       },
-      "toc_required": true,
-      "toc_anchor_format": "double_dash",
-      "toc_uppercase_required": true,
-      "h2_emoji_required": false,
-      "h2_uppercase_required": true,
-      "first_section_name": "overview",
-      "last_section_pattern": "related"
+      "tocRequired": true,
+      "tocAnchorFormat": "double_dash",
+      "tocUppercaseRequired": true,
+      "h2EmojiRequired": false,
+      "h2UppercaseRequired": true,
+      "firstSectionName": "overview",
+      "lastSectionPattern": "related"
     },
     "skill": {
       "description": "SKILL.md files for OpenCode skills",
-      "required_sections": ["when_to_use", "smart_routing", "how_it_works", "rules"],
-      "recommended_sections": ["success_criteria", "integration_points", "related_resources"],
-      "optional_sections": ["external_resources"],
-      "section_emojis": {
-        "when_to_use": "🎯",
-        "smart_routing": "🧭",
-        "how_it_works": "🛠️",
-        "rules": "📋",
-        "success_criteria": "🏆",
-        "integration_points": "🔌",
-        "external_resources": "📚",
-        "related_resources": "🔗",
-        "common_pitfalls": "⚠️",
-        "quality_checklist": "🔍"
+      "requiredSections": ["when_to_use", "smart_routing", "how_it_works", "rules"],
+      "recommendedSections": ["success_criteria", "integration_points", "related_resources"],
+      "optionalSections": ["external_resources"],
+      "sectionEmojis": {
+        "when_to_use": "\ud83c\udfaf",
+        "smart_routing": "\ud83e\udded",
+        "how_it_works": "\ud83d\udee0\ufe0f",
+        "rules": "\ud83d\udccb",
+        "success_criteria": "\ud83c\udfc6",
+        "integration_points": "\ud83d\udd0c",
+        "external_resources": "\ud83d\udcda",
+        "related_resources": "\ud83d\udd17",
+        "common_pitfalls": "\u26a0\ufe0f",
+        "quality_checklist": "\ud83d\udd0d"
       },
-      "section_aliases": {
+      "sectionAliases": {
         "when to use": "when_to_use",
         "smart routing": "smart_routing",
         "smart_routing_references": "smart_routing",
@@ -80,46 +80,46 @@
         "quality checklist": "quality_checklist",
         "quality checklist & quick reference": "quality_checklist"
       },
-      "toc_required": false,
-      "h2_emoji_required": false
+      "tocRequired": false,
+      "h2EmojiRequired": false
     },
     "command": {
       "description": "Command files in .opencode/command/ folders",
-      "required_sections": ["purpose", "instructions"],
-      "recommended_sections": ["contract", "examples", "notes"],
-      "optional_sections": ["workflow", "reference", "related_commands", "tool_signatures", "routing", "docs", "input"],
-      "section_emojis": {
-        "purpose": "🎯",
-        "contract": "📝",
-        "workflow": "📊",
-        "workflow_overview": "🔍",
-        "instructions": "⚡",
-        "reference": "📌",
-        "examples": "🔍",
-        "example_usage": "🔍",
-        "example_output": "📊",
-        "related_commands": "🔗",
-        "related_resources": "🔗",
-        "tool_signatures": "🔧",
-        "routing": "🔀",
-        "argument_routing": "🔀",
-        "mode_detection": "🔀",
-        "docs": "📚",
-        "full_documentation": "📚",
-        "input": "📋",
-        "user_input": "📋",
-        "notes": "📌",
-        "failure_recovery": "🔧",
-        "error_handling": "⚠️",
-        "templates_used": "📁",
-        "completion_report": "📊",
-        "validation_checklist": "✅",
-        "best_practices": "📋",
-        "key_behaviors": "⚡",
-        "context_loading": "📁",
-        "safety_features": "🛡️"
+      "requiredSections": ["purpose", "instructions"],
+      "recommendedSections": ["contract", "examples", "notes"],
+      "optionalSections": ["workflow", "reference", "related_commands", "tool_signatures", "routing", "docs", "input"],
+      "sectionEmojis": {
+        "purpose": "\ud83c\udfaf",
+        "contract": "\ud83d\udcdd",
+        "workflow": "\ud83d\udcca",
+        "workflow_overview": "\ud83d\udd0d",
+        "instructions": "\u26a1",
+        "reference": "\ud83d\udccc",
+        "examples": "\ud83d\udd0d",
+        "example_usage": "\ud83d\udd0d",
+        "example_output": "\ud83d\udcca",
+        "related_commands": "\ud83d\udd17",
+        "related_resources": "\ud83d\udd17",
+        "tool_signatures": "\ud83d\udd27",
+        "routing": "\ud83d\udd00",
+        "argument_routing": "\ud83d\udd00",
+        "mode_detection": "\ud83d\udd00",
+        "docs": "\ud83d\udcda",
+        "full_documentation": "\ud83d\udcda",
+        "input": "\ud83d\udccb",
+        "user_input": "\ud83d\udccb",
+        "notes": "\ud83d\udccc",
+        "failure_recovery": "\ud83d\udd27",
+        "error_handling": "\u26a0\ufe0f",
+        "templates_used": "\ud83d\udcc1",
+        "completion_report": "\ud83d\udcca",
+        "validation_checklist": "\u2705",
+        "best_practices": "\ud83d\udccb",
+        "key_behaviors": "\u26a1",
+        "context_loading": "\ud83d\udcc1",
+        "safety_features": "\ud83d\udee1\ufe0f"
       },
-      "section_aliases": {
+      "sectionAliases": {
         "example usage": "examples",
         "example output": "examples",
         "example_usage": "examples",
@@ -144,10 +144,10 @@
         "context loading": "context_loading",
         "safety features": "safety_features"
       },
-      "toc_required": false,
-      "h2_emoji_required": false,
-      "frontmatter_required": true,
-      "frontmatter_fields": {
+      "tocRequired": false,
+      "h2EmojiRequired": false,
+      "frontmatterRequired": true,
+      "frontmatterFields": {
         "required": ["description"],
         "recommended": ["argument-hint", "allowed-tools"],
         "optional": ["name", "model", "version", "disable-model-invocation"]
@@ -155,62 +155,62 @@
     },
     "install_guide": {
       "description": "Installation guide files for MCP servers, plugins, and tools",
-      "required_sections": ["overview", "prerequisites", "installation", "verification"],
-      "recommended_sections": ["configuration", "troubleshooting", "related_resources"],
-      "optional_sections": ["quick_start", "upgrade", "uninstallation", "advanced_configuration", "faq"],
-      "section_emojis": {
-        "overview": "📖",
-        "quick_start": "🚀",
-        "prerequisites": "📋",
-        "installation": "⚙️",
-        "configuration": "🔧",
-        "verification": "✅",
-        "troubleshooting": "🛠️",
-        "upgrade": "⬆️",
-        "uninstallation": "🗑️",
-        "advanced_configuration": "⚡",
-        "faq": "❓",
-        "related_resources": "🔗",
-        "phase_validation": "🔒"
+      "requiredSections": ["overview", "prerequisites", "installation", "verification"],
+      "recommendedSections": ["configuration", "troubleshooting", "related_resources"],
+      "optionalSections": ["quick_start", "upgrade", "uninstallation", "advanced_configuration", "faq"],
+      "sectionEmojis": {
+        "overview": "\ud83d\udcd6",
+        "quick_start": "\ud83d\ude80",
+        "prerequisites": "\ud83d\udccb",
+        "installation": "\u2699\ufe0f",
+        "configuration": "\ud83d\udd27",
+        "verification": "\u2705",
+        "troubleshooting": "\ud83d\udee0\ufe0f",
+        "upgrade": "\u2b06\ufe0f",
+        "uninstallation": "\ud83d\uddd1\ufe0f",
+        "advanced_configuration": "\u26a1",
+        "faq": "\u2753",
+        "related_resources": "\ud83d\udd17",
+        "phase_validation": "\ud83d\udd12"
       },
-      "section_aliases": {
+      "sectionAliases": {
         "quick start": "quick_start",
         "advanced configuration": "advanced_configuration",
         "related resources": "related_resources",
         "phase validation": "phase_validation"
       },
-      "toc_required": true,
-      "toc_anchor_format": "double_dash",
-      "toc_uppercase_required": true,
-      "h2_emoji_required": false,
-      "h2_uppercase_required": true,
-      "phase_validation_required": true
+      "tocRequired": true,
+      "tocAnchorFormat": "double_dash",
+      "tocUppercaseRequired": true,
+      "h2EmojiRequired": false,
+      "h2UppercaseRequired": true,
+      "phaseValidationRequired": true
     },
     "reference": {
       "description": "Reference files in skill references/ folders",
-      "required_sections": ["overview"],
-      "recommended_sections": ["related_resources"],
-      "optional_sections": ["usage", "examples", "troubleshooting", "decision_logic", "workflows", "patterns"],
-      "section_emojis": {
-        "overview": "📖",
-        "usage": "💡",
-        "examples": "📝",
-        "troubleshooting": "🛠️",
-        "related_resources": "🔗",
-        "decision_logic": "🔀",
-        "workflows": "🔄",
-        "patterns": "💡",
-        "validation": "✅",
-        "configuration": "⚙️",
-        "quick_troubleshooting": "🔧",
-        "common_workflow_examples": "📝",
-        "batch_processing": "📦",
-        "phase_interactions": "🔄",
-        "enforcement_workflows": "🛠️",
-        "validation_integration": "🔗",
-        "execution_modes": "⚙️"
+      "requiredSections": ["overview"],
+      "recommendedSections": ["related_resources"],
+      "optionalSections": ["usage", "examples", "troubleshooting", "decision_logic", "workflows", "patterns"],
+      "sectionEmojis": {
+        "overview": "\ud83d\udcd6",
+        "usage": "\ud83d\udca1",
+        "examples": "\ud83d\udcdd",
+        "troubleshooting": "\ud83d\udee0\ufe0f",
+        "related_resources": "\ud83d\udd17",
+        "decision_logic": "\ud83d\udd00",
+        "workflows": "\ud83d\udd04",
+        "patterns": "\ud83d\udca1",
+        "validation": "\u2705",
+        "configuration": "\u2699\ufe0f",
+        "quick_troubleshooting": "\ud83d\udd27",
+        "common_workflow_examples": "\ud83d\udcdd",
+        "batch_processing": "\ud83d\udce6",
+        "phase_interactions": "\ud83d\udd04",
+        "enforcement_workflows": "\ud83d\udee0\ufe0f",
+        "validation_integration": "\ud83d\udd17",
+        "execution_modes": "\u2699\ufe0f"
       },
-      "section_aliases": {
+      "sectionAliases": {
         "related resources": "related_resources",
         "related_resources": "related_resources",
         "decision logic": "decision_logic",
@@ -223,37 +223,37 @@
         "execution modes": "execution_modes",
         "four execution modes": "execution_modes"
       },
-      "toc_required": false,
-      "h2_emoji_required": false
+      "tocRequired": false,
+      "h2EmojiRequired": false
     },
     "asset": {
       "description": "Asset files in skill assets/ folders",
-      "required_sections": ["overview"],
-      "recommended_sections": ["related_resources"],
-      "optional_sections": ["templates", "examples", "guidelines", "patterns", "configuration", "checklist"],
-      "section_emojis": {
-        "overview": "📖",
-        "related_resources": "🔗",
-        "templates": "📋",
-        "examples": "💡",
-        "guidelines": "📝",
-        "patterns": "🔀",
-        "configuration": "⚙️",
-        "checklist": "✅",
-        "asset_types": "🎯",
-        "document_structure": "📋",
-        "standard_structure": "🏗️",
-        "logic_representation": "🧠",
-        "decision_logic": "🔀",
-        "workflow_patterns": "🔄",
-        "configuration_templates": "⚙️",
-        "template_guidelines": "📝",
-        "asset_checklist": "✅",
-        "asset_maintenance": "🔄",
-        "best_practices": "🎓",
-        "naming_reference": "📚"
+      "requiredSections": ["overview"],
+      "recommendedSections": ["related_resources"],
+      "optionalSections": ["templates", "examples", "guidelines", "patterns", "configuration", "checklist"],
+      "sectionEmojis": {
+        "overview": "\ud83d\udcd6",
+        "related_resources": "\ud83d\udd17",
+        "templates": "\ud83d\udccb",
+        "examples": "\ud83d\udca1",
+        "guidelines": "\ud83d\udcdd",
+        "patterns": "\ud83d\udd00",
+        "configuration": "\u2699\ufe0f",
+        "checklist": "\u2705",
+        "asset_types": "\ud83c\udfaf",
+        "document_structure": "\ud83d\udccb",
+        "standard_structure": "\ud83c\udfd7\ufe0f",
+        "logic_representation": "\ud83e\udde0",
+        "decision_logic": "\ud83d\udd00",
+        "workflow_patterns": "\ud83d\udd04",
+        "configuration_templates": "\u2699\ufe0f",
+        "template_guidelines": "\ud83d\udcdd",
+        "asset_checklist": "\u2705",
+        "asset_maintenance": "\ud83d\udd04",
+        "best_practices": "\ud83c\udf93",
+        "naming_reference": "\ud83d\udcda"
       },
-      "section_aliases": {
+      "sectionAliases": {
         "related resources": "related_resources",
         "related_resources": "related_resources",
         "asset types": "asset_types",
@@ -274,50 +274,78 @@
         "asset file naming quick reference": "naming_reference",
         "naming reference": "naming_reference"
       },
-      "toc_required": false,
-      "h2_emoji_required": false
+      "tocRequired": false,
+      "h2EmojiRequired": false
+    },
+    "playbook": {
+      "description": "Manual testing playbook files for skill validation",
+      "requiredSections": ["overview", "global_preconditions", "global_evidence_requirements", "deterministic_command_notation"],
+      "recommendedSections": ["automated_test_cross_reference", "feature_catalog_cross_reference"],
+      "optionalSections": ["coverage_notes"],
+      "sectionEmojis": {
+        "overview": "\ud83d\udcd6",
+        "global_preconditions": "\ud83d\udccb",
+        "global_evidence_requirements": "\ud83d\udcdd",
+        "deterministic_command_notation": "\u2699\ufe0f",
+        "automated_test_cross_reference": "\ud83d\udd17",
+        "feature_catalog_cross_reference": "\ud83d\udcca",
+        "coverage_notes": "\ud83d\udccc"
+      },
+      "sectionAliases": {
+        "global preconditions": "global_preconditions",
+        "global evidence requirements": "global_evidence_requirements",
+        "deterministic command notation": "deterministic_command_notation",
+        "automated test cross-reference": "automated_test_cross_reference",
+        "automated test cross reference": "automated_test_cross_reference",
+        "feature catalog cross-reference index": "feature_catalog_cross_reference",
+        "feature catalog cross reference": "feature_catalog_cross_reference",
+        "coverage notes": "coverage_notes"
+      },
+      "tocRequired": true,
+      "h2EmojiRequired": false,
+      "h2UppercaseRequired": true
     },
     "spec": {
       "description": "Spec-kit specification documents under specs/ folders",
-      "required_sections": [],
-      "recommended_sections": [],
-      "optional_sections": [],
-      "section_emojis": {},
-      "section_aliases": {},
-      "toc_required": false,
-      "h2_emoji_required": false,
-      "h2_uppercase_required": false
+      "requiredSections": [],
+      "recommendedSections": [],
+      "optionalSections": [],
+      "sectionEmojis": {},
+      "sectionAliases": {},
+      "tocRequired": false,
+      "h2EmojiRequired": false,
+      "h2UppercaseRequired": false
     },
     "agent": {
       "description": "Agent definition files in .opencode/agent/",
-      "required_sections": ["core_workflow", "capability_scan", "output_verification", "anti_patterns", "related_resources"],
-      "recommended_sections": ["model_preference", "rules", "output_format", "summary"],
-      "optional_sections": ["routing", "context_handoff", "escalation_protocol", "agent_capability_map", "task_decomposition", "parallel_vs_sequential", "failure_handling"],
-      "section_emojis": {
-        "model_preference": "🤖",
-        "core_workflow": "🔄",
-        "capability_scan": "🔍",
-        "routing": "🗺️",
-        "rules": "📋",
-        "output_format": "📝",
-        "output_verification": "✅",
-        "anti_patterns": "🚫",
-        "related_resources": "🔗",
-        "summary": "📊",
-        "template_mapping": "📋",
-        "documentation_modes": "🗺️",
-        "document_routing": "🔀",
-        "dqi_scoring": "📊",
-        "workflow_patterns": "🔧",
-        "agent_capability_map": "🗺️",
-        "task_decomposition": "📋",
-        "parallel_vs_sequential": "⚡",
-        "failure_handling": "🔧",
-        "context_handoff": "📥",
-        "escalation_protocol": "⚡",
-        "response_formats": "📤"
+      "requiredSections": ["core_workflow", "capability_scan", "output_verification", "anti_patterns", "related_resources"],
+      "recommendedSections": ["model_preference", "rules", "output_format", "summary"],
+      "optionalSections": ["routing", "context_handoff", "escalation_protocol", "agent_capability_map", "task_decomposition", "parallel_vs_sequential", "failure_handling"],
+      "sectionEmojis": {
+        "model_preference": "\ud83e\udd16",
+        "core_workflow": "\ud83d\udd04",
+        "capability_scan": "\ud83d\udd0d",
+        "routing": "\ud83d\uddfa\ufe0f",
+        "rules": "\ud83d\udccb",
+        "output_format": "\ud83d\udcdd",
+        "output_verification": "\u2705",
+        "anti_patterns": "\ud83d\udeab",
+        "related_resources": "\ud83d\udd17",
+        "summary": "\ud83d\udcca",
+        "template_mapping": "\ud83d\udccb",
+        "documentation_modes": "\ud83d\uddfa\ufe0f",
+        "document_routing": "\ud83d\udd00",
+        "dqi_scoring": "\ud83d\udcca",
+        "workflow_patterns": "\ud83d\udd27",
+        "agent_capability_map": "\ud83d\uddfa\ufe0f",
+        "task_decomposition": "\ud83d\udccb",
+        "parallel_vs_sequential": "\u26a1",
+        "failure_handling": "\ud83d\udd27",
+        "context_handoff": "\ud83d\udce5",
+        "escalation_protocol": "\u26a1",
+        "response_formats": "\ud83d\udce4"
       },
-      "section_aliases": {
+      "sectionAliases": {
         "core workflow": "core_workflow",
         "capability scan": "capability_scan",
         "output verification": "output_verification",
@@ -341,27 +369,27 @@
         "escalation protocol": "escalation_protocol",
         "response formats": "response_formats"
       },
-      "toc_required": false,
-      "h2_emoji_required": false,
-      "frontmatter_required": true,
-      "frontmatter_fields": {
+      "tocRequired": false,
+      "h2EmojiRequired": false,
+      "frontmatterRequired": true,
+      "frontmatterFields": {
         "required": ["name", "description", "mode", "temperature", "permission"],
         "optional": []
       }
     }
   },
-  "validation_rules": {
-    "h2_pattern": "^## (\\d+)\\.\\s+(.+)$",
-    "h2_with_emoji_pattern": "^## (\\d+)\\.\\s+([^\\w\\s])\\s+(.+)$",
-    "toc_header": "## TABLE OF CONTENTS",
-    "toc_entry_pattern": "^- \\[(.+?)\\]\\(#(.+?)\\)$",
-    "toc_anchor_double_dash_pattern": "^(\\d+)--([a-z_-]+)$",
-    "section_separator": "---"
+  "validationRules": {
+    "h2Pattern": "^## (\\d+)\\.\\s+(.+)$",
+    "h2WithEmojiPattern": "^## (\\d+)\\.\\s+([^\\w\\s])\\s+(.+)$",
+    "tocHeader": "## TABLE OF CONTENTS",
+    "tocEntryPattern": "^- \\[(.+?)\\]\\(#(.+?)\\)$",
+    "tocAnchorDoubleDashPattern": "^(\\d+)--([a-z_-]+)$",
+    "sectionSeparator": "---"
   },
-  "severity_definitions": {
+  "severityDefinitions": {
     "blocking": {
       "description": "Errors that must be fixed before document is considered valid",
-      "exit_code": 1,
+      "exitCode": 1,
       "errors": [
         "h2_not_uppercase",
         "toc_single_dash_anchor",
@@ -372,7 +400,7 @@
     },
     "warning": {
       "description": "Issues that should be addressed but don't block validation",
-      "exit_code": 0,
+      "exitCode": 0,
       "errors": [
         "non_sequential_numbering",
         "missing_recommended_section",
@@ -381,25 +409,25 @@
     },
     "info": {
       "description": "Informational notes that may indicate style inconsistencies",
-      "exit_code": 0,
+      "exitCode": 0,
       "errors": [
         "extra_section",
         "unusual_section_order"
       ]
     }
   },
-  "auto_fix_rules": {
-    "toc_single_dash_to_double": {
+  "autoFixRules": {
+    "tocSingleDashToDouble": {
       "description": "Convert single-dash TOC anchors to double-dash",
       "safe": true,
       "pattern": "#(\\d+)-([a-z])",
       "replacement": "#$1--$2"
     },
-    "uppercase_h2_section": {
+    "uppercaseH2Section": {
       "description": "Convert H2 section name to ALL CAPS",
       "safe": true
     },
-    "uppercase_toc_entry": {
+    "uppercaseTocEntry": {
       "description": "Convert TOC entry section name to ALL CAPS",
       "safe": true
     }

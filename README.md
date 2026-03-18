@@ -316,7 +316,7 @@ For the complete memory API (32 tools), pipeline architecture and retrieval conf
 | `@context` | sonnet | Custom | Memory-first retrieval specialist — exclusive entry point for ALL codebase exploration. Read-only. Surfaces Context Packages. Never writes or modifies files |
 | `@speckit` | sonnet | Custom | Spec folder documentation specialist — EXCLUSIVE agent for writing `*.md` inside spec folders. Template-first, CORE + ADDENDUM architecture |
 | `@debug` | opus | Custom | Fresh-perspective debugging specialist — 5-phase methodology (Observe, Analyze, Hypothesize, Validate, Fix). Starts with no prior context to prevent bias |
-| `@research` | opus | Custom | Technical investigation specialist — 9-step evidence gathering process. May write `research.md` inside spec folders |
+| `@deep-research` | opus | Custom | Autonomous deep research loop specialist — iterative evidence gathering with externalized state. May write `research.md` inside spec folders |
 | `@review` | opus | Custom | Code quality guardian — READ-ONLY. Findings-first severity analysis, security assessment, baseline + overlay standards contract |
 | `@write` | sonnet | Custom | Documentation generation specialist — template-first, DQI-compliant. Creates READMEs, skills, guides. Must NOT write inside spec folders |
 | `@handover` | sonnet | Custom | Session continuation specialist — creates `handover.md` for context preservation across sessions |
@@ -348,7 +348,6 @@ For the complete memory API (32 tools), pipeline architecture and retrieval conf
 | `/spec_kit:plan` | Planning only, no implementation |
 | `/spec_kit:implement` | Execute an existing plan |
 | `/spec_kit:phase` | Decompose a spec into phased child folders |
-| `/spec_kit:research` | Technical investigation with evidence gathering |
 | `/spec_kit:debug` | Delegate debugging to fresh-perspective sub-agent |
 | `/spec_kit:resume` | Continue a previous session (auto-loads memory) |
 | `/spec_kit:handover` | Create session handover (`:quick` or `:full` variants) |

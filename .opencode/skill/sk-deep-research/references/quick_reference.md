@@ -1,9 +1,15 @@
+---
+title: Deep Research Quick Reference
+description: One-page cheat sheet for the autonomous deep research loop.
+---
+
 # Deep Research Quick Reference
 
 One-page cheat sheet for the autonomous deep research loop.
 
 ---
 
+<!-- ANCHOR:commands -->
 ## Commands
 
 | Command | Description |
@@ -22,17 +28,21 @@ One-page cheat sheet for the autonomous deep research loop.
 
 ---
 
+<!-- /ANCHOR:commands -->
+<!-- ANCHOR:when-to-use -->
 ## When to Use
 
 | Scenario | Use |
 |----------|-----|
 | Deep unknown topic, multi-round needed | `/spec_kit:deep-research` |
-| Simple question, 1-2 sources | `/spec_kit:research` |
+| Simple question, 1-2 sources | Direct search with `@context` |
 | Check prior work only | `memory_context()` |
 | Exhaustive critical research | `/spec_kit:deep-research --max-iterations 15 --convergence 0.02` |
 
 ---
 
+<!-- /ANCHOR:when-to-use -->
+<!-- ANCHOR:architecture -->
 ## Architecture
 
 ```
@@ -51,6 +61,8 @@ One-page cheat sheet for the autonomous deep research loop.
 
 ---
 
+<!-- /ANCHOR:architecture -->
+<!-- ANCHOR:state-files -->
 ## State Files
 
 | File | Location | Format | Purpose |
@@ -63,28 +75,32 @@ One-page cheat sheet for the autonomous deep research loop.
 
 ---
 
+<!-- /ANCHOR:state-files -->
+<!-- ANCHOR:convergence-decision-tree -->
 ## Convergence Decision Tree
 
 ```
 Max iterations reached?
   Yes --> STOP
 
-3+ consecutive no-progress?
+All questions answered?
+  Yes --> STOP
+
+stuckThreshold consecutive no-progress?
   Yes --> STUCK_RECOVERY
     Recovery works? --> CONTINUE
     Recovery fails? --> STOP (with gaps)
 
-Avg newInfoRatio < threshold?
+Composite convergence (3-signal weighted > 0.60)?
   Yes --> STOP (converged)
-
-All questions answered?
-  Yes --> STOP (complete)
 
 Otherwise --> CONTINUE
 ```
 
 ---
 
+<!-- /ANCHOR:convergence-decision-tree -->
+<!-- ANCHOR:agent-iteration-checklist -->
 ## Agent Iteration Checklist
 
 Each @deep-research iteration:
@@ -98,6 +114,8 @@ Each @deep-research iteration:
 
 ---
 
+<!-- /ANCHOR:agent-iteration-checklist -->
+<!-- ANCHOR:tuning-guide -->
 ## Tuning Guide
 
 | Goal | Adjustment |
@@ -109,6 +127,8 @@ Each @deep-research iteration:
 
 ---
 
+<!-- /ANCHOR:tuning-guide -->
+<!-- ANCHOR:troubleshooting -->
 ## Troubleshooting
 
 | Problem | Fix |
@@ -121,6 +141,8 @@ Each @deep-research iteration:
 
 ---
 
+<!-- /ANCHOR:troubleshooting -->
+<!-- ANCHOR:progress-visualization -->
 ## Progress Visualization
 
 After each iteration, the orchestrator can display a text-based convergence summary:
@@ -155,12 +177,15 @@ Signals: RollingAvg=STOP MAD=CONTINUE Entropy=CONTINUE
 
 ---
 
+<!-- /ANCHOR:progress-visualization -->
+<!-- ANCHOR:related -->
 ## Related
 
 | Resource | Purpose |
 |----------|---------|
-| `/spec_kit:research` | Single-pass research (not iterative) |
-| `@research` agent | General research agent |
+| `@context` | Single-pass codebase search (not iterative) |
 | `@orchestrate` | Multi-agent coordination |
 | `memory_context()` | Prior work retrieval |
 | `generate-context.js` | Memory save script |
+
+<!-- /ANCHOR:related -->

@@ -1,15 +1,15 @@
 ---
 name: sk-doc
-description: "Unified markdown and OpenCode component specialist providing document quality enforcement, content optimization, component creation workflows (skills, agents, commands), ASCII flowcharts and install guides."
+description: "Unified markdown and OpenCode component specialist providing document quality enforcement, content optimization, component creation workflows (skills, agents, commands), ASCII flowcharts, install guides and manual testing playbooks."
 allowed-tools: [Bash, Edit, Glob, Grep, Read, Task, Write]
-version: 1.1.2.0
+version: 1.3.0.0
 ---
 
 <!-- Keywords: sk-doc, markdown-quality, skill-creation, document-validation, ascii-flowchart, llms-txt, content-optimization, extract-structure -->
 
 # Documentation Creation Specialist - Unified Markdown & Component Management
 
-Unified specialist providing: (1) Document quality pipeline with structure enforcement and content optimization, (2) OpenCode component creation (skills, agents, commands) with scaffolding, validation and packaging, (3) ASCII flowchart creation for visualizing workflows and (4) Install guide creation for setup documentation.
+Unified specialist providing: (1) Document quality pipeline with structure enforcement and content optimization, (2) OpenCode component creation (skills, agents, commands) with scaffolding, validation and packaging, (3) ASCII flowchart creation for visualizing workflows, (4) Install guide creation for setup documentation and (5) Manual testing playbook creation with 9-column scenario tables.
 
 **Core Principle**: Structure first, then content, then quality.
 
@@ -102,6 +102,19 @@ Create and validate installation documentation for MCP servers, plugins and tool
 
 **See**: [install_guide_standards.md](./references/install_guide_standards.md)
 
+### Use Case: Manual Testing Playbook Creation
+
+Create manual testing playbooks with deterministic scenarios, structured evidence collection, and multi-agent execution planning.
+
+**Manual Testing Playbook** - Use `manual_testing_playbook_template.md` when:
+- Creating manual testing scenarios for a skill
+- Standardizing test evidence and verdict criteria
+- Setting up multi-agent test execution planning
+
+**3-File Package**: Main playbook (scenarios), review protocol (verdicts), sub-agent ledger (wave planning)
+
+**See**: [manual_testing_playbook_template.md](./assets/documentation/manual_testing_playbook_template.md)
+
 ### When NOT to Use (All Modes)
 
 - Non-markdown files (only `.md` supported)
@@ -152,6 +165,7 @@ INTENT_SIGNALS = {
     "FLOWCHART": {"weight": 3, "keywords": ["flowchart", "ascii diagram", "decision tree", "swimlane"]},
     "INSTALL_GUIDE": {"weight": 3, "keywords": ["install guide", "setup instructions", "prerequisite"]},
     "HVR": {"weight": 4, "keywords": ["human voice", "hvr", "voice rules", "banned words", "writing style"]},
+    "PLAYBOOK": {"weight": 4, "keywords": ["playbook", "manual testing", "test scenarios", "manual test", "testing playbook"]},
 }
 
 RESOURCE_MAP = {
@@ -162,6 +176,7 @@ RESOURCE_MAP = {
     "FLOWCHART": ["assets/flowcharts/simple_workflow.md", "assets/flowcharts/decision_tree_flow.md"],
     "INSTALL_GUIDE": ["assets/documentation/install_guide_template.md", "references/install_guide_standards.md"],
     "HVR": ["references/hvr_rules.md"],
+    "PLAYBOOK": ["assets/documentation/manual_testing_playbook_template.md"],
 }
 
 LOADING_LEVELS = {
@@ -360,6 +375,21 @@ Standard Flow:      Branch:           Parallel:         Merge:
 
 **Workflow**: Select pattern → Build with components → Validate (`validate_flowchart.sh`) → Document
 
+### Mode 5: Playbook Creation
+
+**Template-First Workflow**:
+1. Load `manual_testing_playbook_template.md` for structure reference
+2. Plan categories and Feature ID prefixes (Section 3 of template)
+3. Create `manual_testing_playbook/` directory in the skill folder
+4. Copy and fill the main playbook scaffold (Section 5 of template)
+5. Copy and fill the review protocol scaffold (Section 6 of template)
+6. Copy and fill the sub-agent utilization ledger scaffold (Section 7 of template)
+7. Validate using the playbook checklist (Section 9 of template)
+
+**Key Deliverables**: 3-file package with 9-column scenario tables, review protocol, and wave planning ledger.
+
+**See**: [manual_testing_playbook_template.md](./assets/documentation/manual_testing_playbook_template.md)
+
 ---
 
 <!-- /ANCHOR:how-it-works -->
@@ -524,6 +554,30 @@ Standard Flow:      Branch:           Parallel:         Merge:
 2. External dependencies unavailable
 3. Installation requires special permissions
 
+### Mode 5: Playbook Creation
+
+#### ✅ ALWAYS
+
+1. **ALWAYS use the 3-file package** (main playbook, review protocol, sub-agent ledger)
+2. **ALWAYS use the 9-column table format** for scenario definitions
+3. **ALWAYS assign unique Feature IDs** across the entire playbook (PREFIX-NNN format)
+4. **ALWAYS include Global Preconditions, Evidence Requirements, and Command Notation**
+5. **ALWAYS include a Feature Catalog Cross-Reference Index** at the end
+6. **ALWAYS mark destructive scenarios** in preconditions and review protocol
+
+#### ❌ NEVER
+
+1. **NEVER use vague prompts** in the Exact Prompt column ("test it" is not deterministic)
+2. **NEVER omit step references** in Expected Signals (must reference step numbers)
+3. **NEVER leave Failure Triage empty** (every scenario needs 2+ debugging steps)
+4. **NEVER reuse Feature IDs** across categories
+
+#### ⚠️ ESCALATE IF
+
+1. Scenario count exceeds 200 (consider splitting into sub-playbooks)
+2. Destructive scenarios affect shared production resources
+3. Category boundaries overlap or are unclear
+
 ---
 
 <!-- /ANCHOR:rules -->
@@ -542,6 +596,7 @@ Standard Flow:      Branch:           Parallel:         Merge:
 - [skill_md_template.md](./assets/skill/skill_md_template.md) - canonical SKILL.md template
 - [readme_template.md](./assets/documentation/readme_template.md) - README structure and quality rules
 - [install_guide_template.md](./assets/documentation/install_guide_template.md) - install guide template
+- [manual_testing_playbook_template.md](./assets/documentation/manual_testing_playbook_template.md) - manual testing playbook template
 
 ### Validation Scripts
 
@@ -634,6 +689,14 @@ The `extract_structure.py` script computes a **DQI** (0-100) based on measurable
 - ✅ Platform configurations provided (at least OpenCode)
 - ✅ Troubleshooting covers common errors
 - ✅ Commands tested and working
+
+**Playbook Creation Complete**:
+- ✅ All 3 files exist (main playbook, review protocol, sub-agent ledger)
+- ✅ All scenario tables use 9-column format
+- ✅ Every Feature ID is unique across the playbook
+- ✅ Feature Catalog Cross-Reference Index matches all scenario rows
+- ✅ Review protocol coverage check regex matches all Feature ID prefixes
+- ✅ Destructive scenarios identified and isolated in wave planning
 
 ### Document-Type Gates
 
@@ -736,5 +799,5 @@ Need fast navigation? See [quick_reference.md](./references/quick_reference.md)
 
 ---
 
-**Remember**: This skill operates in four modes: Document Quality, Skill Creation, Flowchart Creation and Install Guide Creation. All modes integrate smoothly for creating and validating high-quality documentation and skills.
+**Remember**: This skill operates in five modes: Document Quality, Skill Creation, Flowchart Creation, Install Guide Creation and Playbook Creation. All modes integrate smoothly for creating and validating high-quality documentation and skills.
 <!-- /ANCHOR:related-resources -->

@@ -1131,7 +1131,7 @@ describe('workflow seam guardrail', () => {
     }
   });
 
-  it('hard-blocks same-workspace stateless saves when no target-spec anchor exists', async () => {
+  it('hard-blocks stateless saves via Block B when captured file paths do not overlap with target spec folder', async () => {
     const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-workflow-'));
     const specFolderPath = path.join(tempRoot, '010-perfect-session-capturing');
     const contextDir = path.join(tempRoot, 'memory');
@@ -1176,11 +1176,14 @@ describe('workflow seam guardrail', () => {
     const { runWorkflow } = await import('../core/workflow');
 
     try {
+      // Q1: Block A now warns instead of throwing for explicit CLI args,
+      // but Block B (file-path overlap) still hard-blocks when captured file paths
+      // don't relate to the target spec folder (overlap < 15%).
       await expect(runWorkflow({
         specFolderArg: specFolderPath,
         collectSessionDataFn: async (_collectedData, specFolderName) => createSessionData(specFolderName || '010-perfect-session-capturing'),
         silent: true,
-      })).rejects.toThrow(/ALIGNMENT_BLOCK: Captured stateless content matched the workspace but not the target spec folder/);
+      })).rejects.toThrow(/ALIGNMENT_BLOCK.*% of captured file paths/);
 
       expect(workflowHarness.writtenFiles).toHaveLength(0);
       const memoryIndexer = await import('../core/memory-indexer');

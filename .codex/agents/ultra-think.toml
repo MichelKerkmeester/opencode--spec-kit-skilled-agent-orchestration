@@ -479,7 +479,7 @@ Fix verification gaps first
 | ------------ | --------------------------------- | ------------------------------------------------ |
 | @orchestrate | Task decomposition and delegation | May dispatch Ultra-Think at Depth 1              |
 | @context     | Memory-first codebase exploration | Provides context for PREPARE step                |
-| @research    | Deep technical investigation      | Alternative for pure research (no synthesis)     |
+| @deep-research | Deep technical investigation    | Alternative for iterative deep research (no synthesis) |
 | @review      | Code quality validation           | Can validate the winning solution post-synthesis |
 | @debug       | Root cause analysis               | Ultra-Think can replace for complex bugs         |
 

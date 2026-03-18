@@ -210,7 +210,7 @@ async function extractDecisions(
           decisionText = `Decision ${index + 1}`;
         }
 
-        const titleMatch = decisionText.match(/^(?:Decision\s*\d+:\s*)?(.+?)(?:\s*[-\u2013\u2014]\s*(.+))?$/i);
+        const titleMatch = decisionText.match(/^(?:Decision\s*(?:\d+\s*)?:\s*)?(.+?)(?:\s+(?:--|[\u2013\u2014])\s+(.+))?$/i);
         const title: string = titleMatch?.[1]?.trim() || `Decision ${index + 1}`;
         const fallbackRationale: string = titleMatch?.[2]?.trim() || decisionText;
 
@@ -275,15 +275,26 @@ async function extractDecisions(
         const hasAlternatives = rawAlternatives.length >= 2;
         const chosenLabel = toText(manualObj?.chosen) || toText(manualObj?.choice) || toText(manualObj?.selected)
           || OPTIONS[0]?.DESCRIPTION || OPTIONS[0]?.LABEL || 'Chosen Approach';
-        const explicitConfidence = typeof manualObj?.confidence === 'number' && Number.isFinite(manualObj.confidence)
+        let explicitConfidence: number | undefined = typeof manualObj?.confidence === 'number' && Number.isFinite(manualObj.confidence)
           ? manualObj.confidence
           : undefined;
+        // Q5: String-form decision text analysis — parse explicit confidence from text
+        if (!manualObj && explicitConfidence === undefined) {
+          const textConfMatch = decisionText.match(/confidence:?\s*(\d+(?:\.\d+)?)(?:%|\b)/i);
+          if (textConfMatch) {
+            explicitConfidence = parseFloat(textConfMatch[1]);
+          }
+        }
         const choiceSignals = [
           toText(manualObj?.chosen),
           toText(manualObj?.choice),
           toText(manualObj?.selected),
         ];
-        const hasExplicitChoice = choiceSignals.some((signal) => signal.length > 0);
+        let hasExplicitChoice = choiceSignals.some((signal) => signal.length > 0);
+        // Q5: String-form choice verb detection
+        if (!manualObj && !hasExplicitChoice) {
+          hasExplicitChoice = /\b(?:chose|selected|decided)\b/i.test(decisionText);
+        }
         const tradeoffSignals: string[] = [
           decisionText,
           rationale,
@@ -292,6 +303,9 @@ async function extractDecisions(
         ];
         const hasOptionTradeoffs = OPTIONS.some((option) => option.PROS.length > 0 || option.CONS.length > 0);
         const hasEvidence = rationaleFromInput.length > 0;
+        // Q5: String-form rationale detection ("because", "due to")
+        const hasStringRationale = !manualObj && rationaleFromInput.length === 0
+          && /\b(?:because|due to)\b/i.test(decisionText);
         const {
           choiceConfidence,
           rationaleConfidence,
@@ -300,7 +314,7 @@ async function extractDecisions(
           hasAlternatives,
           hasExplicitChoice,
           chosen: chosenLabel,
-          hasExplicitRationale: rationaleFromInput.length > 0,
+          hasExplicitRationale: rationaleFromInput.length > 0 || hasStringRationale,
           hasTradeoffs: hasOptionTradeoffs || hasTradeoffSignals(tradeoffSignals),
           hasEvidence,
           explicitConfidence,

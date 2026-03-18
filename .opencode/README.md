@@ -102,7 +102,7 @@ This is an 11-agent / 3-platform model (OpenCode, Claude Code, Codex) with align
 |-------|-------------|-------------|
 | `@orchestrate` | Task decomposition and multi-agent coordination | Complex requests needing delegation across multiple agents |
 | `@context` | Codebase exploration and context retrieval (read-only) | ALL file search, pattern discovery and context loading tasks |
-| `@research` | Technical investigation with 9-step methodology | Deep investigation before planning, evidence-based analysis |
+| `@deep-research` | Autonomous iterative research loop with externalized state | Deep multi-round investigation, evidence-based analysis |
 | `@speckit` | Spec folder documentation (Level 1-3+) | Creating/updating spec folder docs (EXCLUSIVE for spec templates) |
 | `@review` | Code review with 5-dimension quality scoring | PR reviews, pre-commit checks, code quality validation |
 | `@write` | Documentation generation (READMEs, guides, skills) | Project-level docs outside spec folders |
@@ -154,7 +154,6 @@ Commands are invoked with `/command_name` syntax in the chat interface.
 
 ### Spec Kit Commands (`/spec_kit:*`)
 
-- `/spec_kit:research`: 9-step investigation workflow with evidence collection
 - `/spec_kit:plan`: 7-step planning workflow from research to task breakdown
 - `/spec_kit:implement`: Implementation workflow with quality gates
 - `/spec_kit:complete`: Full 14+ step workflow from research to completion

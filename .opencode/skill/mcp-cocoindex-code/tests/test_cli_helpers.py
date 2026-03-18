@@ -1,3 +1,8 @@
+#!/usr/bin/env python3
+# ───────────────────────────────────────────────────────────────
+# COMPONENT: COCOINDEX CODE CLI HELPERS TESTS
+# ───────────────────────────────────────────────────────────────
+
 """Unit tests for shared CLI helpers."""
 
 from __future__ import annotations

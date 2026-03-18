@@ -1,0 +1,1 @@
+../skill/mcp-figma/INSTALL_GUIDE.md

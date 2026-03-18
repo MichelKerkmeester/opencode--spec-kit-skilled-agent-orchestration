@@ -1,3 +1,8 @@
+#!/usr/bin/env python3
+# ───────────────────────────────────────────────────────────────
+# COMPONENT: COCOINDEX CODE END-TO-END TESTS
+# ───────────────────────────────────────────────────────────────
+
 """End-to-end tests exercising the full CLI → daemon → index → search flow.
 
 Each test function represents a complete session: a series of CLI commands

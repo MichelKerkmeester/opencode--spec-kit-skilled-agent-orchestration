@@ -1276,12 +1276,14 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       const specAffinity = evaluateCollectedDataSpecAffinity(collectedData, specAffinityTargets);
 
       if (!specAffinity.hasAnchor) {
-        const alignMsg = `ALIGNMENT_BLOCK: Captured stateless content matched the workspace but not the target spec folder "${activeSpecFolderArg}". ` +
+        // Q1: Downgrade Block A from hard abort to warning when spec folder was explicitly
+        // provided via CLI argument. The user's explicit intent overrides the anchor check.
+        // Blocks B and C (file-path overlap) remain as hard blocks for safety.
+        const alignMsg = `ALIGNMENT_WARNING: Captured stateless content matched the workspace but not the target spec folder "${activeSpecFolderArg}". ` +
           `No spec-specific anchors were found beyond workspace identity (matched files: ${specAffinity.matchedFileTargets.length}, ` +
           `matched phrases: ${specAffinity.matchedPhrases.length}, matched spec id: ${specAffinity.matchedSpecId ? 'yes' : 'no'}). ` +
-          `Aborting to prevent same-workspace cross-spec contamination. To force, pass data via JSON file.`;
+          `Proceeding because spec folder was explicitly provided via CLI argument.`;
         warn(`   ${alignMsg}`);
-        throw new Error(alignMsg);
       }
 
       const allFilePaths = (collectedData.observations || [])
@@ -1814,7 +1816,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     warn(`   Warning: Pre-extraction of trigger phrases failed: ${errMsg}`);
   }
 
-  const keyFiles = buildKeyFiles(effectiveFiles, specFolder);
+  const keyFiles = buildKeyFiles(enhancedFiles, specFolder);
   const memoryClassification = buildMemoryClassificationContext(collectedData, sessionData);
   const sessionDedup = buildSessionDedupContext(collectedData, sessionData, memoryTitle);
   const causalLinks = buildCausalLinksContext(collectedData);

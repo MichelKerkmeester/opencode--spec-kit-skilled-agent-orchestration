@@ -203,8 +203,8 @@ STATUS=FAIL ERROR="[message]"
 Full protocol documentation: `.opencode/skill/sk-deep-research/SKILL.md`
 
 Key references:
-- Loop protocol: `sk-deep-research/references/loop-protocol.md`
-- State formats: `sk-deep-research/references/state-format.md`
+- Loop protocol: `sk-deep-research/references/loop_protocol.md`
+- State formats: `sk-deep-research/references/state_format.md`
 - Convergence: `sk-deep-research/references/convergence.md`
 - Quick reference: `sk-deep-research/references/quick_reference.md`
 

@@ -1,3 +1,8 @@
+#!/usr/bin/env python3
+# ───────────────────────────────────────────────────────────────
+# COMPONENT: COCOINDEX CODE BACKWARD COMPATIBILITY TESTS
+# ───────────────────────────────────────────────────────────────
+
 """Tests for backward-compatible entry point settings migration."""
 
 from __future__ import annotations

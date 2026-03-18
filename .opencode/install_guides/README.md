@@ -14,7 +14,7 @@ importance_tier: "important"
 
 # OpenCode Install Guides
 
-> AI-executable guides for the OpenCode dev environment. Covers 3 native MCP servers, native skills, 9 agents, and optional CLI tools.
+> AI-executable guides for the OpenCode dev environment. Covers 6+ MCP servers, native skills, 9 agents, and optional CLI tools.
 
 ---
 
@@ -55,9 +55,9 @@ The `install_guides/` directory is the central hub for all OpenCode setup and in
 
 | Category | Count | Details |
 |----------|-------|---------|
-| Guide files | 5 | 1 MCP guide, 3 SET-UP guides, 1 index guide |
-| Install scripts | 1 | `install_scripts/` directory |
-| MCP servers covered | 3 | Code Mode, Spec Kit Memory, Sequential Thinking |
+| Guide files | 12 | 7 MCP guides, 4 SET-UP guides, 1 index guide (this README) |
+| Install scripts | 8 | 3 real + 5 symlinks in `install_scripts/` |
+| MCP servers covered | 7 | Code Mode, Spec Kit Memory, Sequential Thinking, Chrome DevTools, ClickUp, CocoIndex Code, Figma |
 | Platforms supported | 3 | macOS, Linux, Windows WSL |
 
 ### What this guide covers
@@ -70,18 +70,26 @@ This README serves as both the **directory index** (listing all available guides
 <!-- ANCHOR:guides-inventory -->
 ## 2. GUIDES INVENTORY
 
-Root `.md` guide files in this directory, sorted by recommended reading order, plus the automation subdirectory:
+All `.md` guide files in this directory (5 real + 7 symlinks), grouped by type:
 
-| Guide | Purpose | Audience |
-|-------|---------|----------|
-| **[README.md](./README.md)** (this file) | Main installation walkthrough and directory index | All users |
-| **[MCP - Sequential Thinking.md](./MCP%20-%20Sequential%20Thinking.md)** | Sequential Thinking MCP server installation and usage | Users needing advanced reasoning |
-| **[SET-UP - AGENTS.md](./SET-UP%20-%20AGENTS.md)** | AGENTS.md customization and AI agent behavior configuration | All users (post-install) |
-| **[SET-UP - Opencode Agents.md](./SET-UP%20-%20Opencode%20Agents.md)** | Agent system setup: specialized AI personas and routing | All users (post-install) |
-| **[SET-UP - Skill Creation.md](./SET-UP%20-%20Skill%20Creation.md)** | Custom skill creation and packaging workflow | Advanced users |
-| **[install_scripts/](./install_scripts/)** | Automated installation scripts, including ClickUp setup | All users |
-
-ClickUp setup currently lives in [`install_scripts/`](./install_scripts/) via `install-clickup.sh`. There is no root `MCP - ClickUp.md` guide file in this directory.
+| Guide | Type | Purpose |
+|-------|------|---------|
+| **[README.md](./README.md)** (this file) | Real | Main installation walkthrough and directory index |
+| **MCP Guides** | | |
+| [MCP - Chrome Dev Tools.md](./MCP%20-%20Chrome%20Dev%20Tools.md) | Symlink | Chrome DevTools MCP server (bdg CLI) |
+| [MCP - ClickUp.md](./MCP%20-%20ClickUp.md) | Symlink | ClickUp project management MCP |
+| [MCP - CocoIndex Code.md](./MCP%20-%20CocoIndex%20Code.md) | Symlink | CocoIndex semantic code search MCP |
+| [MCP - Code Mode.md](./MCP%20-%20Code%20Mode.md) | Symlink | Code Mode orchestration MCP |
+| [MCP - Figma.md](./MCP%20-%20Figma.md) | Symlink | Figma design file access MCP |
+| [MCP - Sequential Thinking.md](./MCP%20-%20Sequential%20Thinking.md) | Real | Sequential Thinking MCP server |
+| [MCP - Spec Kit Memory.md](./MCP%20-%20Spec%20Kit%20Memory.md) | Symlink | Spec Kit Memory MCP server |
+| **SET-UP Guides** | | |
+| [SET-UP - AGENTS.md](./SET-UP%20-%20AGENTS.md) | Real | AGENTS.md customization and AI agent behavior |
+| [SET-UP - Opencode Agents.md](./SET-UP%20-%20Opencode%20Agents.md) | Real | Agent system setup: specialized AI personas and routing |
+| [SET-UP - Skill Advisor.md](./SET-UP%20-%20Skill%20Advisor.md) | Symlink | Skill advisor configuration |
+| [SET-UP - Skill Creation.md](./SET-UP%20-%20Skill%20Creation.md) | Real | Custom skill creation and packaging workflow |
+| **Automation** | | |
+| [install_scripts/](./install_scripts/) | Directory | Automated install scripts (8 scripts) |
 
 ---
 

@@ -348,7 +348,7 @@ When the orchestrator specifies `Output Size: summary-only` or `minimal`, compre
 
 | Agent     | File                          | Relationship                                                                            |
 | --------- | ----------------------------- | --------------------------------------------------------------------------------------- |
-| @research | `.gemini/agents/research.md` | Deeper alternative — when @context finds complexity requiring full 9-step investigation |
+| @deep-research | `.gemini/agents/deep-research.md` | Deeper alternative — when @context finds complexity requiring iterative multi-round investigation |
 | @general  | Built-in                      | Implementation agent — uses @context's findings to write code                           |
 | @speckit  | `.gemini/agents/speckit.md`  | Spec documentation — uses @context's findings for spec folder creation                  |
 

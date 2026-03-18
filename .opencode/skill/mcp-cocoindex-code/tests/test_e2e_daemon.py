@@ -1,3 +1,8 @@
+#!/usr/bin/env python3
+# ───────────────────────────────────────────────────────────────
+# COMPONENT: COCOINDEX CODE END-TO-END DAEMON TESTS
+# ───────────────────────────────────────────────────────────────
+
 """End-to-end tests for the CLI → daemon subprocess flow.
 
 These tests start a real daemon subprocess via ``start_daemon()`` and interact

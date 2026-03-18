@@ -163,6 +163,8 @@ Append ONE line to `scratch/deep-research-state.jsonl`:
 {"type":"iteration","run":N,"status":"complete","focus":"[focus area]","findingsCount":N,"newInfoRatio":0.XX,"keyQuestions":["q1","q2"],"answeredQuestions":["q1"],"timestamp":"ISO-8601","durationMs":NNNNN}
 ```
 
+> **Note:** The orchestrator enriches each iteration record with optional `segment` (default: 1) and `convergenceSignals` fields after the agent writes it. The agent does not write these fields.
+
 **newInfoRatio calculation**:
 - Count total findings in this iteration
 - Count how many are genuinely new (not in prior iterations or strategy)
@@ -401,7 +403,6 @@ If any item fails, fix it before returning. If unfixable, report the specific fa
 | Agent | Purpose |
 |-------|---------|
 | orchestrate | Dispatches deep-research iterations |
-| research | Single-pass research (non-iterative) |
 
 ---
 
